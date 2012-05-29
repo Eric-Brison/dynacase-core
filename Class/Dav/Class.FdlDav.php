@@ -114,8 +114,8 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
     /**
      * PROPFIND method handler
      *
-     * @param  array  general parameter passing array
-     * @param  array  return array for file properties
+     * @param  array $options general parameter passing array
+     * @param  array $files return array for file properties
      * @return bool   true on success
      */
     function PROPFIND(&$options, &$files)
@@ -124,6 +124,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
         $fspath = $options["path"];
         
         error_log("  >PROPFIND depth:" . $options["depth"]);
+        //$this->logArray($options);
         // prepare property array
         $files["files"] = array();
         // store information for the requested path itself
@@ -191,18 +192,44 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
         return $files;
     }
     
+    private static function logArray($a, $level = 0)
+    {
+        if (is_array($a)) {
+            foreach ($a as $k => $v) {
+                error_log(str_pad('.', $level * 3) . "$k=>" . self::logArray($v, $level + 1));
+            }
+        } else {
+            error_log(str_pad('.', $level * 3) . $a);
+        }
+    }
     function path2id($fspath, &$vid = null)
     {
         //error_log("FSPATH :".$fspath);
         if ($fspath == '/') return $this->racine;
         
         $fspath = $this->_unslashify($fspath);
-        if (preg_match("/\/vid-([0-9]+)-([0-9]+)/", $fspath, $reg)) {
+        if (preg_match('/\/vid-([0-9]+)-([0-9]+)-[a-f0-9]+$/', $fspath, $reg)) {
             $fid = $reg[1];
             $vid = $reg[2];
+            //error_log("FSPATH4 :.$fspath vid:[$vid]");
             //	    $dvi=new DocVaultIndex($this->db_freedom);
             //$fid=$dvi->getDocId($vid);
             
+            //error_log("FSPATH3 :.$fspath vid:[$vid]");
+            
+        } else if (preg_match('/\/vid-([0-9]+)-([0-9]+)/', $fspath, $reg)) {
+            $fid = $reg[1];
+            $tmpvid = $reg[2];
+            $query = sprintf("select initid from docread where id=%d and locked != -1", $fid);
+            simpleQuery($this->db_webdav, $query, $finitid, true, true);
+            $query = sprintf("SELECT path FROM dav.properties WHERE name='fid' and value = '%d'", $finitid);
+            $res = pg_query($this->db_res, $query);
+            $fsbase = basename($fspath);
+            while ($row = pg_fetch_assoc($res)) {
+                $base = basename($row["path"]);
+                if ($base == $fsbase) $vid = $tmpvid;
+            }
+            if (!$vid) $fid = 0;
             //error_log("FSPATH3 :.$fspath vid:[$vid]");
             
         } else {
@@ -253,7 +280,6 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
         //$info["path"]  = is_dir($fspath) ? $this->_slashify($path) : $path;
         if ($doc->id == $this->racine) $doc->title = '';
         // no special beautified displayname here ...
-        
         // creation and modification time
         // type and size (caller already made sure that path exists)
         if (($doc->doctype == 'D') || ($doc->doctype == 'S')) {
@@ -470,7 +496,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
      */
     function _mimetype($fspath)
     {
-        return trim(shell_exec(sprintf("file -ib %s", escapeshellarg($fspath))));
+        return strtok(trim(shell_exec(sprintf("file -ib %s", escapeshellarg($fspath)))) , ';');
         if (@is_dir($fspath)) {
             // directories are easy
             return "httpd/unix-directory";
@@ -539,7 +565,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
      */
     function GET(&$options)
     {
-        error_log("========>GET :" . $options["path"]);
+        error_log("---------->GET :" . $options["path"]);
         include_once ("FDL/Class.Doc.php");
         // get absolute fs path to requested resource
         $fspath = $this->base . $options["path"];
@@ -622,7 +648,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
      */
     function PUT(&$options)
     {
-        error_log("========>PUT :" . $options["path"]);
+        error_log("---------->PUT :" . $options["path"]);
         include_once ("FDL/Class.Doc.php");
         
         $bpath = $this->mybasename($options["path"]);
@@ -635,10 +661,17 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
             $err = $doc->canEdit();
             if ($err == "") {
                 if ($doc->doctype == 'C') {
+                    /**
+                     * @var DocFam $doc
+                     */
                     $doc->saveVaultFile($vid, $options["stream"]);
                 } else {
                     $afiles = $doc->GetFileAttributes();
                     //error_log("PUT SEARCH FILES:".count($afiles));
+                    
+                    /**
+                     * @var NormalAttribute $afile
+                     */
                     foreach ($afiles as $afile) {
                         if ($afile->getOption('hideindav') == 'yes') {
                             continue;
@@ -667,6 +700,12 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                 }
             }
         } else {
+            error_log("PUT " . $this->type);
+            if ($this->type == 'freedav') {
+                error_log(" CANCEL PUT :" . $options["path"]);
+                return false; // no creation in freedav
+                
+            }
             $options["new"] = true;
             $stat = "201 Created";
             if ($options["new"]) {
@@ -698,7 +737,11 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                 }
             }
         }
-        
+        if (!$err) {
+            error_log(" CREATE PUT OK :" . $options["path"]);
+        } else {
+            error_log(" CREATE PUT KO : $err:" . $options["path"]);
+        }
         if ($err != "") $stat = false;
         
         return $stat;
@@ -712,7 +755,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
     function MKCOL($options)
     {
         
-        error_log("===========>MKCOL :" . $options["path"]);
+        error_log("---------- >MKCOL :" . $options["path"]);
         include_once ("FDL/Class.Doc.php");
         
         if (!empty($_SERVER["CONTENT_LENGTH"])) { // no body parsing yet
@@ -762,11 +805,11 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
      */
     function DELETE($options)
     {
-        error_log("===========>DELETE :" . $options["path"]);
+        error_log("---------- >DELETE :" . $options["path"]);
         
         if ($this->type == 'freedav') {
             $err = sprintf("unsupported DELETE method with freedav access.");
-            error_log(sprintf("===========> %s", $err));
+            error_log(sprintf("---------- > %s", $err));
             return "403 Forbidden: $err";
         }
         
@@ -814,7 +857,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
      */
     function MOVE($options)
     {
-        error_log("===========>MOVE :" . $options["path"] . "->" . $options["dest"]);
+        error_log("---------- >MOVE :" . $options["path"] . "->" . $options["dest"]);
         // no copying to different WebDAV Servers yet
         if (isset($options["dest_url"])) {
             return "502 bad gateway";
@@ -957,7 +1000,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
      */
     function COPY($options)
     {
-        error_log("===========>COPY :" . $options["path"] . "->" . $options["dest"]);
+        error_log("---------- >COPY :" . $options["path"] . "->" . $options["dest"]);
         // no copying to different WebDAV Servers yet
         if (isset($options["dest_url"])) {
             return "502 bad gateway";
@@ -1054,7 +1097,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
     function PROPPATCH(&$options)
     {
         global $prefs, $tab;
-        error_log("===========>PROPPATCH :" . $options["path"]);
+        error_log("---------- >PROPPATCH :" . $options["path"]);
         
         $msg = "";
         
@@ -1069,9 +1112,9 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
             } else {
                 if (isset($prop["val"])) {
                     //$query = "REPLACE INTO properties SET path = '$options[path]', name = '$prop[name]', ns= '$prop[ns]', value = '$prop[val]'";
-                    $query = sprintf("delete from dav.properties where path='%s' and name= '%s' and ns='%s'", pg_escape_string($prop['name']) , pg_escape_string($prop['name']) , pg_escape_string($prop['ns']));
+                    $query = sprintf("delete from dav.properties where path='%s' and name= '%s' and ns='%s'", pg_escape_string($prop['path']) , pg_escape_string($prop['name']) , pg_escape_string($prop['ns']));
                     pg_query($this->db_res, $query);
-                    $query = sprintf("INSERT INTO dav.properties (path, name, ns, value) values ('%s', '%s',  '%s', '%s')", pg_escape_string($options['path']) , pg_escape_string($prop['name']) , pg_escape_string($prop['ns']) , pg_escape_string($prop['val']));
+                    $query = sprintf("INSERT INTO dav.properties (path, name, ns, value) values ('%s', '%s',  '%s', '%s')", pg_escape_string($prop['path']) , pg_escape_string($prop['name']) , pg_escape_string($prop['ns']) , pg_escape_string($prop['val']));
                     //	  pg_query($this->db_res,$query);
                     //	  $query = "REPLACE INTO properties SET path = '$options[path]', name = '$prop[name]', ns= '$prop[ns]', value = '$prop[val]'";
                     
@@ -1092,7 +1135,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
      */
     function LOCK(&$options)
     {
-        error_log("===========>LOCK :" . $options["path"]);
+        error_log("---------- >LOCK :" . $options["path"]);
         include_once ("FDL/Class.Doc.php");
         if (isset($options["update"])) { // Lock Update
             $query = sprintf("UPDATE dav.locks SET expires = %s where token='%s'", pg_escape_string((time() + 300)) , pg_escape_string($options["update"]));
@@ -1114,7 +1157,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
         $fldid = $this->path2id($options["path"], $vid);
         $doc = new_doc($this->db_freedom, $fldid, true);
         if ($doc->isAffected()) {
-            error_log("LOCK " . $doc->title);
+            error_log("LOCK " . $doc->title . ":" . $options['locktoken']);
             
             $err = $doc->lock(true);
             if ($err == "") {
@@ -1142,7 +1185,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
     function UNLOCK(&$options)
     {
         
-        error_log("===========>UNLOCK :" . $options["path"]);
+        error_log("---------- >UNLOCK :" . $options["path"]);
         include_once ("FDL/Class.Doc.php");
         $fldid = $this->path2id($options["path"], $vid);
         $doc = new_doc($this->db_freedom, $fldid, true);
@@ -1152,12 +1195,15 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
             if ($err == "") {
                 $query = sprintf("DELETE FROM dav.locks WHERE path = '%s' AND token = '%s'", pg_escape_string($options['path']) , pg_escape_string($options['token']));
                 $res = pg_query($this->db_res, $query);
-                if (pg_affected_rows($res)) return "204 No Content";
+                if (pg_affected_rows($res)) {
+                    error_log(" unlock success :" . $doc->title . ":" . $options['token']);
+                    return "204 No Content";
+                }
             }
         } else {
             return "204 No Content";
         }
-        error_log("Cannot unlock " . $doc->title . ":$err");
+        error_log("Cannot unlock " . $doc->title . ":[$err][" . $options['token']) . "]";
         return "409 Conflict";
     }
     /**
