@@ -22,7 +22,6 @@ function barmenu(&$action)
 {
     // -----------------------------------
     global $dbaccess; // use in getChildCatg function
-    
     $dirid = GetHttpVars("dirid", getDefFld($action)); // folder where search
     $catg = GetHttpVars("catg", 1); // catg where search
     if ($action->Read("navigator", "") == "EXPLORER") {
@@ -218,31 +217,57 @@ function barmenu(&$action)
     $action->lay->Set("catg", $catg);
     //----------------------------
     // sort menu
-    $tsort = array(
-        "-" => array(
-            "said" => "",
-            "satitle" => _("no sort")
-        ) ,
-        "title" => array(
-            "said" => "title",
-            "satitle" => _("doctitle")
-        ) ,
-        "initid" => array(
-            "said" => "initid",
-            "satitle" => _("createdate")
-        ) ,
-        "revdate" => array(
-            "said" => "revdate",
-            "satitle" => _("revdate")
-        )
+    $tsort = array();
+    $tsort["-"] = array(
+        "said" => "",
+        "satitle" => _("no sort") ,
+        "aorder" => ""
     );
-    if ($sfdoc->wid > 0) {
-        $tsort["state"] = array(
-            "said" => "state",
-            "satitle" => _("state")
-        );
+    $props = $sfdoc->getSortProperties();
+    foreach ($props as $propName => $config) {
+        if ($config['sort'] != 'asc' && $config['sort'] != 'desc') {
+            continue;
+        }
+        switch ($propName) {
+            case 'state':
+                if ($sfdoc->wid > 0) {
+                    $tsort["state"] = array(
+                        "said" => "state",
+                        "satitle" => _("state") ,
+                        "aorder" => getAOrder($action, $propName, $config['sort'])
+                    );
+                }
+                break;
+
+            case 'title':
+                $tsort["title"] = array(
+                    "said" => "title",
+                    "satitle" => _("doctitle") ,
+                    "aorder" => getAOrder($action, $propName, $config['sort'])
+                );
+                break;
+
+            case 'initid':
+                $tsort["initid"] = array(
+                    "said" => "initid",
+                    "satitle" => _("createdate") ,
+                    "aorder" => getAOrder($action, $propName, $config['sort'])
+                );
+                break;
+
+            default:
+                $label = $sfdoc->infofields[$propName]['label'];
+                if ($label != '') {
+                    $label = _($label);
+                }
+                $tsort[$propName] = array(
+                    "said" => $propName,
+                    "satitle" => $label,
+                    "aorder" => getAOrder($action, $propName, $config['sort'])
+                );
+        }
     }
-    $tmsort[] = "sortdesc";
+
     while (list($k, $v) = each($tsort)) {
         $tmsort[$v["said"]] = "sortdoc" . $v["said"];
     }
@@ -265,7 +290,8 @@ function barmenu(&$action)
                 }
                 $tsort[$sortAttribute->id] = array(
                     "said" => $sortAttribute->id,
-                    "satitle" => sprintf("%s (title)", $a->getLabel())
+                    "satitle" => sprintf("%s (title)", $a->getLabel()) ,
+                    "aorder" => getAOrder($action, $sortAttribute->id, $sortAttribute->getOption('sortable'))
                 );
                 $tmsort[$sortAttribute->id] = "sortdoc" . $sortAttribute->id;
                 continue;
@@ -274,7 +300,8 @@ function barmenu(&$action)
         
         $tsort[$a->id] = array(
             "said" => $a->id,
-            "satitle" => $a->getLabel()
+            "satitle" => $a->getLabel() ,
+            "aorder" => getAOrder($action, $a->id, $a->getOption('sortable'))
         );
         $tmsort[$a->id] = "sortdoc" . $a->id;
     }
@@ -283,7 +310,7 @@ function barmenu(&$action)
     // select the current sort
     $csort = GetHttpVars("sqlorder");
     if ($csort == "") $csort = getDefUSort($action, "--");
-    
+
     if (($csort == '') || ($csort == '--')) {
         $csort = '-';
         $cselect = "&bull;";
@@ -308,4 +335,36 @@ function barmenu(&$action)
     
     popupGen(1);
 }
-?>
+
+function getAOrder(Action & $action, $attrName, $orderBy)
+{
+    $usort = getDefUSort($action, "__UNDEFINED");
+    if ($usort != "__UNDEFINED") {
+        /*
+         * Invert the sort sign and extract attr name
+        */
+        if ($usort[0] == "-") {
+            $invertedSortSign = "";
+            $sortAttr = substr($usort, 1);
+        } else {
+            $invertedSortSign = "-";
+            $sortAttr = $usort;
+        }
+        /*
+         * If the sort is on the same attr, then
+         * we set sort on the same attr but with
+         * the inverted sign
+        */
+        if ($sortAttr == $attrName) {
+            return $invertedSortSign . $attrName;
+        }
+    }
+    /*
+     * By default, we set the sort sign from the
+     * 'sortable' option or the 'sort' property parameter
+    */
+    if ($orderBy === 'desc') {
+        return "-" . $attrName;
+    }
+    return $attrName;
+}

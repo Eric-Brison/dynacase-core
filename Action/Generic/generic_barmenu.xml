@@ -91,7 +91,7 @@ testSplit();
 
 <!-- ------------ MENU NEW --------------------- -->
 <div  id="newmenu" class="popup[IF ISIE6] select-free[ENDIF ISIE6]" >
-[BLOCK NEWFAM]<a  id="newdoc[subfam]" hrefDoc="[CORE_STANDURL]app=[APPNAME]&action=GENERIC_EDIT&classid=[subfam]" href="#" onClick="parent.finfo[famid].location.href='[CORE_STANDURL]app=[APPNAME]&action=GENERIC_EDIT&classid=[subfam]';closeAllMenu()">[stitle]</a>
+[BLOCK NEWFAM]<a  id="newdoc[subfam]" hrefDoc="[CORE_STANDURL]app=[APPNAME]&amp;action=GENERIC_EDIT&amp;classid=[subfam]" href="#" onClick="parent.finfo[famid].location.href='[CORE_STANDURL]app=[APPNAME]&amp;action=GENERIC_EDIT&amp;classid=[subfam]';closeAllMenu()">[stitle]</a>
 [ENDBLOCK NEWFAM]
 [IF ISIE6]<iframe class="innerFixer" src="[IMG:1x1.gif]"></iframe>[ENDIF ISIE6]
 </div>
@@ -104,7 +104,7 @@ testSplit();
 [BLOCK MKIND]
 <div  id="[kindid]menu" class="popup[IF ISIE6] select-free[ENDIF ISIE6]" >
 [BLOCK [vkind]]
-<a  id="[kindid][kid]" href="#" onClick="document.location.href='[CORE_STANDURL]app=[APPNAME]&action=GENERIC_SEARCH_KIND&famid=[famid]&kid=[urlkid]&aid=[kindid]&catg=[catg][pds]';closeAllMenu()" ><span style="margin:0px 0px 0px [level]px">[ktitle]</span></a>
+<a  id="[kindid][kid]" href="#" onClick="document.location.href='[CORE_STANDURL]app=[APPNAME]&amp;action=GENERIC_SEARCH_KIND&amp;famid=[famid]&amp;kid=[urlkid]&amp;aid=[kindid]&amp;catg=[catg][pds]';closeAllMenu()" ><span style="margin:0px 0px 0px [level]px">[ktitle]</span></a>
 [ENDBLOCK [vkind]]
 [IF ISIE6]<iframe class="innerFixer" src="[IMG:1x1.gif]"></iframe>[ENDIF ISIE6]
 </div>
@@ -112,30 +112,28 @@ testSplit();
 
 <!-- ------------ MENU SORT --------------------- -->
 <div  id="sortmenu" class="popup[IF ISIE6] select-free[ENDIF ISIE6]" >
-<a  id="sortdesc" href="#" onClick="document.location.href='[CORE_STANDURL]app=[APPNAME]&action=GENERIC_USORT&famid=[famid]&catg=[dirid]&aorder=-';closeAllMenu()">[TEXT:invert order]</a>
-<a class="separator"></a>
-[BLOCK USORT]<a  id="sortdoc[said]" href="#" onClick="document.location.href='[CORE_STANDURL]app=[APPNAME]&action=GENERIC_USORT&catg=[dirid]&famid=[famid]&aorder=[said]';closeAllMenu()">[dsort]&nbsp;[satitle]</a>
+[BLOCK USORT]<a  id="sortdoc[said]" href="#" onClick="document.location.href='[CORE_STANDURL]app=[APPNAME]&amp;action=GENERIC_USORT&amp;catg=[dirid]&amp;famid=[famid]&amp;aorder=[aorder]';closeAllMenu()">[dsort]&nbsp;[satitle]</a>
 [ENDBLOCK USORT]
 [IF ISIE6]<iframe class="innerFixer" src="[IMG:1x1.gif]"></iframe>[ENDIF ISIE6]
 </div>
 
 <!-- ------------ MENU TOOL --------------------- -->
 <div  id="helpmenu" class="popup[IF ISIE6] select-free[ENDIF ISIE6]" >
-  <a id="help" target="[fhelp]" href="[CORE_STANDURL]app=CORE&action=HELPVIEW&appname=[APPNAME]" onClick="closeAllMenu()"><img  border="0" height="10" src="[IMG:help.gif]">[TEXT:Help]</a>
-  <a  id="newdsearch" href="#" hrefDoc="[CORE_STANDURL]app=GENERIC&action=GENERIC_EDIT&se_memo=yes&classid=16&onlysubfam=[famid]&sfamid=[famid]" onClick="parent.finfo[famid].location.href='[CORE_STANDURL]app=GENERIC&action=GENERIC_EDIT&se_memo=yes&classid=16&onlysubfam=[famid]&sfamid=[famid]';closeAllMenu()">[TEXT:New search]</a>
-<a  id="newreport" href="#" hrefDoc="[CORE_STANDURL]app=GENERIC&action=GENERIC_EDIT&se_memo=yes&classid=25&onlysubfam=[famid]&sfamid=[famid]" onClick="parent.finfo[famid].location.href='[CORE_STANDURL]app=GENERIC&action=GENERIC_EDIT&se_memo=yes&classid=25&onlysubfam=[famid]&sfamid=[famid]';closeAllMenu()">[TEXT:New report]</a><a class="separator"></a>
-<a  id="imvcard" href="#" onClick="parent.finfo[famid].location.href='[CORE_STANDURL]app=[APPNAME]&action=GENERIC_EDITIMPORT&famid=[famid]';closeAllMenu()">[TEXT:Import file]</a>
-<a  id="aview" href="#" onClick="document.location.href='[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&gview=abstract&catg=[dirid]&tab=0&famid=[famid]';closeAllMenu()">[TEXT:Abstract card]</a>
-<a  id="cview" href="#" onClick="document.location.href='[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&gview=column&catg=[dirid]&tab=0&famid=[famid]';closeAllMenu()">[TEXT:Column mode]</a>
+  <a id="help" target="[fhelp]" href="[CORE_STANDURL]app=CORE&amp;action=HELPVIEW&amp;appname=[APPNAME]" onClick="closeAllMenu()"><img  border="0" height="10" src="[IMG:help.gif]">[TEXT:Help]</a>
+  <a  id="newdsearch" href="#" hrefDoc="[CORE_STANDURL]app=GENERIC&amp;action=GENERIC_EDIT&amp;se_memo=yes&amp;classid=16&amp;onlysubfam=[famid]&amp;sfamid=[famid]" onClick="parent.finfo[famid].location.href='[CORE_STANDURL]app=GENERIC&amp;action=GENERIC_EDIT&amp;se_memo=yes&amp;classid=16&amp;onlysubfam=[famid]&amp;sfamid=[famid]';closeAllMenu()">[TEXT:New search]</a>
+<a  id="newreport" href="#" hrefDoc="[CORE_STANDURL]app=GENERIC&amp;action=GENERIC_EDIT&amp;se_memo=yes&amp;classid=25&amp;onlysubfam=[famid]&amp;sfamid=[famid]" onClick="parent.finfo[famid].location.href='[CORE_STANDURL]app=GENERIC&amp;action=GENERIC_EDIT&amp;se_memo=yes&amp;classid=25&amp;onlysubfam=[famid]&amp;sfamid=[famid]';closeAllMenu()">[TEXT:New report]</a><a class="separator"></a>
+<a  id="imvcard" href="#" onClick="parent.finfo[famid].location.href='[CORE_STANDURL]app=[APPNAME]&amp;action=GENERIC_EDITIMPORT&amp;famid=[famid]';closeAllMenu()">[TEXT:Import file]</a>
+<a  id="aview" href="#" onClick="document.location.href='[CORE_STANDURL]app=[APPNAME]&amp;action=GENERIC_TAB&amp;gview=abstract&amp;catg=[dirid]&amp;tab=0&amp;famid=[famid]';closeAllMenu()">[TEXT:Abstract card]</a>
+<a  id="cview" href="#" onClick="document.location.href='[CORE_STANDURL]app=[APPNAME]&amp;action=GENERIC_TAB&amp;gview=column&amp;catg=[dirid]&amp;tab=0&amp;famid=[famid]';closeAllMenu()">[TEXT:Column mode]</a>
 <a  id="isplit" href="#" onClick="invertSplit(event,true);closeAllMenu();return false">[TEXT:Invert split]</a>
-<a  id="memosearch" href="#" onClick="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'fhidden','[CORE_STANDURL]app=GENERIC&action=GENERIC_MEMOSEARCH&famid=[famid]&psearchid=[catg]');closeAllMenu()">[TEXT:memosearch]</a>
-<a  id="folders" href="#" onClick="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'freedom','[CORE_STANDURL]app=FREEDOM&action=FREEDOM_FRAME&dirid=[topid]&famid=[famid]');closeAllMenu()">[TEXT:Freedom]</a>
-<a  id="viewdsearch" href="#" onClick="window.location.href='[CORE_STANDURL]app=GENERIC&action=GENERIC_SEARCH&catg=0&mysearches=yes&famid=[famid]';closeAllMenu()">[TEXT:View my searches]</a>
+<a  id="memosearch" href="#" onClick="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'fhidden','[CORE_STANDURL]app=GENERIC&amp;action=GENERIC_MEMOSEARCH&amp;famid=[famid]&amp;psearchid=[catg]');closeAllMenu()">[TEXT:memosearch]</a>
+<a  id="folders" href="#" onClick="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'freedom','[CORE_STANDURL]app=FREEDOM&amp;action=FREEDOM_FRAME&amp;dirid=[topid]&amp;famid=[famid]');closeAllMenu()">[TEXT:Freedom]</a>
+<a  id="viewdsearch" href="#" onClick="window.location.href='[CORE_STANDURL]app=GENERIC&amp;action=GENERIC_SEARCH&amp;catg=0&amp;mysearches=yes&amp;famid=[famid]';closeAllMenu()">[TEXT:View my searches]</a>
 
-<a  id="prefs" href="#" onClick="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'_self','[CORE_STANDURL]app=GENERIC&action=GENERIC_PREFS&dirid=[topid]&famid=[famid]');closeAllMenu()">[TEXT:Preferences]</a>
+<a  id="prefs" href="#" onClick="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'_self','[CORE_STANDURL]app=GENERIC&amp;action=GENERIC_PREFS&amp;dirid=[topid]&amp;famid=[famid]');closeAllMenu()">[TEXT:Preferences]</a>
 
 <a  id="kindedit" href="#" onClick="parent.finfo[famid].location.href='[CORE_STANDURL]app=[APPNAME]&action=GENERIC_EDITFAMCATG&famid=[famid]';closeAllMenu()">[TEXT:Edit enum attributes]</a><a class="separator"></a>
-[BLOCK FAMMENU]<a  id="[mid]" href="#" onClick="if (([confirm] && confirm('[tconfirm]')) || (! [confirm])) subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'[mid]','[murl]');closeAllMenu()">[mtitle]</a>
+[BLOCK FAMMENU]<a  id="[mid]" href="#" onClick="if (([confirm] &amp;&amp; confirm('[tconfirm]')) || (! [confirm])) subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'[mid]','[murl]');closeAllMenu()">[mtitle]</a>
 [ENDBLOCK FAMMENU]
 [IF ISIE6]<iframe class="innerFixer" src="[IMG:1x1.gif]"></iframe>[ENDIF ISIE6]
 </div>
