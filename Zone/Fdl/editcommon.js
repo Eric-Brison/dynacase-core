@@ -928,7 +928,7 @@ function getIValue(i) {
   if (i) {
     if (i.tagName == "TEXTAREA") {
       if (i.type == 'htmltext') {
-        window.htmltext.synchronizeWithTextArea(i.id);
+        window.htmlText.synchronizeWithTextArea(i.id);
       }
       return i.value;
     }

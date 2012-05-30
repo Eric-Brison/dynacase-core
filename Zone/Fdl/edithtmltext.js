@@ -13,7 +13,7 @@ window.htmlText.toolbars = {
         { name:'basicstyles', items:[ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
         { name:'paragraph', items:[ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
             '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
-        { name:'links', items:[ 'Link', 'Unlink', 'Anchor' ] },
+        { name:'links', items:[ 'Link', 'Unlink' ] },
         { name:'insert', items:[ 'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
         '/',
         { name:'styles', items:[ 'Styles', 'Format', 'Font', 'FontSize' ] },
@@ -27,7 +27,7 @@ window.htmlText.toolbars = {
         { name:'basicstyles', items:[ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
         { name:'paragraph', items:[ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
             '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
-        { name:'links', items:[ 'Link', 'Unlink', 'Anchor' ] },
+        { name:'links', items:[ 'Link', 'Unlink' ] },
         { name:'insert', items:[ 'Image', 'Table', 'HorizontalRule', 'SpecialChar', 'PageBreak', 'Iframe' ] },
         { name:'styles', items:[ 'Styles', 'Format', 'Font', 'FontSize' ] },
         { name:'colors', items:[ 'TextColor', 'BGColor' ] },
@@ -35,11 +35,10 @@ window.htmlText.toolbars = {
     ],
     toolbar_Simple:[
         { name:'document', items:[ 'quicksave'] },
-        { name:'clipboard', items:['Undo', 'Redo' ] },
         { name:'basicstyles', items:[ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
         { name:'paragraph', items:[ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',
             '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-        { name:'links', items:[ 'Link', 'Unlink', 'Anchor' ] },
+        { name:'links', items:[ 'Link', 'Unlink' ] },
         { name:'insert', items:[ 'Image', 'Table', 'SpecialChar' ] },
         { name:'styles', items:[ 'Format', 'FontSize' ] },
         { name:'colors', items:[ 'TextColor', 'BGColor' ] },
@@ -53,20 +52,9 @@ window.htmlText.toolbars = {
 window.htmlText.defaultOption = function (config) {
     var element, property, i, length, modedoclink = false;
 
-    if (config.doclink && (config.doclink.famId || config.doclink.URL)) {
-        this.extraPlugins = this.extraPlugins ? this.extraPlugins + ",doclink" : 'doclink';
-        if (!config.doclink.URL) {
-            config.doclink.URL = "?app=FDL&action=HTMLEDITSELECTDOC&fam=" + config.doclink.famId;
-            if (config.doclink.docrev) {
-                config.doclink.URL += "&docrev=" + config.doclink.docrev;
-            }
-            if (config.doclink.filter) {
-                config.doclink.URL += "&filter=" + config.doclink.filter;
-            }
-        } else {
-            config.doclink.URL = config.doclink.URL;
-        }
-        modedoclink = true;
+    if (config.doclink) {
+        config.addPlugins = config.addPlugins || [];
+        config.addPlugins.push("doclink");
     }
 
     if (config.addPlugins && config.addPlugins.length > 0) {
@@ -113,8 +101,8 @@ window.htmlText.defaultOption.prototype = {
     font_names:'serif;sans-serif;cursive;fantasy;monospace',
     removePlugins:'elementspath',
     extraPlugins:'quicksave',
-    filebrowserImageBrowseUrl:'../../../?sole=Y&app=FDL&action=CKIMAGE',
-    filebrowserImageUploadUrl:'../../../?sole=Y&app=FDL&action=CKUPLOAD',
+    filebrowserImageBrowseUrl:'../../?sole=Y&app=FDL&action=CKIMAGE',
+    filebrowserImageUploadUrl:'../../?sole=Y&app=FDL&action=CKUPLOAD',
     blockedKeystrokes:[
         CKEDITOR.CTRL + 66 /*B*/,
         CKEDITOR.CTRL + 73 /*I*/,

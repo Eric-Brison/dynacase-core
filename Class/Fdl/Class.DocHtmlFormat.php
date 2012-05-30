@@ -287,12 +287,11 @@ class DocHtmlFormat
         $idocfamid = $this->oattr->format;
         $value = $avalue;
         if ($value != "") {
-            // printf("la ");
             $temp = base64_decode($value);
             $entete = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
             $xml = $entete;
             $xml.= $temp;
-            $title = recup_argument_from_xml($xml, "title"); //in freedom_util.php
+            //$title = recup_argument_from_xml($xml, "title"); //in freedom_util.php
             
         }
         $this->attrid = $this->attrid . $this->index;
@@ -901,8 +900,10 @@ class DocHtmlFormat
     }
     /**
      * format Option attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatOption($kvalue, $avalue)
@@ -922,9 +923,12 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Money attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatMoney($kvalue, $avalue)
     {
@@ -953,31 +957,38 @@ class DocHtmlFormat
         $shtmllink = $this->htmlLink ? "true" : "false";
         $avalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->doc->getDocAnchor('\\2',\"$this->target\",$shtmllink)", $avalue);
         if (stripos($avalue, "data-initid") !== false) {
-            $doc = new DOMDocument();
-            
-            $doc->loadHTML(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8'));
-            
-            $aElements = $doc->getElementsByTagName("a");
-            
-            foreach ($aElements as $currentA) {
-                /* @var $currentA DOMElement */
-                if ($currentA->hasAttribute("data-initid")) {
-                    $newA = $this->doc->getDocAnchor($currentA->getAttribute("data-initid") , $this->target, $shtmllink, false, true, $currentA->getAttribute("data-docrev"));
-                    $newAFragment = $doc->createDocumentFragment();
-                    $newAFragment->appendXML($newA);
-                    $currentA->parentNode->replaceChild($newAFragment, $currentA);
+            try {
+                $domDoc = new DOMDocument();
+
+                $domDoc->loadHTML(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8'));
+
+                $aElements = $domDoc->getElementsByTagName("a");
+
+                foreach ($aElements as $currentA) {
+                    /* @var $currentA DOMElement */
+                    if ($currentA->hasAttribute("data-initid")) {
+                        $newA = $this->doc->getDocAnchor($currentA->getAttribute("data-initid") , $this->target, $shtmllink, false, true, $currentA->getAttribute("data-docrev"));
+                        $newAFragment = $domDoc->createDocumentFragment();
+                        $newAFragment->appendXML($newA);
+                        $currentA->parentNode->replaceChild($newAFragment, $currentA);
+                    }
                 }
+
+                $avalue = $domDoc->saveHTML();
             }
-            
-            $avalue = $doc->saveHTML();
+            catch(Exception $e) {
+                error_log(sprintf("%s unable to parse/create html width docLink elements(document :%s, error %)s", __METHOD__, $this->doc->id, $e->getMessage()));
+            }
         }
         $htmlval = '<div class="htmltext">' . $avalue . '</div>';
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Date attribute
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatDate($kvalue, $avalue)
     {
@@ -993,9 +1004,12 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Time attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatTime($kvalue, $avalue)
     {
@@ -1010,9 +1024,12 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format TimeStamp attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatTimestamp($kvalue, $avalue)
     {
@@ -1028,9 +1045,12 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format IFile attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatIfile($kvalue, $avalue)
     {
@@ -1043,9 +1063,12 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Color attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatColor($kvalue, $avalue)
     {
