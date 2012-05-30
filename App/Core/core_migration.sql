@@ -102,7 +102,9 @@ delete from docattr where id in ('grp_toomany',
 'grp_groups',
 'grp_hasmembers');
 
-
-
+--
+-- Add docfam.configuration column
+--
+SELECT pg_temp.addColumnIfNotExists('', 'docfam', 'configuration', 'text');
 
 
