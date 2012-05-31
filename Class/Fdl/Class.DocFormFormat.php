@@ -760,6 +760,7 @@ class DocFormFormat
                     else $input = "<input type=\"hidden\"  name=\"" . $this->attrin . "\"";
                     $input.= " id=\"" . $this->attridk . "\" value=\"$value\">";
                     $cible = "";
+                    $textvalue = $this->doc->getTitle(trim($value) , '', $needLatest);
                 }
                 if (!$this->oattr->phpfile) {
                     $this->oattr->phpfile = "fdl.php";
@@ -776,8 +777,7 @@ class DocFormFormat
                 }
                 $autocomplete = " autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event," . $this->docid . ",this,'{$this->iOptions}','{$this->attrid}','{$this->index}')\" ";
                 $this->onChange.= $autocomplete;
-                $textvalue = $this->doc->getTitle(trim($value) , '', $needLatest);
-                
+
                 $famid = $this->oattr->format;
                 $input.= "<input {$this->classname} $autocomplete {$this->jsEvents} onchange=\"addmdocs('{$this->attrin}');document.isChanged=true\" type=\"text\" name=\"_{$this->linkPrefix}" . substr($this->attrin, 1) . "\"";
                 if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
