@@ -54,6 +54,7 @@ function freedom_gaccess(Action & $action)
     $acls = $doc->acls;
     $acls[] = "viewacl";
     $acls[] = "modifyacl"; //add this acl global for every document
+    // $acls=array_merge($acls, $doc->extendedAcls);
     // contruct headline
     reset($acls);
     $hacl = array();
@@ -64,8 +65,14 @@ function freedom_gaccess(Action & $action)
      * @var $v string
      */
     foreach ($acls as $k => $v) {
-        $hacl[$k]["aclname"] = ucfirst(_($v));
-        $hacl[$k]["acldesc"] = ucfirst(_($doc->dacls[$v]["description"]));
+        $hacl[$k]["aclname"] = mb_ucfirst(_($v));
+        $desc = '-';
+        if (!$desc = $doc->dacls[$v]["description"]) {
+            $desc = $doc->extendedAcls[$v]["description"];
+        } else {
+            $desc = _($desc);
+        }
+        $hacl[$k]["acldesc"] = mb_ucfirst($desc);
         $hacl[$k]["oddoreven"] = ($k % 2) ? "even" : "odd";
     }
     
@@ -81,9 +88,9 @@ function freedom_gaccess(Action & $action)
         
         $sql = sprintf("SELECT users.* from docperm,users where docperm.docid=%d and users.id=docperm.userid and docperm.upacl != 0 order by users.lastname", $doc->profid);
         simpleQuery($dbaccess, $sql, $tusers);
-        
+        $tgreenUid = array();
         foreach ($tusers as $k => $v) {
-            
+            $tgreenUid[] = $v["id"];
             $title[$v["id"]] = $v["firstname"] . " " . $v["lastname"];
             $tg[] = array(
                 "level" => 10,
@@ -92,6 +99,26 @@ function freedom_gaccess(Action & $action)
                 "accountType" => $v["accounttype"],
                 "displaygroup" => ($v["accounttype"] != "U") ? "inline" : "none"
             );
+        }
+        
+        if ($doc->extendedAcls) {
+            // add more users
+            $sql = sprintf("select users.id, users.firstname, users.lastname,users.accounttype, array_agg(docpermext.acl) as acls from docpermext,users where  users.id=docpermext.userid and docpermext.docid=%d and id not in (%s) group by users.id, users.firstname, users.lastname, users.accounttype ;", $doc->profid, implode(',', $tgreenUid));
+            simpleQuery($dbaccess, $sql, $tusers);
+            //print_r($sql);
+            //print_r($tusers);
+            foreach ($tusers as $k => $v) {
+                
+                $title[$v["id"]] = $v["firstname"] . " " . $v["lastname"];
+                $tg[] = array(
+                    "level" => 10,
+                    "gid" => $v["id"],
+                    "isdyn" => false,
+                    "extacl" => $v["acls"],
+                    "accountType" => $v["accounttype"],
+                    "displaygroup" => ($v["accounttype"] != "U") ? "inline" : "none"
+                );
+            }
         }
     } else if ($gid == 0) {
         //-----------------------
@@ -192,6 +219,7 @@ function freedom_gaccess(Action & $action)
             $title[$vg->num] = $v->getLabel();
         }
     }
+    //print_r2($tg);
     // add  group title
     foreach ($tg as $k => $v) {
         $tacl[$v["gid"]] = getTacl($dbaccess, $doc->dacls, $acls, $doc->profid, $v["gid"]);
@@ -199,7 +227,7 @@ function freedom_gaccess(Action & $action)
         $tg[$k]["ACLS"] = "ACL$k";
         $action->lay->setBlockData("ACL$k", $tacl[$v["gid"]]);
     }
-    
+    // print_r2($tacl);
     $action->lay->setBlockData("GROUPS", $tg);
     $action->lay->set("docid", $docid);
     
@@ -271,7 +299,7 @@ function getTableG($hg, $id, $type, $level = 0)
     return $r;
 }
 //--------------------------------------------
-function getTacl($dbaccess, $dacls, $acls, $docid, $gid)
+function getTacl($dbaccess, $dacls, $acls, $docid, $gid, $extAcl = '')
 {
     //--------------------------------------------
     $perm = new DocPerm($dbaccess, array(
@@ -281,13 +309,25 @@ function getTacl($dbaccess, $dacls, $acls, $docid, $gid)
     $tableacl = array();
     foreach ($acls as $k => $v) {
         $tableacl[$k]["aclname"] = $v;
-        $pos = $dacls[$v]["pos"];
+        $pos = 0;
+        if (!$extAcl) $pos = $dacls[$v]["pos"];
         $tableacl[$k]["selected"] = "";
         $tableacl[$k]["bimg"] = "1x1.gif";
         $tableacl[$k]["oddoreven"] = ($k % 2) ? "even" : "odd";
-        $tableacl[$k]["aclid"] = $pos;
-        $tableacl[$k]["iacl"] = $k; // index for table in xml
-        if ($perm->ControlUp($pos)) {
+        $tableacl[$k]["aclid"] = $v;
+        $tableacl[$k]["iacl"] = $v; // index for table in xml
+        if (!$pos) {
+            $tableacl[$k]["aclname"] = $extAcl;
+            $grant = DocPermExt::hasExtAclGrant($docid, $gid, $v);
+            if ($grant) {
+                if ($grant == 'green') {
+                    $tableacl[$k]["bimg"] = "bgreen.png";
+                    $tableacl[$k]["selected"] = "checked";
+                } else {
+                    $tableacl[$k]["bimg"] = "bgrey.png";
+                }
+            }
+        } elseif ($perm->ControlUp($pos)) {
             $tableacl[$k]["selected"] = "checked";
             $tableacl[$k]["bimg"] = "bgreen.png";
         } else {
@@ -296,7 +336,7 @@ function getTacl($dbaccess, $dacls, $acls, $docid, $gid)
             }
         }
     }
-    
+    //print_r2($tableacl);
     return $tableacl;
 }
 ?>

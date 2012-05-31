@@ -155,6 +155,10 @@ class CheckAttr extends CheckData
      * @return CheckAttr
      */
     /**
+     * @var Doc
+     */
+    private $doc = null;
+    /**
      * true if check MODATTR
      * @var bool
      */
@@ -163,6 +167,7 @@ class CheckAttr extends CheckData
     public function check(array $data, &$extra = null)
     {
         $this->structAttr = new StructAttribute($data);
+        $this->doc = $extra;
         $this->attrid = strtolower($this->structAttr->id);
         $this->isModAttr = (strtolower($data[0]) == "modattr");
         $this->checkId();

@@ -24,14 +24,14 @@ include_once ("FDL/import_file.php");
 /**
  * Exportation of documents from folder or searches
  * @param Action &$action current action
- * @global fldid Http var : folder identificator to export
- * @global wprof Http var : (Y|N) if Y export associated profil also
- * @global wfile Http var : (Y|N) if Y export attached file export format will be tgz
- * @global wident Http var : (Y|N) if Y specid column is set with identificator of document
- * @global wutf8 Http var : (Y|N) if Y encoding is utf-8 else iso8859-1
- * @global wcolumn Http var :  if - export preferences are ignored
- * @global eformat Http var :  (I|R|F) I: for reimport, R: Raw data, F: Formatted data
- * @global selection Http var :  JSON document selection object
+ * @global string $fldid Http var : folder identificator to export
+ * @global string $wprof Http var : (Y|N) if Y export associated profil also
+ * @global string $wfile Http var : (Y|N) if Y export attached file export format will be tgz
+ * @global string $wident Http var : (Y|N) if Y specid column is set with identificator of document
+ * @global string $wutf8 Http var : (Y|N) if Y encoding is utf-8 else iso8859-1
+ * @global string $wcolumn Http var :  if - export preferences are ignored
+ * @global string $eformat Http var :  (I|R|F) I: for reimport, R: Raw data, F: Formatted data
+ * @global string $selection Http var :  JSON document selection object
  * @return void
  */
 function exportfld(Action & $action, $aflid = "0", $famid = "")
@@ -287,6 +287,7 @@ function exportProfil($fout, $dbaccess, $docid)
     $doc->acls[] = "modifyacl";
     if ($doc->name != "") $name = $doc->name;
     else $name = $doc->id;
+    
     $q = new QueryDb($dbaccess, "DocPerm");
     $q->AddQuery("docid=" . $doc->profid);
     $acls = $q->Query(0, 0, "TABLE");
@@ -316,6 +317,23 @@ function exportProfil($fout, $dbaccess, $docid)
             }
         }
     }
+    // add extended Acls
+    if ($doc->extendedAcls) {
+        simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d", $doc->profid) , $eAcls);
+        foreach ($eAcls as $aAcl) {
+            $uid = $aAcl["userid"];
+            if ($uid >= STARTIDVGROUP) {
+                $vg = new Vgroup($dbaccess, $uid);
+                $qvg = new QueryDb($dbaccess, "VGroup");
+                $qvg->AddQuery("num=$uid");
+                $tvu = $qvg->Query(0, 1, "TABLE");
+                $uid = $tvu[0]["id"];
+            }
+            $tpa[] = $aAcl["acl"];
+            $tpu[] = $uid;
+        }
+    }
+    
     if (count($tpu) > 0) {
         fputs_utf8($fout, "PROFIL;" . $name . ";;");
         

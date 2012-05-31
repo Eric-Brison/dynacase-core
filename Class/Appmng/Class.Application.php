@@ -120,7 +120,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public $session = null;
     /**
-     * @var User
+     * @var Account
      */
     public $user = null;
     /**

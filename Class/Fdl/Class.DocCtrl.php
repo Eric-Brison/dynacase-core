@@ -49,6 +49,8 @@ define("POS_WF", 12); // begin of workflow privilege definition
  * @method getAttribute
  * @method canEdit
  * @method control
+ * @property int $fromid
+ * @property Doc $doc
  * @property string title
  *
  */
@@ -127,6 +129,12 @@ class DocCtrl extends DocLDAP
         
     );
     /**
+     * extend acl definition
+     * used in WDoc and CVDoc
+     * @var array
+     */
+    public $extendedAcls = array();
+    /**
      * @var int profil identificator
      */
     public $profid;
@@ -159,7 +167,8 @@ class DocCtrl extends DocLDAP
         // --------------------------------------------------------------------
         global $action; // necessary to see information about user privilege
         if (isset($action)) {
-            $this->userid = $action->parent->user->id;
+            $app = $action->parent;
+            $this->userid = $app->user->id;
         }
         if (!isset($this->attributes->attr)) $this->attributes->attr = array();
         parent::__construct($dbaccess, $id, $res, $dbid);
@@ -183,19 +192,27 @@ class DocCtrl extends DocLDAP
     }
     /**
      * Unset all Acl for document (for everybody)
-     *
+     * @param int $userid user system identificator
+     * @return string
      */
-    function removeControl()
+    function removeControl($userid = - 1)
     {
         if ($this->id == $this->profid) {
-            // inhibated all doc references this profil
-            $this->exec_query("delete from docperm where docid=" . $this->id);
+            if ($userid == - 1) {
+                // inhibated all doc references this profil
+                $this->exec_query(sprintf("delete from docperm where docid=%d", $this->id));
+                $this->exec_query(sprintf("delete from docpermext where docid=%d", $this->id));
+            } else {
+                $this->exec_query(sprintf("delete from docperm where docid=%d and userid=%d", $this->id, $userid));
+                $this->exec_query(sprintf("delete from docpermext where docid=%d and userid=%d", $this->id, $userid));
+            }
         }
-        $this->modify();
+        return $this->modify();
     }
     /**
      * activate access specific control
      * @param bool $userctrl if true add all acls for current user
+     * @return string
      */
     function setControl($userctrl = true)
     {
@@ -274,6 +291,92 @@ class DocCtrl extends DocLDAP
      * @param Doc $fromdocidvalues other document to reference dynamic profiling (default itself)
      * @return string error message
      */
+    private function computeDProfilExt($dprofid, $fromdocidvalues = null)
+    {
+        $err = '';
+        if (count($this->extendedAcls) == 0) return '';
+        
+        $tVgroup2attrid = array();
+        $query = new QueryDb($this->dbaccess, "DocPermExt");
+        $query->AddQuery(sprintf("docid=%d", $dprofid));
+        $tacl = $query->Query(0, 0, "TABLE");
+        if (!is_array($tacl)) {
+            //	print "err $tacl";
+            $tacl = array();
+        }
+        if (!$tacl) return ''; // no ext acl
+        $tgnum = array(); // list of virtual user/group
+        foreach ($tacl as $v) {
+            if ($v["userid"] >= STARTIDVGROUP) {
+                $tgnum[] = $v["userid"];
+            }
+        }
+        if (count($tgnum) > 0) {
+            $query = new QueryDb($this->dbaccess, "VGroup");
+            $query->AddQuery(GetSqlCond($tgnum, "num", true));
+            $tg = $query->Query(0, 0, "TABLE");
+            if ($query->nb > 0) {
+                foreach ($tg as $vg) {
+                    $tVgroup2attrid[$vg["num"]] = $vg["id"];
+                }
+            }
+        }
+        $this->exec_query(sprintf("delete from docpermext where docid=%d", $this->id));
+        if ($fromdocidvalues == null) $fromdocidvalues = & $this;
+        $greenUid = array();
+        foreach ($tacl as $v) {
+            
+            if ($v["userid"] < STARTIDVGROUP) {
+                $tuid = array(
+                    $greenUid[$v["userid"] . $v["acl"]] = array(
+                        "uid" => $v["userid"],
+                        "acl" => $v["acl"]
+                    )
+                );
+            } else {
+                $tuid = array();
+                $aid = $tVgroup2attrid[$v["userid"]];
+                /**
+                 * @var Doc $fromdocidvalues
+                 */
+                $duid = $fromdocidvalues->getValue($aid);
+                if ($duid == "") $duid = $fromdocidvalues->getParamValue($aid);
+                if ($duid != "") {
+                    $duid = str_replace("<BR>", "\n", $duid); // docid multiple
+                    $tduid = Doc::_val2array($duid);
+                    foreach ($tduid as $duid) {
+                        if ($duid > 0) {
+                            $docu = getTDoc($fromdocidvalues->dbaccess, intval($duid)); // not for idoc list for the moment
+                            $greenUid[$docu["us_whatid"] . $v["acl"]] = array(
+                                "uid" => $docu["us_whatid"],
+                                "acl" => $v["acl"]
+                            );
+                            //print "<br>$aid:$duid:".$docu["us_whatid"];
+                            
+                        }
+                    }
+                }
+            }
+        }
+        
+        $pe = new DocPermExt($this->dbaccess);
+        $pe->docid = $this->id;
+        foreach ($greenUid as $ku => $uid) {
+            // add right in case of multiple use of the same user : possible in dynamic profile
+            $pe->userid = $uid["uid"];
+            $pe->acl = $uid["acl"];
+            $err.= $pe->add();
+        }
+        
+        return $err;
+    }
+    /**
+     * reset right for dynamic profil
+     *
+     * @param int $dprofid identificator for dynamic profil document
+     * @param Doc $fromdocidvalues other document to reference dynamic profiling (default itself)
+     * @return string error message
+     */
     function computeDProfil($dprofid = 0, $fromdocidvalues = null)
     {
         $err = '';
@@ -282,7 +385,8 @@ class DocCtrl extends DocLDAP
         if ($dprofid <= 0) return '';
         $perm = null;
         $vupacl = array();
-        $tnum = array();
+        
+        $tVgroup2attrid = array();
         $pdoc = new_Doc($this->dbaccess, $dprofid);
         $pfamid = $pdoc->getValue("DPDOC_FAMID");
         if ($pfamid > 0) {
@@ -294,7 +398,7 @@ class DocCtrl extends DocLDAP
             }
             
             $query = new QueryDb($this->dbaccess, "DocPerm");
-            $query->AddQuery("docid=" . $pdoc->id);
+            $query->AddQuery(sprintf("docid=%d", $pdoc->id));
             $tacl = $query->Query(0, 0, "TABLE");
             if (!is_array($tacl)) {
                 //	print "err $tacl";
@@ -312,11 +416,11 @@ class DocCtrl extends DocLDAP
                 $tg = $query->Query(0, 0, "TABLE");
                 if ($query->nb > 0) {
                     foreach ($tg as $vg) {
-                        $tnum[$vg["num"]] = $vg["id"];
+                        $tVgroup2attrid[$vg["num"]] = $vg["id"];
                     }
                 }
             }
-            $this->exec_query("delete from docperm where docid=" . $this->id);
+            $this->exec_query(sprintf("delete from docperm where docid=%d", $this->id));
             if ($fromdocidvalues == null) $fromdocidvalues = & $this;
             $greenUid = array();
             foreach ($tacl as $v) {
@@ -327,7 +431,7 @@ class DocCtrl extends DocLDAP
                     );
                 } else {
                     $tuid = array();
-                    $aid = $tnum[$v["userid"]];
+                    $aid = $tVgroup2attrid[$v["userid"]];
                     /**
                      * @var Doc $fromdocidvalues
                      */
@@ -372,6 +476,7 @@ class DocCtrl extends DocLDAP
             $this->Modify(true, array(
                 'views'
             ) , true);
+            $err.= $this->computeDProfilExt($pdoc->id, $fromdocidvalues);
         }
         unset($this->uperm); // force recompute privileges
         return $err;
@@ -419,20 +524,36 @@ class DocCtrl extends DocLDAP
     /**
      * modify control for a specific user
      *
-     * @param int $uid user identificator
+     * @param string $uName user identificator
      * @param string $aclname name of the acl (edit, view,...)
      * @param bool $deletecontrol set true if want delete a control
-     * @param bool $negativecontrol set true if want add a negative control (explicit no permission)
      * @return string error message (empty if no errors)
      */
-    function modifyControl($uid, $aclname, $deletecontrol = false, $negativecontrol = false)
+    private function modifyExtendedControl($uName, $aclname, $deletecontrol = false)
     {
         $err = '';
-        if (!isset($this->dacls[$aclname])) {
-            return sprintf(_("unknow privilege %s") , $aclname);
+        $uid = $this->getUid($uName);
+        $eacl = new DocPermExt($this->dbaccess, array(
+            $this->id,
+            $uid,
+            $aclname
+        ));
+        if ($deletecontrol) {
+            if ($eacl->isAffected()) $err = $eacl->Delete();
+        } else {
+            // add extended acl
+            if (!$eacl->isAffected()) {
+                $eacl->userid = $uid;
+                $eacl->acl = $aclname;
+                $eacl->docid = $this->id;
+                $err = $eacl->add();
+            }
         }
-        $pos = $this->dacls[$aclname]["pos"];
-        
+        return $err;
+    }
+    
+    private function getUid($uid)
+    {
         if (!is_numeric($uid)) {
             $uiid = getIdFromName($this->dbaccess, $uid);
             if ($uiid) {
@@ -457,6 +578,24 @@ class DocCtrl extends DocLDAP
                 $uid = $vg->num;
             }
         }
+        return $uid;
+    }
+    /**
+     * modify control for a specific user
+     *
+     * @param int $uid user identificator
+     * @param string $aclname name of the acl (edit, view,...)
+     * @param bool $deletecontrol set true if want delete a control
+     * @return string error message (empty if no errors)
+     */
+    function modifyControl($uid, $aclname, $deletecontrol = false)
+    {
+        $err = '';
+        if (!isset($this->dacls[$aclname])) {
+            return sprintf(_("unknow privilege %s") , $aclname);
+        }
+        $pos = $this->dacls[$aclname]["pos"];
+        $uid = $this->getUid($uid);
         
         if ($uid > 0) {
             $perm = new DocPerm($this->dbaccess, array(
@@ -464,11 +603,9 @@ class DocCtrl extends DocLDAP
                 $uid
             ));
             if ($deletecontrol) {
-                if ($negativecontrol); // deprecated
-                else $perm->UnsetControlP($pos);
+                $perm->UnsetControlP($pos);
             } else {
-                if ($negativecontrol); // deprecated;
-                else $perm->SetControlP($pos);
+                $perm->SetControlP($pos);
             }
             if ($perm->isAffected()) $err = $perm->modify();
             else {
@@ -483,12 +620,20 @@ class DocCtrl extends DocLDAP
      *
      * @param int $uid user identificator
      * @param string $aclname name of the acl (edit, view,...)
-     * @param bool $negativecontrol set true if want add a negative control (explicit no permission)
      * @return string error message (empty if no errors)
      */
-    function addControl($uid, $aclname, $negativecontrol = false)
+    function addControl($uid, $aclname)
     {
-        return $this->ModifyControl($uid, $aclname, false, $negativecontrol);
+        if ($this->isExtendedAcl($aclname)) {
+            return $this->modifyExtendedControl($uid, $aclname, false);
+        } else {
+            return $this->modifyControl($uid, $aclname, false);
+        }
+    }
+    
+    public function isExtendedAcl($aclname)
+    {
+        return (!empty($this->extendedAcls[$aclname]));
     }
     /**
      * suppress control for a specific user
@@ -496,12 +641,15 @@ class DocCtrl extends DocLDAP
      * is not a negative control
      * @param int $uid user identificator
      * @param string $aclname name of the acl (edit, view,...)
-     * @param bool $negativecontrol set true if want suppress a negative control
      * @return string error message (empty if no errors)
      */
-    function delControl($uid, $aclname, $negativecontrol = false)
+    function delControl($uid, $aclname)
     {
-        return $this->ModifyControl($uid, $aclname, true, $negativecontrol);
+        if ($this->isExtendedAcl($aclname)) {
+            return $this->modifyExtendedControl($uid, $aclname, true);
+        } else {
+            return $this->ModifyControl($uid, $aclname, true);
+        }
     }
     /**
      * set control view for document
@@ -523,20 +671,40 @@ class DocCtrl extends DocLDAP
      */
     function controlId($docid, $aclname, $strict = false)
     {
-        if ($strict) {
-            $uperm = DocPerm::getUperm($docid, $this->userid, $strict);
-            return $this->ControlUp($uperm, $aclname);
+        if ($this->isExtendedAcl($aclname)) {
+            return $this->controlExtId($docid, $aclname, $strict);
         } else {
-            if ($this->profid == $docid) {
-                if (!isset($this->uperm)) {
-                    $this->uperm = DocPerm::getUperm($docid, $this->userid);
-                }
-                return $this->ControlUp($this->uperm, $aclname);
-            } else {
-                $uperm = DocPerm::getUperm($docid, $this->userid);
+            if ($strict) {
+                $uperm = DocPerm::getUperm($docid, $this->userid, $strict);
                 return $this->ControlUp($uperm, $aclname);
+            } else {
+                if ($this->profid == $docid) {
+                    if (!isset($this->uperm)) {
+                        $this->uperm = DocPerm::getUperm($docid, $this->userid);
+                    }
+                    return $this->ControlUp($this->uperm, $aclname);
+                } else {
+                    $uperm = DocPerm::getUperm($docid, $this->userid);
+                    return $this->ControlUp($uperm, $aclname);
+                }
             }
         }
+    }
+    /**
+     * use to know if current user has access privilege
+     *
+     * @param int $docid profil identificator
+     * @param string $aclname name of the acl (edit, view,...)
+     * @param bool $strict set to true to not use substitute
+     * @return string if empty access granted else error message
+     */
+    function controlExtId($docid, $aclname, $strict = false)
+    {
+        $err = '';
+        $grant = DocPermExt::isGranted($this->userid, $aclname, $docid, $strict);
+        
+        if (!$grant) $err = sprintf(_("no privilege %s for %s [%d]") , $aclname, $this->title, $this->id);
+        return $err;
     }
     /**
      * use to know if current user has access privilege

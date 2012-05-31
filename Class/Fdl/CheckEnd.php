@@ -8,6 +8,10 @@
 class CheckEnd extends CheckData
 {
     /**
+     * max column for a table in postgresql
+     */
+    const maxSqlColumn = 1600;
+    /**
      * @var DocFam
      */
     protected $doc;
@@ -33,7 +37,30 @@ class CheckEnd extends CheckData
         $this->checkLinks();
         return $this;
     }
-    
+    private function getColumnCount()
+    {
+        
+        $c = count($this->doc->fields) + count($this->doc->sup_fields);
+        $ancestor = $this->doc->getFathersDoc();
+        $ancestor[] = $this->doc->id;
+        
+        $sql = sprintf("select count(*) from docattr where type != 'frame' and type != 'tab' and type != 'array' and %s", GetSqlCond($ancestor, "docid", true));
+        simpleQuery('', $sql, $r, true, true);
+        $c+= $r;
+        return $c;
+    }
+    /**
+     * Verify if max sql column is reached
+     * @param Doc $doc
+     */
+    public function checkMaxAttributes(Doc & $doc)
+    {
+        $this->doc = $doc;
+        $c = $this->getColumnCount();
+        if ($c > self::maxSqlColumn) {
+            $this->addError(ErrorCode::getError('ATTR1701', $c, self::maxSqlColumn));
+        }
+    }
     protected function checkSetAttributes()
     {
         $this->doc->getAttributes(); // force reattach attributes

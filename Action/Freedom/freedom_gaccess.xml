@@ -19,6 +19,16 @@ function enablefrom(th) {
     document.getElementById('iSubmit').disabled=false;
 }
 
+    function setFixWidth() {
+        var hscroll = (document.all ? document.scrollLeft : window.pageXOffset);
+        var f=document.getElementById('fixedhead');
+        if (f) {
+           if (hscroll) f.style.left=-hscroll+'px';
+           else f.style.left='';
+       }
+    }
+
+addEvent(window,"scroll", setFixWidth);
 </script>
 <style>
 TABLE.hborder td {
@@ -50,6 +60,9 @@ TABLE.hborder td.headaccess {
   background-color:[COLOR_B7];
   /*font-weight: bold;*/
   min-width:100px;
+}
+input[type="button"] {
+
 }
 span.computed {
   padding-left:30px;
@@ -86,18 +99,74 @@ span[accountType="M"] {
 }
 table.acls {
     margin-bottom:2px ;
-       width:100%;
 }
-table.headacl {
+table.bodyacl thead tr.first {
   position:fixed;
+  width:100%;
   /*height:40px;*/
+}
+table.bodyacl thead tr.second {
+  visibility:hidden
+  width:100%;
+  /*height:40px;*/
+}
+table.bodyacl thead td.puce div {
+  overflow:hidden;
+   width:50px;
 }
 table.bodyacl {
   /*padding-top:40px;*/
     margin:top:10px;
 }
-table.bodyacl thead {
-   visibility:hidden;
+table.bodyacl td.puce {
+   width:50px!important;
+min-width:50px;
+   overflow:hidden;
+}
+table.bodyacl td.firstcol{
+   max-width:200px;
+   min-width:200px;
+   width:200px;
+}
+table.hborder thead td.head11 {
+   max-width:230px;
+   min-width:230px;
+   width:230px;
+}
+table.bodyacl td.firstcol {
+   white-space:nowrap;
+   overflow:hidden;
+}
+table.bodyacl td.bedit {
+   width:30px;
+   max-width:30px;
+   min-width:30px;
+   text-align:center;
+
+}
+table.bodyacl td.bedit a {
+  font-size:10pt;
+  border-radius:10px;
+  background-color:[COLOR_A8];
+
+}
+table.bodyacl td.bedit a:hover {
+  border:1px solid [COLOR_A0];
+}
+table.bodyacl td.firstcol span {
+   white-space:nowrap;
+   overflow:hidden;
+   max-width:180px;
+}
+div.maindiv {
+  width:100%;
+  border: none;
+  text-align:center;
+}
+div.mainacl {
+  width:100%;
+  border: none;
+    overflow:auto;
 }
 form {
   display:inline;
@@ -106,7 +175,8 @@ form {
   float:right;
 }
 #idtbody tr:hover td {
-  border-color:[COLOR_A0]!important;
+  border-color:[COLOR_A9]!important;
+
 }
 </style>
         <script>
@@ -117,51 +187,55 @@ form {
           subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'daccess','[CORE_STANDURL]app=FREEDOM&action=FREEDOM_ACCESS&id=[docid]&userid='+gid);
         }
         function disableAccess(submit) {
-          submit.disabled=true;
+          submit.form.submit();
           submit.value="[TEXT:Update Access in progress]";
-          document.getElementById('iCancel').style.display='none';
-          document.getElementById('fView').style.display='none';
+          submit.disabled=true;
+          document.getElementById('iCancel').style.visibility='hidden';
+          document.getElementById('fView').style.visibility='hidden';
           globalcursor('wait');
           setTimeout(function () {
               alert("[updateWaitText]\n[TEXT:You can close window now or waiting the end of processing]");
             },5000);
+
         }
         </script>
-<table class="hborder acls headacl"  cellspacing="0" cellpadding="0">
-    <thead>
-    <tr>
-    <td colspan="2" class="headaccess"><strong>[toOrigin]</strong>[IF dynamic].<br/><span class="computed">[ComputedFrom] <a target="access[dprofid]"
-        href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[dprofid]">[toDynProfil]</a>[ENDIF dynamic]</span></td>
-     [BLOCK DACLS]<td class="[oddoreven]" align="center" valign="top" title="[acldesc]" style="cursor:help">[aclname]</td>
-     [ENDBLOCK DACLS]
-    </tr>
-    </thead>
-</table>
+
+        <div class="maindiv"><center>
 <form  name="edit" method="POST" action="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_MODACCESS">
 
 
+    <div class="mainacl2">
 <table class="hborder acls bodyacl" cellspacing="0" cellpadding="0" >
-    <thead>
-    <tr>
-    <td colspan="2" class="headaccess"><strong>[toOrigin]</strong>[IF dynamic].<br/><span class="computed">[ComputedFrom] <a target="access[dprofid]"
+    <thead >
+    <tr id="fixedhead" class="first">
+    <td colspan="2" class="headaccess head11" ><strong>[toOrigin]</strong>[IF dynamic].<br/><span class="computed">[ComputedFrom] <a target="access[dprofid]"
         href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[dprofid]">[toDynProfil]</a>[ENDIF dynamic]</span></td>
-     [BLOCK DACLS]<td class="[oddoreven]" align="center" valign="top" title="[acldesc]" style="cursor:help">[aclname]</td>
+     [BLOCK DACLS]<td class="[oddoreven] puce" align="center" valign="top" title="[acldesc]" style="cursor:help"><div>[aclname]</div></td>
+     [ENDBLOCK DACLS]
+    </tr>
+    <tr class="second">
+    <td colspan="2" class="headaccess head11" ><strong>[toOrigin]</strong>[IF dynamic].<br/><span class="computed">[ComputedFrom] <a target="access[dprofid]"
+        href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[dprofid]">[toDynProfil]</a>[ENDIF dynamic]</span></td>
+     [BLOCK DACLS]<td class="[oddoreven] puce" align="center" valign="top" title="[acldesc]" style="cursor:help"><div>[aclname]</div></td>
      [ENDBLOCK DACLS]
     </tr>
     </thead>
 <tbody id="idtbody" >
    [BLOCK GROUPS]
 <tr>
-    <td   align="left" class="left" >
+    <td   align="left" class="left firstcol" >
     <span style="margin:0px 0px 0px [level]px" accountType="[accountType]">
         <a style="display:[displaygroup];cursor:pointer"  onclick="openGroupAcl('[gid]')" title="[TEXT:See members detail]">&rArr;</a>
       [IFNOT isdyn]<A   onclick="openDetailAcl('[gid]')" title="[TEXT:See detail for ][gname]">[gname]</A>[ENDIF isdyn][IF isdyn][gname][ENDIF isdyn]</span>
-    <input id="acls_[gid]_nc" type="hidden" disabled name="acls[[gid]][500]" value="nc"></td>
+    <input id="acls_[gid]_nc" type="hidden" disabled name="acls[[gid]][500]" value="nc">
+    </td>
+        <td class="left bedit">
+            <a style="display:[dmodify];" onclick="enablefrom(this.parentNode.parentNode);"  >&there4;</a>
 
-   <td align="right"  class="left"  >
-     <button style="display:[dmodify]" onclick="enablefrom(this.parentNode.parentNode);"  type="button" >&there4;</button></td>
+
+     </td>
     [BLOCK [ACLS]]
-    <td  align="center" class="[oddoreven]">
+    <td  align="center" class="[oddoreven] puce">
       <img  src="[IMG:[bimg]]" width="10px" height="10px"  >
       <input id="acls_[gid]_[iacl]" align="top" style="display:none" disabled type="checkbox" name="acls[[gid]][[iacl]]" value="[aclid]" [selected] >
   </td>
@@ -172,14 +246,16 @@ form {
   [ENDBLOCK GROUPS]
 </tbody>
 </TABLE>
+                </div>
 [IF MODIFY]
-<p>[profcount]</p><input id="iSubmit" disabled="disabled" class="CORETblHead" type="submit" onclick="disableAccess(this)" name="Modify" value="[TEXT:Update access]"  >
+<p>[profcount]</p><input id="iSubmit" disabled="disabled" class="CORETblHead" type="button" onclick="disableAccess(this)" name="Modify" value="[TEXT:Update access]"  >
         <input id="iCancel"  disabled="disabled" class="CORETblHead" type="button" onclick="document.location.reload()" title="[TEXT:Reload page]" value="[TEXT:Cancel]" >
         [ENDIF MODIFY]
 <input type="hidden" name="docid" value="[docid]">
 <input type="hidden" name="allgreen" value="[allgreen]">
   <input type="hidden" name="group" value="[group]">
 </form>
+
 <form id="fView"  name="view" method="POST" action="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS">
   <input type="hidden" name="id" value="[docid]">
   <input type="hidden" name="allgreen" value="[allgreen]">
@@ -199,6 +275,6 @@ form {
         <input class="CORETblHead" type="button"
                  name="Modify" onclick="document.view.group.value='N';document.view.submit()" value="[TEXT:Hide group access]"  >[ENDIF viewgroup]
             [ENDIF isgreen][ENDIF hasgid]
-
-
+        </center>
+</div>
 [ZONE CORE:HTMLFOOT]

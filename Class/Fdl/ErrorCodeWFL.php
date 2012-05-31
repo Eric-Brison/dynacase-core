@@ -44,9 +44,12 @@ class ErrorCodeWFL
      */
     const WFL0101 = 'workflow transition unknow property %s for transition model %s in class %s (must be one of %s)';
     /**
-     * number of transition model are limited
+     * number of transition model and states are limited
+     * Considers that you have 1500 points to determine transition and states.
+     * a transition cost 4 points and a state 12 points.
+     * generally you could have around 200 transitions for 60 states
      */
-    const WFL0102 = 'workflow %s number of transition model (found %d) exceed limit (max is %s)';
+    const WFL0102 = 'workflow %s number of transition model and states (found %d) exceed limit (max is %s)';
     /**
      * declaration of ask must be in an array
      * @code

@@ -66,16 +66,15 @@ class CVDoc extends Doc
         $tk = $this->getTValue("CV_KVIEW");
         $tm = $this->getTValue("CV_MSKID");
         
-        $ka = POS_WF;
-        while (list($k, $v) = each($tk)) {
+        foreach ($tk as $k => $v) {
             if ($ti[$k] == "") $cvk = "CV$k";
             else $cvk = $ti[$k];
-            $this->dacls[$cvk] = array(
-                "pos" => $ka,
+            $this->extendedAcls[$cvk] = array(
+                "name" => $cvk,
                 "description" => $tl[$k]
             );
+            
             $this->acls[] = $cvk;
-            $ka++;
         }
     }
     
@@ -156,17 +155,17 @@ class CVDoc extends Doc
         $this->setValue("CV_IDVIEW", $ti);
     }
     
-    function docControl($aclname, $strict=false)
+    function docControl($aclname, $strict = false)
     {
         return Doc::control($aclname, $strict);
     }
     /**
      * Special control in case of dynamic controlled profil
      */
-    function control($aclname, $strict=false)
+    function control($aclname, $strict = false)
     {
         
-        $err = $this->docControl($aclname,$strict);
+        $err = $this->docControl($aclname, $strict);
         if ($err == "") return $err; // normal case
         if ($this->getValue("DPDOC_FAMID") > 0) {
             if ($this->doc) {
