@@ -747,18 +747,12 @@ class DocFormFormat
                     $lay = new Layout("FDL/Layout/editmdoc.xml", $action);
                     $this->getLayMultiDoc($lay, $this->doc, $this->oattr, $value, $this->attrin, $this->index);
                     
-                    $cible = "work";
+                    $cible = "mdocid_work";
                     if (($this->visibility == "R") || ($this->visibility == "S")) $lay->set("disabled", $this->idisabled);
                     else $lay->set("disabled", "");
                     $lay->set("cible", $cible);
                     
                     $input2 = $lay->gen();
-                    $autocomplete = " autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event," . $this->docid . ",this,'{$this->iOptions}','{$this->attrid}','{$this->index}')\" ";
-                    $this->onChange.= $autocomplete;
-                    if (!$this->oattr->phpfile) {
-                        $this->oattr->phpfile = "fdl.php";
-                        $this->oattr->phpfunc = "zou";
-                    }
                 } else {
                     $input2 = "";
                     
@@ -766,23 +760,23 @@ class DocFormFormat
                     else $input = "<input type=\"hidden\"  name=\"" . $this->attrin . "\"";
                     $input.= " id=\"" . $this->attridk . "\" value=\"$value\">";
                     $cible = "";
-                    if (!$this->oattr->phpfile) {
-                        $this->oattr->phpfile = "fdl.php";
-                        $this->oattr->phpfunc = "lfamily(D,$famid,{$this->linkPrefix}{$this->attrid}):${cible}{$this->attrid},{$this->linkPrefix}{$this->attrid}";
-                    } else {
-                        $phpfunc = preg_replace('/([\s|,|:|\(])CT([\s|,|\)]|$)/', '$1' . $this->linkPrefix . $this->attrid . '$2', $this->oattr->phpfunc);
-                        $phpfunc = str_replace("):{$this->attrid},", "):${cible}{$this->attrid},", $phpfunc);
-                        $phpfunc = str_replace("):" . strtoupper($this->attrid) . ",", "):${cible}{$this->attrid},", $phpfunc);
-                        $this->oattr->phpfunc = $phpfunc;
-                    }
-                    if ($this->docid == 0) {
-                        // case of specific interface
-                        $this->iOptions = str_replace('\"', '&quot;', '&phpfile=' . $this->oattr->phpfile . '&phpfunc=' . $this->oattr->phpfunc . '&label=' . ($this->oattr->getLabel()));
-                    }
-                    $autocomplete = " autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event," . $this->docid . ",this,'{$this->iOptions}','{$this->attrid}','{$this->index}')\" ";
-                    $this->onChange.= $autocomplete;
-                    $textvalue = $this->doc->getTitle(trim($value) , '', $needLatest);
                 }
+                if (!$this->oattr->phpfile) {
+                    $this->oattr->phpfile = "fdl.php";
+                    $this->oattr->phpfunc = "lfamily(D,$famid,{$this->linkPrefix}{$this->attrid}):${cible}{$this->attrid},{$this->linkPrefix}{$this->attrid}";
+                } else {
+                    $phpfunc = preg_replace('/([\s|,|:|\(])CT([\s|,|\)]|$)/', '$1' . $this->linkPrefix . $this->attrid . '$2', $this->oattr->phpfunc);
+                    $phpfunc = str_replace("):{$this->attrid},", "):${cible}{$this->attrid},", $phpfunc);
+                    $phpfunc = str_replace("):" . strtoupper($this->attrid) . ",", "):${cible}{$this->attrid},", $phpfunc);
+                    $this->oattr->phpfunc = $phpfunc;
+                }
+                if ($this->docid == 0) {
+                    // case of specific interface
+                    $this->iOptions = str_replace('\"', '&quot;', '&phpfile=' . $this->oattr->phpfile . '&phpfunc=' . $this->oattr->phpfunc . '&label=' . ($this->oattr->getLabel()));
+                }
+                $autocomplete = " autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event," . $this->docid . ",this,'{$this->iOptions}','{$this->attrid}','{$this->index}')\" ";
+                $this->onChange.= $autocomplete;
+                $textvalue = $this->doc->getTitle(trim($value) , '', $needLatest);
                 
                 $famid = $this->oattr->format;
                 $input.= "<input {$this->classname} $autocomplete {$this->jsEvents} onchange=\"addmdocs('{$this->attrin}');document.isChanged=true\" type=\"text\" name=\"_{$this->linkPrefix}" . substr($this->attrin, 1) . "\"";
