@@ -91,12 +91,12 @@ helppage.editsection.view = function(seclang) {
 helppage.editsection.set = function(lang) {
 	document.getElementById('sec-name').value = helppage.editsection.datas[lang].name;
 	document.getElementById('sec-text').value = helppage.editsection.datas[lang].text;
-	FCKeditorAPI.GetInstance('sec-text').SetHTML(helppage.editsection.datas[lang].text);
+    window.htmlText.setValue('sec-text', helppage.editsection.datas[lang].text);
 };
 
 helppage.editsection.get = function(lang) {
 	helppage.editsection.datas[lang].name = document.getElementById('sec-name').value;
-	helppage.editsection.datas[lang].text = FCKeditorAPI.GetInstance('sec-text').GetHTML();
+	helppage.editsection.datas[lang].text = window.htmlText.getValue('sec-text');
 };
 
 helppage.editsection.clear = function() {

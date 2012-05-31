@@ -96,25 +96,7 @@ function helpEditsectionLoad() {
 	helppage.editsection.init();
 
 	try {
-		var oFCKeditor = new FCKeditor( 'sec-text' ) ;
-		oFCKeditor.BasePath = 'fckeditor/';
-		oFCKeditor.Config['FullPage'] = false ;
-		oFCKeditor.Config['SkinPath'] =  window.location.pathname.replace(/\/[^\/]*[^\/]$/, '/')+'fckeditor/editor/skins/silver/';
-		oFCKeditor.Config['ToolbarStartExpanded'] =  true;
-
-		oFCKeditor.Config['ImageBrowserURL'] = '../../../?sole=Y&app=FDL&action=FCKIMAGE' ;
-		oFCKeditor.Config['ImageUploadURL'] = '../../../?sole=Y&app=FDL&action=FCKUPLOAD' ;
-		oFCKeditor.Config['ImageBrowserWindowWidth'] = '550px';
-		oFCKeditor.Config['ImageBrowserWindowHeight'] = '400px';
-		oFCKeditor.Config['LinkBrowser'] = false ;
-
-		//oFCKeditor.Config['FontNames'] =  'serif;sans-serif;cursive;fantasy;monospace' ;
-		oFCKeditor.ToolbarSet = 'SimpleNoQS';
-		oFCKeditor.Config["CustomConfigurationsPath"] = "../../FDL/Layout/fdl_fckeditor.js"  ;
-		oFCKeditor.Height='300';
-
-		oFCKeditor.ReplaceTextarea() ;
-
+		window.htmlText.initEditor( 'sec-text', { "doclink" : {"famId":"HELPPAGE"}} ) ;
 		self.setTimeout( helpEditsectionLoaded, 500 );
 	}
 	catch(e) { }
