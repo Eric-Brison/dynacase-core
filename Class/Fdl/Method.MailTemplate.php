@@ -61,7 +61,7 @@ class _MAILTEMPLATE extends Doc
     }
     /**
      * send document by email using this template
-     * @param \Doc $doc documengt to send
+     * @param \Doc $doc document to send
      * @param array $keys extra keys used for template
      * @return string error - empty if no error -
      */
@@ -161,19 +161,26 @@ class _MAILTEMPLATE extends Doc
                         }
                         break;
 
+                    case 'DE': // param user relation
+
                     case 'D': // user relations
                         
                     case 'WD': // user relations
-                        if ($type == 'D') $udoc = $doc;
+                        if ($type == 'D' || $type == 'DE') $udoc = $doc;
                         elseif ($wdoc) $udoc = $wdoc;
                         if ($udoc) {
                             $aid = strtok($v["tmail_recip"], " ");
-                            if (!$udoc->getAttribute($aid)) {
+                            if (!$udoc->getAttribute($aid) && !array_key_exists(strtolower($aid) , $udoc->getParamAttributes())) {
                                 $action->log->error(sprintf(_("Send mail error : Attribute %s not found") , $aid));
                                 $doc->addComment(sprintf(_("Send mail error : Attribute %s not found") , $aid));
                                 return sprintf(_("Send mail error : Attribute %s not found") , $aid);
                             }
-                            $vdocid = $udoc->getValue($aid); // for array of users
+                            if ($type == 'DE') {
+                                $vdocid = $udoc->getParamValue($aid);
+                            } else {
+                                $vdocid = $udoc->getValue($aid); // for array of users
+
+                            }
                             $vdocid = str_replace('<BR>', "\n", $vdocid);
                             if (strpos($vdocid, "\n")) {
                                 $tvdoc = $this->_val2array($vdocid);
@@ -194,8 +201,16 @@ class _MAILTEMPLATE extends Doc
                             } else {
                                 if (strpos($aid, ':')) $mail = $udoc->getRValue($aid);
                                 else {
-                                    $mail = $udoc->getRValue($aid . ':us_mail');
-                                    if (!$mail) $mail = $udoc->getRValue($aid . ':grp_mail');
+                                    if ($type == "DE") {
+                                        $aDoc = new_Doc("", $vdocid);
+                                        $mail = '';
+                                        if (method_exists($aDoc, "getMail")) $mail = $aDoc->getMail();
+                                        if (!$mail) $mail = $aDoc->getValue('us_mail', '');
+                                        if (!$mail) $mail = $aDoc->getValue('grp_mail', '');
+                                    } else {
+                                        $mail = $udoc->getRValue($aid . ':us_mail');
+                                        if (!$mail) $mail = $udoc->getRValue($aid . ':grp_mail');
+                                    }
                                 }
                             }
                         }
