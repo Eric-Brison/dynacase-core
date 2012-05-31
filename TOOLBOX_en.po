@@ -8088,6 +8088,9 @@ msgstr "Delete"
 msgid "reinit all attributes"
 msgstr "Title"
 
+msgid "reinit all properties"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "related documents of %s"
 msgstr "Import"

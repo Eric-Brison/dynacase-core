@@ -282,6 +282,10 @@ class importDocumentDescription
                     
                     break;
 
+                case "PROP":
+                    $this->doProp($data);
+                    break;
+
                 default:
                     // uninterpreted line
                     unset($this->tcr[$this->nLine]);
@@ -429,7 +433,14 @@ class importDocumentDescription
                     
                     $this->doc->defval = '';
                     break;
-                }
+
+                case 'properties':
+                    
+                    $this->tcr[$this->nLine]["msg"].= sprintf(_("reinit all properties"));
+                    if ($this->analyse) return;
+                    $this->doc->resetPropertiesParameters();
+                    break;
+            }
         }
         $this->tcr[$this->nLine]["err"].= $err;
     }
@@ -1152,6 +1163,33 @@ class importDocumentDescription
                         }
                     }
                 }
+            }
+        }
+    }
+    /**
+     * analyze PROP
+     * @param array $data line of description file
+     */
+    protected function doProp($data) {
+        $check = new CheckProp();
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) {
+            return;
+        }
+
+        $propName = $check->propName;
+        $values = $check->parameters;
+
+        if ($this->analyse) {
+            return;
+        }
+
+        foreach ($values as $value) {
+            $pName = $value['name'];
+            $pValue = $value['value'];
+            if (!$this->doc->setPropertyParameter($propName, $pName, $pValue)) {
+                $this->tcr[$this->nLine]["err"] .= sprintf(_("error storing configuration property (%s, %s, %s)"), $propName, $pName, $pValue);
+                return;
             }
         }
     }

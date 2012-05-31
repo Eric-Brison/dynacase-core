@@ -36,7 +36,8 @@ create table docfam (cprofid int ,
                      param text,
                      genversion float,
                      maxrev int,
-                     usedocread int) inherits (doc);
+                     usedocread int,
+                     configuration text) inherits (doc);
 create unique index idx_idfam on docfam(id);";
     
     var $defDoctype = 'C';
@@ -57,7 +58,8 @@ create unique index idx_idfam on docfam(id);";
         "genversion",
         "usedocread",
         "schar",
-        "maxrev"
+        "maxrev",
+        "configuration"
     );
     public $genversion;
     public $dfldid;
@@ -70,7 +72,29 @@ create unique index idx_idfam on docfam(id);";
     public $param;
     public $schar;
     public $maxrev;
+    public $configuration;
     private $_configuration;
+    
+    private $defaultSortProperties = array(
+        'owner' => array(
+            'sort' => 'no',
+        ) ,
+        'title' => array(
+            'sort' => 'asc',
+        ) ,
+        'revision' => array(
+            'sort' => 'no',
+        ) ,
+        'initid' => array(
+            'sort' => 'desc',
+        ) ,
+        'revdate' => array(
+            'sort' => 'desc',
+        ) ,
+        'state' => array(
+            'sort' => 'asc',
+        )
+    );
     
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $include = true)
     {
@@ -344,353 +368,475 @@ create unique index idx_idfam on docfam(id);";
 
                 case 'maxrev':
                     if (!$this->maxrev) {
-                        if ($this->schar == 'S') $this->lay->set("maxrevision", _("no revisable"));
-                        else $this->lay->set("maxrevision", _("unlimited revisions"));
-                    } else $this->lay->set("maxrevision", $this->maxrev);
+                        if ($this->schar == 'S') {
+                            $this->lay->set("maxrevision", _("no revisable"));
+                        } else {
+                            $this->lay->set("maxrevision", _("unlimited revisions"));
+                        }
+                    } else {
+                        $this->lay->set("maxrevision", $this->maxrev);
+                    }
                     
                     break;
-                }
             }
         }
-        //~~~~~~~~~~~~~~~~~~~~~~~~~ PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~
+    }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~ PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    /**
+     * return family parameter
+     *
+     * @param string $idp parameter identificator
+     * @param string $def default value if parameter not found or if it is null
+     * @return string parameter value
+     */
+    final public function getParamValue($idp, $def = "")
+    {
+        if ($def == "") $def = $this->getDefValue($idp);
+        return $this->getXValue("param", $idp, $def);
+    }
+    /**
+     * return all family parameter
+     *
+     * @return array string parameter value
+     */
+    function getParams()
+    {
+        return $this->getXValues("param");
+    }
+    /**
+     * return own family parameters values
+     *
+     * @return array string parameter value
+     */
+    function getOwnParams()
+    {
+        return $this->explodeX($this->param);
+    }
+    /**
+     * return the value of an list parameter document
+     *
+     * the parameter must be in an array or of a type '*list' like enumlist or textlist
+     * @param string $idAttr identificator of list parameter
+     * @param string $def default value returned if parameter not found or if is empty
+     * @return array the list of parameter values
+     */
+    function getParamTValue($idAttr, $def = "", $index = - 1)
+    {
+        $t = $this->_val2array($this->getParamValue("$idAttr", $def));
+        if ($index == - 1) return $t;
+        if (isset($t[$index])) return $t[$index];
+        else return $def;
+    }
+    /**
+     * set family parameter value
+     *
+     * @param string $idp parameter identificator
+     * @param string $val value of the parameter
+     */
+    function setParam($idp, $val)
+    {
+        $this->setChanged();
+        if (is_array($val)) $val = $this->_array2val($val);
+        return $this->setXValue("param", $idp, $val);
+    }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~ DEFAULT VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    /**
+     * return family default value
+     *
+     * @param string $idp parameter identificator
+     * @param string $def default value if parameter not found or if it is null
+     * @return string default value
+     */
+    function getDefValue($idp, $def = "")
+    {
+        $x = $this->getXValue("defval", $idp, $def);
         
-        /**
-         * return family parameter
-         *
-         * @param string $idp parameter identificator
-         * @param string $def default value if parameter not found or if it is null
-         * @return string parameter value
-         */
-        final public function getParamValue($idp, $def = "")
-        {
-            if ($def == "") $def = $this->getDefValue($idp);
-            return $this->getXValue("param", $idp, $def);
-        }
-        /**
-         * return all family parameter
-         *
-         * @return array string parameter value
-         */
-        function getParams()
-        {
-            return $this->getXValues("param");
-        }
-        /**
-         * return own family parameters values
-         *
-         * @return array string parameter value
-         */
-        function getOwnParams()
-        {
-            return $this->explodeX($this->param);
-        }
-        /**
-         * return the value of an list parameter document
-         *
-         * the parameter must be in an array or of a type '*list' like enumlist or textlist
-         * @param string $idAttr identificator of list parameter
-         * @param string $def default value returned if parameter not found or if is empty
-         * @return array the list of parameter values
-         */
-        function getParamTValue($idAttr, $def = "", $index = - 1)
-        {
-            $t = $this->_val2array($this->getParamValue("$idAttr", $def));
-            if ($index == - 1) return $t;
-            if (isset($t[$index])) return $t[$index];
-            else return $def;
-        }
-        /**
-         * set family parameter value
-         *
-         * @param string $idp parameter identificator
-         * @param string $val value of the parameter
-         */
-        function setParam($idp, $val)
-        {
-            $this->setChanged();
-            if (is_array($val)) $val = $this->_array2val($val);
-            return $this->setXValue("param", $idp, $val);
-        }
-        //~~~~~~~~~~~~~~~~~~~~~~~~~ DEFAULT VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
+        return $x;
+    }
+    /**
+     * return all family default values
+     *
+     * @return array string default value
+     */
+    function getDefValues()
+    {
+        return $this->getXValues("defval");
+    }
+    /**
+     * return own default value not inherit default
+     *
+     * @return array string default value
+     */
+    function getOwnDefValues()
+    {
+        return $this->explodeX($this->defval);
+    }
+    /**
+     * set family default value
+     *
+     * @param string $idp parameter identificator
+     * @param string $val value of the default
+     */
+    function setDefValue($idp, $val)
+    {
+        return $this->setXValue("defval", $idp, $val);
+    }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~ X VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    /**
+     * return family default value
+     *
+     * @param string $idp parameter identificator
+     * @param string $def default value if parameter not found or if it is null
+     * @return string default value
+     */
+    function getXValue($X, $idp, $def = "")
+    {
+        $tval = "_xt$X";
+        if (!isset($this->$tval)) $this->getXValues($X);
         
-        /**
-         * return family default value
-         *
-         * @param string $idp parameter identificator
-         * @param string $def default value if parameter not found or if it is null
-         * @return string default value
-         */
-        function getDefValue($idp, $def = "")
-        {
-            $x = $this->getXValue("defval", $idp, $def);
+        $tval2 = $this->$tval;
+        $v = $tval2[strtolower($idp) ];
+        if ($v == "-") return $def;
+        if ($v != "") return $v;
+        return $def;
+    }
+    /**
+     * explode param or defval string
+     * @param $sx
+     * @return array
+     */
+    private function explodeX($sx)
+    {
+        $txval = array();
+        $tdefattr = explode("][", substr($sx, 1, strlen($sx) - 2));
+        foreach ($tdefattr as $k => $v) {
             
-            return $x;
+            $aid = substr($v, 0, strpos($v, '|'));
+            $dval = substr(strstr($v, '|') , 1);
+            if ($aid) $txval[$aid] = $dval;
         }
-        /**
-         * return all family default values
-         *
-         * @return array string default value
-         */
-        function getDefValues()
-        {
-            return $this->getXValues("defval");
-        }
-        /**
-         * return own default value not inherit default
-         *
-         * @return array string default value
-         */
-        function getOwnDefValues()
-        {
-            return $this->explodeX($this->defval);
-        }
-        /**
-         * set family default value
-         *
-         * @param string $idp parameter identificator
-         * @param string $val value of the default
-         */
-        function setDefValue($idp, $val)
-        {
-            return $this->setXValue("defval", $idp, $val);
-        }
-        //~~~~~~~~~~~~~~~~~~~~~~~~~ X VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
+        return $txval;
+    }
+    /**
+     * return all family default values
+     *
+     * @return array string default value
+     */
+    function getXValues($X)
+    {
+        $Xval = "_xt$X";
+        $defval = $this->$X;
+        if (!$defval) return array();
         
-        /**
-         * return family default value
-         *
-         * @param string $idp parameter identificator
-         * @param string $def default value if parameter not found or if it is null
-         * @return string default value
-         */
-        function getXValue($X, $idp, $def = "")
-        {
-            $tval = "_xt$X";
-            if (!isset($this->$tval)) $this->getXValues($X);
-            
-            $tval2 = $this->$tval;
-            $v = $tval2[strtolower($idp) ];
-            if ($v == "-") return $def;
-            if ($v != "") return $v;
-            return $def;
-        }
-        /**
-         * explode param or defval string
-         * @param $sx
-         * @return array
-         */
-        private function explodeX($sx)
-        {
-            $txval = array();
-            $tdefattr = explode("][", substr($sx, 1, strlen($sx) - 2));
-            foreach ($tdefattr as $k => $v) {
-                
-                $aid = substr($v, 0, strpos($v, '|'));
-                $dval = substr(strstr($v, '|') , 1);
-                if ($aid) $txval[$aid] = $dval;
+        if ($this->$Xval) return $this->$Xval;
+        $XS[$this->id] = $defval;
+        $this->$Xval = array();
+        $inhIds = array();
+        if ($this->attributes->fromids) {
+            $sql = sprintf("select id,%s from docfam where id in (%s)", pg_escape_string($X) , implode(',', $this->attributes->fromids));
+            simpleQuery($this->dbaccess, $sql, $rx, false, false);
+            foreach ($rx as $r) {
+                $XS[$r["id"]] = $r[$X];
             }
-            return $txval;
+            $inhIds = array_reverse($this->attributes->fromids);
         }
-        /**
-         * return all family default values
-         *
-         * @return array string default value
-         */
-        function getXValues($X)
-        {
-            $Xval = "_xt$X";
-            $defval = $this->$X;
-            if (!$defval) return array();
-            
-            if ($this->$Xval) return $this->$Xval;
-            $XS[$this->id] = $defval;
-            $this->$Xval = array();
-            $inhIds = array();
-            if ($this->attributes->fromids) {
-                $sql = sprintf("select id,%s from docfam where id in (%s)", pg_escape_string($X) , implode(',', $this->attributes->fromids));
-                simpleQuery($this->dbaccess, $sql, $rx, false, false);
-                foreach ($rx as $r) {
-                    $XS[$r["id"]] = $r[$X];
-                }
-                $inhIds = array_reverse($this->attributes->fromids);
-            }
-            $inhIds[] = $this->id;
-            $txval = array();
-            
-            foreach ($inhIds as $famId) {
-                $txvalh = $this->explodeX($XS[$famId]);
-                foreach ($txvalh as $aid => $dval) {
-                    $txval[$aid] = ($dval == '-') ? '' : $dval;
-                }
-            }
-            uksort($txval, array(
-                $this,
-                "compareXOrder"
-            ));
-            $this->$Xval = $txval;
-            
-            return $this->$Xval;
-        }
+        $inhIds[] = $this->id;
+        $txval = array();
         
-        public function compareXOrder($a1, $a2)
-        {
-            $oa1 = $this->getAttribute($a1);
-            $oa2 = $this->getAttribute($a2);
-            if ($oa1 && $oa2) {
-                if ($oa1->ordered > $oa2->ordered) return 1;
-                else if ($oa1->ordered < $oa2->ordered) return -1;
+        foreach ($inhIds as $famId) {
+            $txvalh = $this->explodeX($XS[$famId]);
+            foreach ($txvalh as $aid => $dval) {
+                $txval[$aid] = ($dval == '-') ? '' : $dval;
             }
-            return 0;
         }
-        /**
-         * set family default value
-         *
-         * @param string $idp parameter identificator
-         * @param string $val value of the default
-         */
-        function setXValue($X, $idp, $val)
-        {
-            $tval = "_xt$X";
-            if (is_array($val)) $val = $this->_array2val($val);
-            
-            if (!isset($this->$tval)) $this->getXValues($X);
-            $txval = $this->$tval;
-            $txval[strtolower($idp) ] = $val;
-            $this->$tval = $txval;
-            
-            $tdefattr = array();
-            foreach ($txval as $k => $v) {
-                if ($k && ($v !== '')) $tdefattr[] = "$k|$v";
-            }
-            
-            $this->$X = "[" . implode("][", $tdefattr) . "]";
+        uksort($txval, array(
+            $this,
+            "compareXOrder"
+        ));
+        $this->$Xval = $txval;
+        
+        return $this->$Xval;
+    }
+    
+    public function compareXOrder($a1, $a2)
+    {
+        $oa1 = $this->getAttribute($a1);
+        $oa2 = $this->getAttribute($a2);
+        if ($oa1 && $oa2) {
+            if ($oa1->ordered > $oa2->ordered) return 1;
+            else if ($oa1->ordered < $oa2->ordered) return -1;
+        }
+        return 0;
+    }
+    /**
+     * set family default value
+     *
+     * @param string $idp parameter identificator
+     * @param string $val value of the default
+     */
+    function setXValue($X, $idp, $val)
+    {
+        $tval = "_xt$X";
+        if (is_array($val)) $val = $this->_array2val($val);
+        
+        if (!isset($this->$tval)) $this->getXValues($X);
+        $txval = $this->$tval;
+        $txval[strtolower($idp) ] = $val;
+        $this->$tval = $txval;
+        
+        $tdefattr = array();
+        foreach ($txval as $k => $v) {
+            if ($k && ($v !== '')) $tdefattr[] = "$k|$v";
         }
         
-        final public function UpdateVaultIndex()
-        {
-            $dvi = new DocVaultIndex($this->dbaccess);
-            $err = $dvi->DeleteDoc($this->id);
-            
-            $fa = $this->getParamAttributes();
-            
-            $tvid = array();
-            
-            foreach ($fa as $aid => $oattr) {
-                if ($oattr->inArray()) {
-                    $ta = $this->_val2array($this->getParamValue($aid));
-                } else {
-                    $ta = array(
-                        $this->getParamValue($aid)
-                    );
-                }
-                foreach ($ta as $k => $v) {
-                    $vid = "";
-                    if (preg_match(PREGEXPFILE, $v, $reg)) {
-                        $vid = $reg[2];
-                        $tvid[$vid] = $vid;
-                    }
-                }
+        $this->$X = "[" . implode("][", $tdefattr) . "]";
+    }
+    
+    final public function UpdateVaultIndex()
+    {
+        $dvi = new DocVaultIndex($this->dbaccess);
+        $err = $dvi->DeleteDoc($this->id);
+        
+        $fa = $this->getParamAttributes();
+        
+        $tvid = array();
+        
+        foreach ($fa as $aid => $oattr) {
+            if ($oattr->inArray()) {
+                $ta = $this->_val2array($this->getParamValue($aid));
+            } else {
+                $ta = array(
+                    $this->getParamValue($aid)
+                );
             }
-            
-            foreach ($tvid as $k => $vid) {
-                $dvi->docid = $this->id;
-                $dvi->vaultid = $vid;
-                $dvi->Add();
+            foreach ($ta as $k => $v) {
+                $vid = "";
+                if (preg_match(PREGEXPFILE, $v, $reg)) {
+                    $vid = $reg[2];
+                    $tvid[$vid] = $vid;
+                }
             }
         }
         
-        function saveVaultFile($vid, $stream)
-        {
-            if (is_resource($stream) && get_resource_type($stream) == "stream") {
-                $ext = "nop";
-                $filename = uniqid(getTmpDir() . "/_fdl") . ".$ext";
-                $tmpstream = fopen($filename, "w");
-                while (!feof($stream)) {
-                    if (false === fwrite($tmpstream, fread($stream, 4096))) {
-                        $err = "403 Forbidden";
-                        break;
-                    }
-                }
-                fclose($tmpstream);
-                $vf = newFreeVaultFile($this->dbaccess);
-                $info = null;
-                $err = $vf->Retrieve($vid, $info);
-                if ($err == "") $err = $vf->Save($filename, false, $vid);
-                unlink($filename);
-                return $err;
-            }
-            return '';
-        }
-        /**
-         * read xml configuration file
-         */
-        function getConfiguration()
-        {
-            if (!$this->_configuration) {
-                if ($this->name) {
-                    $dxml = new DomDocument();
-                    $famfile = DEFAULT_PUBDIR . sprintf("/families/%s.fam", $this->name);
-                    if (!@$dxml->load($famfile)) {
-                        return null;
-                    } else {
-                        $o = null;
-                        $properties = $dxml->getElementsByTagName('property');
-                        /**
-                         * @var DOMElement $prop
-                         */
-                        foreach ($properties as $prop) {
-                            $name = $prop->getAttribute('name');
-                            $value = $prop->nodeValue;
-                            $o->properties[$name] = $value;
-                        }
-                        $views = $dxml->getElementsByTagName('view');
-                        /**
-                         * @var DOMElement $view
-                         */
-                        foreach ($views as $view) {
-                            $name = $view->getAttribute('name');
-                            foreach ($view->attributes as $a) {
-                                $o->views[$name][$a->name] = $a->value;
-                            }
-                        }
-                    }
-                    $this->_configuration = $o;
-                }
-            }
-            return $this->_configuration;
-        }
-        
-        function getXmlSchema()
-        {
-            $lay = new Layout(getLayoutFile("FDL", "family_schema.xml"));
-            $lay->set("famname", strtolower($this->name));
-            $lay->set("famtitle", strtolower($this->getTitle()));
-            $lay->set("includefdlxsd", file_get_contents(getLayoutFile("FDL", "fdl.xsd")));
-            
-            $level1 = array();
-            $la = $this->getAttributes();
-            $tax = array();
-            
-            foreach ($la as $k => $v) {
-                if ((!$v) || ($v->getOption("autotitle") == "yes") || ($v->usefor == 'Q')) unset($la[$k]);
-            }
-            foreach ($la as $k => $v) {
-                if (($v->id != "FIELD_HIDDENS") && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == "FIELD_HIDDENS")) {
-                    $level1[] = array(
-                        "level1name" => $k
-                    );
-                    $tax[] = array(
-                        "tax" => $v->getXmlSchema($la)
-                    );
-                } else {
-                    // if ($v)  $tax[]=array("tax"=>$v->getXmlSchema());
-                    
-                }
-            };
-            
-            $lay->setBlockData("ATTR", $tax);
-            $lay->setBlockData("LEVEL1", $level1);
-            return ($lay->gen());
+        foreach ($tvid as $k => $vid) {
+            $dvi->docid = $this->id;
+            $dvi->vaultid = $vid;
+            $dvi->Add();
         }
     }
     
+    function saveVaultFile($vid, $stream)
+    {
+        if (is_resource($stream) && get_resource_type($stream) == "stream") {
+            $ext = "nop";
+            $filename = uniqid(getTmpDir() . "/_fdl") . ".$ext";
+            $tmpstream = fopen($filename, "w");
+            while (!feof($stream)) {
+                if (false === fwrite($tmpstream, fread($stream, 4096))) {
+                    $err = "403 Forbidden";
+                    break;
+                }
+            }
+            fclose($tmpstream);
+            $vf = newFreeVaultFile($this->dbaccess);
+            $info = null;
+            $err = $vf->Retrieve($vid, $info);
+            if ($err == "") $err = $vf->Save($filename, false, $vid);
+            unlink($filename);
+            return $err;
+        }
+        return '';
+    }
+    /**
+     * read xml configuration file
+     */
+    function getConfiguration()
+    {
+        if (!$this->_configuration) {
+            if ($this->name) {
+                $dxml = new DomDocument();
+                $famfile = DEFAULT_PUBDIR . sprintf("/families/%s.fam", $this->name);
+                if (!@$dxml->load($famfile)) {
+                    return null;
+                } else {
+                    $o = null;
+                    $properties = $dxml->getElementsByTagName('property');
+                    /**
+                     * @var DOMElement $prop
+                     */
+                    foreach ($properties as $prop) {
+                        $name = $prop->getAttribute('name');
+                        $value = $prop->nodeValue;
+                        $o->properties[$name] = $value;
+                    }
+                    $views = $dxml->getElementsByTagName('view');
+                    /**
+                     * @var DOMElement $view
+                     */
+                    foreach ($views as $view) {
+                        $name = $view->getAttribute('name');
+                        foreach ($view->attributes as $a) {
+                            $o->views[$name][$a->name] = $a->value;
+                        }
+                    }
+                }
+                $this->_configuration = $o;
+            }
+        }
+        return $this->_configuration;
+    }
+    
+    function getXmlSchema()
+    {
+        $lay = new Layout(getLayoutFile("FDL", "family_schema.xml"));
+        $lay->set("famname", strtolower($this->name));
+        $lay->set("famtitle", strtolower($this->getTitle()));
+        $lay->set("includefdlxsd", file_get_contents(getLayoutFile("FDL", "fdl.xsd")));
+        
+        $level1 = array();
+        $la = $this->getAttributes();
+        $tax = array();
+        
+        foreach ($la as $k => $v) {
+            if ((!$v) || ($v->getOption("autotitle") == "yes") || ($v->usefor == 'Q')) unset($la[$k]);
+        }
+        foreach ($la as $k => $v) {
+            if (($v->id != "FIELD_HIDDENS") && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == "FIELD_HIDDENS")) {
+                $level1[] = array(
+                    "level1name" => $k
+                );
+                $tax[] = array(
+                    "tax" => $v->getXmlSchema($la)
+                );
+            } else {
+                // if ($v)  $tax[]=array("tax"=>$v->getXmlSchema());
+                
+            }
+        };
+        
+        $lay->setBlockData("ATTR", $tax);
+        $lay->setBlockData("LEVEL1", $level1);
+        return ($lay->gen());
+    }
+    /*
+    private function loadDefaultSortProperties() {
+        $confStore = new ConfigurationStore();
+        foreach ($this->defaultSortProperties as $propName => $pValues) {
+            foreach ($pValues as $pName => $pValue) {
+                $confStore->add('sortProperties', $propName, $pName, $pValue);
+            }
+        }
+        $conf = $confStore->getText();
+        if ($conf === false) {
+            return false;
+        }
+        $this->configuration = $conf;
+        error_log(__METHOD__." ".sprintf("conf = [%s]", $conf));
+        return $this;
+    }
+    */
+    /**
+     * Reset properties configuration
+     * @return \DocFam
+     */
+    public function resetPropertiesParameters()
+    {
+        $this->configuration = '';
+        return $this;
+    }
+    /**
+     * Get a property's parameter's value
+     *
+     * @param $propName The property's name
+     * @param $pName The parameter's name
+     * @return bool|string boolean false on error, string containing the parameter's value
+     */
+    public function getPropertyParameter($propName, $pName)
+    {
+        $propName = strtolower($propName);
+        
+        $confStore = new ConfigurationStore();
+        if ($confStore->load($this->configuration) === false) {
+            return false;
+        }
+        
+        $class = CheckProp::getParameterClassMap($pName);
+        $pValue = $confStore->get($class, $propName, $pName);
+        if ($pValue === false) {
+            return false;
+        }
+        
+        return $pValue;
+    }
+    /**
+     * Set a parameter's value on a property
+     *
+     * Note: The value is set on the object but not saved in the
+     * database, so it's your responsibility to call modify() if you
+     * want to make the change persistent.
+     *
+     * @param $propName The property's name
+     * @param $pName The parameter's name
+     * @param $pValue The parameter's value
+     * @return bool boolean false on error, or boolean true on success
+     */
+    public function setPropertyParameter($propName, $pName, $pValue)
+    {
+        $propName = strtolower($propName);
+        
+        $confStore = new ConfigurationStore();
+        if ($confStore->load($this->configuration) === false) {
+            return false;
+        }
+        
+        $class = CheckProp::getParameterClassMap($pName);
+        $confStore->add($class, $propName, $pName, $pValue);
+        
+        $conf = $confStore->getText();
+        if ($conf === false) {
+            return false;
+        }
+        
+        $this->configuration = $conf;
+        return true;
+    }
+    /**
+     * Get sortable properties.
+     *
+     * @param string $pName The parameter's name
+     * @return array properties' Names with their set of parameters
+     */
+    public function getSortProperties()
+    {
+        $res = array();
+        /*
+         * Lookup default parameters
+        */
+        foreach ($this->defaultSortProperties as $propName => $params) {
+            if (isset($params['sort']) && $params['sort'] != 'no') {
+                $res[$propName] = $params;
+            }
+        }
+        $confStore = new ConfigurationStore();
+        if ($confStore->load($this->configuration) === false) {
+            return $res;
+        }
+        /*
+         * Lookup custom parameters
+        */
+        $props = $confStore->get('sortProperties', null, 'sort');
+        if ($props === null) {
+            return $res;
+        }
+        foreach ($props as $propName => $params) {
+            if (isset($params['sort']) && $params['sort'] != 'no') {
+                $res[$propName] = $params;
+            }
+        }
+        
+        return $res;
+    }
+}

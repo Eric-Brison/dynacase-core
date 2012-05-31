@@ -27,16 +27,10 @@ function generic_usort(&$action)
     $catg = GetHttpVars("catg"); // id for controlled object
     $sfamid = '';
     if ($catg) {
-        $dir = new_doc($dbaccess, $catg);
+        $dir = new_doc($action->dbaccess, $catg);
         if ($dir->isAlive()) {
             $sfamid = $dir->getValue("se_famid");
         }
-    }
-    if ($aorder == "-") {
-        // invert order
-        $uorder = getDefUSort($action, $sfamid);
-        if ($uorder[0] == "-") $aorder = substr($uorder, 1);
-        else $aorder = "-" . $uorder;
     }
     
     $action->parent->param->Set("GENERIC_USORT", setUsort($action, $aorder, $sfamid) , PARAM_USER . $action->user->id, $action->parent->id);
@@ -48,7 +42,6 @@ function generic_usort(&$action)
 
 function setUsort(&$action, $aorder, $famid = "")
 {
-    
     if (!$famid) $famid = getDefFam(&$action);
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
@@ -69,6 +62,9 @@ function setUsort(&$action, $aorder, $famid = "")
     $sqlorder = $aorder;
     if ($aorder[0] == "-") $sqlorder = substr($aorder, 1);
     $a = $fdoc->getAttribute($sqlorder);
+    if ($a === false) {
+        $a = $fdoc->getProperty($sqlorder);
+    }
     if ($a && $a->type == "text") $sqlorder = "lower($sqlorder)";
     if ($aorder[0] == "-") $sqlorder.= " desc";
     
@@ -81,4 +77,3 @@ function setUsort(&$action, $aorder, $famid = "")
     }
     return implode("|", $tu);
 }
-?>

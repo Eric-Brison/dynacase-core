@@ -7661,6 +7661,9 @@ msgstr "actualisation %s"
 msgid "reinit all attributes"
 msgstr "réinitialisation des attributs"
 
+msgid "reinit all properties"
+msgstr "réinitialisation des propriétés"
+
 #, c-format
 msgid "related documents of %s"
 msgstr "documents référençant %s "

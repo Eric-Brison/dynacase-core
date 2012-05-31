@@ -762,31 +762,15 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
     // liste des attributs triable d'une famille
     function getSortAttr($dbaccess, $famid, $name = "", $sort = true)
     {
+        $docfam = new DocFam($dbaccess, $famid);
         //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
         $doc = createDoc($dbaccess, $famid, false);
-        // internal attributes
-        $ti = array(
-            "title" => _("doctitle") ,
-            "revdate" => _("revdate") ,
-            "revision" => _("revision") ,
-            "owner" => _("owner") ,
-            "state" => _("state")
-        );
-        
+
         $tr = array();
         $pattern_name = preg_quote($name);
-        foreach ($ti as $k => $v) {
-            if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) {
-                
-                $tr[] = array(
-                    $v,
-                    $k,
-                    $v
-                );
-            }
-        }
-        
+
         if ($sort) {
+            $tr = getSortProperties($dbaccess, $famid, $name);
             $tinter = $doc->GetSortAttributes();
         } else {
             $tinter = $doc->GetNormalAttributes();
@@ -798,11 +782,76 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
                 $tr[] = array(
                     $dv,
                     $v->id,
-                    $v->getLabel()
+                    $v->getLabel() ,
+                    $v->getOption('sortable')
                 );
             }
         }
+        
         return $tr;
+    }
+    /**
+     * Get sortable properties with their default sort order
+     *
+     * @param $dbaccess
+     * @param $famid
+     * @param string $name filter to match the property's label
+     * @return array
+     */
+    function getSortProperties($dbaccess, $famid, $name = "")
+    {
+        $pattern = preg_quote($name);
+        $docfam = new DocFam($dbaccess, $famid);
+        $props = $docfam->getSortProperties();
+        $ret = array();
+        foreach ($props as $propName => $config) {
+            if ($config['sort'] != 'asc' && $config['sort'] != 'desc') {
+                continue;
+            }
+            
+            switch ($propName) {
+                case 'state':
+                    if ($docfam->wid <= 0) {
+                        /* Excerpt from
+                         * http://www.php.net/manual/en/control-structures.switch.php
+                         *
+                         * "Note that unlike some other languages, the continue statement
+                         * applies to switch and acts similar to break. If you have a
+                         * switch inside a loop and wish to continue to the next
+                         * iteration of the outer loop, use continue 2."
+                        */
+                        continue 2;
+                    }
+                    $label = _("state");
+                    break;
+
+                case 'title':
+                    $label = _("doctitle");
+                    break;
+
+                case 'initid':
+                    $label = _("createdate");
+                    break;
+
+                default:
+                    $label = $docfam->infofields[$propName]['label'];
+                    if ($label != '') {
+                        $label = _($label);
+                    }
+            }
+            
+            if ($name != "" && !preg_match("/$pattern/i", $label)) {
+                continue;
+            }
+            
+            $ret[] = array(
+                $label,
+                $propName,
+                $label,
+                $config['sort']
+            );
+        }
+        return $ret;
     }
     
     function _getParentLabel($oa)
