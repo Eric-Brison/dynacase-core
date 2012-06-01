@@ -579,10 +579,10 @@ class SearchDoc
                 }
                 $filter = call_user_func_array("sprintf", $fs);
             }
-            if (preg_match('/^([a-z0-9_\-]+)\./', $filter, $reg)) {
+            if (preg_match('/^([a-z0-9_\-]+\()?([a-z0-9_\-]+)\./', $filter, $reg)) {
                 // when use join filter like "zoo_espece.es_classe='Boo'"
-                $famid = getFamIdFromName($this->dbaccess, $reg[1]);
-                if ($famid > 0) $filter = preg_replace('/^([a-z0-9_\-]+)\./', "doc" . $famid . '.', $filter);
+                $famid = getFamIdFromName($this->dbaccess, $reg[2]);
+                if ($famid > 0) $filter = preg_replace('/^([a-z0-9_\-]+\()?([a-z0-9_\-]+)\./', '${1}doc' . $famid . '.', $filter);
             }
             $this->filters[] = $filter;
         }

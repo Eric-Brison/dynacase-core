@@ -26,6 +26,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestSearch');
         $suite->addTestSuite('PU\TestSearchDirective');
         $suite->addTestSuite('PU\TestSearchHighlight');
+        $suite->addTestSuite('PU\TestSearchJoin');
         $suite->addTestSuite('PU\TestSimpleQuery');
         $suite->addTestSuite('PU\TestProfil');
         $suite->addTestSuite('PU\TestTag');

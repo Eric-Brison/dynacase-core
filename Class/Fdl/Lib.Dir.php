@@ -135,11 +135,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
     }
     $maintable = $table; // can use join only on search
     if ($join) {
-        if (preg_match("/([a-z0-9_\-:]+)\s*=\s*([a-z0-9_\-:]+)\(([^\)]*)\)/", $join, $reg)) {
-            $joinid = getFamIdFromName($dbaccess, $reg[2]);
-            $jointable = ($joinid) ? "doc" . $joinid : $reg[2];
+        if (preg_match("/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/", $join, $reg)) {
+            $joinid = getFamIdFromName($dbaccess, $reg[3]);
+            $jointable = ($joinid) ? "doc" . $joinid : $reg[3];
             
-            $sqlfilters[] = sprintf("%s.%s = %s.%s", $table, $reg[1], $jointable, $reg[3]); // "id = dochisto(id)";
+            $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg[1], $reg[2], $jointable, $reg[4]); // "id = dochisto(id)";
             $maintable = $table;
             $table.= ", " . $jointable;
         } else {
