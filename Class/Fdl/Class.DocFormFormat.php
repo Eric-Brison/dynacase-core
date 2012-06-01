@@ -325,7 +325,7 @@ class DocFormFormat
                             $input.= $ib;
                         }
                         // clear button
-                        if (($this->oattr->type == "docid") && ($this->oattr->getOption("multiple") == "yes")) {
+                        if (($this->oattr->type == "docid" || $this->oattr->type == "account") && ($this->oattr->getOption("multiple") == "yes")) {
                             $ib = "<input id=\"ix_$attridk\" type=\"button\" value=\"&times;\"" . " title=\"" . _("clear selected inputs") . "\" disabled " . " onclick=\"clearDocIdInputs('$attridk','mdocid_isel_$attridk',this)\">";
                             //$input.="</td><td>";
                             $input.= $ib;
