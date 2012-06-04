@@ -20,31 +20,22 @@ include_once ("FDL/Class.Doc.php");
 
 function setlogicalname(Action & $action)
 {
-    
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id");
     $name = GetHttpVars("name");
     if ($docid && $name) {
-        if (!preg_match('/^[A-Z][[0-9A-Z\-_]*$/i', $name)) {
-            $action->addWarningMsg(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]") , $name));
+        $doc = new_Doc($dbaccess, $docid, true);
+        if (!$doc->isAlive()) {
+            $action->addWarningMsg(sprintf(_("Document %s is not alive") , $doc->getTitle()));
         } else {
-            $doc = new_Doc($dbaccess, $docid, true);
-            if (!$doc->isAffected()) $action->addWarningMsg(sprintf(_("cannot see unknow reference %s") , $docid));
+            $oldName = $doc->name;
+            $err = $doc->setLogicalIdentificator($name, true);
+            if ($err != "") $action->addWarningMsg($err);
             else {
-                $oldName = $doc->name;
-                if (!$doc->isAlive()) {
-                    $action->addWarningMsg(sprintf(_("Document %s is not dead") , $doc->getTitle()));
+                if ($oldName) {
+                    $doc->addComment(sprintf(_("update logical name from %s to %s") , $oldName, $doc->name));
                 } else {
-                    // verify not use yet
-                    $err = $doc->setLogicalIdentificator($name, true);
-                    if ($err != "") $action->addWarningMsg($err);
-                    else {
-                        if ($oldName) {
-                            $doc->addComment(sprintf(_("update logical name from %s to %s") , $oldName, $doc->name));
-                        } else {
-                            $doc->addComment(sprintf(_("set logical name to %s") , $doc->name));
-                        }
-                    }
+                    $doc->addComment(sprintf(_("set logical name to %s") , $doc->name));
                 }
             }
         }

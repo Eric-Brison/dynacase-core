@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-16 16:55+0200\n"
+"POT-Creation-Date: 2012-06-01 16:32+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1565,10 +1565,6 @@ msgstr ""
 msgid "Document %s is not alive"
 msgstr "Import"
 
-#, c-format
-msgid "Document %s is not dead"
-msgstr ""
-
 #, fuzzy, c-format
 msgid "Document %s umounted"
 msgstr "Import"
@@ -2030,7 +2026,7 @@ msgid "Formated data"
 msgstr ""
 
 #, c-format
-msgid "Found <b>%d</b>  Result for <b>%s</b>%s"
+msgid "Found <strong>%d</strong>  Result for <strong>%s</strong>%s"
 msgstr ""
 
 msgid "Free"
@@ -2477,10 +2473,6 @@ msgstr ""
 msgid "Logical name %s already use in document %s"
 msgstr ""
 
-#, c-format
-msgid "Logical name %s already use other document"
-msgstr ""
-
 #, fuzzy
 msgid "Login"
 msgstr "Delete"
@@ -2701,8 +2693,8 @@ msgid "No default value"
 msgstr ""
 
 #, c-format
-msgid "No document found for <b>%s</b>%s"
-msgstr "No document for \"<b>%s</b>\"%s"
+msgid "No document found for <strong>%s</strong>%s"
+msgstr ""
 
 #, fuzzy
 msgid "No family first"
@@ -2804,8 +2796,8 @@ msgid "One Familly Management"
 msgstr ""
 
 #, c-format
-msgid "One document for <b>%s</b>%s"
-msgstr "One document for \"<b>%s</b>\"%s"
+msgid "One document for <strong>%s</strong>%s"
+msgstr ""
 
 #, fuzzy
 msgid "Onefam"
@@ -3403,12 +3395,6 @@ msgstr ""
 
 #, c-format
 msgid ""
-"Send mail error : Relation to attribute %s not found. Relation key %s doe'nt "
-"link to a document"
-msgstr ""
-
-#, c-format
-msgid ""
 "Send mail error : Relation to attribute %s not found. Relation key %s "
 "does'nt link to a document"
 msgstr ""
@@ -3763,6 +3749,9 @@ msgid "Twprocess_public"
 msgstr ""
 
 msgid "Udm_Find Error : "
+msgstr ""
+
+msgid "Unable to store the file"
 msgstr ""
 
 #, fuzzy
@@ -4165,6 +4154,9 @@ msgstr ""
 #, fuzzy
 msgid "access date"
 msgstr "Delete"
+
+msgid "access granted to  database $db\n"
+msgstr ""
 
 #, fuzzy
 msgid "access path folder list"
@@ -4737,6 +4729,9 @@ msgstr ""
 msgid "cannot access edit template file %s"
 msgstr ""
 
+msgid "cannot access to  database $db\n"
+msgstr ""
+
 msgid "cannot access to core database service [service='$pgservice_core']"
 msgstr ""
 
@@ -5076,6 +5071,12 @@ msgstr "Start search"
 #, fuzzy
 msgid "choose workflow"
 msgstr "Delete"
+
+msgid "ck image browser"
+msgstr ""
+
+msgid "ck image upload"
+msgstr ""
 
 msgid "clear containt of a folder"
 msgstr ""
@@ -6086,6 +6087,10 @@ msgstr ""
 msgid "error sending text conversion"
 msgstr ""
 
+#, c-format
+msgid "error storing configuration property (%s, %s, %s)"
+msgstr ""
+
 msgid "exec plan"
 msgstr ""
 
@@ -6194,12 +6199,6 @@ msgstr "Start search"
 msgid "familyname"
 msgstr "Start search"
 
-msgid "fck image browser"
-msgstr ""
-
-msgid "fck image upload"
-msgstr ""
-
 msgid "fgsearch"
 msgstr "Global search"
 
@@ -6278,6 +6277,10 @@ msgstr ""
 
 msgid "first"
 msgstr ""
+
+#, fuzzy
+msgid "first family used"
+msgstr "Category"
 
 msgid "fixed"
 msgstr ""
@@ -6770,10 +6773,6 @@ msgid "inverse video color text"
 msgstr ""
 
 #, fuzzy
-msgid "invert order"
-msgstr "Delete"
-
-#, fuzzy
 msgid "inverted search"
 msgstr "Start search"
 
@@ -7161,7 +7160,9 @@ msgid "name displayed in the right of the foot"
 msgstr ""
 
 #, c-format
-msgid "name must containt only alphanumeric characters: invalid  [%s]"
+msgid ""
+"name must begin with a letter and the containt only alphanumeric characters "
+"or - and _: invalid  [%s]"
 msgstr ""
 
 msgid "name of our society"
@@ -7846,6 +7847,10 @@ msgid "precise search"
 msgstr "Start search"
 
 #, fuzzy
+msgid "prefered contacts"
+msgstr "Start search"
+
+#, fuzzy
 msgid "prefered search"
 msgstr "Start search"
 
@@ -8362,6 +8367,10 @@ msgstr "at "
 
 msgid "second background color"
 msgstr ""
+
+#, fuzzy
+msgid "second family used"
+msgstr "Start search"
 
 #, fuzzy
 msgid "security"
@@ -9635,6 +9644,12 @@ msgstr ""
 #~ msgid "Members"
 #~ msgstr "No embed file"
 
+#~ msgid "No document found for <b>%s</b>%s"
+#~ msgstr "No document for \"<b>%s</b>\"%s"
+
+#~ msgid "One document for <b>%s</b>%s"
+#~ msgstr "One document for \"<b>%s</b>\"%s"
+
 #, fuzzy
 #~ msgid "Person"
 #~ msgstr "Organisation"
@@ -9841,10 +9856,6 @@ msgstr ""
 #~ msgid "expires"
 #~ msgstr "Your login has expired"
 
-#, fuzzy
-#~ msgid "first family used"
-#~ msgstr "Category"
-
 #~ msgid "firstname"
 #~ msgstr "Firstname"
 
@@ -9874,6 +9885,10 @@ msgstr ""
 #, fuzzy
 #~ msgid "import vcard"
 #~ msgstr "Import"
+
+#, fuzzy
+#~ msgid "invert order"
+#~ msgstr "Delete"
 
 #~ msgid "lastname"
 #~ msgstr "Lastname"
@@ -9920,15 +9935,7 @@ msgstr ""
 #~ msgstr "Import"
 
 #, fuzzy
-#~ msgid "prefered contacts"
-#~ msgstr "Start search"
-
-#, fuzzy
 #~ msgid "quick search"
-#~ msgstr "Start search"
-
-#, fuzzy
-#~ msgid "second family used"
 #~ msgstr "Start search"
 
 #, fuzzy

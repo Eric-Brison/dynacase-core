@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-16 16:55+0200\n"
-"PO-Revision-Date: 2012-05-16 17:17+0200\n"
+"POT-Creation-Date: 2012-06-01 16:32+0200\n"
+"PO-Revision-Date: 2012-06-01 16:40+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -1490,10 +1490,6 @@ msgid "Document %s is not alive"
 msgstr "Le document [%s] n'est pas vivant"
 
 #, c-format
-msgid "Document %s is not dead"
-msgstr ""
-
-#, c-format
 msgid "Document %s umounted"
 msgstr "Document %s enlevé"
 
@@ -1542,7 +1538,7 @@ msgstr "Dot"
 
 #, c-format
 msgid "Doucment [%s] not found"
-msgstr ""
+msgstr "Impossible de trouver le doucment [%s]"
 
 msgid "Down"
 msgstr "Descendre"
@@ -2374,10 +2370,6 @@ msgstr "Nom logique %s déjà utilisé pour %s"
 #, c-format
 msgid "Logical name %s already use in document %s"
 msgstr "Le nom logique %s est déjà utilisé pour le document %s"
-
-#, c-format
-msgid "Logical name %s already use other document"
-msgstr "Le nom logique %s déjà utilisé pour un autre document"
 
 msgid "Login"
 msgstr "Login"
@@ -3249,19 +3241,17 @@ msgstr "Échec lors de l'envoi du mail: Paramètre %s n'existe pas"
 msgid ""
 "Send mail error : Relation to attribute %s not found. Incorrect relation "
 "key: %s"
-msgstr "Échec lors de l'envoi du mail: La relation %s vers l'attribut %s est incorrect"
-
-#, c-format
-msgid ""
-"Send mail error : Relation to attribute %s not found. Relation key %s doe'nt "
-"link to a document"
-msgstr "Échec lors de l'envoi du mail: La relation vers l'attribut %s est introuvable: La clé %s n'est pas liée à un document"
+msgstr ""
+"Échec lors de l'envoi du mail: La relation %s vers l'attribut %s est "
+"incorrect"
 
 #, c-format
 msgid ""
 "Send mail error : Relation to attribute %s not found. Relation key %s "
 "does'nt link to a document"
-msgstr "Échec lors de l'envoi du mail:  La relation vers l'attribut %s est introuvable: La clé %s n'est pas liée à un document"
+msgstr ""
+"Échec lors de l'envoi du mail:  La relation vers l'attribut %s est "
+"introuvable: La clé %s n'est pas liée à un document"
 
 #, c-format
 msgid "Send mail info : can't send mail %s: no sendee found"
@@ -3618,6 +3608,9 @@ msgstr "vers public"
 
 msgid "Udm_Find Error : "
 msgstr "Udm_Find_Error : "
+
+msgid "Unable to store the file"
+msgstr ""
 
 msgid "Unallocate aborded"
 msgstr "Suppression de l'affectation abandonnée"
@@ -3998,6 +3991,9 @@ msgstr "[%s] doit correspondre à /%s/"
 
 msgid "access date"
 msgstr "date de dernière consultation"
+
+msgid "access granted to  database $db\n"
+msgstr "accès à la base de données $db autorisé\n"
 
 msgid "access path folder list"
 msgstr "liste des chemin d'accès"
@@ -4537,6 +4533,9 @@ msgstr "Annuler"
 msgid "cannot access edit template file %s"
 msgstr "ne peut accéder à la modification du fichier modèle %s"
 
+msgid "cannot access to  database $db\n"
+msgstr "accès à la base de données $db refusé\n"
+
 msgid "cannot access to core database service [service='$pgservice_core']"
 msgstr ""
 "accès impossible à la base de données par défaut [service='$pgservice_core']"
@@ -4879,6 +4878,12 @@ msgstr "Choix des familles personnelles"
 
 msgid "choose workflow"
 msgstr "choisir un cycle"
+
+msgid "ck image browser"
+msgstr ""
+
+msgid "ck image upload"
+msgstr ""
 
 msgid "clear containt of a folder"
 msgstr "effacer le contenu d'un dossier"
@@ -5799,6 +5804,10 @@ msgstr "erreur dans la format pzone %s"
 msgid "error sending text conversion"
 msgstr "erreur lors de l'envoi de la conversion texte"
 
+#, c-format
+msgid "error storing configuration property (%s, %s, %s)"
+msgstr ""
+
 msgid "exec plan"
 msgstr "Planification des processus"
 
@@ -5897,12 +5906,6 @@ msgstr "Titre de la famille"
 msgid "familyname"
 msgstr "famille"
 
-msgid "fck image browser"
-msgstr "fck navigateur d'images"
-
-msgid "fck image upload"
-msgstr "fck téléchargement"
-
 msgid "fgsearch"
 msgstr "Recherche générale"
 
@@ -5977,6 +5980,9 @@ msgstr "%s trouvé plus d'une fois, création abandonnée\n"
 
 msgid "first"
 msgstr "premier"
+
+msgid "first family used"
+msgstr "première famille utilisée"
 
 msgid "fixed"
 msgstr "figé"
@@ -6429,9 +6435,6 @@ msgstr "couleur de fond en inverse vidéo"
 msgid "inverse video color text"
 msgstr "couleur du texte en inverse vidéo"
 
-msgid "invert order"
-msgstr "ordre inverse"
-
 msgid "inverted search"
 msgstr "Recherche inversée"
 
@@ -6786,9 +6789,10 @@ msgid "name displayed in the right of the foot"
 msgstr "nom affiché dans le bas de la fenêtre (à droite)"
 
 #, c-format
-msgid "name must containt only alphanumeric characters: invalid  [%s]"
-msgstr ""
-"le nom ne doit contenir que des caractères alpha-numérique: invalide [%s]"
+msgid ""
+"name must begin with a letter and the containt only alphanumeric characters "
+"or - and _: invalid  [%s]"
+msgstr "La nom [%s] est invalide : Le nom doit commencer par une lettre suivi de zéro ou plusieurs lettres, chiffres, tiret \"-\" et trait-bas \"_\""
 
 msgid "name of our society"
 msgstr "nom de votre société"
@@ -7431,6 +7435,9 @@ msgstr "post-it de %s"
 msgid "precise search"
 msgstr "Précisez la recherche"
 
+msgid "prefered contacts"
+msgstr "Préférés"
+
 msgid "prefered search"
 msgstr "Recherche préférée"
 
@@ -7899,6 +7906,9 @@ msgstr "exécutée le "
 
 msgid "second background color"
 msgstr "couleur secondaire pour le fond"
+
+msgid "second family used"
+msgstr "seconde famille utilisée"
 
 msgid "security"
 msgstr "sécurité"
@@ -9187,6 +9197,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Linked from"
 #~ msgstr "Lié par"
 
+#~ msgid "Logical name %s already use other document"
+#~ msgstr "Le nom logique %s déjà utilisé pour un autre document"
+
 #~ msgid "Max user reach. Use search filter"
 #~ msgstr "Utiliser la recherche pour voir la suite"
 
@@ -9234,6 +9247,13 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Replace address book card if has permission else duplicate"
 #~ msgstr "Remplace la carte si permission accordée sinon duplication"
+
+#~ msgid ""
+#~ "Send mail error : Relation to attribute %s not found. Relation key %s "
+#~ "doe'nt link to a document"
+#~ msgstr ""
+#~ "Échec lors de l'envoi du mail: La relation vers l'attribut %s est "
+#~ "introuvable: La clé %s n'est pas liée à un document"
 
 #~ msgid "Set by \"%s\" attribute from template profil \"%s\""
 #~ msgstr "Obtenu par l'attribut \"%s\" depuis le profil dynamique \"%s\""
@@ -9284,9 +9304,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "What User Management"
 #~ msgstr "Gestion des utilisateurs"
-
-#~ msgid "access granted to  database $db\n"
-#~ msgstr "accès à la base de données $db autorisé\n"
 
 #~ msgid "access to documents of my space"
 #~ msgstr "Accéder aux documents de mon espace"
@@ -9346,9 +9363,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe "
 #~ "vous a été envoyé par mail.</p>"
-
-#~ msgid "cannot access to  database $db\n"
-#~ msgstr "accès à la base de données $db refusé\n"
 
 #~ msgid "cannot connect to %s"
 #~ msgstr "ne peut se connecter à %s"
@@ -9553,8 +9567,11 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "expires"
 #~ msgstr "expiration"
 
-#~ msgid "first family used"
-#~ msgstr "première famille utilisée"
+#~ msgid "fck image browser"
+#~ msgstr "fck navigateur d'images"
+
+#~ msgid "fck image upload"
+#~ msgstr "fck téléchargement"
 
 #~ msgid "firstname"
 #~ msgstr "Prénom"
@@ -9592,6 +9609,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "insert the document to see it with offline application"
 #~ msgstr "insérer le document pour le voir avec l'application offline"
 
+#~ msgid "invert order"
+#~ msgstr "ordre inverse"
+
 #~ msgid "lastname"
 #~ msgstr "Nom"
 
@@ -9609,6 +9629,10 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "my last name"
 #~ msgstr "mon nom de famille"
+
+#~ msgid "name must containt only alphanumeric characters: invalid  [%s]"
+#~ msgstr ""
+#~ "le nom ne doit contenir que des caractères alpha-numérique: invalide [%s]"
 
 #~ msgid "no import file specified"
 #~ msgstr "pas de fichier d'import spécifié"
@@ -9649,9 +9673,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "pre-import:%s"
 #~ msgstr "pré-Import:%s"
 
-#~ msgid "prefered contacts"
-#~ msgstr "Préférés"
-
 #~ msgid "quick search"
 #~ msgstr "recherche rapide"
 
@@ -9663,9 +9684,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "search in all contact fields"
 #~ msgstr "recherche dans tout les champs"
-
-#~ msgid "second family used"
-#~ msgstr "seconde famille utilisée"
 
 #~ msgid "select"
 #~ msgstr "sélectionner"
