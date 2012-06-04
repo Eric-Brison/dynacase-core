@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ -z "$pgservice_core" ]; then
+	echo "Undefined or empty pgservice_core!"
+	exit 1
+fi
+$wpub/wsh.php --api=migrExtendedAcls

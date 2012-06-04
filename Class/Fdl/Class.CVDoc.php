@@ -58,13 +58,16 @@ class CVDoc extends Doc
         $this->setAcls();
     }
     
+    function Complete()
+    {
+        $this->setAcls();
+    }
     function setAcls()
     {
+        $this->extendedAcls = array();
         $ti = $this->getTValue("CV_IDVIEW");
         $tl = $this->getTValue("CV_LVIEW");
-        $tz = $this->getTValue("CV_ZVIEW");
         $tk = $this->getTValue("CV_KVIEW");
-        $tm = $this->getTValue("CV_MSKID");
         
         foreach ($tk as $k => $v) {
             if ($ti[$k] == "") $cvk = "CV$k";
@@ -74,7 +77,7 @@ class CVDoc extends Doc
                 "description" => $tl[$k]
             );
             
-            $this->acls[] = $cvk;
+            $this->acls[$cvk] = $cvk;
         }
     }
     
