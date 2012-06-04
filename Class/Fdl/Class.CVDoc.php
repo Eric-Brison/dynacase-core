@@ -35,7 +35,7 @@ class CVDoc extends Doc
     
     var $nbId = 0;
     
-    var $usefor = 'W';
+    var $usefor = 'SW';
     var $defDoctype = 'P';
     var $attrPrefix = "CVI"; // prefix attribute
     

@@ -827,7 +827,7 @@ class _DSEARCH extends DocSearch
                 {
                     global $action;
                     
-                    $classid = $famid = GetHttpVars("sfamid", $this->getValue("SE_FAMID", 1));
+                    $classid = $famid = GetHttpVars("sfamid", $this->getValue("SE_FAMID", 0));
                     $onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
                     $dirid = GetHttpVars("dirid");
                     $this->lay->set("ACTION", $action->name);
@@ -835,7 +835,7 @@ class _DSEARCH extends DocSearch
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
-                    
+
                     if ($dirid > 0) {
                         /**
                          * @var Dir $dir
@@ -896,6 +896,7 @@ class _DSEARCH extends DocSearch
                     foreach ($tclassdoc as $k => $cdoc) {
                         $selectclass[$k]["idcdoc"] = $cdoc["id"];
                         $selectclass[$k]["classname"] = $cdoc["title"];
+                        $selectclass[$k]["system_fam"] = (substr($cdoc["usefor"], 0, 1) == 'S') ? true : false;
                         if (abs($cdoc["id"]) == abs($famid)) {
                             $selfam = true;
                             $selectclass[$k]["selected"] = "selected";
@@ -920,6 +921,8 @@ class _DSEARCH extends DocSearch
                     $this->lay->Set("dirid", $dirid);
                     $this->lay->Set("classid", $this->fromid);
                     $this->lay->SetBlockData("SELECTCLASS", $selectclass);
+                    $this->lay->set("has_permission_fdl_system", $action->parent->hasPermission('FDL', 'SYSTEM'));
+                    $this->lay->set("se_sysfam", ($this->getValue('se_sysfam') == 'yes') ? true : false);
                     $this->setFamidInLayout();
                     // display attributes
                     $tattr = array();
@@ -966,7 +969,14 @@ class _DSEARCH extends DocSearch
                     $zpi = $fdoc->GetNormalAttributes();
                     $lastSet = array();
                     foreach ($zpi as $k => $v) {
-                        if ($v->type == "array") continue;
+                        if ($v->type == "array" || $v->type == "password") {
+                            continue;
+                        }
+                        $opt_searchcriteria = $v->getOption("searchcriteria", "");
+                        if ($opt_searchcriteria == "hidden" || $opt_searchcriteria == "restricted") {
+                            continue;
+                        }
+
                         $type = $v->type;
                         if ($lastSet[0] != $v->fieldSet->id) {
                             $tset = $this->editGetSetAttribute($v->fieldSet);

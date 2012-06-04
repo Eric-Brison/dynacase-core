@@ -652,7 +652,7 @@ create table doc ( id int not null,
                    icon varchar(256),
                    lmodify char DEFAULT 'N',
                    profid int DEFAULT 0,
-                   usefor char  DEFAULT 'N',
+                   usefor text DEFAULT 'N',
                    revdate int,
                    version text,
                    cdate timestamp,
@@ -5316,27 +5316,44 @@ create unique index i_docir on doc(initid, revision);";
                 $na = $this->GetNormalAttributes();
                 $tvalues = array();
                 $tsearch = array();
+                $fulltext_c = array();
                 foreach ($na as $k => $v) {
+                    $opt_searchcriteria = $v->getOption("searchcriteria", "");
                     if (($v->type != "array") && ($v->type != "frame") && ($v->type != "tab") && ($v->type != "idoc")) {
+                        // values += any attribute
                         $tvalues[] = array(
                             "attrid" => $k
                         );
-                        if (($v->type != "file") && ($v->type != "image") && ($v->type != "password")) $tsearch[] = array(
-                            "attrid" => $k
-                        );
+                        // svalues += attribute allowed to be indexed
+                        if (($v->type != "file") && ($v->type != "image") && ($v->type != "password") && ($opt_searchcriteria != "hidden")) {
+                            $tsearch[] = array(
+                                "attrid" => $k
+                            );
+                            $fulltext_c[] = array(
+                                "attrid" => $k
+                            );
+                        }
                     }
-                    if ($v->type == "file") {
+                    if ($v->type == "file" && $opt_searchcriteria != "hidden") {
+                        // fulltext += file attributes
                         $files[] = array(
                             "attrid" => $k . "_txt",
                             "vecid" => $k . "_vec"
                         );
+                        // svalues += file attributes
                         $tsearch[] = array(
                             "attrid" => $k . "_txt"
                         );
                     }
                 }
+                // fulltext += abstract attributes
+                $tabstract = array();
                 $na = $this->GetAbstractAttributes();
                 foreach ($na as $k => $v) {
+                    $opt_searchcriteria = $v->getOption("searchcriteria", "");
+                    if ($opt_searchcriteria == "hidden") {
+                        continue;
+                    }
                     if (($v->type != "array") && ($v->type != "file") && ($v->type != "image") && ($v->type != "password")) {
                         $tabstract[] = array(
                             "attrid" => $k
@@ -5349,6 +5366,7 @@ create unique index i_docir on doc(initid, revision);";
                 $lay->setBlockData("FILEATTR", $files);
                 $lay->setBlockData("FILEATTR2", $files);
                 $lay->setBlockData("FILEATTR3", $files);
+                $lay->setBlockData("FULLTEXT_C", $fulltext_c);
                 $lay->set("hasattr", (count($tvalues) > 0));
                 $lay->set("hassattr", (count($tsearch) > 0));
                 $lay->set("hasabsattr", (count($tabstract) > 0));

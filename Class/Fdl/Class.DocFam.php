@@ -165,7 +165,7 @@ create unique index idx_idfam on docfam(id);";
     function postImport(array $extra = array())
     {
         $err = '';
-        if ($this->usefor == 'W') {
+        if (strstr($this->usefor, 'W')) {
             $w = createDoc($this->dbaccess, $this->id);
             if ($w) {
                 if (is_a($w, "WDoc")) {

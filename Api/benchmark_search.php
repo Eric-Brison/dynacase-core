@@ -299,8 +299,8 @@ function bench_search_fam_all(&$stat)
     $s = new SearchDoc($dbaccess_freedom, -1);
     $s->setObjectReturn();
     $s->noViewControl();
-    $s->addFilter("usefor != 'W'");
-    $s->addFilter("usefor != 'S'");
+    $s->addFilter("usefor !~ 'W'");
+    $s->addFilter("usefor !~ '^S'");
     $s->search();
     
     $famList = array();

@@ -520,7 +520,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         
         return ($tretdocs);
     }
-    /** 
+    /**
      * optimization for getChildDoc
      * @param int $limit if -1 no limit
      * @param bool $reallylimit if false don't return false if limit is reached
@@ -568,7 +568,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
     {
         return strcasecmp($td1["title"], $td2["title"]);
     }
-    /** 
+    /**
      * optimization for getChildDoc in case of grouped searches
      * not used
      */
@@ -712,7 +712,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         $query->Query(0, 0, "TABLE");
         return ($query->nb > 0);
     }
-    /** 
+    /**
      * return true if dirid has one or more child dir
      * @param string $dbaccess database specification
      * @param int $dirid folder id
@@ -762,7 +762,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      * @param string $qtype  [TABLE|LIST] use TABLE if you can because LIST cost too many memory
      * @return array the families
      */
-    function GetClassesDoc($dbaccess, $userid, $classid = 0, $qtype = "LIST")
+    function GetClassesDoc($dbaccess, $userid, $classid = 0, $qtype = "LIST", $extraFilters = array())
     // --------------------------------------------------------------------
     
     {
@@ -782,6 +782,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         }
         // if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",docfam.profid)");
         if ($userid > 1) $query->AddQuery(sprintf("views && '%s'", searchDoc::getUserViewVector($userid)));
+        if (is_array($extraFilters) && count($extraFilters) > 0) {
+            foreach ($extraFilters as $filter) {
+                $query->AddQuery($filter);
+            }
+        }
         if ($qtype == "TABLE") {
             $t = $query->Query(0, 0, $qtype);
             foreach ($t as $k => $v) {
@@ -793,6 +798,30 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
             $query->order_by = "lower(title)";
             return $query->Query(0, 0, $qtype);
         }
+    }
+    /**
+     * Return non-system families
+     *
+     * @param string $dbaccess database specification
+     * @param int $userid identifier of the user
+     * @param string $qtype result format "TABLE" | "LIST" (Avoid using "LIST" as it's memory hungry)(default is "TABLE")
+     * @return array the families
+     */
+    function getNonSystemFamilies($dbaccess, $userid, $qtype = "TABLE")
+    {
+        return GetClassesDoc($dbaccess, $userid, 0, $qtype, array("usefor !~ '^S'"));
+    }
+    /**
+     * Return system families
+     *
+     * @param string $dbaccess database specification
+     * @param int $userid identifier of the user
+     * @param string $qtype result format "TABLE" | "LIST" (Avoid using "LIST" as it's memory hungry)(default is "TABLE")
+     * @return array the families
+     */
+    function getSystemFamilies($dbaccess, $userid, $qtype = "TABLE")
+    {
+        return GetClassesDoc($dbaccess, $userid, 0, $qtype, array("usefor ~ '^S'"));
     }
     function cmpfamtitle($a, $b)
     {

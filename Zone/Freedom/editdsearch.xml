@@ -11,8 +11,28 @@
     /* Set perso mode if parenthesis and/or operators are selected */
     showModePersoIfSelected();
   });
+
+  function selectUpdateLocation(select) {
+    if (!select || !select.se_sysfam_input) {
+      return;
+    }
+
+    var sfamid = select.options[select.selectedIndex].value;
+    var se_sysfam = (select.se_sysfam_input.checked ? 'yes' : 'no');
+
+    var location = '[CORE_STANDURL]&app=[APPNAME]&action=[ACTION]&classid=[classid]&dirid=[dirid]&onlysubfam=[onlysubfam]';
+    location = location + '&sfamid=' + sfamid;
+    location = location + '&se_sysfam=' + se_sysfam;
+
+    document.location.href = location;
+  }
+
+  $(document).ready(function() {
+    initializeSysFamSelector($('select[name=_se_famid]').get(0), $('input#se_sysfam_0').get(0));
+  });
+
 </script>
-<style>
+<style type="text/css">
 select.cond option {
   margin-left:10px;
 }
@@ -40,8 +60,8 @@ tr.FREEDOMBack2 td.opt {
   <td   >
    <img needresize="1" align="top" style="width:[SIZE_IMG-SMALL]" src="[icon]">
       <label for="sensitive"> [TEXT:familly]&nbsp;:</label>
-     <select name="_se_famid" id="famid" onchange="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=[ACTION]&classid=[classid]&dirid=[dirid]&onlysubfam=[onlysubfam]&sfamid='+this.options[this.selectedIndex].value">
-         [BLOCK SELECTCLASS]<option VALUE="[idcdoc]" [selected]>[classname]</option>   
+     <select name="_se_famid" id="famid" onchange="selectUpdateLocation(this);">
+         [BLOCK SELECTCLASS]<option VALUE="[idcdoc]" data-sysfam="[IF system_fam]yes[ENDIF system_fam][IFNOT system_fam]no[ENDIF system_fam]" [selected]>[classname]</option>
          [ENDBLOCK SELECTCLASS]
     </select>  
     <input type="hidden" name="_se_fam" value="[selfam]">
@@ -61,6 +81,7 @@ tr.FREEDOMBack2 td.opt {
 
 <fieldset><legend>[TEXT:Conditions]</legend>
 <table>
+<tr><td><label for="sysfam"> [L_SE_SYSFAM]&nbsp;:</label>[V_SE_SYSFAM]</td></tr>
 <tr><td><label for="latest"> [L_SE_LATEST]&nbsp;:</label>[V_SE_LATEST]</td></tr>
 <tr><td><label for="latest"> [L_SE_ACL]&nbsp;:</label>[V_SE_ACL]</td></tr>
 <tr><td><label for="latest"> [L_SE_FAMONLY]&nbsp;:</label>[V_SE_FAMONLY]</td></tr>

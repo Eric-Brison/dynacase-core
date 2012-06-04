@@ -42,7 +42,7 @@ function workflow_init(&$action)
     if ($query->nb > 0) {
         $tdoc = $table1[0];
         
-        if ($wdoc->isAffected() && $wdoc->usefor == "W") {
+        if ($wdoc->isAffected() && strstr($wdoc->usefor, 'W')) {
             
             createDocFile($dbaccess, $tdoc);
             PgUpdateFamilly($dbaccess, $cid);

@@ -1,21 +1,30 @@
 CREATE OR REPLACE FUNCTION upval[docid]() RETURNS trigger AS $$
 declare	
 begin
+
 [BLOCK ATTRFIELD]
 if not NEW.[attrid] isnull then
   NEW.values := NEW.values || '£' || NEW.[attrid];
   NEW.attrids := NEW.attrids || '£' || '[attrid]';
-end if;[ENDBLOCK ATTRFIELD]
+end if;
+[ENDBLOCK ATTRFIELD]
+
 [BLOCK SEARCHFIELD]
 if not NEW.[attrid] isnull then
   NEW.svalues := NEW.svalues || '£' || NEW.[attrid];
-end if;[ENDBLOCK SEARCHFIELD]
+end if;
+[ENDBLOCK SEARCHFIELD]
+
 [IF hassattr]
-NEW.svalues := NEW.svalues || '£';[ENDIF hassattr]
+NEW.svalues := NEW.svalues || '£';
+[ENDIF hassattr]
+
 [IF hasattr]
 NEW.values := NEW.values || '£';
-NEW.attrids := NEW.attrids || '£';[ENDIF hasattr]
-  return NEW;
+NEW.attrids := NEW.attrids || '£';
+[ENDIF hasattr]
+
+return NEW;
 end;
 $$ LANGUAGE 'plpgsql'; 
 
@@ -33,17 +42,35 @@ if NEW.doctype != 'T' then
 
   if (good) then
   begin
-[BLOCK FILEATTR]if NEW.[vecid] is null or (NEW.[vecid]='' and NEW.[attrid]!='') then NEW.[vecid] := setweight2(NEW.[attrid]); end if;
-[ENDBLOCK FILEATTR]	
+[BLOCK FILEATTR]
+    if NEW.[vecid] is null or (NEW.[vecid]='' and NEW.[attrid]!='') then
+      NEW.[vecid] := setweight2(NEW.[attrid]);
+    end if;
+[ENDBLOCK FILEATTR]
 
-   NEW.fulltext := setweight2(NEW.title, 'A')|| [BLOCK ABSATTR]setweight2(NEW.[attrid]::text, 'B')|| [ENDBLOCK ABSATTR] [BLOCK FILEATTR2]NEW.[vecid] || [ENDBLOCK FILEATTR2] setweight2(replace(to2_ascii(NEW.values),'£',' '),'C') ;
+  NEW.fulltext := setweight2(NEW.title, 'A') ||
 
-     EXCEPTION
-	 WHEN OTHERS THEN
-	    RAISE NOTICE 'fulltext not set %',NEW.id;
-   end;
-   end if;
+[BLOCK ABSATTR]
+  setweight2(NEW.[attrid]::text, 'B') ||
+[ENDBLOCK ABSATTR]
+
+[BLOCK FILEATTR2]
+  NEW.[vecid] ||
+[ENDBLOCK FILEATTR2]
+
+[BLOCK FULLTEXT_C]
+  setweight2(NEW.[attrid]::text, 'C') ||
+[ENDBLOCK FULLTEXT_C]
+
+  setweight2('', 'C');
+
+  EXCEPTION
+    WHEN OTHERS THEN
+	  RAISE NOTICE 'fulltext not set %',NEW.id;
+    end;
+  end if;
 end if;
+
 return NEW;
 end;
 $$ LANGUAGE 'plpgsql'; 

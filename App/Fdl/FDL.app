@@ -49,6 +49,10 @@ $app_acl = array(
     array(
         "name" => "FAMILY",
         "description" => N_("Manage families"),
+        "group_default" => "N"),
+    array(
+        "name" => "SYSTEM",
+        "description" => N_("Access to system documents"),
         "group_default" => "N")
 );
 

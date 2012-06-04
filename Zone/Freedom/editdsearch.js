@@ -485,6 +485,81 @@ function initializeMethodSelectors() {
 	});
 }
 
+function initializeSysFamSelector(select, input) {
+	if (!select) {
+		return;
+	}
+	if (select.peer) {
+		return;
+	}
+	if (!input) {
+		return;
+	}
+
+	/* Create the hidden select that will hold all the families */
+	select.peer = document.createElement('select');
+	select.peer.style.display = 'none';
+	select.peer.peer = select;
+	select.parentNode.insertBefore(select.peer, select);
+
+	/* Copy all options to the hidden select
+	 * and only keep non-system families in
+	 * the main select
+	 */
+	var options = $(select).children('option');
+	for (var i = 0; i < options.length; i++) {
+		var sysfam = $(options[i]).data('sysfam');
+		select.peer.appendChild(options[i].cloneNode(true));
+		if (!input.checked && sysfam == 'yes') {
+			select.removeChild(options[i]);
+		}
+	}
+
+	select.se_sysfam_input = input;
+
+	$(input).bind('click', function() {
+		setSysFamSelector(select);
+	});
+
+	setSysFamSelector(select);
+}
+
+function setSysFamSelector(select) {
+	if (!select || !select.peer || !select.se_sysfam_input) {
+		return;
+	}
+	var selectedText = select.options[select.selectedIndex].text;
+	if (select.se_sysfam_input.checked) {
+		/*
+		 * Show system families
+		 */
+		/* Empty main <select/> */
+		$(select).children('option').remove();
+		/* Copy back options from peer <select/> into main <select/> */
+		var options = $(select.peer).children('option');
+		for (var i = 0; i < options.length; i++) {
+			option = options[i].cloneNode(true);
+			if (option.text == selectedText) {
+				option.selected = true;
+			} else {
+				option.selected = false;
+			}
+			select.appendChild(option);
+		}
+	} else {
+		/*
+		 * Hide systems families
+		 */
+		var options = $(select).children('option');
+		/* Remove system families from the main <select/> */
+		for (var i = 0; i < options.length; i++) {
+			if ($(options[i]).data('sysfam') == 'yes') {
+				select.removeChild(options[i]);
+			}
+		}
+	}
+}
+
 $(document).ready(function () {
 	initializeMethodSelectors();
 });

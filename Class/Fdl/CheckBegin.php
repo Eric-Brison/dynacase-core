@@ -44,7 +44,7 @@ class CheckBegin extends CheckData
     function checkClass(array $data, &$doc = null)
     {
         $this->doc = $doc;
-        if ($doc->usefor == 'W') {
+        if (strstr($doc->usefor, 'W')) {
             $checkW = new CheckWorkflow($doc->classname, $doc->name);
             $checkCr = $checkW->verifyWorkflowClass();
             if (count($checkCr) > 0) {
