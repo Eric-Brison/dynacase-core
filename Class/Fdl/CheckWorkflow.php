@@ -28,8 +28,19 @@ class CheckWorkflow
      * @var string
      */
     private $familyName;
-    
-    const maxTransitionModel = 20;
+    /**
+     * max column for a table in postgresql
+     */
+    const maxSqlColumn = 1600;
+
+    /**
+     * number of attributes contructed by transition
+     */
+    const numberAttributeTransition = 4;
+    /**
+     * number of attributes contructed by state
+     */
+    const numberAttributeState = 12;
     /**
      * @var array
      */
@@ -183,8 +194,10 @@ class CheckWorkflow
         if (!is_array($transitions)) {
             $this->addCodeError('WFL0100', $this->className);
         } else {
-            if (count($transitions) > self::maxTransitionModel) {
-                $this->addCodeError('WFL0102', $this->className, count($transitions) , self::maxTransitionModel);
+            $columnNumber = count($transitions) * self::numberAttributeTransition + count($this->wdoc->getStates()) * self::numberAttributeState + count($this->wdoc->fields) + count($this->wdoc->sup_fields);
+
+            if ($columnNumber > self::maxSqlColumn) {
+                $this->addCodeError('WFL0102', $this->className, $columnNumber, self::maxSqlColumn);
             }
             foreach ($transitions as $tkey => $transition) {
                 $this->checkTransitionStateKey($tkey);

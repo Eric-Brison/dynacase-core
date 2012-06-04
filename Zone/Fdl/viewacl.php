@@ -54,9 +54,23 @@ function viewacl(Action & $action)
         
         $pos = $doc->dacls[$acl]["pos"];
         
-        $tableacl[$k]["aclid"] = $pos;
-        $tableacl[$k]["iacl"] = $k; // index for table in xml
-        if ($perm->ControlUp($pos)) {
+        $tableacl[$k]["aclid"] = $acl;
+        $tableacl[$k]["iacl"] = $acl; // index for table in xml
+        if ($doc->extendedAcls[$acl]) {
+            $grant = DocPermExt::hasExtAclGrant($docid, $user->id, $acl);
+            if ($grant == 'green') {
+                
+                $tableacl[$k]["selectedup"] = "checked";
+                $tableacl[$k]["imgacl"] = "bgreen.png";
+            } else {
+                $tableacl[$k]["selectedup"] = "";
+                if ($grant == 'grey') {
+                    $tableacl[$k]["imgacl"] = "bgrey.png";
+                } else {
+                    $tableacl[$k]["imgacl"] = "bred.png";
+                }
+            }
+        } elseif ($perm->ControlUp($pos)) {
             
             $tableacl[$k]["selectedup"] = "checked";
             $tableacl[$k]["imgacl"] = "bgreen.png";
@@ -79,7 +93,7 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
 {
     $Aclpos = $doc->dacls[$acl]["pos"];
     $msg = '?';
-    if ($perm->ControlUp($Aclpos)) {
+    if ($perm->ControlUp($Aclpos) || DocPermExt::hasExtAclGrant($doc->id, $user->id, $acl) == 'green') {
         if (!$doc->dprofid) {
             // direct green
             if ($doc->profid == $doc->id) {
@@ -89,7 +103,7 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
                 $msg = sprintf(_("Set through \"%s\" linked profil") , $doc->getHtmlTitle($doc->profid));
             }
         } else {
-            // Dynamimc profiling
+            // Dynamic profiling
             $dperm = new DocPerm($perm->dbaccess, array(
                 $doc->dprofid,
                 $perm->userid
@@ -124,12 +138,16 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
                 $msg = sprintf(_("Set by %s from template profil \"%s\"") , $sAtt, $doc->getHtmlTitle($doc->dprofid));
             }
         }
-    } else if ($perm->ControlU($Aclpos)) {
+    } else if ($perm->ControlU($Aclpos) || DocPermExt::hasExtAclGrant($doc->id, $user->id, $acl) == 'grey') {
         $msg = '? role/group';
         if (!$doc->dprofid) {
             // grey
             $msg = '? profid role/group';
-            $sql = sprintf("SELECT userid from docperm where docid=%d and upacl & %d != 0", $doc->profid, 1 << $Aclpos);
+            if ($doc->extendedAcls[$acl]) {
+                $sql = sprintf("SELECT userid from docpermext where docid=%d and acl = '%s'", $doc->profid, pg_escape_string($acl));
+            } else {
+                $sql = sprintf("SELECT userid from docperm where docid=%d and upacl & %d != 0", $doc->profid, 1 << $Aclpos);
+            }
             simpleQuery($perm->dbaccess, $sql, $gids, true);
             $mo = $user->getMemberOf();
             

@@ -68,15 +68,13 @@ class WDoc extends Doc
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // first construct acl array
-        $ka = POS_WF;
         if (is_array($this->transitions)) {
             foreach ($this->transitions as $k => $trans) {
-                $this->dacls[$k] = array(
-                    "pos" => $ka,
+                $this->extendedAcls[$k] = array(
+                    "name" => $k,
                     "description" => _($k)
                 );
                 $this->acls[] = $k;
-                $ka++;
             }
         }
         if (isset($this->fromid)) $this->defProfFamId = $this->fromid; // it's a profil itself

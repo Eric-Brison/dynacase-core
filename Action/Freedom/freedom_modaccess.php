@@ -56,15 +56,13 @@ function freedom_modaccess(Action & $action)
                 $perm->upacl
             );
             $perm->UnsetControl();
+            $perm->modify();
             
-            foreach ($aclon as $k => $pos) {
-                if (intval($pos) > 0) $perm->SetControlP($pos);
+            foreach ($aclon as $k => $aclName) {
+                
+                $doc->addControl($userid, $aclName);
             }
-            if ($perm->isAffected()) $err = $perm->modify();
-            else $err = $perm->Add();
-            if ($err != "") {
-                if ($perm->isAffected()) $err = $perm->delete();
-            }
+            
             $after[$userid] = array(
                 $perm->upacl
             );

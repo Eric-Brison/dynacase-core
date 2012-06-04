@@ -283,6 +283,13 @@ class TestImportFamily extends TestCaseDcpDocument
                     "ATTR0603",
                     "tst_badformat2"
                 )
+            ) ,
+            // format string
+            array(
+                "PU_data_dcp_badattr14.ods",
+                array(
+                    "ATTR1701"
+                )
             )
         );
     }

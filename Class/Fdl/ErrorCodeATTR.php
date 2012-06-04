@@ -314,4 +314,9 @@ class ErrorCodeATTR
      * database type are incompatible with attribute type declaration
      */
     const ATTR1700 = 'database document column are erronous : %s';
+    /**
+     * due to postgresql limit, sql column number is limited
+     * @note declaration for an attribute can create more than one sql column
+     */
+    const ATTR1701 = 'too many attributes : %d (maximum sql column is %d)';
 }

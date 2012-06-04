@@ -164,6 +164,7 @@ create unique index idx_idfam on docfam(id);";
      */
     function postImport()
     {
+        $err = '';
         if ($this->usefor == 'W') {
             $w = createDoc($this->dbaccess, $this->id);
             if ($w) {
@@ -171,10 +172,11 @@ create unique index idx_idfam on docfam(id);";
                     /**
                      * @var WDoc $w
                      */
-                    $w->createProfileAttribute();
+                    $err = $w->createProfileAttribute();
                 }
             }
         }
+        return $err;
     }
     /**
      * @templateController

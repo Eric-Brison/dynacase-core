@@ -105,7 +105,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * @var Application
      */
-    var $parent;
+    public $parent;
     
     var $def = array(
         "criteria" => "",

@@ -25,10 +25,15 @@ function modacl(Action & $action)
 {
     // -----------------------------------
     // get all parameters
-    $userid = GetHttpVars("userid");
-    
-    $aclp = GetHttpVars("aclup"); // ACL + (more access)
-    $docid = GetHttpVars("docid"); // oid for controlled object
+    $usage = new ActionUsage($action);
+    $usage->setText("modify document acl");
+    $userid = $usage->addNeeded("userid", "user identificator");
+    $aclp = $usage->addNeeded("aclup", "user identificator");
+    $docid = $usage->addNeeded("docid", "profil identificator");
+    /**
+     * @var array $aclp
+     */
+    $usage->verify();
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $doc = new_Doc($dbaccess, $docid);
@@ -36,21 +41,13 @@ function modacl(Action & $action)
     $err = $doc->Control("modifyacl");
     if ($err != "") $action->exitError($err);
     
-    $perm = new DocPerm($dbaccess, array(
-        $docid,
-        $userid
-    ));
-    
-    $perm->UnSetControl();
-    
+    $doc->removeControl($userid);
     if (is_array($aclp)) {
-        while (list($k, $v) = each($aclp)) {
-            $perm->SetControlP($v);
+        foreach ($aclp as $k => $aclName) {
+            $doc->addControl($userid, $aclName);
         }
     }
     
-    if ($perm->isAffected()) $perm->modify();
-    else $perm->Add();
     $doc->setViewProfil();
     // recompute all related profile
     $doc->recomputeProfiledDocument();
@@ -66,6 +63,6 @@ function modacl(Action & $action)
     } else {
         $doc->addComment(sprintf(_("Change control for %s user. No one privilege") , Account::getDisplayName($userid)));
     }
-    RedirectSender($action);
+    redirect($action, "FREEDOM", sprintf("FREEDOM_ACCESS&userid=%d&id=%d", $userid, $docid));
 }
 ?>

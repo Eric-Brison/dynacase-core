@@ -386,21 +386,31 @@ class importDocumentDescription
         if ($ferr == "") {
             $this->doc->modify();
             
+            $check = new CheckEnd();
             if ($this->doc->doctype == "C") {
                 global $tFamIdName;
-                
-                $msg = refreshPhpPgDoc($this->dbaccess, $this->doc->id);
-                if (isset($tFamIdName)) $tFamIdName[$this->doc->name] = $this->doc->id; // refresh getFamIdFromName for multiple family import
-                $checkCr = checkDb::verifyDbFamily($this->doc->id);
-                if (count($checkCr) > 0) {
-                    $this->tcr[$this->nLine]["err"].= ErrorCode::getError('ATTR1700', implode(",", $checkCr));
+                $check->checkMaxAttributes($this->doc);
+                $err = $check->getErrors();
+                if ($err == '') {
+                    $msg = refreshPhpPgDoc($this->dbaccess, $this->doc->id);
+                    if (isset($tFamIdName)) $tFamIdName[$this->doc->name] = $this->doc->id; // refresh getFamIdFromName for multiple family import
+                    $checkCr = checkDb::verifyDbFamily($this->doc->id);
+                    if (count($checkCr) > 0) {
+                        $this->tcr[$this->nLine]["err"].= ErrorCode::getError('ATTR1700', implode(",", $checkCr));
+                    }
+                } else {
+                    $this->tcr[$this->nLine]["err"].= $err;
                 }
             }
-            $check = new CheckEnd();
             $this->tcr[$this->nLine]["err"].= $check->check($data, $this->doc)->getErrors();
             
             if ((!$this->analyze) && ($this->familyIcon != "")) $this->doc->changeIcon($this->familyIcon);
             $this->tcr[$this->nLine]["msg"].= $this->doc->postImport();
+            if (!$this->tcr[$this->nLine]["err"]) {
+                $check->checkMaxAttributes($this->doc);
+                $this->tcr[$this->nLine]["err"] = $check->getErrors();
+            }
+            
             $this->doc->AddComment(_("Update by importation"));
             
             $this->nbDoc++;
@@ -437,12 +447,12 @@ class importDocumentDescription
                 case 'properties':
                     
                     $this->tcr[$this->nLine]["msg"].= sprintf(_("reinit all properties"));
-                    if ($this->analyse) return;
+                    if ($this->analyze) return;
                     $this->doc->resetPropertiesParameters();
                     break;
+                }
             }
-        }
-        $this->tcr[$this->nLine]["err"].= $err;
+            $this->tcr[$this->nLine]["err"].= $err;
     }
     /**
      * analyze DOC
@@ -1018,7 +1028,7 @@ class importDocumentDescription
         
         if (!$this->doc) return;
         $check = new CheckAttr();
-        $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"]) return;
         
         foreach ($data as $kd => $vd) {
@@ -1170,25 +1180,26 @@ class importDocumentDescription
      * analyze PROP
      * @param array $data line of description file
      */
-    protected function doProp($data) {
+    protected function doProp($data)
+    {
         $check = new CheckProp();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"]) {
             return;
         }
-
+        
         $propName = $check->propName;
         $values = $check->parameters;
-
-        if ($this->analyse) {
+        
+        if ($this->analyze) {
             return;
         }
-
+        
         foreach ($values as $value) {
             $pName = $value['name'];
             $pValue = $value['value'];
             if (!$this->doc->setPropertyParameter($propName, $pName, $pValue)) {
-                $this->tcr[$this->nLine]["err"] .= sprintf(_("error storing configuration property (%s, %s, %s)"), $propName, $pName, $pValue);
+                $this->tcr[$this->nLine]["err"].= sprintf(_("error storing configuration property (%s, %s, %s)") , $propName, $pName, $pValue);
                 return;
             }
         }

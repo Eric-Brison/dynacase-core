@@ -368,9 +368,30 @@ function AttrToPhp($dbaccess, $tdoc)
         return $phpAdoc->gen();
     }
     
+    function canPgUpdateFamily($dbaccess, $docid)
+    {
+        $err = '';
+        try {
+            $doc = new_doc($dbaccess, $docid);
+            if ($doc->isAlive()) {
+                $c = count($doc->fields) + count($doc->sup_fields);
+                $ancestor = $doc->getFathersDoc();
+                $ancestor[] = $doc->id;
+                
+                $sql = sprintf("select count(*) from docattr where type != 'frame' and type != 'tab' and type != 'array' and %s", GetSqlCond($ancestor, "docid", true));
+                simpleQuery('', $sql, $r, true, true);
+                $c+= $r;
+                if ($c > 1600) $err = sprintf("too many attributes %d", $c);
+            }
+        }
+        catch(Exception $e) {
+        }
+        return $err;
+    }
     function PgUpdateFamilly($dbaccess, $docid, $docname = "")
     {
-        $msg = "";
+        $msg = ''; //canPgUpdateFamily($dbaccess, $docid);
+        if ($msg) return $msg;
         $GEN = getGen($dbaccess);
         $doc = new_Doc($dbaccess);
         $err = $doc->exec_query("SELECT oid FROM pg_class where relname='doc" . $docid . "';");
@@ -553,25 +574,34 @@ function AttrToPhp($dbaccess, $tdoc)
         $indexes = $cdoc->GetSqlIndex();
         if ($indexes) $msg = $cdoc->exec_query($indexes);
     }
-    // refresh PHP Class & Postgres Table Definition
+    /**
+     * refresh PHP Class & Postgres Table Definition
+     * @param string $dbaccess
+     * @param int $docid
+     * @return string error message
+     */
     function refreshPhpPgDoc($dbaccess, $docid)
     {
-        $query = new QueryDb($dbaccess, "DocFam");
-        $query->AddQuery("doctype='C'");
-        $query->AddQuery("id=$docid");
-        $table1 = $query->Query(0, 0, "TABLE");
-        if ($query->nb > 0) {
-            $v = $table1[0];
-            $df = createDocFile($dbaccess, $v);
-            
-            $msg = PgUpdateFamilly($dbaccess, $v["id"], $v["name"]);
-            //------------------------------
-            // see if workflow
-            AddLogMsg($msg);
-            // -----------------------------
-            // activate trigger by trigger
-            activateTrigger($dbaccess, $docid);
+        $err = canPgUpdateFamily($dbaccess, $docid);
+        if (!$err) {
+            $query = new QueryDb($dbaccess, "DocFam");
+            $query->AddQuery("doctype='C'");
+            $query->AddQuery("id=$docid");
+            $table1 = $query->Query(0, 0, "TABLE");
+            if ($query->nb > 0) {
+                $v = $table1[0];
+                $df = createDocFile($dbaccess, $v);
+                
+                $msg = PgUpdateFamilly($dbaccess, $v["id"], $v["name"]);
+                //------------------------------
+                // see if workflow
+                AddLogMsg($msg);
+                // -----------------------------
+                // activate trigger by trigger
+                activateTrigger($dbaccess, $docid);
+            }
         }
+        return $err;
     }
     /**
      * complete attribute properties from  parent attribute

@@ -25,12 +25,14 @@
 </style>
 <script>
 function disableAccess(submit) {
+         submit.form.submit();
           submit.disabled=true;
           submit.value="[TEXT:Update Access in progress]";
           globalcursor('wait');
           setTimeout(function () {
               alert("[updateWaitText]\n[TEXT:You can close window now or waiting the end of processing]");
             },5000);
+
         }
 </script>
 <form name="edit" method="POST" action="[CORE_STANDURL]app=FDL&amp;action=MODACL">
@@ -72,7 +74,7 @@ function disableAccess(submit) {
                     <input type="hidden" name="userid" value="[userid]">
                     <input type="hidden" name="docid" value="[docid]">
                     <p style="text-align:left">
-                        [IFNOT readonly]<input type="submit" onclick="disableAccess(this)"
+                        [IFNOT readonly]<input type="button" onclick="disableAccess(this)"
                                name="Modify" value="[TEXT:Change privilege]">[ENDIF readonly]
                         <input type="reset" onClick="self.close()" name="Fermer" value="[TEXT:Close]">
                     </p>
