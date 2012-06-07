@@ -18,7 +18,7 @@
 
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function barmenu(&$action)
+function barmenu(Action & $action)
 {
     // -----------------------------------
     global $dbaccess; // use in getChildCatg function
@@ -267,7 +267,7 @@ function barmenu(&$action)
                 );
         }
     }
-
+    
     while (list($k, $v) = each($tsort)) {
         $tmsort[$v["said"]] = "sortdoc" . $v["said"];
     }
@@ -310,7 +310,7 @@ function barmenu(&$action)
     // select the current sort
     $csort = GetHttpVars("sqlorder");
     if ($csort == "") $csort = getDefUSort($action, "--");
-
+    
     if (($csort == '') || ($csort == '--')) {
         $csort = '-';
         $cselect = "&bull;";

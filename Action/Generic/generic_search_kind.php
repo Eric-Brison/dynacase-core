@@ -23,26 +23,31 @@ include_once ("FDL/Class.DocSearch.php");
 include_once ("FDL/freedom_util.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_search_kind(&$action)
+function generic_search_kind(Action & $action)
 {
     // -----------------------------------
     // Get all the params
-    $kid = GetHttpVars("kid"); // kind id to search
-    $aid = GetHttpVars("aid"); // attribute to search
-    $dirid = GetHttpVars("catg"); // folder or research to search
+    $kid = $action->getArgument("kid"); // kind id to search
+    $aid = $action->getArgument("aid"); // attribute to search
+    $dirid = $action->getArgument("catg"); // folder or research to search
+    $onefamOrigin = $action->getArgument("onefam"); // onefam origin
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $famid = getDefFam($action);
     $fdoc = new_Doc($dbaccess, $famid);
-    
+    /**
+     * @var NormalAttribute $attr
+     */
     $attr = $fdoc->getAttribute($aid);
     $enum = $attr->getEnum();
     $kindname = $enum[$kid];
     
     $dir = new_Doc($dbaccess, $dirid);
-    
+    /**
+     * @var DocSearch $sdoc
+     */
     $sdoc = createTmpDoc($dbaccess, 5); //new DocSearch($dbaccess);
-    $sdoc->title = sprintf(_("search %s") , $keyword);
+    $sdoc->title = sprintf(_("search %s") , $kid);
     if (($dirid == 0) || ($dir->id == getDefFld($action))) $sdoc->title = sprintf(_("search %s is %s") , $attr->getLabel() , $kindname);
     else $sdoc->title = sprintf(_("search %s is %s in %s") , $attr->getLabel() , $kindname, $dir->gettitle());
     
@@ -62,13 +67,16 @@ function generic_search_kind(&$action)
     $kid = str_replace('\.', '-dot-', $kid);
     if (strrpos($kid, '.') !== false) $kid = substr($kid, strrpos($kid, '.') + 1); // last reference
     // clear key
-    $action->parent->param->Set("GENE_LATESTTXTSEARCH", setUkey($action, $famid, $keyword) , PARAM_USER . $action->user->id, $action->parent->id);
+    $action->parent->param->Set("GENE_LATESTTXTSEARCH", setUkey($action, $famid, '') , PARAM_USER . $action->user->id, $action->parent->id);
     
     $sqlfilter[] = "locked != -1";
     //  $sqlfilter[]= "doctype='F'";
     //  $sqlfilter[]= "usefor != 'D'";
     // searches for all fathers kind
     $a = $fdoc->getAttribute($aid);
+    /**
+     * @var NormalAttribute $a
+     */
     $enum = $a->getEnum();
     $tkids = array();;
     foreach ($enum as $k => $v) {
@@ -89,6 +97,6 @@ function generic_search_kind(&$action)
     
     $sdoc->AddQuery($query);
     
-    redirect($action, GetHttpVars("app") , "GENERIC_LIST$pds&famid=$famid&dirid=" . $sdoc->id . "&catg=" . $dirid);
+    redirect($action, $action->getArgument("app") , "GENERIC_LIST&onefam=$onefamOrigin&famid=$famid&dirid=" . $sdoc->id . "&catg=" . $dirid);
 }
 ?>

@@ -2,17 +2,17 @@
 <head>
 
 <title>[TEXT:Generic Management]</title>
-<link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
 
 </head>
 
-          <frameset   frameborder="no" border=0 framespacing="0" rows="*"   >
+          <frameset   frameborder="no" border="0" framespacing="0" rows="*"   >
 
 <frameset name="fgtop" id="fgtop" frameborder="1" framespacing="3" border="3" cols="[cols]" rows="[rows]">
 
 
-<frame name="flist" src="[CORE_STANDURL]&app=GENERIC&action=GENERIC_TAB&famid=[famid]&catg=0&tab=0&viewfld=no&refresh=no" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
-<frame name="finfo[famid]" src="[CORE_STANDURL]&app=GENERIC&action=GENERIC_LOGO&famid=[famid]" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+<frame name="flist" src="[CORE_STANDURL]&amp;app=GENERIC&amp;action=GENERIC_TAB&amp;onefam=[APPNAME]&amp;famid=[famid]&amp;catg=0&amp;tab=0&amp;viewfld=no&amp;refresh=no" scrolling="needed" bordercolor="[CORE_FGCOLOR]"/>
+<frame name="finfo[famid]" src="[CORE_STANDURL]&amp;app=GENERIC&amp;action=GENERIC_LOGO&amp;famid=[famid]" scrolling="needed" bordercolor="[CORE_FGCOLOR]"/>
 
   </frameset>
 

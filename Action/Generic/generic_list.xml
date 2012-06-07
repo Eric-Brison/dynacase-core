@@ -26,15 +26,7 @@
     [JS:CODE]
     document.dirid='[dirid]';
 
-if (document.all) {
-  window.onscroll = floatMenu; /* position fixed not IE supported yet */
-  window.onload = floatMenu; /* position fixed not IE supported yet */
-}
-function floatMenu () {
-  document.getElementById('barmenu').style.position = 'absolute';
-   document.getElementById('barmenu').style.top = getScrollYOffset();
-    return true;
-}
+
 document.needreload=true;
 var prevselid;
 
@@ -99,9 +91,9 @@ function SendSimpleSearch(event) {
       dmainid.innerHTML='<img  src="Images/loading.gif" style="background-color:#FFFFFF;border:groove black 2px;padding:4px;-moz-border-radius:4px">';
       dmainid.style.textAlign='center';
     }
-    if ((fldid>0) && (!key)) document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&tab=0&clearkey=Y&famid=[famid]&catg='+fldid+'&dirid='+fldid+pds);
-  else if (key)  document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_SEARCH&famid=[famid]&dirid=[dirid]&catg='+fldid+pds+'&keyword='+key+'&mode='+mode);
-  else document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&tab=0&famid=[famid]&catg=-1&clearkey=Y');  
+    if ((fldid>0) && (!key)) document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&onefam=[ONEFAMORIGIN]&tab=0&clearkey=Y&famid=[famid]&catg='+fldid+'&dirid='+fldid+pds);
+  else if (key)  document.location.replace('[CORE_STANDURL]app=[APPNAME]&onefam=[ONEFAMORIGIN]&action=GENERIC_SEARCH&famid=[famid]&dirid=[dirid]&catg='+fldid+pds+'&keyword='+key+'&mode='+mode);
+  else document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&tab=0&onefam=[ONEFAMORIGIN]&famid=[famid]&catg=-1&clearkey=Y');
   } 
   return true;  
   
@@ -145,10 +137,10 @@ addEvent(window,"load",function () {if (window.parent && window.parent.multidoc)
 <body class="freedom" >
 
 
-[ZONE [APPNAME]:GENERIC_BARMENU?catg=[catg]]
-<br>[ZONE FDL:POPUPDOCMENU?mzone=GENERIC:POPUPLISTDETAIL%26famid=[famid]]
-<br>
-<div onmouseup="closeAllMenu();">
+[ZONE [APPNAME]:FAMILY_BARMENU?catg=[catg]&onefam=[ONEFAMORIGIN]&famid=[famid]&pds=[pds]]
+[ZONE FDL:POPUPDOCMENU?mzone=GENERIC:POPUPLISTDETAIL%26famid=[famid]]
+
+<div >
 
 <input id="searchmode" name="mode" type="hidden" value="REGEXP">
 <input id="searchbutton" class="searchbutton" title="[TEXT:Search containing characters]" type="button" value="~" onclick="changeMode(this)">
@@ -177,7 +169,7 @@ addEvent(window,"load",function () {if (window.parent && window.parent.multidoc)
 [BLOCK ONGLET]
 <tr><td class="[ongclass]" align="center" onmouseover="if (className != 'onglets') className='ongleth';" 
                        onmouseout="if (className != 'onglets') className='onglet';" 
-                       onclick="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_TAB&catg=[catg]&tab=[ongdir]&famid=[famid][pds]'">[onglabel]</td></tr>
+                       onclick="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_TAB&onefam=[ONEFAMORIGIN]&catg=[catg]&tab=[ongdir]&famid=[famid][pds]'">[onglabel]</td></tr>
 [ENDBLOCK ONGLET]
 </table>
 </td>
