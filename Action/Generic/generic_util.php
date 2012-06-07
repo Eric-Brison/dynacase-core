@@ -18,7 +18,7 @@
 
 include_once ("FDL/Lib.Dir.php");
 
-function getDefFam(&$action)
+function getDefFam(Action & $action)
 {
     // special for onefam application
     $famid = GetHttpVars("famid");
@@ -34,7 +34,7 @@ function getDefFam(&$action)
     return $famid;
 }
 
-function getDefFld(&$action)
+function getDefFld(Action & $action)
 {
     $famid = getDefFam($action);
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -44,7 +44,7 @@ function getDefFld(&$action)
     return 0;
 }
 // return attribute sort default
-function getDefUSort(&$action, $def = "title", $famid = "")
+function getDefUSort(Action & $action, $def = "title", $famid = "")
 {
     if (!$famid) $famid = getDefFam($action);
     $pu = $action->GetParam("GENERIC_USORT");
@@ -64,7 +64,7 @@ function getDefUSort(&$action, $def = "title", $famid = "")
     return $def;
 }
 // return parameters key search
-function getDefUKey(&$action)
+function getDefUKey(Action & $action)
 {
     $famid = getDefFam($action);
     $pu = $action->GetParam("GENE_LATESTTXTSEARCH");
@@ -83,7 +83,7 @@ function getDefUKey(&$action)
  * @param int fmily identificator
  * @param string $key key to memorize
  */
-function setUkey(&$action, $famid, $key)
+function setUkey(Action & $action, $famid, $key)
 {
     
     $famid = getDefFam($action);
@@ -118,7 +118,7 @@ function setUkey(&$action, $famid, $key)
  * @param string $key parameter name
  * return string the value of the parameter according to default family
  */
-function getDefU(&$action, $key)
+function getDefU(Action & $action, $key)
 {
     $famid = getDefFam($action);
     return getFamilyParameter($action, $famid, $key);
@@ -127,7 +127,7 @@ function getDefU(&$action, $key)
  * return attribute split mode
  * @return string [V|H] vertical or horizontal split according to family
  */
-function getSplitMode(&$action, $famid = "")
+function getSplitMode(Action & $action, $famid = "")
 {
     if ($famid == "") $famid = getDefFam($action);
     return getFamilyParameter($action, $famid, "GENE_SPLITMODE", "V");
@@ -136,7 +136,7 @@ function getSplitMode(&$action, $famid = "")
  * return attribute view mode
  * @return string [abstract|column]  according to family
  */
-function getViewMode(&$action, $famid = "")
+function getViewMode(Action & $action, $famid = "")
 {
     if ($famid == "") $famid = getDefFam($action);
     return getFamilyParameter($action, $famid, "GENE_VIEWMODE", "abstract");
@@ -145,7 +145,7 @@ function getViewMode(&$action, $famid = "")
  * return attribute view tab letters
  * @return string [Y|N] Yes/No  according to family
  */
-function getTabLetter(&$action, $famid = "")
+function getTabLetter(Action & $action, $famid = "")
 {
     if ($famid == "") $famid = getDefFam($action);
     return getFamilyParameter($action, $famid, "GENE_TABLETTER", "Y");
@@ -154,7 +154,7 @@ function getTabLetter(&$action, $famid = "")
  * return  if search is also in inherit famileis
  * @return string [Y|N] Yes/No  according to family
  */
-function getInherit(&$action, $famid = "")
+function getInherit(Action & $action, $famid = "")
 {
     if ($famid == "") $famid = getDefFam($action);
     return getFamilyParameter($action, $famid, "GENE_INHERIT", "Y");
@@ -163,7 +163,7 @@ function getInherit(&$action, $famid = "")
  * return  if search is also in inherit famileis
  * @return string [Y|N] Yes/No  according to family
  */
-function getSearchMode(&$action, $famid = "")
+function getSearchMode(Action & $action, $famid = "")
 {
     if ($famid == "") $famid = getDefFam($action);
     return getFamilyParameter($action, $famid, "GENE_MODESEARCH", "REGEXP");
@@ -172,7 +172,7 @@ function getSearchMode(&$action, $famid = "")
  * set attribute split mode
  * @param string $split [V|H]
  */
-function setSplitMode(&$action, $famid, $split)
+function setSplitMode(Action & $action, $famid, $split)
 {
     return setFamilyParameter($action, $famid, 'GENE_SPLITMODE', $split);
 }

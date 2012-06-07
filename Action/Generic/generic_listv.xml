@@ -97,9 +97,9 @@ function SendSimpleSearch(event) {
       dmainid.innerHTML='<img  src="Images/loading.gif" style="background-color:#FFFFFF;border:groove black 2px;padding:4px;-moz-border-radius:4px">';
       dmainid.style.textAlign='center';
     }
-    if ((fldid>0) && (!key)) document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&tab=0&clearkey=Y&famid=[famid]&catg='+fldid+'&dirid='+fldid+pds);
+    if ((fldid>0) && (!key)) document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&tab=0&clearkey=Y&famid=[famid]&onefam=[ONEFAMORIGIN]&catg='+fldid+'&dirid='+fldid+pds);
   else if (key)  document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_SEARCH&famid=[famid]&dirid=[dirid]&catg='+fldid+pds+'&keyword='+key+'&mode='+mode);
-  else document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&tab=0&famid=[famid]&catg=-1&clearkey=Y');  
+  else document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&onefam=[ONEFAMORIGIN]&tab=0&famid=[famid]&catg=-1&clearkey=Y');
   } 
   return true;  
   
@@ -140,10 +140,9 @@ addEvent(window,"load",function () {if (window.parent && window.parent.multidoc)
 <body class="freedom"  >
 
 
-[ZONE [APPNAME]:GENERIC_BARMENU?catg=[catg]]
+[ZONE [APPNAME]:FAMILY_BARMENU?catg=[catg]&onefam=[ONEFAMORIGIN]&famid=[famid]&pds=[pds]]
 [ZONE FDL:POPUPDOCMENU?mzone=GENERIC:POPUPLISTDETAIL%26famid=[famid]]
-<br><br>
-<div onmouseup="closeAllMenu();">
+<div >
 
 
 

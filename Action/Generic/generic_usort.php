@@ -19,12 +19,13 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_usort(&$action)
+function generic_usort(Action & $action)
 {
     // -----------------------------------
     // get all parameters
-    $aorder = GetHttpVars("aorder"); // id for controlled object
-    $catg = GetHttpVars("catg"); // id for controlled object
+    $aorder = $action->getArgument("aorder"); // id for controlled object
+    $catg = $action->getArgument("catg"); // id for controlled object
+    $onefamOrigin = $action->getArgument("onefam"); // onefam origin
     $sfamid = '';
     if ($catg) {
         $dir = new_doc($action->dbaccess, $catg);
@@ -37,12 +38,12 @@ function generic_usort(&$action)
     
     $famid = getDefFam($action);
     
-    redirect($action, $action->GetParam("APPNAME", "GENERIC") , "GENERIC_LIST&dirid=$catg&tab=0&famid=$famid", $action->GetParam("CORE_STANDURL"));
+    redirect($action, $action->GetParam("APPNAME", "GENERIC") , "GENERIC_LIST&onefam=$onefamOrigin&dirid=$catg&tab=0&famid=$famid", $action->GetParam("CORE_STANDURL"));
 }
 
-function setUsort(&$action, $aorder, $famid = "")
+function setUsort(Action & $action, $aorder, $famid = "")
 {
-    if (!$famid) $famid = getDefFam(&$action);
+    if (!$famid) $famid = getDefFam($action);
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $fdoc = new_Doc($dbaccess, $famid);

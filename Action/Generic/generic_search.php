@@ -22,19 +22,21 @@ include_once ("GENERIC/generic_util.php");
 /**
  * Search a document by keyword
  * @param Action &$action current action
- * @global keyword Http var : keyword to search
- * @global catg Http var : primary folder/search where search
- * @global dirid Http var : secondary search for sub searches
- * @global mode Http var : (REGEXP|FULL)  search mode regular expression or full text
+ * @global string $keyword Http var : keyword to search
+ * @global string $catg Http var : primary folder/search where search
+ * @global string $dirid Http var : secondary search for sub searches
+ * @global string $mode Http var : (REGEXP|FULL)  search mode regular expression or full text
  */
-function generic_search(&$action)
+function generic_search(Action & $action)
 {
     // Get all the params
-    $keyword = GetHttpVars("keyword"); // keyword to search
-    $catgid = GetHttpVars("catg", getDefFld($action)); // primary folder/search where search
-    $dirid = GetHttpVars("dirid", getDefFld($action)); // temporary subsearch
-    $mode = GetHttpVars("mode");
-    $mysearches = (GetHttpVars("mysearches") == "yes");
+    $keyword = $action->getArgument("keyword"); // keyword to search
+    $catgid = $action->getArgument("catg", getDefFld($action)); // primary folder/search where search
+    $dirid = $action->getArgument("dirid", getDefFld($action)); // temporary subsearch
+    $mode = $action->getArgument("mode");
+    $mysearches = ($action->getArgument("mysearches") == "yes");
+    
+    $onefamOrigin = $action->getArgument("onefam"); // onefam origin
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $famid = getDefFam($action);
@@ -50,7 +52,9 @@ function generic_search(&$action)
     
     setSearchMode($action, $famid, $mode);
     if ($mysearches) {
-        
+        /**
+         * @var DocSearch $sdoc
+         */
         $sdoc = createTmpDoc($dbaccess, 5); //new DocSearch($dbaccess);
         $sdoc->title = sprintf(_("my search %s") , $keyword);
         $sdoc->setValue("se_famid", 16);
@@ -64,11 +68,11 @@ function generic_search(&$action)
         if ($sqlorder == "") $sdoc->deleteValue("se_orderby");
         $sqlfilter[] = "owner=" . $action->user->id;
         $sqlfilter[] = "se_famid='" . pg_escape_string($famid) . "'";
-        $query = getSqlSearchDoc($dbaccess, $sdirid, 16, $sqlfilter, false, true, "", false);
+        $query = getSqlSearchDoc($dbaccess, $sdirid = 0, 16, $sqlfilter, false, true, "", false);
         
         $sdoc->AddQuery($query);
         
-        redirect($action, GetHttpVars("app") , "GENERIC_LIST&sqlorder=title$pds&mode=$mode&famid=$famid&dirid=" . $sdoc->id . "&catg=$catgid");
+        redirect($action, $action->getArgument("app") , "GENERIC_LIST&onefam=$onefamOrigin&sqlorder=title&mode=$mode&famid=$famid&dirid=" . $sdoc->id . "&catg=$catgid");
     } elseif ($keyword) {
         if ($keyword[0] != ">") {
             $dirid = $catgid;
@@ -111,9 +115,9 @@ function generic_search(&$action)
         $query = getSqlSearchDoc($dbaccess, $sdirid, ($only) ? -($sfamid) : $sfamid, $sqlfilter, false, true, "", false);
         $sdoc->AddQuery($query);
         
-        redirect($action, GetHttpVars("app") , "GENERIC_LIST$pds&mode=$mode&famid=$famid&dirid=" . $sdoc->id . "&catg=$catgid");
+        redirect($action, $action->getArgument("app") , "GENERIC_LIST$pds&onefam=$onefamOrigin&mode=$mode&famid=$famid&dirid=" . $sdoc->id . "&catg=$catgid");
     } else {
-        redirect($action, GetHttpVars("app") , "GENERIC_LIST$pds&mode=$mode&famid=$famid&dirid=" . $catgid . "&catg=$catgid");
+        redirect($action, $action->getArgument("app") , "GENERIC_LIST&onefam=$onefamOrigin&mode=$mode&famid=$famid&dirid=" . $catgid . "&catg=$catgid");
     }
 }
 ?>

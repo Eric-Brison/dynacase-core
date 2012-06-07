@@ -1,0 +1,93 @@
+
+<script>
+	$(function() {
+		function select(event, ui) {
+
+            var ia=ui.item.children('a')[0];
+            var url=ia.getAttribute('url');
+            var tconfirm=ia.getAttribute('confirm');
+            var target=ia.getAttribute('target');
+            var confirmated=true;
+            if (tconfirm) {
+                if (!confirm(tconfirm) ) {
+                    confimated=false;
+                }
+            }
+            if (confirmated) {
+                if (target=='finfo' && url) {
+                    if (parent.finfo[famid] && parent.finfo[famid].location) {
+                        parent.finfo[famid].location=url;
+                    } else {
+                        window.open(url,target);
+                    }
+                } else if (url) {
+                        window.open(url,target);
+                }
+             }
+		}
+        function adjustFixed() {
+            if (!isIE6) {
+            var barH=$('#bar1').height();
+            $('#fakeBarMenu').css("height",barH+'px');
+            }
+            $(".ui-menubar ul.ui-menu").css("max-height",($(window).height()-50)+"px");
+        }
+		$("#bar1").menubar({
+			position: {
+				within: $("#mainbarmenu").add(window).first()
+			},
+			select: select
+		});
+        $('#bar1 div[role="button"]').addClass("ui-button-text-only ui-button ui-widget ui-button-text-only ui-menubar-link");
+        $('#bar1 div[role="button"] a').addClass("ui-button-text");
+        $(window).resize(function() {
+            adjustFixed()
+        });
+        adjustFixed()
+
+
+	});
+	</script>
+	<style>
+		#bar1 { margin: 0 0 10px; }
+        [IFNOT ISIE6]
+    div.menu {
+         position:fixed;
+         width:100%;
+    } [ENDIF ISIE6]
+    div.menu .ui-menubar-item {
+      font-size:80%
+    }
+    div.menu a:link,div.menu a:visited, div[role="button"] a {
+        color:[COLOR_BLACK];
+        text-decoration:none;
+    } [IF ISIE6]
+        div.menu a {
+                color:[COLOR_BLACK]!important;
+                text-decoration:none;
+                border:none;
+            }
+        div.menu .ui-menubar .ui-menubar-link {
+          border-left: none;
+          border-right: 1px solid [COLOR_A5];
+        }
+        [ENDIF ISIE6]
+    .ui-menubar ul.ui-menu {
+        overflow:auto;
+        [IFNOT ISIE6] width:auto; [ENDIF ISIE6]
+        [IF ISIE6] width:inherit; [ENDIF ISIE6]
+        min-width:130px;
+    }
+ 	</style>
+<div id="mainbarmenu" class="menu">
+<ul id="bar1" class="menubar">
+    [familyMenu]
+
+</ul>
+</div>
+        [IFNOT ISIE6]
+<div id="fakeBarMenu" style="margin-bottom:10px">&nbsp;</div>
+ [ENDIF ISIE6]
+
+<iframe name="fhidden" style="display:none" src="[IMG:1x1.gif]"></iframe>
+

@@ -42,12 +42,18 @@ function generic_list(&$action)
     $famid = GetHttpVars("famid"); // family restriction
     $clearkey = (GetHttpVars("clearkey", "N") == "Y"); // delete last user key search
     $sqlorder = GetHttpVars("sqlorder"); // family restriction
+    $onefamOrigin = GetHttpVars("onefam"); // onefam orgigin
     $target = "finfo$famid";
     setHttpVar("target", $target);
     if (!($famid > 0)) $famid = getDefFam($action);
     
     $column = generic_viewmode($action, $famid); // choose the good view mode
     $dbaccess = $action->GetParam("FREEDOM_DB");
+    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/DHTMLapi.js");
+    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
+    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/AnchorPosition.js");
+    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/common.js");
+    $action->parent->AddJsRef($action->Getparam("CORE_PUBURL") . "/FDL/Layout/popupfunc.js");
     $action->parent->addCssRef("GENERIC:generic_list.css", true);
     //change famid if it is a simplesearch
     $sfamid = $famid;
@@ -81,6 +87,7 @@ function generic_list(&$action)
             $action->lay->Set("fldtitle", $dir->getHTMLTitle());
         }
     }
+    $action->lay->Set("ONEFAMORIGIN", $onefamOrigin);
     $action->lay->Set("famtarget", $target);
     $action->lay->Set("dirid", $dirid);
     $action->lay->Set("tab", $tab);

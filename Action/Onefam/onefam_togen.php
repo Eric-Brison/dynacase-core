@@ -19,10 +19,11 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Lib.Dir.php");
 
-function onefam_togen(&$action)
+function onefam_togen(Action & $action)
 {
     
     $famid = GetHttpVars("famid", 0);
+    $onefam = $action->parent->name;
     $gonlylist = GetHttpVars("gonlylist");
     $gaction = "";
     
@@ -30,9 +31,9 @@ function onefam_togen(&$action)
     
     if ($gonlylist == "yes") {
         $gapp = "GENERIC";
-        $gaction = "GENERIC_TAB&catg=0&tab=0&famid=$famid";
+        $gaction = "GENERIC_TAB&catg=0&tab=0&onefam=$onefam&famid=$famid";
     } else {
-        $gapp = $action->GetParam("APPNAME", "ONEFAM");
+        $gapp = $onefam;
         $gaction = "ONEFAM_GENROOT&famid=$famid";
     }
     $dbaccess = $action->GetParam("FREEDOM_DB");
