@@ -27,6 +27,7 @@ class SuiteDcpAttribute
         $suite->addTestSuite('PU\TestAttributeDefault');
         $suite->addTestSuite('PU\TestAttributeCompute');
         $suite->addTestSuite('PU\TestAttributeDate');
+        $suite->addTestSuite('PU\TestAttributeSlashes');
         $suite->addTestSuite('PU\TestGetSearchMethods');
         $suite->addTestSuite('PU\TestGetSortAttributes');
         $suite->addTestSuite('PU\TestGetSortProperties');
