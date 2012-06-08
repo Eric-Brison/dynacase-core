@@ -299,7 +299,7 @@ class SearchDoc
     /**
      * send search
      *
-     * @return array of documents
+     * @return array|SearchDoc array of documents if no setObjectReturn el itself
      *
      */
     public function search()

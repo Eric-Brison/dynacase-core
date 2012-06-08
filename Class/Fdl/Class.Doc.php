@@ -101,7 +101,7 @@ class Doc extends DocCtrl
         "values",
         "attrids"
     ); // not be in fields else trigger error
-    public $infofields = array(
+    public static $infofields = array(
         "id" => array(
             "type" => "integer",
             "displayable" => true,
@@ -7234,28 +7234,9 @@ create unique index i_docir on doc(initid, revision);";
                 } else {
                     if (!is_numeric($id)) $id = getIdFromName($this->dbaccess, $id);
                     if ($id > 0) {
-                        $t = getTDoc($this->dbaccess, $id, array() , array(
-                            "title",
-                            "doctype",
-                            "locked",
-                            "initid"
-                        ));
-                        if ($latest && ($t["locked"] == - 1)) {
-                            if ($lastId != $id) {
-                                $id = getLatestDocId($this->dbaccess, $t["initid"]);
-                                $t = getTDoc($this->dbaccess, $id, array() , array(
-                                    "title",
-                                    "doctype",
-                                    "locked"
-                                ));
-                            }
-                        }
-                        if ($t) {
-                            if ($t["doctype"] == 'C') return getFamTitle($t);
-                            return $t["title"];
-                        }
-                        return " "; // delete title
-                        
+                        $title = getDocTitle($id, $latest);
+                        if (!$title) return " "; // delete title
+                        return $title;
                     }
                 }
                 return $def;

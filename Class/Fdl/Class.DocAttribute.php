@@ -120,7 +120,7 @@ class BasicAttribute
     }
     /**
      * temporary change visibility
-     * @param char $vis new visibility : R|H|W|O|I
+     * @param string $vis new visibility : R|H|W|O|I
      * @return void
      */
     function setVisibility($vis)
@@ -321,9 +321,9 @@ class NormalAttribute extends BasicAttribute
      * @param int $order display order
      * @param string $link link option
      * @param string $visibility visibility option
-     * @param char $needed is mandotary attribute
-     * @param char $isInTitle is used to compute title
-     * @param char $isInAbstract is used in abstract view
+     * @param string $needed is mandotary attribute
+     * @param string $isInTitle is used to compute title
+     * @param string $isInAbstract is used in abstract view
      * @param FieldSetAttribute &$fieldSet parent attribute
      * @param string $phpfile php file used with the phpfunc
      * @param string $phpfunc helpers function
@@ -521,62 +521,66 @@ class NormalAttribute extends BasicAttribute
                     return sprintf("<%s>%s</%s>", $this->id, $v, $this->id);
                 }
             case 'docid':
-                $info = getTDoc($doc->dbaccess, $v, array() , array(
-                    "title",
-                    "name",
-                    "id",
-                    "initid",
-                    "locked"
-                ));
-                
-                if ($info) {
-                    $docid = $info["id"];
-                    $latestTitle = ($this->getOption("docrev", "latest") == "latest");
-                    if ($latestTitle) {
-                        $docid = $info["initid"];
-                        if ($info["locked"] == - 1) {
-                            $info["title"] = $doc->getLastTitle($docid);
-                        }
-                    }
-                    if ($info["name"]) {
-                        if ($opt->withIdentificator) {
-                            return sprintf('<%s id="%s" name="%s">%s</%s>', $this->id, $docid, $info["name"], $this->encodeXml($info["title"]) , $this->id);
-                        } else {
-                            return sprintf('<%s name="%s">%s</%s>', $this->id, $info["name"], $this->encodeXml($info["title"]) , $this->id);
-                        }
-                    } else {
-                        if ($opt->withIdentificator) {
-                            return sprintf('<%s id="%s">%s</%s>', $this->id, $docid, $this->encodeXml($info["title"]) , $this->id);
-                        } else {
-                            
-                            return sprintf('<%s>%s</%s>', $this->id, $this->encodeXml($info["title"]) , $this->id);
-                        }
-                    }
+                if (!$v) {
+                    return sprintf('<%s xsi:nil="true"/>', $this->id);
                 } else {
-                    if ((strpos($v, '<BR>') === false) && (strpos($v, "\n") === false)) {
-                        return sprintf('<%s id="%s">%s</%s>', $this->id, $v, _("unreferenced document") , $this->id);
+                    $info = getTDoc($doc->dbaccess, $v, array() , array(
+                        "title",
+                        "name",
+                        "id",
+                        "initid",
+                        "locked"
+                    ));
+                    
+                    if ($info) {
+                        $docid = $info["id"];
+                        $latestTitle = ($this->getOption("docrev", "latest") == "latest");
+                        if ($latestTitle) {
+                            $docid = $info["initid"];
+                            if ($info["locked"] == - 1) {
+                                $info["title"] = $doc->getLastTitle($docid);
+                            }
+                        }
+                        if ($info["name"]) {
+                            if ($opt->withIdentificator) {
+                                return sprintf('<%s id="%s" name="%s">%s</%s>', $this->id, $docid, $info["name"], $this->encodeXml($info["title"]) , $this->id);
+                            } else {
+                                return sprintf('<%s name="%s">%s</%s>', $this->id, $info["name"], $this->encodeXml($info["title"]) , $this->id);
+                            }
+                        } else {
+                            if ($opt->withIdentificator) {
+                                return sprintf('<%s id="%s">%s</%s>', $this->id, $docid, $this->encodeXml($info["title"]) , $this->id);
+                            } else {
+                                
+                                return sprintf('<%s>%s</%s>', $this->id, $this->encodeXml($info["title"]) , $this->id);
+                            }
+                        }
                     } else {
-                        
-                        $tids = explode("\n", str_replace('<BR>', "\n", $v));
-                        $mName = array();
-                        $mId = array();
-                        $foundName = false;
-                        foreach ($tids as $id) {
-                            $lName = getNameFromId($doc->dbaccess, $id);
-                            $mName[] = $lName;
-                            $mId[] = $id;
-                            if ($lName) $foundName = true;
-                        }
-                        $sIds = '';
-                        if ($opt->withIdentificator) {
-                            $sIds = sprintf('id="%s"', implode(',', $mId));
-                        }
-                        $sName = '';
-                        if ($foundName) {
+                        if ((strpos($v, '<BR>') === false) && (strpos($v, "\n") === false)) {
+                            return sprintf('<%s id="%s">%s</%s>', $this->id, $v, _("unreferenced document") , $this->id);
+                        } else {
                             
-                            $sName = sprintf('name="%s"', implode(',', $mName));
+                            $tids = explode("\n", str_replace('<BR>', "\n", $v));
+                            $mName = array();
+                            $mId = array();
+                            $foundName = false;
+                            foreach ($tids as $id) {
+                                $lName = getNameFromId($doc->dbaccess, $id);
+                                $mName[] = $lName;
+                                $mId[] = $id;
+                                if ($lName) $foundName = true;
+                            }
+                            $sIds = '';
+                            if ($opt->withIdentificator) {
+                                $sIds = sprintf('id="%s"', implode(',', $mId));
+                            }
+                            $sName = '';
+                            if ($foundName) {
+                                
+                                $sName = sprintf('name="%s"', implode(',', $mName));
+                            }
+                            return sprintf('<%s %s %s>%s</%s>', $this->id, $sName, $sIds, _("multiple document") , $this->id);
                         }
-                        return sprintf('<%s %s %s>%s</%s>', $this->id, $sName, $sIds, _("multiple document") , $this->id);
                     }
                 }
             default:
