@@ -117,7 +117,7 @@ function AttrToPhp($dbaccess, $tdoc)
             if ($v->visibility == "F") $v->type = "frame"; // old notation compliant
             if ($v->visibility == "M") $v->type = "menu"; // old notation compliant
             if ($v->type == "integer") $v->type = "int"; // old notation compliant
-            $v->phpfunc = str_replace("\"", "\\\"", $v->phpfunc);
+            //$v->phpfunc = str_replace("\"", "\\\"", $v->phpfunc);
             switch (strtolower($v->type)) {
                 case "menu": // menu
                     if (substr($v->link, 0, 2) == "::") {
@@ -142,7 +142,7 @@ function AttrToPhp($dbaccess, $tdoc)
                         "link" => str_replace("\"", "\\\"", $v->link) ,
                         "visibility" => $v->visibility,
                         "options" => str_replace("\"", "\\\"", $v->options) ,
-                        "precond" => $v->phpfunc
+                        "precond" => doubleslash($v->phpfunc)
                     );
                     break;
 
@@ -167,7 +167,7 @@ function AttrToPhp($dbaccess, $tdoc)
                         "order" => intval($v->ordered) ,
                         "options" => str_replace("\"", "\\\"", $v->options) ,
                         "wapplication" => $v->phpfile,
-                        "waction" => $v->phpfunc,
+                        "waction" => doubleslash($v->phpfunc) ,
                         "precond" => str_replace("\"", "\\\"", $v->phpconstraint)
                     );
                     break;
@@ -211,7 +211,7 @@ function AttrToPhp($dbaccess, $tdoc)
                         if (!$pM->outputString) $oAid = $v->id;
                         else $oAid = $pM->outputs[0];
                         $tcattr[] = array(
-                            "callmethod" => $v->phpfunc,
+                            "callmethod" => doubleslash($v->phpfunc) ,
                             "callattr" => $oAid
                         );
                     }
@@ -229,7 +229,7 @@ function AttrToPhp($dbaccess, $tdoc)
                         if (!$v->phpfile) {
                             $v->phpfile = 'fdl.php';
                             
-                            $v->phpfunc = str_replace('"', '\"', sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', $v->options, $v->id));
+                            $v->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', $v->options, $v->id);
                         }
                     }
                     $tnormal[($v->id) ] = array(
@@ -238,7 +238,7 @@ function AttrToPhp($dbaccess, $tdoc)
                         "type" => $atype,
                         "format" => str_replace("\"", "\\\"", $aformat) ,
                         "eformat" => str_replace("\"", "\\\"", $funcformat) ,
-                        "options" => str_replace("\"", "\\\"", $v->options) ,
+                        "options" => doubleslash($v->options) , //(str_replace("\"", "\\\"", $v->options) ,
                         "order" => intval($v->ordered) ,
                         "link" => str_replace("\"", "\\\"", $v->link) ,
                         "visibility" => $v->visibility,
@@ -249,7 +249,7 @@ function AttrToPhp($dbaccess, $tdoc)
                         "frame" => ($v->frameid == "") ? "FIELD_HIDDENS" : strtolower($v->frameid) ,
                         "elink" => $v->elink,
                         "phpfile" => $v->phpfile,
-                        "phpfunc" => str_replace(", |", ",  |", $v->phpfunc) ,
+                        "phpfunc" => doubleslash(str_replace(", |", ",  |", $v->phpfunc)) ,
                         "phpconstraint" => str_replace("\"", "\\\"", $v->phpconstraint) ,
                         "usefor" => $v->usefor
                     );
@@ -367,7 +367,12 @@ function AttrToPhp($dbaccess, $tdoc)
         }
         return $phpAdoc->gen();
     }
-    
+    function doubleslash($s)
+    {
+        $s = str_replace('\\', '\\\\', $s);
+        $s = str_replace('"', '\\"', $s);
+        return $s;
+    }
     function canPgUpdateFamily($dbaccess, $docid)
     {
         $err = '';
