@@ -233,6 +233,7 @@ class importSingleDocument
         } else {
             $lattr = $this->doc->GetNormalAttributes();
         }
+        $extra = array();
         $iattr = 4; // begin in 5th column
         foreach ($this->orders as $attrid) {
             if (isset($lattr[$attrid])) {
@@ -307,13 +308,25 @@ class importSingleDocument
                         else $this->tcr["values"][$attr->getLabel() ] = ("/no change/");
                     }
                 }
+            } else if (!substr_compare($attrid, "extra:", 0, strlen("extra:"))) {
+                $attr = substr($attrid, strlen("extra:"));
+                if (isset($data[$iattr]) && ($data[$iattr] != "")) {
+                    $dv = str_replace(array(
+                        '\n',
+                        ALTSEPCHAR
+                    ) , array(
+                        "\n",
+                        ';'
+                    ) , $data[$iattr]);
+                    if (!isUTF8($dv)) $dv = utf8_encode($dv);
+                    $extra[$attr] = $dv;
+                }
             }
             $iattr++;
         }
-        
         if ((!$this->hasError()) && (!$this->analyze)) {
             if (($this->doc->id > 0) || ($this->policy != "update")) {
-                $err = $this->doc->preImport();
+                $err = $this->doc->preImport($extra);
                 if ($err) $this->setError("DOC0104", $this->doc->name, $err);
             }
         }
@@ -335,7 +348,7 @@ class importSingleDocument
                             foreach ($this->preValues as $k => $v) {
                                 $this->doc->setValue($k, $v);
                             }
-                            $err = $this->doc->preImport();
+                            $err = $this->doc->preImport($extra);
                             if ($err != "") {
                                 if ($err) $this->setError("DOC0105", $this->doc->name, $err);
                                 return $this;
@@ -369,7 +382,7 @@ class importSingleDocument
                                 foreach ($this->preValues as $k => $v) {
                                     if ($this->doc->getValue($k) == "") $this->doc->setValue($k, $v);
                                 }
-                                $err = $this->doc->preImport();
+                                $err = $this->doc->preImport($extra);
                                 if ($err != "") {
                                     
                                     if ($err) $this->setError("DOC0106", $this->doc->name, $err);
@@ -394,7 +407,7 @@ class importSingleDocument
                         // no double title found
                         $this->tcr["action"] = "updated"; # N_("updated")
                         if (!$this->analyze) {
-                            $err = $lsdoc[0]->preImport();
+                            $err = $lsdoc[0]->preImport($extra);
                             if ($err != "") {
                                 if ($err) $this->setError("DOC0109", $this->doc->name, $err);
                                 
@@ -459,7 +472,7 @@ class importSingleDocument
                         foreach ($this->preValues as $k => $v) {
                             if ($this->doc->getValue($k) == "") $this->doc->setValue($k, $v);
                         }
-                        $err = $this->doc->preImport();
+                        $err = $this->doc->preImport($extra);
                         if ($err != "") {
                             $this->setError("DOC0111", $this->doc->name, $err);
                             return $this;
@@ -489,7 +502,7 @@ class importSingleDocument
                     if ($err == "-") $err = ""; // not really an error add addfile must be tested after
                     if ($err == "") {
                         $this->doc->AddComment(sprintf(_("updated by import")));
-                        $msg.= $this->doc->postImport();
+                        $msg.= $this->doc->postImport($extra);
                     } else {
                         $this->setError("DOC0112", $this->doc->name, $err);
                     }
