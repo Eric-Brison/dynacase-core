@@ -96,7 +96,7 @@ function helpEditsectionLoad() {
 	helppage.editsection.init();
 
 	try {
-		window.htmlText.initEditor( 'sec-text', { "doclink" : {"famId":"HELPPAGE"}} ) ;
+		window.htmlText.initEditor( 'sec-text' );
 		self.setTimeout( helpEditsectionLoaded, 500 );
 	}
 	catch(e) { }
