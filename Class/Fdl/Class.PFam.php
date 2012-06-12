@@ -37,7 +37,7 @@ class PFam extends Doc
         DocCtrl::__construct($dbaccess, $id, $res, $dbid);
     }
     
-    function preImport()
+    function preImport(array $extra = array())
     {
         if ($this->getValue("dpdoc_famid")) {
             return ErrorCode::getError('PRFL0202', $this->getValue('ba_title'));

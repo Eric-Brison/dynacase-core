@@ -162,7 +162,7 @@ create unique index idx_idfam on docfam(id);";
     /**
      * update attributes of workflow if needed
      */
-    function postImport()
+    function postImport(array $extra = array())
     {
         $err = '';
         if ($this->usefor == 'W') {

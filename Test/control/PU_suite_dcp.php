@@ -42,6 +42,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestImportProfid');
         $suite->addTestSuite('PU\TestImportAccess');
         $suite->addTestSuite('PU\TestImportProfil');
+        $suite->addTestSuite('PU\TestImportDocumentsExtra');
         $suite->addTestSuite('PU\TestExtendProfil');
         $suite->addTestSuite('PU\TestExportXml');
         $suite->addTestSuite('PU\TestGetParam');

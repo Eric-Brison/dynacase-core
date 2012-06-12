@@ -2468,17 +2468,19 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call when doc is being imported before any modification
      * if return non null string import will ne aborted
+     * @param array $extra extra parameters
      * @return string error message, if no error empty string
      */
-    function preImport()
+    function preImport(array $extra = array())
     {
     }
     /**
      * call when doc is imported after databases modification
      * the error message will appeared like message
+     * @param array $extra extra parameters
      * @return string warning message, if no warning empty string
      */
-    function postImport()
+    function postImport(array $extra = array())
     {
     }
     /**
