@@ -591,8 +591,24 @@ class DocFormFormat
                 $lay->set("isInDuplicableTableLine", $this->isInDuplicableTableLine ? "TRUE" : "");
                 $lay->set("label", ucFirst($this->oattr->getLabel()));
                 $lay->set("need", $this->oattr->needed);
-                $lay->set("jsonconf", $this->oattr->getOption("jsonconf"));
-                $lay->set("doclink", $this->oattr->getOption("doclink"));
+                $jsonconf = $this->oattr->getOption("jsonconf");
+                if (!$jsonconf) {
+                    $conf = array(
+                        "height" => $this->oattr->getOption("editheight", "150px") ,
+                        "toolbar" => $this->oattr->getOption("toolbar", "Simple") ,
+                        "toolbarStartupExpanded" => (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? false : true
+                    );
+                    
+                    $jsonconf = json_encode($conf);
+                }
+                if ($this->oattr->getOption("doclink")) {
+                    $conf = json_decode($jsonconf, true);
+                    $conf["doclink"] = json_decode($this->oattr->getOption("doclink") , true);
+                    $jsonconf = json_encode($conf);
+                }
+                
+                $lay->set("jsonconf", $jsonconf);
+                
                 $lay->set("height", $this->oattr->getOption("editheight", "150px"));
                 $lay->set("toolbar", $this->oattr->getOption("toolbar", "Simple"));
                 $lay->set("toolbarexpand", (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? "false" : "true");
@@ -777,7 +793,7 @@ class DocFormFormat
                 }
                 $autocomplete = " autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event," . $this->docid . ",this,'{$this->iOptions}','{$this->attrid}','{$this->index}')\" ";
                 $this->onChange.= $autocomplete;
-
+                
                 $famid = $this->oattr->format;
                 $input.= "<input {$this->classname} $autocomplete {$this->jsEvents} onchange=\"addmdocs('{$this->attrin}');document.isChanged=true\" type=\"text\" name=\"_{$this->linkPrefix}" . substr($this->attrin, 1) . "\"";
                 if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;

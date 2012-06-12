@@ -18,12 +18,13 @@
 
 include_once ("GENERIC/generic_util.php");
 
-function generic_logo(&$action)
+function generic_logo(Action & $action)
 {
     $action->lay->Set("apptitle", "");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
-    
+    $action->lay->Set("appicon", false);
+    $action->lay->Set("apptitle", "");
     $famid = getDefFam($action);
     if ($famid > 0) {
         $dbaccess = $action->GetParam("FREEDOM_DB");

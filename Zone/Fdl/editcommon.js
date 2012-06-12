@@ -1977,7 +1977,10 @@ function addtr(trid, tbodyid) {
     //Initiate htmltext
   var newTa = ntr.getElementsByTagName('textarea');
   for (i=0, length = newTa.length ; i < length; i++){
-      window.htmlText.initEditor(newTa[i].id);
+      if (newTa[i].getAttribute('type') == "htmltext") {
+        //window.htmlText.initEditor(newTa[i].id);
+          window.htmlText.initEditor(newTa[i].id, JSON.parse(document.getElementById("conf_"+newTa[i].id).value));
+      }
   }
   return ntr;
 
