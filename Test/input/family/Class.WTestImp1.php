@@ -11,15 +11,15 @@ Class WTestImp1 extends WDoc
 {
     var $attrPrefix = "WAN";
     
-    const alive = "alive"; # N_("alive")
-    const dead = "dead"; # N_("dead")
-    const transfered = "transfered"; # N_("transfered")
-    const sick = "sick"; # N_("sick")
-    const convalescent = "convalescent"; # N_("convalescent")
-    const T1 = "T1"; # N_("T1")
-    const Tsick = "Tsick"; # N_("Tsick")
-    const Tconvalescent = "Tconvalescent"; # N_("Tconvalescent")
-    const T3 = "T3"; # N_("T3")
+    const alive = "alive";
+    const dead = "dead";
+    const transfered = "transfered";
+    const sick = "sick";
+    const convalescent = "convalescent";
+    const T1 = "T1";
+    const Tsick = "Tsick";
+    const Tconvalescent = "Tconvalescent";
+    const T3 = "T3";
     var $firstState = self::alive;
     var $transitions = array(
         self::T1 => array() ,

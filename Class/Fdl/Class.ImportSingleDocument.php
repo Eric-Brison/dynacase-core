@@ -308,7 +308,7 @@ class importSingleDocument
                         else $this->tcr["values"][$attr->getLabel() ] = ("/no change/");
                     }
                 }
-            } else if (!substr_compare($attrid, "extra:", 0, strlen("extra:"))) {
+            } else if (strpos($attrid, "extra:") === 0) {
                 $attr = substr($attrid, strlen("extra:"));
                 if (isset($data[$iattr]) && ($data[$iattr] != "")) {
                     $dv = str_replace(array(

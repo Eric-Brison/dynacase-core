@@ -288,11 +288,12 @@ class WDoc extends Doc
     /**
      * create of parameters attributes of workflow
      */
-    function createProfileAttribute()
+    function createProfileAttribute($cid = 0)
     {
-        if ($this->doctype == 'C') $cid = $this->id;
-        else $cid = $this->fromid;
-        
+        if (!$cid) {
+            if ($this->doctype == 'C') $cid = $this->id;
+            else $cid = $this->fromid;
+        }
         $ordered = 1000;
         // delete old attributes before
         $this->exec_query(sprintf("delete from docattr where docid=%d  and options ~ 'autocreated=yes'", intval($cid)));

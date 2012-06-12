@@ -17,7 +17,7 @@
 include_once ('FDL/Class.PFam.php');
 /**
  * @class DocFam
- * @method string createProfileAttribute
+ * @method  createProfileAttribute
  */
 class DocFam extends PFam
 {
@@ -166,13 +166,14 @@ create unique index idx_idfam on docfam(id);";
     {
         $err = '';
         if (strstr($this->usefor, 'W')) {
-            $w = createDoc($this->dbaccess, $this->id);
-            if ($w) {
+           
+ $classw = $this->classname;
+            $w = new $classw();            if ($w) {
                 if (is_a($w, "WDoc")) {
                     /**
                      * @var WDoc $w
                      */
-                    $err = $w->createProfileAttribute();
+                    $err = $w->createProfileAttribute($this->id);
                 }
             }
         }
@@ -344,8 +345,8 @@ create unique index idx_idfam on docfam(id);";
                         }
                         
                         $this->lay->set("noprofilstate", implode(", ", array_keys($tnoprofilstates)));
-                        foreach ($tstates as $k => $v) {
-                            $tstates[$k]["states"] = implode(", ", $v["states"]);
+                        foreach ($tstates as $ka => $va) {
+                            $tstates[$ka]["states"] = implode(", ", $va["states"]);
                         }
                         $this->lay->setBlockData("pstate", $tstates);
                         $this->lay->setBlockData("nopstate", $tnoprofilstates);
@@ -435,12 +436,13 @@ create unique index idx_idfam on docfam(id);";
      *
      * @param string $idp parameter identificator
      * @param string $val value of the parameter
+     * @return void
      */
     function setParam($idp, $val)
     {
         $this->setChanged();
         if (is_array($val)) $val = $this->_array2val($val);
-        return $this->setXValue("param", $idp, $val);
+        $this->setXValue("param", $idp, $val);
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ DEFAULT VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
     
@@ -480,10 +482,11 @@ create unique index idx_idfam on docfam(id);";
      *
      * @param string $idp parameter identificator
      * @param string $val value of the default
+     * @return void
      */
     function setDefValue($idp, $val)
     {
-        return $this->setXValue("defval", $idp, $val);
+        $this->setXValue("defval", $idp, $val);
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ X VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
     
@@ -576,8 +579,10 @@ create unique index idx_idfam on docfam(id);";
     /**
      * set family default value
      *
+     * @param $X
      * @param string $idp parameter identificator
      * @param string $val value of the default
+     * @return void
      */
     function setXValue($X, $idp, $val)
     {
@@ -752,8 +757,8 @@ create unique index idx_idfam on docfam(id);";
     /**
      * Get a property's parameter's value
      *
-     * @param $propName The property's name
-     * @param $pName The parameter's name
+     * @param string $propName The property's name
+     * @param string $pName The parameter's name
      * @return bool|string boolean false on error, string containing the parameter's value
      */
     public function getPropertyParameter($propName, $pName)
@@ -780,9 +785,9 @@ create unique index idx_idfam on docfam(id);";
      * database, so it's your responsibility to call modify() if you
      * want to make the change persistent.
      *
-     * @param $propName The property's name
-     * @param $pName The parameter's name
-     * @param $pValue The parameter's value
+     * @param string $propName The property's name
+     * @param string $pName The parameter's name
+     * @param string $pValue The parameter's value
      * @return bool boolean false on error, or boolean true on success
      */
     public function setPropertyParameter($propName, $pName, $pValue)

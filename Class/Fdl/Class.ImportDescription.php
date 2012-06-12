@@ -392,6 +392,7 @@ class importDocumentDescription
                 $check->checkMaxAttributes($this->doc);
                 $err = $check->getErrors();
                 if ($err == '') {
+                    if ($this->doc->usefor == "W") $this->doc->postImport(); //special to add calculated attributes
                     $msg = refreshPhpPgDoc($this->dbaccess, $this->doc->id);
                     if (isset($tFamIdName)) $tFamIdName[$this->doc->name] = $this->doc->id; // refresh getFamIdFromName for multiple family import
                     $checkCr = checkDb::verifyDbFamily($this->doc->id);

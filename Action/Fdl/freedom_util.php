@@ -130,9 +130,9 @@ function clearCacheDoc($id = 0)
 /**
  * return document object in type concordance
  * @param string $dbaccess database specification
- * @param int $id identificator of the object
+ * @param int|string $id identificator of the object
  * @param bool $latest if true set to latest revision of doc
- * @global array optimize for speed
+ * @global array $gdocs optimize for speed
  *
  * @return Doc object
  */
@@ -249,12 +249,11 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
         $GEN = getGen($dbaccess);
         include_once ("FDL$GEN/Class.$classname.php");
         /**
-         * @var Doc $doc
+         * @var DocFam $doc
          */
         $doc = new $classname($dbaccess);
         
         $doc->revision = "0";
-        $doc->fileref = "0";
         $doc->doctype = $doc->defDoctype; // it is a new  document (not a familly)
         $doc->cprofid = "0"; // NO CREATION PROFILE ACCESS
         $doc->fromid = $fromid;
@@ -309,7 +308,7 @@ function getFromId($dbaccess, $id)
     
     $result = pg_query($dbid, sprintf("select fromid from docfrom where id=%d", $id));
     if ($result) {
-        if (pg_numrows($result) > 0) {
+        if (pg_num_rows($result) > 0) {
             $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
             $fromid = $arr["fromid"];
         }
@@ -333,7 +332,7 @@ function getFromName($dbaccess, $id)
     $fromname = false;
     $result = pg_query($dbid, sprintf("SELECT name from docfam where id=(select fromid from docfrom where id=%d)", $id));
     
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
         $fromname = $arr["name"];
     }
@@ -356,12 +355,59 @@ function getFamFromId($dbaccess, $id)
     $fromid = false;
     $result = pg_query($dbid, "select  fromid from docfam where id=$id;");
     
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
         $fromid = intval($arr["fromid"]);
     }
     
     return $fromid;
+}
+/**
+ * get document title from document identificator
+ * @param int|string $id document identificator
+ * @param bool $latest set to false for a fixed id or true for latest
+ * @return string
+ */
+function getDocTitle($id, $latest = true)
+{
+    $dbaccess = getDbAccess();
+    if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
+    if ($id > 0) {
+        
+        if (!$latest) $sql = sprintf("select title, doctype, locked, initid from docread where id=%d", $id);
+        else $sql = sprintf("select title, doctype, locked, initid from docread where initid=(select initid from docread where id=%d) and locked != -1", $id);
+        simpleQuery($dbaccess, $sql, $t, false, true);
+        
+        if (!$t) return '';
+        if ($t["doctype"] == 'C') return getFamTitle($t);
+        // TODO confidential property
+        return $t["title"];
+    }
+    return '';
+}
+/**
+ * get some properties for a document
+ * @param $id
+ * @param bool $latest
+ * @param array $prop properties list to retrieve
+ * @return array|null of indexed properties's values - empty array if not found
+ */
+function getDocProperties($id, $latest = true, array $prop = array(
+    "title"
+))
+{
+    $dbaccess = getDbAccess();
+    if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
+    if (($id > 0) && count($prop) > 0) {
+        $sProps = implode(',', $prop);
+        if (!$latest) $sql = sprintf("select %s, doctype, locked, initid from docread where id=%d", $sProps, $id);
+        else $sql = sprintf("select %s, doctype, locked, initid from docread where initid=(select initid from docread where id=%d) and locked != -1", $sProps, $id);
+        simpleQuery($dbaccess, $sql, $t, false, true);
+        
+        if (!$t) return null;
+        return $t;
+    }
+    return null;
 }
 /**
  * return document table value
@@ -393,7 +439,7 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
         $scol = implode($result, ",");
         $sql = "select $scol from only $table where id=$id $sqlcond;";
     }
-    
+    $sqlt1 = 0;
     if ($SQLDEBUG) $sqlt1 = microtime(); // to test delay of request
     $result = pg_query($dbid, $sql);
     if ($SQLDEBUG) {
@@ -404,7 +450,7 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
             "s" => $sql
         );
     }
-    if (($result) && (pg_numrows($result) > 0)) {
+    if (($result) && (pg_num_rows($result) > 0)) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
         
         return $arr;
@@ -442,7 +488,7 @@ function getv(&$t, $k, $d = "")
  * complete all values of an doc array item
  *
  * @param array &$t the array where get value
- * @return void
+ * @return string
  */
 function getvs(&$t)
 {
@@ -636,7 +682,7 @@ function getIdFromName($dbaccess, $name, $famid = "")
     $result = pg_execute($dbid, "getidfromname", array(
         trim($name)
     ));
-    $n = pg_numrows($result);
+    $n = pg_num_rows($result);
     if ($n > 0) {
         $arr = pg_fetch_array($result, ($n - 1) , PGSQL_ASSOC);
         $id = $arr["id"];
@@ -656,22 +702,23 @@ function getNameFromId($dbaccess, $id)
     static $first = true;
     $dbid = getDbid($dbaccess);
     $id = intval($id);
+    $name = '';
     //  $result = pg_query($dbid,"select name from docname where id=$id;");
     if ($first) {
-        @pg_prepare($dbid, "getNameFromId", 'select name from docname where id=$1');
+        @pg_prepare($dbid, "getNameFromId", 'select name from docread where id=$1');
         $first = false;
     }
     $result = pg_execute($dbid, "getNameFromId", array(
         $id
     ));
-    $n = pg_numrows($result);
+    $n = pg_num_rows($result);
     if ($n > 0) {
         $arr = pg_fetch_array($result, ($n - 1) , PGSQL_ASSOC);
         $name = $arr["name"];
     }
     return $name;
 }
-function setFamidInLayout(&$action)
+function setFamidInLayout(Action & $action)
 {
     
     global $tFamIdName;
@@ -883,7 +930,7 @@ function getLatestRevisionNumber($dbaccess, $initid, $fromid = 0)
     else if ($fromid == - 1) $table = "docfam";
     
     $result = @pg_query($dbid, "SELECT revision from only $table where initid=$initid order by revision desc limit 1;");
-    if ($result && (pg_numrows($result) > 0)) {
+    if ($result && (pg_num_rows($result) > 0)) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
         return $arr['revision'];
     }
@@ -941,7 +988,10 @@ function getMyProfil($dbaccess, $create = true)
     }
     return $p;
 }
-
+/**
+ * @param DomElement $node
+ * @return bool
+ */
 function xt_innerXML(&$node)
 {
     if (!$node) return false;
