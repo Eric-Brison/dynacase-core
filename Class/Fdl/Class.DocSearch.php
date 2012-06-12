@@ -241,8 +241,8 @@ class DocSearch extends PDocSearch
         $tkeys = array();
         $sqlfilters = array();
         
-        $keyword = preg_replace('/\s+(OR)\s+/', '|', $keyword);
-        $keyword = preg_replace('/\s+(AND)\s+/', ' ', $keyword);
+        $keyword = preg_replace('/\s+(OR)\s+/u', '|', $keyword);
+        $keyword = preg_replace('/\s+(AND)\s+/u', ' ', $keyword);
         $tkeys = explode(" ", $keyword);
         $sqlfiltersbrut = array();
         $tsearchkeys = array();
