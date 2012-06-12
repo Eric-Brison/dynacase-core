@@ -68,10 +68,10 @@ class SearchHighlight
             $headline = sprintf(_("document too big (%dKo): no highlight") , (strlen($s) / 1024));
         } else {
             
-            $k = preg_replace('/\s+/', '&', unaccent($k));
+            $k = preg_replace('/\s+/u', '&', unaccent($k));
             // print_r("\n============\n\tK=$k\n");
             $s = self::strtr8($s, "£", ",");
-            $s = preg_replace('/[ ]+ /', ' ', $s);
+            $s = preg_replace('/[ ]+ /u', ' ', $s);
             $s = str_replace(array(
                 "<br />",
                 " \r",

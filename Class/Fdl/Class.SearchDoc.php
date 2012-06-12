@@ -177,7 +177,7 @@ class SearchDoc
                         $maintabledot = ($maintable) ? $maintable . '.' : '';
                         
                         $mainid = ($maintable) ? "$maintable.id" : "id";
-                        $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/i', "select count($mainid) from ", $sql, 1);
+                        $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/iu', "select count($mainid) from ", $sql, 1);
                         if ($userid != 1) {
                             $sql.= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
                         }
@@ -607,9 +607,9 @@ class SearchDoc
     public function setPertinenceOrder($keyword = '')
     {
         if ($keyword != '') {
-            $rank = preg_replace('/\s+(OR)\s+/', '|', $keyword);
-            $rank = preg_replace('/\s+(AND)\s+/', '&', $rank);
-            $rank = preg_replace('/\s+/', '&', $rank);
+            $rank = preg_replace('/\s+(OR)\s+/u', '|', $keyword);
+            $rank = preg_replace('/\s+(AND)\s+/u', '&', $rank);
+            $rank = preg_replace('/\s+/u', '&', $rank);
             $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string(unaccent($rank)));
         }
         if ($this->pertinenceOrder) $this->setOrder($this->pertinenceOrder);
@@ -644,9 +644,9 @@ class SearchDoc
      */
     protected static function getMiscFilter($keywords, $useSpell = false, &$pertinenceOrder = '')
     {
-        $workFilter = preg_replace('/\s+(OR)\s+/', '|||', $keywords);
-        $workFilter = preg_replace('/\s+(AND)\s+/', '&&&', $workFilter);
-        $workFilter = preg_replace('/\s+/', '&space;', $workFilter);
+        $workFilter = preg_replace('/\s+(OR)\s+/u', '|||', $keywords);
+        $workFilter = preg_replace('/\s+(AND)\s+/u', '&&&', $workFilter);
+        $workFilter = preg_replace('/\s+/u', '&space;', $workFilter);
         // exacts keys
         preg_match_all('/(?m)"([^"]+)"/u', $workFilter, $matches);
         $exactsKeys = $matches[0];
@@ -699,9 +699,9 @@ class SearchDoc
         $filter = preg_replace("/'\\s+fulltext/", "' and fulltext", $filter);
         $filter = preg_replace("/'\\s+svalues/", "' and svalues", $filter);
         
-        $rank = preg_replace('/\s+(OR)\s+/', '|', $rank);
-        $rank = preg_replace('/\s+(AND)\s+/', '&', $rank);
-        $rank = preg_replace('/\s+/', '&', $rank);
+        $rank = preg_replace('/\s+(OR)\s+/u', '|', $rank);
+        $rank = preg_replace('/\s+(AND)\s+/u', '&', $rank);
+        $rank = preg_replace('/\s+/u', '&', $rank);
         $rank = str_replace('~', '', $rank);
         $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string(unaccent($rank)));
         return ($filter);
@@ -738,11 +738,11 @@ class SearchDoc
     protected static function getFullFilter($words, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
     {
         
-        $filter = preg_replace('/\s+(OR)\s+/', '|', $words);
-        $filter = preg_replace('/\s+(AND)\s+/', '&', $filter);
-        $filter = preg_replace('/\s*\)\s*/', ')', $filter);
-        $filter = preg_replace('/\s*\(\s*/', '(', $filter);
-        $filter = preg_replace('/\s+/', '&', $filter);
+        $filter = preg_replace('/\s+(OR)\s+/u', '|', $words);
+        $filter = preg_replace('/\s+(AND)\s+/u', '&', $filter);
+        $filter = preg_replace('/\s*\)\s*/u', ')', $filter);
+        $filter = preg_replace('/\s*\(\s*/u', '(', $filter);
+        $filter = preg_replace('/\s+/u', '&', $filter);
         if ($useSpell) {
             $filter = preg_replace("/(?m)([\p{L}]+)/ue", "self::testSpell('\\1')", $filter);
         }
