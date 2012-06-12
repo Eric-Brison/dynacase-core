@@ -48,11 +48,9 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
      */
     public function testRenderFormatCollection($docName, $attrName, $expectRender, $expectContainRender = array())
     {
-        $mb0 = microtime(true);
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
-        $mb1 = microtime(true);
         $fc = new \FormatCollection();
         $fc->useCollection($dl);
         $fc->addProperty($fc::propName)->addProperty($fc::propUrl);
@@ -66,7 +64,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $r = $fc->render();
         //print_r2($fc->getDebug());
         $this->assertEquals($s->count() , count($r) , "render must have same entry count has collection");
-        //print_r(($r));
+        print_r(($r));
         //print_r2(json_encode($r));
         $fValue = $this->getRenderValue($r, $docName, $attrName);
         if (is_array($expectRender)) {

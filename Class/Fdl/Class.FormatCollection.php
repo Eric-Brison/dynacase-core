@@ -42,6 +42,8 @@ class FormatCollection
     private $fmtAttrs = array();
     private $ncAttribute = '';
     
+    public $relationIconSize = 14;
+    public $imageThumbnailSize = 48;
     const title = "title";
     
     const propName = "name";
@@ -125,7 +127,8 @@ class FormatCollection
                     $mb0 = microtime(true);
                     $value = $doc->getValue($oa->id);
                     if ($value === '') {
-                        $r[$kdoc]["attributes"][$oa->id] = null;
+                        if ($empty = $oa->getOption("showempty")) $r[$kdoc]["attributes"][$oa->id] = $empty;
+                        else $r[$kdoc]["attributes"][$oa->id] = null;
                         
                         $this->debug["empty"][] = microtime(true) - $mb0;
                     } else {
@@ -166,7 +169,7 @@ class FormatCollection
     {
         $s = new statePropertyValue();
         if ($doc->state) {
-            $s->state = $doc->state;
+            $s->reference = $doc->state;
             $s->stateLabel = _($doc->state);
             $s->activity = $doc->getStateActivity();
             
@@ -223,7 +226,7 @@ class FormatCollection
                 break;
 
             case 'docid':
-                $info = new docidAttributeValue($oa, $value, $doc);
+                $info = new docidAttributeValue($oa, $value, $doc, $this->relationIconSize);
                 break;
 
             case 'file':
@@ -231,7 +234,12 @@ class FormatCollection
                 break;
 
             case 'image':
-                $info = new imageAttributeValue($oa, $value, $doc, $index);
+                $info = new imageAttributeValue($oa, $value, $doc, $index, $this->imageThumbnailSize);
+                break;
+
+            case 'timestamp':
+            case 'date':
+                $info = new dateAttributeValue($oa, $value, $doc, $index);
                 break;
 
             default:
@@ -286,7 +294,7 @@ class unknowAttributeValue
 
 class statePropertyValue
 {
-    public $state;
+    public $reference;
     public $color;
     public $activity;
     public $stateLabel;
@@ -313,6 +321,19 @@ class intAttributeValue extends formatAttributeValue
     {
         parent::__construct($oa, $v);
         $this->value = intval($v);
+    }
+}
+
+class dateAttributeValue extends standardAttributeValue
+{
+    public function __construct(NormalAttribute $oa, $v)
+    {
+        parent::__construct($oa, $v);
+        if ($oa->format != "") {
+            $this->displayValue = strftime($oa->format, stringDateToUnixTs($v));
+        } else {
+            $this->displayValue = stringDateToLocaleDate($v);
+        }
     }
 }
 
@@ -378,11 +399,10 @@ class fileAttributeValue extends standardAttributeValue
 class imageAttributeValue extends fileAttributeValue
 {
     public $thumbnail = '';
-    const thumbnailSize = 48;
-    public function __construct(NormalAttribute $oa, $v, Doc $doc, $index)
+    public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $thumbnailSize = 48)
     {
         parent::__construct($oa, $v, $doc, $index);
-        $this->thumbnail = $doc->getFileLink($oa->id, $index, false, true) . sprintf('&width=%d', self::thumbnailSize);
+        $this->thumbnail = $doc->getFileLink($oa->id, $index, false, true) . sprintf('&width=%d', $thumbnailSize);
     }
 }
 class docidAttributeValue extends standardAttributeValue
@@ -396,7 +416,7 @@ class docidAttributeValue extends standardAttributeValue
      */
     private $oa;
     
-    public function __construct(NormalAttribute $oa, $v, Doc & $doc)
+    public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24)
     {
         $this->familyRelation = $oa->format;
         $this->oa = $oa;
@@ -412,7 +432,7 @@ class docidAttributeValue extends standardAttributeValue
         $this->displayValue = getDocTitle($v, $oa->getOption("docrev", "latest") == "latest");
         // print_r($prop);
         $this->displayValue = $prop["title"];
-        if ($prop["icon"]) $this->icon = $doc->getIcon($prop["icon"], 24);
+        if ($prop["icon"]) $this->icon = $doc->getIcon($prop["icon"], $iconsize);
         $this->url = $this->getDocUrl($v);
         
         $this->oa = null;
