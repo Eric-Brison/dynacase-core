@@ -41,7 +41,7 @@ function editprof(&$action)
     $action->lay->Set("doctitle", _("new profile document"));
     
     $selectclass = array();
-    if (($doc->usefor != "P") && ($doc->usefor != "W") && ($doc->fromid != 28)) { // cannot redirect profil document (only normal document) also workflow and iw control
+    if (($doc->usefor != "P") && (strstr($doc->usefor, 'W') === false) && ($doc->fromid != 28)) { // cannot redirect profil document (only normal document) also workflow and iw control
         if ($createp) {
             // search from profil of the document family (not the family)
             $tdoc = createDoc($dbaccess, $doc->id);
@@ -87,7 +87,7 @@ function editprof(&$action)
         
         $action->lay->SetBlockData("SELECTPROF", $selectclass);
     }
-    if ((($doc->doctype != 'C') || $createp) && ($doc->doctype != "P") && ($doc->usefor != "W") && ($doc->fromid != 28)) {
+    if ((($doc->doctype != 'C') || $createp) && ($doc->doctype != "P") && (strstr($doc->usefor, 'W') === false) && ($doc->fromid != 28)) {
         
         setControlView($action, $doc, $createp);
         $action->lay->set("CV", true);

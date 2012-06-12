@@ -86,10 +86,7 @@ function fullsearchresult(Action & $action)
         }
     }
     /* $bfam = array(); */
-    $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, array(
-        1,
-        2
-    ) , "TABLE");
+    $tclassdoc = getNonSystemFamilies($dbaccess, $action->user->id, "TABLE");
     if (!$nosearch) {
         
         $sqlfilters = array();
@@ -111,6 +108,7 @@ function fullsearchresult(Action & $action)
         $keys = '';
         
         $s = new SearchDoc($dbaccess, $famid);
+        $s->addFilter("usefor !~ '^S'");
         $s->setObjectReturn();
         if ($keyword != "") {
             $s->addGeneralFilter($keyword, true);

@@ -4,4 +4,30 @@ if [ -z "$pgservice_core" ]; then
 	echo "Undefined or empty pgservice_core!"
 	exit 1
 fi
-$wpub/wsh.php --api=migrExtendedAcls
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<EOF
+BEGIN;
+UPDATE doc AS d SET usefor = f.usefor FROM docfam AS f WHERE
+  d.doctype != 'C'
+  AND d.fromid = f.id
+  AND (
+    d.usefor != f.usefor
+    OR (f.usefor IS NULL AND d.usefor IS NOT NULL)
+    OR (f.usefor IS NOT NULL AND d.usefor IS NULL)
+  );
+COMMIT;
+EOF
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error updating document's usefor."
+    exit $RET
+fi
+
+"$wpub/wsh.php" --api=migrExtendedAcls
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error migrating extended acls"
+    exit $RET
+fi
+
+exit 0

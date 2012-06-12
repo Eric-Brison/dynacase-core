@@ -45,11 +45,11 @@ function modwdoc(&$action)
     
     $doc->unlock(true); // disabled autolock
     // update document already created to be conform to new workflow
-    $doc->exec_query("update doc" . $doc->id . " set wid=$wid where usefor != 'W'");
+    $doc->exec_query("update doc" . $doc->id . " set wid=$wid where usefor !~ 'W'");
     
     $wdoc = new_Doc($dbaccess, $wid);
     $firststate = $wdoc->firstState;
-    $doc->exec_query("update doc" . $doc->id . " set state='$firststate' where  usefor != 'W' and (state is null or state='')");
+    $doc->exec_query("update doc" . $doc->id . " set state='$firststate' where  usefor !~ 'W' and (state is null or state='')");
     
     redirect($action, "FDL", "FDL_CARD&id=$docid", $action->GetParam("CORE_STANDURL"));
 }

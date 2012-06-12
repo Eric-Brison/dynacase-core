@@ -703,7 +703,7 @@ class SearchDoc
         $rank = preg_replace('/\s+(AND)\s+/', '&', $rank);
         $rank = preg_replace('/\s+/', '&', $rank);
         $rank = str_replace('~', '', $rank);
-        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", unaccent($rank));
+        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string(unaccent($rank)));
         return ($filter);
     }
     /**

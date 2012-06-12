@@ -53,7 +53,7 @@ function AttrToPhp($dbaccess, $tdoc)
         } else {
             $phpAdoc->Set("GEN", $GEN);
             $phpAdoc->Set("DocParent", "Doc" . $tdoc["fromid"]);
-            if ($tdoc["usefor"] == "W") $phpAdoc->Set("pinit", "WDoc"); // special init for workflow
+            if (strstr($tdoc["usefor"], 'W')) $phpAdoc->Set("pinit", "WDoc"); // special init for workflow
             else $phpAdoc->Set("pinit", "DocCtrl");
         }
         $phpAdoc->Set("AParent", "ADoc" . $tdoc["fromid"]);

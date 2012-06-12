@@ -77,7 +77,7 @@ if ($query->nb > 0) {
     }
     // workflow at the end
     foreach ($tid as $k => $v) {
-        if ($v["usefor"] == "W") {
+        if (strstr($v["usefor"], 'W')) {
             updateDoc($dbaccess, $v);
             
             $wdoc = createDoc($dbaccess, $v["id"]);
@@ -86,7 +86,7 @@ if ($query->nb > 0) {
         }
     }
     foreach ($tid as $k => $v) {
-        if ($v["usefor"] != "W") {
+        if (strstr($v["usefor"], 'W') === false) {
             updateDoc($dbaccess, $v);
         }
     }

@@ -16,35 +16,42 @@ function verifytrash() {
 function simplesearch(){
   sendsearch('[CORE_STANDURL]&app=FREEDOM&action=SEARCH','[rtarget]');
 }
+
+$(document).ready(function() {
+    initializeSysFamSelector($('select[name=_se_famid]').get(0), $('input#se_sysfam_0').get(0));
+});
 </script>
-
-
-
 
 <table width="100%" cellspacing="0">
 <tbody>
 <tr><td style="vertical-align:top">
 	<table>
-<tr><td>[L_SE_KEY]&nbsp;:</td><td> <input onkeydown="if (trackCR(event)) {simplesearch();return false;}" type="text" name="_se_key" value="[thekey]" id="se_key"  ></td></tr>
+<tr><td>[L_SE_KEY]&nbsp;:</td><td> <input onkeydown="if (trackCR(event)) {simplesearch();return false;}" type="text" name="_se_key" value="[thekey]" id="se_key" /></td></tr>
 
 <tr>
- <td>[TEXT:familly]&nbsp;: </td><td><select name="_se_famid" onchange="document.getElementById('se_fam').value=this.options[this.selectedIndex].text">  
+ <td>[TEXT:familly]&nbsp;: </td><td><select name="_se_famid" onchange="document.getElementById('se_fam').value=this.options[this.selectedIndex].text">
            <option VALUE="0" >[TEXT:any familly]</option> 
          [BLOCK SELECTCLASS]
-           <option VALUE="[idcdoc]" [selected] >[classname]</option>   
+           <option VALUE="[idcdoc]" data-sysfam="[IF system_fam]yes[ENDIF system_fam][IFNOT system_fam]no[ENDIF system_fam]" [selected] >[classname]</option>
          [ENDBLOCK SELECTCLASS]
-    </select> </td></tr>
+    </select></td></tr>
     <tr><td><input type="hidden" id="se_fam" name="_se_fam" value="[selfam]"></td><td>
     	<a onclick="document.getElementById('moreoptions').style.visibility='visible';this.style.display='none'">[TEXT:More options]</a>
     </td></tr>
 </table>
  <br/>
- <input type="submit" style="font-weight: bold;" value="[TEXT: send search]" onClick="simplesearch();return false"> </td>
+ <input type="submit" style="font-weight: bold;" value="[TEXT: send search]" onClick="simplesearch();return false" /> </td>
  
 
 </td><td>
 <table  cellspacing="0" style="visibility:hidden" id="moreoptions">
 <tbody>
+<tr class="FREEDOMBack1">
+    [IF has_permission_fdl_system]
+    <td class="FREEDOMLabel" align="right">[L_SE_SYSFAM]&nbsp;: </td>
+    <td>[V_SE_SYSFAM]</td>
+    [ENDIF has_permission_fdl_system]
+</tr>
 <tr class="FREEDOMBack1">
   <td class="FREEDOMLabel" align="right">
       [L_SE_LATEST]&nbsp;: </td>
@@ -54,10 +61,10 @@ function simplesearch(){
   <td class="FREEDOMLabel" style="text-align:left" colspan="2">
        [TEXT:from current folder]&nbsp;: 
       <input type="checkbox" id="ifromdir" name="fromdir" value="true" 
-             onclick="document.getElementById('se_idfld').value=(this.checked)?parent.ffolder.dirid:'0';document.getElementById('se_cfld').value=(this.checked)?'dossier':' ';" > 
-      <input type="hidden" id="se_idfld" name="_se_idfld" value="0" >
-      <input type="hidden" id="se_cfld" name="_se_cfld" value=" " ></td>
-  <td>&nbsp</td>
+             onclick="document.getElementById('se_idfld').value=(this.checked)?parent.ffolder.dirid:'0';document.getElementById('se_cfld').value=(this.checked)?'dossier':' ';" />
+      <input type="hidden" id="se_idfld" name="_se_idfld" value="0" />
+      <input type="hidden" id="se_cfld" name="_se_cfld" value=" " /></td>
+  <td>&nbsp;</td>
 </tr>
 
 <tr class="FREEDOMBack1">

@@ -5,6 +5,27 @@ if [ -z "$pgservice_core" ]; then
 	exit 1
 fi
 
+"$wpub/wsh.php" --api=updateclass --appc=FDL --class=docpermext
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error updating class docpermext."
+    exit $RET
+fi
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<EOF
+BEGIN;
+DROP SCHEMA family CASCADE;
+ALTER TABLE doc ALTER COLUMN usefor TYPE text;
+CREATE SCHEMA family;
+ALTER TABLE docread ALTER COLUMN usefor TYPE text;
+COMMIT;
+EOF
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error upgrading 'usefor' columns to type 'text'."
+    exit $RET
+fi
+
 PGSERVICE="$pgservice_core" psql -t -c "update docattr set type= 'enum' where type='enumlist' and docid < 200;"
 PGSERVICE="$pgservice_core" psql -t -c "update docattr set type= 'text' where type='textlist' and docid < 200;"
 PGSERVICE="$pgservice_core" psql -t -c "update users set accounttype='U' where isgroup is null or isgroup != 'Y';"

@@ -33,7 +33,7 @@ class WDoc extends Doc
         "delete"
     );
     
-    var $usefor = 'W';
+    var $usefor = 'SW';
     var $defDoctype = 'W';
     var $defClassname = 'WDoc';
     var $attrPrefix = "WF"; // prefix attribute

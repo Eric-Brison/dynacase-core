@@ -37,12 +37,17 @@ function freedom_edit(&$action)
     $usefor = GetHttpVars("usefor"); // default values for a document
     $onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
     $alsosub = (GetHttpVars("alsosubfam", "N") == "Y");
+    $type = GetHttpVars("type", "");
     // Set the globals elements
     $dbaccess = $action->GetParam("FREEDOM_DB");
     if (!is_numeric($classid)) $classid = getFamIdFromName($dbaccess, $classid);
     else $classid = abs($classid);
     setHttpVar("classid", $classid);
-    
+
+    $tmpDoc = createDoc($action->dbaccess, $classid);
+    $isSystemDoc = (is_object($tmpDoc) && substr($tmpDoc->usefor, 0, 1) == 'S');
+    unset($tmpDoc);
+
     if ($docid > 0) {
         $doc = new_Doc($dbaccess, $docid);
         if (!$doc->isAlive()) $action->exitError(sprintf(_("document id %d not found") , $docid));
@@ -60,7 +65,9 @@ function freedom_edit(&$action)
                 
                 if ($dir->isAuthorized($classid)) {
                     // verify if classid is possible
-                    if (($dir->hasNoRestriction()) || (!$classid)) $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, $classid, "TABLE");
+                    if (($dir->hasNoRestriction()) || (!$classid)) {
+                        $tclassdoc = getFamiliesWithTypeOrClassId($dbaccess, $action->user->id, $type, $classid, "TABLE");
+                    }
                     else $tclassdoc = $dir->getAuthorizedFamilies();
                 } else {
                     $tclassdoc = $dir->getAuthorizedFamilies();
@@ -70,7 +77,7 @@ function freedom_edit(&$action)
                     
                 }
             } else {
-                $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, $classid, "TABLE");
+                $tclassdoc = getFamiliesWithTypeOrClassId($dbaccess, $action->user->id, $type, $classid, "TABLE"); // ($isSystemDoc) ? getSystemFamilies($dbaccess, $action->user->id, "TABLE") : getNonSystemFamilies($dbaccess, $action->user->id, "TABLE);");
             }
         } else {
             
@@ -92,7 +99,9 @@ function freedom_edit(&$action)
                 if ($classid == "") $classid = $first["id"];
                 setHttpVar("classid", abs($classid)); // propagate to subzones
                 
-            } else $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, $classid, "TABLE");
+            } else {
+                $tclassdoc = getFamiliesWithTypeOrClassId($dbaccess, $action->user->id, $type, $classid, "TABLE"); //($isSystemDoc) ? getSystemFamilies($dbaccess, $action->user->id, "TABLE") : getNonSystemFamilies($dbaccess, $action->user->id, "TABLE);");
+            }
         }
     }
     // when modification
@@ -183,5 +192,16 @@ function freedom_edit(&$action)
 function cmpselect($a, $b)
 {
     return strcasecmp($a["classname"], $b["classname"]);
+}
+function getFamiliesWithTypeOrClassId($dbaccess, $userid, $type, $classid, $qtype) {
+    switch ($type) {
+        case 'system':
+            return getSystemFamilies($dbaccess, $userid, $qtype);
+            break;
+        case 'not(system)':
+            return getNonSystemFamilies($dbaccess, $userid, $qtype);
+            break;
+    }
+    return  GetClassesDoc($dbaccess, $userid, $classid, $qtype);
 }
 ?>

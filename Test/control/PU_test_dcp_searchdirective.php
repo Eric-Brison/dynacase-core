@@ -141,7 +141,182 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             $index++;
         }
     }
-    
+    /**
+     * test "usefor" system search
+     * @param string $dirId The identifer of the collection to use
+     * @param array $existsNameList List of documents name that must be returned by the search
+     * @param array $notExistsNameList List of documents name that must NOT be returned by the search
+     * @return void
+     * @dataProvider dataUseforSystemSearchDocWithCollection
+     */
+    public function testUseforSystemSearchDocWithCollection($dirId, $existsNameList, $notExistsNameList)
+    {
+        $dir = new_Doc(self::$dbaccess, $dirId);
+        $this->assertTrue($dir->isAlive() , sprintf("Could not get search with id '%s'.", $dirId));
+        
+        $search = new \SearchDoc(self::$dbaccess, 0);
+        $search->setObjectReturn();
+        $search->useCollection($dirId);
+        $search->search();
+        
+        $res = array();
+        while ($doc = $search->nextDoc()) {
+            $res[] = $doc->name;
+        }
+        
+        if (count($existsNameList) > 0) {
+            foreach ($existsNameList as $name) {
+                $this->assertTrue(in_array($name, $res) , sprintf("Missing document with name '%s' in search with collection '%s': returned documents name = {%s}", $name, $dir->name, join(', ', $res)));
+            }
+        }
+        
+        if (count($notExistsNameList) > 0) {
+            foreach ($notExistsNameList as $name) {
+                $this->assertTrue(!in_array($name, $res) , sprintf("Found unexpected document with name '%s' in search with collection '%s': returned documents name = {%s}", $name, $dir->name, join(', ', $res)));
+            }
+        }
+    }
+    public function dataUseforSystemSearchDocWithCollection()
+    {
+        return array(
+            array(
+                "TST_USEFOR_SYSTEM_SEARCH_NO",
+                array(
+                    "TST_USEFOR_N_1",
+                    "TST_USEFOR_N_2",
+                    "TST_USEFOR_N_3"
+                ) ,
+                array(
+                    "TST_USEFOR_S_1",
+                    "TST_USEFOR_S_2",
+                    "TST_USEFOR_S_3"
+                )
+            ) ,
+            array(
+                "TST_USEFOR_SYSTEM_SEARCH_YES",
+                array(
+                    "TST_USEFOR_S_1",
+                    "TST_USEFOR_S_2",
+                    "TST_USEFOR_S_3",
+                    "TST_USEFOR_N_1",
+                    "TST_USEFOR_N_2",
+                    "TST_USEFOR_N_3"
+                ) ,
+                array()
+            ) ,
+            array(
+                "TST_USEFOR_SYSTEM_SEARCH_EMPTY",
+                array(
+                    "TST_USEFOR_S_1",
+                    "TST_USEFOR_S_2",
+                    "TST_USEFOR_S_3",
+                    "TST_USEFOR_N_1",
+                    "TST_USEFOR_N_2",
+                    "TST_USEFOR_N_3"
+                ) ,
+                array()
+            ) ,
+            array(
+                "TST_USEFOR_SYSTEM_DSEARCH_NO",
+                array(
+                    "TST_USEFOR_N_1",
+                    "TST_USEFOR_N_2",
+                    "TST_USEFOR_N_3"
+                ) ,
+                array(
+                    "TST_USEFOR_S_1",
+                    "TST_USEFOR_S_2",
+                    "TST_USEFOR_S_3"
+                )
+            ) ,
+            array(
+                "TST_USEFOR_SYSTEM_DSEARCH_YES",
+                array(
+                    "TST_USEFOR_S_1",
+                    "TST_USEFOR_S_2",
+                    "TST_USEFOR_S_3",
+                    "TST_USEFOR_N_1",
+                    "TST_USEFOR_N_2",
+                    "TST_USEFOR_N_3"
+                ) ,
+                array()
+            ) ,
+            array(
+                "TST_USEFOR_SYSTEM_DSEARCH_EMPTY",
+                array(
+                    "TST_USEFOR_S_1",
+                    "TST_USEFOR_S_2",
+                    "TST_USEFOR_S_3",
+                    "TST_USEFOR_N_1",
+                    "TST_USEFOR_N_2",
+                    "TST_USEFOR_N_3"
+                ) ,
+                array()
+            )
+        );
+    }
+
+    /**
+     * Test 'searchcriteria' attributes option
+     *
+     * @param string $fam family id/name to search on
+     * @param $keyword search for this keyword
+     * @param $existsNameList List of documents name that should be returned by the search
+     * @param $notExistsNameList Lost of documents name that should NOT be returned by the search
+     * @dataProvider dataOptionSearchCriteria
+     */
+    public function testOptionSearchCriteria($fam, $keyword, $existsNameList, $notExistsNameList) {
+        $search = new \SearchDoc(self::$dbaccess, $fam);
+        $search->addGeneralFilter($keyword);
+        $search->setObjectReturn();
+        $search->search();
+
+        $res = array();
+        while ($doc = $search->nextDoc()) {
+            $res[] = $doc->name;
+        }
+
+        if (count($existsNameList) > 0) {
+            foreach ($existsNameList as $name) {
+                $this->assertTrue(in_array($name, $res) , sprintf("Document '%s' should be returned by search for '%s' on family '%s': returned documents name = {%s}", $name, $keyword, $fam, join(', ', $res)));
+            }
+        }
+
+        if (count($notExistsNameList) > 0) {
+            foreach ($notExistsNameList as $name) {
+                $this->assertTrue(!in_array($name, $res) , sprintf("Document '%s' should NOT be returned by search for '%s' on family '%s': returned documents name = {%s}", $name, $keyword, $fam, join(', ', $res)));
+            }
+        }
+    }
+    public function dataOptionSearchCriteria() {
+        return array(
+            array(
+                "TST_OPT_SEARCHCRITERIA",
+                "foo",
+                array(
+                    "TST_OPT_SEARCHCRITERIA_DEFAULT",
+                    "TST_OPT_SEARCHCRITERIA_VISIBLE",
+                    "TST_OPT_SEARCHCRITERIA_PROTECTED"
+                ),
+                array(
+                    "TST_OPT_SEARCHCRITERIA_HIDDEN"
+                )
+            ),
+            array(
+                "TST_OPT_SEARCHCRITERIA",
+                "secret",
+                array(
+                ),
+                array(
+                    "TST_OPT_SEARCHCRITERIA_DEFAULT",
+                    "TST_OPT_SEARCHCRITERIA_VISIBLE",
+                    "TST_OPT_SEARCHCRITERIA_HIDDEN",
+                    "TST_OPT_SEARCHCRITERIA_PROTECTED"
+                )
+            )
+        );
+    }
+
     private function getFilterResult(\DocumentList $dl)
     {
         $names = array();

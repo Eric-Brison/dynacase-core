@@ -23,7 +23,7 @@ class CheckEnd extends CheckData
     public function check(array $data, &$doc = null)
     {
         $this->doc = $doc;
-        if ($doc->usefor == 'W') {
+        if (strstr($doc->usefor, 'W')) {
             $checkW = new CheckWorkflow($doc->classname, $doc->name);
             $checkCr = $checkW->verifyWorkflowComplete();
             if (count($checkCr) > 0) {

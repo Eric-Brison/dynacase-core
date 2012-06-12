@@ -212,6 +212,10 @@ class DocSearch extends PDocSearch
             }
             $this->setValue("se_orderby", " ");
         }
+        if ($this->getValue("se_sysfam") == 'no') {
+            $filters[] = sprintf("usefor !~ '^S'");
+            $filters[] = sprintf("doctype != 'C'");
+        }
         return $filters;
     }
     /**
@@ -386,6 +390,7 @@ class DocSearch extends PDocSearch
         if ($farch) $this->lay->set("archive", ($farch->control("view") == ""));
         $this->lay->set("thekey", $this->getValue("se_key"));
         $dirid = GetHttpVars("dirid"); // to set restriction family
+        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
         $famid = $this->getValue("se_famid");
@@ -398,7 +403,9 @@ class DocSearch extends PDocSearch
             if (method_exists($dir, "isAuthorized")) {
                 if ($dir->isAuthorized($classid)) {
                     // verify if classid is possible
-                    if ($dir->hasNoRestriction()) $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
+                    if ($dir->hasNoRestriction()) {
+                        $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
+                    }
                     else {
                         $tclassdoc = $dir->getAuthorizedFamilies();
                         $this->lay->set("restrict", true);
@@ -415,12 +422,13 @@ class DocSearch extends PDocSearch
         } else {
             $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
         }
-        
+
         $this->lay->set("selfam", _("no family"));
         $selectclass = array();
         foreach ($tclassdoc as $k => $cdoc) {
             $selectclass[$k]["idcdoc"] = $cdoc["id"];
             $selectclass[$k]["classname"] = $cdoc["title"];
+            $selectclass[$k]["system_fam"] = (substr($cdoc["usefor"], 0, 1) == 'S') ? true : false;
             if (abs($cdoc["initid"]) == abs($famid)) {
                 $selectclass[$k]["selected"] = "selected";
                 if ($famid < 0) $this->lay->set("selfam", $cdoc["title"] . " " . !!_("(only)"));
@@ -429,7 +437,9 @@ class DocSearch extends PDocSearch
         }
         
         $this->lay->SetBlockData("SELECTCLASS", $selectclass);
-        
+        $this->lay->set("has_permission_fdl_system", $action->parent->hasPermission('FDL', 'SYSTEM'));
+        $this->lay->set("se_sysfam", ($this->getValue('se_sysfam') == 'yes') ? true : false);
+
         $this->editattr();
     }
     /**

@@ -55,10 +55,7 @@ function fullsearch(&$action)
     
     createSearchEngine($action);
     /* $bfam = array(); */
-    $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, array(
-        1,
-        2
-    ) , "TABLE");
+    $tclassdoc = getNonSystemFamilies($dbaccess, $action->user->id, "TABLE");
     
     foreach ($tclassdoc as $k => $cdoc) {
         $selectclass[$k]["idcdoc"] = $cdoc["initid"];
