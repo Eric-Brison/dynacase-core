@@ -64,7 +64,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $r = $fc->render();
         //print_r2($fc->getDebug());
         $this->assertEquals($s->count() , count($r) , "render must have same entry count has collection");
-        print_r(($r));
+        //print_r(($r));
         //print_r2(json_encode($r));
         $fValue = $this->getRenderValue($r, $docName, $attrName);
         if (is_array($expectRender)) {
@@ -133,7 +133,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
          * @var \statePropertyValue $fstate
          */
         $fstate = $this->getRenderProp($r, $docName, $fc::propState);
-        $this->assertEquals($expectState, $fstate->state, "incorrect state reference");
+        $this->assertEquals($expectState, $fstate->reference, "incorrect state reference");
         $this->assertEquals($expectColor, $fstate->color, "incorrect state color ");
         $this->assertEquals($expectActivity, $fstate->activity, "incorrect state activity");
     }
