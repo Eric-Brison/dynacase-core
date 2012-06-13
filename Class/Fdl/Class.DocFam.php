@@ -166,9 +166,9 @@ create unique index idx_idfam on docfam(id);";
     {
         $err = '';
         if (strstr($this->usefor, 'W')) {
-           
- $classw = $this->classname;
-            $w = new $classw();            if ($w) {
+            $classw = $this->classname;
+            $w = new $classw();
+            if ($w) {
                 if (is_a($w, "WDoc")) {
                     /**
                      * @var WDoc $w
