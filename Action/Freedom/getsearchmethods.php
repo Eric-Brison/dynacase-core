@@ -36,16 +36,16 @@ function getsearchmethods(Action & $action)
         $res['error'] = sprintf("Could not get family with id '%s'.", $parms['famid']);
         return sendResponse($action, $res);
     }
-
+    
     $tmpDoc = createTmpDoc($action->dbaccess, $fam->id);
     if (!$tmpDoc) {
         $res['error'] = sprintf("Could not create temporary document from family '%s'.", $fam->name);
         return sendResponse($action, $res);
     }
-
+    
     $attrId = $parms['attrid'];
-    if (isset($tmpDoc->infofields[$attrId])) {
-        $attrType = $tmpDoc->infofields[$attrId]['type'];
+    if (isset(Doc::$infofields[$attrId])) {
+        $attrType = Doc::$infofields[$attrId]['type'];
     } else {
         $attr = $fam->getAttribute($parms['attrid']);
         if (!is_object($attr)) {
@@ -58,7 +58,7 @@ function getsearchmethods(Action & $action)
             $attrType = sprintf('%s("%s")', $attrType, $attr->format);
         }
     }
-
+    
     $methods = $tmpDoc->getSearchMethods($attrId, $attrType);
     $res['data'] = $methods;
     return sendResponse($action, $res);

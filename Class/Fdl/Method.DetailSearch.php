@@ -275,7 +275,7 @@ class _DSEARCH extends DocSearch
         $oa = $this->searchfam->getAttribute($col);
         
         if ($oa) $atype = $oa->type;
-        else if ($this->infofields[$col]) $atype = $this->infofields[$col]["type"];
+        else if (Doc::$infofields[$col]) $atype = Doc::$infofields[$col]["type"];
         if (($atype == "date" || $atype == "timestamp")) {
             if ($col == 'revdate') {
                 if ($op == "=") {
@@ -724,7 +724,6 @@ class _DSEARCH extends DocSearch
                     if (!$fam) $fam = createTmpDoc($this->dbaccess, $this->getValue("SE_FAMID", 1));
                     return $fam;
                 }
-
                 /**
                  * @templateController
                  * @param string $target
@@ -835,7 +834,7 @@ class _DSEARCH extends DocSearch
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
-
+                    
                     if ($dirid > 0) {
                         /**
                          * @var Dir $dir
@@ -976,7 +975,7 @@ class _DSEARCH extends DocSearch
                         if ($opt_searchcriteria == "hidden" || $opt_searchcriteria == "restricted") {
                             continue;
                         }
-
+                        
                         $type = $v->type;
                         if ($lastSet[0] != $v->fieldSet->id) {
                             $tset = $this->editGetSetAttribute($v->fieldSet);
@@ -1211,7 +1210,7 @@ class _DSEARCH extends DocSearch
                                 $tcond[$k]["DOCID_AID"] = 0;
                                 $tcond[$k]["DOCID_TITLE"] = '';
                                 $tcond[$k]["FAMID"] = abs($famid);
-
+                                
                                 $attrType = $oa->type;
                                 if ($oa->format != '') {
                                     // Recompose full attr spec: <attrType>("<format>")

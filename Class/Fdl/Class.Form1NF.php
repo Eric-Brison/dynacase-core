@@ -1221,13 +1221,13 @@ class Form1NF
                     $family->famAttributes[] = new Form1NF_Column($attribute);
                 }
                 // checks properties
-                $allowedProperties = array_keys($fam->infofields);
+                $allowedProperties = array_keys(Doc::$infofields);
                 foreach ($family->properties as $property) {
                     if (!in_array($property->name, $allowedProperties)) {
                         $this->stdError(_("Property '%s' is not valid (family '%s').") , $property->name, $family->name);
                     }
                     // load correct type
-                    $property->setType($fam->infofields[$property->name]['type']);
+                    $property->setType(Doc::$infofields[$property->name]['type']);
                 }
             }
         }
