@@ -25,7 +25,9 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
     {
         return array(
             "PU_data_dcp_formatcollection.ods",
-            "PU_data_dcp_documentsformat.xml"
+            "PU_data_dcp_documentsformat1.xml",
+            "PU_data_dcp_documentsformat2.xml",
+            "PU_data_dcp_documentsformat3.xml"
         );
     }
     
