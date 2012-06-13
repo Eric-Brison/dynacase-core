@@ -163,7 +163,11 @@ class SearchDoc
                 $this->mode = "ITEM";
                 if ($this->debug) $debuginfo = array();
                 else $debuginfo = null;
-                $tqsql = getSqlSearchDoc($this->dbaccess, $this->dirid, $this->fromid, $this->getFilters() , $this->distinct, $this->latest, $this->trash, false, $this->folderRecursiveLevel, $this->join);
+                $fromid = $this->fromid;
+                if ($this->only && strpos($fromid, '-') !== 0) {
+                    $fromid = '-' . $fromid;
+                }
+                $tqsql = getSqlSearchDoc($this->dbaccess, $this->dirid, $fromid, $this->getFilters() , $this->distinct, $this->latest, $this->trash, false, $this->folderRecursiveLevel, $this->join);
                 $this->debuginfo["query"] = $tqsql[0];
                 $count = 0;
                 if (!is_array($tqsql)) {
@@ -172,7 +176,7 @@ class SearchDoc
                 }
                 foreach ($tqsql as $sql) {
                     if ($sql) {
-                        if (preg_match('/from\s+([a-z0-9_\-]*)/', $sql, $reg)) $maintable = $reg[1];
+                        if (preg_match('/from\s+(?:only\s+)?([a-z0-9_\-]*)/', $sql, $reg)) $maintable = $reg[1];
                         else $maintable = '';
                         $maintabledot = ($maintable) ? $maintable . '.' : '';
                         
@@ -226,7 +230,11 @@ class SearchDoc
      */
     public function getOriginalQuery()
     {
-        $tqsql = getSqlSearchDoc($this->dbaccess, $this->dirid, $this->fromid, $this->getFilters() , $this->distinct, $this->latest, $this->trash, false, $this->folderRecursiveLevel, $this->join);
+        $fromid = $this->fromid;
+        if ($this->only && strpos($fromid, '-') !== 0) {
+            $fromid = '-' . $fromid;
+        }
+        $tqsql = getSqlSearchDoc($this->dbaccess, $this->dirid, $fromid, $this->getFilters() , $this->distinct, $this->latest, $this->trash, false, $this->folderRecursiveLevel, $this->join);
         
         return $tqsql[0];
     }

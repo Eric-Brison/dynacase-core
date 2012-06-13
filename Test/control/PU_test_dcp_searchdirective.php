@@ -387,7 +387,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         }
         $count = $search->onlyCount();
         
-        $this->assertTrue(($count == $expectedCount) , sprintf("onlyCount() returned '%s' while expecting '%s'.", $count, $expectedCount));
+        $this->assertTrue(($count == $expectedCount) , sprintf("onlyCount() returned '%s' while expecting '%s' (query = [%s]).", $count, $expectedCount, $search->getOriginalQuery()));
     }
     public function dataSearchDocOnlyCount()
     {
@@ -439,6 +439,34 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 array(
                     "title <> 'Just to add some SQL conditions in the query...'",
                     "title <> '... blah blah blah'"
+                ) ,
+                3
+            ) ,
+            array(
+                "TST_ONLYCOUNT_0",
+                array(
+                    "only" => false
+                ) ,
+                array(
+                    "noViewControl"
+                ) ,
+                array(
+                    "a_title <> 'Just to add some SQL conditions in the query...'",
+                    "a_title <> '... blah blah blah'"
+                ) ,
+                3 + 4
+            ) ,
+            array(
+                "TST_ONLYCOUNT_0",
+                array(
+                    "only" => true
+                ) ,
+                array(
+                    "noViewControl"
+                ) ,
+                array(
+                    "a_title <> 'Just to add some SQL conditions in the query...'",
+                    "a_title <> '... blah blah blah'"
                 ) ,
                 3
             )
