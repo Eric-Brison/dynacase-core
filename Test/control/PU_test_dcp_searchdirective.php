@@ -346,6 +346,104 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             )
         );
     }
+    /**
+     * Test SearchDoc->onlyCount() method
+     * @param string $fam family id or name
+     * @param array $properties list of ($propertyName => $propertyValue) to be set on the SearchDoc object  (e.g. array("only" => true))
+     * @param array $methods list of ($methodName) to be called on the SearchDoc object (e.g. array("noViewControl") to call $search->noViewControl())
+     * @param array $filters list of SQL conditions/filters to be added with the $search->addFilter() method (e.g. array("foo <> 'bar'"))
+     * @param int $expectedCount expected documents count
+     * @return void
+     * @dataProvider dataSearchDocOnlyCount
+     */
+    public function testSearchDocOnlyCount($fam, $properties, $methods, $filters, $expectedCount)
+    {
+        $search = new \SearchDoc(self::$dbaccess, $fam);
+        if (is_array($properties)) {
+            foreach ($properties as $prop => $value) {
+                $search->$prop = $value;
+            }
+        }
+        if (is_array($methods)) {
+            foreach ($methods as $method) {
+                $search->$method();
+            }
+        }
+        if (is_array($filters)) {
+            foreach ($filters as $filter) {
+                $call = array(
+                    $search,
+                    "addFilter"
+                );
+                if (is_array($filter)) {
+                    $args = $filter;
+                } else {
+                    $args = array(
+                        $filter
+                    );
+                }
+                call_user_func_array($call, $args);
+            }
+        }
+        $count = $search->onlyCount();
+        
+        $this->assertTrue(($count == $expectedCount) , sprintf("onlyCount() returned '%s' while expecting '%s'.", $count, $expectedCount));
+    }
+    public function dataSearchDocOnlyCount()
+    {
+        return array(
+            array(
+                "TST_ONLYCOUNT_0",
+                array(
+                    "only" => false
+                ) ,
+                array(
+                    "noViewControl"
+                ) ,
+                array() ,
+                3 + 4
+            ) ,
+            array(
+                "TST_ONLYCOUNT_0",
+                array(
+                    "only" => true
+                ) ,
+                array(
+                    "noViewControl"
+                ) ,
+                array() ,
+                3
+            ) ,
+            array(
+                "TST_ONLYCOUNT_0",
+                array(
+                    "only" => false
+                ) ,
+                array(
+                    "noViewControl"
+                ) ,
+                array(
+                    "title <> 'Just to add some SQL conditions in the query...'",
+                    "title <> '... blah blah blah'"
+                ) ,
+                3 + 4
+            ) ,
+            array(
+                "TST_ONLYCOUNT_0",
+                array(
+                    "only" => true
+                ) ,
+                array(
+                    "noViewControl"
+                ) ,
+                array(
+                    "title <> 'Just to add some SQL conditions in the query...'",
+                    "title <> '... blah blah blah'"
+                ) ,
+                3
+            )
+        );
+    }
     
     private function getFilterResult(\DocumentList $dl)
     {
