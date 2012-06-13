@@ -268,7 +268,7 @@ function family_defaultmenu(Action & $action)
                 break;
 
             default:
-                $label = $sfdoc->infofields[$propName]['label'];
+                $label = Doc::$infofields[$propName]['label'];
                 if ($label != '') {
                     $label = _($label);
                 }

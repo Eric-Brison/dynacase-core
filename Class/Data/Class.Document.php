@@ -104,7 +104,7 @@ class Fdl_Document
      */
     function getValues()
     {
-        $lvalues=null;
+        $lvalues = null;
         if ($this->doc) {
             $lvalues = array();
             if ($this->doc->doctype == 'C') {
@@ -288,8 +288,8 @@ class Fdl_Document
                 }
             }
             
-            foreach ($this->doc->infofields as $k => $v) $this->doc->infofields[$k]["label"] = _($v["label"]);
-            if ($infoprop) $props["informations"] = $this->doc->infofields; // only when search folder family
+            foreach (Doc::$infofields as $k => $v) Doc::$infofields[$k]["label"] = _($v["label"]);
+            if ($infoprop) $props["informations"] = Doc::$infofields; // only when search folder family
             $this->_properties = $props;
         }
         return $props;

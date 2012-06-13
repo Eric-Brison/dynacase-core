@@ -770,10 +770,10 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         $docfam = new DocFam($dbaccess, $famid);
         //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
         $doc = createDoc($dbaccess, $famid, false);
-
+        
         $tr = array();
         $pattern_name = preg_quote($name);
-
+        
         if ($sort) {
             $tr = getSortProperties($dbaccess, $famid, $name);
             $tinter = $doc->GetSortAttributes();
@@ -839,7 +839,7 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
                     break;
 
                 default:
-                    $label = $docfam->infofields[$propName]['label'];
+                    $label = Doc::$infofields[$propName]['label'];
                     if ($label != '') {
                         $label = _($label);
                     }
