@@ -108,7 +108,10 @@ function getSqlSearchDoc($dbaccess, $dirid, $fromid, $sqlfilters = array() , $di
 $latest = true, // only latest document
 $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
 {
-    if (($fromid != "") && (!is_numeric($fromid))) $fromid = getFamIdFromName($dbaccess, $fromid);
+    if (($fromid != "") && (!is_numeric($fromid))) {
+        preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid), $m);
+        $fromid = $m['sign'] . getFamIdFromName($dbaccess, $m['fromid']);
+    }
     $table = "doc";
     $only = "";
     if ($trash == "only") $distinct = true;
