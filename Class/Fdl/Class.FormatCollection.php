@@ -185,9 +185,13 @@ class FormatCollection
                 // double level multiple
                 $tv = Doc::_val2array($value);
                 foreach ($tv as $k => $av) {
-                    $tvv = explode('<BR>', $av); // second level multiple
-                    foreach ($tvv as $avv) {
-                        $info[$k][] = $this->getSingleInfo($oa, $avv, $doc);
+                    if ($av) {
+                        $tvv = explode('<BR>', $av); // second level multiple
+                        foreach ($tvv as $avv) {
+                            $info[$k][] = $this->getSingleInfo($oa, $avv, $doc);
+                        }
+                    } else {
+                        $info[$k] = array();
                     }
                 }
             } else {

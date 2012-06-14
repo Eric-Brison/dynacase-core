@@ -76,6 +76,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                     $this->assertTrue(is_array($fValue) , sprintf("result %s not an array for %s", $fValue->$expAttr, $expAttr));
                     foreach ($fValue as $k => $v) {
                         if (is_array($v)) {
+                            $testValue[$k] = array();
                             foreach ($v as $vv) {
                                 $testValue[$k][] = $vv->$expAttr;
                             }
@@ -86,7 +87,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 } else {
                     $testValue = $fValue->$expAttr;
                 }
-                $this->assertEquals($expVal, $testValue, sprintf("values is :" . sprintf(json_encode($fValue))));
+                $this->assertEquals($expVal, $testValue, sprintf("values is :" . print_r($testValue, true) . sprintf(json_encode($fValue))));
             }
         } else {
             $this->assertEquals($expectRender, $fValue, sprintf("values is :" . sprintf(json_encode($fValue))));
@@ -385,14 +386,32 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                             "Test 1"
                         ) ,
                         array(
+                            "Test 1"
+                        ) ,
+                        array(
+                            "Test 1"
+                        )
+                    ) ,
+                )
+            ) ,
+            
+            array(
+                "TST_FMTCOL3",
+                "tst_relmuls",
+                array(
+                    "displayValue" => array(
+                        array(
+                            "Test 1"
+                        ) ,
+                        array(
                             "Test 1",
                             "Test 2"
                         ) ,
                         array(
-                            "Test 1",
                             "Test 2",
-                            "Test 3"
-                        )
+                            "Test 1"
+                        ) ,
+                        array()
                     ) ,
                 )
             ) ,
