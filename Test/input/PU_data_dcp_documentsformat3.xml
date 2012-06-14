@@ -35,15 +35,15 @@
 <tst_htmls>&lt;p&gt;	Texte Deux&lt;/p&gt;</tst_htmls></tst_t_array2>
 <tst_t_array3><tst_rellatests xsi:nil="true"/>
 <tst_relfixs xsi:nil="true"/>
-<tst_relmuls xsi:nil="true"/>
+    <tst_relmuls name="TST_FMTCOL1">Test 1</tst_relmuls>
 <tst_enums>1</tst_enums></tst_t_array3>
 <tst_t_array3><tst_rellatests xsi:nil="true"/>
 <tst_relfixs xsi:nil="true"/>
-<tst_relmuls xsi:nil="true"/>
+    <tst_relmuls name="TST_FMTCOL1,TST_FMTCOL2" >multiple document</tst_relmuls>
 <tst_enums>2</tst_enums></tst_t_array3>
 <tst_t_array3><tst_rellatests xsi:nil="true"/>
 <tst_relfixs xsi:nil="true"/>
-<tst_relmuls xsi:nil="true"/>
+    <tst_relmuls name="TST_FMTCOL2,TST_FMTCOL1" >multiple document</tst_relmuls>
 <tst_enums>3</tst_enums></tst_t_array3>
 <tst_t_array3><tst_rellatests xsi:nil="true"/>
 <tst_relfixs xsi:nil="true"/>
