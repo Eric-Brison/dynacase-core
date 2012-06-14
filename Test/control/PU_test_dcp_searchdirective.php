@@ -142,6 +142,20 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         }
     }
     /**
+     * @param $filter
+     * @dataProvider dataErrorGeneralFilter
+     */
+    public function testErrorGeneralFilter($filter)
+    {
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s->addGeneralFilter($filter);
+        $s->setObjectReturn();
+        $s->search();
+        
+        $err = $s->getError();
+        $this->assertNotEmpty($err, "search error must not be empty");
+    }
+    /**
      * test "usefor" system search
      * @param string $dirId The identifer of the collection to use
      * @param array $existsNameList List of documents name that must be returned by the search
@@ -176,6 +190,22 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             }
         }
     }
+    
+    public function dataErrorGeneralFilter()
+    {
+        return array(
+            array(
+                "test ()"
+            ) ,
+            array(
+                "(test) or (test"
+            ) ,
+            array(
+                "(test) or )test("
+            )
+        );
+    }
+    
     public function dataUseforSystemSearchDocWithCollection()
     {
         return array(
@@ -255,40 +285,41 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             )
         );
     }
-
     /**
      * Test 'searchcriteria' attributes option
      *
      * @param string $fam family id/name to search on
-     * @param $keyword search for this keyword
-     * @param $existsNameList List of documents name that should be returned by the search
-     * @param $notExistsNameList Lost of documents name that should NOT be returned by the search
+     * @param string $keyword search for this keyword
+     * @param array $existsNameList List of documents name that should be returned by the search
+     * @param array $notExistsNameList Lost of documents name that should NOT be returned by the search
      * @dataProvider dataOptionSearchCriteria
      */
-    public function testOptionSearchCriteria($fam, $keyword, $existsNameList, $notExistsNameList) {
+    public function testOptionSearchCriteria($fam, $keyword, $existsNameList, $notExistsNameList)
+    {
         $search = new \SearchDoc(self::$dbaccess, $fam);
         $search->addGeneralFilter($keyword);
         $search->setObjectReturn();
         $search->search();
-
+        
         $res = array();
         while ($doc = $search->nextDoc()) {
             $res[] = $doc->name;
         }
-
+        
         if (count($existsNameList) > 0) {
             foreach ($existsNameList as $name) {
                 $this->assertTrue(in_array($name, $res) , sprintf("Document '%s' should be returned by search for '%s' on family '%s': returned documents name = {%s}", $name, $keyword, $fam, join(', ', $res)));
             }
         }
-
+        
         if (count($notExistsNameList) > 0) {
             foreach ($notExistsNameList as $name) {
                 $this->assertTrue(!in_array($name, $res) , sprintf("Document '%s' should NOT be returned by search for '%s' on family '%s': returned documents name = {%s}", $name, $keyword, $fam, join(', ', $res)));
             }
         }
     }
-    public function dataOptionSearchCriteria() {
+    public function dataOptionSearchCriteria()
+    {
         return array(
             array(
                 "TST_OPT_SEARCHCRITERIA",
@@ -297,16 +328,15 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_OPT_SEARCHCRITERIA_DEFAULT",
                     "TST_OPT_SEARCHCRITERIA_VISIBLE",
                     "TST_OPT_SEARCHCRITERIA_PROTECTED"
-                ),
+                ) ,
                 array(
                     "TST_OPT_SEARCHCRITERIA_HIDDEN"
                 )
-            ),
+            ) ,
             array(
                 "TST_OPT_SEARCHCRITERIA",
                 "secret",
-                array(
-                ),
+                array() ,
                 array(
                     "TST_OPT_SEARCHCRITERIA_DEFAULT",
                     "TST_OPT_SEARCHCRITERIA_VISIBLE",
@@ -316,7 +346,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             )
         );
     }
-
+    
     private function getFilterResult(\DocumentList $dl)
     {
         $names = array();
@@ -384,8 +414,37 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL1"
                 )
             ) ,
+            
+            array(
+                "'téléphone",
+                array(
+                    "TST_FULL2",
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
+                "'téléphone'",
+                array(
+                    "TST_FULL2",
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
+                "'-;=téléphone_%'",
+                array(
+                    "TST_FULL2",
+                    "TST_FULL1"
+                )
+            ) ,
+            
             array(
                 "téléphones portables",
+                array(
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
+                "téléphones |&portables",
                 array(
                     "TST_FULL1"
                 )
@@ -397,7 +456,25 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
+                "téléphones AND 'portables'",
+                array(
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
+                "'téléphones AND 'portables",
+                array(
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
                 "téléphones fixes",
+                array(
+                    "TST_FULL2"
+                )
+            ) ,
+            array(
+                "(téléphones) (fixes)",
                 array(
                     "TST_FULL2"
                 )

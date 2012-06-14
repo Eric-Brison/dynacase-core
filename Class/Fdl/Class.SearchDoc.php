@@ -599,11 +599,33 @@ class SearchDoc
      */
     public function addGeneralFilter($keywords, $useSpell = false)
     {
-        
-        $filter = $this->getGeneralFilter(trim($keywords) , $useSpell, $this->pertinenceOrder, $this->highlightWords);
-        $this->addFilter($filter);
+        if (!$this->checkGeneralFilter($keywords)) {
+            $this->debuginfo["error"] = sprintf(_("incorrect global filter %s") , $keywords);
+        } else {
+            $filter = $this->getGeneralFilter(trim($keywords) , $useSpell, $this->pertinenceOrder, $this->highlightWords);
+            $this->addFilter($filter);
+        }
     }
-    
+    /**
+     * Verify if $keywords syntax is comptatible with a part of query
+     * for the moment verify only parenthesis balancing
+     * @param string $keyword
+     * @return bool
+     */
+    private function checkGeneralFilter($keyword)
+    {
+        // test parentensis count
+        if (preg_match('/\(\s*\)/u', $keyword)) return false;
+        if (substr_count($keyword, '(') != substr_count($keyword, ')')) return false;
+        $si = strlen($keyword); // be carrefyl no use mb_strlen here : it is wanted
+        $pb = 0;
+        for ($i = 0; $i < $si; $i++) {
+            if ($keyword[$i] == '(') $pb++;
+            if ($keyword[$i] == ')') $pb--;
+            if ($pb < 0) return false;
+        }
+        return true;
+    }
     public function setPertinenceOrder($keyword = '')
     {
         if ($keyword != '') {
@@ -737,15 +759,20 @@ class SearchDoc
      */
     protected static function getFullFilter($words, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
     {
+        $filter = trim($words, "'");
         
-        $filter = preg_replace('/\s+(OR)\s+/u', '|', $words);
+        $filter = preg_replace('/\p{S}/u', ' ', $filter);
+        $filter = preg_replace('/\p{Po}/u', ' ', $filter);
+        $filter = preg_replace('/\s+(OR)\s+/u', '|', trim($filter));
         $filter = preg_replace('/\s+(AND)\s+/u', '&', $filter);
         $filter = preg_replace('/\s*\)\s*/u', ')', $filter);
         $filter = preg_replace('/\s*\(\s*/u', '(', $filter);
         $filter = preg_replace('/\s+/u', '&', $filter);
+        $filter = preg_replace('/([\p{L}\)])\(/u', '\\1&(', $filter);
         if ($useSpell) {
             $filter = preg_replace("/(?m)([\p{L}]+)/ue", "self::testSpell('\\1')", $filter);
         }
+        
         $fullKey = pg_escape_string(unaccent($filter));
         $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", $fullKey);
         $highlightWords = $fullKey;
