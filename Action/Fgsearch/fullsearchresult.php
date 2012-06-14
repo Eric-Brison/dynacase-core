@@ -142,10 +142,16 @@ function fullsearchresult(Action & $action)
         }
         $s->setSlice($slice + 1);
         $s->excludeConfidential();
-        
+        try {
         $s->search();
-        if ($s->getError()) addLogMsg($s->getSearchInfo());
-        //print_r2($s->getSearchInfo());
+        if ($s->getError()) {
+            addLogMsg($s->getSearchInfo());
+            $action->exitError($s->getError());
+        }
+        } catch (Exception $e) {
+            $action->exitError(sprintf(_("Incorrect filter %s"),$keyword));
+        }
+        
         if ($start == 0) {
             if ($s->count() < ($slice + 1)) $globalCount = $s->count();
             else {

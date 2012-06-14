@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-04 14:51+0200\n"
-"PO-Revision-Date: 2012-06-04 14:54+0200\n"
+"POT-Creation-Date: 2012-06-14 08:17+0200\n"
+"PO-Revision-Date: 2012-06-14 08:41+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1513,6 +1513,9 @@ msgstr ""
 msgid "Document context menu"
 msgstr "Menu contextuel du document"
 
+msgid "Document creation"
+msgstr ""
+
 msgid "Document filter"
 msgstr "Filtre sur le document"
 
@@ -1916,6 +1919,10 @@ msgstr "Remplissage de la table enumérée '%s'"
 msgid "Filling family table '%s' and relatives"
 msgstr "Remplissage de la table famille '%s' et afférentes"
 
+#, c-format
+msgid "Filter on %s"
+msgstr ""
+
 msgid "Firstname"
 msgstr "Prénom"
 
@@ -2181,6 +2188,10 @@ msgstr "Impossible de nommer une vue comme un droit"
 #, c-format
 msgid "Incoherent column type '%s' in array '%s'."
 msgstr "Type de colonne incohérent '%s' dans le tableau '%s'."
+
+#, c-format
+msgid "Incorrect filter %s"
+msgstr "Le filtre \"%s\" est incorrect"
 
 #, c-format
 msgid "Incorrect specification of special menu : %s"
@@ -2518,12 +2529,6 @@ msgstr "Déplacer le fichier depuis %s vers %s"
 
 msgid "Move reference"
 msgstr "Déplacer la référence"
-
-msgid "My system user id"
-msgstr "Identifiant système de mon compte utilisateur"
-
-msgid "My user account id"
-msgstr "Identifiant de mon compte utilisateur"
 
 msgid "N"
 msgstr "N"
@@ -3448,6 +3453,9 @@ msgstr "Moteur TE n'est pas activé"
 msgid "TE not activated"
 msgstr "TE non activé"
 
+msgid "TEST_EXTRA:Extra state not found"
+msgstr ""
+
 #, c-format
 msgid "Table '%s' unknown !"
 msgstr "Table '%s' inconnue !"
@@ -3461,9 +3469,6 @@ msgstr ""
 #, c-format
 msgid "Template [%s] not found"
 msgstr "Template [%s] non trouvé."
-
-msgid "The \"Foo\" string"
-msgstr ""
 
 msgid ""
 "The apache configuration seems incorrect. I cannot read .htaccess file. May "
@@ -3611,9 +3616,6 @@ msgstr ""
 
 msgid "Tuesday"
 msgstr "Mardi"
-
-msgid "Two cents"
-msgstr ""
 
 msgid "Twprocess_private"
 msgstr "vers privé"
@@ -3834,15 +3836,15 @@ msgstr ""
 
 #, c-format
 msgid "WID : %s"
-msgstr ""
+msgstr "WID : %s"
 
 #, c-format
 msgid "WID : workflow '%s' is not a workflow"
-msgstr ""
+msgstr "WID : '%s' n'est pas un cycle"
 
 #, c-format
 msgid "WID : workflow '%s' not found"
-msgstr ""
+msgstr "WID : cycle '%s' introuvable"
 
 msgid "WebDav FREEDOM system file"
 msgstr "Système de fichiers WebDAV DYNACASE"
@@ -3927,11 +3929,11 @@ msgstr "Le fichier XML n'a pas pu être créé"
 
 #, c-format
 msgid "Xml import : Cannot create file %s"
-msgstr ""
+msgstr "importation XML : Le fichier %s ne peut être crée"
 
 #, c-format
 msgid "Xml import file %s not found"
-msgstr ""
+msgstr "importation XML : fichier %s introuvable"
 
 msgid "Xml schema"
 msgstr "Xml Schéma"
@@ -4026,7 +4028,7 @@ msgid "accessfor"
 msgstr "Contrôle des accès pour"
 
 msgid "acking detection : clear token"
-msgstr ""
+msgstr "tentative d'intrusion détecté : suppression de la clef"
 
 msgid "acl"
 msgstr "Acl"
@@ -4042,7 +4044,7 @@ msgstr "L'action %s n'est pas déclarée comme étant accessible en mode ouvert"
 msgid ""
 "action %s is not declared to be access in open mode and token context not "
 "match"
-msgstr ""
+msgstr "L'action %s n'est pas déclaré pour être accessible en mode ouvert. La clef de contexte ne correspond pas."
 
 msgid "actions"
 msgstr "les actions"
@@ -4179,7 +4181,7 @@ msgid "affect user to a document"
 msgstr "affecter un utilisateur à un document"
 
 msgid "alive"
-msgstr ""
+msgstr "vivant"
 
 msgid "all"
 msgstr "tous les mots"
@@ -4395,7 +4397,7 @@ msgstr "attribut [%s] déjà présent : ne peut être ajouté"
 msgid ""
 "attribute [%s] identificator syntax is unavalaible. Must have only "
 "alphanumeric characters and must not includes spaces"
-msgstr ""
+msgstr "La syntaxe de l'idenitifiant d'attribut [%s] est non valide. Seuls des caractères alphanumérique sont autorisés et les espaces sont exclus."
 
 #, c-format
 msgid "attribute [%s] not exists : cannot delete it"
@@ -4407,7 +4409,7 @@ msgstr "L'attribut [%s] n'existe pas : impossible de le modifier"
 
 #, c-format
 msgid "attribute [%s] visibility must be one of H,R,W,S,O,I,U"
-msgstr ""
+msgstr "La visibilité de l'attribut [%s] ne peut être que  H,R,W,S,O,I,U"
 
 msgid "attribute id"
 msgstr "Identifiant de l'attribut"
@@ -4662,15 +4664,15 @@ msgstr "Échec du lancement de la conversion <b>%s</b>"
 
 #, c-format
 msgid "cannot load xml %s layout file"
-msgstr ""
+msgstr "ne peut charger le fichier modèle XML %s"
 
 #, c-format
 msgid "cannot load xml layout file : %s"
-msgstr ""
+msgstr "Le modèle XML ne peut être chargé : %s"
 
 #, c-format
 msgid "cannot load xml template : %s"
-msgstr ""
+msgstr "Le modèle XML ne peut être chargé : %s"
 
 #, c-format
 msgid "cannot modify forum %s"
@@ -4682,10 +4684,10 @@ msgstr "ne peut mettre à jour %s"
 
 #, c-format
 msgid "cannot open %s layout file : %s"
-msgstr ""
+msgstr "ne peut pas ouvrir le fichier modèle %s : %s "
 
 msgid "cannot produce sql request"
-msgstr ""
+msgstr "ne peut produire la requête sql"
 
 msgid "cannot see unknow folder"
 msgstr "dossier inconnu, ne peut être consulté"
@@ -4704,7 +4706,7 @@ msgstr "ne peut envoyer le courriel %s"
 
 #, c-format
 msgid "cannot send mail %s to %s : %s"
-msgstr ""
+msgstr "ne peut envoyer le courriel %s à %s : %s"
 
 #, c-format
 msgid "cannot send mail %s with template %s : %s"
@@ -4761,7 +4763,7 @@ msgid "cannot update fixed document"
 msgstr "Un document figé ne peut pas être mis à jour"
 
 msgid "cannot update inconsistent document"
-msgstr ""
+msgstr "ne peut mettre à jour un document inconsistent"
 
 msgid "cannot update no initialized document"
 msgstr "mise à jour impossible : document non initialisé"
@@ -4772,7 +4774,7 @@ msgstr "écriture impossible : %s"
 
 #, c-format
 msgid "cannot write log in %s"
-msgstr ""
+msgstr "ne peut écrire le log dans %s"
 
 msgid "case sensitive"
 msgstr " tenir compte de la casse"
@@ -4895,10 +4897,10 @@ msgid "choose workflow"
 msgstr "choisir un cycle"
 
 msgid "ck image browser"
-msgstr ""
+msgstr "ck navigateur d'image"
 
 msgid "ck image upload"
-msgstr ""
+msgstr "ck téléversement d'image"
 
 msgid "clear containt of a folder"
 msgstr "effacer le contenu d'un dossier"
@@ -5181,7 +5183,7 @@ msgid "current user account"
 msgstr "mon compte"
 
 msgid "current user cannot deactivate account"
-msgstr ""
+msgstr "L'utilisateur courant ne peut désactiver le compte"
 
 msgid "current user parameters"
 msgstr "mes paramètres"
@@ -5201,7 +5203,7 @@ msgid "data:family %s not alive"
 msgstr "Famille %s non vivante"
 
 msgid "data:getsubfamilies no family parameter"
-msgstr ""
+msgstr "data:getsubfamilies pas de famille donnée en paramètre"
 
 msgid "database access for webdav"
 msgstr "coordonnées d'accès à la base de données webdav"
@@ -5421,7 +5423,7 @@ msgstr "document %s : affecte l'icone à '%s'"
 
 #, c-format
 msgid "document %s [%d] is not destroyed"
-msgstr ""
+msgstr "Le document %s [%d] a été détruit"
 
 #, c-format
 msgid "document %s [%d] is not in the trash"
@@ -6385,6 +6387,10 @@ msgstr "contient"
 msgid "incorrect conversion HTML to ODT %s"
 msgstr "erreur de conversion HTML vers ODT %s"
 
+#, c-format
+msgid "incorrect global filter %s"
+msgstr "Le filtre global \"%s\" est incorrect"
+
 msgid "increase size vault"
 msgstr "Augmenter la taille du coffre"
 
@@ -6540,7 +6546,7 @@ msgstr "documents verrouillés par "
 
 #, c-format
 msgid "log file %s not writable"
-msgstr ""
+msgstr "Le fichier de log %s n'est pas être modifié"
 
 msgid "login must not be empty"
 msgstr "le login ne doit pas être vide"
@@ -6576,7 +6582,7 @@ msgid "main view line displayed"
 msgstr "édition des colonnes"
 
 msgid "maintenance in progress"
-msgstr ""
+msgstr "Maintenance en cours"
 
 msgid "make a new document revision"
 msgstr "faire une nouvelle révision de document"
@@ -6604,16 +6610,16 @@ msgid "maximum document can be imported directly"
 msgstr "nombre maximum de documents pouvant être importé en direct"
 
 msgid "mdoc close all docs"
-msgstr ""
+msgstr "Fermer tous les documents"
 
 msgid "mdoc show next docs"
-msgstr ""
+msgstr "Voir le prochain document"
 
 msgid "mdoc: open in a new window"
-msgstr ""
+msgstr "Ouvrir dans une autre fenêtre"
 
 msgid "mdoc: remove doc"
-msgstr ""
+msgstr "Enlever le document"
 
 msgid "memorisation of pref search"
 msgstr "mémorisation de la recherche"
@@ -6650,11 +6656,11 @@ msgstr "méthode %s exécutée pour %s"
 
 #, c-format
 msgid "method %s not defined"
-msgstr ""
+msgstr "la méthode %s n'est pas définie"
 
 #, c-format
 msgid "method %s not executed : %s"
-msgstr ""
+msgstr "la méthode %s n'a pas été exécutée : %s"
 
 #, c-format
 msgid "method %s not found"
@@ -6662,7 +6668,7 @@ msgstr "méthode %s non trouvée"
 
 #, c-format
 msgid "method %s not possible"
-msgstr ""
+msgstr "méthode %s non accessible"
 
 msgid "million bytes"
 msgstr "million d'octets"
@@ -6781,7 +6787,7 @@ msgid "mozilla site"
 msgstr "site de Mozilla"
 
 msgid "multiple document"
-msgstr ""
+msgstr "document multiple"
 
 msgid "my parameters"
 msgstr "mes paramètres"
@@ -6807,7 +6813,9 @@ msgstr "nom affiché dans le bas de la fenêtre (à droite)"
 msgid ""
 "name must begin with a letter and the containt only alphanumeric characters "
 "or - and _: invalid  [%s]"
-msgstr "La nom [%s] est invalide : Le nom doit commencer par une lettre suivi de zéro ou plusieurs lettres, chiffres, tiret \"-\" et trait-bas \"_\""
+msgstr ""
+"La nom [%s] est invalide : Le nom doit commencer par une lettre suivi de "
+"zéro ou plusieurs lettres, chiffres, tiret \"-\" et trait-bas \"_\""
 
 msgid "name of our society"
 msgstr "nom de votre société"
@@ -6980,7 +6988,7 @@ msgstr "Aucune famille de document"
 
 #, c-format
 msgid "no document match '%s'"
-msgstr ""
+msgstr "aucun de document ne correspond à '%s'"
 
 msgid "no document reference"
 msgstr "pas de référence au document"
@@ -7004,13 +7012,13 @@ msgid "no family"
 msgstr "pas de famille"
 
 msgid "no family identificator"
-msgstr ""
+msgstr "aucun identificateur de famille"
 
 msgid "no father category (its a top category)"
 msgstr "pas de catégorie père (catégorie primaire)"
 
 msgid "no file"
-msgstr ""
+msgstr "pas de fichier"
 
 #, c-format
 msgid "no file referenced for %s document"
@@ -7032,10 +7040,10 @@ msgid "no freedom DB access"
 msgstr "pas d'accès à la base de données DYNACASE"
 
 msgid "no identificator"
-msgstr ""
+msgstr "pas d'identificateur"
 
 msgid "no identificator set"
-msgstr ""
+msgstr "aucun identificateur fourni"
 
 msgid "no image"
 msgstr "pas d'image"
@@ -7070,6 +7078,10 @@ msgstr "vous n'avez pas le permission de modifier cet attribut : %s"
 #, c-format
 msgid "no privilege %s for %s"
 msgstr "Pas de privilège %s pour le document %s"
+
+#, c-format
+msgid "no privilege %s for %s [%d]"
+msgstr "pas de privilège %s pour le document %s [%d]"
 
 #, c-format
 msgid "no privilege %s for %s |%d]"
@@ -7181,7 +7193,7 @@ msgid "not authenticated"
 msgstr "non authentifié"
 
 msgid "not authenticated:ERRNO_BUG_639"
-msgstr ""
+msgstr "non authentifié : ERRNO_BUG_639"
 
 #, c-format
 msgid "not authorized : parameter %s is not a user parameter"
@@ -7194,7 +7206,7 @@ msgid "not equal"
 msgstr "pas égal"
 
 msgid "not in XML format"
-msgstr ""
+msgstr "format XML non reconnu "
 
 msgid "not include"
 msgstr "ne contient pas"
@@ -8103,6 +8115,9 @@ msgstr "Vue %s"
 
 msgid "specific control"
 msgstr "Contrôle dédié"
+
+msgid "specific family menu"
+msgstr ""
 
 msgid "specific import"
 msgstr "Import spécifique"
@@ -9235,6 +9250,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "My firstname and lastname"
 #~ msgstr "Mon prénom et mon nom"
+
+#~ msgid "My system user id"
+#~ msgstr "Identifiant système de mon compte utilisateur"
+
+#~ msgid "My user account id"
+#~ msgstr "Identifiant de mon compte utilisateur"
 
 #~ msgid "No identificator found for relation %s"
 #~ msgstr "Aucun identificateur pour la relation %s"
