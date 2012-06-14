@@ -654,7 +654,7 @@ create sequence SEQ_ID_ACTION;
     function Text($code, $args = NULL)
     {
         if ($code == "") return "";
-        return _("$code");
+        return _($code);
     }
     // Log functions
     function debug($msg)

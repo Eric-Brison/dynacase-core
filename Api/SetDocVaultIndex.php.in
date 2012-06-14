@@ -15,7 +15,6 @@
  */
 /**
  */
-ini_set("include_path", ".:@prefix@:@prefix@/WHAT:@PEAR@");
 ini_set("max_execution_time", "36000");
 
 include_once ('Class.Action.php');

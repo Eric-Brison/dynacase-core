@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-14 08:17+0200\n"
-"PO-Revision-Date: 2012-06-14 08:41+0200\n"
+"POT-Creation-Date: 2012-06-14 16:51+0200\n"
+"PO-Revision-Date: 2012-06-14 15:23+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 
 msgid " Access Control for"
 msgstr "Contrôle des accès pour"
@@ -101,10 +101,6 @@ msgstr "Lancer la recherche"
 
 msgid " view files"
 msgstr "afficher les fichiers attachés"
-
-# ne pas modifier laisser à vide
-msgid "$code"
-msgstr ""
 
 #, c-format
 msgid "%.02f Gb"
@@ -786,8 +782,8 @@ msgstr ""
 msgid ""
 "Attribute Error: impossible to found the family for docid attribute '%s'"
 msgstr ""
-"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid "
-"'%s'"
+"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid '%"
+"s'"
 
 #, c-format
 msgid "Attribute [%s] is not found"
@@ -862,11 +858,11 @@ msgstr "CVID : %s"
 
 #, c-format
 msgid "CVID : view control '%s' is not a view control"
-msgstr ""
+msgstr "Le contrôle de vue '%s' n'est pas un contrôle de vue"
 
 #, c-format
 msgid "CVID : view control '%s' not found"
-msgstr ""
+msgstr "Le contrôle de vue '%s' n'a pas été trouvé"
 
 msgid "Call method"
 msgstr "Appel de la méthode"
@@ -1015,10 +1011,10 @@ msgid "Change my ask"
 msgstr "Changer mon opinion"
 
 msgid "Change password"
-msgstr ""
+msgstr "Changer mon mot de passe"
 
 msgid "Change password by token"
-msgstr ""
+msgstr "Changer mon mot de passe par clé"
 
 msgid "Change privilege"
 msgstr "Modifier les privilèges"
@@ -1197,7 +1193,7 @@ msgid "Comment for change state"
 msgstr "Raison du changement d'état"
 
 msgid "Common function for FREEDOM client API"
-msgstr ""
+msgstr "Fonction commune pour le client API FREEDOM"
 
 msgid "Common functions"
 msgstr "Fonctions communes"
@@ -1222,19 +1218,21 @@ msgstr "Document confidentiel"
 
 #, c-format
 msgid "Config file %s : attribute name not set"
-msgstr ""
+msgstr "Fichier de configuration %s: le nom de l'attribut n'est pas précisé"
 
 #, c-format
 msgid "Config file %s : family name [%s] not match a know family"
 msgstr ""
+"Fichier de configuration %s: le nom de famille [%s] ne correspond pas à une "
+"famille connue"
 
 #, c-format
 msgid "Config file %s : family name not set"
-msgstr ""
+msgstr "Fichier de configuration %s: le nom de la famille n'est pas précisé"
 
 #, c-format
 msgid "Config file %s : unknow attribute name %s"
-msgstr ""
+msgstr "Fichier de configuration %s: nom de l'attribut %s inconnu"
 
 msgid "Confirm"
 msgstr "Confirmez"
@@ -1277,14 +1275,14 @@ msgid "Continue (Y|N) ?"
 msgstr "Continuer (Y (oui) |N (non)) ?"
 
 msgid "Control characters are not allowed"
-msgstr ""
+msgstr "Les caractères de contrôle ne sont pas autorisés"
 
 msgid "Control view for new document"
 msgstr "Contrôle de vue pour les nouveaux documents"
 
 #, c-format
 msgid "Conversion as %s has failed "
-msgstr ""
+msgstr "La conversion en %s a échoué"
 
 msgid "Copy reference"
 msgstr "Copier la référence"
@@ -1514,7 +1512,7 @@ msgid "Document context menu"
 msgstr "Menu contextuel du document"
 
 msgid "Document creation"
-msgstr ""
+msgstr "Création de document"
 
 msgid "Document filter"
 msgstr "Filtre sur le document"
@@ -1567,10 +1565,10 @@ msgid "Duplicate"
 msgstr "Dupliquer"
 
 msgid "Dynacase frontpage description"
-msgstr ""
+msgstr "Description de la page principale de Dynacase"
 
 msgid "Dynacase pages favico"
-msgstr ""
+msgstr "Pages de favico de Dynacase"
 
 #, c-format
 msgid "Dynamic template %s not an odt file "
@@ -1921,7 +1919,7 @@ msgstr "Remplissage de la table famille '%s' et afférentes"
 
 #, c-format
 msgid "Filter on %s"
-msgstr ""
+msgstr "Filtre sur %s"
 
 msgid "Firstname"
 msgstr "Prénom"
@@ -2130,8 +2128,8 @@ msgstr "Image (PNG)"
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;"
-"%s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;%"
+"s&gt; will be sended with result rapport"
 msgstr ""
 "L'import %s est en cours. Lorsque la mise à jour sera finie, un email sera "
 "envoyé à \n"
@@ -2438,7 +2436,7 @@ msgid "Mb"
 msgstr "Mo"
 
 msgid "Message to indicate invalid configuration"
-msgstr ""
+msgstr "Message pour indiquer que la configuration est invalide"
 
 #, c-format
 msgid "Method %s cannot be call by client. Must be exposable method"
@@ -2543,10 +2541,10 @@ msgid "Name of table cannot be empty"
 msgstr "Le nom de la table ne doit pas être vide"
 
 msgid "Name of the glob"
-msgstr ""
+msgstr "Nom du glob"
 
 msgid "Name of the zoo"
-msgstr ""
+msgstr "Nom du zoo"
 
 msgid "Negative grant"
 msgstr "Droits négatifs"
@@ -2612,6 +2610,8 @@ msgstr "Pas d'identificateurs"
 #, c-format
 msgid "No identificator found for relation '%s' %s in %s file"
 msgstr ""
+"Impossible de trouver d'identifiant pour la relation '%s' %s dans le fichier "
+"%s"
 
 msgid "No need to refresh group"
 msgstr "Tous les groupes sont actualisés"
@@ -2924,7 +2924,7 @@ msgid "Quick Save"
 msgstr "Sauver vite"
 
 msgid "REPORT_pivot"
-msgstr ""
+msgstr "REPORT_pivot"
 
 msgid "RSS link"
 msgstr "S'abonner au lien RSS"
@@ -3185,7 +3185,7 @@ msgid "Security"
 msgstr "Sécurité"
 
 msgid "See below information about conversion"
-msgstr ""
+msgstr "Voir les informations sur la conversion ci-dessous"
 
 msgid "See detail for "
 msgstr "Voir le détail pour"
@@ -3436,10 +3436,10 @@ msgid "System document"
 msgstr "Documents système"
 
 msgid "T1"
-msgstr ""
+msgstr "T1"
 
 msgid "T3"
-msgstr ""
+msgstr "T3"
 
 msgid "T?"
 msgstr "T?"
@@ -3454,7 +3454,7 @@ msgid "TE not activated"
 msgstr "TE non activé"
 
 msgid "TEST_EXTRA:Extra state not found"
-msgstr ""
+msgstr "État extra introuvable"
 
 #, c-format
 msgid "Table '%s' unknown !"
@@ -3464,7 +3464,7 @@ msgid "Tb"
 msgstr "To"
 
 msgid "Tconvalescent"
-msgstr ""
+msgstr "Tconvalescent"
 
 #, c-format
 msgid "Template [%s] not found"
@@ -3612,7 +3612,7 @@ msgid "Trash"
 msgstr "Poubelle"
 
 msgid "Tsick"
-msgstr ""
+msgstr "Tsick"
 
 msgid "Tuesday"
 msgstr "Mardi"
@@ -3627,7 +3627,7 @@ msgid "Udm_Find Error : "
 msgstr "Udm_Find_Error : "
 
 msgid "Unable to store the file"
-msgstr ""
+msgstr "Impossible d'enregistrer le fichier"
 
 msgid "Unallocate aborded"
 msgstr "Suppression de l'affectation abandonnée"
@@ -4044,7 +4044,9 @@ msgstr "L'action %s n'est pas déclarée comme étant accessible en mode ouvert"
 msgid ""
 "action %s is not declared to be access in open mode and token context not "
 "match"
-msgstr "L'action %s n'est pas déclaré pour être accessible en mode ouvert. La clef de contexte ne correspond pas."
+msgstr ""
+"L'action %s n'est pas déclaré pour être accessible en mode ouvert. La clef "
+"de contexte ne correspond pas."
 
 msgid "actions"
 msgstr "les actions"
@@ -4203,7 +4205,7 @@ msgid "already deleted"
 msgstr "déjà supprimé"
 
 msgid "alterTransitiontype: missing parameter"
-msgstr ""
+msgstr "alterTransitiontype: paramètre manquant"
 
 #, c-format
 msgid "an error has occured: %s"
@@ -4397,7 +4399,9 @@ msgstr "attribut [%s] déjà présent : ne peut être ajouté"
 msgid ""
 "attribute [%s] identificator syntax is unavalaible. Must have only "
 "alphanumeric characters and must not includes spaces"
-msgstr "La syntaxe de l'idenitifiant d'attribut [%s] est non valide. Seuls des caractères alphanumérique sont autorisés et les espaces sont exclus."
+msgstr ""
+"La syntaxe de l'idenitifiant d'attribut [%s] est non valide. Seuls des "
+"caractères alphanumérique sont autorisés et les espaces sont exclus."
 
 #, c-format
 msgid "attribute [%s] not exists : cannot delete it"
@@ -5030,7 +5034,7 @@ msgid "controlaccess"
 msgstr "Contrôle des accès"
 
 msgid "convalescent"
-msgstr ""
+msgstr "convalescent"
 
 #, c-format
 msgid "conversion %s in progress"
@@ -5218,7 +5222,7 @@ msgid "days"
 msgstr "jours"
 
 msgid "dead"
-msgstr ""
+msgstr "mort"
 
 #, c-format
 msgid "declaration syntax does not match special help input '%s'"
@@ -5496,7 +5500,7 @@ msgstr "identificateur %d du document non trouvé"
 
 #, c-format
 msgid "document is booked in domain %s"
-msgstr ""
+msgstr "Le document est enregistré dans le domaine %s"
 
 msgid "document is not controlled by a workflow"
 msgstr "Le document n'est pas controllé par un cycle de vie"
@@ -5591,16 +5595,16 @@ msgid "duration for log conservation (in days)"
 msgstr "durée de conservation des logs (en jours)"
 
 msgid "dynacase control PATH"
-msgstr ""
+msgstr "Chemin d'accès à Dynacase Contrôle"
 
 msgid "dynacase control URL"
-msgstr ""
+msgstr "Url d'accès à Dynacase Contrôle"
 
 msgid "dynamic control"
 msgstr "contrôle dynamique"
 
 msgid "dynlabel"
-msgstr ""
+msgstr "Label dynacase"
 
 msgid "edit"
 msgstr "Modifier"
@@ -5694,7 +5698,7 @@ msgstr "extra Lien"
 
 #, c-format
 msgid "elinkEncode::attribute not found %s in %s : %s"
-msgstr ""
+msgstr "Impossible de trouver l'attribut %s dans %s: %s"
 
 msgid "email sended"
 msgstr "email envoyé"
@@ -5709,7 +5713,7 @@ msgid "empty password : not changed"
 msgstr "mot de passe vide : non changé"
 
 msgid "empty reference"
-msgstr ""
+msgstr "Référence vide"
 
 msgid "enable forum"
 msgstr "Autoriser les forums"
@@ -5824,6 +5828,7 @@ msgstr "erreur lors de l'envoi de la conversion texte"
 #, c-format
 msgid "error storing configuration property (%s, %s, %s)"
 msgstr ""
+"Erreur lors de l'enregistrement des propriétés de configuration (%s, %s, %s)"
 
 msgid "exec plan"
 msgstr "Planification des processus"
@@ -5857,10 +5862,10 @@ msgstr "droit explicite"
 
 #, c-format
 msgid "export Xml : cannot unzip %s : %s"
-msgstr ""
+msgstr "Erreur lors de l'export XML : impossible de décompresser %s : %s"
 
 msgid "export a report"
-msgstr ""
+msgstr "Exporter un rapport"
 
 msgid "export file to consulting"
 msgstr "exportation d'un fichier pour consultation"
@@ -6025,7 +6030,7 @@ msgstr "arborescence de dossier"
 
 #, c-format
 msgid "folder/search %s not found"
-msgstr ""
+msgstr "Dossier/Recherche %s introuvable"
 
 msgid "foldername"
 msgstr "dossier"
@@ -6037,7 +6042,7 @@ msgid "folio icon list"
 msgstr "liste icones pour chemise"
 
 msgid "folio params ajax request"
-msgstr ""
+msgstr "Paramètres de requête ajax pour chemise"
 
 msgid "folio select doc"
 msgstr "sélection de chemise"
@@ -6049,7 +6054,7 @@ msgid "for"
 msgstr "pour"
 
 msgid "format in date"
-msgstr ""
+msgstr "Format de date"
 
 msgid "forum"
 msgstr "forum"
@@ -6198,7 +6203,7 @@ msgid "get data for createtree family"
 msgstr "récupération de données pour l'arbre des familles"
 
 msgid "get ext display configuration"
-msgstr ""
+msgstr "Récupération de la configuration d'affichage"
 
 msgid "get family import schema"
 msgstr "récupération du schéma d'une famille"
@@ -6216,25 +6221,25 @@ msgid "get search methods"
 msgstr "récupération des méthodes de recherche"
 
 msgid "get value for an attribute of document"
-msgstr ""
+msgstr "Récupération de la valeur d'un attribut de document"
 
 msgid "get value of an attribute"
 msgstr "donne la valeur d'un attribut"
 
 msgid "getSelection: no configuration set"
-msgstr ""
+msgstr "Pas de configuration affectée"
 
 msgid "global edit detail search"
-msgstr ""
+msgstr "Détail d'édition pour la recherche globale"
 
 msgid "global search"
-msgstr ""
+msgstr "Recherche globale"
 
 msgid "global search detail results"
-msgstr ""
+msgstr "Détail des résultats pour la recherche globale"
 
 msgid "global search results"
-msgstr ""
+msgstr "Résultat de la recherche globale"
 
 msgid "goaccess"
 msgstr "accessibilités..."
@@ -6346,7 +6351,7 @@ msgstr " Importation de documents <I>%s</I> à partir de"
 
 #, c-format
 msgid "import Xml extract : file %s not found"
-msgstr ""
+msgstr "Erreur lors de l'extraction de l'import XML: fichier %s introuvable"
 
 msgid "import analysis result"
 msgstr "Résultat de l'analyse de l'import"
@@ -6478,10 +6483,10 @@ msgid "item already set"
 msgstr "élément déjà présent"
 
 msgid "iuser choose main view column"
-msgstr ""
+msgstr "Choisissez la colonne de vue principale"
 
 msgid "iuser list main page"
-msgstr ""
+msgstr "Listez la page principale"
 
 msgid "keyword"
 msgstr "mot-clef"
@@ -7228,7 +7233,7 @@ msgid "nothing to add"
 msgstr "rien à ajouter"
 
 msgid "nothing to export. Do export before"
-msgstr ""
+msgstr "Rien à exporter. Faire l'exportation avant"
 
 msgid "nothing to insert"
 msgstr "rien à insérer"
@@ -7259,7 +7264,7 @@ msgid "one family generic root"
 msgstr "racine generic gestion par famille"
 
 msgid "one family multi document"
-msgstr ""
+msgstr "Document multiple"
 
 msgid "one value equal"
 msgstr "une des valeurs égale"
@@ -7299,7 +7304,7 @@ msgid "open"
 msgstr "ouvrir"
 
 msgid "open document to edit or view it"
-msgstr ""
+msgstr "Ouvrir le document pour l'éditer ou le voir"
 
 msgid "open file with your editor"
 msgstr "ouvrir le fichier avec votre éditeur"
@@ -7342,7 +7347,7 @@ msgid "other families"
 msgstr "Autres familles"
 
 msgid "other folders"
-msgstr ""
+msgstr "Autres dossiers"
 
 msgid "others..."
 msgstr "autres..."
@@ -7392,7 +7397,7 @@ msgstr "erreur de parenthésage : %d gauche, %d droite"
 
 #, c-format
 msgid "parse error config file %s : %s"
-msgstr ""
+msgstr "Erreur de parsing dans le fichier de configuration %s : %s"
 
 msgid "password are not identicals : not changed"
 msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
@@ -7467,9 +7472,6 @@ msgstr "Préférés"
 
 msgid "prefered search"
 msgstr "Recherche préférée"
-
-msgid "preferential doc gate id"
-msgstr ""
 
 msgid "prev"
 msgstr "précédent"
@@ -7555,7 +7557,7 @@ msgid "prop_doctype"
 msgstr "type de document"
 
 msgid "prop_domainid"
-msgstr ""
+msgstr "Identifiant du domaine"
 
 msgid "prop_dprofid"
 msgstr "identifiant du template de profil"
@@ -7579,7 +7581,7 @@ msgid "prop_lmodify"
 msgstr "tag indiquant la modification"
 
 msgid "prop_lockdomainid"
-msgstr ""
+msgstr "Identifiant du domaine du verrou"
 
 msgid "prop_locked"
 msgstr "propriétaire du verrou"
@@ -7725,7 +7727,7 @@ msgid "reqpasswd_submit"
 msgstr "Envoyer"
 
 msgid "request empty reference"
-msgstr ""
+msgstr "Requête d'une référence vide"
 
 msgid "request not found"
 msgstr "requête non trouvée"
@@ -7807,10 +7809,10 @@ msgstr "restauration du document"
 
 #, c-format
 msgid "role %s id is already used"
-msgstr ""
+msgstr "L'identifiant du role %s est déjà utilisé"
 
 msgid "role cannot be revived"
-msgstr ""
+msgstr "Le role ne peut pas être ressuscité"
 
 msgid "root"
 msgstr "racine"
@@ -7824,7 +7826,7 @@ msgstr "racine pour %s"
 
 #, c-format
 msgid "roweditzone syntax %s is invalid"
-msgstr ""
+msgstr "La syntaxe %s est invalide"
 
 msgid "rss avaible for users"
 msgstr "Le flux RSS est maintenant accessible pour les utilisateurs"
@@ -7902,7 +7904,7 @@ msgstr "recherche dans les familles héritées par famille"
 
 #, c-format
 msgid "search join syntax error : %s"
-msgstr ""
+msgstr "Erreur de syntaxs lors d'une jointure de recherche : %s"
 
 msgid "search methods"
 msgstr "Méthodes de recherche"
@@ -8017,7 +8019,7 @@ msgstr "affecte le dossier par défaut à '%s'"
 
 #, c-format
 msgid "set default view control to '%s'"
-msgstr ""
+msgstr "affecte le contrôle de vue par défaut à '%s'"
 
 #, c-format
 msgid "set default workflow to '%s'"
@@ -8028,7 +8030,7 @@ msgid "set doctype to '%s'"
 msgstr "affecter le doctype à '%s'"
 
 msgid "set ext display configuration"
-msgstr ""
+msgstr "affecte la configuration d'affichage"
 
 #, c-format
 msgid "set for %s, unset for %s"
@@ -8063,7 +8065,7 @@ msgid "set the document controlled"
 msgstr "Mettre le document sous contrôle"
 
 msgid "set user parameter"
-msgstr ""
+msgstr "affecte les paramètres utilisateur"
 
 msgid "setWaskAnswer::invalid parameters"
 msgstr "setWaskAnswer:: paramètres invalides"
@@ -8081,7 +8083,7 @@ msgid "show vaults occupation"
 msgstr "Affiche les taux d'occupation des coffres"
 
 msgid "sick"
-msgstr ""
+msgstr "malade"
 
 #, c-format
 msgid "similar document %s found. keep similar"
@@ -8094,7 +8096,7 @@ msgid "society style"
 msgstr "style société"
 
 msgid "socket creation error"
-msgstr ""
+msgstr "Erreur lors de la création d'une socket"
 
 msgid "socname"
 msgstr "Nom"
@@ -8117,7 +8119,7 @@ msgid "specific control"
 msgstr "Contrôle dédié"
 
 msgid "specific family menu"
-msgstr ""
+msgstr "Menu de famille spécifique"
 
 msgid "specific import"
 msgstr "Import spécifique"
@@ -8144,7 +8146,7 @@ msgid "static array"
 msgstr "tableau statique"
 
 msgid "stop on sql error"
-msgstr ""
+msgstr "Arrêt lors d'une erreur sql"
 
 msgid "string limit for popup enum"
 msgstr "taille maximum de chaines de caractère pour les choix"
@@ -8179,8 +8181,8 @@ msgstr ""
 "<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
 "p>\n"
 "<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
-"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème"
-"%20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
+"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
+"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
@@ -8212,6 +8214,8 @@ msgid ""
 "syntax error for order %s. May be an integer or a relative upto or downto "
 "identificator"
 msgstr ""
+"Erreur de syntaxe pour l'ordre %s. Il est possible que ce soit à cause d'un "
+"chiffre ou un problème de majuscule/minuscule dans l'identifiant"
 
 msgid "system identifiant equal"
 msgstr "l'identifiant système est égal"
@@ -8381,7 +8385,7 @@ msgid "this kind of document cannot be duplicate"
 msgstr "ce type de document ne peut être dupliqué"
 
 msgid "this login exists"
-msgstr ""
+msgstr "Cet identifiant de connexion existe"
 
 msgid "this system user cannot be deleted"
 msgstr "Cet utilisateur système n epeut être supprimé"
@@ -8477,7 +8481,7 @@ msgid "town of our society"
 msgstr "ville de votre société"
 
 msgid "transfered"
-msgstr ""
+msgstr "transféré"
 
 #, c-format
 msgid "try add acl %s"
@@ -8569,7 +8573,7 @@ msgstr "Attribut structurant inconnu %s %s"
 
 #, c-format
 msgid "unknow user #%s"
-msgstr ""
+msgstr "Utilisateur inconnu #%s"
 
 #, c-format
 msgid "unknow virtual user identificateur %s"
@@ -8624,10 +8628,10 @@ msgid "unselect"
 msgstr "déselectionner"
 
 msgid "unset default view control"
-msgstr ""
+msgstr "enlever le contrôle de vue par défaut"
 
 msgid "unset default workflow"
-msgstr ""
+msgstr "enlever le cycle de vie par défaut"
 
 #, c-format
 msgid "untitle %s %d"
@@ -8705,10 +8709,7 @@ msgid "use ctrl key in popup menu"
 msgstr "utiliser la touche ctrl dans les menus popup"
 
 msgid "use dynacase user management"
-msgstr ""
-
-msgid "use what gate"
-msgstr ""
+msgstr "utiliser la gestion d'utilisateur de dynacase"
 
 #, c-format
 msgid "user #%d does not exist"
@@ -8736,10 +8737,10 @@ msgstr "l'utilisateur %s %s a été modifié\n"
 
 #, c-format
 msgid "user %s not found"
-msgstr ""
+msgstr "Utilisateur %s introuvable"
 
 msgid "user cannot be revived"
-msgstr ""
+msgstr "L'utilisateur ne peut pas être ressuscité"
 
 msgid "user has not identificator"
 msgstr "L'utilisateur n'a pas d'identificateur"
@@ -8971,7 +8972,7 @@ msgid "visible user families"
 msgstr "familles personnelles visibles"
 
 msgid "waiting : document not set"
-msgstr ""
+msgstr "en attente : document non affecté"
 
 msgid "waiting conversion file"
 msgstr "en attente de conversion"
@@ -9386,8 +9387,8 @@ msgstr "le titre de {left} inclus {right}"
 #~ "<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus "
 #~ "valide. Dans ce cas, veuillez renouveller votre demande.</p>\n"
 #~ "<p>Si le problème persiste, veuillez prendre contact avec <a href="
-#~ "\"mailto:[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot"
-#~ "%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
+#~ "\"mailto:[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot%"
+#~ "20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
 
 #~ msgid "callbackreqpasswd_callback_ok"
 #~ msgstr ""
@@ -9736,8 +9737,8 @@ msgstr "le titre de {left} inclus {right}"
 #~ "n'est pas le cas, veuillez détruire ce message.</p>\n"
 #~ "<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
 #~ "suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL]guest.php"
-#~ "[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token="
-#~ "[CALLBACK_TOKEN]\">[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
+#~ "[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]"
+#~ "\">[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
 #~ "app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p>"
 
 #~ msgid "submitreqpasswd_mail_hello"
@@ -9778,6 +9779,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "usage %s --famid=<family id> [--force=yes]"
 #~ msgstr "usage %s --famid=<family id> [--force=yes]"
+
+#~ msgid "use what gate"
+#~ msgstr "utiliser le portail what"
 
 #~ msgid "user"
 #~ msgstr "utilisateur"
