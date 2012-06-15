@@ -122,6 +122,10 @@ This can be solved by:<br/>
                 PHP.
             </help>
         </check>
+         <check type="exec" cmd="php -r 'exit((function_exists('iconv') &amp;&amp; ICONV_IMPL == 'glibc') != true);'">
+                    <label lang="en">Check iconv in libc</label>
+                    <help>Iconv might not work as you want</help>
+                 </check>
         <check type="phpfunction" function="mb_get_info">
             <help>You might need to install a php-mbstring package from your distribution in order to have mbstring
                 support in PHP.
@@ -365,6 +369,10 @@ This can be solved by:<br/>
                 PHP.
             </help>
         </check>
+        <check type="exec" cmd="php -r 'exit((function_exists('iconv') &amp;&amp; ICONV_IMPL == 'glibc') != true);'">
+            <label lang="en">Check iconv in libc</label>
+            <help>Iconv might not work as you want</help>
+         </check>
         <check type="phpfunction" function="mb_get_info">
             <help>You might need to install a php-mbstring package from your distribution in order to have mbstring
                 support in PHP.
