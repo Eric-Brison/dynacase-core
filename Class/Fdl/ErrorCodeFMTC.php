@@ -5,9 +5,10 @@
  * @package FDL
 */
 /**
- * Error codes used to checking manage user/group/role
- * @class ErrorCodeACCT
- * @brief List all error code for user/group/tole mamnagement
+ * Error codes used to format document list
+ * @class ErrorCodeFMTC
+ * @brief List all error code for format document list
+ * @see FormatCollection
  * @see ErrorCode
  */
 class ErrorCodeFMTC

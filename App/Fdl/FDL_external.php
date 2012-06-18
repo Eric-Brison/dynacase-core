@@ -459,52 +459,53 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         $sort = 'lastname';
         $searchinmail = false;
         $dbaccess = getDbAccess();
-        $ofs = array();
+        $s = new SearchAccount();
         if (preg_match('/role\s*=([^|]*)/', $options, $regRole)) {
             $roles = explode(',', $regRole[1]);
             
             foreach ($roles as $role) {
-                simpleQuery($dbaccess, sprintf("select id from users where login='%s' and accounttype='R'", pg_escape_string(trim($role))) , $rid, true, true);
-                if ($rid) $ofs[] = $rid;
-                else return sprintf(_("Role '%s' not exists") , $role);
+                try {
+                    $s->addRoleFilter($role);
+                }
+                catch(Exception $e) {
+                    return $e->getMessage();
+                }
             }
         }
         if (preg_match('/group\s*=([^|]*)/', $options, $regGroup)) {
             $groups = explode(',', $regGroup[1]);
             
             foreach ($groups as $group) {
-                simpleQuery($dbaccess, sprintf("select id from users where login='%s' and accounttype='G'", pg_escape_string(trim($group))) , $rid, true, true);
-                if ($rid) $ofs[] = $rid;
-                else return sprintf(_("Group '%s' not exists") , $group);
+                try {
+                    $s->addGroupFilter($group);
+                }
+                catch(Exception $e) {
+                    return $e->getMessage();
+                }
             }
         }
-        $condMatch = "accounttype='U'";
+        
         if (preg_match('/match\s*=([^|]*)/', $options, $regMatch)) {
             $match = trim($regMatch[1]);
             switch ($match) {
                 case 'all':
-                    $condMatch = '';
                     break;
 
                 case 'group':
-                    $condMatch = "accounttype='G'";
+                    $s->setTypeFilter($s::groupType);
                     break;
 
                 case 'role':
-                    $condMatch = "accounttype='R'";
+                    $s->setTypeFilter($s::roleType);
                     break;
 
                 default:
-                    $condMatch = "accounttype='U'";
+                    $s->setTypeFilter($s::userType);
             }
         }
         
         $tr = array();
         
-        $cond = "true";
-        if (count($ofs) > 0) {
-            $cond = sprintf("memberof && '{%s}'", implode(',', $ofs));
-        }
         $condName = "";
         if ($filterName) {
             $tname = explode(' ', $filterName);
@@ -512,25 +513,24 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
             $condmail = '';
             if ($searchinmail) $condmail = sprintf("or (mail ~* '%s')", $filterName);
             if (count($tname) > 1) {
-                $condName = sprintf("and (coalesce(firstname,'') || ' ' || coalesce(lastname,'') ~* '%s' $condmail)", $filterName);
+                $condName = sprintf(" (coalesce(firstname,'') || ' ' || coalesce(lastname,'') ~* '%s' $condmail)", $filterName);
             } else {
-                $condName = sprintf("and (firstname ~* '%s' or lastname ~* '%s' $condmail)", $filterName, $filterName);
+                $condName = sprintf(" (firstname ~* '%s' or lastname ~* '%s' $condmail)", $filterName, $filterName);
             }
         }
         
-        if ($condMatch) $condName.= ' and ' . $condMatch;
-        if ($sort) $sort = pg_escape_string($sort);
-        else $sort = 'lastname';
-        $sql = sprintf("SELECT users.fid, users.firstname, users.lastname, users.mail,users.fid from users where %s %s order by %s limit %d", $cond, $condName, $sort, $limit);
-        $err = simpleQuery($dbaccess, $sql, $result);
-        if ($err != "") return $err;
-        //$tr[]=array($sql,'z','zs');
-        foreach ($result as $k => $v) {
-            $mail = $v["mail"] ? (' (' . $v["mail"] . ')') : '';
+        if ($condName) $s->addFilter($condName);
+        if (!$sort) $sort = 'lastname';
+        $s->setOrder($sort);
+        $s->useViewControl(true);
+        $al = $s->search();
+        foreach ($al as $account) {
+            
+            $mail = $account->mail ? (' (' . mb_substr($account->mail, 0, 40) . ')') : '';
             $tr[] = array(
-                $v["firstname"] . " " . $v["lastname"] . $mail,
-                $v["fid"],
-                $v["lastname"] . " " . $v["firstname"]
+                $account->firstname . " " . $account->lastname . $mail,
+                $account->fid,
+                $account->lastname . " " . $account->firstname
             );
         }
         

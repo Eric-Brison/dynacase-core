@@ -14,7 +14,7 @@
  */
 /**
  */
-class DocumentList implements Iterator
+class DocumentList implements Iterator, Countable
 {
     /**
      * @var null|SearchDoc
