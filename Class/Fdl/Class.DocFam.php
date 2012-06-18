@@ -37,6 +37,7 @@ create table docfam (cprofid int ,
                      genversion float,
                      maxrev int,
                      usedocread int,
+                     tagable text,
                      configuration text) inherits (doc);
 create unique index idx_idfam on docfam(id);";
     
@@ -59,6 +60,7 @@ create unique index idx_idfam on docfam(id);";
         "usedocread",
         "schar",
         "maxrev",
+        "tagable",
         "configuration"
     );
     public $genversion;
@@ -73,6 +75,7 @@ create unique index idx_idfam on docfam(id);";
     public $schar;
     public $maxrev;
     public $configuration;
+    public $tagable;
     private $_configuration;
     
     private $defaultSortProperties = array(
@@ -157,6 +160,8 @@ create unique index idx_idfam on docfam(id);";
             if (!$this->defval) $this->defval = $cdoc->defval;
             if (!$this->schar) $this->schar = $cdoc->schar;
             if (!$this->usefor) $this->usefor = $cdoc->usefor;
+            // if (!$this->tagable) $this->tagable = $cdoc->tagable;
+            
         }
     }
     /**

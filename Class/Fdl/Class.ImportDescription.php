@@ -51,6 +51,7 @@ class importDocumentDescription
      * @var DocFam
      */
     private $doc;
+    
     public function __construct($importFile)
     {
         if (seemsODS($importFile)) {
@@ -64,6 +65,7 @@ class importDocumentDescription
         }
         $this->dbaccess = getParam("FREEDOM_DB");;
     }
+    
     public function analyzeOnly($analyze)
     {
         $this->analyze = $analyze;
@@ -88,6 +90,7 @@ class importDocumentDescription
     {
         $this->comma = $comma;
     }
+    
     public function import()
     {
         // -----------------------------------
@@ -266,6 +269,10 @@ class importDocumentDescription
 
                 case "KEYS":
                     $this->doKeys($data);
+                    break;
+
+                case "TAGABLE":
+                    $this->doTagable($data);
                     break;
 
                 case "PROFIL":
@@ -855,6 +862,21 @@ class importDocumentDescription
                 }
             }
         }
+    }
+    /**
+     * analyze TAGABLE
+     * @param array $data tagable parameter
+     */
+    protected function doTagable(array $data)
+    {
+        if (!$this->doc) {
+            return;
+        }
+        $check = new CheckTagable();
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $action)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
+        $this->doc->tagable = $data[1];
+        $this->tcr[$this->nLine]["msg"] = sprintf(_("change tagable parameter to '%s'") , $this->doc->tagable);
     }
     /**
      * analyze PROFIL

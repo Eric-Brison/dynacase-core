@@ -28,6 +28,7 @@ SELECT pg_temp.addColumnIfNotExists('', 'docread', 'lockdomainid', 'int');
 SELECT pg_temp.addColumnIfNotExists('', 'doc', 'domainid', 'text');
 SELECT pg_temp.addColumnIfNotExists('', 'docread', 'domainid', 'text');
 SELECT pg_temp.addColumnIfNotExists('', 'docwait', 'extradata', 'text');
+SELECT pg_temp.addColumnIfNotExists('', 'docfam', 'tagable', 'text');
 --
 -- Update global type for parameters
 --
