@@ -368,7 +368,7 @@ function activeMenuDocItem(event,menuid) {
 	   i--;
 	   menuitem=document.getElementById(submenu);
 	   if (menuitem) {
-	     if (mitem.className=='menuItem') menuitem.className='menuItem';
+	     if (mitem.className=='menuItem' || mitem.className=='menuItemDisabled') menuitem.className='menuItem';
 	     else if (CTRLKEYMENU && (mitem.className!='menuItemInvisible')) menuitem.className='menuItem';
 	   }
 	}

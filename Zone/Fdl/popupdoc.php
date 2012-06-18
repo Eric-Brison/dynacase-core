@@ -57,7 +57,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
         if ($v["visibility"] == POPUP_INACTIVE) {
             if ($v["title"]) {
                 $v["url"] = '';
-                $v["jsfunction"] = sprintf("alert('%s')", str_replace("'", "&rsquo;", $v["title"]));
+                $v["jsfunction"] = sprintf("alert('%s')", str_replace(array("'","\n"), array("&rsquo;",'\\n'), $v["title"]));
             } else {
                 $v["url"] = '#';
                 $v["jsfunction"] = '';
@@ -80,8 +80,8 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
             }
             
             $v["issubmenu"] = false;
-            $v["descr"] = ucfirst(($v["descr"]));
-            $v["title"] = ucfirst(($v["title"]));
+            $v["descr"] = mb_ucfirst(($v["descr"]));
+            $v["title"] = mb_ucfirst(($v["title"]));
             $v["tconfirm"] = str_replace(array(
                 "\n",
                 "\r",
@@ -130,7 +130,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
                     }
                     $tsubmenu[$smid] = array(
                         "idlink" => $smid,
-                        "descr" => ucfirst((_($v["submenu"]))) ,
+                        "descr" => mb_ucfirst((_($v["submenu"]))) ,
                         "icon" => $v["icon"],
                         "visibility" => false,
                         "ICONS" => "mainicon",
