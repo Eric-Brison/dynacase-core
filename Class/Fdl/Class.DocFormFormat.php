@@ -507,7 +507,12 @@ class DocFormFormat
                     global $action;
                     if ($DAV) {
                         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/DAV/Layout/getsessionid.js");
-                        $this->onChange = sprintf(" onclick='this.href=getPrivateDavHref(\"%s\",\"%s\",\"%s\",this.getAttribute(\"filename\"))' filename=\"%s\"", $this->docid, $vid, $DAV, str_replace('"', '%22', $info->name));
+                        $parms = $action->parent->GetAllParam();
+                        if (isset($parms['CORE_ABSURL']) && isset($parms['ISIE']) && $parms['ISIE'] && preg_match('/^https:/i', $parms['CORE_ABSURL'])) {
+                            $this->onChange = sprintf(" onclick='asdavLaunch(getPrivateDavHref(\"%s\", \"%s\", \"%s\", this.getAttribute(\"filename\")))' filename=\"%s\"", $this->docid, $vid, $DAV, str_replace('"', '%22', $info->name));
+                        } else {
+                            $this->onChange = sprintf(" onclick='this.href=getPrivateDavHref(\"%s\",\"%s\",\"%s\",this.getAttribute(\"filename\"))' filename=\"%s\"", $this->docid, $vid, $DAV, str_replace('"', '%22', $info->name));
+                        }
                         //$this->onChange="onclick=\"var sid=getsessionid('".$docid."','$vid');this.href='asdav://$DAV/freedav/vid-'+sid+'/'.$info->name."e";
                         $fname = "<A title=\"" . _("open file with your editor") . "\" href=\"#\" {$this->onChange}><img style=\"border:none\" src=\"Images/davedit.png\">";
                     } else {

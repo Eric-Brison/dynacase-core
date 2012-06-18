@@ -91,3 +91,23 @@ function subwindowm(h, w, name, url) {
     
   return me;
 }
+
+// Open+close a window with a asdav:// URL
+function asdavLaunch(url) {
+	var w = window.open(url);
+	_asdavClose(w, 2000, 1000);
+}
+function _asdavClose(w, firstDelay, retryDelay) {
+	if (w.closed) {
+		return;
+	}
+	if (retryDelay <= 0 ) {
+		retryDelay = 1000;
+	}
+	if (firstDelay > 0) {
+		setTimeout(function(){_asdavClose(w, 0, retryDelay);}, firstDelay);
+	} else {
+		w.close();
+		setTimeout(function(){_asdavClose(w, 0, retryDelay);}, retryDelay);
+	}
+}
