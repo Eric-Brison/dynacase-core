@@ -168,7 +168,7 @@ function fdl_card(&$action)
                                     "walabel" => ucfirst($v->getLabel()) ,
                                     "wwidth" => $v->getOption("mwidth", $mwidth) ,
                                     "wheight" => $v->getOption("mheight", $mheight) ,
-                                    "wtarget" => ($v->getOption("ltarget") == "") ? $v->id . "_" . $doc->id : $v->getOption("ltarget") ,
+                                    "wtarget" => ($v->getOption("ltarget") == "") ? (($v->getOption("mtarget") == "") ? $v->id . "_" . $doc->id : $v->getOption("mtarget")) : $v->getOption("ltarget"),
                                     "wlink" => $doc->urlWhatEncode($v->getLink($doc->latestId()))
                                 );
                             }
