@@ -15,16 +15,6 @@ global $app_const;
 $app_const= array(
   "INIT" => "yes",
   "VERSION" => "@VERSION@-@RELEASE@",
-  "GATE_USEOLD"    =>array("val"=>"no",
-			   "descr"=>N_("use what gate"),
-			   "user"=>"Y",
-			   "global"=>"Y",
-			   "kind"=>"enum(yes|no)"),
-  "GATE_PREFID" => array("val"=>"",
-			 "user"=>"Y",
-			 "global"=>"Y",
-			 "descr"=>N_("preferential doc gate id")),
-  
 );
 
 ?>

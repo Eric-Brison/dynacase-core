@@ -999,7 +999,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     function text($code, $args = NULL)
     {
         if ($code == "") return "";
-        return _("$code");
+        return _($code);
     }
     // Write default ACL when new user is created
     function updateUserAcl($iduser)
