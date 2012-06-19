@@ -212,9 +212,7 @@ class SearchAccount
      */
     public function search()
     {
-        
         simpleQuery($this->dbaccess, $this->getQuery() , $this->searchResult);
-        
         if ($this->returnType == self::returnAccount) {
             $al = new AccountList($this->searchResult);
             return $al;
@@ -251,10 +249,10 @@ class SearchAccount
     {
         
         $groupRoleFilter = $this->getgroupRoleFilter();
-        if ($this->viewControl) {
-            $u = getCurrentUser();
+
+        $u = getCurrentUser();
+        if ($this->viewControl && $u->id!=1) {
             $viewVector = SearchDoc::getUserViewVector($u->id);
-            
             $sql = sprintf("select users.* from users, docread where users.fid = docread.id and docread.views && '%s' and %s ", $viewVector, $groupRoleFilter);
         } else {
             $sql = sprintf("select * from users where %s ", $groupRoleFilter);
