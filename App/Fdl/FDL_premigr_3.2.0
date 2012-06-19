@@ -12,6 +12,13 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+"$wpub/wsh.php" --api=updateclass --appc=FDL --class=DocTag
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error updating class doctag."
+    exit $RET
+fi
+
 PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<EOF
 BEGIN;
 DROP SCHEMA family CASCADE;

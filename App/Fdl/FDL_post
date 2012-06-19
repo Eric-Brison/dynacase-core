@@ -91,6 +91,7 @@ if [ "$1" = "I" ] ; then
         DocAttrLDAP \
         DocCount \
         DocFam \
+        DocTag \
         DocHisto \
         DocLog \
         DocWait \
