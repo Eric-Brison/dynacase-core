@@ -502,6 +502,8 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
                 default:
                     $s->setTypeFilter($s::userType);
             }
+        } else {
+            $s->setTypeFilter($s::userType);
         }
         
         $tr = array();

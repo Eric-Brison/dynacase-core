@@ -137,8 +137,18 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                 else $tv = array(
                     $doc->$k
                 );
-                //		print_r2($tv);
-                $this->copyRelations($tv, $doc, $v->id);
+                $tvrel = array();
+                foreach ($tv as $relid) {
+                    if (strpos($relid, '<BR>') !== false) {
+                        $tt = explode('<BR>', $relid);
+                        foreach ($tt as $brelid) {
+                            if (is_numeric($brelid)) $tvrel[] = intval($brelid);
+                        }
+                    } elseif (is_numeric($relid)) {
+                        $tvrel[] = intval($relid);
+                    }
+                }
+                $this->copyRelations(array_unique($tvrel) , $doc, $v->id);
             }
         }
     }
