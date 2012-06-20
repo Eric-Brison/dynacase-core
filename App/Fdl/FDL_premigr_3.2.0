@@ -32,8 +32,8 @@ PGSERVICE="$pgservice_core" psql -t -c "update docattr set type= 'enum' where ty
 PGSERVICE="$pgservice_core" psql -t -c "update docattr set type= 'text' where type='textlist' and docid < 200;"
 
 
-PGSERVICE="$pgservice_core" psql -t -c "update users set accounttype='U' where isgroup is null or isgroup != 'Y';"
-PGSERVICE="$pgservice_core" psql -t -c "update users set accounttype='G' where isgroup = 'Y';"
+PGSERVICE="$pgservice_core" psql -t -c "update users set accounttype='U' where accounttype is null and (isgroup is null or isgroup != 'Y');"
+PGSERVICE="$pgservice_core" psql -t -c "update users set accounttype='G' where accounttype is null and isgroup = 'Y';"
 PGSERVICE="$pgservice_core" psql -t -c "update doc128 set us_passwd=null;"
 PGSERVICE="$pgservice_core" psql -t -c "drop TRIGGER tinitacl on docperm;"
 PGSERVICE="$pgservice_core" psql -f "$wpub/FDL/fdl.sql"
