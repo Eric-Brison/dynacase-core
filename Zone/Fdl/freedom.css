@@ -45,7 +45,7 @@ body.documentView img.documentIcon{ margin-right : 5px; }
   text-transform:capitalize;
 }
 
-TABLE.tablehead TR.FREEDOMBack1 {
+TABLE.tablehead TR.FREEDOMBack1, DIV.tablefoot {
 	background-color: [CORE_BGCELLCOLOR];
 }
 TR.FREEDOMBack1 {
@@ -413,7 +413,7 @@ TABLE.transparent TBODY TR TD,TABLE.transparent TBODY TR,TABLE.transparent THEAD
 TBODY.overflow {
   overflow:auto;
 }
-TABLE.tablefoot {
+TABLE.tablefoot, DIV.tablefoot {
 	position:fixed;
 	top:auto;
 	right:0;

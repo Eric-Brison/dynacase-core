@@ -518,7 +518,12 @@ $action_desc = array(
       "name"	=> "REPORT_EXPORT_CSV",
       "short_name" => N_("export a report"),
       "acl" => "NORMAL"
-  )
+  ),
+    array(
+        "name" => "TAG_MANAGEMENT",
+        "short_name" => N_("Manage documents tags"),
+        "acl" => "NORMAL"
+    )
 
 );
 

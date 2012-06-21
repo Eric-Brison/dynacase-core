@@ -70,7 +70,7 @@ function viewcard(Action & $action)
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/DHTMLapi.js");
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/iframe.js");
     */
-    
+    $action->parent->addJsRef("FDL/Layout/viewcard.js");
     if ($reload) {
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/reload.js");
         $action->unregister("reload$docid");
@@ -89,6 +89,18 @@ function viewcard(Action & $action)
     }
     $action->lay->set("RSS", ($doc->getValue("gui_isrss") == "yes"));
     $action->lay->set("rsslink", $doc->getRssLink());
+    if ($doc->getFamDoc()->tagable != "" && $doc->getFamDoc()->tagable != "none") {
+        $action->lay->set("TAGABLE", true);
+        error_log("control edit is == " . var_export($doc->control("edit") , true));
+        if (($doc->control("edit") == "" && $doc->getFamDoc()->tagable == "restricted") || $doc->getFamDoc()->tagable == "public") {
+            error_log("tag mode true");
+            $action->lay->set("tagMode", 'true');
+        } else {
+            $action->lay->set("tagMode", 'false');
+        }
+    } else {
+        $action->lay->set("TAGABLE", false);
+    }
     if ($doc->wid > 0) {
         $err = $doc->setMask(0);
         if ($err) addWarningMsg($err);

@@ -110,6 +110,11 @@ function generic_edit(Action & $action)
     else $action->lay->Set("shorticon", $doc->getIcon());
     $action->lay->Set("docicon", $doc->getIcon('', 16));
     $action->lay->Set("STITLE", addJsSlashes($action->lay->get("title"))); // for include in JS
+    if ($doc->getFamDoc()->tagable != "none") {
+        $action->lay->set("TAGABLE", true);
+    } else {
+        $action->lay->set("TAGABLE", false);
+    }
     if ($zonebodycard == "") {
         if ($doc->cvid > 0) {
             /**

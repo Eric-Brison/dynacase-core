@@ -364,10 +364,11 @@ function getpopupdocdetail(Action & $action, $docid)
             "visibility" => POPUP_CTRLACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ) ,
+        ) /*,
         "tag" => array(
             "descr" => _("Add a tag") ,
-            "url" => "$surl&app=FDL&action=TAG_MANAGEMENT&type=view",
+            "url" => "",
+            "jsfunction" => "popdoc(null, '$surl&app=FDL&action=TAG_MANAGEMENT&type=view&id=$docid', '"._("Add a tag")."')",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
@@ -375,7 +376,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "visibility" => ($doc->getFamDoc()->tagable == "public" ? POPUP_ACTIVE : POPUP_INVISIBLE) ,
             "submenu" => "",
             "barmenu" => "false"
-        )
+        )*/
     ));
     
     changeMenuVisibility($action, $tlink, $doc);

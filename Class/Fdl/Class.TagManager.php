@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 include_once ("Class.DocTag.php");
 include_once ("Class.QueryDb.php");
@@ -73,9 +73,10 @@ class TagManager
         }
         if (!$this->docid) return _("Document id not found");
         if ($tag == "") return _("no tag specified");
-        /**
-         * @var DocTag $tagDb;
-         */
+        $docTags = $this->getTagsValue($this->getTag());
+        if (in_array($tag, $docTags)) {
+            return "";
+        }
         $tagDb = new DocTag($this->dbaccess);
         $tagDb->initid = $this->docid;
         $tagDb->date = date("d-m-Y H:i:s");
