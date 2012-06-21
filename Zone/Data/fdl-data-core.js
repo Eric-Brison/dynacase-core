@@ -129,7 +129,7 @@ Fdl.formatDate = function (isodate, fmt) {
 		return r;
 	}
 	return '';
-}
+};
 /**
  * @deprecated
  */
