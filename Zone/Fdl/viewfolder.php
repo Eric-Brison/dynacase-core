@@ -91,6 +91,10 @@ $famid = "") // folder containt special fam id
     if ($dirid) $sd->useCollection($dirid);
     $sd->excludeConfidential();
     $sd->distinct = $distinct;
+    $orderbyLabel = '';
+    if ($action->getArgument('onefam')) {
+        $orderbyLabel = preg_replace('/^-/', '', $sqlorder);
+    }
     if ($column) {
         if ($sqlorder != "") {
             $sqlorder = "fromid,$sqlorder";
@@ -98,7 +102,7 @@ $famid = "") // folder containt special fam id
             $sqlorder = "fromid,title";
         }
     }
-    $sd->setOrder($sqlorder);
+    $sd->setOrder($sqlorder, $orderbyLabel);
     if ($sqlfilters) foreach ($sqlfilters as $filter) $sd->addFilter($filter);
     $sd->setObjectReturn();
     //$ldoc = getChildDoc($dbaccess, $dirid,$start,$slice,$sqlfilters,$action->user->id,"TABLE",$famid,
