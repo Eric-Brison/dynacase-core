@@ -36,7 +36,7 @@ if ($vf->Retrieve($vaultid, $info) != "") {
     if (($info->public_access)) {
         Http_DownloadFile($info->path, $info->name, $mimetype, true);
     } else {
-        Http_DownloadFile("FREEDOM/Images/doc.gif", "unknow", "image/gif", true);
+        Http_DownloadFile("Images/doc.png", "unknow", "image/png", true);
     }
 }
 ?>

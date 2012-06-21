@@ -4779,12 +4779,13 @@ create unique index i_docir on doc(initid, revision);";
         }
         /**
          * return icon url
-         * if no icon found return doc.gif
+         * if no icon found return doc.png
+         * @param string $idicon
+         * @param int $size width size
          * @return string icon url
          */
         final public function getIcon($idicon = "", $size = null)
         {
-            
             global $action;
             if ($idicon == "") $idicon = $this->icon;
             if ($idicon != "") {
@@ -4800,15 +4801,8 @@ create unique index i_docir on doc(initid, revision);";
                 }
                 return $efile;
             } else {
-                if ($this->fromid == 0) {
-                    
-                    return $action->GetImageUrl("doc.gif", true, $size);
-                }
-                //$fdoc = new_Doc(newDoc($this->dbaccess, $this->fromid);
-                return $action->GetImageUrl("doc.gif", true, $size);
-                // don't recursivity to increase speed
-                //    return $fdoc->geticon();
                 
+                return $action->GetImageUrl("doc.png", true, $size);
             }
         }
         // change icon for a class or a simple doc
