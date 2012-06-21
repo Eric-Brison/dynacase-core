@@ -610,7 +610,9 @@ function addFamilyPopup(&$tlink, Doc & $doc)
         } else {
             $tlink[$k]["target"] = $v->id . "_" . $doc->id;
         }
-        if ($v->getOption("ltarget") != "") $tlink[$k]["target"] = $v->getOption("ltarget");
+        if ($v->getOption("ltarget") != "") {
+            $tlink[$k]["target"] = $v->getOption("ltarget");
+        } else if ($v->getOption("mtarget") != "") $tlink[$k]["target"] = $v->getOption("mtarget");
         $tlink[$k]["idlink"] = $v->id;
         $tlink[$k]["descr"] = $v->getLabel();
         $tlink[$k]["title"] = $v->getOption("ltitle");
@@ -644,9 +646,11 @@ function addFamilyPopup(&$tlink, Doc & $doc)
             $v->link = $reg[2];
             $tlink[$k]["target"] = $reg[1];
         } else {
-            $tlink[$k]["target"] = $v->id . "_" . $doc->id;;
+            $tlink[$k]["target"] = $v->id . "_" . $doc->id;
         }
-        if ($v->getOption("ltarget") != "") $tlink[$k]["target"] = $v->getOption("ltarget");
+        if ($v->getOption("ltarget") != "") {
+            $tlink[$k]["target"] = $v->getOption("ltarget");
+        } else if ($v->getOption("mtarget") != "") $tlink[$k]["target"] = $v->getOption("mtarget");
         $tlink[$k]["barmenu"] = ($v->getOption("barmenu") == "yes") ? "true" : "false";
         $tlink[$k]["idlink"] = $v->id;
         $tlink[$k]["descr"] = $v->getLabel();
