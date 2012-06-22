@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rpt="http://openoffice.org/2005/report" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:css3t="http://www.w3.org/TR/css3-text/" office:version="1.2" office:mimetype="application/vnd.oasis.opendocument.text">
- <office:meta><meta:initial-creator>Eric Brison</meta:initial-creator><meta:creation-date>2012-06-04T14:57:40</meta:creation-date><dc:date>2012-06-27T10:59:00</dc:date><meta:editing-duration>PT48M8S</meta:editing-duration><meta:editing-cycles>13</meta:editing-cycles><meta:generator>LibreOffice/3.5$MacOSX_x86 LibreOffice_project/165a79a-7059095-e13bb37-fef39a4-9503d18</meta:generator><meta:document-statistic meta:table-count="1" meta:image-count="0" meta:object-count="0" meta:page-count="2" meta:paragraph-count="103" meta:word-count="553" meta:character-count="3760" meta:non-whitespace-character-count="3309"/></office:meta>
+ <office:meta><meta:initial-creator>Eric Brison</meta:initial-creator><meta:creation-date>2012-06-04T14:57:40</meta:creation-date><dc:date>2012-06-28T16:38:45</dc:date><meta:editing-duration>PT51M58S</meta:editing-duration><meta:editing-cycles>15</meta:editing-cycles><meta:generator>LibreOffice/3.5$Linux_x86 LibreOffice_project/350m1$Build-2</meta:generator><dc:creator>Eric Brison</dc:creator><meta:document-statistic meta:table-count="1" meta:image-count="0" meta:object-count="0" meta:page-count="2" meta:paragraph-count="105" meta:word-count="566" meta:character-count="3828" meta:non-whitespace-character-count="3366"/></office:meta>
  <office:settings>
   <config:config-item-set config:name="ooo:view-settings">
    <config:config-item config:name="ViewAreaTop" config:type="int">0</config:config-item>
-   <config:config-item config:name="ViewAreaLeft" config:type="int">0</config:config-item>
-   <config:config-item config:name="ViewAreaWidth" config:type="int">26876</config:config-item>
-   <config:config-item config:name="ViewAreaHeight" config:type="int">19369</config:config-item>
+   <config:config-item config:name="ViewAreaLeft" config:type="int">3175</config:config-item>
+   <config:config-item config:name="ViewAreaWidth" config:type="int">14766</config:config-item>
+   <config:config-item config:name="ViewAreaHeight" config:type="int">16379</config:config-item>
    <config:config-item config:name="ShowRedlineChanges" config:type="boolean">true</config:config-item>
    <config:config-item config:name="InBrowseMode" config:type="boolean">false</config:config-item>
    <config:config-item-map-indexed config:name="Views">
     <config:config-item-map-entry>
      <config:config-item config:name="ViewId" config:type="string">view2</config:config-item>
-     <config:config-item config:name="ViewLeft" config:type="int">15393</config:config-item>
-     <config:config-item config:name="ViewTop" config:type="int">4514</config:config-item>
-     <config:config-item config:name="VisibleLeft" config:type="int">0</config:config-item>
+     <config:config-item config:name="ViewLeft" config:type="int">12813</config:config-item>
+     <config:config-item config:name="ViewTop" config:type="int">6736</config:config-item>
+     <config:config-item config:name="VisibleLeft" config:type="int">3175</config:config-item>
      <config:config-item config:name="VisibleTop" config:type="int">0</config:config-item>
-     <config:config-item config:name="VisibleRight" config:type="int">26875</config:config-item>
-     <config:config-item config:name="VisibleBottom" config:type="int">19368</config:config-item>
+     <config:config-item config:name="VisibleRight" config:type="int">17939</config:config-item>
+     <config:config-item config:name="VisibleBottom" config:type="int">16378</config:config-item>
      <config:config-item config:name="ZoomType" config:type="short">0</config:config-item>
      <config:config-item config:name="ViewLayoutColumns" config:type="short">1</config:config-item>
      <config:config-item config:name="ViewLayoutBookMode" config:type="boolean">false</config:config-item>
@@ -365,6 +365,18 @@
   <style:style style:name="P15" style:family="paragraph" style:parent-style-name="Standard">
    <style:paragraph-properties style:text-autospace="none"/>
   </style:style>
+  <style:style style:name="P16" style:family="paragraph" style:parent-style-name="Table_20_Contents">
+   <style:paragraph-properties fo:text-align="start" style:justify-single-word="false" style:text-autospace="none"/>
+   <style:text-properties style:font-name="DejaVu Sans" fo:font-size="9pt" fo:font-style="normal" fo:font-weight="normal" style:font-name-asian="DejaVu Sans1" style:font-size-asian="16pt" style:font-style-asian="normal" style:font-weight-asian="normal" style:font-name-complex="DejaVu Sans1" style:font-size-complex="9pt" style:font-style-complex="normal" style:font-weight-complex="normal"/>
+  </style:style>
+  <style:style style:name="P17" style:family="paragraph" style:parent-style-name="Table_20_Contents">
+   <style:paragraph-properties fo:text-align="start" style:justify-single-word="false" style:text-autospace="none">
+    <style:tab-stops>
+     <style:tab-stop style:position="4.471cm"/>
+    </style:tab-stops>
+   </style:paragraph-properties>
+   <style:text-properties style:use-window-font-color="true" style:font-name="DejaVu Sans" fo:font-size="9pt" fo:font-style="normal" style:text-underline-style="none" fo:font-weight="normal" style:font-name-asian="DejaVu Sans1" style:font-size-asian="16pt" style:font-style-asian="normal" style:font-weight-asian="normal" style:font-name-complex="DejaVu Sans1" style:font-size-complex="9pt" style:font-style-complex="normal" style:font-weight-complex="normal"/>
+  </style:style>
   <style:style style:name="T1" style:family="text">
    <style:text-properties fo:font-size="9pt" style:font-size-asian="9pt" style:font-size-complex="9pt"/>
   </style:style>
@@ -427,6 +439,7 @@
       <text:p text:style-name="P2">3.2.0</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Tableau1.A2" office:value-type="string">
+      <text:p text:style-name="P4">28 juin 2012</text:p>
       <text:p text:style-name="P4">26 juin 2012</text:p>
       <text:p text:style-name="P4">25 juin 2012</text:p>
       <text:p text:style-name="P4">21 juin 2012</text:p>
@@ -486,6 +499,7 @@
       <text:p text:style-name="P4">14 novembre 2011</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Tableau1.A2" office:value-type="string">
+      <text:p text:style-name="P10">Ajout §3.15 - Mise à jour d&apos;attribut sur des collections</text:p>
       <text:p text:style-name="P10">Ajout §3.3.11 &quot;Ordre de tri des résultats&quot;</text:p>
       <text:p text:style-name="P10">Modification documentation option &apos;sortable&apos; (§2.1.4.2)</text:p>
       <text:p text:style-name="P10">Ajout option noaccesstext pour les attributs docid §2.1.4.2</text:p>
@@ -555,8 +569,8 @@
      <table:table-cell table:style-name="Tableau1.A2" office:value-type="string">
       <text:p text:style-name="P5">12 juillet 2011</text:p>
       <text:p text:style-name="P7"/>
-      <text:p text:style-name="P7"/>
       <text:p text:style-name="P7"><text:soft-page-break/></text:p>
+      <text:p text:style-name="P7"/>
       <text:p text:style-name="P5">27 juillet 2011</text:p>
       <text:p text:style-name="P7"/>
       <text:p text:style-name="P7"/>
@@ -573,8 +587,8 @@
      <table:table-cell table:style-name="Tableau1.A2" office:value-type="string">
       <text:p text:style-name="P6">Modification §3.2 Méthode doc::store()</text:p>
       <text:p text:style-name="P6">Modification §3.5 Calcul méthodes statiques</text:p>
-      <text:p text:style-name="P6">Modification §3.3 Ajout d&apos;un itérateur de document</text:p>
-      <text:p text:style-name="P14"><text:soft-page-break/></text:p>
+      <text:p text:style-name="P6"><text:soft-page-break/>Modification §3.3 Ajout d&apos;un itérateur de document</text:p>
+      <text:p text:style-name="P14"/>
       <text:p text:style-name="P6">Ajout §3.1 Publication de module</text:p>
       <text:p text:style-name="P6">Ajout §3.13 Manipulation des utilisateurs</text:p>
       <text:p text:style-name="P6">Ajout §3.14 Manipulation DbObj et Transaction</text:p>

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-20 14:37+0200\n"
+"POT-Creation-Date: 2012-06-28 15:29+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -177,6 +177,10 @@ msgid "%d documents"
 msgstr "Import"
 
 #, c-format
+msgid "%d documents are updated"
+msgstr ""
+
+#, c-format
 msgid "%d documents linked to the profil"
 msgstr ""
 
@@ -202,6 +206,14 @@ msgstr ""
 
 #, c-format
 msgid "%d stored files"
+msgstr ""
+
+#, c-format
+msgid "%d/%d profiling done"
+msgstr ""
+
+#, c-format
+msgid "%d/%d revision done"
 msgstr ""
 
 #, c-format
@@ -3805,6 +3817,9 @@ msgstr "Update LDAP server"
 msgid "Update document if has permission else ignored"
 msgstr ""
 
+msgid "Update history done"
+msgstr ""
+
 msgid "Update profiling is in progress."
 msgstr ""
 
@@ -4480,6 +4495,10 @@ msgid "archive file %s has been deleted"
 msgstr ""
 
 msgid "archived"
+msgstr ""
+
+#, c-format
+msgid "argument %s=>%s"
 msgstr ""
 
 msgid "ask"
@@ -7905,9 +7924,40 @@ msgstr ""
 msgid "proceed background import of %d documents"
 msgstr ""
 
+#, c-format
+msgid "process %s"
+msgstr ""
+
+#, c-format
+msgid "process addValue for %d documents"
+msgstr ""
+
+#, c-format
+msgid "process history for %d documents"
+msgstr ""
+
+#, c-format
+msgid "process removeValue for %d documents"
+msgstr ""
+
+#, c-format
+msgid "process replaceValue for %d documents"
+msgstr ""
+
+msgid "process revision done"
+msgstr ""
+
+#, c-format
+msgid "process revision for %d documents"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "process search comes from %s"
 msgstr "Start search"
+
+#, c-format
+msgid "process setValue for %d documents"
+msgstr ""
 
 msgid "processes execution plan"
 msgstr ""

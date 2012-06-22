@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-20 14:37+0200\n"
-"PO-Revision-Date: 2012-06-20 14:38+0200\n"
+"POT-Creation-Date: 2012-06-28 15:29+0200\n"
+"PO-Revision-Date: 2012-06-28 15:29+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -159,6 +159,10 @@ msgid "%d documents"
 msgstr "%d documents"
 
 #, c-format
+msgid "%d documents are updated"
+msgstr "%d documents mis à jour"
+
+#, c-format
 msgid "%d documents linked to the profil"
 msgstr "%d documents liés à ce profil"
 
@@ -185,6 +189,14 @@ msgstr "%d minutes"
 #, c-format
 msgid "%d stored files"
 msgstr "%d fichiers stockés"
+
+#, c-format
+msgid "%d/%d profiling done"
+msgstr "%d/%d mise à jour de profils effectués"
+
+#, c-format
+msgid "%d/%d revision done"
+msgstr "%d/%d révisions effectuées"
 
 #, c-format
 msgid "%s (as substitute)"
@@ -3664,6 +3676,9 @@ msgid "Update document if has permission else ignored"
 msgstr ""
 "Mets à jour le document si permission accordée sinon modification ignorée"
 
+msgid "Update history done"
+msgstr "Mise à jour de l'historique effectuée"
+
 msgid "Update profiling is in progress."
 msgstr "Mise à jour des privilèges en cours"
 
@@ -4294,6 +4309,10 @@ msgstr "L'archive %s a été supprimée"
 
 msgid "archived"
 msgstr "Archivé"
+
+#, c-format
+msgid "argument %s=>%s"
+msgstr "argument %s=>%s"
 
 msgid "ask"
 msgstr "accord"
@@ -7500,8 +7519,39 @@ msgid "proceed background import of %d documents"
 msgstr "Effectuer l'import en tache de fond de %d documents"
 
 #, c-format
+msgid "process %s"
+msgstr "traitement %s"
+
+#, c-format
+msgid "process addValue for %d documents"
+msgstr "Traitement ajout de valeur pour %d documents"
+
+#, c-format
+msgid "process history for %d documents"
+msgstr "Traitement de l'historique pour %d documents"
+
+#, c-format
+msgid "process removeValue for %d documents"
+msgstr "Traitement suppression de valeur pour %d documents"
+
+#, c-format
+msgid "process replaceValue for %d documents"
+msgstr "Traitement remplacement de valeur pour %d documents"
+
+msgid "process revision done"
+msgstr "traitement des révisions effectué"
+
+#, c-format
+msgid "process revision for %d documents"
+msgstr "traitement des révisions pour %d documents"
+
+#, c-format
 msgid "process search comes from %s"
 msgstr "recherche de processus issus de %s"
+
+#, c-format
+msgid "process setValue for %d documents"
+msgstr "traitement d'affectation de valeur pour %d documents"
 
 msgid "processes execution plan"
 msgstr "plabification de processus d'execution"
@@ -9381,6 +9431,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "admin view"
 #~ msgstr "vue administrateur"
+
+#~ msgid "argument %s=%s"
+#~ msgstr "argument %s=%s"
 
 #~ msgid "authentication failed"
 #~ msgstr "échec d'authentification"

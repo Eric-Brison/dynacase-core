@@ -279,6 +279,16 @@ class SearchDoc
         $this->resultQPos = 0;
         $this->debuginfo = "";
     }
+    /**
+     * reset result offset
+     * use it to redo a document iteration
+     */
+    public function rewind()
+    {
+        
+        $this->resultPos = 0;
+        $this->resultQPos = 0;
+    }
     /** 
      * Verify if query is already sended to database
      * @return boolean
@@ -855,6 +865,11 @@ class SearchDoc
     {
         if ($returnobject) $this->mode = "ITEM";
         else $this->mode = "TABLE";
+    }
+    
+    public function isObjectReturn()
+    {
+        return ($this->mode == "ITEM");
     }
     /**
      * the return of ::search will be array of values

@@ -7,21 +7,20 @@
 
 namespace PU;
 
-require_once 'PU_testcase_dcp_document.php';
+require_once 'PU_testcase_dcp_commonfamily.php';
 
-class TestGetSearchMethods extends TestCaseDcpDocument
+class TestGetSearchMethods extends TestCaseDcpCommonFamily
 {
-    public static function setUpBeforeClass()
+    /**
+     * import TST_UPDTATTR
+     * @static
+     * @return array|string
+     */
+    protected static function getCommonImportFile()
     {
-        parent::setUpBeforeClass();
-        self::connectUser();
-        self::beginTransaction();
-        self::importDocument("PU_data_dcp_getSearchMethods.ods");
-    }
-    public static function tearDownAfterClass()
-    {
-        self::rollbackTransaction();
-        parent::tearDownAfterClass();
+        return array(
+            "PU_data_dcp_getSearchMethods.ods"
+        );
     }
     /**
      * Test getSearchMethods() method
@@ -118,7 +117,7 @@ class TestGetSearchMethods extends TestCaseDcpDocument
         $dSearch = new_Doc(self::$dbaccess, $dSearchId, true);
         $this->assertTrue($dSearch->isAlive() , sprintf("dSearch with id '%s' is not alive.", $dSearchId));
         $sql = $dSearch->getSqlDetailFilter();
-        $this->assertTrue(($sql == 'false'), sprintf("getSqlDetailFilter() did not returned (string)'false' (returned value is '%s').", $sql));
+        $this->assertTrue(($sql == 'false') , sprintf("getSqlDetailFilter() did not returned (string)'false' (returned value is '%s').", $sql));
     }
     public function data_invalidSearchMethod()
     {

@@ -246,8 +246,10 @@ create sequence seq_id_users start 10;";
             // compute auto role reference
             $this->login = uniqid('role');
         }
+        
         if ($this->setloginName($this->login)) return _("this login exists");
         if ($this->login == "") return _("login must not be empty");
+        $this->login = mb_strtolower($this->login);
         if ($this->id == "") {
             $res = pg_query($this->dbid, "select nextval ('seq_id_users')");
             $arr = pg_fetch_array($res, 0);
@@ -302,6 +304,8 @@ create sequence seq_id_users start 10;";
                 $this->setAdminHtpasswd($this->password_new);
             }
         }
+        
+        $this->login = mb_strtolower($this->login);
         //expires and passdelay
         $this->GetExpires();
     }
