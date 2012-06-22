@@ -23,6 +23,7 @@ class Fdl_Document
 {
     
     protected $doc;
+    protected $_properties;
     public $dbaccess;
     function __construct($id = 0, $config = null, Doc & $doc = null)
     {
@@ -116,13 +117,41 @@ class Fdl_Document
                 $this->doc->applyMask();
                 $isoDate = (getParam("DATA_LCDATE") == 'iso');
                 foreach ($nattr as $k => $v) {
-                    if ($v->mvisibility != "I" && $this->doc->$k) {
+                    if ($v->mvisibility != "I" && $this->doc->$k && $v->getOption("autotitle") != "yes") {
                         if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id] = $this->doc->GetTValue($v->id);
                         else $lvalues[$v->id] = $this->doc->getValue($v->id);
                         
-                        if (($v->type == "docid") && ($v->visibility != 'H') && ($v->getOption("doctitle") != "auto")) {
-                            $lvalues[$v->id . "_title"] = $this->doc->getTitle($this->doc->getValue($v->id));
-                            if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->_val2array($lvalues[$v->id . "_title"]);
+                        if (($v->type == "docid" || $v->type == "account") && ($v->visibility != 'H')) {
+                            $isLatest = $v->getOption("docrev", "latest") == "latest";
+                            if ($v->isMultiple()) {
+                                $lv = $lvalues[$v->id];
+                                $ltitle = array();
+                                foreach ($lv as $kv => $aDocid) {
+                                    if (strpos($aDocid, '<BR>') !== false) {
+                                        
+                                        $tt = explode('<BR>', $aDocid);
+                                        $lvalues[$v->id][$kv] = $tt;
+                                        $trtitle = array();
+                                        foreach ($tt as $vv) {
+                                            $rtitle = DocTitle::getRelationTitle($vv, $isLatest, $this->doc);
+                                            if ($rtitle === false) $rtitle = $v->getOption("noaccesstext", _("information access deny"));
+                                            $trtitle[] = $rtitle;
+                                        }
+                                        $ltitle[] = $trtitle; //implode('<BR>',$trtitle);
+                                        
+                                    } else {
+                                        $rtitle = DocTitle::getRelationTitle($aDocid, $isLatest, $this->doc);
+                                        if ($rtitle === false) $rtitle = $v->getOption("noaccesstext", _("information access deny"));
+                                        $ltitle[] = $rtitle;
+                                    }
+                                }
+                                $lvalues[$v->id . "_title"] = $ltitle;
+                            } else {
+                                $lvalues[$v->id . "_title"] = DocTitle::getRelationTitle($this->doc->getValue($v->id) , $isLatest, $this->doc);
+                                if ($lvalues[$v->id . "_title"] === false) $lvalues[$v->id . "_title"] = $v->getOption("noaccesstext", _("information access deny"));
+                            }
+                            //if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->_val2array($lvalues[$v->id . "_title"]);
+                            
                         } elseif (($v->type == "thesaurus")) {
                             $lvalues[$v->id . "_title"] = $this->doc->getTitle($this->doc->getValue($v->id));
                             if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->_val2array($lvalues[$v->id . "_title"]);
@@ -161,6 +190,9 @@ class Fdl_Document
     function getProposalDocuments($aid, $key)
     {
         if ($this->doc) {
+            /**
+             * @var NormalAttribute $oa
+             */
             $oa = $this->doc->getAttribute($aid);
             $oa->phpfile = "fdl.php";
             $famid = $oa->format;
@@ -186,6 +218,7 @@ class Fdl_Document
     function setValue($aid, $nv)
     {
         if ($this->doc) {
+            $err = '';
             $oa = $this->doc->getAttribute($aid);
             if ($oa && ($oa->mvisibility != "I")) $err = $this->doc->setValue($oa->id, $nv);
             if ($err == "") return true;
@@ -281,6 +314,9 @@ class Fdl_Document
                 }
             }
             if ($this->doc && $this->doc->wid) {
+                /**
+                 * @var WDoc $wd
+                 */
                 $wd = new_doc($this->dbaccess, $this->doc->wid);
                 if ($wd->isAlive()) {
                     $props["colorstate"] = $wd->getColor($this->doc->state);

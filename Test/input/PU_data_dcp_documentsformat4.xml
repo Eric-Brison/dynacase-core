@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2012-06-12T14:00:23" author="Default Master" name="recherche_Test_Format">
+
+<tst_fmtcol xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_fmtcol.xsd"   name="TST_FMTCOL4" title="Test 4" revision="1" modification-date="2012-06-12T11:47:08" version="" state="E3">
+<tst_frame><tst_title>Test 4</tst_title>
+<tst_double xsi:nil="true"/>
+<tst_int xsi:nil="true"/>
+<tst_text>Pôt au feu</tst_text>
+<tst_date>2012-06-08</tst_date>
+<tst_ts>2012-06-13 11:27:00</tst_ts>
+<tst_time>12:20:00</tst_time>
+<tst_color>#FFFF5C</tst_color>
+<tst_file vid="0" mime="text/plain" title="Test.txt">VGVzdAo=</tst_file>
+<tst_img vid="0" mime="image/png" title="add.png">iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAADoSURBVDiNrZOxboNADIY/08CAunTIQBakSLRbH6Qv0XfrQ/QBmLM1iqIMERnaDqxcJsBdOHQhXJOI/JJ1Z8v32z7boqpMQTDpNTDz2OfA08BmgO8zT1Udkwz4BUoreZ6/qqoMfX0ZAByA0CpJktSXSlgAj45+dAk6ZN1ZAT8A4nThWUQ+Hec94LZoCUhX9huwG2YA8DWWZof1pRJs2jfhrgSVqq6sEobhS13XD1Y3xmziOO597UU8o5yJyDvQExRF8ZGm6ZbTj/XPQRAEx7Zte4IoikYj+QiqpmlKTnfFDKP/V8LVmLyNf9lXY6ltlYsrAAAAAElFTkSuQmCC</tst_img>
+<tst_html>&lt;p&gt;
+	&lt;strong&gt;Gras&lt;/strong&gt;&lt;/p&gt;</tst_html>
+<tst_rellatest name="TST_FMTCOL3">Test 3</tst_rellatest>
+<!--autotitle tst_rellatest_title  -->
+<tst_relfix xsi:nil="true"/>
+<tst_relmul xsi:nil="true"/>
+<tst_enum>1</tst_enum>
+<tst_t_array><tst_doubles>56.67</tst_doubles>
+<tst_ints>25</tst_ints>
+<tst_texts>colonne 1</tst_texts>
+<tst_dates>2012-06-14</tst_dates>
+<tst_tss>2012-06-04 11:29</tst_tss>
+<tst_times>08:55</tst_times></tst_t_array>
+<tst_t_array2><tst_colors>#80CCFF</tst_colors>
+<tst_files></tst_files>
+<tst_imgs vid="0" mime="image/png" title="application-exit.png">iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAHzSURBVDiNlZFPaBNBFMZ/s7tNS6tLREuFYsEItbloglH3lnoQPHrqUU/ttRukghSxxx4q2UOg2puChx4ELxYigsmtQUK9GXuIbEtQkKIW0Wwyu+NhzT9SJH0wMO+b73vzvfdEOckNBI+BJMeLHRT3RCnJzumpWCJ6fhpNNwZSBr7kx+ddDvaqH4ymT2JsyMArvQVfDva3bjA2GeOrT0KrS/DcKk1P0pTQlKBfTrfvR2KexHOr1CVo9X9A69GYs5nYKBBZzLaxyGKWiY0CxpzdU6QuQbyMoeIjoTNxJc3M80Lbae2ZA8DkXbuNVe7MospFAD7WQb99kpUzGgQBfNtz2Y1EuZCyADATFmbCaovfPHH4s/mUEUL+lwZoXlefpgKxmiG/7vTNLb/uIFYzmKrD9yQYnh8mrTAB84htThlwqHq5ng9aQ4LsOuPLWeLzdl+B+LzN+HK2h9uQoLUcNCUEqTSxhY54K+ewleu0E1uwCVKddXo+6LNDrJwV4VAOXZfywU8u3bzF65zDr4cZGu/yuCeiTF+zeHE/g/9qE12F/H0J4tEo6npXz78VVK00k9tFTokQ+66gZqWJbRcZFR1uSYJ4MIy6qoPeP7f/hg+898EIfCrVgJlzYvAiPrCvIFBUDCFZqmmsuYqLx3FgCD4NByz9BeQV9UqcAilWAAAAAElFTkSuQmCC</tst_imgs>
+<tst_htmls>&lt;p&gt;	Texte Un&lt;/p&gt;</tst_htmls></tst_t_array2>
+<tst_t_array2><tst_colors>#FFD77A</tst_colors>
+<tst_files vid="0" mime="text/plain" title="Test2.txt">VGVzdDIK</tst_files>
+<tst_imgs vid="0" mime="image/png" title="appointment.png">iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAHoSURBVDiNjZO/a1NRFMc/N/cir6GSIIEXRPDHgwzJkEgWQajEPyLSxVWIm9P7Azo7ZdBVstRmzGxAOugiFIQSW41Dh6gJvJik9qWvPS73ldvYwQOHe8/h+/2eH5erRIQrLAPkAc86wIn1CDi/QIrIqq9FURT4vr9ljOkDQ2BojOn7vr8VRVEgImsp/h9yGIYbWutdS9wPgmA7CIJtYB8Yaq13wzDcSEWUM0JmOp3eLRQKr5MkKQBLgNFo9BKgWCy+sLhrxpjxeDx+lsvlhhln7nylUtlMkiQHzIAYiH3f3/N9fy+NgVmSJLlKpbIJ5I0j4E0mk9vAdGWhZ/aMnVxssZ7bgbdcLm84lWKHNBORHRHZ6XQ6PSC22EsCOpPJJKsC9Xr9IXAd6AP9Xq+3BGKt9Ry4tMR7wGNAAyilHtn8HSuQ2gz4XiqVDgeDwSt3B0Yp9RxARJ4AD2x+wBXWaDS+AScGuAms2/zHFCAiH2wn91fJ1Wr1Z7vdPgAiA6wrpd64AmksIk+Bskuu1Wrjbrd7YIz5BJynI7xfKXIRZ7PZY8/zTsvl8u9ms3ncarV+aK3fAX8ADDAXka+28i1b+cjyzxaLxSFwCoyBI+AzzmdyX6GklGpagbfAl6uWt2ruK8xF5Fd6/x8ywF8z++g7VppyxQAAAABJRU5ErkJggg==</tst_imgs>
+<tst_htmls>&lt;p&gt;	Texte Deux&lt;/p&gt;</tst_htmls></tst_t_array2>
+<tst_t_array3><tst_rellatests xsi:nil="true"/>
+<tst_relfixs xsi:nil="true"/>
+    <tst_relmuls name="TST_FMTCOL1">Test 1</tst_relmuls>
+<tst_enums>1</tst_enums></tst_t_array3>
+<tst_t_array3><tst_rellatests xsi:nil="true"/>
+<tst_relfixs xsi:nil="true"/>
+    <tst_relmuls name="TST_FMTCOL1,TST_FMTCOL2,TST_FMTCOL3" >multiple document</tst_relmuls>
+<tst_enums>2</tst_enums></tst_t_array3>
+<tst_t_array3><tst_rellatests xsi:nil="true"/>
+<tst_relfixs xsi:nil="true"/>
+    <tst_relmuls name="TST_FMTCOL2,TST_FMTCOL1" >multiple document</tst_relmuls>
+<tst_enums>3</tst_enums></tst_t_array3>
+<tst_t_array3><tst_rellatests xsi:nil="true"/>
+<tst_relfixs xsi:nil="true"/>
+<tst_relmuls xsi:nil="true"/>
+<tst_enums>1</tst_enums></tst_t_array3></tst_frame>
+
+</tst_fmtcol>
+</documents>

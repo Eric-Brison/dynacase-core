@@ -41,16 +41,42 @@ class FormatCollection
     );
     private $fmtAttrs = array();
     private $ncAttribute = '';
-    
+    /**
+     * @var int relation icon size in pixel
+     */
     public $relationIconSize = 14;
+    /**
+     * @var int thumbnail width in pixel
+     */
     public $imageThumbnailSize = 48;
+    /**
+     * @var string text in case of no access in relation target
+     */
+    public $relationNoAccessText = "";
     const title = "title";
-    
+    /**
+     * name property
+     */
     const propName = "name";
+    /**
+     * id property
+     */
     const propId = "id";
+    /**
+     * icon property
+     */
     const propIcon = "icon";
+    /**
+     * initid property
+     */
     const propInitid = "initid";
+    /**
+     * url access to document
+     */
     const propUrl = "url";
+    /**
+     * state property
+     */
     const propState = "state";
     public function __construct()
     {
@@ -230,7 +256,8 @@ class FormatCollection
                 break;
 
             case 'docid':
-                $info = new docidAttributeValue($oa, $value, $doc, $this->relationIconSize);
+            case 'account':
+                $info = new docidAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
                 break;
 
             case 'file':
@@ -415,37 +442,32 @@ class docidAttributeValue extends standardAttributeValue
     
     public $url;
     public $icon;
-    /**
-     * @var NormalAttribute
-     */
-    private $oa;
     
-    public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24)
+    public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
         $this->familyRelation = $oa->format;
-        $this->oa = $oa;
-        
-        $hasTitle = $oa->getOption("doctitle");
-        if ($hasTitle == "auto") $hasTitle = $oa->id . '_title';
         
         $this->value = $v;
         $prop = getDocProperties($v, $oa->getOption("docrev", "latest") == "latest", array(
             "title",
             "icon"
         ));
-        $this->displayValue = getDocTitle($v, $oa->getOption("docrev", "latest") == "latest");
-        // print_r($prop);
-        $this->displayValue = $prop["title"];
-        if ($prop["icon"]) $this->icon = $doc->getIcon($prop["icon"], $iconsize);
-        $this->url = $this->getDocUrl($v);
-        
-        $this->oa = null;
+        $this->displayValue = DocTitle::getRelationTitle($v, $oa->getOption("docrev", "latest") == "latest", $doc);
+        if ($this->displayValue !== false) {
+            // print_r($prop);
+            //$this->displayValue = $prop["title"];
+            if (!$prop["icon"]) $prop["icon"] = "doc.png";
+            $this->icon = $doc->getIcon($prop["icon"], $iconsize);
+            $this->url = $this->getDocUrl($v, $oa->getOption("docrev"));
+        } else {
+            if ($relationNoAccessText) $this->displayValue = $relationNoAccessText;
+            else $this->displayValue = $oa->getOption("noaccesstext", _("information access deny"));
+        }
     }
     
-    private function getDocUrl($v)
+    private function getDocUrl($v, $docrev)
     {
         if (!$v) return '';
-        $docrev = $this->oa->getOption("docrev");
         $ul = "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=" . $v;
         
         if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";

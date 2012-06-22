@@ -375,7 +375,7 @@ function getDocTitle($id, $latest = true)
     if ($id > 0) {
         
         if (!$latest) $sql = sprintf("select title, doctype, locked, initid from docread where id=%d", $id);
-        else $sql = sprintf("select title, doctype, locked, initid from docread where initid=(select initid from docread where id=%d) and locked != -1", $id);
+        else $sql = sprintf("select title, doctype, locked, initid from docread where initid=(select initid from docread where id=%d) order by id desc limit 1", $id);
         simpleQuery($dbaccess, $sql, $t, false, true);
         
         if (!$t) return '';
@@ -401,7 +401,7 @@ function getDocProperties($id, $latest = true, array $prop = array(
     if (($id > 0) && count($prop) > 0) {
         $sProps = implode(',', $prop);
         if (!$latest) $sql = sprintf("select %s, doctype, locked, initid from docread where id=%d", $sProps, $id);
-        else $sql = sprintf("select %s, doctype, locked, initid from docread where initid=(select initid from docread where id=%d) and locked != -1", $sProps, $id);
+        else $sql = sprintf("select %s, doctype, locked, initid from docread where initid=(select initid from docread where id=%d) order by id desc limit 1", $sProps, $id);
         simpleQuery($dbaccess, $sql, $t, false, true);
         
         if (!$t) return null;

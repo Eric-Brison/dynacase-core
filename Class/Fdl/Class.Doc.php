@@ -5106,6 +5106,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($htmllink) {
                 
                 if (!$title) $title = $this->getHTMLTitle(strtok($id, '#') , '', $latest);
+                else $title = $this->htmlEncode($title);
                 if (trim($title) == "") {
                     if ($id < 0) {
                         $a = "<a>" . sprintf(_("document not exists yet")) . "</a>";
@@ -7242,14 +7243,24 @@ create unique index i_docir on doc(initid, revision);";
             function getHTMLTitle($id = "-1", $def = "", $latest = false)
             {
                 $t = $this->getTitle($id, $def, $latest);
-                $t = str_replace("&", "&amp;", $t);
+                return $this->htmlEncode($t);
+            }
+            /**
+             * the < > & characters as replace by entities
+             * @static
+             * @param $s
+             * @return mixed
+             */
+            public static function htmlEncode($s)
+            {
+                $s = str_replace("&", "&amp;", $s);
                 return str_replace(array(
                     "<",
                     ">"
                 ) , array(
                     "&lt;",
                     "&gt;"
-                ) , $t);
+                ) , $s);
             }
             /**
              * return the today date with european format DD/MM/YYYY

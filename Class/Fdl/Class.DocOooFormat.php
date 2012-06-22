@@ -107,8 +107,11 @@ class DocOooFormat
                 case "doc":
                     break;
 
+                case "account":
+                    $oooval = $this->formatAccount($avalue);
+                    break;
+
                 case "docid":
-                    
                     $oooval = $this->formatDocid($avalue);
                     break;
 
@@ -317,6 +320,16 @@ class DocOooFormat
         return $oooval;
     }
     /**
+     * format Account attribute
+     * @param $avalue
+     * @return string HTML value
+     */
+    public function formatAccount($avalue)
+    {
+        if (!$this->oattr->format) $this->oattr->format = "x";
+        return $this->formatDocid($avalue);
+    }
+    /**
      * format Docid attribute
      *
      * @param string $avalue raw value of attribute
@@ -328,6 +341,8 @@ class DocOooFormat
         if ($this->oattr->format != "") {
             
             $this->cFormat = "";
+            $isLatest = $this->oattr->getOption("docrev", "latest") == "latest";
+            
             $multiple = ($this->oattr->getOption("multiple") == "yes");
             $dtarget = $this->target;
             if ($this->target != "mail") {
@@ -345,8 +360,11 @@ class DocOooFormat
                 $oooval = implode("<text:tab/>", $thval);
             } else {
                 if ($avalue == "") $oooval = $avalue;
-                elseif ($this->oattr->link != "") $oooval = $this->doc->getTitle($avalue);
-                else $oooval = $this->doc->getDocAnchor(trim($avalue) , $dtarget, false);
+                else {
+                    $title = DocTitle::getRelationTitle(trim($avalue) , $isLatest, $this->doc);
+                    if ($title === false) $title = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
+                    $oooval = $this->doc->htmlEncode($title);
+                }
             }
         } else $oooval = $avalue;
         return $oooval;
