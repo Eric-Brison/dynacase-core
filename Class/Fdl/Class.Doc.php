@@ -4779,12 +4779,13 @@ create unique index i_docir on doc(initid, revision);";
         }
         /**
          * return icon url
-         * if no icon found return doc.gif
+         * if no icon found return doc.png
+         * @param string $idicon
+         * @param int $size width size
          * @return string icon url
          */
         final public function getIcon($idicon = "", $size = null)
         {
-            
             global $action;
             if ($idicon == "") $idicon = $this->icon;
             if ($idicon != "") {
@@ -4800,15 +4801,8 @@ create unique index i_docir on doc(initid, revision);";
                 }
                 return $efile;
             } else {
-                if ($this->fromid == 0) {
-                    
-                    return $action->GetImageUrl("doc.gif", true, $size);
-                }
-                //$fdoc = new_Doc(newDoc($this->dbaccess, $this->fromid);
-                return $action->GetImageUrl("doc.gif", true, $size);
-                // don't recursivity to increase speed
-                //    return $fdoc->geticon();
                 
+                return $action->GetImageUrl("doc.png", true, $size);
             }
         }
         // change icon for a class or a simple doc
@@ -5112,6 +5106,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($htmllink) {
                 
                 if (!$title) $title = $this->getHTMLTitle(strtok($id, '#') , '', $latest);
+                else $title = $this->htmlEncode($title);
                 if (trim($title) == "") {
                     if ($id < 0) {
                         $a = "<a>" . sprintf(_("document not exists yet")) . "</a>";
@@ -7248,14 +7243,24 @@ create unique index i_docir on doc(initid, revision);";
             function getHTMLTitle($id = "-1", $def = "", $latest = false)
             {
                 $t = $this->getTitle($id, $def, $latest);
-                $t = str_replace("&", "&amp;", $t);
+                return $this->htmlEncode($t);
+            }
+            /**
+             * the < > & characters as replace by entities
+             * @static
+             * @param $s
+             * @return mixed
+             */
+            public static function htmlEncode($s)
+            {
+                $s = str_replace("&", "&amp;", $s);
                 return str_replace(array(
                     "<",
                     ">"
                 ) , array(
                     "&lt;",
                     "&gt;"
-                ) , $t);
+                ) , $s);
             }
             /**
              * return the today date with european format DD/MM/YYYY

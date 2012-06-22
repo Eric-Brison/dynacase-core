@@ -228,7 +228,7 @@ class DocHtmlFormat
                         $ltitle = $this->oattr->getOption("ltitle");
                         if ($ltitle != "") $ititle = str_replace("\"", "'", $ltitle);
                         $abegin = "<a target=\"$this->target\" title=\"$ititle\" onmousedown=\"document.noselect=true;\" href=\"";
-                        $abegin.= $ulink . "\" ";;
+                        $abegin.= $ulink . "\" ";
                         if ($this->htmlLink > 1) {
                             $scheme = "";
                             if (preg_match("/^([[:alpha:]]*):(.*)/", $ulink, $reg)) {
@@ -429,7 +429,7 @@ class DocHtmlFormat
                         //$errconvert=trim(file_get_contents($info->path));
                         //$errconvert=sprintf('<p>%s</p>',str_replace(array("'","\r","\n"),array("&rsquo;",""),nl2br(htmlspecialchars($errconvert,ENT_COMPAT,"UTF-8"))));
                         if ($fileInfo->teng_state > 1) $waiting = "<img class=\"mime\" src=\"Images/loading.gif\">";
-                        else $waiting = "<img class=\"mime\" needresize=1 src=\"Images/bullet_error.png\">";;
+                        else $waiting = "<img class=\"mime\" needresize=1 src=\"Images/bullet_error.png\">";
                         $htmlval = sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>', $this->doc->getFileLink($this->oattr->id, $this->index) , $fileInfo->id_file, str_replace("'", "&rsquo;", _("file status")) , $waiting, $textval);
                         if ($fileInfo->teng_state < 0) {
                             $htmlval.= sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>', $this->doc->id, $this->oattr->id, $this->index, _("retry file conversion") , "Images/arrow_refresh.png");
@@ -842,25 +842,39 @@ class DocHtmlFormat
                 $ltarget = $this->oattr->getOption("ltarget");
                 if ($ltarget != "") $dtarget = $ltarget;
             }
+            $isLatest = $this->oattr->getOption("docrev", "latest") == "latest";
             if ($multiple) {
                 $avalue = str_replace("\n", "<BR>", $avalue);
                 $tval = explode("<BR>", $avalue);
                 $thval = array();
                 foreach ($tval as $kv => $vv) {
                     if (trim($vv) == "") $thval[] = $vv;
-                    elseif ($this->oattr->link != "") {
-                        $link = preg_replace("/%" . $this->oattr->id . "%/i", $vv, $this->oattr->link);
-                        $link = $this->doc->urlWhatEncode($this->oattr->link, $kvalue);
-                        if ($link) $thval[] = '<a target="' . $dtarget . '" href="' . $link . '">' . $this->doc->getHTMLTitle($vv) . '</a>';
-                        else $thval[] = $this->doc->getHTMLTitle($vv);
-                    } else $thval[] = $this->doc->getDocAnchor(trim($vv) , $dtarget, $this->htmlLink, false, true, $this->oattr->getOption("docrev") , true);
+                    else {
+                        $title = DocTitle::getRelationTitle(trim($vv) , $isLatest, $this->doc);
+                        if ($this->oattr->link != "" && $title) {
+                            $link = $this->doc->urlWhatEncode($this->oattr->link, $kvalue);
+                            if ($link) $thval[] = '<a target="' . $dtarget . '" href="' . $link . '">' . $this->doc->htmlEncode($title) . '</a>';
+                            else {
+                                if ($title === false) $title = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
+                                $thval[] = $this->doc->htmlEncode($title);
+                            }
+                        } else {
+                            
+                            if ($title === false) $thval[] = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
+                            else $thval[] = $this->doc->getDocAnchor(trim($vv) , $dtarget, $this->htmlLink, $title, true, $this->oattr->getOption("docrev") , true);
+                        }
+                    }
                 }
                 if ($this->oattr->link) $this->htmlLink = false;
                 $htmlval = implode("<br/>", $thval);
             } else {
                 if ($avalue == "") $htmlval = $avalue;
                 elseif ($this->oattr->link != "") $htmlval = $this->doc->getHTMLTitle($avalue);
-                else $htmlval = $this->doc->getDocAnchor(trim($avalue) , $dtarget, $this->htmlLink, false, true, $this->oattr->getOption("docrev") , true);
+                else {
+                    $title = DocTitle::getRelationTitle(trim($avalue) , $isLatest, $this->doc);
+                    if ($title === false) $htmlval = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
+                    else $htmlval = $this->doc->getDocAnchor(trim($avalue) , $dtarget, $this->htmlLink, $title, true, $this->oattr->getOption("docrev") , true);
+                }
             }
         } else $htmlval = $avalue;
         return $htmlval;
@@ -879,7 +893,7 @@ class DocHtmlFormat
             $avalue = str_replace("\n", "<BR>", $avalue);
             $tval = explode("<BR>", $avalue);
             $thval = array();
-            foreach ($tval as $kv => $vv) {
+            foreach ($tval as $vv) {
                 if (trim($vv) == "") $thval[] = $vv;
                 else {
                     $thc = new_doc($this->doc->dbaccess, trim($vv));
@@ -959,13 +973,15 @@ class DocHtmlFormat
         if (stripos($avalue, "data-initid") !== false) {
             try {
                 $domDoc = new DOMDocument();
-
+                
                 $domDoc->loadHTML(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8'));
-
+                
                 $aElements = $domDoc->getElementsByTagName("a");
-
+                /**
+                 * @var DOMElement $currentA
+                 */
                 foreach ($aElements as $currentA) {
-                    /* @var $currentA DOMElement */
+                    
                     if ($currentA->hasAttribute("data-initid")) {
                         $newA = $this->doc->getDocAnchor($currentA->getAttribute("data-initid") , $this->target, $shtmllink, false, true, $currentA->getAttribute("data-docrev"));
                         $newAFragment = $domDoc->createDocumentFragment();
@@ -973,7 +989,7 @@ class DocHtmlFormat
                         $currentA->parentNode->replaceChild($newAFragment, $currentA);
                     }
                 }
-
+                
                 $avalue = $domDoc->saveHTML();
             }
             catch(Exception $e) {
@@ -1092,4 +1108,3 @@ class DocHtmlFormat
         return $v;
     }
 }
-?>

@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-14 16:51+0200\n"
-"PO-Revision-Date: 2012-06-14 15:23+0200\n"
+"POT-Creation-Date: 2012-06-20 14:37+0200\n"
+"PO-Revision-Date: 2012-06-20 14:38+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 
 msgid " Access Control for"
 msgstr "Contrôle des accès pour"
@@ -782,8 +782,8 @@ msgstr ""
 msgid ""
 "Attribute Error: impossible to found the family for docid attribute '%s'"
 msgstr ""
-"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid '%"
-"s'"
+"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid "
+"'%s'"
 
 #, c-format
 msgid "Attribute [%s] is not found"
@@ -2057,10 +2057,6 @@ msgstr "Groupe"
 msgid "Group \"%s\""
 msgstr "le groupe \"%s\""
 
-#, c-format
-msgid "Group '%s' not exists"
-msgstr "Le groupe '%s' n'existe pas"
-
 msgid "Group Access"
 msgstr "Accès des groupes"
 
@@ -2128,8 +2124,8 @@ msgstr "Image (PNG)"
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;%"
-"s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;"
+"%s&gt; will be sended with result rapport"
 msgstr ""
 "L'import %s est en cours. Lorsque la mise à jour sera finie, un email sera "
 "envoyé à \n"
@@ -3076,10 +3072,6 @@ msgstr "Rôle"
 #, c-format
 msgid "Role \"%s\""
 msgstr "le rôle \"%s\""
-
-#, c-format
-msgid "Role '%s' not exists"
-msgstr "Le rôle '%s' n'existe pas"
 
 msgid "Role Access"
 msgstr "Accès des rôles"
@@ -6399,6 +6391,9 @@ msgstr "Le filtre global \"%s\" est incorrect"
 msgid "increase size vault"
 msgstr "Augmenter la taille du coffre"
 
+msgid "information access deny"
+msgstr "Information non accessible"
+
 msgid "informations"
 msgstr "informations"
 
@@ -7473,6 +7468,9 @@ msgstr "Préférés"
 msgid "prefered search"
 msgstr "Recherche préférée"
 
+msgid "preferential doc gate id"
+msgstr "identifiant de portail par défaut"
+
 msgid "prev"
 msgstr "précédent"
 
@@ -8181,8 +8179,8 @@ msgstr ""
 "<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
 "p>\n"
 "<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
-"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
-"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
+"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème"
+"%20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
@@ -8711,6 +8709,9 @@ msgstr "utiliser la touche ctrl dans les menus popup"
 msgid "use dynacase user management"
 msgstr "utiliser la gestion d'utilisateur de dynacase"
 
+msgid "use what gate"
+msgstr "utiliser le portail what"
+
 #, c-format
 msgid "user #%d does not exist"
 msgstr "l'utilisateur n°%d n'existe pas"
@@ -9216,6 +9217,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Error: missing or empty --config"
 #~ msgstr "Erreur: --config manquant ou absent"
 
+#~ msgid "Group '%s' not exists"
+#~ msgstr "Le groupe '%s' n'existe pas"
+
 #~ msgid "Import from"
 #~ msgstr "Importation à partir de"
 
@@ -9278,6 +9282,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Replace address book card if has permission else duplicate"
 #~ msgstr "Remplace la carte si permission accordée sinon duplication"
+
+#~ msgid "Role '%s' not exists"
+#~ msgstr "Le rôle '%s' n'existe pas"
 
 #~ msgid ""
 #~ "Send mail error : Relation to attribute %s not found. Relation key %s "
@@ -9387,8 +9394,8 @@ msgstr "le titre de {left} inclus {right}"
 #~ "<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus "
 #~ "valide. Dans ce cas, veuillez renouveller votre demande.</p>\n"
 #~ "<p>Si le problème persiste, veuillez prendre contact avec <a href="
-#~ "\"mailto:[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot%"
-#~ "20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
+#~ "\"mailto:[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot"
+#~ "%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
 
 #~ msgid "callbackreqpasswd_callback_ok"
 #~ msgstr ""
@@ -9737,8 +9744,8 @@ msgstr "le titre de {left} inclus {right}"
 #~ "n'est pas le cas, veuillez détruire ce message.</p>\n"
 #~ "<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
 #~ "suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL]guest.php"
-#~ "[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]"
-#~ "\">[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
+#~ "[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token="
+#~ "[CALLBACK_TOKEN]\">[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
 #~ "app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p>"
 
 #~ msgid "submitreqpasswd_mail_hello"
@@ -9779,9 +9786,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "usage %s --famid=<family id> [--force=yes]"
 #~ msgstr "usage %s --famid=<family id> [--force=yes]"
-
-#~ msgid "use what gate"
-#~ msgstr "utiliser le portail what"
 
 #~ msgid "user"
 #~ msgstr "utilisateur"

@@ -27,7 +27,10 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             "PU_data_dcp_formatcollection.ods",
             "PU_data_dcp_documentsformat1.xml",
             "PU_data_dcp_documentsformat2.xml",
-            "PU_data_dcp_documentsformat3.xml"
+            "PU_data_dcp_documentsformat3.xml",
+            "PU_data_dcp_documentsformat4.xml",
+            "PU_data_dcp_documentsformat3.xml",
+            "PU_data_dcp_formatcollectionprofil.ods",
         );
     }
     
@@ -46,6 +49,16 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
     }
     protected $famName = 'TST_FMTCOL';
     /**
+     * @dataProvider dataRenderProfilRelationFormatCollection
+     */
+    public function testRenderProfilRelationFormatCollection($login, $docName, $attrName, $expectRender, $expectContainRender = array())
+    {
+        $this->sudo($login);
+        
+        $this->testRenderFormatCollection($docName, $attrName, $expectRender, $expectContainRender);
+        $this->exitSudo();
+    }
+    /**
      * @dataProvider dataRenderFormatCollection
      */
     public function testRenderFormatCollection($docName, $attrName, $expectRender, $expectContainRender = array())
@@ -55,6 +68,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $dl = $s->search()->getDocumentList();
         $fc = new \FormatCollection();
         $fc->useCollection($dl);
+        $fc->relationNoAccessText = 'no grant';
         $fc->addProperty($fc::propName)->addProperty($fc::propUrl);
         
         $f = new_doc(self::$dbaccess, $this->famName);
@@ -252,6 +266,19 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                     "url" => "latest=Y"
                 )
             ) ,
+            
+            array(
+                "TST_FMTCOL4",
+                "tst_rellatest",
+                array(
+                    "displayValue" => "Test 3",
+                    "familyRelation" => "TST_FMTCOL"
+                ) ,
+                array(
+                    "value" => "^[0-9]+$",
+                    "url" => "latest=Y"
+                )
+            ) ,
             array(
                 "TST_FMTCOL2",
                 "tst_title",
@@ -422,6 +449,126 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                     "size" => 5,
                     "mime" => "text/plain",
                     "fileName" => "Test.txt"
+                )
+            )
+        );
+    }
+    
+    public function dataRenderProfilRelationFormatCollection()
+    {
+        return array(
+            array(
+                "tstLoginFmtU1",
+                "TST_FMTCOL1",
+                "tst_title",
+                array(
+                    "value" => "Test 1",
+                    "displayValue" => "Test 1"
+                )
+            ) ,
+            array(
+                "tstLoginFmtU1",
+                "TST_FMTCOL2",
+                "tst_rellatest",
+                array(
+                    "displayValue" => "Test 1",
+                    "familyRelation" => "TST_FMTCOL"
+                ) ,
+                array(
+                    "value" => "^[0-9]+$",
+                    "url" => "latest=Y"
+                )
+            ) ,
+            
+            array(
+                "tstLoginFmtU1",
+                "TST_FMTCOL4",
+                "tst_rellatest",
+                array(
+                    "displayValue" => "Test 3",
+                    "familyRelation" => "TST_FMTCOL"
+                ) ,
+                array(
+                    "value" => "^[0-9]+$",
+                    "url" => "latest=Y"
+                )
+            ) ,
+            
+            array(
+                "tstLoginFmtU2",
+                "TST_FMTCOL4",
+                "tst_rellatest",
+                array(
+                    "displayValue" => "no grant",
+                    "familyRelation" => "TST_FMTCOL"
+                ) ,
+                array(
+                    "value" => "^[0-9]+$",
+                    "url" => ""
+                )
+            ) ,
+            
+            array(
+                "tstLoginFmtU1",
+                "TST_FMTCOL2",
+                "tst_relmuls",
+                array(
+                    "displayValue" => array(
+                        array(
+                            "Test 1"
+                        ) ,
+                        array(
+                            "Test 1"
+                        ) ,
+                        array(
+                            "Test 1"
+                        )
+                    ) ,
+                )
+            ) ,
+            
+            array(
+                "tstLoginFmtU2",
+                "TST_FMTCOL4",
+                "tst_relmuls",
+                array(
+                    "displayValue" => array(
+                        array(
+                            "Test 1"
+                        ) ,
+                        array(
+                            "Test 1",
+                            "Test 2",
+                            "no grant"
+                        ) ,
+                        array(
+                            "Test 2",
+                            "Test 1"
+                        ) ,
+                        array()
+                    ) ,
+                )
+            ) ,
+            
+            array(
+                "tstLoginFmtU1",
+                "TST_FMTCOL3",
+                "tst_relmuls",
+                array(
+                    "displayValue" => array(
+                        array(
+                            "Test 1"
+                        ) ,
+                        array(
+                            "Test 1",
+                            "Test 2"
+                        ) ,
+                        array(
+                            "Test 2",
+                            "Test 1"
+                        ) ,
+                        array()
+                    ) ,
                 )
             )
         );

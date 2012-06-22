@@ -980,18 +980,21 @@ class NormalAttribute extends BasicAttribute
          */
         private function getTextualValueDocId(Doc $doc, $index = - 1)
         {
-            $optionDoc = $this->getOption('docrev', "");
-            $displayTitle = function ($id) use ($optionDoc, $doc)
+            
+            $isLatest = $this->getOption("docrev", "latest") == "latest";
+            $accessText = $this->getOption("noaccesstext", _("information access deny"));
+            $displayTitle = function ($id) use ($isLatest, $accessText, $doc)
             {
                 /**
                  * @var Doc $doc
                  */
-                if ($optionDoc == "fixed") {
-                    return $doc->getTitle($id);
-                } else {
-                    return $doc->getTitle($id, "", true);
-                }
+                
+                $title = DocTitle::getRelationTitle($id, $isLatest, $doc);
+                
+                if ($title === false) $title = $doc->htmlEncode($accessText);
+                return $title;
             };
+            
             if ($this->inArray()) {
                 if ($index >= 0) {
                     if ($this->getOption('multiple') == 'yes') {
