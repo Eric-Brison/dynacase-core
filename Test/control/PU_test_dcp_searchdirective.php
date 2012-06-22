@@ -472,7 +472,285 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             )
         );
     }
-    
+    /**
+     * Test setOrder by label on enum attributes
+     *
+     * @dataProvider dataSearchDocSetOrder
+     */
+    function testSearchDocSetOrder($fam, $orderby, $orderbyLabel, $expectedCount, $expectedTitles = array())
+    {
+        $search = new \SearchDoc(self::$dbaccess, $fam);
+        $search->setObjectReturn(true);
+        $search->setOrder($orderby, $orderbyLabel);
+        $search->search();
+        
+        $count = $search->count();
+        $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true) , var_export($orderbyLabel, true), $count, $expectedCount));
+        
+        $titles = array();
+        while ($doc = $search->nextDoc()) {
+            $titles[] = $doc->title;
+        }
+        
+        $s1 = join(', ', $titles);
+        $s2 = join(', ', $expectedTitles);
+        $this->assertTrue($s1 == $s2, sprintf("Expected titles not found: titles = [%s] / expected titles = [%s] / sql = [%s]", $s1, $s2, $search->getOriginalQuery()));
+    }
+    function dataSearchDocSetOrder()
+    {
+        return array(
+            array(
+                'TST_ORDERBY_LABEL',
+                'a_enum',
+                'a_enum',
+                3,
+                array(
+                    'AAA',
+                    'BBB',
+                    'CCC'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL',
+                'a_enum asc',
+                'a_enum',
+                3,
+                array(
+                    'AAA',
+                    'BBB',
+                    'CCC'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL',
+                '-a_enum',
+                'a_enum',
+                3,
+                array(
+                    'CCC',
+                    'BBB',
+                    'AAA'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL',
+                'a_enum desc',
+                'a_enum',
+                3,
+                array(
+                    'CCC',
+                    'BBB',
+                    'AAA'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL',
+                'a_docid_0',
+                'a_docid_0',
+                3,
+                array(
+                    'CCC',
+                    'BBB',
+                    'AAA'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL',
+                '-a_docid_0',
+                'a_docid_0',
+                3,
+                array(
+                    'AAA',
+                    'BBB',
+                    'CCC'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL',
+                'a_docid_1',
+                'a_docid_1',
+                3,
+                array(
+                    'AAA',
+                    'BBB',
+                    'CCC'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL',
+                '-a_docid_1',
+                'a_docid_1',
+                3,
+                array(
+                    'CCC',
+                    'BBB',
+                    'AAA'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL',
+                'a_docid_2',
+                'a_docid_2',
+                3,
+                array(
+                    'AAA',
+                    'BBB',
+                    'CCC'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL',
+                '-a_docid_2',
+                'a_docid_2',
+                3,
+                array(
+                    'CCC',
+                    'BBB',
+                    'AAA'
+                )
+            )
+        );
+    }
+    /**
+     * Test setOrder by label on enum attributes
+     *
+     * @dataProvider dataSearchDocSetOrderWithCollection
+     */
+    function testSearchDocSetOrderWithCollection($collectionId, $orderby, $orderbyLabel, $expectedCount, $expectedTitles = array())
+    {
+        $search = new \SearchDoc(self::$dbaccess);
+        $search->useCollection($collectionId);
+        $search->setObjectReturn(true);
+        $search->setOrder($orderby, $orderbyLabel);
+        $search->search();
+
+        $count = $search->count();
+        $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true) , var_export($orderbyLabel, true), $count, $expectedCount));
+
+        $titles = array();
+        while ($doc = $search->nextDoc()) {
+            $titles[] = $doc->title;
+        }
+
+        $s1 = join(', ', $titles);
+        $s2 = join(', ', $expectedTitles);
+        $this->assertTrue($s1 == $s2, sprintf("Expected titles not found: titles = [%s] / expected titles = [%s] / sql = [%s]", $s1, $s2, $search->getOriginalQuery()));
+    }
+    function dataSearchDocSetOrderWithCollection()
+    {
+        return array(
+            array(
+                'TST_ORDERBY_LABEL_COLLECTION_1',
+                'a_enum',
+                'a_enum',
+                3,
+                array(
+                    'AAA',
+                    'BBB',
+                    'CCC'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL_COLLECTION_1',
+                'a_enum asc',
+                'a_enum',
+                3,
+                array(
+                    'AAA',
+                    'BBB',
+                    'CCC'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL_COLLECTION_1',
+                '-a_enum',
+                'a_enum',
+                3,
+                array(
+                    'CCC',
+                    'BBB',
+                    'AAA'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL_COLLECTION_1',
+                'a_enum desc',
+                'a_enum',
+                3,
+                array(
+                    'CCC',
+                    'BBB',
+                    'AAA'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL_COLLECTION_1',
+                'a_docid_0',
+                'a_docid_0',
+                3,
+                array(
+                    'CCC',
+                    'BBB',
+                    'AAA'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL_COLLECTION_1',
+                '-a_docid_0',
+                'a_docid_0',
+                3,
+                array(
+                    'AAA',
+                    'BBB',
+                    'CCC'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL_COLLECTION_1',
+                'a_docid_1',
+                'a_docid_1',
+                3,
+                array(
+                    'AAA',
+                    'BBB',
+                    'CCC'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL_COLLECTION_1',
+                '-a_docid_1',
+                'a_docid_1',
+                3,
+                array(
+                    'CCC',
+                    'BBB',
+                    'AAA'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL_COLLECTION_1',
+                'a_docid_2',
+                'a_docid_2',
+                3,
+                array(
+                    'AAA',
+                    'BBB',
+                    'CCC'
+                )
+            ) ,
+            array(
+                'TST_ORDERBY_LABEL_COLLECTION_1',
+                '-a_docid_2',
+                'a_docid_2',
+                3,
+                array(
+                    'CCC',
+                    'BBB',
+                    'AAA'
+                )
+            )
+        );
+    }
     private function getFilterResult(\DocumentList $dl)
     {
         $names = array();
