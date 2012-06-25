@@ -105,6 +105,14 @@ if [ -n "$CORE_LCDATE" ]; then
     fi
 fi
 
+log "Setting standard_conforming_strings to 'off'..."
+PGSERVICE="$core_db" psql -c "ALTER DATABASE \"$CURRENT_DATABASE\" SET standard_conforming_strings = 'off'"
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error setting standard_conforming_strings to 'off' on current database \"$CURRENT_DATABASE\""
+    exit $RET
+fi
+
 log "Setting session.save_path..."
 if [ -f "${WIFF_CONTEXT_ROOT}/.htaccess" ]; then
     sed -i.orig -e "s;^\([[:space:]]*php_value[[:space:]][[:space:]]*session\.save_path[[:space:]][[:space:]]*\).*$;\1\"${WIFF_CONTEXT_ROOT}/session\";" "${WIFF_CONTEXT_ROOT}/.htaccess"

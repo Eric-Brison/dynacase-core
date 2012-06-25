@@ -51,4 +51,14 @@ PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval,
 PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|local]', '') where defval ~ 'us_domain';"
 PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|externe]', '') where defval ~ 'us_domain';"
 
-
+CURRENT_DATABASE=`PGSERVICE="$pgservice_core" psql -tA -c "SELECT current_database()"`
+if [ -z "$CURRENT_DATABASE" ]; then
+    echo "Could not get current_database from PGSERVICE=$pgservice_core"
+    exit 1
+fi
+PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$CURRENT_DATABASE\" SET standard_conforming_strings = 'off'"
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error setting standard_conforming_strings to 'off' on current database \"$CURRENT_DATABASE\""
+    exit $RET
+fi
