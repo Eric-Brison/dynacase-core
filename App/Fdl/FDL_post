@@ -65,6 +65,12 @@ if [ "$1" = "I" ] ; then
 	exit $RET
     fi
 
+    PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE\" SET standard_conforming_strings = 'off';"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+        echo "An error occured while setting standard_conforming_strings to 'off'"
+        exit $RET
+    fi
 
     PGSERVICE="$pgservice_freedom" pgExecuteSqlFile "$wpub/WHAT/getprivilege.sql"
     RET=$?
