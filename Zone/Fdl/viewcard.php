@@ -91,9 +91,7 @@ function viewcard(Action & $action)
     $action->lay->set("rsslink", $doc->getRssLink());
     if ($doc->getFamDoc()->tagable != "" && $doc->getFamDoc()->tagable != "none") {
         $action->lay->set("TAGABLE", true);
-        error_log("control edit is == " . var_export($doc->control("edit") , true));
         if (($doc->control("edit") == "" && $doc->getFamDoc()->tagable == "restricted") || $doc->getFamDoc()->tagable == "public") {
-            error_log("tag mode true");
             $action->lay->set("tagMode", 'true');
         } else {
             $action->lay->set("tagMode", 'false');

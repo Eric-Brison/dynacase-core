@@ -31,7 +31,7 @@ class TagManager
         $this->dbaccess = $doc->dbaccess;
     }
     
-    public function getTagsValue($tags)
+    static public function getTagsValue($tags)
     {
         $res = array();
         foreach ($tags as $tag) {
@@ -86,16 +86,99 @@ class TagManager
         return $err;
     }
     
-    public function getAllTags()
+    static public function getAllTags($start = 0, $slice = 0, $query = "", $orderby = "")
     {
-        $tagDb = new QueryDb($this->dbaccess, "DocTag");
-        $tags = $tagDb->Query(0, 0, "TABLE");
-        if ($tagDb->nb <= 0) {
-            return array();
+        $tags = array();
+        if ($orderby) {
+            $orderby = "ORDER BY $orderby";
+        }
+        if ($slice == 0) {
+            $slice = "ALL";
+        }
+        
+        $err = simpleQuery(getDbAccess() , sprintf("SELECT DISTINCT ON (tag) * FROM DocTag WHERE tag ~* '%s' %s LIMIT %s OFFSET %s", pg_escape_string($query) , $orderby, $slice, $start) , $tags);
+        if ($err) {
+            return array(
+                $err
+            );
         }
         return $tags;
     }
     
+    static public function getAllCount()
+    {
+        $tags = array();
+        $err = simpleQuery(getDbAccess() , "SELECT count(DISTINCT tag) as count FROM DocTag", $tags);
+        if ($err) {
+            return array(
+                $err
+            );
+        }
+        return $tags[0]["count"];
+    }
+    
+    static public function getAllTagsAndCount($start = 0, $slice = 0, $query = "", $orderby = "")
+    {
+        $tags = array();
+        if ($orderby) {
+            $orderby = "ORDER BY $orderby";
+        }
+        if ($slice == 0) {
+            $slice = "ALL";
+        }
+        $err = simpleQuery(getDbAccess() , sprintf("SELECT tag,count(DISTINCT initid) as number FROM DocTag WHERE tag ~* '%s' GROUP BY tag %s LIMIT %s OFFSET %s", pg_escape_string($query) , $orderby, $slice, $start) , $tags);
+        if ($err) {
+            return array(
+                $err
+            );
+        }
+        return $tags;
+    }
+    
+    static public function getTagCount($tag)
+    {
+        $tagDb = new QueryDb(getDbAccess() , "DocTag");
+        $tagDb->AddQuery(sprintf("tag = '%s'", pg_escape_string($tag)));
+        return $tagDb->Count();
+    }
+    
+    static public function deleteTagOnAllDocument($oldTag)
+    {
+        if (!$oldTag) return "";
+        if (is_array($oldTag)) {
+            $where = TagManager::constructWhereMultiple($oldTag);
+        } else {
+            $where = sprintf("tag = '%s'", pg_escape_string($oldTag));
+        }
+        $err = simpleQuery(getDbAccess() , sprintf("DELETE FROM Doctag WHERE %s", $where));
+        return $err;
+    }
+    
+    static public function renameTagOnAllDocument($oldTag, $newTag)
+    {
+        if ($newTag == "") return _("no tag specified");
+        if ($oldTag === $newTag) return "";
+        
+        if (is_array($oldTag)) {
+            $where = TagManager::constructWhereMultiple($oldTag);
+        } else {
+            $where = sprintf("tag = '%s'", pg_escape_string($oldTag));
+        }
+        $err = simpleQuery(getDbAccess() , sprintf("UPDATE Doctag SET tag = '%s' WHERE %s", pg_escape_string($newTag) , $where));
+        return $err;
+    }
+    
+    static private function constructWhereMultiple($oldTag)
+    {
+        $where = "";
+        foreach ($oldTag as $tag) {
+            if ($where) {
+                $where.= " OR ";
+            }
+            $where.= sprintf("tag = '%s'", pg_escape_string($tag));
+        }
+        return $where;
+    }
     public function renameTag($oldTag, $newTag)
     {
         if ($newTag == "") return _("no tag specified");

@@ -126,7 +126,7 @@ addEvent(window,"load",resetbodyopacity);
     <div id="fixtablefoot" class="[IFNOT ISIE]tablefoot [ENDIF ISIE]documentFoot footer">
     [IF HEAD]
     [IF TAGABLE]
-    [ZONE FDL:ZONE_TAG_MANAGEMENT?id=[id]&type=edit&mode=true]
+    [ZONE TAGMANAGEMENT:ZONE_TAG_MANAGEMENT?id=[id]&type=edit&mode=true]
     [ENDIF TAGABLE]
     [ENDIF HEAD]
     </div>

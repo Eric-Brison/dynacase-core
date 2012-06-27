@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 include_once ("Class.DbObj.php");
 class DocTag extends DbObj
@@ -44,6 +44,6 @@ create table doctag ( initid int not null,
                    date timestamp,
                    tag text,
                    fromuid int);
-create index in_doctag on doctag(initid);
+create index in_doctag on doctag(initid,tag);
 ";
 }
