@@ -453,7 +453,13 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                             if ($searchDoc) {
                                 $orderby = $searchDoc->orderby;
                             }
-                            if (!$isgroup) $qsql.= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
+                            if (!$isgroup) {
+                                if ($orderby != '') {
+                                    $qsql .= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
+                                } else {
+                                    $qsql .= " LIMIT $slice OFFSET $start;";
+                                }
+                            }
                         }
                     }
                 } else {
