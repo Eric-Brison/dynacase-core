@@ -38,7 +38,7 @@ array(
 				  "user"=>"Y"
 				  ),
       "FREEDOM_UPLOADDIR" => array(		
-				   "val"=>"/tmp/upload",
+				   "val"=>"./var/tmp",
 				   "descr"=> N_("directory to upload archive"),
 				   "global"=>"Y",
 				   "user"=>"N"

@@ -683,7 +683,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $ncol[1] = hexdec(substr($col, 3, 2));
         $ncol[2] = hexdec(substr($col, 5, 2));
         
-        $cdir = 'img-cache/';
+        $cdir = 'var/cache/image/';
         $rcdir = $this->rootdir . '/' . $cdir;
         if (!is_dir($rcdir)) mkdir($rcdir);
         

@@ -17,20 +17,29 @@
  */
 
 include_once ("FDL/import_file.php");
+include_once ("WHAT/Lib.Prefix.php");
 
-define("TARUPLOAD", getTmpDir() . "/upload/");
+define("TARUPLOAD", $pubdir . "/var/upload/");
 define("TAREXTRACT", "/extract/");
 define("TARTARS", "/tars/");
 
 function getTarUploadDir(Action & $action)
 {
+    global $pubdir;
     $dtar = $action->getParam("FREEDOM_UPLOADDIR");
+    if (substr($dtar, 0, 1) != '/') {
+        $dtar = $pubdir . '/' . $dtar;
+    }
     if ($dtar == "") $dtar = TARUPLOAD;
     return $dtar . "/" . $action->user->login . TARTARS;
 }
 function getTarExtractDir(Action & $action, $tar)
 {
+    global $pubdir;
     $dtar = $action->getParam("FREEDOM_UPLOADDIR");
+    if (substr($dtar, 0, 1) != '/') {
+        $dtar = $pubdir . '/' . $dtar;
+    }
     if ($dtar == "") $dtar = TARUPLOAD;
     return $dtar . "/" . $action->user->login . TAREXTRACT . $tar . "_D";
 }

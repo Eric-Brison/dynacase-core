@@ -94,7 +94,7 @@ class SessionUtils
         }
         $maxage = time() - $session_maxage;
         
-        $sessionDir = sprintf("%s/session", $pubdir);
+        $sessionDir = sprintf("%s/var/session", $pubdir);
         $dir = opendir($sessionDir);
         if ($dir === false) {
             $err = sprintf("Error opening directory '%s'.", $sessionDir);

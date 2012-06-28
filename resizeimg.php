@@ -91,7 +91,7 @@ function getVaultPauth($vid)
 
 function getVaultCacheImage($vid, $size)
 {
-    $basedest = "/img-cache/$size-vid$vid.png";
+    $basedest = "/var/cache/image/$size-vid$vid.png";
     return $basedest;
 }
 
@@ -135,7 +135,7 @@ if (preg_match("/vaultid=([0-9]+)/", $img, $vids)) {
     } else {
         $localimage = $img;
     }
-    $basedest = "/img-cache/$size-" . basename(str_replace("/", "_", $localimage)) . ".png";
+    $basedest = "/var/cache/image/$size-" . basename(str_replace("/", "_", $localimage)) . ".png";
     $dest = DEFAULT_PUBDIR . $basedest;
     
     if (file_exists($dest) && filemtime($dest) >= filemtime(DEFAULT_PUBDIR . "/$localimage")) {

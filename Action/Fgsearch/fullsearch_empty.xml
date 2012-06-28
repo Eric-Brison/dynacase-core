@@ -5,7 +5,7 @@
 <link rel="icon" href="[DYNACASE_FAVICO]" >
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
-<link title="[CORE_CLIENT]" type="application/opensearchdescription+xml" rel="search" href="img-cache/[HOST]-freedom-os.xml">
+<link title="[CORE_CLIENT]" type="application/opensearchdescription+xml" rel="search" href="var/cache/image/[HOST]-freedom-os.xml">
 
 [CSS:REF]
 </head>

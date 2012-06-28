@@ -377,7 +377,7 @@ class Session extends DbObj
         
         global $pubdir;
         
-        $sessionDir = sprintf("%s/session", $pubdir);
+        $sessionDir = sprintf("%s/var/session", $pubdir);
         if (!is_dir($sessionDir)) {
             trigger_error(sprintf("Session directory '%s' does not exists.", $sessionDir));
             return false;
@@ -412,7 +412,7 @@ class Session extends DbObj
         if ($sessid === null) {
             $sessid = $this->id;
         }
-        $sessionFile = sprintf("%s/session/sess_%s", $pubdir, $sessid);
+        $sessionFile = sprintf("%s/var/session/sess_%s", $pubdir, $sessid);
         if (file_exists($sessionFile)) {
             unlink($sessionFile);
         }

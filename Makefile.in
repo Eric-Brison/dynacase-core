@@ -59,19 +59,36 @@ $(pubdir)/context/default/dbaccess.php.sample: dbaccess.php.sample $(pubdir)/con
 $(pubdir)/context/default/dbaccess.php.in: dbaccess.php.in
 	cp $< $@
 
-$(pubdir)/session:
+$(pubdir)/var:
 	mkdir -p $@
-$(pubdir)/session/.htaccess: htaccess.session $(pubdir)/session
+$(pubdir)/var/cache: $(pubdir)/var
+	mkdir -p $@
+
+$(pubdir)/var/session: $(pubdir)/var
+	mkdir -p $@
+$(pubdir)/var/session/.htaccess: htaccess.denyall $(pubdir)/var/session
 	cp $< $@
 
-$(pubdir)/.img-resize:
+$(pubdir)/var/cache/file: $(pubdir)/var/cache
 	mkdir -p $@
-$(pubdir)/.img-resize/.htaccess: htaccess.session $(pubdir)/.img-resize
+$(pubdir)/var/cache/file/.htaccess: htaccess.denyall $(pubdir)/var/cache/file
 	cp $< $@
 
-$(pubdir)/img-cache:
+$(pubdir)/var/cache/image: $(pubdir)/var/cache
 	mkdir -p $@
-$(pubdir)/img-cache/.htaccess: htaccess.img-cache $(pubdir)/img-cache
+$(pubdir)/var/cache/image/.htaccess: htaccess.img-cache $(pubdir)/var/cache/image
+	cp $< $@
+
+$(pubdir)/var/tmp: $(pubdir)/var
+	mkdir -p $@
+
+$(pubdir)/var/tmp/.htaccess: htaccess.denyall $(pubdir)/var/tmp
+	cp $< $@
+
+$(pubdir)/var/upload: $(pubdir)/var
+	mkdir -p $@
+
+$(pubdir)/var/upload/.htaccess: htaccess.denyall $(pubdir)/var/upload
 	cp $< $@
 
 $(pubdir)/$(applib) :
@@ -98,7 +115,7 @@ $(pubdir)/FREEDOM:
 $(pubdir)/FREEDOM/freedom.cron: freedom.cron $(pubdir)/FREEDOM
 	cp $< $@
 
-publish: $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess $(pubdir)/img-cache/.htaccess $(pubdir)/.img-resize/.htaccess $(pubdir)/$(applib) $(pubdir)/img-cache $(pubdir)/$(applib)/FREEDOM.vault $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron 
+publish: $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/var/session/.htaccess $(pubdir)/var/cache/image/.htaccess $(pubdir)/var/cache/file/.htaccess $(pubdir)/var/tmp/.htaccess $(pubdir)/var/upload/.htaccess $(pubdir)/$(applib) $(pubdir)/$(applib)/FREEDOM.vault $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron
 
 
 webinst-test:
