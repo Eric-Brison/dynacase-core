@@ -117,7 +117,7 @@ class TestReport extends TestCaseDcpAction
     
     private static function getOutputDir()
     {
-        $tmpdir = getParam("CORE_TMPDIR", "/tmp/");
+        $tmpdir = getTmpDir();
         $subdir = $tmpdir . "/PU_Report/";
         if (!is_dir($subdir)) {
             mkdir($subdir);

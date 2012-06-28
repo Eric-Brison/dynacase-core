@@ -92,6 +92,7 @@ function getMailAddr($userid, $full = false)
 
 function getTmpDir($def = '/tmp')
 {
+    global $pubdir;
     static $tmp;
     if (isset($tmp) && !empty($tmp)) {
         return $tmp;
@@ -100,6 +101,23 @@ function getTmpDir($def = '/tmp')
     if (empty($tmp)) {
         return $def;
     }
+    if (substr($tmp, 0, 1) != '/') {
+        $tmp = $pubdir . '/' . $tmp;
+    }
+    /* Try to create the directory if it does not exists */
+    if (!is_dir($tmp)) {
+        mkdir($tmp);
+    }
+    /* Add suffix, and try to create the sub-directory */
+    $tmp = $tmp . '/dcp';
+    if (!is_dir($tmp)) {
+        mkdir($tmp);
+    }
+    /* We ignore any failure in the directory creation
+     * and return the expected tmp dir.
+     * The caller will have to handle subsequent
+     * errors...
+    */
     return $tmp;
 }
 /**

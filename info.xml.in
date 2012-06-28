@@ -31,7 +31,7 @@
                values="iso : standard format 8601|dmy : french notation use only for compatibility with old version"
                needed="N" oninstall="W" onupgrade="H" onedit="H"/>
         <param name="apacheuser" label="apache system user" default="www-data" type="text" needed="Y"/>
-        <param name="core_tmpdir" label="temporary folder" default="/tmp" type="text" needed="Y"/>
+        <param name="core_tmpdir" label="temporary folder" default="./var/tmp" type="text" needed="Y"/>
         <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="yes"
                oninstall="W" onupgrade="H" onedit="H"/>
         <param name="mod_deflate" label="Enable compression (requires Apache mod_deflate)" default="yes" type="enum"
