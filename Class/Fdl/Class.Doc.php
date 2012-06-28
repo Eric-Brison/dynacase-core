@@ -2894,7 +2894,8 @@ create unique index i_docir on doc(initid, revision);";
                                     case 'docid':
                                         if (!is_numeric($avalue)) {
                                             if ((!strstr($avalue, "<BR>")) && (!strstr($avalue, "\n"))) {
-                                                $tvalues[$kvalue] = getIdFromName($this->dbaccess, $avalue);
+                                                if ($oattr->getOption("docrev", "latest") == "latest") $tvalues[$kvalue] = getInitidFromName($avalue);
+                                                else $tvalues[$kvalue] = getIdFromName($this->dbaccess, $avalue);
                                             } else {
                                                 $tnames = explode("\n", $avalue);
                                                 
@@ -2904,7 +2905,8 @@ create unique index i_docir on doc(initid, revision);";
                                                     $tlids = array();
                                                     foreach ($mids as $llname) {
                                                         if (!is_numeric($llname)) {
-                                                            $llid = getIdFromName($this->dbaccess, $llname);
+                                                            if ($oattr->getOption("docrev", "latest") == "latest") $llid = getInitidFromName($llname);
+                                                            else $llid = getIdFromName($this->dbaccess, $llname);
                                                             $tlids[] = $llid ? $llid : $llname;
                                                         } else {
                                                             $tlids[] = $llname;
