@@ -110,7 +110,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
 {
 
     if (($fromid != "") && (!is_numeric($fromid))) {
-        preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid), $m);
+        preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid) , $m);
         $fromid = $m['sign'] . getFamIdFromName($dbaccess, $m['fromid']);
     }
     $table = "doc";
@@ -414,6 +414,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                     } else $fdoc = new DocRead($dbaccess);
                     $tsqlfields = array_merge($fdoc->fields, $fdoc->sup_fields);
                     $maintable = '';
+                    if (!$join && preg_match("/from\s+([a-z0-9])*,/", $qsql)) {
+                        $join = true;
+                    }
                     if ($join) {
                         if (preg_match("/from\s+([a-z0-9]*)/", $qsql, $reg)) {
                             $maintable = $reg[1];
@@ -439,7 +442,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                     if ((!$distinct) && strstr($qsql, "distinct")) $distinct = true;
                     if ($start == "") $start = "0";
                     if ($distinct) {
-                        if ($join) {
+                        if ($join || $maintable) {
                             $qsql.= " ORDER BY $maintable.initid, $maintable.id desc";
                         } else {
                             $qsql.= " ORDER BY initid, id desc";
@@ -826,7 +829,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      */
     function getNonSystemFamilies($dbaccess, $userid, $qtype = "TABLE")
     {
-        return GetClassesDoc($dbaccess, $userid, 0, $qtype, array("usefor !~ '^S'"));
+        return GetClassesDoc($dbaccess, $userid, 0, $qtype, array(
+            "usefor !~ '^S'"
+        ));
     }
     /**
      * Return system families
@@ -838,7 +843,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      */
     function getSystemFamilies($dbaccess, $userid, $qtype = "TABLE")
     {
-        return GetClassesDoc($dbaccess, $userid, 0, $qtype, array("usefor ~ '^S'"));
+        return GetClassesDoc($dbaccess, $userid, 0, $qtype, array(
+            "usefor ~ '^S'"
+        ));
     }
     function cmpfamtitle($a, $b)
     {

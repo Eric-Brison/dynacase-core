@@ -1584,6 +1584,10 @@ msgstr ""
 msgid "Document %s is not alive"
 msgstr "Import"
 
+#, c-format
+msgid "Document %s is not tagable"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "Document %s umounted"
 msgstr "Import"
@@ -1609,6 +1613,9 @@ msgid "Document creation"
 msgstr ""
 
 msgid "Document filter"
+msgstr ""
+
+msgid "Document id not found"
 msgstr ""
 
 #, c-format
@@ -5102,6 +5109,10 @@ msgstr "Category"
 msgid "change state transition"
 msgstr ""
 
+#, c-format
+msgid "change tagable parameter to '%s'"
+msgstr ""
+
 msgid "change title family"
 msgstr ""
 
@@ -7594,6 +7605,9 @@ msgid "no state specified"
 msgstr ""
 
 msgid "no subject"
+msgstr ""
+
+msgid "no tag specified"
 msgstr ""
 
 msgid "no task identificator"
