@@ -45,12 +45,8 @@ class TagManager
         if (!$this->doc->tagable) {
             return sprintf(_("Document %s is not tagable") , $this->docid);
         }
-        $tagDb = new QueryDb($this->dbaccess, "DocTag");
-        $tagDb->AddQuery("initid=" . intval($this->docid));
-        $tags = $tagDb->Query(0, 0, "TABLE");
-        if ($tagDb->nb <= 0) {
-            return array();
-        }
+        $tags = array();
+        simpleQuery($this->dbaccess, sprintf("SELECT DISTINCT ON (tag) * FROM DocTag WHERE initid=" . intval($this->docid)) , $tags);
         return $tags;
     }
     

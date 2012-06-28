@@ -76,9 +76,9 @@ if (parseInt('[latestwaskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FD
         <!-- FOOTER -->
 <div id="fixtablefoot" class="[IFNOT ISIE]tablefoot [ENDIF ISIE]documentFoot footer" style="max-height: 47px;">
 [IF HEAD]
-[IF TAGABLE]
-[ZONE TAGMANAGEMENT:ZONE_TAG_MANAGEMENT?id=[id]&mode=[tagMode]]
-[ENDIF TAGABLE]
+[BLOCK ZONE_FOOTER]
+[ZONE [my_zone]]
+[ENDBLOCK ZONE_FOOTER]
 [ENDIF HEAD]
 </div>
         [IFNOT ISIE]<div id="fixspanfoot" style="visibility:visible;padding:0px;margin:0px;height:0px"></div>[ENDIF ISIE]

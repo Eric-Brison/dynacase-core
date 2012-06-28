@@ -89,16 +89,16 @@ function viewcard(Action & $action)
     }
     $action->lay->set("RSS", ($doc->getValue("gui_isrss") == "yes"));
     $action->lay->set("rsslink", $doc->getRssLink());
-    if ($doc->getFamDoc()->tagable != "" && $doc->getFamDoc()->tagable != "none") {
-        $action->lay->set("TAGABLE", true);
-        if (($doc->control("edit") == "" && $doc->getFamDoc()->tagable == "restricted") || $doc->getFamDoc()->tagable == "public") {
-            $action->lay->set("tagMode", 'true');
-        } else {
-            $action->lay->set("tagMode", 'false');
-        }
-    } else {
-        $action->lay->set("TAGABLE", false);
+    
+    $param_zone_footer = json_decode($doc->getParam("FOOTER_ZONE_VIEW") , true);
+    $zone_footer = array();
+    foreach ($param_zone_footer as $zone) {
+        $zone_footer[] = array(
+            "my_zone" => $zone
+        );
     }
+    $action->lay->SetBlockData("ZONE_FOOTER", $zone_footer);
+    
     if ($doc->wid > 0) {
         $err = $doc->setMask(0);
         if ($err) addWarningMsg($err);

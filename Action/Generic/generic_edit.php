@@ -110,11 +110,15 @@ function generic_edit(Action & $action)
     else $action->lay->Set("shorticon", $doc->getIcon());
     $action->lay->Set("docicon", $doc->getIcon('', 16));
     $action->lay->Set("STITLE", addJsSlashes($action->lay->get("title"))); // for include in JS
-    if ($doc->getFamDoc()->tagable != "none") {
-        $action->lay->set("TAGABLE", true);
-    } else {
-        $action->lay->set("TAGABLE", false);
+    $param_zone_footer = json_decode($doc->getParam("FOOTER_ZONE_VIEW") , true);
+    $zone_footer = array();
+    foreach ($param_zone_footer as $zone) {
+        $zone_footer[] = array(
+            "my_zone" => $zone
+        );
     }
+    $action->lay->SetBlockData("ZONE_FOOTER", $zone_footer);
+    
     if ($zonebodycard == "") {
         if ($doc->cvid > 0) {
             /**

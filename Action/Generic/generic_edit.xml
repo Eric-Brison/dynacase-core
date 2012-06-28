@@ -125,9 +125,9 @@ addEvent(window,"load",resetbodyopacity);
 <iframe name="fsave[id]" style="display:none" src="[IMG:1x1.gif]"></iframe>
     <div id="fixtablefoot" class="[IFNOT ISIE]tablefoot [ENDIF ISIE]documentFoot footer">
     [IF HEAD]
-    [IF TAGABLE]
-    [ZONE TAGMANAGEMENT:ZONE_TAG_MANAGEMENT?id=[id]&type=edit&mode=true]
-    [ENDIF TAGABLE]
+        [BLOCK ZONE_FOOTER]
+        [ZONE [my_zone]]
+        [ENDBLOCK ZONE_FOOTER]
     [ENDIF HEAD]
     </div>
     [IFNOT ISIE]<div id="fixspanfoot" style="visibility:visible;padding:0px;margin:0px;height:0px"></div>[ENDIF ISIE]

@@ -1604,6 +1604,9 @@ msgstr "Le fichier %s utilié pour un modèle dynamique n'est pas un odt"
 msgid "Dynamic template %s not found "
 msgstr "Le modèle dynamique %s n'a pas été trouvé"
 
+msgid "EDIT Zones for FOOTER"
+msgstr "Zone dans le pied de page en mode édition"
+
 #, c-format
 msgid "ERROR %s\n"
 msgstr "ERREUR %s\n"
@@ -3812,6 +3815,9 @@ msgstr "Voir XML"
 
 msgid "View Xml Schema"
 msgstr "Voir le Schéma XML"
+
+msgid "View Zones for FOOTER"
+msgstr "Zone dans le pied de page en mode visualisation"
 
 msgid "View all attributes ?"
 msgstr "Voulez vous voir tous les attributs ?"
