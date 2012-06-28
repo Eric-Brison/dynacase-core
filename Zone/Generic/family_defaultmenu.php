@@ -305,7 +305,7 @@ function family_defaultmenu(Action & $action)
                 }
                 $tsort[$sortAttribute->id] = array(
                     "said" => $sortAttribute->id,
-                    "satitle" => sprintf("%s (title)", $a->getLabel()) ,
+                    "satitle" => $a->getLabel() ,
                     "aorder" => getAttributeOrder($action, $sortAttribute->id, $sortAttribute->getOption('sortable'))
                 );
                 $tmsort[$sortAttribute->id] = "sortdoc" . $sortAttribute->id;

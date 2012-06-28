@@ -108,6 +108,7 @@ function getSqlSearchDoc($dbaccess, $dirid, $fromid, $sqlfilters = array() , $di
 $latest = true, // only latest document
 $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
 {
+
     if (($fromid != "") && (!is_numeric($fromid))) {
         preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid), $m);
         $fromid = $m['sign'] . getFamIdFromName($dbaccess, $m['fromid']);
@@ -359,10 +360,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      * @param string $orderby field order
      * @param bool $latest if true only latest else all revision
      * @param string $trash (no|only|also) search in trash or not
+     * @param \SearchDoc $searchDoc the SearchDoc object when getChildDoc is used by a SearchDoc object
      * @deprecated use searchDoc instead
      * @return array/Doc
      */
-    function getChildDoc($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '')
+    function getChildDoc($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
     {
         deprecatedFunction();
         global $action;
@@ -392,7 +394,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         }
         if ($trash == "only") $distinct = true;
         //   xdebug_var_dump(xdebug_get_function_stack());
-        $tqsql = getSqlSearchDoc($dbaccess, $dirid, $fromid, $sqlfilters, $distinct, $latest, $trash, false, $folderRecursiveLevel, $join);
+        if ($searchDoc) {
+            $tqsql  = $searchDoc->getQueries();
+        } else {
+            $tqsql = getSqlSearchDoc($dbaccess, $dirid, $fromid, $sqlfilters, $distinct, $latest, $trash, false, $folderRecursiveLevel, $join);
+        }
         
         $tretdocs = array();
         if ($tqsql) {
@@ -444,7 +450,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                         elseif (substr($qsql, 0, 12) == "select doc.*") $orderby = "title";
                         if ($orderby == "" && (!$isgroup)) $qsql.= "  LIMIT $slice OFFSET $start;";
                         else {
-                            if ($orderby[0] == '-') $orderby = substr($orderby, 1) . " desc";
+                            if ($searchDoc) {
+                                $orderby = $searchDoc->orderby;
+                            }
                             if (!$isgroup) $qsql.= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
                         }
                     }
