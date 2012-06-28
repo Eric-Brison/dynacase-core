@@ -22,7 +22,8 @@ require_once 'Class.Session.php';
 require_once 'Class.Log.php';
 require_once 'Lib.Main.php';
 
-function print_usage() {
+function print_usage()
+{
     print "Usage\twsh.php --app=APPLICATION --action=ACTION [--ARG=VAL] ...:  execute an action\n" . "\twsh.php --api=API [--ARG=VAL] ....   :  execute an api function\n" . "\twsh.php --listapi                     : view api list\n";
 }
 
@@ -41,12 +42,12 @@ if (isset($_SERVER['HTTP_HOST'])) {
 }
 if (count($argv) == 1) {
     print_usage();
-
+    
     exit(1);
 }
 
 foreach ($argv as $k => $v) {
-
+    
     if (preg_match("/--([^=]+)=(.*)/", $v, $reg)) {
         $_GET[$reg[1]] = $reg[2];
     } else if (preg_match("/--(.+)/", $v, $reg)) {
@@ -93,7 +94,7 @@ ini_set("memory_limit", -1);
 $absindex = $core->GetParam("CORE_URLINDEX");
 if ($absindex == '') {
     $absindex = "$puburl/"; // try default
-
+    
 }
 if ($absindex) $core->SetVolatileParam("CORE_EXTERNURL", $absindex);
 else $core->SetVolatileParam("CORE_EXTERNURL", $puburl . "/");
@@ -110,12 +111,12 @@ $core->SetVolatileParam("CORE_ASTANDURL", "$absindex?sole=Y&"); // absolute link
 initExplorerParam($core);
 
 if (!$core->user->isAffected()) {
-    echo sprintf(_("Error : User [%s] doesn't exists\n"), $_GET["userid"]);
+    echo sprintf(_("Error : User [%s] doesn't exists\n") , $_GET["userid"]);
     exit(2);
 }
 
 if ($core->user->status == "D") {
-    echo sprintf(_("Error : User account [%s] is desactivated\n"), $_GET["userid"]);
+    echo sprintf(_("Error : User account [%s] is desactivated\n") , $_GET["userid"]);
     exit(2);
 }
 
@@ -138,15 +139,16 @@ setLanguage($action->Getparam("CORE_LANG"));
 if (isset($_GET["api"])) {
     $apifile = trim($_GET["api"]);
     if (!file_exists(sprintf("%s/API/%s.php", DEFAULT_PUBDIR, $apifile))) {
-        echo sprintf(_("API file %s not found\n"), "API/" . $apifile . ".php");
+        echo sprintf(_("API file %s not found\n") , "API/" . $apifile . ".php");
+        exit(4);
     } else {
         try {
             include ("API/" . $apifile . ".php");
         }
-        catch (Exception $e) {
+        catch(Exception $e) {
             switch ($e->getCode()) {
                 case THROW_EXITERROR:
-                    echo sprintf(_("Error : %s\n"), $e->getMessage());
+                    echo sprintf(_("Error : %s\n") , $e->getMessage());
                     exit(1);
                     break;
 
@@ -156,7 +158,7 @@ if (isset($_GET["api"])) {
                     break;
 
                 default:
-                    echo sprintf(_("Caught Exception : %s\n"), $e->getMessage());
+                    echo sprintf(_("Caught Exception : %s\n") , $e->getMessage());
                     exit(1);
             }
         }
@@ -166,15 +168,15 @@ if (isset($_GET["api"])) {
         try {
             echo ($action->execute());
         }
-        catch (Exception $e) {
+        catch(Exception $e) {
             switch ($e->getCode()) {
                 case THROW_EXITERROR:
-                    echo sprintf(_("Error : %s\n"), $e->getMessage());
+                    echo sprintf(_("Error : %s\n") , $e->getMessage());
                     exit(1);
                     break;
 
                 default:
-                    echo sprintf(_("Caught Exception : %s\n"), $e->getMessage());
+                    echo sprintf(_("Caught Exception : %s\n") , $e->getMessage());
                     exit(1);
             }
         }
@@ -198,14 +200,14 @@ if (isset($_GET["api"])) {
             try {
                 echo ($action->execute());
             }
-            catch (Exception $e) {
+            catch(Exception $e) {
                 switch ($e->getCode()) {
                     case THROW_EXITERROR:
-                        echo sprintf(_("Error : %s\n"), $e->getMessage());
+                        echo sprintf(_("Error : %s\n") , $e->getMessage());
                         break;
 
                     default:
-                        echo sprintf(_("Caught Exception : %s\n"), $e->getMessage());
+                        echo sprintf(_("Caught Exception : %s\n") , $e->getMessage());
                 }
             }
             echo "<hr>";

@@ -661,7 +661,7 @@ function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
     return $id;
 }
 /**
- * return the identificator of a document from its logical name
+ * return the latest identificator of a document from its logical name
  *
  * @param string $dbaccess database specification
  * @param string $name logical name
@@ -688,6 +688,16 @@ function getIdFromName($dbaccess, $name, $famid = "")
         $id = $arr["id"];
     }
     return $id;
+}
+/**
+ * return the initial identificator of a document from its logical name
+ * @param string $name
+ * @return int
+ */
+function getInitidFromName($name)
+{
+    simpleQuery(getDbAccess() , sprintf("select initid from docread where name = '%s' limit 1", pg_escape_string($name)) , $initid, true, true);
+    return $initid;
 }
 /**
  * return the logical name of a document from its initial identificator

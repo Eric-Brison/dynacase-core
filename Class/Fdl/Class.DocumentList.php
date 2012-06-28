@@ -35,8 +35,7 @@ class DocumentList implements Iterator, Countable
     
     public function __construct(SearchDoc & $s = null)
     {
-        $this->search = $s;
-        $this->initSearch();
+        $this->search = & $s;
     }
     /**
      * get number of returned documents
@@ -58,6 +57,8 @@ class DocumentList implements Iterator, Countable
                 }
                 $this->length = $this->search->count();
                 $this->init = true;
+            } else {
+                $this->search->rewind();
             }
         }
     }
@@ -117,7 +118,7 @@ class DocumentList implements Iterator, Countable
     /**
      * @return null|SearchDoc
      */
-    public function getSearchDocument()
+    public function &getSearchDocument()
     {
         return $this->search;
     }

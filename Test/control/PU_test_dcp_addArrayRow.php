@@ -12,23 +12,19 @@ namespace PU;
  * @package DCP
  */
 
-require_once 'PU_testcase_dcp_document.php';
-
-class TestAddArrayRow extends TestCaseDcpDocument
+require_once 'PU_testcase_dcp_commonfamily.php';
+class TestAddArrayRow extends TestCaseDcpCommonFamily
 {
-    public static function setUpBeforeClass()
+    /**
+     * import TST_UPDTATTR
+     * @static
+     * @return array|string
+     */
+    protected static function getCommonImportFile()
     {
-        parent::setUpBeforeClass();
-        
-        self::connectUser();
-        self::beginTransaction();
-        self::importDocument("PU_data_dcp_addArrayRow_family.csv");
-    }
-    
-    public static function tearDownAfterClass()
-    {
-        self::rollbackTransaction();
-        parent::tearDownAfterClass();
+        return array(
+            "PU_data_dcp_addArrayRow_family.csv"
+        );
     }
     /**
      * @dataProvider dataAddArrayRow
