@@ -171,6 +171,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $search = new \SearchDoc(self::$dbaccess, 0);
         $search->setObjectReturn();
         $search->useCollection($dirId);
+        $search->addFilter("name ~ '^TST_USEFOR'");
         $search->search();
         
         $res = array();
@@ -485,7 +486,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $search->search();
         
         $count = $search->count();
-        $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true) , var_export($orderbyLabel, true), $count, $expectedCount));
+        $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true) , var_export($orderbyLabel, true) , $count, $expectedCount));
         
         $titles = array();
         while ($doc = $search->nextDoc()) {
@@ -623,15 +624,15 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $search->setObjectReturn(true);
         $search->setOrder($orderby, $orderbyLabel);
         $search->search();
-
+        
         $count = $search->count();
-        $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true) , var_export($orderbyLabel, true), $count, $expectedCount));
-
+        $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true) , var_export($orderbyLabel, true) , $count, $expectedCount));
+        
         $titles = array();
         while ($doc = $search->nextDoc()) {
             $titles[] = $doc->title;
         }
-
+        
         $s1 = join(', ', $titles);
         $s2 = join(', ', $expectedTitles);
         $this->assertTrue($s1 == $s2, sprintf("Expected titles not found: titles = [%s] / expected titles = [%s] / sql = [%s]", $s1, $s2, $search->getOriginalQuery()));
