@@ -33,7 +33,7 @@ $famid = "") // folder containt special fam id
     $refresh = GetHttpVars("refresh", "no"); // force folder refresh
     $startpage = GetHttpVars("page", "0"); // page number
     $target = GetHttpVars("target", "fdoc"); // target for hyperlinks
-    $sqlorder = GetHttpVars("sqlorder"); // order sort attribute
+    $sqlorder = GetHttpVars("sqlorder", null); // order sort attribute
     $viewone = (GetHttpVars("viewone", "N") == "Y"); // direct view if only one
     if ($slice == "-") $slice = $action->GetParam("FDL_FOLDERMAXITEM", 1000);
     // $column = ($with_popup && ($action->getParam("FREEDOM_VIEW")=="column"));
@@ -101,6 +101,9 @@ $famid = "") // folder containt special fam id
         } else {
             $sqlorder = "fromid,title";
         }
+    }
+    if ($sqlorder === null) {
+        $sqlorder = 'title';
     }
     $sd->setOrder($sqlorder, $orderbyLabel);
     if ($sqlfilters) foreach ($sqlfilters as $filter) $sd->addFilter($filter);
