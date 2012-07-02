@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-28 15:29+0200\n"
+"POT-Creation-Date: 2012-07-02 18:03+0200\n"
 "PO-Revision-Date: 2012-06-29 16:05+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -585,6 +585,9 @@ msgstr ""
 msgid "Activate file indexing with TE"
 msgstr ""
 
+msgid "Activity"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "Add %d document(s)"
 msgstr "Import"
@@ -852,6 +855,9 @@ msgid "August"
 msgstr ""
 
 msgid "Authentication failures before account deactivation"
+msgstr ""
+
+msgid "Author"
 msgstr ""
 
 msgid "Automatic profil creation not possible for this kind of family"
@@ -1474,6 +1480,9 @@ msgstr ""
 msgid "Database : [%s]"
 msgstr ""
 
+msgid "Date"
+msgstr ""
+
 msgid "Dav"
 msgstr ""
 
@@ -1516,6 +1525,9 @@ msgstr ""
 #, fuzzy
 msgid "Detail Permissions"
 msgstr "Edit"
+
+msgid "Diff"
+msgstr ""
 
 #, c-format
 msgid "Dir::insertFolder identificator [%s] must be numeric"
@@ -2192,6 +2204,9 @@ msgid "Historic"
 msgstr ""
 
 msgid "History"
+msgstr ""
+
+msgid "History for"
 msgstr ""
 
 #, fuzzy
@@ -2943,6 +2958,9 @@ msgstr ""
 msgid "Password has been cnanged"
 msgstr ""
 
+msgid "Past Revisions"
+msgstr ""
+
 #, fuzzy
 msgid "Permissions"
 msgstr "Organisation"
@@ -3205,6 +3223,9 @@ msgstr ""
 msgid "Return to reference document"
 msgstr ""
 
+msgid "Rev"
+msgstr ""
+
 #, fuzzy
 msgid "Revise"
 msgstr "Created by"
@@ -3307,6 +3328,12 @@ msgstr ""
 #, fuzzy
 msgid "Search criteria"
 msgstr "Start search"
+
+msgid "Search in current revision"
+msgstr ""
+
+msgid "Search in past revision"
+msgstr ""
 
 #, fuzzy
 msgid "Search linked documents"
@@ -3707,6 +3734,9 @@ msgstr ""
 msgid "Timers prevision"
 msgstr ""
 
+msgid "Title"
+msgstr ""
+
 msgid "To"
 msgstr ""
 
@@ -3980,6 +4010,9 @@ msgid "View print version"
 msgstr ""
 
 msgid "View properties"
+msgstr ""
+
+msgid "View revision"
 msgstr ""
 
 #, fuzzy
@@ -5310,7 +5343,9 @@ msgid "core_sessionttl"
 msgstr "Session lifetime (in seconds)"
 
 msgid "core_tmpdir_maxage"
-msgstr "Maximum time (in days) after which the temporary files and directories are deleted"
+msgstr ""
+"Maximum time (in days) after which the temporary files and directories are "
+"deleted"
 
 #, fuzzy, c-format
 msgid "create %s family %s"
@@ -5610,10 +5645,6 @@ msgstr "Email"
 #, fuzzy
 msgid "detailled search"
 msgstr "Email"
-
-#, fuzzy
-msgid "diff"
-msgstr "Modify"
 
 #, fuzzy
 msgid "difference between 2 documents"
@@ -7893,9 +7924,6 @@ msgstr "Start search"
 msgid "prefered search"
 msgstr "Start search"
 
-msgid "preferential doc gate id"
-msgstr ""
-
 msgid "prev"
 msgstr ""
 
@@ -8253,10 +8281,6 @@ msgstr "Modify"
 
 msgid "retry file conversion"
 msgstr ""
-
-#, fuzzy
-msgid "rev"
-msgstr "Create"
 
 msgid "revdate"
 msgstr "Revision date"
@@ -9236,9 +9260,6 @@ msgstr ""
 msgid "use dynacase user management"
 msgstr ""
 
-msgid "use what gate"
-msgstr ""
-
 #, c-format
 msgid "user #%d does not exist"
 msgstr ""
@@ -9363,10 +9384,6 @@ msgstr ""
 #, fuzzy
 msgid "verify files status"
 msgstr "Modify"
-
-#, fuzzy
-msgid "version"
-msgstr "Organisation"
 
 msgid "version identificator"
 msgstr ""
@@ -9803,6 +9820,10 @@ msgstr ""
 #~ msgstr "Delete"
 
 #, fuzzy
+#~ msgid "diff"
+#~ msgstr "Modify"
+
+#, fuzzy
 #~ msgid "direct"
 #~ msgstr "Edit"
 
@@ -10012,6 +10033,10 @@ msgstr ""
 #~ msgstr "Start search"
 
 #, fuzzy
+#~ msgid "rev"
+#~ msgstr "Create"
+
+#, fuzzy
 #~ msgid "set view control to '%s'"
 #~ msgstr "Start search"
 
@@ -10070,6 +10095,10 @@ msgstr ""
 #, fuzzy
 #~ msgid "vcs file"
 #~ msgstr "Update Title Cards"
+
+#, fuzzy
+#~ msgid "version"
+#~ msgstr "Organisation"
 
 #, fuzzy
 #~ msgid "view_detail"
