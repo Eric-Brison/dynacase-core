@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+if [ -z "$wpub" ]; then
+	echo "Undefined or empty wpub environment variable!"
+	exit 1
+fi
+
+for SUBDIR in session img-cache .img-resize; do
+    if [ -d "$wpub/$SUBDIR" ]; then
+        rm -Rf -- "$wpub/$SUBDIR"
+    fi
+done

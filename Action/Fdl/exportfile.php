@@ -21,7 +21,7 @@ include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/Lib.Vault.php");
 include_once ("VAULT/Class.VaultFile.php");
 
-define("RESIZEDIR", DEFAULT_PUBDIR . "/.img-resize/");
+define("RESIZEDIR", DEFAULT_PUBDIR . "/var/cache/file/");
 // --------------------------------------------------------------------
 function exportfile(&$action)
 {
@@ -132,7 +132,7 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype = "", $width 
             $teng_name = 'pdf';
             $err = $vf->Show($vaultid, $info, $teng_name);
             if ($err == "") {
-                $filecache = sprintf("%s/.img-resize/vid-%s-%d.png", DEFAULT_PUBDIR, $info->id_file, $pngpage);
+                $filecache = sprintf("%s/var/cache/file/vid-%s-%d.png", DEFAULT_PUBDIR, $info->id_file, $pngpage);
                 if (file_exists($filecache)) {
                     //  print_r2($filecache);
                     $resample = true;
@@ -371,10 +371,10 @@ function createPdf2Png($file, $vid)
         $density = 200;
         $width = 1200;
         $nbpages = trim(shell_exec(sprintf('grep -c "/Type[[:space:]]*/Page\>" %s', escapeshellarg($file))));
-        $cmd[] = sprintf("/bin/rm -f %s/vid-%d*.png;", DEFAULT_PUBDIR . "/.img-resize", $vid);
+        $cmd[] = sprintf("/bin/rm -f %s/vid-%d*.png;", DEFAULT_PUBDIR . "/var/cache/file", $vid);
         
         for ($i = 0; $i < $nbpages; $i++) {
-            $cible = DEFAULT_PUBDIR . "/.img-resize/vid-${vid}-${i}.png";
+            $cible = DEFAULT_PUBDIR . "/var/cache/file/vid-${vid}-${i}.png";
             $cmd[] = sprintf("nice convert -interlace plane -thumbnail %d  -density %d %s[%d] %s", $width, $density, $file, $i, $cible);
         }
         bgexec($cmd, $result, $err);

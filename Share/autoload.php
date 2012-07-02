@@ -16,16 +16,14 @@ class excludeSomeFiles extends FilterIterator
         
         if (substr($c, -4) != '.php') return false;
         $exclusionPatterns = array(
-            './.img-resize/',
             './context/',
             './fckeditor/',
             './jscalendar/',
             './Images/',
-            './img-cache/',
             './lib/ext/',
             './lib/zendframework/',
             './locale/',
-            './session/',
+            './var/',
             './FDLGEN/',
             './vaultfs/'
         );

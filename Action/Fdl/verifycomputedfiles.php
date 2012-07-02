@@ -50,7 +50,7 @@ function verifycomputedfiles(&$action)
     
     foreach ($files as $k => $v) {
         if (($v["teng_state"] == 1) || ($v["teng_state"] < 0)) {
-            $files[$k]["icon"] = "img-cache/20-" . getIconMimeFile($v["mime_s"]) . ".png";
+            $files[$k]["icon"] = "var/cache/image/20-" . getIconMimeFile($v["mime_s"]) . ".png";
         } else {
             $files[$k]["icon"] = "";
         }

@@ -177,7 +177,7 @@ function report_export_csv(Action & $action)
                     $csvStruct = $currentDoc->generateCSVReportStruct(false, "", $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh);
             }
             
-            $csvFile = tempnam($action->GetParam("CORE_TMPDIR", "/tmp") , "csv$id") . ".csv";
+            $csvFile = tempnam(getTmpDir() , "csv$id") . ".csv";
             $fp = fopen($csvFile, 'w');
             
             foreach ($csvStruct as $currentLine) {

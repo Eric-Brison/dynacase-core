@@ -31,7 +31,7 @@
                values="iso : standard format 8601|dmy : french notation use only for compatibility with old version"
                needed="N" oninstall="W" onupgrade="H" onedit="H"/>
         <param name="apacheuser" label="apache system user" default="www-data" type="text" needed="Y"/>
-        <param name="core_tmpdir" label="temporary folder" default="/tmp" type="text" needed="Y"/>
+        <param name="core_tmpdir" label="temporary folder" default="./var/tmp" type="text" needed="Y"/>
         <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="yes"
                oninstall="W" onupgrade="H" onedit="H"/>
         <param name="mod_deflate" label="Enable compression (requires Apache mod_deflate)" default="yes" type="enum"
@@ -122,9 +122,9 @@ This can be solved by:<br/>
                 PHP.
             </help>
         </check>
-         <check type="exec" cmd="php -r 'exit((function_exists('iconv') &amp;&amp; ICONV_IMPL == 'glibc') != true);'">
+         <check type="exec" cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
                     <label lang="en">Check iconv in libc</label>
-                    <help>Iconv might not work as you want</help>
+                    <help>Your PHP iconv extension is compiled with a non-GLIBC implementation of iconv, and it might not work as expected.</help>
                  </check>
         <check type="phpfunction" function="mb_get_info">
             <help>You might need to install a php-mbstring package from your distribution in order to have mbstring

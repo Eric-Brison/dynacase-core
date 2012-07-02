@@ -97,7 +97,7 @@ class TestSplitXmlDocument extends TestCaseDcp
     }
     private function createWorkDir()
     {
-        $tmpdir = getParam('CORE_TMPDIR', '/tmp');
+        $tmpdir = getTmpDir();
         if (!is_dir($tmpdir)) {
             throw new \Exception(sprintf("Invalid directory '%s'.", $tmpdir));
         }

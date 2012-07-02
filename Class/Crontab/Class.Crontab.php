@@ -71,7 +71,7 @@ class Crontab
     {
         include_once ('WHAT/Lib.System.php');
         
-        $tmp = LibSystem::tempnam(null, 'crontab');
+        $tmp = tempnam(getTmpDir(), 'crontab');
         if ($tmp === FALSE) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error creating temporary file");
             return FALSE;

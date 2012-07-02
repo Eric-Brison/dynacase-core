@@ -115,8 +115,21 @@ fi
 
 log "Setting session.save_path..."
 if [ -f "${WIFF_CONTEXT_ROOT}/.htaccess" ]; then
-    sed -i.orig -e "s;^\([[:space:]]*php_value[[:space:]][[:space:]]*session\.save_path[[:space:]][[:space:]]*\).*$;\1\"${WIFF_CONTEXT_ROOT}/session\";" "${WIFF_CONTEXT_ROOT}/.htaccess"
+    sed -i.orig -e "s;^\([[:space:]]*php_value[[:space:]][[:space:]]*session\.save_path[[:space:]][[:space:]]*\).*$;\1\"${WIFF_CONTEXT_ROOT}/var/session\";" "${WIFF_CONTEXT_ROOT}/.htaccess"
 fi
+
+log "Re-creating var subdirs..."
+for SUBDIR in cache/file cache/image session tmp upload; do
+    DIR="${WIFF_CONTEXT_ROOT}/var/${SUBDIR}"
+    if [ ! -e "$DIR" ]; then
+        mkdir -p "$DIR"
+        RET=$?
+        if [ $RET -ne 0 ]; then
+            echo "Error creating directory '${WIFF_CONTEXT_ROOT}/${SUBDIR}'."
+            exit $RET
+        fi
+    fi
+done
 
 if [ "$user_login" != "" ]; then
   "$WIFF_CONTEXT_ROOT"/wsh.php --api=fdl_resetprofiling --login="$user_login" --password="$user_password"

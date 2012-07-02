@@ -84,7 +84,7 @@ function createSearchEngine(&$action)
     $action->lay->set("HOST", $host);
     $newpath = $host . $base;
     foreach ($tfiles as $k => $v) {
-        $out = $dirname . "/img-cache/" . $host . "-" . $v;
+        $out = $dirname . "/var/cache/image/" . $host . "-" . $v;
         if (!file_exists($out)) {
             $src = "$dirname/moz-searchplugin/$v";
             if (file_exists($src)) {

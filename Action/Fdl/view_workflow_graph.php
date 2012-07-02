@@ -78,7 +78,7 @@ function view_workflow_graph(Action &$action)
     } else {
         
         $cmd.= sprintf("--api=wdoc_graphviz --size=%s --ratio=%s --type=%s --orient=%s --docid=%d", $size, escapeshellarg($ratio) , escapeshellarg($type) , escapeshellarg($orient) , $doc->id);
-        $svgfile = "img-cache/w$type-" . $action->getParam("CORE_LANG") . "-" . $doc->id . ".$format";
+        $svgfile = "var/cache/image/w$type-" . $action->getParam("CORE_LANG") . "-" . $doc->id . ".$format";
         if ($format == "dot") $svgfile.= ".txt"; // conflict with document template
         $dest = DEFAULT_PUBDIR . "/$svgfile";
         if ($format == "dot") $cmd.= sprintf("> %s", escapeshellarg($dest));
