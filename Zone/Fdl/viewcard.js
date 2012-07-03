@@ -38,12 +38,6 @@ function fixedPosition() {
         }
     }
 
-    var footer = document.getElementById("fixtablefoot");
-    footer.style.maxHeight =  48 + "px";
-    if (footer.height > 47) {
-        document.getElementById("displayAllTags").style.visibility =  "visible";
-    }
-    footer.style.maxHeight =  47 + "px";
 }
 
 if (isNetscape) addEvent(window, "load", fixedPosition);

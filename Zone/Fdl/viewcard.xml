@@ -74,7 +74,7 @@ if (parseInt('[latestwaskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FD
 </div>
 
         <!-- FOOTER -->
-<div id="fixtablefoot" class="[IFNOT ISIE]tablefoot [ENDIF ISIE]documentFoot footer" style="max-height: 47px;">
+<div id="fixtablefoot" class="[IFNOT ISIE]tablefoot [ENDIF ISIE]documentFoot footer">
 [IF HEAD]
 [BLOCK ZONE_FOOTER]
 [ZONE [my_zone]]

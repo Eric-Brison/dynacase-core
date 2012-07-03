@@ -428,6 +428,9 @@ TABLE.tablehead {
 	top:0;
 	left:0;
 }
+#fixtablefoot {
+    max-height: 45px;
+}
 .onglet {
 	font-size: [SIZE_X-SMALL];
 	background-image:url('[IMG:tab.png]');
