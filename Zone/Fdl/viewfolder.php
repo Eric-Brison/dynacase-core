@@ -22,7 +22,7 @@ include_once ("FDL/freedom_util.php");
 include_once ("FDL/Class.QueryDir.php");
 // -----------------------------------
 // -----------------------------------
-function viewfolder(&$action, $with_abstract = false, $with_popup = true, $column = false, $slice = "-", // view all document (not slice by slice)
+function viewfolder(Action & $action, $with_abstract = false, $with_popup = true, $column = false, $slice = "-", // view all document (not slice by slice)
 $sqlfilters = array() , // more filters to see specials doc
 $famid = "") // folder containt special fam id
 
@@ -142,6 +142,7 @@ $famid = "") // folder containt special fam id
     $tdoc = array();
     
     $nbseedoc = 0;
+    $nbdoc = 0;
     if (!$sd->searchError()) {
         // get date format
         if ($action->GetParam("CORE_LANG") == "fr_FR") { // date format depend of locale
@@ -150,7 +151,6 @@ $famid = "") // folder containt special fam id
             $fdate = "%x";
         }
         
-        $nbdoc = 0;
         $prevFromId = - 2;
         
         $tfamdoc = array();
@@ -279,7 +279,13 @@ $famid = "") // folder containt special fam id
             if ($doc->isRevisable()) $tdoc[$k]["revision"] = $doc->revision;
             else $tdoc[$k]["revision"] = "";
             if ($doc->state) {
-                $tdoc[$k]["state"] = $action->Text($doc->getState()); //$action->Text($doc->state);
+                if ($doc->locked == - 1) {
+                    $tdoc[$k]["state"] = $action->Text($doc->getState()); //$action->Text($doc->state);
+                    
+                } else {
+                    $tdoc[$k]["state"] = $action->Text($doc->getStateActivity($doc->getState()));
+                }
+                
                 $tdoc[$k]["statecolor"] = $doc->getStateColor("transparent");
             } else {
                 $tdoc[$k]["state"] = "";
@@ -298,7 +304,7 @@ $famid = "") // folder containt special fam id
                     if ($with_abstract === 2) {
                         $tdoc[$k]["ABSTRACTVALUES"] = getAbstractDetail($doc, $target);
                     } else {
-                        $tdoc[$k]["ABSTRACTVALUES"] = $doc->viewDoc($doc->defaultabstract, $target, true, $abstract);
+                        $tdoc[$k]["ABSTRACTVALUES"] = $doc->viewDoc($doc->defaultabstract, $target, true, $abstract = false);
                         $tdoc[$k]["LOrR"] = ($k % 2 == 0) ? "left" : "right";
                     }
                 } else $tdoc[$k]["ABSTRACTVALUES"] = "";
@@ -333,14 +339,15 @@ $famid = "") // folder containt special fam id
                     foreach ($lattr[$doc->fromid] as $ka => $attr) {
                         if (($attr->mvisibility == 'H') || ($attr->mvisibility == 'I')) unset($lattr[$doc->fromid][$ka]);
                     }
-
+                    /**
+                     * @var NormalAttribute $attr
+                     */
                     foreach ($lattr[$doc->fromid] as $ka => $attr) {
                         $emptytableabstract[$attr->id]["value"] = "-";
                         $taname[$attr->id]["aname"] = $attr->getLabel();
                     }
                     $action->lay->SetBlockData("BATT" . $doc->fromid, $taname);
                 }
-
                 /* Stack up the documents values in tdoc */
                 $tvalues = array();
                 
@@ -357,14 +364,18 @@ $famid = "") // folder containt special fam id
                 }
                 $tdoc[$k]["values"] = implode('</td><td class="tlist">', $tvalues);
             }
-
+            
             $k++;
         }
-
+        
         if ($column == 1) {
             /* Order tdoc by 'fromid', 'title' */
             $collator = new Collator($action->GetParam("CORE_LANG", "fr_FR"));
-            usort($tdoc,function($a, $b) use ($collator) {
+            usort($tdoc, function ($a, $b) use ($collator)
+            {
+                /**
+                 * @var Collator $collator
+                 */
                 $cmp = ($a['fromid'] - $b['fromid']);
                 return ($cmp == 0) ? $collator->compare($a['title'], $b['title']) : $cmp;
             });
@@ -385,22 +396,26 @@ $famid = "") // folder containt special fam id
     $action->lay->Set("nbdiv", $kdiv - 1);
     if ($column) {
         /*
-        * Sort documents with same fromid into separate lists
+         * Sort documents with same fromid into separate lists
         */
         $tdocByFromId = array();
         foreach ($tdoc as $doc) {
-            $tdocByFromId[$doc['fromid']] []= $doc;
+            $tdocByFromId[$doc['fromid']][] = $doc;
         }
         /*
-        * Set the BVAL<fromid> blocks with the list of
-        * documents from the same family
+         * Set the BVAL<fromid> blocks with the list of
+         * documents from the same family
         */
         foreach ($tdocByFromId as $fromid => $documentList) {
             $action->lay->SetBlockData("BVAL" . $fromid, $documentList);
         }
         /* Order tfamdoc by 'ftitle' */
         $collator = new Collator($action->GetParam("CORE_LANG", "fr_FR"));
-        usort($tfamdoc, function($a, $b) use ($collator) {
+        usort($tfamdoc, function ($a, $b) use ($collator)
+        {
+            /**
+             * @var Collator $collator
+             */
             return $collator->compare($a['ftitle'], $b['ftitle']);
         });
         $action->lay->SetBlockData("TABLEBODY", $tfamdoc);
@@ -442,7 +457,7 @@ function orderbytitle($a, $b)
     return strcasecmp($a["title"], $b["title"]);
 }
 
-function getAbstractDetail(&$doc, $target)
+function getAbstractDetail(Doc & $doc, $target)
 {
     $tout = array();
     $lattr = $doc->GetAbstractAttributes();

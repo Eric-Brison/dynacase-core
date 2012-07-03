@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-02 18:03+0200\n"
-"PO-Revision-Date: 2012-06-29 16:05+0200\n"
+"POT-Creation-Date: 2012-07-03 13:21+0200\n"
+"PO-Revision-Date: 2012-07-03 11:23+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
 "Language: \n"
@@ -934,8 +934,8 @@ msgstr ""
 msgid "Cancel changes and quit edit mode"
 msgstr ""
 
-msgid "Cancel the change state"
-msgstr "Cancel next step"
+msgid "Cancel the change step"
+msgstr ""
 
 msgid "Cannot access interface to change password"
 msgstr ""
@@ -1113,9 +1113,8 @@ msgstr "Next step %s"
 msgid "Change state to"
 msgstr "Next step to"
 
-#, c-format
-msgid "Change state to %s"
-msgstr "Next step to %s"
+msgid "Change step"
+msgstr ""
 
 #, fuzzy
 msgid "Change the document state to"
@@ -2192,13 +2191,13 @@ msgid "Hide group access"
 msgstr ""
 
 msgid "Histo:Comment"
-msgstr ""
+msgstr "Comment"
 
 msgid "Histo:Date"
-msgstr ""
+msgstr "Date"
 
 msgid "Histo:User"
-msgstr ""
+msgstr "User"
 
 msgid "Historic"
 msgstr ""
@@ -3563,6 +3562,9 @@ msgstr ""
 msgid "State"
 msgstr "Identity"
 
+msgid "StateConfirm"
+msgstr "Confirm"
+
 #, fuzzy
 msgid "States"
 msgstr "Identity"
@@ -3673,7 +3675,22 @@ msgid ""
 msgstr ""
 
 #, c-format
+msgid "The current activity is \"%s\"."
+msgstr ""
+
+#, c-format
+msgid "The current state is \"%s\"."
+msgstr ""
+
+#, c-format
 msgid "The document <%s> is not a folder"
+msgstr ""
+
+msgid "The document can become inconsistent and can not be used properly"
+msgstr ""
+
+#, c-format
+msgid "The document will be stored with \"%s\" state."
 msgstr ""
 
 #, c-format
@@ -3690,6 +3707,14 @@ msgstr ""
 
 #, c-format
 msgid "The latest document %s waiting for a answer"
+msgstr ""
+
+#, c-format
+msgid "The next activity will be \"%s\"."
+msgstr ""
+
+#, c-format
+msgid "The next state will be \"%s\"."
 msgstr ""
 
 msgid "The separator field is the semicolon(;)"
@@ -3994,9 +4019,6 @@ msgid "View my searches"
 msgstr "Start search"
 
 msgid "View next results"
-msgstr ""
-
-msgid "View notice messages"
 msgstr ""
 
 msgid "View only access set. Green flag"
@@ -5102,7 +5124,7 @@ msgid "changes"
 msgstr "Start search"
 
 msgid "chgstates"
-msgstr "Next step"
+msgstr "Steps"
 
 #, fuzzy
 msgid "choose action from batch document"
@@ -5454,9 +5476,6 @@ msgstr ""
 #, fuzzy
 msgid "current user parameters"
 msgstr "Add parameter"
-
-msgid "current_state"
-msgstr ""
 
 msgid "cycle family must be defined"
 msgstr ""
@@ -6650,6 +6669,21 @@ msgstr ""
 
 msgid "highlight background color"
 msgstr ""
+
+msgid "histoError"
+msgstr "Error"
+
+msgid "histoInfo"
+msgstr "Info"
+
+msgid "histoMessage"
+msgstr "Message"
+
+msgid "histoNotice"
+msgstr "Notice"
+
+msgid "histoWarning"
+msgstr "Warning"
 
 msgid "horizontal size for secondary windows"
 msgstr ""
@@ -8992,6 +9026,10 @@ msgstr ""
 msgid "to insert document in sub folder"
 msgstr ""
 
+#, c-format
+msgid "to the %s activity"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "to the %s state"
 msgstr "Category"
@@ -9721,6 +9759,12 @@ msgstr ""
 #, fuzzy
 #~ msgid "Address book searches"
 #~ msgstr "Start search"
+
+#~ msgid "Cancel the change state"
+#~ msgstr "Cancel next step"
+
+#~ msgid "Change state to %s"
+#~ msgstr "Next step to %s"
 
 #, fuzzy
 #~ msgid "Import from"

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-02 18:03+0200\n"
-"PO-Revision-Date: 2012-07-02 18:03+0200\n"
+"POT-Creation-Date: 2012-07-03 13:21+0200\n"
+"PO-Revision-Date: 2012-07-03 13:22+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -894,8 +894,8 @@ msgstr "Annuler les changements et fermer la fenêtre"
 msgid "Cancel changes and quit edit mode"
 msgstr "Annuler les changements et quitter le mode édition"
 
-msgid "Cancel the change state"
-msgstr "Annulation du changement d'état"
+msgid "Cancel the change step"
+msgstr "Annuler le changement d'étape"
 
 msgid "Cannot access interface to change password"
 msgstr "Accès interdit à l'interface de changement de mot de passe"
@@ -1072,9 +1072,8 @@ msgstr "Changement d'état vers %s"
 msgid "Change state to"
 msgstr "Changement d'état vers"
 
-#, c-format
-msgid "Change state to %s"
-msgstr "Changement d'état vers %s"
+msgid "Change step"
+msgstr "Changer d'étape"
 
 msgid "Change the document state to"
 msgstr "changer l'état du document en"
@@ -3417,6 +3416,9 @@ msgstr "Démarrage de"
 msgid "State"
 msgstr "État"
 
+msgid "StateConfirm"
+msgstr "Confirmer"
+
 msgid "States"
 msgstr "États"
 
@@ -3527,8 +3529,25 @@ msgstr ""
 "%s "
 
 #, c-format
+msgid "The current activity is \"%s\"."
+msgstr "L'activité courante est \"%s\"."
+
+#, c-format
+msgid "The current state is \"%s\"."
+msgstr "L'état courant est \"%s\"."
+
+#, c-format
 msgid "The document <%s> is not a folder"
 msgstr "Le document <%s> n'est pas un dossier"
+
+msgid "The document can become inconsistent and can not be used properly"
+msgstr ""
+"le document peut devenir incohérent et peut ne plus être utilisable "
+"correctement"
+
+#, c-format
+msgid "The document will be stored with \"%s\" state."
+msgstr "Le document sera enregistré avec l'état \"%s\"."
 
 #, c-format
 msgid "The file %s cannot be extracted"
@@ -3547,6 +3566,14 @@ msgstr ""
 #, c-format
 msgid "The latest document %s waiting for a answer"
 msgstr "Le dernier document %s attend une réponse"
+
+#, c-format
+msgid "The next activity will be \"%s\"."
+msgstr "La prochaine activité sera \"%s\"."
+
+#, c-format
+msgid "The next state will be \"%s\"."
+msgstr "Le prochain état sera \"%s\"."
 
 msgid "The separator field is the semicolon(;)"
 msgstr "Le séparateur de colonne est le point-virgule ';'"
@@ -3842,9 +3869,6 @@ msgstr "Voir mes recherches"
 
 msgid "View next results"
 msgstr "voir les documents suivants..."
-
-msgid "View notice messages"
-msgstr "Voir tous les messages"
 
 msgid "View only access set. Green flag"
 msgstr "Voir les droits posés. (puces vertes)"
@@ -4920,7 +4944,7 @@ msgid "changes"
 msgstr "modifications"
 
 msgid "chgstates"
-msgstr "Changer d'état"
+msgstr "Étapes"
 
 msgid "choose action from batch document"
 msgstr "choix d'une action à partir d'un traitement"
@@ -5240,9 +5264,6 @@ msgstr "L'utilisateur courant ne peut désactiver le compte"
 
 msgid "current user parameters"
 msgstr "mes paramètres"
-
-msgid "current_state"
-msgstr "courant"
 
 msgid "cycle family must be defined"
 msgstr "la famille cycle doit être renseignée"
@@ -6340,6 +6361,21 @@ msgstr "caché"
 
 msgid "highlight background color"
 msgstr "couleur de fond pour la mise en évidence"
+
+msgid "histoError"
+msgstr "Erreur"
+
+msgid "histoInfo"
+msgstr "Info"
+
+msgid "histoMessage"
+msgstr "Message"
+
+msgid "histoNotice"
+msgstr "Notice"
+
+msgid "histoWarning"
+msgstr "Avertissement"
 
 msgid "horizontal size for secondary windows"
 msgstr "taille horizontale lors de l'ouverture de fenêtre secondaire"
@@ -8533,6 +8569,10 @@ msgid "to insert document in sub folder"
 msgstr "pour insérer les documents dans des sous dossiers"
 
 #, c-format
+msgid "to the %s activity"
+msgstr "vers l'activite %s"
+
+#, c-format
 msgid "to the %s state"
 msgstr "vers l'état %s"
 
@@ -9272,6 +9312,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Book in my space"
 #~ msgstr "Réserver dans mon espace"
 
+#~ msgid "Cancel the change state"
+#~ msgstr "Annulation du changement d'état"
+
+#~ msgid "Change state to %s"
+#~ msgstr "Changement d'état vers %s"
+
 #~ msgid "Computed from"
 #~ msgstr "Calculé depuis"
 
@@ -9407,6 +9453,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Vcard example"
 #~ msgstr "Exemple de Vcard"
 
+#~ msgid "View notice messages"
+#~ msgstr "Voir tous les messages"
+
 #~ msgid "View only access set. Green or Red flag"
 #~ msgstr "Voir que les accès définis. Les cercles verts ou rouges."
 
@@ -9523,6 +9572,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "contact"
 #~ msgstr "Contact..."
+
+#~ msgid "current_state"
+#~ msgstr "courant"
 
 #~ msgid "delete all favorites"
 #~ msgstr "Suppression des préférés (tous)"
