@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-03 13:21+0200\n"
+"POT-Creation-Date: 2012-07-03 16:50+0200\n"
 "PO-Revision-Date: 2012-07-03 11:23+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1105,10 +1105,6 @@ msgstr "Delete"
 
 msgid "Change state"
 msgstr "Next step"
-
-#, c-format
-msgid "Change state %s"
-msgstr "Next step %s"
 
 msgid "Change state to"
 msgstr "Next step to"
@@ -3302,10 +3298,6 @@ msgid "Save preferences"
 msgstr ""
 
 #, fuzzy
-msgid "Save without change state"
-msgstr "Category"
-
-#, fuzzy
 msgid "Search"
 msgstr ""
 "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
@@ -3576,6 +3568,9 @@ msgstr "Identity"
 msgid "Status for sending mail"
 msgstr ""
 
+msgid "Steps"
+msgstr ""
+
 msgid "Submit"
 msgstr ""
 
@@ -3762,9 +3757,6 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-msgid "To"
-msgstr ""
-
 msgid "To choose other families"
 msgstr ""
 
@@ -3798,9 +3790,6 @@ msgid "Transformation Engine server port number"
 msgstr ""
 
 msgid "Transformation Engine timeout connection (in seconds)"
-msgstr ""
-
-msgid "Transition parameters"
 msgstr ""
 
 msgid "Transitions"
@@ -4044,6 +4033,9 @@ msgstr "Edit"
 #, fuzzy
 msgid "View tab letters"
 msgstr "Start search"
+
+msgid "View workflow graph"
+msgstr ""
 
 msgid ""
 "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
@@ -4929,6 +4921,10 @@ msgstr "Category"
 #, c-format
 msgid "cannot object update %s"
 msgstr ""
+
+#, fuzzy, c-format
+msgid "cannot open %s layout file"
+msgstr "Category"
 
 #, c-format
 msgid "cannot open %s layout file : %s"
@@ -7856,10 +7852,6 @@ msgid "parameter %s not exists"
 msgstr ""
 
 #, c-format
-msgid "parameters for %s state"
-msgstr ""
-
-#, c-format
 msgid "parameters for %s step"
 msgstr ""
 
@@ -8325,14 +8317,6 @@ msgstr "Created by"
 
 #, fuzzy
 msgid "revision"
-msgstr "Organisation"
-
-#, fuzzy
-msgid "revision comment"
-msgstr "Organisation"
-
-#, fuzzy
-msgid "revision comment for autorevision"
 msgstr "Organisation"
 
 #, fuzzy
@@ -9000,9 +8984,6 @@ msgstr "Add parameter"
 msgid "titleparammodify"
 msgstr "Modify parameter"
 
-msgid "to"
-msgstr ""
-
 #, fuzzy, c-format
 msgid "to %s"
 msgstr "Modify"
@@ -9091,10 +9072,6 @@ msgstr ""
 
 msgid "unattachTimer : the timer parameter is not a document of TIMER family"
 msgstr ""
-
-#, fuzzy
-msgid "unchanged"
-msgstr "Start search"
 
 #, fuzzy
 msgid "unchanged state"
@@ -9763,6 +9740,9 @@ msgstr ""
 #~ msgid "Cancel the change state"
 #~ msgstr "Cancel next step"
 
+#~ msgid "Change state %s"
+#~ msgstr "Next step %s"
+
 #~ msgid "Change state to %s"
 #~ msgstr "Next step to %s"
 
@@ -9787,6 +9767,10 @@ msgstr ""
 #, fuzzy
 #~ msgid "Person"
 #~ msgstr "Organisation"
+
+#, fuzzy
+#~ msgid "Save without change state"
+#~ msgstr "Category"
 
 #, fuzzy
 #~ msgid "VCARD Import Result"
@@ -9824,10 +9808,6 @@ msgstr ""
 #~ msgstr ""
 #~ "<p>Your password has been re-initialized, and the new password has been "
 #~ "sent to you by mail.</p>"
-
-#, fuzzy
-#~ msgid "cannot open %s layout file"
-#~ msgstr "Category"
 
 #, fuzzy
 #~ msgid "categorie"
@@ -10081,6 +10061,14 @@ msgstr ""
 #~ msgstr "Create"
 
 #, fuzzy
+#~ msgid "revision comment"
+#~ msgstr "Organisation"
+
+#, fuzzy
+#~ msgid "revision comment for autorevision"
+#~ msgstr "Organisation"
+
+#, fuzzy
 #~ msgid "set view control to '%s'"
 #~ msgstr "Start search"
 
@@ -10124,6 +10112,10 @@ msgstr ""
 
 #~ msgid "titleuser"
 #~ msgstr "User List"
+
+#, fuzzy
+#~ msgid "unchanged"
+#~ msgstr "Start search"
 
 #~ msgid "user"
 #~ msgstr "user"

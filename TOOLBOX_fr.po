@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-03 13:21+0200\n"
-"PO-Revision-Date: 2012-07-03 13:22+0200\n"
+"POT-Creation-Date: 2012-07-03 16:50+0200\n"
+"PO-Revision-Date: 2012-07-03 16:51+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1064,10 +1064,6 @@ msgstr "Changer le dossier racine"
 
 msgid "Change state"
 msgstr "Changer d'état"
-
-#, c-format
-msgid "Change state %s"
-msgstr "Changement d'état vers %s"
 
 msgid "Change state to"
 msgstr "Changement d'état vers"
@@ -3162,9 +3158,6 @@ msgstr "Sauver les paramètres"
 msgid "Save preferences"
 msgstr "Sauver mes choix"
 
-msgid "Save without change state"
-msgstr "Sauver sans changement d'état"
-
 msgid "Search"
 msgstr "Recherche"
 
@@ -3428,6 +3421,9 @@ msgstr "État"
 msgid "Status for sending mail"
 msgstr "Compte-rendu du publipostage"
 
+msgid "Steps"
+msgstr "Étapes"
+
 msgid "Submit"
 msgstr "Valider"
 
@@ -3626,9 +3622,6 @@ msgstr "Prévision des minuteurs"
 msgid "Title"
 msgstr "Titre"
 
-msgid "To"
-msgstr "Vers"
-
 msgid "To choose other families"
 msgstr "Pour choisir d'autres familles"
 
@@ -3662,9 +3655,6 @@ msgstr "Numéro de port du serveur de transformation"
 msgid "Transformation Engine timeout connection (in seconds)"
 msgstr ""
 "Temps d'attente de connexion pour le moteur de transformation (en secondes)"
-
-msgid "Transition parameters"
-msgstr "Paramètres pour le changement d'état"
 
 msgid "Transitions"
 msgstr "Transitions"
@@ -3890,6 +3880,9 @@ msgstr "Voir la sélection"
 
 msgid "View tab letters"
 msgstr "Voir les onglets alphabétiques"
+
+msgid "View workflow graph"
+msgstr "Voir le graphe du cycle de vie"
 
 msgid ""
 "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
@@ -4753,6 +4746,10 @@ msgstr "modification du forum impossible : %s"
 #, c-format
 msgid "cannot object update %s"
 msgstr "ne peut mettre à jour %s"
+
+#, c-format
+msgid "cannot open %s layout file"
+msgstr "ne peut ouvrir le fichier template %s"
 
 #, c-format
 msgid "cannot open %s layout file : %s"
@@ -7458,10 +7455,6 @@ msgid "parameter %s not exists"
 msgstr "paramètre %s n'existe pas"
 
 #, c-format
-msgid "parameters for %s state"
-msgstr "paramètres pour l'état %s"
-
-#, c-format
 msgid "parameters for %s step"
 msgstr "Paramètre de l'étape %s"
 
@@ -7904,12 +7897,6 @@ msgstr "révisé par"
 
 msgid "revision"
 msgstr "révision"
-
-msgid "revision comment"
-msgstr "commentaire de révision"
-
-msgid "revision comment for autorevision"
-msgstr " commentaire de révision pour révision automatique"
 
 msgid "revision date"
 msgstr "date de révision"
@@ -8542,9 +8529,6 @@ msgstr "Cr&eacute;ation d'un param&egrave;tre "
 msgid "titleparammodify"
 msgstr "Modification de param&egrave;tre"
 
-msgid "to"
-msgstr "vers"
-
 #, c-format
 msgid "to %s"
 msgstr "vers %s"
@@ -8632,9 +8616,6 @@ msgid "unattachTimer : the timer parameter is not a document of TIMER family"
 msgstr ""
 "unattachTimer : le paramètre minuteur n'est pas un document de la famille "
 "TIMER"
-
-msgid "unchanged"
-msgstr "inchangé"
 
 msgid "unchanged state"
 msgstr "Pas de changement d'état"
@@ -9315,6 +9296,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Cancel the change state"
 #~ msgstr "Annulation du changement d'état"
 
+#~ msgid "Change state %s"
+#~ msgstr "Changement d'état vers %s"
+
 #~ msgid "Change state to %s"
 #~ msgstr "Changement d'état vers %s"
 
@@ -9405,6 +9389,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Role '%s' not exists"
 #~ msgstr "Le rôle '%s' n'existe pas"
 
+#~ msgid "Save without change state"
+#~ msgstr "Sauver sans changement d'état"
+
 #~ msgid ""
 #~ "Send mail error : Relation to attribute %s not found. Relation key %s "
 #~ "doe'nt link to a document"
@@ -9420,6 +9407,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"
+
+#~ msgid "To"
+#~ msgstr "Vers"
 
 #~ msgid "Today's date"
 #~ msgstr "Aujourd'hui"
@@ -9437,6 +9427,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "Il y a trop de membres dans le groupe pour afficher la liste ici. "
 #~ "Utiliser le menu \"Ouvrir\" à partir du menu contextuel."
+
+#~ msgid "Transition parameters"
+#~ msgstr "Paramètres pour le changement d'état"
 
 #~ msgid "User Card"
 #~ msgstr "Carnet d'adresses"
@@ -9542,9 +9535,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "cannot open %s configuration file"
 #~ msgstr "ne peut ouvrir le fichier de configuration %s"
-
-#~ msgid "cannot open %s layout file"
-#~ msgstr "ne peut ouvrir le fichier template %s"
 
 #~ msgid "categorie"
 #~ msgstr "Catégorie"
@@ -9833,6 +9823,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "othergroup"
 #~ msgstr "Autres"
 
+#~ msgid "parameters for %s state"
+#~ msgstr "paramètres pour l'état %s"
+
 #~ msgid "password"
 #~ msgstr "Mot de passe"
 
@@ -9856,6 +9849,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "rev"
 #~ msgstr "rev"
+
+#~ msgid "revision comment"
+#~ msgstr "commentaire de révision"
+
+#~ msgid "revision comment for autorevision"
+#~ msgstr " commentaire de révision pour révision automatique"
 
 #~ msgid "search in all contact fields"
 #~ msgstr "recherche dans tout les champs"
@@ -9915,11 +9914,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "titleuser"
 #~ msgstr "Liste des utilisateurs"
 
+#~ msgid "to"
+#~ msgstr "vers"
+
 #~ msgid "toedit"
 #~ msgstr "éditer"
 
 #~ msgid "too many similar document %s <B>ignored</B> "
 #~ msgstr "trop de documents similaires trouvés %s <B>ignoré</B> "
+
+#~ msgid "unchanged"
+#~ msgstr "inchangé"
 
 #~ msgid "usage %s --famid=<family id> [--force=yes]"
 #~ msgstr "usage %s --famid=<family id> [--force=yes]"
