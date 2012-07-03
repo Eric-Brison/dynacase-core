@@ -36,7 +36,7 @@ function viewhisto(Action & $action)
     $action->parent->addCssRef("lib/jquery-dataTables/css/jquery.dataTables_themeroller.css");
     $action->parent->addJsRef("FDL/Layout/viewhisto.js");
     
-    $doc = new_Doc($dbaccess, $docid);
+    $doc = new_Doc($dbaccess, $docid,true);
     
     if ($doc->wid) {
         $action->lay->Set("lastState", $doc->getStateActivity(_("Current_state")));
