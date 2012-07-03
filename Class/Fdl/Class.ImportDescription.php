@@ -875,7 +875,7 @@ class importDocumentDescription
         $check = new CheckTagable();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $action)->getErrors();
         if ($this->tcr[$this->nLine]["err"]) return;
-        $this->doc->tagable = $data[1];
+        $this->doc->tagable = $data[1] === "no" ? "" : $data[1];
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change tagable parameter to '%s'") , $this->doc->tagable);
     }
     /**

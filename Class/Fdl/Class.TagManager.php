@@ -10,16 +10,18 @@ include_once ("Class.QueryDb.php");
 /**
  * @class TagManager
  */
-class TagManager {
-
+class TagManager
+{
+    
     public $docid;
     /**
      * @var DocFam $doc
      */
     public $doc;
     public $dbaccess;
-
-    public function __construct(Doc & $doc, $docid) {
+    
+    public function __construct(Doc & $doc, $docid)
+    {
         if ($doc->doctype === "C") {
             $this->doc = $doc;
         } else {
@@ -31,58 +33,59 @@ class TagManager {
         $this->docid = $docid;
         $this->dbaccess = $doc->dbaccess;
     }
-
     /**
      * Get only value in all tag property
      * @static
-     * @param string $tags
+     * @param array $tags
      * @return array
      */
-    static public function getTagsValue($tags) {
+    static public function getTagsValue(array $tags)
+    {
         $res = array();
         foreach ($tags as $tag) {
             $res[] = $tag["tag"];
         }
         return $res;
     }
-
     /**
      * Get tag of current document
      * @return array|string
      */
-    public function getTag() {
+    public function getTag()
+    {
         if (!$this->doc->tagable) {
-            return sprintf(_("Document %s is not tagable"), $this->docid);
+            return sprintf(_("Document %s is not tagable") , $this->docid);
         }
+        if (!$this->docid) return _("Document id not found");
         $tags = array();
-        simpleQuery($this->dbaccess, sprintf("SELECT DISTINCT ON (tag) * FROM DocTag WHERE initid=" . intval($this->docid)), $tags);
+        simpleQuery($this->dbaccess, sprintf("SELECT DISTINCT ON (tag) * FROM DocTag WHERE initid=" . intval($this->docid)) , $tags);
         return $tags;
     }
-
     /**
      * Delete a tag of current document
      * @param string $tag
      * @return string
      */
-    public function delTag($tag) {
+    public function delTag($tag)
+    {
         if (!$this->doc->tagable) {
-            return sprintf(_("Document %s is not tagable"), $this->docid);
+            return sprintf(_("Document %s is not tagable") , $this->docid);
         }
         if (!$this->docid) return _("Document id not found");
-        $err = simpleQuery($this->dbaccess, sprintf("DELETE FROM DocTag WHERE initid=%d AND tag='%s'", intval($this->docid), pg_escape_string($tag)));
+        $err = simpleQuery($this->dbaccess, sprintf("DELETE FROM DocTag WHERE initid=%d AND tag='%s'", intval($this->docid) , pg_escape_string($tag)));
         return $err;
     }
-
     /**
      * Add a tag to current document
      * @param string $tag
      * @return string
      */
-    public function addTag($tag) {
+    public function addTag($tag)
+    {
         global $action;
-
+        
         if (!$this->doc->tagable) {
-            return sprintf(_("Document %s is not tagable"), $this->docid);
+            return sprintf(_("Document %s is not tagable") , $this->docid);
         }
         if (!$this->docid) return _("Document id not found");
         if ($tag == "") return _("no tag specified");
@@ -98,7 +101,6 @@ class TagManager {
         $err = $tagDb->Add();
         return $err;
     }
-
     /**
      * Get list of all tags from $start to $slice orderby $orderby where tag ~* ^$query
      * @static
@@ -106,9 +108,10 @@ class TagManager {
      * @param int $slice
      * @param string $query
      * @param string $orderby
-     * @return array
+     * @return array|string
      */
-    static public function getAllTags($start = 0, $slice = 0, $query = "", $orderby = "") {
+    static public function getAllTags($start = 0, $slice = 0, $query = "", $orderby = "")
+    {
         $tags = array();
         if ($orderby) {
             $orderby = "ORDER BY $orderby";
@@ -116,32 +119,27 @@ class TagManager {
         if ($slice == 0) {
             $slice = "ALL";
         }
-
-        $err = simpleQuery(getDbAccess(), sprintf("SELECT DISTINCT ON (tag) * FROM DocTag WHERE  strpos(tag, '%s') = 1 %s LIMIT %s OFFSET %s", pg_escape_string($query), $orderby, $slice, $start), $tags);
+        
+        $err = simpleQuery(getDbAccess() , sprintf("SELECT DISTINCT ON (tag) * FROM DocTag WHERE  strpos(tag, '%s') = 1 %s LIMIT %s OFFSET %s", pg_escape_string($query) , $orderby, $slice, $start) , $tags);
         if ($err) {
-            return array(
-                $err
-            );
+            return $err;
         }
         return $tags;
     }
-
     /**
      * Get number of all tags on all document
      * @static
      * @return array
      */
-    static public function getAllCount() {
+    static public function getAllCount()
+    {
         $tags = array();
-        $err = simpleQuery(getDbAccess(), "SELECT count(DISTINCT tag) as count FROM DocTag", $tags);
+        $err = simpleQuery(getDbAccess() , "SELECT count(DISTINCT tag) as count FROM DocTag", $tags);
         if ($err) {
-            return array(
-                $err
-            );
+            return $err;
         }
         return $tags[0]["count"];
     }
-
     /**
      * Get tags information and number of tag per document for tags from $start to $slice orderby $orderby where tag ~* ^$query
      * @static
@@ -151,7 +149,8 @@ class TagManager {
      * @param string $orderby
      * @return array
      */
-    static public function getAllTagsAndCount($start = 0, $slice = 0, $query = "", $orderby = "") {
+    static public function getAllTagsAndCount($start = 0, $slice = 0, $query = "", $orderby = "")
+    {
         $tags = array();
         if ($orderby) {
             $orderby = "ORDER BY $orderby";
@@ -159,58 +158,46 @@ class TagManager {
         if ($slice == 0) {
             $slice = "ALL";
         }
-        $err = simpleQuery(getDbAccess(), sprintf("SELECT tag,count(DISTINCT initid) as number FROM DocTag WHERE  strpos(tag, '%s') = 1 GROUP BY tag %s LIMIT %s OFFSET %s", pg_escape_string($query), $orderby, $slice, $start), $tags);
+        $err = simpleQuery(getDbAccess() , sprintf("SELECT tag,count(DISTINCT initid) as number FROM DocTag WHERE  strpos(tag, '%s') = 1 GROUP BY tag %s LIMIT %s OFFSET %s", pg_escape_string($query) , $orderby, $slice, $start) , $tags);
         if ($err) {
-            return array(
-                $err
-            );
+            return $err;
         }
         return $tags;
     }
-
     /**
      * Get number of document with the tag $tag
      * @static
-     * @param string $tags
+     * @param array|string $tags
      * @return array
      */
-    static public function getTagCount($tags) {
+    static public function getTagCount($tags)
+    {
         $result = array();
-        $where = "";
         if (is_array($tags)) {
-            foreach ($tags as $tag) {
-                if ($where) {
-                    $where .= ",";
-                } else {
-                    $where = "in (";
-                }
-                $where .= sprintf("'%s'", pg_escape_string($tag));
-            }
-            $where .= ")";
+            $where = TagManager::constructWhereMultiple($tags);
         } else {
             $where = sprintf("= '%s'", pg_escape_string($tags));
         }
-        simpleQuery(getDbAccess(), sprintf("select count(distinct initid) from doctag where tag %s", $where), $result, true, true);
+        simpleQuery(getDbAccess() , sprintf("select count(distinct initid) from doctag where tag %s", $where) , $result, true, true);
         return $result;
     }
-
     /**
      * Delete tag on all documents
      * @static
      * @param string $oldTag
      * @return string
      */
-    static public function deleteTagOnAllDocument($oldTag) {
+    static public function deleteTagOnAllDocument($oldTag)
+    {
         if (!$oldTag) return "";
         if (is_array($oldTag)) {
             $where = TagManager::constructWhereMultiple($oldTag);
         } else {
-            $where = sprintf("tag = '%s'", pg_escape_string($oldTag));
+            $where = sprintf("= '%s'", pg_escape_string($oldTag));
         }
-        $err = simpleQuery(getDbAccess(), sprintf("DELETE FROM Doctag WHERE %s", $where));
+        $err = simpleQuery(getDbAccess() , sprintf("DELETE FROM Doctag WHERE tag %s", $where));
         return $err;
     }
-
     /**
      * Renmae tag on all document
      * @static
@@ -218,43 +205,47 @@ class TagManager {
      * @param string $newTag new tag name we want to set
      * @return string
      */
-    static public function renameTagOnAllDocument($oldTag, $newTag) {
+    static public function renameTagOnAllDocument($oldTag, $newTag)
+    {
         if ($newTag == "") return _("no tag specified");
         if ($oldTag === $newTag) return "";
-
+        
         if (is_array($oldTag)) {
             $where = TagManager::constructWhereMultiple($oldTag);
         } else {
-            $where = sprintf("tag = '%s'", pg_escape_string($oldTag));
+            $where = sprintf("= '%s'", pg_escape_string($oldTag));
         }
-        $err = simpleQuery(getDbAccess(), sprintf("UPDATE Doctag SET tag = '%s' WHERE %s", pg_escape_string($newTag), $where));
+        $err = simpleQuery(getDbAccess() , sprintf("UPDATE Doctag SET tag = '%s' WHERE tag %s", pg_escape_string($newTag) , $where));
         return $err;
     }
-
     /**
      * Contruct where query for multpile tags
      * @static
-     * @param array $oldTag list of tag names
+     * @param array $tags list of tag names
      * @return string
      */
-    static private function constructWhereMultiple($oldTag) {
+    static private function constructWhereMultiple($tags)
+    {
         $where = "";
-        foreach ($oldTag as $tag) {
+        foreach ($tags as $tag) {
             if ($where) {
-                $where .= " OR ";
+                $where.= ",";
+            } else {
+                $where = "in (";
             }
-            $where .= sprintf("tag = '%s'", pg_escape_string($tag));
+            $where.= sprintf("'%s'", pg_escape_string($tag));
         }
+        $where.= ")";
         return $where;
     }
-
     /**
      * Rename tag on current document
      * @param string $oldTag Actual tag name
      * @param string $newTag New tag name we want to set
      * @return string
      */
-    public function renameTag($oldTag, $newTag) {
+    public function renameTag($oldTag, $newTag)
+    {
         if ($newTag == "") return _("no tag specified");
         if ($oldTag === $newTag) return "";
         $err = $this->delTag($oldTag);
