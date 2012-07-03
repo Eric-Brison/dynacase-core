@@ -95,12 +95,12 @@ OPTION:hover {
   color:[input-text-hover-color];
   background-color:[input-background-hover-color];
 }
-input:hover,  TEXTAREA:hover,  SELECT:hover { 
+input[type="text"]:hover,  TEXTAREA:hover,  SELECT:hover {
   border-style:inset;
   color:[input-text-hover-color];
   background-color:[input-background-hover-color];
    }
-input:focus,  textarea:focus, input.sffocus, textarea.sffocus { 
+input[type="text"]:focus,  textarea:focus, input.sffocus, textarea.sffocus {
   border-style:inset;
   color:[input-text-focus-color];
   background-color:[input-background-focus-color];
