@@ -144,7 +144,7 @@ div.legend {
 [IFNOT ISIE]
 FIELDSET {
 /*   background-color: [CORE_BGCELLCOLOR];*/
-   -moz-border-radius: 6px;
+   border-radius: 6px;
 }[ENDIF ISIE]
 
 FIELDSET.frame table td, div.frame table td {
@@ -169,7 +169,7 @@ div.frame .legend:hover { background-color:[COLOR_A9]; }
      border-color:[COLOR_A6] [COLOR_A6] [COLOR_A6] [COLOR_A6];
      border-width:1px 1px 1px 1px;
  	
-     -moz-border-radius: 6px; 	
+     border-radius: 6px; 	
  }
 TABLE.barmenu {
 /*	background-color: [CORE_BGCOLORALTERN];*/
@@ -562,7 +562,7 @@ IMG.unselect:hover {
   background-color:[CORE_BGCOLORALTERN];
   border-style : solid;
   cursor: pointer;
-  -moz-border-radius:25px;
+  border-radius:25px;
 }
 IMG.select {
   border-style: hidden;
@@ -573,7 +573,7 @@ IMG.select {
   background-color:[COLOR_B7];
   border-style : solid;
   cursor: crosshair;
-  -moz-border-radius:25px;
+  border-radius:25px;
 }
 
 TBODY.unselect, TR.unselect {
@@ -639,7 +639,7 @@ DIV.icon{
 IMG.aicon, IMG.aiconnoh {
 	margin:0pt;
 	padding:0pt;
-	-moz-border-radius:0px 0px 0px 25px;
+	border-radius:0px 0px 0px 25px;
 }
 IMG.aicon:hover {
   cursor: pointer;
@@ -770,7 +770,7 @@ SPAN.selected {
   font-size:[SIZE_SMALL];
   height:20px;
   padding:1px;
-  -moz-border-radius:25px;
+  border-radius:25px;
 }
 
 SPAN.unselected {
@@ -780,7 +780,7 @@ SPAN.unselected {
   padding:1px;
   height:20px;
   font-size:[SIZE_SMALL];
-  -moz-border-radius:25px;
+  border-radius:25px;
 }
 SPAN.hselected {
   cursor: pointer;
@@ -791,7 +791,7 @@ SPAN.hselected {
   border-style: none;
   padding:1px;
   height:20px;
-  -moz-border-radius:25px;
+  border-radius:25px;
 }
 SPAN.wselected {
   cursor: pointer;
@@ -802,11 +802,11 @@ SPAN.wselected {
   border-style: none;
   padding:1px;
   height:20px;
-  -moz-border-radius:25px;
+  border-radius:25px;
 }
 SPAN.selected:hover, SPAN.unselected:hover, SPAN.hselected:hover{
   color:[CORE_BGCOLORHIGH];
-  -moz-border-radius:25px;	
+  border-radius:25px;	
 }
 
 SPAN.checked, TR.checked {
@@ -817,7 +817,7 @@ SPAN.nochecked:hover, TR.nochecked:hover {
 }
 
 DIV.tabh SPAN  {
-  -moz-border-radius: 8px 8px 0px 0px;	
+  border-radius: 8px 8px 0px 0px;	
   border-width : 1px;
   border-style :outset;
   border-color : [COLOR_B7];
@@ -924,7 +924,7 @@ DIV.tabsh SPAN  {
   border-style :outset;
   border-color : [COLOR_B5];
   background-image:url('[IMG:tabvig.png]');
-  -moz-border-radius: 8px 8px 0px 0px;
+  border-radius: 8px 8px 0px 0px;
 [IF ISIE6] background-image:none;[ENDIF ISIE6]
   background-color : [COLOR_B7];
   padding:2px;
@@ -949,7 +949,7 @@ DIV.tabsh SPAN:hover  {
 .statetext {
   border-style:none solid solid none ;
   border-width:0px 10px 1px 0px;
-  -moz-border-radius:0px 0px 8px 0px;
+  border-radius:0px 0px 8px 0px;
   padding-right:2px;
   text-decoration:none;
 }

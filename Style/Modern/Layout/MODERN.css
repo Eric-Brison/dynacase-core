@@ -64,7 +64,7 @@ OPTION {
    background-color:[input-background-normal-color];
 }
 BUTTON, input[type="button"], input[type="submit"], input[type="reset"] {
-  /*-moz-border-radius:25px;*/
+  /*border-radius:25px;*/
   padding:0pt;
   margin:0px;
   vertical-align:top;
@@ -114,15 +114,15 @@ input:focus,  textarea:focus, input.sffocus, textarea.sffocus {
    }
 */
 /*
-input[type="submit"] { -moz-border-radius:25px;
+input[type="submit"] { border-radius:25px;
    }
-input[type="select"] { -moz-border-radius:25px;
+input[type="select"] { border-radius:25px;
   }
-input[type="reset"] { -moz-border-radius:25px ;
+input[type="reset"] { border-radius:25px ;
  }
 */
 input[type="text"] { 
-  /*-moz-border-radius:7px ;*/
+  /*border-radius:7px ;*/
 
   border:inset 1px [input-text-normal-color];
  }
@@ -251,7 +251,7 @@ input[type="image"] {
 .document fieldset {
     border-style: solid;
     border-width: 1px ;
-    -moz-border-radius: 0px;
+    border-radius: 0px;
     margin-bottom: 10px;
     padding: 0px 5px 5px 5px;
 }
@@ -371,7 +371,7 @@ input[type="image"] {
 .document .tabsh span {
     font-weight: bold;
     font-size: 90%;
-    -moz-border-radius: 0px;
+    border-radius: 0px;
     border-left-width: 1px ;
     border-left-style: solid;
     border-right-width: 1px ;
@@ -470,17 +470,17 @@ input[type="image"] {
 .document fieldset {
     background-color: white !important;
     border-color:  #B5B8C8;
-    -moz-border-radius: 0px;
+    border-radius: 0px;
 }
 
 .document div.frame {
     background-color: white !important;
-    -moz-border-radius: 0px;
+    border-radius: 0px;
 }
 
 .document div.frame div.content {
     background-color: white !important;
-    -moz-border-radius: 0px;
+    border-radius: 0px;
     [IFNOT ISIE7][IFNOT ISIE6]margin-top:-0.6em;[ENDIF ISIE6][ENDIF ISIE7]
 }
 .document input,.document select,.document textarea,.document file,
