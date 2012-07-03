@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-28 15:29+0200\n"
-"PO-Revision-Date: 2012-06-29 16:03+0200\n"
+"POT-Creation-Date: 2012-07-03 16:50+0200\n"
+"PO-Revision-Date: 2012-07-03 16:51+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -560,6 +560,9 @@ msgstr "Activer les droits"
 msgid "Activate file indexing with TE"
 msgstr "Activation de l'indexation plein texte avec TE"
 
+msgid "Activity"
+msgstr "Activité"
+
 #, c-format
 msgid "Add %d document(s)"
 msgstr "Ajout de %d document(s)"
@@ -819,6 +822,9 @@ msgstr "Août"
 msgid "Authentication failures before account deactivation"
 msgstr "Nombre d'échecs d'authentification avant la désactivation du compte"
 
+msgid "Author"
+msgstr "Auteur"
+
 msgid "Automatic profil creation not possible for this kind of family"
 msgstr "Création automatique de profil imposssible pour ce type de document"
 
@@ -888,8 +894,8 @@ msgstr "Annuler les changements et fermer la fenêtre"
 msgid "Cancel changes and quit edit mode"
 msgstr "Annuler les changements et quitter le mode édition"
 
-msgid "Cancel the change state"
-msgstr "Annulation du changement d'état"
+msgid "Cancel the change step"
+msgstr "Annuler le changement d'étape"
 
 msgid "Cannot access interface to change password"
 msgstr "Accès interdit à l'interface de changement de mot de passe"
@@ -1059,16 +1065,11 @@ msgstr "Changer le dossier racine"
 msgid "Change state"
 msgstr "Changer d'état"
 
-#, c-format
-msgid "Change state %s"
-msgstr "Changement d'état vers %s"
-
 msgid "Change state to"
 msgstr "Changement d'état vers"
 
-#, c-format
-msgid "Change state to %s"
-msgstr "Changement d'état vers %s"
+msgid "Change step"
+msgstr "Changer d'étape"
 
 msgid "Change the document state to"
 msgstr "changer l'état du document en"
@@ -1403,6 +1404,9 @@ msgstr "Les données ne peuvent être sauvées"
 msgid "Database : [%s]"
 msgstr "Base de données : [%s]"
 
+msgid "Date"
+msgstr "Date"
+
 msgid "Dav"
 msgstr "Dav"
 
@@ -1443,6 +1447,9 @@ msgstr "Description du format d'import"
 
 msgid "Detail Permissions"
 msgstr "Détail des droits"
+
+msgid "Diff"
+msgstr "Diff"
 
 #, c-format
 msgid "Dir::insertFolder identificator [%s] must be numeric"
@@ -2107,6 +2114,9 @@ msgstr "Historique"
 
 msgid "History"
 msgstr "Historique"
+
+msgid "History for"
+msgstr "Historique de"
 
 # ne pas mettre de '
 msgid "Homepage"
@@ -2831,6 +2841,9 @@ msgstr "Mot de passe"
 msgid "Password has been cnanged"
 msgstr "Votre nouveau mot de passe a été enregistré"
 
+msgid "Past Revisions"
+msgstr "Révisions passées"
+
 msgid "Permissions"
 msgstr "Droits"
 
@@ -3075,6 +3088,9 @@ msgstr "Valeur résultante"
 msgid "Return to reference document"
 msgstr "Retour au document de référence"
 
+msgid "Rev"
+msgstr "Rév."
+
 msgid "Revise"
 msgstr "Réviser"
 
@@ -3142,9 +3158,6 @@ msgstr "Sauver les paramètres"
 msgid "Save preferences"
 msgstr "Sauver mes choix"
 
-msgid "Save without change state"
-msgstr "Sauver sans changement d'état"
-
 msgid "Search"
 msgstr "Recherche"
 
@@ -3160,6 +3173,12 @@ msgstr "Recherche contenant les caractères"
 
 msgid "Search criteria"
 msgstr "Critères de recherche"
+
+msgid "Search in current revision"
+msgstr "Filtrer dans la révision courante"
+
+msgid "Search in past revision"
+msgstr "Filtrer dans les révisions passées"
 
 msgid "Search linked documents"
 msgstr "Recherche des documents liés"
@@ -3390,6 +3409,9 @@ msgstr "Démarrage de"
 msgid "State"
 msgstr "État"
 
+msgid "StateConfirm"
+msgstr "Confirmer"
+
 msgid "States"
 msgstr "États"
 
@@ -3398,6 +3420,9 @@ msgstr "État"
 
 msgid "Status for sending mail"
 msgstr "Compte-rendu du publipostage"
+
+msgid "Steps"
+msgstr "Étapes"
 
 msgid "Submit"
 msgstr "Valider"
@@ -3500,8 +3525,25 @@ msgstr ""
 "%s "
 
 #, c-format
+msgid "The current activity is \"%s\"."
+msgstr "L'activité courante est \"%s\"."
+
+#, c-format
+msgid "The current state is \"%s\"."
+msgstr "L'état courant est \"%s\"."
+
+#, c-format
 msgid "The document <%s> is not a folder"
 msgstr "Le document <%s> n'est pas un dossier"
+
+msgid "The document can become inconsistent and can not be used properly"
+msgstr ""
+"le document peut devenir incohérent et peut ne plus être utilisable "
+"correctement"
+
+#, c-format
+msgid "The document will be stored with \"%s\" state."
+msgstr "Le document sera enregistré avec l'état \"%s\"."
 
 #, c-format
 msgid "The file %s cannot be extracted"
@@ -3520,6 +3562,14 @@ msgstr ""
 #, c-format
 msgid "The latest document %s waiting for a answer"
 msgstr "Le dernier document %s attend une réponse"
+
+#, c-format
+msgid "The next activity will be \"%s\"."
+msgstr "La prochaine activité sera \"%s\"."
+
+#, c-format
+msgid "The next state will be \"%s\"."
+msgstr "Le prochain état sera \"%s\"."
 
 msgid "The separator field is the semicolon(;)"
 msgstr "Le séparateur de colonne est le point-virgule ';'"
@@ -3569,8 +3619,8 @@ msgstr "Résultat gestion des minuteurs"
 msgid "Timers prevision"
 msgstr "Prévision des minuteurs"
 
-msgid "To"
-msgstr "Vers"
+msgid "Title"
+msgstr "Titre"
 
 msgid "To choose other families"
 msgstr "Pour choisir d'autres familles"
@@ -3605,9 +3655,6 @@ msgstr "Numéro de port du serveur de transformation"
 msgid "Transformation Engine timeout connection (in seconds)"
 msgstr ""
 "Temps d'attente de connexion pour le moteur de transformation (en secondes)"
-
-msgid "Transition parameters"
-msgstr "Paramètres pour le changement d'état"
 
 msgid "Transitions"
 msgstr "Transitions"
@@ -3813,9 +3860,6 @@ msgstr "Voir mes recherches"
 msgid "View next results"
 msgstr "voir les documents suivants..."
 
-msgid "View notice messages"
-msgstr "Voir tous les messages"
-
 msgid "View only access set. Green flag"
 msgstr "Voir les droits posés. (puces vertes)"
 
@@ -3828,11 +3872,17 @@ msgstr "Version imprimable"
 msgid "View properties"
 msgstr "Voir les propriétés"
 
+msgid "View revision"
+msgstr "Voir la révision"
+
 msgid "View selection"
 msgstr "Voir la sélection"
 
 msgid "View tab letters"
 msgstr "Voir les onglets alphabétiques"
+
+msgid "View workflow graph"
+msgstr "Voir le graphe du cycle de vie"
 
 msgid ""
 "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
@@ -4698,6 +4748,10 @@ msgid "cannot object update %s"
 msgstr "ne peut mettre à jour %s"
 
 #, c-format
+msgid "cannot open %s layout file"
+msgstr "ne peut ouvrir le fichier template %s"
+
+#, c-format
 msgid "cannot open %s layout file : %s"
 msgstr "ne peut pas ouvrir le fichier modèle %s : %s "
 
@@ -4887,7 +4941,7 @@ msgid "changes"
 msgstr "modifications"
 
 msgid "chgstates"
-msgstr "Changer d'état"
+msgstr "Étapes"
 
 msgid "choose action from batch document"
 msgstr "choix d'une action à partir d'un traitement"
@@ -5109,7 +5163,9 @@ msgid "core_sessionttl"
 msgstr "Durée des sessions (en secondes)"
 
 msgid "core_tmpdir_maxage"
-msgstr "Temps maximal (en jours) au bout duquel les fichiers et répertoires temporaires sont supprimés"
+msgstr ""
+"Temps maximal (en jours) au bout duquel les fichiers et répertoires "
+"temporaires sont supprimés"
 
 #, c-format
 msgid "create %s family %s"
@@ -5205,9 +5261,6 @@ msgstr "L'utilisateur courant ne peut désactiver le compte"
 
 msgid "current user parameters"
 msgstr "mes paramètres"
-
-msgid "current_state"
-msgstr "courant"
 
 msgid "cycle family must be defined"
 msgstr "la famille cycle doit être renseignée"
@@ -5370,9 +5423,6 @@ msgstr "détaillée"
 
 msgid "detailled search"
 msgstr "recherche détaillée"
-
-msgid "diff"
-msgstr "diff"
 
 msgid "difference between 2 documents"
 msgstr "différence entre 2 documents"
@@ -6308,6 +6358,21 @@ msgstr "caché"
 
 msgid "highlight background color"
 msgstr "couleur de fond pour la mise en évidence"
+
+msgid "histoError"
+msgstr "Erreur"
+
+msgid "histoInfo"
+msgstr "Info"
+
+msgid "histoMessage"
+msgstr "Message"
+
+msgid "histoNotice"
+msgstr "Notice"
+
+msgid "histoWarning"
+msgstr "Avertissement"
 
 msgid "horizontal size for secondary windows"
 msgstr "taille horizontale lors de l'ouverture de fenêtre secondaire"
@@ -7390,10 +7455,6 @@ msgid "parameter %s not exists"
 msgstr "paramètre %s n'existe pas"
 
 #, c-format
-msgid "parameters for %s state"
-msgstr "paramètres pour l'état %s"
-
-#, c-format
 msgid "parameters for %s step"
 msgstr "Paramètre de l'étape %s"
 
@@ -7489,9 +7550,6 @@ msgstr "Préférés"
 
 msgid "prefered search"
 msgstr "Recherche préférée"
-
-msgid "preferential doc gate id"
-msgstr "identifiant de portail par défaut"
 
 msgid "prev"
 msgstr "précédent"
@@ -7831,9 +7889,6 @@ msgstr "récupération des status de tâches"
 msgid "retry file conversion"
 msgstr "retenter la conversion du fichier"
 
-msgid "rev"
-msgstr "rev"
-
 msgid "revdate"
 msgstr "date de modification"
 
@@ -7842,12 +7897,6 @@ msgstr "révisé par"
 
 msgid "revision"
 msgstr "révision"
-
-msgid "revision comment"
-msgstr "commentaire de révision"
-
-msgid "revision comment for autorevision"
-msgstr " commentaire de révision pour révision automatique"
 
 msgid "revision date"
 msgstr "date de révision"
@@ -8480,9 +8529,6 @@ msgstr "Cr&eacute;ation d'un param&egrave;tre "
 msgid "titleparammodify"
 msgstr "Modification de param&egrave;tre"
 
-msgid "to"
-msgstr "vers"
-
 #, c-format
 msgid "to %s"
 msgstr "vers %s"
@@ -8505,6 +8551,10 @@ msgstr "Pour choisir une valeur depuis une interface spécifique"
 
 msgid "to insert document in sub folder"
 msgstr "pour insérer les documents dans des sous dossiers"
+
+#, c-format
+msgid "to the %s activity"
+msgstr "vers l'activite %s"
 
 #, c-format
 msgid "to the %s state"
@@ -8566,9 +8616,6 @@ msgid "unattachTimer : the timer parameter is not a document of TIMER family"
 msgstr ""
 "unattachTimer : le paramètre minuteur n'est pas un document de la famille "
 "TIMER"
-
-msgid "unchanged"
-msgstr "inchangé"
 
 msgid "unchanged state"
 msgstr "Pas de changement d'état"
@@ -8762,9 +8809,6 @@ msgstr "utiliser la touche ctrl dans les menus popup"
 msgid "use dynacase user management"
 msgstr "utiliser la gestion d'utilisateur de dynacase"
 
-msgid "use what gate"
-msgstr "utiliser le portail what"
-
 #, c-format
 msgid "user #%d does not exist"
 msgstr "l'utilisateur n°%d n'existe pas"
@@ -8883,9 +8927,6 @@ msgstr "vérifie les contraintes d'attributs"
 
 msgid "verify files status"
 msgstr "Vérification status des fichiers"
-
-msgid "version"
-msgstr "version"
 
 msgid "version identificator"
 msgstr "identificateur de version"
@@ -9252,6 +9293,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Book in my space"
 #~ msgstr "Réserver dans mon espace"
 
+#~ msgid "Cancel the change state"
+#~ msgstr "Annulation du changement d'état"
+
+#~ msgid "Change state %s"
+#~ msgstr "Changement d'état vers %s"
+
+#~ msgid "Change state to %s"
+#~ msgstr "Changement d'état vers %s"
+
 #~ msgid "Computed from"
 #~ msgstr "Calculé depuis"
 
@@ -9339,6 +9389,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Role '%s' not exists"
 #~ msgstr "Le rôle '%s' n'existe pas"
 
+#~ msgid "Save without change state"
+#~ msgstr "Sauver sans changement d'état"
+
 #~ msgid ""
 #~ "Send mail error : Relation to attribute %s not found. Relation key %s "
 #~ "doe'nt link to a document"
@@ -9354,6 +9407,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"
+
+#~ msgid "To"
+#~ msgstr "Vers"
 
 #~ msgid "Today's date"
 #~ msgstr "Aujourd'hui"
@@ -9372,6 +9428,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ "Il y a trop de membres dans le groupe pour afficher la liste ici. "
 #~ "Utiliser le menu \"Ouvrir\" à partir du menu contextuel."
 
+#~ msgid "Transition parameters"
+#~ msgstr "Paramètres pour le changement d'état"
+
 #~ msgid "User Card"
 #~ msgstr "Carnet d'adresses"
 
@@ -9386,6 +9445,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Vcard example"
 #~ msgstr "Exemple de Vcard"
+
+#~ msgid "View notice messages"
+#~ msgstr "Voir tous les messages"
 
 #~ msgid "View only access set. Green or Red flag"
 #~ msgstr "Voir que les accès définis. Les cercles verts ou rouges."
@@ -9474,9 +9536,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "cannot open %s configuration file"
 #~ msgstr "ne peut ouvrir le fichier de configuration %s"
 
-#~ msgid "cannot open %s layout file"
-#~ msgstr "ne peut ouvrir le fichier template %s"
-
 #~ msgid "categorie"
 #~ msgstr "Catégorie"
 
@@ -9504,6 +9563,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "contact"
 #~ msgstr "Contact..."
 
+#~ msgid "current_state"
+#~ msgstr "courant"
+
 #~ msgid "delete all favorites"
 #~ msgstr "Suppression des préférés (tous)"
 
@@ -9512,6 +9574,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "desactived user"
 #~ msgstr "Utilisateur désactivé"
+
+#~ msgid "diff"
+#~ msgstr "diff"
 
 #~ msgid "direct"
 #~ msgstr "direct"
@@ -9758,6 +9823,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "othergroup"
 #~ msgstr "Autres"
 
+#~ msgid "parameters for %s state"
+#~ msgstr "paramètres pour l'état %s"
+
 #~ msgid "password"
 #~ msgstr "Mot de passe"
 
@@ -9767,6 +9835,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "pre-import:%s"
 #~ msgstr "pré-Import:%s"
 
+#~ msgid "preferential doc gate id"
+#~ msgstr "identifiant de portail par défaut"
+
 #~ msgid "quick search"
 #~ msgstr "recherche rapide"
 
@@ -9775,6 +9846,15 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "remove the document from my space"
 #~ msgstr "Enlever le document de mon espace"
+
+#~ msgid "rev"
+#~ msgstr "rev"
+
+#~ msgid "revision comment"
+#~ msgstr "commentaire de révision"
+
+#~ msgid "revision comment for autorevision"
+#~ msgstr " commentaire de révision pour révision automatique"
 
 #~ msgid "search in all contact fields"
 #~ msgstr "recherche dans tout les champs"
@@ -9834,14 +9914,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "titleuser"
 #~ msgstr "Liste des utilisateurs"
 
+#~ msgid "to"
+#~ msgstr "vers"
+
 #~ msgid "toedit"
 #~ msgstr "éditer"
 
 #~ msgid "too many similar document %s <B>ignored</B> "
 #~ msgstr "trop de documents similaires trouvés %s <B>ignoré</B> "
 
+#~ msgid "unchanged"
+#~ msgstr "inchangé"
+
 #~ msgid "usage %s --famid=<family id> [--force=yes]"
 #~ msgstr "usage %s --famid=<family id> [--force=yes]"
+
+#~ msgid "use what gate"
+#~ msgstr "utiliser le portail what"
 
 #~ msgid "user"
 #~ msgstr "utilisateur"
@@ -9866,6 +9955,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "vcs file"
 #~ msgstr "fichier VCS"
+
+#~ msgid "version"
+#~ msgstr "version"
 
 #~ msgid "view my space"
 #~ msgstr "Voir mon espace"

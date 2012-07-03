@@ -23,7 +23,6 @@ function popupdocdetail(Action & $action)
     $docid = GetHttpVars("id");
     if ($docid == "") $action->exitError(_("No identificator"));
     $popup = getpopupdocdetail($action, $docid);
-    
     popupdoc($action, $popup);
 }
 
@@ -100,7 +99,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "editstate" => array(
-            "descr" => _("Change state") ,
+            "descr" => _("Change step") ,
             "url" => "$surl&app=FREEDOM&action=FREEDOM_EDITSTATE&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -545,13 +544,14 @@ function addStatesPopup(&$tlink, Doc & $doc)
             $jsf = "";
             
             if ((!$tr["nr"]) || (is_array($tr["ask"]) && (count($tr["ask"]) > 0))) {
-                $jsf = sprintf("popdoc(null,'$surl&app=FDL&action=EDITCHANGESTATE&id=$docid&nstate=$v','%s',0,40,400,250)", (str_replace("'", "&rsquo;", sprintf(_("Change state %s") , _($v)))));
+                $jsf = sprintf("popdoc(null,'$surl&app=FDL&action=EDITCHANGESTATE&id=$docid&nstate=$v','%s',0,40,400,250)", (str_replace("'", "&rsquo;", sprintf(_("Steps")))));
             } else {
                 $jsf = sprintf("subwindow(100,100,'_self','$surl&app=FREEDOM&action=MODSTATE&newstate=$v&id=$docid');");
             }
             $visibility = POPUP_ACTIVE;
             $tooltip = $wdoc->getActivity($v, ucfirst(_($v)));
-            $icon = (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "");
+            //$icon = (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "");
+            $icon = (!$tr) ? "Images/noaccess.png" : "";
             if ($tr && $tr["m0"]) {
                 // verify m0
                 $err = call_user_func(array(

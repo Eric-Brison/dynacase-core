@@ -111,8 +111,9 @@ function objectMenu2Html(array $menulist, $ul = true, $level = 0)
                     $attrs.= sprintf(' %s="%s" ', $ki, $item);
                 }
             }
-            
-            $s.= sprintf('<li><a href="#%s"%s>%s</a>', $k, $attrs, mb_ucfirst($aMenu["label"]));
+            if ($aMenu["label"]) $label=_($aMenu["label"]);
+            else $label='';
+            $s.= sprintf('<li><a href="#%s"%s>%s</a>', $k, $attrs, mb_ucfirst($label));
             
             $s.= objectMenu2Html($aMenu["items"], true, $level + 1);
         } else {
@@ -129,7 +130,9 @@ function objectMenu2Html(array $menulist, $ul = true, $level = 0)
             foreach ($aMenu as $ki => $item) {
                 if ($ki != "label") $s.= sprintf(' %s="%s" ', $ki, $item);
             }
-            $s.= sprintf('>%s', mb_ucfirst($aMenu["label"]));
+            $s.='>';
+            if ($aMenu["label"]) $s.= mb_ucfirst(_($aMenu["label"]));
+
             if (!$noanchor) $s.= "</a> ";
             if ($level == 0) $s.= '</div>';
         }

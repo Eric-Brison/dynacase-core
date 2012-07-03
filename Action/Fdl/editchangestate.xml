@@ -3,12 +3,38 @@
 attrNid=[Wattrnid];
 attrNtitle=[Wattrntitle];
 addEvent(window,'load',disableReadAttribute);
-addEvent(window,'load',function () {setTimeout("hasScrollbar()",2000);});
+addEvent(window,'load',resizePopDoc);
 addEvent(window,'unload',function () {autoUnlock('[docid]');});
-function hasScrollbar() {
-    var d=document.documentElement;
-    if (d.clientHeight < d.scrollHeight) {
-	document.getElementById('afoot').style.display='';
+function resizePopDoc() {
+    var p=window.parent;
+    var pb=p.document.getElementById('POPDOC_b');
+    var ps=p.document.getElementById('POPDOC_s');
+    var pc=p.document.getElementById('POPDOC_c');
+    var prs=p.document.getElementById('POPDOC_rs');
+    var ih=sh=0;
+
+    if (isIE) {
+        sh=document.body.scrollHeight+8;
+        ih=document.documentElement.offsetHeight;
+    } else {
+        sh=document.body.scrollHeight;
+        ih=getFrameHeight()-4;
+    }
+    if (pb) {
+        var delta=(sh - parseInt(pb.style.height));
+        if (pb) pb.style.height=(sh+50)+'px';
+        if (ps) ps.style.height=(sh+50)+'px';
+        if (pc) {
+            var pcd=parseInt(pc.style.height)+delta+50;
+            pc.style.height=pcd+'px';
+        }
+        if (prs) {
+
+            var prsd=parseInt(prs.style.top)+delta+50;
+
+    console.log("top",prs, delta, prsd);
+            prs.style.top=prsd+'px';
+        }
     }
 }
 </script>
@@ -23,6 +49,7 @@ border-style:none none solid none;
  }
 </style>
 
+<p>[Explanations]</p>
 <form  class="fborder document" 
        id="fedit" 
        name="modifydoc" 
@@ -34,8 +61,6 @@ border-style:none none solid none;
 <input type="hidden" name="viewext" value="[viewext]">
 <input type="hidden" name="wiid" value="[docid]">
 
- <a  class="state" title="[tonewstate]"  onclick="submitEdit(event);return true"> [tostate]</a> |
- <a   title="[TEXT:Cancel the change state]"  onclick="window.parent.hidebox('POPDOC')">[TEXT:Cancel] </a> <br/>
 [BLOCK FINPUTS]
 <div style="display:[idisplay];"  id="TWF[aid]" class="FREEDOMBack1">
   <span  valign="top" class="[labelclass]">[alabel]&nbsp;:&nbsp;</span><br>
@@ -48,11 +73,13 @@ border-style:none none solid none;
 [IFNOT noreason]
 [TEXT:Comment] : <br/><textarea style="margin-left:20px;width:90%" name="comment" title="[TEXT:Comment for change state]"></textarea>
 [ENDIF noreason]
-[IFNOT realtransition]<div class="Error">[TEXT:Be carreful, this transition is not defined in workflow]</div>[ENDIF realtransition]
-<div style="display:none" id="afoot">
- <br/> 
- <a class="state" title="[tonewstate]"  onclick="submitEdit(event);return true"> [tostate]</a> |
- <a title="[TEXT:Cancel the change state]"  onclick="window.parent.hidebox('POPDOC')">[TEXT:Cancel] </a>
+[IFNOT realtransition]<div class="Error"><p>[TEXT:Be carreful, this transition is not defined in workflow]</p>
+<p>[TEXT:The document can become inconsistent and can not be used properly]</p></div>[ENDIF realtransition]
+
+ <br/>
+<div style="text-align:right">
+ <a class="state" title="[thetitle]"  onclick="submitEdit(event);return true">[TEXT:StateConfirm]</a> |
+ <a title="[TEXT:Cancel the change step]"  onclick="window.parent.hidebox('POPDOC')">[TEXT:Cancel] </a>
 </div>
 </form>
 [ZONE FDL:HTMLFOOT]

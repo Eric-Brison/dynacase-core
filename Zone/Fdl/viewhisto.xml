@@ -1,47 +1,5 @@
 
-<script>
-function displaytr(event,o,n) {
-  var t=getElementsByNameTag(document,n,'tr');
-  var i=0;
-  var d;
-  
-  if (t.length > 0) {
-    if (t[0].style.display=='none') {
-      d='';
-      o.src='[IMG:minus.gif]';
-    } else {
-      d='none';
-      o.src='[IMG:plus.gif]';
-    }
-    for ( i=0; i< t.length; i++) {
-      t[i].style.display=d;
-    }
-  } else {
-    o.style.visibility='hidden';
-  }
-  stopPropagation(event);
-  return false;
-}
-function senddiff() {
-  var ic=document.getElementsByName("diff");
-  var i1=0,i2=0;
-  for (var i=0; i< ic.length; i++) {
-    ic[i].disabled=false;
-    if (ic[i].checked) {
-      if (i1==0) i1=ic[i].value;
-      else {
-	if (i2==0) i2=ic[i].value;
-      }
-    }
-  }
-  if ((i1>0) && (i2>0)) {
-    for (i=0; i< ic.length; i++) {
-      if ((ic[i].value!= i1) && (ic[i].value!= i2))    ic[i].disabled=true;    
-    }
-    subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'diff','[CORE_STANDURL]&app=FDL&action=DIFFDOC&id1='+i1+'&id2='+i2)
-  }
-}
-</script>
+
 
 <style>
 body {
@@ -57,60 +15,165 @@ TD.date,  {
 TD.date span, TD.author span {
   white-space:nowrap;
 }
-.histo1 {
+tr[level="1"] {
   color:[COLOR_A0]; /* notice */
 }
-.histo2 {
+tr[level="2"] {
    /* info */
 }
-.histo4 {
+tr[level="4"] {
    /* message */
 }
-.histo8 {
+tr[level="8"] {
   color:orange;/* warning */
 }
-.histo16 {
+tr[level="16"] {
   color:red;/* error */
 }
+.stateColor {
+  border-left:10px;border-style: none;overflow:hidden;white-space:nowrap;
+  width:100px;
+}
+td.revision {
 
+
+}
+table.dataTable thead th {
+    cursor: auto;
+}
+#allrev {
+    cursor: pointer;
+}
+td.collapsed {
+   background:url('[IMG:add.png|16]') no-repeat left center;
+}
+td.revision span.ui-icon {
+    float:left;
+}
+    td.comment {
+       border-left: solid 2px;
+    }
+    td.state  {
+        border:none;
+        cursor:pointer;
+    }
+    td.state span {
+      margin:2px;
+      border-style:outset;
+      border-width:1px;
+      float: left;
+          font-size: 30%;
+          width: 7px;
+    padding:3px;
+    }
+    h2 {
+      display:inline
+    }
+div.dataTables_wrapper input::-webkit-input-placeholder {
+    color:   [COLOR_A5];
+}
+div.dataTables_wrapper input:-moz-placeholder {
+    color:   [COLOR_A5];
+}
+div.dataTables_wrapper input[type="text"] {
+    width:250px;
+}
+
+tr.revision  td.comment{
+    border:3px solid red;
+    }
+div.filterLevel {
+    float:right;
+    }
+    div.filterLevel input {
+    }
+    label.checked {
+    background-color: [COLOR_B5];
+    }
 </style>
 
 
+     <h2> [TEXT:History for]  [title]</h2>
 
-<table class="tablesimple" cellspacing="0" cellpadding="0"  width="100%" >
+<div class="filterLevel">
+<label for="notice">[TEXT:histoNotice]</label><input id="notice" type="checkbox" value="1"/>,
+<label class="checked" for="info">[TEXT:histoInfo]</label><input checked="checked" id="info" type="checkbox" value="2"/>,
+<label class="checked" for="message">[TEXT:histoMessage]</label><input checked="checked" id="message" type="checkbox" value="4"/>,
+<label class="checked" for="warning">[TEXT:histoWarning]</label><input checked="checked" id="warning" type="checkbox" value="8"/>,
+<label class="checked" for="error">[TEXT:histoError]</label><input checked="checked" id="error" type="checkbox" value="16"/>
+</div>
+<table  cellspacing="0" cellpadding="0"  width="100%" id="current" data-searchText="[TEXT:Search in current revision]">
 <thead>
-<tr><td class="CORETblHeadBold" align="center" colspan="6">[IFNOT notice]<a title="[TEXT:View notice messages]" onclick="this.href=window.location.href+'&notice=Y'" href="#"><img needresize=1 style="width:[SIZE_IMG-X-SMALL];border:none" align="right" class="button" src="[IMG:notice.png]" ></a>[ENDIF notice][title]</td><tr>
-<tr><td width="40px" class="CORETblHeadBold">[TEXT:version]</td>
-    <td width="20px" class="CORETblHeadBold">[IF VIEWREV][TEXT:rev][ENDIF VIEWREV]</td>
-    <td class="CORETblHeadBold">[IF STATE][TEXT:state][ENDIF STATE]</td>
-    <td class="CORETblHeadBold" style="text-align:left;">[TEXT:author]</td>
-    <td class="CORETblHeadBold" style="text-align:left;">[TEXT:date]</td>
-    <td class="CORETblHeadBold" style="text-align:left;width:30px">[IF viewdiff][TEXT:diff][ENDIF viewdiff]</td>
+<tr>[IF hasversion]<th  >[TEXT:Version]</th>[ENDIF hasversion]
+    <th>[TEXT:Rev]</th>
+    <th>[IF STATE][TEXT:Activity][ENDIF STATE]</th>
+    <th style="text-align:left;">[TEXT:Author]</th>
+    <th style="text-align:left;">[TEXT:Date]</th>
+    <th style="text-align:left;width:30px">[IF viewdiff][TEXT:Diff][ENDIF viewdiff]</th>
 </tr>
 </thead>
 <tbody>
-<!-- TABLEBODY -->
-[BLOCK TABLEBODY]
-<tr class="selhead" id="d[id]" 
-    [IFNOT cversion]name="[vername]" [IF nodetail]style="display:none" [ENDIF nodetail][ENDIF cversion] 
-    onMousedown="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[target]','[CORE_STANDURL]&app=[VIEWAPP]&action=[VIEWACT]&id=[id]')" >
-<td width="100px" style="border-left:10px;border-style: none none none solid;border-color:[color];overflow:hidden;white-space:nowrap">[IF cversion][IF nodetail]<img src="[IMG:plus.gif]" onmousedown="displaytr(event,this,'[vername]');return false">[ENDIF nodetail]<b style="white-space:nowrap">[version]</b>[ENDIF cversion]&nbsp;</td>
-<td>[IF VIEWREV][revision][ENDIF VIEWREV]</td>
-<td>[IF STATE]<b>[state]</b>[ENDIF STATE]&nbsp;</td>
-     <td class="author" title="[TEXT:revised by]"><I style="margin-right:5px;white-space:nowrap;">[owner]</I></td>
-     <td class="date"><span>[date]</span></td>
-     <td>[IF viewdiff]<input type="checkbox" onclick="senddiff()" onmousedown="stopPropagation(event);return false" name="diff" value="[id]">[ENDIF viewdiff]</td>
+<tr docid="[docid]" class="revision">
+    [IF hasversion]<td class="version" >[latestVersion]</td>[ENDIF hasversion]
+    <td class="revision stateColor" ><span class="ui-icon ui-icon-circlesmall-minus" >&nbsp;</span>[lastRevision]</td>
+    <td class="state">[IF STATE]<span style="background-color:[lastColor];border-color:[lastColor]">&nbsp;</span>[ENDIF STATE]<b>[lastState]</b>&nbsp;</td>
+    <td class="author" title="[TEXT:revised by]"><I style="margin-right:5px;white-space:nowrap;">[lastOwner]</I></td>
+    <td class="date"><span>[lastDate]</span></td>
+    <td>[IF viewdiff]<input type="checkbox"  name="diff" value="[docid]">[ENDIF viewdiff]</td>
 </tr>
+    [BLOCK LASTCOMMENT]
+<tr class="comment" level="[clevel]" rev="[lastRevision]" >
+    [IF hasversion]<td class="version">&nbsp;</td>[ENDIF hasversion]
+    <td class="stateColor" style="border-color:[color]">&nbsp;</td>
+    <td class="comment" style="border-color:[lastColor]">[ccomment]</td>
+    <td class="author"><I>[cauthor]</I></td>
+    <td class="date">[cdate]</td>
+    <td>&nbsp;</td>
+</tr>
+       [ENDBLOCK LASTCOMMENT]
+</tbody>
+</table>
 
-     [BLOCK [COMMENT]]
-<tr  class="dash histo[clevel]" name="[vername]" [IF nodetail]style="display:none" [ENDIF nodetail]><td colspan="3"  >  
-       <P style="border-left:10px;border-style: none none none solid;border-color:[color]" > [ccomment]</P>
-</td><td><I>[cauthor]</I></td><td colspan="2">[cdate]</td> </tr>
+        [IF pastRevision]
+        <hr style="clear:both"/>
+
+
+        <h2>[TEXT:Past Revisions]</h2>
+<table  cellspacing="0" cellpadding="0"  width="100%" id="history" data-searchText="[TEXT:Search in past revision]">
+<thead>
+<tr>[IF hasversion]<th>[TEXT:Version]</th>[ENDIF hasversion]
+    <th id="allrev"><span class="ui-icon ui-icon-circlesmall-plus" >&nbsp;</span>[TEXT:Rev]</th>
+    <th >[IF STATE][TEXT:State][ENDIF STATE][IFNOT STATE][TEXT:Title][ENDIF STATE]</th>
+    <th style="text-align:left;">[TEXT:Author]</th>
+    <th style="text-align:left;">[TEXT:Date]</th>
+    <th style="text-align:left;width:30px">[IF viewdiff][TEXT:Diff][ENDIF viewdiff]</th>
+</tr>
+</thead>
+<tbody>
+[BLOCK TABLEBODY]
+<tr class="revision" docid="[id]">
+    [IF hasversion]<td class="version" >[version]</td>[ENDIF hasversion]
+    <td class="revision stateColor"  ><span class="ui-icon ui-icon-circlesmall-plus" >&nbsp;</span>[revision]</td>
+    <td class="state" title="[TEXT:View revision] [revision]">[IF STATE]<span style="background-color:[color];border-color:[color]">&nbsp;</span>[ENDIF STATE]<b>[state]</b>&nbsp;</td>
+    <td class="author" title="[TEXT:revised by]"><I style="margin-right:5px;white-space:nowrap;">[owner]</I></td>
+    <td class="date"><span>[date]</span></td>
+    <td>[IF viewdiff]<input type="checkbox"  name="diff" value="[id]">[ENDIF viewdiff]</td>
+</tr>
+    [BLOCK [COMMENT]]
+<tr  class="comment" level="[clevel]" rev="[revision]" >
+    [IF hasversion]<td >&nbsp;</td>[ENDIF hasversion]
+    <td class="stateColor" style="border-color:[color]">&nbsp;</td>
+    <td class="comment" style="border-color:[color]">[ccomment]</td>
+    <td><I>[cauthor]</I></td>
+    <td >[cdate]</td>
+    <td>&nbsp;</td>
+</tr>
        [ENDBLOCK [COMMENT]]
 [ENDBLOCK TABLEBODY]
 </tbody>
 </table>
-<!-- /TABLEBODY -->
+
+        [ENDIF pastRevision]
 
 
 

@@ -231,9 +231,8 @@ function viewcard(Action & $action)
     if ($state) { // see only if it is a transitionnal doc
         if ($doc->locked == - 1) $action->lay->Set("state", $action->text($state));
         else {
-            if ($doc->lmodify == 'Y') $stateaction = $doc->getStateActivity(_("current_state"));
-            else $stateaction = $doc->getStateActivity();
-            $action->lay->Set("state", sprintf("%s (<i>%s</i>)", $stateaction, $action->text($state)));
+            
+            $action->lay->Set("state", $action->Text($doc->getStateActivity($doc->getState())));
         }
         $action->lay->Set("viewstate", "inherit");
         $action->lay->Set("wid", ($doc->wid > 0) ? $doc->wid : $doc->state);
