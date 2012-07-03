@@ -1344,8 +1344,8 @@ class DocFormFormat
                     $dxml = new DomDocument();
                     $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
                     if (!file_exists($rowlayfile)) {
-                        $lay->template = sprintf(_("cannot open %s layout file : %s") , $rowlayfile);
-                        AddwarningMsg(sprintf(_("cannot open %s layout file : %s") , $rowlayfile));
+                        $lay->template = sprintf(_("cannot open %s layout file") , $rowlayfile);
+                        AddwarningMsg(sprintf(_("cannot open %s layout file") , $rowlayfile));
                         return;
                     }
                     if (!@$dxml->load($rowlayfile)) {
