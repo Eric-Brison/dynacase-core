@@ -89,6 +89,7 @@ function viewhisto(Action & $action)
     foreach ($ldoc as $k => $zdoc) {
         $rdoc = getDocObject($dbaccess, $zdoc);
         if ($rdoc->locked != - 1) continue;
+        if ($rdoc->control('view')) continue;
         $trdoc[$k]["owner"] = Account::getDisplayName($rdoc->owner);
         if ($k == 0) $trdoc[$k]["owner"] = _("Modification date");
         
