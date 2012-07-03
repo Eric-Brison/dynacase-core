@@ -781,7 +781,7 @@ class DocFormFormat
                     else $input = "<input type=\"hidden\"  name=\"" . $this->attrin . "\"";
                     $input.= " id=\"" . $this->attridk . "\" value=\"$value\">";
                     $cible = "";
-                    $textvalue = $this->doc->getTitle(trim($value) , '', $needLatest);
+                    $textvalue = $this->doc->getHtmlTitle(trim($value) , '', $needLatest);
                 }
                 if (!$this->oattr->phpfile) {
                     $this->oattr->phpfile = "fdl.php";
@@ -802,7 +802,7 @@ class DocFormFormat
                 $famid = $this->oattr->format;
                 $input.= "<input {$this->classname} $autocomplete {$this->jsEvents} onchange=\"addmdocs('{$this->attrin}');document.isChanged=true\" type=\"text\" name=\"_{$this->linkPrefix}" . substr($this->attrin, 1) . "\"";
                 if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
-                $input.= " id=\"{$this->linkPrefix}" . $this->attridk . "\" value=\"" . $textvalue . "\">";
+                $input.= " id=\"{$this->linkPrefix}" . $this->attridk . "\" value=\"" . str_replace('"', '&quot;', $textvalue) . "\">";
                 
                 if (!$cible) {
                     $this->doc->addparamrefresh($this->attrid, $this->linkPrefix . $this->attrid);
