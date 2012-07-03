@@ -46,8 +46,10 @@ function viewbarmenu(Action & $action)
         }
     }
     if (!$popup) $popup = getpopupdocdetail($action, $docid);
+    
     foreach ($popup as $k => $v) {
-        if ($v["visibility"] != POPUP_ACTIVE && (!$v["submenu"])) unset($popup[$k]);
+        $vis = $v["visibility"];
+        if (($vis != POPUP_ACTIVE && (!$v["submenu"])) || ($vis == POPUP_INVISIBLE || $vis == POPUP_CTRLACTIVE || $vis == POPUP_CTRLINACTIVE)) unset($popup[$k]);
         else if (($v["url"] == "") && ($v["jsfunction"] == "")) unset($popup[$k]);
         else {
             $popup[$k]["menu"] = ($v["submenu"] != "");

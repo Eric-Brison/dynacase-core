@@ -23,7 +23,6 @@ function popupdocdetail(Action & $action)
     $docid = GetHttpVars("id");
     if ($docid == "") $action->exitError(_("No identificator"));
     $popup = getpopupdocdetail($action, $docid);
-    
     popupdoc($action, $popup);
 }
 
@@ -552,7 +551,7 @@ function addStatesPopup(&$tlink, Doc & $doc)
             $visibility = POPUP_ACTIVE;
             $tooltip = $wdoc->getActivity($v, ucfirst(_($v)));
             //$icon = (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "");
-            $icon = (!$tr) ? "Images/noaccess.png" :  "";
+            $icon = (!$tr) ? "Images/noaccess.png" : "";
             if ($tr && $tr["m0"]) {
                 // verify m0
                 $err = call_user_func(array(
