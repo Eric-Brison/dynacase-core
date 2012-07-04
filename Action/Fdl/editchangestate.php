@@ -98,8 +98,13 @@ function editchangestate(Action & $action)
             $action->lay->set("tonewstate", sprintf(_("to the %s state") , $action->text($nextstate)));
         }
         if ($tr) {
-            if (_($tr["id"]) == $tr["id"]) $transitionLabel = sprintf(_("to %s") , $action->text($activity));
-            else $transitionLabel = _($tr["id"]);
+            if (_($tr["id"]) == $tr["id"]) {
+                if ($activity) {
+                    $transitionLabel = sprintf(_("to %s") , $action->text($activity));
+                } else {
+                    $transitionLabel = sprintf(_("to %s") , _($nextstate));
+                }
+            } else $transitionLabel = _($tr["id"]);
         } else {
             $action->lay->set("realtransition", false);
             if ($activity) $transitionLabel = sprintf(_("to %s") , $action->text($activity));

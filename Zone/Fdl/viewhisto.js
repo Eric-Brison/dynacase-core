@@ -106,14 +106,18 @@ $(document).ready(function () {
 
 
         var checked = $('input[type="checkbox"]', 'div.filterLevel');
+        var label;
         for (var i =0 ;i <checked.length;i++) {
+            label='label[for="'+$(checked[i]).attr('id')+'"] span.ui-icon';
             if (checked[i].checked) {
                 $('tr.comment[level="'+checked[i].value+'"]').show();
                // $(checked[i]).prev('label').addClass('checked');
+                $(label).addClass('ui-icon-check').removeClass('ui-icon-empty');
             }
             else  {
                 $('tr.comment[level="'+checked[i].value+'"]').hide();
                // $(checked[i]).prev('label').removeClass('checked');
+                $(label).removeClass('ui-icon-check').addClass('ui-icon-empty');
             }
         }
 

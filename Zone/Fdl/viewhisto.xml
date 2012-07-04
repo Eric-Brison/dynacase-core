@@ -84,6 +84,11 @@ div.filterLevel {
     }
     div.filterLevel input {
     }
+
+div.filterLevel label span.ui-icon {
+    float:left;
+
+    }
 label.ui-state-active {
    /* background-image:none;*/
    /* background-color: [COLOR_B5];*/
@@ -91,17 +96,20 @@ label.ui-state-active {
 label.ui-state-default {
         font-size:90%;
     }
+.ui-state-default .ui-icon-empty {
+    background-image:none;
+}
 </style>
 
 
      <h2> [TEXT:History for]  [title]</h2>
 
 <div class="filterLevel">
-<input id="notice" type="checkbox" value="1"><label for="notice">[TEXT:histoNotice]</label></input>
-<input checked="checked" id="info" type="checkbox" value="2"><label for="info">[TEXT:histoInfo]</label></input>
-<input checked="checked" id="message" type="checkbox" value="4"><label  for="message">[TEXT:histoMessage]</label></input>
-<input checked="checked" id="warning" type="checkbox" value="8"><label  for="warning">[TEXT:histoWarning]</label></input>
-<input checked="checked" id="error" type="checkbox" value="16"><label  for="error">[TEXT:histoError]</label></input>
+<input id="notice" type="checkbox" value="1"><label for="notice"><span class="ui-icon ui-icon-empty">&nbsp;</span>[TEXT:histoNotice]</label></input>
+<input checked="checked" id="info" type="checkbox" value="2"><label for="info"><span class="ui-icon ui-icon-check">&nbsp;</span>[TEXT:histoInfo]</label></input>
+<input checked="checked" id="message" type="checkbox" value="4"><label  for="message"><span class="ui-icon ui-icon-check">&nbsp;</span>[TEXT:histoMessage]</label></input>
+<input checked="checked" id="warning" type="checkbox" value="8"><label  for="warning"><span class="ui-icon ui-icon-check">&nbsp;</span>[TEXT:histoWarning]</label></input>
+<input checked="checked" id="error" type="checkbox" value="16"><label  for="error"><span class="ui-icon ui-icon-checkh">&nbsp;</span>[TEXT:histoError]</label></input>
 </div>
 <table  cellspacing="0" cellpadding="0"  width="100%" id="current" data-searchText="[TEXT:Search in current revision]">
 <thead>
