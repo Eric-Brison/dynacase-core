@@ -18,6 +18,7 @@
         <installer version="1.2.0" comp="ge"/>
         <module name="dynacase-jquery"  version="1.7.2" comp="ge"/>
         <module name="dynacase-jquery-ui" version="1.8.21" comp="ge"/>
+        <module name="dynacase-jquery-dataTables-installer" />
         <module name="dynacase-ckeditor"/>
     </requires>
 
