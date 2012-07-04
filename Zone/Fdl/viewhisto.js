@@ -109,11 +109,11 @@ $(document).ready(function () {
         for (var i =0 ;i <checked.length;i++) {
             if (checked[i].checked) {
                 $('tr.comment[level="'+checked[i].value+'"]').show();
-                $(checked[i]).prev('label').addClass('checked');
+               // $(checked[i]).prev('label').addClass('checked');
             }
             else  {
                 $('tr.comment[level="'+checked[i].value+'"]').hide();
-                $(checked[i]).prev('label').removeClass('checked');
+               // $(checked[i]).prev('label').removeClass('checked');
             }
         }
 
@@ -138,7 +138,7 @@ $(document).ready(function () {
         }
 
     });
-
+    $('input[type="checkbox"]','div.filterLevel').button();
 });
 
 var _histoui = {
