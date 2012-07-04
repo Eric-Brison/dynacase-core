@@ -182,7 +182,11 @@ class SearchDoc
                         $maintabledot = ($maintable) ? $maintable . '.' : '';
                         
                         $mainid = ($maintable) ? "$maintable.id" : "id";
-                        $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/iu', "select count($mainid) from ", $sql, 1);
+                        $distinct = "";
+                        if (preg_match('/^\s*select\s+distinct(\s+|\(.*?\))/iu', $sql, $m)) {
+                            $distinct = "distinct ";
+                        }
+                        $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/iu', "select count($distinct$mainid) from ", $sql, 1);
                         if ($userid != 1) {
                             $sql.= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
                         }

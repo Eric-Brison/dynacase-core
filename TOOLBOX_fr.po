@@ -1510,6 +1510,10 @@ msgid "Document %s is not alive"
 msgstr "Le document [%s] n'est pas vivant"
 
 #, c-format
+msgid "Document %s is not tagable"
+msgstr "Le document %s ne peut pas avoir de tag"
+
+#, c-format
 msgid "Document %s umounted"
 msgstr "Document %s enlevé"
 
@@ -1535,6 +1539,9 @@ msgstr "Création de document"
 
 msgid "Document filter"
 msgstr "Filtre sur le document"
+
+msgid "Document id not found"
+msgstr "L'identifiant du document est introuvable"
 
 #, c-format
 msgid "Document inserted in %s folder"
@@ -1596,6 +1603,9 @@ msgstr "Le fichier %s utilié pour un modèle dynamique n'est pas un odt"
 #, c-format
 msgid "Dynamic template %s not found "
 msgstr "Le modèle dynamique %s n'a pas été trouvé"
+
+msgid "EDIT Zones for FOOTER"
+msgstr "Zone dans le pied de page en mode édition"
 
 #, c-format
 msgid "ERROR %s\n"
@@ -3806,6 +3816,9 @@ msgstr "Voir XML"
 msgid "View Xml Schema"
 msgstr "Voir le Schéma XML"
 
+msgid "View Zones for FOOTER"
+msgstr "Zone dans le pied de page en mode visualisation"
+
 msgid "View all attributes ?"
 msgstr "Voulez vous voir tous les attributs ?"
 
@@ -4923,6 +4936,10 @@ msgstr "changement d'état vers %s : %s"
 
 msgid "change state transition"
 msgstr "changement d'état"
+
+#, c-format
+msgid "change tagable parameter to '%s'"
+msgstr "Changement du paramètre 'tagable' en '%s'"
 
 msgid "change title family"
 msgstr "changement du titre de famille"
@@ -7215,6 +7232,9 @@ msgstr "pas d'état spécifié"
 msgid "no subject"
 msgstr "pas de sujet"
 
+msgid "no tag specified"
+msgstr "Aucun tag spécifié"
+
 msgid "no task identificator"
 msgstr "Pas d'identificateur de tâche trouvé"
 
@@ -9496,9 +9516,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "admin view"
 #~ msgstr "vue administrateur"
-
-#~ msgid "argument %s=%s"
-#~ msgstr "argument %s=%s"
 
 #~ msgid "authentication failed"
 #~ msgstr "échec d'authentification"

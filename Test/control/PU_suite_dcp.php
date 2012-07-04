@@ -31,6 +31,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestSimpleQuery');
         $suite->addTestSuite('PU\TestProfil');
         $suite->addTestSuite('PU\TestTag');
+        $suite->addTestSuite('PU\TestTagFamily');
         $suite->addTestSuite('PU\TestReport');
         $suite->addTestSuite('PU\TestLink');
         $suite->addTestSuite('PU\TestUpdateAttribute');

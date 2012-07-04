@@ -70,7 +70,7 @@ function viewcard(Action & $action)
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/DHTMLapi.js");
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/iframe.js");
     */
-    
+    $action->parent->addJsRef("FDL/Layout/viewcard.js");
     if ($reload) {
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/reload.js");
         $action->unregister("reload$docid");
@@ -89,6 +89,16 @@ function viewcard(Action & $action)
     }
     $action->lay->set("RSS", ($doc->getValue("gui_isrss") == "yes"));
     $action->lay->set("rsslink", $doc->getRssLink());
+    
+    $param_zone_footer = json_decode($doc->getParam("FOOTER_ZONE_VIEW") , true);
+    $zone_footer = array();
+    foreach ($param_zone_footer as $zone) {
+        $zone_footer[] = array(
+            "my_zone" => $zone
+        );
+    }
+    $action->lay->SetBlockData("ZONE_FOOTER", $zone_footer);
+    
     if ($doc->wid > 0) {
         $err = $doc->setMask(0);
         if ($err) addWarningMsg($err);

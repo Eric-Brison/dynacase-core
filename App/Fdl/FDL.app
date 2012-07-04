@@ -57,7 +57,6 @@ $app_acl = array(
 );
 
 $action_desc = array(
-
     array(
         "name" => "NONE",
         "short_name" => N_("nothing action"),

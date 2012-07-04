@@ -1796,6 +1796,18 @@ create unique index i_docir on doc(initid, revision);";
         return $this->$prop;
     }
     /**
+     * Return the tag object for the document
+     * @return TagManager &$tag object reference use to modify tags
+     */
+    final public function &tag()
+    {
+        static $tag = null;
+        if (empty($tag) || $tag->docid != $this->initid) {
+            $tag = new TagManager($this, $this->initid);
+        }
+        return $tag;
+    }
+    /**
      * return the attribute object for a id
      * the attribute can be defined in fathers
      * @param string $idAttr attribute identificator

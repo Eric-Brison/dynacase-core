@@ -226,5 +226,15 @@ $app_const = array(
         "kind" => "enum(yes|no)",
         "global" => "Y"
     ) ,
+    "FOOTER_ZONE_VIEW" => array(
+        "val" => "{}",
+        "descr" => N_("View Zones for FOOTER") ,
+        "global" => "Y"
+    ) ,
+    "FOOTER_ZONE_EDIT" => array(
+        "val" => "{}",
+        "descr" => N_("EDIT Zones for FOOTER") ,
+        "global" => "Y"
+    )
 );
 ?>
