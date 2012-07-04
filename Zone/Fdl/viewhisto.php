@@ -30,13 +30,13 @@ function viewhisto(Action & $action)
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/common.js");
     $action->parent->addJsRef("lib/jquery/jquery.js");
-    //$action->parent->addJsRef("lib/jquery-ui/js/jquery-ui.js");
+    $action->parent->addJsRef("lib/jquery-ui/js/jquery-ui.js");
     $action->parent->addCssRef("lib/jquery-ui/css/smoothness/jquery-ui.css");
     $action->parent->addJsRef("lib/jquery-dataTables/js/jquery.dataTables.min.js");
     $action->parent->addCssRef("lib/jquery-dataTables/css/jquery.dataTables_themeroller.css");
     $action->parent->addJsRef("FDL/Layout/viewhisto.js");
     
-    $doc = new_Doc($dbaccess, $docid,true);
+    $doc = new_Doc($dbaccess, $docid, true);
     
     if ($doc->wid) {
         $action->lay->Set("lastState", $doc->getStateActivity(_("Current_state")));
