@@ -44,7 +44,7 @@ if (parseInt('[latestwaskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FD
 <div  style="float:right">
   <a  style="display:none" href="[CORE_STANDURL]&app=FDL&action=VIEWSCARD&wedit=Y&id=[id]" target="_blank"><img  align="absmiddle"  alt="[TEXT:wordedit]" title="[TEXT:wordedit]" height="22" width="30" border="0" src="[IMG:openoffice.png]"></a>
       <img class="click" style="display:[dhelp]" align="absmiddle"  onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[fhelp]','[CORE_STANDURL]&app=FDL&action=FAMILY_HELP&id=[helpid]')"  alt="[TEXT:help]" title="[TEXT:family manual]"  src="[IMG:help.gif]">
-         <span ><b title="[TEXT:Version]">[version]</b> <a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'graph','[CORE_STANDURL]&app=FDL&action=VIEW_WORKFLOW_GRAPH&size=20&orient=TB&id=[wid]')"><b class="statetext" style="border-color:[statecolor]" title="[TEXT:View cycle graph]">[state]</b></A></span></div>
+         <span ><b title="[TEXT:Version]">[version]</b> <a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'graph','?app=FDL&amp;action=VIEW_WORKFLOW_GRAPH&amp;type=activity&amp;format=png&amp;orient=LR&amp;tool=dot&amp;id=[wid]')"><b class="statetext" style="border-color:[statecolor]" title="[TEXT:View cycle graph]">[state]</b></A></span></div>
 [IF ACTIONS]
 [ZONE FDL:VIEWBARMENU]
 [ENDIF ACTIONS]

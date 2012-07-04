@@ -101,19 +101,15 @@ addEvent(window,"load",resetbodyopacity);
       [IF helpurl]<span class="dyp-help-header-icon" title="[TEXT:Online help]" alt="[TEXT:Online help]" onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'help[helpid]','[helpurl]')"></span>[ENDIF helpurl]
       <img class="click" style="display:[dhelp]" align="absmiddle"  onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[fhelp]','[CORE_STANDURL]&app=FDL&action=FAMILY_HELP&id=[helpid]')"  alt="[TEXT:help]" title="[TEXT:family manual]"  src="[IMG:help.gif]">
          <span ><b title="[TEXT:Version]">[version]</b> <a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'histo','[CORE_STANDURL]&app=FDL&action=VIEW_WORKFLOW_GRAPH&id=[wid]')"><b class="statetext" style="border-color:[statecolor]" title="[TEXT:View historique]">[state]</b></A></span>
-[IFNOT NOFORM][IFNOT NOSAVE][IF wid]<div style="clear:both;float:right">[ZONE FDL:EDITSTATE]</div>[ENDIF wid][ENDIF NOSAVE][ENDIF NOFORM]
 
 
-  </td
+  </td>
 </tr>
 </thead>
 
 </table>
 [ENDIF HEAD]
 [IFNOT HEAD][IF FOOT][ZONE FDL:EDITBARMENU][ENDIF FOOT]
-[IFNOT NOFORM][IFNOT NOSAVE][IF wid]
-[ZONE FDL:EDITSTATE][ENDIF wid][ENDIF NOSAVE]
-[ENDIF NOFORM]
 [ENDIF HEAD]
 [IFNOT ISIE]<div id="fixspanhead" style="visibility:visible;padding:0px;margin:0px;height:0px"></div>[ENDIF ISIE]
 [ZONE FDL:EDITCARD]
