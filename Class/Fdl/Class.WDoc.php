@@ -758,7 +758,7 @@ class WDoc extends Doc
             ) , $newstate, $this->doc->state, $addcomment);
             if ($err != "") {
                 $this->doc->unlock(true);
-                return (sprintf(_("The change state to %s has been aborted.\n%s") , _($newstate) , $err));
+                return (sprintf(_("Error : %s") , $err));
             }
         }
         
@@ -784,7 +784,7 @@ class WDoc extends Doc
             }
             if ($err != "") {
                 $this->doc->unlock(true);
-                return (sprintf(_("The change state to %s has been aborted.\n%s") , _($newstate) , $err));
+                return (sprintf(_("Error : %s") , $err));
             }
         }
         // change the state
@@ -834,7 +834,7 @@ class WDoc extends Doc
             
             if ($msg2 == "->") $msg2 = ""; //it is not a real error
             if ($msg2) $this->doc->addComment($msg2);
-            if ($msg2 != "") $msg2 = sprintf(_("The change state to %s has been realized. But the following warning is appeared.\n%s") , _($newstate) , $msg2);
+            if ($msg2 != "") $msg2 = sprintf(_("Warning : %s") , $msg2);
         }
         $this->doc->addLog("state", array(
             "id" => $this->id,
@@ -860,7 +860,7 @@ class WDoc extends Doc
             
             if ($msg3 == "->") $msg3 = ""; //it is not a real error
             if ($msg3) $this->doc->addComment($msg3);
-            if ($msg3 != "") $msg3 = sprintf(_("The change state to %s has been realized. But the following warning is appeared.\n%s") , _($newstate) , $msg3);
+            if ($msg3 != "") $msg3 = sprintf(_("Warning : %s") , $msg3);
         }
         $msg.= ($msg ? '\n' : '') . $msg2;
         if ($msg && $msg3) $msg.= "\n";
