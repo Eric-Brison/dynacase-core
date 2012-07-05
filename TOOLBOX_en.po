@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-03 16:50+0200\n"
+"POT-Creation-Date: 2012-07-05 18:19+0200\n"
 "PO-Revision-Date: 2012-07-03 11:23+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1813,6 +1813,10 @@ msgid "Enter your login"
 msgstr ""
 
 msgid "Enter your password"
+msgstr ""
+
+#, c-format
+msgid "Error : %s"
 msgstr ""
 
 #, c-format
@@ -3666,19 +3670,6 @@ msgid ""
 "be parameter allowOverride is not set to All"
 msgstr ""
 
-#, fuzzy, c-format
-msgid ""
-"The change state to %s has been aborted.\n"
-"%s"
-msgstr "Category"
-
-#, c-format
-msgid ""
-"The change state to %s has been realized. But the following warning is "
-"appeared.\n"
-"%s"
-msgstr ""
-
 #, c-format
 msgid "The current activity is \"%s\"."
 msgstr ""
@@ -4047,9 +4038,6 @@ msgstr "Edit"
 msgid "View tab letters"
 msgstr "Start search"
 
-msgid "View workflow graph"
-msgstr ""
-
 msgid ""
 "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
 "pour acceder a cette ressource"
@@ -4065,6 +4053,10 @@ msgstr ""
 
 #, c-format
 msgid "WID : workflow '%s' not found"
+msgstr ""
+
+#, c-format
+msgid "Warning : %s"
 msgstr ""
 
 msgid "WebDav FREEDOM system file"
@@ -9790,6 +9782,12 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "Save without change state"
+#~ msgstr "Category"
+
+#, fuzzy
+#~ msgid ""
+#~ "The change state to %s has been aborted.\n"
+#~ "%s"
 #~ msgstr "Category"
 
 #, fuzzy

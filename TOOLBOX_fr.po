@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-03 16:50+0200\n"
-"PO-Revision-Date: 2012-07-03 16:51+0200\n"
+"POT-Creation-Date: 2012-07-05 18:19+0200\n"
+"PO-Revision-Date: 2012-07-05 18:18+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1732,6 +1732,10 @@ msgstr "Entrez votre identifiant"
 
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
+
+#, c-format
+msgid "Error : %s"
+msgstr "Erreur : %s"
 
 #, c-format
 msgid "Error : %s\n"
@@ -3518,23 +3522,6 @@ msgstr ""
 "All"
 
 #, c-format
-msgid ""
-"The change state to %s has been aborted.\n"
-"%s"
-msgstr ""
-"Le changement d'état vers %s n'a pas pu être réalisé.\n"
-"%s"
-
-#, c-format
-msgid ""
-"The change state to %s has been realized. But the following warning is "
-"appeared.\n"
-"%s"
-msgstr ""
-"Le changement d'état vers %s a réussi avec l'avertissement suivant.\n"
-"%s "
-
-#, c-format
 msgid "The current activity is \"%s\"."
 msgstr "L'activité courante est \"%s\"."
 
@@ -3894,9 +3881,6 @@ msgstr "Voir la sélection"
 msgid "View tab letters"
 msgstr "Voir les onglets alphabétiques"
 
-msgid "View workflow graph"
-msgstr "Voir le graphe du cycle de vie"
-
 msgid ""
 "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
 "pour acceder a cette ressource"
@@ -3915,6 +3899,10 @@ msgstr "WID : '%s' n'est pas un cycle"
 #, c-format
 msgid "WID : workflow '%s' not found"
 msgstr "WID : cycle '%s' introuvable"
+
+#, c-format
+msgid "Warning : %s"
+msgstr "Avertissement : %s"
 
 msgid "WebDav FREEDOM system file"
 msgstr "Système de fichiers WebDAV DYNACASE"
@@ -9331,6 +9319,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
 
+#~ msgid "Error %s"
+#~ msgstr "Erreur %s"
+
 #~ msgid "Error : User account is desactivated\n"
 #~ msgstr "Erreur: Compte utilisateur désactivé\n"
 
@@ -9428,6 +9419,21 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"
 
+#~ msgid ""
+#~ "The change state to %s has been aborted.\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Le changement d'état vers %s n'a pas pu être réalisé.\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "The change state to %s has been realized. But the following warning is "
+#~ "appeared.\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Le changement d'état vers %s a réussi avec l'avertissement suivant.\n"
+#~ "%s "
+
 #~ msgid "To"
 #~ msgstr "Vers"
 
@@ -9474,6 +9480,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "View profil definition"
 #~ msgstr "Voir la définition du profil"
+
+#~ msgid "View workflow graph"
+#~ msgstr "Voir le graphe du cycle de vie"
 
 #~ msgid "What User Management"
 #~ msgstr "Gestion des utilisateurs"
