@@ -109,7 +109,7 @@ label.ui-state-default {
 <input checked="checked" id="info" type="checkbox" value="2"><label for="info"><span class="ui-icon ui-icon-check">&nbsp;</span>[TEXT:histoInfo]</label></input>
 <input checked="checked" id="message" type="checkbox" value="4"><label  for="message"><span class="ui-icon ui-icon-check">&nbsp;</span>[TEXT:histoMessage]</label></input>
 <input checked="checked" id="warning" type="checkbox" value="8"><label  for="warning"><span class="ui-icon ui-icon-check">&nbsp;</span>[TEXT:histoWarning]</label></input>
-<input checked="checked" id="error" type="checkbox" value="16"><label  for="error"><span class="ui-icon ui-icon-checkh">&nbsp;</span>[TEXT:histoError]</label></input>
+<input checked="checked" id="error" type="checkbox" value="16"><label  for="error"><span class="ui-icon ui-icon-check">&nbsp;</span>[TEXT:histoError]</label></input>
 </div>
 <table  cellspacing="0" cellpadding="0"  width="100%" id="current" data-searchText="[TEXT:Search in current revision]">
 <thead>
