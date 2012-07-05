@@ -204,7 +204,7 @@ class TestTagFamily extends TestCaseDcpDocument
             ) ,
             array(
                 "TST_FAMILYTAG2",
-                "no"
+                ""
             ) ,
             array(
                 "TST_FAMILYTAG3",

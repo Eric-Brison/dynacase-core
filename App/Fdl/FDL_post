@@ -155,6 +155,7 @@ if [ "$1" = "U" ] ; then
 	exit $RET
     fi
 
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocTag
     $wpub/wsh.php --api=fdl_adoc
     $wpub/wsh.php --api=fdl_trigger | PGSERVICE="$pgservice_freedom" psql
     $wpub/wsh.php --api=fdl_trigger --trigger=Y | PGSERVICE="$pgservice_freedom" psql
