@@ -13,11 +13,11 @@ shopt -s nullglob
 function whattext ()
 {    
     ntf="$wpub/locale/.gettextnumber"
-    if [ ! -f $ntf ]; then
-	echo "0" > $ntf
+    if [ ! -f "$ntf" ]; then
+	echo "0" > "$ntf"
     fi
-    numberone=`cat $ntf`
-    numbertwo=`expr $numberone + 1`
+    numberone=`cat "$ntf"`
+    numbertwo=`expr "$numberone" + 1`
     today=`date "+%F %T"`
     for lang_dir in "$wpub"/locale/*; do
 	if [ ! -d "$lang_dir/LC_MESSAGES" ]; then
@@ -33,14 +33,14 @@ function whattext ()
 	    \rm "freedom-catalog$numberone.mo"
 	fi
         for mo in `ls *.mo` ; do
-	    msgunfmt --force-po $mo -o $mo.po
+	    msgunfmt --force-po "$mo" -o "$mo.po"
 	done
 	msgcat  --use-first  *.po > freedom-catalog.po
 
 	msgfmt freedom-catalog.po  -o freedom-catalog.mo
 	rm -f *.po *.old
 	if [ ! -a "freedom-catalog$numbertwo.mo" ]; then
-	    \ln -s freedom-catalog.mo "freedom-catalog$numbertwo.mo" && echo $numbertwo > $ntf
+	    \ln -s freedom-catalog.mo "freedom-catalog$numbertwo.mo" && echo "$numbertwo" > "$ntf"
 	    
 	fi
 	popd >/dev/null

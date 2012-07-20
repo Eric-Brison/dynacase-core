@@ -5,10 +5,10 @@ if [ "$freedom_context" == "" ]; then
    wchoose -b
 fi
 
-. $wpub/log.sh
-. $wpub/libutil.sh
+. "$wpub"/log.sh
+. "$wpub"/libutil.sh
 
-if [ -z $pgservice_core -o -z $pgservice_freedom ]; then
+if [ -z "$pgservice_core" -o -z "$pgservice_freedom" ]; then
     echo "Env variables pgservice_core or pgservice_freedom is empty !"
     echo "Check your context for missing or misconfigured environment variables."
     exit 1
@@ -19,11 +19,11 @@ fi
 #------------------------------
 if [ "$1" = "I" ] ; then
 
-    log "Checking if the database service $pgservice_freedom is running and available..."
+    log "Checking if the database service '$pgservice_freedom' is running and available..."
     PGSERVICE="$pgservice_freedom" pgIsRunning
     RET=$?
     if [ $RET -ne 0 ]; then
-	echo "Could not connect to database service $pgservice_freedom) !"
+	echo "Could not connect to database service '$pgservice_freedom' !"
 	echo "Check that your database is running and acessible with the service from pgservice.conf."
 	exit $RET
     fi
@@ -47,10 +47,10 @@ if [ "$1" = "I" ] ; then
         Doc \
         DocRead \
 	; do
-        $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL "--class=$CLASS"
+        "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL "--class=$CLASS"
     done
     log "Setting database date locale..."
-    LCDATE=`$wpub/wsh.php --api=get_param --param=CORE_LCDATE| cut -f1 -d" "`
+    LCDATE=`"$wpub"/wsh.php --api=get_param --param=CORE_LCDATE| cut -f1 -d" "`
 
     if [ "$LCDATE" = "iso" ]; then
 	PGDATESTYLE='ISO, DMY'
@@ -105,19 +105,19 @@ if [ "$1" = "I" ] ; then
         TaskRequest \
         VGroup \
     ; do
-        $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL "--class=$CLASS"
+        "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL "--class=$CLASS"
     done
 
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=VAULT "--class=VaultDiskDirStorage"
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=VAULT "--class=VaultDiskFsStorage"
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=VAULT "--class=VaultDiskStorage"
+    "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=VAULT "--class=VaultDiskDirStorage"
+    "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=VAULT "--class=VaultDiskFsStorage"
+    "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=VAULT "--class=VaultDiskStorage"
 
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --class=Group
+    "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --class=Group
 
 
 
-    $wpub/wsh.php --api=fdl_trigger --docid=-1 | PGSERVICE="$pgservice_freedom" psql
-    $wpub/wsh.php --api=fdl_trigger --trigger=Y --docid=-1 | PGSERVICE="$pgservice_freedom" psql
+    "$wpub"/wsh.php --api=fdl_trigger --docid=-1 | PGSERVICE="$pgservice_freedom" psql
+    "$wpub"/wsh.php --api=fdl_trigger --trigger=Y --docid=-1 | PGSERVICE="$pgservice_freedom" psql
     #if [ ! -f "$wpub/VAULT/${freedom_context}.vault" ]; then
     #    #cp $wpub/FDL/FREEDOM.vault $wpub/VAULT/FREEDOM.vault
     #	sed -e"s/fs1/$freedom_context/g" "$wpub/FDL/FREEDOM.vault" > "$wpub/VAULT/${freedom_context}.vault"
@@ -155,9 +155,9 @@ if [ "$1" = "U" ] ; then
 	exit $RET
     fi
 
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocTag
-    $wpub/wsh.php --api=fdl_adoc
-    $wpub/wsh.php --api=fdl_trigger | PGSERVICE="$pgservice_freedom" psql
-    $wpub/wsh.php --api=fdl_trigger --trigger=Y | PGSERVICE="$pgservice_freedom" psql
+    "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocTag
+    "$wpub"/wsh.php --api=fdl_adoc
+    "$wpub"/wsh.php --api=fdl_trigger | PGSERVICE="$pgservice_freedom" psql
+    "$wpub"/wsh.php --api=fdl_trigger --trigger=Y | PGSERVICE="$pgservice_freedom" psql
 
 fi

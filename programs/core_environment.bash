@@ -5,7 +5,7 @@ if [ $? -ne 0 ]; then
     echo "Error getting pgservice_core env variable from '$wpub/context/dbaccess.php'"
     return 3
 fi
-if [ -z $pgservice_core ]; then
+if [ -z "$pgservice_core" ]; then
     echo "Error: undefined pgservice_core !"
     return 4
 fi
@@ -15,7 +15,7 @@ if [ $? -ne 0 ]; then
     echo "Error getting pgservice_freedom env variable from '$wpub/context/dbaccess.php'"
     return 3
 fi
-if [ -z $pgservice_freedom ]; then
+if [ -z "$pgservice_freedom" ]; then
     echo "Error: undefined pgservice_freedom !"
     return 4
 fi
@@ -25,7 +25,7 @@ if [ $? -ne 0 ]; then
     echo "Error getting freedom_context env variable from '$wpub/context/dbaccess.php'"
     return 3
 fi
-if [ -z $freedom_context ]; then
+if [ -z "$freedom_context" ]; then
     echo "Error: undefined freedom_context !"
     return 4
 fi

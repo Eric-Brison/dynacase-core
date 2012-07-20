@@ -10,7 +10,7 @@ fi
 #------------------------------
 if [ "$1" = "I" ] ; then
     # add plug in footer
-  $wpub/wsh.php --app=APPMNG --action=PARAM_MOD --appid=1 --aname=CORE_PLUGZONE --atype=G --val=FREEDOM:SPEEDSEARCH
+  "$wpub"/wsh.php --app=APPMNG --action=PARAM_MOD --appid=1 --aname=CORE_PLUGZONE --atype=G --val=FREEDOM:SPEEDSEARCH
 
   
 fi
