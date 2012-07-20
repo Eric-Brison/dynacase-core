@@ -128,7 +128,7 @@ class VaultDiskDir extends DbObj
                 }
             } else {
                 error_log("Vault dirs full");
-                return (_("no empty vault dir found") . $err);
+                return sprintf(_("cannot extend vault: %s"), $err);
             }
         }
         return "";
