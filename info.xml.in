@@ -5,21 +5,14 @@
     <description lang="fr">Serveur d'application dynacase platform</description>
 
     <replaces>
-        <module name="freedom-toolbox"/>
-        <module name="freedom-core"/>
-        <module name="freedom-api"/>
-        <module name="freedom-dav"/>
-        <module name="freedom-common"/>
-        <module name="freedom-vault"/>
-        <module name="freedom"/>
     </replaces>
 
     <requires>
         <installer version="1.2.0" comp="ge"/>
-        <module name="dynacase-jquery"  version="1.7.2" comp="ge"/>
-        <module name="dynacase-jquery-ui" version="1.8.21" comp="ge"/>
+        <module name="dynacase-jquery-installer"  version="1.7.2" comp="ge"/>
+        <module name="dynacase-jquery-ui-installer" version="1.8.21" comp="ge"/>
         <module name="dynacase-jquery-dataTables-installer" />
-        <module name="dynacase-ckeditor"/>
+        <module name="dynacase-ckeditor-installer"/>
     </requires>
 
     <parameters>
