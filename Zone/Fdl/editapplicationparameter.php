@@ -113,7 +113,8 @@ function editapplicationparameter(Action & $action)
     }
     $label = $paramdef[0]["descr"] ? _($paramdef[0]["descr"]) : "";
     $action->lay->set("label", $label);
-    $action->parent->addJsRef("FDL/Layout/editparameter.js");
+
     $action->parent->addJsRef("lib/jquery/jquery.js");
+    $action->parent->addJsRef("FDL/Layout/editparameter.js");
     return true;
 }

@@ -3,6 +3,7 @@ function sendParameterData(elem, id) {
     if (!id) {
         id = form.parents("div.editfamilyparameter").attr("data-parameter");
     }
+    form.off("submit");
     form.submit(function () {
         var extractValueFromField = function (e, value) {
             var attrid = $(e).attr("attrid");
@@ -79,7 +80,6 @@ function sendParameterData(elem, id) {
         });
         return false;
     });
-    form.submit();
 }
 
 function sendParameterApplicationData(elem, id) {
@@ -218,6 +218,7 @@ function addOnChange() {
 
 $(function () {
     addOnChange();
+
 });
 //add on change attribute to input field in new row of array
 specAddtr = "addOnChange()";
