@@ -59,7 +59,7 @@ function editfamilyparameter(Action & $action)
         }
         $d = createTmpDoc($action->dbaccess, $doc->id);
         $fdoc = $d->getFamDoc();
-        $d->setDefaultValues($fdoc->getParams());
+        $d->setDefaultValues($fdoc->getParams() , false);
         $input_field = getHtmlInput($d, $attr, $value, "", "", true);
         $action->lay->set("input_field", $input_field);
         $action->lay->set("change", ($onChange != ""));

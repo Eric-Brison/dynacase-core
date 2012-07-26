@@ -36,7 +36,6 @@ function sendParameterData(elem, id) {
                         value = extractValueFromField(e, value);
                     });
                 }
-
             } else {
                 value = $("#" + id).val();
             }
