@@ -8,10 +8,7 @@ function sendParameterData(elem, id) {
         var extractValueFromField = function (e, value) {
             var attrid = $(e).attr("attrid");
             var values = [];
-            $(e).find("input[type='text']").each(function (i, el) {
-                values.push($(el).val());
-            });
-            $(e).find("select").each(function (i, el) {
+            $(e).find("input[type='text'],input[type='hidden'],select").each(function (i, el) {
                 values.push($(el).val());
             });
             value.push({
@@ -29,16 +26,17 @@ function sendParameterData(elem, id) {
         } else {
             var elem = $("#T" + id);
             if (elem.length > 0) {
-                var tbodyelem = elem.find("#tbody" + id).find("td.visibleAttribute");
+                var tbodyelem = elem.find("#tbody" + id).find("td.visibleAttribute,td.hiddenAttribute");
                 if (tbodyelem.length > 0) {
                     tbodyelem.each(function (index, e) {
                         value = extractValueFromField(e, value);
                     });
                 } else {
-                    elem.find("tfoot").find("td.visibleAttribute").each(function (index, e) {
+                    elem.find("tfoot").find("td.visibleAttribute,td.hiddenAttribute").each(function (index, e) {
                         value = extractValueFromField(e, value);
                     });
                 }
+
             } else {
                 value = $("#" + id).val();
             }
