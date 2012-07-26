@@ -216,7 +216,6 @@ function addOnChange() {
 
 $(function () {
     addOnChange();
-
 });
 //add on change attribute to input field in new row of array
 specAddtr = "addOnChange()";
