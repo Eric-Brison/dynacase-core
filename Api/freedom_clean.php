@@ -88,14 +88,14 @@ function cleanTmpFiles() {
     /* We use find & xargs shell commands to do the cleaning. */
 
     /* First pass: remove expired files */
-    $cmd = sprintf('find %s -type f -mtime +%s -print0 | xargs -0 rm', escapeshellarg($tmpDir), $maxAge);
+    $cmd = sprintf('find %s -type f -mtime +%s -print0 | xargs -0 --no-run-if-empty rm', escapeshellarg($tmpDir), $maxAge);
     exec($cmd, $output, $ret);
     if ($ret != 0) {
         echo sprintf("Error: removal of temporary files from '%s' returned with error: %s", $tmpDir, join("\n", $output));
         return;
     }
     /* Second pass: remove expired empty directories */
-    $cmd = sprintf('find %s -type d -empty -mtime +%s -print0 | xargs -0 rmdir', escapeshellarg($tmpDir), $maxAge);
+    $cmd = sprintf('find %s -type d -empty -mtime +%s -print0 | xargs -0 --no-run-if-empty rmdir', escapeshellarg($tmpDir), $maxAge);
     exec($cmd, $output, $ret);
     if ($ret != 0) {
         echo sprintf("Error: removal of empty temporary directories from '%s' returned with error: %s", $tmpDir, join("\n", $output));
