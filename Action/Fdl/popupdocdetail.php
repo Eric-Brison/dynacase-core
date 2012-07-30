@@ -533,7 +533,7 @@ function addStatesPopup(&$tlink, Doc & $doc)
          * @var WDoc $wdoc
          */
         $wdoc = new_Doc($doc->dbaccess, $doc->wid);
-        $wdoc->Set($doc);
+        $wdoc->Set($doc, true);
         $fstate = $wdoc->GetFollowingStates();
         
         $surl = getParam("CORE_STANDURL");
@@ -557,7 +557,7 @@ function addStatesPopup(&$tlink, Doc & $doc)
                 $err = call_user_func(array(
                     $wdoc,
                     $tr["m0"],
-                ) , $tr["e2"], $wdoc->doc->state);
+                ) , $v, $wdoc->doc->state);
                 if ($err) {
                     $visibility = POPUP_INACTIVE;
                     $tooltip = $err;
