@@ -71,12 +71,6 @@ $action_desc = array (
    "acl"                =>"USER"
   ) ,
   array(
-   "name"               =>"PARAM_CUACCOUNT",
-   "short_name"         =>N_("current user account"),
-   "toc"                =>"N",
-   "acl"                =>"USER"
-  ) ,
-  array(
    "name"               =>"ACTIONLIST",
    "short_name"         =>N_("actions"),
    "toc"                =>"Y",

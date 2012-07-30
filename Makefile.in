@@ -133,7 +133,6 @@ clean:
 	      $(PACKAGE)-$(VERSION).tar.gz \
 	      dbaccess.php.sample apache.conf \
 	      App/Core/CORE_init.php \
-	      App/Users/USERS_init.php \
 	      App/Access/ACCESS_init.php \
 	      App/Authent/AUTHENT_init.php \
 	      App/Appmng/APPMNG_init.php \
