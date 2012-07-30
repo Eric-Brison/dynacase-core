@@ -67,6 +67,6 @@ export wpub=$WIFF_CONTEXT_ROOT # same as `wiff --getValue=rootdirectory`
 dc_path=`"$WIFF_ROOT"/wiff config get wiff-path`
 dc_url=`"$WIFF_ROOT"/wiff config get wiff-url`
 
-$wpub/wsh.php --api=set_param --param="DYNACASECONTROL_PATH" --value="$dc_path"
-$wpub/wsh.php --api=set_param --param="DYNACASECONTROL_URL" --value="$dc_url"
+"$wpub"/wsh.php --api=set_param --param="DYNACASECONTROL_PATH" --value="$dc_path"
+"$wpub"/wsh.php --api=set_param --param="DYNACASECONTROL_URL" --value="$dc_url"
 

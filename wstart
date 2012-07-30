@@ -30,11 +30,11 @@ pushd "$wpub/Images" > /dev/null
 ln -sf ../*/Images/* .
 popd > /dev/null
 
-rm -f $wpub/var/cache/image/*png
-rm -f $wpub/var/cache/image/*gif
-rm -f $wpub/var/cache/image/*xml
-rm -f $wpub/var/cache/image/*src
-rm -f $wpub/.autoloader.cache
+rm -f "$wpub"/var/cache/image/*png
+rm -f "$wpub"/var/cache/image/*gif
+rm -f "$wpub"/var/cache/image/*xml
+rm -f "$wpub"/var/cache/image/*src
+rm -f "$wpub"/.autoloader.cache
 
 pushd "$wpub/Docs" > /dev/null
 ln -sf ../*/Docs/* .
@@ -46,7 +46,7 @@ PGSERVICE="$pgservice_core" psql -c "delete from sessions where name='freedom_pa
 
 #change pg mode connection
 cdb=`"$wpub/wsh.php" --api=get_param --param=CORE_DBCONNECT`
-if [ $cdb == 'persistent' ] ; then
+if [ "$cdb" == 'persistent' ] ; then
   sed -ibak -e"s/pg_connect/pg_pconnect/g" "$wpub/WHAT/Lib.Common.php"
 else
   sed -ibak -e"s/pg_pconnect/pg_connect/g" "$wpub/WHAT/Lib.Common.php"

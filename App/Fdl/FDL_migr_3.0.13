@@ -32,6 +32,6 @@ if [ $? -eq 0 ]; then
 	fi
 fi
 
-$wpub/wsh.php --api=cleanFileName
+"$wpub"/wsh.php --api=cleanFileName
 
 exit 0
