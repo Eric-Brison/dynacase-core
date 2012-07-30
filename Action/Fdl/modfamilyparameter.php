@@ -44,21 +44,14 @@ function modfamilyparameter(Action & $action)
                 $modify = false;
                 $result = array();
                 $i = 0;
-                $d = createDoc($action->dbaccess, $doc->id, false, true, false);
                 /**
                  * @var array $value
                  */
                 foreach ($value as $v) {
                     $key = $v["attrid"];
-                    /**
-                     * @var NormalAttribute $paramAttribute
-                     */
-                    $paramAttribute = $doc->getAttribute($v["attrid"]);
-                    $phpfunc = $paramAttribute->phpfunc;
                     if (!array_attrid_exists($key, $result)) {
                         $result[$i] = array(
-                            "attrid" => $key,
-                            "phpfunc" => $phpfunc
+                            "attrid" => $key
                         );
                         foreach ($value as $e) {
                             if ($e["attrid"] == $key) {
@@ -76,15 +69,6 @@ function modfamilyparameter(Action & $action)
                             $modify = true;
                         }
                         $doc->setParam($v["attrid"], $val);
-                    }
-                }
-                foreach ($result as $v) {
-                    $phpfunc = $v["phpfunc"];
-                    if ($phpfunc) {
-                        $valueMethod = $d->getValueMethod($phpfunc);
-                        if ($valueMethod != $phpfunc) {
-                            $doc->setParam($v["attrid"], $valueMethod);
-                        }
                     }
                 }
                 $err = $doc->store();

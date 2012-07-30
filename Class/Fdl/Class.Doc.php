@@ -1396,7 +1396,15 @@ create unique index i_docir on doc(initid, revision);";
             if (!$fdoc->isAlive()) $r = false;
             else $r = $fdoc->getParamValue($idp, $def);
         }
-        if ($r) $r = $this->getValueMethod($r, $r);
+        /**
+         * @var NormalAttribute $paramAttr
+         */
+        $paramAttr = $this->getAttribute($idp);
+        if ($paramAttr->phpfunc != "") {
+            $r = $this->getValueMethod($paramAttr->phpfunc);
+        } else if ($r) {
+            $r = $this->getValueMethod($r, $r);
+        }
         return $r;
     }
     /**

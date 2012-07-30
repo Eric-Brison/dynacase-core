@@ -8,7 +8,7 @@ function sendParameterData(elem, id) {
         var extractValueFromField = function (e, value) {
             var attrid = $(e).attr("attrid");
             var values = [];
-            $(e).find("input[type='text'],input[type='hidden'],select").each(function (i, el) {
+            $(e).find("input[type='text'],select").each(function (i, el) {
                 values.push($(el).val());
             });
             value.push({
@@ -26,13 +26,13 @@ function sendParameterData(elem, id) {
         } else {
             var elem = $("#T" + id);
             if (elem.length > 0) {
-                var tbodyelem = elem.find("#tbody" + id).find("td.visibleAttribute,td.hiddenAttribute");
+                var tbodyelem = elem.find("#tbody" + id).find("td.visibleAttribute");
                 if (tbodyelem.length > 0) {
                     tbodyelem.each(function (index, e) {
                         value = extractValueFromField(e, value);
                     });
                 } else {
-                    elem.find("tfoot").find("td.visibleAttribute,td.hiddenAttribute").each(function (index, e) {
+                    elem.find("tfoot").find("td.visibleAttribute").each(function (index, e) {
                         value = extractValueFromField(e, value);
                     });
                 }
@@ -156,19 +156,7 @@ function addOnChange() {
     edit_family.each(function (index, element) {
         var form = $(element).find("form");
         if (form.attr("data-on-change")) {
-            form.find("input[type='text']").each(function (index, elem) {
-                var f = function (e) {
-                    e = e || event;
-                    setTimeout("sendParameterData('#" + $(e.target).prop("id") + "');", 0)
-                };
-                if ("addEventListener" in elem) {
-                    elem.addEventListener("change", f, false);
-                }
-                else if (elem.attachEvent) {
-                    elem.attachEvent("onchange", f);
-                }
-            });
-            form.find("select").each(function (index, elem) {
+            form.find("input[type='text'],select").each(function (index, elem) {
                 var f = function (e) {
                     e = e || event;
                     setTimeout("sendParameterData('#" + $(e.target).prop("id") + "');", 0)
@@ -185,19 +173,7 @@ function addOnChange() {
     edit_application.each(function (index, element) {
         var form = $(element).find("form");
         if (form.attr("data-on-change")) {
-            form.find("input[type='text']").each(function (index, elem) {
-                var f = function (e) {
-                    e = e || event;
-                    setTimeout("sendParameterApplicationData('#" + $(e.target).prop("id") + "');", 0)
-                };
-                if ("addEventListener" in elem) {
-                    elem.addEventListener("change", f, false);
-                }
-                else if (elem.attachEvent) {
-                    elem.attachEvent("onchange", f);
-                }
-            });
-            form.find("select").each(function (index, elem) {
+            form.find("input[type='text'],select").each(function (index, elem) {
                 var f = function (e) {
                     e = e || event;
                     setTimeout("sendParameterApplicationData('#" + $(e.target).prop("id") + "');", 0)
