@@ -90,7 +90,7 @@ function viewTextError() {
     MENUCIBLE.style.display = '';
     setTimeout("MENUCIBLE.style.display='none'", 2000);
 }
-function menuSend(event, menuurl, cible, coord) {
+function menuSend(event, menuurl, cible, coord, barmenu) {
     if (INPROGRESSMENU) return false; // one request only
     // branch for native XMLHttpRequest object
     if (window.XMLHttpRequest) {
@@ -118,15 +118,19 @@ function menuSend(event, menuurl, cible, coord) {
         cible.style.left = '0px';
         cible.style.top = '0px';
         cible.style.width = '30px';
-
+        if (barmenu) {
+            cible.style.position = "fixed";
+        } else {
+             cible.style.position = "";
+        }
         //	clipboardWait(cible);
         return true;
     }
     return false;
 }
 
-function viewmenu(event, murl, source, coord) {
-    closeDocMenu()
+function viewmenu(event, murl, source, coord, barmenu) {
+    closeDocMenu();
     CTRLKEYMENU = ctrlPushed(event);
     MENUSOURCE = source;
     if (coord) {
@@ -158,20 +162,21 @@ function viewmenu(event, murl, source, coord) {
         // MENUSOURCE.style.borderTop='dashed 1px #777777';
         //MENUSOURCE.style.borderBottom='dashed 1px #777777';
     }
-    menuSend(event, murl, DIVPOPUPMENU, coord);
+
+    menuSend(event, murl, DIVPOPUPMENU, coord, barmenu);
 }
 
-function viewsubmenu(event, murl, upobject, source) {
+function viewsubmenu(event, murl, upobject, source, barmenu) {
     var coord = false;
     // var source=false;
     if (upobject) {
         coord = new Object();
-        ;
         coord.x = AnchorPosition_getPageOffsetLeft(upobject);
         coord.y = AnchorPosition_getPageOffsetTop(upobject) + getObjectHeight(upobject);
+
     }
 
-    viewmenu(event, murl, source, coord);
+    viewmenu(event, murl, source, coord, barmenu);
 }
 function closeDocMenu() {
     var o = DIVPOPUPMENU;

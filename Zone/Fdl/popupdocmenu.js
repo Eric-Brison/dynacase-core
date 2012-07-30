@@ -46,7 +46,7 @@ function setonclick(event) {
   }
 }
 
-function viewdocmenu(event,docid,onlyctrl,upobject,sourceobject) {
+function viewdocmenu(event,docid,onlyctrl,upobject,sourceobject, barmenu) {
   if (!event) event=POPMENUINPROGRESSEVENT;
 
   POPMENUINPROGRESSELT=false;
@@ -66,12 +66,12 @@ function viewdocmenu(event,docid,onlyctrl,upobject,sourceobject) {
     } 
   }
   var menuurl=corestandurl+'app='+menuapp+'&action='+menuaction+menuopt+'&id='+docid+PDS;
-  viewsubmenu(event,menuurl,upobject,sourceobject);
+  viewsubmenu(event,menuurl,upobject,sourceobject, barmenu);
   return false;
 }
 
 
-function viewdocsubmenu(event,docid,submenu,upobject) {
+function viewdocsubmenu(event,docid,submenu,upobject, barmenu) {
   POPMENUINPROGRESSELT=false;
   var corestandurl=window.location.pathname+'?sole=Y&';
   var menuapp=MENUAPP;
@@ -87,7 +87,7 @@ function viewdocsubmenu(event,docid,submenu,upobject) {
   }
 
   var menuurl=corestandurl+'app='+menuapp+'&action='+menuaction+menuopt+'&id='+docid+PDS;
-  viewsubmenu(event,menuurl,upobject);
+  viewsubmenu(event,menuurl,upobject, false, barmenu);
 }
 
 /* verify first if is open */
@@ -96,7 +96,7 @@ function bardocmenu(event,docid,onlyctrl,upobject,sourceobject) {
   if (mid == MENUIDENTIFICATOR) {
     closeDocMenu();
   } else {
-    viewdocmenu(event,docid,onlyctrl,upobject,sourceobject);
+    viewdocmenu(event,docid,onlyctrl,upobject,sourceobject, true);
     MENUIDENTIFICATOR=mid;
   }
 }
@@ -105,7 +105,7 @@ function bardocsubmenu(event,docid,submenu,upobject) {
   if (mid == MENUIDENTIFICATOR) {
     closeDocMenu();
   } else {
-    viewdocsubmenu(event,docid,submenu,upobject);
+    viewdocsubmenu(event,docid,submenu,upobject, true);
     MENUIDENTIFICATOR=mid;
   }
 }
