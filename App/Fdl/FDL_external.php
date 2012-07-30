@@ -802,6 +802,89 @@ function lview($tidview, $tlview)
     
     return $tr;
 }
+
+/**
+ * Get columns (attribute ir property) that can be used to present of
+ * the report's result
+ *
+ * @param $dbaccess
+ * @param $famid
+ * @param string $name
+ * @return array
+ */
+function getReportColumns($dbaccess, $famid, $name = "") {
+    $doc = createDoc($dbaccess, $famid, false);
+    $tr = array();
+    $pattern = preg_quote($name);
+    // Properties
+    $propList = array(
+        "title" => _("doctitle") ,
+        "revdate" => _("revdate") ,
+        "revision" => _("revision") ,
+        "owner" => _("owner") ,
+        "state" => _("state")
+    );
+    foreach ($propList as $propName => $propLabel) {
+        if (($name == "") || (preg_match("/$pattern/i", $propLabel, $m))) {
+            $tr []= array(
+                $propLabel,
+                $propName,
+                $propLabel
+            );
+        }
+    }
+    // Attributes
+    $attrList = $doc->getNormalAttributes();
+    foreach ($attrList as $attr) {
+        if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
+            $html = '<b><i>' . _getParentLabel($attr) . '</i></b><br/><span>&nbsp;&nbsp;' . $attr->getLabel() . '</span>';
+            $tr[] = array(
+                $html,
+                $attr->id,
+                $attr->getLabel(),
+                $attr->getOption('sortable')
+            );
+        }
+    }
+    return $tr;
+}
+
+/**
+ * Get columns (attribute or property) than can be used to order the
+ * report's result.
+ *
+ * @param $dbaccess
+ * @param $famid
+ * @param string $name
+ * @return array
+ */
+function getReportSortableColumns($dbaccess, $famid, $name = "") {
+    $doc = createDoc($dbaccess, $famid, false);
+    $tr = array();
+    $pattern = preg_quote($name);
+    // Properties
+    $propList = getSortProperties($dbaccess, $famid, $name);
+    foreach ($propList as $prop) {
+        if (($name == "") || (preg_match("/$pattern/i", $prop[1], $m))) {
+            $tr[] = $prop;
+        }
+
+    }
+    // Attributes
+    $attrList = $doc->getSortAttributes();
+    foreach ($attrList as $attr) {
+        if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
+            $html = '<b><i>' . _getParentLabel($attr) . '</i></b><br/><span>&nbsp;&nbsp;' . $attr->getLabel() . '</span>';
+            $tr[] = array(
+                $html,
+                $attr->id,
+                $attr->getLabel(),
+                $attr->getOption('sortable')
+            );
+        }
+    }
+    return $tr;
+}
 // liste des attributs d'une famille
 function getDocAttr($dbaccess, $famid, $name = "")
 {
