@@ -1,6 +1,6 @@
 [BLOCK TABLEBODY]
 <div [IF notloaded]loaded="no" [ENDIF notloaded]id="F[frameid]" style="[IF bgcolor]background-color:[bgcolor];[ENDIF bgcolor][IF TAB][IFNOT NOTAB]display:none;[ENDIF NOTAB][ENDIF TAB]" [IF TAB]name="[tag]"[ENDIF TAB]  class="frame" >[IF frametext]<div class="legend"  onmousedown="viewornot('T[frameid]')">[frametext]</div>[ENDIF frametext]
-[IF viewtpl]<div  width="100%" cellspacing="0" id="T[frameid]" >[zonetpl]</div>[ENDIF viewtpl]
+[IF viewtpl]<div class="content" width="100%" cellspacing="0" id="T[frameid]" >[zonetpl]</div>[ENDIF viewtpl]
 [IFNOT viewtpl]<div class="content"><table width="100%" cellspacing="0" id="T[frameid]" >
 <tr class="FREEDOMBack1">
   <td colspan="2"  height="1px"></td>
