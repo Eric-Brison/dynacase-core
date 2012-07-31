@@ -1400,7 +1400,7 @@ create unique index i_docir on doc(initid, revision);";
          * @var NormalAttribute $paramAttr
          */
         $paramAttr = $this->getAttribute($idp);
-        if ($paramAttr->phpfunc != "") {
+        if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "") {
             $r = $this->getValueMethod($paramAttr->phpfunc);
         } else if ($r) {
             $r = $this->getValueMethod($r, $r);
