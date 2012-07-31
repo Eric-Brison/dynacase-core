@@ -21,7 +21,7 @@
  */
 class _IUSER extends Doc
 {
-    public $wuser;
+    public $wuser;  #_("Admin edit")
     public function setGroups()
     {
     }

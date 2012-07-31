@@ -40,7 +40,7 @@ function getpopupdocdetail(Action & $action, $docid)
     
     $tlink = array(
         "headers" => array(
-            "descr" => _("Properties") ,
+            "descr" => mb_ucfirst(_("Properties")),
             "url" => "$surl&app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -51,7 +51,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "latest" => array(
-            "descr" => _("View latest") ,
+            "descr" => mb_ucfirst(_("View latest")),
             "url" => "$surl&app=FDL&action=FDL_CARD&latest=Y&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -62,7 +62,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "editdoc" => array(
-            "descr" => _("Modify") ,
+            "descr" => mb_ucfirst(_("Modify")) ,
             "url" => "$surl&app=GENERIC&action=GENERIC_EDIT&rzone=$zone&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -78,7 +78,7 @@ function getpopupdocdetail(Action & $action, $docid)
     addStatesPopup($tlink, $doc);
     $tlink = array_merge($tlink, array(
         "delete" => array(
-            "descr" => _("Delete") ,
+            "descr" => mb_ucfirst(_("Delete")),
             "url" => "$surl&app=GENERIC&action=GENERIC_DEL&id=$docid",
             "confirm" => "true",
             "control" => "false",
@@ -89,7 +89,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "restore" => array(
-            "descr" => _("restore") ,
+            "descr" => mb_ucfirst(_("restore")),
             "url" => "$surl&app=FDL&action=RESTOREDOC&id=$docid",
             "tconfirm" => "",
             "confirm" => "false",
@@ -99,7 +99,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "editstate" => array(
-            "descr" => _("Change step") ,
+            "descr" => mb_ucfirst(_("Change step")),
             "url" => "$surl&app=FREEDOM&action=FREEDOM_EDITSTATE&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -110,29 +110,29 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "lockdoc" => array(
-            "descr" => _("Lock") ,
+            "descr" => mb_ucfirst(_("Lock")),
             "url" => "$surl&app=FDL&action=LOCKFILE&id=$docid",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
             "target" => "_self",
             "visibility" => POPUP_INACTIVE,
-            "submenu" => N_("security") ,
+            "submenu" => N_("Security") ,
             "barmenu" => "false"
         ) ,
         "unlockdoc" => array(
-            "descr" => _("Unlock") ,
+            "descr" => mb_ucfirst(_("Unlock")),
             "url" => "$surl&app=FDL&action=UNLOCKFILE&id=$docid",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
             "target" => "_self",
             "visibility" => POPUP_INACTIVE,
-            "submenu" => "security",
+            "submenu" => "Security",
             "barmenu" => "false"
         ) ,
         "revise" => array(
-            "descr" => _("Revise") ,
+            "descr" => mb_ucfirst(_("Revise")),
             "url" => "$surl&app=FREEDOM&action=REVCOMMENT&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -143,51 +143,51 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "editprof" => array(
-            "descr" => _("Change profile") ,
+            "descr" => mb_ucfirst(_("Change profile")),
             "url" => "$surl&app=FREEDOM&action=EDITPROF&id=$docid",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
             "target" => "",
             "visibility" => POPUP_INACTIVE,
-            "submenu" => "security",
+            "submenu" => "Security",
             "barmenu" => "false"
         ) ,
         "privateprof" => array(
-            "descr" => _("Set private") ,
+            "descr" => mb_ucfirst(_("Set private")),
             "url" => "$surl&app=FREEDOM&action=MODPROF&docid=$docid&profid=private",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
             "target" => "_self",
             "visibility" => POPUP_INVISIBLE,
-            "submenu" => "security",
+            "submenu" => "Security",
             "barmenu" => "false"
         ) ,
         "specprof" => array(
-            "descr" => _("Set autonome profil") ,
+            "descr" => mb_ucfirst(_("Set autonome profil")),
             "url" => "$surl&app=FREEDOM&action=MODPROF&docid=$docid&profid=$docid",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
             "target" => "_self",
             "visibility" => POPUP_INVISIBLE,
-            "submenu" => "security",
+            "submenu" => "Security",
             "barmenu" => "false"
         ) ,
         "publicprof" => array(
-            "descr" => _("Set public") ,
+            "descr" => mb_ucfirst(_("Set public")),
             "url" => "$surl&app=FREEDOM&action=MODPROF&docid=$docid&profid=0",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
             "target" => "_self",
             "visibility" => POPUP_INVISIBLE,
-            "submenu" => "security",
+            "submenu" => "Security",
             "barmenu" => "false"
         ) ,
         "histo" => array(
-            "descr" => _("History") ,
+            "descr" => mb_ucfirst(_("History")),
             "url" => "$surl&app=FREEDOM&action=HISTO&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -198,7 +198,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "reaffect" => array(
-            "descr" => _("Reaffect") ,
+            "descr" => mb_ucfirst(_("Reaffect")),
             "url" => "",
             "jsfunction" => "popdoc(null,'$surl&app=FDL&action=EDITAFFECT&id=$docid')",
             "confirm" => "false",
@@ -210,7 +210,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "duplicate" => array(
-            "descr" => _("Duplicate") ,
+            "descr" => mb_ucfirst(_("Duplicate")),
             "url" => "$surl&app=GENERIC&action=GENERIC_DUPLICATE&id=$docid",
             "confirm" => "true",
             "control" => "false",
@@ -221,7 +221,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "access" => array(
-            "descr" => _("goaccess") ,
+            "descr" => mb_ucfirst(_("goaccess")),
             "url" => "$surl&app=FREEDOM&action=FREEDOM_GACCESS&id=" . $doc->id,
             "confirm" => "false",
             "control" => "false",
@@ -230,11 +230,11 @@ function getpopupdocdetail(Action & $action, $docid)
             "mwidth" => 800,
             "mheight" => 300,
             "visibility" => POPUP_ACTIVE,
-            "submenu" => "security",
+            "submenu" => "Security",
             "barmenu" => "false"
         ) ,
         "tobasket" => array(
-            "descr" => _("Add to basket") ,
+            "descr" => mb_ucfirst(_("Add to basket")),
             "url" => "$surl&app=FREEDOM&action=ADDDIRFILE&docid=$docid&dirid=" . $action->getParam("FREEDOM_IDBASKET") ,
             "confirm" => "false",
             "control" => "false",
@@ -245,7 +245,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "chgicon" => array(
-            "descr" => _("Change icon") ,
+            "descr" => mb_ucfirst(_("Change icon")),
             "url" => "$surl&app=FDL&action=EDITICON&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -256,7 +256,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "addpostit" => array(
-            "descr" => _("Add postit") ,
+            "descr" => mb_ucfirst(_("Add postit")),
             "jsfunction" => "postit('$surl&app=GENERIC&action=GENERIC_EDIT&classid=27&pit_title=&pit_idadoc=$docid',50,50,300,200)",
             "confirm" => "false",
             "control" => "false",
@@ -267,7 +267,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "viewask" => array(
-            "descr" => _("View my ask") ,
+            "descr" => mb_ucfirst(_("View my ask")),
             "jsfunction" => "viewwask('$surl&app=FDL&action=VIEWWASK&docid=$docid',50,50,300,200)",
             "confirm" => "false",
             "control" => "false",
@@ -278,7 +278,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "viewanswers" => array(
-            "descr" => _("View answers") ,
+            "descr" => mb_ucfirst(_("View answers")),
             "url" => "$surl&app=FDL&action=IMPCARD&zone=FDL:VIEWANSWERS&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -289,7 +289,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "createforum" => array(
-            "descr" => _("create forum") ,
+            "descr" => mb_ucfirst(_("create forum")),
             "url" => "$surl&app=FDL&action=FDL_FORUMCREATE&docid=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -300,7 +300,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "openforum" => array(
-            "descr" => _("open forum") ,
+            "descr" => mb_ucfirst(_("open forum")),
             "url" => "$surl&app=FDL&action=FDL_FORUMOPEN&docid=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -311,7 +311,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "closeforum" => array(
-            "descr" => _("close forum") ,
+            "descr" => mb_ucfirst(_("close forum")),
             "url" => "$surl&app=FDL&action=FDL_FORUMCLOSE&docid=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -322,7 +322,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "toxml" => array(
-            "descr" => _("View XML") ,
+            "descr" => mb_ucfirst(_("View XML")),
             "url" => "$surl&app=FDL&action=VIEWXML&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -333,7 +333,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "relations" => array(
-            "descr" => _("Document relations") ,
+            "descr" => mb_ucfirst(_("Document relations")),
             "url" => "$surl&app=FREEDOM&action=RNAVIGATE&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -344,7 +344,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "path" => array(
-            "descr" => _("Access path list") ,
+            "descr" => mb_ucfirst(_("Access path list")),
             "url" => "$surl&app=FREEDOM&action=FREEDOM_IFLD&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -355,7 +355,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         "reference" => array(
-            "descr" => _("Search linked documents") ,
+            "descr" => mb_ucfirst(_("Search linked documents")),
             "url" => "$surl&app=GENERIC&action=GENERIC_ISEARCH&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -520,7 +520,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
         }
         $defaultview = $doc->getDefaultView(true);
         if ($defaultview !== 0) {
-            $tlink["editdoc"]["descr"] = $defaultview["cv_lview"];
+            $tlink["editdoc"]["descr"] = _($defaultview['cv_lview']);
         }
     }
 }
@@ -553,7 +553,7 @@ function addStatesPopup(&$tlink, Doc & $doc)
                 $jsf = sprintf("subwindow(100,100,'_self','$surl&app=FREEDOM&action=MODSTATE&newstate=$v&id=$docid');");
             }
             $visibility = POPUP_ACTIVE;
-            $tooltip = $wdoc->getActivity($v, ucfirst(_($v)));
+            $tooltip = $wdoc->getActivity($v, mb_ucfirst(_($v)));
             //$icon = (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "");
             $icon = (!$tr) ? "Images/noaccess.png" : "";
             if ($tr && $tr["m0"]) {
