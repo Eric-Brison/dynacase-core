@@ -4968,7 +4968,7 @@ create unique index i_docir on doc(initid, revision);";
         final public function urlWhatEncode($link, $k = - 1)
         {
             global $action;
-            $dbaccess = $action->GetParam("FREEDOM_DB");
+            
             $urllink = "";
             $mi = strlen($link);
             for ($i = 0; $i < $mi; $i++) {
@@ -4979,6 +4979,11 @@ create unique index i_docir on doc(initid, revision);";
                             $urllink.= "%"; // %% is %
                             
                         } else {
+                            $optional = false;
+                            if ($link[$i] == "?") {
+                                $i++;
+                                $optional = true;
+                            }
                             if (preg_match('/[0-9A-F][0-9A-F]/', $link[$i] . $link[$i + 1])) {
                                 // hexa code
                                 $urllink.= '%' . $link[$i] . $link[$i + 1];
@@ -5015,18 +5020,25 @@ create unique index i_docir on doc(initid, revision);";
                                     $sattrid.= $link[$i];
                                     $i++;
                                 }
-                                $oa = $this->GetAttribute($sattrid);
-                                if (($k >= 0) && ($oa && $oa->repeat)) {
-                                    $tval = $this->GetTValue($sattrid);
-                                    $ovalue = chop($tval[$k]);
+                                if (preg_match('/^[a-z0-9_]*::/i', $sattrid)) {
+                                    $urllink.= $this->getValueMethod($sattrid);
                                 } else {
-                                    $ovalue = $this->GetValue($sattrid);
+                                    /**
+                                     * @var NormalAttribute $oa
+                                     */
+                                    $oa = $this->GetAttribute($sattrid);
+                                    if (($k >= 0) && ($oa && $oa->repeat)) {
+                                        $tval = $this->GetTValue($sattrid);
+                                        $ovalue = chop($tval[$k]);
+                                    } else {
+                                        $ovalue = $this->GetValue($sattrid);
+                                    }
+                                    if ($ovalue == "" && (!$optional)) return false;
+                                    
+                                    if (strstr($ovalue, "\n")) $ovalue = str_replace("\n", '\n', $ovalue);
+                                    $urllink.= rawurlencode($ovalue); // need encode
+                                    
                                 }
-                                if ($ovalue == "") return false;
-                                
-                                if (strstr($ovalue, "\n")) $ovalue = str_replace("\n", '\n', $ovalue);
-                                $urllink.= rawurlencode($ovalue); // need encode
-                                
                             }
                         }
                         break;
