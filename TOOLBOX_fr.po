@@ -2624,7 +2624,7 @@ msgid "No acl for new documents of this family"
 msgstr "Pas de droits définis pour les nouveaux documents de cette famille"
 
 msgid "No columns has been defined"
-msgstr "Aucunes colonnes ont étéx définies"
+msgstr "Aucunes colonnes ont été définies"
 
 msgid "No default value"
 msgstr "Aucune valeurs par défaut"
