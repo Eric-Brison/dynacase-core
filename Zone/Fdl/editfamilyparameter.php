@@ -29,7 +29,7 @@ function editfamilyparameter(Action & $action)
     
     $action->lay->set("famid", $famid);
     $action->lay->set("attrid", strtolower($attrid));
-    $doc = new_Doc($action->dbaccess, $famid);
+    $doc = new_Doc($action->dbaccess, $famid, true);
     if ($doc->isAlive()) {
         /**
          * @var NormalAttribute $attr
@@ -54,7 +54,7 @@ function editfamilyparameter(Action & $action)
             if ($default !== null) {
                 $value = $default;
             } else {
-                $value = $doc->getParamValue($attrid);
+                $value = $doc->getParamValue($attrid, $doc->GetValueMethod($attrid));
             }
         }
         $d = createTmpDoc($action->dbaccess, $doc->id);
@@ -68,7 +68,7 @@ function editfamilyparameter(Action & $action)
         $action->lay->template = sprintf(_("Family [%s] not found") , $famid);
         return false;
     }
-    $action->parent->addJsRef("FDL/Layout/editparameter.js");
     $action->parent->addJsRef("lib/jquery/jquery.js");
+    $action->parent->addJsRef("FDL/Layout/editparameter.js");
     return true;
 }

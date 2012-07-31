@@ -3,14 +3,12 @@ function sendParameterData(elem, id) {
     if (!id) {
         id = form.parents("div.editfamilyparameter").attr("data-parameter");
     }
+    form.off("submit");
     form.submit(function () {
         var extractValueFromField = function (e, value) {
             var attrid = $(e).attr("attrid");
             var values = [];
-            $(e).find("input[type='text']").each(function (i, el) {
-                values.push($(el).val());
-            });
-            $(e).find("select").each(function (i, el) {
+            $(e).find("input[type='text'],select").each(function (i, el) {
                 values.push($(el).val());
             });
             value.push({
@@ -79,7 +77,6 @@ function sendParameterData(elem, id) {
         });
         return false;
     });
-    form.submit();
 }
 
 function sendParameterApplicationData(elem, id) {
@@ -159,19 +156,7 @@ function addOnChange() {
     edit_family.each(function (index, element) {
         var form = $(element).find("form");
         if (form.attr("data-on-change")) {
-            form.find("input[type='text']").each(function (index, elem) {
-                var f = function (e) {
-                    e = e || event;
-                    setTimeout("sendParameterData('#" + $(e.target).prop("id") + "');", 0)
-                };
-                if ("addEventListener" in elem) {
-                    elem.addEventListener("change", f, false);
-                }
-                else if (elem.attachEvent) {
-                    elem.attachEvent("onchange", f);
-                }
-            });
-            form.find("select").each(function (index, elem) {
+            form.find("input[type='text'],select").each(function (index, elem) {
                 var f = function (e) {
                     e = e || event;
                     setTimeout("sendParameterData('#" + $(e.target).prop("id") + "');", 0)
@@ -188,19 +173,7 @@ function addOnChange() {
     edit_application.each(function (index, element) {
         var form = $(element).find("form");
         if (form.attr("data-on-change")) {
-            form.find("input[type='text']").each(function (index, elem) {
-                var f = function (e) {
-                    e = e || event;
-                    setTimeout("sendParameterApplicationData('#" + $(e.target).prop("id") + "');", 0)
-                };
-                if ("addEventListener" in elem) {
-                    elem.addEventListener("change", f, false);
-                }
-                else if (elem.attachEvent) {
-                    elem.attachEvent("onchange", f);
-                }
-            });
-            form.find("select").each(function (index, elem) {
+            form.find("input[type='text'],select").each(function (index, elem) {
                 var f = function (e) {
                     e = e || event;
                     setTimeout("sendParameterApplicationData('#" + $(e.target).prop("id") + "');", 0)

@@ -50,7 +50,9 @@ function modfamilyparameter(Action & $action)
                 foreach ($value as $v) {
                     $key = $v["attrid"];
                     if (!array_attrid_exists($key, $result)) {
-                        $result[$i]["attrid"] = $key;
+                        $result[$i] = array(
+                            "attrid" => $key
+                        );
                         foreach ($value as $e) {
                             if ($e["attrid"] == $key) {
                                 $result[$i]["value"][] = $e["value"][0];
@@ -62,13 +64,14 @@ function modfamilyparameter(Action & $action)
                 foreach ($result as $v) {
                     if (!empty($v["value"])) {
                         $val = $doc->_array2val($v["value"]);
-                        if ($doc->getParam($v["attrid"]) != $val) {
+                        $oldValue = $doc->getParamValue($v["attrid"]);
+                        if ($oldValue != $val) {
                             $modify = true;
                         }
                         $doc->setParam($v["attrid"], $val);
                     }
                 }
-                $err = $doc->Modify();
+                $err = $doc->store();
                 if ($err) {
                     $out["success"] = false;
                     $out["errors"] = sprintf(_("an error has occured: %s") , $err);
@@ -76,9 +79,9 @@ function modfamilyparameter(Action & $action)
                     $out["modify"] = true;
                 }
             } else {
-                $oldValue = $doc->getParam($attrid);
+                $oldValue = $doc->getParamValue($attrid);
                 $doc->setParam($attrid, $value);
-                $err = $doc->Modify();
+                $err = $doc->store();
                 if ($err) {
                     $out["success"] = false;
                     $out["errors"] = sprintf(_("an error has occured: %s") , $err);
