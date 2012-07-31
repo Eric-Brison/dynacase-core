@@ -626,11 +626,12 @@ function addFamilyPopup(&$tlink, Doc & $doc)
         else $tlink[$k]["visibility"] = ($control) ? POPUP_CTRLACTIVE : POPUP_ACTIVE;
         $tlink[$k]["submenu"] = $v->getOption("submenu");
         $tlink[$k]["barmenu"] = ($v->getOption("barmenu") == "yes") ? "true" : "false";
-        if ($v->precond != "") {
+        if ($v->precond != "" && $tlink[$k]["url"]) {
             $tlink[$k]["visibility"] = $doc->ApplyMethod($v->precond, POPUP_ACTIVE);
             if ($tlink[$k]["visibility"] === false) $tlink[$k]["visibility"] = POPUP_INVISIBLE;
             elseif ($tlink[$k]["visibility"] === true) $tlink[$k]["visibility"] = POPUP_ACTIVE;
         }
+        if (!$tlink[$k]["url"]) $tlink[$k]["visibility"] = POPUP_INVISIBLE;
     }
     // -------------------- Menu action ------------------
     $lactions = $doc->GetActionAttributes();

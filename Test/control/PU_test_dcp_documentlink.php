@@ -171,6 +171,36 @@ class TestLink extends TestCaseDcpDocument
                 "linkTwo",
                 "http://test.com/?title=%3A%3A%T%%28%29",
                 "http://test.com/?title=%3A%3AJoe%20%26%20Jane%28%29"
+            ) ,
+            array(
+                "linkTwo",
+                "http://test.com/?title=%TITLE%&option=%?OPTIONONE%",
+                "http://test.com/?title=Joe%20%26%20Jane&option="
+            ) ,
+            array(
+                "linkTwo",
+                "http://test.com/?title=%TITLE%&option1=%?OPTIONONE%&hard=true&option2=%?OPTIONTWO%",
+                "http://test.com/?title=Joe%20%26%20Jane&option1=&hard=true&option2="
+            ) ,
+            array(
+                "linkTwo",
+                "::linkOne()",
+                "::linkOne()"
+            ) ,
+            array(
+                "linkTwo",
+                "%::linkOne()%",
+                "http://www.test.net/"
+            ) ,
+            array(
+                "linkTwo",
+                "%::linkOne()%?a=%T%",
+                "http://www.test.net/?a=Joe%20%26%20Jane"
+            ) ,
+            array(
+                "linkTwo",
+                "%::linkTwo()%",
+                "http://www.test.net/?b=Joe%20%26%20Jane"
             )
         );
     }
