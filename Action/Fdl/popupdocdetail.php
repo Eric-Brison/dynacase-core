@@ -500,11 +500,11 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
             if ($v["menu"] != "") {
                 if ($v["menu"] == "-") $submenu = "";
                 else $submenu = $v["menu"];
-                $mtitle = $v["txtview"];
             } else {
                 $submenu = ($count[$v["typeview"]] > 1) ? $v["typeview"] : "";
-                $mtitle = ($count[$v["typeview"]] > 1) ? $v["txtview"] : sprintf(_($v["typeview"] . " %s") , $v["txtview"]);
             }
+            $mtitle = $v["txtview"];
+            
             $tlink[$v["idview"]] = array(
                 "descr" => $mtitle,
                 "url" => $url,
@@ -517,6 +517,10 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
                 "submenu" => $submenu,
                 "barmenu" => "false"
             );
+        }
+        $defaultview = $doc->getDefaultView(true);
+        if ($defaultview !== 0) {
+            $tlink["editdoc"]["descr"] = $defaultview["cv_lview"];
         }
     }
 }
