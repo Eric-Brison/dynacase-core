@@ -31,7 +31,7 @@ include_once ("FDL/editutil.php");
 function inputattribute(&$action)
 {
     
-    $attrid = GetHttpVars("id");
+    $attrid = strtolower(GetHttpVars("id"));
     $type = stripslashes(GetHttpVars("type"));
     $jsevent = stripslashes(GetHttpVars("jsevent"));
     $label = GetHttpVars("label");
