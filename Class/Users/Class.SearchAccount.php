@@ -78,12 +78,14 @@ class SearchAccount
         $roles = explode(' ', $role);
         foreach ($roles as $aRole) {
             $aRole = trim($aRole);
-            $sql = sprintf("select id from users where accounttype='R' and login='%s'", pg_escape_string(mb_strtolower($aRole)));
-            simpleQuery($this->dbaccess, $sql, $result, true, true);
-            if (!$result) {
-                throw new Exception(ErrorCode::getError("SACC0002", $aRole));
+            if ($aRole) {
+                $sql = sprintf("select id from users where accounttype='R' and login='%s'", pg_escape_string(mb_strtolower($aRole)));
+                simpleQuery($this->dbaccess, $sql, $result, true, true);
+                if (!$result) {
+                    throw new Exception(ErrorCode::getError("SACC0002", $aRole));
+                }
+                $this->roleFilters[] = $result;
             }
-            $this->roleFilters[] = $result;
         }
     }
     /**
@@ -96,12 +98,14 @@ class SearchAccount
         $groups = explode(' ', $group);
         foreach ($groups as $aGroup) {
             $aGroup = trim($aGroup);
-            $sql = sprintf("select id from users where accounttype='G' and login='%s'", pg_escape_string(mb_strtolower($aGroup)));
-            simpleQuery($this->dbaccess, $sql, $result, true, true);
-            if (!$result) {
-                throw new Exception(ErrorCode::getError("SACC0005", $aGroup));
+            if ($aGroup) {
+                $sql = sprintf("select id from users where accounttype='G' and login='%s'", pg_escape_string(mb_strtolower($aGroup)));
+                simpleQuery($this->dbaccess, $sql, $result, true, true);
+                if (!$result) {
+                    throw new Exception(ErrorCode::getError("SACC0005", $aGroup));
+                }
+                $this->groupFilters[] = $result;
             }
-            $this->groupFilters[] = $result;
         }
     }
     /**
@@ -249,9 +253,9 @@ class SearchAccount
     {
         
         $groupRoleFilter = $this->getgroupRoleFilter();
-
+        
         $u = getCurrentUser();
-        if ($this->viewControl && $u->id!=1) {
+        if ($this->viewControl && $u->id != 1) {
             $viewVector = SearchDoc::getUserViewVector($u->id);
             $sql = sprintf("select users.* from users, docread where users.fid = docread.id and docread.views && '%s' and %s ", $viewVector, $groupRoleFilter);
         } else {
@@ -271,7 +275,6 @@ class SearchAccount
         
         if ($this->order) $sql.= sprintf(" order by %s", pg_escape_string($this->order));
         $sql.= sprintf(" offset %d limit %s", $this->start, pg_escape_string($this->slice));
-        
         return $sql;
     }
 }

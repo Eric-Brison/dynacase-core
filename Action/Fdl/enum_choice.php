@@ -164,6 +164,10 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         '&rparenthesis;',
         '&lparenthesis;'
     ) , $phpfunc);
+    $oParse = new parseFamilyFunction();
+    $strucFunc = $oParse->parse($phpfunc);
+    if ($strucFunc->getError()) return $strucFunc->getError();
+    
     if (!preg_match('/(.*)\((.*)\)\:(.*)/', $phpfunc, $reg)) {
         return sprintf(_("the pluggins function description '%s' is not conform for %s attribut") , $phpfunc, $oattr->id);
     }
@@ -185,18 +189,19 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
     "getAttr('\\1')", $reg[2]);
     $argids = explode(",", $iarg); // input args
     $arg = array();
-    foreach ($argids as $k => $v) {
+    foreach ($strucFunc->inputs as $k => $inpArg) {
         $v = str_replace(array(
             '&rparenthesis;',
             '&lparenthesis;'
         ) , array(
             ')',
             '('
-        ) , $v);
+        ) , $inpArg->name);
         if ($v != " ") $v = trim($v);
         
         $unser = unserialize($v);
         if ($unser != "") $arg[$k] = $unser;
+        elseif ($inpArg->type == "string") $arg[$k] = $v;
         elseif ($v == "A") {
             global $action;
             $arg[$k] = & $action;
@@ -260,6 +265,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         }
     }
     try {
+        
         $res = call_user_func_array($callfunc, $arg);
     }
     catch(Exception $e) {

@@ -83,11 +83,13 @@ class WDoc extends Doc
     }
     /**
      * affect document instance
-     * @param Doc $doc
+     * @param Doc $doc document to use for workflow
+     * @param bool $force set to true to force a doc reset
+     * @return void
      */
-    function set(Doc & $doc)
+    function set(Doc & $doc, $force = false)
     {
-        if ((!isset($this->doc)) || ($this->doc->id != $doc->id)) {
+        if ((!isset($this->doc)) || ($this->doc->id != $doc->id) || $force) {
             $this->doc = & $doc;
             if (($doc->doctype != 'C') && ($doc->state == "")) {
                 $doc->state = $this->getFirstState();
