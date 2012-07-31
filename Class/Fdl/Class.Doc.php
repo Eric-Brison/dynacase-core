@@ -6526,8 +6526,8 @@ create unique index i_docir on doc(initid, revision);";
                             $elabel = $listattr[$i]->getoption("elabel");
                             $elabel = str_replace("'", "&rsquo;", $elabel);
                             $tableframe[$v]["elabel"] = mb_ucfirst(str_replace('"', "&rquot;", $elabel));
-                            $tableframe[$v]["ehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($listattr[$i]->id) : false;
-                            $tableframe[$v]["ehelpid"] = ($help->isAlive()) ? $help->id : false;
+                            $tableframe[$v]["aehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($listattr[$i]->id) : false;
+                            $tableframe[$v]["aehelpid"] = ($help->isAlive()) ? $help->id : false;
                             
                             $tableframe[$v]["multiple"] = ($attr->getOption("multiple") == "yes") ? "true" : "false";
                             $tableframe[$v]["atype"] = $attr->type;
