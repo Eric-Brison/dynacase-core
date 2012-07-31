@@ -46,9 +46,10 @@ function viewbarmenu(Action & $action)
         }
     }
     if (!$popup) $popup = getpopupdocdetail($action, $docid);
-    
+    $other = false;
     foreach ($popup as $k => $v) {
         $vis = $v["visibility"];
+        if ($vis == POPUP_CTRLACTIVE || $vis == POPUP_CTRLINACTIVE) $other = true;
         if (($vis != POPUP_ACTIVE && (!$v["submenu"])) || ($vis == POPUP_INVISIBLE || $vis == POPUP_CTRLACTIVE || $vis == POPUP_CTRLINACTIVE)) unset($popup[$k]);
         else if (($v["url"] == "") && ($v["jsfunction"] == "")) unset($popup[$k]);
         else {
@@ -100,6 +101,7 @@ function viewbarmenu(Action & $action)
             }
         }
     }
+    $action->lay->set("other", $other);
     $action->lay->setBlockData("LINKS", $popup);
     $action->lay->set("id", $docid);
     
