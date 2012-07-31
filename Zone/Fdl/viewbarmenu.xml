@@ -3,4 +3,4 @@
 
 [IFNOT menu]<a  title="[title]" onclick="[IF confirm]if (confirm('[tconfirm]')){[ENDIF confirm] [IFNOT ISJS][IF self]viewwaitbarmenu(this,this.parentNode);[ENDIF self]subwindow[m]('[mheight]','[mwidth]','[target]','[url]')[IF confirm]} [ENDIF confirm][ENDIF ISJS][IF ISJS][jsfunction][ENDIF ISJS]">[descr]</a>[ENDIF menu]
 [IF menu]<a  title="[title]"  onclick="bardocsubmenu(event,'[id]','[idlink]',this);">[descr]&darr;</a>[ENDIF menu]
-[ENDBLOCK LINKS] <a   onclick="bardocmenu(event,'[id]',true,this);return false"  title="[TEXT:Click to view menu]">[TEXT:Others]&darr;</a> </div>
+[ENDBLOCK LINKS] [IF other]<a   onclick="bardocmenu(event,'[id]',true,this);return false"  title="[TEXT:Click to view menu]">[TEXT:Others]&darr;</a>[ENDIF other] </div>
