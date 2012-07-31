@@ -983,7 +983,10 @@ create sequence SEQ_ID_APPLICATION start 10;
              */
             while (list($k, $v) = each($list)) {
                 $this->log->debug(" Delete action {$v->name} ");
-                $v->Delete();
+                $err = $v->Delete();
+                if ($err != '') {
+                    return $err;
+                }
             }
         }
         unset($query);
@@ -993,7 +996,8 @@ create sequence SEQ_ID_APPLICATION start 10;
         $param = new Param($this->dbaccess);
         $param->DelAll($this->id);
         // delete application
-        $this->Delete();
+        $err = $this->Delete();
+        return $err;
     }
     
     function text($code, $args = NULL)
