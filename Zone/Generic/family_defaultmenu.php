@@ -179,13 +179,7 @@ function family_defaultmenu(Action & $action)
     foreach ($lmenu as $k => $v) {
         if ($v->getOption("global") == "yes") {
             $confirm = ($v->getOption("lconfirm") == "yes");
-            $tmenu[$k] = array(
-                "mid" => $v->id,
-                "mtitle" => $v->getLabel() ,
-                "confirm" => ($confirm) ? "true" : "false",
-                "tconfirm" => ($confirm) ? sprintf(_("Sure %s ?") , addslashes($v->getLabel())) : "",
-                "murl" => addslashes($fdoc->urlWhatEncode($v->link))
-            );
+            
             $vis = MENU_ACTIVE;
             if ($v->precond != "") $vis = $fdoc->ApplyMethod($v->precond, MENU_ACTIVE);
             if ($vis == MENU_ACTIVE) {
@@ -205,7 +199,7 @@ function family_defaultmenu(Action & $action)
                 }
                 $toolsItemMenu[$v->id] = array(
                     "label" => $v->getLabel() ,
-                    "target" => $v->id,
+                    "target" => $v->getOption("mtarget", $v->getoption('ltarget', $v->id)) ,
                     "confirm" => $textConfirm,
                     "url" => $fdoc->urlWhatEncode($v->link)
                 );
