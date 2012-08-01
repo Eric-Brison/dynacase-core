@@ -151,20 +151,12 @@ function family_defaultmenu(Action & $action)
                                       "label" => _("Searches") ,
                                       "items"=>$searchItemMenu);
     */
-    if ($idappfree = $action->parent->Exists("FREEDOM")) {
-        
-        $permission = new Permission($action->dbaccess, array(
-            $action->user->id,
-            $idappfree
-        ));
-        
-        if (($action->user->id == 1) || ($permission->isAffected() && (count($permission->privileges) > 0))) {
-            $toolsItemMenu['folders'] = array(
-                "label" => _("folders") ,
-                "target" => "freedom$famid",
-                "url" => sprintf('?app=FREEDOM&amp;action=FREEDOM_FRAME&amp;dirid=%s&amp;famid=%s', getDefFld($action) , $famid)
-            );
-        }
+    if ($action->HasPermission("GED", "FREEDOM")) {
+        $toolsItemMenu['folders'] = array(
+            "label" => _("folders") ,
+            "target" => "freedom$famid",
+            "url" => sprintf('?app=FREEDOM&amp;action=FREEDOM_FRAME&amp;dirid=%s&amp;famid=%s', getDefFld($action) , $famid)
+        );
     }
     
     $toolsItemMenu['prefs'] = array(
