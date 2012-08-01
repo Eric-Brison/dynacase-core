@@ -163,7 +163,7 @@ class FormatCollection
                         $this->debug[$oa->type][] = microtime(true) - $mb0;
                     }
                 } else {
-                    $r[$kdoc]["attributes"][$attrid] = new unknowAttributeValue($this->ncAttribute);
+                    $r[$kdoc]["attributes"][$attrid] = new UnknowAttributeValue($this->ncAttribute);
                 }
             }
             
@@ -193,7 +193,7 @@ class FormatCollection
     
     private function getState(Doc $doc)
     {
-        $s = new statePropertyValue();
+        $s = new StatePropertyValue();
         if ($doc->state) {
             $s->reference = $doc->state;
             $s->stateLabel = _($doc->state);
@@ -240,41 +240,41 @@ class FormatCollection
         $info = null;
         switch ($oa->type) {
             case 'text':
-                $info = new textAttributeValue($oa, $value);
+                $info = new TextAttributeValue($oa, $value);
                 break;
 
             case 'int':
-                $info = new intAttributeValue($oa, $value);
+                $info = new IntAttributeValue($oa, $value);
                 break;
 
             case 'double':
-                $info = new doubleAttributeValue($oa, $value);
+                $info = new DoubleAttributeValue($oa, $value);
                 break;
 
             case 'enum':
-                $info = new enumAttributeValue($oa, $value);
+                $info = new EnumAttributeValue($oa, $value);
                 break;
 
             case 'docid':
             case 'account':
-                $info = new docidAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
+                $info = new DocidAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
                 break;
 
             case 'file':
-                $info = new fileAttributeValue($oa, $value, $doc, $index);
+                $info = new FileAttributeValue($oa, $value, $doc, $index);
                 break;
 
             case 'image':
-                $info = new imageAttributeValue($oa, $value, $doc, $index, $this->imageThumbnailSize);
+                $info = new ImageAttributeValue($oa, $value, $doc, $index, $this->imageThumbnailSize);
                 break;
 
             case 'timestamp':
             case 'date':
-                $info = new dateAttributeValue($oa, $value, $doc, $index);
+                $info = new DateAttributeValue($oa, $value, $doc, $index);
                 break;
 
             default:
-                $info = new standardAttributeValue($oa, $value);
+                $info = new StandardAttributeValue($oa, $value);
                 break;
         }
         return $info;
@@ -300,7 +300,7 @@ class FormatCollection
     }
 }
 
-class standardAttributeValue
+class StandardAttributeValue
 {
     public $value;
     public $displayValue;
@@ -311,7 +311,7 @@ class standardAttributeValue
         $this->displayValue = $v;
     }
 }
-class unknowAttributeValue
+class UnknowAttributeValue
 {
     public $value;
     public $displayValue;
@@ -323,7 +323,7 @@ class unknowAttributeValue
     }
 }
 
-class statePropertyValue
+class StatePropertyValue
 {
     public $reference;
     public $color;
@@ -331,7 +331,7 @@ class statePropertyValue
     public $stateLabel;
 }
 
-class formatAttributeValue extends standardAttributeValue
+class FormatAttributeValue extends StandardAttributeValue
 {
     public function __construct(NormalAttribute $oa, $v)
     {
@@ -342,11 +342,11 @@ class formatAttributeValue extends standardAttributeValue
     }
 }
 
-class textAttributeValue extends formatAttributeValue
+class TextAttributeValue extends FormatAttributeValue
 {
 }
 
-class intAttributeValue extends formatAttributeValue
+class IntAttributeValue extends FormatAttributeValue
 {
     public function __construct(NormalAttribute $oa, $v)
     {
@@ -355,7 +355,7 @@ class intAttributeValue extends formatAttributeValue
     }
 }
 
-class dateAttributeValue extends standardAttributeValue
+class DateAttributeValue extends StandardAttributeValue
 {
     public function __construct(NormalAttribute $oa, $v)
     {
@@ -368,7 +368,7 @@ class dateAttributeValue extends standardAttributeValue
     }
 }
 
-class doubleAttributeValue extends formatAttributeValue
+class DoubleAttributeValue extends FormatAttributeValue
 {
     public function __construct(NormalAttribute $oa, $v)
     {
@@ -393,7 +393,7 @@ class doubleAttributeValue extends formatAttributeValue
     }
 }
 
-class enumAttributeValue extends standardAttributeValue
+class EnumAttributeValue extends StandardAttributeValue
 {
     public function __construct(NormalAttribute $oa, $v)
     {
@@ -403,7 +403,7 @@ class enumAttributeValue extends standardAttributeValue
     }
 }
 
-class fileAttributeValue extends standardAttributeValue
+class FileAttributeValue extends StandardAttributeValue
 {
     public $size = 0;
     public $creationDate = '';
@@ -427,7 +427,7 @@ class fileAttributeValue extends standardAttributeValue
         $this->url = $doc->getFileLink($oa->id, $index);
     }
 }
-class imageAttributeValue extends fileAttributeValue
+class ImageAttributeValue extends FileAttributeValue
 {
     public $thumbnail = '';
     public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $thumbnailSize = 48)
@@ -436,7 +436,7 @@ class imageAttributeValue extends fileAttributeValue
         $this->thumbnail = $doc->getFileLink($oa->id, $index, false, true) . sprintf('&width=%d', $thumbnailSize);
     }
 }
-class docidAttributeValue extends standardAttributeValue
+class DocidAttributeValue extends StandardAttributeValue
 {
     public $familyRelation;
     
