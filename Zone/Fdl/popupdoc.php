@@ -80,8 +80,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
             }
             
             $v["issubmenu"] = false;
-            $v["descr"] = mb_ucfirst(($v["descr"]));
-            $v["title"] = mb_ucfirst(($v["title"]));
+            $v["title"] = mb_ucfirst($v["title"]);
             $v["tconfirm"] = str_replace(array(
                 "\n",
                 "\r",
@@ -130,7 +129,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
                     }
                     $tsubmenu[$smid] = array(
                         "idlink" => $smid,
-                        "descr" => mb_ucfirst((_($v["submenu"]))) ,
+                        "descr" => _($v['submenu']) ,
                         "icon" => $v["icon"],
                         "visibility" => false,
                         "ICONS" => "mainicon",

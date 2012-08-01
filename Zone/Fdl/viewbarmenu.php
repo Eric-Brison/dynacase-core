@@ -61,7 +61,7 @@ function viewbarmenu(Action & $action)
                     $mpopup[$idxmenu] = true;
                     $popup[$k] = array(
                         "idlink" => $idxmenu,
-                        "descr" => ucfirst((_($v["submenu"]))) ,
+                        "descr" => _($v["submenu"]) ,
                         "visibility" => false,
                         "confirm" => false,
                         "jsfunction" => false,
@@ -86,7 +86,7 @@ function viewbarmenu(Action & $action)
                 if ($v["mwidth"] == "") $popup[$k]["mwidth"] = $action->getParam("FDL_HD2SIZE");
                 if ($v["mheight"] == "") $popup[$k]["mheight"] = $action->getParam("FDL_VD2SIZE");
                 if ($v["target"] == "") $popup[$k]["target"] = "$k$docid";
-                $popup[$k]["descr"] = ucfirst($v["descr"]);
+                $popup[$k]["descr"] = $v["descr"];
                 $popup[$k]["title"] = ucfirst($v["title"]);
                 $popup[$k]["m"] = ($v["barmenu"] == "true") ? "m" : "";
                 $popup[$k]["ISJS"] = ($v["jsfunction"] != "");
