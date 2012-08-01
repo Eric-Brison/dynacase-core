@@ -634,7 +634,7 @@ class UpdateAttribute
             $st = getDebugStack(2);
             
             $f = $st[0]["function"];
-            
+            if ($f == "include") $f = '-';
             file_put_contents($this->statusFile, sprintf("%s %s %s\n", date("Y-m-d\\TH:i:s") , $f, $s) , FILE_APPEND);
         }
     }
