@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-31 17:01+0200\n"
+"POT-Creation-Date: 2012-08-01 13:02+0200\n"
 "PO-Revision-Date: 2012-07-31 15:37+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -5265,9 +5265,6 @@ msgstr "type de fichiers supportés : csv, ods, xml, zip (xml) "
 msgid "current (<i>%s</i>)"
 msgstr "courant (<i>%s</i>)"
 
-msgid "current user account"
-msgstr "mon compte"
-
 msgid "current user cannot deactivate account"
 msgstr "L'utilisateur courant ne peut désactiver le compte"
 
@@ -6731,6 +6728,9 @@ msgstr "mémoire maximum pour PHP en Mo"
 
 msgid "memosearch"
 msgstr "mémo recherche"
+
+msgid "menu"
+msgstr ""
 
 msgid "menu forum"
 msgstr "menu forum"
@@ -8606,6 +8606,9 @@ msgstr "type"
 msgid "type characters to filter document on it's title"
 msgstr "saisissez des caractères pour filtrer les documents par leur titre"
 
+msgid "typeview"
+msgstr "typeview"
+
 msgid "unaffect user to a document"
 msgstr "enlever l'affectation à un document"
 
@@ -9590,6 +9593,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "contact"
 #~ msgstr "Contact..."
 
+#~ msgid "current user account"
+#~ msgstr "mon compte"
+
 #~ msgid "current_state"
 #~ msgstr "courant"
 
@@ -9949,9 +9955,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "too many similar document %s <B>ignored</B> "
 #~ msgstr "trop de documents similaires trouvés %s <B>ignoré</B> "
-
-#~ msgid "typeview"
-#~ msgstr "typeview"
 
 #~ msgid "unchanged"
 #~ msgstr "inchangé"

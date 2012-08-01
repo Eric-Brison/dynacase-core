@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-31 17:01+0200\n"
+"POT-Creation-Date: 2012-08-01 13:02+0200\n"
 "PO-Revision-Date: 2012-07-31 16:19+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -5478,10 +5478,6 @@ msgstr ""
 msgid "current (<i>%s</i>)"
 msgstr ""
 
-#, fuzzy
-msgid "current user account"
-msgstr "Add parameter"
-
 msgid "current user cannot deactivate account"
 msgstr ""
 
@@ -7077,6 +7073,9 @@ msgstr ""
 #, fuzzy
 msgid "memosearch"
 msgstr "Start search"
+
+msgid "menu"
+msgstr ""
 
 #, fuzzy
 msgid "menu forum"
@@ -9067,6 +9066,9 @@ msgstr ""
 msgid "type characters to filter document on it's title"
 msgstr ""
 
+msgid "typeview"
+msgstr ""
+
 #, fuzzy
 msgid "unaffect user to a document"
 msgstr "Delete"
@@ -9853,6 +9855,10 @@ msgstr ""
 #, fuzzy
 #~ msgid "contact"
 #~ msgstr "Edit"
+
+#, fuzzy
+#~ msgid "current user account"
+#~ msgstr "Add parameter"
 
 #, fuzzy
 #~ msgid "delete all favorites"
