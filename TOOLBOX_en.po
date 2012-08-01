@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-01 13:02+0200\n"
+"POT-Creation-Date: 2012-08-01 13:53+0200\n"
 "PO-Revision-Date: 2012-07-31 16:19+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -7074,9 +7074,6 @@ msgstr ""
 msgid "memosearch"
 msgstr "Start search"
 
-msgid "menu"
-msgstr ""
-
 #, fuzzy
 msgid "menu forum"
 msgstr "Modify"
@@ -9064,9 +9061,6 @@ msgid "type"
 msgstr ""
 
 msgid "type characters to filter document on it's title"
-msgstr ""
-
-msgid "typeview"
 msgstr ""
 
 #, fuzzy

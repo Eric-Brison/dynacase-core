@@ -490,9 +490,9 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
         }
         
         foreach ($tv as $v) {
-            if ($defaultview && $defaultview["cv_idview"] !== $v["idview"]) {
+           // if ($defaultview && $defaultview["cv_idview"] !== $v["idview"]) {
                 $count[$v["typeview"]]++;
-            }
+            //}
         }
         
         foreach ($tv as $v) {
@@ -506,9 +506,9 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
             }
             if ($v["menu"] != "") {
                 if ($v["menu"] == "-") $submenu = "";
-                else $submenu = _($v["menu"]);
+                else $submenu = $v["menu"];
             } else {
-                $submenu = ($count[$v["typeview"]] > 1) ? _($v["typeview"]) : "";
+                $submenu = ($count[$v["typeview"]] > 1) ? $v["typeview"] : "";
             }
             $mtitle = $v["txtview"];
             if ($defaultview && $defaultview["cv_idview"] !== $v["idview"]) {

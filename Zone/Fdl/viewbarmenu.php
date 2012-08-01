@@ -61,7 +61,7 @@ function viewbarmenu(Action & $action)
                     $mpopup[$idxmenu] = true;
                     $popup[$k] = array(
                         "idlink" => $idxmenu,
-                        "descr" => ($v["submenu"]) ,
+                        "descr" => _($v["submenu"]) ,
                         "visibility" => false,
                         "confirm" => false,
                         "jsfunction" => false,

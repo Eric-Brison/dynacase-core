@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-01 13:02+0200\n"
+"POT-Creation-Date: 2012-08-01 13:53+0200\n"
 "PO-Revision-Date: 2012-07-31 15:37+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -6729,9 +6729,6 @@ msgstr "mémoire maximum pour PHP en Mo"
 msgid "memosearch"
 msgstr "mémo recherche"
 
-msgid "menu"
-msgstr ""
-
 msgid "menu forum"
 msgstr "menu forum"
 
@@ -8606,9 +8603,6 @@ msgstr "type"
 msgid "type characters to filter document on it's title"
 msgstr "saisissez des caractères pour filtrer les documents par leur titre"
 
-msgid "typeview"
-msgstr "typeview"
-
 msgid "unaffect user to a document"
 msgstr "enlever l'affectation à un document"
 
@@ -9955,6 +9949,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "too many similar document %s <B>ignored</B> "
 #~ msgstr "trop de documents similaires trouvés %s <B>ignoré</B> "
+
+#~ msgid "typeview"
+#~ msgstr "typeview"
 
 #~ msgid "unchanged"
 #~ msgstr "inchangé"
