@@ -25,7 +25,7 @@ class _DSEARCH extends DocSearch
      * @end-method-ignore
     */
     var $defaultedit = "FREEDOM:EDITDSEARCH"; #N_("include") N_("equal") N_("equal") _("not equal") N_("is empty") N_("is not empty") N_("one value equal")
-    var $defaultview = "FREEDOM:VIEWDSEARCH"; #N_("not include") N_("begin by") N_("not equal") N_("&gt; or equal") N_("&lt; or equal") N_("one word equal") N_("content file word") N_("content file expression")
+    var $defaultview = "FREEDOM:VIEWDSEARCH"; #N_("not include") N_("begin by") N_("not equal") N_("&gt; or equal") N_("&lt; or equal")  N_("content file word") N_("content file expression")
     
     /**
      * return sql query to search wanted document

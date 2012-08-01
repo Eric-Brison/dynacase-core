@@ -294,7 +294,7 @@ class DocCollection extends Doc
             )
         ) ,
         "~y" => array(
-            "label" => "one word equal",
+            "label" => "one value equal", #("one value equal")
             "operand" => array(
                 "left",
                 "right"
