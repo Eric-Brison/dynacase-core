@@ -127,7 +127,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $r = $fc->render();
         $this->assertEquals($s->count() , count($r) , "render must have same entry count has collection");
         /**
-         * @var \unknowAttributeValue $fValue
+         * @var \UnknowAttributeValue $fValue
          */
         $fValue = $this->getRenderValue($r, $docName, $attrName);
         $this->assertEquals($nc, $fValue->value);
@@ -147,7 +147,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $r = $fc->render();
         $this->assertEquals($s->count() , count($r) , "render must have same entry count has collection");
         /**
-         * @var \statePropertyValue $fstate
+         * @var \StatePropertyValue $fstate
          */
         $fstate = $this->getRenderProp($r, $docName, $fc::propState);
         $this->assertEquals($expectState, $fstate->reference, "incorrect state reference");

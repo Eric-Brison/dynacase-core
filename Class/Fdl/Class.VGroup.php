@@ -46,13 +46,11 @@ create table vgroup ( id  text primary key,
                       num int not null);
 create sequence seq_id_docvgroup start 1000000;";
     
-    var $isCacheble = false;
-    
     function PreInsert()
     {
         // compute new id
         if ($this->num == "") {
-            $res = pg_exec($this->dbid, "select nextval ('seq_id_docvgroup')");
+            $res = pg_query($this->dbid, "select nextval ('seq_id_docvgroup')");
             $arr = pg_fetch_array($res, 0);
             $this->num = $arr[0]; // not a number must be alphanumeric begin with letter
             

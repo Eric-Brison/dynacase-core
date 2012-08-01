@@ -733,8 +733,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     private $hasChanged = false;
     
-    public $isCacheble = false;
-    
     public $paramRefresh = array();
     /**
      * optimize: compute mask in needed only

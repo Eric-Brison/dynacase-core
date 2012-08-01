@@ -42,7 +42,6 @@ class DocPermExt extends DbObj
     
     var $order_by = "docid";
     
-    var $isCacheble = false;
     var $sqlcreate = "
 create table docpermext (
                      docid int check (docid > 0),
