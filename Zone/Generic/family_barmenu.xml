@@ -10,7 +10,7 @@
             var confirmated=true;
             if (tconfirm) {
                 if (!confirm(tconfirm) ) {
-                    confimated=false;
+                    confirmated=false;
                 }
             }
             if (confirmated) {

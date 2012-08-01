@@ -144,27 +144,19 @@ function family_defaultmenu(Action & $action)
     $toolsItemMenu['viewsearch'] = array(
         "label" => _("View my searches") ,
         "target" => "_self",
-        "url" => sprintf('?app=GENERIC&amp;action=GENERIC_SEARCH&amp;catg=0&amps;onefam=%s&amp;mysearches=yes&amp;famid=%s', $onefamOrigin, $famid)
+        "url" => sprintf('?app=GENERIC&amp;action=GENERIC_SEARCH&amp;catg=0&amp;onefam=%s&amp;mysearches=yes&amp;famid=%s', $onefamOrigin, $famid)
     );
     /*
     $toolsItemMenu['searches'] = array(
                                       "label" => _("Searches") ,
                                       "items"=>$searchItemMenu);
     */
-    if ($idappfree = $action->parent->Exists("FREEDOM")) {
-        
-        $permission = new Permission($action->dbaccess, array(
-            $action->user->id,
-            $idappfree
-        ));
-        
-        if (($action->user->id == 1) || ($permission->isAffected() && (count($permission->privileges) > 0))) {
-            $toolsItemMenu['folders'] = array(
-                "label" => _("folders") ,
-                "target" => "freedom$famid",
-                "url" => sprintf('?app=FREEDOM&amp;action=FREEDOM_FRAME&amp;dirid=%s&amp;famid=%s', getDefFld($action) , $famid)
-            );
-        }
+    if ($action->HasPermission("GED", "FREEDOM")) {
+        $toolsItemMenu['folders'] = array(
+            "label" => _("folders") ,
+            "target" => "freedom$famid",
+            "url" => sprintf('?app=FREEDOM&amp;action=FREEDOM_FRAME&amp;dirid=%s&amp;famid=%s', getDefFld($action) , $famid)
+        );
     }
     
     $toolsItemMenu['prefs'] = array(
@@ -187,13 +179,7 @@ function family_defaultmenu(Action & $action)
     foreach ($lmenu as $k => $v) {
         if ($v->getOption("global") == "yes") {
             $confirm = ($v->getOption("lconfirm") == "yes");
-            $tmenu[$k] = array(
-                "mid" => $v->id,
-                "mtitle" => $v->getLabel() ,
-                "confirm" => ($confirm) ? "true" : "false",
-                "tconfirm" => ($confirm) ? sprintf(_("Sure %s ?") , addslashes($v->getLabel())) : "",
-                "murl" => addslashes($fdoc->urlWhatEncode($v->link))
-            );
+            
             $vis = MENU_ACTIVE;
             if ($v->precond != "") $vis = $fdoc->ApplyMethod($v->precond, MENU_ACTIVE);
             if ($vis == MENU_ACTIVE) {
@@ -213,7 +199,7 @@ function family_defaultmenu(Action & $action)
                 }
                 $toolsItemMenu[$v->id] = array(
                     "label" => $v->getLabel() ,
-                    "target" => $v->id,
+                    "target" => $v->getOption("mtarget", $v->getoption('ltarget', $v->id)) ,
                     "confirm" => $textConfirm,
                     "url" => $fdoc->urlWhatEncode($v->link)
                 );
