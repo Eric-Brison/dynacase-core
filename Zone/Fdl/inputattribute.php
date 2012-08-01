@@ -44,6 +44,8 @@ function inputattribute(&$action)
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $doc = new doc($dbaccess);
     $htmlinput = "";
+
+    $value=str_replace('\\n',"\n",$value);
     if ($type == "doclink") {
         $famid = GetHttpVars("famid");
         
@@ -120,7 +122,7 @@ function inputattribute(&$action)
         $oattr = new NormalAttribute($attrid, $doc->id, $label, $type, $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, $fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint, $usefor, $eformat, $options);
         $doc->attr[$attrid] = $oattr;
     }
-    
+
     $htmlinput.= getHtmlInput($doc, $oattr, $value, $index, $jsevent, true);
     
     $action->lay->template = $htmlinput;
