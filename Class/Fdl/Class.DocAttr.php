@@ -14,11 +14,6 @@
  */
 /**
  */
-// ---------------------------------------------------------------
-// $Id: Class.DocAttr.php,v 1.24 2007/02/27 10:05:17 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/freedom/Class/Fdl/Class.DocAttr.php,v $
-// ---------------------------------------------------------------
-$CLASS_CONTACTATTR_PHP = '$Id: Class.DocAttr.php,v 1.24 2007/02/27 10:05:17 eric Exp $';
 include_once ('Class.DbObj.php');
 include_once ('Class.QueryDb.php');
 include_once ('Class.Log.php');
@@ -115,13 +110,12 @@ create unique index idx_iddocid on docattr(id, docid);";
         "money",
         "password"
     );
-    var $isCacheble = false;
     
     function PreInsert()
     {
         // compute new id
         if ($this->id == "") {
-            $res = pg_exec($this->dbid, "select nextval ('seq_id_docattr')");
+            $res = pg_query($this->dbid, "select nextval ('seq_id_docattr')");
             $arr = pg_fetch_array($res, 0);
             $this->id = "auto_" . $arr[0]; // not a number must be alphanumeric begin with letter
             
@@ -134,14 +128,6 @@ create unique index idx_iddocid on docattr(id, docid);";
             if ($this->usefor == "") $this->usefor = 'N';
             if ($this->visibility == "") $this->visibility = 'W';
         }
-    }
-    
-    function CVisibility()
-    {
-        
-        if ((isset($this->fieldSet)) && ($this->fieldSet->visibility == "H")) return "H";
-        else if (($this->fieldSet->visibility == "R") && ($this->visibility != "H")) return "R";
-        return $this->visibility;
     }
 }
 ?>

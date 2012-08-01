@@ -77,7 +77,6 @@ class Session extends DbObj
                   create index sessions_idx_name on sessions(name);
                   create index sessions_idx_userid on sessions(userid);";
     
-    var $isCacheble = false;
     var $sessiondb;
     
     var $session_name = 'freedom_param';

@@ -56,7 +56,6 @@ define("POS_WF", 12); // begin of workflow privilege definition
  */
 class DocCtrl extends DocLDAP
 {
-    var $isCacheble = false;
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
     // access privilege definition
