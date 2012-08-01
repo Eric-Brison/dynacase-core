@@ -490,9 +490,9 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
         }
         
         foreach ($tv as $v) {
-           // if ($defaultview && $defaultview["cv_idview"] !== $v["idview"]) {
+            if ($defaultview && $defaultview["cv_idview"] !== $v["idview"]) {
                 $count[$v["typeview"]]++;
-            //}
+            }
         }
         
         foreach ($tv as $v) {
