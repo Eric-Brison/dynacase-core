@@ -210,6 +210,9 @@ class FormatCollection
             if ($oa->inArray() && $oa->getOption("multiple") == "yes") {
                 // double level multiple
                 $tv = Doc::_val2array($value);
+                if (count($tv) == 1 && $tv[0] == "\t") {
+                    $tv[0] = '';
+                }
                 foreach ($tv as $k => $av) {
                     if ($av) {
                         $tvv = explode('<BR>', $av); // second level multiple
@@ -223,6 +226,9 @@ class FormatCollection
             } else {
                 // single level multiple
                 $tv = Doc::_val2array($value);
+                if ($oa->inArray() && count($tv) == 1 && $tv[0] == "\t") {
+                    $tv[0] = '';
+                }
                 foreach ($tv as $k => $av) {
                     $info[] = $this->getSingleInfo($oa, $av, $doc, $k);
                 }
@@ -456,9 +462,11 @@ class docidAttributeValue extends standardAttributeValue
         if ($this->displayValue !== false) {
             // print_r($prop);
             //$this->displayValue = $prop["title"];
-            if (!$prop["icon"]) $prop["icon"] = "doc.png";
-            $this->icon = $doc->getIcon($prop["icon"], $iconsize);
-            $this->url = $this->getDocUrl($v, $oa->getOption("docrev"));
+            if ($v !== '') {
+                if (!$prop["icon"]) $prop["icon"] = "doc.png";
+                $this->icon = $doc->getIcon($prop["icon"], $iconsize);
+                $this->url = $this->getDocUrl($v, $oa->getOption("docrev"));
+            }
         } else {
             if ($relationNoAccessText) $this->displayValue = $relationNoAccessText;
             else $this->displayValue = $oa->getOption("noaccesstext", _("information access deny"));
