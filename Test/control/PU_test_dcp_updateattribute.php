@@ -279,6 +279,28 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
         $this->assertEquals($expectedChangedCount, $changed, "not correct changed count");
     }
     /**
+     * @dataProvider dataAddErrorValue
+     */
+    public function testAddErrorValue($attrid, $valueToAdd, $expectedError)
+    {
+        
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s->setObjectReturn();
+        $s->addFilter("name ~ '^TST_DUPTATTR'");
+        $dl = $s->search()->getDocumentList();
+        $ua = new \UpdateAttribute();
+        $ua->useCollection($dl);
+        $statusFile = $ua->bgAddValue($attrid, $valueToAdd);
+        $sua = new \UpdateAttributeStatus($statusFile);
+        
+        while (!$sua->isFinished()) {
+            sleep(1);
+        }
+        $err = $sua->getError();
+        $this->assertNotEmpty($err, "An error must be returned");
+        $this->assertContains($expectedError, $err, "not expected error message");
+    }
+    /**
      * @dataProvider dataRemoveValue
      */
     public function testRemoveValue($attrid, $valueToRemove, $expectedChangedCount)
@@ -414,6 +436,17 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
                 "TST_UUPDTATTR1",
                 "tstLoginUpdtU2",
                 0
+            )
+        );
+    }
+    public function dataAddErrorValue()
+    {
+        
+        return array(
+            array(
+                "TST_NOTHING",
+                "3",
+                "not found"
             )
         );
     }

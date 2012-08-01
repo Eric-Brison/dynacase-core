@@ -39,7 +39,7 @@ class UpdateAttributeStatus
 {
     
     private $statusFile = '';
-    private $content = array();
+    private $content = null;
     const statusRunning = 1;
     const StatusFinished = 2;
     const statusUnknown = 3;
@@ -61,6 +61,7 @@ class UpdateAttributeStatus
      */
     public function getContent()
     {
+        if ($this->content === null) $this->readStatus();
         return $this->content;
     }
     /**
@@ -84,9 +85,10 @@ class UpdateAttributeStatus
      */
     public function getCodeLines($code)
     {
+        if ($this->content === null) $this->readStatus();
         $lines = array();
         foreach ($this->content as $line) {
-            if (mb_strpos($line, $code) == 20) $lines[] = $line;
+            if (preg_match(sprintf("/^[0-9T:-]{19} [\w-]* ?%s/u", preg_quote($code)) , $line)) $lines[] = $line;
         }
         return $lines;
     }
