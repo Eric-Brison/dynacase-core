@@ -62,14 +62,17 @@ function modfamilyparameter(Action & $action)
                     }
                 }
                 foreach ($result as $v) {
+                    $val = "";
                     if (!empty($v["value"])) {
                         $val = $doc->_array2val($v["value"]);
-                        $oldValue = $doc->getParamValue($v["attrid"]);
-                        if ($oldValue != $val) {
-                            $modify = true;
-                        }
-                        $doc->setParam($v["attrid"], $val);
                     }
+                    $val = trim($val);
+                    $ownParams = $doc->getOwnParams();
+                    $oldValue = $ownParams[$v["attrid"]];
+                    if ($oldValue != $val) {
+                        $modify = true;
+                    }
+                    $doc->setParam($v["attrid"], $val);
                 }
                 $err = $doc->store();
                 if ($err) {

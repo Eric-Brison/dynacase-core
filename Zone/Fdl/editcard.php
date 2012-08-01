@@ -175,7 +175,7 @@ function useOwnParamters(Doc & $doc)
     $listattr = $doc->getParamAttributes();
     foreach ($listattr as $aid => $attr) {
         
-        $doc->DeleteValue($attr->id); // delete all value to set only own default values
+        $doc->$aid = ''; // delete all value to set only own default values
         
     }
     
@@ -189,7 +189,8 @@ function useOwnParamters(Doc & $doc)
         $defVal = $fam->getOwnParams();
     }
     foreach ($defVal as $aid => $value) {
-        $doc->$aid=$value; // use raw affect to see method declaration
+        $doc->$aid = $value; // use raw affect to see method declaration
+        
     }
 }
 /**
@@ -232,7 +233,8 @@ function setDocDefaultValues(Doc & $doc)
         $defVal = $fam->getOwnDefValues();
     }
     foreach ($defVal as $aid => $value) {
-        $doc->$aid=$value;// use raw affect to see method declaration
+        $doc->$aid = $value; // use raw affect to see method declaration
+        
     }
 }
 function setNeededAttributes(Action & $action, Doc & $doc)
