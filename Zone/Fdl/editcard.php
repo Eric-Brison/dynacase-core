@@ -173,21 +173,24 @@ function editcard(Action & $action)
 function useOwnParamters(Doc & $doc)
 {
     $listattr = $doc->getParamAttributes();
+    if (is_a($doc, "DocFam")) {
+        $fam = $doc;
+    } else {
+        $fam = $doc->getFamDoc();
+    }
     foreach ($listattr as $aid => $attr) {
-        
+        /**
+         * @var NormalAttribute $attr
+         */
+        $defParamValue = $fam->getDefValue($aid);
+        if ($defParamValue) {
+            $attr->setOption("elabel", _("default value") . ": \n" . $defParamValue);
+        }
         $doc->$aid = ''; // delete all value to set only own default values
         
     }
     
-    if (is_a($doc, "DocFam")) {
-        /**
-         * @var DocFam $doc
-         */
-        $defVal = $doc->getOwnParams();
-    } else {
-        $fam = $doc->getFamDoc();
-        $defVal = $fam->getOwnParams();
-    }
+    $defVal = $fam->getOwnParams();
     foreach ($defVal as $aid => $value) {
         $doc->$aid = $value; // use raw affect to see method declaration
         
@@ -237,6 +240,7 @@ function setDocDefaultValues(Doc & $doc)
         
     }
 }
+
 function setNeededAttributes(Action & $action, Doc & $doc)
 {
     $attrn = $doc->GetNeededAttributes($doc->usefor == 'Q');
@@ -284,6 +288,7 @@ function setNeededAttributes(Action & $action, Doc & $doc)
     $jslay->SetBlockData("RATTR", $tjsa);
     $action->parent->AddJsCode($jslay->gen());
 }
+
 function setRefreshAttributes(Action & $action, Doc & $doc)
 {
     if ($doc->usefor != "D") {
@@ -295,6 +300,7 @@ function setRefreshAttributes(Action & $action, Doc & $doc)
         }
     }
 }
+
 function moreone($v)
 {
     return (strlen($v) > 1);
