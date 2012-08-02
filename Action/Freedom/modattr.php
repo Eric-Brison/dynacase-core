@@ -22,7 +22,7 @@ include_once ("FDL/Lib.Attr.php");
 include_once ("FDL/Class.DocFam.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function modattr(&$action)
+function modattr(Action & $action)
 {
     // Get all the params
     $docid = GetHttpVars("docid");
@@ -58,6 +58,9 @@ function modattr(&$action)
         $doc->fromid = GetHttpVars("classid"); // inherit from
         $doc->profid = "0"; // NO PROFILE ACCESS
         if (GetHttpVars("classid") > 0) {
+            /**
+             * @var DocFam $cdoc
+             */
             $cdoc = new_Doc($dbaccess, GetHttpVars("classid"));
             $doc->classname = "";
             $doc->profid = $cdoc->cprofid; // inherit father profile
@@ -73,9 +76,6 @@ function modattr(&$action)
         // test object permission before modify values (no access control on values yet)
         $err = $doc->canEdit();
         if ($err != "") $action->ExitError($err);
-        // change class document
-        $doc->fromid = GetHttpVars("classid"); // inherit from
-        $doc->Modify();
     }
     // ------------------------------
     // update POSGRES attributes
@@ -83,8 +83,7 @@ function modattr(&$action)
     $oattr0->docid = $doc->initid;
     $tadd = array();
     $tmod = array();
-    while (list($k, $v) = each($orders)) {
-        //  print $k.":".$v."<BR>";
+    foreach ($orders as $k => $v) {
         if ($names[$k] != "") {
             if ($attrids[$k] == "") {
                 $oattr = $oattr0;
@@ -142,7 +141,7 @@ function modattr(&$action)
     
     $doc->unlock(true);
     if ($ret) $action->exitError($err);
-    
-    redirect($action, "FDL", "FDL_CARD&id=" . $doc->id, $action->GetParam("CORE_STANDURL"));
+    $action->AddWarningMsg(sprintf(_("\"%s\" family structure has been updated") , $doc->getTitle()));
+    redirect($action, "FREEDOM", "DEFATTR&id=" . $doc->id, $action->GetParam("CORE_STANDURL"));
 }
 ?>

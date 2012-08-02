@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-01 17:02+0200\n"
-"PO-Revision-Date: 2012-07-31 15:37+0200\n"
+"POT-Creation-Date: 2012-08-02 15:57+0200\n"
+"PO-Revision-Date: 2012-08-02 15:58+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -101,6 +101,10 @@ msgstr "Lancer la recherche"
 
 msgid " view files"
 msgstr "afficher les fichiers attachés"
+
+#, c-format
+msgid "\"%s\" family structure has been updated"
+msgstr "La structure de la famille \"%s\" a été mise à jour"
 
 #, c-format
 msgid "%.02f Gb"
@@ -1021,6 +1025,9 @@ msgstr "Changer la recherche par défaut"
 
 msgid "Change enum"
 msgstr "Changer d'énuméré"
+
+msgid "Change family structure"
+msgstr "Modifier la structure de la famille"
 
 msgid "Change icon"
 msgstr "Changer d'icone"
@@ -2236,6 +2243,10 @@ msgstr "Augmenter le FS"
 msgid "Increase vault size"
 msgstr "Augmenter la taille du coffre"
 
+#, c-format
+msgid "Inherit from \"%s\""
+msgstr "Hérite de \"%s\""
+
 msgid "Inherit value"
 msgstr "Valeur des parents"
 
@@ -2262,6 +2273,9 @@ msgstr "Insérer le contenu dans %s"
 
 msgid "Inserted in a domain"
 msgstr "Inséré dans un domaine"
+
+msgid "Inspect another family"
+msgstr "Inspecter une autre famille"
 
 msgid "Internet explorer site"
 msgstr "Site de Microsoft"
@@ -7140,6 +7154,9 @@ msgstr "aucun identificateur fourni"
 
 msgid "no image"
 msgstr "pas d'image"
+
+msgid "no inheritance"
+msgstr "Aucun héritage"
 
 msgid "no key2"
 msgstr "pas de clef"

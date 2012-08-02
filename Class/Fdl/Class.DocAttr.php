@@ -129,5 +129,28 @@ create unique index idx_iddocid on docattr(id, docid);";
             if ($this->visibility == "") $this->visibility = 'W';
         }
     }
+    
+    public function getRawType($type = '')
+    {
+        if (!$type) $type = $this->type;
+        return strtok($type, '(');
+    }
+    public function isStructure()
+    {
+        $rtype = $this->getRawType();
+        return ($rtype == "frame" || $rtype == "tab");
+    }
+    public function isAbstract()
+    {
+        return (strtolower($this->abstract) == "y");
+    }
+    public function isTitle()
+    {
+        return (strtolower($this->title) == "y");
+    }
+    public function isNeeded()
+    {
+        return (strtolower($this->needed) == "y");
+    }
 }
 ?>

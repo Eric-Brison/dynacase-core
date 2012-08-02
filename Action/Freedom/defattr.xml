@@ -1,6 +1,7 @@
 
 <!-- HEAD HTML -->
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
@@ -33,8 +34,9 @@ table.defattr tr.array, table.defattr option {
 table.defattr option.invalid {
    background-color:red;
  }
-table.defattr tr {
-   background-color:[COLOR_A9];
+table.defattr tr.readonly {
+  /* background-color:[COLOR_A9];*/
+       opacity:0.8;
  }
 table.defattr select {
    background-color:transparent; 
@@ -59,6 +61,11 @@ table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.m
  table.defattr tr.invalid  {   
    background-color:red; /* red */
  }
+ table.defattr tr.readonly td {
+   color:[COLOR_A0];
+ }
+
+
  span.tab {
    color:#cba4de; 
    background-color:#cba4de; 
@@ -91,7 +98,7 @@ table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.m
 
 
 <!-- Title Table -->
-<form target="fdoc" class="fborder" name="modifyfamilly" method="POST"  action="[CORE_STANDURL]&app=[APPNAME]&action=MODATTR&docid=[docid]&dirid=[dirid]" >
+<form  class="fborder" name="modifyfamilly" method="POST"  action="[CORE_STANDURL]&app=[APPNAME]&action=MODATTR&docid=[docid]&dirid=[dirid]" >
 
 
                          
@@ -102,11 +109,11 @@ table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.m
 <table class="tableborder"  width="100%" cellspacing="0" cellpadding="0" >
 <tr>
  <td class="FREEDOMTblTitle">
-   <span class="FREEDOMTextTitle">[TITLE]</span>
+   <span class="FREEDOMTextTitle">[TITLE]</span> <em>[inherit]</em>
   </td> 
-  <td class="FREEDOMTblTitle" align="right"><span class="FREEDOMTextName">[TEXT:inherit from]</span>
+  <td class="FREEDOMTblTitle" align="right">
    <select name="classid" onChange="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=DEFATTR&id='+self.document.modifyfamilly.classid.options[self.document.modifyfamilly.classid.selectedIndex].value">   
-           <option VALUE="0">[TEXT:no document family]</option>      
+           <option VALUE="0">[TEXT:Inspect another family]</option>
          [BLOCK SELECTCLASS]
            <option VALUE="[idcdoc]" [selected]>[classname]</option>   
          [ENDBLOCK SELECTCLASS]
@@ -142,13 +149,12 @@ table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.m
 
 
 [BLOCK NEWELEM]
-<tr class="[classvalue]" >
-   <td style="white-space : nowrap">
+<tr class="[classvalue] [IF disabled]readonly[ENDIF disabled]">
+   <td style="white-space : nowrap"  class="reference">
    <input type="hidden" name="attrid[[neweltid]]" value="[attrid]" >
    	[profundator]
       <input type="[idtype]" class="iname" name="nattrid[[neweltid]]" value="[attrid]"  [disabledid]/>[attrid]
-   </td>
-   <td>
+   </td><td>
 
       <input class="iorder" type="text" name="order[[neweltid]]" value="[order]" size="3" [disabled]>
    </td>
@@ -204,8 +210,7 @@ table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.m
 
 </table>
 <br/>
-<input type="submit" value="[TEXT:Validate]"
-        onclick="setTimeout('self.close()',2000)"> 
+<input type="submit" value="[TEXT:Change family structure]">
 </form>
 <!--  FOOT HTML -->
 

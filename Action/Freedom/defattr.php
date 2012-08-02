@@ -36,11 +36,56 @@ function defattr(Action & $action)
     }
     $docid = $doc->id;
     
+    if ($doc->fromid) {
+        $action->lay->set("inherit", sprintf(_("Inherit from \"%s\"") , $doc->getTitle($doc->fromid)));
+    } else {
+        $action->lay->set("inherit", _("no inheritance"));
+    }
+    $fromids = $doc->getFromDoc();
+    
+    $sql = sprintf("select * from docattr where docid in (%s) and usefor != 'Q' order by ordered", implode(',', $fromids));
+    
+    simpleQuery($action->dbaccess, $sql, $attrs);
+    
+    foreach ($attrs as $k => $v) {
+        // if ($v["type"]=="frame") $v["ordered"]=-1;
+        // if ($v["type"]=="tab") $v["ordered"]=-2;
+        $attrs[$v["id"]] = $v;
+        unset($attrs[$k]);
+    }
+    
+    $oDocAttr = new DocAttr($dbaccess);
+    $oAttrs = $doc->getAttributes();
+    foreach ($oAttrs as $oa) {
+        if (($oa->usefor == 'A') && (!$attrs[$oa->id])) {
+            
+            $oDocAttr->id = $oa->id;
+            $oDocAttr->type = $oa->type;
+            $oDocAttr->docid = $oa->docid;
+            $oDocAttr->usefor = $oa->usefor;
+            $oDocAttr->ordered = $oa->ordered;
+            $oDocAttr->visibility = $oa->visibility;
+            $oDocAttr->labeltext = $oa->labelText;
+            $oDocAttr->abstract = ($oa->isInAbstract) ? "Y" : "N";
+            $oDocAttr->title = ($oa->isInTitle) ? "Y" : "N";
+            $oDocAttr->needed = ($oa->needed) ? "Y" : "N";
+            $oDocAttr->frameid = ($oa->fieldSet->id != "FIELD_HIDDENS") ? $oa->fieldSet->id : '';
+            
+            $oDocAttr->link = $oa->link;
+            $oDocAttr->elink = $oa->elink;
+            $oDocAttr->options = $oa->options;
+            $oDocAttr->phpfile = $oa->phpfile;
+            $oDocAttr->phpfunc = $oa->phpfunc;
+            $oDocAttr->phpconstraint = $oa->phpconstraint;
+            
+            $attrs[$oa->id] = $oDocAttr->getValues();
+        }
+    }
+    
+    uasort($attrs, 'reOrderAttr');
     $action->lay->Set("docid", $docid);
     $action->lay->Set("dirid", $dirid);
     // build values type array
-    $odocattr = new DocAttr($dbaccess);
-    
     $action->lay->Set("TITLE", _("new document family"));
     // when modification
     if (($classid == 0) && ($docid != 0)) $classid = $doc->fromid;
@@ -48,8 +93,8 @@ function defattr(Action & $action)
     // to show inherit attributes
     if (($docid == 0) && ($classid > 0)) $doc = new_Doc($dbaccess, $classid); // the doc inherit from chosen class
     $selectclass = array();
-    $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, $classid, "TABLE");
-    while (list($k, $cdoc) = each($tclassdoc)) {
+    $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
+    foreach ($tclassdoc as $k => $cdoc) {
         $selectclass[$k]["idcdoc"] = $cdoc["id"];
         $selectclass[$k]["classname"] = $cdoc["title"];
         $selectclass[$k]["selected"] = "";
@@ -67,144 +112,120 @@ function defattr(Action & $action)
         $action->lay->Set("TITLE", $doc->title);
     }
     if (($classid > 0) || ($doc->doctype = 'C')) {
-        // selected the current class document
-        while (list($k, $cdoc) = each($selectclass)) {
-            
-            if ($classid == $selectclass[$k]["idcdoc"]) {
-                
-                $selectclass[$k]["selected"] = "selected";
-            }
-        }
         
         $ka = 0; // index attribute
         //    ------------------------------------------
-        //  -------------------- FIELDSET ----------------------
-        $tattr = $doc->GetFieldAttributes();
-        
         $selectframe = array();
         $selectframe[0]["framevalue"] = "-";
         $selectframe[0]["frameid"] = "";
         $selectframe[0]["frameclass"] = "";
         $selectframe[0]["selected"] = "";
         $selecttab = $selectframe;
-        
-        foreach ($tattr as $k => $attr) {
-            if ($attr->docid > 0 && $attr->usefor != 'Q') {
-                $selectframe[$k]["framevalue"] = $attr->getLabel();
-                $selectframe[$k]["frameid"] = $attr->id;
-                $selectframe[$k]["frameclass"] = strtok($attr->type, '(');
-                $selectframe[$k]["selected"] = "";
-                if ($attr->type == "tab") $selecttab[$k] = $selectframe[$k];
-            }
-        }
-        foreach ($tattr as $k => $attr) {
-            if ($attr->docid > 0 && $attr->usefor != 'Q') {
-                $newelem[$k]["attrid"] = $attr->id;
-                $newelem[$k]["attrname"] = $attr->getLabel();
-                $newelem[$k]["neweltid"] = $k;
-                $newelem[$k]["idtype"] = "hidden";
-                $newelem[$k]["visibility"] = $attr->visibility;
-                $newelem[$k]["options"] = $attr->options;
-                $newelem[$k]["typevalue"] = $attr->type;
-                $newelem[$k]["classvalue"] = strtok($attr->type, '(') . ' F' . strtok($attr->fieldSet->type, '(');
-                $newelem[$k]["disabledid"] = "disabled";
-                $newelem[$k]["order"] = "0";
-                $newelem[$k]["displayorder"] = - 2;
-                $newelem[$k]["profond"] = getAttributeProfunder($attr) * 10;
-                $newelem[$k]["profundator"] = getPuceAttributeProfunder($attr);
-                $newelem[$k]["SELECTFRAME"] = "SELECTFRAME_$k";
+        /**
+         * @var array $rawAttr
+         */
+        foreach ($attrs as $k => $rawAttr) {
+            $oDocAttr->Affect($rawAttr);
+            if ($oDocAttr->isStructure()) {
                 
-                if ($attr->type == "frame") {
-                    foreach ($selecttab as $kopt => $opt) {
-                        if ($opt["frameid"] == $attr->fieldSet->id) {
-                            $selecttab[$kopt]["selected"] = "selected";
-                        } else {
-                            $selecttab[$kopt]["selected"] = "";
-                        }
-                    }
-                    $action->lay->SetBlockData($newelem[$k]["SELECTFRAME"], $selecttab);
-                }
-                if ($attr->docid == $docid) {
-                    $newelem[$k]["disabled"] = "";
-                } else {
-                    $newelem[$k]["disabled"] = "disabled";
-                }
-                // unused be necessary for layout
-                $newelem[$k]["link"] = "";
-                $newelem[$k]["phpfile"] = "";
-                $newelem[$k]["phpfunc"] = "";
-                $newelem[$k]["phpconstraint"] = "";
-                $newelem[$k]["elink"] = "";
-                $newelem[$k]["abscheck"] = "";
-                $newelem[$k]["neededcheck"] = "";
-                $newelem[$k]["titcheck"] = "";
+                $selectframe[$k]["framevalue"] = $oDocAttr->labeltext;
+                $selectframe[$k]["frameid"] = $oDocAttr->id;
+                $selectframe[$k]["frameclass"] = strtok($oDocAttr->type, '(');
+                $selectframe[$k]["selected"] = "";
+                if ($oDocAttr->type == "tab") $selecttab[$k] = $selectframe[$k];
             }
-            $ka++;
         }
-        //    ------------------------------------------
-        //  -------------------- NORMAL ----------------------
-        $tattr = $doc->GetNormalAttributes();
         
-        uasort($tattr, "tordered");
-        reset($tattr);
-        while (list($k, $attr) = each($tattr)) {
-            if ($attr->type == "array") {
-                $selectframe[$k]["framevalue"] = $attr->getLabel();
-                $selectframe[$k]["frameid"] = $attr->id;
+        $nextOrder = 0;
+        
+        foreach ($attrs as $k => $rawAttr) {
+            
+            if ($k[0] == ':') continue;
+            $oDocAttr->Affect($rawAttr);
+            // if ($odocattr->isStructure()) continue;
+            if ($oDocAttr->getRawType() == "array") {
+                $selectframe[$k]["framevalue"] = $oDocAttr->labeltext;
+                $selectframe[$k]["frameid"] = $oDocAttr->id;
                 $selectframe[$k]["selected"] = "";
             }
-            $newelem[$k]["attrid"] = $attr->id;
+            $newelem[$k]["attrid"] = $oDocAttr->id;
             $newelem[$k]["idtype"] = "hidden";
-            $newelem[$k]["attrname"] = $attr->getLabel();
-            $newelem[$k]["order"] = $attr->ordered;
-            $newelem[$k]["displayorder"] = $attr->ordered;
-            $newelem[$k]["profond"] = getAttributeProfunder($attr) * 10;
-            $newelem[$k]["profundator"] = getPuceAttributeProfunder($attr);
-            $newelem[$k]["visibility"] = $attr->visibility;
-            $newelem[$k]["link"] = $attr->link;
-            $newelem[$k]["phpfile"] = $attr->phpfile;
-            $newelem[$k]["phpfunc"] = htmlspecialchars($attr->phpfunc);
-            $newelem[$k]["options"] = $attr->options;
-            $newelem[$k]["phpconstraint"] = $attr->phpconstraint;
-            $newelem[$k]["elink"] = $attr->elink;
+            if (($oDocAttr->docid == $docid) && ($oDocAttr->usefor != "A")) {
+                $newelem[$k]["disabled"] = "";
+            } else {
+                $newelem[$k]["disabled"] = "disabled";
+                /**
+                 * @var NormalAttribute $oa
+                 */
+                $oa = $doc->getAttribute($k);
+                if ($oa) {
+                    // case MODATTR : view new
+                    if (!$oDocAttr->isStructure()) $oDocAttr->ordered = $oa->ordered;
+                    $oDocAttr->visibility = $oa->visibility;
+                    $oDocAttr->labeltext = $oa->labelText;
+                    $oDocAttr->abstract = ($oa->isInAbstract) ? "Y" : "N";
+                    $oDocAttr->title = ($oa->isInTitle) ? "Y" : "N";
+                    $oDocAttr->needed = ($oa->needed) ? "Y" : "N";
+                    $oDocAttr->frameid = ($oa->fieldSet->id != "FIELD_HIDDENS") ? $oa->fieldSet->id : '';
+                    
+                    $oDocAttr->link = $oa->link;
+                    $oDocAttr->elink = $oa->elink;
+                    $oDocAttr->options = $oa->options;
+                    $oDocAttr->phpfile = $oa->phpfile;
+                    $oDocAttr->phpfunc = $oa->phpfunc;
+                    $oDocAttr->phpconstraint = $oa->phpconstraint;
+                }
+            }
+            
+            $newelem[$k]["attrname"] = $oDocAttr->labeltext;
+            $newelem[$k]["order"] = $oDocAttr->ordered;
+            if ($oDocAttr->isStructure()) $newelem[$k]["displayorder"] = - 2;
+            else {
+                if ($oDocAttr->getRawType() == "menu" || $oDocAttr->getRawType() == "action") {
+                    $newelem[$k]["displayorder"] = $nextOrder++;
+                } else {
+                    $newelem[$k]["displayorder"] = $oDocAttr->ordered;
+                    $nextOrder = $oDocAttr->ordered + 1;
+                }
+            }
+            $newelem[$k]["profond"] = getAttributeProfunder($k, $attrs) * 10;
+            $newelem[$k]["profundator"] = getPuceAttributeProfunder($oDocAttr, $attrs);
+            $newelem[$k]["visibility"] = $oDocAttr->visibility;
+            $newelem[$k]["link"] = $oDocAttr->link;
+            $newelem[$k]["phpfile"] = $oDocAttr->phpfile;
+            $newelem[$k]["phpfunc"] = htmlspecialchars($oDocAttr->phpfunc);
+            $newelem[$k]["options"] = $oDocAttr->options;
+            $newelem[$k]["phpconstraint"] = $oDocAttr->phpconstraint;
+            $newelem[$k]["elink"] = $oDocAttr->elink;
             $newelem[$k]["disabledid"] = "disabled";
             $newelem[$k]["neweltid"] = $k;
-            if ($attr->isInAbstract) {
+            if ($oDocAttr->isAbstract()) {
                 $newelem[$k]["abscheck"] = "checked";
             } else {
                 $newelem[$k]["abscheck"] = "";
             }
-            if ($attr->isInTitle) {
+            if ($oDocAttr->isTitle()) {
                 $newelem[$k]["titcheck"] = "checked";
             } else {
                 $newelem[$k]["titcheck"] = "";
             }
             
-            $newelem[$k]["neededcheck"] = ($attr->needed) ? "checked" : "";
+            $newelem[$k]["neededcheck"] = ($oDocAttr->isNeeded()) ? "checked" : "";
             
-            if (($attr->docid == $docid) && ($attr->usefor != "A")) {
-                $newelem[$k]["disabled"] = "";
-            } else {
-                $newelem[$k]["disabled"] = "disabled";
-            }
-            
-            $newelem[$k]["typevalue"] = $attr->type;
-            $newelem[$k]["classvalue"] = strtok($attr->type, '(') . ' F' . strtok($attr->fieldSet->type, '(');
-            //if (($attr->repeat) && (!$attr->inArray())) $newelem[$k]["typevalue"].="list"; // add list if repetable attribute without array
-            if ($attr->format != "") $newelem[$k]["typevalue"].= "(\"" . $attr->format . "\")";
-            if ($attr->eformat != "") $newelem[$k]["phpfunc"] = "[" . $attr->eformat . "]" . $newelem[$k]["phpfunc"];
+            $newelem[$k]["typevalue"] = $oDocAttr->type;
+            $newelem[$k]["classvalue"] = $oDocAttr->getRawType() . ' F' . $oDocAttr->getRawType($attrs[$oDocAttr->frameid]["id"]);
             
             $selectedSet = false;
-            
             foreach ($selectframe as $kopt => $opt) {
-                if ($opt["frameid"] == $attr->fieldSet->id) {
+                if ($opt["frameid"] == $oDocAttr->frameid) {
                     $selectframe[$kopt]["selected"] = "selected";
                     $selectedSet = true;
+                    
                     if ($newelem[$kopt]["displayorder"] < 0) {
-                        $newelem[$kopt]["displayorder"] = $attr->ordered - 1;
-                        if ($attr->fieldSet->fieldSet && $attr->fieldSet->fieldSet->id) {
-                            if ($newelem[$attr->fieldSet->fieldSet->id]["displayorder"] < 0) {
-                                $newelem[$attr->fieldSet->fieldSet->id]["displayorder"] = $newelem[$kopt]["displayorder"] - 1;
+                        $newelem[$kopt]["displayorder"] = $oDocAttr->ordered - 1;
+                        if ($attrs[$oDocAttr->frameid]) {
+                            if ($newelem[$attrs[$oDocAttr->frameid]["id"]]["displayorder"] < 0) {
+                                $newelem[$attrs[$oDocAttr->frameid]["id"]]["displayorder"] = $newelem[$kopt]["displayorder"] - 1;
                             }
                         }
                     }
@@ -213,9 +234,9 @@ function defattr(Action & $action)
                 }
             }
             
-            if (!$attr->fieldSet) {
-                simpleQuery($dbaccess, sprintf("select frameid from docattr where id='%s'", $attr->id) , $kset, true, true);
+            if ($oDocAttr->frameid && (!$attrs[$oDocAttr->frameid])) {
                 
+                $kset = $oDocAttr->frameid;
                 $selectframe[$kset] = $selectframe[0];
                 $selectframe[$kset]["selected"] = "selected";
                 $selectframe[$kset]["framevalue"] = "INVALID $kset";
@@ -230,82 +251,14 @@ function defattr(Action & $action)
         }
     }
     // reset default values
-    while (list($kopt, $opt) = each($selectframe)) $selectframe[$kopt]["selected"] = "";
+    foreach ($selectframe as $kopt => $opt) $selectframe[$kopt]["selected"] = "";
     
     $action->lay->SetBlockData("SELECTCLASS", $selectclass);
     
     uasort($newelem, 'sortnewelem');
     //    ------------------------------------------
-    //  -------------------- MENU ----------------------
-    $tattr = $doc->GetMenuAttributes(true);
-    
-    foreach ($tattr as $k => $attr) {
-        if ($attr->docid > 0) {
-            $newelem[$k]["attrid"] = $attr->id;
-            $newelem[$k]["attrname"] = $attr->getLabel();
-            $newelem[$k]["neweltid"] = $k;
-            $newelem[$k]["idtype"] = "hidden";
-            $newelem[$k]["visibility"] = $attr->visibility;
-            $newelem[$k]["typevalue"] = $attr->type;
-            $newelem[$k]["classvalue"] = $attr->type;
-            $newelem[$k]["order"] = $attr->ordered;
-            $newelem[$k]["displayorder"] = $attr->ordered;
-            $newelem[$k]["disabledid"] = "disabled";
-            $newelem[$k]["options"] = $attr->options;
-            $newelem[$k]["SELECTFRAME"] = "SELECTFRAME_$k";
-            if ($attr->docid == $docid) {
-                $newelem[$k]["disabled"] = "";
-            } else {
-                $newelem[$k]["disabled"] = "disabled";
-            }
-            
-            $newelem[$k]["link"] = $attr->link;
-            $newelem[$k]["phpfunc"] = $attr->precond;;
-            // unused be necessary for layout
-            $newelem[$k]["phpfile"] = "";
-            $newelem[$k]["phpconstraint"] = "";
-            $newelem[$k]["elink"] = "";
-            $newelem[$k]["abscheck"] = "";
-            $newelem[$k]["titcheck"] = "";
-        }
-        $ka++;
-    }
-    //    ------------------------------------------
-    //  -------------------- Action ----------------------
-    $tattr = $doc->GetActionAttributes();
-    
-    foreach ($tattr as $k => $attr) {
-        if ($attr->docid > 0) {
-            $newelem[$k]["attrid"] = $attr->id;
-            $newelem[$k]["attrname"] = $attr->getLabel();
-            $newelem[$k]["idtype"] = "hidden";
-            $newelem[$k]["neweltid"] = $k;
-            $newelem[$k]["visibility"] = $attr->visibility;
-            $newelem[$k]["typevalue"] = $attr->type;
-            $newelem[$k]["classvalue"] = $attr->type;
-            $newelem[$k]["order"] = $attr->ordered;
-            $newelem[$k]["displayorder"] = $attr->ordered;
-            $newelem[$k]["disabledid"] = "disabled";
-            $newelem[$k]["options"] = $attr->options;
-            $newelem[$k]["SELECTFRAME"] = "SELECTFRAME_$k";
-            if ($attr->docid == $docid) {
-                $newelem[$k]["disabled"] = "";
-            } else {
-                $newelem[$k]["disabled"] = "disabled";
-            }
-            
-            $newelem[$k]["link"] = $attr->link;
-            $newelem[$k]["phpfile"] = $attr->wapplication;
-            $newelem[$k]["phpfunc"] = $attr->waction;
-            // unused be necessary for layout
-            $newelem[$k]["phpconstraint"] = "";
-            $newelem[$k]["elink"] = "";
-            $newelem[$k]["abscheck"] = "";
-            $newelem[$k]["titcheck"] = "";
-        }
-        $ka++;
-    }
     // add 3 new attributes to be defined
+    $ka = count($newelem);
     for ($k = $ka; $k < 3 + $ka; $k++) {
         $newelem[$k]["idtype"] = "text";
         $newelem[$k]["neweltid"] = $k;
@@ -353,32 +306,53 @@ function sortnewelem($a, $b)
     if (isset($b["displayorder"])) return -1;
     return 0;
 }
-
-function getAttributeProfunder(&$oa)
+/**
+ * use to usort attributes
+ * @param BasicAttribute $a
+ * @param BasicAttribute $b
+ */
+function reOrderAttr($a, $b)
 {
-    if (!$oa) return 0;
-    if (!$oa->fieldSet) return 0;
-    if ($oa->fieldSet->id == 'FIELD_HIDDENS') return 0;
-    return 1 + getAttributeProfunder($oa->fieldSet);
+    
+    if ($a["type"] == "tab") return -1;
+    if ($b["type"] == "tab") return 1;
+    if ($a["type"] == "frame") return -1;
+    if ($b["type"] == "frame") return 1;
+    if ($a["type"] == "menu" && $b["type"] != "menu") return 1;
+    if ($b["type"] == "menu" && $a["type"] != "menu") return -1;
+    
+    if ($a["ordered"] == $b["ordered"]) return 0;
+    if ($a["ordered"] > $b["ordered"]) return 1;
+    return -1;
 }
-function getPuceAttributeProfunder(&$oa)
+
+function getAttributeProfunder($aid, array $attrs)
 {
-    $p = getAttributeProfunder($oa);
+    if (!$aid) return 0;
+    $oa = $attrs[$aid];
+    if (!$oa["frameid"]) return 0;
+    
+    return 1 + getAttributeProfunder($oa["frameid"], $attrs);
+}
+function getPuceAttributeProfunder(DocAttr & $oa, array $attrs)
+{
+    $p = getAttributeProfunder($oa->id, $attrs);
+    $fromType = $oa->getRawType($attrs["frameid"]);
     switch ($p) {
         case 0:
             return '';
         case 1:
-            if ($oa->fieldSet->type == 'frame') {
+            if ($oa->getRawType() == 'frame') {
                 return '<span class="frame">---</span>';
-            } elseif ($oa->fieldSet->type == 'tab') {
+            } elseif ($fromType == 'tab') {
                 return '<span class="tab">---</span>';
             } else {
                 return '<span class="unknow">---</span>';
             }
         case 2:
-            if ($oa->fieldSet->type == 'array') {
+            if ($fromType == 'array') {
                 return '<span class="frame">---</span><span class="array">---</span>';
-            } elseif ($oa->fieldSet->type == 'frame') {
+            } elseif ($fromType == 'frame') {
                 return '<span class="tab">---</span><span class="frame">---</span>';
             } else {
                 return '<span class="unknow">---</span>';
@@ -386,5 +360,6 @@ function getPuceAttributeProfunder(&$oa)
         case 3:
             return '<span class="tab">---</span><span class="frame">---</span><span class="array">---</span>';
     }
+    return '';
 }
-?>
+
