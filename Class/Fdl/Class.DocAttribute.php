@@ -277,11 +277,21 @@ class BasicAttribute
  */
 class NormalAttribute extends BasicAttribute
 {
+    /**
+     * @var bool
+     */
     public $needed; // Y / N
     public $format; // C format
     public $eformat; // format for edition : list,vcheck,hcheck
     public $repeat; // true if is a repeatable attribute
+    
+    /**
+     * @var bool
+     */
     public $isInTitle;
+    /**
+     * @var bool
+     */
     public $isInAbstract;
     public $link; // hypertext link
     public $phpfile;
@@ -321,9 +331,9 @@ class NormalAttribute extends BasicAttribute
      * @param int $order display order
      * @param string $link link option
      * @param string $visibility visibility option
-     * @param string $needed is mandotary attribute
-     * @param string $isInTitle is used to compute title
-     * @param string $isInAbstract is used in abstract view
+     * @param bool $needed is mandotary attribute
+     * @param bool $isInTitle is used to compute title
+     * @param bool $isInAbstract is used in abstract view
      * @param FieldSetAttribute &$fieldSet parent attribute
      * @param string $phpfile php file used with the phpfunc
      * @param string $phpfunc helpers function

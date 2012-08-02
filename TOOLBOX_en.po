@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-01 17:02+0200\n"
+"POT-Creation-Date: 2012-08-02 15:57+0200\n"
 "PO-Revision-Date: 2012-07-31 16:19+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -119,6 +119,10 @@ msgstr "Start search"
 #, fuzzy
 msgid " view files"
 msgstr "Start search"
+
+#, c-format
+msgid "\"%s\" family structure has been updated"
+msgstr ""
 
 #, c-format
 msgid "%.02f Gb"
@@ -1057,6 +1061,9 @@ msgid "Change default search"
 msgstr ""
 
 msgid "Change enum"
+msgstr ""
+
+msgid "Change family structure"
 msgstr ""
 
 #, fuzzy
@@ -2330,6 +2337,10 @@ msgstr ""
 msgid "Increase vault size"
 msgstr ""
 
+#, c-format
+msgid "Inherit from \"%s\""
+msgstr ""
+
 msgid "Inherit value"
 msgstr ""
 
@@ -2356,6 +2367,9 @@ msgid "Insert the content in %s"
 msgstr ""
 
 msgid "Inserted in a domain"
+msgstr ""
+
+msgid "Inspect another family"
 msgstr ""
 
 msgid "Internet explorer site"
@@ -7521,6 +7535,9 @@ msgstr ""
 #, fuzzy
 msgid "no image"
 msgstr "Firstname"
+
+msgid "no inheritance"
+msgstr ""
 
 msgid "no key2"
 msgstr ""
