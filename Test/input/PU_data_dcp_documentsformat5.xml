@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+  <tst_fmtcol xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_fmtcol.xsd" name="TST_FMTCOL5" title="Test 5" revision="1" modification-date="2012-06-12T11:47:08" version="" state="E3">
+    <tst_frame>
+      <tst_title>Test 5</tst_title>
+      <tst_t_array3>
+        <tst_rellatests xsi:nil="true"/>
+        <tst_relfixs xsi:nil="true"/>
+        <tst_relmuls xsi:nil="true"/>
+        <tst_enums>1</tst_enums>
+      </tst_t_array3>
+    </tst_frame>
+  </tst_fmtcol>
+</documents>

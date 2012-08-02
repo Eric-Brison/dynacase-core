@@ -29,7 +29,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             "PU_data_dcp_documentsformat2.xml",
             "PU_data_dcp_documentsformat3.xml",
             "PU_data_dcp_documentsformat4.xml",
-            "PU_data_dcp_documentsformat3.xml",
+            "PU_data_dcp_documentsformat5.xml",
             "PU_data_dcp_formatcollectionprofil.ods",
         );
     }
@@ -449,6 +449,16 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                     "size" => 5,
                     "mime" => "text/plain",
                     "fileName" => "Test.txt"
+                )
+            ) ,
+            array(
+                "TST_FMTCOL5",
+                "tst_rellatests",
+                array(
+                    "url" => array(""),
+                    "icon" => array(""),
+                    "value" => array(""),
+                    "displayValue" => array(null)
                 )
             )
         );
