@@ -1803,13 +1803,20 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Return the tag object for the document
+     * @throws Exception If module dynacas-tags is not installed
      * @return TagManager &$tag object reference use to modify tags
      */
     final public function &tag()
     {
         static $tag = null;
+        
         if (empty($tag) || $tag->docid != $this->initid) {
-            $tag = new TagManager($this, $this->initid);
+            try {
+                $tag = new TagManager($this, $this->initid);
+            }
+            catch(\Exception $e) {
+                throw $e;
+            }
         }
         return $tag;
     }
