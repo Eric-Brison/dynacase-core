@@ -201,7 +201,7 @@ function AttrToPhp($dbaccess, $tdoc)
                     }
                     $atype = strtolower(trim($atype));
                     // create code for calculated attributes
-                    if ((!$v->phpfile) && preg_match('/^[a-z]*::[a-z0-9_ ]+\(/i', $v->phpfunc, $reg)) {
+                    if ((!$v->phpfile) && preg_match('/^[a-z]*::[a-z0-9_ ]+\(/i', $v->phpfunc, $reg) && ($v->usefor != 'Q')) {
                         
                         $pM->parse($v->phpfunc);
                         $error = $pM->getError();
