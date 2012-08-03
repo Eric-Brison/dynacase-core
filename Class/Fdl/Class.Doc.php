@@ -1399,7 +1399,10 @@ create unique index i_docir on doc(initid, revision);";
          */
         $paramAttr = $this->getAttribute($idp);
         if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "") {
-            $r = $this->getValueMethod($paramAttr->phpfunc);
+            $val = $this->getValueMethod($paramAttr->phpfunc);
+            if ($val != $paramAttr->phpfunc) {
+                $r = $val;
+            }
         } else if ($r) {
             $r = $this->getValueMethod($r, $r);
         }
