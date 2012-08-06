@@ -19,11 +19,13 @@ class CheckMethod extends CheckData
      */
     function check(array $data, &$doc = null)
     {
-        $prefix = $data[1][0];
-        if (($prefix == '+') || ($prefix == '*')) $this->methodFile = substr($data[1], 1);
-        else $this->methodFile = $data[1];
-        $this->doc = $doc;
-        $this->checkMethodFile();
+        if (!empty($data[1])) {
+            $prefix = $data[1][0];
+            if (($prefix == '+') || ($prefix == '*')) $this->methodFile = substr($data[1], 1);
+            else $this->methodFile = $data[1];
+            $this->doc = $doc;
+            $this->checkMethodFile();
+        }
         return $this;
     }
     private function getClassFile($className)

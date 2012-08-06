@@ -34,14 +34,14 @@ if ($authtype != 'basic') {
 # element
 #
 #
-getmainAction($auth, $action);
+getmainAction($auth=null, $action);
 
 if ($action->user->id != ANONYMOUS_ID) {
     // reopen a new anonymous session
-    setcookie('freedom_param', $session->id, 0);
+    setcookie('freedom_param', $action->session->id, 0);
     unset($_SERVER['PHP_AUTH_USER']); // cause IE send systematicaly AUTH_USER & AUTH_PASSWD
-    $session->Set("");
-    $core->SetSession($session);
+    $action->session->Set("");
+    $action->parent->SetSession($session);
 }
 if ($action->user->id != ANONYMOUS_ID) {
     // reverify

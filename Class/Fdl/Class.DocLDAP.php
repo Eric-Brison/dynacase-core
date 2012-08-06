@@ -287,9 +287,10 @@ class DocLDAP extends DbObj
             $this->ConvertToLdap();
         }
         if ($index == "") $tldap = current($this->infoldap);
+        elseif (!isset($this->infoldap[$index])) return null;
         else $tldap = $this->infoldap[$index];
         
-        return $tldap[$idattr];
+        return isset($tldap[$idattr]) ? $tldap[$idattr] : null;
     }
     /**
      * modify in LDAP database information

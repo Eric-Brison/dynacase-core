@@ -162,12 +162,14 @@ class DocSearch extends PDocSearch
         if ($this->getValue("se_archive") > 0) {
             $filters[] = sprintf("archiveid = %d", $this->getValue("se_archive"));
         }
-        if ($keyword[0] == '~') {
-            $full = false; // force REGEXP
-            $keyword = substr($keyword, 1);
-        } else if ($keyword[0] == '*') {
-            $full = true; // force FULLSEARCH
-            $keyword = substr($keyword, 1);
+        if ($keyword) {
+            if ($keyword[0] == '~') {
+                $full = false; // force REGEXP
+                $keyword = substr($keyword, 1);
+            } else if ($keyword[0] == '*') {
+                $full = true; // force FULLSEARCH
+                $keyword = substr($keyword, 1);
+            }
         }
         if ($full) {
             $this->getFullSqlFilters($keyword, $sqlfilters, $order, $tkeys);
@@ -325,13 +327,14 @@ class DocSearch extends PDocSearch
             if ($subfolder) $cdirid = getRChildDirId($this->dbaccess, $dirid, array() , 0, $this->folderRecursiveLevel);
             else $cdirid = $dirid;
         } else $cdirid = 0;
-        
-        if ($keyword[0] == '~') {
-            $full = false;
-            $keyword = substr($keyword, 1);
-        } else if ($keyword[0] == '*') {
-            $full = true;
-            $keyword = substr($keyword, 1);
+        if ($keyword) {
+            if ($keyword[0] == '~') {
+                $full = false;
+                $keyword = substr($keyword, 1);
+            } else if ($keyword[0] == '*') {
+                $full = true;
+                $keyword = substr($keyword, 1);
+            }
         }
         $filters = $this->getSqlGeneralFilters($keyword, $latest, $sensitive, $full);
         
@@ -405,8 +408,7 @@ class DocSearch extends PDocSearch
                     // verify if classid is possible
                     if ($dir->hasNoRestriction()) {
                         $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
-                    }
-                    else {
+                    } else {
                         $tclassdoc = $dir->getAuthorizedFamilies();
                         $this->lay->set("restrict", true);
                     }
@@ -422,7 +424,7 @@ class DocSearch extends PDocSearch
         } else {
             $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
         }
-
+        
         $this->lay->set("selfam", _("no family"));
         $selectclass = array();
         foreach ($tclassdoc as $k => $cdoc) {
@@ -439,7 +441,7 @@ class DocSearch extends PDocSearch
         $this->lay->SetBlockData("SELECTCLASS", $selectclass);
         $this->lay->set("has_permission_fdl_system", $action->parent->hasPermission('FDL', 'SYSTEM'));
         $this->lay->set("se_sysfam", ($this->getValue('se_sysfam') == 'yes') ? true : false);
-
+        
         $this->editattr();
     }
     /**

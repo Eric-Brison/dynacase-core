@@ -199,7 +199,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         ) , $inpArg->name);
         if ($v != " ") $v = trim($v);
         
-        $unser = unserialize($v);
+        $unser = @unserialize($v); // try unserial to see if it is object
         if ($unser != "") $arg[$k] = $unser;
         elseif ($inpArg->type == "string") $arg[$k] = $v;
         elseif ($v == "A") {

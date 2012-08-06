@@ -190,14 +190,20 @@ function AttrToPhp($dbaccess, $tdoc)
                         $atype = $v->type;
                         $aformat = "";
                     }
+                    $repeat = "false";
                     if (preg_match("/([a-z]+)list/i", $atype, $reg)) {
                         $atype = $reg[1];
                         $repeat = "true";
                     } else {
-                        if ($tnormal[strtolower($v->frameid) ]["type"] == "array") $repeat = "true";
-                        else if (strpos($v->options, "multiple=yes") !== false) $repeat = "true";
-                        else if (getTypeMain($pa[strtolower($v->frameid) ]["type"]) == "array") $repeat = "true";
-                        else $repeat = "false";
+                        if (strpos($v->options, "multiple=yes") !== false) $repeat = "true";
+                        else {
+                            if (isset($tnormal[strtolower($v->frameid) ])) {
+                                if (getTypeMain($tnormal[strtolower($v->frameid) ]["type"]) == "array") $repeat = "true";
+                            }
+                            if ((!$repeat) && isset($pa[strtolower($v->frameid) ])) {
+                                if (getTypeMain($pa[strtolower($v->frameid) ]["type"]) == "array") $repeat = "true";
+                            }
+                        }
                     }
                     $atype = strtolower(trim($atype));
                     // create code for calculated attributes
@@ -258,7 +264,7 @@ function AttrToPhp($dbaccess, $tdoc)
                         if ($atype != "array") $tattr[$v->id] = array(
                             "attrid" => ($v->id)
                         );
-                        if (($repeat == "true") || ($tnormal[$v->frameid]["type"] == "array")) {
+                        if ($repeat == "true") {
                             $attrids[$v->id] = ($v->id) . " text"; // for the moment all repeat are text
                             
                         } else {
@@ -446,8 +452,14 @@ function AttrToPhp($dbaccess, $tdoc)
         $qattr->AddQuery("usefor != 'Q' or usefor is null");
         
         $oattr = $qattr->Query();
+        /**
+         * @var DocAttr[] $tattr
+         */
         $tattr = array();
         if ($qattr->nb > 0) {
+            /**
+             * @var DocAttr $attr
+             */
             foreach ($oattr as $ka => $attr) {
                 $tattr[strtolower($attr->id) ] = $attr;
                 if ($attr->type == 'file') {
@@ -472,8 +484,9 @@ function AttrToPhp($dbaccess, $tdoc)
                 if ($attr->docid == $docid) { // modify my field not inherited fields
                     if (!in_array($ka, $pgatt)) {
                         $msg.= "add field $ka in table doc" . $docid . "\n";
-                        
-                        if (($attr->repeat) || (($tattr[$attr->frameid]->type == "array") && ($attr->type != 'tsvector'))) {
+                        $repeat = (strpos($attr->options, "multiple=yes") !== false);
+                        if (!$repeat) $repeat = (isset($tattr[$attr->frameid]) && $tattr[$attr->frameid]->type == "array");
+                        if (($repeat && ($attr->type != 'tsvector'))) {
                             
                             $sqltype = " text"; // for the moment all repeat are text
                             
@@ -557,7 +570,11 @@ function AttrToPhp($dbaccess, $tdoc)
     {
         $cdoc = createTmpDoc($dbaccess, $docid, false);
         $indexes = $cdoc->GetSqlIndex();
-        if ($indexes) $msg = $cdoc->exec_query($indexes);
+        $msg = '';
+        if ($indexes) {
+            foreach ($indexes as $sqlIndex) $msg.= $cdoc->exec_query($sqlIndex);
+        }
+        return $msg;
     }
     /**
      * refresh PHP Class & Postgres Table Definition
@@ -654,6 +671,7 @@ function AttrToPhp($dbaccess, $tdoc)
     {
         if (preg_match('/^\s*(?P<type>[a-z]+)(?P<format>\(.+\))?\s*$/i', $type, $m)) {
             /* Remove leading and trailing parenthesis from format */
+            if (empty($m['format'])) $m['format'] = '';
             $m['format'] = substr($m['format'], 1, -1);
             return array(
                 'type' => $m['type'],

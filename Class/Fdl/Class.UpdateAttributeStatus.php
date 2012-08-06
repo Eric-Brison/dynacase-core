@@ -72,10 +72,12 @@ class UpdateAttributeStatus
     public function getStatus()
     {
         $this->readStatus();
-        $last = end($this->content);
-        if (strpos($last, 'END') > 0) return self::StatusFinished;
-        $first = $this->content[0];
-        if (strpos($first, 'BEGIN') > 0) return self::statusRunning;
+        if ($this->content) {
+            $last = end($this->content);
+            if (strpos($last, 'END') > 0) return self::StatusFinished;
+            $first = $this->content[0];
+            if (strpos($first, 'BEGIN') > 0) return self::statusRunning;
+        }
         return self::statusUnknown;
     }
     /**

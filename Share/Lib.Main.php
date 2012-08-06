@@ -41,7 +41,7 @@ function getMainAction($auth, &$action)
     if (!getHttpVars("app")) {
         $defaultapp = true;
         $_GET["app"] = "CORE";
-        if ($_SERVER["FREEDOM_ACCESS"]) {
+        if (!empty($_SERVER["FREEDOM_ACCESS"])) {
             $_GET["app"] = $_SERVER["FREEDOM_ACCESS"];
             $_GET["action"] = "";
         } else {
@@ -61,7 +61,7 @@ function getMainAction($auth, &$action)
     $core = new Application();
     $core->Set("CORE", $CoreNull, $session);
     
-    if ($core->user->login != $_SERVER['PHP_AUTH_USER']) {
+    if (isset($_SERVER['PHP_AUTH_USER']) && ($core->user->login != $_SERVER['PHP_AUTH_USER'])) {
         // reopen a new session
         $session->Set("");
         $core->SetSession($session);
@@ -86,6 +86,7 @@ function getMainAction($auth, &$action)
     $pattern = preg_quote($indexphp);
     if (preg_match("|(.*)/$pattern|", $_SERVER['SCRIPT_NAME'], $reg)) {
         // determine publish url (detect ssl require)
+        if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = "off";
         if ($_SERVER['HTTPS'] != 'on') $puburl = "http://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $reg[1];
         else $puburl = "https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $reg[1];
     } else {
@@ -193,7 +194,7 @@ function initExplorerParam(Application & $app, $defaultValue = false)
     $app->SetVolatileParam("ISAPPLEWEBKIT", $defaultValue);
     $app->SetVolatileParam("ISSAFARI", $defaultValue);
     $app->SetVolatileParam("ISCHROME", $defaultValue);
-    if ($_SERVER["HTTP_HOST"]) {
+    if (!empty($_SERVER["HTTP_HOST"])) {
         initExplorerWebParam($app);
     }
 }

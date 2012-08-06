@@ -289,6 +289,7 @@ class WDoc extends Doc
     }
     /**
      * create of parameters attributes of workflow
+     * @return string error message
      */
     function createProfileAttribute($cid = 0)
     {
@@ -480,7 +481,7 @@ class WDoc extends Doc
             ));
             $oattr->docid = $cid;
             
-            if ($this->stateactivity[$k]) {
+            if (!(empty($this->stateactivity[$k]))) {
                 $oattr->visibility = "S";
             } else $oattr->visibility = "W";
             $oattr->type = 'text';
@@ -696,7 +697,7 @@ class WDoc extends Doc
             if ($oattr->isAffected()) $oattr->Modify();
             else $oattr->Add();
         }
-        refreshPhpPgDoc($this->dbaccess, $cid);
+        return refreshPhpPgDoc($this->dbaccess, $cid);
     }
     /**
      * change state of a document
@@ -901,8 +902,8 @@ class WDoc extends Doc
         if ($this->states === null) {
             $this->states = array();
             foreach ($this->cycle as $k => $tr) {
-                if ($tr["e1"] != "") $this->states[$tr["e1"]] = $tr["e1"];
-                if ($tr["e2"] != "") $this->states[$tr["e2"]] = $tr["e2"];
+                if (!empty($tr["e1"])) $this->states[$tr["e1"]] = $tr["e1"];
+                if (!empty($tr["e2"])) $this->states[$tr["e2"]] = $tr["e2"];
             }
         }
         return $this->states;
@@ -947,7 +948,7 @@ class WDoc extends Doc
      * searcj all WASK document which current user can see for a specific state
      * @param string $state the state
      * @param bool $control set to false to not control ask access
-     * @return string the text of action
+     * @return string[] texts of action
      */
     function getDocumentWasks($state, $control = true)
     {
@@ -994,7 +995,7 @@ class WDoc extends Doc
         $err = '';
         $tmtid = $this->getTValue($this->_Aid("_TRANS_MTID", $tname));
         
-        $tr = $this->transitions[$tname];
+        $tr = ($tname) ? $this->transitions[$tname] : null;
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
                 $keys = array();
@@ -1046,7 +1047,7 @@ class WDoc extends Doc
         $mtid = $this->getValue($this->_Aid("_TRANS_TMID", $tname));
         
         $this->doc->unattachAllTimers($this);
-        $tr = $this->transitions[$tname];
+        
         if ($mtid) {
             /**
              * @var _TIMER $mt

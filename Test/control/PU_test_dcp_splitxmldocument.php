@@ -49,8 +49,6 @@ class TestSplitXmlDocument extends TestCaseDcp
         $testDir = self::$workDir . DIRECTORY_SEPARATOR . self::$runid;
         mkdir($testDir);
         
-        $xml = $data['xml'];
-        $produces = $data['produces'];
         $src = 'DCPTEST' . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . $data['xml'];
         $workingXML = $testDir . DIRECTORY_SEPARATOR . $data['xml'];
         $ret = copy($src, $workingXML);

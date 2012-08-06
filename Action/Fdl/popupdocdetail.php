@@ -489,6 +489,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
             $tlink["editdoc"]["descr"] = _($defaultview['cv_lview']);
         }
         
+        $count["specialedit"] = $count["specialview"] = 0;
         foreach ($tv as $v) {
             if ($defaultview && $defaultview["cv_idview"] !== $v["idview"]) {
                 $count[$v["typeview"]]++;
@@ -508,7 +509,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
                 if ($v["menu"] == "-") $submenu = "";
                 else $submenu = $v["menu"];
             } else {
-                $submenu = ($count[$v["typeview"]] > 1) ? $v["typeview"] : "";
+                $submenu = (isset($count[$v["typeview"]]) && $count[$v["typeview"]] > 1) ? $v["typeview"] : "";
             }
             $mtitle = $v["txtview"];
             if ((!$defaultview) || $defaultview["cv_idview"] !== $v["idview"]) {
@@ -551,7 +552,7 @@ function addStatesPopup(&$tlink, Doc & $doc)
             $tr = $wdoc->getTransition($doc->state, $v);
             $jsf = "";
             
-            if ((!$tr["nr"]) || (is_array($tr["ask"]) && (count($tr["ask"]) > 0))) {
+            if ((empty($tr["nr"])) || ((!empty($tr["ask"])) && is_array($tr["ask"]) && (count($tr["ask"]) > 0))) {
                 $jsf = sprintf("popdoc(null,'$surl&app=FDL&action=EDITCHANGESTATE&id=$docid&nstate=$v','%s',0,40,400,250)", (str_replace("'", "&rsquo;", sprintf(_("Steps")))));
             } else {
                 $jsf = sprintf("subwindow(100,100,'_self','$surl&app=FREEDOM&action=MODSTATE&newstate=$v&id=$docid');");
@@ -560,7 +561,7 @@ function addStatesPopup(&$tlink, Doc & $doc)
             $tooltip = $wdoc->getActivity($v, mb_ucfirst(_($v)));
             //$icon = (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "");
             $icon = (!$tr) ? "Images/noaccess.png" : "";
-            if ($tr && $tr["m0"]) {
+            if ($tr && (!empty($tr["m0"]))) {
                 // verify m0
                 $err = call_user_func(array(
                     $wdoc,

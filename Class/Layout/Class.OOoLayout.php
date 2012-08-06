@@ -201,8 +201,8 @@ class OOoLayout extends Layout
             if (is_array($val)) $val = null; // it is not the good level
             if ($val !== null) $cond = ($val == true);
         } else {
-            if ($this->rif[$name] !== null) $cond = ($this->rif[$name] == true);
-            elseif ($this->rkey[$name] !== null) $cond = ($this->rkey[$name] == true);
+            if (isset($this->rif[$name]) && $this->rif[$name] !== null) $cond = ($this->rif[$name] == true);
+            elseif (isset($this->rkey[$name]) && $this->rkey[$name] !== null) $cond = ($this->rkey[$name] == true);
         }
         if ($cond !== null) {
             if ($cond xor $not) {

@@ -23,7 +23,7 @@ function tabindex(Action & $action)
     // -----------------------------------
     global $_GET;
     $appname = $_GET["app"];
-    $actname = $_GET["action"];
+    $actname = isset($_GET["action"])?$_GET["action"]:'';
     
     $appcalled = new Application();
     $appcalled->Set($appname, $action->parent);

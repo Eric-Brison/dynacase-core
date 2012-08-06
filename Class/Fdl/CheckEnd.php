@@ -146,7 +146,7 @@ class CheckEnd extends CheckData
      */
     private function checkLinkMethod(BasicAttribute & $oa)
     {
-        if (!$oa->link) return;
+        if (empty($oa->link)) return;
         $link = '';
         if (preg_match('/action=FDL_METHOD&.*method=([^&]*)/', $oa->link, $reg)) {
             $link = urldecode($reg[1]);

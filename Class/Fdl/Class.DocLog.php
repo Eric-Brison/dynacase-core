@@ -18,15 +18,16 @@
  * constant for log level history
  *
 */
-define("LOG_NOTICE", 1);
-define("LOG_INFO", 2);
-define("LOG_NOTIFY", 4);
-define("LOG_WARNING", 8);
-define("LOG_ERROR", 16);
 
 include_once ("Class.DbObj.php");
 class DocLog extends DbObj
 {
+    const LOG_NOTICE = 1;
+    const LOG_INFO = 2;
+    const LOG_NOTIFY = 4;
+    const LOG_WARNING = 8;
+    const LOG_ERROR = 16;
+    
     public $fields = array(
         "id", // doc id
         "initid", // doc initid
@@ -42,7 +43,8 @@ class DocLog extends DbObj
     );
     
     public $sup_fields = array(
-        "date", // date of entry
+        "date"
+        // date of entry
         
     );
     /**
@@ -76,6 +78,16 @@ class DocLog extends DbObj
      */
     public $arg;
     
+    public $initid;
+    /**
+     * @var string document title
+     */
+    public $title;
+    /**
+     * @var string log message
+     */
+    public $comment;
+    public $code;
     public $id_fields = array(
         "id"
     );

@@ -404,7 +404,7 @@ class SearchDoc
      */
     public function searchError()
     {
-        return ($this->debuginfo["error"]);
+        return $this->getError();
     }
     /**
      * Return error message
@@ -412,7 +412,7 @@ class SearchDoc
      */
     public function getError()
     {
-        if ($this->debuginfo) return $this->debuginfo["error"];
+        if ($this->debuginfo && isset($this->debuginfo["error"])) return $this->debuginfo["error"];
         return "";
     }
     /**
@@ -519,12 +519,12 @@ class SearchDoc
     public function nextDoc()
     {
         if ($this->mode == "ITEM") {
-            $n = $this->result[$this->resultQPos];
+            $n = empty($this->result[$this->resultQPos]) ? null : $this->result[$this->resultQPos];
             if (!$n) return false;
             $tdoc = @pg_fetch_array($n, $this->resultPos, PGSQL_ASSOC);
             if ($tdoc === false) {
                 $this->resultQPos++;
-                $n = $this->result[$this->resultQPos];
+                $n = empty($this->result[$this->resultQPos]) ? null : $this->result[$this->resultQPos];
                 if (!$n) return false;
                 $this->resultPos = 0;
                 $tdoc = @pg_fetch_array($n, $this->resultPos, PGSQL_ASSOC);

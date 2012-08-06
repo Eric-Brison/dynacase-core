@@ -56,13 +56,14 @@ if ($docid != - 1) {
             if ($trig) print $doc->sqltrigger($drop) . "\n";
             else {
                 $triggers = $doc->sqltrigger(false, true);
+                
                 if (is_array($triggers)) {
                     print implode(";\n", $triggers);
                 } else {
                     print $triggers . "\n";
                 }
             }
-            print $doc->getSqlIndex();
+            print implode(' ', $doc->getSqlIndex()) . "\n";
         }
     }
 }

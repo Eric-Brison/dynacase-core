@@ -31,9 +31,9 @@ class CheckDoc extends CheckData
     function check(array $data, &$extra = null)
     {
         
-        $this->famName = trim($data[1]);
-        $this->specName = trim($data[2]);
-        $this->folderId = trim($data[3]);
+        $this->famName = isset($data[1]) ? trim($data[1]) : '';
+        $this->specName = isset($data[2]) ? trim($data[2]) : '';
+        $this->folderId = isset($data[3]) ? trim($data[3]) : '';
         $this->CheckDocName();
         if (!$this->hasErrors()) $this->CheckDocFrom();
         

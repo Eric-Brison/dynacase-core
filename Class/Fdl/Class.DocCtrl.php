@@ -142,7 +142,7 @@ class DocCtrl extends DocLDAP
      */
     public $dprofid;
     public $views;
-    public $attributes;
+    public $attributes = null;
     public $doctype;
     /**
      * @var int document identificator
@@ -452,7 +452,7 @@ class DocCtrl extends DocLDAP
                 foreach ($tuid as $ku => $uid) {
                     // add right in case of multiple use of the same user : possible in dynamic profile
                     if (($v["upacl"] & 2) && $uid) $greenUid[$uid] = $uid;
-                    $vupacl[$uid] = (intval($vupacl[$uid]) | intval($v["upacl"]));
+                    $vupacl[$uid] = (isset($vupacl[$uid]) ? intval($vupacl[$uid]) : 0 | intval($v["upacl"]));
                     
                     if ($uid > 0) {
                         $perm = new DocPerm($this->dbaccess, array(

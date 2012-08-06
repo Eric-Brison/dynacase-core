@@ -27,6 +27,10 @@ class ADoc
      */
     public $attr = array();
     public $fromname = '';
+    /**
+     * @var array family ancestors ids
+     */
+    public $fromids = array();
     
     function __construct()
     {

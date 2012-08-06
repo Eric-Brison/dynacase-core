@@ -21,9 +21,10 @@
  */
 class _IUSER extends Doc
 {
-    public $wuser;  #_("Admin edit")
+    public $wuser; #_("Admin edit")
     public function setGroups()
     {
+        return '';
     }
     /**
      * @param bool $real
@@ -31,9 +32,11 @@ class _IUSER extends Doc
      */
     public function getAccount($real = false)
     {
+        return null;
     }
     public function getSystemIds(array $accountIds)
     {
+        return '';
     }
     /**
      * @end-method-ignore
@@ -417,12 +420,13 @@ class _IUSER extends Doc
     }
     /**
      * return main mail address
+     * @param bool $rawmail if true only system amil address else add also display name
      * @return string
      */
     public function getMail($rawmail = false)
     {
         $wu = $this->getAccount();
-        if ($wu->isAffected()) {
+        if ($wu && $wu->isAffected()) {
             return $wu->getMail($rawmail);
         }
         return '';
@@ -434,7 +438,7 @@ class _IUSER extends Doc
     public function getCryptPassword()
     {
         $wu = $this->getAccount();
-        if ($wu->isAffected()) {
+        if ($wu && $wu->isAffected()) {
             return $wu->password;
         }
         return '';
@@ -633,7 +637,8 @@ class _IUSER extends Doc
      */
     public function control($aclname, $strict = false)
     {
-        if ($this->getAccount()->substitute == $this->getSystemUserId()) {
+        $u = $this->getAccount();
+        if ($u && ($u->substitute == $this->getSystemUserId())) {
             return parent::control($aclname, true);
         } else {
             return parent::control($aclname, $strict);

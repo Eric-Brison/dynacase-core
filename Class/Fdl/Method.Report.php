@@ -120,7 +120,7 @@ class _REPORT extends _DSEARCH
         $lattr = $rdoc->GetNormalAttributes();
         $tcolumn1 = array();
         $tcolumn2 = array();
-        while (list($k, $v) = each($lattr)) {
+        foreach ($lattr as $k => $v) {
             //    if ($v->visibility=="H") continue;
             $tcolumn1[$v->id] = array(
                 "colid" => $v->id,
@@ -226,7 +226,7 @@ class _REPORT extends _DSEARCH
                 $tcell[$kc]["bgcell"] = current($tcolor);
                 next($tcolor);
                 $tcell[$kc]["tdoddoreven"] = $tdodd ? "tdodd" : "tdeven";
-                $tcell[$kc]["rightfornumber"] = ($lattr[$kc]->type == "money") ? "right" : "left";
+                $tcell[$kc]["rightfornumber"] = (isset($lattr[$kc]) && $lattr[$kc]->type == "money") ? "right" : "left";
                 $tdodd = !$tdodd;
             }
             $this->lay->setBlockData("row$k", $tcell);
@@ -235,7 +235,7 @@ class _REPORT extends _DSEARCH
         // ---------------------
         // footer
         $tfoots = $this->getTValue("REP_FOOTS");
-        
+        $tlfoots = array();
         foreach ($tfoots as $k => $v) {
             switch ($v) {
                 case "CARD":

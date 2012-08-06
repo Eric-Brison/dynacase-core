@@ -52,7 +52,8 @@ function family_defaultmenu(Action & $action)
     if (($fdoc->control("create") == "") && ($fdoc->control("icreate") == "")) {
         $child[$famid] = array(
             "title" => $fdoc->getTitle() ,
-            "id" => $famid
+            "id" => $famid,
+            "name" => $fdoc->name
         );
     } else $child = array();
     
@@ -62,7 +63,6 @@ function family_defaultmenu(Action & $action)
     $tnewmenu = array();
     if ($action->HasPermission("GENERIC")) {
         foreach ($child as $k => $vid) {
-            
             $defaultMenuCreate[] = array(
                 "label" => DocFam::getLangTitle($vid) ,
                 "target" => "finfo",

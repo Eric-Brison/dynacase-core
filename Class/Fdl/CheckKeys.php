@@ -27,7 +27,7 @@ class CheckKeys extends CheckData
     function check(array $data, &$extra = null)
     {
         
-        $this->famName = trim($data[1]);
+        $this->famName = (isset($data[1])) ? trim($data[1]) : null;
         $this->attrIds = getOrder($data);
         
         $this->CheckKeysFamily();

@@ -85,7 +85,7 @@ class DbObj
      */
     public $err_code = '';
     /**
-     * @var ressource
+     * @var resource
      */
     public $res = '';
     /**
@@ -207,7 +207,7 @@ class DbObj
         
         if ($this->numrows() > 0) {
             $res = $this->fetch_array(0);
-            $retour = $this->Affect($res);
+            $this->Affect($res);
         } else {
             return FALSE;
         }
@@ -256,7 +256,7 @@ class DbObj
         
         if ($this->numrows() > 0) {
             $res = $this->fetch_array(0);
-            $retour = $this->Affect($res);
+            $this->Affect($res);
         } else {
             return FALSE;
         }
@@ -337,26 +337,30 @@ class DbObj
      */
     function PostUpdate()
     {
+        return '';
         // This function should be replaced by the Child Class
         
     }
     function PreDelete()
     {
+        return '';
         // This function should be replaced by the Child Class
         
     }
     function PostDelete()
     {
+        return '';
         // This function should be replaced by the Child Class
         
     }
     function PreSelect($id)
     {
         // This function should be replaced by the Child Class
-        
+        return '';
     }
     function PostSelect($id)
     {
+        return '';
         // This function should be replaced by the Child Class
         
     }
@@ -381,7 +385,7 @@ class DbObj
         $valstring = "";
         reset($this->fields);
         foreach ($this->fields as $k => $v) {
-            $valstring = $valstring . $this->lw($this->$v) . ",";
+            $valstring = $valstring . $this->lw(isset($this->$v) ? $this->$v : '') . ",";
         }
         $valstring = substr($valstring, 0, strlen($valstring) - 1);
         $sql = $sql . $valstring . ")";
@@ -431,7 +435,7 @@ class DbObj
         $setstr = "";
         foreach ($fields as $k => $v) {
             if (!isset($notset[$v])) {
-                $setstr = $setstr . " " . $v . "=" . $this->lw($this->$v) . ",";
+                $setstr = $setstr . " " . $v . "=" . $this->lw(isset($this->$v) ? $this->$v : '') . ",";
             }
         }
         $setstr = substr($setstr, 0, strlen($setstr) - 1);
@@ -656,7 +660,6 @@ class DbObj
         if ($SQLDEBUG) $sqlt1 = microtime(); // to test delay of request
         $this->init_dbid();
         $this->log->debug("exec_query : $sql");
-        
         $this->msg_err = '';
         
         if ($prepare) {
@@ -695,6 +698,7 @@ class DbObj
                 return $this->msg_err;
             }
             $this->res = pg_get_result($this->dbid);
+            while (pg_get_result($this->dbid)); // purge following queries
             $err = pg_result_error($this->res);
             if ($err) $this->msg_err = ErrorCode::getError('DB0001', $err);
             $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
@@ -864,7 +868,7 @@ class DbObj
         }
         if ($this->debug) error_log('[DBG]' . 'BEFORE' . __METHOD__ . $this->dbid);
         $err = '';
-        if (!self::$savepoint[$this->dbid]) {
+        if (empty(self::$savepoint[$this->dbid])) {
             self::$savepoint[$this->dbid] = array(
                 $point
             );

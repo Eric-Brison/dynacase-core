@@ -11,23 +11,23 @@ require_once 'EXTERNALS/fdl.php';
 /**
  * Export a report in CSV
  *
- * @note 
+ * @note
  * @verbatim
  Usage :
- 	--app=FDL : <application name>
- 	--action=REPORT_EXPORT_CSV : <action name>
- 	--id=<the id of the report>
-    Options:
- 	--refresh=<would you refresh doc before build report> [TRUE|FALSE], default is 'FALSE'
- 	--kind=<the kind of report> [simple|pivot], default is 'simple'
- 	--pivot=<the pivot attr>, default is 'id'
- 	--delimiter=<the CSV delimiter>, default is ';'
- 	--enclosure=<the CSV enclosure>, default is '"'
- 	--encoding=<the CSV encoding>, default is 'ISO-8859-15//TRANSLIT'
- 	--decimalSeparator=<the decimalSeparator>, default is '.'
- 	--dateFormat=<the dateFormat> [US|FR|ISO], default is 'US
-@endverbatim
-*/
+ --app=FDL : <application name>
+ --action=REPORT_EXPORT_CSV : <action name>
+ --id=<the id of the report>
+ Options:
+ --refresh=<would you refresh doc before build report> [TRUE|FALSE], default is 'FALSE'
+ --kind=<the kind of report> [simple|pivot], default is 'simple'
+ --pivot=<the pivot attr>, default is 'id'
+ --delimiter=<the CSV delimiter>, default is ';'
+ --enclosure=<the CSV enclosure>, default is '"'
+ --encoding=<the CSV encoding>, default is 'ISO-8859-15//TRANSLIT'
+ --decimalSeparator=<the decimalSeparator>, default is '.'
+ --dateFormat=<the dateFormat> [US|FR|ISO], default is 'US
+ @endverbatim
+ */
 function report_export_csv(Action & $action)
 {
     $dbaccess = getParam('FREEDOM_DB');
@@ -39,11 +39,11 @@ function report_export_csv(Action & $action)
     $defaultDocArg = array();
     
     $id = $usage->addNeeded("id", "the id of the report");
-    
+    $currentDoc = null;
     if ($id != "") {
         $currentDoc = new_Doc($dbaccess, $id);
         $currentUserTag = $currentDoc->getUTag("document_export_csv");
-        $defaultDocArg = json_decode($currentUserTag->comment, true);
+        if ($currentUserTag) $defaultDocArg = json_decode($currentUserTag->comment, true);
     }
     
     $refresh = $usage->addOption("refresh", "would you refresh doc before build report", array(
@@ -165,6 +165,9 @@ function report_export_csv(Action & $action)
     } else {
         
         $reportFamId = getIdFromName($dbaccess, "REPORT");
+        /**
+         * @var _REPORT $currentDoc
+         */
         $familyIdArray = $currentDoc->getFromDoc();
         
         if (in_array($reportFamId, $familyIdArray)) {
@@ -181,19 +184,20 @@ function report_export_csv(Action & $action)
             $fp = fopen($csvFile, 'w');
             
             foreach ($csvStruct as $currentLine) {
+                $encoding = $argumentsCSV["encoding"];
                 if ($encoding != "utf8") {
-                    $currentLine = convertLine($currentLine, $argumentsCSV["encoding"]);
+                    $currentLine = convertLine($currentLine, $encoding);
                 }
                 fputcsv($fp, $currentLine, $argumentsCSV["delimiter"], $argumentsCSV["enclosure"]);
             }
             
             fclose($fp);
             
-            if (!$_SERVER['HTTP_HOST']) {
+            if (empty($_SERVER['HTTP_HOST'])) {
                 $handle = fopen($csvFile, 'r');
                 $content = fread($handle, filesize($csvFile));
                 fclose($handle);
-                $action->lay->noParse = true;
+                $action->lay->noparse = true;
                 $action->lay->template = $content;
             } else {
                 $fileName = sprintf("%s_%s.%s", $currentDoc->getTitle() , date("Y_m_d-H_m_s") , "csv");

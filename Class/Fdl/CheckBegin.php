@@ -25,10 +25,10 @@ class CheckBegin extends CheckData
     {
         
         $this->parentName = $data[1];
-        $this->famId = $data[3];
-        $this->famTitle = $data[2];
-        $this->famClass = $data[4];
-        $this->famName = $data[5];
+        $this->famId = isset($data[3]) ? $data[3] : 0;
+        $this->famTitle = isset($data[2]) ? $data[2] : null;
+        $this->famClass = isset($data[4]) ? $data[4] : null;
+        $this->famName = isset($data[5]) ? $data[5] : '';
         $this->checkName();
         $this->checkInheritance();
         $this->checkTitle();

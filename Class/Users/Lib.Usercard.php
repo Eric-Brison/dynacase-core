@@ -42,7 +42,8 @@ function refreshGroups($groupIdList, $refresh = false, &$currentPath = array() ,
         $parentGroupIdList = $wg->getParentsGroupId($groupId);
         // Compute depth of current group and recursively compute depth on parent groups
         array_push($currentPath, $groupId);
-        $groupDepth[$groupId] = max($groupDepth[$groupId], count($currentPath));
+        if (isset($groupDepth[$groupId])) $groupDepth[$groupId] = max($groupDepth[$groupId], count($currentPath));
+        else $groupDepth[$groupId] = count($currentPath);
         refreshGroups($parentGroupIdList, $refresh, $currentPath, $groupDepth);
         array_pop($currentPath);
     }

@@ -127,7 +127,7 @@ class importDocumentDescription
             );
             $this->tcr[$this->nLine]["title"] = substr($data[0], 0, 10);
             $data[0] = trim($data[0]);
-            if ($data[12][0] == '|') print_r2('[' . $data[12] . ']' . $buffer . "\n");
+            
             $this->beginLine = 0;
             
             switch ($data[0]) {
@@ -388,7 +388,7 @@ class importDocumentDescription
         if ((count($data) > 3) && ($data[3] != "")) $this->doc->doctype = "S";
         $ferr = '';
         for ($i = $this->beginLine; $i < $this->nLine; $i++) {
-            if ($this->tcr[$i]["err"]) $ferr.= $this->tcr[$i]["err"];
+            if (!empty($this->tcr[$i]["err"])) $ferr.= $this->tcr[$i]["err"];
         }
         if ($ferr == "") {
             $this->doc->modify();
@@ -696,14 +696,16 @@ class importDocumentDescription
     {
         if (!$this->doc) return;
         $data = array_map("trim", $data);
-        
         $check = new CheckMethod();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"]) return;
-        $s1 = $data[1][0];
+        
+        if (!isset($data[1])) $aMethod = null;
+        else $aMethod = $data[1];
+        $s1 = ($aMethod) ? $aMethod[0] : '';
         if (($s1 == "+") || ($s1 == "*")) {
-            if ($s1 == "*") $method = $data[1];
-            else $method = substr($data[1], 1);
+            if ($s1 == "*") $method = $aMethod;
+            else $method = substr($aMethod, 1);
             
             if ($this->doc->methods == "") {
                 $this->doc->methods = $method;
@@ -714,7 +716,7 @@ class importDocumentDescription
                 $tmeth = array_unique($tmeth);
                 $this->doc->methods = implode("\n", $tmeth);
             }
-        } else $this->doc->methods = $data[1];
+        } else $this->doc->methods = $aMethod;
         
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change methods to '%s'") , $this->doc->methods);
         $tmethods = explode("\n", $this->doc->methods);
@@ -768,6 +770,7 @@ class importDocumentDescription
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"]) return;
         
+        if (!isset($data[2])) $data[2] = '';
         $attrid = trim(strtolower($data[1]));
         $defv = str_replace(array(
             '\n',
@@ -780,9 +783,10 @@ class importDocumentDescription
             //,'\\\\'
             
         ) , $data[2]);
-        $force = (str_replace(" ", "", trim(strtolower($data[3]))) == "force=yes");
+        $opt = (isset($data[3])) ? trim(strtolower($data[3])) : null;
+        $force = (str_replace(" ", "", $opt) == "force=yes");
         $ownDef = $this->doc->getOwnDefValues();
-        if ($ownDef[$attrid] && (!$force)) {
+        if ((!empty($ownDef[$attrid])) && (!$force)) {
             // reset default
             $this->tcr[$this->nLine]["msg"] = sprintf("keep default value %s : %s. No use %s", $attrid, $ownDef[$attrid], $data[2]);
         } else {

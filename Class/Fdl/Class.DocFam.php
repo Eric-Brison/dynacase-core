@@ -77,7 +77,8 @@ create unique index idx_idfam on docfam(id);";
     public $configuration;
     public $tagable;
     private $_configuration;
-    
+    private $_xtdefval; // dynamic used by ::getParams()
+    private $_xtparam; // dynamic used by ::getDefValues()
     private $defaultSortProperties = array(
         'owner' => array(
             'sort' => 'no',
@@ -507,7 +508,7 @@ create unique index idx_idfam on docfam(id);";
         if (!isset($this->$tval)) $this->getXValues($X);
         
         $tval2 = $this->$tval;
-        $v = $tval2[strtolower($idp) ];
+        $v = isset($tval2[strtolower($idp) ]) ? $tval2[strtolower($idp) ] : '';
         if ($v == "-") return $def;
         if ($v != "") return $v;
         return $def;

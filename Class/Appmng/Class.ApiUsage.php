@@ -25,9 +25,9 @@
  $usage->verify();
  * @endcode
  */
-define("THROW_EXITHELP", 1988);
 class ApiUsage
 {
+    const THROW_EXITHELP = 1988;
     /**
      * usage text
      *
@@ -128,6 +128,7 @@ class ApiUsage
         $this->needArgs[] = array(
             "name" => $argName,
             "def" => $argDefinition,
+            "default" => null,
             "restriction" => $restriction
         );
         return $this->action->getArgument($argName);
@@ -164,7 +165,9 @@ class ApiUsage
     {
         $this->emptyArgs[] = array(
             "name" => $argName,
-            "def" => $argDefinition
+            "def" => $argDefinition,
+            "default" => null,
+            "restriction" => null
         );
         return $this->action->getArgument($argName, false);
     }
@@ -222,14 +225,14 @@ class ApiUsage
         $usage = $this->getUsage();
         
         if ((!$this->useException)) {
-            if ($_SERVER['HTTP_HOST'] != "") {
+            if (!empty($_SERVER['HTTP_HOST'])) {
                 $usage = str_replace('--', '&', $usage);
                 $error.= '<pre>' . htmlspecialchars($usage) . '</pre>';
             } else {
                 $error.= $usage;
             }
             if ($this->action->getArgument("help") == true) {
-                throw new Exception($usage, THROW_EXITHELP);
+                throw new Exception($usage, self::THROW_EXITHELP);
             }
             $this->action->exitError($error);
         } else {

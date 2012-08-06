@@ -26,7 +26,10 @@ class importSingleDocument
     protected $policy = 'add';
     protected $orders = array();
     protected $preValues = array();
-    protected $keys = array();
+    protected $keys = array(
+        'title',
+        null
+    );
     protected $tcr = array();
     protected $error = array();
     public $dbaccess = '';
@@ -87,6 +90,7 @@ class importSingleDocument
     public function setKey(array $keys)
     {
         $this->keys = $keys;
+        if (!isset($this->keys[1])) $this->keys[1] = null;
     }
     
     public function getError()
@@ -152,9 +156,9 @@ class importSingleDocument
         // like : DOC;120;...
         $err = "";
         
-        $this->famId = trim($data[1]);
-        $this->specId = trim($data[2]);
-        $this->folderId = trim($data[3]);
+        $this->famId = isset($data[1]) ? trim($data[1]) : '';
+        $this->specId = isset($data[2]) ? trim($data[2]) : '';
+        $this->folderId = isset($data[3]) ? trim($data[3]) : '';
         
         if (is_numeric($this->famId)) $fromid = $this->famId;
         else $fromid = getFamIdFromName($this->dbaccess, $this->famId);

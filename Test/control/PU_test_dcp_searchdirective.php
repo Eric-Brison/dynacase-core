@@ -107,7 +107,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            if ($expectedDocName[$index]) {
+            if (!empty($expectedDocName[$index])) {
                 $this->assertEquals($expectedDocName[$index], $doc->name);
             }
             $index++;

@@ -164,7 +164,7 @@ class _IGROUPUSER extends Doc
             }
         }
         if (!$groups) $groups = array();
-        $iconGroup=$this->getIcon('',14);
+        $iconGroup = $this->getIcon('', 14);
         if ($mgroups) {
             foreach ($mgroups as $k => $v) {
                 $cgroup = $this->_getChildsGroup($v["id"], $groups);
@@ -173,7 +173,7 @@ class _IGROUPUSER extends Doc
                 $fid = $v["fid"];
                 if ($fid) {
                     $tdoc = getTDoc($this->dbaccess, $fid);
-                    $icon = $this->getIcon($tdoc["icon"],14);
+                    $icon = $this->getIcon($tdoc["icon"], 14);
                     $tgroup[$k]["icon"] = $icon;
                 } else {
                     $tgroup[$k]["icon"] = $iconGroup;
@@ -242,7 +242,7 @@ class _IGROUPUSER extends Doc
         
         global $_POST;
         $err = '';
-        $gidnew = $_POST["gidnew"];
+        $gidnew = isset($_POST["gidnew"]) ? $_POST["gidnew"] : '';
         $tgid = array(); // group ids will be modified
         if ($gidnew == "Y") {
             /**

@@ -51,6 +51,7 @@ function getOnefamMenu($onefam, $famid, $defaultMenu)
     if (!$onefamMenu) return $defaultMenu;
     $confOnefam = json_decode($onefamMenu, true);
     $famName = getNameFromId(getDbAccess() , $famid);
+    if (!isset($confOnefam["families"][$famName])) return $defaultMenu;
     $specMenu = $confOnefam["families"][$famName];
     if (!$specMenu) return $defaultMenu;
     $standardMenu = $specMenu["standardMenu"];
@@ -80,7 +81,7 @@ function getOnefamMenu($onefam, $famid, $defaultMenu)
     $customMenu = $specMenu["customMenu"];
     if (is_array($customMenu)) {
         foreach ($customMenu as $kc => $cMenu) {
-            if ($cMenu["before"]) {
+            if (!empty($cMenu["before"])) {
                 $tmpMenu = array();
                 foreach ($defaultMenu as $kd => $dMenu) {
                     if ($kd == $cMenu["before"]) {
@@ -104,20 +105,20 @@ function objectMenu2Html(array $menulist, $ul = true, $level = 0)
     $s = '';
     if ($ul) $s = '<ul>';
     foreach ($menulist as $k => $aMenu) {
-        if ($aMenu["items"]) {
+        if (!empty($aMenu["items"])) {
             $attrs = '';
             foreach ($aMenu as $ki => $item) {
                 if ($ki != "items" && $ki != "label") {
                     $attrs.= sprintf(' %s="%s" ', $ki, $item);
                 }
             }
-            if ($aMenu["label"]) $label=_($aMenu["label"]);
-            else $label='';
+            if ($aMenu["label"]) $label = _($aMenu["label"]);
+            else $label = '';
             $s.= sprintf('<li><a href="#%s"%s>%s</a>', $k, $attrs, mb_ucfirst($label));
             
             $s.= objectMenu2Html($aMenu["items"], true, $level + 1);
         } else {
-            $noanchor = (!$aMenu["url"]) && (!$aMenu["href"]);
+            $noanchor = (empty($aMenu["url"])) && (empty($aMenu["href"]));
             $s.= "\n<li";
             
             $s.= " level=\"$level\" ";
@@ -130,9 +131,9 @@ function objectMenu2Html(array $menulist, $ul = true, $level = 0)
             foreach ($aMenu as $ki => $item) {
                 if ($ki != "label") $s.= sprintf(' %s="%s" ', $ki, $item);
             }
-            $s.='>';
+            $s.= '>';
             if ($aMenu["label"]) $s.= mb_ucfirst(_($aMenu["label"]));
-
+            
             if (!$noanchor) $s.= "</a> ";
             if ($level == 0) $s.= '</div>';
         }

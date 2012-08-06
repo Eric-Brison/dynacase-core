@@ -405,7 +405,10 @@ class CheckAttr extends CheckData
             ) , '-', $phpFunc); // to replace dot & comma separators
             $topt = explode(",", $enums);
             foreach ($topt as $opt) {
-                list($enumKey, $enumLabel) = explode("|", $opt, 2);
+                if (strpos($opt, '|') === false) {
+                    $enumKey = $opt;
+                    $enumLabel = null;
+                } else list($enumKey, $enumLabel) = explode("|", $opt, 2);
                 if ($enumKey === '') {
                     $this->addError(ErrorCode::getError('ATTR1271', $opt, $this->attrid));
                 } elseif (!preg_match('/^[\x20-\x7E]+$/', $enumKey)) {
@@ -504,7 +507,10 @@ class CheckAttr extends CheckData
         if ($options) {
             $topt = explode("|", $options);
             foreach ($topt as $opt) {
-                list($optName, $optValue) = explode("=", $opt, 2);
+                if (strpos($opt, '=') === false) {
+                    $optName = $opt;
+                    $optValue = null;
+                } else list($optName, $optValue) = explode("=", $opt, 2);
                 if (!preg_match('/^[a-z]{1,63}$/', $optName)) {
                     $this->addError(ErrorCode::getError('ATTR1500', $optName, $this->attrid));
                 } else if ($optValue === null) {
@@ -613,8 +619,8 @@ class StructAttribute
     {
         $cid = 1;
         foreach ($this->dataOrder as $key) {
-            if ($key == 'phpfunc') $this->$key = $data[$cid];
-            else $this->$key = trim($data[$cid]);
+            if ($key == 'phpfunc') $this->$key = isset($data[$cid]) ? $data[$cid] : '';
+            else $this->$key = isset($data[$cid]) ? trim($data[$cid]) : '';
             $cid++;
         }
     }

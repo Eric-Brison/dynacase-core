@@ -59,9 +59,9 @@ function inputattribute(&$action)
         $needed = "N";
         $isInTitle = false;
         $isInAbstract = false;
-        $fieldSet = $doc->attr["FIELD_HIDDENS"];
+        $fieldSet = null;
         
-        if (!$phpfunc) $phpfunc = "::getTitle($id_$attrid):$attrid";
+        if (!$phpfunc) $phpfunc = "::getTitle(id_$attrid):$attrid";
         $elink = "";
         $phpconstraint = "";
         $usefor = "";
@@ -83,7 +83,7 @@ function inputattribute(&$action)
         $isInAbstract = false;
         $phpfile = "fdl.php";
         $phpfunc = "lfamily(D,$famid,$attrid):id_$attrid,$attrid";
-        $fieldSet = $doc->attr["FIELD_HIDDENS"];
+        $fieldSet = null;
         $elink = "";
         $phpconstraint = "";
         $usefor = "";
@@ -92,9 +92,9 @@ function inputattribute(&$action)
         if ($esize) $options.= "|esize=$esize";
         $oattr = new NormalAttribute($attrid, $doc->id, $label, "text", $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, $fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint, $usefor, $eformat, $options);
         
-        $doc->attr[$oattr1->id] = $oattr1;
+        $doc->attributes->attr[$oattr1->id] = $oattr1;
         $htmlinput = getHtmlInput($doc, $oattr1, $value, $index, $jsevent, true);
-        $doc->attr[$oattr->id] = $oattr;
+        $doc->attributes->attr[$oattr->id] = $oattr;
     } else {
         
         $format = "";
@@ -111,7 +111,7 @@ function inputattribute(&$action)
         $needed = "N";
         $isInTitle = false;
         $isInAbstract = false;
-        $fieldSet = $doc->attr["FIELD_HIDDENS"];
+        $fieldSet = null;
         
         $elink = "";
         $phpconstraint = "";
@@ -120,7 +120,7 @@ function inputattribute(&$action)
         if (!$options) $options = "elabel=" . ($label);
         if ($esize) $options.= "|esize=$esize";
         $oattr = new NormalAttribute($attrid, $doc->id, $label, $type, $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, $fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint, $usefor, $eformat, $options);
-        $doc->attr[$attrid] = $oattr;
+        $doc->attributes->attr[$attrid] = $oattr;
     }
 
     $htmlinput.= getHtmlInput($doc, $oattr, $value, $index, $jsevent, true);

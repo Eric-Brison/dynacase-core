@@ -143,9 +143,9 @@ class _ROLE extends Doc
     {
         if ($nocache) {
             unset($this->sysRole); // needed for reaffect new values
-            
+            $this->sysRole = null;
         }
-        if (!$this->sysRole) {
+        if (empty($this->sysRole)) {
             $wid = $this->getValue("us_whatid");
             if ($wid > 0) {
                 $this->sysRole = new Account("", $wid);

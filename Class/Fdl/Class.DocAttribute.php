@@ -33,6 +33,7 @@ class BasicAttribute
     public $type; // text, longtext, date, file, ...
     public $usefor; // = Q if parameters.
     public $ordered; // order to place attributes
+    public $format; // subtype
     
     /**
      * @var FieldSetAttribute field set object
@@ -81,15 +82,18 @@ class BasicAttribute
             $topt = explode("|", $this->options);
             $this->_topt = array();
             foreach ($topt as $k => $v) {
-                list($vn, $vv) = explode("=", $v, 2);
-                $this->_topt[$vn] = $vv;
+                if ($v) {
+                    list($vn, $vv) = explode("=", $v, 2);
+                    $this->_topt[$vn] = $vv;
+                }
             }
         }
         $r = $this->docname . '#' . $this->id . '#' . $x;
         $i = _($r);
         if ($i != $r) return $i;
-        $v = $this->_topt[$x];
-        return ($v ? $v : $def);
+        
+        $v = empty($this->_topt[$x]) ? $def : $this->_topt[$x];
+        return $v;
     }
     /**
      * Return all value of options
@@ -177,7 +181,7 @@ class BasicAttribute
     function inArray()
     {
         if (get_class($this) == "NormalAttribute") {
-            if ($this->fieldSet->type == "array") return true;
+            if ($this->fieldSet && $this->fieldSet->type == "array") return true;
         }
         return false;
     }
@@ -192,8 +196,9 @@ class BasicAttribute
     }
     /**
      * Get tab ancestor
+     * false if not found
      *
-     * @return FieldSetAttribute
+     * @return FieldSetAttribute|bool
      */
     function getTab()
     {
@@ -1314,13 +1319,13 @@ class NormalAttribute extends BasicAttribute
         /**
          * Constructor
          *
-         * @param string $id logical name
-         * @param $id $docid famid
+         * @param string $id $docid famid
+         * @param string $docid
          * @param string $label default translation key
          * @param string $visibility visibility option
          * @param string $usefor Attr or Param usage
          * @param string $type kind of
-         * @param FieldSetAttribute &$fieldSet parent field
+         * @param FieldSetAttribute $fieldSet parent field
          * @param string $options option string
          * @param string $docname
          */
