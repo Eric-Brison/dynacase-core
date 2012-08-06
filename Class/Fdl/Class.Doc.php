@@ -1386,6 +1386,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function getParamValue($idp, $def = "")
     {
+        static $_paramValue=array();
         $r = $def;
         if ($this->doctype == 'C') $r = $this->getParamValue($idp, $def);
         else {
@@ -1394,18 +1395,23 @@ create unique index i_docir on doc(initid, revision);";
             if (!$fdoc->isAlive()) $r = false;
             else $r = $fdoc->getParamValue($idp, $def);
         }
+        if ($_paramValue[$idp]!==null) return $_paramValue[$idp];
         /**
          * @var NormalAttribute $paramAttr
          */
         $paramAttr = $this->getAttribute($idp);
         if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "") {
+            $_paramValue[$idp]=$r;
             $val = $this->getValueMethod($paramAttr->phpfunc);
             if ($val != $paramAttr->phpfunc) {
                 $r = $val;
             }
         } else if ($r) {
+            $_paramValue[$idp]=$r;
             $r = $this->getValueMethod($r, $r);
+
         }
+        $_paramValue[$idp]=$r;
         return $r;
     }
     /**
@@ -3717,7 +3723,9 @@ create unique index i_docir on doc(initid, revision);";
                                             $pas = $this->_val2array($this->getParamValue($input->name));
                                             if ($index == - 1) $args[$ki] = $pas;
                                             else $args[$ki] = $pas[$index];
-                                        } else $args[$ki] = $this->getParamValue($input->name);
+                                        } else {
+                                            $args[$ki] = $this->getParamValue($input->name);
+                                        }
                                     } else {
                                         if ($attr->inArray()) $args[$ki] = $this->getTValue($input->name, "", $index);
                                         else $args[$ki] = $this->GetValue($input->name);
