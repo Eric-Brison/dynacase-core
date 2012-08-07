@@ -6,7 +6,7 @@
 */
 
 include_once ("FDL/Class.Dir.php");
-include_once ("FDL/editutil.php");
+include_once ("FDL/editcard.php");
 /**
  * Compose family parameter edit field
  * @param Action $action
