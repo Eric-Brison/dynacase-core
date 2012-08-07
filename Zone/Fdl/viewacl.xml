@@ -55,12 +55,12 @@ function disableAccess(submit) {
 
                 <TD align="center">
 
-                    <img src="Images/[imgacl]"></img>
+                    <img src="Images/[imgacl]"/>
 
                 </TD>[IFNOT readonly]
                 <TD align="center">
                     <input align="top" type="checkbox" name="aclup[[iacl]]" value="[aclid]"
-                    [selectedup] ">
+                    [selectedup] >
                 </TD>[ENDIF readonly]
 
                 <TD title="[acldesc]">[aclname]</TD>

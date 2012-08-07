@@ -52,20 +52,15 @@ function freedom_modaccess(Action & $action)
                 $userid
             ));
             
-            $before[$userid] = array(
-                $perm->upacl
-            );
-            $perm->UnsetControl();
-            $perm->modify();
+            $before[$userid] = getUserAclNames($doc, $userid);
             
+            $doc->removeControl($userid);
             foreach ($aclon as $k => $aclName) {
                 
                 $doc->addControl($userid, $aclName);
             }
             
-            $after[$userid] = array(
-                $perm->upacl
-            );
+            $after[$userid] = getUserAclNames($doc, $userid);
         }
         if ($err != "") $action->exitError($err);
         
@@ -104,29 +99,35 @@ function freedom_modaccess(Action & $action)
             $posacls[$k] = $v["pos"];
         }
         
-        foreach ($before as $k => $v) {
-            $a = $after[$k][0];
-            $b = $before[$k][0];
-            if ($b != $a) {
-                $tadd = array();
-                $tdel = array();
-                foreach ($doc->acls as $acl) {
-                    $pos = $posacls[$acl];
-                    
-                    $a0 = ($a & (1 << $pos));
-                    $b0 = ($b & (1 << $pos));
-                    if ($a0 != $b0) {
-                        if ($a0) $tadd[] = $acl;
-                        else $tdel[] = $acl;
-                    }
+        foreach ($before as $uid => $acls) {
+            
+            $tadd = array();
+            $tdel = array();
+            foreach ($acls as $aclName => $granted) {
+                if (($before[$uid][$aclName] === true) && ($after[$uid][$aclName] === false)) {
+                    $tdel[] = $aclName;
+                } elseif (($before[$uid][$aclName] === false) && ($after[$uid][$aclName] === true)) {
+                    $tadd[] = $aclName;
                 }
-                
-                if (count($tadd) > 0) $tc[] = sprintf(_("Add acl %s for %s") , implode(", ", $tadd) , $tuname[$k]);
-                if (count($tdel) > 0) $tc[] = sprintf(_("Delete acl %s for %s") , implode(", ", $tdel) , $tuname[$k]);
             }
+            
+            if (count($tadd) > 0) $tc[] = sprintf(_("Add acl %s for %s") , implode(", ", $tadd) , $tuname[$uid]);
+            if (count($tdel) > 0) $tc[] = sprintf(_("Delete acl %s for %s") , implode(", ", $tdel) , $tuname[$uid]);
         }
         if (count($tc) > 0) $doc->addComment(sprintf(_("Change control :\n %s") , implode("\n", $tc)));
     }
     redirect($action, "FREEDOM", sprintf("FREEDOM_GACCESS&id=%s&allgreen=%s&group=%s", $docid, $action->getArgument("allgreen", "N") , $action->getArgument("group", "N")));
+}
+
+function getUserAclNames(Doc & $doc, $userid)
+{
+    $uperm = DocPerm::getUperm($doc->id, $userid, true);
+    $doc->userid = $userid;
+    $grant = array();
+    foreach ($doc->acls as $aclName) {
+        if ($doc->isExtendedAcl($aclName)) $grant[$aclName] = ($doc->controlExtId($doc->id, $aclName, true) == '');
+        else $grant[$aclName] = ($doc->controlUp($uperm, $aclName) == '');
+    }
+    return ($grant);
 }
 ?>

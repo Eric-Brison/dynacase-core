@@ -28,7 +28,7 @@ function modacl(Action & $action)
     $usage = new ActionUsage($action);
     $usage->setText("modify document acl");
     $userid = $usage->addNeeded("userid", "user identificator");
-    $aclp = $usage->addNeeded("aclup", "user identificator");
+    $aclp = $usage->addOption("aclup", "acls to add");
     $docid = $usage->addNeeded("docid", "profil identificator");
     /**
      * @var array $aclp
