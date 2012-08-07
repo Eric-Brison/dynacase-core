@@ -511,7 +511,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
                 $submenu = ($count[$v["typeview"]] > 1) ? $v["typeview"] : "";
             }
             $mtitle = $v["txtview"];
-            if ($defaultview && $defaultview["cv_idview"] !== $v["idview"]) {
+            if ((!$defaultview) || $defaultview["cv_idview"] !== $v["idview"]) {
                 $tlink[$v["idview"]] = array(
                     "descr" => $mtitle,
                     "url" => $url,

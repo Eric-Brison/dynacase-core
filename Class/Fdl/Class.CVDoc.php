@@ -180,10 +180,13 @@ class CVDoc extends Doc
                     $err = $pdoc->Add();
                     if ($err != "") return "CVDoc::Control:" . $err; // can't create profil
                     $pdoc->setProfil($this->profid, $this->doc);
-                    $pdoc->dacls = $this->dacls;
+                    
+                    $pdoc->acls = $this->acls;
+                    $pdoc->extendedAcls = $this->extendedAcls;
                     
                     $this->pdoc = & $pdoc;
                 }
+                
                 $err = $this->pdoc->docControl($aclname, $strict);
             }
         }
