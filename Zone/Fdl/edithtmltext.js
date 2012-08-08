@@ -101,8 +101,8 @@ window.htmlText.defaultOption.prototype = {
     font_names:'serif;sans-serif;cursive;fantasy;monospace',
     removePlugins:'elementspath',
     extraPlugins:'quicksave',
-    filebrowserImageBrowseUrl:'../../?sole=Y&app=FDL&action=CKIMAGE',
-    filebrowserImageUploadUrl:'../../?sole=Y&app=FDL&action=CKUPLOAD',
+    filebrowserImageBrowseUrl:'?sole=Y&app=FDL&action=CKIMAGE',
+    filebrowserImageUploadUrl:'?sole=Y&app=FDL&action=CKUPLOAD',
     blockedKeystrokes:[
         CKEDITOR.CTRL + 66 /*B*/,
         CKEDITOR.CTRL + 73 /*I*/,

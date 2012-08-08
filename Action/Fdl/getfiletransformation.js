@@ -9,7 +9,7 @@ var XHR_TID;
 
 var BEGDATEPDF=new Date();
 function verifytid(tid) {
-  var corestandurl=window.location.pathname+'?sole=Y';
+  var corestandurl='?sole=Y';
   // branch for native XMLHttpRequest object
   if (window.XMLHttpRequest) {
     XHR_TID = new XMLHttpRequest(); 

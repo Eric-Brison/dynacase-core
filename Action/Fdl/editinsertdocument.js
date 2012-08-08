@@ -7,7 +7,7 @@
 
 
 function fdl_searchDocs(event,uname,where,famid) {
-  var corestandurl=window.location.pathname+'?sole=Y&';
+  var corestandurl='?sole=Y&';
   enableSynchro();
 
   requestUrlSend(where,corestandurl+'app=FDL&action=SEARCHDOCUMENT&famid='+famid+'&key='+uname+'&noids='+fdl_implodeInputKeyValues('uchange'))

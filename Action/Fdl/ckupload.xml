@@ -4,6 +4,6 @@
 if ('[err]'!='') {
 	alert('[err]');
 } else {
-	window.parent.CKEDITOR.tools.callFunction([FUNCNUM], window.location.pathname+"?sole=A&app=FDL&action=EXPORTFILE&cache=no&docid=[docid]&attrid=img_file&index=-1", "[title]");
+	window.parent.CKEDITOR.tools.callFunction([FUNCNUM], "?sole=A&app=FDL&action=EXPORTFILE&cache=no&docid=[docid]&attrid=img_file&index=-1", "[title]");
 }
 </script>
