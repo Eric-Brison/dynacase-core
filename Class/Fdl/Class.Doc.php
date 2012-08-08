@@ -6029,6 +6029,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             /**
              * write layout for thumb view
+             * @templateController
              */
             function viewthumbcard($target = "finfo", $ulink = true, $abstract = true)
             {
@@ -6041,6 +6042,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             /**
              *  layout for view answers
+             * @templateController
              */
             function viewanswers($target = "finfo", $ulink = true, $abstract = true)
             {
