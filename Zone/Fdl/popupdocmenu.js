@@ -50,7 +50,7 @@ function viewdocmenu(event,docid,onlyctrl,upobject,sourceobject, barmenu) {
   if (!event) event=POPMENUINPROGRESSEVENT;
 
   POPMENUINPROGRESSELT=false;
-  var corestandurl=window.location.pathname+'?sole=Y&';
+  var corestandurl='?';
   var menuapp=MENUAPP;
   var menuaction=MENUACTION;
   var menuopt='';
@@ -73,7 +73,7 @@ function viewdocmenu(event,docid,onlyctrl,upobject,sourceobject, barmenu) {
 
 function viewdocsubmenu(event,docid,submenu,upobject, barmenu) {
   POPMENUINPROGRESSELT=false;
-  var corestandurl=window.location.pathname+'?sole=Y&';
+  var corestandurl='?sole=Y&';
   var menuapp=MENUAPP;
   var menuaction=MENUACTION;
   var menuopt='';

@@ -6,7 +6,7 @@
 
 function setparamu(appname,parname,parval) {
   var r;
-  var corestandurl=window.location.pathname+'?sole=Y';
+  var corestandurl='?sole=Y';
   // branch for native XMLHttpRequest object
   if (window.XMLHttpRequest) {
     r = new XMLHttpRequest(); 

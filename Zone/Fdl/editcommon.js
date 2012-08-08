@@ -1198,7 +1198,7 @@ function addEnum(th,cible,docid,attrid,key,index) {
             if (trim(key.value)=='') {
                 alert('[TEXT:Item cannot be empty]');
             } else {
-                var corestandurl=window.location.pathname+'?sole=Y';
+                var corestandurl='?sole=Y';
                 var url=corestandurl+'&app=FDL&action=ADDENUMITEM&docid='+docid+'&aid='+attrid+'&index='+index+'&key='+key.value;
                 enableSynchro();
                 requestUrlSend(cible.parentNode,url);
@@ -1230,7 +1230,7 @@ function unselectInput(id) {
 }
 function autoUnlock(docid) {
   var r;
-  var corestandurl=window.location.pathname+'?sole=Y';
+  var corestandurl='?sole=Y';
   // branch for native XMLHttpRequest object
   if (window.XMLHttpRequest) {
     r = new XMLHttpRequest();

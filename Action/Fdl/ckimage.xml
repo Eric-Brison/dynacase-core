@@ -1,7 +1,7 @@
 [ZONE FDL:HTMLHEAD]
 <script>
 function SelectFile(src) {
-  window.opener.CKEDITOR.tools.callFunction([FUNCNUM], window.location.pathname+src ) ;
+  window.opener.CKEDITOR.tools.callFunction([FUNCNUM], src ) ;
   window.close();
 }
 try {

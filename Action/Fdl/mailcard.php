@@ -289,7 +289,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                 $baseurl = $url;
                 $absurl = $action->GetParam("CORE_URLINDEX");
             } else {
-                $absurl = $action->GetParam("CORE_ABSURL") . "/";
+                $absurl = $action->GetParam("CORE_ABSURL");
                 $baseurl = $action->GetParam("CORE_ABSURL");
             }
             

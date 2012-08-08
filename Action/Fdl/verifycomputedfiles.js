@@ -7,7 +7,7 @@
 var XHT_FILES;
 
 function verifycomputedfiles(docid) {
-  var corestandurl=window.location.pathname+'?sole=Y';
+  var corestandurl='?sole=Y';
   // branch for native XMLHttpRequest object
   if (window.XMLHttpRequest) {
     XHT_FILES = new XMLHttpRequest(); 

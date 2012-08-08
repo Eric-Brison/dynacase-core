@@ -96,8 +96,8 @@ if ($absindex == '') {
     $absindex = "$puburl/"; // try default
     
 }
-if ($absindex) $core->SetVolatileParam("CORE_EXTERNURL", $absindex);
-else $core->SetVolatileParam("CORE_EXTERNURL", $puburl . "/");
+if ($absindex) $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($absindex));
+else $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($puburl . "/"));
 
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl . "/"); // absolute links

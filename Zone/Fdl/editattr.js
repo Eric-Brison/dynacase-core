@@ -13,7 +13,7 @@ var DIVATTR=document.createElement("span");
 var CINPUTDOCID=false; // current docid
 
 var INPUTCHANGED=false;
-var corestandurl=window.location.pathname+'?sole=Y';
+var corestandurl='?sole=Y';
 
 function reqEditAttr() {
   INPROGRESSATTR=false; 

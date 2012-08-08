@@ -89,7 +89,7 @@ function forum_cancelEdit(event) {
 
 function forum_saveEdit(event) {
 
-  var corestandurl=window.location.pathname+'?sole=Y&';
+  var corestandurl='?sole=Y&';
   enableSynchro();
 
   var docid = document.getElementById('foredit_docid').value;
@@ -118,7 +118,7 @@ function forum_delete(event, docid, eid, prev) {
   var cprev = prev;
   if (prev==-1) cprev='X';
 
-  var corestandurl=window.location.pathname+'?sole=Y&';
+  var corestandurl='?sole=Y&';
   var url = corestandurl+'app=FDL&action=FDL_FORUMDELENTRY&docid='+docid+'&eid='+eid+'&start='+prev;
 
   enableSynchro();
