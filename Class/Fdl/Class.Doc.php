@@ -2712,15 +2712,17 @@ create unique index i_docir on doc(initid, revision);";
             $ta = $this->attributes->getArrayElements($a->id);
             
             $max = - 1;
-            $maxdiff = false;
+            $needRepad = false;
             $tValues = array();
             foreach ($ta as $k => $v) { // delete empty end values
                 $tValues[$k] = $this->getTValue($k);
                 if ($deleteLastEmptyRows) {
                     $c = count($tValues[$k]);
                     for ($i = $c - 1; $i >= 0; $i--) {
-                        if ($tValues[$k][$i] === '') unset($tValues[$k][$i]);
-                        else break;
+                        if ($tValues[$k][$i] === '' || $tValues[$k][$i] === null) {
+                            unset($tValues[$k][$i]);
+                            $needRepad = true;
+                        } else break;
                     }
                 }
             }
@@ -2728,18 +2730,23 @@ create unique index i_docir on doc(initid, revision);";
                 $c = count($tValues[$k]);
                 if ($max < 0) $max = $c;
                 else {
-                    if ($c != $max) $maxdiff = true;
+                    if ($c != $max) $needRepad = true;
                     if ($max < $c) $max = $c;
                 }
             }
-            if ($maxdiff) {
+            if ($needRepad) {
+                $oldComplete = $this->_setValueCompleteArrayRow;
+                $this->_setValueCompleteArrayRow = false;
                 foreach ($ta as $k => $v) { // fill uncompleted rows
                     $c = count($tValues[$k]);
                     if ($c < $max) {
                         $nt = array_pad($tValues[$k], $max, "");
                         $err.= $this->setValue($k, $nt);
+                    } else {
+                        $err.= $this->setValue($k, $tValues[$k]);
                     }
                 }
+                $this->_setValueCompleteArrayRow = $oldComplete;
             }
             
             unset($calls[strtolower($idAttr) ]);
