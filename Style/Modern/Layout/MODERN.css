@@ -319,8 +319,7 @@ input[type="image"] {
 */
 
 .document td,.document tr,.document th {
-    padding-left: 0px !important;
-    padding-right: 0px !important;
+
 }
 
 .document th,
