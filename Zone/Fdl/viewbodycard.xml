@@ -3,16 +3,17 @@
 [IF viewtpl]<div class="content" width="100%" cellspacing="0" id="T[frameid]" >[zonetpl]</div>[ENDIF viewtpl]
 [IFNOT viewtpl]<div class="content"><table width="100%" cellspacing="0" id="T[frameid]" >
 <tr class="FREEDOMBack1">
-  <td colspan="2"  height="1px"></td>
+  <td colspan="3"  height="1px"></td>
   <td style="width:1px" rowspan="[rowspan]" align="center" >[BLOCK [IMAGES]]<A href="[imgsrc]" target="[itarget]"><IMG border="0" title="[imgalt]" alt="[imgalt]" align="absbottom" width="[imgwidth]" SRC="[imgthumbsrc]"></A><br>[ENDBLOCK [IMAGES]]</td>
 </tr>
 [BLOCK [TABLEVALUE]]
 <tr  class="[classback]">
-  [IF nonelabel]<td valign="top" colspan="2" class="FREEDOMText" >[value]</td>[ENDIF nonelabel]
+  [IF nonelabel]<td valign="top" colspan="3" class="FREEDOMText" >[value]</td>[ENDIF nonelabel]
   [IF normallabel]
-  <td valign="top"  class="FREEDOMLabel"  width="[wvalue]"><span style="display:[ndisplay]">[name]&nbsp;:&nbsp;</span></td>
+  <td valign="top"  class="FREEDOMLabel"  width="[wvalue]"><span style="display:[ndisplay]">[name]</span></td>
+  <td valign="top" style="width:1px"><span style="display:[ndisplay]">:</span></td>
   <td valign="top" class="FREEDOMText" >[value]</td>[ENDIF normallabel]
-  [IF uplabel]<td valign="top" colspan="2" class="FREEDOMText" ><P style="margin:0px" ><u>[name]</u>&nbsp;:&nbsp;</P><div style="margin-left:20px">[value]</div></td>[ENDIF uplabel]
+  [IF uplabel]<td valign="top" colspan="3" class="FREEDOMText" ><P style="margin:0px" ><u>[name]</u>&nbsp;:&nbsp;</P><div style="margin-left:20px">[value]</div></td>[ENDIF uplabel]
 </tr>
 [ENDBLOCK [TABLEVALUE]]
 </table></div>[ENDIF viewtpl]

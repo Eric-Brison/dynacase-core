@@ -74,6 +74,7 @@ TD.FREEDOMText, .FREEDOMText {
 }
 TD.FREEDOMLabel, .FREEDOMLabel {
   text-align:right;
+  padding-right: 3px;
 }
 TR.FREEDOMOpt TD.FREEDOMLabel {
   color: [CORE_TEXTFGCOLOR];

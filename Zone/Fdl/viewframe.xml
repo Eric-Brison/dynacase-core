@@ -2,17 +2,18 @@
 
 [BLOCK FIELDSET]
 <tr >
-  <td  colspan="3" >
+  <td  colspan="4" >
  <div class="frame" style="cursor:[cursor];">[IF flabel]<div class="legend" onclick="viewornot('T[frameid]')">[flabel]</div>[ENDIF flabel]
 <div class="content"><table id="T[frameid]" cellspacing="0" width="100%" >
-<tr class="FREEDOMBack1"><td colspan="3"  height="1px"></td></tr>
+<tr class="FREEDOMBack1"><td colspan="4"  height="1px"></td></tr>
 [BLOCK FVALUES]
 <tr class="FREEDOMBack1"><td valign="top" >&nbsp;</td>
-[IF nonelabel]<td valign="top" colspan="2" class="FREEDOMText" >[avalue]</td>[ENDIF nonelabel]
+[IF nonelabel]<td valign="top" colspan="3" class="FREEDOMText" >[avalue]</td>[ENDIF nonelabel]
   [IF normallabel]
-  <td valign="top"  class="FREEDOMLabel"  width="[wvalue]"><span style="display:[ndisplay]">[alabel]&nbsp;:&nbsp;</span></td>
+  <td valign="top"  class="FREEDOMLabel"  width="[wvalue]"><span style="display:[ndisplay]">[alabel]</span></td>
+  <td valign="top" style="width:1px"><span style="display:[ndisplay]">:</span></td>
   <td valign="top" class="FREEDOMText" >[avalue]</td>[ENDIF normallabel]
-  [IF uplabel]<td valign="top" colspan="2" class="FREEDOMText" ><P style="margin:0px" ><u>[alabel]</u>&nbsp;:&nbsp;</P><div style="margin-left:20px">[avalue]</div></td>[ENDIF uplabel]
+  [IF uplabel]<td valign="top" colspan="3" class="FREEDOMText" ><P style="margin:0px" ><u>[alabel]</u>&nbsp;:&nbsp;</P><div style="margin-left:20px">[avalue]</div></td>[ENDIF uplabel]
 </tr>
 [ENDBLOCK FVALUES]
 </table></div></div>
