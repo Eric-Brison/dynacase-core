@@ -81,34 +81,33 @@ function extractTar($tar, $untardir, $mime = "")
     $mime = trim(shell_exec(sprintf("file -b %s", escapeshellarg($tar))));
     $mime = substr($mime, 0, strpos($mime, " "));
     
-    if ($status == 0) {
-        switch ($mime) {
-            case "gzip":
-            case "application/x-compressed-tar":
-            case "application/x-gzip":
-                system("/bin/rm -fr " . escapeshellarg($untardir) . "; mkdir -p " . escapeshellarg($untardir) , $status);
-                system("cd " . escapeshellarg($untardir) . " && tar xfz " . escapeshellarg($tar) . " >/dev/null", $status);
-                
-                break;
+    $status = 0;
+    switch ($mime) {
+        case "gzip":
+        case "application/x-compressed-tar":
+        case "application/x-gzip":
+            system("/bin/rm -fr " . escapeshellarg($untardir) . "; mkdir -p " . escapeshellarg($untardir) , $status);
+            system("cd " . escapeshellarg($untardir) . " && tar xfz " . escapeshellarg($tar) . " >/dev/null", $status);
+            
+            break;
 
-            case "bzip2":
-                system("/bin/rm -fr " . escapeshellarg($untardir) . "; mkdir -p " . escapeshellarg($untardir) , $status);
-                system("cd " . escapeshellarg($untardir) . " &&  tar xf " . escapeshellarg($tar) . " --use-compress-program bzip2 >/dev/null", $status);
-                
-                break;
+        case "bzip2":
+            system("/bin/rm -fr " . escapeshellarg($untardir) . "; mkdir -p " . escapeshellarg($untardir) , $status);
+            system("cd " . escapeshellarg($untardir) . " &&  tar xf " . escapeshellarg($tar) . " --use-compress-program bzip2 >/dev/null", $status);
+            
+            break;
 
-            case "Zip":
-            case "application/x-zip-compressed":
-            case "application/x-zip":
-                system("/bin/rm -fr " . escapeshellarg($untardir) . "; mkdir -p " . escapeshellarg($untardir) , $status);
-                system("cd " . escapeshellarg($untardir) . " && unzip " . escapeshellarg($tar) . " >/dev/null", $status);
-                
-                WNGBDirRename($untardir);
-                break;
+        case "Zip":
+        case "application/x-zip-compressed":
+        case "application/x-zip":
+            system("/bin/rm -fr " . escapeshellarg($untardir) . "; mkdir -p " . escapeshellarg($untardir) , $status);
+            system("cd " . escapeshellarg($untardir) . " && unzip " . escapeshellarg($tar) . " >/dev/null", $status);
+            
+            WNGBDirRename($untardir);
+            break;
 
-            default:
-                $status = - 2;
-        }
+        default:
+            $status = - 2;
     }
     return $status;
 }

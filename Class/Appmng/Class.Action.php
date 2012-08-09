@@ -23,7 +23,6 @@ include_once ('Class.QueryDb.php');
 include_once ('Class.Application.php');
 
 define("THROW_EXITERROR", 1968);
-define("THROW_EXITHELP", 1988);
 class Action extends DbObj
 {
     var $fields = array(
@@ -189,7 +188,9 @@ create sequence SEQ_ID_ACTION;
         // Set the hereurl if possible
         $this->url = $this->GetParam("CORE_BASEURL") . "app=" . $this->parent->name . "&action=" . $this->name;
         // Init a log attribute
-        $this->log->loghead = sprintf("%s %s [%d] - ", $this->user->firstname, $this->user->lastname, $this->user->id);
+        if ($this->user) $this->log->loghead = sprintf("%s %s [%d] - ", $this->user->firstname, $this->user->lastname, $this->user->id);
+        else $this->log->loghead = "user not defined - ";
+        
         $this->log->function = $this->name;
         $this->log->application = $this->parent->name;
         return "";
@@ -300,15 +301,14 @@ create sequence SEQ_ID_ACTION;
     function AddLogMsg($msg, $cut = 80)
     {
         if (isset($this->parent)) {
-            return ($this->parent->AddLogMsg($msg, $cut));
+            $this->parent->AddLogMsg($msg, $cut);
         }
-        return '';
     }
     
     function AddWarningMsg($msg)
     {
         if (isset($this->parent)) {
-            return ($this->parent->AddWarningMsg($msg));
+            $this->parent->AddWarningMsg($msg);
         }
         return '';
     }
@@ -523,7 +523,7 @@ create sequence SEQ_ID_ACTION;
      */
     function exitError($texterr)
     {
-        if ($_SERVER['HTTP_HOST'] != "") {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             //      redirect($this,"CORE&sole=Y","ERROR");
             $this->lay = new Layout("CORE/Layout/error.xml", $this);
             $this->lay->set("error", nl2br($texterr));

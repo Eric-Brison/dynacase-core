@@ -229,7 +229,7 @@ class TestDocument extends TestCaseDcpCommonFamily
          * @var \stream $fd
          */
         $fd = @fopen($filePathName, 'r');
-        $this->assertFalse(($fd === false) , sprintf("error openging file '%s': %s", $filePathName, $php_errormsg));
+        $this->assertFalse(($fd === false) , sprintf("error openging file '%s': %s", $filePathName, isset($php_errormsg) ? $php_errormsg : ''));
         
         $doc = new_doc(self::$dbaccess, $docId);
         $this->assertTrue($doc->isAlive() , sprintf("could not get document with id '%s'", $docId));

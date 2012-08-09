@@ -189,15 +189,20 @@ function generic_list(&$action)
     $action->lay->set("tkey", str_replace('"', '&quot;', getDefUKey($action)));
 }
 
-function generic_viewmode(&$action, $famid)
+function generic_viewmode(Action & $action, $famid)
 {
     $prefview = getHttpVars("gview");
     
     $tmode = explode(",", $action->getParam("GENE_VIEWMODE"));
     // explode parameters
-    while (list($k, $v) = each($tmode)) {
-        list($fid, $vmode) = explode("|", $v);
-        $tview[$fid] = $vmode;
+    $tview = array();
+    $tview[$famid] = '';
+    foreach ($tmode as $v) {
+        if ($v) {
+            list($fid, $vmode) = explode("|", $v);
+            $tview[$fid] = $vmode;
+        }
+
     }
     switch ($prefview) {
         case "column":

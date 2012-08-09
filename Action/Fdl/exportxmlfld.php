@@ -25,12 +25,12 @@ include_once ("FDL/Class.SearchDoc.php");
 /**
  * Exportation as xml of documents from folder or searches
  * @param Action &$action current action
- * @global fldid Http var : folder identificator to export
- * @global wfile Http var : (Y|N) if Y export attached file export format will be tgz
- * @global flat Http var : (Y|N) if Y specid column is set with identificator of document
- * @global eformat Http var :  (X|Y) I:  Y: only one xml, X: zip by document with files
- * @global log Http var :  log file output
- * @global selection Http var :  JSON document selection object
+ * @global string $fldid Http var : folder identificator to export
+ * @global string $wfile Http var : (Y|N) if Y export attached file export format will be tgz
+ * @global string $flat Http var : (Y|N) if Y specid column is set with identificator of document
+ * @global string $eformat Http var :  (X|Y) I:  Y: only one xml, X: zip by document with files
+ * @global string $log Http var :  log file output
+ * @global string $selection Http var :  JSON document selection object
  * @param string $afldid folder identificator to export
  * @param string $famid restrict to specific family for folder
  * @param SearchDoc $specSearch use this search instead folder
@@ -93,6 +93,7 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
         }
     }
     // set the export's search
+    $exportname = '';
     if ($specSearch) {
         $s = $specSearch;
         $s->setObjectReturn();
@@ -170,6 +171,9 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
             $count++;
             if ($flog) fputs($flog, sprintf("EXPORT DOC OK : <%s> [%d]\n", $doc->getTitle() , $doc->id));
             if (!isset($xsd[$doc->fromid])) {
+                /**
+                 * @var DocFam $fam
+                 */
                 $fam = new_doc($dbaccess, $doc->fromid);
                 $fname = sprintf("%s/%s.xsd", $foutdir, strtolower($fam->name));
                 file_put_contents($fname, $fam->getXmlSchema());
@@ -201,7 +205,7 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
         
         $fh = fopen($xmlfile, 'x');
         if ($fh === false) {
-            return exportExit($action, sprintf("%s (Error creating file '%s')", _("Xml file cannot be created") , htmlspecialchars($xmlfile)));
+            exportExit($action, sprintf("%s (Error creating file '%s')", _("Xml file cannot be created") , htmlspecialchars($xmlfile)));
         }
         /* Print XML header */
         $xml_head = <<<EOF
@@ -214,7 +218,7 @@ EOF;
         
         $ret = fwrite($fh, $xml_head);
         if ($ret === false) {
-            return exportExit($action, sprintf("%s (Error writing to file '%s')", _("Xml file cannot be created") , htmlspecialchars($xmlfile)));
+            exportExit($action, sprintf("%s (Error writing to file '%s')", _("Xml file cannot be created") , htmlspecialchars($xmlfile)));
         }
         fflush($fh);
         /* chdir into dir containing the XML files
@@ -223,7 +227,7 @@ EOF;
         $cwd = getcwd();
         $ret = chdir($foutdir);
         if ($ret === false) {
-            return exportExit($action, sprintf("%s (Error chdir to '%s')", _("Xml file cannot be created") , htmlspecialchars($foutdir)));
+            exportExit($action, sprintf("%s (Error chdir to '%s')", _("Xml file cannot be created") , htmlspecialchars($foutdir)));
         }
         
         if ($s->count() > 0) {
@@ -233,17 +237,17 @@ EOF;
         
         $ret = chdir($cwd);
         if ($ret === false) {
-            return exportExit($action, sprintf("%s (Error chdir to '%s')", _("Xml file cannot be created") , htmlspecialchars($cwd)));
+            exportExit($action, sprintf("%s (Error chdir to '%s')", _("Xml file cannot be created") , htmlspecialchars($cwd)));
         }
         /* Print XML footer */
         $ret = fseek($fh, 0, SEEK_END);
         if ($ret === - 1) {
-            return exportExit($action, sprintf("%s (Error fseek '%s')", _("Xml file cannot be created") , htmlspecialchars($xmlfile)));
+            exportExit($action, sprintf("%s (Error fseek '%s')", _("Xml file cannot be created") , htmlspecialchars($xmlfile)));
         }
         
         $ret = fwrite($fh, $xml_footer);
         if ($ret === false) {
-            return exportExit($action, sprintf("%s (Error writing to file '%s')", _("Xml file cannot be created") , htmlspecialchars($xmlfile)));
+            exportExit($action, sprintf("%s (Error writing to file '%s')", _("Xml file cannot be created") , htmlspecialchars($xmlfile)));
         }
         fflush($fh);
         fclose($fh);

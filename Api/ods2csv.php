@@ -46,12 +46,12 @@ function startElementOds($parser, $name, $attrs)
     if ($name == "TABLE:TABLE-CELL") {
         $incell = true;
         $celldata = "";
-        if ($attrs["TABLE:NUMBER-COLUMNS-REPEATED"]) {
+        if (isset($attrs["TABLE:NUMBER-COLUMNS-REPEATED"])) {
             $colrepeat = intval($attrs["TABLE:NUMBER-COLUMNS-REPEATED"]);
         }
     }
     if ($name == "TEXT:P") {
-        if (strlen($rows[$nrow][$ncol]) > 0) $rows[$nrow][$ncol].= '\n';
+        if ((isset($rows[$nrow][$ncol])) && strlen($rows[$nrow][$ncol]) > 0) $rows[$nrow][$ncol].= '\n';
     }
 }
 
@@ -146,7 +146,6 @@ $usage = new ApiUsage();
 $usage->setText("Convert OpenDocument Spreadsheet to csv (semicolon)");
 $odsfile = $usage->addNeeded("odsfile", "ods file (input)"); // file ods (input)
 $csvfile = $usage->addOption("csvfile", "xml file (output)"); // file xml (output)
-
 $usage->verify();
 
 $err = ods2content($odsfile, $content);

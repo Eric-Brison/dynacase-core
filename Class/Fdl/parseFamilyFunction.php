@@ -39,10 +39,10 @@ class parseFamilyFunction
         $this->firstParenthesis = strpos($funcCall, '(');
         $this->lastParenthesis = strrpos($funcCall, ')');
         $this->lastSemiColumn = strrpos($funcCall, ':');
-        $this->inputs=array();
-        $this->outputs=array();
-        $this->outputString='';
-        $this->inputString='';
+        $this->inputs = array();
+        $this->outputs = array();
+        $this->outputString = '';
+        $this->inputString = '';
     }
     
     protected function checkParenthesis()
@@ -276,7 +276,7 @@ class parseFamilyFunction
         }
         $r = strlen($arg) - 1;
         $c = $arg[strlen($arg) - 1];
-        while ($c == ' ') {
+        while ($c == ' ' && $r > 0) {
             $r--;
             $c = $arg[$r];
         }

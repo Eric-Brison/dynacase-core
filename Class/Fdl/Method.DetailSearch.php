@@ -28,6 +28,10 @@ class _DSEARCH extends DocSearch
     var $defaultview = "FREEDOM:VIEWDSEARCH"; #N_("not include") N_("begin by") N_("not equal") N_("&gt; or equal") N_("&lt; or equal")  N_("content file word") N_("content file expression")
     
     /**
+     * @var DocFam|null
+     */
+    protected $searchfam = null;
+    /**
      * return sql query to search wanted document
      */
     function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true)
@@ -273,7 +277,9 @@ class _DSEARCH extends DocSearch
         }
         $atype = '';
         $oa = $this->searchfam->getAttribute($col);
-        
+        /**
+         * @var NormalAttribute $oa
+         */
         if ($oa) $atype = $oa->type;
         else if (Doc::$infofields[$col]) $atype = Doc::$infofields[$col]["type"];
         if (($atype == "date" || $atype == "timestamp")) {
@@ -512,7 +518,7 @@ class _DSEARCH extends DocSearch
                     if ($ol == "") {
                         // try in old version
                         $ols = $this->getTValue("SE_OLS");
-                        $ol = $ols[1];
+                        $ol = isset($ols[1]) ? $ols[1] : '';
                         if ($ol) {
                             $this->setValue("SE_OL", $ol);
                             $this->modify();
@@ -523,7 +529,7 @@ class _DSEARCH extends DocSearch
                     if (!$this->searchfam) {
                         $this->searchfam = new_doc($this->dbaccess, $this->getValue("se_famid"));
                     }
-                    if ((count($taid) > 1) || ($taid[0] != "")) {
+                    if ((count($taid) > 1) || (count($taid) > 0 && $taid[0] != "")) {
                         // special loop for revdate
                         foreach ($tkey as $k => $v) {
                             // Does it looks like a method name?
@@ -576,12 +582,11 @@ class _DSEARCH extends DocSearch
                 function isParameterizable()
                 {
                     $tkey = $this->getTValue("SE_KEYS");
-                    
+                    if (empty($tkey)) return false;
                     if ((count($tkey) > 1) || ($tkey[0] != "")) {
-                        
                         foreach ($tkey as $k => $v) {
                             
-                            if ($v[0] == '?') {
+                            if ($v && $v[0] == '?') {
                                 return true;
                                 //if (getHttpVars(substr($v,1),"-") == "-") return true;
                                 
@@ -601,7 +606,7 @@ class _DSEARCH extends DocSearch
                         
                         foreach ($tkey as $k => $v) {
                             
-                            if ($v[0] == '?') {
+                            if ($v && $v[0] == '?') {
                                 if (getHttpVars(substr($v, 1) , "-") == "-") return true;
                             }
                         }
@@ -615,11 +620,11 @@ class _DSEARCH extends DocSearch
                 {
                     $tkey = $this->getTValue("SE_KEYS");
                     
-                    if ((count($tkey) > 1) || ($tkey[0] != "")) {
+                    if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
                         
                         foreach ($tkey as $k => $v) {
                             
-                            if ($v[0] == '?') {
+                            if ($v && $v[0] == '?') {
                                 if (getHttpVars(substr($v, 1) , "-") != "-") {
                                     $l.= '&' . substr($v, 1) . "=" . getHttpVars(substr($v, 1));
                                 }
@@ -637,11 +642,11 @@ class _DSEARCH extends DocSearch
                     $tkey = $this->getTValue("SE_KEYS");
                     $taid = $this->getTValue("SE_ATTRIDS");
                     $l = "";
-                    if ((count($tkey) > 1) || ($tkey[0] != "")) {
+                    if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
                         $tl = array();
                         foreach ($tkey as $k => $v) {
                             
-                            if ($v[0] == '?') {
+                            if ($v && $v[0] == '?') {
                                 $vh = getHttpVars(substr($v, 1) , "-");
                                 if (($vh != "-") && ($vh != "")) {
                                     
@@ -873,7 +878,8 @@ class _DSEARCH extends DocSearch
                             if ($alsosub) {
                                 $tclassdoc[$classid] = array(
                                     "id" => $cdoc->id,
-                                    "title" => $cdoc->title
+                                    "title" => $cdoc->title,
+                                    "usefor" => ''
                                 );
                                 $tclassdoc = array_merge($tclassdoc, $tsub);
                             } else {
@@ -885,7 +891,8 @@ class _DSEARCH extends DocSearch
                             $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
                             $tclassdoc[] = array(
                                 "id" => 0,
-                                "title" => _("any families")
+                                "title" => _("any families") ,
+                                "usefor" => ''
                             );
                         }
                     }
@@ -966,7 +973,7 @@ class _DSEARCH extends DocSearch
                     $fdoc = new_Doc($this->dbaccess, abs($famid));
                     $tmpDoc = createTmpDoc($this->dbaccess, abs($famid));
                     $zpi = $fdoc->GetNormalAttributes();
-                    $lastSet = array();
+                    
                     foreach ($zpi as $k => $v) {
                         if ($v->type == "array" || $v->type == "password") {
                             continue;
@@ -977,10 +984,9 @@ class _DSEARCH extends DocSearch
                         }
                         
                         $type = $v->type;
-                        if ($lastSet[0] != $v->fieldSet->id) {
-                            $tset = $this->editGetSetAttribute($v->fieldSet);
-                            if (count($tset) > 0) $tattr = array_merge($tattr, array_reverse($tset));
-                        }
+                        
+                        $tset = $this->editGetSetAttribute($v->fieldSet);
+                        if (count($tset) > 0) $tattr = array_merge($tattr, array_reverse($tset));
                         
                         $tattr[] = array(
                             "attrid" => $v->id,
@@ -1129,15 +1135,13 @@ class _DSEARCH extends DocSearch
                                         "attrname" => $vi
                                     );
                                 }
-                                $lastSet = array();
+                                
                                 $this->editGetSetAttribute(null, true);
                                 foreach ($zpi as $ki => $vi) {
                                     $type = $vi->type;
-                                    if ($lastSet[0] != $vi->fieldSet->id) {
-                                        
-                                        $tset = $this->editGetSetAttribute($vi->fieldSet);
-                                        if (count($tset) > 0) $tattr = array_merge($tattr, array_reverse($tset));
-                                    }
+                                    
+                                    $tset = $this->editGetSetAttribute($vi->fieldSet);
+                                    if (count($tset) > 0) $tattr = array_merge($tattr, array_reverse($tset));
                                     
                                     $tattr[] = array(
                                         "attrid" => $vi->id,

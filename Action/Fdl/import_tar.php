@@ -19,7 +19,7 @@
 include_once ("FDL/import_file.php");
 include_once ("WHAT/Lib.Prefix.php");
 
-define("TARUPLOAD", $pubdir . "/var/upload/");
+define("TARUPLOAD", DEFAULT_PUBDIR . "/var/upload/");
 define("TAREXTRACT", "/extract/");
 define("TARTARS", "/tars/");
 

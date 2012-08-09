@@ -35,6 +35,11 @@ class DocUtag extends DbObj
      */
     public $id;
     /**
+     * initial identificator of document
+     * @public int
+     */
+    public $initid;
+    /**
      * identificator system of the user
      * @public int
      */

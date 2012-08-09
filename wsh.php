@@ -152,7 +152,7 @@ if (isset($_GET["api"])) {
                     exit(1);
                     break;
 
-                case THROW_EXITHELP:
+                case ApiUsage::THROW_EXITHELP:
                     echo sprintf($e->getMessage());
                     exit(0);
                     break;

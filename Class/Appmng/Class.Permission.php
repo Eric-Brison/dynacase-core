@@ -76,7 +76,7 @@ create index permission_idx4 on permission(computed);
                 $this->Affect(array(
                     "id_user" => $id[0],
                     "id_application" => $id[1],
-                    "computed" => $id[2]
+                    "computed" => (!empty($id[2]))
                 ));
                 $this->GetPrivileges(false, $computed);
             }

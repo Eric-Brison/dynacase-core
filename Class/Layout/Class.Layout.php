@@ -197,7 +197,8 @@ class Layout
                 $loc = $block;
                 if (!is_array($this->corresp["$name"])) return sprintf(_("SetBlock:error [%s]") , $name);
                 foreach ($this->corresp["$name"] as $k2 => $v2) {
-                    if ((!is_object($v[$v2])) && (!is_array($v[$v2]))) $loc = str_replace($k2, $v[$v2], $loc);
+                    $vv2 = (isset($v[$v2])) ? $v[$v2] : '';
+                    if ((!is_object($vv2)) && (!is_array($vv2))) $loc = str_replace($k2, $vv2, $loc);
                 }
                 $this->rif = & $v;
                 $this->ParseIf($loc);
@@ -490,8 +491,8 @@ class Layout
     }
     /**
      * Count number of execute() calls on the stack to detect infinite recursive loops
-     * @param string class name to track
-     * @param string function/method name to track
+     * @param string $class name to track
+     * @param string $function/method name to track
      * @return array array('count' => $callCount, 'delta' => $callDelta, 'depth' => $stackDepth)
      */
     function getRecursionCount($class, $function)
@@ -505,7 +506,9 @@ class Layout
         $btCount = count($bt);
         for ($i = $btCount - 2; $i >= 0; $i--) {
             $curDepth++;
-            if ($class == $bt[$i]['class'] && $function == $bt[$i]['function']) {
+            $bClass = isset($bt[$i]['class']) ? $bt[$i]['class'] : '';
+            $bFunction = isset($bt[$i]['function']) ? $bt[$i]['function'] : '';
+            if ($class == $bClass && $function == $bFunction) {
                 $delta = $curDepth - $prevDepth;
                 $prevDepth = $curDepth;
                 $count++;
@@ -520,9 +523,9 @@ class Layout
     }
     /**
      * Print a recursion count error message and stop execution
-     * @param string class name to display
-     * @param string function/method name to display
-     * @param integer the call count that triggered the error
+     * @param string $class name to display
+     * @param string $function/method name to display
+     * @param int $count the call count that triggered the error
      */
     function printRecursionCountError($class, $function, $count)
     {

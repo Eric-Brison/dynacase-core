@@ -8,7 +8,7 @@
 class CheckDefault extends CheckData
 {
     protected $defaultName;
-    protected $defaultValue;
+    protected $defaultValue = '';
     /**
      * @var Doc
      */
@@ -20,9 +20,8 @@ class CheckDefault extends CheckData
      */
     function check(array $data, &$doc = null)
     {
-        
         $this->defaultName = trim(strtolower($data[1]));
-        $this->defaultValue = trim($data[2]);
+        if (isset($data[2])) $this->defaultValue = trim($data[2]);
         $this->doc = $doc;
         $this->checkDefaultName();
         $this->checkDefaultValue();

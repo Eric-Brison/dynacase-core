@@ -117,7 +117,7 @@ class Session extends DbObj
         
         if ($createNewSession) {
             $u = new Account();
-            if ($u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {
+            if ((!empty($_SERVER['PHP_AUTH_USER'])) && $u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {
                 $this->open($u->id);
             } else {
                 $this->open(ANONYMOUS_ID); //anonymous session
@@ -125,8 +125,8 @@ class Session extends DbObj
             }
         }
         // set cookie session
-        if ($_SERVER['HTTP_HOST'] != "") {
-            if (!$_SERVER["REDIRECT_URL"]) {
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            if (empty($_SERVER["REDIRECT_URL"])) {
                 $this->setCookieSession($this->id, $this->SetTTL());
             }
         }
@@ -154,7 +154,7 @@ class Session extends DbObj
     function Close()
     {
         global $_SERVER; // use only cache with HTTP
-        if ($_SERVER['HTTP_HOST'] != "") {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             session_name($this->name);
             session_id($this->id);
             @session_unset();
@@ -191,7 +191,7 @@ class Session extends DbObj
     {
         $idsess = $this->newId();
         global $_SERVER; // use only cache with HTTP
-        if ($_SERVER['HTTP_HOST'] != "") {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             session_name($this->session_name);
             session_id($idsess);
             @session_start();
@@ -220,7 +220,7 @@ class Session extends DbObj
         //      global $_SESSION;
         //      $$k=$v;
         global $_SERVER; // use only cache with HTTP
-        if ($_SERVER['HTTP_HOST'] != "") {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             //	session_register($k);
             session_name($this->name);
             session_id($this->id);
@@ -238,7 +238,7 @@ class Session extends DbObj
     // --------------------------------
     function Read($k = "", $d = "")
     {
-        if ($_SERVER['HTTP_HOST'] != "") {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             session_name($this->name);
             session_id($this->id);
             @session_start();
@@ -260,7 +260,7 @@ class Session extends DbObj
     function Unregister($k = "")
     {
         global $_SERVER; // use only cache with HTTP
-        if ($_SERVER['HTTP_HOST'] != "") {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             session_name($this->name);
             session_id($this->id);
             @session_start();
@@ -268,7 +268,7 @@ class Session extends DbObj
             @session_write_close(); // avoid block
             
         }
-        return;
+        return true;
     }
     // ------------------------------------------------------------------------
     // utilities functions (private)

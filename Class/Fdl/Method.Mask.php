@@ -81,12 +81,11 @@ class _MASK extends Doc
                 unset($tattrid[$k]);
             }
         }
-        
         $this->setValue("MSK_NEEDEEDS", $tneed);
         $this->setValue("MSK_ATTRIDS", $tattrid);
         $this->setValue("MSK_VISIBILITIES", $tvis);
-        $err = $this->modify();
-        return $err;
+        
+        return '';
     }
     
     function getVisibilities()
@@ -117,7 +116,7 @@ class _MASK extends Doc
             if ($tvisid[$k] == "-") $vis = $attr->visibility;
             else $vis = $tvisid[$k];
             
-            $tvisibilities[$v] = ComputeVisibility($vis, $tvisibilities[$fvisid], $attr->fieldSet->fieldSet ? $attr->fieldSet->fieldSet->mvisibility : '');
+            $tvisibilities[$v] = ComputeVisibility($vis, isset($tvisibilities[$fvisid]) ? $tvisibilities[$fvisid] : '', isset($attr->fieldSet->fieldSet) ? $attr->fieldSet->fieldSet->mvisibility : '');
         }
         return $tvisibilities;
     }
@@ -173,7 +172,7 @@ class _MASK extends Doc
             $tmask[$k]["attrname"] = $attr->getLabel();
             $tmask[$k]["type"] = $attr->type;
             $tmask[$k]["visibility"] = $labelvis[$attr->visibility];
-            $tmask[$k]["wneed"] = ($origattr[$k]->needed) ? "bold" : "normal";
+            $tmask[$k]["wneed"] = (!empty($origattr[$k]->needed)) ? "bold" : "normal";
             $tmask[$k]["bgcolor"] = "inherits";
             $tmask[$k]["mvisibility"] = $labelvis[$attr->mvisibility];
             $tmask[$k]["classtype"] = strtok($attr->type, '(');
@@ -196,7 +195,7 @@ class _MASK extends Doc
             
             if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id != "FIELD_HIDDENS") $tmask[$k]["framelabel"] = $attr->fieldSet->getLabel();
             else $tmask[$k]["framelabel"] = "";
-            if ($attr->waction != "") $tmask[$k]["framelabel"] = _("Action");
+            if (!empty($attr->waction)) $tmask[$k]["framelabel"] = _("Action");
             
             $tmask[$k]["displayorder"] = ($attr->ordered) ? $attr->ordered : -2;
             if ($attr->type == "menu" || $attr->type == "action") $tmask[$k]["displayorder"]+= 1000000; // at then end
@@ -282,7 +281,7 @@ class _MASK extends Doc
                 $newelem[$k]["type"] = strtok($attr->type, '(');
                 $newelem[$k]["visibility"] = $labelvis[$attr->visibility];
                 
-                $newelem[$k]["wneed"] = ($attr->needed) ? "bold" : "normal";
+                $newelem[$k]["wneed"] = (!empty($attr->needed)) ? "bold" : "normal";
                 $newelem[$k]["neweltid"] = $k;
                 $newelem[$k]["attrinfo"] = $attr->id;
                 if ($attr->fieldSet->id && $attr->fieldSet->id != 'FIELD_HIDDENS') {
@@ -301,11 +300,11 @@ class _MASK extends Doc
                 
                 if ($attr->fieldSet->docid > 0) $newelem[$k]["framelabel"] = $attr->fieldSet->getLabel();
                 else $newelem[$k]["framelabel"] = "";
-                if ($attr->waction != "") $newelem[$k]["framelabel"] = _("Action");
+                if (!empty($attr->waction)) $newelem[$k]["framelabel"] = _("Action");
                 
                 reset($selectvis);
                 while (list($kopt, $opt) = each($selectvis)) {
-                    if ($opt["visid"] == $tvisibilities[$attr->id]) {
+                    if (isset($tvisibilities[$attr->id]) && $opt["visid"] == $tvisibilities[$attr->id]) {
                         $selectvis[$kopt]["selected"] = "selected";
                     } else {
                         $selectvis[$kopt]["selected"] = "";
@@ -314,7 +313,7 @@ class _MASK extends Doc
                 // idem for needed
                 reset($selectneed);
                 while (list($kopt, $opt) = each($selectneed)) {
-                    if ($opt["needid"] == $tneedeeds[$attr->id]) {
+                    if (isset($tneedeeds[$attr->id]) && $opt["needid"] == $tneedeeds[$attr->id]) {
                         $selectneed[$kopt]["selectedneed"] = "selected";
                     } else {
                         $selectneed[$kopt]["selectedneed"] = "";

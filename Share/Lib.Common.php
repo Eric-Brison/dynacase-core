@@ -272,7 +272,7 @@ function logDebugStack($slice = 1)
 {
     $st = getDebugStack(2);
     foreach ($st as $k => $t) {
-        error_log(sprintf('%d) %s:%s %s::%s()', $k, $t["file"], $t["line"], $t["class"], $t["function"]));
+        error_log(sprintf('%d) %s:%s %s::%s()', $k, isset($t["file"]) ? $t["file"] : 'closure', isset($t["line"]) ? $t["line"] : 0, isset($t["class"]) ? $t["class"] : '', $t["function"]));
     }
 }
 function getDbid($dbaccess)

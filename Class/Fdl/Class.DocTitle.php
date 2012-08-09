@@ -92,7 +92,7 @@ class DocTitle
             }
             foreach ($relationIds as $k => $relid) {
                 if ($relid["latest"]) {
-                    $relationIds[$k]["rid"] = $tInitid[$relid["docid"]];
+                    $relationIds[$k]["rid"] = empty($tInitid[$relid["docid"]]) ? null : $tInitid[$relid["docid"]];
                 } else {
                     $relationIds[$k]["rid"] = $relid["docid"];
                 }
@@ -113,11 +113,13 @@ class DocTitle
             }
             foreach ($relationIds as $k => $relid) {
                 $rid = $relid["rid"];
-                $relationIds[$k]["title"] = $accesses[$rid]["title"];
-                $relationIds[$k]["canaccess"] = $accesses[$rid]["canaccess"];
+                if ($rid) {
+                    $relationIds[$k]["title"] = $accesses[$rid]["title"];
+                    $relationIds[$k]["canaccess"] = $accesses[$rid]["canaccess"];
+                }
             }
         }
-        if (self::$relationCache[$uid]) self::$relationCache[$uid] = array_merge($relationIds, self::$relationCache[$uid]);
+        if (!empty(self::$relationCache[$uid])) self::$relationCache[$uid] = array_merge($relationIds, self::$relationCache[$uid]);
         else self::$relationCache[$uid] = $relationIds;
     }
     /**

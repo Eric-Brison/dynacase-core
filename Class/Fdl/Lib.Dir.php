@@ -108,13 +108,14 @@ function getSqlSearchDoc($dbaccess, $dirid, $fromid, $sqlfilters = array() , $di
 $latest = true, // only latest document
 $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
 {
-
+    
     if (($fromid != "") && (!is_numeric($fromid))) {
         preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid) , $m);
         $fromid = $m['sign'] . getFamIdFromName($dbaccess, $m['fromid']);
     }
     $table = "doc";
     $only = "";
+    $qsql = '';
     if ($trash == "only") $distinct = true;
     if ($fromid == - 1) $table = "docfam";
     elseif ($simplesearch) $table = "docread";
@@ -252,6 +253,10 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                 switch ($ldocsearch[0]["qtype"]) {
                     case "M": // complex query
                         // $sqlM=$ldocsearch[0]["query"];
+                        
+                        /**
+                         * @var _GROUPSEARCH $fld
+                         */
                         $fld = new_Doc($dbaccess, $dirid);
                         if ($trash) $fld->setValue("se_trash", $trash);
                         else $trash = $fld->getValue("se_trash");
@@ -395,7 +400,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         if ($trash == "only") $distinct = true;
         //   xdebug_var_dump(xdebug_get_function_stack());
         if ($searchDoc) {
-            $tqsql  = $searchDoc->getQueries();
+            $tqsql = $searchDoc->getQueries();
         } else {
             $tqsql = getSqlSearchDoc($dbaccess, $dirid, $fromid, $sqlfilters, $distinct, $latest, $trash, false, $folderRecursiveLevel, $join);
         }
@@ -458,9 +463,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                             }
                             if (!$isgroup) {
                                 if ($orderby != '') {
-                                    $qsql .= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
+                                    $qsql.= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
                                 } else {
-                                    $qsql .= " LIMIT $slice OFFSET $start;";
+                                    $qsql.= " LIMIT $slice OFFSET $start;";
                                 }
                             }
                         }
@@ -524,7 +529,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                     $debug["query"] = $query->LastQuery;
                     $debug["error"] = $query->basic_elem->msg_err;
                     $debug["delay"] = sprintf("%.03fs", microtime_diff(microtime() , $mb));
-                    if ($debug["log"]) {
+                    if (!empty($debug["log"])) {
                         addLogMsg($query->basic_elem->msg_err, 200);
                         addLogMsg($debug);
                     }

@@ -100,8 +100,11 @@ function getTableFamilyList($idsfam, $izpx = null)
         $dbaccess = GetParam("FREEDOM_DB");
         
         foreach ($tidsfam as $k => $cid) {
+            /**
+             * @var DocFam $cdoc
+             */
             $cdoc = new_Doc($dbaccess, $cid);
-            if ($cdoc->dfldid > 0) {
+            if ($cdoc->isAlive() && $cdoc->dfldid > 0) {
                 
                 if ($cdoc->control('view') == "") {
                     $selectclass[$k]["idcdoc"] = $cdoc->initid;

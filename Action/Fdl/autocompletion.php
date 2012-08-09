@@ -55,7 +55,7 @@ function autocompletion(Action & $action)
         $isInAbstract = false;
         $phpfile = GetHttpVars("phpfile");
         $phpfunc = GetHttpVars("phpfunc");
-        $fieldSet = $doc->attr["FIELD_HIDDENS"];
+        $fieldSet = null;
         $elink = "";
         $phpconstraint = "";
         $usefor = "";

@@ -23,7 +23,7 @@ include_once ("FDL/freedom_util.php");
 include_once ("GENERIC/generic_util.php");
 include_once ("GENERIC/generic_list.php");
 // -----------------------------------
-function generic_tab(&$action)
+function generic_tab(Action & $action)
 {
     // Get all the params
     $keyword = GetHttpVars("keyword"); // keyword to search
@@ -64,7 +64,7 @@ function generic_tab(&$action)
         "TUV",
         "WXYZ"
     );
-    
+    $sqlfilter = array();
     $dir = new_Doc($dbaccess, $dirid);
     // control open
     if ($dir->defDoctype == 'S') $aclctrl = "execute";
@@ -79,6 +79,9 @@ function generic_tab(&$action)
         setHttpVar("sid", "dirid");
         setHttpVar("id", $dir->initid);
     } else {
+        /**
+         * @var DocSearch $sdoc
+         */
         $sdoc = createTmpDoc($dbaccess, 5); // new DocSearch
         if ($dir->id == $fdoc->dfldid) {
             $sdoc->title = sprintf(_("%s all ") , $tabletter[$tab]);

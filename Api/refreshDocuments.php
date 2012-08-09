@@ -107,7 +107,7 @@ while ($doc = $s->nextDoc()) {
         printf("\nmethod not exists %s \n", $method);
         break;
     }
-    $doc->_oldvalue = array();
+    
     $modified = false;
     $smod = '';
     if ($usemethod) {

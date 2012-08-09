@@ -87,7 +87,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             foreach ($expectRender as $expAttr => $expVal) {
                 if (is_array($expVal)) {
                     $testValue = array();
-                    $this->assertTrue(is_array($fValue) , sprintf("result %s not an array for %s", $fValue->$expAttr, $expAttr));
+                    $this->assertTrue(is_array($fValue) , sprintf("result %s not an array for %s", $fValue, $expAttr));
                     foreach ($fValue as $k => $v) {
                         if (is_array($v)) {
                             $testValue[$k] = array();
@@ -455,10 +455,18 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 "TST_FMTCOL5",
                 "tst_rellatests",
                 array(
-                    "url" => array(""),
-                    "icon" => array(""),
-                    "value" => array(""),
-                    "displayValue" => array(null)
+                    "url" => array(
+                        ""
+                    ) ,
+                    "icon" => array(
+                        ""
+                    ) ,
+                    "value" => array(
+                        ""
+                    ) ,
+                    "displayValue" => array(
+                        null
+                    )
                 )
             )
         );

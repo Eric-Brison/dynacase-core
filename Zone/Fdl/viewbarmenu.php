@@ -47,7 +47,20 @@ function viewbarmenu(Action & $action)
     }
     if (!$popup) $popup = getpopupdocdetail($action, $docid);
     $other = false;
+    $menuIndex = array(
+        "visibility",
+        "jsfunction",
+        "submenu",
+        "mwidth",
+        "mheight",
+        "title",
+        "url",
+        "target",
+        "confirm",
+        "tconfirm"
+    );
     foreach ($popup as $k => $v) {
+        foreach ($menuIndex as $aItemMenu) if (!isset($v[$aItemMenu])) $v[$aItemMenu] = ''; // set undefined options
         $vis = $v["visibility"];
         if ($vis == POPUP_CTRLACTIVE || $vis == POPUP_CTRLINACTIVE) $other = true;
         if (($vis != POPUP_ACTIVE && (!$v["submenu"])) || ($vis == POPUP_INVISIBLE || $vis == POPUP_CTRLACTIVE || $vis == POPUP_CTRLINACTIVE)) unset($popup[$k]);

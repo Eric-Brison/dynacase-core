@@ -65,7 +65,7 @@ class TwoDimensionStruct
             }
             return $row;
         } else {
-            $this->addErrorMessage(sprintf("Unable to get row $s out of the border", $x));
+            $this->addErrorMessage(sprintf("Unable to get row %s out of the border", $x));
             return null;
         }
     }
@@ -192,7 +192,7 @@ class TwoDimensionStruct
             $this->y = array_values($this->y);
             return $this->setColumn($y, $column, $force);
         } else {
-            $this->addErrorMessage(sprintf("Unable to set a row bigger than the column size (%s < %s)", count($this->y) , count($row)));
+            $this->addErrorMessage(sprintf("Unable to set a row bigger than the column size (%s < %s)", count($this->y) , $y));
             return null;
         }
     }
@@ -285,7 +285,7 @@ class TwoDimensionStruct
             }
             $this->data[$this->x[$x]][$this->y[$y]] = $value;
         } else {
-            $this->addErrorMessage(sprintf("Unable to set x : $s, y :$s, value : $s", $x, $y, $value));
+            $this->addErrorMessage(sprintf("Unable to set x : %s, y :%s, value : %s", $x, $y, $value));
             return null;
         }
         return $this;
@@ -301,12 +301,13 @@ class TwoDimensionStruct
     public function getValue($x, $y)
     {
         if (isset($this->y[$y]) && isset($this->x[$x])) {
-            $value = $this->data[$this->x[$x]][$this->y[$y]];
+            if (isset($this->data[$this->x[$x]][$this->y[$y]])) $value = $this->data[$this->x[$x]][$this->y[$y]];
+            else $value = null;
             return is_null($value) ? $this->emptyValue : $value;
         } elseif (count($x) >= $x && count($y) >= $y) {
             return $this->emptyValue;
         } else {
-            $this->addErrorMessage(sprintf("Unable to get x : $s, y :$s out of the border", $x, $y));
+            $this->addErrorMessage(sprintf("Unable to get x : %s, y :%s out of the border", $x, $y));
             return null;
         }
     }
@@ -332,7 +333,7 @@ class TwoDimensionStruct
     /**
      * Get the default empty value
      *
-     * @return the $emptyValue
+     * @return string the $emptyValue
      */
     public function getEmptyValue()
     {
@@ -341,7 +342,7 @@ class TwoDimensionStruct
     /**
      * Set a default emptyValue
      *
-     * @param field_type $emptyValue
+     * @param string $emptyValue
      *
      * @return TwoDimensionStruct
      */

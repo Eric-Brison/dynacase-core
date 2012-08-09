@@ -421,16 +421,18 @@ class FileAttributeValue extends StandardAttributeValue
     {
         
         $this->value = $v;
-        $finfo = $doc->getFileInfo($v);
-        $this->size = $finfo["size"];
-        $this->creationDate = $finfo["cdate"];
-        $this->fileName = $finfo["name"];
-        $this->mime = $finfo["mime_s"];
-        $this->displayValue = $this->fileName;
-        
-        $iconFile = getIconMimeFile($this->mime);
-        if ($iconFile) $this->icon = "Images/" . $iconFile;
-        $this->url = $doc->getFileLink($oa->id, $index);
+        if ($v) {
+            $finfo = $doc->getFileInfo($v);
+            $this->size = $finfo["size"];
+            $this->creationDate = $finfo["cdate"];
+            $this->fileName = $finfo["name"];
+            $this->mime = $finfo["mime_s"];
+            $this->displayValue = $this->fileName;
+            
+            $iconFile = getIconMimeFile($this->mime);
+            if ($iconFile) $this->icon = "Images/" . $iconFile;
+            $this->url = $doc->getFileLink($oa->id, $index);
+        }
     }
 }
 class ImageAttributeValue extends FileAttributeValue

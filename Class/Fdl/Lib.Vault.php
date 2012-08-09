@@ -182,12 +182,13 @@ function vault_get_content($idfile)
  */
 function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
 {
+    $err = '';
     if (($docid > 0) && ($vid > 0)) {
         
         $tea = getParam("TE_ACTIVATE");
-        if ($tea != "yes") return;
+        if ($tea != "yes") return '';
         $tea = getParam("TE_FULLTEXT");
-        if ($tea != "yes") return;
+        if ($tea != "yes") return '';
         if (@include_once ("WHAT/Class.TEClient.php")) {
             global $action;
             include_once ("FDL/Class.TaskRequest.php");
@@ -224,6 +225,7 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
 function convertFile($infile, $engine, $outfile, &$info)
 {
     global $action;
+    $err = '';
     if (file_exists($infile) && ($engine != "")) {
         $tea = getParam("TE_ACTIVATE");
         if ($tea != "yes") return _("TE not activated");
@@ -246,6 +248,7 @@ function convertFile($infile, $engine, $outfile, &$info)
                 $tr->uname = $action->user->firstname . " " . $action->user->lastname;
                 $err = $tr->Add();
             }
+            $tid = 0;
             if ($err == "") {
                 $tid = $info["tid"];
                 if ($tid == 0) $err = _("no task identificator");

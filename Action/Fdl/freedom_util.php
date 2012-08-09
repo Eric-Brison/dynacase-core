@@ -374,8 +374,8 @@ function getDocTitle($id, $latest = true)
     if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
     if ($id > 0) {
         
-        if (!$latest) $sql = sprintf("select title, doctype, locked, initid from docread where id=%d", $id);
-        else $sql = sprintf("select title, doctype, locked, initid from docread where initid=(select initid from docread where id=%d) order by id desc limit 1", $id);
+        if (!$latest) $sql = sprintf("select title, doctype, locked, initid, name from docread where id=%d", $id);
+        else $sql = sprintf("select title, doctype, locked, initid, name from docread where initid=(select initid from docread where id=%d) order by id desc limit 1", $id);
         simpleQuery($dbaccess, $sql, $t, false, true);
         
         if (!$t) return '';
@@ -562,6 +562,9 @@ function controlTdoc(&$tdoc, $aclname)
  */
 function getDocObject($dbaccess, $v, $k = 0)
 {
+    /**
+     * @var array $_OgetDocObject
+     */
     static $_OgetDocObject;
     
     if ($v["doctype"] == "C") {
@@ -572,7 +575,7 @@ function getDocObject($dbaccess, $v, $k = 0)
         if (!isset($_OgetDocObject[$k][$v["fromid"]])) $_OgetDocObject[$k][$v["fromid"]] = createDoc($dbaccess, $v["fromid"], false, false);
     }
     $_OgetDocObject[$k][$v["fromid"]]->Affect($v, true);
-    $_OgetDocObject[$k][$v["fromid"]]->nocache = true;
+    
     return $_OgetDocObject[$k][$v["fromid"]];
 }
 /**

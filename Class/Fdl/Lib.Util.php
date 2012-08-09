@@ -94,9 +94,9 @@ function stringDateToLocaleDate($fdate, $format = '')
         $yy = $r[1];
         $mo = $r[2];
         $dd = $r[3];
-        $hh = $r[4];
-        $mm = $r[5];
-        $ss = $r[6];
+        $hh = isset($r[4]) ? $r[4] : null;
+        $mm = isset($r[5]) ? $r[5] : null;
+        $ss = isset($r[6]) ? $r[6] : null;
         if (!$hh && !$mm && !$ss) {
             $fdate = sprintf("%s/%s/%s", $dd, $mo, $yy);
         } elseif (!$ss) {

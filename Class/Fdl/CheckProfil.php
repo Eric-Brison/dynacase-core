@@ -57,16 +57,16 @@ class CheckProfil extends CheckData
     function check(array $data, &$extra = null)
     {
         
-        if ($data[2]) {
+        if (!empty($data[2])) {
             $this->prfName = $data[2];
             $this->docName = $data[1];
         } else {
-            $this->prfName = $data[1];
+            $this->prfName = isset($data[1]) ? $data[1] : null;
             for ($i = 4; $i < count($data); $i++) {
                 $this->acls[] = $data[$i];
             }
         }
-        $this->modifier = strtolower($data[3]);
+        if (isset($data[3])) $this->modifier = strtolower($data[3]);
         $this->checkUnknow();
         if (!$this->hasErrors()) {
             $this->checkModifier();

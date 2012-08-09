@@ -75,9 +75,8 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            
             $this->assertEquals($newValue, $doc->getValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->id, $attrid));
-            if ($results[$doc->id]->changed) {
+            if ($results[$doc->initid]->changed) {
                 $this->assertGreaterThan($doc->initid, $doc->id, "revision not done for %s (#%d)", $doc->title, $doc->id);
                 $this->assertTrue($results[$doc->initid]->revised);
             }

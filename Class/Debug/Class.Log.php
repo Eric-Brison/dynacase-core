@@ -157,6 +157,9 @@ class Log
                     case "O":
                         $td = @debug_backtrace(false);
                         $str.= sprintf("%s called in %s%s%s(), file %s:%s", $td[3]["function"], $td[4]["class"], $td[4]["class"] ? '::' : '', $td[4]["function"], $td[4]["file"], $td[4]["line"]);
+                        $pri = LOG_INFO;
+                        break;
+
                     case "I":
                         $pri = LOG_INFO;
                         break;

@@ -105,11 +105,9 @@ if ($to) {
     if ($from == "") $from = $action->user->login . '@' . php_uname('n');
     
     $subject = sprintf(_("result of import  %s") , basename(GetHttpVars("file")));
-    $err = sendmail($to, $from, $cc, $bcc, $subject, $themail);
+    $err = sendmail($to, $from, $cc = '', $bcc = '', $subject, $themail);
     if ($err) error_log("import sending mail: Error:$err");
     if ($filetmp) unlink($logfile);
-} else {
-    if (GetHttpVars("htmlmode") == "Y") print $out;
 }
 $err = $oImport->getErrorMessage();
 if ($err) $action->ExitError($err);

@@ -438,6 +438,7 @@ class DocOooFormat
         $oooval = '';
         $attrid = $this->oattr->id;
         $html_body = trim($avalue);
+        if (!$html_body) return '';
         $html_body = str_replace(array(
             '&quot;',
             '&lt;',
@@ -447,7 +448,7 @@ class DocOooFormat
             '--lteric--',
             '--gteric--'
         ) , $html_body); // prevent pb for quot in quot
-        if ($html_body[0] != '<') {
+        if ($html_body && $html_body[0] != '<') {
             // think it is raw text
             $html_body = str_replace("\n<br/>", "\n", $html_body);
             $html_body = str_replace('<br/>', "\n", $html_body);

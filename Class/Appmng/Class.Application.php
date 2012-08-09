@@ -167,7 +167,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                     if ($this->name == "") {
                         printf("Application name %s not found", $name);
                         exit;
-                    } elseif ($_SERVER['HTTP_HOST'] != "") {
+                    } elseif (!empty($_SERVER['HTTP_HOST'])) {
                         Redirect($this, $this->name, "");
                     }
                 } else {
@@ -347,7 +347,10 @@ create sequence SEQ_ID_APPLICATION start 10;
         /* Try to attach the ressource to the current app */
         $ressourceLocation = '';
         if ($needparse) {
-            $ressourceLocation = "?app=CORE&action=CORE_CSS&session=" . $this->session->id . "&layout=" . $ref . "&type=" . $type;
+            
+            if (!isset($this->session)) $sessid = 0;
+            else $sessid = $this->session->id;
+            $ressourceLocation =  "?app=CORE&action=CORE_CSS&session=" . $sessid . "&layout=" . $ref . "&type=" . $type;
         } else {
             $location = $this->resolveRessourceLocation($ref);
             if ($location != '') {
@@ -412,7 +415,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * send a message to the user interface
      * @param string $code message
-     * @return mixed
+     * @return void
      */
     function addWarningMsg($code)
     {

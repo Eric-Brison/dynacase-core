@@ -75,19 +75,14 @@ class TestExportXml extends TestCaseDcpCommonFamily
             $s = new \SearchDoc(self::$dbaccess, "TST_EXPORTFAM1");
             //print_r( $s->search());
             $export = new \exportXmlFolder();
-            try {
-                $export->setOutputFormat(\exportXmlFolder::xmlFormat);
-                $export->useIdentificator(false);
-                $export->exportFromSearch($s);
-                $this->dom = new \DOMDocument();
-                $this->dom->load($export->getOutputFile());
-                @unlink($export->getOutputFile());
-                return $this->dom;
-            }
-            catch(\Exception $e) {
-                print $e->getMessage();
-            }
-            return null;
+            
+            $export->setOutputFormat(\exportXmlFolder::xmlFormat);
+            $export->useIdentificator(false);
+            $export->exportFromSearch($s);
+            $this->dom = new \DOMDocument();
+            $this->dom->load($export->getOutputFile());
+            @unlink($export->getOutputFile());
+            return $this->dom;
         } else {
             return $this->dom;
         }

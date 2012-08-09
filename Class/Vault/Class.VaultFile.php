@@ -57,7 +57,7 @@ class VaultFile
             case "fs":
                 $this->use_cache = FALSE;
                 $this->logger->debug("Set Storage Type to FS");
-                $this->storage = new VaultDiskStorage($access, $fs);
+                $this->storage = new VaultDiskStorage($access);
                 break;
 
             default:
@@ -82,7 +82,12 @@ function show($id_file, &$infos, $teng_lname = "")
     if ($this->chrono) $this->logger->end("Show");
     return ($msg);
 }
-// ---------------------------------------------------------
+/**
+ * retrieve information from vault id
+ * @param int $id_file
+ * @param VaultFileInfo $infos
+ * @return string error message
+ */
 function retrieve($id_file, &$infos)
 {
     // ---------------------------------------------------------

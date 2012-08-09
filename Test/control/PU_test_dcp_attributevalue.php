@@ -56,6 +56,222 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
         
         return $d;
     }
+    /**
+     * @dataProvider dataArraySetValue
+     */
+    public function testArraySetValue(array $values, $expectedCount, array $secondValues = array() , $secondCount = 0)
+    {
+        $d = createDoc(self::$dbaccess, "TST_FAMSETVALUE");
+        $this->assertTrue(is_object($d) , "cannot create TST_FAMSETVALUE document");
+        $err = '';
+        foreach ($values as $aid => $value) {
+            $err.= $d->setValue($aid, $value);
+        }
+        $this->assertEmpty($err, sprintf("setvalue error : %s", $err));
+        
+        foreach ($values as $aid => $value) {
+            $this->assertEquals($expectedCount, count($d->getTValue($aid)) , sprintf("count for %s incorrect %d <> %d", $aid, $expectedCount, count($d->getTValue($aid))));
+        }
+        
+        if ($secondValues) {
+            foreach ($secondValues as $aid => $value) {
+                $err.= $d->setValue($aid, $value);
+            }
+            $this->assertEmpty($err, sprintf("setvalue error : %s", $err));
+            
+            foreach ($secondValues as $aid => $value) {
+                $oa = $d->getAttribute($aid);
+                $this->assertEquals($secondCount, count($d->getTValue($aid)) , sprintf("second count for %s incorrect %d <> %d : %s", $aid, $secondCount, count($d->getTValue($aid)) , print_r($d->getAValues($oa->fieldSet->id) , true)));
+            }
+        }
+        return $d;
+    }
+    
+    public function dataArraySetValue()
+    {
+        return array(
+            array(
+                array(
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux",
+                        "Trois"
+                    ) ,
+                    "tst_colint" => array(
+                        1,
+                        2,
+                        3
+                    ) ,
+                    "tst_coldate" => array(
+                        "2012-06-20",
+                        "2012-06-21",
+                        "2012-06-22"
+                    )
+                ) ,
+                3
+            ) ,
+            array(
+                array(
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux"
+                    ) ,
+                    "tst_colint" => array(
+                        1
+                    ) ,
+                    "tst_coldate" => array(
+                        "2012-06-20",
+                        "2012-06-20"
+                    )
+                ) ,
+                2
+            ) ,
+            array(
+                array(
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux"
+                    ) ,
+                    "tst_colint" => array() ,
+                    "tst_coldate" => array(
+                        "2012-06-20",
+                        "2012-06-20"
+                    )
+                ) ,
+                2
+            ) ,
+            
+            array(
+                array(
+                    "tst_coltext" => array() ,
+                    "tst_colint" => array() ,
+                    "tst_coldate" => array(
+                        "2012-06-20",
+                        "2012-06-20"
+                    )
+                ) ,
+                2
+            ) ,
+            array(
+                array(
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux"
+                    ) ,
+                    "tst_colint" => array() ,
+                    "tst_coldate" => array(
+                        "2012-06-20",
+                        "2012-06-20"
+                    )
+                ) ,
+                2,
+                array(
+                    "tst_coltext" => array(
+                        "Un"
+                    ) ,
+                    "tst_colint" => array() ,
+                    "tst_coldate" => array(
+                        "2012-06-20"
+                    )
+                ) ,
+                1
+            ) ,
+            array(
+                array(
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux",
+                        "Trois"
+                    ) ,
+                    "tst_colint" => array(
+                        1,
+                        2,
+                        3
+                    ) ,
+                    "tst_coldate" => array(
+                        "2012-06-20",
+                        "2012-06-21",
+                        "2012-06-22"
+                    )
+                ) ,
+                3,
+                array(
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux"
+                    ) ,
+                    "tst_colint" => array(
+                        1,
+                        2
+                    ) ,
+                    "tst_coldate" => array(
+                        "2012-06-20",
+                        "2012-06-21"
+                    )
+                ) ,
+                2
+            ) ,
+            array(
+                array(
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux",
+                        "Trois"
+                    ) ,
+                    "tst_colint" => array(
+                        1,
+                        2,
+                        3
+                    ) ,
+                    "tst_coldate" => array(
+                        "2012-06-20",
+                        "2012-06-21",
+                        "2012-06-22"
+                    )
+                ) ,
+                3,
+                array(
+                    "tst_coltext" => array(
+                        "Un"
+                    ) ,
+                    "tst_colint" => array(
+                        1
+                    ) ,
+                    "tst_coldate" => array(
+                        "2012-06-20"
+                    )
+                ) ,
+                1
+            ) ,
+            array(
+                array(
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux",
+                        "Trois"
+                    ) ,
+                    "tst_colint" => array(
+                        1,
+                        2,
+                        3
+                    ) ,
+                    "tst_coldate" => array(
+                        "2012-06-20",
+                        "2012-06-21",
+                        "2012-06-22"
+                    )
+                ) ,
+                3,
+                array(
+                    "tst_coltext" => array() ,
+                    "tst_colint" => array() ,
+                    "tst_coldate" => array()
+                ) ,
+                0
+            )
+        );
+    }
+    
     public function goodValues()
     {
         $iso = (getLcDate() == 'iso');
