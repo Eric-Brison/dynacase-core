@@ -439,7 +439,6 @@ class Layout
     {
         $js = "";
         $list = $this->action->parent->GetCssRef();
-        
         foreach ($list as $k => $v) {
             $js.= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$v\">\n";
         }
