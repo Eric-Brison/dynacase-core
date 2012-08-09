@@ -347,11 +347,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         /* Try to attach the ressource to the current app */
         $ressourceLocation = '';
         if ($needparse) {
-            $ressourceLocation = $this->GetParam("CORE_STANDURL") . "&app=CORE&action=CORE_CSS&session=" . $this->session->id . "&layout=" . $ref . "&type=" . $type;
+            $ressourceLocation = "?app=CORE&action=CORE_CSS&session=" . $this->session->id . "&layout=" . $ref . "&type=" . $type;
         } else {
             $location = $this->resolveRessourceLocation($ref);
             if ($location != '') {
-                $ressourceLocation = $location;
+                $ressourceLocation = (strpos($location, '?') !== false) ? $location : $location . '?wv=' . getParam("WVERSION");
             }
         }
         
@@ -361,9 +361,9 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         
         if ($type == 'js') {
-            $this->jsref[$ref] = $ressourceLocation;
+            $this->jsref[$ressourceLocation] = $ressourceLocation;
         } elseif ($type == 'css') {
-            $this->cssref[$ref] = $ressourceLocation;
+            $this->cssref[$ressourceLocation] = $ressourceLocation;
         } else {
             return '';
         }
