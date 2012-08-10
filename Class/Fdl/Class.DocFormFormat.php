@@ -715,6 +715,7 @@ class DocFormFormat
          */
         private function formatAccount($value)
         {
+            
             if (!$this->oattr->format) {
                 $match = $this->oattr->getOption("match");
                 switch ($match) {
@@ -741,10 +742,11 @@ class DocFormFormat
                 $this->oattr->format = 'IUSER';
             }
             
-            if (!$this->oattr->phpfile) {
-                // it is already set in Lib.Attr.php when create family class
+            if (!$this->oattr->phpfile && !$this->oattr->phpfunc) {
                 // use fdlGetAccounts phpfunc
+                $this->oattr->phpfile = 'fdl.php';
                 
+                $this->oattr->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', $this->oattr->options, $this->oattr->id);
             }
             return $this->formatDocid($value);
         }
@@ -794,7 +796,7 @@ class DocFormFormat
                 }
                 if ($this->docid == 0) {
                     // case of specific interface
-                    $this->iOptions = str_replace('\"', '&quot;', '&phpfile=' . $this->oattr->phpfile . '&phpfunc=' . $this->oattr->phpfunc . '&label=' . ($this->oattr->getLabel()));
+                    $this->iOptions = str_replace('"', '&quot;', '&phpfile=' . $this->oattr->phpfile . '&phpfunc=' . $this->oattr->phpfunc . '&label=' . ($this->oattr->getLabel()));
                 }
                 $autocomplete = " autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event," . $this->docid . ",this,'{$this->iOptions}','{$this->attrid}','{$this->index}')\" ";
                 $this->onChange.= $autocomplete;
