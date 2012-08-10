@@ -212,7 +212,7 @@ function AttrToPhp($dbaccess, $tdoc)
                         $pM->parse($v->phpfunc);
                         $error = $pM->getError();
                         if ($error) {
-                            throw new Exception($error);
+                            throw new Dcp\Exception($error);
                         }
                         if (!$pM->outputString) $oAid = $v->id;
                         else $oAid = $pM->outputs[0];

@@ -859,7 +859,7 @@ union
      * get memberof for user without substitutes
      * @param int $uid if not set it is the current account object else use another account identificator
      * @return array
-     * @throws Exception
+     * @throws Dcp\Exception
      */
     public function getStrictMemberOf($uid = - 1)
     {
@@ -879,7 +879,7 @@ union
      * update memberof fields with all group/role of user
      * @param bool $updateSubstitute also update substitute by default
      * @return array of memberof identificators
-     * @throws Exception
+     * @throws Dcp\Exception
      */
     public function updateMemberOf($updateSubstitute = true)
     {
@@ -900,7 +900,7 @@ union
         $err = $this->modify(true, array(
             'memberof'
         ) , true);
-        if ($err) throw new Exception($err);
+        if ($err) throw new Dcp\Exception($err);
         if ($updateSubstitute && $this->substitute) {
             $u = new Account($this->dbaccess, $this->substitute);
             $u->updateMemberOf(false);

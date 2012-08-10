@@ -199,7 +199,7 @@ class QueryDb
         //	print "$query $res_type $p_query<BR>\n";
         if ($res_type == "ITER") {
             if ($err) {
-                throw new Exception("query fail : " . $err);
+                throw new Dcp\Db\Exception("query fail : " . $err);
             }
             include_once ("Class.DbObjectList.php");
             return new DbObjectList($this->dbaccess, $this->basic_elem->res, $this->class);
@@ -295,6 +295,7 @@ class QueryDb
     
     function AlphaClause()
     {
+        return '';
     }
     
     function SupClause()

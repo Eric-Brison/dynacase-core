@@ -373,7 +373,7 @@ class Layout
     {
         $js = "";
         $list[] = $this->action->GetParam("CORE_JSURL") . "/logmsg.js?wv=" . $this->action->GetParam("WVERSION");
-        $list = array_merge($list, $this->action->parent->GetJsRef());
+        if (!empty($this->action->parent)) $list = array_merge($list, $this->action->parent->GetJsRef());
         
         reset($list);
         
@@ -386,7 +386,9 @@ class Layout
     function GenJsCode($showlog, $onlylog = false)
     {
         $out = "";
+        if (empty($this->action->parent)) return $out;
         if (!$onlylog) {
+            
             $list = $this->action->parent->GetJsCode();
             foreach ($list as $k => $v) {
                 $out.= $v . "\n";
@@ -439,6 +441,7 @@ class Layout
     function GenCssRef()
     {
         $js = "";
+        if (empty($this->action->parent)) return "";
         $list = $this->action->parent->GetCssRef();
         foreach ($list as $k => $v) {
             $js.= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$v\">\n";
@@ -448,6 +451,7 @@ class Layout
     
     function GenCssCode()
     {
+        if (empty($this->action->parent)) return "";
         $list = $this->action->parent->GetCssCode();
         reset($list);
         $out = "";
@@ -468,7 +472,7 @@ class Layout
     {
         if ($this->noparse) return $this->template;
         // if used in an app , set the app params
-        if (is_object($this->action)) {
+        if (is_object($this->action) && (!empty($this->action->parent))) {
             $list = $this->action->parent->GetAllParam();
             while (list($k, $v) = each($list)) {
                 $this->set($k, $v);

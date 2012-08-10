@@ -40,6 +40,7 @@ class ImportDocument
      */
     public function importDocuments(Action & $action, $file, $onlyAnalyze = false, $archive = false)
     {
+        $point = '';
         if ($this->strict) {
             $point = 'importDocument';
             //$action->debug=true;
@@ -103,7 +104,7 @@ class ImportDocument
     }
     /**
      * write report in file
-     * @param $log filename path to write in
+     * @param string $log filename path to write in
      * @return void
      */
     public function writeHTMLImportLog($log)
@@ -166,7 +167,7 @@ class ImportDocument
                 fputs($flog, sprintf("IMPORT BEGIN OK : %s\n", $this->begtime));
                 $countok = 0;
                 $counterr = 0;
-                foreach ($this->cr as $k => $v) {
+                foreach ($this->cr as $v) {
                     $chg = "";
                     if (is_array($v["values"])) {
                         foreach ($v["values"] as $ka => $va) {

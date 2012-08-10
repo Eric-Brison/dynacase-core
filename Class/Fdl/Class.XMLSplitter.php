@@ -54,13 +54,13 @@ class XMLSplitter
      * stored into a dedicated file named after the node 'name' or 'id' attribute.
      *
      * @param string $splitdir the directory in which the nodes XML files will be produced
-     * @throws Exception
+     * @throws Dcp\Exception
      */
     public function __construct($splitdir)
     {
         if (!is_dir($splitdir) || !is_writable($splitdir)) {
             $this->errmsg = sprintf(_("Invalid directory '%s'.") , $splitdir);
-            throw new Exception($this->errmsg);
+            throw new Dcp\Exception($this->errmsg);
         }
         
         $this->splitdir = $splitdir;
@@ -77,7 +77,7 @@ class XMLSplitter
      * Parse the given XML input file and produce the XML output files.
      *
      * @param string $file the XML input file
-     * @throws Exception
+     * @throws Dcp\Exception
      * @return void
      */
     public function split($file)
@@ -87,7 +87,7 @@ class XMLSplitter
         while ($data = fread($this->in_fh, 4096)) {
             if (!xml_parse($this->xml_parser, $data, feof($this->in_fh))) {
                 $this->errmsg = sprintf(_("XML error %s at line %d") , xml_error_string(xml_get_error_code($this->xml_parser)) , xml_get_current_line_number($this->xml_parser));
-                throw new Exception($this->errmsg);
+                throw new Dcp\Exception($this->errmsg);
             }
         }
         $this->close();
@@ -176,7 +176,7 @@ class XMLSplitter
      * Open the input XML file that will be splitted
      *
      * @param string $file the XML input file pathname
-     * @throws Exception
+     * @throws Dcp\Exception
      * @return void
      */
     private function open($file)
@@ -185,14 +185,14 @@ class XMLSplitter
         $this->in_fh = fopen($this->in_file, "r");
         if ($this->in_fh === false) {
             $this->errmsg = sprintf(_("Could not open '%s' for reading.") , $this->in_file);
-            throw new Exception($this->errmsg);
+            throw new Dcp\Exception($this->errmsg);
         }
     }
     /**
      * Write a string to the current output file.
      *
      * @param string $str the string to write
-     * @throws Exception
+     * @throws Dcp\Exception
      * @return void
      */
     private function writeOutputFile($str)
@@ -201,7 +201,7 @@ class XMLSplitter
             $ret = fwrite($this->out_fh, $str);
             if ($ret === false) {
                 $this->errmsg = sprintf(_("Error writing to ouput file '%s'.") , $this->out_file);
-                throw new Exception($this->errmsg);
+                throw new Dcp\Exception($this->errmsg);
             }
         }
     }
@@ -271,7 +271,7 @@ class XMLSplitter
      * @param resource $parser the XML parser resource
      * @param string $name the current opening tag name
      * @param array $attrs the current opening tag attributes
-     * @throws Exception
+     * @throws Dcp\Exception
      * @return void
      */
     private function startElement(&$parser, $name, $attrs)
@@ -283,7 +283,7 @@ class XMLSplitter
         $this->depth++;
         if ($this->depth == 1 && $node['name'] != 'documents') {
             $this->errmsg = sprintf(_("XML Root node is not a '%s' node (root node is '%s').") , 'documents', $node['name']);
-            throw new Exception($this->errmsg);
+            throw new Dcp\Exception($this->errmsg);
         }
         if ($this->depth == 2) {
             $this->openOutputFile($node);
@@ -315,7 +315,7 @@ class XMLSplitter
      * If there are no name/id attributes, then a random string is used.
      *
      * @param array $node the current starting node
-     * @throws Exception
+     * @throws Dcp\Exception
      * @return void
      */
     private function openOutputFile(array $node)
@@ -323,7 +323,7 @@ class XMLSplitter
         if ($this->out_fh !== false) {
             $this->errmsg = sprintf(_("Output file '%s' is already opened.", $this->out_file));
             error_log($this->errmsg);
-            throw new Exception($this->errmsg);
+            throw new Dcp\Exception($this->errmsg);
         }
         
         if (isset($node['attrs']['name']) && preg_match('/^[a-zA-Z0-9_-]+$/', $node['attrs']['name'])) {
@@ -336,18 +336,18 @@ class XMLSplitter
         
         if ($fname == '') {
             $this->errmsg = sprintf(_("Could not generate output file name for node '%s'.") , $node['name']);
-            throw new Exception($this->errmsg);
+            throw new Dcp\Exception($this->errmsg);
         }
         
         $this->out_file = $this->splitdir . DIRECTORY_SEPARATOR . $fname . '.xml';
         if (is_file($this->out_file)) {
             $this->errmsg = sprintf(_("Output file '%s' already exists.") , $this->out_file);
-            throw new Exception($this->errmsg);
+            throw new Dcp\Exception($this->errmsg);
         }
         $this->out_fh = fopen($this->out_file, 'wx');
         if ($this->out_fh === false) {
             $this->errmsg = sprintf(_("Xml import : Cannot create file %s") , $this->out_file);
-            throw new Exception($this->errmsg);
+            throw new Dcp\Exception($this->errmsg);
         }
         $this->writeOutputFile("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
     }

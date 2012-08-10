@@ -62,7 +62,7 @@ foreach ($argv as $k => $v) {
     }
 }
 
-if (($_GET["api"] == "") && ($_GET["app"] == "" || $_GET["action"] == "")) {
+if ((empty($_GET["api"])) && (empty($_GET["app"]) || empty($_GET["action"]))) {
     print_usage();
     exit(1);
 }
@@ -119,19 +119,24 @@ if ($core->user->status == "D") {
     echo sprintf(_("Error : User account [%s] is desactivated\n") , $_GET["userid"]);
     exit(2);
 }
-
-if (isset($_GET["app"])) {
-    $appl = new Application();
-    $appl->Set($_GET["app"], $core);
-} else {
-    $appl = $core;
+try {
+    if (isset($_GET["app"])) {
+        $appl = new Application();
+        $appl->Set($_GET["app"], $core);
+    } else {
+        $appl = $core;
+    }
+    
+    $action = new Action();
+    if (isset($_GET["action"])) {
+        $action->Set($_GET["action"], $appl);
+    } else {
+        $action->Set("", $appl);
+    }
 }
-
-$action = new Action();
-if (isset($_GET["action"])) {
-    $action->Set($_GET["action"], $appl);
-} else {
-    $action->Set("", $appl);
+catch(Dcp\Exception $e) {
+    echo sprintf(_("Error : %s\n") , $e->getMessage());
+    exit(1);
 }
 // init for gettext
 setLanguage($action->Getparam("CORE_LANG"));
@@ -145,15 +150,15 @@ if (isset($_GET["api"])) {
         try {
             include ("API/" . $apifile . ".php");
         }
-        catch(Exception $e) {
-            switch ($e->getCode()) {
-                case THROW_EXITERROR:
-                    echo sprintf(_("Error : %s\n") , $e->getMessage());
+        catch(Dcp\ApiUsage\Exception $e) {
+            switch ($e->getDcpCode()) {
+                case "CORE0002":
+                    echo sprintf(_("Error : %s\n") , $e->getDcpMessage());
                     exit(1);
                     break;
 
-                case ApiUsage::THROW_EXITHELP:
-                    echo sprintf($e->getMessage());
+                case "CORE0003":
+                    echo sprintf($e->getDcpMessage());
                     exit(0);
                     break;
 
@@ -162,23 +167,29 @@ if (isset($_GET["api"])) {
                     exit(1);
             }
         }
+        catch(Dcp\Exception $e) {
+            echo sprintf(_("Error : %s\n") , $e->getMessage());
+            exit(1);
+        }
+        catch(Exception $e) {
+            
+            echo sprintf(_("Caught Exception : %s\n") , $e->getMessage());
+            exit(1);
+        }
     }
 } else {
     if (!isset($_GET["wshfldid"])) {
         try {
             echo ($action->execute());
         }
+        catch(Dcp\Exception $e) {
+            echo sprintf(_("Error : %s\n") , $e->getMessage());
+            exit(1);
+        }
         catch(Exception $e) {
-            switch ($e->getCode()) {
-                case THROW_EXITERROR:
-                    echo sprintf(_("Error : %s\n") , $e->getMessage());
-                    exit(1);
-                    break;
-
-                default:
-                    echo sprintf(_("Caught Exception : %s\n") , $e->getMessage());
-                    exit(1);
-            }
+            
+            echo sprintf(_("Caught Exception : %s\n") , $e->getMessage());
+            exit(1);
         }
     } else {
         // REPEAT EXECUTION FOR FREEDOM FOLDERS

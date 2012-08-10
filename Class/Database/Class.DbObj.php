@@ -649,7 +649,8 @@ class DbObj
      * @param string $sql the query
      * @param int $lvl level set to 0
      * @param bool $prepare set to true to use pg_prepare, restrict to use single query
-     * @return string error message
+     * @throw Dcp\Db\Exception
+     * @return string error message if not strict mode
      */
     function exec_query($sql, $lvl = 0, $prepare = false)
     {
@@ -773,7 +774,7 @@ class DbObj
         logDebugStack(2);
         error_log($err);
         if (self::$sqlStrict) {
-            throw new Exception($err);
+            throw new Dcp\Db\Exception($err);
         }
     }
     /**

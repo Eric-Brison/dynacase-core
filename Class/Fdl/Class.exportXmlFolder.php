@@ -38,14 +38,14 @@ class exportXmlFolder
     /**
      * export format xml or zip
      * @param string $xy
-     * @throws Exception
+     * @throws Dcp\Exception
      */
     public function setOutputFormat($xy)
     {
         if ($xy == self::zipFormat || $xy == self::xmlFormat) {
             $this->format = $xy;
         } else {
-            throw new Exception(sprintf("format must be %s or %s") , self::zipFormat, self::xmlFormat);
+            throw new Dcp\Exception(sprintf("format must be %s or %s") , self::zipFormat, self::xmlFormat);
         }
     }
     /**
@@ -79,15 +79,15 @@ class exportXmlFolder
     /**
      * return content of xml file to be use only with xml format
      * @return string
-     * @throws Exception
+     * @throws Dcp\Exception
      */
     public function getXmlContent()
     {
         if (!$this->exported) {
-            throw new Exception(sprintf(_("nothing to export. Do export before")));
+            throw new Dcp\Exception(sprintf(_("nothing to export. Do export before")));
         }
         if ($this->format != self::xmlFormat) {
-            throw new Exception(sprintf(_("not in XML format")));
+            throw new Dcp\Exception(sprintf(_("not in XML format")));
         }
         return file_get_contents($this->outputFile);
     }

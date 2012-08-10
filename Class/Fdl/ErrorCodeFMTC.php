@@ -4,23 +4,44 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-/**
- * Error codes used to format document list
- * @class ErrorCodeFMTC
- * @brief List all error code for format document list
- * @see FormatCollection
- * @see ErrorCode
- */
-class ErrorCodeFMTC
-{
+namespace {
     /**
-     * the property used by formatProperties must a property like "title".
-     * @see FormatCollection::addProperty()
+     * Error codes used to format document list
+     * @class ErrorCodeFMTC
+     * @brief List all error code for format document list
+     * @see FormatCollection
+     * @see ErrorCode
      */
-    const FMTC0001 = 'The document property "%s" is not know. Cannot format document list';
-    /**
-     * array, tab and frame type attributes cannot be formated
-     * @see FormatCollection::addAttribute()
-     */
-    const FMTC0002 = 'Structured attribute "%s" cannot be formated.';
+    class ErrorCodeFMTC
+    {
+        /**
+         * the property used by formatProperties must a property like "title".
+         * @see FormatCollection::addProperty()
+         */
+        const FMTC0001 = 'The document property "%s" is not know. Cannot format document list';
+        /**
+         * array, tab and frame type attributes cannot be formated
+         * @see FormatCollection::addAttribute()
+         */
+        const FMTC0002 = 'Structured attribute "%s" cannot be formated.';
+        /**
+         * for beautifier
+         */
+        private function _bo()
+        {
+            if (true) $a = 1;
+        }
+    }
+}
+namespace Dcp\Fmtc {
+    class Exception extends \dcp\Exception
+    {
+        /**
+         * for beautifier
+         */
+        private function _bo()
+        {
+            if (true) $a = 1;
+        }
+    }
 }

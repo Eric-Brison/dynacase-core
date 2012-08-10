@@ -284,7 +284,7 @@ function getDbid($dbaccess)
         if (!$CORE_DBID[$dbaccess]) {
             // fatal error
             header('HTTP/1.0 503 DB connection unavalaible');
-            throw new Exception(ErrorCode::getError('DB0101', $dbaccess));
+            throw new \Dcp\Db\Exception('DB0101', $dbaccess);
         }
     }
     return $CORE_DBID[$dbaccess];
@@ -363,7 +363,7 @@ function getDbAccessValue($varName)
         }
     }
     if (!$included) {
-        throw new Exception(ErrorCode::getError("FILE0005", $filename));
+        throw new Dcp\Exception("FILE0005", $filename);
     }
     return $$varName;
 }
@@ -396,13 +396,13 @@ function getServiceName($dbaccess)
 }
 /**
  * send simple query to database
- * @param string $dbaccessaccess database coordonates
+ * @param string $dbaccess access database coordonates
  * @param string $query sql query
  * @param string|array &$result  query result
  * @param bool $singlecolumn  set to true if only one field is return
  * @param bool $singleresult  set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array
  * @param bool $useStrict set to true to force exception or false to force no exception, if null use global parameter
- * @throw Exception when sql error in query
+ * @throws Dcp\Db\Exception
  * @return string error message. Empty message if no errors (when strict mode is not enable)
  */
 function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = false, $singleresult = false, $useStrict = null)
@@ -451,7 +451,7 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
             if ($sqlStrict === null) $sqlStrict = (getParam("CORE_SQLSTRICT") != "no");
             if ($useStrict === true || $sqlStrict) {
                 
-                throw new Exception($err);
+                throw new \Dcp\Db\Exception($err);
             }
         }
     }
@@ -498,7 +498,7 @@ function getAuthTypeParams($freedomctx = "")
     global $pubdir;
     $freedom_authtypeparams = getDbAccessValue('freedom_authtypeparams');
     if (!is_array($freedom_authtypeparams)) {
-        throw new Exception(ErrorCode::getError('FILE0006'));
+        throw new Dcp\Exception('FILE0006');
     }
     
     if (!array_key_exists(getAuthType() , $freedom_authtypeparams)) {
