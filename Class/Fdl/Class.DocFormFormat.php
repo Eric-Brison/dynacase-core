@@ -715,7 +715,6 @@ class DocFormFormat
          */
         private function formatAccount($value)
         {
-            
             if (!$this->oattr->format) {
                 $match = $this->oattr->getOption("match");
                 switch ($match) {
@@ -739,13 +738,11 @@ class DocFormFormat
                         $this->oattr->format = 'IUSER';
                         break;
                 }
-                $this->oattr->format = 'IUSER';
             }
             
             if (!$this->oattr->phpfile && !$this->oattr->phpfunc) {
                 // use fdlGetAccounts phpfunc
                 $this->oattr->phpfile = 'fdl.php';
-                
                 $this->oattr->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', $this->oattr->options, $this->oattr->id);
             }
             return $this->formatDocid($value);
@@ -1828,10 +1825,10 @@ class DocFormFormat
              */
             private function addDocIdCreate(BasicAttribute & $oattr, Doc & $doc, $attridk, $value, $index)
             {
-                if ($oattr->type == "docid") {
+
+                if ($oattr->type == "docid" || $oattr->type == "account" ) {
                     $creation = $oattr->getOption("creation");
                     if ($creation && ($creation != "no")) {
-                        
                         $reldoc = new_doc($doc->dbaccess, $oattr->format);
                         if ($reldoc->control('icreate') != "") return '';
                         
