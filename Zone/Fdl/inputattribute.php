@@ -21,12 +21,12 @@ include_once ("FDL/editutil.php");
 /**
  * Compose html code to insert input
  * @param Action &$action current action
- * @global type Http var : attribute type
- * @global id Http var : identificator of input generated
- * @global label Http var : label of attribute (only for doclink type when no choice is possible)
- * @global famid Http var : family identificator criteria (only for doclink type)
- * @global value Http var : predefined value
- * @global esize Http var : number of character visible (for text input)
+ * @global string $type Http var : attribute type
+ * @global string $id Http var : identificator of input generated
+ * @global string $label Http var : label of attribute (only for doclink type when no choice is possible)
+ * @global string $famid Http var : family identificator criteria (only for doclink type)
+ * @global string $value Http var : predefined value
+ * @global string $esize Http var : number of character visible (for text input)
  */
 function inputattribute(&$action)
 {
@@ -44,8 +44,8 @@ function inputattribute(&$action)
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $doc = new doc($dbaccess);
     $htmlinput = "";
-
-    $value=str_replace('\\n',"\n",$value);
+    
+    $value = str_replace('\\n', "\n", $value);
     if ($type == "doclink") {
         $famid = GetHttpVars("famid");
         
@@ -122,7 +122,7 @@ function inputattribute(&$action)
         $oattr = new NormalAttribute($attrid, $doc->id, $label, $type, $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, $fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint, $usefor, $eformat, $options);
         $doc->attributes->attr[$attrid] = $oattr;
     }
-
+    
     $htmlinput.= getHtmlInput($doc, $oattr, $value, $index, $jsevent, true);
     
     $action->lay->template = $htmlinput;

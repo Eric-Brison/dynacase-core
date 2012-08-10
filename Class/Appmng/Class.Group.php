@@ -88,7 +88,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     /**
      * initialise groups for a user
      */
-    function PostSelect()
+    function PostSelect($id)
     {
         $this->GetGroups();
     }

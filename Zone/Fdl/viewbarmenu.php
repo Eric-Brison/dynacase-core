@@ -30,16 +30,18 @@ function viewbarmenu(Action & $action)
     else {
         if ($doc->specialmenu) {
             if (preg_match("/(.*):(.*)/", $doc->specialmenu, $reg)) {
-                $action->getmenulink = true;
+                $action->parent->setVolatileParam("getmenulink", 1);
+                
                 $dir = $reg[1];
                 $function = strtolower($reg[2]);
                 $file = $function . ".php";
                 if (include_once ("$dir/$file")) {
                     $function($action);
-                    $popup = $action->menulink;
+                    $popup = $action->GetParam("menulink");;
                 } else {
                     AddwarningMsg(sprintf(_("Incorrect specification of special menu : %s") , $doc->specialmenu));
                 }
+                $action->parent->setVolatileParam("getmenulink", null);
             } else {
                 AddwarningMsg(sprintf(_("Incorrect specification of special menu : %s") , $doc->specialmenu));
             }
