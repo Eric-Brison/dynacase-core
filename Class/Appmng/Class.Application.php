@@ -350,7 +350,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             
             if (!isset($this->session)) $sessid = 0;
             else $sessid = $this->session->id;
-            $ressourceLocation =  "?app=CORE&action=CORE_CSS&session=" . $sessid . "&layout=" . $ref . "&type=" . $type;
+            $ressourceLocation = "?app=CORE&amp;action=CORE_CSS&amp;session=" . $sessid . "&amp;layout=" . $ref . "&amp;type=" . $type;
         } else {
             $location = $this->resolveRessourceLocation($ref);
             if ($location != '') {
@@ -801,7 +801,8 @@ create sequence SEQ_ID_APPLICATION start 10;
     }
     function setVolatileParam($key, $val)
     {
-        $this->param->SetVolatile($key, $val);
+        if ($this->hasParent()) $this->parent->setVolatileParam($key, $val);
+        else $this->param->SetVolatile($key, $val);
     }
     
     function getParam($key, $default = "")

@@ -232,10 +232,9 @@ function AttrToPhp($dbaccess, $tdoc)
                         }
                     }
                     if ($atype == "account") {
-                        if (!$v->phpfile) {
+                        if (!$v->phpfile && !$v->phpfunc) {
                             $v->phpfile = 'fdl.php';
-                            
-                            $v->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', $v->options, $v->id);
+                            $v->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', str_replace('"', '\\"', $v->options) , $v->id);
                         }
                     }
                     $tnormal[($v->id) ] = array(

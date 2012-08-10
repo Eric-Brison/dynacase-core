@@ -49,7 +49,7 @@ function viewcard(Action & $action)
     else if ($ulink == "Y") $ulink = 1;
     $action->lay->set("ulink", $ulink);
     // Set the globals elements
-    $action->parent->AddJsRef(sprintf("%sapp=FDL&action=ALLVIEWJS&wv=%s", $action->getParam("CORE_SSTANDURL") , $action->getParam('WVERSION')));
+    $action->parent->AddJsRef(sprintf("?app=FDL&amp;action=ALLVIEWJS&amp;wv=%s", $action->getParam('WVERSION')));
     /*
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/WHAT/Layout/AnchorPosition.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");

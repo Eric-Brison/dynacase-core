@@ -10,7 +10,7 @@
    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 [IFNOT nocss]
 <link rel="shortcut icon" href="[shorticon]">
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&popup=true&wv=[WVERSION]" >[ENDIF nocss]
+<LINK REL="stylesheet" type="text/css" HREF="?app=FDL&amp;action=ALLVIEWCSS&amp;popup=true&amp;wv=[WVERSION]" >[ENDIF nocss]
 [IF RSS]<link rel="alternate" type="application/rss+xml" title="[TITLE]" href="[rsslink]"/>[ENDIF RSS]
 [IFNOT nocss]
 [CSS:REF]

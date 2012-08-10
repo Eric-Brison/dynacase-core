@@ -20,8 +20,9 @@ include_once ("FDL/Class.Doc.php");
 // -----------------------------------
 function popupdoc(Action & $action, $tlink, $tsubmenu = array())
 {
-    if ($action->getmenulink) { // to be use in viewbarmenu function
-        $action->menulink = $tlink;
+    
+    if ($action->getParam("getmenulink")) { // to be use in viewbarmenu function
+        $action->parent->setVolatileParam("menulink", $tlink);
         return;
     }
     
@@ -43,13 +44,22 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
     $useicon = false;
     $rlink = array();
     $rlinkbottom = array();
+    $menuKeys = array(
+        "title",
+        "submenu",
+        "tconfirm",
+        "visibility",
+        "url",
+        "jsfunction",
+        "icon"
+    );
     foreach ($tlink as $k => $v) {
         if ($onlyctrl) {
             if (($v["visibility"] != POPUP_CTRLACTIVE) && ($v["visibility"] != POPUP_CTRLINACTIVE)) $v["visibility"] = POPUP_INVISIBLE;
             if ($v["visibility"] == POPUP_CTRLACTIVE) $v["visibility"] = POPUP_ACTIVE;
             else if ($v["visibility"] == POPUP_CTRLINACTIVE) $v["visibility"] = POPUP_INACTIVE;
         }
-        
+        foreach ($menuKeys as $mKey) if (!isset($v[$mKey])) $v[$mKey] = '';
         if ($onlysub) {
             if ($v["submenu"] != $onlysub) $v["visibility"] = POPUP_INVISIBLE;
             else $v["submenu"] = "";
@@ -57,7 +67,13 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
         if ($v["visibility"] == POPUP_INACTIVE) {
             if ($v["title"]) {
                 $v["url"] = '';
-                $v["jsfunction"] = sprintf("alert('%s')", str_replace(array("'","\n"), array("&rsquo;",'\\n'), $v["title"]));
+                $v["jsfunction"] = sprintf("alert('%s')", str_replace(array(
+                    "'",
+                    "\n"
+                ) , array(
+                    "&rsquo;",
+                    '\\n'
+                ) , $v["title"]));
             } else {
                 $v["url"] = '#';
                 $v["jsfunction"] = '';
@@ -66,7 +82,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
         }
         if ($v["visibility"] != POPUP_INVISIBLE) {
             if ($v["submenu"] == "") {
-                if ($v["icon"]) $useicon = true;
+                if (!empty($v["icon"])) $useicon = true;
                 $v["ICONS"] = "mainicon";
             } else {
                 $smid = base64_encode($v["submenu"]);
@@ -81,6 +97,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
             
             $v["issubmenu"] = false;
             $v["title"] = mb_ucfirst($v["title"]);
+            
             $v["tconfirm"] = str_replace(array(
                 "\n",
                 "\r",

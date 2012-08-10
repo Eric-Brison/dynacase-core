@@ -52,4 +52,10 @@ class ErrorCodeUPAT
      * @see UpdateAttribute::addValue
      */
     const UPAT0008 = 'cannot add an array in addValue when attribute is not in an array :  the attribute "%s"(%s)  must not have multiple=yes option';
+
+    /**
+     * can use removeValue only with multiple attribute
+     * @see UpdateAttribute::removeValue
+     */
+    const UPAT0009 = 'cannot use removeValue :  the attribute "%s" (%s) must be declared as multiple';
 }

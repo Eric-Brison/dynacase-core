@@ -536,7 +536,7 @@ class UpdateAttribute
         }
         
         if (!$singleMultiple && !$doubleMultiple) {
-            throw new Exception(ErrorCode::getError("UPAT0007", $attrid, $oa->docname));
+            throw new Exception(ErrorCode::getError("UPAT0009", $attrid, $oa->docname));
         }
         $valueToRemove = $this->name2id($oa, $valueToRemove);
         

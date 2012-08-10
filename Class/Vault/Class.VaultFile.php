@@ -198,9 +198,9 @@ function rename($id_file, $newname)
         if ($msg == "") {
             $pio = pathinfo($oldname);
             $pin = pathinfo($newname);
-            $epio = $pio['extension'];
+            $epio = isset($pio['extension']) ? $pio['extension'] : "";
             if ($epio == "") $epio = "nop";
-            $epin = $pin['extension'];
+            $epin = isset($pin['extension']) ? $pin['extension'] : "";
             if ($epin == "") $epin = "nop";
             if ($epio != $epin) {
                 // need rename physically file
