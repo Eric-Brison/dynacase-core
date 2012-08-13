@@ -375,8 +375,28 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
         $this->assertEquals($expectedChangedCount, $changed, "not correct changed count");
     }
     /**
+     * @dataProvider dataErrorSetValue
+     */
+    public function testErrorSetValue($attrid, $newValue, $expectErrorCode)
+    {
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s->setObjectReturn();
+        $s->addFilter("name ~ '^TST_DUPTATTR'");
+        $dl = $s->search()->getDocumentList();
+        $ua = new \UpdateAttribute();
+        try {
+            $ua->useCollection($dl);
+            $ua->setValue($attrid, $newValue);
+        }
+        catch(\Dcp\Upat\Exception $e) {
+            $this->assertEquals($expectErrorCode, $e->getDcpCode() , "erroneous exception code");
+            return;
+        }
+        $this->assertTrue(true, false, "an error must be catched");
+    }
+    /**
      * @dataProvider dataSetValue
-     * can use it in bg mode cause postgresql transaction locking
+     * cannot use it in bg mode cause postgresql transaction locking
      */
     private function _testBgSetValue($attrid, $newValue)
     {
@@ -449,6 +469,19 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
             )
         );
     }
+    
+    public function dataErrorSetValue()
+    {
+        
+        return array(
+            array(
+                "TST_NOTHING",
+                "3",
+                "UPAT0004"
+            )
+        );
+    }
+    
     public function dataSetValue()
     {
         

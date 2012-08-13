@@ -84,9 +84,13 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
  * @var Action $action
  */
 $action = null;
-getmainAction(AuthenticatorManager::$auth, $action);
 try {
+    getmainAction(AuthenticatorManager::$auth, $action);
     executeAction($action);
+}
+catch(Dcp\Exception $e) {
+    print $e->getMessage();
+    exit(1);
 }
 catch(Exception $e) {
     $action->exitError($e->getMessage());

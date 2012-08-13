@@ -51,7 +51,10 @@ class importDocumentDescription
      * @var DocFam
      */
     private $doc;
-    
+    /**
+     * @param string $importFile
+     * @throw Dcp\Exception
+     */
     public function __construct($importFile)
     {
         if (seemsODS($importFile)) {
@@ -61,7 +64,7 @@ class importDocumentDescription
             $this->fdoc = fopen($importFile, "r");
         }
         if (!$this->fdoc) {
-            throw new Exception(sprintf("no import file found : %s") , $importFile);
+            throw new Dcp\Exception(sprintf("no import file found : %s") , $importFile);
         }
         $this->dbaccess = getParam("FREEDOM_DB");;
     }

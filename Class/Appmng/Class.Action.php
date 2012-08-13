@@ -167,9 +167,8 @@ create sequence SEQ_ID_ACTION;
             $this->Affect($query->list[0]);
             $this->log->debug("Set Action to {$this->name}");
         } else {
-            $err = sprintf(_("Action '%s' not declared for application %s (%d)") , $name, $parent->name, $parent->id);
-            print $err;
-            exit;
+            header('HTTP/1.0 503 Action unavalaible');
+            throw new Dcp\Core\Exception("CORE0005", $name, $parent->name, $parent->id);
         }
         
         $this->CompleteSet($parent);
@@ -528,7 +527,7 @@ create sequence SEQ_ID_ACTION;
             $this->lay = new Layout("CORE/Layout/error.xml", $this);
             $this->lay->set("error", nl2br($texterr));
             $this->lay->set("serror", str_replace("\n", "\\n", addslashes($texterr)));
-            $this->lay->set("appname", $this->parent->name);
+            $this->lay->set("appname", (empty($this->parent)) ? '' : $this->parent->name);
             $this->lay->set("appact", $this->name);
             if ($this->parent && $this->parent->parent) { // reset js ans ccs
                 $this->parent->parent->cssref = array();
@@ -538,7 +537,7 @@ create sequence SEQ_ID_ACTION;
             print $this->lay->gen();
             exit;
         } else {
-            throw new Exception($texterr, THROW_EXITERROR);
+            throw new Dcp\Core\Exception("CORE0001", $texterr);
         }
     }
     

@@ -70,7 +70,7 @@ Class _[PHPclassName] extends [DocParent] {
   $oAttr="[callattr]";
        $callMethod="[callmethod]";
   $ca=$this->getAttribute($oAttr);
-  if (! $ca) throw new Exception(ErrorCode::getError('ATTR1212',$callMethod, $this->fromname));
+  if (! $ca) throw new Dcp\Exception(ErrorCode::getError('ATTR1212',$callMethod, $this->fromname));
   if ($ca->inArray()) {
       $this->completeArrayRow($ca->fieldSet->id);
       $t=$this->getTValue($oAttr);

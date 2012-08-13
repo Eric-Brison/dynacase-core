@@ -235,7 +235,7 @@ class OOoLayout extends Layout
         // restore user fields
         if (!$this->dom->loadXML($this->template)) {
             print $this->template;
-            throw new Exception("Error in parse condition");
+            throw new Dcp\Exception("Error in parse condition");
         }
         //header('Content-type: text/xml; charset=utf-8');print $this->dom->saveXML();exit;
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "user-field-get");
@@ -734,7 +734,7 @@ class OOoLayout extends Layout
     {
         if ($strNewContent === null) return;
         if (is_array($strNewContent)) {
-            throw new Exception("node replacement must be a string : array found");
+            throw new Dcp\Exception("node replacement must be a string : array found");
         }
         $objNodeListNested = & $objNode->childNodes;
         /**
@@ -1337,7 +1337,7 @@ class OOoLayout extends Layout
     
     protected function setArray($key, array $t)
     {
-        if (!$key) throw new Exception('Key must not be empty');
+        if (!$key) throw new Dcp\Exception('Key must not be empty');
         $this->arrayKeys[$key] = $t;
     }
     /**
@@ -1664,10 +1664,10 @@ class OOoLayout extends Layout
                 $this->content_template = $this->template;
             } else {
                 print $this->template;
-                throw new Exception("cannot product ooo template");
+                throw new Dcp\Exception("cannot product ooo template");
             }
         } else {
-            throw new Exception(sprintf("not openDocument file %s", $this->file));
+            throw new Dcp\Exception(sprintf("not openDocument file %s", $this->file));
         }
     }
     /**

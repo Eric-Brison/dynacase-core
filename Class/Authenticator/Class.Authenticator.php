@@ -32,8 +32,8 @@ abstract class Authenticator
         
         include_once ('WHAT/Lib.Common.php');
         
-        if ($authtype == "") throw new Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: authentication mode not set");
-        if ($authprovider == "") throw new Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: authentication provider not set");
+        if ($authtype == "") throw new Dcp\Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: authentication mode not set");
+        if ($authprovider == "") throw new Dcp\Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: authentication provider not set");
         
         $tx = array(
             'type' => $authtype,
@@ -45,15 +45,15 @@ abstract class Authenticator
             $this->parms = array_merge($tx, $ta, $tp);
             
             if (!array_key_exists('provider', $this->parms)) {
-                throw new Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: provider parm not specified at __construct");
+                throw new Dcp\Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: provider parm not specified at __construct");
             }
             $providerClass = $this->parms{'provider'} . 'Provider';
             $ret = @include_once ('WHAT/Class.' . $providerClass . '.php');
             if ($ret === FALSE) {
-                throw new Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: WHAT/Class." . $providerClass . ".php not found");
+                throw new Dcp\Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: WHAT/Class." . $providerClass . ".php not found");
             }
             if (!class_exists($providerClass)) {
-                throw new Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: " . $providerClass . " class not found");
+                throw new Dcp\Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: " . $providerClass . " class not found");
             }
             global $action;
             //     error_log("Using authentication provider [".$providerClass."]");

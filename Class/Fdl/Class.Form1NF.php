@@ -240,7 +240,7 @@ class Form1NF
         $this->sqlLogWrite($msg, true);
         $this->sqlLogFlush();
         //debug_print_backtrace();
-        throw new Exception(trim($msg));
+        throw new Dcp\Exception(trim($msg));
     }
     /**
      *

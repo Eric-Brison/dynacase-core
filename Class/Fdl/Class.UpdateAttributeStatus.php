@@ -47,7 +47,7 @@ class UpdateAttributeStatus
     public function __construct($statusFile)
     {
         $this->statusFile = $statusFile;
-        if (!file_exists($this->statusFile)) throw new Exception(ErrorCode::getError("UPAT0003", $statusFile));
+        if (!file_exists($this->statusFile)) throw new Dcp\Upat\Exception("UPAT0003", $statusFile);
     }
     
     private function readStatus()

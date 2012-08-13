@@ -55,20 +55,20 @@ class TestUsage extends TestCaseDcp
     public function testNeededApiUsageForceException($argNeeded, $def)
     {
         $usage = '';
-                $error = '';
+        $error = '';
         try {
             $u = new \ApiUsage();
             $u->addNeeded($argNeeded, $def);
             $u->verify(true);
         }
-        catch(\ApiUsageException $e) {
+        catch(\Dcp\ApiUsage\Exception $e) {
             $error = $e->getMessage();
-                        $usage = $e->getUsage();
+            $usage = $e->getUsage();
         }
         $this->assertContains($argNeeded, $error);
         $this->assertNotContains($def, $error);
-                $this->assertContains($argNeeded, $usage);
-                $this->assertContains($def, $usage);
+        $this->assertContains($argNeeded, $usage);
+        $this->assertContains($def, $usage);
     }
     
     public function dataTextUsage()

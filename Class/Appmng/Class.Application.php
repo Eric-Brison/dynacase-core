@@ -135,6 +135,11 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @var Permission
      */
     public $permission = null; // permission object
+    
+    /**
+     * @var Log
+     */
+    public $log = null;
     public $jsref = array();
     public $jscode = array();
     public $logmsg = array();
@@ -176,10 +181,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 }
             } else {
                 header('HTTP/1.0 503 Application unavalaible');
-                printf("Fail to find application %s.\n", $name);
-                exit;
-                //throw new Exception(sprintf("Fail to find application %s",$name));
-                
+                throw new Dcp\Core\Exception("CORE0004", $name);
             }
         }
         

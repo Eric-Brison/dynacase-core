@@ -106,13 +106,13 @@ class FormatCollection
      * add a property to render
      * by default id and title are rendered
      * @param string $props
-     * @throws Exception
+     * @throws \Dcp\Fmtc\Exception
      * @return FormatCollection
      */
     public function addProperty($props)
     {
         if ((!in_array($props, $this->propsKeys) && ($props != self::propUrl))) {
-            throw new Exception(ErrorCode::getError("FMTC0001", $props));
+            throw new \Dcp\Fmtc\Exception("FMTC0001", $props);
         }
         $this->fmtProps[$props] = $props;
         return $this;
@@ -131,7 +131,7 @@ class FormatCollection
     }
     /**
      * return formatted document list to be easily exported in other format
-     * @throws Exception
+     * @throws \Dcp\Fmtc\Exception
      * @return array
      */
     public function render()
@@ -149,7 +149,7 @@ class FormatCollection
             foreach ($this->fmtAttrs as $attrid) {
                 $oa = $doc->getAttribute($attrid);
                 if ($oa) {
-                    if (($oa->type == "array") || ($oa->type == "tab") || ($oa->type == "frame")) throw new Exception(ErrorCode::getError("FMTC0002", $attrid));
+                    if (($oa->type == "array") || ($oa->type == "tab") || ($oa->type == "frame")) throw new \Dcp\Fmtc\Exception("FMTC0002", $attrid);
                     $mb0 = microtime(true);
                     $value = $doc->getValue($oa->id);
                     if ($value === '') {
@@ -490,4 +490,4 @@ class DocidAttributeValue extends StandardAttributeValue
         return $ul;
     }
 }
-?>
+

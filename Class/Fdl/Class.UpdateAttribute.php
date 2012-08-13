@@ -66,14 +66,14 @@ class UpdateAttribute
     /**
      * document list to process
      * @param DocumentList $l
-     * @throws Exception
+     * @throws Dcp\Upat\Exception
      * @return UpdateAttribute
      */
     public function useCollection(DocumentList & $l)
     {
         $this->dl = $l;
         $s = $l->getSearchDocument();
-        if (!$s->isObjectReturn()) throw new Exception(ErrorCode::getError("UPAT0002"));
+        if (!$s->isObjectReturn()) throw new \Dcp\Upat\Exception(ErrorCode::getError("UPAT0002"));
         return $this;
     }
     /**
@@ -327,7 +327,7 @@ class UpdateAttribute
      * change value of an attribute for docment list
      * @param string $attrid attribute id
      * @param string|string[] $newValue new value to set for attribute
-     * @throws Exception
+     * @throws Dcp\Upat\Exception
      */
     public function setValue($attrid, $newValue)
     {
@@ -337,7 +337,7 @@ class UpdateAttribute
         $this->logStatus("BEGIN");
         if (!CheckAttr::checkAttrSyntax($attrid)) {
             $this->logStatus("END");
-            throw new Exception(ErrorCode::getError("UPAT0001", $attrid));
+            throw new \Dcp\Upat\Exception(ErrorCode::getError("UPAT0001", $attrid));
         }
         
         $newValue = $this->name2id($oa, $newValue);
@@ -373,7 +373,7 @@ class UpdateAttribute
      * @param string $attrid attribute id
      * @param string $oldValue value to replace
      * @param string|string[] $newValue new value to set for attribute
-     * @throws Exception
+     * @throws Dcp\Upat\Exception
      */
     public function replaceValue($attrid, $oldValue, $newValue)
     {
@@ -385,7 +385,7 @@ class UpdateAttribute
         $this->logStatus("BEGIN");
         if (!CheckAttr::checkAttrSyntax($attrid)) {
             $this->logStatus("END");
-            throw new Exception(ErrorCode::getError("UPAT0001", $attrid));
+            throw new \Dcp\Upat\Exception(ErrorCode::getError("UPAT0001", $attrid));
         }
         $ids = array();
         $upToDateIds = array();
@@ -417,24 +417,24 @@ class UpdateAttribute
     }
     /**
      * @param $attrid
+     * @throws Dcp\Upat\Exception
      * @return NormalAttribute
-     * @throws Exception
      */
     private function getFamilyAttribute($attrid)
     {
         $famid = $this->getFamily();
-        if (!$famid) throw new Exception(ErrorCode::getError("UPAT0006"));
+        if (!$famid) throw new \Dcp\Upat\Exception(ErrorCode::getError("UPAT0006"));
         $fam = new_doc($this->dbaccess, $famid);
-        if (!$fam->isAlive()) throw new Exception(ErrorCode::getError("UPAT0005", $this->getFamily()));
+        if (!$fam->isAlive()) throw new \Dcp\Upat\Exception(ErrorCode::getError("UPAT0005", $this->getFamily()));
         $oa = $fam->getAttribute($attrid);
-        if (!$oa) throw new Exception(ErrorCode::getError("UPAT0004", $attrid, $fam->getTitle()));
+        if (!$oa) throw new \Dcp\Upat\Exception("UPAT0004", $attrid, $fam->getTitle());
         return $oa;
     }
     /**
      * replace value by another for an document list attribute
      * @param string $attrid attribute id
      * @param string|\string[] $valueToAdd
-     * @throws Exception
+     * @throws Dcp\Upat\Exception
      */
     public function addValue($attrid, $valueToAdd)
     {
@@ -448,7 +448,7 @@ class UpdateAttribute
         }
         
         if (!$singleMultiple && !$doubleMultiple) {
-            throw new Exception(ErrorCode::getError("UPAT0007", $attrid, $oa->docname));
+            throw new \Dcp\Upat\Exception("UPAT0007", $attrid, $oa->docname);
         }
         
         $valueToAdd = $this->name2id($oa, $valueToAdd);
@@ -468,7 +468,7 @@ class UpdateAttribute
             }
         } elseif ((!$oa->inArray()) && $singleMultiple) {
             if (is_array($valueToAdd)) {
-                throw new Exception(ErrorCode::getError("UPAT0008", $attrid, $oa->docname));
+                throw new \Dcp\Upat\Exception("UPAT0008", $attrid, $oa->docname);
             }
             /**
              * @var Doc $doc
@@ -484,7 +484,7 @@ class UpdateAttribute
             }
         } elseif ($doubleMultiple) {
             if (is_array($valueToAdd)) {
-                throw new Exception(ErrorCode::getError("UPAT0008", $attrid, $oa->docname));
+                throw new \Dcp\Upat\Exception("UPAT0008", $attrid, $oa->docname);
             }
             /**
              * @var Doc $doc
@@ -522,7 +522,7 @@ class UpdateAttribute
      * replace value by another for an document list attribute
      * @param string $attrid attribute id
      * @param string|\string[] $valueToRemove
-     * @throws Exception
+     * @throws Dcp\Upat\Exception
      */
     public function removeValue($attrid, $valueToRemove)
     {
@@ -536,7 +536,7 @@ class UpdateAttribute
         }
         
         if (!$singleMultiple && !$doubleMultiple) {
-            throw new Exception(ErrorCode::getError("UPAT0009", $attrid, $oa->docname));
+            throw new \Dcp\Upat\Exception("UPAT0009", $attrid, $oa->docname);
         }
         $valueToRemove = $this->name2id($oa, $valueToRemove);
         
@@ -660,7 +660,14 @@ class UpdateAttribute
         bgexec($cmd, $result, $err);
         return $tmpStatus;
     }
-    
+    /**
+     * call ::addValue() in a background process
+     * the return filename can be use by UpdateAttributeStatus to see information trace from background process
+     * @see UpdateAttributeStatus
+     * @param string $attrid attribute id
+     * @param string|\string[] $valueToAdd
+     * @return string filename status
+     */
     public function bgAddValue($attrid, $valueToAdd)
     {
         $tmpThis = tempnam(getTmpDir() , 'uptAddValue');
@@ -675,7 +682,14 @@ class UpdateAttribute
         bgexec($cmd, $result, $err);
         return $tmpStatus;
     }
-    
+    /**
+     * call ::removeValue() in a background process
+     * the return filename can be use by UpdateAttributeStatus to see information trace from background process
+     * @see UpdateAttributeStatus
+     * @param string $attrid attribute id
+     * @param string|\string[] $valueToRemove
+     * @return string filename status
+     */
     public function bgRemoveValue($attrid, $valueToRemove)
     {
         $tmpThis = tempnam(getTmpDir() , 'uptRemoveValue');
@@ -690,7 +704,16 @@ class UpdateAttribute
         bgexec($cmd, $result, $err);
         return $tmpStatus;
     }
-    public function bgReplaceValue($attrid, $oldvalue, $newValue)
+    /**
+     * call ::replaceValue() in a background process
+     * the return filename can be use by UpdateAttributeStatus to see information trace from background process
+     * @see UpdateAttributeStatus
+     * @param string $attrid attribute id
+     * @param string $oldValue value to replace
+     * @param string|string[] $newValue new value to set for attribute
+     * @return string filename status
+     */
+    public function bgReplaceValue($attrid, $oldValue, $newValue)
     {
         $tmpThis = tempnam(getTmpDir() , 'uptReplValue');
         file_put_contents($tmpThis, serialize($this));
@@ -734,3 +757,4 @@ class UpdateAttributeResults
      */
     public $historyUpdated = false;
 }
+

@@ -71,7 +71,7 @@ class SearchAccount
     /**
      * add role filter appartenance
      * @param string $role role reference (login)
-     * @throws Exception
+     * @throws Dcp\Sacc\Exception
      */
     public function addRoleFilter($role)
     {
@@ -82,7 +82,7 @@ class SearchAccount
                 $sql = sprintf("select id from users where accounttype='R' and login='%s'", pg_escape_string(mb_strtolower($aRole)));
                 simpleQuery($this->dbaccess, $sql, $result, true, true);
                 if (!$result) {
-                    throw new Exception(ErrorCode::getError("SACC0002", $aRole));
+                    throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0002", $aRole));
                 }
                 $this->roleFilters[] = $result;
             }
@@ -91,7 +91,7 @@ class SearchAccount
     /**
      * add group filter appartenance
      * @param string $group group name (login)
-     * @throws Exception
+     * @throws Dcp\Sacc\Exception
      */
     public function addGroupFilter($group)
     {
@@ -102,7 +102,7 @@ class SearchAccount
                 $sql = sprintf("select id from users where accounttype='G' and login='%s'", pg_escape_string(mb_strtolower($aGroup)));
                 simpleQuery($this->dbaccess, $sql, $result, true, true);
                 if (!$result) {
-                    throw new Exception(ErrorCode::getError("SACC0005", $aGroup));
+                    throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0005", $aGroup));
                 }
                 $this->groupFilters[] = $result;
             }
@@ -156,12 +156,12 @@ class SearchAccount
     /**
      * set slice limit / "all" if no limit
      * @param int|string $slice
-     * @throws Exception
+     * @throws Dcp\Sacc\Exception
      */
     public function setSlice($slice)
     {
         if (((!is_numeric($slice)) && (strtolower($slice) != 'all')) || ($slice < 0)) {
-            throw new Exception(ErrorCode::getError("SACC0003", $slice));
+            throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0003", $slice));
         }
         if (is_numeric($slice)) $this->slice = intval($slice);
         else $this->slice = $slice;
@@ -169,12 +169,12 @@ class SearchAccount
     /**
      * set start offset
      * @param int $start
-     * @throws Exception
+     * @throws Dcp\Sacc\Exception
      */
     public function setStart($start)
     {
         if ((!is_numeric($start)) || ($start < 0)) {
-            throw new Exception(ErrorCode::getError("SACC0004", $start));
+            throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0004", $start));
         }
         $this->start = intval($start);
     }
@@ -189,12 +189,12 @@ class SearchAccount
     /**
      * set object type return by ::search method
      * @param string $type self::returnDocument or self::returnAccount
-     * @throws Exception
+     * @throws Dcp\Sacc\Exception
      */
     public function setObjectReturn($type)
     {
         if ($type != self::returnAccount && $type != self::returnDocument) {
-            throw new Exception(ErrorCode::getError("SACC0001", $type));
+            throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0001", $type));
         }
         $this->returnType = $type;
     }
