@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fdl="http://www.freedom-ecm.org/schema-att" fdl:schemaLocation="fdloptions.xsd">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fdl="http://www.dynacase.org/schema-att" fdl:schemaLocation="fdloptions.xsd">
         [includefdlxsd]
         <xs:element name="[famname]">
-        	 <xs:annotation><xs:appinfo xmlns:fdl="http://www.freedom-ecm.org/schema">
+        	 <xs:annotation><xs:appinfo xmlns:fdl="http://www.dynacase.org/schema">
                       <fdl:label>[famtitle]</fdl:label>     
                 </xs:appinfo></xs:annotation>
                 <xs:complexType>
@@ -17,6 +17,7 @@
                          <xs:attribute name="revision" type="xs:integer" />
                          <xs:attribute name="state" type="xs:token" />
                          <xs:attribute name="title" type="xs:token" />
+                         <xs:attribute name="folders" type="xs:token" />
                          <xs:attribute name="modification-date" type="xs:dateTime" />
 
                 </xs:complexType>
