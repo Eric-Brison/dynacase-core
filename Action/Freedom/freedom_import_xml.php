@@ -104,22 +104,28 @@ function freedom_import_xmlzip(Action & $action, $filename = "")
 /**
  * read a directory to import all xml files
  * @param string $splitdir
- * @param array options analyze (boolean) , policy (string)
+ * @param array $opt options analyze (boolean) , policy (string)
  */
 function importXmlDirectory($dbaccess, $splitdir, $opt)
 {
     $tlog = array();
     if ($handle = opendir($splitdir)) {
+        $files = array();
         while (false !== ($file = readdir($handle))) {
             if ($file[0] != "." && is_file("$splitdir/$file")) {
                 $ext = substr($file, strrpos($file, '.') + 1);
                 if ($ext == "xml") {
-                    $err = importXmlDocument($dbaccess, "$splitdir/$file", $log, $opt);
-                    $tlog[] = $log;
+                    $files[] = $file;
                 }
             }
         }
+        asort($files);
+        foreach ($files as $file) {
+            $err = importXmlDocument($dbaccess, "$splitdir/$file", $log, $opt);
+            $tlog[] = $log;
+        }
     }
+    
     return $tlog;
 }
 /**
@@ -252,6 +258,9 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
     }
     catch(Exception $e) {
         $log["action"] = 'ignored';
+        /**
+         * @var XMLParseErrorException $e
+         */
         $log["err"] = $e->userInfo;
         return $e->userInfo;
     }
@@ -260,6 +269,7 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
     $id = $root->getAttribute("id");
     $name = $root->getAttribute("name");
     $key = $root->getAttribute("key");
+    $folders = $root->getAttribute("folders");
     if ($key) {
         $tkey = explode(',', $key);
         foreach ($tkey as & $v) {
@@ -288,6 +298,9 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
     foreach ($la as $k => & $v) {
         $n = $dom->getElementsByTagName($v->id);
         $val = array();
+        /**
+         * @var DomElement $item
+         */
         foreach ($n as $item) {
             switch ($v->type) {
                 case 'array':
@@ -356,8 +369,28 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
             $tord[] = $v->id;
             $tdoc[] = implode("\n", $val);
         }
-        $log = csvAddDoc($dbaccess, $tdoc, $importdirid, $analyze, $splitdir, $policy, $tkey, $prevalues, $tord);
+        //$log = csvAddDoc($dbaccess, $tdoc, $importdirid, $analyze, $splitdir, $policy, $tkey, $prevalues, $tord);
+        $o = new importSingleDocument();
+        if ($tkey) $o->setKey($tkey);
+        if ($tord) $o->setOrder($tord);
+        $o->analyzeOnly($analyze);
+        $o->setPolicy($policy);
+        $o->setFilePath($splitdir);
+        if ($folders) {
+            $folders = str_replace(',', ' ', $folders);
+            $tfolders = explode(' ', $folders);
+            foreach ($tfolders as $k => $aFolder) {
+                if (!$aFolder) unset($tfolders[$k]);
+            }
+            
+            if ($tfolders) $o->setTargetDirectories($tfolders);
+        }
+        
+        $o->import($tdoc);
+        $log = $o->getImportResult();
+        
         if ($msg) $log["err"].= "\n" . $msg;
+        return '';
     }
     
     function splitZipXmlDocument($zipfiles, $splitdir)
@@ -378,6 +411,7 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
         catch(Exception $e) {
             return $e->getMessage();
         }
+        return '';
     }
     
     function base64_decodefile($filename)
@@ -397,7 +431,7 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
     
     class XMLParseErrorException extends Exception
     {
-        
+        public $userInfo = '';
         public function __construct($filename)
         {
             set_error_handler(array(

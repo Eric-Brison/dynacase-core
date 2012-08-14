@@ -161,7 +161,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     {
         $u = new \Account(self::$dbaccess);
         if (!$u->setLoginName($login)) {
-            throw new \Exception("login $login not exist");
+            throw new \Dcp\Exception("login $login not exist");
         }
         
         global $action;
@@ -212,13 +212,13 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
             }
         }
         if (!file_exists($realfile)) {
-            throw new \Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
+            throw new \Dcp\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
         }
         $oImport = new \ImportDocument();
         //error_log(__METHOD__."import $realfile");
         $oImport->importDocuments(self::getAction() , $realfile);
         $err = $oImport->getErrorMessage();
-        if ($err) throw new \Exception($err);
+        if ($err) throw new \Dcp\Exception($err);
         return;
     }
     /**
@@ -246,16 +246,16 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     {
         $tmpFile = tempnam(getTmpDir() , "importData");
         if ($tmpFile === false) {
-            throw new \Exception(sprintf("Error creating temporary file in '%s'.", getTmpDir()));
+            throw new \Dcp\Exception(sprintf("Error creating temporary file in '%s'.", getTmpDir()));
         }
         $ret = rename($tmpFile, $tmpFile . '.csv');
         if ($ret === false) {
-            throw new \Exception(sprintf("Error renaming '%s' to '%s'.", $tmpFile, $tmpFile . '.csv'));
+            throw new \Dcp\Exception(sprintf("Error renaming '%s' to '%s'.", $tmpFile, $tmpFile . '.csv'));
         }
         $tmpFile = $tmpFile . '.csv';
         $ret = file_put_contents($tmpFile, $data);
         if ($ret === false) {
-            throw new \Exception(sprintf("Error writing to file '%s'.", $tmpFile));
+            throw new \Dcp\Exception(sprintf("Error writing to file '%s'.", $tmpFile));
         }
         $this->importDocument($tmpFile);
         unlink($tmpFile);
