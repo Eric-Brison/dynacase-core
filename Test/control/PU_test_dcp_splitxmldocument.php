@@ -232,9 +232,9 @@ class TestSplitXmlDocument extends TestCaseDcp
                     'description' => 'Small XML file',
                     'xml' => 'PU_data_dcp_splitxmldocument.xml',
                     'produces' => array(
-                        'PU_DATA_DCP_SPLITXMLDOCUMENT_1.xml',
-                        'PU_DATA_DCP_SPLITXMLDOCUMENT_2.xml',
-                        'PU_DATA_DCP_SPLITXMLDOCUMENT_3.xml'
+                        '00000PU_DATA_DCP_SPLITXMLDOCUMENT_1.xml',
+                        '00001PU_DATA_DCP_SPLITXMLDOCUMENT_2.xml',
+                        '00002PU_DATA_DCP_SPLITXMLDOCUMENT_3.xml'
                     )
                 )
             ) ,
@@ -249,10 +249,10 @@ class TestSplitXmlDocument extends TestCaseDcp
                         'size_in_MB' => '100'
                     ) ,
                     'produces' => array(
-                        'PU_DATA_DCP_SPLITXMLDOCUMENT_1.xml',
-                        'PU_DATA_DCP_SPLITXMLDOCUMENT_2.xml',
-                        'PU_DATA_DCP_SPLITXMLDOCUMENT_3.xml',
-                        'PU_DATA_DCP_SPLITXMLDOCUMENT_BIGNODE.xml'
+                        '00000PU_DATA_DCP_SPLITXMLDOCUMENT_1.xml',
+                        '00001PU_DATA_DCP_SPLITXMLDOCUMENT_2.xml',
+                        '00002PU_DATA_DCP_SPLITXMLDOCUMENT_3.xml',
+                        '00003PU_DATA_DCP_SPLITXMLDOCUMENT_BIGNODE.xml'
                     )
                 )
             ) ,
