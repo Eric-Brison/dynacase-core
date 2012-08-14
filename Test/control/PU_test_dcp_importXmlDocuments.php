@@ -74,6 +74,33 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
             $this->assertTrue(in_array($fid, $folders) , sprintf("folder %s not found in %s", $folder, print_r($folders, true)));
         }
     }
+    /**
+     * @dataProvider dataExtraImportDocument
+     */
+    public function testExtraImportDocument($documentFile, $docName, array $extraValues)
+    {
+        $err = '';
+        try {
+            $this->importDocument($documentFile);
+        }
+        catch(\Dcp\Exception $e) {
+            $err = $e->getMessage();
+        }
+        $this->assertEmpty($err, sprintf("Error : $err"));
+        $doc = new_doc("", $docName);
+        $this->assertTrue($doc->isAlive() , sprintf("cannot umport %s document", $docName));
+        $tColK = $doc->getTValue("tst_extrakey");
+        $tColv = $doc->getTValue("tst_extraval");
+        $tExtra = array();
+        foreach ($tColK as $k => $v) {
+            $tExtra[$v] = $tColv[$k];
+        }
+        foreach ($extraValues as $expKey => $expVal) {
+            
+            $this->assertEquals($expVal, $tExtra[$expKey], sprintf("not correct extra : %s", print_r($tExtra, true)));
+        }
+    }
+    
     public function dataDocumentFiles()
     {
         return array(
@@ -92,6 +119,20 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
             array(
                 "PU_data_dcp_importdoc4.xml",
                 1
+            )
+        );
+    }
+    public function dataExtraImportDocument()
+    {
+        return array(
+            array(
+                "PU_data_dcp_importdoc8.xml",
+                "TST_DOCIMP4",
+                array(
+                    'state' => "test",
+                    'title' => "Un",
+                    "revision" => 2
+                )
             )
         );
     }

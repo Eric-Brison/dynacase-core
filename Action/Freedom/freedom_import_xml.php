@@ -291,6 +291,17 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
         ($id) ? $id : $name,
         '-'
     );
+    
+    $rootAttrs = $root->attributes;
+    
+    foreach ($rootAttrs as $rname => $ra) {
+        $v = $root->getAttribute($rname);
+        if ($v) {
+            $tord[] = "extra:$rname";
+            $tdoc[] = $v;
+        }
+    }
+    
     $msg = '';
     /**
      * @var BasicAttribute $v
