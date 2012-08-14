@@ -23,7 +23,7 @@ include_once ("VAULT/Class.VaultFile.php");
 
 define("RESIZEDIR", DEFAULT_PUBDIR . "/var/cache/file/");
 // --------------------------------------------------------------------
-function exportfile(&$action)
+function exportfile(Action & $action)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("docid", GetHttpVars("id", 0)); // same docid id
@@ -40,7 +40,7 @@ function exportfile(&$action)
     $pngwidth = GetHttpVars("width"); // [pdf|png]
     $pngpage = GetHttpVars("page"); // [pdf|png]
     $isControled = false;
-    
+    $othername = '';
     if ($vaultid == 0) {
         
         $doc = new_Doc($dbaccess, $docid);
@@ -62,6 +62,9 @@ function exportfile(&$action)
         if ($err != "") $action->exiterror($err);
         $isControled = true;
         if ($doc->doctype == "C") {
+            /**
+             * @var DocFam $doc
+             */
             $ovalue = $doc->getParamValue($attrid);
             if (!$ovalue) $ovalue = $doc->getDefValue($attrid);
         } else $ovalue = $doc->getValue($attrid);
@@ -98,7 +101,7 @@ function exportfile(&$action)
 /**
  * Idem like exportfile instead that download first file attribute found
  */
-function exportfirstfile(&$action)
+function exportfirstfile(Action & $action)
 {
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -113,7 +116,7 @@ function exportfirstfile(&$action)
     exportfile($action);
 }
 // --------------------------------------------------------------------
-function DownloadVault(&$action, $vaultid, $isControled, $mimetype = "", $width = "", $inline = false, $cache = true, $type = "", $pngpage = 0, $othername = '')
+function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "", $width = "", $inline = false, $cache = true, $type = "", $pngpage = 0, $othername = '')
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $vf = newFreeVaultFile($dbaccess);
@@ -146,7 +149,7 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype = "", $width 
                         }
                         $owidth = $imageSize[0];
                         $oheight = $imageSize[1];
-                        if ($owidth == 0 ||$oheight == 0) {
+                        if ($owidth == 0 || $oheight == 0) {
                             $err = ErrorCode::getError('FILE0002', $owidth, $oheight, $filename);
                             error_log($err);
                             sendimgerror($err);
@@ -200,7 +203,7 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype = "", $width 
                         }
                         $owidth = $imageSize[0];
                         $oheight = $imageSize[1];
-                        if ($owidth == 0 ||$oheight == 0) {
+                        if ($owidth == 0 || $oheight == 0) {
                             $err = ErrorCode::getError('FILE0004', $owidth, $oheight, $filename);
                             error_log($err);
                             sendimgerror($err);
@@ -380,5 +383,4 @@ function createPdf2Png($file, $vid)
         bgexec($cmd, $result, $err);
     }
 }
-
 ?>

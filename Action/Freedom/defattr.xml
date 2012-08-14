@@ -172,34 +172,34 @@ table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.m
     </select>
    </td>
    <td  >
-      <input type="checkbox" value="Y" name="abstractyn[[neweltid]]" [abscheck] [disabled]></input>
+      <input type="checkbox" value="Y" name="abstractyn[[neweltid]]" [abscheck] [disabled]/>
    </td>
    <td  >
-      <input type="checkbox" value="Y" name="titleyn[[neweltid]]" [titcheck] [disabled]></input>
+      <input type="checkbox" value="Y" name="titleyn[[neweltid]]" [titcheck] [disabled]/>
    </td>
    <td  >
-      <input type="checkbox" value="Y" name="neededyn[[neweltid]]" [neededcheck] [disabled]></input>
+      <input type="checkbox" value="Y" name="neededyn[[neweltid]]" [neededcheck] [disabled]/>
    </td>
    <td  >
-      <input type="text" size="1"  name="visibility[[neweltid]]" value="[visibility]" [disabled]></input>
+      <input type="text" size="1"  name="visibility[[neweltid]]" value="[visibility]" [disabled]/>
    </td>
    <td  >
-      <input type="text"   name="link[[neweltid]]" value="[link]" [disabled]></input>
+      <input type="text"   name="link[[neweltid]]" value="[link]" [disabled]/>
    </td>
    <td  >
-      <input type="text"  name="phpfile[[neweltid]]" value="[phpfile]" [disabled]></input>
+      <input type="text"  name="phpfile[[neweltid]]" value="[phpfile]" [disabled]/>
    </td>
    <td  >
-      <input type="text"   name="phpfunc[[neweltid]]" value="[phpfunc]" [disabled]></input>
+      <input type="text"   name="phpfunc[[neweltid]]" value="[phpfunc]" [disabled]/>
    </td>
    <td  >
-      <input type="text"   name="elink[[neweltid]]" value="[elink]" [disabled]></input>
+      <input type="text"   name="elink[[neweltid]]" value="[elink]" [disabled]/>
    </td>
    <td  >
-      <input type="text"   name="phpconstraint[[neweltid]]" value="[phpconstraint]" [disabled]></input>
+      <input type="text"   name="phpconstraint[[neweltid]]" value="[phpconstraint]" [disabled]/>
    </td>
    <td  >
-      <input type="text"   name="options[[neweltid]]" value="[options]" [disabled]></input>
+      <input type="text"   name="options[[neweltid]]" value="[options]" [disabled]/>
    </td>
   
 </tr>

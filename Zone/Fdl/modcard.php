@@ -158,7 +158,8 @@ function modcard(Action & $action, &$ndocid, &$info = array())
             $ndocid = $doc->id;
             if (!$quicksave) { // else quick save
                 $doc->refresh();
-                if ($doc->hasNewFiles) $doc->refreshRn(); // hasNewFiles set by insertFile below
+                if (needRefreshRn($doc)) $action->AddWarningMsg("RefreshRn");
+                if (needRefreshRn($doc)) $doc->refreshRn(); // hasNewFiles set by insertFile below
                 $msg = $doc->PostModify();
                 if ($msg) $action->addWarningMsg($msg);
                 // add trace to know when and who modify the document
@@ -438,7 +439,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
             if (is_uploaded_file($userfile['tmp_name'])) {
                 // move to add extension
                 $fname = $userfile['name'];
-                $doc->hasNewFiles = true; // to use in modcard call to refreshRn
+                
                 $err = vault_store($userfile['tmp_name'], $vid, $fname);
                 // read system mime
                 $userfile['type'] = getSysMimeFile($userfile['tmp_name'], $userfile['name']);
@@ -477,7 +478,17 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
     // return file type and upload file name
     return ($rt);
 }
-
+function needRefreshRn(Doc & $doc)
+{
+    $fa = $doc->GetFileAttributes();
+    foreach ($fa as $aid => $oa) {
+        $rn = $oa->getOption("rn");
+        $ov = $doc->getOldValue($aid);
+        if ($rn && $ov) return true;
+    }
+    
+    return false;
+}
 function searchmorerecent($rt, $file)
 {
     foreach ($rt as $k => $v) {

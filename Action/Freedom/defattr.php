@@ -57,7 +57,7 @@ function defattr(Action & $action)
     $oDocAttr = new DocAttr($dbaccess);
     $oAttrs = $doc->getAttributes();
     foreach ($oAttrs as $oa) {
-        if (($oa->usefor == 'A') && (!$attrs[$oa->id])) {
+        if (($oa->usefor == 'A') && (empty($attrs[$oa->id]))) {
             
             $oDocAttr->id = $oa->id;
             $oDocAttr->type = $oa->type;
@@ -163,17 +163,19 @@ function defattr(Action & $action)
                     if (!$oDocAttr->isStructure()) $oDocAttr->ordered = $oa->ordered;
                     $oDocAttr->visibility = $oa->visibility;
                     $oDocAttr->labeltext = $oa->labelText;
-                    $oDocAttr->abstract = ($oa->isInAbstract) ? "Y" : "N";
-                    $oDocAttr->title = ($oa->isInTitle) ? "Y" : "N";
-                    $oDocAttr->needed = ($oa->needed) ? "Y" : "N";
-                    $oDocAttr->frameid = ($oa->fieldSet->id != "FIELD_HIDDENS") ? $oa->fieldSet->id : '';
+                    $oDocAttr->frameid = (isset($oa->fieldSet) && $oa->fieldSet->id != "FIELD_HIDDENS") ? $oa->fieldSet->id : '';
                     
-                    $oDocAttr->link = $oa->link;
-                    $oDocAttr->elink = $oa->elink;
                     $oDocAttr->options = $oa->options;
-                    $oDocAttr->phpfile = $oa->phpfile;
-                    $oDocAttr->phpfunc = $oa->phpfunc;
-                    $oDocAttr->phpconstraint = $oa->phpconstraint;
+                    if (is_a($oDocAttr, "NormalAttribute")) {
+                        $oDocAttr->abstract = ($oa->isInAbstract) ? "Y" : "N";
+                        $oDocAttr->title = ($oa->isInTitle) ? "Y" : "N";
+                        $oDocAttr->needed = ($oa->needed) ? "Y" : "N";
+                        $oDocAttr->link = $oa->link;
+                        $oDocAttr->elink = $oa->elink;
+                        $oDocAttr->phpfile = $oa->phpfile;
+                        $oDocAttr->phpfunc = $oa->phpfunc;
+                        $oDocAttr->phpconstraint = $oa->phpconstraint;
+                    }
                 }
             }
             
@@ -213,7 +215,8 @@ function defattr(Action & $action)
             $newelem[$k]["neededcheck"] = ($oDocAttr->isNeeded()) ? "checked" : "";
             
             $newelem[$k]["typevalue"] = $oDocAttr->type;
-            $newelem[$k]["classvalue"] = $oDocAttr->getRawType() . ' F' . $oDocAttr->getRawType($attrs[$oDocAttr->frameid]["id"]);
+            $newelem[$k]["classvalue"] = $oDocAttr->getRawType();
+            if (isset($attrs[$oDocAttr->frameid]["type"])) $newelem[$k]["classvalue"].= ' F' . $oDocAttr->getRawType($attrs[$oDocAttr->frameid]["type"]);
             
             $selectedSet = false;
             foreach ($selectframe as $kopt => $opt) {
@@ -221,7 +224,7 @@ function defattr(Action & $action)
                     $selectframe[$kopt]["selected"] = "selected";
                     $selectedSet = true;
                     
-                    if ($newelem[$kopt]["displayorder"] < 0) {
+                    if (isset($newelem[$kopt]) && $newelem[$kopt]["displayorder"] < 0) {
                         $newelem[$kopt]["displayorder"] = $oDocAttr->ordered - 1;
                         if ($attrs[$oDocAttr->frameid]) {
                             if ($newelem[$attrs[$oDocAttr->frameid]["id"]]["displayorder"] < 0) {
@@ -337,28 +340,29 @@ function getAttributeProfunder($aid, array $attrs)
 function getPuceAttributeProfunder(DocAttr & $oa, array $attrs)
 {
     $p = getAttributeProfunder($oa->id, $attrs);
-    $fromType = $oa->getRawType($attrs["frameid"]);
+    if (empty($attrs["frameid"])) $fromType = '';
+    else $fromType = $oa->getRawType($attrs["frameid"]);
     switch ($p) {
         case 0:
             return '';
         case 1:
             if ($oa->getRawType() == 'frame') {
-                return '<span class="frame">---</span>';
+                return "<span class='frame'>---</span>";
             } elseif ($fromType == 'tab') {
-                return '<span class="tab">---</span>';
+                return "<span class='tab'>---</span>";
             } else {
-                return '<span class="unknow">---</span>';
+                return "<span class='unknow'>---</span>";
             }
         case 2:
             if ($fromType == 'array') {
-                return '<span class="frame">---</span><span class="array">---</span>';
+                return "<span class='frame'>---</span><span class='array'>---</span>";
             } elseif ($fromType == 'frame') {
-                return '<span class="tab">---</span><span class="frame">---</span>';
+                return "<span class='tab'>---</span><span class='frame'>---</span>";
             } else {
-                return '<span class="unknow">---</span>';
+                return "<span class='unknow'>---</span>";
             }
         case 3:
-            return '<span class="tab">---</span><span class="frame">---</span><span class="array">---</span>';
+            return "<span class='tab'>---</span><span class='frame'>---</span><span class='array'>---</span>";
     }
     return '';
 }

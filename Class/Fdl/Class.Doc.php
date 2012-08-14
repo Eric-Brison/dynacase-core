@@ -441,8 +441,8 @@ class Doc extends DocCtrl
      */
     public $adate;
     /**
-     * date of the last modification (the revision date for fixed docuemnt)
-     * @var int
+     * @deprecated old history notation
+     * @var string
      */
     public $comment;
     /**

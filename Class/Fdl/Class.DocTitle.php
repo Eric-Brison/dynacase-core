@@ -35,6 +35,8 @@ class DocTitle
         
         if (isset(self::$relationCache[$uid][$keyCache])) {
             $relCache = self::$relationCache[$uid][$keyCache];
+            
+            if (!isset($relCache["rid"])) return null; // unknow document
             if ($relCache["canaccess"] === 'f' && (!$isAdmin)) {
                 return false; //_("information access deny");
                 

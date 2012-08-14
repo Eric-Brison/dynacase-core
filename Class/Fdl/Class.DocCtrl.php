@@ -51,11 +51,11 @@ define("POS_WF", 12); // begin of workflow privilege definition
  * @method control
  * @property int $fromid
  * @property Doc $doc
- * @property string title
  *
  */
 class DocCtrl extends DocLDAP
 {
+    public $title = '';
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
     // access privilege definition
@@ -160,6 +160,10 @@ class DocCtrl extends DocLDAP
      * @var Doc profil
      */
     private $pdoc;
+    /**
+     * @var int  current user id
+     */
+    public $userid;
     // --------------------------------------------------------------------
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {

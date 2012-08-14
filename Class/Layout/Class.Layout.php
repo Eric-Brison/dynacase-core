@@ -341,7 +341,7 @@ class Layout
     
     function get($tag)
     {
-        if (isset($this->rkey)) return $this->rkey[$tag];
+        if (isset($this->rkey[$tag])) return $this->rkey[$tag];
         return "";
     }
     
