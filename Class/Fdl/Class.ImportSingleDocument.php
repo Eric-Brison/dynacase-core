@@ -26,6 +26,10 @@ class importSingleDocument
     protected $policy = 'add';
     protected $orders = array();
     protected $preValues = array();
+    /**
+     * @var array folder id where insert the new document
+     */
+    protected $folderIds = array();
     protected $keys = array(
         'title',
         null
@@ -76,7 +80,14 @@ class importSingleDocument
         if ($dirid == '-') $dirid = 0;
         $this->dirid = $dirid;
     }
-    
+    /**
+     * identify  where to insert document
+     * @param array $dirid folder identifier
+     */
+    public function setTargetDirectories(array $dirid)
+    {
+        $this->folderIds = $dirid;
+    }
     public function setFilePath($path)
     {
         $this->importFilePath = $path;
@@ -522,6 +533,11 @@ class importSingleDocument
                     $this->addIntoFolder($this->folderId);
                 } elseif ($this->dirid) {
                     $this->addIntoFolder($this->dirid);
+                }
+            }
+            if ($this->folderIds) {
+                foreach ($this->folderIds as $fid) {
+                    if ($fid) $this->addIntoFolder($fid);
                 }
             }
             

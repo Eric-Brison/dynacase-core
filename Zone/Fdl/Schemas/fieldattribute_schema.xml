@@ -1,5 +1,5 @@
 <xs:element name="[aname]" [IF notop]minOccurs="0" maxOccurs="1"[ENDIF notop]>
-	<xs:annotation><xs:appinfo xmlns:fdl="http://www.freedom-ecm.org/schema">
+	<xs:annotation><xs:appinfo xmlns:fdl="http://www.dynacase.org/schema">
                 [appinfos]
         </xs:appinfo></xs:annotation>
                 <xs:complexType>

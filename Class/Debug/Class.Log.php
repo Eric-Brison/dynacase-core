@@ -137,7 +137,7 @@ class Log
         if (!$str) return;
         if (is_array($str)) $str = implode(", ", $str);
         if ($sta == "S" || (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta)))) {
-            $addr = $_SERVER["REMOTE_ADDR"];
+            $addr = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '';
             $appf = "[{$sta}] Dynacase";
             $appf.= ($this->application != "" ? ":" . $this->application : "");
             $appf.= ($this->function != "" ? ":" . $this->function : "");
@@ -179,7 +179,7 @@ class Log
                     default:
                         $pri = LOG_NOTICE;
                 }
-                if ($_SERVER['HTTP_HOST'] == "") {
+                if (empty($_SERVER['HTTP_HOST'])) {
                     error_log(sprintf("%s LOG::$appf %s", date("d/m/Y H:i:s", time()) , $str));
                 }
                 openlog("{$appf}", 0, $facility);

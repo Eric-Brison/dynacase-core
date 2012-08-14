@@ -42,6 +42,8 @@ class XMLSplitter
      * @var integer
      */
     private $depth = 0;
+    
+    private $fileIndex = 0;
     /**
      * By default, escape only '<', '>' and '&' chars,
      * in attribute values, for compatibility with the
@@ -339,7 +341,7 @@ class XMLSplitter
             throw new Dcp\Exception($this->errmsg);
         }
         
-        $this->out_file = $this->splitdir . DIRECTORY_SEPARATOR . $fname . '.xml';
+        $this->out_file = sprintf("%s%s%05d%s.xml", $this->splitdir, DIRECTORY_SEPARATOR, $this->fileIndex++, $fname);
         if (is_file($this->out_file)) {
             $this->errmsg = sprintf(_("Output file '%s' already exists.") , $this->out_file);
             throw new Dcp\Exception($this->errmsg);

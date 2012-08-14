@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace PU;
 /**
@@ -40,16 +40,65 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
      */
     public function testErrorImportDocument($documentFile, $nbError)
     {
+        $err = '';
         try {
-        $err = $this->importDocument($documentFile);
-        } catch (\Exception $e) {
-            $err=$e->getMessage();
+            $this->importDocument($documentFile);
+        }
+        catch(\Dcp\Exception $e) {
+            $err = $e->getMessage();
         }
         $this->assertNotEmpty($err);
         $this->assertEquals($nbError, $this->countErrors($err) , sprintf('status error : "%s"', $err));
         
         $s = new \SearchDoc("", "TST_FAMIMP1");
         $this->assertEquals(0, $s->onlyCount() , "document is created and must be not");
+    }
+    /**
+     * @dataProvider dataFolderImportDocument
+     */
+    public function testFolderImportDocument($documentFile, $docName, array $folderNames)
+    {
+        $err = '';
+        try {
+            $this->importDocument($documentFile);
+        }
+        catch(\Dcp\Exception $e) {
+            $err = $e->getMessage();
+        }
+        $this->assertEmpty($err, sprintf("Error : $err"));
+        $doc = new_doc("", $docName);
+        $this->assertTrue($doc->isAlive() , sprintf("cannot umport %s document", $docName));
+        $folders = $doc->getParentFolderIds();
+        foreach ($folderNames as $folder) {
+            $fid = getIdFromName(self::$dbaccess, $folder);
+            $this->assertTrue(in_array($fid, $folders) , sprintf("folder %s not found in %s", $folder, print_r($folders, true)));
+        }
+    }
+    /**
+     * @dataProvider dataExtraImportDocument
+     */
+    public function testExtraImportDocument($documentFile, $docName, array $extraValues)
+    {
+        $err = '';
+        try {
+            $this->importDocument($documentFile);
+        }
+        catch(\Dcp\Exception $e) {
+            $err = $e->getMessage();
+        }
+        $this->assertEmpty($err, sprintf("Error : $err"));
+        $doc = new_doc("", $docName);
+        $this->assertTrue($doc->isAlive() , sprintf("cannot umport %s document", $docName));
+        $tColK = $doc->getTValue("tst_extrakey");
+        $tColv = $doc->getTValue("tst_extraval");
+        $tExtra = array();
+        foreach ($tColK as $k => $v) {
+            $tExtra[$v] = $tColv[$k];
+        }
+        foreach ($extraValues as $expKey => $expVal) {
+            
+            $this->assertEquals($expVal, $tExtra[$expKey], sprintf("not correct extra : %s", print_r($tExtra, true)));
+        }
     }
     
     public function dataDocumentFiles()
@@ -70,6 +119,49 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
             array(
                 "PU_data_dcp_importdoc4.xml",
                 1
+            )
+        );
+    }
+    public function dataExtraImportDocument()
+    {
+        return array(
+            array(
+                "PU_data_dcp_importdoc8.xml",
+                "TST_DOCIMP4",
+                array(
+                    'state' => "test",
+                    'title' => "Un",
+                    "revision" => 2
+                )
+            )
+        );
+    }
+    public function dataFolderImportDocument()
+    {
+        return array(
+            array(
+                "PU_data_dcp_importdoc5.xml",
+                "TST_DOCIMP1",
+                array(
+                    'TST_FOLDER1'
+                )
+            ) ,
+            array(
+                "PU_data_dcp_importdoc6.xml",
+                "TST_DOCIMP2",
+                array(
+                    'TST_FOLDER1',
+                    'TST_FOLDER2'
+                )
+            ) ,
+            array(
+                "PU_data_dcp_importdoc7.xml",
+                "TST_DOCIMP3",
+                array(
+                    'TST_FOLDER1',
+                    'TST_FOLDER2',
+                    'TST_FOLDER3'
+                )
             )
         );
     }
