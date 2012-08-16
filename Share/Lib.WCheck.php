@@ -7,7 +7,7 @@
 /**
  * Util function for update and initialize application
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: Lib.WCheck.php,v 1.21 2009/01/07 15:35:07 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

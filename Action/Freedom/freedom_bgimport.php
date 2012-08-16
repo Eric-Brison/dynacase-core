@@ -7,7 +7,7 @@
 /**
  * Importation in batch mode
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: freedom_bgimport.php,v 1.11 2008/11/12 13:24:01 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

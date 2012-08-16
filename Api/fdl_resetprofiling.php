@@ -8,9 +8,9 @@
  * reset profiling use when restore context from archive
  * all document has the same profil
  *
- * @author Anakeen 2010
+ * @author Anakeen
  * @version $Id:  $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * 
  * @package FDL
  *
  *

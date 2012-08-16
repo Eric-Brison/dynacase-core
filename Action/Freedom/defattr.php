@@ -7,7 +7,7 @@
 /**
  * Display family attributes
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: defattr.php,v 1.28 2009/01/14 09:18:05 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

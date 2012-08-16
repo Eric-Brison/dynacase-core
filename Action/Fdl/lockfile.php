@@ -7,7 +7,7 @@
 /**
  * Lock a document
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: lockfile.php,v 1.6 2006/04/28 14:33:39 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * Detect file which are not indexed and index them
  *
- * @author Anakeen 2004
+ * @author Anakeen
  * @version $Id: FullFileIndex.php,v 1.2 2007/09/07 09:40:21 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
@@ -21,9 +21,10 @@ include_once ('FDL/Class.Doc.php');
 include_once ("FDL/Lib.Dir.php");
 global $action;
 
-define("REDCOLOR", '[1;31;40m');
-define("UPDTCOLOR", '[1;32;40m');
-define("STOPCOLOR", '[0m');
+define("REDCOLOR", "\033".'[1;31;40m');
+define("UPDTCOLOR", "\033".'[1;32;40m');
+define("STOPCOLOR", "\033".'[0m');
+
 
 $usage = new ApiUsage();
 

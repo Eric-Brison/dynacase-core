@@ -7,7 +7,7 @@
 /**
  * Edition to send mail
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: editmail.php,v 1.21 2008/10/16 13:57:35 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

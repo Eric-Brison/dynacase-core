@@ -7,7 +7,7 @@
 /**
  * Document Relation Class
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: Class.DocRel.php,v 1.13 2008/12/03 13:55:14 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

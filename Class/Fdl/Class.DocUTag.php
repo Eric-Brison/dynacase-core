@@ -7,7 +7,7 @@
 /**
  * History log for document
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: Class.DocUTag.php,v 1.2 2006/08/01 15:25:55 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

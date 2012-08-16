@@ -7,7 +7,7 @@
 /**
  * Search come from mozilla seach engine
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: freedomsearch.php,v 1.6 2007/10/22 07:20:53 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * Process Workflow
  *
- * @author Anakeen 2002
+ * @author Anakeen
  * @version \$Id: Class.WProcess.php,v 1.2 2006/04/03 14:56:26 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

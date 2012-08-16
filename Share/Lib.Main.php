@@ -7,7 +7,7 @@
 /**
  * Main first level function
  *
- * @author Anakeen 2002
+ * @author Anakeen
  * @version $Id: Lib.Common.php,v 1.50 2008/09/11 14:50:04 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

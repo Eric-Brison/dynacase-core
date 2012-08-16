@@ -5,11 +5,11 @@
  * @package FDL
 */
 
-namespace PU;
+namespace Dcp\Pu;
 /**
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package DCP
+ * @package Dcp\Pu
  */
 
 class SuiteDcpUser
@@ -18,11 +18,11 @@ class SuiteDcpUser
     {
         $suite = new FrameworkDcp('Package');
         
-        $suite->addTestSuite('PU\TestUser');
-        $suite->addTestSuite('PU\TestGroup');
-        $suite->addTestSuite('PU\TestUserDeactivateAccount');
-        $suite->addTestSuite('PU\TestDocControlSubstitute');
-        $suite->addTestSuite('PU\TestSearchAccount');
+        $suite->addTestSuite('Dcp\Pu\TestUser');
+        $suite->addTestSuite('Dcp\Pu\TestGroup');
+        $suite->addTestSuite('Dcp\Pu\TestUserDeactivateAccount');
+        $suite->addTestSuite('Dcp\Pu\TestDocControlSubstitute');
+        $suite->addTestSuite('Dcp\Pu\TestSearchAccount');
         // ...
         return $suite;
     }

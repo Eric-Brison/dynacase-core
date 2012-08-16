@@ -7,7 +7,7 @@
 /**
  *  Execute Freedom Processes when needed
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: fdl_cronexec.php,v 1.4 2008/12/31 14:39:52 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

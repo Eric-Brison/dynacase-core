@@ -7,7 +7,7 @@
 /**
  * Interface to inser document in  folder
  *
- * @author Anakeen 2007
+ * @author Anakeen
  * @version $Id: editinsertdocument.php,v 1.3 2008/06/03 10:12:21 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

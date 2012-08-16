@@ -9,7 +9,7 @@
  *
  * Top-level class to authenticate and authorize users
  *
- * @author Anakeen 2009
+ * @author Anakeen
  * @version $Id: Class.Authenticator.php,v 1.6 2009/01/16 13:33:00 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

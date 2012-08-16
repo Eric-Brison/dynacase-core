@@ -8,7 +8,7 @@
  * Initialisation of the FREEDOM VAULT based on the VAULT/FREEDOM.vault file
  *
  * create all sub-directories where files will be inserted by the VAULT application
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: vault_init.php,v 1.1 2007/02/19 16:25:40 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

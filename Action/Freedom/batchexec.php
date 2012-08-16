@@ -7,7 +7,7 @@
 /**
  * Execute an action in a batch documents
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: batchexec.php,v 1.1 2005/09/09 16:25:46 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

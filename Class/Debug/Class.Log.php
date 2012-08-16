@@ -7,7 +7,7 @@
 /**
  * Log information class
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Class.Log.php,v 1.15 2008/10/31 16:57:18 jerome Exp $
  * @license http://www.gnu.org/licenses/lgpl-3.0.html GNU Lesser General Public License
  * @package FDL
@@ -27,6 +27,10 @@ class Log
     public $loghead;
     public $application;
     public $function;
+    private $deb;
+    private $fin;
+    private $tic;
+    private $ptext;
     // ------------------------------------------------------------------------
     function Log($logfile = "", $application = "", $function = "")
     {
@@ -75,16 +79,16 @@ class Log
     {
         $this->wlog("O", $string);
     }
-    
+
     function start($text = "")
     {
         $deb = gettimeofday();
         $this->deb = $deb["sec"] + $deb["usec"] / 1000000;
         $this->tic = $this->deb;
         $this->ptext = $text; // prefix
-        
+
     }
-    
+
     function tic($text)
     {
         $tic = gettimeofday();
@@ -93,7 +97,7 @@ class Log
         $this->info("CHRONO-INT [$this->ptext]/[$text] : $duree");
         $this->tic = $now;
     }
-    
+
     function end($text)
     {
         $fin = gettimeofday();
@@ -101,7 +105,7 @@ class Log
         $duree = round($this->fin - $this->deb, 3);
         $this->info("CHRONO [$this->ptext]/[$text] : $duree");
     }
-    
+
     function push($string)
     {
         global $CORE_LOGLEVEL;
@@ -116,7 +120,7 @@ class Log
             $call_pre = $call_pre . "-";
         }
     }
-    
+
     function pop()
     {
         global $CORE_LOGLEVEL;
@@ -130,14 +134,14 @@ class Log
     // ------------------------------------------------------------------------
     function wlog($sta, $str, $args = NULL, $facility = LOG_LOCAL6)
     {
-        
+
         global $_SERVER;
         global $CORE_LOGLEVEL;
-        
+
         if (!$str) return;
         if (is_array($str)) $str = implode(", ", $str);
         if ($sta == "S" || (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta)))) {
-            $addr = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '';
+            $addr = isset($_SERVER["REMOTE_ADDR"])?$_SERVER["REMOTE_ADDR"]:'';
             $appf = "[{$sta}] Dynacase";
             $appf.= ($this->application != "" ? ":" . $this->application : "");
             $appf.= ($this->function != "" ? ":" . $this->function : "");

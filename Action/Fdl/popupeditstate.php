@@ -7,7 +7,7 @@
 /**
  * States menu in edit mode
  *
- * @author Anakeen 2007
+ * @author Anakeen
  * @version $Id: popupeditstate.php,v 1.1 2007/06/27 10:04:29 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

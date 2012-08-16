@@ -7,7 +7,7 @@
 /**
  * to big importation
  *
- * @author Anakeen 2007
+ * @author Anakeen
  * @version $Id: csv2sql.php,v 1.2 2007/12/13 16:54:21 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * Display interface to change state
  *
- * @author Anakeen 2007
+ * @author Anakeen
  * @version $Id: editchangestate.php,v 1.8 2008/10/02 15:41:45 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * Affect a worflow
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: modwdoc.php,v 1.6 2009/01/02 17:45:18 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

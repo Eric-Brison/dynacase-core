@@ -7,7 +7,7 @@
 /**
  * Size font and image definition
  *
- * @author Anakeen 2006
+ * @author Anakeen
  * @version $Id: size.php,v 1.3 2006/09/15 12:05:36 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

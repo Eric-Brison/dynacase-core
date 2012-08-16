@@ -7,7 +7,7 @@
 /**
  * Suppress a link to a folder
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: generic_del.php,v 1.13 2006/11/21 15:52:03 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

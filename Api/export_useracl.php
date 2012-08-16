@@ -8,7 +8,7 @@
  * export USER login and acl
  * the result is printed on stdout
  *
- * @author Anakeen 2002
+ * @author Anakeen
  * @version $Id: export_useracl.php,v 1.2 2003/08/18 15:46:41 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

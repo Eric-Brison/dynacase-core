@@ -6,10 +6,8 @@
 */
 /**
  * Exception class
- * @category --category--
- * @package platform
- * @author anakeen
- * @copyright : anakeen SAS
+ * @package FDL
+ * @author Anakeen
  * @license : http://www.gnu.org/licenses/agpl.html GNU AFFERO GENERAL PUBLIC LICENSE
  *
  */
@@ -18,7 +16,7 @@ namespace Dcp {
      * @brief Exception class
      * use exceptionCode to identifiy correctly exception
      * @class Exception
-     * @author anakeen
+     * @author Anakeen
      */
     class Exception extends \Exception
     {

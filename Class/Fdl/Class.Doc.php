@@ -7,7 +7,7 @@
 /**
  * Document Object Definition
  *
- * @author Anakeen 2002
+ * @author Anakeen
  * @version $Id: Class.Doc.php,v 1.562 2009/01/14 09:18:05 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
@@ -5752,8 +5752,6 @@ create unique index i_docir on doc(initid, revision);";
                 $this->lay = new Layout($tplfile, $action, "");
             }
             //if (! file_exists($this->lay->file)) return sprintf(_("template file (layout [%s]) not found"), $layout);
-            $this->lay->setZone($reg);
-            
             $this->lay->set("_readonly", ($this->Control('edit') != ""));
             $method = strtok(strtolower($reg['layout']) , '.');
             if (method_exists($this, $method)) {

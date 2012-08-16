@@ -8,7 +8,7 @@
  * update list of available font style
  *
  * analyze sub-directories presents in STYLE directory
- * @author Anakeen 2002
+ * @author Anakeen
  * @version $Id: import_size.php,v 1.2 2007/02/21 11:07:12 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

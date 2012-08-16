@@ -7,7 +7,7 @@
 /**
  * History log for document
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: Class.DocHisto.php,v 1.1 2006/06/08 16:03:13 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

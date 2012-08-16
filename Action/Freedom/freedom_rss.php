@@ -7,7 +7,7 @@
 /**
  * RSS syndication on a folder (search, folders, report....)
  *
- * @author Anakeen 2003
+ * @author Anakeen
  * @version $Id: freedom_rss.php,v 1.11 2009/01/14 13:09:53 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

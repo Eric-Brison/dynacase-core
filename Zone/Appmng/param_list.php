@@ -7,7 +7,7 @@
 /**
  * Display parameters
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: param_list.php,v 1.10 2005/06/16 12:23:07 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

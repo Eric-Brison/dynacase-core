@@ -7,7 +7,7 @@
 /**
  * Document Attributes
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Class.DocAttribute.php,v 1.47 2008/12/11 10:06:51 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
@@ -18,7 +18,7 @@
  *
  * Generic attribute class
  *
- * @author anakeen
+ * @author Anakeen
  */
 class BasicAttribute
 {
@@ -277,7 +277,7 @@ class BasicAttribute
  * NormalAttribute Class
  * Non structural attribute (all attribute except frame and tab)
  *
- * @author anakeen
+ * @author Anakeen
  *
  */
 class NormalAttribute extends BasicAttribute
@@ -1311,7 +1311,7 @@ class NormalAttribute extends BasicAttribute
     /**
      * Structural attribute (attribute that contain other attribute : tab, frame)
      *
-     * @author anakeen
+     * @author Anakeen
      *
      */
     class FieldSetAttribute extends BasicAttribute

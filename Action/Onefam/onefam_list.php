@@ -7,7 +7,7 @@
 /**
  * list available families
  *
- * @author Anakeen 2003
+ * @author Anakeen
  * @version $Id: onefam_list.php,v 1.13 2007/01/03 19:38:59 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

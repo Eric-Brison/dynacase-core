@@ -7,7 +7,7 @@
 /**
  * Retrieve and store file in Vault
  *
- * @author Anakeen 2004
+ * @author Anakeen
  * @version $Id: Class.VaultFile.php,v 1.23 2008/05/27 12:46:06 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

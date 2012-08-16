@@ -7,7 +7,7 @@
 /**
  * Document searches classes
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Class.DocSearch.php,v 1.56 2008/11/19 08:47:46 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

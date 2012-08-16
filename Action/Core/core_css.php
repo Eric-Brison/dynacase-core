@@ -7,7 +7,7 @@
 /**
  * send css file
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @package FDL
  * @subpackage CORE
  */

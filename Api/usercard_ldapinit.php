@@ -7,7 +7,7 @@
 /**
  * Initiate LDAP database
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: usercard_ldapinit.php,v 1.18 2007/03/26 14:09:35 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
@@ -19,9 +19,9 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Lib.Dir.php");
 
-define("SKIPCOLOR", '[1;31;40m');
-define("UPDTCOLOR", '[1;32;40m');
-define("STOPCOLOR", '[0m');
+define("REDCOLOR", "\033".'[1;31;40m');
+define("UPDTCOLOR", "\033".'[1;32;40m');
+define("STOPCOLOR", "\033".'[0m');
 global $action;
 
 $usage = new ApiUsage();

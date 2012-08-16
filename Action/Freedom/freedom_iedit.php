@@ -7,7 +7,7 @@
 /**
  * Edition of virtual document
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: freedom_iedit.php,v 1.3 2005/03/04 17:15:51 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * Permission to execute actions
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Class.Permission.php,v 1.10 2006/06/01 12:54:05 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

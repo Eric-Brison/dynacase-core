@@ -7,7 +7,7 @@
 /**
  * Edition of option sttribute for a document
  *
- * @author Anakeen 2004
+ * @author Anakeen
  * @version $Id: editoption.php,v 1.3 2005/10/17 14:02:37 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

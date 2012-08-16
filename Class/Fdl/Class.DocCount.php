@@ -7,7 +7,7 @@
 /**
  * Cache table to memorize count doc of different sql filter
  *
- * @author Anakeen 2008
+ * @author Anakeen
  * @version $Id: Class.DocCount.php,v 1.1 2008/08/13 15:17:07 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

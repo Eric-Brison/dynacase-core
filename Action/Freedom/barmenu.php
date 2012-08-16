@@ -7,7 +7,7 @@
 /**
  * Definition of bar menu for folder navigation
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: barmenu.php,v 1.19 2007/08/10 16:09:49 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

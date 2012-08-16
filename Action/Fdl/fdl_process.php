@@ -7,7 +7,7 @@
 /**
  * Emailing
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: fdl_process.php,v 1.2 2005/06/28 08:37:46 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

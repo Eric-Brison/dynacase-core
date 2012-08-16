@@ -7,7 +7,7 @@
 /**
  * User manipulation
  *
- * @author Anakeen 2004
+ * @author Anakeen
  * @version $Id: Method.DocIUser.php,v 1.49 2008/08/13 14:07:54 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,9 +7,9 @@
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Class.Upload.php,v 1.2 2003/08/18 15:46:42 eric Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * 
  * @package FDL
  * @subpackage CORE
  */

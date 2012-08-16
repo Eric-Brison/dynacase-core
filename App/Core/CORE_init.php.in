@@ -9,13 +9,13 @@
  * @brief
  * @author Anakeen Dynacase Labs
  * @version @VERSION@-@RELEASE@
- * @date 2012
+ * @date @LOGDATE@
  *
  *
  *
  * @par Reference manual:
  * The Dynacase Reference Manual gives you all informations you need to design, code, test your applications.
- ation. This manual should be your daily companion, with all answers to all questions when developping on Dynacase Platform.
+  This manual should be your daily companion, with all answers to all questions when developping on Dynacase Platform.
  * ==> http://www.dynacase.org/documentation
  *
  *

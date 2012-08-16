@@ -7,7 +7,7 @@
 /**
  * Folder managing
  *
- * @author Anakeen 2001
+ * @author Anakeen
  * @version $Id: Class.QueryDir.php,v 1.25 2007/05/24 15:01:45 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

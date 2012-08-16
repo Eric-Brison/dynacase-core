@@ -9,7 +9,7 @@
  *
  * This struct gives some helpers to manipulate rows and columns (addRow, addColumn, insertColumn etc...)
  *
- * @author anakeen
+ * @author Anakeen
  *
  */
 class TwoDimensionStruct

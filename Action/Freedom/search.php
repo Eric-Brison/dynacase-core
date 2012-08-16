@@ -7,7 +7,7 @@
 /**
  * Search document
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: search.php,v 1.29 2008/12/30 17:14:40 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * Edit Url for gate
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: gate_editurl.php,v 1.4 2005/10/11 12:25:47 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

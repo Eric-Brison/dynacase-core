@@ -7,7 +7,7 @@
 /**
  * Enable/disable forum for documents
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: setlogicalname.php,v 1.3 2008/09/26 12:34:57 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * Image document
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Method.Forum.php,v 1.11 2007/10/16 16:17:46 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

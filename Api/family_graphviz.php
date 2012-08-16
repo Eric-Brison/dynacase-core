@@ -7,7 +7,7 @@
 /**
  * Generate family relation graph
  *
- * @author Anakeen 2008
+ * @author Anakeen
  * @version $Id: family_graphviz.php,v 1.1 2008/07/11 13:17:31 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

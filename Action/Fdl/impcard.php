@@ -7,7 +7,7 @@
 /**
  * View document only - without any menu
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: impcard.php,v 1.11 2008/02/08 09:50:26 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

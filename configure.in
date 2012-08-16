@@ -26,6 +26,8 @@ TODAY=`date`
 AC_SUBST(APPNAME)
 APPNAME=TOOLBOX
 
+AC_SUBST(LOGDATE)
+LOGDATE=`(git log -1 || echo 2012) | grep Date |cut -c6-`
 LICENSE="http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License"
 AC_SUBST(LICENSE)
 

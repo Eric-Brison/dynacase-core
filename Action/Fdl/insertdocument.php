@@ -7,7 +7,7 @@
 /**
  *  Insert documents in  folder
  *
- * @author Anakeen 2007
+ * @author Anakeen
  * @version $Id: insertdocument.php,v 1.2 2007/08/07 16:56:59 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

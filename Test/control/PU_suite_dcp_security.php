@@ -2,10 +2,10 @@
 /*
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package DCP
+ * @package Dcp\Pu
 */
 
-namespace PU;
+namespace Dcp\Pu;
 
 class SuiteDcpSecurity
 {
@@ -13,9 +13,9 @@ class SuiteDcpSecurity
     {
         $suite = new FrameworkDcp('Package');
         
-        $suite->addTestSuite('PU\TestAccess');
-        $suite->addTestSuite('PU\TestDocControl');
-        $suite->addTestSuite('PU\TestRole');
+        $suite->addTestSuite('Dcp\Pu\TestAccess');
+        $suite->addTestSuite('Dcp\Pu\TestDocControl');
+        $suite->addTestSuite('Dcp\Pu\TestRole');
         // ...
         return $suite;
     }

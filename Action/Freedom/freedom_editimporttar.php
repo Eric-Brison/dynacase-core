@@ -7,7 +7,7 @@
 /**
  * Edit Import Archive
  *
- * @author Anakeen 2004
+ * @author Anakeen
  * @version $Id: freedom_editimporttar.php,v 1.1 2004/03/16 14:12:46 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

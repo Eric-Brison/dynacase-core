@@ -7,7 +7,7 @@
 /**
  * List document of a category
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: generic_tab.php,v 1.29 2008/02/20 16:55:05 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * validate user or master choosen families
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: onefam_modpref.php,v 1.8 2006/10/05 09:22:38 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

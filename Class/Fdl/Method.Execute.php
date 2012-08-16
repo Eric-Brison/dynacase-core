@@ -7,7 +7,7 @@
 /**
  * Method for processes family
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: Method.Execute.php,v 1.9 2008/12/02 13:21:27 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

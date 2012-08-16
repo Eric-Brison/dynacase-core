@@ -7,7 +7,7 @@
 /**
  * function use for specialised searches
  *
- * @author Anakeen 2006
+ * @author Anakeen
  * @version $Id: fdlsearches.php,v 1.3 2007/08/01 14:08:09 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
