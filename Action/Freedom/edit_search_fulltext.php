@@ -7,7 +7,7 @@
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: edit_search_fulltext.php,v 1.5 2005/02/08 11:34:37 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

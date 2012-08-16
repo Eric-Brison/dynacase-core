@@ -7,7 +7,7 @@
 /**
  * Speed Search
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: speedsearch.php,v 1.5 2005/06/28 08:37:46 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

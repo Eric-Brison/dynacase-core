@@ -7,7 +7,7 @@
 /**
  * Display a message to advert that Dynacase Platform being to be upgraded
  *
- * @author Anakeen 2002
+ * @author Anakeen
  * @version $Id: stop.php,v 1.4 2007/03/06 18:57:03 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

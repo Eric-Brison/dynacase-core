@@ -7,7 +7,7 @@
 /**
  * Set WHAT user & mail parameters
  *
- * @author Anakeen 2003
+ * @author Anakeen
  * @version $Id: Method.DocIGroup.php,v 1.40 2008/09/04 09:48:26 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

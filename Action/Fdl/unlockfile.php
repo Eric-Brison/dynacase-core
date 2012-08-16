@@ -7,7 +7,7 @@
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: unlockfile.php,v 1.10 2007/09/27 13:57:11 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

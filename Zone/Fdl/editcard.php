@@ -7,7 +7,7 @@
 /**
  * generate interface for the rdition of document
  *
- * @author Anakeen 2003
+ * @author Anakeen
  * @version $Id: editcard.php,v 1.76 2008/11/10 16:53:06 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

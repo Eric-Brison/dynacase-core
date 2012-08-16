@@ -7,7 +7,7 @@
 /**
  * Display edition of enum attributes
  *
- * @author Anakeen 2006
+ * @author Anakeen
  * @version $Id: generic_editfamcatg.php,v 1.1 2006/02/03 17:03:41 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

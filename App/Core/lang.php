@@ -7,7 +7,7 @@
 /**
  * Locale name and language name localization
  *
- * @author Anakeen 2009
+ * @author Anakeen
  * @version $Id: lang.php,v 1.5 2009/01/16 13:33:00 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

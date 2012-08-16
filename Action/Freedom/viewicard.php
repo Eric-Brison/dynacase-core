@@ -7,7 +7,7 @@
 /**
  * View virtual document
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: viewicard.php,v 1.5 2005/03/08 17:53:56 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

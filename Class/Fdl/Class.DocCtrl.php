@@ -7,7 +7,7 @@
 /**
  * Control Access Document
  *
- * @author Anakeen 2002
+ * @author Anakeen
  * @version $Id: Class.DocCtrl.php,v 1.54 2008/08/05 15:16:58 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * Get Values in XML form
  *
- * @author Anakeen 2006
+ * @author Anakeen
  * @version $Id: getdocsvalue.php,v 1.1 2008/11/14 16:37:05 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

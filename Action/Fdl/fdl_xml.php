@@ -7,7 +7,7 @@
 /**
  * XML Utilities for freedom
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: fdl_xml.php,v 1.3 2005/09/22 16:34:44 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

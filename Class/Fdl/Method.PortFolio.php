@@ -7,7 +7,7 @@
 /**
  * PortFolio Methods
  *
- * @author Anakeen 2003
+ * @author Anakeen
  * @version $Id: Method.PortFolio.php,v 1.17 2008/01/22 16:44:48 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

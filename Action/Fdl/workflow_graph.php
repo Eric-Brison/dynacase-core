@@ -7,7 +7,7 @@
 /**
  * View workflow graph
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: workflow_graph.php,v 1.2 2008/03/11 11:25:04 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

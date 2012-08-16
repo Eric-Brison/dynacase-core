@@ -7,7 +7,7 @@
 /**
  * Specific menu for family
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: popupfamdetail.php,v 1.10 2008/11/27 14:18:33 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

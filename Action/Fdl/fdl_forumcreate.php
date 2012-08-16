@@ -7,7 +7,7 @@
 /**
  * FDL Forum creation
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: fdl_forumcreate.php,v 1.2 2007/10/17 10:15:39 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

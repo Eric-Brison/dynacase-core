@@ -7,7 +7,7 @@
 /**
  * Profile for folders
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Class.PDir.php,v 1.12 2007/10/11 12:35:10 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

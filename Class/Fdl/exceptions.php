@@ -6,10 +6,8 @@
 */
 /**
  * Exception class
- * @category --category--
- * @package platform
+ * @package FDL
  * @author Anakeen
- * @copyright : anakeen SAS
  * @license : http://www.gnu.org/licenses/agpl.html GNU AFFERO GENERAL PUBLIC LICENSE
  *
  */

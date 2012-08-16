@@ -7,7 +7,7 @@
 /**
  * View Document
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: fdl_getvalue.php,v 1.1 2005/07/28 16:47:51 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

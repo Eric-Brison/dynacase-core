@@ -7,7 +7,7 @@
 /**
  * Detect file which are not indexed and index them
  *
- * @author Anakeen 2004
+ * @author Anakeen
  * @version $Id: FullFileIndex.php,v 1.2 2007/09/07 09:40:21 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

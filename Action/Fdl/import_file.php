@@ -7,7 +7,7 @@
 /**
  * Import documents
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: import_file.php,v 1.149 2008/11/14 12:40:07 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * Grouped searches
  *
- * @author Anakeen 2004
+ * @author Anakeen
  * @version $Id: Method.GroupSearch.php,v 1.3 2005/06/28 08:37:46 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -10,7 +10,7 @@
  * This class allows you to manipulate a user crontab by registering
  * and unregistering cron files
  *
- * @author Anakeen 2009
+ * @author Anakeen
  * @version $Id: Class.Crontab.php,v 1.2 2009/01/16 15:51:35 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

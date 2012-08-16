@@ -7,7 +7,7 @@
 /**
  * Redirector for generic
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: fusers_iuser.php,v 1.2 2006/04/06 16:48:02 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

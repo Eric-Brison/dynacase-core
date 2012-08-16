@@ -7,7 +7,7 @@
 /**
  * Retrieve and store file in Vault for unix fs
  *
- * @author Anakeen 2004
+ * @author Anakeen
  * @version $Id: Class.VaultDiskStorage.php,v 1.8 2007/11/14 09:53:37 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * View Help Document
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: family_help.php,v 1.4 2007/09/04 09:09:10 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

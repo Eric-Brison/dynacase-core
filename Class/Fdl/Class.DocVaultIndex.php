@@ -8,7 +8,7 @@
  * Class.DocVaultIndex.php manages a full index
  * for files attached to a Freedom document
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Class.DocVaultIndex.php,v 1.8 2007/03/07 18:42:24 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

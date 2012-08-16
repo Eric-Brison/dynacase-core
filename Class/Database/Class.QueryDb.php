@@ -7,7 +7,7 @@
 /**
  * Query to Database
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Class.QueryDb.php,v 1.16 2008/08/11 10:03:29 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

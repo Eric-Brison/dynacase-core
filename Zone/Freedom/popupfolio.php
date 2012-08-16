@@ -7,7 +7,7 @@
 /**
  * popup for portfolio list
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: popupfolio.php,v 1.14 2008/06/03 10:14:13 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

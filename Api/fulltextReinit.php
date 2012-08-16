@@ -7,7 +7,7 @@
 /**
  * Reinit vault files
  *
- * @author Anakeen 2004
+ * @author Anakeen
  * @version $Id: VaultIndexInit.php,v 1.4 2008/11/28 16:14:34 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

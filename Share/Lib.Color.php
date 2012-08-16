@@ -7,7 +7,7 @@
 /**
  * Color utilities
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: Lib.Color.php,v 1.1 2007/02/21 11:04:26 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

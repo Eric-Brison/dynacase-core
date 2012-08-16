@@ -9,7 +9,7 @@
  *
  * All HTTP requests call index.php to execute action within application
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: index.php,v 1.64 2008/12/16 15:51:53 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

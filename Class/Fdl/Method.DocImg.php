@@ -7,7 +7,7 @@
 /**
  * Image document
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Method.DocImg.php,v 1.8 2008/03/10 10:45:52 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

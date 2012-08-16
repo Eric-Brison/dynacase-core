@@ -7,7 +7,7 @@
 /**
  * Return extension from mime type
  *
- * @author Anakeen 2007
+ * @author Anakeen
  * @version $Id: MimeExtension.php,v 1.1 2007/11/14 14:51:39 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

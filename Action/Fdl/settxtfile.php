@@ -7,7 +7,7 @@
 /**
  * Update file text which comes from transformation engine
  *
- * @author Anakeen 2007
+ * @author Anakeen
  * @version $Id: settxtfile.php,v 1.13 2007/12/12 15:22:36 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

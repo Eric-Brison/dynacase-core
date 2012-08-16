@@ -7,7 +7,7 @@
 /**
  * Import Set of documents and files with directories
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: import_tar.php,v 1.8 2007/08/02 15:34:12 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

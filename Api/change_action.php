@@ -12,7 +12,7 @@
  * @param string $actname internal name of the action
  * @param string $attribute internal name of the field of the action
  * @param string $value new value for the attribute
- * @author Anakeen 2003
+ * @author Anakeen
  * @version $Id: change_action.php,v 1.2 2003/08/18 15:46:41 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

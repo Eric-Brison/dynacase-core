@@ -7,7 +7,7 @@
 /**
  * Increase size of vault file system
  *
- * @author Anakeen 2006
+ * @author Anakeen
  * @version $Id: vault_diskimage.php,v 1.2 2008/11/24 16:10:23 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

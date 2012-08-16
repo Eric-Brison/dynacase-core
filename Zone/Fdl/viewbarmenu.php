@@ -7,7 +7,7 @@
 /**
  * Specific menu for family
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: viewbarmenu.php,v 1.10 2008/10/09 08:00:37 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

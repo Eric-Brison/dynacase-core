@@ -7,7 +7,7 @@
 /**
  * Tranformation Engine Definition
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: Class.VaultEngine.php,v 1.2 2007/05/23 16:01:51 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

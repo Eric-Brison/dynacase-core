@@ -7,7 +7,7 @@
 /**
  * Full Text Search document
  *
- * @author Anakeen 2007
+ * @author Anakeen
  * @version $Id: fulldsearch.php,v 1.2 2007/12/06 10:51:35 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

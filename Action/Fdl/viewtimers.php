@@ -7,7 +7,7 @@
 /**
  * View Attached timer
  *
- * @author Anakeen 2008
+ * @author Anakeen
  * @version $Id: viewtimers.php,v 1.4 2009/01/02 17:43:50 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

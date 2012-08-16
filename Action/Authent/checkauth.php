@@ -7,7 +7,7 @@
 /**
  * PHP Authentification control
  *
- * @author Anakeen 1999
+ * @author Anakeen
  * @license http://www.gnu.org/licenses/lgpl-3.0.html GNU Lesser General Public License
  * @package FDL
  * @subpackage CORE

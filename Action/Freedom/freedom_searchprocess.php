@@ -7,7 +7,7 @@
 /**
  * Interface to create new execution from batch
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: freedom_searchprocess.php,v 1.1 2005/08/19 16:14:50 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

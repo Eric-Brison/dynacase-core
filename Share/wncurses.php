@@ -7,7 +7,7 @@
 /**
  * WHAT ncurses utilities functions
  *
- * @author Anakeen 2004
+ * @author Anakeen
  * @version $Id: wncurses.php,v 1.3 2005/04/18 12:53:39 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

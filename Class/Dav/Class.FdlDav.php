@@ -7,7 +7,7 @@
 /**
  * FREEDOM File system
  *
- * @author Anakeen 2006
+ * @author Anakeen
  * @version $Id: Class.FdlDav.php,v 1.18 2008/12/01 16:29:18 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

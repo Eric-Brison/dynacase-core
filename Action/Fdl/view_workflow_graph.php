@@ -7,7 +7,7 @@
 /**
  * Edition to affect document
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: view_workflow_graph.php,v 1.8 2008/12/31 16:05:20 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

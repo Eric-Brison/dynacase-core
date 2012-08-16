@@ -7,7 +7,7 @@
 /**
  * View standalone document (without popup menu)
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: viewscard.php,v 1.8 2005/11/04 15:38:29 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

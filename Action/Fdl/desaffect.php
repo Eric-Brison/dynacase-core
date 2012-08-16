@@ -7,7 +7,7 @@
 /**
  * Functions to un-affect document to an user
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: desaffect.php,v 1.2 2006/08/11 15:48:17 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

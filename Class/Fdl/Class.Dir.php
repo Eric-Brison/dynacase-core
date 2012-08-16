@@ -7,7 +7,7 @@
 /**
  * Folder document definition
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Class.Dir.php,v 1.81 2008/09/03 08:35:24 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * Intranet User & Group  manipulation
  *
- * @author Anakeen 2004
+ * @author Anakeen
  * @version $Id: Method.DocIntranet.php,v 1.23 2008/04/15 07:11:04 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

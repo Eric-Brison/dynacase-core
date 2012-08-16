@@ -7,7 +7,7 @@
 /**
  * Utilities functions to generate popup menu
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: popup_util.php,v 1.15 2005/10/07 14:07:53 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

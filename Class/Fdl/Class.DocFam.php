@@ -7,7 +7,7 @@
 /**
  * Family Document Class
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Class.DocFam.php,v 1.31 2008/09/16 16:09:59 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

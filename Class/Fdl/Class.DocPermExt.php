@@ -7,7 +7,7 @@
 /**
  * Document permissions
  *
- * @author Anakeen 2000
+ * @author Anakeen
  * @version $Id: Class.DocPerm.php,v 1.15 2007/06/14 15:48:25 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL

@@ -7,7 +7,7 @@
 /**
  * javascript utilities for view document
  *
- * @author Anakeen 2005
+ * @author Anakeen
  * @version $Id: viewdocjs.php,v 1.4 2008/08/12 12:42:10 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
