@@ -18,6 +18,7 @@ class excludeSomeFiles extends FilterIterator
         $exclusionPatterns = array(
             './context/',
             './fckeditor/',
+            './ckeditor/',
             './jscalendar/',
             './Images/',
             './lib/ext/',
@@ -39,5 +40,5 @@ class excludeSomeFiles extends FilterIterator
     }
 }
 
-\dcp\DirectoriesAutoloader::instance(DEFAULT_PUBDIR, '.autoloader.cache')->addDirectory('./')->addCustomFilter('excludeSomeFiles')->register();
+\Dcp\DirectoriesAutoloader::instance(DEFAULT_PUBDIR, '.autoloader.cache')->addDirectory('./')->addCustomFilter('excludeSomeFiles')->register();
 ?>

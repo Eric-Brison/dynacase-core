@@ -5,7 +5,7 @@
  * @package FDL
 */
 
-namespace dcp;
+namespace Dcp;
 
 class ExtensionFilterIteratorDecorator extends \FilterIterator
 {
