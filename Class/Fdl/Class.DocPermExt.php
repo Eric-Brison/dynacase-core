@@ -62,8 +62,9 @@ create unique index idx_permext on docpermext(docid, userid,acl);";
     }
     /**
      * @static
-     * @param int $profid profil identificator
-     * @param int $userid user identificator
+     * @param int $userid user identifier
+     * @param string $acl acl name to control
+     * @param int $profid profil identifier
      * @param bool $strict set to true to not use substitute
      * @return int
      */
