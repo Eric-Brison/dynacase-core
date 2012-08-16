@@ -7,9 +7,9 @@
 /**
  * Ooo Layout test
  *
- * @author Anakeen 2010
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package DCP
+ * @author Anakeen
+ * 
+ * @package Dcp\Pu
  */
 /**
  */

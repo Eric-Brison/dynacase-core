@@ -5,11 +5,11 @@
  * @package FDL
 */
 
-namespace PU;
+namespace Dcp\Pu;
 /**
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package DCP
+ * @package Dcp\Pu
  */
 //require_once 'PHPUnit/Framework.php';
 set_include_path(get_include_path() . PATH_SEPARATOR . "./DCPTEST:./WHAT");
