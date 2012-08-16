@@ -5,6 +5,7 @@
                  title="Arbre + Feuilles" revision="0" modification-date="2011-11-14T16:57:14" version="" state="">
         <tst_frame><tst_title>Arbre + Feuilles</tst_title>
             <tst_longtext>La nature est jolie &lt;en automne&gt;</tst_longtext>
+            <aa_one>Un</aa_one>
         </tst_frame>
 
     </tst_linkdoc>

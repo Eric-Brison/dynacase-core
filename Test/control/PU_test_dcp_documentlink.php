@@ -118,6 +118,16 @@ class TestLink extends TestCaseDcpDocument
                 "http://test.com/?title=Arbre%20%2B%20Feuilles&long=La%20nature%20est%20jolie%20%3Cen%20automne%3E"
             ) ,
             array(
+                "linkOne",
+                "http://test.com/?title=%aa_one%",
+                "http://test.com/?title=Un"
+            ) ,
+            array(
+                "linkOne",
+                "http://test.com/?title=%AA_ONE%",
+                "http://test.com/?title=Un"
+            ) ,
+            array(
                 "linkTwo",
                 "http://test.com/?title=%tst_title%",
                 "http://test.com/?title=Joe%20%26%20Jane"
