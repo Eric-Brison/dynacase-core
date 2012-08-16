@@ -18,7 +18,7 @@
  *
  * Generic attribute class
  *
- * @author anakeen
+ * @author Anakeen
  */
 class BasicAttribute
 {
@@ -277,7 +277,7 @@ class BasicAttribute
  * NormalAttribute Class
  * Non structural attribute (all attribute except frame and tab)
  *
- * @author anakeen
+ * @author Anakeen
  *
  */
 class NormalAttribute extends BasicAttribute
@@ -1311,7 +1311,7 @@ class NormalAttribute extends BasicAttribute
     /**
      * Structural attribute (attribute that contain other attribute : tab, frame)
      *
-     * @author anakeen
+     * @author Anakeen
      *
      */
     class FieldSetAttribute extends BasicAttribute
