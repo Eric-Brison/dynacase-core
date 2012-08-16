@@ -18,7 +18,10 @@
 
 include_once ('Class.Layout.php');
 include_once ('Lib.FileMime.php');
-
+/**
+ * @class OOoLayout
+ * use an open document text file as template
+ */
 class OOoLayout extends Layout
 {
     //############################################
@@ -49,13 +52,13 @@ class OOoLayout extends Layout
      */
     protected $dom;
     /**
-     * construct layout for view card containt
+     * construct template using an open document text file
      *
-     * @param string $caneva file of the template
+     * @param string $caneva open document file of the template
      * @param Action $action current action
      * @param Doc $doc document
      */
-    function __construct($caneva = "", Action & $action = null, Doc & $doc = null)
+    public function __construct($caneva = "", Action & $action = null, Doc & $doc = null)
     {
         $this->LOG = new Log("", "Layout");
         $this->doc = $doc;
@@ -79,8 +82,12 @@ class OOoLayout extends Layout
             }
         }
     }
-    
-    function innerXML(DOMnode & $node)
+    /**
+     * return inside string of a node
+     * @param DOMnode $node
+     * @return string
+     */
+    protected function innerXML(DOMnode & $node)
     {
         if (!$node) return false;
         $document = $node->ownerDocument;
@@ -91,11 +98,12 @@ class OOoLayout extends Layout
     /**
      * @deprecated
      * Enter description here ...
-     * @param unknown_type $block
-     * @param unknown_type $aid
-     * @param unknown_type $vkey
+     * @param string $block
+     * @param string $aid
+     * @param string $vkey
+     * @return string
      */
-    function parseListInBlock($block, $aid, $vkey)
+    protected function parseListInBlock($block, $aid, $vkey)
     {
         deprecatedFunction();
         $head = '<?xml version="1.0" encoding="UTF-8"?>
@@ -155,7 +163,7 @@ class OOoLayout extends Layout
         
     }
     
-    function getAncestor(&$node, $type)
+    protected function getAncestor(&$node, $type)
     {
         $mynode = $node;
         while (!empty($mynode->parentNode)) {
@@ -169,6 +177,7 @@ class OOoLayout extends Layout
     /**
      * get depth in dom tree
      * @param DOMNode $node
+     * @return int
      */
     private function getNodeDepth(DOMNode & $node)
     {
@@ -181,7 +190,7 @@ class OOoLayout extends Layout
         return $depth;
     }
     
-    function ParseBlock()
+    protected function ParseBlock()
     {
         $this->template = preg_replace("/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/se", "\$this->SetBlock('\\1','\\2')", $this->template);
     }
@@ -191,8 +200,9 @@ class OOoLayout extends Layout
      * @param string $block xml string which containt the condition
      * @param boolean $not negative condition
      * @param array $levelPath Path use to retrieve condition value in recursive repeatable mode
+     * @return string
      */
-    function TestIf($name, $block, $not = false, $levelPath = null)
+    protected function TestIf($name, $block, $not = false, $levelPath = null)
     {
         $out = "";
         $cond = null;
@@ -219,7 +229,7 @@ class OOoLayout extends Layout
     /**
      * Top level parse condition
      */
-    function ParseIf()
+    protected function ParseIf()
     {
         $templateori = '';
         $level = 0;
@@ -336,7 +346,7 @@ class OOoLayout extends Layout
      * @param $name
      * @param $block
      */
-    function SetBlock($name, $block)
+    protected function SetBlock($name, $block)
     {
         deprecatedFunction();
         if ($this->strip == 'Y') {
@@ -367,7 +377,7 @@ class OOoLayout extends Layout
      * @deprecated
      * @param $out
      */
-    function ParseZone(&$out)
+    protected function ParseZone(&$out)
     {
         deprecatedFunction();
         
@@ -376,7 +386,7 @@ class OOoLayout extends Layout
     /**
      * replace simple key in xml string
      */
-    function ParseKey()
+    protected function ParseKey()
     {
         if (isset($this->rkey)) {
             $this->template = str_replace($this->pkey, $this->rkey, $this->template);
@@ -407,8 +417,9 @@ class OOoLayout extends Layout
     /**
      * read odt file and insert xmls in object
      * @param string $odsfile path to the odt file
+     * @return string
      */
-    function odf2content($odtfile)
+    protected function odf2content($odtfile)
     {
         if (!file_exists($odtfile)) return "file $odtfile not found";
         $this->cibledir = uniqid(getTmpDir() . "/odf");
@@ -441,8 +452,9 @@ class OOoLayout extends Layout
     /**
      * recompose odt file
      * @param string $odsfile output file path
+     * @return string
      */
-    function content2odf($odsfile)
+    protected function content2odf($odsfile)
     {
         if (file_exists($odsfile)) return "file $odsfile must not be present";
         
@@ -479,7 +491,7 @@ class OOoLayout extends Layout
         return '';
     }
     
-    function execute($appname, $actionargn)
+    protected function execute($appname, $actionargn)
     {
         
         if ($this->action == "") return ("Layout not used in a core environment");
@@ -510,10 +522,10 @@ class OOoLayout extends Layout
         
         if (($actionname != $this->action->name) || ($OLD_ZONE_ARGS != $ZONE_ARGS)) {
             $act = new Action();
-            
+            $res = '';
             if ($act->Exists($actionname, $appl->id)) {
                 
-                $res = $act->Set($actionname, $appl);
+                $act->Set($actionname, $appl);
             } else {
                 // it's a no-action zone (no ACL, cannot be call directly by URL)
                 $act->name = $actionname;
@@ -575,7 +587,7 @@ class OOoLayout extends Layout
      *
      * @param string $val
      */
-    function isXML($val)
+    protected function isXML($val)
     {
         return false;
         //return preg_match("/<text:/", $val);
@@ -900,6 +912,7 @@ class OOoLayout extends Layout
      * @param DOMElement $node
      * @param string $name
      * @param string $value
+     * @return string error message
      */
     protected function setDropDownField(DOMElement & $node, $name, $value)
     {
@@ -1086,9 +1099,7 @@ class OOoLayout extends Layout
         }
     }
     /**
-     *
-     * Inspect sub tables
-     * @param string_type $row
+     * @param DOMNode $row
      * @param array $levelPath
      */
     protected function replaceRowNode(DOMNode & $row, array $levelPath)
@@ -1345,7 +1356,7 @@ class OOoLayout extends Layout
      * @param string $p_nom_block
      * @param array $data
      */
-    public function SetBlockData($p_nom_block, $data)
+    public function setBlockData($p_nom_block, $data)
     {
         deprecatedFunction();
         if ($p_nom_block != "") {
@@ -1365,12 +1376,12 @@ class OOoLayout extends Layout
             $this->data[$p_nom_block] = $data;
             if (is_array($data)) {
                 reset($data);
-                $elem = pos($data);
+                $elem = current($data);
                 if (isset($elem) && is_array($elem)) {
                     reset($elem);
                     foreach ($elem as $k => $v) {
                         if (!isset($this->corresp["$p_nom_block"]["[$k]"])) {
-                            $this->SetBlockCorresp($p_nom_block, $k);
+                            $this->setBlockCorresp($p_nom_block, $k);
                         }
                     }
                 }
@@ -1467,31 +1478,31 @@ class OOoLayout extends Layout
         }
     }
     
-    function GenJsRef()
+    protected function GenJsRef()
     {
         return "";
     }
     
-    function GenJsCode($showlog)
+    protected function GenJsCode($showlog)
     {
         return ("");
     }
     
-    function ParseJs(&$out)
+    protected function ParseJs(&$out)
     {
     }
     
-    function GenCssRef()
+    protected function GenCssRef()
     {
         return "";
     }
     
-    function GenCssCode()
+    protected function GenCssCode()
     {
         return ("");
     }
     
-    function ParseCss(&$out)
+    protected function ParseCss(&$out)
     {
     }
     /**
@@ -1540,7 +1551,7 @@ class OOoLayout extends Layout
      * delete unecessary span or p
      * delete section tag if needed (not in cell or text:section or text:body
      */
-    public function parseHtmlText()
+    protected function parseHtmlText()
     {
         $this->dom->loadXML($this->template);
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "section");

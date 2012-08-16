@@ -6,7 +6,6 @@
 */
 /**
  * Layout Class
- *
  * @author Anakeen 2000
  * @version $Id: Class.Layout.php,v 1.49 2009/01/14 14:48:14 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
@@ -15,76 +14,69 @@
  */
 /**
  */
-//
-// PHP Layout Class
-//   this class is designed to perform the final page layout of
-//   an application.
-//   this class uses a template with three dynamic zones header,toc and main
-//   doc.
-//
-//
-// Layout Class can manage three kind of datas :
-//
-// 1) Simple tags :
-//    those tags are enclosed into brackets [] and can be replaced with any
-//    dynamic data given with the Set method.
-//    e.g : [MYDATA]  => $this->Set("MYDATA","this is my text");
-//
-// 2) Block of Data :
-//    those tags are used to manage repeated set of data (as table for instance)
-//    You can assign a table of data to a specific block.
-//    e.g : $table = array ( "0" => array ( "name" => "John",
-//                                          "surname" => "Smith"),
-//                           "1" => array ( "name" => "Robert",
-//                                          "surname" => "Martin"));
-//
-//    the block : [BLOCK IDENTITY]
-//                <tr><td align="left">[NAME]</td>
-//                    <td align="right">[SURNAME]</td>
-//                </tr>
-//                [ENDBLOCK IDENTITY]
-//
-//   the code :   $lay = new Layout ("file containing the block");
-//                $lay->SetBlockCorresp("IDENTITY","NAME","name");
-//                $lay->SetBlockCorresp("IDENTITY","SURNAME","surname");
-//                $lay->SetBlockData("IDENTITY",$table);
-//
-//                $out = $lay->gen();
-//
-//      $out  :   <tr><td align="left">John</td>
-//                    <td align="right">Smith</td>
-//                </tr>
-//                <tr><td align="left">Robert</td>
-//                    <td align="right">Martin</td>
-//                </tr>
-//
-// 3) Call a specific script (need Core App Environment to work)
-//   tag syntax : [ZONE zonename]
-//
-//     the zone name is linked to a specific application/function
-//
-//          eg :  [ZONE CORE:APPLIST]
-//
-//         then the APPLIST function in the CORE Application is called
-//           this function can then use another layout etc......
-//
-//
-// Copyright (c) 1999 Anakeen S.A.
-//               Yannick Le Briquer
-//
-//  $Id: Class.Layout.php,v 1.49 2009/01/14 14:48:14 eric Exp $
-$CLASS_LAYOUT_PHP = "";
+
 include_once ('Class.Log.php');
 include_once ('Class.Action.php');
 include_once ('Class.Application.php');
-
+/**
+ *
+ * @class Layout
+ * @brief  Layout is a template generator
+ *
+ * Layout Class can manage three kind of datas :
+ * @par
+ * - 1) Simple tags :
+ *    those tags are enclosed into brackets [] and can be replaced with any
+ *    dynamic data given with the Set method.
+ *    e.g : [MYDATA]  => $this->Set("MYDATA","this is my text");
+ * @par
+ * - 2) Block of Data :
+ *    those tags are used to manage repeated set of data (as table for instance)
+ *    You can assign a table of data to a specific block.
+ * @code
+ *     $table = array ( "0" => array ( "NAME" => "John",
+ *                                          "SURNAME" => "Smith"),
+ *                           "1" => array ( "NAME" => "Robert",
+ *                                          "SURNAME" => "Martin"));
+ * @endcode
+ *    the block :
+ * @code [BLOCK IDENTITY]
+ *                <tr><td align="left">[NAME]</td>
+ *                    <td align="right">[SURNAME]</td>
+ *                </tr>
+ *       [ENDBLOCK IDENTITY]
+ * @endcode
+ *    the code :
+ * @code $lay = new Layout ("file containing the block");
+ *                $lay->SetBlockData("IDENTITY",$table);
+ *
+ *                $out = $lay->gen();
+ * @endcode
+ *      $out  :
+ * @code
+ *     <tr><td align="left">John</td>
+ *                    <td align="right">Smith</td>
+ *                </tr>
+ *                <tr><td align="left">Robert</td>
+ *                    <td align="right">Martin</td>
+ *                </tr>
+ * @endcode
+ * - 3) Call a specific script (need Core App Environment to work)
+ *   tag syntax : [ZONE zonename]
+ *     the zone name is linked to a specific application/function
+ *          eg :  [ZONE CORE:APPLIST]
+ *     then the APPLIST function in the CORE Application is called
+ *     this function can then use another layout etc......
+ */
 class Layout
 {
-    //############################################
-    //#
     private $strip = 'Y';
     public $encoding = "";
-    public $noparse = false; // return template without parse
+    /**
+     * set to true to not parse template when it is generating
+     * @var bool
+     */
+    public $noparse = false;
     protected $corresp;
     protected $data = null;
     /**
@@ -100,9 +92,9 @@ class Layout
      */
     protected $pkey = array();
     /**
-     * @var array different par of original zone
+     * @var Action
      */
-    private $zone;
+    protected $action = null;
     //########################################################################
     //# Public methods
     //#
@@ -110,18 +102,18 @@ class Layout
     
     
     /**
-     * construct layout for view card containt
+     * construct layout to identify template
      *
-     * @param string $caneva file of the template
+     * @param string $caneva file path of the template
      * @param Action $action current action
-     * @param string $template default template
+     * @param string $template if no $caneva found or is empty use this template.
      */
-    function Layout($caneva = "", $action = "", $template = "[OUT]")
+    public function __construct($caneva = "", $action = null, $template = "[OUT]")
     {
         $this->LOG = new Log("", "Layout");
         if (($template == "[OUT]") && ($caneva != "")) $this->template = sprintf(_("Template [%s] not found") , $caneva);
         else $this->template = $template;
-        $this->action = & $action;
+        if ($action) $this->action = & $action;
         $this->generation = "";
         $file = $caneva;
         $this->file = "";
@@ -137,54 +129,72 @@ class Layout
         }
     }
     /**
-     * return original zone
-     * @param string $key
+     * set reference between array index and layout key
+     *
+     * use these data
+     * @code
+     *   $table = array ( "0" => array ( "name" => "John",
+     "surname" => "Smith"),
+     "1" => array ( "name" => "Robert",
+     "surname" => "Martin"));
+     * @endcode
+     * with the code
+     * @code
+     * $lay = new Layout ("file containing the block");
+     $lay->setBlockCorresp("IDENTITY","MYNAME","name");
+     $lay->setBlockCorresp("IDENTITY","MYSURNAME","surname");
+     $lay->SetBlockData("IDENTITY",$table);
+     $out = $lay->gen();
+     * @endcode
+     * for template
+     * @code[BLOCK IDENTITY]
+     <tr><td align="left">[MYNAME]</td>
+     <td align="right">[MYSURNAME]</td>
+     </tr>
+     [ENDBLOCK IDENTITY]
+     * @endcode
+     * @param string $p_nom_block
+     * @param string $p_nom_modele
+     * @param string $p_nom
      */
-    function getZone($key = '')
-    {
-        if ($key) {
-            if (isset($this->zone[$key])) return $this->zone[$key];
-            return null;
-        } else {
-            return $this->zone;
-        }
-    }
-    
-    function setZone($zone)
-    {
-        $this->zone = $zone;
-    }
-    
-    function SetBlockCorresp($p_nom_block, $p_nom_modele, $p_nom = NULL)
+    public function setBlockCorresp($p_nom_block, $p_nom_modele, $p_nom = NULL)
     {
         $this->corresp["$p_nom_block"]["[$p_nom_modele]"] = ($p_nom == NULL ? $p_nom_modele : "$p_nom");
     }
-    
-    function SetBlockData($p_nom_block, $data = NULL)
+    /**
+     * set data to fill a block
+     * @param string $p_nom_block block name
+     * @param array $data data to fill the block
+     */
+    public function setBlockData($p_nom_block, $data = NULL)
     {
         $this->data["$p_nom_block"] = $data;
         // affect the corresp block if not
         if (is_array($data)) {
             reset($data);
-            $elem = pos($data);
+            $elem = current($data);
             if (isset($elem) && is_array($elem)) {
-                reset($elem);
-                while (list($k, $v) = each($elem)) {
+                foreach ($elem as $k => $v) {
                     if (!isset($this->corresp["$p_nom_block"]["[$k]"])) {
-                        $this->SetBlockCorresp($p_nom_block, $k);
+                        $this->setBlockCorresp($p_nom_block, $k);
                     }
                 }
             }
         }
     }
-    
-    function GetBlockData($p_nom_block)
+    /**
+     * return data set in block name
+     * @see setBlockData
+     * @param string $p_nom_block block name
+     * @return array|bool return data or false if no data are set yet
+     */
+    public function getBlockData($p_nom_block)
     {
         if (isset($this->data["$p_nom_block"])) return $this->data["$p_nom_block"];
         return false;
     }
     
-    function SetBlock($name, $block)
+    protected function SetBlock($name, $block)
     {
         if ($this->strip == 'Y') {
             //      $block = StripSlashes($block);
@@ -209,12 +219,12 @@ class Layout
         return ($out);
     }
     
-    function ParseBlock(&$out)
+    protected function ParseBlock(&$out)
     {
         $out = preg_replace("/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/se", "\$this->SetBlock('\\1','\\2')", $out);
     }
     
-    function TestIf($name, $block, $not = false)
+    protected function TestIf($name, $block, $not = false)
     {
         $out = "";
         if (array_key_exists($name, $this->rif) || isset($this->rkey[$name])) {
@@ -236,17 +246,17 @@ class Layout
         return ($out);
     }
     
-    function ParseIf(&$out)
+    protected function ParseIf(&$out)
     {
         $out = preg_replace("/(?m)\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se", "\$this->TestIf('\\2','\\3','\\1')", $out);
     }
     
-    function ParseZone(&$out)
+    protected function ParseZone(&$out)
     {
         $out = preg_replace("/\[ZONE\s+([^:]*):([^\]]*)\]/e", "\$this->execute('\\1','\\2')", $out);
     }
     
-    function ParseKey(&$out)
+    protected function ParseKey(&$out)
     {
         if (isset($this->rkey)) {
             $out = str_replace($this->pkey, $this->rkey, $out);
@@ -254,9 +264,11 @@ class Layout
     }
     /**
      * define new encoding text
-     * default is iso8859-1
+     * default is utf-8
+     * @param string $enc encoding (only 'utf-8' is allowed)
+     * @deprecated
      */
-    function setEncoding($enc)
+    public function setEncoding($enc)
     {
         if ($enc == "utf-8") {
             $this->encoding = $enc;
@@ -265,7 +277,7 @@ class Layout
         }
     }
     
-    function execute($appname, $actionargn)
+    protected function execute($appname, $actionargn)
     {
         $limit = getParam('CORE_LAYOUT_EXECUTE_RECURSION_LIMIT', 0);
         if (is_numeric($limit) && $limit > 0) {
@@ -303,10 +315,10 @@ class Layout
         
         if (($actionname != $this->action->name) || ($OLD_ZONE_ARGS != $ZONE_ARGS)) {
             $act = new Action();
-            
+            $res = '';
             if ($act->Exists($actionname, $appl->id)) {
                 
-                $res = $act->Set($actionname, $appl);
+                $act->Set($actionname, $appl);
             } else {
                 // it's a no-action zone (no ACL, cannot be call directly by URL)
                 $act->name = $actionname;
@@ -345,7 +357,7 @@ class Layout
         return "";
     }
     
-    function ParseRef(&$out)
+    protected function ParseRef(&$out)
     {
         if (!$this->action) return;
         $out = preg_replace("/\[IMG:([^\|\]]+)\|([0-9]+)\]/e", "\$this->action->GetImageUrl('\\1',true,'\\2')", $out);
@@ -363,13 +375,13 @@ class Layout
         $out = preg_replace("/\[TEXT:([^\]]*)\]/e", "\$this->Text('\\1')", $out);
     }
     
-    function Text($s)
+    protected function Text($s)
     {
         if ($s == "") return $s;
         return _($s);
     }
     
-    function GenJsRef()
+    protected function GenJsRef()
     {
         $js = "";
         $list[] = $this->action->GetParam("CORE_JSURL") . "/logmsg.js?wv=" . $this->action->GetParam("WVERSION");
@@ -383,7 +395,7 @@ class Layout
         return $js;
     }
     
-    function GenJsCode($showlog, $onlylog = false)
+    protected function GenJsCode($showlog, $onlylog = false)
     {
         $out = "";
         if (empty($this->action->parent)) return $out;
@@ -429,7 +441,7 @@ class Layout
         return ($out);
     }
     
-    function ParseJs(&$out)
+    protected function ParseJs(&$out)
     {
         $out = preg_replace("/\[JS:REF\]/e", "\$this->GenJsRef()", $out);
         
@@ -438,7 +450,7 @@ class Layout
         $out = preg_replace("/\[JS:CODENLOG\]/e", "\$this->GenJsCode(false)", $out);
     }
     
-    function GenCssRef()
+    protected function GenCssRef()
     {
         $js = "";
         if (empty($this->action->parent)) return "";
@@ -449,7 +461,7 @@ class Layout
         return $js;
     }
     
-    function GenCssCode()
+    protected function GenCssCode()
     {
         if (empty($this->action->parent)) return "";
         $list = $this->action->parent->GetCssCode();
@@ -461,14 +473,17 @@ class Layout
         return ($out);
     }
     
-    function ParseCss(&$out)
+    protected function ParseCss(&$out)
     {
         $out = preg_replace("/\[CSS:REF\]/e", "\$this->GenCssRef()", $out);
         
         $out = preg_replace("/\[CSS:CODE\]/e", "\$this->GenCssCode()", $out);
     }
-    
-    function gen()
+    /**
+     * Generate text from template with data included
+     * @return string the complete text
+     */
+    public function gen()
     {
         if ($this->noparse) return $this->template;
         // if used in an app , set the app params
@@ -499,7 +514,7 @@ class Layout
      * @param string $function/method name to track
      * @return array array('count' => $callCount, 'delta' => $callDelta, 'depth' => $stackDepth)
      */
-    function getRecursionCount($class, $function)
+    protected function getRecursionCount($class, $function)
     {
         $count = 0;
         $curDepth = 0;
@@ -531,7 +546,7 @@ class Layout
      * @param string $function/method name to display
      * @param int $count the call count that triggered the error
      */
-    function printRecursionCountError($class, $function, $count)
+    protected function printRecursionCountError($class, $function, $count)
     {
         include_once ('WHAT/Lib.Prefix.php');
         
