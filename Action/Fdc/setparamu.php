@@ -20,14 +20,14 @@ include_once ("Class.Param.php");
 /**
  * set an user attribute value
  * @param Action &$action current action
- * @global appname Http var : application name of the attribute
- * @global parname Http var : parameters name
- * @global parval Http var : new value
+ * @global string $appname Http var : application name of the attribute
+ * @global string $parname Http var : parameters name
+ * @global string $parval Http var : new value
  */
-function setparamu(&$action)
+function setparamu(Action & $action)
 {
     header('Content-type: text/xml; charset=utf-8');
-    
+    $err = '';
     $mb = microtime();
     $appname = GetHttpVars("appname");
     $parname = GetHttpVars("parname");

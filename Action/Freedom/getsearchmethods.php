@@ -25,22 +25,25 @@ function getsearchmethods(Action & $action)
         $parms[$p] = GetHttpVars($p, '');
         if ($parms[$p] == '' && $isRequired) {
             $res['error'] = sprintf("Missing or empty parameter '%s'.", $p);
-            return sendResponse($action, $res);
+            sendResponse($action, $res);
+            return;
         }
     }
     /**
      * @var DocFam $fam
      */
     $fam = new_Doc($action->dbaccess, $parms['famid'], true);
-    if (!$fam->isAlive()) {
+    if ($parms['famid'] && (!$fam->isAlive())) {
         $res['error'] = sprintf("Could not get family with id '%s'.", $parms['famid']);
-        return sendResponse($action, $res);
+        sendResponse($action, $res);
+        return;
     }
     
     $tmpDoc = createTmpDoc($action->dbaccess, $fam->id);
     if (!$tmpDoc) {
         $res['error'] = sprintf("Could not create temporary document from family '%s'.", $fam->name);
-        return sendResponse($action, $res);
+        sendResponse($action, $res);
+        return;
     }
     
     $attrId = $parms['attrid'];
@@ -50,7 +53,8 @@ function getsearchmethods(Action & $action)
         $attr = $fam->getAttribute($parms['attrid']);
         if (!is_object($attr)) {
             $res['error'] = sprintf("Could not get attribute '%s' from family '%s'.", $parms['attrid'], $fam->name);
-            return sendResponse($action, $res);
+            sendResponse($action, $res);
+            return;
         }
         $attrType = $attr->type;
         if ($attr->format != '') {
@@ -61,7 +65,8 @@ function getsearchmethods(Action & $action)
     
     $methods = $tmpDoc->getSearchMethods($attrId, $attrType);
     $res['data'] = $methods;
-    return sendResponse($action, $res);
+    sendResponse($action, $res);
+    return;
 }
 
 function sendResponse($action, $response)
@@ -73,5 +78,4 @@ function sendResponse($action, $response)
     header('Content-Type: application/json');
     $action->lay->template = json_encode($response);
     $action->lay->noparse = true;
-    return;
 }

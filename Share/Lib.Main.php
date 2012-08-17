@@ -204,7 +204,7 @@ function initExplorerParam(Application & $app, $defaultValue = false)
  */
 function initExplorerWebParam(Application & $app)
 {
-    $nav = $_SERVER['HTTP_USER_AGENT'];
+    $nav = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
     $pos = strpos($nav, "MSIE");
     if ($app->session->Read("navigator", "") == "") {
         if ($pos !== false) {

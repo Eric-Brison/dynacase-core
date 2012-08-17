@@ -1053,7 +1053,7 @@ class _DSEARCH extends DocSearch
                     $cond = "";
                     $tcond = array();
                     
-                    if ((count($taid) > 1) || ($taid[0] != "")) {
+                    if ((count($taid) > 1) || ($taid && $taid[0] != "")) {
                         foreach ($taid as $k => $va) {
                             $docid_aid = 0;
                             $v = $tkey[$k];
@@ -1062,7 +1062,7 @@ class _DSEARCH extends DocSearch
                                 "OLCOND" => "olcond$k",
                                 "ATTRCOND" => "attrcond$k",
                                 "FUNCCOND" => "funccond$k",
-                                "ISENUM" => (($taid[$k] == "state") || ($oa->type == "enum")) ,
+                                "ISENUM" => (($taid[$k] == "state") || ($oa && $oa->type == "enum")) ,
                                 "SSTATE" => "sstate$k",
                                 "ols_and_selected" => ($tol[$k] == "and") ? "selected" : "",
                                 "ols_or_selected" => ($tol[$k] == "or") ? "selected" : "",
@@ -1096,7 +1096,7 @@ class _DSEARCH extends DocSearch
                                     "attrname" => _("state")
                                 );
                             } else {
-                                if ($oa->type == "enum") {
+                                if ($oa && $oa->type == "enum") {
                                     $te = $oa->getEnum();
                                     $tstates = array();
                                     $enumselected = false;
@@ -1159,7 +1159,8 @@ class _DSEARCH extends DocSearch
                             
                             foreach ($this->top as $ki => $vi) {
                                 $oa = $fdoc->getAttribute($taid[$k]);
-                                $type = $oa->type;
+                                if ($oa) $type = $oa->type;
+                                else $type = '';
                                 if ($type == "") {
                                     if ($taid[$k] == "title") $type = "text";
                                     elseif ($taid[$k] == "cdate") $type = "date";
@@ -1214,18 +1215,20 @@ class _DSEARCH extends DocSearch
                                 $tcond[$k]["DOCID_AID"] = 0;
                                 $tcond[$k]["DOCID_TITLE"] = '';
                                 $tcond[$k]["FAMID"] = abs($famid);
-                                
-                                $attrType = $oa->type;
-                                if ($oa->format != '') {
-                                    // Recompose full attr spec: <attrType>("<format>")
-                                    $attrType = sprintf('%s("%s")', $attrType, $oa->format);
-                                }
-                                $methods = $tmpDoc->getSearchMethods($oa->id, $attrType);
                                 $isSearchMethod = false;
-                                foreach ($methods as $method) {
-                                    if ($method['method'] == $v) {
-                                        $isSearchMethod = true;
-                                        break;
+                                if ($oa) {
+                                    $attrType = $oa->type;
+                                    if ($oa->format != '') {
+                                        // Recompose full attr spec: <attrType>("<format>")
+                                        $attrType = sprintf('%s("%s")', $attrType, $oa->format);
+                                    }
+                                    $methods = $tmpDoc->getSearchMethods($oa->id, $attrType);
+                                    
+                                    foreach ($methods as $method) {
+                                        if ($method['method'] == $v) {
+                                            $isSearchMethod = true;
+                                            break;
+                                        }
                                     }
                                 }
                                 $tcond[$k]["ISSEARCHMETHOD"] = $isSearchMethod;

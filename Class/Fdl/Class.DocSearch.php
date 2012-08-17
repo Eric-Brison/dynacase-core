@@ -199,7 +199,7 @@ class DocSearch extends PDocSearch
                         } else {
                             $ckey.= " " . $v;
                         }
-                    } else if ($v[0] == '"') {
+                    } else if ($v && $v[0] == '"') {
                         if ($v[strlen($v) - 1] == '"') {
                             $ckey = substr($v, 1, -1);
                             $filters[] = "svalues $op '$ckey' ";
