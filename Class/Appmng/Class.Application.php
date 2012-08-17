@@ -337,23 +337,53 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param string $ref the ressource reference
      * @param boolean $needparse should the ressource be parsed (default false)
      */
-    function addRessourceRef($type, $ref, $needparse)
+    function addRessourceRef($type, $ref, $needparse, $packName)
     {
+        static $firstPack = array();
         /* Try to attach the ressource to the parent app */
         if ($this->hasParent()) {
-            $ret = $this->parent->AddRessourceRef($type, $ref, $needparse);
+            $ret = $this->parent->AddRessourceRef($type, $ref, $needparse, $packName);
             if ($ret !== '') {
                 return $ret;
             }
         }
         /* Try to attach the ressource to the current app */
         $ressourceLocation = '';
-        if ($needparse) {
+        if (!isset($this->session)) $sessid = 0;
+        else $sessid = $this->session->id;
+        if ($packName) {
+            $ressourcePackParseLocation = sprintf("?app=CORE&amp;action=CORE_CSS&amp;type=%s&amp;session=%s&amp;pack=%s", $type, $sessid, $packName);
+            // $ressourcePackNoParseLocation = sprintf("?app=CORE&amp;action=CORE_CSS&amp;type=%s&amp;&amp;pack=%s", $type, $packName);
+            $ressourcePackNoParseLocation = sprintf("pack.php?type=%s&amp;&amp;pack=%s&amp;wv=%s", $type, $packName, getParam("WVERSION"));
             
-            if (!isset($this->session)) $sessid = 0;
-            else $sessid = $this->session->id;
+            if (!isset($firstPack[$packName])) {
+                $packSession = array();
+                $firstPack[$packName] = true;
+            } else {
+                $packSession = $this->session->Read("RSPACK_" . $packName);
+                if (!$packSession) $packSession = array();
+            }
+            $packSession[$ref] = array(
+                "ref" => $ref,
+                "needparse" => $needparse
+            );
+            $this->session->Register("RSPACK_" . $packName, $packSession);
+            
+            if ($needparse) {
+                if ($type == "js") unset($this->jsref[$ressourcePackNoParseLocation]);
+                else if ($type == "css") unset($this->cssref[$ressourcePackNoParseLocation]);
+                $ressourceLocation = $ressourcePackParseLocation;
+            } else {
+                $hasParseBefore = ($type == "js") && isset($this->jsref[$ressourcePackParseLocation]);
+                if (!$hasParseBefore) $hasParseBefore = ($type == "css") && isset($this->cssref[$ressourcePackParseLocation]);
+                
+                if (!$hasParseBefore) $ressourceLocation = $ressourcePackNoParseLocation;
+            }
+        } elseif ($needparse) {
+            
             $ressourceLocation = "?app=CORE&amp;action=CORE_CSS&amp;session=" . $sessid . "&amp;layout=" . $ref . "&amp;type=" . $type;
         } else {
+            
             $location = $this->resolveRessourceLocation($ref);
             if ($location != '') {
                 $ressourceLocation = (strpos($location, '?') !== false) ? $location : $location . '?wv=' . getParam("WVERSION");
@@ -376,14 +406,19 @@ create sequence SEQ_ID_APPLICATION start 10;
         return $ressourceLocation;
     }
     
-    function addCssRef($ref, $needparse = false)
+    function addCssRef($ref, $needparse = false, $packName = '')
     {
-        return $this->AddRessourceRef('css', $ref, $needparse);
+        return $this->AddRessourceRef('css', $ref, $needparse, $packName);
     }
-    
-    function addJsRef($ref, $needparse = false)
+    /**
+     * @param string $ref js file path
+     * @param bool $needparse set to true to parse file with Layout
+     * @param string $packName use it to pack same packName into a sibgle file
+     * @return string
+     */
+    function addJsRef($ref, $needparse = false, $packName = '')
     {
-        return $this->AddRessourceRef('js', $ref, $needparse);
+        return $this->AddRessourceRef('js', $ref, $needparse, $packName);
     }
     
     function addJsCode($code)

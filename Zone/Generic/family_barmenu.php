@@ -24,21 +24,34 @@ function family_barmenu(Action & $action)
     $famid = $action->getArgument("famid");
     //$action->parent->addJsRef('lib/jquery-ui/jquery-1.7.1.js');
     $action->parent->addJsRef('lib/jquery/jquery.js');
+    $packName = 'menubarjs';
+    $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.core.js', false, $packName);
+    $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.widget.js', false, $packName);
+    $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.position.js', false, $packName);
+    $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.button.js', false, $packName);
+    $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.menu.js', false, $packName);
+    $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.menubar.js', false, $packName);
     
-    $action->parent->addJsRef('lib/jquery-ui/src/ui/jquery.ui.core.js');
-    $action->parent->addJsRef('lib/jquery-ui/src/ui/jquery.ui.widget.js');
-    $action->parent->addJsRef('lib/jquery-ui/src/ui/jquery.ui.position.js');
-    $action->parent->addJsRef('lib/jquery-ui/src/ui/jquery.ui.button.js');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.all.css');
-    
-    $action->parent->addJsRef('lib/jquery-ui/src/ui/jquery.ui.menu.js');
-    $action->parent->addJsRef('lib/jquery-ui/src/ui/jquery.ui.menubar.js');
-    
+    $action->parent->addCssRef('lib/jquery-ui/devel-src/themes/base/jquery.ui.all.css');
+    /*
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.core.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.accordion.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.autocomplete.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.button.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.datepicker.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.dialog.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.menu.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.menubar.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.progressbar.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.resizable.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.selectable.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.slider.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.spinner.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.tabs.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.tooltip.css',false,'menubarcss');
+    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.theme.css',false,'menubarcss');*/
     $defaultMenu = family_defaultmenu($action);
-    // print_r2($defaultMenu);
-    //print_r2($onefamOrigin);
     $menu = getOnefamMenu($onefamOrigin, $famid, $defaultMenu);
-    //print_r2($menu);
     $action->lay->set("familyMenu", objectMenu2Html($menu, false));
     $action->lay->set("famid", $action->getArgument("famid"));
 }
