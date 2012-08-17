@@ -21,14 +21,14 @@ include_once ("GENERIC/generic_util.php");
 /**
  * View list of document from folder (or searches)
  * @param Action &$action current action
- * @global dirid Http var : folder identificator to see
- * @global catg Http var :
- * @global page Http var : page number
- * @global tabs Http var : tab number 1 for ABC, 2 for DEF, if onglet=Y..
- * @global onglet Http var : [Y|N] Y if want see alphabetics tabs
- * @global famid Http var : main family identificator
- * @global sqlorder Http var : order by attribute
- * @global gview Http var : [abstract|column] view mode
+ * @global string $dirid Http var : folder identificator to see
+ * @global string $catg Http var :
+ * @global string $page Http var : page number
+ * @global string $tabs Http var : tab number 1 for ABC, 2 for DEF, if onglet=Y..
+ * @global string $onglet Http var : [Y|N] Y if want see alphabetics tabs
+ * @global string $famid Http var : main family identificator
+ * @global string $sqlorder Http var : order by attribute
+ * @global string $gview Http var : [abstract|column] view mode
  */
 function generic_list(&$action)
 {
@@ -49,11 +49,12 @@ function generic_list(&$action)
     
     $column = generic_viewmode($action, $famid); // choose the good view mode
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/DHTMLapi.js");
-    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
-    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/AnchorPosition.js");
-    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/common.js");
-    $action->parent->AddJsRef($action->Getparam("CORE_PUBURL") . "/FDL/Layout/popupfunc.js");
+    $packGeneric = "";
+    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/DHTMLapi.js", false, $packGeneric);
+    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js", false, $packGeneric);
+    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/AnchorPosition.js", false, $packGeneric);
+    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/common.js", false, $packGeneric);
+    $action->parent->AddJsRef($action->Getparam("CORE_PUBURL") . "/FDL/Layout/popupfunc.js", false, $packGeneric);
     $action->parent->addCssRef("GENERIC:generic_list.css", true);
     //change famid if it is a simplesearch
     $sfamid = $famid;
@@ -114,7 +115,7 @@ function generic_list(&$action)
         }
     }
     if ($clearkey) {
-        $action->parent->param->Set("GENE_LATESTTXTSEARCH", setUkey($action, $famid, $keyword) , PARAM_USER . $action->user->id, $action->parent->id);
+        $action->setParamU("GENE_LATESTTXTSEARCH", setUkey($action, $famid, $keyword = ''));
     }
     getFamilySearches($action, $dbaccess, $famid);
     if ($dirid) {
@@ -202,7 +203,6 @@ function generic_viewmode(Action & $action, $famid)
             list($fid, $vmode) = explode("|", $v);
             $tview[$fid] = $vmode;
         }
-
     }
     switch ($prefview) {
         case "column":
@@ -214,7 +214,7 @@ function generic_viewmode(Action & $action, $famid)
                 if ($k > 0) $tmode[] = "$k|$v";
             }
             $pmode = implode(",", $tmode);
-            $action->parent->param->Set("GENE_VIEWMODE", $pmode, PARAM_USER . $action->user->id, $action->parent->id);
+            $action->setParamU("GENE_VIEWMODE", $pmode);
             
             break;
         }
@@ -242,16 +242,21 @@ function generic_viewmode(Action & $action, $famid)
 function getFamilySearches($action, $dbaccess, $famid)
 {
     // search searches in primary folder
+    
+    /**
+     * @var DocFam $fdoc
+     */
     $fdoc = new_Doc($dbaccess, $famid);
     $dirid = GetHttpVars("dirid"); // search
     $catgid = GetHttpVars("catg", $dirid); // primary directory
     if ($catgid == 0) $catgid = $dirid;
+    
+    $streeSearch = array();
     if ($fdoc->dfldid > 0) {
         $homefld = new_Doc($dbaccess, $fdoc->dfldid);
         $stree = array();
         if ($homefld->id > 0) $stree = getChildDoc($dbaccess, $homefld->id, "0", "ALL", array() , $action->user->id, "TABLE", 5);
         
-        $streeSearch = array();
         foreach ($stree as $k => $v) {
             if (($v["doctype"] == "S") && ($v["fromid"] != $fdoc->id)) {
                 $streeSearch[$v["id"]] = $v;
