@@ -71,8 +71,13 @@ function generic_search(Action & $action)
         $query = getSqlSearchDoc($dbaccess, $sdirid = 0, 16, $sqlfilter, false, true, "", false);
         
         $sdoc->AddQuery($query);
-        
-        redirect($action, $action->getArgument("app") , "GENERIC_LIST&onefam=$onefamOrigin&sqlorder=title&mode=$mode&famid=$famid&dirid=" . $sdoc->id . "&catg=$catgid");
+        executeGenericList($action, array(
+            "onefam" => $onefamOrigin,
+            "mode" => $mode,
+            "famid" => $famid,
+            "dirid" => $sdoc->id,
+            "catg" => $catgid
+        ));
     } elseif ($keyword) {
         if ($keyword[0] != ">") {
             $dirid = $catgid;
@@ -114,10 +119,34 @@ function generic_search(Action & $action)
         
         $query = getSqlSearchDoc($dbaccess, $sdirid, ($only) ? -($sfamid) : $sfamid, $sqlfilter, false, true, "", false);
         $sdoc->AddQuery($query);
+        executeGenericList($action, array(
+            "onefam" => $onefamOrigin,
+            "mode" => $mode,
+            "famid" => $famid,
+            "dirid" => $sdoc->id,
+            "catg" => $catgid
+        ));
+        // redirect($action, $action->getArgument("app") , "GENERIC_LIST$pds&onefam=$onefamOrigin&mode=$mode&famid=$famid&dirid=" . $sdoc->id . "&catg=$catgid");
         
-        redirect($action, $action->getArgument("app") , "GENERIC_LIST$pds&onefam=$onefamOrigin&mode=$mode&famid=$famid&dirid=" . $sdoc->id . "&catg=$catgid");
     } else {
-        redirect($action, $action->getArgument("app") , "GENERIC_LIST&onefam=$onefamOrigin&mode=$mode&famid=$famid&dirid=" . $catgid . "&catg=$catgid");
+        executeGenericList($action, array(
+            "onefam" => $onefamOrigin,
+            "mode" => $mode,
+            "famid" => $famid,
+            "dirid" => $catgid,
+            "catg" => $catgid
+        ));
     }
+}
+
+function executeGenericList(Action & $action, array $args)
+{
+    foreach ($args as $k => $v) {
+        SetHttpVar($k, $v);
+    }
+    $action->set("GENERIC_LIST", $action->parent);
+    $gen = $action->execute();
+    $action->lay->template = $gen;
+    $action->lay->noparse = true;
 }
 ?>

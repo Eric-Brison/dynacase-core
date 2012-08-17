@@ -145,8 +145,9 @@ class openAuthenticator extends Authenticator
     public function getSessionVar($name)
     {
         include_once ('WHAT/Class.Session.php');
-        $session_auth = new Session($this->parms{'cookie'});
-        if (array_key_exists($this->parms{'cookie'}, $_COOKIE)) {
+        $ref = isset($this->parms{'cookie'}) ? $this->parms{'cookie'} : '';
+        $session_auth = new Session($ref);
+        if ($ref && array_key_exists($this->parms{'cookie'}, $_COOKIE)) {
             $session_auth->Set($_COOKIE[$this->parms{'cookie'}]);
         } else {
             $session_auth->Set();

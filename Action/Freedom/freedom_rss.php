@@ -19,7 +19,7 @@
 include_once ("FDL/freedom_util.php");
 include_once ("FDL/Lib.Dir.php");
 
-function freedom_rss(&$action)
+function freedom_rss(Action & $action)
 {
     
     $id = GetHttpVars("id", 0);
@@ -56,7 +56,7 @@ function freedom_rss(&$action)
     $action->lay->set("generator", "Dynacase version " . $action->parent->getParam("VERSION"));
     
     $doc = new_Doc($dbaccess, $id);
-    $action->lay->set("lastbuild", strftime("%a, %d %b %Y %H:%M:%S %z", $doc->revdate));
+    $action->lay->set("lastbuild", strftime("%a, %d %b %Y %H:%M:%S %z", intval($doc->revdate)));
     // Check right for doc access
     if ($doc->defDoctype == 'S') $aclctrl = "execute";
     else $aclctrl = "open";
@@ -64,6 +64,9 @@ function freedom_rss(&$action)
         $action->log->error($err);
         return;
     }
+    $report = false;
+    $tcolshown = array();
+    $items = array();
     $action->lay->set("icon", $doc->getIcon());
     if ($doc->doctype != 'S' && $doc->doctype != 'D') {
         
@@ -75,7 +78,6 @@ function freedom_rss(&$action)
         $filter = array();
         $famid = "";
         $report = ($doc->fromid == getIdFromName($dbaccess, "REPORT") ? true : false);
-        $items = array();
         if (!$order) {
             if ($doc->getValue("REP_IDSORT")) {
                 $order = $doc->getValue("REP_IDSORT");
@@ -84,7 +86,11 @@ function freedom_rss(&$action)
         }
         $ldoc = getChildDoc($dbaccess, $doc->id, 0, $lim, $filter, $action->user->id, "TABLE", $famid, false, $order);
     }
+    $lattr = array();
     if ($report) {
+        /**
+         * @var _REPORT $tmpdoc
+         */
         $tmpdoc = createDoc($dbaccess, getIdFromName($dbaccess, "REPORT") , false);
         $fdoc = createDoc($dbaccess, $doc->getValue("SE_FAMID") , false);
         $lattr = $fdoc->GetNormalAttributes();
@@ -104,10 +110,10 @@ function freedom_rss(&$action)
                 "rightfornumber" => "left"
             );
         }
-        $tcolshown = array();
+        
         $tcols = $doc->getTValue("REP_IDCOLS");
-        foreach ($tcols as $k => $v) {
-            $tcolshown[$v] = $tcol1[$v];
+        foreach ($tcols as $val) {
+            $tcolshown[$val] = $tcol1[$val];
         }
     }
     // $action->lay->set("rssname", $doc->getTitle()."  -".count($ldoc)."-");
@@ -122,11 +128,11 @@ function freedom_rss(&$action)
             "title" => "",
             "link" => $baseurl . __xmlentities("?sole=Y$addauth&app=FDL&action=FDL_CARD&id=" . $zdoc->id) ,
             "descr" => "",
-            "revdate" => strftime("%a, %d %b %Y %H:%M:%S %z", $zdoc->revdate) ,
+            "revdate" => strftime("%a, %d %b %Y %H:%M:%S %z", intval($zdoc->revdate)) ,
             "id" => $zdoc->id,
             "category" => $zdoc->fromname,
             "author" => __xmlentities(getMailAddr($zdoc->owner, true)) ,
-            "rssname" => __xmlentities($doc->getTitle()),
+            "rssname" => __xmlentities($doc->getTitle()) ,
             "rsslink" => $rsslink,
             "report" => $report,
         );
@@ -148,9 +154,15 @@ function freedom_rss(&$action)
                             $cval = _($vdoc[$kc]);
                             break;
 
+                        case "title":
+                            $cval = $zdoc->getTitle();
+                            break;
+
                         default:
-                            $cval = $zdoc->getHtmlValue($lattr[$kc], $zdoc->getValue($kc) , "", false);
-                            if ($lattr[$kc]->type == "image") $cval = "<img width=\"30px\" src=\"$cval\">";
+                            if (isset($lattr[$kc])) {
+                                $cval = $zdoc->getHtmlValue($lattr[$kc], $zdoc->getValue($kc) , "", false);
+                                if ($lattr[$kc]->type == "image") $cval = "<img width=\"30px\" src=\"$cval\">";
+                            } else $cval = $zdoc->getProperty($kc);
                         }
                         if ($i == 0) {
                             $items[$zdoc->id]["title"] = __xmlentities(html_entity_decode($cval, ENT_NOQUOTES, 'UTF-8'));
@@ -162,7 +174,7 @@ function freedom_rss(&$action)
                                 "val" => ($cval)
                             );
                         }
-                }
+                    }
             }
             $action->lay->setBlockData("lines" . $zdoc->id, $lines);
         } else {

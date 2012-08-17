@@ -16,7 +16,7 @@ GZIP_ENV = --best
 
 SUBDIR = Class Zone Action Api App Admin CONTRIB Doc Expire Images programs Share Style 
 
-TOP_MODULES = indexq.php index.php whattext wsh.php wvirtual.php guest.php wcheck wstop wstart wdbcreate winitrc resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess
+TOP_MODULES = indexq.php index.php whattext wsh.php wvirtual.php guest.php wcheck wstop wstart wdbcreate winitrc resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess pack.php
 
 pages_not_xml = info.xml
 pages_not_php = fam2po.php po2js.php

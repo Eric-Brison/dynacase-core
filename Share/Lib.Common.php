@@ -26,7 +26,7 @@ function print_r2($z, $ret = false)
 {
     print "<PRE>";
     print_r($z, $ret);
-    print "</PRE>";
+    print "</PRE>\n";
     flush();
 }
 /**

@@ -96,9 +96,11 @@ class Param extends DbObj
             if ($pdef->isglob == 'Y') {
                 $appid = $pdef->appid;
                 if ($action) {
-                    $action->parent->session->close(); // need to refresh all application parameters
-                    $action->parent->session->set(); // reopen current session
-                    
+                    if ($type[0] != PARAM_USER) {
+                        $action->parent->session->close(); // need to refresh all application parameters
+                        $action->parent->session->set(); // reopen current session
+                        
+                    }
                 }
             }
         }
@@ -109,8 +111,8 @@ class Param extends DbObj
             $type,
             $appid
         ));
-        if ($paramt->isAffected()) $err=$this->Modify();
-        else $err=$this->Add();
+        if ($paramt->isAffected()) $err = $this->Modify();
+        else $err = $this->Add();
         
         $otype = '';
         if ($type == PARAM_GLB) $otype = PARAM_APP;

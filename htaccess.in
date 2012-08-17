@@ -46,7 +46,7 @@ Options -Indexes
         Allow from All
 </FilesMatch>
 
-<FilesMatch "^(install|resizeimg|geticon|chgpasswd).php$">
+<FilesMatch "^(install|resizeimg|geticon|chgpasswd|pack).php$">
         Order Deny,Allow
         Allow from All
 </FilesMatch>

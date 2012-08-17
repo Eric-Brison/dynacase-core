@@ -7612,6 +7612,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
                 /**
                  * return a specific attribute of the current user document
+                 * @searchLabel account attribute
                  * @return int
                  */
                 final public function getMyAttribute($idattr)
