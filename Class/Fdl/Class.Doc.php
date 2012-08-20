@@ -3091,7 +3091,7 @@ create unique index i_docir on doc(initid, revision);";
                                         break;
 
                                     case 'htmltext':
-                                        $avalue = str_replace('&quot;', '--quoteric--', $avalue);
+                                        $tvalues[$kvalue] = str_replace('&#39;', "'", $tvalues[$kvalue]);
                                         
                                         $tvalues[$kvalue] = preg_replace("/<!--.*?-->/ms", "", $tvalues[$kvalue]); //delete comments
                                         /* Double encode the entities we want to keep encoded as entities
