@@ -80,7 +80,7 @@ function autocompletion(Action & $action)
         // capture title
         $ititle = "";
         
-        if ($phpfunc[0] == "[") {
+        if ((!empty($phpfunc)) && $phpfunc[0] == "[") {
             if (preg_match('/\[(.*)\](.*)/', $phpfunc, $reg)) {
                 $oattr->phpfunc = $reg[2];
                 

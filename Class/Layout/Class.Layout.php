@@ -94,7 +94,7 @@ class Layout
     /**
      * @var Action
      */
-    protected $action = null;
+    public $action = null;
     //########################################################################
     //# Public methods
     //#
