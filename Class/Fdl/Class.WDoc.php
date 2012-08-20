@@ -751,7 +751,7 @@ class WDoc extends Doc
         if ($withcontrol) $err = $this->control($tname);
         if ($err != "") return $err;
         
-        if ($wm0 && ($tr["m0"] != "")) {
+        if ($wm0 && (!empty($tr["m0"]))) {
             // apply first method (condition for the change)
             if (!method_exists($this, $tr["m0"])) return (sprintf(_("the method '%s' is not known for the object class %s") , $tr["m0"], get_class($this)));
             
@@ -765,7 +765,7 @@ class WDoc extends Doc
             }
         }
         
-        if ($wm1 && ($tr["m1"] != "")) {
+        if ($wm1 && (!empty($tr["m1"]))) {
             // apply first method (condition for the change)
             if (!method_exists($this, $tr["m1"])) return (sprintf(_("the method '%s' is not known for the object class %s") , $tr["m1"], get_class($this)));
             
@@ -828,7 +828,7 @@ class WDoc extends Doc
         $this->doc->enableEditControl();
         // post action
         $msg2 = '';
-        if ($wm2 && ($tr["m2"] != "")) {
+        if ($wm2 && (!empty($tr["m2"]))) {
             if (!method_exists($this, $tr["m2"])) return (sprintf(_("the method '%s' is not known for the object class %s") , $tr["m2"], get_class($this)));
             $msg2 = call_user_func(array(
                 $this,
@@ -854,7 +854,7 @@ class WDoc extends Doc
         $err.= $this->changeAllocateUser($newstate);
         // post action
         $msg3 = '';
-        if ($wm3 && ($tr["m3"] != "")) {
+        if ($wm3 && (!empty($tr["m3"]))) {
             if (!method_exists($this, $tr["m3"])) return (sprintf(_("the method '%s' is not known for the object class %s") , $tr["m3"], get_class($this)));
             $msg3 = call_user_func(array(
                 $this,

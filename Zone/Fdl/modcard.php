@@ -349,7 +349,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
             while (list($k, $ufv) = each($v)) {
                 if ($k >= 0) {
                     $tuserfiles[$k][$kp] = $ufv;
-                    if ($orinames[$k]) {
+                    if (!empty($orinames[$k])) {
                         if (!$tuserfiles[$k]["realname"]) {
                             $tuserfiles[$k]["realname"] = $tuserfiles[$k]["name"];
                             $tuserfiles[$k]["name"] = $orinames[$k];

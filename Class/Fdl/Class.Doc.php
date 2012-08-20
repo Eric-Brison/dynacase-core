@@ -2689,7 +2689,7 @@ create unique index i_docir on doc(initid, revision);";
             foreach ($ta as $k => $v) {
                 for ($i = 0; $i < $ix; $i++) {
                     $ti[$i]+= array(
-                        $k => $tv[$k][$i]
+                        $k => isset($tv[$k][$i]) ? $tv[$k][$i] : ''
                     );
                 }
             }
@@ -3159,7 +3159,7 @@ create unique index i_docir on doc(initid, revision);";
         {
             $attrid = strtolower($attrid);
             $oa = $this->getAttribute($attrid);
-            if ($oa) {
+            if ($oa && $oa->usefor != 'Q') {
                 if ($oa->getOption("search") != "no") {
                     $ak = $attrid . '_txt';
                     if ($index == - 1) {
