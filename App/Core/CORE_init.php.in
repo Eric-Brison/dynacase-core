@@ -398,19 +398,6 @@ $app_const = array(
         "descr" => N_("core_layout_execute_recursion_limit") ,
         "user" => "N",
         "global" => "Y"
-    ) ,
-    
-    "DYNACASECONTROL_URL" => array(
-        "val" => "",
-        "descr" => N_("dynacase control URL") ,
-        "user" => "N",
-        "global" => "Y"
-    ) ,
-    "DYNACASECONTROL_PATH" => array(
-        "val" => "",
-        "descr" => N_("dynacase control PATH") ,
-        "user" => "N",
-        "global" => "Y"
     )
 );
 

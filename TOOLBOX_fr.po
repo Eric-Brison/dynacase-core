@@ -5681,12 +5681,6 @@ msgstr "duplication de"
 msgid "duration for log conservation (in days)"
 msgstr "durée de conservation des logs (en jours)"
 
-msgid "dynacase control PATH"
-msgstr "Chemin d'accès à Dynacase Contrôle"
-
-msgid "dynacase control URL"
-msgstr "Url d'accès à Dynacase Contrôle"
-
 msgid "dynamic control"
 msgstr "contrôle dynamique"
 

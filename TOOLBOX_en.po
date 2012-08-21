@@ -5936,12 +5936,6 @@ msgstr "Edit"
 msgid "duration for log conservation (in days)"
 msgstr ""
 
-msgid "dynacase control PATH"
-msgstr ""
-
-msgid "dynacase control URL"
-msgstr ""
-
 #, fuzzy
 msgid "dynamic control"
 msgstr "Start search"
