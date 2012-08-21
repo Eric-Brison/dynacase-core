@@ -112,17 +112,26 @@ function family_defaultmenu(Action & $action)
     //--------------------- tools menu -----------------------
     $toolsItemMenu = array();
     $searchItemMenu = array();
-    $toolsItemMenu['newsearch'] = array(
-        "label" => _("New search") ,
-        "target" => "finfo",
-        "url" => sprintf('?app=GENERIC&amp;action=GENERIC_EDIT&amp;se_memo=yes&amp;classid=16&amp;onlysubfam=%s&amp;sfamid=%s', $famid, $famid)
-    );
     
-    $toolsItemMenu['newreport'] = array(
-        "label" => _("New report") ,
-        "target" => "finfo",
-        "url" => sprintf('?app=GENERIC&amp;action=GENERIC_EDIT&amp;se_memo=yes&amp;classid=25&amp;onlysubfam=%s&amp;sfamid=%s', $famid, $famid)
-    );
+    if ($action->HasPermission("GENERIC")) {
+        $d = new_doc($dbaccess, 16);
+        if ($d->control("create") == "" && $d->control("icreate") == "") {
+            $toolsItemMenu['newsearch'] = array(
+                "label" => _("New search") ,
+                "target" => "finfo",
+                "url" => sprintf('?app=GENERIC&amp;action=GENERIC_EDIT&amp;se_memo=yes&amp;classid=16&amp;onlysubfam=%s&amp;sfamid=%s', $famid, $famid)
+            );
+        }
+        
+        $d = new_doc($dbaccess, 25);
+        if ($d->control("create") == "" && $d->control("icreate") == "") {
+            $toolsItemMenu['newreport'] = array(
+                "label" => _("New report") ,
+                "target" => "finfo",
+                "url" => sprintf('?app=GENERIC&amp;action=GENERIC_EDIT&amp;se_memo=yes&amp;classid=25&amp;onlysubfam=%s&amp;sfamid=%s', $famid, $famid)
+            );
+        }
+    }
     if ($action->HasPermission("GENERIC_MASTER")) {
         $toolsItemMenu['imvcard'] = array(
             "label" => _("Import file") ,
