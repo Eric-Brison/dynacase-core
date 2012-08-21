@@ -196,6 +196,7 @@ function popupGetAccess($popname)
     
     array_shift($ta);
     $ti = $menuitems[$popname];
+    $tu = array();
     foreach ($ta as $v) {
         $tu[current($ti) ] = $v;
         next($ti);
@@ -222,6 +223,9 @@ function popupGen($kdiv = "nothing")
     global $tmenuaccess;
     global $menuitems;
     global $tmenus;
+    /**
+     * @var Action $action
+     */
     global $action;
     static $first = 1;
     global $tcmenus; // closeAll menu
@@ -243,6 +247,7 @@ function popupGen($kdiv = "nothing")
     $lpopup = new Layout($action->Getparam("CORE_PUBDIR") . "/FDL/Layout/popup.js", $action);
     if (isset($tmenuaccess)) {
         $kv = 0; // index for item
+        $tma = array();
         foreach ($tmenuaccess as $name => $v2) {
             $nbdiv = 0;
             while (list($k, $v) = each($v2)) {
@@ -279,7 +284,7 @@ function popupGen($kdiv = "nothing")
     
     $tmenus = array(); // re-init (for next time)
     $tmenuaccess = array();
-    $menuitems[$name] = array();
+    // $menuitems[$name] = array();
     unset($tmenus);
     unset($tmenusaccess);
     unset($tsubmenu);
@@ -291,6 +296,9 @@ function popupAddGen($kdiv = "nothing")
     global $tmenuaccess;
     global $menuitems;
     global $tmenus;
+    /**
+     * @var Action $action
+     */
     global $action;
     global $tsubmenu;
     
@@ -298,6 +306,7 @@ function popupAddGen($kdiv = "nothing")
     if (isset($tmenuaccess)) {
         reset($tmenuaccess);
         $kv = 0; // index for item
+        $tma = array();
         while (list($name, $v2) = each($tmenuaccess)) {
             $nbdiv = 0;
             while (list($k, $v) = each($v2)) {
@@ -327,7 +336,7 @@ function popupAddGen($kdiv = "nothing")
     
     $tmenus = array(); // re-init (for next time)
     $tmenuaccess = array();
-    $menuitems[$name] = array();
+    // $menuitems[$name] = array();
     unset($tmenus);
     unset($tmenusaccess);
     unset($tsubmenu);
