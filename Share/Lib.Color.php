@@ -34,6 +34,11 @@ function srgb2hsl($rgb)
         $b = hexdec(substr($rgb, 5, 2));
         return RGB2HSL($r, $g, $b);
     }
+    return array(
+        0,
+        0,
+        0
+    );
 }
 //Retourne un tableau de 3 valeurs : H,S,L
 function RGB2HSL($r, $g, $b)
@@ -47,9 +52,9 @@ function RGB2HSL($r, $g, $b)
     $msum = $maxval + $minval + 0.0;
     $luminance = $msum / 510.0;
     
+    $hue = 0.0;
     if ($maxval == $minval) {
         $saturation = 0.0;
-        $hue = 0.0;
     } else {
         $rnorm = ($maxval - $red) / $mdiff;
         $gnorm = ($maxval - $green) / $mdiff;
@@ -81,6 +86,9 @@ function Magic($rm1, $rm2, $rh)
 /**
  * Retourne une chaine: #RRGGBB
  * @param float $h hue
+ * @param float $s saturation
+ * @param float $l luminance
+ * @return string
  */
 
 function HSL2RGB($h, $s, $l)
@@ -102,4 +110,3 @@ function HSL2RGB($h, $s, $l)
     //return new Array ($red, $green, $blue);
     
 }
-?>
