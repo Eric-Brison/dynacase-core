@@ -104,16 +104,16 @@ class htmlAuthenticator extends Authenticator
     public function askAuthentication($args = array())
     {
         
-        $parsed_referer = parse_url($_SERVER['HTTP_REFERER']);
+         $parsed_referer = parse_url(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "");
         
         $referer_uri = "";
         if ($parsed_referer['path'] != "") {
             $referer_uri.= $parsed_referer['path'];
         }
-        if ($parsed_referer['query'] != "") {
+        if (!empty($parsed_referer['query'])) {
             $referer_uri.= "?" . $parsed_referer['query'];
         }
-        if ($parsed_referer['fragment'] != "") {
+        if (!empty($parsed_referer['fragment'])) {
             $referer_uri.= "#" . $parsed_referer['fragment'];
         }
         $session = $this->getAuthSession();
