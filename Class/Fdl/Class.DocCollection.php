@@ -66,7 +66,8 @@ class DocCollection extends Doc
             ) , #_("{left} title include {right}")
             "type" => array(
                 "uid",
-                "docid"
+                "docid",
+                "account"
             )
         ) ,
         "@@" => array(
@@ -118,6 +119,7 @@ class DocCollection extends Doc
                 "money",
                 "color",
                 "docid",
+                "account",
                 "uid"
             )
         ) ,
@@ -160,6 +162,7 @@ class DocCollection extends Doc
                 "money",
                 "color",
                 "docid",
+                "account",
                 "uid"
             )
         ) ,
@@ -331,9 +334,9 @@ class DocCollection extends Doc
     /**
      * return document includes in search folder
      *
-     * @param boolean $controlview if false all document are returned else only visible for current user  document are return
+     * @param bool $controlview if false all document are returned else only visible for current user  document are return
      * @param array $filter to add list sql filter for selected document
-     * @param integer $famid family identificator to restrict search
+     * @param int|string $famid family identificator to restrict search
      *
      * @return array array of document array
      */
@@ -388,6 +391,7 @@ class DocCollection extends Doc
                 $of->criteria
             );
         }
+        $err = '';
         if ($of->criteria && is_array($of->criteria)) {
             foreach ($of->criteria as $c) {
                 if ($c->operator) {
@@ -481,6 +485,9 @@ class DocCollection extends Doc
                 if (!$sw) {
                     $sw = createTmpDoc($this->dbaccess, "DSEARCH");
                 }
+                /**
+                 * @var _DSEARCH $sw
+                 */
                 $sw->setValue("se_famid", $famid);
                 $sql = $sw->getSqlCond($col, $c->operator, $val1, $val2, $err);
             } else {
@@ -523,4 +530,4 @@ class DocCollection extends Doc
         return $s->search()->getDocumentList();
     }
 }
-?>
+
