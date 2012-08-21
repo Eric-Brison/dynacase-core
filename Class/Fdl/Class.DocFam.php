@@ -40,6 +40,7 @@ create table docfam (cprofid int ,
                      tagable text,
                      configuration text) inherits (doc);
 create unique index idx_idfam on docfam(id);";
+    var $sqltcreate = array();
     
     var $defDoctype = 'C';
     
@@ -271,6 +272,8 @@ create unique index idx_idfam on docfam(id);";
     function viewfamcard($target = "_self", $ulink = true, $abstract = false)
     {
         // -----------------------------------
+        
+        /** @var Action $action */
         global $action;
         //Checking if document has acls
         simpleQuery($this->dbaccess, "SELECT count(*) FROM docperm WHERE docid=" . $this->id, $nb_acl, true, true);
@@ -545,7 +548,7 @@ create unique index idx_idfam on docfam(id);";
         $XS[$this->id] = $defval;
         $this->$Xval = array();
         $inhIds = array();
-        if ($this->attributes->fromids) {
+        if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
             $sql = sprintf("select id,%s from docfam where id in (%s)", pg_escape_string($X) , implode(',', $this->attributes->fromids));
             simpleQuery($this->dbaccess, $sql, $rx, false, false);
             foreach ($rx as $r) {
@@ -674,21 +677,18 @@ create unique index idx_idfam on docfam(id);";
                 if (!@$dxml->load($famfile)) {
                     return null;
                 } else {
+                    /** @var stdClass $o */
                     $o = null;
                     $properties = $dxml->getElementsByTagName('property');
-                    /**
-                     * @var DOMElement $prop
-                     */
                     foreach ($properties as $prop) {
+                        /** @var DOMElement $prop */
                         $name = $prop->getAttribute('name');
                         $value = $prop->nodeValue;
                         $o->properties[$name] = $value;
                     }
                     $views = $dxml->getElementsByTagName('view');
-                    /**
-                     * @var DOMElement $view
-                     */
                     foreach ($views as $view) {
+                        /** @var DOMElement $view */
                         $name = $view->getAttribute('name');
                         foreach ($view->attributes as $a) {
                             $o->views[$name][$a->name] = $a->value;
@@ -818,7 +818,6 @@ create unique index idx_idfam on docfam(id);";
     /**
      * Get sortable properties.
      *
-     * @param string $pName The parameter's name
      * @return array properties' Names with their set of parameters
      */
     public function getSortProperties()

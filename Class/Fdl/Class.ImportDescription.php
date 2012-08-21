@@ -483,7 +483,11 @@ class importDocumentDescription
             "title"
         );
         
-        $this->tcr[$this->nLine] = csvAddDoc($this->dbaccess, $data, $this->dirid, $this->analyze, '', $this->policy, $tk, array() , $this->colOrders[$fromid]);
+        $torder = array();
+        if (isset($this->colOrders[$fromid])) {
+            $torder = $this->colOrders[$fromid];
+        }
+        $this->tcr[$this->nLine] = csvAddDoc($this->dbaccess, $data, $this->dirid, $this->analyze, '', $this->policy, $tk, array() , $torder);
         
         if ($this->tcr[$this->nLine]["err"] == "") $this->nbDoc++;
         else {
@@ -577,7 +581,7 @@ class importDocumentDescription
     protected function doDfldid(array $data)
     {
         if (!$this->doc) return;
-        
+        if (!isset($data[1])) $data[1] = '';
         $check = new CheckDfldid();
         $err = $check->check($data, $this->doc)->getErrors();
         if (!$err) {
@@ -626,6 +630,7 @@ class importDocumentDescription
     protected function doWid(array $data)
     {
         if (!$this->doc) return;
+        if (!isset($data[1])) $data[1] = '';
         $check = new CheckWid();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"]) return;
@@ -1235,4 +1240,3 @@ class importDocumentDescription
         }
     }
 }
-?>

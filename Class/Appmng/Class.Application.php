@@ -27,6 +27,7 @@ include_once ('Class.Style.php');
 include_once ('Class.ParamDef.php');
 include_once ('Lib.Http.php');
 include_once ('Lib.Common.php');
+include_once ('Class.Log.php');
 
 function f_paramglog($var)
 { // filter to select only not global
@@ -177,7 +178,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                     }
                 } else {
                     global $_SERVER;
-                    if ($_SERVER['HTTP_HOST'] != "") Header("Location: " . $_SERVER['HTTP_REFERER']);
+                    if (!empty($_SERVER['HTTP_HOST'])) Header("Location: " . $_SERVER['HTTP_REFERER']);
                 }
             } else {
                 header('HTTP/1.0 503 Application unavalaible');
@@ -1080,7 +1081,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $query = new QueryDb($this->dbaccess, $this->dbtable);
         $query->AddQuery("name = '" . pg_escape_string(trim($name)) . "'");
         $app = $query->Query(0, 0, "TABLE");
-        if (is_array($app)) return $app[0]["id"];
+        if (is_array($app) && isset($app[0]) && isset($app[0]["id"])) return $app[0]["id"];
         return 0;
     }
     
@@ -1089,4 +1090,3 @@ create sequence SEQ_ID_APPLICATION start 10;
         return (is_object($this->parent) && ($this->parent !== $this));
     }
 }
-?>

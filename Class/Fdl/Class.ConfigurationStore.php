@@ -1,48 +1,53 @@
 <?php
-
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
- * ConfigrationStore handles (de)serialization of the
+ * ConfigurationStore handles (de)serialization of the
  * DocFam->configuration property from/to JSON into a array() struct
  * called "store".
  */
 class ConfigurationStore
 {
     private $store = array();
-
     /**
      * Load a configuration JSON string into the corresponding array() struct
      *
-     * @param $str The configuration's JSON string
+     * @param string $str The configuration's JSON string
      * @return bool boolean true on success, or boolean false on error
      */
-    public function load($str) {
+    public function load($str)
+    {
         $codec = new JSONCodec();
         try {
             $store = $codec->decode($str, true);
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             return false;
         }
         $this->store = $store;
         return true;
     }
-
     /**
      * Reset the array() struct
      */
-    public function reset() {
+    public function reset()
+    {
         $this->store = array();
     }
-
     /**
      * Add a configuration parameter into the store
      *
-     * @param $class The parameter's class
-     * @param $propName The property's name
-     * @param $pName The parameter's name
-     * @param $pValue The parameter's value
+     * @param string $class The parameter's class
+     * @param string $propName The property's name
+     * @param string $pName The parameter's name
+     * @param string $pValue The parameter's value
      * @return ConfigurationStore
      */
-    public function add($class, $propName, $pName, $pValue) {
+    public function add($class, $propName, $pName, $pValue)
+    {
         if (!isset($this->store[$class])) {
             $this->store[$class] = array();
         }
@@ -52,16 +57,16 @@ class ConfigurationStore
         $this->store[$class][$propName][$pName] = $pValue;
         return $this;
     }
-
     /**
      * Get a configuration parameter from the store
      *
-     * @param $class The parameter's class
+     * @param string $class The parameter's class
      * @param null $propName The property's name. If $propName is null, then it will lookup all parameters matching the $pName
      * @param null $pName The parameter's name. If $pName is null, then it will lookup all parameters matching the $propName
      * @return array|null null on error, or array() containing the queried properties' parameters
      */
-    public function get($class, $propName = null, $pName = null) {
+    public function get($class, $propName = null, $pName = null)
+    {
         if (!isset($this->store[$class])) {
             return null;
         }
@@ -81,30 +86,27 @@ class ConfigurationStore
             if ($pName === null) {
                 if (isset($this->store[$class][$propName])) {
                     return $this->store[$class][$propName];
-                } else {
-                    return null;
                 }
             } else {
                 if (isset($this->store[$class]) && isset($this->store[$class][$propName])) {
                     return $this->store[$class][$propName][$pName];
-                } else {
-                    return null;
                 }
             }
         }
         return null;
     }
-
     /**
      * Returns the JSON text serialization of the store
      *
      * @return bool|string boolean false on error, or JSON string on success
      */
-    public function getText() {
+    public function getText()
+    {
         $codec = new JSONCodec();
         try {
             $str = $codec->encode($this->store);
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             return false;
         }
         return $str;

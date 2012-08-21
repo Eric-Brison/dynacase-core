@@ -20,7 +20,7 @@ class CheckWid extends CheckData
     function check(array $data, &$doc = null)
     {
         
-        $this->folderName = $data[1];
+        $this->folderName = isset($data[1]) ? $data[1] : null;
         $this->doc = $doc;
         $this->checkWorkflow();
         return $this;

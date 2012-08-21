@@ -64,7 +64,7 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$nam
     }
     
     $sty = new Style("", $name);
-    if (sizeof($sty_desc) > 0) {
+    if (isset($sty_desc) && is_array($sty_desc) && sizeof($sty_desc) > 0) {
         reset($sty_desc);
         while (list($k, $v) = each($sty_desc)) {
             $sty->$k = $v;
@@ -77,6 +77,7 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$nam
     $query->AddQuery("type='" . PARAM_STYLE . $name . "'");
     $list = $query->Query();
     if ($query->nb > 0) {
+        /** @var Param $v */
         while (list($k, $v) = each($list)) {
             $v->delete();
         }
@@ -90,10 +91,11 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$nam
     if (isset($sty_colors)) {
         // compute all derived color
         $dark = false;
+        $basehsl = array();
         if (isset($sty_const["COLOR_WHITE"])) {
             $basehsl = srgb2hsl($sty_const["COLOR_WHITE"]);
         }
-        $dark = ($basehsl[2] < 0.5);
+        if (!empty($basehsl)) $dark = ($basehsl[2] < 0.5);
         
         foreach ($sty_colors as $k => $v) {
             $basecolor = $v;
@@ -149,7 +151,7 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$nam
         }
     }
     $inputlay = new Layout("STYLE/$name/Layout/$name.css", $action);
-    if ($sty_inherit) {
+    if (!empty($sty_inherit)) {
         if ($inputlay->file == "") {
             $inputlay = new Layout("STYLE/$sty_inherit/Layout/$sty_inherit.css", $action);
         } else {
@@ -185,4 +187,3 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$nam
     
     print sprintf(_("%s style updated\n") , $name);
 }
-?>

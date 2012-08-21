@@ -885,7 +885,11 @@ create unique index i_docir on doc(initid, revision);";
         $this->version = $this->getVersion();
         
         if ($this->wid > 0) {
-            $this->wdoc = new_Doc($this->dbaccess, $this->wid);
+            /**
+             * @var WDoc $wdoc
+             */
+            $wdoc = new_Doc($this->dbaccess, $this->wid);
+            $this->wdoc = $wdoc;
             if ($this->wdoc->isAlive()) {
                 if ($this->wdoc->doctype != 'W') $err = sprintf(_("creation : document %s is not a workflow") , $this->wid);
                 else $this->wdoc->Set($this); // set first state
@@ -1205,7 +1209,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         deprecatedFunction();
         $err = '';
-        $info = '';
+        $info = new stdClass();
         $info->constraint = '';
         if (!$skipConstraint) {
             $err = $this->verifyAllConstraints(false, $info->constraint);
@@ -1232,7 +1236,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         $err = '';
         $constraint = '';
-        $info = '';
+        $info = new stdClass();
         
         if (!$skipConstraint) {
             $err = $this->verifyAllConstraints(false, $constraint);
@@ -1259,7 +1263,8 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * test if the document can be edit by the current user
-     * the diffence between ::canUpdateDoc is that document is not need to be locked
+     * the difference between ::canUpdateDoc is that document is not need to be locked
+     * @param bool $verifyDomain
      * @return string empty means user can update else message of the raison
      */
     public function canEdit($verifyDomain = true)
@@ -1536,9 +1541,6 @@ create unique index i_docir on doc(initid, revision);";
                     "really" => $really
                 ));
                 $rev = $this->GetRevisions();
-                /**
-                 * @var Doc $v
-                 */
                 foreach ($rev as $k => $v) {
                     $v->ReallyDelete($nopost);
                 }
@@ -1750,6 +1752,8 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return all revision documents
+     *
+     * @return Doc[]|array
      */
     final public function getRevisions($type = "LIST", $limit = 200)
     {
@@ -2092,10 +2096,10 @@ create unique index i_docir on doc(initid, revision);";
         $tsa = array();
         
         if (isset($this->attributes->attr)) {
-            /**
-             * @var NormalAttribute $v
-             */
             foreach ($this->attributes->attr as $k => $v) {
+                /**
+                 * @var NormalAttribute $v
+                 */
                 if ((get_class($v) == "NormalAttribute") && ($v->usefor != 'Q') && ($v->isInAbstract)) $tsa[$v->id] = $v;
             }
         }
@@ -2111,10 +2115,10 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->_maskApplied) $this->ApplyMask();
         $tsa = array();
         if (isset($this->attributes->attr)) {
-            /**
-             * @var NormalAttribute $v
-             */
             foreach ($this->attributes->attr as $k => $v) {
+                /**
+                 * @var NormalAttribute $v
+                 */
                 if ((get_class($v) == "NormalAttribute") && ($v->isInTitle)) $tsa[$v->id] = $v;
             }
         }
@@ -2352,15 +2356,18 @@ create unique index i_docir on doc(initid, revision);";
         $tsa = array();
         
         if ($parameters) {
-            /**
-             * @var NormalAttribute $v
-             */
             foreach ($this->attributes->attr as $k => $v) {
+                /**
+                 * @var NormalAttribute $v
+                 */
                 if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor == 'Q')) $tsa[$v->id] = $v;
             }
         } else {
             if (!$this->_maskApplied) $this->ApplyMask();
             foreach ($this->attributes->attr as $k => $v) {
+                /**
+                 * @var NormalAttribute $v
+                 */
                 if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor != 'Q')) $tsa[$v->id] = $v;
             }
         }
@@ -2428,10 +2435,10 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->_maskApplied) $this->ApplyMask();
         $tsa = array();
         $tattr = $this->attributes->attr;
-        /**
-         * @var NormalAttribute $v
-         */
         foreach ($tattr as $k => $v) {
+            /**
+             * @var NormalAttribute $v
+             */
             
             if ((get_class($v) == "NormalAttribute") && (($v->mvisibility == "W") || ($v->mvisibility == "O") || ($v->type == "docid")) && ($v->type != "array")) {
                 
@@ -3261,7 +3268,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                     $vaultid = $reg[2];
                     $mimetype = $reg[1];
-                    $info = null;
+                    $info = new stdClass();
                     $err = $vf->Retrieve($vaultid, $info);
                     
                     if ($err == "") {
@@ -3352,7 +3359,7 @@ create unique index i_docir on doc(initid, revision);";
                         $vaultid = $reg[2];
                         $mimetype = $reg[1];
                         $oftitle = $reg[3];
-                        $info = null;
+                        $info = new stdClass();
                         $err = $vf->Retrieve($vaultid, $info);
                         
                         if ($err == "") {
@@ -4897,6 +4904,9 @@ create unique index i_docir on doc(initid, revision);";
          */
         final public function getIcon($idicon = "", $size = null)
         {
+            /**
+             * @var Action $action
+             */
             global $action;
             if ($idicon == "") $idicon = $this->icon;
             if ($idicon != "") {
@@ -5058,6 +5068,9 @@ create unique index i_docir on doc(initid, revision);";
         
         final public function urlWhatEncode($link, $k = - 1)
         {
+            /**
+             * @var Action $action
+             */
             global $action;
             
             $urllink = "";
@@ -5191,6 +5204,9 @@ create unique index i_docir on doc(initid, revision);";
              */
             public function getRssLink()
             {
+                /**
+                 * @var Action $action
+                 */
                 global $action;
                 return sprintf("%s?app=FREEDOM&action=FREEDOM_RSS&authtype=open&privateid=%s&id=%s", $action->getParam("CORE_OPENURL", $action->getParam("CORE_EXTERNURL")) , $action->user->getUserToken() , $this->id);
             }
@@ -5507,7 +5523,7 @@ create unique index i_docir on doc(initid, revision);";
                     $sql = $lay->gen();
                 } else {
                     
-                    if (is_array($this->attributes->fromids)) {
+                    if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
                         foreach ($this->attributes->fromids as $k => $v) {
                             
                             $sql.= "create trigger UV{$cid}_$v BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE upval$v();";
@@ -5848,6 +5864,9 @@ create unique index i_docir on doc(initid, revision);";
              */
             function viewbodycard($target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
             {
+                /**
+                 * @var Action $action
+                 */
                 global $action;
                 
                 $frames = array();
@@ -6561,6 +6580,10 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     } else {
                         // when modification
+                        
+                        /**
+                         * @var Action $action
+                         */
                         global $action;
                         if (!$this->isAlive()) $action->ExitError(_("document not referenced"));
                         $this->lay->Set("title", $this->getHtmlTitle());
@@ -6983,7 +7006,9 @@ create unique index i_docir on doc(initid, revision);";
                 // ================= Methods use for XML ======================
                 final public function toxml($withdtd = false, $id_doc = "")
                 {
-                    
+                    /**
+                     * @var Action $action
+                     */
                     global $action;
                     $doctype = $this->doctype;
                     
@@ -7321,6 +7346,9 @@ create unique index i_docir on doc(initid, revision);";
                  */
                 function getEmblem($size = null)
                 {
+                    /**
+                     * @var Action $action
+                     */
                     global $action;
                     if ($this->confidential > 0) return $action->getImageUrl("confidential.gif", true, $size);
                     else if ($this->locked == - 1) return $action->getImageUrl("revised.png", true, $size);
@@ -7985,7 +8013,9 @@ create unique index i_docir on doc(initid, revision);";
                 public function getSearchMethods($attrId, $attrType = '')
                 {
                     include_once ('FDL/Lib.Attr.php');
-                    
+                    /**
+                     * @var Action $action
+                     */
                     global $action;
                     // Strip format strings for non-docid types
                     $pType = parseType($attrType);
@@ -8113,4 +8143,5 @@ create unique index i_docir on doc(initid, revision);";
                     return $tags;
                 }
             }
-?>
+            
+            

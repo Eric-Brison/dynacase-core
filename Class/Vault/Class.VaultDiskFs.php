@@ -78,6 +78,7 @@ class VaultDiskFs extends DbObj
     
     function createArch($maxsize, $path, $fsname = "-")
     {
+        $err = '';
         if (!is_dir($path)) $err = sprintf(_("%s directory not found") , $path);
         elseif (!is_writable($path)) $err = sprintf(_("%s directory not writable") , $path);
         if ($err == "") {

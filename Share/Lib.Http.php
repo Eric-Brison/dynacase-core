@@ -16,10 +16,10 @@
 /**
  */
 
-function Redirect(&$action, $appname, $actionname, $otherurl = "", $httpparamredirect = false)
+function Redirect(Action & $action, $appname, $actionname, $otherurl = "", $httpparamredirect = false)
 {
     global $_SERVER, $_GET; // use only  with HTTP
-    if ($_SERVER['HTTP_HOST'] == "") {
+    if (empty($_SERVER['HTTP_HOST'])) {
         print "\n--Redirect $appname $actionname--\n";
         return;
     }
@@ -75,7 +75,7 @@ function Redirect(&$action, $appname, $actionname, $otherurl = "", $httpparamred
     exit;
 }
 
-function RedirectSender(&$action)
+function RedirectSender(Action & $action)
 {
     global $_SERVER;
     
@@ -152,7 +152,6 @@ function GetExt($mime_type)
     }
     return ("");
 }
-
 /**
  * Send a response with the given data to be downloaded by the client.
  *
@@ -176,7 +175,6 @@ function Http_Download($src, $ext, $name, $add_ext = TRUE, $mime_type = "")
     header("Content-type: " . $mime_type);
     echo $src;
 }
-
 /**
  * Send a response with the content of a local file to be downloaded by the client
  *

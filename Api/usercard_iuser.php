@@ -35,7 +35,6 @@ $usage->setText("Update usercard");
 $whatid = $usage->addOption("whatid", "document"); // document
 $fbar = $usage->addOption("bar", "for progress bar"); // for progress bar
 $onlygroup = ($usage->addOption("onlygroup", "for progress bar") != ""); // for progress bar
-
 $usage->verify();
 
 $query = new QueryDb("", "Account");
@@ -54,7 +53,7 @@ if ($query->nb > 0) {
     
     printf("\n%d user to update\n", count($table1));
     $card = count($table1);
-    $doc = createDoc($dbaccess, $famId, false);
+    $doc = new Doc($dbaccess);
     $reste = $card;
     foreach ($table1 as $k => $v) {
         $fid = 0;
@@ -65,6 +64,7 @@ if ($query->nb > 0) {
         $mail = getMailAddr($v["id"]);
         // first in IUSER
         unset($tdoc);
+        $udoc = false;
         $foundoc = false;
         $fid = $v["fid"];
         if ($fid > 0) {
@@ -93,7 +93,9 @@ if ($query->nb > 0) {
             }
         }
         if ($foundoc) {
-            
+            /**
+             * @var _IUSER|_IGROUP $udoc
+             */
             if (method_exists($udoc, "RefreshGroup")) $udoc->RefreshGroup();
             else if (method_exists($udoc, "RefreshDocUser")) $udoc->RefreshDocUser();
             //if (method_exists($tdoc[0],"SetGroupMail")) $tdoc[0]->SetGroupMail();
@@ -128,6 +130,9 @@ if ($query->nb > 0) {
                         $fid = $tdoc[0]->id;
                     } else {
                         $udoc = new_Doc($dbaccess, $tdoc[0]->id);
+                        /**
+                         * @var _IUSER $udoc
+                         */
                         $udoc->setValue("US_WHATID", $v["id"]);
                         $udoc->refresh();
                         $udoc->RefreshDocUser();
@@ -186,4 +191,3 @@ if ($query->nb > 0) {
     $doc->exec_query("update doc128 set cvid=508          where us_whatid='1'");
     $doc->exec_query("update doc128 set cvid=508          where us_whatid='3'");
 }
-?>

@@ -76,7 +76,7 @@ if (($docid == - 1) || ($docid == 0)) {
     $doc->doctype = 'C';
     $doc->fromid = 'fam';
     if ($trig) print $doc->sqltrigger($drop) . "\n";
-    else {
+    else if (!empty($doc->sqltcreate)) {
         if (is_array($doc->sqltcreate)) {
             print implode(";\n", $doc->sqltcreate);
         } else {
@@ -84,4 +84,3 @@ if (($docid == - 1) || ($docid == 0)) {
         }
     }
 }
-?>
