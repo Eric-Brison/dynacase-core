@@ -64,7 +64,8 @@ function Redirect(&$action, $appname, $actionname, $otherurl = "", $httpparamred
         $trace["__server all"] = sprintf("%.03fs", $tic4 - $tic1);
         $action->register("trace", $trace);
     }
-    if (($_GET["viewext"] == "yes") || ($_POST["viewext"] == "yes")) {
+    $viewext = isset($_GET["viewext"]) ? $_GET["viewext"] : isset($_POST["viewext"]) ? $_POST["viewext"] : "";
+    if ($viewext === "yes") {
         $location = str_replace("FDL_CARD", "VIEWEXTDOC", $location);
         if (preg_match("/action=GENERIC_EDIT/", $location)) {
             $location = str_replace("GENERIC_EDIT", "EDITEXTDOC", $location);
