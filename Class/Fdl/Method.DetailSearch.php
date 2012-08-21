@@ -829,9 +829,13 @@ class _DSEARCH extends DocSearch
                  */
                 function editdsearch()
                 {
+                    /**
+                     * @var Action $action
+                     */
                     global $action;
                     
-                    $classid = $famid = GetHttpVars("sfamid", $this->getValue("SE_FAMID", 0));
+                    $classid = GetHttpVars("sfamid", 0);
+                    $famid = $this->getValue("SE_FAMID", 0);
                     $onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
                     $dirid = GetHttpVars("dirid");
                     $this->lay->set("ACTION", $action->name);
@@ -852,7 +856,8 @@ class _DSEARCH extends DocSearch
                                     $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
                                     $tclassdoc[] = array(
                                         "id" => 0,
-                                        "title" => _("any families")
+                                        "title" => _("any families") ,
+                                        "usefor" => ''
                                     );
                                 } else {
                                     $tclassdoc = $dir->getAuthorizedFamilies();
@@ -899,15 +904,16 @@ class _DSEARCH extends DocSearch
                     
                     $this->lay->set("onlysubfam", $onlysubfam);
                     $selfam = false;
-                    foreach ($tclassdoc as $k => $cdoc) {
-                        $selectclass[$k]["idcdoc"] = $cdoc["id"];
-                        $selectclass[$k]["classname"] = $cdoc["title"];
-                        $selectclass[$k]["system_fam"] = (substr($cdoc["usefor"], 0, 1) == 'S') ? true : false;
-                        if (abs($cdoc["id"]) == abs($famid)) {
+                    $selectclass = array();
+                    foreach ($tclassdoc as $k => $tdoc) {
+                        $selectclass[$k]["idcdoc"] = $tdoc["id"];
+                        $selectclass[$k]["classname"] = $tdoc["title"];
+                        $selectclass[$k]["system_fam"] = (substr($tdoc["usefor"], 0, 1) == 'S') ? true : false;
+                        if (abs($tdoc["id"]) == abs($famid)) {
                             $selfam = true;
                             $selectclass[$k]["selected"] = "selected";
-                            if ($famid < 0) $this->lay->set("selfam", $cdoc["title"] . " " . _("(only)"));
-                            else $this->lay->set("selfam", $cdoc["title"]);
+                            if ($famid < 0) $this->lay->set("selfam", $tdoc["title"] . " " . _("(only)"));
+                            else $this->lay->set("selfam", $tdoc["title"]);
                         } else $selectclass[$k]["selected"] = "";
                     }
                     if (!$selfam) {
@@ -1027,6 +1033,9 @@ class _DSEARCH extends DocSearch
                     // display state
                     if ($fdoc->wid > 0) {
                         $wdoc = new_Doc($this->dbaccess, $fdoc->wid);
+                        /**
+                         * @var Wdoc $wdoc
+                         */
                         $states = $wdoc->getStates();
                         
                         $tstates = array();
@@ -1097,6 +1106,9 @@ class _DSEARCH extends DocSearch
                                 );
                             } else {
                                 if ($oa && $oa->type == "enum") {
+                                    /**
+                                     * @var NormalAttribute $oa
+                                     */
                                     $te = $oa->getEnum();
                                     $tstates = array();
                                     $enumselected = false;
@@ -1261,7 +1273,11 @@ class _DSEARCH extends DocSearch
                     $this->lay->Set("id", $this->id);
                     $this->editattr();
                 }
-                
+                /**
+                 * @param BasicAttribute $fs
+                 * @param bool $reset
+                 * @return array
+                 */
                 private function editGetSetAttribute($fs, $reset = false)
                 {
                     static $setAttribute = array();
