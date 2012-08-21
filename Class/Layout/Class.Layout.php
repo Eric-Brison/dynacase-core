@@ -394,8 +394,13 @@ class Layout
         }
         return $js;
     }
-    
-    protected function GenJsCode($showlog, $onlylog = false)
+    /**
+     * get js code for notification (internal usage)
+     * @param $showlog
+     * @param bool $onlylog
+     * @return string
+     */
+    public function GenJsCode($showlog, $onlylog = false)
     {
         $out = "";
         if (empty($this->action->parent)) return $out;

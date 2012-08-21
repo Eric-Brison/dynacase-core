@@ -1483,7 +1483,7 @@ class OOoLayout extends Layout
         return "";
     }
     
-    protected function GenJsCode($showlog)
+    public function GenJsCode($showlog)
     {
         return ("");
     }
