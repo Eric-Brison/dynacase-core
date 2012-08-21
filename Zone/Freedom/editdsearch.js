@@ -338,7 +338,7 @@ function filterfunc(th) {
 			sec.id='';
 			pnode.appendChild(sec);
 		}
-	} else if(atype == 'docid') {
+	} else if(atype == 'docid' || atype == 'account') {
 		se=document.getElementById('thekey');
 		if (se!=null && pnode!=null) {
 			if(!egaloperator) {
@@ -354,9 +354,22 @@ function filterfunc(th) {
 					famid = document.getElementById('famid').value;
 				}
 				if(famid) {
-					var html = '<input type="hidden"  name="_se_keys[]" id="'+aid+'" value="">';
-					html += '<input autocomplete="off" autoinput="1" onfocus="activeAuto(event,'+famid+',this,\'\',\''+aid+'\',\'\')"   onchange="addmdocs(\'_'+aid+'\')" type="text" name="_ilink_'+aid+'" id="ilink_'+aid+'" value="">';
-					pnode.innerHTML= html;
+                    var html='';
+                    var aIdindex=$(th).parents('tr').prevUntil().length;
+                    if (document.getElementById(aid)) {
+                        $('#'+aid).remove();
+                        $('#ilink_'+aid).attr('name','');
+                        $('#ilink_'+aid).attr('id','');
+                    }
+                    if (! document.getElementById(aid)) {
+                        html += '<input type="hidden"  id="'+aid+'" value="aid" onchange="$(\'#'+aid+aIdindex+'\').val(this.value)">';
+                        html += '<input autocomplete="off" autoinput="1" onfocus="activeAuto(event,'+famid+',this,\'\',\''+aid+'\','+aIdindex+')"   onchange="addmdocs(\'_'+aid+'\')" type="text" name="_ilink_'+aid+'"  id="ilink_'+aid+'" value="">';
+                    }
+
+                    html += '<input type="hidden"  name="_se_keys[]" id="'+aid+aIdindex+'" value="aid">';
+
+
+                    pnode.innerHTML= html;
 				}
 				else {
 					sec=se.cloneNode(true);
@@ -510,9 +523,10 @@ function initializeSysFamSelector(select, input) {
 	for (var i = 0; i < options.length; i++) {
 		var sysfam = $(options[i]).data('sysfam');
 		select.peer.appendChild(options[i].cloneNode(true));
-		if (!input.checked && sysfam == 'yes') {
+		if (!input.checked && sysfam == 'yes' && (!options[i].selected)) {
 			select.removeChild(options[i]);
 		}
+
 	}
 
 	select.se_sysfam_input = input;
@@ -553,7 +567,7 @@ function setSysFamSelector(select) {
 		var options = $(select).children('option');
 		/* Remove system families from the main <select/> */
 		for (var i = 0; i < options.length; i++) {
-			if ($(options[i]).data('sysfam') == 'yes') {
+			if ($(options[i]).data('sysfam') == 'yes' && (!options[i].selected)) {
 				select.removeChild(options[i]);
 			}
 		}

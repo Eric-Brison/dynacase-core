@@ -214,7 +214,7 @@ class DocSearch extends PDocSearch
             }
             $this->setValue("se_orderby", " ");
         }
-        if ($this->getValue("se_sysfam") == 'no') {
+        if ($this->getValue("se_sysfam") == 'no' && (!$this->getValue("se_famid"))) {
             $filters[] = sprintf("usefor !~ '^S'");
             $filters[] = sprintf("doctype != 'C'");
         }

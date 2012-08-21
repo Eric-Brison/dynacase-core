@@ -21,7 +21,7 @@
     var se_sysfam = (select.se_sysfam_input.checked ? 'yes' : 'no');
 
     var location = '[CORE_STANDURL]&app=[APPNAME]&action=[ACTION]&classid=[classid]&dirid=[dirid]&onlysubfam=[onlysubfam]';
-    location = location + '&sfamid=' + sfamid;
+    location = location + '&se_famid=' + sfamid;
     location = location + '&se_sysfam=' + se_sysfam;
 
     document.location.href = location;
