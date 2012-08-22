@@ -187,6 +187,16 @@ function filterfunc(th) {
 				if(document.getElementById('famid')) {
 					famid = document.getElementById('famid').value;
 				}
+
+                var xAid=document.getElementById(aid);
+                if (xAid) {
+                    xAid.setAttribute('id','');
+                }
+                xAid=document.getElementById('ilink_'+aid);
+                if (xAid) {
+                    xAid.setAttribute('id','');
+                    xAid.setAttribute('name','');
+                }
 				if(famid) {
 					var html = '<input type="hidden"  name="_se_keys[]" id="'+aid+'" value="">';
 					html += '<input autocomplete="off" autoinput="1" onfocus="activeAuto(event,'+famid+',this,\'\',\''+aid+'\',\'\')"   onchange="addmdocs(\'_'+aid+'\')" type="text" name="_ilink_'+aid+'" id="ilink_'+aid+'" value="">';
