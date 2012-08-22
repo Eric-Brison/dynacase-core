@@ -62,7 +62,7 @@ function viewbarmenu(Action & $action)
         "tconfirm"
     );
     foreach ($popup as $k => $v) {
-        foreach ($menuIndex as $aItemMenu) if (!isset($v[$aItemMenu])) $v[$aItemMenu] = ''; // set undefined options
+        foreach ($menuIndex as $aItemMenu) if (!isset($v[$aItemMenu])) $popup[$k][$aItemMenu] = $v[$aItemMenu] = ''; // set undefined options
         $vis = $v["visibility"];
         if ($vis == POPUP_CTRLACTIVE || $vis == POPUP_CTRLINACTIVE) $other = true;
         if (($vis != POPUP_ACTIVE && (!$v["submenu"])) || ($vis == POPUP_INVISIBLE || $vis == POPUP_CTRLACTIVE || $vis == POPUP_CTRLINACTIVE)) unset($popup[$k]);
@@ -97,7 +97,6 @@ function viewbarmenu(Action & $action)
                 }
             } else {
                 $popup[$k]["idlink"] = $k;
-                if (!isset($v["jsfunction"])) $popup[$k]["jsfunction"] = '';
                 if ($v["mwidth"] == "") $popup[$k]["mwidth"] = $action->getParam("FDL_HD2SIZE");
                 if ($v["mheight"] == "") $popup[$k]["mheight"] = $action->getParam("FDL_VD2SIZE");
                 if ($v["target"] == "") $popup[$k]["target"] = "$k$docid";
