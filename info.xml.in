@@ -360,7 +360,7 @@ This can be solved by:<br/>
                 PHP.
             </help>
         </check>
-        <check type="exec" cmd="php -r 'exit((function_exists('iconv') &amp;&amp; ICONV_IMPL == 'glibc') != true);'">
+        <check type="exec" cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
             <label lang="en">Check iconv in libc</label>
             <help>Iconv might not work as you want</help>
          </check>

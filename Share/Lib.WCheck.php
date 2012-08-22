@@ -22,7 +22,7 @@ function GetDbVersion($dbid, &$tmachine)
 {
     $tver = array();
     $tmachine = array();
-    $rq = pg_exec($dbid, "select paramv.val, application.name, application.machine from paramv, application  where paramv.name='VERSION' and paramv.appid=application.id");
+    $rq = pg_query($dbid, "select paramv.val, application.name, application.machine from paramv, application  where paramv.name='VERSION' and paramv.appid=application.id");
     
     if ($rq === false) return GetDbOldVersion($dbid);
     
@@ -39,7 +39,7 @@ function GetDbOldVersion($dbid)
 {
     print "GetDbOldVersion";
     $tver = array();
-    $rq = pg_exec($dbid, "select param.val, application.name from param, application  where param.name='VERSION' and param.key=application.id");
+    $rq = pg_query($dbid, "select param.val, application.name from param, application  where param.name='VERSION' and param.key=application.id");
     
     for ($i = 0; $i < pg_numrows($rq); $i++) {
         $row = pg_fetch_array($rq, $i);
@@ -127,10 +127,12 @@ function version2float($ver)
         foreach ($matches as $k => $v) $sva.= sprintf("%02d", $v);
         return floatval($sva);
     }
+    return 0;
 }
 
 function checkPGConnection()
 {
+    $err = '';
     $dbaccess_core = getDbAccessCore();
     $pgservice_core = getServiceCore();
     
@@ -149,7 +151,7 @@ function checkPGConnection()
 function getCheckApp($pubdir, &$tapp, $version_override = array())
 {
     global $_SERVER;
-    
+    $err = '';
     $dbaccess_core = getDbAccessCore();
     $pgservice_core = getServiceCore();
     $pgservice_freedom = getServiceFreedom();
@@ -177,6 +179,9 @@ function getCheckApp($pubdir, &$tapp, $version_override = array())
         
         $ta = array_unique(array_merge(array_keys($tvdb) , array_keys($tvfile)));
         foreach ($ta as $k => $v) {
+            if (!isset($tvfile[$v])) {
+                $tvfile[$v] = '';
+            }
             if (($tmachine[$v] != "") && (gethostbyname($tmachine[$v]) != gethostbyname($_SERVER["HOSTNAME"]))) $chk[$v] = "?";
             else if ($tvdb[$v] == $tvfile[$v]) {
                 $chk[$v] = "";
@@ -243,6 +248,9 @@ function getCheckActions($pubdir, $tapp, &$tact, $version_override = array())
         usort($migr, "cmpmigr");
         $cmd = array_merge($cmd, $migr);
         // search PRE install
+        if (!isset($v["chk"])) {
+            $v["chk"] = '';
+        }
         if (($v["chk"] != "") && (is_file("$pubdir/$k/{$k}_post"))) {
             if ($v["chk"] == "I") {
                 $cmd[] = "$pubdir/$k/{$k}_post  " . $v["chk"];
@@ -303,7 +311,7 @@ function getCheckActions($pubdir, $tapp, &$tact, $version_override = array())
     $tact[] = "$pubdir/wstart";
     global $_SERVER;
     if (empty($_GET['httpdrestart']) || ($_GET['httpdrestart'] != 'no')) {
-        if ($_SERVER['HTTP_HOST'] != "") $tact[] = "sudo $pubdir/admin/shttpd";
+        if (!empty($_SERVER['HTTP_HOST'])) $tact[] = "sudo $pubdir/admin/shttpd";
         else $tact[] = "service httpd restart";
     }
 }
@@ -329,4 +337,3 @@ function cmpmigr($migr_a, $migr_b)
     
     return version_compare($v_a['version'], $v_b['version']);
 }
-?>
