@@ -24,7 +24,7 @@ class CheckBegin extends CheckData
     function check(array $data, &$doc = null)
     {
         
-        $this->parentName = $data[1];
+        $this->parentName = ($data[1] == "--" || $data[1] == "-") ? "" : $data[1];
         $this->famId = isset($data[3]) ? $data[3] : 0;
         $this->famTitle = isset($data[2]) ? $data[2] : null;
         $this->famClass = isset($data[4]) ? $data[4] : null;
