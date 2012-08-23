@@ -20,16 +20,16 @@ include_once ("FDL/Class.Doc.php");
 /**
  * Edition to send mail
  * @param Action &$action current action
- * @global mid Http var : document id to send
- * @global mzone Http var : view zone to use to send mail
- * @global ulink Http var : with hyperlink (to use in internal) [Y|N]
- * @global dochead Http var : with header (icon/title) or not [Y|N]
- * @global viewdoc Http var : with preview of sended mail [Y|N]
- * @global mail_to Http var : recipient mail
- * @global mail_cc Http var : recipient copy
- * @global mail_subject Http var : subject
+ * @global string $mid Http var : document id to send
+ * @global string $mzone Http var : view zone to use to send mail
+ * @global string $ulink Http var : with hyperlink (to use in internal) [Y|N]
+ * @global string $dochead Http var : with header (icon/title) or not [Y|N]
+ * @global string $viewdoc Http var : with preview of sended mail [Y|N]
+ * @global string $mail_to Http var : recipient mail
+ * @global string $mail_cc Http var : recipient copy
+ * @global string $mail_subject Http var : subject
  */
-function editmail(&$action)
+function editmail(Action & $action)
 {
     $docid = GetHttpVars("mid");
     $zone = GetHttpVars("mzone");
