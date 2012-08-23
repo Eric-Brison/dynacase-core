@@ -583,13 +583,13 @@ function sep_replace($ak, $idx, $by = "-", $sep = "\n")
 function xml_entity_encode($s)
 {
     return str_replace(array(
+        '&',
         "<",
-        ">",
-        '&'
+        ">"
     ) , array(
+        "&amp;",
         "&lt;",
-        "&gt;",
-        "&amp;"
+        "&gt;"
     ) , $s);
 }
 ?>
