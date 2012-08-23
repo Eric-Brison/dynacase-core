@@ -37,10 +37,7 @@ $(pubdir)/EXTERNALS/helppage.php: $(pubdir)/EXTERNALS
 	cd $(pubdir)/EXTERNALS; \
 	ln -sf ../FDL/helppage.php helppage.php
 
-$(pubdir)/EXTERNALS/usercard.php: $(pubdir)/EXTERNALS 
-	cd $(pubdir)/EXTERNALS; \
-	ln -sf ../FDL/usercard.php usercard.php
 
-publish: $(pubdir)/$(appname)/$(appname)_init.sh $(pubdir)/$(appname)/fdl.ods $(pubdir)/$(appname)/freeaction.ods $(pubdir)/EXTERNALS/fdl.php $(pubdir)/EXTERNALS/helppage.php $(pubdir)/EXTERNALS/usercard.php
+publish: $(pubdir)/$(appname)/$(appname)_init.sh $(pubdir)/$(appname)/fdl.ods $(pubdir)/$(appname)/freeaction.ods $(pubdir)/EXTERNALS/fdl.php $(pubdir)/EXTERNALS/helppage.php 
 
 

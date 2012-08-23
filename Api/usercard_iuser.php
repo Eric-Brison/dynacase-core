@@ -116,32 +116,24 @@ if ($query->nb > 0) {
             else $filter = array(
                 "lower(title) = '" . pg_escape_string($title) . "'"
             );
-            $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "USER"));
+            $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IUSER"));
             if (count($tdoc) > 0) {
                 if (count($tdoc) > 1) {
                     printf(_("find %s more than one, created aborded\n") , $title);
                 } else {
-                    if ($tdoc[0]->fromid == getFamIdFromName($dbaccess, "USER")) {
-                        $tdoc[0]->convert(getFamIdFromName($dbaccess, "IUSER") , array(
-                            "US_WHATID" => $v["id"]
-                        ));
-                        print "$reste)";
-                        printf(_("%s migrated\n") , $title);
-                        $fid = $tdoc[0]->id;
-                    } else {
-                        $udoc = new_Doc($dbaccess, $tdoc[0]->id);
-                        /**
-                         * @var _IUSER $udoc
-                         */
-                        $udoc->setValue("US_WHATID", $v["id"]);
-                        $udoc->refresh();
-                        $udoc->RefreshDocUser();
-                        $udoc->modify();
-                        $fid = $udoc->id;
-                        print "$reste)";
-                        printf(_("%s updated\n") , $title);
-                        unset($udoc);
-                    }
+                    
+                    $udoc = new_Doc($dbaccess, $tdoc[0]->id);
+                    /**
+                     * @var _IUSER $udoc
+                     */
+                    $udoc->setValue("US_WHATID", $v["id"]);
+                    $udoc->refresh();
+                    $udoc->RefreshDocUser();
+                    $udoc->modify();
+                    $fid = $udoc->id;
+                    print "$reste)";
+                    printf(_("%s updated\n") , $title);
+                    unset($udoc);
                 }
             } else {
                 // create new card

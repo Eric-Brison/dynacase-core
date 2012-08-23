@@ -19,7 +19,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-class _IUSER extends Doc
+class _IUSER extends Doc implements MailRecipient
 {
     public $wuser; #_("Admin edit")
     public function setGroups()
@@ -65,6 +65,9 @@ class _IUSER extends Doc
              */
             $oa = $this->getAttribute("us_passwd1");
             if ($oa) $oa->needed = true;
+            /**
+             * @var NormalAttribute $oa
+             */
             $oa = $this->getAttribute("us_passwd2");
             if ($oa) $oa->needed = true;
             $oa = $this->getAttribute("us_tab_system");
@@ -236,6 +239,9 @@ class _IUSER extends Doc
     function postCreated()
     {
         $err = "";
+        /**
+         * @var Action $action
+         */
         global $action;
         $ed = $action->getParam("AUTHENT_ACCOUNTEXPIREDELAY");
         if ($ed > 0) {
@@ -789,6 +795,14 @@ class _IUSER extends Doc
             return ($expires <= time());
         }
         return false;
+    }
+    /**
+     * return attribute used to filter from keyword
+     * @return string
+     */
+    static function getMailAttribute()
+    {
+        return "us_mail";
     }
     /**
      * @begin-method-ignore
