@@ -31,7 +31,6 @@ function autocompletion(Action & $action)
     $skey = GetHttpVars("skey"); // use only when enum (filter key)
     header('Content-type: text/xml; charset=utf-8');
     
-    $action->lay->setEncoding("utf-8");
     if ($enum != "") $attrid = $enum;
     $err = '';
     $canitem = false;

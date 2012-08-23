@@ -619,10 +619,10 @@ create sequence SEQ_ID_ACTION;
                 "id_application = {$app->id}"
             );
             $list = $query->Query();
-            /**
-             * @var Action $act
-             */
             foreach ($list as $k => $act) {
+                /**
+                 * @var Action $act
+                 */
                 $find = FALSE;
                 reset($action_desc);
                 while ((list($k2, $v2) = each($action_desc)) && (!$find)) {
