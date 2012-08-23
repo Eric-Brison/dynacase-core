@@ -73,45 +73,68 @@ function linkenum($famid, $attrid)
     }
     return "";
 }
-// liste de personnes
+/**
+ * get mail address from MAILRECIPENT families
+ * @param $dbaccess
+ * @param $name
+ * @return array|string
+ */
 function lmail($dbaccess, $name)
 {
     
-    global $action;
-    
-    $filter = array();
-    if ($name != "") {
-        $name = pg_escape_string($name);
-        $filter[] = "(title ~* '$name') or (us_mail ~* '$name')";
-    }
-    
-    $filter[] = "us_mail is not null";
-    $famid = getFamIdFromName($dbaccess, "USER");
-    
-    $tinter = getChildDoc($dbaccess, 0, 0, 100, $filter, $action->user->id, "TABLE", $famid);
-    
     $tr = array();
+    $sf = new SearchDoc($dbaccess, -1);
+    $sf->setObjectReturn();
+    $sf->noViewControl();
+    $sf->addFilter("atags ~* 'MAILRECIPIENT'");
+    $dlf = $sf->search()->getDocumentList();
     
-    while (list($k, $v) = each($tinter)) {
+    if ($dlf->count() == 0) return sprintf(_("none families are described to be used as recipient"));
+    foreach ($dlf as $fam) {
+        $cfam = createTmpDoc($dbaccess, $fam->id);
+        /**
+         * @var MailRecipient $cfam
+         */
+        if (!method_exists($cfam, "getMail")) return sprintf(_("family %s not implement MailRecipent - missing getMail method") , $fam->name);
+        if (!method_exists($cfam, "getMailAttribute")) return sprintf(_("family %s not implement MailRecipent - missing getMailAttribute") , $fam->name);
         
-        $mail = getv($v, "us_mail");
-        $usw = getv($v, "us_whatid");
-        $uid = "";
-        if ($usw > 0) {
-            $uid = $v["id"];
-            $type = "link"; //$type="link";  // cause it is a bool
-            
-        } else {
-            $type = "plain"; //$type="plain";
-            $uid = " ";
+        $mailAttr = $cfam->getMailAttribute();
+        $s = new SearchDoc($dbaccess, $fam->id);
+        $s->setObjectReturn();
+        $s->setSlice(100);
+        if ($mailAttr) $s->addFilter("%s is not null", $mailAttr);
+        if ($name != "") {
+            if ($mailAttr) $s->addFilter("(title ~* '%s') or (%s ~* '%s')", $name, $mailAttr, $name);
+            else $s->addFilter("(title ~* '%s')", $name, $name);
         }
-        $tr[] = array(
-            $v["title"],
-            $v["title"] . " <$mail>",
-            $uid,
-            $type
-        );
+        $dl = $s->search()->getDocumentList();
+        foreach ($dl as $dest) {
+            /**
+             * @var _IUSER $dest
+             */
+            $mail = $dest->getMail();
+            $usw = $dest->getValue("us_whatid");
+            $uid = "";
+            if ($usw > 0) {
+                $uid = $dest->id;
+                $type = "link"; //$type="link";  // cause it is a bool
+                
+            } else {
+                $type = "plain"; //$type="plain";
+                $uid = " ";
+            }
+            $tr[] = array(
+                xml_entity_encode($mail) ,
+                $mail,
+                $uid,
+                $type
+            );
+        }
     }
+    usort($tr, function ($a, $b)
+    {
+        return strcasecmp($a[0], $b[0]);
+    });
     return $tr;
 }
 
@@ -802,7 +825,6 @@ function lview($tidview, $tlview)
     
     return $tr;
 }
-
 /**
  * Get columns (attribute ir property) that can be used to present of
  * the report's result
@@ -812,7 +834,8 @@ function lview($tidview, $tlview)
  * @param string $name
  * @return array
  */
-function getReportColumns($dbaccess, $famid, $name = "") {
+function getReportColumns($dbaccess, $famid, $name = "")
+{
     $doc = createDoc($dbaccess, $famid, false);
     $tr = array();
     $pattern = preg_quote($name);
@@ -826,7 +849,7 @@ function getReportColumns($dbaccess, $famid, $name = "") {
     );
     foreach ($propList as $propName => $propLabel) {
         if (($name == "") || (preg_match("/$pattern/i", $propLabel, $m))) {
-            $tr []= array(
+            $tr[] = array(
                 $propLabel,
                 $propName,
                 $propLabel
@@ -836,19 +859,18 @@ function getReportColumns($dbaccess, $famid, $name = "") {
     // Attributes
     $attrList = $doc->getNormalAttributes();
     foreach ($attrList as $attr) {
-        if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
+        if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel() , $m))) {
             $html = '<b><i>' . _getParentLabel($attr) . '</i></b><br/><span>&nbsp;&nbsp;' . $attr->getLabel() . '</span>';
             $tr[] = array(
                 $html,
                 $attr->id,
-                $attr->getLabel(),
+                $attr->getLabel() ,
                 $attr->getOption('sortable')
             );
         }
     }
     return $tr;
 }
-
 /**
  * Get columns (attribute or property) than can be used to order the
  * report's result.
@@ -858,7 +880,8 @@ function getReportColumns($dbaccess, $famid, $name = "") {
  * @param string $name
  * @return array
  */
-function getReportSortableColumns($dbaccess, $famid, $name = "") {
+function getReportSortableColumns($dbaccess, $famid, $name = "")
+{
     $doc = createDoc($dbaccess, $famid, false);
     $tr = array();
     $pattern = preg_quote($name);
@@ -868,17 +891,16 @@ function getReportSortableColumns($dbaccess, $famid, $name = "") {
         if (($name == "") || (preg_match("/$pattern/i", $prop[1], $m))) {
             $tr[] = $prop;
         }
-
     }
     // Attributes
     $attrList = $doc->getSortAttributes();
     foreach ($attrList as $attr) {
-        if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
+        if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel() , $m))) {
             $html = '<b><i>' . _getParentLabel($attr) . '</i></b><br/><span>&nbsp;&nbsp;' . $attr->getLabel() . '</span>';
             $tr[] = array(
                 $html,
                 $attr->id,
-                $attr->getLabel(),
+                $attr->getLabel() ,
                 $attr->getOption('sortable')
             );
         }
