@@ -115,7 +115,7 @@ Fdl.Collection.prototype.toString= function() {
  */
 Fdl.Collection.prototype.getContent = function(config) {
 	if (! this.getProperty('initid')) {
-		this.context.setErrorMessage('getContent: no identificator set');
+		this.context.setErrorMessage('getContent: no identifier set');
 		return null;
 	}
 	var data=null;
@@ -169,7 +169,7 @@ Fdl.Collection.prototype.getSubFolders = function() {
  * @param {Object}
  *            config
  *            <ul>
- *            <li><b>id : </b>{Number} the document identificator to add</li>
+ *            <li><b>id : </b>{Number} the document identifier to add</li>
  *            </ul>
  * @return {Boolean} true if document is inserted
  */
@@ -197,7 +197,7 @@ Fdl.Collection.prototype.insertDocument = function(config) {
  * @param {Object}
  *            config
  *            <ul>
- *            <li><b>id : </b>{Number} the document identificator to remove
+ *            <li><b>id : </b>{Number} the document identifier to remove
  *            from folder</li>
  *            </ul>
  * @return {Boolean} true if document is unlinked

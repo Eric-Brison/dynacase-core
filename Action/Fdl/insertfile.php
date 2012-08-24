@@ -23,10 +23,10 @@ include_once ("Lib.FileMime.php");
 /**
  * Modify the attrid_txt attribute
  * @param Action &$action current action
- * @global docid Http var : document identificator to modify
+ * @global docid Http var : document identifier to modify
  * @global attrid Http var : the id of attribute to modify
  * @global index Http var : the range in case of array
- * @global tid Http var : task identificator
+ * @global tid Http var : task identifier
  *
  */
 function insertfile(&$action)
@@ -40,7 +40,7 @@ function insertfile(&$action)
     $docid = GetHttpVars("docid");
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
-    if (!$tid) $err = _("no task identificator found");
+    if (!$tid) $err = _("no task identifier found");
     else {
         $filename = uniqid(getTmpDir() . "/txt-" . $vidout . '-');
         $err = getTEFile($tid, $filename, $info);

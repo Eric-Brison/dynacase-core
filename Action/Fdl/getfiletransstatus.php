@@ -20,7 +20,7 @@ include_once ("FDL/Class.Doc.php");
 /**
  * retrieve task status
  * @param Action &$action current action
- * @global tid Http var : task identificator
+ * @global tid Http var : task identifier
  */
 function getfiletransstatus(&$action)
 {

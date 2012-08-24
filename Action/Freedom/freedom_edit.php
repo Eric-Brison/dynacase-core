@@ -20,9 +20,9 @@ include_once ("GENERIC/generic_edit.php");
 /**
  * Edit or create a document
  * @param Action &$action current action
- * @global id Http var : document identificator to édit (empty means create)
- * @global classid Http var : family identificator use for create
- * @global dirid Http var : folder identificator to add when create
+ * @global id Http var : document identifier to édit (empty means create)
+ * @global classid Http var : family identifier use for create
+ * @global dirid Http var : folder identifier to add when create
  * @global usefor Http var : set to  "D" for edit default values
  * @global onlysubfam Http var : to show in family list only sub family of classid
  * @global alsosubfam Http var : N default (Y|N) in case of only sub fam view also the mother family

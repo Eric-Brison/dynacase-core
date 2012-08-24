@@ -21,7 +21,7 @@
  * construct document from xml
  * @param string $dbaccess database specification
  * @param string $xml the xml structure
- * @param string $famid identificator of family (need correspond to xml)
+ * @param string $famid identifier of family (need correspond to xml)
  * @param bool $encoded true is xml is encoded
  * @return Doc the document (view like a temporary document);
  */

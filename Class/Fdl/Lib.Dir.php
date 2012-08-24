@@ -360,7 +360,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      * @param array $sqlfilters array of sql filter
      * @param int $userid the current user id
      * @param string $qtype LIST|TABLE the kind of return : list of object or list or values array
-     * @param int $fromid identificator of family document
+     * @param int $fromid identifier of family document
      * @param bool $distinct if true all revision of the document are returned else only latest
      * @param string $orderby field order
      * @param bool $latest if true only latest else all revision
@@ -617,7 +617,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      *
      * @param string $dbaccess database specification
      * @param string $famname internal name of family document
-     * @param string $aid the attribute identificator
+     * @param string $aid the attribute identifier
      * @param string $kid the key for enum value to search
      * @param string $name additionnal filter on the title
      * @param array $sqlfilters array of sql filter
@@ -782,7 +782,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
     /**
      * return families with the same usefor
      * @param string $dbaccess database specification
-     * @param int $userid identificator of the user
+     * @param int $userid identifier of the user
      * @param int $classid the reference family to find by usefor (if 0 all families) can be an array of id
      * @param string $qtype  [TABLE|LIST] use TABLE if you can because LIST cost too many memory
      * @return array the families
@@ -885,7 +885,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      * get array of family id that the user can create interactivaly
      *
      * @param string $dbaccess database specification
-     * @param int $uid user identificator
+     * @param int $uid user identifier
      * @param array $tfid restriction of this set of family id
      * @return array of family identificators
      */
@@ -958,7 +958,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
     /**
      * return true for optimization select
      * @param string $dbaccess database specification
-     * @param int $id identificator of the document family
+     * @param int $id identifier of the document family
      *
      * @return int false if error occured
      */

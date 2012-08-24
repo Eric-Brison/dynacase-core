@@ -65,7 +65,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     /**
      * suppress a user from the group
      *
-     * @param int $uid user identificator to suppress
+     * @param int $uid user identifier to suppress
      * @param bool $nopost set to to true to not perform postDelete methods
      * @return string error message
      */

@@ -134,18 +134,21 @@ class DocCtrl extends DocLDAP
      */
     public $extendedAcls = array();
     /**
-     * @var int profil identificator
+     * @var int profil identifier
      */
     public $profid;
     /**
-     * @var int dynamic profil identificator
+     * @var int dynamic profil identifier
      */
     public $dprofid;
     public $views;
+    /**
+     * @var ADoc
+     */
     public $attributes = null;
     public $doctype;
     /**
-     * @var int document identificator
+     * @var int document identifier
      */
     public $id;
     /**
@@ -153,7 +156,7 @@ class DocCtrl extends DocLDAP
      */
     public $uperm;
     /**
-     * @var string  view control identificator
+     * @var string  view control identifier
      */
     public $cvid;
     /**
@@ -195,7 +198,7 @@ class DocCtrl extends DocLDAP
     }
     /**
      * Unset all Acl for document (for everybody)
-     * @param int $userid user system identificator
+     * @param int $userid user system identifier
      * @return string
      */
     function removeControl($userid = - 1)
@@ -246,7 +249,7 @@ class DocCtrl extends DocLDAP
     /**
      * set profil for document
      *
-     * @param int $profid identificator for profil document
+     * @param int $profid identifier for profil document
      * @param Doc $fromdocidvalues
      */
     function setProfil($profid, $fromdocidvalues = null)
@@ -290,7 +293,7 @@ class DocCtrl extends DocLDAP
     /**
      * reset right for dynamic profil
      *
-     * @param int $dprofid identificator for dynamic profil document
+     * @param int $dprofid identifier for dynamic profil document
      * @param Doc $fromdocidvalues other document to reference dynamic profiling (default itself)
      * @return string error message
      */
@@ -376,7 +379,7 @@ class DocCtrl extends DocLDAP
     /**
      * reset right for dynamic profil
      *
-     * @param int $dprofid identificator for dynamic profil document
+     * @param int $dprofid identifier for dynamic profil document
      * @param Doc $fromdocidvalues other document to reference dynamic profiling (default itself)
      * @return string error message
      */
@@ -527,7 +530,7 @@ class DocCtrl extends DocLDAP
     /**
      * modify control for a specific user
      *
-     * @param string $uName user identificator
+     * @param string $uName user identifier
      * @param string $aclname name of the acl (edit, view,...)
      * @param bool $deletecontrol set true if want delete a control
      * @return string error message (empty if no errors)
@@ -586,7 +589,7 @@ class DocCtrl extends DocLDAP
     /**
      * modify control for a specific user
      *
-     * @param int $uid user identificator
+     * @param int $uid user identifier
      * @param string $aclname name of the acl (edit, view,...)
      * @param bool $deletecontrol set true if want delete a control
      * @return string error message (empty if no errors)
@@ -621,7 +624,7 @@ class DocCtrl extends DocLDAP
     /**
      * add control for a specific user
      *
-     * @param int $uid user identificator
+     * @param int $uid user identifier
      * @param string $aclname name of the acl (edit, view,...)
      * @return string error message (empty if no errors)
      */
@@ -642,7 +645,7 @@ class DocCtrl extends DocLDAP
      * suppress control for a specific user
      *
      * is not a negative control
-     * @param int $uid user identificator
+     * @param int $uid user identifier
      * @param string $aclname name of the acl (edit, view,...)
      * @return string error message (empty if no errors)
      */
@@ -657,7 +660,7 @@ class DocCtrl extends DocLDAP
     /**
      * set control view for document
      *
-     * @param int $cvid identificator for control view document
+     * @param int $cvid identifier for control view document
      */
     function setCvid($cvid)
     {
@@ -667,7 +670,7 @@ class DocCtrl extends DocLDAP
     /**
      * use to know if current user has access privilege
      *
-     * @param int $docid profil identificator
+     * @param int $docid profil identifier
      * @param string $aclname name of the acl (edit, view,...)
      * @param bool $strict set to true to not use substitute
      * @return string if empty access granted else error message
@@ -696,7 +699,7 @@ class DocCtrl extends DocLDAP
     /**
      * use to know if current user has access privilege
      *
-     * @param int $docid profil identificator
+     * @param int $docid profil identifier
      * @param string $aclname name of the acl (edit, view,...)
      * @param bool $strict set to true to not use substitute
      * @return string if empty access granted else error message
@@ -712,8 +715,8 @@ class DocCtrl extends DocLDAP
     /**
      * use to know if current user has access privilege
      *
-     * @param int $docid profil identificator
-     * @param int $uid user identificator
+     * @param int $docid profil identifier
+     * @param int $uid user identifier
      * @param string $aclname name of the acl (edit, view,...)
      * @return string if empty access granted else error message
      */
@@ -909,7 +912,7 @@ class DocCtrl extends DocLDAP
     /** 
      * verify if a document title and its link are for the same document
      * @param string $title document title use for verification
-     * @param string $docid document identificator use for verification
+     * @param string $docid document identifier use for verification
      */
     public function isDocLinked($title, $docid)
     {
@@ -935,7 +938,7 @@ class DocCtrl extends DocLDAP
     /** 
      * verify if a link of document is alive
      * @param string $title document title use for verification
-     * @param string $docid document identificator use for verification
+     * @param string $docid document identifier use for verification
      */
     public function isValidLink($title, $docid)
     {
@@ -1017,6 +1020,9 @@ class DocCtrl extends DocLDAP
      */
     static public function canExecute($appname, $actname)
     {
+        /**
+         * @var Action $action
+         */
         global $action;
         
         $err = $action->canExecute($actname, $appname);

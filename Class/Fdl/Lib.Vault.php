@@ -56,9 +56,9 @@ function getOpenTeUrl($context = array())
 /**
  * Generate a conversion of a file
  * The result is store in vault itself
- * @param string $engine the convert engine identificator (from VaultEngine Class)
- * @param int $vidin vault file identificator (original file)
- * @param int $vidout vault identificator of new stored file
+ * @param string $engine the convert engine identifier (from VaultEngine Class)
+ * @param int $vidin vault file identifier (original file)
+ * @param int $vidout vault identifier of new stored file
  * @param boolean $isimage true is it is a image (jpng, png, ...)
  * @param int $docid original document where the file is inserted
  * @return string error message (empty if OK)
@@ -110,7 +110,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
 }
 /**
  * return various informations for a file stored in VAULT
- * @param int $idfile vault file identificator
+ * @param int $idfile vault file identifier
  * @param string $teng_name transformation engine name
  * @return vaultFileInfo
  */
@@ -123,7 +123,7 @@ function vault_properties($idfile, $teng_name = "")
 }
 /**
  * return unique name with for a vault file
- * @param int $idfile vault file identificator
+ * @param int $idfile vault file identifier
  * @param string $teng_name transformation engine name
  * @return string the unique name
  */
@@ -150,7 +150,7 @@ function vault_uniqname($idfile, $teng_name = "")
 /**
  * return various informations for a file stored in VAULT
  * @param string $filename
- * @param int &$vid return vaul identificator
+ * @param int &$vid return vaul identifier
  * @return string error message
  */
 function vault_store($filename, &$vid, $ftitle = "")
@@ -163,7 +163,7 @@ function vault_store($filename, &$vid, $ftitle = "")
 }
 /**
  * return context of a file
- * @param int $idfile vault file identificator
+ * @param int $idfile vault file identifier
  * @return array
  */
 function vault_get_content($idfile)

@@ -20,7 +20,7 @@ include_once ("FDL/Class.Dir.php");
 /**
  * To choose action before create en exec document
  * @param Action &$action current action
- * @global id Http var : document identificator folder
+ * @global id Http var : document identifier folder
  * @global saction Http var : action name to execute
  * @global sapp Http var : app name to execute
  */

@@ -68,7 +68,7 @@ class VaultFile
 // ---------------------------------------------------------
 
 /**
- * @param int $id_file vault file identificator
+ * @param int $id_file vault file identifier
  * @param vaultFileInfo $infos file properties
  * @param string $teng_lname engine name
  * @return string error message

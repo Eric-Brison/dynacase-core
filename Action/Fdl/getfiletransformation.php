@@ -20,11 +20,11 @@ include_once ("FDL/Class.Dir.php");
 /**
  * Retrieve file converted
  * @param Action &$action current action
- * @global id Http var : document identificator to see
+ * @global id Http var : document identifier to see
  * @global tid Http var : transformation is done : tid is set to give result
  * @global zone Http var : specific representation where engine is set
  * @global vid Http var : vault id file to convert if zone is not set
- * @global idv Http var : view identificator to apply mask
+ * @global idv Http var : view identifier to apply mask
  */
 function getfiletransformation(&$action)
 {

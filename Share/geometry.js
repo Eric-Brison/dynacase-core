@@ -17,8 +17,10 @@ function GetXY(event) {
     }
   }
   else {
-    Xpos = event.clientX + window.scrollX;
-    Ypos = event.clientY + window.scrollY;
+    if (event) {
+      Xpos = event.clientX + window.scrollX;
+      Ypos = event.clientY + window.scrollY;
+    }
   }    
 }
 function getFrameWidth(w) {

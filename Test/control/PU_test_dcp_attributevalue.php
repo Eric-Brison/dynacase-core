@@ -16,6 +16,7 @@ require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestAttributeValue extends TestCaseDcpCommonFamily
 {
+    public $famName = "TST_FAMSETVALUE";
     /**
      * import TST_FAMSETVALUE family
      * @static
@@ -30,7 +31,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
      */
     public function testGoodSetValue($attrid, $value, $converted = false)
     {
-        $d = createDoc(self::$dbaccess, "TST_FAMSETVALUE");
+        $d = createDoc(self::$dbaccess, $this->famName);
         $this->assertTrue(is_object($d) , "cannot create TST_FAMSETVALUE document");
         
         $err = $d->setValue($attrid, $value);
@@ -47,7 +48,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
      */
     public function testWrongSetValue($attrid, $value)
     {
-        $d = createDoc(self::$dbaccess, "TST_FAMSETVALUE");
+        $d = createDoc(self::$dbaccess, $this->famName);
         $this->assertTrue(is_object($d) , "cannot create TST_FAMSETVALUE document");
         
         $err = $d->setValue($attrid, $value);
@@ -61,7 +62,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
      */
     public function testArraySetValue(array $values, $expectedCount, array $secondValues = array() , $secondCount = 0)
     {
-        $d = createDoc(self::$dbaccess, "TST_FAMSETVALUE");
+        $d = createDoc(self::$dbaccess, $this->famName);
         $this->assertTrue(is_object($d) , "cannot create TST_FAMSETVALUE document");
         $err = '';
         foreach ($values as $aid => $value) {
@@ -86,7 +87,155 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
         }
         return $d;
     }
-    
+    /**
+     * @dataProvider dataOldValue
+     */
+    public function testOldValue(array $before, array $after, array $notchanged)
+    {
+        $d = createDoc(self::$dbaccess, $this->famName);
+        $this->assertTrue(is_object($d) , "cannot create TST_FAMSETVALUE document");
+        $err = '';
+        foreach ($before as $aid => $value) {
+            $err.= $d->setValue($aid, $value);
+        }
+        $d->store();
+        // new instance
+        $d = new_doc(self::$dbaccess, $d->id);
+        $this->assertEmpty($err, sprintf("before setvalue error : %s", $err));
+        foreach ($after as $aid => $value) {
+            $err.= $d->setValue($aid, $value);
+        }
+        $this->assertEmpty($err, sprintf("after setvalue error : %s", $err));
+        
+        foreach ($notchanged as $aid => $value) {
+            $this->assertEquals($value, $d->getOldValue($aid) , "wrong old value $aid" . print_r($d->getValues() , true));
+        }
+    }
+    public function dataOldValue()
+    {
+        return array(
+            
+            array(
+                "before" => array(
+                    "tst_title" => "T3",
+                    "tst_int" => 2,
+                    "tst_date" => '2012-01-30',
+                    "tst_docids" => array() ,
+                    "tst_coltext" => array() ,
+                    "tst_coldate" => array() ,
+                    "tst_colint" => array()
+                ) ,
+                "after" => array(
+                    "tst_title" => "T2",
+                    "tst_int" => 2,
+                    "tst_date" => '2012-01-30',
+                    "tst_docids" => array() ,
+                    "tst_coltext" => array() ,
+                    "tst_coldate" => array()
+                ) ,
+                "cnanged" => array(
+                    "tst_title" => "T3",
+                    "tst_int" => null,
+                    "tst_date" => null,
+                    "tst_docids" => null,
+                    "tst_coltext" => null,
+                    "tst_coldate" => null,
+                    "tst_colint" => null,
+                )
+            ) ,
+            array(
+                "before" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 2,
+                    "tst_date" => '2012-01-30',
+                    "tst_docids" => array(
+                        11,
+                        9
+                    ) ,
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux"
+                    ) ,
+                    "tst_coldate" => array(
+                        "2012-02-20",
+                        "2012-03-26"
+                    ) ,
+                    "tst_colint" => array(
+                        0,
+                        1
+                    )
+                ) ,
+                "after" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 2,
+                    "tst_date" => '30/01/2012',
+                    "tst_docids" => array(
+                        11,
+                        9
+                    ) ,
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux"
+                    )
+                ) ,
+                "cnanged" => array(
+                    "tst_title" => null,
+                    "tst_int" => null,
+                    "tst_date" => null,
+                    "tst_docids" => null,
+                    "tst_coltext" => null,
+                    "tst_coldate" => null,
+                    "tst_colint" => null,
+                )
+            ) ,
+            array(
+                "before" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 2,
+                    "tst_date" => '2012-01-30',
+                    "tst_docids" => array(
+                        11,
+                        9
+                    ) ,
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux"
+                    ) ,
+                    "tst_coldate" => array(
+                        "2012-02-20",
+                        "2012-03-26"
+                    ) ,
+                    "tst_colint" => array(
+                        0,
+                        1
+                    )
+                ) ,
+                "after" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 3,
+                    "tst_date" => '31/01/2012',
+                    "tst_docids" => array(
+                        11,
+                        9
+                    ) ,
+                    "tst_coltext" => array(
+                        "Un",
+                        "Deux",
+                        "Trois"
+                    )
+                ) ,
+                "cnanged" => array(
+                    "tst_title" => null,
+                    "tst_int" => 2,
+                    "tst_date" => '2012-01-30',
+                    "tst_docids" => null,
+                    "tst_coltext" => "Un\nDeux",
+                    "tst_coldate" => null,
+                    "tst_colint" => null,
+                )
+            )
+        );
+    }
     public function dataArraySetValue()
     {
         return array(

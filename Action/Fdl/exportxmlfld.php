@@ -25,13 +25,13 @@ include_once ("FDL/Class.SearchDoc.php");
 /**
  * Exportation as xml of documents from folder or searches
  * @param Action &$action current action
- * @global string $fldid Http var : folder identificator to export
+ * @global string $fldid Http var : folder identifier to export
  * @global string $wfile Http var : (Y|N) if Y export attached file export format will be tgz
- * @global string $flat Http var : (Y|N) if Y specid column is set with identificator of document
+ * @global string $flat Http var : (Y|N) if Y specid column is set with identifier of document
  * @global string $eformat Http var :  (X|Y) I:  Y: only one xml, X: zip by document with files
  * @global string $log Http var :  log file output
  * @global string $selection Http var :  JSON document selection object
- * @param string $afldid folder identificator to export
+ * @param string $afldid folder identifier to export
  * @param string $famid restrict to specific family for folder
  * @param SearchDoc $specSearch use this search instead folder
  * @param string $outputFile put result into this file instead download it
@@ -45,7 +45,7 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
     $fldid = $action->getArgument("id", $aflid);
     $wprof = false; // no profil
     $wfile = (substr(strtolower($action->getArgument("wfile", "N")) , 0, 1) == "y"); // with files
-    $wident = (substr(strtolower($action->getArgument("wident", $wident)) , 0, 1) == "y"); // with numeric identificator
+    $wident = (substr(strtolower($action->getArgument("wident", $wident)) , 0, 1) == "y"); // with numeric identifier
     $flat = (substr(strtolower($action->getArgument("flat")) , 0, 1) == "y"); // flat xml
     if (!$eformat) $eformat = strtoupper($action->getArgument("eformat", "X")); // export format
     $selection = $action->getArgument("selection"); // export selection  object (JSON)

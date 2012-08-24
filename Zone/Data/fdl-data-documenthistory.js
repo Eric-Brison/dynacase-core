@@ -65,9 +65,9 @@ Fdl.DocumentHistory.prototype = {
          * <li><b>code : </b> specific key to describe action like 'CREATE', 'MODIFY'</li>
          * <li><b>date : </b> date of action</li>
          * <li><b>id : </b> document identificator</li>
-         * <li><b>initid : </b>initial document identificator (always the same)</li>
+         * <li><b>initid : </b>initial document identifier (always the same)</li>
          * <li><b>level : </b> message level <ul><li>1 : notice</li><li>2 : info</li><li>4 : message</li><li>8 : warning</li><li>16 : error</li></ul></li>
-         * <li><b>userId : </b> the system identificator of the user</li>
+         * <li><b>userId : </b> the system identifier of the user</li>
          * <li><b>userName : </b>the user name</li>
          * </ul>
          * @return array of history items

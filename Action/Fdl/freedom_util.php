@@ -110,7 +110,7 @@ function HandleXmlError($errno, $errstr, $errfile, $errline)
 }
 /**
  * clear all cache used by new_doc function
- * @param int $id document identificator : limit to destroy cache of only this document
+ * @param int $id document identifier : limit to destroy cache of only this document
  * @return void
  */
 function clearCacheDoc($id = 0)
@@ -130,7 +130,7 @@ function clearCacheDoc($id = 0)
 /**
  * return document object in type concordance
  * @param string $dbaccess database specification
- * @param int|string $id identificator of the object
+ * @param int|string $id identifier of the object
  * @param bool $latest if true set to latest revision of doc
  * @global array $gdocs optimize for speed
  *
@@ -218,7 +218,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
  *
  * the document is set with default values and default profil of the family
  * @param string $dbaccess database specification
- * @param string $fromid identificator of the family document (the number or internal name)
+ * @param string $fromid identifier of the family document (the number or internal name)
  * @param bool $control if false don't control the user hability to create this kind of document
  * @param bool $defaultvalues  if false not affect default values
  * @param bool $temporary  if true create document as temporary doc (use Doc::createTmpDoc instead)
@@ -278,7 +278,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
  * the document is set with default values and has no profil
  * the create privilege is not tested in this case
  * @param string $dbaccess database specification
- * @param string $fromid identificator of the family document (the number or internal name)
+ * @param string $fromid identifier of the family document (the number or internal name)
  * @param bool $defaultvalue set to false to not set default values
  * @return Doc may be return false if no hability to create the document
  */
@@ -295,7 +295,7 @@ function createTmpDoc($dbaccess, $fromid, $defaultvalue = true)
 /**
  * return from id for document (not for family (use @see getFamFromId() instead)
  * @param string $dbaccess database specification
- * @param int $id identificator of the object
+ * @param int $id identifier of the object
  *
  * @return int false if error occured (return -1 if family document )
  */
@@ -319,7 +319,7 @@ function getFromId($dbaccess, $id)
 /**
  * return from name for document (not for family (use @see getFamFromId() instead)
  * @param string $dbaccess database specification
- * @param int $id identificator of the object
+ * @param int $id identifier of the object
  *
  * @return string false if error occured (return -1 if family document )
  */
@@ -342,7 +342,7 @@ function getFromName($dbaccess, $id)
 /**
  * return from id for family document
  * @param string $dbaccess database specification
- * @param int $id identificator of the object
+ * @param int $id identifier of the object
  *
  * @return int false if error occured
  */
@@ -363,8 +363,8 @@ function getFamFromId($dbaccess, $id)
     return $fromid;
 }
 /**
- * get document title from document identificator
- * @param int|string $id document identificator
+ * get document title from document identifier
+ * @param int|string $id document identifier
  * @param bool $latest set to false for a fixed id or true for latest
  * @return string
  */
@@ -412,7 +412,7 @@ function getDocProperties($id, $latest = true, array $prop = array(
 /**
  * return document table value
  * @param string $dbaccess database specification
- * @param int $id identificator of the object
+ * @param int $id identifier of the object
  * @param array $sqlfilters add sql supply condition
  *
  * @return array false if error occured
@@ -530,7 +530,7 @@ function cmp_cvorder3($a, $b)
  * the array must provide from getTdoc
  * the function is equivalent of Doc::Control
  * @param array $tdoc document
- * @param string $aclname identificator of the privilege to test
+ * @param string $aclname identifier of the privilege to test
  * @return bool true if current user has privilege
  */
 function controlTdoc(&$tdoc, $aclname)
@@ -620,7 +620,7 @@ function countDocs(&$tres)
     return $n;
 }
 /**
- * return the identificator of a family from internal name
+ * return the identifier of a family from internal name
  *
  * @param string $dbaccess database specification
  * @param string $name internal family name
@@ -643,7 +643,7 @@ function getFamIdFromName($dbaccess, $name)
     return 0;
 }
 /**
- * return the identificator of a document from a search with title
+ * return the identifier of a document from a search with title
  *
  * @param string $dbaccess database specification
  * @param string $name logical name
@@ -664,7 +664,7 @@ function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
     return $id;
 }
 /**
- * return the latest identificator of a document from its logical name
+ * return the latest identifier of a document from its logical name
  *
  * @param string $dbaccess database specification
  * @param string $name logical name
@@ -693,7 +693,7 @@ function getIdFromName($dbaccess, $name, $famid = "")
     return $id;
 }
 /**
- * return the initial identificator of a document from its logical name
+ * return the initial identifier of a document from its logical name
  * @param string $name
  * @return int
  */
@@ -703,10 +703,10 @@ function getInitidFromName($name)
     return $initid;
 }
 /**
- * return the logical name of a document from its initial identificator
+ * return the logical name of a document from its initial identifier
  *
  * @param string $dbaccess database specification
- * @param string $id initial identificator
+ * @param string $id initial identifier
  *
  * @return string empty if not found
  */
@@ -746,7 +746,7 @@ function setFamidInLayout(Action & $action)
 /**
  * return freedom user document in concordance with what user id
  * @param string $dbaccess database specification
- * @param int $userid what user identificator
+ * @param int $userid what user identifier
  * @return Doc the user document
  */
 function getDocFromUserId($dbaccess, $userid)
@@ -814,7 +814,7 @@ function ComputeVisibility($vis, $fvis, $ffvis = '')
  * return doc array of latest revision of initid
  *
  * @param string $dbaccess database specification
- * @param string $initid initial identificator of the  document
+ * @param string $initid initial identifier of the  document
  * @param array $sqlfilters add sql supply condition
  * @return array values array if found. False if initid not avalaible
  */
@@ -857,7 +857,7 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array() , $fromid = fal
  *
  * @param string $dbaccess database specification
  * @param array $ids array of document identificators
- * @return array identificator relative to latest revision. if one or several documents document not exists the identificator not appear in result so the array count of result can be lesser than parameter
+ * @return array identifier relative to latest revision. if one or several documents document not exists the identifier not appear in result so the array count of result can be lesser than parameter
  */
 function getLatestDocIds($dbaccess, $ids)
 {
@@ -881,7 +881,7 @@ function getLatestDocIds($dbaccess, $ids)
  *
  * @param string $dbaccess database specification
  * @param array $ids array of document identificators
- * @return array identificator relative to latest revision. if one or several documents document not exists the identificator not appear in result so the array count of result can be lesser than parameter
+ * @return array identifier relative to latest revision. if one or several documents document not exists the identifier not appear in result so the array count of result can be lesser than parameter
  */
 function getLatestDocId($dbaccess, $initid)
 {
@@ -898,7 +898,7 @@ function getLatestDocId($dbaccess, $initid)
  * return doc array of specific revision of document initid
  *
  * @param string $dbaccess database specification
- * @param string $initid initial identificator of the  document
+ * @param string $initid initial identifier of the  document
  * @param int $rev revision number
  * @return array values array if found. False if initid not avalaible
  */
@@ -926,7 +926,7 @@ function getRevTDoc($dbaccess, $initid, $rev)
  * use only for debug mode
  *
  * @param string $dbaccess database specification
- * @param int $initid initial identificator of the  document
+ * @param int $initid initial identifier of the  document
  * @param int $fromid family identicator of document
  * @return int latest revision if found. False if initid not available
  */

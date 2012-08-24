@@ -24,10 +24,10 @@ include_once ("FDL/import_file.php");
 /**
  * Exportation of documents from folder or searches
  * @param Action &$action current action
- * @global string $fldid Http var : folder identificator to export
+ * @global string $fldid Http var : folder identifier to export
  * @global string $wprof Http var : (Y|N) if Y export associated profil also
  * @global string $wfile Http var : (Y|N) if Y export attached file export format will be tgz
- * @global string $wident Http var : (Y|N) if Y specid column is set with identificator of document
+ * @global string $wident Http var : (Y|N) if Y specid column is set with identifier of document
  * @global string $wutf8 Http var : (Y|N) if Y encoding is utf-8 else iso8859-1
  * @global string $wcolumn Http var :  if - export preferences are ignored
  * @global string $eformat Http var :  (I|R|F) I: for reimport, R: Raw data, F: Formatted data
@@ -40,8 +40,8 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
     $fldid = GetHttpVars("id", $aflid);
     $wprof = (GetHttpVars("wprof", "N") == "Y"); // with profil
     $wfile = (GetHttpVars("wfile", "N") == "Y"); // with files
-    $wident = (GetHttpVars("wident", "Y") == "Y"); // with numeric identificator
-    $wutf8 = (GetHttpVars("code", "utf8") == "utf8"); // with numeric identificator
+    $wident = (GetHttpVars("wident", "Y") == "Y"); // with numeric identifier
+    $wutf8 = (GetHttpVars("code", "utf8") == "utf8"); // with numeric identifier
     $nopref = (GetHttpVars("wcolumn") == "-"); // no preference read
     $eformat = GetHttpVars("eformat", "I"); // export format
     $selection = GetHttpVars("selection"); // export selection  object (JSON)

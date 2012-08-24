@@ -1316,8 +1316,8 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
     /**
      * get session from login
      *
-     * @param  int $docid document identificator
-     * @param  int $vid vault identificator
+     * @param  int $docid document identifier
+     * @param  int $vid vault identifier
      * @param  string $owner user login
      * @return string
      */

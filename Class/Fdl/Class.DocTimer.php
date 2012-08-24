@@ -38,7 +38,7 @@ class DocTimer extends DbObj
     ); // not be in fields auto computed
     
     /**
-     * identificator of timer
+     * identifier of timer
      * @public int
      */
     public $id;
@@ -89,7 +89,7 @@ create table doctimer ( id serial,
     }
     /**
      * delete all timers which comes from same origin
-     * @param int $docid initial doc identificator to detach
+     * @param int $docid initial doc identifier to detach
      * @param int $originid initial origin id
      * @param int &$c count of deletion
      * @return string error - empty if no error -
@@ -114,7 +114,7 @@ create table doctimer ( id serial,
     }
     /**
      * delete all timers for a document
-     * @param int $docid initial doc identificator to detach
+     * @param int $docid initial doc identifier to detach
      * @param int &$c count of deletion
      * @return string error - empty if no error -
      */
@@ -135,8 +135,8 @@ create table doctimer ( id serial,
     }
     /**
      * delete a specific timer for a document
-     * @param int $docid initial doc identificator to detach
-     * @param int $timerid timerc identificator to detach
+     * @param int $docid initial doc identifier to detach
+     * @param int $timerid timerc identifier to detach
      * @return string error - empty if no error -
      */
     function unattachDocument($docid, $timerid)

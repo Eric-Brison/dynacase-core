@@ -20,12 +20,12 @@ include_once ("FDL/Lib.Dir.php");
 class SearchDoc
 {
     /**
-     * family identificator filter
+     * family identifier filter
      * @public string
      */
     public $fromid;
     /**
-     * folder identificator filter
+     * folder identifier filter
      * @public int
      */
     public $dirid = 0;
@@ -85,7 +85,7 @@ class SearchDoc
      */
     public $latest = true;
     /**
-     * user identificator : set to current user by default
+     * user identifier : set to current user by default
      * @public int
      */
     public $userid = 0;
@@ -141,7 +141,7 @@ class SearchDoc
      * initialize with family
      *
      * @param string $dbaccess database coordinate
-     * @param int|string $fromid family identificator to filter
+     * @param int|string $fromid family identifier to filter
      */
     public function __construct($dbaccess = '', $fromid = 0)
     {
@@ -483,7 +483,7 @@ class SearchDoc
     }
     /**
      * use folder or search document to apply restrict the search
-     * @param int $dirid identificator of the collection
+     * @param int $dirid identifier of the collection
      *
      * @return Boolean true if set
      */

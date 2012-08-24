@@ -15,7 +15,7 @@
   var s = new DocumentSelection();
   s.insertToList( {
  	id : 2024
- }); // first way : use only the identificator
+ }); // first way : use only the identifier
   var d = C.getDocument( {
   	id : 2045
   }); // C is the context
@@ -74,7 +74,7 @@ Fdl.DocumentSelection.prototype = {
 	 */
     selectionItems:[],
     /**
-	 * collection identificator use for selection
+	 * collection identifier use for selection
 	 * 
 	 * @type Fdl.Collection
 	 */
@@ -97,7 +97,7 @@ Fdl.DocumentSelection.prototype = {
 	 * containt (if exists of course)
 	 * 
 	 * @param config
-	 *            {Nmmber/Fdl.Document} document identificator or document
+	 *            {Nmmber/Fdl.Document} document identifier or document
 	 *            object
 	 *            <ul>
 	 *            <li><b>id : </b>{Number} document identificator</li>
@@ -175,7 +175,7 @@ Fdl.DocumentSelection.prototype = {
 	 * Return the documentList identicators, this is no Fdl.Document but only
 	 * document id Numbers.
 	 * 
-	 * @return {Array} of document identificator
+	 * @return {Array} of document identifier
 	 */
     getDocumentIdList:function (config) {
     	if (this.mainSelector =='all') {

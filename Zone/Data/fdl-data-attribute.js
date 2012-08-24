@@ -44,7 +44,7 @@ Fdl.Attribute = function(config) {
 
 Fdl.Attribute.prototype = {
 	/**
-	 * identificator of the attribute
+	 * identifier of the attribute
 	 * 
 	 * @type Number
 	 */
@@ -56,7 +56,7 @@ Fdl.Attribute.prototype = {
 	 */
 	type : null,
 	/**
-	 * family identificator
+	 * family identifier
 	 * 
 	 * @type Number
 	 */

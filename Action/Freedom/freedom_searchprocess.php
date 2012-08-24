@@ -22,7 +22,7 @@ include_once ("GENERIC/generic_util.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global id Http var : document identificator for process document
+ * @global id Http var : document identifier for process document
  * @global target Http var : window name when click on document
  */
 function freedom_searchprocess(&$action)

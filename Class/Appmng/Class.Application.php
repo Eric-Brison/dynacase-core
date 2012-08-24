@@ -783,7 +783,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * set user parameter for current user
      *
-     * @param string $key parameter identificator
+     * @param string $key parameter identifier
      * @param string $val value
      * @return string error message
      */

@@ -20,7 +20,7 @@ include_once ('FREEDOM/Lib.portfolio.php');
 /**
  *
  * @param Action &$action current action
- * @global dirid Http var : separator identificator to see
+ * @global dirid Http var : separator identifier to see
  * @global folioid Http var : portfolio of separator
  */
 function folioparams(&$action)

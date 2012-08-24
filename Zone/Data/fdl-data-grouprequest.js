@@ -94,7 +94,7 @@ Fdl.GroupRequest.prototype.addRequest = function(request) {
 
 /**
  * get information about a specific request
- * @param {String } name the identificator of the request
+ * @param {String } name the identifier of the request
  * 
  *
  * @return {Object} the request information, null if not found
@@ -119,7 +119,7 @@ Fdl.GroupRequest.prototype.getDocument = function(config) {
  * to save selection before call foreach
  * @param {Fdl.DocumentSelection} selection 
  * 
- * @return {Array} identificator objects
+ * @return {Array} identifier objects
  */
 Fdl.GroupRequest.prototype.getSelection = function(selection) {
     return {method:'getSelection',config:selection};
@@ -235,7 +235,7 @@ Fdl.GroupRequestResult.prototype = {
 		gr:null,
 		/**
 		 * Return a request result
-		 * @param name {String} the identificator of the request
+		 * @param name {String} the identifier of the request
 		 */
 		get: function (name) {
 	if (this.gr) {
@@ -304,7 +304,7 @@ toString: function () {
 },
 /**
  * Return error message for a specific request
- * @param name {String} the identificator of the request
+ * @param name {String} the identifier of the request
  * @return  {String} error message - may be empty if no errors
  */
 getError: function (name) {

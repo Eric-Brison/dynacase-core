@@ -34,12 +34,12 @@ class Fdl_Family extends Fdl_Document
             }
             $id = strtolower($id);
             if ($id == "") {
-                $this->setError(_("attribute identificator is null"));
+                $this->setError(_("attribute identifier is null"));
                 $err = $this->doc->unlock(true);
                 return null;
             }
             if (!preg_match("/^[a-z0-9_]+$/", $id)) {
-                $this->setError(sprintf(_("attribute [%s] identificator syntax is unavalaible. Must have only alphanumeric characters and must not includes spaces") , $id));
+                $this->setError(sprintf(_("attribute [%s] identifier syntax is unavalaible. Must have only alphanumeric characters and must not includes spaces") , $id));
                 $err = $this->doc->unlock(true);
                 return null;
             }
@@ -93,7 +93,7 @@ class Fdl_Family extends Fdl_Document
             }
             $id = strtolower($id);
             if ($id == "") {
-                $this->setError(_("attribute identificator is null"));
+                $this->setError(_("attribute identifier is null"));
                 $err = $this->doc->unlock(true);
                 return null;
             }
@@ -145,7 +145,7 @@ class Fdl_Family extends Fdl_Document
             }
             $id = strtolower($id);
             if ($id == "") {
-                $this->setError(_("attribute identificator is null"));
+                $this->setError(_("attribute identifier is null"));
                 $err = $this->doc->unlock(true);
                 return null;
             }
@@ -179,11 +179,11 @@ class Fdl_Family extends Fdl_Document
         if ($this->doc) {
             $id = strtolower($id);
             if ($id == "") {
-                $this->setError(_("attribute identificator is null"));
+                $this->setError(_("attribute identifier is null"));
                 return null;
             }
             if (!preg_match("/^[a-z0-9_:]+$/", $id)) {
-                $this->setError(sprintf(_("attribute [%s] identificator syntax is unavalaible. Must have only alphanumeric characters and must not includes spaces") , $id));
+                $this->setError(sprintf(_("attribute [%s] identifier syntax is unavalaible. Must have only alphanumeric characters and must not includes spaces") , $id));
                 return null;
             }
             

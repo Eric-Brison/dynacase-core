@@ -22,7 +22,7 @@ include_once ("FDL/mailcard.php");
  * Edition to un-saffect document
  * @param Action &$action current action
  * @global id Http var : document id to affect
- * @global _id_affectuser Http var : user identificator to affect
+ * @global _id_affectuser Http var : user identifier to affect
  * @global _actioncomment Http var : description of the action
  */
 function desaffect(&$action)

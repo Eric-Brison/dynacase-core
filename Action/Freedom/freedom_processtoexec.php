@@ -22,7 +22,7 @@ include_once ("GENERIC/generic_util.php");
 /**
  * Interface to edit new process
  * @param Action &$action current action
- * @global id Http var : document identificator for process document
+ * @global id Http var : document identifier for process document
  */
 function freedom_processtoexec(&$action)
 {

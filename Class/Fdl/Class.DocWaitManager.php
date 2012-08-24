@@ -67,7 +67,7 @@ class DocWaitManager
     }
     /**
      * Return waiting doc
-     * @param int $id doc identificator
+     * @param int $id doc identifier
      * @return Doc
      */
     public static function getWaitingDoc($id)
@@ -84,8 +84,8 @@ class DocWaitManager
     }
     /**
      * return unresolved links
-     * @param int $domain domain identificator
-     * @param int $user user identificator
+     * @param int $domain domain identifier
+     * @param int $user user identifier
      * @return array index=localid, value=serverid
      */
     public static function getUnresolvedLocalLinks($domain = - 1, $user = - 1)
@@ -107,7 +107,7 @@ class DocWaitManager
     }
     /**
      * return waiting doc for a transaction
-     * @param int $transaction transaction identificator
+     * @param int $transaction transaction identifier
      * @return DbObjectList docWait list
      */
     public static function getWaitingDocs($transaction)
@@ -119,7 +119,7 @@ class DocWaitManager
     }
     /**
      * return waiting doc for a domain
-     * @param int $transaction transaction identificator
+     * @param int $transaction transaction identifier
      * @return DbObjectList docWait list
      */
     public static function getWaitingDocsByDomain($domainId)
@@ -131,7 +131,7 @@ class DocWaitManager
     }
     /**
      * create a new transaction id
-     * @return int transaction identificator
+     * @return int transaction identifier
      */
     public static function getTransaction()
     {
@@ -140,9 +140,9 @@ class DocWaitManager
     }
     /**
      * delete waiting document for a domain, an user or an user in a domain
-     * @param int $domain domain identificator
-     * @param int $user user identificator
-     * @param int $docinitid initial document identificator
+     * @param int $domain domain identifier
+     * @param int $user user identifier
+     * @param int $docinitid initial document identifier
      */
     public static function clearWaitingDocs($domain = - 1, $user = - 1, $docinitid = - 1)
     {

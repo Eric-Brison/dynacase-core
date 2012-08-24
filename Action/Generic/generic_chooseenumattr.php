@@ -21,7 +21,7 @@ include_once ("GENERIC/generic_util.php");
 /**
  * Display list of enumrate attribute for a family
  * @param Action &$action current action
- * @global famid Http var : family document identificator where find enum attributes
+ * @global famid Http var : family document identifier where find enum attributes
  */
 function generic_chooseenumattr(&$action)
 {

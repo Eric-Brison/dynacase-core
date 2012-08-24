@@ -37,7 +37,7 @@ class ADoc
         $this->attr["FIELD_HIDDENS"] = new FieldSetAttribute("FIELD_HIDDENS", 0, "hiddens");
     }
     /**
-     * @param string $id attribute identificator
+     * @param string $id attribute identifier
      * @return BasicAttribute
      */
     function getAttr($id)

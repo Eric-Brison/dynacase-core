@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-23 15:27+0200\n"
-"PO-Revision-Date: 2012-08-23 15:29+0200\n"
+"POT-Creation-Date: 2012-08-24 11:29+0200\n"
+"PO-Revision-Date: 2012-08-24 11:31+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1182,6 +1182,9 @@ msgstr "Cliquer ici pour se déconnecter"
 msgid "Click to access to the document"
 msgstr "Cliquer pour accéder au document"
 
+msgid "Click to clear message"
+msgstr "Cliquer pour effacer le message"
+
 msgid "Click to view menu"
 msgstr "Cliquer pour voir le menu"
 
@@ -1454,7 +1457,7 @@ msgid "Diff"
 msgstr "Diff"
 
 #, c-format
-msgid "Dir::insertFolder identificator [%s] must be numeric"
+msgid "Dir::insertFolder identifier [%s] must be numeric"
 msgstr "Dir::insertFolder l'identificateur [%s] doit être numérique"
 
 msgid "Direct Import"
@@ -2642,7 +2645,7 @@ msgid "No identificator"
 msgstr "Pas d'identificateurs"
 
 #, c-format
-msgid "No identificator found for relation '%s' %s in %s file"
+msgid "No identifier found for relation '%s' %s in %s file"
 msgstr ""
 "Impossible de trouver d'identifiant pour la relation '%s' %s dans le fichier "
 "%s"
@@ -3259,7 +3262,7 @@ msgid "Select group appartenance"
 msgstr "Selectionner les groupes d'appartenance"
 
 msgid ""
-"Select identificator to set the second column -specid- this file can only "
+"Select identifier to set the second column -specid- this file can only "
 "reimport in the same database"
 msgstr ""
 "Sélectionnez identificateur pour remplir la deuxième colonne -specid-. Le "
@@ -4461,7 +4464,7 @@ msgstr "attribut [%s] déjà présent : ne peut être ajouté"
 
 #, c-format
 msgid ""
-"attribute [%s] identificator syntax is unavalaible. Must have only "
+"attribute [%s] identifier syntax is unavalaible. Must have only "
 "alphanumeric characters and must not includes spaces"
 msgstr ""
 "La syntaxe de l'idenitifiant d'attribut [%s] est non valide. Seuls des "
@@ -4482,7 +4485,7 @@ msgstr "La visibilité de l'attribut [%s] ne peut être que  H,R,W,S,O,I,U"
 msgid "attribute id"
 msgstr "Identifiant de l'attribut"
 
-msgid "attribute identificator is null"
+msgid "attribute identifier is null"
 msgstr "l'identifiant de l'attribut est nul"
 
 #, c-format
@@ -5100,8 +5103,8 @@ msgstr "le contenu du fichier contient l'expression"
 msgid "content file word"
 msgstr "le contenu du fichier contient les mots"
 
-msgid "control :: user identificator is null"
-msgstr "control :: identifiant de l'utilisateur est vide"
+msgid "control :: user identifier is null"
+msgstr "control :: identifiant utilisateur est nul"
 
 msgid "control view"
 msgstr "contrôle de vues"
@@ -5973,11 +5976,14 @@ msgstr "famille %s non trouvée"
 
 #, c-format
 msgid "family %s not implement MailRecipent - missing getMail method"
-msgstr "La famille %s n'implémente pas MailRecipient - il manque la méthode getMail"
+msgstr ""
+"La famille %s n'implémente pas MailRecipient - il manque la méthode getMail"
 
 #, c-format
 msgid "family %s not implement MailRecipent - missing getMailAttribute"
-msgstr "La famille %s n'implémente pas MailRecipient - il manque la méthode getMailAttribute"
+msgstr ""
+"La famille %s n'implémente pas MailRecipient - il manque la méthode "
+"getMailAttribute"
 
 msgid "family id"
 msgstr "Identifiant de la famille"
@@ -6086,7 +6092,7 @@ msgstr "dossier"
 msgid "folder %s as been added in your bookmark"
 msgstr "Le dossier %s a été ajouté dans vos signets"
 
-msgid "folder identificator for root"
+msgid "folder identifier for root"
 msgstr "Identifiant du dossier racine pour l'accès authentifié"
 
 msgid "folder is locked. Cannot containt modification"
@@ -7132,7 +7138,7 @@ msgstr "pas d'accès à la base de données DYNACASE"
 msgid "no identificator"
 msgstr "pas d'identificateur"
 
-msgid "no identificator set"
+msgid "no identifier set"
 msgstr "aucun identificateur fourni"
 
 msgid "no image"
@@ -7224,7 +7230,7 @@ msgstr "pas de sujet"
 msgid "no task identificator"
 msgstr "Pas d'identificateur de tâche trouvé"
 
-msgid "no task identificator found"
+msgid "no task identifier found"
 msgstr "Pas d'identificateur de tâche trouvé"
 
 msgid "no template defined"
@@ -8318,7 +8324,7 @@ msgstr ""
 msgid "system identifiant equal"
 msgstr "l'identifiant système est égal"
 
-msgid "system identificator not equal"
+msgid "system identifier not equal"
 msgstr "l'identifiant système n'est pas égal"
 
 msgid "t"
@@ -9184,10 +9190,10 @@ msgstr "{left} est supérieur ou égal à {right}"
 msgid "{left} greater than {right}"
 msgstr "{left} est supérieur à {right}"
 
-msgid "{left} identificator equal {right}"
+msgid "{left} identifier equal {right}"
 msgstr "l'identificateur {left} est égal à {right}"
 
-msgid "{left} identificator not equal {right}"
+msgid "{left} identifier not equal {right}"
 msgstr "l'identifiant {left} est différent de {right}"
 
 msgid "{left} include no value of {right}"
@@ -9223,10 +9229,10 @@ msgstr "{left} ne contient pas {right}"
 msgid "{left} one value equal {right}"
 msgstr "{left} une des valeurs est égal à {right}"
 
-msgid "{left} system identificator equal {right}"
+msgid "{left} system identifier equal {right}"
 msgstr "l'identifiant système {left} est égal à {right}"
 
-msgid "{left} system identificator not equal {right}"
+msgid "{left} system identifier not equal {right}"
 msgstr "l'identifiant système {left} est différent de {right}"
 
 msgid "{left} title include {right}"
@@ -9303,6 +9309,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Change state to %s"
 #~ msgstr "Changement d'état vers %s"
 
+#~ msgid "Clear message"
+#~ msgstr "Effacer le message"
+
 #~ msgid "Computed from"
 #~ msgstr "Calculé depuis"
 
@@ -9375,7 +9384,7 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "My user account id"
 #~ msgstr "Identifiant de mon compte utilisateur"
 
-#~ msgid "No identificator found for relation %s"
+#~ msgid "No identifier found for relation %s"
 #~ msgstr "Aucun identificateur pour la relation %s"
 
 #~ msgid "No privilege to define accessibilities"
@@ -9587,6 +9596,8 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "contact"
 #~ msgstr "Contact..."
+
+
 
 #~ msgid "current user account"
 #~ msgstr "mon compte"

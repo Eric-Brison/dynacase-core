@@ -36,12 +36,12 @@ class TaskRequest extends DbObj
     public $fkey;
     public $status;
     /**
-     * identificator of task
+     * identifier of task
      * @public int
      */
     public $tid;
     /**
-     * identificator system of the user
+     * identifier system of the user
      * @public int
      */
     public $uid;

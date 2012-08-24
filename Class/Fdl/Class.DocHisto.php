@@ -40,12 +40,12 @@ class DocHisto extends DbObj
         
     );
     /**
-     * identificator of document
+     * identifier of document
      * @public int
      */
     public $id;
     /**
-     * identificator system of the user
+     * identifier system of the user
      * @public int
      */
     public $uid;

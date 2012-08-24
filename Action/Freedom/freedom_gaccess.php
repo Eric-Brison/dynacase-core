@@ -29,7 +29,7 @@ function freedom_gaccess(Action & $action)
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $usage = new ActionUsage($action);
     $usage->setText("view or modify document accessibilities");
-    $docid = $usage->addNeeded("id", "document identificator to profil");
+    $docid = $usage->addNeeded("id", "document identifier to profil");
     $gid = $usage->addOption("gid", "group identificator, view user access for this group");
     $green = ($usage->addOption("allgreen", "view only up acl", array(
         "Y",

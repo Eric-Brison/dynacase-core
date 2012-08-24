@@ -25,7 +25,7 @@ include_once ("FDL/Class.DocHisto.php");
 include_once ('FDL/Class.ADoc.php');
 // define constant for search attributes in concordance with the file "init.freedom"
 /**#@+
- * constant for document family identificator in concordance with the file "FDL/init.freedom"
+ * constant for document family identifier in concordance with the file "FDL/init.freedom"
  *
 */
 define("FAM_BASE", 1);
@@ -336,12 +336,12 @@ class Doc extends DocCtrl
     ); # N_("prop_ldapdn");
     
     /**
-     * identificator of the document
+     * identifier of the document
      * @var int
      */
     public $id;
     /**
-     * user identificator for the creator
+     * user identifier for the creator
      * @var int
      */
     public $owner;
@@ -361,12 +361,12 @@ class Doc extends DocCtrl
      */
     public $version;
     /**
-     * identificator of the first revision document
+     * identifier of the first revision document
      * @var int
      */
     public $initid;
     /**
-     * identificator of the family document
+     * identifier of the family document
      * @var int
      */
     public $fromid;
@@ -396,7 +396,7 @@ class Doc extends DocCtrl
      */
     public $doctype;
     /**
-     * user identificator for the locker
+     * user identifier for the locker
      * @vart
      */
     public $locked;
@@ -411,7 +411,7 @@ class Doc extends DocCtrl
      */
     public $lmodify;
     /**
-     * identificator of the profil document
+     * identifier of the profil document
      * @var int
      */
     public $profid;
@@ -456,34 +456,34 @@ class Doc extends DocCtrl
      */
     public $state;
     /**
-     * identificator of the workflow document
+     * identifier of the workflow document
      *
      * if 0 then no workflow
      * @var int
      */
     public $wid;
     /**
-     * identificator of the control view document
+     * identifier of the control view document
      *
      * if 0 then no special control view
      * @var int
      */
     public $cvid;
     /**
-     * string identificator of the document
+     * string identifier of the document
      *
      * @var string
      */
     public $name;
     /**
-     * identificator of the mask document
+     * identifier of the mask document
      *
      * if 0 then no mask
      * @var int
      */
     public $mid = 0;
     /**
-     * identificator of dynamic profil
+     * identifier of dynamic profil
      *
      * if 0 then no dynamic profil
      * @var int
@@ -1120,7 +1120,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * convert to another family
      * loose all revisions
-     * @param int $fromid family identificator where the document will be converted
+     * @param int $fromid family identifier where the document will be converted
      * @param array $prevalues values which will be added before conversion
      * @return doc the document converted (don't reuse $this) if error return string message
      */
@@ -1378,7 +1378,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * search the first document from its title
      * @param string $title the title to search (must be exactly the same title)
-     * @return int document identificator
+     * @return int document identifier
      */
     function getFreedomFromTitle($title)
     {
@@ -1400,7 +1400,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return family parameter
      *
-     * @param string $idp parameter identificator
+     * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      * @return string parameter value
      */
@@ -1420,6 +1420,7 @@ create unique index i_docir on doc(initid, revision);";
          * @var NormalAttribute $paramAttr
          */
         $paramAttr = $this->getAttribute($idp);
+        if (!$paramAttr) return $def;
         if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "") {
             $_paramValue[$idp] = $r;
             $val = $this->getValueMethod($paramAttr->phpfunc);
@@ -1640,7 +1641,7 @@ create unique index i_docir on doc(initid, revision);";
                             $this->modify(true, array(
                                 "name"
                             ) , true);
-                            $this->setLogicalIdentificator($name);
+                            $this->setLogicalName($name);
                         }
                     }
                 }
@@ -1771,7 +1772,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param bool $fixed if true latest fixed revision
      * @param bool $forcequery if true force recompute of id (use it in case of modification by another program)
-     * @return int identificator of latest revision
+     * @return int identifier of latest revision
      */
     final public function latestId($fixed = false, $forcequery = false)
     {
@@ -1816,7 +1817,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return the string label text for a id
-     * @param string $idAttr attribute identificator
+     * @param string $idAttr attribute identifier
      * @return string
      */
     final public function getLabel($idAttr)
@@ -1826,7 +1827,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return the property object like id, initid, revision, ...
-     * @param string $prop property identificator
+     * @param string $prop property identifier
      * @return string false if not an property
      */
     final public function getProperty($prop)
@@ -1858,7 +1859,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the attribute object for a id
      * the attribute can be defined in fathers
-     * @param string $idAttr attribute identificator
+     * @param string $idAttr attribute identifier
      * @param BasicAttribute &$oa object reference use this if want to modify attribute
      * @return BasicAttribute|bool
      */
@@ -2235,7 +2236,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * reset Conversion of file
      * update $attrid_txt table column
-     * @param string $attrid file attribute identificator
+     * @param string $attrid file attribute identifier
      * @return string error message
      */
     public function resetConvertVaultFile($attrid, $index)
@@ -2621,7 +2622,7 @@ create unique index i_docir on doc(initid, revision);";
     
     /**
      * return the value of an attribute document
-     * @param string $idAttr identificator of attribute
+     * @param string $idAttr identifier of attribute
      * @param string $def default value returned if attribute not found or if is empty
      * @return string the attribute value
      */
@@ -2637,7 +2638,7 @@ create unique index i_docir on doc(initid, revision);";
      * return the value of an list attribute document
      *
      * the attribute must be in an array or of a type '*list' like enumlist or textlist
-     * @param string $idAttr identificator of list attribute
+     * @param string $idAttr identifier of list attribute
      * @param string $def default value returned if attribute not found or if is empty
      * @param string $index the values for $index row (default value -1 means all values)
      * @return array the list of attribute values
@@ -2674,7 +2675,7 @@ create unique index i_docir on doc(initid, revision);";
      * return the array of values for an array attribute
      *
      * the attribute must  an array type
-     * @param string $idAttr identificator of array attribute
+     * @param string $idAttr identifier of array attribute
      * @param string $index the values for $index row (default value -1 means all values)
      * @return array all values of array order by rows (return false if not an array attribute)
      */
@@ -2709,7 +2710,7 @@ create unique index i_docir on doc(initid, revision);";
      * delete a row in an array attribute
      *
      * the attribute must an array type
-     * @param string $idAttr identificator of array attribute
+     * @param string $idAttr identifier of array attribute
      * @param string $index  $index row (first is 0)
      * @return string error message, if no error empty string
      */
@@ -2737,7 +2738,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * the attribute must an array type
      * fill uncomplete column with null values
-     * @param string $idAttr identificator of array attribute
+     * @param string $idAttr identifier of array attribute
      * @param bool $deleteLastEmptyRows by default empty rows which are in the end are deleted
      * @return string error message, if no error empty string
      */
@@ -2805,8 +2806,8 @@ create unique index i_docir on doc(initid, revision);";
      * add new row in an array attribute
      *
      * the attribute must be an array type
-     * @param string $idAttr identificator of array attribute
-     * @param array $tv values of each column. Array index must be the attribute identificator
+     * @param string $idAttr identifier of array attribute
+     * @param array $tv values of each column. Array index must be the attribute identifier
      * @param string $index  $index row (first is 0) -1 at the end; x means before x row
      * @return string error message, if no error empty string
      */
@@ -2855,7 +2856,7 @@ create unique index i_docir on doc(initid, revision);";
      * delete all attributes values of an array
      *
      * the attribute must be an array type
-     * @param string $idAttr identificator of array attribute
+     * @param string $idAttr identifier of array attribute
      * @return string error message, if no error empty string
      */
     final public function deleteArray($idAttr)
@@ -2884,7 +2885,7 @@ create unique index i_docir on doc(initid, revision);";
      * call after modification
      * If value is empty no modification are set. To reset a value use Doc::DeleteValue method.
      * an array can be use as value for values which are in arrays
-     * @param string $idAttr identificator of attribute
+     * @param string $idAttr identifier of attribute
      * @param string $value new value for the attribute
      * @param int $index only for array values affect value in a specific row
      * @param int &$kvalue in case of error the index of error (for arrays)
@@ -2948,9 +2949,11 @@ create unique index i_docir on doc(initid, revision);";
             if ($value === " ") {
                 $value = ""; // erase value
                 if ($this->$attrid != "") {
-                    $this->hasChanged = true;
                     //print "change by delete $attrid  <BR>";
-                    $this->_oldvalue[$attrid] = $this->$attrid;
+                    if ($this->_setValueCompleteArrayRow) {
+                        $this->hasChanged = true;
+                        $this->_oldvalue[$attrid] = $this->$attrid;
+                    }
                     $this->$attrid = "";
                     if ($oattr->type == "file") {
                         // need clear computed column
@@ -2962,7 +2965,6 @@ create unique index i_docir on doc(initid, revision);";
                 if (!isset($this->$attrid)) $this->$attrid = "";
                 
                 if (strcmp($this->$attrid, $value) != 0 && strcmp($this->$attrid, str_replace("\n ", "\n", $value)) != 0) {
-                    $this->hasChanged = true;
                     // print "change2 $attrid  to <PRE>[{$this->$attrid}] [$value]</PRE><BR>";
                     if ($oattr->repeat) {
                         $tvalues = $this->_val2array($value);
@@ -3180,8 +3182,12 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     }
                     //print "<br/>change $attrid to :".$this->$attrid."->".implode("\n",$tvalues);
-                    $this->_oldvalue[$attrid] = $this->$attrid;
-                    $this->$attrid = implode("\n", $tvalues);
+                    $rawValue = implode("\n", $tvalues);
+                    if ($this->_setValueCompleteArrayRow && $this->$attrid != $rawValue) {
+                        $this->_oldvalue[$attrid] = $this->$attrid;
+                        $this->hasChanged = true;
+                    }
+                    $this->$attrid = $rawValue;
                 }
             }
         }
@@ -3193,7 +3199,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * clear $attrid_txt and $attrid_vec
      *
-     * @param string $idAttr identificator of file attribute
+     * @param string $idAttr identifier of file attribute
      * @return string error message, if no error empty string
      */
     final private function clearFullAttr($attrid, $index = - 1)
@@ -3252,7 +3258,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * force recompute all file text transformation
-     * @param string $aid file attribute identificator. If false all files attributes will be reseted
+     * @param string $aid file attribute identifier. If false all files attributes will be reseted
      * @return string error message, if no error empty string
      */
     final public function recomputeTextFiles($aid = false)
@@ -3285,7 +3291,7 @@ create unique index i_docir on doc(initid, revision);";
      * affect text value in $attrid file attribute
      *
      * create a new file in Vault to replace old file
-     * @param string $idAttr identificator of file attribute
+     * @param string $idAttr identifier of file attribute
      * @param string $value new value for the attribute
      * @param string $ftitle the name of file (if empty the same as before)
      * @return string error message, if no error empty string
@@ -3339,7 +3345,7 @@ create unique index i_docir on doc(initid, revision);";
      * get text value from $attrid file attribute
      *
      * get content of a file (must be an ascii file)
-     * @param string $idAttr identificator of file attribute
+     * @param string $idAttr identifier of file attribute
      * @param string &$text the content of the file
      * @return string error message, if no error empty string
      */
@@ -3372,7 +3378,7 @@ create unique index i_docir on doc(initid, revision);";
      * save stream file in an file attribute
      *
      * replace a new file in Vault to replace old file
-     * @param string $idAttr identificator of file attribute
+     * @param string $idAttr identifier of file attribute
      * @param resource $stream file resource from fopen
      * @param int $index for array of file : modify in specific row
      * @return string error message, if no error empty string
@@ -3458,7 +3464,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * use for duplicate physicaly the file
      *
-     * @param string $idattr identificator of file attribute
+     * @param string $idattr identifier of file attribute
      * @param string $newname basename if want change name of file
      * @param int $index in case of array
      * @return string attribut value formated to be inserted into a file attribute
@@ -3490,7 +3496,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * rename physicaly the file
      *
-     * @param string $idattr identificator of file attribute
+     * @param string $idattr identifier of file attribute
      * @param string $newname base name file
      * @param int $index in case of array of files
      * @return string empty if no error
@@ -3543,11 +3549,11 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Store a file in a file attribute
      *
-     * @param string $attrid identificator of file attribute
+     * @param string $attrid identifier of file attribute
      * @param string $filename file path
      * @param string $ftitle basename of file
      * @param int $index only for array values affect value in a specific row
-     * @internal param string $idAttr identificator of file attribute
+     * @internal param string $idAttr identifier of file attribute
      * @return string error message, if no error empty string
      */
     final public function setFile($attrid, $filename, $ftitle = "", $index = - 1)
@@ -3579,7 +3585,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @deprecated use setFile() instead
      *
-     * @param string $attrid identificator of file attribute
+     * @param string $attrid identifier of file attribute
      * @param string $filename file path
      * @param string $ftitle basename of file
      * @param int $index only for array values affect value in a specific row
@@ -3596,7 +3602,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @deprecated use setFile() instead
      *
-     * @param string $attrid identificator of file attribute
+     * @param string $attrid identifier of file attribute
      * @param array $filenames file path
      * @param array|string $ftitle basename of file
      * @return string error message, if no error empty string
@@ -3658,7 +3664,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return the related value by linked attributes
-     * @param string $RidAttr attribute identificator
+     * @param string $RidAttr attribute identifier
      * @param string $def $def default return value
      * @param bool $latest always last revision of document
      * @param bool $html return formated value for html
@@ -3688,7 +3694,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the previous value for a attibute set before Doc::SetValue
      * can be use in Doc::postModify generaly
-     * @param string $attrid identificator of attribute
+     * @param string $attrid identifier of attribute
      * @return string the old value (false if not modified before)
      *
      */
@@ -3704,8 +3710,11 @@ create unique index i_docir on doc(initid, revision);";
         if (isset($this->_oldvalue)) return $this->_oldvalue;
         return array();
     }
-    
-    final public function DeleteValue($attrid)
+    /**
+     * @param string $attrid attribute identifier
+     * @return string
+     */
+    final public function deleteValue($attrid)
     {
         $oattr = $this->GetAttribute($attrid);
         if ($oattr->type == 'docid') {
@@ -3855,7 +3864,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * verify attribute constraint
      *
-     * @param string $attrid attribute identificator
+     * @param string $attrid attribute identifier
      * @return array array of 2 items ("err" + "sug").
      * The err is the string error message (empty means no error)
      * The sug is an array of possibles corrections
@@ -3958,7 +3967,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $comment the comment to add
      * @param string $level level of comment
      * @param string $code use when memorize notification
-     * @param string $uid user identificator : by default its the current user
+     * @param string $uid user identifier : by default its the current user
      * @return string error message
      */
     final public function addComment($comment = '', $level = HISTO_INFO, $code = '', $uid = '')
@@ -3997,7 +4006,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $level level of comment
      * @param string $code use when memorize notification
      * @param string $arg serialized object
-     * @param string $uid user identificator : by default its the current user
+     * @param string $uid user identifier : by default its the current user
      * @return string error message
      */
     final public function addLog($code = '', $arg = '', $comment = '', $level = '', $uid = '')
@@ -4106,7 +4115,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Add a user tag for the document
      * if it is already set no set twice
-     * @param int $uid the system user identificator
+     * @param int $uid the system user identifier
      * @param string $tag the key tag
      * @param string $datas a comment or a value for the tag
      * @param bool $allrevision set to false if attach a tag to a specific version
@@ -4181,7 +4190,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Remove a user tag for the document
      * if it is already set no set twice
-     * @param int $uid the system user identificator
+     * @param int $uid the system user identifier
      * @param string $tag the tag to add
      * @param bool $allrevision set to false to del a tag to a specific version
      * @return string error message
@@ -4203,7 +4212,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Remove all user tag for the document
      *
-     * @param int $uid the system user identificator
+     * @param int $uid the system user identifier
      * @return string error message
      */
     final public function delUTags($uid = "")
@@ -4287,7 +4296,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * set a answer for a document for a ask (for current user)
-     * @param int $waskid the identificator of wask
+     * @param int $waskid the identifier of wask
      */
     function setWaskAnswer($waskid, $answer)
     {
@@ -4314,7 +4323,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return the latest document id in history of a document which has ask
-     * @return int the identificator
+     * @return int the identifier
      */
     function getLatestIdWithAsk()
     {
@@ -4834,7 +4843,7 @@ create unique index i_docir on doc(initid, revision);";
      * allocate document
      *
      * affect a document to a user
-     * @param int $userid the system identificator of the user to affect
+     * @param int $userid the system identifier of the user to affect
      * @param bool $revision if false no revision are made
      * @param bool $autolock if false no lock are made
      *
@@ -5254,7 +5263,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return an url for file attribute
-     * @param string $attrid attribute identificator
+     * @param string $attrid attribute identifier
      * @param int $index set to row rank if it is in array else use -1
      * @param bool $cache set to true if file may be persistent in client cache
      * @param bool $inline set to true if file must be displayed in web browser
@@ -5284,7 +5293,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return an html anchor to a document
-     * @param int $id identificator of document
+     * @param int $id identifier of document
      * @param string $target window target
      * @param bool $htmllink must be true else return nothing
      * @param string $title should we override default title
@@ -5436,7 +5445,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Control Access privilege for document for current user
      *
-     * @param string $aclname identificator of the privilege to test
+     * @param string $aclname identifier of the privilege to test
      * @param bool $strict set tio true to test without notion of account susbstitute
      * @return string empty means access granted else it is an error message (access unavailable)
      */
@@ -5457,8 +5466,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Control Access privilege for document for other user
      *
-     * @param int $uid user identificator
-     * @param string $aclname identificator of the privilege to test
+     * @param int $uid user identifier
+     * @param string $aclname identifier of the privilege to test
      * @return string empty means access granted else it is an error message (access unavailable)
      */
     public function controlUser($uid, $aclname)
@@ -5466,7 +5475,7 @@ create unique index i_docir on doc(initid, revision);";
         // --------------------------------------------------------------------
         if ($this->IsAffected()) {
             if (($this->profid <= 0) || ($uid == 1)) return ""; // no profil or admin
-            if (!$uid) return _("control :: user identificator is null");
+            if (!$uid) return _("control :: user identifier is null");
             return $this->controlUserId($this->profid, $uid, $aclname);
         }
         return "";
@@ -6336,7 +6345,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->lay->set("setname", $action->parent->Haspermission("FREEDOM_MASTER", "FREEDOM"));
         $this->lay->set("lname", $this->name);
         $this->lay->set("hasrevision", ($this->revision > 0));
-        $this->lay->Set("moddate", strftime("%d/%m/%Y %H:%M:%S", $this->revdate));
+        $this->lay->Set("moddate", strftime("%Y-%m-%d %H:%M:%S", $this->revdate));
         $this->lay->set("moddatelabel", _("last modification date"));
         if ($this->locked == - 1) {
             if ($this->doctype == 'Z') $this->lay->set("moddatelabel", _("suppression date"));
@@ -6548,9 +6557,20 @@ create unique index i_docir on doc(initid, revision);";
      * affect a logical name that can be use as unique reference of a document independant of database
      * @param string $name new logical name
      * @param bool $reset set to true to accept change
+     * @deprecated use ::setLogicalName instead
      * @return string error message if cannot be
      */
     function setLogicalIdentificator($name, $reset = false)
+    {
+        return $this->setLogicalName($name, $reset);
+    }
+    /**
+     * affect a logical name that can be use as unique reference of a document independant of database
+     * @param string $name new logical name
+     * @param bool $reset set to true to accept change
+     * @return string error message if cannot be
+     */
+    function setLogicalName($name, $reset = false)
     {
         if ($name) {
             if (!preg_match("/^[A-Z][0-9A-Z\-_]*$/i", $name)) {
@@ -6860,7 +6880,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * get vault file name or server path of filename
-     * @param string $idAttr identificator of file attribute
+     * @param string $idAttr identifier of file attribute
      * @param bool $path false return original file name (basename) , true the real path
      * @param int $index in case of array of files
      * @return string the file name of the attribute
@@ -6993,7 +7013,7 @@ create unique index i_docir on doc(initid, revision);";
         $option = new exportOptionAttribute();
         $option->withFile = $withfile;
         $option->outFile = $outfile;
-        $option->withIdentificator = $wident;
+        $option->withIdentifier = $wident;
         $option->flat = $flat;
         $option->exportAttributes = $exportAttributes;
         
@@ -7434,7 +7454,7 @@ create unique index i_docir on doc(initid, revision);";
     
     /**
      * return title of document in latest revision
-     * @param string $id identificator of document
+     * @param string $id identifier of document
      * @param string $def default value if document not found
      */
     final public function getLastTitle($id = "-1", $def = "")
@@ -7443,7 +7463,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return title of document
-     * @param string $id identificator of document
+     * @param string $id identifier of document
      * @param string $def default value if document not found
      * @param boolean $latest search title in latest revision
      * @see Doc::getSpecTitle()
@@ -7589,8 +7609,8 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return value of an attribute for the document referenced
-     * @param int $docid document identificator
-     * @param string $attrid attribute identificator
+     * @param int $docid document identifier
+     * @param string $attrid attribute identifier
      * @param string $def $def default return value
      * @param bool $latest always last revision of document
      * @return array|string
@@ -7611,8 +7631,8 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return value of an property for the document referenced
-     * @param int $docid document identificator
-     * @param string $propid property identificator
+     * @param int $docid document identifier
+     * @param string $propid property identifier
      * @param bool $latest always last revision of document if true
      * @return string
      */
@@ -7883,7 +7903,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * attach lock to specific domain.
-     * @param int $domainId domain identificator
+     * @param int $domainId domain identifier
      * @return string error message
      */
     public function lockToDomain($domainId, $userid = '')
@@ -7903,7 +7923,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return folder where document is set into
-     * @return array of folder identificators
+     * @return array of folder identifiers
      */
     public function getParentFolderIds()
     {

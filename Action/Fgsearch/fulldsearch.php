@@ -24,7 +24,7 @@ include_once ("FDL/modcard.php");
  * @global keyword Http var : word to search in any values
  * @global famid Http var : restrict to this family identioficator
  * @global start Http var : page number
- * @global dirid Http var : search identificator
+ * @global dirid Http var : search identifier
  */
 function fulldsearch(&$action)
 {

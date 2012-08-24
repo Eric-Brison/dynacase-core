@@ -294,7 +294,7 @@ class _IGROUPUSER extends Doc
     }
     /**
      * return document objet from what id (user or group)
-     * @param int $wid what identificator
+     * @param int $wid what identifier
      * @return _IUSER|_IGROUP the object document (false if not found)
      */
     function getDocUser($wid)

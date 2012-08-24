@@ -17,7 +17,7 @@ if (d && d.isAlive()) {
  * </code></pre>
  * @namespace Fdl.Document
  * @param {Object} config
- * @cfg {String/Number} id document identificator. Could be a logical identificator (a string) or a system identificator (a number)
+ * @cfg {String/Number} id document identificator. Could be a logical identifier (a string) or a system identifier (a number)
  * @cfg {Boolean} latest (Optional)  set to false if you don't want the latest revision but the exact revision given by id
  * @cfg {Number} revision (Optional) retrieve a specific revision of the document. 0 is the first. 
  * @cfg {Object} data (Optional) initialize document object from raw data (internal use)
@@ -159,7 +159,7 @@ Fdl.Document.prototype = {
            var desc=d.getValue('ba_desc');
         }
      * </code></pre>
-     * @param {String} id the attribute identificator
+     * @param {String} id the attribute identifier
      * @param {String} (optional) def the return value if value is empty
      * @return {Any} return value of an attribute's document
      */
@@ -175,7 +175,7 @@ Fdl.Document.prototype = {
    
     /**
      * return all values of the array
-     * @param {String} id the attribute identificator
+     * @param {String} id the attribute identifier
      * @return {Object} array Rows composed of columns (attributes) values
      */
     getArrayValues: function(id) {
@@ -205,7 +205,7 @@ Fdl.Document.prototype = {
     /**
      * Get formated value of a attribute
      * For relation attributes return document title, for enumerate return label
-     * @param {String} id the attribute identificator
+     * @param {String} id the attribute identifier
      * @return {Any} return value of document
      */
     getDisplayValue: function(id,config) {
@@ -284,7 +284,7 @@ Fdl.Document.prototype = {
     /**
      * set value to an attribute
      * the document is not updated in database server until it will saved
-     * @param {string } id the attribute identificator 
+     * @param {string } id the attribute identifier 
      * @param {String} value the new value to set
      * @return {boolean} true if set succeed
      */
@@ -305,16 +305,28 @@ Fdl.Document.prototype = {
     	return true;
     },
     /**
-     * Modify the logical identificator of a document
+     * Modify the logical identifier of a document
      * the document is not updated in database server until it will saved
-     * @param {string} name the new identificator
+     * @param {string} name the new identifier
      * @return {boolean} true if succeed
      */
-    setLogicalIdentificator: function(name) {
+    setLogicalName: function(name) {
     	this._data.properties['name']=name;
     	this._mvalues['name']=name;
     	return true;
     },
+    /**
+        * Modify the logical identifier of a document
+        * the document is not updated in database server until it will saved
+        * @param {string} name the new identifier
+        * @deprecated
+        * @return {boolean} true if succeed
+        */
+       setLogicalIdentificator: function(name) {
+       	this._data.properties['name']=name;
+       	this._mvalues['name']=name;
+       	return true;
+       },
     /**
      * Verify if an attribute value has changed by a setValue
      * not verify from database
@@ -333,7 +345,7 @@ Fdl.Document.prototype = {
     },
     /**
      * Return value of a property of the document
-     * @param {String} id property identificator can be one of
+     * @param {String} id property identifier can be one of
      * <ul><li>id</li><li>owner</li><li>title</li><li>revision</li><li>version</li><li>initid</li><li>fromid</li><li>doctype</li><li>locked</li><li>allocated</li><li>icon</li><li>lmodify</li><li>profid</li><li>usefor</li><li>cdate</li><li>adate</li><li>revdate</li><li>comment</li><li>classname</li><li>state</li><li>wid</li><li>postitid</li><li>forumid</li><li>cvid</li><li>name</li><li>dprofid</li><li>atags</li><li>prelid</li><li>confidential</li><li>ldapdn</li></ul>
      * @return {String} return the value
      */
@@ -360,7 +372,7 @@ Fdl.Document.prototype = {
     },
     /**
      * get attribute definition
-     * @param {string} id the attribute identificator
+     * @param {string} id the attribute identifier
      * @return {Fdl.Attribute}
      */
     getAttribute: function(id) {
@@ -957,7 +969,7 @@ Fdl.Document.prototype.cloneDocument = function(config) {
 /**
    * move document from primary folder to another folder
    * @param {Object} config
-   * <ul><li><b>folderId : </b> the identificator of folder destination</li>
+   * <ul><li><b>folderId : </b> the identifier of folder destination</li>
    * <li><b>fromFolderId : </b> (optional) the source folder, if not defined it is the primary folder of the document</li>
    * </ul>
    * @return {Boolean} true if move suceeded
@@ -1142,7 +1154,7 @@ Fdl.Document.prototype.getSearchCriteria = function() {
  * Can be use after a search with hightlight option
  * <pre><code>
  * </code></pre>
- * @param {String} id the attribute identificator
+ * @param {String} id the attribute identifier
  * @return {String} the key is between &gt;b<&lt; HTML tag
  */
 Fdl.Document.prototype.getHighlight = function() { // in case of search with highlight

@@ -23,7 +23,7 @@ include_once ("FDL/Class.Doc.php");
 /**
  * View a document without standard header and footer. It is display in raw format
  * @param Action &$action current action
- * @global id Http var : document identificator to see
+ * @global id Http var : document identifier to see
  * @global latest Http var : (Y|N) if Y force view latest revision
  * @global abstract Http var : (Y|N) if Y view only abstract attribute
  * @global zonebodycard Http var : if set, view other specific representation

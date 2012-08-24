@@ -37,19 +37,19 @@ class DocWait extends DbObj
         "extradata"
     );
     /**
-     * identificator of referer document
+     * identifier of referer document
      *
      * @var integer
      */
     public $refererid;
     /**
-     * temporary identificator use before creation
+     * temporary identifier use before creation
      *
      * @var integer
      */
     public $localid;
     /**
-     * identificator system of the user
+     * identifier system of the user
      *
      * @var integer
      */
@@ -140,7 +140,7 @@ create sequence seq_waittransaction start 1;
      */
     private $refererDoc = null;
     /**
-     * referer document identificator
+     * referer document identifier
      *
      * @var integer
      */
@@ -309,7 +309,7 @@ create sequence seq_waittransaction start 1;
     /**
      * verify if origin values are same as current alive values
      *
-     * @param integer $mask identificator to use specific mask to detect W attributes
+     * @param integer $mask identifier to use specific mask to detect W attributes
      *
      * @brief restrict to W/O visibilities values
      * @return integer ths status code

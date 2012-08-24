@@ -456,7 +456,7 @@ class DocSearch extends PDocSearch
      * return document includes in search folder
      * @param bool $controlview if false all document are returned else only visible for current user  document are return
      * @param array $filter to add list sql filter for selected document
-     * @param int $famid family identificator to restrict search
+     * @param int $famid family identifier to restrict search
      * @return array array of document array
      */
     function getContent($controlview = true, $filter = array() , $famid = "")

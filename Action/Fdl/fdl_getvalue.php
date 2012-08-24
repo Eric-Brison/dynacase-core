@@ -20,7 +20,7 @@ include_once ("FDL/Class.Dir.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global docid Http var : document identificator to see
+ * @global docid Http var : document identifier to see
  * @global latest Http var : (Y|N) if Y force view latest revision
  * @global attrid Http var : the attribute id to see
  * @global vid Http var : if set, view represention describe in view control (can be use only if doc has controlled view)

@@ -144,7 +144,7 @@ class CheckAttr extends CheckData
         'with'
     );
     /**
-     * the attribute identificator
+     * the attribute identifier
      * @var string
      */
     private $attrid;
@@ -187,7 +187,7 @@ class CheckAttr extends CheckData
         return $this;
     }
     /**
-     * test syntax for document's identificator
+     * test syntax for document's identifier
      * @return void
      */
     private function checkId()
@@ -208,7 +208,7 @@ class CheckAttr extends CheckData
         }
     }
     /**
-     * test syntax for document's identificator
+     * test syntax for document's identifier
      * @return void
      */
     private function checkSet()

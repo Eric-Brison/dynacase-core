@@ -223,7 +223,7 @@ Fdl.Notifier.Notification.prototype = {
      */
     id:null,
     /**
-     * Initial identificator of notified document 
+     * Initial identifier of notified document 
      * @type Number
      * @property
      */
@@ -241,7 +241,7 @@ Fdl.Notifier.Notification.prototype = {
      */
     level:null,
    /**
-     * User identificator which produce notification
+     * User identifier which produce notification
      * @type Number
      * @property
      */

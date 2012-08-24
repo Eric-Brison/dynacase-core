@@ -50,7 +50,7 @@ class Fdl_Document
     }
     /**
      * create document : not set in dataabse until it was saved
-     * @param string $familyId the family identificator
+     * @param string $familyId the family identifier
      * @param boolean $temporary set to true if need only a temporary document
      * @return void
      */
@@ -630,7 +630,7 @@ class Fdl_Document
      * allocate document
      *
      * affect a document to a user
-     * @param int $userid the system identificator of the user to affect
+     * @param int $userid the system identifier of the user to affect
      * @param bool $revision if false no revision are made
      * @param bool $autolock if false no lock are made
      *
@@ -649,7 +649,7 @@ class Fdl_Document
      * allocate document
      *
      * affect a document to a user
-     * @param int $userid the system identificator of the user to affect
+     * @param int $userid the system identifier of the user to affect
      * @param bool $revision if false no revision are made
      * @param bool $autolock if false no lock are made
      *
@@ -778,12 +778,12 @@ class Fdl_Document
         }
         return true;
     }
-    function setLogicalIdentificator()
+    function setLogicalName()
     {
         if ($this->doc && $this->doc->name == '') {
             $name = getHttpVars("name");
             if ($name) {
-                $err = $this->doc->setLogicalIdentificator($name);
+                $err = $this->doc->setLogicalName($name);
                 if ($err) {
                     $this->setError($err);
                     return false;

@@ -20,8 +20,8 @@ include_once ("FDL/Class.Dir.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global docid Http var : document identificator where use the ask
- * @global waskid Http var : document identificator of the ask
+ * @global docid Http var : document identifier where use the ask
+ * @global waskid Http var : document identifier of the ask
  */
 function viewwask(&$action)
 {

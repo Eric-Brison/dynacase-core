@@ -73,8 +73,8 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                     $tr = analyze_csv($absfile, $dbaccess, $dirid, $lfamid, $lfldid, $analyze);
                 }
             }
-            if ($lfamid > 0) $famid = $lfamid; // set local default family identificator
-            if ($lfldid > 0) $dfldid = $lfldid; // set local default family folder identificator
+            if ($lfamid > 0) $famid = $lfamid; // set local default family identifier
+            if ($lfldid > 0) $dfldid = $lfldid; // set local default family folder identifier
             rewinddir($handle);
             /* This is the correct way to loop over the directory. */
             $defaultdoc = createDoc($dbaccess, $famid);

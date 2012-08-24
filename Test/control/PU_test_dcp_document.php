@@ -141,7 +141,7 @@ class TestDocument extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("error when create document BASE : %s", $err));
         $this->assertTrue(($nd->id > 0) , sprintf("no id when create document BASE"));
         if ($name) {
-            $err = $nd->setLogicalIdentificator($name);
+            $err = $nd->setLogicalName($name);
             $this->assertEmpty($err, sprintf("cannot set name %s : %s", $name, $err));
         }
         $err = $nd->delete();
@@ -178,7 +178,7 @@ class TestDocument extends TestCaseDcpCommonFamily
         
         $this->assertTrue(($nd->id > 0) , sprintf("no id when create document BASE"));
         if ($name) {
-            $err = $nd->setLogicalIdentificator($name);
+            $err = $nd->setLogicalName($name);
             $this->assertEmpty($err, sprintf("cannot set name %s : %s", $name, $err));
         }
         $err = $nd->delete(true);

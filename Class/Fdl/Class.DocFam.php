@@ -397,7 +397,7 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return family parameter
      *
-     * @param string $idp parameter identificator
+     * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      * @return string parameter value
      */
@@ -428,7 +428,7 @@ create unique index idx_idfam on docfam(id);";
      * return the value of an list parameter document
      *
      * the parameter must be in an array or of a type '*list' like enumlist or textlist
-     * @param string $idAttr identificator of list parameter
+     * @param string $idAttr identifier of list parameter
      * @param string $def default value returned if parameter not found or if is empty
      * @return array the list of parameter values
      */
@@ -442,7 +442,7 @@ create unique index idx_idfam on docfam(id);";
     /**
      * set family parameter value
      *
-     * @param string $idp parameter identificator
+     * @param string $idp parameter identifier
      * @param string $val value of the parameter
      * @return void
      */
@@ -457,7 +457,7 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return family default value
      *
-     * @param string $idp parameter identificator
+     * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      * @return string default value
      */
@@ -488,7 +488,7 @@ create unique index idx_idfam on docfam(id);";
     /**
      * set family default value
      *
-     * @param string $idp parameter identificator
+     * @param string $idp parameter identifier
      * @param string $val value of the default
      * @return void
      */
@@ -501,7 +501,7 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return family default value
      *
-     * @param string $idp parameter identificator
+     * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      * @return string default value
      */
@@ -588,7 +588,7 @@ create unique index idx_idfam on docfam(id);";
      * set family default value
      *
      * @param $X
-     * @param string $idp parameter identificator
+     * @param string $idp parameter identifier
      * @param string $val value of the default
      * @return void
      */

@@ -29,7 +29,7 @@ function setlogicalname(Action & $action)
             $action->addWarningMsg(sprintf(_("Document %s is not alive") , $doc->getTitle()));
         } else {
             $oldName = $doc->name;
-            $err = $doc->setLogicalIdentificator($name, true);
+            $err = $doc->setLogicalName($name, true);
             if ($err != "") $action->addWarningMsg($err);
             else {
                 if ($oldName) {

@@ -511,7 +511,7 @@ class NormalAttribute extends BasicAttribute
             case 'image':
             case 'file':
                 if (preg_match(PREGEXPFILE, $v, $reg)) {
-                    if ($opt->withIdentificator) $vid = $reg[2];
+                    if ($opt->withIdentifier) $vid = $reg[2];
                     else $vid = '';
                     $mime = $reg[1];
                     $name = $reg[3];
@@ -557,13 +557,13 @@ class NormalAttribute extends BasicAttribute
                             }
                         }
                         if ($info["name"]) {
-                            if ($opt->withIdentificator) {
+                            if ($opt->withIdentifier) {
                                 return sprintf('<%s id="%s" name="%s">%s</%s>', $this->id, $docid, $info["name"], $this->encodeXml($info["title"]) , $this->id);
                             } else {
                                 return sprintf('<%s name="%s">%s</%s>', $this->id, $info["name"], $this->encodeXml($info["title"]) , $this->id);
                             }
                         } else {
-                            if ($opt->withIdentificator) {
+                            if ($opt->withIdentifier) {
                                 return sprintf('<%s id="%s">%s</%s>', $this->id, $docid, $this->encodeXml($info["title"]) , $this->id);
                             } else {
                                 
@@ -586,7 +586,7 @@ class NormalAttribute extends BasicAttribute
                                 if ($lName) $foundName = true;
                             }
                             $sIds = '';
-                            if ($opt->withIdentificator) {
+                            if ($opt->withIdentifier) {
                                 $sIds = sprintf('id="%s"', implode(',', $mId));
                             }
                             $sName = '';
@@ -1070,6 +1070,9 @@ class NormalAttribute extends BasicAttribute
                 if (($this->phpfile != "") && ($this->phpfile != "-")) {
                     // for dynamic  specification of kind attributes
                     if (!include_once ("EXTERNALS/$this->phpfile")) {
+                        /**
+                         * @var Action $action
+                         */
                         global $action;
                         $action->exitError(sprintf(_("the external pluggin file %s cannot be read") , $this->phpfile));
                     }
@@ -1460,7 +1463,7 @@ class NormalAttribute extends BasicAttribute
         /**
          * @var bool
          */
-        public $withIdentificator;
+        public $withIdentifier;
         /**
          * @var bool
          */

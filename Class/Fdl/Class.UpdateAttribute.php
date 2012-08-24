@@ -138,7 +138,7 @@ class UpdateAttribute
     protected function executeProfiling(array $ids)
     {
         $dl = new DocumentList();
-        $dl->addDocumentIdentificators($ids);
+        $dl->addDocumentIdentifiers($ids);
         $c = 0;
         $nbR = count($ids);
         /**
@@ -611,7 +611,7 @@ class UpdateAttribute
         return $values;
     }
     /**
-     * fet initial document identificator from name
+     * fet initial document identifier from name
      * @param string $name
      * @return int
      */

@@ -21,7 +21,7 @@ include_once ("DAV/Class.FdlDav.php");
 /**
  * Get DAV session id for current user
  * @param Action &$action current action
- * @param string $vid identificator for file <vaultid>-<docid>
+ * @param string $vid identifier for file <vaultid>-<docid>
  */
 function getsessionid(&$action)
 {

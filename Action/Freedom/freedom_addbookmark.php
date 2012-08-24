@@ -19,7 +19,7 @@ include_once ("FDL/Class.Doc.php");
 /**
  * Add folder bookmark
  * @param Action &$action current action
- * @global dirid Http var : folder identificator to add
+ * @global dirid Http var : folder identifier to add
  */
 function freedom_addbookmark(&$action)
 {

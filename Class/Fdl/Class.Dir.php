@@ -120,7 +120,7 @@ class Dir extends PDir
     }
     /**
      * virtual method use before insert document in folder
-     * @param int $docid document identificator to insert
+     * @param int $docid document identifier to insert
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message if not empty the insert will be aborted
      */
@@ -129,7 +129,7 @@ class Dir extends PDir
     }
     /**
      * virtual method use after insert document in folder
-     * @param int $docid document identificator to insert
+     * @param int $docid document identifier to insert
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message
      */
@@ -139,7 +139,7 @@ class Dir extends PDir
     /**
      * virtual method use after insert multiple document in this folder
      * must be redefined to optimize algorithm
-     * @param array $tdocid array of document identificator to insert
+     * @param array $tdocid array of document identifier to insert
      * @return string error message
      */
     function postMInsertDoc($tdocid)
@@ -150,7 +150,7 @@ class Dir extends PDir
     }
     /**
      * virtual method use after unlink document in folder
-     * @param int $docid document identificator to unlink
+     * @param int $docid document identifier to unlink
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message if not empty the insert will be aborted
      */
@@ -159,7 +159,7 @@ class Dir extends PDir
     }
     /**
      * virtual method use after unlink document in folder
-     * @param int $docid document identificator to unlink
+     * @param int $docid document identifier to unlink
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message
      */
@@ -372,7 +372,7 @@ class Dir extends PDir
          * be carreful : not verify restriction folders
          * to be use when many include (verification constraint must ne set before by caller)
          *
-         * @param array $tdocids identificator documents  for the insertion
+         * @param array $tdocids identifier documents  for the insertion
          * @return string error message, if no error empty string
          */
         function QuickInsertMSDocId($tdocids)
@@ -398,12 +398,12 @@ class Dir extends PDir
          * be carreful : not verify restriction folders
          * to be use when many include (verification constraint must ne set before by caller)
          *
-         * @param int $docid identificator document  for the insertion  (must be initial id)
+         * @param int $docid identifier document  for the insertion  (must be initial id)
          * @return string error message, if no error empty string
          */
         function insertFolder($docid)
         {
-            if (!is_numeric($docid)) return sprintf(_("Dir::insertFolder identificator [%s] must be numeric") , $docid);
+            if (!is_numeric($docid)) return sprintf(_("Dir::insertFolder identifier [%s] must be numeric") , $docid);
             if ($this->isLocked(true)) return sprintf(_("folder is locked. Cannot containt modification"));
             // need this privilege
             $err = $this->Control("modify");
@@ -504,7 +504,7 @@ class Dir extends PDir
         }
         /**
          * move a document from me to a folder
-         * @param integer $docid the document identificator to move
+         * @param integer $docid the document identifier to move
          * @param integer $movetoid target destination
          * @return string error message (empty if null)
          */
@@ -650,7 +650,7 @@ class Dir extends PDir
          * return document includes in folder
          * @param bool $controlview if false all document are returned else only visible for current user  document are return
          * @param array $filter to add list sql filter for selected document
-         * @param int $famid family identificator to restrict search
+         * @param int $famid family identifier to restrict search
          * @param string $qtype type os result TABLE|LIST|ITEM
          * @return array array of document array
          */

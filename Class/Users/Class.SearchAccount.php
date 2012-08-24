@@ -227,7 +227,7 @@ class SearchAccount
             }
             $dl = new DocumentList();
             
-            $dl->addDocumentIdentificators($ids);
+            $dl->addDocumentIdentifiers($ids);
             return $dl;
         }
     }

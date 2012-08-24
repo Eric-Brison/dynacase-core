@@ -22,10 +22,10 @@ include_once ("WHAT/Class.TEClient.php");
 /**
  * Modify the attrid_txt attribute
  * @param Action &$action current action
- * @global docid Http var : document identificator to modify
+ * @global docid Http var : document identifier to modify
  * @global attrid Http var : the id of attribute to modify
  * @global index Http var : the range in case of array
- * @global tid Http var : task identificator
+ * @global tid Http var : task identifier
  *
  */
 function settxtfile(Action & $action)
@@ -36,7 +36,7 @@ function settxtfile(Action & $action)
     $tid = $action->getArgument("tid");
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $err = '';
-    if (!$tid) $err = _("no task identificator found");
+    if (!$tid) $err = _("no task identifier found");
     else {
         $ot = new TransformationEngine($action->getParam("TE_HOST") , $action->getParam("TE_PORT"));
         

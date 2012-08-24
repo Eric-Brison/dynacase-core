@@ -26,12 +26,12 @@ class DocAttrLDAP extends DbObj
         "index"
     );
     /**
-     * identificator of the family document
+     * identifier of the family document
      * @public int
      */
     public $famid;
     /**
-     * identificator of the LDAP attribute
+     * identifier of the LDAP attribute
      * @public string
      */
     public $ldapname;

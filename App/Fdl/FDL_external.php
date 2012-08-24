@@ -39,7 +39,7 @@ function vault_filename($th, $fileid)
  * Functions used for edition help
  *
  * @param string $dbaccess database specification
- * @param int $docid identificator document
+ * @param int $docid identifier document
  * @return array first item : the title
  */
 function gettitle($dbaccess, $docid)

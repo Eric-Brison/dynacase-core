@@ -20,7 +20,7 @@ include_once ("DATA/Class.Collection.php");
 /**
  * Retrieve and set documents
  * @param Action &$action current action
- * @global id Http var : document identificator
+ * @global id Http var : document identifier
  */
 function document(Action & $action)
 {
@@ -68,7 +68,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
 {
     $returntype = "json";
     $doc = null;
-    $out = false;
+    $out = new stdClass();
     switch ($method) {
         case 'getselection':
             $config = getHttpVars("config");
@@ -261,7 +261,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             $linkfld = (getHttpVars("linkFolder", "true") == "true");
             $copyfiles = (getHttpVars("cloneFiles", "false") == "true");
             $title = getHttpVars("title");
-            if (!$id) $out->error = _("no identificator set");
+            if (!$id) $out->error = _("no identifier set");
             else {
                 $doc = new Fdl_Document($id);
                 if (!$doc->error) {
@@ -276,7 +276,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
         case 'send':
         case 'senddocument':
             if (!$id) {
-                $out->error = _("no identificator set");
+                $out->error = _("no identifier set");
             } else {
                 $to = getHttpVars("to");
                 $cc = getHttpVars("cc");
@@ -294,7 +294,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             if ($id) {
                 $doc = new Fdl_Document($id);
                 $doc->setValueFromHttpVars();
-                $doc->setLogicalIdentificator();
+                $doc->setLogicalName();
                 $doc->save();
             } else {
                 $doc = new Fdl_Document();
@@ -302,7 +302,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
                 $temporary = (getHttpVars("temporary", "false") == "true");
                 $doc->createDocument($famid, $temporary);
                 $doc->setValueFromHttpVars();
-                $doc->setLogicalIdentificator();
+                $doc->setLogicalName();
                 $doc->create(); // really set in database
                 
             }
@@ -318,7 +318,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             if (!$doc->error) {
                 $doc->setValueFromHttpVars();
                 $doc->setFileValueFromHttpVars();
-                $doc->setLogicalIdentificator();
+                $doc->setLogicalName();
                 $callback = getHttpVars("callid");
                 $doc->save();
                 if ((!$doc->error) && $autounlock) $doc->unlock(true);

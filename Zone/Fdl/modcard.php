@@ -256,7 +256,7 @@ function setPostVars(Doc & $doc, &$info = array())
     
     foreach ($_POST as $k => $v) {
         
-        if ($k[0] == "_") // freedom attributes  begin with  _
+        if ($k[0] == "_") // document attributes  begin with  _
         {
             
             $attrid = substr($k, 1);
@@ -267,7 +267,25 @@ function setPostVars(Doc & $doc, &$info = array())
                 if ((count($v) == 0)) $value = " "; // delete column
                 else $value = $v;
                 //$value = array_values($value);
-                
+                if (count($v) == 1 && $v[0] === '' && (count($doc->getTValue($attrid)) == 0)) {
+                    $value = '';
+                    $oa = $doc->getAttribute($attrid);
+                    if ($oa && $oa->fieldSet && $oa->fieldSet->type == "array") {
+                        /**
+                         * @var NormaLAttribute $oa
+                         */
+                        $arrayAids = $doc->attributes->getArrayElements($oa->fieldSet->id);
+                        // detect if it is a empty row => in this case
+                        $canCut = true;
+                        foreach ($arrayAids as $taid) {
+                            if (!empty($_POST['_' . $taid->id][0])) {
+                                $canCut = false;
+                                break;
+                            }
+                        }
+                        if ($canCut) $value = '';
+                    }
+                }
             } else $value = $v;
             
             if ($value == "") $doc->SetValue($attrid, DELVALUE);
@@ -331,7 +349,9 @@ function setPostVars(Doc & $doc, &$info = array())
  */
 function insert_file(Doc & $doc, $attrid, $strict = false)
 {
-    
+    /**
+     * @var Action $action
+     */
     global $action;
     global $_FILES;
     

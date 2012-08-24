@@ -125,7 +125,7 @@ Fdl.SearchDocument.prototype.getFamilies = function(config) {
  */
 Fdl.SearchDocument.prototype.getSubFamilies = function(config) {
     if ((! config) || (!config.famid)) {
-    	this.context.setErrorMessage('no family identificator set');
+    	this.context.setErrorMessage('no family identifier set');
     	return null;
     }
     var data=this.context.retrieveData({app:'DATA',action:'DOCUMENT',method:'getsubfamilies'},config);

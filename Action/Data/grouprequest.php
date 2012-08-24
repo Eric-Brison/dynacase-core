@@ -20,7 +20,7 @@ include_once ("DATA/document.php");
 /**
  * Retrieve and set documents
  * @param Action &$action current action
- * @global id Http var : document identificator
+ * @global id Http var : document identifier
  */
 function grouprequest(Action & $action)
 {

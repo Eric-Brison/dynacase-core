@@ -614,7 +614,7 @@ Fdl.Context.prototype.stringToFunction = function(str) {
  *            config
  *            <p>
  *            <ul>
- *            <li><b>id</b> String/Number the document identificator to
+ *            <li><b>id</b> String/Number the document identifier to
  *            retrieve</li>
  *            <li><b>latest</b> Boolean (Optional) the latest revision
  *            (default is true)
@@ -925,7 +925,7 @@ Fdl.Context.prototype.getBasketFolder = function(config) {
  * @param {Object}
  *            config
  *            <ul>
- *            <li><b>familyId : </b> The family identificator for the new document</li>
+ *            <li><b>familyId : </b> The family identifier for the new document</li>
  *            <li><b>temporary : </b> (optional) boolean set to true if want only a working document</li>
  *            </ul>
  * @return {Fdl.Document} a new document
@@ -981,7 +981,7 @@ Fdl.Context.prototype.getApplication = function(config) {
 };
 /**
  * 
- * @param config .id the param identificator
+ * @param config .id the param identifier
  * <ul><li><b>id : </b>the param identificator</li>
  * </ul>
  * @return {string} the value of parameter
@@ -996,7 +996,7 @@ Fdl.Context.prototype.getParameter = function (config) {
   };
 /**
  * 
- * @param config .id the param identificator
+ * @param config .id the param identifier
  * <ul><li><b>id : </b>the param identificator</li>
  *     <li><b>value : </b>the value</li>
  * </ul>

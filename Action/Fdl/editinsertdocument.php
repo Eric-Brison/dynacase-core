@@ -20,7 +20,7 @@ include_once ("FDL/Class.Dir.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global id Http var : folder document identificator to see
+ * @global id Http var : folder document identifier to see
  * @global famid Http var : family to use for search
  */
 function editinsertdocument(&$action)
