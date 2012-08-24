@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-23 15:27+0200\n"
-"PO-Revision-Date: 2012-08-23 15:29+0200\n"
+"POT-Creation-Date: 2012-08-24 11:29+0200\n"
+"PO-Revision-Date: 2012-08-24 11:31+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1181,6 +1181,9 @@ msgstr "Cliquer ici pour se déconnecter"
 
 msgid "Click to access to the document"
 msgstr "Cliquer pour accéder au document"
+
+msgid "Click to clear message"
+msgstr "Cliquer pour effacer le message"
 
 msgid "Click to view menu"
 msgstr "Cliquer pour voir le menu"
@@ -5100,8 +5103,8 @@ msgstr "le contenu du fichier contient l'expression"
 msgid "content file word"
 msgstr "le contenu du fichier contient les mots"
 
-msgid "control :: user identificator is null"
-msgstr "control :: identifiant de l'utilisateur est vide"
+msgid "control :: user identifier is null"
+msgstr "control :: identifiant utilisateur est nul"
 
 msgid "control view"
 msgstr "contrôle de vues"
@@ -5973,11 +5976,14 @@ msgstr "famille %s non trouvée"
 
 #, c-format
 msgid "family %s not implement MailRecipent - missing getMail method"
-msgstr "La famille %s n'implémente pas MailRecipient - il manque la méthode getMail"
+msgstr ""
+"La famille %s n'implémente pas MailRecipient - il manque la méthode getMail"
 
 #, c-format
 msgid "family %s not implement MailRecipent - missing getMailAttribute"
-msgstr "La famille %s n'implémente pas MailRecipient - il manque la méthode getMailAttribute"
+msgstr ""
+"La famille %s n'implémente pas MailRecipient - il manque la méthode "
+"getMailAttribute"
 
 msgid "family id"
 msgstr "Identifiant de la famille"
@@ -9303,6 +9309,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Change state to %s"
 #~ msgstr "Changement d'état vers %s"
 
+#~ msgid "Clear message"
+#~ msgstr "Effacer le message"
+
 #~ msgid "Computed from"
 #~ msgstr "Calculé depuis"
 
@@ -9587,6 +9596,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "contact"
 #~ msgstr "Contact..."
+
+#~ msgid "control :: user identificator is null"
+#~ msgstr "control :: identifiant de l'utilisateur est vide"
 
 #~ msgid "current user account"
 #~ msgstr "mon compte"

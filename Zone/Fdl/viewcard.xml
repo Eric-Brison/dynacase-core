@@ -1,7 +1,7 @@
 
 
 [IFNOT MAILVIEW]
-<div id="error" class="COREError" onmouseup="this.style.visibility='hidden'"  onmouseover="this.className='COREErrorBg'"  onmouseout="this.className='COREError'"
+<div id="error" class="COREErrorBg" title="[TEXT:Click to clear message]" onmouseup="this.style.visibility='hidden'"
      style="display:none;position:absolute;top:0px; left:0px;">
 <div  class="CoreTextError">[TEXTERROR]</div>
 </div>

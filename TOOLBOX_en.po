@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-23 15:27+0200\n"
+"POT-Creation-Date: 2012-08-24 11:29+0200\n"
 "PO-Revision-Date: 2012-07-31 16:19+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1232,6 +1232,9 @@ msgstr ""
 #, fuzzy
 msgid "Click to access to the document"
 msgstr "Category"
+
+msgid "Click to clear message"
+msgstr ""
 
 msgid "Click to view menu"
 msgstr ""
@@ -5302,7 +5305,7 @@ msgstr "Organisation"
 msgid "content file word"
 msgstr "Start search"
 
-msgid "control :: user identificator is null"
+msgid "control :: user identifier is null"
 msgstr ""
 
 #, fuzzy

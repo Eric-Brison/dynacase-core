@@ -235,12 +235,14 @@ color: [CORE_TEXTFGCOLOR];
   font-weight: bold;
   padding:20px;
   background:[CORE_BGCOLOR];
-
   border:solid 1px;
   text-align:center;
   z-index: 2;
+  cursor:pointer;
 }
-
+.COREErrorBg:hover {
+    border:inset 1px;
+}
 IMG.Fade {
 	[IF ISIE]filter:alpha(opacity=50);[ENDIF ISIE]
 	[IFNOT ISIE]opacity:.5;[ENDIF ISIE]
