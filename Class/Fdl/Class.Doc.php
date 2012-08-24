@@ -5364,7 +5364,7 @@ create unique index i_docir on doc(initid, revision);";
                     $ajs.= sprintf(' documentId="%s" ', $id);
                     if ($viewIcon) {
                         simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
-                        $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14)) . $title;
+                        $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
                     }
                     $a = "<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
                 }
