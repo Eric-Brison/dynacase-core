@@ -142,6 +142,9 @@ class DocCtrl extends DocLDAP
      */
     public $dprofid;
     public $views;
+    /**
+     * @var ADoc
+     */
     public $attributes = null;
     public $doctype;
     /**
@@ -1017,6 +1020,9 @@ class DocCtrl extends DocLDAP
      */
     static public function canExecute($appname, $actname)
     {
+        /**
+         * @var Action $action
+         */
         global $action;
         
         $err = $action->canExecute($actname, $appname);

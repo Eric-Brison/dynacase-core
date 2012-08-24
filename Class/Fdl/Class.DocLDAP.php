@@ -78,6 +78,9 @@ class DocLDAP extends DbObj
      */
     function SetLdapParam()
     {
+        /**
+         * @var Action $action
+         */
         global $action;
         $this->serveur = $action->GetParam("LDAP_SERVEUR");
         $this->port = $action->GetParam("LDAP_PORT");
@@ -95,7 +98,7 @@ class DocLDAP extends DbObj
     function getDNs()
     {
         if ($this->ldapdn == "") return array();
-        return $this->_val2array($this->ldapdn);
+        return Doc::_val2array($this->ldapdn);
     }
     /**
      * set new DNs created in LDAP database from this document
@@ -148,12 +151,13 @@ class DocLDAP extends DbObj
     }
     /**
      * delete LDAP cards of document
-     * @return void
+     * @return string error message
      */
     function DeleteLdapCard()
     {
-        if (!$this->UseLdap()) return;
-        if (!$this->useldap) return;
+        $err = '';
+        if (!$this->UseLdap()) return '';
+        if (!$this->useldap) return '';
         
         if (($this->serveur != "") && ($this->id > 0)) {
             $ds = ldap_connect($this->serveur, $this->port);
@@ -168,6 +172,7 @@ class DocLDAP extends DbObj
                 ldap_close($ds);
             }
         }
+        return $err;
     }
     /**
      * get DN of document
@@ -298,7 +303,7 @@ class DocLDAP extends DbObj
     function ModifyLdapCard($tinfoldap)
     {
         if (!$this->UseLdap()) return false;
-        if (!$this->useldap) return;
+        if (!$this->useldap) return false;
         $retour = "";
         if ($this->serveur != "") {
             if ($this->OrgInit()) {
@@ -374,6 +379,7 @@ class DocLDAP extends DbObj
                 "ou" => "$n"
             ))) return ldap_error($ds);
         }
+        return '';
     }
 }
 ?>
