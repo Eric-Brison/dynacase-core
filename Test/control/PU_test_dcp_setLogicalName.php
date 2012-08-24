@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace Dcp\Pu;
 /**
@@ -37,14 +37,14 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
         $this->assertTrue($doc->isAlive() , sprintf("document %s not alive", $doc->id));
         
-        $err = $doc->setLogicalIdentificator($oldname);
+        $err = $doc->setLogicalName($oldname);
         $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $oldname, $doc->id, $err));
         clearCacheDoc();
         
         $new_doc = new_Doc(self::$dbaccess, $oldname);
         $this->assertTrue($new_doc->isAlive() , sprintf("document %s not alive", $oldname));
         
-        $err = $doc->setLogicalIdentificator($newname, true);
+        $err = $doc->setLogicalName($newname, true);
         $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $newname, $oldname, $err));
         clearCacheDoc();
         

@@ -778,12 +778,12 @@ class Fdl_Document
         }
         return true;
     }
-    function setLogicalIdentificator()
+    function setLogicalName()
     {
         if ($this->doc && $this->doc->name == '') {
             $name = getHttpVars("name");
             if ($name) {
-                $err = $this->doc->setLogicalIdentificator($name);
+                $err = $this->doc->setLogicalName($name);
                 if ($err) {
                     $this->setError($err);
                     return false;

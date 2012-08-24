@@ -68,7 +68,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
 {
     $returntype = "json";
     $doc = null;
-    $out = false;
+    $out = new stdClass();
     switch ($method) {
         case 'getselection':
             $config = getHttpVars("config");
@@ -294,7 +294,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             if ($id) {
                 $doc = new Fdl_Document($id);
                 $doc->setValueFromHttpVars();
-                $doc->setLogicalIdentificator();
+                $doc->setLogicalName();
                 $doc->save();
             } else {
                 $doc = new Fdl_Document();
@@ -302,7 +302,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
                 $temporary = (getHttpVars("temporary", "false") == "true");
                 $doc->createDocument($famid, $temporary);
                 $doc->setValueFromHttpVars();
-                $doc->setLogicalIdentificator();
+                $doc->setLogicalName();
                 $doc->create(); // really set in database
                 
             }
@@ -318,7 +318,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             if (!$doc->error) {
                 $doc->setValueFromHttpVars();
                 $doc->setFileValueFromHttpVars();
-                $doc->setLogicalIdentificator();
+                $doc->setLogicalName();
                 $callback = getHttpVars("callid");
                 $doc->save();
                 if ((!$doc->error) && $autounlock) $doc->unlock(true);

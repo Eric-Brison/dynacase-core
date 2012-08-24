@@ -305,16 +305,28 @@ Fdl.Document.prototype = {
     	return true;
     },
     /**
-     * Modify the logical identificator of a document
+     * Modify the logical identifier of a document
      * the document is not updated in database server until it will saved
      * @param {string} name the new identificator
      * @return {boolean} true if succeed
      */
-    setLogicalIdentificator: function(name) {
+    setLogicalName: function(name) {
     	this._data.properties['name']=name;
     	this._mvalues['name']=name;
     	return true;
     },
+    /**
+        * Modify the logical identifier of a document
+        * the document is not updated in database server until it will saved
+        * @param {string} name the new identificator
+        * @deprecated
+        * @return {boolean} true if succeed
+        */
+       setLogicalIdentificator: function(name) {
+       	this._data.properties['name']=name;
+       	this._mvalues['name']=name;
+       	return true;
+       },
     /**
      * Verify if an attribute value has changed by a setValue
      * not verify from database
