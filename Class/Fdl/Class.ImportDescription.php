@@ -236,8 +236,7 @@ class importDocumentDescription
                     // -----------------------------------
                     
                 case "TAG":
-                    $this->doc->AddATag($data[1]);
-                    $this->tcr[$this->nLine]["msg"] = sprintf(_("change application tag to '%s'") , $this->doc->atags);
+                    $this->doATag($data);
                     break;
                     // -----------------------------------
                     
@@ -308,6 +307,17 @@ class importDocumentDescription
         return $this->tcr;
     }
     /**
+     * add application tag
+     * @param array $data
+     */
+    protected function doATag(array $data)
+    {
+        
+        $err = $this->doc->AddATag($data[1]);
+        if (!$err) $this->tcr[$this->nLine]["msg"] = sprintf(_("change application tag to '%s'") , $this->doc->atags);
+        else $this->tcr[$this->nLine]["err"] = "ATAG:" . $err;
+    }
+    /**
      * analyze BEGIN
      * @param array $data line of description file
      */
@@ -344,7 +354,8 @@ class importDocumentDescription
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("update %s family %s") , $data[2], $data[5]);
                 }
                 if ($data[1] && ($data[1] != '-')) {
-                    if (is_numeric($data[1])) $this->doc->fromid = $data[1];
+                    if ($data[1] == '--') $this->doc->fromid = 0;
+                    else if (is_numeric($data[1])) $this->doc->fromid = $data[1];
                     else $this->doc->fromid = getFamIdFromName($this->dbaccess, $data[1]);
                 }
                 if ($data[2] && ($data[2] != '-')) $this->doc->title = $data[2];

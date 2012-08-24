@@ -42,6 +42,9 @@ PGSERVICE="$pgservice_core" psql -t -c "update docattr set type= 'text' where ty
 PGSERVICE="$pgservice_core" psql -t -c "update users set accounttype='U' where accounttype is null and (isgroup is null or isgroup != 'Y');"
 PGSERVICE="$pgservice_core" psql -t -c "update users set accounttype='G' where accounttype is null and isgroup = 'Y';"
 PGSERVICE="$pgservice_core" psql -t -c "update doc128 set us_passwd=null;"
+PGSERVICE="$pgservice_core" psql -t -c "ALTER TABLE doc128 NO INHERIT doc120;"
+PGSERVICE="$pgservice_core" psql -t -c "ALTER TABLE doc128 INHERIT doc;"
+PGSERVICE="$pgservice_core" psql -t -c "update docfam set fromid=0 where id=128;"
 PGSERVICE="$pgservice_core" psql -t -c "drop TRIGGER tinitacl on docperm;"
 PGSERVICE="$pgservice_core" psql -f "$wpub/FDL/fdl.sql"
 

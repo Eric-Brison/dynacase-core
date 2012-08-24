@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-02 15:57+0200\n"
-"PO-Revision-Date: 2012-08-02 15:58+0200\n"
+"POT-Creation-Date: 2012-08-23 15:27+0200\n"
+"PO-Revision-Date: 2012-08-23 15:29+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -357,10 +357,6 @@ msgid "%s mask"
 msgstr "masque %s"
 
 #, c-format
-msgid "%s migrated\n"
-msgstr "%s migré\n"
-
-#, c-format
 msgid "%s needed\n"
 msgstr "%s doit être rempli\n"
 
@@ -547,10 +543,6 @@ msgstr "Droits non initialisés"
 
 msgid "Action"
 msgstr "Action"
-
-#, c-format
-msgid "Action '%s' not declared for application %s (%d)"
-msgstr "Action '%s' non déclarée pour l'application %s (%d)"
 
 msgid "Action to do"
 msgstr "Action à faire"
@@ -1520,10 +1512,6 @@ msgid "Document %s is not alive"
 msgstr "Le document [%s] n'est pas vivant"
 
 #, c-format
-msgid "Document %s is not tagable"
-msgstr "Le document %s ne peut pas avoir de tag"
-
-#, c-format
 msgid "Document %s umounted"
 msgstr "Document %s enlevé"
 
@@ -1549,9 +1537,6 @@ msgstr "Création de document"
 
 msgid "Document filter"
 msgstr "Filtre sur le document"
-
-msgid "Document id not found"
-msgstr "L'identifiant du document est introuvable"
 
 #, c-format
 msgid "Document inserted in %s folder"
@@ -5545,10 +5530,6 @@ msgid "document %s is not a folder"
 msgstr "le document %s n'est pas un dossier"
 
 #, c-format
-msgid "document %s is not a group"
-msgstr "le document %s n'est pas un groupe"
-
-#, c-format
 msgid "document %s not exist"
 msgstr "document %s n'existe pas"
 
@@ -5989,6 +5970,14 @@ msgstr "la famille %s n'existe pas"
 #, c-format
 msgid "family %s not found"
 msgstr "famille %s non trouvée"
+
+#, c-format
+msgid "family %s not implement MailRecipent - missing getMail method"
+msgstr "La famille %s n'implémente pas MailRecipient - il manque la méthode getMail"
+
+#, c-format
+msgid "family %s not implement MailRecipent - missing getMailAttribute"
+msgstr "La famille %s n'implémente pas MailRecipient - il manque la méthode getMailAttribute"
 
 msgid "family id"
 msgstr "Identifiant de la famille"
@@ -7232,9 +7221,6 @@ msgstr "pas d'état spécifié"
 msgid "no subject"
 msgstr "pas de sujet"
 
-msgid "no tag specified"
-msgstr "Aucun tag spécifié"
-
 msgid "no task identificator"
 msgstr "Pas d'identificateur de tâche trouvé"
 
@@ -7246,14 +7232,6 @@ msgstr "Pas de modèle défini"
 
 msgid "no user tag specified"
 msgstr "pas d'étiquette utilisateur spécifiée"
-
-#, c-format
-msgid "no valid document group : %s"
-msgstr "groupe de document invalide : %s"
-
-#, c-format
-msgid "no valid group : %s"
-msgstr "groupe invalide : %s"
 
 msgid "no value include"
 msgstr "aucune valeur contient"
@@ -7281,6 +7259,9 @@ msgstr "pas de zone spécifiée"
 
 msgid "none"
 msgstr "Aucun"
+
+msgid "none families are described to be used as recipient"
+msgstr "Aucune famille n'est déclarée utilisable comme destinataire"
 
 msgid "noone document"
 msgstr "Aucun document"
@@ -9272,6 +9253,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "%d uppercase alpha characters"
 #~ msgstr "%d lettres majuscules"
 
+#~ msgid "%s migrated\n"
+#~ msgstr "%s migré\n"
+
 #~ msgid "Access To All Users"
 #~ msgstr "Accès à tous les utilisateurs"
 
@@ -9292,6 +9276,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Account"
 #~ msgstr "Compte"
+
+#~ msgid "Action '%s' not declared for application %s (%d)"
+#~ msgstr "Action '%s' non déclarée pour l'application %s (%d)"
 
 #~ msgid "Add new card (duplicate title)"
 #~ msgstr "Ajout nouvelle carte (titre dupliqué)"
@@ -9321,6 +9308,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Coordonates"
 #~ msgstr "Coordonnées"
+
+#~ msgid "Document %s is not tagable"
+#~ msgstr "Le document %s ne peut pas avoir de tag"
+
+#~ msgid "Document id not found"
+#~ msgstr "L'identifiant du document est introuvable"
 
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
@@ -9616,6 +9609,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "direct"
 #~ msgstr "direct"
 
+#~ msgid "document %s is not a group"
+#~ msgstr "le document %s n'est pas un groupe"
+
 #~ msgid "domain"
 #~ msgstr "Domaine"
 
@@ -9834,8 +9830,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "no mail"
 #~ msgstr "pas d'email"
 
+#~ msgid "no tag specified"
+#~ msgstr "Aucun tag spécifié"
+
 #~ msgid "no trash image"
 #~ msgstr "image de la poubelle non trouvée"
+
+#~ msgid "no valid document group : %s"
+#~ msgstr "groupe de document invalide : %s"
+
+#~ msgid "no valid group : %s"
+#~ msgstr "groupe invalide : %s"
 
 #~ msgid "no vcard file specified"
 #~ msgstr "pas de fichier vcard spécifié"

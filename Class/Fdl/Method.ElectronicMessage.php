@@ -33,9 +33,8 @@ class _SENTMESSAGE extends Doc
         $filter1 = "us_mail='" . pg_escape_string($from) . "'";
         $filter2 = "us_homemail='" . pg_escape_string($from) . "'";
         $filter[] = "$filter1 or $filter2";
-        $tdir = getChildDoc($this->dbaccess, 0, "0", 1, $filter, 1, "LIST", "USER");
+        $tdir = getChildDoc($this->dbaccess, 0, "0", 1, $filter, 1, "LIST", "IUSER");
         if (count($tdir) == 1) {
-            
             $vphoto = $tdir[0]->getValue("us_photo");
             if ($vphoto) {
                 $photo = $tdir[0]->GetHtmlAttrValue("us_photo");

@@ -48,7 +48,7 @@ function viewloading(event) {
 
  </head>
 
-<body class="freedom" 
+<body class="document"
       onLoad="resizeInputFields()"
       onUnLoad="closechoose()"
       onResize="resizeInputFields()">
@@ -80,7 +80,6 @@ function viewloading(event) {
 </table>
    
 [ZONE FDL:EDITCARD?classid=15]
-
 
 <table cellspacing="0" width="100%">
 <tr class="FREEDOMBack2"><td  colspan="3"  height="1px"></td></tr>
