@@ -72,7 +72,7 @@ if (parseInt('[latestwaskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FD
 <div class="body">
 [ZONEBODYCARD]
 </div>
-
+<iframe name="fhidden" style="display:none" src="[IMG:1x1.gif]"></iframe>
         <!-- FOOTER -->
 <div id="fixtablefoot" class="[IFNOT ISIE]tablefoot [ENDIF ISIE]documentFoot footer">
 [IF HEAD]
