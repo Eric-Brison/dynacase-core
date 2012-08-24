@@ -1187,7 +1187,7 @@ class WDoc extends Doc
     }
     /**
      * get value of instanced document
-     * @param string $attrid attribute identificator
+     * @param string $attrid attribute identifier
      * @param bool $def default value if no value
      * @return string return the value, false if attribute not exist or document not set
      */

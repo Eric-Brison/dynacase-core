@@ -981,7 +981,7 @@ Fdl.Context.prototype.getApplication = function(config) {
 };
 /**
  * 
- * @param config .id the param identificator
+ * @param config .id the param identifier
  * <ul><li><b>id : </b>the param identificator</li>
  * </ul>
  * @return {string} the value of parameter
@@ -996,7 +996,7 @@ Fdl.Context.prototype.getParameter = function (config) {
   };
 /**
  * 
- * @param config .id the param identificator
+ * @param config .id the param identifier
  * <ul><li><b>id : </b>the param identificator</li>
  *     <li><b>value : </b>the value</li>
  * </ul>

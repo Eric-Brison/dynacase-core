@@ -18,12 +18,12 @@ class CheckAccess extends CheckData
      */
     private $appName = '';
     /**
-     * application identificator
+     * application identifier
      * @var int
      */
     private $appId = '';
     /**
-     * user identificator
+     * user identifier
      * @var string
      */
     private $userId = '';

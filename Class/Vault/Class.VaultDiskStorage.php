@@ -169,7 +169,7 @@ class VaultDiskStorage extends DbObj
      * Add new file in VAULT
      * @param string $infile complete server path of file to store
      * @param bool $public_access set true if can be access without any permission
-     * @param int &$id new file identificator
+     * @param int &$id new file identifier
      * @param string $fsname name of the VAULT to store (can be empty=>store in one of available VAULT)
      * @return string error message (empty if OK)
      */
@@ -252,7 +252,7 @@ class VaultDiskStorage extends DbObj
         return $err;
     }
     /**
-     * @param int $id_file vault file identificator
+     * @param int $id_file vault file identifier
      * @param VaultFileInfo $f_infos
      * @param string $teng_lname engine name
      * @return string

@@ -97,7 +97,7 @@ class _IUSER extends Doc implements MailRecipient
     }
     /**
      * get all direct group document identificators of the isuser
-     * @return @array of group document id, the index of array is the system identificator
+     * @return @array of group document id, the index of array is the system identifier
      */
     public function getUserGroups()
     {
@@ -135,7 +135,7 @@ class _IUSER extends Doc implements MailRecipient
     }
     /**
      * get all direct group and parent group document identificators of the isuser
-     * @return @array of group document id the index of array is the system identificator
+     * @return @array of group document id the index of array is the system identifier
      */
     public function getAllUserGroups()
     {

@@ -51,7 +51,7 @@ class DocTitle
      * get all title and access of document's relations
      * @static
      * @param Doc $doc
-     * @param int $uid user identificator
+     * @param int $uid user identifier
      * @return void
      */
     protected static function setRelationCache(Doc $doc, $uid)

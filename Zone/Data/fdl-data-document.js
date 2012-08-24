@@ -159,7 +159,7 @@ Fdl.Document.prototype = {
            var desc=d.getValue('ba_desc');
         }
      * </code></pre>
-     * @param {String} id the attribute identificator
+     * @param {String} id the attribute identifier
      * @param {String} (optional) def the return value if value is empty
      * @return {Any} return value of an attribute's document
      */
@@ -175,7 +175,7 @@ Fdl.Document.prototype = {
    
     /**
      * return all values of the array
-     * @param {String} id the attribute identificator
+     * @param {String} id the attribute identifier
      * @return {Object} array Rows composed of columns (attributes) values
      */
     getArrayValues: function(id) {
@@ -205,7 +205,7 @@ Fdl.Document.prototype = {
     /**
      * Get formated value of a attribute
      * For relation attributes return document title, for enumerate return label
-     * @param {String} id the attribute identificator
+     * @param {String} id the attribute identifier
      * @return {Any} return value of document
      */
     getDisplayValue: function(id,config) {
@@ -307,7 +307,7 @@ Fdl.Document.prototype = {
     /**
      * Modify the logical identifier of a document
      * the document is not updated in database server until it will saved
-     * @param {string} name the new identificator
+     * @param {string} name the new identifier
      * @return {boolean} true if succeed
      */
     setLogicalName: function(name) {
@@ -318,7 +318,7 @@ Fdl.Document.prototype = {
     /**
         * Modify the logical identifier of a document
         * the document is not updated in database server until it will saved
-        * @param {string} name the new identificator
+        * @param {string} name the new identifier
         * @deprecated
         * @return {boolean} true if succeed
         */
@@ -372,7 +372,7 @@ Fdl.Document.prototype = {
     },
     /**
      * get attribute definition
-     * @param {string} id the attribute identificator
+     * @param {string} id the attribute identifier
      * @return {Fdl.Attribute}
      */
     getAttribute: function(id) {
@@ -1154,7 +1154,7 @@ Fdl.Document.prototype.getSearchCriteria = function() {
  * Can be use after a search with hightlight option
  * <pre><code>
  * </code></pre>
- * @param {String} id the attribute identificator
+ * @param {String} id the attribute identifier
  * @return {String} the key is between &gt;b<&lt; HTML tag
  */
 Fdl.Document.prototype.getHighlight = function() { // in case of search with highlight

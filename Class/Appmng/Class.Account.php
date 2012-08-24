@@ -71,7 +71,7 @@ class Account extends DbObj
      */
     public $accounttype;
     /**
-     * @var int the substitute account identificator
+     * @var int the substitute account identifier
      */
     public $substitute;
     /**
@@ -352,7 +352,7 @@ create sequence seq_id_users start 10;";
     }
     /**
      * return display name of a user
-     * @param int $uid user identificator
+     * @param int $uid user identifier
      * @return string|null firstname and lastname or null if not found
      */
     static function getDisplayName($uid)
@@ -768,7 +768,7 @@ union
     }
     /**
      * for group :: get All user & groups ids in all descendant(recursive);
-     * @param int $id group identificator
+     * @param int $id group identifier
      * @return array of account array
      */
     function getRUsersList($id, $r = array())
@@ -794,7 +794,7 @@ union
     }
     /**
      * for group :: get All direct user & groups ids
-     * @param int $id group identificator
+     * @param int $id group identifier
      * @param bool $onlygroup set to true if you want only child groups
      */
     function getUsersGroupList($gid, $onlygroup = false)
@@ -857,7 +857,7 @@ union
     }
     /**
      * get memberof for user without substitutes
-     * @param int $uid if not set it is the current account object else use another account identificator
+     * @param int $uid if not set it is the current account object else use another account identifier
      * @return array
      * @throws Dcp\Exception
      */
@@ -929,7 +929,7 @@ union
      * return list of account (group/role) member for a user
      * return null if user not exists
      * @static
-     * @param int $uid user identificator
+     * @param int $uid user identifier
      * @return array|null
      */
     public static function getUserMemberOf($uid, $strict = false)

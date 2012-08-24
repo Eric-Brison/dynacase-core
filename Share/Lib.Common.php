@@ -71,7 +71,7 @@ function mb_ucfirst($s)
 }
 /**
  * get mail addr of a user
- * @param int $userid system user identificator
+ * @param int $userid system user identifier
  * @param bool $full if true email is like : "John Doe" <John.doe@blackhole.net> else only system email address : john.doe@blackhole.net
  * @return string mail address, false if user not exists
  */

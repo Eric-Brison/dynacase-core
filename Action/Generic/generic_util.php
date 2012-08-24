@@ -80,7 +80,7 @@ function getDefUKey(Action & $action)
 /**
  * memorize search key for generic applications
  * @param Action $action current action
- * @param int fmily identificator
+ * @param int fmily identifier
  * @param string $key key to memorize
  */
 function setUkey(Action & $action, $famid, $key)
@@ -230,7 +230,7 @@ function getFamilyParameters(&$action, $key)
 /**
  * return parameters key search
  * @param action $action current action
- * @param int $famid family identificator
+ * @param int $famid family identifier
  * @param string $key parameter name
  * return string the value of the parameter according to family
  */

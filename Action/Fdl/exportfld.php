@@ -40,8 +40,8 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
     $fldid = GetHttpVars("id", $aflid);
     $wprof = (GetHttpVars("wprof", "N") == "Y"); // with profil
     $wfile = (GetHttpVars("wfile", "N") == "Y"); // with files
-    $wident = (GetHttpVars("wident", "Y") == "Y"); // with numeric identificator
-    $wutf8 = (GetHttpVars("code", "utf8") == "utf8"); // with numeric identificator
+    $wident = (GetHttpVars("wident", "Y") == "Y"); // with numeric identifier
+    $wutf8 = (GetHttpVars("code", "utf8") == "utf8"); // with numeric identifier
     $nopref = (GetHttpVars("wcolumn") == "-"); // no preference read
     $eformat = GetHttpVars("eformat", "I"); // export format
     $selection = GetHttpVars("selection"); // export selection  object (JSON)

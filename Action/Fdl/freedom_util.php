@@ -363,8 +363,8 @@ function getFamFromId($dbaccess, $id)
     return $fromid;
 }
 /**
- * get document title from document identificator
- * @param int|string $id document identificator
+ * get document title from document identifier
+ * @param int|string $id document identifier
  * @param bool $latest set to false for a fixed id or true for latest
  * @return string
  */
@@ -703,10 +703,10 @@ function getInitidFromName($name)
     return $initid;
 }
 /**
- * return the logical name of a document from its initial identificator
+ * return the logical name of a document from its initial identifier
  *
  * @param string $dbaccess database specification
- * @param string $id initial identificator
+ * @param string $id initial identifier
  *
  * @return string empty if not found
  */
@@ -746,7 +746,7 @@ function setFamidInLayout(Action & $action)
 /**
  * return freedom user document in concordance with what user id
  * @param string $dbaccess database specification
- * @param int $userid what user identificator
+ * @param int $userid what user identifier
  * @return Doc the user document
  */
 function getDocFromUserId($dbaccess, $userid)

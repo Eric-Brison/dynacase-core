@@ -20,19 +20,19 @@ include_once ("Class.DbObj.php");
 class DocCount extends DbObj
 {
     public $fields = array(
-        "famid", // family identificator
-        "aid", // attribute identificator
+        "famid", // family identifier
+        "aid", // attribute identifier
         "filter", // sql filter
         "c", // count
         
     );
     /**
-     * family identificator
+     * family identifier
      * @public string
      */
     public $famid;
     /**
-     * attribute identificator
+     * attribute identifier
      * @public string
      */
     public $aid;

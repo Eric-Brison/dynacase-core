@@ -140,7 +140,7 @@ create sequence seq_waittransaction start 1;
      */
     private $refererDoc = null;
     /**
-     * referer document identificator
+     * referer document identifier
      *
      * @var integer
      */

@@ -56,7 +56,7 @@ Fdl.Attribute.prototype = {
 	 */
 	type : null,
 	/**
-	 * family identificator
+	 * family identifier
 	 * 
 	 * @type Number
 	 */

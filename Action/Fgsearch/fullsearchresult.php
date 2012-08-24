@@ -26,7 +26,7 @@ include_once ("FDL/freedom_util.php");
  * @global string $keyword Http var : word to search in any values
  * @global string $famid Http var : restrict to this family identioficator
  * @global string $start Http var : page number
- * @global string $dirid Http var : search identificator
+ * @global string $dirid Http var : search identifier
  */
 function fullsearchresult(Action & $action)
 {

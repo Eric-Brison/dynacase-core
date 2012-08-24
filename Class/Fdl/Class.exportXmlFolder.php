@@ -49,7 +49,7 @@ class exportXmlFolder
         }
     }
     /**
-     * export (or not) system document identificator
+     * export (or not) system document identifier
      * @param bool $exportIdentificator export option
      */
     public function useIdentificator($exportIdentificator = true)
@@ -105,7 +105,7 @@ class exportXmlFolder
     }
     /**
      * export documents from search object
-     * @param string $folderId collection identificator
+     * @param string $folderId collection identifier
      * @param string $outputFile path to output file
      * @return void
      */

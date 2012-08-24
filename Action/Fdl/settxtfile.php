@@ -25,7 +25,7 @@ include_once ("WHAT/Class.TEClient.php");
  * @global docid Http var : document identifier to modify
  * @global attrid Http var : the id of attribute to modify
  * @global index Http var : the range in case of array
- * @global tid Http var : task identificator
+ * @global tid Http var : task identifier
  *
  */
 function settxtfile(Action & $action)

@@ -13,7 +13,7 @@
 class ErrorCodeACCT
 {
     /**
-     * the reference role to add to a user is not correct. can be system identificator
+     * the reference role to add to a user is not correct. can be system identifier
      * or login reference (role_login)
      */
     const ACCT0001 = 'Cannot add role "%s" for %s user "%s". This role is unknow';
@@ -43,7 +43,7 @@ class ErrorCodeACCT
      */
     const ACCT0007 = 'Cannot set role "%s" into a role ("%s"). ';
     /**
-     * the reference role to add to a user is not correct. can be system identificator
+     * the reference role to add to a user is not correct. can be system identifier
      * or login reference (role_login)
      * This is a part of a role set
      */

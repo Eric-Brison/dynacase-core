@@ -45,7 +45,7 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
     $fldid = $action->getArgument("id", $aflid);
     $wprof = false; // no profil
     $wfile = (substr(strtolower($action->getArgument("wfile", "N")) , 0, 1) == "y"); // with files
-    $wident = (substr(strtolower($action->getArgument("wident", $wident)) , 0, 1) == "y"); // with numeric identificator
+    $wident = (substr(strtolower($action->getArgument("wident", $wident)) , 0, 1) == "y"); // with numeric identifier
     $flat = (substr(strtolower($action->getArgument("flat")) , 0, 1) == "y"); // flat xml
     if (!$eformat) $eformat = strtoupper($action->getArgument("eformat", "X")); // export format
     $selection = $action->getArgument("selection"); // export selection  object (JSON)

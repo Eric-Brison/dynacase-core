@@ -50,7 +50,7 @@ class Fdl_Document
     }
     /**
      * create document : not set in dataabse until it was saved
-     * @param string $familyId the family identificator
+     * @param string $familyId the family identifier
      * @param boolean $temporary set to true if need only a temporary document
      * @return void
      */

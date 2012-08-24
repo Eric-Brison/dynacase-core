@@ -444,7 +444,7 @@ class DocCollection extends Doc
      *
      * @param object $c the filter object
      * @param string &$sql return the sql where clause
-     * @param string $famid family identificator
+     * @param string $famid family identifier
      *
      * @return string error message. Empty is no errors
      */

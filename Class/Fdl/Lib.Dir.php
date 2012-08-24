@@ -617,7 +617,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      *
      * @param string $dbaccess database specification
      * @param string $famname internal name of family document
-     * @param string $aid the attribute identificator
+     * @param string $aid the attribute identifier
      * @param string $kid the key for enum value to search
      * @param string $name additionnal filter on the title
      * @param array $sqlfilters array of sql filter
@@ -885,7 +885,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      * get array of family id that the user can create interactivaly
      *
      * @param string $dbaccess database specification
-     * @param int $uid user identificator
+     * @param int $uid user identifier
      * @param array $tfid restriction of this set of family id
      * @return array of family identificators
      */

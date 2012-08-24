@@ -72,7 +72,7 @@ create unique index idx_perm on docperm(docid, userid);";
      * return account vector for current user
      * to be use in getaperm sql function
      * @static
-     * @param int $uid user identificator
+     * @param int $uid user identifier
      * @param bool $strict set to true to not use substitute
      * @return string
      */
@@ -92,8 +92,8 @@ create unique index idx_perm on docperm(docid, userid);";
     }
     /**
      * @static
-     * @param int $profid profil identificator
-     * @param int $userid user identificator
+     * @param int $profid profil identifier
+     * @param int $userid user identifier
      * @param bool $strict set to true to not use substitute
      * @return int
      */

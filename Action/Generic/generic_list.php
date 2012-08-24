@@ -26,7 +26,7 @@ include_once ("GENERIC/generic_util.php");
  * @global string $page Http var : page number
  * @global string $tabs Http var : tab number 1 for ABC, 2 for DEF, if onglet=Y..
  * @global string $onglet Http var : [Y|N] Y if want see alphabetics tabs
- * @global string $famid Http var : main family identificator
+ * @global string $famid Http var : main family identifier
  * @global string $sqlorder Http var : order by attribute
  * @global string $gview Http var : [abstract|column] view mode
  */

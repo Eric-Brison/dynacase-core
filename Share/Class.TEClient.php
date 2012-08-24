@@ -190,7 +190,7 @@ class TransformationEngine
     }
     /**
      * send a request to get information about a task
-     * @param int $tid_task identificator
+     * @param int $tid_task identifier
      * @param array &$info transformation task info return "tid"=> ,"status"=> ,"comment=>
      *
      * @return string error message, if no error empty string
