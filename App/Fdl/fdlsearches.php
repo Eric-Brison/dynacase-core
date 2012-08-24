@@ -62,7 +62,7 @@ function mytagdoc($start = "0", $slice = "ALL", $tag, $userid = 0)
  *
  * @param int $start start cursor
  * @param int $slice offset ("ALL" means no limit)
- * @param int $userid user system identificator (NOT USE in this function)
+ * @param int $userid user system identifier (NOT USE in this function)
  */
 function mytoviewdoc($start = "0", $slice = "ALL", $userid = 0)
 {
@@ -74,7 +74,7 @@ function mytoviewdoc($start = "0", $slice = "ALL", $userid = 0)
  *
  * @param int $start start cursor
  * @param int $slice offset ("ALL" means no limit)
- * @param int $userid user system identificator (NOT USE in this function)
+ * @param int $userid user system identifier (NOT USE in this function)
  */
 function myvieweddoc($start = "0", $slice = "ALL", $userid = 0)
 {
@@ -87,7 +87,7 @@ function myvieweddoc($start = "0", $slice = "ALL", $userid = 0)
  *
  * @param int $start start cursor
  * @param int $slice offset ("ALL" means no limit)
- * @param int $userid user system identificator (NOT USE in this function)
+ * @param int $userid user system identifier (NOT USE in this function)
  */
 function myaffecteddoc($start = "0", $slice = "ALL", $userid = 0)
 {
@@ -99,7 +99,7 @@ function myaffecteddoc($start = "0", $slice = "ALL", $userid = 0)
  *
  * @param int $start start cursor
  * @param int $slice offset ("ALL" means no limit)
- * @param int $userid user system identificator (NOT USE in this function)
+ * @param int $userid user system identifier (NOT USE in this function)
  * @param int $docid document referenced
  * @param int $famid family restriction (0 if no restriction)
  */

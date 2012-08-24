@@ -249,7 +249,7 @@ class DocCtrl extends DocLDAP
     /**
      * set profil for document
      *
-     * @param int $profid identificator for profil document
+     * @param int $profid identifier for profil document
      * @param Doc $fromdocidvalues
      */
     function setProfil($profid, $fromdocidvalues = null)
@@ -293,7 +293,7 @@ class DocCtrl extends DocLDAP
     /**
      * reset right for dynamic profil
      *
-     * @param int $dprofid identificator for dynamic profil document
+     * @param int $dprofid identifier for dynamic profil document
      * @param Doc $fromdocidvalues other document to reference dynamic profiling (default itself)
      * @return string error message
      */
@@ -379,7 +379,7 @@ class DocCtrl extends DocLDAP
     /**
      * reset right for dynamic profil
      *
-     * @param int $dprofid identificator for dynamic profil document
+     * @param int $dprofid identifier for dynamic profil document
      * @param Doc $fromdocidvalues other document to reference dynamic profiling (default itself)
      * @return string error message
      */
@@ -660,7 +660,7 @@ class DocCtrl extends DocLDAP
     /**
      * set control view for document
      *
-     * @param int $cvid identificator for control view document
+     * @param int $cvid identifier for control view document
      */
     function setCvid($cvid)
     {
@@ -912,7 +912,7 @@ class DocCtrl extends DocLDAP
     /** 
      * verify if a document title and its link are for the same document
      * @param string $title document title use for verification
-     * @param string $docid document identificator use for verification
+     * @param string $docid document identifier use for verification
      */
     public function isDocLinked($title, $docid)
     {
@@ -938,7 +938,7 @@ class DocCtrl extends DocLDAP
     /** 
      * verify if a link of document is alive
      * @param string $title document title use for verification
-     * @param string $docid document identificator use for verification
+     * @param string $docid document identifier use for verification
      */
     public function isValidLink($title, $docid)
     {

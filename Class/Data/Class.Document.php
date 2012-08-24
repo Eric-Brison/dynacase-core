@@ -630,7 +630,7 @@ class Fdl_Document
      * allocate document
      *
      * affect a document to a user
-     * @param int $userid the system identificator of the user to affect
+     * @param int $userid the system identifier of the user to affect
      * @param bool $revision if false no revision are made
      * @param bool $autolock if false no lock are made
      *
@@ -649,7 +649,7 @@ class Fdl_Document
      * allocate document
      *
      * affect a document to a user
-     * @param int $userid the system identificator of the user to affect
+     * @param int $userid the system identifier of the user to affect
      * @param bool $revision if false no revision are made
      * @param bool $autolock if false no lock are made
      *

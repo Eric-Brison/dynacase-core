@@ -20,7 +20,7 @@ include_once ("FDL/Class.Doc.php");
 /**
  * Edit an attribute inline
  * @param Action &$action current action
- * @global docid Http var : document identificator to see
+ * @global docid Http var : document identifier to see
  * @global attrid Http var : the id of attribute to edit
  */
 function editattribute(&$action)

@@ -21,7 +21,7 @@ include_once ('FREEDOM/Lib.portfolio.php');
 /**
  * View a containt of portfolio separator
  * @param Action &$action current action
- * @global dirid Http var : separator identificator to see
+ * @global dirid Http var : separator identifier to see
  * @global folioid Http var : portfolio of separator
  */
 function foliolist(&$action)

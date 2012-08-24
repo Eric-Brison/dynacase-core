@@ -530,7 +530,7 @@ function getAuthParam($freedomctx = "", $provider = "")
  * return shell commande for wsh
  * depending of database (in case of several instances)
  * @param bool $nice set to true if want nice mode
- * @param int $userid the user identificator to send command (if 0 send like admin without specific user parameter)
+ * @param int $userid the user identifier to send command (if 0 send like admin without specific user parameter)
  * @param bool $sudo set to true if want to be send with sudo (need /etc/sudoers correctly configured)
  * @return string the command
  */

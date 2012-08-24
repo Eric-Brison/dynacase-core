@@ -17,7 +17,7 @@ if (d && d.isAlive()) {
  * </code></pre>
  * @namespace Fdl.Document
  * @param {Object} config
- * @cfg {String/Number} id document identificator. Could be a logical identificator (a string) or a system identificator (a number)
+ * @cfg {String/Number} id document identificator. Could be a logical identifier (a string) or a system identifier (a number)
  * @cfg {Boolean} latest (Optional)  set to false if you don't want the latest revision but the exact revision given by id
  * @cfg {Number} revision (Optional) retrieve a specific revision of the document. 0 is the first. 
  * @cfg {Object} data (Optional) initialize document object from raw data (internal use)
@@ -284,7 +284,7 @@ Fdl.Document.prototype = {
     /**
      * set value to an attribute
      * the document is not updated in database server until it will saved
-     * @param {string } id the attribute identificator 
+     * @param {string } id the attribute identifier 
      * @param {String} value the new value to set
      * @return {boolean} true if set succeed
      */
@@ -345,7 +345,7 @@ Fdl.Document.prototype = {
     },
     /**
      * Return value of a property of the document
-     * @param {String} id property identificator can be one of
+     * @param {String} id property identifier can be one of
      * <ul><li>id</li><li>owner</li><li>title</li><li>revision</li><li>version</li><li>initid</li><li>fromid</li><li>doctype</li><li>locked</li><li>allocated</li><li>icon</li><li>lmodify</li><li>profid</li><li>usefor</li><li>cdate</li><li>adate</li><li>revdate</li><li>comment</li><li>classname</li><li>state</li><li>wid</li><li>postitid</li><li>forumid</li><li>cvid</li><li>name</li><li>dprofid</li><li>atags</li><li>prelid</li><li>confidential</li><li>ldapdn</li></ul>
      * @return {String} return the value
      */
@@ -969,7 +969,7 @@ Fdl.Document.prototype.cloneDocument = function(config) {
 /**
    * move document from primary folder to another folder
    * @param {Object} config
-   * <ul><li><b>folderId : </b> the identificator of folder destination</li>
+   * <ul><li><b>folderId : </b> the identifier of folder destination</li>
    * <li><b>fromFolderId : </b> (optional) the source folder, if not defined it is the primary folder of the document</li>
    * </ul>
    * @return {Boolean} true if move suceeded

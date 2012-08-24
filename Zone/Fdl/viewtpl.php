@@ -20,7 +20,7 @@ include_once ("FDL/Class.Dir.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global id Http var : document identificator to see
+ * @global id Http var : document identifier to see
  * @global famid Http var :
  * @global zone Http var : zone
  */

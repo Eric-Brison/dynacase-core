@@ -19,7 +19,7 @@ include_once ("Class.Doc.php");
 class DocRead extends DbObj
 {
     /**
-     * identificator of document
+     * identifier of document
      * @public int
      */
     public $id;

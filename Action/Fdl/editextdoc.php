@@ -23,7 +23,7 @@ include_once ("FDL/popupfamdetail.php");
 /**
  * View a extjs document
  * @param Action &$action current action
- * @global id Http var : document identificator to see
+ * @global id Http var : document identifier to see
  * @global latest Http var : (Y|N|L|P) if Y force view latest revision, L : latest fixed revision, P : previous revision
  * @global state Http var : to view document in latest fixed state (only if revision > 0)
  * @global abstract Http var : (Y|N) if Y view only abstract attribute

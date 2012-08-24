@@ -74,7 +74,7 @@ Fdl.DocumentSelection.prototype = {
 	 */
     selectionItems:[],
     /**
-	 * collection identificator use for selection
+	 * collection identifier use for selection
 	 * 
 	 * @type Fdl.Collection
 	 */
@@ -97,7 +97,7 @@ Fdl.DocumentSelection.prototype = {
 	 * containt (if exists of course)
 	 * 
 	 * @param config
-	 *            {Nmmber/Fdl.Document} document identificator or document
+	 *            {Nmmber/Fdl.Document} document identifier or document
 	 *            object
 	 *            <ul>
 	 *            <li><b>id : </b>{Number} document identificator</li>

@@ -24,7 +24,7 @@ include_once ("GENERIC/generic_util.php");
 /**
  * Edit a document
  * @param Action &$action current action
- * @global id string Http var : document identificator to see
+ * @global id string Http var : document identifier to see
  * @global zone string Http var : if set, special edit with special zone
  * @global rzone string Http var : if set, to return view with special zone
  * @global rtarget string Http var : if set, to return result in another window (the window will be closed)

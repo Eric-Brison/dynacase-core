@@ -104,9 +104,9 @@ class DocCollection extends Doc
                 "uid" => "system identifiant equal"
             ) , #_("identificator equal") _("system identifiant equal")
             "sdynlabel" => array(
-                "docid" => "{left} identificator equal {right}",
-                "uid" => "{left} system identificator equal {right}"
-            ) , #_("{left} identificator equal {right}") _("{left} system identificator equal {right}")
+                "docid" => "{left} identifier equal {right}",
+                "uid" => "{left} system identifier equal {right}"
+            ) , #_("{left} identifier equal {right}") _("{left} system identifier equal {right}")
             "type" => array(
                 "text",
                 "integer",
@@ -143,13 +143,13 @@ class DocCollection extends Doc
             ) ,
             "dynlabel" => "{left} is not equal {right}", # _("{left} is not equal {right}")
             "sdynlabel" => array(
-                "docid" => "{left} identificator not equal {right}",
-                "uid" => "{left} system identificator not equal {right}"
-            ) , #_("{left} identificator not equal {right}") _("{left} system identificator not equal {right}")
+                "docid" => "{left} identifier not equal {right}",
+                "uid" => "{left} system identifier not equal {right}"
+            ) , #_("{left} identifier not equal {right}") _("{left} system identifier not equal {right}")
             "slabel" => array(
                 "docid" => "identificator not equal",
-                "uid" => "system identificator not equal"
-            ) , #_("identificator not equal") _("system identificator not equal")
+                "uid" => "system identifier not equal"
+            ) , #_("identificator not equal") _("system identifier not equal")
             "type" => array(
                 "text",
                 "integer",
@@ -336,7 +336,7 @@ class DocCollection extends Doc
      *
      * @param bool $controlview if false all document are returned else only visible for current user  document are return
      * @param array $filter to add list sql filter for selected document
-     * @param int|string $famid family identificator to restrict search
+     * @param int|string $famid family identifier to restrict search
      *
      * @return array array of document array
      */

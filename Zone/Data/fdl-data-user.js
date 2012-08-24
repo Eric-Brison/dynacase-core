@@ -43,7 +43,7 @@ Fdl.User = function(config){
 
 
 Fdl.User.prototype = {
-		/** system user identificator 
+		/** system user identifier 
         @type Number */
 		id:null,
 		/** system user login 
@@ -135,7 +135,7 @@ Fdl.User.prototype.getLocaleFormat = function() {
 	return null;
 };
 
-/** get document identificator associated with the user
+/** get document identifier associated with the user
  * @return {Number}
  */
 Fdl.User.prototype.getUserDocumentIdentificator = function() {    

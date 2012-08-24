@@ -29,12 +29,12 @@ class DocRel extends DbObj
         "doctype"
     );
     /**
-     * identificator of the source document
+     * identifier of the source document
      * @public int
      */
     public $sinitid;
     /**
-     * identificator of the cible document
+     * identifier of the cible document
      * @public int
      */
     public $cinitid;
@@ -102,7 +102,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
     /**
      * Delete document relations
      * @param string $type a special type of relation . Empty means all relations
-     * @param int $sinitid document identificator of relation (initid)
+     * @param int $sinitid document identifier of relation (initid)
      * @return void
      */
     public function resetRelations($type = "", $sinitid = 0)

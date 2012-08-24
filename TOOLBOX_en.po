@@ -1530,7 +1530,7 @@ msgid "Diff"
 msgstr ""
 
 #, c-format
-msgid "Dir::insertFolder identificator [%s] must be numeric"
+msgid "Dir::insertFolder identifier [%s] must be numeric"
 msgstr ""
 
 #, fuzzy
@@ -2752,7 +2752,7 @@ msgid "No identificator"
 msgstr ""
 
 #, c-format
-msgid "No identificator found for relation '%s' %s in %s file"
+msgid "No identifier found for relation '%s' %s in %s file"
 msgstr ""
 
 #, fuzzy
@@ -3409,7 +3409,7 @@ msgid "Select group appartenance"
 msgstr ""
 
 msgid ""
-"Select identificator to set the second column -specid- this file can only "
+"Select identifier to set the second column -specid- this file can only "
 "reimport in the same database"
 msgstr ""
 
@@ -4651,7 +4651,7 @@ msgstr ""
 
 #, c-format
 msgid ""
-"attribute [%s] identificator syntax is unavalaible. Must have only "
+"attribute [%s] identifier syntax is unavalaible. Must have only "
 "alphanumeric characters and must not includes spaces"
 msgstr ""
 
@@ -4670,7 +4670,7 @@ msgstr ""
 msgid "attribute id"
 msgstr ""
 
-msgid "attribute identificator is null"
+msgid "attribute identifier is null"
 msgstr ""
 
 #, c-format
@@ -6379,7 +6379,7 @@ msgstr "Delete"
 msgid "folder %s as been added in your bookmark"
 msgstr ""
 
-msgid "folder identificator for root"
+msgid "folder identifier for root"
 msgstr ""
 
 msgid "folder is locked. Cannot containt modification"
@@ -7515,7 +7515,7 @@ msgstr "No access to Dynacase database"
 msgid "no identificator"
 msgstr ""
 
-msgid "no identificator set"
+msgid "no identifier set"
 msgstr ""
 
 #, fuzzy
@@ -7611,7 +7611,7 @@ msgstr ""
 msgid "no task identificator"
 msgstr ""
 
-msgid "no task identificator found"
+msgid "no task identifier found"
 msgstr ""
 
 msgid "no template defined"
@@ -8785,7 +8785,7 @@ msgstr ""
 msgid "system identifiant equal"
 msgstr ""
 
-msgid "system identificator not equal"
+msgid "system identifier not equal"
 msgstr ""
 
 msgid "t"
@@ -9685,10 +9685,10 @@ msgstr ""
 msgid "{left} greater than {right}"
 msgstr ""
 
-msgid "{left} identificator equal {right}"
+msgid "{left} identifier equal {right}"
 msgstr ""
 
-msgid "{left} identificator not equal {right}"
+msgid "{left} identifier not equal {right}"
 msgstr ""
 
 msgid "{left} include no value of {right}"
@@ -9724,10 +9724,10 @@ msgstr ""
 msgid "{left} one value equal {right}"
 msgstr ""
 
-msgid "{left} system identificator equal {right}"
+msgid "{left} system identifier equal {right}"
 msgstr ""
 
-msgid "{left} system identificator not equal {right}"
+msgid "{left} system identifier not equal {right}"
 msgstr ""
 
 msgid "{left} title include {right}"

@@ -38,7 +38,7 @@ class TestAddArrayRow extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("Error adding new document in database: %s", $err));
         
         $err = $doc->setLogicalName($data['name']);
-        $this->assertEmpty($err, sprintf("Error setting logical identificator '%s' on new document: %s", $data['name'], $err));
+        $this->assertEmpty($err, sprintf("Error setting logical identifier '%s' on new document: %s", $data['name'], $err));
         
         foreach ($data['rows'] as & $row) {
             $err = $doc->addArrayRow($data['array_attr_name'], $row['data'], $row['index']);

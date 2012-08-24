@@ -22,9 +22,9 @@ include_once ("FDL/editutil.php");
  * Compose html code to insert input
  * @param Action &$action current action
  * @global string $type Http var : attribute type
- * @global string $id Http var : identificator of input generated
+ * @global string $id Http var : identifier of input generated
  * @global string $label Http var : label of attribute (only for doclink type when no choice is possible)
- * @global string $famid Http var : family identificator criteria (only for doclink type)
+ * @global string $famid Http var : family identifier criteria (only for doclink type)
  * @global string $value Http var : predefined value
  * @global string $esize Http var : number of character visible (for text input)
  */

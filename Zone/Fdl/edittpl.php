@@ -21,7 +21,7 @@ include_once ("FDL/Class.Dir.php");
  * Edit special template for an attribute
  *
  * @param Action &$action current action
- * @global id Http var : document identificator to see
+ * @global id Http var : document identifier to see
  * @global famid Http var :
  * @global zone Http var : zone
  */

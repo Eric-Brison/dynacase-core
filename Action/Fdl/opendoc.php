@@ -22,7 +22,7 @@ include_once ("FDL/Class.Doc.php");
  * all parameters use in GENERIC_GENERIC_EDIT can be use in edit mode
  * all parameters use in FDL:FDL_CARD can be use in view mode
  * @param Action &$action current action
- * @global id Http var : document identificator to see
+ * @global id Http var : document identifier to see
  * @global mode Http var : edit or view mode
  *
  */

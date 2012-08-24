@@ -113,7 +113,7 @@ class _IUSER extends Doc implements MailRecipient
     }
     /**
      * return all direct group and parent group document identificators of $gid
-     * @param string $gid systeme identificator group or users
+     * @param string $gid systeme identifier group or users
      */
     protected function getAscendantGroup($gid)
     {

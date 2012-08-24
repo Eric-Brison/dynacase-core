@@ -101,7 +101,7 @@ class DbObj
      *
      *
      * @param string $dbaccess database specification
-     * @param int $id identificator of the object
+     * @param int $id identifier of the object
      * @param array $res array of result issue to QueryDb {@link QueryDb::Query()}
      * @param resource $dbid the database connection resource
      * @return bool false if error occured

@@ -18,23 +18,23 @@ class ErrorCodeATTR
      */
     const ATTR0100 = 'syntax error for attribute "%s"';
     /**
-     * Attribute identificator cannot be equal to a reserved postgresql word
+     * Attribute identifier cannot be equal to a reserved postgresql word
      */
-    const ATTR0101 = 'attribute identificator "%s" use a reserved word';
+    const ATTR0101 = 'attribute identifier "%s" use a reserved word';
     /**
-     * Attribute identificator is required
+     * Attribute identifier is required
      */
-    const ATTR0102 = 'attribute identificator is not set';
+    const ATTR0102 = 'attribute identifier is not set';
     /**
-     * Attribute identificator cannot be equal to a doc properties name
+     * Attribute identifier cannot be equal to a doc properties name
      */
-    const ATTR0103 = 'attribute identificator "%s" use a property identificator';
+    const ATTR0103 = 'attribute identifier "%s" use a property identificator';
     /**
      * Attribute identicator is limit to 63 alphanum characters
      */
     const ATTR0200 = 'syntax error for structure "%s" attribute "%s"';
     /**
-     * Attribute structure identificator is required
+     * Attribute structure identifier is required
      */
     const ATTR0201 = 'attribute structure is not set for attribute "%s"';
     /**

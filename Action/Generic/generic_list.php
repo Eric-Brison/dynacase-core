@@ -21,7 +21,7 @@ include_once ("GENERIC/generic_util.php");
 /**
  * View list of document from folder (or searches)
  * @param Action &$action current action
- * @global string $dirid Http var : folder identificator to see
+ * @global string $dirid Http var : folder identifier to see
  * @global string $catg Http var :
  * @global string $page Http var : page number
  * @global string $tabs Http var : tab number 1 for ABC, 2 for DEF, if onglet=Y..

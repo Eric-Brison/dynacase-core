@@ -21,7 +21,7 @@ include_once ("FDL/Class.DocFam.php");
 /**
  * Insert documents in  folder
  * @param Action &$action current action
- * @global id Http var : folder document identificator to see
+ * @global id Http var : folder document identifier to see
  */
 function insertdocument(&$action)
 {

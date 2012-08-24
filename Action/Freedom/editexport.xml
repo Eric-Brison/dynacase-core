@@ -62,7 +62,7 @@ select.disable {
   <option value="N">[TEXT:Without files]</option>
   <option value="Y">[TEXT:With files]</option>
 </select></td></tr>
-<tr><td align="right" style="cursor:help" title="[TEXT:Select identificator to set the second column -specid- this file can only reimport in the same database]">[TEXT:Identificators] :</td>
+<tr><td align="right" style="cursor:help" title="[TEXT:Select identifier to set the second column -specid- this file can only reimport in the same database]">[TEXT:Identificators] :</td>
 <td><select name="wident">
   <option value="N">[TEXT:Without identificators]</option>
   <option value="Y">[TEXT:With identificators]</option>

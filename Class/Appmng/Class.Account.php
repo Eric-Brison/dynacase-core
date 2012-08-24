@@ -75,7 +75,7 @@ class Account extends DbObj
      */
     public $substitute;
     /**
-     * family identificator of user document default is IUSER/IGROUP
+     * family identifier of user document default is IUSER/IGROUP
      * @var string
      */
     public $famid;
@@ -375,7 +375,7 @@ create sequence seq_id_users start 10;";
         return null;
     }
     /**
-     * return system user identificator from user document reference
+     * return system user identifier from user document reference
      * @static
      * @param $fid
      * @return int

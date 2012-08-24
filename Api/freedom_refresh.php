@@ -23,12 +23,12 @@ global $action;
 
 $usage = new ApiUsage();
 $usage->setText("Refresh documents");
-$usage->addNeeded("famid", "family identificator (name or id)");
-$usage->addOption("docid", "document identificator to apply refresh only on this document");
+$usage->addNeeded("famid", "family identifier (name or id)");
+$usage->addOption("docid", "document identifier to apply refresh only on this document");
 $usage->addOption("method", "method to apply instead of refresh method");
 $usage->addOption("arg", "option arg of the method");
-$usage->addOption("fldid", "collection identificator where apply refresh");
-$usage->addOption("revision", "collection identificator where apply refresh", array(
+$usage->addOption("fldid", "collection identifier where apply refresh");
+$usage->addOption("revision", "collection identifier where apply refresh", array(
     "yes",
     "no",
     "Y",

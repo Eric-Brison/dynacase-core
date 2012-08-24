@@ -30,17 +30,17 @@ class DocUtag extends DbObj
         "comment"
     );
     /**
-     * identificator of document
+     * identifier of document
      * @public int
      */
     public $id;
     /**
-     * initial identificator of document
+     * initial identifier of document
      * @public int
      */
     public $initid;
     /**
-     * identificator system of the user
+     * identifier system of the user
      * @public int
      */
     public $uid;
@@ -60,7 +60,7 @@ class DocUtag extends DbObj
      */
     public $tag;
     /**
-     * identificator system of the author user
+     * identifier system of the author user
      * @public int
      */
     public $fromuid;

@@ -397,7 +397,7 @@ class Fdl_Collection extends Fdl_Document
     }
     /**
      * insert a document into folder
-     * @param int $docid the document identificator to insert to
+     * @param int $docid the document identifier to insert to
      * @return object with error or message field
      */
     public function insertDocument($docid)
@@ -416,7 +416,7 @@ class Fdl_Collection extends Fdl_Document
     }
     /**
      * unlink a document from folder
-     * @param int $docid the document identificator to unlink
+     * @param int $docid the document identifier to unlink
      * @return object with error or message field
      */
     function unlinkDocument($docid)

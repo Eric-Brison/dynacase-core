@@ -20,7 +20,7 @@ include_once ("FDL/Class.Doc.php");
 /**
  * View timers attached to a document
  * @param Action &$action current action
- * @global id Http var : document identificator to see
+ * @global id Http var : document identifier to see
  */
 function viewtimers(&$action)
 {

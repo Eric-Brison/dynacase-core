@@ -261,7 +261,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             $linkfld = (getHttpVars("linkFolder", "true") == "true");
             $copyfiles = (getHttpVars("cloneFiles", "false") == "true");
             $title = getHttpVars("title");
-            if (!$id) $out->error = _("no identificator set");
+            if (!$id) $out->error = _("no identifier set");
             else {
                 $doc = new Fdl_Document($id);
                 if (!$doc->error) {
@@ -276,7 +276,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
         case 'send':
         case 'senddocument':
             if (!$id) {
-                $out->error = _("no identificator set");
+                $out->error = _("no identifier set");
             } else {
                 $to = getHttpVars("to");
                 $cc = getHttpVars("cc");

@@ -15,15 +15,15 @@ class ErrorCodePRFL
     /**
      * the profil id must is required
      */
-    const PRFL0001 = 'profil identificator is not set';
+    const PRFL0001 = 'profil identifier is not set';
     /**
      * the profil id must reference a document
      */
-    const PRFL0002 = 'profil identificator "%s" is not found';
+    const PRFL0002 = 'profil identifier "%s" is not found';
     /**
      * the document where attach profil must reference a document
      */
-    const PRFL0003 = 'document identificator "%s" is not found, profil not set';
+    const PRFL0003 = 'document identifier "%s" is not found, profil not set';
     /**
      * the profil id must reference a profil document
      */

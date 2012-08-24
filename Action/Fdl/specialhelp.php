@@ -20,7 +20,7 @@ include_once ("FDL/Class.Dir.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global docid Http var : document identificator to see
+ * @global docid Http var : document identifier to see
  * @global attrid Http var :  the attribute comes from search
  */
 function specialhelp(Action & $action)

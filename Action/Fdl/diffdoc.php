@@ -20,8 +20,8 @@ include_once ("FDL/Class.Dir.php");
 /**
  * Compare 2 documents
  * @param Action &$action current action
- * @global id1 Http var : first document identificator to compare
- * @global id2 Http var : second document identificator to compare
+ * @global id1 Http var : first document identifier to compare
+ * @global id2 Http var : second document identifier to compare
  */
 function diffdoc(&$action)
 {
