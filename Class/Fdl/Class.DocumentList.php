@@ -122,8 +122,22 @@ class DocumentList implements Iterator, Countable
     {
         return $this->search;
     }
-    
+    /**
+     * set document identifiers to be used in iterator
+     * @param int[] $ids document identifiers
+     * @param bool $useInitid if true identifier must ne initid else must be latest ids
+     * @deprecated use addDocumentIdentifiers instead
+     */
     public function addDocumentIdentificators(array $ids, $useInitid = true)
+    {
+        $this->addDocumentIdentifiers($ids, $useInitid);
+    }
+    /**
+     * set document identifiers to be used in iterator
+     * @param int[] $ids document identifiers
+     * @param bool $useInitid if true identifier must ne initid else must be latest ids
+     */
+    public function addDocumentIdentifiers(array $ids, $useInitid = true)
     {
         $this->search = new SearchDoc(getDbAccess());
         $this->search->setObjectReturn();

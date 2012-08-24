@@ -162,7 +162,7 @@ class _MAILTEMPLATE extends Doc
                         break;
 
                     case 'DE': // param user relation
-
+                        
                     case 'D': // user relations
                         
                     case 'WD': // user relations
@@ -179,14 +179,14 @@ class _MAILTEMPLATE extends Doc
                                 $vdocid = $udoc->getParamValue($aid);
                             } else {
                                 $vdocid = $udoc->getValue($aid); // for array of users
-
+                                
                             }
                             $vdocid = str_replace('<BR>', "\n", $vdocid);
                             if (strpos($vdocid, "\n")) {
                                 $tvdoc = $this->_val2array($vdocid);
                                 $tmail = array();
                                 $it = new DocumentList();
-                                $it->addDocumentIdentificators($tvdoc);
+                                $it->addDocumentIdentifiers($tvdoc);
                                 /**
                                  * @var _IUSER|_IGROUP|_ROLE $aDoc
                                  */
