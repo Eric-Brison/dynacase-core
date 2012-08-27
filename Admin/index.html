@@ -6,7 +6,6 @@
     <title>Context administration and exploitation center</title>
     <link rel="stylesheet" type="text/css" href="admin.css" />  
     <script type='text/javascript' src='../lib/jquery/jquery.js'></script>
-    <script type='text/javascript' src='knockout-2.0.0.js'></script>
     <script type='text/javascript' src='admin.js'></script>
   </head>
   
@@ -22,8 +21,8 @@
       <div style="clear:both;"></div>
       <div id="left-block">
 	<div class="title">Available services</div>
-	<ul data-bind="foreach: pages">
-	  <li data-bind="text: service, click : $parent.selectService, attr: { title : description }" ></li>
+	<ul id="pages">
+
 	</ul>
       </div>
     </div> <!-- page -->
@@ -31,7 +30,7 @@
     <div id="log-zone"></div>
   </body>
 <script>
-  ko.applyBindings(new AdminCenterViewModel());
+  AdminCenterViewModel();
 //  $('li').tipsy();
 </script>
 </html>
