@@ -17,7 +17,6 @@
  */
 ?>
 <html><head>
-<LINK REL="stylesheet" type="text/css" HREF="Layout/wg.css" >
 <style>
 a.context {
  border:solid 1px black;
@@ -38,7 +37,6 @@ a.context:hover {
 <?php
 include ("../../../WHAT/Lib.Common.php");
 require_once 'WHAT/autoload.php';
-
 //---------------------------------------------------
 //------------------- MAIN -------------------------
 $dbaccess = getDbAccess();
