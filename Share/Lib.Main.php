@@ -324,4 +324,25 @@ function executeAction(&$action, &$out = null)
         }
     }
 }
-?>
+
+function handleActionException(Exception $e) {
+    global $action;
+    if (!headers_sent()) {
+        header("HTTP/1.1 500 Dynacase Uncaugth Exception");
+    }
+    errorLogException($e);
+    if (isset($action) && is_a($action, 'Action')) {
+        $action->exitError($e->getMessage());
+    }
+}
+
+function errorLogException(Exception $e) {
+    $pid = getmypid();
+    error_log(sprintf("%s> Dynacase got an uncaught exception '%s' with message '%s' in file %s at line %s:", $pid, get_class($e), $e->getMessage(), $e->getFile(), $e->getLine()));
+    foreach (preg_split('/\n/', $e->getTraceAsString()) as $line) {
+        error_log(sprintf("%s> %s", $pid, $line));
+    }
+    error_log(sprintf("%s> End Of Exception.", $pid));
+}
+
+set_exception_handler('handleActionException');

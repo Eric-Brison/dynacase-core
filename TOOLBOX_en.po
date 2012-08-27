@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-24 11:29+0200\n"
+"POT-Creation-Date: 2012-08-27 10:14+0200\n"
 "PO-Revision-Date: 2012-07-31 16:19+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1813,6 +1813,9 @@ msgstr ""
 msgid "Enter your password"
 msgstr ""
 
+msgid "Error"
+msgstr ""
+
 #, c-format
 msgid "Error : %s"
 msgstr ""
@@ -2666,6 +2669,12 @@ msgstr ""
 #, fuzzy
 msgid "Move reference"
 msgstr "Delete"
+
+msgid "My system user id"
+msgstr ""
+
+msgid "My user account id"
+msgstr ""
 
 msgid "N"
 msgstr ""
@@ -3670,6 +3679,9 @@ msgstr ""
 msgid "Template [%s] not found"
 msgstr ""
 
+msgid "The \"Foo\" string"
+msgstr ""
+
 msgid ""
 "The apache configuration seems incorrect. I cannot read .htaccess file. May "
 "be parameter allowOverride is not set to All"
@@ -3808,6 +3820,9 @@ msgid "Tsick"
 msgstr ""
 
 msgid "Tuesday"
+msgstr ""
+
+msgid "Two cents"
 msgstr ""
 
 msgid "Twprocess_private"
@@ -4254,6 +4269,9 @@ msgstr "Access Free"
 msgid "accessfor"
 msgstr "Control access for application"
 
+msgid "account attribute"
+msgstr ""
+
 msgid "acking detection : clear token"
 msgstr ""
 
@@ -4651,8 +4669,8 @@ msgstr ""
 
 #, c-format
 msgid ""
-"attribute [%s] identifier syntax is unavalaible. Must have only "
-"alphanumeric characters and must not includes spaces"
+"attribute [%s] identifier syntax is unavalaible. Must have only alphanumeric "
+"characters and must not includes spaces"
 msgstr ""
 
 #, c-format
@@ -6364,10 +6382,6 @@ msgstr ""
 msgid "first"
 msgstr ""
 
-#, fuzzy
-msgid "first family used"
-msgstr "Category"
-
 msgid "fixed"
 msgstr ""
 
@@ -7946,10 +7960,6 @@ msgid "precise search"
 msgstr "Start search"
 
 #, fuzzy
-msgid "prefered contacts"
-msgstr "Start search"
-
-#, fuzzy
 msgid "prefered search"
 msgstr "Start search"
 
@@ -8482,10 +8492,6 @@ msgstr "at "
 
 msgid "second background color"
 msgstr ""
-
-#, fuzzy
-msgid "second family used"
-msgstr "Start search"
 
 #, fuzzy
 msgid "security"
@@ -9984,6 +9990,10 @@ msgstr ""
 #~ msgid "expires"
 #~ msgstr "Your login has expired"
 
+#, fuzzy
+#~ msgid "first family used"
+#~ msgstr "Category"
+
 #~ msgid "firstname"
 #~ msgstr "Firstname"
 
@@ -10067,6 +10077,10 @@ msgstr ""
 #~ msgstr "Import"
 
 #, fuzzy
+#~ msgid "prefered contacts"
+#~ msgstr "Start search"
+
+#, fuzzy
 #~ msgid "quick search"
 #~ msgstr "Start search"
 
@@ -10081,6 +10095,10 @@ msgstr ""
 #, fuzzy
 #~ msgid "revision comment for autorevision"
 #~ msgstr "Organisation"
+
+#, fuzzy
+#~ msgid "second family used"
+#~ msgstr "Start search"
 
 #, fuzzy
 #~ msgid "set view control to '%s'"

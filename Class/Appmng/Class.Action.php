@@ -525,6 +525,7 @@ create sequence SEQ_ID_ACTION;
         if (!empty($_SERVER['HTTP_HOST'])) {
             //      redirect($this,"CORE&sole=Y","ERROR");
             $this->lay = new Layout("CORE/Layout/error.xml", $this);
+            $this->lay->set("TITLE", _("Error"));
             $this->lay->set("error", nl2br($texterr));
             $this->lay->set("serror", str_replace("\n", "\\n", addslashes($texterr)));
             $this->lay->set("appname", (empty($this->parent)) ? '' : $this->parent->name);

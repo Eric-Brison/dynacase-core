@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-24 11:29+0200\n"
-"PO-Revision-Date: 2012-08-24 11:31+0200\n"
+"POT-Creation-Date: 2012-08-27 10:14+0200\n"
+"PO-Revision-Date: 2012-08-27 10:28+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1731,6 +1731,9 @@ msgstr "Entrez votre identifiant"
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
+msgid "Error"
+msgstr "Erreur"
+
 #, c-format
 msgid "Error : %s"
 msgstr "Erreur : %s"
@@ -2564,6 +2567,12 @@ msgstr "Déplacer le fichier depuis %s vers %s"
 
 msgid "Move reference"
 msgstr "Déplacer la référence"
+
+msgid "My system user id"
+msgstr "Identifiant système de mon compte utilisateur"
+
+msgid "My user account id"
+msgstr "Identifiant de mon compte utilisateur"
 
 msgid "N"
 msgstr "N"
@@ -3518,6 +3527,9 @@ msgstr "Tconvalescent"
 msgid "Template [%s] not found"
 msgstr "Template [%s] non trouvé."
 
+msgid "The \"Foo\" string"
+msgstr ""
+
 msgid ""
 "The apache configuration seems incorrect. I cannot read .htaccess file. May "
 "be parameter allowOverride is not set to All"
@@ -3669,6 +3681,9 @@ msgstr "Tsick"
 
 msgid "Tuesday"
 msgstr "Mardi"
+
+msgid "Two cents"
+msgstr ""
 
 msgid "Twprocess_private"
 msgstr "vers privé"
@@ -4090,6 +4105,9 @@ msgstr "Acces libre"
 msgid "accessfor"
 msgstr "Contrôle des accès pour"
 
+msgid "account attribute"
+msgstr ""
+
 msgid "acking detection : clear token"
 msgstr "tentative d'intrusion détecté : suppression de la clef"
 
@@ -4464,8 +4482,8 @@ msgstr "attribut [%s] déjà présent : ne peut être ajouté"
 
 #, c-format
 msgid ""
-"attribute [%s] identifier syntax is unavalaible. Must have only "
-"alphanumeric characters and must not includes spaces"
+"attribute [%s] identifier syntax is unavalaible. Must have only alphanumeric "
+"characters and must not includes spaces"
 msgstr ""
 "La syntaxe de l'idenitifiant d'attribut [%s] est non valide. Seuls des "
 "caractères alphanumérique sont autorisés et les espaces sont exclus."
@@ -6079,9 +6097,6 @@ msgstr "%s trouvé plus d'une fois, création abandonnée\n"
 msgid "first"
 msgstr "premier"
 
-msgid "first family used"
-msgstr "première famille utilisée"
-
 msgid "fixed"
 msgstr "figé"
 
@@ -7549,9 +7564,6 @@ msgstr "post-it de %s"
 msgid "precise search"
 msgstr "Précisez la recherche"
 
-msgid "prefered contacts"
-msgstr "Préférés"
-
 msgid "prefered search"
 msgstr "Recherche préférée"
 
@@ -8039,9 +8051,6 @@ msgstr "exécutée le "
 
 msgid "second background color"
 msgstr "couleur secondaire pour le fond"
-
-msgid "second family used"
-msgstr "seconde famille utilisée"
 
 msgid "security"
 msgstr "sécurité"
@@ -9378,12 +9387,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "My firstname and lastname"
 #~ msgstr "Mon prénom et mon nom"
 
-#~ msgid "My system user id"
-#~ msgstr "Identifiant système de mon compte utilisateur"
-
-#~ msgid "My user account id"
-#~ msgstr "Identifiant de mon compte utilisateur"
-
 #~ msgid "No identifier found for relation %s"
 #~ msgstr "Aucun identificateur pour la relation %s"
 
@@ -9597,8 +9600,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "contact"
 #~ msgstr "Contact..."
 
-
-
 #~ msgid "current user account"
 #~ msgstr "mon compte"
 
@@ -9774,6 +9775,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "fck image upload"
 #~ msgstr "fck téléchargement"
 
+#~ msgid "first family used"
+#~ msgstr "première famille utilisée"
+
 #~ msgid "firstname"
 #~ msgstr "Prénom"
 
@@ -9889,6 +9893,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "pre-import:%s"
 #~ msgstr "pré-Import:%s"
 
+#~ msgid "prefered contacts"
+#~ msgstr "Préférés"
+
 #~ msgid "preferential doc gate id"
 #~ msgstr "identifiant de portail par défaut"
 
@@ -9912,6 +9919,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "search in all contact fields"
 #~ msgstr "recherche dans tout les champs"
+
+#~ msgid "second family used"
+#~ msgstr "seconde famille utilisée"
 
 #~ msgid "select"
 #~ msgstr "sélectionner"
