@@ -22,7 +22,9 @@ include_once ('WHAT/Lib.Main.php');
 include_once ('WHAT/Class.AuthenticatorManager.php');
 
 $authtype = getAuthType();
+$guestMode = getDbAccessValue("useIndexAsGuest");
 
+$needToBeGuest = false;
 if ($authtype == 'apache') {
     // Apache has already handled the authentication
     global $_SERVER;
@@ -32,17 +34,22 @@ if ($authtype == 'apache') {
         exit;
     }
 } else {
-    
-    $status = AuthenticatorManager::checkAccess();
+    $noAsk = ($guestMode == true);
+    $status = AuthenticatorManager::checkAccess(null, $noAsk);
     switch ($status) {
-        case 0: // it'good, user is authentified
+        case AuthenticatorManager::AccessOk: // it'good, user is authentified
+            $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
             break;
 
-        case -1:
+        case AuthenticatorManager::AccessBug:
             // User must change his password
             // $action->session->close();
             AuthenticatorManager::$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
             exit(0);
+            break;
+
+        case AuthenticatorManager::NeedAsk:
+            $needToBeGuest = true;
             break;
 
         default:
@@ -54,8 +61,6 @@ if ($authtype == 'apache') {
             // Redirect($action, 'AUTHENT', 'LOGINFORM&error='.$status.'&auth_user='.urlencode($_POST['auth_user']));
             exit(0);
     }
-    
-    $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
 }
 
 if (file_exists('maintenance.lock')) {
@@ -72,7 +77,7 @@ if (file_exists('maintenance.lock')) {
 #
 #
 // First control
-if (!isset($_SERVER['PHP_AUTH_USER'])) {
+if ((!isset($_SERVER['PHP_AUTH_USER'])) && (!$needToBeGuest)) {
     $dirname = dirname($_SERVER["SCRIPT_NAME"]);
     
     Header("Location:" . $dirname . "/guest.php");
@@ -84,5 +89,36 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
  * @var Action $action
  */
 $action = null;
-getmainAction(AuthenticatorManager::$auth, $action);
-executeAction($action);
+
+if ($needToBeGuest) {
+    getmainAction(AuthenticatorManager::$auth, $action);
+    if ($action->user->id != ANONYMOUS_ID) {
+        // reopen a new anonymous session
+        setcookie('freedom_param', $action->session->id, 0);
+        unset($_SERVER['PHP_AUTH_USER']); // cause IE send systematicaly AUTH_USER & AUTH_PASSWD
+        $action->session->Set("");
+        $action->parent->SetSession($action->session);
+    }
+    if ($action->user->id != ANONYMOUS_ID) {
+        // reverify
+        print "<B>:~((</B>";
+        exit;
+    }
+    try {
+        executeAction($action);
+    }
+    catch(Dcp\Exception $e) {
+        switch ($e->getDcpCode()) {
+            case "CORE0006":
+                AuthenticatorManager::$auth->askAuthentication(array());
+                break;
+
+            default:
+                throw $e;
+        }
+    }
+} else {
+    getmainAction(AuthenticatorManager::$auth, $action);
+    executeAction($action);
+}
+?>

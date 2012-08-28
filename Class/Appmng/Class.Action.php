@@ -464,7 +464,7 @@ create sequence SEQ_ID_ACTION;
         }
         // check if this action is permitted
         if (!$this->HasPermission($this->acl)) {
-            $this->ExitError(sprintf(_("Access denied\nNeed ACL %s for action %s [%s]") , $this->acl, $this->short_name, $this->name));
+            throw new Dcp\Exception("CORE0006", $this->short_name, $this->name, $this->acl, $this->user->login);
         }
         
         if ($this->id > 0) {

@@ -1021,6 +1021,9 @@ class WDoc extends Doc
             foreach ($tmtid as $mtid) {
                 $keys = array();
                 $mt = new_doc($this->dbaccess, $mtid);
+                /**
+                 * @var _MAILTEMPLATE $mt
+                 */
                 if ($mt->isAlive()) {
                     $keys["WCOMMENT"] = nl2br($comment);
                     if (isset($tr["ask"])) {
