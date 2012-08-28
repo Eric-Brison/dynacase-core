@@ -263,7 +263,8 @@ class _MAILTEMPLATE extends Doc
                 
                 if (trim($to . $cc . $bcc) == "") {
                     $action->log->info(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject));
-                    return sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject);
+                    $doc->addComment(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject));
+                    return "";
                 } //nobody to send data
                 if ($this->sendercopy && getParam("FDL_BCC") == "yes") {
                     $umail = getMailAddr($this->userid);
