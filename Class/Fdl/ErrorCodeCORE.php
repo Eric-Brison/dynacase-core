@@ -34,6 +34,10 @@ namespace {
          */
         const CORE0005 = 'Action "%s"  not declared for application "%s" (#%d)';
         /**
+         * action name name is not declared for application
+         */
+        const CORE0006 = "Access deny to action \"%s\" [%s].\n Need \"%s\" Acl for \"%s\" user";
+        /**
          * for beautifier
          */
         private function _bo()

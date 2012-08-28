@@ -28,6 +28,9 @@ abstract class AuthenticatorManager
 {
     
     public static $session = null;
+    const NeedAsk = 6;
+    const AccessOk = 0;
+    const AccessBug = - 1;
     /**
      * @var Authenticator
      */
@@ -36,12 +39,12 @@ abstract class AuthenticatorManager
     
     public static function checkAccess($authtype = null, $noask = false)
     {
-        $error = 0;
+        $error = self::AccessOk;
         self::$provider_errno = 0;
         if ($authtype == null) $authtype = getAuthType();
         if ($authtype == 'apache') {
             // Apache has already handled the authentication
-            return 0;
+            return self::AccessOk;
         } else {
             if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype)) {
                 print sprintf("Invalid authtype '%s'", $authtype);
@@ -62,7 +65,7 @@ abstract class AuthenticatorManager
             $status = self::$auth->checkAuthentication();
             if ($status === Authenticator::AUTH_ASK) {
                 if ($noask) {
-                    return 1;
+                    return self::NeedAsk;
                 } else {
                     self::$auth->askAuthentication();
                     exit(0);
@@ -81,7 +84,7 @@ abstract class AuthenticatorManager
                 switch ($providerErrno) {
                     case Provider::ERRNO_BUG_639:
                         // User must change his password
-                        $error = - 1;
+                        $error = self::AccessBug;
                         break;
                 }
             }
@@ -157,7 +160,7 @@ abstract class AuthenticatorManager
         }
         
         self::clearGDocs();
-        return 0;
+        return self::AccessOk;
     }
     
     public function closeAccess()
