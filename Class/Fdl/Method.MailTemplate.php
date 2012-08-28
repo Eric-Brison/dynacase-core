@@ -219,7 +219,7 @@ class _MAILTEMPLATE extends Doc
                     case 'P':
                         $aid = strtok($v["tmail_recip"], " ");
                         if (!getParam($aid)) {
-                            $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                            $action->log->wlog("", sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
                             $doc->addComment(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
                             return sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid);
                         }
