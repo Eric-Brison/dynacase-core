@@ -85,7 +85,7 @@ class Session extends DbObj
     {
         parent::__construct();
         if ($session_name != '') $this->session_name = $session_name;
-        $this->last_seen = strftime('%d/%m/%Y %H:%M:%S %Z', time());
+        $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
     }
     
     function Set($id = "")
@@ -202,7 +202,7 @@ class Session extends DbObj
         $this->name = $this->session_name;
         $this->id = $idsess;
         $this->userid = $uid;
-        $this->last_seen = strftime('%d/%m/%Y %H:%M:%S %Z', time());
+        $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
         $this->Add();
         $this->log->debug("Nouvelle Session : {$this->id}");
     }
@@ -311,7 +311,7 @@ class Session extends DbObj
     
     function touch()
     {
-        $this->last_seen = strftime('%d/%m/%Y %H:%M:%S %Z', time());
+        $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
         $err = $this->modify();
         return $err;
     }
