@@ -6,32 +6,32 @@
 /**
  * @class Fdl.Context The connection context object to access to freedom
  *        documents
- * 
+ *
  * <pre><code>
   var C=new Fdl.Context({url:'http://my.freedom/'});
-  if (! C.isConnected()) {   
+  if (! C.isConnected()) {
     alert('error connect:'+C.getLastErrorMessage());
     return;
   }
-  
+
   if (! C.isAuthenticated()) {
     var u=C.setAuthentification({login:'admin',password:'anakeen'});
-    if (!u)  alert('error authent:'+C.getLastErrorMessage());    
+    if (!u)  alert('error authent:'+C.getLastErrorMessage());
   }
   &lt;core&gt;
  * </pre>
  * @param {Object} config
- * @cfg {String} url the url to reach freedom server 
+ * @cfg {String} url the url to reach freedom server
  * @constructor
  */
 Fdl.Context = function(config) {
 	if (! config) config={};
 	if (config) {
-		if (! config.url) this.url = window.location.protocol+'//'+window.location.host+window.location.pathname;
+		if (! config.url) this.url = './';
 		else this.url = config.url;
-		if (this.url.substr(-4, 4) == '.php')
-			this.url += '?';
-		else if (this.url.substr(-1, 1) != '/')
+		if (this.url.substr(-4, 4) == '.php') {
+            throw "Wrong context url: [" + this.url + "], url must not end with .php";
+        } else if (this.url.substr(-1, 1) != '/')
 			this.url += '/';
 	}
 };
@@ -50,15 +50,15 @@ Fdl.Context.prototype = {
 		propertiesInformation:null,
 		catalog:null,
 		/** translation catalog is autoloaded, set to false if you don't wan't autoload @type {Boolean}*/
-		autoLoadCatalog:true, 
+		autoLoadCatalog:true,
 		/** default locale 'fr' (french) or 'en' (english) @type {String}*/
-		locale:null, 
+		locale:null,
 		/** mapping family's document to special js class @type {Object}*/
 		familyMap:null,
 		getPropertiesInformation: function() {
 	if (! this.propertiesInformation) {
 			// not initialised yet i retreive the folder family
-			this.getDocument({id:2,useCache:false,onlyValues:false,propertiesInformation:true});			
+			this.getDocument({id:2,useCache:false,onlyValues:false,propertiesInformation:true});
 	}
 	return this.propertiesInformation;
 }
@@ -76,7 +76,7 @@ Fdl.Context.prototype.toString = function() {
  * @param {String} (optional) define an other locale
  * @return {Boolean} true if loaded is done
  */
-Fdl.Context.prototype.loadCatalog = function(locale) { 
+Fdl.Context.prototype.loadCatalog = function(locale) {
 	if (! locale) locale=this.locale;
 	if (!locale) {
 		var u=this.getUser();
@@ -98,13 +98,13 @@ Fdl.Context.prototype.loadCatalog = function(locale) {
  * get all sortable properties
  * @return {array} of property identificators
  */
-Fdl.Context.prototype.getSortableProperties = function() { 
+Fdl.Context.prototype.getSortableProperties = function() {
 	var f=[];
 		var pi=this.getPropertiesInformation();
 		for (var i in pi) {
 			if (pi[i].sortable) f.push(i);
 		}
-	
+
 	return f;
 };
 /**
@@ -112,27 +112,27 @@ Fdl.Context.prototype.getSortableProperties = function() {
  * @param {String} id the property id
  * @return {Object} example : {"type":"integer","displayable":true,"sortable":true,"filterable":true,"label":"identificateur"},
  */
-Fdl.Context.prototype.getPropertyInformation = function(id) { 
+Fdl.Context.prototype.getPropertyInformation = function(id) {
 	var pis=this.getPropertiesInformation();
-	
+
 	if (pis) {
 		var pi=pis[id];
 		if (pi) return pi;
-	} 
+	}
 	return null;
 };
 /**
   * get all displayable properties
   * @return {array} of property identificators
   */
-Fdl.Context.prototype.getDisplayableProperties = function() { 
+Fdl.Context.prototype.getDisplayableProperties = function() {
 	var f=[];
-	
+
 		var pi=this.getPropertiesInformation();
 		for (var i in pi) {
 			if (pi[i].displayable) f.push(i);
 		}
-	
+
 	return f;
 };
 
@@ -140,20 +140,20 @@ Fdl.Context.prototype.getDisplayableProperties = function() {
  * get all filterable properties
  * @return {array} of property identificators
  */
-Fdl.Context.prototype.getFilterableProperties = function() { 
+Fdl.Context.prototype.getFilterableProperties = function() {
 	var f=[];
-	
+
 		var pi=this.getPropertiesInformation();
 		for (var i in pi) {
 			if (pi[i].filterable) f.push(i);
 		}
-	
+
 	return f;
 };
 
 /**
  * To reconnect to another freedom server context
- * 
+ *
  * @param {object}
  *            config
  *            <p>
@@ -176,7 +176,7 @@ Fdl.Context.prototype.connect = function(config) {
 };
 /**
  * Try to ping server if connection is detected one time return always true
- * 
+ *
  * @param {object}
  *            config
  *            <p>
@@ -214,7 +214,7 @@ Fdl.Context.prototype.isConnected = function(config) {
                     config.onFail();
                 }
             };
-            
+
             if (config.timeout > 0) {
                 me._connectTimeId=setTimeout(function () {
                     if (me._isConnected === null) {
@@ -245,7 +245,7 @@ Fdl.Context.prototype.isConnected = function(config) {
 };
 /**
  * Verify is user is already authenticated
- * 
+ *
  * @param {object}
  *            config
  *            <p>
@@ -282,7 +282,7 @@ Fdl.Context.prototype.isAuthenticated = function(config) {
 
 /**
  * Authenticate to server
- * 
+ *
  * @param {object}
  *            config
  *            <p>
@@ -326,7 +326,7 @@ Fdl.Context.prototype.setAuthentification = function(config) {
 };
 /**
  * set error message
- * @param {String} msg the text message 
+ * @param {String} msg the text message
  * @param {String} code the code message
  * @return boolean
  */
@@ -345,7 +345,7 @@ Fdl.Context.prototype.getLastErrorMessage = function() {
 };
 /**
  * return translate message
- * @param {String} s the text to translate 
+ * @param {String} s the text to translate
  * @return {String}
  */
 Fdl.Context.prototype.getText = function(s) {
@@ -353,7 +353,7 @@ Fdl.Context.prototype.getText = function(s) {
 };
 /**
  * return translate message
- * @param {String} s the text to translate 
+ * @param {String} s the text to translate
  * @return {String}
  */
 Fdl.Context.prototype._ = function(s) {
@@ -365,7 +365,7 @@ Fdl.Context.prototype._ = function(s) {
 /**
  * Return user currently connected if already authenticate return always the
  * same object
- * 
+ *
  * @param {object}
  *            config
  *            <p>
@@ -384,7 +384,7 @@ Fdl.Context.prototype.getUser = function(config) {
 	if (!this.user) {
 		this.user = new Fdl.User( {
 			context : this
-		});			
+		});
 		if (this.user.locale) this.locale=this.user.locale.substr(0,this.user.locale.indexOf('_'));
 
 	}
@@ -405,8 +405,8 @@ Fdl.Context.prototype.resizeImage = function(icon, width) {
  * Send a request to the server
  * @param Object urldata object list of key:value : {a:2,app:MYTEST,action:MYACTION}
  * @param Object parameters other parameters to complte urldata
- * @param Boolean anonymousmode 
- * @param String otherroot to call another file in same domain (it is forbidden to call another server domain) 
+ * @param Boolean anonymousmode
+ * @param String otherroot to call another file in same domain (it is forbidden to call another server domain)
  * @return Boolean true if ok
  */
 Fdl.Context.prototype.retrieveData = function(urldata, parameters,
@@ -439,7 +439,7 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 	                    }
 	                }
 	            }
-	           
+
 	        }
 	    }
 		var url = this.url;
@@ -530,10 +530,10 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 
 /**
  * Send a request to the server
- * @param Object filepath 
+ * @param Object filepath
  * @param Object parameters other parameters to complte urldata
- * @param Boolean anonymousmode 
- * @param String otherroot to call another file in same domain (it is forbidden to call another server domain) 
+ * @param Boolean anonymousmode
+ * @param String otherroot to call another file in same domain (it is forbidden to call another server domain)
  * @return Boolean true if ok
  */
 Fdl.Context.prototype.retrieveFile = function(filepath, parameters) {
@@ -543,7 +543,7 @@ Fdl.Context.prototype.retrieveFile = function(filepath, parameters) {
  * Send a form to the server
  * @param Object urldata object list of key:value : {a:2,app:MYTEST,action:MYACTION}
  * @param String target target where send result (can be _hidden to not see the result or if result is a file which will be downloading in your desktop)
- * @param String otherroot to call another file in same domain (it is forbidden to call another server domain) 
+ * @param String otherroot to call another file in same domain (it is forbidden to call another server domain)
  * @return Boolean true if ok
  */
 Fdl.Context.prototype.sendForm = function(urldata, target, otherroot) {
@@ -572,7 +572,7 @@ Fdl.Context.prototype.sendForm = function(urldata, target, otherroot) {
 				newElement.value= JSON.stringify(urldata[name]);
 			} catch (e){
 				newElement.value = urldata[name];
-			} 
+			}
 		}else newElement.value = urldata[name];
 	}
 	form.submit();
@@ -581,13 +581,13 @@ Fdl.Context.prototype.sendForm = function(urldata, target, otherroot) {
 
 /**
  * get a document object
- * 
+ *
  * @param {object} config
  *     <p><ul>
  *          <li><b>familyName</b> family name to map</li>
  *          <li><b>className</b> class name to map</li>
  *     </ul></p>
- *     
+ *
  * @return {Boolean}
  */
 Fdl.Context.prototype.addFamilyMap = function(config) {
@@ -609,7 +609,7 @@ Fdl.Context.prototype.stringToFunction = function(str) {
 
 /**
  * get a document object
- * 
+ *
  * @param {object}
  *            config
  *            <p>
@@ -640,8 +640,8 @@ Fdl.Context.prototype.stringToFunction = function(str) {
 			}
 		});
 		if (d && d.isAlive()) {
-			var dl = d.getStoredContent(); // document list object			
-			var p = dl.getDocuments();  // array of Fdl.Documents   
+			var dl = d.getStoredContent(); // document list object
+			var p = dl.getDocuments();  // array of Fdl.Documents
  *            </code></pre>
  *            </li>
  *            </ul>
@@ -667,7 +667,7 @@ Fdl.Context.prototype.getDocument = function(config) {
 
 	var latest=true;
 	if (typeof config == 'object' && config.latest === false) latest=false;
-	
+
 	if (docid && (typeof docid == 'object') && (docid.length==1)) {
 		docid=docid[0];
 		config.id=docid;
@@ -682,7 +682,7 @@ Fdl.Context.prototype.getDocument = function(config) {
 	if (config.data && config.data.properties && config.data.properties.id && docid) {
 	    if (latest) {
 	        // verify revdate
-	        if (this._documents[docid] && this._documents[docid]._data && 
+	        if (this._documents[docid] && this._documents[docid]._data &&
 	                (config.data.requestDate <= this._documents[docid]._data.requestDate)) {
 	            // use cache if data is oldest cache
 	           // console.log("use latest cache", docid, this._documents[docid].getTitle());
@@ -706,13 +706,13 @@ Fdl.Context.prototype.getDocument = function(config) {
 	   return null;
    }
 	var wdoc = new Fdl.Document(config);
-  
-	
+
+
 	if (! wdoc._data) return null;
 	if (this.familyMap != null && this.familyMap[wdoc.getProperty('fromname')]) {
 		var sname=wdoc.getProperty('fromname');
 		config.data = wdoc._data;
-		
+
 		var sclass=this.stringToFunction(this.familyMap[sname]);
 		wdoc = new sclass(config);
 	}else if ((wdoc.getProperty('defdoctype') == 'D')
@@ -735,7 +735,7 @@ Fdl.Context.prototype.getDocument = function(config) {
 			if ((docid!=wdoc.getProperty('id')) && (docid!=wdoc.getProperty('initid'))) {
 				this._documents[docid] = wdoc; // other alias cache
 			}
-		} else {	
+		} else {
 			this._fixDocuments[wdoc.getProperty('id')] = wdoc;
 		}
 	}
@@ -745,7 +745,7 @@ Fdl.Context.prototype.getDocument = function(config) {
 /**
  * get the notifier object after the first call retrun always the same notifier
  * object : one notifier by context
- * 
+ *
  * @param {object}
  *            config
  *            <p>
@@ -774,7 +774,7 @@ Fdl.Context.prototype.getNotifier = function(config) {
 };
 /**
  * get a new search document
- * 
+ *
  * @param {object}
  *            config (see
  *            {@link Fdl.SearchDocument configuration of Fdl.SearchDocument } )
@@ -792,12 +792,12 @@ Fdl.Context.prototype.getSearchDocument = function(config) {
 
 /**
  * get available operators for search criteria by attribute type
- * @return {Object} the operator available by attribute type  
+ * @return {Object} the operator available by attribute type
 {text:[{operator:'=', label:'equal', operand:['left','right'],labelTpl:'{left} is equal to {right}'},{operator:'~*', label:'include',operand:['left','right'],labelTpl:'{left} is equal to {right}'}],integer:[{operator:'=', label:'equal'},{operator:'>', label:'&gt;'}],...
  */
-Fdl.Context.prototype.getSearchCriteria = function() { 
+Fdl.Context.prototype.getSearchCriteria = function() {
 	if (this._opcriteria) return this._opcriteria;
-	
+
 	var r= this.retrieveData({app:'DATA',action:'DOCUMENT',
 		method:'getsearchcriteria'});
 	if (! r.error) {
@@ -809,7 +809,7 @@ Fdl.Context.prototype.getSearchCriteria = function() {
 
 /**
  * get a groupRequest object
- * 
+ *
  * @param {object}
  *            config
  * @return {Fdl.GroupRequest} return the object group request
@@ -825,7 +825,7 @@ Fdl.Context.prototype.createGroupRequest = function(config) {
 };
 /**
  * get home folder of current user
- * 
+ *
  * @return {Fdl.Collection} the home folder, null is no home
  */
 Fdl.Context.prototype.getHomeFolder = function(config) {
@@ -846,7 +846,7 @@ Fdl.Context.prototype.getHomeFolder = function(config) {
 };
 /**
  * get desktop folder of current user
- * 
+ *
  * @return {Fdl.Collection} the home folder, null is no desktop folder
  */
 Fdl.Context.prototype.getDesktopFolder = function(config) {
@@ -867,7 +867,7 @@ Fdl.Context.prototype.getDesktopFolder = function(config) {
 };
 /**
  * get offline folder of current user
- * 
+ *
  * @return {Fdl.Collection} the home folder, null is no offline folder
  */
 Fdl.Context.prototype.getOfflineFolder = function(config) {
@@ -888,7 +888,7 @@ Fdl.Context.prototype.getOfflineFolder = function(config) {
 };
 /**
  * get basket folder of current user
- * 
+ *
  * @return {Fdl.Collection} the home folder, null is no home
  */
 Fdl.Context.prototype.getBasketFolder = function(config) {
@@ -904,7 +904,7 @@ Fdl.Context.prototype.getBasketFolder = function(config) {
 			this._basketFolder = h;
 			return h;
 		} else {
-			var f=new Fdl.DocumentFilter({family:'DIR strict',  
+			var f=new Fdl.DocumentFilter({family:'DIR strict',
 				criteria:[{operator:'=',
 					left:'owner',
 					right:'-'+u.id}]});
@@ -921,7 +921,7 @@ Fdl.Context.prototype.getBasketFolder = function(config) {
 };
 /**
  * create a new object document (not set in database since it is saved)
- * 
+ *
  * @param {Object}
  *            config
  *            <ul>
@@ -964,7 +964,7 @@ Fdl.Context.prototype.createDocument = function(config) {
 
 /**
  * get application object
- * 
+ *
  * @param {object} config
  * <ul>
  * <li><b>name : </b> (String) the application name</li>
@@ -974,13 +974,13 @@ Fdl.Context.prototype.createDocument = function(config) {
 Fdl.Context.prototype.getApplication = function(config) {
 	if (config) config.context = this;
 	else config = {context : this};
-	
+
 	var a= new Fdl.Application(config);
 	if (! a.id ) return null;
 	return a;
 };
 /**
- * 
+ *
  * @param config .id the param identifier
  * <ul><li><b>id : </b>the param identificator</li>
  * </ul>
@@ -995,7 +995,7 @@ Fdl.Context.prototype.getParameter = function (config) {
     }
   };
 /**
- * 
+ *
  * @param config .id the param identifier
  * <ul><li><b>id : </b>the param identificator</li>
  *     <li><b>value : </b>the value</li>
