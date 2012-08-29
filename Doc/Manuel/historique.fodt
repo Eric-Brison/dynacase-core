@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rpt="http://openoffice.org/2005/report" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:css3t="http://www.w3.org/TR/css3-text/" office:version="1.2" office:mimetype="application/vnd.oasis.opendocument.text">
- <office:meta><meta:initial-creator>Eric Brison</meta:initial-creator><meta:creation-date>2012-06-04T14:57:40</meta:creation-date><dc:date>2012-08-29T16:28:27</dc:date><meta:editing-duration>PT1H51M36S</meta:editing-duration><meta:editing-cycles>38</meta:editing-cycles><meta:generator>LibreOffice/3.4$Linux LibreOffice_project/340m1$Build-402</meta:generator><dc:creator>Nicolas Thing-leoh</dc:creator><meta:document-statistic meta:table-count="1" meta:image-count="0" meta:object-count="0" meta:page-count="2" meta:paragraph-count="132" meta:word-count="751" meta:character-count="5040" meta:non-whitespace-character-count="4419"/></office:meta>
+ <office:meta><meta:initial-creator>Eric Brison</meta:initial-creator><meta:creation-date>2012-06-04T14:57:40</meta:creation-date><dc:date>2012-08-29T17:33:16</dc:date><meta:editing-duration>PT1H53M23S</meta:editing-duration><meta:editing-cycles>39</meta:editing-cycles><meta:generator>LibreOffice/3.4$Linux LibreOffice_project/340m1$Build-402</meta:generator><dc:creator>Nicolas Thing-leoh</dc:creator><meta:document-statistic meta:table-count="1" meta:image-count="0" meta:object-count="0" meta:page-count="2" meta:paragraph-count="133" meta:word-count="758" meta:character-count="5105" meta:non-whitespace-character-count="4478"/></office:meta>
  <office:settings>
   <config:config-item-set config:name="ooo:view-settings">
    <config:config-item config:name="ViewAreaTop" config:type="int">0</config:config-item>
    <config:config-item config:name="ViewAreaLeft" config:type="int">0</config:config-item>
    <config:config-item config:name="ViewAreaWidth" config:type="int">36858</config:config-item>
-   <config:config-item config:name="ViewAreaHeight" config:type="int">15639</config:config-item>
+   <config:config-item config:name="ViewAreaHeight" config:type="int">16723</config:config-item>
    <config:config-item config:name="ShowRedlineChanges" config:type="boolean">true</config:config-item>
    <config:config-item config:name="InBrowseMode" config:type="boolean">false</config:config-item>
    <config:config-item-map-indexed config:name="Views">
     <config:config-item-map-entry>
      <config:config-item config:name="ViewId" config:type="string">view2</config:config-item>
-     <config:config-item config:name="ViewLeft" config:type="int">17824</config:config-item>
-     <config:config-item config:name="ViewTop" config:type="int">4884</config:config-item>
+     <config:config-item config:name="ViewLeft" config:type="int">20219</config:config-item>
+     <config:config-item config:name="ViewTop" config:type="int">5995</config:config-item>
      <config:config-item config:name="VisibleLeft" config:type="int">0</config:config-item>
      <config:config-item config:name="VisibleTop" config:type="int">0</config:config-item>
      <config:config-item config:name="VisibleRight" config:type="int">36856</config:config-item>
-     <config:config-item config:name="VisibleBottom" config:type="int">15637</config:config-item>
+     <config:config-item config:name="VisibleBottom" config:type="int">16722</config:config-item>
      <config:config-item config:name="ZoomType" config:type="short">0</config:config-item>
      <config:config-item config:name="ViewLayoutColumns" config:type="short">1</config:config-item>
      <config:config-item config:name="ViewLayoutBookMode" config:type="boolean">false</config:config-item>
@@ -446,6 +446,9 @@
      </table:table-cell>
      <table:table-cell table:style-name="Tableau1.A2" office:value-type="string">
       <text:p text:style-name="P4">29 août 2012</text:p>
+      <text:p text:style-name="P4"/>
+      <text:p text:style-name="P4"/>
+      <text:p text:style-name="P4"/>
       <text:p text:style-name="P4">28 août 2012</text:p>
       <text:p text:style-name="P4">24 août 2012</text:p>
       <text:p text:style-name="P4"/>
@@ -507,10 +510,10 @@
       <text:p text:style-name="P4">13 avril 2012</text:p>
       <text:p text:style-name="P4">27 mars 2012</text:p>
       <text:p text:style-name="P4">22 mars 2012</text:p>
-      <text:p text:style-name="P7"/>
+      <text:p text:style-name="P7"><text:soft-page-break/></text:p>
       <text:p text:style-name="P4">21 mars 2012</text:p>
       <text:p text:style-name="P4">30 janvier 2012</text:p>
-      <text:p text:style-name="P4"><text:soft-page-break/>27 janvier 2012</text:p>
+      <text:p text:style-name="P4">27 janvier 2012</text:p>
       <text:p text:style-name="P4">26 janvier 2012</text:p>
       <text:p text:style-name="P7"/>
       <text:p text:style-name="P4">9 janvier 2012</text:p>
@@ -528,6 +531,7 @@
      </table:table-cell>
      <table:table-cell table:style-name="Tableau1.A2" office:value-type="string">
       <text:p text:style-name="P10">Modification §4.4 et §3.10.2.5 : Ajout de log pour les crons et les minuteurs</text:p>
+      <text:p text:style-name="P10">Modification §2.6.4 : renomage freedom_clean en dynacaseDbCleaner</text:p>
       <text:p text:style-name="P10">mode useIndexAsGuest §4.1.5</text:p>
       <text:p text:style-name="P10">addDocumentIdentifiers remplace <text:s/>addDocumentIdenticators (§3.3.6)</text:p>
       <text:p text:style-name="P10">Document fhidden ltarget option (£2.1.4.3)</text:p>
@@ -570,9 +574,9 @@
       <text:p text:style-name="P10">Force du mot de passe. §4.5.5</text:p>
       <text:p text:style-name="P10">Class Account remplace User §3.13</text:p>
       <text:p text:style-name="P10">Login utilisateur devient modifiable §2.2.3.2</text:p>
-      <text:p text:style-name="P10">balise @templateController §3.9</text:p>
+      <text:p text:style-name="P10"><text:soft-page-break/>balise @templateController §3.9</text:p>
       <text:p text:style-name="P10">méthode de menu @apiExpose §2.1.3.12</text:p>
-      <text:p text:style-name="P10"><text:soft-page-break/>Ajout des rôles §2.2, §2.3, §3.13</text:p>
+      <text:p text:style-name="P10">Ajout des rôles §2.2, §2.3, §3.13</text:p>
       <text:p text:style-name="P10">Dbaccess.php déplacé dans répertoire context §4</text:p>
       <text:p text:style-name="P10">Déplacement des éléments d&apos;exploitation (§4.3.2, §4.7, §4.8) dans le Manuel d&apos;Exploitation</text:p>
       <text:p text:style-name="P10">Ajout §3.1.3.2.4 Modification des éléments d&apos;importations</text:p>

@@ -42,7 +42,7 @@ function fusers_igroup(&$action)
     
     $cmd = getWshCmd();
     
-    $cmd.= "--bar=$bar --api=usercard_refreshgroup ";
+    $cmd.= "--bar=$bar --api=accountRefreshGroup ";
     
     bgexec(array(
         $cmd

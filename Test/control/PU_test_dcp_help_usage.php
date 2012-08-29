@@ -86,7 +86,7 @@ class TestHelpUsage extends TestCaseDcp
                 "fixMultipleAliveRevision"
             ) ,
             array(
-                "freedom_clean"
+                "dynacaseDbCleaner"
             ) ,
             array(
                 "freedom_convert"
@@ -155,7 +155,7 @@ class TestHelpUsage extends TestCaseDcp
                 "usercard_ldapinit"
             ) ,
             array(
-                "usercard_refreshgroup"
+                "accountRefreshGroup"
             ) ,
             array(
                 "VaultExamine"

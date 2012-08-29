@@ -8,7 +8,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen
- * @version $Id: freedom_clean.php,v 1.8 2008/04/25 09:18:15 jerome Exp $
+ * @version $Id: dynacaseDbCleaner.php,v 1.8 2008/04/25 09:18:15 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage
@@ -43,8 +43,8 @@ global $_SERVER;
 $dir = dirname($_SERVER["argv"][0]);
 
 $dbfreedom = getServiceName($dbaccess);
-if ($real) system(sprintf("PGSERVICE=%s psql -f %s/API/freedom_realclean.sql", escapeshellarg($dbfreedom) , escapeshellarg($dir)));
-else system(sprintf("PGSERVICE=%s psql -f %s/API/freedom_clean.sql", escapeshellarg($dbfreedom) , escapeshellarg($dir)));
+if ($real) system(sprintf("PGSERVICE=%s psql -f %s/API/dynacaseDbCleaner.sql", escapeshellarg($dbfreedom) , escapeshellarg($dir)));
+else system(sprintf("PGSERVICE=%s psql -f %s/API/dynacaseDbCleaner.sql", escapeshellarg($dbfreedom) , escapeshellarg($dir)));
 // Cleanup session files
 $core_db = $action->GetParam('CORE_DB');
 $sessionUtils = new SessionUtils($core_db);
