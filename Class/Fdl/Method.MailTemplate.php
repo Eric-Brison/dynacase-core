@@ -219,7 +219,7 @@ class _MAILTEMPLATE extends Doc
                     case 'P':
                         $aid = strtok($v["tmail_recip"], " ");
                         if (!getParam($aid)) {
-                            $action->log->wlog("", sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                            $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
                             $doc->addComment(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
                             return sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid);
                         }
@@ -263,7 +263,7 @@ class _MAILTEMPLATE extends Doc
                 
                 if (trim($to . $cc . $bcc) == "") {
                     $action->log->info(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject));
-                    $doc->addComment(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject));
+                    $doc->addComment(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject) , HISTO_NOTICE);
                     return "";
                 } //nobody to send data
                 if ($this->sendercopy && getParam("FDL_BCC") == "yes") {
