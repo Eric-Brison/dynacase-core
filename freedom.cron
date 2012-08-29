@@ -3,4 +3,4 @@
 # Every days
 02 5 * * * [ -f "$CONTEXT_ROOT"/wsh.php ] && [ ! -f "$CONTEXT_ROOT"/maintenance.lock ] && cd "$CONTEXT_ROOT" && ./wsh.php --api=freedom_clean --real=yes > /dev/null
 # Every 5 minutes
-*/5 * * * * [ -f "$CONTEXT_ROOT"/wsh.php ] && [ ! -f "$CONTEXT_ROOT"/maintenance.lock ] && cd "$CONTEXT_ROOT" && ./wsh.php --api=fdl_cronexec > /dev/null
+*/5 * * * * [ -f "$CONTEXT_ROOT"/wsh.php ] && [ ! -f "$CONTEXT_ROOT"/maintenance.lock ] && cd "$CONTEXT_ROOT" && ./wsh.php --api=process-execute > /dev/null

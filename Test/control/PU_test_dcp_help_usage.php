@@ -53,7 +53,7 @@ class TestHelpUsage extends TestCaseDcp
                 "fdl_adoc"
             ) ,
             array(
-                "fdl_cronexec"
+                "process-execute"
             ) ,
             array(
                 "fdl_dbaccess"
