@@ -865,7 +865,7 @@ class WDoc extends Doc
             if ($msg3) $this->doc->addComment($msg3);
             if ($msg3 != "") $msg3 = sprintf(_("Warning : %s") , $msg3);
         }
-        $msg.= ($msg ? '\n' : '') . $msg2;
+        $msg.= ($msg && $msg2 ? "\n" : '') . $msg2;
         if ($msg && $msg3) $msg.= "\n";
         $msg.= $msg3;
         $this->doc->enableEditControl();
