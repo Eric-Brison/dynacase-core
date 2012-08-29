@@ -52,7 +52,41 @@ class DocTimer extends DbObj
      * @public int
      */
     public $level;
-    
+    /**
+     * Timer identifier
+     * @public int $timerid
+     */
+    public $timerid;
+    /**
+     * Document identifier
+     * @public int $docid
+     */
+    public $docid;
+    /**
+     * Executed date
+     * @public date $donedate
+     */
+    public $donedate;
+    /**
+     * Attach date to document
+     * @public date $attachdate
+     */
+    public $attachdate;
+    /**
+     * Action result
+     * @public string $result
+     */
+    public $result;
+    /**
+     * Actions to be executed
+     * @public string $actions
+     */
+    public $actions;
+    /**
+     * Timer title
+     * @public string title
+     */
+    public $title;
     public $id_fields = array(
         "id"
     );
@@ -86,6 +120,7 @@ create table doctimer ( id serial,
         $c = $q->count();
         
         if ($c > 0) return _("timer already set");
+        return "";
     }
     /**
      * delete all timers which comes from same origin
@@ -167,7 +202,10 @@ create table doctimer ( id serial,
     function executeTimerNow()
     {
         $timer = new_doc($this->dbaccess, $this->timerid);
-        if (!$timer->isAlive()) return sprintf(_("cannot execute timer : timer %s is not found") , $timerid);
+        /**
+         * @var _TIMER $timer
+         */
+        if (!$timer->isAlive()) return sprintf(_("cannot execute timer : timer %s is not found") , $this->timerid);
         
         $err = $timer->executeLevel($this->level, $this->docid, $msg, $gonextlevel);
         if ($gonextlevel) {
@@ -192,6 +230,7 @@ create table doctimer ( id serial,
                 }
             }
         }
+        return $err;
     }
 }
 ?>
