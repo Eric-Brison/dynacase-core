@@ -30,4 +30,11 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+"$wpub/wsh.php" --api=initViewPrivileges
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error migrating extended acls"
+    exit $RET
+fi
+
 exit 0
