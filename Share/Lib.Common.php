@@ -340,7 +340,12 @@ function getServiceCore()
     $pg_service = $pgservice_core;
     return $pg_service;
 }
-
+/**
+ * return variable from dbaccess.php
+ * @param string $varName
+ * @return string|null
+ * @throws Dcp\Exception
+ */
 function getDbAccessValue($varName)
 {
     $included = false;
@@ -365,6 +370,8 @@ function getDbAccessValue($varName)
     if (!$included) {
         throw new Dcp\Exception("FILE0005", $filename);
     }
+    
+    if (!isset($$varName)) return null;
     return $$varName;
 }
 function getServiceFreedom()
