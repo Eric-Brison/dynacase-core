@@ -78,7 +78,7 @@ function viewdocsubmenu(event,docid,submenu,upobject, barmenu) {
   var menuaction=MENUACTION;
   var menuopt='';
   var coord=false;
-  if (submenu) menuopt='&submenu='+submenu;
+  if (submenu) menuopt='&submenu='+encodeURIComponent(submenu);
   else {
     if (ctrlPushed(event) && altPushed(event)) {
       menuapp='FDL';
