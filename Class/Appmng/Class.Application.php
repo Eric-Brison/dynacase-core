@@ -917,7 +917,11 @@ create sequence SEQ_ID_APPLICATION start 10;
                     foreach ($app_desc as $k => $v) {
                         $this->$k = $v;
                     }
-                    $this->Add();
+                    if ($this->isAffected()) {
+                        $this->modify();
+                    } else {
+                        $this->Add();
+                    }
                     $this->param = new Param();
                     $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : ANONYMOUS_ID);
                 }
