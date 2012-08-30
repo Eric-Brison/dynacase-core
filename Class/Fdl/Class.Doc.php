@@ -5734,7 +5734,7 @@ create unique index i_docir on doc(initid, revision);";
      * set default name reference
      * if no name a new name will ne computed from its initid and family name
      * the new name is set to name attribute
-     * @param boolean $temporary compute a temporary logical name that will be deleted by the freedom_clean API
+     * @param boolean $temporary compute a temporary logical name that will be deleted by the dynacaseDbCleaner API
      * @return string error message (empty means OK).
      */
     final public function setNameAuto($temporary = false)

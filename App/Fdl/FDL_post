@@ -110,7 +110,7 @@ if [ "$1" = "I" ] ; then
     #$wpub/wsh.php --api=vault_init
     
     # $wpub/wsh.php --app=FDL --action=FREEDOM_INIT  
-    # psql $dbfreename anakeen -f $wpub/API/freedom_clean.sql
+    # psql $dbfreename anakeen -f $wpub/API/dynacaseDbCleaner.sql
 fi
 
 #------------------------------

@@ -28,10 +28,15 @@ class _EXEC extends Doc
     /**
      * execute the action describe in the object
      * @apiExpose
+     * @param string $comment
      * @return int shell status (0 means OK).
      */
     function bgExecute($comment = "")
     {
+        /**
+         * @var Action $action
+         */
+        global $action;
         
         if (!$this->canExecuteAction()) {
             AddWarningMsg(sprintf(_("Error : need edit privilege to execute")));
@@ -43,9 +48,17 @@ class _EXEC extends Doc
             
             $cmd.= " --userid=" . $this->userid;
             if ($comment != "") $cmd.= " --comment=" . base64_encode($comment); // prevent hack
+            $time_start = microtime(true);
             system($cmd, $status);
-            if ($status == 0) AddWarningMsg(sprintf(_("Process %s [%d] executed") , $this->title, $this->id));
-            else AddWarningMsg(sprintf(_("Error : Process %s [%d]: status %d") , $this->title, $this->id, $status));
+            $time_end = microtime(true);
+            $time = $time_end - $time_start;
+            if ($status == 0) {
+                AddWarningMsg(sprintf(_("Process %s [%d] executed") , $this->title, $this->id));
+                $action->log->info(sprintf(_("Process %s [%d] executed in %.03f seconds") , $this->title, $this->id, $time));
+            } else {
+                AddWarningMsg(sprintf(_("Error : Process %s [%d]: status %d") , $this->title, $this->id, $status));
+                $action->log->error(sprintf(_("Error : Process %s [%d]: status %d in %.03f seconds") , $this->title, $this->id, $status, $time));
+            }
             return $status;
         }
         return -2;
@@ -62,6 +75,7 @@ class _EXEC extends Doc
         $err = $this->modify();
         return $err;
     }
+    
     function isInprogress()
     {
         if ($this->canEdit() == "") {
@@ -69,6 +83,7 @@ class _EXEC extends Doc
         }
         return MENU_INVISIBLE;
     }
+    
     function postModify()
     {
         $this->setValue("exec_nextdate", $this->getNextExecDate());
@@ -132,6 +147,7 @@ class _EXEC extends Doc
         
         return $ndh;
     }
+    
     function getPrevExecDate()
     {
         if ($this->revision > 0) {

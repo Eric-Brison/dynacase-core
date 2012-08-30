@@ -307,7 +307,7 @@ function getCheckActions($pubdir, $tapp, &$tact, $version_override = array())
     
     $tact = array_merge($dump, $cmd);
     
-    $tact[] = "$pubdir/wsh.php  --api=freedom_clean";
+    $tact[] = "$pubdir/wsh.php  --api=dynacaseDbCleaner";
     $tact[] = "$pubdir/wstart";
     global $_SERVER;
     if (empty($_GET['httpdrestart']) || ($_GET['httpdrestart'] != 'no')) {

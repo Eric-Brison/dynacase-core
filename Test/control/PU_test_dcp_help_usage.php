@@ -53,7 +53,7 @@ class TestHelpUsage extends TestCaseDcp
                 "fdl_adoc"
             ) ,
             array(
-                "fdl_cronexec"
+                "processExecute"
             ) ,
             array(
                 "fdl_dbaccess"
@@ -86,7 +86,7 @@ class TestHelpUsage extends TestCaseDcp
                 "fixMultipleAliveRevision"
             ) ,
             array(
-                "freedom_clean"
+                "dynacaseDbCleaner"
             ) ,
             array(
                 "freedom_convert"
@@ -155,7 +155,7 @@ class TestHelpUsage extends TestCaseDcp
                 "usercard_ldapinit"
             ) ,
             array(
-                "usercard_refreshgroup"
+                "accountRefreshGroup"
             ) ,
             array(
                 "VaultExamine"

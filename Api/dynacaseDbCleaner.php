@@ -8,7 +8,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen
- * @version $Id: freedom_clean.php,v 1.8 2008/04/25 09:18:15 jerome Exp $
+ * @version $Id: dynacaseDbCleaner.php,v 1.8 2008/04/25 09:18:15 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage
@@ -43,8 +43,8 @@ global $_SERVER;
 $dir = dirname($_SERVER["argv"][0]);
 
 $dbfreedom = getServiceName($dbaccess);
-if ($real) system(sprintf("PGSERVICE=%s psql -f %s/API/freedom_realclean.sql", escapeshellarg($dbfreedom) , escapeshellarg($dir)));
-else system(sprintf("PGSERVICE=%s psql -f %s/API/freedom_clean.sql", escapeshellarg($dbfreedom) , escapeshellarg($dir)));
+if ($real) system(sprintf("PGSERVICE=%s psql -f %s/API/dynacaseDbCleaner.sql | logger -t %s", escapeshellarg($dbfreedom) , escapeshellarg($dir) , escapeshellarg("dynacaseDbCleaner(" . $action->GetParam("CORE_CLIENT") . ")")));
+else system(sprintf("PGSERVICE=%s psql -f %s/API/dynacaseDbCleaner.sql | logger -t %s", escapeshellarg($dbfreedom) , escapeshellarg($dir) , escapeshellarg("dynacaseDbCleaner(" . $action->GetParam("CORE_CLIENT") . ")")));
 // Cleanup session files
 $core_db = $action->GetParam('CORE_DB');
 $sessionUtils = new SessionUtils($core_db);
@@ -52,15 +52,16 @@ $sessionUtils->deleteExpiredSessionFiles();
 
 cleanTmpFiles();
 
-function cleanTmpFiles() {
+function cleanTmpFiles()
+{
     global $action;
     global $pubdir;
-
+    
     if ($pubdir == '') {
         echo sprintf("Error: Yikes! we got an empty pubdir?");
         return;
     }
-
+    
     $tmpDir = getTmpDir('');
     if ($tmpDir == '') {
         echo sprintf("Error: empty directory returned by getTmpDir().");
@@ -70,7 +71,7 @@ function cleanTmpFiles() {
         echo sprintf("Error: temporary directory '%s' does not exists.", $tmpDir);
         return;
     }
-
+    
     $maxAge = $action->GetParam('CORE_TMPDIR_MAXAGE', '');
     if ($maxAge == '') {
         echo sprintf("Error: empty CORE_TMPDIR_MAXAGE parameter.");
@@ -84,25 +85,22 @@ function cleanTmpFiles() {
     if ($maxAge < 0) {
         return;
     }
-
     /* We use find & xargs shell commands to do the cleaning. */
-
     /* First pass: remove expired files */
-    $cmd = sprintf('find %s -type f -mtime +%s -print0 | xargs -0 --no-run-if-empty rm', escapeshellarg($tmpDir), $maxAge);
+    $cmd = sprintf('find %s -type f -mtime +%s -print0 | xargs -0 --no-run-if-empty rm', escapeshellarg($tmpDir) , $maxAge);
     exec($cmd, $output, $ret);
     if ($ret != 0) {
         echo sprintf("Error: removal of temporary files from '%s' returned with error: %s", $tmpDir, join("\n", $output));
         return;
     }
     /* Second pass: remove expired empty directories */
-    $cmd = sprintf('find %s -type d -empty -mtime +%s -print0 | xargs -0 --no-run-if-empty rmdir', escapeshellarg($tmpDir), $maxAge);
+    $cmd = sprintf('find %s -type d -empty -mtime +%s -print0 | xargs -0 --no-run-if-empty rmdir', escapeshellarg($tmpDir) , $maxAge);
     exec($cmd, $output, $ret);
     if ($ret != 0) {
         echo sprintf("Error: removal of empty temporary directories from '%s' returned with error: %s", $tmpDir, join("\n", $output));
         return;
     }
-
+    
     return;
 }
-
 ?>

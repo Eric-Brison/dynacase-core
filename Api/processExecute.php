@@ -8,7 +8,7 @@
  *  Execute Freedom Processes when needed
  *
  * @author Anakeen
- * @version $Id: fdl_cronexec.php,v 1.4 2008/12/31 14:39:52 eric Exp $
+ * @version $Id: processExecute.php,v 1.4 2008/12/31 14:39:52 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage
@@ -22,7 +22,7 @@ include_once ("FDL/Class.DocTimer.php");
 include_once ("FDL/Class.SearchDoc.php");
 
 $usage = new ApiUsage();
-$usage->setText("Execute Freedom Processes when needed");
+$usage->setText("Execute Dynacase Processes when needed");
 $usage->verify();
 
 $appl = new Application();
@@ -36,6 +36,10 @@ if ($dbaccess == "") {
 
 function verifyExecDocuments($dbaccess)
 {
+    /**
+     * @var Action $action
+     */
+    global $action;
     // Verify EXEC document
     $now = Doc::getTimeDate();
     
@@ -60,29 +64,56 @@ function verifyExecDocuments($dbaccess)
         $s->search();
         //print_r2($s->getDebugInfo());
         while ($de = $s->nextDoc()) {
-            $status = $de->bgExecute(_("freedom cron try execute"));
+            /**
+             * @var _EXEC $de
+             */
+            /**
+             * Logging in bgexecute
+             */
+            $status = $de->bgExecute(_("dynacase cron try execute"));
             $del = new_Doc($dbaccess, $de->latestId(false, true));
-            
+            /**
+             * @var _EXEC $del
+             */
             $del->deleteValue("exec_status");
             $del->deleteValue("exec_handnextdate");
-            $del->refresh();
-            $del->postModify();
-            $err = $del->modify();
-            print sprintf("Execute %s [%d] (%s) : %s\n", $del->title, $del->id, $del->exec_handnextdate, $err);
+            $err = $del->store();
+            
+            if ($status == 0) {
+                print sprintf("Execute %s [%d] (%s) : %s\n", $del->title, $del->id, $del->getValue("exec_handnextdate") , $err);
+            } else {
+                print sprintf("Error executing %s [%d] (%s) : %s (%s)\n", $del->title, $del->id, $del->getValue("exec_handnextdate") , $err, $status);
+            }
         }
     }
 }
+
 function verifyTimerDocuments($dbaccess)
 {
+    global $action;
+    /**
+     * @var Action $action
+     */
     // Verify EXEC document
     $dt = new DocTimer($dbaccess);
     $ate = $dt->getActionsToExecute();
     
     foreach ($ate as $k => $v) {
         $dt->Affect($v);
-        $dt->executeTimerNow();
+        $time_start = microtime(true);
+        $err = $dt->executeTimerNow();
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        if ($err) {
+            $action->log->error(sprintf("Error while executing timer %s (%d): %s in %.03f seconds", $dt->title, $dt->id, $err, $time));
+            print sprintf("Error while executing timer %s (%d): %s in %.03f seconds", $dt->title, $dt->id, $err, $time);
+        } else {
+            $action->log->info(sprintf("Timer %s (%d) executed in %.03f seconds", $dt->title, $dt->id, $time));
+            print sprintf("Timer %s (%d) executed in %.03f seconds", $dt->title, $dt->id, $time);
+        }
     }
 }
+
 verifyExecDocuments($dbaccess);
 verifyTimerDocuments($dbaccess);
 ?>
