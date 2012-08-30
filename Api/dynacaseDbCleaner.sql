@@ -1,3 +1,4 @@
+\timing
 delete from only doc;
 delete from doc where doctype='T';
 begin;

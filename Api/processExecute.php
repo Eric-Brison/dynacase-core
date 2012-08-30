@@ -77,9 +77,7 @@ function verifyExecDocuments($dbaccess)
              */
             $del->deleteValue("exec_status");
             $del->deleteValue("exec_handnextdate");
-            $del->refresh();
-            $del->postModify();
-            $err = $del->modify();
+            $err = $del->store();
             
             if ($status == 0) {
                 print sprintf("Execute %s [%d] (%s) : %s\n", $del->title, $del->id, $del->getValue("exec_handnextdate") , $err);
