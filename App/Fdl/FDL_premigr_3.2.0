@@ -12,13 +12,6 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
-"$wpub/wsh.php" --api=updateclass --appc=FDL --class=DocTag
-RET=$?
-if [ $RET -ne 0 ]; then
-    echo "Error updating class doctag."
-    exit $RET
-fi
-
 PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<EOF
 BEGIN;
 DROP SCHEMA family CASCADE;
@@ -48,18 +41,29 @@ PGSERVICE="$pgservice_core" psql -t -c "update docfam set fromid=0 where id=128;
 PGSERVICE="$pgservice_core" psql -t -c "drop TRIGGER tinitacl on docperm;"
 PGSERVICE="$pgservice_core" psql -f "$wpub/FDL/fdl.sql"
 
-
-
 #
 # Delete deprecated default values
 #
-PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where id= 'us_iddomain';"
-PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where id= 'us_domain';"
-PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where id= 'us_passwd';"
-PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|0]', '') where defval ~ 'us_iddomain';"
-PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|1]', '') where defval ~ 'us_iddomain';"
-PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|local]', '') where defval ~ 'us_domain';"
-PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|externe]', '') where defval ~ 'us_domain';"
+PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where docid < 1000 and id = 'us_iddomain';"
+PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where docid < 1000 and id = 'us_domain';"
+PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where docid < 1000 and id = 'us_passwd';"
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|0]', '') where id < 1000 and defval ~ 'us_iddomain';"
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|1]', '') where id < 1000 and defval ~ 'us_iddomain';"
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|local]', '') where id < 1000 and defval ~ 'us_domain';"
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|externe]', '') where id < 1000 and defval ~ 'us_domain';"
+
+#
+# Delete attributes referencing old non-existing frames
+#
+PGSERVICE="$pgservice_core" psql -f - <<EOF
+-- Delete attributes referencing old frames
+DELETE FROM docattr WHERE (docid BETWEEN 120 AND 1000) AND id IN ('us_service', 'us_idservice') AND frameid = 'us_fr_soc';
+DELETE FROM docattr WHERE (docid BETWEEN 120 AND 1000) AND id IN ('us_extmail', ':us_mail', ':us_lname', ':us_fname') AND frameid = 'us_fr_ident';
+-- Delete old frames
+DELETE FROM docattr WHERE (docid BETWEEN 120 AND 1000) AND id IN ('us_privcard', 'us_fr_ident');
+-- Remove defaut values on non-existing attributes
+UPDATE docfam SET defval = replace(defval, '[us_privcard|W]', '') WHERE id < 1000;
+EOF
 
 CURRENT_DATABASE=`PGSERVICE="$pgservice_core" psql -tA -c "SELECT current_database()"`
 if [ -z "$CURRENT_DATABASE" ]; then

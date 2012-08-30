@@ -23,7 +23,24 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<EOF
+-- Hide the USERCARD application
+UPDATE application SET available = 'N' WHERE name = 'USERCARD';
+EOF
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error hiding application 'USERCARD'."
+    exit $RET
+fi
+
 "$wpub/wsh.php" --api=migrExtendedAcls
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error migrating extended acls"
+    exit $RET
+fi
+
+"$wpub/wsh.php" --api=initViewPrivileges
 RET=$?
 if [ $RET -ne 0 ]; then
     echo "Error migrating extended acls"
