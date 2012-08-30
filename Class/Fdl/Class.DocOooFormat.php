@@ -16,7 +16,6 @@ class DocOooFormat
      */
     public $doc = null;
     private $index = - 1;
-    private $target = '_self';
     /**
      * @var NormalAttribute
      */
@@ -27,7 +26,6 @@ class DocOooFormat
      * @var string
      */
     private $cFormat = '';
-    private $htmlLink = true;
     
     public function __construct(Doc & $doc)
     {
@@ -41,20 +39,16 @@ class DocOooFormat
     /**
      * @param NormalAttribute $oattr
      * @param string $value
-     * @param string $target
-     * @param bool $htmlLink
      * @param int $index
      * @return string the formated value
      */
-    public function getOooValue($oattr, $value, $target = "_self", $htmlLink = true, $index = - 1)
+    public function getOooValue($oattr, $value, $index = - 1)
     {
         
         $this->oattr = $oattr;
-        $this->target = $target;
         $this->index = $index;
         $this->cFormat = $this->oattr->format;
         $atype = $this->oattr->type;
-        $this->htmlLink = $htmlLink;
         
         if (($this->oattr->repeat) && ($this->index <= 0)) {
             $tvalues = explode("\n", $value);
@@ -344,18 +338,14 @@ class DocOooFormat
             $isLatest = $this->oattr->getOption("docrev", "latest") == "latest";
             
             $multiple = ($this->oattr->getOption("multiple") == "yes");
-            $dtarget = $this->target;
-            if ($this->target != "mail") {
-                $ltarget = $this->oattr->getOption("ltarget");
-                if ($ltarget != "") $dtarget = $ltarget;
-            }
+            
             if ($multiple) {
                 $avalue = str_replace("\n", "<BR>", $avalue);
                 $tval = explode("<BR>", $avalue);
                 $thval = array();
                 foreach ($tval as $kv => $vv) {
                     if (trim($vv) == "") $thval[] = $vv;
-                    else $thval[] = $this->doc->getDocAnchor(trim($vv) , $dtarget, false);
+                    else $thval[] = $this->doc->getDocAnchor(trim($vv) , '', false);
                 }
                 $oooval = implode("<text:tab/>", $thval);
             } else {
