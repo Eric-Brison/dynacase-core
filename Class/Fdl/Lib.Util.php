@@ -41,6 +41,7 @@ function toIso8601($fdate, $wtz = false)
 {
     deprecatedFunction();
     $isoDate = "";
+    $tz = "";
     if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s(\d\d)?:?(\d\d)?:?(\d\d)?\s+?(\w+)?$/", $fdate, $reg)) {
         $isoDate = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $reg[3], $reg[2], $reg[1], $reg[4], $reg[5], $reg[6]);
         if ($reg[8] != "") $tz = $reg[7];
@@ -358,7 +359,6 @@ function cal2jd($era, $y, $m, $d, $h, $mn, $s)
         if ($jd0 - $jd > 0.5) $jd++;
         return $jd / 100000;
     }
-    return "Date Error";
 }
 /**
  * return the day of the week (1 id Monday, 7 is Sunday)
