@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-29 14:38+0200\n"
+"POT-Creation-Date: 2012-08-30 09:38+0200\n"
 "PO-Revision-Date: 2012-07-31 16:19+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1827,7 +1827,7 @@ msgid "Error : Process %s [%d]: status %d"
 msgstr ""
 
 #, c-format
-msgid "Error : Process %s [%d]: status %d in %d seconds"
+msgid "Error : Process %s [%d]: status %d in %.03f seconds"
 msgstr ""
 
 #, c-format
@@ -3046,7 +3046,7 @@ msgid "Process %s [%d] executed"
 msgstr ""
 
 #, c-format
-msgid "Process %s [%d] executed in %d seconds"
+msgid "Process %s [%d] executed in %.03f seconds"
 msgstr ""
 
 msgid "Processes plan"

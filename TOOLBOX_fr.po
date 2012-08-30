@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-29 14:38+0200\n"
-"PO-Revision-Date: 2012-08-29 14:41+0200\n"
+"POT-Creation-Date: 2012-08-30 09:38+0200\n"
+"PO-Revision-Date: 2012-08-30 09:45+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -1743,8 +1743,8 @@ msgid "Error : Process %s [%d]: status %d"
 msgstr "Erreur : Processus %s [%d]: statut %d"
 
 #, c-format
-msgid "Error : Process %s [%d]: status %d in %d seconds"
-msgstr "Erreur : Processus %s [%d]: statut %d in %d seconds"
+msgid "Error : Process %s [%d]: status %d in %.03f seconds"
+msgstr "Erreur : Processus %s [%d]: statut %d en %.03f secondes"
 
 #, c-format
 msgid "Error : User [%s] doesn't exists\n"
@@ -2925,8 +2925,8 @@ msgid "Process %s [%d] executed"
 msgstr "Processus %s [%d] exécuté"
 
 #, c-format
-msgid "Process %s [%d] executed in %d seconds"
-msgstr "Processus %s [%d] exécuté en %d secondes"
+msgid "Process %s [%d] executed in %.03f seconds"
+msgstr "Processus %s [%d] exécuté en %.03f secondes"
 
 msgid "Processes plan"
 msgstr "Planification des processus"
@@ -3528,7 +3528,7 @@ msgid "Template [%s] not found"
 msgstr "Template [%s] non trouvé."
 
 msgid "The \"Foo\" string"
-msgstr ""
+msgstr "La chaîne de caractère \"Foo\""
 
 msgid ""
 "The apache configuration seems incorrect. I cannot read .htaccess file. May "
@@ -3683,7 +3683,7 @@ msgid "Tuesday"
 msgstr "Mardi"
 
 msgid "Two cents"
-msgstr ""
+msgstr "Deux centimes"
 
 msgid "Twprocess_private"
 msgstr "vers privé"
@@ -4106,7 +4106,7 @@ msgid "accessfor"
 msgstr "Contrôle des accès pour"
 
 msgid "account attribute"
-msgstr ""
+msgstr "Attribut de compte"
 
 msgid "acking detection : clear token"
 msgstr "tentative d'intrusion détecté : suppression de la clef"
@@ -9355,6 +9355,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Error %s"
 #~ msgstr "Erreur %s"
 
+#~ msgid "Error : Process %s [%d]: status %d in %d seconds"
+#~ msgstr "Erreur : Processus %s [%d]: statut %d in %d seconds"
+
 #~ msgid "Error : User account is desactivated\n"
 #~ msgstr "Erreur: Compte utilisateur désactivé\n"
 
@@ -9420,6 +9423,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Person"
 #~ msgstr "Personne"
+
+#~ msgid "Process %s [%d] executed in %d seconds"
+#~ msgstr "Processus %s [%d] exécuté en %d secondes"
 
 #~ msgid "Replace address book card if has permission else duplicate"
 #~ msgstr "Remplace la carte si permission accordée sinon duplication"
