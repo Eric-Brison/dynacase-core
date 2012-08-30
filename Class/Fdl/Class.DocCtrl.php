@@ -881,7 +881,8 @@ class DocCtrl extends DocLDAP
     }
     /** 
      * return true if the date is in the future (one day after at less)
-     * @param string $date date JJ/MM/AAAA
+     * @param string $date date JJ/MM/AAAA or AAAA-MM-DD
+     * @return array
      */
     static public function isFutureDate($date)
     {
@@ -889,11 +890,12 @@ class DocCtrl extends DocLDAP
         $err = "";
         $sug = array(); // suggestions
         if ($date != "") {
-            if (!preg_match("|^[0-9]{2}/[0-9]{2}/[0-9]{4}|", $date)) {
-                $err = _("the date syntax must be like : DD/MM/AAAA");
+            $date = stringDateToIso($date);
+            if (!preg_match("|^[0-9]{4}-[0-9]{2}-[0-9]{2}|", $date)) {
+                $err = _("the date syntax must be like : AAAA-MM-DD");
             } else {
                 
-                list($dd, $mm, $yy) = explode("/", $date);
+                list($yy, $mm, $dd) = explode("-", $date);
                 $yy = intval($yy);
                 $mm = intval($mm);
                 $dd = intval($dd);
