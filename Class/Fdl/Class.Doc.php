@@ -2640,8 +2640,9 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * call when doc is being revive
-     * @api hook
      * if return non null string revive will ne aborted
+     * @api hook
+     * @see revive
      * @return string error message, if no error empty string
      */
     function preRevive()
@@ -2649,8 +2650,8 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * call when doc is revived after resurrection in database
-     * @api hook
      * the error message will appeared like message
+     * @api hook
      * @return string warning message, if no warning empty string
      */
     function postRevive()
