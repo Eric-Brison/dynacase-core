@@ -1,6 +1,12 @@
 
 <script language="javascript">
-  addEvent(document.modifydoc,'submit',deletenew);
+    [IFNOT ISIE]
+    addEvent(document.modifydoc,'submit',deletenew);
+    [ENDIF ISIE]
+    [IF ISIE]
+    var oldSubmit = document.modifydoc.getAttribute("onsubmit");
+    document.modifydoc.setAttribute("onsubmit","deletenew();"+oldSubmit);
+    [ENDIF ISIE]
 </script>
 <style>
 select.cond option {

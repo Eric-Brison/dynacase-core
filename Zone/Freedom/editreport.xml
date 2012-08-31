@@ -19,5 +19,5 @@
 
 
 <script language="javascript">
-  addEvent(document.modifydoc,'submit',deletenew);
+if (!isIE) addEvent(document.modifydoc,'submit',deletenew);
 </script>
