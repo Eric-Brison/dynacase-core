@@ -33,15 +33,6 @@ class _MASK extends Doc
     var $defaultedit = "FREEDOM:EDITMASK";
     var $defaultview = "FREEDOM:VIEWMASK";
     
-    function SpecRefresh()
-    {
-        $err = '';
-        //  gettitle(D,AR_IDCONST):AR_CONST,AR_IDCONST
-        $this->refreshDocTitle("MSK_FAMID", "MSK_FAM");
-        
-        return $err;
-    }
-    
     function getLabelVis()
     {
         return array(

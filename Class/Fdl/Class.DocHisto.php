@@ -27,6 +27,12 @@ define("HISTO_ERROR", 16);
 include_once ("Class.DbObj.php");
 class DocHisto extends DbObj
 {
+    const NOTICE = 1;
+    const INFO = 2;
+    const MESSAGE = 4;
+    const WARNING = 8;
+    const ERROR = 16;
+    
     public $fields = array(
         "id", // doc id
         "initid", // doc initid

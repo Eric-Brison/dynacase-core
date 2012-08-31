@@ -74,6 +74,7 @@ class Layout
     public $encoding = "";
     /**
      * set to true to not parse template when it is generating
+     * @api
      * @var bool
      */
     public $noparse = false;
@@ -104,6 +105,7 @@ class Layout
     /**
      * construct layout to identify template
      *
+     * @api
      * @param string $caneva file path of the template
      * @param Action $action current action
      * @param string $template if no $caneva found or is empty use this template.
@@ -163,6 +165,7 @@ class Layout
     }
     /**
      * set data to fill a block
+     * @api
      * @param string $p_nom_block block name
      * @param array $data data to fill the block
      */
@@ -185,6 +188,7 @@ class Layout
     /**
      * return data set in block name
      * @see setBlockData
+     * @api
      * @param string $p_nom_block block name
      * @return array|bool return data or false if no data are set yet
      */
@@ -344,13 +348,24 @@ class Layout
             return ("Fatal loop : $actionname is called in $actionname");
         }
     }
-    
-    function set($tag, $val)
+    /**
+     * add a simple key /value in template
+     * the key will be replaced by value when [KEY] is found in template
+     * @api
+     * @param string $tag
+     * @param string $val
+     */
+    public function set($tag, $val)
     {
         $this->pkey[$tag] = "[$tag]";
         $this->rkey[$tag] = $val;
     }
-    
+    /**
+     * return the value set for a key
+     * @see Layout::set()
+     * @param string $tag
+     * @return string
+     */
     function get($tag)
     {
         if (isset($this->rkey[$tag])) return $this->rkey[$tag];
@@ -486,6 +501,7 @@ class Layout
     }
     /**
      * Generate text from template with data included
+     * @api
      * @return string the complete text
      */
     public function gen()

@@ -85,14 +85,14 @@ class ADoc
     }
     /**
      * return all the family parameters except frame & menu & action
-     * @return BasicAttribute[]
+     * @return NormalAttribute[]
      */
     function getParamAttributes()
     {
         $tsa = array();
         if (isset($this->attr)) {
             reset($this->attr);
-            while (list($k, $v) = each($this->attr)) {
+            foreach ($this->attr as $k => $v) {
                 if ((get_class($v) == "NormalAttribute") && ($v->usefor == "Q")) $tsa[$v->id] = $v;
             }
         }
@@ -100,7 +100,7 @@ class ADoc
     }
     /**
      * get attributes included in an arrary
-     * @return BasicAttribute[]
+     * @return NormalAttribute[]
      */
     function getArrayElements($id)
     {

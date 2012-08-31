@@ -16,7 +16,23 @@
  */
 
 include_once ("FDL/Lib.Dir.php");
-
+/**
+ * document searches
+ * @code
+ * $s=new SearchDoc($db,"IUSER");
+ $s->setObjectReturn(); // document object returns
+ $s->addFilter('us_extmail is not null'); // simple filter
+ $s->search(); // send search query
+ $c=$s->count();
+ print "count $c\n";
+ $k=0;
+ while ($doc=$s->nextDoc()) {
+ // iterate document by document
+ print "$k)".$doc->getTitle()."(".$doc->getValue("US_MAIL","nomail").")\n";
+ $k+
+ * @endcode
+ * @class SearchDoc
+ */
 class SearchDoc
 {
     /**
@@ -123,8 +139,7 @@ class SearchDoc
     private $result;
     private $searchmode;
     /**
-     *
-     * @var string pertinence order in case of full search
+     * @var string pertinence order in case of full searches
      */
     private $pertinenceOrder = '';
     /**
@@ -139,6 +154,7 @@ class SearchDoc
     private $resultQPos = 0;
     /**
      * initialize with family
+     * @api
      *
      * @param string $dbaccess database coordinate
      * @param int|string $fromid family identifier to filter
@@ -153,15 +169,14 @@ class SearchDoc
     }
     /**
      * count results without return data
+     * @api
      *
      * @return int the number of results
      */
     public function onlyCount()
     {
         if (!$this->result) {
-            /**
-             * @var Dir $fld
-             */
+            /**  @var Dir $fld */
             $fld = new_Doc($this->dbaccess, $this->dirid);
             $userid = $this->userid;
             if ($fld->fromid != getFamIdFromName($this->dbaccess, "SSEARCH")) {
@@ -230,6 +245,7 @@ class SearchDoc
     }
     /**
      * return original sql query before test permissions
+     * @api
      *
      * @return string
      */
@@ -239,6 +255,21 @@ class SearchDoc
         
         return $tqsql[0];
     }
+    /**
+     * add join condition
+     * @api
+     * @code
+     * $s=new searchDoc();
+     $s->trash='only';
+     $s->join("id = dochisto(id)");
+     $s->addFilter("dochisto.uid = %d",$this->getSystemUserId());
+     * // search all document which has been deleted by search DELETE code in history
+     $s->addFilter("dochisto.code = 'DELETE'");
+     $s->distinct=true;
+     $result= $s->search();
+     * @endcode
+     * @param string $jointure
+     */
     public function join($jointure)
     {
         $this->join = $jointure;
@@ -246,6 +277,8 @@ class SearchDoc
     /**
      * count results
      * ::search must be call before
+     * @see SearchDoc::search()
+     * @api
      *
      * @return int
      *
@@ -273,7 +306,9 @@ class SearchDoc
         return $n;
     }
     /** 
-     *reset results to use another search
+     * reset results to use another search
+     *
+     * @api
      * @return void
      */
     public function reset()
@@ -285,7 +320,8 @@ class SearchDoc
     }
     /**
      * reset result offset
-     * use it to redo a document iteration
+     * use it to redo a document's iteration
+     * @api
      */
     public function rewind()
     {
@@ -295,6 +331,7 @@ class SearchDoc
     }
     /** 
      * Verify if query is already sended to database
+     * @api
      * @return boolean
      */
     public function isExecuted()
@@ -303,6 +340,7 @@ class SearchDoc
     }
     /**
      * Return sql filters used for request
+     * @api
      * @return array of string
      */
     public function getFilters()
@@ -317,9 +355,9 @@ class SearchDoc
     }
     /**
      * send search
-     *
-     * @return array|SearchDoc array of documents if no setObjectReturn el itself
-     *
+     * the query is sent to database
+     * @api
+     * @return array|null|SearchDoc array of documents if no setObjectReturn else itself
      */
     public function search()
     {
@@ -391,6 +429,7 @@ class SearchDoc
      print $doc->getTitle();
      }
      * @endcode
+     * @api
      * @return DocumentList
      */
     public function getDocumentList()
@@ -408,6 +447,7 @@ class SearchDoc
     }
     /**
      * Return error message
+     * @api
      * @return string
      */
     public function getError()
@@ -428,8 +468,10 @@ class SearchDoc
     }
     /**
      * set recursive mode for folder searches
-     *
+     * can bu use only if collection set if a static folder
      * @param bool $recursiveMode set to true to use search in sub folders when collection is folder
+     * @api
+     * @see SearchDoc::useCollection
      * @return void
      */
     public function setRecursiveSearch($recursiveMode = true)
@@ -448,8 +490,9 @@ class SearchDoc
         return $this->debuginfo;
     }
     /**
-     * return information about query after search is call
-     *
+     * return informations about query after search has been sent
+     * array indexes are query, err, count, delay
+     * @api
      * @return array of info
      */
     public function getSearchInfo()
@@ -458,6 +501,7 @@ class SearchDoc
     }
     /**
      * set maximum number of document to return
+     * @api
      * @param int $slice the limit ('ALL' means no limit)
      *
      * @return Boolean
@@ -470,6 +514,7 @@ class SearchDoc
     }
     /**
      * use different order , default is title
+     * @api
      * @param string $order the new order, empty means no order
      * @param string $orderbyLabel string of comma separated columns names on which the order should be performed on their label instead of their value (e.g. order enum by their label instead of their key)
      * @return void
@@ -482,7 +527,8 @@ class SearchDoc
         $this->orderby = preg_replace('/(^\s*|,\s*)-([A-Z_0-9]{1,63})\b/i', '$1$2 desc', $this->orderby);
     }
     /**
-     * use folder or search document to apply restrict the search
+     * use folder or search document to search within it
+     * @api
      * @param int $dirid identifier of the collection
      *
      * @return Boolean true if set
@@ -500,6 +546,7 @@ class SearchDoc
     }
     /**
      * set offset where start the result window
+     * @api
      * @param int $start the offset (0 is the begin)
      *
      * @return Boolean true if set
@@ -513,7 +560,8 @@ class SearchDoc
     /**
      * can, be use in loop
      * ::search must be call before
-     *
+     * @see SearchDoc::search
+     * @api
      * @return Doc|array or null if this is the end
      */
     public function nextDoc()
@@ -541,7 +589,11 @@ class SearchDoc
             return current(array_slice($this->result, $this->resultPos++, 1));
         }
     }
-    
+    /**
+     * after search return only document identifiers instead of complete document
+     * @api
+     * @return int[] document identifiers
+     */
     public function getIds()
     {
         $ids = array();
@@ -615,6 +667,7 @@ class SearchDoc
      *   foo bar : the word foo and the word bar are set in document attributes
      *   foo OR bar : the word foo or the word bar are set in a document attributes
      *   foo OR (bar AND zou) : more complex logical expression
+     * @api
      * @param string $keywords
      * @param bool $useSpell use spell french checker
      */
@@ -647,6 +700,12 @@ class SearchDoc
         }
         return true;
     }
+    /**
+     * add a order based on keyword
+     * consider how often the keyword terms appear in the document
+     * @api
+     * @param string $keyword
+     */
     public function setPertinenceOrder($keyword = '')
     {
         if ($keyword != '') {
@@ -659,7 +718,7 @@ class SearchDoc
     }
     /**
      * get global filter
-     * @see addGeneralFilter
+     * @see SearchDoc::addGeneralFilter
      * @static
      * @param string $keywords
      * @param bool $useSpell
@@ -750,6 +809,9 @@ class SearchDoc
         return ($filter);
     }
     /**
+     * return a document part where general filter term is found
+     * @api
+     * @see SearchDoc::addGeneralFilter
      * @param Doc $doc document to analyze
      * @param string $beginTag delimiter begin tag
      * @param string $endTag delimiter end tag
@@ -776,6 +838,7 @@ class SearchDoc
      * @param string $words
      * @param bool $useSpell
      * @param string $pertinenceOrder return pertinence order
+     * @param string $highlightWords
      * @return string sql filter
      */
     protected static function getFullFilter($words, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
@@ -851,8 +914,8 @@ class SearchDoc
         return $sql_cond;
     }
     /**
-     * add a condition in filters
-     *
+     * no use access view control in filters
+     * @api
      * @return void
      */
     public function noViewControl()
@@ -862,6 +925,7 @@ class SearchDoc
     /**
      * the return of ::search will be array of document's object
      *
+     * @api
      * @param bool $returnobject set to true to return object, false to return raw data
      * @return void
      */
@@ -887,6 +951,7 @@ class SearchDoc
     }
     /**
      * add a filter to not return confidential document if current user cannot see it
+     * @api
      * @param boolean $exclude set to true to exclude confidential
      * @return void
      */
@@ -904,7 +969,7 @@ class SearchDoc
      * Get the SQL queries that will be executed by the search() method
      * @return array|bool boolean false on error, or array() of queries on success.
      */
-    function getQueries()
+    public function getQueries()
     {
         $dbaccess = $this->dbaccess;
         $dirid = $this->dirid;
@@ -996,6 +1061,9 @@ class SearchDoc
             //-------------------------------------------
             $fld = new_Doc($dbaccess, $dirid);
             if ($fld->defDoctype != 'S') {
+                /**
+                 * @var Dir $fld
+                 */
                 $hasFilters = false;
                 if ($fld && method_exists($fld, "getSpecificFilters")) {
                     $specFilters = $fld->getSpecificFilters();
@@ -1057,11 +1125,10 @@ class SearchDoc
                     switch ($ldocsearch[0]["qtype"]) {
                         case "M": // complex query
                             // $sqlM=$ldocsearch[0]["query"];
-                            
+                            $fld = new_Doc($dbaccess, $dirid);
                             /**
                              * @var DocSearch $fld
                              */
-                            $fld = new_Doc($dbaccess, $dirid);
                             if ($trash) {
                                 $fld->setValue("se_trash", $trash);
                             } else {

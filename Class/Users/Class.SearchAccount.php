@@ -19,7 +19,7 @@ include_once ("FDL/Lib.Dir.php");
  $s = new SearchAccount();
  $s->addRoleFilter($s->docName2login('TST_ROLEWRITTER'));
  $s->addGroupFilter("all");
- $s->addFilter("mail ~ '%s'", "test);
+ $s->addFilter("mail ~ '%s'", "test");
  $al = $s->search();
  foreach ($al as $account) {
  printf("%s => %s\n ", $account->login, $account->mail);
@@ -70,6 +70,7 @@ class SearchAccount
     }
     /**
      * add role filter appartenance
+     * @api
      * @param string $role role reference (login)
      * @throws Dcp\Sacc\Exception
      */
@@ -90,6 +91,7 @@ class SearchAccount
     }
     /**
      * add group filter appartenance
+     * @api
      * @param string $group group name (login)
      * @throws Dcp\Sacc\Exception
      */
@@ -110,6 +112,7 @@ class SearchAccount
     }
     /**
      * set account type filter
+     * @api
      * @code
      * $s->setTypeFilter($s::userType | $s::groupType);
      * @endcode
@@ -124,6 +127,7 @@ class SearchAccount
     }
     /**
      * add sql filter about Account properties
+     * @api
      * @code
      * $s->addFilter("mail ~ '%s'", $mailExpr);
      * @endcode
@@ -147,6 +151,7 @@ class SearchAccount
     }
     /**
      * set order can be login, mail, id, firstname,... each Account properties
+     * @api
      * @param string $order
      */
     public function setOrder($order)
@@ -155,6 +160,7 @@ class SearchAccount
     }
     /**
      * set slice limit / "all" if no limit
+     * @api
      * @param int|string $slice
      * @throws Dcp\Sacc\Exception
      */
@@ -168,6 +174,7 @@ class SearchAccount
     }
     /**
      * set start offset
+     * @api
      * @param int $start
      * @throws Dcp\Sacc\Exception
      */
@@ -180,6 +187,7 @@ class SearchAccount
     }
     /**
      * set if use view control document's privilege to filter account
+     * @api
      * @param bool $control
      */
     public function useViewControl($control = true)
@@ -188,6 +196,7 @@ class SearchAccount
     }
     /**
      * set object type return by ::search method
+     * @api
      * @param string $type self::returnDocument or self::returnAccount
      * @throws Dcp\Sacc\Exception
      */
@@ -201,6 +210,7 @@ class SearchAccount
     /**
      * convert logical name document to login account
      * @static
+     * @api
      * @param string $name lolgical name
      * @return string login , null if not found
      */
@@ -212,6 +222,7 @@ class SearchAccount
     }
     /**
      * send search of account's object
+     * @api
      * @return DocumentList|AccountList
      */
     public function search()
