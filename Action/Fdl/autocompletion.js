@@ -568,7 +568,8 @@ function PressAction(){
 	}
 	// on désélectionne toutes les suggestions
 	for(var i=0; i<suggestionLongueur; i++) {
-		setStylePourElement(suggestionList.item(i),"AutoCompleteDiv");
+        var item = suggestionList.item(i);
+		setStylePourElement(item,"AutoCompleteDiv");
 	}
 	// si l'entrée utilisateur (n) est le début d'une suggestion (n-1) on sélectionne cette suggestion avant de continuer
 	if(trouve){
@@ -772,13 +773,12 @@ var divOnMouseDown=function(){
 
 //declenchee quand on passe sur une div de possibilite. La div précédente est passee en style normal
 var divOnMouseOver=function(){
-	var suggestionList=_completeDiv.getElementsByTagName("div");
 	if(_highlightedSuggestionDiv) {
 		setStylePourElement(_highlightedSuggestionDiv,"AutoCompleteDiv");
 	}
 	setStylePourElement(this,"AutoCompleteDivAct");
 	_highlightedSuggestionIndex=this.getAttribute('index');
-	_highlightedSuggestionDiv=suggestionList.item(_highlightedSuggestionIndex);
+	_highlightedSuggestionDiv=this;
 };
 
 //declenchee quand la sourie quitte une div de possiblite. La div repasse a l'etat normal
