@@ -16,8 +16,3 @@
 </tbody>
 </table>
 
-
-
-<script language="javascript">
-  addEvent(document.modifydoc,'submit',deletenew);
-</script>
