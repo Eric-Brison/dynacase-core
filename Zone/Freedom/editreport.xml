@@ -15,9 +15,3 @@
 
 </tbody>
 </table>
-
-
-
-<script language="javascript">
-if (!isIE) addEvent(document.modifydoc,'submit',deletenew);
-</script>
