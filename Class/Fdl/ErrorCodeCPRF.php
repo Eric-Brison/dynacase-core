@@ -13,10 +13,12 @@
 class ErrorCodeCPRF
 {
     /**
+     * @errorCode
      * folder reference must be reference existing profil
      */
     const CPRF0001 = 'CPROFID "%s" search is not found in attribute "%s"';
     /**
+     * @errorCode
      * folder reference must be a profil document
      */
     const CPRF0002 = 'CPROFID "%s" is not a profil in attribute "%s"';

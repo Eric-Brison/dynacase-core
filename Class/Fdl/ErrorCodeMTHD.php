@@ -13,10 +13,12 @@
 class ErrorCodeMTHD
 {
     /**
+     * @errorCode
      * method file must exists in FDL directory
      */
     const MTHD0001 = 'method file "%s" is not found in family "%s"';
     /**
+     * @errorCode
      * syntax error in method file. Use begin-method-ignore en end-method-ignore comment tag
      */
     const MTHD0002 = 'error in method file "%s" in family "%s" : %s';

@@ -13,6 +13,7 @@
 class ErrorCodeRESE
 {
     /**
+     * @errorCode
      * RESET parameter can be only attribute
      */
     const RESE0001 = 'value "%s" is not allowed for RESET "%s"';
