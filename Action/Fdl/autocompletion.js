@@ -825,13 +825,12 @@ var divOnMouseDown=function(){
 
 //declenchee quand on passe sur une div de possibilite. La div précédente est passee en style normal
 var divOnMouseOver=function(){
-	var suggestionList=_completeDiv.getElementsByTagName("div");
 	if(_highlightedSuggestionDiv) {
 		setStylePourElement(_highlightedSuggestionDiv,"AutoCompleteDiv");
 	}
 	setStylePourElement(this,"AutoCompleteDivAct");
 	_highlightedSuggestionIndex=this.getAttribute('index');
-	_highlightedSuggestionDiv=suggestionList.item(_highlightedSuggestionIndex);
+	_highlightedSuggestionDiv=this
 };
 
 //declenchee quand la sourie quitte une div de possiblite. La div repasse a l'etat normal
