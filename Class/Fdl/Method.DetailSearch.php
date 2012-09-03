@@ -911,7 +911,7 @@ class _DSEARCH extends DocSearch
                         $selectclass[$k]["system_fam"] = (substr($tdoc["usefor"], 0, 1) == 'S') ? true : false;
                         if (abs($tdoc["id"]) == abs($famid)) {
                             $selfam = true;
-                            $selectclass[$k]["selected"] = "selected";
+                            $selectclass[$k]["selected"] = 'selected="selected"';
                             if ($famid < 0) $this->lay->set("selfam", $tdoc["title"] . " " . _("(only)"));
                             else $this->lay->set("selfam", $tdoc["title"]);
                         } else $selectclass[$k]["selected"] = "";
