@@ -103,7 +103,9 @@ function freedom_gaccess(Action & $action)
         
         if ($doc->extendedAcls) {
             // add more users
-            $sql = sprintf("select users.id, users.firstname, users.lastname,users.accounttype, array_agg(docpermext.acl) as acls from docpermext,users where  users.id=docpermext.userid and docpermext.docid=%d and id not in (%s) group by users.id, users.firstname, users.lastname, users.accounttype ;", $doc->profid, implode(',', $tgreenUid));
+            $sql = sprintf("select users.id, users.firstname, users.lastname,users.accounttype, array_agg(docpermext.acl) as acls from docpermext,users where  users.id=docpermext.userid and docpermext.docid=%d", $doc->profid);
+            if (!empty($tgreenUid)) $sql.= sprintf(" and id not in (%s)", implode(',', $tgreenUid));
+            $sql.= " group by users.id, users.firstname, users.lastname, users.accounttype ;";
             simpleQuery($dbaccess, $sql, $tusers);
             //print_r($sql);
             //print_r($tusers);
