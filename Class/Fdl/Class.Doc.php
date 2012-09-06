@@ -949,11 +949,14 @@ create unique index i_docir on doc(initid, revision);";
         
         if ($this->hasChanged) {
             $this->computeDProfil();
-            $this->regenerateTemplates();
-            $this->UpdateVaultIndex();
-            $this->updateRelations();
-            if ($this->getATag("DYNTIMER")) $this->resetDynamicTimers();
-            $this->addLog("changed", array_keys($this->getOldValues()));
+            if ($this->doctype != 'C') {
+                $this->regenerateTemplates();
+                $this->UpdateVaultIndex();
+                $this->updateRelations();
+
+                if ($this->getATag("DYNTIMER")) $this->resetDynamicTimers();
+                $this->addLog("changed", array_keys($this->getOldValues()));
+            }
         }
         $this->sendTextToEngine();
         $this->hasChanged = false;

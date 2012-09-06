@@ -83,8 +83,8 @@ class BasicAttribute
             $this->_topt = array();
             foreach ($topt as $k => $v) {
                 if ($v) {
-                    list($vn, $vv) = explode("=", $v, 2);
-                    $this->_topt[$vn] = $vv;
+                    $v = explode("=", $v, 2);
+                    $this->_topt[$v[0]] = isset($v[1]) ? $v[1] : null;
                 }
             }
         }
