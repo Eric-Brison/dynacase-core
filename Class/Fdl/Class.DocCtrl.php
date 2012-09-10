@@ -459,15 +459,15 @@ class DocCtrl extends DocLDAP
                 foreach ($tuid as $ku => $uid) {
                     // add right in case of multiple use of the same user : possible in dynamic profile
                     if (($v["upacl"] & 2) && $uid) $greenUid[$uid] = $uid;
-                    $vupacl[$uid] = (isset($vupacl[$uid]) ? intval($vupacl[$uid]) : 0 | intval($v["upacl"]));
-                    
+                    if (!isset($vupacl[$uid])) $vupacl[$uid] = 0;
+                    $vupacl[$uid] = (intval($vupacl[$uid]) | intval($v["upacl"]));
                     if ($uid > 0) {
                         $perm = new DocPerm($this->dbaccess, array(
                             $this->id,
                             $uid
                         ));
                         $perm->upacl = $vupacl[$uid];
-                        //   print "<BR>set perm $uid : ".$this->id."/".$perm->upacl;
+                        // print "<BR>\nset perm $uid : ".$this->id."/".$perm->upacl.'/'.$vupacl[$uid]."\n";
                         if ($perm->isAffected()) $err = $perm->modify();
                         else {
                             if ($perm->upacl) {
