@@ -45,8 +45,8 @@ class TestAddArrayRow extends TestCaseDcpCommonFamily
             $this->assertEmpty($err, sprintf("Error adding row {%s} to '%s': %s", join(', ', $row['data']) , $data['name'], $err));
         }
         unset($row);
-        
-        $err = $doc->modify();
+        $this->assertTrue($doc->isChanged() , sprintf("no changed value detected"));
+        $err = $doc->store();
         $this->assertEmpty($err, sprintf("modify() on '%s' returned with error: %s", $data['name'], $err));
         
         self::resetDocumentCache();
