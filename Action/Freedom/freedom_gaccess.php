@@ -66,8 +66,8 @@ function freedom_gaccess(Action & $action)
      */
     foreach ($acls as $k => $v) {
         $hacl[$k]["aclname"] = mb_ucfirst(_($v));
-        $desc = '-';
-        if (!$desc = $doc->dacls[$v]["description"]) {
+        $desc = isset($doc->dacls[$v]) ? $doc->dacls[$v]["description"] : "";
+        if (!$desc) {
             $desc = $doc->extendedAcls[$v]["description"];
         } else {
             $desc = _($desc);
@@ -103,7 +103,9 @@ function freedom_gaccess(Action & $action)
         
         if ($doc->extendedAcls) {
             // add more users
-            $sql = sprintf("select users.id, users.firstname, users.lastname,users.accounttype, array_agg(docpermext.acl) as acls from docpermext,users where  users.id=docpermext.userid and docpermext.docid=%d and id not in (%s) group by users.id, users.firstname, users.lastname, users.accounttype ;", $doc->profid, implode(',', $tgreenUid));
+            $sql = sprintf("select users.id, users.firstname, users.lastname,users.accounttype, array_agg(docpermext.acl) as acls from docpermext,users where  users.id=docpermext.userid and docpermext.docid=%d", $doc->profid);
+            if (!empty($tgreenUid)) $sql.= sprintf(" and id not in (%s)", implode(',', $tgreenUid));
+            $sql.= " group by users.id, users.firstname, users.lastname, users.accounttype ;";
             simpleQuery($dbaccess, $sql, $tusers);
             //print_r($sql);
             //print_r($tusers);
@@ -310,7 +312,7 @@ function getTacl($dbaccess, $dacls, $acls, $docid, $gid, $extAcl = '')
     foreach ($acls as $k => $v) {
         $tableacl[$k]["aclname"] = $v;
         $pos = 0;
-        if (!$extAcl) $pos = $dacls[$v]["pos"];
+        if (!$extAcl && isset($dacls[$v])) $pos = $dacls[$v]["pos"];
         $tableacl[$k]["selected"] = "";
         $tableacl[$k]["bimg"] = "1x1.gif";
         $tableacl[$k]["oddoreven"] = ($k % 2) ? "even" : "odd";
