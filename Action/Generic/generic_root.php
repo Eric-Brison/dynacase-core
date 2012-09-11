@@ -16,7 +16,7 @@
 /**
  */
 include_once ("GENERIC/generic_util.php");
-function generic_root(&$action)
+function generic_root(Action & $action)
 {
     
     $famid = GetHttpVars("famid"); // family restriction

@@ -100,6 +100,8 @@ class Param extends DbObj
                         $action->parent->session->close(); // need to refresh all application parameters
                         $action->parent->session->set(); // reopen current session
                         
+                    } else {
+                        $action->parent->session->replaceGlobalParam($name, $val);
                     }
                 }
             }

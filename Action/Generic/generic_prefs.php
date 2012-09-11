@@ -18,11 +18,10 @@
 
 include_once ("FDL/Class.Doc.php");
 include_once ("GENERIC/generic_util.php");
-function generic_prefs(&$action)
+function generic_prefs(Action & $action)
 {
-    
-    $famid = GetHttpVars("famid"); // family id
-    $dirid = GetHttpVars("dirid"); // last searched
+    $famid = $action->getArgument("famid"); // family id
+    $dirid = $action->getArgument("dirid"); // last searched
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     
     $dbaccess = $action->getParam("FREEDOM_DB");
@@ -47,6 +46,7 @@ function generic_prefs(&$action)
     $fchild = $fdoc->GetChildFam();
     $action->lay->set("viewinh", (count($fchild) > 0));
     if (count($fchild) > 0) {
+        $tftitle = array();
         foreach ($fchild as $k => $v) {
             $tftitle[] = $v["title"];
         }
