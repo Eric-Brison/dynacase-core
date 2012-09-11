@@ -18,7 +18,7 @@
 
 include_once ("FDL/Class.Doc.php");
 include_once ("GENERIC/generic_util.php");
-function generic_modprefs(&$action)
+function generic_modprefs(Action & $action)
 {
     
     $famid = GetHttpVars("famid"); // family id
@@ -26,13 +26,12 @@ function generic_modprefs(&$action)
     $dispo = GetHttpVars("dispo"); // last searched
     $letters = GetHttpVars("letters"); // want tab letters
     $inherit = GetHttpVars("inherit"); // search in inherit
-    
     $dbaccess = $action->getParam("FREEDOM_DB");
     $fdoc = new_doc($dbaccess, $famid);
     if (!$fdoc->isAlive()) {
         $action->exitError(sprintf(_("Family (#%s) not exists") , $famid));
     }
-    
+    $split = $visu = '';
     switch ($dispo) {
         case 1:
             $split = 'V';
@@ -67,6 +66,5 @@ function generic_modprefs(&$action)
     $action->lay->set("famtitle", $fdoc->title);
     $action->lay->set("famid", $famid);
     $action->lay->set("dirid", $dirid);
-    redirect($action, "GENERIC", "GENERIC_TAB&tab=0&dirid=$dirid&famid=$famid", $action->GetParam("CORE_STANDURL"));
 }
 ?>
