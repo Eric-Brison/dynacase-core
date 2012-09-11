@@ -281,7 +281,32 @@ class Session extends DbObj
         unset($magic);
         return md5(uniqid($m));
     }
-    
+    /**
+     * replace value of global parameter in session cache
+     * @param string $paramName
+     * @param string $paramValue
+     * @return bool
+     */
+    function replaceGlobalParam($paramName, $paramValue)
+    {
+        global $_SERVER; // use only cache with HTTP
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            
+            session_name($this->name);
+            session_id($this->id);
+            @session_start();
+            foreach ($_SESSION as $k => $v) {
+                if (preg_match("/^sessparam[0-9]+$/", $k)) {
+                    if (isset($v[$paramName])) {
+                        $_SESSION[$k][$paramName] = $paramValue;
+                    }
+                }
+            }
+            @session_write_close(); // avoid block
+            
+        }
+        return true;
+    }
     function SetTTL()
     {
         $ttliv = $this->getSessionTTL(0);

@@ -640,6 +640,11 @@ class Doc extends DocCtrl
      */
     private $textsend;
     /**
+     * to not detect changed when it is automatic setValue
+     * @var bool
+     */
+    private $_setValueDetectChange = true;
+    /**
      * list of availaible control
      * @var array
      */
@@ -953,7 +958,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->regenerateTemplates();
                 $this->UpdateVaultIndex();
                 $this->updateRelations();
-
+                
                 if ($this->getATag("DYNTIMER")) $this->resetDynamicTimers();
                 $this->addLog("changed", array_keys($this->getOldValues()));
             }
@@ -2869,8 +2874,8 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
             if ($needRepad) {
-                $oldComplete = $this->_setValueCompleteArrayRow;
-                $this->_setValueCompleteArrayRow = false;
+                $oldComplete = $this->_setValueDetectChange;
+                $this->_setValueDetectChange = false;
                 foreach ($ta as $k => $v) { // fill uncompleted rows
                     $c = count($tValues[$k]);
                     if ($c < $max) {
@@ -2880,7 +2885,7 @@ create unique index i_docir on doc(initid, revision);";
                         $err.= $this->setValue($k, $tValues[$k]);
                     }
                 }
-                $this->_setValueCompleteArrayRow = $oldComplete;
+                $this->_setValueDetectChange = $oldComplete;
             }
             
             unset($calls[strtolower($idAttr) ]);
@@ -3041,7 +3046,7 @@ create unique index i_docir on doc(initid, revision);";
                 $value = ""; // erase value
                 if ($this->$attrid != "") {
                     //print "change by delete $attrid  <BR>";
-                    if ($this->_setValueCompleteArrayRow) {
+                    if ($this->_setValueDetectChange) {
                         $this->hasChanged = true;
                         $this->_oldvalue[$attrid] = $this->$attrid;
                     }
@@ -3274,7 +3279,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     //print "<br/>change $attrid to :".$this->$attrid."->".implode("\n",$tvalues);
                     $rawValue = implode("\n", $tvalues);
-                    if ($this->_setValueCompleteArrayRow && $this->$attrid != $rawValue) {
+                    if ($this->_setValueDetectChange && $this->$attrid != $rawValue) {
                         $this->_oldvalue[$attrid] = $this->$attrid;
                         $this->hasChanged = true;
                     }

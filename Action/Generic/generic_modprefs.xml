@@ -1,0 +1,9 @@
+<html>
+    <head>
+        <script>
+            if (window.parent && window.parent.parent) {
+               window.parent.parent.reloadiframe(null,null,'[famid]');
+            }
+        </script>
+    </head>
+</html>
