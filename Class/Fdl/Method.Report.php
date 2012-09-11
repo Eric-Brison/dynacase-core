@@ -42,8 +42,9 @@ class _REPORT extends _DSEARCH
         return array(
             "title" => _("doctitle") ,
             "revdate" => _("revdate") ,
+            "id" => _("document id") ,
             "revision" => _("revision") ,
-            "state" => _("state") ,
+            "state" => _("step") ,
             "owner" => _("owner")
         );
     }
@@ -124,7 +125,7 @@ class _REPORT extends _DSEARCH
             //    if ($v->visibility=="H") continue;
             $tcolumn1[$v->id] = array(
                 "colid" => $v->id,
-                "collabel" => $v->getLabel() ,
+                "collabel" => mb_ucfirst($v->getLabel()) ,
                 "rightfornumber" => ($v->type == "money") ? "right" : "left"
             );
         }
@@ -133,7 +134,7 @@ class _REPORT extends _DSEARCH
         foreach ($tinternals as $k => $v) {
             $tcolumn1[$k] = array(
                 "colid" => $k,
-                "collabel" => $v,
+                "collabel" => mb_ucfirst($v) ,
                 "rightfornumber" => "left"
             );
         }
@@ -169,12 +170,20 @@ class _REPORT extends _DSEARCH
             }
         }
         $order.= " " . $this->getValue("REP_ORDERSORT");
-        $tdoc = getChildDoc($this->dbaccess, $this->initid, 0, $limit, array() , $this->userid, "TABLE", $rfamid, false, $order);
+        
+        $s = new SearchDoc($this->dbaccess);
+        $s->useCollection($this->initid);
+        $s->setOrder($order);
+        $s->setObjectReturn();
+        $s->setSlice($limit);
+        $s->search();
+        
         $trodd = false;
         $tcolor = $this->getTValue("REP_COLORS");
         $trow = array();
-        while (list($k, $v) = each($tdoc)) {
-            $rdoc->Affect($v);
+        $k = 0;
+        while ($rdoc = $s->nextDoc()) {
+            $k++;
             $trow[$k] = array(
                 "CELLS" => "row$k",
                 "docid" => $rdoc->id,
@@ -187,40 +196,37 @@ class _REPORT extends _DSEARCH
             reset($tcolor);
             
             foreach ($tcolumn2 as $kc => $vc) {
-                if ($v[$kc] == "") $tcell[$kc] = array(
+                if ($rdoc->getValue($kc) == "") $tcell[$kc] = array(
                     "cellval" => ""
                 );
                 else {
                     switch ($kc) {
                         case "revdate":
-                            $cval = strftime("%d/%m/%Y %T", $v[$kc]);
-                            //	  $cval = strftime ("%x %T",$v[$kc]);
+                            // $cval= (date("Y-m-d H:i:s", $rdoc->getValue($kc)));
+                            $cval = (date("Y-m-d H:i:s", $rdoc->getValue($kc)));
+                            // $cval = strftime("%d/%m/%Y %T", $rdoc->getValue($kc));
+                            //	  $cval = strftime ("%x %T",$rdoc->getValue($kc]);
                             break;
 
                         case "state":
-                            $cval = _($v[$kc]);
+                            $cval = $rdoc->getStatelabel();
                             break;
 
                         case "title":
                             if ($ulink) {
-                                $trid = $v["id"];
-                                $v[$kc] = $rdoc->getHTMLTitle();
-                                $trlink = getparam("CORE_STANDURL") . "&app=FDL&action=FDL_CARD&id=$trid";
-                                $cval = "<A target=\"rdoc" . $v["id"] . "\"  onmousedown=\"document.noselect=true;\" ";
-                                $cval.= "onclick=\"subwindowm(200,600,'rdoc$trid','$trlink')\" oncontextmenu=\"popdoc(event,'$trlink');return false;\">";
-                                $cval.= $v[$kc] . "</a>";
+                                $cval = $rdoc->getDocAnchor($rdoc->id, 'rdoc' . $rdoc->id, true, false, true, "fixed");
                             } else {
-                                $cval = $v[$kc];
+                                $cval = $rdoc->getHtmlTitle();
                             }
                             break;
 
                         default:
-                            $cval = $rdoc->getHtmlValue($lattr[$kc], $v[$kc], $target, $ulink);
+                            $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getValue($kc) , $target, $ulink);
                             if ($lattr[$kc]->type == "image") $cval = "<img width=\"40px\" src=\"$cval\">";
                         }
                         $tcell[$kc] = array(
                             "cellval" => $cval,
-                            "rawval" => $v[$kc]
+                            "rawval" => $rdoc->getValue($kc)
                         );
                 }
                 $tcell[$kc]["bgcell"] = current($tcolor);
@@ -286,7 +292,7 @@ class _REPORT extends _DSEARCH
         $search = new SearchDoc($this->dbaccess, $famId);
         $search->dirid = $this->initid;
         $search->slice = $limit;
-        $search->orderby = $order;
+        $search->orderby = trim($order . " " . $this->getValue("rep_ordersort"));
         $search->setObjectReturn();
         $search->search();
         
@@ -448,11 +454,7 @@ class _REPORT extends _DSEARCH
             case "revdate":
                 return strftime("%x %T", $doc->getValue($internalName));
             case "state":
-                $stateValue = $doc->getstate();
-                if (empty($stateValue)) {
-                    return "";
-                }
-                return _($stateValue);
+                return $doc->getStatelabel();
             case "title":
                 return $doc->getHTMLTitle();
             case "id":

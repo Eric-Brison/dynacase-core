@@ -845,10 +845,12 @@ function getReportColumns($dbaccess, $famid, $name = "")
         "revdate" => _("revdate") ,
         "revision" => _("revision") ,
         "owner" => _("owner") ,
-        "state" => _("state")
+        "state" => _("step") ,
+        "id" => _("document id")
     );
     foreach ($propList as $propName => $propLabel) {
         if (($name == "") || (preg_match("/$pattern/i", $propLabel, $m))) {
+            $propLabel = mb_ucfirst($propLabel);
             $tr[] = array(
                 $propLabel,
                 $propName,
