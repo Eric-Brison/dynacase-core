@@ -144,7 +144,7 @@ class ErrorCodeWFL
      * @errorCode
      * the attrPrefix must be composed of just few characters
      */
-    const WFL0008 = 'workflow : syntax error attrPrefix for %s class (limit to 10 alpha characters)';
+    const WFL0008 = 'workflow : syntax error attrPrefix for %s class (limit to 15 alpha characters)';
     /**
      * @errorCode
      * activies label is not an array
