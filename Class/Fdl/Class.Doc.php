@@ -4735,6 +4735,18 @@ create unique index i_docir on doc(initid, revision);";
         return $def;
     }
     /**
+     * return state label if ficed document else activity label
+     * if not activity return state
+     * @api return state label
+     * @return string localized state label
+     */
+    final public function getStatelabel()
+    {
+        if ($this->locked == - 1) $stateValue = $this->getState();
+        else $stateValue = $this->getStateActivity($this->getState());
+        return (empty($stateValue) ? '' : _($stateValue));
+    }
+    /**
      * return the copy (duplication) of the document
      * the copy is created to the database
      * the profil of the copy is the default profil according to his family
