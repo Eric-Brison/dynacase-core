@@ -571,7 +571,7 @@ function addStatesPopup(&$tlink, Doc & $doc)
                 if ($err) {
                     $visibility = POPUP_INACTIVE;
                     $tooltip = $err;
-                    $icon = "Images/nowaccess.png";
+                    $icon = ""; // no image "Images/nowaccess.png";
                 }
             }
             $tlink[$v] = array(
