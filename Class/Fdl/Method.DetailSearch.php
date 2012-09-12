@@ -294,9 +294,9 @@ class _DSEARCH extends DocSearch
                     $op = "><";
                 }
             } else {
+                $hms = '';
                 if (($atype == "timestamp")) {
                     $pos = strpos($val, ' ');
-                    $hms = '';
                     if ($pos != false) {
                         $hms = substr($val, $pos + 1);
                     }
@@ -329,6 +329,7 @@ class _DSEARCH extends DocSearch
                 }
             }
         }
+        $cond = '';
         switch ($op) {
             case "is null":
                 
@@ -487,9 +488,10 @@ class _DSEARCH extends DocSearch
                             
                             break;
 
-                        case "docid":
-                            if (!is_numeric($val)) $val = getIdFromName($this->dbaccess, $val);
                         default:
+                            if ($atype == "docid") {
+                                if (!is_numeric($val)) $val = getIdFromName($this->dbaccess, $val);
+                            }
                             $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
                             if (($op == '!=') || ($op == '!~*')) {
                                 $cond = "(($cond1) or ($col is null))";
@@ -762,7 +764,7 @@ class _DSEARCH extends DocSearch
                     $tkey = $this->getTValue("SE_KEYS");
                     $taid = $this->getTValue("SE_ATTRIDS");
                     $tf = $this->getTValue("SE_FUNCS");
-                    
+                    $zpi = $toperator = array();
                     if ((count($taid) > 1) || ($taid[0] != "")) {
                         
                         $fdoc = new_Doc($this->dbaccess, $this->getValue("SE_FAMID", 1));
@@ -797,6 +799,7 @@ class _DSEARCH extends DocSearch
                         $doc = $this->getSearchFamilyDocument();
                         $inputset = array();
                         $ki = 0; // index numeric
+                        $tinputs = $ttransfert = array();
                         foreach ($tparm as $k => $v) {
                             if (isset($inputset[$v])) {
                                 // need clone when use several times the same attribute
@@ -1023,7 +1026,7 @@ class _DSEARCH extends DocSearch
                     }
                     
                     $this->lay->SetBlockData("ATTR", $tattr);
-                    
+                    $tfunc = array();
                     foreach ($this->top as $k => $v) {
                         $display = '';
                         if (isset($v["type"])) {
@@ -1051,6 +1054,7 @@ class _DSEARCH extends DocSearch
                     $states = array();
                     //-----------------------------------------------
                     // display state
+                    $wdoc = null;
                     if ($fdoc->wid > 0) {
                         $wdoc = new_Doc($this->dbaccess, $fdoc->wid);
                         /**

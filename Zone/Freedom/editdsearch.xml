@@ -263,8 +263,8 @@ tr.FREEDOMBack2 td.opt {
    
 
    <input value="[TEXT:addcond]"   type="button" onclick="addrow('newcond','condlist'); refreshCondList();">
-   <input  style="display:[dstate]" value="[TEXT:addstate]"   type="button" onclick="addrow('newstate','condlist'); newStepIs('fixstate');refreshCondList();">
-   <input  style="display:[dstate]" value="[TEXT:addactivity]"   type="button" onclick="addrow('newstate','condlist');newStepIs('activity');refreshCondList();">
+   <input  style="display:[dstate]" id="bAddState" value="[TEXT:addstate]"   type="button" onclick="addrow('newstate','condlist'); newStepIs('fixstate');refreshCondList();">
+   <input  style="display:[dstate]" id="bAddActivity" value="[TEXT:addactivity]"   type="button" onclick="addrow('newstate','condlist');newStepIs('activity');refreshCondList();">
 
 <select id="method-selector"  style="display:none" onchange="setKey(event,this)">
            <option disabled style="font-weight: bold;" value="">[TEXT:search methods]</option>

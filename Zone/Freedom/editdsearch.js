@@ -583,7 +583,30 @@ function newStepIs(type) {
         lastcond.find('option[value="fixstate"]').detach();
    }
 }
+function activateStatesButton() {
+    $('#se_latest').bind('change', function() {
+        var selOption=$(this).val();
+        if (selOption == 'fixed') {
+            $('#bAddActivity').attr('disabled','disabled');
+            $('#bAddState').removeAttr('disabled');
+        } else if (selOption == 'yes') {
+            $('#bAddState').attr('disabled','disabled');
+            $('#bAddActivity').removeAttr('disabled');
+        } else if (selOption == 'no') {
+            $('#bAddActivity').removeAttr('disabled');
+            $('#bAddState').removeAttr('disabled');
+        } else if (selOption == 'allfixed') {
+            $('#bAddActivity').attr('disabled','disabled');
+            $('#bAddState').removeAttr('disabled');
+        } else if (selOption == 'lastfixed') {
+            $('#bAddActivity').attr('disabled','disabled');
+            $('#bAddState').removeAttr('disabled');
+        }
 
+    });
+     $('#se_latest').trigger('change');
+}
 $(document).ready(function () {
     initializeMethodSelectors();
+    activateStatesButton();
 });
