@@ -156,17 +156,18 @@ tr.FREEDOMBack2 td.opt {
   </select>
 	</td>
 <td class="und" >
-  <select  name="_se_attrids[]" >
-     <option selected value="state">[TEXT:state]</option>
+  <select name="_se_attrids[]" >
+     <option value="activity">[TEXT:Activity]</option>
+     <option value="fixstate">[TEXT:State]</option>
   </select></td>
 <td class="und">
   <select  name="_se_funcs[]" >
-    [BLOCK FUNCSTATE]<option  value="[funcid]">[funcname]</option>
+    [BLOCK FUNCSTATE]<option value="[funcid]">[funcname]</option>
     [ENDBLOCK FUNCSTATE]
   </select></td>
 <td class="und"  >
   <select  name="_se_keys[]" >
-  [BLOCK STATE]<option  value="[stateid]">[statename]</option>
+  [BLOCK STATE]<option  step="[step]" value="[stateid]">[statename]</option>
   [ENDBLOCK STATE]
   </select></td><td><input title="[TEXT:search methods]" type="button" value="&Sigma;" onclick="callFunction(event,this)"></td>
 	<td class="und">
@@ -238,7 +239,7 @@ tr.FREEDOMBack2 td.opt {
   [ENDIF ISENUM]
   [IF ISENUM]
   <select  name="_se_keys[]" >
-  [BLOCK [SSTATE]]<option  value="[sstateid]" [sstate_selected]>[sstatename]</option>
+  [BLOCK [SSTATE]]<option  step="[sstep]" value="[sstateid]" [sstate_selected]>[sstatename]</option>
   [ENDBLOCK [SSTATE]]
   </select>  
   [ENDIF ISENUM]</td>
@@ -261,8 +262,9 @@ tr.FREEDOMBack2 td.opt {
 <td class="und" colspan="6" id="lastcell">
    
 
-   <input   value="[TEXT:addcond]"   type="button" onclick="addrow('newcond','condlist'); refreshCondList();">
-   <input  style="display:[dstate]" value="[TEXT:addstate]"   type="button" onclick="addrow('newstate','condlist'); refreshCondList();">
+   <input value="[TEXT:addcond]"   type="button" onclick="addrow('newcond','condlist'); refreshCondList();">
+   <input  style="display:[dstate]" id="bAddState" value="[TEXT:addstate]"   type="button" onclick="addrow('newstate','condlist'); newStepIs('fixstate');refreshCondList();">
+   <input  style="display:[dstate]" id="bAddActivity" value="[TEXT:addactivity]"   type="button" onclick="addrow('newstate','condlist');newStepIs('activity');refreshCondList();">
 
 <select id="method-selector"  style="display:none" onchange="setKey(event,this)">
            <option disabled style="font-weight: bold;" value="">[TEXT:search methods]</option>

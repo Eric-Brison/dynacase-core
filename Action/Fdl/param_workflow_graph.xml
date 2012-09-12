@@ -12,8 +12,9 @@
 <input type="hidden" value="[id]" name="id">
 
 <select title="[TEXT:dotType]" name="type">
+  <option value="justactivity">[TEXT:Just activities]</option>
   <option value="simple">[TEXT:Just states]</option>
-  <option value="activity">[TEXT:With Activity]</option>
+  <option value="activity">[TEXT:With States and activities]</option>
   <option value="complet">[TEXT:With conditions]</option>
   <option value="cluster">[TEXT:Complete (cluster)]</option>
   </select>

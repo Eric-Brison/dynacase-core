@@ -275,6 +275,11 @@ class _DSEARCH extends DocSearch
         if (($col == "revdate") && ($val != '') && (!is_numeric($val))) {
             $val = stringdatetounixts($val);
         }
+        $stateCol = '';
+        if ($col == "activity" || $col = "fixstate") {
+            $stateCol = $col;
+            $col = "state";
+        }
         $atype = '';
         $oa = $this->searchfam->getAttribute($col);
         /**
@@ -289,9 +294,9 @@ class _DSEARCH extends DocSearch
                     $op = "><";
                 }
             } else {
+                $hms = '';
                 if (($atype == "timestamp")) {
                     $pos = strpos($val, ' ');
-                    $hms = '';
                     if ($pos != false) {
                         $hms = substr($val, $pos + 1);
                     }
@@ -324,6 +329,7 @@ class _DSEARCH extends DocSearch
                 }
             }
         }
+        $cond = '';
         switch ($op) {
             case "is null":
                 
@@ -482,17 +488,22 @@ class _DSEARCH extends DocSearch
                             
                             break;
 
-                        case "docid":
-                            if (!is_numeric($val)) $val = getIdFromName($this->dbaccess, $val);
                         default:
+                            if ($atype == "docid") {
+                                if (!is_numeric($val)) $val = getIdFromName($this->dbaccess, $val);
+                            }
                             $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
                             if (($op == '!=') || ($op == '!~*')) {
                                 $cond = "(($cond1) or ($col is null))";
                             } else $cond = $cond1;
                         }
                     }
-                    
                     if (!$cond) $cond = "true";
+                    elseif ($stateCol == "activity") {
+                        $cond = sprintf("(%s and locked != -1)", $cond);
+                    } elseif ($stateCol == "fixstate") {
+                        $cond = sprintf("(%s and locked = -1)", $cond);
+                    }
                     return $cond;
                 }
                 
@@ -689,7 +700,9 @@ class _DSEARCH extends DocSearch
                         
                         $fdoc = new_Doc($this->dbaccess, $this->getValue("SE_FAMID", 1));
                         $zpi = $fdoc->GetNormalAttributes();
-                        $zpi["state"] = new BasicAttribute("state", $this->fromid, _("state"));
+                        $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
+                        $zpi["fixstate"] = new BasicAttribute("fixstate", $this->fromid, _("state"));
+                        $zpi["activity"] = new BasicAttribute("activity", $this->fromid, _("activity"));
                         $zpi["title"] = new BasicAttribute("title", $this->fromid, _("doctitle"));
                         $zpi["revdate"] = new BasicAttribute("revdate", $this->fromid, _("revdate"));
                         $zpi["cdate"] = new BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
@@ -698,11 +711,17 @@ class _DSEARCH extends DocSearch
                         $zpi["locked"] = new BasicAttribute("owner", $this->fromid, _("locked"));
                         $zpi["allocated"] = new BasicAttribute("owner", $this->fromid, _("allocated"));
                         $zpi["svalues"] = new BasicAttribute("svalues", $this->fromid, _("any values"));
-                        
+                        $tcond = array();
                         foreach ($taid as $k => $v) {
-                            $label = $zpi[$taid[$k]]->getLabel();
-                            if ($label == "") $label = $taid[$k];
-                            $tcond[]["condition"] = sprintf("%s %s %s", $label, $this->getOperatorLabel($tf[$k], $zpi[$taid[$k]]->type) , ($tkey[$k] != "") ? _($tkey[$k]) : $tkey[$k]);
+                            $label = $zpi[$v]->getLabel();
+                            if ($label == "") $label = $v;
+                            if ($v == "activity") {
+                                $fdoc->state = $tkey[$k];
+                                $displayValue = $fdoc->getStatelabel();
+                            } else {
+                                $displayValue = ($tkey[$k] != "") ? _($tkey[$k]) : $tkey[$k];
+                            }
+                            $tcond[]["condition"] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $zpi[$taid[$k]]->type) , $displayValue);
                             if ($tkey[$k][0] == '?') {
                                 $tparm[substr($tkey[$k], 1) ] = $taid[$k];
                             }
@@ -745,12 +764,14 @@ class _DSEARCH extends DocSearch
                     $tkey = $this->getTValue("SE_KEYS");
                     $taid = $this->getTValue("SE_ATTRIDS");
                     $tf = $this->getTValue("SE_FUNCS");
-                    
+                    $zpi = $toperator = array();
                     if ((count($taid) > 1) || ($taid[0] != "")) {
                         
                         $fdoc = new_Doc($this->dbaccess, $this->getValue("SE_FAMID", 1));
                         $zpi = $fdoc->GetNormalAttributes();
-                        $zpi["state"] = new BasicAttribute("state", $this->fromid, _("state"));
+                        $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
+                        $zpi["fixstate"] = new BasicAttribute("state", $this->fromid, _("fixstate"));
+                        $zpi["activity"] = new BasicAttribute("state", $this->fromid, _("activity"));
                         $zpi["title"] = new BasicAttribute("title", $this->fromid, _("doctitle"));
                         $zpi["revdate"] = new BasicAttribute("revdate", $this->fromid, _("revdate"));
                         $zpi["cdate"] = new BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
@@ -778,6 +799,7 @@ class _DSEARCH extends DocSearch
                         $doc = $this->getSearchFamilyDocument();
                         $inputset = array();
                         $ki = 0; // index numeric
+                        $tinputs = $ttransfert = array();
                         foreach ($tparm as $k => $v) {
                             if (isset($inputset[$v])) {
                                 // need clone when use several times the same attribute
@@ -1004,7 +1026,7 @@ class _DSEARCH extends DocSearch
                     }
                     
                     $this->lay->SetBlockData("ATTR", $tattr);
-                    
+                    $tfunc = array();
                     foreach ($this->top as $k => $v) {
                         $display = '';
                         if (isset($v["type"])) {
@@ -1029,8 +1051,10 @@ class _DSEARCH extends DocSearch
                     
                     if ($this->getValue("SE_LATEST") == "no") $this->lay->Set("select_all", "selected");
                     else $this->lay->Set("select_all", "");
+                    $states = array();
                     //-----------------------------------------------
                     // display state
+                    $wdoc = null;
                     if ($fdoc->wid > 0) {
                         $wdoc = new_Doc($this->dbaccess, $fdoc->wid);
                         /**
@@ -1039,10 +1063,18 @@ class _DSEARCH extends DocSearch
                         $states = $wdoc->getStates();
                         
                         $tstates = array();
-                        while (list($k, $v) = each($states)) {
+                        foreach ($states as $k => $v) {
                             $tstates[] = array(
+                                "step" => "state",
                                 "stateid" => $v,
                                 "statename" => _($v)
+                            );
+                            $activity = $wdoc->getActivity($v);
+                            
+                            $tstates[] = array(
+                                "step" => "activity",
+                                "stateid" => $v,
+                                "statename" => ($activity) ? _($activity) : _($v)
                             );
                         }
                         $this->lay->SetBlockData("STATE", $tstates);
@@ -1063,15 +1095,15 @@ class _DSEARCH extends DocSearch
                     $tcond = array();
                     
                     if ((count($taid) > 1) || ($taid && $taid[0] != "")) {
-                        foreach ($taid as $k => $va) {
+                        foreach ($taid as $k => $keyId) {
                             $docid_aid = 0;
                             $v = $tkey[$k];
-                            $oa = $fdoc->getAttribute($taid[$k]);
+                            $oa = $fdoc->getAttribute($keyId);
                             $tcond[$k] = array(
                                 "OLCOND" => "olcond$k",
                                 "ATTRCOND" => "attrcond$k",
                                 "FUNCCOND" => "funccond$k",
-                                "ISENUM" => (($taid[$k] == "state") || ($oa && $oa->type == "enum")) ,
+                                "ISENUM" => (($keyId == "state") || ($keyId == "fixstate") || ($keyId == "activity") || ($oa && $oa->type == "enum")) ,
                                 "SSTATE" => "sstate$k",
                                 "ols_and_selected" => ($tol[$k] == "and") ? "selected" : "",
                                 "ols_or_selected" => ($tol[$k] == "or") ? "selected" : "",
@@ -1081,28 +1113,39 @@ class _DSEARCH extends DocSearch
                                 "rightp_open_selected" => ($trp[$k] == "yes") ? "selected" : "",
                                 "key" => $v
                             );
-                            
                             $tattr = array();
-                            if ($taid[$k] == "state") {
+                            if ($keyId == "state" || ($keyId == "fixstate") || ($keyId == "activity")) {
                                 $tstates = array();
                                 $stateselected = false;
                                 foreach ($states as $ks => $vs) {
-                                    $tstates[] = array(
-                                        "sstateid" => $vs,
-                                        "sstate_selected" => ($vs == $v) ? "selected" : "",
-                                        "sstatename" => _($vs)
-                                    );
+                                    if ($keyId != "activity") {
+                                        $tstates[] = array(
+                                            "sstateid" => $vs,
+                                            "sstep" => "state",
+                                            "sstate_selected" => ($vs == $v) ? "selected" : "",
+                                            "sstatename" => _($vs)
+                                        );
+                                    } else {
+                                        $activity = $wdoc->getActivity($vs);
+                                        $tstates[] = array(
+                                            "sstateid" => $vs,
+                                            "sstep" => "activity",
+                                            "sstate_selected" => ($vs == $v) ? "selected" : "",
+                                            "sstatename" => ($activity) ? _($activity) : _($vs)
+                                        );
+                                    }
                                     if ($vs == $v) $stateselected = true;
                                 }
                                 if (!$stateselected) $tcond[$k]["ISENUM"] = false;
                                 $this->lay->SetBlockData("sstate$k", $tstates);
                                 
                                 $tattr[] = array(
-                                    "attrid" => $taid[$k],
+                                    "attrid" => $keyId,
                                     "ismultiple" => 'no',
-                                    "attrtype" => "docid",
+                                    "attrtype" => "enum",
+                                    "attrdisabled" => '',
                                     "attrselected" => "selected",
-                                    "attrname" => _("state")
+                                    "attrname" => _($keyId)
                                 );
                             } else {
                                 if ($oa && $oa->type == "enum") {
@@ -1142,7 +1185,7 @@ class _DSEARCH extends DocSearch
                                         "attrid" => $ki,
                                         "ismultiple" => 'no',
                                         "attrtype" => $type,
-                                        "attrselected" => ($taid[$k] == $ki) ? "selected" : "",
+                                        "attrselected" => ($keyId == $ki) ? "selected" : "",
                                         "attrdisabled" => "",
                                         "attrname" => $vi
                                     );
@@ -1159,7 +1202,7 @@ class _DSEARCH extends DocSearch
                                         "attrid" => $vi->id,
                                         "ismultiple" => ($vi->isMultiple()) ? 'yes' : 'no',
                                         "attrtype" => $type,
-                                        "attrselected" => ($taid[$k] == $vi->id) ? "selected" : "",
+                                        "attrselected" => ($keyId == $vi->id) ? "selected" : "",
                                         "attrdisabled" => "",
                                         "attrname" => $vi->getLabel()
                                     );
@@ -1170,19 +1213,21 @@ class _DSEARCH extends DocSearch
                             $tfunc = array();
                             
                             foreach ($this->top as $ki => $vi) {
-                                $oa = $fdoc->getAttribute($taid[$k]);
+                                $oa = $fdoc->getAttribute($keyId);
                                 if ($oa) $type = $oa->type;
                                 else $type = '';
                                 if ($type == "") {
-                                    if ($taid[$k] == "title") $type = "text";
-                                    elseif ($taid[$k] == "cdate") $type = "date";
-                                    elseif ($taid[$k] == "revision") $type = "int";
-                                    elseif ($taid[$k] == "allocated") $type = "docid";
-                                    elseif ($taid[$k] == "locked") $type = "docid";
-                                    elseif ($taid[$k] == "revdate") $type = "date";
-                                    elseif ($taid[$k] == "owner") $type = "docid";
-                                    elseif ($taid[$k] == "svalues") $type = "text";
-                                    elseif ($taid[$k] == "state") $type = "enum";
+                                    if ($keyId == "title") $type = "text";
+                                    elseif ($keyId == "cdate") $type = "date";
+                                    elseif ($keyId == "fixstate") $type = "enum";
+                                    elseif ($keyId == "activity") $type = "enum";
+                                    elseif ($keyId == "revision") $type = "int";
+                                    elseif ($keyId == "allocated") $type = "docid";
+                                    elseif ($keyId == "locked") $type = "docid";
+                                    elseif ($keyId == "revdate") $type = "date";
+                                    elseif ($keyId == "owner") $type = "docid";
+                                    elseif ($keyId == "svalues") $type = "text";
+                                    elseif ($keyId == "state") $type = "enum";
                                 } else {
                                     if ($oa->inArray() && ($oa->type != 'file')) $type = "array";
                                 }
@@ -1193,7 +1238,7 @@ class _DSEARCH extends DocSearch
                                     $ctype = implode(",", $vi["type"]);
                                 }
                                 if ($tf[$k] == $ki && $type == 'docid' && $display == '' && ($ki == '=' || $ki == '!=')) {
-                                    $docid_aid = $taid[$k];
+                                    $docid_aid = $keyId;
                                 }
                                 $tfunc[] = array(
                                     "func_id" => $ki,

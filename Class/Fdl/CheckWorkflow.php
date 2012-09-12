@@ -262,7 +262,7 @@ class CheckWorkflow
                         $wi = createTmpDoc($this->wdoc->dbaccess, $this->familyName);
                         $aids = array_keys($wi->getAttributes());
                         foreach ($askes as $aid) {
-                            if (!in_array($aid, $aids)) {
+                            if (!in_array(strtolower($aid), $aids)) {
                                 $this->addCodeError('WFL0104', $aid, $this->className);
                             }
                         }
@@ -307,7 +307,7 @@ class CheckWorkflow
     {
         if (!$this->wdoc->attrPrefix) {
             $this->addCodeError('WFL0007', $this->className);
-        } elseif (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]{0,9}$/', $this->wdoc->attrPrefix)) {
+        } elseif (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]{0,14}$/', $this->wdoc->attrPrefix)) {
             $this->addCodeError('WFL0008', $this->className);
         }
     }

@@ -24,7 +24,7 @@ class DotWorkflow
     /**
      * @var array
      */
-    private $lines;
+    private $lines = array();
     /**
      * @var WDoc
      */
@@ -84,6 +84,12 @@ class DotWorkflow
                 $this->lines[] = sprintf('%s [shape=doublecircle]', $this->wdoc->firstState);
                 break;
 
+            case 'justactivity':
+                $this->setActivities();
+                $this->setTransitionLines();
+                $this->lines[] = sprintf('%s [penwidth=2]', $this->wdoc->firstState);
+                break;
+
             case 'activity':
                 $this->setStates();
                 $this->setActivity();
@@ -96,7 +102,7 @@ class DotWorkflow
         ratio=\"{$this->ratio}\";
 	    rankdir={$this->orient};
         {$this->size}
-        bgcolor=\"transparent\";
+        bgcolor=\"white\";
         {rank=1; \"$ft\";}
         splines=true; fontsize={$this->conditionfontsize}; fontname=sans;
 	node [shape = circle, style=filled, fixedsize=true,fontsize={$this->fontsize},fontname=sans];
@@ -116,6 +122,7 @@ class DotWorkflow
                     $this->setCompleteTransitionLine($k, $v);
                     break;
 
+                case 'justactivity':
                 case 'simple':
                     $this->setSimpleTransitionLine($k, $v);
                     break;
@@ -138,7 +145,7 @@ class DotWorkflow
         foreach ($this->wdoc->cycle as $k => $v) {
             if ($v["e2"] == $startPoint) {
                 $t = $this->wdoc->transitions[$v["t"]];
-                if ($t["m3"]) $start = "m3" . $k;
+                if (!empty($t["m3"])) $start = "m3" . $k;
                 else {
                     $tmids = $this->wdoc->getTransitionTimers($v["t"]);
                     if ($tmids) $start = "tm" . $k;
@@ -156,16 +163,16 @@ class DotWorkflow
                                 if ($tmid) $start = "mtf" . $k;
                                 else {
                                     
-                                    if ($t["m2"]) $start = "m2" . $k;
+                                    if (!empty($t["m2"])) $start = "m2" . $k;
                                     else $start = $v["e2"] . $k;
                                 }
                             }
                         }
                     }
                 }
-                if ($start && (($limitIndex == - 1) || (!$transitionLink[$v["t"] . $v["e2"]]))) {
+                if ($start && (($limitIndex == - 1) || (empty($transitionLink[$v["t"] . $v["e2"]])))) {
                     $transitionLink[$v["t"] . $v["e2"]] = true;
-                    if (!$this->memoTr[$start][$end]) {
+                    if (empty($this->memoTr[$start][$end])) {
                         $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans, label="%s"];', $start, $end, $this->style['arrow-label-font-color'], $this->style['arrow-color'], "");
                         
                         $this->memoTr[$start][$end] = true;
@@ -230,11 +237,11 @@ class DotWorkflow
         $e1 = $tr["e1"];
         $e2 = $tr["e2"];
         $t = $this->wdoc->transitions[$tr["t"]];
-        $m0 = $t["m0"];
-        $m1 = $t["m1"];
-        $m2 = $t["m2"];
-        $m3 = $t["m3"];
-        $ask = $t["ask"];
+        $m0 = isset($t["m0"]) ? $t["m0"] : null;
+        $m1 = isset($t["m1"]) ? $t["m1"] : null;
+        $m2 = isset($t["m2"]) ? $t["m2"] : null;
+        $m3 = isset($t["m3"]) ? $t["m3"] : null;
+        $ask = isset($t["ask"]) ? $t["ask"] : null;
         $act = $this->getActivity($e1);
         
         if ($this->linkSameTransition($tr, $index)) {
@@ -290,7 +297,7 @@ class DotWorkflow
             $e1 = $mi;
         }
         $e2p = $e2 . $index;
-        if (!$this->memoTr[$e1][$e2p]) {
+        if (empty($this->memoTr[$e1][$e2p])) {
             
             if (!$startedPoint) {
                 $this->setAttachStart($e1, $e2);
@@ -336,7 +343,7 @@ class DotWorkflow
         $ends = array();
         foreach ($endState as $e) {
             foreach ($this->wdoc->cycle as $k => $t) {
-                if ($t["e2"] == $e && (!$see[$e]) && (!$see[$t["t"] . $t["e2"]])) {
+                if ($t["e2"] == $e && (empty($see[$e])) && (empty($see[$t["t"] . $t["e2"]]))) {
                     $end = 'E' . $e . $k;
                     $this->lines[] = '"' . $end . '" [shape = square,style=filled, width=0.3,label="", fixedsize=true,fontname=sans,color="' . $this->style['end-color'] . '"];';
                     $see[$e] = true;
@@ -595,7 +602,7 @@ class DotWorkflow
             $tmain = sprintf('color="%s",style="setlinewidth(3)",arrowsize=1.0', $this->style['autonext-color']);
         }
         if ($act) {
-            if (!$this->memoTr[$e1][$act]) {
+            if (empty($this->memoTr[$e1][$act])) {
                 $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans, label="%s"];', $e1, $act, $this->style['arrow-label-font-color'], $this->style['arrow-color'], "");
                 
                 $this->memoTr[$e1][$act] = true;
@@ -603,7 +610,7 @@ class DotWorkflow
             $e1 = $act;
         }
         
-        if (!$this->memoTr[$e1][$e2]) {
+        if (empty($this->memoTr[$e1][$e2])) {
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontsize=6,color="%s" %s,labelfontname=sans, label="%s"];', $e1, $e2, $this->style['arrow-color'], $tmain, _($tr["t"]));
             $this->memoTr[$e1][$e2] = true;
         }
@@ -625,6 +632,29 @@ class DotWorkflow
         }
     }
     
+    private function setActivities()
+    {
+        $states = $this->wdoc->getStates();
+        foreach ($states as $k => $v) {
+            $color = $this->wdoc->getColor($v);
+            $activity = $this->wdoc->getActivity($v);
+            
+            if (!$activity) {
+                $activity = $v;
+                $shape = "circle";
+            } else {
+                $shape = "box";
+            }
+            
+            $tt = sprintf('label="%s"', $this->_n($activity));
+            $tt.= ',shape = ' . $shape . ', style=filled, fixedsize=false,width=1.0,   fontname=sans';
+            if ($v) $tt.= ', tooltip="' . $v . '"';
+            
+            if ($color) $tt.= ',fillcolor="' . $color . '"';
+            
+            $this->lines[] = '"' . $v . '" [' . $tt . '];';
+        }
+    }
     private function setActivity()
     {
         $states = $this->wdoc->getStates();
@@ -658,28 +688,28 @@ class DotWorkflow
     {
         
         $tt = sprintf('fixedsize=false,fontsize="%s"', $this->conditionfontsize);
-        if ($tr["m0"]) {
+        if (!empty($tr["m0"])) {
             $mi = "m0" . $k;
             $this->lines[] = sprintf('"%s" [%s,label="%s",  shape=Mdiamond,tooltip="m0",color="%s"];', $mi, $tt, $this->_n($tr["m0"]) , $this->style['condition-color0']);
             
             $this->clusters[$k][] = $mi;
         }
-        if ($tr["m1"]) {
+        if (!empty($tr["m1"])) {
             $mi = "m1" . $k;
             $this->lines[] = sprintf('"%s" [%s,label="%s", tooltip="m1",shape=diamond,color="%s"];', $mi, $tt, $this->_n($tr["m1"]) , $this->style['condition-color1']);
             $this->clusters[$k][] = $mi;
         }
-        if ($tr["m2"]) {
+        if (!empty($tr["m2"])) {
             $mi = "m2" . $k;
             $this->lines[] = sprintf('"%s" [%s,label="%s",tooltip="m2",shape=box,color="%s"];', $mi, $tt, $this->_n($tr["m2"]) , $this->style['action-color2']);
             $this->clusters[$k][] = $mi;
         }
-        if ($tr["m3"]) {
+        if (!empty($tr["m3"])) {
             $mi = "m3" . $k;
             $this->lines[] = sprintf('"%s" [%s,label="%s",tooltip="m3",shape=box,color="%s"];', $mi, $tt, $this->_n($tr["m3"]) , $this->style['action-color3']);
             $this->clusters[$k][] = $mi;
         }
-        if ($tr["ask"] && count($tr["ask"]) > 0) {
+        if (!empty($tr["ask"]) && count($tr["ask"]) > 0) {
             $mi = "ask" . $k;
             $askLabel = array();
             foreach ($tr["ask"] as $aAsk) {
@@ -773,6 +803,7 @@ $isize = $usage->addOption("size", "image size", array() , "10");
 $type = $usage->addOption("type", "type of output", array(
     "complet",
     "activity",
+    "justactivity",
     "simple",
     "cluster"
 ) , "complet");

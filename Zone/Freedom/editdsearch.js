@@ -573,6 +573,40 @@ function setSysFamSelector(select) {
     if (isIE) $("#famid").find('option[selected="selected"]').attr("selected", 'selected');
 }
 
+function newStepIs(type) {
+    var lastcond=$('#condlist tr:last-child')
+   if (type=='fixstate') {
+       lastcond.find('option[step="activity"]').detach();
+        lastcond.find('option[value="activity"]').detach();
+   } else if (type=='activity') {
+       lastcond.find('option[step="state"]').detach();
+        lastcond.find('option[value="fixstate"]').detach();
+   }
+}
+function activateStatesButton() {
+    $('#se_latest').bind('change', function() {
+        var selOption=$(this).val();
+        if (selOption == 'fixed') {
+            $('#bAddActivity').attr('disabled','disabled');
+            $('#bAddState').removeAttr('disabled');
+        } else if (selOption == 'yes') {
+            $('#bAddState').attr('disabled','disabled');
+            $('#bAddActivity').removeAttr('disabled');
+        } else if (selOption == 'no') {
+            $('#bAddActivity').removeAttr('disabled');
+            $('#bAddState').removeAttr('disabled');
+        } else if (selOption == 'allfixed') {
+            $('#bAddActivity').attr('disabled','disabled');
+            $('#bAddState').removeAttr('disabled');
+        } else if (selOption == 'lastfixed') {
+            $('#bAddActivity').attr('disabled','disabled');
+            $('#bAddState').removeAttr('disabled');
+        }
+
+    });
+     $('#se_latest').trigger('change');
+}
 $(document).ready(function () {
     initializeMethodSelectors();
+    activateStatesButton();
 });
