@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-11 12:14+0200\n"
-"PO-Revision-Date: 2012-09-11 12:14+0200\n"
+"POT-Creation-Date: 2012-09-12 09:47+0200\n"
+"PO-Revision-Date: 2012-09-12 10:33+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -4132,6 +4132,9 @@ msgstr ""
 msgid "actions"
 msgstr "les actions"
 
+msgid "activity"
+msgstr "activité"
+
 #, c-format
 msgid "activity for %s"
 msgstr "Activité pour %s"
@@ -4220,8 +4223,11 @@ msgstr "Marquer ce dossier"
 msgid "addState: missing parameter"
 msgstr "addState: paramètre manquant"
 
+msgid "addactivity"
+msgstr "Activité"
+
 msgid "addcond"
-msgstr "attributs"
+msgstr "Attributs"
 
 msgid "added"
 msgstr "ajouté"

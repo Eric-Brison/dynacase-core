@@ -573,6 +573,17 @@ function setSysFamSelector(select) {
     if (isIE) $("#famid").find('option[selected="selected"]').attr("selected", 'selected');
 }
 
+function newStepIs(type) {
+    var lastcond=$('#condlist tr:last-child')
+   if (type=='fixstate') {
+       lastcond.find('option[step="activity"]').detach();
+        lastcond.find('option[value="activity"]').detach();
+   } else if (type=='activity') {
+       lastcond.find('option[step="state"]').detach();
+        lastcond.find('option[value="fixstate"]').detach();
+   }
+}
+
 $(document).ready(function () {
     initializeMethodSelectors();
 });
