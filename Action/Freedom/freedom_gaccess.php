@@ -46,7 +46,8 @@ function freedom_gaccess(Action & $action)
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/AnchorPosition.js");
-    
+    $action->parent->addJsRef("lib/jquery/jquery.js");
+    $action->parent->addCssRef("lib/jquery-ui/css/smoothness/jquery-ui.css");
     $doc = new_Doc($dbaccess, $docid);
     $err = $doc->control("viewacl");
     if ($err != "") $action->exitError($err);
@@ -279,6 +280,24 @@ function freedom_gaccess(Action & $action)
     } else {
         $action->lay->Set("dynamic", false);
     }
+    $action->lay->setBlockData("legendcolor", array(
+       array(
+           "legendimage" => "G",
+           "legendexplication" => _("Legend:Groups")
+       ),array(
+           "legendimage" => "U",
+           "legendexplication" => _("Legend:Users")
+       ),array(
+           "legendimage" => "R",
+           "legendexplication" => _("Legend:Roles")
+       ),array(
+           "legendimage" => "D",
+           "legendexplication" => _("Legend:Dynamic")
+       ),array(
+           "legendimage" => "M",
+           "legendexplication" => _("Legend:Dynamic multiple")
+       )
+    ));
 }
 //--------------------------------------------
 function getTableG($hg, $id, $type, $level = 0)

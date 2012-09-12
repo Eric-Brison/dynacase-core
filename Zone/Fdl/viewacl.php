@@ -56,7 +56,7 @@ function viewacl(Action & $action)
         
         $tableacl[$k]["aclid"] = $acl;
         $tableacl[$k]["iacl"] = $acl; // index for table in xml
-        if ($doc->extendedAcls[$acl]) {
+        if (isset($doc->extendedAcls[$acl])) {
             $grant = DocPermExt::hasExtAclGrant($docid, $user->id, $acl);
             if ($grant == 'green') {
                 
@@ -143,7 +143,7 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
         if (!$doc->dprofid) {
             // grey
             $msg = '? profid role/group';
-            if ($doc->extendedAcls[$acl]) {
+            if (isset($doc->extendedAcls[$acl])) {
                 $sql = sprintf("SELECT userid from docpermext where docid=%d and acl = '%s'", $doc->profid, pg_escape_string($acl));
             } else {
                 $sql = sprintf("SELECT userid from docperm where docid=%d and upacl & %d != 0", $doc->profid, 1 << $Aclpos);

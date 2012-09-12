@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-12 13:56+0200\n"
-"PO-Revision-Date: 2012-09-12 09:47+0200\n"
+"POT-Creation-Date: 2012-09-12 16:59+0200\n"
+"PO-Revision-Date: 2012-09-12 17:30+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+"Language: \n"
 
 msgid " Access Control for"
 msgstr ""
@@ -2244,8 +2244,8 @@ msgstr "Start search"
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;"
-"%s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;%"
+"s&gt; will be sended with result rapport"
 msgstr ""
 
 #, fuzzy
@@ -2476,6 +2476,36 @@ msgstr ""
 
 msgid "Left Right"
 msgstr ""
+
+msgid "Legend"
+msgstr ""
+
+msgid "Legend:Acl set"
+msgstr "Acl set"
+
+msgid "Legend:Acl's type"
+msgstr "Acl's type"
+
+msgid "Legend:Actors"
+msgstr "Actors"
+
+msgid "Legend:Dynamic"
+msgstr "Account attribute"
+
+msgid "Legend:Dynamic multiple"
+msgstr "Account multpile attribute"
+
+msgid "Legend:Groups"
+msgstr "Groups"
+
+msgid "Legend:Legacy"
+msgstr "Acl inherited"
+
+msgid "Legend:Roles"
+msgstr "Roles"
+
+msgid "Legend:Users"
+msgstr "Users"
 
 msgid "Limit of text size (in Ko) for highlight text"
 msgstr ""
@@ -3990,6 +4020,9 @@ msgid "View all rows"
 msgstr "Start search"
 
 msgid "View answers"
+msgstr ""
+
+msgid "View color legend"
 msgstr ""
 
 msgid "View cycle graph"
