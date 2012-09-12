@@ -134,9 +134,10 @@ addEvent(window,"load",function () {if (window.parent && window.parent.multidoc)
                     if (index != -1) {
                       var percentage = widthStr.substr(0, index);
                     var divWidth = $("div#main").width();
-                    var ongletWidth = $(".onglet").width() + 7;
+          var docresume = $(".docresume");
+                    var ongletWidth = $(".onglet").outerWidth(true) + (docresume.outerWidth(true) - docresume.innerWidth()) + 3;
                     var newWidth = ((divWidth * percentage) / 100) - ongletWidth;
-                    $(".docresume").width(newWidth);
+          docresume.width(newWidth);
                     }
                 }
   $(window).on("load resize", resizeTable);
