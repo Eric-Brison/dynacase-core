@@ -29,37 +29,46 @@ include_once ("FDL/Class.WDoc.php");
  * @global string $size Http var : global size of graph
  * @return void
  */
-function view_workflow_graph(Action &$action)
+function view_workflow_graph(Action & $action)
 {
-    $usage=new ActionUsage($action);
+    $usage = new ActionUsage($action);
     $usage->setText("Generate graph image for workflow");
-    $docid=$usage->addNeeded("id","workflow id");
-    $type=$usage->addOption("type","graph detail level",array("simple","activity","complet","cluster"),"simple");
-    $format=$usage->addOption("format","image format",array("png","svg","dot"),"png");
-    $orient=$usage->addOption("orient","orientation",array("LR","TB"),"LR");
-    $size=$usage->addOption("size","image size",array(),"20");
-    $ratio=$usage->addOption("ratio","ration",array("fill","compress","auto","expand"),"fill");
-    $tool=$usage->addOption("tool","tool used to generate",array("dot","sfdp","neato","fdp","twopi","circo"),"dot");
+    $docid = $usage->addNeeded("id", "workflow id");
+    $type = $usage->addOption("type", "graph detail level", array(
+        "justactivity",
+        "simple",
+        "activity",
+        "complet",
+        "cluster"
+    ) , "justactivity");
+    $format = $usage->addOption("format", "image format", array(
+        "png",
+        "svg",
+        "dot"
+    ) , "png");
+    $orient = $usage->addOption("orient", "orientation", array(
+        "LR",
+        "TB"
+    ) , "LR");
+    $size = $usage->addOption("size", "image size", array() , "auto");
+    $ratio = $usage->addOption("ratio", "ration", array(
+        "fill",
+        "compress",
+        "auto",
+        "expand"
+    ) , "fill");
+    $tool = $usage->addOption("tool", "tool used to generate", array(
+        "dot",
+        "sfdp",
+        "neato",
+        "fdp",
+        "twopi",
+        "circo"
+    ) , "dot");
     $usage->verify();
-
+    
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
-    if ($type != 'simple' && $type != 'activity' && $type != 'complet' && $type != 'cluster') {
-         $action->exitError(sprintf("Invalid type '%s'", htmlspecialchars($type)));
-    }
-    if ($format != 'dot' && $format != 'png' && $format != 'svg') {
-         $action->exitError(sprintf("Invalid format '%s'", htmlspecialchars($format)));
-    }
-    if ($orient != 'LR' && $orient != 'TB') {
-         $action->exitError(sprintf("Invalid orient '%s'", htmlspecialchars($orient)));
-    }
-    if ($ratio != 'fill' && $ratio != 'compress' && $ratio != 'expand' && $ratio != 'auto') {
-         $action->exitError(sprintf("Invalid ratio '%s'", htmlspecialchars($ratio)));
-    }
-    if ($tool != 'dot' && $tool != 'sfdp' && $tool != 'neato' && $tool != 'fdp' && $tool != 'twopi' && $tool != 'circo') {
-         $action->exitError(sprintf("Invalid tool '%s'", htmlspecialchars($tool)));
-    }
-
     if ($tool == "sfdp") {
         $tool.= "  -Goverlap=prism";
     } elseif ($tool == "neato") {
@@ -83,14 +92,13 @@ function view_workflow_graph(Action &$action)
         $dest = DEFAULT_PUBDIR . "/$svgfile";
         if ($format == "dot") $cmd.= sprintf("> %s", escapeshellarg($dest));
         $sed = sprintf("s/%s/../", str_replace('/', '\/', DEFAULT_PUBDIR));
-       // if ($format == "svg") $cmd.= sprintf("| %s -T%s | sed -e %s > %s", $tool, escapeshellarg($format) , escapeshellarg($sed) , escapeshellarg($dest));
+        // if ($format == "svg") $cmd.= sprintf("| %s -T%s | sed -e %s > %s", $tool, escapeshellarg($format) , escapeshellarg($sed) , escapeshellarg($dest));
         //else
         $cmd.= sprintf("| %s -T%s 2>&1  > %s", $tool, escapeshellarg($format) , escapeshellarg($dest));
         
-
         exec($cmd, $out, $ret);
-
-        if ($ret != 0) $action->exitError(implode("\n",$out));
+        
+        if ($ret != 0) $action->exitError(implode("\n", $out));
         //   print_r2( $cmd);
         if ($format == "png") $mime = "image/png";
         elseif ($format == "svg") $mime = "image/svg+xml";

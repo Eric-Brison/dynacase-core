@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-12 12:09+0200\n"
-"PO-Revision-Date: 2012-09-12 12:10+0200\n"
+"POT-Creation-Date: 2012-09-12 13:56+0200\n"
+"PO-Revision-Date: 2012-09-12 13:57+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -2302,6 +2302,9 @@ msgstr "Juillet"
 msgid "June"
 msgstr "Juin"
 
+msgid "Just activities"
+msgstr "Que les activités"
+
 msgid "Just states"
 msgstr "Que les états"
 
@@ -3939,8 +3942,8 @@ msgstr "Gestion des accessibilités"
 msgid "What Application Management"
 msgstr "Gestion des applications"
 
-msgid "With Activity"
-msgstr "Avec les activités"
+msgid "With States and activities"
+msgstr "Avec états et activités"
 
 msgid "With conditions"
 msgstr "Avec les traitements"
@@ -9534,6 +9537,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "What User Management"
 #~ msgstr "Gestion des utilisateurs"
+
+#~ msgid "With Activity"
+#~ msgstr "Avec les activités"
 
 #~ msgid "access to documents of my space"
 #~ msgstr "Accéder aux documents de mon espace"

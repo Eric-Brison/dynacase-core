@@ -24,7 +24,7 @@ class DotWorkflow
     /**
      * @var array
      */
-    private $lines;
+    private $lines = array();
     /**
      * @var WDoc
      */
@@ -84,6 +84,12 @@ class DotWorkflow
                 $this->lines[] = sprintf('%s [shape=doublecircle]', $this->wdoc->firstState);
                 break;
 
+            case 'justactivity':
+                $this->setActivities();
+                $this->setTransitionLines();
+                $this->lines[] = sprintf('%s [penwidth=2]', $this->wdoc->firstState);
+                break;
+
             case 'activity':
                 $this->setStates();
                 $this->setActivity();
@@ -116,6 +122,7 @@ class DotWorkflow
                     $this->setCompleteTransitionLine($k, $v);
                     break;
 
+                case 'justactivity':
                 case 'simple':
                     $this->setSimpleTransitionLine($k, $v);
                     break;
@@ -625,6 +632,29 @@ class DotWorkflow
         }
     }
     
+    private function setActivities()
+    {
+        $states = $this->wdoc->getStates();
+        foreach ($states as $k => $v) {
+            $color = $this->wdoc->getColor($v);
+            $activity = $this->wdoc->getActivity($v);
+            
+            if (!$activity) {
+                $activity = $v;
+                $shape = "circle";
+            } else {
+                $shape = "box";
+            }
+            
+            $tt = sprintf('label="%s"', $this->_n($activity));
+            $tt.= ',shape = ' . $shape . ', style=filled, fixedsize=false,width=1.0,   fontname=sans';
+            if ($v) $tt.= ', tooltip="' . $v . '"';
+            
+            if ($color) $tt.= ',fillcolor="' . $color . '"';
+            
+            $this->lines[] = '"' . $v . '" [' . $tt . '];';
+        }
+    }
     private function setActivity()
     {
         $states = $this->wdoc->getStates();
@@ -773,6 +803,7 @@ $isize = $usage->addOption("size", "image size", array() , "10");
 $type = $usage->addOption("type", "type of output", array(
     "complet",
     "activity",
+    "justactivity",
     "simple",
     "cluster"
 ) , "complet");

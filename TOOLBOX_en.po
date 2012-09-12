@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-12 12:09+0200\n"
+"POT-Creation-Date: 2012-09-12 13:56+0200\n"
 "PO-Revision-Date: 2012-09-12 09:47+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -2399,6 +2399,9 @@ msgstr ""
 msgid "June"
 msgstr ""
 
+msgid "Just activities"
+msgstr ""
+
 #, fuzzy
 msgid "Just states"
 msgstr "Create"
@@ -4097,7 +4100,7 @@ msgstr ""
 msgid "What Application Management"
 msgstr ""
 
-msgid "With Activity"
+msgid "With States and activities"
 msgstr ""
 
 #, fuzzy
