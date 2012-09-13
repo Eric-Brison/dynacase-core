@@ -898,7 +898,8 @@ class DbObj
             error_log(__METHOD__ . ":$err");
             return $err;
         }
-        $lastPoint = array_search($point, self::$savepoint[$this->dbid]);
+        if (isset(self::$savepoint[$this->dbid])) $lastPoint = array_search($point, self::$savepoint[$this->dbid]);
+        else $lastPoint = false;
         if ($lastPoint !== false) {
             self::$savepoint[$this->dbid] = array_slice(self::$savepoint[$this->dbid], 0, $lastPoint);
             $err = $this->exec_query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));

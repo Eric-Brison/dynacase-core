@@ -8,7 +8,7 @@
  * Ooo Layout test
  *
  * @author Anakeen
- * 
+ *
  * @package Dcp\Pu
  */
 /**
@@ -59,6 +59,40 @@ class _TST_FAMILYDEFAULT extends Doc
         $s = new SearchDoc($this->dbaccess, "TST_DEFAULTFAMILY1");
         $s->search();
         return $s->count();
+    }
+    
+    public function completeMyArray()
+    {
+        $t[] = array(
+            "tst_text2" => "First",
+            "tst_number2" => 10,
+            "tst_docm2" => "9\n11"
+        );
+        $t[] = array(
+            "tst_text2" => "Second",
+            "tst_number2" => 20,
+            "tst_docm2" => "12\n13"
+        );
+        return $t;
+    }
+    public function completeWrongArray()
+    {
+        $t = "not an array is a string";
+        return $t;
+    }
+    public function completeWrongAttributeArray()
+    {
+        $t[] = array(
+            "tst_text2" => "First",
+            "tst_number2" => "pi",
+            "tst_docm2" => "9\n11"
+        );
+        $t[] = array(
+            "tst_text2" => "Seven",
+            "tst_number2" => 20,
+            "tst_docm2" => "12\n13"
+        );
+        return $t;
     }
     /**
      * @begin-method-ignore

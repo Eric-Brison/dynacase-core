@@ -2907,6 +2907,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function addArrayRow($idAttr, $tv, $index = - 1)
     {
+        if (!is_array($tv)) return sprintf('values "%s" must be an array', $tv);
         $old_setValueCompleteArrayRow = $this->_setValueCompleteArrayRow;
         $this->_setValueCompleteArrayRow = false;
         
@@ -5922,18 +5923,44 @@ create unique index i_docir on doc(initid, revision);";
                 
                 $ok = false;
                 if (empty($oattr)) $ok = false;
-                elseif (!method_exists($oattr, "inArray")) $ok = false;
+                elseif (empty($dval)) $ok = false;
+                elseif (!is_a($oattr, "BasicAttribute")) $ok = false;
                 elseif ($forcedefault) $ok = true;
                 elseif (!$oattr->inArray()) $ok = true;
                 elseif ($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty") != "yes") {
-                    $ok = true;
+                    if (empty($tdefval[$oattr->fieldSet->id])) $ok = true;
+                    else $ok = false;
                 }
                 if ($ok) {
-                    if ($method) {
-                        $this->setValue($aid, $this->GetValueMethod($dval));
-                    } else {
-                        $this->$aid = $dval; // raw data
+                    if ($oattr->type == "array") {
+                        if ($method) {
+                            
+                            $values = json_decode($dval, true);
+                            if ($values === null) {
+                                $values = $this->applyMethod($dval, null, -1, array() , array() , $err);
+                                if ($values === null) {
+                                    throw new Dcp\Exception("DFLT0007", $aid, $dval, $this->fromname);
+                                }
+                            }
+                            if (!is_array($values)) {
+                                throw new Dcp\Exception("DFLT0008", $aid, $dval, $values, $this->fromname);
+                            }
+                            $terr = '';
+                            foreach ($values as $row) {
+                                $err = $this->addArrayRow($aid, $row);
+                                if ($err) $terr[] = $err;
+                            }
+                            if ($terr) throw new Dcp\Exception("DFLT0009", $aid, $dval, $values, $this->fromname, implode('; ', $terr));
+                        }
+                        //print_r($this->getValues());
                         
+                    } else {
+                        if ($method) {
+                            $this->setValue($aid, $this->GetValueMethod($dval));
+                        } else {
+                            $this->$aid = $dval; // raw data
+                            
+                        }
                     }
                 } else {
                     // TODO raise exception

@@ -196,7 +196,14 @@ class CheckEnd extends CheckData
                     
                     $err = $this->verifyMethod($strucFunc, $oa);
                     if ($err) {
-                        $this->addError(ErrorCode::getError('DFLT0004', $this->doc->name, $err));
+                        $this->addError(ErrorCode::getError('DFLT0004', $attrid, $this->doc->name, $err));
+                    }
+                } else {
+                    if ($oa->type == "array") {
+                        $value = json_decode($def);
+                        if ($value === null) {
+                            $this->addError(ErrorCode::getError('DFLT0006', $attrid, $def, $this->doc->name));
+                        }
                     }
                 }
             }

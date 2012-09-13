@@ -242,7 +242,9 @@ class TestImportFamily extends TestCaseDcpDocument
                     "badCall",
                     "ATTR1001",
                     "ATTR1002",
-                    "goodCompute1"
+                    "goodCompute1",
+                    "DFLT0006",
+                    "notjson"
                 )
             ) ,
             // method control in the end
@@ -273,7 +275,7 @@ class TestImportFamily extends TestCaseDcpDocument
                     "DFLT0001",
                     "tst syntax",
                     "DFLT0002",
-                    "DFLT0003",
+                    "DFLT0003"
                 )
             ) ,
             // format string
