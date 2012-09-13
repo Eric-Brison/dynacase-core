@@ -293,6 +293,10 @@ tr.FREEDOMBack2 td.opt {
 </tbody>
 </table>
 
+        <!-- Operator informations -->
+<div style="display:none;" id="topInformation">
+[topInformation]
+</div>
 <table width="100%" cellspacing="0">
 [ZONE FDL:EDITFRAME?frameid=FR_BASIC]
 </table>

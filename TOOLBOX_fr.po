@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-12 16:59+0200\n"
-"PO-Revision-Date: 2012-09-13 16:40+0200\n"
+"POT-Creation-Date: 2012-09-13 17:06+0200\n"
+"PO-Revision-Date: 2012-09-13 17:07+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -7421,6 +7421,9 @@ msgstr "racine generic gestion par famille"
 msgid "one family multi document"
 msgstr "Document multiple"
 
+msgid "one id equal"
+msgstr "un des identifiants égale"
+
 msgid "one value equal"
 msgstr "une des valeurs égale"
 
@@ -9294,6 +9297,9 @@ msgstr "{left} est inférieur à {right}"
 
 msgid "{left} not include {right}"
 msgstr "{left} ne contient pas {right}"
+
+msgid "{left} one id equal {right}"
+msgstr "L'identifiant {left} est égale à {right}"
 
 msgid "{left} one value equal {right}"
 msgstr "{left} une des valeurs est égal à {right}"
