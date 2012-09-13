@@ -280,7 +280,7 @@ class _IUSER extends Doc implements MailRecipient
         $login = $this->getValue("us_login");
         $substitute = $this->getValue("us_substitute");
         $allRoles = $this->getAValues("us_t_roles");
-        $extmail = $this->getValue("us_extmail", $this->getValue("us_homemail", " "));
+        $extmail = $this->getValue("us_extmail", " ");
         
         if ($login != "-") {
             // compute expire for epoch
@@ -334,7 +334,7 @@ class _IUSER extends Doc implements MailRecipient
         } else {
             // tranfert extern mail if no login specified yet
             if ($this->getValue("us_login") == "-") {
-                $email = $this->getValue("us_extmail", $this->getValue("us_homemail"));
+                $email = $this->getValue("us_extmail");
                 if (($email != "") && ($email[0] != "<")) $this->setValue("us_mail", $email);
                 else $this->deleteValue("us_mail");
             }
