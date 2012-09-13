@@ -76,7 +76,7 @@ span[accountType="G"] {
 span[accountType="U"] {
     padding-left:15px;
 	background-repeat: no-repeat;
-    background-image: url('[IMG:bgreen.png|10]');
+    background-image: url('[IMG:bcyan.png|10]');
     background-position:left center;
 }
 span[accountType="R"] {
@@ -198,6 +198,15 @@ form {
             },5000);
 
         }
+        $(function() {
+
+        $("#legendbutton").on("click", function() {
+        CenterDiv("legendwindow");
+        });
+        $("#legendclosebutton").on("click", function() {
+        $("#legendwindow").css("display", "none");
+        });
+        });
         </script>
 
         <div class="maindiv"><center>
@@ -275,6 +284,51 @@ form {
         <input class="CORETblHead" type="button"
                  name="Modify" onclick="document.view.group.value='N';document.view.submit()" value="[TEXT:Hide group access]"  >[ENDIF viewgroup]
             [ENDIF isgreen][ENDIF hasgid]
+            </form>
+            <BUTTON title="[TEXT:View color legend]" id="legendbutton" style="float:right;margin-right:3px">[TEXT:Legend]</BUTTON>
+            <div style="display:none; border:black solid 1px;position:absolute;background-color:#EEEEEE;" id="legendwindow" class="ui-corner-all">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td><h4>[TEXT:Legend:Actors]</h4></td>
+                        </tr>
+                        [BLOCK legendcolor]
+                        <tr>
+                            <td>
+                                <span accountType="[legendimage]"></span>
+                            </td>
+                            <td>
+                                [legendexplication]
+                            </td>
+                        </tr>
+                        [ENDBLOCK legendcolor]
+                        <tr>
+                            <td></td>
+                            <td><h4>[TEXT:Legend:Acl's type]</h4></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img width="10px" height="10px" src="Images/bgreen.png" />
+                            </td>
+                            <td>
+                                [TEXT:Legend:Acl set]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img width="10px" height="10px" src="Images/bgrey.png" />
+                            </td>
+                            <td>
+                                [TEXT:Legend:Legacy]
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <BUTTON id="legendclosebutton" style="margin:5px;">[TEXT:Close]</BUTTON>
+            </div>
         </center>
 </div>
+
+
 [ZONE CORE:HTMLFOOT]
