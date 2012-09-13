@@ -403,7 +403,7 @@ create unique index idx_idfam on docfam(id);";
      */
     final public function getParamValue($idp, $def = "")
     {
-        if ($def == "") $def = $this->getDefValue($idp);
+        if ($def === "") $def = $this->getDefValue($idp);
         return $this->getXValue("param", $idp, $def);
     }
     /**
@@ -450,7 +450,7 @@ create unique index idx_idfam on docfam(id);";
     {
         $this->setChanged();
         if (is_array($val)) $val = $this->_array2val($val);
-        $this->setXValue("param", $idp, $val);
+        $this->setXValue("param", strtolower($idp) , $val);
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ DEFAULT VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
     

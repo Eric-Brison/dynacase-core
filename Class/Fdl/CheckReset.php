@@ -16,7 +16,8 @@ class CheckReset extends CheckData
     protected $authorizedKeys = array(
         "attributes",
         "default",
-        "properties"
+        "properties",
+        "parameters"
     );
     /**
      * @param array $data

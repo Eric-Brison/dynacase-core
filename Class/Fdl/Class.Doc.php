@@ -558,6 +558,11 @@ class Doc extends DocCtrl
      */
     protected $attrids;
     /**
+     * param value cache
+     * @var array
+     */
+    private $_paramValue = array();
+    /**
      * identification of special views
      *
      * @var array
@@ -1444,7 +1449,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function getParamValue($idp, $def = "")
     {
-        static $_paramValue = array();
+        
         $r = $def;
         if ($this->doctype == 'C') $r = $this->getParamValue($idp, $def);
         else {
@@ -1453,23 +1458,23 @@ create unique index i_docir on doc(initid, revision);";
             if (!$fdoc->isAlive()) $r = false;
             else $r = $fdoc->getParamValue($idp, $def);
         }
-        if (isset($_paramValue[$idp])) return $_paramValue[$idp];
+        if (isset($this->_paramValue[$idp])) return $this->_paramValue[$idp];
         /**
          * @var NormalAttribute $paramAttr
          */
         $paramAttr = $this->getAttribute($idp);
         if (!$paramAttr) return $def;
         if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "") {
-            $_paramValue[$idp] = $r;
+            $this->_paramValue[$idp] = $r;
             $val = $this->getValueMethod($paramAttr->phpfunc);
             if ($val != $paramAttr->phpfunc) {
                 $r = $val;
             }
         } else if ($r) {
-            $_paramValue[$idp] = $r;
+            $this->_paramValue[$idp] = $r;
             $r = $this->getValueMethod($r, $r);
         }
-        $_paramValue[$idp] = $r;
+        $this->_paramValue[$idp] = $r;
         return $r;
     }
     /**
@@ -2907,6 +2912,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function addArrayRow($idAttr, $tv, $index = - 1)
     {
+        if (!is_array($tv)) return sprintf('values "%s" must be an array', $tv);
         $old_setValueCompleteArrayRow = $this->_setValueCompleteArrayRow;
         $this->_setValueCompleteArrayRow = false;
         
@@ -5922,18 +5928,44 @@ create unique index i_docir on doc(initid, revision);";
                 
                 $ok = false;
                 if (empty($oattr)) $ok = false;
-                elseif (!method_exists($oattr, "inArray")) $ok = false;
+                elseif (empty($dval)) $ok = false;
+                elseif (!is_a($oattr, "BasicAttribute")) $ok = false;
                 elseif ($forcedefault) $ok = true;
                 elseif (!$oattr->inArray()) $ok = true;
                 elseif ($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty") != "yes") {
-                    $ok = true;
+                    if (empty($tdefval[$oattr->fieldSet->id])) $ok = true;
+                    else $ok = false;
                 }
                 if ($ok) {
-                    if ($method) {
-                        $this->setValue($aid, $this->GetValueMethod($dval));
-                    } else {
-                        $this->$aid = $dval; // raw data
+                    if ($oattr->type == "array") {
+                        if ($method) {
+                            
+                            $values = json_decode($dval, true);
+                            if ($values === null) {
+                                $values = $this->applyMethod($dval, null);
+                                if ($values === null) {
+                                    throw new Dcp\Exception("DFLT0007", $aid, $dval, $this->fromname);
+                                }
+                            }
+                            if (!is_array($values)) {
+                                throw new Dcp\Exception("DFLT0008", $aid, $dval, $values, $this->fromname);
+                            }
+                            $terr = '';
+                            foreach ($values as $row) {
+                                $err = $this->addArrayRow($aid, $row);
+                                if ($err) $terr[] = $err;
+                            }
+                            if ($terr) throw new Dcp\Exception("DFLT0009", $aid, $dval, $values, $this->fromname, implode('; ', $terr));
+                        }
+                        //print_r($this->getValues());
                         
+                    } else {
+                        if ($method) {
+                            $this->setValue($aid, $this->GetValueMethod($dval));
+                        } else {
+                            $this->$aid = $dval; // raw data
+                            
+                        }
                     }
                 } else {
                     // TODO raise exception
@@ -6553,7 +6585,7 @@ create unique index i_docir on doc(initid, revision);";
         $state = $this->getState();
         if ($state != "") {
             if (($this->locked == - 1) || ($this->lmodify != 'Y')) $this->lay->Set("state", _($state));
-            else $this->lay->Set("state", sprintf(_("current (<i>%s</i>)") , _($state)));
+            else $this->lay->Set("state", sprintf(_("current (<em>%s</em>)") , _($state)));
         } else $this->lay->set("state", _("no state"));
         if (is_numeric($this->state) && ($this->state > 0) && (!$this->wid)) {
             $this->lay->set("freestate", $this->state);

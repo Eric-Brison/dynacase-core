@@ -30,36 +30,30 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
     /**
      * @dataProvider dataDefaultValues
      */
-    public function testDefaultValue($attrid, $expectedvalue)
+    public function testDefaultValue($famid, $attrid, $expectedvalue)
     {
-        static $d = null;
-        if ($d === null) {
-            $d = createDoc(self::$dbaccess, $this->famName);
-            $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $this->famName));
-        }
+        
+        $d = createDoc(self::$dbaccess, $famid);
+        $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $famid));
+        
         $oa = $d->getAttribute($attrid);
-        $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $this->famName));
+        $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $famid));
         $value = $d->getValue($oa->id);
         $this->assertEquals($expectedvalue, $value, sprintf("not the expected default value attribute %s", $attrid));
-        
-        return $d;
     }
     /**
      * @dataProvider dataDefaultParamValues
      */
-    public function testDefaultParamValue($attrid, $expectedvalue)
+    public function testDefaultParamValue($famid, $attrid, $expectedvalue)
     {
-        static $d = null;
-        if ($d === null) {
-            $d = createDoc(self::$dbaccess, $this->famName, false, false);
-            $this->assertTrue(is_object($d) , sprintf("cannot create %s1 document", $this->famName));
-        }
+        
+        $d = createDoc(self::$dbaccess, $famid, false, false);
+        $this->assertTrue(is_object($d) , sprintf("cannot create %s1 document", $famid));
+        
         $oa = $d->getAttribute($attrid);
-        $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $this->famName));
+        $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $famid));
         $value = $d->getParamValue($oa->id);
         $this->assertEquals($expectedvalue, $value, sprintf("not the expected default value attribute %s", $attrid));
-        
-        return $d;
     }
     /**
      * @dataProvider dataDefaultInheritedValues
@@ -82,7 +76,6 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
             $value = $d->getParamValue($oa->id);
             $this->assertEquals($expectedValue, $value, sprintf("not the expected default value parameter %s", $attrid));
         }
-        return $d;
     }
     /**
      * @dataProvider dataDefaultInherited
@@ -105,9 +98,73 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
             $value = $d->getParamValue($attrid);
             $this->assertEquals($expectedValue, $value, sprintf("not the expected default value parameter %s", $attrid));
         }
-        return $d;
+    }
+    /**
+     * @dataProvider dataWrongValue
+     */
+    public function testWrongValue($famid, $errorCode)
+    {
+        $err = '';
+        try {
+            $d = createDoc(self::$dbaccess, $famid);
+            $this->assertNotEmpty($err, sprintf(" no error returned, must have %s", $errorCode));
+        }
+        catch(\Dcp\Exception $e) {
+            $err = $e->getDcpCode();
+            $this->assertEquals($errorCode, $err, sprintf("not the good error code : %s", $e->getMessage()));
+        }
+    }
+    /**
+     * @dataProvider dataInitialParam
+     */
+    public function testInitialParam($famid, $attrid, $expectedValue, $expectedDefaultValue)
+    {
+        $d = createDoc(self::$dbaccess, $famid);
+        $value = $d->getParamValue($attrid);
+        $this->assertEquals($expectedValue, $value, sprintf("parameter %s has not correct initial value", $attrid));
+        $f = $d->getFamDoc();
+        $f->setParam($attrid, '');
+        $f->modify();
+        $d2 = createDoc(self::$dbaccess, $famid);
+        $f = $d2->getFamDoc();
+        $value = $d2->getParamValue($attrid);
+        $this->assertEquals($expectedDefaultValue, $value, sprintf("parameter %s has not correct default value", $attrid));
     }
     
+    public function dataInitialParam()
+    {
+        return array(
+            array(
+                "TST_DEFAULTFAMILY2",
+                "TST_P4",
+                40,
+                ''
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY2",
+                "TST_P5",
+                50,
+                34
+            )
+        );
+    }
+    public function dataWrongValue()
+    {
+        return array(
+            array(
+                "TST_DEFAULTFAMILY7",
+                "DFLT0009"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY8",
+                "DFLT0009"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY9",
+                "DFLT0008"
+            )
+        );
+    }
     public function dataDefaultInherited()
     {
         return array(
@@ -208,74 +265,136 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
     {
         return array(
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_TITLE',
                 'The title'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_NUMBER1',
                 '1'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_NUMBER2',
                 '2'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_NUMBER3',
                 '3'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_NUMBER4',
                 '4'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_NUMBER5',
                 '5'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_NUMBER6',
                 '50'
             ) ,
             
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_NUMBER7',
                 '53'
             ) ,
             
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_NUMBER8',
                 '6'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_NUMBER9',
                 '11'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_TEXT1',
                 'TST_TITLE'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_TEXT2',
                 'TST_TITLE'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_TEXT3',
                 'TST_TITLE,TST_TITLE'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_TEXT4',
                 'it is,simple word,testing'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_TEXT5',
                 'it\'s,a "citation",and "second"'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_TEXT6',
                 '[:TST_TITLE:]'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_TEXT7',
                 "0"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY5",
+                'TST_TITLE',
+                "First"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY5",
+                'TST_NUMBER1',
+                "1"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY5",
+                'TST_TEXT1',
+                "cellule un"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY5",
+                'TST_NUMBER2',
+                ""
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY5",
+                'TST_TEXT2',
+                ""
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY6",
+                'TST_TEXT1',
+                "Un\nDeux"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY6",
+                'TST_TEXT2',
+                "First\nSecond"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY6",
+                'TST_NUMBER2',
+                "10\n20"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY6",
+                'TST_DOCM2',
+                "9<BR>11\n12<BR>13"
             )
         );
     }
@@ -284,14 +403,17 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
     {
         return array(
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_P1',
                 'test one'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_P2',
                 '10'
             ) ,
             array(
+                "TST_DEFAULTFAMILY1",
                 'TST_P3',
                 '11'
             )
