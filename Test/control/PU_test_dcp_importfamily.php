@@ -244,7 +244,9 @@ class TestImportFamily extends TestCaseDcpDocument
                     "ATTR1002",
                     "goodCompute1",
                     "DFLT0006",
-                    "notjson"
+                    "notjson",
+                    "INIT0005",
+                    "tst_p2"
                 )
             ) ,
             // method control in the end

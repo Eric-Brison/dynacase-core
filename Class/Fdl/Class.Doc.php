@@ -558,6 +558,11 @@ class Doc extends DocCtrl
      */
     protected $attrids;
     /**
+     * param value cache
+     * @var array
+     */
+    private $_paramValue = array();
+    /**
      * identification of special views
      *
      * @var array
@@ -1444,7 +1449,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function getParamValue($idp, $def = "")
     {
-        static $_paramValue = array();
+        
         $r = $def;
         if ($this->doctype == 'C') $r = $this->getParamValue($idp, $def);
         else {
@@ -1453,23 +1458,23 @@ create unique index i_docir on doc(initid, revision);";
             if (!$fdoc->isAlive()) $r = false;
             else $r = $fdoc->getParamValue($idp, $def);
         }
-        if (isset($_paramValue[$idp])) return $_paramValue[$idp];
+        if (isset($this->_paramValue[$idp])) return $this->_paramValue[$idp];
         /**
          * @var NormalAttribute $paramAttr
          */
         $paramAttr = $this->getAttribute($idp);
         if (!$paramAttr) return $def;
         if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "") {
-            $_paramValue[$idp] = $r;
+            $this->_paramValue[$idp] = $r;
             $val = $this->getValueMethod($paramAttr->phpfunc);
             if ($val != $paramAttr->phpfunc) {
                 $r = $val;
             }
         } else if ($r) {
-            $_paramValue[$idp] = $r;
+            $this->_paramValue[$idp] = $r;
             $r = $this->getValueMethod($r, $r);
         }
-        $_paramValue[$idp] = $r;
+        $this->_paramValue[$idp] = $r;
         return $r;
     }
     /**
@@ -5937,7 +5942,7 @@ create unique index i_docir on doc(initid, revision);";
                             
                             $values = json_decode($dval, true);
                             if ($values === null) {
-                                $values = $this->applyMethod($dval, null, -1, array() , array() , $err);
+                                $values = $this->applyMethod($dval, null);
                                 if ($values === null) {
                                     throw new Dcp\Exception("DFLT0007", $aid, $dval, $this->fromname);
                                 }
@@ -6580,7 +6585,7 @@ create unique index i_docir on doc(initid, revision);";
         $state = $this->getState();
         if ($state != "") {
             if (($this->locked == - 1) || ($this->lmodify != 'Y')) $this->lay->Set("state", _($state));
-            else $this->lay->Set("state", sprintf(_("current (<i>%s</i>)") , _($state)));
+            else $this->lay->Set("state", sprintf(_("current (<em>%s</em>)") , _($state)));
         } else $this->lay->set("state", _("no state"));
         if (is_numeric($this->state) && ($this->state > 0) && (!$this->wid)) {
             $this->lay->set("freestate", $this->state);

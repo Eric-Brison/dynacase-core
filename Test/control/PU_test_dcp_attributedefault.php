@@ -107,15 +107,47 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         $err = '';
         try {
             $d = createDoc(self::$dbaccess, $famid);
-            $this->assertNotEmpty($err, sprintf(" not error returned, must have %s", $errorCode));
-            if ($d) print_r2($d->getValues());
+            $this->assertNotEmpty($err, sprintf(" no error returned, must have %s", $errorCode));
         }
         catch(\Dcp\Exception $e) {
             $err = $e->getDcpCode();
             $this->assertEquals($errorCode, $err, sprintf("not the good error code : %s", $e->getMessage()));
         }
     }
+    /**
+     * @dataProvider dataInitialParam
+     */
+    public function testInitialParam($famid, $attrid, $expectedValue, $expectedDefaultValue)
+    {
+        $d = createDoc(self::$dbaccess, $famid);
+        $value = $d->getParamValue($attrid);
+        $this->assertEquals($expectedValue, $value, sprintf("parameter %s has not correct initial value", $attrid));
+        $f = $d->getFamDoc();
+        $f->setParam($attrid, '');
+        $f->modify();
+        $d2 = createDoc(self::$dbaccess, $famid);
+        $f = $d2->getFamDoc();
+        $value = $d2->getParamValue($attrid);
+        $this->assertEquals($expectedDefaultValue, $value, sprintf("parameter %s has not correct default value", $attrid));
+    }
     
+    public function dataInitialParam()
+    {
+        return array(
+            array(
+                "TST_DEFAULTFAMILY2",
+                "TST_P4",
+                40,
+                ''
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY2",
+                "TST_P5",
+                50,
+                34
+            )
+        );
+    }
     public function dataWrongValue()
     {
         return array(
@@ -130,7 +162,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
             array(
                 "TST_DEFAULTFAMILY9",
                 "DFLT0008"
-            ) ,
+            )
         );
     }
     public function dataDefaultInherited()

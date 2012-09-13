@@ -6,7 +6,7 @@
 */
 /**
  * Errors code used to checking METHOD keyword
- * @class ErrorCodeRESE
+ * @class ErrorCodeDFLT
  * @brief List all error code for METHOD
  * @see ErrorCode
  */

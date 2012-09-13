@@ -34,6 +34,7 @@ class CheckEnd extends CheckData
         $this->checkSetAttributes();
         $this->checkComputedConstraintAttributes();
         $this->checkDefault();
+        $this->checkParameters();
         $this->checkLinks();
         return $this;
     }
@@ -210,6 +211,35 @@ class CheckEnd extends CheckData
         }
     }
     
+    private function checkParameters()
+    {
+        $parameters = $this->doc->getParams();
+        foreach ($parameters as $attrid => $def) {
+            /**
+             * @var $oa NormalAttribute
+             */
+            $oa = $this->doc->getAttribute($attrid);
+            if (!$oa) {
+                $this->addError(ErrorCode::getError('INIT0005', $attrid, $this->doc->name));
+            } else {
+                if ($oa->usefor != 'Q') {
+                    // TODO : cannot test here because DEFAULT set parameters systematicaly
+                   // $this->addError(ErrorCode::getError('INIT0006', $attrid, $this->doc->name));
+                } else {
+                    $oParse = new parseFamilyMethod();
+                    $strucFunc = $oParse->parse($def);
+                    $error = $oParse->getError();
+                    if (!$error) {
+                        
+                        $err = $this->verifyMethod($strucFunc, $oa);
+                        if ($err) {
+                            $this->addError(ErrorCode::getError('INIT0004', $attrid, $this->doc->name, $err));
+                        }
+                    }
+                }
+            }
+        }
+    }
     private function verifyMethod($strucFunc, $oa, &$refMeth = null)
     {
         $err = '';

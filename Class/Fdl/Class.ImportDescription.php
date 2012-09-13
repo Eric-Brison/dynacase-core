@@ -253,6 +253,10 @@ class importDocumentDescription
                     $this->doDefault($data);
                     break;
 
+                case "INITIAL":
+                    $this->doInitial($data);
+                    break;
+
                 case "IATTR":
                     $this->doIattr($data);
                     break;
@@ -778,6 +782,46 @@ class importDocumentDescription
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change profile id  to '%s'") , $data[1]);
     }
     /**
+     * analyze INITIAL
+     * @param array $data line of description file
+     */
+    protected function doInitial(array $data)
+    {
+        
+        if (!$this->doc) return;
+        $check = new CheckInitial();
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
+        
+        if (!isset($data[2])) $data[2] = '';
+        $attrid = trim(strtolower($data[1]));
+        $newValue = str_replace(array(
+            '\n',
+            ALTSEPCHAR
+            //,'\\'
+            
+        ) , array(
+            "\n",
+            SEPCHAR
+            //,'\\\\'
+            
+        ) , $data[2]);
+        $opt = (isset($data[3])) ? trim(strtolower($data[3])) : null;
+        $force = (str_replace(" ", "", $opt) == "force=yes");
+        $previousValue = $this->doc->getParamvalue($attrid, null);
+        if ((!empty($previousValue)) && (!$force)) {
+            // reset default
+            $this->tcr[$this->nLine]["msg"] = sprintf("keep default value %s : %s. No use %s", $attrid, $previousValue, $data[2]);
+        } else {
+            
+            if ($force || ($previousValue === null)) {
+                $this->doc->setParam($attrid, $newValue);
+                $this->tcr[$this->nLine]["msg"] = "reset default parameter";
+            }
+            $this->tcr[$this->nLine]["msg"].= sprintf(_("add default value %s %s") , $attrid, $data[2]);
+        }
+    }
+    /**
      * analyze DEFAULT
      * @param array $data line of description file
      */
@@ -811,6 +855,7 @@ class importDocumentDescription
         } else {
             $this->doc->setDefValue($attrid, $defv);
             if ($force || (!$this->doc->getParamValue($attrid))) {
+                // TODO : not really exact here : must verify if it is really a parameter
                 $this->doc->setParam($attrid, $defv);
                 $this->tcr[$this->nLine]["msg"] = "reset default parameter";
             }
