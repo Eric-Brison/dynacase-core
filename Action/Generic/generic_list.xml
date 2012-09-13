@@ -128,19 +128,31 @@ function focusInput(event,did) {
 }
 addEvent(window,"load",focusInput);
 addEvent(window,"load",function () {if (window.parent && window.parent.multidoc) window.parent.multidoc(window.document);});
-
+  function resizeTable() {
+            var widthStr = "[ACARD_WIDTH]";
+            var index = widthStr.indexOf("%");
+                    if (index != -1) {
+                      var percentage = widthStr.substr(0, index);
+                    var divWidth = $("div#main").width();
+          var docresume = $(".docresume");
+                    var ongletWidth = $(".onglet").outerWidth(true) + (docresume.outerWidth(true) - docresume.innerWidth()) + 3;
+                    var newWidth = ((divWidth * percentage) / 100) - ongletWidth;
+          docresume.width(newWidth);
+                    }
+                }
+  $(window).on("load resize", resizeTable);
 -->
 
 </script>
  </head>
 
-<body class="freedom" >
+<body class="freedom">
 
 
 [ZONE [APPNAME]:FAMILY_BARMENU?catg=[catg]&onefam=[ONEFAMORIGIN]&famid=[famid]&pds=[pds]]
 [ZONE FDL:POPUPDOCMENU?mzone=GENERIC:POPUPLISTDETAIL%26famid=[famid]]
 
-<div >
+<div id="main">
 
 <input id="searchmode" name="mode" type="hidden" value="REGEXP">
 <input id="searchbutton" class="searchbutton" title="[TEXT:Search containing characters]" type="button" value="~" onclick="changeMode(this)">
@@ -180,7 +192,7 @@ addEvent(window,"load",function () {if (window.parent && window.parent.multidoc)
 
 <!-- TABLEBODY -->
 <div  id="d[id]"
-      view="multidoc" documentId="[id]" hrefDoc='[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]' style="width:[ACARD_WIDTH];float:left;cursor:crosshair;"
+      view="multidoc" documentId="[id]" hrefDoc='[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]' style="width:[ACARD_WIDTH];float:left;cursor:crosshair;overflow:hidden;"
         
         onclick="if (document.noselect) document.noselect=false; else {vselect(this);subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[famtarget]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]');}" 
 oncontextmenu="viewdocmenu(event,'[id]',false,false,this);return false" 
