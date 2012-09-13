@@ -19,7 +19,10 @@ class _SENTMESSAGE extends Doc
      * @end-method-ignore
     */
     var $defaultview = "FDL:VIEWEMESSAGE";
-    
+
+    /**
+     * @templateController
+     */
     function viewemessage($target = "_self", $ulink = true, $abstract = false)
     {
         include_once ("FDL/Lib.Dir.php");
