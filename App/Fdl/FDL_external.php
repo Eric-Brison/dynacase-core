@@ -93,10 +93,11 @@ function lmail($dbaccess, $name)
     foreach ($dlf as $fam) {
         $cfam = createTmpDoc($dbaccess, $fam->id);
         /**
-         * @var MailRecipient $cfam
+         * @var IMailRecipient $cfam
          */
-        if (!method_exists($cfam, "getMail")) return sprintf(_("family %s not implement MailRecipent - missing getMail method") , $fam->name);
-        if (!method_exists($cfam, "getMailAttribute")) return sprintf(_("family %s not implement MailRecipent - missing getMailAttribute") , $fam->name);
+        if (!method_exists($cfam, "getMail")) return sprintf(_("family %s does not implement IMailRecipent - missing getMail method") , $fam->name);
+        if (!method_exists($cfam, "getMailAttribute")) return sprintf(_("family %s does not implement IMailRecipent - missing getMailAttribute method") , $fam->name);
+        if (!method_exists($cfam, "getMailTitle")) return sprintf(_("family %s does not implement IMailRecipient - missing getMailTitle method"), $fam->name);
         
         $mailAttr = $cfam->getMailAttribute();
         $s = new SearchDoc($dbaccess, $fam->id);
@@ -112,7 +113,11 @@ function lmail($dbaccess, $name)
             /**
              * @var _IUSER $dest
              */
+            $mailTitle = $dest->getMailTitle();
             $mail = $dest->getMail();
+            if ($mailTitle == '') {
+                $mailTitle = $mail;
+            }
             $usw = $dest->getValue("us_whatid");
             $uid = "";
             if ($usw > 0) {
@@ -124,7 +129,7 @@ function lmail($dbaccess, $name)
                 $uid = " ";
             }
             $tr[] = array(
-                xml_entity_encode($mail) ,
+                xml_entity_encode($mailTitle) ,
                 $mail,
                 $uid,
                 $type
