@@ -41,7 +41,7 @@ function onefam_root(Action & $action)
         
         $dbaccess = $action->GetParam("FREEDOM_DB");
         
-        $izpx = intval($action->getParam("SIZE_IMG-SMALL")) + 2;
+        $izpx = intval($action->getParam("SIZE_IMG-SMALL")) + 4;
         $action->lay->set("wcols", $izpx * $nbcol + $delta);
         $action->lay->set("Title", _($action->parent->short_name));
         
