@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-12 16:59+0200\n"
+"POT-Creation-Date: 2012-09-14 15:19+0200\n"
 "PO-Revision-Date: 2012-09-12 17:30+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
-"Language: \n"
 
 msgid " Access Control for"
 msgstr ""
@@ -2244,8 +2244,8 @@ msgstr "Start search"
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;%"
-"s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;"
+"%s&gt; will be sended with result rapport"
 msgstr ""
 
 #, fuzzy
@@ -5539,7 +5539,7 @@ msgid "csv, ods, xml, zip (xml) supported import files"
 msgstr ""
 
 #, c-format
-msgid "current (<i>%s</i>)"
+msgid "current (<em>%s</em>)"
 msgstr ""
 
 msgid "current user cannot deactivate account"
@@ -6316,19 +6316,25 @@ msgid "familly result"
 msgstr "Start search"
 
 #, c-format
+msgid "family %s does not implement IMailRecipent - missing getMail method"
+msgstr ""
+
+#, c-format
+msgid ""
+"family %s does not implement IMailRecipent - missing getMailAttribute method"
+msgstr ""
+
+#, c-format
+msgid ""
+"family %s does not implement IMailRecipient - missing getMailTitle method"
+msgstr ""
+
+#, c-format
 msgid "family %s not exists"
 msgstr ""
 
 #, c-format
 msgid "family %s not found"
-msgstr ""
-
-#, c-format
-msgid "family %s not implement MailRecipent - missing getMail method"
-msgstr ""
-
-#, c-format
-msgid "family %s not implement MailRecipent - missing getMailAttribute"
 msgstr ""
 
 msgid "family id"
@@ -6431,10 +6437,6 @@ msgstr ""
 
 msgid "first"
 msgstr ""
-
-#, fuzzy
-msgid "first family used"
-msgstr "Category"
 
 msgid "fixed"
 msgstr ""
@@ -8014,10 +8016,6 @@ msgid "precise search"
 msgstr "Start search"
 
 #, fuzzy
-msgid "prefered contacts"
-msgstr "Start search"
-
-#, fuzzy
 msgid "prefered search"
 msgstr "Start search"
 
@@ -8550,10 +8548,6 @@ msgstr "at "
 
 msgid "second background color"
 msgstr ""
-
-#, fuzzy
-msgid "second family used"
-msgstr "Start search"
 
 #, fuzzy
 msgid "security"
@@ -10055,6 +10049,10 @@ msgstr ""
 #~ msgid "expires"
 #~ msgstr "Your login has expired"
 
+#, fuzzy
+#~ msgid "first family used"
+#~ msgstr "Category"
+
 #~ msgid "firstname"
 #~ msgstr "Firstname"
 
@@ -10141,6 +10139,10 @@ msgstr ""
 #~ msgstr "Import"
 
 #, fuzzy
+#~ msgid "prefered contacts"
+#~ msgstr "Start search"
+
+#, fuzzy
 #~ msgid "quick search"
 #~ msgstr "Start search"
 
@@ -10155,6 +10157,10 @@ msgstr ""
 #, fuzzy
 #~ msgid "revision comment for autorevision"
 #~ msgstr "Organisation"
+
+#, fuzzy
+#~ msgid "second family used"
+#~ msgstr "Start search"
 
 #, fuzzy
 #~ msgid "set view control to '%s'"

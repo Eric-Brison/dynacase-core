@@ -19,7 +19,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-class _IUSER extends Doc implements MailRecipient
+class _IUSER extends Doc implements IMailRecipient
 {
     public $wuser; #_("Admin edit")
     public function setGroups()
@@ -425,7 +425,7 @@ class _IUSER extends Doc implements MailRecipient
         }
     }
     /**
-     * return main mail address
+     * return main mail address in RFC822 format
      * @param bool $rawmail if true only system amil address else add also display name
      * @return string
      */
@@ -436,6 +436,17 @@ class _IUSER extends Doc implements MailRecipient
             return $wu->getMail($rawmail);
         }
         return '';
+    }
+
+    /**
+     * return main mail address in a user-friendly representation
+     * (by default we return the getMail() address, and it's up to the
+     * descendant to override it and implement it's own user-friendly
+     * representation)
+     * @return string
+     */
+    public function getMailTitle() {
+        return $this->getMail();
     }
     /**
      * return crypted password

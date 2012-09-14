@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-12 16:59+0200\n"
-"PO-Revision-Date: 2012-09-13 16:40+0200\n"
+"POT-Creation-Date: 2012-09-14 15:19+0200\n"
+"PO-Revision-Date: 2012-09-14 15:12+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 
 msgid " Access Control for"
 msgstr "Contrôle des accès pour"
@@ -788,8 +788,8 @@ msgstr ""
 msgid ""
 "Attribute Error: impossible to found the family for docid attribute '%s'"
 msgstr ""
-"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid '%"
-"s'"
+"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid "
+"'%s'"
 
 #, c-format
 msgid "Attribute [%s] is not found"
@@ -2157,8 +2157,8 @@ msgstr "Image (PNG)"
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;%"
-"s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;"
+"%s&gt; will be sended with result rapport"
 msgstr ""
 "L'import %s est en cours. Lorsque la mise à jour sera finie, un email sera "
 "envoyé à \n"
@@ -5324,8 +5324,8 @@ msgid "csv, ods, xml, zip (xml) supported import files"
 msgstr "type de fichiers supportés : csv, ods, xml, zip (xml) "
 
 #, c-format
-msgid "current (<i>%s</i>)"
-msgstr "courant (<i>%s</i>)"
+msgid "current (<em>%s</em>)"
+msgstr ""
 
 msgid "current user cannot deactivate account"
 msgstr "L'utilisateur courant ne peut désactiver le compte"
@@ -6033,23 +6033,31 @@ msgid "familly result"
 msgstr "résultat des familles"
 
 #, c-format
+msgid "family %s does not implement IMailRecipent - missing getMail method"
+msgstr ""
+"La famille %s n'implémente pas IMailRecipient - il manque la méthode getMail"
+
+#, c-format
+msgid ""
+"family %s does not implement IMailRecipent - missing getMailAttribute method"
+msgstr ""
+"La famille %s n'implémente pas IMailRecipient - il manque la méthode "
+"getMailAttribute"
+
+#, c-format
+msgid ""
+"family %s does not implement IMailRecipient - missing getMailTitle method"
+msgstr ""
+"La famille %s n'implémente pas IMailRecipient - il manque la méthode "
+"getMailTitle"
+
+#, c-format
 msgid "family %s not exists"
 msgstr "la famille %s n'existe pas"
 
 #, c-format
 msgid "family %s not found"
 msgstr "famille %s non trouvée"
-
-#, c-format
-msgid "family %s not implement MailRecipent - missing getMail method"
-msgstr ""
-"La famille %s n'implémente pas MailRecipient - il manque la méthode getMail"
-
-#, c-format
-msgid "family %s not implement MailRecipent - missing getMailAttribute"
-msgstr ""
-"La famille %s n'implémente pas MailRecipient - il manque la méthode "
-"getMailAttribute"
 
 msgid "family id"
 msgstr "Identifiant de la famille"
@@ -6144,9 +6152,6 @@ msgstr "%s trouvé plus d'une fois, création abandonnée\n"
 
 msgid "first"
 msgstr "premier"
-
-msgid "first family used"
-msgstr "première famille utilisée"
 
 msgid "fixed"
 msgstr "figé"
@@ -7615,9 +7620,6 @@ msgstr "post-it de %s"
 msgid "precise search"
 msgstr "Précisez la recherche"
 
-msgid "prefered contacts"
-msgstr "Préférés"
-
 msgid "prefered search"
 msgstr "Recherche préférée"
 
@@ -8106,9 +8108,6 @@ msgstr "exécutée le "
 msgid "second background color"
 msgstr "couleur secondaire pour le fond"
 
-msgid "second family used"
-msgstr "seconde famille utilisée"
-
 msgid "security"
 msgstr "sécurité"
 
@@ -8354,8 +8353,8 @@ msgstr ""
 "<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
 "p>\n"
 "<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
-"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
-"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
+"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème"
+"%20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
@@ -9625,8 +9624,8 @@ msgstr "le titre de {left} inclus {right}"
 #~ "<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus "
 #~ "valide. Dans ce cas, veuillez renouveller votre demande.</p>\n"
 #~ "<p>Si le problème persiste, veuillez prendre contact avec <a href="
-#~ "\"mailto:[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot%"
-#~ "20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
+#~ "\"mailto:[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot"
+#~ "%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
 
 #~ msgid "callbackreqpasswd_callback_ok"
 #~ msgstr ""
@@ -9675,6 +9674,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "contact"
 #~ msgstr "Contact..."
+
+#~ msgid "current (<i>%s</i>)"
+#~ msgstr "courant (<i>%s</i>)"
 
 #~ msgid "current user account"
 #~ msgstr "mon compte"
@@ -9851,6 +9853,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "fck image upload"
 #~ msgstr "fck téléchargement"
 
+#~ msgid "first family used"
+#~ msgstr "première famille utilisée"
+
 #~ msgid "firstname"
 #~ msgstr "Prénom"
 
@@ -9969,6 +9974,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "pre-import:%s"
 #~ msgstr "pré-Import:%s"
 
+#~ msgid "prefered contacts"
+#~ msgstr "Préférés"
+
 #~ msgid "preferential doc gate id"
 #~ msgstr "identifiant de portail par défaut"
 
@@ -9993,6 +10001,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "search in all contact fields"
 #~ msgstr "recherche dans tout les champs"
 
+#~ msgid "second family used"
+#~ msgstr "seconde famille utilisée"
+
 #~ msgid "select"
 #~ msgstr "sélectionner"
 
@@ -10014,8 +10025,8 @@ msgstr "le titre de {left} inclus {right}"
 #~ "n'est pas le cas, veuillez détruire ce message.</p>\n"
 #~ "<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
 #~ "suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL]guest.php"
-#~ "[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]"
-#~ "\">[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
+#~ "[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token="
+#~ "[CALLBACK_TOKEN]\">[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
 #~ "app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p>"
 
 #~ msgid "submitreqpasswd_mail_hello"
