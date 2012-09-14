@@ -61,15 +61,18 @@ class DocCollection extends Doc
             ) ,
             "dynlabel" => "{left} title include {right}", # _("{left} last or first name include {right}")
             "slabel" => array(
-                "uid" => "last or first name include"
-            ) , #_("title include") _("last or first name include")
+                "uid" => "last or first name include",
+                "docidtitle[]" => "one of the titles include"
+            ) , #_("title include") _("last or first name include") _("one of the titles include")
             "sdynlabel" => array(
-                "uid" => "{left} last or first name include {right}"
-            ) , #_("{left} title include {right}")
+                "uid" => "{left} last or first name include {right}",
+                "docidtitle[]" => "one of the titles {left} include {right}"
+            ) , #_("{left} title include {right}") _("one of the titles {left} include {right}")
             "type" => array(
                 "uid",
                 "docid",
-                "account"
+                "account",
+                "docidtitle[]"
             )
         ) ,
         "@@" => array(

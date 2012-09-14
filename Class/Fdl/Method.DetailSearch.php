@@ -279,7 +279,7 @@ class _DSEARCH extends DocSearch
             $val = stringdatetounixts($val);
         }
         $stateCol = '';
-        if ($col == "activity" || $col = "fixstate") {
+        if ($col == "activity" || $col == "fixstate") {
             $stateCol = $col;
             $col = "state";
         }
@@ -1036,7 +1036,7 @@ class _DSEARCH extends DocSearch
                         }
                         
                         $type = $v->type;
-                        
+                        if ($v->getOption("doctitle") && $v->isMultiple()) $type = "docidtitle[]";
                         $tset = $this->editGetSetAttribute($v->fieldSet);
                         if (count($tset) > 0) $tattr = array_merge($tattr, array_reverse($tset));
                         
@@ -1261,7 +1261,7 @@ class _DSEARCH extends DocSearch
                                     if (!in_array($type, $vi["type"])) $display = 'none';
                                     $ctype = implode(",", $vi["type"]);
                                 }
-                                if ($tf[$k] == $ki && $type == 'docid' && $display == '' && ($ki == '=' || $ki == '!=')) {
+                                if ($tf[$k] == $ki && $display == '' && ((($type == 'docid' || $type == 'account') && ($ki == '=' || $ki == '!=')) || (($type == 'docid[]' || $type == 'account[]') && $ki == '~y'))) {
                                     $docid_aid = $keyId;
                                 }
                                 $tfunc[] = array(
@@ -1269,7 +1269,7 @@ class _DSEARCH extends DocSearch
                                     "func_selected" => ($tf[$k] == $ki) ? "selected" : "",
                                     "func_display" => $display,
                                     "func_type" => $ctype,
-                                    "func_name" => _($vi["label"])
+                                    "func_name" => $this->getOperatorLabel($ki, $type)
                                 );
                             }
                             

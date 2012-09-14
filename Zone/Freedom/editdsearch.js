@@ -313,14 +313,14 @@ function filterfunc(th) {
     for (i = 0; i < so.options.length; i++) {
         opt = so.options[i];
         var ctype = opt.getAttribute('ctype');
-        if ((ismultiple && (ctype == '' || (ctype.indexOf('array') >= 0 && atype != "docid" && atype != "account") || (ctype.indexOf('docid[]') >= 0 && atype == "docid") || (ctype.indexOf('account[]') >= 0 && atype == "account"))) || (!ismultiple && ((ctype == '') || (ctype.indexOf(atype) >= 0)))) {
+        if ((ismultiple && (ctype == '' || (ctype.indexOf('array') >= 0 && atype != "docid" && atype != "account" && atype.indexOf('[]') < 0) || (ctype.indexOf('docid[]') >= 0 && (atype == "docid" || atype.indexOf('[]') >= 0)) || (ctype.indexOf('account[]') >= 0 && (atype == "account" || atype.indexOf('[]') >= 0)) || (atype.indexOf('[]') >= 0 && ctype.indexOf(atype) >= 0))) || (!ismultiple && ((ctype == '') || (ctype.indexOf(atype) >= 0 && ctype.indexOf(atype+"[]") < 0)))) {
             if (ifirst == -1) ifirst = i;
             opt.style.display = '';
             opt.disabled = false;
             var type = atype;
-            if (ctype.indexOf('array') && atype != "docid") type = "array";
-            else if (ctype.indexOf('docid[]') >= 0 && atype == "docid") type = "docid[]";
-            else if (ctype.indexOf('account[]') >= 0 && atype == "account") type = "account[]";
+            if (ctype.indexOf('array') >= 0 && atype != "docid" && atype != "account" && ismultiple && atype.indexOf('[]') < 0) type = "array";
+            else if (ctype.indexOf('docid[]') >= 0 && (atype == "docid"|| atype.indexOf('[]') >= 0) && ismultiple) type = "docid[]";
+            else if (ctype.indexOf('account[]') >= 0 &&( atype == "account"|| atype.indexOf('[]') >= 0) && ismultiple) type = "account[]";
             var label = getOperatorLabel(opt.value, type);
             $(opt).text(label);
         } else {
@@ -335,7 +335,9 @@ function filterfunc(th) {
         so.options[ifirst].selected = true;
     }
     var egaloperator = false;
-    if (so.value == '=' || so.value == '!=') {
+    console.log("atype === ", atype);
+    if (so.value == '=' || so.value == '!=' || (ismultiple && so.value == '~y' && (atype == "docid" || atype == "account" ||  atype == "docidtitle[]"))) {
+        console.log("egaloperator");
         egaloperator = true;
     }
 
@@ -353,7 +355,7 @@ function filterfunc(th) {
             sec.id = '';
             pnode.appendChild(sec);
         }
-    } else if (atype == 'docid' || atype == 'account') {
+    } else if (atype == 'docid' || atype == 'account' || atype == "docidtitle[]") {
         se = document.getElementById('thekey');
         if (se != null && pnode != null) {
             if (!egaloperator) {
@@ -378,10 +380,12 @@ function filterfunc(th) {
                     if (!document.getElementById(aid)) {
                         html += '<input type="hidden"  id="' + aid + '" value="aid" onchange="$(\'#' + aid + aIdindex + '\').val(this.value)">';
                         html += '<input autocomplete="off" autoinput="1" onfocus="activeAuto(event,' + famid + ',this,\'\',\'' + aid + '\',' + aIdindex + ')"   onchange="addmdocs(\'_' + aid + '\')" type="text" name="_ilink_' + aid + '"  id="ilink_' + aid + '" value="">';
+                        if (ismultiple) {
+                            html += '<input type="hidden"  id="' +'mdocid_work' + aid  + '" value="aid" onchange="$(\'#' + aid + aIdindex + '\').val(this.value)">';
+                        }
                     }
 
                     html += '<input type="hidden"  name="_se_keys[]" id="' + aid + aIdindex + '" value="aid">';
-
 
                     pnode.innerHTML = html;
                 }
