@@ -40,7 +40,7 @@ function checkauth(&$action)
         default:
             AuthenticatorManager::$auth->askAuthentication(array(
                 'error' => $status,
-                'auth_user' => urlencode($_POST['auth_user'])
+                'auth_user' => $_POST['auth_user']
             ));
             exit(0);
     }

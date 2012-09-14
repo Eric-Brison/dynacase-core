@@ -69,7 +69,7 @@ function loginform(Action & $action)
     $action->lay->set("act_redir", $act_redir);
     $action->lay->set("arg_redir", $arg_redir);
     $action->lay->set("title", _("welcome"));
-    $action->lay->set("auth_user", $auth_user);
+    $action->lay->set("auth_user", htmlspecialchars($auth_user));
     $action->lay->set("passfocus", ($auth_user !== "" ? true : false));
     $action->lay->set("error", $merr);
     
