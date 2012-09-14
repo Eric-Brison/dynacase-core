@@ -197,12 +197,14 @@ function new_Doc($dbaccess, $id = '', $latest = false)
             AddWarningMsg(sprintf("cannot include %s class", $classname));
             return null;
         }
-        
+        /**
+         * @var Doc $doc
+         */
         $doc = new $classname($dbaccess, $id);
         
         if ($latest && $doc->locked == - 1) {
             $tl = getLatestTDoc($dbaccess, $doc->initid);
-            $doc->Affect($tl);
+            $doc->affect($tl);
             $id = $doc->id;
         }
         
@@ -806,14 +808,13 @@ function ComputeVisibility($vis, $fvis, $ffvis = '')
 {
     if ($vis == "I") return $vis;
     if ($fvis == "H") return $fvis;
-    if (($fvis == "R") && ($vis == "W")) return $fvis;
+    if (($fvis == "R") && (($vis == "W") || ($vis == "U") || ($vis == "S"))) return $fvis;
     if (($fvis == "R") && ($vis == "O")) return "H";
     if (($fvis == "O") && ($vis == "W")) return $fvis;
-    if (($fvis == "R") && ($vis == "U")) return $fvis;
     if (($fvis == "S") && (($vis == "W") || ($vis == "O"))) return $fvis;
     if ($fvis == "I") return $fvis;
     if ($fvis == 'U') {
-        if ($ffvis && ($vis == 'W' || $vis == 'O')) {
+        if ($ffvis && ($vis == 'W' || $vis == 'O' || $vis == 'S')) {
             if ($ffvis == 'S') return 'S';
             if ($ffvis == 'R') return 'R';
         }

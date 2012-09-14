@@ -57,8 +57,16 @@ class TestAttributeVisibility extends TestCaseDcpCommonFamily
                     "SOU_WUW" => "W",
                     "SOU_T_HU" => "H",
                     "SOU_HUW" => "H",
-                    "SOU_T_WU" => "U",
-                    "SOU_WUW" => "W"
+                    "SOU_IW" => "I",
+                    "SOU_IH" => "I",
+                    "SOU_IR" => "I",
+                    "SOU_IO" => "I",
+                    "SOU_IS" => "I",
+                    "SOU_RW" => "R",
+                    "SOU_RH" => "H",
+                    "SOU_RR" => "R",
+                    "SOU_RO" => "H",
+                    "SOU_RS" => "R"
                 )
             ) ,
             array(
@@ -72,8 +80,18 @@ class TestAttributeVisibility extends TestCaseDcpCommonFamily
                     "SOU_WUW" => "S",
                     "SOU_T_HU" => "U",
                     "SOU_HUW" => "S",
-                    "SOU_T_WU" => "U",
-                    "SOU_WUW" => "S"
+                    "SOU_IW" => "S", // SW
+                    "SOU_IH" => "H", // SH
+                    "SOU_IR" => "R", // SR
+                    "SOU_IO" => "S", // SO
+                    "SOU_IS" => "S", // SS
+                    "SOU_RW" => "S", // SW
+                    "SOU_RH" => "H", // SH
+                    "SOU_RR" => "R", // SR
+                    "SOU_RO" => "S", // SO
+                    "SOU_RS" => "S"
+                    // SS
+                    
                 )
             ) ,
             array(
@@ -87,8 +105,18 @@ class TestAttributeVisibility extends TestCaseDcpCommonFamily
                     "SOU_WUW" => "R",
                     "SOU_T_HU" => "R",
                     "SOU_HUW" => "R",
-                    "SOU_T_WU" => "R",
-                    "SOU_WUW" => "R"
+                    "SOU_IW" => "R", // RW
+                    "SOU_IH" => "H", // RH
+                    "SOU_IR" => "R", // RR
+                    "SOU_IO" => "H", // RO
+                    "SOU_IS" => "R", // RS
+                    "SOU_RW" => "R", // RW
+                    "SOU_RH" => "H", // RH
+                    "SOU_RR" => "R", // RR
+                    "SOU_RO" => "H", // RO
+                    "SOU_RS" => "R"
+                    // RS
+                    
                 )
             ) ,
             array(
@@ -102,8 +130,18 @@ class TestAttributeVisibility extends TestCaseDcpCommonFamily
                     "SOU_WUW" => "H",
                     "SOU_T_HU" => "H",
                     "SOU_HUW" => "H",
-                    "SOU_T_WU" => "H",
-                    "SOU_WUW" => "H"
+                    "SOU_IW" => "H", // HW
+                    "SOU_IH" => "H", // HH
+                    "SOU_IR" => "H", // HR
+                    "SOU_IO" => "H", // HO
+                    "SOU_IS" => "H", // HS
+                    "SOU_RW" => "H", // HW
+                    "SOU_RH" => "H", // HH
+                    "SOU_RR" => "H", // HR
+                    "SOU_RO" => "H", // HO
+                    "SOU_RS" => "H"
+                    // HS
+                    
                 )
             ) ,
             array(
@@ -117,8 +155,18 @@ class TestAttributeVisibility extends TestCaseDcpCommonFamily
                     "SOU_WUW" => "W",
                     "SOU_T_HU" => "U",
                     "SOU_HUW" => "W",
-                    "SOU_T_WU" => "U",
-                    "SOU_WUW" => "W"
+                    "SOU_IW" => "W", // WW
+                    "SOU_IH" => "H", // WH
+                    "SOU_IR" => "R", // WR
+                    "SOU_IO" => "O", // WO
+                    "SOU_IS" => "S", // WS
+                    "SOU_RW" => "W", // WW
+                    "SOU_RH" => "H", // WH
+                    "SOU_RR" => "R", // WR
+                    "SOU_RO" => "O", // WO
+                    "SOU_RS" => "S"
+                    // WS
+                    
                 )
             )
         );

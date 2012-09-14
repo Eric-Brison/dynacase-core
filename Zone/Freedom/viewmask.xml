@@ -18,20 +18,24 @@
             background-color:#a4dec6; // green
         }
         table.tablemask tr.directmodified td { 
-          border:solid 2px green;
-          border-style: solid none solid none;
+          /*border:solid 2px green;
+          border-style: solid none solid none;*/
            background-image:none;
-           background-image:url("Images/dashed.png");
-           
+           /*background-image:url("Images/dashed.png");*/
+           opacity:1;
         }
         
         table.tablemask tr.inheritmodified td { 
-           border:solid 2px blue;
-          border-style: solid none solid none;
-           background-image:url("Images/dashed.png");
+          /* border:solid 2px blue;
+          border-style: solid none solid none;*/
+           /*background-image:url("Images/dashed.png");*/
+           opacity:1;
+        }
+        table.tablemask tr.notmodified td {
+            opacity:0.5;
         }
         table.tablemask tr.inheritmodified td span,table.tablemask tr.directmodified td span  { 
-           background-color: [COLOR_WHITE];
+           /*background-color: [COLOR_WHITE];*/
         }
         /*table.tablemask tr.tab, table.tablemask tr.frame, table.tablemask tr.array{ 
            background-image:url("Images/tabvig.png");
@@ -57,7 +61,7 @@
 <tr  class="[classtype]" >  
   <td><span>[type]</span></td>     
   <td><span>[framelabel]</span></td>     
-   <td><span>[attrname]</span></td>  
+   <td><span style="font-weight:[waneed]">[attrname]</span></td>
    <td style="font-weight:[waneed]"><span>[mvisibility]</span></td>
    <td style="font-weight:[wneed]"><span>[visibility]</span></td>
 </tr>

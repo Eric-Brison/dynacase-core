@@ -172,6 +172,8 @@ class _MASK extends Doc
                 $tmask[$k]["classtype"].= " directmodified";
             } elseif ($tmask[$k]["visibility"] != $tmask[$k]["mvisibility"]) {
                 if ($tmask[$k]["mvisibility"] != $labelvis[$origattr[$k]->mvisibility]) $tmask[$k]["classtype"].= " inheritmodified";
+            } else {
+                $tmask[$k]["classtype"].= " notmodified";
             }
             
             if (isset($tneedeeds[$attr->id])) {
@@ -336,7 +338,7 @@ class _MASK extends Doc
             ));
             $this->lay->SetBlockData("NEWELEM", $newelem);
         }
-        $this->editattr();
+        $this->editattr(false);
     }
     /** 
      * use to usort attributes
