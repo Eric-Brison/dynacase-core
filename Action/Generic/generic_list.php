@@ -186,6 +186,7 @@ function generic_list(&$action)
     }
     
     $action->lay->Set("onglet", $wonglet ? "Y" : "N");
+    $action->lay->Set("hasOnglet", (!empty($wonglet)));
     
     $action->lay->set("tkey", str_replace('"', '&quot;', getDefUKey($action)));
 }
@@ -239,7 +240,7 @@ function generic_viewmode(Action & $action, $famid)
         return $column;
 }
 
-function getFamilySearches($action, $dbaccess, $famid)
+function getFamilySearches(Action $action, $dbaccess, $famid)
 {
     // search searches in primary folder
     

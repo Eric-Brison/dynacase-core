@@ -124,29 +124,45 @@ function focusInput(event,did) {
     }
   }
   var i=document.getElementById('searchkey');
-  if (i) i.focus();
+  try {
+    if (i) i.focus();
+  } catch (e) {
+  }
 }
 addEvent(window,"load",focusInput);
 addEvent(window,"load",function () {if (window.parent && window.parent.multidoc) window.parent.multidoc(window.document);});
   function resizeTable() {
             var widthStr = "[ACARD_WIDTH]";
             var index = widthStr.indexOf("%");
-                    if (index != -1) {
-                      var percentage = widthStr.substr(0, index);
-                    var divWidth = $("div#main").width();
-          var docresume = $(".docresume");
-                    var ongletWidth = $(".onglet").outerWidth(true) + (docresume.outerWidth(true) - docresume.innerWidth()) + 3;
-                    var newWidth = ((divWidth * percentage) / 100) - ongletWidth;
-          docresume.width(newWidth);
-                    }
-                }
+            if (index != -1) {
+
+                    var firstAbstract=$('#cellmain div:first');
+
+                    if (firstAbstract) {
+                        var startX=$('#cellmain').position().left;
+                        var percentage = widthStr.substr(0, index);
+                        var divWidth = $("div#main").width();
+
+                        var delta= $('#cellmain div:first').outerWidth(true) - $('#cellmain div:first').width();
+                        if (isIE6) {
+                          delta+=10; // because... resize is looping else
+                          if (document.body.offsetHeight > document.documentElement.clientHeight) {
+                            delta+=10; // add scrollbar width
+                          }
+                        }
+                        var newWidth = ((divWidth * percentage) / 100) - startX - delta;
+                        $(".docresume").width(newWidth);
+                     }
+             }
+             $('body').css('visibility','');
+   }
   $(window).on("load resize", resizeTable);
 -->
 
 </script>
  </head>
 
-<body class="freedom">
+<body class="freedom" style="visibility:hidden">
 
 
 [ZONE [APPNAME]:FAMILY_BARMENU?catg=[catg]&onefam=[ONEFAMORIGIN]&famid=[famid]&pds=[pds]]
@@ -174,22 +190,19 @@ addEvent(window,"load",function () {if (window.parent && window.parent.multidoc)
 <td align="right" width="30px"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[next]&dirid=[dirid]&catg=[catg]&famid=[famid][pds]">[nexticon]</a></td>
 </tr></table>
 
-<table class="transparent"  width="100%">
-<tr>
-<td  width="1px" valign="top" cellspacing="0" cellpadding="0">
-<table   cellpadding="1px" cellspacing="1px" >
+<table class="transparent"  width="100%" cellpadding="0px" cellspacing="0px">
+<tr>[IF hasOnglet]
+<td  id="letterTabs" width="1px" valign="top" cellspacing="0" cellpadding="0">
+<table cellpadding="1px" cellspacing="1px" >
 [BLOCK ONGLET]
 <tr><td class="[ongclass]" align="center" onmouseover="if (className != 'onglets') className='ongleth';" 
                        onmouseout="if (className != 'onglets') className='onglet';" 
                        onclick="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_TAB&onefam=[ONEFAMORIGIN]&catg=[catg]&tab=[ongdir]&famid=[famid][pds]'">[onglabel]</td></tr>
 [ENDBLOCK ONGLET]
 </table>
-</td>
+</td>[ENDIF hasOnglet]
 <td id="cellmain" valign="top">
-
-
 [BLOCK TABLEBODY]
-
 <!-- TABLEBODY -->
 <div  id="d[id]"
       view="multidoc" documentId="[id]" hrefDoc='[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]' style="width:[ACARD_WIDTH];float:left;cursor:crosshair;overflow:hidden;"

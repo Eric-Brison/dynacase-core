@@ -33,15 +33,16 @@ function onefam_root(Action & $action)
         $action->lay->set("APP_TITLE", _($action->parent->description));
         
         $nbcol = intval($action->getParam("ONEFAM_LWIDTH", 1));
+        $action->lay->set("colNumber", $nbcol);
         
         $delta = 0;
-        if ($action->read("navigator") == "EXPLORER") $delta = 10;
+        if ($action->read("navigator") == "EXPLORER") $delta = 1;
         
         $iz = $action->getParam("CORE_ICONSIZE");
         
         $dbaccess = $action->GetParam("FREEDOM_DB");
         
-        $izpx = intval($action->getParam("SIZE_IMG-SMALL")) + 2;
+        $izpx = intval($action->getParam("SIZE_IMG-SMALL"));
         $action->lay->set("wcols", $izpx * $nbcol + $delta);
         $action->lay->set("Title", _($action->parent->short_name));
         
@@ -57,6 +58,7 @@ function onefam_root(Action & $action)
         $action->parent->AddCssRef("ONEFAM:onefam.css", true);
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
+        $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
         
         $action->lay->Set("oneBgColor", (($action->getParam("ONEFAM_BGCOLOR") != 'inherit') && ($action->getParam("ONEFAM_BGCOLOR") != '')));
         
@@ -86,7 +88,6 @@ function onefam_root(Action & $action)
             ));
         }
         $iz = $action->getParam("CORE_ICONSIZE");
-        $izpx = intval($action->getParam("SIZE_IMG-SMALL"));
         
         $action->lay->set("izpx", $izpx);
     }
