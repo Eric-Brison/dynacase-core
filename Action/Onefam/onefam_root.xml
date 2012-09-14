@@ -17,24 +17,30 @@
 [CSS:CODE]
 .ifonefam {
   width:100%;
-  height:100%;
+  height:99%; /* else parasite scroll in FF/IE but not in chrome */
   border:none;
 }
 .iframecell {
-  height:100%;
+  [IFNOT ISIE]height:100%;[ENDIF ISIE]
+  [IF ISIE]height:100%;[ENDIF ISIE]
+  padding:0px;
+  margin:0px;
  [IF ISIE] vertical-align:top;[ENDIF ISIE]
 }
-
+.iconList {
+       border:none;
+       overflow:auto;
+       }
 body.onefam {
  width:100%;
  height:100%;
  [IF oneBgColor]
- background-color:[ONEFAM_BGCOLOR];
-  background: -moz-linear-gradient(270deg, [ONEFAM_BGCOLOR], [CORE_BGCOLOR]);   
+  background-color:[ONEFAM_BGCOLOR];
+  background: linear-gradient(270deg, [ONEFAM_BGCOLOR], [CORE_BGCOLOR]);
+  background: -moz-linear-gradient(270deg, [ONEFAM_BGCOLOR], [CORE_BGCOLOR]);
   background: -webkit-gradient(linear, 0% 0, 0% 100%, from([ONEFAM_BGCOLOR]), to([CORE_BGCOLOR]) );
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='[ONEFAM_BGCOLOR]', endColorstr='[CORE_BGCOLOR]'); 
-  
-  [ENDIF oneBgColor]
+  /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='[ONEFAM_BGCOLOR]', endColorstr='[CORE_BGCOLOR]'); */
+ [ENDIF oneBgColor]
  
  
 }
@@ -120,22 +126,49 @@ function openfirst(docid) {
     openiframe(null,null,docid)
   }
 }
-  
+
+function resizeIconList(colNumber) {
+        var il=document.getElementById('iconList');
+
+        il.style.height=(getFrameHeight() - 15)+'px';
+        var delta=6;
+
+       var iconWidth=parseInt('[izpx]')+4; // padding 2x2
+       il.style.width=(colNumber*iconWidth+delta)+'px';
+        if (il.scrollHeight > il.clientHeight) {
+             delta=20;
+            il.style.width=(colNumber*iconWidth+delta)+'px';
+         }
+          //console.log('same',hasIconScroll,localScroll);
+         //  console.log(il.style.width,colNumber,il.scrollHeight,il.clientHeight);
+
+
+ }
+var resizeIconListTimer = 0;
+function resizeIconListAtEnd(colNumber)
+{
+    if (resizeIconListTimer) clearTimeout(resizeIconListTimer);
+    resizeIconListTimer = setTimeout(function () {resizeIconList(colNumber);resizeIconList(colNumber);}, 200);
+}
 
 
 [IF OPENFAM]
-addEvent(window,'load',function zou() {openfirst('[openfam]');})
+addEvent(window,'load',function () {openfirst('[openfam]');})
 [ENDIF OPENFAM]
+
+addEvent(window,'load',function () {resizeIconList([colNumber]);})
+addEvent(window,'resize',function () {resizeIconListAtEnd([colNumber]);})
    </script>
 
  </head>
 
 <body class="onefam" >
 
-<table style="width:100%;height:100%"><tr><td style="width:[wcols]px" valign="top">
+<table cellpadding="0px" cellspacing="0px" style="width:100%;height:100%"><tr><td style="width:[wcols]px" valign="top">
+    <div id="iconList" class="iconList">
 [BLOCK SELECTMASTER]
 <img style="width:[izpx]px"
-     src="[iconsrc]"  needresize="1"
+     src="[iconsrc]"
      onclick="if (ctrlPushed(event)) reloadiframe(event,this,'[idcdoc]'); else openiframe(event,this,'[idcdoc]');"
      class="onefamico"
      id="imgm[idcdoc]"
@@ -144,29 +177,31 @@ addEvent(window,'load',function zou() {openfirst('[openfam]');})
 [ENDBLOCK SELECTMASTER]
 
 [BLOCK CHOOSEMASTERFAMILIES]
-<br style="clear:both"/>
-<input style="float:left;width:[izpx]px"  type="button" value="+" 
+<br />
+<input style="width:[izpx]px"  type="button" value="+"
        title="[TEXT:master choose families]" 
        onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&amp;app=[APPNAME]&amp;action=ONEFAM_EDITMASTERPREF')"/>
 [ENDBLOCK CHOOSEMASTERFAMILIES]
 [BLOCK SEPARATOR]
-<hr style="float:left;clear:both" width="100%"/>
+<hr  width="90%"/>
 [ENDBLOCK SEPARATOR]
 [BLOCK SELECTUSER]
 <img style="width:[izpx]px"
-     src="[iconsrc]"  needresize="1"
+     src="[iconsrc]"
      id="imgu[idcdoc]"
      onclick="if (ctrlPushed(event)) reloadiframe(event,this,'[idcdoc]'); else openiframe(event,this,'[idcdoc]');"
      class="onefamico"
      alt="[ftitle]"
      title="[ftitle]"/>
 [ENDBLOCK SELECTUSER]
-<br style="clear:both"/>
+<br/>
 [BLOCK CHOOSEUSERFAMILIES]
-<input style="float:left;width:[izpx]px" type="button" value="+" 
+<input style="width:[izpx]px" type="button" value="+"
        title="[TEXT:choose user families]" 
        onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&amp;app=[APPNAME]&amp;action=ONEFAM_EDITPREF')"/>
 [ENDBLOCK CHOOSEUSERFAMILIES]
+
+    </div>
 </td><td  class="iframecell" id="tdiframe"></td></tr></table>
 </body>
 </html>

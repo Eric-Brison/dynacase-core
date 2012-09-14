@@ -124,7 +124,10 @@ function focusInput(event,did) {
     }
   }
   var i=document.getElementById('searchkey');
-  if (i) i.focus();
+  try {
+    if (i) i.focus();
+  } catch (e) {
+  }
 }
 addEvent(window,"load",focusInput);
 addEvent(window,"load",function () {if (window.parent && window.parent.multidoc) window.parent.multidoc(window.document);});

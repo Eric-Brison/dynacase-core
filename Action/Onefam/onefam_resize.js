@@ -134,7 +134,7 @@ function redisplaywsdiv(event) {
   var ch=0;//current height
   var w2,w3; // width of flist finfo
   var w4 = window.parent.outerWidth;
-  
+
   listicon.style.top='0px';
   listicon.style.left=dx+'px';
   listicon.style.height='100%'; 
