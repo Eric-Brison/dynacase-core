@@ -72,7 +72,7 @@
    <td  >[framelabel]</td>
   
    
-   <td   style="font-weight:[fieldweight]">
+   <td   style="font-weight:[wneed]">
    <input type="hidden" name="_MSK_ATTRIDS[[neweltid]]" value="[attrid]" >[attrname]</td>
   
    <td  >
