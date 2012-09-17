@@ -393,11 +393,13 @@ class _DSEARCH extends DocSearch
                         }
                         break;
 
+                    case "account":
                     case "docid":
                         if ($oa) {
                             $otitle = $oa->getOption("doctitle");
                             if (!$otitle) {
                                 $fid = $oa->format;
+                                if (!$fid && $oa->type=="account") $fid="IUSER";
                                 if (!$fid) $err = sprintf(_("no compatible type with operator %s") , $op);
                                 else {
                                     if (!is_numeric($fid)) $fid = getFamidFromName($this->dbaccess, $fid);

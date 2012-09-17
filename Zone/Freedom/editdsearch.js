@@ -380,6 +380,8 @@ function filterfunc(th) {
                     if (!document.getElementById(aid)) {
                         html += '<input type="hidden"  id="' + aid + '" value="aid" onchange="$(\'#' + aid + aIdindex + '\').val(this.value)">';
                         html += '<input autocomplete="off" autoinput="1" onfocus="activeAuto(event,' + famid + ',this,\'\',\'' + aid + '\',' + aIdindex + ')"   onchange="addmdocs(\'_' + aid + '\')" type="text" name="_ilink_' + aid + '"  id="ilink_' + aid + '" value="">';
+                        html += '<input id="ic_'+aid +'" type="button" onclick="sendAutoChoice(event,\'' + famid + '\',this,\'ilink_'+aid +'\',null,\''+aid +'\')"  value="&#133;">';
+                        html += '<input id="ix_'+aid+'" type="button" onclick="clearInputs([\'ilink_'+aid +'\',\''+aid +'\'],null,\''+aid +'\' )" title="" value="&times;">';
                         if (ismultiple) {
                             html += '<input type="hidden"  id="' +'mdocid_work' + aid  + '" value="aid" onchange="$(\'#' + aid + aIdindex + '\').val(this.value)">';
                         }
