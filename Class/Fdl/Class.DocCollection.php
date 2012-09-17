@@ -33,13 +33,15 @@ class DocCollection extends Doc
             "slabel" => array(
                 "file" => "filename or type include", #_("filename or type include")
                 "image" => "filename or type include",
-                "array" => "one value include"
-            ) , #_("one value include")
+                "array" => "one value include", #_("one value include")
+                
+            ) ,
             "sdynlabel" => array(
                 "file" => "{left} filename or type include {right}", #_("{left} filename or type include {right}")
                 "image" => "{left} filename or type include {right}",
-                "array" => "one value of {left} include {right}"
-            ) , #_("one value of {left} include {right}")
+                "array" => "one value of {left} include {right}", #_("one value of {left} include {right}")
+                
+            ) ,
             "type" => array(
                 "text",
                 "longtext",
@@ -59,15 +61,18 @@ class DocCollection extends Doc
             ) ,
             "dynlabel" => "{left} title include {right}", # _("{left} last or first name include {right}")
             "slabel" => array(
-                "uid" => "last or first name include"
-            ) , #_("title include") _("last or first name include")
+                "uid" => "last or first name include",
+                "docidtitle[]" => "one of the titles include"
+            ) , #_("title include") _("last or first name include") _("one of the titles include")
             "sdynlabel" => array(
-                "uid" => "{left} last or first name include {right}"
-            ) , #_("{left} title include {right}")
+                "uid" => "{left} last or first name include {right}",
+                "docidtitle[]" => "one of the titles {left} include {right}"
+            ) , #_("{left} title include {right}") _("one of the titles {left} include {right}")
             "type" => array(
                 "uid",
                 "docid",
-                "account"
+                "account",
+                "docidtitle[]"
             )
         ) ,
         "@@" => array(
@@ -177,8 +182,9 @@ class DocCollection extends Doc
                 "file" => "filename or type not include",
                 "fulltext" => "any value include", #_("any value include")
                 "image" => "filename or type not include", #_("filename or type not include")
-                "array" => "no value include"
-            ) , #_("no value include")
+                "array" => "no value include", #_("no value include")
+                
+            ) ,
             "sdynlabel" => array(
                 "file" => "{left} filename or type not include {right}",
                 "fulltext" => "any values include {right}", #_("any values include {right}")
@@ -303,8 +309,18 @@ class DocCollection extends Doc
                 "right"
             ) ,
             "dynlabel" => "{left} one value equal {right}", # _("{left} one value equal {right}")
+            "slabel" => array(
+                "docid[]" => "one id equal", # _("one id equal")
+                "account[]" => "one id equal"
+            ) ,
+            "sdynlabel" => array(
+                "docid[]" => "{left} one id equal {right}", #_("{left} one id equal {right}")
+                "account[]" => "{left} one id equal {right}"
+            ) ,
             "type" => array(
-                "array"
+                "array",
+                "docid[]",
+                "account[]"
             )
         )
     );
@@ -321,7 +337,7 @@ class DocCollection extends Doc
         $op = $this->top[$operator];
         if (!$op) return _("unknow operator") . " : $operator"; // TODO set exception
         if ($attributeType) {
-            if (is_array($op["slabel"])) {
+            if (isset($op["slabel"]) && is_array($op["slabel"])) {
                 foreach ($op["slabel"] as $type => $label) {
                     if ($type == $attributeType) return _($label);
                 }
@@ -394,8 +410,8 @@ class DocCollection extends Doc
         $err = '';
         if ($of->criteria && is_array($of->criteria)) {
             foreach ($of->criteria as $c) {
+                $sqlone = '';
                 if ($c->operator) {
-                    $sqlone = '';
                     $err.= $this->_1object2SqlFilter($c, $sqlone, $famid);
                     if ($err == "") $sql[] = $sqlone;
                 } elseif ($c->or && is_array($c->or)) {

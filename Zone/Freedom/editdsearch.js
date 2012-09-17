@@ -87,7 +87,7 @@ function sendsearch(faction, artarget) {
                 $(stash).append(elmt);
             });
         });
-    }
+    };
 
     /**
      * Move back stashed elements as childs of an element
@@ -166,7 +166,7 @@ function callFunction(event, th) {
             // Create input + select
             var methodSelectElmt = $('#method-selector').get(0).cloneNode(true);
             methodSelectElmt.removeAttribute('id');
-            var input = document.createElement('input');
+            input = document.createElement('input');
             input.setAttribute('type', 'text');
             input.setAttribute('size', '20');
             input.setAttribute('name', '_se_keys[]');
@@ -216,7 +216,6 @@ function getSearchMethods(opts) {
             }
             if (!data.data) {
                 return (typeof(opts.error) == 'function') ? (opts.error)("undefined data.data", opts.cbdata) : undefined;
-                return;
             }
             return (typeof(opts.success) == 'function') ? (opts.success)(data.data, opts.cbdata) : undefined;
         }
@@ -265,16 +264,26 @@ function filterfunc2(th) {
     }
 }
 
+function getOperatorLabel(id, attributeType) {
+    var top = $.parseJSON($("#topInformation").text());
+    var op = top[id];
+    if (!op) return "";
+    if (op["slabel"] && op["slabel"][attributeType]) {
+        return op["slabel"][attributeType];
+    }
+    return op["label"];
+}
+
 function filterfunc(th) {
     var p = th.parentNode;
     var opt = th.options[th.selectedIndex];
     var atype = opt.getAttribute('atype');
-    var ismultiple = (opt.getAttribute('ismultiple') == 'yes') ? true : false;
+    var ismultiple = !!((opt.getAttribute('ismultiple') == 'yes'));
     var i;
     var pnode, so = false;
     var aid = opt.value;
     var sec, se;
-    var needresetselect = false, ifirst = 0;
+    var needresetselect = false;
     var ex = document.getElementById('method-selector');
     var lc = document.getElementById('lastcell');
 
@@ -300,26 +309,35 @@ function filterfunc(th) {
 
 
     // display only matches
-    ifirst = -1;
+    var ifirst = -1;
     for (i = 0; i < so.options.length; i++) {
         opt = so.options[i];
-        ctype = opt.getAttribute('ctype');
-        if ((ismultiple && (ctype == '' || ctype.indexOf('array') >= 0)) || (!ismultiple && ((ctype == '') || (ctype.indexOf(atype) >= 0)))) {
+        var ctype = opt.getAttribute('ctype');
+        if ((ismultiple && (ctype == '' || (ctype.indexOf('array') >= 0 && atype != "docid" && atype != "account" && atype.indexOf('[]') < 0) || (ctype.indexOf('docid[]') >= 0 && (atype == "docid" || atype.indexOf('[]') >= 0)) || (ctype.indexOf('account[]') >= 0 && (atype == "account" || atype.indexOf('[]') >= 0)) || (atype.indexOf('[]') >= 0 && ctype.indexOf(atype) >= 0))) || (!ismultiple && ((ctype == '') || (ctype.indexOf(atype) >= 0 && ctype.indexOf(atype+"[]") < 0)))) {
             if (ifirst == -1) ifirst = i;
             opt.style.display = '';
             opt.disabled = false;
+            var type = atype;
+            if (ctype.indexOf('array') >= 0 && atype != "docid" && atype != "account" && ismultiple && atype.indexOf('[]') < 0) type = "array";
+            else if (ctype.indexOf('docid[]') >= 0 && (atype == "docid"|| atype.indexOf('[]') >= 0) && ismultiple) type = "docid[]";
+            else if (ctype.indexOf('account[]') >= 0 &&( atype == "account"|| atype.indexOf('[]') >= 0) && ismultiple) type = "account[]";
+            var label = getOperatorLabel(opt.value, type);
+            $(opt).text(label);
         } else {
             opt.style.display = 'none';
             if (opt.selected) needresetselect = true;
             opt.selected = false;
             opt.disabled = true;
         }
+
     }
     if (needresetselect) {
         so.options[ifirst].selected = true;
     }
     var egaloperator = false;
-    if (so.value == '=' || so.value == '!=') {
+    console.log("atype === ", atype);
+    if (so.value == '=' || so.value == '!=' || (ismultiple && so.value == '~y' && (atype == "docid" || atype == "account" ||  atype == "docidtitle[]"))) {
+        console.log("egaloperator");
         egaloperator = true;
     }
 
@@ -337,7 +355,7 @@ function filterfunc(th) {
             sec.id = '';
             pnode.appendChild(sec);
         }
-    } else if (atype == 'docid' || atype == 'account') {
+    } else if (atype == 'docid' || atype == 'account' || atype == "docidtitle[]") {
         se = document.getElementById('thekey');
         if (se != null && pnode != null) {
             if (!egaloperator) {
@@ -357,16 +375,17 @@ function filterfunc(th) {
                     var aIdindex = $(th).parents('tr').prevUntil().length;
                     if (document.getElementById(aid)) {
                         $('#' + aid).remove();
-                        $('#ilink_' + aid).attr('name', '');
-                        $('#ilink_' + aid).attr('id', '');
+                        $('#ilink_' + aid).attr('name', '').attr('id', '');
                     }
                     if (!document.getElementById(aid)) {
                         html += '<input type="hidden"  id="' + aid + '" value="aid" onchange="$(\'#' + aid + aIdindex + '\').val(this.value)">';
                         html += '<input autocomplete="off" autoinput="1" onfocus="activeAuto(event,' + famid + ',this,\'\',\'' + aid + '\',' + aIdindex + ')"   onchange="addmdocs(\'_' + aid + '\')" type="text" name="_ilink_' + aid + '"  id="ilink_' + aid + '" value="">';
+                        if (ismultiple) {
+                            html += '<input type="hidden"  id="' +'mdocid_work' + aid  + '" value="aid" onchange="$(\'#' + aid + aIdindex + '\').val(this.value)">';
+                        }
                     }
 
                     html += '<input type="hidden"  name="_se_keys[]" id="' + aid + aIdindex + '" value="aid">';
-
 
                     pnode.innerHTML = html;
                 }
@@ -396,7 +415,8 @@ function showModePersoIfSelected() {
     /**
      * Show parenthesis if global mode is 'perso'
      */
-    if ($('select#se_ol').val() == 'perso') {
+    var $selectse_ol = $('select#se_ol');
+    if ($selectse_ol.val() == 'perso') {
         toggleModePerso(true);
         return;
     }
@@ -405,7 +425,7 @@ function showModePersoIfSelected() {
      * Lookup condlist lines and show parenthesis if
      * parenthesis select is 'yes' or operator is 'and' or 'or'
      */
-    var selectList = $('#condlist select.modeperso');
+    var selectList = $('#condlist').find('select.modeperso');
     var visible = false;
     for (var i = 0; i < selectList.length; i++) {
         if (selectList[i].value == 'yes' || selectList[i].value == 'and' || selectList[i] == 'or') {
@@ -415,7 +435,7 @@ function showModePersoIfSelected() {
     }
 
     if (visible) {
-        $('select#se_ol').val('perso');
+        $selectse_ol.val('perso');
     }
     toggleModePerso(visible);
 }
@@ -481,7 +501,7 @@ function addGlobalOperator() {
 }
 
 function refreshCondList() {
-    $('#condlist select[name="_se_ols[]"]:eq(0)').toggle(false);
+    $('#condlist').find('select[name="_se_ols[]"]:eq(0)').toggle(false);
 }
 
 function initializeMethodSelectors() {
@@ -559,9 +579,9 @@ function setSysFamSelector(select) {
         /*
          * Hide systems families
          */
-        var options = $(select).children('option');
+        options = $(select).children('option');
         /* Remove system families from the main <select/> */
-        for (var i = 0; i < options.length; i++) {
+        for (i = 0; i < options.length; i++) {
             if ($(options[i]).data('sysfam') == 'yes' && (!options[i].selected)) {
                 select.removeChild(options[i]);
             }
@@ -574,37 +594,40 @@ function setSysFamSelector(select) {
 }
 
 function newStepIs(type) {
-    var lastcond=$('#condlist tr:last-child')
-   if (type=='fixstate') {
-       lastcond.find('option[step="activity"]').detach();
+    var lastcond = $('#condlist').find('tr:last-child');
+    if (type == 'fixstate') {
+        lastcond.find('option[step="activity"]').detach();
         lastcond.find('option[value="activity"]').detach();
-   } else if (type=='activity') {
-       lastcond.find('option[step="state"]').detach();
+    } else if (type == 'activity') {
+        lastcond.find('option[step="state"]').detach();
         lastcond.find('option[value="fixstate"]').detach();
-   }
+    }
 }
 function activateStatesButton() {
-    $('#se_latest').bind('change', function() {
-        var selOption=$(this).val();
+    var $se_latest = $('#se_latest');
+    $se_latest.bind('change', function () {
+        var selOption = $(this).val();
+        var $bAddActivity = $('#bAddActivity');
+        var $bAddState = $('#bAddState');
         if (selOption == 'fixed') {
-            $('#bAddActivity').attr('disabled','disabled');
-            $('#bAddState').removeAttr('disabled');
+            $bAddActivity.attr('disabled', 'disabled');
+            $bAddState.removeAttr('disabled');
         } else if (selOption == 'yes') {
-            $('#bAddState').attr('disabled','disabled');
-            $('#bAddActivity').removeAttr('disabled');
+            $bAddState.attr('disabled', 'disabled');
+            $bAddActivity.removeAttr('disabled');
         } else if (selOption == 'no') {
-            $('#bAddActivity').removeAttr('disabled');
-            $('#bAddState').removeAttr('disabled');
+            $bAddActivity.removeAttr('disabled');
+            $bAddState.removeAttr('disabled');
         } else if (selOption == 'allfixed') {
-            $('#bAddActivity').attr('disabled','disabled');
-            $('#bAddState').removeAttr('disabled');
+            $bAddActivity.attr('disabled', 'disabled');
+            $bAddState.removeAttr('disabled');
         } else if (selOption == 'lastfixed') {
-            $('#bAddActivity').attr('disabled','disabled');
-            $('#bAddState').removeAttr('disabled');
+            $bAddActivity.attr('disabled', 'disabled');
+            $bAddState.removeAttr('disabled');
         }
 
     });
-     $('#se_latest').trigger('change');
+    $se_latest.trigger('change');
 }
 $(document).ready(function () {
     initializeMethodSelectors();

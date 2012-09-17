@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-14 15:19+0200\n"
-"PO-Revision-Date: 2012-09-14 15:12+0200\n"
+"POT-Creation-Date: 2012-09-14 17:24+0200\n"
+"PO-Revision-Date: 2012-09-14 17:26+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -5324,8 +5324,8 @@ msgid "csv, ods, xml, zip (xml) supported import files"
 msgstr "type de fichiers supportés : csv, ods, xml, zip (xml) "
 
 #, c-format
-msgid "current (<em>%s</em>)"
-msgstr ""
+msgid "current (<i>%s</i>)"
+msgstr "courant (<i>%s</i>)"
 
 msgid "current user cannot deactivate account"
 msgstr "L'utilisateur courant ne peut désactiver le compte"
@@ -7426,6 +7426,15 @@ msgstr "racine generic gestion par famille"
 msgid "one family multi document"
 msgstr "Document multiple"
 
+msgid "one id equal"
+msgstr "un des identifiants égal"
+
+msgid "one of the titles include"
+msgstr "un des titres contient"
+
+msgid "one of the titles {left} include {right}"
+msgstr ""
+
 msgid "one value equal"
 msgstr "une des valeurs égale"
 
@@ -9293,6 +9302,9 @@ msgstr "{left} est inférieur à {right}"
 
 msgid "{left} not include {right}"
 msgstr "{left} ne contient pas {right}"
+
+msgid "{left} one id equal {right}"
+msgstr "L'identifiant {left} est égale à {right}"
 
 msgid "{left} one value equal {right}"
 msgstr "{left} une des valeurs est égal à {right}"

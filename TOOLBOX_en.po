@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-14 15:19+0200\n"
-"PO-Revision-Date: 2012-09-12 17:30+0200\n"
+"POT-Creation-Date: 2012-09-14 17:24+0200\n"
+"PO-Revision-Date: 2012-09-12 09:47+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
 "Language: \n"
@@ -7815,6 +7815,15 @@ msgstr "Start search"
 msgid "one family multi document"
 msgstr ""
 
+msgid "one id equal"
+msgstr ""
+
+msgid "one of the titles include"
+msgstr ""
+
+msgid "one of the titles {left} include {right}"
+msgstr ""
+
 msgid "one value equal"
 msgstr ""
 
@@ -9784,6 +9793,9 @@ msgid "{left} lesser than {right}"
 msgstr ""
 
 msgid "{left} not include {right}"
+msgstr ""
+
+msgid "{left} one id equal {right}"
 msgstr ""
 
 msgid "{left} one value equal {right}"
