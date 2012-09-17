@@ -80,6 +80,7 @@ class _DSEARCH extends DocSearch
             return parent::getQuery();
         }
     }
+    
     function postModify()
     {
         $err = parent::postModify();
@@ -169,6 +170,7 @@ class _DSEARCH extends DocSearch
         $root = simplexml_load_string($xml);
         // trasnform XmlObject to StdClass object
         $std = $this->simpleXml2StdClass($root);
+        $famid = $sql = "";
         $this->object2SqlFilter($std, $famid, $sql);
         
         $filters[] = $sql;
@@ -217,6 +219,7 @@ class _DSEARCH extends DocSearch
             }
         }
     }
+    
     function preEdition()
     {
         if (count($this->getTvalue("se_filter")) > 0) {
@@ -276,7 +279,7 @@ class _DSEARCH extends DocSearch
             $val = stringdatetounixts($val);
         }
         $stateCol = '';
-        if ($col == "activity" || $col = "fixstate") {
+        if ($col == "activity" || $col == "fixstate") {
             $stateCol = $col;
             $col = "state";
         }
@@ -390,11 +393,13 @@ class _DSEARCH extends DocSearch
                         }
                         break;
 
+                    case "account":
                     case "docid":
                         if ($oa) {
                             $otitle = $oa->getOption("doctitle");
                             if (!$otitle) {
                                 $fid = $oa->format;
+                                if (!$fid && $oa->type=="account") $fid="IUSER";
                                 if (!$fid) $err = sprintf(_("no compatible type with operator %s") , $op);
                                 else {
                                     if (!is_numeric($fid)) $fid = getFamidFromName($this->dbaccess, $fid);
@@ -695,7 +700,6 @@ class _DSEARCH extends DocSearch
                     $tkey = $this->getTValue("SE_KEYS");
                     $taid = $this->getTValue("SE_ATTRIDS");
                     $tf = $this->getTValue("SE_FUNCS");
-                    
                     if ((count($taid) > 1) || ($taid[0] != "")) {
                         
                         $fdoc = new_Doc($this->dbaccess, $this->getValue("SE_FAMID", 1));
@@ -721,7 +725,12 @@ class _DSEARCH extends DocSearch
                             } else {
                                 $displayValue = ($tkey[$k] != "") ? _($tkey[$k]) : $tkey[$k];
                             }
-                            $tcond[]["condition"] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $zpi[$taid[$k]]->type) , $displayValue);
+                            $type = $zpi[$taid[$k]]->type;
+                            if ($zpi[$taid[$k]]->isMultiple() || $zpi[$taid[$k]]->inArray()) {
+                                if ($type === "docid") $type = "docid[]";
+                                else if ($type === "account") $type = "account[]";
+                            }
+                            $tcond[]["condition"] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $type) , $displayValue);
                             if ($tkey[$k][0] == '?') {
                                 $tparm[substr($tkey[$k], 1) ] = $taid[$k];
                             }
@@ -818,7 +827,12 @@ class _DSEARCH extends DocSearch
                                 "value" => getHttpVars($k)
                             );
                             $tinputs[$k]["label"] = $zpi[$v]->getLabel();
-                            $tinputs[$k]["operator"] = $this->getOperatorLabel($toperator[$k], $zpi[$v]->type);
+                            $type = $zpi[$v]->type;
+                            if ($zpi[$v]->isMultiple() || $zpi[$v]->inArray()) {
+                                if ($type === "docid") $type = "docid[]";
+                                else if ($type === "account") $type = "account[]";
+                            }
+                            $tinputs[$k]["operator"] = $this->getOperatorLabel($toperator[$k], $type);
                             if (($toperator[$k] == "=~*" || $toperator[$k] == "~*") && $zpi[$v]->type == "docid") $zpi[$v]->type = "text"; // present like a search when operator is text search
                             if ($zpi[$v]->visibility == 'R') $zpi[$v]->mvisibility = 'W';
                             if ($zpi[$v]->visibility == 'S') $zpi[$v]->mvisibility = 'W';
@@ -855,7 +869,6 @@ class _DSEARCH extends DocSearch
                      * @var Action $action
                      */
                     global $action;
-                    
                     $classid = GetHttpVars("sfamid", 0);
                     $famid = $this->getValue("SE_FAMID", 0);
                     $onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
@@ -923,7 +936,20 @@ class _DSEARCH extends DocSearch
                             );
                         }
                     }
-                    
+                    $sLabelArray = array();
+                    foreach ($this->top as $k => $v) {
+                        $sLabel = array();
+                        if (isset($v["slabel"]) && is_array($v["slabel"])) {
+                            foreach ($v["slabel"] as $key => $value) {
+                                $sLabel[$key] = _($value);
+                            }
+                        }
+                        $sLabelArray[$k] = array(
+                            "label" => _($v["label"]) ,
+                            "slabel" => $sLabel
+                        );
+                    }
+                    $this->lay->set("topInformation", json_encode($sLabelArray));
                     $this->lay->set("onlysubfam", $onlysubfam);
                     $selfam = false;
                     $selectclass = array();
@@ -1012,7 +1038,7 @@ class _DSEARCH extends DocSearch
                         }
                         
                         $type = $v->type;
-                        
+                        if ($v->getOption("doctitle") && $v->isMultiple()) $type = "docidtitle[]";
                         $tset = $this->editGetSetAttribute($v->fieldSet);
                         if (count($tset) > 0) $tattr = array_merge($tattr, array_reverse($tset));
                         
@@ -1093,7 +1119,6 @@ class _DSEARCH extends DocSearch
                     
                     $cond = "";
                     $tcond = array();
-                    
                     if ((count($taid) > 1) || ($taid && $taid[0] != "")) {
                         foreach ($taid as $k => $keyId) {
                             $docid_aid = 0;
@@ -1211,7 +1236,6 @@ class _DSEARCH extends DocSearch
                             $this->lay->SetBlockData("attrcond$k", $tattr);
                             
                             $tfunc = array();
-                            
                             foreach ($this->top as $ki => $vi) {
                                 $oa = $fdoc->getAttribute($keyId);
                                 if ($oa) $type = $oa->type;
@@ -1229,7 +1253,9 @@ class _DSEARCH extends DocSearch
                                     elseif ($keyId == "svalues") $type = "text";
                                     elseif ($keyId == "state") $type = "enum";
                                 } else {
-                                    if ($oa->inArray() && ($oa->type != 'file')) $type = "array";
+                                    if (($oa->isMultiple() || $oa->inArray()) && $type === "docid") $type = "docid[]";
+                                    else if (($oa->isMultiple() || $oa->inArray()) && $type === "account") $type = "account[]";
+                                    else if ($oa->inArray() && ($oa->type != 'file')) $type = "array";
                                 }
                                 $display = '';
                                 $ctype = '';
@@ -1237,7 +1263,7 @@ class _DSEARCH extends DocSearch
                                     if (!in_array($type, $vi["type"])) $display = 'none';
                                     $ctype = implode(",", $vi["type"]);
                                 }
-                                if ($tf[$k] == $ki && $type == 'docid' && $display == '' && ($ki == '=' || $ki == '!=')) {
+                                if ($tf[$k] == $ki && $display == '' && ((($type == 'docid' || $type == 'account') && ($ki == '=' || $ki == '!=')) || (($type == 'docid[]' || $type == 'account[]') && $ki == '~y'))) {
                                     $docid_aid = $keyId;
                                 }
                                 $tfunc[] = array(
@@ -1245,9 +1271,10 @@ class _DSEARCH extends DocSearch
                                     "func_selected" => ($tf[$k] == $ki) ? "selected" : "",
                                     "func_display" => $display,
                                     "func_type" => $ctype,
-                                    "func_name" => _($vi["label"])
+                                    "func_name" => $this->getOperatorLabel($ki, $type)
                                 );
                             }
+                            
                             $this->lay->SetBlockData("funccond$k", $tfunc);
                             
                             $tols = array();

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-14 15:19+0200\n"
-"PO-Revision-Date: 2012-09-12 17:30+0200\n"
+"POT-Creation-Date: 2012-09-17 11:44+0200\n"
+"PO-Revision-Date: 2012-09-12 09:47+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
 "Language: \n"
@@ -6438,6 +6438,10 @@ msgstr ""
 msgid "first"
 msgstr ""
 
+#, fuzzy
+msgid "first family used"
+msgstr "Category"
+
 msgid "fixed"
 msgstr ""
 
@@ -7815,6 +7819,15 @@ msgstr "Start search"
 msgid "one family multi document"
 msgstr ""
 
+msgid "one id equal"
+msgstr ""
+
+msgid "one of the titles include"
+msgstr ""
+
+msgid "one of the titles {left} include {right}"
+msgstr ""
+
 msgid "one value equal"
 msgstr ""
 
@@ -8013,6 +8026,10 @@ msgstr "Import"
 
 #, fuzzy
 msgid "precise search"
+msgstr "Start search"
+
+#, fuzzy
+msgid "prefered contacts"
 msgstr "Start search"
 
 #, fuzzy
@@ -8548,6 +8565,10 @@ msgstr "at "
 
 msgid "second background color"
 msgstr ""
+
+#, fuzzy
+msgid "second family used"
+msgstr "Start search"
 
 #, fuzzy
 msgid "security"
@@ -9786,6 +9807,9 @@ msgstr ""
 msgid "{left} not include {right}"
 msgstr ""
 
+msgid "{left} one id equal {right}"
+msgstr ""
+
 msgid "{left} one value equal {right}"
 msgstr ""
 
@@ -10049,10 +10073,6 @@ msgstr ""
 #~ msgid "expires"
 #~ msgstr "Your login has expired"
 
-#, fuzzy
-#~ msgid "first family used"
-#~ msgstr "Category"
-
 #~ msgid "firstname"
 #~ msgstr "Firstname"
 
@@ -10139,10 +10159,6 @@ msgstr ""
 #~ msgstr "Import"
 
 #, fuzzy
-#~ msgid "prefered contacts"
-#~ msgstr "Start search"
-
-#, fuzzy
 #~ msgid "quick search"
 #~ msgstr "Start search"
 
@@ -10157,10 +10173,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "revision comment for autorevision"
 #~ msgstr "Organisation"
-
-#, fuzzy
-#~ msgid "second family used"
-#~ msgstr "Start search"
 
 #, fuzzy
 #~ msgid "set view control to '%s'"

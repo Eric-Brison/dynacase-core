@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-14 15:19+0200\n"
-"PO-Revision-Date: 2012-09-14 15:12+0200\n"
+"POT-Creation-Date: 2012-09-17 11:44+0200\n"
+"PO-Revision-Date: 2012-09-17 11:45+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -5325,7 +5325,7 @@ msgstr "type de fichiers supportés : csv, ods, xml, zip (xml) "
 
 #, c-format
 msgid "current (<em>%s</em>)"
-msgstr ""
+msgstr "courant (<em>%s</em>)"
 
 msgid "current user cannot deactivate account"
 msgstr "L'utilisateur courant ne peut désactiver le compte"
@@ -6152,6 +6152,9 @@ msgstr "%s trouvé plus d'une fois, création abandonnée\n"
 
 msgid "first"
 msgstr "premier"
+
+msgid "first family used"
+msgstr "première famille utilisée"
 
 msgid "fixed"
 msgstr "figé"
@@ -7426,6 +7429,15 @@ msgstr "racine generic gestion par famille"
 msgid "one family multi document"
 msgstr "Document multiple"
 
+msgid "one id equal"
+msgstr "un des identifiants égal"
+
+msgid "one of the titles include"
+msgstr "un des titres contient"
+
+msgid "one of the titles {left} include {right}"
+msgstr "un des titres {left} contient {right}"
+
 msgid "one value equal"
 msgstr "une des valeurs égale"
 
@@ -7619,6 +7631,9 @@ msgstr "post-it de %s"
 
 msgid "precise search"
 msgstr "Précisez la recherche"
+
+msgid "prefered contacts"
+msgstr "Préférés"
 
 msgid "prefered search"
 msgstr "Recherche préférée"
@@ -8107,6 +8122,9 @@ msgstr "exécutée le "
 
 msgid "second background color"
 msgstr "couleur secondaire pour le fond"
+
+msgid "second family used"
+msgstr "seconde famille utilisée"
 
 msgid "security"
 msgstr "sécurité"
@@ -9294,6 +9312,9 @@ msgstr "{left} est inférieur à {right}"
 msgid "{left} not include {right}"
 msgstr "{left} ne contient pas {right}"
 
+msgid "{left} one id equal {right}"
+msgstr "L'identifiant {left} est égale à {right}"
+
 msgid "{left} one value equal {right}"
 msgstr "{left} une des valeurs est égal à {right}"
 
@@ -9853,9 +9874,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "fck image upload"
 #~ msgstr "fck téléchargement"
 
-#~ msgid "first family used"
-#~ msgstr "première famille utilisée"
-
 #~ msgid "firstname"
 #~ msgstr "Prénom"
 
@@ -9974,9 +9992,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "pre-import:%s"
 #~ msgstr "pré-Import:%s"
 
-#~ msgid "prefered contacts"
-#~ msgstr "Préférés"
-
 #~ msgid "preferential doc gate id"
 #~ msgstr "identifiant de portail par défaut"
 
@@ -10000,9 +10015,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "search in all contact fields"
 #~ msgstr "recherche dans tout les champs"
-
-#~ msgid "second family used"
-#~ msgstr "seconde famille utilisée"
 
 #~ msgid "select"
 #~ msgstr "sélectionner"
