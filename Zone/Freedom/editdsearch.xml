@@ -1,14 +1,14 @@
 
 <script language="javascript">
-    [IFNOT ISIE]
-    addEvent(document.modifydoc,'submit',deletenew);
-    [ENDIF ISIE]
-    [IF ISIE]
-    var oldSubmit = document.modifydoc.getAttribute("onsubmit");
-    document.modifydoc.setAttribute("onsubmit","deletenew();"+oldSubmit);
-    [ENDIF ISIE]
+
 
   $(document).ready(function() {
+
+    $('#fedit').bind('submit', function() {
+      deletenew();
+    });
+
+
     /* Set change handler on se_ol select */
     $('select#se_ol').change(function(e) {
         toggleModePerso($(this).val() == 'perso');
@@ -16,6 +16,7 @@
 
     /* Set perso mode if parenthesis and/or operators are selected */
     showModePersoIfSelected();
+
   });
 
   function selectUpdateLocation(select) {
@@ -83,26 +84,26 @@ tr.FREEDOMBack2 td.opt {
 <table width="100%" cellspacing="0">
 
 <tr class="FREEDOMBack1">
-<td colspan="3" align="center"> 
+<td colspan="3" >
 
 <fieldset><legend>[TEXT:Conditions]</legend>
-<table>
+<table align="center">
 <tr><td><label for="sysfam"> [L_SE_SYSFAM]&nbsp;:</label>[V_SE_SYSFAM]</td></tr>
 <tr><td><label for="latest"> [L_SE_LATEST]&nbsp;:</label>[V_SE_LATEST]</td></tr>
 <tr><td><label for="latest"> [L_SE_ACL]&nbsp;:</label>[V_SE_ACL]</td></tr>
 <tr><td><label for="latest"> [L_SE_FAMONLY]&nbsp;:</label>[V_SE_FAMONLY]</td></tr>
 <tr><td><label for="latest"> [L_SE_OL]&nbsp;:</label>[V_SE_OL]</td></tr>
 </table>
-<table border=0 width="100%">
+<table border="0" cellspacing="0" width="100%">
 <thead>
 
         <!-- Template for new attribute row -->
 
 <tr id="newcond" style="display:none">
-<td class="und" align="left">
+<td class="und">
   <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="FREEDOM/Images/bin.png">
 </td>
-<td class="und">
+<td class="und" align="left">
 		 <select class="modeperso" name="_se_ols[]"   >
   <option selected  value="">[TEXT:OP_GLOB]</option>
   <option value="and">[TEXT:OP_AND]</option>

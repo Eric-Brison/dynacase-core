@@ -1268,19 +1268,23 @@ function autoUnlock(docid) {
   return false;
 }
 
+
 function submitEdit(event,force) {
 	var fedit= document.getElementById('fedit');
 	var r=true;
 	if (fedit) {
-		var fedit= document.getElementById('fedit');
-
 		if (force) fedit.noconstraint.value='Y';
 		window.htmlText.synchronizeWithTextArea();
 		//bsubmit.onclick.apply(null,[event]);
-		if (fedit.onsubmit) r=fedit.onsubmit();
+
+        var fts=fedit.getAttribute('onsubmit');
+		if (fts) {
+            r=fedit.onsubmit();
+        }
+
 		if (r) {
 			if (isIE) {
-				fedit.fireEvent("onsubmit");
+                $('#fedit').trigger('submit');
 			} else {
 				oEvent = document.createEvent("HTMLEvents");
 				oEvent.initEvent("submit",false,false);
