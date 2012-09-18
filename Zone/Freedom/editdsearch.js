@@ -18,7 +18,6 @@ function deletenew() {
         na = document.getElementById('newstate');
         if (na) na.parentNode.removeChild(na);
     }
-
 }
 
 
@@ -271,6 +270,7 @@ function getOperatorLabel(id, attributeType) {
     if (op["slabel"] && op["slabel"][attributeType]) {
         return op["slabel"][attributeType];
     }
+
     return op["label"];
 }
 
@@ -310,6 +310,7 @@ function filterfunc(th) {
 
     // display only matches
     var ifirst = -1;
+    var label='';
     for (i = 0; i < so.options.length; i++) {
         opt = so.options[i];
         var ctype = opt.getAttribute('ctype');
@@ -321,13 +322,16 @@ function filterfunc(th) {
             if (ctype.indexOf('array') >= 0 && atype != "docid" && atype != "account" && ismultiple && atype.indexOf('[]') < 0) type = "array";
             else if (ctype.indexOf('docid[]') >= 0 && (atype == "docid"|| atype.indexOf('[]') >= 0) && ismultiple) type = "docid[]";
             else if (ctype.indexOf('account[]') >= 0 &&( atype == "account"|| atype.indexOf('[]') >= 0) && ismultiple) type = "account[]";
-            var label = getOperatorLabel(opt.value, type);
+            label = getOperatorLabel(opt.value, type);
             $(opt).text(label);
+            opt.text=label;
         } else {
             opt.style.display = 'none';
             if (opt.selected) needresetselect = true;
             opt.selected = false;
             opt.disabled = true;
+            if (isIE6) opt.text='---';
+
         }
 
     }
@@ -335,9 +339,8 @@ function filterfunc(th) {
         so.options[ifirst].selected = true;
     }
     var egaloperator = false;
-    console.log("atype === ", atype);
     if (so.value == '=' || so.value == '!=' || (ismultiple && so.value == '~y' && (atype == "docid" || atype == "account" ||  atype == "docidtitle[]"))) {
-        console.log("egaloperator");
+
         egaloperator = true;
     }
 
@@ -368,7 +371,7 @@ function filterfunc(th) {
             else {
                 var famid = null;
                 if (document.getElementById('famid')) {
-                    famid = document.getElementById('famid').value;
+                    famid = $('#famid').val();
                 }
                 if (famid) {
                     var html = '';

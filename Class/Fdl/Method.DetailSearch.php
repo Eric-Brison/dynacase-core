@@ -399,7 +399,7 @@ class _DSEARCH extends DocSearch
                             $otitle = $oa->getOption("doctitle");
                             if (!$otitle) {
                                 $fid = $oa->format;
-                                if (!$fid && $oa->type=="account") $fid="IUSER";
+                                if (!$fid && $oa->type == "account") $fid = "IUSER";
                                 if (!$fid) $err = sprintf(_("no compatible type with operator %s") , $op);
                                 else {
                                     if (!is_numeric($fid)) $fid = getFamidFromName($this->dbaccess, $fid);
@@ -717,22 +717,26 @@ class _DSEARCH extends DocSearch
                         $zpi["svalues"] = new BasicAttribute("svalues", $this->fromid, _("any values"));
                         $tcond = array();
                         foreach ($taid as $k => $v) {
-                            $label = $zpi[$v]->getLabel();
-                            if ($label == "") $label = $v;
-                            if ($v == "activity") {
-                                $fdoc->state = $tkey[$k];
-                                $displayValue = $fdoc->getStatelabel();
+                            if (isset($zpi[$v])) {
+                                $label = $zpi[$v]->getLabel();
+                                if ($label == "") $label = $v;
+                                if ($v == "activity") {
+                                    $fdoc->state = $tkey[$k];
+                                    $displayValue = $fdoc->getStatelabel();
+                                } else {
+                                    $displayValue = ($tkey[$k] != "") ? _($tkey[$k]) : $tkey[$k];
+                                }
+                                $type = $zpi[$taid[$k]]->type;
+                                if ($zpi[$taid[$k]]->isMultiple() || $zpi[$taid[$k]]->inArray()) {
+                                    if ($type === "docid") $type = "docid[]";
+                                    else if ($type === "account") $type = "account[]";
+                                }
+                                $tcond[]["condition"] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $type) , $displayValue);
+                                if ($tkey[$k][0] == '?') {
+                                    $tparm[substr($tkey[$k], 1) ] = $taid[$k];
+                                }
                             } else {
-                                $displayValue = ($tkey[$k] != "") ? _($tkey[$k]) : $tkey[$k];
-                            }
-                            $type = $zpi[$taid[$k]]->type;
-                            if ($zpi[$taid[$k]]->isMultiple() || $zpi[$taid[$k]]->inArray()) {
-                                if ($type === "docid") $type = "docid[]";
-                                else if ($type === "account") $type = "account[]";
-                            }
-                            $tcond[]["condition"] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $type) , $displayValue);
-                            if ($tkey[$k][0] == '?') {
-                                $tparm[substr($tkey[$k], 1) ] = $taid[$k];
+                                addWarningMsg(sprintf("property %s not know", $v));
                             }
                         }
                         $this->lay->SetBlockData("COND", $tcond);
@@ -1050,7 +1054,12 @@ class _DSEARCH extends DocSearch
                             "attrname" => $v->getLabel()
                         );
                     }
-                    
+                    if ($action->getParam("ISIE6")) {
+                        // cannot disable select option with IE6
+                        foreach ($tattr as $ka => $va) {
+                            if (!empty($va["attrdisabled"])) unset($tattr[$ka]);
+                        }
+                    }
                     $this->lay->SetBlockData("ATTR", $tattr);
                     $tfunc = array();
                     foreach ($this->top as $k => $v) {
@@ -1233,6 +1242,7 @@ class _DSEARCH extends DocSearch
                                     );
                                 }
                             }
+                            
                             $this->lay->SetBlockData("attrcond$k", $tattr);
                             
                             $tfunc = array();
