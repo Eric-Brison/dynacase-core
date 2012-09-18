@@ -847,12 +847,12 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         if (!isset($this->param)) return ($default);
         $z = $this->param->Get($key, "z");
-        if ($z == "z") {
+        
+        if ($z === "z") {
             if ($this->hasParent()) return $this->parent->GetParam($key, $default);
         } else {
             return ($z);
         }
-        
         return ($default);
     }
     
