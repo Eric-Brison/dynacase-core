@@ -24,6 +24,10 @@ class JSONCodec
      */
     public function decode($json, $assoc = false, $depth = 512)
     {
+        /* Circumvent PHP bug 54484 <https://bugs.php.net/bug.php?id=54484> */
+        if ($json === '' || $json === null) {
+            return null;
+        }
         $o = json_decode($json, $assoc, $depth);
         if ($o === null) {
             $errCode = json_last_error();
