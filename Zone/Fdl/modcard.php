@@ -49,9 +49,9 @@ function modcard(Action & $action, &$ndocid, &$info = array())
     
     if (($usefor == "D") || ($usefor == "Q")) {
         //  set values to family document
-        specialmodcard($action, $usefor);
+        $err = specialmodcard($action, $usefor);
         $ndocid = $classid;
-        return "";
+        return $err;
     }
     $commentSubstitute = '';
     if ($docid == 0) {
@@ -290,6 +290,7 @@ function setPostVars(Doc & $doc, &$info = array())
             
             if ($value == "") $doc->SetValue($attrid, DELVALUE);
             else {
+                $kerr = '';
                 $seterr = $doc->SetValue($attrid, $value, -1, $kerr);
                 if ($seterr) {
                     $oa = $doc->getAttribute($attrid);
@@ -538,7 +539,7 @@ function specialmodcard(Action & $action, $usefor)
      */
     $cdoc = new_Doc($dbaccess, $classid); // family doc
     $tmod = array();
-    
+    $err = '';
     foreach ($_POST as $k => $v) {
         //print $k.":".$v."<BR>";
         if ($k[0] == "_") // freedom attributes  begin with  _
@@ -551,7 +552,7 @@ function specialmodcard(Action & $action, $usefor)
             } else $value = ($v);
             $value = trim($value);
             if ($usefor == "D") $cdoc->setDefValue($attrid, $value);
-            else if ($usefor == "Q") $cdoc->setParam($attrid, $value);
+            else if ($usefor == "Q") $err.= $cdoc->setParam($attrid, $value);
             $tmod[$attrid] = $value;
         }
     }
@@ -567,23 +568,26 @@ function specialmodcard(Action & $action, $usefor)
             if ($filename != "") {
                 if (substr($k, 0, 4) == "UPL_") $k = substr($k, 4);
                 if ($usefor == "D") $cdoc->setDefValue($k, $filename);
-                else if ($usefor == "Q") $cdoc->setParam($k, $filename);
+                else if ($usefor == "Q") $err . $cdoc->setParam($k, $filename);
                 
                 $tmod[$k] = $filename;
             }
         }
     }
     
-    $cdoc->modify();
-    if (count($tmod) > 0) {
-        $s = '';
-        if ($usefor == "D") $s = _("modify default values :");
-        else if ($usefor == "Q") $s = _("modify parameters :");
-        $s.= " ";
-        foreach ($tmod as $k => $v) {
-            $s.= "$k:$v, ";
+    if (!$err) {
+        $cdoc->modify();
+        if (count($tmod) > 0) {
+            $s = '';
+            if ($usefor == "D") $s = _("modify default values :");
+            else if ($usefor == "Q") $s = _("modify parameters :");
+            $s.= " ";
+            foreach ($tmod as $k => $v) {
+                $s.= "$k:$v, ";
+            }
+            $cdoc->AddComment($s);
         }
-        $cdoc->AddComment($s);
     }
+    return $err;
 }
 ?>
