@@ -20,24 +20,24 @@ include_once ("FDL/Class.Dir.php");
 /**
  * Retrieve file converted
  * @param Action &$action current action
- * @global id Http var : document identifier to see
- * @global tid Http var : transformation is done : tid is set to give result
- * @global zone Http var : specific representation where engine is set
- * @global vid Http var : vault id file to convert if zone is not set
- * @global idv Http var : view identifier to apply mask
+ * @global string $id Http var : document identifier to see
+ * @global string $tid Http var : transformation is done : tid is set to give result
+ * @global string $zone Http var : specific representation where engine is set
+ * @global string $vid Http var : vault id file to convert if zone is not set
+ * @global string $idv Http var : view identifier to apply mask
  */
-function getfiletransformation(&$action)
+function getfiletransformation(Action & $action)
 {
-    $docid = GetHttpVars("id");
-    $tid = GetHttpVars("tid");
-    $zone = GetHttpVars("zone");
-    $vid = GetHttpVars("vid");
-    $idv = GetHttpVars("idv");
+    $docid = $action->getArgument("id");
+    $tid = $action->getArgument("tid");
+    $zone = $action->getArgument("zone");
+    $vid = $action->getArgument("vid");
+    $idv = $action->getArgument("idv");
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     if ($docid == "") $action->exitError(_("no document reference"));
     if (!is_numeric($docid)) $docid = getIdFromName($dbaccess, $docid);
-    if (intval($docid) == 0) $action->exitError(sprintf(_("unknow logical reference '%s'") , GetHttpVars("id")));
+    if (intval($docid) == 0) $action->exitError(sprintf(_("unknow logical reference '%s'") , $action->getArgument("id")));
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     
@@ -63,7 +63,11 @@ function getfiletransformation(&$action)
         if ($engine) {
             $tplfile = $doc->getZoneFile($zone);
             if (($idv != "") && ($doc->cvid)) {
+                /**
+                 * @var CVDoc $cvdoc
+                 */
                 $cvdoc = new_Doc($dbaccess, $doc->cvid);
+                $cvdoc->set($doc);
                 $err = $cvdoc->control(trim($idv)); // control special view
                 if ($err != "") $action->exitError("CV:" . $cvdoc->title . "\n" . $err);
                 $tview = $cvdoc->getView($idv);
@@ -71,7 +75,7 @@ function getfiletransformation(&$action)
             }
             if (preg_match('/\.odt/', $tplfile)) {
                 $target = "ooo";
-                $file = $doc->viewdoc($zone, $target, $ulink);
+                $file = $doc->viewdoc($zone, $target, $ulink = false);
             } else {
                 $file = uniqid(getTmpDir() . "/doc") . "-" . $doc->id . ".html";
                 if ($zo == "S") $view = $doc->viewdoc($zone, "te");
@@ -99,7 +103,7 @@ function getfiletransformation(&$action)
     }
 }
 
-function completeHTMLDoc(&$doc, $zone)
+function completeHTMLDoc(Doc & $doc, $zone)
 {
     global $action;
     $layout = "singledoc.xml"; // the default
@@ -117,7 +121,8 @@ function completeHTMLDoc(&$doc, $zone)
 function downloadTid($tid, $title)
 {
     $tea = getParam("TE_ACTIVATE");
-    if ($tea != "yes") return;
+    $err = '';
+    if ($tea != "yes") return '';
     if (@include_once ("WHAT/Class.TEClient.php")) {
         global $action;
         include_once ("FDL/insertfile.php");
@@ -126,9 +131,9 @@ function downloadTid($tid, $title)
         $err = getTEFile($tid, $filename, $info);
         $mime = getSysMimeFile($filename, basename($filename));
         $ext = getExtension($mime);
-        if ($ext == "") $ext = $infoout->teng_lname;
+        if ($ext) $ext = '.' . $ext;
         if ($err == "") {
-            Http_DownloadFile($filename, $title . ".$ext", $mime, false, false);
+            Http_DownloadFile($filename, $title . "$ext", $mime, false, false);
             @unlink($filename);
         }
     } else {
@@ -140,6 +145,7 @@ function downloadTid($tid, $title)
 
 function sendRequestForFileTransformation($filename, $engine, &$info)
 {
+    $err = '';
     if (file_exists($filename) && ($engine != "")) {
         
         $tea = getParam("TE_ACTIVATE");
@@ -150,7 +156,7 @@ function sendRequestForFileTransformation($filename, $engine, &$info)
             
             $callback = "";
             $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
-            $err = $ot->sendTransformation($engine, $vid, $filename, $callback, $info);
+            $err = $ot->sendTransformation($engine, $vid = 0, $filename, $callback, $info);
             if ($err == "") {
                 $dbaccess = GetParam("FREEDOM_DB");
                 $tr = new TaskRequest($dbaccess);
