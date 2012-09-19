@@ -69,7 +69,7 @@ function editfamilyparameter(Action & $action)
         $action->lay->template = sprintf(_("Family [%s] not found") , $famid);
         return false;
     }
-    $action->parent->addJsRef("lib/jquery/jquery.js");
+    
     $action->parent->addJsRef("FDL/Layout/editparameter.js");
     return true;
 }
