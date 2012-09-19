@@ -430,9 +430,10 @@ create unique index idx_idfam on docfam(id);";
      * the parameter must be in an array or of a type '*list' like enumlist or textlist
      * @param string $idAttr identifier of list parameter
      * @param string $def default value returned if parameter not found or if is empty
+     * @param int $index rank in case of multiple value
      * @return array the list of parameter values
      */
-    function getParamTValue($idAttr, $def = "", $index = - 1)
+    public function getParamTValue($idAttr, $def = "", $index = - 1)
     {
         $t = $this->_val2array($this->getParamValue("$idAttr", $def));
         if ($index == - 1) return $t;
@@ -444,13 +445,62 @@ create unique index idx_idfam on docfam(id);";
      *
      * @param string $idp parameter identifier
      * @param string $val value of the parameter
-     * @return void
+     * @return string error message
      */
-    function setParam($idp, $val)
+    public function setParam($idp, $val)
     {
         $this->setChanged();
+        $idp = strtolower($idp);
         if (is_array($val)) $val = $this->_array2val($val);
-        $this->setXValue("param", strtolower($idp) , $val);
+        $err = $this->checkSyntax($idp, $val);
+        if (!$err) $this->setXValue("param", strtolower($idp) , $val);
+        return $err;
+    }
+    /**
+     * @param string $aid attribute identifier
+     * @param string $val value to test
+     * @return string error message
+     */
+    private function checkSyntax($aid, $val)
+    {
+        /**
+         * @var NormalAttribute $oa
+         */
+        $oa = $this->getAttribute($aid);
+        if (!$oa) return ''; // cannot test in this case
+        $err = '';
+        $type = $oa->type;
+        if ($oa->isMultiple()) {
+            $val = explode("\n", $val);
+        }
+        
+        if (is_array($val)) $vals = $val;
+        else $vals[] = $val;
+        //print_r2($val);
+        foreach ($vals as $ka => $av) {
+            switch ($type) {
+                case 'money':
+                case 'double':
+                    if (!empty($av) && (!is_numeric($av))) {
+                        $err = sprintf(_("value [%s] is not a number") , $av);
+                    }
+                    break;
+
+                case 'int':
+                    if (!empty($av) && (!is_numeric($av))) $err = sprintf(_("value [%s] is not a number") , $av);
+                    if (!$err && (!ctype_digit($av))) $err = sprintf(_("value [%s] is not a integer") , $av);
+                    break;
+                }
+                if (!$err) {
+                    // verifiy constraint
+                    if ($oa->phpconstraint) {
+                        //print_r2($aid."[$ka]".$oa->phpconstraint);
+                        $map[$aid] = $av;
+                        $err = $this->applyMethod($oa->phpconstraint, null, $oa->isMultiple() ? $ka : -1, array() , $map);
+                    }
+                }
+            }
+            return $err;
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ DEFAULT VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
     
@@ -461,7 +511,7 @@ create unique index idx_idfam on docfam(id);";
      * @param string $def default value if parameter not found or if it is null
      * @return string default value
      */
-    function getDefValue($idp, $def = "")
+    public function getDefValue($idp, $def = "")
     {
         $x = $this->getXValue("defval", $idp, $def);
         
@@ -472,7 +522,7 @@ create unique index idx_idfam on docfam(id);";
      *
      * @return array string default value
      */
-    function getDefValues()
+    public function getDefValues()
     {
         return $this->getXValues("defval");
     }
@@ -734,7 +784,7 @@ create unique index idx_idfam on docfam(id);";
         return ($lay->gen());
     }
     /*
-    private function loadDefaultSortProperties() {
+        private function loadDefaultSortProperties() {
         $confStore = new ConfigurationStore();
         foreach ($this->defaultSortProperties as $propName => $pValues) {
             foreach ($pValues as $pName => $pValue) {
@@ -748,7 +798,7 @@ create unique index idx_idfam on docfam(id);";
         $this->configuration = $conf;
         error_log(__METHOD__." ".sprintf("conf = [%s]", $conf));
         return $this;
-    }
+        }
     */
     /**
      * Reset properties configuration

@@ -3931,10 +3931,10 @@ create unique index i_docir on doc(initid, revision);";
                         if ($input->type == "string") {
                             $args[$ki] = $input->name;
                         } else {
-                            $mapped = (isset($mapArgs[$input->name])) ? $mapArgs[$input->name] : null;
+                            $mapped = (isset($mapArgs[strtolower($input->name) ])) ? $mapArgs[strtolower($input->name) ] : null;
                             if ($mapped) {
-                                if (is_object($mapped)) $args[$ki] = & $mapArgs[$input->name];
-                                else $args[$ki] = $mapArgs[$input->name];
+                                if (is_object($mapped)) $args[$ki] = & $mapArgs[strtolower($input->name) ];
+                                else $args[$ki] = $mapped;
                             } elseif ($attr = $this->getAttribute($input->name)) {
                                 if ($attr->usefor == 'Q') {
                                     if ($attr->inArray()) {
@@ -3961,7 +3961,6 @@ create unique index i_docir on doc(initid, revision);";
                             }
                         }
                     }
-                    
                     $value = call_user_func_array(array(
                         $staticClass,
                         $methodName,

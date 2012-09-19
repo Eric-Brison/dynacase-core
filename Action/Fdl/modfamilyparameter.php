@@ -61,6 +61,7 @@ function modfamilyparameter(Action & $action)
                         $i++;
                     }
                 }
+                $err = '';
                 foreach ($result as $v) {
                     $val = "";
                     if (!empty($v["value"])) {
@@ -72,22 +73,23 @@ function modfamilyparameter(Action & $action)
                     if ($oldValue != $val) {
                         $modify = true;
                     }
-                    $doc->setParam($v["attrid"], $val);
+                    $err = $doc->setParam($v["attrid"], $val);
+                    if ($err) break;
                 }
-                $err = $doc->store();
+                if (!$err) $err = $doc->store();
                 if ($err) {
                     $out["success"] = false;
-                    $out["errors"] = sprintf(_("an error has occured: %s") , $err);
+                    $out["errors"] = $err;
                 } elseif ($modify) {
                     $out["modify"] = true;
                 }
             } else {
                 $oldValue = $doc->getParamValue($attrid);
-                $doc->setParam($attrid, $value);
-                $err = $doc->store();
+                $err = $doc->setParam($attrid, $value);
+                if (!$err) $err = $doc->store();
                 if ($err) {
                     $out["success"] = false;
-                    $out["errors"] = sprintf(_("an error has occured: %s") , $err);
+                    $out["errors"] = $err;
                 } else {
                     if ($oldValue != $value) {
                         $out["modify"] = true;
@@ -100,7 +102,7 @@ function modfamilyparameter(Action & $action)
         $out["errors"] = sprintf(_("Doucment [%s] not found") , $famid);
     }
     $action->lay->set("success", $out["success"]);
-    $action->lay->set("warning", $out["errors"]);
+    $action->lay->set("warning", htmlspecialchars($out["errors"]));
     $action->lay->set("count", 1);
     $action->lay->set("parameterid", $out["parameterid"]);
     $action->lay->set("modify", $out["modify"]);
