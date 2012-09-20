@@ -112,7 +112,7 @@ class openAuthenticator extends Authenticator
     /**
      * no logout
      */
-    public function logout($redir_uri)
+    public function logout($redir_uri = '')
     {
         header("HTTP/1.0 401 Authorization Required ");
         print _("private key is not valid");

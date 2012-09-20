@@ -68,8 +68,13 @@ function generic_edit(Action & $action)
         if ($classid == "") $action->exitError(sprintf(_("Creation aborded : unknow family %s") , GetHttpVars("classid", getDefFam($action))));
         if ($classid > 0) {
             $cdoc = new_Doc($dbaccess, $classid);
-            if ($cdoc->control('create') != "") $action->exitError(sprintf(_("no privilege to create this kind (%s) of document") , $cdoc->gettitle()));
-            if ($cdoc->control('icreate') != "") $action->exitError(sprintf(_("no privilege to create interactivaly this kind (%s) of document") , $cdoc->gettitle()));
+            $errc = $cdoc->control('create');
+            $erric = $cdoc->control('icreate');
+            if ($errc || $erric) {
+                redirectAsGuest($action);
+            }
+            if ($errc != "") $action->exitError(sprintf(_("no privilege to create this kind (%s) of document") , $cdoc->gettitle()));
+            if ($erric != "") $action->exitError(sprintf(_("no privilege to create interactivaly this kind (%s) of document") , $cdoc->gettitle()));
             $action->lay->Set("title", mb_convert_case(sprintf(_("creation %s") , $cdoc->getHTMLTitle()) , MB_CASE_TITLE, 'UTF-8'));
         } else {
             $action->lay->Set("title", _("new card"));
@@ -79,8 +84,8 @@ function generic_edit(Action & $action)
         
         $action->lay->Set("editaction", $action->text("Create"));
         $doc = createDoc($dbaccess, $classid);
-        if ($usefor == 'D' || $usefor == 'Q') $doc->state = '';
         if (!$doc) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , $classid));
+        if ($usefor == 'D' || $usefor == 'Q') $doc->state = '';
         if ($usefor != "") $doc->doctype = 'T';
     } else {
         $doc = new_Doc($dbaccess, $docid, true); // always latest revision
@@ -89,6 +94,7 @@ function generic_edit(Action & $action)
         $docid = $doc->id;
         setHttpVar("id", $doc->id);
         $err = $doc->lock(true); // autolock
+        if ($err != "") redirectAsGuest($action);
         if ($err != "") $action->ExitError($err);
         if ($err == "") $action->AddActionDone("LOCKFILE", $doc->id);
         

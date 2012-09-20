@@ -47,7 +47,7 @@ class htmlAuthenticator extends Authenticator
             $this->provider,
             'validateCredential'
         ))) {
-            if (!$this->provider->validateCredential(getHttpVars($this->parms{'username'}), getHttpVars($this->parms{'password'}))) {
+            if (!$this->provider->validateCredential(getHttpVars($this->parms{'username'}) , getHttpVars($this->parms{'password'}))) {
                 return Authenticator::AUTH_NOK;
             }
             
@@ -101,10 +101,10 @@ class htmlAuthenticator extends Authenticator
      **
      *
      */
-    public function askAuthentication($args = array())
+    public function askAuthentication($args)
     {
-        
-         $parsed_referer = parse_url(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "");
+        if (empty($args)) $args = array();
+        $parsed_referer = parse_url(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "");
         
         $referer_uri = "";
         if ($parsed_referer['path'] != "") {
@@ -130,29 +130,48 @@ class htmlAuthenticator extends Authenticator
         }
         
         if (array_key_exists('authurl', $this->parms)) {
-            $sargs = '';
-            foreach ($args as $k => $v) $sargs.= sprintf("&%s=%s", $k, urlencode($v));
             
-            $location = '';
-            if (substr($this->parms{'authurl'}, 0, 9) == "guest.php") {
-                $dirname = dirname($_SERVER["SCRIPT_NAME"]);
-                $location = str_replace('//', '/', $dirname . '/' . $this->parms{'authurl'});
-                if (strpos($location, '?') === false && $sargs != '') {
-                    $sargs = sprintf('?%s', $sargs);
-                }
-            } else {
-                $location = $this->parms{'authurl'};
-                if (strpos($location, '?') === false && $sargs != '') {
-                    $sargs = sprintf('?%s', $sargs);
-                }
-            }
-            
-            header(sprintf('Location: %s%s', $location, $sargs));
+            header(sprintf('Location: %s', $this->getAuthUrl($args)));
             return TRUE;
         }
         
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: no authurl of askAuthentication() method defined for " . $this->parms{'type'} . $this->parms{'provider'} . "Provider");
         return FALSE;
+    }
+    /**
+     * return url used to connect user
+     * @param array $extendedArg
+     * @return string
+     */
+    public function getAuthUrl(array $extendedArg = array())
+    {
+        $sargs = '';
+        foreach ($extendedArg as $k => $v) $sargs.= sprintf("&%s=%s", $k, urlencode($v));
+        $location = '';
+        if (substr($this->parms{'authurl'}, 0, 9) == "guest.php") {
+            $dirname = dirname($_SERVER["SCRIPT_NAME"]);
+            $location = str_replace('//', '/', $dirname . '/' . $this->parms{'authurl'});
+            if (strpos($location, '?') === false && $sargs != '') {
+                $sargs = sprintf('?%s', $sargs);
+            }
+        } else {
+            $location = $this->parms{'authurl'};
+            if (strpos($location, '?') === false && $sargs != '') {
+                $sargs = sprintf('?%s', $sargs);
+            }
+        }
+        return $location . $sargs;
+    }
+    /**
+     * ask authentication and redirect
+     * @param string $uri uri to redirect after connection
+     */
+    public function connectTo($uri)
+    {
+        
+        $this->getAuthSession()->register('fromuri', $uri);
+        header(sprintf('Location: %s', $this->getAuthUrl()));
+        exit(0);
     }
     /**
      **

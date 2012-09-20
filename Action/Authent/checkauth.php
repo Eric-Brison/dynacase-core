@@ -14,8 +14,9 @@
  * @deprecated since HTTP Authentification
  */
 
-function checkauth(&$action)
+function checkauth(Action & $action)
 {
+    
     include_once ('WHAT/Lib.Common.php');
     include_once ('WHAT/Class.AuthenticatorManager.php');
     include_once ('WHAT/Class.htmlAuthenticator.php');
@@ -49,7 +50,7 @@ function checkauth(&$action)
     if (($fromuri == "") || (preg_match('/app=AUTHENT/', $fromuri))) {
         $fromuri = ".";
     }
-    
+    $lang = array();;
     include_once ('CORE/lang.php');
     $core_lang = getHttpVars('CORE_LANG');
     if ($core_lang != "" && array_key_exists($core_lang, $lang)) {

@@ -82,8 +82,10 @@ function viewcard(Action & $action)
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     
     $err = $doc->control("view");
-    if ($err != "") $action->exitError($err);
-    
+    if ($err != "") {
+        redirectAsGuest($action);
+        $action->exitError($err);
+    }
     if ($doc->isConfidential()) {
         redirect($action, "FDL", "FDL_CONFIDENTIAL&id=" . $doc->id);
     }

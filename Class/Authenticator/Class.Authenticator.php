@@ -26,6 +26,10 @@ abstract class Authenticator
     const AUTH_NOK = 1;
     /* Authentication status cannot be determined, and credentials should be asked */
     const AUTH_ASK = 2;
+    /**
+     * @var Provider
+     */
+    public $provider = null;
     
     public function __construct($authtype, $authprovider)
     {
@@ -107,7 +111,7 @@ abstract class Authenticator
     abstract function askAuthentication($args);
     abstract function getAuthUser();
     abstract function getAuthPw();
-    abstract function logout($redir_uri);
+    abstract function logout($redir_uri = '');
     abstract function setSessionVar($name, $value);
     abstract function getSessionVar($name);
 }

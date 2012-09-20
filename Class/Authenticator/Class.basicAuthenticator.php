@@ -73,13 +73,13 @@ class basicAuthenticator extends Authenticator
         return TRUE;
     }
     
-    public function askAuthentication($args = array())
+    public function askAuthentication($args)
     {
         if (is_callable(array(
             $this->provider,
             'askAuthentication'
         ))) {
-            return $this->provider->askAuthentication();
+            return $this->provider->askAuthentication(array());
         }
         header('HTTP/1.1 401 Authentication Required');
         header('WWW-Authenticate: Basic realm="' . $this->parms{'realm'} . '"');
