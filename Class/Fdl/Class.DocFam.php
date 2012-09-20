@@ -487,8 +487,10 @@ create unique index idx_idfam on docfam(id);";
                     break;
 
                 case 'int':
-                    if (!empty($av) && (!is_numeric($av))) $err = sprintf(_("value [%s] is not a number") , $av);
-                    if (!$err && (!ctype_digit($av))) $err = sprintf(_("value [%s] is not a integer") , $av);
+                    if (!empty($av)) {
+                        if ((!is_numeric($av))) $err = sprintf(_("value [%s] is not a number") , $av);
+                        if (!$err && (!ctype_digit($av))) $err = sprintf(_("value [%s] is not a integer") , $av);
+                    }
                     break;
                 }
                 if (!$err) {
