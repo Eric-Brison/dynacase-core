@@ -36,8 +36,8 @@ function generic_prefs(Action & $action)
     $action->lay->set("dirid", $dirid);
     
     $tabletters = getTabLetter($action, $famid);
-    if ($tabletters == 'N') $action->lay->set("lettercheck", "");
-    else $action->lay->set("lettercheck", "checked");
+    if ($tabletters == 'Y') $action->lay->set("lettercheck", "checked");
+    else $action->lay->set("lettercheck", "");
     
     $inh = getInherit($action, $famid);
     if ($inh == 'N') $action->lay->set("inhcheck", "");
