@@ -33,6 +33,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestTag');
         $suite->addTestSuite('Dcp\Pu\TestReport');
         $suite->addTestSuite('Dcp\Pu\TestLink');
+        $suite->addTestSuite('Dcp\Pu\TestDocRel');
         $suite->addTestSuite('Dcp\Pu\TestUpdateAttribute');
         $suite->addTestSuite('Dcp\Pu\TestSplitXmlDocument');
         $suite->addTestSuite('Dcp\Pu\TestImportFamily');

@@ -165,7 +165,9 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
         });
         if (count($tv) > 0) {
             // increase speed using pg_copy
-            $t = $this->exec_query(sprintf("select initid, icon, title from docread where initid in (SELECT initid from docread where %s) and locked != -1;", getsqlcond($tv, 'id', true)));
+            $sql = sprintf("select initid, icon, title from docread where initid in (SELECT initid from docread where %s) and locked != -1;", getsqlcond($tv, 'id', true));
+            
+            $t = $this->exec_query($sql);
             if ($this->numrows() > 0) {
                 $c = 0;
                 $tin = array();
