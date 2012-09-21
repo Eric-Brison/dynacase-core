@@ -193,15 +193,7 @@ function filterfunc(th) {
 					famid = sFamid.value;
 				}
 				if(famid) {
-                    var xAid=document.getElementById(aid);
-                    if (xAid) {
-                        xAid.setAttribute('id','');
-                    }
-                    xAid=document.getElementById('ilink_'+aid);
-                    if (xAid) {
-                        xAid.setAttribute('id','');
-                        xAid.setAttribute('name','');
-                    }
+
                     var dIndex=aid+getNewDocIDIndex();
 					var html = '<input type="hidden"  name="_se_keys[]" attrid="'+dIndex+'"  value="">';
 					html += '<input autocomplete="off" autoinput="1" onfocus="recycleDocId(\''+aid+'\',\''+dIndex+'\');activeAuto(event,'+famid+',this,\'\',\''+aid+'\',\'\')"   onchange="addmdocs(\'_'+aid+'\')" type="text"  attrid="ilink_'+dIndex+'" value="">';
@@ -248,7 +240,6 @@ function recycleDocId(aid, uniqueAid) {
         var iAid=document.getElementById(aid);
         if (iAid) {
             iAid.setAttribute('id','');
-            iAid.setAttribute('name','');
         }
         iAid=document.getElementById('ilink_'+aid);
         if (iAid) {
