@@ -1160,11 +1160,13 @@ class _DSEARCH extends DocSearch
                                 $tcond[$k]["ISENUM"] = false;
                                 $tcond[$k]["ISDOCID"] = true;
                                 $tcond[$k]["DOCID_AID"] = $docid_aid;
+                                $tcond[$k]["DOCID_AIDINDEX"] = $docid_aid . $k;
                                 $tcond[$k]["DOCID_TITLE"] = $this->getTitle($v);
                                 $tcond[$k]["FAMID"] = abs($famid);
                             } else {
                                 $tcond[$k]["ISDOCID"] = false;
                                 $tcond[$k]["DOCID_AID"] = 0;
+                                $tcond[$k]["DOCID_AIDINDEX"] = 0;
                                 $tcond[$k]["DOCID_TITLE"] = '';
                                 $tcond[$k]["FAMID"] = abs($famid);
                             }
