@@ -123,16 +123,15 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
     {
         $nattr = $doc->GetNormalAttributes();
         foreach ($nattr as $k => $v) {
-            if (isset($doc->$k) && ($doc->$k != "") && ($v->type == "docid" || $v->type == "account")) {
+            if (isset($doc->$k) && ($v->type == "docid" || $v->type == "account")) {
                 
                 if (!$force) {
                     if ($doc->getOldValue($v->id) === false) {
                         continue;
-                    } else {
-                        // reset old relations
-                        $this->exec_query("delete from docrel where sinitid=" . $doc->initid . " and type = '" . $v->id . "'");
                     }
                 }
+                // reset old relations
+                $this->exec_query(sprintf("delete from docrel where sinitid=%d and type='%s'", $doc->initid, pg_escape_string($v->id)));
                 if ($v->inArray()) $tv = array_unique($doc->getTValue($v->id));
                 else $tv = array(
                     $doc->$k
@@ -160,10 +159,13 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
      */
     function copyRelations(&$tv, &$doc, $reltype)
     {
-        $tv = array_filter($tv, "notEmpty");
-        if (count($tv) > 5) {
+        $tv = array_filter($tv, function ($a)
+        {
+            return (!empty($a));
+        });
+        if (count($tv) > 0) {
             // increase speed using pg_copy
-            $t = $this->exec_query(sprintf("select initid,title,icon from docread where locked != -1 and %s", getsqlcond($tv, 'initid')));
+            $t = $this->exec_query(sprintf("select initid, icon, title from docread where initid in (SELECT initid from docread where %s) and locked != -1;", getsqlcond($tv, 'id', true)));
             if ($this->numrows() > 0) {
                 $c = 0;
                 $tin = array();
@@ -172,24 +174,6 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                     $c++;
                 }
                 pg_copy_from($this->dbid, "docrel", $tin);
-            }
-        } else {
-            foreach ($tv as $vals) {
-                $tval = explode("\n", $vals);
-                foreach ($tval as $val) {
-                    $t = getTDoc($this->dbaccess, $val);
-                    $this->cinitid = $t["initid"];
-                    if ($this->cinitid > 0) {
-                        $this->sinitid = $doc->initid;
-                        $this->ctitle = $t["title"];
-                        $this->cicon = $t["icon"];
-                        $this->stitle = $doc->title;
-                        $this->sicon = $doc->icon;
-                        $this->type = $reltype;
-                        $this->doctype = $doc->doctype;
-                        $err = $this->Add();
-                    }
-                }
             }
         }
     }
