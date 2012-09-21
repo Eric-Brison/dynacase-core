@@ -839,7 +839,7 @@ create unique index i_docir on doc(initid, revision);";
                 ) , true);
             }
             $this->UpdateVaultIndex();
-            $this->updateRelations();
+            $this->updateRelations(true);
         }
         $this->hasChanged = false;
         
@@ -1058,13 +1058,13 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Set relation doc id use on docrel table
      */
-    function updateRelations()
+    function updateRelations($force = false)
     {
         //    return; // for the moment
         include_once ("FDL/Class.DocRel.php");
         $or = new DocRel($this->dbaccess);
         //    $or->resetRelations('',$this->initid); // not necessary now
-        $or->initRelations($this);
+        $or->initRelations($this, $force);
     }
     /**
      * get current sequence number :: number of doc for this family
