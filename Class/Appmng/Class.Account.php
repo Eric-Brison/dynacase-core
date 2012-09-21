@@ -533,6 +533,10 @@ create sequence seq_id_users start 10;";
             $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $fam);
             if (count($tdoc) == 0) {
                 //Create a new doc IUSER
+                
+                /**
+                 * @var _IUSER $iuser
+                 */
                 $iuser = createDoc($dbaccess, $fam);
                 $iuser->SetValue("US_WHATID", $this->id);
                 $iuser->Add();
@@ -540,13 +544,17 @@ create sequence seq_id_users start 10;";
                 $this->modify(true, array(
                     'fid'
                 ) , true);
-                $err = $iuser->RefreshDocUser();
+                $err = $iuser->refreshDocUser();
             } else {
-                $this->fid = $tdoc[0]->id;
+                /**
+                 * @var _IUSER $iuser
+                 */
+                $iuser = $tdoc[0];
+                $this->fid = $iuser->id;
                 $this->modify(true, array(
                     'fid'
                 ) , true);
-                $err = $tdoc[0]->RefreshDocUser();
+                $err = $iuser->RefreshDocUser();
             }
         }
         return $err;
@@ -920,8 +928,10 @@ union
             $memberOf = explode(',', substr($this->memberof, 1, -1));
         }
         if (!$useSystemId) {
-            simpleQuery($this->dbaccess, sprintf("select fid from users where id in (%s)", implode(',', $memberOf)) , $dUids, true);
-            return $dUids;
+            if (!empty($memberOf)) {
+                simpleQuery($this->dbaccess, sprintf("select fid from users where id in (%s)", implode(',', $memberOf)) , $dUids, true);
+                return $dUids;
+            }
         }
         return $memberOf;
     }
@@ -1179,7 +1189,7 @@ union
     function getAllRoles()
     {
         $mo = $this->getMemberOf();
-        
+        if (empty($mo)) return array();
         $sql = sprintf("SELECT * from users where id in (%s) and accounttype='R'", implode(',', $mo));
         simpleQuery($this->dbaccess, $sql, $rusers);
         return $rusers;

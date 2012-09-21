@@ -231,7 +231,8 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
                 if ($v["iduser"] == $pgid) {
                     $gid = $v["idgroup"];
                     $groupsid[$gid] = $gid;
-                    $this->levgid[$gid] = max($level, $this->levgid[$gid]);
+                    if (isset($this->levgid[$gid])) $this->levgid[$gid] = max($level, $this->levgid[$gid]);
+                    else $this->levgid[$gid] = $level;
                     
                     $groupsid+= $this->getParentsGroupId($gid, $level + 1);
                 }

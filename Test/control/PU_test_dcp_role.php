@@ -422,6 +422,10 @@ class TestRole extends TestCaseDcpCommonFamily
                     "ryellow",
                     "rblue"
                 )
+            ) ,
+            array(
+                "addTo" => array() ,
+                "expectRoles" => array()
             )
         );
     }
