@@ -1155,8 +1155,7 @@ class _DSEARCH extends DocSearch
                                 );
                             }
                             $this->lay->SetBlockData("olcond$k", $tols);
-                            
-                            if (is_numeric($v) && isset($docid_aid) && !empty($docid_aid)) {
+                            if (is_numeric($v) && (!empty($docid_aid))) {
                                 $tcond[$k]["ISENUM"] = false;
                                 $tcond[$k]["ISDOCID"] = true;
                                 $tcond[$k]["DOCID_AID"] = $docid_aid;
