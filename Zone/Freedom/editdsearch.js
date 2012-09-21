@@ -108,7 +108,7 @@ function filterfunc(th) {
 	var p=th.parentNode;
 	var opt=th.options[th.selectedIndex];
 	var atype=opt.getAttribute('atype');
-	var ismultiple=(opt.getAttribute('ismultiple')=='yes')?true:false;
+	var ismultiple=((opt.getAttribute('ismultiple') == 'yes'));
 	var i;
 	var pnode,so=false;
 	var aid=opt.value;
@@ -188,8 +188,9 @@ function filterfunc(th) {
 			}
 			else {
 				var famid=null;
-				if(document.getElementById('famid')) {
-					famid = document.getElementById('famid').value;
+                var sFamid=document.getElementById('sFamid');
+				if(sFamid) {
+					famid = sFamid.value;
 				}
 				if(famid) {
                     var xAid=document.getElementById(aid);
@@ -201,8 +202,9 @@ function filterfunc(th) {
                         xAid.setAttribute('id','');
                         xAid.setAttribute('name','');
                     }
-					var html = '<input type="hidden"  name="_se_keys[]" id="'+aid+'" value="">';
-					html += '<input autocomplete="off" autoinput="1" onfocus="activeAuto(event,'+famid+',this,\'\',\''+aid+'\',\'\')"   onchange="addmdocs(\'_'+aid+'\')" type="text" name="_ilink_'+aid+'" id="ilink_'+aid+'" value="">';
+                    var dIndex=aid+getNewDocIDIndex();
+					var html = '<input type="hidden"  name="_se_keys[]" attrid="'+dIndex+'"  value="">';
+					html += '<input autocomplete="off" autoinput="1" onfocus="recycleDocId(\''+aid+'\',\''+dIndex+'\');activeAuto(event,'+famid+',this,\'\',\''+aid+'\',\'\')"   onchange="addmdocs(\'_'+aid+'\')" type="text"  attrid="ilink_'+dIndex+'" value="">';
 					pnode.innerHTML= html;
 				}
 				else {
@@ -225,4 +227,37 @@ function filterfunc(th) {
 		}
 	}
   
+}
+var DOCIDINDEX=1000;
+function getNewDocIDIndex() {
+    return DOCIDINDEX++;
+}
+function recycleDocId(aid, uniqueAid) {
+    var xAid=null;
+    var xATitle=null;
+    var la=document.getElementsByTagName('input');
+    for (var i=0;i<la.length;i++) {
+        var attrid=la[i].getAttribute('attrid');
+        if (attrid == uniqueAid) {
+            xAid=la[i];
+        } else if (attrid == 'ilink_'+uniqueAid) {
+            xATitle=la[i];
+        }
+    }
+    if (xAid && xATitle) {
+        var iAid=document.getElementById(aid);
+        if (iAid) {
+            iAid.setAttribute('id','');
+            iAid.setAttribute('name','');
+        }
+        iAid=document.getElementById('ilink_'+aid);
+        if (iAid) {
+            iAid.setAttribute('id','');
+            iAid.setAttribute('name','');
+        }
+        xAid.setAttribute('id',aid);
+        xATitle.setAttribute('id','ilink_'+aid);
+        xATitle.setAttribute('name','_ilink_'+aid);
+    }
+
 }
