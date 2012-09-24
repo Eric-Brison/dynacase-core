@@ -376,21 +376,20 @@ function filterfunc(th) {
                 if (famid) {
                     var html = '';
                     var aIdindex = $(th).parents('tr').prevUntil().length;
-                    if (document.getElementById(aid)) {
-                        $('#' + aid).remove();
-                        $('#ilink_' + aid).attr('name', '').attr('id', '');
-                    }
-                    if (!document.getElementById(aid)) {
-                        html += '<input type="hidden"  id="' + aid + '" value="aid" onchange="$(\'#' + aid + aIdindex + '\').val(this.value)">';
-                        html += '<input autocomplete="off" autoinput="1" onfocus="activeAuto(event,' + famid + ',this,\'\',\'' + aid + '\',' + aIdindex + ')"   onchange="addmdocs(\'_' + aid + '\')" type="text" name="_ilink_' + aid + '"  id="ilink_' + aid + '" value="">';
-                        html += '<input id="ic_'+aid +'" type="button" onclick="sendAutoChoice(event,\'' + famid + '\',this,\'ilink_'+aid +'\',null,\''+aid +'\')"  value="&#133;">';
-                        html += '<input id="ix_'+aid+'" type="button" onclick="clearInputs([\'ilink_'+aid +'\',\''+aid +'\'],null,\''+aid +'\' )" title="" value="&times;">';
+
+                    var dIndex=aid+getNewDocIDIndex();
+                    if (!document.getElementById(dIndex)) {
+                        html += '<input autocomplete="off" autoinput="1" onfocus="recycleDocId(\''+aid+'\',\''+dIndex+'\');activeAuto(event,' + famid + ',this,\'\',\'' + aid + '\',' + aIdindex + ')"   onchange="addmdocs(\'_' + aid + '\')" type="text" name="_ilink_' + aid + '"  id="ilink_' + aid + '" attrid="ilink_'+dIndex+'" value="">';
+                        html += '<input id="ic_'+dIndex +'" type="button" onclick="recycleDocId(\''+aid+'\',\''+dIndex+'\');sendAutoChoice(event,\'' + famid + '\',this,\'ilink_'+aid +'\',null,\''+aid +'\')"  value="&#133;">';
+                        html += '<input id="ix_'+dIndex+'" type="button" onclick="recycleDocId(\''+aid+'\',\''+dIndex+'\');clearInputs([\'ilink_'+aid +'\',\''+aid +'\'],null,\''+aid +'\' )" title="" value="&times;">';
                         if (ismultiple) {
-                            html += '<input type="hidden"  id="' +'mdocid_work' + aid  + '" value="aid" onchange="$(\'#' + aid + aIdindex + '\').val(this.value)">';
+                            if (! document.getElementById('mdocid_work' + aid )) {
+                               html += '<input type="hidden"  id="' +'mdocid_work' + aid  + '" value="" onchange="$(\'#' + aid + '\').val(this.value)">';
+                            }
                         }
                     }
 
-                    html += '<input type="hidden"  name="_se_keys[]" id="' + aid + aIdindex + '" value="aid">';
+                    html += '<input type="hidden2"  name="_se_keys[]" attrid="'+dIndex+'"  value="">';
 
                     pnode.innerHTML = html;
                 }
@@ -634,6 +633,41 @@ function activateStatesButton() {
     });
     $se_latest.trigger('change');
 }
+var DOCIDINDEX=1000;
+function getNewDocIDIndex() {
+    return DOCIDINDEX++;
+}
+function recycleDocId(aid, uniqueAid) {
+    var xAid=null;
+    var xATitle=null;
+    var la=document.getElementsByTagName('input');
+    for (var i=0;i<la.length;i++) {
+        var attrid=la[i].getAttribute('attrid');
+        if (attrid == uniqueAid) {
+            xAid=la[i];
+        } else if (attrid == 'ilink_'+uniqueAid) {
+            xATitle=la[i];
+        }
+    }
+    if (xAid && xATitle) {
+        var iAid=document.getElementById(aid);
+        if (iAid) {
+            iAid.setAttribute('id','');
+        }
+        iAid=document.getElementById('ilink_'+aid);
+        if (iAid) {
+            iAid.setAttribute('id','');
+            iAid.setAttribute('name','');
+        }
+        xAid.setAttribute('id',aid);
+        xATitle.setAttribute('id','ilink_'+aid);
+        xATitle.setAttribute('name','_ilink_'+aid);
+
+    }
+
+}
+
+
 $(document).ready(function () {
     initializeMethodSelectors();
     activateStatesButton();
