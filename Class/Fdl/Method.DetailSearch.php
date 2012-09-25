@@ -1297,16 +1297,18 @@ class _DSEARCH extends DocSearch
                             }
                             $this->lay->SetBlockData("olcond$k", $tols);
                             
-                            if (is_numeric($v) && isset($docid_aid) && !empty($docid_aid)) {
+                            if ((is_numeric($v) || empty($v)) && isset($docid_aid) && !empty($docid_aid)) {
                                 $tcond[$k]["ISENUM"] = false;
                                 $tcond[$k]["ISDOCID"] = true;
                                 $tcond[$k]["DOCID_AID"] = $docid_aid;
+                                $tcond[$k]["DOCID_AIDINDEX"] = $docid_aid . $k;
                                 $tcond[$k]["DOCID_TITLE"] = $this->getTitle($v);
                                 $tcond[$k]["FAMID"] = abs($famid);
                                 $tcond[$k]["ISSEARCHMETHOD"] = false;
                             } else {
                                 $tcond[$k]["ISDOCID"] = false;
                                 $tcond[$k]["DOCID_AID"] = 0;
+                                $tcond[$k]["DOCID_AIDINDEX"] = 0;
                                 $tcond[$k]["DOCID_TITLE"] = '';
                                 $tcond[$k]["FAMID"] = abs($famid);
                                 $isSearchMethod = false;

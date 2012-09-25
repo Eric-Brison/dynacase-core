@@ -106,10 +106,12 @@ class DocCollection extends Doc
             "dynlabel" => "{left} equal {right}", # _("{left} equal {right}")
             "slabel" => array(
                 "docid" => "identificator equal",
+                "account" => "identificator equal",
                 "uid" => "system identifiant equal"
             ) , #_("identificator equal") _("system identifiant equal")
             "sdynlabel" => array(
                 "docid" => "{left} identifier equal {right}",
+                "account" => "{left} identifier equal {right}",
                 "uid" => "{left} system identifier equal {right}"
             ) , #_("{left} identifier equal {right}") _("{left} system identifier equal {right}")
             "type" => array(
@@ -149,10 +151,12 @@ class DocCollection extends Doc
             "dynlabel" => "{left} is not equal {right}", # _("{left} is not equal {right}")
             "sdynlabel" => array(
                 "docid" => "{left} identifier not equal {right}",
+                "account" => "{left} identifier not equal {right}",
                 "uid" => "{left} system identifier not equal {right}"
             ) , #_("{left} identifier not equal {right}") _("{left} system identifier not equal {right}")
             "slabel" => array(
                 "docid" => "identificator not equal",
+                "account" => "identificator not equal",
                 "uid" => "system identifier not equal"
             ) , #_("identificator not equal") _("system identifier not equal")
             "type" => array(
