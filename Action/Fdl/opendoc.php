@@ -30,7 +30,7 @@ function opendoc(Action & $action)
 {
     $docid = $action->getArgument("id");
     $mode = $action->getArgument("mode", "none");
-    
+    $err = '';
     if ($mode == "none") {
         if (!$docid) {
             $famid = $action->getArgument("famid", $action->getArgument("classid"));
@@ -40,9 +40,9 @@ function opendoc(Action & $action)
         } else {
             $dbaccess = $action->GetParam("FREEDOM_DB");
             $doc = new_doc($dbaccess, $docid, true);
-            if ($doc->control('edit') == "") {
+            if (($err = $doc->control('edit')) == "") {
                 $mode = 'edit';
-            } else if ($doc->control('view') == "") {
+            } else if (($err = $doc->control('view')) == "") {
                 $mode = 'view';
             }
         }
@@ -63,6 +63,10 @@ function opendoc(Action & $action)
             $action->lay->template = $gen;
             $action->lay->noparse = true;
             break;
+
+        default:
+            if ($err) redirectAsGuest($action);
+        }
+        if ($err) $action->exitError($err);
     }
-}
 ?>

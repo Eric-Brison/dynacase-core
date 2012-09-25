@@ -94,6 +94,25 @@ function RedirectSender(Action & $action)
     exit;
 }
 /**
+ * if in useIndexAsGuest mode
+ * redirect with authtication to current url
+ * only if it is anonymous also
+ * @param Action $action
+ */
+function redirectAsGuest(Action & $action)
+{
+    $guestMode = getDbAccessValue("useIndexAsGuest");
+    if ($guestMode) {
+        if ($action->user->id == ANONYMOUS_ID) {
+            /**
+             * @var htmlAuthenticator $auth
+             */
+            $auth = AuthenticatorManager::$auth;
+            if (is_a($auth, "htmlAuthenticator")) $auth->connectTo($_SERVER['REQUEST_URI']);
+        }
+    }
+}
+/**
  * return value of an http parameter
  * @param string $name parameter key
  * @param string $def default value if parameter is not set

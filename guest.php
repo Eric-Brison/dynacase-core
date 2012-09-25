@@ -34,6 +34,10 @@ if ($authtype != 'basic') {
 # element
 #
 #
+
+/**
+ * @var Action $action
+ */
 $action = null;
 getmainAction($auth = null, $action);
 /**

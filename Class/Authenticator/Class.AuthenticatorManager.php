@@ -24,9 +24,11 @@ include_once ('WHAT/Class.Session.php');
 include_once ('WHAT/Class.User.php');
 include_once ('WHAT/Class.Log.php');
 
-abstract class AuthenticatorManager
+class AuthenticatorManager
 {
-    
+    /**
+     * @var Session
+     */
     public static $session = null;
     const NeedAsk = 6;
     const AccessOk = 0;
@@ -191,7 +193,7 @@ abstract class AuthenticatorManager
             
             if (method_exists(AuthenticatorManager::$auth, 'logout')) {
                 AuthenticatorManager::secureLog("close", "see you tomorrow", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], AuthenticatorManager::$auth->getAuthUser() , $_SERVER["HTTP_USER_AGENT"]);
-                AuthenticatorManager::$auth->logout();
+                AuthenticatorManager::$auth->logout(null);
                 exit(0);
             }
             
@@ -215,7 +217,7 @@ abstract class AuthenticatorManager
         exit;
     }
     
-    public function secureLog($status = "", $additionalMessage = "", $provider = "", $clientIp = "", $account = "", $userAgent = "")
+    public static function secureLog($status = "", $additionalMessage = "", $provider = "", $clientIp = "", $account = "", $userAgent = "")
     {
         global $_GET;
         $log = new Log("", "Session", "Authentication");
