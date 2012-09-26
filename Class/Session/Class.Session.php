@@ -79,9 +79,9 @@ class Session extends DbObj
     
     var $sessiondb;
     
-    var $session_name = 'freedom_param';
-    
-    function __construct($session_name = 'freedom_param')
+    const PARAMNAME = 'freedom_param';
+    var $session_name = self::PARAMNAME;
+    function __construct($session_name = self::PARAMNAME)
     {
         parent::__construct();
         if ($session_name != '') $this->session_name = $session_name;
@@ -98,6 +98,7 @@ class Session extends DbObj
         
         $this->gcSessions();
         
+        $query = new QueryDb($this->dbaccess, "Session");
         $query = new QueryDb($this->dbaccess, "Session");
         $query->addQuery("id = '" . pg_escape_string($id) . "'");
         $list = $query->Query(0, 0, "TABLE");
@@ -170,9 +171,13 @@ class Session extends DbObj
     /** 
      * Closes all session
      */
-    function CloseAll()
+    function CloseAll($uid = null)
     {
-        $this->exec_query("delete from sessions where name = '" . pg_escape_string($this->name) . "'");
+        if ($uid === null) {
+            $this->exec_query(sprintf("delete from sessions where name = '%s';", pg_escape_string($this->session_name)));
+        } else {
+            $this->exec_query(sprintf("delete from sessions where name = '%s' and userid=%d;", pg_escape_string($this->session_name) , $uid));
+        }
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
     }

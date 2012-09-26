@@ -50,8 +50,8 @@ function getMainAction($auth, &$action)
         }
     }
     
-    if (isset($_COOKIE['freedom_param'])) $sess_num = $_COOKIE['freedom_param'];
-    else $sess_num = GetHttpVars('freedom_param'); //$_GET["session"];
+    if (isset($_COOKIE[Session::PARAMNAME])) $sess_num = $_COOKIE[Session::PARAMNAME];
+    else $sess_num = GetHttpVars(Session::PARAMNAME); //$_GET["session"];
     $session = new Session();
     if (!$session->Set($sess_num)) {
         print "<strong>:~((</strong>";
@@ -359,6 +359,7 @@ function handleFatalShutdown()
             }
             $action->exitError($error["message"]);
             // Fatal error are already logged by PHP
+            
         }
     }
 }
