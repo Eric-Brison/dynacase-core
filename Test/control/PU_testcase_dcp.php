@@ -101,7 +101,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      * Current action
      * @return \Action
      */
-    protected static function getAction()
+    protected static function &getAction()
     {
         global $action;
         if (!$action) {

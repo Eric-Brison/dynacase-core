@@ -45,7 +45,7 @@ getmainAction($auth = null, $action);
  */
 if ($action->user->id != ANONYMOUS_ID) {
     // reopen a new anonymous session
-    setcookie('freedom_param', $action->session->id, 0);
+    setcookie(Session::PARAMNAME, $action->session->id, 0);
     unset($_SERVER['PHP_AUTH_USER']); // cause IE send systematicaly AUTH_USER & AUTH_PASSWD
     $action->session->Set("");
     $action->parent->SetSession($action->session);

@@ -19,7 +19,7 @@
 include_once ("Class.SubForm.php");
 include_once ("Class.Param.php");
 // -----------------------------------
-function param_mod(&$action)
+function param_mod(Action & $action)
 {
     // -----------------------------------
     // Get all the params
@@ -86,7 +86,7 @@ function param_mod(&$action)
     }
 }
 // -----------------------------------
-function param_umod(&$action)
+function param_umod(Action & $action)
 {
     // -----------------------------------
     $atype = GetHttpVars("atype", PARAM_APP);
