@@ -99,7 +99,6 @@ class Session extends DbObj
         $this->gcSessions();
         
         $query = new QueryDb($this->dbaccess, "Session");
-        $query = new QueryDb($this->dbaccess, "Session");
         $query->addQuery("id = '" . pg_escape_string($id) . "'");
         $list = $query->Query(0, 0, "TABLE");
         $createNewSession = true;
