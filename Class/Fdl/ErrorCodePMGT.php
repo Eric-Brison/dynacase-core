@@ -47,6 +47,11 @@ namespace {
          */
         const PMGT0007 = 'Global User parameter "%s" "%s" not found';
         /**
+         * @errorCode The parameter key not exists
+         * also when parameter is not declared as user and global
+         */
+        const PMGT0008 = 'Cannot set User parameter "%s" "%s" user "#%s" not found';
+        /**
          * for beautifier
          */
         private function _bo()
