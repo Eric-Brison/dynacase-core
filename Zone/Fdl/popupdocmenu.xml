@@ -1,4 +1,15 @@
 <script>
 var MENUAPP='[menuapp]';
 var MENUACTION='[menuaction]';
+
+function addMouseContextMenu() {
+    var docBody=document.getElementById('documentBody');
+    if (docBody) {
+       docBody.style.cursor='crosshair';
+       addEvent(docBody,'contextmenu', function (event) {
+          return viewdocmenu(event,'[id]');
+       });
+    }
+}
+addEvent(window, 'load', addMouseContextMenu);
 </script>

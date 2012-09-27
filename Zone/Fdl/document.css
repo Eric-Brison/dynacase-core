@@ -31,3 +31,7 @@
      height: 22px;
      width: 22px;
 }
+
+.document .documentTitle a:link,.document .documentTitle a:visited {
+    color: [COLOR_BLACK];
+}

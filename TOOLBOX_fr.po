@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-17 11:44+0200\n"
-"PO-Revision-Date: 2012-09-17 11:45+0200\n"
+"POT-Creation-Date: 2012-09-27 10:49+0200\n"
+"PO-Revision-Date: 2012-09-27 10:50+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1176,6 +1176,9 @@ msgstr "Cliquer pour accéder au document"
 
 msgid "Click to clear message"
 msgstr "Cliquer pour effacer le message"
+
+msgid "Click to update document"
+msgstr "Cliquer pour actualiser le document"
 
 msgid "Click to view menu"
 msgstr "Cliquer pour voir le menu"
@@ -5698,9 +5701,6 @@ msgstr "Outil"
 msgid "dotType"
 msgstr "Type"
 
-msgid "double-clic to update document"
-msgstr "double-cliquez pour mettre à jour le document"
-
 msgid "downk"
 msgstr "descendre"
 
@@ -8967,6 +8967,10 @@ msgid "val"
 msgstr "Valeur"
 
 #, c-format
+msgid "value [%s] is not a integer"
+msgstr "la valeur [%s] n'est pas un entier"
+
+#, c-format
 msgid "value [%s] is not a number"
 msgstr "la valeur [%s] n'est pas un nombre"
 
@@ -9731,6 +9735,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "double click to edit"
 #~ msgstr "Double clic pour éditer"
+
+#~ msgid "double-clic to update document"
+#~ msgstr "double-cliquez pour mettre à jour le document"
 
 #~ msgid "drag to move. Use ctrl-&uarr; &darr; to up/down"
 #~ msgstr ""
