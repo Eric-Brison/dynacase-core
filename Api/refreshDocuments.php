@@ -80,8 +80,19 @@ $s->setObjectReturn();
 $s->orderby = 'id desc';
 $s->slice = $slice;
 $s->start = $start;
-if ($docid > 0) $s->addFilter('id = %d', $docid);
-if ($fldid > 0) $s->dirid = $fldid;
+if ($docid != '') {
+    if (!is_numeric($docid)) {
+        $docName = $docid;
+        $docid = getIdFromName($dbaccess, $docName);
+        if ($docid === false) {
+            $action->exitError(sprintf("document with name '%s' not found", $docName));
+        }
+    }
+    $s->addFilter('id = %d', $docid);
+}
+if ($fldid != '') {
+    $s->useCollection($fldid);
+}
 if ($allrev) $s->latest = false;
 if ($filter) {
     // verify validity and prevent hack
