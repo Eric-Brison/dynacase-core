@@ -53,5 +53,7 @@ if [ $RET -ne 0 ]; then
     echo "Error migrating profil"
     exit $RET
 fi
+# add FREEDOM_HISTO acl to default group
+PGSERVICE="$pgservice_core" psql -t -c "INSERT INTO permission (id_user,id_application,id_acl) VALUES (2, (select id from application where name='FREEDOM'), (select id from acl where name = 'FREEDOM_HISTO'));"
 
 exit 0

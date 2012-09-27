@@ -193,7 +193,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "control" => "false",
             "tconfirm" => "",
             "target" => "histo" . $doc->initid,
-            "visibility" => POPUP_ACTIVE,
+            "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
         ) ,
@@ -783,7 +783,7 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
     }
     }*/
     
-    if (($doc->wid > 0) || ($doc->revision > 0)) $tlink["histo"]["visibility"] = POPUP_ACTIVE;
+    
     $waskes = $doc->getWasks(false);
     if (count($waskes) > 0) {
         if ($doc->control("wask") == "") $tlink["viewanswers"]["visibility"] = POPUP_ACTIVE;
@@ -817,8 +817,8 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
         $tlink["access"]["visibility"] = POPUP_INVISIBLE;
         $tlink["tobasket"]["visibility"] = POPUP_INVISIBLE;
     }
-    if (!$action->parent->Haspermission("FREEDOM_READ", "FREEDOM")) {
-        $tlink["histo"]["visibility"] = POPUP_INVISIBLE;
+    if ($action->parent->Haspermission("FREEDOM_HISTO", "FREEDOM")) {
+        $tlink["histo"]["visibility"] = POPUP_ACTIVE;
     }
     // Forum
     $tlink["createforum"]["visibility"] = POPUP_INVISIBLE;
