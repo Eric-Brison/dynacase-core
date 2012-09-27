@@ -51,7 +51,7 @@ function viewdocmenu(event,docid,onlyctrl,upobject,sourceobject, barmenu) {
 
 
     var e = (event.target) ? event.target : ((event.srcElement) ? event.srcElement : null);
-    if (e && e.getAttribute("oncontextmenu")) return true;
+    if ((! sourceobject) && e && e.getAttribute("oncontextmenu")) return true;
   POPMENUINPROGRESSELT=false;
   var corestandurl='?';
   var menuapp=MENUAPP;
