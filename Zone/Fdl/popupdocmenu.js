@@ -49,6 +49,9 @@ function setonclick(event) {
 function viewdocmenu(event,docid,onlyctrl,upobject,sourceobject, barmenu) {
   if (!event) event=POPMENUINPROGRESSEVENT;
 
+
+    var e = (event.target) ? event.target : ((event.srcElement) ? event.srcElement : null);
+    if (e && e.getAttribute("oncontextmenu")) return true;
   POPMENUINPROGRESSELT=false;
   var corestandurl='?';
   var menuapp=MENUAPP;
@@ -67,6 +70,8 @@ function viewdocmenu(event,docid,onlyctrl,upobject,sourceobject, barmenu) {
   }
   var menuurl=corestandurl+'app='+menuapp+'&action='+menuaction+menuopt+'&id='+docid+PDS;
   viewsubmenu(event,menuurl,upobject,sourceobject, barmenu);
+    event.returnValue = false;
+    stopPropagation(event);
   return false;
 }
 
@@ -78,6 +83,9 @@ function viewdocsubmenu(event,docid,submenu,upobject, barmenu) {
   var menuaction=MENUACTION;
   var menuopt='';
   var coord=false;
+
+
+
   if (submenu) menuopt='&submenu='+encodeURIComponent(submenu);
   else {
     if (ctrlPushed(event) && altPushed(event)) {

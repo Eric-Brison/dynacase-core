@@ -9,7 +9,7 @@ var Xpos = 0;
 var Ypos = 0;
 function GetXY(event) {
   if (window.event) {
-    if( document && document.documentElement ) {
+    if( document && document.documentElement && document.body) {
       Xpos = window.event.clientX + document.documentElement.scrollLeft
                                   + document.body.scrollLeft;
       Ypos = window.event.clientY + document.documentElement.scrollTop +

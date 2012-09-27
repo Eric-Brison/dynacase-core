@@ -37,7 +37,8 @@ function popupdocmenu(Action &$action)
         $menuapp = "FDL";
         $menuaction = "POPUPDOCDETAIL";
     }
-    
+
+    $action->lay->set("id", $doc->id);
     $action->lay->set("menuapp", $menuapp);
     $action->lay->set("menuaction", $menuaction);
     if ($js) {
