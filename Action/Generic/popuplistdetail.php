@@ -149,7 +149,7 @@ function popuplistdetail(&$action)
             "control" => "false",
             "tconfirm" => "",
             "target" => "",
-            "visibility" => POPUP_ACTIVE,
+            "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
         ) ,
