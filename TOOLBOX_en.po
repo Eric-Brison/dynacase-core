@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-27 10:49+0200\n"
+"POT-Creation-Date: 2012-09-27 12:13+0200\n"
 "PO-Revision-Date: 2012-09-12 09:47+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -532,6 +532,9 @@ msgstr ""
 #, fuzzy
 msgid "Access path list"
 msgstr "Delete"
+
+msgid "Access to document history"
+msgstr ""
 
 msgid "Access to edit action"
 msgstr ""

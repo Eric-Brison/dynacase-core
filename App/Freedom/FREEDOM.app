@@ -53,7 +53,11 @@ $app_acl = array (
   array(
    "name"               =>"FREEDOM_GED",
    "description"        =>N_("Access To Main Interface"),
-   "group_default"       =>"N")
+   "group_default"       =>"N"),
+     array(
+      "name"               =>"FREEDOM_HISTO",
+      "description"        =>N_("Access to document history"),
+      "group_default"       =>"Y")
 );
 
 $action_desc = array (
@@ -435,7 +439,7 @@ array(
   array(
    "name"		=>"HISTO",
    "short_name"		=>N_("view history revision"),
-   "acl"		=>"FREEDOM_READ"
+   "acl"		=>"FREEDOM_HISTO"
   ),
   array(
    "name"		=>"GENCSS",
