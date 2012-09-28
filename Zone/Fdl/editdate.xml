@@ -1,6 +1,3 @@
-<input [disabled] size="8" autocomplete="off"
+<input [disabled] size="8" autocomplete="off" 
         [IF VIEWCALSEL] onfocus="if (this.readOnly) $('#ic_[id]').trigger('mousedown').trigger('click')" [ENDIF VIEWCALSEL]
-        [IF CONTROLCAL]onblur="control_date(event,this)"[ENDIF CONTROLCAL] type="text" name="[name]" value="[value]" id="[id]" />
-[IF VIEWCALSEL]
-<input type="button" onmousedown="Calendar_Init('[id]','ic_[id]',false,'[dateformat]')" id="ic_[id]" value="&#133;" />
-<input type="button" value="&diams;" id="id_[id]"    title="[TEXT:manual date]" onmousedown="document.getElementById('[id]').disabled=false;document.getElementById('[id]').readOnly=false" onclick="focus_date(event,'[id]')" />[ENDIF VIEWCALSEL]
+        [IF CONTROLCAL]onblur="control_date(event,this)"[ENDIF CONTROLCAL] type="text" name="[name]" value="[value]" id="[id]" />[IF VIEWCALSEL]<input type="button" onmousedown="Calendar_Init('[id]','ic_[id]',false,'[dateformat]')" id="ic_[id]" value="&#133;" /><input type="button" value="&diams;" id="id_[id]"    title="[TEXT:manual date]" onmousedown="document.getElementById('[id]').disabled=false;document.getElementById('[id]').readOnly=false" onclick="focus_date(event,'[id]')" />[ENDIF VIEWCALSEL]

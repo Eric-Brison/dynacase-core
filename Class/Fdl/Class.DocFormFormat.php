@@ -958,7 +958,7 @@ class DocFormFormat
                 if (($this->visibility == "R") || ($this->visibility == "S")) {
                     $lay->set("disabled", $this->idisabled);
                     $lay->set("readonly", true);
-                } else if ($this->doc->usefor != 'D') $lay->set("disabled", "disabled");
+                } else if ($this->doc->usefor != 'D') $lay->set("disabled", "readonly");
                 
                 $input = $lay->gen();
                 return $input;
