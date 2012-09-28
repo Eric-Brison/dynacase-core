@@ -409,6 +409,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     
     function addCssRef($ref, $needparse = false, $packName = '')
     {
+        if (substr($ref, 0, 2) == './') $ref = substr($ref, 2);
         return $this->AddRessourceRef('css', $ref, $needparse, $packName);
     }
     /**
@@ -419,6 +420,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     function addJsRef($ref, $needparse = false, $packName = '')
     {
+        if (substr($ref, 0, 2) == './') $ref = substr($ref, 2);
         return $this->AddRessourceRef('js', $ref, $needparse, $packName);
     }
     
