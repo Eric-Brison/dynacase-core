@@ -1009,7 +1009,7 @@ function disableReadAttribute() {
                 var iout=document.getElementById(taout[c][i]);
                 if (iout) {
                     if (iout.type != 'hidden') {
-                        if (iout.getAttribute('readonly') != '1')  iout.disabled=ndis;
+                        if (iout.getAttribute('readonly') != 'readonly')  iout.disabled=ndis;
                         inc=document.getElementById('ic_'+taout[c][i]);
                         inx=document.getElementById('ix_'+taout[c][i]);
                         ind=document.getElementById('id_'+taout[c][i]);
@@ -1053,7 +1053,7 @@ function disableReadAttribute() {
                             if (!kj) kj=j;
                             vin = getInputValue(tain[c][k],kj);
                             if ((vin == '') || (vin == ' ')) {
-                                if (lin[j].getAttribute('readonly') != '1') ndis = false;
+                                if (lin[j].getAttribute('readonly') != 'readonly') ndis = false;
                             }
                         }
                         incr=document.getElementById('icr_'+tain[c][0]+'_'+kj);

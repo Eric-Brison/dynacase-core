@@ -64,6 +64,8 @@ class DocFormFormat
      * @var string add an javascript callback on input (like onblur or onmouseover)
      */
     private $jsEvents = '';
+
+    const arrayIndex='__1x_';
     
     public function __construct(Doc & $doc)
     {
@@ -115,20 +117,20 @@ class DocFormFormat
         if ($this->oattr->inArray()) {
             if ($this->index == - 1) {
                 $attrin.= '[-1]';
-                $attridk = $this->oattr->id . '__1x_';
+                $attridk = $this->oattr->id . DocFormFormat::arrayIndex;
                 $this->isInDuplicableTableLine = true;
             } else $attrin.= "[{$this->index}]";
         }
         if (isset($this->oattr->mvisibility)) $this->visibility = $this->oattr->mvisibility;
         else $this->visibility = $this->oattr->visibility;
         if ($this->visibility == "I") return ""; // not editable attribute
-        $this->idisabled = " disabled readonly=1 title=\"" . _("read only") . "\" ";
+        $this->idisabled = ' disabled="disabled" readonly="readonly" title="' . _("read only") . '" ';
         $input = "";
         
         if (!$this->notd) $classname = "class=\"fullresize\"";
         else $classname = "";
         if ($this->isInDuplicableTableLine == false) {
-            $this->isInDuplicableTableLine = ($this->index == '__1x_');
+            $this->isInDuplicableTableLine = ($this->index == DocFormFormat::arrayIndex);
         }
         $this->attrid = $this->oattr->id;
         $this->docid = $docid;
@@ -912,7 +914,7 @@ class DocFormFormat
                 $input.= " id=\"" . $this->attridk . "\" ";
                 
                 if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
-                else if ($this->doc->usefor != 'D') $input.= " readonly "; // always but default
+                else if ($this->doc->usefor != 'D') $input.= ' readonly="readonly"'; // always but default
                 $input.= " class=\"color {pickerOnfocus:true,pickerClosable:true,pickerCloseText:'" . _("Close") . "',hash:true,required:false}\" ";
                 
                 $input.= " >&nbsp;";
@@ -935,7 +937,7 @@ class DocFormFormat
                 $lay->set("disabled", "");
                 if (($this->visibility == "R") || ($this->visibility == "S")) {
                     $lay->set("disabled", $this->idisabled);
-                }  else if ($this->doc->usefor != 'D') $lay->set("disabled", "readonly");
+                }  else if ($this->doc->usefor != 'D') $lay->set("disabled", ' readonly="readonly"');
                 $lay->set("VIEWCALSEL", (!(($this->visibility == "R") || ($this->visibility == "S"))) );
 
                $lay->set("CONTROLCAL",  (($this->doc->usefor != 'D') && ($this->doc->usefor != 'Q')));
@@ -958,7 +960,7 @@ class DocFormFormat
                 if (($this->visibility == "R") || ($this->visibility == "S")) {
                     $lay->set("disabled", $this->idisabled);
                     $lay->set("readonly", true);
-                } else if ($this->doc->usefor != 'D') $lay->set("disabled", "readonly");
+                } else if ($this->doc->usefor != 'D') $lay->set("disabled", ' readonly="readonly"');
                 
                 $input = $lay->gen();
                 return $input;
@@ -1192,7 +1194,7 @@ class DocFormFormat
                         "aehelpid" => ($help->isAlive()) ? $help->id : false
                     );
                     $tilabel[] = array(
-                        "ilabel" => getHtmlInput($doc, $v, $ddoc->getValue($tad[$k]->id) , '__1x_') ,
+                        "ilabel" => getHtmlInput($doc, $v, $ddoc->getValue($tad[$k]->id) , DocFormFormat::arrayIndex) ,
                         "ihw" => (!$visible) ? "0px" : $width,
                         "bgcolor" => $v->getOption("bgcolor", "inherit") ,
                         "tdstyle" => $v->getOption("cellbodystyle") ,
@@ -1447,7 +1449,7 @@ class DocFormFormat
                     }
                     $tilabel = array();
                     foreach ($tr as $kd => $td) {
-                        $dval = preg_replace('/\[([^\]]*)\]/e', "\$this->rowattrReplace(\$doc,'\\1','__1x_',\$defval)", $td);
+                        $dval = preg_replace('/\[([^\]]*)\]/e', "\$this->rowattrReplace(\$doc,'\\1','".DocFormFormat::arrayIndex."',\$defval)", $td);
                         $tilabel[] = array(
                             "ilabel" => $dval,
                             "ihw" => "auto",
