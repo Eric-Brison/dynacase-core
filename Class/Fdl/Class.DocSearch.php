@@ -178,13 +178,12 @@ class DocSearch extends PDocSearch
         } else {
             $op = ($sensitive) ? '~' : '~*';
             //    $filters[] = "usefor != 'D'";
-            $keyword = pg_escape_string($keyword);
             $keyword = str_replace("^", "£", $keyword);
-            $keyword = str_replace("$", "\0", $keyword);
+            $keyword = str_replace("$", "£", $keyword);
             if (strtolower(substr($keyword, 0, 5)) == "::get") { // only get method allowed
                 // it's method call
                 $keyword = $this->ApplyMethod($keyword);
-                $filters[] = "svalues $op '$keyword' ";
+                $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($keyword));
             } else if ($keyword != "") {
                 // transform conjonction
                 $tkey = explode(" ", $keyword);
@@ -195,20 +194,20 @@ class DocSearch extends PDocSearch
                         if ($v[strlen($v) - 1] == '"') {
                             $ing = false;
                             $ckey.= " " . substr($v, 0, -1);
-                            $filters[] = "svalues $op '$ckey' ";
+                            $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($ckey));
                         } else {
                             $ckey.= " " . $v;
                         }
                     } else if ($v && $v[0] == '"') {
                         if ($v[strlen($v) - 1] == '"') {
                             $ckey = substr($v, 1, -1);
-                            $filters[] = "svalues $op '$ckey' ";
+                            $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($ckey));
                         } else {
                             $ing = true;
                             $ckey = substr($v, 1);
                         }
                     } else {
-                        $filters[] = "svalues $op '$v' ";
+                        $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($v));
                     }
                 }
             }
