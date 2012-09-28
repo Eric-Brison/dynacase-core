@@ -861,8 +861,9 @@ class importDocumentDescription
             $this->doc->setDefValue($attrid, $defv);
             if ($force || (!$this->doc->getParamValue($attrid))) {
                 // TODO : not really exact here : must verify if it is really a parameter
-                $this->doc->setParam($attrid, $defv);
-                $this->tcr[$this->nLine]["msg"] = "reset default parameter";
+                //$this->doc->setParam($attrid, $defv);
+                //$this->tcr[$this->nLine]["msg"] = "reset default parameter";
+                
             }
             $this->tcr[$this->nLine]["msg"].= sprintf(_("add default value %s %s") , $attrid, $data[2]);
         }
@@ -946,7 +947,7 @@ class importDocumentDescription
             return;
         }
         $check = new CheckTagable();
-        $this->tcr[$this->nLine]["err"] = $check->check($data, $action)->getErrors();
+        $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         if ($this->tcr[$this->nLine]["err"]) return;
         $this->doc->tagable = $data[1] === "no" ? "" : $data[1];
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change tagable parameter to '%s'") , $this->doc->tagable);
@@ -958,7 +959,7 @@ class importDocumentDescription
     protected function doProfil(array $data)
     {
         $check = new CheckProfil();
-        $this->tcr[$this->nLine]["err"] = $check->check($data, $action)->getErrors();
+        $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         if ($this->tcr[$this->nLine]["err"]) return;
         
         if (ctype_digit(trim($data[1]))) $pid = trim($data[1]);
