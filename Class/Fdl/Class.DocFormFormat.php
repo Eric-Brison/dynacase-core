@@ -402,6 +402,8 @@ class DocFormFormat
                 
                 $input.= $this->addDocidCreate($this->oattr, $this->doc, $attridk, $value, $this->index);
                 if ($this->oattr->elink != "" && (!$alone)) {
+
+                    $isymbol=$ititle='';
                     if (substr($this->oattr->elink, 0, 3) == "JS:") {
                         // javascript action
                         $url = $this->elinkEncode($this->doc, $attridk, substr($this->oattr->elink, 3) , $this->index, $ititle, $isymbol);
@@ -500,6 +502,10 @@ class DocFormFormat
             if (preg_match(PREGEXPFILE, $value, $reg)) {
                 $dbaccess = getDbAccess();
                 $vf = newFreeVaultFile($dbaccess);
+                /**
+                 * @var vaultFileInfo $info
+                 */
+                $info=null;
                 if ($vf->Show($reg[2], $info) == "") {
                     $vid = $reg[2];
                     $DAV = getParam("FREEDAV_SERVEUR", false);
@@ -906,8 +912,8 @@ class DocFormFormat
                 $input.= " id=\"" . $this->attridk . "\" ";
                 
                 if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
-                else if ($this->doc->usefor != 'D') $input.= " disabled "; // always but default
-                $input.= " class=\"color {pickerOnfocus:false,pickerClosable:true,pickerCloseText:'" . _("Close") . "',hash:true,required:false}\" ";
+                else if ($this->doc->usefor != 'D') $input.= " readonly "; // always but default
+                $input.= " class=\"color {pickerOnfocus:true,pickerClosable:true,pickerCloseText:'" . _("Close") . "',hash:true,required:false}\" ";
                 
                 $input.= " >&nbsp;";
                 if (!(($this->visibility == "R") || ($this->visibility == "S"))) {
@@ -929,20 +935,10 @@ class DocFormFormat
                 $lay->set("disabled", "");
                 if (($this->visibility == "R") || ($this->visibility == "S")) {
                     $lay->set("disabled", $this->idisabled);
-                } else if ($this->doc->usefor != 'D') $lay->set("disabled", "disabled");
-                
-                if (!(($this->visibility == "R") || ($this->visibility == "S"))) {
-                    $lay->setBlockData("VIEWCALSEL", array(
-                        array(
-                            "zou"
-                        )
-                    ));
-                }
-                if (($this->doc->usefor != 'D') && ($this->doc->usefor != 'Q')) $lay->setBlockData("CONTROLCAL", array(
-                    array(
-                        "zou"
-                    )
-                ));
+                }  else if ($this->doc->usefor != 'D') $lay->set("disabled", "readonly");
+                $lay->set("VIEWCALSEL", (!(($this->visibility == "R") || ($this->visibility == "S"))) );
+
+               $lay->set("CONTROLCAL",  (($this->doc->usefor != 'D') && ($this->doc->usefor != 'Q')));
                 $input = trim($lay->gen());
                 return $input;
             }
@@ -1818,7 +1814,7 @@ class DocFormFormat
              *
              * @param \BasicAttribute|\NormalAttribute $oattr
              * @param \Doc $doc
-             * @param $attridk id suffix of the <input/> tag
+             * @param string $attridk id suffix of the <input/> tag
              * @param string $value
              * @param integer $index
              * @return string

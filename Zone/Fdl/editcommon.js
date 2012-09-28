@@ -984,7 +984,6 @@ function isInputLocked(id) {
 
 
 function disableReadAttribute() {
-
     var ndis = true;
     var i;
     var vin;

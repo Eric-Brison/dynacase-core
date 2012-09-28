@@ -1730,7 +1730,7 @@ function control_date(event, th) {
 
     if (r != null) {    
       nd.setFullYear(r[3],r[2]-1,r[1]);
-      th.disabled=true; // to say OK
+      th.readOnly=true; // to say OK
       th.value= padout2(nd.getDate())+'/'+padout2(nd.getMonth()+1)+'/'+padout4(nd.getFullYear());
 		     
     } else {

@@ -361,7 +361,7 @@ var jscolor = {
 
 		this.hidePicker = function() {
 			if(isPickerOwner()) {
-			    this.valueElement.disabled = true;
+			    this.valueElement.readOnly = true;
 				removePicker();
 			}
 		};
@@ -369,7 +369,7 @@ var jscolor = {
 
 		this.showPicker = function() {
 			if(!isPickerOwner()) {
-			    this.valueElement.disabled = false;
+			    this.valueElement.readOnly = false;
 				var tp = jscolor.getElementPos(target); // target pos
 				var ts = jscolor.getElementSize(target); // target size
 				var vp = jscolor.getViewPos(); // view pos
