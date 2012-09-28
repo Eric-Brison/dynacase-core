@@ -200,12 +200,13 @@ create unique index idx_idfam on docfam(id);";
         $tDefVal = $tDefPar = array();
         
         $tp = $this->getParamAttributes();
+        $pPowns = $this->getOwnParams();
         foreach ($tp as $aid => & $oa) {
             $tDefPar[$aid] = array(
                 "aid" => $aid,
                 "alabel" => $oa->getLabel() ,
-                "defown" => $this->getParamValue($aid) ,
-                "definh" => '',
+                "defown" => $pPowns[$aid],
+                "definh" => ($this->fromid) ? $this->getFamDoc()->getParamValue($aid) : '',
                 "defresult" => $this->getHtmlValue($oa, $d->getParamValue($aid))
             );
         }
@@ -594,7 +595,6 @@ create unique index idx_idfam on docfam(id);";
     {
         $Xval = "_xt$X";
         $defval = $this->$X;
-        if (!$defval) return array();
         
         if ($this->$Xval) return $this->$Xval;
         $XS[$this->id] = $defval;
@@ -606,9 +606,10 @@ create unique index idx_idfam on docfam(id);";
             foreach ($rx as $r) {
                 $XS[$r["id"]] = $r[$X];
             }
-            $inhIds = array_reverse($this->attributes->fromids);
+            $inhIds = array_values($this->attributes->fromids);
         }
-        $inhIds[] = $this->id;
+        if (!in_array($this->id, $inhIds)) $inhIds[] = $this->id;
+        
         $txval = array();
         
         foreach ($inhIds as $famId) {
