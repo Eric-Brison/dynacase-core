@@ -65,6 +65,8 @@ class DocFormFormat
      */
     private $jsEvents = '';
     
+    const arrayIndex = '__1x_';
+    
     public function __construct(Doc & $doc)
     {
         $this->setDoc($doc);
@@ -115,20 +117,20 @@ class DocFormFormat
         if ($this->oattr->inArray()) {
             if ($this->index == - 1) {
                 $attrin.= '[-1]';
-                $attridk = $this->oattr->id . '__1x_';
+                $attridk = $this->oattr->id . DocFormFormat::arrayIndex;
                 $this->isInDuplicableTableLine = true;
             } else $attrin.= "[{$this->index}]";
         }
         if (isset($this->oattr->mvisibility)) $this->visibility = $this->oattr->mvisibility;
         else $this->visibility = $this->oattr->visibility;
         if ($this->visibility == "I") return ""; // not editable attribute
-        $this->idisabled = " disabled readonly=1 title=\"" . _("read only") . "\" ";
+        $this->idisabled = ' disabled="disabled" readonly="readonly" visibility="S"  title="' . _("read only") . '" ';
         $input = "";
         
         if (!$this->notd) $classname = "class=\"fullresize\"";
         else $classname = "";
         if ($this->isInDuplicableTableLine == false) {
-            $this->isInDuplicableTableLine = ($this->index == '__1x_');
+            $this->isInDuplicableTableLine = ($this->index == DocFormFormat::arrayIndex);
         }
         $this->attrid = $this->oattr->id;
         $this->docid = $docid;
@@ -402,6 +404,8 @@ class DocFormFormat
                 
                 $input.= $this->addDocidCreate($this->oattr, $this->doc, $attridk, $value, $this->index);
                 if ($this->oattr->elink != "" && (!$alone)) {
+                    
+                    $isymbol = $ititle = '';
                     if (substr($this->oattr->elink, 0, 3) == "JS:") {
                         // javascript action
                         $url = $this->elinkEncode($this->doc, $attridk, substr($this->oattr->elink, 3) , $this->index, $ititle, $isymbol);
@@ -500,6 +504,10 @@ class DocFormFormat
             if (preg_match(PREGEXPFILE, $value, $reg)) {
                 $dbaccess = getDbAccess();
                 $vf = newFreeVaultFile($dbaccess);
+                /**
+                 * @var vaultFileInfo $info
+                 */
+                $info = null;
                 if ($vf->Show($reg[2], $info) == "") {
                     $vid = $reg[2];
                     $DAV = getParam("FREEDAV_SERVEUR", false);
@@ -906,8 +914,8 @@ class DocFormFormat
                 $input.= " id=\"" . $this->attridk . "\" ";
                 
                 if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
-                else if ($this->doc->usefor != 'D') $input.= " disabled "; // always but default
-                $input.= " class=\"color {pickerOnfocus:false,pickerClosable:true,pickerCloseText:'" . _("Close") . "',hash:true,required:false}\" ";
+                else if ($this->doc->usefor != 'D') $input.= ' readonly="readonly"'; // always but default
+                $input.= " class=\"color {pickerOnfocus:true,pickerClosable:true,pickerCloseText:'" . _("Close") . "',hash:true,required:false}\" ";
                 
                 $input.= " >&nbsp;";
                 if (!(($this->visibility == "R") || ($this->visibility == "S"))) {
@@ -929,20 +937,10 @@ class DocFormFormat
                 $lay->set("disabled", "");
                 if (($this->visibility == "R") || ($this->visibility == "S")) {
                     $lay->set("disabled", $this->idisabled);
-                } else if ($this->doc->usefor != 'D') $lay->set("disabled", "disabled");
+                } else if ($this->doc->usefor != 'D') $lay->set("disabled", ' readonly="readonly"');
+                $lay->set("VIEWCALSEL", (!(($this->visibility == "R") || ($this->visibility == "S"))));
                 
-                if (!(($this->visibility == "R") || ($this->visibility == "S"))) {
-                    $lay->setBlockData("VIEWCALSEL", array(
-                        array(
-                            "zou"
-                        )
-                    ));
-                }
-                if (($this->doc->usefor != 'D') && ($this->doc->usefor != 'Q')) $lay->setBlockData("CONTROLCAL", array(
-                    array(
-                        "zou"
-                    )
-                ));
+                $lay->set("CONTROLCAL", (($this->doc->usefor != 'D') && ($this->doc->usefor != 'Q')));
                 $input = trim($lay->gen());
                 return $input;
             }
@@ -962,7 +960,7 @@ class DocFormFormat
                 if (($this->visibility == "R") || ($this->visibility == "S")) {
                     $lay->set("disabled", $this->idisabled);
                     $lay->set("readonly", true);
-                } else if ($this->doc->usefor != 'D') $lay->set("disabled", "disabled");
+                } else if ($this->doc->usefor != 'D') $lay->set("disabled", ' readonly="readonly"');
                 
                 $input = $lay->gen();
                 return $input;
@@ -1196,7 +1194,7 @@ class DocFormFormat
                         "aehelpid" => ($help->isAlive()) ? $help->id : false
                     );
                     $tilabel[] = array(
-                        "ilabel" => getHtmlInput($doc, $v, $ddoc->getValue($tad[$k]->id) , '__1x_') ,
+                        "ilabel" => getHtmlInput($doc, $v, $ddoc->getValue($tad[$k]->id) , DocFormFormat::arrayIndex) ,
                         "ihw" => (!$visible) ? "0px" : $width,
                         "bgcolor" => $v->getOption("bgcolor", "inherit") ,
                         "tdstyle" => $v->getOption("cellbodystyle") ,
@@ -1451,7 +1449,7 @@ class DocFormFormat
                     }
                     $tilabel = array();
                     foreach ($tr as $kd => $td) {
-                        $dval = preg_replace('/\[([^\]]*)\]/e', "\$this->rowattrReplace(\$doc,'\\1','__1x_',\$defval)", $td);
+                        $dval = preg_replace('/\[([^\]]*)\]/e', "\$this->rowattrReplace(\$doc,'\\1','" . DocFormFormat::arrayIndex . "',\$defval)", $td);
                         $tilabel[] = array(
                             "ilabel" => $dval,
                             "ihw" => "auto",
@@ -1818,15 +1816,15 @@ class DocFormFormat
              *
              * @param \BasicAttribute|\NormalAttribute $oattr
              * @param \Doc $doc
-             * @param $attridk id suffix of the <input/> tag
+             * @param string $attridk id suffix of the <input/> tag
              * @param string $value
              * @param integer $index
              * @return string
              */
             private function addDocIdCreate(BasicAttribute & $oattr, Doc & $doc, $attridk, $value, $index)
             {
-
-                if ($oattr->type == "docid" || $oattr->type == "account" ) {
+                
+                if ($oattr->type == "docid" || $oattr->type == "account") {
                     $creation = $oattr->getOption("creation");
                     if ($creation && ($creation != "no")) {
                         $reldoc = new_doc($doc->dbaccess, $oattr->format);

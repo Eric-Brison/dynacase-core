@@ -1055,7 +1055,7 @@ Calendar._keyEvent = function(ev) {
  */
 Calendar.prototype._init = function (firstDayOfWeek, date) {
 	var today = new Date();
-	this.table.style.visibility = "hidden";
+	//this.table.style.visibility = "hidden";
 	var year = date.getFullYear();
 	if (year < this.minYear) {
 		year = this.minYear;
@@ -1150,7 +1150,7 @@ Calendar.prototype._init = function (firstDayOfWeek, date) {
 	this.ar_days = ar_days;
 	this.title.firstChild.data = Calendar._MN[month] + ", " + year;
 	this.onSetTime();
-	this.table.style.visibility = "visible";
+	//this.table.style.visibility = "visible";
 	// PROFILE
 	// this.tooltips.firstChild.data = "Generated in " + ((new Date()) - today) + " ms";
 };
@@ -1260,6 +1260,7 @@ Calendar.prototype.show = function () {
 		}
 	}
 	this.element.style.display = "block";
+    this.element.style.visibility = "";
 	this.hidden = false;
 	if (this.isPopup) {
 		window.calendar = this;
@@ -1329,7 +1330,9 @@ Calendar.prototype.showAtElement = function (el, opts) {
 		tmp = box.y + box.height - br.y;
 		if (tmp > 0) box.y -= tmp;
 	};
+
 	this.element.style.display = "block";
+    this.element.style.visibility = "hidden";
 	Calendar.continuation_for_the_fucking_khtml_browser = function() {
 		var w = self.element.offsetWidth;
 		var h = self.element.offsetHeight;
@@ -1359,6 +1362,7 @@ Calendar.prototype.showAtElement = function (el, opts) {
 		p.height = h + 40;
 		self.monthsCombo.style.display = "none";
 		fixPosition(p);
+
 		self.showAt(p.x, p.y);
 	};
 	if (Calendar.is_khtml)
@@ -1730,7 +1734,7 @@ function control_date(event, th) {
 
     if (r != null) {    
       nd.setFullYear(r[3],r[2]-1,r[1]);
-      th.disabled=true; // to say OK
+      th.readOnly=true; // to say OK
       th.value= padout2(nd.getDate())+'/'+padout2(nd.getMonth()+1)+'/'+padout4(nd.getFullYear());
 		     
     } else {

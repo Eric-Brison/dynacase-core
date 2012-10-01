@@ -15,6 +15,14 @@ input[type=button].view-doc {
     width:16px;
 }
 
+input[readonly="readonly"], input[readonly] {
+    color: [COLOR_BLACK];
+}
+input[disabled="disabled"], input[disabled] {
+    cursor:not-allowed;
+    color: #808080;
+    text-shadow: 2px 2px 2px #eee
+}
 .tarray .add-button {
     background : url('[IMG:add22.gif]') no-repeat;
 }
@@ -33,7 +41,12 @@ input[type=button].view-doc {
 .tarray .duplicate-button {
     background : url('[IMG:dup22.gif]') no-repeat;
 }
-
+div.relationTooltip {
+    background-color: [COLOR_WHITE];
+    border: 1px solid [COLOR_A0];
+    padding: 3px;
+    margin:3px;
+}
 /*
  *
  * refs #1443: trash columns in edition

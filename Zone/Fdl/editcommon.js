@@ -984,7 +984,6 @@ function isInputLocked(id) {
 
 
 function disableReadAttribute() {
-
     var ndis = true;
     var i;
     var vin;
@@ -1010,7 +1009,14 @@ function disableReadAttribute() {
                 var iout=document.getElementById(taout[c][i]);
                 if (iout) {
                     if (iout.type != 'hidden') {
-                        if (iout.getAttribute('readonly') != '1')  iout.disabled=ndis;
+                        if (iout.getAttribute('visibility') != '') {
+                            if (iout.getAttribute('autocomplete') == '') {
+                              iout.disabled=ndis;
+
+                            } else {
+                                 iout.readOnly=ndis;
+                            }
+                        }
                         inc=document.getElementById('ic_'+taout[c][i]);
                         inx=document.getElementById('ix_'+taout[c][i]);
                         ind=document.getElementById('id_'+taout[c][i]);
@@ -1054,7 +1060,7 @@ function disableReadAttribute() {
                             if (!kj) kj=j;
                             vin = getInputValue(tain[c][k],kj);
                             if ((vin == '') || (vin == ' ')) {
-                                if (lin[j].getAttribute('readonly') != '1') ndis = false;
+                                if (lin[j].getAttribute('readonly') != 'readonly') ndis = false;
                             }
                         }
                         incr=document.getElementById('icr_'+tain[c][0]+'_'+kj);
@@ -1065,8 +1071,13 @@ function disableReadAttribute() {
                         //	  alert(tain[c].toString()+'['+j+']'+ndis);
                         if (lin[j].type != 'hidden') {
                             aid=lin[j].id;
-                            lin[j].disabled=ndis;
-                            disabledIE(lin[j]);
+                            if (lin[j].getAttribute("autocomplete")=='') {
+                                lin[j].disabled=ndis;
+
+                                disabledIE(lin[j]);
+                            } else {
+                                lin[j].readOnly=ndis;
+                            }
                             inc=document.getElementById('ic_'+aid);
                             ind=document.getElementById('ic_'+aid);
                             if (inc) inc.disabled=ndis;
@@ -2875,3 +2886,34 @@ function elinkvalue(attrid) {
 
   return '';
 }
+$(document).ready(function () {
+
+    $("body").on("click", '#relTooltip', function(event){
+        $(this).hide();
+    });
+    $("#fedit").on("click", 'input[autoinput][readonly]', function(event){
+	   var dTooltip=$("#relTooltip");
+        var oTooltip=null;
+        if (dTooltip.length == 0) {
+            oTooltip=document.createElement('div');
+            oTooltip.setAttribute('id','relTooltip');
+            oTooltip.style.position='absolute';
+            oTooltip.innerHTML="[TEXT:Click to clear button to change value]";
+            oTooltip.className='relationTooltip';
+            document.body.appendChild(oTooltip);
+            dTooltip=$("#relTooltip");
+        }
+        if (dTooltip.length == 1) {
+            oTooltip= dTooltip[0];
+            var x=$(this).position().left;
+            var y=$(this).position().top;
+
+             oTooltip.style.left=x+'px';
+             oTooltip.style.top=y+'px';
+            dTooltip.show();
+            setTimeout(function(){ $("#relTooltip").hide('slow'); }, 2000);
+        }
+
+    });
+});
+
