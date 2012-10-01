@@ -16,10 +16,12 @@ input[type=button].view-doc {
 }
 
 input[readonly="readonly"], input[readonly] {
-    color: [COLOR_A0];
+    color: [COLOR_BLACK];
 }
 input[disabled="disabled"], input[disabled] {
     cursor:not-allowed;
+    color: #808080;
+    text-shadow: 2px 2px 2px #eee
 }
 .tarray .add-button {
     background : url('[IMG:add22.gif]') no-repeat;
