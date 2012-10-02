@@ -23,17 +23,20 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.SearchDoc.php");
 function color_failure($msg)
 {
-    if ($msg) return chr(0x1b) . "[1;31m" . $msg . chr(0x1b) . "[0;39m";
+    if ($msg) $msg = chr(0x1b) . "[1;31m" . $msg . chr(0x1b) . "[0;39m";
+    return $msg;
 }
 
 function color_success($msg)
 {
-    if ($msg) return chr(0x1b) . "[1;32m" . $msg . chr(0x1b) . "[0;39m";
+    if ($msg) $msg = chr(0x1b) . "[1;32m" . $msg . chr(0x1b) . "[0;39m";
+    return $msg;
 }
 
 function color_warning($msg)
 {
-    if ($msg) return chr(0x1b) . "[1;33m" . $msg . chr(0x1b) . "[0;39m";
+    if ($msg) $msg = chr(0x1b) . "[1;33m" . $msg . chr(0x1b) . "[0;39m";
+    return $msg;
 }
 
 $usage = new ApiUsage();
@@ -64,6 +67,7 @@ if ($dbaccess == "") {
     exit();
 }
 
+$famtitle = "";
 if ($famId) {
     $f = new_doc($dbaccess, $famId);
     if (!$f->isAlive()) {
@@ -73,6 +77,7 @@ if ($famId) {
         $action->exitError(sprintf("document %s not a family", $famId));
     }
     $famId = $f->id;
+    $famtitle = $f->getTitle();
 }
 
 $s = new SearchDoc($dbaccess, $famId);
@@ -96,7 +101,7 @@ if ($fldid != '') {
 if ($allrev) $s->latest = false;
 if ($filter) {
     // verify validity and prevent hack
-    if (@pg_prepare($s->dbid, sprintf("select id from doc%d where %s", $s->fromid, $filter)) == false) {
+    if (@pg_prepare(getDbid($dbaccess) , sprintf("select id from doc%d where %s", $s->fromid, $filter)) == false) {
         $action->exitError(sprintf("filter not valid :%s", pg_last_error()));
     } else {
         $s->addFilter($filter);
@@ -110,8 +115,9 @@ if ($s->searchError()) {
 $targ = array();
 if ($arg != "") $targ[] = $arg;
 $card = $s->count();
-printf("\n%d %s to update with %s\n", $card, $f->getTitle() , $method);
+printf("\n%d %s to update with %s\n", $card, $famtitle, $method);
 
+$ret = "";
 while ($doc = $s->nextDoc()) {
     $usemethod = ($method && (method_exists($doc, $method)));
     if ($method && (!method_exists($doc, $method))) {
@@ -138,7 +144,7 @@ while ($doc = $s->nextDoc()) {
                     break;
 
                 case "complete":
-                    $err = $doc->save();
+                    $err = $doc->store();
                     $modified = true;
                     break;
             }
