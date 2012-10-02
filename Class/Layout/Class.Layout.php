@@ -74,7 +74,7 @@ class Layout
     public $encoding = "";
     /**
      * set to true to not parse template when it is generating
-     * @api
+     * @api if layout must not be parsed
      * @var bool
      */
     public $noparse = false;
@@ -165,14 +165,14 @@ class Layout
     }
     /**
      * set data to fill a block
-     * @api
+     * @api set data to fill a block
      * @param string $p_nom_block block name
      * @param array $data data to fill the block
      */
     public function setBlockData($p_nom_block, $data = NULL)
     {
         $this->data["$p_nom_block"] = $data;
-        // affect the corresp block if not
+        // affect the $corresp block if not
         if (is_array($data)) {
             reset($data);
             $elem = current($data);
@@ -188,7 +188,7 @@ class Layout
     /**
      * return data set in block name
      * @see setBlockData
-     * @api
+     * @api return previously block setting
      * @param string $p_nom_block block name
      * @return array|bool return data or false if no data are set yet
      */
@@ -351,7 +351,7 @@ class Layout
     /**
      * add a simple key /value in template
      * the key will be replaced by value when [KEY] is found in template
-     * @api
+     * @api affect value to a key
      * @param string $tag
      * @param string $val
      */
@@ -363,6 +363,7 @@ class Layout
     /**
      * return the value set for a key
      * @see Layout::set()
+     * @api get value of a key
      * @param string $tag
      * @return string
      */
@@ -501,7 +502,7 @@ class Layout
     }
     /**
      * Generate text from template with data included
-     * @api
+     * @api generate text from template
      * @return string the complete text
      */
     public function gen()
