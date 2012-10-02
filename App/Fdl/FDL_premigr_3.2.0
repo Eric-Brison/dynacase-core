@@ -41,13 +41,14 @@ PGSERVICE="$pgservice_core" psql -t -c "update docfam set fromid=0 where id=128;
 PGSERVICE="$pgservice_core" psql -t -c "drop TRIGGER tinitacl on docperm;"
 PGSERVICE="$pgservice_core" psql -f "$wpub/FDL/fdl.sql"
 
+# Delete parasite parameters
+"$wpub/wsh.php" --api=cleanFamilyParameter
 #
 # Delete deprecated default values
 #
 PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where docid < 1000 and id = 'us_iddomain';"
 PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where docid < 1000 and id = 'us_domain';"
 PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where docid < 1000 and id = 'us_passwd';"
-PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set param =null where id=128";
 PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|0]', '') where id < 1000 and defval ~ 'us_iddomain';"
 PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|1]', '') where id < 1000 and defval ~ 'us_iddomain';"
 PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|local]', '') where id < 1000 and defval ~ 'us_domain';"
