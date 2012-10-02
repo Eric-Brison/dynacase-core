@@ -437,7 +437,6 @@ class _IUSER extends Doc implements IMailRecipient
         }
         return '';
     }
-
     /**
      * return main mail address in a user-friendly representation
      * (by default we return the getMail() address, and it's up to the
@@ -445,7 +444,8 @@ class _IUSER extends Doc implements IMailRecipient
      * representation)
      * @return string
      */
-    public function getMailTitle() {
+    public function getMailTitle()
+    {
         return $this->getMail();
     }
     /**
@@ -800,7 +800,7 @@ class _IUSER extends Doc implements IMailRecipient
         if ($expd != "") {
             if (preg_match("|([0-9][0-9])/([0-9][0-9])/(2[0-9][0-9][0-9])|", $expd, $reg)) {
                 $expires = mktime(0, 0, 0, $reg[2], $reg[1], $reg[3]);
-            } else if (preg_match("|(2[0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9]|", $expd, $reg)) {
+            } else if (preg_match("|(2[0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])|", $expd, $reg)) {
                 $expires = mktime(0, 0, 0, $reg[2], $reg[3], $reg[1]);
             }
             return ($expires <= time());
