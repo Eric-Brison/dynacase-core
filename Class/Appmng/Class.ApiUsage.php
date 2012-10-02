@@ -287,7 +287,7 @@ namespace {
                     $this->exitError($error);
                 }
             }
-            $allArgs = array_merge($this->needArgs, $this->optArgs);
+            $allArgs = array_merge($this->needArgs, $this->optArgs, $this->emptyArgs);
             $argsKey = $this->getHiddenKeys();
             
             foreach ($allArgs as $arg) {
