@@ -851,7 +851,7 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array() , $fromid = fal
     $userid = $action->user->id;
     if ($userid) {
         $userMember = DocPerm::getMemberOfVector();
-        $sql = sprintf("select *,getaperm('%s',profid) as uperm  from only %s where initid=%d and doctype != 'T' and locked != -1 ", $userMember, $table, $initid, $sqlcond);
+        $sql = sprintf("select *,getaperm('%s',profid) as uperm  from only %s where initid=%d and doctype != 'T' and locked != -1 %s", $userMember, $table, $initid, $sqlcond);
         $err = simpleQuery($dbaccess, $sql, $result);
         if ($result && (count($result) > 0)) {
             if (count($result) > 1) addWarningMsg(sprintf("document %d : multiple alive revision", $initid));
