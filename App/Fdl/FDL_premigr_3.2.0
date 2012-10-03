@@ -43,6 +43,12 @@ PGSERVICE="$pgservice_core" psql -f "$wpub/FDL/fdl.sql"
 
 # Delete parasite parameters
 "$wpub/wsh.php" --api=cleanFamilyParameter
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error executing cleanFamilyParameter."
+    exit $RET
+fi
+
 #
 # Delete deprecated default values
 #

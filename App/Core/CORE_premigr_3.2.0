@@ -12,3 +12,18 @@ for SUBDIR in session img-cache .img-resize; do
         rm -Rf -- "$wpub/$SUBDIR"
     fi
 done
+
+if [ -d "$wpub"/context/default/FDLGEN ]; then
+    mv "$wpub"/context/default/FDLGEN/Class*php "$wpub"/FDLGEN
+    sed -i'' -e 's|^include_once("FDLGEN/default/|include_once("FDLGEN/|' "$wpub"/FDLGEN/Class*php
+    rm -f "$wpub"/FDLGEN/default
+    rmdir "$wpub"/context/default/FDLGEN
+fi
+if [ -f "$wpub"/context/default/dbaccess.php ]; then
+    rm -f "$wpub"/context/default/dbaccess.php
+fi
+if [ -f "$wpub"/context/default/local-dbaccess.php ]; then
+    mv "$wpub"/context/default/local-dbaccess.php "$wpub"/config/local-dbaccess.php
+fi
+rmdir "$wpub/context/default/"
+rmdir "$wpub/context"
