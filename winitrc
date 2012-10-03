@@ -1,5 +1,0 @@
-#!/bin/bash
-
-#load environement variable for freedom
-. /etc/freedom.conf
-wchoose -b

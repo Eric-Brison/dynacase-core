@@ -16,7 +16,7 @@ GZIP_ENV = --best
 
 SUBDIR = Class Zone Action Api App Admin CONTRIB Doc Expire Images programs Share Style 
 
-TOP_MODULES = indexq.php index.php whattext wsh.php wvirtual.php guest.php wcheck wstop wstart wdbcreate winitrc resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess pack.php
+TOP_MODULES = indexq.php index.php whattext wsh.php guest.php wcheck wstop wstart resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess pack.php
 
 pages_not_xml = info.xml
 pages_not_php = fam2po.php po2js.php
@@ -33,10 +33,6 @@ $(pubdir)/whattext: whattext
 	cp $< $@
 $(pubdir)/wcheck: wcheck
 	cp $< $@
-$(pubdir)/wdbcreate: wdbcreate
-	cp $< $@
-$(pubdir)/winitrc: winitrc
-	cp $< $@
 $(pubdir)/wstop: wstop
 	cp $< $@
 $(pubdir)/wstart: wstart
@@ -52,11 +48,11 @@ $(pubdir)/.htaccess: htaccess
 
 $(pubdir)/FDLGEN:
 	mkdir -p $@
-$(pubdir)/context/default:
+$(pubdir)/config:
 	mkdir -p $@
-$(pubdir)/context/default/dbaccess.php.sample: dbaccess.php.sample $(pubdir)/context/default/
+$(pubdir)/config/dbaccess.php.in: dbaccess.php.in $(pubdir)/config
 	cp $< $@
-$(pubdir)/context/default/dbaccess.php.in: dbaccess.php.in
+$(pubdir)/config/local-dbaccess.php.sample: local-dbaccess.php.sample $(pubdir)/config
 	cp $< $@
 
 $(pubdir)/var:
@@ -115,7 +111,7 @@ $(pubdir)/FREEDOM:
 $(pubdir)/FREEDOM/freedom.cron: freedom.cron $(pubdir)/FREEDOM
 	cp $< $@
 
-publish: $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/var/session/.htaccess $(pubdir)/var/cache/image/.htaccess $(pubdir)/var/cache/file/.htaccess $(pubdir)/var/tmp/.htaccess $(pubdir)/var/upload/.htaccess $(pubdir)/$(applib) $(pubdir)/$(applib)/FREEDOM.vault $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron
+publish: $(pubdir)/config/dbaccess.php.in $(pubdir)/config/local-dbaccess.php.sample $(pubdir)/var/session/.htaccess $(pubdir)/var/cache/image/.htaccess $(pubdir)/var/cache/file/.htaccess $(pubdir)/var/tmp/.htaccess $(pubdir)/var/upload/.htaccess $(pubdir)/$(applib) $(pubdir)/$(applib)/FREEDOM.vault $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron
 
 
 webinst-test:
@@ -131,7 +127,7 @@ clean:
 	rm -f *.*~ config.* Makefile configure \
 	      dynacase-platform-*-*.webinst \
 	      $(PACKAGE)-$(VERSION).tar.gz \
-	      dbaccess.php.sample apache.conf \
+	      apache.conf \
 	      App/Core/CORE_init.php \
 	      App/Access/ACCESS_init.php \
 	      App/Authent/AUTHENT_init.php \

@@ -153,7 +153,6 @@ AC_OUTPUT(Makefile \
           Api/updateclass.php \
           FREEDOM.vault \
           Share/Lib.Prefix.php  \
-          dbaccess.php.sample \
           Admin/htaccess \
           htaccess \
           info.xml \

@@ -349,22 +349,15 @@ function getServiceCore()
 function getDbAccessValue($varName)
 {
     $included = false;
-    $filename = sprintf("%s/context/dbaccess.php", DEFAULT_PUBDIR);
+    $filename = sprintf("%s/config/dbaccess.php", DEFAULT_PUBDIR);
     if (file_exists($filename)) {
         if (include ($filename)) {
             $included = true;
         }
     } else {
-        $filename = sprintf("%s/context/default/dbaccess.php", DEFAULT_PUBDIR);
-        if (file_exists($filename)) {
-            if (include ($filename)) {
-                $included = true;
-            }
-        } else {
-            $filename = ('dbaccess.php');
-            if (include ("dbaccess.php")) {
-                $included = true;
-            }
+        $filename = ('dbaccess.php');
+        if (include ($filename)) {
+            $included = true;
         }
     }
     if (!$included) {
