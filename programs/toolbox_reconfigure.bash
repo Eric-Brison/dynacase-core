@@ -16,8 +16,8 @@ if [ -z "$freedom_db" ]; then
 fi
 apacheuser=`"$WIFF_ROOT"/wiff --getValue=apacheuser`
 
-dbaccesstpl="$WIFF_CONTEXT_ROOT"/context/default/dbaccess.php.in
-dbaccess="$WIFF_CONTEXT_ROOT"/context/dbaccess.php
+dbaccesstpl="$WIFF_CONTEXT_ROOT"/config/dbaccess.php.in
+dbaccess="$WIFF_CONTEXT_ROOT"/config/dbaccess.php
 
 prefixtpl="$WIFF_CONTEXT_ROOT"/WHAT/Lib.Prefix.php.in
 prefix="$WIFF_CONTEXT_ROOT"/WHAT/Lib.Prefix.php

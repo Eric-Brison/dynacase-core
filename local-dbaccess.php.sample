@@ -1,0 +1,15 @@
+<?php
+
+/*
+ * Sample configuration to pre-select an authentication mode
+ * depending on the requested URL's hostname.
+ */
+
+if ($_SERVER['HTTP_HOST'] == 'admin.example.net') {
+    /* Access to http://admin.example.net/ are authenticated against local accounts only */
+    $freedom_authtype = 'freedom';
+} else {
+    /* While everything else is authenticated with networkuser accounts only */
+    $freedom_authtype = 'freedomNu';
+    $freedom_providers['freedomNu'] = array();
+}
