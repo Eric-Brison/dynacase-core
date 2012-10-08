@@ -29,7 +29,9 @@ $file = $usage->addOption("file", "file (can be a file name or stdin");
 $htmlmode = $usage->addOption("htmlmode", "activacte htmlmode");
 
 $usage->verify();
-
+/**
+ * @var Action $action
+ */
 $from = getMailAddr($action->user->id);
 if ($from == "") $from = getParam('SMTP_FROM');
 if ($from == "") $from = $from = $action->user->login . '@' . php_uname('n');

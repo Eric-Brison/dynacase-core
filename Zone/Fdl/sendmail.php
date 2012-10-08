@@ -91,7 +91,9 @@ function sendmail($to, $from, $cc, $bcc, $subject, &$mimemail, $multipart = null
         if ($cc != '') {
             $mm->addCc($cc);
         }
-        
+        /**
+         * @var Fdl_Mail_mimePart $mimemail
+         */
         $email = $mimemail->encode();
         if (PEAR::isError($email)) {
             $err = sprintf("Error encoding Fdl_Mail_mimePart : %s", $email->message);
@@ -134,6 +136,7 @@ function sendmail($to, $from, $cc, $bcc, $subject, &$mimemail, $multipart = null
     }
     /* Disconnect from the SMTP server. */
     $smtp->disconnect();
+    return '';
 }
 /**
  * redefine class to add explicit CID
@@ -306,12 +309,15 @@ class Fdl_Mail_mimePart extends Mail_mimePart
 function createSentMessage($to, $from, $cc, $bcc, $subject, &$mimemail, &$doc = null)
 {
     include_once ('WHAT/Lib.Common.php');
-    
+    $err = '';
     $msg = createDoc(getDbAccessFreedom() , "SENTMESSAGE", true);
     if ($msg) {
         $msg->setValue("emsg_from", $from);
         $msg->setValue("emsg_date", Doc::getTimeDate());
         $msg->setValue("emsg_subject", $subject);
+        /**
+         * @var Doc $doc
+         */
         if ($doc && $doc->id) {
             $msg->setValue("emsg_refid", $doc->id);
             $msg->profid = $doc->profid;
@@ -376,6 +382,9 @@ function createSentMessage($to, $from, $cc, $bcc, $subject, &$mimemail, &$doc = 
             // Store the text part
             $textBody = '';
             if ($textPart !== null) {
+                /**
+                 * @var Mail_mimePart $textPart
+                 */
                 if ($textPart->_body_file != '') {
                     $textBody = file_get_contents($textPart->_body_file);
                 } else {
@@ -386,6 +395,9 @@ function createSentMessage($to, $from, $cc, $bcc, $subject, &$mimemail, &$doc = 
             // Store the HTML part
             $htmlBody = '';
             if ($htmlPart !== null) {
+                /**
+                 * @var Mail_mimePart $htmlPart
+                 */
                 if ($htmlPart->_body_file != '') {
                     $htmlBody = file_get_contents($htmlPart->_body_file);
                 } else {
