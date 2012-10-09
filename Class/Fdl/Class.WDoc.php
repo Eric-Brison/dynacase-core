@@ -934,7 +934,7 @@ class WDoc extends Doc
     }
     /**
      * get action (localized language)
-     * @deprecated
+     * @deprecated use getActivity instead
      * @param string $state the state
      * @return string the text of action
      */
