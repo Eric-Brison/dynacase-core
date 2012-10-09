@@ -386,49 +386,55 @@ class DotWorkflow
         
         $this->lines[] = '"' . $e1 . '" [shape = point,style=filled, width=0.3, fixedsize=true,fontname=sans,color="' . $this->style['start-color'] . '"];';;
         
-        $e2 = 'D' . $this->wdoc->firstState;
-        $this->lines[] = sprintf('"%s" [label="%s",shape = doublecircle, style=filled, width=1.0, fixedsize=true,fontname=sans,fillcolor="%s"];', $e2, $this->_n($this->wdoc->firstState) , $this->wdoc->getColor($this->wdoc->firstState));
-        $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
-        $e1 = $e2;
-        
-        if (count($tm) > 0) {
-            $e2 = 'tmfirst';
-            
-            $tmlabel = str_replace(array(
-                "\n",
-                ' ',
-                '<BR>'
-            ) , array(
-                "\\n,",
-                "\\n",
-                ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState) , $this->wdoc->_array2val($tm) , '_self', false));
-            $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
-            $this->lines[] = '"' . str_replace(" ", "\\n", $e2) . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=octagon,color="' . $this->style['timer-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
-            $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
-            $e1 = $e2;
-        }
-        if (count($mt) > 0) {
-            $e2 = 'mtfirst';
-            $tmlabel = str_replace(array(
-                "\n",
-                ' ',
-                '<BR>'
-            ) , array(
-                "\\n,",
-                "\\n",
-                ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState) , $this->wdoc->_array2val($mt) , '_self', false));
-            $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
-            $this->lines[] = '"' . $e2 . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=house,color="' . $this->style['mail-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
-            $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
-            $e1 = $e2;
-        }
-        
-        if ($e1 != 'D') {
-            //attach to first state
+        if (count($tm) == 0 && count($mt) == 0) {
             $e2 = $this->getActivity($this->wdoc->firstState);
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
+        } else {
+            
+            $e2 = 'D' . $this->wdoc->firstState;
+            $this->lines[] = sprintf('"%s" [label="%s",shape = doublecircle, style=filled, width=1.0, fixedsize=true,fontname=sans,fillcolor="%s"];', $e2, $this->_n($this->wdoc->firstState) , $this->wdoc->getColor($this->wdoc->firstState));
+            $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
+            $e1 = $e2;
+            
+            if (count($tm) > 0) {
+                $e2 = 'tmfirst';
+                
+                $tmlabel = str_replace(array(
+                    "\n",
+                    ' ',
+                    '<BR>'
+                ) , array(
+                    "\\n,",
+                    "\\n",
+                    ",\\n"
+                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState) , $this->wdoc->_array2val($tm) , '_self', false));
+                $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
+                $this->lines[] = '"' . str_replace(" ", "\\n", $e2) . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=octagon,color="' . $this->style['timer-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
+                $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
+                $e1 = $e2;
+            }
+            if (count($mt) > 0) {
+                $e2 = 'mtfirst';
+                $tmlabel = str_replace(array(
+                    "\n",
+                    ' ',
+                    '<BR>'
+                ) , array(
+                    "\\n,",
+                    "\\n",
+                    ",\\n"
+                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState) , $this->wdoc->_array2val($mt) , '_self', false));
+                $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
+                $this->lines[] = '"' . $e2 . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=house,color="' . $this->style['mail-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
+                $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
+                $e1 = $e2;
+            }
+            
+            if ($e1 != 'D') {
+                //attach to first state
+                $e2 = $this->getActivity($this->wdoc->firstState);
+                $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
+            }
         }
     }
     /**
@@ -585,9 +591,9 @@ class DotWorkflow
     {
         $act = $this->wdoc->getActivity($e);
         if (!$act) {
-            return sprintf(_("activity for %s") , _($e));
+            $act = sprintf(_("activity for %s") , _($e));
         }
-        return $act;
+        return str_replace('_', ' ', $act);
     }
     
     private function setActivityTransitionLine($index, $tr)
@@ -723,7 +729,13 @@ class DotWorkflow
     
     public function _n($s)
     {
-        if ($s) return str_replace(" ", "\\n", _($s));
+        if ($s) return str_replace(array(
+            " ",
+            "_"
+        ) , array(
+            "\\n",
+            "\\n"
+        ) , _($s));
         return '';
     }
     
