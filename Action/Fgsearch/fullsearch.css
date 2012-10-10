@@ -196,3 +196,22 @@ DIV.famicon {
     vertical-align:bottom;
 }
 
+#throbbermask {
+    display: none;
+    background-color: rgb(255, 255, 255);
+    opacity: 0.75;
+    height: 100%;
+    width: 100%;
+    position: fixed !important;
+    position: absolute; /* This is for IE6 */
+    top: 0;
+    left: 0;
+    text-align: center;
+    filter: alpha(opacity=75);
+}
+#throbbermask span {
+    height: 100%;
+    _height: 300px !important; /* This is for IE6 */
+    display: inline-block;
+    vertical-align: middle
+}
