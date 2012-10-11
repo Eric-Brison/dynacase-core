@@ -5,6 +5,10 @@
     cursor: pointer;
 }
 
+.tarray input[type="radio"] {
+    width: auto;
+    height: auto;
+}
 
 input[type=button].add-doc {
     background : url('[IMG:createdoc.png|16]') no-repeat;
