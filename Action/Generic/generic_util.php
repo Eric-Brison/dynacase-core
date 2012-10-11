@@ -148,7 +148,7 @@ function getViewMode(&$action, $famid = "")
 function getTabLetter(&$action, $famid = "")
 {
     if ($famid == "") $famid = getDefFam($action);
-    return getFamilyParameter($action, $famid, "GENE_TABLETTER", "Y");
+    return getFamilyParameter($action, $famid, "GENE_TABLETTER", "N");
 }
 /**
  * return  if search is also in inherit famileis

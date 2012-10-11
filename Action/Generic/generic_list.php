@@ -38,7 +38,7 @@ function generic_list(&$action)
     $catgid = GetHttpVars("catg", $dirid); // category
     $startpage = GetHttpVars("page", "0"); // page to see
     $tab = GetHttpVars("tab", "0"); // tab to see 1 for ABC, 2 for DEF, ...
-    $onglet = GetHttpVars("onglet", 'N'); // if you want onglet
+    $onglet = GetHttpVars("onglet"); // if you want onglet
     $famid = GetHttpVars("famid"); // family restriction
     $clearkey = (GetHttpVars("clearkey", "N") == "Y"); // delete last user key search
     $sqlorder = GetHttpVars("sqlorder"); // family restriction
