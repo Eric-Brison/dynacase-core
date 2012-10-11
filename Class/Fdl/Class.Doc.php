@@ -7997,7 +7997,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return system user id
-     * @api
+     * @api system user id
      * @searchLabel My system user id
      * @searchType uid
      * @return int
@@ -8488,6 +8488,7 @@ create unique index i_docir on doc(initid, revision);";
             $rc = new ReflectionClass($className);
             $method = $rc->getMethod($methodName);
             $tags = self::getDocCommentTags($method->getDocComment());
+
             foreach ($tags as $tag) {
                 if ($tag['name'] == 'searchLabel') {
                     return true;
