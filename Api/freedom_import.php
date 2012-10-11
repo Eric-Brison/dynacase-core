@@ -13,42 +13,32 @@
  * @package FDL
  * @subpackage WSH
  */
-/**
- */
 
-global $appl, $action;
+error_log("*** API script 'freedom_import' is deprecated! You should use 'importDocuments' instead. ***");
 
-include_once ("FDL/import_file.php");
-
-$usage = new ApiUsage();
-
-$usage->setText("importation of documents");
-$to = $usage->addOption("to", "Adress to send mail");
-$htmlMode = $usage->addOption("htmlmode", "Html mode");
-
-$usage->strict(false);
-$usage->verify();
-// mode HTML
-$appl = new Application();
-$appl->Set("FREEDOM", $core);
-
-$action->Set("FREEDOM_IMPORT", $appl);
-
-$out = ($action->execute());
-if ($to) {
-    include_once ("FDL/sendmail.php");
-    
-    $themail = new Fdl_Mail_mime();
-    $themail->setHTMLBody($out, false);
-    
-    $from = getMailAddr($action->user->id);
-    if ($from == "") $from = getParam('SMTP_FROM');
-    if ($from == "") $from = $action->user->login . '@' . php_uname('n');
-    
-    $subject = sprintf(_("result of import  %s") , basename(GetHttpVars("file")));
-    $err = sendmail($to, $from, "", "", $subject, $themail);
-    if ($err) error_log("import sending mail: Error:$err");
-} else {
-    if ($htmlMode == "Y") print $out;
+$wsh = array_shift($argv);
+if (substr($wsh, 0, 1) != '/') {
+    $realwsh = realpath($wsh);
+    if ($realwsh === false) {
+        error_log("Error: could not get real path of '%s'.", $wsh);
+        exit(1);
+    }
+    $wsh = $realwsh;
 }
-?>
+$args = array(
+    escapeshellarg($wsh)
+);
+foreach ($argv as $arg) {
+    if (preg_match('/^--api=/', $arg)) {
+        $arg = '--api=importDocuments';
+    }
+    $args[] = escapeshellarg($arg);
+}
+$cmd = join(' ', $args);
+$ret = 0;
+$out = system($cmd, $ret);
+if ($out === false) {
+    error_log("Error: could not execute command '%s'.", $cmd);
+    exit(1);
+}
+exit($ret);
