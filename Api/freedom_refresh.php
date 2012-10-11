@@ -22,25 +22,19 @@ include_once ("FDL/Class.SearchDoc.php");
 
 $usage = new ApiUsage();
 $usage->setText("Refresh documents");
-$usage->addNeeded("famid", "family identificator (name or id)");
-$usage->addOption("docid", "document identificator to apply refresh only on this document");
-$usage->addOption("method", "method to apply instead of refresh method");
-$usage->addOption("arg", "option arg of the method");
-$usage->addOption("fldid", "collection identificator where apply refresh");
-$usage->addOption("revision", "collection identificator where apply refresh", array(
+$famId = $usage->addNeeded("famid", "family identifier (name or id)");
+$docid = $usage->addOption("docid", "document identifier to apply refresh only on this document");
+$method = $usage->addOption("method", "method to apply instead of refresh method");
+$arg = $usage->addOption("arg", "option arg of the method");
+$fldid = $usage->addOption("fldid", "collection identifier where apply refresh");
+$allrev = (strtoupper(substr($usage->addOption("revision", "collection identifier where apply refresh", array(
     "yes",
     "no",
     "Y",
     "N"
-));
+)), 0, 1)) == "Y");
 $usage->verify();
 
-$famId = $action->getArgument("famid", ""); // familly filter
-$docid = $action->getArgument("docid", ""); // doc filter
-$method = $action->getArgument("method"); // method to use
-$allrev = (strtoupper(substr($action->getArgument("revision", "N") , 0, 1)) == "Y"); // all revision
-$arg = $action->getArgument("arg"); // arg for method
-$fldid = $action->getArgument("fldid"); // arg for method
 $appl = new Application();
 $appl->Set("FDL", $core);
 
@@ -69,7 +63,7 @@ if ($docid) {
     } else $docid = $d->id;
 }
 if ($docid > 0) $s->addFilter("id = $docid");
-if ($fldid > 0) $s->dirid = $fldid;
+if ($fldid != "") $s->useCollection($fldid);
 if ($allrev) $s->latest = false;
 $s->search();
 
