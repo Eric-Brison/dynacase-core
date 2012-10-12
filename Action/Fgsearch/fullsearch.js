@@ -14,6 +14,7 @@ function sendNextSearch() {
 	if (form) {
 		form.target='nextresult';
 		form.page.value=parseInt(form.page.value)+1;
+		showThrobberMask();
 		form.submit();
 	}
 }
@@ -24,6 +25,19 @@ function sendNewSearch() {
 	form.page.value=0;
 	// form.submit();
     }
+	showThrobberMask();
+}
+function showThrobberMask() {
+	var throbbermask = document.getElementById('throbbermask');
+	if (throbbermask) {
+		throbbermask.style.display = 'block';
+	}
+}
+function hideThrobberMask() {
+	var throbbermask = document.getElementById('throbbermask');
+	if (throbbermask) {
+		throbbermask.style.display = 'none';
+	}
 }
 function changeDetailForm(famid) {
 	var inr=document.getElementById('nextresult');
@@ -100,6 +114,7 @@ function searchIfKeyword() {
 	var form=document.searchdoc;
 	if (form) {
 		form.page.value=0;
+		showThrobberMask();
 		form.submit();
 	}
 }
