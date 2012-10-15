@@ -3420,6 +3420,9 @@ create unique index i_docir on doc(initid, revision);";
             }
             $filename = uniqid(getTmpDir() . "/_html") . ".html";
             $nc = file_put_contents($filename, $value);
+            /**
+             * @var int $vid
+             */
             $err = $vf->Store($filename, false, $vid);
             if ($ftitle != "") {
                 $vf->Rename($vid, $ftitle);
@@ -3580,9 +3583,15 @@ create unique index i_docir on doc(initid, revision);";
         if ($f) {
             if (preg_match(PREGEXPFILE, $f, $reg)) {
                 $vf = newFreeVaultFile($this->dbaccess);
+                /**
+                 * @var vaultFileInfo $info
+                 */
                 if ($vf->Show($reg[2], $info) == "") {
                     $cible = $info->path;
                     if (file_exists($cible)) {
+                        /**
+                         * @var int $vid vault id
+                         */
                         $err = $vf->Store($cible, false, $vid);
                         if ($err == "") {
                             if (!$newname) $newname = $info->name;
@@ -3615,6 +3624,9 @@ create unique index i_docir on doc(initid, revision);";
                 if (preg_match(PREGEXPFILE, $f, $reg)) {
                     $vf = newFreeVaultFile($this->dbaccess);
                     $vid = $reg[2];
+                    /**
+                     * @var vaultFileInfo $info
+                     */
                     if ($vf->Show($reg[2], $info) == "") {
                         $cible = $info->path;
                         if (file_exists($cible)) {
@@ -7174,6 +7186,9 @@ create unique index i_docir on doc(initid, revision);";
         if (preg_match(PREGEXPFILE, $fileid, $reg)) {
             // reg[1] is mime type
             $vf = newFreeVaultFile($this->dbaccess);
+            /**
+             * @var vaultFileInfo $info
+             */
             if ($vf->Show($reg[2], $info) == "") {
                 if ($path) $fname = $info->path;
                 else $fname = $info->name;
@@ -7212,6 +7227,9 @@ create unique index i_docir on doc(initid, revision);";
             if (preg_match(PREGEXPFILE, $fileid, $reg)) {
                 // reg[1] is mime type
                 $vf = newFreeVaultFile($this->dbaccess);
+                /**
+                 * @var vaultFileInfo $info
+                 */
                 if ($vf->Show($reg[2], $info) == "") {
                     $tinfo[$k] = get_object_vars($info);
                     $tinfo[$k]["vid"] = $reg[2];
@@ -8156,6 +8174,7 @@ create unique index i_docir on doc(initid, revision);";
          * @var $timer _TIMER
          */
         $timer = createTmpDoc($this->dbaccess, "TIMER");
+        $c = 0;
         $err = $timer->unattachAllDocument($this, $origin, $c);
         if ($err == "" && $c > 0) {
             if ($origin) $this->addComment(sprintf(_("unattach %d timers associated to %s") , $c, $origin->title) , DocHisto::NOTICE);
@@ -8488,7 +8507,7 @@ create unique index i_docir on doc(initid, revision);";
             $rc = new ReflectionClass($className);
             $method = $rc->getMethod($methodName);
             $tags = self::getDocCommentTags($method->getDocComment());
-
+            
             foreach ($tags as $tag) {
                 if ($tag['name'] == 'searchLabel') {
                     return true;
