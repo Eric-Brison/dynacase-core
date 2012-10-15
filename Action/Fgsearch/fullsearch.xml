@@ -65,6 +65,7 @@ var initKeyword = [IF initKeyword]true[ENDIF initKeyword][IFNOT initKeyword]fals
 <div id="searchresults">
    &nbsp;
 </div>
+<div id="throbbermask"><span></span><img src="Images/loading.gif" /></div>
 
 <div id="aide" style="display:none">
   <div id="closeaide"><a href="#" onclick="document.getElementById('aide').style.display='none'">[TEXT:close search online help]</a></div>
