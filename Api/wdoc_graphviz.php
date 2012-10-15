@@ -528,7 +528,7 @@ class DotWorkflow
                 "\\n,",
                 "\\n",
                 ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $t["e2"]) , $this->wdoc->_array2val($mt) , '_self', false));
+            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $t["e2"]) , $this->wdoc->_array2val($mt) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,tooltip="timer",style=bold,shape=octagon,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -554,7 +554,6 @@ class DotWorkflow
         
         if (count($ttrans) > 0) {
             $ex = 'tm' . $index;
-            $tmlabel = "tumer";
             $tmlabel = str_replace(array(
                 "\n",
                 ' ',

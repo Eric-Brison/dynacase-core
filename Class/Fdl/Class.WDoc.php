@@ -267,7 +267,7 @@ class WDoc extends Doc
      */
     public function getTransitionTimers($transName)
     {
-        return $this->getTValue($this->_Aid("_trans_pa_tmid", $transName));
+        return array_merge($this->getTValue($this->_Aid("_trans_pa_tmid", $transName)) , $this->getTValue($this->_Aid("_trans_tmid", $transName)));
     }
     /**
      * get the mail ids according to transition
