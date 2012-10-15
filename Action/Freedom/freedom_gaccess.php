@@ -205,7 +205,9 @@ function freedom_gaccess(Action & $action)
         
         $pdoc = new_Doc($dbaccess, $doc->getValue("DPDOC_FAMID"));
         $pattr = $pdoc->GetProfilAttributes();
-        
+        /**
+         * @var NormalAttribute $v
+         */
         foreach ($pattr as $k => $v) {
             $vg = new Vgroup($dbaccess, $v->id);
             if (!$vg->isAffected()) {
@@ -240,6 +242,8 @@ function freedom_gaccess(Action & $action)
     $action->lay->set("isgreen", $green);
     $err = $doc->control("modifyacl");
     $action->lay->set("profcount", "");
+    $action->lay->set("cellWidth", "65");
+    if (count($acls)> 15) $action->lay->set("cellWidth", "50");
     
     $action->lay->set("updateWaitText", sprintf(_("Update profiling is in progress.")));
     if ($err == "" && (!$doc->dprofid) && ($doc->profid == $doc->id)) {

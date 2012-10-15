@@ -112,15 +112,16 @@ table.bodyacl thead tr.second {
 }
 table.bodyacl thead td.puce div {
   overflow:hidden;
-   width:50px;
+   width:[cellWidth]px;
+  text-overflow: ellipsis;
 }
 table.bodyacl {
   /*padding-top:40px;*/
     margin:top:10px;
 }
 table.bodyacl td.puce {
-   width:50px!important;
-min-width:50px;
+   width:[cellWidth]px!important;
+   min-width:[cellWidth]px;
    overflow:hidden;
 }
 table.bodyacl td.firstcol{
