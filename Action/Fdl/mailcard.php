@@ -19,7 +19,7 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/sendmail.php");
 // -----------------------------------
-function mailcard(&$action)
+function mailcard(Action & $action)
 {
     
     $docid = GetHttpVars("id");
@@ -33,6 +33,7 @@ function mailcard(&$action)
     $mailto = "";
     $mailcc = "";
     $mailbcc = "";
+    $tmailto = $tmailcc = $tmailbcc = array();
     $mailfrom = GetHttpVars("_mail_from");
     
     foreach (array(
@@ -121,7 +122,7 @@ function mailcard(&$action)
     redirect($action, GetHttpVars("redirect_app", "FDL") , GetHttpVars("redirect_act", "FDL_CARD&latest=Y&refreshfld=Y&id=" . $doc->id) , $action->GetParam("CORE_STANDURL"));
 }
 // -----------------------------------
-function sendmailcard(&$action)
+function sendmailcard(Action & $action)
 {
     
     $sendcopy = true;
@@ -141,6 +142,9 @@ function sendmailcard(&$action)
         $doc = new_Doc($dbaccess, $docid);
         if ($doc->wid > 0) {
             if ($state != "-") {
+                /**
+                 * @var WDoc $wdoc
+                 */
                 $wdoc = new_Doc($dbaccess, $doc->wid);
                 $wdoc->Set($doc);
                 $err = $wdoc->ChangeState($state, _("email sended") , true);
@@ -150,6 +154,7 @@ function sendmailcard(&$action)
             $action->AddLogMsg(sprintf(_("the document %s is not related to a workflow") , $doc->title));
         }
     }
+    return '';
 }
 // -----------------------------------
 function sendCard(&$action, $docid, $to, $cc, $subject, $zonebodycard = "", // define mail layout
@@ -174,6 +179,8 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
     $tfiles = array();
     $tmpfile = array();
     $mixed = true; // to see file as attachement
+    $err = '';
+    $pfout = $ppdf = '';
     // set title
     setHttpVar("id", $docid); // for view zone
     if (GetHttpVars("_mail_format") == "") setHttpVar("_mail_format", $format);
@@ -199,6 +206,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
     $vf = newFreeVaultFile($dbaccess);
     $pubdir = $action->getParam("CORE_PUBDIR");
     $szone = false;
+    $sgen = $sgen1 = '';
     
     $multi_mix = new Fdl_Mail_mimePart('', array(
         'content_type' => 'multipart/mixed'
@@ -231,7 +239,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
     
     if ($zonebodycard == "") $zonebodycard = $doc->defaultmview;
     if ($zonebodycard == "") $zonebodycard = $doc->defaultview;
-    
+    $binary = false;
     if (preg_match("/[A-Z]+:[^:]+:S/", $zonebodycard, $reg)) $szone = true; // the zonebodycard is a standalone zone ?
     if (preg_match("/[A-Z]+:[^:]+:T/", $zonebodycard, $reg)) setHttpVar("dochead", "N"); // the zonebodycard without head ?
     if (preg_match("/[A-Z]+:[^:]+:B/", $zonebodycard, $reg)) $binary = true;
@@ -242,6 +250,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
         if (!is_file($binfile)) $err = $binfile;
         
         if ($err == "") {
+            $mime = $ext = '';
             $engine = $doc->getZoneTransform($zonebodycard);
             if ($engine) {
                 include_once ("FDL/Lib.Vault.php");
@@ -415,6 +424,9 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                                 list($mime, $vid) = explode("|", $va);
                                 
                                 if ($vid != "") {
+                                    /**
+                                     * @var VaultFileInfo $info
+                                     */
                                     if ($vf->Retrieve($vid, $info) == "") {
                                         
                                         $cidindex = $vaf;
@@ -455,6 +467,9 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                         list($mime, $vid) = explode("|", $va);
                         
                         if ($vid != "") {
+                            /**
+                             * @var VaultFileInfo $info
+                             */
                             if ($vf->Retrieve($vid, $info) == "") {
                                 $multi_rel->addSubpart('', array(
                                     'body_file' => $info->path,
@@ -732,6 +747,10 @@ function realfile($src)
         list($mime, $vid) = explode("|", $va);
         
         if ($vid != "") {
+            $info = null;
+            /**
+             * @var VaultFileInfo $info
+             */
             if ($vf->Retrieve($vid, $info) == "") {
                 $f = $info->path;
             }

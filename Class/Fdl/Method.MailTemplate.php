@@ -279,8 +279,7 @@ class _MAILTEMPLATE extends Doc
                 // ---------------------------
                 // add inserted image
                 foreach ($this->ifiles as $k => $v) {
-                    if (file_exists(DEFAULT_PUBDIR . "/$v")) {
-                        
+                    if (file_exists($v)) {
                         $multi_rel->addSubpart('', array(
                             'body_file' => $v,
                             'content_type' => sprintf("image/%s", fileextension($v)) ,
@@ -396,6 +395,12 @@ class _MAILTEMPLATE extends Doc
             }
         }
         
+        private function getUniqId()
+        {
+            static $unid = 0;
+            if (!$unid) $unid = date('Ymdhis');
+            return $unid;
+        }
         private function srcfile($src)
         {
             $vext = array(
@@ -434,7 +439,7 @@ class _MAILTEMPLATE extends Doc
             if (preg_match("/.*app=FDL.*action=EXPORTFILE.*vid=([0-9]*)/", $src, $reg)) {
                 $info = vault_properties($reg[1]);
                 $src = $info->path;
-                $cid = "cid" . $reg[1] . '.' . fileextension($info->path);
+                $cid = "cid" . $this->getUniqId() . $reg[1] . '.' . fileextension($info->path);
             }
             
             if (!in_array(strtolower(fileextension($src)) , $vext)) return "";
