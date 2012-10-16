@@ -329,18 +329,24 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (isset($pUrl['scheme']) || isset($pUrl['query'])) {
             return $ref;
         }
-        
+
+        /* TODO : update with application log class */
+        $this->addLogMsg(__METHOD__." Unable to identify the ref $ref");
+
         return '';
     }
     /**
      * Add a ressource (JS/CSS) to the page
+     *
      * @param string $type 'js' or 'css'
      * @param string $ref the ressource reference
      * @param boolean $needparse should the ressource be parsed (default false)
+     * @param string $packName
+     *
+     * @return string ressource location
      */
     function addRessourceRef($type, $ref, $needparse, $packName)
     {
-        static $firstPack = array();
         /* Try to attach the ressource to the parent app */
         if ($this->hasParent()) {
             $ret = $this->parent->AddRessourceRef($type, $ref, $needparse, $packName);
@@ -348,53 +354,8 @@ create sequence SEQ_ID_APPLICATION start 10;
                 return $ret;
             }
         }
-        /* Try to attach the ressource to the current app */
-        $ressourceLocation = '';
-        if (!isset($this->session)) $sessid = 0;
-        else $sessid = $this->session->id;
-        if ($packName) {
-            $ressourcePackParseLocation = sprintf("?app=CORE&amp;action=CORE_CSS&amp;type=%s&amp;session=%s&amp;pack=%s", $type, $sessid, $packName);
-            // $ressourcePackNoParseLocation = sprintf("?app=CORE&amp;action=CORE_CSS&amp;type=%s&amp;&amp;pack=%s", $type, $packName);
-            $ressourcePackNoParseLocation = sprintf("pack.php?type=%s&amp;&amp;pack=%s&amp;wv=%s", $type, $packName, getParam("WVERSION"));
-            
-            if (!isset($firstPack[$packName])) {
-                $packSession = array();
-                $firstPack[$packName] = true;
-            } else {
-                $packSession = $this->session->Read("RSPACK_" . $packName);
-                if (!$packSession) $packSession = array();
-            }
-            $packSession[$ref] = array(
-                "ref" => $ref,
-                "needparse" => $needparse
-            );
-            $this->session->Register("RSPACK_" . $packName, $packSession);
-            
-            if ($needparse) {
-                if ($type == "js") unset($this->jsref[$ressourcePackNoParseLocation]);
-                else if ($type == "css") unset($this->cssref[$ressourcePackNoParseLocation]);
-                $ressourceLocation = $ressourcePackParseLocation;
-            } else {
-                $hasParseBefore = ($type == "js") && isset($this->jsref[$ressourcePackParseLocation]);
-                if (!$hasParseBefore) $hasParseBefore = ($type == "css") && isset($this->cssref[$ressourcePackParseLocation]);
-                
-                if (!$hasParseBefore) $ressourceLocation = $ressourcePackNoParseLocation;
-            }
-        } elseif ($needparse) {
-            
-            $ressourceLocation = "?app=CORE&amp;action=CORE_CSS&amp;session=" . $sessid . "&amp;layout=" . $ref . "&amp;type=" . $type;
-        } else {
-            
-            $location = $this->resolveRessourceLocation($ref);
-            if ($location != '') {
-                $ressourceLocation = (strpos($location, '?') !== false) ? $location : $location . '?wv=' . getParam("WVERSION");
-            }
-        }
         
-        if ($ressourceLocation == '') {
-            /* The ressource could not be resolved */
-            return '';
-        }
+        $ressourceLocation = $this->getRessourceLocation($type, $ref, $needparse, $packName, true);
         
         if ($type == 'js') {
             $this->jsref[$ressourceLocation] = $ressourceLocation;
@@ -406,24 +367,186 @@ create sequence SEQ_ID_APPLICATION start 10;
         
         return $ressourceLocation;
     }
-    
-    function addCssRef($ref, $needparse = false, $packName = '')
+    /**
+     * Get ressourceLocation with cache handling
+     *
+     * @param string $type (js|css)
+     * @param string $ref path or URI of the ressource
+     * @param bool $needparse need to parse
+     * @param string $packName use it to pack all the ref with the same packName into a single file
+     * @param bool $fromAdd (do not use this param) true only if you call it from addRessourceRef function
+     *
+     * @return string new location
+     */
+    private function getRessourceLocation($type, $ref, $needparse, $packName, $fromAdd = false)
+    {
+        static $firstPack = array();
+        $ressourceLocation = '';
+        
+        if (!isset($this->session)) {
+            $sessid = 0;
+        } else {
+            $sessid = $this->session->id;
+        }
+        if ($packName) {
+            $ressourcePackParseLocation = sprintf("?app=CORE&amp;action=CORE_CSS&amp;type=%s&amp;session=%s&amp;pack=%s", $type, $sessid, $packName);
+            $ressourcePackNoParseLocation = sprintf("pack.php?type=%s&amp;pack=%s&amp;wv=%s", $type, $packName, getParam("WVERSION"));
+            
+            if (!isset($firstPack[$packName])) {
+                $packSession = array();
+                $firstPack[$packName] = true;
+            } else {
+                $packSession = $this->session->Read("RSPACK_" . $packName);
+                if (!$packSession) {
+                    $packSession = array();
+                }
+            }
+            $packSession[$ref] = array(
+                "ref" => $ref,
+                "needparse" => $needparse
+            );
+            $this->session->Register("RSPACK_" . $packName, $packSession);
+            
+            if ($needparse) {
+                if ($fromAdd) {
+                    if ($type == "js") {
+                        unset($this->jsref[$ressourcePackNoParseLocation]);
+                    } elseif ($type == "css") {
+                        unset($this->cssref[$ressourcePackNoParseLocation]);
+                    }
+                }
+                $ressourceLocation = $ressourcePackParseLocation;
+            } else {
+                $hasParseBefore = (($type === "js") && isset($this->jsref[$ressourcePackParseLocation]));
+                if (!$hasParseBefore) {
+                    $hasParseBefore = (($type === "css") && isset($this->cssref[$ressourcePackParseLocation]));
+                }
+                if (!$hasParseBefore) {
+                    $ressourceLocation = $ressourcePackNoParseLocation;
+                }
+            }
+        } elseif ($needparse) {
+            $ressourceLocation = "?app=CORE&amp;action=CORE_CSS&amp;session=" . $sessid . "&amp;layout=" . $ref . "&amp;type=" . $type;
+        } else {
+            $location = $this->resolveRessourceLocation($ref);
+            if ($location != '') {
+                $ressourceLocation = (strpos($location, '?') !== false) ? $location : $location . '?wv=' . getParam("WVERSION");
+            }
+        }
+        
+        return $ressourceLocation;
+    }
+    /**
+     * Get dynacase CSS link
+     *
+     * @api Get the src of a CSS with dynacase cache
+     *
+     * @param string $ref path, or URL, or filename (if in the current application), or APP:filename
+     * @param bool $needparse if true will be parsed by the template engine (false by default)
+     * @param string $packName use it to pack all the ref with the same packName into a single file
+     *
+     * @return string the src of the CSS or "" if non existent ref
+     */
+    public function getCSSLink($ref, $needparse = false, $packName = '')
+    {
+        if (substr($ref, 0, 2) == './') {
+            $ref = substr($ref, 2);
+        }
+        return $this->getRessourceLocation('css', $ref, $needparse, $packName);
+    }
+    /**
+     * Get dynacase JS link
+     *
+     * @api Get the src of a JS with dynacase cache
+     *
+     * @param string $ref path, or URL, or filename (if in the current application), or APP:filename
+     * @param bool $needparse if true will be parsed by the template engine (false by default)
+     * @param string $packName use it to pack all the ref with the same packName into a single file
+     *
+     * @return string the src of the JS or "" if non existent ref
+     */
+    public function getJSLink($ref, $needparse = false, $packName = '')
+    {
+        if (substr($ref, 0, 2) == './') {
+            $ref = substr($ref, 2);
+        }
+        return $this->getRessourceLocation('js', $ref, $needparse, $packName);
+    }
+
+    /**
+     * Add a CSS in an action
+     *
+     * Use this method to add a CSS in an action that use the zone [CSS:REF] and the template engine
+     *
+     * @api Add a CSS in an action
+     *
+     * @param string $ref path, or URL, or filename (if in the current application), or APP:filename
+     * @param bool $needparse if true will be parsed by the template engine (false by default)
+     * @param string $packName use it to pack all the ref with the same packName into a single file
+     *
+     * @return string the path of the added ref or "" if the ref is not valid
+     */
+    public function addCssRef($ref, $needparse = false, $packName = '')
     {
         if (substr($ref, 0, 2) == './') $ref = substr($ref, 2);
         return $this->AddRessourceRef('css', $ref, $needparse, $packName);
     }
     /**
-     * @param string $ref js file path
-     * @param bool $needparse set to true to parse file with Layout
-     * @param string $packName use it to pack same packName into a sibgle file
-     * @return string
+     * Get the current CSS ref of the current action
+     *
+     * @return string[]
      */
-    function addJsRef($ref, $needparse = false, $packName = '')
+    function getCssRef()
+    {
+        if ($this->hasParent()) {
+            return ($this->parent->GetCssRef());
+        } else {
+            return ($this->cssref);
+        }
+    }
+    /**
+     * Add a JS in an action
+     *
+     * Use this method to add a JS in an action that use the zone [JS:REF] and the template engine
+     *
+     * @api Add a JS in an action
+     *
+     * @param string $ref path to a js, or URL to a js, or js file name (if in the current application), or APP:jsfilename
+     * @param bool $needparse if true will be parsed by the template engine (false by default)
+     * @param string $packName use it to pack all the ref with the same packName into a single file
+     *
+     * @return string the path of the added ref or "" if the ref is not valid
+     */
+    public function addJsRef($ref, $needparse = false, $packName = '')
     {
         if (substr($ref, 0, 2) == './') $ref = substr($ref, 2);
         return $this->AddRessourceRef('js', $ref, $needparse, $packName);
     }
-    
+
+    /**
+     * Get the js ref array of the current action
+     *
+     * @return string[] array of location
+     */
+    function getJsRef()
+    {
+        if ($this->hasParent()) {
+            return ($this->parent->GetJsRef());
+        } else {
+            return ($this->jsref);
+        }
+    }
+    /**
+     * Add a JS code in an action
+     * Use this method to add a JS in an action that use the zone [JS:REF] and the template engine
+     * (beware use protective ; because all the addJsCode are concatened)
+     *
+     * @api Add a JS code in an action
+     *
+     * @param string $code code to add
+     *
+     * @return void
+     */
     function addJsCode($code)
     {
         // Js Code are stored in the top level application
@@ -433,7 +556,52 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->jscode[] = $code;
         }
     }
-    
+    /**
+     * Get the js code of the current action
+     *
+     * @return string[]
+     */
+    function getJsCode()
+    {
+        if ($this->hasParent()) {
+            return ($this->parent->GetJsCode());
+        } else {
+            return ($this->jscode);
+        }
+    }
+    /**
+     * Add a CSS code in an action
+     * Use this method to add a CSS in an action that use the zone [CSS:REF] and the template engine
+     *
+     * @api Add a CSS code in an action
+     *
+     * @param string $code code to add
+     *
+     * @return void
+     */
+    function addCssCode($code)
+    {
+        // Css Code are stored in the top level application
+        if ($this->hasParent()) {
+            $this->parent->AddCssCode($code);
+        } else {
+            $this->csscode[] = $code;
+        }
+    }
+    /**
+     * Get the current CSS code of the current action
+     *
+     * @return string[]
+     */
+    function getCssCode()
+    {
+        if ($this->hasParent()) {
+            return ($this->parent->GetCssCode());
+        } else {
+            return ($this->csscode);
+        }
+    }
+
     function addLogMsg($code, $cut = 80)
     {
         if ($code == "") return;
@@ -471,23 +639,6 @@ create sequence SEQ_ID_APPLICATION start 10;
             } else error_log("dcp warning: $code");
         }
     }
-    function getJsRef()
-    {
-        if ($this->hasParent()) {
-            return ($this->parent->GetJsRef());
-        } else {
-            return ($this->jsref);
-        }
-    }
-    
-    function getJsCode()
-    {
-        if ($this->hasParent()) {
-            return ($this->parent->GetJsCode());
-        } else {
-            return ($this->jscode);
-        }
-    }
     
     function getLogMsg()
     {
@@ -507,33 +658,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         $this->session->unregister("warningmsg");
     }
-    
-    function addCssCode($code)
-    {
-        // Css Code are stored in the top level application
-        if ($this->hasParent()) {
-            $this->parent->AddCssCode($code);
-        } else {
-            $this->csscode[] = $code;
-        }
-    }
-    function getCssRef()
-    {
-        if ($this->hasParent()) {
-            return ($this->parent->GetCssRef());
-        } else {
-            return ($this->cssref);
-        }
-    }
-    
-    function getCssCode()
-    {
-        if ($this->hasParent()) {
-            return ($this->parent->GetCssCode());
-        } else {
-            return ($this->csscode);
-        }
-    }
+
     /**
      * Test permission for currennt user in current application
      *
