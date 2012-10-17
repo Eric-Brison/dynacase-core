@@ -223,6 +223,8 @@ class _IGROUP extends _GROUP
         if (!$nomail) $nomail = ($this->getValue("grp_hasmail") == "no");
         if (!$nomail) {
             $this->setValue("grp_mail", $this->getMail());
+        } else {
+            $this->deleteValue('grp_mail');
         }
     }
     /**
