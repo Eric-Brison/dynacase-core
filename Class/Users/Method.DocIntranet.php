@@ -43,9 +43,6 @@ class _IGROUPUSER extends Doc
             $err = _("the login must not be empty");
         } else if ($login == "-") {
         } else {
-            if (!preg_match("/^[a-z0-9][-_@a-z0-9\.]*[a-z0-9]+$/i", $login)) {
-                $err = _("the login syntax is like : john.doe");
-            }
             if ($err == "") {
                 return $this->ExistsLogin($login);
             }
@@ -67,8 +64,8 @@ class _IGROUPUSER extends Doc
         $id = $this->GetValue("US_WHATID");
         
         $q = new QueryDb("", "Account");
-        $q->AddQuery("login='" . strtolower(pg_escape_string($login)) . "'");
-        if ($id) $q->AddQuery("id != $id");
+        $q->AddQuery(sprintf("login='%s'", strtolower(pg_escape_string($login)))) ;
+        if ($id) $q->AddQuery(sprintf("id != %d",$id));
         $q->Query(0, 0, "TABLE");
         $err = $q->basic_elem->msg_err;
         if (($err == "") && ($q->nb > 0)) $err = _("login yet use");
