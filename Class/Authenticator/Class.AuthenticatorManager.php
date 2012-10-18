@@ -34,7 +34,7 @@ class AuthenticatorManager
     const AccessOk = 0;
     const AccessBug = - 1;
     /**
-     * @var Authenticator
+     * @var Authenticator|htmlAuthenticator
      */
     public static $auth = null;
     public static $provider_errno = 0;
@@ -69,7 +69,7 @@ class AuthenticatorManager
                 if ($noask) {
                     return self::NeedAsk;
                 } else {
-                    self::$auth->askAuthentication();
+                    self::$auth->askAuthentication(array());
                     exit(0);
                 }
             }
@@ -97,6 +97,9 @@ class AuthenticatorManager
                 if ($wu->SetLoginName(self::$auth->getAuthUser())) {
                     if ($wu->id != 1) {
                         include_once ("FDL/freedom_util.php");
+                        /**
+                         * @var _IUSER $du
+                         */
                         $du = new_Doc(getParam("FREEDOM_DB") , $wu->fid);
                         if ($du->isAlive()) {
                             $du->disableEditControl();
@@ -125,6 +128,9 @@ class AuthenticatorManager
         if ($wu->id != 1) {
             
             include_once ("FDL/freedom_util.php");
+            /**
+             * @var _IUSER $du
+             */
             $du = new_Doc(getParam("FREEDOM_DB") , $wu->fid);
             // First check if account is active
             if ($du->isAccountInactive()) {
@@ -156,7 +162,7 @@ class AuthenticatorManager
         if (method_exists(self::$auth, 'getAuthSession')) {
             self::$session = self::$auth->getAuthSession();
             if (self::$session->read('username') == "") {
-                self::secureLog("failure", "username should exists in session", $authprovider, $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+                self::secureLog("failure", "username should exists in session", $authprovider = "", $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
                 exit(0);
             }
         }
