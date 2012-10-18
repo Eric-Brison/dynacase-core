@@ -100,6 +100,11 @@ This can be solved by:<br/>
                 PHP.
             </help>
         </check>
+        <check type="phpfunction" function="token_get_all">
+            <help>You might need to install a php-tokenizer package from your distribution in order to have tokenizer support in
+                PHP.
+            </help>
+        </check>
         <check type="phpfunction" function="ldap_connect">
             <help>You might need to install a php-ldap package from your distribution in order to have LDAP support in
                 PHP.
@@ -343,6 +348,12 @@ This can be solved by:<br/>
                 PHP.
             </help>
         </check>
+
+        <check type="phpfunction" function="token_get_all">
+            <help>You might need to install a php-tokenizer package from your distribution in order to have tokenizer support in
+                PHP.
+            </help>
+        </check>
         <!--<check type="phpfunction" function="mhash"><help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help></check>-->
         <check type="phpfunction" function="ldap_connect">
             <help>You might need to install a php-ldap package from your distribution in order to have LDAP support in
@@ -530,6 +541,15 @@ This can be solved by:<br/>
 
     <changelog>
 
+        <version number="3.2.2" date="2012-10-20">
+            <change title="Some fixes" url="http://dev.dynacase.org/versions/show/233"/>
+        </version>
+        <version number="3.2.1" date="2012-10-03">
+            <change title="Stability fixes" url="http://dev.dynacase.org/versions/show/226">
+                Add Histo Acl
+                Change document HTML headed
+            </change>
+        </version>
         <version number="3.1.1" date="2011-09-15">
             <change title="Pivot export, Action usage, and many fixes" url="http://dev.dynacase.org/versions/show/117"/>
         </version>
