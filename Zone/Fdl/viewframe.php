@@ -55,7 +55,7 @@ function viewframe(Action & $action)
     
     $listattr = $doc->GetNormalAttributes(); // get frame attribute also
     $foa = $doc->getAttribute($frameid);
-    if (!$foa) $action->exitError(sprintf("attribute %s not found") , $frameid);
+    if (!$foa) $action->exitError(sprintf("attribute %s not found" , $frameid));
     if ($foa->getOption("vlabel") == "none") $action->lay->set("flabel", '');
     else $action->lay->set("flabel", mb_ucfirst($foa->getLabel()));
     
