@@ -70,6 +70,16 @@ function mb_ucfirst($s)
     return $s;
 }
 /**
+ * increase limit if current limit is lesser than
+ * @param int $limit new limit in seconds
+ */
+function setMaxExecutionTimeTo($limit)
+{
+    $im = intval(ini_get("max_execution_time"));
+    if ($im > 0 && $im < $limit && $limit >= 0) ini_set("max_execution_time", $limit);
+    if ($limit <= 0) ini_set("max_execution_time", 0);
+}
+/**
  * get mail addr of a user
  * @param int $userid system user identifier
  * @param bool $full if true email is like : "John Doe" <John.doe@blackhole.net> else only system email address : john.doe@blackhole.net

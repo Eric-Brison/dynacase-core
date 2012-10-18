@@ -22,7 +22,7 @@ function freedom_ana_tar(&$action)
 {
     
     global $_FILES;
-    if (intval(ini_get("max_execution_time")) < 300) ini_set("max_execution_time", 300);
+    setMaxExecutionTimeTo(300);
     
     $analyze = GetHttpVars("analyze", "Y"); // just analyze
     $filename = GetHttpVars("filename"); // the select filename

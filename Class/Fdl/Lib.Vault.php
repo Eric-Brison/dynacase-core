@@ -256,7 +256,7 @@ function convertFile($infile, $engine, $outfile, &$info)
             // waiting response
             if ($err == "") {
                 $status = "";
-                ini_set("max_execution_time", "3600"); // may be long
+                setMaxExecutionTimeTo(3600);
                 while (($status != 'K') && ($status != 'D') && ($err == "")) {
                     $err = $ot->getInfo($tid, $info);
                     $status = $info["status"];

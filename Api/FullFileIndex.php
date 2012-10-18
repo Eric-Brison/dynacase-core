@@ -15,16 +15,14 @@
  */
 /**
  */
-ini_set("max_execution_time", "36000");
 
 include_once ('FDL/Class.Doc.php');
 include_once ("FDL/Lib.Dir.php");
 global $action;
 
-define("REDCOLOR", "\033".'[1;31;40m');
-define("UPDTCOLOR", "\033".'[1;32;40m');
-define("STOPCOLOR", "\033".'[0m');
-
+define("REDCOLOR", "\033" . '[1;31;40m');
+define("UPDTCOLOR", "\033" . '[1;32;40m');
+define("STOPCOLOR", "\033" . '[0m');
 
 $usage = new ApiUsage();
 

@@ -5,8 +5,6 @@
  * @package FDL
 */
 
-ini_set("max_execution_time", "36000");
-
 include_once ('FDL/freedom_util.php');
 
 $usage = new ApiUsage();

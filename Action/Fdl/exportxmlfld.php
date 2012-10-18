@@ -40,7 +40,7 @@ include_once ("FDL/Class.SearchDoc.php");
  */
 function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', Fdl_DocumentSelection $aSelection = null)
 {
-    if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600); // 60 minutes
+    setMaxExecutionTimeTo(3600); // 60 minutes
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $fldid = $action->getArgument("id", $aflid);
     $wprof = false; // no profil

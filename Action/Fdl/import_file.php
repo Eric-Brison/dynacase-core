@@ -28,7 +28,7 @@ define("SEPCHAR", ';');
 
 function add_import_file(Action & $action, $fimport)
 {
-    if (intval(ini_get("max_execution_time")) < 300) ini_set("max_execution_time", 300);
+    setMaxExecutionTimeTo(300);
     $dirid = GetHttpVars("dirid", 0); // directory to place imported doc
     $analyze = (GetHttpVars("analyze", "N") == "Y"); // just analyze
     $policy = GetHttpVars("policy", "update");

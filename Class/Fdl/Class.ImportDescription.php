@@ -96,8 +96,7 @@ class importDocumentDescription
     
     public function import()
     {
-        // -----------------------------------
-        if (intval(ini_get("max_execution_time")) < 300) ini_set("max_execution_time", 300);
+        setMaxExecutionTimeTo(300);
         
         $this->nbDoc = 0; // number of imported document
         $this->dbaccess = GetParam("FREEDOM_DB");

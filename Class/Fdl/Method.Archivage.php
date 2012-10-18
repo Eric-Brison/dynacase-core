@@ -40,7 +40,8 @@ class _ARCHIVING extends Dir
             $s->orderby = '';
             $s->setObjectReturn();
             $s->search();
-            if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600);
+            
+            setMaxExecutionTimeTo(3600);
             while ($doc = $s->nextDoc()) {
                 $doc->disableEditControl();
                 $err.= $doc->archive($this);
@@ -74,7 +75,8 @@ class _ARCHIVING extends Dir
                 $s->orderby = '';
                 $s->setObjectReturn();
                 $s->search();
-                if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600);
+                
+                setMaxExecutionTimeTo(3600);
                 while ($doc = $s->nextDoc()) {
                     $doc->disableEditControl();
                     $err.= $doc->unArchive($this);
@@ -105,7 +107,8 @@ class _ARCHIVING extends Dir
                 $s->orderby = '';
                 $s->setObjectReturn();
                 $s->search();
-                if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600);
+                
+                setMaxExecutionTimeTo(3600);
                 $t = "<ol>";
                 while ($doc = $s->nextDoc()) {
                     if ($doc->doctype != 'C') {

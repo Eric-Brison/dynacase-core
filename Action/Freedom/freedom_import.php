@@ -28,7 +28,7 @@ function freedom_import(Action & $action)
     // -----------------------------------
     global $_FILES;
     $log = $action->getArgument("log"); // log file
-    if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600); // 60 minutes
+    setMaxExecutionTimeTo(3600); // 60 minutes
     if (isset($_FILES["file"])) {
         $filename = $_FILES["file"]['name'];
         $csvfile = $_FILES["file"]['tmp_name'];

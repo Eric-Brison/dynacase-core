@@ -38,7 +38,6 @@ if ($dbaccess == "") {
     exit();
 }
 
-ini_set("max_execution_time", "-1"); // no limit
 if ($accountOnly) {
     $err = simpleQuery($dbaccess, "select * from users order by id", $tusers);
 } else {

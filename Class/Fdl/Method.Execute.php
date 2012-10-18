@@ -41,7 +41,7 @@ class _EXEC extends Doc
         if (!$this->canExecuteAction()) {
             AddWarningMsg(sprintf(_("Error : need edit privilege to execute")));
         } else {
-            if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600);
+            setMaxExecutionTimeTo(3600);
             $cmd = getWshCmd(true);
             $cmd.= " --api=fdl_execute";
             $cmd.= " --docid=" . $this->id;

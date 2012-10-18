@@ -14,7 +14,7 @@
  * @package FDL
  */
 
-ini_set("max_execution_time", "3600");
+ini_set("max_execution_time", "0");
 require_once 'WHAT/Lib.Prefix.php';
 require_once 'Class.Action.php';
 require_once 'Class.Application.php';

@@ -18,7 +18,7 @@ class TestHelpUsage extends TestCaseDcp
     public function testTextHelpUsage($api)
     {
         $output = array();
-        exec(getWshCmd() . " --api=" . $api . " --help", $output);
+        exec(getWshCmd() . " --api=" . $api . " --help 2> /dev/null", $output);
         $this->assertTrue($output[1] == "Usage :", "String usage not found for api " . $api);
     }
     
@@ -94,7 +94,7 @@ class TestHelpUsage extends TestCaseDcp
             array(
                 "freedom_import"
             ) ,
-            array(
+            array(//deprecated
                 "freedom_refresh"
             ) ,
             array(

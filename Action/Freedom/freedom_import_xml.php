@@ -31,7 +31,8 @@ function freedom_import_xml(Action & $action, $filename = "")
     $opt["policy"] = getHttpVars("policy", "update");
     $dbaccess = $action->getParam("FREEDOM_DB");
     global $_FILES;
-    if (intval(ini_get("max_execution_time")) < 300) ini_set("max_execution_time", 300);
+    
+    setMaxExecutionTimeTo(300);
     if ($filename == "") {
         if (isset($_FILES["file"])) {
             $filename = $_FILES["file"]['name'];
@@ -72,7 +73,7 @@ function freedom_import_xmlzip(Action & $action, $filename = "")
     $opt["policy"] = getHttpVars("policy", "update");
     $dbaccess = $action->getParam("FREEDOM_DB");
     global $_FILES;
-    if (intval(ini_get("max_execution_time")) < 300) ini_set("max_execution_time", 300);
+    setMaxExecutionTimeTo(300);
     if ($filename == "") {
         if (isset($_FILES["file"])) {
             $filename = $_FILES["file"]['name'];

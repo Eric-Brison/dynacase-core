@@ -7,7 +7,6 @@
 /**
  *  Reinit doc relations
  */
-ini_set("max_execution_time", "36000");
 
 global $appl, $action;
 
@@ -15,7 +14,6 @@ include_once ('FDL/Class.Doc.php');
 include_once ('FDL/Class.DocFam.php');
 include_once ('FDL/Class.DocVaultIndex.php');
 include_once ('VAULT/Class.VaultFile.php');
-
 /**
  * Setup main db connection
  */
@@ -73,7 +71,7 @@ $parms['realclean'] = $usage->addOption("realclean", "Delete everything in docre
     "yes",
     "no"
 ) , "yes");
-if ($parms['realclean'] == 'yes' && $parms['famid'] == 'all' ) {
+if ($parms['realclean'] == 'yes' && $parms['famid'] == 'all') {
     $parms['realclean'] = true;
 } else {
     $parms['realclean'] = false;
@@ -103,7 +101,7 @@ if ($parms['transaction']) {
  */
 if ($parms['famid'] == 'all' && $parms['realclean']) {
     sqlexec($o, $parms, "DELETE FROM docrel");
-
+    
     if (!$parms['transaction']) {
         sqlexec($o, $parms, "VACUUM ANALYSE docrel");
     }
@@ -172,7 +170,6 @@ print sprintf("-- Re-creating docrel indexes...\n");
 sqlexec($o, $parms, "CREATE INDEX docrel_u ON docrel (sinitid, cinitid, type)");
 sqlexec($o, $parms, "CREATE INDEX i_docrels ON docrel (sinitid)");
 sqlexec($o, $parms, "CREATE INDEX i_docrelc ON docrel (cinitid)");
-
 /**
  * Commit transaction if required
  */

@@ -16,7 +16,6 @@
  */
 /**
  */
-ini_set("max_execution_time", "36000");
 
 include_once ('FDL/Class.Doc.php');
 include_once ('FDL/Class.DocFam.php');

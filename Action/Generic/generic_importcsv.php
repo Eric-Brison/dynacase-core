@@ -48,10 +48,10 @@ function generic_importcsv(&$action)
     $comma = GetHttpVars("comma", ";"); // Column separator -default is comma-
     $tcolorder[$classid] = GetHttpVars("colorder"); // column order
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    if (ini_get("max_execution_time") < 180) ini_set("max_execution_time", 180); // 3 minutes
+    
+    setMaxExecutionTimeTo(180);
     $ddoc = createDoc($dbaccess, $classid);
     setPostVars($ddoc); // memorize default import values
-    
     if (isset($_FILES["vcardfile"])) {
         // importation
         $vcardfile = $_FILES["vcardfile"]["tmp_name"];
