@@ -1011,9 +1011,9 @@ class _DSEARCH extends DocSearch
                     
                     foreach ($internals as $k => $v) {
                         if ($k == "revdate") $type = "date";
-                        else if ($k == "owner") $type = "docid";
-                        else if ($k == "locked") $type = "docid";
-                        else if ($k == "allocated") $type = "docid";
+                        else if ($k == "owner") $type = "uid";
+                        else if ($k == "locked") $type = "uid";
+                        else if ($k == "allocated") $type = "uid";
                         else if ($k == "cdate") $type = "date";
                         else if ($k == "revision") $type = "int";
                         else if ($k == "state") $type = "docid";
