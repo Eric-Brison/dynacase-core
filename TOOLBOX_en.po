@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-28 18:48+0200\n"
+"POT-Creation-Date: 2012-10-18 11:25+0200\n"
 "PO-Revision-Date: 2012-09-12 09:47+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -440,10 +440,6 @@ msgstr ""
 
 msgid "(only)"
 msgstr ""
-
-#, fuzzy
-msgid "(private)"
-msgstr "Create"
 
 #, c-format
 msgid "(substitute of %s) : "
@@ -1280,10 +1276,6 @@ msgstr ""
 msgid "Complete (cluster)"
 msgstr ""
 
-#, fuzzy
-msgid "Complete view"
-msgstr "Create"
-
 msgid "Composing the email"
 msgstr ""
 
@@ -1348,13 +1340,6 @@ msgstr "Edit"
 
 #, c-format
 msgid "Content managing of %s"
-msgstr ""
-
-#, c-format
-msgid "Context  : [%s]"
-msgstr ""
-
-msgid "Continue (Y|N) ?"
 msgstr ""
 
 msgid "Control characters are not allowed"
@@ -1447,10 +1432,6 @@ msgstr "Category"
 msgid "Create new group"
 msgstr "Create"
 
-#, c-format
-msgid "Create other database for %s (%s)"
-msgstr ""
-
 #, fuzzy
 msgid "Create subfolder"
 msgstr "Delete"
@@ -1477,10 +1458,6 @@ msgid "Data api"
 msgstr ""
 
 msgid "Data cannot be saved"
-msgstr ""
-
-#, c-format
-msgid "Database : [%s]"
 msgstr ""
 
 msgid "Date"
@@ -1807,9 +1784,6 @@ msgstr ""
 msgid "Encoding"
 msgstr "Edit"
 
-msgid "Enter name for database ? "
-msgstr ""
-
 msgid "Enter your login"
 msgstr ""
 
@@ -1972,10 +1946,6 @@ msgstr ""
 #, fuzzy
 msgid "Family preferences"
 msgstr "Modify"
-
-#, fuzzy
-msgid "Fax"
-msgstr "Fax"
 
 msgid "February"
 msgstr ""
@@ -2229,9 +2199,6 @@ msgstr ""
 #, fuzzy
 msgid "Homepage"
 msgstr "Welcome !"
-
-msgid "I can't find hostname alias"
-msgstr ""
 
 msgid "ID"
 msgstr ""
@@ -3033,14 +3000,6 @@ msgid "Personal profile for %s %s"
 msgstr "Category"
 
 #, fuzzy
-msgid "Personnel"
-msgstr "Organisation"
-
-#, fuzzy
-msgid "Phone"
-msgstr "Phone"
-
-#, fuzzy
 msgid "PortFolio"
 msgstr "Modify"
 
@@ -3096,10 +3055,6 @@ msgstr ""
 
 msgid "Processes to exec"
 msgstr ""
-
-#, fuzzy
-msgid "Professional"
-msgstr "Update Title Cards"
 
 #, c-format
 msgid "Profil for document's archive %s"
@@ -3406,10 +3361,6 @@ msgstr "Delete"
 msgid "Search to insert"
 msgstr "Start search"
 
-#, fuzzy
-msgid "Secretary"
-msgstr "Locality"
-
 msgid "Section free key"
 msgstr ""
 
@@ -3587,10 +3538,6 @@ msgstr ""
 
 msgid "Skipped Timers"
 msgstr ""
-
-#, fuzzy
-msgid "Society"
-msgstr "Locality"
 
 #, c-format
 msgid ""
@@ -5319,10 +5266,6 @@ msgstr "Delete"
 
 #, fuzzy
 msgid "confidential document"
-msgstr "Delete"
-
-#, fuzzy
-msgid "confidentiality"
 msgstr "Delete"
 
 #, c-format
@@ -7758,10 +7701,6 @@ msgid "not authorized : parameter %s is not a user parameter"
 msgstr ""
 
 #, fuzzy
-msgid "not defined"
-msgstr "Modify"
-
-#, fuzzy
 msgid "not equal"
 msgstr "Email"
 
@@ -8059,10 +7998,6 @@ msgstr "Print this page"
 msgid "printed view card"
 msgstr "Category"
 
-#, fuzzy
-msgid "private card"
-msgstr "Category"
-
 msgid "private key is not valid"
 msgstr ""
 
@@ -8228,12 +8163,6 @@ msgstr "version"
 
 msgid "prop_wid"
 msgstr "workflow"
-
-msgid "public card - read access"
-msgstr ""
-
-msgid "public card - write access"
-msgstr ""
 
 #, c-format
 msgid "query %s has failed"
@@ -8748,10 +8677,6 @@ msgid "socket creation error"
 msgstr ""
 
 #, fuzzy
-msgid "socname"
-msgstr "Lastname"
-
-#, fuzzy
 msgid "specialedit"
 msgstr "Delete"
 
@@ -8874,6 +8799,11 @@ msgid ""
 "identificator"
 msgstr ""
 
+msgid ""
+"system id already set in database\n"
+"This kind of document can not be duplicated"
+msgstr ""
+
 msgid "system identifiant equal"
 msgstr ""
 
@@ -8994,9 +8924,6 @@ msgid "the external pluggin file %s cannot be read"
 msgstr ""
 
 msgid "the login must not be empty"
-msgstr ""
-
-msgid "the login syntax is like : john.doe"
 msgstr ""
 
 #, c-format
@@ -9676,11 +9603,6 @@ msgstr ""
 msgid "welcome"
 msgstr "Welcome !"
 
-msgid ""
-"what id already set in freedom\n"
-"This kind of document can not be duplicated"
-msgstr ""
-
 msgid "widget display popup for a description card"
 msgstr ""
 
@@ -9833,6 +9755,10 @@ msgid "{left} title include {right}"
 msgstr ""
 
 #, fuzzy
+#~ msgid "(private)"
+#~ msgstr "Create"
+
+#, fuzzy
 #~ msgid "Address book searches"
 #~ msgstr "Start search"
 
@@ -9844,6 +9770,14 @@ msgstr ""
 
 #~ msgid "Change state to %s"
 #~ msgstr "Next step to %s"
+
+#, fuzzy
+#~ msgid "Complete view"
+#~ msgstr "Create"
+
+#, fuzzy
+#~ msgid "Fax"
+#~ msgstr "Fax"
 
 #, fuzzy
 #~ msgid "Import from"
@@ -9868,8 +9802,28 @@ msgstr ""
 #~ msgstr "Organisation"
 
 #, fuzzy
+#~ msgid "Personnel"
+#~ msgstr "Organisation"
+
+#, fuzzy
+#~ msgid "Phone"
+#~ msgstr "Phone"
+
+#, fuzzy
+#~ msgid "Professional"
+#~ msgstr "Update Title Cards"
+
+#, fuzzy
 #~ msgid "Save without change state"
 #~ msgstr "Category"
+
+#, fuzzy
+#~ msgid "Secretary"
+#~ msgstr "Locality"
+
+#, fuzzy
+#~ msgid "Society"
+#~ msgstr "Locality"
 
 #, fuzzy
 #~ msgid ""
@@ -9927,6 +9881,10 @@ msgstr ""
 #, fuzzy
 #~ msgid "clear"
 #~ msgstr "Close"
+
+#, fuzzy
+#~ msgid "confidentiality"
+#~ msgstr "Delete"
 
 #, fuzzy
 #~ msgid "confirm delete"
@@ -10138,6 +10096,10 @@ msgstr ""
 #~ msgstr "No mail account"
 
 #, fuzzy
+#~ msgid "not defined"
+#~ msgstr "Modify"
+
+#, fuzzy
 #~ msgid "one word equal"
 #~ msgstr "Email"
 
@@ -10169,6 +10131,10 @@ msgstr ""
 #~ msgstr "Import"
 
 #, fuzzy
+#~ msgid "private card"
+#~ msgstr "Category"
+
+#, fuzzy
 #~ msgid "quick search"
 #~ msgstr "Start search"
 
@@ -10191,6 +10157,10 @@ msgstr ""
 #, fuzzy
 #~ msgid "society"
 #~ msgstr "Locality"
+
+#, fuzzy
+#~ msgid "socname"
+#~ msgstr "Lastname"
 
 #~ msgid "subject for new password request"
 #~ msgstr "The subject of the mail for password requests"

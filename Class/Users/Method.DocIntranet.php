@@ -42,6 +42,7 @@ class _IGROUPUSER extends Doc
         if ($login == "") {
             $err = _("the login must not be empty");
         } else if ($login == "-") {
+        } else if ($login == "-") {
         } else {
             if ($err == "") {
                 return $this->ExistsLogin($login);
@@ -64,8 +65,8 @@ class _IGROUPUSER extends Doc
         $id = $this->GetValue("US_WHATID");
         
         $q = new QueryDb("", "Account");
-        $q->AddQuery(sprintf("login='%s'", strtolower(pg_escape_string($login)))) ;
-        if ($id) $q->AddQuery(sprintf("id != %d",$id));
+        $q->AddQuery(sprintf("login='%s'", strtolower(pg_escape_string($login))));
+        if ($id) $q->AddQuery(sprintf("id != %d", $id));
         $q->Query(0, 0, "TABLE");
         $err = $q->basic_elem->msg_err;
         if (($err == "") && ($q->nb > 0)) $err = _("login yet use");
@@ -85,7 +86,7 @@ class _IGROUPUSER extends Doc
                 "us_whatid = '" . intval($this->getValue("US_WHATID")) . "'"
             );
             $tdoc = getChildDoc($this->dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", $this->fromid);
-            if (count($tdoc) > 0) return _("what id already set in freedom\nThis kind of document can not be duplicated");
+            if (count($tdoc) > 0) return _("system id already set in database\nThis kind of document can not be duplicated");
         }
         return '';
     }
@@ -102,7 +103,7 @@ class _IGROUPUSER extends Doc
         return $err;
     }
     /**
-     * get system id account from doculnet id account
+     * get system id account from document id account
      * @param array $accountIds
      * @return array
      */
@@ -121,7 +122,7 @@ class _IGROUPUSER extends Doc
     }
     /**
      * interface to affect group for an user
-     * @templateController
+     * @templateController interface to view group tree and select group
      * @param string $target window target name for hyperlink destination
      * @param bool $ulink if false hyperlink are not generated
      * @param bool $abstract if true only abstract attribute are generated
@@ -305,8 +306,9 @@ class _IGROUPUSER extends Doc
         }
         return false;
     }
-    /** 
-     * return what user object conform to whatid
+    /**
+     * return system account object conform to whatid
+     * @api get system account corresponding to this document
      * @return Account return false if not found
      */
     function getAccount($nocache = false)
@@ -326,7 +328,7 @@ class _IGROUPUSER extends Doc
     }
     /**
      * return what user object conform to whatid
-     * @deprecated
+     * @deprecated use getAccount instead
      * @return Account return false if not found
      */
     function getWuser($nocache = false)

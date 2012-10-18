@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-28 18:48+0200\n"
-"PO-Revision-Date: 2012-09-28 18:49+0200\n"
+"POT-Creation-Date: 2012-10-18 11:25+0200\n"
+"PO-Revision-Date: 2012-10-18 11:26+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -423,9 +423,6 @@ msgstr "(nouvelle entrée)"
 
 msgid "(only)"
 msgstr "(seulement)"
-
-msgid "(private)"
-msgstr "(privé)"
 
 #, c-format
 msgid "(substitute of %s) : "
@@ -1220,9 +1217,6 @@ msgstr "Fonctions communes"
 msgid "Complete (cluster)"
 msgstr "Avec les traitements (cadre)"
 
-msgid "Complete view"
-msgstr "Vue complète"
-
 msgid "Composing the email"
 msgstr "Composition du couriel"
 
@@ -1285,13 +1279,6 @@ msgstr "Contraintes"
 #, c-format
 msgid "Content managing of %s"
 msgstr "Gestion du contenu de %s"
-
-#, c-format
-msgid "Context  : [%s]"
-msgstr "Contexte : [%s]"
-
-msgid "Continue (Y|N) ?"
-msgstr "Continuer (Y (oui) |N (non)) ?"
 
 msgid "Control characters are not allowed"
 msgstr "Les caractères de contrôle ne sont pas autorisés"
@@ -1376,10 +1363,6 @@ msgstr "Créer une nouvelle famille"
 msgid "Create new group"
 msgstr "Créer un nouveau groupe"
 
-#, c-format
-msgid "Create other database for %s (%s)"
-msgstr "Création d'autres bases pour %s (%s)"
-
 msgid "Create subfolder"
 msgstr "Créer un dossier"
 
@@ -1405,10 +1388,6 @@ msgstr "Api données"
 
 msgid "Data cannot be saved"
 msgstr "Les données ne peuvent être sauvées"
-
-#, c-format
-msgid "Database : [%s]"
-msgstr "Base de données : [%s]"
 
 msgid "Date"
 msgstr "Date"
@@ -1723,9 +1702,6 @@ msgstr "Vidage de la base temporaire '%s'"
 msgid "Encoding"
 msgstr "Encodage"
 
-msgid "Enter name for database ? "
-msgstr "Nom de la base de donnée ?"
-
 msgid "Enter your login"
 msgstr "Entrez votre identifiant"
 
@@ -1888,9 +1864,6 @@ msgstr "La famille n'est pas instanciée"
 
 msgid "Family preferences"
 msgstr "Préférences des familles"
-
-msgid "Fax"
-msgstr "Fax"
 
 msgid "February"
 msgstr "Février"
@@ -2141,9 +2114,6 @@ msgstr "Historique de"
 # ne pas mettre de '
 msgid "Homepage"
 msgstr "Accueil"
-
-msgid "I can't find hostname alias"
-msgstr "Alias de hostname introuvable"
 
 msgid "ID"
 msgstr "ID"
@@ -2917,12 +2887,6 @@ msgstr "Droits"
 msgid "Personal profile for %s %s"
 msgstr "Profil personnel de %s %s"
 
-msgid "Personnel"
-msgstr "Personnel"
-
-msgid "Phone"
-msgstr "Téléphone"
-
 msgid "PortFolio"
 msgstr "Chemise"
 
@@ -2975,9 +2939,6 @@ msgstr "Planification des processus"
 
 msgid "Processes to exec"
 msgstr "Processus à exécuter"
-
-msgid "Professional"
-msgstr "Professionnel"
 
 #, c-format
 msgid "Profil for document's archive %s"
@@ -3256,9 +3217,6 @@ msgstr "Recherche des documents liés"
 msgid "Search to insert"
 msgstr "Recherche pour l'insertion"
 
-msgid "Secretary"
-msgstr "Secrétariat"
-
 msgid "Section free key"
 msgstr "Clé libre"
 
@@ -3439,9 +3397,6 @@ msgstr "Evitement de la propriété '%s' déjà ajoutée dans la famille '%s'"
 
 msgid "Skipped Timers"
 msgstr "Minuteurs dépassés"
-
-msgid "Society"
-msgstr "Société"
 
 #, c-format
 msgid ""
@@ -5121,9 +5076,6 @@ msgstr "confidentiel"
 
 msgid "confidential document"
 msgstr "document confidentiel"
-
-msgid "confidentiality"
-msgstr "confidentialité"
 
 #, c-format
 msgid "config file %s not found"
@@ -7373,9 +7325,6 @@ msgstr "non authentifié : ERRNO_BUG_639"
 msgid "not authorized : parameter %s is not a user parameter"
 msgstr "non autorisé: le paramètre %s n'est pas un paramètre utilisateur"
 
-msgid "not defined"
-msgstr "non défini"
-
 msgid "not equal"
 msgstr "pas égal"
 
@@ -7659,9 +7608,6 @@ msgstr "Impression de la page"
 msgid "printed view card"
 msgstr "voir une carte imprimable"
 
-msgid "private card"
-msgstr "carte privée"
-
 msgid "private key is not valid"
 msgstr "La clef privé n'est pas valide"
 
@@ -7826,12 +7772,6 @@ msgstr "version"
 
 msgid "prop_wid"
 msgstr "cycle de vie"
-
-msgid "public card - read access"
-msgstr "carte publique - accès lecture"
-
-msgid "public card - write access"
-msgstr "carte publique - accès écriture"
 
 #, c-format
 msgid "query %s has failed"
@@ -8291,9 +8231,6 @@ msgstr "style société"
 msgid "socket creation error"
 msgstr "Erreur lors de la création d'une socket"
 
-msgid "socname"
-msgstr "Nom"
-
 msgid "specialedit"
 msgstr "Éditions spéciales"
 
@@ -8412,6 +8349,13 @@ msgid ""
 msgstr ""
 "Erreur de syntaxe pour l'ordre %s. Il est possible que ce soit à cause d'un "
 "chiffre ou un problème de majuscule/minuscule dans l'identifiant"
+
+msgid ""
+"system id already set in database\n"
+"This kind of document can not be duplicated"
+msgstr ""
+"L'identifiant est déjà utilisé\n"
+"Ce type de document ne peut pas être dupliqué"
 
 msgid "system identifiant equal"
 msgstr "l'identifiant système est égal"
@@ -8541,9 +8485,6 @@ msgstr "le fichier externe %s ne peut être lu"
 
 msgid "the login must not be empty"
 msgstr "Le login ne doit pas être vide"
-
-msgid "the login syntax is like : john.doe"
-msgstr "La syntaxe d'un login est de la forme : jean.martin"
 
 #, c-format
 msgid "the method '%s' is not known for the object class %s"
@@ -9181,11 +9122,6 @@ msgstr "Voir les réponses"
 msgid "welcome"
 msgstr "Bienvenue !"
 
-msgid ""
-"what id already set in freedom\n"
-"This kind of document can not be duplicated"
-msgstr "ce type de document ne peut être dupliqué"
-
 msgid "widget display popup for a description card"
 msgstr "widget popup pour affichage d'une carte"
 
@@ -9361,6 +9297,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "%s migrated\n"
 #~ msgstr "%s migré\n"
 
+#~ msgid "(private)"
+#~ msgstr "(privé)"
+
 #~ msgid "Access To All Users"
 #~ msgstr "Accès à tous les utilisateurs"
 
@@ -9418,11 +9357,26 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Clear message"
 #~ msgstr "Effacer le message"
 
+#~ msgid "Complete view"
+#~ msgstr "Vue complète"
+
 #~ msgid "Computed from"
 #~ msgstr "Calculé depuis"
 
+#~ msgid "Context  : [%s]"
+#~ msgstr "Contexte : [%s]"
+
+#~ msgid "Continue (Y|N) ?"
+#~ msgstr "Continuer (Y (oui) |N (non)) ?"
+
 #~ msgid "Coordonates"
 #~ msgstr "Coordonnées"
+
+#~ msgid "Create other database for %s (%s)"
+#~ msgstr "Création d'autres bases pour %s (%s)"
+
+#~ msgid "Database : [%s]"
+#~ msgstr "Base de données : [%s]"
 
 #~ msgid "Document %s is not tagable"
 #~ msgstr "Le document %s ne peut pas avoir de tag"
@@ -9432,6 +9386,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
+
+#~ msgid "Enter name for database ? "
+#~ msgstr "Nom de la base de donnée ?"
 
 #~ msgid "Error %s"
 #~ msgstr "Erreur %s"
@@ -9448,8 +9405,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Error: missing or empty --config"
 #~ msgstr "Erreur: --config manquant ou absent"
 
+#~ msgid "Fax"
+#~ msgstr "Fax"
+
 #~ msgid "Group '%s' not exists"
 #~ msgstr "Le groupe '%s' n'existe pas"
+
+#~ msgid "I can't find hostname alias"
+#~ msgstr "Alias de hostname introuvable"
 
 #~ msgid "Import from"
 #~ msgstr "Importation à partir de"
@@ -9505,8 +9468,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Person"
 #~ msgstr "Personne"
 
+#~ msgid "Personnel"
+#~ msgstr "Personnel"
+
+#~ msgid "Phone"
+#~ msgstr "Téléphone"
+
 #~ msgid "Process %s [%d] executed in %d seconds"
 #~ msgstr "Processus %s [%d] exécuté en %d secondes"
+
+#~ msgid "Professional"
+#~ msgstr "Professionnel"
 
 #~ msgid "Replace address book card if has permission else duplicate"
 #~ msgstr "Remplace la carte si permission accordée sinon duplication"
@@ -9516,6 +9488,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Save without change state"
 #~ msgstr "Sauver sans changement d'état"
+
+#~ msgid "Secretary"
+#~ msgstr "Secrétariat"
 
 #~ msgid ""
 #~ "Send mail error : Relation to attribute %s not found. Relation key %s "
@@ -9532,6 +9507,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"
+
+#~ msgid "Society"
+#~ msgstr "Société"
 
 #~ msgid ""
 #~ "The change state to %s has been aborted.\n"
@@ -9696,6 +9674,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "click to reload favorites"
 #~ msgstr "Cliquer ici pour raffraichir mes favoris"
+
+#~ msgid "confidentiality"
+#~ msgstr "confidentialité"
 
 #~ msgid "confirm delete"
 #~ msgstr "retirer des préférés ?"
@@ -9975,6 +9956,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "nomail"
 #~ msgstr "pas d'email"
 
+#~ msgid "not defined"
+#~ msgstr "non défini"
+
 #~ msgid "number of members"
 #~ msgstr "Nombre de membres"
 
@@ -10008,6 +9992,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "preferential doc gate id"
 #~ msgstr "identifiant de portail par défaut"
 
+#~ msgid "private card"
+#~ msgstr "carte privée"
+
+#~ msgid "public card - read access"
+#~ msgstr "carte publique - accès lecture"
+
+#~ msgid "public card - write access"
+#~ msgstr "carte publique - accès écriture"
+
 #~ msgid "quick search"
 #~ msgstr "recherche rapide"
 
@@ -10038,6 +10031,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "society"
 #~ msgstr "société"
 
+#~ msgid "socname"
+#~ msgstr "Nom"
+
 #~ msgid "subject for new password request"
 #~ msgstr "Le sujet du mail pour les demandes de mot de passe"
 
@@ -10065,6 +10061,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "the file %s (rev %d) must be locked before"
 #~ msgstr "le fichier %s (rév %d) doit être verrouillé au préalable"
+
+#~ msgid "the login syntax is like : john.doe"
+#~ msgstr "La syntaxe d'un login est de la forme : jean.martin"
 
 #~ msgid "the user identification is unknow"
 #~ msgstr "l'identification de l'utilisateur est inconnue"
@@ -10146,3 +10145,8 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "web"
 #~ msgstr "Web"
+
+#~ msgid ""
+#~ "what id already set in freedom\n"
+#~ "This kind of document can not be duplicated"
+#~ msgstr "ce type de document ne peut être dupliqué"
