@@ -144,14 +144,7 @@ class _DSEARCH extends DocSearch
             }
             if ($this->getValue("se_famid")) {
                 $filterXml = sprintf("<filter><family>%s%s</family>", $this->getValue("se_famid") , ($this->getValue("se_famonly") == "yes" ? " strict" : ""));
-                // <criteria><lp></lp><rp></rp><ol></ol><left>an_espece_title</left><operator>~*</operator><right>baleine</right></criteria>
-                $details = $this->getAValues("se_t_detail");
-                foreach ($details as $k => $v) {
-                    // need linearize Filter
-                    /*$filterXml.=sprintf("<criteria><lp></lp><rp></rp><ol></ol><left>an_espece_title</left><operator>~*</operator><right>baleine</right></criteria>",
-                        $v["se_leftp"]);
-                    */
-                }
+                
                 
                 $filterXml.= "</filter>";
                 $this->setValue("se_typefilter", "generated"); // only one
