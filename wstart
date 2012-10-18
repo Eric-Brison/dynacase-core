@@ -15,9 +15,6 @@ if [ ! -x "$core_environment" ]; then
 fi
 . "$core_environment"
 
-if [ -f "$wpub/maintenance.lock" ]; then
-    rm -f "$wpub/maintenance.lock"
-fi
 
 # link images file to be used in several applications
 if [ ! -d "$wpub/Images" ] ; then
@@ -55,3 +52,6 @@ fi
 #/bin/rm -f /var/run/php/sess_*
 #/bin/rm -f /var/lib/php/session/sess_*
 
+if [ -f "$wpub/maintenance.lock" ]; then
+    rm -f "$wpub/maintenance.lock"
+fi
