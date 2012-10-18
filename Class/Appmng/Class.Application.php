@@ -329,10 +329,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (isset($pUrl['scheme']) || isset($pUrl['query'])) {
             return $ref;
         }
-
+        
+        if (is_file($ref)) return $ref;
         /* TODO : update with application log class */
-        $this->addLogMsg(__METHOD__." Unable to identify the ref $ref");
-
+        $this->log->error(__METHOD__ . " Unable to identify the ref $ref");
+        
         return '';
     }
     /**
@@ -472,7 +473,6 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return $this->getRessourceLocation('js', $ref, $needparse, $packName);
     }
-
     /**
      * Add a CSS in an action
      *
@@ -522,7 +522,6 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (substr($ref, 0, 2) == './') $ref = substr($ref, 2);
         return $this->AddRessourceRef('js', $ref, $needparse, $packName);
     }
-
     /**
      * Get the js ref array of the current action
      *
@@ -601,7 +600,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             return ($this->csscode);
         }
     }
-
+    
     function addLogMsg($code, $cut = 80)
     {
         if ($code == "") return;
@@ -609,15 +608,19 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($this->hasParent()) {
             $this->parent->AddLogMsg($code, $cut);
         } else {
-            $logmsg = $this->session->read("logmsg", array());
-            if (is_array($code)) {
-                $code["stack"] = getDebugStack(4);
-                $logmsg[] = json_encode($code);
-            } else $logmsg[] = strftime("%H:%M - ") . str_replace("\n", "\\n", addslashes(mb_substr($code, 0, $cut)));
-            $this->session->register("logmsg", $logmsg);
-            $suser = sprintf("%s %s [%d] - ", $this->user->firstname, $this->user->lastname, $this->user->id);
-            if (is_array($code)) $code = print_r($code, true);
-            $this->log->info($suser . $code);
+            if ($this->session) {
+                $logmsg = $this->session->read("logmsg", array());
+                if (is_array($code)) {
+                    $code["stack"] = getDebugStack(4);
+                    $logmsg[] = json_encode($code);
+                } else $logmsg[] = strftime("%H:%M - ") . str_replace("\n", "\\n", addslashes(mb_substr($code, 0, $cut)));
+                $this->session->register("logmsg", $logmsg);
+                $suser = sprintf("%s %s [%d] - ", $this->user->firstname, $this->user->lastname, $this->user->id);
+                if (is_array($code)) $code = print_r($code, true);
+                $this->log->info($suser . $code);
+            } else {
+                error_log($code);
+            }
         }
     }
     /**
@@ -658,7 +661,6 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         $this->session->unregister("warningmsg");
     }
-
     /**
      * Test permission for currennt user in current application
      *
