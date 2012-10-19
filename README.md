@@ -13,7 +13,7 @@ Dynacase Platform is an open source development platform, with core functionalit
 
 ### Documentation 
 
-[Dynacase reference manual](https://github.com/Anakeen/dynacase-platform/raw/3.2-integration/Doc/Manuel/dynacase-platform.pdf) reference manual for Dynacase Platform
+[Dynacase reference manual](https://github.com/Anakeen/dynacase-platform/raw/3.2-integration/Doc/Manuel/dynacase-core.pdf) reference manual for Dynacase Platform
 
 [Dynacase operating manual](https://github.com/Anakeen/dynacase-doc-platform-operating-manual/) guide to install Dynacase Platform
 
