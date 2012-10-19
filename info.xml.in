@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
-<module name="dynacase-platform" version="@VERSION@" release="@RELEASE@" license="@LICENSE@" basecomponent="yes">
+<module name="@PACKAGE@" version="@VERSION@" release="@RELEASE@" license="@LICENSE@" basecomponent="yes">
 
-    <description lang="en">Hosting Application Toolkit dynacase platform</description>
-    <description lang="fr">Serveur d'application dynacase platform</description>
+    <description lang="en">Hosting Application Toolkit dynacase core</description>
+    <description lang="fr">Serveur d'application dynacase core</description>
 
     <replaces>
+        <module name="dynacase-platform" />
     </replaces>
 
     <requires>
