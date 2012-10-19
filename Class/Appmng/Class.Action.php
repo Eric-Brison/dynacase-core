@@ -5,7 +5,7 @@
  * @package FDL
 */
 /**
- * Action Class
+ * Action class
  *
  * @author Anakeen
  * @version $Id: Class.Action.php,v 1.40 2008/03/10 15:09:17 eric Exp $
@@ -23,6 +23,11 @@ include_once ('Class.QueryDb.php');
 include_once ('Class.Application.php');
 
 define("THROW_EXITERROR", 1968);
+/**
+ * manage Action
+ * Action is part of Application
+ * @see Application
+ */
 class Action extends DbObj
 {
     var $fields = array(
@@ -143,8 +148,27 @@ create sequence SEQ_ID_ACTION;
      * @var Layout
      */
     public $lay;
-    
-    function Set($name, &$parent)
+    /**
+     * initialize Action object
+     * need set action to execute it
+     * @api initialize Action object
+     * @code
+     $core = new Application();
+     $core->Set("CORE", $CoreNull); // init core application from nothing
+     $core->session = new Session();
+     $core->session->set();
+     $one = new Application();
+     $one->set("ONEFAM", $core, $core->session);// init ONEFAM application from core
+     $myAct=new Action();
+     $myAct->set("ONEFAM_LIST", $one);
+     print $myAct->execute();
+     *
+     * @endcode
+     * @param string $name action name reference
+     * @param Application $parent application object where action depends
+     * @throws Dcp\Core\Exception if action not exists
+     */
+    public function Set($name, &$parent)
     {
         $this->script = "";
         $this->layout = "";
@@ -173,8 +197,12 @@ create sequence SEQ_ID_ACTION;
         
         $this->CompleteSet($parent);
     }
-    
-    function CompleteSet(&$parent)
+    /**
+     * add Application parent
+     * @param Application $parent
+     * @return string
+     */
+    public function completeSet(&$parent)
     {
         $this->parent = & $parent;
         if ($this->script == "") $this->script = strtolower($this->name) . ".php";
@@ -195,27 +223,44 @@ create sequence SEQ_ID_ACTION;
         return "";
     }
     
-    function Complete()
+    public function complete()
     {
     }
-    
-    function Read($k, $d = "")
+    /**
+     * read a session variable
+     * @api read a session variable
+     * @param string $k key variable
+     * @param string $d default value
+     * @return string
+     */
+    public function Read($k, $d = "")
     {
         if (is_object($this->session)) {
             return ($this->session->Read($k, $d));
         }
         return ($d . "--");
     }
-    
-    function Register($k, $v)
+    /**
+     * record a session variable
+     * @api record variable into current session
+     * @param  string $k key variable
+     * @param string $v value to set
+     * @return bool return true if ok
+     */
+    public function Register($k, $v)
     {
         if (isset($this->session) && is_object($this->session)) {
             return ($this->session->Register($k, $v));
         }
         return false;
     }
-    
-    function Unregister($k)
+    /**
+     * remove variable from current session
+     * @api remove variable of current session
+     * @param string $k key variable
+     * @return bool return true if ok
+     */
+    public function Unregister($k)
     {
         if (is_object($this->session)) {
             return ($this->session->Unregister($k));
@@ -223,22 +268,22 @@ create sequence SEQ_ID_ACTION;
         return false;
     }
     
-    function ActRead($k, $d = "")
+    public function actRead($k, $d = "")
     {
         return ($this->Read("{$this->id}_" . $k, $d));
     }
     
-    function ActRegister($k, $v)
+    public function actRegister($k, $v)
     {
         return ($this->Register("{$this->id}_" . $k, $v));
     }
     
-    function ActUnregister($k)
+    public function actUnregister($k)
     {
         return ($this->Unregister("{$this->id}_" . $k));
     }
     
-    function PreInsert()
+    public function PreInsert()
     {
         if ($this->Exists($this->name, $this->id_application)) return "Action {$this->name} already exists...";
         $msg_res = $this->exec_query("select nextval ('seq_id_action')");
@@ -246,14 +291,21 @@ create sequence SEQ_ID_ACTION;
         $this->id = $arr["nextval"];
         return '';
     }
-    function PreUpdate()
+    public function PreUpdate()
     {
         if ($this->dbid == - 1) return FALSE;
         if ($this->Exists($this->name, $this->id_application, $this->id)) return "Action {$this->name} already exists...";
         return '';
     }
-    
-    function GetParam($name, $def = "")
+    /**
+     * get parameter value of action'sapplication
+     * shorcut to Application::getParam
+     * @api get parameter value of action's application
+     * @param string $key
+     * @param string $default value if not set
+     * @return string
+     */
+    public function getParam($name, $def = "")
     {
         if (isset($this->parent)) {
             return ($this->parent->GetParam($name, $def));
@@ -262,18 +314,29 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * set a new value for a user parameter
+     * @see ParameterManager::setUserApplicationParameter
      * @param string $name parameter key
      * @param string $val new value for the parameter
      * @return string error message if not succeed else empty string
      */
-    function setParamU($name, $val)
+    public function setParamU($name, $val)
     {
         if (isset($this->parent)) {
             return ($this->parent->setParamU($name, $val));
         }
         return '';
     }
-    function GetImageUrl($name, $detectstyle = true, $size = null)
+    /**
+     * get image url of an application
+     * shorcut to Application::getImageUrl
+     * @see Application::getImageUrl
+     * @api get image url of an application
+     * @param string $name image filename
+     * @param bool $detectstyle to use theme image instead of original
+     * @param int $size to use image with another width (in pixel) - null is original size
+     * @return string url to download image
+     */
+    public function getImageUrl($name, $detectstyle = true, $size = null)
     {
         if (isset($this->parent)) {
             return ($this->parent->GetImageUrl($name, $detectstyle, $size));
@@ -281,7 +344,7 @@ create sequence SEQ_ID_ACTION;
         return '';
     }
     
-    function GetFilteredImageUrl($name)
+    public function getFilteredImageUrl($name)
     {
         if (isset($this->parent)) {
             return ($this->parent->GetFilteredImageUrl($name));
@@ -289,7 +352,7 @@ create sequence SEQ_ID_ACTION;
         return '';
     }
     
-    function GetImageFile($name)
+    public function getImageFile($name)
     {
         if (isset($this->parent)) {
             return ($this->parent->GetImageFile($name));
@@ -297,14 +360,14 @@ create sequence SEQ_ID_ACTION;
         return '';
     }
     
-    function AddLogMsg($msg, $cut = 80)
+    public function addLogMsg($msg, $cut = 80)
     {
         if (isset($this->parent)) {
             $this->parent->AddLogMsg($msg, $cut);
         }
     }
     
-    function AddWarningMsg($msg)
+    public function addWarningMsg($msg)
     {
         if (isset($this->parent)) {
             $this->parent->AddWarningMsg($msg);
@@ -316,7 +379,7 @@ create sequence SEQ_ID_ACTION;
      * @param string $actdone the code of action
      * @param string $args the argument of action
      */
-    function AddActionDone($actdone, $arg = "")
+    public function addActionDone($actdone, $arg = "")
     {
         if ($actdone != "") {
             $sact = $this->session->read("actdone_name", array());
@@ -332,7 +395,7 @@ create sequence SEQ_ID_ACTION;
      * @param string $actdone the code of action
      * @param string $args the argument of action
      */
-    function ClearActionDone()
+    public function clearActionDone()
     {
         $this->session->unregister("actdone_name");
         $this->session->unregister("actdone_arg");
@@ -341,14 +404,22 @@ create sequence SEQ_ID_ACTION;
      * get action code and argument for action code done
      * to be use in refreshing main window interface
      * @param string &$actdone the code of action
-     * @param string &$args the argument of action
+     * @param string &$arg the argument of action
      */
-    function GetActionDone(&$actdone, &$arg)
+    public function getActionDone(&$actdone, &$arg)
     {
         $actdone = $this->session->read("actdone_name", array());
         $arg = $this->session->read("actdone_arg", array());
     }
-    function GetIcon($name, $text, $width = "", $height = "")
+    /**
+     * get image HTML fragment
+     * @param string  $name icon filename
+     * @param string $text alternative text
+     * @param string $width icon width
+     * @param string $height icon Height
+     * @return string HTML fragment image tag
+     */
+    public function getIcon($name, $text, $width = "", $height = "")
     {
         
         if ($width != "") $width = "width = \"" . $width . "\"";
@@ -356,14 +427,25 @@ create sequence SEQ_ID_ACTION;
         
         return ("<img border=0 " . $width . " " . $height . " src=\"" . $this->GetImageUrl($name) . "\" title=\"" . $this->text($text) . "\" alt=\"" . $this->text($text) . "\">");
     }
-    
-    function GetLayoutFile($layname)
+    /**
+     * get file path layout from layout name
+     * @see Application::getLayoutFile
+     * @param $layname
+     * @return string
+     */
+    public function getLayoutFile($layname)
     {
         if (isset($this->parent)) return ($this->parent->GetLayoutFile($layname));
         return '';
     }
-    
-    function Exists($name, $idapp, $id_func = '')
+    /**
+     * Verify if action exists
+     * @param string $name action name
+     * @param int $idapp application numeric identifier
+     * @param int $id_func action identifier - when test itself @ internal purpose
+     * @return bool true if exists
+     */
+    public function exists($name, $idapp, $id_func = 0)
     {
         if ($idapp == '') return false;
         $query = new QueryDb($this->dbaccess, "Action");
@@ -379,25 +461,27 @@ create sequence SEQ_ID_ACTION;
         return ($query->nb > 0);
     }
     /**
+     * Verify acl grant for current user
+     * @api test action acl grant
      * @param string $acl_name acl name
-     * return true if current user has acl privilege
      * @param string $app_name app name to specify another appname (else current app name)
      * @param bool $strict to not use substitute account information
-     * @return bool
+     * @return bool true if current user has acl privilege
      */
-    function HasPermission($acl_name = "", $app_name = "", $strict = false)
+    public function hasPermission($acl_name = "", $app_name = "", $strict = false)
     {
         if ($acl_name == "") return (true); // no control for this action
         return ($this->parent->HasPermission($acl_name, $app_name, $strict));
     }
     /** 
      * Check if the current user can execute the specified action.
+     * @api verify if an action can be executed
      * @param string $actname action name
      * @param string $appid application name or application id (default is the current application)
      * @return string with error message if the user cannot execute the given action, or an empty string if the user can execute the action
      *
      */
-    function canExecute($actname, $appid = "")
+    public function canExecute($actname, $appid = "")
     {
         
         if ($this->user->id == 1) return "";
@@ -423,7 +507,7 @@ create sequence SEQ_ID_ACTION;
      * @param string $appid application id (default itself)
      * @return string (false if not found)
      */
-    function GetAcl($actname, $appid = "")
+    public function getAcl($actname, $appid = "")
     {
         if ($appid == "") $appid = $this->parent->id;
         $query = new QueryDb($this->dbaccess, $this->dbtable);
@@ -435,9 +519,12 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * execute the action
+     * test if current user can execute it
+     * @api execute action
+     * @throws Dcp\Exception
      * @return string the composed associated layout
      */
-    function execute()
+    public function execute()
     {
         // If no parent set , it's a misconfiguration
         if (!isset($this->parent)) return '';
@@ -519,8 +606,11 @@ create sequence SEQ_ID_ACTION;
     /**
      * display error to user and stop execution
      * @param string $texterr the error message
+     * @api abord action execution
+     * @throws Dcp\Core\Exception
+     * @return void
      */
-    function exitError($texterr)
+    public function exitError($texterr)
     {
         if (!empty($_SERVER['HTTP_HOST'])) {
             //      redirect($this,"CORE&sole=Y","ERROR");
@@ -542,7 +632,7 @@ create sequence SEQ_ID_ACTION;
         }
     }
     
-    function exitForbidden($texterr)
+    public function exitForbidden($texterr)
     {
         header("HTTP/1.0 401 Authorization Required ");
         header("HTTP/1.0 301 Access Forbidden ");
@@ -552,13 +642,19 @@ create sequence SEQ_ID_ACTION;
     /**
      * unregister FT error
      */
-    function ClearError()
+    public function clearError()
     {
         $this->Unregister("FT_ERROR");
         $this->Unregister("FT_ERROR_ACT");
     }
-    
-    function Init($app, $action_desc, $update = FALSE)
+    /**
+     * record/update action
+     * @param Application $app application
+     * @param array $action_desc action description
+     * @param bool $update set to true if update only
+     * @return string none
+     */
+    public function Init($app, $action_desc, $update = FALSE)
     {
         if (sizeof($action_desc) == 0) {
             $this->log->info("No action available");
@@ -643,6 +739,7 @@ create sequence SEQ_ID_ACTION;
      * in web mode the value comes from http variable and in shell mode comes from args variable
      * @param string $k the argument name
      * @param mixed $def default value if no argument is not set
+     * @return mixed|string
      */
     static function getArgument($k, $def = '')
     {
@@ -650,38 +747,74 @@ create sequence SEQ_ID_ACTION;
         if ($v === null) return $def;
         else return $v;
     }
-    
-    function Text($code, $args = NULL)
+    /**
+     * translate text
+     * use gettext catalog
+     * @api translate text
+     * @param string $code text to translate
+     * @return string
+     */
+    public static function text($code)
     {
         if ($code == "") return "";
         return _($code);
     }
-    // Log functions
-    function debug($msg)
+    /**
+     * log with debug level
+     * @api log with debug level
+     * @see Log
+     * @param string $msg message text
+     */
+    public function debug($msg)
     {
         $this->log->debug($msg);
     }
-    function info($msg)
+    /**
+     * log with info level
+     * @api log with info level
+     * @see Log
+     * @param string $msg message text
+     */
+    public function info($msg)
     {
         $this->log->info($msg);
     }
-    function warning($msg)
+    /**
+     * log with warning level
+     * @api log with warning level
+     * @see Log
+     * @param string $msg message text
+     */
+    public function warning($msg)
     {
         $this->log->warning($msg);
     }
-    function error($msg)
+    /**
+     * log with error level
+     * @api log with error level
+     * @see Log
+     * @param string $msg message text
+     */
+    public function error($msg)
     {
         $this->log->error($msg);
     }
-    function fatal($msg)
+    /**
+     * log with fatal level
+     * @api log with fatal level
+     * @see Log
+     * @param string $msg message text
+     */
+    public function fatal($msg)
     {
         $this->log->fatal($msg);
     }
     /**
-     * verify if the application is really installed in localhost
+     * verify if an application is really installed in localhost
+     * @param string $appname application reference name
      * @return bool true if application is installed
      */
-    function AppInstalled($appname)
+    public function appInstalled($appname)
     {
         
         $pubdir = $this->parent->GetParam("CORE_PUBDIR");
@@ -692,7 +825,7 @@ create sequence SEQ_ID_ACTION;
      * return available Applications for current user
      * @return array
      */
-    function GetAvailableApplication()
+    public function getAvailableApplication()
     {
         
         $query = new QueryDb($this->dbaccess, "Application");

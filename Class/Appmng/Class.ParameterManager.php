@@ -8,6 +8,9 @@
  * Manage application parameters
  * Set and get application parameters
  * @class ParameterManager
+ * @code
+ * $v=ParameterManager::getParameter("CORE_CLIENT");
+ * @endcode
  */
 class ParameterManager
 {

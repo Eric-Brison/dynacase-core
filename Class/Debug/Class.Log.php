@@ -20,10 +20,14 @@
 // yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
 $CLASS_LOG_PHP = "";
-
+/**
+ * Log manager
+ * log message according to CORE_LOGLEVEL parameter
+ * @class Log
+ *
+ */
 class Log
 {
-    
     public $loghead;
     public $application;
     public $function;
@@ -32,7 +36,7 @@ class Log
     private $tic;
     private $ptext;
     // ------------------------------------------------------------------------
-    function Log($logfile = "", $application = "", $function = "")
+    public function Log($logfile = "", $application = "", $function = "")
     {
         $this->usesyslog = 0;
         if ($logfile == "") {
@@ -50,46 +54,87 @@ class Log
         $this->application = $application;
         $this->function = $function;
     }
-    // ------------------------------------------------------------------------
-    function debug($string, $args = NULL)
+    /**
+     * log with debug level
+     * @api log with debug level
+     * @param string $string message text
+     */
+    public function debug($string)
     {
         $this->wlog("D", $string);
     }
-    function callstack($string, $args = NULL)
+    /**
+     * @param string $string message text
+     */
+    public function callstack($string)
     {
         $this->wlog("C", $string);
     }
-    function info($string, $args = NULL)
+    /**
+     * log with info level
+     * @api log with info level
+     * @param string $string message text
+     */
+    public function info($string)
     {
         $this->wlog("I", $string);
     }
-    function warning($string, $args = NULL)
+    /**
+     * log with warning level
+     * @api log with warning level
+     * @param string $string message text
+     */
+    public function warning($string)
     {
         $this->wlog("W", $string);
     }
-    function error($string, $args = NULL)
+    /**
+     * log with error level
+     * @api log with error level
+     * @param string $string message text
+     */
+    public function error($string)
     {
         $this->wlog("E", $string);
     }
-    function fatal($string, $args = NULL)
+    /**
+     * log with fatal level
+     * @api log with fatal level
+     * @param string $string message text
+     */
+    public function fatal($string)
     {
         $this->wlog("F", $string);
     }
-    function deprecated($string, $args = NULL)
+    /**
+     * log with deprecated level
+     * add callstack
+     * @api log with deprecated level
+     * @see Log
+     * @param string $string message text
+     */
+    public function deprecated($string)
     {
         $this->wlog("O", $string);
     }
-
-    function start($text = "")
+    /**
+     * to set start time
+     * @param string $text prefix text to set for next tic/end
+     */
+    public function start($text = "")
     {
         $deb = gettimeofday();
         $this->deb = $deb["sec"] + $deb["usec"] / 1000000;
         $this->tic = $this->deb;
         $this->ptext = $text; // prefix
-
+        
     }
-
-    function tic($text)
+    /**
+     * log partial time
+     * @see start
+     * @param string $text text to log
+     */
+    public function tic($text)
     {
         $tic = gettimeofday();
         $now = $tic["sec"] + $tic["usec"] / 1000000;
@@ -97,16 +142,19 @@ class Log
         $this->info("CHRONO-INT [$this->ptext]/[$text] : $duree");
         $this->tic = $now;
     }
-
-    function end($text)
+    /**
+     * log end time from last start
+     * @param string $text text to log
+     */
+    public function end($text)
     {
         $fin = gettimeofday();
         $this->fin = $fin["sec"] + $fin["usec"] / 1000000;
         $duree = round($this->fin - $this->deb, 3);
         $this->info("CHRONO [$this->ptext]/[$text] : $duree");
     }
-
-    function push($string)
+    
+    public function push($string)
     {
         global $CORE_LOGLEVEL;
         if (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, "C"))) {
@@ -120,8 +168,8 @@ class Log
             $call_pre = $call_pre . "-";
         }
     }
-
-    function pop()
+    
+    public function pop()
     {
         global $CORE_LOGLEVEL;
         if (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, "C"))) {
@@ -131,17 +179,23 @@ class Log
             $this->callstack("($call_reqid) $call_pre : exiting  {$call_stack[$call_ind]}");
         }
     }
-    // ------------------------------------------------------------------------
-    function wlog($sta, $str, $args = NULL, $facility = LOG_LOCAL6)
+    /**
+     * main log function
+     * @param string $sta log code (one character : IWEFDO)
+     * @param string $str message to log
+     * @param null $args unused
+     * @param int $facility syslog level
+     */
+    public function wlog($sta, $str, $args = NULL, $facility = LOG_LOCAL6)
     {
-
+        
         global $_SERVER;
         global $CORE_LOGLEVEL;
-
+        
         if (!$str) return;
         if (is_array($str)) $str = implode(", ", $str);
         if ($sta == "S" || (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta)))) {
-            $addr = isset($_SERVER["REMOTE_ADDR"])?$_SERVER["REMOTE_ADDR"]:'';
+            $addr = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '';
             $appf = "[{$sta}] Dynacase";
             $appf.= ($this->application != "" ? ":" . $this->application : "");
             $appf.= ($this->function != "" ? ":" . $this->function : "");
