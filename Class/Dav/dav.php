@@ -122,10 +122,9 @@ function webdav_auth()
         default:
             sleep(1); // for robots
             // Redirect to authentication
-            AuthenticatorManager::$auth->askAuthentication();
+            AuthenticatorManager::$auth->askAuthentication(array());
             exit(0);
     }
     
     $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
 }
-?>
