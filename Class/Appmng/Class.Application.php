@@ -33,7 +33,11 @@ function f_paramglog($var)
 { // filter to select only not global
     return (!((isset($var["global"]) && ($var["global"] == 'Y'))));
 }
-
+/**
+ * Application managing
+ * @class Application
+ *
+ */
 class Application extends DbObj
 {
     public $fields = array(
@@ -53,6 +57,9 @@ class Application extends DbObj
         "iorder",
         "tag"
     );
+    /**
+     * @var int application identifier
+     */
     public $id;
     public $name;
     public $short_name;
@@ -147,8 +154,29 @@ create sequence SEQ_ID_APPLICATION start 10;
     
     public $cssref = array();
     public $csscode = array();
-    
-    function set($name, &$parent, $session = "", $autoinit = false)
+    /**
+     * initialize  Application object
+     * @param string $name application name to set
+     * @param Application $parent the parent (generally CORE app)
+     * @param string $session parent session
+     * @param bool $autoinit set to true to auto create app if not exists yet
+     *
+     * @api initialize Application object
+     * @code
+     $CoreNull = "";
+     $core = new Application();
+     $core->Set("CORE", $CoreNull); // init core application from nothing
+     $core->session = new Session();
+     $core->session->set();
+     $one = new Application();
+     $one->set("ONEFAM", $core, $core->session);// init ONEFAM application from CORE
+     *
+     * @endcode
+     *
+     * @return string error message
+     * @throws Dcp\Core\Exception if application not exists
+     */
+    public function set($name, &$parent, $session = "", $autoinit = false)
     {
         $this->log->debug("Entering : Set application to $name");
         
@@ -216,11 +244,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         return '';
     }
     
-    function complete()
+    public function complete()
     {
     }
     
-    function setSession(&$session)
+    public function setSession(&$session)
     {
         $this->session = $session;
         // Set the user if possible
@@ -234,7 +262,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
     }
     
-    function preInsert()
+    public function preInsert()
     {
         if ($this->Exists($this->name)) return "Ce nom d'application existe deja...";
         if ($this->name == "CORE") {
@@ -247,14 +275,19 @@ create sequence SEQ_ID_APPLICATION start 10;
         return '';
     }
     
-    function preUpdate()
+    public function preUpdate()
     {
         if ($this->dbid == - 1) return FALSE;
         if ($this->Exists($this->name, $this->id)) return "Ce nom d'application existe deja...";
         return '';
     }
-    
-    function exists($app_name, $id_application = '')
+    /**
+     * Verify an application name exists
+     * @param string $app_name application reference name
+     * @param int $id_application optionnal numeric id to verify if not itself
+     * @return bool
+     */
+    public function exists($app_name, $id_application = 0)
     {
         $this->log->debug("Exists $app_name ?");
         $query = new QueryDb($this->dbaccess, "application");
@@ -346,7 +379,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return string ressource location
      */
-    function addRessourceRef($type, $ref, $needparse, $packName)
+    public function addRessourceRef($type, $ref, $needparse, $packName)
     {
         /* Try to attach the ressource to the parent app */
         if ($this->hasParent()) {
@@ -496,7 +529,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return string[]
      */
-    function getCssRef()
+    public function getCssRef()
     {
         if ($this->hasParent()) {
             return ($this->parent->GetCssRef());
@@ -527,7 +560,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return string[] array of location
      */
-    function getJsRef()
+    public function getJsRef()
     {
         if ($this->hasParent()) {
             return ($this->parent->GetJsRef());
@@ -546,7 +579,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return void
      */
-    function addJsCode($code)
+    public function addJsCode($code)
     {
         // Js Code are stored in the top level application
         if ($this->hasParent()) {
@@ -560,7 +593,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return string[]
      */
-    function getJsCode()
+    public function getJsCode()
     {
         if ($this->hasParent()) {
             return ($this->parent->GetJsCode());
@@ -578,7 +611,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return void
      */
-    function addCssCode($code)
+    public function addCssCode($code)
     {
         // Css Code are stored in the top level application
         if ($this->hasParent()) {
@@ -592,7 +625,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return string[]
      */
-    function getCssCode()
+    public function getCssCode()
     {
         if ($this->hasParent()) {
             return ($this->parent->GetCssCode());
@@ -600,8 +633,14 @@ create sequence SEQ_ID_APPLICATION start 10;
             return ($this->csscode);
         }
     }
-    
-    function addLogMsg($code, $cut = 80)
+    /**
+     * Add message to log (syslog)
+     * The message is also display in console of web interfaces
+     * @api Add message to log
+     * @param string $code message to add to log
+     * @param int $cut
+     */
+    public function addLogMsg($code, $cut = 80)
     {
         if ($code == "") return;
         // Js Code are stored in the top level application
@@ -625,10 +664,11 @@ create sequence SEQ_ID_APPLICATION start 10;
     }
     /**
      * send a message to the user interface
+     * @api send warning message to web interface
      * @param string $code message
      * @return void
      */
-    function addWarningMsg($code)
+    public function addWarningMsg($code)
     {
         if (($code == "") || ($code == "-")) return;
         // Js Code are stored in the top level application
@@ -643,33 +683,34 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
     }
     
-    function getLogMsg()
+    public function getLogMsg()
     {
         return ($this->session->read("logmsg", array()));
     }
     
-    function clearLogMsg()
+    public function clearLogMsg()
     {
         $this->session->unregister("logmsg");
     }
-    function getWarningMsg()
+    public function getWarningMsg()
     {
         return ($this->session->read("warningmsg", array()));
     }
     
-    function clearWarningMsg()
+    public function clearWarningMsg()
     {
         $this->session->unregister("warningmsg");
     }
     /**
      * Test permission for currennt user in current application
      *
+     * @api test grant of current user to execute an action
      * @param string $acl_name acl name to test
      * @param string $app_name application if test for other application
      * @param bool $strict to not use substitute account information
      * @return bool true if permission granted
      */
-    function hasPermission($acl_name, $app_name = "", $strict = false)
+    public function hasPermission($acl_name, $app_name = "", $strict = false)
     {
         if (!isset($this->user) || !is_object($this->user)) {
             $this->log->warning("Action {$this->parent->name}:{$this->name} requires authentification");
@@ -719,8 +760,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return false;
     }
-    
-    function initStyle($init = true)
+    /**
+     * create style parameters
+     * @param bool $init
+     */
+    public function initStyle($init = true)
     {
         if ($init == true) {
             if (isset($this->user)) $pstyle = new Param($this->dbaccess, array(
@@ -758,14 +802,14 @@ create sequence SEQ_ID_APPLICATION start 10;
         $this->AddCssRef("WHAT/Layout/size-$size.css");
     }
     
-    function setLayoutVars($lay)
+    public function setLayoutVars($lay)
     {
         if ($this->hasParent()) {
             $this->parent->SetLayoutVars($lay);
         }
     }
     
-    function getRootApp()
+    public function getRootApp()
     {
         if ($this->parent == "") {
             return ($this);
@@ -774,14 +818,23 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
     }
     
-    function getImageFile($img)
+    public function getImageFile($img)
     {
         
         return $this->rootdir . "/" . $this->GetImageUrl($img);
     }
     
     var $noimage = "CORE/Images/noimage.png";
-    function getImageUrl($img, $detectstyle = true, $size = null)
+    /**
+     * get image url of an application
+     * can also get another image by search in Images general directory
+     * @api get image url of an application
+     * @param string $img image filename
+     * @param bool $detectstyle to use theme image instead of original
+     * @param int $size to use image with another width (in pixel) - null is original size
+     * @return string url to download image
+     */
+    public function getImageUrl($img, $detectstyle = true, $size = null)
     {
         
         if ($img != "") {
@@ -819,7 +872,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         return $this->noimage;
     }
     
-    function imageFilterColor($image, $fcol, $newcol, $out = null)
+    public function imageFilterColor($image, $fcol, $newcol, $out = null)
     {
         if ($out === null) {
             $out = getTmpDir() . "/i.gif";
@@ -831,7 +884,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         imagedestroy($im);
     }
     
-    function getFilteredImageUrl($imgf)
+    public function getFilteredImageUrl($imgf)
     {
         
         $ttf = explode(":", $imgf);
@@ -864,8 +917,12 @@ create sequence SEQ_ID_APPLICATION start 10;
         $this->ImageFilterColor($this->rootdir . '/' . $url, $fcol, $ncol, $cimg);
         return $uimg;
     }
-    
-    function getLayoutFile($layname)
+    /**
+     * get file path layout from layout name
+     * @param string $layname
+     * @return string file path
+     */
+    public function getLayoutFile($layname)
     {
         if (strstr($layname, '..')) {
             return ""; // not authorized
@@ -886,7 +943,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($this->parent != "") return ($this->parent->GetLayoutFile($layname));
         return ("");
     }
-    function OldGetLayoutFile($layname)
+    public function OldGetLayoutFile($layname)
     {
         
         $root = $this->Getparam("CORE_PUBDIR");
@@ -898,8 +955,13 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($this->parent != "") return ($this->parent->GetLayoutFile($layname));
         return ("");
     }
-    
-    function setParam($key, $val)
+    /**
+     * affect new value to an application parameter
+     * @see ParameterManager to easily manage application parameters
+     * @param string $key parameter id
+     * @param string $val parameter value
+     */
+    public function setParam($key, $val)
     {
         if (is_array($val)) {
             if (isset($val["global"]) && $val["global"] == "Y") $type = PARAM_GLB;
@@ -912,15 +974,21 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * set user parameter for current user
      *
+     * @see ParameterManager to easily manage application parameters
      * @param string $key parameter identifier
      * @param string $val value
      * @return string error message
      */
-    function setParamU($key, $val)
+    public function setParamU($key, $val)
     {
         return $this->param->Set($key, $val, PARAM_USER . $this->user->id, $this->id);
     }
-    function setParamDef($key, $val)
+    /**
+     * declare new application parameter
+     * @param string $key
+     * @param array $val
+     */
+    public function setParamDef($key, $val)
     {
         // add new param definition
         $pdef = new ParamDef($this->dbaccess, $key);
@@ -966,13 +1034,25 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         } else $pdef->Add();
     }
-    function setVolatileParam($key, $val)
+    /**
+     * Add temporary parameter to ths application
+     * Can be use to transmit global variable or to affect Layout
+     * @api Add temporary parameter to this application
+     * @param string $key
+     * @param string $val
+     */
+    public function setVolatileParam($key, $val)
     {
         if ($this->hasParent()) $this->parent->setVolatileParam($key, $val);
         else $this->param->SetVolatile($key, $val);
     }
-    
-    function getParam($key, $default = "")
+    /**
+     * get parameter value
+     * @param string $key
+     * @param string $default value if not set
+     * @return string
+     */
+    public function getParam($key, $default = "")
     {
         if (!isset($this->param)) return ($default);
         $z = $this->param->Get($key, "z");
@@ -984,8 +1064,12 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return ($default);
     }
-    
-    function initAllParam($tparam, $update = false)
+    /**
+     * create/update application parameter definition
+     * @param array $tparam all parameter definition
+     * @param bool $update
+     */
+    public function initAllParam($tparam, $update = false)
     {
         if (is_array($tparam)) {
             reset($tparam);
@@ -1001,8 +1085,11 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
     }
-    
-    function getAllParam()
+    /**
+     * get all parameters values indexed by name
+     * @return array all paramters values
+     */
+    public function getAllParam()
     {
         $list = $this->param->buffer;
         if ($this->hasParent()) {
@@ -1012,8 +1099,14 @@ create sequence SEQ_ID_APPLICATION start 10;
         
         return ($list);
     }
-    
-    function initApp($name, $update = FALSE)
+    /**
+     * initialize application description
+     * from .app and _init.php configuration files
+     * @param string $name application name reference
+     * @param bool $update set to true when update application
+     * @return bool true if init is done, false if error
+     */
+    public function initApp($name, $update = FALSE)
     {
         
         $this->log->info("Init : $name");
@@ -1117,14 +1210,20 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return true;
     }
-    
-    function updateApp()
+    /**
+     * update application description
+     * from .app and _init.php configuration files
+     */
+    public function updateApp()
     {
         $name = $this->name;
         $this->InitApp($name, TRUE);
     }
-    // Update All available application
-    function updateAllApp()
+    /**
+     * Update All available application
+     * @see updateApp
+     */
+    public function updateAllApp()
     {
         
         $query = new QueryDb($this->dbaccess, $this->dbtable);
@@ -1138,7 +1237,12 @@ create sequence SEQ_ID_APPLICATION start 10;
             $application->UpdateApp();
         }
     }
-    function deleteApp()
+    /**
+     * delete application
+     * database application reference are destroyed but application files are not removed from server
+     * @return string
+     */
+    public function deleteApp()
     {
         // delete acl
         $acl = new Acl($this->dbaccess);
@@ -1174,14 +1278,23 @@ create sequence SEQ_ID_APPLICATION start 10;
         $err = $this->Delete();
         return $err;
     }
-    
-    function text($code, $args = NULL)
+    /**
+     * translate text
+     * use gettext catalog
+     * @api translate text
+     * @param string $code text to translate
+     * @return string
+     */
+    public static function text($code)
     {
         if ($code == "") return "";
         return _($code);
     }
-    // Write default ACL when new user is created
-    function updateUserAcl($iduser)
+    /**
+     * Write default ACL when new user is created
+     * @TODO not used - to remove
+     */
+    public function updateUserAcl($iduser)
     {
         
         $query = new QueryDb($this->dbaccess, $this->dbtable);
@@ -1209,7 +1322,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param string $name
      * @return int (0 if not found)
      */
-    function getIdFromName($name)
+    public function getIdFromName($name)
     {
         $query = new QueryDb($this->dbaccess, $this->dbtable);
         $query->AddQuery("name = '" . pg_escape_string(trim($name)) . "'");
@@ -1217,8 +1330,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (is_array($app) && isset($app[0]) && isset($app[0]["id"])) return $app[0]["id"];
         return 0;
     }
-    
-    function hasParent()
+    /**
+     * verify if application object has parent application
+     * @return bool
+     */
+    public function hasParent()
     {
         return (is_object($this->parent) && ($this->parent !== $this));
     }

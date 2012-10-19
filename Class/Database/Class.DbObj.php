@@ -94,14 +94,18 @@ class DbObj
     public $debug = false;
     public $sqlcreate;
     public $sqlinit;
+    /**
+     * @var Log DbObj Log Object
+     */
+    public $log;
     //----------------------------------------------------------------------------
     
-    /** 
+    /**
      * Database Object constructor
      *
      *
      * @param string $dbaccess database specification
-     * @param int $id identifier of the object
+     * @param int|array $id identifier of the object
      * @param array $res array of result issue to QueryDb {@link QueryDb::Query()}
      * @param resource $dbid the database connection resource
      * @return bool false if error occured
@@ -148,7 +152,13 @@ class DbObj
         
         return TRUE;
     }
-    
+    /**
+     * Select object from its fields
+     * if fields has more then one variable, need to use an array
+     * @api Select object from its fields
+     * @param int|array $id
+     * @return bool|string
+     */
     function Select($id)
     {
         if (!$id) return false;
@@ -216,7 +226,7 @@ class DbObj
         return TRUE;
     }
     /**
-     * get all values in array
+     * get all values in indexed array
      * @return array
      */
     function getValues()
@@ -262,7 +272,11 @@ class DbObj
         }
         return TRUE;
     }
-    
+    /**
+     * affect object with a set of values
+     * @api affect object with a set of values
+     * @param array $array indexed array of values , index if the column attribute
+     */
     function Affect($array)
     {
         reset($array);
@@ -275,16 +289,21 @@ class DbObj
         $this->isset = true;
     }
     /**
-     * verify that the object exists
-     *
+     * verify that the object exists in database
+     * test if object has fields id set
      * if true values of the object has been set
+     * @æpi test if object if affected
+     * @see affect
      * @return bool
      */
     function isAffected()
     {
         return $this->isset;
     }
-    
+    /**
+     * @api hook call after affect method
+     * @see affect
+     */
     function Complete()
     {
         // This function should be replaced by the Child Class
@@ -293,11 +312,12 @@ class DbObj
     /** 
      * Method use before Add method
      * This method should be replaced by the Child Class
-     *
+     * if return error message, modify is aborded
+     * @api hook call before add method
      * @return string error message, if no error empty string
      * @see Add()
      */
-    function PreInsert()
+    public function preInsert()
     {
         // This function should be replaced by the Child Class
         
@@ -305,12 +325,13 @@ class DbObj
     /** 
      * Method use after Add method
      * This method should be replaced by the Child Class
+     * @api hook call after add method
      *
      * @return string error message, if no error empty string, if message
      * error not empty the Add method is not completed
      * @see Add()
      */
-    function PostInsert()
+    public function postInsert()
     {
         // This function should be replaced by the Child Class
         
@@ -318,11 +339,13 @@ class DbObj
     /** 
      * Method use before Modify method
      * This method should be replaced by the Child Class
+     * if return error message, modify is aborded
      *
+     * @api hook call before modify method
      * @return string error message, if no error empty string
      * @see Modify()
      */
-    function PreUpdate()
+    public function preUpdate()
     {
         // This function should be replaced by the Child Class
         
@@ -331,43 +354,71 @@ class DbObj
      * Method use after Modify method
      * This method should be replaced by the Child Class
      *
+     * @api hook call after modify method
      * @return string error message, if no error empty string, if message
      * error not empty the Modify method is not completed
      * @see Modify()
      */
-    function PostUpdate()
+    public function postUpdate()
     {
         return '';
         // This function should be replaced by the Child Class
         
     }
-    function PreDelete()
+    /**
+     * if return error message, deletion is aborded
+     * @api hook call before delete method
+     * @see delete
+     * @return string
+     */
+    public function preDelete()
     {
         return '';
         // This function should be replaced by the Child Class
         
     }
-    function PostDelete()
+    /**
+     * Method use after delete method
+     * @api hook call after delete method
+     * @see delete
+     * @return string
+     */
+    public function postDelete()
     {
         return '';
         // This function should be replaced by the Child Class
         
     }
-    function PreSelect($id)
+    /**
+     * Method use before select method
+     * @param mixed $id the id use by select
+     * @api hook call before delete method
+     * @see select
+     * @return string
+     */
+    public function preSelect($id)
     {
         // This function should be replaced by the Child Class
         return '';
     }
-    function PostSelect($id)
+    /**
+     * Method use after select method
+     * @param mixed $id the id use by select
+     * @api hook call after delete method
+     * @see select
+     * @return string
+     */
+    public function postSelect($id)
     {
         return '';
         // This function should be replaced by the Child Class
         
     }
-    /** 
+    /**
      * Add the object to the database
+     * @api record new object to database
      * @param bool $nopost PostInsert method not apply if true
-     * @param bool $nopost PreInsert method not apply if true
+     * @param bool $nopre PreInsert method not apply if true
      * @return string error message, if no error empty string
      * @see PreInsert()
      * @see PostInsert()
@@ -400,7 +451,8 @@ class DbObj
         return $msg;
     }
     /** 
-     * Add the object to the database
+     * Save the object to the database
+     * @api record affected object to database
      * @param bool $nopost PostUpdate() and method not apply if true
      * @param string $sfields only this column will ne updated if empty all fields
      * @param bool $nopre PreUpdate() method not apply if true
@@ -408,7 +460,7 @@ class DbObj
      * @see PreUpdate()
      * @see PostUpdate()
      */
-    function Modify($nopost = false, $sfields = "", $nopre = false)
+    public function modify($nopost = false, $sfields = "", $nopre = false)
     {
         $msg = '';
         if ($this->dbid == - 1) return FALSE;
@@ -455,8 +507,13 @@ class DbObj
         
         return $msg;
     }
-    
-    function Delete($nopost = false)
+    /**
+     * Delete the object on the database
+     * @api delete affected object on database
+     * @param bool $nopost PostUpdate() and method not apply if true
+     * @return string error message, if no error empty string
+     */
+    public function delete($nopost = false)
     {
         $msg = $this->PreDelete();
         if ($msg != '') return $msg;
@@ -557,7 +614,7 @@ class DbObj
         return ($msg);
     }
     
-    function PostInit()
+    public function postInit()
     {
     }
     
@@ -646,10 +703,12 @@ class DbObj
         return false;
     }
     /**
+     * Send a request to database
+     * @api send request to database
      * @param string $sql the query
-     * @param int $lvl level set to 0
+     * @param int $lvl level set to 0 (internal purpose only)
      * @param bool $prepare set to true to use pg_prepare, restrict to use single query
-     * @throw Dcp\Db\Exception
+     * @throw Dcp\Db\Exception if query fail
      * @return string error message if not strict mode
      */
     function exec_query($sql, $lvl = 0, $prepare = false)
@@ -743,7 +802,12 @@ class DbObj
         
         return ($this->msg_err);
     }
-    
+    /**
+     * number of return rows after exec_query
+     * @api number of return rows after exec_query
+     * @see exec_query
+     * @return int
+     */
     function numrows()
     {
         if ($this->msg_err == "") {

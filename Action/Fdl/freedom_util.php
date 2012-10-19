@@ -122,18 +122,14 @@ function clearCacheDoc($id = 0)
         $gdocs[$id] = null;
     }
 }
-/** 
- * optimize for speed : memorize object for future use
- * @global array $_GLOBALS["gdocs"]
- * @name $gdocs
- */
 /**
  * return document object in type concordance
- * @api
  * @param string $dbaccess database specification
  * @param int|string $id identifier of the object
  * @param bool $latest if true set to latest revision of doc
  * @global array $gdocs optimize for speed
+ *
+ * @api get document from database
  * @code
  * $myDoc=new_doc("", $myIdentifier);
  * if ($myDoc->isAlive()) {
@@ -147,7 +143,6 @@ function clearCacheDoc($id = 0)
  */
 function new_Doc($dbaccess, $id = '', $latest = false)
 {
-    
     global $gdocs; // optimize for speed
     if ($dbaccess == "") {
         // don't test if file exist or must be searched in include_path
@@ -197,9 +192,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
             AddWarningMsg(sprintf("cannot include %s class", $classname));
             return null;
         }
-        /**
-         * @var Doc $doc
-         */
+        /* @var Doc $doc */
         $doc = new $classname($dbaccess, $id);
         
         if ($latest && $doc->locked == - 1) {
@@ -228,7 +221,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
  * create a new document object in type concordance
  *
  * the document is set with default values and default profil of the family
- * @api
+ * @api create new document
  * @param string $dbaccess database specification
  * @param string $fromid identifier of the family document (the number or internal name)
  * @param bool $control if false don't control the user hability to create this kind of document
@@ -260,9 +253,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
         $classname = "Doc" . $fromid;
         $GEN = getGen($dbaccess);
         include_once ("FDL$GEN/Class.$classname.php");
-        /**
-         * @var DocFam $doc
-         */
+        /* @var DocFam $doc */
         $doc = new $classname($dbaccess);
         
         $doc->revision = "0";
@@ -289,7 +280,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
  *
  * the document is set with default values and has no profil
  * the create privilege is not tested in this case
- * @api
+ * @api create temporary document
  * @param string $dbaccess database specification
  * @param string $fromid identifier of the family document (the number or internal name)
  * @param bool $defaultvalue set to false to not set default values
@@ -575,9 +566,7 @@ function controlTdoc(&$tdoc, $aclname)
  */
 function getDocObject($dbaccess, $v, $k = 0)
 {
-    /**
-     * @var array $_OgetDocObject
-     */
+    /* @var array $_OgetDocObject */
     static $_OgetDocObject;
     
     if ($v["doctype"] == "C") {
@@ -587,6 +576,7 @@ function getDocObject($dbaccess, $v, $k = 0)
     } else {
         if (!isset($_OgetDocObject[$k][$v["fromid"]])) $_OgetDocObject[$k][$v["fromid"]] = createDoc($dbaccess, $v["fromid"], false, false);
     }
+    
     $_OgetDocObject[$k][$v["fromid"]]->Affect($v, true);
     
     return $_OgetDocObject[$k][$v["fromid"]];
