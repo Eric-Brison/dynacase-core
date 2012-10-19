@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <module name="@PACKAGE@-test" disabled="no" version="@VERSION@" release="@RELEASE@" basecomponent="no">
-  <description>Test case for dynacase-platform.</description>
+  <description>Test case for dynacase-core.</description>
+
+  <replaces>
+      <module name="dynacase-platform-test" />
+  </replaces>
 
   <requires>
     <module name="@PACKAGE@" />

@@ -125,7 +125,7 @@ webinst: webinst-test
 
 clean:
 	rm -f *.*~ config.* Makefile configure \
-	      dynacase-platform-*-*.webinst \
+	      dynacase-core-*-*.webinst \
 	      $(PACKAGE)-$(VERSION).tar.gz \
 	      apache.conf \
 	      App/Core/CORE_init.php \

@@ -1,4 +1,4 @@
-
+# Dynacase Core
 
 ![Dynacase Platform](https://raw.github.com/Anakeen/dynacase-platform/3.2-integration/Images/Fdl/logo.png)
 
