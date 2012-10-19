@@ -21,6 +21,7 @@ include_once ('Class.QueryDb.php');
 include_once ('Class.Log.php');
 include_once ('Class.Application.php');
 include_once ('Class.Group.php');
+include_once ('WHAT/Lib.Common.php');
 
 require_once 'PEAR.php';
 
@@ -123,7 +124,8 @@ create sequence seq_id_users start 10;";
      */
     function setLoginName($login)
     {
-        $login = trim(mb_strtolower($login));
+        $login = mb_trim(mb_strtolower($login));
+        
         $query = new QueryDb($this->dbaccess, "Account");
         $query->AddQuery("login='" . pg_escape_string($login) . "'");
         

@@ -65,7 +65,7 @@ class _IGROUPUSER extends Doc
         $id = $this->GetValue("US_WHATID");
         
         $q = new QueryDb("", "Account");
-        $q->AddQuery(sprintf("login='%s'", strtolower(pg_escape_string($login))));
+        $q->AddQuery(sprintf("login='%s'", pg_escape_string(mb_strtolower($login))));
         if ($id) $q->AddQuery(sprintf("id != %d", $id));
         $q->Query(0, 0, "TABLE");
         $err = $q->basic_elem->msg_err;

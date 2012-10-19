@@ -69,6 +69,11 @@ function mb_ucfirst($s)
     }
     return $s;
 }
+
+function mb_trim($string)
+{
+    return preg_replace("/(^\s+)|(\s+$)/us", "", $string);
+}
 /**
  * increase limit if current limit is lesser than
  * @param int $limit new limit in seconds
@@ -862,4 +867,6 @@ function setLanguage($lang)
     textdomain($td);
     mb_internal_encoding('UTF-8');
 }
+// use UTF-8 by default
+mb_internal_encoding('UTF-8');
 ?>
