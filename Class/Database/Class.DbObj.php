@@ -808,7 +808,7 @@ class DbObj
      * @see exec_query
      * @return int
      */
-    function numrows()
+    public function numrows()
     {
         if ($this->msg_err == "") {
             return (pg_num_rows($this->res));
@@ -817,20 +817,20 @@ class DbObj
         }
     }
     
-    function fetch_array($c, $type = PGSQL_ASSOC)
+    public function fetch_array($c, $type = PGSQL_ASSOC)
     {
         
         return (pg_fetch_array($this->res, $c, $type));
     }
     
-    function update()
+    public function update()
     {
         $err = ErrorCode::getError('DB0009', $this->dbtable);
         
         return $err;
     }
     
-    function setError($moreerr = '')
+    public function setError($moreerr = '')
     {
         if ($moreerr == '') $err = $this->msg_err;
         $err = $this->msg_err . "\n" . $moreerr . "\n";
@@ -845,7 +845,7 @@ class DbObj
      * @deprecated
      * @return string
      */
-    function autoUpdate()
+    public function autoUpdate()
     {
         print $this->msg_err;
         print (" - need update table " . $this->dbtable);
@@ -921,6 +921,7 @@ class DbObj
     }
     /**
      * set a database transaction save point
+     * @api set a database transaction save point
      * @param string $point
      * @return string error message
      */
@@ -952,7 +953,8 @@ class DbObj
     }
     /**
      * revert to transaction save point
-     * @param string $point
+     * @api cencel trasaction since point
+     * @param string $point revert point
      * @return string error message
      */
     public function rollbackPoint($point)
@@ -982,6 +984,7 @@ class DbObj
     }
     /**
      * commit transaction save point
+     * @api accept transaction point
      * @param string $point
      * @return string error message
      */
