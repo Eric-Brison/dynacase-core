@@ -270,7 +270,7 @@ class Layout
      * define new encoding text
      * default is utf-8
      * @param string $enc encoding (only 'utf-8' is allowed)
-     * @deprecated
+     * @deprecated not need always utf-8
      */
     public function setEncoding($enc)
     {

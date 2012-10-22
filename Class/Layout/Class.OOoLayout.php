@@ -96,7 +96,7 @@ class OOoLayout extends Layout
         return $match[1];
     }
     /**
-     * @deprecated
+     * @deprecated BLOCK are not supported
      * Enter description here ...
      * @param string $block
      * @param string $aid
@@ -343,7 +343,7 @@ class OOoLayout extends Layout
     }
     /**
      * not use for the moment
-     * @deprecated
+     * @deprecated BLOCK are not supported
      * @param $name
      * @param $block
      */
@@ -375,7 +375,7 @@ class OOoLayout extends Layout
     }
     /**
      * not use for the moment
-     * @deprecated
+     * @deprecated ZONE are not supported
      * @param $out
      */
     protected function ParseZone(&$out)
@@ -1360,7 +1360,7 @@ class OOoLayout extends Layout
         $this->arrayKeys[$key] = $t;
     }
     /**
-     * @deprecated
+     * @deprecated BLOCK not supported, use setColumn instead
      * @param string $p_nom_block
      * @param array $data
      */

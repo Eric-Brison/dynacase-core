@@ -737,11 +737,12 @@ create sequence SEQ_ID_ACTION;
     /**
      * retrieve the value of an argument fot the action
      * in web mode the value comes from http variable and in shell mode comes from args variable
+     * @api get parameter value for an action
      * @param string $k the argument name
      * @param mixed $def default value if no argument is not set
      * @return mixed|string
      */
-    static function getArgument($k, $def = '')
+    public static function getArgument($k, $def = '')
     {
         $v = getHttpVars($k, null);
         if ($v === null) return $def;

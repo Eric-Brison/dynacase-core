@@ -25,7 +25,7 @@ include_once ('Class.Log.php');
 /**
  * Values of Attribute document
  * @package FDL
- * @deprecated
+ * @deprecated no used from 2.0 version
  *
  */
 class DocValue extends DbObj

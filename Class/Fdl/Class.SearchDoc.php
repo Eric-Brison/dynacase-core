@@ -458,7 +458,7 @@ class SearchDoc
     /**
      * do the search in debug mode, you can after the search get infrrmation with getDebugIndo()
      * @param boolean $debug set to true search in debug mode
-     * @deprecated
+     * @deprecated no debug mode setting are necessary
      * @return void
      */
     public function setDebugMode($debug = true)
@@ -480,7 +480,7 @@ class SearchDoc
     }
     /**
      * return debug info if debug mode enabled
-     * @deprecated
+     * @deprecated use getSearchInfo instead
      *
      * @return array of info
      */
@@ -941,7 +941,7 @@ class SearchDoc
     }
     /**
      * the return of ::search will be array of values
-     * @deprecated
+     * @deprecated use setObjectReturn(false) instead
      * @return void
      */
     public function setValueReturn()

@@ -134,7 +134,7 @@ create unique index idx_perm on docperm(docid, userid);";
     
     /**
      * @param $pos
-     * @deprecated
+     * @deprecated no need now. Control process has changed
      * @return bool
      */
     function ControlG($pos)

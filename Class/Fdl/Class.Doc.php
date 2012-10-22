@@ -723,31 +723,31 @@ create unique index i_docir on doc(initid, revision);";
     
     /**
      * default view to view card
-     * @api
+     * @api default view to view card
      * @var string
      */
     public $defaultview = "FDL:VIEWBODYCARD";
     /**
      * default view to edit card
-     * @api
+     * @api default view to edit card
      * @var string
      */
     public $defaultedit = "FDL:EDITBODYCARD";
     /**
      * default view for abstract card
-     * @api
+     * @api default view for abstract card
      * @var string
      */
     public $defaultabstract = "FDL:VIEWABSTRACTCARD";
     /**
      * default view use when edit document for the first time (creation mode)
-     * @api
+     * @api default view use when edit document for the first time (creation mode)
      * @var string
      */
     public $defaultcreate = "";
     /**
      * for email : the same as $defaultview by default
-     * @api
+     * @api for email : the same as $defaultview by default
      * @var string
      */
     public $defaultmview = "";
@@ -855,7 +855,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return true if document has changed after setValue/deleteValue calling
-     * @api
+     * @api test if document attributes are changed
      * @return bool
      */
     function isChanged()
@@ -1023,7 +1023,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Regenerate all templates referenced by the document attributes
-     * @api
+     * @api Regenerate all templates referenced by the document attributes
      *
      * @return string error message, if no error empty string
      */
@@ -1068,7 +1068,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * get current sequence number :: number of doc for this family
-     * @api
+     * @api get current sequence number :: number of doc for this family
      * @return int
      */
     function getCurSequence()
@@ -1103,7 +1103,7 @@ create unique index i_docir on doc(initid, revision);";
      * disable edit control for setValue/modify/store
      * the document can be modified without testing edit acl
      * @see enableEditControl
-     * @api
+     * @api disable edit control for setValue/modify/store
      */
     final public function disableEditControl()
     {
@@ -1114,7 +1114,7 @@ create unique index i_docir on doc(initid, revision);";
      * default edit control enable
      * restore control which are disabled by disableEditControl
      * @see disableEditControl
-     * @api
+     * @api default edit control enable
      */
     final public function enableEditControl()
     {
@@ -1126,7 +1126,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * to know if the document can be revised
-     * @api
+     * @api verify if document can be revised
      * @return bool true is revisable
      */
     public function isRevisable()
@@ -1154,7 +1154,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * convert to another family
      * loose all revisions
-     * @api
+     * @api convert to another family
      * @param int $fromid family identifier where the document will be converted
      * @param array $prevalues values which will be added before conversion
      * @return doc the document converted (don't reuse $this) if error return string message
@@ -1223,7 +1223,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * test if the document can be revised now
      * it must be locked by the current user
-     * @deprecated
+     * @deprecated use canEdit instead
      * @return string empty means user can update else message of the raison
      */
     final public function canUpdateDoc()
@@ -1263,7 +1263,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * record new document or update
-     * @api
+     * @api record new document or update it in database
      * @param stdClass $info refresh and postModify messages
      * @param boolean $skipConstraint set to true to not test constraints
      * @return string error message
@@ -1300,7 +1300,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * test if the document can be modified by the current user
      * the difference between ::canUpdateDoc is that document is not need to be locked
-     * @api
+     * @api test if the document can be modified by the current user
      * @param bool $verifyDomain
      * @return string empty means user can update else message of the raison
      */
@@ -1337,7 +1337,7 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
     /**
-     * @api
+     * @api verify document can be locked by current user
      * @see canUnLock
      * @return boolean true if current user can lock file
      */
@@ -1347,7 +1347,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * @see canLock
-     * @api
+     * @api verify document can be unlocked by current user
      * @return bool true if current user can lock file
      */
     public function canUnLock()
@@ -1383,7 +1383,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * test if the document is locked
      * @see canLockFile()
-     * @api
+     * @api verify if document is locked
      * @param bool $my if true test if it is lock of current user
      *
      * @return bool true if locked. If $my return true if it is locked by another user
@@ -1399,7 +1399,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * test if the document is confidential
-     * @api
+     * @api verify if document is confidential
      * @return bool true if confidential and current user is not authorized
      */
     final public function isConfidential()
@@ -1408,7 +1408,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return the family document where the document comes from
-     * @api
+     * @api return family odcument
      * @return DocFam
      */
     final public function getFamDoc()
@@ -1442,7 +1442,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return family parameter
      *
-     * @api
+     * @api return family parameter value
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      * @return string parameter value
@@ -1499,7 +1499,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the latest revision id with the indicated state
      * For the user the document is in the trash
-     * @api
+     * @api return the latest revision id with the indicated state
      * @param string $state wanted state
      * @param bool $fixed set to true if not search in current state
      * @return int document id (0 if no found)
@@ -1542,7 +1542,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Really delete document from database
-     * @api
+     * @api Destroy document from database
      * @param bool $nopost set to true if no need tu call postDelete methods
      * @return string error message, if no error empty string
      */
@@ -1562,7 +1562,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Set the document to zombie state
      * For the user the document is in the trash
-     * @api
+     * @api Delete document
      * @param bool $really if true call {@link ReallyDelete} really delete from database
      * @param bool $control if false don't control 'delete' acl
      * @param bool $nopost if true don't call {@link PostDelete} and {@link PreDelete}
@@ -1643,7 +1643,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * To restore a document which is in the trash
-     * @api
+     * @api restore deleted document
      * @see delete
      * @return string error message (empty message if no errors);
      */
@@ -1767,7 +1767,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Return array of fathers doc id : class document
-     * @api
+     * @api get family's ids of document
      * @return int[]
      */
     final public function getFromDoc()
@@ -1805,7 +1805,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return all revision documents
-     * @api
+     * @api get all revision of the document
      * @param string $type LIST|TABLE il LIST return Doc object else if TABLE raw documents
      * @param int $limit limit of revision (by default the 200 latest revisions)
      * @return Doc[]|array
@@ -1824,7 +1824,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /** get Latest Id of document
      *
-     * @api
+     * @api get latest id of document
      * @param bool $fixed if true latest fixed revision
      * @param bool $forcequery if true force recompute of id (use it in case of modification by another program)
      * @return int identifier of latest revision
@@ -1872,8 +1872,8 @@ create unique index i_docir on doc(initid, revision);";
         return $version;
     }
     /**
-     * return the string label text for a id
-     * @api
+     * return the string label text for a id (label depends of current user locale)
+     * @api get the label text for a attribute
      * @param string $idAttr attribute identifier
      * @return string
      */
@@ -1883,8 +1883,8 @@ create unique index i_docir on doc(initid, revision);";
         return _("unknow attribute");
     }
     /**
-     * return the property object like id, initid, revision, ...
-     * @api
+     * return the property value like id, initid, revision, ...
+     * @api get property value
      * @param string $prop property identifier
      * @return string false if not an property
      */
@@ -1918,7 +1918,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the attribute object for a id
      * the attribute can be defined in fathers
-     * @api
+     * @api get attribute object
      * @param string $idAttr attribute identifier
      * @param BasicAttribute &$oa object reference use this if want to modify attribute
      * @return BasicAttribute|bool
@@ -1937,7 +1937,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return all the attributes object
      * the attribute can be defined in fathers
-     * @api
+     * @api get all attribute objects
      * @return BasicAttribute[]
      */
     final public function &getAttributes()
@@ -2150,7 +2150,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return all the attributes object for abstract
      * the attribute can be defined in fathers
-     * @api
+     * @api get all attribute's objects declared as abstract
      * @return  NormalAttribute[]
      */
     final public function getAbstractAttributes()
@@ -2171,7 +2171,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return all the attributes object for title
      * the attribute can be defined in fathers
-     * @api
+     * @api get all attribute's objects declared as title
      * @return  NormalAttribute[]
      */
     final public function getTitleAttributes()
@@ -2327,7 +2327,7 @@ create unique index i_docir on doc(initid, revision);";
      * send a request to TE to convert files
      * update $attrid_txt table column
      * waiting end of conversion
-     * @api
+     * @api send a request to TE to convert files
      * @param string $va value of file attribute like mime|vid|name
      * @param string $engine the name of transformation
      * @param bool $isimage set true if it is an image (error returns is not same)
@@ -2418,7 +2418,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return all the necessary attributes
-     * @api
+     * @api get all attribute's objects declared as needed
      * @param bool $parameters set to true if want parameters instead of attributes
      * @return NormalAttribute[]
      */
@@ -2577,7 +2577,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * call after construct
-     * @api hook
+     * @api hook call after construct
      * @return void
      */
     function postConstructor()
@@ -2585,7 +2585,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * no in postUpdate method :: call this only if real change (values)
-     * @api hook
+     * @api hook called in ::store()
      * @return string error message
      */
     function PostModify()
@@ -2595,7 +2595,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * called when user edit a document FDL/editcard
-     * @api hook
+     * @api hook called when compose edit document web interface
      */
     function preEdition()
     {
@@ -2604,7 +2604,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * called when user view a document FDL/fdl_card
-     * @api hook
+     * @api hook called when compose view document web interface
      */
     function preConsultation()
     {
@@ -2613,7 +2613,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * call in doc::postInsert method
-     * @api hook
+     * @api hook called when document is created in database
      * @return string error message
      */
     function PostCreated()
@@ -2623,7 +2623,8 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * call in doc::add method
-     * @api hook
+     * if return message, creation is aborted
+     * @api hook called before document is created in database
      * @return string error message
      */
     function PreCreated()
@@ -2634,7 +2635,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call when doc is being imported before any modification
      * if return non null string import will ne aborted
-     * @api hook
+     * @api hook called when import document - before import it
      * @param array $extra extra parameters
      * @return string error message, if no error empty string
      */
@@ -2644,7 +2645,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call when doc is imported after databases modification
      * the error message will appeared like message
-     * @api hook
+     * @api hook called when import document - after it is imported
      * @param array $extra extra parameters
      * @return string warning message, if no warning empty string
      */
@@ -2654,7 +2655,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call when doc is being revive
      * if return non null string revive will ne aborted
-     * @api hook
+     * @api hook called before undelete document
      * @see revive
      * @return string error message, if no error empty string
      */
@@ -2664,16 +2665,16 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call when doc is revived after resurrection in database
      * the error message will appeared like message
-     * @api hook
+     * @api hook called after undelete document
      * @return string warning message, if no warning empty string
      */
     function postRevive()
     {
     }
     /**
-     * recompute values from title
+     * set attribute title value
      * the first value of type text use for title will be modify to have the new title
-     * @api
+     * @api set attribute title value
      * @param string $title new title
      */
     final public function setTitle($title)
@@ -2695,7 +2696,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return all attribute values
-     * @api
+     * @api get all attribute's values
      * @return array all attribute values, index is attribute identifier
      */
     final public function getValues()
@@ -2716,9 +2717,17 @@ create unique index i_docir on doc(initid, revision);";
     
     /**
      * return the value of an attribute document
-     * @api
+     * @api get the value of an attribute
      * @param string $idAttr attribute identifier
      * @param string $def default value returned if attribute not found or if is empty
+     * @code
+     $doc = new_Doc('',7498 );
+     if ($doc->isAlive()) {
+     $rev = $doc->getProperty('revision');
+     $order = $doc->getValue("tst_order");
+     $level = $doc->getValue("tst_level","0");
+     }
+     * @endcode
      * @return string the attribute value
      */
     final public function getValue($idAttr, $def = "")
@@ -2733,7 +2742,7 @@ create unique index i_docir on doc(initid, revision);";
      * return all values of a multiple value attribute
      *
      * the attribute must be in an array or declared with multiple option
-     * @api
+     * @api get the values of an multiple attribute
      * @param string $idAttr identifier of list attribute
      * @param string $def default value returned if attribute not found or if is empty
      * @param string $index the values for $index row (default value -1 means all values)
@@ -2771,7 +2780,7 @@ create unique index i_docir on doc(initid, revision);";
      * return the array of values for an array attribute
      *
      * the attribute must  an array type
-     * @api
+     * @api get all values for an array attribute
      * @param string $idAttr identifier of array attribute
      * @param string $index the values for $index row (default value -1 means all values)
      * @return array all values of array order by rows (return false if not an array attribute)
@@ -2808,7 +2817,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * the attribute must an array type
      * @param string $idAttr identifier of array attribute
-     * @api
+     * @api delete a row in an array attribute
      * @param string $index  $index row (first is 0)
      * @return string error message, if no error empty string
      */
@@ -2904,7 +2913,7 @@ create unique index i_docir on doc(initid, revision);";
      * add new row in an array attribute
      *
      * the attribute must be an array type
-     * @api
+     * @api add new row in an array attribute
      * @param string $idAttr identifier of array attribute
      * @param array $tv values of each column. Array index must be the attribute identifier
      * @param string $index  $index row (first is 0) -1 at the end; x means before x row
@@ -2956,7 +2965,7 @@ create unique index i_docir on doc(initid, revision);";
      * delete all attributes values of an array
      *
      * the attribute must be an array type
-     * @api
+     * @api delete all attributes values of an array
      * @param string $idAttr identifier of array attribute
      * @return string error message, if no error empty string
      */
@@ -2986,7 +2995,7 @@ create unique index i_docir on doc(initid, revision);";
      * call after modification
      * If value is empty no modification are set. To reset a value use Doc::deleteValue method.
      * an array can be use as value for values which are in arrays
-     * @api
+     * @api affect value for an attribute
      * @param string $attrid attribute identifier
      * @param string $value new value for the attribute
      * @param int $index only for array values affect value in a specific row
@@ -3609,7 +3618,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * rename physicaly the file
      *
-     * @api
+     * @api rename filename of file/image attribute
      * @param string $idattr identifier of file attribute
      * @param string $newname base name file
      * @param int $index in case of array of files
@@ -3666,7 +3675,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Store a file in a file attribute
      *
-     * @api
+     * @api  Store a file in a file/image attribute
      * @param string $attrid identifier of file attribute
      * @param string $filename file path
      * @param string $ftitle basename of file
@@ -3781,7 +3790,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return the related value by linked attributes
-     * @api
+     * @api get the related value by linked attributes
      * @param string $RidAttr attribute identifier
      * @param string $def $def default return value
      * @param bool $latest always last revision of document
@@ -3812,7 +3821,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the previous value for a attibute set before Doc::SetValue
      * can be used in Doc::postModify generaly
-     * @api
+     * @api get previous value of an attribute
      * @param string $attrid attribute identifier
      * @return string the old value (false if not modified before)
      *
@@ -3825,8 +3834,8 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return all modified values from last modify
-     * @api
-     * @return array
+     * @api get all modified values from last modify
+     * @return array indexed by attribute identifier (lowercase)
      */
     final public function getOldValues()
     {
@@ -3837,7 +3846,7 @@ create unique index i_docir on doc(initid, revision);";
      * delete a value of an attribute
      * @see setValue
      * @param string $attrid attribute identifier
-     * @api
+     * @api delete value of an attribute
      * @return string error message
      */
     final public function deleteValue($attrid)
@@ -4091,7 +4100,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Add a comment line in history document
      * note : modify is call automatically
-     * @api
+     * @api Add a comment message in history document
      * @param string $comment the comment to add
      * @param int $level level of comment DocHisto::INFO, DocHisto::ERROR, DocHisto::NOTICE DocHisto::MESSAGE, DocHisto::WARNING
      * @param string $code use when memorize notification
@@ -4167,7 +4176,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Get history for the document
-     * @api
+     * @api Get message history for the document
      * @param bool $allrev set true if want for all revision
      *
      * @param string $code code filter
@@ -4190,7 +4199,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Add a application tag for the document
      * if it is already set no set twice
-     * @param string $atg the tag to add
+     * @param string $tag the tag to add
      * @return string error message
      */
     final public function addATag($tag)
@@ -4279,9 +4288,9 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
     /**
-     * Test if current user has the u tag specified
+     * Test if current user has the user tag specified
      *
-     * @api
+     * @api Test if current user has the user tag specified
      * @param string $tag the tag to verify
      * @param bool $allrevision set to false to verify a tag to a specific version
      * @return bool
@@ -4479,8 +4488,8 @@ create unique index i_docir on doc(initid, revision);";
         return false;
     }
     /**
-     * verify if document is really fixed
-     * @api
+     * verify if document is really fixed (verify in database)
+     * @api verify if document is really fixed
      * @return bool
      */
     function isFixed()
@@ -4490,8 +4499,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Create a new revision of a document
      * the current document is revised (became a fixed document)
-     * a new revision is created
-     * @api
+     * a new revision is created, a new identifier if set
+     * @api Create a new revision of a document
      * @param string $comment the comment of the revision
      * @return string error text (empty if no error)
      */
@@ -4650,8 +4659,9 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * set state for a document controled by a workflow
+     * apply associated transaction
      *
-     * @api
+     * @api set state for a document controled by a workflow
      * @param string $newstate the new state
      * @param string $comment optionnal comment to set in history
      * @param bool $force is true when it is the second passage (without interactivity)
@@ -4688,7 +4698,7 @@ create unique index i_docir on doc(initid, revision);";
      * if document has workflow it is the key
      * if document state is a free state it is the name of the state
      *
-     * @api
+     * @api get the state of a document
      * @return string the state - empty if no state
      */
     public function getState()
@@ -4706,7 +4716,7 @@ create unique index i_docir on doc(initid, revision);";
      * if document has workflow : the color state
      * if document state is a free state the color
      *
-     * @api
+     * @api get called when compose edit document web interface
      * @param string $def default color if state not found or color is empty
      * @return string the color of the state - empty if no state
      */
@@ -4731,7 +4741,7 @@ create unique index i_docir on doc(initid, revision);";
      * if document has workflow : the action label description
      * if document state is a free state description
      *
-     * @api
+     * @api get the action associated for the state of a document
      * @param string $def default activity is activity is empty
      * @return string the color of the state - empty if no state
      */
@@ -4768,7 +4778,7 @@ create unique index i_docir on doc(initid, revision);";
      * the copy is created to the database
      * the profil of the copy is the default profil according to his family
      * the copy is not locked and if it is related to a workflow, his state is the first state
-     * @api
+     * @api duplicate document
      * @param bool $temporary if true the document create it as temporary document
      * @param bool $control if false don't control acl create (generaly use when temporary is true)
      * @param bool $linkfld if true and document is a folder then document included in folder are also inserted in the copy (are not duplicated) just linked
@@ -4825,7 +4835,9 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * call before copy document
-     * @api hook
+     * if return error message copy is aborted
+     * @api hook called before copy document
+     *
      * @see copy
      * @param Doc $copyfrom
      * @return string
@@ -4837,7 +4849,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * call after copy document
-     * @api hook
+     * @api hook called after copy document
      * @see copy
      * @param Doc $copyfrom
      * @return string
@@ -4928,7 +4940,7 @@ create unique index i_docir on doc(initid, revision);";
      * lock document
      *
      * the auto lock is unlocked when the user discard edition or when he's modify document
-     * @api
+     * @api lock document
      * @param bool $auto if true it is a automatic lock due to an edition (@see editcard()}
      * @param int $userid if set lock with another userid, the edit control will be disabled
      *
@@ -4974,7 +4986,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * the automatic unlock is done only if the lock has been set automatically also
      * the explicit unlock, unlock in all case (if CanUnLockFile)
-     * @api
+     * @api unlock document
      * @param bool $auto if true it is a automatic unlock
      * @param bool $force if true no control oif can unlock
      *
@@ -5114,7 +5126,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return icon url
      * if no icon found return doc.png
-     * @api
+     * @api get document's icon url
      * @param string $idicon
      * @param int $size width size
      * @return string icon url
@@ -5211,8 +5223,9 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Special Refresh
-     * to define in child classes
-     * @api hook
+     * called when view document
+     * @see refresh
+     * @api hook called in refresh
      */
     function SpecRefresh()
     {
@@ -5423,7 +5436,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * convert flat attribute value to an array for multiple attributes
-     * @api
+     * @api convert flat attribute value to an array
      * @param string $v value
      * @return array
      */
@@ -5446,7 +5459,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return an url to access of folder/search RSS in open mode authentication
-     * @api
+     * @api get RSS link for folder document
      * @return string the url anchor
      */
     public function getRssLink()
@@ -5459,7 +5472,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return an url to download for file attribute
-     * @api
+     * @api get download url for file attribute
      * @param string $attrid attribute identifier
      * @param int $index set to row rank if it is in array else use -1
      * @param bool $cache set to true if file may be persistent in client cache
@@ -5576,7 +5589,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return HTML formated value of an attribute
-     * @api
+     * @api get HTML formated value of an attribute
      * @param NormalAttribute $oattr
      * @param string $value raw value
      * @param string $target html target in case of link
@@ -5598,7 +5611,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return an html anchor to a document
-     * @api
+     * @api get an html anchor to a document
      * @see getHtmlValue
      * @param string $attrid attribute identifier
      * @param string $target html target in case of link
@@ -5651,7 +5664,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return open document text format for attribute value
-     * @api
+     * @api get open document text format for attribute value
      * @param NormalAttribute $oattr
      * @param string $value
      * @param string $target unused
@@ -5673,7 +5686,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Control Access privilege for document for current user
      *
-     * @api
+     * @api control document access
      * @param string $aclname identifier of the privilege to test
      * @param bool $strict set tio true to test without notion of account susbstitute
      * @return string empty means access granted else it is an error message (access unavailable)
@@ -5711,7 +5724,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * verify that the document exists and is not in trash (not a zombie)
-     * @api
+     * @api verify that the document exists and is not in trash
      * @return bool
      */
     final public function isAlive()
@@ -6042,7 +6055,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * generate HTML code for view doc
-     * @api
+     * @api HTML document's view
      * @param string $layout layout to use to view document
      * @param string $target window target name for hyperlink destination
      * @param bool $ulink if false hyperlink are not generated
@@ -6150,8 +6163,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * default construct layout for view card containt
      *
-     * @templateController
-     * @api
+     * @templateController default controller view
+     * @api default controller view
      * @param string $target window target name for hyperlink destination
      * @param bool $ulink if false hyperlink are not generated
      * @param bool $abstract if true only abstract attribute are generated
@@ -6167,7 +6180,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * construct layout for view card containt
      *
-     * @templateController
+     * @templateController default HTML view controller
      * @param string $target window target name for hyperlink destination
      * @param bool $ulink if false hyperlink are not generated
      * @param bool $abstract if true only abstract attribute are generated
@@ -6467,7 +6480,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * write layout for thumb view
-     * @templateController
+     * @templateController controller for thumb view (used in mail link)
      */
     function viewthumbcard($target = "finfo", $ulink = true, $abstract = true)
     {
@@ -6480,7 +6493,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      *  layout for view answers
-     * @templateController
+     * @templateController controller used if use WASK in workflow
      */
     function viewanswers($target = "finfo", $ulink = true, $abstract = true)
     {
@@ -6568,7 +6581,7 @@ create unique index i_docir on doc(initid, revision);";
         return strcasecmp($a["comment"] . $a["uname"], $b["comment"] . $b["uname"]);
     }
     /**
-     * @templateController
+     * @templateController controller to view document properties
      * write layout for properties view
      */
     function viewproperties($target = "finfo", $ulink = true, $abstract = true)
@@ -6681,7 +6694,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->lay->Set("Timers", (count($tms) > 0));
     }
     /**
-     * @templateController
+     * @templateController controller for abstract view
      * write layout for abstract view
      */
     function viewabstractcard($target = "finfo", $ulink = true, $abstract = true)
@@ -6726,7 +6739,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * set V_<attrid> and L_<attrid> keys for current layout
      * the keys are in uppercase letters
-     * @api
+     * @api set layout key for attribute's value
      * @param string $target HTML target for links
      * @param bool $ulink set to true to have HTML hyperlink when it is possible
      * @param bool $abstract set to true to restrict to abstract attributes
@@ -6807,7 +6820,7 @@ create unique index i_docir on doc(initid, revision);";
      * set properties keys in current layout
      *  the keys are in uppercase letters
      * produce alse V_TITLE key to have a HTML link to document (for HTML layout)
-     * @api
+     * @api set properties keys in current layout
      * @param string $target
      * @param bool $ulink for the V_TITLE key
      * @param bool $abstract unused
@@ -6842,7 +6855,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * affect a logical name that can be use as unique reference of a document independant of database
-     * @api
+     * @api affect a logical name to document
      * @param string $name new logical name
      * @param bool $reset set to true to accept change
      * @return string error message if cannot be
@@ -6880,7 +6893,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * view only option values
      * @templateController
-     * @deprecated
+     * @deprecated option attributes are not supported
      * @param string $target
      * @param bool $ulink
      * @param bool $abstract
@@ -6893,7 +6906,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * edit only option
      * @templateController
-     * @deprecated
+     * @deprecated option attributes are not supported
      * @param string $target
      * @param bool $ulink
      * @param bool $abstract
@@ -6905,7 +6918,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * value for edit interface
-     * @templateController
+     * @templateController default control for HTML form document edition
      * @param bool $onlyopt if true only optionnal attributes are displayed
      */
     function editbodycard($target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
@@ -7119,7 +7132,7 @@ create unique index i_docir on doc(initid, revision);";
      * add V_<<ATTRID> keys for HTML form in current layout
      * add also L_<ATTRID> for attribute labels
      * create input fields for attribute document
-     * @api
+     * @api set intput form attributes for
      * @param bool $withtd set to false if don't wan't <TD> tag in the middle bet<een fields and button
      */
     final public function editattr($withtd = true)
@@ -7200,7 +7213,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * get vault file name or server path of filename
      * @param NormalAttribute $attr identifier of file attribute
-     * @api
+     * @api get vault file properties from file/image attribute
      * @return array of properties :
      [0]=>
      [name] => TP_Users.pdf
@@ -7242,7 +7255,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return a property of vault file value
-     * @api
+     * @api get vault file properties
      * @param string $filesvalue the file value : like application/pdf|12345
      * @param string $key one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, adate, teng_state, teng_lname, teng_vid, teng_comment, path
      * @return string|array value of property or array of all properties if no key
@@ -7362,7 +7375,7 @@ create unique index i_docir on doc(initid, revision);";
     // ================= Methods use for XML ======================
     
     /**
-     * @deprecated
+     * @deprecated use exportXml instead
      * @param bool $withdtd
      * @param string $id_doc
      * @return string
@@ -7539,7 +7552,7 @@ create unique index i_docir on doc(initid, revision);";
         return $this->lay->gen();
     }
     /**
-     * @deprecated
+     * @deprecated use exportXml instead
      * @return string
      */
     final public function todtd()
@@ -7688,15 +7701,15 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return possible dynamic title
-     * @api hook
+     * @api hook called in refresh title
      * this method can be redefined in child if the title is variable by other parameters than containt
      */
-    function getSpecTitle()
+    public function getSpecTitle()
     {
         return $this->title;
     }
     /**
-     * @deprecated
+     * @deprecated not needed until 2.0 version
      * @param string $nameId
      * @param $nameTitle
      */
@@ -7712,8 +7725,8 @@ create unique index i_docir on doc(initid, revision);";
         }
     }
     /**
-     * get image emblem for the doc like lock/nowrite
-     * @api
+     * get filename image emblem for the doc like lock/nowrite
+     * @api get document image emblem
      * @param int $size image width in pixel
      * @return string the url of the image
      */
@@ -7772,7 +7785,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return title of document
-     * @api
+     * @api get document's title
      * @param string $id identifier of document (if not set use current document)
      * @param string $def default value if document not found
      * @param boolean $latest search title in latest revision
@@ -7813,7 +7826,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Same as ::getTitle()
      * the < & > characters as replace by entities
-     * @api
+     * @api get HTML title
      * @param string $id docuemnt identifier to set else use current document title
      * @param string $def default value if document not found
      * @param bool $latest force use latest revision of document
@@ -7848,7 +7861,7 @@ create unique index i_docir on doc(initid, revision);";
      * @searchLabel today
      * @searchType date
      * @searchType timestamp
-     * @api
+     * @api get date
      * @param int $daydelta to have the current date more or less day (-1 means yesterday, 1 tomorrow)
      * @param int|string $dayhour hours of day
      * @param int|string $daymin minutes of day
@@ -7897,7 +7910,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return the today date and time with european format DD/MM/YYYY HH:MM
-     * @api
+     * @api get date and time
      * @param int $hourdelta to have the current date more or less hour  (-1 means one hour before, 1 one hour after)
      * @param bool $second if true format DD/MM/YYYY HH:MM
      * @return string DD/MM/YYYY HH:MM or YYYY-MM-DD HH:MM (depend of CORE_LCDATE parameter)
@@ -7928,7 +7941,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return value of an attribute for the document referenced
      * @see getRValue
-     * @api
+     * @api get value of an attribute for the document referenced
      * @param int $docid document identifier
      * @param string $attrid attribute identifier
      * @param string $def $def default return value
@@ -7951,7 +7964,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return value of an property for the document referenced
-     * @api
+     * @api get value of an property for the document referenced
      * @see getProperty
      * @param int $docid document identifier
      * @param string $propid property identifier
@@ -7969,7 +7982,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return the current user display name
-     * @api
+     * @api get the current user display name
      * @param bool $withfirst if true compose first below last name
      * @return string
      */
@@ -7981,7 +7994,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return the user document identifier associated to the current account
-     * @api
+     * @api get the user document identifier associated to the current account
      * @return int
      */
     public static function userDocId()
@@ -8004,7 +8017,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return system user id
-     * @deprecated
+     * @deprecated use getSystemUserId instead
      * @return int
      */
     public static function getWhatUserId()
@@ -8016,7 +8029,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return system user id
-     * @api system user id
+     * @api get system user id
      * @searchLabel My system user id
      * @searchType uid
      * @return int
@@ -8040,7 +8053,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * concatenate and format string
      * to be use in computed attribute
-     * @api
+     * @api concatenate and format string
      * @param string $fmt like sprintf format
      * @internal param string $extra parameters of string composition
      * @return string the composed string
@@ -8099,7 +8112,7 @@ create unique index i_docir on doc(initid, revision);";
     
     /**
      * attach timer to a document
-     * @api
+     * @api attach timer to a document
      * @param _TIMER &$timer the timer document
      * @param Doc &$origin the document which comes from the attachement
      * @param string $execdate date to execute first action YYYY-MM-DD HH:MM:SS
@@ -8128,7 +8141,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * unattach timer to a document
-     * @api
+     * @api unattach timer to a document
      * @param _TIMER &$timer the timer document
      * @return string error - empty if no error -
      */
@@ -8165,7 +8178,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * unattach several timers to a document
-     * @api
+     * @api unattach several timers to a document
      * @param Doc &$origin if set unattach all timer which comes from this origin
      * @return string error - empty if no error -
      */
@@ -8189,7 +8202,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return all activated document timer
-     * @api
+     * @api return all activated document timer
      * @return array of doctimer values
      */
     final public function getAttachedTimers()
@@ -8254,7 +8267,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return folder where document is set into
-     * @api
+     * @api get folder where document is set into
      * @return array of folder identifiers
      */
     public function getParentFolderIds()
@@ -8403,7 +8416,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Get the list of compatible search methods for a given attribute type
-     * @api
+     * @api Get the list of compatible search methods for a given attribute type
      * @param string $attrId attribute name
      * @param string $attrType empty string to returns all methods or attribute type (e.g. 'date', 'docid', 'docid("IUSER")', etc.) to restrict search to methods supporting this type
      * @return array list of array('method' => '::foo()', 'label' => 'Foo Bar Baz')

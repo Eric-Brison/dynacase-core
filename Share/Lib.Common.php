@@ -320,7 +320,7 @@ function getDbAccessFreedom()
     return "service='" . getServiceFreedom() . "'";
 }
 /**
- * @deprecated
+ * @deprecated context notion are be deleted
  * @return string
  */
 function getDbEnv()
@@ -329,7 +329,7 @@ function getDbEnv()
     return getFreedomContext();
 }
 /**
- * @deprecated
+ * @deprecated context notion are be deleted
  * @return string
  */
 function getFreedomContext()

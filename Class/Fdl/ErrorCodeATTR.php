@@ -109,7 +109,7 @@ class ErrorCodeATTR
     /**
      * @errorCode
      * a type is can be only a alpha characters
-     * @example text, double, money("%.02f $")
+     * example text, double, money("%.02f $")
      */
     const ATTR0602 = 'syntax error for type "%s" in attribute "%s"';
     /**

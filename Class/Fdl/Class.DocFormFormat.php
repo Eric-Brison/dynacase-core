@@ -1004,7 +1004,7 @@ class DocFormFormat
             /**
              * HTML input for Password attribute
              * @param string $value the row value of input
-             * @deprecated
+             * @deprecated option attributes are not supported
              * @return string HTML input fragment
              */
             private function formatOption($value)
