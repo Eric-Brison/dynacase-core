@@ -1223,7 +1223,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * test if the document can be revised now
      * it must be locked by the current user
-     * @deprecated
+     * @deprecated use canEdit instead
      * @return string empty means user can update else message of the raison
      */
     final public function canUpdateDoc()
@@ -6893,7 +6893,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * view only option values
      * @templateController
-     * @deprecated
+     * @deprecated option attributes are not supported
      * @param string $target
      * @param bool $ulink
      * @param bool $abstract
@@ -6906,7 +6906,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * edit only option
      * @templateController
-     * @deprecated
+     * @deprecated option attributes are not supported
      * @param string $target
      * @param bool $ulink
      * @param bool $abstract
@@ -7375,7 +7375,7 @@ create unique index i_docir on doc(initid, revision);";
     // ================= Methods use for XML ======================
     
     /**
-     * @deprecated
+     * @deprecated use exportXml instead
      * @param bool $withdtd
      * @param string $id_doc
      * @return string
@@ -7552,7 +7552,7 @@ create unique index i_docir on doc(initid, revision);";
         return $this->lay->gen();
     }
     /**
-     * @deprecated
+     * @deprecated use exportXml instead
      * @return string
      */
     final public function todtd()
@@ -7709,7 +7709,7 @@ create unique index i_docir on doc(initid, revision);";
         return $this->title;
     }
     /**
-     * @deprecated
+     * @deprecated not needed until 2.0 version
      * @param string $nameId
      * @param $nameTitle
      */
@@ -8017,7 +8017,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return system user id
-     * @deprecated
+     * @deprecated use getSystemUserId instead
      * @return int
      */
     public static function getWhatUserId()

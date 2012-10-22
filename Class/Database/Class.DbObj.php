@@ -842,7 +842,7 @@ class DbObj
         }
     }
     /**
-     * @deprecated
+     * @deprecated not used now
      * @return string
      */
     public function autoUpdate()

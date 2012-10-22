@@ -57,7 +57,7 @@ class Account extends DbObj
     public $login;
     public $password;
     /**
-     * @deprecated
+     * @deprecated use accountType instead
      * @var string
      */
     public $isgroup;
@@ -215,7 +215,7 @@ create sequence seq_id_users start 10;";
      * affect account from its login
      *
      * @param string $login login
-     * @deprecated
+     * @deprecated use setLoginName instead
      * @return bool true if ok
      */
     function setLogin($login, $unused = '0')
@@ -331,10 +331,10 @@ create sequence seq_id_users start 10;";
         return $err;
     }
     /**
-     * @deprecated
-     * @param $login
-     * @param $domain
-     * @param $whatid
+     * @deprecated use SearchAccount class instead
+     * @param string $login
+     * @param string $unused
+     * @param int $whatid
      * @return bool
      */
     function CheckLogin($login, $unused, $whatid)

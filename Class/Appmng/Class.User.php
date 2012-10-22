@@ -6,13 +6,12 @@
  * @package FDL
 */
 
-include_once('Class.Account.php');
+include_once ('Class.Account.php');
 /**
  * Manage User, Group and Role account object
  * @class User
- * @deprecated
+ * @deprecated use Account Class instead
  */
 class User extends Account
 {
-
 }

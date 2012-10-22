@@ -71,7 +71,7 @@ class CheckWorkflow
     /**
      * @param $code
      * @param $msg
-     * @deprecated
+     * @deprecated use addCoreError instead
      */
     private function addError($code, $msg)
     {
@@ -262,7 +262,7 @@ class CheckWorkflow
                         $wi = createTmpDoc($this->wdoc->dbaccess, $this->familyName);
                         $aids = array_keys($wi->getAttributes());
                         foreach ($askes as $aid) {
-                            if (!in_array(strtolower($aid), $aids)) {
+                            if (!in_array(strtolower($aid) , $aids)) {
                                 $this->addCodeError('WFL0104', $aid, $this->className);
                             }
                         }
