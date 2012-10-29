@@ -187,7 +187,7 @@ addEvent(window,"load",function () {if (window.parent && window.parent.multidoc)
 <table class="transparent" cellspacing="0" width="100%"><tr>
 <td align="left" width="30px"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[prev]&dirid=[dirid]&catg=[catg]&famid=[famid][pds]">[previcon]</a></td>
 <td align="center"><i><b>[fldtitle]</b></i></td>
-<td align="right" width="30px"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[next]&dirid=[dirid]&catg=[catg]&famid=[famid][pds]">[nexticon]</a></td>
+[IF hasNext]<td align="right" width="30px"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[next]&dirid=[dirid]&catg=[catg]&famid=[famid][pds]">[nexticon]</a></td>[ENDIF hasNext]
 </tr></table>
 
 <table class="transparent"  width="100%" cellpadding="0px" cellspacing="0px">
@@ -225,7 +225,7 @@ oncontextmenu="viewdocmenu(event,'[id]',false,false,this);return false"
 </table>
 <table class="transparent" cellspacing="0" width="100%"><tr>
 <td align="left"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[prev]&dirid=[dirid]&catg=[catg]&onglet=[onglet]&famid=[famid][pds]">[previcon]</a></td>
-<td align="right"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[next]&dirid=[dirid]&catg=[catg]&onglet=[onglet]&famid=[famid][pds]">[nexticon]</a></td>
+[IF hasNext]<td align="right"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[next]&dirid=[dirid]&catg=[catg]&onglet=[onglet]&famid=[famid][pds]">[nexticon]</a></td>[ENDIF hasNext]
 </tr></table>
 </div>
 <!--  FOOT HTML -->
