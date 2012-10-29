@@ -86,7 +86,7 @@ $famid = "") // folder containt special fam id
     }
     
     $sd = new SearchDoc($dbaccess, $famid);
-    $sd->setSlice($slice);
+    $sd->setSlice($slice + 1);
     $sd->setStart($start);
     if ($dirid) $sd->useCollection($dirid);
     $sd->excludeConfidential();
@@ -111,7 +111,7 @@ $famid = "") // folder containt special fam id
     //$ldoc = getChildDoc($dbaccess, $dirid,$start,$slice,$sqlfilters,$action->user->id,"TABLE",$famid,
     //$distinct, $sqlorder);
     $sd->search();
-    
+    $hasNext = ($sd->count() > $slice);
     if ($viewone && ($sd->count() == 1)) {
         
         $doc1 = $sd->nextDoc();
@@ -175,8 +175,9 @@ $famid = "") // folder containt special fam id
             
             if (strlen($title) > 20) $tdoc[$k]["abrvtitle"] = mb_substr($title, 0, 12) . " ... " . mb_substr($title, -5);
             else $tdoc[$k]["abrvtitle"] = $title;
-            
+            /** @noinspection PhpUndefinedFieldInspection */
             if (isset($doc->_highlight) && $doc->_highlight != "") {
+                /** @noinspection PhpUndefinedFieldInspection */
                 $tdoc[$k]["highlight"] = $doc->_highlight;
             } else $tdoc[$k]["highlight"] = $title;
             $tdoc[$k]["icontitle"] = $tdoc[$k]["highlight"];
@@ -274,7 +275,6 @@ $famid = "") // folder containt special fam id
                     popupInvisible("popuplist", $kdiv, 'delete');
                 }
             }
-            
             $kdiv++;
             if ($doc->isRevisable()) $tdoc[$k]["revision"] = $doc->revision;
             else $tdoc[$k]["revision"] = "";
@@ -368,6 +368,12 @@ $famid = "") // folder containt special fam id
             $k++;
         }
         
+        if ($hasNext) {
+            //"delete last"
+            array_pop($tdoc);
+        }
+        
+        $nbdoc = $nbseedoc = count($tdoc);
         if ($column == 1) {
             /* Order tdoc by 'fromid', 'title' */
             $collator = new Collator($action->GetParam("CORE_LANG", "fr_FR"));
@@ -441,6 +447,7 @@ $famid = "") // folder containt special fam id
     $action->lay->Set("prev", $startpage - 1);
     
     $action->lay->Set("nbdoc", $nbdoc);
+    $action->lay->Set("hasNext", $hasNext);
     $action->lay->Set("wtarget", $target);
     
     return $nbdoc;

@@ -125,10 +125,9 @@ function generic_list(&$action)
             
         }
         $only = (getInherit($action, $famid) == "N");
-        if (viewfolder($action, true, false, $column, $slice, array() , ($only) ? -(abs($famid)) : abs($famid)) == $slice) {
-            // can see next
-            $action->lay->Set("nexticon", $action->GetIcon("next.png", N_("next") , 16));
-        }
+        viewfolder($action, true, false, $column, $slice, array() , ($only) ? -(abs($famid)) : abs($famid));
+        // can see next
+        $action->lay->Set("nexticon", $action->GetIcon("next.png", N_("next") , 16));
     }
     if ($startpage > 0) {
         // can see prev
