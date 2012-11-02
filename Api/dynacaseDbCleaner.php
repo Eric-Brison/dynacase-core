@@ -43,8 +43,8 @@ global $_SERVER;
 $dir = dirname($_SERVER["argv"][0]);
 
 $dbfreedom = getServiceName($dbaccess);
-if ($real) system(sprintf("PGSERVICE=%s psql -f %s/API/dynacaseDbCleaner.sql | logger -t %s", escapeshellarg($dbfreedom) , escapeshellarg($dir) , escapeshellarg("dynacaseDbCleaner(" . $action->GetParam("CORE_CLIENT") . ")")));
-else system(sprintf("PGSERVICE=%s psql -f %s/API/dynacaseDbCleaner.sql | logger -t %s", escapeshellarg($dbfreedom) , escapeshellarg($dir) , escapeshellarg("dynacaseDbCleaner(" . $action->GetParam("CORE_CLIENT") . ")")));
+if ($real) system(sprintf("PGSERVICE=%s psql -a -f %s/API/dynacaseDbRealCleaner.sql | logger -t %s", escapeshellarg($dbfreedom) , escapeshellarg($dir) , escapeshellarg("dynacaseDbCleaner(" . $action->GetParam("CORE_CLIENT") . ")")));
+else system(sprintf("PGSERVICE=%s psql -a -f %s/API/dynacaseDbCleaner.sql | logger -t %s", escapeshellarg($dbfreedom) , escapeshellarg($dir) , escapeshellarg("dynacaseDbCleaner(" . $action->GetParam("CORE_CLIENT") . ")")));
 // Cleanup session files
 $core_db = $action->GetParam('CORE_DB');
 $sessionUtils = new SessionUtils($core_db);

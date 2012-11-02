@@ -20,7 +20,7 @@ include_once ("DATA/Class.User.php");
 /**
  * Display info before download
  * @param Action &$action current action
- * @global id Http var : document for file to edit (SIMPLEFILE family)
+ * @global string $id Http var : document for file to edit (SIMPLEFILE family)
  */
 function user(&$action)
 {
@@ -36,11 +36,13 @@ function user(&$action)
             break;
 
         case 'ping':
+            $out=new stdClass();
             $out->status = 'ok';
             $out->time = time();
             break;
 
         case 'authent':
+            $out=new stdClass();
             $login = getHttpVars("login");
             $password = getHttpVars("password");
             $u = new Account();
@@ -66,6 +68,7 @@ function user(&$action)
             break;
 
         default:
+            $out=new stdClass();
             $out->error = sprintf(_("method %s not defined") , $method);
     }
     

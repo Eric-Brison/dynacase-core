@@ -176,7 +176,11 @@ class DocCtrl extends DocLDAP
             $app = $action->parent;
             $this->userid = $app->user->id;
         }
-        if (!isset($this->attributes->attr)) $this->attributes->attr = array();
+
+        if (!isset($this->attributes->attr)) {
+            if (!isset($this->attributes)) $this->attributes=new stdClass();
+            $this->attributes->attr = array();
+        }
         parent::__construct($dbaccess, $id, $res, $dbid);
     }
     

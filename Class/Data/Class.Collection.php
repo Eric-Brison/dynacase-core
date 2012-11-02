@@ -119,7 +119,7 @@ class Fdl_Collection extends Fdl_Document
         $s->recursiveSearch = ($this->contentRecursiveLevel > 0);
         $s->folderRecursiveLevel = $this->contentRecursiveLevel;
         
-        $out = false;
+        $out = new stdClass();
         $content = array();
         if ($s->dirid > 0) {
             $s->setObjectReturn();
@@ -200,7 +200,7 @@ class Fdl_Collection extends Fdl_Document
             $content = array();
             $s = $dl->getSearchDocument();
             if ($this->contentMap) $dl->listMap($this->contentMap);
-            $out = null;
+            $out = new stdClass();
             $out->info = $s->getSearchInfo();
             $out->slice = $s->slice;
             $out->start = $s->start;
