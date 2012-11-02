@@ -48,6 +48,8 @@ class Fdl_User
                 "lastname",
                 "login"
             );
+            $out=new stdClass();
+            $info=new stdClass();
             foreach ($ti as $i) $info->$i = $this->_user->$i;
             $info->locale = getParam("CORE_LANG");
             $out->info = $info;

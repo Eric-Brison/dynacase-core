@@ -596,6 +596,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
         case '':
             if (!$id) $out->error = _("no identificator");
             else {
+                $config=new stdClass();
                 $config->onlyValues = getHttpVars("onlyValues", "true") == "true";
                 $config->latest = (getHttpVars("latest", "true") == "true");
                 $winfo = (getHttpVars("needWorkflow", "false") == "true");
