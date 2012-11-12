@@ -253,7 +253,7 @@ class Fdl_Collection extends Fdl_Document
     {
         include_once ("FDL/Class.SearchDoc.php");
         static $sw = null;
-        $out = '';
+        $out = new stdClass();
         $tfid = array();
         if (strstr($famid, '|')) {
             // multi family search
