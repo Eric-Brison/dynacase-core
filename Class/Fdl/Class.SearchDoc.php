@@ -154,7 +154,7 @@ class SearchDoc
     private $resultQPos = 0;
     /**
      * initialize with family
-     * @api
+     * @api search contructor
      *
      * @param string $dbaccess database coordinate
      * @param int|string $fromid family identifier to filter
@@ -169,7 +169,7 @@ class SearchDoc
     }
     /**
      * count results without return data
-     * @api
+     * @api send query search and only count results
      *
      * @return int the number of results
      */
@@ -245,7 +245,7 @@ class SearchDoc
     }
     /**
      * return original sql query before test permissions
-     * @api
+     * @api return original sql query without visibility criteria
      *
      * @return string
      */
@@ -257,7 +257,7 @@ class SearchDoc
     }
     /**
      * add join condition
-     * @api
+     * @api add join condition
      * @code
      * $s=new searchDoc();
      $s->trash='only';
@@ -278,7 +278,7 @@ class SearchDoc
      * count results
      * ::search must be call before
      * @see SearchDoc::search()
-     * @api
+     * @api count results after query search is sended
      *
      * @return int
      *
@@ -308,7 +308,7 @@ class SearchDoc
     /** 
      * reset results to use another search
      *
-     * @api
+     * @api reset results to use another search
      * @return void
      */
     public function reset()
@@ -321,7 +321,7 @@ class SearchDoc
     /**
      * reset result offset
      * use it to redo a document's iteration
-     * @api
+     * @api reset result offset
      */
     public function rewind()
     {
@@ -331,7 +331,7 @@ class SearchDoc
     }
     /** 
      * Verify if query is already sended to database
-     * @api
+     * @api Verify if query is already sended
      * @return boolean
      */
     public function isExecuted()
@@ -340,7 +340,7 @@ class SearchDoc
     }
     /**
      * Return sql filters used for request
-     * @api
+     * @api get sql filters of query
      * @return array of string
      */
     public function getFilters()
@@ -356,7 +356,7 @@ class SearchDoc
     /**
      * send search
      * the query is sent to database
-     * @api
+     * @api send query
      * @return array|null|SearchDoc array of documents if no setObjectReturn else itself
      */
     public function search()
@@ -429,7 +429,7 @@ class SearchDoc
      print $doc->getTitle();
      }
      * @endcode
-     * @api
+     * @api get document iterator
      * @return DocumentList
      */
     public function getDocumentList()
@@ -447,7 +447,7 @@ class SearchDoc
     }
     /**
      * Return error message
-     * @api
+     * @api get error message
      * @return string
      */
     public function getError()
@@ -491,8 +491,8 @@ class SearchDoc
     }
     /**
      * return informations about query after search has been sent
-     * array indexes are query, err, count, delay
-     * @api
+     * array indexes are : query, err, count, delay
+     * @api get informations about query results
      * @return array of info
      */
     public function getSearchInfo()
@@ -501,7 +501,7 @@ class SearchDoc
     }
     /**
      * set maximum number of document to return
-     * @api
+     * @api set maximum number of document to return
      * @param int $slice the limit ('ALL' means no limit)
      *
      * @return Boolean
@@ -514,7 +514,7 @@ class SearchDoc
     }
     /**
      * use different order , default is title
-     * @api
+     * @api set order to sort results
      * @param string $order the new order, empty means no order
      * @param string $orderbyLabel string of comma separated columns names on which the order should be performed on their label instead of their value (e.g. order enum by their label instead of their key)
      * @return void
@@ -528,7 +528,7 @@ class SearchDoc
     }
     /**
      * use folder or search document to search within it
-     * @api
+     * @api use folder or search document
      * @param int $dirid identifier of the collection
      *
      * @return Boolean true if set
@@ -546,7 +546,7 @@ class SearchDoc
     }
     /**
      * set offset where start the result window
-     * @api
+     * @api set offset where start the result window
      * @param int $start the offset (0 is the begin)
      *
      * @return Boolean true if set
@@ -561,7 +561,7 @@ class SearchDoc
      * can, be use in loop
      * ::search must be call before
      * @see SearchDoc::search
-     * @api
+     * @api get next document results
      * @return Doc|array or null if this is the end
      */
     public function nextDoc()
@@ -591,7 +591,7 @@ class SearchDoc
     }
     /**
      * after search return only document identifiers instead of complete document
-     * @api
+     * @api get only document identifiers
      * @return int[] document identifiers
      */
     public function getIds()
@@ -636,6 +636,7 @@ class SearchDoc
     }
     /**
      * add a condition in filters
+     * @api add a new condition in filters
      * @param string $filter the filter string
      * @param string $args arguments of the filter string (arguments are escaped to avoid sql injection)
      * @return void
@@ -667,7 +668,7 @@ class SearchDoc
      *   foo bar : the word foo and the word bar are set in document attributes
      *   foo OR bar : the word foo or the word bar are set in a document attributes
      *   foo OR (bar AND zou) : more complex logical expression
-     * @api
+     * @api add global filter based on keyword
      * @param string $keywords
      * @param bool $useSpell use spell french checker
      */
@@ -703,7 +704,7 @@ class SearchDoc
     /**
      * add a order based on keyword
      * consider how often the keyword terms appear in the document
-     * @api
+     * @api add a order based on keyword
      * @param string $keyword
      */
     public function setPertinenceOrder($keyword = '')
@@ -810,7 +811,7 @@ class SearchDoc
     }
     /**
      * return a document part where general filter term is found
-     * @api
+     * @api get a document part where general filter term is found
      * @see SearchDoc::addGeneralFilter
      * @param Doc $doc document to analyze
      * @param string $beginTag delimiter begin tag
@@ -889,6 +890,7 @@ class SearchDoc
     }
     /**
      * return where condition like : foo in ('x','y','z')
+     * @api get sql condition to search in a value's set
      * @static
      * @param array $values set of values
      * @param string $column database column name
@@ -915,7 +917,7 @@ class SearchDoc
     }
     /**
      * no use access view control in filters
-     * @api
+     * @api no add view access criteria in final query
      * @return void
      */
     public function noViewControl()
@@ -925,7 +927,7 @@ class SearchDoc
     /**
      * the return of ::search will be array of document's object
      *
-     * @api
+     * @api set return type : document object or document array
      * @param bool $returnobject set to true to return object, false to return raw data
      * @return void
      */
@@ -951,7 +953,7 @@ class SearchDoc
     }
     /**
      * add a filter to not return confidential document if current user cannot see it
-     * @api
+     * @api add a filter to not return confidential
      * @param boolean $exclude set to true to exclude confidential
      * @return void
      */
