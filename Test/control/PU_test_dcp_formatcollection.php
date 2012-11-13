@@ -135,7 +135,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
     /**
      * @dataProvider dataStateRenderFormatCollection
      */
-    public function testStateRenderFormatCollection($docName, $expectState, $expectColor, $expectActivity)
+    public function testStateRenderFormatCollection($docName, $expectState, $expectColor, $expectActivity, $expectDisplayValue)
     {
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
@@ -153,6 +153,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $this->assertEquals($expectState, $fstate->reference, "incorrect state reference");
         $this->assertEquals($expectColor, $fstate->color, "incorrect state color ");
         $this->assertEquals($expectActivity, $fstate->activity, "incorrect state activity");
+        $this->assertEquals($expectDisplayValue, $fstate->displayValue, sprintf("incorrect state display value : %s", print_r($fstate, true)));
     }
     private function getRenderValue(array $r, $docName, $attrName)
     {
@@ -198,21 +199,23 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 "TST_FMTCOL1",
                 "E1",
                 "#7DFF63",
+                "Activity E1",
                 "Activity E1"
             ) ,
             array(
                 "TST_FMTCOL2",
                 "E2",
                 "#8CFFDD",
+                "Activity E2",
                 "Activity E2"
             ) ,
             
             array(
                 "TST_FMTCOL3",
                 "E3",
-                
                 "#BC8FFF",
-                ""
+                "",
+                "E3"
             )
         );
     }

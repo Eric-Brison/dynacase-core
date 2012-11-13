@@ -202,7 +202,14 @@ class FormatCollection
         if ($doc->state) {
             $s->reference = $doc->state;
             $s->stateLabel = _($doc->state);
-            $s->activity = $doc->getStateActivity();
+            
+            if ($doc->locked != - 1) {
+                $s->activity = $doc->getStateActivity();
+                if ($s->activity) $s->displayValue = $s->activity;
+                else $s->displayValue = $s->stateLabel;
+            } else {
+                $s->displayValue = $s->stateLabel;
+            }
             
             $s->color = $doc->getStateColor();
         }
@@ -340,6 +347,7 @@ class StatePropertyValue
     public $color;
     public $activity;
     public $stateLabel;
+    public $displayValue;
 }
 
 class FormatAttributeValue extends StandardAttributeValue
