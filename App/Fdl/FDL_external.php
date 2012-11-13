@@ -527,8 +527,8 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
 {
     $sort = 'lastname';
     $searchinmail = false;
-    $dbaccess = getDbAccess();
     $s = new SearchAccount();
+    $s->setSlice($limit);
     if (preg_match('/role\s*=([^|]*)/', $options, $regRole)) {
         $roles = explode(',', $regRole[1]);
         
