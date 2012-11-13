@@ -4739,7 +4739,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the action associated for the state of a document
      * if document has workflow : the action label description
-     * if document state is a free state description
+     * if document state is a free state : state description
      *
      * @api get the action associated for the state of a document
      * @param string $def default activity is activity is empty
