@@ -5,11 +5,9 @@
  * @package FDL
 */
 /**
- * @mainpage Dynacase Platform Documentation
+ * @mainpage Dynacase Core Documentation
  * @brief
- * @author Anakeen Dynacase Labs
- * @version @VERSION@-@RELEASE@
- * @date @LOGDATE@
+ * @author Anakeen <labs@anakeen.com>
  *
  *
  *
@@ -18,6 +16,15 @@
   This manual should be your daily companion, with all answers to all questions when developping on Dynacase Platform.
  * ==> http://www.dynacase.org/documentation
  *
+ * @par Explanation of related pages
+ * @li Methods for document menus@n These methods are tagged with @@apiExpose tag@n List methods which can be called by FDL:FDL_METHOD action
+ * @li Error codes@n List all code's error which are returned when a problem appear. Most of them are send when import families definition's
+ * @li Methods used as search conditions@n These methods results can be used as criteria to filter document's searches@n They are tagged with @@searchLabel tag
+ * @li Supported Apis@n These methods are described in reference documentation. Their signature (argument and return) are maintained from one version to another
+ * @li Deprecated List@n These methods are no longer supported. They can be removed in the next version
+ *
+ * @note Build
+ *  @VERSION@-@RELEASE@, @LOGDATE@
  *
  */
 /**

@@ -1,4 +1,4 @@
-io<?php
+<?php
 /*
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
@@ -21,9 +21,13 @@ include_once ("DATA/Class.Document.php");
  */
 class Fdl_Application
 {
+    /**
+     * @var Application $_app
+     */
     private $_app = null;
     public $id = 0;
     public $name = '';
+    public $error='';
     function __construct(&$app)
     {
         if ($app) {
@@ -43,6 +47,7 @@ class Fdl_Application
             $this->error = sprintf(_("application not initialized"));
             return null;
         } else {
+            $out=new stdClass();
             $out->value = $this->_app->getParam($key, null);
             if ($out->value === null) $this->error = sprintf(_("parameter %s not exists") , $key);
             $js = json_decode($out->value);
@@ -61,6 +66,7 @@ class Fdl_Application
             $this->error = sprintf(_("application not initialized"));
             return null;
         } else {
+            $out=new stdClass();
             $op = new ParamDef("", $key);
             if ($op->isAffected()) {
                 if ($op->isuser == "Y") {
@@ -98,7 +104,7 @@ class Fdl_Application
     function getExecutableActions()
     {
         
-        $queryact = new QueryDb($action->dbaccess, "Action");
+        $queryact = new QueryDb(getDbAccess(), "Action");
         $queryact->AddQuery(sprintf("id_application=%d", $this->id));
         $queryact->AddQuery("available!='N'");
         $listact = $queryact->Query(0, 0, "TABLE");
