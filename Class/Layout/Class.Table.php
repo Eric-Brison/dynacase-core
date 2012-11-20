@@ -15,79 +15,14 @@
  */
 /**
  */
-// ---------------------------------------------------------------------------
-// PHP Table Class
-// ---------------------------------------------------------------------------
-// 1999 anakeen  -  Yannick Le Briquer
-// ---------------------------------------------------------------------------
-//
-//  $Id: Class.Table.php,v 1.2 2003/08/18 15:46:42 eric Exp $
-//
-//  $Log: Class.Table.php,v $
-//  Revision 1.2  2003/08/18 15:46:42  eric
-//  phpdoc
-//
-//  Revision 1.1  2002/01/08 12:41:34  eric
-//  first
-//
-//  Revision 1.6  2001/10/17 09:08:49  eric
-//  mise en place de i18n via gettext
-//
-//  Revision 1.5  2001/02/10 10:07:39  yannick
-//  Abandon de libphpinclude
-//
-//  Revision 1.4  2001/02/10 09:45:51  yannick
-//  Ajout de vieilles classes
-//
-//  Revision 1.17  2000/09/04 17:50:11  yannick
-//  Traitement des valeurs non initialisees
-//
-//  Revision 1.16  2000/07/04 16:24:38  marianne
-//  suppression trace : reste bug...
-//
-//  Revision 1.15  2000/06/05 16:14:25  yannick
-//  Trace dans Table
-//
-//  Revision 1.14  2000/04/18 08:54:19  marianne
-//  Retour arriere
-//
-//  Revision 1.12  2000/03/21 14:33:27  marianne
-//  Ajout head_class
-//
-//  Revision 1.11  2000/03/21 14:22:53  marianne
-//  Correction bug sur class et aout index_class
-//
-//  Revision 1.10  2000/02/15 14:47:47  marianne
-//  Maj affichage footer
-//
-//  Revision 1.9  2000/02/15 09:29:49  marianne
-//  Suppression warnings
-//
-//  Revision 1.8  2000/02/10 10:40:16  marianne
-//  Ajout Incidents
-//
-//  Revision 1.7  2000/01/27 17:52:19  marianne
-//  Suppression warnings
-//
-//  Revision 1.6  1999/12/06 16:33:19  marianne
-//  Correction Bug sur index_alpha quand initiale=''
-//
-//  Revision 1.5  1999/12/03 14:36:13  marc
-//  Integration de l'index dans un tableau
-//
-//  Revision 1.4  1999/12/02 17:45:37  marc
-//  Commentaires et indentation
-//
-//  Revision 1.3  1999/12/02 17:42:32  marc
-//  Traitement de la barre de navigation inter-pages.
-//
-//
-// ---------------------------------------------------------------------------
+
 //
 include_once ('Class.Log.php');
 
 $CLASS_TABLE_PHP = "";
-
+/**
+ * @deprecated not necessary and not used now
+ */
 class Table
 {
     // ---------------------------------------------------------------------------
@@ -147,13 +82,13 @@ class Table
     // 1 : UpperCase letter
     // 2 : lowerCase letter
     var $page_numbering = 0; // if true a page number is displayed
-    var $previous = N_("prev"); // the text (can be <img...) used to link to the
+    var $previous = "prev"; // the text (can be <img...) used to link to the
     // previous page
-    var $next = N_("next"); // the text (can be <img...) used to link to the
+    var $next = "next"; // the text (can be <img...) used to link to the
     // next page
-    var $first = N_("first"); // the text (can be <img...) used to link to the
+    var $first = "first"; // the text (can be <img...) used to link to the
     // first page
-    var $last = N_("last"); // the text (can be <img...) used to link to the
+    var $last = "last"; // the text (can be <img...) used to link to the
     // last page
     var $page_link; // the URL used to turn pages. This URL is a format
     // string with two %s in it the first on gives the
