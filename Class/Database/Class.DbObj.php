@@ -600,7 +600,7 @@ class DbObj
                     $msg.= $this->exec_query($sqlquery, 1);
                 }
             }
-            $this->log->debug("DbObj::Create : {$this->sqlcreate}");
+            $this->log->debug("DbObj::Create : " . print_r($this->sqlcreate, true));
         }
         if (isset($this->sqlinit)) {
             $msg = $this->exec_query($this->sqlinit, 1);
