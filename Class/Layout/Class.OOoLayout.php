@@ -1606,7 +1606,12 @@ class OOoLayout extends Layout
             // double up
             $pParentHtml = $htmlSection->parentNode->parentNode;
             $parentHtml = $htmlSection->parentNode;
+            /* copy style in parent but not works
+            foreach ($parentHtml->attributes as $attribute) {
             
+                                              $htmlSection->setAttribute('text:'.$attribute->name, $attribute->value);
+                                  }
+            */
             if (($parentHtml->nodeName == "text:p") && ($parentHtml->childNodes->length == 1)) {
                 
                 if ($parentHtml->nextSibling) {
@@ -1614,6 +1619,7 @@ class OOoLayout extends Layout
                 } else {
                     $pParentHtml->appendChild($htmlSection);
                 }
+                
                 $pParentHtml->removeChild($parentHtml);
             } else {
                 $htmlCleanSections[] = $htmlSection;
@@ -1637,16 +1643,47 @@ class OOoLayout extends Layout
                 $nbp = $htmlSection->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "p")->length;
             }
             while ($htmlSection->childNodes->length > 0) {
-                if (($htmlSection->parentNode->nodeName == "text:p") && ($nbp > 1)) {
+                $newSpan = null;
+                if (($htmlSection->parentNode->nodeName == "text:p")) {
                     if ($htmlSection->firstChild->nodeName == "text:p") {
                         $htmlSection->firstChild->appendChild($this->dom->createElement("text:line-break"));
                         $nbp--;
+                        $this->changeElementName($htmlSection->firstChild, 'text:span');
                     }
                 }
+                
                 $htmlSection->parentNode->insertBefore($htmlSection->firstChild, $htmlSection);
             }
         }
         $this->template = $this->dom->saveXML();
+    }
+    /**
+     * Change Element Name
+     * @param DOMElement $node
+     * @param string $name
+     * @return DOMElement
+     */
+    protected function changeElementName($node, $name)
+    {
+        
+        $newElement = $this->dom->createElement($name);
+        // Clone the attributes:
+        foreach ($node->attributes as $attribute) {
+            
+            $newElement->setAttribute($attribute->name, $attribute->value);
+        }
+        // Add clones of the old element's children to the replacement
+        
+        /**
+         * @var DOMElement $child
+         */
+        foreach ($node->childNodes as $child) {
+            
+            $newElement->appendChild($child->cloneNode(true));
+        }
+        // Replace the old node
+        $node->parentNode->replaceChild($newElement, $node);
+        return $newElement;
     }
     /**
      * generate OOo document content
@@ -1659,6 +1696,7 @@ class OOoLayout extends Layout
         $this->dom->loadXML($this->content_template);
         if ($this->dom) {
             $this->template = $this->content_template;
+            
             $this->parseTplSection();
             //header('Content-type: text/xml; charset=utf-8');print $this->dom->saveXML();exit;
             $this->hideUserFieldSet();
@@ -1713,7 +1751,7 @@ class OOoLayout extends Layout
         // if used in an app , set the app params
         if (is_object($this->action)) {
             $list = $this->action->parent->GetAllParam();
-            while (list($k, $v) = each($list)) {
+            foreach ($list as $k => $v) {
                 $v = str_replace(array(
                     '<BR>',
                     '<br>',
@@ -1733,7 +1771,7 @@ class OOoLayout extends Layout
         $this->updateManifest();
         $outfile = uniqid(getTmpDir() . "/odf") . '.odt';
         $this->content2odf($outfile);
-        //print_r2($this->content_template);exit;
+        //print_r2($this->content_template);
         return ($outfile);
     }
 }
