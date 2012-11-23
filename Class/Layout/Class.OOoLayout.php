@@ -47,6 +47,10 @@ class OOoLayout extends Layout
     protected $rkeyxml = array();
     protected $cibledir;
     /**
+     * @var array error list
+     */
+    protected $errors = array();
+    /**
      /**
      * @var DOMDocument
      */
@@ -78,6 +82,7 @@ class OOoLayout extends Layout
                     $this->file = $file;
                 }
             } else {
+                
                 $this->template = "file  [$caneva] not exists";
             }
         }
@@ -265,10 +270,6 @@ class OOoLayout extends Layout
                 }
             }
         }
-        foreach ($domElemsToClean as $domElement) {
-            //$domElement->parentNode->nodeValue=$domElement->nodeValue;
-            
-        }
         /**
          * @var $domElemsToRemove DOMElement[]
          */
@@ -331,8 +332,18 @@ class OOoLayout extends Layout
      */
     protected function restoreUserFieldSet()
     {
-        // header('Content-type: text/xml; charset=utf-8');print $this->template;exit;
-        $this->dom->loadXML($this->template);
+        if (!$this->dom->loadXML($this->template)) {
+            /*
+            $xmlErr=libxml_get_last_error();
+            if (is_array($xmlErr)) $err=sprintf("XML error line %d, column %d,: %s",$xmlErr["line"],$xmlErr["column"], $xmlErr["message"]);
+            else $err="";
+            */
+            $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
+            $this->addError("LAY0004", $outfile);
+            file_put_contents($outfile, $this->template);
+            $this->exitError($outfile);
+        }
+        
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "user-field-decl");
         
         foreach ($lists as $list) {
@@ -425,7 +436,10 @@ class OOoLayout extends Layout
      */
     protected function odf2content($odtfile)
     {
-        if (!file_exists($odtfile)) return "file $odtfile not found";
+        if (!file_exists($odtfile)) {
+            $this->addError("LAY0001", $odtfile);
+            $this->exitError();
+        }
         $this->cibledir = uniqid(getTmpDir() . "/odf");
         
         $cmd = sprintf("unzip  %s  -d %s >/dev/null", escapeshellarg($odtfile) , escapeshellarg($this->cibledir));
@@ -1606,47 +1620,147 @@ class OOoLayout extends Layout
             // double up
             $pParentHtml = $htmlSection->parentNode->parentNode;
             $parentHtml = $htmlSection->parentNode;
-            
+           
             if (($parentHtml->nodeName == "text:p") && ($parentHtml->childNodes->length == 1)) {
+                $htmlPs = $htmlSection->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "p");
+                /**
+                 * @var DOMElement $p
+                 */
+                foreach ($htmlPs as $p) {
+                    foreach ($parentHtml->attributes as $attribute) {
+                        
+                        $p->setAttribute('text:' . $attribute->name, $attribute->value);
+                    }
+                }
                 
                 if ($parentHtml->nextSibling) {
                     $pParentHtml->insertBefore($htmlSection, $parentHtml->nextSibling);
                 } else {
                     $pParentHtml->appendChild($htmlSection);
                 }
+                
                 $pParentHtml->removeChild($parentHtml);
+                
+                if (in_array($htmlSection->parentNode->nodeName, array(
+                    "text:list-item",
+                    //   "draw:text-box",
+                    //  "text:p"
+                    
+                ))) {
+                    $htmlCleanSections[] = $htmlSection;
+                }
+                //print "Parent Node is ".$htmlSection->parentNode->nodeName."\n";
+                
             } else {
+                
                 $htmlCleanSections[] = $htmlSection;
             }
-            if (in_array($htmlSection->parentNode->nodeName, array(
-                "text:list-item",
-                "draw:text-box",
-                "text:p"
-            ))) {
-                $htmlCleanSections[] = $htmlSection;
-            }
-            //print "Parent Node is ".$htmlSection->parentNode->nodeName."\n";
-            
         }
         $nbp = 0;
         foreach ($htmlCleanSections as $htmlSection) {
             /**
              * @var $htmlSection DOMElement
              */
+            
+            $attrid = substr($htmlSection->getAttribute("text:name") , 7);
+            /*
             if ($htmlSection->parentNode->nodeName == "text:p") {
                 $nbp = $htmlSection->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "p")->length;
             }
             while ($htmlSection->childNodes->length > 0) {
-                if (($htmlSection->parentNode->nodeName == "text:p") && ($nbp > 1)) {
+                $newSpan = null;
+                if (($htmlSection->parentNode->nodeName == "text:p")) {
                     if ($htmlSection->firstChild->nodeName == "text:p") {
                         $htmlSection->firstChild->appendChild($this->dom->createElement("text:line-break"));
                         $nbp--;
+                        $this->changeElementName($htmlSection->firstChild, 'text:span');
                     }
                 }
-                $htmlSection->parentNode->insertBefore($htmlSection->firstChild, $htmlSection);
+                $htmlSection->firstChild->nodeValue='ERROR';
+                $htmlSection->removeChild($htmlSection->firstChild);
             }
+            */
+            $pp = $this->dom->createElement("text:span");
+            $pp->nodeValue = "ERROR " . "[V_" . strtoupper($attrid) . "]";
+            $htmlSection->parentNode->appendChild($pp);
+            $this->addError("LAY0002", "[V_" . strtoupper($attrid) . "]");
         }
         $this->template = $this->dom->saveXML();
+    }
+    /**
+     * get all error stored by addError
+     * @return string
+     */
+    public function getErrors()
+    {
+        $s = array();
+        foreach ($this->errors as $err) {
+            $s[] = ErrorCode::getError($err["code"], $err["key"]);
+        }
+        return implode("\n", $s);
+    }
+    /**
+     * send exception and exit generation
+     * use sored error
+     * @see addError()
+     * @param string $outfile corrupted file path
+     * @throws Dcp\Layout\Exception
+     */
+    protected function exitError($outfile = '')
+    {
+        $s = array();
+        foreach ($this->errors as $err) {
+            if ($err["code"]) {
+                $e = new Dcp\Layout\Exception($err["code"], $err["key"]);
+                if ($outfile) {
+                    error_log(sprintf("Error {%s}: corrupted temporary file is %s", $err["code"], $outfile));
+                    $e->setCorruptedFile($outfile);
+                }
+                throw $e;
+            }
+        }
+    }
+    /**
+     * store an error code
+     * @param string $code
+     * @param string $key
+     * @param string $message
+     */
+    protected function addError($code, $key, $message = '')
+    {
+        $this->errors[] = array(
+            "key" => $key,
+            "code" => $code,
+            "message" => $message
+        );
+    }
+    /**
+     * Change Element Name
+     * @param DOMElement $node
+     * @param string $name
+     * @return DOMElement
+     */
+    protected function changeElementName($node, $name)
+    {
+        
+        $newElement = $this->dom->createElement($name);
+        // Clone the attributes:
+        foreach ($node->attributes as $attribute) {
+            
+            $newElement->setAttribute($attribute->name, $attribute->value);
+        }
+        // Add clones of the old element's children to the replacement
+        
+        /**
+         * @var DOMElement $child
+         */
+        foreach ($node->childNodes as $child) {
+            
+            $newElement->appendChild($child->cloneNode(true));
+        }
+        // Replace the old node
+        $node->parentNode->replaceChild($newElement, $node);
+        return $newElement;
     }
     /**
      * generate OOo document content
@@ -1659,6 +1773,7 @@ class OOoLayout extends Layout
         $this->dom->loadXML($this->content_template);
         if ($this->dom) {
             $this->template = $this->content_template;
+            
             $this->parseTplSection();
             //header('Content-type: text/xml; charset=utf-8');print $this->dom->saveXML();exit;
             $this->hideUserFieldSet();
@@ -1681,6 +1796,7 @@ class OOoLayout extends Layout
             //      print $this->template;exit;
             $this->ParseKey();
             $this->ParseText();
+            
             $this->restoreUserFieldSet();
             
             $this->restoreProtectedValues();
@@ -1695,25 +1811,33 @@ class OOoLayout extends Layout
                 
                 $this->content_template = $this->template;
             } else {
-                print $this->template;
-                throw new Dcp\Exception("cannot product ooo template");
+                $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
+                file_put_contents($outfile, $this->template);
+                $this->addError("LAY0004", $this->file);
+                $this->exitError($outfile);
             }
         } else {
-            throw new Dcp\Exception(sprintf("not openDocument file %s", $this->file));
+            $this->addError("LAY0001", $this->file);
+            $this->exitError();
         }
     }
     /**
      * generate OOo document
      * get temporary file path of result
      * @api generate ODT file and get file path
+     * @throws Dcp\Layout\Exception
      * @return string odt file path
      */
     public function gen()
     {
+        if (!$this->file) {
+            $this->addError("LAY0001", $this->template);
+            $this->exitError();
+        }
         // if used in an app , set the app params
         if (is_object($this->action)) {
             $list = $this->action->parent->GetAllParam();
-            while (list($k, $v) = each($list)) {
+            foreach ($list as $k => $v) {
                 $v = str_replace(array(
                     '<BR>',
                     '<br>',
@@ -1727,13 +1851,19 @@ class OOoLayout extends Layout
         // $this->ParseIf($out);
         // Parse IMG: and LAY: tags
         $this->genContent();
-        
         $this->genStyle();
         $this->genMeta();
         $this->updateManifest();
         $outfile = uniqid(getTmpDir() . "/odf") . '.odt';
         $this->content2odf($outfile);
-        //print_r2($this->content_template);exit;
+        
+        if (!empty($this->errors)) {
+            //error_log(sprintf("Error {LAY0001}: corrupted temporary file is %s", $outfile));
+            //throw new Dcp\Layout\Exception("LAY0001", $this->getErrors() , $outfile);
+            $this->exitError($outfile);
+        }
+        //print_r2($this->content_template);
         return ($outfile);
     }
 }
+
