@@ -932,7 +932,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         $tdoc = array();
         foreach ($ids as $k => $id) {
             $tdoc1 = getLatestTDoc($dbaccess, $id);
-            if ((($userid == 1) || controlTdoc($tdoc1, "view")) && ($tdoc1["doctype"] != 'Z')) $tdoc[$id] = $tdoc1;
+            if (($tdoc1 !== false) && (($userid == 1) || controlTdoc($tdoc1, "view")) && ($tdoc1["doctype"] != 'Z')) $tdoc[$id] = $tdoc1;
         }
         return $tdoc;
     }
