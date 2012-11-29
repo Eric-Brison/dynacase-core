@@ -118,7 +118,7 @@ class Fdl_Collection extends Fdl_Document
         $s->excludeConfidential();
         $s->recursiveSearch = ($this->contentRecursiveLevel > 0);
         $s->folderRecursiveLevel = $this->contentRecursiveLevel;
-        
+        $err = '';
         $out = new stdClass();
         $content = array();
         if ($s->dirid > 0) {
@@ -194,13 +194,13 @@ class Fdl_Collection extends Fdl_Document
     {
         $dl = $this->documentList;
         $content = null;
+        $out = new stdClass();
         if (!$dl) {
             $this->setError("document list uninitialized");
         } else {
             $content = array();
             $s = $dl->getSearchDocument();
             if ($this->contentMap) $dl->listMap($this->contentMap);
-            $out = new stdClass();
             $out->info = $s->getSearchInfo();
             $out->slice = $s->slice;
             $out->start = $s->start;
@@ -255,6 +255,7 @@ class Fdl_Collection extends Fdl_Document
         static $sw = null;
         $out = new stdClass();
         $tfid = array();
+        $err = '';
         if (strstr($famid, '|')) {
             // multi family search
             $tfamids = explode('|', $famid);
@@ -366,7 +367,7 @@ class Fdl_Collection extends Fdl_Document
      */
     public function getSubFamilies($famid, $controlcreate = false)
     {
-        $out = '';
+        $out = new stdClass();
         $fam = new_doc($this->dbaccess, $famid);
         if (!$fam->isAlive()) {
             $out->error = sprintf(_("data:family %s not alive") , $famid);
@@ -402,7 +403,7 @@ class Fdl_Collection extends Fdl_Document
      */
     public function insertDocument($docid)
     {
-        $out = '';
+        $out = new stdClass();
         if ($this->docisset()) {
             $err = $this->doc->addFile($docid);
             if ($err != "") {
@@ -421,7 +422,7 @@ class Fdl_Collection extends Fdl_Document
      */
     function unlinkDocument($docid)
     {
-        $out = '';
+        $out = new stdClass();
         if ($this->docisset()) {
             $err = $this->doc->delFile($docid);
             if ($err != "") {
@@ -440,7 +441,7 @@ class Fdl_Collection extends Fdl_Document
      */
     function unlinkDocuments($selection)
     {
-        $out = '';
+        $out = new stdClass();
         include_once ("DATA/Class.DocumentSelection.php");
         $os = new Fdl_DocumentSelection($selection);
         $ids = $os->getIdentificators();
@@ -473,7 +474,7 @@ class Fdl_Collection extends Fdl_Document
      */
     function unlinkAllDocuments()
     {
-        $out = '';
+        $out = new stdClass();
         if ($this->docisset()) {
             $out->error = "";
             $err = $this->doc->canModify();
@@ -492,7 +493,7 @@ class Fdl_Collection extends Fdl_Document
      */
     function moveDocuments($selection, $targetId)
     {
-        $out = '';
+        $out = new stdClass();
         include_once ("DATA/Class.DocumentSelection.php");
         $os = new Fdl_DocumentSelection($selection);
         $ids = $os->getIdentificators();
@@ -538,7 +539,7 @@ class Fdl_Collection extends Fdl_Document
      */
     function insertDocuments($selection)
     {
-        $out = '';
+        $out = new stdClass();
         include_once ("DATA/Class.DocumentSelection.php");
         $os = new Fdl_DocumentSelection($selection);
         if ($this->docisset()) {

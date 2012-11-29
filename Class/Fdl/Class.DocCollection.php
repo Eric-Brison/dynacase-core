@@ -375,7 +375,7 @@ class DocCollection extends Doc
      */
     public function object2SqlFilter($of, &$famid, &$fsql)
     {
-        if ($of->family) {
+        if (!empty($of->family)) {
             if (preg_match('/([\w:]*)\s?(strict)?/', trim($of->family) , $reg)) {
                 if (!is_numeric($reg[1])) $reg[1] = getFamIdFromName($this->dbaccess, $reg[1]);
                 if ($reg[2] == "strict") $famid = '-' . $reg[1];
@@ -393,8 +393,8 @@ class DocCollection extends Doc
             }
         }
         $sql = array();
-        if ($of->sql) $of->sql = trim($of->sql);
-        if ($of->sql) {
+        if (!empty($of->sql)) $of->sql = trim($of->sql);
+        if (!empty($of->sql)) {
             if ((!strstr($of->sql, '--')) && (!strstr($of->sql, ';')) && (!stristr($of->sql, 'insert')) && (!stristr($of->sql, 'alter')) && (!stristr($of->sql, 'delete')) && (!stristr($of->sql, 'update'))) {
                 // try to prevent sql injection
                 $sql[] = $of->sql;
@@ -462,7 +462,7 @@ class DocCollection extends Doc
     /**
      * return sql from a single object filter
      *
-     * @param object $c the filter object
+     * @param stdClass $c the filter object
      * @param string &$sql return the sql where clause
      * @param string $famid family identifier
      *
@@ -477,11 +477,11 @@ class DocCollection extends Doc
             if ($top) {
                 $toperand = $top["operand"];
                 $first = $toperand[0];
-                $second = $toperand[1];
-                $third = $toperand[2];
+                $second = isset($toperand[1]) ? $toperand[1] : null;
+                $third = isset($toperand[2]) ? $toperand[2] : null;
                 $col = $c->$first;
                 if ($second) {
-                    $val1 = $c->$second;
+                    $val1 = (isset($c->$second)) ? $c->$second : null;
                     if (!$val1) {
                         $sql = "true"; // incomplete request parameters
                         return "";

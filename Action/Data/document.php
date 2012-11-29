@@ -20,15 +20,17 @@ include_once ("DATA/Class.Collection.php");
 /**
  * Retrieve and set documents
  * @param Action &$action current action
- * @global id Http var : document identifier
+ * @global string $id Http var : document identifier
  */
 function document(Action & $action)
 {
     $mb1 = microtime(true);
     $id = getHttpVars("id");
     $method = strtolower(getHttpVars("method"));
+    $err = '';
     if ($err) {
         $returntype = "json";
+        $out = new stdClass();
         $out->error = $err;
     } else {
         $start = microtime(true);
@@ -62,11 +64,19 @@ function getPerfoInfo($time = '')
 }
 /**
  * Display info before download
- * @global id Http var : document for file to edit (SIMPLEFILE family)
+ * @param Action $action
+ * @param string $id
+ * @param string $method
+ * @param string $returntype
+ * @param stdClass $out
+ * @param Doc $doc
+ * @global string $id Http var : document for file to edit (SIMPLEFILE family)
  */
 function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out, &$doc = null)
 {
     $returntype = "json";
+    
+    $onlyValues = false;
     $doc = null;
     $out = new stdClass();
     switch ($method) {
@@ -479,7 +489,8 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
                 $constraint = getHttpVars("constraint", null);
                 $options = getHttpVars("options", null);
                 if ($options) $options = json_decode($options);
-                
+                $phpfile = '';
+                $phpfunc = '';
                 if ($method == "addattribute") {
                     $doc->addAttribute($aid, $label, $order, $type, $parent, $visibility, $inTitle, $inAbstract, $needed, $link, $elink, $phpfile, $phpfunc, $constraint, $options);
                 } elseif ($method == "removeattribute") {
@@ -535,8 +546,8 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
                 $noComment = getHttpVars("noComment", null);
                 $ask = getHttpVars("ask", null);
                 if ($ask) $ask = json_decode($ask);
-                if ($method == "addtransitiontype") $doc->addTransitiontype($key, $label, $ask, $preMethod, $postmethod, $noComment);
-                elseif ($method == "modifytransitiontype") $doc->modifyTransitiontype($key, $label, $ask, $preMethod, $postmethod, $noComment);
+                if ($method == "addtransitiontype") $doc->addTransitiontype($key, $label, $ask, $preMethod, $postMethod, $noComment);
+                elseif ($method == "modifytransitiontype") $doc->modifyTransitiontype($key, $label, $ask, $preMethod, $postMethod, $noComment);
                 else $doc->removeTransitiontype($key);
                 $out = $doc->getDocument($onlyValues);
             } else $out->error = $doc->error;
@@ -567,16 +578,16 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
                 "money"
             );
             foreach ($operators as $k => $v) {
-                if (!is_array($v["type"])) $v["type"] = $alltype;
+                if (empty($v["type"]) || (!is_array($v["type"]))) $v["type"] = $alltype;
                 foreach ($v["type"] as $type) {
-                    $label = $v["label"] ? _($v["label"]) : '';
-                    $dynlabel = $v["dynlabel"] ? _($v["dynlabel"]) : '';
-                    if ($v["slabel"]) {
+                    $label = (!empty($v["label"])) ? _($v["label"]) : '';
+                    $dynlabel = (!empty($v["dynlabel"])) ? _($v["dynlabel"]) : '';
+                    if (!empty($v["slabel"])) {
                         foreach ($v["slabel"] as $kl => $vl) {
                             if ($kl == $type) $label = _($vl);
                         }
                     }
-                    if ($v["sdynlabel"]) {
+                    if (!empty($v["sdynlabel"])) {
                         foreach ($v["sdynlabel"] as $kl => $vl) {
                             if ($kl == $type) $dynlabel = _($vl);
                         }
@@ -596,7 +607,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
         case '':
             if (!$id) $out->error = _("no identificator");
             else {
-                $config=new stdClass();
+                $config = new stdClass();
                 $config->onlyValues = getHttpVars("onlyValues", "true") == "true";
                 $config->latest = (getHttpVars("latest", "true") == "true");
                 $winfo = (getHttpVars("needWorkflow", "false") == "true");
@@ -615,6 +626,22 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
                         $configContent = getHttpVars("contentConfig");
                         if ($configContent) {
                             $configContent = json_decode($configContent);
+                            $props = array(
+                                "completeProperties",
+                                "onlyValues",
+                                "orderBy",
+                                "slice",
+                                "start",
+                                "key",
+                                "mode",
+                                "searchProperty",
+                                "recursiveLevel",
+                                "filter",
+                                "verifyhaschild"
+                            );
+                            foreach ($props as $p) {
+                                if (!isset($configContent->$p)) $configContent->$p = null;
+                            }
                             
                             $doc->setContentCompleteProperties($configContent->completeProperties === true);
                             $doc->setContentOnlyValue($configContent->onlyValues !== false);
@@ -642,7 +669,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             $out->error = sprintf(_("method %s not possible") , $method);
         }
     }
-    function addLogInData(&$action, &$out)
+    function addLogInData(Action & $action, &$out)
     {
         $l = $action->parent->GetLogMsg();
         if (is_array($l) && (count($l) > 0)) {

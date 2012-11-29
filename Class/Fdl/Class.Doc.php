@@ -2927,7 +2927,7 @@ create unique index i_docir on doc(initid, revision);";
         
         $tv = array_change_key_case($tv, CASE_LOWER);
         $a = $this->getAttribute($idAttr);
-        if ($a->type == "array") {
+        if ((!empty($a)) && $a->type == "array") {
             $err = $this->completeArrayRow($idAttr, false);
             if ($err == "") {
                 $ta = $this->attributes->getArrayElements($a->id);
