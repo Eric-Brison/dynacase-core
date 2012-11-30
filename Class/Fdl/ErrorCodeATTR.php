@@ -52,7 +52,7 @@ class ErrorCodeATTR
      * @errorCode
      * Attribute structure must reference an attribute
      */
-    const ATTR0203 = 'attribute structure reference is not an attribute for "%s"';
+    const ATTR0203 = 'attribute structure reference is not an attribute for "%s", family "%s"';
     /**
      * @errorCode
      * Attribute structure must compatible with level hierarchy
