@@ -19,7 +19,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-class _PORTFOLIO extends Doc
+class _PORTFOLIO extends Dir
 {
     /*
      * @end-method-ignore

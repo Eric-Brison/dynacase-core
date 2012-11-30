@@ -15,6 +15,16 @@
  */
 /**
  */
+
+        /**
+         * @begin-method-ignore
+         * this part will be deleted when construct document class until end-method-ignore
+         */
+        class _BATCH extends _PORTFOLIO
+        {
+            /*
+             * @end-method-ignore
+            */
 function filterContent()
 {
 }
@@ -31,4 +41,13 @@ function getContent($controlview = true, $filter = array() , $famid = "", $inser
     
     return parent::getContent($controlview, $filter, $famid, $insertguide);
 }
+            /**
+             * @begin-method-ignore
+             * this part will be deleted when construct document class until end-method-ignore
+             */
+        }
+        /*
+         * @end-method-ignore
+        */
+
 ?>
