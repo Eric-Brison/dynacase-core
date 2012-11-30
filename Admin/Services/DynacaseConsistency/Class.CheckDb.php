@@ -386,7 +386,7 @@ class checkDb
             }
             foreach ($oas as $oa) {
                 $aid = $oa->id;
-                if (($oa->docid == $fam->id) && ($oa->type != "array") && ($oa->type != "frame") && ($oa->type != "tab") && ($oa->type != "menu")) {
+                if (($oa->docid == $fam->id) && ($oa->type != "array") && ($oa->type != "frame") && ($oa->type != "tab") && ($oa->type != "") && ($oa->type != "menu")) {
                     $err = self::verifyDbAttr($oa, $pgtype[$aid], $rtype);
                     if ($err) {
                         $cr[] = sprintf("family %s, %s (%s) : %s\n", $fam->getTitle() , $aid, $oa->type, $err) . sprintf("\ttry : drop view family.%s; \n", strtolower($fam->name)) . sprintf("\tand : alter table doc%d alter column %s type %s using %s::%s; \n", $fam->id, $aid, $rtype, $aid, $rtype);
