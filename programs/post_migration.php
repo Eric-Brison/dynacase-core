@@ -42,13 +42,7 @@ if ($argc != 2) {
 }
 $appname = $argv[1];
 
-$version_override = array();
-$MODULE_VERSION_FROM = getenv('MODULE_VERSION_FROM');
-if ($MODULE_VERSION_FROM !== false) {
-    $version_override[$appname] = $MODULE_VERSION_FROM;
-}
-
-$err = getCheckApp($pubdir, $tapp, $version_override);
+$err = getCheckApp($pubdir, $tapp, true);
 if ($err) {
     print $err;
     exit(1);
@@ -74,7 +68,7 @@ putenv(sprintf("freedom_context=%s", $FREEDOM_CONTEXT));
 
 $err = getCheckActions($pubdir, array(
     $appname => $app
-) , $actions, $version_override);
+) , $actions, true);
 
 $postmigr = array_filter($actions, create_function('$x', "return preg_match('@/\\Q$appname\\E_(p|post)migr@', \$x);"));
 

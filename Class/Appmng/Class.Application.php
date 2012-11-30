@@ -1176,8 +1176,18 @@ create sequence SEQ_ID_APPLICATION start 10;
             //----------------------------------
             // init application constant
             if (file_exists(GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/{$name}/{$name}_init.php")) {
-                
                 include ("{$name}/{$name}_init.php");
+                if ($update) {
+                    /* Store previous version for post migration scripts */
+                    global $app_const;
+                    $nextVersion = isset($app_const['VERSION']) ? $app_const['VERSION'] : '';
+                    if ($nextVersion != '') {
+                        $currentVersion = $this->getParam('VERSION', '');
+                        if ($currentVersion != '' && $nextVersion != $currentVersion) {
+                            $this->setParam('PREVIOUS_VERSION', array('val' => $currentVersion, 'kind' => 'static'));
+                        }
+                    }
+                }
                 if ($this->param) {
                     // delete paramters that cannot be change after initialisation to be change now
                     if ($update) $this->param->DelStatic($this->id);

@@ -18,40 +18,37 @@
 
 include_once ("WHAT/Lib.System.php");
 //---------------------------------------------------
-function GetDbVersion($dbid, &$tmachine)
+function GetDbVersion($dbid, &$tmachine, $usePreviousVersion = false)
 {
     $tver = array();
     $tmachine = array();
+
     $rq = pg_query($dbid, "select paramv.val, application.name, application.machine from paramv, application  where paramv.name='VERSION' and paramv.appid=application.id");
-    
-    if ($rq === false) return GetDbOldVersion($dbid);
-    
+    if ($rq === false) {
+        return $tver;
+    }
     for ($i = 0; $i < pg_numrows($rq); $i++) {
         $row = pg_fetch_array($rq, $i);
         $tver[$row["name"]] = $row["val"];
         $tmachine[$row["name"]] = $row["machine"];
     }
-    
-    return ($tver);
-}
-//---------------------------------------------------
-function GetDbOldVersion($dbid)
-{
-    print "GetDbOldVersion";
-    $tver = array();
-    $rq = pg_query($dbid, "select param.val, application.name from param, application  where param.name='VERSION' and param.key=application.id");
-    
-    for ($i = 0; $i < pg_numrows($rq); $i++) {
-        $row = pg_fetch_array($rq, $i);
-        $tver[$row["name"]] = $row["val"];
-        if ($row["name"] == "USERS") {
-            $tver["CORE"] = $row["val"];
-            $tver["ACCESS"] = $row["val"];
-            $tver["APPMNG"] = $row["val"];
-            $tver["AUTHENT"] = $row["val"];
+
+    if ($usePreviousVersion) {
+        /*
+         * Overwrite versions with previous versions (if available)
+         * for post migration scripts
+         */
+        $rq = pg_query($dbid, "select paramv.val, application.name, application.machine from paramv, application  where paramv.name='PREVIOUS_VERSION' and paramv.appid=application.id");
+        if ($rq === false) {
+            return $tver;
+        }
+        while ($row = pg_fetch_array($rq)) {
+            if (isset($tver[$row['name']])) {
+                $tver[$row['name']] = $row['val'];
+            }
         }
     }
-    
+
     return ($tver);
 }
 //---------------------------------------------------
@@ -148,7 +145,7 @@ function checkPGConnection()
     return $err;
 }
 
-function getCheckApp($pubdir, &$tapp, $version_override = array())
+function getCheckApp($pubdir, &$tapp, $usePreviousVersion = false)
 {
     global $_SERVER;
     $err = '';
@@ -164,19 +161,10 @@ function getCheckApp($pubdir, &$tapp, $version_override = array())
         exec("PGSERVICE=\"$pgservice_core\" psql -c '\q'", $out);
         $err.= implode(",", $out);
     } else {
-        $tvdb = GetDbVersion($dbid, $tmachine);
+        $tvdb = GetDbVersion($dbid, $tmachine, $usePreviousVersion);
         $tvfile = GetFileVersion("$pubdir");
         pg_close($dbid);
-        /*
-         * Override versions of app for doing pmigr (post migr)
-         * scripts from WIFF
-        */
-        foreach ($tvdb as $appname => & $version) {
-            if (array_key_exists($appname, $version_override)) {
-                $version = $version_override[$appname];
-            }
-        }
-        
+
         $ta = array_unique(array_merge(array_keys($tvdb) , array_keys($tvfile)));
         foreach ($ta as $k => $v) {
             if (!isset($tvfile[$v])) {
@@ -206,7 +194,7 @@ function getCheckApp($pubdir, &$tapp, $version_override = array())
     return $err;
 }
 
-function getCheckActions($pubdir, $tapp, &$tact, $version_override = array())
+function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
 {
     
     $wsh = array(); // application update
@@ -218,18 +206,9 @@ function getCheckActions($pubdir, $tapp, &$tact, $version_override = array())
     
     $dbid = @pg_connect("service='$pgservice_core'");
     
-    $tvdb = GetDbVersion($dbid, $tmachine);
+    $tvdb = GetDbVersion($dbid, $tmachine, $usePreviousVersion);
     $tiorder = getAppOrder($pubdir);
-    /*
-     * Override versions of app for doing pmigr (post migr)
-     * scripts from WIFF
-    */
-    foreach ($tvdb as $appname => & $version) {
-        if (array_key_exists($appname, $version_override)) {
-            $version = $version_override[$appname];
-        }
-    }
-    
+
     foreach ($tiorder as $k => $v) {
         $tapp[$k]["iorder"] = $v;
     }
