@@ -219,11 +219,11 @@ function isValidDate($date)
 {
     if ((strlen($date) > 0) && (strlen($date) < 3)) return false;
     $c = strtotime($date);
-    if ($c > 0) return true;
+    if ($c !== false && $c != -1) return true;
     // replace month/day
     $date = preg_replace('/(\d+)\/(\d+)\/(.*)/', '${2}/${1}/${3}', $date);
     $c = strtotime($date);
-    return ($c > 0);
+    return ($c !== false && $c != -1);
 }
 /**
  * convert string date to iso
