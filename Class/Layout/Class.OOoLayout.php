@@ -1648,12 +1648,17 @@ class OOoLayout extends Layout
                     
                 ))) {
                     $htmlCleanSections[] = $htmlSection;
+                    $attrid = substr($htmlSection->getAttribute("text:name") , 7);
+                    $this->addError("LAY0002", "[V_" . strtoupper($attrid) . "]");
                 }
                 //print "Parent Node is ".$htmlSection->parentNode->nodeName."\n";
                 
             } else {
-                
+                if (! in_array( array( 'office:text','text:text-content','text:office-text-content-main'),$parentHtml->nodeName )) {
                 $htmlCleanSections[] = $htmlSection;
+                $attrid = substr($htmlSection->getAttribute("text:name") , 7);
+                $this->addError("LAY0002", "[V_" . strtoupper($attrid) . "]");
+                }
             }
         }
         $nbp = 0;
@@ -1683,7 +1688,6 @@ class OOoLayout extends Layout
             $pp = $this->dom->createElement("text:span");
             $pp->nodeValue = "ERROR " . "[V_" . strtoupper($attrid) . "]";
             $htmlSection->parentNode->appendChild($pp);
-            $this->addError("LAY0002", "[V_" . strtoupper($attrid) . "]");
         }
         $this->template = $this->dom->saveXML();
     }
