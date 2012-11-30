@@ -511,7 +511,7 @@ class CheckAttr extends CheckData
                     $optName = $opt;
                     $optValue = null;
                 } else list($optName, $optValue) = explode("=", $opt, 2);
-                if (!preg_match('/^[a-z]{1,63}$/', $optName)) {
+                if (!preg_match('/^[a-z_-]{1,63}$/', $optName)) {
                     $this->addError(ErrorCode::getError('ATTR1500', $optName, $this->attrid));
                 } else if ($optValue === null) {
                     $this->addError(ErrorCode::getError('ATTR1501', $optName, $this->attrid));
