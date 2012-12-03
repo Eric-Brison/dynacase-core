@@ -37,9 +37,26 @@ PGSERVICE="$pgservice_core" psql -t -c "update users set accounttype='G' where a
 PGSERVICE="$pgservice_core" psql -t -c "update doc128 set us_passwd=null;"
 PGSERVICE="$pgservice_core" psql -t -c "ALTER TABLE doc128 NO INHERIT doc120;"
 PGSERVICE="$pgservice_core" psql -t -c "ALTER TABLE doc128 INHERIT doc;"
+
+PGSERVICE="$pgservice_core" psql -f - <<EOF
+INSERT INTO docattr
+    ( id,            docid, labeltext,    title, abstract, type,    visibility, needed, usefor )
+    VALUES
+    ( 'us_fr_ident', 128,   'État civil', 'N',   'N',      'frame', 'W',        'N',    'N'    );
+UPDATE docattr SET frameid = 'us_fr_ident' WHERE docid = 128 AND id = 'us_mail';
+EOF
+
 PGSERVICE="$pgservice_core" psql -t -c "update docfam set fromid=0 where id=128;"
 PGSERVICE="$pgservice_core" psql -t -c "drop TRIGGER tinitacl on docperm;"
 PGSERVICE="$pgservice_core" psql -f "$wpub/FDL/fdl.sql"
+
+# Drop deprecated columns on IUSERs
+"$wpub/wsh.php" --api=migr_IUSER_premigr_3.2.0
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error executing API script 'migr_FUSERS_premigr_3.2.0'."
+    exit $RET
+fi
 
 # Delete parasite parameters
 "$wpub/wsh.php" --api=cleanFamilyParameter
@@ -52,24 +69,29 @@ fi
 #
 # Delete deprecated default values
 #
-PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where docid < 1000 and id = 'us_iddomain';"
-PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where docid < 1000 and id = 'us_domain';"
-PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where docid < 1000 and id = 'us_passwd';"
-PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|0]', '') where id < 1000 and defval ~ 'us_iddomain';"
-PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|1]', '') where id < 1000 and defval ~ 'us_iddomain';"
-PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|local]', '') where id < 1000 and defval ~ 'us_domain';"
-PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|externe]', '') where id < 1000 and defval ~ 'us_domain';"
+# PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where id = 'us_iddomain';"
+# PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where id = 'us_domain';"
+
+PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where id IN ('us_passwd', ':us_passwd');"
+
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|0]', '') where defval ~ 'us_iddomain';"
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|1]', '') where defval ~ 'us_iddomain';"
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|local]', '') where defval ~ 'us_domain';"
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|externe]', '') where defval ~ 'us_domain';"
 
 #
 # Delete attributes referencing old non-existing frames
 #
 PGSERVICE="$pgservice_core" psql -f - <<EOF
+
 -- Delete attributes referencing old frames
-DELETE FROM docattr WHERE (docid BETWEEN 120 AND 1000) AND id IN ('us_service', 'us_idservice') AND frameid = 'us_fr_soc';
-DELETE FROM docattr WHERE (docid BETWEEN 120 AND 1000) AND id IN ('us_extmail', ':us_mail', ':us_lname', ':us_fname') AND frameid = 'us_fr_ident';
+-- DELETE FROM docattr WHERE (docid BETWEEN 120 AND 1000) AND id IN ('us_service', 'us_idservice') AND frameid = 'us_fr_soc';
+-- DELETE FROM docattr WHERE (docid BETWEEN 120 AND 1000) AND id IN ('us_extmail', ':us_mail', ':us_lname', ':us_fname') AND frameid = 'us_fr_ident';
+
 -- Delete old frames
-DELETE FROM docattr WHERE (docid BETWEEN 120 AND 1000) AND id IN ('us_privcard', 'us_fr_ident');
--- Remove defaut values on non-existing attributes
+-- DELETE FROM docattr WHERE (docid BETWEEN 120 AND 1000) AND id IN ('us_privcard', 'us_fr_ident');
+
+-- Remove default values on non-existing attributes
 UPDATE docfam SET defval = replace(defval, '[us_privcard|W]', '') WHERE id < 1000;
 EOF
 
