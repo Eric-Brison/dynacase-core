@@ -191,6 +191,9 @@ function FrenchDateToIso($fdate, $withT = true)
 function iso8601DateToUnixTs($isodate, $utc = false)
 {
     if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)[\s|T]?(\d\d)?:?(\d\d)?:?(\d\d)?/", $isodate, $r)) {
+        if (empty($r[4])) $r[4]=0;
+        if (empty($r[5])) $r[5]=0;
+        if (empty($r[6])) $r[6]=0;
         if ($utc) $dt = gmmktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
         else $dt = mktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
     } else {

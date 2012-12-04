@@ -1655,7 +1655,7 @@ class DocFormFormat
                             $topt[$k]["checked"] = "nochecked";
                         }
                     }
-                    if (($eformat != "auto") || ($topt[$k]["selected"] == "selected")) {
+                    if (($eformat != "auto") || (isset($topt[$k]["selected"]) && $topt[$k]["selected"] == "selected")) {
                         if ($k == "...") $topt[$k]["optid"] = $idx . '___';
                         else $topt[$k]["optid"] = $idx . '_' . $ki;
                         $topt[$k]["fvalue"] = $v;
