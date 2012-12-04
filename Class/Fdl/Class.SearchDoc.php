@@ -28,10 +28,10 @@ include_once ("FDL/Lib.Dir.php");
  $k=0;
  while ($doc=$s->nextDoc()) {
  // iterate document by document
- print "$k)".$doc->getTitle()."(".$doc->getValue("US_MAIL","nomail").")\n";
+ print "$k)".$doc->getTitle()."(".$doc->getValue("US_MAIL","nomail").")\n";clam
  $k+
  * @endcode
- * @class SearchDoc
+ * @class SearchDoc.
  */
 class SearchDoc
 {

@@ -69,7 +69,7 @@ class CheckEnd extends CheckData
         foreach ($la as & $oa) {
             $foa = $oa->fieldSet;
             if (!$foa) {
-                $this->addError(ErrorCode::getError('ATTR0203', $oa->id));
+                $this->addError(ErrorCode::getError('ATTR0203', $oa->id,$this->doc->name));
             } elseif ((!is_a($foa, "FieldSetAttribute")) && ($foa->type != 'array')) {
                 $this->addError(ErrorCode::getError('ATTR0204', $foa->id, $oa->id));
             } else {

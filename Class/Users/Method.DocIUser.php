@@ -38,6 +38,9 @@ class _IUSER extends Doc implements IMailRecipient
     {
         return '';
     }
+    function ExistsLogin($login, $unused = 0) {
+        return false;
+    }
     /**
      * @end-method-ignore
      */

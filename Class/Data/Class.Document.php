@@ -24,13 +24,24 @@ class Fdl_Document
     
     protected $doc;
     protected $_properties;
+    public $error = '';
     public $dbaccess;
+    /**
+     * @param int $id
+     * @param stdClass $config
+     * @param Doc $doc
+     */
     function __construct($id = 0, $config = null, Doc & $doc = null)
     {
         $this->dbaccess = getParam("FREEDOM_DB");
         if (isset($config->latest)) $latest = $config->latest;
         else $latest = true;
-        if ($id || - $doc) {
+        
+        if ($config === null) {
+            $config = new stdClass();
+            $config->onlyValues = null;
+        }
+        if ($id || is_object($doc)) {
             if ($doc) $this->doc = $doc;
             else $this->doc = new_doc($this->dbaccess, $id, $latest);
             if (!$this->doc->isAffected()) $this->error = sprintf(_("document %s not exist") , $id);
@@ -40,7 +51,7 @@ class Fdl_Document
                 if ($this->error) $this->error = sprintf(_("no privilege view for %d") , $id);
                 elseif ($this->doc->isConfidential()) $this->error = sprintf(_("confidential document"));
             }
-            if ($this->error) unset($this->doc);
+            if ($this->error) $this->doc = null;
             else {
                 $this->doc->refresh();
                 $mask = $this->doc->getDefaultView(false, "mask");
@@ -78,6 +89,9 @@ class Fdl_Document
         if ($this->doc) return $this->doc->isAlive();
         return null;
     }
+    /**
+     * @param Doc $doc
+     */
     function affect(&$doc)
     {
         $this->doc = $doc;
@@ -109,15 +123,17 @@ class Fdl_Document
         if ($this->doc) {
             $lvalues = array();
             if ($this->doc->doctype == 'C') {
-                foreach ($this->doc->addfields as $aid) {
-                    $lvalues[$aid] = $this->doc->$aid;
+                if (isset($this->doc->addfields)) {
+                    foreach ($this->doc->addfields as $aid) {
+                        $lvalues[$aid] = $this->doc->$aid;
+                    }
                 }
             } else {
                 $nattr = $this->doc->getNormalAttributes();
                 $this->doc->applyMask();
                 $isoDate = (getParam("DATA_LCDATE") == 'iso');
                 foreach ($nattr as $k => $v) {
-                    if ($v->mvisibility != "I" && $this->doc->$k && $v->getOption("autotitle") != "yes") {
+                    if ($v->mvisibility != "I" && (!empty($this->doc->$k)) && $v->getOption("autotitle") != "yes") {
                         if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id] = $this->doc->GetTValue($v->id);
                         else $lvalues[$v->id] = $this->doc->getValue($v->id);
                         
@@ -250,7 +266,7 @@ class Fdl_Document
             foreach ($this->doc->fields as $k => $v) {
                 if (is_numeric($k)) $props[$v] = $this->doc->$v;
             }
-            if ($this->doc->addfields) {
+            if (isset($this->doc->addfields)) {
                 foreach ($this->doc->addfields as $k => $v) {
                     $props[$v] = $this->doc->$v;
                 }
@@ -297,7 +313,8 @@ class Fdl_Document
                 }
                 
                 $props["fromname"] = $this->doc->fromname;
-                $props["fromtitle"] = $this->doc->fromtitle;
+                //$props["fromtitle"] = $this->doc->fromtitle;
+                
             }
             if ($this->doc->doctype == 'C') {
                 $props["generateVersion"] = doubleval($this->doc->genversion);

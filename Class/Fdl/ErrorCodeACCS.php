@@ -31,7 +31,7 @@ class ErrorCodeACCS
     const ACCS0003 = 'user %s not found, cannot apply access';
     /**
      * @errorCode
-     * acl syntax is [alphanum|_]{1,63}
+     * acl syntax is [alphanum|_]{1,63} - and _ characters are granted
      */
     const ACCS0004 = 'acl syntax error, "%s" must be an alphanum limit to 63, cannot apply access';
     /**

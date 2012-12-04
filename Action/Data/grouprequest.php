@@ -20,7 +20,7 @@ include_once ("DATA/document.php");
 /**
  * Retrieve and set documents
  * @param Action &$action current action
- * @global id Http var : document identifier
+ * @global string $id Http var : document identifier
  */
 function grouprequest(Action & $action)
 {
@@ -46,7 +46,7 @@ function grouprequest(Action & $action)
             else if ($r->variable && $docid[$r->variable]) $id = $docid[$r->variable];
             
             if ($id) {
-                if ($r->iterative) {
+                if (!empty($r->iterative)) {
                     $ds = $out[$r->variable]->content;
                     $outi = array();
                     if (is_array($ds)) {
@@ -60,6 +60,9 @@ function grouprequest(Action & $action)
                 } else {
                     documentApplyMethod($action, $id, $method, $returntype, $out[$varname], $document);
                     if ($document) {
+                        /**
+                         * @var Doc $document
+                         */
                         $docid[$varname] = $document->getProperty('id');
                     } else if ($id == "selection") $docid[$varname] = $id;
                 }
