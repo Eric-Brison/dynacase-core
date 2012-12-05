@@ -53,6 +53,12 @@ class FormatCollection
      * @var string text in case of no access in relation target
      */
     public $relationNoAccessText = "";
+    
+    private $decimalSeparator = ',';
+    
+    private $dateStyle = DateAttributeValue::defaultStyle;
+    
+    private $stripHtmlTag = false;
     const title = "title";
     /**
      * name property
@@ -103,6 +109,44 @@ class FormatCollection
     {
         $this->dl = $l;
         return $this;
+    }
+    /**
+     * set decimal character character to use for double and money type
+     * @param string $s a character to separate decimal part from integer part
+     * @return FormatCollection
+     */
+    public function setDecimalSeparator($s)
+    {
+        $this->decimalSeparator = $s;
+        return $this;
+    }
+    /**
+     * display Value of htmltext content value without tags
+     * @param bool $strip
+     * @return FormatCollection
+     */
+    public function stripHtmlTags($strip = true)
+    {
+        $this->stripHtmlTag = $strip;
+        return $this;
+    }
+    /**
+     * set date style
+     * possible values are :DateAttributeValue::defaultStyle,DateAttributeValue::frenchStyle,DateAttributeValue::isoWTStyle,DateAttributeValue::isoStyle
+     * @param string $style
+     * @throws Dcp\Fmtc\Exception
+     */
+    public function setDateStyle($style)
+    {
+        if (!in_array($style, array(
+            DateAttributeValue::defaultStyle,
+            DateAttributeValue::frenchStyle,
+            DateAttributeValue::isoWTStyle,
+            DateAttributeValue::isoStyle
+        ))) {
+            throw new \Dcp\Fmtc\Exception("FMTC0003", $style);
+        }
+        $this->dateStyle = $style;
     }
     /**
      * add a property to render
@@ -265,8 +309,9 @@ class FormatCollection
                 $info = new IntAttributeValue($oa, $value);
                 break;
 
+            case 'money':
             case 'double':
-                $info = new DoubleAttributeValue($oa, $value);
+                $info = new DoubleAttributeValue($oa, $value, $this->decimalSeparator);
                 break;
 
             case 'enum':
@@ -288,7 +333,11 @@ class FormatCollection
 
             case 'timestamp':
             case 'date':
-                $info = new DateAttributeValue($oa, $value, $doc, $index);
+                $info = new DateAttributeValue($oa, $value, $this->dateStyle);
+                break;
+
+            case 'htmltext':
+                $info = new HtmltextAttributeValue($oa, $value, $this->stripHtmlTag);
                 break;
 
             default:
@@ -320,6 +369,7 @@ class FormatCollection
 
 class StandardAttributeValue
 {
+    
     public $value;
     public $displayValue;
     
@@ -376,34 +426,61 @@ class IntAttributeValue extends FormatAttributeValue
 
 class DateAttributeValue extends StandardAttributeValue
 {
-    public function __construct(NormalAttribute $oa, $v)
+    const defaultStyle = 'D';
+    const isoStyle = 'I';
+    const isoWTStyle = 'U';
+    const frenchStyle = 'F';
+    public function __construct(NormalAttribute $oa, $v, $dateStyle = self::defaultStyle)
     {
         parent::__construct($oa, $v);
         if ($oa->format != "") {
             $this->displayValue = strftime($oa->format, stringDateToUnixTs($v));
         } else {
-            $this->displayValue = stringDateToLocaleDate($v);
+            if ($dateStyle === self::defaultStyle) $this->displayValue = stringDateToLocaleDate($v);
+            else if ($dateStyle === self::isoStyle) $this->displayValue = stringDateToIso($v, false, true);
+            else if ($dateStyle === self::isoWTStyle) $this->displayValue = stringDateToIso($v, false, false);
+            else if ($dateStyle === self::frenchStyle) {
+                if (getLcdate() == "iso") { // FR
+                    $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
+                    if (strlen($v) < 11) $this->displayValue = substr($ldate, 0, strlen($v));
+                    else $this->displayValue = $ldate;
+                }
+            } else $this->displayValue = stringDateToLocaleDate($v);
         }
     }
 }
 
+class HtmltextAttributeValue extends StandardAttributeValue
+{
+    const defaultStyle = 'D';
+    const isoStyle = 'I';
+    const isoWTStyle = 'U';
+    const frenchStyle = 'F';
+    public function __construct(NormalAttribute $oa, $v, $stripHtmlTag = false)
+    {
+        parent::__construct($oa, $v);
+        if ($stripHtmlTag) $this->displayValue = strip_tags($this->displayValue);
+    }
+}
 class DoubleAttributeValue extends FormatAttributeValue
 {
-    public function __construct(NormalAttribute $oa, $v)
+    
+    public function __construct(NormalAttribute $oa, $v, $decimalSeparator = ',')
     {
         parent::__construct($oa, $v);
         $lang = getParam("CORE_LANG");
         if ($lang == "fr_FR") {
             if (is_array($this->displayValue)) {
                 foreach ($this->displayValue as $k => $v) {
-                    $this->displayValue[$k] = str_replace('.', ',', $v);
+                    $this->displayValue[$k] = str_replace('.', $decimalSeparator, $v);
                 }
             } else {
-                $this->displayValue = str_replace('.', ',', $this->displayValue);
+                $this->displayValue = str_replace('.', $decimalSeparator, $this->displayValue);
             }
         }
         if (is_array($this->value)) {
-            foreach ($this->displayValue as $k => $v) {
+            /** @noinspection PhpWrongForeachArgumentTypeInspection */
+            foreach ($this->value as $k => $v) {
                 $this->value[$k] = doubleval($v);
             }
         } else {

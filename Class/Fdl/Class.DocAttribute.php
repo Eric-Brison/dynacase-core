@@ -808,6 +808,7 @@ class NormalAttribute extends BasicAttribute
                     break;
 
                 case 'float':
+                case 'double':
                 case 'money':
                     $decimalSeparator = isset($configuration['decimalSeparator']) ? $configuration['decimalSeparator'] : '.';
                     $return = $this->getTextualFloat($doc, $index, $decimalSeparator);

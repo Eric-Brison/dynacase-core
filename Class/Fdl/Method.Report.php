@@ -64,6 +64,9 @@ class _REPORT extends _DSEARCH
         $lattr = $rdoc->GetNormalAttributes();
         $tcolumn1 = array();
         $tcolumn2 = array();
+        /**
+         * @var NormalAttribute $v
+         */
         while (list($k, $v) = each($lattr)) {
             //    if ($v->visibility=="H") continue;
             $tcolumn1[$v->id] = array(
@@ -83,14 +86,14 @@ class _REPORT extends _DSEARCH
         // display selected column
         $tcols = $this->getTValue("REP_IDCOLS");
         
-        foreach ($tcols as $k => $v) {
-            if (isset($tcolumn1[$v])) {
-                $tcolumn2[$v] = $tcolumn1[$v];
-                unset($tcolumn1[$v]);
+        foreach ($tcols as $k => $vx) {
+            if (isset($tcolumn1[$vx])) {
+                $tcolumn2[$vx] = $tcolumn1[$vx];
+                unset($tcolumn1[$vx]);
             }
-            if (isset($tinternals[$v])) {
-                $tcolumn2[$v] = $tinternals[$v];
-                unset($tinternals[$v]);
+            if (isset($tinternals[$vx])) {
+                $tcolumn2[$vx] = $tinternals[$vx];
+                unset($tinternals[$vx]);
             }
         }
         
@@ -175,9 +178,16 @@ class _REPORT extends _DSEARCH
         $s->useCollection($this->initid);
         $s->setOrder($order);
         $s->setObjectReturn();
+        $limit = intval($limit);
+        $maxDisplayLimit = $this->getParamValue("rep_maxdisplaylimit", 1000) + 1;
+        if ($limit == 0) $limit = $maxDisplayLimit;
+        else $limit = min($limit, $maxDisplayLimit);
         $s->setSlice($limit);
         $s->search();
         
+        if ($s->count() >= $maxDisplayLimit) {
+            addWarningMsg(sprintf(_("Max display limit %s reached. Use export to see all") , $maxDisplayLimit - 1));
+        }
         $trodd = false;
         $tcolor = $this->getTValue("REP_COLORS");
         $trow = array();
@@ -289,13 +299,14 @@ class _REPORT extends _DSEARCH
         $limit = $this->getValue("rep_limit", "ALL");
         $order = $this->getValue("rep_idsort", "title");
         
+        $mb0 = microtime(true);
         $search = new SearchDoc($this->dbaccess, $famId);
         $search->dirid = $this->initid;
         $search->slice = $limit;
         $search->orderby = trim($order . " " . $this->getValue("rep_ordersort"));
         $search->setObjectReturn();
         $search->search();
-        
+        //   print_r($search->getSearchInfo());
         $famDoc = createDoc($this->dbaccess, $famId, false);
         $tcols = $this->getTValue("rep_idcols");
         
@@ -421,33 +432,81 @@ class _REPORT extends _DSEARCH
      */
     protected function generateBasicCSV(SearchDoc $search, Array $columns, Doc $famDoc, $refresh, $separator, $dateFormat)
     {
+        $mb0 = microtime(true);
         $convertFormat = array(
             "dateFormat" => $dateFormat,
             'decimalSeparator' => $separator
         );
+        $fc = new FormatCollection();
+        $fc->useCollection($search->getDocumentList());
+        if ($separator) $fc->setDecimalSeparator($separator);
+        $fc->stripHtmlTags(true);
+        switch ($dateFormat) {
+            case 'US':
+                $fc->setDateStyle(DateAttributeValue::isoWTStyle);
+                break;
+
+            case 'FR':
+                $fc->setDateStyle(DateAttributeValue::frenchStyle);
+                break;
+
+            case 'ISO':
+                $fc->setDateStyle(DateAttributeValue::isoStyle);
+                break;
+        }
+        $isAttrInArray = array();
+        foreach ($columns as $col) {
+            if ($famDoc->getAttribute($col)) {
+                $fc->addAttribute($col);
+                $isAttrInArray[$col] = $famDoc->getAttribute($col)->inArray();
+            } else {
+                $fc->addProperty($col);
+            }
+        }
+        $fc->setNc('-');
+        $r = $fc->render();
+        $out = array();
+        $line = array();
+        foreach ($columns as $col) {
+            if (isset(Doc::$infofields[$col]["label"])) {
+                $line[] = _(Doc::$infofields[$col]["label"]);
+            } else $line[] = $famDoc->getLabel($col);
+        }
+        $out[] = $line;
         
-        $twoDimStruct = new TwoDimensionStruct();
-        $firstRow = array();
-        $internals = $this->_getInternals();
-        foreach ($columns as $currentColumn) {
-            $currentAttribute = $famDoc->getAttribute($currentColumn);
-            $firstRow[] = $currentAttribute ? $currentAttribute->getLabel() : $internals[$currentColumn];
-        }
-        $twoDimStruct->addRow($firstRow);
-        while ($currentDoc = $search->nextDoc()) {
-            if ($refresh) {
-                $currentDoc->refresh();
+        foreach ($r as $k => $render) {
+            $line = array();
+            foreach ($columns as $col) {
+                $cellValue = '';
+                if (isset($render["attributes"][$col])) {
+                    $dv = $render["attributes"][$col];
+                    if (is_array($dv)) {
+                        $vs = array();
+                        foreach ($dv as $rv) {
+                            if (is_array($rv)) {
+                                $vsv = array();
+                                foreach ($rv as $rvv) {
+                                    $vsv[] = $rvv->displayValue;
+                                }
+                                $vs[] = implode(', ', $vsv);
+                            } else {
+                                $vs[] = strtr($rv->displayValue, "\n", "\r");
+                            }
+                        }
+                        $cellValue = implode(empty($isAttrInArray[$col]) ? ", " : "\n", $vs);
+                    } else {
+                        $cellValue = $dv->displayValue;
+                    }
+                } else {
+                    if (isset($render["properties"][$col])) $cellValue = $render["properties"][$col];
+                }
+                $line[] = $cellValue;
             }
-            $currentRow = array();
-            foreach ($columns as $currentColumn) {
-                $currentAttribute = $famDoc->getAttribute($currentColumn);
-                $currentRow[] = $currentAttribute ? $currentAttribute->getTextualValue($currentDoc, -1, $convertFormat) : $this->convertInternalElement($currentColumn, $currentDoc);
-            }
-            $twoDimStruct->addRow($currentRow);
+            $out[] = $line;
         }
-        return $twoDimStruct->getArray();
+        
+        return $out;
     }
-    
     protected function convertInternalElement($internalName, Doc $doc)
     {
         switch ($internalName) {
@@ -475,7 +534,7 @@ class _REPORT extends _DSEARCH
      */
     public function viewminireport($target = "_self", $ulink = true, $abstract = false)
     {
-        return $this->viewreport($target, $ulink, $abstract);
+        $this->viewreport($target, $ulink, $abstract);
     }
     /**
      * @begin-method-ignore
