@@ -64,6 +64,10 @@ function report_export_csv(Action & $action)
     $default = isset($defaultDocArg["pivot"]) ? $defaultDocArg["pivot"] : 'id';
     $pivot = $usage->addOption("pivot", "the pivot attr", array() , $default);
     
+    $default = isset($defaultDocArg["stripHtmlTag"]) ? $defaultDocArg["stripHtmlTag"] : false;
+    $applyHtmlStrip = $usage->addOption("stripHtmlTag", "strip html tags", array() , $default);
+    $applyHtmlStrip = ($applyHtmlStrip != "1");
+    
     $default = isset($defaultArgument["delimiter"]) ? $defaultArgument["delimiter"] : ';';
     $argumentsCSV["delimiter"] = $usage->addOption("delimiter", "the CSV delimiter", array() , $default);
     $default = isset($defaultArgument["enclosure"]) ? $defaultArgument["enclosure"] : '"';
@@ -100,7 +104,8 @@ function report_export_csv(Action & $action)
         $action->setParamU("REPORT_DEFAULT_CSV", json_encode($argumentsCSV));
         $err = $currentDoc->addUTag($action->user->id, "document_export_csv", json_encode(array(
             "kind" => $kind,
-            "pivot" => $pivot
+            "pivot" => $pivot,
+            "stripHtmlTag" => $applyHtmlStrip
         )));
         error_log(__LINE__ . var_export($err, true));
     }
@@ -148,6 +153,20 @@ function report_export_csv(Action & $action)
             )
         );
         $action->lay->setBlockData("kinds", $kinds);
+        
+        $stripHtml = array(
+            array(
+                "key" => "0",
+                "selected" => $isSelected("0", $applyHtmlStrip) ,
+                "label" => _("Strip Html tags")
+            ) ,
+            array(
+                "key" => "1",
+                "selected" => $isSelected("1", $applyHtmlStrip) ,
+                "label" => _("No strip Html tags")
+            )
+        );
+        $action->lay->setBlockData("stripHtml", $stripHtml);
         
         $encodings = array(
             array(
@@ -197,11 +216,11 @@ function report_export_csv(Action & $action)
         if (in_array($reportFamId, $familyIdArray)) {
             switch ($kind) {
                 case "pivot":
-                    $csvStruct = $currentDoc->generateCSVReportStruct(true, $pivot, $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh);
+                    $csvStruct = $currentDoc->generateCSVReportStruct(true, $pivot, $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh, $applyHtmlStrip);
                     break;
 
                 default:
-                    $csvStruct = $currentDoc->generateCSVReportStruct(false, "", $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh);
+                    $csvStruct = $currentDoc->generateCSVReportStruct(false, "", $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh, $applyHtmlStrip);
             }
             
             $csvFile = tempnam(getTmpDir() , "csv$id") . ".csv";

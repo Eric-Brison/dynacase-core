@@ -485,7 +485,9 @@ class HtmltextAttributeValue extends StandardAttributeValue
     public function __construct(NormalAttribute $oa, $v, $stripHtmlTag = false)
     {
         parent::__construct($oa, $v);
-        if ($stripHtmlTag) $this->displayValue = strip_tags($this->displayValue);
+        if ($stripHtmlTag) {
+            $this->displayValue = html_entity_decode(strip_tags($this->displayValue) , ENT_NOQUOTES, 'UTF-8');
+        }
     }
 }
 class DoubleAttributeValue extends FormatAttributeValue

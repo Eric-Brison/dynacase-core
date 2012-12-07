@@ -90,10 +90,25 @@
                             </select>
                         </td>
                     </tr>
+            <tr>
+                <td>
+                    [TEXT:Strip HTML tags :]
+            </td>
+                <td>
+                    <select name="stripHtmlTag">
+
+                                [BLOCK stripHtml]
+	                                <option value="[key]" [selected]>[label]</option>
+                                [ENDBLOCK stripHtml]
+
+                    </select>
+                </td>
+            </tr>
+           <tr>
                 </table>
             </div>
         </div>
-       
+
         <input type="hidden" value="[id]" name="id" />
         <input type="hidden" value="TRUE" name="updateDefault" />
         <input id="iExportId" type="hidden" value="[exportId]" name="exportId" />

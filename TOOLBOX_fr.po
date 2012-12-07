@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-07 09:04+0100\n"
-"PO-Revision-Date: 2012-12-07 09:04+0100\n"
+"POT-Creation-Date: 2012-12-07 13:27+0100\n"
+"PO-Revision-Date: 2012-12-07 13:31+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -2707,6 +2707,9 @@ msgstr "Pas de résultats"
 msgid "No results"
 msgstr "Pas de résultats"
 
+msgid "No strip Html tags"
+msgstr "Garder les balises Html"
+
 msgid "No user found"
 msgstr "pas d'utilisateur trouvé"
 
@@ -3474,6 +3477,12 @@ msgstr "Compte-rendu du publipostage"
 
 msgid "Steps"
 msgstr "Étapes"
+
+msgid "Strip HTML tags :"
+msgstr "Balises HTML :"
+
+msgid "Strip Html tags"
+msgstr "Enlever les balises Html"
 
 msgid "Submit"
 msgstr "Valider"

@@ -294,7 +294,7 @@ class _REPORT extends _DSEARCH
      *
      * @return array
      */
-    public function generateCSVReportStruct($isPivotExport = false, $pivotId = "id", $separator = ".", $dateFormat = "US", $refresh = true)
+    public function generateCSVReportStruct($isPivotExport = false, $pivotId = "id", $separator = ".", $dateFormat = "US", $refresh = true, $stripHtmlTags = false)
     {
         require_once 'WHAT/Class.twoDimensionalArray.php';
         require_once 'FDL/Class.SearchDoc.php';
@@ -322,7 +322,7 @@ class _REPORT extends _DSEARCH
             return $this->generatePivotCSV($search, $tcols, $famDoc, $pivotId, $refresh, $separator, $dateFormat);
         } else {
             $this->setStatus(_("Doing render"));
-            return $this->generateBasicCSV($search, $tcols, $famDoc, $refresh, $separator, $dateFormat);
+            return $this->generateBasicCSV($search, $tcols, $famDoc, $refresh, $separator, $dateFormat, $stripHtmlTags);
         }
     }
     
@@ -452,18 +452,15 @@ class _REPORT extends _DSEARCH
      *
      * @return array
      */
-    protected function generateBasicCSV(SearchDoc $search, Array $columns, Doc $famDoc, $refresh, $separator, $dateFormat)
+    protected function generateBasicCSV(SearchDoc $search, Array $columns, Doc $famDoc, $refresh, $separator, $dateFormat, $stripHtmlFormat = true)
     {
+        
         $mb0 = microtime(true);
-        $convertFormat = array(
-            "dateFormat" => $dateFormat,
-            'decimalSeparator' => $separator
-        );
         $fc = new FormatCollection();
         $fc->useCollection($search->getDocumentList());
         if ($separator) $fc->setDecimalSeparator($separator);
         $fc->relationIconSize = 0;
-        $fc->stripHtmlTags(true);
+        $fc->stripHtmlTags($stripHtmlFormat);
         switch ($dateFormat) {
             case 'US':
                 $fc->setDateStyle(DateAttributeValue::isoWTStyle);
