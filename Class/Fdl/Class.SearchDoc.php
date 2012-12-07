@@ -152,6 +152,8 @@ class SearchDoc
      */
     
     private $resultQPos = 0;
+    
+    protected $returnsFields = array();
     /**
      * initialize with family
      * @api search contructor
@@ -437,6 +439,28 @@ class SearchDoc
         include_once ("FDL/Class.DocumentList.php");
         return new DocumentList($this);
     }
+    
+    public function returnsOnly(array $returns)
+    {
+        foreach ($returns as $k => $r) {
+            if (empty($r)) unset($returns[$k]);
+        }
+        $this->returnsFields = array_unique(array_merge(array(
+            "id",
+            "title",
+            "fromid",
+            "doctype"
+        ) , $returns));
+    }
+    public function getReturnsFields()
+    {
+        if ($this->returnsFields) return $this->returnsFields;
+        if ($this->fromid) {
+            $fdoc = createTmpDoc($this->dbaccess, $this->fromid, false);
+            if ($fdoc->isAlive()) return array_merge($fdoc->fields, $fdoc->sup_fields);
+        }
+        return null;
+    }
     /**
      * return error message
      * @return string empty if no errors
@@ -632,6 +656,7 @@ class SearchDoc
         }
         $this->cacheDocuments[$fromid]->Affect($v, true);
         $this->cacheDocuments[$fromid]->nocache = true;
+        if ((!empty($this->returnsFields))) $this->cacheDocuments[$fromid]->doctype = "I"; // incomplete document
         return $this->cacheDocuments[$fromid];
     }
     /**

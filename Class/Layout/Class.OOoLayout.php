@@ -328,21 +328,61 @@ class OOoLayout extends Layout
         $this->template = $this->dom->saveXML();
     }
     /**
+     * function use by Doc::getOOoValue()
+     * use to trap XML parsing error : raise exception
+     * @param int $errno error number
+     * @param string $errstr error message
+     * @param string $errfile
+     * @param string $errline error line
+     * @throws DOMException
+     * @return bool
+     */
+    public static function HandleXmlError($errno, $errstr, $errfile, $errline)
+    {
+        if ($errno == E_WARNING && (substr_count($errstr, "DOMDocument::loadXML()") > 0)) {
+            throw new DOMException($errstr);
+        } else return false;
+    }
+    /**
+     * to get xml warning as Exception
+     * @param string $strXml
+     * @return DOMDocument
+     */
+    protected function XmlLoader($strXml)
+    {
+        set_error_handler(array(
+            __CLASS__,
+            "HandleXmlError"
+        ));
+        $this->dom->loadXml($strXml);
+        restore_error_handler();
+        return $this->dom;
+    }
+    /**
      * replace brackets
      */
     protected function restoreUserFieldSet()
     {
-        if (!$this->dom->loadXML($this->template)) {
-            /*
-            $xmlErr=libxml_get_last_error();
-            if (is_array($xmlErr)) $err=sprintf("XML error line %d, column %d,: %s",$xmlErr["line"],$xmlErr["column"], $xmlErr["message"]);
-            else $err="";
-            */
+        try {
+            $this->XmlLoader($this->template);
+        }
+        catch(Exception $e) {
             $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
             $this->addError("LAY0004", $outfile);
             file_put_contents($outfile, $this->template);
             $this->exitError($outfile);
         }
+        /*  if (!$this->dom->loadXML($this->template)) {
+        
+            $xmlErr=libxml_get_last_error();
+            if (is_array($xmlErr)) $err=sprintf("XML error line %d, column %d,: %s",$xmlErr["line"],$xmlErr["column"], $xmlErr["message"]);
+            else $err="";
+        
+            $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
+            $this->addError("LAY0004", $outfile);
+            file_put_contents($outfile, $this->template);
+            $this->exitError($outfile);
+        }*/
         
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "user-field-decl");
         
@@ -1620,7 +1660,7 @@ class OOoLayout extends Layout
             // double up
             $pParentHtml = $htmlSection->parentNode->parentNode;
             $parentHtml = $htmlSection->parentNode;
-           
+            
             if (($parentHtml->nodeName == "text:p") && ($parentHtml->childNodes->length == 1)) {
                 $htmlPs = $htmlSection->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "p");
                 /**
@@ -1654,10 +1694,14 @@ class OOoLayout extends Layout
                 //print "Parent Node is ".$htmlSection->parentNode->nodeName."\n";
                 
             } else {
-                if (! in_array( array( 'office:text','text:text-content','text:office-text-content-main'),$parentHtml->nodeName )) {
-                $htmlCleanSections[] = $htmlSection;
-                $attrid = substr($htmlSection->getAttribute("text:name") , 7);
-                $this->addError("LAY0002", "[V_" . strtoupper($attrid) . "]");
+                if (!in_array(array(
+                    'office:text',
+                    'text:text-content',
+                    'text:office-text-content-main'
+                ) , $parentHtml->nodeName)) {
+                    $htmlCleanSections[] = $htmlSection;
+                    $attrid = substr($htmlSection->getAttribute("text:name") , 7);
+                    $this->addError("LAY0002", "[V_" . strtoupper($attrid) . "]");
                 }
             }
         }

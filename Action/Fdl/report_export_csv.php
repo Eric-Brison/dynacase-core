@@ -31,9 +31,10 @@ require_once 'EXTERNALS/fdl.php';
 function report_export_csv(Action & $action)
 {
     $dbaccess = getParam('FREEDOM_DB');
-    
+    setMaxExecutionTimeTo(1000);
     $argumentsCSV = array();
     $defaultArgument = json_decode(getParam("REPORT_DEFAULT_CSV", "[]") , true);
+    $action->parent->addJsRef("lib/jquery/jquery.js");
     
     $usage = new ActionUsage($action);
     $defaultDocArg = array();
@@ -45,6 +46,10 @@ function report_export_csv(Action & $action)
         $currentUserTag = $currentDoc->getUTag("document_export_csv");
         if ($currentUserTag) $defaultDocArg = json_decode($currentUserTag->comment, true);
     }
+    
+    $csvTmpFile = $usage->addHidden("csvDownloadFile", "tmp file to download");
+    $expVarName = $usage->addHidden("exportId", "expert ident");
+    $statusOnly = $usage->addHidden("statusOnly", "get status only");
     
     $refresh = $usage->addOption("refresh", "would you refresh doc before build report", array(
         "TRUE",
@@ -58,6 +63,10 @@ function report_export_csv(Action & $action)
     ) , $default);
     $default = isset($defaultDocArg["pivot"]) ? $defaultDocArg["pivot"] : 'id';
     $pivot = $usage->addOption("pivot", "the pivot attr", array() , $default);
+    
+    $default = isset($defaultDocArg["stripHtmlTag"]) ? $defaultDocArg["stripHtmlTag"] : false;
+    $applyHtmlStrip = $usage->addOption("stripHtmlTag", "strip html tags", array() , $default);
+    $applyHtmlStrip = ($applyHtmlStrip != "1");
     
     $default = isset($defaultArgument["delimiter"]) ? $defaultArgument["delimiter"] : ';';
     $argumentsCSV["delimiter"] = $usage->addOption("delimiter", "the CSV delimiter", array() , $default);
@@ -79,20 +88,39 @@ function report_export_csv(Action & $action)
     
     $usage->verify();
     
+    if ($csvTmpFile) {
+        
+        $fileName = sprintf("%s_%s.%s", $currentDoc->getTitle() , date("Y_m_d-H_m_s") , "csv");
+        Http_DownloadFile($csvTmpFile, $fileName, "text/csv", false, false, true);
+    }
+    
+    if ($statusOnly && $expVarName) {
+        header('Content-Type: application/json');
+        $action->lay->noparse = true;
+        $action->lay->template = json_encode($action->read($expVarName));
+        return;
+    }
     if ($updateDefault) {
         $action->setParamU("REPORT_DEFAULT_CSV", json_encode($argumentsCSV));
         $err = $currentDoc->addUTag($action->user->id, "document_export_csv", json_encode(array(
             "kind" => $kind,
-            "pivot" => $pivot
+            "pivot" => $pivot,
+            "stripHtmlTag" => $applyHtmlStrip
         )));
         error_log(__LINE__ . var_export($err, true));
     }
     
     if ($displayForm) {
         $action->lay->set("id", $id);
+        $expVarName = uniqid("EXPCSV");
+        $action->lay->set("exportId", $expVarName);
+        $action->Register($expVarName, array(
+            "status" => "init"
+        ));
         $attr = getDocAttr($dbaccess, $currentDoc->getValue("se_famid", 1));
         $attributeLay = array();
         $attributeLay[] = array(
+            "selected" => "",
             "key" => "id",
             "libelle" => _("EXPORT_CSV : identifiant unique")
         );
@@ -105,7 +133,7 @@ function report_export_csv(Action & $action)
         foreach ($attr as $currentAttr) {
             $attributeLay[] = array(
                 "key" => $currentAttr[1],
-                "libelle" => $currentAttr[0],
+                "libelle" => strip_tags($currentAttr[0]) ,
                 "selected" => $isSelected($currentAttr[1], $pivot) ,
             );
         }
@@ -125,6 +153,20 @@ function report_export_csv(Action & $action)
             )
         );
         $action->lay->setBlockData("kinds", $kinds);
+        
+        $stripHtml = array(
+            array(
+                "key" => "0",
+                "selected" => $isSelected("0", $applyHtmlStrip) ,
+                "label" => _("Strip Html tags")
+            ) ,
+            array(
+                "key" => "1",
+                "selected" => $isSelected("1", $applyHtmlStrip) ,
+                "label" => _("No strip Html tags")
+            )
+        );
+        $action->lay->setBlockData("stripHtml", $stripHtml);
         
         $encodings = array(
             array(
@@ -164,6 +206,7 @@ function report_export_csv(Action & $action)
         $action->lay->set("decimalSeparator", $argumentsCSV["decimalSeparator"]);
     } else {
         
+        $action->parent->setVolatileParam("exportSession", $expVarName);
         $reportFamId = getIdFromName($dbaccess, "REPORT");
         /**
          * @var _REPORT $currentDoc
@@ -173,11 +216,11 @@ function report_export_csv(Action & $action)
         if (in_array($reportFamId, $familyIdArray)) {
             switch ($kind) {
                 case "pivot":
-                    $csvStruct = $currentDoc->generateCSVReportStruct(true, $pivot, $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh);
+                    $csvStruct = $currentDoc->generateCSVReportStruct(true, $pivot, $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh, $applyHtmlStrip);
                     break;
 
                 default:
-                    $csvStruct = $currentDoc->generateCSVReportStruct(false, "", $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh);
+                    $csvStruct = $currentDoc->generateCSVReportStruct(false, "", $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh, $applyHtmlStrip);
             }
             
             $csvFile = tempnam(getTmpDir() , "csv$id") . ".csv";
@@ -185,7 +228,7 @@ function report_export_csv(Action & $action)
             
             foreach ($csvStruct as $currentLine) {
                 $encoding = $argumentsCSV["encoding"];
-                if ($encoding != "utf8") {
+                if ($encoding != "UTF-8") {
                     $currentLine = convertLine($currentLine, $encoding);
                 }
                 fputcsv($fp, $currentLine, $argumentsCSV["delimiter"], $argumentsCSV["enclosure"]);
@@ -200,7 +243,13 @@ function report_export_csv(Action & $action)
                 $action->lay->noparse = true;
                 $action->lay->template = $content;
             } else {
+                
                 $fileName = sprintf("%s_%s.%s", $currentDoc->getTitle() , date("Y_m_d-H_m_s") , "csv");
+                
+                $action->Register($expVarName, array(
+                    "status" => _("Export Done") ,
+                    "end" => true
+                ));
                 Http_DownloadFile($csvFile, $fileName, "text/csv", false, false, true);
             }
         } else {
@@ -213,6 +262,7 @@ function convertLine($currentLine, $encoding)
 {
     $returnArray = array();
     foreach ($currentLine as $currentValue) {
+        
         $returnArray[] = iconv("UTF-8", $encoding, $currentValue);
     }
     return $returnArray;

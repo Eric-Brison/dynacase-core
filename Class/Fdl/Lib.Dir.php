@@ -184,10 +184,14 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         //-------------------------------------------
         // in a specific folder
         //-------------------------------------------
+        $fld = null;
         if (!is_array($dirid)) $fld = new_Doc($dbaccess, $dirid);
-        if ((is_array($dirid)) || ($fld->defDoctype != 'S')) {
+        if ((is_array($dirid)) || ($fld && $fld->defDoctype != 'S')) {
             $hasFilters = false;
             if ($fld && method_exists($fld, "getSpecificFilters")) {
+                /**
+                 * @var DocCollection $fld
+                 */
                 $specFilters = $fld->getSpecificFilters();
                 if (is_array($specFilters) && (count($specFilters) > 0)) {
                     $sqlfilters = array_merge($sqlfilters, $specFilters);
@@ -216,6 +220,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                     $q->AddQuery($sqlfld);
                     $tfld = $q->Query(0, 0, "TABLE");
                     if ($q->nb > 0) {
+                        $tfldid = array();
                         foreach ($tfld as $onefld) {
                             $tfldid[] = $onefld["childid"];
                         }
@@ -255,7 +260,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                         // $sqlM=$ldocsearch[0]["query"];
                         
                         /**
-                         * @var _GROUPSEARCH $fld
+                         * @var DocSearch $fld
                          */
                         $fld = new_Doc($dbaccess, $dirid);
                         if ($trash) $fld->setValue("se_trash", $trash);
@@ -312,27 +317,34 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
             //-------------------------------------------
             // in a specific folder
             //-------------------------------------------
-            if (!is_array($dirid)) $fld = new_Doc($dbaccess, $dirid);
-            
-            if ($fld->getValue("se_phpfunc") != "") return $terr;
+            $fld = null;
+            if (!is_array($dirid)) {
+                $fld = new_Doc($dbaccess, $dirid);
+                if ($fld->getValue("se_phpfunc") != "") return $terr;
+            }
             
             if ((is_array($dirid)) || ($fld->defDoctype != 'S')) {
             } else {
                 //-------------------------------------------
                 // search familly
                 //-------------------------------------------
+                
+                /**
+                 * @var int $dirid
+                 */
                 $docsearch = new QueryDb($dbaccess, "QueryDir");
-                $err = $docsearch->AddQuery("dirid=$dirid");
-                if ($err != "") {
-                    global $action;
-                    $action->AddWarningMsg($err);
-                }
+                $docsearch->AddQuery("dirid=$dirid");
+                
                 $docsearch->AddQuery("qtype = 'M'");
                 $ldocsearch = $docsearch->Query(0, 0, "TABLE");
                 // for the moment only one query search
                 if (($docsearch->nb) > 0) {
                     switch ($ldocsearch[0]["qtype"]) {
                         case "M": // complex query
+                            
+                            /**
+                             * @var DocSearch $fld
+                             */
                             $fld = new_Doc($dbaccess, $dirid);
                             $tsqlM = $fld->getQuery();
                             foreach ($tsqlM as $sqlM) {
@@ -377,12 +389,17 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         if (($fromid != "") && (!is_numeric($fromid))) $fromid = getFamIdFromName($dbaccess, $fromid);
         if ($fromid == 0) $fromid = "";
         if (($fromid == "") && ($dirid != 0) && ($qtype == "TABLE")) {
-            
+            /**
+             * @var DocCollection $fld
+             */
             $fld = new_Doc($dbaccess, $dirid);
-            // In case of full text search, execute specific code
-            if ($fld->fromid == getFamIdFromName($dbaccess, "FTEXTSEARCH")) return $fld->GetFullTextResultDocs($dbaccess, $dirid, $start, $slice, $sqlfilters, $userid, $qtype, $fromid, $distinct, $orderby, $latest);
             
-            if ($fld->fromid == getFamIdFromName($dbaccess, "SSEARCH")) return $fld->getDocList($start, $slice, $qtype, $userid);
+            if ($fld->fromid == getFamIdFromName($dbaccess, "SSEARCH")) {
+                /**
+                 * @var _SSEARCH $fld
+                 */
+                return $fld->getDocList($start, $slice, $qtype, $userid);
+            }
             
             if ($fld->defDoctype != 'S') {
                 // try optimize containt of folder
@@ -417,7 +434,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                         $fdoc = createDoc($dbaccess, abs($fromid) , false, false);
                         if (preg_match("/from\s+docread/", $qsql) || $isgroup) $fdoc = new DocRead($dbaccess);
                     } else $fdoc = new DocRead($dbaccess);
-                    $tsqlfields = array_merge($fdoc->fields, $fdoc->sup_fields);
+                    $tsqlfields = null;
+                    if ($searchDoc) $tsqlfields = $searchDoc->getReturnsFields();
+                    if ($tsqlfields == null) $tsqlfields = array_merge($fdoc->fields, $fdoc->sup_fields);
                     $maintable = '';
                     if (!$join && preg_match("/from\s+([a-z0-9])*,/", $qsql)) {
                         $join = true;
@@ -637,6 +656,10 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         $famid = getFamIdFromName($dbaccess, $famname);
         $fdoc = new_Doc($dbaccess, $famid);
         // searches for all fathers kind
+        
+        /**
+         * @var NormalAttribute $a
+         */
         $a = $fdoc->getAttribute($aid);
         if ($a) {
             $tkids = array();;
@@ -796,6 +819,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         $query->AddQuery("doctype='C'");
         
         if (is_array($classid)) {
+            $use = array();
             foreach ($classid as $fid) {
                 $tcdoc = getTDoc($dbaccess, $fid);
                 $use[] = $tcdoc["usefor"];

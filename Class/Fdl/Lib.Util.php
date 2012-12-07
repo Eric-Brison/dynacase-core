@@ -175,7 +175,7 @@ function FrenchDateToIso($fdate, $withT = true)
     if (!$fdate) return '';
     if (preg_match('/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/', $fdate, $r)) {
         
-        if ($r[4] == "") $dt = sprintf("%04d-%02d-%02d", $r[3], $r[2], $r[1]);
+        if (empty($r[4])) $dt = sprintf("%04d-%02d-%02d", $r[3], $r[2], $r[1]);
         else $dt = sprintf("%04d-%02d-%02d%s%02d:%02d:%02d", $r[3], $r[2], $r[1], ($withT) ? 'T' : ' ', $r[4], $r[5], $r[6]);
     } else {
         $dt = "";
@@ -191,9 +191,9 @@ function FrenchDateToIso($fdate, $withT = true)
 function iso8601DateToUnixTs($isodate, $utc = false)
 {
     if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)[\s|T]?(\d\d)?:?(\d\d)?:?(\d\d)?/", $isodate, $r)) {
-        if (empty($r[4])) $r[4]=0;
-        if (empty($r[5])) $r[5]=0;
-        if (empty($r[6])) $r[6]=0;
+        if (empty($r[4])) $r[4] = 0;
+        if (empty($r[5])) $r[5] = 0;
+        if (empty($r[6])) $r[6] = 0;
         if ($utc) $dt = gmmktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
         else $dt = mktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
     } else {
@@ -222,11 +222,11 @@ function isValidDate($date)
 {
     if ((strlen($date) > 0) && (strlen($date) < 3)) return false;
     $c = strtotime($date);
-    if ($c !== false && $c != -1) return true;
+    if ($c !== false && $c != - 1) return true;
     // replace month/day
     $date = preg_replace('/(\d+)\/(\d+)\/(.*)/', '${2}/${1}/${3}', $date);
     $c = strtotime($date);
-    return ($c !== false && $c != -1);
+    return ($c !== false && $c != - 1);
 }
 /**
  * convert string date to iso

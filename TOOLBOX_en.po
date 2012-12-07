@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 11:25+0200\n"
+"POT-Creation-Date: 2012-12-07 13:27+0100\n"
 "PO-Revision-Date: 2012-09-12 09:47+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1539,6 +1539,10 @@ msgstr "Select"
 msgid "Do connection"
 msgstr "Connect"
 
+#, c-format
+msgid "Doc Render %d/%d"
+msgstr ""
+
 msgid "DocProperties"
 msgstr "Properties"
 
@@ -1609,6 +1613,15 @@ msgid "Document unlinked of %s folder"
 msgstr ""
 
 msgid "Documents administration"
+msgstr ""
+
+msgid "Doing csv render"
+msgstr ""
+
+msgid "Doing render"
+msgstr ""
+
+msgid "Doing search request"
 msgstr ""
 
 msgid "Don't care preferences"
@@ -1892,6 +1905,9 @@ msgstr ""
 #, fuzzy
 msgid "Export Documents from"
 msgstr "Import"
+
+msgid "Export Done"
+msgstr ""
 
 #, fuzzy
 msgid "Export Folder"
@@ -2570,6 +2586,10 @@ msgid ""
 "Close window ?"
 msgstr ""
 
+#, c-format
+msgid "Max display limit %s reached. Use export to see all"
+msgstr ""
+
 msgid "Maximum 20 views by control"
 msgstr ""
 
@@ -2792,6 +2812,9 @@ msgstr "Import"
 msgid "No results"
 msgstr "Import"
 
+msgid "No strip Html tags"
+msgstr ""
+
 msgid "No user found"
 msgstr ""
 
@@ -2998,6 +3021,10 @@ msgstr "Organisation"
 #, fuzzy, c-format
 msgid "Personal profile for %s %s"
 msgstr "Category"
+
+#, c-format
+msgid "Pivot rendering %d/%d"
+msgstr ""
 
 #, fuzzy
 msgid "PortFolio"
@@ -3588,6 +3615,12 @@ msgid "Status for sending mail"
 msgstr ""
 
 msgid "Steps"
+msgstr ""
+
+msgid "Strip HTML tags :"
+msgstr ""
+
+msgid "Strip Html tags"
 msgstr ""
 
 msgid "Submit"
@@ -6384,9 +6417,6 @@ msgstr ""
 msgid "find %s more than one, created aborded\n"
 msgstr ""
 
-msgid "first"
-msgstr ""
-
 #, fuzzy
 msgid "first family used"
 msgstr "Category"
@@ -6948,9 +6978,6 @@ msgstr ""
 
 msgid "language"
 msgstr "lang"
-
-msgid "last"
-msgstr ""
 
 #, fuzzy
 msgid "last modification date"
@@ -8811,6 +8838,9 @@ msgid "system identifier not equal"
 msgstr ""
 
 msgid "t"
+msgstr ""
+
+msgid "tag"
 msgstr ""
 
 #, c-format

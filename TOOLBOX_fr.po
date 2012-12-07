@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 11:25+0200\n"
-"PO-Revision-Date: 2012-10-18 11:26+0200\n"
+"POT-Creation-Date: 2012-12-07 13:27+0100\n"
+"PO-Revision-Date: 2012-12-07 13:31+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1465,6 +1465,10 @@ msgstr "Choisissez"
 msgid "Do connection"
 msgstr "se connecter"
 
+#, c-format
+msgid "Doc Render %d/%d"
+msgstr "Composition %d/%d"
+
 msgid "DocProperties"
 msgstr "Propriétés"
 
@@ -1534,6 +1538,15 @@ msgstr "Document enlevé du dossier %s"
 
 msgid "Documents administration"
 msgstr "Administration des documents"
+
+msgid "Doing csv render"
+msgstr "Composition du csv"
+
+msgid "Doing render"
+msgstr "Composition en cours"
+
+msgid "Doing search request"
+msgstr "Recherche en cours"
 
 msgid "Don't care preferences"
 msgstr "Ne pas tenir compte des préférences"
@@ -1813,6 +1826,9 @@ msgstr "Export 1NF fini"
 
 msgid "Export Documents from"
 msgstr " Exporter les documents depuis"
+
+msgid "Export Done"
+msgstr "Exportation finie"
 
 msgid "Export Folder"
 msgstr "Exportation du dossier"
@@ -2471,6 +2487,12 @@ msgstr ""
 "Le document maître a été fermé.\n"
 "Voulez-vous fermer la fenêtre ?"
 
+#, c-format
+msgid "Max display limit %s reached. Use export to see all"
+msgstr ""
+"Limite d'affichage maximum %s atteinte. Utilisez l'exportation pour tout "
+"voir."
+
 msgid "Maximum 20 views by control"
 msgstr "Maximum 20 vues par contrôle"
 
@@ -2685,6 +2707,9 @@ msgstr "Pas de résultats"
 msgid "No results"
 msgstr "Pas de résultats"
 
+msgid "No strip Html tags"
+msgstr "Garder les balises Html"
+
 msgid "No user found"
 msgstr "pas d'utilisateur trouvé"
 
@@ -2886,6 +2911,10 @@ msgstr "Droits"
 #, c-format
 msgid "Personal profile for %s %s"
 msgstr "Profil personnel de %s %s"
+
+#, c-format
+msgid "Pivot rendering %d/%d"
+msgstr "Composition du pivot %d/%d"
 
 msgid "PortFolio"
 msgstr "Chemise"
@@ -3448,6 +3477,12 @@ msgstr "Compte-rendu du publipostage"
 
 msgid "Steps"
 msgstr "Étapes"
+
+msgid "Strip HTML tags :"
+msgstr "Balises HTML :"
+
+msgid "Strip Html tags"
+msgstr "Enlever les balises Html"
 
 msgid "Submit"
 msgstr "Valider"
@@ -6108,9 +6143,6 @@ msgstr "filtre sur le login et le nom"
 msgid "find %s more than one, created aborded\n"
 msgstr "%s trouvé plus d'une fois, création abandonnée\n"
 
-msgid "first"
-msgstr "premier"
-
 msgid "first family used"
 msgstr "première famille utilisée"
 
@@ -6628,9 +6660,6 @@ msgstr "désignation"
 
 msgid "language"
 msgstr "langue"
-
-msgid "last"
-msgstr "dernier"
 
 msgid "last modification date"
 msgstr "date de dernière modification"
@@ -8366,6 +8395,9 @@ msgstr "l'identifiant système n'est pas égal"
 msgid "t"
 msgstr "t"
 
+msgid "tag"
+msgstr "tag"
+
 #, c-format
 msgid "target folder [%s] is not a folder"
 msgstr "le dossier destination [%s] n'est pas un dossier"
@@ -9868,6 +9900,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "fck image upload"
 #~ msgstr "fck téléchargement"
 
+#~ msgid "first"
+#~ msgstr "premier"
+
 #~ msgid "firstname"
 #~ msgstr "Prénom"
 
@@ -9909,6 +9944,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "invert order"
 #~ msgstr "ordre inverse"
+
+#~ msgid "last"
+#~ msgstr "dernier"
 
 #~ msgid "lastname"
 #~ msgstr "Nom"
