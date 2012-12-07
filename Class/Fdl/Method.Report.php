@@ -173,10 +173,10 @@ class _REPORT extends _DSEARCH
             }
         }
         $order.= " " . $this->getValue("REP_ORDERSORT");
-        
         $s = new SearchDoc($this->dbaccess);
         $s->useCollection($this->initid);
         $s->setOrder($order);
+        $s->returnsOnly($tcols);
         $s->setObjectReturn();
         $limit = intval($limit);
         $maxDisplayLimit = $this->getParamValue("rep_maxdisplaylimit", 1000) + 1;
@@ -185,8 +185,10 @@ class _REPORT extends _DSEARCH
         $s->setSlice($limit);
         $s->search();
         
+        $needRemoveLast = false;
         if ($s->count() >= $maxDisplayLimit) {
             addWarningMsg(sprintf(_("Max display limit %s reached. Use export to see all") , $maxDisplayLimit - 1));
+            $needRemoveLast = true;
         }
         $trodd = false;
         $tcolor = $this->getTValue("REP_COLORS");
@@ -247,6 +249,8 @@ class _REPORT extends _DSEARCH
             }
             $this->lay->setBlockData("row$k", $tcell);
         }
+        
+        if ($needRemoveLast) array_pop($trow);
         $this->lay->setBlockData("ROWS", $trow);
         // ---------------------
         // footer
@@ -300,21 +304,35 @@ class _REPORT extends _DSEARCH
         $order = $this->getValue("rep_idsort", "title");
         
         $mb0 = microtime(true);
+        $this->setStatus(_("Doing search request"));
         $search = new SearchDoc($this->dbaccess, $famId);
         $search->dirid = $this->initid;
         $search->slice = $limit;
         $search->orderby = trim($order . " " . $this->getValue("rep_ordersort"));
         $search->setObjectReturn();
-        $search->search();
-        //   print_r($search->getSearchInfo());
+        // print_r($search->getSearchInfo());
         $famDoc = createDoc($this->dbaccess, $famId, false);
         $tcols = $this->getTValue("rep_idcols");
         
+        $search->returnsOnly($tcols);
+        
         if ($isPivotExport) {
+            $search->search();
+            $this->setStatus(_("Doing render"));
             return $this->generatePivotCSV($search, $tcols, $famDoc, $pivotId, $refresh, $separator, $dateFormat);
         } else {
+            $this->setStatus(_("Doing render"));
             return $this->generateBasicCSV($search, $tcols, $famDoc, $refresh, $separator, $dateFormat);
         }
+    }
+    
+    public static function setStatus($s)
+    {
+        global $action;
+        $expVarName = $action->getParam("exportSession");
+        if ($expVarName) $action->Register($expVarName, array(
+            "status" => $s
+        ));
     }
     
     protected function generatePivotCSV(SearchDoc $search, Array $columns, Doc $famDoc, $pivotId, $refresh, $separator, $dateFormat)
@@ -363,7 +381,11 @@ class _REPORT extends _DSEARCH
             }
         }
         //Get Value
+        $nbDoc = $search->count();
+        $k = 0;
         while ($currentDoc = $search->nextDoc()) {
+            $k++;
+            if ($k % 10 == 0) $this->setStatus(sprintf(_("Pivot rendering %d/%d") , $k, $nbDoc));
             if ($refresh) {
                 $currentDoc->refresh();
             }
@@ -440,6 +462,7 @@ class _REPORT extends _DSEARCH
         $fc = new FormatCollection();
         $fc->useCollection($search->getDocumentList());
         if ($separator) $fc->setDecimalSeparator($separator);
+        $fc->relationIconSize = 0;
         $fc->stripHtmlTags(true);
         switch ($dateFormat) {
             case 'US':
@@ -464,7 +487,12 @@ class _REPORT extends _DSEARCH
             }
         }
         $fc->setNc('-');
+        $fc->setHookAdvancedStatus(function ($s)
+        {
+            _REPORT::setStatus($s);
+        });
         $r = $fc->render();
+        $this->setStatus(_("Doing csv render"));
         $out = array();
         $line = array();
         foreach ($columns as $col) {
@@ -498,7 +526,12 @@ class _REPORT extends _DSEARCH
                         $cellValue = $dv->displayValue;
                     }
                 } else {
-                    if (isset($render["properties"][$col])) $cellValue = $render["properties"][$col];
+                    if (isset($render["properties"][$col])) {
+                        $cellValue = $render["properties"][$col];
+                        if (is_object($cellValue)) {
+                            $cellValue = $cellValue->displayValue;
+                        }
+                    }
                 }
                 $line[] = $cellValue;
             }

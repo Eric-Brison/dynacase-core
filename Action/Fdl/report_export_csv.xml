@@ -1,5 +1,5 @@
-
 [ZONE FDL:HTMLHEAD]
+
 <div class="document" style="padding : 10px">
     <br />
     <span class="FREEDOMTextBigTitle documentTitle">[TEXT:EXPORT_CSV Definition of the export param :]</span>
@@ -7,7 +7,7 @@
     <a style="float : right" href="./?sole=Y&&app=FDL&action=FDL_CARD&props=N&abstract=N&id=HELP_REPORT" target="_blank">[TEXT:EXPORT_CSV help]</a>
     <br />
 
-    <form name="fviewidoc" method="POST" ENCTYPE="multipart/form-data" action="[CORE_STANDURL]&app=FDL&action=REPORT_EXPORT_CSV">
+    <form id="exportForm" name="fviewidoc" method="POST" ENCTYPE="multipart/form-data" action="[CORE_STANDURL]&app=FDL&action=REPORT_EXPORT_CSV" target="csvfile">
         <div id="exportKind" class="frame" style="">
             <div class="legend">[TEXT:EXPORT_CSV Select export kind :]</div>
             <div class="content" style="background-color: rgb(249, 250, 251); padding : 10px">
@@ -19,8 +19,7 @@
                         <td>
                             <select id="kind" name="kind" onchange="computePivotVisibility();">
                                 [BLOCK kinds]
-	                                <option value="[key]" [selected]>[label]</option>
-                                [ENDBLOCK kinds]
+	                                <option value="[key]" [selected]>[label]</option>[ENDBLOCK kinds]
                             </select>
                         </td>
                     </tr>
@@ -32,8 +31,7 @@
                         <td>
                             <select name="pivot">
                                 [BLOCK pivotAttribute]
-                                <option value='[key]' [selected]>[libelle]</option>
-                                [ENDBLOCK pivotAttribute]
+                                <option value='[key]' [selected]>[libelle]</option>[ENDBLOCK pivotAttribute]
                             </select>
                         </td>
                     </tr>
@@ -95,11 +93,14 @@
                 </table>
             </div>
         </div>
+       
         <input type="hidden" value="[id]" name="id" />
         <input type="hidden" value="TRUE" name="updateDefault" />
-        <input style='float : right; margin-right : 25 px' type='submit' value="[TEXT:EXPORT_CSV Exporter]" />
+        <input id="iExportId" type="hidden" value="[exportId]" name="exportId" />
+        <input id="bExport" style='float : right; margin-right : 25 px' type='submit' value="[TEXT:EXPORT_CSV Exporter]" />
     </form>
 </div>
+        <iframe name="csvfile" id="csvfile" frameborder="0" border="0" cellspacing="0" width="100%" marginwidth="0" marginheight="0" style="border:none;width:90%;height:30px"></iframe>
 <script type="text/javascript">
     function computePivotVisibility() {
         var value = document.getElementById("kind").value;
@@ -109,7 +110,7 @@
         document.getElementById("pivot-tab").style.display = 'block';
         }
     }
-    
+    var stopExportPolling=0;
     function switchBlock() {
         if (document.getElementById("csvOption").style.display != 'none') {
             document.getElementById("csvOption").style.display = 'none';
@@ -118,6 +119,35 @@
         }
     }
 
-    window.onload = computePivotVisibility;
+    function pollingExport(exportId) {
+        $.ajax({
+              url: '?',
+              dataType: 'json',
+              data: {exportId:exportId,statusOnly:1,app:'FDL',action:'REPORT_EXPORT_CSV',id:'[id]'},
+              success: function(data) {
+                  $('#bExport').val(data.status);
+                  if (stopExportPolling < 1) {
+                    if (! data.end) setTimeout(function () {pollingExport(exportId);},500);
+                  } else {
+    $('#bExport').val('[TEXT:Export Done]');
+                 }
+              }});
+
+    }
+
+    $(document).ready(function() {
+        computePivotVisibility();
+
+        $('#csvfile').load(function() {
+            stopExportPolling++;
+        });
+        $('#exportForm').submit(function() {
+            stopExportPolling=0;
+            setTimeout(function () {$('#bExport').attr('disabled',true);},20);
+            setTimeout(function () {pollingExport($('#iExportId').val());},200);
+
+        });
+    });
+
 </script>
 [ZONE FDL:HTMLFOOT]
