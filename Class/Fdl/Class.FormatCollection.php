@@ -59,6 +59,10 @@ class FormatCollection
     private $dateStyle = DateAttributeValue::defaultStyle;
     
     private $stripHtmlTag = false;
+    /**
+     * @var closure
+     */
+    private $hookStatus = null;
     const title = "title";
     /**
      * name property
@@ -178,6 +182,26 @@ class FormatCollection
         return $this;
     }
     /**
+     * apply a callback on each document
+     * if callback return false, the document is skipped from list
+     * @param Closure $hookfunction
+     * @return void
+     */
+    public function setHookAdvancedStatus($hookFunction)
+    {
+        $this->hookStatus = $hookFunction;
+    }
+    
+    protected function callHookStatus($s)
+    {
+        if ($this->hookStatus) {
+            // call_user_func($function, $this->currentDoc);
+            $h = $this->hookStatus;
+            return $h($s);
+        }
+        return true;
+    }
+    /**
      * return formatted document list to be easily exported in other format
      * @api compute rendering and get it
      * @throws \Dcp\Fmtc\Exception
@@ -190,7 +214,9 @@ class FormatCollection
          */
         $r = array();
         $kdoc = 0;
+        $countDoc = count($this->dl);
         foreach ($this->dl as $docid => $doc) {
+            if ($kdoc % 10 == 0) $this->callHookStatus(sprintf(_("Doc Render %d/%d") , $kdoc, $countDoc));
             foreach ($this->fmtProps as $propName) {
                 $r[$kdoc]["properties"][$propName] = $this->getPropInfo($propName, $doc);
             }
@@ -539,24 +565,23 @@ class DocidAttributeValue extends StandardAttributeValue
     public $familyRelation;
     
     public $url;
-    public $icon;
+    public $icon = null;
     
     public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
         $this->familyRelation = $oa->format;
-        
         $this->value = $v;
-        $prop = getDocProperties($v, $oa->getOption("docrev", "latest") == "latest", array(
-            "title",
-            "icon"
-        ));
         $this->displayValue = DocTitle::getRelationTitle($v, $oa->getOption("docrev", "latest") == "latest", $doc);
         if ($this->displayValue !== false) {
-            // print_r($prop);
-            //$this->displayValue = $prop["title"];
             if ($v !== '') {
-                if (!$prop["icon"]) $prop["icon"] = "doc.png";
-                $this->icon = $doc->getIcon($prop["icon"], $iconsize);
+                if ($iconsize > 0) {
+                    $prop = getDocProperties($v, $oa->getOption("docrev", "latest") == "latest", array(
+                        
+                        "icon"
+                    ));
+                    if (!$prop["icon"]) $prop["icon"] = "doc.png";
+                    $this->icon = $doc->getIcon($prop["icon"], $iconsize);
+                }
                 $this->url = $this->getDocUrl($v, $oa->getOption("docrev"));
             }
         } else {
