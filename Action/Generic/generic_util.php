@@ -239,13 +239,15 @@ function getFamilyParameter(&$action, $famid, $key, $def = "")
     $pu = $action->GetParam($key);
     if ($pu) {
         $tu = explode(",", $pu);
-        while (list($k, $v) = each($tu)) {
-            list($afamid, $aorder) = explode("|", $v);
-            if (!is_numeric($afamid)) {
-                $afamid = getFamIdFromName($action->getParam('FREEDOM_DB') , $afamid);
-            }
-            if ($afamid == $famid) {
-                return $aorder;
+        foreach ($tu as $v) {
+            if (strpos($v, '|') !== false) {
+                list($afamid, $aorder) = explode("|", $v);
+                if (!is_numeric($afamid)) {
+                    $afamid = getFamIdFromName($action->getParam('FREEDOM_DB') , $afamid);
+                }
+                if ($afamid == $famid) {
+                    return $aorder;
+                }
             }
         }
     }

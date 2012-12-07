@@ -929,7 +929,7 @@ create unique index i_docir on doc(initid, revision);";
     function PreUpdate()
     {
         if ($this->id == "") return _("cannot update no initialized document");
-        if ($this->doctype == 'I') return _("cannot update inconsistent document"); // provides from waiting document
+        if ($this->doctype == 'I') return _("cannot update inconsistent document"); // provides from waiting document or searchDOc with setReturns
         if (!$this->withoutControl) {
             $err = $this->control("edit");
             if ($err != "") return ($err);
