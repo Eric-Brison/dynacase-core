@@ -554,53 +554,8 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             break;
 
         case 'getsearchcriteria':
-            include_once ("FDL/Class.DocSearch.php");
-            $s = new DocSearch();
-            $operators = $s->top;
-            $out->error = '';
-            $out->operators = array();
-            $alltype = array(
-                'integer',
-                'text',
-                'longtext',
-                'htmltext',
-                'docid',
-                'double',
-                "ifile",
-                "array",
-                "file",
-                "image",
-                "enum",
-                "color",
-                "date",
-                "time",
-                "timestamp",
-                "money"
-            );
-            foreach ($operators as $k => $v) {
-                if (empty($v["type"]) || (!is_array($v["type"]))) $v["type"] = $alltype;
-                foreach ($v["type"] as $type) {
-                    $label = (!empty($v["label"])) ? _($v["label"]) : '';
-                    $dynlabel = (!empty($v["dynlabel"])) ? _($v["dynlabel"]) : '';
-                    if (!empty($v["slabel"])) {
-                        foreach ($v["slabel"] as $kl => $vl) {
-                            if ($kl == $type) $label = _($vl);
-                        }
-                    }
-                    if (!empty($v["sdynlabel"])) {
-                        foreach ($v["sdynlabel"] as $kl => $vl) {
-                            if ($kl == $type) $dynlabel = _($vl);
-                        }
-                    }
-                    $out->operators[$type][] = array(
-                        "operator" => $k,
-                        "operand" => $v["operand"],
-                        "label" => $label,
-                        "tplLabel" => $dynlabel
-                    );
-                }
-            }
-            
+            require_once("DATA/Lib.Document.php");
+            getSearchCriteria($out);
             break;
 
         case 'reload':
@@ -669,7 +624,8 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             $out->error = sprintf(_("method %s not possible") , $method);
         }
     }
-    function addLogInData(Action & $action, &$out)
+
+function addLogInData(Action & $action, &$out)
     {
         $l = $action->parent->GetLogMsg();
         if (is_array($l) && (count($l) > 0)) {
@@ -686,4 +642,3 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             }
         }
     }
-?>
