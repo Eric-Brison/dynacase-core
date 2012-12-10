@@ -86,7 +86,41 @@ function report_export_csv(Action & $action)
     $displayForm = $usage->addHidden("displayForm", "");
     $updateDefault = $usage->addHidden("updateDefault", "");
     
+    $usage->strict(false);
     $usage->verify();
+    
+    $usageArguments = array(
+        "sole",
+        "app",
+        "action",
+        "id",
+        "csvDownloadFile",
+        "exportId",
+        "statusOnly",
+        "refresh",
+        "kind",
+        "pivot",
+        "stripHtmlTag",
+        "delimiter",
+        "enclosure",
+        "encoding",
+        "decimalSeparator",
+        "dateFormat",
+        "displayForm",
+        "updateDefault"
+    );
+    $addedArguments = array();
+    
+    foreach ($_GET as $key => $value) {
+        if (!in_array($key, $usageArguments)) {
+            $addedArguments[] = array(
+                "argumentName" => $key,
+                "argumentValue" => $value
+            );
+        }
+    }
+    
+    $action->lay->setBlockData("addedArguments", $addedArguments);
     
     if ($csvTmpFile) {
         
@@ -107,7 +141,9 @@ function report_export_csv(Action & $action)
             "pivot" => $pivot,
             "stripHtmlTag" => $applyHtmlStrip
         )));
-        error_log(__LINE__ . var_export($err, true));
+        if ($err) {
+            error_log(__LINE__ . var_export($err, true));
+        }
     }
     
     if ($displayForm) {
