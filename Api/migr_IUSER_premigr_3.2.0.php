@@ -67,11 +67,13 @@ foreach ($resList as $attr) {
 /*
  * 2. Suppress MODATTR of deprecated attributes of USER and IUSER
  */
-$resList = array();
-$q = sprintf("SELECT id, docid FROM docattr WHERE docid IN (120, 128) AND id !~ '^:' AND id NOT IN ('us_defaultgroup', 'us_lname', 'us_fname', 'us_mail', 'us_extmail', 'us_meid', 'us_login', 'us_whatid', 'us_roles', 'us_rolesorigin', 'us_rolegorigin', 'us_group', 'us_idgroup', 'us_expires', 'us_daydelay', 'us_expiresd', 'us_expirest', 'us_passdelay', 'us_ldapdn', 'us_substitute', 'us_incumbents', 'us_passwd1', 'us_passwd2', 'us_status', 'us_loginfailure', 'us_accexpiredate')");
-simpleQuery($dbaccess, $q, $resList, false, false, true);
-foreach ($resList as $attr) {
-    $sqlList[] = sprintf("DELETE FROM docattr WHERE docid IN (%s) AND id = ':%s';", join(', ', $childIdList), pg_escape_string($attr['id']));
+if (count($childIdList) > 0) {
+    $resList = array();
+    $q = sprintf("SELECT id, docid FROM docattr WHERE docid IN (120, 128) AND id !~ '^:' AND id NOT IN ('us_defaultgroup', 'us_lname', 'us_fname', 'us_mail', 'us_extmail', 'us_meid', 'us_login', 'us_whatid', 'us_roles', 'us_rolesorigin', 'us_rolegorigin', 'us_group', 'us_idgroup', 'us_expires', 'us_daydelay', 'us_expiresd', 'us_expirest', 'us_passdelay', 'us_ldapdn', 'us_substitute', 'us_incumbents', 'us_passwd1', 'us_passwd2', 'us_status', 'us_loginfailure', 'us_accexpiredate')");
+    simpleQuery($dbaccess, $q, $resList, false, false, true);
+    foreach ($resList as $attr) {
+        $sqlList[] = sprintf("DELETE FROM docattr WHERE docid IN (%s) AND id = ':%s';", join(', ', $childIdList), pg_escape_string($attr['id']));
+    }
 }
 
 /*
