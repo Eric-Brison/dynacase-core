@@ -21,7 +21,9 @@ include_once ("FDL/Class.Doc.php");
  */
 class Fdl_Document
 {
-    
+    /**
+     * @var Doc|DocFam
+     */
     protected $doc;
     protected $_properties;
     public $error = '';
@@ -374,12 +376,14 @@ class Fdl_Document
         if ($this->doc) {
             $acls = $this->doc->acls;
             foreach ($acls as $acl) {
-                $conf[$acl] = array(
-                    "acl" => $acl,
-                    "description" => $this->doc->dacls[$acl]["description"],
-                    "ldescription" => ($this->doc->dacls[$acl]["description"]) ? _($this->doc->dacls[$acl]["description"]) : '',
-                    "control" => $this->doc->control($acl) == ""
-                );
+                if (isset($this->doc->dacls[$acl])) {
+                    $conf[$acl] = array(
+                        "acl" => $acl,
+                        "description" => $this->doc->dacls[$acl]["description"],
+                        "ldescription" => ($this->doc->dacls[$acl]["description"]) ? _($this->doc->dacls[$acl]["description"]) : '',
+                        "control" => $this->doc->control($acl) == ""
+                    );
+                }
             }
         }
         return $conf;
@@ -432,6 +436,9 @@ class Fdl_Document
                     $attrs[$oa->id]['labelText'] = $oa->getLabel();
                 }
                 if ($oa->type == "enum") {
+                    /**
+                     * @var NormalAttribute $oa
+                     */
                     $attrs[$oa->id]["enumerate"] = $oa->getEnum();
                 }
             }
@@ -726,17 +733,24 @@ class Fdl_Document
     function moveTo($movetoid, $fromtoid = null)
     {
         if ($this->doc) {
+            $err = '';
             if (!$fromtoid) $fromtoid = $this->doc->prelid;
             // if ($fromtoid == $movetoid) return; // same destination
             $da = new_doc($this->dbaccess, $movetoid);
             if ($da->isAlive()) {
                 if (method_exists($da, "addFile")) {
+                    /**
+                     * @var Dir $da
+                     */
                     $err = $da->addFile($this->doc->initid);
                     if ($err == "") {
                         if (($fromtoid) && ($fromtoid != $movetoid)) {
                             $d = new_doc($this->dbaccess, $fromtoid);
                             if ($d->isAlive()) {
                                 if (method_exists($d, "delFile")) {
+                                    /**
+                                     * @var Dir $d
+                                     */
                                     $err = $d->delFile($this->doc->initid);
                                     if ($err == "") {
                                         $this->doc->prelid = $da->initid;
@@ -845,6 +859,9 @@ class Fdl_Document
     function getFollowingStates()
     {
         if ($this->doc && $this->doc->wid) {
+            /**
+             * @var WDoc $wd
+             */
             $wd = new_doc($this->dbaccess, $this->doc->wid);
             if (!$wd->isAlive()) return null;
             $wd->set($this->doc);
@@ -878,6 +895,9 @@ class Fdl_Document
         $prev = array();
         $timers = $this->doc->getAttachedTimers();
         foreach ($timers as $k => $v) {
+            /**
+             * @var _TIMER $timer
+             */
             $timer = new_doc($this->dbaccess, $v["timerid"]);
             if ($timer->isAlive()) {
                 $iprev = $timer->getPrevisions($v["attachdate"], $v["tododate"], $v["level"]);

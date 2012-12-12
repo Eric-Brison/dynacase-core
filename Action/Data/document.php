@@ -43,6 +43,7 @@ function document(Action & $action)
             else if (is_object($out)) $out->debuginfo = getPerfoInfo(sprintf("%.03fs", microtime(true) - $mb1));
         }
         addLogInData($action, $out);
+        //$out=sprintf("%.03fms", microtime(true)-$mb1);
         $action->lay->template = json_encode($out);
     }
     $action->lay->noparse = true; // no need to parse after - increase performances

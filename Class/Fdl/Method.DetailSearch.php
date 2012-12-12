@@ -68,7 +68,7 @@ class _DSEARCH extends DocSearch
     function getQuery()
     {
         $filtersType = $this->getTValue("se_typefilter");
-        if ((count($this->getTvalue("se_filter")) > 0) && ($filtersType[0] != "generated")) {
+        if ((count($this->getTvalue("se_filter")) > 0) && (empty($filtersType[0]) || $filtersType[0] != "generated")) {
             $queries = array();
             $filters = $this->getTValue("se_filter");
             foreach ($filters as $filter) {
@@ -145,7 +145,6 @@ class _DSEARCH extends DocSearch
             if ($this->getValue("se_famid")) {
                 $filterXml = sprintf("<filter><family>%s%s</family>", $this->getValue("se_famid") , ($this->getValue("se_famonly") == "yes" ? " strict" : ""));
                 
-                
                 $filterXml.= "</filter>";
                 $this->setValue("se_typefilter", "generated"); // only one
                 $this->setValue("se_filter", $filterXml);
@@ -194,6 +193,7 @@ class _DSEARCH extends DocSearch
                     );
                     array_push($std->$k, $this->simpleXml2StdClass($se));
                 } else {
+                    if ($std === null) $std = new stdClass();
                     $std->$k = $this->simpleXml2StdClass($se);
                 }
             }
