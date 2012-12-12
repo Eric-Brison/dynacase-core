@@ -947,7 +947,12 @@ class importDocumentDescription
         if (!$this->doc) {
             return;
         }
-        $check = new CheckTagable();
+        if (class_exists("CheckTagable")) {
+            $check = new CheckTagable();
+        } else {
+            $this->tcr[$this->nLine]["err"] = ErrorCode::getError('PROP0102', "TAGABLE", "dynacase-tags");
+            return;
+        }
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         if ($this->tcr[$this->nLine]["err"]) return;
         $this->doc->tagable = $data[1] === "no" ? "" : $data[1];

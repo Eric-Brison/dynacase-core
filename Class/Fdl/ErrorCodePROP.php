@@ -24,6 +24,11 @@ class ErrorCodePROP
     const PROP0101 = 'syntax error for property name "%s"';
     /**
      * @errorCode
+     * The property's value can't be verified beacause the module's associated with it is not installed.
+     */
+    const PROP0102 = 'cannot verify validity of property %s. Module %s must be installed.';
+    /**
+     * @errorCode
      * The property's parameter's value is missing
      */
     const PROP0200 = 'missing parameters values';
