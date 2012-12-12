@@ -1906,11 +1906,10 @@ create unique index i_docir on doc(initid, revision);";
         static $tag = null;
         
         if (empty($tag) || $tag->docid != $this->initid) {
-            try {
+            if (class_exists("TagManager")) {
                 $tag = new TagManager($this, $this->initid);
-            }
-            catch(\Exception $e) {
-                throw new Dcp\Exception("Need install dynacase-tags module.\n" . $e->getMessage());
+            } else {
+                throw new Dcp\Exception("Need install dynacase-tags module.\n");
             }
         }
         return $tag;
@@ -2101,9 +2100,9 @@ create unique index i_docir on doc(initid, revision);";
                 $err = ErrorCode::getError('DOC1000', $argMid, $this->getTitle());
             }
         }
-        if (! $this->attributes->isOrdered) {
+        if (!$this->attributes->isOrdered) {
             uasort($this->attributes->attr, "tordered");
-            $this->attributes->isOrdered=true;
+            $this->attributes->isOrdered = true;
         }
         if ($err) error_log($err);
         return $err;
