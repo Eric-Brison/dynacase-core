@@ -2101,7 +2101,10 @@ create unique index i_docir on doc(initid, revision);";
                 $err = ErrorCode::getError('DOC1000', $argMid, $this->getTitle());
             }
         }
-        uasort($this->attributes->attr, "tordered");
+        if (! $this->attributes->isOrdered) {
+            uasort($this->attributes->attr, "tordered");
+            $this->attributes->isOrdered=true;
+        }
         if ($err) error_log($err);
         return $err;
     }

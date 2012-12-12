@@ -22,6 +22,10 @@ include_once ("DATA/Lib.FullSearch.php");
  */
 class Fdl_Collection extends Fdl_Document
 {
+    /**
+     * @var Doc|Dir
+     */
+    protected $doc;
     private $completeProperties = false;
     private $contentOnlyValue = true;
     private $contentOrderBy = '';
@@ -192,6 +196,7 @@ class Fdl_Collection extends Fdl_Document
      */
     private function getDocumentListContent()
     {
+        
         $dl = $this->documentList;
         $content = null;
         $out = new stdClass();
@@ -208,6 +213,9 @@ class Fdl_Collection extends Fdl_Document
             $tmpdoc = new Fdl_Document();
             $kd = 0;
             $verifyhaschild = $this->contentVerifyHasChild;
+            /**
+             * @var Doc $doc
+             */
             foreach ($dl as $doc) {
                 $tmpdoc->affect($doc);
                 if (!$doc->isConfidential()) {
@@ -256,6 +264,7 @@ class Fdl_Collection extends Fdl_Document
         $out = new stdClass();
         $tfid = array();
         $err = '';
+        $keyword = '';
         if (strstr($famid, '|')) {
             // multi family search
             $tfamids = explode('|', $famid);
@@ -291,6 +300,9 @@ class Fdl_Collection extends Fdl_Document
                     $s->addFilter($filter);
                 }
             } elseif (is_object($filter)) {
+                /**
+                 * @var _DSEARCH $sw
+                 */
                 if (!$sw) {
                     $sw = createTmpDoc($this->dbaccess, "DSEARCH");
                     $sw->setValue("se_famid", $famid);
@@ -321,6 +333,9 @@ class Fdl_Collection extends Fdl_Document
             $out->info = $info;
             
             if (!$out->error) {
+                /**
+                 * @var _DSEARCH $ws
+                 */
                 $ws = createTmpDoc($this->dbaccess, "DSEARCH");
                 $ws->setValue("ba_title", sprintf(_("search %s") , $key));
                 $ws->add();
@@ -503,6 +518,9 @@ class Fdl_Collection extends Fdl_Document
             $out->moved = array();
             $err = $this->doc->canModify();
             if ($err == "") {
+                /**
+                 * @var Dir $targetDoc
+                 */
                 $targetDoc = new_doc($this->dbaccess, $targetId);
                 if ($targetDoc->isAlive()) {
                     if ($targetDoc->defDoctype != 'D') $err = sprintf(_("target folder [%s] is not a folder") , $targetDoc->getTitle());

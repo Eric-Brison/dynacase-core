@@ -55,9 +55,9 @@ class Fdl_Workflow extends Fdl_Document
             $out["transitionTypes"][$k] = array(
                 "key" => $k,
                 "label" => _($k) ,
-                "ask" => $v["ask"],
-                "preMethod" => $v["m1"],
-                "postMethod" => $v["m2"],
+                "ask" => isset($v["ask"]) ? $v["ask"] : null,
+                "preMethod" => isset($v["m1"]) ? $v["m1"] : null,
+                "postMethod" => isset($v["m2"]) ? $v["m2"] : null,
                 "noComment" => $v["nr"] ? true : false
             );
         }

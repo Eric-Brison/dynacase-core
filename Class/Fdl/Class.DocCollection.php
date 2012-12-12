@@ -378,7 +378,7 @@ class DocCollection extends Doc
         if (!empty($of->family)) {
             if (preg_match('/([\w:]*)\s?(strict)?/', trim($of->family) , $reg)) {
                 if (!is_numeric($reg[1])) $reg[1] = getFamIdFromName($this->dbaccess, $reg[1]);
-                if ($reg[2] == "strict") $famid = '-' . $reg[1];
+                if (isset($reg[2]) && ($reg[2] == "strict")) $famid = '-' . $reg[1];
                 else $famid = $reg[1];
             }
         }
@@ -400,7 +400,7 @@ class DocCollection extends Doc
                 $sql[] = $of->sql;
             }
         }
-        if ($of->criteria && (!is_array($of->criteria))) {
+        if ((!empty($of->criteria)) && (!is_array($of->criteria))) {
             if ($of->criteria->operator) $of->criteria = array(
                 $of->criteria
             );
@@ -412,7 +412,7 @@ class DocCollection extends Doc
             );
         }
         $err = '';
-        if ($of->criteria && is_array($of->criteria)) {
+        if ((!empty($of->criteria)) && is_array($of->criteria)) {
             foreach ($of->criteria as $c) {
                 $sqlone = '';
                 if ($c->operator) {

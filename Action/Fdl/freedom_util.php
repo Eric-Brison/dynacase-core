@@ -243,7 +243,10 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
     if (!is_numeric($fromid)) $fromid = getFamIdFromName($dbaccess, $fromid);
     if ($fromid > 0) {
         include_once ("FDL/Class.DocFam.php");
-        $cdoc = new DocFam($dbaccess, $fromid);
+        /**
+         * @var DocFam $cdoc
+         */
+        $cdoc = new_doc($dbaccess, $fromid);
         
         if ($control) {
             $err = $cdoc->control('create');
