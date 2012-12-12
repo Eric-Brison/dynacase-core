@@ -834,7 +834,7 @@ class Fdl_Document
     }
     function setVersion($version, $usecomment = true)
     {
-        $la = $this->doc->GetNormalAttributes();
+        $la = $this->doc->attributes->getNormalAttributes();
         $hasversion = false;
         $err = "";
         foreach ($la as $at) {

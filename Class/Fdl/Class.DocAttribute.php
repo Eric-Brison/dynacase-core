@@ -289,6 +289,7 @@ class NormalAttribute extends BasicAttribute
     public $format; // C format
     public $eformat; // format for edition : list,vcheck,hcheck
     public $repeat; // true if is a repeatable attribute
+    public $isNormal=true;
     
     /**
      * @var bool

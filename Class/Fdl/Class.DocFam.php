@@ -107,7 +107,6 @@ create unique index idx_idfam on docfam(id);";
         foreach ($this->addfields as $f) $this->fields[$f] = $f;
         // specials characteristics R : revised on each modification
         parent::__construct($dbaccess, $id, $res, $dbid);
-        
         $this->doctype = 'C';
         if ($include && ($this->id > 0) && ($this->isAffected())) {
             $adoc = "Doc" . $this->id;
