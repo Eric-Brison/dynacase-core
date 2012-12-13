@@ -28,6 +28,7 @@ class Fdl_Document
     protected $_properties;
     public $error = '';
     public $dbaccess;
+    private $onlyAttributes = null;
     /**
      * @param int $id
      * @param stdClass $config
@@ -49,7 +50,7 @@ class Fdl_Document
             if (!$this->doc->isAffected()) $this->error = sprintf(_("document %s not exist") , $id);
             if (!$this->error) {
                 // no control families if structure is required
-                if ($this->doc->doctype != 'C' || ($config->onlyValues)) $this->error = $this->doc->control('view');
+                if ($this->doc->doctype != 'C' || (!empty($config->onlyValues))) $this->error = $this->doc->control('view');
                 if ($this->error) $this->error = sprintf(_("no privilege view for %d") , $id);
                 elseif ($this->doc->isConfidential()) $this->error = sprintf(_("confidential document"));
             }
@@ -108,6 +109,11 @@ class Fdl_Document
         }
         return null;
     }
+    
+    public function usePartialDocument(array $attrids)
+    {
+        $this->onlyAttributes = $attrids;
+    }
     /**
      * @return Doc|null
      */
@@ -135,6 +141,7 @@ class Fdl_Document
                 $this->doc->applyMask();
                 $isoDate = (getParam("DATA_LCDATE") == 'iso');
                 foreach ($nattr as $k => $v) {
+                    if ($this->onlyAttributes !== null && (!in_array($v->id, $this->onlyAttributes))) continue;
                     if ($v->mvisibility != "I" && (!empty($this->doc->$k)) && $v->getOption("autotitle") != "yes") {
                         if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id] = $this->doc->GetTValue($v->id);
                         else $lvalues[$v->id] = $this->doc->getValue($v->id);
@@ -476,6 +483,9 @@ class Fdl_Document
             "requestDate" => date('Y-m-d H:i:s') ,
             "values" => $this->getValues()
         );
+        if ($this->onlyAttributes !== null) {
+            $out["partialDocument"] = true;
+        }
         
         if ($completeprop) {
             $out["followingStates"] = $this->getFollowingStates();

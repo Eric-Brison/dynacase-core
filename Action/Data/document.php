@@ -43,7 +43,7 @@ function document(Action & $action)
             else if (is_object($out)) $out->debuginfo = getPerfoInfo(sprintf("%.03fs", microtime(true) - $mb1));
         }
         addLogInData($action, $out);
-        //$out=sprintf("%.03fms", microtime(true)-$mb1);
+        //$out = sprintf("%.03fms", microtime(true) - $mb1);
         $action->lay->template = json_encode($out);
     }
     $action->lay->noparse = true; // no need to parse after - increase performances
@@ -112,6 +112,13 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
                 $doc->setContentKeyMode($action->getArgument("mode", "word"));
                 $doc->setContentRecursiveLevel($action->getArgument("recursiveLevel", 0));
                 $doc->setContentSearchProperty($action->getArgument("searchProperty", "svalues"));
+                $fetchedAttributes = $action->getArgument("fetchedAttributes", null);
+                if ($fetchedAttributes) {
+                    $fetchedAttributes = json_decode($fetchedAttributes);
+                    if (is_array($fetchedAttributes)) {
+                        $doc->returnsOnlyAttributes($fetchedAttributes);
+                    }
+                }
                 $filter = $action->getArgument("filter");
                 if ($filter) $filter = json_decode($filter);
                 if ($filter == "undefined") $filter = "";
@@ -555,7 +562,7 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             break;
 
         case 'getsearchcriteria':
-            require_once("DATA/Lib.Document.php");
+            require_once ("DATA/Lib.Document.php");
             getSearchCriteria($out);
             break;
 
@@ -625,8 +632,8 @@ function documentApplyMethod(Action & $action, $id, $method, &$returntype, &$out
             $out->error = sprintf(_("method %s not possible") , $method);
         }
     }
-
-function addLogInData(Action & $action, &$out)
+    
+    function addLogInData(Action & $action, &$out)
     {
         $l = $action->parent->GetLogMsg();
         if (is_array($l) && (count($l) > 0)) {
@@ -643,3 +650,4 @@ function addLogInData(Action & $action, &$out)
             }
         }
     }
+    

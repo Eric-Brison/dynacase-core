@@ -38,6 +38,7 @@ class Fdl_Collection extends Fdl_Document
     private $contentVerifyHasChild = false;
     private $contentRecursiveLevel = 0;
     private $contentMap = null;
+    private $onlyAttributes = null;
     /**
      * Internal document list
      * @var DocumentList
@@ -47,6 +48,10 @@ class Fdl_Collection extends Fdl_Document
     public function setContentCompleteProperties($value)
     {
         $this->completeProperties = $value;
+    }
+    public function returnsOnlyAttributes(array $value)
+    {
+        $this->onlyAttributes = $value;
     }
     public function setContentOnlyValue($value)
     {
@@ -211,6 +216,9 @@ class Fdl_Collection extends Fdl_Document
             $out->start = $s->start;
             $this->setError($out->info["error"]);
             $tmpdoc = new Fdl_Document();
+            if ($this->onlyAttributes !== null) {
+                $tmpdoc->usePartialDocument($this->onlyAttributes);
+            }
             $kd = 0;
             $verifyhaschild = $this->contentVerifyHasChild;
             /**

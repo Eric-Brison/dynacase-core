@@ -719,7 +719,7 @@ Fdl.Context.prototype.getDocument = function(config) {
 		config.data = wdoc._data;
 		wdoc = new Fdl.Workflow(config);
 	}
-	if (config && (! config.noCache)) {
+	if (config && (! config.noCache) && (! wdoc.partialDocument)) {
 		if (latest) {
 			this._documents[wdoc.getProperty('initid')] = wdoc;
 			if (wdoc.getProperty('id') != wdoc.getProperty('initid')) {
