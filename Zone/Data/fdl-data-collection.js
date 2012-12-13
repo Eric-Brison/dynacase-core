@@ -107,6 +107,7 @@ Fdl.Collection.prototype.toString= function() {
  * <li><b>withHighlight : </b> {Boolean}(optional) to return highlight text in
  * concordance with the main keyword</li>
  * <li><b>key : </b> {String}(optional) main keyword filter  </li>
+ * <li><b>fetchedAttributes : </b> {Array}(optional) return a subset of attributes </li>
  * <li><b>mode : </b> {String}(optional) search mode fir main keyword must be 'word' or 'regexp' (default is word)</li>
  * <li><b>recursiveLevel : </b> {Numeric}(optional) inspect subdirectories until depth level. A limit is necessary because the graph can be cyclic </li>
  * <li><b>mode : </b> {String}(optional) search mode fir main keyword must be 'word' or 'regexp' (default is word)</li>
