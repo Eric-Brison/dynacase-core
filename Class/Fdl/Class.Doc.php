@@ -544,6 +544,10 @@ class Doc extends DocCtrl
      */
     public $fromname;
     /**
+     * @var string raw family title
+     */
+    public $fromtitle;
+    /**
      * @var string fulltext vector
      */
     public $fulltext;
