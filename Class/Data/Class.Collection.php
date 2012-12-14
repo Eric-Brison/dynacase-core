@@ -161,6 +161,9 @@ class Fdl_Collection extends Fdl_Document
                     $s->addFilter($sfilter);
                 }
             }
+            if ($this->onlyAttributes !== null) {
+                $s->returnsOnly(array_merge(array_keys(Doc::$infofields) , $this->onlyAttributes));
+            }
             if ($err == "") {
                 $s->search();
                 $out->info = $s->getSearchInfo();
