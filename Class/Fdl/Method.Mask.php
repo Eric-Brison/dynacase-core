@@ -103,11 +103,15 @@ class _MASK extends Doc
         
         foreach ($tattrid as $k => $v) {
             $attr = $doc->getAttribute($v);
-            $fvisid = $attr->fieldSet->id;
-            if ($tvisid[$k] == "-") $vis = $attr->visibility;
-            else $vis = $tvisid[$k];
-            
-            $tvisibilities[$v] = ComputeVisibility($vis, isset($tvisibilities[$fvisid]) ? $tvisibilities[$fvisid] : '', isset($attr->fieldSet->fieldSet) ? $attr->fieldSet->fieldSet->mvisibility : '');
+            if ($attr) {
+                $fvisid = $attr->fieldSet->id;
+                if ($tvisid[$k] == "-") $vis = $attr->visibility;
+                else $vis = $tvisid[$k];
+                
+                $tvisibilities[$v] = ComputeVisibility($vis, isset($tvisibilities[$fvisid]) ? $tvisibilities[$fvisid] : '', isset($attr->fieldSet->fieldSet) ? $attr->fieldSet->fieldSet->mvisibility : '');
+            } else {
+                $tvisibilities[$v] = false;
+            }
         }
         return $tvisibilities;
     }
