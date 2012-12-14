@@ -138,10 +138,11 @@ class Fdl_Document
                 }
             } else {
                 $nattr = $this->doc->getNormalAttributes();
-                $this->doc->applyMask();
+                if ($this->onlyAttributes === null) $this->doc->applyMask();
                 $isoDate = (getParam("DATA_LCDATE") == 'iso');
                 foreach ($nattr as $k => $v) {
                     if ($this->onlyAttributes !== null && (!in_array($v->id, $this->onlyAttributes))) continue;
+                    
                     if ($v->mvisibility != "I" && (!empty($this->doc->$k)) && $v->getOption("autotitle") != "yes") {
                         if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id] = $this->doc->GetTValue($v->id);
                         else $lvalues[$v->id] = $this->doc->getValue($v->id);
@@ -322,8 +323,7 @@ class Fdl_Document
                 }
                 
                 $props["fromname"] = $this->doc->fromname;
-                //$props["fromtitle"] = $this->doc->fromtitle;
-                
+                $props["fromtitle"] = $this->doc->fromtitle;
             }
             if ($this->doc->doctype == 'C') {
                 $props["generateVersion"] = doubleval($this->doc->genversion);

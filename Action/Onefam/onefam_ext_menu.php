@@ -33,6 +33,7 @@ function onefam_ext_menu(&$action)
     
     $fldid = $action->getArgument("fldid");
     $famid = $action->getArgument("famid");
+    $docid = 0;
     $menuxml = $action->getArgument("menuxml", "EXTUI:default-collection-menu.xml");
     $menu = eui_getxmlmenu($docid, $menuxml, $fldid);
     $dbaccess = $action->getParam("FREEDOM_DB");

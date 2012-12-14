@@ -87,6 +87,7 @@ class DocTitle
         }
         if ($latestId) {
             $sql = sprintf("select id,initid from docread where initid in (%s) and locked != -1", implode(',', $latestId));
+            //$sql = sprintf("select id,initid from docread where initid in (select initid from docread where id in (%s)) and  locked != -1", implode(',', $latestId));
             simpleQuery($doc->dbaccess, $sql, $result);
             $tInitid = array();
             foreach ($result as $aRow) {
@@ -94,7 +95,7 @@ class DocTitle
             }
             foreach ($relationIds as $k => $relid) {
                 if ($relid["latest"]) {
-                    $relationIds[$k]["rid"] = empty($tInitid[$relid["docid"]]) ? null : $tInitid[$relid["docid"]];
+                    $relationIds[$k]["rid"] = empty($tInitid[$relid["docid"]]) ? $relid["docid"] : $tInitid[$relid["docid"]];
                 } else {
                     $relationIds[$k]["rid"] = $relid["docid"];
                 }

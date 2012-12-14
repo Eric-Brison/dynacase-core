@@ -439,11 +439,27 @@ class SearchDoc
         include_once ("FDL/Class.DocumentList.php");
         return new DocumentList($this);
     }
-    
+    /**
+     * limit query to a subset of somes attributes
+     * @param array $returns
+     */
     public function returnsOnly(array $returns)
     {
+        $fields = array();
+        if ($this->fromid) {
+            $fdoc = createTmpDoc($this->dbaccess, $this->fromid, false);
+            $fields = array_merge($fdoc->fields, $fdoc->sup_fields);
+        } else {
+            $fdoc = new Doc();
+            $fields = array_merge($fdoc->fields, $fdoc->sup_fields);
+        }
         foreach ($returns as $k => $r) {
             if (empty($r)) unset($returns[$k]);
+            $returns[$k] = strtolower($r);
+            // delete unknow fields
+            if (!in_array($r, $fields)) {
+                unset($returns[$k]);
+            }
         }
         $this->returnsFields = array_unique(array_merge(array(
             "id",

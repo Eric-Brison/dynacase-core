@@ -836,36 +836,44 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function getImageUrl($img, $detectstyle = true, $size = null)
     {
+        static $cacheImgUrl = array();
         
+        $cacheIndex = $img . $size;
+        if (isset($cacheImgUrl[$cacheIndex])) return $cacheImgUrl[$cacheIndex];
         if ($img != "") {
             // try style first
             if ($detectstyle) {
                 $url = $this->style->GetImageUrl($img, "");
                 if ($url != "") {
-                    if ($size !== null) return 'resizeimg.php?img=' . $url . '&size=' . $size;
+                    if ($size !== null) $url = 'resizeimg.php?img=' . $url . '&size=' . $size;
+                    $cacheImgUrl[$cacheIndex] = $url;
                     return $url;
                 }
             }
             // try application
             if (file_exists($this->rootdir . "/" . $this->name . "/Images/" . $img)) {
                 $url = $this->name . "/Images/" . $img;
-                if ($size !== null) return 'resizeimg.php?img=' . $url . '&size=' . $size;
+                if ($size !== null) $url = 'resizeimg.php?img=' . $url . '&size=' . $size;
+                $cacheImgUrl[$cacheIndex] = $url;
                 return $url;
             } else { // perhaps generic application
                 if (($this->childof != "") && (file_exists($this->rootdir . "/" . $this->childof . "/Images/" . $img))) {
                     $url = $this->childof . "/Images/" . $img;
-                    if ($size !== null) return 'resizeimg.php?img=' . $url . '&size=' . $size;
+                    if ($size !== null) $url = 'resizeimg.php?img=' . $url . '&size=' . $size;
+                    $cacheImgUrl[$cacheIndex] = $url;
                     return $url;
                 } else if (file_exists($this->rootdir . "/Images/" . $img)) {
                     $url = "Images/" . $img;
-                    if ($size !== null) return 'resizeimg.php?img=' . $url . '&size=' . $size;
+                    if ($size !== null) $url = 'resizeimg.php?img=' . $url . '&size=' . $size;
+                    $cacheImgUrl[$cacheIndex] = $url;
                     return $url;
                 }
             }
             // try in parent
             if ($this->parent != "") {
                 $url = $this->parent->getImageUrl($img);
-                if ($size !== null) return 'resizeimg.php?img=' . $url . '&size=' . $size;
+                if ($size !== null) $url = 'resizeimg.php?img=' . $url . '&size=' . $size;
+                $cacheImgUrl[$cacheIndex] = $url;
                 return $url;
             }
         }
@@ -1184,7 +1192,10 @@ create sequence SEQ_ID_APPLICATION start 10;
                     if ($nextVersion != '') {
                         $currentVersion = $this->getParam('VERSION', '');
                         if ($currentVersion != '' && $nextVersion != $currentVersion) {
-                            $this->setParam('PREVIOUS_VERSION', array('val' => $currentVersion, 'kind' => 'static'));
+                            $this->setParam('PREVIOUS_VERSION', array(
+                                'val' => $currentVersion,
+                                'kind' => 'static'
+                            ));
                         }
                     }
                 }
