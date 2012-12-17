@@ -210,7 +210,15 @@ class TestOooLayout extends TestCaseDcpDocument
                 "PU_dcp_data_simpleOooLayout.xml",
                 "TST_SIMPLEODT",
                 array(
-                    "PU_dcp_data_errorInlineOooLayout.odt",
+                    "PU_dcp_data_errorInlineOooLayout.odt"
+                ) ,
+                "LAY0005"
+            ) ,
+            
+            array(
+                "PU_dcp_data_simpleOooLayout.xml",
+                "TST_SIMPLEODT",
+                array(
                     "PU_dcp_data_errorPuceHtmlOooLayout.odt"
                 ) ,
                 "LAY0002"

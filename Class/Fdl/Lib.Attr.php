@@ -200,11 +200,13 @@ function AttrToPhp($dbaccess, $tdoc)
                             if (isset($tnormal[strtolower($v->frameid) ])) {
                                 if (getTypeMain($tnormal[strtolower($v->frameid) ]["type"]) == "array") $repeat = "true";
                             }
-                            if ((!$repeat) && isset($pa[strtolower($v->frameid) ])) {
+                            
+                            if (($repeat == "false") && isset($pa[strtolower($v->frameid) ])) {
                                 if (getTypeMain($pa[strtolower($v->frameid) ]["type"]) == "array") $repeat = "true";
                             }
                         }
                     }
+                    
                     $atype = strtolower(trim($atype));
                     // create code for calculated attributes
                     if ((!$v->phpfile) && preg_match('/^[a-z]*::[a-z0-9_ ]+\(/i', $v->phpfunc, $reg) && ($v->usefor != 'Q')) {

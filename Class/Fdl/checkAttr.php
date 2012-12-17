@@ -443,7 +443,9 @@ class CheckAttr extends CheckData
                             $targetFile = $refFunc->getFileName();
                             $realPhpFile = realpath(sprintf("EXTERNALS/%s", $phpFile));
                             if ($targetFile != $realPhpFile) {
-                                $this->addError(ErrorCode::getError('ATTR1210', $phpFuncName, $realPhpFile));
+                                if (!$oParse->appName) {
+                                    $this->addError(ErrorCode::getError('ATTR1210', $phpFuncName, $realPhpFile));
+                                }
                             } else {
                                 $numArgs = $refFunc->getNumberOfRequiredParameters();
                                 if ($numArgs > count($strucFunc->inputs)) {

@@ -122,7 +122,7 @@ class DocTitle
             
             foreach ($relationIds as $k => $relid) {
                 $rid = $relid["rid"];
-                if ($rid) {
+                if ($rid && isset($accesses[$rid])) {
                     $relationIds[$k]["title"] = $accesses[$rid]["title"];
                     $relationIds[$k]["canaccess"] = $accesses[$rid]["canaccess"];
                 }
