@@ -195,7 +195,7 @@ class DocHtmlFormat
                     if ($this->target == "ext") {
                         if (preg_match("/FDL_CARD.*id=([0-9]+)/", $ulink, $reg)) {
                             
-                            $abegin = $this->doc->getDocAnchor($reg[1], $this->target, true, html_entity_decode($htmlval));
+                            $abegin = $this->doc->getDocAnchor($reg[1], $this->target, true, html_entity_decode($htmlval, ENT_QUOTES, 'UTF-8'));
                             $htmlval = '';
                             $aend = "";
                         } else if (true || preg_match("/^http:/", $ulink, $reg)) {
