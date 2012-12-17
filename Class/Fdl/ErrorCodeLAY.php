@@ -40,6 +40,13 @@ namespace {
          */
         const LAY0004 = 'Cannot produce open Document Text file from %s template';
         /**
+         * the attribute HTMLTEXT must be placed in a single paragraph in OOo Layout
+         * @errorCode the attribute HTMLTEXT must be placed in a single paragraph
+         *
+         * Thes section must be under 'office:text', 'text:text-content' or 'text:office-text-content-main'
+         */
+        const LAY0005 = 'HTML attribute %s misplaced';
+        /**
          * for beautifier
          */
         private function _bo()

@@ -29,10 +29,15 @@ class DocTitle
         if (!is_numeric($docid)) $docid = getIdFromName(getDbAccess() , $docid);
         if (!$docid) return null;
         $keyCache = intval($docid) . '-' . intval($latest);
+        
         if (!isset(self::$relationCache[$uid][$keyCache])) {
             self::setRelationCache($doc, $uid);
         }
         
+        if (isset(self::$relationCache[$uid][$keyCache])) {
+        } else {
+            $keyCache = intval($docid) . '-' . intval(!$latest);
+        }
         if (isset(self::$relationCache[$uid][$keyCache])) {
             $relCache = self::$relationCache[$uid][$keyCache];
             
@@ -76,6 +81,7 @@ class DocTitle
                 foreach ($realId as $did) {
                     $relationIds[$did . '-' . intval($latest) ] = array(
                         "docid" => $did,
+                        "rid" => $did,
                         "latest" => $latest
                     );
                 }
@@ -102,18 +108,18 @@ class DocTitle
             }
         }
         $realIds = array();
+        
         foreach ($relationIds as $relid) {
-            if ($relid["rid"]) $realIds[] = $relid["rid"];
+            if (!empty($relid["rid"])) $realIds[] = $relid["rid"];
         }
         if ($realIds) {
             $sql = sprintf("select id,initid,title,views && '%s' as canaccess from docread where id in (%s)", self::getUserVector() , implode(',', $realIds));
-            
             simpleQuery($doc->dbaccess, $sql, $result);
-            
             $accesses = array();
             foreach ($result as $access) {
                 $accesses[$access["id"]] = $access;
             }
+            
             foreach ($relationIds as $k => $relid) {
                 $rid = $relid["rid"];
                 if ($rid) {
