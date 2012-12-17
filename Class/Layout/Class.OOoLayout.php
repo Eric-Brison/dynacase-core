@@ -1694,14 +1694,14 @@ class OOoLayout extends Layout
                 //print "Parent Node is ".$htmlSection->parentNode->nodeName."\n";
                 
             } else {
-                if (!in_array(array(
+                if (!in_array($parentHtml->nodeName, array(
                     'office:text',
                     'text:text-content',
                     'text:office-text-content-main'
-                ) , $parentHtml->nodeName)) {
+                ))) {
                     $htmlCleanSections[] = $htmlSection;
                     $attrid = substr($htmlSection->getAttribute("text:name") , 7);
-                    $this->addError("LAY0002", "[V_" . strtoupper($attrid) . "]");
+                    $this->addError("LAY0005", "[V_" . strtoupper($attrid) . "]");
                 }
             }
         }
