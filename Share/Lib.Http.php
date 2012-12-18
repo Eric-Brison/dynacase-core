@@ -64,7 +64,7 @@ function Redirect(Action & $action, $appname, $actionname, $otherurl = "", $http
         $trace["__server all"] = sprintf("%.03fs", $tic4 - $tic1);
         $action->register("trace", $trace);
     }
-    $viewext = isset($_GET["viewext"]) ? $_GET["viewext"] : isset($_POST["viewext"]) ? $_POST["viewext"] : "";
+    $viewext = isset($_GET["viewext"]) ? $_GET["viewext"] : (isset($_POST["viewext"]) ? $_POST["viewext"] : "");
     if ($viewext === "yes") {
         $location = str_replace("FDL_CARD", "VIEWEXTDOC", $location);
         if (preg_match("/action=GENERIC_EDIT/", $location)) {
@@ -72,7 +72,7 @@ function Redirect(Action & $action, $appname, $actionname, $otherurl = "", $http
             $location = str_replace("app=GENERIC", "app=FDL", $location);
         }
     }
-    Header("Location: $location");
+    header("Location: $location");
     exit;
 }
 
