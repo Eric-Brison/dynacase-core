@@ -629,10 +629,12 @@ create unique index idx_idfam on docfam(id);";
                 $txval[$aid] = ($dval == '-') ? '' : $dval;
             }
         }
-        uksort($txval, array(
-            $this,
-            "compareXOrder"
-        ));
+        if ($this->attributes) {
+            uksort($txval, array(
+                $this,
+                "compareXOrder"
+            ));
+        }
         $this->$Xval = $txval;
         
         return $this->$Xval;
@@ -764,7 +766,6 @@ create unique index idx_idfam on docfam(id);";
         }
         return $this->_configuration;
     }
-
     /**
      * @api get XML Schema for create XML document of these family
      * @return string
