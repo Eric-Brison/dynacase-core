@@ -26,7 +26,6 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
-
 echo "change old attribute syntax type enumlist, textlist"
 PGSERVICE="$pgservice_core" psql -t -c "update docattr set type= 'enum' where type='enumlist' and docid < 200;"
 PGSERVICE="$pgservice_core" psql -t -c "update docattr set type= 'text' where type='textlist' and docid < 200;"
@@ -37,6 +36,14 @@ PGSERVICE="$pgservice_core" psql -t -c "update users set accounttype='G' where a
 PGSERVICE="$pgservice_core" psql -t -c "update doc128 set us_passwd=null;"
 PGSERVICE="$pgservice_core" psql -t -c "ALTER TABLE doc128 NO INHERIT doc120;"
 PGSERVICE="$pgservice_core" psql -t -c "ALTER TABLE doc128 INHERIT doc;"
+
+# Drop deprecated columns on IUSERs
+"$wpub/wsh.php" --api=migr_IUSER_premigr_3.2.0
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error executing API script 'migr_FUSERS_premigr_3.2.0'."
+    exit $RET
+fi
 
 PGSERVICE="$pgservice_core" psql -f - <<EOF
 INSERT INTO docattr
@@ -49,14 +56,6 @@ EOF
 PGSERVICE="$pgservice_core" psql -t -c "update docfam set fromid=0 where id=128;"
 PGSERVICE="$pgservice_core" psql -t -c "drop TRIGGER tinitacl on docperm;"
 PGSERVICE="$pgservice_core" psql -f "$wpub/FDL/fdl.sql"
-
-# Drop deprecated columns on IUSERs
-"$wpub/wsh.php" --api=migr_IUSER_premigr_3.2.0
-RET=$?
-if [ $RET -ne 0 ]; then
-    echo "Error executing API script 'migr_FUSERS_premigr_3.2.0'."
-    exit $RET
-fi
 
 # Delete parasite parameters
 "$wpub/wsh.php" --api=cleanFamilyParameter
