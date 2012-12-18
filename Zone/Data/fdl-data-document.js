@@ -514,6 +514,7 @@ Fdl.Document.prototype.completeAttributes = function(attrs) {
 			case 'timestamp':
 				this._attributes[attrs[name].id]=new Fdl.DateAttribute(attrs[name]);
 				break;
+			case 'account':
 			case 'docid':
 				this._attributes[attrs[name].id]=new Fdl.RelationAttribute(attrs[name]);
 				break;
