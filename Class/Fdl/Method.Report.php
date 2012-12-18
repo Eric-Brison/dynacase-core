@@ -173,7 +173,7 @@ class _REPORT extends _DSEARCH
             }
         }
         $order.= " " . $this->getValue("REP_ORDERSORT");
-        $s = new SearchDoc($this->dbaccess);
+        $s = new SearchDoc($this->dbaccess, $this->getValue("se_famid"));
         $s->useCollection($this->initid);
         $s->setOrder($order);
         $s->returnsOnly($tcols);
@@ -475,12 +475,16 @@ class _REPORT extends _DSEARCH
                 break;
         }
         $isAttrInArray = array();
-        foreach ($columns as $col) {
-            if ($famDoc->getAttribute($col)) {
-                $fc->addAttribute($col);
-                $isAttrInArray[$col] = $famDoc->getAttribute($col)->inArray();
+        foreach ($columns as $k => $col) {
+            if (empty($col)) {
+                unset($columns[$k]);
             } else {
-                $fc->addProperty($col);
+                if ($famDoc->getAttribute($col)) {
+                    $fc->addAttribute($col);
+                    $isAttrInArray[$col] = $famDoc->getAttribute($col)->inArray();
+                } else {
+                    $fc->addProperty($col);
+                }
             }
         }
         $fc->setNc('-');
