@@ -415,7 +415,7 @@ class DocCollection extends Doc
         if ((!empty($of->criteria)) && is_array($of->criteria)) {
             foreach ($of->criteria as $c) {
                 $sqlone = '';
-                if ($c->operator) {
+                if (!empty($c->operator)) {
                     $err.= $this->_1object2SqlFilter($c, $sqlone, $famid);
                     if ($err == "") $sql[] = $sqlone;
                 } elseif ($c->or && is_array($c->or)) {
