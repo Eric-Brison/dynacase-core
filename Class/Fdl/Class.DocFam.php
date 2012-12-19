@@ -460,9 +460,18 @@ create unique index idx_idfam on docfam(id);";
         $this->setChanged();
         $idp = strtolower($idp);
         if (is_array($val)) $val = $this->_array2val($val);
-        $err = $this->checkSyntax($idp, $val);
+        $err = '';
+        if ($this->isComplete()) $err = $this->checkSyntax($idp, $val);
         if (!$err) $this->setXValue("param", strtolower($idp) , $val);
         return $err;
+    }
+    /**
+     * Verify is family is under construction
+     * @return bool
+     */
+    private function isComplete()
+    {
+        return ($this->attributes && $this->attributes->attr);
     }
     /**
      * @param string $aid attribute identifier
@@ -629,7 +638,7 @@ create unique index idx_idfam on docfam(id);";
                 $txval[$aid] = ($dval == '-') ? '' : $dval;
             }
         }
-        if ($this->attributes) {
+        if ($this->isComplete()) {
             uksort($txval, array(
                 $this,
                 "compareXOrder"
