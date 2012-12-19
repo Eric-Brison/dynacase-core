@@ -33,7 +33,7 @@ foreach ($childList as $child) {
 }
 
 /*
- * 1. Suppress attributes that do not belongs to USER or IUSER
+ * 1. Suppress attributes that do not belongs to IUSER
  */
 $resList = array();
 $q = sprintf("SELECT id, docid FROM docattr WHERE docid IN (120, 128) AND (type IS NULL OR type NOT IN ('frame', 'tab', 'array', 'menu')) AND id !~ '^:' AND id NOT IN ('us_defaultgroup', 'us_lname', 'us_fname', 'us_mail', 'us_extmail', 'us_meid', 'us_login', 'us_whatid', 'us_roles', 'us_rolesorigin', 'us_rolegorigin', 'us_group', 'us_idgroup', 'us_expires', 'us_daydelay', 'us_expiresd', 'us_expirest', 'us_passdelay', 'us_ldapdn', 'us_substitute', 'us_incumbents', 'us_passwd1', 'us_passwd2', 'us_status', 'us_loginfailure', 'us_accexpiredate')");
@@ -45,7 +45,7 @@ foreach ($resList as $attr) {
 
     /* Check if the column is empty */
     $count = array();
-    $q = sprintf("SELECT count(%s) AS count FROM doc%d", pg_escape_string($attr['id']), $attr['docid']);
+    $q = sprintf("SELECT count(%s) AS count FROM doc128 WHERE %s IS NOT NULL", pg_escape_string($attr['id']), pg_escape_string($attr['id']));
     simpleQuery($dbaccess, $q, $count, false, false, true);
 
     if (!isset($count[0]['count'])) {
