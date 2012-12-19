@@ -759,7 +759,8 @@ class DocHtmlFormat
                      */
                     foreach ($ta as $ka => $va) {
                         if (($va->mvisibility == "H") || ($va->mvisibility == "I") || ($va->mvisibility == "O")) continue;
-                        $hval = $this->doc->getHtmlValue($va, $tval[$ka][$k], $this->target, $this->htmlLink, $k);
+                        if (isset($tval[$ka][$k])) $hval = $this->doc->getHtmlValue($va, $tval[$ka][$k], $this->target, $this->htmlLink, $k);
+                        else $hval = '';
                         if ($va->type == "image") {
                             $iwidth = $va->getOption("iwidth", "80px");
                             if ($tval[$ka][$k] == "") $hval = "";

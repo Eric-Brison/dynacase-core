@@ -5553,7 +5553,7 @@ create unique index i_docir on doc(initid, revision);";
                         $ajs = "";
                         if ($viewIcon) {
                             simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
-                            $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14)) . $title;
+                            $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
                         }
                         $a = "<a $ajs onclick='parent.$ecu'>$title</a>";
                     } else {
@@ -5607,13 +5607,26 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getHtmlValue($oattr, $value, $target = "_self", $htmllink = true, $index = - 1, $entities = true, $abstract = false)
     {
+        static $level = 0;
+        static $otherFormatter = array();;
         if (!$this->htmlFormater) {
             $this->htmlFormater = new DocHtmlFormat($this);
         }
-        if ($this->htmlFormater->doc->id != $this->id) {
-            $this->htmlFormater->setDoc($this);
+        if ($level == 0) {
+            $htmlFormater = & $this->htmlFormater;
+        } else {
+            if (!isset($otherFormatter[$level])) {
+                $otherFormatter[$level] = new DocHtmlFormat($this);
+            }
+            $htmlFormater = $otherFormatter[$level];
         }
-        return $this->htmlFormater->getHtmlValue($oattr, $value, $target, $htmllink, $index, $entities, $abstract);
+        if ($htmlFormater->doc->id != $this->id) {
+            $htmlFormater->setDoc($this);
+        }
+        $level++;
+        $r = $htmlFormater->getHtmlValue($oattr, $value, $target, $htmllink, $index, $entities, $abstract);
+        $level--;
+        return $r;
     }
     /**
      * return an html anchor to a document
