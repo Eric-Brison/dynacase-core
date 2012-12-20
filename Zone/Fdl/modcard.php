@@ -158,7 +158,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
             $ndocid = $doc->id;
             if (!$quicksave) { // else quick save
                 $doc->refresh();
-                if (needRefreshRn($doc)) $action->AddWarningMsg("RefreshRn");
+
                 if (needRefreshRn($doc)) $doc->refreshRn(); // hasNewFiles set by insertFile below
                 $msg = $doc->PostModify();
                 if ($msg) $action->addWarningMsg($msg);

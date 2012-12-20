@@ -3949,11 +3949,13 @@ create unique index i_docir on doc(initid, revision);";
                     // with argument
                     $args = array();
                     
-                    $inputs = $parseMethod->inputs;
+
+                    $inputs=array();
                     foreach ($bargs as $extraArg) {
                         $inputs[] = new inputArgument($extraArg);
                     }
-                    foreach ($parseMethod->inputs as $ki => $input) {
+                    $inputs=array_merge($inputs,$parseMethod->inputs);
+                    foreach ($inputs as $ki => $input) {
                         $args[$ki] = null;
                         if ($input->type == "string") {
                             $args[$ki] = $input->name;
@@ -5287,6 +5289,7 @@ create unique index i_docir on doc(initid, revision);";
                             $fname = $this->applyMethod($rn, "", $k, array(
                                 $cfname
                             ));
+                            
                             if ($fname != $cfname) {
                                 $err.= $this->renameFile($oa->id, $fname, $k);
                             }

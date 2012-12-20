@@ -241,7 +241,7 @@ class UpdateAttribute
         } else {
             $searchValue = pg_escape_string($valueToRemove);
         }
-        $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $valueToRemove));
+        $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, print_r($valueToRemove,true)));
         $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\",E'(\\\\A|\\n|<BR>)(%s)(\\\\Z|\n|<BR>)',E'\\\\1\\\\3','g')  where locked != -1 and initid in (%s)", $this->famid, $attrid, $attrid, $searchValue, implode(',', $ids));
         simpleQuery($this->dbaccess, $sql);
         

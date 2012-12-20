@@ -28,6 +28,7 @@ function freedom_gaccess(Action & $action)
     // Get all the params
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $usage = new ActionUsage($action);
+    $usage->strict(false);
     $usage->setText("view or modify document accessibilities");
     $docid = $usage->addNeeded("id", "document identifier to profil");
     $gid = $usage->addOption("gid", "group identificator, view user access for this group");
