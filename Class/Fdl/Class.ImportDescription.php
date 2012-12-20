@@ -411,7 +411,6 @@ class importDocumentDescription
         }
         if ($ferr == "") {
             $this->doc->modify();
-            
             $check = new CheckEnd();
             if ($this->doc->doctype == "C") {
                 global $tFamIdName;
@@ -441,6 +440,8 @@ class importDocumentDescription
             $this->doc->AddComment(_("Update by importation"));
             
             $this->nbDoc++;
+
+            clearCacheDoc($this->doc->id);
         }
     }
     /**
