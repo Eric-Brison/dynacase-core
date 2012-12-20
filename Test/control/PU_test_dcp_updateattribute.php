@@ -262,7 +262,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
             if ($singleMultiple) {
                 if (!in_array($doc->initid, $noNeedChanged)) {
                     if (is_array($expectedAdd)) {
-                        $this->assertEquals(end($expectedAdd) , end($tv) , sprintf("value \"%s\" not added : %s", $valueToAdd, implode(',', $tv)));
+                        $this->assertEquals(end($expectedAdd) , end($tv) , sprintf("value \"%s\" not added : %s", print_r($valueToAdd,true), implode(',', $tv)));
                     } else {
                         $this->assertEquals($expectedAdd, end($tv) , sprintf("value \"%s\" not added : %s", $valueToAdd, implode(',', $tv)));
                     }
