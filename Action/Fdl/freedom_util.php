@@ -115,8 +115,8 @@ function HandleXmlError($errno, $errstr, $errfile, $errline)
  */
 function clearCacheDoc($id = 0)
 {
+    global $gdocs; // optimize for speed
     if ($id == 0) {
-        global $gdocs; // optimize for speed
         $gdocs = array();
     } else {
         $gdocs[$id] = null;
@@ -264,7 +264,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
         $doc->cprofid = "0"; // NO CREATION PROFILE ACCESS
         $doc->fromid = $fromid;
         if (!$temporary) {
-            $doc->setProfil($cdoc->cprofid); // inherit from its familly
+            $err=$doc->setProfil($cdoc->cprofid); // inherit from its familly
             $doc->setCvid($cdoc->ccvid); // inherit from its familly
             $doc->wid = $cdoc->wid;
         }
