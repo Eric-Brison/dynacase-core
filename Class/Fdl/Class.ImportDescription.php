@@ -105,6 +105,7 @@ class importDocumentDescription
         $this->cvsFile = "";
         
         $this->nLine = 0;
+        $this->beginLine = 0;
         while (!feof($this->fdoc)) {
             $buffer = rtrim(fgets($this->fdoc, 16384));
             $data = explode($this->comma, $buffer);
@@ -129,8 +130,6 @@ class importDocumentDescription
             );
             $this->tcr[$this->nLine]["title"] = substr($data[0], 0, 10);
             $data[0] = trim($data[0]);
-            
-            $this->beginLine = 0;
             
             switch ($data[0]) {
                     // -----------------------------------
@@ -440,7 +439,7 @@ class importDocumentDescription
             $this->doc->AddComment(_("Update by importation"));
             
             $this->nbDoc++;
-
+            
             clearCacheDoc($this->doc->id);
         }
     }
@@ -952,6 +951,7 @@ class importDocumentDescription
             $check = new CheckTagable();
         } else {
             $this->tcr[$this->nLine]["err"] = ErrorCode::getError('PROP0102', "TAGABLE", "dynacase-tags");
+            error_log("ERROR:" . $this->tcr[$this->nLine]["err"]);
             return;
         }
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
