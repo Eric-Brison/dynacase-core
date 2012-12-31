@@ -540,7 +540,7 @@ class importSingleDocument
                     if ($fid) $this->addIntoFolder($fid);
                 }
             }
-            
+            if ($this->doc->id) clearCacheDoc($this->doc->id); // clear cache to clean unused
             return $this;
         }
         /**
