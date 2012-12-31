@@ -263,6 +263,7 @@ class Layout
     protected function ParseKey(&$out)
     {
         if (isset($this->rkey)) {
+            
             $out = str_replace($this->pkey, $this->rkey, $out);
         }
     }
@@ -511,7 +512,8 @@ class Layout
         // if used in an app , set the app params
         if (is_object($this->action) && (!empty($this->action->parent))) {
             $list = $this->action->parent->GetAllParam();
-            while (list($k, $v) = each($list)) {
+            foreach ($list as $k => $v) {
+                if (!is_scalar($v)) $v = "notScalar";
                 $this->set($k, $v);
             }
         }
