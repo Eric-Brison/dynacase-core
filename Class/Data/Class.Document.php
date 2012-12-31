@@ -261,6 +261,13 @@ class Fdl_Document
             if ($this->_properties) $this->_properties[$key] = $value;
         }
     }
+    
+    protected function getDocPropertiesFields()
+    {
+        static $d = null;
+        if ($d === null) $d = new Doc();
+        return $d->fields;
+    }
     /**
      * return all properties object like id, initid, revision, ...
      * @param bool $complete if false not set fromname, fromtitle, lastmodifiername (it is set to false in collection to increase speed)
@@ -273,8 +280,9 @@ class Fdl_Document
         $props = null;
         if ($this->doc) {
             $props = array();
-            foreach ($this->doc->fields as $k => $v) {
-                if (is_numeric($k)) $props[$v] = $this->doc->$v;
+            $dFields = $this->getDocPropertiesFields();
+            foreach ($dFields as $k => $v) {
+                $props[$v] = $this->doc->$v;
             }
             if (isset($this->doc->addfields)) {
                 foreach ($this->doc->addfields as $k => $v) {
@@ -287,7 +295,7 @@ class Fdl_Document
             $props["defdoctype"] = $this->doc->defDoctype;
             
             if ($props['id'] > 0) {
-                $props["mdate"] = strftime("%d/%m/%Y %H:%M:%S", $this->doc->revdate);
+                $props["mdate"] = strftime("%Y-%m-%d %H:%M:%S", $this->doc->revdate);
                 $props["readonly"] = ($this->doc->canEdit() != "");
                 
                 $props["lockdomainid"] = intval($this->doc->lockdomainid);
@@ -309,7 +317,7 @@ class Fdl_Document
                 $props["owner"] = intval($props["owner"]);
                 if ($props["domainid"]) $props["domainid"] = $this->doc->_val2array($props["domainid"]);
                 else $props["domainid"] = array();
-                if (getParam("DATA_LCDATE") == "iso") {
+                if (getParam("DATA_LCDATE") == "iso" && getLcdate() != 'iso') {
                     $props["cdate"] = StringDateToIso($props["cdate"], false);
                     $props["mdate"] = StringDateToIso($props["mdate"], false);
                     $props["adate"] = StringDateToIso($props["adate"], false);
@@ -349,9 +357,11 @@ class Fdl_Document
                     if ($this->doc->locked != - 1) $props["activitystate"] = $wd->getActivity($this->doc->state);
                 }
             }
-            
-            foreach (Doc::$infofields as $k => $v) Doc::$infofields[$k]["label"] = _($v["label"]);
-            if ($infoprop) $props["informations"] = Doc::$infofields; // only when search folder family
+            if ($infoprop) {
+                foreach (Doc::$infofields as $k => $v) Doc::$infofields[$k]["label"] = _($v["label"]);
+                $props["informations"] = Doc::$infofields; // only when search folder family
+                
+            }
             $this->_properties = $props;
         }
         return $props;
