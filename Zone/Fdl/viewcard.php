@@ -89,10 +89,11 @@ function viewcard(Action & $action)
     if ($doc->isConfidential()) {
         redirect($action, "FDL", "FDL_CONFIDENTIAL&id=" . $doc->id);
     }
-    $action->lay->set("RSS", ($doc->getValue("gui_isrss") == "yes"));
-    $action->lay->set("rsslink", $doc->getRssLink());
+    $useRss=($doc->getValue("gui_isrss") == "yes");
+    $action->lay->set("RSS", $useRss);
+    if ($useRss) $action->lay->set("rsslink", $doc->getRssLink());
     
-    $param_zone_footer = json_decode($doc->getParam("FOOTER_ZONE_VIEW") , true);
+    $param_zone_footer = json_decode($action->getParam("FOOTER_ZONE_VIEW") , true);
     $zone_footer = array();
     foreach ($param_zone_footer as $zone) {
         $zone_footer[] = array(

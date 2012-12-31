@@ -35,6 +35,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestLink');
         $suite->addTestSuite('Dcp\Pu\TestDocRel');
         $suite->addTestSuite('Dcp\Pu\TestUpdateAttribute');
+        $suite->addTestSuite('Dcp\Pu\TestGetDocValue');
         $suite->addTestSuite('Dcp\Pu\TestSplitXmlDocument');
         $suite->addTestSuite('Dcp\Pu\TestImportFamily');
         $suite->addTestSuite('Dcp\Pu\TestImportFamilyProperty');

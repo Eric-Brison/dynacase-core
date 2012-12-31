@@ -80,6 +80,9 @@ function FrenchDateToJD($fdate)
 function FrenchDateToUnixTs($fdate, $utc = false)
 {
     if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/", $fdate, $r)) {
+        $r[4] = isset($r[4]) ? $r[4] : 0;
+        $r[5] = isset($r[5]) ? $r[5] : 0;
+        $r[6] = isset($r[6]) ? $r[6] : 0;
         if ($utc) $dt = gmmktime($r[4], $r[5], $r[6], $r[2], $r[1], $r[3]);
         else $dt = mktime($r[4], $r[5], $r[6], $r[2], $r[1], $r[3]);
     } else {

@@ -122,6 +122,10 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
     function initRelations(&$doc, $force = false)
     {
         $nattr = $doc->GetNormalAttributes();
+        
+        $savePoint = uniqid("initrelation");
+        $this->savePoint($savePoint);
+        pg_query($this->dbid, "lock table docrel in exclusive mode"); // need to avoid conflict in docrel index
         foreach ($nattr as $k => $v) {
             if (isset($doc->$k) && ($v->type == "docid" || $v->type == "account")) {
                 
@@ -131,7 +135,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                     }
                 }
                 // reset old relations
-                $this->exec_query(sprintf("delete from docrel where sinitid=%d and type='%s'", $doc->initid, pg_escape_string($v->id)));
+                pg_query($this->dbid, sprintf("delete from docrel where sinitid=%d and type='%s'", $doc->initid, pg_escape_string($v->id)));
                 if ($v->inArray()) $tv = array_unique($doc->getTValue($v->id));
                 else $tv = array(
                     $doc->$k
@@ -150,6 +154,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                 $this->copyRelations(array_unique($tvrel) , $doc, $v->id);
             }
         }
+        $this->commitPoint($savePoint);
     }
     /**
      * copy in db document relations

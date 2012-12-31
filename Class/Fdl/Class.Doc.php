@@ -3949,12 +3949,11 @@ create unique index i_docir on doc(initid, revision);";
                     // with argument
                     $args = array();
                     
-
-                    $inputs=array();
+                    $inputs = array();
                     foreach ($bargs as $extraArg) {
                         $inputs[] = new inputArgument($extraArg);
                     }
-                    $inputs=array_merge($inputs,$parseMethod->inputs);
+                    $inputs = array_merge($inputs, $parseMethod->inputs);
                     foreach ($inputs as $ki => $input) {
                         $args[$ki] = null;
                         if ($input->type == "string") {
@@ -7973,13 +7972,38 @@ create unique index i_docir on doc(initid, revision);";
     final public function getDocValue($docid, $attrid, $def = " ", $latest = false)
     {
         if (intval($docid) > 0) {
-            $doc = new_Doc($this->dbaccess, $docid);
-            if ($doc->isAlive()) {
-                if ($latest && ($doc->locked == - 1)) {
-                    $ldocid = $doc->latestId();
-                    if ($ldocid != $doc->id) $doc = new_Doc($this->dbaccess, $ldocid);
+            if (strpos(':', $attrid) === false) {
+                $attrid = strtolower($attrid);
+                if ($latest) {
+                    $rawDoc = getTDoc($this->dbaccess, $docid, array() , array(
+                        "initid",
+                        "id",
+                        "locked",
+                        $attrid
+                    ));
+                    if ($rawDoc["locked"] == - 1) {
+                        $docid = getLatestDocId($this->dbaccess, $rawDoc["initid"]);
+                        $rawDoc = getTDoc($this->dbaccess, $docid, array() , array(
+                            $attrid
+                        ));
+                    }
+                } else {
+                    $rawDoc = getTDoc($this->dbaccess, $docid, array() , array(
+                        $attrid
+                    ));
                 }
-                return $doc->getRValue($attrid, $def, $latest);
+                if ($rawDoc) {
+                    return $rawDoc[$attrid];
+                }
+            } else {
+                $doc = new_Doc($this->dbaccess, $docid);
+                if ($doc->isAlive()) {
+                    if ($latest && ($doc->locked == - 1)) {
+                        $ldocid = $doc->latestId();
+                        if ($ldocid != $doc->id) $doc = new_Doc($this->dbaccess, $ldocid);
+                    }
+                    return $doc->getRValue($attrid, $def, $latest);
+                }
             }
         }
         return "";
