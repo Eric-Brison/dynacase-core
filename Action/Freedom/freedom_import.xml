@@ -30,22 +30,30 @@ TD, TH {
 [JS:REF]
 
    <script language="JavaScript">
-  <!--
+
     [JS:CODE]
-    if (window.opener) {
-       var b=window.opener.document.getElementById('bgimport');
-       if (b) {
-	 b.disabled=true;
-	 if ([nbdoc]+[nbprof]>0) b.disabled=false;
+       var editw=window.opener;
+       if (! editw) {
+           if (window.parent) {
+             var editf=editw=window.parent.document.getElementById("editw");
+            if (editf && editf.contentWindow) {
+                editw=editf.contentWindow;
+            }
+           }
        }
-       b=window.opener.document.getElementById('fgimport');
-       if (b) {
-	 b.disabled=true;
-	 if (([nbdoc]<[FDL_MAX_FGEXPORTDOC]) && ([nbdoc]+[nbprof]>0)) b.disabled=false;
+       if (editw) {
+          var b=editw.document.getElementById('bgimport');
+           if (b) {
+               b.disabled=true;
+               if ([nbdoc]+[nbprof]>0) b.disabled=false;
+           }
+           b=editw.document.getElementById('fgimport');
+           if (b) {
+           b.disabled=true;
+           if (([nbdoc]<[FDL_MAX_FGEXPORTDOC]) && ([nbdoc]+[nbprof]>0)) b.disabled=false;
+           }
        }
-   }
-  //-->
-   </script>   
+   </script>
 
 
 
@@ -54,7 +62,7 @@ TD, TH {
 <body class="freedom">
 
 
-   <H1>[TEXT:Result Import Documents]</H1>
+   <H1>[IF analyze][TEXT:Result Analyze Documents][ENDIF analyze][IFNOT analyze][TEXT:Result Import Documents][ENDIF analyze]</H1>
 <H3>[nbdoc] [TEXT:documents to examine].</H3>
 
 <table width="100%" >

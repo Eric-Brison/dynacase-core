@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-07 13:27+0100\n"
+"POT-Creation-Date: 2013-01-02 17:53+0100\n"
 "PO-Revision-Date: 2012-09-12 09:47+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -691,9 +691,6 @@ msgstr "Concatenate all JS scripts for consultation"
 msgid "All js in one for edition"
 msgstr "Concatenate all JS scripts for edition"
 
-msgid "All manuals"
-msgstr ""
-
 msgid "All set only"
 msgstr ""
 
@@ -720,10 +717,6 @@ msgid "Analyze only"
 msgstr ""
 
 msgid "Answers"
-msgstr ""
-
-#, c-format
-msgid "Application %s (%s) not available"
 msgstr ""
 
 msgid "Application Access"
@@ -1753,9 +1746,6 @@ msgstr "Edit"
 msgid "Edit %s"
 msgstr ""
 
-msgid "Edit Url Gate"
-msgstr ""
-
 msgid "Edit any access"
 msgstr ""
 
@@ -2138,9 +2128,6 @@ msgstr ""
 msgid "Full search"
 msgstr "Start search"
 
-msgid "Gate"
-msgstr ""
-
 msgid "Gb"
 msgstr ""
 
@@ -2211,10 +2198,6 @@ msgstr ""
 
 msgid "History for"
 msgstr ""
-
-#, fuzzy
-msgid "Homepage"
-msgstr "Welcome !"
 
 msgid "ID"
 msgstr ""
@@ -2571,9 +2554,6 @@ msgstr ""
 msgid "Manage families"
 msgstr "Start search"
 
-msgid "Manuals"
-msgstr ""
-
 #, fuzzy
 msgid "March"
 msgstr "Start search"
@@ -2724,9 +2704,6 @@ msgstr ""
 msgid "Negative grant"
 msgstr ""
 
-msgid "New GATE page"
-msgstr ""
-
 msgid "New Vault FS"
 msgstr ""
 
@@ -2754,14 +2731,14 @@ msgstr ""
 msgid "New state"
 msgstr "Identity"
 
-msgid "New version has been installed."
-msgstr ""
-
 #, fuzzy
 msgid "Next"
 msgstr "Export this card"
 
 msgid "Next Timers"
+msgstr ""
+
+msgid "No Icon specified"
 msgstr ""
 
 msgid "No acl for family"
@@ -3255,6 +3232,9 @@ msgstr ""
 msgid "Restricted Access"
 msgstr ""
 
+msgid "Result Analyze Documents"
+msgstr ""
+
 #, fuzzy
 msgid "Result Import Documents"
 msgstr "Import"
@@ -3336,9 +3316,6 @@ msgstr "Start search"
 #, fuzzy
 msgid "Save default values"
 msgstr "Delete"
-
-msgid "Save geometry"
-msgstr ""
 
 #, fuzzy
 msgid "Save in progress"
@@ -3445,6 +3422,9 @@ msgid ""
 msgstr ""
 
 msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
+msgstr ""
+
+msgid "Send Analyze"
 msgstr ""
 
 msgid "Send document"
@@ -4112,10 +4092,6 @@ msgstr "Dynacase WebDAV file system"
 msgid "Wednesday"
 msgstr ""
 
-#, fuzzy
-msgid "Welcome Page"
-msgstr "Welcome !"
-
 msgid "What Access Management"
 msgstr ""
 
@@ -4210,9 +4186,6 @@ msgid "Y"
 msgstr ""
 
 msgid "You can close window now or waiting the end of processing"
-msgstr ""
-
-msgid "You must clear navigator cache."
 msgstr ""
 
 msgid "You must upgrade to version 6 or more"
@@ -4505,9 +4478,6 @@ msgstr ""
 
 #, c-format
 msgid "an error has occured: %s"
-msgstr ""
-
-msgid "anakeen"
 msgstr ""
 
 msgid "analyze archive file"
@@ -6590,15 +6560,6 @@ msgstr ""
 msgid "fusers view/edit window"
 msgstr ""
 
-msgid "gate geometry"
-msgstr ""
-
-msgid "gate page"
-msgstr ""
-
-msgid "gate urls"
-msgstr ""
-
 #, c-format
 msgid "generate version '%s'"
 msgstr ""
@@ -7061,6 +7022,9 @@ msgstr "Edit"
 msgid "mailstatus"
 msgstr ""
 
+msgid "main interface document import"
+msgstr ""
+
 #, fuzzy
 msgid "main view columns"
 msgstr "Start search"
@@ -7312,9 +7276,6 @@ msgid "name"
 msgstr "Name"
 
 msgid "name and address of our society"
-msgstr ""
-
-msgid "name displayed in the right of the foot"
 msgstr ""
 
 #, c-format
@@ -9556,10 +9517,6 @@ msgstr ""
 msgid "view list"
 msgstr ""
 
-#, fuzzy
-msgid "view log"
-msgstr "Lastname"
-
 msgid "view object acl"
 msgstr ""
 
@@ -9810,6 +9767,10 @@ msgstr ""
 #~ msgstr "Fax"
 
 #, fuzzy
+#~ msgid "Homepage"
+#~ msgstr "Welcome !"
+
+#, fuzzy
 #~ msgid "Import from"
 #~ msgstr "Import"
 
@@ -9864,6 +9825,10 @@ msgstr ""
 #, fuzzy
 #~ msgid "VCARD Import Result"
 #~ msgstr "Import"
+
+#, fuzzy
+#~ msgid "Welcome Page"
+#~ msgstr "Welcome !"
 
 #, fuzzy
 #~ msgid "active user"
@@ -10251,6 +10216,10 @@ msgstr ""
 #, fuzzy
 #~ msgid "version"
 #~ msgstr "Organisation"
+
+#, fuzzy
+#~ msgid "view log"
+#~ msgstr "Lastname"
 
 #, fuzzy
 #~ msgid "view_detail"

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-07 13:27+0100\n"
-"PO-Revision-Date: 2012-12-07 13:31+0100\n"
+"POT-Creation-Date: 2013-01-02 17:53+0100\n"
+"PO-Revision-Date: 2013-01-02 17:54+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -658,9 +658,6 @@ msgstr "Concatène tous les scripts JS pour la consultation"
 msgid "All js in one for edition"
 msgstr "Concatène tous les scripts JS pour l'édition"
 
-msgid "All manuals"
-msgstr "Tous les manuels"
-
 msgid "All set only"
 msgstr "Voir les droits explicites"
 
@@ -684,10 +681,6 @@ msgstr "Analyse seulement"
 
 msgid "Answers"
 msgstr "Réponses"
-
-#, c-format
-msgid "Application %s (%s) not available"
-msgstr "Application %s (%s) non disponible"
 
 msgid "Application Access"
 msgstr "Accès des applications"
@@ -1675,9 +1668,6 @@ msgstr "Éditer"
 msgid "Edit %s"
 msgstr "Éditer %s"
 
-msgid "Edit Url Gate"
-msgstr "édition des URLs pour le portail"
-
 msgid "Edit any access"
 msgstr "Editer n'importe quel accès"
 
@@ -2054,9 +2044,6 @@ msgstr "Depuis l'état %s vers"
 msgid "Full search"
 msgstr "Recheche plein texte"
 
-msgid "Gate"
-msgstr "Portail"
-
 msgid "Gb"
 msgstr "Go"
 
@@ -2126,10 +2113,6 @@ msgstr "Historique"
 
 msgid "History for"
 msgstr "Historique de"
-
-# ne pas mettre de '
-msgid "Homepage"
-msgstr "Accueil"
 
 msgid "ID"
 msgstr "ID"
@@ -2471,9 +2454,6 @@ msgstr "Fabrication des références ..."
 msgid "Manage families"
 msgstr "gestion des familles"
 
-msgid "Manuals"
-msgstr "Manuels"
-
 msgid "March"
 msgstr "Mars"
 
@@ -2625,9 +2605,6 @@ msgstr "Nom du zoo"
 msgid "Negative grant"
 msgstr "Droits négatifs"
 
-msgid "New GATE page"
-msgstr "Portail"
-
 msgid "New Vault FS"
 msgstr "Nouveau coffre"
 
@@ -2652,14 +2629,14 @@ msgstr "Nouvelle taille"
 msgid "New state"
 msgstr "Nouvel état"
 
-msgid "New version has been installed."
-msgstr "Une nouvelle version vient d'être installée."
-
 msgid "Next"
 msgstr "Suivant"
 
 msgid "Next Timers"
 msgstr "Prochains minuteurs"
+
+msgid "No Icon specified"
+msgstr "Pas d'icone définie"
 
 msgid "No acl for family"
 msgstr "Pas de droits définis pour la famille"
@@ -3133,6 +3110,9 @@ msgstr "Durée restante"
 msgid "Restricted Access"
 msgstr "Accès restreint"
 
+msgid "Result Analyze Documents"
+msgstr "Résultat de l'analyse des documents"
+
 msgid "Result Import Documents"
 msgstr " Résultat de l'importation de documents"
 
@@ -3205,9 +3185,6 @@ msgstr "Sauver les changements ?"
 
 msgid "Save default values"
 msgstr "Sauver les valeurs par défaut"
-
-msgid "Save geometry"
-msgstr "Sauver la disposition"
 
 msgid "Save in progress"
 msgstr "Enregistrement en cours"
@@ -3309,6 +3286,9 @@ msgstr ""
 msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
 msgstr ""
 "Sélectionner. Utiliser ctrl-&uarr; &darr; pour monter/descendre la sélection"
+
+msgid "Send Analyze"
+msgstr "Lancer l'analyse"
 
 msgid "Send document"
 msgstr "Envoyer par courriel"
@@ -3965,9 +3945,6 @@ msgstr "Système de fichiers WebDAV DYNACASE"
 msgid "Wednesday"
 msgstr "Mercredi"
 
-msgid "Welcome Page"
-msgstr "Page d'accueil"
-
 msgid "What Access Management"
 msgstr "Gestion des accessibilités"
 
@@ -4057,9 +4034,6 @@ msgstr "O"
 msgid "You can close window now or waiting the end of processing"
 msgstr ""
 "Vous pouvez fermer la fenêtre maintenant ou attendre la fin du traitement"
-
-msgid "You must clear navigator cache."
-msgstr "Vous devez effacer le cache de votre navigateur."
 
 msgid "You must upgrade to version 6 or more"
 msgstr "Vous devez mettre à jour avec la version 6 au minimum"
@@ -4332,9 +4306,6 @@ msgstr "alterTransitiontype: paramètre manquant"
 #, c-format
 msgid "an error has occured: %s"
 msgstr "Une erreur a été produite: %s"
-
-msgid "anakeen"
-msgstr "anakeen"
 
 msgid "analyze archive file"
 msgstr "analyse de fichier archive"
@@ -6295,15 +6266,6 @@ msgstr "fuser fenêtre principale"
 msgid "fusers view/edit window"
 msgstr "fuser voir/modifier"
 
-msgid "gate geometry"
-msgstr "disposition du portail"
-
-msgid "gate page"
-msgstr "Page du portail"
-
-msgid "gate urls"
-msgstr "urls du portail"
-
 #, c-format
 msgid "generate version '%s'"
 msgstr "version de génération '%s'"
@@ -6735,6 +6697,9 @@ msgstr "rédaction de mail"
 msgid "mailstatus"
 msgstr "Status"
 
+msgid "main interface document import"
+msgstr "Interface principale d'importation"
+
 msgid "main view columns"
 msgstr "Vue principale"
 
@@ -6965,9 +6930,6 @@ msgstr "Nom"
 
 msgid "name and address of our society"
 msgstr "nom et adresse de votre société"
-
-msgid "name displayed in the right of the foot"
-msgstr "nom affiché dans le bas de la fenêtre (à droite)"
 
 #, c-format
 msgid ""
@@ -9086,9 +9048,6 @@ msgstr "voir les dernières traces d'un document détruit"
 msgid "view list"
 msgstr "voir la liste"
 
-msgid "view log"
-msgstr "voir les messages"
-
 msgid "view object acl"
 msgstr "voir les droits"
 
@@ -9369,6 +9328,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Address book searches"
 #~ msgstr "Adress book : recherche rapide"
 
+#~ msgid "All manuals"
+#~ msgstr "Tous les manuels"
+
+#~ msgid "Application %s (%s) not available"
+#~ msgstr "Application %s (%s) non disponible"
+
 #~ msgid "Authentification failure before account desactivation"
 #~ msgstr ""
 #~ "Nombre de connexion avec mot de passe incorrect avant désactivation du "
@@ -9419,6 +9384,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
 
+#~ msgid "Edit Url Gate"
+#~ msgstr "édition des URLs pour le portail"
+
 #~ msgid "Enter name for database ? "
 #~ msgstr "Nom de la base de donnée ?"
 
@@ -9440,8 +9408,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Fax"
 #~ msgstr "Fax"
 
+#~ msgid "Gate"
+#~ msgstr "Portail"
+
 #~ msgid "Group '%s' not exists"
 #~ msgstr "Le groupe '%s' n'existe pas"
+
+# ne pas mettre de '
+#~ msgid "Homepage"
+#~ msgstr "Accueil"
 
 #~ msgid "I can't find hostname alias"
 #~ msgstr "Alias de hostname introuvable"
@@ -9460,6 +9435,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Logical name %s already use other document"
 #~ msgstr "Le nom logique %s déjà utilisé pour un autre document"
+
+#~ msgid "Manuals"
+#~ msgstr "Manuels"
 
 #~ msgid "Max user reach. Use search filter"
 #~ msgstr "Utiliser la recherche pour voir la suite"
@@ -9481,6 +9459,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "My firstname and lastname"
 #~ msgstr "Mon prénom et mon nom"
+
+#~ msgid "New GATE page"
+#~ msgstr "Portail"
+
+#~ msgid "New version has been installed."
+#~ msgstr "Une nouvelle version vient d'être installée."
 
 #~ msgid "No identifier found for relation %s"
 #~ msgstr "Aucun identificateur pour la relation %s"
@@ -9517,6 +9501,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Role '%s' not exists"
 #~ msgstr "Le rôle '%s' n'existe pas"
+
+#~ msgid "Save geometry"
+#~ msgstr "Sauver la disposition"
 
 #~ msgid "Save without change state"
 #~ msgstr "Sauver sans changement d'état"
@@ -9608,11 +9595,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "View workflow graph"
 #~ msgstr "Voir le graphe du cycle de vie"
 
+#~ msgid "Welcome Page"
+#~ msgstr "Page d'accueil"
+
 #~ msgid "What User Management"
 #~ msgstr "Gestion des utilisateurs"
 
 #~ msgid "With Activity"
 #~ msgstr "Avec les activités"
+
+#~ msgid "You must clear navigator cache."
+#~ msgstr "Vous devez effacer le cache de votre navigateur."
 
 #~ msgid "access to documents of my space"
 #~ msgstr "Accéder aux documents de mon espace"
@@ -9652,6 +9645,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "admin view"
 #~ msgstr "vue administrateur"
+
+#~ msgid "anakeen"
+#~ msgstr "anakeen"
 
 #~ msgid "authentication failed"
 #~ msgstr "échec d'authentification"
@@ -9921,6 +9917,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "function examples"
 #~ msgstr "exemples de fonctions"
 
+#~ msgid "gate geometry"
+#~ msgstr "disposition du portail"
+
+#~ msgid "gate page"
+#~ msgstr "Page du portail"
+
+#~ msgid "gate urls"
+#~ msgstr "urls du portail"
+
 #~ msgid "group list"
 #~ msgstr "les groupes"
 
@@ -9965,6 +9970,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "my last name"
 #~ msgstr "mon nom de famille"
+
+#~ msgid "name displayed in the right of the foot"
+#~ msgstr "nom affiché dans le bas de la fenêtre (à droite)"
 
 #~ msgid "name must containt only alphanumeric characters: invalid  [%s]"
 #~ msgstr ""
@@ -10171,6 +10179,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "version"
 #~ msgstr "version"
+
+#~ msgid "view log"
+#~ msgstr "voir les messages"
 
 #~ msgid "view my space"
 #~ msgstr "Voir mon espace"
