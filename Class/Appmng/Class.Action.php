@@ -191,8 +191,9 @@ create sequence SEQ_ID_ACTION;
             $this->Affect($query->list[0]);
             $this->log->debug("Set Action to {$this->name}");
         } else {
-            header('HTTP/1.0 503 Action unavalaible');
-            throw new Dcp\Core\Exception("CORE0005", $name, $parent->name, $parent->id);
+            $e = new Dcp\Core\Exception("CORE0005", $name, $parent->name, $parent->id);
+            $e->addHttpHeader('HTTP/1.0 404 Action not found');
+            throw $e;
         }
         
         $this->CompleteSet($parent);
@@ -549,9 +550,13 @@ create sequence SEQ_ID_ACTION;
                 if (!$allow) $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode") , $this->name));
             }
         }
+        
+      
         // check if this action is permitted
         if (!$this->HasPermission($this->acl)) {
-            throw new Dcp\Exception("CORE0006", $this->short_name, $this->name, $this->acl, $this->user->login);
+            $e = new Dcp\Exception("CORE0006", $this->short_name, $this->name, $this->acl, $this->user->login);
+            $e->addHttpHeader('HTTP/1.0 503 Action forbidden');
+            throw $e;
         }
         
         if ($this->id > 0) {

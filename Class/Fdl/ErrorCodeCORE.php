@@ -45,6 +45,16 @@ namespace {
         const CORE0006 = "Access deny to action \"%s\" [%s].\n Need \"%s\" Acl for \"%s\" user";
         /**
          * @errorCode
+         * application name is not available (property available is N)
+         */
+        const CORE0007 = 'Unavailable application %s';
+        /**
+         * @errorCode
+         * action name is not available for application (property available is N)
+         */
+        const CORE0008 = 'Action "%s"  not available for application "%s"';
+        /**
+         * @errorCode
          * for beautifier
          */
         private function _bo()

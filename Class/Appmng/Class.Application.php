@@ -209,8 +209,9 @@ create sequence SEQ_ID_APPLICATION start 10;
                     if (!empty($_SERVER['HTTP_HOST'])) Header("Location: " . $_SERVER['HTTP_REFERER']);
                 }
             } else {
-                header('HTTP/1.0 503 Application unavalaible');
-                throw new Dcp\Core\Exception("CORE0004", $name);
+                $e = new Dcp\Core\Exception("CORE0004", $name);
+                $e->addHttpHeader('HTTP/1.0 404 Application not found');
+                throw $e;
             }
         }
         
@@ -238,7 +239,9 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (!$this->rootdir) $this->rootdir = $this->Getparam("CORE_PUBDIR");
         if ($this->available == "N") {
             // error
-            return sprintf(_("Application %s (%s) not available") , $this->name, _($this->short_name));
+            $e = new Dcp\Core\Exception("CORE0007", $name);
+            $e->addHttpHeader('HTTP/1.0 503 Application unavalaible');
+            throw $e;
         }
         $this->permission = null;
         return '';

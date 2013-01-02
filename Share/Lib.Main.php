@@ -311,12 +311,24 @@ function executeAction(&$action, &$out = null)
 function handleActionException(Exception $e)
 {
     global $action;
-    if (!headers_sent()) {
+    
+    if (method_exists($e, "addHttpHeader")) {
+        /**
+         * @var \Dcp\Exception $e
+         */
+        if ($e->getHttpHeader()) header($e->getHttpHeader());
+        else header("HTTP/1.1 500 Dynacase Uncaugth Exception");
+    } else {
         header("HTTP/1.1 500 Dynacase Uncaugth Exception");
     }
+    
     errorLogException($e);
     if (isset($action) && is_a($action, 'Action')) {
+        
         $action->exitError($e->getMessage());
+    } else {
+        
+        print $e->getMessage();
     }
 }
 
