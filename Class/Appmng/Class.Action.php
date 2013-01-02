@@ -551,7 +551,11 @@ create sequence SEQ_ID_ACTION;
             }
         }
         
-      
+        if ($this->available == "N") {
+            $e = new Dcp\Core\Exception("CORE0008", $this->name, $this->parent->name);
+            $e->addHttpHeader('HTTP/1.0 503 Action unavalaible');
+            throw $e;
+        }
         // check if this action is permitted
         if (!$this->HasPermission($this->acl)) {
             $e = new Dcp\Exception("CORE0006", $this->short_name, $this->name, $this->acl, $this->user->login);
