@@ -423,7 +423,6 @@ TABLE.tablefoot, DIV.tablefoot {
 }
 TABLE.tablehead {
 	position:fixed;
-	z-index:10;
 	bottom:auto;
 	right:0;
 	top:0;

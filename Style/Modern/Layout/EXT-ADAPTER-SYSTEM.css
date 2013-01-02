@@ -152,7 +152,7 @@
 	border-bottom-style: solid;
 	border-top-width: 1px ;
 	border-top-style: solid;
-	position: relative;
+	[IF ISIE6]position: relative;[ENDIF ISIE6]
 	top: -1px;
 }
 
@@ -179,7 +179,8 @@
 	background-repeat: repeat-x;
 	background-position: 0 -151px;
 	background-attachment: scroll;
-	position: relative;
+    [IF ISIE6]position: relative;[ENDIF ISIE6]
+
 	z-index: 1;
 }
 
