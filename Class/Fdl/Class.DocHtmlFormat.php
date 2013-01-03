@@ -618,8 +618,8 @@ class DocHtmlFormat
             $dxml = new DomDocument();
             $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
             if (!file_exists($rowlayfile)) {
-                $htmlval = sprintf(_("cannot open %s layout file : %s") , $rowlayfile);
-                AddwarningMsg(sprintf(_("cannot open %s layout file : %s") , $rowlayfile));
+                $htmlval = sprintf(_("cannot open layout file : %s") , $rowlayfile);
+                AddwarningMsg(sprintf(_("cannot open layout file : %s") , $rowlayfile));
                 return $htmlval;
             }
             if (!@$dxml->load($rowlayfile)) {
