@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-02 17:53+0100\n"
-"PO-Revision-Date: 2013-01-02 17:54+0100\n"
+"POT-Creation-Date: 2013-01-03 09:19+0100\n"
+"PO-Revision-Date: 2013-01-03 09:20+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -610,6 +610,9 @@ msgstr "Ajouter un dossier racine"
 msgid "Adding button to submit"
 msgstr "Ajout un bouton pour l'envoi du formulaire"
 
+msgid "Additionnals informations about import document"
+msgstr "Informations sur les formats d'importation"
+
 msgid "Admin"
 msgstr "Admin"
 
@@ -813,7 +816,7 @@ msgid "Automatic profil creation not possible for this kind of family"
 msgstr "Création automatique de profil imposssible pour ce type de document"
 
 msgid "Background Import"
-msgstr "Import en tache de fond"
+msgstr "Importation en tâche de fond"
 
 msgid "Basic search"
 msgstr "Recherche simple"
@@ -1434,7 +1437,7 @@ msgid "Dir::insertFolder identifier [%s] must be numeric"
 msgstr "Dir::insertFolder l'identificateur [%s] doit être numérique"
 
 msgid "Direct Import"
-msgstr "Import direct"
+msgstr "Importation directe"
 
 #, c-format
 msgid "Direct set through document itself \"%s\""
@@ -2059,6 +2062,9 @@ msgstr "Générique"
 msgid "Generic Management"
 msgstr "Gestion générique"
 
+msgid "Get Xml schema"
+msgstr "Récupérer le schéma XML"
+
 msgid "Go"
 msgstr "Go"
 
@@ -2166,11 +2172,14 @@ msgstr "Importation Archive"
 msgid "Import Users"
 msgstr "Importation d'utilisateurs"
 
+msgid "Import after analyze done"
+msgstr "Importer après l'analyse"
+
 msgid "Import description file"
 msgstr "Fichier de description de l'import"
 
-msgid "Import document description"
-msgstr "Importer les documents"
+msgid "Import document description now"
+msgstr "Importer les documents maintenant"
 
 msgid "Import documents"
 msgstr "Importer des documents"
@@ -2650,6 +2659,9 @@ msgstr "Aucunes colonnes ont été définies"
 msgid "No default value"
 msgstr "Aucune valeurs par défaut"
 
+msgid "No direct import : limit is reached"
+msgstr "Pas d'importation directe : limite atteinte"
+
 #, c-format
 msgid "No document found for <strong>%s</strong>%s"
 msgstr "Aucun document pour la recherche \"<strong>%s</strong>\"%s"
@@ -2665,6 +2677,9 @@ msgid "No identifier found for relation '%s' %s in %s file"
 msgstr ""
 "Impossible de trouver d'identifiant pour la relation '%s' %s dans le fichier "
 "%s"
+
+msgid "No import : no document detected"
+msgstr "Par d'importation : pas de document détectés"
 
 msgid "No need to refresh group"
 msgstr "Tous les groupes sont actualisés"
@@ -3437,6 +3452,9 @@ msgstr "Éditions spéciales"
 msgid "Special view"
 msgstr "Vues spéciales"
 
+msgid "Specific import in csv format"
+msgstr "Importation spécifiques au format CSV"
+
 msgid "Starting of"
 msgstr "Démarrage de"
 
@@ -4025,9 +4043,6 @@ msgstr "importation XML : Le fichier %s ne peut être crée"
 msgid "Xml import file %s not found"
 msgstr "importation XML : fichier %s introuvable"
 
-msgid "Xml schema"
-msgstr "Xml Schéma"
-
 msgid "Y"
 msgstr "O"
 
@@ -4575,7 +4590,7 @@ msgid "background color or image in security mode"
 msgstr "image ou couleur de fond en mode sécurité"
 
 msgid "background document import"
-msgstr "import en tache de fond"
+msgstr "importation en tâche de fond"
 
 msgid "background image for bar"
 msgstr "image de fond pour les barres"
@@ -6468,7 +6483,8 @@ msgstr " Importation de documents <I>%s</I> à partir de"
 
 #, c-format
 msgid "import Xml extract : file %s not found"
-msgstr "Erreur lors de l'extraction de l'import XML: fichier %s introuvable"
+msgstr ""
+"Erreur lors de l'extraction de l'importation XML: fichier %s introuvable"
 
 msgid "import analysis result"
 msgstr "Résultat de l'analyse de l'import"
@@ -6477,20 +6493,20 @@ msgid "import archive file"
 msgstr "Importer un fichier archive"
 
 msgid "import csv"
-msgstr "Import csv"
+msgstr "Importation csv"
 
 msgid "import edition"
 msgstr "modification de l'importation"
 
 #, c-format
 msgid "import file %s not found"
-msgstr "fichier d'import %s non trouvé"
+msgstr "fichier d'importation %s non trouvé"
 
 msgid "import file:"
 msgstr "Fichier à importer :"
 
 msgid "import keys"
-msgstr "clefs d'import"
+msgstr "clefs d'importation"
 
 msgid "import results"
 msgstr "Résultats de l'importation"
@@ -7096,7 +7112,7 @@ msgid "no control"
 msgstr "pas de contrôle"
 
 msgid "no csv import file specified"
-msgstr "pas de fichier d'import CSV spécifié"
+msgstr "pas de fichier d'importation CSV spécifié"
 
 msgid "no cycle defined"
 msgstr "pas de cycle défini"
@@ -7603,11 +7619,11 @@ msgid "private key is not valid"
 msgstr "La clef privé n'est pas valide"
 
 msgid "proceed background import"
-msgstr "Effectuer l'import en tache de fond"
+msgstr "Effectuer l'importation en tâche de fond"
 
 #, c-format
 msgid "proceed background import of %d documents"
-msgstr "Effectuer l'import en tache de fond de %d documents"
+msgstr "Effectuer l'importation en tâche de fond de %d documents"
 
 #, c-format
 msgid "process %s"
@@ -7773,13 +7789,13 @@ msgid "query [%s] not valid for select document"
 msgstr "la requête [%s] n'est pas valide pour une sélection de documents"
 
 msgid "query document import"
-msgstr "demande d'import de document"
+msgstr "demande d'importation de document"
 
 msgid "query icon"
 msgstr "requête icone"
 
 msgid "query tar document import"
-msgstr "demande d'import d'archive"
+msgstr "demande d'importation d'archive"
 
 msgid "quick save not possible"
 msgstr "Sauvegarde rapide impossible"
@@ -7898,11 +7914,11 @@ msgstr "restriction aux familles préférées"
 
 #, c-format
 msgid "result of archive import  %s"
-msgstr "Résultat de l'import d'archive %s"
+msgstr "Résultat de l'importation d'archive %s"
 
 #, c-format
 msgid "result of import  %s"
-msgstr "Résultat de l'import %s"
+msgstr "Résultat de l'importation %s"
 
 msgid "retrieve file converted"
 msgstr "récupération d'un fichier converti"
@@ -8242,9 +8258,6 @@ msgstr "Contrôle dédié"
 msgid "specific family menu"
 msgstr "Menu de famille spécifique"
 
-msgid "specific import"
-msgstr "Import spécifique"
-
 msgid "specmessage"
 msgstr "message spécifique"
 
@@ -8374,7 +8387,7 @@ msgstr "La tâche %s ne s'est pas terminée correctement"
 
 #, c-format
 msgid "task %s is not recorded"
-msgstr "la tache %s n'est pas enregistrée"
+msgstr "la tâche %s n'est pas enregistrée"
 
 #, c-format
 msgid "template %s no document found"
@@ -9421,6 +9434,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "I can't find hostname alias"
 #~ msgstr "Alias de hostname introuvable"
 
+#~ msgid "Import document description"
+#~ msgstr "Importer les documents"
+
 #~ msgid "Import from"
 #~ msgstr "Importation à partir de"
 
@@ -9603,6 +9619,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "With Activity"
 #~ msgstr "Avec les activités"
+
+#~ msgid "Xml schema"
+#~ msgstr "Xml Schéma"
 
 #~ msgid "You must clear navigator cache."
 #~ msgstr "Vous devez effacer le cache de votre navigateur."
@@ -10079,6 +10098,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "socname"
 #~ msgstr "Nom"
+
+#~ msgid "specific import"
+#~ msgstr "Import spécifique"
 
 #~ msgid "subject for new password request"
 #~ msgstr "Le sujet du mail pour les demandes de mot de passe"

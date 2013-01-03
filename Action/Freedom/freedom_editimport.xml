@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 
-   <title>[TEXT:edition: ] [TITLE]</title>
+      <title>[TEXT:Import Documents]</title>
 
 
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
@@ -67,27 +67,20 @@ function getWindowresult() {
 <input type="hidden" name="dirid" value="[dirid]">
 <input type="hidden" name="analyze" value="N">
 [IF descr]<fieldset>
-<legend>[TEXT:Description of the import format]</legend> 
+<legend>[TEXT:Additionnals informations about import document]</legend>
    [TEXT:for]
    <select name="classid" id="classid" onchange="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_EDITIMPORT&classid='+self.document.modifydoc.classid.options[self.document.modifydoc.classid.selectedIndex].value">  
          [BLOCK SELECTCLASS]
            <option VALUE="[idcdoc]" [selected]>[classname]</option>   
          [ENDBLOCK SELECTCLASS]
     </select>
-<input type="button" value="[TEXT:specific import]" onclick="editimport()" >
-	<input type="button" title="[TEXT:View Xml Schema]" value="[TEXT:Xml schema]" onclick='subwindow(200,400,"_xsd","[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+self.document.modifydoc.classid.options[self.document.modifydoc.classid.selectedIndex].value)' >
-<BR>
+<input type="button" value="[TEXT:Specific import in csv format]" onclick="editimport()" >
+	<input type="button" title="[TEXT:View Xml Schema]" value="[TEXT:Get Xml schema]" onclick='subwindow(200,400,"_xsd","[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+self.document.modifydoc.classid.options[self.document.modifydoc.classid.selectedIndex].value)' >
+<br/>
+</fieldset>[ENDIF descr]
+   <fieldset>
+<legend>[TEXT:Description of the import format]</legend>
 
-    <textarea cols=80>[format]
-</textarea>
-     <table border=1 cols=[cols]>
-     <tr>
-     [BLOCK TFORMAT]
-     <td style="border-left:solid 1px">[labeltext]</td>
-     [ENDBLOCK TFORMAT]
-     </tr>
-     </table>
-<hr width="50%">[ENDIF descr]
  <label for="file"><strong>[TEXT:import file:]</strong> </label><br/>
  <input type="file" name="file" accept="text/csv,application/xml,application/vnd.oasis.opendocument.spreadsheet" title="[TEXT:csv, ods, xml, zip (xml) supported import files]" onchange="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;" onblur="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;" >
          <br/>
@@ -102,7 +95,7 @@ function getWindowresult() {
 </fieldset>
 <fieldset>
 <legend>[TEXT:Direct Import]</legend> 
- <input id="fgimport" type="submit" value="[TEXT:Import document description]" disabled
+ <input id="fgimport" type="submit" value="[TEXT:Import after analyze done]" disabled
         onclick="document.modifydoc.target='_self';document.modifydoc.analyze.value='N'" > 
 
 </fieldset>
@@ -112,7 +105,7 @@ function getWindowresult() {
 <input type="text" size=30 name="to" value=[mailaddr]></input><br>
 <input id="bgimport" type="submit" disabled
        onclick="document.modifydoc.target='_self';document.modifydoc.action='[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_BGIMPORT'" 
-       value="[TEXT:proceed background import]">
+       value="[TEXT:Import after analyze done]">
 </fieldset>
 </form>
 <!--  FOOT HTML -->

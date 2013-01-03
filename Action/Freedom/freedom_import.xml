@@ -45,12 +45,26 @@ TD, TH {
           var b=editw.document.getElementById('bgimport');
            if (b) {
                b.disabled=true;
-               if ([nbdoc]+[nbprof]>0) b.disabled=false;
+               if ([nbdoc]+[nbprof]>0) {
+                 b.disabled=false;
+                 b.value="[TEXT:proceed background import]";
+               } else {
+                 b.value="[TEXT:No import : no document detected]";
+               }
            }
            b=editw.document.getElementById('fgimport');
            if (b) {
-           b.disabled=true;
-           if (([nbdoc]<[FDL_MAX_FGEXPORTDOC]) && ([nbdoc]+[nbprof]>0)) b.disabled=false;
+                b.disabled=true;
+                if (([nbdoc]<[FDL_MAX_FGEXPORTDOC]) && ([nbdoc]+[nbprof]>0)){
+                    b.disabled=false;
+                    b.value="[TEXT:Import document description now]";
+                 } else {
+                    if ([nbdoc]<[FDL_MAX_FGEXPORTDOC]) {
+                       b.value="[TEXT:No import : no document detected]";
+                    } else {
+                       b.value="[TEXT:No direct import : limit is reached]"+" : "+ [FDL_MAX_FGEXPORTDOC];
+                    }
+                 }
            }
        }
    </script>

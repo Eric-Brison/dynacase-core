@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 
-   <title>[TEXT:edition: ] [TITLE]</title>
+   <title>[TEXT:Import Documents]</title>
 
 
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
@@ -37,7 +37,7 @@ function editimport() {
 
  </head>
 
-<frameset border="0" cols="40%,*" >
+<frameset border="1" cols="40%,*" >
 
 	<frame id="editw" src="?app=FREEDOM&action=FREEDOM_EDITIMPORT[params]"  />
     <frame id="resultw" name="[resultAnalysisId]" src="?app=FREEDOM&action=FREEDOM_LOGO" scrolling="no" frameborder="1" />

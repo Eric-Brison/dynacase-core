@@ -46,7 +46,7 @@ function freedom_editimport(Action & $action)
     $selectclass = array();
     
     $doc = new_Doc($dbaccess, $classid);
-    $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, $classid, "TABLE");
+    $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
     
     while (list($k, $cdoc) = each($tclassdoc)) {
         $selectclass[$k]["idcdoc"] = $cdoc["initid"];
@@ -57,30 +57,11 @@ function freedom_editimport(Action & $action)
     
     $action->lay->SetBlockData("SELECTCLASS", $selectclass);
     
-    $lattr = $doc->GetImportAttributes();
-    $format = "DOC;" . (($doc->name != "") ? $doc->name : $doc->id) . ";<special id>;<special dirid> ";
-    
-    $ttemp = explode(";", $format);
-    $tformat = array();
-    foreach ($ttemp as $k => $v) {
-        $tformat[$k]["labeltext"] = htmlentities($v, ENT_COMPAT, "UTF-8");
-    }
-    
-    foreach ($lattr as $k => $attr) {
-        $format.= "; " . $attr->getLabel();
-        $tformat[$k]["labeltext"] = $attr->getLabel();
-    }
-    
     $action->lay->set("mailaddr", getMailAddr($action->user->id));
     
-    $action->lay->SetBlockData("TFORMAT", $tformat);
-    
-    $action->lay->Set("cols", count($tformat));
     $action->lay->Set("descr", $descr);
     $action->lay->Set("policy", $policy);
     
     $action->lay->Set("dirid", $dirid);
-    
-    $action->lay->Set("format", $format);
 }
 ?>

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-02 17:53+0100\n"
+"POT-Creation-Date: 2013-01-03 09:19+0100\n"
 "PO-Revision-Date: 2012-09-12 09:47+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -638,6 +638,9 @@ msgid "Add top folder"
 msgstr "Modify"
 
 msgid "Adding button to submit"
+msgstr ""
+
+msgid "Additionnals informations about import document"
 msgstr ""
 
 #, fuzzy
@@ -2143,6 +2146,9 @@ msgstr ""
 msgid "Generic Management"
 msgstr ""
 
+msgid "Get Xml schema"
+msgstr ""
+
 msgid "Go"
 msgstr ""
 
@@ -2255,13 +2261,15 @@ msgstr "Import"
 msgid "Import Users"
 msgstr "Import"
 
+msgid "Import after analyze done"
+msgstr ""
+
 #, fuzzy
 msgid "Import description file"
 msgstr "Edit"
 
-#, fuzzy
-msgid "Import document description"
-msgstr "Import"
+msgid "Import document description now"
+msgstr ""
 
 #, fuzzy
 msgid "Import documents"
@@ -2753,6 +2761,9 @@ msgstr ""
 msgid "No default value"
 msgstr ""
 
+msgid "No direct import : limit is reached"
+msgstr ""
+
 #, c-format
 msgid "No document found for <strong>%s</strong>%s"
 msgstr ""
@@ -2766,6 +2777,9 @@ msgstr ""
 
 #, c-format
 msgid "No identifier found for relation '%s' %s in %s file"
+msgstr ""
+
+msgid "No import : no document detected"
 msgstr ""
 
 #, fuzzy
@@ -3573,6 +3587,9 @@ msgstr ""
 msgid "Special view"
 msgstr ""
 
+msgid "Specific import in csv format"
+msgstr ""
+
 msgid "Starting of"
 msgstr ""
 
@@ -4177,9 +4194,6 @@ msgstr ""
 
 #, c-format
 msgid "Xml import file %s not found"
-msgstr ""
-
-msgid "Xml schema"
 msgstr ""
 
 msgid "Y"
@@ -8685,10 +8699,6 @@ msgstr ""
 msgid "specific family menu"
 msgstr ""
 
-#, fuzzy
-msgid "specific import"
-msgstr "Import"
-
 msgid "specmessage"
 msgstr ""
 
@@ -9771,6 +9781,10 @@ msgstr ""
 #~ msgstr "Welcome !"
 
 #, fuzzy
+#~ msgid "Import document description"
+#~ msgstr "Import"
+
+#, fuzzy
 #~ msgid "Import from"
 #~ msgstr "Import"
 
@@ -10156,6 +10170,10 @@ msgstr ""
 #, fuzzy
 #~ msgid "socname"
 #~ msgstr "Lastname"
+
+#, fuzzy
+#~ msgid "specific import"
+#~ msgstr "Import"
 
 #~ msgid "subject for new password request"
 #~ msgstr "The subject of the mail for password requests"
