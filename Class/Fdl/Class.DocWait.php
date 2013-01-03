@@ -43,11 +43,47 @@ class DocWait extends DbObj
      */
     public $refererid;
     /**
+     * initial identifier of referer document
+     *
+     * @var integer
+     */
+    public $refererinitid;
+    /**
      * temporary identifier use before creation
      *
      * @var integer
      */
     public $localid;
+    /**
+     * original values (serialized)
+     *
+     * @var string
+     */
+    public $orivalues;
+    /**
+     * extra data (json)
+     *
+     * @var string
+     */
+    public $extradata;
+    /**
+     * family identifier
+     *
+     * @var int
+     */
+    public $fromid;
+    /**
+     * new values (serialized)
+     *
+     * @var string
+     */
+    public $values;
+    /**
+     * transaction identifier
+     *
+     * @var int
+     */
+    public $transaction;
     /**
      * identifier system of the user
      *
@@ -63,7 +99,7 @@ class DocWait extends DbObj
     /**
      * date record
      *
-     * @var date
+     * @var string
      */
     public $date;
     /**
@@ -81,7 +117,7 @@ class DocWait extends DbObj
     /**
      * arg of code
      *
-     * @var text serialize object
+     * @var string serialize object
      */
     public $arg;
     /**
@@ -327,7 +363,7 @@ create sequence seq_waittransaction start 1;
                         $this->status = self::conflict;
                     } else {
                         if ($currentDoc->locked != $currentDoc->getSystemUserId()) {
-                            $this->statusmessage = sprintf("document %s [%d] not locked");
+                            $this->statusmessage = sprintf("document %s [%d] not locked", $currentDoc->getTitle() , $currentDoc->id);
                             $this->status = self::conflict;
                         } else {
                             if ($mask) $currentDoc->ApplyMask($mask);
@@ -341,6 +377,9 @@ create sequence seq_waittransaction start 1;
                             ));
                             */
                             $waitingDoc = $this->getWaitingDocument();
+                            /**
+                             * @var NormalAttribute $oa
+                             */
                             foreach ($attrs as $aid => $oa) {
                                 $ovalue = $originValues[$oa->id];
                                 $cvalue = $currentDoc->getValue($oa->id);
