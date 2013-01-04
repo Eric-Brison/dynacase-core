@@ -599,7 +599,7 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
         
         $mail = $account->mail ? (' (' . mb_substr($account->mail, 0, 40) . ')') : '';
         $tr[] = array(
-            $account->firstname . " " . $account->lastname . $mail,
+            $account->lastname . " " . $account->firstname . $mail,
             $account->fid,
             $account->lastname . " " . $account->firstname
         );
