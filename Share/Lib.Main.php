@@ -36,7 +36,6 @@ function getMainAction($auth, &$action)
     global $CORE_LOGLEVEL;
     
     global $_GET;
-    $standalone = GetHttpVars("sole", "Y");
     $defaultapp = false;
     if (!getHttpVars("app")) {
         $defaultapp = true;
@@ -114,63 +113,58 @@ function getMainAction($auth, &$action)
     $core->SetVolatileParam("CORE_ASTANDURL", "$puburl/$indexphp?sole=Y$add_args&"); // absolute links
     // ----------------------------------------
     // Init Application & Actions Objects
-    if (($standalone == "") || ($standalone == "N")) {
-        $action = new Action();
-        $action->Set("MAIN", $core, $session);
-    } else {
-        $appl = new Application();
-        $err = $appl->Set(getHttpVars("app") , $core, $session);
-        if ($err) {
-            print $err;
-            exit;
-        }
-        
-        if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect
-            if (substr($_SERVER['REQUEST_URI'], 0, 6) == "http:/") {
-                $aquest = parse_url($_SERVER['REQUEST_URI']);
-                $aquest['host'] = $appl->machine;
-                $puburl = glue_url($aquest);
-            } else {
-                $puburl = "http://" . $appl->machine . $_SERVER['REQUEST_URI'];
-            }
-            
-            Header("Location: $puburl");
-            exit;
-        }
-        // ----------------------------------------
-        // test SSL mode needed or not
-        // redirect if needed
-        if ($appl->ssl == "Y") {
-            if ($_SERVER['HTTPS'] != 'on') {
-                // redirect to go to ssl http
-                $sslurl = "https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'];
-                Header("Location: $sslurl");
-                exit;
-            }
-            
-            $core->SetVolatileParam("CORE_BGCOLOR", $core->GetParam("CORE_SSLBGCOLOR"));
-        }
-        // -----------------------------------------------
-        // now we are in correct protocol (http or https)
-        $action = new Action();
-        $action->Set(getHttpVars("action") , $appl, $session);
-        
-        if ($auth) {
-            $core_lang = $auth->getSessionVar('CORE_LANG');
-            if ($core_lang != '') {
-                $action->setParamU('CORE_LANG', $core_lang);
-                $auth->setSessionVar('CORE_LANG', '');
-            }
-            $action->auth = & $auth;
-            $core->SetVolatileParam("CORE_BASICAUTH", '&authtype=basic');
-        } else $core->SetVolatileParam("CORE_BASICAUTH", '');
-        
-        initExplorerParam($core);
-        // init for gettext
-        setLanguage($action->Getparam("CORE_LANG"));
-        
-        $action->log->debug("gettext init for " . $action->parent->name . $action->Getparam("CORE_LANG"));
+    $appl = new Application();
+    $err = $appl->Set(getHttpVars("app") , $core, $session);
+    if ($err) {
+        print $err;
+        exit;
     }
+    
+    if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect
+        if (substr($_SERVER['REQUEST_URI'], 0, 6) == "http:/") {
+            $aquest = parse_url($_SERVER['REQUEST_URI']);
+            $aquest['host'] = $appl->machine;
+            $puburl = glue_url($aquest);
+        } else {
+            $puburl = "http://" . $appl->machine . $_SERVER['REQUEST_URI'];
+        }
+        
+        Header("Location: $puburl");
+        exit;
+    }
+    // ----------------------------------------
+    // test SSL mode needed or not
+    // redirect if needed
+    if ($appl->ssl == "Y") {
+        if ($_SERVER['HTTPS'] != 'on') {
+            // redirect to go to ssl http
+            $sslurl = "https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'];
+            Header("Location: $sslurl");
+            exit;
+        }
+        
+        $core->SetVolatileParam("CORE_BGCOLOR", $core->GetParam("CORE_SSLBGCOLOR"));
+    }
+    // -----------------------------------------------
+    // now we are in correct protocol (http or https)
+    $action = new Action();
+    $action->Set(getHttpVars("action") , $appl, $session);
+    
+    if ($auth) {
+        $core_lang = $auth->getSessionVar('CORE_LANG');
+        if ($core_lang != '') {
+            $action->setParamU('CORE_LANG', $core_lang);
+            $auth->setSessionVar('CORE_LANG', '');
+        }
+        $action->auth = & $auth;
+        $core->SetVolatileParam("CORE_BASICAUTH", '&authtype=basic');
+    } else $core->SetVolatileParam("CORE_BASICAUTH", '');
+    
+    initExplorerParam($core);
+    // init for gettext
+    setLanguage($action->Getparam("CORE_LANG"));
+    
+    $action->log->debug("gettext init for " . $action->parent->name . $action->Getparam("CORE_LANG"));
 }
 
 function stripUrlSlahes($url)
@@ -277,22 +271,11 @@ function initExplorerWebParam(Application & $app)
  */
 function executeAction(&$action, &$out = null)
 {
-    
     $standalone = GetHttpVars("sole", "Y");
-    if (($standalone == "Y") || ($standalone == "N") || ($standalone == "")) {
+    if ($standalone != "A") {
         if ($out !== null) $out = $action->execute();
         else echo ($action->execute());
-    } else if ($standalone == "R") {
-        $app = GetHttpVars("app", "CORE");
-        $act = GetHttpVars("action", "");
-        // compute others argument to propagate to redirect url
-        global $_GET;
-        $getargs = "";
-        while (list($k, $v) = each($_GET)) {
-            if (($k != "freedom_param") && ($k != "app") && ($k != "sole") && ($k != "action")) $getargs.= "&" . $k . "=" . $v;
-        }
-        redirect($action, "CORE", "MAIN&appd=${app}&actd=${act}" . urlencode($getargs) , $action->GetParam("CORE_STANDURL"));
-    } else if ($standalone == "A") {
+    } else {
         if ((isset($action->parent)) && ($action->parent->with_frame != "Y")) {
             // This document is not completed : does not contain header and footer
             // HTML body result
@@ -328,12 +311,24 @@ function executeAction(&$action, &$out = null)
 function handleActionException(Exception $e)
 {
     global $action;
-    if (!headers_sent()) {
+    
+    if (method_exists($e, "addHttpHeader")) {
+        /**
+         * @var \Dcp\Exception $e
+         */
+        if ($e->getHttpHeader()) header($e->getHttpHeader());
+        else header("HTTP/1.1 500 Dynacase Uncaugth Exception");
+    } else {
         header("HTTP/1.1 500 Dynacase Uncaugth Exception");
     }
+    
     errorLogException($e);
     if (isset($action) && is_a($action, 'Action')) {
+        
         $action->exitError($e->getMessage());
+    } else {
+        
+        print $e->getMessage();
     }
 }
 

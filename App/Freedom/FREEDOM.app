@@ -112,6 +112,11 @@ $action_desc = array (
    "short_name"		=>N_("to choose value from set"),
    "acl"		=>"FREEDOM"
   ) ,
+  array(
+   "name"		=>"FREEDOM_MAINIMPORT",
+   "short_name"		=>N_("main interface document import"),
+   "acl"		=>"FREEDOM_MASTER"
+  ) ,
   array( 
    "name"		=>"FREEDOM_EDITIMPORT",
    "short_name"		=>N_("query document import"),

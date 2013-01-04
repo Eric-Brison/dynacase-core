@@ -17,6 +17,8 @@ class ImportDocument
      * @var bool strict mode
      */
     private $strict = true;
+    
+    private $onlyAnalyze = false;
     /**
      * set strict mode
      * @param bool $strict set to false to accept error when import
@@ -41,6 +43,7 @@ class ImportDocument
             //$action->debug=true;
             $action->savePoint($point);
         }
+        $this->onlyAnalyze = $onlyAnalyze;
         if ($archive) {
             include_once ("FREEDOM/freedom_ana_tar.php");
             $untardir = getTarExtractDir($action, basename($file));
@@ -142,6 +145,7 @@ class ImportDocument
         )));
         $lay->SetBlockData("ADDEDDOC", $this->cr);
         $lay->Set("nbdoc", $nbdoc);
+        $lay->set("analyze", ($this->onlyAnalyze));
         $lay->Set("nbprof", count(array_filter($this->cr, array(
             $this,
             "isprof"

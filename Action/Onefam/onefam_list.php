@@ -19,7 +19,7 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Lib.Dir.php");
 
-function onefam_list(&$action)
+function onefam_list(Action & $action)
 {
     $action->lay->set("APP_TITLE", _($action->parent->description));
     
@@ -70,7 +70,7 @@ function getTableFamilyList($idsfam)
             if ($cdoc->dfldid > 0) {
                 if ($cdoc->control('view') == "") {
                     $selectclass[$k]["idcdoc"] = $cdoc->initid;
-                    $selectclass[$k]["ftitle"] = $cdoc->title;
+                    $selectclass[$k]["ftitle"] = $cdoc->getHTMLTitle();
                     $selectclass[$k]["iconsrc"] = $cdoc->getIcon();
                 }
             }

@@ -87,7 +87,7 @@ class TestGetParam extends TestCaseDcp
         return array(
             array(
                 array(
-                    'name' => 'CORE_ANAKEEN'
+                    'name' => 'CORE_CLIENT'
                     // CORE 'G'
                     
                 ) ,
@@ -105,7 +105,7 @@ class TestGetParam extends TestCaseDcp
         return array(
             array(
                 array(
-                    'name' => 'CORE_ANAKEEN'
+                    'name' => 'CORE_CLIENT'
                     // CORE 'G'
                     
                 ) ,

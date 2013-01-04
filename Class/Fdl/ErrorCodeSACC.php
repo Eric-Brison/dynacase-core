@@ -46,6 +46,12 @@ namespace {
         const SACC0005 = 'Unknow group "%s" to be use with account search filter';
         /**
          * @errorCode
+         * the argument must be a valid family Id
+         * @see SearchAccount::filterFamily()
+         */
+        const SACC0006 = 'Unknow family "%s" to be use with account search filter';
+        /**
+         * @errorCode
          * for beautifier
          */
         private function _bo()

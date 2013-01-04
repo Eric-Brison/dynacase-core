@@ -236,7 +236,12 @@ function AttrToPhp($dbaccess, $tdoc)
                     if ($atype == "account") {
                         if (!$v->phpfile && !$v->phpfunc) {
                             $v->phpfile = 'fdl.php';
-                            $v->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', str_replace('"', '\\"', $v->options) , $v->id);
+                            $options = $v->options;
+                            if ($aformat) {
+                                if ($options) $options.= '|';
+                                $options.= sprintf("family=%s", $aformat);
+                            }
+                            $v->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', str_replace('"', '\\"', $options) , $v->id);
                         }
                     }
                     $tnormal[($v->id) ] = array(

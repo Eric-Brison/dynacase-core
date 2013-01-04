@@ -19,14 +19,23 @@
 include_once ("FDL/import_file.php");
 include_once ("FDL/Lib.Dir.php");
 // -----------------------------------
-function freedom_editimport(&$action)
+function freedom_editimport(Action & $action)
 {
-    // -----------------------------------
-    // Get all the params
-    $classid = GetHttpVars("classid", 0); // doc familly
-    $dirid = GetHttpVars("dirid", 10); // directory to place imported doc (default unclassed folder)
-    $descr = (GetHttpVars("descr", "Y") == "Y"); // view info
-    $policy = (GetHttpVars("policy", "Y") == "Y"); // view policy
+    
+    $usage = new ActionUsage($action);
+    $usage->setText("Import document interface");
+    $classid = $usage->addOption("classid", "family used to view schema");
+    $dirid = $usage->addOption("dirid", "directory to place imported doc");
+    $descr = ($usage->addOption("descr", "view information", array(
+        "Y",
+        "N"
+    ) , "Y") == "Y");
+    $policy = ($usage->addOption("policy", "view policy options", array(
+        "Y",
+        "N"
+    ) , "Y") == "Y");
+    $usage->strict(false);
+    $usage->verify();
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
@@ -37,7 +46,7 @@ function freedom_editimport(&$action)
     $selectclass = array();
     
     $doc = new_Doc($dbaccess, $classid);
-    $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, $classid, "TABLE");
+    $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
     
     while (list($k, $cdoc) = each($tclassdoc)) {
         $selectclass[$k]["idcdoc"] = $cdoc["initid"];
@@ -48,29 +57,11 @@ function freedom_editimport(&$action)
     
     $action->lay->SetBlockData("SELECTCLASS", $selectclass);
     
-    $lattr = $doc->GetImportAttributes();
-    $format = "DOC;" . (($doc->name != "") ? $doc->name : $doc->id) . ";<special id>;<special dirid> ";
-    
-    $ttemp = explode(";", $format);
-    while (list($k, $v) = each($ttemp)) {
-        $tformat[$k]["labeltext"] = htmlentities($v, ENT_COMPAT, "UTF-8");
-    }
-    
-    while (list($k, $attr) = each($lattr)) {
-        $format.= "; " . $attr->getLabel();
-        $tformat[$k]["labeltext"] = $attr->getLabel();
-    }
-    
     $action->lay->set("mailaddr", getMailAddr($action->user->id));
     
-    $action->lay->SetBlockData("TFORMAT", $tformat);
-    
-    $action->lay->Set("cols", count($tformat));
     $action->lay->Set("descr", $descr);
     $action->lay->Set("policy", $policy);
     
     $action->lay->Set("dirid", $dirid);
-    
-    $action->lay->Set("format", $format);
 }
 ?>

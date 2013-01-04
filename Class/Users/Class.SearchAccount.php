@@ -58,6 +58,7 @@ class SearchAccount
     private $order = 'login';
     private $slice = 'ALL';
     private $start = 0;
+    private $familyFilter = null;
     
     private $returnUser = true;
     private $returnGroup = true;
@@ -221,6 +222,19 @@ class SearchAccount
         return $login;
     }
     /**
+     * @param string $family
+     */
+    public function filterFamily($family)
+    {
+        if (!is_numeric($family)) {
+            $famId = getFamIdFromName($this->dbaccess, $family);
+            if (!$famId) throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0006", $family));
+            $this->familyFilter = $famId;
+        } else {
+            $this->familyFilter = $family;
+        }
+    }
+    /**
      * send search of account's object
      * @api
      * @return DocumentList|AccountList
@@ -268,9 +282,19 @@ class SearchAccount
         $u = getCurrentUser();
         if ($this->viewControl && $u->id != 1) {
             $viewVector = SearchDoc::getUserViewVector($u->id);
-            $sql = sprintf("select users.* from users, docread where users.fid = docread.id and docread.views && '%s' and %s ", $viewVector, $groupRoleFilter);
+            if ($this->familyFilter) {
+                $table = "doc" . $this->familyFilter;
+                $sql = sprintf("select users.* from users, $table where users.fid = $table.id and $table.views && '%s' and %s ", $viewVector, $groupRoleFilter);
+            } else {
+                $sql = sprintf("select users.* from users, docread where users.fid = docread.id and docread.views && '%s' and %s ", $viewVector, $groupRoleFilter);
+            }
         } else {
-            $sql = sprintf("select * from users where %s ", $groupRoleFilter);
+            if ($this->familyFilter) {
+                $table = "doc" . $this->familyFilter;
+                $sql = sprintf("select users.* from users, $table where users.fid = $table.id  and %s ", $groupRoleFilter);
+            } else {
+                $sql = sprintf("select * from users where %s ", $groupRoleFilter);
+            }
         }
         foreach ($this->filters as $aFilter) {
             $sql.= sprintf(" and (%s) ", $aFilter);
@@ -286,6 +310,7 @@ class SearchAccount
         
         if ($this->order) $sql.= sprintf(" order by %s", pg_escape_string($this->order));
         $sql.= sprintf(" offset %d limit %s", $this->start, pg_escape_string($this->slice));
+        
         return $sql;
     }
 }

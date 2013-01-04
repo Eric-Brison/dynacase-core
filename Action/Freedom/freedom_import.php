@@ -28,6 +28,7 @@ function freedom_import(Action & $action)
     // -----------------------------------
     global $_FILES;
     $log = $action->getArgument("log"); // log file
+    $analyze = ($action->getArgument("analyze", "N") == "Y"); // just analyze
     setMaxExecutionTimeTo(3600); // 60 minutes
     if (isset($_FILES["file"])) {
         $filename = $_FILES["file"]['name'];
@@ -40,7 +41,8 @@ function freedom_import(Action & $action)
         $csvfile = $filename;
     }
     $oImport = new ImportDocument();
-    $cr = $oImport->importDocuments($action, $csvfile);
+    
+    $cr = $oImport->importDocuments($action, $csvfile, $analyze);
     
     $oImport->writeImportLog($log);
     $oImport->writeHtmlCr($action->lay);

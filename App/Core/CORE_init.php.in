@@ -13,7 +13,7 @@
  *
  * @par Reference manual:
  * The Dynacase Reference Manual gives you all informations you need to design, code, test your applications.
-  This manual should be your daily companion, with all answers to all questions when developping on Dynacase Platform.
+ This manual should be your daily companion, with all answers to all questions when developping on Dynacase Platform.
  * ==> http://www.dynacase.org/documentation
  *
  * @par Explanation of related pages
@@ -84,7 +84,7 @@ $app_const = array(
     "CORE_TMPDIR" => "./var/tmp",
     "CORE_TMPDIR_MAXAGE" => array(
         "val" => "2",
-        "desc" => N_("core_tmpdir_maxage"),
+        "desc" => N_("core_tmpdir_maxage") ,
         "user" => "N",
         "global" => "Y"
     ) ,
@@ -260,13 +260,6 @@ $app_const = array(
         "style" => "N",
         "global" => "Y"
     ) ,
-    "CORE_ANAKEEN" => array(
-        "val" => "Anakeen&nbsp;2005",
-        "descr" => N_("anakeen") ,
-        "user" => "N",
-        "style" => "N",
-        "global" => "Y"
-    ) ,
     "CORE_URLINDEX" => array(
         "val" => "",
         "descr" => N_("url to reach http server index") ,
@@ -288,20 +281,6 @@ $app_const = array(
         "style" => "N",
         "global" => "Y"
     ) ,
-    "GATE_URL" => array(
-        "val" => "",
-        "descr" => N_("gate urls") ,
-        "user" => "Y",
-        "style" => "N",
-        "global" => "Y"
-    ) ,
-    "GATE_GEO" => array(
-        "val" => "",
-        "descr" => N_("gate geometry") ,
-        "user" => "Y",
-        "style" => "N",
-        "global" => "Y"
-    ) ,
     "CORE_SOCSTYLE" => array(
         "val" => "",
         "descr" => N_("society style") ,
@@ -317,12 +296,6 @@ $app_const = array(
     "CORE_PASSWDDELAY" => array(
         "val" => "0",
         "descr" => N_("default delay before expiration of password in day") ,
-        "style" => "N",
-        "global" => "Y"
-    ) ,
-    "CORE_RFOOT" => array(
-        "val" => "<B>Dynacase</B>",
-        "descr" => N_("name displayed in the right of the foot") ,
         "style" => "N",
         "global" => "Y"
     ) ,
@@ -411,7 +384,7 @@ $app_const = array(
 @include_once ('WHAT/Lib.Prefix.php');
 @include_once ("CORE/lang.php");
 if (isset($lang)) {
-    $tl=array();
+    $tl = array();
     foreach ($lang as $k => $v) {
         $tl[] = $k;
     }

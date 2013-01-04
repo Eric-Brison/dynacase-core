@@ -21,6 +21,7 @@ namespace Dcp {
     class Exception extends \Exception
     {
         private $dcpCode = '';
+        private $httpHeader = array();
         /**
          * Redefined exception : message text is mandatory now
          * @param string $message error message or code error
@@ -75,6 +76,15 @@ namespace Dcp {
         public function __toString()
         {
             return __CLASS__ . ": {$this->message}";
+        }
+        
+        public function addHttpHeader($header)
+        {
+            $this->httpHeader[] = $header;
+        }
+        public function getHttpHeader()
+        {
+            return implode("\n", $this->httpHeader);
         }
     }
 }

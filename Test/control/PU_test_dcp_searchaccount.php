@@ -195,6 +195,64 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
     {
         $this->assertEquals(mb_strtolower($login) , \SearchAccount::docName2login($docName) , "logical name convert to login failed");
     }
+    /**
+     * @dataProvider dataFilterByFamily
+     */
+    public function testFilterByFamily($family, $filter, $expectedCount)
+    {
+        $this->sudo("tstlogina1");
+        $s = new \SearchAccount();
+        $s->addFilter($filter);
+        $s->setOrder("login");
+        $s->useViewControl();
+        $s->setObjectReturn($s::returnAccount);
+        $s->filterFamily($family);
+        /**
+         * @var \AccountList $al
+         */
+        $al = $s->search();
+        
+        $ll = $this->getAccounlLogin($al);
+        
+        $this->assertEquals($expectedCount, count($al) , sprintf("not same count expected %d : %s", $expectedCount, $ll));
+        $this->exitSudo();
+    }
+    /**
+     * @dataProvider dataFilterByFamily
+     */
+    public function testFilterByFamilyNoView($family, $filter, $expectedCount)
+    {
+        $s = new \SearchAccount();
+        $s->addFilter($filter);
+        $s->setOrder("login");
+        $s->useViewControl(false);
+        $s->setObjectReturn($s::returnAccount);
+        $s->filterFamily($family);
+        /**
+         * @var \AccountList $al
+         */
+        $al = $s->search();
+        
+        $ll = $this->getAccounlLogin($al);
+        
+        $this->assertEquals($expectedCount, count($al) , sprintf("not same count expected %d : %s", $expectedCount, $ll));
+    }
+    
+    public function dataFilterByFamily()
+    {
+        return array(
+            array(
+                "family" => "TST_uSER",
+                "filter" => " login ~ '^tstloginu'",
+                "expect" => 7
+            ) ,
+            array(
+                "family" => "TST_OTHERuSER",
+                "filter" => " login ~ '^tstloginu'",
+                "expect" => 1
+            )
+        );
+    }
     public function dataFilterViewControl()
     {
         return array(

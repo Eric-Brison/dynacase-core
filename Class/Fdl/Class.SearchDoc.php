@@ -182,7 +182,6 @@ class SearchDoc
             $fld = new_Doc($this->dbaccess, $this->dirid);
             $userid = $this->userid;
             if ($fld->fromid != getFamIdFromName($this->dbaccess, "SSEARCH")) {
-                $this->mode = "ITEM";
                 if ($this->debug) $debuginfo = array();
                 else $debuginfo = null;
                 $tqsql = $this->getQueries();
@@ -319,6 +318,7 @@ class SearchDoc
         $this->resultPos = 0;
         $this->resultQPos = 0;
         $this->debuginfo = "";
+        $this->count = - 1;
     }
     /**
      * reset result offset

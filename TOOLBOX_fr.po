@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-07 13:27+0100\n"
-"PO-Revision-Date: 2012-12-07 13:31+0100\n"
+"POT-Creation-Date: 2013-01-03 09:19+0100\n"
+"PO-Revision-Date: 2013-01-03 09:20+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -610,6 +610,9 @@ msgstr "Ajouter un dossier racine"
 msgid "Adding button to submit"
 msgstr "Ajout un bouton pour l'envoi du formulaire"
 
+msgid "Additionnals informations about import document"
+msgstr "Informations sur les formats d'importation"
+
 msgid "Admin"
 msgstr "Admin"
 
@@ -658,9 +661,6 @@ msgstr "Concatène tous les scripts JS pour la consultation"
 msgid "All js in one for edition"
 msgstr "Concatène tous les scripts JS pour l'édition"
 
-msgid "All manuals"
-msgstr "Tous les manuels"
-
 msgid "All set only"
 msgstr "Voir les droits explicites"
 
@@ -684,10 +684,6 @@ msgstr "Analyse seulement"
 
 msgid "Answers"
 msgstr "Réponses"
-
-#, c-format
-msgid "Application %s (%s) not available"
-msgstr "Application %s (%s) non disponible"
 
 msgid "Application Access"
 msgstr "Accès des applications"
@@ -820,7 +816,7 @@ msgid "Automatic profil creation not possible for this kind of family"
 msgstr "Création automatique de profil imposssible pour ce type de document"
 
 msgid "Background Import"
-msgstr "Import en tache de fond"
+msgstr "Importation en tâche de fond"
 
 msgid "Basic search"
 msgstr "Recherche simple"
@@ -1441,7 +1437,7 @@ msgid "Dir::insertFolder identifier [%s] must be numeric"
 msgstr "Dir::insertFolder l'identificateur [%s] doit être numérique"
 
 msgid "Direct Import"
-msgstr "Import direct"
+msgstr "Importation directe"
 
 #, c-format
 msgid "Direct set through document itself \"%s\""
@@ -1674,9 +1670,6 @@ msgstr "Éditer"
 #, c-format
 msgid "Edit %s"
 msgstr "Éditer %s"
-
-msgid "Edit Url Gate"
-msgstr "édition des URLs pour le portail"
 
 msgid "Edit any access"
 msgstr "Editer n'importe quel accès"
@@ -2054,9 +2047,6 @@ msgstr "Depuis l'état %s vers"
 msgid "Full search"
 msgstr "Recheche plein texte"
 
-msgid "Gate"
-msgstr "Portail"
-
 msgid "Gb"
 msgstr "Go"
 
@@ -2071,6 +2061,9 @@ msgstr "Générique"
 
 msgid "Generic Management"
 msgstr "Gestion générique"
+
+msgid "Get Xml schema"
+msgstr "Récupérer le schéma XML"
 
 msgid "Go"
 msgstr "Go"
@@ -2127,10 +2120,6 @@ msgstr "Historique"
 msgid "History for"
 msgstr "Historique de"
 
-# ne pas mettre de '
-msgid "Homepage"
-msgstr "Accueil"
-
 msgid "ID"
 msgstr "ID"
 
@@ -2183,11 +2172,14 @@ msgstr "Importation Archive"
 msgid "Import Users"
 msgstr "Importation d'utilisateurs"
 
+msgid "Import after analyze done"
+msgstr "Importer après l'analyse"
+
 msgid "Import description file"
 msgstr "Fichier de description de l'import"
 
-msgid "Import document description"
-msgstr "Importer les documents"
+msgid "Import document description now"
+msgstr "Importer les documents maintenant"
 
 msgid "Import documents"
 msgstr "Importer des documents"
@@ -2471,9 +2463,6 @@ msgstr "Fabrication des références ..."
 msgid "Manage families"
 msgstr "gestion des familles"
 
-msgid "Manuals"
-msgstr "Manuels"
-
 msgid "March"
 msgstr "Mars"
 
@@ -2625,9 +2614,6 @@ msgstr "Nom du zoo"
 msgid "Negative grant"
 msgstr "Droits négatifs"
 
-msgid "New GATE page"
-msgstr "Portail"
-
 msgid "New Vault FS"
 msgstr "Nouveau coffre"
 
@@ -2652,14 +2638,14 @@ msgstr "Nouvelle taille"
 msgid "New state"
 msgstr "Nouvel état"
 
-msgid "New version has been installed."
-msgstr "Une nouvelle version vient d'être installée."
-
 msgid "Next"
 msgstr "Suivant"
 
 msgid "Next Timers"
 msgstr "Prochains minuteurs"
+
+msgid "No Icon specified"
+msgstr "Pas d'icone définie"
 
 msgid "No acl for family"
 msgstr "Pas de droits définis pour la famille"
@@ -2672,6 +2658,9 @@ msgstr "Aucunes colonnes ont été définies"
 
 msgid "No default value"
 msgstr "Aucune valeurs par défaut"
+
+msgid "No direct import : limit is reached"
+msgstr "Pas d'importation directe : limite atteinte"
 
 #, c-format
 msgid "No document found for <strong>%s</strong>%s"
@@ -2688,6 +2677,9 @@ msgid "No identifier found for relation '%s' %s in %s file"
 msgstr ""
 "Impossible de trouver d'identifiant pour la relation '%s' %s dans le fichier "
 "%s"
+
+msgid "No import : no document detected"
+msgstr "Par d'importation : pas de document détectés"
 
 msgid "No need to refresh group"
 msgstr "Tous les groupes sont actualisés"
@@ -3133,6 +3125,9 @@ msgstr "Durée restante"
 msgid "Restricted Access"
 msgstr "Accès restreint"
 
+msgid "Result Analyze Documents"
+msgstr "Résultat de l'analyse des documents"
+
 msgid "Result Import Documents"
 msgstr " Résultat de l'importation de documents"
 
@@ -3205,9 +3200,6 @@ msgstr "Sauver les changements ?"
 
 msgid "Save default values"
 msgstr "Sauver les valeurs par défaut"
-
-msgid "Save geometry"
-msgstr "Sauver la disposition"
 
 msgid "Save in progress"
 msgstr "Enregistrement en cours"
@@ -3309,6 +3301,9 @@ msgstr ""
 msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
 msgstr ""
 "Sélectionner. Utiliser ctrl-&uarr; &darr; pour monter/descendre la sélection"
+
+msgid "Send Analyze"
+msgstr "Lancer l'analyse"
 
 msgid "Send document"
 msgstr "Envoyer par courriel"
@@ -3456,6 +3451,9 @@ msgstr "Éditions spéciales"
 
 msgid "Special view"
 msgstr "Vues spéciales"
+
+msgid "Specific import in csv format"
+msgstr "Importation spécifiques au format CSV"
 
 msgid "Starting of"
 msgstr "Démarrage de"
@@ -3965,9 +3963,6 @@ msgstr "Système de fichiers WebDAV DYNACASE"
 msgid "Wednesday"
 msgstr "Mercredi"
 
-msgid "Welcome Page"
-msgstr "Page d'accueil"
-
 msgid "What Access Management"
 msgstr "Gestion des accessibilités"
 
@@ -4048,18 +4043,12 @@ msgstr "importation XML : Le fichier %s ne peut être crée"
 msgid "Xml import file %s not found"
 msgstr "importation XML : fichier %s introuvable"
 
-msgid "Xml schema"
-msgstr "Xml Schéma"
-
 msgid "Y"
 msgstr "O"
 
 msgid "You can close window now or waiting the end of processing"
 msgstr ""
 "Vous pouvez fermer la fenêtre maintenant ou attendre la fin du traitement"
-
-msgid "You must clear navigator cache."
-msgstr "Vous devez effacer le cache de votre navigateur."
 
 msgid "You must upgrade to version 6 or more"
 msgstr "Vous devez mettre à jour avec la version 6 au minimum"
@@ -4333,9 +4322,6 @@ msgstr "alterTransitiontype: paramètre manquant"
 msgid "an error has occured: %s"
 msgstr "Une erreur a été produite: %s"
 
-msgid "anakeen"
-msgstr "anakeen"
-
 msgid "analyze archive file"
 msgstr "analyse de fichier archive"
 
@@ -4604,7 +4590,7 @@ msgid "background color or image in security mode"
 msgstr "image ou couleur de fond en mode sécurité"
 
 msgid "background document import"
-msgstr "import en tache de fond"
+msgstr "importation en tâche de fond"
 
 msgid "background image for bar"
 msgstr "image de fond pour les barres"
@@ -6295,15 +6281,6 @@ msgstr "fuser fenêtre principale"
 msgid "fusers view/edit window"
 msgstr "fuser voir/modifier"
 
-msgid "gate geometry"
-msgstr "disposition du portail"
-
-msgid "gate page"
-msgstr "Page du portail"
-
-msgid "gate urls"
-msgstr "urls du portail"
-
 #, c-format
 msgid "generate version '%s'"
 msgstr "version de génération '%s'"
@@ -6506,7 +6483,8 @@ msgstr " Importation de documents <I>%s</I> à partir de"
 
 #, c-format
 msgid "import Xml extract : file %s not found"
-msgstr "Erreur lors de l'extraction de l'import XML: fichier %s introuvable"
+msgstr ""
+"Erreur lors de l'extraction de l'importation XML: fichier %s introuvable"
 
 msgid "import analysis result"
 msgstr "Résultat de l'analyse de l'import"
@@ -6515,20 +6493,20 @@ msgid "import archive file"
 msgstr "Importer un fichier archive"
 
 msgid "import csv"
-msgstr "Import csv"
+msgstr "Importation csv"
 
 msgid "import edition"
 msgstr "modification de l'importation"
 
 #, c-format
 msgid "import file %s not found"
-msgstr "fichier d'import %s non trouvé"
+msgstr "fichier d'importation %s non trouvé"
 
 msgid "import file:"
 msgstr "Fichier à importer :"
 
 msgid "import keys"
-msgstr "clefs d'import"
+msgstr "clefs d'importation"
 
 msgid "import results"
 msgstr "Résultats de l'importation"
@@ -6734,6 +6712,9 @@ msgstr "rédaction de mail"
 
 msgid "mailstatus"
 msgstr "Status"
+
+msgid "main interface document import"
+msgstr "Interface principale d'importation"
 
 msgid "main view columns"
 msgstr "Vue principale"
@@ -6966,9 +6947,6 @@ msgstr "Nom"
 msgid "name and address of our society"
 msgstr "nom et adresse de votre société"
 
-msgid "name displayed in the right of the foot"
-msgstr "nom affiché dans le bas de la fenêtre (à droite)"
-
 #, c-format
 msgid ""
 "name must begin with a letter and the containt only alphanumeric characters "
@@ -7134,7 +7112,7 @@ msgid "no control"
 msgstr "pas de contrôle"
 
 msgid "no csv import file specified"
-msgstr "pas de fichier d'import CSV spécifié"
+msgstr "pas de fichier d'importation CSV spécifié"
 
 msgid "no cycle defined"
 msgstr "pas de cycle défini"
@@ -7641,11 +7619,11 @@ msgid "private key is not valid"
 msgstr "La clef privé n'est pas valide"
 
 msgid "proceed background import"
-msgstr "Effectuer l'import en tache de fond"
+msgstr "Effectuer l'importation en tâche de fond"
 
 #, c-format
 msgid "proceed background import of %d documents"
-msgstr "Effectuer l'import en tache de fond de %d documents"
+msgstr "Effectuer l'importation en tâche de fond de %d documents"
 
 #, c-format
 msgid "process %s"
@@ -7811,13 +7789,13 @@ msgid "query [%s] not valid for select document"
 msgstr "la requête [%s] n'est pas valide pour une sélection de documents"
 
 msgid "query document import"
-msgstr "demande d'import de document"
+msgstr "demande d'importation de document"
 
 msgid "query icon"
 msgstr "requête icone"
 
 msgid "query tar document import"
-msgstr "demande d'import d'archive"
+msgstr "demande d'importation d'archive"
 
 msgid "quick save not possible"
 msgstr "Sauvegarde rapide impossible"
@@ -7936,11 +7914,11 @@ msgstr "restriction aux familles préférées"
 
 #, c-format
 msgid "result of archive import  %s"
-msgstr "Résultat de l'import d'archive %s"
+msgstr "Résultat de l'importation d'archive %s"
 
 #, c-format
 msgid "result of import  %s"
-msgstr "Résultat de l'import %s"
+msgstr "Résultat de l'importation %s"
 
 msgid "retrieve file converted"
 msgstr "récupération d'un fichier converti"
@@ -8280,9 +8258,6 @@ msgstr "Contrôle dédié"
 msgid "specific family menu"
 msgstr "Menu de famille spécifique"
 
-msgid "specific import"
-msgstr "Import spécifique"
-
 msgid "specmessage"
 msgstr "message spécifique"
 
@@ -8412,7 +8387,7 @@ msgstr "La tâche %s ne s'est pas terminée correctement"
 
 #, c-format
 msgid "task %s is not recorded"
-msgstr "la tache %s n'est pas enregistrée"
+msgstr "la tâche %s n'est pas enregistrée"
 
 #, c-format
 msgid "template %s no document found"
@@ -9086,9 +9061,6 @@ msgstr "voir les dernières traces d'un document détruit"
 msgid "view list"
 msgstr "voir la liste"
 
-msgid "view log"
-msgstr "voir les messages"
-
 msgid "view object acl"
 msgstr "voir les droits"
 
@@ -9369,6 +9341,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Address book searches"
 #~ msgstr "Adress book : recherche rapide"
 
+#~ msgid "All manuals"
+#~ msgstr "Tous les manuels"
+
+#~ msgid "Application %s (%s) not available"
+#~ msgstr "Application %s (%s) non disponible"
+
 #~ msgid "Authentification failure before account desactivation"
 #~ msgstr ""
 #~ "Nombre de connexion avec mot de passe incorrect avant désactivation du "
@@ -9419,6 +9397,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
 
+#~ msgid "Edit Url Gate"
+#~ msgstr "édition des URLs pour le portail"
+
 #~ msgid "Enter name for database ? "
 #~ msgstr "Nom de la base de donnée ?"
 
@@ -9440,11 +9421,21 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Fax"
 #~ msgstr "Fax"
 
+#~ msgid "Gate"
+#~ msgstr "Portail"
+
 #~ msgid "Group '%s' not exists"
 #~ msgstr "Le groupe '%s' n'existe pas"
 
+# ne pas mettre de '
+#~ msgid "Homepage"
+#~ msgstr "Accueil"
+
 #~ msgid "I can't find hostname alias"
 #~ msgstr "Alias de hostname introuvable"
+
+#~ msgid "Import document description"
+#~ msgstr "Importer les documents"
 
 #~ msgid "Import from"
 #~ msgstr "Importation à partir de"
@@ -9460,6 +9451,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Logical name %s already use other document"
 #~ msgstr "Le nom logique %s déjà utilisé pour un autre document"
+
+#~ msgid "Manuals"
+#~ msgstr "Manuels"
 
 #~ msgid "Max user reach. Use search filter"
 #~ msgstr "Utiliser la recherche pour voir la suite"
@@ -9481,6 +9475,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "My firstname and lastname"
 #~ msgstr "Mon prénom et mon nom"
+
+#~ msgid "New GATE page"
+#~ msgstr "Portail"
+
+#~ msgid "New version has been installed."
+#~ msgstr "Une nouvelle version vient d'être installée."
 
 #~ msgid "No identifier found for relation %s"
 #~ msgstr "Aucun identificateur pour la relation %s"
@@ -9517,6 +9517,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Role '%s' not exists"
 #~ msgstr "Le rôle '%s' n'existe pas"
+
+#~ msgid "Save geometry"
+#~ msgstr "Sauver la disposition"
 
 #~ msgid "Save without change state"
 #~ msgstr "Sauver sans changement d'état"
@@ -9608,11 +9611,20 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "View workflow graph"
 #~ msgstr "Voir le graphe du cycle de vie"
 
+#~ msgid "Welcome Page"
+#~ msgstr "Page d'accueil"
+
 #~ msgid "What User Management"
 #~ msgstr "Gestion des utilisateurs"
 
 #~ msgid "With Activity"
 #~ msgstr "Avec les activités"
+
+#~ msgid "Xml schema"
+#~ msgstr "Xml Schéma"
+
+#~ msgid "You must clear navigator cache."
+#~ msgstr "Vous devez effacer le cache de votre navigateur."
 
 #~ msgid "access to documents of my space"
 #~ msgstr "Accéder aux documents de mon espace"
@@ -9652,6 +9664,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "admin view"
 #~ msgstr "vue administrateur"
+
+#~ msgid "anakeen"
+#~ msgstr "anakeen"
 
 #~ msgid "authentication failed"
 #~ msgstr "échec d'authentification"
@@ -9921,6 +9936,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "function examples"
 #~ msgstr "exemples de fonctions"
 
+#~ msgid "gate geometry"
+#~ msgstr "disposition du portail"
+
+#~ msgid "gate page"
+#~ msgstr "Page du portail"
+
+#~ msgid "gate urls"
+#~ msgstr "urls du portail"
+
 #~ msgid "group list"
 #~ msgstr "les groupes"
 
@@ -9965,6 +9989,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "my last name"
 #~ msgstr "mon nom de famille"
+
+#~ msgid "name displayed in the right of the foot"
+#~ msgstr "nom affiché dans le bas de la fenêtre (à droite)"
 
 #~ msgid "name must containt only alphanumeric characters: invalid  [%s]"
 #~ msgstr ""
@@ -10072,6 +10099,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "socname"
 #~ msgstr "Nom"
 
+#~ msgid "specific import"
+#~ msgstr "Import spécifique"
+
 #~ msgid "subject for new password request"
 #~ msgstr "Le sujet du mail pour les demandes de mot de passe"
 
@@ -10171,6 +10201,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "version"
 #~ msgstr "version"
+
+#~ msgid "view log"
+#~ msgstr "voir les messages"
 
 #~ msgid "view my space"
 #~ msgstr "Voir mon espace"

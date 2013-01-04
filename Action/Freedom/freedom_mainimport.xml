@@ -1,0 +1,49 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:Import Documents]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+function editimport() {
+  var eurl;
+  var famid;
+  if (document.getElementById('classid')) {
+    famid=document.getElementById('classid').options[document.getElementById('classid').selectedIndex].value;
+    eurl='[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDITIMPORT&famid='+famid;
+    subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'editimport',eurl);
+  }
+}
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<frameset border="1" cols="40%,*" >
+
+	<frame id="editw" src="?app=FREEDOM&action=FREEDOM_EDITIMPORT[params]"  />
+    <frame id="resultw" name="[resultAnalysisId]" src="?app=FREEDOM&action=FREEDOM_LOGO" scrolling="no" frameborder="1" />
+
+
+</frameset>
+
+
+</html>
