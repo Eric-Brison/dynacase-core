@@ -69,7 +69,6 @@ class TestSearch extends TestCaseDcpDocument
         if ($criteria) $s->addFilter($criteria, $arg);
         $s->setObjectReturn(true);
         $s->search();
-        
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
         
@@ -284,6 +283,34 @@ class TestSearch extends TestCaseDcpDocument
             $this->assertContains($error, $err, sprintf("no good error code"));
         }
     }
+    /**
+     * test basic search criteria
+     * @param string $criteria filter
+     * @param string $arg filter argument
+     * @param string $family family name or id
+     * @param integer $count expected results count
+     * @return void
+     * @dataProvider countCriteria
+     */
+    public function testCountAndResetSearch($criteria, $arg, $family, $count)
+    {
+        require_once "FDL/Class.SearchDoc.php";
+        $this->createDataSearch();
+        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s->onlyCount();
+        
+        $s->reset();
+        if ($criteria) $s->addFilter($criteria, $arg);
+        
+        $t = $s->search();
+        
+        $err = $s->getError();
+        $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
+        
+        $this->assertEquals($count, $s->count() , sprintf("Count must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
+        $this->assertEquals($count, count($t) , sprintf("Count must be %d (found %d) search mode error %s %s", $count, count($t) , $criteria, $arg));
+    }
+    
     public function loginCriteria()
     {
         return array(
