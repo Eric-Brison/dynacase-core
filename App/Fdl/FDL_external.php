@@ -97,7 +97,7 @@ function lmail($dbaccess, $name)
          */
         if (!method_exists($cfam, "getMail")) return sprintf(_("family %s does not implement IMailRecipent - missing getMail method") , $fam->name);
         if (!method_exists($cfam, "getMailAttribute")) return sprintf(_("family %s does not implement IMailRecipent - missing getMailAttribute method") , $fam->name);
-        if (!method_exists($cfam, "getMailTitle")) return sprintf(_("family %s does not implement IMailRecipient - missing getMailTitle method"), $fam->name);
+        if (!method_exists($cfam, "getMailTitle")) return sprintf(_("family %s does not implement IMailRecipient - missing getMailTitle method") , $fam->name);
         
         $mailAttr = $cfam->getMailAttribute();
         $s = new SearchDoc($dbaccess, $fam->id);
@@ -575,6 +575,10 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
         $s->setTypeFilter($s::userType);
     }
     
+    if (preg_match('/family\s*=([^|]*)/', $options, $regMatch)) {
+        $match = trim($regMatch[1]);
+        $s->filterFamily($match);
+    }
     $tr = array();
     
     $condName = "";
