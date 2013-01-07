@@ -21,6 +21,10 @@
  */
 class _WASK extends Doc
 {
+    /**
+     * @var _WASK
+     */
+    private $prdoc = null;
     /*
      * @end-method-ignore
     */
@@ -61,7 +65,7 @@ class _WASK extends Doc
     /**
      * Special control in case of dynamic controlled profil
      */
-    function Control($aclname)
+    function Control($aclname, $strict = false)
     {
         
         $err = $this->DocControl($aclname);
@@ -69,14 +73,14 @@ class _WASK extends Doc
         if ($this->getValue("DPDOC_FAMID") > 0) {
             if ($this->doc) {
                 // special control for dynamic users
-                if (!isset($this->pdoc)) {
+                if (!isset($this->prdoc)) {
                     $pdoc = createTmpDoc($this->dbaccess, $this->fromid);
                     $err = $pdoc->Add();
                     if ($err != "") return "Wask::Control:" . $err; // can't create profil
                     $pdoc->setProfil($this->profid, $this->doc);
-                    $this->pdoc = & $pdoc;
+                    $this->prdoc = & $pdoc;
                 }
-                $err = $this->pdoc->DocControl($aclname);
+                $err = $this->prdoc->DocControl($aclname);
             }
         }
         return $err;

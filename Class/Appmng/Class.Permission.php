@@ -82,7 +82,7 @@ create index permission_idx4 on permission(computed);
             }
         }
     }
-    function PostSelect()
+    function postSelect($id)
     {
         // init privileges
         $this->GetPrivileges();
@@ -114,13 +114,18 @@ create index permission_idx4 on permission(computed);
         
         return "";
     }
-    // Gives the list of Permission for a user on an application
+    /**
+     * Gives the list of Permission for a user on an application
+     * @param Account $user
+     * @param Application $app
+     * @return array
+     */
     function ListUserPermissions($user, $app)
     {
         $query = new QueryDb($this->dbaccess, "Permission");
         $query->basic_elem->sup_where = array(
             "id_user='{$user->id}'",
-            "id_application='{app->id}'"
+            "id_application='{$app->id}'"
         );
         $list = $query->Query();
         $res = array();
@@ -179,7 +184,7 @@ create index permission_idx4 on permission(computed);
             $naclid = - $aclid;
             $query->AddQuery("(id_acl={$aclid}) OR (id_acl= {$naclid}) ");
         }
-        $list = $query->Query(0, 0, "TABLE");
+        $query->Query(0, 0, "TABLE");
         
         return ($query->nb > 0);
     }
@@ -222,7 +227,7 @@ create index permission_idx4 on permission(computed);
             /**
              * @var Permission $v
              */
-            foreach ($list as $k => $v) {
+            foreach ($list as $v) {
                 $v->Delete();
             }
         } else {
@@ -271,7 +276,7 @@ create index permission_idx4 on permission(computed);
         $res = $query->Query();
         $aclList = array();
         if ($query->nb > 0) {
-            foreach ($res as $k => $v) {
+            foreach ($res as $v) {
                 $aclList[] = $v->id;
             }
         }
@@ -290,10 +295,9 @@ create index permission_idx4 on permission(computed);
             "computed = TRUE"
         );
         $computedAcl = array();
-        $privileges = array();
         $list = $query->Query();
         if ($query->nb > 0) {
-            while (list($k, $v) = each($list)) {
+            foreach ($list as $v) {
                 $computedAcl[abs($v->id_acl) ] = $v->id_acl;
             }
         }
@@ -312,7 +316,7 @@ create index permission_idx4 on permission(computed);
     public function computePerm($uid, $appid, $acl)
     {
         $db = new DbObj($this->dbaccess);
-        $res = $db->exec_query(sprintf("SELECT computePerm(%d, %d, %d)", $uid, $appid, abs($acl)));
+        $db->exec_query(sprintf("SELECT computePerm(%d, %d, %d)", $uid, $appid, abs($acl)));
         $perm = $db->fetch_array(0);
         return $perm['computeperm'];
     }
@@ -321,7 +325,6 @@ create index permission_idx4 on permission(computed);
      */
     public function GetPrivileges($force = false, $computed = true)
     {
-        global $session;
         
         if (!$force) {
             $privileges = "";
@@ -343,7 +346,7 @@ create index permission_idx4 on permission(computed);
         // add groups privilege
         $ugroup = new Group($this->dbaccess, $this->id_user);
         
-        while (list($k, $gid) = each($ugroup->groups)) {
+        foreach ($ugroup->groups as $gid) {
             
             $gperm = new permission($this->dbaccess, array(
                 $gid,
@@ -351,7 +354,7 @@ create index permission_idx4 on permission(computed);
                 false
             ) , '', 0, $computed);
             // add group
-            while (list($k2, $gacl) = each($gperm->privileges)) {
+            foreach ($gperm->privileges as $gacl) {
                 if (!in_array($gacl, $this->privileges)) {
                     $this->gprivileges[] = $gacl;
                     $this->privileges[] = $gacl;
@@ -367,7 +370,7 @@ create index permission_idx4 on permission(computed);
         );
         $list = $query->Query();
         if ($query->nb > 0) {
-            while (list($k, $v) = each($list)) {
+            foreach ($list as $v) {
                 if ($v->id_acl > 0) {
                     // add privilege
                     $this->upprivileges[] = $v->id_acl;
@@ -496,4 +499,4 @@ action.acl = acl.name where ";
         return false;
     }
 }
-?>
+

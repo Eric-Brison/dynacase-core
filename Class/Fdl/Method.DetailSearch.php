@@ -34,7 +34,7 @@ class _DSEARCH extends DocSearch
     /**
      * return sql query to search wanted document
      */
-    function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true)
+    function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
         
         if ($dirid > 0) {

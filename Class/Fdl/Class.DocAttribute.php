@@ -209,18 +209,22 @@ class BasicAttribute
     /**
      * Export values as xml fragment
      *
+     * @param array $la array of DocAttribute
      * @return string
      */
-    function getXmlSchema()
+    function getXmlSchema($la)
     {
         return sprintf("<!-- no Schema %s (%s)-->", $this->id, $this->type);
     }
     /**
-     * Export values as xml fragment
+     * export values as xml fragment
+     *
+     * @param Doc $doc working doc
+     * @param bool|\exportOptionAttribute $opt
      *
      * @return string
      */
-    function getXmlValue()
+    function getXmlValue(Doc & $doc, $opt = false)
     {
         return sprintf("<!-- no value %s (%s)-->", $this->id, $this->type);
     }
@@ -228,9 +232,13 @@ class BasicAttribute
      * Get human readable textual value
      * Fallback method
      *
-     * @return NULL
+     * @param Doc $doc current Doc
+     * @param int $index index if multiple
+     * @param array $configuration value
+     *
+     * @return string
      */
-    function getTextualValue()
+    public function getTextualValue(Doc $doc, $index = - 1, Array $configuration = array())
     {
         return null;
     }
@@ -289,8 +297,7 @@ class NormalAttribute extends BasicAttribute
     public $format; // C format
     public $eformat; // format for edition : list,vcheck,hcheck
     public $repeat; // true if is a repeatable attribute
-    public $isNormal=true;
-    
+    public $isNormal = true;
     /**
      * @var bool
      */
@@ -472,7 +479,7 @@ class NormalAttribute extends BasicAttribute
      * export values as xml fragment
      *
      * @param Doc $doc working doc
-     * @param exportOptionAttribute $opt
+     * @param bool|\exportOptionAttribute $opt
      *
      * @return string
      */
@@ -1353,7 +1360,7 @@ class NormalAttribute extends BasicAttribute
          *
          * @return string
          */
-        function getXmlSchema(&$la)
+        function getXmlSchema($la)
         {
             $lay = new Layout(getLayoutFile("FDL", "fieldattribute_schema.xml"));
             $lay->set("aname", $this->id);
@@ -1382,7 +1389,7 @@ class NormalAttribute extends BasicAttribute
          *
          * @return string
          */
-        function getXmlValue(Doc & $doc, $opt)
+        function getXmlValue(Doc & $doc, $opt = false)
         {
             $la = $doc->getAttributes();
             $xmlvalues = array();

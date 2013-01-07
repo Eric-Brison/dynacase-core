@@ -572,6 +572,7 @@ function addStatesPopup(&$tlink, Doc & $doc)
                     $visibility = POPUP_INACTIVE;
                     $tooltip = $err;
                     $icon = ""; // no image "Images/nowaccess.png";
+                    
                 }
             }
             $tlink[$v] = array(
@@ -604,12 +605,12 @@ function addFamilyPopup(&$tlink, Doc & $doc)
         $control = false;
         if (($v->getOption("onlyglobal") == "yes") && ($doc->doctype != "C")) continue;
         if (($v->getOption("global") != "yes") && ($doc->doctype == "C")) continue;
-        if ($v->link[0] == '?') {
+        if (isset($v->link[0]) && $v->link[0] == '?') {
             $v->link = substr($v->link, 1);
             $confirm = true;
         }
         if ($v->getOption("lconfirm") == "yes") $confirm = true;
-        if ($v->link[0] == 'C') {
+        if (isset($v->link[0]) && $v->link[0] == 'C') {
             $v->link = substr($v->link, 1);
             $control = true;
         }
@@ -782,7 +783,6 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
       }
     }
     }*/
-    
     
     $waskes = $doc->getWasks(false);
     if (count($waskes) > 0) {

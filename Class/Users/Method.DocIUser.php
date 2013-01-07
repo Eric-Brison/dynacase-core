@@ -38,7 +38,8 @@ class _IUSER extends Doc implements IMailRecipient
     {
         return '';
     }
-    function ExistsLogin($login, $unused = 0) {
+    function ExistsLogin($login, $unused = 0)
+    {
         return false;
     }
     /**
@@ -358,7 +359,7 @@ class _IUSER extends Doc implements IMailRecipient
      * Do not call ::setGroup if its import
      * called only in initialisation
      */
-    function preImport()
+    function preImport(array $extra = array())
     {
         if ($this->id > 0) {
             global $_POST;

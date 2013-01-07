@@ -250,7 +250,7 @@ class _IGROUP extends _GROUP
      * update groups table in USER database
      * @return string error message
      */
-    function postInsertDoc($docid, $multiple)
+    function postInsertDoc($docid, $multiple = false)
     {
         $err = "";
         if ($multiple == false) {
@@ -311,7 +311,7 @@ class _IGROUP extends _GROUP
      * update groups table in USER database before suppress
      * @return string error message
      */
-    function postUnlinkDoc($docid)
+    function postUnlinkDoc($docid, $multiple = false)
     {
         
         $err = "";

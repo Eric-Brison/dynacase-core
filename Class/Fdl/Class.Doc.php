@@ -805,7 +805,8 @@ create unique index i_docir on doc(initid, revision);";
         if (($this->revision == 0) && ($this->doctype != "T")) {
             // increment family sequence
             $this->nextSequence();
-            $incumbentName = getCurrentUser()->getIncumbentPrivilege($this->getFamDoc() , 'create');
+            $famDoc = $this->getFamDoc();
+            $incumbentName = getCurrentUser()->getIncumbentPrivilege($famDoc, 'create');
             $createComment = _("document creation");
             if ($incumbentName) $createComment = sprintf(_("(substitute of %s) : ") , $incumbentName) . $createComment;
             $this->Addcomment($createComment, HISTO_INFO, "CREATE");

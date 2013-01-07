@@ -93,7 +93,8 @@ function family_defaultmenu(Action & $action)
             foreach ($enum as $kk => $ki) {
                 $klabel = $a->getenumLabel($ki);
                 
-                $klabel = array_pop(explode('/', $klabel, substr_count($kk, '.') + 0));
+                $tmpArray = explode('/', $klabel, substr_count($kk, '.') + 0);
+                $klabel = array_pop($tmpArray);
                 
                 $enumItems[] = array(
                     "label" => $klabel,

@@ -151,7 +151,8 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                         $tvrel[] = intval($relid);
                     }
                 }
-                $this->copyRelations(array_unique($tvrel) , $doc, $v->id);
+                $tvrel = array_unique($tvrel);
+                $this->copyRelations($tvrel, $doc, $v->id);
             }
         }
         $this->commitPoint($savePoint);

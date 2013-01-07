@@ -8,7 +8,7 @@
  * Ooo Layout test
  *
  * @author Anakeen
- * 
+ *
  * @package Dcp\Pu
  */
 /**
@@ -24,7 +24,7 @@ class _TST_FAMIMP1 extends Doc
     /**
      * @end-method-ignore
      */
-    public function preImport($extra)
+    public function preImport(array $extra)
     {
         $tkey = $tval = array();
         foreach ($extra as $id => $val) {

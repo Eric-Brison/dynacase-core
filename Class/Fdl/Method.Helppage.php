@@ -87,9 +87,9 @@ class _HELPPAGE extends Doc
      * @param $aclname
      * @return string non-empty string with error message when forbidden or empty string if allowed
      */
-    public function Control($aclname)
+    public function Control($aclname, $strict = false)
     {
-        $control = parent::Control($aclname);
+        $control = parent::Control($aclname, $strict);
         
         if ($control != '') {
             return $control;
