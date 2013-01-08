@@ -124,6 +124,7 @@ class DirectoriesAutoloader
      * @var \dcp\ClassHunterForPHP5_3
      */
     private $_classHunterStrategy;
+    private $_lockfd = false;
     //--- Singleton
     
     /**
@@ -179,7 +180,7 @@ class DirectoriesAutoloader
     public function forceRegenerate()
     {
         $this->_canRegenerate = true;
-        $this->_classes = null;
+        $this->_classes = array();
         $this->_saveIncache();
         return self::$_instance;
     }
@@ -222,6 +223,15 @@ class DirectoriesAutoloader
     {
         return $this->_cachePath . '/' . $this->_cacheFileName;
     }
+    /**
+     * get the cache lock file
+     *
+     * @return string
+     */
+    private function _getCacheLockFilePath()
+    {
+        return $this->getCacheFilePath() . '.lock';
+    }
     //--- /Cache
     //--- custom filters
     private $_customFilterClasses = null;
@@ -256,6 +266,70 @@ class DirectoriesAutoloader
     //--- Autoload
     
     /**
+     * @throws DirectoriesAutoloaderException
+     */
+    private function _lock()
+    {
+        if ($this->_lockfd !== false) {
+            throw new DirectoriesAutoloaderException(sprintf("Cache lock is already opened."));
+        }
+        $lockfile = $this->_getCacheLockFilePath();
+        $this->_lockfd = fopen($lockfile, 'a');
+        if ($this->_lockfd === false) {
+            throw new DirectoriesAutoloaderException(sprintf("Error opening cache lock file '%s'.", $lockfile));
+        }
+        if (flock($this->_lockfd, LOCK_EX) === false) {
+            throw new DirectoriesAutoloaderException(sprintf("Error locking cache lock file '%s'.", $lockfile));
+        }
+    }
+    /**
+     * @throws DirectoriesAutoloaderException
+     */
+    private function _unlock()
+    {
+        if ($this->_lockfd === false) {
+            throw new DirectoriesAutoloaderException(sprintf("Cache lock not opened."));
+        }
+        if (flock($this->_lockfd, LOCK_UN) === false) {
+            fclose($this->_lockfd);
+            $this->_lockfd = false;
+            throw new DirectoriesAutoloaderException(sprintf("Error unlocking cache lock."));
+        }
+        fclose($this->_lockfd);
+        $this->_lockfd = false;
+    }
+    /**
+     * @param $pClassName
+     * @return bool
+     * @throws \Exception
+     */
+    private function _regenerate($pClassName)
+    {
+        $this->_lock();
+        /*
+         * Re-check the cache in case of a concurrent process
+         * which might have already re-built the cache.
+        */
+        $this->_classes = array();
+        if ($this->_loadClass($pClassName)) {
+            $this->_unlock();
+            return true;
+        }
+        /*
+         * Re-build the cache
+        */
+        try {
+            $this->_includesAll();
+            $this->addFamilies('FDLGEN');
+            $this->_saveInCache();
+        }
+        catch(\Exception $e) {
+            $this->_unlock();
+            throw $e;
+        }
+        $this->_unlock();
+    }
+    /**
      * autoloader
      *
      * @param string $pClassName name of the class to load
@@ -270,10 +344,8 @@ class DirectoriesAutoloader
         }
         //If we are allowed to regenerate autoload file, we try again
         if ($this->_canRegenerate) {
+            $this->_regenerate($pClassName);
             $this->_canRegenerate = false; //avoid loops
-            $this->_includesAll();
-            $this->addFamilies('FDLGEN');
-            $this->_saveInCache();
             return $this->autoload($pClassName);
         }
         //we really found nothing
@@ -361,14 +433,29 @@ class DirectoriesAutoloader
             }
         }
         unset($fileName);
+        
         $toSave = '<?php' . PHP_EOL;
         $toSave.= '// Cache generated at: ' . date(DATE_W3C) . PHP_EOL;
         $toSave.= '$classes = ' . var_export($this->_classes, true);
         $toSave.= '; ?>';
-        //error_log('will save classes');
-        if (file_put_contents($this->getCacheFilePath() , $toSave) === false) {
-            throw new DirectoriesAutoloaderException('Cannot write cache file ' . $this->getCacheFilePath());
+        /*
+         * Atomically write .autoloader.cache file
+        */
+        $cacheFileName = $this->getCacheFilePath();
+        $cacheDirName = dirname($cacheFileName);
+        $tmpFile = tempnam($cacheDirName, '.autoloader.cache.tmp');
+        if ($tmpFile === false) {
+            throw new DirectoriesAutoloaderException("Error creating temporary autoloader cache file.");
         }
+        if (file_put_contents($tmpFile, $toSave) === false) {
+            unlink($tmpFile);
+            throw new DirectoriesAutoloaderException(sprintf("Error writing cache content to temporary file '%s'", $tmpFile));
+        }
+        if (rename($tmpFile, $cacheFileName) === false) {
+            unlink($tmpFile);
+            throw new DirectoriesAutoloaderException(sprintf("Error renaming temporary cache file '%s' to '%s'.", $tmpFile, $cacheFileName));
+        }
+        chmod($cacheFileName, (0666 ^ umask()));
     }
     /**
      * try to load a class
@@ -389,8 +476,14 @@ class DirectoriesAutoloader
             }
         }
         if (isset($this->_classes[$className])) {
+            include_once('WHAT/Lib.Prefix.php');
+            if (!file_exists(DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . $this->_classes[$className])) {
+                return false;
+            }
             require_once $this->_classes[$className];
-            //error_log('loaded class [' . $className . ']');
+            if (!class_exists($className, false)) {
+                return false;
+            }
             return true;
         }
         return false;
