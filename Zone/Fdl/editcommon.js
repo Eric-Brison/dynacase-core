@@ -1183,12 +1183,13 @@ function deleteInputValue(id){
             if (el.tagName.toLowerCase()=='textarea' &&  document.getElementById("mdocid_work"+id)) {
                 clearDocIdInputs(id, 'mdocid_isel_'+id, document.getElementById("ix_"+id), true);
             }
+
 			el.value = ' ';
 
 			if ((el.tagName.toLowerCase()=='textarea') && (el.getAttribute('type')=='htmltext')) {
 			    window.htmlText.deleteContent(el.id);
 			}
-            if (el.tagName.toLowerCase()=='select' && document.getElementById("sp_"+id).parentNode.parentNode.parentNode.parentNode.getAttribute("multiple") != 'false') {
+            if (el.tagName.toLowerCase()=='select') {
                 unselectInput(id);
             }
 			if( el.className.match(/^color\b/) ) {
@@ -1244,12 +1245,19 @@ function addEnum(th,cible,docid,attrid,key,index) {
 
 function unselectInput(id) {
   var sel=document.getElementById(id);
+    var hasEmptyField = -1;
   if (sel) {
     for (var i=0; i< sel.options.length; i++) {
+        if (sel.options[i].value == " ") hasEmptyField = i;
       sel.options[i].selected=false;
     }
   }
-  sel.options[sel.options.length-1].selected=true;
+    if (hasEmptyField < 0) {
+        sel.add(new Option("[TEXT:Do choice]", " ", true));
+        //Selected for ie
+        sel.options[sel.options.length - 1].selected = true;
+    }
+    else sel.options[hasEmptyField].selected=true;
 }
 function autoUnlock(docid) {
   var r;
