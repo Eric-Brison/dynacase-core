@@ -744,7 +744,7 @@ class Fdl_Document
         if ($this->doc) {
             if ($version) $this->setVersion($version);
             if (!$comment) $comment = _("revision of document");
-            $err = $this->doc->addRevision($comment);
+            $err = $this->doc->revise($comment);
             if ($err) $this->setError($err);
             return ($err == "");
         }

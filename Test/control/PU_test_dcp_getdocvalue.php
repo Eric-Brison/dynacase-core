@@ -45,7 +45,7 @@ class TestGetDocValue extends TestCaseDcpCommonFamily
     {
         $d = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($d->isAlive() , sprintf("cannot find %s document", $docName));
-        $d->addRevision('test');
+        $d->revise('test');
         $d->setValue($attrid, $expectValue);
         $d->store();
         
@@ -64,7 +64,7 @@ class TestGetDocValue extends TestCaseDcpCommonFamily
     {
         $d = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($d->isAlive() , sprintf("cannot find %s document", $docName));
-        $d->addRevision('test');
+        $d->revise('test');
         $d->setValue($attrid, $newvalue);
         $d->store();
         

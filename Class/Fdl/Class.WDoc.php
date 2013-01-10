@@ -812,7 +812,7 @@ class WDoc extends Doc
         }
         $incumbentName = getCurrentUser()->getIncumbentPrivilege($this, $tname);
         if ($incumbentName) $revcomment = sprintf(_("(substitute of %s) : ") , $incumbentName) . $revcomment;
-        $err = $this->doc->AddRevision($revcomment);
+        $err = $this->doc->revise($revcomment);
         if ($err != "") {
             $this->doc->disableEditControl(); // restore old states
             $this->doc->state = $oldstate;

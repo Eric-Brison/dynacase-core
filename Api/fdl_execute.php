@@ -85,7 +85,7 @@ if ($docid > 0) {
     $err = $doc->modify();
     if ($err == "") {
         if ($comment != "") $doc->addHistoryEntry($comment);
-        $err = $doc->AddRevision(sprintf(_("execution by %s done %s") , $doc->getTitle($doc->getExecUserID()) , $statut));
+        $err = $doc->revise(sprintf(_("execution by %s done %s") , $doc->getTitle($doc->getExecUserID()) , $statut));
         if ($err == "") {
             $doc->deleteValue("exec_elapsed");
             $doc->deleteValue("exec_detail");

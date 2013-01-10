@@ -32,7 +32,7 @@ function revision(&$action)
     $err = $doc->canEdit();
     if ($err != "") $action->ExitError($err);
     
-    $err = $doc->Addrevision($comment);
+    $err = $doc->revise($comment);
     if ($err != "") $action->ExitError($err);
     
     $action->AddLogMsg(sprintf(_("%s new revision %d") , $doc->title, $doc->revision));

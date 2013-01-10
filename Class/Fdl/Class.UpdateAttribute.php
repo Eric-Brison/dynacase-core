@@ -171,7 +171,7 @@ class UpdateAttribute
         $nbR = count($ids);
         foreach ($this->dl as $doc) {
             if (isset($ids[$doc->id])) {
-                $err = $doc->addRevision($this->revisionComment);
+                $err = $doc->revise($this->revisionComment);
                 /**
                  * @var UpdateAttributeStatus $r
                  */

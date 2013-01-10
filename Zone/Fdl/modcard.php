@@ -213,7 +213,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
                         $fdoc = $doc->getFamDoc();
                         
                         if ($fdoc->schar == "R") {
-                            $doc->AddRevision(sprintf("%s : %s", _("auto revision") , $comment));
+                            $doc->revise(sprintf("%s : %s", _("auto revision") , $comment));
                         } else {
                             if ($comment != "") $doc->addHistoryEntry($commentSubstitute . $comment);
                         }

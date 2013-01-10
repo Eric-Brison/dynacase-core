@@ -2659,6 +2659,26 @@ create unique index i_docir on doc(initid, revision);";
     {
     }
     /**
+     * call when doc is being revised before new document is created
+     * if return non null string revision will ne aborted
+     * @api hook called when revise document - before revise it
+     * @see revise
+     * @return string error message, if no error empty string
+     */
+    function preRevise()
+    {
+    }
+    /**
+     * call when doc is revised after new document is created
+     * the error message will appeared like message
+     * @api hook called when revise document - after it is revided
+     * @see revise
+     * @return string message - message is added to history
+     */
+    function postRevise()
+    {
+    }
+    /**
      * call when doc is being revive
      * if return non null string revive will ne aborted
      * @api hook called before undelete document
@@ -4144,20 +4164,21 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
     /**
-       * Add a comment line in history document
-       * note : modify is call automatically
-       * @api Add a comment message in history document
-       * @param string $comment the comment to add
-       * @param int $level level of comment DocHisto::INFO, DocHisto::ERROR, DocHisto::NOTICE DocHisto::MESSAGE, DocHisto::WARNING
-       * @param string $code use when memorize notification
-       * @param string $uid user identifier : by default its the current user
+     * Add a comment line in history document
+     * note : modify is call automatically
+     * @api Add a comment message in history document
+     * @param string $comment the comment to add
+     * @param int $level level of comment DocHisto::INFO, DocHisto::ERROR, DocHisto::NOTICE DocHisto::MESSAGE, DocHisto::WARNING
+     * @param string $code use when memorize notification
+     * @param string $uid user identifier : by default its the current user
      * @deprecated use {@link addHistoryEntry} instead
      * @see addHistoryEntry
-       * @return string error message
-       */
-      final public function addComment($comment = '', $level = DocHisto::INFO, $code = '', $uid = '') {
-          return $this->addHistoryEntry($comment = '', $level , $code, $uid );
-      }
+     * @return string error message
+     */
+    final public function addComment($comment = '', $level = DocHisto::INFO, $code = '', $uid = '')
+    {
+        return $this->addHistoryEntry($comment = '', $level, $code, $uid);
+    }
     /**
      * Add a log entry line in log document
      *
@@ -4526,15 +4547,17 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $comment the comment of the revision
      * @return string error text (empty if no error)
      */
-    final public function addRevision($comment = '')
+    final public function revise($comment = '')
     {
         // first control
         if ($this->locked == - 1) return _("document already revised");
         if ($this->isFixed()) {
             $err = _("document already revised");
-            $this->addHistoryEntry($err, HISTO_ERROR, "REVERROR");
+            $this->addHistoryEntry($err, DocHisto::ERROR, "REVERROR");
             return $err;
         }
+        $err = $this->preRevise();
+        if ($err) return $err;
         if (!$this->withoutControl) {
             $err = $this->Control("edit");
             if ($err != "") return ($err);
@@ -4556,7 +4579,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->revdate = $date['sec']; // change rev date
         $point = "revision" . $this->id;
         $this->savePoint($point);
-        if ($comment != '') $this->addHistoryEntry($comment, HISTO_MESSAGE, "REVISION");
+        if ($comment != '') $this->addHistoryEntry($comment, DocHisto::MESSAGE, "REVISION");
         $err = $this->modify();
         if ($err != "") {
             $this->rollbackPoint($point);
@@ -4567,7 +4590,7 @@ create unique index i_docir on doc(initid, revision);";
         // double control
         if (!$this->isFixed()) {
             $err = sprintf("track error revision [%s]", pg_last_error($this->dbid));
-            $this->addHistoryEntry($err, HISTO_ERROR, "REVERROR");
+            $this->addHistoryEntry($err, DocHisto::ERROR, "REVERROR");
             $this->commitPoint($point);
             return $err;
         }
@@ -4632,9 +4655,26 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
             }
+            $msg = $this->postRevise();
+            if ($msg) $this->addHistoryEntry($msg, DocHisto::MESSAGE, "POSTREVISE");
         }
         
         return $err;
+    }
+    /**
+     * Create a new revision of a document
+     * the current document is revised (became a fixed document)
+     * a new revision is created, a new identifier if set
+     * @api Create a new revision of a document
+     * @deprecated use {@link revise] instead
+     * @asee revise
+     * @param string $comment the comment of the revision
+     * @return string error text (empty if no error)
+     */
+    final public function _addRevision($comment = '')
+    {
+        deprecatedFunction();
+        return $this->revise($comment);
     }
     /**
      * Set a free state to the document
@@ -4657,7 +4697,7 @@ create unique index i_docir on doc(initid, revision);";
             ));
             if ($err == "") {
                 $comment = sprintf(_("remove state : %s") , $comment);
-                if ($revision) $err = $this->addRevision($comment);
+                if ($revision) $err = $this->revise($comment);
                 else $err = $this->addHistoryEntry($comment);
             }
         } else {
@@ -4672,7 +4712,7 @@ create unique index i_docir on doc(initid, revision);";
             ));
             if ($err == "") {
                 $comment = sprintf(_("change state to %s : %s") , $state->title, $comment);
-                if ($revision) $err = $this->addRevision($comment);
+                if ($revision) $err = $this->revise($comment);
                 else $err = $this->addHistoryEntry($comment);
             }
         }
@@ -5071,7 +5111,7 @@ create unique index i_docir on doc(initid, revision);";
                     $this->addHistoryEntry(sprintf(_("Affected to %s %s") , $u->firstname, $u->lastname));
                     if ($comment) {
                         if ($revision) {
-                            $this->addRevision(sprintf(_("Affected for %s") , $comment));
+                            $this->revise(sprintf(_("Affected for %s") , $comment));
                         } else {
                             $this->addHistoryEntry(sprintf(_("Affected for %s") , $comment));
                         }
@@ -5126,7 +5166,7 @@ create unique index i_docir on doc(initid, revision);";
                 $err = $this->unlock();
                 if ($err == "") {
                     $this->delUTag($this->userid, "AFFECTED"); // TODO need delete all AFFECTED tag
-                    if ($revision) $this->addRevision(sprintf(_("Unallocated of %s %s : %s") , $u->firstname, $u->lastname, $comment));
+                    if ($revision) $this->revise(sprintf(_("Unallocated of %s %s : %s") , $u->firstname, $u->lastname, $comment));
                     else $this->addHistoryEntry(sprintf(_("Unallocated of %s %s: %s") , $u->firstname, $u->lastname, $comment));
                 }
             } else {
