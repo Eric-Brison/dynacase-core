@@ -13,8 +13,6 @@
  * @package FDL
  * @subpackage CORE
  */
-/**
- */
 
 require_once 'WHAT/autoload.php';
 include_once ('Class.DbObj.php');
@@ -151,7 +149,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * initialize Action object
      * need set action to execute it
-     * @api initialize Action object
+     *
      * @code
      $core = new Application();
      $core->Set("CORE", $CoreNull); // init core application from nothing
@@ -229,7 +227,7 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * read a session variable
-     * @api read a session variable
+     *
      * @param string $k key variable
      * @param string $d default value
      * @return string
@@ -243,7 +241,7 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * record a session variable
-     * @api record variable into current session
+     *
      * @param  string $k key variable
      * @param string $v value to set
      * @return bool return true if ok
@@ -257,7 +255,7 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * remove variable from current session
-     * @api remove variable of current session
+     *
      * @param string $k key variable
      * @return bool return true if ok
      */
@@ -298,12 +296,15 @@ create sequence SEQ_ID_ACTION;
         if ($this->Exists($this->name, $this->id_application, $this->id)) return "Action {$this->name} already exists...";
         return '';
     }
+
     /**
      * get parameter value of action'sapplication
      * shorcut to Application::getParam
-     * @api get parameter value of action's application
-     * @param string $key
-     * @param string $default value if not set
+     *
+     * @param string $name
+     * @param string $def
+     * @internal param string $key
+     * @internal param string $default value if not set
      * @return string
      */
     public function getParam($name, $def = "")
@@ -381,8 +382,9 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * store action done to be use in refreshing main window interface
+     *
      * @param string $actdone the code of action
-     * @param string $args the argument of action
+     * @param string $arg the argument of action
      */
     public function addActionDone($actdone, $arg = "")
     {
@@ -397,8 +399,6 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * clear action done to be use in refreshing main window interface
-     * @param string $actdone the code of action
-     * @param string $args the argument of action
      */
     public function clearActionDone()
     {
@@ -467,7 +467,7 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * Verify acl grant for current user
-     * @api test action acl grant
+     *
      * @param string $acl_name acl name
      * @param string $app_name app name to specify another appname (else current app name)
      * @param bool $strict to not use substitute account information
@@ -522,11 +522,15 @@ create sequence SEQ_ID_ACTION;
         if (is_array($q)) return $q[0]["acl"];
         return false;
     }
+
     /**
      * execute the action
      * test if current user can execute it
-     * @api execute action
+     *
+     *
+     * @throws Dcp\Core\Exception
      * @throws Dcp\Exception
+     *
      * @return string the composed associated layout
      */
     public function execute()
@@ -619,7 +623,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * display error to user and stop execution
      * @param string $texterr the error message
-     * @api abord action execution
+     * @api abort action execution
      * @throws Dcp\Core\Exception
      * @return void
      */
@@ -750,7 +754,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * retrieve the value of an argument fot the action
      * in web mode the value comes from http variable and in shell mode comes from args variable
-     * @api get parameter value for an action
+     *
      * @param string $k the argument name
      * @param mixed $def default value if no argument is not set
      * @return mixed|string
@@ -764,7 +768,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * translate text
      * use gettext catalog
-     * @api translate text
+     *
      * @param string $code text to translate
      * @return string
      */
@@ -775,7 +779,7 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * log with debug level
-     * @api log with debug level
+     *
      * @see Log
      * @param string $msg message text
      */
@@ -785,7 +789,7 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * log with info level
-     * @api log with info level
+     *
      * @see Log
      * @param string $msg message text
      */
@@ -795,7 +799,7 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * log with warning level
-     * @api log with warning level
+     *
      * @see Log
      * @param string $msg message text
      */
@@ -805,7 +809,7 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * log with error level
-     * @api log with error level
+     *
      * @see Log
      * @param string $msg message text
      */
@@ -815,7 +819,7 @@ create sequence SEQ_ID_ACTION;
     }
     /**
      * log with fatal level
-     * @api log with fatal level
+     *
      * @see Log
      * @param string $msg message text
      */
@@ -880,4 +884,3 @@ create sequence SEQ_ID_ACTION;
         return $tab;
     }
 }
-?>
