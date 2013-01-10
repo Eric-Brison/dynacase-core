@@ -564,7 +564,7 @@ class importDocumentDescription
                  * @var Dir $dir
                  */
                 $dir = new_Doc($this->dbaccess, $data[2]);
-                if ($dir->isAlive() && method_exists($dir, "AddFile")) $dir->AddFile($search->id);
+                if ($dir->isAlive() && method_exists($dir, "insertDocument")) $dir->insertDocument($search->id);
             }
         }
         $this->nbDoc++;

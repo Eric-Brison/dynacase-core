@@ -264,7 +264,7 @@ class _IGROUPUSER extends Doc
                         // insert in folder group
                         $gdoc = $this->getDocUser($gid);
                         //  $gdoc->insertMember($this->id);
-                        $gdoc->addFile($this->id); // add in group is set here by postInsert
+                        $gdoc->insertDocument($this->id); // add in group is set here by postInsert
                         $tgid[$gid] = $gid;
                     }
                     $err.= $aerr;

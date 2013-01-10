@@ -234,7 +234,7 @@ class _IUSER extends Doc implements IMailRecipient
              */
             $grp = new_doc($this->dbaccess, $grpid);
             if ($grp->isAlive()) {
-                $err = $grp->addFile($this->initid);
+                $err = $grp->insertDocument($this->initid);
             }
         }
         return $err;

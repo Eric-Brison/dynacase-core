@@ -558,8 +558,8 @@ class importSingleDocument
                     $this->tcr["folderid"] = $dir->id;
                     $this->tcr["foldername"] = dirname($this->importFilePath) . "/" . $dir->title;
                     if (!$this->analyze) {
-                        if (method_exists($dir, "AddFile")) {
-                            $err = $dir->AddFile($this->doc->id);
+                        if (method_exists($dir, "insertDocument")) {
+                            $err = $dir->insertDocument($this->doc->id);
                             if (-$err) $this->setError("DOC0200", $this->doc->name, $dir->getTitle() , $err);
                         } else {
                             $this->setError("DOC0202", $dir->getTitle() , $dir->fromname, $this->doc->name);

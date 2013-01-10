@@ -66,7 +66,7 @@ class _PORTFOLIO extends Dir
                     $doc = getDocObject($this->dbaccess, $tdoc);
                     $copy = $doc->duplicate();
                     if (!is_object($copy)) $err.= $copy;
-                    else $err.= $this->AddFile($copy->id, "latest", true, true);
+                    else $err.= $this->insertDocument($copy->id, "latest", true, true);
                 }
             } else {
                 $err = sprintf(_("Error in portfolio : folder %s not exists") , $ddocid);
@@ -93,7 +93,7 @@ class _PORTFOLIO extends Dir
                 $doc = getDocObject($this->dbaccess, $tdoc);
                 $copy = $doc->duplicate();
                 if (!is_object($copy)) $err.= $copy;
-                else $err.= $this->AddFile($copy->id, "latest", true, true);
+                else $err.= $this->insertDocument($copy->id, "latest", true, true);
             }
         }
         

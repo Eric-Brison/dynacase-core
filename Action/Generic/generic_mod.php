@@ -61,14 +61,14 @@ function generic_mod(Action & $action)
                     $dirid = $fld->getLatestId();
                     if ($dirid != $fld->id) $fld = new_Doc($dbaccess, $dirid);
                 }
-                if (method_exists($fld, "AddFile")) {
-                    $err = $fld->AddFile($doc->id);
+                if (method_exists($fld, "insertDocument")) {
+                    $err = $fld->insertDocument($doc->id);
                     if ($err != "") {
                         //try in home folder
                         $home = $fld->getHome(false);
                         if ($home && ($home->id > 0)) {
                             $fld = $home;
-                            $err = $fld->AddFile($doc->id);
+                            $err = $fld->insertDocument($doc->id);
                         }
                     }
                     
@@ -84,7 +84,7 @@ function generic_mod(Action & $action)
                     $home = $fld->getHome(false);
                     if ($home && ($home->id > 0)) {
                         $fld = $home;
-                        $err = $fld->AddFile($doc->id);
+                        $err = $fld->insertDocument($doc->id);
                     }
                 }
             }

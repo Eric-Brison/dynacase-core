@@ -431,7 +431,7 @@ class Fdl_Collection extends Fdl_Document
     {
         $out = new stdClass();
         if ($this->docisset()) {
-            $err = $this->doc->addFile($docid);
+            $err = $this->doc->insertDocument($docid);
             if ($err != "") {
                 $this->setError($err);
                 $out->error = $err;

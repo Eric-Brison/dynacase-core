@@ -64,7 +64,7 @@ if (!$uid) {
                      */
                     $g = new_Doc($dbaccess, "GDEFAULT");
                     if ($g) {
-                        $err = $g->addFile($du->initid);
+                        $err = $g->insertDocument($du->initid);
                     }
                 }
             }

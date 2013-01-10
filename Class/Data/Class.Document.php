@@ -762,7 +762,7 @@ class Fdl_Document
                     /**
                      * @var Dir $da
                      */
-                    $err = $da->addFile($this->doc->initid);
+                    $err = $da->insertDocument($this->doc->initid);
                     if ($err == "") {
                         if (($fromtoid) && ($fromtoid != $movetoid)) {
                             $d = new_doc($this->dbaccess, $fromtoid);

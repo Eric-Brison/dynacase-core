@@ -49,7 +49,7 @@ class TestGroup extends TestCaseDcpDocument
             
             $err = $group->store();
             $this->assertEmpty($err, sprintf("cannot store igroup %s", $err));
-            $group->addFile($user->initid);
+            $group->insertDocument($user->initid);
             $newGids[] = $group->getRawValue("us_whatid");
             $groups[$gLogin] = $group;
         }
@@ -140,7 +140,7 @@ class TestGroup extends TestCaseDcpDocument
             
             $err = $group->store();
             $this->assertEmpty($err, sprintf("cannot store igroup %s", $err));
-            $group->addFile($user->initid);
+            $group->insertDocument($user->initid);
             $newGids[] = $group->getRawValue("us_whatid");
         }
         $u = new \Account("", $user->getRawValue("us_whatid"));

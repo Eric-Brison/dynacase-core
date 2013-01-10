@@ -85,7 +85,7 @@ class TestFolder extends TestCaseDcpCommonFamily
         $db = new_doc(self::$dbaccess, $b, true);
         if ($da->isAlive() && $db->isAlive()) {
             
-            $err = $da->addFile($db->initid);
+            $err = $da->insertDocument($db->initid);
             if ($err == "") {
                 $this->assertEquals("", $err, sprintf(_("error ::addFile %s %s") , $a, $err));
                 $sval = $this->_DBGetValue(sprintf("select childid from fld where dirid=%d and childid=%d", $da->initid, $db->initid));

@@ -200,7 +200,7 @@ class _IGROUP extends _GROUP
                  */
                 $dfld = new_doc($this->dbaccess, $dfldid);
                 if ($dfld->isAlive()) {
-                    if (count($tgid) == 0) $dfld->AddFile($this->initid);
+                    if (count($tgid) == 0) $dfld->insertDocument($this->initid);
                     else $dfld->delFile($this->initid);
                 }
             }
@@ -374,7 +374,7 @@ class _IGROUP extends _GROUP
      */
     function insertMember($docid)
     {
-        $err = $this->AddFile($docid, "latest", true); // without postInsert
+        $err = $this->insertDocument($docid, "latest", true); // without postInsert
         $this->setValue("grp_isrefreshed", "0");
         $this->modify(true, array(
             "grp_isrefreshed"
