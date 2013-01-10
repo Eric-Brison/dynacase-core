@@ -39,7 +39,8 @@ class Dir extends PDir
     }
     /**
      * get the home and basket folder
-     * @param bool $create set tu false if no want aute creation
+     * @param bool $create set to false to disable auto creation
+     * @return bool|\Dir false if the dir does not exists and $create is false, home document either
      */
     function GetHome($create = true)
     {
@@ -54,9 +55,10 @@ class Dir extends PDir
         if (count($rq) > 0) $home = $rq[0];
         else {
             if (!$create) return false;
+            /** @var Dir $home */
             $home = createDoc($this->dbaccess, "DIR");
             
-            if (!$home) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , getFamIdFromName($dbaccess, "DIR")));
+            if (!$home) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , getFamIdFromName($this->dbaccess, "DIR")));
             
             $home->owner = - $this->userid;
             include_once ("Class.User.php");
@@ -64,11 +66,12 @@ class Dir extends PDir
             $home->title = $user->firstname . " " . $user->lastname;
             $home->setTitle($home->title);
             $home->icon = 'fldhome.gif';
-            $home->name = 'FLDHOME_' . $this->getWhatUserId();
+            $home->name = 'FLDHOME_' . $this->getSystemUserId();
             $home->Add();
-            
+
+            /** @var DocSearch $privlocked */
             $privlocked = createDoc($this->dbaccess, "SEARCH");
-            if (!$privlocked) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , getFamIdFromName($dbaccess, "SEARCH")));
+            if (!$privlocked) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , getFamIdFromName($this->dbaccess, "SEARCH")));
             
             $privlocked->title = (_("locked document of ") . $home->title);
             $privlocked->Add();
@@ -79,7 +82,7 @@ class Dir extends PDir
         if (getParam("FREEDOM_IDBASKET") == "") {
             
             $bas = createDoc($this->dbaccess, "BASKET");
-            if (!$bas) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , getFamIdFromName($dbaccess, "BASKET")));
+            if (!$bas) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , getFamIdFromName($this->dbaccess, "BASKET")));
             
             $query = new QueryDb($this->dbaccess, "_BASKET");
             $query->AddQuery("owner = " . $this->userid);
@@ -87,7 +90,7 @@ class Dir extends PDir
             if ($query->nb == 0) {
                 $bas->setvalue("ba_title", _("Document basket"));
                 $bas->setvalue("ba_desc", sprintf(_("basket of %s") , $home->title));
-                $home->name = 'FLDBASKET_' + $this->getWhatUserId();
+                $home->name = 'FLDBASKET_' + $this->getSystemUserId();
                 $bas->Add();
                 $home->insertDocument($bas->id);
                 $basid = $bas->id;
@@ -232,6 +235,7 @@ class Dir extends PDir
      */
     function insertDocument($docid, $mode = "latest", $noprepost = false, $forcerestrict = false, $nocontrol = false)
     {
+        $err = '';
         if (!$nocontrol) {
             $err = $this->canModify();
             if ($err != "") return $err;
@@ -320,7 +324,7 @@ class Dir extends PDir
             if ($err == "") {
                 global $action;
                 $action->AddActionDone("ADDFILE", $this->initid);
-                
+
                 $this->updateFldRelations();
                 // use post virtual method
                 if (!$noprepost) $err = $this->postInsertDoc($docid, false);
@@ -371,17 +375,17 @@ class Dir extends PDir
      */
     function InsertMultipleDocuments($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array(), &$twarning = array())
     {
-        
+
         $err = $this->canModify();
         if ($err != "") return $err;
         $tAddeddocids = array();
         // verify if doc family is autorized
         $qf = new QueryDir($this->dbaccess);
-        foreach ($tdocs as $k => $tdoc) {
-            
+        foreach ($tdocs as $tdoc) {
+
             if (!$this->isAuthorized($tdoc["fromid"])) {
                 $warn = sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document") , $tdoc["title"], $this->title);
-                $twarning[$docid] = $warn;
+                $twarning[$tdoc['id']] = $warn;
             } else {
                 switch ($mode) {
                     case "static":
@@ -401,7 +405,6 @@ class Dir extends PDir
                 }
 
                 $err = "";
-                $qf->id = "";
                 $qf->dirid = $this->initid; // the reference folder is the initial id
                 $qf->query = "";
                 // use post virtual method
@@ -455,7 +458,7 @@ class Dir extends PDir
         $qf->qtype = 'S'; // single user query
         $qf->dirid = $this->initid; // the reference folder is the initial id
         $qf->query = "";
-        foreach ($tdocids as $k => $docid) {
+        foreach ($tdocids as $docid) {
             $tcopy[$docid]["childid"] = $docid;
         }
 
@@ -504,7 +507,7 @@ class Dir extends PDir
             }
             unset($tableq);
         }
-        
+
         return ($tableid);
     }
     // --------------------------------------------------------------------
@@ -537,6 +540,7 @@ class Dir extends PDir
      */
     function removeDocument($docid, $noprepost = false, $nocontrol = false)
     {
+        $err = '';
         if (!$nocontrol) {
             $err = $this->canModify();
             if ($err != "") return $err;
@@ -602,6 +606,7 @@ class Dir extends PDir
         $err = $this->canModify();
         if ($err == "") {
             $fromtoid = $this->initid;
+            /** @var Dir $da */
             $da = new_doc($this->dbaccess, $movetoid);
             if ($da->isAlive()) {
                 if (method_exists($da, "addFile")) {
@@ -647,7 +652,6 @@ class Dir extends PDir
         $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
 
         if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
-            
             $this->clearValue("FLD_ALLBUT");
             $this->modify();
         }
@@ -659,15 +663,17 @@ class Dir extends PDir
         }
         return ($this->norestrict);
     }
+
     /**
      * return families that can be use in insertion
      * @param int $classid : restrict for same usefor families
+     * @param bool $verifyCreate set to true if you want to get only families the user can create (icreate acl)
+     * @return array
      */
     function getAuthorizedFamilies($classid = 0, $verifyCreate = false)
     {
 
         if (!$this->authfam) {
-            
             $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
             $tfam = $this->getMultipleRawValues("FLD_FAM");
             $tsubfam = $this->getMultipleRawValues("FLD_SUBFAM");
@@ -675,7 +681,7 @@ class Dir extends PDir
 
             if (($allbut != "1") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
                 $this->norestrict = true;
-                return;
+                return array();
             }
 
             $this->norestrict = false;;
@@ -683,8 +689,8 @@ class Dir extends PDir
             if ($allbut != "1") {
                 include_once ("FDL/Lib.Dir.php");
                 $tallfam = GetClassesDoc($this->dbaccess, $this->userid, $classid, "TABLE");
-                
-                foreach ($tallfam as $k => $cdoc) {
+
+                foreach ($tallfam as $cdoc) {
                     $tclassdoc[$cdoc["id"]] = $cdoc;
                     //	  $tclassdoc += $this->GetChildFam($cdoc["id"]);
 
@@ -692,7 +698,7 @@ class Dir extends PDir
                 // suppress undesirable families
                 reset($tfamid);
                 while (list($k, $famid) = each($tfamid)) {
-                    
+
                     unset($tclassdoc[intval($famid) ]);
                     if ($tsubfam[$k] != "yes") {
                         $tnofam = $this->GetChildFam(intval($famid));
@@ -716,12 +722,12 @@ class Dir extends PDir
             }
             $this->authfam = $tclassdoc;
         }
-        $this->kauthfam = array_keys($this->authfam);
         return $this->authfam;
     }
     /**
      * return families that can be use in insertion
      * @param int $classid : restrict for same usefor families
+     * @return bool
      */
     public function isAuthorized($classid)
     {
@@ -758,21 +764,6 @@ class Dir extends PDir
     public function updateFldRelations()
     {
         return; //inhibit folder relation (too slow for great folder)
-        if ($this->doctype == 'T') return;
-        include_once ("FDL/Class.DocRel.php");
-        $nattr = $this->GetNormalAttributes();
-        $or = new DocRel($this->dbaccess);
-        $or->sinitid = $this->initid;
-        $or->resetRelations("folder");
-        $q = new QueryDb($this->dbaccess, "QueryDir");
-        $tv = $q->Query(0, 0, "TABLE", "select childid from fld where dirid=" . $this->initid . " and qtype='S'");
-        if (is_array($tv)) {
-            $tid = array();
-            foreach ($tv as $tq) {
-                $tid[] = $tq["childid"];
-            }
-            $or->copyRelations($tid, $this, 'folder');
-        }
     }
     /**
      * return number of item in the static folder
@@ -822,7 +813,7 @@ class Dir extends PDir
     }
     /**
      * delete all document which primary relation is the folder (recurively)
-     * different of {@see Clear()}
+     * different of {@link Dir::Clear()}
      * all document are put in the trash (zombie mode)
      * @return array of possible errors. Empty array means no errors
      */
@@ -835,8 +826,9 @@ class Dir extends PDir
         while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
             $coulddelete = true;
             if ($doc->doctype == 'D') {
+                /** @var Dir $doc */
                 $terr = array_merge($terr, $doc->deleteItems());
-                foreach ($terr as $id => $err) {
+                foreach ($terr as $err) {
                     if ($err != "") $coulddelete = false;
                 }
             }
@@ -860,6 +852,7 @@ class Dir extends PDir
         $terr = array();
         $fld = new_doc($this->dbaccess, $indirid);
         if ($fld->doctype == 'D') {
+            /** @var Dir $fld */
             $err = $fld->control("modify");
             if ($err == "") {
                 while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
@@ -867,9 +860,9 @@ class Dir extends PDir
                         // copy
                         $copy = $doc->duplicate();
                         if (is_object($copy)) {
-                            $fld->addFile($copy->initid);
-                            
+                            $fld->insertDocument($copy->initid);
                             if ($doc->doctype == 'D') {
+                                /** @var Dir $doc */
                                 $terr = array_merge($terr, $doc->copyItems($copy->id));
                             }
                         }
@@ -884,7 +877,7 @@ class Dir extends PDir
     }
     /**
      * delete the folder and its containt
-     * different of {@see Clear()}
+     * different of {@link Dir::Clear()}
      * all document are put in the trash (zombie mode)
      * @return string error message, if no error empty string
      */
@@ -895,7 +888,7 @@ class Dir extends PDir
         $coulddelete = true;
         $terr = $this->deleteItems();
         $err = "";
-        foreach ($terr as $id => $err1) {
+        foreach ($terr as $err1) {
             if ($err1 != "") {
                 $coulddelete = false;
                 $err.= "\n$err1";
@@ -908,7 +901,7 @@ class Dir extends PDir
      * restore all document which primary relation is the folder (recurively)
      *
      *
-     * @return int -1 if it is not a static folder
+     * @return array an array of errors
      */
     function reviveItems()
     {
