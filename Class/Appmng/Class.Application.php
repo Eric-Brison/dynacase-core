@@ -824,7 +824,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function getImageFile($img)
     {
         
-        return $this->rootdir . "/" . $this->GetImageUrl($img);
+        return $this->rootdir . "/" . $this->getImageLink($img);
     }
     
     var $noimage = "CORE/Images/noimage.png";
@@ -837,7 +837,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param int $size to use image with another width (in pixel) - null is original size
      * @return string url to download image
      */
-    public function getImageUrl($img, $detectstyle = true, $size = null)
+    public function getImageLink($img, $detectstyle = true, $size = null)
     {
         static $cacheImgUrl = array();
         
@@ -874,7 +874,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
             // try in parent
             if ($this->parent != "") {
-                $url = $this->parent->getImageUrl($img);
+                $url = $this->parent->getImageLink($img);
                 if ($size !== null) $url = 'resizeimg.php?img=' . $url . '&size=' . $size;
                 $cacheImgUrl[$cacheIndex] = $url;
                 return $url;
@@ -902,7 +902,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $img = $ttf[0];
         $filter = $ttf[1];
         
-        $url = $this->GetImageUrl($img);
+        $url = $this->getImageLink($img);
         if ($url == $this->noimage) return $url;
         
         $tf = explode("|", $filter);
