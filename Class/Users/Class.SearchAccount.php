@@ -273,8 +273,10 @@ class SearchAccount
         simpleQuery('', $sql, $login, true, true);
         return $login;
     }
+
     /**
      * @param string $family
+     * @throws Dcp\Sacc\Exception if $family is not a valid family name
      */
     public function filterFamily($family)
     {
