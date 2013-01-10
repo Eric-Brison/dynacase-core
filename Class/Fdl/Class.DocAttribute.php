@@ -984,7 +984,7 @@ class NormalAttribute extends BasicAttribute
             } else {
                 if ($this->getOption('multiple') == 'yes') {
                     $value = $doc->getValue($this->id);
-                    $values = $doc->_val2array($value);
+                    $values = $doc->rawValueToArray($value);
                     $returnValues = array();
                     foreach ($values as $currentKey) {
                         $returnValues[] = $this->getEnumLabel($currentKey);
@@ -1045,7 +1045,7 @@ class NormalAttribute extends BasicAttribute
             } else {
                 if ($this->getOption('multiple') == 'yes') {
                     $value = $doc->getValue($this->id);
-                    $values = $doc->_val2array($value);
+                    $values = $doc->rawValueToArray($value);
                     if ($index >= 0) {
                         return $displayTitle($values[$index]);
                     } else {

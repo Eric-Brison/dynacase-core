@@ -195,7 +195,7 @@ class _TIMER extends Doc
                         $err = "";
                         switch ($ka) {
                             case "tmail":
-                                $tva = $this->_val2array(str_replace('<BR>', "\n", $va));
+                                $tva = $this->rawValueToArray(str_replace('<BR>', "\n", $va));
                                 foreach ($tva as $idmail) {
                                     $tm = new_doc($this->dbaccess, $idmail);
                                     if ($tm->isAlive()) {

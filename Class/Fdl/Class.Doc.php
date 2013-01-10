@@ -1738,7 +1738,6 @@ create unique index i_docir on doc(initid, revision);";
         $this->isset = false;
         $this->id = "";
         $this->initid = "";
-        $this->comment = "";
         $nattr = $this->GetNormalAttributes();
         foreach ($nattr as $k => $v) {
             if (isset($this->$k) && ($this->$k != "")) $this->$k = "";
@@ -2767,7 +2766,7 @@ create unique index i_docir on doc(initid, revision);";
             );
             else return $def;
         }
-        $t = $this->_val2array($v);
+        $t = $this->rawValueToArray($v);
         if ($index == - 1) {
             $oa = $this->getAttribute($idAttr);
             if ($oa && $oa->type == "xml") {
@@ -3033,7 +3032,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         if (is_array($value)) {
             if ($oattr->type == 'htmltext') {
-                $value = $this->_array2val($value, "\r");
+                $value = $this->arrayToRawValue($value, "\r");
                 if ($value === '') {
                     $value = DELVALUE;
                 }
@@ -3049,9 +3048,9 @@ create unique index i_docir on doc(initid, revision);";
                             for ($i = $start; $i < $rank; $i++) $ov[$i] = "";
                         }
                         foreach ($value as $k => $v) $ov[substr($k, 1, 1) ] = $v;
-                        $value = $this->_array2val($ov);
+                        $value = $this->arrayToRawValue($ov);
                     } else {
-                        $value = $this->_array2val($value);
+                        $value = $this->arrayToRawValue($value);
                     }
                 }
             }
@@ -3085,7 +3084,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (strcmp($this->$attrid, $value) != 0 && strcmp($this->$attrid, str_replace("\n ", "\n", $value)) != 0) {
                     // print "change2 $attrid  to <PRE>[{$this->$attrid}] [$value]</PRE><BR>";
                     if ($oattr->repeat) {
-                        $tvalues = $this->_val2array($value);
+                        $tvalues = $this->rawValueToArray($value);
                     } else {
                         $tvalues[] = $value;
                     }
@@ -3967,7 +3966,7 @@ create unique index i_docir on doc(initid, revision);";
                             } elseif ($attr = $this->getAttribute($input->name)) {
                                 if ($attr->usefor == 'Q') {
                                     if ($attr->inArray()) {
-                                        $pas = $this->_val2array($this->getParamValue($input->name));
+                                        $pas = $this->rawValueToArray($this->getParamValue($input->name));
                                         if ($index == - 1) $args[$ki] = $pas;
                                         else $args[$ki] = $pas[$index];
                                     } else {
@@ -4454,7 +4453,7 @@ create unique index i_docir on doc(initid, revision);";
         $err = _("setWaskAnswer::invalid parameters");
         $waskid = intval($waskid);
         if ($waskid && $answer) {
-            if (is_array($answer)) $answer = $this->_array2val($answer);
+            if (is_array($answer)) $answer = $this->arrayToRawValue($answer);
             $err = $this->addUTag($this->userid, "ASK_" . intval($waskid) , $answer, false);
             return $err;
         }
@@ -4575,7 +4574,6 @@ create unique index i_docir on doc(initid, revision);";
         if ($locked > 0) $this->locked = $locked; // report the lock
         else $this->locked = 0;
         $this->allocated = $allocated; // report the allocate
-        $this->comment = ""; // change comment
         $this->revision = $this->revision + 1;
         $this->postitid = $postitid;
         $this->forumid = $forumid;
@@ -5449,10 +5447,23 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $v value
      * @return array
      */
-    public static function _val2array($v)
+    public static function rawValueToArray($v)
     {
         if ($v === "" || $v === null) return array();
         return explode("\n", str_replace("\r", "", $v));
+    }
+    /**
+     * convert flat attribute value to an array for multiple attributes
+     * @api convert flat attribute value to an array
+     * @deprecated use instead {@Doc::rawValueToArray}
+     * @see rawValueToArray
+     * @param string $v value
+     * @return array
+     */
+    public static function _val2array($v)
+    {
+        deprecatedFunction();
+        return self::rawValueToArray($v);
     }
     /**
      * convert array value to flat attribute value
@@ -5460,11 +5471,24 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $br
      * @return string
      */
-    public static function _array2val($v, $br = '<BR>')
+    public static function arrayToRawValue($v, $br = '<BR>')
     {
         $v = str_replace("\n", $br, $v);
         if (count($v) == 0) return "";
         return implode("\n", $v);
+    }
+    /**
+     * convert array value to flat attribute value
+     * @param array $v
+     * @param string $br
+     * @deprecated use {@link Doc::arrayToRawValue] instead
+     * @see arrayToRawValue
+     * @return string
+     */
+    public static function _array2val($v, $br = '<BR>')
+    {
+        deprecatedFunction();
+        return self::arrayToRawValue($v, $br);
     }
     /**
      * return an url to access of folder/search RSS in open mode authentication
@@ -5908,7 +5932,7 @@ create unique index i_docir on doc(initid, revision);";
                     $template = $this->getParamValue($aid);
                 }
                 if ($index >= 0) {
-                    $tt = $this->_val2array($template);
+                    $tt = $this->rawValueToArray($template);
                     $template = $tt[$index];
                 }
                 
@@ -7424,6 +7448,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($withdtd == true) {
             $dtd = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
             $dtd.= "<!DOCTYPE $name [";
+            /** @noinspection PhpDeprecationInspection */
             $dtd.= $this->todtd();
             $dtd.= "]>";
         } else {
@@ -7507,7 +7532,7 @@ create unique index i_docir on doc(initid, revision);";
                     if ($attrtype_list) {
                         // $value=htmlspecialchars($this->GetValue($i));
                         $value = $this->GetValue($i);
-                        $textlist = $this->_val2array($value);
+                        $textlist = $this->rawValueToArray($value);
                         
                         while ($text = each($textlist)) {
                             $currentFrameId = $listattr[$i]->fieldSet->id;
@@ -8330,7 +8355,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         $domains = $this->getDomainIds(false, true);
         //delete domain lock if is not in the list
-        $this->domainid = trim($this->_array2val($domains));
+        $this->domainid = trim($this->arrayToRawValue($domains));
         if ($this->lockdomainid) {
             if (!in_array($this->lockdomainid, $domains)) $this->lockdomainid = '';
             else {

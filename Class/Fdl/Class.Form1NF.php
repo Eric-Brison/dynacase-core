@@ -835,7 +835,7 @@ class Form1NF
                                             $this->sqlInsert(strtolower($data['table']->name) , $data['table']->sqlFields, $fieldCopyValues, $fieldValues);
                                             // docid multiple in array
                                             foreach ($data['linkedTables'] as $data2) {
-                                                $values = $doc->_val2array(str_replace('<BR>', "\n", $row[$data2['column']->name]));
+                                                $values = $doc->rawValueToArray(str_replace('<BR>', "\n", $row[$data2['column']->name]));
                                                 foreach ($values as $val) {
                                                     $id = $this->sqlGetValidDocId($val);
                                                     $this->sqlInsert(strtolower($data2['table']->name) , $data2['table']->sqlFields, array(

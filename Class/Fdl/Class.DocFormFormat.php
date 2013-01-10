@@ -1620,7 +1620,7 @@ class DocFormFormat
                 $lay->set("isopen", ($etype == "open"));
                 $lay->set("isfreeselected", false);
                 $lay->set("isfree", ($etype == "free"));
-                $tvalue = $doc->_val2array($value);
+                $tvalue = $doc->rawValueToArray($value);
                 
                 $lay->set("lvalue", $value);
                 $enuml = $oattr->getenumlabel();

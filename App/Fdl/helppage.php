@@ -17,8 +17,8 @@ function helppageenumlang()
     }
     $doc = new_Doc($dbaccess, $famid);
     if ($doc->isAlive()) {
-        $all_lang_keys = $doc->_val2array($doc->getParamValue('help_p_lang_key'));
-        $all_lang_texts = $doc->_val2array($doc->getParamValue('help_p_lang_name'));
+        $all_lang_keys = $doc->rawValueToArray($doc->getParamValue('help_p_lang_key'));
+        $all_lang_texts = $doc->rawValueToArray($doc->getParamValue('help_p_lang_name'));
         $langs = array();
         foreach ($all_lang_keys as $i => $key) {
             $langs[] = $key . '|' . $all_lang_texts[$i];

@@ -183,7 +183,7 @@ class _MAILTEMPLATE extends Doc
                             }
                             $vdocid = str_replace('<BR>', "\n", $vdocid);
                             if (strpos($vdocid, "\n")) {
-                                $tvdoc = $this->_val2array($vdocid);
+                                $tvdoc = $this->rawValueToArray($vdocid);
                                 $tmail = array();
                                 $it = new DocumentList();
                                 $it->addDocumentIdentifiers($tvdoc);
@@ -305,7 +305,7 @@ class _MAILTEMPLATE extends Doc
                     }
                     $vf = $doc->getRValue(strtok($v, " "));
                     if ($vf) {
-                        $tvf = $this->_val2array($vf);
+                        $tvf = $this->rawValueToArray($vf);
                         foreach ($tvf as $vf) {
                             if ($vf) {
                                 $fileinfo = $this->getFileInfo($vf);

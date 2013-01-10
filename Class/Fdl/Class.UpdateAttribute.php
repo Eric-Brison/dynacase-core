@@ -218,7 +218,7 @@ class UpdateAttribute
     private function executeSetValue(array $ids, $attrid, $newValue)
     {
         $this->logStatus(sprintf(_("process setValue for %d documents") , count($ids)));
-        if (is_array($newValue)) $newValue = Doc::_array2val($newValue);
+        if (is_array($newValue)) $newValue = Doc::arrayToRawValue($newValue);
         $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $newValue));
         $sql = sprintf("update doc%s set \"%s\"=E'%s' where locked != -1 and initid in (%s)", $this->famid, ($attrid) , pg_escape_string($newValue) , implode(',', $ids));
         simpleQuery($this->dbaccess, $sql);
@@ -241,7 +241,7 @@ class UpdateAttribute
         } else {
             $searchValue = pg_escape_string($valueToRemove);
         }
-        $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, print_r($valueToRemove,true)));
+        $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, print_r($valueToRemove, true)));
         $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\",E'(\\\\A|\\n|<BR>)(%s)(\\\\Z|\n|<BR>)',E'\\\\1\\\\3','g')  where locked != -1 and initid in (%s)", $this->famid, $attrid, $attrid, $searchValue, implode(',', $ids));
         simpleQuery($this->dbaccess, $sql);
         
@@ -275,7 +275,7 @@ class UpdateAttribute
     {
         $pattrid = pg_escape_string(strtolower($attrid));
         $this->logStatus(sprintf(_("process addValue for %d documents") , count($ids)));
-        if (is_array($valueToAdd)) $valueToAdd = Doc::_array2val($valueToAdd);
+        if (is_array($valueToAdd)) $valueToAdd = Doc::arrayToRawValue($valueToAdd);
         
         $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $valueToAdd));
         $oa = $this->getFamilyAttribute($attrid);
@@ -309,7 +309,7 @@ class UpdateAttribute
     {
         $this->logStatus(sprintf(_("process replaceValue for %d documents") , count($ids)));
         
-        if (is_array($newValue)) $newValue = Doc::_array2val($newValue);
+        if (is_array($newValue)) $newValue = Doc::arrayToRawValue($newValue);
         
         $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $oldvalue . '/' . $newValue));
         $this->getFamily();

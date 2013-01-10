@@ -52,7 +52,7 @@ function foliotab(&$action)
     
     $linktab = $doc->getParamValue("pfl_idlinktab");
     if ($linktab) {
-        $linktab = $doc->_val2array($linktab);
+        $linktab = $doc->rawValueToArray($linktab);
         foreach ($linktab as $k => $id) {
             $tdoc = getTDoc($dbaccess, $id);
             if (controlTdoc($tdoc, "view")) $child[] = $tdoc;

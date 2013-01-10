@@ -65,7 +65,7 @@ function modfamilyparameter(Action & $action)
                 foreach ($result as $v) {
                     $val = "";
                     if (!empty($v["value"])) {
-                        $val = $doc->_array2val($v["value"]);
+                        $val = $doc->arrayToRawValue($v["value"]);
                     }
                     $val = trim($val);
                     $ownParams = $doc->getOwnParams();

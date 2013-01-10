@@ -269,7 +269,7 @@ class importSingleDocument
                         
                         if (!$this->analyze) {
                             if ($attr->inArray()) {
-                                $tabsfiles = $this->doc->_val2array($dv);
+                                $tabsfiles = $this->doc->rawValueToArray($dv);
                                 $tvfids = array();
                                 foreach ($tabsfiles as $fi) {
                                     if (preg_match(PREGEXPFILE, $fi, $reg)) {

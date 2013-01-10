@@ -127,8 +127,8 @@ class _HELPPAGE extends Doc
      */
     public function getFamilyLangs()
     {
-        $all_lang_keys = $this->_val2array($this->getParamValue('help_p_lang_key'));
-        $all_lang_texts = $this->_val2array($this->getParamValue('help_p_lang_name'));
+        $all_lang_keys = $this->rawValueToArray($this->getParamValue('help_p_lang_key'));
+        $all_lang_texts = $this->rawValueToArray($this->getParamValue('help_p_lang_name'));
         $all_langs = array();
         foreach ($all_lang_keys as $i => $key) {
             $all_langs[$key] = $all_lang_texts[$i];

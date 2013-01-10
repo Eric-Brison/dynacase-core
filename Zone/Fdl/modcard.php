@@ -158,7 +158,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
             $ndocid = $doc->id;
             if (!$quicksave) { // else quick save
                 $doc->refresh();
-
+                
                 if (needRefreshRn($doc)) $doc->refreshRn(); // hasNewFiles set by insertFile below
                 $msg = $doc->PostModify();
                 if ($msg) $action->addWarningMsg($msg);
@@ -390,7 +390,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
     }
     
     $rt = $rtold = array(); // array of file to be returned
-    if ($doc) $rtold = $doc->_val2array($doc->getOldValue(substr($attrid, 4))); // special in case of file modification by DAV in revised document
+    if ($doc) $rtold = $doc->rawValueToArray($doc->getOldValue(substr($attrid, 4))); // special in case of file modification by DAV in revised document
     $oa = $doc->getAttribute(substr($attrid, 4));
     $rt = $doc->getTvalue($attrid); // in case of modified only a part of array files
     unset($tuserfiles['__1x_']);

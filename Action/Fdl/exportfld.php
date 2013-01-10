@@ -129,7 +129,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
                         $cv = getTDoc($dbaccess, $doc->ccvid);
                         if ($cv["name"] != "") $cvname = $cv["name"];
                         else $cvname = $cv["id"];
-                        $tmskid = $doc->_val2array($cv["cv_mskid"]);
+                        $tmskid = $doc->rawValueToArray($cv["cv_mskid"]);
                         
                         foreach ($tmskid as $kmsk => $imsk) {
                             if ($imsk != "") {
@@ -155,7 +155,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
                                         if ($m) {
                                             $tmoredoc[$m["id"]] = $m;
                                             if ($m["cv_mskid"] != '') {
-                                                $tmskid = $doc->_val2array($m["cv_mskid"]);
+                                                $tmskid = $doc->rawValueToArray($m["cv_mskid"]);
                                                 foreach ($tmskid as $kmsk => $imsk) {
                                                     if ($imsk != "") {
                                                         $msk = getTDoc($dbaccess, $imsk);
@@ -164,7 +164,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
                                                 }
                                             }
                                             if ($m["tm_tmail"] != '') {
-                                                $tmskid = $doc->_val2array(str_replace('<BR>', "\n", $m["tm_tmail"]));
+                                                $tmskid = $doc->rawValueToArray(str_replace('<BR>', "\n", $m["tm_tmail"]));
                                                 foreach ($tmskid as $kmsk => $imsk) {
                                                     if ($imsk != "") {
                                                         $msk = getTDoc($dbaccess, $imsk);
@@ -428,7 +428,7 @@ function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, 
         } else if ($attr->type == "docid") {
             if ($value != "") {
                 if (strstr($value, "\n") || ($attr->getOption("multiple") == "yes")) {
-                    $tid = $doc->_val2array($value);
+                    $tid = $doc->rawValueToArray($value);
                     $tn = array();
                     foreach ($tid as $did) {
                         $brtid = explode("<BR>", $did);

@@ -361,7 +361,7 @@ class _DSEARCH extends DocSearch
                 break;
 
             case "~y":
-                if (!is_array($val)) $val = $this->_val2array($val);
+                if (!is_array($val)) $val = $this->rawValueToArray($val);
                 if (count($val) > 0) $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
                 
                 break;

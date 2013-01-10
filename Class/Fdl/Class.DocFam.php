@@ -442,7 +442,7 @@ create unique index idx_idfam on docfam(id);";
      */
     public function getParamTValue($idAttr, $def = "", $index = - 1)
     {
-        $t = $this->_val2array($this->getParamValue("$idAttr", $def));
+        $t = $this->rawValueToArray($this->getParamValue("$idAttr", $def));
         if ($index == - 1) return $t;
         if (isset($t[$index])) return $t[$index];
         else return $def;
@@ -459,7 +459,7 @@ create unique index idx_idfam on docfam(id);";
     {
         $this->setChanged();
         $idp = strtolower($idp);
-        if (is_array($val)) $val = $this->_array2val($val);
+        if (is_array($val)) $val = $this->arrayToRawValue($val);
         $err = '';
         if ($this->isComplete()) $err = $this->checkSyntax($idp, $val);
         if (!$err) $this->setXValue("param", strtolower($idp) , $val);
@@ -670,7 +670,7 @@ create unique index idx_idfam on docfam(id);";
     function setXValue($X, $idp, $val)
     {
         $tval = "_xt$X";
-        if (is_array($val)) $val = $this->_array2val($val);
+        if (is_array($val)) $val = $this->arrayToRawValue($val);
         
         if (!isset($this->$tval)) $this->getXValues($X);
         $txval = $this->$tval;
@@ -696,7 +696,7 @@ create unique index idx_idfam on docfam(id);";
         
         foreach ($fa as $aid => $oattr) {
             if ($oattr->inArray()) {
-                $ta = $this->_val2array($this->getParamValue($aid));
+                $ta = $this->rawValueToArray($this->getParamValue($aid));
             } else {
                 $ta = array(
                     $this->getParamValue($aid)

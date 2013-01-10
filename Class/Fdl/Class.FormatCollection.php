@@ -291,7 +291,7 @@ class FormatCollection
         if ($oa->isMultiple()) {
             if ($oa->inArray() && $oa->getOption("multiple") == "yes") {
                 // double level multiple
-                $tv = Doc::_val2array($value);
+                $tv = Doc::rawValueToArray($value);
                 if (count($tv) == 1 && $tv[0] == "\t") {
                     $tv[0] = '';
                 }
@@ -307,7 +307,7 @@ class FormatCollection
                 }
             } else {
                 // single level multiple
-                $tv = Doc::_val2array($value);
+                $tv = Doc::rawValueToArray($value);
                 if ($oa->inArray() && count($tv) == 1 && $tv[0] == "\t") {
                     $tv[0] = '';
                 }

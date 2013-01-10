@@ -341,7 +341,7 @@ function fdl_setHttpVars(&$doc)
         $oa = $doc->getAttribute($k);
         if ($oa) {
             if ($doc->getValue($k) == "") {
-                if ($oa->inArray() && (!is_array($v))) $v = $doc->_val2array(str_replace('\n', "\n", $v));
+                if ($oa->inArray() && (!is_array($v))) $v = $doc->rawValueToArray(str_replace('\n', "\n", $v));
                 $doc->setValue($k, $v);
                 //		print "<br>Set $k to ";print_r($v);
                 $ismod = true;

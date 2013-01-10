@@ -407,7 +407,7 @@ class DotWorkflow
                     "\\n,",
                     "\\n",
                     ",\\n"
-                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState) , $this->wdoc->_array2val($tm) , '_self', false));
+                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState) , $this->wdoc->arrayToRawValue($tm) , '_self', false));
                 $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
                 $this->lines[] = '"' . str_replace(" ", "\\n", $e2) . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=octagon,color="' . $this->style['timer-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
                 $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -423,7 +423,7 @@ class DotWorkflow
                     "\\n,",
                     "\\n",
                     ",\\n"
-                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState) , $this->wdoc->_array2val($mt) , '_self', false));
+                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
                 $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
                 $this->lines[] = '"' . $e2 . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=house,color="' . $this->style['mail-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
                 $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -463,7 +463,7 @@ class DotWorkflow
                 "\\n,",
                 "\\n",
                 ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->_array2val($mtrans) , '_self', false));
+            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->arrayToRawValue($mtrans) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
             
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false, tooltip="mail",style=bold,shape=house,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
@@ -495,7 +495,7 @@ class DotWorkflow
                 "\\n,",
                 "\\n",
                 ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $t["e2"]) , $this->wdoc->_array2val($mt) , '_self', false));
+            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $t["e2"]) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,tooltip="mail",style=bold,shape=house,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -528,7 +528,7 @@ class DotWorkflow
                 "\\n,",
                 "\\n",
                 ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $t["e2"]) , $this->wdoc->_array2val($mt) , '_self', false));
+            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $t["e2"]) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,tooltip="timer",style=bold,shape=octagon,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -562,7 +562,7 @@ class DotWorkflow
                 "\\n,",
                 "\\n",
                 ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->_array2val($ttrans) , '_self', false));
+            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->arrayToRawValue($ttrans) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,tooltip="timer",shape=octagon,color="' . $this->style['timer-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s",labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);

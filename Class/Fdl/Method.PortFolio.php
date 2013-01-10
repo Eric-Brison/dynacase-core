@@ -86,7 +86,7 @@ class _PORTFOLIO extends Dir
         
         $copytab = $this->getParamValue("pfl_idcopytab");
         if ($copytab) {
-            $copytab = $this->_val2array($copytab);
+            $copytab = $this->rawValueToArray($copytab);
             foreach ($copytab as $k => $id) {
                 $tdoc = getTDoc($this->dbaccess, $id);
                 

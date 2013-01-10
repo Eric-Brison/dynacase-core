@@ -176,11 +176,11 @@ class Fdl_Document
                                 $lvalues[$v->id . "_title"] = DocTitle::getRelationTitle($this->doc->getValue($v->id) , $isLatest, $this->doc);
                                 if ($lvalues[$v->id . "_title"] === false) $lvalues[$v->id . "_title"] = $v->getOption("noaccesstext", _("information access deny"));
                             }
-                            //if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->_val2array($lvalues[$v->id . "_title"]);
+                            //if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->rawValueToArray($lvalues[$v->id . "_title"]);
                             
                         } elseif (($v->type == "thesaurus")) {
                             $lvalues[$v->id . "_title"] = $this->doc->getTitle($this->doc->getValue($v->id));
-                            if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->_val2array($lvalues[$v->id . "_title"]);
+                            if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->rawValueToArray($lvalues[$v->id . "_title"]);
                         } elseif ($isoDate && ($v->type == 'date' || $v->type == 'timestamp')) {
                             if (is_array($lvalues[$v->id])) {
                                 foreach ($lvalues[$v->id] as $kd => $vd) {
@@ -300,7 +300,7 @@ class Fdl_Document
                 
                 $props["lockdomainid"] = intval($this->doc->lockdomainid);
                 // numeric values
-                if ($props["postitid"]) $props["postitid"] = $this->doc->_val2array($props["postitid"]);
+                if ($props["postitid"]) $props["postitid"] = $this->doc->rawValueToArray($props["postitid"]);
                 else $props["postitid"] = array();
                 $props["id"] = intval($props["id"]);
                 $props["initid"] = intval($props["initid"]);
@@ -315,7 +315,7 @@ class Fdl_Document
                 $props["fromid"] = intval($props["fromid"]);
                 $props["allocated"] = intval($props["allocated"]);
                 $props["owner"] = intval($props["owner"]);
-                if ($props["domainid"]) $props["domainid"] = $this->doc->_val2array($props["domainid"]);
+                if ($props["domainid"]) $props["domainid"] = $this->doc->rawValueToArray($props["domainid"]);
                 else $props["domainid"] = array();
                 if (getParam("DATA_LCDATE") == "iso" && getLcdate() != 'iso') {
                     $props["cdate"] = StringDateToIso($props["cdate"], false);

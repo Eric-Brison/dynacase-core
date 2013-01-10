@@ -176,9 +176,9 @@ class DocCtrl extends DocLDAP
             $app = $action->parent;
             $this->userid = $app->user->id;
         }
-
+        
         if (!isset($this->attributes->attr)) {
-            if (!isset($this->attributes)) $this->attributes=new stdClass();
+            if (!isset($this->attributes)) $this->attributes = new stdClass();
             $this->attributes->attr = array();
         }
         parent::__construct($dbaccess, $id, $res, $dbid);
@@ -353,7 +353,7 @@ class DocCtrl extends DocLDAP
                 if ($duid == "") $duid = $fromdocidvalues->getParamValue($aid);
                 if ($duid != "") {
                     $duid = str_replace("<BR>", "\n", $duid); // docid multiple
-                    $tduid = Doc::_val2array($duid);
+                    $tduid = Doc::rawValueToArray($duid);
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
                             $docu = getTDoc($fromdocidvalues->dbaccess, intval($duid)); // not for idoc list for the moment
@@ -449,7 +449,7 @@ class DocCtrl extends DocLDAP
                     if ($duid == "") $duid = $fromdocidvalues->getParamValue($aid);
                     if ($duid != "") {
                         $duid = str_replace("<BR>", "\n", $duid); // docid multiple
-                        $tduid = Doc::_val2array($duid);
+                        $tduid = Doc::rawValueToArray($duid);
                         foreach ($tduid as $duid) {
                             if ($duid > 0) {
                                 $docu = getTDoc($fromdocidvalues->dbaccess, intval($duid)); // not for idoc list for the moment
