@@ -597,7 +597,7 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
     if ($condName) $s->addFilter($condName);
     if (!$sort) $sort = 'lastname';
     $s->setOrder($sort);
-    $s->useViewControl(true);
+    $s->overrideViewControl(false);
     $al = $s->search();
     foreach ($al as $account) {
         

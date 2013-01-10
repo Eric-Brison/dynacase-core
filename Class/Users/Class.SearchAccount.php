@@ -17,7 +17,7 @@ include_once ("FDL/Lib.Dir.php");
  * @class SearchAccount
  * @code
  $s = new SearchAccount();
- $s->addRoleFilter($s->docName2login('TST_ROLEWRITTER'));
+ $s->addRoleFilter($s->getLoginFromDocName('TST_ROLEWRITTER'));
  $s->addGroupFilter("all");
  $s->addFilter("mail ~ '%s'", "test");
  $al = $s->search();
@@ -247,8 +247,8 @@ class SearchAccount
      * convert logical name document to login account
      *
      * @static
-     * @deprecated use {@link SearchAccount::convertAccountDocNameToAccountLogin} instead
-     * @see SearchAccount::convertAccountDocNameToAccountLogin
+     * @deprecated use {@link SearchAccount::getLoginFromDocName} instead
+     * @see SearchAccount::getLoginFromDocName
      *
      * @param string $name lolgical name
      * @return string login , null if not found
@@ -256,7 +256,7 @@ class SearchAccount
     public static function docName2login($name)
     {
         deprecatedFunction();
-        return self::convertAccountDocNameToAccountLogin($name);
+        return self::getLoginFromDocName($name);
     }
     /**
      * convert logical name document to login account
@@ -267,7 +267,7 @@ class SearchAccount
      * @param string $name lolgical name
      * @return string login , null if not found
      */
-    public static function convertAccountDocNameToAccountLogin($name)
+    public static function getLoginFromDocName($name)
     {
         $sql = sprintf("select login from docname, users where docname.id = users.fid and docname.name='%s'", pg_escape_string($name));
         simpleQuery('', $sql, $login, true, true);
