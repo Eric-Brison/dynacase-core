@@ -1547,11 +1547,21 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Really delete document from database
-     * @api Destroy document from database
+     * @deprecated use {@link Doc::delete} instead
+     * @see Doc::delete
      * @param bool $nopost set to true if no need tu call postDelete methods
      * @return string error message, if no error empty string
      */
     final public function ReallyDelete($nopost)
+    {
+        return $this->_destroy($nopost);
+    }
+    /**
+     * Really delete document from database
+     * @param bool $nopost set to true if no need tu call postDelete methods
+     * @return string error message, if no error empty string
+     */
+    final private function _destroy($nopost)
     {
         $err = DbObj::delete($nopost);
         if ($err == "") {
@@ -1595,7 +1605,7 @@ create unique index i_docir on doc(initid, revision);";
                 ));
                 $rev = $this->GetRevisions();
                 foreach ($rev as $k => $v) {
-                    $v->ReallyDelete($nopost);
+                    $v->_destroy($nopost);
                 }
             }
         } else {
@@ -4679,7 +4689,7 @@ create unique index i_docir on doc(initid, revision);";
                     $revs = $this->getRevisions("TABLE", "ALL");
                     for ($i = $maxrev; $i < count($revs); $i++) {
                         $d = getDocObject($this->dbaccess, $revs[$i]);
-                        if ($d) $d->ReallyDelete(true);
+                        if ($d) $d->_destroy(true);
                     }
                 }
             }
