@@ -73,7 +73,7 @@ class Dir extends PDir
             $privlocked->title = (_("locked document of ") . $home->title);
             $privlocked->Add();
             $privlocked->AddQuery("select * from doc where (doctype!='Z') and" . " (locked=" . $this->userid . ") ");
-            $home->AddFile($privlocked->id);
+            $home->insertDocument($privlocked->id);
         }
         // add basket in home
         if (getParam("FREEDOM_IDBASKET") == "") {
@@ -89,7 +89,7 @@ class Dir extends PDir
                 $bas->setvalue("ba_desc", sprintf(_("basket of %s") , $home->title));
                 $home->name = 'FLDBASKET_' + $this->getWhatUserId();
                 $bas->Add();
-                $home->AddFile($bas->id);
+                $home->insertDocument($bas->id);
                 $basid = $bas->id;
             } else {
                 $basid = $rq[0]->id;
@@ -178,19 +178,44 @@ class Dir extends PDir
         $err = $this->Control("modify");
         return $err;
     }
+
     /**
      * add a document reference in this folder
      *
      * if mode is latest the user always see latest revision
      * if mode is static the user see the revision which has been inserted
+     *
+     * @deprecated use {@link Dir::insertDocument} instead
+     * @see Dir::insertDocument
+     *
      * @param int $docid document ident for the insertion
      * @param string $mode latest|static
-     * @param bool $noprepost if true if the virtuals methods {@link preInsertDoc()} and {@link postInsertDoc()} are not called
+     * @param bool $noprepost if true if the virtuals methods {@link Dir::preInsertDoc()} and {@link Dir::postInsertDoc()} are not called
      * @param bool $forcerestrict if true don't test restriction (if have)
      * @param bool $nocontrol if true no test acl "modify"
      * @return string error message, if no error empty string
      */
     function AddFile($docid, $mode = "latest", $noprepost = false, $forcerestrict = false, $nocontrol = false)
+    {
+        deprecatedFunction();
+        return $this->insertDocument($docid, $mode, $noprepost, $forcerestrict, $nocontrol);
+    }
+    /**
+     * add a document reference in this folder
+     *
+     * if mode is latest the user always see latest revision
+     * if mode is static the user see the revision which has been inserted
+     *
+     * @api add a document reference in this folder
+     *
+     * @param int $docid document ident for the insertion
+     * @param string $mode latest|static
+     * @param bool $noprepost if true if the virtuals methods {@link Dir::preInsertDoc()} and {@link Dir::postInsertDoc()} are not called
+     * @param bool $forcerestrict if true don't test restriction (if have)
+     * @param bool $nocontrol if true no test acl "modify"
+     * @return string error message, if no error empty string
+     */
+    function insertDocument($docid, $mode = "latest", $noprepost = false, $forcerestrict = false, $nocontrol = false)
     {
         if (!$nocontrol) {
             $err = $this->canModify();
@@ -295,12 +320,41 @@ class Dir extends PDir
      *
      * if mode is latest the user always see latest revision
      * if mode is static the user see the revision which has been inserted
-     * @param array doc array document  for the insertion
+     *
+     * @deprecated use {@link Dir::InsertMultipleDocuments} instead
+     * @see Dir::InsertMultipleDocuments
+     *
+     * @param $tdocs
      * @param string $mode latest|static
      * @param boolean $noprepost not call preInsert and postInsert method (default if false)
+     * @param array $tinserted
+     * @param array $twarning
+     * @internal param \doc $array array document  for the insertion
      * @return string error message, if no error empty string
      */
-    function InsertMDoc($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
+    function InsertMDoc($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array(), &$twarning = array())
+    {
+        deprecatedFunction();
+        return $this->InsertMultipleDocuments($tdocs, $mode, $noprepost, $tinserted, $twarning);
+    }
+
+    /**
+     * insert multiple document reference in this folder
+     *
+     * if mode is latest the user always see latest revision
+     * if mode is static the user see the revision which has been inserted
+     *
+     * @api insert multiple document reference in this folder
+     *
+     * @param $tdocs
+     * @param string $mode latest|static
+     * @param boolean $noprepost not call preInsert and postInsert method (default if false)
+     * @param array $tinserted
+     * @param array $twarning
+     * @internal param \doc $array array document  for the insertion
+     * @return string error message, if no error empty string
+     */
+    function InsertMultipleDocuments($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array(), &$twarning = array())
     {
         
         $err = $this->canModify();
@@ -441,14 +495,32 @@ class Dir extends PDir
     // --------------------------------------------------------------------
 
     /**
-     * delete a document reference in this folder
+     * remove a document reference from this folder
+     *
+     * @deprecated use {@link Dir::removeDocument} instead
+     * @see Dir::removeDocument
      *
      * @param int $docid document ident for the deletion
-     * @param bool $noprepost if true then the virtuals methods {@link preUnlinkDoc()} and {@link postUnlinkDoc()} are not called
+     * @param bool $noprepost if true then the virtuals methods {@link Dir::preUnlinkDoc()} and {@link Dir::postUnlinkDoc()} are not called
      * @param bool $nocontrol if true no test acl "modify"
      * @return string error message, if no error empty string
      */
     function DelFile($docid, $noprepost = false, $nocontrol = false)
+    {
+        deprecatedFunction();
+        return $this->removeDocument($docid, $noprepost, $nocontrol);
+    }
+    /**
+     * delete a document reference from this folder
+     *
+     * @api remove a document reference from this folder
+     *
+     * @param int $docid document ident for the deletion
+     * @param bool $noprepost if true then the virtuals methods {@link Dir::preUnlinkDoc()} and {@link Dir::postUnlinkDoc()} are not called
+     * @param bool $nocontrol if true no test acl "modify"
+     * @return string error message, if no error empty string
+     */
+    function removeDocument($docid, $noprepost = false, $nocontrol = false)
     {
         if (!$nocontrol) {
             $err = $this->canModify();
@@ -518,12 +590,12 @@ class Dir extends PDir
             $da = new_doc($this->dbaccess, $movetoid);
             if ($da->isAlive()) {
                 if (method_exists($da, "addFile")) {
-                    $err = $da->addFile($docid);
+                    $err = $da->insertDocument($docid);
                     if ($err == "") {
                         if (($fromtoid) && ($fromtoid != $movetoid)) {
                             if ($this->isAlive()) {
                                 if (method_exists($this, "delFile")) {
-                                    $err = $this->delFile($docid);
+                                    $err = $this->removeDocument($docid);
                                     if ($err == "") {
                                         $doc = new_doc($this->dbaccess, $docid, true);
                                         if ($doc->isAlive()) {
@@ -781,14 +853,14 @@ class Dir extends PDir
                         $copy = $doc->duplicate();
                         if (is_object($copy)) {
                             $fld->addFile($copy->initid);
-
+                            
                             if ($doc->doctype == 'D') {
                                 $terr = array_merge($terr, $doc->copyItems($copy->id));
                             }
                         }
                     } else {
                         // link
-                        $fld->addFile($doc->initid);
+                        $fld->insertDocument($doc->initid);
                     }
                 }
             }
