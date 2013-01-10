@@ -483,7 +483,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return string the src of the CSS or "" if non existent ref
      */
-    public function getCSSLink($ref, $needparse = false, $packName = '')
+    public function getCssLink($ref, $needparse = false, $packName = '')
     {
         if (substr($ref, 0, 2) == './') {
             $ref = substr($ref, 2);
@@ -501,7 +501,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return string the src of the JS or "" if non existent ref
      */
-    public function getJSLink($ref, $needparse = false, $packName = '')
+    public function getJsLink($ref, $needparse = false, $packName = '')
     {
         if (substr($ref, 0, 2) == './') {
             $ref = substr($ref, 2);
