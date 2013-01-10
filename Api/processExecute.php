@@ -75,8 +75,8 @@ function verifyExecDocuments($dbaccess)
             /**
              * @var _EXEC $del
              */
-            $del->deleteValue("exec_status");
-            $del->deleteValue("exec_handnextdate");
+            $del->clearValue("exec_status");
+            $del->clearValue("exec_handnextdate");
             $err = $del->store();
             
             if ($status == 0) {

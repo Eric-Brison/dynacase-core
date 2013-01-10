@@ -222,7 +222,7 @@ function setDocDefaultValues(Doc & $doc)
             } elseif ($attr->type == "array") {
                 $attr->setOption("empty", "yes");
             }
-            $doc->DeleteValue($attr->id); // delete all value to set only own default values
+            $doc->clearValue($attr->id); // delete all value to set only own default values
             
         }
     }

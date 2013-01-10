@@ -82,14 +82,14 @@ class _FORUM extends Doc
         $t_flag = $this->getTValue("forum_d_flag");
         $t_date = $this->getTValue("forum_d_date");
         
-        $this->deleteValue("forum_d_id");
-        $this->deleteValue("forum_d_link");
-        $this->deleteValue("forum_d_userid");
-        $this->deleteValue("forum_d_user");
-        $this->deleteValue("forum_d_usermail");
-        $this->deleteValue("forum_d_text");
-        $this->deleteValue("forum_d_flag");
-        $this->deleteValue("forum_d_date");
+        $this->clearValue("forum_d_id");
+        $this->clearValue("forum_d_link");
+        $this->clearValue("forum_d_userid");
+        $this->clearValue("forum_d_user");
+        $this->clearValue("forum_d_usermail");
+        $this->clearValue("forum_d_text");
+        $this->clearValue("forum_d_flag");
+        $this->clearValue("forum_d_date");
         
         $nt_id = array();
         $nt_lid = array();

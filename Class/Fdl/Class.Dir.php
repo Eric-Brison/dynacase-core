@@ -559,7 +559,7 @@ class Dir extends PDir
             
             if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
                 
-                $this->deleteValue("FLD_ALLBUT");
+                $this->clearValue("FLD_ALLBUT");
                 $this->modify();
             }
         }

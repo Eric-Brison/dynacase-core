@@ -73,11 +73,11 @@ if ($docid > 0) {
         unlink($ferr);
     }
     
-    $doc->deleteValue("exec_nextdate");
+    $doc->clearValue("exec_nextdate");
     $doc->setValue("exec_elapsed", $ms);
     $doc->setValue("exec_date", date("d/m/Y H:i "));
-    $doc->deleteValue("exec_status");
-    $doc->deleteValue("exec_statusdate");
+    $doc->clearValue("exec_status");
+    $doc->clearValue("exec_statusdate");
     $doc->setValue("exec_state", (($statut == 0) ? "OK" : $statut));
     $puserid = $doc->getValue("exec_iduser"); // default exec user
     $doc->setValue("exec_iduser", $doc->getExecUserID());
@@ -87,11 +87,11 @@ if ($docid > 0) {
         if ($comment != "") $doc->addHistoryEntry($comment);
         $err = $doc->revise(sprintf(_("execution by %s done %s") , $doc->getTitle($doc->getExecUserID()) , $statut));
         if ($err == "") {
-            $doc->deleteValue("exec_elapsed");
-            $doc->deleteValue("exec_detail");
-            $doc->deleteValue("exec_detaillog");
-            $doc->deleteValue("exec_date");
-            $doc->deleteValue("exec_state");
+            $doc->clearValue("exec_elapsed");
+            $doc->clearValue("exec_detail");
+            $doc->clearValue("exec_detaillog");
+            $doc->clearValue("exec_date");
+            $doc->clearValue("exec_state");
             $doc->setValue("exec_iduser", $puserid);
             $doc->refresh();
             $err = $doc->modify();

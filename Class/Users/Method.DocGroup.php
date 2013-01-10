@@ -120,7 +120,7 @@ class _GROUP extends Dir
             $this->SetValue("GRP_MAIL", $gmail);
         }
         
-        if ($this->getValue("grp_hasmail") == "no") $this->deleteValue("GRP_MAIL");
+        if ($this->getValue("grp_hasmail") == "no") $this->clearValue("GRP_MAIL");
         
         return $err;
     }
@@ -170,7 +170,7 @@ class _GROUP extends Dir
             }
             $this->SetValue("GRP_IDGROUP", $tmemid);
         } else {
-            $this->DeleteValue("GRP_IDGROUP");
+            $this->clearValue("GRP_IDGROUP");
         }
         $err = $this->modify();
     }

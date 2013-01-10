@@ -224,7 +224,7 @@ class _IGROUP extends _GROUP
         if (!$nomail) {
             $this->setValue("grp_mail", $this->getMail());
         } else {
-            $this->deleteValue('grp_mail');
+            $this->clearValue('grp_mail');
         }
     }
     /**
@@ -470,7 +470,7 @@ class _IGROUP extends _GROUP
                 uasort($tglogin, "strcasecmp");
                 $this->SetValue("GRP_IDGROUP", array_keys($tglogin));
             } else {
-                $this->DeleteValue("GRP_IDGROUP");
+                $this->clearValue("GRP_IDGROUP");
             }
             
             $err = $this->modify();

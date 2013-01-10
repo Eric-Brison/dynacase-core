@@ -188,7 +188,7 @@ class _IUSER extends Doc implements IMailRecipient
                 $this->SetValue("us_roles", $rolesIds);
                 
                 $mail = $wuser->getMail();
-                if (!$mail) $this->DeleteValue("US_MAIL");
+                if (!$mail) $this->clearValue("US_MAIL");
                 else $this->SetValue("US_MAIL", $mail);
                 if ($wuser->passdelay <> 0) {
                     $this->SetValue("US_EXPIRESD", strftime("%Y-%m-%d", $wuser->expires));
@@ -340,7 +340,7 @@ class _IUSER extends Doc implements IMailRecipient
             if ($this->getValue("us_login") == "-") {
                 $email = $this->getValue("us_extmail");
                 if (($email != "") && ($email[0] != "<")) $this->setValue("us_mail", $email);
-                else $this->deleteValue("us_mail");
+                else $this->clearValue("us_mail");
             }
         }
         

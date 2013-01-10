@@ -65,7 +65,7 @@ class _ARCHIVING extends Dir
         $err = $this->canEdit();
         if (!$err) {
             $err = $this->setValue("arc_status", "O");
-            $err = $this->deleteValue("arc_clotdate");
+            $err = $this->clearValue("arc_clotdate");
             if (!$err) $err = $this->modify();
             if (!$err) {
                 include_once ("FDL/Class.SearchDoc.php");

@@ -70,8 +70,8 @@ class _EXEC extends Doc
      */
     function resetExecute()
     {
-        $this->deleteValue("exec_status");
-        $this->deleteValue("exec_statusdate");
+        $this->clearValue("exec_status");
+        $this->clearValue("exec_statusdate");
         $err = $this->modify();
         return $err;
     }

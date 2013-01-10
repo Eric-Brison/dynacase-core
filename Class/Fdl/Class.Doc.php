@@ -859,7 +859,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->hasChanged = true;
     }
     /**
-     * return true if document has changed after setValue/deleteValue calling
+     * return true if document has changed after setValue/clearValue calling
      * @api test if document attributes are changed
      * @return bool
      */
@@ -3006,7 +3006,7 @@ create unique index i_docir on doc(initid, revision);";
             $err = "";
             // delete each columns
             foreach ($ta as $k => $v) {
-                $err.= $this->deleteValue($k);
+                $err.= $this->clearValue($k);
             }
             $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
             return $err;
@@ -3034,7 +3034,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * the affectation is only in object. To set modification in database the store method must be
      * call after modification
-     * If value is empty no modification are set. To reset a value use Doc::deleteValue method.
+     * If value is empty no modification are set. To reset a value use Doc::clearValue method.
      * an array can be use as value for values which are in arrays
      * @api affect value for an attribute
      * @param string $attrid attribute identifier
@@ -3887,10 +3887,10 @@ create unique index i_docir on doc(initid, revision);";
      * delete a value of an attribute
      * @see setValue
      * @param string $attrid attribute identifier
-     * @api delete value of an attribute
+     * @api clear value of an attribute
      * @return string error message
      */
-    final public function deleteValue($attrid)
+    final public function clearValue($attrid)
     {
         $oattr = $this->GetAttribute($attrid);
         if ($oattr->type == 'docid') {
@@ -3903,6 +3903,19 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         return $this->SetValue($attrid, " ");
+    }
+    /**
+     * delete a value of an attribute
+     * @see setValue
+     * @param string $attrid attribute identifier
+     * @deprecated use {@link clearValue} instead
+     * @see clearValue
+     * @return string error message
+     */
+    final public function deleteValue($attrid)
+    {
+        deprecatedFunction();
+        return $this->clearValue($attrid);
     }
     /**
      * add values present in values field
@@ -7849,7 +7862,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($doc->isAlive()) $this->setValue($nameTitle, $doc->title);
         else {
             // suppress
-            if (!$doc->isAffected()) $this->deleteValue($nameId);
+            if (!$doc->isAffected()) $this->clearValue($nameId);
         }
     }
     /**

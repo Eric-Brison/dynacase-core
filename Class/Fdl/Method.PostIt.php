@@ -114,8 +114,8 @@ class _POSTIT extends Doc
             $this->setValue("PIT_DATE", $tdate);
             $this->setValue("PIT_IDUSER", $tiduser);
             $this->setValue("PIT_COLOR", $tcolor);
-            $this->deleteValue("PIT_NCOLOR");
-            $this->deleteValue("PIT_NCOM");
+            $this->clearValue("PIT_NCOLOR");
+            $this->clearValue("PIT_NCOM");
         }
     }
     
