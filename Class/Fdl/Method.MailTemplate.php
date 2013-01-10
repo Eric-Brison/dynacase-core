@@ -120,7 +120,7 @@ class _MAILTEMPLATE extends Doc
                         $err = $this->checkAttributeExistsInRelation($aid, getLatestTDoc($this->dbaccess, $doc->initid));
                         if ($err) {
                             $action->log->error($err);
-                            $doc->addComment($err);
+                            $doc->addHistoryEntry($err);
                             return $err;
                         }
                         $mail = $doc->getRValue($aid);
@@ -132,7 +132,7 @@ class _MAILTEMPLATE extends Doc
                             $err = $this->checkAttributeExistsInRelation($aid, getLatestTDoc($this->dbaccess, $wdoc->initid));
                             if ($err) {
                                 $action->log->error($err);
-                                $wdoc->addComment($err);
+                                $wdoc->addHistoryEntry($err);
                                 return $err;
                             }
                             $mail = $wdoc->getRValue($aid);
@@ -143,7 +143,7 @@ class _MAILTEMPLATE extends Doc
                         $aid = strtok($v["tmail_recip"], " ");
                         if (!$doc->getAttribute($aid)) {
                             $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
-                            $doc->addComment(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                            $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
                             return sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid);
                         }
                         $mail = $doc->getparamValue($aid);
@@ -154,7 +154,7 @@ class _MAILTEMPLATE extends Doc
                             $aid = strtok($v["tmail_recip"], " ");
                             if (!$wdoc->getAttribute($aid)) {
                                 $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
-                                $wdoc->addComment(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                                $wdoc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
                                 return sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid);
                             }
                             $mail = $wdoc->getparamValue($aid);
@@ -172,7 +172,7 @@ class _MAILTEMPLATE extends Doc
                             $aid = strtok($v["tmail_recip"], " ");
                             if (!$udoc->getAttribute($aid) && !array_key_exists(strtolower($aid) , $udoc->getParamAttributes())) {
                                 $action->log->error(sprintf(_("Send mail error : Attribute %s not found") , $aid));
-                                $doc->addComment(sprintf(_("Send mail error : Attribute %s not found") , $aid));
+                                $doc->addHistoryEntry(sprintf(_("Send mail error : Attribute %s not found") , $aid));
                                 return sprintf(_("Send mail error : Attribute %s not found") , $aid);
                             }
                             if ($type == 'DE') {
@@ -220,7 +220,7 @@ class _MAILTEMPLATE extends Doc
                         $aid = strtok($v["tmail_recip"], " ");
                         if (!getParam($aid)) {
                             $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
-                            $doc->addComment(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                            $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
                             return sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid);
                         }
                         $mail = getParam($aid);
@@ -263,7 +263,7 @@ class _MAILTEMPLATE extends Doc
                 
                 if (trim($to . $cc . $bcc) == "") {
                     $action->log->info(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject));
-                    $doc->addComment(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject) , HISTO_NOTICE);
+                    $doc->addHistoryEntry(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject) , HISTO_NOTICE);
                     return "";
                 } //nobody to send data
                 if ($this->sendercopy && getParam("FDL_BCC") == "yes") {
@@ -300,7 +300,7 @@ class _MAILTEMPLATE extends Doc
                     $err = $this->checkAttributeExistsInRelation(strtok($v, " ") , getLatestTDoc($this->dbaccess, $doc->initid));
                     if ($err) {
                         $action->log->error($err);
-                        $doc->addComment($err);
+                        $doc->addHistoryEntry($err);
                         return $err;
                     }
                     $vf = $doc->getRValue(strtok($v, " "));
@@ -338,11 +338,11 @@ class _MAILTEMPLATE extends Doc
                 if ($bcc) $recip.= ' ' . sprintf(_("sendmailbcc %s") , $bcc);
                 
                 if ($err == "") {
-                    $doc->addComment(sprintf(_("send mail %s with template %s") , $recip, $this->title) , HISTO_INFO, "SENDMAIL");
+                    $doc->addHistoryEntry(sprintf(_("send mail %s with template %s") , $recip, $this->title) , HISTO_INFO, "SENDMAIL");
                     $action->log->info(sprintf(_("Mail %s sent to %s") , $subject, $recip));
                     addWarningMsg(sprintf(_("send mail %s") , $recip));
                 } else {
-                    $doc->addComment(sprintf(_("cannot send mail %s with template %s : %s") , $recip, $this->title, $err) , HISTO_ERROR);
+                    $doc->addHistoryEntry(sprintf(_("cannot send mail %s with template %s : %s") , $recip, $this->title, $err) , HISTO_ERROR);
                     $action->log->error(sprintf(_("cannot send mail %s to %s : %s") , $subject, $recip, $err));
                     addWarningMsg(sprintf(_("cannot send mail %s") , $err));
                 }

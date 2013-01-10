@@ -175,9 +175,9 @@ function modcard(Action & $action, &$ndocid, &$info = array())
                             $keys[] = $oa->getLabel();
                         }
                         $skeys = implode(", ", $keys);
-                        $doc->Addcomment($commentSubstitute . sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
+                        $doc->addHistoryEntry($commentSubstitute . sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
                     } else {
-                        $doc->Addcomment($commentSubstitute . _("change") , HISTO_INFO, "MODIFY");
+                        $doc->addHistoryEntry($commentSubstitute . _("change") , HISTO_INFO, "MODIFY");
                     }
                 }
                 if ($err == "") {
@@ -215,7 +215,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
                         if ($fdoc->schar == "R") {
                             $doc->AddRevision(sprintf("%s : %s", _("auto revision") , $comment));
                         } else {
-                            if ($comment != "") $doc->AddComment($commentSubstitute . $comment);
+                            if ($comment != "") $doc->addHistoryEntry($commentSubstitute . $comment);
                         }
                     }
                     $ndocid = $doc->id;
@@ -467,7 +467,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
                 
                 if ($err != "") {
                     AddWarningMsg($err);
-                    $doc->AddComment(sprintf(_("file %s : %s") , $userfile['name'], $err) , HISTO_WARNING);
+                    $doc->addHistoryEntry(sprintf(_("file %s : %s") , $userfile['name'], $err) , HISTO_WARNING);
                 } else {
                     if ($oa && $oa->getOption('preventfilechange') == "yes") {
                         if (preg_match(PREGEXPFILE, $userfile["oldvalue"], $reg)) {
@@ -480,7 +480,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
                                 $realprefix = substr($userfile["realname"], 0, strrpos($userfile["realname"], '}', strrpos($expectname, '.') - 2) + 1);
                                 
                                 if (($ext != $realext) || ($prefix != $realprefix)) {
-                                    $doc->addComment(sprintf(_("%s : file %s has been replaced by new file %s") , $oa->getLabel() , $reg[3], $userfile["name"]) , HISTO_WARNING);
+                                    $doc->addHistoryEntry(sprintf(_("%s : file %s has been replaced by new file %s") , $oa->getLabel() , $reg[3], $userfile["name"]) , HISTO_WARNING);
                                 }
                             }
                         }
@@ -585,7 +585,7 @@ function specialmodcard(Action & $action, $usefor)
             foreach ($tmod as $k => $v) {
                 $s.= "$k:$v, ";
             }
-            $cdoc->AddComment($s);
+            $cdoc->addHistoryEntry($s);
         }
     }
     return $err;

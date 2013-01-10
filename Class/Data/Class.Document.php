@@ -598,7 +598,7 @@ class Fdl_Document
                         $keys[] = $oa->getLabel();
                     }
                     $skeys = implode(",", $keys);
-                    $this->doc->Addcomment(sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
+                    $this->doc->addHistoryEntry(sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
                 }
             }
         }
@@ -861,15 +861,15 @@ class Fdl_Document
             if ($at->getOption("version") == "yes") {
                 $err = $this->doc->setValue($at->id, $version);
                 $hasversion = true;
-                if ((!$err) && $usecomment) $this->doc->addComment(sprintf(_("change version to %s") , $version));
+                if ((!$err) && $usecomment) $this->doc->addHistoryEntry(sprintf(_("change version to %s") , $version));
                 break;
             }
         }
         if (($err == "") && (!$hasversion)) {
             $this->doc->version = trim($version);
             if ($usecomment) {
-                if ($version == "") $this->doc->addComment(sprintf(_("reset version")));
-                else $this->doc->addComment(sprintf(_("change version to %s") , $version));
+                if ($version == "") $this->doc->addHistoryEntry(sprintf(_("reset version")));
+                else $this->doc->addHistoryEntry(sprintf(_("change version to %s") , $version));
             }
         }
         

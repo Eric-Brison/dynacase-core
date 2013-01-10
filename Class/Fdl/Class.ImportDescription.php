@@ -436,7 +436,7 @@ class importDocumentDescription
                 $this->tcr[$this->nLine]["err"] = $check->getErrors();
             }
             
-            $this->doc->AddComment(_("Update by importation"));
+            $this->doc->addHistoryEntry(_("Update by importation"));
             
             $this->nbDoc++;
             

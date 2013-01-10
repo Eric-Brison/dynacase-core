@@ -51,7 +51,7 @@ class _ARCHIVING extends Dir
             $err = $this->setValue("arc_status", "C");
             $err = $this->setValue("arc_clotdate", $this->getDate());
             if (!$err) $err = $this->modify();
-            $this->addComment(sprintf(_("Close archive")));
+            $this->addHistoryEntry(sprintf(_("Close archive")));
         }
         return $err;
     }
@@ -83,7 +83,7 @@ class _ARCHIVING extends Dir
                     $doc->enableEditControl();
                 }
             }
-            $this->addComment(sprintf(_("Reopen archive")));
+            $this->addHistoryEntry(sprintf(_("Reopen archive")));
         }
         return $err;
     }
@@ -114,7 +114,7 @@ class _ARCHIVING extends Dir
                     if ($doc->doctype != 'C') {
                         $t.= sprintf('<li><a href="?app=FDL&action=VIEWDESTROYDOC&id=%d">%s</a></li> ', $doc->id, $doc->title);
                         $doc->disableEditControl();
-                        $doc->addComment(sprintf(_("destroyed by archive purge from %s") , $this->getTitle()));
+                        $doc->addHistoryEntry(sprintf(_("destroyed by archive purge from %s") , $this->getTitle()));
                         $err.= $doc->delete(true, false);
                         $doc->enableEditControl();
                     }
@@ -123,7 +123,7 @@ class _ARCHIVING extends Dir
                 $err = $this->setValue("arc_purgemanif", $t);
                 if (!$err) $err = $this->modify();
                 $this->clear();
-                $this->addComment(sprintf(_("Purge archive")));
+                $this->addHistoryEntry(sprintf(_("Purge archive")));
             }
         }
         return $err;

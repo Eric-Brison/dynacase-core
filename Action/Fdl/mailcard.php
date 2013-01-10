@@ -114,7 +114,7 @@ function mailcard(Action & $action)
         if ($uid > 0) {
             $tu = getTDoc($dbaccess, $uid);
             $wuid = getv($tu, "us_whatid");
-            //      $err=$doc->addComment(_("document received for"),HISTO_NOTICE,"RCPTDOC",$wuid);
+            //      $err=$doc->addHistoryEntry(_("document received for"),HISTO_NOTICE,"RCPTDOC",$wuid);
             $err = $doc->addUTag($wuid, "TOVIEW");
         }
     }
@@ -611,7 +611,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
             if ($savecopy) createSentMessage($to, $from, $cc, $bcc, $subject, $multi_mix, $doc);
             if ($cc != "") $lsend = sprintf("%s and %s", $to, $cc);
             else $lsend = $to;
-            $doc->addcomment(sprintf(_("sended to %s") , $lsend));
+            $doc->addHistoryEntry(sprintf(_("sended to %s") , $lsend));
             $action->addlogmsg(sprintf(_("sending %s to %s") , $doc->title, $lsend));
             if ($userinfo) $action->addwarningmsg(sprintf(_("sending %s to %s") , $doc->title, $lsend));
         } else {

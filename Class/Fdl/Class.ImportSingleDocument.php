@@ -516,7 +516,7 @@ class importSingleDocument
                     $err = $this->doc->modify();
                     if ($err == "-") $err = ""; // not really an error add addfile must be tested after
                     if ($err == "") {
-                        $this->doc->AddComment(sprintf(_("updated by import")));
+                        $this->doc->addHistoryEntry(sprintf(_("updated by import")));
                         $msg.= $this->doc->postImport($extra);
                     } else {
                         $this->setError("DOC0112", $this->doc->name, $err);

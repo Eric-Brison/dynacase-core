@@ -83,7 +83,7 @@ function settxtfile(Action & $action)
                                         $at,
                                         $av
                                     ) , true);
-                                    $doc->AddComment(sprintf(_("text conversion done for file %s") , $doc->vault_filename($attrid, false, $index)) , HISTO_NOTICE);
+                                    $doc->addHistoryEntry(sprintf(_("text conversion done for file %s") , $doc->vault_filename($attrid, false, $index)) , HISTO_NOTICE);
                                     if (($err == "") && ($doc->locked == - 1)) {
                                         // propagation in case of auto revision
                                         $idl = $doc->latestId();
@@ -110,7 +110,7 @@ function settxtfile(Action & $action)
                         } else {
                             $err = sprintf(_("task %s is not done correctly") , $tid);
                         }
-                        if ($err != "") $doc->AddComment(sprintf(_("conversion failed for %s: ") . $err, $doc->vault_filename($attrid, false, $index)) , HISTO_NOTICE);
+                        if ($err != "") $doc->addHistoryEntry(sprintf(_("conversion failed for %s: ") . $err, $doc->vault_filename($attrid, false, $index)) , HISTO_NOTICE);
                     } else {
                         $err = sprintf(_("document [%s] not found") , $docid);
                     }

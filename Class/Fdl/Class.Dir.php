@@ -112,7 +112,7 @@ class Dir extends PDir
         // need this privilege
         $err = $this->Control("modify");
         if ($err != "") return $err;
-        $this->AddComment(_("Folder cleared"));
+        $this->addHistoryEntry(_("Folder cleared"));
         $this->addLog('clearcontent');
         $err = $this->exec_query("delete from fld where dirid=" . $this->initid);
         $this->updateFldRelations();
@@ -224,8 +224,8 @@ class Dir extends PDir
                 $err = $qf->Add();
                 if ($err == "") {
                     AddLogMsg(sprintf(_("Add %s in %s folder") , $doc->title, $this->title));
-                    $this->AddComment(sprintf(_("Document %s inserted") , $doc->title));
-                    $doc->addComment(sprintf(_("Document inserted in %s folder") , $this->title, HISTO_INFO, "MOVEADD"));
+                    $this->addHistoryEntry(sprintf(_("Document %s inserted") , $doc->title));
+                    $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder") , $this->title, HISTO_INFO, "MOVEADD"));
                     
                     $this->addLog('addcontent', array(
                         "insert" => array(
@@ -244,7 +244,7 @@ class Dir extends PDir
                                         "profid",
                                         "dprofid"
                                     ) , true);
-                                    if ($err == "") $doc->addComment(sprintf(_("Change profil to default document profil : %d") , $profid));
+                                    if ($err == "") $doc->addHistoryEntry(sprintf(_("Change profil to default document profil : %d") , $profid));
                                 }
                                 break;
 
@@ -262,7 +262,7 @@ class Dir extends PDir
                                         $doc->setValue("FLD_PDOC", $this->getValue("FLD_PDOC"));
                                     }
                                     $err = $doc->modify();
-                                    if ($err == "") $doc->addComment(sprintf(_("Change profil to default subfolder profil : %d") , $profid));
+                                    if ($err == "") $doc->addHistoryEntry(sprintf(_("Change profil to default subfolder profil : %d") , $profid));
                                 }
                                 break;
                             }
@@ -340,7 +340,7 @@ class Dir extends PDir
                         $err = $qf->Add();
                         if ($err == "") {
                             AddLogMsg(sprintf(_("Add %s in %s folder") , $tdoc["title"], $this->title));
-                            $this->AddComment(sprintf(_("Document %s inserted") , $tdoc["title"]) , HISTO_INFO, "MODCONTAIN");
+                            $this->addHistoryEntry(sprintf(_("Document %s inserted") , $tdoc["title"]) , HISTO_INFO, "MODCONTAIN");
                             
                             $this->addLog('addcontent', array(
                                 "insert" => array(
@@ -489,8 +489,8 @@ class Dir extends PDir
                     "title" => $doc->title
                 )
             ));
-            $this->AddComment(sprintf(_("Document %s umounted") , $doc->title) , HISTO_INFO, "MODCONTAIN");
-            $doc->addComment(sprintf(_("Document unlinked of %s folder") , $this->title, HISTO_INFO, "MOVEUNLINK"));
+            $this->addHistoryEntry(sprintf(_("Document %s umounted") , $doc->title) , HISTO_INFO, "MODCONTAIN");
+            $doc->addHistoryEntry(sprintf(_("Document unlinked of %s folder") , $this->title, HISTO_INFO, "MOVEUNLINK"));
             // use post virtual method
             if (!$noprepost) {
                 $this->updateFldRelations();
@@ -753,7 +753,7 @@ class Dir extends PDir
                 }
                 if ($coulddelete) $terr[$doc->id] = $doc->delete();
             }
-            $this->AddComment(_("Folder cleared") , HISTO_INFO, "MODCONTAIN");
+            $this->addHistoryEntry(_("Folder cleared") , HISTO_INFO, "MODCONTAIN");
             return $terr;
         }
         /**

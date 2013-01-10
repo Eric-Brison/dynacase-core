@@ -780,7 +780,7 @@ class WDoc extends Doc
                     SetHttpVar("redirect_app", ""); // override the redirect
                     SetHttpVar("redirect_act", "");
                 } else {
-                    if ($addcomment != "") $this->doc->AddComment($addcomment); // add comment now because it will be lost
+                    if ($addcomment != "") $this->doc->addHistoryEntry($addcomment); // add comment now because it will be lost
                     return ""; //it is not a real error, but don't change state (reported)
                     
                 }
@@ -800,7 +800,7 @@ class WDoc extends Doc
         if ($err != "") return $err;
         
         $revcomment = sprintf(_("change state : %s to %s") , _($oldstate) , _($newstate));
-        if ($addcomment != "") $this->doc->AddComment($addcomment);
+        if ($addcomment != "") $this->doc->addHistoryEntry($addcomment);
         if (isset($tr["ask"])) {
             foreach ($tr["ask"] as $vpid) {
                 $pv = $this->getValue($vpid);
@@ -836,7 +836,7 @@ class WDoc extends Doc
             ) , $newstate, $oldstate, $addcomment);
             
             if ($msg2 == "->") $msg2 = ""; //it is not a real error
-            if ($msg2) $this->doc->addComment($msg2);
+            if ($msg2) $this->doc->addHistoryEntry($msg2);
             if ($msg2 != "") $msg2 = sprintf(_("Warning : %s") , $msg2);
         }
         $this->doc->addLog("state", array(
@@ -862,7 +862,7 @@ class WDoc extends Doc
             ) , $newstate, $oldstate, $addcomment);
             
             if ($msg3 == "->") $msg3 = ""; //it is not a real error
-            if ($msg3) $this->doc->addComment($msg3);
+            if ($msg3) $this->doc->addHistoryEntry($msg3);
             if ($msg3 != "") $msg3 = sprintf(_("Warning : %s") , $msg3);
         }
         $msg.= ($msg && $msg2 ? "\n" : '') . $msg2;

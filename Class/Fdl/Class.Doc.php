@@ -809,7 +809,7 @@ create unique index i_docir on doc(initid, revision);";
             $incumbentName = getCurrentUser()->getIncumbentPrivilege($famDoc, 'create');
             $createComment = _("document creation");
             if ($incumbentName) $createComment = sprintf(_("(substitute of %s) : ") , $incumbentName) . $createComment;
-            $this->Addcomment($createComment, HISTO_INFO, "CREATE");
+            $this->addHistoryEntry($createComment, HISTO_INFO, "CREATE");
             if ($this->wdoc) {
                 $this->wdoc->workflowSendMailTemplate($this->state, _("creation"));
                 $this->wdoc->workflowAttachTimer($this->state);
@@ -1023,7 +1023,7 @@ create unique index i_docir on doc(initid, revision);";
             return $err;
         }
         fclose($fh);
-        $this->AddComment(sprintf(_('regeneration of file template %s') , $aid));
+        $this->addHistoryEntry(sprintf(_('regeneration of file template %s') , $aid));
         return '';
     }
     /**
@@ -1215,7 +1215,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $this->exec_query(sprintf("update fld set fromid=%d where childid=%d", $cdoc->fromid, $this->initid));
         
-        $cdoc->AddComment(sprintf(_("convertion from %s to %s family") , $f1from, $f2from));
+        $cdoc->addHistoryEntry(sprintf(_("convertion from %s to %s family") , $f1from, $f2from));
         
         $this->commitPoint($point);
         global $gdocs; //reset cache if needed
@@ -1261,7 +1261,7 @@ create unique index i_docir on doc(initid, revision);";
                 //in case of change in postModify
                 $err = $this->modify();
             }
-            if ($err == "") $this->addComment(_("save document") , HISTO_INFO, "MODIFY");
+            if ($err == "") $this->addHistoryEntry(_("save document") , HISTO_INFO, "MODIFY");
         }
         $info->error = $err;
         return $err;
@@ -1295,7 +1295,7 @@ create unique index i_docir on doc(initid, revision);";
                     //in case of change in postModify
                     $err = $this->modify();
                 }
-                if ($err == "" && (!$create)) $this->addComment(_("save document") , HISTO_INFO, "MODIFY");
+                if ($err == "" && (!$create)) $this->addHistoryEntry(_("save document") , HISTO_INFO, "MODIFY");
             }
         }
         $info->constraint = $constraint;
@@ -1618,8 +1618,8 @@ create unique index i_docir on doc(initid, revision);";
                 global $_SERVER;
                 
                 $appli = $action->parent;
-                $this->AddComment(sprintf(_("delete by action %s/%s from %s") , $appli->name, $action->name, isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode') , DocHisto::NOTICE);
-                $this->addComment(_("document deleted") , HISTO_MESSAGE, "DELETE");
+                $this->addHistoryEntry(sprintf(_("delete by action %s/%s from %s") , $appli->name, $action->name, isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode') , DocHisto::NOTICE);
+                $this->addHistoryEntry(_("document deleted") , HISTO_MESSAGE, "DELETE");
                 $this->addLog('delete', array(
                     "really" => $really
                 ));
@@ -1672,9 +1672,9 @@ create unique index i_docir on doc(initid, revision);";
                             "locked",
                             "lmodify"
                         ) , true);
-                        $this->AddComment(_("revival document") , HISTO_MESSAGE, "REVIVE");
+                        $this->addHistoryEntry(_("revival document") , HISTO_MESSAGE, "REVIVE");
                         $msg = $this->postRevive();
-                        if ($msg) $this->addComment($msg);
+                        if ($msg) $this->addHistoryEntry($msg);
                         $this->addLog('revive');
                         $rev = $this->getRevisions();
                         /**
@@ -2375,7 +2375,7 @@ create unique index i_docir on doc(initid, revision);";
                         $value = "$mime|$vidout";
                         if ($err == "") $vf->rename($vidout, sprintf(_("conversion of %s in progress") . ".%s", $info->name, $engine));
                         
-                        $this->AddComment("value $engine : $value");
+                        $this->addHistoryEntry("value $engine : $value");
                     } else {
                         if ($err == "") {
                             $info1 = vault_properties($vidin);
@@ -2387,7 +2387,7 @@ create unique index i_docir on doc(initid, revision);";
                     
                     $err = vault_generate($this->dbaccess, $engine, $vidin, $vidout, $isimage, $this->initid);
                     if ($err != "") {
-                        $this->addComment(sprintf(_("convert file %s as %s failed : %s") , $info->name, $engine, $err) , HISTO_ERROR);
+                        $this->addHistoryEntry(sprintf(_("convert file %s as %s failed : %s") , $info->name, $engine, $err) , HISTO_ERROR);
                     }
                 } else {
                     if ($isimage) {
@@ -3366,7 +3366,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (preg_match(PREGEXPFILE, $fval, $reg)) {
                     $vid = $reg[2];
                     $err = sendTextTransformation($this->dbaccess, $this->id, $v["attrid"], $index, $vid);
-                    if ($err != "") $this->AddComment(_("error sending text conversion") . ": $err", DocHisto::NOTICE);
+                    if ($err != "") $this->addHistoryEntry(_("error sending text conversion") . ": $err", DocHisto::NOTICE);
                 }
             }
             $this->textsend = array(); //reinit
@@ -3577,7 +3577,7 @@ create unique index i_docir on doc(initid, revision);";
                     
                 }
                 unlink($filename);
-                $this->AddComment(sprintf(_("modify file %s") , $ftitle));
+                $this->addHistoryEntry(sprintf(_("modify file %s") , $ftitle));
                 $this->hasChanged = true;
             }
         }
@@ -4114,7 +4114,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $uid user identifier : by default its the current user
      * @return string error message
      */
-    final public function addComment($comment = '', $level = DocHisto::INFO, $code = '', $uid = '')
+    final public function addHistoryEntry($comment = '', $level = DocHisto::INFO, $code = '', $uid = '')
     {
         global $action;
         if ($this->id == "") return '';
@@ -4143,6 +4143,21 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $err;
     }
+    /**
+       * Add a comment line in history document
+       * note : modify is call automatically
+       * @api Add a comment message in history document
+       * @param string $comment the comment to add
+       * @param int $level level of comment DocHisto::INFO, DocHisto::ERROR, DocHisto::NOTICE DocHisto::MESSAGE, DocHisto::WARNING
+       * @param string $code use when memorize notification
+       * @param string $uid user identifier : by default its the current user
+     * @deprecated use {@link addHistoryEntry} instead
+     * @see addHistoryEntry
+       * @return string error message
+       */
+      final public function addComment($comment = '', $level = DocHisto::INFO, $code = '', $uid = '') {
+          return $this->addHistoryEntry($comment = '', $level , $code, $uid );
+      }
     /**
      * Add a log entry line in log document
      *
@@ -4517,7 +4532,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->locked == - 1) return _("document already revised");
         if ($this->isFixed()) {
             $err = _("document already revised");
-            $this->Addcomment($err, HISTO_ERROR, "REVERROR");
+            $this->addHistoryEntry($err, HISTO_ERROR, "REVERROR");
             return $err;
         }
         if (!$this->withoutControl) {
@@ -4541,7 +4556,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->revdate = $date['sec']; // change rev date
         $point = "revision" . $this->id;
         $this->savePoint($point);
-        if ($comment != '') $this->Addcomment($comment, HISTO_MESSAGE, "REVISION");
+        if ($comment != '') $this->addHistoryEntry($comment, HISTO_MESSAGE, "REVISION");
         $err = $this->modify();
         if ($err != "") {
             $this->rollbackPoint($point);
@@ -4552,7 +4567,7 @@ create unique index i_docir on doc(initid, revision);";
         // double control
         if (!$this->isFixed()) {
             $err = sprintf("track error revision [%s]", pg_last_error($this->dbid));
-            $this->Addcomment($err, HISTO_ERROR, "REVERROR");
+            $this->addHistoryEntry($err, HISTO_ERROR, "REVERROR");
             $this->commitPoint($point);
             return $err;
         }
@@ -4643,7 +4658,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($err == "") {
                 $comment = sprintf(_("remove state : %s") , $comment);
                 if ($revision) $err = $this->addRevision($comment);
-                else $err = $this->addComment($comment);
+                else $err = $this->addHistoryEntry($comment);
             }
         } else {
             
@@ -4658,7 +4673,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($err == "") {
                 $comment = sprintf(_("change state to %s : %s") , $state->title, $comment);
                 if ($revision) $err = $this->addRevision($comment);
-                else $err = $this->addComment($comment);
+                else $err = $this->addHistoryEntry($comment);
             }
         }
         return $err;
@@ -4899,7 +4914,7 @@ create unique index i_docir on doc(initid, revision);";
                     "profid"
                 ) , true);
                 if (!$err) {
-                    $this->addComment(sprintf(_("Archiving into %s") , $archive->getTitle()) , HISTO_MESSAGE, "ARCHIVE");
+                    $this->addHistoryEntry(sprintf(_("Archiving into %s") , $archive->getTitle()) , HISTO_MESSAGE, "ARCHIVE");
                     $this->addLog('archive', $archive->id, sprintf(_("Archiving into %s") , $archive->getTitle()));
                     $err = $this->exec_query(sprintf("update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1", $this->fromid, $archive->id, $archprof, $this->initid));
                 }
@@ -4933,7 +4948,7 @@ create unique index i_docir on doc(initid, revision);";
                     "profid"
                 ) , true);
                 if (!$err) {
-                    $this->addComment(sprintf(_("Unarchiving from %s") , $archive->getTitle()) , HISTO_MESSAGE, "UNARCHIVE");
+                    $this->addHistoryEntry(sprintf(_("Unarchiving from %s") , $archive->getTitle()) , HISTO_MESSAGE, "UNARCHIVE");
                     $this->addLog('unarchive', $archive->id, sprintf(_("Unarchiving from %s") , $archive->getTitle()));
                     $err = $this->exec_query(sprintf("update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1", $this->fromid, $this->initid));
                 }
@@ -5053,12 +5068,12 @@ create unique index i_docir on doc(initid, revision);";
                 //$err=$this->ControlUser($u->id,"edit");
                 //if ($err != "") $err=sprintf(_("Affectation aborded\n%s for user %s %s"),$err,$u->firstname,$u->lastname);
                 if ($err == "") {
-                    $this->addComment(sprintf(_("Affected to %s %s") , $u->firstname, $u->lastname));
+                    $this->addHistoryEntry(sprintf(_("Affected to %s %s") , $u->firstname, $u->lastname));
                     if ($comment) {
                         if ($revision) {
                             $this->addRevision(sprintf(_("Affected for %s") , $comment));
                         } else {
-                            $this->addComment(sprintf(_("Affected for %s") , $comment));
+                            $this->addHistoryEntry(sprintf(_("Affected for %s") , $comment));
                         }
                     }
                     $this->addLog('allocate', array(
@@ -5112,7 +5127,7 @@ create unique index i_docir on doc(initid, revision);";
                 if ($err == "") {
                     $this->delUTag($this->userid, "AFFECTED"); // TODO need delete all AFFECTED tag
                     if ($revision) $this->addRevision(sprintf(_("Unallocated of %s %s : %s") , $u->firstname, $u->lastname, $comment));
-                    else $this->addComment(sprintf(_("Unallocated of %s %s: %s") , $u->firstname, $u->lastname, $comment));
+                    else $this->addHistoryEntry(sprintf(_("Unallocated of %s %s: %s") , $u->firstname, $u->lastname, $comment));
                 }
             } else {
                 $err = _("user not know");
@@ -5456,7 +5471,7 @@ create unique index i_docir on doc(initid, revision);";
      * convert flat attribute value to an array for multiple attributes
      * @api convert flat attribute value to an array
      * @deprecated use instead {@Doc::rawValueToArray}
-     * @see rawValueToArray
+     * @see Doc::rawValueToArray
      * @param string $v value
      * @return array
      */
@@ -5482,7 +5497,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param array $v
      * @param string $br
      * @deprecated use {@link Doc::arrayToRawValue] instead
-     * @see arrayToRawValue
+     * @see Doc::arrayToRawValue
      * @return string
      */
     public static function _array2val($v, $br = '<BR>')
@@ -8201,7 +8216,7 @@ create unique index i_docir on doc(initid, revision);";
             $err = $timer->attachDocument($this, $origin, $execdate);
             if ($err == "") {
                 if ($dyn) $this->addATag("DYNTIMER");
-                $this->addComment(sprintf(_("attach timer %s [%d]") , $timer->title, $timer->id) , DocHisto::NOTICE);
+                $this->addHistoryEntry(sprintf(_("attach timer %s [%d]") , $timer->title, $timer->id) , DocHisto::NOTICE);
                 $this->addLog("attachtimer", array(
                     "timer" => $timer->id
                 ));
@@ -8222,7 +8237,7 @@ create unique index i_docir on doc(initid, revision);";
         if (method_exists($timer, 'unattachDocument')) {
             $err = $timer->unattachDocument($this);
             if ($err == "") {
-                $this->addComment(sprintf(_("unattach timer %s [%d]") , $timer->title, $timer->id) , DocHisto::NOTICE);
+                $this->addHistoryEntry(sprintf(_("unattach timer %s [%d]") , $timer->title, $timer->id) , DocHisto::NOTICE);
                 $this->addLog("unattachtimer", array(
                     "timer" => $timer->id
                 ));
@@ -8263,8 +8278,8 @@ create unique index i_docir on doc(initid, revision);";
         $c = 0;
         $err = $timer->unattachAllDocument($this, $origin, $c);
         if ($err == "" && $c > 0) {
-            if ($origin) $this->addComment(sprintf(_("unattach %d timers associated to %s") , $c, $origin->title) , DocHisto::NOTICE);
-            else $this->addComment(sprintf(_("unattach all timers [%s]") , $c) , DocHisto::NOTICE);
+            if ($origin) $this->addHistoryEntry(sprintf(_("unattach %d timers associated to %s") , $c, $origin->title) , DocHisto::NOTICE);
+            else $this->addHistoryEntry(sprintf(_("unattach all timers [%s]") , $c) , DocHisto::NOTICE);
             $this->addLog("unattachtimer", array(
                 "timer" => "all",
                 "number" => $c

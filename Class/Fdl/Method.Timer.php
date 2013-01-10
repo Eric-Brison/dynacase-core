@@ -200,7 +200,7 @@ class _TIMER extends Doc
                                     $tm = new_doc($this->dbaccess, $idmail);
                                     if ($tm->isAlive()) {
                                         $msg = sprintf(_("send mail with template %s [%d]") , $tm->title, $tm->id);
-                                        $doc->addComment(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
+                                        $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
                                         $err = $tm->sendDocument($doc);
                                         $tmsg[] = $msg;
                                     }
@@ -209,14 +209,14 @@ class _TIMER extends Doc
 
                             case "state":
                                 $msg = sprintf(_("change state to %s") , _($va));
-                                $doc->addComment(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
+                                $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
                                 $err = $doc->setState($va);
                                 $tmsg[] = $msg;
                                 break;
 
                             case "method":
                                 $msg = sprintf(_("apply method %s") , $va);
-                                $doc->addComment(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
+                                $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
                                 $err = $doc->applyMethod($va);
                                 $tmsg[] = $msg;
                                 break;
@@ -224,7 +224,7 @@ class _TIMER extends Doc
                         
                         if ($err) {
                             $gerr.= "$err\n";
-                            $doc->addComment(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $err) , HISTO_ERROR);
+                            $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $err) , HISTO_ERROR);
                         }
                     }
                 }

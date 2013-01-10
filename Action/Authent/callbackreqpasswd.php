@@ -79,7 +79,7 @@ function callbackreqpasswd(Action & $action)
                     $u->password_new = $pwd1;
                     $err = $u->modify();
                     if ($err == "") {
-                        $udoc->addComment(_("Change password by token"));
+                        $udoc->addHistoryEntry(_("Change password by token"));
                     }
                     // Delete the token in the database
                     $err = $utok->delete();

@@ -902,7 +902,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                                 $err = $psrc->delFile($srcid);
                                 if ($err == "") {
                                     
-                                    $src->addComment(sprintf(_("Move file from %s to %s") , ($psrc->title) , ($ppdest->title)));
+                                    $src->addHistoryEntry(sprintf(_("Move file from %s to %s") , ($psrc->title) , ($ppdest->title)));
                                     $query = "DELETE FROM dav.properties WHERE path = '$psource'";
                                 }
                             }
@@ -935,7 +935,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                         if ($psrc->isAlive()) {
                             $err = $psrc->delFile($srcid);
                             if ($err == "") {
-                                $src->addComment(sprintf(_("Move file from %s to %s") , ($psrc->title) , ($ppdest->title)));
+                                $src->addHistoryEntry(sprintf(_("Move file from %s to %s") , ($psrc->title) , ($ppdest->title)));
                                 $query = sprintf("DELETE FROM dav.properties WHERE path = '%s'", pg_escape_string($psource));
                                 pg_query($this->db_res, $query);
                             }
@@ -959,7 +959,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                                     
                                     $vf = newFreeVaultFile($this->db_freedom);
                                     $vf->Rename($afile["vid"], $bdest);
-                                    $src->addComment(sprintf(_("Rename file as %s") , $bdest));
+                                    $src->addHistoryEntry(sprintf(_("Rename file as %s") , $bdest));
                                     $src->postModify();
                                     $err = $src->modify();
                                 }
@@ -1058,7 +1058,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                     $vid = $reg[2];
                     
                     $vf->Rename($vid, $bdest);
-                    $copy->addComment(sprintf(_("Rename file as %s") , $bdest));
+                    $copy->addHistoryEntry(sprintf(_("Rename file as %s") , $bdest));
                     $copy->postModify();
                     $err = $copy->modify();
                 }

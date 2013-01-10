@@ -59,9 +59,9 @@ function modacl(Action & $action)
             }
         }
         
-        $doc->addComment(sprintf(_("Change control for %s user. Set %s privileges") , Account::getDisplayName($userid) , implode(', ', $aclName)));
+        $doc->addHistoryEntry(sprintf(_("Change control for %s user. Set %s privileges") , Account::getDisplayName($userid) , implode(', ', $aclName)));
     } else {
-        $doc->addComment(sprintf(_("Change control for %s user. No one privilege") , Account::getDisplayName($userid)));
+        $doc->addHistoryEntry(sprintf(_("Change control for %s user. No one privilege") , Account::getDisplayName($userid)));
     }
     redirect($action, "FREEDOM", sprintf("FREEDOM_ACCESS&userid=%d&id=%d", $userid, $docid));
 }

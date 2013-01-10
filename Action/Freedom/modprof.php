@@ -58,13 +58,13 @@ function modprof(&$action)
     if ($createp) {
         // change creation profile
         if ($doc->cprofid != $profid) {
-            $doc->AddComment(sprintf(_("Change creation profil to %s [%d]") , $doc->getTitle($profid) , $profid));
+            $doc->addHistoryEntry(sprintf(_("Change creation profil to %s [%d]") , $doc->getTitle($profid) , $profid));
             $doc->cprofid = $profid; // new creation profile access
             
         }
         if ($doc->ccvid != $cvid) {
             $doc->ccvid = $cvid; //  default control view for creation
-            $doc->AddComment(sprintf(_("Change creation view control to %s [%d]") , $doc->getTitle($cvid) , $cvid));
+            $doc->addHistoryEntry(sprintf(_("Change creation view control to %s [%d]") , $doc->getTitle($cvid) , $cvid));
         }
     } else {
         
@@ -72,8 +72,8 @@ function modprof(&$action)
             // unset control
             $doc->UnsetControl();
         }
-        if ($doc->profid != $profid) $doc->AddComment(sprintf(_("Change profil to %s [%d]") , $doc->getTitle($profid) , $profid));
-        if ($doc->cvid != $cvid) $doc->AddComment(sprintf(_("Change view control  to %s [%d]") , $doc->getTitle($cvid) , $cvid));
+        if ($doc->profid != $profid) $doc->addHistoryEntry(sprintf(_("Change profil to %s [%d]") , $doc->getTitle($profid) , $profid));
+        if ($doc->cvid != $cvid) $doc->addHistoryEntry(sprintf(_("Change view control  to %s [%d]") , $doc->getTitle($cvid) , $cvid));
         $doc->setProfil($profid); // change profile
         $doc->setCvid($cvid); // change view control
         // specific control
