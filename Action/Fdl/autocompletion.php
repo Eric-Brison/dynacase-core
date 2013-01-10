@@ -155,7 +155,7 @@ function autocompletion(Action & $action)
                 $oattr->phpfunc = $phpfunc;
             }
         }
-        $oattr->phpfunc = preg_replace('/([\s|,|:|\(])CT\[([^]]+)\]/e', "'\\1'.$linkprefix.strtolower('\\2')", $oattr->phpfunc);
+        $oattr->phpfunc = preg_replace('/([\s|,|:|\(])CT\[([^]]+)\]/e', "'\\1'.'$linkprefix'.strtolower('\\2')", $oattr->phpfunc);
         
         $res = getResPhpFunc($doc, $oattr, $rargids, $tselect, $tval, true, $index);
         if (!is_array($res)) {
