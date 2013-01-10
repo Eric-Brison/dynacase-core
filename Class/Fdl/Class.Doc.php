@@ -2995,7 +2995,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $idAttr identifier of array attribute
      * @return string error message, if no error empty string
      */
-    final public function deleteArray($idAttr)
+    final public function clearArrayValues($idAttr)
     {
         $old_setValueCompleteArrayRow = $this->_setValueCompleteArrayRow;
         $this->_setValueCompleteArrayRow = false;
@@ -3013,6 +3013,21 @@ create unique index i_docir on doc(initid, revision);";
         }
         $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
         return sprintf(_("%s is not an array attribute") , $idAttr);
+    }
+    /**
+     * delete all attributes values of an array
+     *
+     * the attribute must be an array type
+     * @api delete all attributes values of an array
+     * @param string $idAttr identifier of array attribute
+     * @deprecated use {@link clearArrayValues] instead
+     * @see clearArrayValues
+     * @return string error message, if no error empty string
+     */
+    final public function deleteArray($idAttr)
+    {
+        deprecatedFunction();
+        return $this->clearArrayValues($idAttr);
     }
     /**
      * affect value for $attrid attribute

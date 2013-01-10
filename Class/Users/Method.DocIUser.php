@@ -208,10 +208,10 @@ class _IUSER extends Doc implements IMailRecipient
                         $gt->select($gid);
                         $tgid[] = $gt->fid;
                     }
-                    $this->deleteArray("us_groups");
+                    $this->clearArrayValues("us_groups");
                     $this->SetValue("us_idgroup", $tgid);
                 } else {
-                    $this->deleteArray("us_groups");
+                    $this->clearArrayValues("us_groups");
                 }
                 $err = $this->modify();
             } else {
@@ -374,7 +374,7 @@ class _IUSER extends Doc implements IMailRecipient
     public function preEdition()
     {
         $allRoles = $this->getAValues("us_t_roles");
-        $this->deleteArray("us_t_roles");
+        $this->clearArrayValues("us_t_roles");
         // get direct system role ids
         $roles = array();
         foreach ($allRoles as $arole) {
@@ -397,7 +397,7 @@ class _IUSER extends Doc implements IMailRecipient
             else $allGroup[] = $aParent;
         }
         
-        $this->deleteArray("us_t_roles");
+        $this->clearArrayValues("us_t_roles");
         foreach ($allRoles as $role) {
             if (in_array($role["id"], $directRoleIds)) {
                 $group = '';
