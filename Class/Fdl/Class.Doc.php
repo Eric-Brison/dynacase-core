@@ -5424,12 +5424,11 @@ create unique index i_docir on doc(initid, revision);";
                     $efile = "FDL/geticon.php?vaultid=" . $reg[2] . "&mimetype=" . $reg[1];
                 }
             } else {
-                $efile = $action->parent->GetImageUrl($idicon, true, $size);
+                $efile = $action->parent->getImageLink($idicon, true, $size);
             }
             return $efile;
         } else {
-            
-            return $action->GetImageUrl("doc.png", true, $size);
+            return $action->parent->getImageLink("doc.png", true, $size);
         }
     }
     /**
@@ -8086,19 +8085,19 @@ create unique index i_docir on doc(initid, revision);";
          * @var Action $action
          */
         global $action;
-        if ($this->confidential > 0) return $action->getImageUrl("confidential.gif", true, $size);
-        else if ($this->locked == - 1) return $action->getImageUrl("revised.png", true, $size);
+        if ($this->confidential > 0) return $action->parent->getImageLink("confidential.gif", true, $size);
+        else if ($this->locked == - 1) return $action->parent->getImageLink("revised.png", true, $size);
         else if ($this->lockdomainid > 0) {
             if ($this->locked > 0) {
-                if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockorange.png", true, $size);
-                else return $action->getImageUrl("lockred.png", true, $size);
-            } else return $action->getImageUrl("lockorange.png", true, $size);
-        } else if ($this->allocated == $this->userid) return $action->getImageUrl("lockblue.png", true, $size);
-        else if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockgreen.png", true, $size);
-        else if ($this->locked != 0) return $action->getImageUrl("lockred.png", true, $size);
-        else if ($this->archiveid != 0) return $action->getImageUrl("archive.png", true, $size);
-        else if ($this->control("edit") != "") return $action->getImageUrl("nowrite.png", true, $size);
-        else return $action->getImageUrl("1x1.gif");
+                if ((abs($this->locked) == $this->userid)) return $action->parent->getImageLink("lockorange.png", true, $size);
+                else return $action->parent->getImageLink("lockred.png", true, $size);
+            } else return $action->parent->getImageLink("lockorange.png", true, $size);
+        } else if ($this->allocated == $this->userid) return $action->parent->getImageLink("lockblue.png", true, $size);
+        else if ((abs($this->locked) == $this->userid)) return $action->parent->getImageLink("lockgreen.png", true, $size);
+        else if ($this->locked != 0) return $action->parent->getImageLink("lockred.png", true, $size);
+        else if ($this->archiveid != 0) return $action->parent->getImageLink("archive.png", true, $size);
+        else if ($this->control("edit") != "") return $action->parent->getImageLink("nowrite.png", true, $size);
+        else return $action->parent->getImageLink("1x1.gif");
     }
     /**
      * use only for paramRefresh in attribute definition of a family

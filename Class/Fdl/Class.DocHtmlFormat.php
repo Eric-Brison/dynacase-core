@@ -343,7 +343,7 @@ class DocHtmlFormat
                 $htmlval = $action->GetParam("CORE_BASEURL") . "app=FDL" . "&action=EXPORTFILE$opt&cache=no&vid=$vid&docid=" . $this->doc->id . "&attrid=" . $this->oattr->id . "&index=$idx"; // upload name
                 
             } else {
-                $htmlval = $action->GetImageUrl($avalue);
+                $htmlval = $action->parent->getImageLink($avalue);
             }
         }
         return $htmlval;

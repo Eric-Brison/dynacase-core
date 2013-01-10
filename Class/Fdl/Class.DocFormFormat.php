@@ -475,7 +475,7 @@ class DocFormFormat
                 global $action;
                 if ($value) {
                     $fname = "<img id=\"img_{$this->attridk}\" style=\"vertical-align:bottom;width:30px\" SRC=\"";
-                    $fname.= $action->getImageUrl($value);
+                    $fname.= $action->parent->getImageLink($value);
                     $fname.= "\">";
                 } else {
                     

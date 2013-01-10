@@ -377,9 +377,9 @@ class Layout
     protected function ParseRef(&$out)
     {
         if (!$this->action) return;
-        $out = preg_replace("/\[IMG:([^\|\]]+)\|([0-9]+)\]/e", "\$this->action->GetImageUrl('\\1',true,'\\2')", $out);
+        $out = preg_replace("/\[IMG:([^\|\]]+)\|([0-9]+)\]/e", "\$this->action->parent->getImageLink('\\1',true,'\\2')", $out);
         
-        $out = preg_replace("/\[IMG:([^\]\|]+)\]/e", "\$this->action->GetImageUrl('\\1')", $out);
+        $out = preg_replace("/\[IMG:([^\]\|]+)\]/e", "\$this->action->parent->getImageLink('\\1')", $out);
         
         $out = preg_replace("/\[IMGF:([^\]]*)\]/e", "\$this->action->GetFilteredImageUrl('\\1')", $out);
         

@@ -190,7 +190,7 @@ $famid = "") // folder containt special fam id
             $tdoc[$k]["divid"] = $kdiv;
             
             $tdoc[$k]["locked"] = "";
-            $tdoc[$k]["emblem"] = $action->GetImageUrl("1x1.png");
+            $tdoc[$k]["emblem"] = $action->parent->getImageLink("1x1.png");
             $tdoc[$k]["emblemt"] = "";
             $tdoc[$k]["emblemw"] = "0";
             $tdoc[$k]["canedit"] = 1;
