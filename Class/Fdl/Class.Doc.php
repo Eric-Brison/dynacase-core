@@ -2623,7 +2623,7 @@ create unique index i_docir on doc(initid, revision);";
      * @api hook called when document is created in database
      * @return string error message
      */
-    function PostCreated()
+    function postCreated()
     {
         // to be defined in child class
         return "";
@@ -2634,7 +2634,7 @@ create unique index i_docir on doc(initid, revision);";
      * @api hook called before document is created in database
      * @return string error message
      */
-    function PreCreated()
+    function preCreated()
     {
         // to be defined in child class
         return "";
