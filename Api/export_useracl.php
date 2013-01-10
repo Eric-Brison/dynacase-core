@@ -24,7 +24,7 @@ include_once ("Lib.Http.php");
 include_once ("ACCESS/download.php");
 
 $usage = new ApiUsage();
-$usage->setText("Export USER login and acl");
+$usage->setDefinitionText("Export USER login and acl");
 $usage->verify();
 // use ACCESS because of its own Layout
 $appl = new Application();

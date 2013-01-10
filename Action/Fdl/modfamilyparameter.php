@@ -14,10 +14,10 @@ function modfamilyparameter(Action & $action)
 {
     
     $usage = new ActionUsage($action);
-    $famid = $usage->addNeeded("famid", "family id");
-    $attrid = $usage->addNeeded("attrid", "attribute id");
-    $value = $usage->addOption("value", "value in field");
-    $usage->strict();
+    $famid = $usage->addNeededParameter("famid", "family id");
+    $attrid = $usage->addNeededParameter("attrid", "attribute id");
+    $value = $usage->addOptionnalParameter("value", "value in field");
+    $usage->setStrictMode();
     $usage->verify();
     
     header('Content-type: text/xml; charset=utf-8');

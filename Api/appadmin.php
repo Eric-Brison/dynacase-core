@@ -22,9 +22,9 @@ include_once ("Class.Application.php");
 global $action;
 
 $usage = new ApiUsage();
-$usage->setText("Manage application");
-$appname = $usage->addNeeded("appname", "application name");
-$method = $usage->addOption("method", "action to do", array(
+$usage->setDefinitionText("Manage application");
+$appname = $usage->addNeededParameter("appname", "application name");
+$method = $usage->addOptionnalParameter("method", "action to do", array(
     "init",
     "update",
     "reinit",

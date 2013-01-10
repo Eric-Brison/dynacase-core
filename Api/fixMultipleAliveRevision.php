@@ -8,7 +8,7 @@
 include_once ('FDL/freedom_util.php');
 
 $usage = new ApiUsage();
-$usage->setText("Fixed multiple alive revision problem");
+$usage->setDefinitionText("Fixed multiple alive revision problem");
 $usage->verify();
 
 $dbaccess = GetParam("FREEDOM_DB");

@@ -28,12 +28,12 @@ function ckimage(Action & $action)
     
     $usage = new ActionUsage($action);
     /* Internal numFunc */
-    $numFunc = $usage->addNeeded("CKEditorFuncNum", "CKEditorFuncNum");
+    $numFunc = $usage->addNeededParameter("CKEditorFuncNum", "CKEditorFuncNum");
     
-    $startpage = $usage->addOption("page", "pageNumber", array() , "0");
-    $key = $usage->addOption("key", "key", array() , "");
+    $startpage = $usage->addOptionnalParameter("page", "pageNumber", array() , "0");
+    $key = $usage->addOptionnalParameter("key", "key", array() , "");
     
-    $usage->strict(false);
+    $usage->setStrictMode(false);
     
     $usage->verify();
     

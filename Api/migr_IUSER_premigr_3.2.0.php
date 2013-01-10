@@ -15,8 +15,8 @@ if ($dbaccess == "") {
 }
 
 $usage = new ApiUsage();
-$usage->setText("Migrate IUSERS from dynacase 3.1 to 3.2");
-$dryrun = $usage->addEmpty('dry-run', 'Dry-run mode');
+$usage->setDefinitionText("Migrate IUSERS from dynacase 3.1 to 3.2");
+$dryrun = $usage->addEmptyParameter('dry-run', 'Dry-run mode');
 $usage->verify();
 
 $sqlList = array(

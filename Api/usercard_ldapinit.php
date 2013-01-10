@@ -26,11 +26,9 @@ global $action;
 
 $usage = new ApiUsage();
 
-$usage->setText("Initiate LDAP database");
-$clean = ($usage->addOption("clean", "clean database option", array(
-    "yes",
-    "no"
-) , "no") == "yes"); // clean databases option
+$usage->setDefinitionText("Initiate LDAP database");
+$clean = ($usage->addOptionnalParameter("clean", "clean database option", array("yes", "no"), "no") == "yes"); // clean databases option
+
 $usage->verify();
 
 $appl = new Application();

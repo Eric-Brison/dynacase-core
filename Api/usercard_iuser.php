@@ -31,10 +31,10 @@ if ($dbaccess == "") {
 
 $usage = new ApiUsage();
 
-$usage->setText("Update usercard");
-$whatid = $usage->addOption("whatid", "document"); // document
-$fbar = $usage->addOption("bar", "for progress bar"); // for progress bar
-$onlygroup = ($usage->addOption("onlygroup", "for progress bar") != ""); // for progress bar
+$usage->setDefinitionText("Update usercard");
+$whatid = $usage->addOptionnalParameter("whatid", "document"); // document
+$fbar = $usage->addOptionnalParameter("bar", "for progress bar"); // for progress bar
+$onlygroup = ($usage->addOptionnalParameter("onlygroup", "for progress bar") != ""); // for progress bar
 $usage->verify();
 
 $query = new QueryDb("", "Account");

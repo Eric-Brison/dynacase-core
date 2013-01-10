@@ -21,8 +21,8 @@ include_once ("FDL/Class.DocFam.php");
 
 $usage = new ApiUsage();
 
-$usage->setText("Adding key to doc");
-$docid = $usage->addOption("docid", "special docid", null, 0);
+$usage->setDefinitionText("Adding key to doc");
+$docid = $usage->addOptionnalParameter("docid", "special docid", null, 0);
 
 $usage->verify();
 

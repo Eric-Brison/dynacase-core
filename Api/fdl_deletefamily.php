@@ -21,9 +21,9 @@ include_once ("FDL/Lib.Attr.php");
 include_once ("FDL/Class.DocFam.php");
 
 $usage = new ApiUsage();
-$usage->setText("Delete family document and its documents");
-$docid = $usage->addNeeded("famid", "special docid");
-$force = ($usage->addOption("force", "force", null, "yes") == "yes") ? true : false;
+$usage->setDefinitionText("Delete family document and its documents");
+$docid = $usage->addNeededParameter("famid", "special docid");
+$force = ($usage->addOptionnalParameter("force", "force", null, "yes") == "yes") ? true : false;
 $usage->verify();
 
 $appl = new Application();

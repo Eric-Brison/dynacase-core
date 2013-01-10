@@ -39,7 +39,7 @@ function report_export_csv(Action & $action)
     $usage = new ActionUsage($action);
     $defaultDocArg = array();
     
-    $id = $usage->addNeeded("id", "the id of the report");
+    $id = $usage->addNeededParameter("id", "the id of the report");
     $currentDoc = null;
     if ($id != "") {
         $currentDoc = new_Doc($dbaccess, $id);
@@ -47,37 +47,37 @@ function report_export_csv(Action & $action)
         if ($currentUserTag) $defaultDocArg = json_decode($currentUserTag->comment, true);
     }
     
-    $csvTmpFile = $usage->addHidden("csvDownloadFile", "tmp file to download");
-    $expVarName = $usage->addHidden("exportId", "expert ident");
-    $statusOnly = $usage->addHidden("statusOnly", "get status only");
+    $csvTmpFile = $usage->addHiddenParameter("csvDownloadFile", "tmp file to download");
+    $expVarName = $usage->addHiddenParameter("exportId", "expert ident");
+    $statusOnly = $usage->addHiddenParameter("statusOnly", "get status only");
     
-    $refresh = $usage->addOption("refresh", "would you refresh doc before build report", array(
+    $refresh = $usage->addOptionnalParameter("refresh", "would you refresh doc before build report", array(
         "TRUE",
         "FALSE"
     ) , "FALSE");
     
     $default = isset($defaultDocArg["kind"]) ? $defaultDocArg["kind"] : 'simple';
-    $kind = $usage->addOption("kind", "the kind of report", array(
+    $kind = $usage->addOptionnalParameter("kind", "the kind of report", array(
         "simple",
         "pivot"
     ) , $default);
     $default = isset($defaultDocArg["pivot"]) ? $defaultDocArg["pivot"] : 'id';
-    $pivot = $usage->addOption("pivot", "the pivot attr", array() , $default);
+    $pivot = $usage->addOptionnalParameter("pivot", "the pivot attr", array() , $default);
     
     $default = isset($defaultDocArg["stripHtmlTag"]) ? $defaultDocArg["stripHtmlTag"] : false;
-    $applyHtmlStrip = $usage->addOption("stripHtmlTag", "strip html tags", array() , $default);
+    $applyHtmlStrip = $usage->addOptionnalParameter("stripHtmlTag", "strip html tags", array() , $default);
     $applyHtmlStrip = ($applyHtmlStrip != "1");
     
     $default = isset($defaultArgument["delimiter"]) ? $defaultArgument["delimiter"] : ';';
-    $argumentsCSV["delimiter"] = $usage->addOption("delimiter", "the CSV delimiter", array() , $default);
+    $argumentsCSV["delimiter"] = $usage->addOptionnalParameter("delimiter", "the CSV delimiter", array() , $default);
     $default = isset($defaultArgument["enclosure"]) ? $defaultArgument["enclosure"] : '"';
-    $argumentsCSV["enclosure"] = $usage->addOption("enclosure", "the CSV enclosure", array() , $default);
+    $argumentsCSV["enclosure"] = $usage->addOptionnalParameter("enclosure", "the CSV enclosure", array() , $default);
     $default = isset($defaultArgument["encoding"]) ? $defaultArgument["encoding"] : 'ISO-8859-15//TRANSLIT';
-    $argumentsCSV["encoding"] = $usage->addOption("encoding", "the CSV encoding", array() , $default);
+    $argumentsCSV["encoding"] = $usage->addOptionnalParameter("encoding", "the CSV encoding", array() , $default);
     $default = isset($defaultArgument["decimalSeparator"]) ? $defaultArgument["decimalSeparator"] : '.';
-    $argumentsCSV["decimalSeparator"] = $usage->addOption("decimalSeparator", "the decimalSeparator", array() , $default);
+    $argumentsCSV["decimalSeparator"] = $usage->addOptionnalParameter("decimalSeparator", "the decimalSeparator", array() , $default);
     $default = isset($defaultArgument["dateFormat"]) ? $defaultArgument["dateFormat"] : 'US';
-    $argumentsCSV["dateFormat"] = $usage->addOption("dateFormat", "the dateFormat", array(
+    $argumentsCSV["dateFormat"] = $usage->addOptionnalParameter("dateFormat", "the dateFormat", array(
         'US',
         'FR',
         'ISO'
@@ -86,7 +86,7 @@ function report_export_csv(Action & $action)
     $displayForm = $usage->addHidden("displayForm", "");
     $updateDefault = $usage->addHidden("updateDefault", "");
     
-    $usage->strict(false);
+    $usage->setStrictMode(false);
     $usage->verify();
     
     $usageArguments = array(

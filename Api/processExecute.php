@@ -22,7 +22,7 @@ include_once ("FDL/Class.DocTimer.php");
 include_once ("FDL/Class.SearchDoc.php");
 
 $usage = new ApiUsage();
-$usage->setText("Execute Dynacase Processes when needed");
+$usage->setDefinitionText("Execute Dynacase Processes when needed");
 $usage->verify();
 
 $appl = new Application();

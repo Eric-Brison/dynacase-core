@@ -22,29 +22,29 @@ include_once ("FDL/import_file.php");
 include_once ("FREEDOM/freedom_import.php");
 
 $usage = new ApiUsage();
-$usage->setText("Import documents from description file");
-$filename = $usage->addNeeded("file", "the description file path");
-$analyze = $usage->addOption("analyze", "analyze only", array(
+$usage->setDefinitionText("Import documents from description file");
+$filename = $usage->addNeededParameter("file", "the description file path");
+$analyze = $usage->addOptionnalParameter("analyze", "analyze only", array(
     "yes",
     "no"
 ) , "no");
-$archive = $usage->addOption("archive", "description file is an standard archive (not xml)", array(
+$archive = $usage->addOptionnalParameter("archive", "description file is an standard archive (not xml)", array(
     "yes",
     "no"
 ) , "no");
-$logfile = $usage->addOption("log", "log file output");
-$htmlmode = $usage->addOption("htmlmode", "analyze report mode in html", array(
+$logfile = $usage->addOptionnalParameter("log", "log file output");
+$htmlmode = $usage->addOptionnalParameter("htmlmode", "analyze report mode in html", array(
     "yes",
     "no"
 ) , "yes");
-$reinit = $usage->addOption("reinitattr", "reset attribute before import family update", array(
+$reinit = $usage->addOptionnalParameter("reinitattr", "reset attribute before import family update", array(
     "yes",
     "no"
 ));
-$to = $usage->addOption("to", "email address to send report");
-$dirid = $usage->addOption("dir", "folder where imported documents are put");
+$to = $usage->addOptionnalParameter("to", "email address to send report");
+$dirid = $usage->addOptionnalParameter("dir", "folder where imported documents are put");
 
-$strict = $usage->addOption("strict", "don't import if one error detected", array(
+$strict = $usage->addOptionnalParameter("strict", "don't import if one error detected", array(
     "yes",
     "no"
 ) , "yes");

@@ -17,14 +17,14 @@ function editapplicationparameter(Action & $action)
 {
     
     $usage = new ActionUsage($action);
-    $parameterid = $usage->addNeeded("parameterId", _("Parameter's id"));
-    $appid = $usage->addOption("appId", _("Application Id"));
-    $default = $usage->addOption("emptyValue", _("value for empty field"));
-    $value = $usage->addOption("value", _("value in field"));
-    $onChange = $usage->addOption("submitOnChange", _("Sending input on change?"));
-    $localSubmit = $usage->addOption("localSubmit", _("Adding button to submit")) == "yes" ? true : false;
-    $submitLabel = $usage->addOption("submitLabel", _("Label of submit button") , array() , _("Submit"));
-    $usage->strict();
+    $parameterid = $usage->addNeededParameter("parameterId", _("Parameter's id"));
+    $appid = $usage->addOptionnalParameter("appId", _("Application Id"));
+    $default = $usage->addOptionnalParameter("emptyValue", _("value for empty field"));
+    $value = $usage->addOptionnalParameter("value", _("value in field"));
+    $onChange = $usage->addOptionnalParameter("submitOnChange", _("Sending input on change?"));
+    $localSubmit = $usage->addOptionnalParameter("localSubmit", _("Adding button to submit")) == "yes" ? true : false;
+    $submitLabel = $usage->addOptionnalParameter("submitLabel", _("Label of submit button") , array() , _("Submit"));
+    $usage->setStrictMode();
     $usage->verify();
     
     $action->lay->set("parameterid", $parameterid);

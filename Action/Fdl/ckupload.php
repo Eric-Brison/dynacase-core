@@ -28,9 +28,9 @@ function ckupload(Action & $action)
     
     $usage = new ActionUsage($action);
     /* Internal numFunc */
-    $funcNum = $usage->addNeeded("CKEditorFuncNum", "CKEditorFuncNum");
+    $funcNum = $usage->addNeededParameter("CKEditorFuncNum", "CKEditorFuncNum");
     
-    $usage->strict(false);
+    $usage->setStrictMode(false);
     
     $usage->verify();
     

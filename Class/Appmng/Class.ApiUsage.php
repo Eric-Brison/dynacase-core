@@ -11,19 +11,19 @@ namespace {
      * @class ApiUsage
      * @brief Verify arguments for wsh programs
      * @code
-     $usage = new ApiUsage();
-     $usage->setText("Refresh documents ");
-     $usage->addNeeded("famid", "the family filter");
-     $usage->addOption("revision", "use all revision - default is no", array(
-     "yes",
-     "no"
-     ));
-     $usage->addOption("save", "use modify default is light", array(
-     "complete",
-     "light",
-     "none"
-     ));
-     $usage->verify();
+    $usage = new ApiUsage();
+    $usage->setText("Refresh documents ");
+    $usage->addNeeded("famid", "the family filter");
+    $usage->addOption("revision", "use all revision - default is no", array(
+    "yes",
+    "no"
+    ));
+    $usage->addOption("save", "use modify default is light", array(
+    "complete",
+    "light",
+    "none"
+    ));
+    $usage->verify();
      * @endcode
      */
     class ApiUsage
@@ -77,6 +77,7 @@ namespace {
          * @var boolean
          */
         protected $useException = false;
+
         /**
          * init action
          */
@@ -84,10 +85,24 @@ namespace {
         {
             global $action;
             $this->action = & $action;
-            $this->addHidden("api", "api file to use");
-            $this->addOption('userid', "user system id or login name to execute function - default is (admin)", array() , 1);
-            $this->addEmpty('help', "Show usage");
+            $this->addHiddenParameter("api", "api file to use");
+            $this->addOptionnalParameter('userid', "user system id or login name to execute function - default is (admin)", array(), 1);
+            $this->addEmptyParameter('help', "Show usage");
         }
+
+        /**
+         * add textual definition of program
+         *
+         * @param string $text usage text
+         *
+         * @return void setText
+         */
+        public function setText($text)
+        {
+            deprecatedFunction();
+            $this->setDefinitionText($text);
+        }
+
         /**
          * add textual definition of program
          *
@@ -95,12 +110,17 @@ namespace {
          *
          * @return void
          */
-        public function setText($text)
+        public function setDefinitionText($text)
         {
             $this->text = $text;
         }
+
         /**
          * add hidden argument (private arg not see them in usage)
+         *
+         * @see ApiUsage::addHiddenParameter
+         *
+         * @deprecated use { @link Application::addHiddenParameter } instead
          *
          * @param string $argName argument name
          * @param string $argDefinition argument définition
@@ -109,14 +129,35 @@ namespace {
          */
         public function addHidden($argName, $argDefinition)
         {
+            deprecatedFunction();
+            return $this->addHiddenParameter($argName, $argDefinition);
+        }
+
+        /**
+         * add hidden argument (private arg not see them in usage)
+         *
+         * @api add an empty parameter
+         *
+         * @param string $argName argument name
+         * @param string $argDefinition argument définition
+         *
+         * @return string argument value
+         */
+        public function addHiddenParameter($argName, $argDefinition)
+        {
             $this->hiddenArgs[] = array(
                 "name" => $argName,
                 "def" => $argDefinition
             );
             return $this->action->getArgument($argName);
         }
+
         /**
          * add needed argument
+         *
+         * @see ApiUsage::addNeededParameter
+         *
+         * @deprecated use { @link Application::addNeededParameter } instead
          *
          * @param string $argName argument name
          * @param string $argDefinition argument définition
@@ -126,6 +167,23 @@ namespace {
          */
         public function addNeeded($argName, $argDefinition, array $restriction = null)
         {
+            deprecatedFunction();
+            return $this->addNeededParameter($argName, $argDefinition, $restriction);
+        }
+
+        /**
+         * add needed argument
+         *
+         * @api add needed argument
+         *
+         * @param string $argName argument name
+         * @param string $argDefinition argument définition
+         * @param array $restriction optionnal enumeration for argument
+         *
+         * @return string argument value
+         */
+        public function addNeededParameter($argName, $argDefinition, array $restriction = null)
+        {
             $this->needArgs[] = array(
                 "name" => $argName,
                 "def" => $argDefinition,
@@ -134,9 +192,13 @@ namespace {
             );
             return $this->action->getArgument($argName);
         }
+
         /**
          * add optionnal argument
          *
+         * @see addOptionnalParameter::addOptionParameter
+         *
+         * @deprecated use { @link Application::addOptionParameter } instead
          * @param string $argName argument name
          * @param string $argDefinition argument définition
          * @param array $restriction optionnal enumeration for argument
@@ -146,6 +208,24 @@ namespace {
          */
         public function addOption($argName, $argDefinition, array $restriction = null, $default = null)
         {
+            deprecatedFunction();
+            return $this->addOptionnalParameter($argName, $argDefinition, $restriction, $default);
+        }
+
+        /**
+         * add optionnal argument
+         *
+         * @api add optionnal argument
+         *
+         * @param string $argName argument name
+         * @param string $argDefinition argument definition
+         * @param array $restriction optionnal enumeration for argument
+         * @param string $default default value if no value set
+         *
+         * @return string argument value
+         */
+        public function addOptionnalParameter($argName, $argDefinition, array $restriction = null, $default = null)
+        {
             $this->optArgs[] = array(
                 "name" => $argName,
                 "def" => $argDefinition,
@@ -154,8 +234,13 @@ namespace {
             );
             return $this->action->getArgument($argName, $default);
         }
+
         /**
          * add empty argument (argument with boolean value)
+         *
+         * @see ApiUsage::addEmptyParameter
+         *
+         * @deprecated use { @link Application::addEmptyParameter } instead
          *
          * @param string $argName argument name
          * @param string $argDefinition argument definition
@@ -163,6 +248,22 @@ namespace {
          * @return string argument value
          */
         public function addEmpty($argName, $argDefinition = "")
+        {
+            deprecatedFunction();
+            return $this->addEmptyParameter($argName, $argDefinition);
+        }
+
+        /**
+         * add empty argument (argument with boolean value)
+         *
+         * @api add empty argument (argument with boolean value)
+         *
+         * @param string $argName argument name
+         * @param string $argDefinition argument definition
+         *
+         * @return string argument value
+         */
+        public function addEmptyParameter($argName, $argDefinition = "")
         {
             $this->emptyArgs[] = array(
                 "name" => $argName,
@@ -172,6 +273,7 @@ namespace {
             );
             return $this->action->getArgument($argName, false);
         }
+
         /**
          * get usage for a specific argument
          *
@@ -193,11 +295,12 @@ namespace {
                     $default = sprintf(", default is '%s'", $arg["default"]);
                 }
                 $string = "\t--" . $arg["name"] . ($empty ? " (%s) " : "=<%s>");
-                
-                $usage.= sprintf("$string%s%s\n", $arg["def"], $res, $default);
+
+                $usage .= sprintf("$string%s%s\n", $arg["def"], $res, $default);
             }
             return $usage;
         }
+
         /**
          * return usage text for the action
          *
@@ -206,13 +309,14 @@ namespace {
         public function getUsage()
         {
             $usage = $this->text;
-            $usage.= "\nUsage :\n";
-            $usage.= $this->getArgumentText($this->needArgs);
-            $usage.= "   Options:\n";
-            $usage.= $this->getArgumentText($this->optArgs);
-            $usage.= $this->getArgumentText($this->emptyArgs, true);
+            $usage .= "\nUsage :\n";
+            $usage .= $this->getArgumentText($this->needArgs);
+            $usage .= "   Options:\n";
+            $usage .= $this->getArgumentText($this->optArgs);
+            $usage .= $this->getArgumentText($this->emptyArgs, true);
             return $usage;
         }
+
         /**
          * exit when error
          *
@@ -222,15 +326,15 @@ namespace {
          */
         public function exitError($error = '')
         {
-            if ($error != '') $error.= "\n";
+            if ($error != '') $error .= "\n";
             $usage = $this->getUsage();
-            
+
             if ((!$this->useException)) {
                 if (!empty($_SERVER['HTTP_HOST'])) {
                     $usage = str_replace('--', '&', $usage);
-                    $error.= '<pre>' . htmlspecialchars($usage) . '</pre>';
+                    $error .= '<pre>' . htmlspecialchars($usage) . '</pre>';
                 } else {
-                    $error.= $usage;
+                    $error .= $usage;
                 }
                 if ($this->action->getArgument("help") == true) {
                     throw new \Dcp\ApiUsage\Exception("CORE0003", $error, $usage);
@@ -241,6 +345,7 @@ namespace {
                 throw new \Dcp\ApiUsage\Exception("CORE0002", $error, $usage);
             }
         }
+
         /**
          * list hidden keys
          *
@@ -254,8 +359,13 @@ namespace {
             }
             return $keys;
         }
+
         /**
          * set strict mode
+         *
+         * @see ApiUsage::setStrictMode
+         *
+         * @deprecated use { @link Application::setStrictMode } instead
          *
          * @param boolean $strict strict mode
          * @brief if false additionnal arguments are ignored, default is true
@@ -264,8 +374,25 @@ namespace {
          */
         public function strict($strict = true)
         {
+            deprecatedFunction();
+            $this->setStrictMode($strict);
+        }
+
+        /**
+         * set strict mode
+         *
+         * @api set strict mode
+         *
+         * @param boolean $strict strict mode
+         * @brief if false additionnal arguments are ignored, default is true
+         *
+         * @return void
+         */
+        public function setStrictMode($strict = true)
+        {
             $this->strict = $strict;
         }
+
         /**
          * verify if wsh program argument are valids. If not wsh exit
          *
@@ -283,19 +410,19 @@ namespace {
                 $value = $this->action->getArgument($arg["name"]);
                 if ($value == '') {
                     $error = sprintf("argument '%s' expected\n", $arg["name"]);
-                    
+
                     $this->exitError($error);
                 }
             }
             $allArgs = array_merge($this->needArgs, $this->optArgs, $this->emptyArgs);
             $argsKey = $this->getHiddenKeys();
-            
+
             foreach ($allArgs as $arg) {
                 $value = $this->action->getArgument($arg["name"], null);
                 if ($value !== null && $arg["restriction"]) {
                     if (!in_array($value, $arg["restriction"])) {
                         $error = sprintf("argument '%s' must be one of these values : %s\n", $arg["name"], implode(", ", $arg["restriction"]));
-                        
+
                         $this->exitError($error);
                     }
                 }
@@ -305,7 +432,7 @@ namespace {
                 foreach ($_GET as $k => $v) {
                     if (!in_array($k, $argsKey)) {
                         $error = sprintf("argument '%s' is not defined\n", $k);
-                        
+
                         $this->exitError($error);
                     }
                 }
@@ -318,13 +445,13 @@ namespace Dcp\ApiUsage {
     class Exception extends \Dcp\Exception
     {
         private $usage = '';
-        
+
         public function __construct($code, $text, $usage = '')
         {
             parent::__construct($code, $text);
             $this->usage = $usage;
         }
-        
+
         public function getUsage()
         {
             if ($this->usage) return $this->usage;

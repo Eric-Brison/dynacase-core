@@ -174,9 +174,9 @@ function migrPerm()
 
 $usage = new ApiUsage();
 
-$usage->setText("Migrate sql base 2.0");
-$table = ($usage->addOption("table", "Migrate table?", array("yes", "no"), "no") == "yes"); //
-$perm = ($usage->addOption("perm", "Migrate permission", array("yes", "no"), "no") == "yes"); //
+$usage->setDefinitionText("Migrate sql base 2.0");
+$table = ($usage->addOptionnalParameter("table", "Migrate table?", array("yes", "no"), "no") == "yes"); //
+$perm = ($usage->addOptionnalParameter("perm", "Migrate permission", array("yes", "no"), "no") == "yes"); //
 
 $usage->verify();
 

@@ -32,32 +32,32 @@ include_once ("FDL/Class.WDoc.php");
 function view_workflow_graph(Action & $action)
 {
     $usage = new ActionUsage($action);
-    $usage->setText("Generate graph image for workflow");
-    $docid = $usage->addNeeded("id", "workflow id");
-    $type = $usage->addOption("type", "graph detail level", array(
+    $usage->setDefinitionText("Generate graph image for workflow");
+    $docid = $usage->addNeededParameter("id", "workflow id");
+    $type = $usage->addOptionnalParameter("type", "graph detail level", array(
         "justactivity",
         "simple",
         "activity",
         "complet",
         "cluster"
     ) , "justactivity");
-    $format = $usage->addOption("format", "image format", array(
+    $format = $usage->addOptionnalParameter("format", "image format", array(
         "png",
         "svg",
         "dot"
     ) , "png");
-    $orient = $usage->addOption("orient", "orientation", array(
+    $orient = $usage->addOptionnalParameter("orient", "orientation", array(
         "LR",
         "TB"
     ) , "LR");
-    $size = $usage->addOption("size", "image size", array() , "auto");
-    $ratio = $usage->addOption("ratio", "ration", array(
+    $size = $usage->addOptionnalParameter("size", "image size", array() , "auto");
+    $ratio = $usage->addOptionnalParameter("ratio", "ration", array(
         "fill",
         "compress",
         "auto",
         "expand"
     ) , "fill");
-    $tool = $usage->addOption("tool", "tool used to generate", array(
+    $tool = $usage->addOptionnalParameter("tool", "tool used to generate", array(
         "dot",
         "sfdp",
         "neato",

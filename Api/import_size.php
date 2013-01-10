@@ -26,7 +26,7 @@ global $action;
 
 $usage = new ApiUsage();
 
-$usage->setText("update list of available font style");
+$usage->setDefinitionText("update list of available font style");
 
 $usage->verify();
 

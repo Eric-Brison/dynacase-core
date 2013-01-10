@@ -23,10 +23,10 @@ include_once ('Class.Application.php');
 
 $usage = new ApiUsage();
 
-$usage->setText("Update the SQL structure of a table of a DbObj Object");
-$appclass = $usage->addOption('appc', "application class folder", null, 'WHAT');
-$class = $usage->addNeeded('class', 'Class name');
-$db = $usage->addOption('dbcoord', "Database name", null, getDbAccess());
+$usage->setDefinitionText("Update the SQL structure of a table of a DbObj Object");
+$appclass = $usage->addOptionnalParameter('appc', "application class folder", null, 'WHAT');
+$class = $usage->addNeededParameter('class', 'Class name');
+$db = $usage->addOptionnalParameter('dbcoord', "Database name", null, getDbAccess());
 
 $usage->verify();
 

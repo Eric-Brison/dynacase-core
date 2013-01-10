@@ -28,19 +28,19 @@ function freedom_gaccess(Action & $action)
     // Get all the params
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $usage = new ActionUsage($action);
-    $usage->strict(false);
-    $usage->setText("view or modify document accessibilities");
-    $docid = $usage->addNeeded("id", "document identifier to profil");
-    $gid = $usage->addOption("gid", "group identificator, view user access for this group");
-    $green = ($usage->addOption("allgreen", "view only up acl", array(
+    $usage->setStrictMode(false);
+    $usage->setDefinitionText("view or modify document accessibilities");
+    $docid = $usage->addNeededParameter("id", "document identifier to profil");
+    $gid = $usage->addOptionnalParameter("gid", "group identificator, view user access for this group");
+    $green = ($usage->addOptionnalParameter("allgreen", "view only up acl", array(
         "Y",
         "N"
     ) , "N") == "Y");
-    $viewgroup = ($usage->addOption("group", "view group", array(
+    $viewgroup = ($usage->addOptionnalParameter("group", "view group", array(
         "Y",
         "N"
     ) , "N") == "Y");
-    $limit = $usage->addOption("memberLimit", "when gid option is set, limit members to display", array() , 100);
+    $limit = $usage->addOptionnalParameter("memberLimit", "when gid option is set, limit members to display", array() , 100);
     $usage->verify();
     // edition of group accessibilities
     // ---------------------

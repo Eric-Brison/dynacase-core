@@ -23,12 +23,10 @@ include_once ("FDL/Lib.Usercard.php");
 
 $usage = new ApiUsage();
 
-$usage->setText("Refresh groups to recompute members and mail attributes");
-$force = $usage->addOption("force", "force a refresh", array(
-    "yes",
-    "no"
-)); // force a refresh if set to 'yes'
-$fbar = $usage->addOption("bar", "for progress bar"); // for progress bar
+$usage->setDefinitionText("Refresh groups to recompute members and mail attributes");
+$force = $usage->addOptionnalParameter("force", "force a refresh", array("yes", "no")); // force a refresh if set to 'yes'
+$fbar = $usage->addOptionnalParameter("bar", "for progress bar"); // for progress bar
+
 $usage->verify();
 
 $appl = new Application();

@@ -29,8 +29,8 @@ if ($dbaccess == "") {
     exit;
 }
 $usage = new ApiUsage();
-$usage->setText("Delete parameter values which are not real parameters");
-$verifyOnly=$usage->addEmpty("verify-only","only verify, do not changes");
+$usage->setDefinitionText("Delete parameter values which are not real parameters");
+$verifyOnly=$usage->addEmptyParameter("verify-only","only verify, do not changes");
 $usage->verify();
 /**
  * @var Action $action

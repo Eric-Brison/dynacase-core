@@ -22,8 +22,8 @@ global $action;
 
 $usage = new ApiUsage();
 
-$usage->setText("Clean base");
-$real = ($usage->addOption("real", "real (yes or no)") == "yes");
+$usage->setDefinitionText("Clean base");
+$real = ($usage->addOptionnalParameter("real", "real (yes or no)") == "yes");
 
 $usage->verify();
 

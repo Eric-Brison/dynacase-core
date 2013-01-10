@@ -25,7 +25,7 @@ include_once ('FDL/Class.Doc.php');
 include_once ('FDL/Class.DocVaultIndex.php');
 
 $usage = new ApiUsage();
-$usage->setText("Construct vault index database");
+$usage->setDefinitionText("Construct vault index database");
 $usage->verify();
 
 $appl = new Application();

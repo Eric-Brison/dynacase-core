@@ -23,8 +23,8 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.SearchDoc.php");
 
 $usage = new ApiUsage();
-$usage->setText("Init view privilege ");
-$accountOnly = $usage->addOption("reset-account", "reset account members of", array(
+$usage->setDefinitionText("Init view privilege ");
+$accountOnly = $usage->addOptionnalParameter("reset-account", "reset account members of", array(
     "yes",
     "no"
 ) , "no");

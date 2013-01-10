@@ -28,8 +28,8 @@ if ($dbaccess == "") {
     exit;
 }
 $usage = new ApiUsage();
-$usage->setText("Clean file name");
-$limitFamily = $usage->addOption("family", "Family to limit to", null, "");
+$usage->setDefinitionText("Clean file name");
+$limitFamily = $usage->addOptionnalParameter("family", "Family to limit to", null, "");
 
 $usage->verify();
 

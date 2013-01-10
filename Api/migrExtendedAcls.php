@@ -29,7 +29,7 @@ if ($dbaccess == "") {
     exit;
 }
 $usage = new ApiUsage();
-$usage->setText("Migrate old Acls for workflow and CV to extended acls");
+$usage->setDefinitionText("Migrate old Acls for workflow and CV to extended acls");
 $usage->verify();
 /**
  * @var Action $action

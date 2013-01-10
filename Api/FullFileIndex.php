@@ -26,8 +26,8 @@ define("STOPCOLOR", "\033" . '[0m');
 
 $usage = new ApiUsage();
 
-$usage->setText("Detect file which are not indexed and index them");
-$force = ($usage->addOption("force", "force (yes or no)") == "yes");
+$usage->setDefinitionText("Detect file which are not indexed and index them");
+$force = ($usage->addOptionnalParameter("force", "force (yes or no)") == "yes");
 
 $usage->verify();
 

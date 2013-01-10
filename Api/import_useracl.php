@@ -25,8 +25,8 @@ include_once ("ACCESS/upload.php");
 
 $usage = new ApiUsage();
 
-$usage->setText("import USER login and acl");
-$filename = $usage->addNeeded("filename", "File name");
+$usage->setDefinitionText("import USER login and acl");
+$filename = $usage->addNeededParameter("filename", "File name");
 
 $usage->verify();
 

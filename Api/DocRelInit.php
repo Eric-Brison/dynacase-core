@@ -30,9 +30,9 @@ if (!is_object($o)) {
  */
 $parms = array();
 $usage = new ApiUsage();
-$usage->setText("Re-initialize docrel table");
+$usage->setDefinitionText("Re-initialize docrel table");
 /* --dryrun=no|yes (default 'no') */
-$parms['dryrun'] = $usage->addOption("dryrun", "Only output SQL queries that would be executed", array(
+$parms['dryrun'] = $usage->addOptionnalParameter("dryrun", "Only output SQL queries that would be executed", array(
     "yes",
     "no"
 ) , "no");
@@ -42,7 +42,7 @@ if ($parms['dryrun'] == 'yes') {
     $parms['dryrun'] = false;
 }
 /* --famid=<name|id> (default 'all') */
-$parms['famid'] = $usage->addOption("famid", "Process all families (keyword 'all') or only a specific family (family name or family id)", array() , "all");
+$parms['famid'] = $usage->addOptionnalParameter("famid", "Process all families (keyword 'all') or only a specific family (family name or family id)", array() , "all");
 if ($parms['famid'] != 'all') {
     if (!is_numeric($parms['famid'])) {
         $famid = getIdFromName($dbaccess, $parms['famid']);
@@ -57,7 +57,7 @@ if ($parms['famid'] != 'all') {
     }
 }
 /* --transaction=no|yes (default 'no') */
-$parms['transaction'] = $usage->addOption("transaction", "Execute whole operation in a single transaction", array(
+$parms['transaction'] = $usage->addOptionnalParameter("transaction", "Execute whole operation in a single transaction", array(
     "yes",
     "no"
 ) , "no");
@@ -67,7 +67,7 @@ if ($parms['transaction'] == 'yes') {
     $parms['transaction'] = false;
 }
 /* --realclean=yes|no (default 'yes') */
-$parms['realclean'] = $usage->addOption("realclean", "Delete everything in docrel at the beginning of the operation", array(
+$parms['realclean'] = $usage->addOptionnalParameter("realclean", "Delete everything in docrel at the beginning of the operation", array(
     "yes",
     "no"
 ) , "yes");
