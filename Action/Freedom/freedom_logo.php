@@ -16,11 +16,11 @@
 /**
  */
 
-function freedom_logo(&$action)
+function freedom_logo(Action &$action)
 {
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
-    $action->lay->Set("appicon", $action->GetImageUrl($action->parent->icon));
+    $action->lay->Set("appicon", $action->parent->getImageLink($action->parent->icon));
     $action->lay->Set("apptitle", $action->parent->description);
 }
 ?>

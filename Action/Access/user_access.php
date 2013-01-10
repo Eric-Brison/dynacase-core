@@ -66,16 +66,16 @@ function user_access(Action & $action, $accountType = "U")
     if ($accountType == "G") {
         
         $varreg = "access_group_id";
-        $action->lay->set("imgaccess", $action->GetImageUrl("access2.gif", true, 20));
+        $action->lay->set("imgaccess", $action->parent->getImageLink("access2.gif", true, 20));
         $action->lay->set("changeLabel", _("Select Group Access"));
     } elseif ($accountType == "R") {
         
         $varreg = "access_role_id";
-        $action->lay->set("imgaccess", $action->GetImageUrl("access2.gif", true, 20));
+        $action->lay->set("imgaccess", $action->parent->getImageLink("access2.gif", true, 20));
         $action->lay->set("changeLabel", _("Select Role Access"));
     } else {
         $varreg = "access_user_id";
-        $action->lay->set("imgaccess", $action->GetImageUrl("access.gif", true, 20));
+        $action->lay->set("imgaccess", $action->parent->getImageLink("access.gif", true, 20));
         $action->lay->set("changeLabel", _("Select User Access"));
     }
     // select the first user if not set

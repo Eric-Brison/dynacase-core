@@ -5,7 +5,7 @@
  * @package FDL
 */
 
-function welcome(&$action)
+function welcome(Action &$action)
 {
     
     $action->parent->AddCssRef("CORE:welcome.css", true);
@@ -39,12 +39,9 @@ function welcome(&$action)
     );
     $list = $query->Query(0, 0, "TABLE");
     $ap = 0;
-    $tab = array();
+    $lapps = array();
     if ($query->nb > 0) {
-        $i = 0;
-        $j = 0;
-        $lapps = array();
-        foreach ($list as $k => $appli) {
+        foreach ($list as $appli) {
             if ($appli["access_free"] == "N") {
                 $action->log->debug("Access not free for :" . $appli["name"]);
                 if (isset($action->user)) {
@@ -64,7 +61,7 @@ function welcome(&$action)
             $lapps[$ap]["name"] = $appli["name"];
             $lapps[$ap]["desc"] = $action->text($appli["description"]); // translate
             $lapps[$ap]["sname"] = $action->text($appli["short_name"]); // translate
-            $lapps[$ap]["icon"] = $action->GetImageUrl($appli["icon"]);
+            $lapps[$ap]["icon"] = $action->parent->getImageLink($appli["icon"]);
             if ($lapps[$ap]["icon"] == "CORE/Images/noimage.png") $lapps[$ap]["icon"] = $appli["name"] . "/Images/" . $appli["icon"];
             $ap++;
         }
@@ -72,4 +69,3 @@ function welcome(&$action)
     $action->lay->set("appsdev", count($lapps) > 0);
     $action->lay->setBlockData("apps", $lapps);
 }
-?>

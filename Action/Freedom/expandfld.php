@@ -21,7 +21,7 @@
 // ---------------------------------------------------------------
 include_once ("FREEDOM/folders.php");
 // -----------------------------------
-function expandfld(&$action)
+function expandfld(Action &$action)
 {
     // -----------------------------------
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -95,7 +95,7 @@ function expandfld(&$action)
         }
     }
     // define icon from style
-    $iconfolder = $action->GetImageUrl("ftv2folderopen1.gif");
+    $iconfolder = $action->parent->getImageLink("ftv2folderopen1.gif");
     $pathicon = explode("/", $iconfolder);
     if (count($pathicon) == 4) $action->lay->set("iconFolderPath", $pathicon[0] . "/" . $pathicon[1]);
     else $action->lay->set("iconFolderPath", "FREEDOM");
@@ -104,4 +104,3 @@ function expandfld(&$action)
     // display popup js
     popupGen($nbfolders);
 }
-?>

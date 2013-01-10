@@ -345,7 +345,7 @@ create sequence SEQ_ID_ACTION;
     {
         deprecatedFunction();
         if (isset($this->parent)) {
-            return ($this->parent->GetImageUrl($name, $detectstyle, $size));
+            return ($this->parent->getImageLink($name, $detectstyle, $size));
         }
         return '';
     }

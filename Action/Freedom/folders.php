@@ -24,7 +24,7 @@ include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/Class.QueryDir.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function folders(&$action)
+function folders(Action &$action)
 {
     // -----------------------------------
     global $nbfolders, $dbaccess, $pexport;
@@ -82,7 +82,7 @@ function folders(&$action)
     
     $nbfolders++; // one for the top
     // define icon from style
-    $iconfolder = $action->GetImageUrl("ftv2folderopen1.gif");
+    $iconfolder = $action->parent->getImageLink("ftv2folderopen1.gif");
     $pathicon = explode("/", $iconfolder);
     if (count($pathicon) == 4) $action->lay->set("iconFolderPath", $pathicon[0] . "/" . $pathicon[1]);
     else $action->lay->set("iconFolderPath", "FREEDOM");
@@ -102,7 +102,7 @@ function folders(&$action)
     popupGen($nbfolders);
 }
 // -----------------------------------
-function addfolder($doc, $level, $treename, $thisfld = true)
+function addfolder(Doc $doc, $level, $treename, $thisfld = true)
 {
     // -----------------------------------
     global $dbaccess;
