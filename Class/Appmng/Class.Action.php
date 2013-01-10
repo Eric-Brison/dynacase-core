@@ -330,8 +330,11 @@ create sequence SEQ_ID_ACTION;
     /**
      * get image url of an application
      * shorcut to Application::getImageUrl
-     * @see Application::getImageUrl
-     * @api get image url of an application
+     *
+     * @see Application::getImageLink
+     *
+     * @deprecated use { @link Application::getImageLink } instead
+     *
      * @param string $name image filename
      * @param bool $detectstyle to use theme image instead of original
      * @param int $size to use image with another width (in pixel) - null is original size
@@ -339,6 +342,7 @@ create sequence SEQ_ID_ACTION;
      */
     public function getImageUrl($name, $detectstyle = true, $size = null)
     {
+        deprecatedFunction();
         if (isset($this->parent)) {
             return ($this->parent->GetImageUrl($name, $detectstyle, $size));
         }
