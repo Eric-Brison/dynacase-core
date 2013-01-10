@@ -430,7 +430,7 @@ create sequence SEQ_ID_ACTION;
         if ($width != "") $width = "width = \"" . $width . "\"";
         if ($height != "") $height = "height = \"" . $height . "\"";
         
-        return ("<img border=0 " . $width . " " . $height . " src=\"" . $this->GetImageUrl($name) . "\" title=\"" . $this->text($text) . "\" alt=\"" . $this->text($text) . "\">");
+        return ("<img border=0 " . $width . " " . $height . " src=\"" . $this->parent->getImageLink($name) . "\" title=\"" . $this->text($text) . "\" alt=\"" . $this->text($text) . "\">");
     }
     /**
      * get file path layout from layout name
@@ -871,7 +871,7 @@ create sequence SEQ_ID_ACTION;
                     }
                 }
                 $appli["description"] = $this->text($appli["description"]); // translate
-                $appli["iconsrc"] = $this->GetImageUrl($appli["icon"]);
+                $appli["iconsrc"] = $this->parent->getImageLink($appli["icon"]);
                 if ($appli["iconsrc"] == "CORE/Images/noimage.png") $appli["iconsrc"] = $appli["name"] . "/Images/" . $appli["icon"];
                 
                 $tab[$i++] = $appli;
