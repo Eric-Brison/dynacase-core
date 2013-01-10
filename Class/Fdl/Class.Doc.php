@@ -5802,7 +5802,6 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Control Access privilege for document for current user
      *
-     * @api control document access
      * @param string $aclname identifier of the privilege to test
      * @param bool $strict set tio true to test without notion of account susbstitute
      * @return string empty means access granted else it is an error message (access unavailable)
@@ -5820,6 +5819,18 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         return $err;
+    }
+    /**
+     * Control Access privilege for document for current user
+     *
+     * @api control document access
+     * @param string $aclName identifier of the privilege to test
+     * @param bool $strict set tio true to test without notion of account susbstitute
+     * @return bool return true if access $aclName is granted, false else
+     */
+    public function hasPermission($aclName, $strict = false)
+    {
+        return ($this->control($aclName, $strict) == "");
     }
     /**
      * Control Access privilege for document for other user
