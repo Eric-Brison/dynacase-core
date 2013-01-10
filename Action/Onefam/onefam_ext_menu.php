@@ -42,7 +42,7 @@ function onefam_ext_menu(&$action)
         $fld = new_doc($dbaccess, $fldid);
         if (!$famid) {
             if ($fld->isAlive()) {
-                $famid = $fld->getValue("se_famid");
+                $famid = $fld->getRawValue("se_famid");
             }
         }
     }

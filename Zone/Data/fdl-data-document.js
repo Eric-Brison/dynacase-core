@@ -156,7 +156,7 @@ Fdl.Document.prototype = {
 			id : 9
 		});
         if (d && d.isAlive()) {
-           var desc=d.getValue('ba_desc');
+           var desc=d.getRawValue('ba_desc');
         }
      * </code></pre>
      * @param {String} id the attribute identifier
@@ -635,7 +635,7 @@ Fdl.Document.prototype.save = function(config) {
   
 function mycallback(doc) {
   // I am after saved
-  alert(doc.getValue('ba_desc'));
+  alert(doc.getRawValue('ba_desc'));
 }
 
  * </code><pre>

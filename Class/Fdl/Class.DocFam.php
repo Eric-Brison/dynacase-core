@@ -220,7 +220,7 @@ create unique index idx_idfam on docfam(id);";
         }
         foreach ($defValues as $aid => $dv) {
             $oa = $d->getAttribute($aid);
-            $value = $d->getValue($aid);
+            $value = $d->getRawValue($aid);
             $ownValue = $ownDefValues[$aid];
             
             if ($oa) {

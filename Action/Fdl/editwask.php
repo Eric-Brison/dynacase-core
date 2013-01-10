@@ -51,7 +51,7 @@ function editwask(&$action)
         $action->lay->set("asktitle", $title);
         $tw[] = array(
             "waskid" => $wask->id,
-            "ask" => $wask->getValue("was_ask")
+            "ask" => $wask->getRawValue("was_ask")
         );
     }
     $action->lay->setBlockData("WASK", $tw);

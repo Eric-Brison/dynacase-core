@@ -72,7 +72,7 @@ class _HELPPAGE extends Doc
                     $this->Affect(getTdoc($this->dbaccess, $doc->id));
                     
                     $this->setValue("help_family", getHttpVars("help_family"));
-                    if ($this->getValue("help_family")) $this->title = sprintf(_("help for %s") , $this->getTitle($this->getValue("help_family")));
+                    if ($this->getRawValue("help_family")) $this->title = sprintf(_("help for %s") , $this->getTitle($this->getRawValue("help_family")));
                     
                     $this->modify();
                     global $action;
@@ -96,7 +96,7 @@ class _HELPPAGE extends Doc
         }
         
         if ($aclname == 'view') {
-            $famId = $this->getValue('HELP_FAMILY');
+            $famId = $this->getRawValue('HELP_FAMILY');
             $fam = new_Doc($this->dbaccess, $famId);
             if ($fam->isAlive()) {
                 return $fam->Control('view');
@@ -199,7 +199,7 @@ class _HELPPAGE extends Doc
         $this->lay->set('HELPNAME', $helpname);
         $this->lay->set('HELPDESCRIPTION', $helpdescription);
         // help add section
-        $famid = $this->getValue('help_family');
+        $famid = $this->getRawValue('help_family');
         if (empty($famid)) {
             $this->lay->set('HELPATTRIBUTESLIST', false);
         } else {

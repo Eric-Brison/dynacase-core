@@ -43,7 +43,7 @@ class _POSTIT extends Doc
         $tdate = $this->getTvalue("PIT_DATE");
         $tcolor = $this->getTvalue("PIT_COLOR");
         
-        $nbcar = strlen($this->getvalue("PIT_COM"));
+        $nbcar = strlen($this->getRawValue("PIT_COM"));
         if ($nbcar < 60) $fontsize = 120;
         elseif ($nbcar < 200) $fontsize = 100;
         else $fontsize = 80;
@@ -77,7 +77,7 @@ class _POSTIT extends Doc
     }
     function PostModify()
     {
-        $docid = $this->getValue("PIT_IDADOC");
+        $docid = $this->getRawValue("PIT_IDADOC");
         if ($docid > 0) {
             $doc = new_Doc($this->dbaccess, $docid);
             if (intval($doc->postitid) == 0) {
@@ -88,7 +88,7 @@ class _POSTIT extends Doc
             }
         }
         
-        $ncom = $this->getValue("PIT_NCOM");
+        $ncom = $this->getRawValue("PIT_NCOM");
         if ($ncom != "") {
             
             $tcom = $this->getTValue("PIT_COM");
@@ -108,7 +108,7 @@ class _POSTIT extends Doc
             $tcom[$nk] = $ncom;
             $tdate[$nk] = $this->getDate();
             $tiduser[$nk] = $this->getUserId();
-            $tcolor[$nk] = $this->getValue("PIT_NCOLOR");
+            $tcolor[$nk] = $this->getRawValue("PIT_NCOLOR");
             
             $this->setValue("PIT_COM", $tcom);
             $this->setValue("PIT_DATE", $tdate);
@@ -121,7 +121,7 @@ class _POSTIT extends Doc
     
     function PostDelete()
     {
-        $docid = $this->getValue("PIT_IDADOC");
+        $docid = $this->getRawValue("PIT_IDADOC");
         if ($docid > 0) {
             $doc = new_Doc($this->dbaccess, $docid);
             if ($doc->locked == - 1) $doc = new_Doc($this->dbaccess, $doc->latestId());
@@ -137,7 +137,7 @@ class _POSTIT extends Doc
     function preCreated()
     {
         
-        $tcomment = $this->getValue("PIT_NCOM");
+        $tcomment = $this->getRawValue("PIT_NCOM");
         if ($tcomment == "") return (_("no message : post-it creation aborted"));
     }
     /**

@@ -153,7 +153,7 @@ function report_export_csv(Action & $action)
         $action->Register($expVarName, array(
             "status" => "init"
         ));
-        $attr = getDocAttr($dbaccess, $currentDoc->getValue("se_famid", 1));
+        $attr = getDocAttr($dbaccess, $currentDoc->getRawValue("se_famid", 1));
         $attributeLay = array();
         $attributeLay[] = array(
             "selected" => "",

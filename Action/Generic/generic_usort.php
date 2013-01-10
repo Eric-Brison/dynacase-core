@@ -30,7 +30,7 @@ function generic_usort(Action & $action)
     if ($catg) {
         $dir = new_doc($action->dbaccess, $catg);
         if ($dir->isAlive()) {
-            $sfamid = $dir->getValue("se_famid");
+            $sfamid = $dir->getRawValue("se_famid");
         }
     }
     

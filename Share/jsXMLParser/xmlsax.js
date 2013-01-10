@@ -1028,7 +1028,7 @@ SAXDriver.prototype.getName = function(index) {
 
 SAXDriver.prototype.getValue = function(index) {
     /*******************************************************************************************************************
-    function:   getValue
+    function:   getRawValue
 
     Author:   Scott Severtson
     *********************************************************************************************************************/

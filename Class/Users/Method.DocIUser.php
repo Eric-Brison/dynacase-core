@@ -55,15 +55,15 @@ class _IUSER extends Doc implements IMailRecipient
     {
         $err = parent::SpecRefresh();
         
-        if ($this->getValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is deactivated");
+        if ($this->getRawValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is deactivated");
         // refresh MEID itself
         $this->SetValue("US_MEID", $this->id);
-        $iduser = $this->getValue("US_WHATID");
+        $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
             if (!$user->isAffected()) return sprintf(_("user #%d does not exist") , $iduser);
         } else {
-            if ($this->getValue("us_login") != '-') $err = _("user has not identificator");
+            if ($this->getRawValue("us_login") != '-') $err = _("user has not identificator");
             /**
              * @var NormalAttribute $oa
              */
@@ -92,7 +92,7 @@ class _IUSER extends Doc implements IMailRecipient
      */
     function canUpdateLdapCard()
     {
-        return ($this->getValue("US_STATUS") != 'D');
+        return ($this->getRawValue("US_STATUS") != 'D');
     }
     
     public function preRevive()
@@ -105,7 +105,7 @@ class _IUSER extends Doc implements IMailRecipient
      */
     public function getUserGroups()
     {
-        $err = simpleQuery($this->dbaccess, sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $this->getValue("us_whatid")) , $groupIds, false, false);
+        $err = simpleQuery($this->dbaccess, sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $this->getRawValue("us_whatid")) , $groupIds, false, false);
         if (!$err) {
             $gids = array();
             foreach ($groupIds as $gid) {
@@ -143,7 +143,7 @@ class _IUSER extends Doc implements IMailRecipient
      */
     public function getAllUserGroups()
     {
-        return $this->getAscendantGroup($this->getValue("us_whatid"));
+        return $this->getAscendantGroup($this->getRawValue("us_whatid"));
     }
     /**
      * Refresh folder parent containt
@@ -168,7 +168,7 @@ class _IUSER extends Doc implements IMailRecipient
     {
         
         $err = "";
-        $wid = $this->getValue("us_whatid");
+        $wid = $this->getRawValue("us_whatid");
         if ($wid > 0) {
             $wuser = $this->getAccount(true);
             
@@ -271,25 +271,25 @@ class _IUSER extends Doc implements IMailRecipient
     function synchronizeSystemUser()
     {
         $err = '';
-        $uid = $this->getValue("us_whatid");
-        $lname = $this->getValue("us_lname");
-        $fname = $this->getValue("us_fname");
-        $pwd1 = $this->getValue("us_passwd1");
-        $pwd2 = $this->getValue("us_passwd2");
-        $expires = $this->getValue("us_expires");
-        $daydelay = $this->getValue("us_daydelay");
+        $uid = $this->getRawValue("us_whatid");
+        $lname = $this->getRawValue("us_lname");
+        $fname = $this->getRawValue("us_fname");
+        $pwd1 = $this->getRawValue("us_passwd1");
+        $pwd2 = $this->getRawValue("us_passwd2");
+        $expires = $this->getRawValue("us_expires");
+        $daydelay = $this->getRawValue("us_daydelay");
         if ($daydelay == - 1) $passdelay = $daydelay;
         else $passdelay = intval($daydelay) * 3600 * 24;
-        $status = $this->getValue("us_status");
-        $login = $this->getValue("us_login");
-        $substitute = $this->getValue("us_substitute");
+        $status = $this->getRawValue("us_status");
+        $login = $this->getRawValue("us_login");
+        $substitute = $this->getRawValue("us_substitute");
         $allRoles = $this->getAValues("us_t_roles");
-        $extmail = $this->getValue("us_extmail", " ");
+        $extmail = $this->getRawValue("us_extmail", " ");
         
         if ($login != "-") {
             // compute expire for epoch
-            $expiresd = $this->getValue("us_expiresd");
-            $expirest = $this->getValue("us_expirest", "00:00");
+            $expiresd = $this->getRawValue("us_expiresd");
+            $expirest = $this->getRawValue("us_expirest", "00:00");
             //convert date
             $expdate = $expiresd . " " . $expirest . ":00";
             $expires = 0;
@@ -337,8 +337,8 @@ class _IUSER extends Doc implements IMailRecipient
             }
         } else {
             // tranfert extern mail if no login specified yet
-            if ($this->getValue("us_login") == "-") {
-                $email = $this->getValue("us_extmail");
+            if ($this->getRawValue("us_login") == "-") {
+                $email = $this->getRawValue("us_extmail");
                 if (($email != "") && ($email[0] != "<")) $this->setValue("us_mail", $email);
                 else $this->clearValue("us_mail");
             }
@@ -472,7 +472,7 @@ class _IUSER extends Doc implements IMailRecipient
         
         if ($pwd1 <> $pwd2) {
             $err = _("the 2 passwords are not the same");
-        } else if (($pwd1 == "") && ($this->getValue("us_whatid") == "")) {
+        } else if (($pwd1 == "") && ($this->getRawValue("us_whatid") == "")) {
             if ($login != "-") $err = _("passwords must not be empty");
         }
         
@@ -600,7 +600,7 @@ class _IUSER extends Doc implements IMailRecipient
      */
     function setPassword($password)
     {
-        $idwuser = $this->getValue("US_WHATID");
+        $idwuser = $this->getRawValue("US_WHATID");
         
         $wuser = $this->getAccount();
         if (!$wuser->isAffected()) {
@@ -620,8 +620,8 @@ class _IUSER extends Doc implements IMailRecipient
      */
     function increaseLoginFailure()
     {
-        if ($this->getValue("us_whatid") == 1) return ""; // it makes non sense for admin
-        $lf = $this->getValue("us_loginfailure", 0) + 1;
+        if ($this->getRawValue("us_whatid") == 1) return ""; // it makes non sense for admin
+        $lf = $this->getRawValue("us_loginfailure", 0) + 1;
         $err = $this->SetValue("us_loginfailure", $lf);
         if ($err == "") {
             $err = $this->modify(false, array(
@@ -636,10 +636,10 @@ class _IUSER extends Doc implements IMailRecipient
      */
     function resetLoginFailure()
     {
-        if ($this->getValue("us_whatid") == 1) return ""; // it makes non sense for admin
+        if ($this->getRawValue("us_whatid") == 1) return ""; // it makes non sense for admin
         $err = $this->canEdit();
         if ($err == '') {
-            if (intval($this->getValue("us_loginfailure")) > 0) {
+            if (intval($this->getRawValue("us_loginfailure")) > 0) {
                 $err = $this->setValue("us_loginfailure", 0);
                 if ($err == "") {
                     $err = $this->modify(false, array(
@@ -680,11 +680,11 @@ class _IUSER extends Doc implements IMailRecipient
             return MENU_INVISIBLE;
         }
         // Do not show the menu on the 'admin' user
-        if ($this->getValue('us_whatid') == 1) {
+        if ($this->getRawValue('us_whatid') == 1) {
             return MENU_INVISIBLE;
         }
         // Do not show the menu if the account had no failures
-        if ($this->getValue("us_loginfailure") <= 0) {
+        if ($this->getRawValue("us_loginfailure") <= 0) {
             return MENU_INVISIBLE;
         }
         return MENU_ACTIVE;
@@ -701,11 +701,11 @@ class _IUSER extends Doc implements IMailRecipient
             return MENU_INVISIBLE;
         }
         // Do not show the menu on the 'admin' user
-        if ($this->getValue('us_whatid') == 1) {
+        if ($this->getRawValue('us_whatid') == 1) {
             return MENU_INVISIBLE;
         }
         // Do not show the menu if the account is already active
-        if ($this->getValue('us_status', 'A') == 'A') {
+        if ($this->getRawValue('us_status', 'A') == 'A') {
             return MENU_INVISIBLE;
         }
         return MENU_ACTIVE;
@@ -722,11 +722,11 @@ class _IUSER extends Doc implements IMailRecipient
             return MENU_INVISIBLE;
         }
         // Do not show the menu on the 'admin' user
-        if ($this->getValue('us_whatid') == 1) {
+        if ($this->getRawValue('us_whatid') == 1) {
             return MENU_INVISIBLE;
         }
         // Do not show the menu if the account is already inactive
-        if ($this->getValue('us_status', 'A') != 'A') {
+        if ($this->getRawValue('us_status', 'A') != 'A') {
             return MENU_INVISIBLE;
         }
         return MENU_ACTIVE;
@@ -736,7 +736,7 @@ class _IUSER extends Doc implements IMailRecipient
      */
     function isAccountActive()
     {
-        if ($this->getValue("us_whatid") == 1) return false; // it makes non sense for admin
+        if ($this->getRawValue("us_whatid") == 1) return false; // it makes non sense for admin
         $u = $this->getAccount();
         if ($u) {
             return $u->status != 'D';
@@ -755,7 +755,7 @@ class _IUSER extends Doc implements IMailRecipient
             return _("current user cannot deactivate account");
         }
         // The 'admin' account cannot be deactivated
-        if ($this->getValue("us_whatid") == 1) {
+        if ($this->getRawValue("us_whatid") == 1) {
             return '';
         }
         $err = $this->SetValue("us_status", 'A');
@@ -783,7 +783,7 @@ class _IUSER extends Doc implements IMailRecipient
             return _("current user cannot deactivate account");
         }
         // The 'admin' account cannot be deactivated
-        if ($this->getValue("us_whatid") == 1) {
+        if ($this->getRawValue("us_whatid") == 1) {
             return '';
         }
         $err = $this->SetValue("us_status", 'D');
@@ -797,8 +797,8 @@ class _IUSER extends Doc implements IMailRecipient
     }
     function accountHasExpired()
     {
-        if ($this->getValue("us_whatid") == 1) return false;
-        $expd = $this->getValue("us_accexpiredate");
+        if ($this->getRawValue("us_whatid") == 1) return false;
+        $expd = $this->getRawValue("us_accexpiredate");
         //convert date
         $expires = 0;
         if ($expd != "") {

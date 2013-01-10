@@ -693,7 +693,7 @@ class DocFormFormat
             $lay->set("aid", $this->attridk);
             $idth = $this->oattr->format;
             
-            $thid = $this->doc->getValue($idth);
+            $thid = $this->doc->getRawValue($idth);
             if (!$thid) $thid = $idth; // direct logical name
             $lay->set("thesaurus", $thid);
             $this->notd = true; // autonome input
@@ -1194,7 +1194,7 @@ class DocFormFormat
                         "aehelpid" => ($help->isAlive()) ? $help->id : false
                     );
                     $tilabel[] = array(
-                        "ilabel" => getHtmlInput($doc, $v, $ddoc->getValue($tad[$k]->id) , DocFormFormat::arrayIndex) ,
+                        "ilabel" => getHtmlInput($doc, $v, $ddoc->getRawValue($tad[$k]->id) , DocFormFormat::arrayIndex) ,
                         "ihw" => (!$visible) ? "0px" : $width,
                         "bgcolor" => $v->getOption("bgcolor", "inherit") ,
                         "tdstyle" => $v->getOption("cellbodystyle") ,
@@ -1501,7 +1501,7 @@ class DocFormFormat
                 } else {
                     $sl = strtolower($s);
                     if (!isset($doc->$sl)) return "[$s]";
-                    if ($index == - 1) $v = $doc->getValue($sl);
+                    if ($index == - 1) $v = $doc->getRawValue($sl);
                     else $v = $doc->getTValue($sl, "", $index);
                     $v = str_replace('"', '&quot;', $v);
                 }
@@ -1737,7 +1737,7 @@ class DocFormFormat
                 $lay->set("didx", $index);
                 $lay->set("di", trim(strtolower($oattr->format)));
                 if ($index !== "") $lay->set("said", $doc->getTValue($oattr->format, "", $index));
-                else $lay->set("said", $doc->getValue($oattr->format));
+                else $lay->set("said", $doc->getRawValue($oattr->format));
                 
                 $lay->set("value", $value);
                 $lay->set("uuvalue", urlencode($value));

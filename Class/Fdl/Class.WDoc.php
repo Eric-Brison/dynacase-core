@@ -111,7 +111,7 @@ class WDoc extends Doc
     {
         $err = '';
         if ($newstate != "") {
-            $profid = $this->getValue($this->_Aid("_ID", $newstate));
+            $profid = $this->getRawValue($this->_Aid("_ID", $newstate));
             if (!is_numeric($profid)) $profid = getIdFromName($this->dbaccess, $profid);
             if ($profid > 0) {
                 // change only if new profil
@@ -128,16 +128,16 @@ class WDoc extends Doc
     {
         $err = "";
         if ($newstate != "") {
-            $auserref = trim($this->getValue($this->_Aid("_AFFECTREF", $newstate)));
+            $auserref = trim($this->getRawValue($this->_Aid("_AFFECTREF", $newstate)));
             if ($auserref) {
                 $uid = $this->getAllocatedUser($newstate);
                 $wuid = 0;
                 if ($uid) $wuid = $this->getDocValue($uid, "us_whatid");
                 if ($wuid > 0) {
-                    $lock = (trim($this->getValue($this->_Aid("_AFFECTLOCK", $newstate))) == "yes");
+                    $lock = (trim($this->getRawValue($this->_Aid("_AFFECTLOCK", $newstate))) == "yes");
                     $err = $this->doc->allocate($wuid, "", false, $lock);
                     if ($err == "") {
-                        $automail = (trim($this->getValue($this->_Aid("_AFFECTMAIL", $newstate))) == "yes");
+                        $automail = (trim($this->getRawValue($this->_Aid("_AFFECTMAIL", $newstate))) == "yes");
                         if ($automail) {
                             include_once ("FDL/mailcard.php");
                             $to = trim($this->getDocValue($uid, "us_mail"));
@@ -158,8 +158,8 @@ class WDoc extends Doc
     
     private function getAllocatedUser($newstate)
     {
-        $auserref = trim($this->getValue($this->_Aid("_AFFECTREF", $newstate)));
-        $type = trim($this->getValue($this->_Aid("_AFFECTTYPE", $newstate)));
+        $auserref = trim($this->getRawValue($this->_Aid("_AFFECTREF", $newstate)));
+        $type = trim($this->getRawValue($this->_Aid("_AFFECTTYPE", $newstate)));
         if (!$auserref) return false;
         $aid = strtok($auserref, " ");
         $uid = false;
@@ -199,7 +199,7 @@ class WDoc extends Doc
     {
         
         if ($newstate != "") {
-            $cvid = ($this->getValue($this->_Aid("_CVID", $newstate)));
+            $cvid = ($this->getRawValue($this->_Aid("_CVID", $newstate)));
             if (!is_numeric($cvid)) $cvid = getIdFromName($this->dbaccess, $cvid);
             if ($cvid > 0) {
                 // change only if set
@@ -222,7 +222,7 @@ class WDoc extends Doc
      */
     public function getStateProfil($state)
     {
-        return $this->getValue($this->_Aid("_id", $state));
+        return $this->getRawValue($this->_Aid("_id", $state));
     }
     /**
      * get the attribute id for profile id according to state
@@ -240,7 +240,7 @@ class WDoc extends Doc
      */
     public function getStateMask($state)
     {
-        return $this->getValue($this->_Aid("_mskid", $state));
+        return $this->getRawValue($this->_Aid("_mskid", $state));
     }
     /**
      * get the view control id according to state
@@ -249,7 +249,7 @@ class WDoc extends Doc
      */
     public function getStateViewControl($state)
     {
-        return $this->getValue($this->_Aid("_cvid", $state));
+        return $this->getRawValue($this->_Aid("_cvid", $state));
     }
     /**
      * get the timers ids according to state
@@ -258,7 +258,7 @@ class WDoc extends Doc
      */
     public function getStateTimers($state)
     {
-        return $this->getValue($this->_Aid("_tmid", $state));
+        return $this->getRawValue($this->_Aid("_tmid", $state));
     }
     /**
      * get the timers ids according to transition
@@ -803,7 +803,7 @@ class WDoc extends Doc
         if ($addcomment != "") $this->doc->addHistoryEntry($addcomment);
         if (isset($tr["ask"])) {
             foreach ($tr["ask"] as $vpid) {
-                $pv = $this->getValue($vpid);
+                $pv = $this->getRawValue($vpid);
                 if ($pv != "") {
                     $oa = $this->getAttribute($vpid);
                     $revcomment.= "\n-" . $oa->getLabel() . ":" . $pv;
@@ -919,7 +919,7 @@ class WDoc extends Doc
     {
         //$acolor=$this->attrPrefix."_COLOR".($state);
         $acolor = $this->_Aid("_COLOR", $state);
-        return $this->getValue($acolor, $def);
+        return $this->getRawValue($acolor, $def);
     }
     /**
      * get activity (localized language)
@@ -930,7 +930,7 @@ class WDoc extends Doc
     {
         //$acolor=$this->attrPrefix."_ACTIVITYLABEL".($state);
         $acolor = $this->_Aid("_ACTIVITYLABEL", $state);
-        $v = $this->getValue($acolor);
+        $v = $this->getRawValue($acolor);
         if ($v) return _($v);
         return $def;
     }
@@ -981,7 +981,7 @@ class WDoc extends Doc
         $states = $this->getStates();
         foreach ($states as $state) {
             $aask = $this->_Aid("_ASKID", $state);
-            if ($this->getValue($aask)) return true;
+            if ($this->getRawValue($aask)) return true;
         }
         return false;
     }
@@ -1010,7 +1010,7 @@ class WDoc extends Doc
                     if (isset($tr["ask"])) {
                         foreach ($tr["ask"] as $vpid) {
                             $keys["V_" . strtoupper($vpid) ] = $this->getHtmlAttrValue($vpid);
-                            $keys[strtoupper($vpid) ] = $this->getValue($vpid);
+                            $keys[strtoupper($vpid) ] = $this->getRawValue($vpid);
                         }
                     }
                     $err.= $mt->sendDocument($this->doc, $keys);
@@ -1031,7 +1031,7 @@ class WDoc extends Doc
                     if (isset($tr["ask"])) {
                         foreach ($tr["ask"] as $vpid) {
                             $keys["V_" . strtoupper($vpid) ] = $this->getHtmlAttrValue($vpid);
-                            $keys[strtoupper($vpid) ] = $this->getValue($vpid);
+                            $keys[strtoupper($vpid) ] = $this->getRawValue($vpid);
                         }
                     }
                     $err.= $mt->sendDocument($this->doc, $keys);
@@ -1049,7 +1049,7 @@ class WDoc extends Doc
     function workflowAttachTimer($state, $tname = "")
     {
         $err = '';
-        $mtid = $this->getValue($this->_Aid("_TRANS_TMID", $tname));
+        $mtid = $this->getRawValue($this->_Aid("_TRANS_TMID", $tname));
         
         $this->doc->unattachAllTimers($this);
         
@@ -1073,7 +1073,7 @@ class WDoc extends Doc
             }
         }
         
-        $mtid = $this->getValue($this->_Aid("_TMID", $state));
+        $mtid = $this->getRawValue($this->_Aid("_TMID", $state));
         if ($mtid) {
             $mt = new_doc($this->dbaccess, $mtid);
             if ($mt->isAlive()) {
@@ -1158,12 +1158,12 @@ class WDoc extends Doc
     {
         $err = Doc::control($aclname, $strict);
         if ($err == "") return $err; // normal case
-        if ($this->getValue("DPDOC_FAMID") > 0) {
+        if ($this->getRawValue("DPDOC_FAMID") > 0) {
             // special control for dynamic users
             if ($this->pdoc === null) {
                 $pdoc = createDoc($this->dbaccess, $this->fromid, false);
                 $pdoc->doctype = "T"; // temporary
-                //	$pdoc->setValue("DPDOC_FAMID",$this->getValue("DPDOC_FAMID"));
+                //	$pdoc->setValue("DPDOC_FAMID",$this->getRawValue("DPDOC_FAMID"));
                 $err = $pdoc->Add();
                 if ($err != "") return "WDoc::Control:" . $err; // can't create profil
                 $pdoc->setProfil($this->profid, $this->doc);
@@ -1184,7 +1184,7 @@ class WDoc extends Doc
         }
         $this->getStates();
         foreach ($this->states as $k => $state) {
-            $allo = trim($this->getValue($this->_Aid("_AFFECTREF", $state)));
+            $allo = trim($this->getRawValue($this->_Aid("_AFFECTREF", $state)));
             if (!$allo) $this->removeArrayRow($this->_Aid("_T_AFFECT", $state) , 0);
         }
         
@@ -1199,7 +1199,7 @@ class WDoc extends Doc
     function getInstanceValue($attrid, $def = false)
     {
         if ($this->doc) {
-            return $this->doc->getValue($attrid, $def);
+            return $this->doc->getRawValue($attrid, $def);
         }
         return $def;
     }

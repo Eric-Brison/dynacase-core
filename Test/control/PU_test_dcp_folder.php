@@ -46,7 +46,7 @@ class TestFolder extends TestCaseDcpCommonFamily
             $val = "testing " . time();
             $err = $d->setValue("ba_desc", $val);
             $this->assertEquals("", $err, sprintf("cannot object update", $a));
-            $this->assertEquals($val, $d->getValue("ba_desc") , sprintf("document not updated", $a));
+            $this->assertEquals($val, $d->getRawValue("ba_desc") , sprintf("document not updated", $a));
             $err = $d->modify();
             $this->assertEquals("", $err, sprintf("cannot database update", $a));
             

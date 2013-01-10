@@ -3393,7 +3393,7 @@ DOMAttr.prototype.getSpecified = function DOMAttr_getSpecified() {
 };
 
 /**
- * @method DOMAttr.getValue - Java style gettor for .value
+ * @method DOMAttr.getRawValue - Java style gettor for .value
  *
  * @author Jon van Noort (jon@webarcana.com.au)
  *
@@ -3488,7 +3488,7 @@ DOMNamespace = function(ownerDocument) {
 DOMNamespace.prototype = new DOMNode;
 
 /**
- * @method DOMNamespace.getValue - Java style gettor for .value
+ * @method DOMNamespace.getRawValue - Java style gettor for .value
  *
  * @author Jon van Noort (jon@webarcana.com.au)
  *

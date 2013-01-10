@@ -48,7 +48,7 @@ function fdl_getvalue(Action & $action)
     
     $a = $doc->getAttribute($attrid);
     if ($a) {
-        if ($a->mvisibility != "I") $v = $doc->getValue($attrid);
+        if ($a->mvisibility != "I") $v = $doc->getRawValue($attrid);
         else $v = sprintf("no privilege to access attribute [%s] for document %s |%d]", $attrid, $doc->title, $doc->id);
     } else {
         $v = sprintf("unknown attribute [%s] for document %s |%d]", $attrid, $doc->title, $doc->id);

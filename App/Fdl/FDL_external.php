@@ -118,7 +118,7 @@ function lmail($dbaccess, $name)
             if ($mailTitle == '') {
                 $mailTitle = $mail;
             }
-            $usw = $dest->getValue("us_whatid");
+            $usw = $dest->getRawValue("us_whatid");
             $uid = "";
             if ($usw > 0) {
                 $uid = $dest->id;

@@ -170,13 +170,13 @@ class CVDoc extends Doc
         
         $err = $this->docControl($aclname, $strict);
         if ($err == "") return $err; // normal case
-        if ($this->getValue("DPDOC_FAMID") > 0) {
+        if ($this->getRawValue("DPDOC_FAMID") > 0) {
             if ($this->doc) {
                 // special control for dynamic users
                 if ($this->pdoc === null) {
                     $pdoc = createDoc($this->dbaccess, $this->fromid, false);
                     $pdoc->doctype = "T"; // temporary
-                    //	$pdoc->setValue("DPDOC_FAMID",$this->getValue("DPDOC_FAMID"));
+                    //	$pdoc->setValue("DPDOC_FAMID",$this->getRawValue("DPDOC_FAMID"));
                     $err = $pdoc->Add();
                     if ($err != "") return "CVDoc::Control:" . $err; // can't create profil
                     $pdoc->setProfil($this->profid, $this->doc);
@@ -209,7 +209,7 @@ class CVDoc extends Doc
         $view = '';
         if ($this->doc) {
             if ($edition && (!$this->doc->id)) {
-                $vidcreate = $this->getValue("cv_idcview");
+                $vidcreate = $this->getRawValue("cv_idcview");
                 if ($vidcreate) {
                     //	   control must be done by the caller
                     $viewU = $this->getView($vidcreate); // use it first if exist

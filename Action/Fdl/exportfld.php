@@ -409,7 +409,7 @@ function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, 
             '<BR>',
             '<br/>'
         ) , '\\n', $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
-        else $value = $doc->getValue($attr->id);
+        else $value = $doc->getRawValue($attr->id);
         // invert HTML entities
         if (($attr->type == "image") || ($attr->type == "file")) {
             $tfiles = $doc->vault_properties($attr);

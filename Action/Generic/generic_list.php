@@ -61,7 +61,7 @@ function generic_list(&$action)
     if ($dirid) {
         $dir = new_doc($dbaccess, $dirid);
         if ($dir->isAlive() && ($dir->defDoctype == 'S')) {
-            $sfamid = $dir->getValue("se_famid");
+            $sfamid = $dir->getRawValue("se_famid");
         }
     }
     if ($onglet) {

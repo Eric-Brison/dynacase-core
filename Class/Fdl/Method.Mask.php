@@ -95,7 +95,7 @@ class _MASK extends Doc
     {
         $tvisid = $this->getTValue("MSK_VISIBILITIES");
         $tattrid = $this->getTValue("MSK_ATTRIDS");
-        $docid = $this->getValue("MSK_FAMID", 1);
+        $docid = $this->getRawValue("MSK_FAMID", 1);
         $doc = new_Doc($this->dbaccess, $docid);
         
         $tsvis = $this->getVisibilities();
@@ -135,7 +135,7 @@ class _MASK extends Doc
     function viewmask($target = "_self", $ulink = true, $abstract = false)
     {
         
-        $docid = $this->getValue("MSK_FAMID", 1);
+        $docid = $this->getRawValue("MSK_FAMID", 1);
         
         $tvisibilities = $this->getCVisibilities();
         $tkey_visibilities = array_keys($tvisibilities);
@@ -221,7 +221,7 @@ class _MASK extends Doc
     {
         global $action;
         
-        $docid = $this->getValue("MSK_FAMID");
+        $docid = $this->getRawValue("MSK_FAMID");
         
         $this->lay->Set("docid", $docid);
         

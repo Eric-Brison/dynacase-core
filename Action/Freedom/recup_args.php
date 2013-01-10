@@ -44,20 +44,20 @@ function recup_args(&$action)
     
     $doc = new_Doc($dbaccess, $docid);
     //print_r($doc);
-    if ($doc->GetValue("act_type") == 1) { //action de type action
+    if ($doc->getRawValue("act_type") == 1) { //action de type action
         $idoc = createDoc($dbaccess, 601);
         $action->lay->Set("famid", 601); // familly action_implement
         
     }
-    if ($doc->GetValue("act_type") == 2) { //action de type condition
+    if ($doc->getRawValue("act_type") == 2) { //action de type condition
         $idoc = createDoc($dbaccess, 602);
         $action->lay->Set("famid", 602); // familly condition_implement
         
     }
     
-    $args_nom = $doc->GetValue("act_liste_noms");
+    $args_nom = $doc->getRawValue("act_liste_noms");
     //printf($args_nom);
-    $args_descrps = $doc->GetValue("act_liste_descrps");
+    $args_descrps = $doc->getRawValue("act_liste_descrps");
     
     $idoc->SetValue("ai_args_nom", $args_nom);
     $idoc->SetValue("ai_args_descrip", $args_descrps);

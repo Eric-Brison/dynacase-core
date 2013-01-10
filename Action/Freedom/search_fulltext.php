@@ -274,7 +274,7 @@ function search_fulltext(&$action)
             $rlay = new Layout($action->GetLayoutFile("search_fulltext_result.xml") , $action);
             $filed = array();
             for ($if = 0; $if < $vd["fcnt"]; $if++) {
-                $value = chop($doc->GetValue($vd[$if]["attrid"]));
+                $value = chop($doc->getRawValue($vd[$if]["attrid"]));
                 $filed[$if]["imgsrc"] = $doc->GetHtmlValue($doc->GetAttribute($vd[$if]["attrid"]) , $value, "_self", "Y");
                 $filed[$if]["rating"] = $vd[$if]["rate"];
                 $filed[$if]["date"] = strftime("%d/%m/%Y %H:%M", $vd[$if]["modi"]);

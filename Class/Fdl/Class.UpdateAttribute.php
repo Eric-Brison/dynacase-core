@@ -347,7 +347,7 @@ class UpdateAttribute
          * @var Doc $doc
          */
         foreach ($this->dl as $doc) {
-            if ($doc->getValue($attrid) != $newValue) $ids[$doc->id] = intval($doc->initid);
+            if ($doc->getRawValue($attrid) != $newValue) $ids[$doc->id] = intval($doc->initid);
             else $upToDateIds[$doc->id] = intval($doc->initid);
             $this->results[$doc->initid] = new UpdateAttributeResults();
         }
@@ -395,7 +395,7 @@ class UpdateAttribute
          * @var Doc $doc
          */
         foreach ($this->dl as $doc) {
-            if (preg_match(sprintf('/\b%s\b/', preg_quote($oldValue)) , $doc->getValue($attrid))) $ids[$doc->id] = intval($doc->initid);
+            if (preg_match(sprintf('/\b%s\b/', preg_quote($oldValue)) , $doc->getRawValue($attrid))) $ids[$doc->id] = intval($doc->initid);
             else $upToDateIds[$doc->id] = intval($doc->initid);
             $this->results[$doc->initid] = new UpdateAttributeResults();
         }
@@ -547,10 +547,10 @@ class UpdateAttribute
          */
         foreach ($this->dl as $doc) {
             if (is_array($valueToRemove)) {
-                if (array_intersect($this->linearize($doc->getValue($attrid)) , $valueToRemove)) {
+                if (array_intersect($this->linearize($doc->getRawValue($attrid)) , $valueToRemove)) {
                     $ids[$doc->id] = intval($doc->initid);
                 } else $upToDateIds[$doc->id] = intval($doc->initid);
-            } elseif (in_array($valueToRemove, $this->linearize($doc->getValue($attrid)))) $ids[$doc->id] = intval($doc->initid);
+            } elseif (in_array($valueToRemove, $this->linearize($doc->getRawValue($attrid)))) $ids[$doc->id] = intval($doc->initid);
             else $upToDateIds[$doc->id] = intval($doc->initid);
             
             $this->results[$doc->initid] = new UpdateAttributeResults();

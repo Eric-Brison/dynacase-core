@@ -311,7 +311,7 @@ class importSingleDocument
                             }
                         } else {
                             // just for analyze
-                            if ($dv == $this->doc->getValue($attr->id)) $this->tcr["values"][$attr->getLabel() ] = ("/no change/");
+                            if ($dv == $this->doc->getRawValue($attr->id)) $this->tcr["values"][$attr->getLabel() ] = ("/no change/");
                             else $this->tcr["values"][$attr->getLabel() ] = $dv;
                         }
                     } else {
@@ -395,7 +395,7 @@ class importSingleDocument
                             if ($this->doc->id == "") {
                                 // insert default values
                                 foreach ($this->preValues as $k => $v) {
-                                    if ($this->doc->getValue($k) == "") $this->doc->setValue($k, $v);
+                                    if ($this->doc->getRawValue($k) == "") $this->doc->setValue($k, $v);
                                 }
                                 $err = $this->doc->preImport($extra);
                                 if ($err != "") {
@@ -459,7 +459,7 @@ class importSingleDocument
                             if ($this->doc->id == "") {
                                 // insert default values
                                 foreach ($this->preValues as $k => $v) {
-                                    if ($this->doc->getValue($k) == "") $this->doc->setValue($k, $v);
+                                    if ($this->doc->getRawValue($k) == "") $this->doc->setValue($k, $v);
                                 }
                                 $err = $this->doc->Add();
                             }
@@ -485,7 +485,7 @@ class importSingleDocument
                     if (!$this->analyze) {
                         // insert default values
                         foreach ($this->preValues as $k => $v) {
-                            if ($this->doc->getValue($k) == "") $this->doc->setValue($k, $v);
+                            if ($this->doc->getRawValue($k) == "") $this->doc->setValue($k, $v);
                         }
                         $err = $this->doc->preImport($extra);
                         if ($err != "") {

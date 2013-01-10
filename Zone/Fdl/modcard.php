@@ -385,7 +385,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
             $postfiles["realname"] = $postfiles["name"];
             $postfiles["name"] = $orinames;
         }
-        if ($oa) $postfiles["oldvalue"] = $doc->getValue($oa->id);
+        if ($oa) $postfiles["oldvalue"] = $doc->getRawValue($oa->id);
         $tuserfiles[] = $postfiles;
     }
     

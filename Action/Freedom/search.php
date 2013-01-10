@@ -76,7 +76,7 @@ function search(&$action)
     
     SetHttpVar("id", $ndoc->id);
     $err = modcard($action, $ndocid); // ndocid change if new doc
-    $orderby = urlencode($ndoc->getValue("se_orderby"));
+    $orderby = urlencode($ndoc->getRawValue("se_orderby"));
     
     if ($generic) {
         redirect($action, "GENERIC", "GENERIC_LIST&famid=$famid&catg=0&dirid=" . $ndoc->id, $action->GetParam("CORE_STANDURL"));

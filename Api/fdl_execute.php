@@ -79,7 +79,7 @@ if ($docid > 0) {
     $doc->clearValue("exec_status");
     $doc->clearValue("exec_statusdate");
     $doc->setValue("exec_state", (($statut == 0) ? "OK" : $statut));
-    $puserid = $doc->getValue("exec_iduser"); // default exec user
+    $puserid = $doc->getRawValue("exec_iduser"); // default exec user
     $doc->setValue("exec_iduser", $doc->getExecUserID());
     $doc->refresh();
     $err = $doc->modify();

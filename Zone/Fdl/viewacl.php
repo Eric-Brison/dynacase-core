@@ -122,7 +122,7 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
             $sql = sprintf('select vgroup.id as aid from docperm,vgroup where docid=%d and userid >= %d and upacl & %d != 0 and docperm.userid=vgroup.num', $doc->dprofid, STARTIDVGROUP, 1 << $Aclpos);
             simpleQuery($perm->dbaccess, $sql, $dynAids, true);
             foreach ($dynAids as $aid) {
-                $va = $doc->getValue($aid);
+                $va = $doc->getRawValue($aid);
                 if ($va) {
                     $tva = explode("\n", str_replace('<BR>', "\n", $va));
                     if (in_array($user->fid, $tva)) {
@@ -210,7 +210,7 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
                 simpleQuery($perm->dbaccess, $sql, $dynAids, true);
                 $mo = $user->getMemberOf(false);
                 foreach ($dynAids as $aid) {
-                    $va = $doc->getValue($aid);
+                    $va = $doc->getRawValue($aid);
                     if ($va) {
                         $tva = explode("\n", str_replace('<BR>', "\n", $va));
                         $as = array_intersect($tva, $mo);

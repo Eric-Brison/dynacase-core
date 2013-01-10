@@ -61,7 +61,7 @@ class _FORUM extends Doc
         $this->lay->setBlockData("entry_list", $el);
         $this->lay->set("title", $this->getTitle());
         $this->lay->set("opened", $this->canAnswer());
-        $this->lay->set("docid", $this->getValue("forum_docid"));
+        $this->lay->set("docid", $this->getRawValue("forum_docid"));
         return;
     }
     
@@ -164,7 +164,7 @@ class _FORUM extends Doc
         
         $elist = array();
         
-        $docid = $this->getValue("forum_docid");
+        $docid = $this->getRawValue("forum_docid");
         $t_id = $this->getTValue("forum_d_id");
         $t_lid = $this->getTValue("forum_d_link");
         $t_userid = $this->getTValue("forum_d_userid");
@@ -208,7 +208,7 @@ class _FORUM extends Doc
     {
         static $doc = false;
         if ($doc === false) {
-            $doc = new_Doc($this->dbaccess, $this->getValue("forum_docid"));
+            $doc = new_Doc($this->dbaccess, $this->getRawValue("forum_docid"));
         }
         if (intval($doc->forumid) < 0) return false;
         if ($this->locked != - 1 && ($doc->Control("forum") == "" || $doc->Control("edit") == "")) return true;

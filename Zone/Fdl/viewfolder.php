@@ -47,13 +47,13 @@ $famid = "") // folder containt special fam id
     $dirid = $dir->id; // use initial id for directories
     $distinct = false;
     
-    $action->lay->set("RSS", ($dir->getValue("gui_isrss") == "yes" ? true : false));
+    $action->lay->set("RSS", ($dir->getRawValue("gui_isrss") == "yes" ? true : false));
     $action->lay->set("rsslink", $dir->getRssLink());
     $action->lay->set("foldername", $dir->getHtmlTitle());
     // control open
     if ($dir->defDoctype == 'S') {
         $aclctrl = "execute";
-        if ($sqlorder == "") $sqlorder = $dir->getValue("se_orderby");
+        if ($sqlorder == "") $sqlorder = $dir->getRawValue("se_orderby");
     } else $aclctrl = "open";
     if (($err = $dir->Control($aclctrl)) != "") $action->exitError($err);
     
@@ -357,9 +357,9 @@ $famid = "") // folder containt special fam id
                     }
                 } else {
                     foreach ($lattr[$doc->fromid] as $ka => $attr) {
-                        //$tvalues[]=$doc->getValue($attr->id,"-");
-                        if ($attr->type == "image") $tvalues[] = '<img src="' . $doc->getHtmlValue($attr, $doc->getValue($attr->id, "-") , $target) . '&height=30"  height="30">';
-                        else $tvalues[] = ($doc->getValue($attr->id) ? $doc->getHtmlValue($attr, $doc->getValue($attr->id) , $target) : '-');
+                        //$tvalues[]=$doc->getRawValue($attr->id,"-");
+                        if ($attr->type == "image") $tvalues[] = '<img src="' . $doc->getHtmlValue($attr, $doc->getRawValue($attr->id, "-") , $target) . '&height=30"  height="30">';
+                        else $tvalues[] = ($doc->getRawValue($attr->id) ? $doc->getHtmlValue($attr, $doc->getRawValue($attr->id) , $target) : '-');
                     }
                 }
                 $tdoc[$k]["values"] = implode('</td><td class="tlist">', $tvalues);

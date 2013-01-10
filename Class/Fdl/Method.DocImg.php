@@ -50,7 +50,7 @@ class _IMAGE extends Doc
         // view all (and only) images
         while (list($i, $attr) = each($listattr)) {
             
-            $value = chop($this->GetValue($i));
+            $value = chop($this->getRawValue($i));
             //------------------------------
             // Set the table value elements
             if (($value != "") && ($attr->visibility != "H")) {

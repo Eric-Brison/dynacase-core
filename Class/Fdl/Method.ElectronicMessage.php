@@ -27,7 +27,7 @@ class _SENTMESSAGE extends Doc
         include_once ("FDL/Lib.Dir.php");
         $this->viewdefaultcard($target, $ulink, $abstract);
         
-        $from = $this->getValue("emsg_from");
+        $from = $this->getRawValue("emsg_from");
         if (preg_match("/<([^>]*)>/", $from, $erg)) {
             $from = $erg[1];
         }
@@ -42,7 +42,7 @@ class _SENTMESSAGE extends Doc
                 $this->lay->set("hasphoto", ($photo != ""));
             }
         }
-        $hashtml = ($this->getValue("emsg_htmlbody") != "");
+        $hashtml = ($this->getRawValue("emsg_htmlbody") != "");
         
         $this->lay->set("hashtml", $hashtml);
         

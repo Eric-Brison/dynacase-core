@@ -21,7 +21,7 @@ if (user) {
     if (duid) {
       var d=C.getDocument({id:duid});
       if (d && d.isAlive()) {
-          var phone=d.getValue("us_phone");
+          var phone=d.getRawValue("us_phone");
 	  alert('Phone:'+phone);
       }
     }

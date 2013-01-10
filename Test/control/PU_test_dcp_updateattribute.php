@@ -48,7 +48,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $this->assertEquals($newValue, $doc->getValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->id, $attrid));
+            $this->assertEquals($newValue, $doc->getRawValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->id, $attrid));
         }
     }
     /**
@@ -75,7 +75,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $this->assertEquals($newValue, $doc->getValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->id, $attrid));
+            $this->assertEquals($newValue, $doc->getRawValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->id, $attrid));
             if ($results[$doc->initid]->changed) {
                 $this->assertGreaterThan($doc->initid, $doc->id, "revision not done for %s (#%d)", $doc->title, $doc->id);
                 $this->assertTrue($results[$doc->initid]->revised);
@@ -115,7 +115,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $this->assertEquals($newValue, $doc->getValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->initid, $attrid));
+            $this->assertEquals($newValue, $doc->getRawValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->initid, $attrid));
             $histo = $doc->getHisto(false, "UPDATE");
             
             $this->assertEquals($comment, $histo[0]["comment"], sprintf("not good history #%d:%s", $doc->initid, print_r($histo, true)));
@@ -187,12 +187,12 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $isIn = (preg_match("/\b$newValue\b/", $doc->getValue($attrid)) > 0);
+            $isIn = (preg_match("/\b$newValue\b/", $doc->getRawValue($attrid)) > 0);
             if (in_array($doc->initid, $needChanged)) {
-                $this->assertTrue($isIn, sprintf("doc %s [#%d] not updated : value is \"%s\"  for %s attribute", $doc->title, $doc->initid, $doc->getValue($attrid) , $attrid));
+                $this->assertTrue($isIn, sprintf("doc %s [#%d] not updated : value is \"%s\"  for %s attribute", $doc->title, $doc->initid, $doc->getRawValue($attrid) , $attrid));
             } else {
                 if (!in_array($doc->initid, $noNeedChanged)) {
-                    $this->assertFalse($isIn, sprintf("doc %s [#%d] must not be updated : value is \"%s\"  for %s attribute", $doc->title, $doc->initid, $doc->getValue($attrid) , $attrid));
+                    $this->assertFalse($isIn, sprintf("doc %s [#%d] must not be updated : value is \"%s\"  for %s attribute", $doc->title, $doc->initid, $doc->getRawValue($attrid) , $attrid));
                 }
             }
         }
@@ -262,7 +262,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
             if ($singleMultiple) {
                 if (!in_array($doc->initid, $noNeedChanged)) {
                     if (is_array($expectedAdd)) {
-                        $this->assertEquals(end($expectedAdd) , end($tv) , sprintf("value \"%s\" not added : %s", print_r($valueToAdd,true), implode(',', $tv)));
+                        $this->assertEquals(end($expectedAdd) , end($tv) , sprintf("value \"%s\" not added : %s", print_r($valueToAdd, true) , implode(',', $tv)));
                     } else {
                         $this->assertEquals($expectedAdd, end($tv) , sprintf("value \"%s\" not added : %s", $valueToAdd, implode(',', $tv)));
                     }
@@ -424,7 +424,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $this->assertEquals($newValue, $doc->getValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->id, $attrid));
+            $this->assertEquals($newValue, $doc->getRawValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->id, $attrid));
         }
     }
     

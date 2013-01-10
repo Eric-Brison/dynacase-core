@@ -89,7 +89,7 @@ function viewcard(Action & $action)
     if ($doc->isConfidential()) {
         redirect($action, "FDL", "FDL_CONFIDENTIAL&id=" . $doc->id);
     }
-    $useRss=($doc->getValue("gui_isrss") == "yes");
+    $useRss = ($doc->getRawValue("gui_isrss") == "yes");
     $action->lay->set("RSS", $useRss);
     if ($useRss) $action->lay->set("rsslink", $doc->getRssLink());
     

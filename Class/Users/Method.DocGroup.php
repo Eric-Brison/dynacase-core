@@ -105,7 +105,7 @@ class _GROUP extends Dir
         $gmail = " ";
         $tmail = array();
         
-        if (!$nomail) $nomail = ($this->getValue("grp_hasmail") == "no");
+        if (!$nomail) $nomail = ($this->getRawValue("grp_hasmail") == "no");
         if (!$nomail) {
             
             $s = new SearchDoc($this->dbaccess);
@@ -120,7 +120,7 @@ class _GROUP extends Dir
             $this->SetValue("GRP_MAIL", $gmail);
         }
         
-        if ($this->getValue("grp_hasmail") == "no") $this->clearValue("GRP_MAIL");
+        if ($this->getRawValue("grp_hasmail") == "no") $this->clearValue("GRP_MAIL");
         
         return $err;
     }

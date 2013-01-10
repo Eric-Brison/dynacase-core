@@ -28,7 +28,7 @@ include_once ("FDL/Lib.Dir.php");
  $k=0;
  while ($doc=$s->nextDoc()) {
  // iterate document by document
- print "$k)".$doc->getTitle()."(".$doc->getValue("US_MAIL","nomail").")\n";clam
+ print "$k)".$doc->getTitle()."(".$doc->getRawValue("US_MAIL","nomail").")\n";clam
  $k+
  * @endcode
  * @class SearchDoc.
@@ -1116,7 +1116,7 @@ class SearchDoc
                     }
                 }
                 if (strpos(implode(",", $sqlfilters) , "archiveid") === false) $sqlfilters[-4] = $maintabledot . "archiveid is null";
-                //if ($fld->getValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
+                //if ($fld->getRawValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
                 if ($trash == "only") $sqlfilters[-1] = "locked = -1";
                 elseif ($latest) $sqlfilters[-1] = "locked != -1";
                 ksort($sqlfilters);
@@ -1175,7 +1175,7 @@ class SearchDoc
                             if ($trash) {
                                 $fld->setValue("se_trash", $trash);
                             } else {
-                                $trash = $fld->getValue("se_trash");
+                                $trash = $fld->getRawValue("se_trash");
                             }
                             $fld->folderRecursiveLevel = $folderRecursiveLevel;
                             $tsqlM = $fld->getQuery();
@@ -1201,7 +1201,7 @@ class SearchDoc
                                     if ($fromid > 0) {
                                         $sqlM = str_replace("from doc ", "from $only $table ", $sqlM);
                                     }
-                                    $fldFromId = ($fromid == 0) ? $fld->getValue('se_famid', 0) : $fromid;
+                                    $fldFromId = ($fromid == 0) ? $fld->getRawValue('se_famid', 0) : $fromid;
                                     $sqlM = $this->injectFromClauseForOrderByLabel($fldFromId, $this->orderbyLabel, $sqlM);
                                     if ($sqlcond) {
                                         $qsql[] = $sqlM . " and " . $sqlcond;

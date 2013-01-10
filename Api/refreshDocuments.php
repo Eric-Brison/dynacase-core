@@ -135,7 +135,7 @@ while ($doc = $s->nextDoc()) {
         if ($doc->isChanged()) {
             $olds = $doc->getOldValues();
             foreach ($olds as $k => $v) {
-                $smod.= sprintf("\t- %s [%s]:[%s]\n", $k, $v, $doc->getValue($k));
+                $smod.= sprintf("\t- %s [%s]:[%s]\n", $k, $v, $doc->getRawValue($k));
             }
             switch ($save) {
                 case "light":

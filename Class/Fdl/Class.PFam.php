@@ -39,8 +39,8 @@ class PFam extends Doc
     
     function preImport(array $extra = array())
     {
-        if ($this->getValue("dpdoc_famid")) {
-            return ErrorCode::getError('PRFL0202', $this->getValue('ba_title'));
+        if ($this->getRawValue("dpdoc_famid")) {
+            return ErrorCode::getError('PRFL0202', $this->getRawValue('ba_title'));
         }
         return '';
     }

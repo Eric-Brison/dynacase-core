@@ -383,7 +383,7 @@ class DocCollection extends Doc
             }
         }
         if (!$famid) {
-            $famid = $this->getValue("se_famid");
+            $famid = $this->getRawValue("se_famid");
             if (!$famid) { // search in origin filter
                 $filter = $this->getTValue("se_filter", '', 0);
                 if ($filter) {

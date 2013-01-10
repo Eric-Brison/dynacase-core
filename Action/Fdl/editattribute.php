@@ -58,7 +58,7 @@ function editattribute(&$action)
             if ($err == "") {
             }
         }
-        $action->lay->set("thetext", $doc->getValue($attrid));
+        $action->lay->set("thetext", $doc->getRawValue($attrid));
     }
     
     if ($err != "") $action->lay->set("CODE", "KO");

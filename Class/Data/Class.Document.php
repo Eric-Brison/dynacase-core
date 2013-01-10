@@ -145,7 +145,7 @@ class Fdl_Document
                     
                     if ($v->mvisibility != "I" && (!empty($this->doc->$k)) && $v->getOption("autotitle") != "yes") {
                         if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id] = $this->doc->GetTValue($v->id);
-                        else $lvalues[$v->id] = $this->doc->getValue($v->id);
+                        else $lvalues[$v->id] = $this->doc->getRawValue($v->id);
                         
                         if (($v->type == "docid" || $v->type == "account") && ($v->visibility != 'H')) {
                             $isLatest = $v->getOption("docrev", "latest") == "latest";
@@ -173,13 +173,13 @@ class Fdl_Document
                                 }
                                 $lvalues[$v->id . "_title"] = $ltitle;
                             } else {
-                                $lvalues[$v->id . "_title"] = DocTitle::getRelationTitle($this->doc->getValue($v->id) , $isLatest, $this->doc);
+                                $lvalues[$v->id . "_title"] = DocTitle::getRelationTitle($this->doc->getRawValue($v->id) , $isLatest, $this->doc);
                                 if ($lvalues[$v->id . "_title"] === false) $lvalues[$v->id . "_title"] = $v->getOption("noaccesstext", _("information access deny"));
                             }
                             //if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->rawValueToArray($lvalues[$v->id . "_title"]);
                             
                         } elseif (($v->type == "thesaurus")) {
-                            $lvalues[$v->id . "_title"] = $this->doc->getTitle($this->doc->getValue($v->id));
+                            $lvalues[$v->id . "_title"] = $this->doc->getTitle($this->doc->getRawValue($v->id));
                             if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->rawValueToArray($lvalues[$v->id . "_title"]);
                         } elseif ($isoDate && ($v->type == 'date' || $v->type == 'timestamp')) {
                             if (is_array($lvalues[$v->id])) {
@@ -204,7 +204,7 @@ class Fdl_Document
             $oa = $this->doc->getAttribute($aid);
             if ($oa && ($oa->mvisibility != "I")) {
                 if ($oa->inArray()) return $this->doc->GetTValue($oa->id);
-                else return $this->doc->GetValue($oa->id);
+                else return $this->doc->getRawValue($oa->id);
             }
         }
         return null;

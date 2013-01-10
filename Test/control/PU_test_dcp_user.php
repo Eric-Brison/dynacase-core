@@ -51,7 +51,7 @@ class TestUser extends TestCaseDcpDocument
         $this->assertTrue($u->setLoginName($login) , "system user not found");
         $this->assertEquals($login, $u->login);
         $this->assertEquals($doc->id, $u->fid, "mismatch document iuser reference");
-        $this->assertEquals($doc->getValue("us_whatid") , $u->id, "mismatch system iuser reference");
+        $this->assertEquals($doc->getRawValue("us_whatid") , $u->id, "mismatch system iuser reference");
         return $doc;
     }
     /**

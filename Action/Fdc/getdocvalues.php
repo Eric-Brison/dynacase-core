@@ -40,7 +40,7 @@ function getdocvalues(&$action)
     if ($err == "") {
         $err = $doc->control("view");
         if ($err == "") {
-            if ($attrid) $values[$attrid] = $doc->getValue($attrid);
+            if ($attrid) $values[$attrid] = $doc->getRawValue($attrid);
             else $values = $doc->getValues();
             foreach ($values as $aid => $v) {
                 $a = $doc->getAttribute($aid);

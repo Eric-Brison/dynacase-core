@@ -40,7 +40,7 @@ function viewattr(&$action, $htmlval = true, $htmllink = true)
     // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
     while (list($k, $v) = each($listattr)) {
         
-        $value = chop($doc->GetValue($v->id));
+        $value = chop($doc->getRawValue($v->id));
         //------------------------------
         // Set the table value elements
         if ($v->mvisibility != "H") {

@@ -340,7 +340,7 @@ function fdl_setHttpVars(&$doc)
     foreach ($http as $k => $v) {
         $oa = $doc->getAttribute($k);
         if ($oa) {
-            if ($doc->getValue($k) == "") {
+            if ($doc->getRawValue($k) == "") {
                 if ($oa->inArray() && (!is_array($v))) $v = $doc->rawValueToArray(str_replace('\n', "\n", $v));
                 $doc->setValue($k, $v);
                 //		print "<br>Set $k to ";print_r($v);

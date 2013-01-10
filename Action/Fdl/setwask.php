@@ -42,7 +42,7 @@ function setwask(&$action)
             $err = $doc->setWaskAnswer($waskid, $answer);
             if ($err) $action->addWarningMsg($err);
             else $task[] = array(
-                "ask" => $wask->getValue("was_ask") ,
+                "ask" => $wask->getRawValue("was_ask") ,
                 "answer" => implode(", ", $wask->getAskLabels($answer))
             );
         }

@@ -51,8 +51,8 @@ function diffdoc(&$action)
             if ($v1 == $v2) $cdiff = "eq";
             else $cdiff = "ne";
         } else {
-            $v1 = $d1->getValue($a->id);
-            $v2 = $d2->getValue($a->id);
+            $v1 = $d1->getRawValue($a->id);
+            $v2 = $d2->getRawValue($a->id);
             if ($v1 == $v2) $cdiff = "eq";
             else $cdiff = "ne";
         }

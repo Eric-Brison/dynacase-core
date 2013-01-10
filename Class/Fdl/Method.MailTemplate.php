@@ -26,7 +26,7 @@ class _MAILTEMPLATE extends Doc
     {
         global $action;
         
-        if ($mailfamily = $this->getValue("tmail_family", getHttpVars("TMAIL_FAMILY"))) {
+        if ($mailfamily = $this->getRawValue("tmail_family", getHttpVars("TMAIL_FAMILY"))) {
             $action->parent->AddJsRef("?app=FDL&action=FCKDOCATTR&famid=" . $mailfamily);
         }
     }
@@ -90,11 +90,11 @@ class _MAILTEMPLATE extends Doc
                 "bcc" => array() ,
                 "from" => array()
             );
-            $from = trim($this->getValue("tmail_from"));
+            $from = trim($this->getRawValue("tmail_from"));
             if ($from) {
                 $tdest[] = array(
                     "tmail_copymode" => "from",
-                    "tmail_desttype" => $this->getValue("tmail_fromtype") ,
+                    "tmail_desttype" => $this->getRawValue("tmail_fromtype") ,
                     "tmail_recip" => $from
                 );
             }
@@ -178,7 +178,7 @@ class _MAILTEMPLATE extends Doc
                             if ($type == 'DE') {
                                 $vdocid = $udoc->getParamValue($aid);
                             } else {
-                                $vdocid = $udoc->getValue($aid); // for array of users
+                                $vdocid = $udoc->getRawValue($aid); // for array of users
                                 
                             }
                             $vdocid = str_replace('<BR>', "\n", $vdocid);
@@ -193,8 +193,8 @@ class _MAILTEMPLATE extends Doc
                                 foreach ($it as $aDoc) {
                                     $umail = '';
                                     if (method_exists($aDoc, "getMail")) $umail = $aDoc->getMail();
-                                    if (!$umail) $umail = $aDoc->getValue('us_mail', '');
-                                    if (!$umail) $umail = $aDoc->getValue('grp_mail', '');
+                                    if (!$umail) $umail = $aDoc->getRawValue('us_mail', '');
+                                    if (!$umail) $umail = $aDoc->getRawValue('grp_mail', '');
                                     if ($umail) $tmail[] = $umail;
                                 }
                                 $mail = implode(",", $tmail);
@@ -205,8 +205,8 @@ class _MAILTEMPLATE extends Doc
                                         $aDoc = new_Doc("", $vdocid);
                                         $mail = '';
                                         if (method_exists($aDoc, "getMail")) $mail = $aDoc->getMail();
-                                        if (!$mail) $mail = $aDoc->getValue('us_mail', '');
-                                        if (!$mail) $mail = $aDoc->getValue('grp_mail', '');
+                                        if (!$mail) $mail = $aDoc->getRawValue('us_mail', '');
+                                        if (!$mail) $mail = $aDoc->getRawValue('grp_mail', '');
                                     } else {
                                         $mail = $udoc->getRValue($aid . ':us_mail');
                                         if (!$mail) $mail = $udoc->getRValue($aid . ':grp_mail');
@@ -234,7 +234,7 @@ class _MAILTEMPLATE extends Doc
                         ""
                     ) , $mail);
                 }
-                $subject = $this->generateMailInstance($doc, $this->getValue("tmail_subject"));
+                $subject = $this->generateMailInstance($doc, $this->getRawValue("tmail_subject"));
                 $subject = str_replace(array(
                     "\n",
                     "\r",
@@ -244,7 +244,7 @@ class _MAILTEMPLATE extends Doc
                     " ",
                     ", "
                 ) , html_entity_decode($subject, ENT_COMPAT, "UTF-8"));
-                $pfout = $this->generateMailInstance($doc, $this->getValue("tmail_body"));
+                $pfout = $this->generateMailInstance($doc, $this->getRawValue("tmail_body"));
                 // delete empty address
                 $dest['to'] = array_filter($dest['to'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
                 $dest['cc'] = array_filter($dest['cc'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
@@ -330,7 +330,7 @@ class _MAILTEMPLATE extends Doc
                 
                 $err = sendmail($to, $from, $cc, $bcc, $subject, $multi_mix);
                 
-                $savecopy = $this->getValue("tmail_savecopy") == "yes";
+                $savecopy = $this->getRawValue("tmail_savecopy") == "yes";
                 if (($err == "") && $savecopy) createSentMessage($to, $from, $cc, $bcc, $subject, $multi_mix, $doc);
                 $recip = "";
                 if ($to) $recip.= sprintf(_("sendmailto %s") , $to);
@@ -361,7 +361,7 @@ class _MAILTEMPLATE extends Doc
             $tpl = str_replace("&#x5B;", "[", $tpl); // replace [ convverted in Doc::setValue()
             $doc->lay = new Layout("", $action, $tpl);
             
-            $ulink = ($this->getValue("tmail_ulink") == "yes");
+            $ulink = ($this->getRawValue("tmail_ulink") == "yes");
             $doc->viewdefaultcard("mail", $ulink, false, true);
             foreach ($this->keys as $k => $v) $doc->lay->set($k, $v);
             $body = $doc->lay->gen();

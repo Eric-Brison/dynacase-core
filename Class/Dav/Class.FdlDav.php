@@ -216,16 +216,16 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
             //error_log("FSPATH3 :.$fspath vid:[$vid]");
             
         } else if (preg_match('/\/vid-([0-9]+)-([0-9]+)/', $fspath, $reg)) {
-            include_once('FDL/Lib.Vault.php');
+            include_once ('FDL/Lib.Vault.php');
             $fid = $reg[1];
             $tmpvid = $reg[2];
-            $info=vault_properties($tmpvid);
-
+            $info = vault_properties($tmpvid);
+            
             $fsbase = basename($fspath);
             if ($info->name == $fsbase) {
                 $vid = $tmpvid;
             } else {
-                $fid=0;
+                $fid = 0;
             }
             // error_log("FSPATH3 :.$fspath vid:[$vid]");
             
@@ -751,7 +751,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
     {
         
         error_log("---------- >MKCOL :" . $options["path"]);
-        $err='';
+        $err = '';
         include_once ("FDL/Class.Doc.php");
         
         if (!empty($_SERVER["CONTENT_LENGTH"])) { // no body parsing yet
@@ -1051,7 +1051,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                 error_log("# FILE :" . count($afiles));
                 $ff = $copy->GetFirstFileAttributes();
                 
-                $f = $copy->getValue($ff->id);
+                $f = $copy->getRawValue($ff->id);
                 error_log("RENAME SEARCH:" . $f);
                 if (preg_match(PREGEXPFILE, $f, $reg)) {
                     $vf = newFreeVaultFile($this->db_freedom);

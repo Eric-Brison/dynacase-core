@@ -67,7 +67,7 @@ function exportfile(Action & $action)
              */
             $ovalue = $doc->getParamValue($attrid);
             if (!$ovalue) $ovalue = $doc->getDefValue($attrid);
-        } else $ovalue = $doc->getValue($attrid);
+        } else $ovalue = $doc->getRawValue($attrid);
         if (($index !== "") && ($index >= 0)) {
             $tvalue = explode("\n", $ovalue);
             $ovalue = $tvalue[$index];

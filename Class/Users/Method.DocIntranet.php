@@ -62,7 +62,7 @@ class _IGROUPUSER extends Doc
     {
         $sug = array();
         
-        $id = $this->GetValue("US_WHATID");
+        $id = $this->getRawValue("US_WHATID");
         
         $q = new QueryDb("", "Account");
         $q->AddQuery(sprintf("login='%s'", pg_escape_string(mb_strtolower($login))));
@@ -79,11 +79,11 @@ class _IGROUPUSER extends Doc
     
     function preCreated()
     {
-        if ($this->getValue("US_WHATID") != "") {
+        if ($this->getRawValue("US_WHATID") != "") {
             include_once ('FDL/Lib.Dir.php');
             
             $filter = array(
-                "us_whatid = '" . intval($this->getValue("US_WHATID")) . "'"
+                "us_whatid = '" . intval($this->getRawValue("US_WHATID")) . "'"
             );
             $tdoc = getChildDoc($this->dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", $this->fromid);
             if (count($tdoc) > 0) return _("system id already set in database\nThis kind of document can not be duplicated");
@@ -97,7 +97,7 @@ class _IGROUPUSER extends Doc
     {
         $err = parent::preDocDelete();
         if ($err == "") {
-            $uid = $this->getValue("us_whatid");
+            $uid = $this->getRawValue("us_whatid");
             if (($uid > 0) && ($uid < 10)) $err = _("this system user cannot be deleted");
         }
         return $err;
@@ -133,7 +133,7 @@ class _IGROUPUSER extends Doc
         
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/mktree.js");
         $err = '';
-        $iduser = $this->getValue("US_WHATID");
+        $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
             if (!$user->isAffected()) return sprintf(_("user #%d does not exist") , $iduser);
@@ -318,7 +318,7 @@ class _IGROUPUSER extends Doc
             
         }
         if (!isset($this->wuser)) {
-            $wid = $this->getValue("us_whatid");
+            $wid = $this->getRawValue("us_whatid");
             if ($wid > 0) {
                 $this->wuser = new Account("", $wid);
             }

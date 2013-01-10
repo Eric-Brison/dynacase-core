@@ -45,7 +45,7 @@ function generic_search(Action & $action)
     if ($catgid) {
         $dir = new_doc($dbaccess, $catgid);
         if ($dir->isAlive()) {
-            $sfamid = $dir->getValue("se_famid", $famid);
+            $sfamid = $dir->getRawValue("se_famid", $famid);
         }
     }
     $action->setParamU("GENE_LATESTTXTSEARCH", setUkey($action, $famid, $keyword));

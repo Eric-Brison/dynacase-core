@@ -53,11 +53,11 @@ class _DSEARCH extends DocSearch
         $distinct = false;
         if ($latest == "lastfixed") $distinct = true;
         if ($cond != "") $filters[] = $cond;
-        if ($this->getValue("se_famonly") == "yes") {
+        if ($this->getRawValue("se_famonly") == "yes") {
             if (!is_numeric($famid)) $famid = getFamIdFromName($this->dbaccess, $famid);
             $famid = - abs($famid);
         }
-        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getValue("se_trash") , false);
+        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash") , false);
         
         return $query;
     }
@@ -142,8 +142,8 @@ class _DSEARCH extends DocSearch
                 if ($typeFilters[0] != "generated") return ''; // don't update specified filter created by data API
                 
             }
-            if ($this->getValue("se_famid")) {
-                $filterXml = sprintf("<filter><family>%s%s</family>", $this->getValue("se_famid") , ($this->getValue("se_famonly") == "yes" ? " strict" : ""));
+            if ($this->getRawValue("se_famid")) {
+                $filterXml = sprintf("<filter><family>%s%s</family>", $this->getRawValue("se_famid") , ($this->getRawValue("se_famonly") == "yes" ? " strict" : ""));
                 
                 $filterXml.= "</filter>";
                 $this->setValue("se_typefilter", "generated"); // only one
@@ -263,8 +263,8 @@ class _DSEARCH extends DocSearch
     function getSqlCond($col, $op, $val = "", $val2 = "", &$err = "")
     {
         
-        if ((!$this->searchfam) || ($this->searchfam->id != $this->getValue("se_famid"))) {
-            $this->searchfam = new_doc($this->dbaccess, $this->getValue("se_famid"));
+        if ((!$this->searchfam) || ($this->searchfam->id != $this->getRawValue("se_famid"))) {
+            $this->searchfam = new_doc($this->dbaccess, $this->getRawValue("se_famid"));
         }
         $col = trim(strtok($col, ' ')); // a col is one word only (prevent injection)
         // because for historic reason revdate is not a date type
@@ -516,7 +516,7 @@ class _DSEARCH extends DocSearch
                  */
                 function getSqlDetailFilter()
                 {
-                    $ol = $this->getValue("SE_OL");
+                    $ol = $this->getRawValue("SE_OL");
                     $tkey = $this->getTValue("SE_KEYS");
                     $taid = $this->getTValue("SE_ATTRIDS");
                     $tf = $this->getTValue("SE_FUNCS");
@@ -536,7 +536,7 @@ class _DSEARCH extends DocSearch
                     if ($ol == "") $ol = "and";
                     $cond = "";
                     if (!$this->searchfam) {
-                        $this->searchfam = new_doc($this->dbaccess, $this->getValue("se_famid"));
+                        $this->searchfam = new_doc($this->dbaccess, $this->getRawValue("se_famid"));
                     }
                     if ((count($taid) > 1) || (count($taid) > 0 && $taid[0] != "")) {
                         // special loop for revdate
@@ -676,7 +676,7 @@ class _DSEARCH extends DocSearch
                             $l = " (" . implode(", ", $tl) . ")";
                         }
                     }
-                    return $this->getValue("ba_title") . $l;
+                    return $this->getRawValue("ba_title") . $l;
                 }
                 /**
                  * @templateController default detailed search view
@@ -695,7 +695,7 @@ class _DSEARCH extends DocSearch
                     $tf = $this->getTValue("SE_FUNCS");
                     if ((count($taid) > 1) || ($taid[0] != "")) {
                         
-                        $fdoc = new_Doc($this->dbaccess, $this->getValue("SE_FAMID", 1));
+                        $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
                         $zpi = $fdoc->GetNormalAttributes();
                         $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
                         $zpi["fixstate"] = new BasicAttribute("fixstate", $this->fromid, _("state"));
@@ -742,7 +742,7 @@ class _DSEARCH extends DocSearch
                  */
                 function isStaticSql()
                 {
-                    return ($this->getValue("se_static") != "");
+                    return ($this->getRawValue("se_static") != "");
                 }
                 /**
                  * return family use for search
@@ -751,7 +751,7 @@ class _DSEARCH extends DocSearch
                 private function getSearchFamilyDocument()
                 {
                     static $fam = null;
-                    if (!$fam) $fam = createTmpDoc($this->dbaccess, $this->getValue("SE_FAMID", 1));
+                    if (!$fam) $fam = createTmpDoc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
                     return $fam;
                 }
                 /**
@@ -773,7 +773,7 @@ class _DSEARCH extends DocSearch
                     $zpi = $toperator = array();
                     if ((count($taid) > 1) || ($taid[0] != "")) {
                         
-                        $fdoc = new_Doc($this->dbaccess, $this->getValue("SE_FAMID", 1));
+                        $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
                         $zpi = $fdoc->GetNormalAttributes();
                         $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
                         $zpi["fixstate"] = new BasicAttribute("state", $this->fromid, _("fixstate"));
@@ -867,7 +867,7 @@ class _DSEARCH extends DocSearch
                      */
                     global $action;
                     $classid = GetHttpVars("sfamid", 0);
-                    $famid = $this->getValue("SE_FAMID", 0);
+                    $famid = $this->getRawValue("SE_FAMID", 0);
                     $onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
                     $dirid = GetHttpVars("dirid");
                     $this->lay->set("ACTION", $action->name);
@@ -962,7 +962,7 @@ class _DSEARCH extends DocSearch
                         } else $selectclass[$k]["selected"] = "";
                     }
                     if (!$selfam) {
-                        $famid = abs($this->getValue("se_famid"));
+                        $famid = abs($this->getRawValue("se_famid"));
                         if ($this->id && $famid) {
                             $selectclass[] = array(
                                 "idcdoc" => $famid,
@@ -979,7 +979,7 @@ class _DSEARCH extends DocSearch
                     $this->lay->Set("classid", $this->fromid);
                     $this->lay->SetBlockData("SELECTCLASS", $selectclass);
                     $this->lay->set("has_permission_fdl_system", $action->parent->hasPermission('FDL', 'SYSTEM'));
-                    $this->lay->set("se_sysfam", ($this->getValue('se_sysfam') == 'yes') ? true : false);
+                    $this->lay->set("se_sysfam", ($this->getRawValue('se_sysfam') == 'yes') ? true : false);
                     $this->setFamidInLayout();
                     // display attributes
                     $tattr = array();
@@ -1077,7 +1077,7 @@ class _DSEARCH extends DocSearch
                     $this->lay->SetBlockData("FUNCSTATE", $tfunc);
                     $this->lay->Set("icon", $fdoc->getIcon());
                     
-                    if ($this->getValue("SE_LATEST") == "no") $this->lay->Set("select_all", "selected");
+                    if ($this->getRawValue("SE_LATEST") == "no") $this->lay->Set("select_all", "selected");
                     else $this->lay->Set("select_all", "");
                     $states = array();
                     //-----------------------------------------------

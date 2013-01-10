@@ -118,12 +118,12 @@ class DocSearch extends PDocSearch
     function getQuery()
     {
         if (!$this->isStaticSql()) {
-            $query = $this->ComputeQuery($this->getValue("se_key") , $this->getValue("se_famid") , $this->getValue("se_latest") , $this->getValue("se_case") == "yes", $this->getValue("se_idfld") , $this->getValue("se_sublevel") === "", $this->getValue("se_case") == "full");
+            $query = $this->ComputeQuery($this->getRawValue("se_key") , $this->getRawValue("se_famid") , $this->getRawValue("se_latest") , $this->getRawValue("se_case") == "yes", $this->getRawValue("se_idfld") , $this->getRawValue("se_sublevel") === "", $this->getRawValue("se_case") == "full");
             // print "<HR>getQuery1:[$query]";
             
         } else {
-            $query[] = $this->getValue("SE_SQLSELECT");
-            // print "<BR><HR>".$this->getValue("se_latest")."/".$this->getValue("se_case")."/".$this->getValue("se_key");
+            $query[] = $this->getRawValue("SE_SQLSELECT");
+            // print "<BR><HR>".$this->getRawValue("se_latest")."/".$this->getRawValue("se_case")."/".$this->getRawValue("se_key");
             //  print "getQuery2:[$query]";
             
         }
@@ -159,8 +159,8 @@ class DocSearch extends PDocSearch
             $filters[] = "locked = -1";
         }
         
-        if ($this->getValue("se_archive") > 0) {
-            $filters[] = sprintf("archiveid = %d", $this->getValue("se_archive"));
+        if ($this->getRawValue("se_archive") > 0) {
+            $filters[] = sprintf("archiveid = %d", $this->getRawValue("se_archive"));
         }
         if ($keyword) {
             if ($keyword[0] == '~') {
@@ -213,7 +213,7 @@ class DocSearch extends PDocSearch
             }
             $this->setValue("se_orderby", " ");
         }
-        if ($this->getValue("se_sysfam") == 'no' && (!$this->getValue("se_famid"))) {
+        if ($this->getRawValue("se_sysfam") == 'no' && (!$this->getRawValue("se_famid"))) {
             $filters[] = sprintf("usefor !~ '^S'");
             $filters[] = sprintf("doctype != 'C'");
         }
@@ -337,12 +337,12 @@ class DocSearch extends PDocSearch
         }
         $filters = $this->getSqlGeneralFilters($keyword, $latest, $sensitive, $full);
         
-        if ($this->getValue("se_famonly") == "yes") {
+        if ($this->getRawValue("se_famonly") == "yes") {
             if (!is_numeric($famid)) $famid = getFamIdFromName($this->dbaccess, $famid);
             $famid = - abs($famid);
         }
         
-        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, false, $latest == "yes", $this->getValue("se_trash"));
+        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, false, $latest == "yes", $this->getRawValue("se_trash"));
         
         return $query;
     }
@@ -352,7 +352,7 @@ class DocSearch extends PDocSearch
      */
     function isStaticSql()
     {
-        return ($this->getValue("se_static") != "") || (($this->getValue("se_latest") == "") && ($this->getValue("se_case") == "") && ($this->getValue("se_key") == ""));
+        return ($this->getRawValue("se_static") != "") || (($this->getRawValue("se_latest") == "") && ($this->getRawValue("se_case") == "") && ($this->getRawValue("se_key") == ""));
     }
     /**
      * return error if query filters are not compatibles
@@ -390,12 +390,12 @@ class DocSearch extends PDocSearch
         
         $farch = new_doc($this->dbaccess, "ARCHIVING");
         if ($farch) $this->lay->set("archive", ($farch->control("view") == ""));
-        $this->lay->set("thekey", $this->getValue("se_key"));
+        $this->lay->set("thekey", $this->getRawValue("se_key"));
         $dirid = GetHttpVars("dirid"); // to set restriction family
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
-        $famid = $this->getValue("se_famid");
+        $famid = $this->getRawValue("se_famid");
         $classid = 0;
         if ($dirid > 0) {
             /**
@@ -439,7 +439,7 @@ class DocSearch extends PDocSearch
         
         $this->lay->SetBlockData("SELECTCLASS", $selectclass);
         $this->lay->set("has_permission_fdl_system", $action->parent->hasPermission('FDL', 'SYSTEM'));
-        $this->lay->set("se_sysfam", ($this->getValue('se_sysfam') == 'yes') ? true : false);
+        $this->lay->set("se_sysfam", ($this->getRawValue('se_sysfam') == 'yes') ? true : false);
         
         $this->editattr();
     }
@@ -462,8 +462,8 @@ class DocSearch extends PDocSearch
     {
         if ($controlview) $uid = $this->userid;
         else $uid = 1;
-        $orderby = $this->getValue("se_orderby", "title");
-        $tdoc = getChildDoc($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, "TABLE", $famid, false, $orderby, true, $this->getValue("se_trash"));
+        $orderby = $this->getRawValue("se_orderby", "title");
+        $tdoc = getChildDoc($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, "TABLE", $famid, false, $orderby, true, $this->getRawValue("se_trash"));
         return $tdoc;
     }
 }

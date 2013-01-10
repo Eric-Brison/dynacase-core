@@ -237,7 +237,7 @@ class Dir extends PDir
                     if ($doc->profid == 0) { // only if no privilege yet
                         switch ($doc->defProfFamId) {
                             case FAM_ACCESSDOC:
-                                $profid = $this->getValue("FLD_PDOCID", 0);
+                                $profid = $this->getRawValue("FLD_PDOCID", 0);
                                 if ($profid > 0) {
                                     $doc->setProfil($profid);
                                     $err = $doc->modify(true, array(
@@ -249,17 +249,17 @@ class Dir extends PDir
                                 break;
 
                             case FAM_ACCESSDIR:
-                                $profid = $this->getValue("FLD_PDIRID", 0);
+                                $profid = $this->getRawValue("FLD_PDIRID", 0);
                                 if ($profid > 0) {
                                     $doc->setProfil($profid);
                                     // copy default privilege if not set
-                                    if ($doc->getValue("FLD_PDIRID") == "") {
-                                        $doc->setValue("FLD_PDIRID", $this->getValue("FLD_PDIRID"));
-                                        $doc->setValue("FLD_PDIR", $this->getValue("FLD_PDIR"));
+                                    if ($doc->getRawValue("FLD_PDIRID") == "") {
+                                        $doc->setValue("FLD_PDIRID", $this->getRawValue("FLD_PDIRID"));
+                                        $doc->setValue("FLD_PDIR", $this->getRawValue("FLD_PDIR"));
                                     }
-                                    if ($doc->getValue("FLD_PDOCID") == "") {
-                                        $doc->setValue("FLD_PDOCID", $this->getValue("FLD_PDOCID"));
-                                        $doc->setValue("FLD_PDOC", $this->getValue("FLD_PDOC"));
+                                    if ($doc->getRawValue("FLD_PDOCID") == "") {
+                                        $doc->setValue("FLD_PDOCID", $this->getRawValue("FLD_PDOCID"));
+                                        $doc->setValue("FLD_PDOC", $this->getRawValue("FLD_PDOC"));
                                     }
                                     $err = $doc->modify();
                                     if ($err == "") $doc->addHistoryEntry(sprintf(_("Change profil to default subfolder profil : %d") , $profid));
@@ -554,7 +554,7 @@ class Dir extends PDir
         function postModify()
         {
             // don't see restriction frame is not needed
-            $allbut = $this->getValue("FLD_ALLBUT");
+            $allbut = $this->getRawValue("FLD_ALLBUT");
             $tfamid = $this->getTValue("FLD_FAMIDS");
             
             if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
@@ -582,7 +582,7 @@ class Dir extends PDir
                 $tfamid = $this->getTValue("FLD_FAMIDS");
                 $tfam = $this->getTValue("FLD_FAM");
                 $tsubfam = $this->getTValue("FLD_SUBFAM");
-                $allbut = $this->getValue("FLD_ALLBUT");
+                $allbut = $this->getRawValue("FLD_ALLBUT");
                 
                 if (($allbut != "1") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
                     $this->norestrict = true;

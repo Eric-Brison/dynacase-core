@@ -38,7 +38,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("setvalue error : %s", $err));
         if ($converted === false) $converted = $value;
         
-        $this->assertEquals($converted, $d->getValue($attrid) , "setvalue / getvalue $attrid : not the same");
+        $this->assertEquals($converted, $d->getRawValue($attrid) , "setvalue / getvalue $attrid : not the same");
         $err = $d->store();
         $this->assertEmpty($err, sprintf("store error : %s", $err));
         return $d;
@@ -53,7 +53,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
         
         $err = $d->setValue($attrid, $value);
         $this->assertNotEmpty($err, sprintf("setvalue error : %s", $err));
-        $this->assertEmpty($d->getValue($attrid));
+        $this->assertEmpty($d->getRawValue($attrid));
         
         return $d;
     }

@@ -88,7 +88,7 @@ function settxtfile(Action & $action)
                                         // propagation in case of auto revision
                                         $idl = $doc->latestId();
                                         $ldoc = new_Doc($dbaccess, $idl);
-                                        if ($doc->getValue($attrid) == $ldoc->getValue($attrid)) {
+                                        if ($doc->getRawValue($attrid) == $ldoc->getRawValue($attrid)) {
                                             $ldoc->$at = $doc->$at;
                                             $ldoc->$av = '';
                                             $ldoc->fulltext = '';

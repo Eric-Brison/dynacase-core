@@ -46,7 +46,7 @@ function generic_editimport(&$action)
     if ($doc->ccvid > 0) {
         // special controlled view
         $cvdoc = new_Doc($dbaccess, $doc->ccvid);
-        $cvid = $cvdoc->getValue("CV_IDCVIEW");
+        $cvid = $cvdoc->getRawValue("CV_IDCVIEW");
         if ($cvid) {
             $err = $cvdoc->control($cvid); // control special view
             if ($err != "") $action->exitError($err);

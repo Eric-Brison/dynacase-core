@@ -704,8 +704,8 @@ class Form1NF
                         );
                         // fields
                         foreach ($table->columns as $column) {
-                            $fieldValues[] = $column->getPgEscape($doc->getValue($column->name));
-                            $fieldCopyValues[] = $column->getPgEscapeCopy($doc->getValue($column->name));
+                            $fieldValues[] = $column->getPgEscape($doc->getRawValue($column->name));
+                            $fieldCopyValues[] = $column->getPgEscapeCopy($doc->getRawValue($column->name));
                         }
                         // properties
                         foreach ($table->properties as $property) {
@@ -722,7 +722,7 @@ class Form1NF
                             
                             switch ($tablesByName[$fTable]->type) {
                                 case 'family': // docid
-                                    $value = $doc->getValue($reference->attributeName);
+                                    $value = $doc->getRawValue($reference->attributeName);
                                     $id = $this->sqlGetValidDocId($value);
                                     $fieldValues[] = $id;
                                     $fieldCopyValues[] = $id == 'NULL' ? "\\N" : $id;
@@ -731,7 +731,7 @@ class Form1NF
                                 case 'enum':
                                 case 'enum_multiple':
                                 case 'enum_inarray':
-                                    $value = $doc->getValue($reference->attributeName);
+                                    $value = $doc->getRawValue($reference->attributeName);
                                     $tablesByName[$fTable]->checkEnumValue($value);
                                     $fieldValues[] = $this->getPgEscape($value);
                                     $fieldCopyValues[] = $this->getPgEscapeCopy($value);

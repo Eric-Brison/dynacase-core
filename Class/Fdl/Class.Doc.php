@@ -1495,8 +1495,8 @@ create unique index i_docir on doc(initid, revision);";
         // --------------------------------------------------------------------
         $filter[] = "doctype!='T'";
         if ($this->initid > 0) $filter[] = sprintf("initid != %d", $this->initid); // not itself
-        $filter[] = sprintf("%s=E'%s'", $key1, pg_escape_string($this->getValue($key1)));
-        if ($key2 != "") $filter[] = sprintf("%s=E'%s'", $key2, pg_escape_string($this->getValue($key2)));
+        $filter[] = sprintf("%s=E'%s'", $key1, pg_escape_string($this->getRawValue($key1)));
+        if ($key2 != "") $filter[] = sprintf("%s=E'%s'", $key2, pg_escape_string($this->getRawValue($key2)));
         $tpers = getChildDoc($this->dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $this->fromid);
         
         return $tpers;
@@ -1877,7 +1877,7 @@ create unique index i_docir on doc(initid, revision);";
         if (isset($this->attributes->attr)) {
             foreach ($this->attributes->attr as $k => $v) {
                 if ((get_class($v) == "NormalAttribute") && ($v->getOption("version") == "yes")) {
-                    $tversion[] = $this->getValue($v->id);
+                    $tversion[] = $this->getRawValue($v->id);
                 }
             }
         }
@@ -2082,7 +2082,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($mdoc->isAlive()) {
                 if (is_a($mdoc, '_MASK')) {
                     
-                    $maskFam = $mdoc->getValue("msk_famid");
+                    $maskFam = $mdoc->getRawValue("msk_famid");
                     if (!in_array($maskFam, $this->getFromDoc())) {
                         $err = ErrorCode::getError('DOC1002', $argMid, $this->getTitle() , getNameFromId($this->dbaccess, $maskFam));
                     } else {
@@ -2470,7 +2470,7 @@ create unique index i_docir on doc(initid, revision);";
         $tsa = $this->GetNeededAttributes();
         $err = "";
         foreach ($tsa as $k => $v) {
-            if ($this->getValue($v->id) == "") $err.= sprintf(_("%s needed\n") , $v->getLabel());
+            if ($this->getRawValue($v->id) == "") $err.= sprintf(_("%s needed\n") , $v->getLabel());
         }
         return $err;
     }
@@ -2583,9 +2583,9 @@ create unique index i_docir on doc(initid, revision);";
         
         $title1 = "";
         foreach ($ltitle as $k => $v) {
-            if ($this->GetValue($v->id) != "") {
-                if ($v->type == "enum") $title1.= $this->GetHtmlValue($v, $this->GetValue($v->id)) . " ";
-                else $title1.= $this->GetValue($v->id) . " ";
+            if ($this->getRawValue($v->id) != "") {
+                if ($v->type == "enum") $title1.= $this->GetHtmlValue($v, $this->getRawValue($v->id)) . " ";
+                else $title1.= $this->getRawValue($v->id) . " ";
             }
         }
         if (chop($title1) != "") $this->title = mb_substr(chop(str_replace("\n", " ", $title1)) , 0, 255); // restric to 256 char
@@ -2741,7 +2741,7 @@ create unique index i_docir on doc(initid, revision);";
         //    if (isset($this->id) && ($this->id>0)) {
         $nattr = $this->GetNormalAttributes();
         foreach ($nattr as $k => $v) {
-            $lvalues[$v->id] = $this->GetValue($v->id);
+            $lvalues[$v->id] = $this->getRawValue($v->id);
         }
         // }
         $lvalues = array_merge($lvalues, $this->mvalues); // add more values possibilities
@@ -2760,19 +2760,35 @@ create unique index i_docir on doc(initid, revision);";
      $doc = new_Doc('',7498 );
      if ($doc->isAlive()) {
      $rev = $doc->getProperty('revision');
-     $order = $doc->getValue("tst_order");
-     $level = $doc->getValue("tst_level","0");
+     $order = $doc->getRawValue("tst_order");
+     $level = $doc->getRawValue("tst_level","0");
      }
      * @endcode
      * @return string the attribute value
      */
-    final public function getValue($idAttr, $def = "")
+    final public function getRawValue($idAttr, $def = "")
     {
-        
         $lidAttr = strtolower($idAttr);
         if (isset($this->$lidAttr) && ($this->$lidAttr != "")) return $this->$lidAttr;
         
         return $def;
+    }
+    /**
+     * return the value of an attribute document
+     * @deprecated use [@link getRawValue} instead
+     * @param string $idAttr attribute identifier
+     * @param string $def default value returned if attribute not found or if is empty
+     * @see getRawValue
+     * @return string the attribute value
+     */
+    final public function getValue($idAttr, $def = "")
+    {
+        static $first = true;
+        if ($first) {
+            deprecatedFunction();
+            $first = false;
+        }
+        return $this->getRawValue($idAttr, $def);
     }
     /**
      * return all values of a multiple value attribute
@@ -2786,7 +2802,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getTValue($idAttr, $def = "", $index = - 1)
     {
-        $v = $this->getValue("$idAttr", null);
+        $v = $this->getRawValue("$idAttr", null);
         if ($v === null) {
             if ($index == - 1) return array();
             else return $def;
@@ -3407,7 +3423,7 @@ create unique index i_docir on doc(initid, revision);";
             foreach ($this->textsend as $k => $v) {
                 $index = $v["index"];
                 if ($index > 0) $fval = $this->getTValue($v["attrid"], "", $index);
-                else $fval = strtok($this->getValue($v["attrid"]) , "\n");
+                else $fval = strtok($this->getRawValue($v["attrid"]) , "\n");
                 if (preg_match(PREGEXPFILE, $fval, $reg)) {
                     $vid = $reg[2];
                     $err = sendTextTransformation($this->dbaccess, $this->id, $v["attrid"], $index, $vid);
@@ -3466,7 +3482,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($a->type == "file") {
             $err = "file conversion";
             $vf = newFreeVaultFile($this->dbaccess);
-            $fvalue = $this->getValue($attrid);
+            $fvalue = $this->getRawValue($attrid);
             $basename = "";
             if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                 $vaultid = $reg[2];
@@ -3521,7 +3537,7 @@ create unique index i_docir on doc(initid, revision);";
         $a = $this->getAttribute($attrid);
         if ($a->type == "file") {
             $vf = newFreeVaultFile($this->dbaccess);
-            $fvalue = $this->getValue($attrid);
+            $fvalue = $this->getRawValue($attrid);
             $basename = "";
             if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                 $vaultid = $reg[2];
@@ -3560,7 +3576,7 @@ create unique index i_docir on doc(initid, revision);";
                 $err = "file conversion";
                 $vf = newFreeVaultFile($this->dbaccess);
                 if ($index > - 1) $fvalue = $this->getTValue($attrid, '', $index);
-                else $fvalue = $this->getValue($attrid);
+                else $fvalue = $this->getRawValue($attrid);
                 $basename = "";
                 if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                     $vaultid = $reg[2];
@@ -3639,7 +3655,7 @@ create unique index i_docir on doc(initid, revision);";
     final function copyFile($idattr, $newname = "", $index = - 1)
     {
         if ($index >= 0) $f = $this->getTValue($idattr, "", $index);
-        else $f = $this->getValue($idattr);
+        else $f = $this->getRawValue($idattr);
         if ($f) {
             if (preg_match(PREGEXPFILE, $f, $reg)) {
                 $vf = newFreeVaultFile($this->dbaccess);
@@ -3678,7 +3694,7 @@ create unique index i_docir on doc(initid, revision);";
     final function renameFile($idattr, $newname, $index = - 1)
     {
         if ($newname) {
-            if ($index == - 1) $f = $this->getValue($idattr);
+            if ($index == - 1) $f = $this->getRawValue($idattr);
             else $f = $this->getTValue($idattr, "", $index);
             if ($f) {
                 if (preg_match(PREGEXPFILE, $f, $reg)) {
@@ -3854,7 +3870,7 @@ create unique index i_docir on doc(initid, revision);";
         $lattrid = array_pop($tattrid); // last attribute
         $doc = $this;
         foreach ($tattrid as $k => $v) {
-            $docid = $doc->getValue($v);
+            $docid = $doc->getRawValue($v);
             if ($docid == "") return $def;
             $doc = new_Doc($this->dbaccess, $docid);
             
@@ -3867,7 +3883,7 @@ create unique index i_docir on doc(initid, revision);";
             if (!$doc->isAlive()) return $def;
         }
         if ($html) return $doc->getHtmlAttrValue($lattrid, $def);
-        else return $doc->getValue($lattrid, $def);
+        else return $doc->getRawValue($lattrid, $def);
     }
     /**
      * return the previous value for a attibute set before Doc::SetValue
@@ -4032,7 +4048,7 @@ create unique index i_docir on doc(initid, revision);";
                                     }
                                 } else {
                                     if ($attr->inArray()) $args[$ki] = $this->getTValue($input->name, "", $index);
-                                    else $args[$ki] = $this->GetValue($input->name);
+                                    else $args[$ki] = $this->getRawValue($input->name);
                                 }
                             } else {
                                 if ($input->name == 'THIS') {
@@ -4507,7 +4523,7 @@ create unique index i_docir on doc(initid, revision);";
                         else $answer = "";
                         $t[] = array(
                             "waskid" => $wask->id,
-                            "ask" => $wask->getValue("was_ask") ,
+                            "ask" => $wask->getRawValue("was_ask") ,
                             "key" => $answer,
                             "label" => $wask->getAskLabel($answer)
                         );
@@ -4561,8 +4577,8 @@ create unique index i_docir on doc(initid, revision);";
             $wdoc->set($this);
             foreach ($ldoc as $k => $v) {
                 $aask = $wdoc->attrPrefix . "_ASKID" . ($v["state"]);
-                if ($v["locked"] == - 1 && $wdoc->getValue($aask)) {
-                    if ($wdoc->getValue($aask)) return $v["id"];
+                if ($v["locked"] == - 1 && $wdoc->getRawValue($aask)) {
+                    if ($wdoc->getRawValue($aask)) return $v["id"];
                 }
             }
         }
@@ -4964,7 +4980,7 @@ create unique index i_docir on doc(initid, revision);";
         $doc = new_Doc($this->dbaccess, $docid);
         if ($doc->isAlive()) {
             foreach ($translate as $afrom => $ato) {
-                $this->setValue($ato, $doc->getValue($afrom));
+                $this->setValue($ato, $doc->getRawValue($afrom));
             }
         }
     }
@@ -4983,7 +4999,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->locked = 0;
                 $this->archiveid = $archive->id;
                 $this->dprofid = ($this->dprofid > 0) ? (-$this->dprofid) : (-abs($this->profid));
-                $archprof = $archive->getValue("arc_profil");
+                $archprof = $archive->getRawValue("arc_profil");
                 $this->profid = $archprof;
                 $err = $this->modify(true, array(
                     "locked",
@@ -5309,7 +5325,7 @@ create unique index i_docir on doc(initid, revision);";
             reset($v["in"]);
             $val = true;
             while ($val && (list($ka, $va) = each($v["in"]))) {
-                $val = $this->getValue($va);
+                $val = $this->getRawValue($va);
             }
             if ($val) {
                 foreach ($v["out"] as $oa) {
@@ -5489,7 +5505,7 @@ create unique index i_docir on doc(initid, revision);";
                                         $ovalue = chop($tval[$k]);
                                     } else {
                                         // get property also
-                                        $ovalue = $this->GetValue($sattrid);
+                                        $ovalue = $this->getRawValue($sattrid);
                                     }
                                     if ($ovalue == "" && (!$optional)) {
                                         return false;
@@ -5610,7 +5626,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         if (!$otherValue) {
             if ($index >= 0) $avalue = $this->getTValue($attrid, "", $index);
-            else $avalue = $this->getValue($attrid);
+            else $avalue = $this->getRawValue($attrid);
         } else {
             if ($index >= 0) {
                 if (is_array($otherValue)) $avalue = $otherValue[$index];
@@ -5763,7 +5779,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function getHtmlAttrValue($attrid, $target = "_self", $htmllink = 2, $index = - 1, $entities = true, $abstract = false)
     {
         if ($index != - 1) $v = $this->getTValue($attrid, "", $index);
-        else $v = $this->getValue($attrid);
+        else $v = $this->getRawValue($attrid);
         if ($v == "") return $v;
         return $this->GetHtmlValue($this->getAttribute($attrid) , $v, $target, $htmllink, $index, $entities, $abstract);
     }
@@ -5797,7 +5813,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function getOooAttrValue($attrid, $target = "_self", $htmllink = false, $index = - 1)
     {
         if ($index != - 1) $v = $this->getTValue($attrid, "", $index);
-        else $v = $this->getValue($attrid);
+        else $v = $this->getRawValue($attrid);
         if ($v == "") return $v;
         return $this->getOooValue($this->getAttribute($attrid) , $v, '', false, $index);
     }
@@ -6031,7 +6047,7 @@ create unique index i_docir on doc(initid, revision);";
             $oa = $this->getAttribute($aid);
             if ($oa) {
                 if ($oa->usefor != 'Q') {
-                    $template = $this->getValue($oa->id);
+                    $template = $this->getRawValue($oa->id);
                 } else {
                     $template = $this->getParamValue($aid);
                 }
@@ -6384,7 +6400,7 @@ create unique index i_docir on doc(initid, revision);";
             $htmlvalue = '';
             //------------------------------
             // Compute value element
-            $value = chop($this->GetValue($i));
+            $value = chop($this->getRawValue($i));
             if (!$attr->fieldSet) {
                 addWarningMsg(sprintf(_("unknow set for attribute %s %s") , $attr->id, $attr->getLabel()));
                 continue;
@@ -6672,7 +6688,7 @@ create unique index i_docir on doc(initid, revision);";
                 $taguid[] = $v["uid"];
                 $t[$k] = $v;
                 $t[$k]["label"] = $wask->getAskLabel($v["comment"]);
-                $t[$k]["ask"] = $wask->getvalue("was_ask");
+                $t[$k]["ask"] = $wask->getRawValue("was_ask");
             }
             
             uasort($t, array(
@@ -6717,7 +6733,7 @@ create unique index i_docir on doc(initid, revision);";
                 "waskid" => $wask->id,
                 "nacount" => sprintf(_("number of waiting answers %d") , count($una)) ,
                 "count" => (count($t) > 1) ? sprintf(_("%d answers") , count($t)) : sprintf(_("%d answer") , count($t)) ,
-                "ask" => $wask->getValue("was_ask")
+                "ask" => $wask->getRawValue("was_ask")
             );
         }
         $this->lay->setBlockData("WASK", $tw);
@@ -6856,7 +6872,7 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($listattr as $i => $attr) {
             //------------------------------
             // Compute value elements
-            $value = chop($this->GetValue($i));
+            $value = chop($this->getRawValue($i));
             
             if (($value != "") && ($attr->mvisibility != "H") && ($attr->mvisibility != "I")) {
                 
@@ -6900,7 +6916,7 @@ create unique index i_docir on doc(initid, revision);";
         $listattr = $this->GetNormalAttributes();
         // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
         foreach ($listattr as $k => $v) {
-            $value = chop($this->GetValue($v->id));
+            $value = chop($this->getRawValue($v->id));
             //------------------------------
             // Set the table value elements
             $this->lay->Set("S_" . strtoupper($v->id) , ($value != ""));
@@ -7125,9 +7141,9 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($listattr as $i => $attr) {
             $iattr++;
             // Compute value elements
-            if ($docid > 0) $value = $this->GetValue($attr->id);
+            if ($docid > 0) $value = $this->getRawValue($attr->id);
             else {
-                $value = $this->GetValue($attr->id);
+                $value = $this->getRawValue($attr->id);
                 //	$value = $this->GetValueMethod($this->GetValue($listattr[$i]->id));
                 
             }
@@ -7294,7 +7310,7 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($listattr as $k => $v) {
             //------------------------------
             // Set the table value elements
-            $value = chop($this->GetValue($v->id));
+            $value = chop($this->getRawValue($v->id));
             if ($v->mvisibility == "R") $v->mvisibility = "H"; // don't see in edit mode
             $this->lay->Set("V_" . strtoupper($v->id) , getHtmlInput($this, $v, $value, "", "", (!$withtd)));
             if ($v->needed == "Y") $this->lay->Set("L_" . strtoupper($v->id) , "<B>" . $v->getLabel() . "</B>");
@@ -7334,7 +7350,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function vault_filename($attrid, $path = false, $index = - 1)
     {
-        if ($index == - 1) $fileid = $this->getValue($attrid);
+        if ($index == - 1) $fileid = $this->getRawValue($attrid);
         else $fileid = $this->getTValue($attrid, '', $index);
         return $this->vault_filename_fromvalue($fileid, $path);
     }
@@ -7384,7 +7400,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function vault_properties(NormalAttribute $attr)
     {
         if ($attr->inArray()) $fileids = $this->getTValue($attr->id);
-        else $fileids[] = $this->getValue($attr->id);
+        else $fileids[] = $this->getRawValue($attr->id);
         
         $tinfo = array();
         foreach ($fileids as $k => $fileid) {
@@ -7615,7 +7631,7 @@ create unique index i_docir on doc(initid, revision);";
                     $v = 0;
                 }
                 // Set the table value elements
-                if (($iattr <= $nattr) && ($this->Getvalue($i) != "")) {
+                if (($iattr <= $nattr) && ($this->getRawValue($i) != "")) {
                     $attrtype_idoc = false;
                     $attrtype_list = false;
                     
@@ -7635,7 +7651,7 @@ create unique index i_docir on doc(initid, revision);";
                     
                     if ($attrtype_list) {
                         // $value=htmlspecialchars($this->GetValue($i));
-                        $value = $this->GetValue($i);
+                        $value = $this->getRawValue($i);
                         $textlist = $this->rawValueToArray($value);
                         
                         while ($text = each($textlist)) {
@@ -7663,12 +7679,12 @@ create unique index i_docir on doc(initid, revision);";
                     } else {
                         
                         if ($attrtype_idoc) {
-                            $value = base64_decode($this->GetValue($i));
+                            $value = base64_decode($this->getRawValue($i));
                             $tableframe[$v]["type"] = "idoc";
                             //printf($value);
                             
                         } else {
-                            $value = htmlspecialchars($this->GetValue($i));
+                            $value = htmlspecialchars($this->getRawValue($i));
                             $tableframe[$v]["type"] = base64_encode($listattr[$i]->type);
                         }
                         
@@ -7868,7 +7884,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         // gettitle(D,SI_IDSOC):SI_SOCIETY,SI_IDSOC
         $this->AddParamRefresh("$nameId", "$nameTitle");
-        $doc = new_Doc($this->dbaccess, $this->getValue($nameId));
+        $doc = new_Doc($this->dbaccess, $this->getRawValue($nameId));
         if ($doc->isAlive()) $this->setValue($nameTitle, $doc->title);
         else {
             // suppress
@@ -8224,7 +8240,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         $mydoc = new_Doc($this->dbaccess, $this->getUserId());
         
-        return $mydoc->getValue($idattr);
+        return $mydoc->getRawValue($idattr);
     }
     /**
      * concatenate and format string
@@ -8265,7 +8281,7 @@ create unique index i_docir on doc(initid, revision);";
                 $ta = $this->getTValue($aid);
             } else {
                 $ta = array(
-                    $this->getValue($aid)
+                    $this->getRawValue($aid)
                 );
             }
             foreach ($ta as $k => $v) {
@@ -8298,8 +8314,8 @@ create unique index i_docir on doc(initid, revision);";
     {
         $dyn = false;
         if ($execdate == null) {
-            $dyn = trim(strtok($timer->getValue("tm_dyndate") , " "));
-            if ($dyn) $execdate = $this->getValue($dyn);
+            $dyn = trim(strtok($timer->getRawValue("tm_dyndate") , " "));
+            if ($dyn) $execdate = $this->getRawValue($dyn);
         }
         if (method_exists($timer, 'attachDocument')) {
             $err = $timer->attachDocument($this, $origin, $execdate);

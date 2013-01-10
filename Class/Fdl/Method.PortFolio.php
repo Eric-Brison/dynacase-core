@@ -55,7 +55,7 @@ class _PORTFOLIO extends Dir
         $err = "";
         include_once ("FDL/Lib.Dir.php");
         
-        $ddocid = $this->getValue("PFL_IDDEF");
+        $ddocid = $this->getRawValue("PFL_IDDEF");
         
         if ($ddocid != "") {
             $ddoc = new_Doc($this->dbaccess, $ddocid);

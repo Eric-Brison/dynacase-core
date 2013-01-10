@@ -80,9 +80,9 @@ function verifyExecDocuments($dbaccess)
             $err = $del->store();
             
             if ($status == 0) {
-                print sprintf("Execute %s [%d] (%s) : %s\n", $del->title, $del->id, $del->getValue("exec_handnextdate") , $err);
+                print sprintf("Execute %s [%d] (%s) : %s\n", $del->title, $del->id, $del->getRawValue("exec_handnextdate") , $err);
             } else {
-                print sprintf("Error executing %s [%d] (%s) : %s (%s)\n", $del->title, $del->id, $del->getValue("exec_handnextdate") , $err, $status);
+                print sprintf("Error executing %s [%d] (%s) : %s (%s)\n", $del->title, $del->id, $del->getRawValue("exec_handnextdate") , $err, $status);
             }
         }
     }

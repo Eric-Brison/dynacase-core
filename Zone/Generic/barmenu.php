@@ -45,7 +45,7 @@ function barmenu(Action & $action)
     $sfamid = $famid;
     $sfdoc = $fdoc; // search family
     if ($fld->isAlive()) {
-        $sfamid = $fld->getValue("se_famid");
+        $sfamid = $fld->getRawValue("se_famid");
         if ($sfamid && $sfamid != $fdoc->id) {
             $sfdoc = new_Doc($dbaccess, $sfamid);
             if (!$sfdoc->isAlive()) {

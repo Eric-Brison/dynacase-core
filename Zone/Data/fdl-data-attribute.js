@@ -244,8 +244,8 @@ Fdl.LeafAttribute.prototype.toString = function() {
  * @return {Any} return value of current document fot this attribute
  */
 /*
- * Fdl.LeafAttribute.prototype.getValue= function() { if (this._family) { return
- * this._family.getValue(this.id); } return null; };
+ * Fdl.LeafAttribute.prototype.getRawValue= function() { if (this._family) { return
+ * this._family.getRawValue(this.id); } return null; };
  */
 Fdl.LeafAttribute.prototype.hasInputHelp = function() {
 	return (this._data.phpfunc && this._data.phpfile && this.type != 'enum');
@@ -562,7 +562,7 @@ Fdl.FileAttribute.prototype.getDavUrl = function(v, documentId) {
  * @deprecated Fdl.FileAttribute.prototype.hasPDF= function(config) { var
  *             apdf=this.getOption('pdffile'); if (apdf) {
  * 
- * var vpdf=this._family.getValue(apdf); if (vpdf) { if (vpdf.indexOf('/pdf')>0)
+ * var vpdf=this._family.getRawValue(apdf); if (vpdf) { if (vpdf.indexOf('/pdf')>0)
  * return true; } } return false; }
  */
 Fdl.FileAttribute.prototype.getFileName = function(v, config) {

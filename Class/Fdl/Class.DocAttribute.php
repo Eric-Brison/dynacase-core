@@ -486,7 +486,7 @@ class NormalAttribute extends BasicAttribute
     function getXmlValue(Doc & $doc, $opt = false)
     {
         if ($opt->index > - 1) $v = $doc->getTvalue($this->id, null, $opt->index);
-        else $v = $doc->getValue($this->id, null);
+        else $v = $doc->getRawValue($this->id, null);
         //if (! $v) return sprintf("<!-- no value %s -->",$this->id);
         if ($this->getOption("autotitle") == "yes") return sprintf("<!--autotitle %s %s -->", $this->id, $v);
         if (($v === null) && ($this->type != 'array')) {
@@ -871,7 +871,7 @@ class NormalAttribute extends BasicAttribute
                     return implode($this->textualValueMultipleSeparator[0], $returnValues);
                 }
             } else {
-                return strip_tags($doc->getValue($this->id));
+                return strip_tags($doc->getRawValue($this->id));
             }
         }
         /**
@@ -892,7 +892,7 @@ class NormalAttribute extends BasicAttribute
                     return implode($this->textualValueMultipleSeparator[0], $returnValues);
                 }
             } else {
-                return $doc->getValue($this->id);
+                return $doc->getRawValue($this->id);
             }
         }
         /**
@@ -932,7 +932,7 @@ class NormalAttribute extends BasicAttribute
                     return implode($this->textualValueMultipleSeparator[0], $returnValues);
                 }
             } else {
-                return $convertDate($doc->getValue($this->id));
+                return $convertDate($doc->getRawValue($this->id));
             }
         }
         /**
@@ -983,7 +983,7 @@ class NormalAttribute extends BasicAttribute
                 }
             } else {
                 if ($this->getOption('multiple') == 'yes') {
-                    $value = $doc->getValue($this->id);
+                    $value = $doc->getRawValue($this->id);
                     $values = $doc->rawValueToArray($value);
                     $returnValues = array();
                     foreach ($values as $currentKey) {
@@ -991,7 +991,7 @@ class NormalAttribute extends BasicAttribute
                     }
                     return implode($this->textualValueMultipleSeparator[1], $returnValues);
                 }
-                return $this->getEnumLabel($doc->getValue($this->id));
+                return $this->getEnumLabel($doc->getRawValue($this->id));
             }
         }
         /**
@@ -1044,7 +1044,7 @@ class NormalAttribute extends BasicAttribute
                 }
             } else {
                 if ($this->getOption('multiple') == 'yes') {
-                    $value = $doc->getValue($this->id);
+                    $value = $doc->getRawValue($this->id);
                     $values = $doc->rawValueToArray($value);
                     if ($index >= 0) {
                         return $displayTitle($values[$index]);
@@ -1056,7 +1056,7 @@ class NormalAttribute extends BasicAttribute
                         return implode($this->textualValueMultipleSeparator[1], $returnValues);
                     }
                 }
-                return $displayTitle($doc->getValue($this->id));
+                return $displayTitle($doc->getRawValue($this->id));
             }
         }
         /**

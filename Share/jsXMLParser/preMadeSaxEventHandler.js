@@ -196,7 +196,7 @@ SAXEventHandler.prototype.startElement = function(name, atts) {
 
         The attribute information can be retrieved by calling
         atts.getName([ordinal])  -- zero based
-        atts.getValue([ordinal]) -- zero based
+        atts.getRawValue([ordinal]) -- zero based
         atts.getLength()
         atts.getValueByName([attributeName])
 

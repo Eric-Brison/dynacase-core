@@ -548,7 +548,7 @@ class DotWorkflow
     private function setTransitionTimer($e2, $t, $index)
     {
         $ttrans = array();
-        $tm = $this->wdoc->getValue($this->wdoc->attrPrefix . "_TRANS_TMID" . $t["t"]);
+        $tm = $this->wdoc->getRawValue($this->wdoc->attrPrefix . "_TRANS_TMID" . $t["t"]);
         if ($tm) $ttrans[] = $tm;
         $ttrans = array_merge($ttrans, $this->wdoc->getTValue($this->wdoc->attrPrefix . "_TRANS_PA_TMID" . $t["t"]));
         

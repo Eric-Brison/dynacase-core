@@ -199,7 +199,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                 }
             }
             if (strpos(implode(",", $sqlfilters) , "archiveid") === false) $sqlfilters[-4] = $maintabledot . "archiveid is null";
-            //if ($fld->getValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
+            //if ($fld->getRawValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
             if ($trash == "only") $sqlfilters[-1] = "locked = -1";
             elseif ($latest) $sqlfilters[-1] = "locked != -1";
             ksort($sqlfilters);
@@ -264,7 +264,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                          */
                         $fld = new_Doc($dbaccess, $dirid);
                         if ($trash) $fld->setValue("se_trash", $trash);
-                        else $trash = $fld->getValue("se_trash");
+                        else $trash = $fld->getRawValue("se_trash");
                         $fld->folderRecursiveLevel = $folderRecursiveLevel;
                         $tsqlM = $fld->getQuery();
                         foreach ($tsqlM as $sqlM) {
@@ -320,7 +320,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
             $fld = null;
             if (!is_array($dirid)) {
                 $fld = new_Doc($dbaccess, $dirid);
-                if ($fld->getValue("se_phpfunc") != "") return $terr;
+                if ($fld->getRawValue("se_phpfunc") != "") return $terr;
             }
             
             if ((is_array($dirid)) || ($fld->defDoctype != 'S')) {
@@ -408,11 +408,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                     if (is_array($td)) return $td;
                 }
             } else {
-                if ($fld->getValue("se_famid")) $fromid = $fld->getValue("se_famid");
+                if ($fld->getRawValue("se_famid")) $fromid = $fld->getRawValue("se_famid");
             }
         } elseif ($dirid != 0) {
             $fld = new_Doc($dbaccess, $dirid);
-            if (($fld->defDoctype == 'S') && ($fld->getValue("se_famid"))) $fromid = $fld->getValue("se_famid");
+            if (($fld->defDoctype == 'S') && ($fld->getRawValue("se_famid"))) $fromid = $fld->getRawValue("se_famid");
         }
         if ($trash == "only") $distinct = true;
         //   xdebug_var_dump(xdebug_get_function_stack());

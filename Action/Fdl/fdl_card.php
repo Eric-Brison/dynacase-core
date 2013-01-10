@@ -92,7 +92,7 @@ function fdl_card(&$action)
     
     SetHttpVar("viewbarmenu", 1);
     
-    $action->lay->set("RSS", ($doc->getValue("gui_isrss")));
+    $action->lay->set("RSS", ($doc->getRawValue("gui_isrss")));
     $action->lay->set("rsslink", $doc->getRssLink());
     $action->lay->Set("TITLE", $doc->getHtmlTitle());
     $action->lay->Set("id", $doc->id);
@@ -168,7 +168,7 @@ function fdl_card(&$action)
                                     "walabel" => ucfirst($v->getLabel()) ,
                                     "wwidth" => $v->getOption("mwidth", $mwidth) ,
                                     "wheight" => $v->getOption("mheight", $mheight) ,
-                                    "wtarget" => ($v->getOption("ltarget") == "") ? (($v->getOption("mtarget") == "") ? $v->id . "_" . $doc->id : $v->getOption("mtarget")) : $v->getOption("ltarget"),
+                                    "wtarget" => ($v->getOption("ltarget") == "") ? (($v->getOption("mtarget") == "") ? $v->id . "_" . $doc->id : $v->getOption("mtarget")) : $v->getOption("ltarget") ,
                                     "wlink" => $doc->urlWhatEncode($v->getLink($doc->latestId()))
                                 );
                             }

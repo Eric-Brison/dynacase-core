@@ -39,7 +39,7 @@ class TestDocControl extends TestCaseDcpDocument
             $user = new_Doc(self::$dbaccess, $control['user']);
             $this->assertTrue($user->isAlive() , sprintf("control#%s> Could not get user with id '%s'.", $controlIdx, $control['user']));
             
-            $login = $user->getValue('us_login');
+            $login = $user->getRawValue('us_login');
             $this->assertNotEmpty($login, sprintf("control#%s> User with id '%s' have an empty login.", $controlIdx, $control['user']));
             
             $this->sudo($login);

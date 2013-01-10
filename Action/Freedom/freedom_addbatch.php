@@ -44,7 +44,7 @@ function freedom_addbatch(&$action)
     
     $doc->setTitle(sprintf(_("batch from %s folder") , $fld->title));
     $doc->setValue("ba_desc", sprintf(_("batch from %s folder") , $fld->title));
-    $famid = $fld->getValue("se_famid");
+    $famid = $fld->getRawValue("se_famid");
     if ($famid) {
         $doc->setValue("pubm_idfam", $famid);
     }

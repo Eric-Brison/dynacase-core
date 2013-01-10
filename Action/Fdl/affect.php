@@ -42,7 +42,7 @@ function affect(&$action)
         $docu = new_doc($dbaccess, $uid);
         if (!$docu->isAlive()) $action->addWarningMsg(sprintf(_("user #%s not found. Affectation aborded") , $uid));
         
-        $wuid = $docu->getValue("us_whatid");
+        $wuid = $docu->getRawValue("us_whatid");
         if (!($wuid > 0)) $action->addWarningMsg(sprintf(_("user #%s has not a real account. Affectation aborded") , $uid));
     }
     if ($newstate >= 0) {
@@ -62,7 +62,7 @@ function affect(&$action)
             
             $action->addWarningMsg(sprintf(_("document %s has been allocate to %s") , $doc->title, $docu->title));
             
-            $to = $docu->getValue("us_mail");
+            $to = $docu->getRawValue("us_mail");
             $subject = sprintf(_("allocation for %s document") , $doc->title);
             $err = sendCard($action, $doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
             if ($err != "") $action->addWarningMsg($err);

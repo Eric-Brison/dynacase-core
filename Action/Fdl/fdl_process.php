@@ -47,8 +47,8 @@ function fdl_process(&$action)
         $doc->modify();
     };
     
-    $subject = $doc->getValue("pubm_title");
-    $body = $doc->getValue("pubm_body");
+    $subject = $doc->getRawValue("pubm_title");
+    $body = $doc->getRawValue("pubm_body");
     if (preg_match("/\[us_[a-z0-9_]+\]/i", $body)) {
         foreach ($t as $k => $v) {
             $mail = getv($v, "us_mail");

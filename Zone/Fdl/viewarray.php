@@ -48,7 +48,7 @@ function viewarray(&$action)
     }
     //$oattr=$doc->getAttribute($arrayid);
     //$xmlarray=$doc->GetHtmlAttrValue($arrayid,$target,$ulink);
-    $xmlarray = $doc->GetHtmlValue($doc->getAttribute($arrayid) , $doc->getValue($arrayid) , $target, $ulink);
+    $xmlarray = $doc->GetHtmlValue($doc->getAttribute($arrayid) , $doc->getRawValue($arrayid) , $target, $ulink);
     
     $action->lay->set("array", $xmlarray);
 }

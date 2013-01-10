@@ -55,7 +55,7 @@ function viewframe(Action & $action)
     
     $listattr = $doc->GetNormalAttributes(); // get frame attribute also
     $foa = $doc->getAttribute($frameid);
-    if (!$foa) $action->exitError(sprintf("attribute %s not found" , $frameid));
+    if (!$foa) $action->exitError(sprintf("attribute %s not found", $frameid));
     if ($foa->getOption("vlabel") == "none") $action->lay->set("flabel", '');
     else $action->lay->set("flabel", mb_ucfirst($foa->getLabel()));
     
@@ -66,7 +66,7 @@ function viewframe(Action & $action)
          */
         if ($v->fieldSet->id != $frameid) continue;
         
-        $value = chop($doc->GetValue($v->id));
+        $value = chop($doc->getRawValue($v->id));
         
         $goodvalue = ((($value != "") || ($v->type == "array") || $v->getOption("showempty")) && ($v->mvisibility != "H") && ($v->mvisibility != "O") && (!$v->inArray()));
         if ($goodvalue) {

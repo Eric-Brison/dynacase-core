@@ -37,7 +37,7 @@ class TestImportDocumentsExtra extends TestCaseDcpCommonFamily
             $stateExpected = $data[1];
             $doc = new_Doc(self::$dbaccess, $docName);
             $this->assertTrue($doc->isAlive() , sprintf("cannot find doc [%s]", $docName));
-            $stateFound = json_decode($doc->getValue("test_extra") , true);
+            $stateFound = json_decode($doc->getRawValue("test_extra") , true);
             $this->assertEquals($stateExpected, $stateFound, sprintf("State found : [%s] is not the same as state expected: [%s]", $stateFound["state"], $stateExpected["state"]));
         }
     }

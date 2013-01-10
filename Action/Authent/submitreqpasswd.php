@@ -35,7 +35,7 @@ function submitreqpasswd(Action & $action)
     $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
     
     $userdoc = retrieveUserDoc($action, $submitted_login, $submitted_email);
-
+    
     if ($userdoc == NULL) {
         $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', True);
         return;
@@ -56,7 +56,7 @@ function submitreqpasswd(Action & $action)
     }
     $log = new Log("", "Authent", "ChangePassword");
     $facility = constant(getParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
-    $txt=sprintf("ask change password for %s [%d]", $userdoc->getAccount()->login, $userdoc->getAccount()->id);
+    $txt = sprintf("ask change password for %s [%d]", $userdoc->getAccount()->login, $userdoc->getAccount()->id);
     $log->wlog("S", $txt, NULL, $facility);
     $action->lay->set('FORM_SEND_OK', True);
     return;
@@ -114,7 +114,7 @@ function sendCallback(Action $action, _IUSER $userdoc)
     include_once ("FDL/sendmail.php");
     
     $us_mail = $userdoc->getMail();
-    $uid = $userdoc->getValue("us_whatid");
+    $uid = $userdoc->getRawValue("us_whatid");
     if ($us_mail == "") {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Empty us_mail for user " . $uid);
         return "Empty us_mail for user " . $uid;

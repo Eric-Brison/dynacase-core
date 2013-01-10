@@ -79,9 +79,9 @@ function freedom_rss(Action & $action)
         $famid = "";
         $report = ($doc->fromid == getIdFromName($dbaccess, "REPORT") ? true : false);
         if (!$order) {
-            if ($doc->getValue("REP_IDSORT")) {
-                $order = $doc->getValue("REP_IDSORT");
-                $order.= " " . $doc->getValue("REP_ORDERSORT");
+            if ($doc->getRawValue("REP_IDSORT")) {
+                $order = $doc->getRawValue("REP_IDSORT");
+                $order.= " " . $doc->getRawValue("REP_ORDERSORT");
             } else $order = "revdate desc";
         }
         $ldoc = getChildDoc($dbaccess, $doc->id, 0, $lim, $filter, $action->user->id, "TABLE", $famid, false, $order);
@@ -92,7 +92,7 @@ function freedom_rss(Action & $action)
          * @var _REPORT $tmpdoc
          */
         $tmpdoc = createDoc($dbaccess, getIdFromName($dbaccess, "REPORT") , false);
-        $fdoc = createDoc($dbaccess, $doc->getValue("SE_FAMID") , false);
+        $fdoc = createDoc($dbaccess, $doc->getRawValue("SE_FAMID") , false);
         $lattr = $fdoc->GetNormalAttributes();
         $tcol1 = array();
         foreach ($lattr as $k => $v) {
@@ -140,7 +140,7 @@ function freedom_rss(Action & $action)
             $lines = array();
             $i = 0;
             foreach ($tcolshown as $kc => $vc) {
-                if ($zdoc->getValue($kc) == "") $lines[] = array(
+                if ($zdoc->getRawValue($kc) == "") $lines[] = array(
                     "attr" => $vc["collabel"],
                     "val" => ""
                 );
@@ -160,7 +160,7 @@ function freedom_rss(Action & $action)
 
                         default:
                             if (isset($lattr[$kc])) {
-                                $cval = $zdoc->getHtmlValue($lattr[$kc], $zdoc->getValue($kc) , "", false);
+                                $cval = $zdoc->getHtmlValue($lattr[$kc], $zdoc->getRawValue($kc) , "", false);
                                 if ($lattr[$kc]->type == "image") $cval = "<img width=\"30px\" src=\"$cval\">";
                             } else $cval = $zdoc->getProperty($kc);
                         }

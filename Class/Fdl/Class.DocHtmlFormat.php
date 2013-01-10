@@ -731,7 +731,7 @@ class DocHtmlFormat
                 );
                 $tval[$k] = $this->doc->getTValue($k);
                 $nbitem = max($nbitem, count($tval[$k]));
-                if ($emptyarray && ($this->doc->getValue($k) != "")) $emptyarray = false;
+                if ($emptyarray && ($this->doc->getRawValue($k) != "")) $emptyarray = false;
             }
             if (!$emptyarray) {
                 if ($this->oattr->getOption("vlabel") == "up") {
@@ -803,7 +803,7 @@ class DocHtmlFormat
         $htmlval = "";
         if ($avalue != "") {
             if ($kvalue > - 1) $idocid = $this->doc->getTValue($this->cFormat, "", $kvalue);
-            else $idocid = $this->doc->getValue($this->cFormat);
+            else $idocid = $this->doc->getRawValue($this->cFormat);
             
             if ($idocid > 0) {
                 //$lay = new Layout("FDL/Layout/viewadoc.xml", $action);
@@ -929,7 +929,7 @@ class DocHtmlFormat
         $htmlval = "";
         
         if ($kvalue > - 1) $di = $this->doc->getTValue($this->oattr->format, "", $kvalue);
-        else $di = $this->doc->getValue($this->oattr->format);
+        else $di = $this->doc->getRawValue($this->oattr->format);
         if ($di > 0) {
             $lay->set("said", $di);
             $lay->set("uuvalue", urlencode($avalue));

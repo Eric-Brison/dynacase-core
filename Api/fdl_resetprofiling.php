@@ -10,7 +10,7 @@
  *
  * @author Anakeen
  * @version $Id:  $
- * 
+ *
  * @package FDL
  *
  *
@@ -57,7 +57,7 @@ if (!$uid) {
             if ($err == "") {
                 $err = $du->modify();
                 if ($err == "") {
-                    printf(_("new user # %d") , $du->getValue("us_whatid")); // affichage de l'identifiant système
+                    printf(_("new user # %d") , $du->getRawValue("us_whatid")); // affichage de l'identifiant système
                     
                     /**
                      * @var Dir $g
@@ -70,7 +70,7 @@ if (!$uid) {
             }
         }
         if ($err) print "\nerreur:$err\n";
-        $uid = $du->getValue("us_whatid");
+        $uid = $du->getRawValue("us_whatid");
     }
 }
 if ($uid > 0) {

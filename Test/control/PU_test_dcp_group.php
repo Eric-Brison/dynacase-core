@@ -50,11 +50,11 @@ class TestGroup extends TestCaseDcpDocument
             $err = $group->store();
             $this->assertEmpty($err, sprintf("cannot store igroup %s", $err));
             $group->addFile($user->initid);
-            $newGids[] = $group->getValue("us_whatid");
+            $newGids[] = $group->getRawValue("us_whatid");
             $groups[$gLogin] = $group;
         }
-        $u = new \Account("", $user->getValue("us_whatid"));
-        $this->assertTrue($u->isAffected() , sprintf("cannot find %s account", $user->getValue("us_whatid")));
+        $u = new \Account("", $user->getRawValue("us_whatid"));
+        $this->assertTrue($u->isAffected() , sprintf("cannot find %s account", $user->getRawValue("us_whatid")));
         $gids = $u->getGroupsId();
         
         $this->assertEmpty(array_diff($newGids, $gids) , "groups are not in new user");
@@ -104,7 +104,7 @@ class TestGroup extends TestCaseDcpDocument
         $this->assertTrue($u->setLoginName($login) , "system group not found");
         $this->assertEquals($login, $u->login);
         $this->assertEquals($doc->id, $u->fid, "mismatch document igroup reference");
-        $this->assertEquals($doc->getValue("us_whatid") , $u->id, "mismatch system igroup reference");
+        $this->assertEquals($doc->getRawValue("us_whatid") , $u->id, "mismatch system igroup reference");
         return $doc;
     }
     /**
@@ -141,9 +141,9 @@ class TestGroup extends TestCaseDcpDocument
             $err = $group->store();
             $this->assertEmpty($err, sprintf("cannot store igroup %s", $err));
             $group->addFile($user->initid);
-            $newGids[] = $group->getValue("us_whatid");
+            $newGids[] = $group->getRawValue("us_whatid");
         }
-        $u = new \Account("", $user->getValue("us_whatid"));
+        $u = new \Account("", $user->getRawValue("us_whatid"));
         $this->assertTrue($u->isAffected());
         $gids = $u->getGroupsId();
         

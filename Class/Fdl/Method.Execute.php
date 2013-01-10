@@ -79,7 +79,7 @@ class _EXEC extends Doc
     function isInprogress()
     {
         if ($this->canEdit() == "") {
-            if ($this->getvalue("exec_status") == "progressing") return MENU_ACTIVE;
+            if ($this->getRawValue("exec_status") == "progressing") return MENU_ACTIVE;
         }
         return MENU_INVISIBLE;
     }
@@ -93,15 +93,15 @@ class _EXEC extends Doc
      */
     function bgCommand($masteruserid = false)
     {
-        $bgapp = $this->getValue("exec_application");
-        $bgact = $this->getValue("exec_action");
-        $bgapi = $this->getValue("exec_api");
+        $bgapp = $this->getRawValue("exec_application");
+        $bgact = $this->getRawValue("exec_action");
+        $bgapi = $this->getRawValue("exec_api");
         
         $tp = $this->getAValues("exec_t_parameters");
         
         $cmd = getWshCmd(true);
         if ($masteruserid) {
-            $fuid = $this->getValue("exec_iduser");
+            $fuid = $this->getRawValue("exec_iduser");
             $fu = getTDoc($this->dbaccess, $fuid);
             $wuid = $fu["us_whatid"];
             $this->execuserid = $fuid;
@@ -133,11 +133,11 @@ class _EXEC extends Doc
      */
     function getNextExecDate()
     {
-        $ndh = $this->getValue("exec_handnextdate");
+        $ndh = $this->getRawValue("exec_handnextdate");
         if ($ndh == "") {
-            $nday = intval($this->getValue("exec_periodday", 0));
-            $nhour = intval($this->getValue("exec_periodhour", 0));
-            $nmin = intval($this->getValue("exec_periodmin", 0));
+            $nday = intval($this->getRawValue("exec_periodday", 0));
+            $nhour = intval($this->getRawValue("exec_periodhour", 0));
+            $nmin = intval($this->getRawValue("exec_periodmin", 0));
             if (($nday + $nhour + $nmin) > 0) {
                 $ndh = $this->getDate($nday, $nhour, $nmin);
             } else {

@@ -38,7 +38,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         
         $oa = $d->getAttribute($attrid);
         $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $famid));
-        $value = $d->getValue($oa->id);
+        $value = $d->getRawValue($oa->id);
         $this->assertEquals($expectedvalue, $value, sprintf("not the expected default value attribute %s", $attrid));
     }
     /**
@@ -66,7 +66,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         foreach ($expectedvalues as $attrid => $expectedValue) {
             $oa = $d->getAttribute($attrid);
             $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $famid));
-            $value = $d->getValue($oa->id);
+            $value = $d->getRawValue($oa->id);
             
             $this->assertEquals($expectedValue, $value, sprintf("not the expected default value attribute %s", $attrid));
         }

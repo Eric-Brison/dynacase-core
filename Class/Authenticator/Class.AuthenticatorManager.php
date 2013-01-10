@@ -146,7 +146,7 @@ class AuthenticatorManager
             }
             // check count of login failure
             $maxfail = getParam("AUTHENT_FAILURECOUNT");
-            if ($maxfail > 0 && $du->getValue("us_loginfailure", 0) >= $maxfail) {
+            if ($maxfail > 0 && $du->getRawValue("us_loginfailure", 0) >= $maxfail) {
                 self::secureLog("failure", "max connection (" . $maxfail . ") attempts exceeded", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
                 self::clearGDocs();
                 return 2;

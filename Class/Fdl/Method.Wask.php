@@ -70,7 +70,7 @@ class _WASK extends Doc
         
         $err = $this->DocControl($aclname);
         if ($err == "") return $err; // normal case
-        if ($this->getValue("DPDOC_FAMID") > 0) {
+        if ($this->getRawValue("DPDOC_FAMID") > 0) {
             if ($this->doc) {
                 // special control for dynamic users
                 if (!isset($this->prdoc)) {

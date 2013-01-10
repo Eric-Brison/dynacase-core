@@ -38,7 +38,7 @@ class _PUBLIMAIL extends Doc
                 $listattr = $udoc->GetNormalAttributes();
                 $atarget = ""; // must not be mail the same bacuse it is not the doc itself
                 foreach ($listattr as $k => $v) {
-                    $value = $udoc->getValue($v->id);
+                    $value = $udoc->getRawValue($v->id);
                     
                     if ($value || ($v->type == "image")) $this->lay->Set(strtoupper($v->id) , $udoc->GetHtmlValue($v, $value, $atarget, $ulink));
                     else $this->lay->Set(strtoupper($v->id) , false);
@@ -53,7 +53,7 @@ class _PUBLIMAIL extends Doc
     function fdl_pubedit()
     {
         $this->editattr();
-        $famid = $this->getValue("PUBM_IDFAM", "USER");
+        $famid = $this->getRawValue("PUBM_IDFAM", "USER");
         $udoc = createDoc($this->dbaccess, $famid, false);
         $listattr = $udoc->GetNormalAttributes();
         foreach ($listattr as $k => $v) {
@@ -76,7 +76,7 @@ class _PUBLIMAIL extends Doc
                 );
             }
         }
-        $this->lay->set("famattr", sprintf(_("%s attribute") , $this->getValue("pubm_fam", "personne")));
+        $this->lay->set("famattr", sprintf(_("%s attribute") , $this->getRawValue("pubm_fam", "personne")));
         $this->lay->setBlockData("ATTR", $tatt);
     }
     /**
@@ -89,8 +89,8 @@ class _PUBLIMAIL extends Doc
         global $action;
         // GetAllParameters
         $udocid = GetHttpVars("uid");
-        $subject = $this->getValue("pubm_title");
-        $body = $this->getValue("pubm_body");
+        $subject = $this->getRawValue("pubm_title");
+        $body = $this->getRawValue("pubm_body");
         $zonebodycard = "FDL:FDL_PUBPRINTONE:S"; // define view zone
         if ($udocid > 0) {
             $t[] = getTDoc($this->dbaccess, $udocid);
@@ -136,11 +136,11 @@ class _PUBLIMAIL extends Doc
     {
         include_once ("FDL/mailcard.php");
         global $action;
-        $subject = $this->getValue("pubm_title");
-        $body = $this->getValue("pubm_body");
+        $subject = $this->getRawValue("pubm_title");
+        $body = $this->getRawValue("pubm_body");
         
         $t = $this->getContent();
-        $mailattr = strtolower($this->getValue("PÜBM_MAILATT", "us_mail"));
+        $mailattr = strtolower($this->getRawValue("PÜBM_MAILATT", "us_mail"));
         
         $tout = array();
         $zonebodycard = "FDL:FDL_PUBSENDMAIL:S";

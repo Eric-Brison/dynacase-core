@@ -37,7 +37,7 @@ class _GROUPSEARCH extends Dir
             $doc = new_Doc($this->dbaccess, $v);
             
             if (method_exists($doc, "getQuery")) {
-                $doc->setValue("SE_IDCFLD", $this->getValue("SE_IDCFLD"));
+                $doc->setValue("SE_IDCFLD", $this->getRawValue("SE_IDCFLD"));
                 $q = $doc->getQuery();
                 
                 $wsql[] = $q[0];

@@ -150,13 +150,13 @@ class _ARCHIVING extends Dir
     
     function preInsertDoc()
     {
-        if ($this->getValue("arc_status") != "O") {
+        if ($this->getRawValue("arc_status") != "O") {
             return _("archieve status must be open to modify content");
         }
     }
     function preUnlinkDoc()
     {
-        if ($this->getValue("arc_status") != "O") {
+        if ($this->getRawValue("arc_status") != "O") {
             return _("archieve status must be open to modify content");
         }
     }
@@ -166,7 +166,7 @@ class _ARCHIVING extends Dir
      */
     public function getSpecificFilters()
     {
-        if ($this->getValue("arc_status") == "C") {
+        if ($this->getRawValue("arc_status") == "C") {
             return array(
                 sprintf("archiveid=%d", $this->id)
             );
@@ -178,7 +178,7 @@ class _ARCHIVING extends Dir
      */
     function createProfil()
     {
-        $prfid = $this->getValue("arc_profil");
+        $prfid = $this->getRawValue("arc_profil");
         if ($prfid) {
             $prf = new_doc($this->dbaccess, $prfid);
             if (!$prf->isAlive()) $prfid = 0; // redo the profil

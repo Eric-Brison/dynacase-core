@@ -418,7 +418,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                             $tva = array();
                             $cidindex = "";
                             if ($afiles[$aid]->repeat) $va = $doc->getTValue($aid, "", $index);
-                            else $va = $doc->getValue($aid);
+                            else $va = $doc->getRawValue($aid);
                             
                             if ($va != "") {
                                 list($mime, $vid) = explode("|", $va);
@@ -736,7 +736,7 @@ function realfile($src)
     if ($src == "cid:icon") {
         $va = $doc->icon;
     } else {
-        if (substr($src, 0, 4) == "cid:") $va = $doc->getValue(substr($src, 4));
+        if (substr($src, 0, 4) == "cid:") $va = $doc->getRawValue(substr($src, 4));
         elseif (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)$/", $src, $reg)) {
             $va = copyvault(str_replace('&amp;', '&', $reg[2]));
             $tmpfile[] = $va;
