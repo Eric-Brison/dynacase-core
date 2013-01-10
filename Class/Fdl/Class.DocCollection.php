@@ -360,7 +360,7 @@ class DocCollection extends Doc
      *
      * @return array array of document array
      */
-    public function getContent($controlview = true, array $filter = array() , $famid = "")
+    public function getContent($controlview = true, array $filter = array() , $famid = "", $qtype = "TABLE", $trash = "")
     {
         return array();
     }

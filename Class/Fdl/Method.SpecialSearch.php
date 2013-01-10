@@ -30,7 +30,7 @@ class _SSEARCH extends DocSearch
     /**
      * return sql query to search wanted document
      */
-    function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true)
+    function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
         
         return true;
@@ -100,8 +100,10 @@ class _SSEARCH extends DocSearch
      * @param int $famid family identifier to restrict search
      * @return array array of document array
      */
-    function getContent($controlview = true, $filter = array() , $famid = "")
+    
+    public function getContent($controlview = true, $filter = array() , $famid = "", $unusedType = "TABLE", $unusedTrash = "")
     {
+        $uid = 0;
         if ($controlview) $uid = 1;
         return $this->getDocList(0, "ALL", $uid);
     }

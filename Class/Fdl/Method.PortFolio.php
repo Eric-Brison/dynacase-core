@@ -116,7 +116,7 @@ class _PORTFOLIO extends Dir
      * @param bool $insertguide if true merge each content of guide else same as a normal folder
      * @return array array of document array
      */
-    function getContent($controlview = true, $filter = array() , $famid = "", $insertguide = false)
+    function getContent($controlview = true, array $filter = array() , $famid = "", $insertguide = false, $unused = "")
     {
         $tdoc = Dir::getContent($controlview, $filter, $famid);
         if ($insertguide) {

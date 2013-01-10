@@ -195,7 +195,7 @@ class OOoLayout extends Layout
         return $depth;
     }
     
-    protected function ParseBlock()
+    protected function ParseBlock(&$out = null)
     {
         $this->template = preg_replace("/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/se", "\$this->SetBlock('\\1','\\2')", $this->template);
     }
@@ -234,7 +234,7 @@ class OOoLayout extends Layout
     /**
      * Top level parse condition
      */
-    protected function ParseIf()
+    protected function ParseIf(&$out = null)
     {
         $templateori = '';
         $level = 0;
@@ -441,7 +441,7 @@ class OOoLayout extends Layout
     /**
      * replace simple key in xml string
      */
-    protected function ParseKey()
+    protected function ParseKey(&$out = null)
     {
         if (isset($this->rkey)) {
             $this->template = str_replace($this->pkey, $this->rkey, $this->template);
@@ -666,7 +666,7 @@ class OOoLayout extends Layout
     /**
      * parse text
      */
-    protected function ParseText()
+    protected function ParseText(&$out = null)
     {
         if ($this->encoding == "utf-8") bind_textdomain_codeset("what", 'UTF-8');
         $this->template = preg_replace('/\[TEXT:([^\]]*)\]/e', "\$this->Text('\\1')", $this->template);
@@ -1427,7 +1427,7 @@ class OOoLayout extends Layout
      * @param string $p_nom_block
      * @param array $data
      */
-    public function setBlockData($p_nom_block, $data)
+    public function setBlockData($p_nom_block, $data = NULL)
     {
         deprecatedFunction();
         if ($p_nom_block != "") {
@@ -1555,7 +1555,7 @@ class OOoLayout extends Layout
         return "";
     }
     
-    public function GenJsCode($showlog)
+    public function GenJsCode($showlog, $onlylog = false)
     {
         return ("");
     }

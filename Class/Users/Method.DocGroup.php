@@ -57,7 +57,7 @@ class _GROUP extends Dir
      * update groups table in USER database
      * @return string error message
      */
-    function postInsertDoc($docid, $multiple)
+    function postInsertDoc($docid, $multiple = false)
     {
         $this->SetGroupMail();
         $this->refreshMembers();
@@ -77,7 +77,7 @@ class _GROUP extends Dir
      * update groups table in USER database before suppress
      * @return string error message
      */
-    function postUnlinkDoc($docid)
+    function postUnlinkDoc($docid, $multiple = false)
     {
         $this->SetGroupMail();
         $this->refreshMembers();
@@ -106,23 +106,19 @@ class _GROUP extends Dir
         $tmail = array();
         
         if (!$nomail) $nomail = ($this->getValue("grp_hasmail") == "no");
-         if (!$nomail)  {
-
-             $s=new SearchDoc($this->dbaccess);
-             $s->useCollection($this->initid);
-             $r=$s->search();
-             foreach ($r as $account) {
-                 $mail=$account["us_mail"];
-                 if (!$mail) $account["grp_mail"];
-                 if ($mail)  $tmail[]=$mail;
-             }
-             $gmail = implode(", ", array_unique($tmail));
-             $this->SetValue("GRP_MAIL", $gmail);
-
+        if (!$nomail) {
+            
+            $s = new SearchDoc($this->dbaccess);
+            $s->useCollection($this->initid);
+            $r = $s->search();
+            foreach ($r as $account) {
+                $mail = $account["us_mail"];
+                if (!$mail) $account["grp_mail"];
+                if ($mail) $tmail[] = $mail;
+            }
+            $gmail = implode(", ", array_unique($tmail));
+            $this->SetValue("GRP_MAIL", $gmail);
         }
-
-        
-
         
         if ($this->getValue("grp_hasmail") == "no") $this->deleteValue("GRP_MAIL");
         
@@ -139,7 +135,7 @@ class _GROUP extends Dir
         include_once ("FDL/freedom_util.php");
         include_once ("FDL/Lib.Dir.php");
         
-        $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')",$this->id);
+        $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')", $this->id);
         // $sqlfilters[]="fromid !=".getFamIdFromName($this->dbaccess,"IGROUP");
         $tgroup = getChildDoc($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", getFamIdFromName($this->dbaccess, "GROUP"));
         
@@ -153,7 +149,7 @@ class _GROUP extends Dir
             $tpgroup[] = $v->title;
             $tidpgroup[] = $v->id;
         }
-
+        
         $this->SetValue("GRP_IDPGROUP", implode("\n", $tidpgroup));
         return $tgroup;
     }
@@ -163,7 +159,6 @@ class _GROUP extends Dir
     function refreshMembers()
     {
         include_once ("FDL/Lib.Dir.php");
-
         // 2)groups
         $tu = getChildDoc($this->dbaccess, $this->initid, "0", "ALL", array() , 1, "TABLE", "GROUP");
         $tmemid = array();

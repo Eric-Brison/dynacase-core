@@ -934,20 +934,21 @@ class DbObj
         }
         if ($this->debug) error_log('[DBG]' . 'BEFORE' . __METHOD__ . $this->dbid);
         $err = '';
-        if (empty(self::$savepoint[$this->dbid])) {
-            self::$savepoint[$this->dbid] = array(
+        $idbid = intval($this->dbid);
+        if (empty(self::$savepoint[$idbid])) {
+            self::$savepoint[$idbid] = array(
                 $point
             );
             $err = $this->exec_query("begin");
             if ($this->debug) error_log('[DBG]' . __METHOD__ . "add(1) $point");
         } else {
-            self::$savepoint[$this->dbid][] = $point;
+            self::$savepoint[$idbid][] = $point;
             if ($this->debug) error_log('[DBG]' . __METHOD__ . "add(2) $point");
         }
         if (!$err) {
             $err = $this->exec_query(sprintf('savepoint "%s"', pg_escape_string($point)));
         }
-        if ($this->debug) error_log('[DBG]' . 'AFTER' . __METHOD__ . $this->dbid . ":$point:" . implode(',', self::$savepoint[$this->dbid]));
+        if ($this->debug) error_log('[DBG]' . 'AFTER' . __METHOD__ . $idbid . ":$point:" . implode(',', self::$savepoint[$idbid]));
         if ($err) error_log(__METHOD__ . ":$err");
         return $err;
     }
@@ -964,13 +965,14 @@ class DbObj
             error_log(__METHOD__ . ":$err");
             return $err;
         }
-        if (isset(self::$savepoint[$this->dbid])) $lastPoint = array_search($point, self::$savepoint[$this->dbid]);
+        $idbid = intval($this->dbid);
+        if (isset(self::$savepoint[$idbid])) $lastPoint = array_search($point, self::$savepoint[$idbid]);
         else $lastPoint = false;
         if ($lastPoint !== false) {
-            self::$savepoint[$this->dbid] = array_slice(self::$savepoint[$this->dbid], 0, $lastPoint);
+            self::$savepoint[$idbid] = array_slice(self::$savepoint[$idbid], 0, $lastPoint);
             $err = $this->exec_query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));
             
-            if ((!$err) && (count(self::$savepoint[$this->dbid]) == 0)) {
+            if ((!$err) && (count(self::$savepoint[$idbid]) == 0)) {
                 $err = $this->exec_query("commit");
             }
         } else {
@@ -978,7 +980,7 @@ class DbObj
             $err = sprintf("cannot rollback unsaved point : %s", $point);
         }
         
-        if ($this->debug) error_log('[DBG]' . __METHOD__ . ":$point:" . implode(',', self::$savepoint[$this->dbid]));
+        if ($this->debug) error_log('[DBG]' . __METHOD__ . ":$point:" . implode(',', self::$savepoint[$idbid]));
         if ($err) error_log(__METHOD__ . ":$err");
         return $err;
     }
@@ -995,14 +997,15 @@ class DbObj
             error_log(__METHOD__ . ":$err");
             return $err;
         }
-        if ($this->debug) error_log('[DBG]' . __METHOD__ . ":$point:" . implode(',', self::$savepoint[$this->dbid]));
+        $idbid = intval($this->dbid);
+        if ($this->debug) error_log('[DBG]' . __METHOD__ . ":$point:" . implode(',', self::$savepoint[$idbid]));
         
-        $lastPoint = array_search($point, self::$savepoint[$this->dbid]);
+        $lastPoint = array_search($point, self::$savepoint[$idbid]);
         
         if ($lastPoint !== false) {
-            self::$savepoint[$this->dbid] = array_slice(self::$savepoint[$this->dbid], 0, $lastPoint);
+            self::$savepoint[$idbid] = array_slice(self::$savepoint[$idbid], 0, $lastPoint);
             $err = $this->exec_query(sprintf('release savepoint "%s"', pg_escape_string($point)));
-            if ((!$err) && (count(self::$savepoint[$this->dbid]) == 0)) {
+            if ((!$err) && (count(self::$savepoint[$idbid]) == 0)) {
                 $err = $this->exec_query("commit");
             }
         } else {

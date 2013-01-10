@@ -458,7 +458,7 @@ class DocSearch extends PDocSearch
      * @param int $famid family identifier to restrict search
      * @return array array of document array
      */
-    function getContent($controlview = true, $filter = array() , $famid = "")
+    public function getContent($controlview = true, array $filter = array() , $famid = "", $qtype = "TABLE", $trash = "")
     {
         if ($controlview) $uid = $this->userid;
         else $uid = 1;
