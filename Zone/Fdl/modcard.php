@@ -160,7 +160,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
                 $doc->refresh();
                 
                 if (needRefreshRn($doc)) $doc->refreshRn(); // hasNewFiles set by insertFile below
-                $msg = $doc->PostModify();
+                $msg = $doc->postModify();
                 if ($msg) $action->addWarningMsg($msg);
                 // add trace to know when and who modify the document
                 if ($docid == 0) {

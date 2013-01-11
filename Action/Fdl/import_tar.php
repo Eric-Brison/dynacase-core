@@ -145,7 +145,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                         $ddoc->addHistoryEntry(sprintf("create by import from archive %s", substr(basename($ldir) , 0, -2)));
                                         $tr[$index]["action"] = N_("added");
                                         $tr[$index]["id"] = $ddoc->id;
-                                        $ddoc->PostModify();
+                                        $ddoc->postModify();
                                         $ddoc->Modify();
                                         if ($dirid > 0) {
                                             $dir->AddFile($ddoc->id);

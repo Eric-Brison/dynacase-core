@@ -2614,9 +2614,10 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * no in postUpdate method :: call this only if real change (values)
      * @api hook called in ::store()
+     * @warning This hook may be replaced by postStore in the the next version.
      * @return string error message
      */
-    function PostModify()
+    function postModify()
     {
         // to be defined in child class
         return "";

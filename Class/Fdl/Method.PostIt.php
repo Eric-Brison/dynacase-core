@@ -75,7 +75,7 @@ class _POSTIT extends Doc
     {
         return sprintf(_("postit of %s") , $this->getTitle($s));
     }
-    function PostModify()
+    function postModify()
     {
         $docid = $this->getRawValue("PIT_IDADOC");
         if ($docid > 0) {

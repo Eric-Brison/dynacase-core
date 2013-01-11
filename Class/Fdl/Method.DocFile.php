@@ -25,7 +25,7 @@ class _FILE extends Doc
      * @end-method-ignore
     */
     
-    function PostModify()
+    function postModify()
     {
         $filename = $this->vault_filename("FI_FILE");
         /* to not view extension file

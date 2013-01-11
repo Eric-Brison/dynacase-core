@@ -26,9 +26,9 @@ class _GROUP extends Dir
      * reconstruct mail group & recompute parent group
      *
      * @return string error message, if no error empty string
-     * @see Doc::PostModify()
+     * @see postModify::PostModify()
      */
-    function PostModify()
+    function postModify()
     {
         
         $err = $this->SetGroupMail();
