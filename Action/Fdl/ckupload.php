@@ -44,7 +44,7 @@ function ckupload(Action & $action)
         $doc->setValue("img_file", $filename);
         $err.= $doc->store();
         if ($err == "") {
-            $action->lay->set("docid", $doc->getProperty("id"));
+            $action->lay->set("docid", $doc->getPropertyValue("id"));
             $action->lay->set("title", $doc->getTitle());
         }
     } else {

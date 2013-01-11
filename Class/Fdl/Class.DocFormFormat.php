@@ -1082,7 +1082,7 @@ class DocFormFormat
                                     break;
 
                                 default:
-                                    $prop = $doc->getProperty($sattrid);
+                                    $prop = $doc->getPropertyValue($sattrid);
                                     if ($prop !== false) {
                                         $urllink.= $prop;
                                     } else {

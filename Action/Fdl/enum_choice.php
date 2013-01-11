@@ -214,7 +214,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
             $lc = substr($v, -1);
             if ($lc == $v[0]) $arg[$k] = mb_substr($v, 1, -1);
             else $arg[$k] = mb_substr($v, 1);
-        } else if ($doc->getProperty($v) !== false) $arg[$k] = $doc->getProperty($v);
+        } else if ($doc->getPropertyValue($v) !== false) $arg[$k] = $doc->getPropertyValue($v);
         else {
             // can be values or family parameter
             $a = $doc->GetAttribute($v);

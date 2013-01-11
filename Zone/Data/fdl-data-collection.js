@@ -21,11 +21,11 @@
   		var ht = '&lt;table&gt;';
   		for ( var i in p) {
   			doc = p[i];
-  			ht += '&lt;tr&gt;&lt;td&gt;' + i + '&lt;/td&gt;&lt;td&gt;' + doc.getProperty('id')
+  			ht += '&lt;tr&gt;&lt;td&gt;' + i + '&lt;/td&gt;&lt;td&gt;' + doc.getPropertyValue('id')
   					+ '&lt;/td&gt;&lt;td style=&quot;width:200px;overflow:hidden&quot;&gt;'
   					+ doc.getTitle() + '&lt;/td&gt;&lt;td&gt;&lt;img src=&quot;' + doc.getIcon( {
   						'width' : 20
-  					}) + '&quot;&gt;&lt;/td&gt;&lt;td&gt;' + doc.getProperty('mdate')
+  					}) + '&quot;&gt;&lt;/td&gt;&lt;td&gt;' + doc.getPropertyValue('mdate')
   					+ '&lt;/td&gt;&lt;/tr&gt;';
   		}
   		ht += '&lt;/table&gt;';

@@ -162,7 +162,7 @@ function freedom_rss(Action & $action)
                             if (isset($lattr[$kc])) {
                                 $cval = $zdoc->getHtmlValue($lattr[$kc], $zdoc->getRawValue($kc) , "", false);
                                 if ($lattr[$kc]->type == "image") $cval = "<img width=\"30px\" src=\"$cval\">";
-                            } else $cval = $zdoc->getProperty($kc);
+                            } else $cval = $zdoc->getPropertyValue($kc);
                         }
                         if ($i == 0) {
                             $items[$zdoc->id]["title"] = __xmlentities(html_entity_decode($cval, ENT_NOQUOTES, 'UTF-8'));

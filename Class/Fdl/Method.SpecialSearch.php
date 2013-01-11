@@ -62,7 +62,7 @@ class _SSEARCH extends DocSearch
                         if ($aid == "THIS") $moreargs[$k] = & $this;
                         else {
                             $val = $this->getRawValue($aid);
-                            if (!$val) $val = $this->getProperty($aid);
+                            if (!$val) $val = $this->getPropertyValue($aid);
                             $moreargs[$k] = $val;
                         }
                     }

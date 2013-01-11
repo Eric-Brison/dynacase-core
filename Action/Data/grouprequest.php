@@ -63,7 +63,7 @@ function grouprequest(Action & $action)
                         /**
                          * @var Doc $document
                          */
-                        $docid[$varname] = $document->getProperty('id');
+                        $docid[$varname] = $document->getPropertyValue('id');
                     } else if ($id == "selection") $docid[$varname] = $id;
                 }
             } else {

@@ -1938,13 +1938,25 @@ create unique index i_docir on doc(initid, revision);";
         if (isset($this->attributes->attr[$idAttr])) return $this->attributes->attr[$idAttr]->getLabel();
         return _("unknow attribute");
     }
+
+    /**
+     * return the property value like id, initid, revision, ...
+     * @deprecated use {@link Doc::getPropertyValue} instead
+     * @see Doc::getPropertyValue
+     * @param string $prop property identifier
+     * @return string false if not an property
+     */
+    final public function getProperty($prop) {
+        deprecatedFunction();
+        return $this->getPropertyValue($prop);
+    }
     /**
      * return the property value like id, initid, revision, ...
      * @api get property value
      * @param string $prop property identifier
      * @return string false if not an property
      */
-    final public function getProperty($prop)
+    final public function getPropertyValue($prop)
     {
         $prop = trim(strtolower($prop));
         if (!in_array($prop, $this->fields)) return false;
@@ -2816,7 +2828,7 @@ create unique index i_docir on doc(initid, revision);";
      * @code
      $doc = new_Doc('',7498 );
      if ($doc->isAlive()) {
-     $rev = $doc->getProperty('revision');
+     $rev = $doc->getPropertyValue('revision');
      $order = $doc->getRawValue("tst_order");
      $level = $doc->getRawValue("tst_level","0");
      }
@@ -8316,7 +8328,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return value of an property for the document referenced
      * @api get value of an property for the document referenced
-     * @see getProperty
+     * @see getPropertyValue
      * @param int $docid document identifier
      * @param string $propid property identifier
      * @param bool $latest always last revision of document if true
