@@ -1460,12 +1460,25 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return family parameter
      *
-     * @api return family parameter value
+     * @deprecated use {@link Doc::getFamilyParameterValue} instead
+     * @see Doc::getFamilyParameterValue
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      * @return string parameter value
      */
     public function getParamValue($idp, $def = "")
+    {
+        return $this->getFamilyParameterValue($idp, $def);
+    }
+    /**
+     * return family parameter
+     *
+     * @api return family parameter value
+     * @param string $idp parameter identifier
+     * @param string $def default value if parameter not found or if it is null
+     * @return string parameter value
+     */
+    public function getFamilyParameterValue($idp, $def = "")
     {
         
         $r = $def;
@@ -4143,11 +4156,11 @@ create unique index i_docir on doc(initid, revision);";
                             } elseif ($attr = $this->getAttribute($input->name)) {
                                 if ($attr->usefor == 'Q') {
                                     if ($attr->inArray()) {
-                                        $pas = $this->rawValueToArray($this->getParamValue($input->name));
+                                        $pas = $this->rawValueToArray($this->getFamilyParameterValue($input->name));
                                         if ($index == - 1) $args[$ki] = $pas;
                                         else $args[$ki] = $pas[$index];
                                     } else {
-                                        $args[$ki] = $this->getParamValue($input->name);
+                                        $args[$ki] = $this->getFamilyParameterValue($input->name);
                                     }
                                 } else {
                                     if ($attr->inArray()) $args[$ki] = $this->getMultipleRawValues($input->name, "", $index);
@@ -6188,7 +6201,7 @@ create unique index i_docir on doc(initid, revision);";
                 if ($oa->usefor != 'Q') {
                     $template = $this->getRawValue($oa->id);
                 } else {
-                    $template = $this->getParamValue($aid);
+                    $template = $this->getFamilyParameterValue($aid);
                 }
                 if ($index >= 0) {
                     $tt = $this->rawValueToArray($template);

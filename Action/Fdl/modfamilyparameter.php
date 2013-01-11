@@ -84,7 +84,7 @@ function modfamilyparameter(Action & $action)
                     $out["modify"] = true;
                 }
             } else {
-                $oldValue = $doc->getParamValue($attrid);
+                $oldValue = $doc->getParameterRawValue($attrid);
                 $err = $doc->setParam($attrid, $value);
                 if (!$err) $err = $doc->store();
                 if ($err) {

@@ -79,7 +79,7 @@ class _SENTMESSAGE extends Doc
      */
     function control($aclname, $strict = false)
     {
-        if (($this->id > 0) && ($this->doctype != 'C') && ($aclname == "edit") && ($this->getParamValue("emsg_editcontrol") != "freeedit")) return _("electronic messages cannot be modified");
+        if (($this->id > 0) && ($this->doctype != 'C') && ($aclname == "edit") && ($this->getFamilyParameterValue("emsg_editcontrol") != "freeedit")) return _("electronic messages cannot be modified");
         else return parent::control($aclname, $strict);
     }
     /**

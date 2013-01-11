@@ -65,7 +65,7 @@ function exportfile(Action & $action)
             /**
              * @var DocFam $doc
              */
-            $ovalue = $doc->getParamValue($attrid);
+            $ovalue = $doc->getParameterRawValue($attrid);
             if (!$ovalue) $ovalue = $doc->getDefValue($attrid);
         } else $ovalue = $doc->getRawValue($attrid);
         if (($index !== "") && ($index >= 0)) {
@@ -120,6 +120,9 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $vf = newFreeVaultFile($dbaccess);
+    /**
+     * @var vaultFileInfo $info
+     */
     $info = null;
     if ($type == "pdf") {
         $teng_name = 'pdf';

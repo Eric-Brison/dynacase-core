@@ -170,12 +170,12 @@ class WDoc extends Doc
                 break;
 
             case 'PR': // docid parameter
-                $uid = $this->doc->getparamValue($aid);
+                $uid = $this->doc->getFamilyParameterValue($aid);
                 //	if ($uid) $wuid=$this->getDocValue($uid,"us_whatid");
                 break;
 
             case 'WPR': // workflow docid parameter
-                $uid = $this->getparamValue($aid);
+                $uid = $this->getFamilyParameterValue($aid);
                 //	if ($uid) $wuid=$this->getDocValue($uid,"us_whatid");
                 break;
 

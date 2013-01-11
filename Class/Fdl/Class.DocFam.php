@@ -206,12 +206,13 @@ create unique index idx_idfam on docfam(id);";
         $tp = $this->getParamAttributes();
         $pPowns = $this->getOwnParams();
         foreach ($tp as $aid => & $oa) {
+            if ($oa->type == "array") continue;
             $tDefPar[$aid] = array(
                 "aid" => $aid,
                 "alabel" => $oa->getLabel() ,
                 "defown" => $pPowns[$aid],
-                "definh" => ($this->fromid) ? $this->getFamilyDocument()->getParamValue($aid) : '',
-                "defresult" => $this->getHtmlValue($oa, $d->getParamValue($aid))
+                "definh" => ($this->fromid) ? $this->getFamilyDocument()->getParameterRawValue($aid) : '',
+                "defresult" => $this->getHtmlValue($oa, $d->getFamilyParameterValue($aid))
             );
         }
         $parent = null;
@@ -227,7 +228,7 @@ create unique index idx_idfam on docfam(id);";
                 $oa->setVisibility('R');
                 $label = $oa->getLabel();
                 if ($oa->usefor == 'Q') {
-                    $value = $d->getParamValue($aid);
+                    $value = $d->getFamilyParameterValue($aid);
                     if ($ownParValues[$aid]) {
                         $ownValue = $ownParValues[$aid];
                     } else {
@@ -241,7 +242,7 @@ create unique index idx_idfam on docfam(id);";
             if ($parent) {
                 if ($oa->usefor == 'Q') {
                     
-                    $inhValue = $parent->getParamValue($aid);
+                    $inhValue = $parent->getParameterRawValue($aid);
                 } else {
                     $inhValue = $parent->getDefValue($aid);
                 }
@@ -402,6 +403,20 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return family parameter
      *
+     * @deprecated use {@link Doc::getParameterRawValue} instead
+     * @see Doc::getParameterRawValue
+     * @param string $idp parameter identifier
+     * @param string $def default value if parameter not found or if it is null
+     * @return string parameter value
+     */
+    final public function getParamValue($idp, $def = "")
+    {
+        deprecatedFunction();
+        return $this->getParameterRawValue($idp, $def);
+    }
+    /**
+     * return family parameter
+     *
      * @api get parameter value
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
@@ -454,7 +469,7 @@ create unique index idx_idfam on docfam(id);";
      */
     public function getParamTValue($idAttr, $def = "", $index = - 1)
     {
-        $t = $this->rawValueToArray($this->getParamValue("$idAttr", $def));
+        $t = $this->rawValueToArray($this->getParameterRawValue("$idAttr", $def));
         if ($index == - 1) return $t;
         if (isset($t[$index])) return $t[$index];
         else return $def;
@@ -708,10 +723,10 @@ create unique index idx_idfam on docfam(id);";
         
         foreach ($fa as $aid => $oattr) {
             if ($oattr->inArray()) {
-                $ta = $this->rawValueToArray($this->getParamValue($aid));
+                $ta = $this->rawValueToArray($this->getParameterRawValue($aid));
             } else {
                 $ta = array(
-                    $this->getParamValue($aid)
+                    $this->getParameterRawValue($aid)
                 );
             }
             foreach ($ta as $k => $v) {

@@ -52,7 +52,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         
         $oa = $d->getAttribute($attrid);
         $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $famid));
-        $value = $d->getParamValue($oa->id);
+        $value = $d->getFamilyParameterValue($oa->id);
         $this->assertEquals($expectedvalue, $value, sprintf("not the expected default value attribute %s", $attrid));
     }
     /**
@@ -73,7 +73,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         foreach ($expectedParams as $attrid => $expectedValue) {
             $oa = $d->getAttribute($attrid);
             $this->assertNotEmpty($oa, sprintf("parameter %s not found in %s family", $attrid, $famid));
-            $value = $d->getParamValue($oa->id);
+            $value = $d->getFamilyParameterValue($oa->id);
             $this->assertEquals($expectedValue, $value, sprintf("not the expected default value parameter %s", $attrid));
         }
     }
@@ -120,7 +120,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
     public function testInitialParam($famid, $attrid, $expectedValue, $expectedDefaultValue)
     {
         $d = createDoc(self::$dbaccess, $famid);
-        $value = $d->getParamValue($attrid);
+        $value = $d->getFamilyParameterValue($attrid);
         $this->assertEquals($expectedValue, $value, sprintf("parameter %s has not correct initial value", $attrid));
         $f = $d->getFamilyDocument();
         $err = $f->setParam($attrid, '');
@@ -128,7 +128,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         $f->modify();
         $d2 = createDoc(self::$dbaccess, $famid);
         $f = $d2->getFamilyDocument();
-        $value = $d2->getParamValue($attrid);
+        $value = $d2->getFamilyParameterValue($attrid);
         $this->assertEquals($expectedDefaultValue, $value, sprintf("parameter %s has not correct default value", $attrid));
     }
     

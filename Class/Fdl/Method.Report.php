@@ -179,7 +179,7 @@ class _REPORT extends _DSEARCH
         $s->returnsOnly($tcols);
         $s->setObjectReturn();
         $limit = intval($limit);
-        $maxDisplayLimit = $this->getParamValue("rep_maxdisplaylimit", 1000) + 1;
+        $maxDisplayLimit = $this->getFamilyParameterValue("rep_maxdisplaylimit", 1000) + 1;
         if ($limit == 0) $limit = $maxDisplayLimit;
         else $limit = min($limit, $maxDisplayLimit);
         $s->setSlice($limit);

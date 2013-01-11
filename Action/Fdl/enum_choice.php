@@ -233,7 +233,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
                         if ($ta === false) return false;
                         $arg[$k] = trim($ta[$index]);
                     } else {
-                        $arg[$k] = $doc->getParamValue($v);
+                        $arg[$k] = $doc->getFamilyParameterValue($v);
                     }
                 } else if ($a && $a->inArray()) {
                     if (($a->fieldSet->id == $oattr->fieldSet->id)) { // search with index
@@ -260,7 +260,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
                 }
             }
             if ($a && ($a->usefor == "Q")) {
-                if (getFuncVar($v, false, $whttpvars, $doc, $a) === false) $arg[$k] = $doc->getParamValue($v);
+                if (getFuncVar($v, false, $whttpvars, $doc, $a) === false) $arg[$k] = $doc->getFamilyParameterValue($v);
             }
         }
     }

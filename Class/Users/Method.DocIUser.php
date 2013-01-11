@@ -226,7 +226,7 @@ class _IUSER extends Doc implements IMailRecipient
      */
     function setToDefaultGroup()
     {
-        $grpid = $this->getParamValue("us_defaultgroup");
+        $grpid = $this->getFamilyParameterValue("us_defaultgroup");
         $err = '';
         if ($grpid) {
             /**

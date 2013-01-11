@@ -62,7 +62,7 @@ function editchangestate(Action & $action)
                         if ($oa) {
                             if ($oa->needed) $tneed[$oa->id] = $oa->getLabel();
                             if ($oa->usefor == 'Q') {
-                                $wval = $wdoc->getParamValue($oa->id);
+                                $wval = $wdoc->getFamilyParameterValue($oa->id);
                                 $wval = $wdoc->getValueMethod($wval);
                             } else {
                                 $wval = $wdoc->getRawValue($oa->id);

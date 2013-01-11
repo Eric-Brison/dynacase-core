@@ -29,6 +29,9 @@ function editfamilyparameter(Action & $action)
     
     $action->lay->set("famid", $famid);
     $action->lay->set("attrid", strtolower($attrid));
+    /**
+     * @var DocFam $doc
+     */
     $doc = new_Doc($action->dbaccess, $famid, true);
     if ($doc->isAlive()) {
         /**
@@ -54,7 +57,7 @@ function editfamilyparameter(Action & $action)
             if ($default !== null) {
                 $value = $default;
             } else {
-                $value = $doc->getParamValue($attrid, $doc->GetValueMethod($attrid));
+                $value = $doc->getParameterRawValue($attrid, $doc->GetValueMethod($attrid));
             }
         }
         $d = createTmpDoc($action->dbaccess, $doc->id);

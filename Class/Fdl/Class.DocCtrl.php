@@ -350,7 +350,7 @@ class DocCtrl extends DocLDAP
                  * @var Doc $fromdocidvalues
                  */
                 $duid = $fromdocidvalues->getRawValue($aid);
-                if ($duid == "") $duid = $fromdocidvalues->getParamValue($aid);
+                if ($duid == "") $duid = $fromdocidvalues->getFamilyParameterValue($aid);
                 if ($duid != "") {
                     $duid = str_replace("<BR>", "\n", $duid); // docid multiple
                     $tduid = Doc::rawValueToArray($duid);
@@ -446,7 +446,7 @@ class DocCtrl extends DocLDAP
                      * @var Doc $fromdocidvalues
                      */
                     $duid = $fromdocidvalues->getRawValue($aid);
-                    if ($duid == "") $duid = $fromdocidvalues->getParamValue($aid);
+                    if ($duid == "") $duid = $fromdocidvalues->getFamilyParameterValue($aid);
                     if ($duid != "") {
                         $duid = str_replace("<BR>", "\n", $duid); // docid multiple
                         $tduid = Doc::rawValueToArray($duid);

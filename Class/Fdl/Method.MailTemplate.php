@@ -146,7 +146,7 @@ class _MAILTEMPLATE extends Doc
                             $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
                             return sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid);
                         }
-                        $mail = $doc->getparamValue($aid);
+                        $mail = $doc->getFamilyParameterValue($aid);
                         break;
 
                     case 'WE': // workflow text parameter
@@ -157,7 +157,7 @@ class _MAILTEMPLATE extends Doc
                                 $wdoc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
                                 return sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid);
                             }
-                            $mail = $wdoc->getparamValue($aid);
+                            $mail = $wdoc->getFamilyParameterValue($aid);
                         }
                         break;
 
@@ -176,7 +176,7 @@ class _MAILTEMPLATE extends Doc
                                 return sprintf(_("Send mail error : Attribute %s not found") , $aid);
                             }
                             if ($type == 'DE') {
-                                $vdocid = $udoc->getParamValue($aid);
+                                $vdocid = $udoc->getFamilyParameterValue($aid);
                             } else {
                                 $vdocid = $udoc->getRawValue($aid); // for array of users
                                 

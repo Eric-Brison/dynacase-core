@@ -84,7 +84,7 @@ class _PORTFOLIO extends Dir
         $err = "";
         include_once ("FDL/Lib.Dir.php");
         
-        $copytab = $this->getParamValue("pfl_idcopytab");
+        $copytab = $this->getFamilyParameterValue("pfl_idcopytab");
         if ($copytab) {
             $copytab = $this->rawValueToArray($copytab);
             foreach ($copytab as $k => $id) {
