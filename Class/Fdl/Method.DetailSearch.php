@@ -67,10 +67,10 @@ class _DSEARCH extends DocSearch
      */
     function getQuery()
     {
-        $filtersType = $this->getTValue("se_typefilter");
-        if ((count($this->getTvalue("se_filter")) > 0) && (empty($filtersType[0]) || $filtersType[0] != "generated")) {
+        $filtersType = $this->getMultipleRawValues("se_typefilter");
+        if ((count($this->getMultipleRawValues("se_filter")) > 0) && (empty($filtersType[0]) || $filtersType[0] != "generated")) {
             $queries = array();
-            $filters = $this->getTValue("se_filter");
+            $filters = $this->getMultipleRawValues("se_filter");
             foreach ($filters as $filter) {
                 $q = $this->getSqlXmlFilter($filter);
                 if ($q) $queries[] = $q;
@@ -97,10 +97,10 @@ class _DSEARCH extends DocSearch
     {
         // update only if one filter
         $err = '';
-        if (count($this->getTvalue("se_filter")) == 1) {
+        if (count($this->getMultipleRawValues("se_filter")) == 1) {
             // try to update se_famid
-            $filters = $this->getTValue("se_filter");
-            $filtersType = $this->getTValue("se_typefilter");
+            $filters = $this->getMultipleRawValues("se_filter");
+            $filtersType = $this->getMultipleRawValues("se_typefilter");
             $filter = $filters[0];
             $filterType = $filtersType[0];
             if ($filterType != "generated") {
@@ -134,11 +134,11 @@ class _DSEARCH extends DocSearch
     {
         // update only if one filter
         $err = '';
-        if (count($this->getTvalue("se_filter")) < 2) {
+        if (count($this->getMultipleRawValues("se_filter")) < 2) {
             // try to update se_famid
-            $filters = $this->getTValue("se_filter");
-            $typeFilters = $this->getTValue("se_typefilter");
-            if (count($this->getTvalue("se_filter")) == 1) {
+            $filters = $this->getMultipleRawValues("se_filter");
+            $typeFilters = $this->getMultipleRawValues("se_typefilter");
+            if (count($this->getMultipleRawValues("se_filter")) == 1) {
                 if ($typeFilters[0] != "generated") return ''; // don't update specified filter created by data API
                 
             }
@@ -203,9 +203,9 @@ class _DSEARCH extends DocSearch
     
     function preConsultation()
     {
-        if (count($this->getTvalue("se_filter")) > 0) {
+        if (count($this->getMultipleRawValues("se_filter")) > 0) {
             if ($this->defaultview == "FREEDOM:VIEWDSEARCH") {
-                $type = $this->getTvalue("se_typefilter");
+                $type = $this->getMultipleRawValues("se_typefilter");
                 if ($type[0] != "generated") {
                     $this->defaultview = "FDL:VIEWBODYCARD";
                 }
@@ -215,8 +215,8 @@ class _DSEARCH extends DocSearch
     
     function preEdition()
     {
-        if (count($this->getTvalue("se_filter")) > 0) {
-            $type = $this->getTvalue("se_typefilter");
+        if (count($this->getMultipleRawValues("se_filter")) > 0) {
+            $type = $this->getMultipleRawValues("se_typefilter");
             if ($type[0] != "generated") {
                 $this->defaultedit = "FDL:EDITBODYCARD";
                 /**
@@ -240,8 +240,8 @@ class _DSEARCH extends DocSearch
     function getSqlParseError()
     {
         $err = "";
-        $tlp = $this->getTValue("SE_LEFTP");
-        $tlr = $this->getTValue("SE_RIGHTP");
+        $tlp = $this->getMultipleRawValues("SE_LEFTP");
+        $tlr = $this->getMultipleRawValues("SE_RIGHTP");
         $clp = 0;
         $clr = 0;
         //if (count($tlp) > count($tlr)) $err=sprintf(_("left parenthesis is not closed"));
@@ -517,16 +517,16 @@ class _DSEARCH extends DocSearch
                 function getSqlDetailFilter()
                 {
                     $ol = $this->getRawValue("SE_OL");
-                    $tkey = $this->getTValue("SE_KEYS");
-                    $taid = $this->getTValue("SE_ATTRIDS");
-                    $tf = $this->getTValue("SE_FUNCS");
-                    $tlp = $this->getTValue("SE_LEFTP");
-                    $tlr = $this->getTValue("SE_RIGHTP");
-                    $tols = $this->getTValue("SE_OLS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
+                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+                    $tf = $this->getMultipleRawValues("SE_FUNCS");
+                    $tlp = $this->getMultipleRawValues("SE_LEFTP");
+                    $tlr = $this->getMultipleRawValues("SE_RIGHTP");
+                    $tols = $this->getMultipleRawValues("SE_OLS");
                     
                     if ($ol == "") {
                         // try in old version
-                        $ols = $this->getTValue("SE_OLS");
+                        $ols = $this->getMultipleRawValues("SE_OLS");
                         $ol = isset($ols[1]) ? $ols[1] : '';
                         if ($ol) {
                             $this->setValue("SE_OL", $ol);
@@ -590,7 +590,7 @@ class _DSEARCH extends DocSearch
                  */
                 function isParameterizable()
                 {
-                    $tkey = $this->getTValue("SE_KEYS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
                     if (empty($tkey)) return false;
                     if ((count($tkey) > 1) || ($tkey[0] != "")) {
                         foreach ($tkey as $k => $v) {
@@ -609,7 +609,7 @@ class _DSEARCH extends DocSearch
                  */
                 function needParameters()
                 {
-                    $tkey = $this->getTValue("SE_KEYS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
                     
                     if ((count($tkey) > 1) || ($tkey[0] != "")) {
                         
@@ -627,7 +627,7 @@ class _DSEARCH extends DocSearch
                  */
                 function urlWhatEncodeSpec($l)
                 {
-                    $tkey = $this->getTValue("SE_KEYS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
                     
                     if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
                         
@@ -648,8 +648,8 @@ class _DSEARCH extends DocSearch
                  */
                 function getSpecTitle()
                 {
-                    $tkey = $this->getTValue("SE_KEYS");
-                    $taid = $this->getTValue("SE_ATTRIDS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
+                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
                     $l = "";
                     if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
                         $tl = array();
@@ -690,9 +690,9 @@ class _DSEARCH extends DocSearch
                     $this->viewattr();
                     //-----------------------------------------------
                     // display already condition written
-                    $tkey = $this->getTValue("SE_KEYS");
-                    $taid = $this->getTValue("SE_ATTRIDS");
-                    $tf = $this->getTValue("SE_FUNCS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
+                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+                    $tf = $this->getMultipleRawValues("SE_FUNCS");
                     if ((count($taid) > 1) || ($taid[0] != "")) {
                         
                         $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
@@ -767,9 +767,9 @@ class _DSEARCH extends DocSearch
                     $tparm = $tcond = array();
                     //-----------------------------------------------
                     // display already condition written
-                    $tkey = $this->getTValue("SE_KEYS");
-                    $taid = $this->getTValue("SE_ATTRIDS");
-                    $tf = $this->getTValue("SE_FUNCS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
+                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+                    $tf = $this->getMultipleRawValues("SE_FUNCS");
                     $zpi = $toperator = array();
                     if ((count($taid) > 1) || ($taid[0] != "")) {
                         
@@ -1112,12 +1112,12 @@ class _DSEARCH extends DocSearch
                     }
                     //-----------------------------------------------
                     // display already condition written
-                    $tol = $this->getTValue("SE_OLS");
-                    $tkey = $this->getTValue("SE_KEYS");
-                    $taid = $this->getTValue("SE_ATTRIDS");
-                    $tf = $this->getTValue("SE_FUNCS");
-                    $tlp = $this->getTValue("SE_LEFTP");
-                    $trp = $this->getTValue("SE_RIGHTP");
+                    $tol = $this->getMultipleRawValues("SE_OLS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
+                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+                    $tf = $this->getMultipleRawValues("SE_FUNCS");
+                    $tlp = $this->getMultipleRawValues("SE_LEFTP");
+                    $trp = $this->getMultipleRawValues("SE_RIGHTP");
                     
                     $cond = "";
                     $tcond = array();

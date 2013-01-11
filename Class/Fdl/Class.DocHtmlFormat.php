@@ -677,7 +677,7 @@ class DocHtmlFormat
             $nbitem = 0;
             $tval = array();
             foreach ($ta as $k => $v) {
-                $tval[$k] = $this->doc->getTValue($k);
+                $tval[$k] = $this->doc->getMultipleRawValues($k);
                 $nbitem = max($nbitem, count($tval[$k]));
                 $lay->set("L_" . strtoupper($v->id) , ucfirst($v->getLabel()));
             }
@@ -729,7 +729,7 @@ class DocHtmlFormat
                     "astyle" => $v->getOption("cellheadstyle") ,
                     "cwidth" => $v->getOption("cwidth", "auto")
                 );
-                $tval[$k] = $this->doc->getTValue($k);
+                $tval[$k] = $this->doc->getMultipleRawValues($k);
                 $nbitem = max($nbitem, count($tval[$k]));
                 if ($emptyarray && ($this->doc->getRawValue($k) != "")) $emptyarray = false;
             }
@@ -802,7 +802,7 @@ class DocHtmlFormat
     {
         $htmlval = "";
         if ($avalue != "") {
-            if ($kvalue > - 1) $idocid = $this->doc->getTValue($this->cFormat, "", $kvalue);
+            if ($kvalue > - 1) $idocid = $this->doc->getMultipleRawValues($this->cFormat, "", $kvalue);
             else $idocid = $this->doc->getRawValue($this->cFormat);
             
             if ($idocid > 0) {
@@ -928,7 +928,7 @@ class DocHtmlFormat
         $lay = new Layout("FDL/Layout/viewdocoption.xml", $action);
         $htmlval = "";
         
-        if ($kvalue > - 1) $di = $this->doc->getTValue($this->oattr->format, "", $kvalue);
+        if ($kvalue > - 1) $di = $this->doc->getMultipleRawValues($this->oattr->format, "", $kvalue);
         else $di = $this->doc->getRawValue($this->oattr->format);
         if ($di > 0) {
             $lay->set("said", $di);
@@ -1105,7 +1105,7 @@ class DocHtmlFormat
         } else {
             $sl = strtolower($s);
             if (!isset($this->doc->$sl)) return "[$s]";
-            $v = $this->doc->getTValue($sl, "", $index);
+            $v = $this->doc->getMultipleRawValues($sl, "", $index);
         }
         return $v;
     }

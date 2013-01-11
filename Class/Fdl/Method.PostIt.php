@@ -38,10 +38,10 @@ class _POSTIT extends Doc
     function viewpostit($target = "_self", $ulink = true, $abstract = false)
     {
         // -----------------------------------
-        $tcomment = $this->getTvalue("PIT_COM");
-        $tuser = $this->getTvalue("PIT_USER");
-        $tdate = $this->getTvalue("PIT_DATE");
-        $tcolor = $this->getTvalue("PIT_COLOR");
+        $tcomment = $this->getMultipleRawValues("PIT_COM");
+        $tuser = $this->getMultipleRawValues("PIT_USER");
+        $tdate = $this->getMultipleRawValues("PIT_DATE");
+        $tcolor = $this->getMultipleRawValues("PIT_COLOR");
         
         $nbcar = strlen($this->getRawValue("PIT_COM"));
         if ($nbcar < 60) $fontsize = 120;
@@ -91,10 +91,10 @@ class _POSTIT extends Doc
         $ncom = $this->getRawValue("PIT_NCOM");
         if ($ncom != "") {
             
-            $tcom = $this->getTValue("PIT_COM");
-            $tdate = $this->getTValue("PIT_DATE");
-            $tiduser = $this->getTValue("PIT_IDUSER");
-            $tcolor = $this->getTValue("PIT_COLOR");
+            $tcom = $this->getMultipleRawValues("PIT_COM");
+            $tdate = $this->getMultipleRawValues("PIT_DATE");
+            $tiduser = $this->getMultipleRawValues("PIT_IDUSER");
+            $tcolor = $this->getMultipleRawValues("PIT_COLOR");
             
             foreach ($tcom as $k => $v) {
                 if ($v == "") {

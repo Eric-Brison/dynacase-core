@@ -148,7 +148,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
                         $tattr = $wdoc->getAttributes();
                         foreach ($tattr as $ka => $oa) {
                             if ($oa->type == "docid") {
-                                $tdid = $wdoc->getTValue($ka);
+                                $tdid = $wdoc->getMultipleRawValues($ka);
                                 foreach ($tdid as $did) {
                                     if ($did != "") {
                                         $m = getTDoc($dbaccess, $did);

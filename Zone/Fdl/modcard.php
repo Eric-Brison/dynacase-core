@@ -267,7 +267,7 @@ function setPostVars(Doc & $doc, &$info = array())
                 if ((count($v) == 0)) $value = " "; // delete column
                 else $value = $v;
                 //$value = array_values($value);
-                if (count($v) == 1 && $v[0] === '' && (count($doc->getTValue($attrid)) == 0)) {
+                if (count($v) == 1 && $v[0] === '' && (count($doc->getMultipleRawValues($attrid)) == 0)) {
                     $value = '';
                     $oa = $doc->getAttribute($attrid);
                     if ($oa && $oa->fieldSet && $oa->fieldSet->type == "array") {
@@ -376,7 +376,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
                             $tuserfiles[$k]["name"] = $orinames[$k];
                         }
                     }
-                    if ($oa) $tuserfiles[$k]["oldvalue"] = $doc->getTValue($oa->id, "", $k);
+                    if ($oa) $tuserfiles[$k]["oldvalue"] = $doc->getMultipleRawValues($oa->id, "", $k);
                 }
             }
         }
@@ -392,7 +392,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
     $rt = $rtold = array(); // array of file to be returned
     if ($doc) $rtold = $doc->rawValueToArray($doc->getOldValue(substr($attrid, 4))); // special in case of file modification by DAV in revised document
     $oa = $doc->getAttribute(substr($attrid, 4));
-    $rt = $doc->getTvalue($attrid); // in case of modified only a part of array files
+    $rt = $doc->getMultipleRawValues($attrid); // in case of modified only a part of array files
     unset($tuserfiles['__1x_']);
     
     foreach ($tuserfiles as $k => $userfile) {

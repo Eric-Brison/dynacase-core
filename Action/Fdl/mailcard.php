@@ -417,7 +417,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                         if (in_array($aid, $taids)) {
                             $tva = array();
                             $cidindex = "";
-                            if ($afiles[$aid]->repeat) $va = $doc->getTValue($aid, "", $index);
+                            if ($afiles[$aid]->repeat) $va = $doc->getMultipleRawValues($aid, "", $index);
                             else $va = $doc->getRawValue($aid);
                             
                             if ($va != "") {

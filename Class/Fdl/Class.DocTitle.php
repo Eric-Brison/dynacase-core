@@ -67,7 +67,7 @@ class DocTitle
             $type = $oa->type;
             $latest = $oa->getOption("docrev", "latest") == "latest";
             if ($type == "docid" || $type == "account") {
-                $ids = $doc->getTValue($oa->id);
+                $ids = $doc->getMultipleRawValues($oa->id);
                 $realId = array();
                 foreach ($ids as $rid) {
                     if (is_numeric($rid)) $realId[] = intval($rid);

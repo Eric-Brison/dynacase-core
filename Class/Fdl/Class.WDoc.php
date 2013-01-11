@@ -267,7 +267,7 @@ class WDoc extends Doc
      */
     public function getTransitionTimers($transName)
     {
-        return array_merge($this->getTValue($this->_Aid("_trans_pa_tmid", $transName)) , $this->getTValue($this->_Aid("_trans_tmid", $transName)));
+        return array_merge($this->getMultipleRawValues($this->_Aid("_trans_pa_tmid", $transName)) , $this->getMultipleRawValues($this->_Aid("_trans_tmid", $transName)));
     }
     /**
      * get the mail ids according to transition
@@ -276,7 +276,7 @@ class WDoc extends Doc
      */
     public function getTransitionMailTemplates($transName)
     {
-        return $this->getTValue($this->_Aid("_trans_pa_mtid", $transName));
+        return $this->getMultipleRawValues($this->_Aid("_trans_pa_mtid", $transName));
     }
     /**
      * get the mail templates ids according to state
@@ -285,7 +285,7 @@ class WDoc extends Doc
      */
     public function getStateMailTemplate($state)
     {
-        return $this->getTValue($this->_Aid("_mtid", $state));
+        return $this->getMultipleRawValues($this->_Aid("_mtid", $state));
     }
     /**
      * create of parameters attributes of workflow
@@ -955,7 +955,7 @@ class WDoc extends Doc
     function getDocumentWasks($state, $control = true)
     {
         $aask = $this->_Aid("_ASKID", $state);
-        $vasks = $this->getTValue($aask);
+        $vasks = $this->getMultipleRawValues($aask);
         if ($control) {
             $cask = array();
             foreach ($vasks as $askid) {
@@ -995,7 +995,7 @@ class WDoc extends Doc
     function workflowSendMailTemplate($state, $comment = "", $tname = "")
     {
         $err = '';
-        $tmtid = $this->getTValue($this->_Aid("_TRANS_MTID", $tname));
+        $tmtid = $this->getMultipleRawValues($this->_Aid("_TRANS_MTID", $tname));
         
         $tr = ($tname) ? $this->transitions[$tname] : null;
         if ($tmtid && (count($tmtid) > 0)) {
@@ -1018,7 +1018,7 @@ class WDoc extends Doc
             }
         }
         
-        $tmtid = $this->getTValue($this->_Aid("_MTID", $state));
+        $tmtid = $this->getMultipleRawValues($this->_Aid("_MTID", $state));
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
                 $keys = array();
@@ -1063,7 +1063,7 @@ class WDoc extends Doc
             }
         }
         // unattach persistent
-        $tmtid = $this->getTValue($this->_Aid("_TRANS_PU_TMID", $tname));
+        $tmtid = $this->getMultipleRawValues($this->_Aid("_TRANS_PU_TMID", $tname));
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
                 $mt = new_doc($this->dbaccess, $mtid);
@@ -1081,7 +1081,7 @@ class WDoc extends Doc
             }
         }
         // attach persistent
-        $tmtid = $this->getTValue($this->_Aid("_TRANS_PA_TMID", $tname));
+        $tmtid = $this->getMultipleRawValues($this->_Aid("_TRANS_PA_TMID", $tname));
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
                 $mt = new_doc($this->dbaccess, $mtid);

@@ -51,9 +51,9 @@ class _WASK extends Doc
     
     function getAskLabel($keys)
     {
-        $i = array_search($keys, $this->getTValue("was_keys"));
+        $i = array_search($keys, $this->getMultipleRawValues("was_keys"));
         if ($i !== false) {
-            return $this->getTvalue("was_labels", "", $i);
+            return $this->getMultipleRawValues("was_labels", "", $i);
         }
         return "";
     }

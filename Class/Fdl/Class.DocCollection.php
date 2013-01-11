@@ -385,7 +385,7 @@ class DocCollection extends Doc
         if (!$famid) {
             $famid = $this->getRawValue("se_famid");
             if (!$famid) { // search in origin filter
-                $filter = $this->getTValue("se_filter", '', 0);
+                $filter = $this->getMultipleRawValues("se_filter", '', 0);
                 if ($filter) {
                     $xfilter = simplexml_load_string($filter);
                     $famid = trim($xfilter->family);

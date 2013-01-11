@@ -1151,7 +1151,7 @@ class DocFormFormat
                 $help = $doc->getHelpPage();
                 
                 foreach ($ta as $k => $v) { // detect uncompleted rows
-                    $t = $doc->getTValue($k);
+                    $t = $doc->getMultipleRawValues($k);
                     $c = count($t);
                     if ($c > $max) {
                         if ($max0 < 0) $max0 = $c;
@@ -1161,7 +1161,7 @@ class DocFormFormat
                 
                 if ($max > $max0) {
                     foreach ($ta as $k => $v) { // fill uncompleted rows
-                        $t = $doc->getTValue($k);
+                        $t = $doc->getMultipleRawValues($k);
                         $c = count($t);
                         if ($c < $max) {
                             $t = array_pad($t, $max, "");
@@ -1205,7 +1205,7 @@ class DocFormFormat
                     );
                     
                     if ($visible) $nbcolattr++;
-                    $tval[$k] = $doc->getTValue($k);
+                    $tval[$k] = $doc->getMultipleRawValues($k);
                     $nbitem = count($tval[$k]);
                     
                     if (($visible) && ($width == "auto")) {
@@ -1400,7 +1400,7 @@ class DocFormFormat
                     $nbitem = 0;
                     
                     foreach ($ta as $k => $v) {
-                        $tval[$k] = $doc->getTValue($k);
+                        $tval[$k] = $doc->getMultipleRawValues($k);
                         $nbitem = max($nbitem, count($tval[$k]));
                         $lay->set("L_" . strtoupper($v->id) , ucfirst($v->getLabel()));
                     }
@@ -1493,7 +1493,7 @@ class DocFormFormat
                 if (substr($s, 0, 2) == "L_") return "[$s]";
                 if (substr($s, 0, 2) == "V_") {
                     $s = substr($s, 2);
-                    if ($index != - 1) $value = $doc->getTValue($s, "", $index);
+                    if ($index != - 1) $value = $doc->getMultipleRawValues($s, "", $index);
                     else $value = $defval[strtolower($s) ];
                     $oattr = $doc->getAttribute($s);
                     if (!$oattr) return sprintf(_("unknow attribute %s") , $s);
@@ -1502,7 +1502,7 @@ class DocFormFormat
                     $sl = strtolower($s);
                     if (!isset($doc->$sl)) return "[$s]";
                     if ($index == - 1) $v = $doc->getRawValue($sl);
-                    else $v = $doc->getTValue($sl, "", $index);
+                    else $v = $doc->getMultipleRawValues($sl, "", $index);
                     $v = str_replace('"', '&quot;', $v);
                 }
                 return $v;
@@ -1736,7 +1736,7 @@ class DocFormFormat
                 $lay->set("id", $idx);
                 $lay->set("didx", $index);
                 $lay->set("di", trim(strtolower($oattr->format)));
-                if ($index !== "") $lay->set("said", $doc->getTValue($oattr->format, "", $index));
+                if ($index !== "") $lay->set("said", $doc->getMultipleRawValues($oattr->format, "", $index));
                 else $lay->set("said", $doc->getRawValue($oattr->format));
                 
                 $lay->set("value", $value);

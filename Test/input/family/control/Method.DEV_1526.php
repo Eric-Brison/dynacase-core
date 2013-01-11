@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 /**
  * Test HTML Text in ODT representation
  *
@@ -25,11 +25,11 @@ class _IGROUPDEV extends _GROUP
      */
     function dev_1526($target, $ulink, $abstract)
     {
-        $this->lay->setColumn('V_STR_COL1', $this->getTValue('COL_1'));
+        $this->lay->setColumn('V_STR_COL1', $this->getMultipleRawValues('COL_1'));
         
         $oooTValue = array();
         $attrName = 'ARR_3_COL_1';
-        foreach ($this->getTValue($attrName) as $v) {
+        foreach ($this->getMultipleRawValues($attrName) as $v) {
             array_push($oooTValue, $this->getOOoValue($this->getAttribute($attrName) , $v));
         }
         $this->lay->setColumn('MANUAL_SET_ARR_3_COL_1', $oooTValue);

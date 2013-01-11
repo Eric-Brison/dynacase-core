@@ -144,7 +144,7 @@ class _IGROUP extends _GROUP
      */
     function refreshParentGroup()
     {
-        $tgid = $this->getTValue("GRP_IDPGROUP");
+        $tgid = $this->getMultipleRawValues("GRP_IDPGROUP");
         foreach ($tgid as $gid) {
             /**
              * @var _IGROUP $gdoc
@@ -165,7 +165,7 @@ class _IGROUP extends _GROUP
         $uid = $this->getRawValue("US_WHATID");
         $gname = $this->getRawValue("GRP_NAME");
         $login = $this->getRawValue("US_LOGIN");
-        $roles = $this->GetTValue("grp_roles");
+        $roles = $this->getMultipleRawValues("grp_roles");
         
         $fid = $this->id;
         /**
@@ -191,7 +191,7 @@ class _IGROUP extends _GROUP
             $wrg = $this->RefreshLdapCard();
             if ($wrg) AddWarningMsg($wrg);
             // add in default folder root groups : usefull for import
-            $tgid = $this->getTValue("GRP_IDPGROUP");
+            $tgid = $this->getMultipleRawValues("GRP_IDPGROUP");
             $fdoc = $this->getFamilyDocument();
             $dfldid = $fdoc->dfldid;
             if ($dfldid != "") {

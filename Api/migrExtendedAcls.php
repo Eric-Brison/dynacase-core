@@ -85,8 +85,8 @@ while ($cvdoc = $s->nextDoc()) {
     print ("\n" . $cvdoc->getTitle() . " : #" . $cvdoc->id);
     // old code compatibility
     $ka = POS_WF;
-    $ti = $cvdoc->getTValue("CV_IDVIEW");
-    $tl = $cvdoc->getTValue("CV_LVIEW");
+    $ti = $cvdoc->getMultipleRawValues("CV_IDVIEW");
+    $tl = $cvdoc->getMultipleRawValues("CV_LVIEW");
     
     $ka = POS_WF;
     foreach ($ti as $k => $v) {

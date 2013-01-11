@@ -754,7 +754,7 @@ class Form1NF
                             foreach ($linkedTables as $data) {
                                 switch ($type) {
                                     case 'enum_multiple_link':
-                                        $values = $doc->getTValue($data['column']->name);
+                                        $values = $doc->getMultipleRawValues($data['column']->name);
                                         foreach ($values as $value) {
                                             if (isset($data['enumtable'])) {
                                                 $data['enumtable']->checkEnumValue($value);
@@ -770,7 +770,7 @@ class Form1NF
                                         break;
 
                                     case 'docid_multiple_link':
-                                        $values = $doc->getTValue($data['column']->name);
+                                        $values = $doc->getMultipleRawValues($data['column']->name);
                                         foreach ($values as $value) {
                                             $id = $this->sqlGetValidDocId($value);
                                             $this->sqlInsert(strtolower($data['table']->name) , $data['table']->sqlFields, array(

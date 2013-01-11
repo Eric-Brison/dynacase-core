@@ -111,7 +111,7 @@ function freedom_rss(Action & $action)
             );
         }
         
-        $tcols = $doc->getTValue("REP_IDCOLS");
+        $tcols = $doc->getMultipleRawValues("REP_IDCOLS");
         foreach ($tcols as $val) {
             $tcolshown[$val] = $tcol1[$val];
         }

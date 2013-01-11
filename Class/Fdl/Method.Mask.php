@@ -60,9 +60,9 @@ class _MASK extends Doc
      */
     function postModify()
     {
-        $tneed = $this->getTValue("MSK_NEEDEEDS");
-        $tattrid = $this->getTValue("MSK_ATTRIDS");
-        $tvis = $this->getTValue("MSK_VISIBILITIES");
+        $tneed = $this->getMultipleRawValues("MSK_NEEDEEDS");
+        $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
+        $tvis = $this->getMultipleRawValues("MSK_VISIBILITIES");
         
         $tvisibilities = array();
         foreach ($tattrid as $k => $v) {
@@ -81,8 +81,8 @@ class _MASK extends Doc
     
     function getVisibilities()
     {
-        $tvisid = $this->getTValue("MSK_VISIBILITIES");
-        $tattrid = $this->getTValue("MSK_ATTRIDS");
+        $tvisid = $this->getMultipleRawValues("MSK_VISIBILITIES");
+        $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
         
         $tvisibilities = array();
         while (list($k, $v) = each($tattrid)) {
@@ -93,8 +93,8 @@ class _MASK extends Doc
     
     function getCVisibilities()
     {
-        $tvisid = $this->getTValue("MSK_VISIBILITIES");
-        $tattrid = $this->getTValue("MSK_ATTRIDS");
+        $tvisid = $this->getMultipleRawValues("MSK_VISIBILITIES");
+        $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
         $docid = $this->getRawValue("MSK_FAMID", 1);
         $doc = new_Doc($this->dbaccess, $docid);
         
@@ -117,8 +117,8 @@ class _MASK extends Doc
     }
     function getNeedeeds()
     {
-        $tvisid = $this->getTValue("MSK_NEEDEEDS");
-        $tattrid = $this->getTValue("MSK_ATTRIDS");
+        $tvisid = $this->getMultipleRawValues("MSK_NEEDEEDS");
+        $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
         
         $tvisibilities = array();
         while (list($k, $v) = each($tattrid)) {

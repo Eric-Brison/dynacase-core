@@ -146,7 +146,7 @@ function getFuncVar($n, $def = "", $whttpvars, &$doc, &$oa)
         $h = GetHttpVars(strtolower($n));
         if ($h) return $h;
         if (!$oa) return ($n);
-        if (($oa->repeat) || $oa->inArray()) $r = $doc->getTValue($n);
+        if (($oa->repeat) || $oa->inArray()) $r = $doc->getMultipleRawValues($n);
         else $r = $doc->getRawValue($n);
         if ($r === "") return false;
         return $r;

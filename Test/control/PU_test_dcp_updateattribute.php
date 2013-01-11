@@ -258,7 +258,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $tv = $doc->getTValue($attrid);
+            $tv = $doc->getMultipleRawValues($attrid);
             if ($singleMultiple) {
                 if (!in_array($doc->initid, $noNeedChanged)) {
                     if (is_array($expectedAdd)) {
@@ -351,7 +351,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $tv = $doc->getTValue($attrid);
+            $tv = $doc->getMultipleRawValues($attrid);
             if ($singleMultiple) {
                 if (!in_array($doc->initid, $noNeedChanged)) {
                     if (is_array($expectedRemove)) {

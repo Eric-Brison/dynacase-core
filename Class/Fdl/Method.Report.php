@@ -84,7 +84,7 @@ class _REPORT extends _DSEARCH
             );
         }
         // display selected column
-        $tcols = $this->getTValue("REP_IDCOLS");
+        $tcols = $this->getMultipleRawValues("REP_IDCOLS");
         
         foreach ($tcols as $k => $vx) {
             if (isset($tcolumn1[$vx])) {
@@ -142,7 +142,7 @@ class _REPORT extends _DSEARCH
             );
         }
         
-        $tcols = $this->getTValue("REP_IDCOLS");
+        $tcols = $this->getMultipleRawValues("REP_IDCOLS");
         foreach ($tcols as $k => & $vcol) {
             if ($vcol) {
                 $tcolumn2[$vcol] = $tcolumn1[$vcol];
@@ -191,7 +191,7 @@ class _REPORT extends _DSEARCH
             $needRemoveLast = true;
         }
         $trodd = false;
-        $tcolor = $this->getTValue("REP_COLORS");
+        $tcolor = $this->getMultipleRawValues("REP_COLORS");
         $trow = array();
         $k = 0;
         while ($rdoc = $s->nextDoc()) {
@@ -254,7 +254,7 @@ class _REPORT extends _DSEARCH
         $this->lay->setBlockData("ROWS", $trow);
         // ---------------------
         // footer
-        $tfoots = $this->getTValue("REP_FOOTS");
+        $tfoots = $this->getMultipleRawValues("REP_FOOTS");
         $tlfoots = array();
         foreach ($tfoots as $k => $v) {
             switch ($v) {
@@ -312,7 +312,7 @@ class _REPORT extends _DSEARCH
         $search->setObjectReturn();
         // print_r($search->getSearchInfo());
         $famDoc = createDoc($this->dbaccess, $famId, false);
-        $tcols = $this->getTValue("rep_idcols");
+        $tcols = $this->getMultipleRawValues("rep_idcols");
         
         $search->returnsOnly($tcols);
         
@@ -399,7 +399,7 @@ class _REPORT extends _DSEARCH
             foreach ($multipleAttributes as $currentKey => $currentArrayID) {
                 foreach ($currentArrayID as $currentColumnID) {
                     $currentAttribute = $famDoc->getAttribute($currentColumnID);
-                    $nbElement = count($currentDoc->getTValue($currentColumnID));
+                    $nbElement = count($currentDoc->getMultipleRawValues($currentColumnID));
                     for ($i = 0; $i < $nbElement; $i++) {
                         $resultMultipleArray[$currentKey][$currentColumnID][] = $currentAttribute->getTextualValue($currentDoc, $i, $convertFormat);
                     }

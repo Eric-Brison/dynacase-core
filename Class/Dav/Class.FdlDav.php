@@ -673,7 +673,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                         }
                         $fnames = array();
                         if ($afile->inArray()) {
-                            $tval = $doc->getTValue($afile->id);
+                            $tval = $doc->getMultipleRawValues($afile->id);
                             foreach ($tval as $k => $v) {
                                 $fnames[$k] = $doc->vault_filename($afile->id, false, $k);
                             }

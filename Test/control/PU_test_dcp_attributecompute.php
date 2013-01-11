@@ -45,7 +45,7 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
         
         $this->assertEmpty($err, sprintf("cannot modify %s document", $this->famName));
         foreach ($expectedvalues as $k => $v) {
-            if (is_array($v)) $value = $d->getTValue($k);
+            if (is_array($v)) $value = $d->getMultipleRawValues($k);
             else $value = $d->getRawValue($k);
             $this->assertEquals($v, $value, sprintf("error computed %s", $k));
         }

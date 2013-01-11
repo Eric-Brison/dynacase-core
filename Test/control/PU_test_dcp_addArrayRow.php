@@ -55,8 +55,8 @@ class TestAddArrayRow extends TestCaseDcpCommonFamily
         $this->assertTrue(is_object($doc) , sprintf("Error retrieving document '%s': %s", $data['name'], $err));
         
         foreach ($data['expected_tvalues'] as $colName => & $colData) {
-            $tvalue = $doc->getTValue($colName);
-            $this->assertTrue(is_array($tvalue) , sprintf("getTValue(%s) on document '%s' did not returned an array.", $colName, $data['name']));
+            $tvalue = $doc->getMultipleRawValues($colName);
+            $this->assertTrue(is_array($tvalue) , sprintf("getMultipleRawValues(%s) on document '%s' did not returned an array.", $colName, $data['name']));
             
             $tvalueCount = count($tvalue);
             $expectedCount = count($colData);

@@ -150,7 +150,7 @@ class _IUSER extends Doc implements IMailRecipient
      */
     function refreshParentGroup()
     {
-        $tgid = $this->getTValue("US_IDGROUP");
+        $tgid = $this->getMultipleRawValues("US_IDGROUP");
         foreach ($tgid as $gid) {
             /**
              * @var _IGROUP $gdoc

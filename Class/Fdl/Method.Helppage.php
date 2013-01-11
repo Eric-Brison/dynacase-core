@@ -472,7 +472,7 @@ class _HELPPAGE extends Doc
      */
     public function getHelpAttributes()
     {
-        $attrList = $this->getTValue("help_sec_key");
+        $attrList = $this->getMultipleRawValues("help_sec_key");
         if (!is_array($attrList)) {
             return array();
         }

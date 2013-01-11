@@ -45,8 +45,8 @@ class _TIMER extends Doc
         if ($origin) $dt->originid = $origin->id;
         $dt->fromid = $doc->fromid;
         
-        $dates = $this->getTValue("tm_delay");
-        $hours = $this->getTValue("tm_hdelay");
+        $dates = $this->getMultipleRawValues("tm_delay");
+        $hours = $this->getMultipleRawValues("tm_hdelay");
         
         if (((count($dates) == 0) || $dates[0] + $hours[0] == 0) && ($tododate == null)) {
             $err = sprintf(_("no delay specified in timer %s [%d]") , $this->title, $this->id);

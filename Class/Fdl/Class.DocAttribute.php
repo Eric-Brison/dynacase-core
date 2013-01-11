@@ -485,7 +485,7 @@ class NormalAttribute extends BasicAttribute
      */
     function getXmlValue(Doc & $doc, $opt = false)
     {
-        if ($opt->index > - 1) $v = $doc->getTvalue($this->id, null, $opt->index);
+        if ($opt->index > - 1) $v = $doc->getMultipleRawValues($this->id, null, $opt->index);
         else $v = $doc->getRawValue($this->id, null);
         //if (! $v) return sprintf("<!-- no value %s -->",$this->id);
         if ($this->getOption("autotitle") == "yes") return sprintf("<!--autotitle %s %s -->", $this->id, $v);
@@ -861,9 +861,9 @@ class NormalAttribute extends BasicAttribute
         {
             if ($this->inArray()) {
                 if ($index >= 0) {
-                    return strip_tags($doc->getTValue($this->id, "", $index));
+                    return strip_tags($doc->getMultipleRawValues($this->id, "", $index));
                 } else {
-                    $nbValue = count($doc->getTValue($this->id));
+                    $nbValue = count($doc->getMultipleRawValues($this->id));
                     $returnValues = array();
                     for ($i = 0; $i < $nbValue; $i++) {
                         $returnValues[] = $this->getTextualValueText($doc, $i);
@@ -886,9 +886,9 @@ class NormalAttribute extends BasicAttribute
         {
             if ($this->inArray()) {
                 if ($index >= 0) {
-                    return $doc->getTValue($this->id, "", $index);
+                    return $doc->getMultipleRawValues($this->id, "", $index);
                 } else {
-                    $returnValues = $doc->getTValue($this->id);
+                    $returnValues = $doc->getMultipleRawValues($this->id);
                     return implode($this->textualValueMultipleSeparator[0], $returnValues);
                 }
             } else {
@@ -922,9 +922,9 @@ class NormalAttribute extends BasicAttribute
             };
             if ($this->inArray()) {
                 if ($index >= 0) {
-                    return $convertDate($doc->getTValue($this->id, "", $index));
+                    return $convertDate($doc->getMultipleRawValues($this->id, "", $index));
                 } else {
-                    $nbValue = count($doc->getTValue($this->id));
+                    $nbValue = count($doc->getMultipleRawValues($this->id));
                     $returnValues = array();
                     for ($i = 0; $i < $nbValue; $i++) {
                         $returnValues[] = $this->getTextualValueDate($doc, $i, $dateFormat);
@@ -949,7 +949,7 @@ class NormalAttribute extends BasicAttribute
                 if ($index >= 0) {
                     return $doc->vault_filename($this->id, false, $index);
                 } else {
-                    $nbValue = count($doc->getTValue($this->id));
+                    $nbValue = count($doc->getMultipleRawValues($this->id));
                     $returnValues = array();
                     for ($i = 0; $i < $nbValue; $i++) {
                         $returnValues[] = $this->getTextualValueFile($doc, $i);
@@ -972,9 +972,9 @@ class NormalAttribute extends BasicAttribute
         {
             if ($this->inArray()) {
                 if ($index >= 0) {
-                    return $this->getEnumLabel($doc->getTValue($this->id, "", $index));
+                    return $this->getEnumLabel($doc->getMultipleRawValues($this->id, "", $index));
                 } else {
-                    $nbValue = count($doc->getTValue($this->id));
+                    $nbValue = count($doc->getMultipleRawValues($this->id));
                     $returnValues = array();
                     for ($i = 0; $i < $nbValue; $i++) {
                         $returnValues[] = $this->getTextualValueEnum($doc, $i);
@@ -1022,7 +1022,7 @@ class NormalAttribute extends BasicAttribute
             if ($this->inArray()) {
                 if ($index >= 0) {
                     if ($this->getOption('multiple') == 'yes') {
-                        $values = explode("<BR>", $doc->getTValue($this->id, "", $index));
+                        $values = explode("<BR>", $doc->getMultipleRawValues($this->id, "", $index));
                         if (is_array($values)) {
                             $returnValues = array();
                             foreach ($values as $currentId) {
@@ -1032,10 +1032,10 @@ class NormalAttribute extends BasicAttribute
                         }
                         return $displayTitle($values);
                     } else {
-                        return $displayTitle($doc->getTValue($this->id, "", $index));
+                        return $displayTitle($doc->getMultipleRawValues($this->id, "", $index));
                     }
                 } else {
-                    $nbValue = count($doc->getTValue($this->id));
+                    $nbValue = count($doc->getMultipleRawValues($this->id));
                     $returnValues = array();
                     for ($i = 0; $i < $nbValue; $i++) {
                         $returnValues[] = $this->getTextualValueDocId($doc, $i);

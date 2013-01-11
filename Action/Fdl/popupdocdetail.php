@@ -439,13 +439,13 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
          */
         $cvdoc = new_Doc($doc->dbaccess, $doc->cvid);
         $cvdoc->set($doc);
-        $ti = $cvdoc->getTValue("CV_IDVIEW");
-        $tl = $cvdoc->getTValue("CV_LVIEW");
-        $tz = $cvdoc->getTValue("CV_ZVIEW");
-        $tk = $cvdoc->getTValue("CV_KVIEW");
-        $tm = $cvdoc->getTValue("CV_MSKID");
-        $td = $cvdoc->getTValue("CV_DISPLAYED");
-        $tmenu = $cvdoc->getTValue("CV_MENU");
+        $ti = $cvdoc->getMultipleRawValues("CV_IDVIEW");
+        $tl = $cvdoc->getMultipleRawValues("CV_LVIEW");
+        $tz = $cvdoc->getMultipleRawValues("CV_ZVIEW");
+        $tk = $cvdoc->getMultipleRawValues("CV_KVIEW");
+        $tm = $cvdoc->getMultipleRawValues("CV_MSKID");
+        $td = $cvdoc->getMultipleRawValues("CV_DISPLAYED");
+        $tmenu = $cvdoc->getMultipleRawValues("CV_MENU");
         
         $tv = array(); // consult array views
         $te = array(); // edit array views

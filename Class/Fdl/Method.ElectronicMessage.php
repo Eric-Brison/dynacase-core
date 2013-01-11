@@ -49,8 +49,8 @@ class _SENTMESSAGE extends Doc
         $this->lay->set("TO", false);
         $this->lay->set("CC", false);
         
-        $recips = $this->getTValue("emsg_recipient");
-        $reciptype = $this->getTValue("emsg_sendtype");
+        $recips = $this->getMultipleRawValues("emsg_recipient");
+        $reciptype = $this->getMultipleRawValues("emsg_sendtype");
         $tto = array();
         $tcc = array();
         $tbcc = array();

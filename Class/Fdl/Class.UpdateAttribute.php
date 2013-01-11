@@ -474,7 +474,7 @@ class UpdateAttribute
              * @var Doc $doc
              */
             foreach ($this->dl as $doc) {
-                if (!in_array($valueToAdd, $doc->getTValue($attrid))) $ids[$doc->id] = intval($doc->initid);
+                if (!in_array($valueToAdd, $doc->getMultipleRawValues($attrid))) $ids[$doc->id] = intval($doc->initid);
                 else $upToDateIds[$doc->id] = intval($doc->initid);
                 
                 $this->results[$doc->initid] = new UpdateAttributeResults();

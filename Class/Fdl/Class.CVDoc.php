@@ -65,9 +65,9 @@ class CVDoc extends Doc
     function setAcls()
     {
         $this->extendedAcls = array();
-        $ti = $this->getTValue("CV_IDVIEW");
-        $tl = $this->getTValue("CV_LVIEW");
-        $tk = $this->getTValue("CV_KVIEW");
+        $ti = $this->getMultipleRawValues("CV_IDVIEW");
+        $tl = $this->getMultipleRawValues("CV_LVIEW");
+        $tk = $this->getMultipleRawValues("CV_KVIEW");
         
         foreach ($tk as $k => $v) {
             if ($ti[$k] == "") $cvk = "CV$k";
@@ -97,7 +97,7 @@ class CVDoc extends Doc
         } elseif (array_key_exists($value, $originals)) {
             $err = _("Impossible to name a view like a control acl");
         } else {
-            $id_list = $this->getTValue('CV_IDVIEW');
+            $id_list = $this->getMultipleRawValues('CV_IDVIEW');
             $id_count = 0;
             foreach ($id_list as $id) {
                 if ($id == $value) {
@@ -116,14 +116,14 @@ class CVDoc extends Doc
     
     function getView($vid)
     {
-        $ti = $this->getTValue("CV_IDVIEW");
+        $ti = $this->getMultipleRawValues("CV_IDVIEW");
         foreach ($ti as $k => $v) {
             if ($v == $vid) {
                 // found it
-                $tl = $this->getTValue("CV_LVIEW");
-                $tz = $this->getTValue("CV_ZVIEW");
-                $tk = $this->getTValue("CV_KVIEW");
-                $tm = $this->getTValue("CV_MSKID");
+                $tl = $this->getMultipleRawValues("CV_LVIEW");
+                $tz = $this->getMultipleRawValues("CV_ZVIEW");
+                $tk = $this->getMultipleRawValues("CV_KVIEW");
+                $tm = $this->getMultipleRawValues("CV_MSKID");
                 
                 return array(
                     "CV_IDVIEW" => $v,
@@ -139,7 +139,7 @@ class CVDoc extends Doc
     
     function getViews()
     {
-        $ti = $this->getTValue("CV_IDVIEW");
+        $ti = $this->getMultipleRawValues("CV_IDVIEW");
         $tv = array();
         foreach ($ti as $k => $v) {
             
@@ -151,7 +151,7 @@ class CVDoc extends Doc
     function postModify()
     {
         
-        $ti = $this->getTValue("CV_IDVIEW");
+        $ti = $this->getMultipleRawValues("CV_IDVIEW");
         foreach ($ti as $k => $v) {
             if ($v == "") $ti[$k] = "CV$k";
         }

@@ -137,7 +137,7 @@ class DocSearch extends PDocSearch
     {
         $filters = array();
         
-        $acls = $this->getTValue("se_acl");
+        $acls = $this->getMultipleRawValues("se_acl");
         if ((count($acls) > 0 && ($this->userid != 1))) {
             //      print_r2($acls);
             foreach ($acls as $acl) {

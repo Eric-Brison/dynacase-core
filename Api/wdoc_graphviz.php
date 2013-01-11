@@ -379,9 +379,9 @@ class DotWorkflow
     {
         
         $aid = strtolower($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState);
-        $tm = $this->wdoc->getTValue($aid);
+        $tm = $this->wdoc->getMultipleRawValues($aid);
         $aid = strtolower($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState);
-        $mt = $this->wdoc->getTValue($aid);
+        $mt = $this->wdoc->getMultipleRawValues($aid);
         $e1 = "D";
         
         $this->lines[] = '"' . $e1 . '" [shape = point,style=filled, width=0.3, fixedsize=true,fontname=sans,color="' . $this->style['start-color'] . '"];';;
@@ -516,7 +516,7 @@ class DotWorkflow
     private function setStateTimer($e2, $t, $index)
     {
         $aid = strtolower($this->wdoc->attrPrefix . "_TMID" . $t["e2"]);
-        $mt = $this->wdoc->getTValue($aid);
+        $mt = $this->wdoc->getMultipleRawValues($aid);
         if (count($mt) > 0) {
             $ex = 'tmf' . $index;
             
@@ -550,7 +550,7 @@ class DotWorkflow
         $ttrans = array();
         $tm = $this->wdoc->getRawValue($this->wdoc->attrPrefix . "_TRANS_TMID" . $t["t"]);
         if ($tm) $ttrans[] = $tm;
-        $ttrans = array_merge($ttrans, $this->wdoc->getTValue($this->wdoc->attrPrefix . "_TRANS_PA_TMID" . $t["t"]));
+        $ttrans = array_merge($ttrans, $this->wdoc->getMultipleRawValues($this->wdoc->attrPrefix . "_TRANS_PA_TMID" . $t["t"]));
         
         if (count($ttrans) > 0) {
             $ex = 'tm' . $index;

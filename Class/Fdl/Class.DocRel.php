@@ -136,7 +136,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                 }
                 // reset old relations
                 pg_query($this->dbid, sprintf("delete from docrel where sinitid=%d and type='%s'", $doc->initid, pg_escape_string($v->id)));
-                if ($v->inArray()) $tv = array_unique($doc->getTValue($v->id));
+                if ($v->inArray()) $tv = array_unique($doc->getMultipleRawValues($v->id));
                 else $tv = array(
                     $doc->$k
                 );

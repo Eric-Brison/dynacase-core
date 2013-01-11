@@ -64,7 +64,7 @@ class TestAttributeDate extends TestCaseDcpCommonFamily
     private function verifyValues(\Doc $test, array $expectedValues)
     {
         foreach ($expectedValues as $k => $expectValue) {
-            if (is_array($expectValue)) $targetValue = $test->getTValue($k);
+            if (is_array($expectValue)) $targetValue = $test->getMultipleRawValues($k);
             else $targetValue = $test->getRawValue($k);
             $this->assertEquals($expectValue, $targetValue, sprintf("wrong value %s", $k));
         }

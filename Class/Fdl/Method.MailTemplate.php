@@ -295,7 +295,7 @@ class _MAILTEMPLATE extends Doc
                     }
                 }
                 //send attachment
-                $ta = $this->getTValue("tmail_attach");
+                $ta = $this->getMultipleRawValues("tmail_attach");
                 foreach ($ta as $k => $v) {
                     $err = $this->checkAttributeExistsInRelation(strtok($v, " ") , getLatestTDoc($this->dbaccess, $doc->initid));
                     if ($err) {

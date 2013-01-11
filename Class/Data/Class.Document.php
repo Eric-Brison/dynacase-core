@@ -144,7 +144,7 @@ class Fdl_Document
                     if ($this->onlyAttributes !== null && (!in_array($v->id, $this->onlyAttributes))) continue;
                     
                     if ($v->mvisibility != "I" && (!empty($this->doc->$k)) && $v->getOption("autotitle") != "yes") {
-                        if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id] = $this->doc->GetTValue($v->id);
+                        if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id] = $this->doc->getMultipleRawValues($v->id);
                         else $lvalues[$v->id] = $this->doc->getRawValue($v->id);
                         
                         if (($v->type == "docid" || $v->type == "account") && ($v->visibility != 'H')) {
@@ -203,7 +203,7 @@ class Fdl_Document
         if ($this->doc) {
             $oa = $this->doc->getAttribute($aid);
             if ($oa && ($oa->mvisibility != "I")) {
-                if ($oa->inArray()) return $this->doc->GetTValue($oa->id);
+                if ($oa->inArray()) return $this->doc->getMultipleRawValues($oa->id);
                 else return $this->doc->getRawValue($oa->id);
             }
         }

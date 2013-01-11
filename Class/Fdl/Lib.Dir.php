@@ -415,7 +415,6 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      */
     function internalGetDocCollection($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
     {
-        deprecatedFunction();
         global $action;
         // query to find child documents
         if (($fromid != "") && (!is_numeric($fromid))) $fromid = getFamIdFromName($dbaccess, $fromid);
@@ -653,7 +652,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         
         $sdoc = new_Doc($dbaccess, $dirid);
         
-        $tidsearch = $sdoc->getTValue("SEG_IDCOND");
+        $tidsearch = $sdoc->getMultipleRawValues("SEG_IDCOND");
         $tdoc = array();
         foreach ($tidsearch as $k => $v) {
             $tdoc = array_merge(internalGetDocCollection($dbaccess, $v, $start, $slice, $sqlfilters, $userid, $qtype, $fromid, $distinct, $orderby, $latest) , $tdoc);

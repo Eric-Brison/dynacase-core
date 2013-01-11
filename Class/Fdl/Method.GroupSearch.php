@@ -27,7 +27,7 @@ class _GROUPSEARCH extends Dir
     
     function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true)
     {
-        $tidsearch = $this->getTValue("SEG_IDCOND");
+        $tidsearch = $this->getMultipleRawValues("SEG_IDCOND");
         $wsql = array();
         $query[] = "select * from doc1 limit 0;"; // null query
         foreach ($tidsearch as $k => $v) {

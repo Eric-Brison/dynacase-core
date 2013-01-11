@@ -555,7 +555,7 @@ class Dir extends PDir
         {
             // don't see restriction frame is not needed
             $allbut = $this->getRawValue("FLD_ALLBUT");
-            $tfamid = $this->getTValue("FLD_FAMIDS");
+            $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
             
             if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
                 
@@ -579,9 +579,9 @@ class Dir extends PDir
             
             if (!$this->authfam) {
                 
-                $tfamid = $this->getTValue("FLD_FAMIDS");
-                $tfam = $this->getTValue("FLD_FAM");
-                $tsubfam = $this->getTValue("FLD_SUBFAM");
+                $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
+                $tfam = $this->getMultipleRawValues("FLD_FAM");
+                $tsubfam = $this->getMultipleRawValues("FLD_SUBFAM");
                 $allbut = $this->getRawValue("FLD_ALLBUT");
                 
                 if (($allbut != "1") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
