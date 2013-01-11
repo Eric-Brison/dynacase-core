@@ -149,7 +149,7 @@ class TestSearch extends TestCaseDcpDocument
             $s = new \SearchDoc(self::$dbaccess, $test['search:family']);
             $s->setObjectReturn();
             if (isset($test['search:noviewcontrol']) && $test['search:noviewcontrol']) {
-                $s->noViewControl();
+                $s->overrideViewControl();
             }
             $count = $s->onlyCount();
             $this->assertEquals($count, $test['expect:count'], sprintf("test#%s> Result size is %s while expecting %s. [%s]", $i, $count, $test['expect:count'], print_r($s->getSearchInfo() , true)));
@@ -186,7 +186,7 @@ class TestSearch extends TestCaseDcpDocument
             $s = new \SearchDoc(self::$dbaccess, $test['search:family']);
             $s->setObjectReturn();
             if (isset($test['search:noviewcontrol']) && $data['search:noviewcontrol']) {
-                $s->noViewControl();
+                $s->overrideViewControl();
             }
             if (isset($test['search:filters']) && is_array($test['search:filters'])) {
                 foreach ($test['search:filters'] as $filter) {

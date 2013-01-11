@@ -399,7 +399,7 @@ class _HELPPAGE extends Doc
         $s->setObjectReturn();
         $s->orderby = 'title';
         $s->search();
-        while ($doc = $s->nextDoc()) {
+        while ($doc = $s->getNextDoc()) {
             $aides[] = array(
                 'AIDE' => $doc->getDocAnchor($doc->id, $target, true, false, false) ,
             );

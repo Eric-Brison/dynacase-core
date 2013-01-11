@@ -1846,7 +1846,7 @@ create unique index i_docir on doc(initid, revision);";
             
             $s = new SearchDoc($this->dbaccess, -1);
             $s->addFilter("fromid = " . $id);
-            $s->noViewControl();
+            $s->overrideViewControl();
             $table1 = $s->search();
             if ($table1) {
                 foreach ($table1 as $k => $v) {
@@ -8608,7 +8608,7 @@ create unique index i_docir on doc(initid, revision);";
             $s->addFilter("fld.childid = %d", $this->initid);
             $uid = $this->getUserId();
             if ($user) $s->addFilter("off_user = '%d' or off_user is null", $uid);
-            $s->noViewControl();
+            $s->overrideViewControl();
             $t = $s->search();
             $ids = array();
             foreach ($t as $v) {

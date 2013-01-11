@@ -692,7 +692,7 @@ class Form1NF
                     //$s->trash = 'also';
                     $s->search();
                     // get field values
-                    while ($doc = $s->nextDoc()) {
+                    while ($doc = $s->getNextDoc()) {
                         // document required fields (id, title)
                         $fieldValues = array(
                             $doc->id,

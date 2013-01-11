@@ -42,7 +42,7 @@ class _ARCHIVING extends Dir
             $s->search();
             
             setMaxExecutionTimeTo(3600);
-            while ($doc = $s->nextDoc()) {
+            while ($doc = $s->getNextDoc()) {
                 $doc->disableEditControl();
                 $err.= $doc->archive($this);
                 $doc->enableEditControl();
@@ -77,7 +77,7 @@ class _ARCHIVING extends Dir
                 $s->search();
                 
                 setMaxExecutionTimeTo(3600);
-                while ($doc = $s->nextDoc()) {
+                while ($doc = $s->getNextDoc()) {
                     $doc->disableEditControl();
                     $err.= $doc->unArchive($this);
                     $doc->enableEditControl();
@@ -110,7 +110,7 @@ class _ARCHIVING extends Dir
                 
                 setMaxExecutionTimeTo(3600);
                 $t = "<ol>";
-                while ($doc = $s->nextDoc()) {
+                while ($doc = $s->getNextDoc()) {
                     if ($doc->doctype != 'C') {
                         $t.= sprintf('<li><a href="?app=FDL&action=VIEWDESTROYDOC&id=%d">%s</a></li> ', $doc->id, $doc->title);
                         $doc->disableEditControl();

@@ -50,7 +50,7 @@ function verifyExecDocuments($dbaccess)
     //  $s->setDebugMode();
     $s->search();
     if ($s->count() > 0) {
-        while ($de = $s->nextDoc()) {
+        while ($de = $s->getNextDoc()) {
             $de->setValue("exec_status", "waiting");
             $de->modify(true, array(
                 "exec_status"
@@ -63,7 +63,7 @@ function verifyExecDocuments($dbaccess)
         //$s->setDebugMode();
         $s->search();
         //print_r2($s->getDebugInfo());
-        while ($de = $s->nextDoc()) {
+        while ($de = $s->getNextDoc()) {
             /**
              * @var _EXEC $de
              */

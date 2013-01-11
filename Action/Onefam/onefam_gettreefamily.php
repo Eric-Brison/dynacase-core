@@ -84,7 +84,7 @@ function getFamilySearches($dbaccess, $fid)
         $s->setObjectReturn();
         $s->setDebugMode();
         $t = $s->search();
-        while ($v = $s->nextDoc()) {
+        while ($v = $s->getNextDoc()) {
             
             $to["userSearches"][] = array(
                 "id" => $v->id,
@@ -98,7 +98,7 @@ function getFamilySearches($dbaccess, $fid)
         $s->setObjectReturn();
         $s->setDebugMode();
         $t = $s->search();
-        while ($v = $s->nextDoc()) {
+        while ($v = $s->getNextDoc()) {
             
             $to["adminSearches"][$fid] = array(
                 "id" => $v->id,

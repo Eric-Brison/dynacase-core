@@ -600,11 +600,32 @@ class SearchDoc
     /**
      * can, be use in loop
      * ::search must be call before
+     *
+     * @see Application::getNextDoc
+     *
+     * @deprecated use { @link Application::getNextDoc } instead
+     *
      * @see SearchDoc::search
      * @api get next document results
      * @return Doc|array or null if this is the end
      */
     public function nextDoc()
+    {
+        deprecatedFunction();
+        return $this->getNextDoc();
+    }
+
+    /**
+     * can, be use in loop
+     * ::search must be call before
+     *
+     * @see SearchDoc::search
+     *
+     * @api get next document results
+     *
+     * @return Doc|array or null if this is the end
+     */
+    public function getNextDoc()
     {
         if ($this->mode == "ITEM") {
             $n = empty($this->result[$this->resultQPos]) ? null : $this->result[$this->resultQPos];
@@ -958,10 +979,22 @@ class SearchDoc
     }
     /**
      * no use access view control in filters
-     * @api no add view access criteria in final query
+     *  @see SearchDoc::overrideViewControl
+     *
+     * @deprecated use { @link SearchDoc::overrideViewControl } instead
      * @return void
      */
     public function noViewControl()
+    {
+        deprecatedFunction();
+        $this->overrideViewControl();
+    }
+    /**
+     * no use access view control in filters
+     * @api no add view access criteria in final query
+     * @return void
+     */
+    public function overrideViewControl()
     {
         $this->userid = 1;
     }

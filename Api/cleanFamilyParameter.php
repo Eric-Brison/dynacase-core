@@ -45,7 +45,7 @@ $deleting = array();
 /**
  * @var DocFam $fam
  */
-while ($fam = $s->nextDoc()) {
+while ($fam = $s->getNextDoc()) {
     print ("\n" . $fam->getTitle() . " : #" . $fam->id);
     $pa = $fam->getOwnParams();
     

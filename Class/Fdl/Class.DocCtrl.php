@@ -820,18 +820,18 @@ class DocCtrl extends DocLDAP
                 $s = new SearchDoc($this->dbaccess);
                 $s->addFilter("dprofid = %d", $this->id);
                 $s->setObjectReturn();
-                $s->noViewControl();
+                $s->overrideViewControl();
                 $s->search();
-                while ($doc = $s->nextDoc()) {
+                while ($doc = $s->getNextDoc()) {
                     $doc->computeDProfil();
                 }
                 // in case of change profil status (static -> dynamic)
                 $s = new SearchDoc($this->dbaccess);
                 $s->addFilter("profid = %d", $this->id);
                 $s->setObjectReturn();
-                $s->noViewControl();
+                $s->overrideViewControl();
                 $s->search();
-                while ($doc = $s->nextDoc()) {
+                while ($doc = $s->getNextDoc()) {
                     $doc->setProfil($this->id);
                 }
             } else {
@@ -840,9 +840,9 @@ class DocCtrl extends DocLDAP
                 $s = new SearchDoc($this->dbaccess);
                 $s->addFilter("dprofid = %d", $this->id);
                 $s->setObjectReturn();
-                $s->noViewControl();
+                $s->overrideViewControl();
                 $s->search();
-                while ($doc = $s->nextDoc()) {
+                while ($doc = $s->getNextDoc()) {
                     $doc->setProfil($this->id);
                 }
             }

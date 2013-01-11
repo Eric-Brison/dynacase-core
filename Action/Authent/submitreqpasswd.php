@@ -84,7 +84,7 @@ function retrieveUserDoc(Action $action, $login = "", $email = "")
     }
     
     $s->setObjectReturn();
-    $s->noViewControl();
+    $s->overrideViewControl();
     $s->search();
     if ($s->count() <= 0) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Empty search result");
@@ -98,7 +98,7 @@ function retrieveUserDoc(Action $action, $login = "", $email = "")
     /**
      * @var _IUSER $uDoc
      */
-    $uDoc = $s->nextDoc();
+    $uDoc = $s->getNextDoc();
     $email = $uDoc->getMail();
     if ($email == "") {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Empty us_mail for docid '" . $uDoc->id . "'");

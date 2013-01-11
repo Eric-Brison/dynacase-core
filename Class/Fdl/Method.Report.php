@@ -194,7 +194,7 @@ class _REPORT extends _DSEARCH
         $tcolor = $this->getMultipleRawValues("REP_COLORS");
         $trow = array();
         $k = 0;
-        while ($rdoc = $s->nextDoc()) {
+        while ($rdoc = $s->getNextDoc()) {
             $k++;
             $trow[$k] = array(
                 "CELLS" => "row$k",
@@ -383,7 +383,7 @@ class _REPORT extends _DSEARCH
         //Get Value
         $nbDoc = $search->count();
         $k = 0;
-        while ($currentDoc = $search->nextDoc()) {
+        while ($currentDoc = $search->getNextDoc()) {
             $k++;
             if ($k % 10 == 0) $this->setStatus(sprintf(_("Pivot rendering %d/%d") , $k, $nbDoc));
             if ($refresh) {

@@ -388,7 +388,7 @@ function addArchivePopup(&$tlink, Doc & $doc, $target = "_self")
     $s->search();
     
     if ($s->count() > 0) {
-        while ($archive = $s->nextDoc()) {
+        while ($archive = $s->getNextDoc()) {
             if ($archive->control("modify") == "") {
                 $tlink["arch" . $archive->id] = array(
                     "descr" => sprintf(_("Insert in %s") , $archive->getTitle()) ,

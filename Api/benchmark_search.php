@@ -298,13 +298,13 @@ function bench_search_fam_all(&$stat)
     
     $s = new SearchDoc($dbaccess_freedom, -1);
     $s->setObjectReturn();
-    $s->noViewControl();
+    $s->overrideViewControl();
     $s->addFilter("usefor !~ 'W'");
     $s->addFilter("usefor !~ '^S'");
     $s->search();
     
     $famList = array();
-    while ($fam = $s->nextDoc()) {
+    while ($fam = $s->getNextDoc()) {
         $fam->childs = array();
         $childFam = $fam->getChildFam($fam->id, false);
         $inherit = join(',', array_map(create_function('$v', 'global $dbaccess_freedom; return getNameFromId($dbaccess_freedom, $v);') , array_keys($childFam)));

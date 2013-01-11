@@ -42,7 +42,7 @@ $s->search();
 /**
  * @var WDoc $wdoc
  */
-while ($wdoc = $s->nextDoc()) {
+while ($wdoc = $s->getNextDoc()) {
     print ("\n" . $wdoc->getTitle() . " : #" . $wdoc->id);
     $tr = $wdoc->transitions;
     if (is_array($tr)) {
@@ -81,7 +81,7 @@ $s->search();
 /**
  * @var CVDoc $cvdoc
  */
-while ($cvdoc = $s->nextDoc()) {
+while ($cvdoc = $s->getNextDoc()) {
     print ("\n" . $cvdoc->getTitle() . " : #" . $cvdoc->id);
     // old code compatibility
     $ka = POS_WF;

@@ -37,7 +37,7 @@ function PU_data_dcp_autocompletion_getTitle_fam_title($dbaccess, $famId, $title
     $s->setObjectReturn();
     $s->search();
     $ret = array();
-    while ($doc = $s->nextDoc()) {
+    while ($doc = $s->getNextDoc()) {
         if (strlen($title) > 0 && strpos($doc->getTitle() , $title) === false) {
             continue;
         }

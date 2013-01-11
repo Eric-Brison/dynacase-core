@@ -187,7 +187,7 @@ function fullsearchresult(Action & $action)
         
         $k = 0;
         $tdocs = array();
-        while ($doc = $s->nextDoc()) {
+        while ($doc = $s->getNextDoc()) {
             
             if ($doc->confidential) {
                 if (($doc->profid > 0) && ($workdoc->controlId($doc->profid, "confidential") != "")) {

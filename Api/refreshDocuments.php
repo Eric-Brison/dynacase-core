@@ -118,7 +118,7 @@ $card = $s->count();
 printf("\n%d %s to update with %s\n", $card, $famtitle, $method);
 
 $ret = "";
-while ($doc = $s->nextDoc()) {
+while ($doc = $s->getNextDoc()) {
     $usemethod = ($method && (method_exists($doc, $method)));
     if ($method && (!method_exists($doc, $method))) {
         printf("\nmethod not exists %s \n", $method);

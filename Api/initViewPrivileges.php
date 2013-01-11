@@ -69,7 +69,7 @@ if (!$accountOnly) {
         $card = $s->count();
         if ($card > 0) {
             printf("\n%s) %d records\n", $famid, $card);
-            while ($doc = $s->nextDoc()) {
+            while ($doc = $s->getNextDoc()) {
                 $doc->setViewProfil();
                 print '.';
             }

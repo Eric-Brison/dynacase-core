@@ -58,7 +58,7 @@ function folder_barmenu(&$action)
         $s->addFilter("arc_status = 'O'");
         $s->search();
         if ($s->count() > 0) {
-            while ($archive = $s->nextDoc()) {
+            while ($archive = $s->getNextDoc()) {
                 if ($archive->control("modify") == "") {
                     $toolmenu[] = "arch" . $archive->id;
                     $tarch[] = array(

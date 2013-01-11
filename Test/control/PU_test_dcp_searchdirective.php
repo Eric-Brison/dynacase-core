@@ -175,7 +175,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $search->search();
         
         $res = array();
-        while ($doc = $search->nextDoc()) {
+        while ($doc = $search->getNextDoc()) {
             $res[] = $doc->name;
         }
         
@@ -303,7 +303,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $search->search();
         
         $res = array();
-        while ($doc = $search->nextDoc()) {
+        while ($doc = $search->getNextDoc()) {
             $res[] = $doc->name;
         }
         
@@ -489,7 +489,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true) , var_export($orderbyLabel, true) , $count, $expectedCount));
         
         $titles = array();
-        while ($doc = $search->nextDoc()) {
+        while ($doc = $search->getNextDoc()) {
             $titles[] = $doc->title;
         }
         
@@ -629,7 +629,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true) , var_export($orderbyLabel, true) , $count, $expectedCount));
         
         $titles = array();
-        while ($doc = $search->nextDoc()) {
+        while ($doc = $search->getNextDoc()) {
             $titles[] = $doc->title;
         }
         

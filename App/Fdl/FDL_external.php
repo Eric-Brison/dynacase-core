@@ -85,7 +85,7 @@ function lmail($dbaccess, $name)
     $tr = array();
     $sf = new SearchDoc($dbaccess, -1);
     $sf->setObjectReturn();
-    $sf->noViewControl();
+    $sf->overrideViewControl();
     $sf->addFilter("atags ~* 'MAILRECIPIENT'");
     $dlf = $sf->search()->getDocumentList();
     
@@ -503,7 +503,7 @@ function fdlGetDocuments($families, $filterName = '', $limit = 15, $extraFilter 
             $s->search();
             if ($s->getError()) return $s->getError();
             
-            while ($doc = $s->nextDoc()) {
+            while ($doc = $s->getNextDoc()) {
                 $title = $doc->getHTMLTitle();
                 $tout[] = array(
                     sprintf('<img width="10px" src="%s">%s', $doc->getIcon('', 10) , $title) ,

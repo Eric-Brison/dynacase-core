@@ -56,7 +56,7 @@ function workflow_init(&$action)
     $s = new SearchDoc($dbaccess, $wdoc->fromid);
     $s->setObjectReturn();
     $s->search();
-    while ($doc = $s->nextDoc()) {
+    while ($doc = $s->getNextDoc()) {
         $doc->postModify();
     }
     

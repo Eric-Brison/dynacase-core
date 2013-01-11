@@ -114,7 +114,7 @@ $famid = "") // folder containt special fam id
     $hasNext = ($sd->count() > $slice);
     if ($viewone && ($sd->count() == 1)) {
         
-        $doc1 = $sd->nextDoc();
+        $doc1 = $sd->getNextDoc();
         
         if ($doc1->doctype == "D") redirect($action, "FREEDOM", "OPENFOLIO&id=" . $doc1->initid, $action->GetParam("CORE_STANDURL"));
         else redirect($action, "FDL", "FDL_CARD&latest=Y&id=" . $doc1->id, $action->GetParam("CORE_STANDURL"));
@@ -157,7 +157,7 @@ $famid = "") // folder containt special fam id
         $lattr = array();
         
         $k = 0;
-        while ($doc = $sd->nextDoc()) {
+        while ($doc = $sd->getNextDoc()) {
             
             if ($doc->isConfidential()) continue;
             $nbseedoc++;

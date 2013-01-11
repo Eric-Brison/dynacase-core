@@ -179,7 +179,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                         $s->setObjectReturn();
                         $s->search();
                         if ($s->count() > 0) {
-                            while ($doc = $s->nextDoc()) {
+                            while ($doc = $s->getNextDoc()) {
                                 $files = array_merge($files, $this->docpropinfo($doc, $fspath, false));
                             }
                         }
