@@ -1278,7 +1278,9 @@ create unique index i_docir on doc(initid, revision);";
         $err = '';
         $constraint = '';
         $info = new stdClass();
-        
+
+        $err=$this->preStore();
+        if ($err) return $err;
         if (!$skipConstraint) {
             $err = $this->verifyAllConstraints(false, $constraint);
         }
@@ -2618,6 +2620,19 @@ create unique index i_docir on doc(initid, revision);";
      * @return string error message
      */
     function postModify()
+    {
+        // to be defined in child class
+        return "";
+    }
+
+    /**
+     * call in beging store before constraint verification
+     * if error message is returned store is aborted and the message is returned by store method
+     * @api hook called in Doc::store()
+     * @see Doc::store()
+     * @return string error message
+     */
+    function preStore()
     {
         // to be defined in child class
         return "";
