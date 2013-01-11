@@ -43,11 +43,11 @@ function freedom_edit(&$action)
     if (!is_numeric($classid)) $classid = getFamIdFromName($dbaccess, $classid);
     else $classid = abs($classid);
     setHttpVar("classid", $classid);
-
+    
     $tmpDoc = createDoc($action->dbaccess, $classid);
     $isSystemDoc = (is_object($tmpDoc) && substr($tmpDoc->usefor, 0, 1) == 'S');
     unset($tmpDoc);
-
+    
     if ($docid > 0) {
         $doc = new_Doc($dbaccess, $docid);
         if (!$doc->isAlive()) $action->exitError(sprintf(_("document id %d not found") , $docid));
@@ -61,14 +61,13 @@ function freedom_edit(&$action)
         if ($dirid > 0) {
             $dir = new_Doc($dbaccess, $dirid);
             if (method_exists($dir, "isAuthorized")) {
-                if ($dir->locked == - 1) $dir = new_Doc($dbaccess, $dir->latestId());
+                if ($dir->locked == - 1) $dir = new_Doc($dbaccess, $dir->getLatestId());
                 
                 if ($dir->isAuthorized($classid)) {
                     // verify if classid is possible
                     if (($dir->hasNoRestriction()) || (!$classid)) {
                         $tclassdoc = getFamiliesWithTypeOrClassId($dbaccess, $action->user->id, $type, $classid, "TABLE");
-                    }
-                    else $tclassdoc = $dir->getAuthorizedFamilies();
+                    } else $tclassdoc = $dir->getAuthorizedFamilies();
                 } else {
                     $tclassdoc = $dir->getAuthorizedFamilies();
                     $first = current($tclassdoc);
@@ -78,6 +77,7 @@ function freedom_edit(&$action)
                 }
             } else {
                 $tclassdoc = getFamiliesWithTypeOrClassId($dbaccess, $action->user->id, $type, $classid, "TABLE"); // ($isSystemDoc) ? getSystemFamilies($dbaccess, $action->user->id, "TABLE") : getNonSystemFamilies($dbaccess, $action->user->id, "TABLE);");
+                
             }
         } else {
             
@@ -101,6 +101,7 @@ function freedom_edit(&$action)
                 
             } else {
                 $tclassdoc = getFamiliesWithTypeOrClassId($dbaccess, $action->user->id, $type, $classid, "TABLE"); //($isSystemDoc) ? getSystemFamilies($dbaccess, $action->user->id, "TABLE") : getNonSystemFamilies($dbaccess, $action->user->id, "TABLE);");
+                
             }
         }
     }
@@ -193,15 +194,17 @@ function cmpselect($a, $b)
 {
     return strcasecmp($a["classname"], $b["classname"]);
 }
-function getFamiliesWithTypeOrClassId($dbaccess, $userid, $type, $classid, $qtype) {
+function getFamiliesWithTypeOrClassId($dbaccess, $userid, $type, $classid, $qtype)
+{
     switch ($type) {
         case 'system':
             return getSystemFamilies($dbaccess, $userid, $qtype);
             break;
+
         case 'not(system)':
             return getNonSystemFamilies($dbaccess, $userid, $qtype);
             break;
     }
-    return  GetClassesDoc($dbaccess, $userid, $classid, $qtype);
+    return GetClassesDoc($dbaccess, $userid, $classid, $qtype);
 }
 ?>

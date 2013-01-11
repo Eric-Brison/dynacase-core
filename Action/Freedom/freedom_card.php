@@ -33,7 +33,7 @@ function freedom_card(&$action)
     
     if (($latest == "Y") && ($doc->locked == - 1)) {
         // get latest revision
-        SetHttpVar("id", $doc->latestId());
+        SetHttpVar("id", $doc->getLatestId());
     }
     
     $action->lay->Set("TITLE", $doc->title);

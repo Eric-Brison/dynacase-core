@@ -34,7 +34,7 @@ function fdl_forumaddentry(&$action)
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     if ($doc->locked == - 1) { // it is revised document
-        $docid = $doc->latestId();
+        $docid = $doc->getLatestId();
         if ($docid != $doc->id) $doc = new_Doc($dbaccess, $docid);
     }
     

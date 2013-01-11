@@ -58,7 +58,7 @@ function generic_mod(Action & $action)
                  */
                 $fld = new_Doc($dbaccess, $dirid);
                 if ($fld->locked == - 1) { // it is revised document
-                    $dirid = $fld->latestId();
+                    $dirid = $fld->getLatestId();
                     if ($dirid != $fld->id) $fld = new_Doc($dbaccess, $dirid);
                 }
                 if (method_exists($fld, "AddFile")) {

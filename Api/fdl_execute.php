@@ -45,7 +45,7 @@ if ($docid > 0) {
      * @var _EXEC $doc
      */
     if ($doc->locked == - 1) { // it is revised document
-        $doc = new_Doc($dbaccess, $doc->latestId());
+        $doc = new_Doc($dbaccess, $doc->getLatestId());
     }
     
     $doc->setValue("exec_status", "progressing");

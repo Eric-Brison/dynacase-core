@@ -53,7 +53,7 @@ function exportfile(Action & $action)
         } else {
             if (($latest == "Y") && ($doc->locked == - 1)) {
                 // get latest revision
-                $docid = $doc->latestId();
+                $docid = $doc->getLatestId();
                 $doc = new_Doc($dbaccess, $docid);
             }
         }

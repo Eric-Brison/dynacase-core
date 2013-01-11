@@ -124,7 +124,7 @@ class _POSTIT extends Doc
         $docid = $this->getRawValue("PIT_IDADOC");
         if ($docid > 0) {
             $doc = new_Doc($this->dbaccess, $docid);
-            if ($doc->locked == - 1) $doc = new_Doc($this->dbaccess, $doc->latestId());
+            if ($doc->locked == - 1) $doc = new_Doc($this->dbaccess, $doc->getLatestId());
             if (intval($doc->postitid) > 0) {
                 $doc->disableEditControl();
                 $doc->postitid = 0;

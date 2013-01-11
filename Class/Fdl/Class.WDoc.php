@@ -1103,7 +1103,7 @@ class WDoc extends Doc
     {
         $err = '';
         $cmd = new_Doc($this->dbaccess, $docid);
-        $cmdid = $cmd->latestId(); // get the latest
+        $cmdid = $cmd->getLatestId(); // get the latest
         $cmd = new_Doc($this->dbaccess, $cmdid);
         
         if ($cmd->wid > 0) {

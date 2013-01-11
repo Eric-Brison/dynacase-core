@@ -31,7 +31,7 @@ function fdl_forumdelentry(&$action)
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     if ($doc->locked == - 1) { // it is revised document
-        $docid = $doc->latestId();
+        $docid = $doc->getLatestId();
         if ($docid != $doc->id) $doc = new_Doc($dbaccess, $docid);
     }
     if ($doc->Control("edit") != "" && $doc->Control("forum") != "") $action->exitError(sprintf(_("you don't have privilege to edit forum for document %s") , $doc->title));

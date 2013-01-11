@@ -93,7 +93,7 @@ class DocTitle
         }
         if ($latestId) {
             $sql = sprintf("select id,initid from docread where initid in (%s) and locked != -1", implode(',', $latestId));
-            //$sql = sprintf("select id,initid from docread where initid in (select initid from docread where id in (%s)) and  locked != -1", implode(',', $latestId));
+            //$sql = sprintf("select id,initid from docread where initid in (select initid from docread where id in (%s)) and  locked != -1", implode(',', $getLatestId));
             simpleQuery($doc->dbaccess, $sql, $result);
             $tInitid = array();
             foreach ($result as $aRow) {

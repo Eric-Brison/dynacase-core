@@ -71,7 +71,7 @@ function verifyExecDocuments($dbaccess)
              * Logging in bgexecute
              */
             $status = $de->bgExecute(_("dynacase cron try execute"));
-            $del = new_Doc($dbaccess, $de->latestId(false, true));
+            $del = new_Doc($dbaccess, $de->getLatestId(false, true));
             /**
              * @var _EXEC $del
              */

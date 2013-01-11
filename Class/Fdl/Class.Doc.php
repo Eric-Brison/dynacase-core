@@ -1880,12 +1880,25 @@ create unique index i_docir on doc(initid, revision);";
     }
     /** get Latest Id of document
      *
+     * @deprecated use {@link Doc::getLatestId} instead
+     * @param bool $fixed if true latest fixed revision
+     * @param bool $forcequery if true force recompute of id (use it in case of modification by another program)
+     * @see Doc::getLatestId
+     * @return int identifier of latest revision
+     */
+    final public function latestId($fixed = false, $forcequery = false)
+    {
+        deprecatedFunction();
+        return $this->getLatestId($fixed, $forcequery);
+    }
+    /** get Latest Id of document
+     *
      * @api get latest id of document
      * @param bool $fixed if true latest fixed revision
      * @param bool $forcequery if true force recompute of id (use it in case of modification by another program)
      * @return int identifier of latest revision
      */
-    final public function latestId($fixed = false, $forcequery = false)
+    final public function getLatestId($fixed = false, $forcequery = false)
     {
         if ($this->id == "") return false;
         if (!$forcequery) {
@@ -1938,7 +1951,6 @@ create unique index i_docir on doc(initid, revision);";
         if (isset($this->attributes->attr[$idAttr])) return $this->attributes->attr[$idAttr]->getLabel();
         return _("unknow attribute");
     }
-
     /**
      * return the property value like id, initid, revision, ...
      * @deprecated use {@link Doc::getPropertyValue} instead
@@ -1946,7 +1958,8 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $prop property identifier
      * @return string false if not an property
      */
-    final public function getProperty($prop) {
+    final public function getProperty($prop)
+    {
         deprecatedFunction();
         return $this->getPropertyValue($prop);
     }
@@ -3980,7 +3993,7 @@ create unique index i_docir on doc(initid, revision);";
             
             if ($latest) {
                 if ($doc->locked == - 1) { // it is revised document
-                    $ldocid = $doc->latestId();
+                    $ldocid = $doc->getLatestId();
                     if ($ldocid != $doc->id) $doc = new_Doc($this->dbaccess, $ldocid);
                 }
             }
@@ -8036,7 +8049,6 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * define custom title used to set title propert when update or create document
-
      * @api hook called in refresh title
      * @warning This hook may be replaced by getCustomTitle in the the next version.
      * this method can be redefined in child family to compose specific title
@@ -8142,7 +8154,7 @@ create unique index i_docir on doc(initid, revision);";
                 return $this->getSpecTitle();
             } else {
                 // search latest
-                $id = $this->latestId();
+                $id = $this->getLatestId();
                 $lastId = $id;
             }
         }
@@ -8318,7 +8330,7 @@ create unique index i_docir on doc(initid, revision);";
                 $doc = new_Doc($this->dbaccess, $docid);
                 if ($doc->isAlive()) {
                     if ($latest && ($doc->locked == - 1)) {
-                        $ldocid = $doc->latestId();
+                        $ldocid = $doc->getLatestId();
                         if ($ldocid != $doc->id) $doc = new_Doc($this->dbaccess, $ldocid);
                     }
                     return $doc->getRValue($attrid, $def, $latest);

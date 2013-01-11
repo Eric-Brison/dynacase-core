@@ -86,7 +86,7 @@ function settxtfile(Action & $action)
                                     $doc->addHistoryEntry(sprintf(_("text conversion done for file %s") , $doc->vault_filename($attrid, false, $index)) , HISTO_NOTICE);
                                     if (($err == "") && ($doc->locked == - 1)) {
                                         // propagation in case of auto revision
-                                        $idl = $doc->latestId();
+                                        $idl = $doc->getLatestId();
                                         $ldoc = new_Doc($dbaccess, $idl);
                                         if ($doc->getRawValue($attrid) == $ldoc->getRawValue($attrid)) {
                                             $ldoc->$at = $doc->$at;

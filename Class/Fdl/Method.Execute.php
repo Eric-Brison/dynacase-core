@@ -151,7 +151,7 @@ class _EXEC extends Doc
     function getPrevExecDate()
     {
         if ($this->revision > 0) {
-            $pid = $this->latestId(true);
+            $pid = $this->getLatestId(true);
             $td = getTDoc($this->dbaccess, $pid);
             $ndh = getv($td, "exec_date");
             
