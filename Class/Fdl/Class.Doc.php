@@ -1469,14 +1469,9 @@ create unique index i_docir on doc(initid, revision);";
     {
         
         $r = $def;
-        if ($this->doctype == 'C') $r = $this->getParamValue($idp, $def);
-        else {
-            if (!$this->fromid) return false;
-            $fdoc = $this->getFamilyDocument();
-            if (!$fdoc->isAlive()) $r = false;
-            else $r = $fdoc->getParamValue($idp, $def);
-        }
+        
         if (isset($this->_paramValue[$idp])) return $this->_paramValue[$idp];
+        $r = $this->getParameterFamilyRawValue($idp, $def);
         /**
          * @var NormalAttribute $paramAttr
          */
@@ -1493,6 +1488,15 @@ create unique index i_docir on doc(initid, revision);";
             $r = $this->getValueMethod($r, $r);
         }
         $this->_paramValue[$idp] = $r;
+        return $r;
+    }
+    
+    protected function getParameterFamilyRawValue($idp, $def)
+    {
+        if (!$this->fromid) return false;
+        $fdoc = $this->getFamilyDocument();
+        if (!$fdoc->isAlive()) $r = false;
+        else $r = $fdoc->getParameterRawValue($idp, $def);
         return $r;
     }
     /**
@@ -4170,6 +4174,7 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 $err = sprintf(_("Method [%s] not exists") , $method);
                 addWarningMsg($err);
+                error_log(print_r(getDebugStack() , true));
                 return null;
             }
         }

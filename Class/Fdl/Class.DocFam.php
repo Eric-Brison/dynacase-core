@@ -407,10 +407,22 @@ create unique index idx_idfam on docfam(id);";
      * @param string $def default value if parameter not found or if it is null
      * @return string parameter value
      */
-    final public function getParamValue($idp, $def = "")
+    final public function getParameterRawValue($idp, $def = "")
     {
         if ($def === "") $def = $this->getDefValue($idp);
         return $this->getXValue("param", $idp, $def);
+    }
+    /**
+     * use in Doc::getParameterFamilyValue
+     * @param string $idp
+     * @param string $def
+     * @see Doc::getParameterFamilyValue_
+     * @return bool|string
+     */
+    protected function getParameterFamilyRawValue($idp, $def)
+    {
+        
+        return $this->getParameterRawValue($idp, $def);
     }
     /**
      * return all family parameter - seach in parents if parameter value is null

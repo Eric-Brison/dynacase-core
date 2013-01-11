@@ -814,7 +814,7 @@ class importDocumentDescription
         ) , $data[2]);
         $opt = (isset($data[3])) ? trim(strtolower($data[3])) : null;
         $force = (str_replace(" ", "", $opt) == "force=yes");
-        $previousValue = $this->doc->getParamvalue($attrid, null);
+        $previousValue = $this->doc->getParameterRawValue($attrid, null);
         if ((!empty($previousValue)) && (!$force)) {
             // reset default
             $this->tcr[$this->nLine]["msg"] = sprintf("keep default value %s : %s. No use %s", $attrid, $previousValue, $data[2]);
@@ -860,7 +860,7 @@ class importDocumentDescription
             $this->tcr[$this->nLine]["msg"] = sprintf("keep default value %s : %s. No use %s", $attrid, $ownDef[$attrid], $data[2]);
         } else {
             $this->doc->setDefValue($attrid, $defv);
-            if ($force || (!$this->doc->getParamValue($attrid))) {
+            if ($force || (!$this->doc->getParameterRawValue($attrid))) {
                 // TODO : not really exact here : must verify if it is really a parameter
                 //$this->doc->setParam($attrid, $defv);
                 //$this->tcr[$this->nLine]["msg"] = "reset default parameter";
