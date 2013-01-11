@@ -55,7 +55,7 @@ class TestAttributeDate extends TestCaseDcpCommonFamily
     {
         $origin = new_doc(self::$dbaccess, $docid);
         $this->assertTrue($origin->isAlive() , "cannot find $docid document");
-        $target = $origin->copy();
+        $target = $origin->duplicate();
         $target->transfertValuesFrom($origin);
         $this->verifyValues($target, $expectedValues);
         $this->verifyHtmlValues($origin, $target, array_keys($expectedValues));

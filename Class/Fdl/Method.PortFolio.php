@@ -64,7 +64,7 @@ class _PORTFOLIO extends Dir
                 
                 foreach ($child as $k => $tdoc) {
                     $doc = getDocObject($this->dbaccess, $tdoc);
-                    $copy = $doc->Copy();
+                    $copy = $doc->duplicate();
                     if (!is_object($copy)) $err.= $copy;
                     else $err.= $this->AddFile($copy->id, "latest", true, true);
                 }
@@ -91,7 +91,7 @@ class _PORTFOLIO extends Dir
                 $tdoc = getTDoc($this->dbaccess, $id);
                 
                 $doc = getDocObject($this->dbaccess, $tdoc);
-                $copy = $doc->Copy();
+                $copy = $doc->duplicate();
                 if (!is_object($copy)) $err.= $copy;
                 else $err.= $this->AddFile($copy->id, "latest", true, true);
             }

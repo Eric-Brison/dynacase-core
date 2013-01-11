@@ -34,7 +34,7 @@ function duplicate(&$action, $dirid, $docid, $temporary = false)
     $values = $doc->getValues();
     if (!is_array($values)) $action->exitError(_("this kind of document cannot be duplicate"));
     // initiate a copy of the doc
-    $copy = $doc->copy($temporary);
+    $copy = $doc->duplicate($temporary);
     if (!is_object($copy)) $action->exitError($copy);
     
     if ($err != "") $action->exitError($err);

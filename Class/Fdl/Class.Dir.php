@@ -776,7 +776,7 @@ class Dir extends PDir
                     while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
                         if ($doc->prelid == $this->initid) {
                             // copy
-                            $copy = $doc->copy();
+                            $copy = $doc->duplicate();
                             if (is_object($copy)) {
                                 $fld->addFile($copy->initid);
                                 

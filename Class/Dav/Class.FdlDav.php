@@ -1044,7 +1044,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                 return "501 not implemented";
             } else {
                 
-                $copy = $src->copy();
+                $copy = $src->duplicate();
                 
                 error_log("COPY :" . $copy->id);
                 $afiles = $this->GetFilesProperties($copy);

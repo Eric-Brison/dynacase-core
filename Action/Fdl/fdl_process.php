@@ -42,7 +42,7 @@ function fdl_process(&$action)
         $t = $doc->getContent(true, array() , true);
     }
     if ($fromedit) {
-        $doc = $doc->copy(true, false);
+        $doc = $doc->duplicate(true, false);
         $err = setPostVars($doc);
         $doc->modify();
     };

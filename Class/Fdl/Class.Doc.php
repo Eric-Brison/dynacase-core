@@ -4907,7 +4907,8 @@ create unique index i_docir on doc(initid, revision);";
      * the copy is created to the database
      * the profil of the copy is the default profil according to his family
      * the copy is not locked and if it is related to a workflow, his state is the first state
-     * @api duplicate document
+     * @deprecated use {@link Doc::duplicate} instead
+     * @see Doc::duplicate
      * @param bool $temporary if true the document create it as temporary document
      * @param bool $control if false don't control acl create (generaly use when temporary is true)
      * @param bool $linkfld if true and document is a folder then document included in folder are also inserted in the copy (are not duplicated) just linked
@@ -4916,10 +4917,29 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function copy($temporary = false, $control = true, $linkfld = false, $copyfile = false)
     {
+        deprecatedFunction();
+        return $this->duplicate($temporary, $control, $linkfld, $copyfile);
+    }
+    /**
+     * return the copy (duplication) of the document
+     * the copy is created to the database
+     * the profil of the copy is the default profil according to his family
+     * the copy is not locked and if it is related to a workflow, his state is the first state
+     * @api duplicate document
+     * @param bool $temporary if true the document create it as temporary document
+     * @param bool $control if false don't control acl create (generaly use when temporary is true)
+     * @param bool $linkfld if true and document is a folder then document included in folder are also inserted in the copy (are not duplicated) just linked
+     * @param bool $copyfile if true duplicate files of the document
+     * @return Doc|string in case of error return a string that indicate the error
+     */
+    final public function duplicate($temporary = false, $control = true, $linkfld = false, $copyfile = false)
+    {
         
         $copy = createDoc($this->dbaccess, $this->fromid, $control);
         if (!is_object($copy)) return false;
-        
+        /**
+         * @var Doc $copy
+         */
         $copy->transfertValuesFrom($this);
         
         $copy->id = "";
@@ -4928,7 +4948,6 @@ create unique index i_docir on doc(initid, revision);";
         $copy->locked = "0";
         $copy->allocated = "0";
         $copy->state = "";
-        $copy->comment = "";
         $copy->icon = $this->icon;;
         
         if ($temporary) {
@@ -4940,12 +4959,12 @@ create unique index i_docir on doc(initid, revision);";
             $copy->setProfil($cdoc->cprofid);
         }
         
-        $err = $copy->PreCopy($this);
+        $err = $copy->preCopy($this);
         if ($err != "") return $err;
         
         $err = $copy->Add();
         if ($err != "") return $err;
-        $copy->addComment(sprintf(_("copy from document #%d -%s-") , $this->id, $this->title));
+        $copy->addHistoryEntry(sprintf(_("copy from document #%d -%s-") , $this->id, $this->title));
         
         if ($copyfile) $copy->duplicateFiles();
         
@@ -4964,10 +4983,10 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * call before copy document
-     * if return error message copy is aborted
-     * @api hook called before copy document
-     *
-     * @see copy
+     * if return error message duplicate is aborted
+     * @api hook called before duplicate document
+     * @warning This hook may be replaced by preDuplicate in the the next version.
+     * @see Doc::duplicate
      * @param Doc $copyfrom
      * @return string
      */
@@ -4978,8 +4997,9 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * call after copy document
-     * @api hook called after copy document
-     * @see copy
+     * @api hook called after duplicate document
+     * @warning This hook may be replaced by postDuplicate in the the next version.
+     * @see Doc::duplicate
      * @param Doc $copyfrom
      * @return string
      */

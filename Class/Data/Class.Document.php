@@ -534,7 +534,7 @@ class Fdl_Document
     {
         $out = null;
         if ($this->doc) {
-            $clone = $this->doc->copy($temporary, true, $linkfld, $copyfile);
+            $clone = $this->doc->duplicate($temporary, true, $linkfld, $copyfile);
             
             if (is_object($clone)) {
                 if ($title) {

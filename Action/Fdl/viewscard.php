@@ -59,7 +59,7 @@ function viewscard(&$action)
     if ($fromedit) {
         include_once ("FDL/modcard.php");
         
-        $doc = $doc->copy(true, false, true);
+        $doc = $doc->duplicate(true, false, true);
         $err = setPostVars($doc);
         $doc->modify();
         setHttpVar("id", $doc->id);

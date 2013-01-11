@@ -113,7 +113,7 @@ function getdocoption(&$action)
     $topt = $fdoc->getXValues("opt");
     
     $doc->setDefaultValues($topt);
-    $doc = $doc->copy(true, false);
+    $doc = $doc->duplicate(true, false);
     setHttpVar("id", $doc->id);
     
     return $doc;
