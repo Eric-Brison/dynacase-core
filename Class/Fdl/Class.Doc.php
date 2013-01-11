@@ -5387,11 +5387,25 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Special Refresh
-     * called when view document
-     * @see refresh
-     * @api hook called in refresh
+     * called when refresh document : when view, modify document - generally when access to the document
+     * @note during specRefresh edit control is disabled
+     * @warning This hook may be replaced by preRefresh in the the next version.
+     * @see Doc::refresh
+     * @api hook called in begining of refresh before update computed attributes
      */
-    function SpecRefresh()
+    public function specRefresh()
+    {
+        return '';
+    }
+    /**
+     * post Refresh
+     * called when refresh document : when view, modify document - generally when access to the document
+     * a modify is done after if attributes are chahged
+     * @note during postRefresh edit control is disabled
+     * @see Doc::refresh
+     * @api hook called at the end of refresh after update computed attributes
+     */
+    public function postRefresh()
     {
         return '';
     }
@@ -5399,7 +5413,7 @@ create unique index i_docir on doc(initid, revision);";
      * Special Refresh Generated automatically
      * is defined in generated child classes
      */
-    function SpecRefreshGen($onlyspec = false)
+    public function specRefreshGen($onlyspec = false)
     {
         return '';
     }
@@ -5409,22 +5423,23 @@ create unique index i_docir on doc(initid, revision);";
      * @api refresh document by calling specRefresh and update computed attributes
      * @return string information message
      */
-    final public function Refresh()
+    final public function refresh()
     {
         if ($this->locked == - 1) return ''; // no refresh revised document
         if (($this->doctype == 'C') || ($this->doctype == 'Z')) return ''; // no refresh for family  and zombie document
         if ($this->lockdomainid > 0) return '';
         $changed = $this->hasChanged;
         if (!$changed) $this->disableEditControl(); // disabled control just to refresh
-        $err = $this->SpecRefresh();
+        $msg = $this->specRefresh();
         // if ($this->id == 0) return; // no refresh for no created document
-        $err.= $this->SpecRefreshGen();
+        $msg.= $this->SpecRefreshGen();
+        $msg.= $this->postRefresh();
         if ($this->hasChanged && $this->id > 0) {
-            $err.= $this->modify(); // refresh title
+            $msg.= $this->modify(); // refresh title
             
         }
         if (!$changed) $this->enableEditControl();
-        return $err;
+        return $msg;
     }
     /**
      * Recompute file name in concordance with rn option
