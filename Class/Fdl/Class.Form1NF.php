@@ -785,7 +785,7 @@ class Form1NF
 
                                     case 'array':
                                         // load all array
-                                        $array = $doc->getAValues($data['table']->arrayName);
+                                        $array = $doc->getArrayRawValues($data['table']->arrayName);
                                         // for each row of array
                                         foreach ($array as $iRow => $row) {
                                             

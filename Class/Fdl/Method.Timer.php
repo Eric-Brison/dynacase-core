@@ -151,7 +151,7 @@ class _TIMER extends Doc
     private function linearizeActions()
     {
         $this->lineActions = array();
-        $tactions = $this->getAvalues("tm_t_config");
+        $tactions = $this->getArrayRawValues("tm_t_config");
         $level = 0;
         foreach ($tactions as $k => $v) {
             $repeat = intval($v["tm_iteration"]);

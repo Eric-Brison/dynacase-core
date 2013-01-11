@@ -221,7 +221,7 @@ class CVDoc extends Doc
             if (!$view) {
                 $type = ($edition) ? "VEDIT" : "VCONS";
                 // search preferred view
-                $tv = $this->getAValues("cv_t_views");
+                $tv = $this->getArrayRawValues("cv_t_views");
                 // sort
                 usort($tv, "cmp_cvorder3");
                 foreach ($tv as $k => $v) {

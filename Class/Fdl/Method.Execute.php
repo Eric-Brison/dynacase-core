@@ -97,7 +97,7 @@ class _EXEC extends Doc
         $bgact = $this->getRawValue("exec_action");
         $bgapi = $this->getRawValue("exec_api");
         
-        $tp = $this->getAValues("exec_t_parameters");
+        $tp = $this->getArrayRawValues("exec_t_parameters");
         
         $cmd = getWshCmd(true);
         if ($masteruserid) {

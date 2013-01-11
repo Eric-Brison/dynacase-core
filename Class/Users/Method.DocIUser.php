@@ -283,7 +283,7 @@ class _IUSER extends Doc implements IMailRecipient
         $status = $this->getRawValue("us_status");
         $login = $this->getRawValue("us_login");
         $substitute = $this->getRawValue("us_substitute");
-        $allRoles = $this->getAValues("us_t_roles");
+        $allRoles = $this->getArrayRawValues("us_t_roles");
         $extmail = $this->getRawValue("us_extmail", " ");
         
         if ($login != "-") {
@@ -373,7 +373,7 @@ class _IUSER extends Doc implements IMailRecipient
     }
     public function preEdition()
     {
-        $allRoles = $this->getAValues("us_t_roles");
+        $allRoles = $this->getArrayRawValues("us_t_roles");
         $this->clearArrayValues("us_t_roles");
         // get direct system role ids
         $roles = array();

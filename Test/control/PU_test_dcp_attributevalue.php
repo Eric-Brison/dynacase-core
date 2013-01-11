@@ -82,7 +82,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             
             foreach ($secondValues as $aid => $value) {
                 $oa = $d->getAttribute($aid);
-                $this->assertEquals($secondCount, count($d->getTValue($aid)) , sprintf("second count for %s incorrect %d <> %d : %s", $aid, $secondCount, count($d->getTValue($aid)) , print_r($d->getAValues($oa->fieldSet->id) , true)));
+                $this->assertEquals($secondCount, count($d->getTValue($aid)) , sprintf("second count for %s incorrect %d <> %d : %s", $aid, $secondCount, count($d->getTValue($aid)) , print_r($d->getArrayRawValues($oa->fieldSet->id) , true)));
             }
         }
         return $d;

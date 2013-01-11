@@ -82,7 +82,7 @@ class _MAILTEMPLATE extends Doc
                 'content_type' => 'multipart/related'
             ));
             
-            $tdest = $this->getAValues("tmail_dest");
+            $tdest = $this->getArrayRawValues("tmail_dest");
             
             $dest = array(
                 "to" => array() ,

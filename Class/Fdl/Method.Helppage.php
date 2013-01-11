@@ -110,7 +110,7 @@ class _HELPPAGE extends Doc
      */
     public function getSectionsByLang()
     {
-        $rows = $this->getAValues('help_t_sections');
+        $rows = $this->getArrayRawValues('help_t_sections');
         
         $sections = array();
         foreach ($rows as $row) {
@@ -152,7 +152,7 @@ class _HELPPAGE extends Doc
      */
     public function getHelpByLang()
     {
-        $rows = $this->getAValues('help_t_help');
+        $rows = $this->getArrayRawValues('help_t_help');
         
         $helps = array();
         foreach ($rows as $row) {
@@ -375,7 +375,7 @@ class _HELPPAGE extends Doc
         }
         $this->lay->setBlockData('ALLLANGS', $all_langs);
         
-        $descriptions = $this->getAvalues("help_t_help");
+        $descriptions = $this->getArrayRawValues("help_t_help");
         $first = true;
         foreach ($descriptions as & $v) {
             $v["firstdesc"] = $first;

@@ -501,7 +501,7 @@ class NormalAttribute extends BasicAttribute
             case 'array':
                 $la = $doc->getAttributes();
                 $xmlvalues = array();
-                $av = $doc->getAvalues($this->id);
+                $av = $doc->getArrayRawValues($this->id);
                 $axml = array();
                 foreach ($av as $k => $col) {
                     $xmlvalues = array();

@@ -327,7 +327,7 @@ function setPostVars(Doc & $doc, &$info = array())
     $ta = $doc->getNormalAttributes();
     foreach ($ta as $k => $v) {
         if ($v->type == "array") {
-            $tv = $doc->getAvalues($v->id);
+            $tv = $doc->getArrayRawValues($v->id);
             if (count($tv) == 1) {
                 $fv = current($tv);
                 $vempty = true;

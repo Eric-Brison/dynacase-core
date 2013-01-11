@@ -2846,12 +2846,27 @@ create unique index i_docir on doc(initid, revision);";
      * return the array of values for an array attribute
      *
      * the attribute must  an array type
-     * @api get all values for an array attribute
+     * @deprecated use {@link Doc::getArrayRawValues} instead
+     * @see Doc::getArrayRawValues
      * @param string $idAttr identifier of array attribute
      * @param string $index the values for $index row (default value -1 means all values)
      * @return array all values of array order by rows (return false if not an array attribute)
      */
     final public function getAValues($idAttr, $index = - 1)
+    {
+        deprecatedFunction();
+        return $this->getArrayRawValues($idAttr, $index);
+    }
+    /**
+     * return the array of values for an array attribute
+     *
+     * the attribute must  an array type
+     * @api get all values for an array attribute
+     * @param string $idAttr identifier of array attribute
+     * @param string $index the values for $index row (default value -1 means all values)
+     * @return array all values of array order by rows (return false if not an array attribute)
+     */
+    final public function getArrayRawValues($idAttr, $index = - 1)
     {
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
@@ -6453,7 +6468,7 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 $goodvalue = ((($value != "") || ($attr->type == "array") || $attr->getOption("showempty")) && ($attr->mvisibility != "H") && ($attr->mvisibility != "I") && ($attr->mvisibility != "O") && (!$attr->inArray()));
                 if (($attr->type == "array") && (!$attr->getOption("showempty"))) {
-                    if (count($this->getAValues($attr->id)) == 0) $goodvalue = false;
+                    if (count($this->getArrayRawValues($attr->id)) == 0) $goodvalue = false;
                 }
                 
                 if ($goodvalue) {
@@ -6961,7 +6976,7 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 if ($target == "ooo") {
                     if ($v->type == "array") {
-                        $tva = $this->getAValues($v->id);
+                        $tva = $this->getArrayRawValues($v->id);
                         
                         $tmkeys = array();
                         foreach ($tva as $kindex => $kvalues) {

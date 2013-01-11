@@ -593,7 +593,7 @@ class DocHtmlFormat
         
         global $action;
         $htmlval = '';
-        if (count($this->doc->getAValues($this->oattr->id)) == 0 && $this->oattr->getOption('showempty')) {
+        if (count($this->doc->getArrayRawValues($this->oattr->id)) == 0 && $this->oattr->getOption('showempty')) {
             $htmlval = $this->oattr->getOption('showempty');
             return $htmlval;
         }
