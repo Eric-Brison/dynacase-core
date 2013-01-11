@@ -1554,6 +1554,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function ReallyDelete($nopost)
     {
+        deprecatedFunction();
         return $this->_destroy($nopost);
     }
     /**
@@ -3059,7 +3060,7 @@ create unique index i_docir on doc(initid, revision);";
      * the attribute must be an array type
      * @api delete all attributes values of an array
      * @param string $idAttr identifier of array attribute
-     * @deprecated use {@link Doc::clearArrayValues] instead
+     * @deprecated use {@link Doc::clearArrayValues} instead
      * @see Doc::clearArrayValues
      * @return string error message, if no error empty string
      */
@@ -4233,7 +4234,6 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Add a comment line in history document
      * note : modify is call automatically
-     * @api Add a comment message in history document
      * @param string $comment the comment to add
      * @param int $level level of comment DocHisto::INFO, DocHisto::ERROR, DocHisto::NOTICE DocHisto::MESSAGE, DocHisto::WARNING
      * @param string $code use when memorize notification
@@ -4244,6 +4244,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function addComment($comment = '', $level = DocHisto::INFO, $code = '', $uid = '')
     {
+        deprecatedFunction();
         return $this->addHistoryEntry($comment = '', $level, $code, $uid);
     }
     /**
@@ -4733,12 +4734,12 @@ create unique index i_docir on doc(initid, revision);";
      * the current document is revised (became a fixed document)
      * a new revision is created, a new identifier if set
      * @api Create a new revision of a document
-     * @deprecated use {@link Doc::revise] instead
+     * @deprecated use {@link Doc::revise} instead
      * @see Doc::revise
      * @param string $comment the comment of the revision
      * @return string error text (empty if no error)
      */
-    final public function _addRevision($comment = '')
+    final public function addRevision($comment = '')
     {
         deprecatedFunction();
         return $this->revise($comment);
@@ -5603,7 +5604,7 @@ create unique index i_docir on doc(initid, revision);";
      * convert array value to flat attribute value
      * @param array $v
      * @param string $br
-     * @deprecated use {@link Doc::arrayToRawValue] instead
+     * @deprecated use {@link Doc::arrayToRawValue} instead
      * @see Doc::arrayToRawValue
      * @return string
      */
@@ -7030,6 +7031,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     function setLogicalIdentificator($name, $reset = false)
     {
+        deprecatedFunction();
         return $this->setLogicalName($name, $reset);
     }
     /**
@@ -7080,6 +7082,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function viewoptcard($target = "_self", $ulink = true, $abstract = false)
     {
+        deprecatedFunction();
         $this->viewbodycard($target, $ulink, $abstract, true);
     }
     /**
@@ -7093,6 +7096,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function editoptcard($target = "_self", $ulink = true, $abstract = false)
     {
+        deprecatedFunction();
         $this->editbodycard($target, $ulink, $abstract, true);
     }
     /**
@@ -7561,6 +7565,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function toxml($withdtd = false, $id_doc = "")
     {
+        deprecatedFunction();
         /**
          * @var Action $action
          */
@@ -7737,7 +7742,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function todtd()
     {
-        
+        deprecatedFunction();
         global $action;
         $this->lay = new Layout("FDL/Layout/viewdtd.xml", $action);
         
@@ -7895,6 +7900,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function refreshDocTitle($nameId, $nameTitle)
     {
+        deprecatedFunction();
         // gettitle(D,SI_IDSOC):SI_SOCIETY,SI_IDSOC
         $this->AddParamRefresh("$nameId", "$nameTitle");
         $doc = new_Doc($this->dbaccess, $this->getRawValue($nameId));
@@ -7939,13 +7945,15 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return application parameter value
-     * @deprecated use instead getParam global function
+     * @deprecated use instead getParam global function or parameterManager
+     * @see parameterManager
      * @param  string  $param parameter
      * @param  string  $defv default return value
      * @return string  returns parameter value ou default value
      */
     final public function getParam($param, $defv = "")
     {
+        deprecatedFunction();
         return getParam($param, $defv);
     }
     //----------------------------------------------------------------------
