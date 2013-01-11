@@ -732,7 +732,7 @@ class Fdl_Document
         if ($this->doc) {
             $err = $this->doc->control("edit");
             if ($err == "") {
-                $err = $this->doc->revive();
+                $err = $this->doc->undelete();
             }
             if ($err) $this->setError($err);
             return ($err == "");

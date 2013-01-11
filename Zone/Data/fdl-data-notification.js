@@ -190,7 +190,7 @@ Fdl.Notifier.Notification.prototype = {
 <li><b>unlock : </b> when document is unlocked</li>
 <li><b>lock : </b>when document is locked</li>
 <li><b>delete : </b>when document is deleted</li>
-<li><b>revive : </b>when document is undeleted</li>
+<li><b>undelete : </b>when document is undeleted</li>
 <li><b>clearcontent : </b>when the containt of folder is cleared</li>
 <li><b>addcontent : </b>when document is inserted in a folder</li>
 <li><b>delcontent : </b>when document is unlinked from a folder</li>

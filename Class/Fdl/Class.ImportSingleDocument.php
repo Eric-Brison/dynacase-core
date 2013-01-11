@@ -222,7 +222,7 @@ class importSingleDocument
                 return $this;
             }
             if ($this->doc->doctype == 'Z') {
-                if (!$this->analyze) $this->doc->revive();
+                if (!$this->analyze) $this->doc->undelete();
                 $this->tcr["msg"].= _("restore document") . "\n";
             }
             

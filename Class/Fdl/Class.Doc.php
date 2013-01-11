@@ -927,7 +927,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Verify control edit
      *
-     * if {@link disableEditControl()} is call before control permission is desactivated
+     * if {@link Doc::disableEditControl()} is call before control permission is desactivated
      * if attribute values are changed the modification date is updated
      * @return string error message, if no error empty string
      */
@@ -1578,9 +1578,9 @@ create unique index i_docir on doc(initid, revision);";
      * Set the document to zombie state
      * For the user the document is in the trash
      * @api Delete document
-     * @param bool $really if true call {@link ReallyDelete} really delete from database
+     * @param bool $really if true  really delete from database
      * @param bool $control if false don't control 'delete' acl
-     * @param bool $nopost if true don't call {@link PostDelete} and {@link PreDelete}
+     * @param bool $nopost if true don't call {@link Doc::postDelete} and {@link Doc::preDelete}
      * @return string error message
      */
     final public function delete($really = false, $control = true, $nopost = false)
@@ -1658,11 +1658,22 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * To restore a document which is in the trash
+     * @see undelete
+     * @deprecated use {@link Doc::undelete} instead
+     * @return string error message (empty message if no errors);
+     */
+    final public function revive()
+    {
+        deprecatedFunction();
+        return $this->undelete();
+    }
+    /**
+     * To restore a document which is in the trash
      * @api restore deleted document
      * @see delete
      * @return string error message (empty message if no errors);
      */
-    final public function revive()
+    final public function undelete()
     {
         $err = "";
         if (($this->control('delete') == "") || ($this->userid == 1)) {
@@ -1685,7 +1696,7 @@ create unique index i_docir on doc(initid, revision);";
                         $this->addHistoryEntry(_("revival document") , HISTO_MESSAGE, "REVIVE");
                         $msg = $this->postRevive();
                         if ($msg) $this->addHistoryEntry($msg);
-                        $this->addLog('revive');
+                        $this->addLog('undelete');
                         $rev = $this->getRevisions();
                         /**
                          * @var Doc $v
@@ -2681,18 +2692,20 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call when doc is revised after new document is created
      * the error message will appeared like message
+     * @warning This hook may be replaced by postUndelete in the the next version.
      * @api hook called when revise document - after it is revided
-     * @see revise
+     * @see Doc::revise
      * @return string message - message is added to history
      */
     function postRevise()
     {
     }
     /**
-     * call when doc is being revive
-     * if return non null string revive will ne aborted
+     * call when doc is being undelete
+     * if return non null string undelete will ne aborted
+     * @warning This hook may be replaced by preUndelete in the the next version.
      * @api hook called before undelete document
-     * @see revive
+     * @see Doc::undelete
      * @return string error message, if no error empty string
      */
     function preRevive()
@@ -2775,10 +2788,10 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return the value of an attribute document
-     * @deprecated use [@link getRawValue} instead
+     * @deprecated use {@link Doc::getRawValue} instead
      * @param string $idAttr attribute identifier
      * @param string $def default value returned if attribute not found or if is empty
-     * @see getRawValue
+     * @see Doc::getRawValue
      * @return string the attribute value
      */
     final public function getValue($idAttr, $def = "")
@@ -3046,8 +3059,8 @@ create unique index i_docir on doc(initid, revision);";
      * the attribute must be an array type
      * @api delete all attributes values of an array
      * @param string $idAttr identifier of array attribute
-     * @deprecated use {@link clearArrayValues] instead
-     * @see clearArrayValues
+     * @deprecated use {@link Doc::clearArrayValues] instead
+     * @see Doc::clearArrayValues
      * @return string error message, if no error empty string
      */
     final public function deleteArray($idAttr)
@@ -3934,8 +3947,8 @@ create unique index i_docir on doc(initid, revision);";
      * delete a value of an attribute
      * @see setValue
      * @param string $attrid attribute identifier
-     * @deprecated use {@link clearValue} instead
-     * @see clearValue
+     * @deprecated use {@link Doc::clearValue} instead
+     * @see Doc::clearValue
      * @return string error message
      */
     final public function deleteValue($attrid)
@@ -4225,8 +4238,8 @@ create unique index i_docir on doc(initid, revision);";
      * @param int $level level of comment DocHisto::INFO, DocHisto::ERROR, DocHisto::NOTICE DocHisto::MESSAGE, DocHisto::WARNING
      * @param string $code use when memorize notification
      * @param string $uid user identifier : by default its the current user
-     * @deprecated use {@link addHistoryEntry} instead
-     * @see addHistoryEntry
+     * @deprecated use {@link Doc::addHistoryEntry} instead
+     * @see Doc::addHistoryEntry
      * @return string error message
      */
     final public function addComment($comment = '', $level = DocHisto::INFO, $code = '', $uid = '')
@@ -4720,8 +4733,8 @@ create unique index i_docir on doc(initid, revision);";
      * the current document is revised (became a fixed document)
      * a new revision is created, a new identifier if set
      * @api Create a new revision of a document
-     * @deprecated use {@link revise] instead
-     * @asee revise
+     * @deprecated use {@link Doc::revise] instead
+     * @see Doc::revise
      * @param string $comment the comment of the revision
      * @return string error text (empty if no error)
      */

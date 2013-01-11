@@ -828,7 +828,7 @@ class Dir extends PDir
             $terr = array();
             while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
                 if ($doc->defDoctype == 'D') $terr = array_merge($terr, $doc->reviveItems());
-                $terr[$doc->id] = $doc->revive();
+                $terr[$doc->id] = $doc->undelete();
             }
             return $terr;
         }
