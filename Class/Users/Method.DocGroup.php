@@ -137,7 +137,7 @@ class _GROUP extends Dir
         
         $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')", $this->id);
         // $sqlfilters[]="fromid !=".getFamIdFromName($this->dbaccess,"IGROUP");
-        $tgroup = getChildDoc($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", getFamIdFromName($this->dbaccess, "GROUP"));
+        $tgroup = internalGetDocCollection($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", getFamIdFromName($this->dbaccess, "GROUP"));
         
         $tpgroup = array();
         $tidpgroup = array();
@@ -160,7 +160,7 @@ class _GROUP extends Dir
     {
         include_once ("FDL/Lib.Dir.php");
         // 2)groups
-        $tu = getChildDoc($this->dbaccess, $this->initid, "0", "ALL", array() , 1, "TABLE", "GROUP");
+        $tu = internalGetDocCollection($this->dbaccess, $this->initid, "0", "ALL", array() , 1, "TABLE", "GROUP");
         $tmemid = array();
         $tmem = array();
         if (count($tu) > 0) {

@@ -105,7 +105,7 @@ function setControlView(&$action, &$doc, $createp = false)
     $filter[] = GetSqlCond($chdoc, "cv_famid");
     //   if ($doc->doctype=='C') $filter[]="cv_famid=".$doc->id;
     //   else $filter[]="cv_famid=".$doc->fromid;
-    $tcv = getChildDoc($doc->dbaccess, 0, 0, 100, $filter, $action->user->id, "TABLE", "CVDOC");
+    $tcv = internalGetDocCollection($doc->dbaccess, 0, 0, 100, $filter, $action->user->id, "TABLE", "CVDOC");
     
     foreach ($tcv as $k => $v) {
         

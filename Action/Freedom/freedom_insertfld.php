@@ -38,7 +38,7 @@ function freedom_insertfld(&$action)
     
     if (!method_exists($doc, "addfile")) $action->exitError(sprintf(_("the document %s is not a container") , $doc->title));
     if ($dirid > 0) {
-        $ldoc = getChildDoc($dbaccess, $dirid, 0, "ALL", array() , 1, "TABLE");
+        $ldoc = internalGetDocCollection($dbaccess, $dirid, 0, "ALL", array() , 1, "TABLE");
         $err = $doc->InsertMDoc($ldoc, $mode);
     }
     if ($err != "") $action->addWarningMsg($err);

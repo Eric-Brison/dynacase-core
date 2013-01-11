@@ -47,7 +47,7 @@ class Dir extends PDir
         
         include_once ("FDL/freedom_util.php");
         include_once ("FDL/Lib.Dir.php");
-        $rq = getChildDoc($this->dbaccess, 0, 0, 1, array(
+        $rq = internalGetDocCollection($this->dbaccess, 0, 0, 1, array(
             "owner = -" . $this->userid
         ) , $this->userid, "LIST", "DIR");
         
@@ -660,7 +660,7 @@ class Dir extends PDir
             include_once ("FDL/Lib.Dir.php");
             if ($controlview) $uid = $this->userid;
             else $uid = 1;
-            $tdoc = getChildDoc($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, $qtype, $famid, false, "title", true, $trash);
+            $tdoc = internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, $qtype, $famid, false, "title", true, $trash);
             return $tdoc;
         }
         /**

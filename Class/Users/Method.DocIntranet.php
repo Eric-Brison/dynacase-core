@@ -85,7 +85,7 @@ class _IGROUPUSER extends Doc
             $filter = array(
                 "us_whatid = '" . intval($this->getRawValue("US_WHATID")) . "'"
             );
-            $tdoc = getChildDoc($this->dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", $this->fromid);
+            $tdoc = internalGetDocCollection($this->dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", $this->fromid);
             if (count($tdoc) > 0) return _("system id already set in database\nThis kind of document can not be duplicated");
         }
         return '';

@@ -40,7 +40,7 @@ function editdfld(&$action)
         $action->lay->Set("TITLE", _("Change default search"));
         $action->lay->Set("current", "Y");
         
-        $tclassdoc = getChildDoc($dbaccess, $doc->dfldid, "0", "ALL", $sqlfilters, $action->user->id, "TABLE", 5);
+        $tclassdoc = internalGetDocCollection($dbaccess, $doc->dfldid, "0", "ALL", $sqlfilters, $action->user->id, "TABLE", 5);
         //$tclassdoc = array_merge($tclassdoc,getChildDoc($dbaccess,$doc->dfldid,"0","ALL",$sqlfilters, $action->user->id, "TABLE",2));
         
     } else {
@@ -48,7 +48,7 @@ function editdfld(&$action)
         $action->lay->Set("TITLE", _("change root folder"));
         $action->lay->Set("current", "N");
         $sqlfilters[] = "doctype='D'";
-        $tclassdoc = getChildDoc($dbaccess, 0, "0", "ALL", $sqlfilters, $action->user->id, "TABLE", 2);
+        $tclassdoc = internalGetDocCollection($dbaccess, 0, "0", "ALL", $sqlfilters, $action->user->id, "TABLE", 2);
     }
     
     $selectclass = array();

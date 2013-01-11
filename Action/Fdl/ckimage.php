@@ -44,7 +44,7 @@ function ckimage(Action & $action)
     else $start = ($startpage * $slice + 1);
     $sqlfilters = array();
     if ($key) $sqlfilters[] = "svalues ~* '" . pg_escape_string($key) . "'";
-    $limg = getChildDoc($dbaccess, 0, $start, $slice, $sqlfilters, $action->user->id, "TABLE", "IMAGE");
+    $limg = internalGetDocCollection($dbaccess, 0, $start, $slice, $sqlfilters, $action->user->id, "TABLE", "IMAGE");
     $wimg = createDoc($dbaccess, "IMAGE", false);
     $oaimg = $wimg->getAttribute("img_file");
     

@@ -50,7 +50,7 @@ foreach ($la as $k => $v) {
     $filter = array();
     $filter[] = "$aid is not null";
     if (!$force) $filter[] = "{$aid}_txt is null";
-    $ldoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, $action->user->id, "ITEM", $docid);
+    $ldoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, $action->user->id, "ITEM", $docid);
     $c = countDocs($ldoc);
     
     print "\n-- Family $docid, Attribute : $aid, count:$c\n";

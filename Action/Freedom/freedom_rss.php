@@ -84,7 +84,7 @@ function freedom_rss(Action & $action)
                 $order.= " " . $doc->getRawValue("REP_ORDERSORT");
             } else $order = "revdate desc";
         }
-        $ldoc = getChildDoc($dbaccess, $doc->id, 0, $lim, $filter, $action->user->id, "TABLE", $famid, false, $order);
+        $ldoc = internalGetDocCollection($dbaccess, $doc->id, 0, $lim, $filter, $action->user->id, "TABLE", $famid, false, $order);
     }
     $lattr = array();
     if ($report) {

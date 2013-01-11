@@ -78,12 +78,12 @@ if ($query->nb > 0) {
                 $filter = array(
                     "us_whatid = '" . $v["id"] . "'"
                 );
-                $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
+                $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
             } else {
                 $filter = array(
                     "us_whatid = '" . $v["id"] . "'"
                 );
-                $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IUSER");
+                $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IUSER");
             }
             
             if (count($tdoc) > 0) {
@@ -116,7 +116,7 @@ if ($query->nb > 0) {
             else $filter = array(
                 "lower(title) = '" . pg_escape_string($title) . "'"
             );
-            $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IUSER"));
+            $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IUSER"));
             if (count($tdoc) > 0) {
                 if (count($tdoc) > 1) {
                     printf(_("find %s more than one, created aborded\n") , $title);

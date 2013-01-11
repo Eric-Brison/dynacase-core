@@ -157,7 +157,7 @@ function search_fulltext(&$action)
                 if ($fromdir) {
                     $cdirid = getRChildDirId($dbaccess, $dirid);
                 }
-                $rq = getChildDoc($dbaccess, $cdirid, 0, 100, $filter, $action->user->id, "TABLE", $famid);
+                $rq = internalGetDocCollection($dbaccess, $cdirid, 0, 100, $filter, $action->user->id, "TABLE", $famid);
                 
                 if (is_array($rq) && count($rq) > 0) {
                     while (count($rq) > 0 && list($kv, $vd) = each($rq)) {

@@ -380,7 +380,7 @@ function lfamilly($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() ,
     }
     //$famid=-(abs($famid));
     if ($only) $famid = - ($famid);
-    $tinter = getChildDoc($dbaccess, $dirid, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
+    $tinter = internalGetDocCollection($dbaccess, $dirid, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
     
     $tr = array();
     
@@ -433,7 +433,7 @@ function lfamilyvalues($dbaccess, $famid, $name = "")
     }
     //$famid=-(abs($famid));
     if ($only) $famid = - ($famid);
-    $tinter = getChildDoc($dbaccess, $dirid = 0, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
+    $tinter = internalGetDocCollection($dbaccess, $dirid = 0, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
     
     $tr = array();
     

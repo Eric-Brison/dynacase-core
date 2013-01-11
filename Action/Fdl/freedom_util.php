@@ -264,7 +264,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
         $doc->cprofid = "0"; // NO CREATION PROFILE ACCESS
         $doc->fromid = $fromid;
         if (!$temporary) {
-            $err=$doc->setProfil($cdoc->cprofid); // inherit from its familly
+            $err = $doc->setProfil($cdoc->cprofid); // inherit from its familly
             $doc->setCvid($cdoc->ccvid); // inherit from its familly
             $doc->wid = $cdoc->wid;
         }
@@ -766,12 +766,12 @@ function getDocFromUserId($dbaccess, $userid)
         $filter = array(
             "us_whatid = '$userid'"
         );
-        $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IGROUP"));
+        $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IGROUP"));
     } else {
         $filter = array(
             "us_whatid = '$userid'"
         );
-        $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IUSER"));
+        $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IUSER"));
     }
     if (count($tdoc) == 0) return false;
     return $tdoc[0];

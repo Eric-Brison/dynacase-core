@@ -1497,7 +1497,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->initid > 0) $filter[] = sprintf("initid != %d", $this->initid); // not itself
         $filter[] = sprintf("%s=E'%s'", $key1, pg_escape_string($this->getRawValue($key1)));
         if ($key2 != "") $filter[] = sprintf("%s=E'%s'", $key2, pg_escape_string($this->getRawValue($key2)));
-        $tpers = getChildDoc($this->dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $this->fromid);
+        $tpers = internalGetDocCollection($this->dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $this->fromid);
         
         return $tpers;
     }

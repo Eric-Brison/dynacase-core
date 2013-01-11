@@ -38,7 +38,7 @@ function editwdoc(&$action)
     
     $chdoc = $doc->GetFromDoc();
     $sqlfilters[] = "(" . GetSqlCond($chdoc, "wf_famid") . ") OR (wf_famid isnull)";
-    $tclassdoc = getChildDoc($dbaccess, 0, "0", "ALL", $sqlfilters, $action->user->id, "TABLE", "WDOC");
+    $tclassdoc = internalGetDocCollection($dbaccess, 0, "0", "ALL", $sqlfilters, $action->user->id, "TABLE", "WDOC");
     
     $selectclass = array();
     if (is_array($tclassdoc)) {

@@ -410,7 +410,7 @@ class SearchDoc
         }
         $debuginfo = array();
         
-        $this->result = getChildDoc($this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters() , $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
+        $this->result = internalGetDocCollection($this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters() , $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
         if ($this->searchmode == "TABLE") $this->count = count($this->result); // memo cause array is unset by shift
         $this->debuginfo = $debuginfo;
         if (($this->searchmode == "TABLE") && ($this->mode == "ITEM")) $this->mode = "TABLEITEM";

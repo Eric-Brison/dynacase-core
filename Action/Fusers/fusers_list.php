@@ -91,7 +91,7 @@ function fusers_list(Action & $action)
     }
     $action->lay->setBlockData("CATG", $tcf);
     $filter[] = "grp_isrefreshed = '0'";
-    $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
+    $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
     $ngr = count($tdoc);
     if ($ngr > 0) $action->lay->set("textgroup", sprintf(_("<b>%d group(s) to refresh</b>") , $ngr));
     else $action->lay->set("textgroup", sprintf(_("No need to refresh group")));

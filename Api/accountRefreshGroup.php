@@ -24,9 +24,11 @@ include_once ("FDL/Lib.Usercard.php");
 $usage = new ApiUsage();
 
 $usage->setText("Refresh groups to recompute members and mail attributes");
-$force = $usage->addOption("force", "force a refresh", array("yes", "no")); // force a refresh if set to 'yes'
+$force = $usage->addOption("force", "force a refresh", array(
+    "yes",
+    "no"
+)); // force a refresh if set to 'yes'
 $fbar = $usage->addOption("bar", "for progress bar"); // for progress bar
-
 $usage->verify();
 
 $appl = new Application();
@@ -39,7 +41,7 @@ if ($dbaccess == "") {
 }
 $filter = array();
 if ($force != 'yes') $filter[] = "grp_isrefreshed = '0'";
-$tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
+$tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
 
 $tgid = array();
 $nd = count($tdoc);

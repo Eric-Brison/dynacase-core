@@ -73,7 +73,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
             "_",
             ""
         ) , $fld->title);
-        $tdoc = getChildDoc($dbaccess, $fldid, "0", "ALL", array() , $action->user->id, "TABLE", $famid);
+        $tdoc = internalGetDocCollection($dbaccess, $fldid, "0", "ALL", array() , $action->user->id, "TABLE", $famid);
     }
     usort($tdoc, "orderbyfromid");
     $foutdir = '';

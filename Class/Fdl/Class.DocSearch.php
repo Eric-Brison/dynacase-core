@@ -463,7 +463,7 @@ class DocSearch extends PDocSearch
         if ($controlview) $uid = $this->userid;
         else $uid = 1;
         $orderby = $this->getRawValue("se_orderby", "title");
-        $tdoc = getChildDoc($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, "TABLE", $famid, false, $orderby, true, $this->getRawValue("se_trash"));
+        $tdoc = internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, "TABLE", $famid, false, $orderby, true, $this->getRawValue("se_trash"));
         return $tdoc;
     }
 }

@@ -40,7 +40,7 @@ function searchdocument(&$action)
     if ($key != "") $filter[] = "title ~* '" . pg_escape_string($key) . "'";
     $filter[] = "doctype!='T'";
     
-    $lq = getChildDoc($dbaccess, 0, 0, $limit, $filter, $action->user->id, "TABLE", $famid);
+    $lq = internalGetDocCollection($dbaccess, 0, 0, $limit, $filter, $action->user->id, "TABLE", $famid);
     $doc = new_doc($dbaccess);
     
     foreach ($lq as $k => $v) {
