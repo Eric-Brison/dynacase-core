@@ -120,6 +120,9 @@ class Dir extends PDir
     }
     /**
      * virtual method use before insert document in folder
+     *
+     * @warning This hook may be replaced by Dir::preInsertDocument() in the the next version
+     *
      * @param int $docid document identifier to insert
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message if not empty the insert will be aborted
@@ -129,6 +132,9 @@ class Dir extends PDir
     }
     /**
      * virtual method use after insert document in folder
+     *
+     * @warning This hook may be replaced by Dir::postInsertDocument() in the the next version
+     *
      * @param int $docid document identifier to insert
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message
@@ -139,6 +145,9 @@ class Dir extends PDir
     /**
      * virtual method use after insert multiple document in this folder
      * must be redefined to optimize algorithm
+     *
+     * @warning This hook may be replaced by Dir::postInsertMultipleDocuments() in the the next version
+     *
      * @param array $tdocid array of document identifier to insert
      * @return string error message
      */
@@ -150,6 +159,9 @@ class Dir extends PDir
     }
     /**
      * virtual method use after unlink document in folder
+     *
+     * @warning This hook may be replaced by Dir::preRemoveDocument() in the the next version
+     *
      * @param int $docid document identifier to unlink
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message if not empty the insert will be aborted
@@ -159,6 +171,9 @@ class Dir extends PDir
     }
     /**
      * virtual method use after unlink document in folder
+     *
+     * @warning This hook may be replaced by Dir::postRemoveDocument() in the the next version
+     *
      * @param int $docid document identifier to unlink
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message
