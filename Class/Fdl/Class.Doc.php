@@ -970,7 +970,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->updateRelations();
                 
                 if ($this->getATag("DYNTIMER")) $this->resetDynamicTimers();
-                $this->addLog("changed", array_keys($this->getOldValues()));
+                $this->addLog("changed", array_keys($this->getOldRawValues()));
             }
         }
         $this->sendTextToEngine();
@@ -3963,12 +3963,25 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the previous value for a attibute set before Doc::SetValue
      * can be used in Doc::postModify generaly
+     * @deprecated use Doc::getOldRawvalue
+     * @see Doc::getOldRawValue
+     * @param string $attrid attribute identifier
+     * @return string the old value (false if not modified before)
+     */
+    final public function getOldValue($attrid)
+    {
+        deprecatedFunction();
+        return $this->getOldRawValue($attrid);
+    }
+    /**
+     * return the previous value for a attibute set before Doc::SetValue
+     * can be used in Doc::postModify generaly
      * @api get previous value of an attribute
      * @param string $attrid attribute identifier
      * @return string the old value (false if not modified before)
      *
      */
-    final public function getOldValue($attrid)
+    final public function getOldRawValue($attrid)
     {
         $attrid = strtolower($attrid);
         if (isset($this->_oldvalue[$attrid])) return $this->_oldvalue[$attrid];
@@ -3976,10 +3989,21 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return all modified values from last modify
-     * @api get all modified values from last modify
+     * @deprecated use Doc::getOldRawValues instead
+     * @see Doc::getOldRawValues
      * @return array indexed by attribute identifier (lowercase)
      */
     final public function getOldValues()
+    {
+        deprecatedFunction();
+        return $this->getOldRawValues();
+    }
+    /**
+     * return all modified values from last modify
+     * @api get all modified values from last modify
+     * @return array indexed by attribute identifier (lowercase)
+     */
+    final public function getOldRawValues()
     {
         if (isset($this->_oldvalue)) return $this->_oldvalue;
         return array();

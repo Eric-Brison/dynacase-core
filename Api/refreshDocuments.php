@@ -133,7 +133,7 @@ while ($doc = $s->nextDoc()) {
             $method
         ) , $targ);
         if ($doc->isChanged()) {
-            $olds = $doc->getOldValues();
+            $olds = $doc->getOldRawValues();
             foreach ($olds as $k => $v) {
                 $smod.= sprintf("\t- %s [%s]:[%s]\n", $k, $v, $doc->getRawValue($k));
             }

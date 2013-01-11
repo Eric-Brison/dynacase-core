@@ -582,7 +582,7 @@ class Fdl_Document
         if ($err) {
             $this->setError($err);
         } else {
-            $olds = $this->doc->getOldValues();
+            $olds = $this->doc->getOldRawValues();
             $needpostmodif = (is_array($olds));
             
             $this->doc->refresh();
@@ -590,7 +590,7 @@ class Fdl_Document
             $err = $this->doc->modify();
             $this->setError($err);
             if ($err == "") {
-                $olds = $this->doc->getOldValues();
+                $olds = $this->doc->getOldRawValues();
                 $keys = array();
                 if (is_array($olds)) {
                     foreach ($olds as $ka => $va) {

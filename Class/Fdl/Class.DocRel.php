@@ -130,7 +130,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
             if (isset($doc->$k) && ($v->type == "docid" || $v->type == "account")) {
                 
                 if (!$force) {
-                    if ($doc->getOldValue($v->id) === false) {
+                    if ($doc->getOldRawValue($v->id) === false) {
                         continue;
                     }
                 }

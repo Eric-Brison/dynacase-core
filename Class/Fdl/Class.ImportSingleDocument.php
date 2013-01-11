@@ -319,7 +319,7 @@ class importSingleDocument
                         if ($errv) {
                             $this->setError("DOC0100", $attr->id, $errv);
                         }
-                        if ($this->doc->getOldValue($attr->id) !== false) $this->tcr["values"][$attr->getLabel() ] = $dv;
+                        if ($this->doc->getOldRawValue($attr->id) !== false) $this->tcr["values"][$attr->getLabel() ] = $dv;
                         else $this->tcr["values"][$attr->getLabel() ] = ("/no change/");
                     }
                 }

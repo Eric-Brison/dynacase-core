@@ -167,7 +167,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
                     //$doc->Addcomment(_("creation"));
                     
                 } else {
-                    $olds = $doc->getOldValues();
+                    $olds = $doc->getOldRawValues();
                     if (is_array($olds)) {
                         $keys = array();
                         foreach ($olds as $ka => $va) {
@@ -390,7 +390,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
     }
     
     $rt = $rtold = array(); // array of file to be returned
-    if ($doc) $rtold = $doc->rawValueToArray($doc->getOldValue(substr($attrid, 4))); // special in case of file modification by DAV in revised document
+    if ($doc) $rtold = $doc->rawValueToArray($doc->getOldRawValue(substr($attrid, 4))); // special in case of file modification by DAV in revised document
     $oa = $doc->getAttribute(substr($attrid, 4));
     $rt = $doc->getMultipleRawValues($attrid); // in case of modified only a part of array files
     unset($tuserfiles['__1x_']);
@@ -504,7 +504,7 @@ function needRefreshRn(Doc & $doc)
     $fa = $doc->GetFileAttributes();
     foreach ($fa as $aid => $oa) {
         $rn = $oa->getOption("rn");
-        $ov = $doc->getOldValue($aid);
+        $ov = $doc->getOldRawValue($aid);
         if ($rn && $ov) return true;
     }
     

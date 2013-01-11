@@ -108,7 +108,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("after setvalue error : %s", $err));
         
         foreach ($notchanged as $aid => $value) {
-            $this->assertEquals($value, $d->getOldValue($aid) , "wrong old value $aid" . print_r($d->getValues() , true));
+            $this->assertEquals($value, $d->getOldRawValue($aid) , "wrong old value $aid" . print_r($d->getValues() , true));
         }
     }
     public function dataOldValue()
