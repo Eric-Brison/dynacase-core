@@ -159,7 +159,7 @@ create unique index idx_idfam on docfam(id);";
     
     function preCreated()
     {
-        $cdoc = $this->getFamDoc();
+        $cdoc = $this->getFamilyDocument();
         if ($cdoc->isAlive()) {
             if (!$this->ccvid) $this->ccvid = $cdoc->ccvid;
             if (!$this->cprofid) $this->cprofid = $cdoc->cprofid;
@@ -210,13 +210,13 @@ create unique index idx_idfam on docfam(id);";
                 "aid" => $aid,
                 "alabel" => $oa->getLabel() ,
                 "defown" => $pPowns[$aid],
-                "definh" => ($this->fromid) ? $this->getFamDoc()->getParamValue($aid) : '',
+                "definh" => ($this->fromid) ? $this->getFamilyDocument()->getParamValue($aid) : '',
                 "defresult" => $this->getHtmlValue($oa, $d->getParamValue($aid))
             );
         }
         $parent = null;
         if ($this->fromid > 0) {
-            $parent = $this->getFamDoc();
+            $parent = $this->getFamilyDocument();
         }
         foreach ($defValues as $aid => $dv) {
             $oa = $d->getAttribute($aid);

@@ -376,7 +376,7 @@ function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, 
     $dbaccess = $doc->dbaccess;
     if ($prevfromid != $doc->fromid) {
         if (($eformat != "I") && ($prevfromid > 0)) fputs_utf8($fout, "\n");
-        $adoc = $doc->getFamDoc();
+        $adoc = $doc->getFamilyDocument();
         if ($adoc->name != "") $fromname = $adoc->name;
         else $fromname = $adoc->id;
         if (!$fromname) return;

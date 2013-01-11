@@ -97,7 +97,7 @@ class Fdl_Workflow extends Fdl_Document
                         "t" => $transitionType
                     );
                 }
-                $fam = $this->doc->getFamDoc();
+                $fam = $this->doc->getFamilyDocument();
                 $classname = $fam->classname;
                 $file = sprintf("%s/FDL/Class.%s.php", DEFAULT_PUBDIR, $classname);
                 if (file_exists($file)) {
@@ -199,7 +199,7 @@ msgstr "%s"', $key, str_replace('"', '\"', $text));
                 } else {
                     $states[$key] = $key;
                 }
-                $fam = $this->doc->getFamDoc();
+                $fam = $this->doc->getFamilyDocument();
                 $classname = $fam->classname;
                 $file = sprintf("%s/FDL/Class.%s.php", DEFAULT_PUBDIR, $classname);
                 if (file_exists($file)) {
@@ -319,7 +319,7 @@ msgstr "%s"', $key, str_replace('"', '\"', $text));
                 if ($label) {
                     $this->addTraduction('fr', $key, $label);
                 }
-                $fam = $this->doc->getFamDoc();
+                $fam = $this->doc->getFamilyDocument();
                 $classname = $fam->classname;
                 $file = sprintf("%s/FDL/Class.%s.php", DEFAULT_PUBDIR, $classname);
                 if (file_exists($file)) {

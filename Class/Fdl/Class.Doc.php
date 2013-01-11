@@ -805,7 +805,7 @@ create unique index i_docir on doc(initid, revision);";
         if (($this->revision == 0) && ($this->doctype != "T")) {
             // increment family sequence
             $this->nextSequence();
-            $famDoc = $this->getFamDoc();
+            $famDoc = $this->getFamilyDocument();
             $incumbentName = getCurrentUser()->getIncumbentPrivilege($famDoc, 'create');
             $createComment = _("document creation");
             if ($incumbentName) $createComment = sprintf(_("(substitute of %s) : ") , $incumbentName) . $createComment;
@@ -890,7 +890,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->initid == "") $this->initid = $this->id;
         $this->RefreshTitle();
         if (chop($this->title) == "") {
-            $fdoc = $this->getFamDoc();
+            $fdoc = $this->getFamilyDocument();
             $this->title = sprintf(_("untitle %s %d") , $fdoc->title, $this->initid);
         }
         if ($this->doctype == "") $this->doctype = $this->defDoctype;
@@ -1137,7 +1137,7 @@ create unique index i_docir on doc(initid, revision);";
     public function isRevisable()
     {
         if (($this->doctype == 'F') && ($this->usefor != 'P')) {
-            $fdoc = $this->getFamDoc();
+            $fdoc = $this->getFamilyDocument();
             if ($fdoc->schar != "S") return true;
         }
         return false;
@@ -1172,9 +1172,9 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->fromid == $cdoc->fromid) return false; // no convert if not needed
         if ($this->locked == - 1) return false; // not revised document
         if ($cdoc->fromid == 0) return false;
-        $f1doc = $this->getFamDoc();
+        $f1doc = $this->getFamilyDocument();
         $f1from = $f1doc->title . "[" . $f1doc->id . "]";
-        $f2doc = $cdoc->getFamDoc();
+        $f2doc = $cdoc->getFamilyDocument();
         $f2from = $f2doc->title . "[" . $f2doc->id . "]";
         
         $cdoc->id = $this->id;
@@ -1413,12 +1413,24 @@ create unique index i_docir on doc(initid, revision);";
     {
         return (($this->confidential > 0) && ($this->controlId($this->profid, 'confidential') != ""));
     }
+
+
+    /**
+     * return the family document where the document comes from
+     * @deprecated use {@link Doc::getFamilyDocument} instead
+     * @see Doc::getFamilyDocument
+     * @return DocFam
+     */
+    final public function getFamDoc() {
+        deprecatedFunction();
+        return $this->getFamilyDocument();
+    }
     /**
      * return the family document where the document comes from
      * @api return family odcument
      * @return DocFam
      */
-    final public function getFamDoc()
+    final public function getFamilyDocument()
     {
         static $famdoc = null;
         if (($famdoc === null) || ($famdoc->id != $this->fromid)) $famdoc = new_Doc($this->dbaccess, $this->fromid);
@@ -1461,7 +1473,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->doctype == 'C') $r = $this->getParamValue($idp, $def);
         else {
             if (!$this->fromid) return false;
-            $fdoc = $this->getFamDoc();
+            $fdoc = $this->getFamilyDocument();
             if (!$fdoc->isAlive()) $r = false;
             else $r = $fdoc->getParamValue($idp, $def);
         }
@@ -1786,7 +1798,7 @@ create unique index i_docir on doc(initid, revision);";
             
             $this->fathers = array();
             if ($this->fromid > 0) {
-                $fdoc = $this->getFamDoc();
+                $fdoc = $this->getFamilyDocument();
                 $this->fathers = $fdoc->GetFathersDoc();
                 array_push($this->fathers, $this->fromid);
             }
@@ -4661,7 +4673,7 @@ create unique index i_docir on doc(initid, revision);";
             $err = $this->Control("edit");
             if ($err != "") return ($err);
         }
-        $fdoc = $this->getFamDoc();
+        $fdoc = $this->getFamilyDocument();
         
         if ($fdoc->schar == "S") return sprintf(_("the document of %s family cannot be revised") , $fdoc->title);
         $locked = $this->locked;
@@ -4742,7 +4754,7 @@ create unique index i_docir on doc(initid, revision);";
                 "fromname" => $this->fromname
             ));
             // max revision
-            $fdoc = $this->getFamDoc();
+            $fdoc = $this->getFamilyDocument();
             $maxrev = intval($fdoc->maxrev);
             if ($maxrev > 0) {
                 if ($this->revision > $maxrev) {
@@ -4986,7 +4998,7 @@ create unique index i_docir on doc(initid, revision);";
             $copy->profid = 0;
             $copy->dprofid = 0;
         } else {
-            $cdoc = $this->getFamDoc();
+            $cdoc = $this->getFamilyDocument();
             $copy->setProfil($cdoc->cprofid);
         }
         
@@ -6256,7 +6268,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         $err = '';
         if (($this->name == "") && ($this->initid > 0)) {
-            $dfam = $this->getFamDoc();
+            $dfam = $this->getFamilyDocument();
             if ($dfam->name == "") return sprintf("no family name %s", $dfam->id);
             if ($temporary) {
                 $this->name = sprintf('TEMPORARY_%s_%s_%s', $dfam->name, $this->initid, uniqid());
@@ -6835,7 +6847,7 @@ create unique index i_docir on doc(initid, revision);";
         global $action;
         $this->viewprop($target, $ulink, $abstract);
         $this->lay->set("iconsrc", $this->getIcon());
-        $fdoc = $this->getFamDoc();
+        $fdoc = $this->getFamilyDocument();
         $this->lay->Set("ficonsrc", $fdoc->getIcon());
         $owner = new Account("", abs($this->owner));
         $this->lay->Set("username", $owner->firstname . " " . $owner->lastname);
@@ -7181,7 +7193,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($docid == 0) {
             // new document
             if ($this->fromid > 0) {
-                $cdoc = $this->getFamDoc();
+                $cdoc = $this->getFamilyDocument();
                 $this->lay->Set("title", sprintf(_("new %s") , $cdoc->getHtmlTitle()));
             }
         } else {
@@ -7812,7 +7824,7 @@ create unique index i_docir on doc(initid, revision);";
         global $action;
         $this->lay = new Layout("FDL/Layout/viewdtd.xml", $action);
         
-        $fam_doc = $this->getFamDoc();
+        $fam_doc = $this->getFamilyDocument();
         $name = str_replace(" ", "_", $fam_doc->title);
         $this->lay->Set("doctype", $this->doctype);
         $this->lay->Set("idfam", $this->fromid);

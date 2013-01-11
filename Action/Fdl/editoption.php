@@ -37,7 +37,7 @@ function editoption(&$action)
     $action->lay->Set("iconsrc", $doc->geticon());
     
     if ($doc->fromid > 0) {
-        $fdoc = $doc->getFamDoc();
+        $fdoc = $doc->getFamilyDocument();
         $action->lay->Set("FTITLE", $fdoc->title);
     } else {
         $action->lay->Set("FTITLE", _("no family"));
@@ -108,7 +108,7 @@ function getdocoption(&$action)
     
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAlive()) return false;
-    $fdoc = $doc->getFamDoc();
+    $fdoc = $doc->getFamilyDocument();
     $fdoc->opt = $valopt;
     $topt = $fdoc->getXValues("opt");
     

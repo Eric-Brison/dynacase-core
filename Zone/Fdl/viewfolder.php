@@ -313,7 +313,7 @@ $famid = "") // folder containt special fam id
             //                 COLUMN MODE
             // ----------------------------------------------------------
             if ($column) {
-                $adoc = $doc->getFamDoc();
+                $adoc = $doc->getFamilyDocument();
                 /* Check if the family header has already been generated */
                 $famdocAlreadyExists = false;
                 foreach ($tfamdoc as $famdoc) {

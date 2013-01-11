@@ -740,7 +740,7 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
         $tlink["editprof"]["visibility"] = POPUP_CTRLINACTIVE;
     }
     
-    $fdoc = $doc->getFamDoc();
+    $fdoc = $doc->getFamilyDocument();
     if ($fdoc->Control("icreate") != "") $tlink["duplicate"]["visibility"] = POPUP_INVISIBLE;
     
     if ($doc->PreDocDelete() == "") {

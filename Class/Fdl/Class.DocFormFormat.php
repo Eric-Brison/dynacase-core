@@ -1171,7 +1171,7 @@ class DocFormFormat
                 }
                 // get default values
                 $ddoc = createDoc($doc->dbaccess, $doc->fromid == 0 ? $doc->id : $doc->fromid, false);
-                $ddoc->setDefaultValues($ddoc->getFamDoc()->getDefValues() , true, true);
+                $ddoc->setDefaultValues($ddoc->getFamilyDocument()->getDefValues() , true, true);
                 
                 $tad = $ddoc->attributes->getArrayElements($attrid);
                 $tval = array();
@@ -1419,7 +1419,7 @@ class DocFormFormat
                         $defval = $doc->getDefValues();
                     } else {
                         
-                        $fdoc = $doc->getFamDoc();
+                        $fdoc = $doc->getFamilyDocument();
                         $defval = $fdoc->getDefValues();
                     }
                     

@@ -176,7 +176,7 @@ function useOwnParamters(Doc & $doc)
     if (is_a($doc, "DocFam")) {
         $fam = $doc;
     } else {
-        $fam = $doc->getFamDoc();
+        $fam = $doc->getFamilyDocument();
     }
     foreach ($listattr as $aid => $attr) {
         /**
@@ -232,7 +232,7 @@ function setDocDefaultValues(Doc & $doc)
          */
         $defVal = $doc->getOwnDefValues();
     } else {
-        $fam = $doc->getFamDoc();
+        $fam = $doc->getFamilyDocument();
         $defVal = $fam->getOwnDefValues();
     }
     foreach ($defVal as $aid => $value) {

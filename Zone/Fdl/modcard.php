@@ -60,7 +60,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
         $doc = createDoc($dbaccess, $classid);
         if (!$doc) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , $classid));
         
-        $fdoc = $doc->getFamDoc();
+        $fdoc = $doc->getFamilyDocument();
         if ($fdoc->control('icreate') != "") $action->exitError(sprintf(_("no privilege to create interactivaly this kind (%s) of document") , $fdoc->title));
         $doc->owner = $action->user->id;
         $doc->locked = 0;
@@ -210,7 +210,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
                         }
                     } else {
                         // test if auto revision
-                        $fdoc = $doc->getFamDoc();
+                        $fdoc = $doc->getFamilyDocument();
                         
                         if ($fdoc->schar == "R") {
                             $doc->revise(sprintf("%s : %s", _("auto revision") , $comment));

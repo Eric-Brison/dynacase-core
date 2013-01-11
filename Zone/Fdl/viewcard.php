@@ -198,7 +198,7 @@ function viewcard(Action & $action)
     
     $action->lay->Set("dhelp", "none");
     if ($doc->fromid > 0) {
-        $cdoc = $doc->getFamDoc();
+        $cdoc = $doc->getFamilyDocument();
         $action->lay->Set("classtitle", $cdoc->getTitle());
         if (getFamilyHelpFile($action, $doc->fromid)) {
             $action->lay->Set("dhelp", "");

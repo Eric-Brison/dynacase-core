@@ -58,7 +58,7 @@ function freedom_mod(Action & $action)
             // second try in default folder for family
             /*
             if ($dirid == 0) {
-            $cdoc = $doc->getFamDoc();
+            $cdoc = $doc->getFamilyDocument();
             if ($cdoc->dfldid>0)  {
             $dirid=$cdoc->dfldid;
             $fld = new_Doc($dbaccess,$dirid);

@@ -338,7 +338,7 @@ class Fdl_Document
                 if ($complete) $props["configuration"] = $this->doc->getConfiguration();
             } else {
                 if ($complete) {
-                    $fdoc = $this->doc->getFamDoc();
+                    $fdoc = $this->doc->getFamilyDocument();
                     if ($fdoc->isAffected()) {
                         $props["fromname"] = $fdoc->name;
                         $props["fromtitle"] = $fdoc->getTitle();
@@ -374,7 +374,7 @@ class Fdl_Document
     {
         $conf = null;
         if ($this->doc) {
-            $fdoc = $this->doc->getFamDoc();
+            $fdoc = $this->doc->getFamilyDocument();
             if ($this->doc->doctype == 'C') {
                 $conf = $this->doc->getConfiguration();
             } else {

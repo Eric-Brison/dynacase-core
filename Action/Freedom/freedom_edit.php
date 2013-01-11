@@ -51,7 +51,7 @@ function freedom_edit(&$action)
     if ($docid > 0) {
         $doc = new_Doc($dbaccess, $docid);
         if (!$doc->isAlive()) $action->exitError(sprintf(_("document id %d not found") , $docid));
-        $fdoc = $doc->getFamDoc();
+        $fdoc = $doc->getFamilyDocument();
         $tclassdoc[$doc->fromid] = array(
             "id" => $fdoc->id,
             "title" => $fdoc->getTitle()

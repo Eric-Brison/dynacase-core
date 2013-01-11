@@ -58,7 +58,7 @@ function editfamilyparameter(Action & $action)
             }
         }
         $d = createTmpDoc($action->dbaccess, $doc->id);
-        $fdoc = $d->getFamDoc();
+        $fdoc = $d->getFamilyDocument();
         $d->setDefaultValues($fdoc->getParams() , false);
         useOwnParamters($d);
         $input_field = getHtmlInput($d, $attr, $value, "", "", true);

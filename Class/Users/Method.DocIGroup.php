@@ -192,7 +192,7 @@ class _IGROUP extends _GROUP
             if ($wrg) AddWarningMsg($wrg);
             // add in default folder root groups : usefull for import
             $tgid = $this->getTValue("GRP_IDPGROUP");
-            $fdoc = $this->getFamdoc();
+            $fdoc = $this->getFamilyDocument();
             $dfldid = $fdoc->dfldid;
             if ($dfldid != "") {
                 /**

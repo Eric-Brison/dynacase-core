@@ -122,12 +122,12 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         $d = createDoc(self::$dbaccess, $famid);
         $value = $d->getParamValue($attrid);
         $this->assertEquals($expectedValue, $value, sprintf("parameter %s has not correct initial value", $attrid));
-        $f = $d->getFamDoc();
+        $f = $d->getFamilyDocument();
         $err = $f->setParam($attrid, '');
         $this->assertEmpty($err, "parameter set error : $err");
         $f->modify();
         $d2 = createDoc(self::$dbaccess, $famid);
-        $f = $d2->getFamDoc();
+        $f = $d2->getFamilyDocument();
         $value = $d2->getParamValue($attrid);
         $this->assertEquals($expectedDefaultValue, $value, sprintf("parameter %s has not correct default value", $attrid));
     }

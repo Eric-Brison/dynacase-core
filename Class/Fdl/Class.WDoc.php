@@ -205,7 +205,7 @@ class WDoc extends Doc
                 // change only if set
                 $this->doc->cvid = $cvid;
             } else {
-                $fdoc = $this->doc->getFamDoc();
+                $fdoc = $this->doc->getFamilyDocument();
                 $this->doc->cvid = $fdoc->ccvid;
             }
         }

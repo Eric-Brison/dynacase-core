@@ -26,7 +26,7 @@ function duplicate(&$action, $dirid, $docid, $temporary = false)
     
     if ($doc->isConfidential()) redirect($action, "FDL", "FDL_CONFIDENTIAL&id=" . $doc->id);
     
-    $cdoc = $doc->getFamDoc();
+    $cdoc = $doc->getFamilyDocument();
     
     $err = $cdoc->control('create');
     if ($err != "") $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , $doc->fromid));

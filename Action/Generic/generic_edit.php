@@ -177,7 +177,7 @@ function generic_edit(Action & $action)
     $action->lay->Set("statecolor", $doc->getStateColor("transparent"));
     $action->lay->Set("wid", false);
     if ($doc->fromid > 0) {
-        $fdoc = $doc->getFamDoc();
+        $fdoc = $doc->getFamilyDocument();
         $action->lay->Set("wid", ($fdoc->schar == 'R'));
         $action->lay->Set("FTITLE", $fdoc->gettitle());
     } else {

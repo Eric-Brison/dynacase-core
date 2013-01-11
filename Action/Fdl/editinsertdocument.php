@@ -80,7 +80,7 @@ function editinsertdocument(&$action)
         $action->lay->set("famtitle", sprintf(_("Search %s") , $fdoc->title));
     }
     $action->lay->set("docid", $doc->id);
-    $fdoc = $doc->getFamDoc();
+    $fdoc = $doc->getFamilyDocument();
     $action->lay->set("classtitle", $fdoc->title);
     $action->lay->set("iconsrc", $doc->getIcon());
     $action->lay->set("TITLE", sprintf(_("Content managing of %s") , $doc->title));

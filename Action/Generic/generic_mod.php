@@ -50,7 +50,7 @@ function generic_mod(Action & $action)
         if ($docid == 0) { // new file => add in a folder
             AddLogMsg(sprintf(_("%s has been created") , $doc->title));
             
-            $cdoc = $doc->getFamDoc();
+            $cdoc = $doc->getFamilyDocument();
             //if (($cdoc->dfldid>0) && ($dirid==0))  $dirid=$cdoc->dfldid;// we not insert in defaut folder
             if ($dirid > 0) {
                 /**
