@@ -246,7 +246,7 @@ class SearchDoc
     }
     /**
      * return original sql query before test permissions
-     * @api return original sql query without visibility criteria
+     *
      *
      * @return string
      */
@@ -258,7 +258,7 @@ class SearchDoc
     }
     /**
      * add join condition
-     * @api add join condition
+     *
      * @code
      * $s=new searchDoc();
      $s->trash='only';
@@ -309,7 +309,7 @@ class SearchDoc
     /** 
      * reset results to use another search
      *
-     * @api reset results to use another search
+     *
      * @return void
      */
     public function reset()
@@ -323,7 +323,7 @@ class SearchDoc
     /**
      * reset result offset
      * use it to redo a document's iteration
-     * @api reset result offset
+     *
      */
     public function rewind()
     {
@@ -333,7 +333,7 @@ class SearchDoc
     }
     /** 
      * Verify if query is already sended to database
-     * @api Verify if query is already sended
+     *
      * @return boolean
      */
     public function isExecuted()
@@ -342,7 +342,7 @@ class SearchDoc
     }
     /**
      * Return sql filters used for request
-     * @api get sql filters of query
+     *
      * @return array of string
      */
     public function getFilters()
@@ -508,9 +508,9 @@ class SearchDoc
     }
     /**
      * set recursive mode for folder searches
-     * can bu use only if collection set if a static folder
+     * can be use only if collection set if a static folder
      * @param bool $recursiveMode set to true to use search in sub folders when collection is folder
-     * @api
+     * @api set recursive mode for folder searches
      * @see SearchDoc::useCollection
      * @return void
      */
@@ -606,7 +606,7 @@ class SearchDoc
      * @deprecated use { @link Application::getNextDoc } instead
      *
      * @see SearchDoc::search
-     * @api get next document results
+     *
      * @return Doc|array or null if this is the end
      */
     public function nextDoc()
@@ -873,7 +873,7 @@ class SearchDoc
     }
     /**
      * return a document part where general filter term is found
-     * @api get a document part where general filter term is found
+     *
      * @see SearchDoc::addGeneralFilter
      * @param Doc $doc document to analyze
      * @param string $beginTag delimiter begin tag
@@ -952,7 +952,7 @@ class SearchDoc
     }
     /**
      * return where condition like : foo in ('x','y','z')
-     * @api get sql condition to search in a value's set
+     *
      * @static
      * @param array $values set of values
      * @param string $column database column name

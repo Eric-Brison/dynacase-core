@@ -638,7 +638,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * Add message to log (syslog)
      * The message is also display in console of web interfaces
-     * @api Add message to log
+     *
      * @param string $code message to add to log
      * @param int $cut
      */

@@ -8,6 +8,11 @@
  * Manage application parameters
  * Set and get application parameters
  * @class ParameterManager
+ *
+ * @see ApplicationParameterManager
+ *
+ * @deprecated use { @link ApplicationParameterManager } instead
+ *
  * @code
  * $v=ParameterManager::getParameter("CORE_CLIENT");
  * @endcode
@@ -25,32 +30,37 @@ class ParameterManager
     }
     /**
      * for internal purpose only
+     * @deprecated use { @link ApplicationParameterManager } instead
      */
     public static function resetCache()
     {
+        deprecatedFunction();
         self::$cache = array();
     }
     /**
      * return current value for a parameter
      * these values can depend of current user when it is a user parameter
-     * @api return current value for a parameter
+     * @deprecated use { @link ApplicationParameterManager } instead
+     *
      * @param string $name paramter name
      * @return string|null value of parameter (null if parameter not exists)
      */
     public static function getParameter($name)
     {
+        deprecatedFunction();
         return getParam($name);
     }
     /**
      * get a specific value for an application
      * get user value for current user if it is a user parameter
-     * @api get a specific value for an application
+     * @deprecated use { @link ApplicationParameterManager } instead
      * @param string $appName application name
      * @param string $name paramter
      * @return string|null value of parameter (null if parameter not exists)
      */
     public static function getApplicationParameter($appName, $name)
     {
+        deprecatedFunction();
         self::getParameter('a');
         if (!isset(self::$cache[$appName])) {
             $sql = sprintf("select paramv.name,paramv.val from paramv, application where application.name='%s' and application.id=paramv.appid and paramv.type !~ '^U';", pg_escape_string($appName));
@@ -72,13 +82,14 @@ class ParameterManager
     }
     /**
      * set new Value for a global application parameter
-     * @api set new Value for a global application parameter
+     * @deprecated use { @link ApplicationParameterManager } instead
      * @param string $name parameter name
      * @param string $value new value to set
      * @throws Dcp\PMGT\Exception
      */
     public static function setGlobalParameter($name, $value)
     {
+        deprecatedFunction();
         // verify parameter exists
         $sql = sprintf("select paramdef.*, application.name as appname from paramdef, application where paramdef.isglob='Y' and application.id=paramdef.appid and paramdef.name='%s';", pg_escape_string($name));
         simpleQuery('', $sql, $r, false, true);
@@ -89,7 +100,7 @@ class ParameterManager
     }
     /**
      * set new Value for an application parameter
-     * @api set new Value for an application parameter
+     * @deprecated use { @link ApplicationParameterManager } instead
      * @param string $appName application name
      * @param string $name parameter name
      * @param string $value new value to set
@@ -97,6 +108,7 @@ class ParameterManager
      */
     public static function setApplicationParameter($appName, $name, $value)
     {
+        deprecatedFunction();
         // verify if parameter exists
         $sql = sprintf("select paramdef.*, application.name as appname from paramdef, application where application.id = paramdef.appid  and paramdef.name='%s';", pg_escape_string($name));
         simpleQuery('', $sql, $r, false, true);
@@ -117,7 +129,7 @@ class ParameterManager
     }
     /**
      * Update a user parameter value
-     * @api Update a user parameter value
+     * @deprecated use { @link ApplicationParameterManager } instead
      * @param string $appName application name
      * @param string $name parameter name (must be declared as user)
      * @param string $value new value to set
@@ -126,6 +138,7 @@ class ParameterManager
      */
     public static function setUserApplicationParameter($appName, $name, $value, $userId = null)
     {
+        deprecatedFunction();
         // verify if parameter exists
         $sql = sprintf("select paramdef.*, application.name as appname from paramdef, application where application.name in ('%s',(select childof from application where  name='%s'))  and application.id=paramdef.appid and paramdef.name = '%s' and isuser='Y';", pg_escape_string($appName) , pg_escape_string($appName) , pg_escape_string($name));
         simpleQuery('', $sql, $r, false, true);
@@ -146,7 +159,7 @@ class ParameterManager
     }
     /**
      * Update a global user parameter value
-     * @api Update a global user parameter value
+     * @deprecated use { @link ApplicationParameterManager } instead
      * @param string $name parameter name (must be declared as user and global)
      * @param string $value new value to set
      * @param int $userId user account identificator (if null use current user)
@@ -154,6 +167,7 @@ class ParameterManager
      */
     public static function setGlobalUserParameter($name, $value, $userId = null)
     {
+        deprecatedFunction();
         // verify if parameter exists
         $sql = sprintf("select paramdef.*, application.name as appname from paramdef, application where application.id=paramdef.appid and paramdef.name = '%s' and isuser='Y' and isglob='Y';", pg_escape_string($name));
         simpleQuery('', $sql, $r, false, true);
