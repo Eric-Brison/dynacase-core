@@ -454,10 +454,9 @@ class _REPORT extends _DSEARCH
      */
     protected function generateBasicCSV(SearchDoc $search, Array $columns, Doc $famDoc, $refresh, $separator, $dateFormat, $stripHtmlFormat = true)
     {
-        
-        $mb0 = microtime(true);
         $fc = new FormatCollection();
-        $fc->useCollection($search->getDocumentList());
+        $dl = $search->getDocumentList();
+        $fc->useCollection($dl);
         if ($separator) $fc->setDecimalSeparator($separator);
         $fc->relationIconSize = 0;
         $fc->stripHtmlTags($stripHtmlFormat);

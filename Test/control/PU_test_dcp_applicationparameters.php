@@ -26,7 +26,8 @@ class TestApplicationParameters extends TestCaseDcp
         $appTest = new \Application(self::$dbaccess);
         $appTest->name = self::appName;
         $appTest->Add();
-        $appTest->set(self::appName, $parent = null);
+        $parent = null;
+        $appTest->set(self::appName, $parent);
         return $appTest;
     }
     /**

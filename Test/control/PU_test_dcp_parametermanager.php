@@ -29,7 +29,8 @@ class TestParameterManager extends TestCaseDcp
         $err = $appTest->Add();
         
         $this->assertEmpty($err, "Cannot create application : $err");
-        $appTest->set(self::appName, $parent = null);
+        $parent = null;
+        $appTest->set(self::appName, $parent);
         
         $this->assertTrue($appTest->isAffected() , sprintf("DCPTEST2 app not found"));
         
