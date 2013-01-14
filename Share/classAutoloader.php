@@ -307,7 +307,7 @@ class DirectoriesAutoloader
             $directories = new \AppendIterator();
             //add all paths that we want to browse
             if ($recursive) {
-                $directories->append(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory)));
+                $directories->append(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory), \RecursiveIteratorIterator::LEAVES_ONLY, \RecursiveIteratorIterator::CATCH_GET_CHILD));
             } else {
                 $directories->append(new \DirectoryIterator($directory));
             }
