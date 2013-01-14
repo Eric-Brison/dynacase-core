@@ -17,6 +17,7 @@ class deprecatedHookManager
         "postModify" => "postStore",
         "specRefresh" => "preRefresh",
         "postCopy" => "postDuplicate",
+        "preCopy" => "preDuplicate",
         "postRevive" => "postUndelete",
         "preRevive" => "preUndelete"
     );

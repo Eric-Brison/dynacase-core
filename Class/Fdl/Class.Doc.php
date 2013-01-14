@@ -5128,7 +5128,7 @@ create unique index i_docir on doc(initid, revision);";
             $copy->setProfil($cdoc->cprofid);
         }
         
-        $err = $copy->preCopy($this);
+        $err = $copy->preDuplicate($this);
         if ($err != "") return $err;
         
         $err = $copy->Add();
@@ -5154,16 +5154,28 @@ create unique index i_docir on doc(initid, revision);";
      * call before copy document
      * if return error message duplicate is aborted
      * @api hook called before duplicate document
-     * @warning This hook may be replaced by preDuplicate in the the next version.
      * @see Doc::duplicate
      * @param Doc $copyfrom
      * @return string
      */
-    function preCopy(&$copyfrom)
+    function preDuplicate(&$copyfrom)
     {
         // to be defined in child class
         return "";
     }
+    /**
+       * call before copy document
+       * if return error message duplicate is aborted
+       * @deprecated hook use {@Doc::preDuplicate} instead
+       * @see Doc::preDuplicate
+       * @param Doc $copyfrom
+       * @return string
+       */
+      function preCopy(&$copyfrom)
+      {
+          // to be defined in child class
+          return "";
+      }
     /**
      * call after copy document
      * @api hook called after duplicate document
