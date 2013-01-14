@@ -297,7 +297,7 @@ class DocFormFormat
                         $phpfunc = $this->oattr->phpfunc;
                         
                         $linkPrefixCT = "ilink_";
-                        $phpfunc = preg_replace('/([\s|,|:|\(])CT\[([^]]+)\]/e', "'\\1'.$linkPrefixCT.strtolower('\\2')", $phpfunc);
+                        $phpfunc = preg_replace('/([\s|,|:|\(])CT\[([^]]+)\]/e', "'\\1'.'$linkPrefixCT'.strtolower('\\2')", $phpfunc);
                         // capture title
                         //if (isUTF8($oattr->getLabel())) $oattr->labelText=utf8_decode($oattr->getLabel());
                         $ititle = sprintf(_("choose inputs for %s") , ($this->oattr->getLabel()));
