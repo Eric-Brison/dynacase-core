@@ -207,630 +207,632 @@ class Dir extends PDir
 
             case "latest":
             default:
-                if (!$doc->isAffected()) return sprintf(_("Cannot add in %s folder, doc id (%d) unknown") , $this->title, $docid);
+                if (!$doc->isAffected()) {
+                    return sprintf(_("Cannot add in %s folder, doc id (%d) unknown") , $this->title, $docid);
+                }
                 $qf->qtype = 'S'; // single user query
                 $qf->childid = $doc->initid; // initial doc
                 break;
-            }
-            $qf->dirid = $this->initid; // the reference folder is the initial id
-            $qf->query = "";
-            if (!$qf->Exists()) {
-                // use pre virtual method
-                if (!$noprepost) $err = $this->preInsertDoc($docid);
-                if ($err != "") return $err;
-                // verify if doc family is autorized
-                if ((!$forcerestrict) && (!$this->isAuthorized($doc->fromid))) return sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document") , $doc->title, $this->title);
-                
-                $err = $qf->Add();
-                if ($err == "") {
-                    AddLogMsg(sprintf(_("Add %s in %s folder") , $doc->title, $this->title));
-                    $this->addHistoryEntry(sprintf(_("Document %s inserted") , $doc->title));
-                    $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder") , $this->title, HISTO_INFO, "MOVEADD"));
-                    
-                    $this->addLog('addcontent', array(
-                        "insert" => array(
-                            "id" => $doc->id,
-                            "title" => $doc->title
-                        )
-                    ));
-                    // add default folder privilege to the doc
-                    if ($doc->profid == 0) { // only if no privilege yet
-                        switch ($doc->defProfFamId) {
-                            case FAM_ACCESSDOC:
-                                $profid = $this->getRawValue("FLD_PDOCID", 0);
-                                if ($profid > 0) {
-                                    $doc->setProfil($profid);
-                                    $err = $doc->modify(true, array(
-                                        "profid",
-                                        "dprofid"
-                                    ) , true);
-                                    if ($err == "") $doc->addHistoryEntry(sprintf(_("Change profil to default document profil : %d") , $profid));
-                                }
-                                break;
-
-                            case FAM_ACCESSDIR:
-                                $profid = $this->getRawValue("FLD_PDIRID", 0);
-                                if ($profid > 0) {
-                                    $doc->setProfil($profid);
-                                    // copy default privilege if not set
-                                    if ($doc->getRawValue("FLD_PDIRID") == "") {
-                                        $doc->setValue("FLD_PDIRID", $this->getRawValue("FLD_PDIRID"));
-                                        $doc->setValue("FLD_PDIR", $this->getRawValue("FLD_PDIR"));
-                                    }
-                                    if ($doc->getRawValue("FLD_PDOCID") == "") {
-                                        $doc->setValue("FLD_PDOCID", $this->getRawValue("FLD_PDOCID"));
-                                        $doc->setValue("FLD_PDOC", $this->getRawValue("FLD_PDOC"));
-                                    }
-                                    $err = $doc->modify();
-                                    if ($err == "") $doc->addHistoryEntry(sprintf(_("Change profil to default subfolder profil : %d") , $profid));
-                                }
-                                break;
-                            }
-                        }
-                }
-                if ($doc->prelid == "") {
-                    $doc->prelid = $this->initid;
-                    $doc->modify(true, array(
-                        "prelid"
-                    ) , true);
-                }
-                
-                if ($err == "") {
-                    global $action;
-                    $action->AddActionDone("ADDFILE", $this->initid);
-                    
-                    $this->updateFldRelations();
-                    // use post virtual method
-                    if (!$noprepost) $err = $this->postInsertDoc($docid, false);
-                }
-            }
-            return $err;
         }
-        // --------------------------------------------------------------------
-        
-        /**
-         * insert multiple document reference in this folder
-         *
-         * if mode is latest the user always see latest revision
-         * if mode is static the user see the revision which has been inserted
-         * @param array doc array document  for the insertion
-         * @param string $mode latest|static
-         * @param boolean $noprepost not call preInsert and postInsert method (default if false)
-         * @return string error message, if no error empty string
-         */
-        function InsertMDoc($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
-        {
-            
-            $err = $this->canModify();
-            if ($err != "") return $err;
-            $tAddeddocids = array();
-            // verify if doc family is autorized
-            $qf = new QueryDir($this->dbaccess);
-            foreach ($tdocs as $k => $tdoc) {
-                
-                if (!$this->isAuthorized($tdoc["fromid"])) {
-                    $warn = sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document") , $tdoc["title"], $this->title);
-                    $twarning[$docid] = $warn;
-                } else {
-                    switch ($mode) {
-                        case "static":
-                            
-                            $qf->qtype = 'F'; // fixed document
-                            $docid = $tdoc["id"];
-                            $qf->childid = $tdoc["id"]; // initial doc
-                            break;
-
-                        case "latest":
-                        default:
-                            
-                            $qf->qtype = 'S'; // single user query
-                            $docid = $tdoc["initid"];
-                            $qf->childid = $tdoc["initid"]; // initial doc
-                            break;
-                    }
-                    
-                    $err = "";
-                    $qf->id = "";
-                    $qf->dirid = $this->initid; // the reference folder is the initial id
-                    $qf->query = "";
-                    // use post virtual method
-                    if (!$noprepost) $err = $this->preInsertDoc($tdoc["initid"], true);
-                    
-                    if ($err == "") {
-                        $err = $qf->Add();
-                        if ($err == "") {
-                            AddLogMsg(sprintf(_("Add %s in %s folder") , $tdoc["title"], $this->title));
-                            $this->addHistoryEntry(sprintf(_("Document %s inserted") , $tdoc["title"]) , HISTO_INFO, "MODCONTAIN");
-                            
-                            $this->addLog('addcontent', array(
-                                "insert" => array(
-                                    "id" => $tdoc["id"],
-                                    "title" => $tdoc["title"]
-                                )
-                            ));
-                            $tAddeddocids[] = $docid;
-                            $tinserted[$docid] = sprintf(_("Document %s inserted") , $tdoc["title"]);
-                            // use post virtual method
-                            //	    if (!$noprepost) $err=$this->postInsertDoc($tdoc["initid"],true);
-                            
-                        }
-                    } else {
-                        $twarning[$docid] = $err;
-                    }
-                }
-            }
-            // use post virtual method
-            if (!$noprepost) {
-                $this->updateFldRelations();
-                $err.= $this->postMInsertDoc($tAddeddocids);
-            }
-            
-            return $err;
-        }
-        /**
-         * insert multiple static document reference in this folder
-         * be carreful : not verify restriction folders
-         * to be use when many include (verification constraint must ne set before by caller)
-         *
-         * @param array $tdocids identifier documents  for the insertion
-         * @return string error message, if no error empty string
-         */
-        function QuickInsertMSDocId($tdocids)
-        {
-            
-            $err = $this->canModify();
-            if ($err != "") return $err;
-            $qf = new QueryDir($this->dbaccess);
-            $qf->qtype = 'S'; // single user query
-            $qf->dirid = $this->initid; // the reference folder is the initial id
-            $qf->query = "";
-            foreach ($tdocids as $k => $docid) {
-                $tcopy[$docid]["childid"] = $docid;
-            }
-            
-            $err = $qf->Adds($tcopy, true);
-            $this->updateFldRelations();
-            
-            return $err;
-        }
-        /**
-         * insert all static document which are included in $docid in this folder
-         * be carreful : not verify restriction folders
-         * to be use when many include (verification constraint must ne set before by caller)
-         *
-         * @param int $docid identifier document  for the insertion  (must be initial id)
-         * @return string error message, if no error empty string
-         */
-        function insertFolder($docid)
-        {
-            if (!is_numeric($docid)) return sprintf(_("Dir::insertFolder identifier [%s] must be numeric") , $docid);
-            if ($this->isLocked(true)) return sprintf(_("folder is locked. Cannot containt modification"));
-            // need this privilege
-            $err = $this->Control("modify");
-            if ($err != "") return $err;
-            
-            $err = $this->exec_Query(sprintf("insert INTO fld (select %d,query,childid,qtype from fld where dirid=%d);", $this->initid, $docid));
-            
-            $this->updateFldRelations();
-            return $err;
-        }
-        // --------------------------------------------------------------------
-        function getQids($docid)
-        {
-            // return array of queries id includes in a directory
-            // --------------------------------------------------------------------
-            $tableid = array();
-            
-            $doc = new_Doc($this->dbaccess, $docid);
-            $query = new QueryDb($this->dbaccess, "QueryDir");
-            $query->AddQuery("dirid=" . $this->id);
-            $query->AddQuery("((childid=$docid) and (qtype='F')) OR ((childid={$doc->initid}) and (qtype='S'))");
-            $tableq = $query->Query();
-            
-            if ($query->nb > 0) {
-                while (list($k, $v) = each($tableq)) {
-                    $tableid[$k] = $v->id;
-                }
-                unset($tableq);
-            }
-            
-            return ($tableid);
-        }
-        // --------------------------------------------------------------------
-        
-        /**
-         * delete a document reference in this folder
-         *
-         * @param int $docid document ident for the deletion
-         * @param bool $noprepost if true then the virtuals methods {@link preUnlinkDoc()} and {@link postUnlinkDoc()} are not called
-         * @param bool $nocontrol if true no test acl "modify"
-         * @return string error message, if no error empty string
-         */
-        function DelFile($docid, $noprepost = false, $nocontrol = false)
-        {
-            if (!$nocontrol) {
-                $err = $this->canModify();
-                if ($err != "") return $err;
-            }
+        $qf->dirid = $this->initid; // the reference folder is the initial id
+        $qf->query = "";
+        if (!$qf->Exists()) {
             // use pre virtual method
-            if (!$noprepost) $err = $this->preUnlinkDoc($docid);
+            if (!$noprepost) $err = $this->preInsertDoc($docid);
             if ($err != "") return $err;
+            // verify if doc family is autorized
+            if ((!$forcerestrict) && (!$this->isAuthorized($doc->fromid))) return sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document") , $doc->title, $this->title);
             
-            $doc = new_Doc($this->dbaccess, $docid);
-            $docid = $doc->initid;
-            //if (count($qids) == 0) $err = sprintf(_("cannot delete link : link not found for doc %d in folder %d"),$docid, $this->initid);
-            if ($err != "") return $err;
-            // search original query
-            $qf = new QueryDir($this->dbaccess, array(
-                $this->initid,
-                $docid
-            ));
-            if (!($qf->isAffected())) $err = sprintf(_("cannot delete link : initial query not found for doc %d in folder %d") , $docid, $this->initid);
-            
-            if ($err != "") return $err;
-            
-            if ($qf->qtype == "M") $err = sprintf(_("cannot delete link for doc %d in folder %d : the document comes from a user query. Delete initial query if you want delete this document") , $docid, $this->initid);
-            
-            if ($err != "") return $err;
-            $qf->Delete();
-            
-            if ($doc->prelid == $this->initid) {
-                $doc->prelid = "";
+            $err = $qf->Add();
+            if ($err == "") {
+                AddLogMsg(sprintf(_("Add %s in %s folder") , $doc->title, $this->title));
+                $this->addHistoryEntry(sprintf(_("Document %s inserted") , $doc->title));
+                $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder") , $this->title, HISTO_INFO, "MOVEADD"));
+                
+                $this->addLog('addcontent', array(
+                    "insert" => array(
+                        "id" => $doc->id,
+                        "title" => $doc->title
+                    )
+                ));
+                // add default folder privilege to the doc
+                if ($doc->profid == 0) { // only if no privilege yet
+                    switch ($doc->defProfFamId) {
+                        case FAM_ACCESSDOC:
+                            $profid = $this->getRawValue("FLD_PDOCID", 0);
+                            if ($profid > 0) {
+                                $doc->setProfil($profid);
+                                $err = $doc->modify(true, array(
+                                    "profid",
+                                    "dprofid"
+                                ) , true);
+                                if ($err == "") $doc->addHistoryEntry(sprintf(_("Change profil to default document profil : %d") , $profid));
+                            }
+                            break;
+
+                        case FAM_ACCESSDIR:
+                            $profid = $this->getRawValue("FLD_PDIRID", 0);
+                            if ($profid > 0) {
+                                $doc->setProfil($profid);
+                                // copy default privilege if not set
+                                if ($doc->getRawValue("FLD_PDIRID") == "") {
+                                    $doc->setValue("FLD_PDIRID", $this->getRawValue("FLD_PDIRID"));
+                                    $doc->setValue("FLD_PDIR", $this->getRawValue("FLD_PDIR"));
+                                }
+                                if ($doc->getRawValue("FLD_PDOCID") == "") {
+                                    $doc->setValue("FLD_PDOCID", $this->getRawValue("FLD_PDOCID"));
+                                    $doc->setValue("FLD_PDOC", $this->getRawValue("FLD_PDOC"));
+                                }
+                                $err = $doc->modify();
+                                if ($err == "") $doc->addHistoryEntry(sprintf(_("Change profil to default subfolder profil : %d") , $profid));
+                            }
+                            break;
+                        }
+                    }
+            }
+            if ($doc->prelid == "") {
+                $doc->prelid = $this->initid;
                 $doc->modify(true, array(
                     "prelid"
                 ) , true);
             }
             
-            AddLogMsg(sprintf(_("Delete %d in %s folder") , $docid, $this->title));
-            
-            $this->addLog('delcontent', array(
-                "insert" => array(
-                    "id" => $doc->id,
-                    "title" => $doc->title
-                )
-            ));
-            $this->addHistoryEntry(sprintf(_("Document %s umounted") , $doc->title) , HISTO_INFO, "MODCONTAIN");
-            $doc->addHistoryEntry(sprintf(_("Document unlinked of %s folder") , $this->title, HISTO_INFO, "MOVEUNLINK"));
-            // use post virtual method
-            if (!$noprepost) {
-                $this->updateFldRelations();
-                $err = $this->postUnlinkDoc($docid);
-            }
-            
-            global $action;
-            $action->AddActionDone("DELFILE", $this->initid);
-            
-            return $err;
-        }
-        /**
-         * move a document from me to a folder
-         * @param integer $docid the document identifier to move
-         * @param integer $movetoid target destination
-         * @return string error message (empty if null)
-         */
-        function moveDocument($docid, $movetoid)
-        {
-            $err = $this->canModify();
             if ($err == "") {
-                $fromtoid = $this->initid;
-                $da = new_doc($this->dbaccess, $movetoid);
-                if ($da->isAlive()) {
-                    if (method_exists($da, "addFile")) {
-                        $err = $da->addFile($docid);
-                        if ($err == "") {
-                            if (($fromtoid) && ($fromtoid != $movetoid)) {
-                                if ($this->isAlive()) {
-                                    if (method_exists($this, "delFile")) {
-                                        $err = $this->delFile($docid);
-                                        if ($err == "") {
-                                            $doc = new_doc($this->dbaccess, $docid, true);
-                                            if ($doc->isAlive()) {
-                                                $doc->prelid = $da->initid;
-                                                $err = $doc->modify(true, array(
-                                                    "prelid"
-                                                ) , true);
-                                            }
-                                        }
-                                    } else $err = sprintf(_("document %s is not a folder") , $this->getTitle());
-                                }
-                            } else {
-                                if ($err == "") {
-                                    $doc = new_doc($this->dbaccess, $docid, true);
-                                    if ($doc->isAlive()) {
-                                        $doc->prelid = $da->initid;
-                                        $err = $doc->modify(true, array(
-                                            "prelid"
-                                        ) , true);
-                                    }
-                                }
-                            }
-                        }
-                    } else $err = sprintf(_("document %s is not a folder") , $da->getTitle());
-                }
+                global $action;
+                $action->AddActionDone("ADDFILE", $this->initid);
+                
+                $this->updateFldRelations();
+                // use post virtual method
+                if (!$noprepost) $err = $this->postInsertDoc($docid, false);
             }
-            return $err;
         }
-        // --------------------------------------------------------------------
-        function postModify()
-        {
-            // don't see restriction frame is not needed
-            $allbut = $this->getRawValue("FLD_ALLBUT");
-            $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
+        return $err;
+    }
+    // --------------------------------------------------------------------
+    
+    /**
+     * insert multiple document reference in this folder
+     *
+     * if mode is latest the user always see latest revision
+     * if mode is static the user see the revision which has been inserted
+     * @param array doc array document  for the insertion
+     * @param string $mode latest|static
+     * @param boolean $noprepost not call preInsert and postInsert method (default if false)
+     * @return string error message, if no error empty string
+     */
+    function InsertMDoc($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
+    {
+        
+        $err = $this->canModify();
+        if ($err != "") return $err;
+        $tAddeddocids = array();
+        // verify if doc family is autorized
+        $qf = new QueryDir($this->dbaccess);
+        foreach ($tdocs as $k => $tdoc) {
             
-            if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
-                
-                $this->clearValue("FLD_ALLBUT");
-                $this->modify();
-            }
-        }
-        function hasNoRestriction()
-        {
-            if (!$this->authfam) {
-                $this->getAuthorizedFamilies();
-            }
-            return ($this->norestrict);
-        }
-        /**
-         * return families that can be use in insertion
-         * @param int $classid : restrict for same usefor families
-         */
-        function getAuthorizedFamilies($classid = 0, $verifyCreate = false)
-        {
-            
-            if (!$this->authfam) {
-                
-                $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
-                $tfam = $this->getMultipleRawValues("FLD_FAM");
-                $tsubfam = $this->getMultipleRawValues("FLD_SUBFAM");
-                $allbut = $this->getRawValue("FLD_ALLBUT");
-                
-                if (($allbut != "1") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
-                    $this->norestrict = true;
-                    return;
+            if (!$this->isAuthorized($tdoc["fromid"])) {
+                $warn = sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document") , $tdoc["title"], $this->title);
+                $twarning[$docid] = $warn;
+            } else {
+                switch ($mode) {
+                    case "static":
+                        
+                        $qf->qtype = 'F'; // fixed document
+                        $docid = $tdoc["id"];
+                        $qf->childid = $tdoc["id"]; // initial doc
+                        break;
+
+                    case "latest":
+                    default:
+                        
+                        $qf->qtype = 'S'; // single user query
+                        $docid = $tdoc["initid"];
+                        $qf->childid = $tdoc["initid"]; // initial doc
+                        break;
                 }
                 
-                $this->norestrict = false;;
-                $tclassdoc = array();
-                if ($allbut != "1") {
-                    include_once ("FDL/Lib.Dir.php");
-                    $tallfam = GetClassesDoc($this->dbaccess, $this->userid, $classid, "TABLE");
-                    
-                    foreach ($tallfam as $k => $cdoc) {
-                        $tclassdoc[$cdoc["id"]] = $cdoc;
-                        //	  $tclassdoc += $this->GetChildFam($cdoc["id"]);
+                $err = "";
+                $qf->id = "";
+                $qf->dirid = $this->initid; // the reference folder is the initial id
+                $qf->query = "";
+                // use post virtual method
+                if (!$noprepost) $err = $this->preInsertDoc($tdoc["initid"], true);
+                
+                if ($err == "") {
+                    $err = $qf->Add();
+                    if ($err == "") {
+                        AddLogMsg(sprintf(_("Add %s in %s folder") , $tdoc["title"], $this->title));
+                        $this->addHistoryEntry(sprintf(_("Document %s inserted") , $tdoc["title"]) , HISTO_INFO, "MODCONTAIN");
                         
-                    }
-                    // suppress undesirable families
-                    reset($tfamid);
-                    while (list($k, $famid) = each($tfamid)) {
+                        $this->addLog('addcontent', array(
+                            "insert" => array(
+                                "id" => $tdoc["id"],
+                                "title" => $tdoc["title"]
+                            )
+                        ));
+                        $tAddeddocids[] = $docid;
+                        $tinserted[$docid] = sprintf(_("Document %s inserted") , $tdoc["title"]);
+                        // use post virtual method
+                        //	    if (!$noprepost) $err=$this->postInsertDoc($tdoc["initid"],true);
                         
-                        unset($tclassdoc[intval($famid) ]);
-                        if ($tsubfam[$k] != "yes") {
-                            $tnofam = $this->GetChildFam(intval($famid));
-                            foreach ($tnofam as $ka => $va) {
-                                unset($tclassdoc[intval($ka) ]);
-                            }
-                        }
                     }
                 } else {
-                    //add families
-                    foreach ($tfamid as $k => $famid) {
-                        $tfdoc = getTDoc($this->dbaccess, $famid);
-                        if ($tfdoc && ((!$verifyCreate) || controlTdoc($tfdoc, 'icreate'))) {
-                            $tclassdoc[intval($famid) ] = array(
-                                "id" => ($tsubfam[$k] == "no") ? (-intval($famid)) : intval($famid) ,
-                                "title" => $tfam[$k]
-                            );
-                        }
-                        if ($tsubfam[$k] != "no") $tclassdoc+= $this->GetChildFam(intval($famid));
-                    }
+                    $twarning[$docid] = $err;
                 }
-                $this->authfam = $tclassdoc;
-            }
-            $this->kauthfam = array_keys($this->authfam);
-            return $this->authfam;
-        }
-        /**
-         * return families that can be use in insertion
-         * @param int $classid : restrict for same usefor families
-         */
-        public function isAuthorized($classid)
-        {
-            if (!$this->authfam) {
-                $this->getAuthorizedFamilies();
-            }
-            if ($this->norestrict) return true;
-            if (!$classid) return true;
-            
-            if (isset($this->authfam[$classid])) return true;
-            
-            return false;
-        }
-        /**
-         * return document includes in folder
-         * @param bool $controlview if false all document are returned else only visible for current user  document are return
-         * @param array $filter to add list sql filter for selected document
-         * @param int|string $famid family identifier to restrict search
-         * @param string $qtype type os result TABLE|LIST|ITEM
-         * @param string $trash
-         * @return array array of document array
-         */
-        public function getContent($controlview = true, array $filter = array() , $famid = "", $qtype = "TABLE", $trash = "")
-        {
-            include_once ("FDL/Lib.Dir.php");
-            if ($controlview) $uid = $this->userid;
-            else $uid = 1;
-            $tdoc = internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, $qtype, $famid, false, "title", true, $trash);
-            return $tdoc;
-        }
-        /**
-         * update folder relations
-         */
-        public function updateFldRelations()
-        {
-            return; //inhibit folder relation (too slow for great folder)
-            if ($this->doctype == 'T') return;
-            include_once ("FDL/Class.DocRel.php");
-            $nattr = $this->GetNormalAttributes();
-            $or = new DocRel($this->dbaccess);
-            $or->sinitid = $this->initid;
-            $or->resetRelations("folder");
-            $q = new QueryDb($this->dbaccess, "QueryDir");
-            $tv = $q->Query(0, 0, "TABLE", "select childid from fld where dirid=" . $this->initid . " and qtype='S'");
-            if (is_array($tv)) {
-                $tid = array();
-                foreach ($tv as $tq) {
-                    $tid[] = $tq["childid"];
-                }
-                $or->copyRelations($tid, $this, 'folder');
             }
         }
-        /**
-         * return number of item in the static folder
-         * @param bool $onlyprimary set to true if you wnat only document linked by primary relation
-         * @return int -1 if it is not a static folder
-         */
-        public function count($onlyprimary = false)
-        {
-            if ($onlyprimary) {
-                $tdoc = $this->getPrimaryChild();
-                if ($tdoc) return count($tdoc);
-            } else {
-                $q = new QueryDb($this->dbaccess, "QueryDir");
-                $tv = $q->Query(0, 0, "TABLE", "select childid from fld where dirid=" . $this->initid . " and qtype='S'");
-                if (is_array($tv)) return count($tv);
+        // use post virtual method
+        if (!$noprepost) {
+            $this->updateFldRelations();
+            $err.= $this->postMInsertDoc($tAddeddocids);
+        }
+        
+        return $err;
+    }
+    /**
+     * insert multiple static document reference in this folder
+     * be carreful : not verify restriction folders
+     * to be use when many include (verification constraint must ne set before by caller)
+     *
+     * @param array $tdocids identifier documents  for the insertion
+     * @return string error message, if no error empty string
+     */
+    function QuickInsertMSDocId($tdocids)
+    {
+        
+        $err = $this->canModify();
+        if ($err != "") return $err;
+        $qf = new QueryDir($this->dbaccess);
+        $qf->qtype = 'S'; // single user query
+        $qf->dirid = $this->initid; // the reference folder is the initial id
+        $qf->query = "";
+        foreach ($tdocids as $k => $docid) {
+            $tcopy[$docid]["childid"] = $docid;
+        }
+        
+        $err = $qf->Adds($tcopy, true);
+        $this->updateFldRelations();
+        
+        return $err;
+    }
+    /**
+     * insert all static document which are included in $docid in this folder
+     * be carreful : not verify restriction folders
+     * to be use when many include (verification constraint must ne set before by caller)
+     *
+     * @param int $docid identifier document  for the insertion  (must be initial id)
+     * @return string error message, if no error empty string
+     */
+    function insertFolder($docid)
+    {
+        if (!is_numeric($docid)) return sprintf(_("Dir::insertFolder identifier [%s] must be numeric") , $docid);
+        if ($this->isLocked(true)) return sprintf(_("folder is locked. Cannot containt modification"));
+        // need this privilege
+        $err = $this->Control("modify");
+        if ($err != "") return $err;
+        
+        $err = $this->exec_Query(sprintf("insert INTO fld (select %d,query,childid,qtype from fld where dirid=%d);", $this->initid, $docid));
+        
+        $this->updateFldRelations();
+        return $err;
+    }
+    // --------------------------------------------------------------------
+    function getQids($docid)
+    {
+        // return array of queries id includes in a directory
+        // --------------------------------------------------------------------
+        $tableid = array();
+        
+        $doc = new_Doc($this->dbaccess, $docid);
+        $query = new QueryDb($this->dbaccess, "QueryDir");
+        $query->AddQuery("dirid=" . $this->id);
+        $query->AddQuery("((childid=$docid) and (qtype='F')) OR ((childid={$doc->initid}) and (qtype='S'))");
+        $tableq = $query->Query();
+        
+        if ($query->nb > 0) {
+            while (list($k, $v) = each($tableq)) {
+                $tableid[$k] = $v->id;
             }
-            return -1;
+            unset($tableq);
         }
-        /**
-         * return array of document identificators included in folder
-         * @return array of initial identificators (initid)
-         */
-        public function getContentInitid()
-        {
-            $query = sprintf("select childid from fld where dirid=%d and qtype='S'", $this->initid);
-            $initids = array();
-            $err = simpleQuery($this->dbaccess, $query, $initids, true, false);
-            if ($err == "") return $initids;
-            
-            return array();
+        
+        return ($tableid);
+    }
+    // --------------------------------------------------------------------
+    
+    /**
+     * delete a document reference in this folder
+     *
+     * @param int $docid document ident for the deletion
+     * @param bool $noprepost if true then the virtuals methods {@link preUnlinkDoc()} and {@link postUnlinkDoc()} are not called
+     * @param bool $nocontrol if true no test acl "modify"
+     * @return string error message, if no error empty string
+     */
+    function DelFile($docid, $noprepost = false, $nocontrol = false)
+    {
+        if (!$nocontrol) {
+            $err = $this->canModify();
+            if ($err != "") return $err;
         }
-        /**
-         * get  document which primary relation is this folder
-         *
-         *
-         * @return array of doc  (array document)
-         */
-        public function getPrimaryChild()
-        {
-            $filter[] = "prelid=" . $this->initid;
-            return $this->getContent(true, $filter);
+        // use pre virtual method
+        if (!$noprepost) $err = $this->preUnlinkDoc($docid);
+        if ($err != "") return $err;
+        
+        $doc = new_Doc($this->dbaccess, $docid);
+        $docid = $doc->initid;
+        //if (count($qids) == 0) $err = sprintf(_("cannot delete link : link not found for doc %d in folder %d"),$docid, $this->initid);
+        if ($err != "") return $err;
+        // search original query
+        $qf = new QueryDir($this->dbaccess, array(
+            $this->initid,
+            $docid
+        ));
+        if (!($qf->isAffected())) $err = sprintf(_("cannot delete link : initial query not found for doc %d in folder %d") , $docid, $this->initid);
+        
+        if ($err != "") return $err;
+        
+        if ($qf->qtype == "M") $err = sprintf(_("cannot delete link for doc %d in folder %d : the document comes from a user query. Delete initial query if you want delete this document") , $docid, $this->initid);
+        
+        if ($err != "") return $err;
+        $qf->Delete();
+        
+        if ($doc->prelid == $this->initid) {
+            $doc->prelid = "";
+            $doc->modify(true, array(
+                "prelid"
+            ) , true);
         }
-        function Complete()
-        {
-            $this->authfam = false;
-            $this->norestrict = false;
+        
+        AddLogMsg(sprintf(_("Delete %d in %s folder") , $docid, $this->title));
+        
+        $this->addLog('delcontent', array(
+            "insert" => array(
+                "id" => $doc->id,
+                "title" => $doc->title
+            )
+        ));
+        $this->addHistoryEntry(sprintf(_("Document %s umounted") , $doc->title) , HISTO_INFO, "MODCONTAIN");
+        $doc->addHistoryEntry(sprintf(_("Document unlinked of %s folder") , $this->title, HISTO_INFO, "MOVEUNLINK"));
+        // use post virtual method
+        if (!$noprepost) {
+            $this->updateFldRelations();
+            $err = $this->postUnlinkDoc($docid);
         }
-        /**
-         * delete all document which primary relation is the folder (recurively)
-         * different of {@see Clear()}
-         * all document are put in the trash (zombie mode)
-         * @return array of possible errors. Empty array means no errors
-         */
-        public function deleteItems()
-        {
-            $filter[] = "prelid=" . $this->initid;
-            $lpdoc = $this->getContent(false, $filter, "", "ITEM");
-            
-            $terr = array();
-            while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
-                $coulddelete = true;
-                if ($doc->doctype == 'D') {
-                    $terr = array_merge($terr, $doc->deleteItems());
-                    foreach ($terr as $id => $err) {
-                        if ($err != "") $coulddelete = false;
-                    }
-                }
-                if ($coulddelete) $terr[$doc->id] = $doc->delete();
-            }
-            $this->addHistoryEntry(_("Folder cleared") , HISTO_INFO, "MODCONTAIN");
-            return $terr;
-        }
-        /**
-         * copy (clone) all documents which primary relation is the folder (recurively)
-         * the others documents are just linked
-         * all document are put in $indirid folder id
-         * @param int $indirid the folder where put the copies
-         * @return array of possible errors. Empty array means no errors
-         */
-        public function copyItems($indirid)
-        {
-            $filter = array();
-            $lpdoc = $this->getContent(false, $filter, "", "ITEM");
-            
-            $terr = array();
-            $fld = new_doc($this->dbaccess, $indirid);
-            if ($fld->doctype == 'D') {
-                $err = $fld->control("modify");
-                if ($err == "") {
-                    while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
-                        if ($doc->prelid == $this->initid) {
-                            // copy
-                            $copy = $doc->duplicate();
-                            if (is_object($copy)) {
-                                $fld->addFile($copy->initid);
-                                
-                                if ($doc->doctype == 'D') {
-                                    $terr = array_merge($terr, $doc->copyItems($copy->id));
-                                }
+        
+        global $action;
+        $action->AddActionDone("DELFILE", $this->initid);
+        
+        return $err;
+    }
+    /**
+     * move a document from me to a folder
+     * @param integer $docid the document identifier to move
+     * @param integer $movetoid target destination
+     * @return string error message (empty if null)
+     */
+    function moveDocument($docid, $movetoid)
+    {
+        $err = $this->canModify();
+        if ($err == "") {
+            $fromtoid = $this->initid;
+            $da = new_doc($this->dbaccess, $movetoid);
+            if ($da->isAlive()) {
+                if (method_exists($da, "addFile")) {
+                    $err = $da->addFile($docid);
+                    if ($err == "") {
+                        if (($fromtoid) && ($fromtoid != $movetoid)) {
+                            if ($this->isAlive()) {
+                                if (method_exists($this, "delFile")) {
+                                    $err = $this->delFile($docid);
+                                    if ($err == "") {
+                                        $doc = new_doc($this->dbaccess, $docid, true);
+                                        if ($doc->isAlive()) {
+                                            $doc->prelid = $da->initid;
+                                            $err = $doc->modify(true, array(
+                                                "prelid"
+                                            ) , true);
+                                        }
+                                    }
+                                } else $err = sprintf(_("document %s is not a folder") , $this->getTitle());
                             }
                         } else {
-                            // link
-                            $fld->addFile($doc->initid);
+                            if ($err == "") {
+                                $doc = new_doc($this->dbaccess, $docid, true);
+                                if ($doc->isAlive()) {
+                                    $doc->prelid = $da->initid;
+                                    $err = $doc->modify(true, array(
+                                        "prelid"
+                                    ) , true);
+                                }
+                            }
+                        }
+                    }
+                } else $err = sprintf(_("document %s is not a folder") , $da->getTitle());
+            }
+        }
+        return $err;
+    }
+    // --------------------------------------------------------------------
+    function postModify()
+    {
+        // don't see restriction frame is not needed
+        $allbut = $this->getRawValue("FLD_ALLBUT");
+        $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
+        
+        if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
+            
+            $this->clearValue("FLD_ALLBUT");
+            $this->modify();
+        }
+    }
+    function hasNoRestriction()
+    {
+        if (!$this->authfam) {
+            $this->getAuthorizedFamilies();
+        }
+        return ($this->norestrict);
+    }
+    /**
+     * return families that can be use in insertion
+     * @param int $classid : restrict for same usefor families
+     */
+    function getAuthorizedFamilies($classid = 0, $verifyCreate = false)
+    {
+        
+        if (!$this->authfam) {
+            
+            $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
+            $tfam = $this->getMultipleRawValues("FLD_FAM");
+            $tsubfam = $this->getMultipleRawValues("FLD_SUBFAM");
+            $allbut = $this->getRawValue("FLD_ALLBUT");
+            
+            if (($allbut != "1") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
+                $this->norestrict = true;
+                return;
+            }
+            
+            $this->norestrict = false;;
+            $tclassdoc = array();
+            if ($allbut != "1") {
+                include_once ("FDL/Lib.Dir.php");
+                $tallfam = GetClassesDoc($this->dbaccess, $this->userid, $classid, "TABLE");
+                
+                foreach ($tallfam as $k => $cdoc) {
+                    $tclassdoc[$cdoc["id"]] = $cdoc;
+                    //	  $tclassdoc += $this->GetChildFam($cdoc["id"]);
+                    
+                }
+                // suppress undesirable families
+                reset($tfamid);
+                while (list($k, $famid) = each($tfamid)) {
+                    
+                    unset($tclassdoc[intval($famid) ]);
+                    if ($tsubfam[$k] != "yes") {
+                        $tnofam = $this->GetChildFam(intval($famid));
+                        foreach ($tnofam as $ka => $va) {
+                            unset($tclassdoc[intval($ka) ]);
                         }
                     }
                 }
-            }
-            return $terr;
-        }
-        /**
-         * delete the folder and its containt
-         * different of {@see Clear()}
-         * all document are put in the trash (zombie mode)
-         * @return string error message, if no error empty string
-         */
-        public function deleteRecursive()
-        {
-            $err = $this->predocdelete(); // test before try recursive deletion
-            if ($err != "") return $err;
-            $coulddelete = true;
-            $terr = $this->deleteItems();
-            $err = "";
-            foreach ($terr as $id => $err1) {
-                if ($err1 != "") {
-                    $coulddelete = false;
-                    $err.= "\n$err1";
+            } else {
+                //add families
+                foreach ($tfamid as $k => $famid) {
+                    $tfdoc = getTDoc($this->dbaccess, $famid);
+                    if ($tfdoc && ((!$verifyCreate) || controlTdoc($tfdoc, 'icreate'))) {
+                        $tclassdoc[intval($famid) ] = array(
+                            "id" => ($tsubfam[$k] == "no") ? (-intval($famid)) : intval($famid) ,
+                            "title" => $tfam[$k]
+                        );
+                    }
+                    if ($tsubfam[$k] != "no") $tclassdoc+= $this->GetChildFam(intval($famid));
                 }
             }
-            if ($coulddelete) $err = $this->delete();
-            return $err;
+            $this->authfam = $tclassdoc;
         }
-        /**
-         * restore all document which primary relation is the folder (recurively)
-         *
-         *
-         * @return int -1 if it is not a static folder
-         */
-        function reviveItems()
-        {
-            $filter[] = "prelid=" . $this->initid;
-            $lpdoc = $this->getContent(true, $filter, "", "ITEM", "only");
-            $terr = array();
-            while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
-                if ($doc->defDoctype == 'D') $terr = array_merge($terr, $doc->reviveItems());
-                $terr[$doc->id] = $doc->undelete();
+        $this->kauthfam = array_keys($this->authfam);
+        return $this->authfam;
+    }
+    /**
+     * return families that can be use in insertion
+     * @param int $classid : restrict for same usefor families
+     */
+    public function isAuthorized($classid)
+    {
+        if (!$this->authfam) {
+            $this->getAuthorizedFamilies();
+        }
+        if ($this->norestrict) return true;
+        if (!$classid) return true;
+        
+        if (isset($this->authfam[$classid])) return true;
+        
+        return false;
+    }
+    /**
+     * return document includes in folder
+     * @param bool $controlview if false all document are returned else only visible for current user  document are return
+     * @param array $filter to add list sql filter for selected document
+     * @param int|string $famid family identifier to restrict search
+     * @param string $qtype type os result TABLE|LIST|ITEM
+     * @param string $trash
+     * @return array array of document array
+     */
+    public function getContent($controlview = true, array $filter = array() , $famid = "", $qtype = "TABLE", $trash = "")
+    {
+        include_once ("FDL/Lib.Dir.php");
+        if ($controlview) $uid = $this->userid;
+        else $uid = 1;
+        $tdoc = internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, $qtype, $famid, false, "title", true, $trash);
+        return $tdoc;
+    }
+    /**
+     * update folder relations
+     */
+    public function updateFldRelations()
+    {
+        return; //inhibit folder relation (too slow for great folder)
+        if ($this->doctype == 'T') return;
+        include_once ("FDL/Class.DocRel.php");
+        $nattr = $this->GetNormalAttributes();
+        $or = new DocRel($this->dbaccess);
+        $or->sinitid = $this->initid;
+        $or->resetRelations("folder");
+        $q = new QueryDb($this->dbaccess, "QueryDir");
+        $tv = $q->Query(0, 0, "TABLE", "select childid from fld where dirid=" . $this->initid . " and qtype='S'");
+        if (is_array($tv)) {
+            $tid = array();
+            foreach ($tv as $tq) {
+                $tid[] = $tq["childid"];
             }
-            return $terr;
+            $or->copyRelations($tid, $this, 'folder');
         }
     }
+    /**
+     * return number of item in the static folder
+     * @param bool $onlyprimary set to true if you wnat only document linked by primary relation
+     * @return int -1 if it is not a static folder
+     */
+    public function count($onlyprimary = false)
+    {
+        if ($onlyprimary) {
+            $tdoc = $this->getPrimaryChild();
+            if ($tdoc) return count($tdoc);
+        } else {
+            $q = new QueryDb($this->dbaccess, "QueryDir");
+            $tv = $q->Query(0, 0, "TABLE", "select childid from fld where dirid=" . $this->initid . " and qtype='S'");
+            if (is_array($tv)) return count($tv);
+        }
+        return -1;
+    }
+    /**
+     * return array of document identificators included in folder
+     * @return array of initial identificators (initid)
+     */
+    public function getContentInitid()
+    {
+        $query = sprintf("select childid from fld where dirid=%d and qtype='S'", $this->initid);
+        $initids = array();
+        $err = simpleQuery($this->dbaccess, $query, $initids, true, false);
+        if ($err == "") return $initids;
+        
+        return array();
+    }
+    /**
+     * get  document which primary relation is this folder
+     *
+     *
+     * @return array of doc  (array document)
+     */
+    public function getPrimaryChild()
+    {
+        $filter[] = "prelid=" . $this->initid;
+        return $this->getContent(true, $filter);
+    }
+    function Complete()
+    {
+        $this->authfam = false;
+        $this->norestrict = false;
+    }
+    /**
+     * delete all document which primary relation is the folder (recurively)
+     * different of {@see Clear()}
+     * all document are put in the trash (zombie mode)
+     * @return array of possible errors. Empty array means no errors
+     */
+    public function deleteItems()
+    {
+        $filter[] = "prelid=" . $this->initid;
+        $lpdoc = $this->getContent(false, $filter, "", "ITEM");
+        
+        $terr = array();
+        while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
+            $coulddelete = true;
+            if ($doc->doctype == 'D') {
+                $terr = array_merge($terr, $doc->deleteItems());
+                foreach ($terr as $id => $err) {
+                    if ($err != "") $coulddelete = false;
+                }
+            }
+            if ($coulddelete) $terr[$doc->id] = $doc->delete();
+        }
+        $this->addHistoryEntry(_("Folder cleared") , HISTO_INFO, "MODCONTAIN");
+        return $terr;
+    }
+    /**
+     * copy (clone) all documents which primary relation is the folder (recurively)
+     * the others documents are just linked
+     * all document are put in $indirid folder id
+     * @param int $indirid the folder where put the copies
+     * @return array of possible errors. Empty array means no errors
+     */
+    public function copyItems($indirid)
+    {
+        $filter = array();
+        $lpdoc = $this->getContent(false, $filter, "", "ITEM");
+        
+        $terr = array();
+        $fld = new_doc($this->dbaccess, $indirid);
+        if ($fld->doctype == 'D') {
+            $err = $fld->control("modify");
+            if ($err == "") {
+                while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
+                    if ($doc->prelid == $this->initid) {
+                        // copy
+                        $copy = $doc->duplicate();
+                        if (is_object($copy)) {
+                            $fld->addFile($copy->initid);
+                            
+                            if ($doc->doctype == 'D') {
+                                $terr = array_merge($terr, $doc->copyItems($copy->id));
+                            }
+                        }
+                    } else {
+                        // link
+                        $fld->addFile($doc->initid);
+                    }
+                }
+            }
+        }
+        return $terr;
+    }
+    /**
+     * delete the folder and its containt
+     * different of {@see Clear()}
+     * all document are put in the trash (zombie mode)
+     * @return string error message, if no error empty string
+     */
+    public function deleteRecursive()
+    {
+        $err = $this->predocdelete(); // test before try recursive deletion
+        if ($err != "") return $err;
+        $coulddelete = true;
+        $terr = $this->deleteItems();
+        $err = "";
+        foreach ($terr as $id => $err1) {
+            if ($err1 != "") {
+                $coulddelete = false;
+                $err.= "\n$err1";
+            }
+        }
+        if ($coulddelete) $err = $this->delete();
+        return $err;
+    }
+    /**
+     * restore all document which primary relation is the folder (recurively)
+     *
+     *
+     * @return int -1 if it is not a static folder
+     */
+    function reviveItems()
+    {
+        $filter[] = "prelid=" . $this->initid;
+        $lpdoc = $this->getContent(true, $filter, "", "ITEM", "only");
+        $terr = array();
+        while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
+            if ($doc->defDoctype == 'D') $terr = array_merge($terr, $doc->reviveItems());
+            $terr[$doc->id] = $doc->undelete();
+        }
+        return $terr;
+    }
+}
 ?>
