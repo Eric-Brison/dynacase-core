@@ -36,7 +36,7 @@ class _HELPPAGE extends Doc
      *
      * @return string
      */
-    public function getSpecTitle()
+    public function getCustomTitle()
     {
         $titles = $this->getHelpByLang();
         $user_lang = $this->getUserLang();

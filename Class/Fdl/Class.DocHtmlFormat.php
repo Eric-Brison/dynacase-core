@@ -899,7 +899,7 @@ class DocHtmlFormat
                 if (trim($vv) == "") $thval[] = $vv;
                 else {
                     $thc = new_doc($this->doc->dbaccess, trim($vv));
-                    if ($thc->isAlive()) $thval[] = $this->doc->getDocAnchor(trim($vv) , $this->target, $this->htmlLink, $thc->getSpecTitle());
+                    if ($thc->isAlive()) $thval[] = $this->doc->getDocAnchor(trim($vv) , $this->target, $this->htmlLink, $thc->getCustomTitle());
                     else $thval[] = "th error $vv";
                 }
             }
@@ -908,7 +908,7 @@ class DocHtmlFormat
             if ($avalue == "") $htmlval = $avalue;
             else {
                 $thc = new_doc($this->doc->dbaccess, $avalue);
-                if ($thc->isAlive()) $htmlval = $this->doc->getDocAnchor(trim($avalue) , $this->target, $this->htmlLink, $thc->getSpecTitle());
+                if ($thc->isAlive()) $htmlval = $this->doc->getDocAnchor(trim($avalue) , $this->target, $this->htmlLink, $thc->getCustomTitle());
                 else $htmlval = "th error $avalue";
             }
         }

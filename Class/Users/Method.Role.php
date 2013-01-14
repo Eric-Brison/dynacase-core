@@ -74,7 +74,7 @@ class _ROLE extends Doc
      */
     public function postStore()
     {
-        r $err = $this->userSynchronize();
+        $err = $this->userSynchronize();
         return $err;
     }
     /**
@@ -95,6 +95,7 @@ class _ROLE extends Doc
                 $sR->fid = $this->initid;
                 $sR->accounttype = 'R';
                 $sR->password_new = uniqid("role");
+                /** @noinspection PhpDeprecationInspection */
                 $sR->isgroup = 'N';
                 $err = $sR->add();
                 if ($err == "") {

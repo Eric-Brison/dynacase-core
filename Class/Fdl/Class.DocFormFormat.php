@@ -669,7 +669,7 @@ class DocFormFormat
                     foreach ($thids as $kth => $vth) {
                         $th = new_doc($this->doc->dbaccess, trim($vth));
                         if ($th->isAlive()) {
-                            $thtitle = $th->getSpecTitle();
+                            $thtitle = $th->getCustomTitle();
                             $top[] = array(
                                 "ltitle" => substr($thtitle, 0, 100) ,
                                 "ldocid" => $vth
@@ -684,7 +684,7 @@ class DocFormFormat
                 $lay = new Layout("THESAURUS/Layout/editinputthconcept.xml");
                 if ($value) {
                     $th = new_doc($this->doc->dbaccess, $value);
-                    $thtitle = $th->getSpecTitle();
+                    $thtitle = $th->getCustomTitle();
                     $lay->set("atitle", $thtitle);
                 } else $lay->set("atitle", false);
             }

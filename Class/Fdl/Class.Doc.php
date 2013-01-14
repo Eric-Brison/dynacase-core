@@ -2668,7 +2668,7 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         if (chop($title1) != "") $this->title = mb_substr(chop(str_replace("\n", " ", $title1)) , 0, 255); // restric to 256 char
-        $this->title = mb_substr(chop(str_replace("\n", " ", $this->getSpecTitle())) , 0, 255);
+        $this->title = mb_substr(chop(str_replace("\n", " ", $this->getCustomTitle())) , 0, 255);
     }
     /**
      * call after construct
@@ -5164,18 +5164,18 @@ create unique index i_docir on doc(initid, revision);";
         return "";
     }
     /**
-       * call before copy document
-       * if return error message duplicate is aborted
-       * @deprecated hook use {@Doc::preDuplicate} instead
-       * @see Doc::preDuplicate
-       * @param Doc $copyfrom
-       * @return string
-       */
-      function preCopy(&$copyfrom)
-      {
-          // to be defined in child class
-          return "";
-      }
+     * call before copy document
+     * if return error message duplicate is aborted
+     * @deprecated hook use {@Doc::preDuplicate} instead
+     * @see Doc::preDuplicate
+     * @param Doc $copyfrom
+     * @return string
+     */
+    function preCopy(&$copyfrom)
+    {
+        // to be defined in child class
+        return "";
+    }
     /**
      * call after copy document
      * @api hook called after duplicate document
@@ -8125,7 +8125,16 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * define custom title used to set title propert when update or create document
      * @api hook called in refresh title
-     * @warning This hook may be replaced by getCustomTitle in the the next version.
+     * this method can be redefined in child family to compose specific title
+     */
+    public function getCustomTitle()
+    {
+        return $this->title;
+    }
+    /**
+     * define custom title used to set title propert when update or create document
+     * @api hook called in refresh title
+     * @deprecated This hook may be replaced by getCustomTitle in the the next version.
      * this method can be redefined in child family to compose specific title
      */
     public function getSpecTitle()
@@ -8217,7 +8226,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $def default value if document not found
      * @param boolean $latest search title in latest revision
      * @return string
-     * @see Doc::getSpecTitle()
+     * @see getCustomTitle::getSpecTitle()
      */
     final public function getTitle($id = "-1", $def = "", $latest = false)
     {
@@ -8226,7 +8235,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($id == "-1") {
             if ($this->locked != - 1 || (!$latest)) {
                 if ($this->isConfidential()) return _("confidential document");
-                return $this->getSpecTitle();
+                return $this->getCustomTitle();
             } else {
                 // search latest
                 $id = $this->getLatestId();

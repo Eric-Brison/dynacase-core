@@ -646,7 +646,7 @@ class _DSEARCH extends DocSearch
                 /**
                  * add parameters in title
                  */
-                function getSpecTitle()
+                function getCustomTitle()
                 {
                     $tkey = $this->getMultipleRawValues("SE_KEYS");
                     $taid = $this->getMultipleRawValues("SE_ATTRIDS");
