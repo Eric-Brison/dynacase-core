@@ -148,7 +148,7 @@ class CVDoc extends Doc
         return $tv;
     }
     
-    function postModify()
+    function postStore()
     {
         
         $ti = $this->getMultipleRawValues("CV_IDVIEW");

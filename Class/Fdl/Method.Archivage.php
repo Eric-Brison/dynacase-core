@@ -141,9 +141,9 @@ class _ARCHIVING extends Dir
         }
         return $err;
     }
-    function postModify()
+    function postStore()
     {
-        $err = parent::postModify();
+        $err = parent::postStore();
         $err.= $this->createProfil();
         return $err;
     }

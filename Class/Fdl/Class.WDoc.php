@@ -1177,7 +1177,7 @@ class WDoc extends Doc
     /**
      * affect action label
      */
-    function postModify()
+    function postStore()
     {
         foreach ($this->stateactivity as $k => $v) {
             $this->setValue($this->_Aid("_ACTIVITYLABEL", $k) , $v);

@@ -81,9 +81,9 @@ class _DSEARCH extends DocSearch
         }
     }
     
-    function postModify()
+    function postStore()
     {
-        $err = parent::postModify();
+        $err = parent::postStore();
         $err.= $this->updateFromXmlFilter();
         $err.= $this->updateXmlFilter();
         if ((!$err) && ($this->isChanged())) $err = $this->modify();

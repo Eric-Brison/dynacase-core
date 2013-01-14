@@ -40,7 +40,7 @@ function duplicate(&$action, $dirid, $docid, $temporary = false)
     if ($err != "") $action->exitError($err);
     //  $copy->SetTitle($copy->title);
     $copy->refresh();
-    $copy->postModify();
+    $copy->postStore();
     $err = $copy->modify();
     if ($err != "") $action->exitError($err);
     

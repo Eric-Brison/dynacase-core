@@ -75,7 +75,7 @@ class _IMAGE extends Doc
         $this->lay->SetBlockData("TABLEIMG", $tableimage);
     }
     
-    function postModify()
+    function postStore()
     {
         $this->SetValue("IMG_TITLE", $this->vault_filename("IMG_FILE"));
     }

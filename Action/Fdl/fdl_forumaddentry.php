@@ -134,7 +134,7 @@ function fdl_forumaddentry(&$action)
     $forum->setValue("forum_d_date", $t_date);
     $err = $forum->Modify();
     if ($err != "") $action->exitError(sprintf(_("cannot modify forum %s") , $forum->id));;
-    $err = $forum->postModify();
+    $err = $forum->postStore();
     if ($err != "") $action->exitError(sprintf(_("cannot modify forum %s") , $forum->id));;
     //   print_r2($forum);
     redirect($action, "FDL", "IMPCARD&sole=Y&zone=FDL:FORUM_VIEW:S&id=" . $forum->id . "&start=" . $start);

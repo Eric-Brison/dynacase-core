@@ -950,8 +950,6 @@ create unique index i_docir on doc(initid, revision);";
             $this->revdate = $date['sec'];
             $this->version = $this->getVersion();
             $this->lmodify = 'Y';
-            //	$this->postModify(); // in modcard function
-            
         }
         return '';
     }
@@ -1240,7 +1238,7 @@ create unique index i_docir on doc(initid, revision);";
      * save document if attribute are change
      * not be use when modify properties
      * only use with use of setValue.
-     * @param stdClass $info refresh and postModify messages
+     * @param stdClass $info refresh and postStore messages
      * @param boolean $skipConstraint set to true to not test constraints
      * @deprecated use ::store() instead
      * @return string error message
@@ -1256,7 +1254,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         if ($err == '') {
             $info->refresh = $this->refresh();
-            $info->postModify = $this->postModify();
+            $info->postModify = $this->postStore();
             if ($this->hasChanged) {
                 //in case of change in postModify
                 $err = $this->modify();
@@ -1269,7 +1267,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * record new document or update
      * @api record new document or update it in database
-     * @param stdClass $info refresh and postModify messages
+     * @param storeInfo $info refresh and postStore messages
      * @param boolean $skipConstraint set to true to not test constraints
      * @return string error message
      */
@@ -1277,10 +1275,15 @@ create unique index i_docir on doc(initid, revision);";
     {
         $err = '';
         $constraint = '';
-        $info = new stdClass();
+        $info = new storeInfo();
         
         $err = $this->preStore();
-        if ($err) return $err;
+        if ($err) {
+            $info->preStore = $err;
+            $info->error = $err;
+            $info->errorCode = storeInfo::PRESTORE_ERROR;
+            return $err;
+        }
         if (!$skipConstraint) {
             $err = $this->verifyAllConstraints(false, $constraint);
         }
@@ -1292,13 +1295,22 @@ create unique index i_docir on doc(initid, revision);";
             }
             if ($err == '') {
                 $info->refresh = $this->refresh();
-                $info->postModify = $this->postModify();
+                $info->postStore = $this->postStore();
+                /** @noinspection PhpDeprecationInspection
+                 * compatibility until postModify exists
+                 */
+                $info->postModify = $info->postStore;
                 if ($this->hasChanged) {
-                    //in case of change in postModify
+                    //in case of change in postStore
                     $err = $this->modify();
+                    if ($err) $info->errorCode=storeInfo::UPDATE_ERROR;
                 }
                 if ($err == "" && (!$create)) $this->addHistoryEntry(_("save document") , HISTO_INFO, "MODIFY");
+            } else {
+                $info->errorCode = storeInfo::CREATE_ERROR;
             }
+        } else {
+            $info->errorCode = storeInfo::CONSTRAINT_ERROR;
         }
         $info->constraint = $constraint;
         $info->error = $err;
@@ -2668,11 +2680,20 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * no in postUpdate method :: call this only if real change (values)
-     * @api hook called in ::store()
+     * @deprecated hook use {@link Doc::postStore} instead
      * @warning This hook may be replaced by postStore in the the next version.
      * @return string error message
      */
     function postModify()
+    {
+        return "";
+    }
+    /**
+     * no in postUpdate method :: call this only if real change (values)
+     * @api hook called in ::store()
+     * @return string error message
+     */
+    function postStore()
     {
         // to be defined in child class
         return "";
@@ -4004,7 +4025,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return the previous value for a attibute set before Doc::SetValue
-     * can be used in Doc::postModify generaly
+     * can be used in Doc::postStore generaly
      * @deprecated use Doc::getOldRawvalue
      * @see Doc::getOldRawValue
      * @param string $attrid attribute identifier

@@ -685,7 +685,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                                 
                                 $bpath = $bpath;
                                 $doc->saveFile($afile->id, $options["stream"], $bpath, $k);
-                                $err = $doc->postModify();
+                                $err = $doc->postStore();
                                 $err = $doc->Modify();
                                 
                                 break;
@@ -718,7 +718,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                         $ndoc->saveFile($fa->id, $options["stream"], $bpath);
                         //		$ndoc->setTitle($bpath);
                         $err = $ndoc->Add();
-                        $err = $ndoc->postModify();
+                        $err = $ndoc->postStore();
                         $err = $ndoc->Modify();
                         error_log("PUT NEW FILE:" . $fa->id . "-" . $ndoc->id);
                         if ($err == "") {
@@ -960,7 +960,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                                     $vf = newFreeVaultFile($this->db_freedom);
                                     $vf->Rename($afile["vid"], $bdest);
                                     $src->addHistoryEntry(sprintf(_("Rename file as %s") , $bdest));
-                                    $src->postModify();
+                                    $src->postStore();
                                     $err = $src->modify();
                                 }
                             }
@@ -1059,7 +1059,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                     
                     $vf->Rename($vid, $bdest);
                     $copy->addHistoryEntry(sprintf(_("Rename file as %s") , $bdest));
-                    $copy->postModify();
+                    $copy->postStore();
                     $err = $copy->modify();
                 }
                 

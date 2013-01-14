@@ -512,7 +512,7 @@ class importSingleDocument
             if (!$this->analyze) {
                 if ($this->doc->isAffected()) {
                     $this->tcr["specmsg"] = $this->doc->Refresh(); // compute read attribute
-                    $msg.= $this->doc->postModify(); // compute read attribute
+                    $msg.= $this->doc->postStore(); // compute read attribute
                     $err = $this->doc->modify();
                     if ($err == "-") $err = ""; // not really an error add addfile must be tested after
                     if ($err == "") {

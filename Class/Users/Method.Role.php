@@ -71,12 +71,10 @@ class _ROLE extends Doc
      * synchro with User table
      *
      * @return string error message, if no error empty string
-     * @see Doc::PostModify()
      */
-    public function postModify()
+    public function postStore()
     {
-        
-        $err = $this->userSynchronize();
+        r $err = $this->userSynchronize();
         return $err;
     }
     /**

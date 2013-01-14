@@ -155,7 +155,7 @@ class _IGROUP extends _GROUP
             }
         }
     }
-    public function postModify()
+    public function postStore()
     {
         return $this->synchronizeSystemGroup();
     }

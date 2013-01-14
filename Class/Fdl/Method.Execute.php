@@ -84,7 +84,7 @@ class _EXEC extends Doc
         return MENU_INVISIBLE;
     }
     
-    function postModify()
+    function postStore()
     {
         $this->setValue("exec_nextdate", $this->getNextExecDate());
     }

@@ -260,7 +260,7 @@ class _IUSER extends Doc implements IMailRecipient
     /**
      * update/synchro system user
      */
-    public function postModify()
+    public function postStore()
     {
         $err = $this->synchronizeSystemUser();
         if (!$err) $this->refreshRoles();
