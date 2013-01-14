@@ -38,9 +38,9 @@ class _SSEARCH extends DocSearch
     
     function getDocList($start = 0, $slice = "ALL", $qtype = "TABLE", $userid = "")
     {
-        $phpfile = $this->getValue("se_phpfile");
-        $phpfunc = $this->getValue("se_phpfunc");
-        $phparg = $this->getValue("se_phparg");
+        $phpfile = $this->getRawValue("se_phpfile");
+        $phpfunc = $this->getRawValue("se_phpfunc");
+        $phparg = $this->getRawValue("se_phparg");
         if (!include_once ("EXTERNALS/$phpfile")) {
             global $action;
             $action->AddWarningMsg(sprintf(_("php file %s needed for request not found") , "EXTERNALS/$phpfunc"));
@@ -61,8 +61,8 @@ class _SSEARCH extends DocSearch
                         $aid = substr($v, 1, -1);
                         if ($aid == "THIS") $moreargs[$k] = & $this;
                         else {
-                            $val = $this->getValue($aid);
-                            if (!$val) $val = $this->getProperty($aid);
+                            $val = $this->getRawValue($aid);
+                            if (!$val) $val = $this->getPropertyValue($aid);
                             $moreargs[$k] = $val;
                         }
                     }

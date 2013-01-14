@@ -46,7 +46,7 @@ class TestRole extends TestCaseDcpCommonFamily
              * @var \_IGROUP $dg
              */
             $dg = new_doc(self::$dbaccess, $aGroupName);
-            $err = $dg->addFile($du->id);
+            $err = $dg->insertDocument($du->id);
             $this->assertEmpty($err, "cannot add user to $aGroupName");
         }
         $u->setLoginName("tst_jd1");

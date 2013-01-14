@@ -91,7 +91,7 @@ function insertfile(&$action)
                 if ($docid) {
                     $doc = new_doc($dbaccess, $docid);
                     if ($doc->isAlive()) {
-                        $doc->addComment(sprintf(_("convert file %s as %s failed") , $infoin->name, $infoout->teng_lname) , HISTO_ERROR);
+                        $doc->addHistoryEntry(sprintf(_("convert file %s as %s failed") , $infoin->name, $infoout->teng_lname) , HISTO_ERROR);
                     }
                 }
             }

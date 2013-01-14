@@ -13,11 +13,11 @@ include_once ('WHAT/Class.Param.php');
 function modapplicationparameter(Action & $action)
 {
     $usage = new ActionUsage($action);
-    $appid = $usage->addNeeded("appid", "application id");
-    $name = $usage->addNeeded("name", "parameter name");
-    $type = $usage->addNeeded("type", "type of parameter");
-    $value = $usage->addOption("value", "value for parameter");
-    $usage->strict();
+    $appid = $usage->addNeededParameter("appid", "application id");
+    $name = $usage->addNeededParameter("name", "parameter name");
+    $type = $usage->addNeededParameter("type", "type of parameter");
+    $value = $usage->addOptionnalParameter("value", "value for parameter");
+    $usage->setStrictMode();
     $usage->verify();
     
     header('Content-type: text/xml; charset=utf-8');

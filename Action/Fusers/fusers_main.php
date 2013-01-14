@@ -22,7 +22,7 @@ include_once ("FDL/Lib.Dir.php");
  * @global viewone Http var : (Y|N) set Y if want display detail doc if only one found
  * @global createsubfam Http var : (Y|N) set N if no want view possibility to create subfamily
  */
-function fusers_main(Action &$action)
+function fusers_main(Action & $action)
 {
     global $_POST;
     
@@ -33,8 +33,7 @@ function fusers_main(Action &$action)
     
     $dbaccess = $action->getParam("FREEDOM_DB");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
-    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDC/Layout/setparamu.js");
-
+    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDC/Layout/setparamu.js");
     
     $pstart = GetHttpVars("sp", 0);
     $action->lay->set("choosecolumn", ($action->Haspermission("USERCARD_MANAGER", "USERCARD") == 1 ? true : false));
@@ -196,13 +195,13 @@ function fusers_main(Action &$action)
     
     $psearch = $pstart * $lpage;
     $fsearch = $psearch + $lpage + 1;
-    $cl = $rq = getChildDoc($dbaccess, $dirid, $psearch, $fsearch, $filter, $action->user->id, "TABLE", $sfam, false, "title");
+    $cl = $rq = internalGetDocCollection($dbaccess, $dirid, $psearch, $fsearch, $filter, $action->user->id, "TABLE", $sfam, false, "title");
     
     $dline = array();
     $il = 0;
     
     $action->lay->set("idone", ($viewone && (count($cl) == 1)) ? $cl[0]["id"] : false);
-    $pzone='';
+    $pzone = '';
     foreach ($cl as $k => $v) {
         if ($il >= $lpage) continue;
         $dcol = array();

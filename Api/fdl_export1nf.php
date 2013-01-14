@@ -28,18 +28,18 @@ function usage()
 }
 
 $usage = new ApiUsage();
-$usage->setText("Export 1nf");
+$usage->setDefinitionText("Export 1nf");
 /**
  * Args
  */
 $parms = array(
-    'config' => $usage->addNeeded("config", "configuration file") ,
-    'outputsql' => $usage->addOption("outputsql", "File to output sql", null, "") ,
-    'outputpgservice' => $usage->addOption("outputpgservice", "Pgservice to output", null, "") ,
-    'tmppgservice' => $usage->addOption("tmppgservice", "Tmp pgservice name", null, 'tmp_1nf') ,
-    'tmpschemaname' => $usage->addOption('tmpschemaname', "Tmp shema name", null, 'tmp_1nf') ,
-    'tmpemptydb' => $usage->addOption("tmpemptydb", "Tmp empty database", null, "yes") ,
-    'sqllog' => $usage->addOption("sqllog", "File to log", null, "") ,
+    'config' => $usage->addNeededParameter("config", "configuration file") ,
+    'outputsql' => $usage->addOptionnalParameter("outputsql", "File to output sql", null, "") ,
+    'outputpgservice' => $usage->addOptionnalParameter("outputpgservice", "Pgservice to output", null, "") ,
+    'tmppgservice' => $usage->addOptionnalParameter("tmppgservice", "Tmp pgservice name", null, 'tmp_1nf') ,
+    'tmpschemaname' => $usage->addOptionnalParameter('tmpschemaname', "Tmp shema name", null, 'tmp_1nf') ,
+    'tmpemptydb' => $usage->addOptionnalParameter("tmpemptydb", "Tmp empty database", null, "yes") ,
+    'sqllog' => $usage->addOptionnalParameter("sqllog", "File to log", null, "") ,
 );
 
 $usage->verify();

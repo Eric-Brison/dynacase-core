@@ -25,7 +25,7 @@
  $ua->useCollection($dl);
  $comment = "coucoux";
  $ua->addHistoryComment($comment);
- $ua->addRevision('REvX');
+ $ua->revise('REvX');
  $statusFile= $ua->bgSetValue($attrid, $newValue);
  $sua= new UpdateAttributeStatus($statusFile);
  while (! $sua->isFinished()) {

@@ -114,7 +114,7 @@ function freedom_modaccess(Action & $action)
             if (count($tadd) > 0) $tc[] = sprintf(_("Add acl %s for %s") , implode(", ", $tadd) , $tuname[$uid]);
             if (count($tdel) > 0) $tc[] = sprintf(_("Delete acl %s for %s") , implode(", ", $tdel) , $tuname[$uid]);
         }
-        if (count($tc) > 0) $doc->addComment(sprintf(_("Change control :\n %s") , implode("\n", $tc)));
+        if (count($tc) > 0) $doc->addHistoryEntry(sprintf(_("Change control :\n %s") , implode("\n", $tc)));
     }
     redirect($action, "FREEDOM", sprintf("FREEDOM_GACCESS&id=%s&allgreen=%s&group=%s", $docid, $action->getArgument("allgreen", "N") , $action->getArgument("group", "N")));
 }

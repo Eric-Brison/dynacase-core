@@ -72,8 +72,8 @@ function editmail(Action & $action)
     $action->lay->Set("binarymode", ($zo == "B"));
     if ($zo == "B") {
         $engine = $doc->getZoneTransform($zone);
-        if ($engine == "pdf") $action->lay->Set("iconmime", $action->getImageUrl("mime-pdf.png"));
-        else $action->lay->Set("iconmime", $action->getImageUrl("mime-document2.png"));
+        if ($engine == "pdf") $action->lay->Set("iconmime", $action->parent->getImageLink("mime-pdf.png"));
+        else $action->lay->Set("iconmime", $action->parent->getImageLink("mime-document2.png"));
     }
     
     $action->lay->Set("from", $from);

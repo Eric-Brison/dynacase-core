@@ -93,7 +93,7 @@ class TestSplitXmlDocument extends TestCaseDcp
         
         $this->rm_Rf($testDir);
     }
-    private function createWorkDir()
+    private static function createWorkDir()
     {
         $tmpdir = getTmpDir();
         if (!is_dir($tmpdir)) {

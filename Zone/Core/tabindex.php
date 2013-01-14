@@ -49,7 +49,7 @@ function tabindex(Action & $action)
                 $toc[$itoc]["app"] = $actcalled->parent->name;
                 $toc[$itoc]["action"] = $v->name;
                 $limg = ($v->name == $actcalled->name ? "tabselected.png" : "tab.png");
-                $toc[$itoc]["img"] = $action->parent->GetImageUrl($limg);;
+                $toc[$itoc]["img"] = $action->parent->getImageLink($limg);;
                 if (substr($v->short_name, 0, 1) == '&') {
                     $sn = substr($v->short_name, 1, strlen($v->short_name));
                     $toc[$itoc]["label"] = $actcalled->text($sn);

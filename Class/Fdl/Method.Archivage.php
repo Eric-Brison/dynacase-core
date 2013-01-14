@@ -42,7 +42,7 @@ class _ARCHIVING extends Dir
             $s->search();
             
             setMaxExecutionTimeTo(3600);
-            while ($doc = $s->nextDoc()) {
+            while ($doc = $s->getNextDoc()) {
                 $doc->disableEditControl();
                 $err.= $doc->archive($this);
                 $doc->enableEditControl();
@@ -51,7 +51,7 @@ class _ARCHIVING extends Dir
             $err = $this->setValue("arc_status", "C");
             $err = $this->setValue("arc_clotdate", $this->getDate());
             if (!$err) $err = $this->modify();
-            $this->addComment(sprintf(_("Close archive")));
+            $this->addHistoryEntry(sprintf(_("Close archive")));
         }
         return $err;
     }
@@ -65,7 +65,7 @@ class _ARCHIVING extends Dir
         $err = $this->canEdit();
         if (!$err) {
             $err = $this->setValue("arc_status", "O");
-            $err = $this->deleteValue("arc_clotdate");
+            $err = $this->clearValue("arc_clotdate");
             if (!$err) $err = $this->modify();
             if (!$err) {
                 include_once ("FDL/Class.SearchDoc.php");
@@ -77,13 +77,13 @@ class _ARCHIVING extends Dir
                 $s->search();
                 
                 setMaxExecutionTimeTo(3600);
-                while ($doc = $s->nextDoc()) {
+                while ($doc = $s->getNextDoc()) {
                     $doc->disableEditControl();
                     $err.= $doc->unArchive($this);
                     $doc->enableEditControl();
                 }
             }
-            $this->addComment(sprintf(_("Reopen archive")));
+            $this->addHistoryEntry(sprintf(_("Reopen archive")));
         }
         return $err;
     }
@@ -110,11 +110,11 @@ class _ARCHIVING extends Dir
                 
                 setMaxExecutionTimeTo(3600);
                 $t = "<ol>";
-                while ($doc = $s->nextDoc()) {
+                while ($doc = $s->getNextDoc()) {
                     if ($doc->doctype != 'C') {
                         $t.= sprintf('<li><a href="?app=FDL&action=VIEWDESTROYDOC&id=%d">%s</a></li> ', $doc->id, $doc->title);
                         $doc->disableEditControl();
-                        $doc->addComment(sprintf(_("destroyed by archive purge from %s") , $this->getTitle()));
+                        $doc->addHistoryEntry(sprintf(_("destroyed by archive purge from %s") , $this->getTitle()));
                         $err.= $doc->delete(true, false);
                         $doc->enableEditControl();
                     }
@@ -123,7 +123,7 @@ class _ARCHIVING extends Dir
                 $err = $this->setValue("arc_purgemanif", $t);
                 if (!$err) $err = $this->modify();
                 $this->clear();
-                $this->addComment(sprintf(_("Purge archive")));
+                $this->addHistoryEntry(sprintf(_("Purge archive")));
             }
         }
         return $err;
@@ -150,13 +150,13 @@ class _ARCHIVING extends Dir
     
     function preInsertDoc()
     {
-        if ($this->getValue("arc_status") != "O") {
+        if ($this->getRawValue("arc_status") != "O") {
             return _("archieve status must be open to modify content");
         }
     }
     function preUnlinkDoc()
     {
-        if ($this->getValue("arc_status") != "O") {
+        if ($this->getRawValue("arc_status") != "O") {
             return _("archieve status must be open to modify content");
         }
     }
@@ -166,7 +166,7 @@ class _ARCHIVING extends Dir
      */
     public function getSpecificFilters()
     {
-        if ($this->getValue("arc_status") == "C") {
+        if ($this->getRawValue("arc_status") == "C") {
             return array(
                 sprintf("archiveid=%d", $this->id)
             );
@@ -178,7 +178,7 @@ class _ARCHIVING extends Dir
      */
     function createProfil()
     {
-        $prfid = $this->getValue("arc_profil");
+        $prfid = $this->getRawValue("arc_profil");
         if ($prfid) {
             $prf = new_doc($this->dbaccess, $prfid);
             if (!$prf->isAlive()) $prfid = 0; // redo the profil

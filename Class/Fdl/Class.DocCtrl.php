@@ -45,7 +45,7 @@ define("POS_WF", 12); // begin of workflow privilege definition
  * Control Access Document Class
  * @package FDL
  * @class DocCtrl
- * @method getValue
+ * @method getRawValue
  * @method getAttribute
  * @method canEdit
  * @method control
@@ -176,9 +176,9 @@ class DocCtrl extends DocLDAP
             $app = $action->parent;
             $this->userid = $app->user->id;
         }
-
+        
         if (!isset($this->attributes->attr)) {
-            if (!isset($this->attributes)) $this->attributes=new stdClass();
+            if (!isset($this->attributes)) $this->attributes = new stdClass();
             $this->attributes->attr = array();
         }
         parent::__construct($dbaccess, $id, $res, $dbid);
@@ -269,7 +269,7 @@ class DocCtrl extends DocLDAP
         if (($profid > 0) && ($profid != $this->id)) {
             // make sure that the profil is activated
             $pdoc = new_Doc($this->dbaccess, $profid);
-            if ($pdoc->getValue("DPDOC_FAMID") > 0) {
+            if ($pdoc->getRawValue("DPDOC_FAMID") > 0) {
                 // dynamic profil
                 $this->dprofid = $profid;
                 $this->computeDProfil($this->dprofid, $fromdocidvalues);
@@ -349,11 +349,11 @@ class DocCtrl extends DocLDAP
                 /**
                  * @var Doc $fromdocidvalues
                  */
-                $duid = $fromdocidvalues->getValue($aid);
-                if ($duid == "") $duid = $fromdocidvalues->getParamValue($aid);
+                $duid = $fromdocidvalues->getRawValue($aid);
+                if ($duid == "") $duid = $fromdocidvalues->getFamilyParameterValue($aid);
                 if ($duid != "") {
                     $duid = str_replace("<BR>", "\n", $duid); // docid multiple
-                    $tduid = Doc::_val2array($duid);
+                    $tduid = Doc::rawValueToArray($duid);
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
                             $docu = getTDoc($fromdocidvalues->dbaccess, intval($duid)); // not for idoc list for the moment
@@ -398,7 +398,7 @@ class DocCtrl extends DocLDAP
         
         $tVgroup2attrid = array();
         $pdoc = new_Doc($this->dbaccess, $dprofid);
-        $pfamid = $pdoc->getValue("DPDOC_FAMID");
+        $pfamid = $pdoc->getRawValue("DPDOC_FAMID");
         if ($pfamid > 0) {
             if ($this->profid != $this->id) {
                 $this->profid = $this->id; //private profil
@@ -445,11 +445,11 @@ class DocCtrl extends DocLDAP
                     /**
                      * @var Doc $fromdocidvalues
                      */
-                    $duid = $fromdocidvalues->getValue($aid);
-                    if ($duid == "") $duid = $fromdocidvalues->getParamValue($aid);
+                    $duid = $fromdocidvalues->getRawValue($aid);
+                    if ($duid == "") $duid = $fromdocidvalues->getFamilyParameterValue($aid);
                     if ($duid != "") {
                         $duid = str_replace("<BR>", "\n", $duid); // docid multiple
-                        $tduid = Doc::_val2array($duid);
+                        $tduid = Doc::rawValueToArray($duid);
                         foreach ($tduid as $duid) {
                             if ($duid > 0) {
                                 $docu = getTDoc($fromdocidvalues->dbaccess, intval($duid)); // not for idoc list for the moment
@@ -568,7 +568,7 @@ class DocCtrl extends DocLDAP
             $uiid = getIdFromName($this->dbaccess, $uid);
             if ($uiid) {
                 $udoc = new_Doc($this->dbaccess, $uiid);
-                if ($udoc->isAlive()) $uid = $udoc->getValue("us_whatid");
+                if ($udoc->isAlive()) $uid = $udoc->getRawValue("us_whatid");
             }
         }
         
@@ -577,7 +577,7 @@ class DocCtrl extends DocLDAP
             $vg = new VGroup($this->dbaccess, strtolower($uid));
             if (!$vg->isAffected()) {
                 // try to add
-                $ddoc = new_Doc($this->dbaccess, $this->getValue("dpdoc_famid"));
+                $ddoc = new_Doc($this->dbaccess, $this->getRawValue("dpdoc_famid"));
                 $oa = $ddoc->getAttribute($uid);
                 if (($oa->type == "docid") || ($oa->type == "account")) {
                     $vg->id = $oa->id;
@@ -763,7 +763,7 @@ class DocCtrl extends DocLDAP
         if (isset($this->dacls[$aclname])) {
             $pos = $this->dacls[$aclname]["pos"];
             
-            if ($this->getValue("DPDOC_FAMID") > 0) {
+            if ($this->getRawValue("DPDOC_FAMID") > 0) {
                 if ($this->doc) {
                     if (!isset($this->pdoc)) {
                         $pdoc = createTmpDoc($this->dbaccess, $this->fromid);
@@ -813,25 +813,25 @@ class DocCtrl extends DocLDAP
     {
         if ($this->isRealProfile()) {
             include_once ("FDL/Class.SearchDoc.php");
-            if ($this->getValue("dpdoc_famid") > 0) {
+            if ($this->getRawValue("dpdoc_famid") > 0) {
                 // dynamic profil
                 // recompute associated documents
                 setMaxExecutionTimeTo(0);
                 $s = new SearchDoc($this->dbaccess);
                 $s->addFilter("dprofid = %d", $this->id);
                 $s->setObjectReturn();
-                $s->noViewControl();
+                $s->overrideViewControl();
                 $s->search();
-                while ($doc = $s->nextDoc()) {
+                while ($doc = $s->getNextDoc()) {
                     $doc->computeDProfil();
                 }
                 // in case of change profil status (static -> dynamic)
                 $s = new SearchDoc($this->dbaccess);
                 $s->addFilter("profid = %d", $this->id);
                 $s->setObjectReturn();
-                $s->noViewControl();
+                $s->overrideViewControl();
                 $s->search();
-                while ($doc = $s->nextDoc()) {
+                while ($doc = $s->getNextDoc()) {
                     $doc->setProfil($this->id);
                 }
             } else {
@@ -840,9 +840,9 @@ class DocCtrl extends DocLDAP
                 $s = new SearchDoc($this->dbaccess);
                 $s->addFilter("dprofid = %d", $this->id);
                 $s->setObjectReturn();
-                $s->noViewControl();
+                $s->overrideViewControl();
                 $s->search();
-                while ($doc = $s->nextDoc()) {
+                while ($doc = $s->getNextDoc()) {
                     $doc->setProfil($this->id);
                 }
             }

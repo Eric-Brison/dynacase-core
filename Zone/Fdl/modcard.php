@@ -60,7 +60,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
         $doc = createDoc($dbaccess, $classid);
         if (!$doc) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , $classid));
         
-        $fdoc = $doc->getFamDoc();
+        $fdoc = $doc->getFamilyDocument();
         if ($fdoc->control('icreate') != "") $action->exitError(sprintf(_("no privilege to create interactivaly this kind (%s) of document") , $fdoc->title));
         $doc->owner = $action->user->id;
         $doc->locked = 0;
@@ -158,16 +158,16 @@ function modcard(Action & $action, &$ndocid, &$info = array())
             $ndocid = $doc->id;
             if (!$quicksave) { // else quick save
                 $doc->refresh();
-
+                
                 if (needRefreshRn($doc)) $doc->refreshRn(); // hasNewFiles set by insertFile below
-                $msg = $doc->PostModify();
+                $msg = $doc->postModify();
                 if ($msg) $action->addWarningMsg($msg);
                 // add trace to know when and who modify the document
                 if ($docid == 0) {
                     //$doc->Addcomment(_("creation"));
                     
                 } else {
-                    $olds = $doc->getOldValues();
+                    $olds = $doc->getOldRawValues();
                     if (is_array($olds)) {
                         $keys = array();
                         foreach ($olds as $ka => $va) {
@@ -175,9 +175,9 @@ function modcard(Action & $action, &$ndocid, &$info = array())
                             $keys[] = $oa->getLabel();
                         }
                         $skeys = implode(", ", $keys);
-                        $doc->Addcomment($commentSubstitute . sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
+                        $doc->addHistoryEntry($commentSubstitute . sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
                     } else {
-                        $doc->Addcomment($commentSubstitute . _("change") , HISTO_INFO, "MODIFY");
+                        $doc->addHistoryEntry($commentSubstitute . _("change") , HISTO_INFO, "MODIFY");
                     }
                 }
                 if ($err == "") {
@@ -210,12 +210,12 @@ function modcard(Action & $action, &$ndocid, &$info = array())
                         }
                     } else {
                         // test if auto revision
-                        $fdoc = $doc->getFamDoc();
+                        $fdoc = $doc->getFamilyDocument();
                         
                         if ($fdoc->schar == "R") {
-                            $doc->AddRevision(sprintf("%s : %s", _("auto revision") , $comment));
+                            $doc->revise(sprintf("%s : %s", _("auto revision") , $comment));
                         } else {
-                            if ($comment != "") $doc->AddComment($commentSubstitute . $comment);
+                            if ($comment != "") $doc->addHistoryEntry($commentSubstitute . $comment);
                         }
                     }
                     $ndocid = $doc->id;
@@ -267,7 +267,7 @@ function setPostVars(Doc & $doc, &$info = array())
                 if ((count($v) == 0)) $value = " "; // delete column
                 else $value = $v;
                 //$value = array_values($value);
-                if (count($v) == 1 && $v[0] === '' && (count($doc->getTValue($attrid)) == 0)) {
+                if (count($v) == 1 && $v[0] === '' && (count($doc->getMultipleRawValues($attrid)) == 0)) {
                     $value = '';
                     $oa = $doc->getAttribute($attrid);
                     if ($oa && $oa->fieldSet && $oa->fieldSet->type == "array") {
@@ -327,7 +327,7 @@ function setPostVars(Doc & $doc, &$info = array())
     $ta = $doc->getNormalAttributes();
     foreach ($ta as $k => $v) {
         if ($v->type == "array") {
-            $tv = $doc->getAvalues($v->id);
+            $tv = $doc->getArrayRawValues($v->id);
             if (count($tv) == 1) {
                 $fv = current($tv);
                 $vempty = true;
@@ -376,7 +376,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
                             $tuserfiles[$k]["name"] = $orinames[$k];
                         }
                     }
-                    if ($oa) $tuserfiles[$k]["oldvalue"] = $doc->getTValue($oa->id, "", $k);
+                    if ($oa) $tuserfiles[$k]["oldvalue"] = $doc->getMultipleRawValues($oa->id, "", $k);
                 }
             }
         }
@@ -385,14 +385,14 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
             $postfiles["realname"] = $postfiles["name"];
             $postfiles["name"] = $orinames;
         }
-        if ($oa) $postfiles["oldvalue"] = $doc->getValue($oa->id);
+        if ($oa) $postfiles["oldvalue"] = $doc->getRawValue($oa->id);
         $tuserfiles[] = $postfiles;
     }
     
     $rt = $rtold = array(); // array of file to be returned
-    if ($doc) $rtold = $doc->_val2array($doc->getOldValue(substr($attrid, 4))); // special in case of file modification by DAV in revised document
+    if ($doc) $rtold = $doc->rawValueToArray($doc->getOldRawValue(substr($attrid, 4))); // special in case of file modification by DAV in revised document
     $oa = $doc->getAttribute(substr($attrid, 4));
-    $rt = $doc->getTvalue($attrid); // in case of modified only a part of array files
+    $rt = $doc->getMultipleRawValues($attrid); // in case of modified only a part of array files
     unset($tuserfiles['__1x_']);
     
     foreach ($tuserfiles as $k => $userfile) {
@@ -467,7 +467,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
                 
                 if ($err != "") {
                     AddWarningMsg($err);
-                    $doc->AddComment(sprintf(_("file %s : %s") , $userfile['name'], $err) , HISTO_WARNING);
+                    $doc->addHistoryEntry(sprintf(_("file %s : %s") , $userfile['name'], $err) , HISTO_WARNING);
                 } else {
                     if ($oa && $oa->getOption('preventfilechange') == "yes") {
                         if (preg_match(PREGEXPFILE, $userfile["oldvalue"], $reg)) {
@@ -480,7 +480,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
                                 $realprefix = substr($userfile["realname"], 0, strrpos($userfile["realname"], '}', strrpos($expectname, '.') - 2) + 1);
                                 
                                 if (($ext != $realext) || ($prefix != $realprefix)) {
-                                    $doc->addComment(sprintf(_("%s : file %s has been replaced by new file %s") , $oa->getLabel() , $reg[3], $userfile["name"]) , HISTO_WARNING);
+                                    $doc->addHistoryEntry(sprintf(_("%s : file %s has been replaced by new file %s") , $oa->getLabel() , $reg[3], $userfile["name"]) , HISTO_WARNING);
                                 }
                             }
                         }
@@ -504,7 +504,7 @@ function needRefreshRn(Doc & $doc)
     $fa = $doc->GetFileAttributes();
     foreach ($fa as $aid => $oa) {
         $rn = $oa->getOption("rn");
-        $ov = $doc->getOldValue($aid);
+        $ov = $doc->getOldRawValue($aid);
         if ($rn && $ov) return true;
     }
     
@@ -585,7 +585,7 @@ function specialmodcard(Action & $action, $usefor)
             foreach ($tmod as $k => $v) {
                 $s.= "$k:$v, ";
             }
-            $cdoc->AddComment($s);
+            $cdoc->addHistoryEntry($s);
         }
     }
     return $err;

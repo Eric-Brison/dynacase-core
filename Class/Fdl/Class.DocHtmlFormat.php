@@ -343,7 +343,7 @@ class DocHtmlFormat
                 $htmlval = $action->GetParam("CORE_BASEURL") . "app=FDL" . "&action=EXPORTFILE$opt&cache=no&vid=$vid&docid=" . $this->doc->id . "&attrid=" . $this->oattr->id . "&index=$idx"; // upload name
                 
             } else {
-                $htmlval = $action->GetImageUrl($avalue);
+                $htmlval = $action->parent->getImageLink($avalue);
             }
         }
         return $htmlval;
@@ -593,7 +593,7 @@ class DocHtmlFormat
         
         global $action;
         $htmlval = '';
-        if (count($this->doc->getAValues($this->oattr->id)) == 0 && $this->oattr->getOption('showempty')) {
+        if (count($this->doc->getArrayRawValues($this->oattr->id)) == 0 && $this->oattr->getOption('showempty')) {
             $htmlval = $this->oattr->getOption('showempty');
             return $htmlval;
         }
@@ -677,7 +677,7 @@ class DocHtmlFormat
             $nbitem = 0;
             $tval = array();
             foreach ($ta as $k => $v) {
-                $tval[$k] = $this->doc->getTValue($k);
+                $tval[$k] = $this->doc->getMultipleRawValues($k);
                 $nbitem = max($nbitem, count($tval[$k]));
                 $lay->set("L_" . strtoupper($v->id) , ucfirst($v->getLabel()));
             }
@@ -729,9 +729,9 @@ class DocHtmlFormat
                     "astyle" => $v->getOption("cellheadstyle") ,
                     "cwidth" => $v->getOption("cwidth", "auto")
                 );
-                $tval[$k] = $this->doc->getTValue($k);
+                $tval[$k] = $this->doc->getMultipleRawValues($k);
                 $nbitem = max($nbitem, count($tval[$k]));
-                if ($emptyarray && ($this->doc->getValue($k) != "")) $emptyarray = false;
+                if ($emptyarray && ($this->doc->getRawValue($k) != "")) $emptyarray = false;
             }
             if (!$emptyarray) {
                 if ($this->oattr->getOption("vlabel") == "up") {
@@ -802,8 +802,8 @@ class DocHtmlFormat
     {
         $htmlval = "";
         if ($avalue != "") {
-            if ($kvalue > - 1) $idocid = $this->doc->getTValue($this->cFormat, "", $kvalue);
-            else $idocid = $this->doc->getValue($this->cFormat);
+            if ($kvalue > - 1) $idocid = $this->doc->getMultipleRawValues($this->cFormat, "", $kvalue);
+            else $idocid = $this->doc->getRawValue($this->cFormat);
             
             if ($idocid > 0) {
                 //$lay = new Layout("FDL/Layout/viewadoc.xml", $action);
@@ -928,8 +928,8 @@ class DocHtmlFormat
         $lay = new Layout("FDL/Layout/viewdocoption.xml", $action);
         $htmlval = "";
         
-        if ($kvalue > - 1) $di = $this->doc->getTValue($this->oattr->format, "", $kvalue);
-        else $di = $this->doc->getValue($this->oattr->format);
+        if ($kvalue > - 1) $di = $this->doc->getMultipleRawValues($this->oattr->format, "", $kvalue);
+        else $di = $this->doc->getRawValue($this->oattr->format);
         if ($di > 0) {
             $lay->set("said", $di);
             $lay->set("uuvalue", urlencode($avalue));
@@ -1105,7 +1105,7 @@ class DocHtmlFormat
         } else {
             $sl = strtolower($s);
             if (!isset($this->doc->$sl)) return "[$s]";
-            $v = $this->doc->getTValue($sl, "", $index);
+            $v = $this->doc->getMultipleRawValues($sl, "", $index);
         }
         return $v;
     }

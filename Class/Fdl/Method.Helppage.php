@@ -72,7 +72,7 @@ class _HELPPAGE extends Doc
                     $this->Affect(getTdoc($this->dbaccess, $doc->id));
                     
                     $this->setValue("help_family", getHttpVars("help_family"));
-                    if ($this->getValue("help_family")) $this->title = sprintf(_("help for %s") , $this->getTitle($this->getValue("help_family")));
+                    if ($this->getRawValue("help_family")) $this->title = sprintf(_("help for %s") , $this->getTitle($this->getRawValue("help_family")));
                     
                     $this->modify();
                     global $action;
@@ -96,7 +96,7 @@ class _HELPPAGE extends Doc
         }
         
         if ($aclname == 'view') {
-            $famId = $this->getValue('HELP_FAMILY');
+            $famId = $this->getRawValue('HELP_FAMILY');
             $fam = new_Doc($this->dbaccess, $famId);
             if ($fam->isAlive()) {
                 return $fam->Control('view');
@@ -110,7 +110,7 @@ class _HELPPAGE extends Doc
      */
     public function getSectionsByLang()
     {
-        $rows = $this->getAValues('help_t_sections');
+        $rows = $this->getArrayRawValues('help_t_sections');
         
         $sections = array();
         foreach ($rows as $row) {
@@ -127,8 +127,8 @@ class _HELPPAGE extends Doc
      */
     public function getFamilyLangs()
     {
-        $all_lang_keys = $this->_val2array($this->getParamValue('help_p_lang_key'));
-        $all_lang_texts = $this->_val2array($this->getParamValue('help_p_lang_name'));
+        $all_lang_keys = $this->rawValueToArray($this->getFamilyParameterValue('help_p_lang_key'));
+        $all_lang_texts = $this->rawValueToArray($this->getFamilyParameterValue('help_p_lang_name'));
         $all_langs = array();
         foreach ($all_lang_keys as $i => $key) {
             $all_langs[$key] = $all_lang_texts[$i];
@@ -152,7 +152,7 @@ class _HELPPAGE extends Doc
      */
     public function getHelpByLang()
     {
-        $rows = $this->getAValues('help_t_help');
+        $rows = $this->getArrayRawValues('help_t_help');
         
         $helps = array();
         foreach ($rows as $row) {
@@ -199,7 +199,7 @@ class _HELPPAGE extends Doc
         $this->lay->set('HELPNAME', $helpname);
         $this->lay->set('HELPDESCRIPTION', $helpdescription);
         // help add section
-        $famid = $this->getValue('help_family');
+        $famid = $this->getRawValue('help_family');
         if (empty($famid)) {
             $this->lay->set('HELPATTRIBUTESLIST', false);
         } else {
@@ -375,7 +375,7 @@ class _HELPPAGE extends Doc
         }
         $this->lay->setBlockData('ALLLANGS', $all_langs);
         
-        $descriptions = $this->getAvalues("help_t_help");
+        $descriptions = $this->getArrayRawValues("help_t_help");
         $first = true;
         foreach ($descriptions as & $v) {
             $v["firstdesc"] = $first;
@@ -399,7 +399,7 @@ class _HELPPAGE extends Doc
         $s->setObjectReturn();
         $s->orderby = 'title';
         $s->search();
-        while ($doc = $s->nextDoc()) {
+        while ($doc = $s->getNextDoc()) {
             $aides[] = array(
                 'AIDE' => $doc->getDocAnchor($doc->id, $target, true, false, false) ,
             );
@@ -472,7 +472,7 @@ class _HELPPAGE extends Doc
      */
     public function getHelpAttributes()
     {
-        $attrList = $this->getTValue("help_sec_key");
+        $attrList = $this->getMultipleRawValues("help_sec_key");
         if (!is_array($attrList)) {
             return array();
         }

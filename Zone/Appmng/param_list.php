@@ -21,7 +21,7 @@ include_once ("Class.QueryDb.php");
 include_once ("Class.Param.php");
 include_once ("Class.SubForm.php");
 // -----------------------------------
-function param_list(&$action)
+function param_list(Action &$action)
 {
     // -----------------------------------
     // Get Param
@@ -80,7 +80,7 @@ function param_list(&$action)
                     $app1 = new Application($action->dbaccess, $precApp);
                     
                     $appinc[$precApp]["appname"] = $app1->name;
-                    $appinc[$precApp]["appicon"] = $action->getImageUrl($app1->icon);
+                    $appinc[$precApp]["appicon"] = $action->parent->getImageLink($app1->icon);
                     $applist.= ($applist == "" ? "" : ",");
                     $applist.= "'" . $app1->name . "'";
                     $appinc[$precApp]["appdesc"] = $action->text($app1->short_name);

@@ -79,7 +79,7 @@ function editframe(Action & $action)
         $action->lay->set("ehelpid", ($help->isAlive()) ? $help->id : false);
         //------------------------------
         // Set the table value elements
-        $value = chop($doc->GetValue($v->id));
+        $value = chop($doc->getRawValue($v->id));
         if ($docid == 0) {
             $value = $doc->GetValueMethod($value); // execute method for default values
             

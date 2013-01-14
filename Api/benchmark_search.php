@@ -40,11 +40,11 @@ $default_resetcperm = 'no';
 $parms = array();
 
 $usage = new ApiUsage();
-$usage->setText("Benchmark search");
-$parms['famid'] = $usage->addOption("famid", "family id", null, $default_famid);
-$parms['word'] = $usage->addOption("word", "word to search", null, $default_word);
-$parms['limit'] = $usage->addOption("limit", "number of element to search", null, $default_limit);
-$parms['resetcperm'] = $usage->addOption("resetcperm", "reseting permission", null, $default_resetcperm);
+$usage->setDefinitionText("Benchmark search");
+$parms['famid'] = $usage->addOptionnalParameter("famid", "family id", null, $default_famid);
+$parms['word'] = $usage->addOptionnalParameter("word", "word to search", null, $default_word);
+$parms['limit'] = $usage->addOptionnalParameter("limit", "number of element to search", null, $default_limit);
+$parms['resetcperm'] = $usage->addOptionnalParameter("resetcperm", "reseting permission", null, $default_resetcperm);
 
 $usage->verify();
 
@@ -298,13 +298,13 @@ function bench_search_fam_all(&$stat)
     
     $s = new SearchDoc($dbaccess_freedom, -1);
     $s->setObjectReturn();
-    $s->noViewControl();
+    $s->overrideViewControl();
     $s->addFilter("usefor !~ 'W'");
     $s->addFilter("usefor !~ '^S'");
     $s->search();
     
     $famList = array();
-    while ($fam = $s->nextDoc()) {
+    while ($fam = $s->getNextDoc()) {
         $fam->childs = array();
         $childFam = $fam->getChildFam($fam->id, false);
         $inherit = join(',', array_map(create_function('$v', 'global $dbaccess_freedom; return getNameFromId($dbaccess_freedom, $v);') , array_keys($childFam)));

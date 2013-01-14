@@ -45,7 +45,7 @@ function editaffect(&$action)
     $sqlfilters = array(
         "(frst_famid='" . $doc->fromid . "') or (frst_famid is null) or (frst_famid='')"
     );
-    $tfree = getChildDoc($dbaccess, 0, "0", "ALL", $sqlfilters, $action->user->id, "TABLE", "FREESTATE");
+    $tfree = internalGetDocCollection($dbaccess, 0, "0", "ALL", $sqlfilters, $action->user->id, "TABLE", "FREESTATE");
     $tstate = array();
     if ($doc->wid == 0) {
         foreach ($tfree as $k => $v) {

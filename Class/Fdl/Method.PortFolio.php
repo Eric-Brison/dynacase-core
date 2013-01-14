@@ -55,7 +55,7 @@ class _PORTFOLIO extends Dir
         $err = "";
         include_once ("FDL/Lib.Dir.php");
         
-        $ddocid = $this->getValue("PFL_IDDEF");
+        $ddocid = $this->getRawValue("PFL_IDDEF");
         
         if ($ddocid != "") {
             $ddoc = new_Doc($this->dbaccess, $ddocid);
@@ -64,9 +64,9 @@ class _PORTFOLIO extends Dir
                 
                 foreach ($child as $k => $tdoc) {
                     $doc = getDocObject($this->dbaccess, $tdoc);
-                    $copy = $doc->Copy();
+                    $copy = $doc->duplicate();
                     if (!is_object($copy)) $err.= $copy;
-                    else $err.= $this->AddFile($copy->id, "latest", true, true);
+                    else $err.= $this->insertDocument($copy->id, "latest", true, true);
                 }
             } else {
                 $err = sprintf(_("Error in portfolio : folder %s not exists") , $ddocid);
@@ -84,16 +84,16 @@ class _PORTFOLIO extends Dir
         $err = "";
         include_once ("FDL/Lib.Dir.php");
         
-        $copytab = $this->getParamValue("pfl_idcopytab");
+        $copytab = $this->getFamilyParameterValue("pfl_idcopytab");
         if ($copytab) {
-            $copytab = $this->_val2array($copytab);
+            $copytab = $this->rawValueToArray($copytab);
             foreach ($copytab as $k => $id) {
                 $tdoc = getTDoc($this->dbaccess, $id);
                 
                 $doc = getDocObject($this->dbaccess, $tdoc);
-                $copy = $doc->Copy();
+                $copy = $doc->duplicate();
                 if (!is_object($copy)) $err.= $copy;
-                else $err.= $this->AddFile($copy->id, "latest", true, true);
+                else $err.= $this->insertDocument($copy->id, "latest", true, true);
             }
         }
         

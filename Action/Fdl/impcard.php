@@ -52,11 +52,11 @@ function impcard(&$action)
     } else {
         if (($latest == "Y") && ($doc->locked == - 1)) {
             // get latest revision
-            $docid = $doc->latestId();
+            $docid = $doc->getLatestId();
             SetHttpVar("id", $docid);
         } else if (($latest == "L") && ($doc->lmodify != 'L')) {
             // get latest fixed revision
-            $docid = $doc->latestId(true);
+            $docid = $doc->getLatestId(true);
             SetHttpVar("id", $docid);
         } else if (($latest == "P") && ($doc->revision > 0)) {
             // get previous fixed revision

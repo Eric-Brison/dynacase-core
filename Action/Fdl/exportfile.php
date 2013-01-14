@@ -53,7 +53,7 @@ function exportfile(Action & $action)
         } else {
             if (($latest == "Y") && ($doc->locked == - 1)) {
                 // get latest revision
-                $docid = $doc->latestId();
+                $docid = $doc->getLatestId();
                 $doc = new_Doc($dbaccess, $docid);
             }
         }
@@ -65,9 +65,9 @@ function exportfile(Action & $action)
             /**
              * @var DocFam $doc
              */
-            $ovalue = $doc->getParamValue($attrid);
+            $ovalue = $doc->getParameterRawValue($attrid);
             if (!$ovalue) $ovalue = $doc->getDefValue($attrid);
-        } else $ovalue = $doc->getValue($attrid);
+        } else $ovalue = $doc->getRawValue($attrid);
         if (($index !== "") && ($index >= 0)) {
             $tvalue = explode("\n", $ovalue);
             $ovalue = $tvalue[$index];
@@ -120,6 +120,9 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $vf = newFreeVaultFile($dbaccess);
+    /**
+     * @var vaultFileInfo $info
+     */
     $info = null;
     if ($type == "pdf") {
         $teng_name = 'pdf';

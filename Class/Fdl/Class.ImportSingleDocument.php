@@ -222,7 +222,7 @@ class importSingleDocument
                 return $this;
             }
             if ($this->doc->doctype == 'Z') {
-                if (!$this->analyze) $this->doc->revive();
+                if (!$this->analyze) $this->doc->undelete();
                 $this->tcr["msg"].= _("restore document") . "\n";
             }
             
@@ -269,7 +269,7 @@ class importSingleDocument
                         
                         if (!$this->analyze) {
                             if ($attr->inArray()) {
-                                $tabsfiles = $this->doc->_val2array($dv);
+                                $tabsfiles = $this->doc->rawValueToArray($dv);
                                 $tvfids = array();
                                 foreach ($tabsfiles as $fi) {
                                     if (preg_match(PREGEXPFILE, $fi, $reg)) {
@@ -311,7 +311,7 @@ class importSingleDocument
                             }
                         } else {
                             // just for analyze
-                            if ($dv == $this->doc->getValue($attr->id)) $this->tcr["values"][$attr->getLabel() ] = ("/no change/");
+                            if ($dv == $this->doc->getRawValue($attr->id)) $this->tcr["values"][$attr->getLabel() ] = ("/no change/");
                             else $this->tcr["values"][$attr->getLabel() ] = $dv;
                         }
                     } else {
@@ -319,7 +319,7 @@ class importSingleDocument
                         if ($errv) {
                             $this->setError("DOC0100", $attr->id, $errv);
                         }
-                        if ($this->doc->getOldValue($attr->id) !== false) $this->tcr["values"][$attr->getLabel() ] = $dv;
+                        if ($this->doc->getOldRawValue($attr->id) !== false) $this->tcr["values"][$attr->getLabel() ] = $dv;
                         else $this->tcr["values"][$attr->getLabel() ] = ("/no change/");
                     }
                 }
@@ -395,7 +395,7 @@ class importSingleDocument
                             if ($this->doc->id == "") {
                                 // insert default values
                                 foreach ($this->preValues as $k => $v) {
-                                    if ($this->doc->getValue($k) == "") $this->doc->setValue($k, $v);
+                                    if ($this->doc->getRawValue($k) == "") $this->doc->setValue($k, $v);
                                 }
                                 $err = $this->doc->preImport($extra);
                                 if ($err != "") {
@@ -459,7 +459,7 @@ class importSingleDocument
                             if ($this->doc->id == "") {
                                 // insert default values
                                 foreach ($this->preValues as $k => $v) {
-                                    if ($this->doc->getValue($k) == "") $this->doc->setValue($k, $v);
+                                    if ($this->doc->getRawValue($k) == "") $this->doc->setValue($k, $v);
                                 }
                                 $err = $this->doc->Add();
                             }
@@ -485,7 +485,7 @@ class importSingleDocument
                     if (!$this->analyze) {
                         // insert default values
                         foreach ($this->preValues as $k => $v) {
-                            if ($this->doc->getValue($k) == "") $this->doc->setValue($k, $v);
+                            if ($this->doc->getRawValue($k) == "") $this->doc->setValue($k, $v);
                         }
                         $err = $this->doc->preImport($extra);
                         if ($err != "") {
@@ -512,11 +512,11 @@ class importSingleDocument
             if (!$this->analyze) {
                 if ($this->doc->isAffected()) {
                     $this->tcr["specmsg"] = $this->doc->Refresh(); // compute read attribute
-                    $msg.= $this->doc->PostModify(); // compute read attribute
+                    $msg.= $this->doc->postModify(); // compute read attribute
                     $err = $this->doc->modify();
                     if ($err == "-") $err = ""; // not really an error add addfile must be tested after
                     if ($err == "") {
-                        $this->doc->AddComment(sprintf(_("updated by import")));
+                        $this->doc->addHistoryEntry(sprintf(_("updated by import")));
                         $msg.= $this->doc->postImport($extra);
                     } else {
                         $this->setError("DOC0112", $this->doc->name, $err);
@@ -558,8 +558,8 @@ class importSingleDocument
                     $this->tcr["folderid"] = $dir->id;
                     $this->tcr["foldername"] = dirname($this->importFilePath) . "/" . $dir->title;
                     if (!$this->analyze) {
-                        if (method_exists($dir, "AddFile")) {
-                            $err = $dir->AddFile($this->doc->id);
+                        if (method_exists($dir, "insertDocument")) {
+                            $err = $dir->insertDocument($this->doc->id);
                             if (-$err) $this->setError("DOC0200", $this->doc->name, $dir->getTitle() , $err);
                         } else {
                             $this->setError("DOC0202", $dir->getTitle() , $dir->fromname, $this->doc->name);

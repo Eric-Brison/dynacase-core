@@ -27,11 +27,11 @@
 include_once ("Class.Application.php");
 
 $usage = new ApiUsage();
-$usage->setText("Change an attribute of an WHAT Action");
-$appname = $usage->addNeeded("appname", "application name");
-$actionname = $usage->addNeeded("actname", "action name");
-$attribute = $usage->addNeeded("attribute", "attribute name");
-$value = $usage->addOption("value", "value to set", null, "");
+$usage->setDefinitionText("Change an attribute of an WHAT Action");
+$appname = $usage->addNeededParameter("appname", "application name");
+$actionname = $usage->addNeededParameter("actname", "action name");
+$attribute = $usage->addNeededParameter("attribute", "attribute name");
+$value = $usage->addOptionnalParameter("value", "value to set", null, "");
 $usage->verify();
 
 $app = new Application();

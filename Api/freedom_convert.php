@@ -21,9 +21,9 @@ include_once ("FDL/Class.Doc.php");
 
 $usage = new ApiUsage();
 
-$usage->setText("Convert document");
-$famId = $usage->addNeeded("tofamid", "family filter"); // familly filter
-$docid = $usage->addNeeded("docid", "document id to be converted"); // document
+$usage->setDefinitionText("Convert document");
+$famId = $usage->addNeededParameter("tofamid", "family filter"); // familly filter
+$docid = $usage->addNeededParameter("docid", "document id to be converted"); // document
 
 $usage->verify();
 

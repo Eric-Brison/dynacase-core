@@ -73,7 +73,7 @@ function modattribute(&$action)
                         $err = $doc->modify();
                         if ($err == "") {
                             $action->AddActionDone("MODATTR", $a->id);
-                            $doc->AddComment(sprintf(_("modify [%s] attribute") , $a->getLabel()) , HISTO_INFO, "MODATTR");
+                            $doc->addHistoryEntry(sprintf(_("modify [%s] attribute") , $a->getLabel()) , HISTO_INFO, "MODATTR");
                         }
                     }
                 }

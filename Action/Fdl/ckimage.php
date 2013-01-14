@@ -28,12 +28,12 @@ function ckimage(Action & $action)
     
     $usage = new ActionUsage($action);
     /* Internal numFunc */
-    $numFunc = $usage->addNeeded("CKEditorFuncNum", "CKEditorFuncNum");
+    $numFunc = $usage->addNeededParameter("CKEditorFuncNum", "CKEditorFuncNum");
     
-    $startpage = $usage->addOption("page", "pageNumber", array() , "0");
-    $key = $usage->addOption("key", "key", array() , "");
+    $startpage = $usage->addOptionnalParameter("page", "pageNumber", array() , "0");
+    $key = $usage->addOptionnalParameter("key", "key", array() , "");
     
-    $usage->strict(false);
+    $usage->setStrictMode(false);
     
     $usage->verify();
     
@@ -44,7 +44,7 @@ function ckimage(Action & $action)
     else $start = ($startpage * $slice + 1);
     $sqlfilters = array();
     if ($key) $sqlfilters[] = "svalues ~* '" . pg_escape_string($key) . "'";
-    $limg = getChildDoc($dbaccess, 0, $start, $slice, $sqlfilters, $action->user->id, "TABLE", "IMAGE");
+    $limg = internalGetDocCollection($dbaccess, 0, $start, $slice, $sqlfilters, $action->user->id, "TABLE", "IMAGE");
     $wimg = createDoc($dbaccess, "IMAGE", false);
     $oaimg = $wimg->getAttribute("img_file");
     

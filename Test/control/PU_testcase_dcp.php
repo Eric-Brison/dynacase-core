@@ -264,7 +264,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      * Set the include_path INI parameter
      * @param string $include_path the new include_path to use
      */
-    public function setIncludePath($include_path)
+    public static function setIncludePath($include_path)
     {
         if (self::$include_path == null) {
             self::$include_path = ini_get('include_path');
@@ -274,7 +274,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     /**
      * Set back the original include_path INI parameter
      */
-    public function resetIncludePath()
+    public static function resetIncludePath()
     {
         if (self::$include_path !== null) {
             ini_set('include_path', self::$include_path);

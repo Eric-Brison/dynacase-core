@@ -436,7 +436,7 @@ class importDocumentDescription
                 $this->tcr[$this->nLine]["err"] = $check->getErrors();
             }
             
-            $this->doc->AddComment(_("Update by importation"));
+            $this->doc->addHistoryEntry(_("Update by importation"));
             
             $this->nbDoc++;
             
@@ -564,7 +564,7 @@ class importDocumentDescription
                  * @var Dir $dir
                  */
                 $dir = new_Doc($this->dbaccess, $data[2]);
-                if ($dir->isAlive() && method_exists($dir, "AddFile")) $dir->AddFile($search->id);
+                if ($dir->isAlive() && method_exists($dir, "insertDocument")) $dir->insertDocument($search->id);
             }
         }
         $this->nbDoc++;
@@ -814,7 +814,7 @@ class importDocumentDescription
         ) , $data[2]);
         $opt = (isset($data[3])) ? trim(strtolower($data[3])) : null;
         $force = (str_replace(" ", "", $opt) == "force=yes");
-        $previousValue = $this->doc->getParamvalue($attrid, null);
+        $previousValue = $this->doc->getParameterRawValue($attrid, null);
         if ((!empty($previousValue)) && (!$force)) {
             // reset default
             $this->tcr[$this->nLine]["msg"] = sprintf("keep default value %s : %s. No use %s", $attrid, $previousValue, $data[2]);
@@ -860,7 +860,7 @@ class importDocumentDescription
             $this->tcr[$this->nLine]["msg"] = sprintf("keep default value %s : %s. No use %s", $attrid, $ownDef[$attrid], $data[2]);
         } else {
             $this->doc->setDefValue($attrid, $defv);
-            if ($force || (!$this->doc->getParamValue($attrid))) {
+            if ($force || (!$this->doc->getParameterRawValue($attrid))) {
                 // TODO : not really exact here : must verify if it is really a parameter
                 //$this->doc->setParam($attrid, $defv);
                 //$this->tcr[$this->nLine]["msg"] = "reset default parameter";

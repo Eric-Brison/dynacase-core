@@ -89,7 +89,7 @@ function viewcard(Action & $action)
     if ($doc->isConfidential()) {
         redirect($action, "FDL", "FDL_CONFIDENTIAL&id=" . $doc->id);
     }
-    $useRss=($doc->getValue("gui_isrss") == "yes");
+    $useRss = ($doc->getRawValue("gui_isrss") == "yes");
     $action->lay->set("RSS", $useRss);
     if ($useRss) $action->lay->set("rsslink", $doc->getRssLink());
     
@@ -198,7 +198,7 @@ function viewcard(Action & $action)
     
     $action->lay->Set("dhelp", "none");
     if ($doc->fromid > 0) {
-        $cdoc = $doc->getFamDoc();
+        $cdoc = $doc->getFamilyDocument();
         $action->lay->Set("classtitle", $cdoc->getTitle());
         if (getFamilyHelpFile($action, $doc->fromid)) {
             $action->lay->Set("dhelp", "");

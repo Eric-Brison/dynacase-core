@@ -26,8 +26,8 @@ define("STOPCOLOR", "\033" . '[0m');
 
 $usage = new ApiUsage();
 
-$usage->setText("Detect file which are not indexed and index them");
-$force = ($usage->addOption("force", "force (yes or no)") == "yes");
+$usage->setDefinitionText("Detect file which are not indexed and index them");
+$force = ($usage->addOptionnalParameter("force", "force (yes or no)") == "yes");
 
 $usage->verify();
 
@@ -50,7 +50,7 @@ foreach ($la as $k => $v) {
     $filter = array();
     $filter[] = "$aid is not null";
     if (!$force) $filter[] = "{$aid}_txt is null";
-    $ldoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, $action->user->id, "ITEM", $docid);
+    $ldoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, $action->user->id, "ITEM", $docid);
     $c = countDocs($ldoc);
     
     print "\n-- Family $docid, Attribute : $aid, count:$c\n";

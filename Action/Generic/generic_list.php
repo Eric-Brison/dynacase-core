@@ -61,7 +61,7 @@ function generic_list(&$action)
     if ($dirid) {
         $dir = new_doc($dbaccess, $dirid);
         if ($dir->isAlive() && ($dir->defDoctype == 'S')) {
-            $sfamid = $dir->getValue("se_famid");
+            $sfamid = $dir->getRawValue("se_famid");
         }
     }
     if ($onglet) {
@@ -255,7 +255,7 @@ function getFamilySearches(Action $action, $dbaccess, $famid)
     if ($fdoc->dfldid > 0) {
         $homefld = new_Doc($dbaccess, $fdoc->dfldid);
         $stree = array();
-        if ($homefld->id > 0) $stree = getChildDoc($dbaccess, $homefld->id, "0", "ALL", array() , $action->user->id, "TABLE", 5);
+        if ($homefld->id > 0) $stree = internalGetDocCollection($dbaccess, $homefld->id, "0", "ALL", array() , $action->user->id, "TABLE", 5);
         
         foreach ($stree as $k => $v) {
             if (($v["doctype"] == "S") && ($v["fromid"] != $fdoc->id)) {
@@ -286,7 +286,7 @@ function getFamilySearches(Action $action, $dbaccess, $famid)
     $filter[] = "doctype != 'T'";
     $filter[] = "se_memo='yes'";
     $action->lay->set("MSEARCH", false);
-    $stree = getChildDoc($dbaccess, "0", "0", "ALL", $filter, $action->user->id, "TABLE", 5);
+    $stree = internalGetDocCollection($dbaccess, "0", "0", "ALL", $filter, $action->user->id, "TABLE", 5);
     $streeSearch = array();
     foreach ($stree as $k => $v) {
         if (!isset($streeSearch[$v["id"]])) $streeSearch[$v["id"]] = $v;

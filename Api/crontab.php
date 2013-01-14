@@ -20,14 +20,14 @@ include_once ("WHAT/Class.Crontab.php");
 include_once ("FDL/Lib.Util.php");
 
 $usage = new ApiUsage();
-$usage->setText("API script to manipulate user crontab");
-$cmd = $usage->addNeeded("cmd", "command to execute", array(
+$usage->setDefinitionText("API script to manipulate user crontab");
+$cmd = $usage->addNeededParameter("cmd", "command to execute", array(
     "list",
     "register",
     "unregister"
 ));
-$file = $usage->addOption("file", "path to cronfile (needed for cmd=register|unregister)", null, NULL);
-$user = $usage->addOption("user", "id of user", null, NULL);
+$file = $usage->addOptionnalParameter("file", "path to cronfile (needed for cmd=register|unregister)", null, NULL);
+$user = $usage->addOptionnalParameter("user", "id of user", null, NULL);
 $usage->verify();
 /*function usage()
 {

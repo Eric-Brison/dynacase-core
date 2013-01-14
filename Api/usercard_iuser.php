@@ -31,10 +31,10 @@ if ($dbaccess == "") {
 
 $usage = new ApiUsage();
 
-$usage->setText("Update usercard");
-$whatid = $usage->addOption("whatid", "document"); // document
-$fbar = $usage->addOption("bar", "for progress bar"); // for progress bar
-$onlygroup = ($usage->addOption("onlygroup", "for progress bar") != ""); // for progress bar
+$usage->setDefinitionText("Update usercard");
+$whatid = $usage->addOptionnalParameter("whatid", "document"); // document
+$fbar = $usage->addOptionnalParameter("bar", "for progress bar"); // for progress bar
+$onlygroup = ($usage->addOptionnalParameter("onlygroup", "for progress bar") != ""); // for progress bar
 $usage->verify();
 
 $query = new QueryDb("", "Account");
@@ -78,12 +78,12 @@ if ($query->nb > 0) {
                 $filter = array(
                     "us_whatid = '" . $v["id"] . "'"
                 );
-                $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
+                $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
             } else {
                 $filter = array(
                     "us_whatid = '" . $v["id"] . "'"
                 );
-                $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IUSER");
+                $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IUSER");
             }
             
             if (count($tdoc) > 0) {
@@ -116,7 +116,7 @@ if ($query->nb > 0) {
             else $filter = array(
                 "lower(title) = '" . pg_escape_string($title) . "'"
             );
-            $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IUSER"));
+            $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IUSER"));
             if (count($tdoc) > 0) {
                 if (count($tdoc) > 1) {
                     printf(_("find %s more than one, created aborded\n") , $title);
@@ -142,7 +142,7 @@ if ($query->nb > 0) {
                     $iuser->setValue("US_WHATID", $v["id"]);
                     $iuser->Add();
                     $iuser->refresh();
-                    $iuser->postmodify();
+                    $iuser->postModify();
                     $iuser->modify();
                     print "$reste)";
                     printf(_("%s igroup created\n") , $title);

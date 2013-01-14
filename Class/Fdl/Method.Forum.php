@@ -30,7 +30,7 @@ class _FORUM extends Doc
     
     function getEntryId()
     {
-        $dids = $this->getTValue("forum_d_id");
+        $dids = $this->getMultipleRawValues("forum_d_id");
         $max = 0;
         foreach ($dids as $k => $v) $max = ($v > $max ? $v : $max);
         $max++;
@@ -61,7 +61,7 @@ class _FORUM extends Doc
         $this->lay->setBlockData("entry_list", $el);
         $this->lay->set("title", $this->getTitle());
         $this->lay->set("opened", $this->canAnswer());
-        $this->lay->set("docid", $this->getValue("forum_docid"));
+        $this->lay->set("docid", $this->getRawValue("forum_docid"));
         return;
     }
     
@@ -73,23 +73,23 @@ class _FORUM extends Doc
         );
         $this->getsubentry($eid, $le);
         
-        $t_id = $this->getTValue("forum_d_id");
-        $t_lid = $this->getTValue("forum_d_link");
-        $t_userid = $this->getTValue("forum_d_userid");
-        $t_user = $this->getTValue("forum_d_user");
-        $t_mail = $this->getTValue("forum_d_usermail");
-        $t_text = $this->getTValue("forum_d_text");
-        $t_flag = $this->getTValue("forum_d_flag");
-        $t_date = $this->getTValue("forum_d_date");
+        $t_id = $this->getMultipleRawValues("forum_d_id");
+        $t_lid = $this->getMultipleRawValues("forum_d_link");
+        $t_userid = $this->getMultipleRawValues("forum_d_userid");
+        $t_user = $this->getMultipleRawValues("forum_d_user");
+        $t_mail = $this->getMultipleRawValues("forum_d_usermail");
+        $t_text = $this->getMultipleRawValues("forum_d_text");
+        $t_flag = $this->getMultipleRawValues("forum_d_flag");
+        $t_date = $this->getMultipleRawValues("forum_d_date");
         
-        $this->deleteValue("forum_d_id");
-        $this->deleteValue("forum_d_link");
-        $this->deleteValue("forum_d_userid");
-        $this->deleteValue("forum_d_user");
-        $this->deleteValue("forum_d_usermail");
-        $this->deleteValue("forum_d_text");
-        $this->deleteValue("forum_d_flag");
-        $this->deleteValue("forum_d_date");
+        $this->clearValue("forum_d_id");
+        $this->clearValue("forum_d_link");
+        $this->clearValue("forum_d_userid");
+        $this->clearValue("forum_d_user");
+        $this->clearValue("forum_d_usermail");
+        $this->clearValue("forum_d_text");
+        $this->clearValue("forum_d_flag");
+        $this->clearValue("forum_d_date");
         
         $nt_id = array();
         $nt_lid = array();
@@ -164,15 +164,15 @@ class _FORUM extends Doc
         
         $elist = array();
         
-        $docid = $this->getValue("forum_docid");
-        $t_id = $this->getTValue("forum_d_id");
-        $t_lid = $this->getTValue("forum_d_link");
-        $t_userid = $this->getTValue("forum_d_userid");
-        $t_user = $this->getTValue("forum_d_user");
-        $t_mail = $this->getTValue("forum_d_usermail");
-        $t_text = $this->getTValue("forum_d_text");
-        $t_flag = $this->getTValue("forum_d_flag");
-        $t_date = $this->getTValue("forum_d_date");
+        $docid = $this->getRawValue("forum_docid");
+        $t_id = $this->getMultipleRawValues("forum_d_id");
+        $t_lid = $this->getMultipleRawValues("forum_d_link");
+        $t_userid = $this->getMultipleRawValues("forum_d_userid");
+        $t_user = $this->getMultipleRawValues("forum_d_user");
+        $t_mail = $this->getMultipleRawValues("forum_d_usermail");
+        $t_text = $this->getMultipleRawValues("forum_d_text");
+        $t_flag = $this->getMultipleRawValues("forum_d_flag");
+        $t_date = $this->getMultipleRawValues("forum_d_date");
         
         $fopened = $this->canAnswer();
         foreach ($t_id as $k => $v) {
@@ -208,7 +208,7 @@ class _FORUM extends Doc
     {
         static $doc = false;
         if ($doc === false) {
-            $doc = new_Doc($this->dbaccess, $this->getValue("forum_docid"));
+            $doc = new_Doc($this->dbaccess, $this->getRawValue("forum_docid"));
         }
         if (intval($doc->forumid) < 0) return false;
         if ($this->locked != - 1 && ($doc->Control("forum") == "" || $doc->Control("edit") == "")) return true;

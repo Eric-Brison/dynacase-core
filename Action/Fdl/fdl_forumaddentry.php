@@ -34,7 +34,7 @@ function fdl_forumaddentry(&$action)
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     if ($doc->locked == - 1) { // it is revised document
-        $docid = $doc->latestId();
+        $docid = $doc->getLatestId();
         if ($docid != $doc->id) $doc = new_Doc($dbaccess, $docid);
     }
     
@@ -87,14 +87,14 @@ function fdl_forumaddentry(&$action)
         if (!$forum->isAffected()) $action->exitError(sprintf(_("cannot see unknow forum reference %s") , $forid));
         $forum->disableEditControl();
         
-        $t_id = $forum->getTValue("forum_d_id");
-        $t_lid = $forum->getTValue("forum_d_link");
-        $t_userid = $forum->getTValue("forum_d_userid");
-        $t_user = $forum->getTValue("forum_d_user");
-        $t_usermail = $forum->getTValue("forum_d_usermail");
-        $t_text = $forum->getTValue("forum_d_text");
-        $t_flag = $forum->getTValue("forum_d_flag");
-        $t_date = $forum->getTValue("forum_d_date");
+        $t_id = $forum->getMultipleRawValues("forum_d_id");
+        $t_lid = $forum->getMultipleRawValues("forum_d_link");
+        $t_userid = $forum->getMultipleRawValues("forum_d_userid");
+        $t_user = $forum->getMultipleRawValues("forum_d_user");
+        $t_usermail = $forum->getMultipleRawValues("forum_d_usermail");
+        $t_text = $forum->getMultipleRawValues("forum_d_text");
+        $t_flag = $forum->getMultipleRawValues("forum_d_flag");
+        $t_date = $forum->getMultipleRawValues("forum_d_date");
         
         $newentry = ($entrid == - 1 ? true : false);
         $entrid = ($entrid == - 1 ? $forum->getEntryId() : $entrid);

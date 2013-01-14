@@ -5,7 +5,6 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-
 /**
  */
 include_once ("FDL/Class.Doc.php");
@@ -29,8 +28,8 @@ function openfolio(&$action)
     $action->lay->Set("title", $folio->title);
     
     $dir = new_Doc($dbaccess, $folio->initid);
-    $savedTab = $dir->getParamValue('pfl_savetab');
-    $savedDispo = $dir->getParamValue('pfl_savedispo', 1);
+    $savedTab = $dir->getFamilyParameterValue('pfl_savetab');
+    $savedDispo = $dir->getFamilyParameterValue('pfl_savedispo', 1);
     $pfctx = portfolio_get_context($dir);
     
     $action->lay->set("FRAMELISTWIDTH", '180');

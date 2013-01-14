@@ -39,7 +39,7 @@ function editwask(&$action)
     $title = "";
     foreach ($answers as $ans) {
         $wask = new_doc($dbaccess, $ans["waskid"]);
-        $t = $wask->getAvalues("was_t_answer");
+        $t = $wask->getArrayRawValues("was_t_answer");
         foreach ($t as $k => $v) {
             $t[$k]["waskid"] = $wask->id;
             $t[$k]["checked"] = ($ans["key"] == $v["was_keys"]);
@@ -51,7 +51,7 @@ function editwask(&$action)
         $action->lay->set("asktitle", $title);
         $tw[] = array(
             "waskid" => $wask->id,
-            "ask" => $wask->getValue("was_ask")
+            "ask" => $wask->getRawValue("was_ask")
         );
     }
     $action->lay->setBlockData("WASK", $tw);

@@ -475,7 +475,7 @@ class DocFormFormat
                 global $action;
                 if ($value) {
                     $fname = "<img id=\"img_{$this->attridk}\" style=\"vertical-align:bottom;width:30px\" SRC=\"";
-                    $fname.= $action->getImageUrl($value);
+                    $fname.= $action->parent->getImageLink($value);
                     $fname.= "\">";
                 } else {
                     
@@ -693,7 +693,7 @@ class DocFormFormat
             $lay->set("aid", $this->attridk);
             $idth = $this->oattr->format;
             
-            $thid = $this->doc->getValue($idth);
+            $thid = $this->doc->getRawValue($idth);
             if (!$thid) $thid = $idth; // direct logical name
             $lay->set("thesaurus", $thid);
             $this->notd = true; // autonome input
@@ -1082,7 +1082,7 @@ class DocFormFormat
                                     break;
 
                                 default:
-                                    $prop = $doc->getProperty($sattrid);
+                                    $prop = $doc->getPropertyValue($sattrid);
                                     if ($prop !== false) {
                                         $urllink.= $prop;
                                     } else {
@@ -1151,7 +1151,7 @@ class DocFormFormat
                 $help = $doc->getHelpPage();
                 
                 foreach ($ta as $k => $v) { // detect uncompleted rows
-                    $t = $doc->getTValue($k);
+                    $t = $doc->getMultipleRawValues($k);
                     $c = count($t);
                     if ($c > $max) {
                         if ($max0 < 0) $max0 = $c;
@@ -1161,7 +1161,7 @@ class DocFormFormat
                 
                 if ($max > $max0) {
                     foreach ($ta as $k => $v) { // fill uncompleted rows
-                        $t = $doc->getTValue($k);
+                        $t = $doc->getMultipleRawValues($k);
                         $c = count($t);
                         if ($c < $max) {
                             $t = array_pad($t, $max, "");
@@ -1171,7 +1171,7 @@ class DocFormFormat
                 }
                 // get default values
                 $ddoc = createDoc($doc->dbaccess, $doc->fromid == 0 ? $doc->id : $doc->fromid, false);
-                $ddoc->setDefaultValues($ddoc->getFamDoc()->getDefValues() , true, true);
+                $ddoc->setDefaultValues($ddoc->getFamilyDocument()->getDefValues() , true, true);
                 
                 $tad = $ddoc->attributes->getArrayElements($attrid);
                 $tval = array();
@@ -1194,7 +1194,7 @@ class DocFormFormat
                         "aehelpid" => ($help->isAlive()) ? $help->id : false
                     );
                     $tilabel[] = array(
-                        "ilabel" => getHtmlInput($doc, $v, $ddoc->getValue($tad[$k]->id) , DocFormFormat::arrayIndex) ,
+                        "ilabel" => getHtmlInput($doc, $v, $ddoc->getRawValue($tad[$k]->id) , DocFormFormat::arrayIndex) ,
                         "ihw" => (!$visible) ? "0px" : $width,
                         "bgcolor" => $v->getOption("bgcolor", "inherit") ,
                         "tdstyle" => $v->getOption("cellbodystyle") ,
@@ -1205,7 +1205,7 @@ class DocFormFormat
                     );
                     
                     if ($visible) $nbcolattr++;
-                    $tval[$k] = $doc->getTValue($k);
+                    $tval[$k] = $doc->getMultipleRawValues($k);
                     $nbitem = count($tval[$k]);
                     
                     if (($visible) && ($width == "auto")) {
@@ -1400,7 +1400,7 @@ class DocFormFormat
                     $nbitem = 0;
                     
                     foreach ($ta as $k => $v) {
-                        $tval[$k] = $doc->getTValue($k);
+                        $tval[$k] = $doc->getMultipleRawValues($k);
                         $nbitem = max($nbitem, count($tval[$k]));
                         $lay->set("L_" . strtoupper($v->id) , ucfirst($v->getLabel()));
                     }
@@ -1419,7 +1419,7 @@ class DocFormFormat
                         $defval = $doc->getDefValues();
                     } else {
                         
-                        $fdoc = $doc->getFamDoc();
+                        $fdoc = $doc->getFamilyDocument();
                         $defval = $fdoc->getDefValues();
                     }
                     
@@ -1493,7 +1493,7 @@ class DocFormFormat
                 if (substr($s, 0, 2) == "L_") return "[$s]";
                 if (substr($s, 0, 2) == "V_") {
                     $s = substr($s, 2);
-                    if ($index != - 1) $value = $doc->getTValue($s, "", $index);
+                    if ($index != - 1) $value = $doc->getMultipleRawValues($s, "", $index);
                     else $value = $defval[strtolower($s) ];
                     $oattr = $doc->getAttribute($s);
                     if (!$oattr) return sprintf(_("unknow attribute %s") , $s);
@@ -1501,8 +1501,8 @@ class DocFormFormat
                 } else {
                     $sl = strtolower($s);
                     if (!isset($doc->$sl)) return "[$s]";
-                    if ($index == - 1) $v = $doc->getValue($sl);
-                    else $v = $doc->getTValue($sl, "", $index);
+                    if ($index == - 1) $v = $doc->getRawValue($sl);
+                    else $v = $doc->getMultipleRawValues($sl, "", $index);
                     $v = str_replace('"', '&quot;', $v);
                 }
                 return $v;
@@ -1620,7 +1620,7 @@ class DocFormFormat
                 $lay->set("isopen", ($etype == "open"));
                 $lay->set("isfreeselected", false);
                 $lay->set("isfree", ($etype == "free"));
-                $tvalue = $doc->_val2array($value);
+                $tvalue = $doc->rawValueToArray($value);
                 
                 $lay->set("lvalue", $value);
                 $enuml = $oattr->getenumlabel();
@@ -1736,8 +1736,8 @@ class DocFormFormat
                 $lay->set("id", $idx);
                 $lay->set("didx", $index);
                 $lay->set("di", trim(strtolower($oattr->format)));
-                if ($index !== "") $lay->set("said", $doc->getTValue($oattr->format, "", $index));
-                else $lay->set("said", $doc->getValue($oattr->format));
+                if ($index !== "") $lay->set("said", $doc->getMultipleRawValues($oattr->format, "", $index));
+                else $lay->set("said", $doc->getRawValue($oattr->format));
                 
                 $lay->set("value", $value);
                 $lay->set("uuvalue", urlencode($value));

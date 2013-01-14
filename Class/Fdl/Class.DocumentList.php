@@ -65,10 +65,10 @@ class DocumentList implements Iterator, Countable
     
     private function getCurrentDoc()
     {
-        $this->currentDoc = $this->search->nextDoc();
+        $this->currentDoc = $this->search->getNextDoc();
         $good = ($this->callHook() !== false);
         if (!$good) {
-            while ($this->currentDoc = $this->search->nextDoc()) {
+            while ($this->currentDoc = $this->search->getNextDoc()) {
                 $good = ($this->callHook() !== false);
                 if ($good) break;
             }

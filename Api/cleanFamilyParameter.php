@@ -29,8 +29,8 @@ if ($dbaccess == "") {
     exit;
 }
 $usage = new ApiUsage();
-$usage->setText("Delete parameter values which are not real parameters");
-$verifyOnly=$usage->addEmpty("verify-only","only verify, do not changes");
+$usage->setDefinitionText("Delete parameter values which are not real parameters");
+$verifyOnly=$usage->addEmptyParameter("verify-only","only verify, do not changes");
 $usage->verify();
 /**
  * @var Action $action
@@ -45,7 +45,7 @@ $deleting = array();
 /**
  * @var DocFam $fam
  */
-while ($fam = $s->nextDoc()) {
+while ($fam = $s->getNextDoc()) {
     print ("\n" . $fam->getTitle() . " : #" . $fam->id);
     $pa = $fam->getOwnParams();
     

@@ -45,8 +45,8 @@ class _TIMER extends Doc
         if ($origin) $dt->originid = $origin->id;
         $dt->fromid = $doc->fromid;
         
-        $dates = $this->getTValue("tm_delay");
-        $hours = $this->getTValue("tm_hdelay");
+        $dates = $this->getMultipleRawValues("tm_delay");
+        $hours = $this->getMultipleRawValues("tm_hdelay");
         
         if (((count($dates) == 0) || $dates[0] + $hours[0] == 0) && ($tododate == null)) {
             $err = sprintf(_("no delay specified in timer %s [%d]") , $this->title, $this->id);
@@ -151,7 +151,7 @@ class _TIMER extends Doc
     private function linearizeActions()
     {
         $this->lineActions = array();
-        $tactions = $this->getAvalues("tm_t_config");
+        $tactions = $this->getArrayRawValues("tm_t_config");
         $level = 0;
         foreach ($tactions as $k => $v) {
             $repeat = intval($v["tm_iteration"]);
@@ -195,12 +195,12 @@ class _TIMER extends Doc
                         $err = "";
                         switch ($ka) {
                             case "tmail":
-                                $tva = $this->_val2array(str_replace('<BR>', "\n", $va));
+                                $tva = $this->rawValueToArray(str_replace('<BR>', "\n", $va));
                                 foreach ($tva as $idmail) {
                                     $tm = new_doc($this->dbaccess, $idmail);
                                     if ($tm->isAlive()) {
                                         $msg = sprintf(_("send mail with template %s [%d]") , $tm->title, $tm->id);
-                                        $doc->addComment(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
+                                        $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
                                         $err = $tm->sendDocument($doc);
                                         $tmsg[] = $msg;
                                     }
@@ -209,14 +209,14 @@ class _TIMER extends Doc
 
                             case "state":
                                 $msg = sprintf(_("change state to %s") , _($va));
-                                $doc->addComment(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
+                                $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
                                 $err = $doc->setState($va);
                                 $tmsg[] = $msg;
                                 break;
 
                             case "method":
                                 $msg = sprintf(_("apply method %s") , $va);
-                                $doc->addComment(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
+                                $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
                                 $err = $doc->applyMethod($va);
                                 $tmsg[] = $msg;
                                 break;
@@ -224,7 +224,7 @@ class _TIMER extends Doc
                         
                         if ($err) {
                             $gerr.= "$err\n";
-                            $doc->addComment(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $err) , HISTO_ERROR);
+                            $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $err) , HISTO_ERROR);
                         }
                     }
                 }

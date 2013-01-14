@@ -28,7 +28,7 @@ include_once ("FDL/Lib.Dir.php");
  $k=0;
  while ($doc=$s->nextDoc()) {
  // iterate document by document
- print "$k)".$doc->getTitle()."(".$doc->getValue("US_MAIL","nomail").")\n";clam
+ print "$k)".$doc->getTitle()."(".$doc->getRawValue("US_MAIL","nomail").")\n";clam
  $k+
  * @endcode
  * @class SearchDoc.
@@ -246,7 +246,7 @@ class SearchDoc
     }
     /**
      * return original sql query before test permissions
-     * @api return original sql query without visibility criteria
+     *
      *
      * @return string
      */
@@ -258,7 +258,7 @@ class SearchDoc
     }
     /**
      * add join condition
-     * @api add join condition
+     *
      * @code
      * $s=new searchDoc();
      $s->trash='only';
@@ -309,7 +309,7 @@ class SearchDoc
     /** 
      * reset results to use another search
      *
-     * @api reset results to use another search
+     *
      * @return void
      */
     public function reset()
@@ -323,7 +323,7 @@ class SearchDoc
     /**
      * reset result offset
      * use it to redo a document's iteration
-     * @api reset result offset
+     *
      */
     public function rewind()
     {
@@ -333,7 +333,7 @@ class SearchDoc
     }
     /** 
      * Verify if query is already sended to database
-     * @api Verify if query is already sended
+     *
      * @return boolean
      */
     public function isExecuted()
@@ -342,7 +342,7 @@ class SearchDoc
     }
     /**
      * Return sql filters used for request
-     * @api get sql filters of query
+     *
      * @return array of string
      */
     public function getFilters()
@@ -410,7 +410,7 @@ class SearchDoc
         }
         $debuginfo = array();
         
-        $this->result = getChildDoc($this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters() , $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
+        $this->result = internalGetDocCollection($this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters() , $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
         if ($this->searchmode == "TABLE") $this->count = count($this->result); // memo cause array is unset by shift
         $this->debuginfo = $debuginfo;
         if (($this->searchmode == "TABLE") && ($this->mode == "ITEM")) $this->mode = "TABLEITEM";
@@ -508,9 +508,9 @@ class SearchDoc
     }
     /**
      * set recursive mode for folder searches
-     * can bu use only if collection set if a static folder
+     * can be use only if collection set if a static folder
      * @param bool $recursiveMode set to true to use search in sub folders when collection is folder
-     * @api
+     * @api set recursive mode for folder searches
      * @see SearchDoc::useCollection
      * @return void
      */
@@ -600,11 +600,32 @@ class SearchDoc
     /**
      * can, be use in loop
      * ::search must be call before
+     *
+     * @see Application::getNextDoc
+     *
+     * @deprecated use { @link Application::getNextDoc } instead
+     *
      * @see SearchDoc::search
-     * @api get next document results
+     *
      * @return Doc|array or null if this is the end
      */
     public function nextDoc()
+    {
+        deprecatedFunction();
+        return $this->getNextDoc();
+    }
+
+    /**
+     * can, be use in loop
+     * ::search must be call before
+     *
+     * @see SearchDoc::search
+     *
+     * @api get next document results
+     *
+     * @return Doc|array or null if this is the end
+     */
+    public function getNextDoc()
     {
         if ($this->mode == "ITEM") {
             $n = empty($this->result[$this->resultQPos]) ? null : $this->result[$this->resultQPos];
@@ -852,7 +873,7 @@ class SearchDoc
     }
     /**
      * return a document part where general filter term is found
-     * @api get a document part where general filter term is found
+     *
      * @see SearchDoc::addGeneralFilter
      * @param Doc $doc document to analyze
      * @param string $beginTag delimiter begin tag
@@ -931,7 +952,7 @@ class SearchDoc
     }
     /**
      * return where condition like : foo in ('x','y','z')
-     * @api get sql condition to search in a value's set
+     *
      * @static
      * @param array $values set of values
      * @param string $column database column name
@@ -958,10 +979,22 @@ class SearchDoc
     }
     /**
      * no use access view control in filters
-     * @api no add view access criteria in final query
+     *  @see SearchDoc::overrideViewControl
+     *
+     * @deprecated use { @link SearchDoc::overrideViewControl } instead
      * @return void
      */
     public function noViewControl()
+    {
+        deprecatedFunction();
+        $this->overrideViewControl();
+    }
+    /**
+     * no use access view control in filters
+     * @api no add view access criteria in final query
+     * @return void
+     */
+    public function overrideViewControl()
     {
         $this->userid = 1;
     }
@@ -1116,7 +1149,7 @@ class SearchDoc
                     }
                 }
                 if (strpos(implode(",", $sqlfilters) , "archiveid") === false) $sqlfilters[-4] = $maintabledot . "archiveid is null";
-                //if ($fld->getValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
+                //if ($fld->getRawValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
                 if ($trash == "only") $sqlfilters[-1] = "locked = -1";
                 elseif ($latest) $sqlfilters[-1] = "locked != -1";
                 ksort($sqlfilters);
@@ -1175,7 +1208,7 @@ class SearchDoc
                             if ($trash) {
                                 $fld->setValue("se_trash", $trash);
                             } else {
-                                $trash = $fld->getValue("se_trash");
+                                $trash = $fld->getRawValue("se_trash");
                             }
                             $fld->folderRecursiveLevel = $folderRecursiveLevel;
                             $tsqlM = $fld->getQuery();
@@ -1201,7 +1234,7 @@ class SearchDoc
                                     if ($fromid > 0) {
                                         $sqlM = str_replace("from doc ", "from $only $table ", $sqlM);
                                     }
-                                    $fldFromId = ($fromid == 0) ? $fld->getValue('se_famid', 0) : $fromid;
+                                    $fldFromId = ($fromid == 0) ? $fld->getRawValue('se_famid', 0) : $fromid;
                                     $sqlM = $this->injectFromClauseForOrderByLabel($fldFromId, $this->orderbyLabel, $sqlM);
                                     if ($sqlcond) {
                                         $qsql[] = $sqlM . " and " . $sqlcond;

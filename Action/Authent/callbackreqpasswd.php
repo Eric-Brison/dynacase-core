@@ -18,10 +18,10 @@ function callbackreqpasswd(Action & $action)
     $action->lay->set('CALLBACK_NOT_OK', False);
     $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
     $au = new ActionUsage($action);
-    $token = $au->addNeeded("token", "token number");
-    $uid = $au->addOption("uid", "user id");
-    $pwd1 = $au->addOption("pwd1", "new password 1");
-    $pwd2 = $au->addOption("pwd2", "new password 2");
+    $token = $au->addNeededParameter("token", "token number");
+    $uid = $au->addOptionnalParameter("uid", "user id");
+    $pwd1 = $au->addOptionnalParameter("pwd1", "new password 1");
+    $pwd2 = $au->addOptionnalParameter("pwd2", "new password 2");
     $au->verify();
     // Retrieve token from database
     $utok = new UserToken($action->dbaccess, $token);
@@ -79,7 +79,7 @@ function callbackreqpasswd(Action & $action)
                     $u->password_new = $pwd1;
                     $err = $u->modify();
                     if ($err == "") {
-                        $udoc->addComment(_("Change password by token"));
+                        $udoc->addHistoryEntry(_("Change password by token"));
                     }
                     // Delete the token in the database
                     $err = $utok->delete();

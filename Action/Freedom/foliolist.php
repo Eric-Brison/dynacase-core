@@ -59,7 +59,7 @@ function foliolist(&$action)
             //     $dir->id="";
             //     $dir->initid="";
             //     $dir->doctype='T';
-            if (($folioid > 0) && ($dir->getValue("SE_IDCFLD") != $folioid)) {
+            if (($folioid > 0) && ($dir->getRawValue("SE_IDCFLD") != $folioid)) {
                 $dir->setValue("SE_IDCFLD", $folioid);
                 $dir->setValue("SE_ORDERBY", "title");
                 //     $dir->Add();

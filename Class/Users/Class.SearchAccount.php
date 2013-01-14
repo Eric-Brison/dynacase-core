@@ -17,7 +17,7 @@ include_once ("FDL/Lib.Dir.php");
  * @class SearchAccount
  * @code
  $s = new SearchAccount();
- $s->addRoleFilter($s->docName2login('TST_ROLEWRITTER'));
+ $s->addRoleFilter($s->getLoginFromDocName('TST_ROLEWRITTER'));
  $s->addGroupFilter("all");
  $s->addFilter("mail ~ '%s'", "test");
  $al = $s->search();
@@ -71,7 +71,7 @@ class SearchAccount
     }
     /**
      * add role filter appartenance
-     * @api
+     * @api add role filter appartenance
      * @param string $role role reference (login)
      * @throws Dcp\Sacc\Exception
      */
@@ -92,7 +92,7 @@ class SearchAccount
     }
     /**
      * add group filter appartenance
-     * @api
+     * @api add group filter appartenance
      * @param string $group group name (login)
      * @throws Dcp\Sacc\Exception
      */
@@ -112,8 +112,8 @@ class SearchAccount
         }
     }
     /**
-     * set account type filter
-     * @api
+     * set account type filter (only matching accounts will be returned)
+     * @api set account type filter (only matching accounts will be returned)
      * @code
      * $s->setTypeFilter($s::userType | $s::groupType);
      * @endcode
@@ -128,7 +128,7 @@ class SearchAccount
     }
     /**
      * add sql filter about Account properties
-     * @api
+     * @api add sql filter about Account properties
      * @code
      * $s->addFilter("mail ~ '%s'", $mailExpr);
      * @endcode
@@ -151,8 +151,8 @@ class SearchAccount
         }
     }
     /**
-     * set order can be login, mail, id, firstname,... each Account properties
-     * @api
+     * set order can be login, mail, id, firstname,… each Account properties
+     * @api set order can be login, mail, id, firstname,… each Account properties
      * @param string $order
      */
     public function setOrder($order)
@@ -160,8 +160,8 @@ class SearchAccount
         $this->order = $order;
     }
     /**
-     * set slice limit / "all" if no limit
-     * @api
+     * set slice limit / "all" for no limit
+     * @api set slice limit / "all" for no limit
      * @param int|string $slice
      * @throws Dcp\Sacc\Exception
      */
@@ -175,7 +175,7 @@ class SearchAccount
     }
     /**
      * set start offset
-     * @api
+     * @api set start offset
      * @param int $start
      * @throws Dcp\Sacc\Exception
      */
@@ -186,18 +186,37 @@ class SearchAccount
         }
         $this->start = intval($start);
     }
+
     /**
      * set if use view control document's privilege to filter account
-     * @api
+     *
+     * @deprecated use {@link SearchAccount::useViewControl} instead. Be carefull: this is the opposite!
+     * @see SearchAccount::overrideViewControl
+     *
      * @param bool $control
      */
     public function useViewControl($control = true)
     {
-        $this->viewControl = $control;
+        deprecatedFunction();
+        $this->overrideViewControl(!$control);
     }
+
+    /**
+     * include accounts the user cannot view
+     * @api include accounts the user cannot view
+     * @param bool $override
+     */
+    public function overrideViewControl($override = true)
+    {
+        $this->viewControl = !$override;
+    }
+
     /**
      * set object type return by ::search method
-     * @api
+     *
+     * @deprecated use {@link SearchAccount::setReturnType} instead
+     * @see SearchAccount::setReturnType
+     *
      * @param string $type self::returnDocument or self::returnAccount
      * @throws Dcp\Sacc\Exception
      */
@@ -209,20 +228,55 @@ class SearchAccount
         $this->returnType = $type;
     }
     /**
+     * set object type return by ::search method
+     *
+     * @api set object type return by ::search method
+     *
+     * @param string $type self::returnDocument or self::returnAccount
+     * @throws Dcp\Sacc\Exception
+     */
+    public function setReturnType($type)
+    {
+        if ($type != self::returnAccount && $type != self::returnDocument) {
+            throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0001", $type));
+        }
+        $this->returnType = $type;
+    }
+
+    /**
      * convert logical name document to login account
+     *
      * @static
-     * @api
+     * @deprecated use {@link SearchAccount::getLoginFromDocName} instead
+     * @see SearchAccount::getLoginFromDocName
+     *
      * @param string $name lolgical name
      * @return string login , null if not found
      */
     public static function docName2login($name)
     {
+        deprecatedFunction();
+        return self::getLoginFromDocName($name);
+    }
+    /**
+     * convert logical name document to login account
+     *
+     * @static
+     * @api convert logical name document to login account
+     *
+     * @param string $name lolgical name
+     * @return string login , null if not found
+     */
+    public static function getLoginFromDocName($name)
+    {
         $sql = sprintf("select login from docname, users where docname.id = users.fid and docname.name='%s'", pg_escape_string($name));
         simpleQuery('', $sql, $login, true, true);
         return $login;
     }
+
     /**
      * @param string $family
+     * @throws Dcp\Sacc\Exception if $family is not a valid family name
      */
     public function filterFamily($family)
     {
@@ -236,7 +290,7 @@ class SearchAccount
     }
     /**
      * send search of account's object
-     * @api
+     * @api send search of account's object
      * @return DocumentList|AccountList
      */
     public function search()

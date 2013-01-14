@@ -50,9 +50,9 @@ function foliotab(&$action)
         $tabongletsel = "ongletvs";
     }
     
-    $linktab = $doc->getParamValue("pfl_idlinktab");
+    $linktab = $doc->getFamilyParameterValue("pfl_idlinktab");
     if ($linktab) {
-        $linktab = $doc->_val2array($linktab);
+        $linktab = $doc->rawValueToArray($linktab);
         foreach ($linktab as $k => $id) {
             $tdoc = getTDoc($dbaccess, $id);
             if (controlTdoc($tdoc, "view")) $child[] = $tdoc;

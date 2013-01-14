@@ -355,7 +355,7 @@ class Fdl_Collection extends Fdl_Document
                 $out->document = $tmpdoc->getDocument(true, false);
                 $idx = 0;
                 if (!$keyword) $keyword = str_replace(" ", "|", $key);
-                while ($doc = $s->nextDoc()) {
+                while ($doc = $s->getNextDoc()) {
                     $tmpdoc->affect($doc);
                     if ($verifyhaschild) {
                         $tmpdoc->setVolatileProperty("haschildfolder", hasChildFld($this->dbaccess, $tmpdoc->getProperty('initid') , ($doc->doctype == 'S')));
@@ -431,7 +431,7 @@ class Fdl_Collection extends Fdl_Document
     {
         $out = new stdClass();
         if ($this->docisset()) {
-            $err = $this->doc->addFile($docid);
+            $err = $this->doc->insertDocument($docid);
             if ($err != "") {
                 $this->setError($err);
                 $out->error = $err;

@@ -226,7 +226,7 @@ class FormatCollection
                 if ($oa) {
                     if (($oa->type == "array") || ($oa->type == "tab") || ($oa->type == "frame")) throw new \Dcp\Fmtc\Exception("FMTC0002", $attrid);
                     $mb0 = microtime(true);
-                    $value = $doc->getValue($oa->id);
+                    $value = $doc->getRawValue($oa->id);
                     if ($value === '') {
                         if ($empty = $oa->getOption("showempty")) $r[$kdoc]["attributes"][$oa->id] = $empty;
                         else $r[$kdoc]["attributes"][$oa->id] = null;
@@ -291,7 +291,7 @@ class FormatCollection
         if ($oa->isMultiple()) {
             if ($oa->inArray() && $oa->getOption("multiple") == "yes") {
                 // double level multiple
-                $tv = Doc::_val2array($value);
+                $tv = Doc::rawValueToArray($value);
                 if (count($tv) == 1 && $tv[0] == "\t") {
                     $tv[0] = '';
                 }
@@ -307,7 +307,7 @@ class FormatCollection
                 }
             } else {
                 // single level multiple
-                $tv = Doc::_val2array($value);
+                $tv = Doc::rawValueToArray($value);
                 if ($oa->inArray() && count($tv) == 1 && $tv[0] == "\t") {
                     $tv[0] = '';
                 }

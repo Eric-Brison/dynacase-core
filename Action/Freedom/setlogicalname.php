@@ -33,9 +33,9 @@ function setlogicalname(Action & $action)
             if ($err != "") $action->addWarningMsg($err);
             else {
                 if ($oldName) {
-                    $doc->addComment(sprintf(_("update logical name from %s to %s") , $oldName, $doc->name));
+                    $doc->addHistoryEntry(sprintf(_("update logical name from %s to %s") , $oldName, $doc->name));
                 } else {
-                    $doc->addComment(sprintf(_("set logical name to %s") , $doc->name));
+                    $doc->addHistoryEntry(sprintf(_("set logical name to %s") , $doc->name));
                 }
             }
         }

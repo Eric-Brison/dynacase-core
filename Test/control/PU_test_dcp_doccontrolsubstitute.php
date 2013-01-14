@@ -32,7 +32,7 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
     private function getSearchName(\SearchDoc & $s)
     {
         $names = array();
-        while ($doc = $s->nextDoc()) {
+        while ($doc = $s->getNextDoc()) {
             $names[] = $doc->name;
         }
         return $names;

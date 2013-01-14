@@ -22,7 +22,6 @@ include_once ("FDL/freedom_util.php");
 function movedirfile(&$action)
 {
     // -----------------------------------
-    
     // Get all the params
     $todirid = GetHttpVars("todirid");
     $fromdirid = GetHttpVars("fromdirid");
@@ -34,7 +33,7 @@ function movedirfile(&$action)
     // add before suppress
     $dir = new_Doc($dbaccess, $todirid);
     if ($dir->locked == - 1) { // it is revised document
-        $ldocid = $dir->latestId();
+        $ldocid = $dir->getLatestId();
         if ($ldocid != $dir->id) $dir = new_Doc($dbaccess, $ldocid);
     }
     $err = $dir->AddFile($docid);
@@ -44,7 +43,7 @@ function movedirfile(&$action)
     
     $dir2 = new_Doc($dbaccess, $fromdirid);
     if ($dir2->locked == - 1) { // it is revised document
-        $ldocid = $dir2->latestId();
+        $ldocid = $dir2->getLatestId();
         if ($ldocid != $dir2->id) $dir2 = new_Doc($dbaccess, $ldocid);
     }
     

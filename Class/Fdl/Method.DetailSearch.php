@@ -53,11 +53,11 @@ class _DSEARCH extends DocSearch
         $distinct = false;
         if ($latest == "lastfixed") $distinct = true;
         if ($cond != "") $filters[] = $cond;
-        if ($this->getValue("se_famonly") == "yes") {
+        if ($this->getRawValue("se_famonly") == "yes") {
             if (!is_numeric($famid)) $famid = getFamIdFromName($this->dbaccess, $famid);
             $famid = - abs($famid);
         }
-        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getValue("se_trash") , false);
+        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash") , false);
         
         return $query;
     }
@@ -67,10 +67,10 @@ class _DSEARCH extends DocSearch
      */
     function getQuery()
     {
-        $filtersType = $this->getTValue("se_typefilter");
-        if ((count($this->getTvalue("se_filter")) > 0) && (empty($filtersType[0]) || $filtersType[0] != "generated")) {
+        $filtersType = $this->getMultipleRawValues("se_typefilter");
+        if ((count($this->getMultipleRawValues("se_filter")) > 0) && (empty($filtersType[0]) || $filtersType[0] != "generated")) {
             $queries = array();
-            $filters = $this->getTValue("se_filter");
+            $filters = $this->getMultipleRawValues("se_filter");
             foreach ($filters as $filter) {
                 $q = $this->getSqlXmlFilter($filter);
                 if ($q) $queries[] = $q;
@@ -97,10 +97,10 @@ class _DSEARCH extends DocSearch
     {
         // update only if one filter
         $err = '';
-        if (count($this->getTvalue("se_filter")) == 1) {
+        if (count($this->getMultipleRawValues("se_filter")) == 1) {
             // try to update se_famid
-            $filters = $this->getTValue("se_filter");
-            $filtersType = $this->getTValue("se_typefilter");
+            $filters = $this->getMultipleRawValues("se_filter");
+            $filtersType = $this->getMultipleRawValues("se_typefilter");
             $filter = $filters[0];
             $filterType = $filtersType[0];
             if ($filterType != "generated") {
@@ -134,16 +134,16 @@ class _DSEARCH extends DocSearch
     {
         // update only if one filter
         $err = '';
-        if (count($this->getTvalue("se_filter")) < 2) {
+        if (count($this->getMultipleRawValues("se_filter")) < 2) {
             // try to update se_famid
-            $filters = $this->getTValue("se_filter");
-            $typeFilters = $this->getTValue("se_typefilter");
-            if (count($this->getTvalue("se_filter")) == 1) {
+            $filters = $this->getMultipleRawValues("se_filter");
+            $typeFilters = $this->getMultipleRawValues("se_typefilter");
+            if (count($this->getMultipleRawValues("se_filter")) == 1) {
                 if ($typeFilters[0] != "generated") return ''; // don't update specified filter created by data API
                 
             }
-            if ($this->getValue("se_famid")) {
-                $filterXml = sprintf("<filter><family>%s%s</family>", $this->getValue("se_famid") , ($this->getValue("se_famonly") == "yes" ? " strict" : ""));
+            if ($this->getRawValue("se_famid")) {
+                $filterXml = sprintf("<filter><family>%s%s</family>", $this->getRawValue("se_famid") , ($this->getRawValue("se_famonly") == "yes" ? " strict" : ""));
                 
                 $filterXml.= "</filter>";
                 $this->setValue("se_typefilter", "generated"); // only one
@@ -203,9 +203,9 @@ class _DSEARCH extends DocSearch
     
     function preConsultation()
     {
-        if (count($this->getTvalue("se_filter")) > 0) {
+        if (count($this->getMultipleRawValues("se_filter")) > 0) {
             if ($this->defaultview == "FREEDOM:VIEWDSEARCH") {
-                $type = $this->getTvalue("se_typefilter");
+                $type = $this->getMultipleRawValues("se_typefilter");
                 if ($type[0] != "generated") {
                     $this->defaultview = "FDL:VIEWBODYCARD";
                 }
@@ -215,8 +215,8 @@ class _DSEARCH extends DocSearch
     
     function preEdition()
     {
-        if (count($this->getTvalue("se_filter")) > 0) {
-            $type = $this->getTvalue("se_typefilter");
+        if (count($this->getMultipleRawValues("se_filter")) > 0) {
+            $type = $this->getMultipleRawValues("se_typefilter");
             if ($type[0] != "generated") {
                 $this->defaultedit = "FDL:EDITBODYCARD";
                 /**
@@ -240,8 +240,8 @@ class _DSEARCH extends DocSearch
     function getSqlParseError()
     {
         $err = "";
-        $tlp = $this->getTValue("SE_LEFTP");
-        $tlr = $this->getTValue("SE_RIGHTP");
+        $tlp = $this->getMultipleRawValues("SE_LEFTP");
+        $tlr = $this->getMultipleRawValues("SE_RIGHTP");
         $clp = 0;
         $clr = 0;
         //if (count($tlp) > count($tlr)) $err=sprintf(_("left parenthesis is not closed"));
@@ -263,8 +263,8 @@ class _DSEARCH extends DocSearch
     function getSqlCond($col, $op, $val = "", $val2 = "", &$err = "")
     {
         
-        if ((!$this->searchfam) || ($this->searchfam->id != $this->getValue("se_famid"))) {
-            $this->searchfam = new_doc($this->dbaccess, $this->getValue("se_famid"));
+        if ((!$this->searchfam) || ($this->searchfam->id != $this->getRawValue("se_famid"))) {
+            $this->searchfam = new_doc($this->dbaccess, $this->getRawValue("se_famid"));
         }
         $col = trim(strtok($col, ' ')); // a col is one word only (prevent injection)
         // because for historic reason revdate is not a date type
@@ -361,7 +361,7 @@ class _DSEARCH extends DocSearch
                 break;
 
             case "~y":
-                if (!is_array($val)) $val = $this->_val2array($val);
+                if (!is_array($val)) $val = $this->rawValueToArray($val);
                 if (count($val) > 0) $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
                 
                 break;
@@ -516,17 +516,17 @@ class _DSEARCH extends DocSearch
                  */
                 function getSqlDetailFilter()
                 {
-                    $ol = $this->getValue("SE_OL");
-                    $tkey = $this->getTValue("SE_KEYS");
-                    $taid = $this->getTValue("SE_ATTRIDS");
-                    $tf = $this->getTValue("SE_FUNCS");
-                    $tlp = $this->getTValue("SE_LEFTP");
-                    $tlr = $this->getTValue("SE_RIGHTP");
-                    $tols = $this->getTValue("SE_OLS");
+                    $ol = $this->getRawValue("SE_OL");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
+                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+                    $tf = $this->getMultipleRawValues("SE_FUNCS");
+                    $tlp = $this->getMultipleRawValues("SE_LEFTP");
+                    $tlr = $this->getMultipleRawValues("SE_RIGHTP");
+                    $tols = $this->getMultipleRawValues("SE_OLS");
                     
                     if ($ol == "") {
                         // try in old version
-                        $ols = $this->getTValue("SE_OLS");
+                        $ols = $this->getMultipleRawValues("SE_OLS");
                         $ol = isset($ols[1]) ? $ols[1] : '';
                         if ($ol) {
                             $this->setValue("SE_OL", $ol);
@@ -536,7 +536,7 @@ class _DSEARCH extends DocSearch
                     if ($ol == "") $ol = "and";
                     $cond = "";
                     if (!$this->searchfam) {
-                        $this->searchfam = new_doc($this->dbaccess, $this->getValue("se_famid"));
+                        $this->searchfam = new_doc($this->dbaccess, $this->getRawValue("se_famid"));
                     }
                     if ((count($taid) > 1) || (count($taid) > 0 && $taid[0] != "")) {
                         // special loop for revdate
@@ -590,7 +590,7 @@ class _DSEARCH extends DocSearch
                  */
                 function isParameterizable()
                 {
-                    $tkey = $this->getTValue("SE_KEYS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
                     if (empty($tkey)) return false;
                     if ((count($tkey) > 1) || ($tkey[0] != "")) {
                         foreach ($tkey as $k => $v) {
@@ -609,7 +609,7 @@ class _DSEARCH extends DocSearch
                  */
                 function needParameters()
                 {
-                    $tkey = $this->getTValue("SE_KEYS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
                     
                     if ((count($tkey) > 1) || ($tkey[0] != "")) {
                         
@@ -627,7 +627,7 @@ class _DSEARCH extends DocSearch
                  */
                 function urlWhatEncodeSpec($l)
                 {
-                    $tkey = $this->getTValue("SE_KEYS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
                     
                     if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
                         
@@ -648,8 +648,8 @@ class _DSEARCH extends DocSearch
                  */
                 function getSpecTitle()
                 {
-                    $tkey = $this->getTValue("SE_KEYS");
-                    $taid = $this->getTValue("SE_ATTRIDS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
+                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
                     $l = "";
                     if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
                         $tl = array();
@@ -676,7 +676,7 @@ class _DSEARCH extends DocSearch
                             $l = " (" . implode(", ", $tl) . ")";
                         }
                     }
-                    return $this->getValue("ba_title") . $l;
+                    return $this->getRawValue("ba_title") . $l;
                 }
                 /**
                  * @templateController default detailed search view
@@ -690,12 +690,12 @@ class _DSEARCH extends DocSearch
                     $this->viewattr();
                     //-----------------------------------------------
                     // display already condition written
-                    $tkey = $this->getTValue("SE_KEYS");
-                    $taid = $this->getTValue("SE_ATTRIDS");
-                    $tf = $this->getTValue("SE_FUNCS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
+                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+                    $tf = $this->getMultipleRawValues("SE_FUNCS");
                     if ((count($taid) > 1) || ($taid[0] != "")) {
                         
-                        $fdoc = new_Doc($this->dbaccess, $this->getValue("SE_FAMID", 1));
+                        $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
                         $zpi = $fdoc->GetNormalAttributes();
                         $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
                         $zpi["fixstate"] = new BasicAttribute("fixstate", $this->fromid, _("state"));
@@ -742,7 +742,7 @@ class _DSEARCH extends DocSearch
                  */
                 function isStaticSql()
                 {
-                    return ($this->getValue("se_static") != "");
+                    return ($this->getRawValue("se_static") != "");
                 }
                 /**
                  * return family use for search
@@ -751,7 +751,7 @@ class _DSEARCH extends DocSearch
                 private function getSearchFamilyDocument()
                 {
                     static $fam = null;
-                    if (!$fam) $fam = createTmpDoc($this->dbaccess, $this->getValue("SE_FAMID", 1));
+                    if (!$fam) $fam = createTmpDoc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
                     return $fam;
                 }
                 /**
@@ -767,13 +767,13 @@ class _DSEARCH extends DocSearch
                     $tparm = $tcond = array();
                     //-----------------------------------------------
                     // display already condition written
-                    $tkey = $this->getTValue("SE_KEYS");
-                    $taid = $this->getTValue("SE_ATTRIDS");
-                    $tf = $this->getTValue("SE_FUNCS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
+                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+                    $tf = $this->getMultipleRawValues("SE_FUNCS");
                     $zpi = $toperator = array();
                     if ((count($taid) > 1) || ($taid[0] != "")) {
                         
-                        $fdoc = new_Doc($this->dbaccess, $this->getValue("SE_FAMID", 1));
+                        $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
                         $zpi = $fdoc->GetNormalAttributes();
                         $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
                         $zpi["fixstate"] = new BasicAttribute("state", $this->fromid, _("fixstate"));
@@ -867,7 +867,7 @@ class _DSEARCH extends DocSearch
                      */
                     global $action;
                     $classid = GetHttpVars("sfamid", 0);
-                    $famid = $this->getValue("SE_FAMID", 0);
+                    $famid = $this->getRawValue("SE_FAMID", 0);
                     $onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
                     $dirid = GetHttpVars("dirid");
                     $this->lay->set("ACTION", $action->name);
@@ -962,7 +962,7 @@ class _DSEARCH extends DocSearch
                         } else $selectclass[$k]["selected"] = "";
                     }
                     if (!$selfam) {
-                        $famid = abs($this->getValue("se_famid"));
+                        $famid = abs($this->getRawValue("se_famid"));
                         if ($this->id && $famid) {
                             $selectclass[] = array(
                                 "idcdoc" => $famid,
@@ -979,7 +979,7 @@ class _DSEARCH extends DocSearch
                     $this->lay->Set("classid", $this->fromid);
                     $this->lay->SetBlockData("SELECTCLASS", $selectclass);
                     $this->lay->set("has_permission_fdl_system", $action->parent->hasPermission('FDL', 'SYSTEM'));
-                    $this->lay->set("se_sysfam", ($this->getValue('se_sysfam') == 'yes') ? true : false);
+                    $this->lay->set("se_sysfam", ($this->getRawValue('se_sysfam') == 'yes') ? true : false);
                     $this->setFamidInLayout();
                     // display attributes
                     $tattr = array();
@@ -1077,7 +1077,7 @@ class _DSEARCH extends DocSearch
                     $this->lay->SetBlockData("FUNCSTATE", $tfunc);
                     $this->lay->Set("icon", $fdoc->getIcon());
                     
-                    if ($this->getValue("SE_LATEST") == "no") $this->lay->Set("select_all", "selected");
+                    if ($this->getRawValue("SE_LATEST") == "no") $this->lay->Set("select_all", "selected");
                     else $this->lay->Set("select_all", "");
                     $states = array();
                     //-----------------------------------------------
@@ -1112,12 +1112,12 @@ class _DSEARCH extends DocSearch
                     }
                     //-----------------------------------------------
                     // display already condition written
-                    $tol = $this->getTValue("SE_OLS");
-                    $tkey = $this->getTValue("SE_KEYS");
-                    $taid = $this->getTValue("SE_ATTRIDS");
-                    $tf = $this->getTValue("SE_FUNCS");
-                    $tlp = $this->getTValue("SE_LEFTP");
-                    $trp = $this->getTValue("SE_RIGHTP");
+                    $tol = $this->getMultipleRawValues("SE_OLS");
+                    $tkey = $this->getMultipleRawValues("SE_KEYS");
+                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+                    $tf = $this->getMultipleRawValues("SE_FUNCS");
+                    $tlp = $this->getMultipleRawValues("SE_LEFTP");
+                    $trp = $this->getMultipleRawValues("SE_RIGHTP");
                     
                     $cond = "";
                     $tcond = array();

@@ -25,7 +25,7 @@ class _FILE extends Doc
      * @end-method-ignore
     */
     
-    function PostModify()
+    function postModify()
     {
         $filename = $this->vault_filename("FI_FILE");
         /* to not view extension file
@@ -34,8 +34,8 @@ class _FILE extends Doc
         $filename=substr($filename,0,$pos);
         }
         */
-        if ($this->getValue("FI_TITLEW") == "") $this->SetValue("FI_TITLE", $filename);
-        else $this->SetValue("FI_TITLE", $this->getValue("FI_TITLEW"));
+        if ($this->getRawValue("FI_TITLEW") == "") $this->SetValue("FI_TITLE", $filename);
+        else $this->SetValue("FI_TITLE", $this->getRawValue("FI_TITLEW"));
     }
     /**
      * @begin-method-ignore

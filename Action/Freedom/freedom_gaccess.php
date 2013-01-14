@@ -28,19 +28,19 @@ function freedom_gaccess(Action & $action)
     // Get all the params
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $usage = new ActionUsage($action);
-    $usage->strict(false);
-    $usage->setText("view or modify document accessibilities");
-    $docid = $usage->addNeeded("id", "document identifier to profil");
-    $gid = $usage->addOption("gid", "group identificator, view user access for this group");
-    $green = ($usage->addOption("allgreen", "view only up acl", array(
+    $usage->setStrictMode(false);
+    $usage->setDefinitionText("view or modify document accessibilities");
+    $docid = $usage->addNeededParameter("id", "document identifier to profil");
+    $gid = $usage->addOptionnalParameter("gid", "group identificator, view user access for this group");
+    $green = ($usage->addOptionnalParameter("allgreen", "view only up acl", array(
         "Y",
         "N"
     ) , "N") == "Y");
-    $viewgroup = ($usage->addOption("group", "view group", array(
+    $viewgroup = ($usage->addOptionnalParameter("group", "view group", array(
         "Y",
         "N"
     ) , "N") == "Y");
-    $limit = $usage->addOption("memberLimit", "when gid option is set, limit members to display", array() , 100);
+    $limit = $usage->addOptionnalParameter("memberLimit", "when gid option is set, limit members to display", array() , 100);
     $usage->verify();
     // edition of group accessibilities
     // ---------------------
@@ -202,9 +202,9 @@ function freedom_gaccess(Action & $action)
         }
     }
     // add dynamic group for dynamic profile
-    if ($doc->getValue("DPDOC_FAMID") > 0) {
+    if ($doc->getRawValue("DPDOC_FAMID") > 0) {
         
-        $pdoc = new_Doc($dbaccess, $doc->getValue("DPDOC_FAMID"));
+        $pdoc = new_Doc($dbaccess, $doc->getRawValue("DPDOC_FAMID"));
         $pattr = $pdoc->GetProfilAttributes();
         /**
          * @var NormalAttribute $v
@@ -244,14 +244,14 @@ function freedom_gaccess(Action & $action)
     $err = $doc->control("modifyacl");
     $action->lay->set("profcount", "");
     $action->lay->set("cellWidth", "65");
-    if (count($acls)> 15) $action->lay->set("cellWidth", "50");
+    if (count($acls) > 15) $action->lay->set("cellWidth", "50");
     
     $action->lay->set("updateWaitText", sprintf(_("Update profiling is in progress.")));
     if ($err == "" && (!$doc->dprofid) && ($doc->profid == $doc->id)) {
         $action->lay->set("MODIFY", true);
         $action->lay->set("dmodify", "");
         if ($doc->isRealProfile()) {
-            if ($doc->getValue("dpdoc_famid")) {
+            if ($doc->getRawValue("dpdoc_famid")) {
                 
                 simpleQuery($dbaccess, sprintf("select count(id) from docread where dprofid=%d", $doc->id) , $cont, true, true);
             } else {
@@ -286,22 +286,26 @@ function freedom_gaccess(Action & $action)
         $action->lay->Set("dynamic", false);
     }
     $action->lay->setBlockData("legendcolor", array(
-       array(
-           "legendimage" => "G",
-           "legendexplication" => _("Legend:Groups")
-       ),array(
-           "legendimage" => "U",
-           "legendexplication" => _("Legend:Users")
-       ),array(
-           "legendimage" => "R",
-           "legendexplication" => _("Legend:Roles")
-       ),array(
-           "legendimage" => "D",
-           "legendexplication" => _("Legend:Dynamic")
-       ),array(
-           "legendimage" => "M",
-           "legendexplication" => _("Legend:Dynamic multiple")
-       )
+        array(
+            "legendimage" => "G",
+            "legendexplication" => _("Legend:Groups")
+        ) ,
+        array(
+            "legendimage" => "U",
+            "legendexplication" => _("Legend:Users")
+        ) ,
+        array(
+            "legendimage" => "R",
+            "legendexplication" => _("Legend:Roles")
+        ) ,
+        array(
+            "legendimage" => "D",
+            "legendexplication" => _("Legend:Dynamic")
+        ) ,
+        array(
+            "legendimage" => "M",
+            "legendexplication" => _("Legend:Dynamic multiple")
+        )
     ));
 }
 //--------------------------------------------

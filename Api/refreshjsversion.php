@@ -18,7 +18,7 @@
  */
 
 $usage = new ApiUsage();
-$usage->setText("regenerate js version file");
+$usage->setDefinitionText("regenerate js version file");
 $usage->verify();
 
 $nv = getJsVersion();

@@ -28,9 +28,9 @@ function ckupload(Action & $action)
     
     $usage = new ActionUsage($action);
     /* Internal numFunc */
-    $funcNum = $usage->addNeeded("CKEditorFuncNum", "CKEditorFuncNum");
+    $funcNum = $usage->addNeededParameter("CKEditorFuncNum", "CKEditorFuncNum");
     
-    $usage->strict(false);
+    $usage->setStrictMode(false);
     
     $usage->verify();
     
@@ -44,7 +44,7 @@ function ckupload(Action & $action)
         $doc->setValue("img_file", $filename);
         $err.= $doc->store();
         if ($err == "") {
-            $action->lay->set("docid", $doc->getProperty("id"));
+            $action->lay->set("docid", $doc->getPropertyValue("id"));
             $action->lay->set("title", $doc->getTitle());
         }
     } else {

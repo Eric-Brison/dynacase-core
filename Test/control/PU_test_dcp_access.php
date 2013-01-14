@@ -58,7 +58,7 @@ class TestAccess extends TestCaseDcpApplication
             foreach ($test['has:permission'] as $checkIdx => $check) {
                 $user = new_doc(self::$dbaccess, $check['user']);
                 $this->assertTrue($user->isAlive() , sprintf("test#%s/check#%s> Could not get user with id '%s'.", $testIdx, $checkIdx, $check['user']));
-                $wuser = new \User(self::$dbaccess, $user->getValue('us_whatid'));
+                $wuser = new \User(self::$dbaccess, $user->getRawValue('us_whatid'));
                 $this->assertTrue(is_numeric($wuser->id) , sprintf("test#%s/check#%s> Invalid user what id '%s' for user '%s'.", $testIdx, $checkIdx, $wuser->id, $check['user']));
                 
                 $this->sudo($wuser->login);

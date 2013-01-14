@@ -63,7 +63,7 @@ class _IGROUP extends _GROUP
         $this->AddParamRefresh("US_WHATID", "GRP_MAIL,US_LOGIN");
         // refresh MEID itself
         $this->SetValue("US_MEID", $this->id);
-        $iduser = $this->getValue("US_WHATID");
+        $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
             if (!$user) return sprintf(_("group #%d does not exist") , $iduser);
@@ -71,7 +71,7 @@ class _IGROUP extends _GROUP
             return _("group has not identificator");
         }
         
-        if ($this->getValue("grp_isrefreshed") == "0") $err.= _("this groups must be refreshed");
+        if ($this->getRawValue("grp_isrefreshed") == "0") $err.= _("this groups must be refreshed");
         return $err;
     }
     public function preRevive()
@@ -126,13 +126,13 @@ class _IGROUP extends _GROUP
         //  $err=_GROUP::RefreshGroup();
         $err = $this->RefreshDocUser();
         //$err.=$this->refreshMembers();
-        // refreshGroups(array($this->getValue("us_whatid")));
+        // refreshGroups(array($this->getRawValue("us_whatid")));
         $err.= $this->insertGroups();
         $err.= $this->Modify();
         //AddWarningMsg(sprintf("RefreshGroup %d %s",$this->id, $this->title));
         if ($err == "") {
             refreshGroups(array(
-                $this->getValue("us_whatid")
+                $this->getRawValue("us_whatid")
             ) , true);
             /*$this->setValue("grp_isrefreshed","1");
              $this->modify(true,array("grp_isrefreshed"),true);*/
@@ -144,7 +144,7 @@ class _IGROUP extends _GROUP
      */
     function refreshParentGroup()
     {
-        $tgid = $this->getTValue("GRP_IDPGROUP");
+        $tgid = $this->getMultipleRawValues("GRP_IDPGROUP");
         foreach ($tgid as $gid) {
             /**
              * @var _IGROUP $gdoc
@@ -162,10 +162,10 @@ class _IGROUP extends _GROUP
     
     public function synchronizeSystemGroup()
     {
-        $uid = $this->GetValue("US_WHATID");
-        $gname = $this->GetValue("GRP_NAME");
-        $login = $this->GetValue("US_LOGIN");
-        $roles = $this->GetTValue("grp_roles");
+        $uid = $this->getRawValue("US_WHATID");
+        $gname = $this->getRawValue("GRP_NAME");
+        $login = $this->getRawValue("US_LOGIN");
+        $roles = $this->getMultipleRawValues("grp_roles");
         
         $fid = $this->id;
         /**
@@ -191,8 +191,8 @@ class _IGROUP extends _GROUP
             $wrg = $this->RefreshLdapCard();
             if ($wrg) AddWarningMsg($wrg);
             // add in default folder root groups : usefull for import
-            $tgid = $this->getTValue("GRP_IDPGROUP");
-            $fdoc = $this->getFamdoc();
+            $tgid = $this->getMultipleRawValues("GRP_IDPGROUP");
+            $fdoc = $this->getFamilyDocument();
             $dfldid = $fdoc->dfldid;
             if ($dfldid != "") {
                 /**
@@ -200,7 +200,7 @@ class _IGROUP extends _GROUP
                  */
                 $dfld = new_doc($this->dbaccess, $dfldid);
                 if ($dfld->isAlive()) {
-                    if (count($tgid) == 0) $dfld->AddFile($this->initid);
+                    if (count($tgid) == 0) $dfld->insertDocument($this->initid);
                     else $dfld->delFile($this->initid);
                 }
             }
@@ -220,11 +220,11 @@ class _IGROUP extends _GROUP
      */
     public function setGroupMail($nomail = false)
     {
-        if (!$nomail) $nomail = ($this->getValue("grp_hasmail") == "no");
+        if (!$nomail) $nomail = ($this->getRawValue("grp_hasmail") == "no");
         if (!$nomail) {
             $this->setValue("grp_mail", $this->getMail());
         } else {
-            $this->deleteValue('grp_mail');
+            $this->clearValue('grp_mail');
         }
     }
     /**
@@ -254,13 +254,13 @@ class _IGROUP extends _GROUP
     {
         $err = "";
         if ($multiple == false) {
-            $gid = $this->getValue("US_WHATID");
+            $gid = $this->getRawValue("US_WHATID");
             if ($gid > 0) {
                 /**
                  * @var _IUSER $du
                  */
                 $du = new_Doc($this->dbaccess, $docid);
-                $uid = $du->getValue("us_whatid");
+                $uid = $du->getRawValue("us_whatid");
                 if ($uid > 0) {
                     $g = new Group("", $uid);
                     $g->iduser = $uid;
@@ -285,7 +285,7 @@ class _IGROUP extends _GROUP
         
         $err = "";
         
-        $gid = $this->getValue("US_WHATID");
+        $gid = $this->getRawValue("US_WHATID");
         if ($gid > 0) {
             
             $g = new Group("");
@@ -294,7 +294,7 @@ class _IGROUP extends _GROUP
                  * @var _IUSER $du
                  */
                 $du = new_Doc($this->dbaccess, $docid);
-                $uid = $du->getValue("us_whatid");
+                $uid = $du->getRawValue("us_whatid");
                 if ($uid > 0) {
                     $g->iduser = $uid;
                     $g->idgroup = $gid;
@@ -315,13 +315,13 @@ class _IGROUP extends _GROUP
     {
         
         $err = "";
-        $gid = $this->getValue("US_WHATID");
+        $gid = $this->getRawValue("US_WHATID");
         if ($gid > 0) {
             /**
              * @var _IUSER $du
              */
             $du = new_Doc($this->dbaccess, $docid);
-            $uid = $du->getValue("us_whatid");
+            $uid = $du->getRawValue("us_whatid");
             if ($uid > 0) {
                 $g = new Group("", $gid);
                 $g->iduser = $gid;
@@ -374,7 +374,7 @@ class _IGROUP extends _GROUP
      */
     function insertMember($docid)
     {
-        $err = $this->AddFile($docid, "latest", true); // without postInsert
+        $err = $this->insertDocument($docid, "latest", true); // without postInsert
         $this->setValue("grp_isrefreshed", "0");
         $this->modify(true, array(
             "grp_isrefreshed"
@@ -406,7 +406,7 @@ class _IGROUP extends _GROUP
     function refreshDocUser()
     {
         $err = "";
-        $wid = $this->getValue("us_whatid");
+        $wid = $this->getRawValue("us_whatid");
         if ($wid > 0) {
             $wuser = $this->getAccount(true);
             if ($wuser->isAffected()) {
@@ -449,7 +449,7 @@ class _IGROUP extends _GROUP
     {
         $err = '';
         
-        $wid = $this->getValue("us_whatid");
+        $wid = $this->getRawValue("us_whatid");
         if ($wid > 0) {
             $u = $this->getAccount(true);
             
@@ -470,7 +470,7 @@ class _IGROUP extends _GROUP
                 uasort($tglogin, "strcasecmp");
                 $this->SetValue("GRP_IDGROUP", array_keys($tglogin));
             } else {
-                $this->DeleteValue("GRP_IDGROUP");
+                $this->clearValue("GRP_IDGROUP");
             }
             
             $err = $this->modify();

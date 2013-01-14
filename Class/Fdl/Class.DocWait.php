@@ -382,7 +382,7 @@ create sequence seq_waittransaction start 1;
                              */
                             foreach ($attrs as $aid => $oa) {
                                 $ovalue = $originValues[$oa->id];
-                                $cvalue = $currentDoc->getValue($oa->id);
+                                $cvalue = $currentDoc->getRawValue($oa->id);
                                 if ($ovalue != $cvalue) {
                                     $this->status = self::conflict;
                                     $this->statusmessage.= sprintf(_("conflict %s [%s]: referer=%s, modified=%s") , $oa->getLabel() , $oa->id, $cvalue, $ovalue) . "\n";

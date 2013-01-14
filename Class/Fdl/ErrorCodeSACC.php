@@ -17,7 +17,7 @@ namespace {
         /**
          * @errorCode
          * the argument must be SearchAccount::returnAccount or SearchAccount::returnDocument
-         * @see SearchAccount::setObjectReturn()
+         * @see SearchAccount::setReturnType()
          */
         const SACC0001 = 'Incorrect argument "%s" to return type account search';
         /**

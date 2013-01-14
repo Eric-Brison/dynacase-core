@@ -179,7 +179,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                         $s->setObjectReturn();
                         $s->search();
                         if ($s->count() > 0) {
-                            while ($doc = $s->nextDoc()) {
+                            while ($doc = $s->getNextDoc()) {
                                 $files = array_merge($files, $this->docpropinfo($doc, $fspath, false));
                             }
                         }
@@ -216,16 +216,16 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
             //error_log("FSPATH3 :.$fspath vid:[$vid]");
             
         } else if (preg_match('/\/vid-([0-9]+)-([0-9]+)/', $fspath, $reg)) {
-            include_once('FDL/Lib.Vault.php');
+            include_once ('FDL/Lib.Vault.php');
             $fid = $reg[1];
             $tmpvid = $reg[2];
-            $info=vault_properties($tmpvid);
-
+            $info = vault_properties($tmpvid);
+            
             $fsbase = basename($fspath);
             if ($info->name == $fsbase) {
                 $vid = $tmpvid;
             } else {
-                $fid=0;
+                $fid = 0;
             }
             // error_log("FSPATH3 :.$fspath vid:[$vid]");
             
@@ -673,7 +673,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                         }
                         $fnames = array();
                         if ($afile->inArray()) {
-                            $tval = $doc->getTValue($afile->id);
+                            $tval = $doc->getMultipleRawValues($afile->id);
                             foreach ($tval as $k => $v) {
                                 $fnames[$k] = $doc->vault_filename($afile->id, false, $k);
                             }
@@ -751,7 +751,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
     {
         
         error_log("---------- >MKCOL :" . $options["path"]);
-        $err='';
+        $err = '';
         include_once ("FDL/Class.Doc.php");
         
         if (!empty($_SERVER["CONTENT_LENGTH"])) { // no body parsing yet
@@ -902,7 +902,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                                 $err = $psrc->delFile($srcid);
                                 if ($err == "") {
                                     
-                                    $src->addComment(sprintf(_("Move file from %s to %s") , ($psrc->title) , ($ppdest->title)));
+                                    $src->addHistoryEntry(sprintf(_("Move file from %s to %s") , ($psrc->title) , ($ppdest->title)));
                                     $query = "DELETE FROM dav.properties WHERE path = '$psource'";
                                 }
                             }
@@ -935,7 +935,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                         if ($psrc->isAlive()) {
                             $err = $psrc->delFile($srcid);
                             if ($err == "") {
-                                $src->addComment(sprintf(_("Move file from %s to %s") , ($psrc->title) , ($ppdest->title)));
+                                $src->addHistoryEntry(sprintf(_("Move file from %s to %s") , ($psrc->title) , ($ppdest->title)));
                                 $query = sprintf("DELETE FROM dav.properties WHERE path = '%s'", pg_escape_string($psource));
                                 pg_query($this->db_res, $query);
                             }
@@ -959,7 +959,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                                     
                                     $vf = newFreeVaultFile($this->db_freedom);
                                     $vf->Rename($afile["vid"], $bdest);
-                                    $src->addComment(sprintf(_("Rename file as %s") , $bdest));
+                                    $src->addHistoryEntry(sprintf(_("Rename file as %s") , $bdest));
                                     $src->postModify();
                                     $err = $src->modify();
                                 }
@@ -1044,21 +1044,21 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                 return "501 not implemented";
             } else {
                 
-                $copy = $src->copy();
+                $copy = $src->duplicate();
                 
                 error_log("COPY :" . $copy->id);
                 $afiles = $this->GetFilesProperties($copy);
                 error_log("# FILE :" . count($afiles));
                 $ff = $copy->GetFirstFileAttributes();
                 
-                $f = $copy->getValue($ff->id);
+                $f = $copy->getRawValue($ff->id);
                 error_log("RENAME SEARCH:" . $f);
                 if (preg_match(PREGEXPFILE, $f, $reg)) {
                     $vf = newFreeVaultFile($this->db_freedom);
                     $vid = $reg[2];
                     
                     $vf->Rename($vid, $bdest);
-                    $copy->addComment(sprintf(_("Rename file as %s") , $bdest));
+                    $copy->addHistoryEntry(sprintf(_("Rename file as %s") , $bdest));
                     $copy->postModify();
                     $err = $copy->modify();
                 }

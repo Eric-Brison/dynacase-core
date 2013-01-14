@@ -26,10 +26,10 @@ function modacl(Action & $action)
     // -----------------------------------
     // get all parameters
     $usage = new ActionUsage($action);
-    $usage->setText("modify document acl");
-    $userid = $usage->addNeeded("userid", "user identificator");
-    $aclp = $usage->addOption("aclup", "acls to add");
-    $docid = $usage->addNeeded("docid", "profil identificator");
+    $usage->setDefinitionText("modify document acl");
+    $userid = $usage->addNeededParameter("userid", "user identificator");
+    $aclp = $usage->addOptionnalParameter("aclup", "acls to add");
+    $docid = $usage->addNeededParameter("docid", "profil identificator");
     /**
      * @var array $aclp
      */
@@ -59,9 +59,9 @@ function modacl(Action & $action)
             }
         }
         
-        $doc->addComment(sprintf(_("Change control for %s user. Set %s privileges") , Account::getDisplayName($userid) , implode(', ', $aclName)));
+        $doc->addHistoryEntry(sprintf(_("Change control for %s user. Set %s privileges") , Account::getDisplayName($userid) , implode(', ', $aclName)));
     } else {
-        $doc->addComment(sprintf(_("Change control for %s user. No one privilege") , Account::getDisplayName($userid)));
+        $doc->addHistoryEntry(sprintf(_("Change control for %s user. No one privilege") , Account::getDisplayName($userid)));
     }
     redirect($action, "FREEDOM", sprintf("FREEDOM_ACCESS&userid=%d&id=%d", $userid, $docid));
 }

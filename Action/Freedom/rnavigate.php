@@ -29,7 +29,7 @@ function rnavigate(&$action)
     $limit = 100;
     
     $doc = new_Doc($dbaccess, $docid);
-    if ($doc->locked == - 1) $doc = new_Doc($dbaccess, $doc->LatestId());
+    if ($doc->locked == - 1) $doc = new_Doc($dbaccess, $doc->getLatestId());
     $idocid = $doc->initid;
     
     $rdoc = new DocRel($dbaccess, $idocid);

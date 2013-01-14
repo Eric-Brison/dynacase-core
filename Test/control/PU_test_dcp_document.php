@@ -151,8 +151,8 @@ class TestDocument extends TestCaseDcpCommonFamily
         $sdoctype = $this->_DBGetValue(sprintf("select doctype from docread where id=%d", $nd->id));
         $this->assertEquals('Z', $sdoctype, sprintf("document %s not deleted fix", $name));
         
-        $err = $nd->revive();
-        $this->assertEmpty($err, sprintf("error when revive document BASE : %s", $err));
+        $err = $nd->undelete();
+        $this->assertEmpty($err, sprintf("error when undelete document BASE : %s", $err));
         $slock = $this->_DBGetValue(sprintf("select locked from docread where id=%d", $nd->id));
         $this->assertGreaterThan(-1, $slock, sprintf("document %s locked fix", $name));
         $sdoctype = $this->_DBGetValue(sprintf("select doctype from docread where id=%d", $nd->id));
@@ -193,8 +193,8 @@ class TestDocument extends TestCaseDcpCommonFamily
         $sid = $this->_DBGetValue(sprintf("select id from docfrom where id='%s'", $nd->id));
         $this->assertFalse($sid, sprintf("document %s not really deleted (docfrom)", $nd->id));
         
-        $err = $nd->revive();
-        $this->assertNotEmpty($err, sprintf("error when revive document BASE : %s", $err));
+        $err = $nd->undelete();
+        $this->assertNotEmpty($err, sprintf("error when undelete document BASE : %s", $err));
     }
     /**
      * @dataProvider dataStoreFile
@@ -211,8 +211,8 @@ class TestDocument extends TestCaseDcpCommonFamily
         
         $err = $doc->setFile($attrName, $filePathName, $fileName, $index);
         $this->assertEmpty($err, sprintf("storeFile(%s, %s, %s, %s) returned with error: %s", $attrName, $filePathName, $fileName, $index, $err));
-        
-        $value = $doc->getTValue($attrName, '', $index);
+
+        $value = $doc->getMultipleRawValues($attrName, '', $index);
         $this->assertNotEmpty($value, sprintf("value of '%s' at index %s should not be empty", $attrName, $index));
     }
     /**
@@ -237,7 +237,7 @@ class TestDocument extends TestCaseDcpCommonFamily
         $err = $doc->saveFile($attrName, $fd, $fileName, $index);
         $this->assertEmpty($err, sprintf("saveFile(%s, %s, %s, %s) returned with error: %s", $attrName, $filePathName, $fileName, $index, $err));
         
-        $value = $doc->getTValue($attrName, '', $index);
+        $value = $doc->getMultipleRawValues($attrName, '', $index);
         $this->assertNotEmpty($value, sprintf("value of '%s' at index %s should not be empty", $attrName, $index));
     }
     /**
@@ -256,7 +256,7 @@ class TestDocument extends TestCaseDcpCommonFamily
         $err = $doc->setFile($attrName, $filePathName, $fileName, $index);
         $this->assertEmpty($err, sprintf("setFile(%s, %s, %s, %s) returned with error: %s", $attrName, $filePathName, $fileName, $index, $err));
         
-        $value = $doc->getTValue($attrName, '', $index);
+        $value = $doc->getMultipleRawValues($attrName, '', $index);
         $this->assertNotEmpty($value, sprintf("value of '%s' at index %s should not be empty", $attrName, $index));
     }
     /**

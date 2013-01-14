@@ -10,7 +10,7 @@
  *
  * @author Anakeen
  * @version $Id:  $
- * 
+ *
  * @package FDL
  *
  *
@@ -23,9 +23,9 @@ include_once ("FDL/Class.Doc.php");
 
 $usage = new ApiUsage();
 
-$usage->setText("Reset profiling use when restore context from archive");
-$user = $usage->addNeeded("login", "login");
-$password = $usage->addNeeded("password", "password");
+$usage->setDefinitionText("Reset profiling use when restore context from archive");
+$user = $usage->addNeededParameter("login", "login");
+$password = $usage->addNeededParameter("password", "password");
 
 $usage->verify();
 /**
@@ -57,20 +57,20 @@ if (!$uid) {
             if ($err == "") {
                 $err = $du->modify();
                 if ($err == "") {
-                    printf(_("new user # %d") , $du->getValue("us_whatid")); // affichage de l'identifiant système
+                    printf(_("new user # %d") , $du->getRawValue("us_whatid")); // affichage de l'identifiant système
                     
                     /**
                      * @var Dir $g
                      */
                     $g = new_Doc($dbaccess, "GDEFAULT");
                     if ($g) {
-                        $err = $g->addFile($du->initid);
+                        $err = $g->insertDocument($du->initid);
                     }
                 }
             }
         }
         if ($err) print "\nerreur:$err\n";
-        $uid = $du->getValue("us_whatid");
+        $uid = $du->getRawValue("us_whatid");
     }
 }
 if ($uid > 0) {

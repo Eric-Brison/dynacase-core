@@ -114,7 +114,7 @@ function mailcard(Action & $action)
         if ($uid > 0) {
             $tu = getTDoc($dbaccess, $uid);
             $wuid = getv($tu, "us_whatid");
-            //      $err=$doc->addComment(_("document received for"),HISTO_NOTICE,"RCPTDOC",$wuid);
+            //      $err=$doc->addHistoryEntry(_("document received for"),HISTO_NOTICE,"RCPTDOC",$wuid);
             $err = $doc->addUTag($wuid, "TOVIEW");
         }
     }
@@ -417,8 +417,8 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                         if (in_array($aid, $taids)) {
                             $tva = array();
                             $cidindex = "";
-                            if ($afiles[$aid]->repeat) $va = $doc->getTValue($aid, "", $index);
-                            else $va = $doc->getValue($aid);
+                            if ($afiles[$aid]->repeat) $va = $doc->getMultipleRawValues($aid, "", $index);
+                            else $va = $doc->getRawValue($aid);
                             
                             if ($va != "") {
                                 list($mime, $vid) = explode("|", $va);
@@ -611,7 +611,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
             if ($savecopy) createSentMessage($to, $from, $cc, $bcc, $subject, $multi_mix, $doc);
             if ($cc != "") $lsend = sprintf("%s and %s", $to, $cc);
             else $lsend = $to;
-            $doc->addcomment(sprintf(_("sended to %s") , $lsend));
+            $doc->addHistoryEntry(sprintf(_("sended to %s") , $lsend));
             $action->addlogmsg(sprintf(_("sending %s to %s") , $doc->title, $lsend));
             if ($userinfo) $action->addwarningmsg(sprintf(_("sending %s to %s") , $doc->title, $lsend));
         } else {
@@ -736,7 +736,7 @@ function realfile($src)
     if ($src == "cid:icon") {
         $va = $doc->icon;
     } else {
-        if (substr($src, 0, 4) == "cid:") $va = $doc->getValue(substr($src, 4));
+        if (substr($src, 0, 4) == "cid:") $va = $doc->getRawValue(substr($src, 4));
         elseif (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)$/", $src, $reg)) {
             $va = copyvault(str_replace('&amp;', '&', $reg[2]));
             $tmpfile[] = $va;

@@ -32,9 +32,9 @@ if ($dbaccess == "") {
 }
 
 $usage = new ApiUsage();
-$usage->setText("Execute Dynacase Processes");
-$docid = $usage->addOption("docid", "special docid", null, 0);
-$comment = base64_decode($usage->addOption("comment", "additionnal comment", null, ""));
+$usage->setDefinitionText("Execute Dynacase Processes");
+$docid = $usage->addOptionnalParameter("docid", "special docid", null, 0);
+$comment = base64_decode($usage->addOptionnalParameter("comment", "additionnal comment", null, ""));
 $usage->verify();
 
 if (($docid == 0) && (!is_numeric($docid))) $docid = getFamIdFromName($dbaccess, $docid);
@@ -45,7 +45,7 @@ if ($docid > 0) {
      * @var _EXEC $doc
      */
     if ($doc->locked == - 1) { // it is revised document
-        $doc = new_Doc($dbaccess, $doc->latestId());
+        $doc = new_Doc($dbaccess, $doc->getLatestId());
     }
     
     $doc->setValue("exec_status", "progressing");
@@ -73,31 +73,31 @@ if ($docid > 0) {
         unlink($ferr);
     }
     
-    $doc->deleteValue("exec_nextdate");
+    $doc->clearValue("exec_nextdate");
     $doc->setValue("exec_elapsed", $ms);
     $doc->setValue("exec_date", date("d/m/Y H:i "));
-    $doc->deleteValue("exec_status");
-    $doc->deleteValue("exec_statusdate");
+    $doc->clearValue("exec_status");
+    $doc->clearValue("exec_statusdate");
     $doc->setValue("exec_state", (($statut == 0) ? "OK" : $statut));
-    $puserid = $doc->getValue("exec_iduser"); // default exec user
+    $puserid = $doc->getRawValue("exec_iduser"); // default exec user
     $doc->setValue("exec_iduser", $doc->getExecUserID());
     $doc->refresh();
     $err = $doc->modify();
     if ($err == "") {
-        if ($comment != "") $doc->AddComment($comment);
-        $err = $doc->AddRevision(sprintf(_("execution by %s done %s") , $doc->getTitle($doc->getExecUserID()) , $statut));
+        if ($comment != "") $doc->addHistoryEntry($comment);
+        $err = $doc->revise(sprintf(_("execution by %s done %s") , $doc->getTitle($doc->getExecUserID()) , $statut));
         if ($err == "") {
-            $doc->deleteValue("exec_elapsed");
-            $doc->deleteValue("exec_detail");
-            $doc->deleteValue("exec_detaillog");
-            $doc->deleteValue("exec_date");
-            $doc->deleteValue("exec_state");
+            $doc->clearValue("exec_elapsed");
+            $doc->clearValue("exec_detail");
+            $doc->clearValue("exec_detaillog");
+            $doc->clearValue("exec_date");
+            $doc->clearValue("exec_state");
             $doc->setValue("exec_iduser", $puserid);
             $doc->refresh();
             $err = $doc->modify();
         }
     } else {
-        $doc->AddComment($err, HISTO_ERROR);
+        $doc->addHistoryEntry($err, HISTO_ERROR);
     }
     
     if ($err != "") exit(1);

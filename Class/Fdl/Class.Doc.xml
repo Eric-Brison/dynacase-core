@@ -73,7 +73,7 @@ Class _[PHPclassName] extends [DocParent] {
   if (! $ca) throw new Dcp\Exception(ErrorCode::getError('ATTR1212',$callMethod, $this->fromname));
   if ($ca->inArray()) {
       $this->completeArrayRow($ca->fieldSet->id);
-      $t=$this->getTValue($oAttr);
+      $t=$this->getMultipleRawValues($oAttr);
       foreach ($t as $k=>$v) {
           $err.=$this->setValue($oAttr, $this->applyMethod($callMethod,'',$k),$k);
       }

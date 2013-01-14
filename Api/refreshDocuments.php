@@ -40,20 +40,20 @@ function color_warning($msg)
 }
 
 $usage = new ApiUsage();
-$usage->setText("Refresh documents ");
-$famId = $usage->addNeeded("famid", "the family identifier used to filter");
-$method = $usage->addOption("method", "method to use)", array() , "refresh");
-$arg = $usage->addOption("arg", "optional method argument to set when calling method");
-$revision = $usage->addOption("revision", "use all revision", array(
+$usage->setDefinitionText("Refresh documents ");
+$famId = $usage->addNeededParameter("famid", "the family identifier used to filter");
+$method = $usage->addOptionnalParameter("method", "method to use)", array() , "refresh");
+$arg = $usage->addOptionnalParameter("arg", "optional method argument to set when calling method");
+$revision = $usage->addOptionnalParameter("revision", "use all revision", array(
     "yes",
     "no"
 ) , "no");
-$docid = $usage->addOption("docid", "use only for this document id");
-$start = $usage->addOption("start", "start from offset", array() , 0);
-$slice = $usage->addOption("slice", "limit from offset", array() , "all");
-$fldid = $usage->addOption("fldid", "use collection id to limit search");
-$filter = $usage->addOption("filter", "sql filter to limit search");
-$save = $usage->addOption("save", "store mode", array(
+$docid = $usage->addOptionnalParameter("docid", "use only for this document id");
+$start = $usage->addOptionnalParameter("start", "start from offset", array() , 0);
+$slice = $usage->addOptionnalParameter("slice", "limit from offset", array() , "all");
+$fldid = $usage->addOptionnalParameter("fldid", "use collection id to limit search");
+$filter = $usage->addOptionnalParameter("filter", "sql filter to limit search");
+$save = $usage->addOptionnalParameter("save", "store mode", array(
     "complete",
     "light",
     "none"
@@ -118,7 +118,7 @@ $card = $s->count();
 printf("\n%d %s to update with %s\n", $card, $famtitle, $method);
 
 $ret = "";
-while ($doc = $s->nextDoc()) {
+while ($doc = $s->getNextDoc()) {
     $usemethod = ($method && (method_exists($doc, $method)));
     if ($method && (!method_exists($doc, $method))) {
         printf("\nmethod not exists %s \n", $method);
@@ -133,9 +133,9 @@ while ($doc = $s->nextDoc()) {
             $method
         ) , $targ);
         if ($doc->isChanged()) {
-            $olds = $doc->getOldValues();
+            $olds = $doc->getOldRawValues();
             foreach ($olds as $k => $v) {
-                $smod.= sprintf("\t- %s [%s]:[%s]\n", $k, $v, $doc->getValue($k));
+                $smod.= sprintf("\t- %s [%s]:[%s]\n", $k, $v, $doc->getRawValue($k));
             }
             switch ($save) {
                 case "light":

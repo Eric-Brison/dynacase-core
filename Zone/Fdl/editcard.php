@@ -176,7 +176,7 @@ function useOwnParamters(Doc & $doc)
     if (is_a($doc, "DocFam")) {
         $fam = $doc;
     } else {
-        $fam = $doc->getFamDoc();
+        $fam = $doc->getFamilyDocument();
     }
     foreach ($listattr as $aid => $attr) {
         /**
@@ -222,7 +222,7 @@ function setDocDefaultValues(Doc & $doc)
             } elseif ($attr->type == "array") {
                 $attr->setOption("empty", "yes");
             }
-            $doc->DeleteValue($attr->id); // delete all value to set only own default values
+            $doc->clearValue($attr->id); // delete all value to set only own default values
             
         }
     }
@@ -232,7 +232,7 @@ function setDocDefaultValues(Doc & $doc)
          */
         $defVal = $doc->getOwnDefValues();
     } else {
-        $fam = $doc->getFamDoc();
+        $fam = $doc->getFamilyDocument();
         $defVal = $fam->getOwnDefValues();
     }
     foreach ($defVal as $aid => $value) {
@@ -340,8 +340,8 @@ function fdl_setHttpVars(&$doc)
     foreach ($http as $k => $v) {
         $oa = $doc->getAttribute($k);
         if ($oa) {
-            if ($doc->getValue($k) == "") {
-                if ($oa->inArray() && (!is_array($v))) $v = $doc->_val2array(str_replace('\n', "\n", $v));
+            if ($doc->getRawValue($k) == "") {
+                if ($oa->inArray() && (!is_array($v))) $v = $doc->rawValueToArray(str_replace('\n', "\n", $v));
                 $doc->setValue($k, $v);
                 //		print "<br>Set $k to ";print_r($v);
                 $ismod = true;

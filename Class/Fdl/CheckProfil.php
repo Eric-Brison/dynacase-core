@@ -142,7 +142,7 @@ class CheckProfil extends CheckData
         foreach ($uids as $uid) {
             $uid = trim($uid);
             if ($uid) {
-                if ($this->profil->getValue("dpdoc_famid")) {
+                if ($this->profil->getRawValue("dpdoc_famid")) {
                     if (!$this->checkUser($uid)) {
                         $this->checkAttribute($uid);
                     }
@@ -175,7 +175,7 @@ class CheckProfil extends CheckData
     
     private function checkAttribute($aid)
     {
-        $dynName = $this->profil->getValue("dpdoc_famid");
+        $dynName = $this->profil->getRawValue("dpdoc_famid");
         if (!$this->dynDoc) {
             $this->dynDoc = new_doc(getDbAccess() , $dynName);
         }

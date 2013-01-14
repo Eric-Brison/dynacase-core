@@ -21,7 +21,7 @@ include_once ("Class.QueryGen.php");
 include_once ("Class.SubForm.php");
 include_once ("Class.Param.php");
 // -----------------------------------
-function applist(&$action)
+function applist(Action &$action)
 {
     // -----------------------------------
     // Set the globals elements
@@ -82,7 +82,7 @@ function applist(&$action)
         $query->table->array[$k]["delete"] = "";
         $query->table->array[$k]["version"] = $version;
         $query->table->array[$k]["description"] = $action->text($query->table->array[$k]["description"]);
-        $query->table->array[$k]["appicon"] = $action->getImageUrl($query->table->array[$k]["icon"]);
+        $query->table->array[$k]["appicon"] = $action->parent->getImageLink($query->table->array[$k]["icon"]);
     }
     
     $query->table->fields = array(
@@ -100,10 +100,10 @@ function applist(&$action)
     );
     
     $action->lay->Set("TABLE", $query->table->Set());
-    $action->lay->Set("IMGHELP", $action->GetImageUrl("help.gif"));
-    $action->lay->Set("IMGPRINT", $action->GetImageUrl("print.gif"));
-    $action->lay->Set("IMGEDIT", $action->GetImageUrl("edit.gif"));
-    $action->lay->Set("IMGSEARCH", $action->GetImageUrl("search.gif"));
+    $action->lay->Set("IMGHELP", $action->parent->getImageLink("help.gif"));
+    $action->lay->Set("IMGPRINT", $action->parent->getImageLink("print.gif"));
+    $action->lay->Set("IMGEDIT", $action->parent->getImageLink("edit.gif"));
+    $action->lay->Set("IMGSEARCH", $action->parent->getImageLink("search.gif"));
     $action->lay->Set("APPLIST", _("Application list"));
 }
 ?>

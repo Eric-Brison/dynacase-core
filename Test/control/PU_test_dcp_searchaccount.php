@@ -36,7 +36,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         $s = new \SearchAccount();
         if ($roleFilter) $s->addRoleFilter($roleFilter);
         if ($groupFilter) $s->addGroupFilter($groupFilter);
-        $s->setObjectReturn($s::returnAccount);
+        $s->setReturnType($s::returnAccount);
         /**
          * @var \AccountList $al
          */
@@ -79,7 +79,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         $s = new \SearchAccount();
         if ($roleFilter) $s->addRoleFilter($roleFilter);
         if ($groupFilter) $s->addGroupFilter($groupFilter);
-        $s->setObjectReturn($s::returnDocument);
+        $s->setReturnType($s::returnDocument);
         /**
          * @var \DocumentList $al
          */
@@ -92,8 +92,8 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
          */
         foreach ($al as $doc) {
             $login = '';
-            if ($doc->getAttribute("us_login")) $login = $doc->getvalue("us_login");
-            elseif ($doc->getAttribute("role_login")) $login = $doc->getvalue("role_login");
+            if ($doc->getAttribute("us_login")) $login = $doc->getRawValue("us_login");
+            elseif ($doc->getAttribute("role_login")) $login = $doc->getRawValue("role_login");
             $this->assertTrue(in_array($login, $expectedAccounts) , sprintf("login <%s> #%s must not be present", $login, $doc->id));
             $loginFounds[] = $login;
         }
@@ -112,7 +112,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         $s->setSlice($slice);
         $s->setStart($start);
         $s->setOrder($order);
-        $s->setObjectReturn($s::returnAccount);
+        $s->setReturnType($s::returnAccount);
         /**
          * @var \AccountList $al
          */
@@ -138,7 +138,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         $s->addFilter($filter, $filterArg);
         if ($accountType) $s->setTypeFilter($accountType);
         $s->setOrder("login");
-        $s->setObjectReturn($s::returnAccount);
+        $s->setReturnType($s::returnAccount);
         /**
          * @var \AccountList $al
          */
@@ -166,8 +166,8 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         $s = new \SearchAccount();
         $s->addFilter($filter, $filterArg);
         $s->setOrder("login");
-        $s->useViewControl();
-        $s->setObjectReturn($s::returnAccount);
+        $s->overrideViewControl(false);
+        $s->setReturnType($s::returnAccount);
         /**
          * @var \AccountList $al
          */
@@ -193,7 +193,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
      */
     public function testDocName2Login($docName, $login)
     {
-        $this->assertEquals(mb_strtolower($login) , \SearchAccount::docName2login($docName) , "logical name convert to login failed");
+        $this->assertEquals(mb_strtolower($login) , \SearchAccount::getLoginFromDocName($docName) , "logical name convert to login failed");
     }
     /**
      * @dataProvider dataFilterByFamily
@@ -204,8 +204,8 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         $s = new \SearchAccount();
         $s->addFilter($filter);
         $s->setOrder("login");
-        $s->useViewControl();
-        $s->setObjectReturn($s::returnAccount);
+        $s->overrideViewControl(false);
+        $s->setReturnType($s::returnAccount);
         $s->filterFamily($family);
         /**
          * @var \AccountList $al
@@ -225,8 +225,8 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         $s = new \SearchAccount();
         $s->addFilter($filter);
         $s->setOrder("login");
-        $s->useViewControl(false);
-        $s->setObjectReturn($s::returnAccount);
+        $s->overrideViewControl(true);
+        $s->setReturnType($s::returnAccount);
         $s->filterFamily($family);
         /**
          * @var \AccountList $al

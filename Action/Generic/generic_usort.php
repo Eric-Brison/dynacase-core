@@ -30,7 +30,7 @@ function generic_usort(Action & $action)
     if ($catg) {
         $dir = new_doc($action->dbaccess, $catg);
         if ($dir->isAlive()) {
-            $sfamid = $dir->getValue("se_famid");
+            $sfamid = $dir->getRawValue("se_famid");
         }
     }
     
@@ -64,7 +64,7 @@ function setUsort(Action & $action, $aorder, $famid = "")
     if ($aorder[0] == "-") $sqlorder = substr($aorder, 1);
     $a = $fdoc->getAttribute($sqlorder);
     if ($a === false) {
-        $a = $fdoc->getProperty($sqlorder);
+        $a = $fdoc->getPropertyValue($sqlorder);
     }
     if ($a && $a->type == "text") $sqlorder = "lower($sqlorder)";
     if ($aorder[0] == "-") $sqlorder.= " desc";

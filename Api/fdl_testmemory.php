@@ -20,10 +20,10 @@ include_once ("FDL/Class.SearchDoc.php");
 global $appl;
 
 $usage = new ApiUsage();
-$usage->setText("List Animal");
-$mode = $usage->addNeeded("mode", "Mode", array("TABLE", "OBJECT", "ITEM"));
-$family = $usage->addNeeded("famid", "family identificator");
-$slice = $usage->addOption("slice", "number of document to retrieve", null, 10);
+$usage->setDefinitionText("List Animal");
+$mode = $usage->addNeededParameter("mode", "Mode", array("TABLE", "OBJECT", "ITEM"));
+$family = $usage->addNeededParameter("famid", "family identificator");
+$slice = $usage->addOptionnalParameter("slice", "number of document to retrieve", null, 10);
 $usage->verify();
 
 $dbaccess = $appl->GetParam("FREEDOM_DB");

@@ -47,13 +47,13 @@ $famid = "") // folder containt special fam id
     $dirid = $dir->id; // use initial id for directories
     $distinct = false;
     
-    $action->lay->set("RSS", ($dir->getValue("gui_isrss") == "yes" ? true : false));
+    $action->lay->set("RSS", ($dir->getRawValue("gui_isrss") == "yes" ? true : false));
     $action->lay->set("rsslink", $dir->getRssLink());
     $action->lay->set("foldername", $dir->getHtmlTitle());
     // control open
     if ($dir->defDoctype == 'S') {
         $aclctrl = "execute";
-        if ($sqlorder == "") $sqlorder = $dir->getValue("se_orderby");
+        if ($sqlorder == "") $sqlorder = $dir->getRawValue("se_orderby");
     } else $aclctrl = "open";
     if (($err = $dir->Control($aclctrl)) != "") $action->exitError($err);
     
@@ -114,7 +114,7 @@ $famid = "") // folder containt special fam id
     $hasNext = ($sd->count() > $slice);
     if ($viewone && ($sd->count() == 1)) {
         
-        $doc1 = $sd->nextDoc();
+        $doc1 = $sd->getNextDoc();
         
         if ($doc1->doctype == "D") redirect($action, "FREEDOM", "OPENFOLIO&id=" . $doc1->initid, $action->GetParam("CORE_STANDURL"));
         else redirect($action, "FDL", "FDL_CARD&latest=Y&id=" . $doc1->id, $action->GetParam("CORE_STANDURL"));
@@ -157,7 +157,7 @@ $famid = "") // folder containt special fam id
         $lattr = array();
         
         $k = 0;
-        while ($doc = $sd->nextDoc()) {
+        while ($doc = $sd->getNextDoc()) {
             
             if ($doc->isConfidential()) continue;
             $nbseedoc++;
@@ -190,7 +190,7 @@ $famid = "") // folder containt special fam id
             $tdoc[$k]["divid"] = $kdiv;
             
             $tdoc[$k]["locked"] = "";
-            $tdoc[$k]["emblem"] = $action->GetImageUrl("1x1.png");
+            $tdoc[$k]["emblem"] = $action->parent->getImageLink("1x1.png");
             $tdoc[$k]["emblemt"] = "";
             $tdoc[$k]["emblemw"] = "0";
             $tdoc[$k]["canedit"] = 1;
@@ -313,7 +313,7 @@ $famid = "") // folder containt special fam id
             //                 COLUMN MODE
             // ----------------------------------------------------------
             if ($column) {
-                $adoc = $doc->getFamDoc();
+                $adoc = $doc->getFamilyDocument();
                 /* Check if the family header has already been generated */
                 $famdocAlreadyExists = false;
                 foreach ($tfamdoc as $famdoc) {
@@ -357,9 +357,9 @@ $famid = "") // folder containt special fam id
                     }
                 } else {
                     foreach ($lattr[$doc->fromid] as $ka => $attr) {
-                        //$tvalues[]=$doc->getValue($attr->id,"-");
-                        if ($attr->type == "image") $tvalues[] = '<img src="' . $doc->getHtmlValue($attr, $doc->getValue($attr->id, "-") , $target) . '&height=30"  height="30">';
-                        else $tvalues[] = ($doc->getValue($attr->id) ? $doc->getHtmlValue($attr, $doc->getValue($attr->id) , $target) : '-');
+                        //$tvalues[]=$doc->getRawValue($attr->id,"-");
+                        if ($attr->type == "image") $tvalues[] = '<img src="' . $doc->getHtmlValue($attr, $doc->getRawValue($attr->id, "-") , $target) . '&height=30"  height="30">';
+                        else $tvalues[] = ($doc->getRawValue($attr->id) ? $doc->getHtmlValue($attr, $doc->getRawValue($attr->id) , $target) : '-');
                     }
                 }
                 $tdoc[$k]["values"] = implode('</td><td class="tlist">', $tvalues);

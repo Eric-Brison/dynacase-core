@@ -62,10 +62,10 @@ function editchangestate(Action & $action)
                         if ($oa) {
                             if ($oa->needed) $tneed[$oa->id] = $oa->getLabel();
                             if ($oa->usefor == 'Q') {
-                                $wval = $wdoc->getParamValue($oa->id);
+                                $wval = $wdoc->getFamilyParameterValue($oa->id);
                                 $wval = $wdoc->getValueMethod($wval);
                             } else {
-                                $wval = $wdoc->getValue($oa->id);
+                                $wval = $wdoc->getRawValue($oa->id);
                             }
                             if ($edittpl = $oa->getOption("edittemplate")) {
                                 $input = sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&wiid=%d&zone=%s]", $wdoc->id, $wdoc->fromid, $doc->id, $edittpl);

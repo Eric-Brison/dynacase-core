@@ -36,10 +36,10 @@ class ActionUsage extends ApiUsage
     public function __construct(Action &$action)
     {
         $this->action = $action;
-        $this->setText(_($action->short_name));
-        $this->addNeeded('app', "application name");
-        $this->addNeeded('action', "action name");
-        $this->addHidden('sole', "display mode (deprecated)");
+        $this->setDefinitionText(_($action->short_name));
+        $this->addNeededParameter('app', "application name");
+        $this->addNeededParameter('action', "action name");
+        $this->addHiddenParameter('sole', "display mode (deprecated)");
     }
     public function getUsage() {
         $usage=parent::getUsage();

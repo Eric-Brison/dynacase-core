@@ -23,7 +23,7 @@ include_once ('VAULT/Class.VaultFile.php');
 
 $usage = new ApiUsage();
 
-$usage->setText("Reinit vault files");
+$usage->setDefinitionText("Reinit vault files");
 
 $usage->verify();
 

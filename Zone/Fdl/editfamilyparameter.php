@@ -15,20 +15,23 @@ include_once ("FDL/editcard.php");
 function editfamilyparameter(Action & $action)
 {
     $usage = new ActionUsage($action);
-    $famid = $usage->addNeeded("famid", _("family id"));
-    $attrid = $usage->addNeeded("attrid", _("attribute id"));
-    $default = $usage->addOption("emptyValue", _("value for empty field"));
-    $value = $usage->addOption("value", _("value in field"));
-    $onChange = $usage->addOption("submitOnChange", _("Sending input on change?"));
-    $localSubmit = $usage->addOption("localSubmit", _("Adding button to submit")) == "yes" ? true : false;
-    $submitLabel = $usage->addOption("submitLabel", _("Label of submit button") , array() , _("Submit"));
-    $usage->strict();
+    $famid = $usage->addNeededParameter("famid", _("family id"));
+    $attrid = $usage->addNeededParameter("attrid", _("attribute id"));
+    $default = $usage->addOptionnalParameter("emptyValue", _("value for empty field"));
+    $value = $usage->addOptionnalParameter("value", _("value in field"));
+    $onChange = $usage->addOptionnalParameter("submitOnChange", _("Sending input on change?"));
+    $localSubmit = $usage->addOptionnalParameter("localSubmit", _("Adding button to submit")) == "yes" ? true : false;
+    $submitLabel = $usage->addOptionnalParameter("submitLabel", _("Label of submit button") , array() , _("Submit"));
+    $usage->setStrictMode();
     $usage->verify();
     
     editmode($action);
     
     $action->lay->set("famid", $famid);
     $action->lay->set("attrid", strtolower($attrid));
+    /**
+     * @var DocFam $doc
+     */
     $doc = new_Doc($action->dbaccess, $famid, true);
     if ($doc->isAlive()) {
         /**
@@ -54,11 +57,11 @@ function editfamilyparameter(Action & $action)
             if ($default !== null) {
                 $value = $default;
             } else {
-                $value = $doc->getParamValue($attrid, $doc->GetValueMethod($attrid));
+                $value = $doc->getParameterRawValue($attrid, $doc->GetValueMethod($attrid));
             }
         }
         $d = createTmpDoc($action->dbaccess, $doc->id);
-        $fdoc = $d->getFamDoc();
+        $fdoc = $d->getFamilyDocument();
         $d->setDefaultValues($fdoc->getParams() , false);
         useOwnParamters($d);
         $input_field = getHtmlInput($d, $attr, $value, "", "", true);

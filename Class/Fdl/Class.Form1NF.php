@@ -692,7 +692,7 @@ class Form1NF
                     //$s->trash = 'also';
                     $s->search();
                     // get field values
-                    while ($doc = $s->nextDoc()) {
+                    while ($doc = $s->getNextDoc()) {
                         // document required fields (id, title)
                         $fieldValues = array(
                             $doc->id,
@@ -704,8 +704,8 @@ class Form1NF
                         );
                         // fields
                         foreach ($table->columns as $column) {
-                            $fieldValues[] = $column->getPgEscape($doc->getValue($column->name));
-                            $fieldCopyValues[] = $column->getPgEscapeCopy($doc->getValue($column->name));
+                            $fieldValues[] = $column->getPgEscape($doc->getRawValue($column->name));
+                            $fieldCopyValues[] = $column->getPgEscapeCopy($doc->getRawValue($column->name));
                         }
                         // properties
                         foreach ($table->properties as $property) {
@@ -722,7 +722,7 @@ class Form1NF
                             
                             switch ($tablesByName[$fTable]->type) {
                                 case 'family': // docid
-                                    $value = $doc->getValue($reference->attributeName);
+                                    $value = $doc->getRawValue($reference->attributeName);
                                     $id = $this->sqlGetValidDocId($value);
                                     $fieldValues[] = $id;
                                     $fieldCopyValues[] = $id == 'NULL' ? "\\N" : $id;
@@ -731,7 +731,7 @@ class Form1NF
                                 case 'enum':
                                 case 'enum_multiple':
                                 case 'enum_inarray':
-                                    $value = $doc->getValue($reference->attributeName);
+                                    $value = $doc->getRawValue($reference->attributeName);
                                     $tablesByName[$fTable]->checkEnumValue($value);
                                     $fieldValues[] = $this->getPgEscape($value);
                                     $fieldCopyValues[] = $this->getPgEscapeCopy($value);
@@ -754,7 +754,7 @@ class Form1NF
                             foreach ($linkedTables as $data) {
                                 switch ($type) {
                                     case 'enum_multiple_link':
-                                        $values = $doc->getTValue($data['column']->name);
+                                        $values = $doc->getMultipleRawValues($data['column']->name);
                                         foreach ($values as $value) {
                                             if (isset($data['enumtable'])) {
                                                 $data['enumtable']->checkEnumValue($value);
@@ -770,7 +770,7 @@ class Form1NF
                                         break;
 
                                     case 'docid_multiple_link':
-                                        $values = $doc->getTValue($data['column']->name);
+                                        $values = $doc->getMultipleRawValues($data['column']->name);
                                         foreach ($values as $value) {
                                             $id = $this->sqlGetValidDocId($value);
                                             $this->sqlInsert(strtolower($data['table']->name) , $data['table']->sqlFields, array(
@@ -785,7 +785,7 @@ class Form1NF
 
                                     case 'array':
                                         // load all array
-                                        $array = $doc->getAValues($data['table']->arrayName);
+                                        $array = $doc->getArrayRawValues($data['table']->arrayName);
                                         // for each row of array
                                         foreach ($array as $iRow => $row) {
                                             
@@ -835,7 +835,7 @@ class Form1NF
                                             $this->sqlInsert(strtolower($data['table']->name) , $data['table']->sqlFields, $fieldCopyValues, $fieldValues);
                                             // docid multiple in array
                                             foreach ($data['linkedTables'] as $data2) {
-                                                $values = $doc->_val2array(str_replace('<BR>', "\n", $row[$data2['column']->name]));
+                                                $values = $doc->rawValueToArray(str_replace('<BR>', "\n", $row[$data2['column']->name]));
                                                 foreach ($values as $val) {
                                                     $id = $this->sqlGetValidDocId($val);
                                                     $this->sqlInsert(strtolower($data2['table']->name) , $data2['table']->sqlFields, array(

@@ -144,8 +144,8 @@ class Fdl_Document
                     if ($this->onlyAttributes !== null && (!in_array($v->id, $this->onlyAttributes))) continue;
                     
                     if ($v->mvisibility != "I" && (!empty($this->doc->$k)) && $v->getOption("autotitle") != "yes") {
-                        if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id] = $this->doc->GetTValue($v->id);
-                        else $lvalues[$v->id] = $this->doc->getValue($v->id);
+                        if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id] = $this->doc->getMultipleRawValues($v->id);
+                        else $lvalues[$v->id] = $this->doc->getRawValue($v->id);
                         
                         if (($v->type == "docid" || $v->type == "account") && ($v->visibility != 'H')) {
                             $isLatest = $v->getOption("docrev", "latest") == "latest";
@@ -173,14 +173,14 @@ class Fdl_Document
                                 }
                                 $lvalues[$v->id . "_title"] = $ltitle;
                             } else {
-                                $lvalues[$v->id . "_title"] = DocTitle::getRelationTitle($this->doc->getValue($v->id) , $isLatest, $this->doc);
+                                $lvalues[$v->id . "_title"] = DocTitle::getRelationTitle($this->doc->getRawValue($v->id) , $isLatest, $this->doc);
                                 if ($lvalues[$v->id . "_title"] === false) $lvalues[$v->id . "_title"] = $v->getOption("noaccesstext", _("information access deny"));
                             }
-                            //if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->_val2array($lvalues[$v->id . "_title"]);
+                            //if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->rawValueToArray($lvalues[$v->id . "_title"]);
                             
                         } elseif (($v->type == "thesaurus")) {
-                            $lvalues[$v->id . "_title"] = $this->doc->getTitle($this->doc->getValue($v->id));
-                            if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->_val2array($lvalues[$v->id . "_title"]);
+                            $lvalues[$v->id . "_title"] = $this->doc->getTitle($this->doc->getRawValue($v->id));
+                            if ($v->inArray() || ($v->getOption("multiple") == "yes")) $lvalues[$v->id . "_title"] = $this->doc->rawValueToArray($lvalues[$v->id . "_title"]);
                         } elseif ($isoDate && ($v->type == 'date' || $v->type == 'timestamp')) {
                             if (is_array($lvalues[$v->id])) {
                                 foreach ($lvalues[$v->id] as $kd => $vd) {
@@ -203,8 +203,8 @@ class Fdl_Document
         if ($this->doc) {
             $oa = $this->doc->getAttribute($aid);
             if ($oa && ($oa->mvisibility != "I")) {
-                if ($oa->inArray()) return $this->doc->GetTValue($oa->id);
-                else return $this->doc->GetValue($oa->id);
+                if ($oa->inArray()) return $this->doc->getMultipleRawValues($oa->id);
+                else return $this->doc->getRawValue($oa->id);
             }
         }
         return null;
@@ -300,7 +300,7 @@ class Fdl_Document
                 
                 $props["lockdomainid"] = intval($this->doc->lockdomainid);
                 // numeric values
-                if ($props["postitid"]) $props["postitid"] = $this->doc->_val2array($props["postitid"]);
+                if ($props["postitid"]) $props["postitid"] = $this->doc->rawValueToArray($props["postitid"]);
                 else $props["postitid"] = array();
                 $props["id"] = intval($props["id"]);
                 $props["initid"] = intval($props["initid"]);
@@ -315,7 +315,7 @@ class Fdl_Document
                 $props["fromid"] = intval($props["fromid"]);
                 $props["allocated"] = intval($props["allocated"]);
                 $props["owner"] = intval($props["owner"]);
-                if ($props["domainid"]) $props["domainid"] = $this->doc->_val2array($props["domainid"]);
+                if ($props["domainid"]) $props["domainid"] = $this->doc->rawValueToArray($props["domainid"]);
                 else $props["domainid"] = array();
                 if (getParam("DATA_LCDATE") == "iso" && getLcdate() != 'iso') {
                     $props["cdate"] = StringDateToIso($props["cdate"], false);
@@ -338,7 +338,7 @@ class Fdl_Document
                 if ($complete) $props["configuration"] = $this->doc->getConfiguration();
             } else {
                 if ($complete) {
-                    $fdoc = $this->doc->getFamDoc();
+                    $fdoc = $this->doc->getFamilyDocument();
                     if ($fdoc->isAffected()) {
                         $props["fromname"] = $fdoc->name;
                         $props["fromtitle"] = $fdoc->getTitle();
@@ -374,7 +374,7 @@ class Fdl_Document
     {
         $conf = null;
         if ($this->doc) {
-            $fdoc = $this->doc->getFamDoc();
+            $fdoc = $this->doc->getFamilyDocument();
             if ($this->doc->doctype == 'C') {
                 $conf = $this->doc->getConfiguration();
             } else {
@@ -534,7 +534,7 @@ class Fdl_Document
     {
         $out = null;
         if ($this->doc) {
-            $clone = $this->doc->copy($temporary, true, $linkfld, $copyfile);
+            $clone = $this->doc->duplicate($temporary, true, $linkfld, $copyfile);
             
             if (is_object($clone)) {
                 if ($title) {
@@ -582,7 +582,7 @@ class Fdl_Document
         if ($err) {
             $this->setError($err);
         } else {
-            $olds = $this->doc->getOldValues();
+            $olds = $this->doc->getOldRawValues();
             $needpostmodif = (is_array($olds));
             
             $this->doc->refresh();
@@ -590,7 +590,7 @@ class Fdl_Document
             $err = $this->doc->modify();
             $this->setError($err);
             if ($err == "") {
-                $olds = $this->doc->getOldValues();
+                $olds = $this->doc->getOldRawValues();
                 $keys = array();
                 if (is_array($olds)) {
                     foreach ($olds as $ka => $va) {
@@ -598,7 +598,7 @@ class Fdl_Document
                         $keys[] = $oa->getLabel();
                     }
                     $skeys = implode(",", $keys);
-                    $this->doc->Addcomment(sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
+                    $this->doc->addHistoryEntry(sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
                 }
             }
         }
@@ -732,7 +732,7 @@ class Fdl_Document
         if ($this->doc) {
             $err = $this->doc->control("edit");
             if ($err == "") {
-                $err = $this->doc->revive();
+                $err = $this->doc->undelete();
             }
             if ($err) $this->setError($err);
             return ($err == "");
@@ -744,7 +744,7 @@ class Fdl_Document
         if ($this->doc) {
             if ($version) $this->setVersion($version);
             if (!$comment) $comment = _("revision of document");
-            $err = $this->doc->addRevision($comment);
+            $err = $this->doc->revise($comment);
             if ($err) $this->setError($err);
             return ($err == "");
         }
@@ -762,7 +762,7 @@ class Fdl_Document
                     /**
                      * @var Dir $da
                      */
-                    $err = $da->addFile($this->doc->initid);
+                    $err = $da->insertDocument($this->doc->initid);
                     if ($err == "") {
                         if (($fromtoid) && ($fromtoid != $movetoid)) {
                             $d = new_doc($this->dbaccess, $fromtoid);
@@ -861,15 +861,15 @@ class Fdl_Document
             if ($at->getOption("version") == "yes") {
                 $err = $this->doc->setValue($at->id, $version);
                 $hasversion = true;
-                if ((!$err) && $usecomment) $this->doc->addComment(sprintf(_("change version to %s") , $version));
+                if ((!$err) && $usecomment) $this->doc->addHistoryEntry(sprintf(_("change version to %s") , $version));
                 break;
             }
         }
         if (($err == "") && (!$hasversion)) {
             $this->doc->version = trim($version);
             if ($usecomment) {
-                if ($version == "") $this->doc->addComment(sprintf(_("reset version")));
-                else $this->doc->addComment(sprintf(_("change version to %s") , $version));
+                if ($version == "") $this->doc->addHistoryEntry(sprintf(_("reset version")));
+                else $this->doc->addHistoryEntry(sprintf(_("change version to %s") , $version));
             }
         }
         

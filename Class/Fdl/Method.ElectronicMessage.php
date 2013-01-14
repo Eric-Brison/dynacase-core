@@ -27,13 +27,13 @@ class _SENTMESSAGE extends Doc
         include_once ("FDL/Lib.Dir.php");
         $this->viewdefaultcard($target, $ulink, $abstract);
         
-        $from = $this->getValue("emsg_from");
+        $from = $this->getRawValue("emsg_from");
         if (preg_match("/<([^>]*)>/", $from, $erg)) {
             $from = $erg[1];
         }
         $this->lay->set("hasphoto", false);
         $filter[] = "us_mail='" . pg_escape_string($from) . "'";
-        $tdir = getChildDoc($this->dbaccess, 0, "0", 1, $filter, 1, "LIST", "IUSER");
+        $tdir = internalGetDocCollection($this->dbaccess, 0, "0", 1, $filter, 1, "LIST", "IUSER");
         if (count($tdir) == 1) {
             $vphoto = $tdir[0]->getValue("us_photo");
             if ($vphoto) {
@@ -42,15 +42,15 @@ class _SENTMESSAGE extends Doc
                 $this->lay->set("hasphoto", ($photo != ""));
             }
         }
-        $hashtml = ($this->getValue("emsg_htmlbody") != "");
+        $hashtml = ($this->getRawValue("emsg_htmlbody") != "");
         
         $this->lay->set("hashtml", $hashtml);
         
         $this->lay->set("TO", false);
         $this->lay->set("CC", false);
         
-        $recips = $this->getTValue("emsg_recipient");
-        $reciptype = $this->getTValue("emsg_sendtype");
+        $recips = $this->getMultipleRawValues("emsg_recipient");
+        $reciptype = $this->getMultipleRawValues("emsg_sendtype");
         $tto = array();
         $tcc = array();
         $tbcc = array();
@@ -79,7 +79,7 @@ class _SENTMESSAGE extends Doc
      */
     function control($aclname, $strict = false)
     {
-        if (($this->id > 0) && ($this->doctype != 'C') && ($aclname == "edit") && ($this->getParamValue("emsg_editcontrol") != "freeedit")) return _("electronic messages cannot be modified");
+        if (($this->id > 0) && ($this->doctype != 'C') && ($aclname == "edit") && ($this->getFamilyParameterValue("emsg_editcontrol") != "freeedit")) return _("electronic messages cannot be modified");
         else return parent::control($aclname, $strict);
     }
     /**

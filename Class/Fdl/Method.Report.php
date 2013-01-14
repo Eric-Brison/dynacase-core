@@ -59,7 +59,7 @@ class _REPORT extends _DSEARCH
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/selectbox.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editreport.js");
         
-        $rfamid = GetHttpVars("sfamid", $this->getValue("SE_FAMID", 1));
+        $rfamid = GetHttpVars("sfamid", $this->getRawValue("SE_FAMID", 1));
         $rdoc = createDoc($this->dbaccess, $rfamid, false);
         $lattr = $rdoc->GetNormalAttributes();
         $tcolumn1 = array();
@@ -84,7 +84,7 @@ class _REPORT extends _DSEARCH
             );
         }
         // display selected column
-        $tcols = $this->getTValue("REP_IDCOLS");
+        $tcols = $this->getMultipleRawValues("REP_IDCOLS");
         
         foreach ($tcols as $k => $vx) {
             if (isset($tcolumn1[$vx])) {
@@ -119,7 +119,7 @@ class _REPORT extends _DSEARCH
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/sorttable.js");
         // --------------------------
         // display headers column
-        $rfamid = $this->getValue("SE_FAMID", 1);
+        $rfamid = $this->getRawValue("SE_FAMID", 1);
         $rdoc = createDoc($this->dbaccess, $rfamid, false);
         $lattr = $rdoc->GetNormalAttributes();
         $tcolumn1 = array();
@@ -142,7 +142,7 @@ class _REPORT extends _DSEARCH
             );
         }
         
-        $tcols = $this->getTValue("REP_IDCOLS");
+        $tcols = $this->getMultipleRawValues("REP_IDCOLS");
         foreach ($tcols as $k => & $vcol) {
             if ($vcol) {
                 $tcolumn2[$vcol] = $tcolumn1[$vcol];
@@ -152,8 +152,8 @@ class _REPORT extends _DSEARCH
         $this->lay->set("HASCOLS", count($tcolumn2) > 0);
         include_once ("FDL/Lib.Dir.php");
         
-        $this->lay->set("reportstyle", $this->getValue("REP_STYLE", "perso"));
-        $this->lay->set("isperso", ($this->getValue("REP_STYLE", "perso") == "perso"));
+        $this->lay->set("reportstyle", $this->getRawValue("REP_STYLE", "perso"));
+        $this->lay->set("isperso", ($this->getRawValue("REP_STYLE", "perso") == "perso"));
         if ($this->isParameterizable() && $ulink) {
             $this->lay->setBlockData("PARAMS", array(
                 array(
@@ -163,8 +163,8 @@ class _REPORT extends _DSEARCH
         }
         // --------------------------
         // display body
-        $limit = $this->getValue("REP_LIMIT", "ALL");
-        $order = $this->getValue("REP_IDSORT", "title");
+        $limit = $this->getRawValue("REP_LIMIT", "ALL");
+        $order = $this->getRawValue("REP_IDSORT", "title");
         $oa = $rdoc->getAttribute($order);
         if ($oa) {
             if (($oa->type == "docid") && ($oa->getOption("doctitle") != "")) {
@@ -172,14 +172,14 @@ class _REPORT extends _DSEARCH
                 if ($order == 'auto') $order = $oa->id . '_title';
             }
         }
-        $order.= " " . $this->getValue("REP_ORDERSORT");
-        $s = new SearchDoc($this->dbaccess, $this->getValue("se_famid"));
+        $order.= " " . $this->getRawValue("REP_ORDERSORT");
+        $s = new SearchDoc($this->dbaccess, $this->getRawValue("se_famid"));
         $s->useCollection($this->initid);
         $s->setOrder($order);
         $s->returnsOnly($tcols);
         $s->setObjectReturn();
         $limit = intval($limit);
-        $maxDisplayLimit = $this->getParamValue("rep_maxdisplaylimit", 1000) + 1;
+        $maxDisplayLimit = $this->getFamilyParameterValue("rep_maxdisplaylimit", 1000) + 1;
         if ($limit == 0) $limit = $maxDisplayLimit;
         else $limit = min($limit, $maxDisplayLimit);
         $s->setSlice($limit);
@@ -191,10 +191,10 @@ class _REPORT extends _DSEARCH
             $needRemoveLast = true;
         }
         $trodd = false;
-        $tcolor = $this->getTValue("REP_COLORS");
+        $tcolor = $this->getMultipleRawValues("REP_COLORS");
         $trow = array();
         $k = 0;
-        while ($rdoc = $s->nextDoc()) {
+        while ($rdoc = $s->getNextDoc()) {
             $k++;
             $trow[$k] = array(
                 "CELLS" => "row$k",
@@ -208,16 +208,16 @@ class _REPORT extends _DSEARCH
             reset($tcolor);
             
             foreach ($tcolumn2 as $kc => $vc) {
-                if ($rdoc->getValue($kc) == "") $tcell[$kc] = array(
+                if ($rdoc->getRawValue($kc) == "") $tcell[$kc] = array(
                     "cellval" => ""
                 );
                 else {
                     switch ($kc) {
                         case "revdate":
-                            // $cval= (date("Y-m-d H:i:s", $rdoc->getValue($kc)));
-                            $cval = (date("Y-m-d H:i:s", $rdoc->getValue($kc)));
-                            // $cval = strftime("%d/%m/%Y %T", $rdoc->getValue($kc));
-                            //	  $cval = strftime ("%x %T",$rdoc->getValue($kc]);
+                            // $cval= (date("Y-m-d H:i:s", $rdoc->getRawValue($kc)));
+                            $cval = (date("Y-m-d H:i:s", $rdoc->getRawValue($kc)));
+                            // $cval = strftime("%d/%m/%Y %T", $rdoc->getRawValue($kc));
+                            //	  $cval = strftime ("%x %T",$rdoc->getRawValue($kc]);
                             break;
 
                         case "state":
@@ -233,12 +233,12 @@ class _REPORT extends _DSEARCH
                             break;
 
                         default:
-                            $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getValue($kc) , $target, $ulink);
+                            $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getRawValue($kc) , $target, $ulink);
                             if ($lattr[$kc]->type == "image") $cval = "<img width=\"40px\" src=\"$cval\">";
                         }
                         $tcell[$kc] = array(
                             "cellval" => $cval,
-                            "rawval" => $rdoc->getValue($kc)
+                            "rawval" => $rdoc->getRawValue($kc)
                         );
                 }
                 $tcell[$kc]["bgcell"] = current($tcolor);
@@ -254,7 +254,7 @@ class _REPORT extends _DSEARCH
         $this->lay->setBlockData("ROWS", $trow);
         // ---------------------
         // footer
-        $tfoots = $this->getTValue("REP_FOOTS");
+        $tfoots = $this->getMultipleRawValues("REP_FOOTS");
         $tlfoots = array();
         foreach ($tfoots as $k => $v) {
             switch ($v) {
@@ -299,20 +299,20 @@ class _REPORT extends _DSEARCH
         require_once 'WHAT/Class.twoDimensionalArray.php';
         require_once 'FDL/Class.SearchDoc.php';
         
-        $famId = $this->getValue("se_famid", 1);
-        $limit = $this->getValue("rep_limit", "ALL");
-        $order = $this->getValue("rep_idsort", "title");
+        $famId = $this->getRawValue("se_famid", 1);
+        $limit = $this->getRawValue("rep_limit", "ALL");
+        $order = $this->getRawValue("rep_idsort", "title");
         
         $mb0 = microtime(true);
         $this->setStatus(_("Doing search request"));
         $search = new SearchDoc($this->dbaccess, $famId);
         $search->dirid = $this->initid;
         $search->slice = $limit;
-        $search->orderby = trim($order . " " . $this->getValue("rep_ordersort"));
+        $search->orderby = trim($order . " " . $this->getRawValue("rep_ordersort"));
         $search->setObjectReturn();
         // print_r($search->getSearchInfo());
         $famDoc = createDoc($this->dbaccess, $famId, false);
-        $tcols = $this->getTValue("rep_idcols");
+        $tcols = $this->getMultipleRawValues("rep_idcols");
         
         $search->returnsOnly($tcols);
         
@@ -383,7 +383,7 @@ class _REPORT extends _DSEARCH
         //Get Value
         $nbDoc = $search->count();
         $k = 0;
-        while ($currentDoc = $search->nextDoc()) {
+        while ($currentDoc = $search->getNextDoc()) {
             $k++;
             if ($k % 10 == 0) $this->setStatus(sprintf(_("Pivot rendering %d/%d") , $k, $nbDoc));
             if ($refresh) {
@@ -399,7 +399,7 @@ class _REPORT extends _DSEARCH
             foreach ($multipleAttributes as $currentKey => $currentArrayID) {
                 foreach ($currentArrayID as $currentColumnID) {
                     $currentAttribute = $famDoc->getAttribute($currentColumnID);
-                    $nbElement = count($currentDoc->getTValue($currentColumnID));
+                    $nbElement = count($currentDoc->getMultipleRawValues($currentColumnID));
                     for ($i = 0; $i < $nbElement; $i++) {
                         $resultMultipleArray[$currentKey][$currentColumnID][] = $currentAttribute->getTextualValue($currentDoc, $i, $convertFormat);
                     }
@@ -454,10 +454,9 @@ class _REPORT extends _DSEARCH
      */
     protected function generateBasicCSV(SearchDoc $search, Array $columns, Doc $famDoc, $refresh, $separator, $dateFormat, $stripHtmlFormat = true)
     {
-        
-        $mb0 = microtime(true);
         $fc = new FormatCollection();
-        $fc->useCollection($search->getDocumentList());
+        $dl = $search->getDocumentList();
+        $fc->useCollection($dl);
         if ($separator) $fc->setDecimalSeparator($separator);
         $fc->relationIconSize = 0;
         $fc->stripHtmlTags($stripHtmlFormat);
@@ -545,7 +544,7 @@ class _REPORT extends _DSEARCH
     {
         switch ($internalName) {
             case "revdate":
-                return strftime("%x %T", $doc->getValue($internalName));
+                return strftime("%x %T", $doc->getRawValue($internalName));
             case "state":
                 return $doc->getStatelabel();
             case "title":
@@ -555,7 +554,7 @@ class _REPORT extends _DSEARCH
             case "owner":
                 return $doc->owner;
             default:
-                return $doc->getValue($internalName);
+                return $doc->getRawValue($internalName);
         }
     }
     /**

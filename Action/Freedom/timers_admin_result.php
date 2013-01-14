@@ -106,7 +106,7 @@ function humanactions($act, $dbaccess)
         if ($v) {
             switch ($k) {
                 case "tmail":
-                    $tva = Doc::_val2array(str_replace('<BR>', "\n", $v));
+                    $tva = Doc::rawValueToArray(str_replace('<BR>', "\n", $v));
                     foreach ($tva as $idmail) {
                         $tm = new_doc($dbaccess, $idmail);
                         if ($tm->isAlive()) {

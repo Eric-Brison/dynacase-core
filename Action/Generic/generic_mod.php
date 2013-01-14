@@ -50,7 +50,7 @@ function generic_mod(Action & $action)
         if ($docid == 0) { // new file => add in a folder
             AddLogMsg(sprintf(_("%s has been created") , $doc->title));
             
-            $cdoc = $doc->getFamDoc();
+            $cdoc = $doc->getFamilyDocument();
             //if (($cdoc->dfldid>0) && ($dirid==0))  $dirid=$cdoc->dfldid;// we not insert in defaut folder
             if ($dirid > 0) {
                 /**
@@ -58,17 +58,17 @@ function generic_mod(Action & $action)
                  */
                 $fld = new_Doc($dbaccess, $dirid);
                 if ($fld->locked == - 1) { // it is revised document
-                    $dirid = $fld->latestId();
+                    $dirid = $fld->getLatestId();
                     if ($dirid != $fld->id) $fld = new_Doc($dbaccess, $dirid);
                 }
-                if (method_exists($fld, "AddFile")) {
-                    $err = $fld->AddFile($doc->id);
+                if (method_exists($fld, "insertDocument")) {
+                    $err = $fld->insertDocument($doc->id);
                     if ($err != "") {
                         //try in home folder
                         $home = $fld->getHome(false);
                         if ($home && ($home->id > 0)) {
                             $fld = $home;
-                            $err = $fld->AddFile($doc->id);
+                            $err = $fld->insertDocument($doc->id);
                         }
                     }
                     
@@ -84,7 +84,7 @@ function generic_mod(Action & $action)
                     $home = $fld->getHome(false);
                     if ($home && ($home->id > 0)) {
                         $fld = $home;
-                        $err = $fld->AddFile($doc->id);
+                        $err = $fld->insertDocument($doc->id);
                     }
                 }
             }

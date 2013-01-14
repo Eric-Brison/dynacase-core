@@ -46,13 +46,13 @@ function diffdoc(&$action)
     foreach ($la as $k => $a) {
         
         if ($a->type == "array") {
-            $v1 = $d1->getAValues($a->id);
-            $v2 = $d2->getAValues($a->id);
+            $v1 = $d1->getArrayRawValues($a->id);
+            $v2 = $d2->getArrayRawValues($a->id);
             if ($v1 == $v2) $cdiff = "eq";
             else $cdiff = "ne";
         } else {
-            $v1 = $d1->getValue($a->id);
-            $v2 = $d2->getValue($a->id);
+            $v1 = $d1->getRawValue($a->id);
+            $v2 = $d2->getRawValue($a->id);
             if ($v1 == $v2) $cdiff = "eq";
             else $cdiff = "ne";
         }

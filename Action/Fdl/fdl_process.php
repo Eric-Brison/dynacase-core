@@ -42,13 +42,13 @@ function fdl_process(&$action)
         $t = $doc->getContent(true, array() , true);
     }
     if ($fromedit) {
-        $doc = $doc->copy(true, false);
+        $doc = $doc->duplicate(true, false);
         $err = setPostVars($doc);
         $doc->modify();
     };
     
-    $subject = $doc->getValue("pubm_title");
-    $body = $doc->getValue("pubm_body");
+    $subject = $doc->getRawValue("pubm_title");
+    $body = $doc->getRawValue("pubm_body");
     if (preg_match("/\[us_[a-z0-9_]+\]/i", $body)) {
         foreach ($t as $k => $v) {
             $mail = getv($v, "us_mail");

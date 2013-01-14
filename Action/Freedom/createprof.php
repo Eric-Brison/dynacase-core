@@ -76,7 +76,7 @@ function createprof(&$action)
         if ($oa) $doc->setValue($attrid, $pdoc->id);
         else $doc->$attrid = $pdoc->id;
         $err = $doc->modify();
-        if ($err == "") $doc->addComment(sprintf(_("add new profil %s") , $pdoc->getTitle()));
+        if ($err == "") $doc->addHistoryEntry(sprintf(_("add new profil %s") , $pdoc->getTitle()));
     }
     
     if ($err != "") $action->exitError($err);

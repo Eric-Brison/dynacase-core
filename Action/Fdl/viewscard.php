@@ -50,7 +50,7 @@ function viewscard(&$action)
     $doc = new_Doc($dbaccess, $docid);
     if (($latest == "Y") && ($doc->locked == - 1)) {
         // get latest revision
-        $docid = $doc->latestId();
+        $docid = $doc->getLatestId();
         $doc = new_Doc($dbaccess, $docid);
         SetHttpVar("id", $docid);
     }
@@ -59,7 +59,7 @@ function viewscard(&$action)
     if ($fromedit) {
         include_once ("FDL/modcard.php");
         
-        $doc = $doc->copy(true, false, true);
+        $doc = $doc->duplicate(true, false, true);
         $err = setPostVars($doc);
         $doc->modify();
         setHttpVar("id", $doc->id);

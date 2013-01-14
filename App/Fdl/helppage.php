@@ -12,13 +12,11 @@ function helppageenumlang()
 {
     
     $dbaccess = getParam("FREEDOM_DB");
-    if (!is_numeric($famid)) {
-        $famid = getFamIdFromName($dbaccess, 'HELPPAGE');
-    }
-    $doc = new_Doc($dbaccess, $famid);
+    
+    $doc = new_Doc($dbaccess, 'HELPPAGE');
     if ($doc->isAlive()) {
-        $all_lang_keys = $doc->_val2array($doc->getParamValue('help_p_lang_key'));
-        $all_lang_texts = $doc->_val2array($doc->getParamValue('help_p_lang_name'));
+        $all_lang_keys = $doc->rawValueToArray($doc->getFamilyParameterValue('help_p_lang_key'));
+        $all_lang_texts = $doc->rawValueToArray($doc->getFamilyParameterValue('help_p_lang_name'));
         $langs = array();
         foreach ($all_lang_keys as $i => $key) {
             $langs[] = $key . '|' . $all_lang_texts[$i];
@@ -33,7 +31,9 @@ function helppage_editsection(Action & $action, $dbaccess, $docid)
     
     include_once ('FDL/editutil.php');
     editmode($action);
-    
+    /**
+     * @var _HELPPAGE $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     $action->lay->set('DOCID', $docid);
     $action->lay->set('DOCTITLE', $doc->getTitle());
@@ -65,7 +65,9 @@ function helppage_edithelp(Action & $action, $dbaccess, $docid)
     
     include_once ('FDL/editutil.php');
     editmode($action);
-    
+    /**
+     * @var _HELPPAGE $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     $action->lay->set('DOCID', $docid);
     $action->lay->set('DOCTITLE', $doc->getTitle());

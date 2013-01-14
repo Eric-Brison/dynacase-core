@@ -22,7 +22,7 @@ include_once ("FDL/Class.DocTimer.php");
 include_once ("FDL/Class.SearchDoc.php");
 
 $usage = new ApiUsage();
-$usage->setText("Execute Dynacase Processes when needed");
+$usage->setDefinitionText("Execute Dynacase Processes when needed");
 $usage->verify();
 
 $appl = new Application();
@@ -50,7 +50,7 @@ function verifyExecDocuments($dbaccess)
     //  $s->setDebugMode();
     $s->search();
     if ($s->count() > 0) {
-        while ($de = $s->nextDoc()) {
+        while ($de = $s->getNextDoc()) {
             $de->setValue("exec_status", "waiting");
             $de->modify(true, array(
                 "exec_status"
@@ -63,7 +63,7 @@ function verifyExecDocuments($dbaccess)
         //$s->setDebugMode();
         $s->search();
         //print_r2($s->getDebugInfo());
-        while ($de = $s->nextDoc()) {
+        while ($de = $s->getNextDoc()) {
             /**
              * @var _EXEC $de
              */
@@ -71,18 +71,18 @@ function verifyExecDocuments($dbaccess)
              * Logging in bgexecute
              */
             $status = $de->bgExecute(_("dynacase cron try execute"));
-            $del = new_Doc($dbaccess, $de->latestId(false, true));
+            $del = new_Doc($dbaccess, $de->getLatestId(false, true));
             /**
              * @var _EXEC $del
              */
-            $del->deleteValue("exec_status");
-            $del->deleteValue("exec_handnextdate");
+            $del->clearValue("exec_status");
+            $del->clearValue("exec_handnextdate");
             $err = $del->store();
             
             if ($status == 0) {
-                print sprintf("Execute %s [%d] (%s) : %s\n", $del->title, $del->id, $del->getValue("exec_handnextdate") , $err);
+                print sprintf("Execute %s [%d] (%s) : %s\n", $del->title, $del->id, $del->getRawValue("exec_handnextdate") , $err);
             } else {
-                print sprintf("Error executing %s [%d] (%s) : %s (%s)\n", $del->title, $del->id, $del->getValue("exec_handnextdate") , $err, $status);
+                print sprintf("Error executing %s [%d] (%s) : %s (%s)\n", $del->title, $del->id, $del->getRawValue("exec_handnextdate") , $err, $status);
             }
         }
     }

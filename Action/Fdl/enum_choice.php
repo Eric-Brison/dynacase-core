@@ -146,8 +146,8 @@ function getFuncVar($n, $def = "", $whttpvars, &$doc, &$oa)
         $h = GetHttpVars(strtolower($n));
         if ($h) return $h;
         if (!$oa) return ($n);
-        if (($oa->repeat) || $oa->inArray()) $r = $doc->getTValue($n);
-        else $r = $doc->getValue($n);
+        if (($oa->repeat) || $oa->inArray()) $r = $doc->getMultipleRawValues($n);
+        else $r = $doc->getRawValue($n);
         if ($r === "") return false;
         return $r;
     }
@@ -214,7 +214,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
             $lc = substr($v, -1);
             if ($lc == $v[0]) $arg[$k] = mb_substr($v, 1, -1);
             else $arg[$k] = mb_substr($v, 1);
-        } else if ($doc->getProperty($v) !== false) $arg[$k] = $doc->getProperty($v);
+        } else if ($doc->getPropertyValue($v) !== false) $arg[$k] = $doc->getPropertyValue($v);
         else {
             // can be values or family parameter
             $a = $doc->GetAttribute($v);
@@ -233,7 +233,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
                         if ($ta === false) return false;
                         $arg[$k] = trim($ta[$index]);
                     } else {
-                        $arg[$k] = $doc->getParamValue($v);
+                        $arg[$k] = $doc->getFamilyParameterValue($v);
                     }
                 } else if ($a && $a->inArray()) {
                     if (($a->fieldSet->id == $oattr->fieldSet->id)) { // search with index
@@ -260,7 +260,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
                 }
             }
             if ($a && ($a->usefor == "Q")) {
-                if (getFuncVar($v, false, $whttpvars, $doc, $a) === false) $arg[$k] = $doc->getParamValue($v);
+                if (getFuncVar($v, false, $whttpvars, $doc, $a) === false) $arg[$k] = $doc->getFamilyParameterValue($v);
             }
         }
     }

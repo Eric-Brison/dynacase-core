@@ -14,10 +14,10 @@ function modfamilyparameter(Action & $action)
 {
     
     $usage = new ActionUsage($action);
-    $famid = $usage->addNeeded("famid", "family id");
-    $attrid = $usage->addNeeded("attrid", "attribute id");
-    $value = $usage->addOption("value", "value in field");
-    $usage->strict();
+    $famid = $usage->addNeededParameter("famid", "family id");
+    $attrid = $usage->addNeededParameter("attrid", "attribute id");
+    $value = $usage->addOptionnalParameter("value", "value in field");
+    $usage->setStrictMode();
     $usage->verify();
     
     header('Content-type: text/xml; charset=utf-8');
@@ -65,7 +65,7 @@ function modfamilyparameter(Action & $action)
                 foreach ($result as $v) {
                     $val = "";
                     if (!empty($v["value"])) {
-                        $val = $doc->_array2val($v["value"]);
+                        $val = $doc->arrayToRawValue($v["value"]);
                     }
                     $val = trim($val);
                     $ownParams = $doc->getOwnParams();
@@ -84,7 +84,7 @@ function modfamilyparameter(Action & $action)
                     $out["modify"] = true;
                 }
             } else {
-                $oldValue = $doc->getParamValue($attrid);
+                $oldValue = $doc->getParameterRawValue($attrid);
                 $err = $doc->setParam($attrid, $value);
                 if (!$err) $err = $doc->store();
                 if ($err) {

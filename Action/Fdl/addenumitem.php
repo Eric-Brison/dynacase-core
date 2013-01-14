@@ -44,7 +44,7 @@ function addenumitem(Action & $action)
         if ($oa) {
             $err = $oa->addEnum($dbaccess, str_replace('.', '\.', $key) , $key);
             if ($oa->repeat && (!$oa->inArray())) {
-                $v = $doc->getValue($oa->id);
+                $v = $doc->getRawValue($oa->id);
                 if ($v != "") $v.= "\n$key";
                 else $v = $key;
             } else {

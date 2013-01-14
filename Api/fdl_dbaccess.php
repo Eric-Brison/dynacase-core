@@ -17,7 +17,7 @@
  */
 
 $usage = new ApiUsage();
-$usage->setText("Get database coordonate for freedom access by psql");
+$usage->setDefinitionText("Get database coordonate for freedom access by psql");
 $usage->verify();
 
 $dbaccess = getParam("FREEDOM_DB");

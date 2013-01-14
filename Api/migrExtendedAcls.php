@@ -29,7 +29,7 @@ if ($dbaccess == "") {
     exit;
 }
 $usage = new ApiUsage();
-$usage->setText("Migrate old Acls for workflow and CV to extended acls");
+$usage->setDefinitionText("Migrate old Acls for workflow and CV to extended acls");
 $usage->verify();
 /**
  * @var Action $action
@@ -42,7 +42,7 @@ $s->search();
 /**
  * @var WDoc $wdoc
  */
-while ($wdoc = $s->nextDoc()) {
+while ($wdoc = $s->getNextDoc()) {
     print ("\n" . $wdoc->getTitle() . " : #" . $wdoc->id);
     $tr = $wdoc->transitions;
     if (is_array($tr)) {
@@ -81,12 +81,12 @@ $s->search();
 /**
  * @var CVDoc $cvdoc
  */
-while ($cvdoc = $s->nextDoc()) {
+while ($cvdoc = $s->getNextDoc()) {
     print ("\n" . $cvdoc->getTitle() . " : #" . $cvdoc->id);
     // old code compatibility
     $ka = POS_WF;
-    $ti = $cvdoc->getTValue("CV_IDVIEW");
-    $tl = $cvdoc->getTValue("CV_LVIEW");
+    $ti = $cvdoc->getMultipleRawValues("CV_IDVIEW");
+    $tl = $cvdoc->getMultipleRawValues("CV_LVIEW");
     
     $ka = POS_WF;
     foreach ($ti as $k => $v) {

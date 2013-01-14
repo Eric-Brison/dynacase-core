@@ -61,7 +61,7 @@ class _ROLE extends Doc
     }
     private function lowerLogin()
     {
-        $login = $this->getValue("role_login");
+        $login = $this->getRawValue("role_login");
         if (mb_strtolower($login) != $login) {
             
             $this->setValue("role_login", mb_strtolower($login));
@@ -92,8 +92,8 @@ class _ROLE extends Doc
             if (!$sR) {
                 // try create it
                 $sR = new Account();
-                $sR->login = $this->getValue('role_login');
-                $sR->lastname = $this->getValue('role_name');
+                $sR->login = $this->getRawValue('role_login');
+                $sR->lastname = $this->getRawValue('role_name');
                 $sR->fid = $this->initid;
                 $sR->accounttype = 'R';
                 $sR->password_new = uniqid("role");
@@ -108,8 +108,8 @@ class _ROLE extends Doc
                 }
             } else {
                 // update it
-                $sR->login = $this->getValue('role_login');
-                $sR->lastname = $this->getValue('role_name');
+                $sR->login = $this->getRawValue('role_login');
+                $sR->lastname = $this->getRawValue('role_name');
                 $sR->fid = $this->initid;
                 $err = $sR->modify();
             }
@@ -122,7 +122,7 @@ class _ROLE extends Doc
      */
     function refreshDocUser()
     {
-        $wid = $this->getValue("us_whatid");
+        $wid = $this->getRawValue("us_whatid");
         if ($wid > 0) {
             $wuser = $this->getAccount(true);
             
@@ -146,7 +146,7 @@ class _ROLE extends Doc
             $this->sysRole = null;
         }
         if (empty($this->sysRole)) {
-            $wid = $this->getValue("us_whatid");
+            $wid = $this->getRawValue("us_whatid");
             if ($wid > 0) {
                 $this->sysRole = new Account("", $wid);
             }
@@ -162,7 +162,7 @@ class _ROLE extends Doc
     public function isUniqueLogin($login)
     {
         $err = "";
-        $sql = sprintf("select id from users where login = '%s' and id != %d", mb_strtolower(pg_escape_string($login)) , $this->getValue("us_whatid"));
+        $sql = sprintf("select id from users where login = '%s' and id != %d", mb_strtolower(pg_escape_string($login)) , $this->getRawValue("us_whatid"));
         simpleQuery('', $sql, $id, true, true);
         
         if ($id) $err = sprintf(_("role %s id is already used") , $login);

@@ -23,7 +23,7 @@ function portfolio_get_context($doc)
     }
     if (empty($pfctx) || !is_array($pfctx)) {
         $pfctx = array(
-            'listtype' => $doc->getParamValue('pfl_liststyle') ,
+            'listtype' => $doc->getFamilyParameterValue('pfl_liststyle') ,
         );
         if (empty($pfctx['listtype'])) {
             $pfctx['listtype'] = 'icon';

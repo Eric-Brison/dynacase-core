@@ -20,9 +20,9 @@
     var ht+='&lt;table&gt;';
     for (var i in p) {
             doc=p[i];
-            ht+='&lt;tr&gt;&lt;td&gt;'+i+'&lt;/td&gt;&lt;td&gt;'+doc.getProperty('id')
+            ht+='&lt;tr&gt;&lt;td&gt;'+i+'&lt;/td&gt;&lt;td&gt;'+doc.getPropertyValue('id')
               +'&lt;/td&gt;&lt;td style="width:200px;overflow:hidden"&gt;'+doc.getTitle()+'&lt;/td&gt;&lt;td&gt;&lt;img src="'
-              +doc.getIcon({'width':20})+'"&gt;&lt;/td&gt;&lt;td&gt;'+doc.getProperty('mdate')
+              +doc.getIcon({'width':20})+'"&gt;&lt;/td&gt;&lt;td&gt;'+doc.getPropertyValue('mdate')
               +'&lt;/td&gt;&lt;/tr&gt;';
      }
      ht+='&lt;/table&gt;';     

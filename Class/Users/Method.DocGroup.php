@@ -26,9 +26,9 @@ class _GROUP extends Dir
      * reconstruct mail group & recompute parent group
      *
      * @return string error message, if no error empty string
-     * @see Doc::PostModify()
+     * @see postModify::PostModify()
      */
-    function PostModify()
+    function postModify()
     {
         
         $err = $this->SetGroupMail();
@@ -105,7 +105,7 @@ class _GROUP extends Dir
         $gmail = " ";
         $tmail = array();
         
-        if (!$nomail) $nomail = ($this->getValue("grp_hasmail") == "no");
+        if (!$nomail) $nomail = ($this->getRawValue("grp_hasmail") == "no");
         if (!$nomail) {
             
             $s = new SearchDoc($this->dbaccess);
@@ -120,7 +120,7 @@ class _GROUP extends Dir
             $this->SetValue("GRP_MAIL", $gmail);
         }
         
-        if ($this->getValue("grp_hasmail") == "no") $this->deleteValue("GRP_MAIL");
+        if ($this->getRawValue("grp_hasmail") == "no") $this->clearValue("GRP_MAIL");
         
         return $err;
     }
@@ -137,7 +137,7 @@ class _GROUP extends Dir
         
         $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')", $this->id);
         // $sqlfilters[]="fromid !=".getFamIdFromName($this->dbaccess,"IGROUP");
-        $tgroup = getChildDoc($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", getFamIdFromName($this->dbaccess, "GROUP"));
+        $tgroup = internalGetDocCollection($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", getFamIdFromName($this->dbaccess, "GROUP"));
         
         $tpgroup = array();
         $tidpgroup = array();
@@ -160,7 +160,7 @@ class _GROUP extends Dir
     {
         include_once ("FDL/Lib.Dir.php");
         // 2)groups
-        $tu = getChildDoc($this->dbaccess, $this->initid, "0", "ALL", array() , 1, "TABLE", "GROUP");
+        $tu = internalGetDocCollection($this->dbaccess, $this->initid, "0", "ALL", array() , 1, "TABLE", "GROUP");
         $tmemid = array();
         $tmem = array();
         if (count($tu) > 0) {
@@ -170,7 +170,7 @@ class _GROUP extends Dir
             }
             $this->SetValue("GRP_IDGROUP", $tmemid);
         } else {
-            $this->DeleteValue("GRP_IDGROUP");
+            $this->clearValue("GRP_IDGROUP");
         }
         $err = $this->modify();
     }
@@ -178,7 +178,7 @@ class _GROUP extends Dir
     function refreshMailMembersOnChange()
     {
         // Recompute mail/members when the hasmail/hasmembers enum is changed
-        if ($this->getOldValue('GRP_HASMAIL') !== false || $this->getOldValue('GRP_HASMEMBERS') !== false) {
+        if ($this->getOldRawValue('GRP_HASMAIL') !== false || $this->getOldRawValue('GRP_HASMEMBERS') !== false) {
             $err = $this->refreshGroup();
             if ($err != '') {
                 return $err;

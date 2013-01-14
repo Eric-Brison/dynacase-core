@@ -34,7 +34,7 @@ function restoredoc(Action & $action)
     
     if ($doc->isAffected()) {
         if (!$doc->isAlive()) {
-            $err = $doc->revive();
+            $err = $doc->undelete();
         }
     } else $err = sprintf(_("document [%s] not found"));
     

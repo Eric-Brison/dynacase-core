@@ -73,12 +73,12 @@ function fdl_card(&$action)
     } else {
         if (($latest == "Y") && ($doc->locked == - 1)) {
             // get latest revision
-            $docid = $doc->latestId();
+            $docid = $doc->getLatestId();
             if ($docid == "") $action->exitError(_("no alive document reference"));
             SetHttpVar("id", $docid);
         } else if (($latest == "L") && ($doc->lmodify != 'L')) {
             // get latest fixed revision
-            $docid = $doc->latestId(true);
+            $docid = $doc->getLatestId(true);
             SetHttpVar("id", $docid);
         } else if (($latest == "P") && ($doc->revision > 0)) {
             // get previous fixed revision
@@ -92,7 +92,7 @@ function fdl_card(&$action)
     
     SetHttpVar("viewbarmenu", 1);
     
-    $action->lay->set("RSS", ($doc->getValue("gui_isrss")));
+    $action->lay->set("RSS", ($doc->getRawValue("gui_isrss")));
     $action->lay->set("rsslink", $doc->getRssLink());
     $action->lay->Set("TITLE", $doc->getHtmlTitle());
     $action->lay->Set("id", $doc->id);
@@ -168,8 +168,8 @@ function fdl_card(&$action)
                                     "walabel" => ucfirst($v->getLabel()) ,
                                     "wwidth" => $v->getOption("mwidth", $mwidth) ,
                                     "wheight" => $v->getOption("mheight", $mheight) ,
-                                    "wtarget" => ($v->getOption("ltarget") == "") ? (($v->getOption("mtarget") == "") ? $v->id . "_" . $doc->id : $v->getOption("mtarget")) : $v->getOption("ltarget"),
-                                    "wlink" => $doc->urlWhatEncode($v->getLink($doc->latestId()))
+                                    "wtarget" => ($v->getOption("ltarget") == "") ? (($v->getOption("mtarget") == "") ? $v->id . "_" . $doc->id : $v->getOption("mtarget")) : $v->getOption("ltarget") ,
+                                    "wlink" => $doc->urlWhatEncode($v->getLink($doc->getLatestId()))
                                 );
                             }
                         }

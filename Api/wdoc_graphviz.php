@@ -379,9 +379,9 @@ class DotWorkflow
     {
         
         $aid = strtolower($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState);
-        $tm = $this->wdoc->getTValue($aid);
+        $tm = $this->wdoc->getMultipleRawValues($aid);
         $aid = strtolower($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState);
-        $mt = $this->wdoc->getTValue($aid);
+        $mt = $this->wdoc->getMultipleRawValues($aid);
         $e1 = "D";
         
         $this->lines[] = '"' . $e1 . '" [shape = point,style=filled, width=0.3, fixedsize=true,fontname=sans,color="' . $this->style['start-color'] . '"];';;
@@ -407,7 +407,7 @@ class DotWorkflow
                     "\\n,",
                     "\\n",
                     ",\\n"
-                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState) , $this->wdoc->_array2val($tm) , '_self', false));
+                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState) , $this->wdoc->arrayToRawValue($tm) , '_self', false));
                 $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
                 $this->lines[] = '"' . str_replace(" ", "\\n", $e2) . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=octagon,color="' . $this->style['timer-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
                 $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -423,7 +423,7 @@ class DotWorkflow
                     "\\n,",
                     "\\n",
                     ",\\n"
-                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState) , $this->wdoc->_array2val($mt) , '_self', false));
+                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
                 $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
                 $this->lines[] = '"' . $e2 . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=house,color="' . $this->style['mail-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
                 $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -463,7 +463,7 @@ class DotWorkflow
                 "\\n,",
                 "\\n",
                 ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->_array2val($mtrans) , '_self', false));
+            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->arrayToRawValue($mtrans) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
             
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false, tooltip="mail",style=bold,shape=house,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
@@ -495,7 +495,7 @@ class DotWorkflow
                 "\\n,",
                 "\\n",
                 ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $t["e2"]) , $this->wdoc->_array2val($mt) , '_self', false));
+            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $t["e2"]) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,tooltip="mail",style=bold,shape=house,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -516,7 +516,7 @@ class DotWorkflow
     private function setStateTimer($e2, $t, $index)
     {
         $aid = strtolower($this->wdoc->attrPrefix . "_TMID" . $t["e2"]);
-        $mt = $this->wdoc->getTValue($aid);
+        $mt = $this->wdoc->getMultipleRawValues($aid);
         if (count($mt) > 0) {
             $ex = 'tmf' . $index;
             
@@ -528,7 +528,7 @@ class DotWorkflow
                 "\\n,",
                 "\\n",
                 ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $t["e2"]) , $this->wdoc->_array2val($mt) , '_self', false));
+            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $t["e2"]) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,tooltip="timer",style=bold,shape=octagon,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -548,9 +548,9 @@ class DotWorkflow
     private function setTransitionTimer($e2, $t, $index)
     {
         $ttrans = array();
-        $tm = $this->wdoc->getValue($this->wdoc->attrPrefix . "_TRANS_TMID" . $t["t"]);
+        $tm = $this->wdoc->getRawValue($this->wdoc->attrPrefix . "_TRANS_TMID" . $t["t"]);
         if ($tm) $ttrans[] = $tm;
-        $ttrans = array_merge($ttrans, $this->wdoc->getTValue($this->wdoc->attrPrefix . "_TRANS_PA_TMID" . $t["t"]));
+        $ttrans = array_merge($ttrans, $this->wdoc->getMultipleRawValues($this->wdoc->attrPrefix . "_TRANS_PA_TMID" . $t["t"]));
         
         if (count($ttrans) > 0) {
             $ex = 'tm' . $index;
@@ -562,7 +562,7 @@ class DotWorkflow
                 "\\n,",
                 "\\n",
                 ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->_array2val($ttrans) , '_self', false));
+            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->arrayToRawValue($ttrans) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,tooltip="timer",shape=octagon,color="' . $this->style['timer-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s",labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -794,24 +794,24 @@ if ($dbaccess == "") {
 }
 
 $usage = new ApiUsage();
-$usage->setText("Create graph image for workflow");
-$docid = $usage->addNeeded("docid", "workflow identificator");
-$orient = $usage->addOption("orient", "orientation", array(
+$usage->setDefinitionText("Create graph image for workflow");
+$docid = $usage->addNeededParameter("docid", "workflow identificator");
+$orient = $usage->addOptionnalParameter("orient", "orientation", array(
     "LR",
     "TB",
     "BT",
     "RL"
 ) , "LR");
 
-$ratio = $usage->addOption("ratio", "ratio", array(
+$ratio = $usage->addOptionnalParameter("ratio", "ratio", array(
     "auto",
     "fill",
     "compress",
     "expand"
 ) , "auto");
-$isize = $usage->addOption("size", "image size", array() , "10");
+$isize = $usage->addOptionnalParameter("size", "image size", array() , "10");
 
-$type = $usage->addOption("type", "type of output", array(
+$type = $usage->addOptionnalParameter("type", "type of output", array(
     "complet",
     "activity",
     "justactivity",

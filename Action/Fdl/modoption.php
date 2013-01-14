@@ -42,7 +42,7 @@ function modoption(&$action)
         $vo = "";
         foreach ($listattr as $k => $v) {
             if ($v->usefor == "O") {
-                $vo.= "[" . $v->id . "|" . $doc->getValue($v->id) . "]";
+                $vo.= "[" . $v->id . "|" . $doc->getRawValue($v->id) . "]";
             }
         }
         $action->lay->set("vo", $vo);

@@ -115,7 +115,7 @@ function fullsearchresult(Action & $action)
             $s->setPertinenceOrder();
         } else {
             $sdoc = new_doc($dbaccess, $dirid);
-            $tkeys = $sdoc->getTValue("se_keys");
+            $tkeys = $sdoc->getMultipleRawValues("se_keys");
             foreach ($tkeys as $k => $v) if (!$v) unset($tkeys[$k]);
             $keys = implode('|', $tkeys);
         }
@@ -143,13 +143,14 @@ function fullsearchresult(Action & $action)
         $s->setSlice($slice + 1);
         $s->excludeConfidential();
         try {
-        $s->search();
-        if ($s->getError()) {
-            addLogMsg($s->getSearchInfo());
-            $action->exitError($s->getError());
+            $s->search();
+            if ($s->getError()) {
+                addLogMsg($s->getSearchInfo());
+                $action->exitError($s->getError());
+            }
         }
-        } catch (Exception $e) {
-            $action->exitError(sprintf(_("Incorrect filter %s"),$keyword));
+        catch(Exception $e) {
+            $action->exitError(sprintf(_("Incorrect filter %s") , $keyword));
         }
         
         if ($start == 0) {
@@ -186,7 +187,7 @@ function fullsearchresult(Action & $action)
         
         $k = 0;
         $tdocs = array();
-        while ($doc = $s->nextDoc()) {
+        while ($doc = $s->getNextDoc()) {
             
             if ($doc->confidential) {
                 if (($doc->profid > 0) && ($workdoc->controlId($doc->profid, "confidential") != "")) {

@@ -57,7 +57,7 @@ function modstate(Action & $action)
             else $action->info(sprintf("Change state %s [%d] : %s", $doc->title, $doc->id, $state));
         } else {
             if ($comment != "") {
-                $doc->addComment($comment);
+                $doc->addHistoryEntry($comment);
                 $action->log->info(sprintf("Add comment %s [%d] : %s", $doc->title, $doc->id, $comment));
             }
         }

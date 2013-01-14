@@ -45,7 +45,7 @@ function generic_search(Action & $action)
     if ($catgid) {
         $dir = new_doc($dbaccess, $catgid);
         if ($dir->isAlive()) {
-            $sfamid = $dir->getValue("se_famid", $famid);
+            $sfamid = $dir->getRawValue("se_famid", $famid);
         }
     }
     $action->setParamU("GENE_LATESTTXTSEARCH", setUkey($action, $famid, $keyword));
@@ -65,7 +65,7 @@ function generic_search(Action & $action)
         
         $sqlfilter = $sdoc->getSqlGeneralFilters($keyword, "yes", false, $full);
         $sqlorder = getDefUSort($action, "title");
-        if ($sqlorder == "") $sdoc->deleteValue("se_orderby");
+        if ($sqlorder == "") $sdoc->clearValue("se_orderby");
         $sqlfilter[] = "owner=" . $action->user->id;
         $sqlfilter[] = "se_famid='" . pg_escape_string($famid) . "'";
         $query = getSqlSearchDoc($dbaccess, $sdirid = 0, 16, $sqlfilter, false, true, "", false);
@@ -111,7 +111,7 @@ function generic_search(Action & $action)
         
         $sqlfilter = $sdoc->getSqlGeneralFilters($keyword, "yes", false, $full);
         $sqlorder = getDefUSort($action, "title");
-        if ($sqlorder == "") $sdoc->deleteValue("se_orderby");
+        if ($sqlorder == "") $sdoc->clearValue("se_orderby");
         if ($full) {
             //if ($famid > 0) $sqlfilter[]="fromid=".intval($famid); // here function to retrieve descendants
             

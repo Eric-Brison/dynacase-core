@@ -85,7 +85,7 @@ function lmail($dbaccess, $name)
     $tr = array();
     $sf = new SearchDoc($dbaccess, -1);
     $sf->setObjectReturn();
-    $sf->noViewControl();
+    $sf->overrideViewControl();
     $sf->addFilter("atags ~* 'MAILRECIPIENT'");
     $dlf = $sf->search()->getDocumentList();
     
@@ -118,7 +118,7 @@ function lmail($dbaccess, $name)
             if ($mailTitle == '') {
                 $mailTitle = $mail;
             }
-            $usw = $dest->getValue("us_whatid");
+            $usw = $dest->getRawValue("us_whatid");
             $uid = "";
             if ($usw > 0) {
                 $uid = $dest->id;
@@ -380,7 +380,7 @@ function lfamilly($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() ,
     }
     //$famid=-(abs($famid));
     if ($only) $famid = - ($famid);
-    $tinter = getChildDoc($dbaccess, $dirid, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
+    $tinter = internalGetDocCollection($dbaccess, $dirid, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
     
     $tr = array();
     
@@ -433,7 +433,7 @@ function lfamilyvalues($dbaccess, $famid, $name = "")
     }
     //$famid=-(abs($famid));
     if ($only) $famid = - ($famid);
-    $tinter = getChildDoc($dbaccess, $dirid = 0, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
+    $tinter = internalGetDocCollection($dbaccess, $dirid = 0, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
     
     $tr = array();
     
@@ -503,7 +503,7 @@ function fdlGetDocuments($families, $filterName = '', $limit = 15, $extraFilter 
             $s->search();
             if ($s->getError()) return $s->getError();
             
-            while ($doc = $s->nextDoc()) {
+            while ($doc = $s->getNextDoc()) {
                 $title = $doc->getHTMLTitle();
                 $tout[] = array(
                     sprintf('<img width="10px" src="%s">%s', $doc->getIcon('', 10) , $title) ,
@@ -597,7 +597,7 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
     if ($condName) $s->addFilter($condName);
     if (!$sort) $sort = 'lastname';
     $s->setOrder($sort);
-    $s->useViewControl(true);
+    $s->overrideViewControl(false);
     $al = $s->search();
     foreach ($al as $account) {
         

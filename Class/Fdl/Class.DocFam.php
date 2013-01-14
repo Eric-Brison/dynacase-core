@@ -151,7 +151,7 @@ create unique index idx_idfam on docfam(id);";
         return $values["title"];
     }
     
-    function PostModify()
+    function postModify()
     {
         include_once ("FDL/Lib.Attr.php");
         return refreshPhpPgDoc($this->dbaccess, $this->id);
@@ -159,7 +159,7 @@ create unique index idx_idfam on docfam(id);";
     
     function preCreated()
     {
-        $cdoc = $this->getFamDoc();
+        $cdoc = $this->getFamilyDocument();
         if ($cdoc->isAlive()) {
             if (!$this->ccvid) $this->ccvid = $cdoc->ccvid;
             if (!$this->cprofid) $this->cprofid = $cdoc->cprofid;
@@ -206,28 +206,29 @@ create unique index idx_idfam on docfam(id);";
         $tp = $this->getParamAttributes();
         $pPowns = $this->getOwnParams();
         foreach ($tp as $aid => & $oa) {
+            if ($oa->type == "array") continue;
             $tDefPar[$aid] = array(
                 "aid" => $aid,
                 "alabel" => $oa->getLabel() ,
                 "defown" => $pPowns[$aid],
-                "definh" => ($this->fromid) ? $this->getFamDoc()->getParamValue($aid) : '',
-                "defresult" => $this->getHtmlValue($oa, $d->getParamValue($aid))
+                "definh" => ($this->fromid) ? $this->getFamilyDocument()->getParameterRawValue($aid) : '',
+                "defresult" => $this->getHtmlValue($oa, $d->getFamilyParameterValue($aid))
             );
         }
         $parent = null;
         if ($this->fromid > 0) {
-            $parent = $this->getFamDoc();
+            $parent = $this->getFamilyDocument();
         }
         foreach ($defValues as $aid => $dv) {
             $oa = $d->getAttribute($aid);
-            $value = $d->getValue($aid);
+            $value = $d->getRawValue($aid);
             $ownValue = $ownDefValues[$aid];
             
             if ($oa) {
                 $oa->setVisibility('R');
                 $label = $oa->getLabel();
                 if ($oa->usefor == 'Q') {
-                    $value = $d->getParamValue($aid);
+                    $value = $d->getFamilyParameterValue($aid);
                     if ($ownParValues[$aid]) {
                         $ownValue = $ownParValues[$aid];
                     } else {
@@ -241,7 +242,7 @@ create unique index idx_idfam on docfam(id);";
             if ($parent) {
                 if ($oa->usefor == 'Q') {
                     
-                    $inhValue = $parent->getParamValue($aid);
+                    $inhValue = $parent->getParameterRawValue($aid);
                 } else {
                     $inhValue = $parent->getDefValue($aid);
                 }
@@ -402,15 +403,41 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return family parameter
      *
-     * @api get parameter value
+     * @deprecated use {@link Doc::getParameterRawValue} instead
+     * @see Doc::getParameterRawValue
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      * @return string parameter value
      */
     final public function getParamValue($idp, $def = "")
     {
+        deprecatedFunction();
+        return $this->getParameterRawValue($idp, $def);
+    }
+    /**
+     * return family parameter
+     *
+     * @api get parameter value
+     * @param string $idp parameter identifier
+     * @param string $def default value if parameter not found or if it is null
+     * @return string parameter value
+     */
+    final public function getParameterRawValue($idp, $def = "")
+    {
         if ($def === "") $def = $this->getDefValue($idp);
         return $this->getXValue("param", $idp, $def);
+    }
+    /**
+     * use in Doc::getParameterFamilyValue
+     * @param string $idp
+     * @param string $def
+     * @see Doc::getParameterFamilyValue_
+     * @return bool|string
+     */
+    protected function getParameterFamilyRawValue($idp, $def)
+    {
+        
+        return $this->getParameterRawValue($idp, $def);
     }
     /**
      * return all family parameter - seach in parents if parameter value is null
@@ -442,7 +469,7 @@ create unique index idx_idfam on docfam(id);";
      */
     public function getParamTValue($idAttr, $def = "", $index = - 1)
     {
-        $t = $this->_val2array($this->getParamValue("$idAttr", $def));
+        $t = $this->rawValueToArray($this->getParameterRawValue("$idAttr", $def));
         if ($index == - 1) return $t;
         if (isset($t[$index])) return $t[$index];
         else return $def;
@@ -459,7 +486,7 @@ create unique index idx_idfam on docfam(id);";
     {
         $this->setChanged();
         $idp = strtolower($idp);
-        if (is_array($val)) $val = $this->_array2val($val);
+        if (is_array($val)) $val = $this->arrayToRawValue($val);
         $err = '';
         if ($this->isComplete()) $err = $this->checkSyntax($idp, $val);
         if (!$err) $this->setXValue("param", strtolower($idp) , $val);
@@ -670,7 +697,7 @@ create unique index idx_idfam on docfam(id);";
     function setXValue($X, $idp, $val)
     {
         $tval = "_xt$X";
-        if (is_array($val)) $val = $this->_array2val($val);
+        if (is_array($val)) $val = $this->arrayToRawValue($val);
         
         if (!isset($this->$tval)) $this->getXValues($X);
         $txval = $this->$tval;
@@ -696,10 +723,10 @@ create unique index idx_idfam on docfam(id);";
         
         foreach ($fa as $aid => $oattr) {
             if ($oattr->inArray()) {
-                $ta = $this->_val2array($this->getParamValue($aid));
+                $ta = $this->rawValueToArray($this->getParameterRawValue($aid));
             } else {
                 $ta = array(
-                    $this->getParamValue($aid)
+                    $this->getParameterRawValue($aid)
                 );
             }
             foreach ($ta as $k => $v) {

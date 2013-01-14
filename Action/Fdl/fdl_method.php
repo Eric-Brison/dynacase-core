@@ -45,8 +45,8 @@ function fdl_method(Action & $action)
     
     if ($err != "") $action->AddWarningMsg($err);
     $action->AddLogMsg(sprintf(_("method %s executed for %s ") , $method, $doc->title));
-    if ($err) $doc->addComment(sprintf(_("method %s not executed : %s") , $method, $err) , HISTO_ERROR);
-    else $doc->addComment(sprintf(_("method %s executed") , $method) , HISTO_NOTICE);
+    if ($err) $doc->addHistoryEntry(sprintf(_("method %s not executed : %s") , $method, $err) , HISTO_ERROR);
+    else $doc->addHistoryEntry(sprintf(_("method %s executed") , $method) , HISTO_NOTICE);
     
     if (!$noredirect) {
         if ($zone) $opt = "&zone=$zone";

@@ -49,7 +49,7 @@ function freedom_mod(Action & $action)
             }
             // first try in current folder
             if ($dirid > 0) {
-                $err = $fld->AddFile($doc->id);
+                $err = $fld->insertDocument($doc->id);
                 if ($err != "") {
                     $action->AddLogMsg($err);
                     $dirid = 0;
@@ -58,7 +58,7 @@ function freedom_mod(Action & $action)
             // second try in default folder for family
             /*
             if ($dirid == 0) {
-            $cdoc = $doc->getFamDoc();
+            $cdoc = $doc->getFamilyDocument();
             if ($cdoc->dfldid>0)  {
             $dirid=$cdoc->dfldid;
             $fld = new_Doc($dbaccess,$dirid);
@@ -76,7 +76,7 @@ function freedom_mod(Action & $action)
                 $home = $fld->getHome();
                 
                 if ($home->id > 0) $fld = $home;
-                $err = $fld->AddFile($doc->id);
+                $err = $fld->insertDocument($doc->id);
                 if ($err != "") $action->AddLogMsg($err);
             }
         }

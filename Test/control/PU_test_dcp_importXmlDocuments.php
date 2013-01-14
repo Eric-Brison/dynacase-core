@@ -89,8 +89,8 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("Error : $err"));
         $doc = new_doc("", $docName);
         $this->assertTrue($doc->isAlive() , sprintf("cannot umport %s document", $docName));
-        $tColK = $doc->getTValue("tst_extrakey");
-        $tColv = $doc->getTValue("tst_extraval");
+        $tColK = $doc->getMultipleRawValues("tst_extrakey");
+        $tColv = $doc->getMultipleRawValues("tst_extraval");
         $tExtra = array();
         foreach ($tColK as $k => $v) {
             $tExtra[$v] = $tColv[$k];

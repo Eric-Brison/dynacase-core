@@ -98,7 +98,7 @@ class DocLDAP extends DbObj
     function getDNs()
     {
         if ($this->ldapdn == "") return array();
-        return Doc::_val2array($this->ldapdn);
+        return Doc::rawValueToArray($this->ldapdn);
     }
     /**
      * set new DNs created in LDAP database from this document

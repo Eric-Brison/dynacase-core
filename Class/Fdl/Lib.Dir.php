@@ -44,20 +44,20 @@ function getChildDir($dbaccess, $userid, $dirid, $notfldsearch = false, $restype
     // search classid and appid to test privilege
     if ($notfldsearch) {
         // just folder no serach
-        return getChildDoc($dbaccess, $dirid, "0", "ALL", array() , $userid, $restype, 2, false, "title");
+        return internalGetDocCollection($dbaccess, $dirid, "0", "ALL", array() , $userid, $restype, 2, false, "title");
     } else {
         $folders = array();
         $searches = array();
         // with folder and searches
         try {
-            $folders = getChildDoc($dbaccess, $dirid, "0", "ALL", array(
+            $folders = internalGetDocCollection($dbaccess, $dirid, "0", "ALL", array(
                 "doctype='D'"
             ) , $userid, $restype, 2, false, "title");
         }
         catch(Exception $e) {
         }
         try {
-            $searches = getChildDoc($dbaccess, $dirid, "0", "ALL", array(
+            $searches = internalGetDocCollection($dbaccess, $dirid, "0", "ALL", array(
                 "doctype='S'"
             ) , $userid, $restype, 5, false, "title");
         }
@@ -199,7 +199,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                 }
             }
             if (strpos(implode(",", $sqlfilters) , "archiveid") === false) $sqlfilters[-4] = $maintabledot . "archiveid is null";
-            //if ($fld->getValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
+            //if ($fld->getRawValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
             if ($trash == "only") $sqlfilters[-1] = "locked = -1";
             elseif ($latest) $sqlfilters[-1] = "locked != -1";
             ksort($sqlfilters);
@@ -264,7 +264,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                          */
                         $fld = new_Doc($dbaccess, $dirid);
                         if ($trash) $fld->setValue("se_trash", $trash);
-                        else $trash = $fld->getValue("se_trash");
+                        else $trash = $fld->getRawValue("se_trash");
                         $fld->folderRecursiveLevel = $folderRecursiveLevel;
                         $tsqlM = $fld->getQuery();
                         foreach ($tsqlM as $sqlM) {
@@ -320,7 +320,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
             $fld = null;
             if (!is_array($dirid)) {
                 $fld = new_Doc($dbaccess, $dirid);
-                if ($fld->getValue("se_phpfunc") != "") return $terr;
+                if ($fld->getRawValue("se_phpfunc") != "") return $terr;
             }
             
             if ((is_array($dirid)) || ($fld->defDoctype != 'S')) {
@@ -372,18 +372,49 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      * @param array $sqlfilters array of sql filter
      * @param int $userid the current user id
      * @param string $qtype LIST|TABLE the kind of return : list of object or list or values array
-     * @param int $fromid identifier of family document
+     * @param int|string $fromid identifier of family document
      * @param bool $distinct if true all revision of the document are returned else only latest
      * @param string $orderby field order
      * @param bool $latest if true only latest else all revision
      * @param string $trash (no|only|also) search in trash or not
+     * @param null $debug
+     * @param int $folderRecursiveLevel
+     * @param string $join
      * @param \SearchDoc $searchDoc the SearchDoc object when getChildDoc is used by a SearchDoc object
-     * @deprecated use searchDoc instead
+     * @deprecated use {@link SearchDoc} instead
+     * @see SearchDoc
      * @return array/Doc
      */
     function getChildDoc($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
     {
         deprecatedFunction();
+        return internalGetDocCollection($dbaccess, $dirid, $start, $slice, $sqlfilters, $userid, $qtype, $fromid, $distinct, $orderby, $latest, $trash, $debug, $folderRecursiveLevel, $join, $searchDoc);
+    }
+    /**
+     * system only - used by core return array of documents
+     *
+     * @param string $dbaccess database specification
+     * @param array  $dirid the array of id or single id of folder where search document
+     * @param string $start the start index
+     * @param string $slice the maximum number of returned document
+     * @param array $sqlfilters array of sql filter
+     * @param int $userid the current user id
+     * @param string $qtype LIST|TABLE the kind of return : list of object or list or values array
+     * @param int|string $fromid identifier of family document
+     * @param bool $distinct if true all revision of the document are returned else only latest
+     * @param string $orderby field order
+     * @param bool $latest if true only latest else all revision
+     * @param string $trash (no|only|also) search in trash or not
+     * @param bool $debug
+     * @param int $folderRecursiveLevel
+     * @param string $join
+     * @param \SearchDoc $searchDoc the SearchDoc object when getChildDoc is used by a SearchDoc object
+     * @internal use searchDoc to get document collection
+     * @see SearchDoc
+     * @return array
+     */
+    function internalGetDocCollection($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
+    {
         global $action;
         // query to find child documents
         if (($fromid != "") && (!is_numeric($fromid))) $fromid = getFamIdFromName($dbaccess, $fromid);
@@ -408,11 +439,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                     if (is_array($td)) return $td;
                 }
             } else {
-                if ($fld->getValue("se_famid")) $fromid = $fld->getValue("se_famid");
+                if ($fld->getRawValue("se_famid")) $fromid = $fld->getRawValue("se_famid");
             }
         } elseif ($dirid != 0) {
             $fld = new_Doc($dbaccess, $dirid);
-            if (($fld->defDoctype == 'S') && ($fld->getValue("se_famid"))) $fromid = $fld->getValue("se_famid");
+            if (($fld->defDoctype == 'S') && ($fld->getRawValue("se_famid"))) $fromid = $fld->getRawValue("se_famid");
         }
         if ($trash == "only") $distinct = true;
         //   xdebug_var_dump(xdebug_get_function_stack());
@@ -621,10 +652,10 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         
         $sdoc = new_Doc($dbaccess, $dirid);
         
-        $tidsearch = $sdoc->getTValue("SEG_IDCOND");
+        $tidsearch = $sdoc->getMultipleRawValues("SEG_IDCOND");
         $tdoc = array();
         foreach ($tidsearch as $k => $v) {
-            $tdoc = array_merge(getChildDoc($dbaccess, $v, $start, $slice, $sqlfilters, $userid, $qtype, $fromid, $distinct, $orderby, $latest) , $tdoc);
+            $tdoc = array_merge(internalGetDocCollection($dbaccess, $v, $start, $slice, $sqlfilters, $userid, $qtype, $fromid, $distinct, $orderby, $latest) , $tdoc);
         }
         return $tdoc;
     }
@@ -681,7 +712,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         
         if ($name != "") $sqlfilter[] = "title ~* '$name'";
         
-        return getChildDoc($dbaccess, 0, 0, $limit, $sqlfilter, $userid, "TABLE", getFamIdFromName($dbaccess, $famname) , false, "title");
+        return internalGetDocCollection($dbaccess, 0, 0, $limit, $sqlfilter, $userid, "TABLE", getFamIdFromName($dbaccess, $famname) , false, "title");
     }
     function sqlval2array($sqlvalue)
     {
@@ -705,7 +736,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
     {
         $tableid = array();
         
-        $tdir = getChildDoc($dbaccess, $dirid, "0", "ALL", array() , $userid = 1, "TABLE", 2);
+        $tdir = internalGetDocCollection($dbaccess, $dirid, "0", "ALL", array() , $userid = 1, "TABLE", 2);
         
         foreach ($tdir as $k => $v) {
             $tableid[] = $v["id"];
@@ -901,7 +932,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         if ($cond != "") $filter[] = "dpdoc_famid is null or (" . GetSqlCond($chdoc, "dpdoc_famid") . ")";
         else $filter[] = "dpdoc_famid is null";
         $filter[] = "fromid=" . $defProfFamId;
-        $tcv = getChildDoc($dbaccess, 0, 0, "ALL", $filter, $action->user->id, "TABLE", $defProfFamId);
+        $tcv = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, $action->user->id, "TABLE", $defProfFamId);
         
         return $tcv;
     }

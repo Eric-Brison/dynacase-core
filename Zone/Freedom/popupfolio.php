@@ -29,7 +29,7 @@ function popupfolio(&$action)
     
     $dir = new_Doc($dbaccess, $dirid);
     if ($dir->locked == - 1) { // it is revised document
-        $ldocid = $dir->latestId();
+        $ldocid = $dir->getLatestId();
         if ($ldocid != $dir->id) $dir = new_Doc($dbaccess, $ldocid);
     }
     

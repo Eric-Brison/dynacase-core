@@ -161,7 +161,6 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param string $session parent session
      * @param bool $autoinit set to true to auto create app if not exists yet
      *
-     * @api initialize Application object
      * @code
      $CoreNull = "";
      $core = new Application();
@@ -484,7 +483,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return string the src of the CSS or "" if non existent ref
      */
-    public function getCSSLink($ref, $needparse = false, $packName = '')
+    public function getCssLink($ref, $needparse = false, $packName = '')
     {
         if (substr($ref, 0, 2) == './') {
             $ref = substr($ref, 2);
@@ -502,7 +501,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return string the src of the JS or "" if non existent ref
      */
-    public function getJSLink($ref, $needparse = false, $packName = '')
+    public function getJsLink($ref, $needparse = false, $packName = '')
     {
         if (substr($ref, 0, 2) == './') {
             $ref = substr($ref, 2);
@@ -639,7 +638,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * Add message to log (syslog)
      * The message is also display in console of web interfaces
-     * @api Add message to log
+     *
      * @param string $code message to add to log
      * @param int $cut
      */
@@ -667,7 +666,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     }
     /**
      * send a message to the user interface
-     * @api send warning message to web interface
+     *
      * @param string $code message
      * @return void
      */
@@ -678,7 +677,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($this->hasParent()) {
             $this->parent->addWarningMsg($code);
         } else {
-            if ($_SERVER['HTTP_HOST'] != "") {
+            if (!empty($_SERVER['HTTP_HOST'])) {
                 $logmsg = $this->session->read("warningmsg", array());
                 $logmsg[] = str_replace("\n", "\\n", addslashes($code));
                 $this->session->register("warningmsg", $logmsg);
@@ -705,9 +704,8 @@ create sequence SEQ_ID_APPLICATION start 10;
         $this->session->unregister("warningmsg");
     }
     /**
-     * Test permission for currennt user in current application
+     * Test permission for current user in current application
      *
-     * @api test grant of current user to execute an action
      * @param string $acl_name acl name to test
      * @param string $app_name application if test for other application
      * @param bool $strict to not use substitute account information
@@ -824,7 +822,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function getImageFile($img)
     {
         
-        return $this->rootdir . "/" . $this->GetImageUrl($img);
+        return $this->rootdir . "/" . $this->getImageLink($img);
     }
     
     var $noimage = "CORE/Images/noimage.png";
@@ -837,7 +835,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param int $size to use image with another width (in pixel) - null is original size
      * @return string url to download image
      */
-    public function getImageUrl($img, $detectstyle = true, $size = null)
+    public function getImageLink($img, $detectstyle = true, $size = null)
     {
         static $cacheImgUrl = array();
         
@@ -874,7 +872,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
             // try in parent
             if ($this->parent != "") {
-                $url = $this->parent->getImageUrl($img);
+                $url = $this->parent->getImageLink($img);
                 if ($size !== null) $url = 'resizeimg.php?img=' . $url . '&size=' . $size;
                 $cacheImgUrl[$cacheIndex] = $url;
                 return $url;
@@ -882,6 +880,24 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return $this->noimage;
     }
+    /**
+     * get image url of an application
+     * can also get another image by search in Images general directory
+     *
+     * @see Application::getImageLink
+     *
+     * @deprecated use { @link Application::getImageLink } instead
+     *
+     * @param string $img image filename
+     * @param bool $detectstyle to use theme image instead of original
+     * @param int $size to use image with another width (in pixel) - null is original size
+     * @return string url to download image
+     */
+    public function getImageUrl($img, $detectstyle = true, $size = null) {
+        deprecatedFunction();
+        return $this->getImageLink($img, $detectstyle, $size);
+    }
+
     
     public function imageFilterColor($image, $fcol, $newcol, $out = null)
     {
@@ -902,7 +918,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $img = $ttf[0];
         $filter = $ttf[1];
         
-        $url = $this->GetImageUrl($img);
+        $url = $this->getImageLink($img);
         if ($url == $this->noimage) return $url;
         
         $tf = explode("|", $filter);
@@ -1048,7 +1064,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * Add temporary parameter to ths application
      * Can be use to transmit global variable or to affect Layout
-     * @api Add temporary parameter to this application
+     *
      * @param string $key
      * @param string $val
      */
@@ -1305,7 +1321,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * translate text
      * use gettext catalog
-     * @api translate text
+     *
      * @param string $code text to translate
      * @return string
      */

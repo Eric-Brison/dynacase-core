@@ -132,8 +132,8 @@ function modattr(Action & $action)
         }
     }
     
-    if (count($tmod) > 0) $doc->AddComment(_("Modify Attributes") , HISTO_INFO, "MODATTR");
-    if (count($tadd) > 0) $doc->AddComment(sprintf(_("Add Attributes : %s") , implode(", ", $tadd)) , HISTO_INFO, "MODATTR");
+    if (count($tmod) > 0) $doc->addHistoryEntry(_("Modify Attributes") , HISTO_INFO, "MODATTR");
+    if (count($tadd) > 0) $doc->addHistoryEntry(sprintf(_("Add Attributes : %s") , implode(", ", $tadd)) , HISTO_INFO, "MODATTR");
     $wsh = getWshCmd();
     $cmd = $wsh . "--userid={$action->user->id} --api=fdl_adoc --docid=" . $doc->initid;
     

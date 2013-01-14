@@ -47,7 +47,7 @@ class TestDocRel extends TestCaseDcpCommonFamily
                 $d->setValue("tst_title", $bid);
                 $d->store();
                 $this->base[$bid] = $d->id;
-                if ($i < 2) $d->addRevision();
+                if ($i < 2) $d->revise();
             }
         }
     }

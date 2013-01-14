@@ -38,7 +38,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("setvalue error : %s", $err));
         if ($converted === false) $converted = $value;
         
-        $this->assertEquals($converted, $d->getValue($attrid) , "setvalue / getvalue $attrid : not the same");
+        $this->assertEquals($converted, $d->getRawValue($attrid) , "setvalue / getvalue $attrid : not the same");
         $err = $d->store();
         $this->assertEmpty($err, sprintf("store error : %s", $err));
         return $d;
@@ -53,7 +53,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
         
         $err = $d->setValue($attrid, $value);
         $this->assertNotEmpty($err, sprintf("setvalue error : %s", $err));
-        $this->assertEmpty($d->getValue($attrid));
+        $this->assertEmpty($d->getRawValue($attrid));
         
         return $d;
     }
@@ -71,7 +71,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("setvalue error : %s", $err));
         
         foreach ($values as $aid => $value) {
-            $this->assertEquals($expectedCount, count($d->getTValue($aid)) , sprintf("count for %s incorrect %d <> %d", $aid, $expectedCount, count($d->getTValue($aid))));
+            $this->assertEquals($expectedCount, count($d->getMultipleRawValues($aid)) , sprintf("count for %s incorrect %d <> %d", $aid, $expectedCount, count($d->getMultipleRawValues($aid))));
         }
         
         if ($secondValues) {
@@ -82,7 +82,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             
             foreach ($secondValues as $aid => $value) {
                 $oa = $d->getAttribute($aid);
-                $this->assertEquals($secondCount, count($d->getTValue($aid)) , sprintf("second count for %s incorrect %d <> %d : %s", $aid, $secondCount, count($d->getTValue($aid)) , print_r($d->getAValues($oa->fieldSet->id) , true)));
+                $this->assertEquals($secondCount, count($d->getMultipleRawValues($aid)) , sprintf("second count for %s incorrect %d <> %d : %s", $aid, $secondCount, count($d->getMultipleRawValues($aid)) , print_r($d->getArrayRawValues($oa->fieldSet->id) , true)));
             }
         }
         return $d;
@@ -108,7 +108,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("after setvalue error : %s", $err));
         
         foreach ($notchanged as $aid => $value) {
-            $this->assertEquals($value, $d->getOldValue($aid) , "wrong old value $aid" . print_r($d->getValues() , true));
+            $this->assertEquals($value, $d->getOldRawValue($aid) , "wrong old value $aid" . print_r($d->getValues() , true));
         }
     }
     public function dataOldValue()

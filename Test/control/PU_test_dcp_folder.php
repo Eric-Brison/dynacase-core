@@ -46,7 +46,7 @@ class TestFolder extends TestCaseDcpCommonFamily
             $val = "testing " . time();
             $err = $d->setValue("ba_desc", $val);
             $this->assertEquals("", $err, sprintf("cannot object update", $a));
-            $this->assertEquals($val, $d->getValue("ba_desc") , sprintf("document not updated", $a));
+            $this->assertEquals($val, $d->getRawValue("ba_desc") , sprintf("document not updated", $a));
             $err = $d->modify();
             $this->assertEquals("", $err, sprintf("cannot database update", $a));
             
@@ -85,7 +85,7 @@ class TestFolder extends TestCaseDcpCommonFamily
         $db = new_doc(self::$dbaccess, $b, true);
         if ($da->isAlive() && $db->isAlive()) {
             
-            $err = $da->addFile($db->initid);
+            $err = $da->insertDocument($db->initid);
             if ($err == "") {
                 $this->assertEquals("", $err, sprintf(_("error ::addFile %s %s") , $a, $err));
                 $sval = $this->_DBGetValue(sprintf("select childid from fld where dirid=%d and childid=%d", $da->initid, $db->initid));

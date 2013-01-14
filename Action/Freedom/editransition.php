@@ -40,10 +40,10 @@ function editransition(&$action)
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $doc = new_Doc($dbaccess, $docid);
     
-    $idetats_ini = explode("\n", $doc->GetValue("wor_trans_idetat_ini"));
-    $idetats_fin = explode("\n", $doc->GetValue("wor_trans_idetat_fin"));
-    $descriptions = explode("\n", $doc->GetValue("wor_trans_descrip"));
-    $tts = explode("\n", $doc->GetValue("wor_trans_tt"));
+    $idetats_ini = explode("\n", $doc->getRawValue("wor_trans_idetat_ini"));
+    $idetats_fin = explode("\n", $doc->getRawValue("wor_trans_idetat_fin"));
+    $descriptions = explode("\n", $doc->getRawValue("wor_trans_descrip"));
+    $tts = explode("\n", $doc->getRawValue("wor_trans_tt"));
     
     while (list($k, $v) = each($idetats_ini)) {
         $descrip[$v][$idetats_fin[$k]] = $descriptions[$k];

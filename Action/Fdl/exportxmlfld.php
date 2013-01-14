@@ -147,7 +147,7 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
         fputs($flog, sprintf("EXPORT OPTION ID : %s <%s>\n", $fldid, $fld->getTitle()));
     }
     
-    while ($doc = $s->nextDoc()) {
+    while ($doc = $s->getNextDoc()) {
         //print $doc->exportXml();
         if ($doc->doctype != 'C') {
             $ftitle = str_replace(array(

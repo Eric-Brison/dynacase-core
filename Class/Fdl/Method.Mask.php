@@ -60,9 +60,9 @@ class _MASK extends Doc
      */
     function postModify()
     {
-        $tneed = $this->getTValue("MSK_NEEDEEDS");
-        $tattrid = $this->getTValue("MSK_ATTRIDS");
-        $tvis = $this->getTValue("MSK_VISIBILITIES");
+        $tneed = $this->getMultipleRawValues("MSK_NEEDEEDS");
+        $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
+        $tvis = $this->getMultipleRawValues("MSK_VISIBILITIES");
         
         $tvisibilities = array();
         foreach ($tattrid as $k => $v) {
@@ -81,8 +81,8 @@ class _MASK extends Doc
     
     function getVisibilities()
     {
-        $tvisid = $this->getTValue("MSK_VISIBILITIES");
-        $tattrid = $this->getTValue("MSK_ATTRIDS");
+        $tvisid = $this->getMultipleRawValues("MSK_VISIBILITIES");
+        $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
         
         $tvisibilities = array();
         while (list($k, $v) = each($tattrid)) {
@@ -93,9 +93,9 @@ class _MASK extends Doc
     
     function getCVisibilities()
     {
-        $tvisid = $this->getTValue("MSK_VISIBILITIES");
-        $tattrid = $this->getTValue("MSK_ATTRIDS");
-        $docid = $this->getValue("MSK_FAMID", 1);
+        $tvisid = $this->getMultipleRawValues("MSK_VISIBILITIES");
+        $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
+        $docid = $this->getRawValue("MSK_FAMID", 1);
         $doc = new_Doc($this->dbaccess, $docid);
         
         $tsvis = $this->getVisibilities();
@@ -117,8 +117,8 @@ class _MASK extends Doc
     }
     function getNeedeeds()
     {
-        $tvisid = $this->getTValue("MSK_NEEDEEDS");
-        $tattrid = $this->getTValue("MSK_ATTRIDS");
+        $tvisid = $this->getMultipleRawValues("MSK_NEEDEEDS");
+        $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
         
         $tvisibilities = array();
         while (list($k, $v) = each($tattrid)) {
@@ -135,7 +135,7 @@ class _MASK extends Doc
     function viewmask($target = "_self", $ulink = true, $abstract = false)
     {
         
-        $docid = $this->getValue("MSK_FAMID", 1);
+        $docid = $this->getRawValue("MSK_FAMID", 1);
         
         $tvisibilities = $this->getCVisibilities();
         $tkey_visibilities = array_keys($tvisibilities);
@@ -221,7 +221,7 @@ class _MASK extends Doc
     {
         global $action;
         
-        $docid = $this->getValue("MSK_FAMID");
+        $docid = $this->getRawValue("MSK_FAMID");
         
         $this->lay->Set("docid", $docid);
         

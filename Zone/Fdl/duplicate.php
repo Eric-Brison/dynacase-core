@@ -26,7 +26,7 @@ function duplicate(&$action, $dirid, $docid, $temporary = false)
     
     if ($doc->isConfidential()) redirect($action, "FDL", "FDL_CONFIDENTIAL&id=" . $doc->id);
     
-    $cdoc = $doc->getFamDoc();
+    $cdoc = $doc->getFamilyDocument();
     
     $err = $cdoc->control('create');
     if ($err != "") $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , $doc->fromid));
@@ -34,13 +34,13 @@ function duplicate(&$action, $dirid, $docid, $temporary = false)
     $values = $doc->getValues();
     if (!is_array($values)) $action->exitError(_("this kind of document cannot be duplicate"));
     // initiate a copy of the doc
-    $copy = $doc->copy($temporary);
+    $copy = $doc->duplicate($temporary);
     if (!is_object($copy)) $action->exitError($copy);
     
     if ($err != "") $action->exitError($err);
     //  $copy->SetTitle($copy->title);
     $copy->refresh();
-    $copy->postmodify();
+    $copy->postModify();
     $err = $copy->modify();
     if ($err != "") $action->exitError($err);
     
