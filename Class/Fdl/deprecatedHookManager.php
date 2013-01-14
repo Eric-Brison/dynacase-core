@@ -16,7 +16,9 @@ class deprecatedHookManager
     public $deprecatedHooks = array(
         "postModify" => "postStore",
         "specRefresh" => "preRefresh",
-        "postCopy" => "postDuplicate"
+        "postCopy" => "postDuplicate",
+        "postRevive" => "postUndelete",
+        "preRevive" => "preUndelete"
     );
     private $content = '';
     private $methods = array();

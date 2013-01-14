@@ -95,7 +95,7 @@ class _IUSER extends Doc implements IMailRecipient
         return ($this->getRawValue("US_STATUS") != 'D');
     }
     
-    public function preRevive()
+    public function preUndelete()
     {
         return _("user cannot be revived");
     }

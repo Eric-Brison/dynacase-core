@@ -761,9 +761,9 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
         if ($doc->doctype != 'Z') {
             $tmpdoc = new_Doc($doc->dbaccess, $doc->initid, true);
             if ($tmpdoc->Control("view") == "") {
-                if (!$tmpdoc->preRevive()) $tlink["latest"]["visibility"] = POPUP_ACTIVE;
+                if (!$tmpdoc->preUndelete()) $tlink["latest"]["visibility"] = POPUP_ACTIVE;
             }
-        } elseif (!$doc->preRevive()) $tlink["restore"]["visibility"] = POPUP_ACTIVE;
+        } elseif (!$doc->preUndelete()) $tlink["restore"]["visibility"] = POPUP_ACTIVE;
         $tlink["editdoc"]["visibility"] = POPUP_INVISIBLE;
         $tlink["delete"]["visibility"] = POPUP_INVISIBLE;
         $tlink["editprof"]["visibility"] = POPUP_INVISIBLE;

@@ -42,7 +42,7 @@ class _ROLE extends Doc
         $role = $this->getAccount();
         if ($role) $role->Delete();
     }
-    public function preRevive()
+    public function preUndelete()
     {
         return _("role cannot be revived");
     }

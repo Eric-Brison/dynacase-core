@@ -74,7 +74,7 @@ class _IGROUP extends _GROUP
         if ($this->getRawValue("grp_isrefreshed") == "0") $err.= _("this groups must be refreshed");
         return $err;
     }
-    public function preRevive()
+    public function preUndelete()
     {
         return _("group cannot be revived");
     }

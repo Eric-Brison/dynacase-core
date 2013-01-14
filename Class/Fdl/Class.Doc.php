@@ -1721,7 +1721,7 @@ create unique index i_docir on doc(initid, revision);";
         $err = "";
         if (($this->control('delete') == "") || ($this->userid == 1)) {
             if (!$this->isAlive()) {
-                $err = $this->preRevive();
+                $err = $this->preUndelete();
                 if ($err) return $err;
                 $err = simpleQuery($this->dbaccess, sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1", $this->fromid, $this->initid) , $latestId, true, true);
                 if ($err == "") {
@@ -1737,7 +1737,7 @@ create unique index i_docir on doc(initid, revision);";
                             "lmodify"
                         ) , true);
                         $this->addHistoryEntry(_("revival document") , HISTO_MESSAGE, "REVIVE");
-                        $msg = $this->postRevive();
+                        $msg = $this->postUndelete();
                         if ($msg) $this->addHistoryEntry($msg);
                         $this->addLog('undelete');
                         $rev = $this->getRevisions();
@@ -2798,13 +2798,33 @@ create unique index i_docir on doc(initid, revision);";
      * @see Doc::undelete
      * @return string error message, if no error empty string
      */
-    function preRevive()
+    function preUndelete()
     {
     }
     /**
      * call when doc is revived after resurrection in database
      * the error message will appeared like message
      * @api hook called after undelete document
+     * @return string warning message, if no warning empty string
+     */
+    function postUndelete()
+    {
+    }
+    /**
+     * call when doc is being undelete
+     * if return non null string undelete will ne aborted
+     * @deprecated use {@link Doc:::preUndelete} instead
+     * @see Doc::preUndelete
+     * @return string error message, if no error empty string
+     */
+    function preRevive()
+    {
+    }
+    /**
+     * call when doc is revived after resurrection in database
+     * the error message will appeared like message
+     * @deprecated use {@link Doc:::postUndelete} instead
+     * @see Doc::postUndelete
      * @return string warning message, if no warning empty string
      */
     function postRevive()
