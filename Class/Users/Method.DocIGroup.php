@@ -56,7 +56,7 @@ class _IGROUP extends _GROUP
         "description" => "GRP_DESC"
     );
     var $ldapobjectclass = "posixGroup";
-    function specRefresh()
+    function preRefresh()
     {
         //  $err=$this->ComputeGroup();
         $err = "";

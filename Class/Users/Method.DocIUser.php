@@ -51,9 +51,9 @@ class _IUSER extends Doc implements IMailRecipient
     );
     var $defaultview = "FDL:VIEWBODYCARD";
     var $defaultedit = "FDL:EDITBODYCARD";
-    function specRefresh()
+    function preRefresh()
     {
-        $err = parent::SpecRefresh();
+        $err = parent::preRefresh();
         
         if ($this->getRawValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is deactivated");
         // refresh MEID itself

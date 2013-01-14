@@ -1303,7 +1303,7 @@ create unique index i_docir on doc(initid, revision);";
                 if ($this->hasChanged) {
                     //in case of change in postStore
                     $err = $this->modify();
-                    if ($err) $info->errorCode=storeInfo::UPDATE_ERROR;
+                    if ($err) $info->errorCode = storeInfo::UPDATE_ERROR;
                 }
                 if ($err == "" && (!$create)) $this->addHistoryEntry(_("save document") , HISTO_INFO, "MODIFY");
             } else {
@@ -5521,8 +5521,19 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Special Refresh
      * called when refresh document : when view, modify document - generally when access to the document
+     * @note during preRefresh edit control is disabled
+     * @see Doc::refresh
+     * @api hook called in begining of refresh before update computed attributes
+     */
+    public function preRefresh()
+    {
+        return '';
+    }
+    /**
+     * Special Refresh
+     * called when refresh document : when view, modify document - generally when access to the document
      * @note during specRefresh edit control is disabled
-     * @warning This hook may be replaced by preRefresh in the the next version.
+     * @deprecated This hook may be replaced by preRefresh in the the next version.
      * @see Doc::refresh
      * @api hook called in begining of refresh before update computed attributes
      */
@@ -5563,7 +5574,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->lockdomainid > 0) return '';
         $changed = $this->hasChanged;
         if (!$changed) $this->disableEditControl(); // disabled control just to refresh
-        $msg = $this->specRefresh();
+        $msg = $this->preRefresh();
         // if ($this->id == 0) return; // no refresh for no created document
         $msg.= $this->SpecRefreshGen();
         $msg.= $this->postRefresh();

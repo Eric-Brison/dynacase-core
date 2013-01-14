@@ -72,7 +72,7 @@ function search(&$action)
     $err = $ndoc->Add();
     
     if ($err != "") $action->ExitError($err);
-    $ndoc->SpecRefresh();
+    $ndoc->preRefresh();
     
     SetHttpVar("id", $ndoc->id);
     $err = modcard($action, $ndocid); // ndocid change if new doc
