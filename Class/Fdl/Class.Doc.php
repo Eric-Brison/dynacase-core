@@ -5117,7 +5117,7 @@ create unique index i_docir on doc(initid, revision);";
         
         if ($copyfile) $copy->duplicateFiles();
         
-        $copy->PostCopy($this);
+        $copy->postDuplicate($this);
         if ($err != "") AddWarningMsg($err);
         
         $copy->Modify();
@@ -5147,8 +5147,20 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call after copy document
      * @api hook called after duplicate document
-     * @warning This hook may be replaced by postDuplicate in the the next version.
      * @see Doc::duplicate
+     * @param Doc $copyfrom
+     * @return string
+     */
+    function postDuplicate(&$copyfrom)
+    {
+        // to be defined in child class
+        return "";
+    }
+    /**
+     * call after copy document
+     * @api hook called after duplicate document
+     * @deprecated use {@link Doc::postDuplicate} hook instead
+     * @see Doc::postDuplicate
      * @param Doc $copyfrom
      * @return string
      */
