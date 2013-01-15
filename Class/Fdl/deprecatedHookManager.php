@@ -48,6 +48,16 @@ class deprecatedHookManager
             "newName" => "getCustomTitle",
             "call" => '',
             "declare" => ''
+        ) ,
+        "postInsertDoc" => array(
+            "newName" => "postInsertDocument",
+            "call" => '$docid, $multiple',
+            "declare" => '$docid, $multiple = false'
+        ) ,
+        "preInsertDoc" => array(
+            "newName" => "preInsertDocument",
+            "call" => '$docid, $multiple',
+            "declare" => '$docid, $multiple = false'
         )
     );
     private $content = '';
@@ -158,11 +168,11 @@ class deprecatedHookManager
         
         $nh = $this->getNewHooks();
         foreach ($nh as $nHook) {
-            $dHook=$this->getDeprecatedHookName($nHook);
+            $dHook = $this->getDeprecatedHookName($nHook);
             $alias.= "\n/**\n*generated alias : old compatibility\n";
             $alias.= sprintf("*@deprecated alias for %s\n", $nHook);
             $alias.= sprintf("*/\n");
-            $alias.= sprintf('public function %s(%s) {return self::%s(%s);}', $dHook ,$this->getArgDeclareHook($dHook), $nHook, $this->getArgCallHook($dHook));
+            $alias.= sprintf('public function %s(%s) {return self::%s(%s);}', $dHook, $this->getArgDeclareHook($dHook) , $nHook, $this->getArgCallHook($dHook));
             $alias.= "\n";
         }
         return $alias;

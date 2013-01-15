@@ -123,7 +123,19 @@ class Dir extends PDir
     /**
      * virtual method use before insert document in folder
      *
-     * @warning This hook may be replaced by Dir::preInsertDocument() in the the next version
+     * @api hook method use before insert document in folder
+     *
+     * @param int $docid document identifier to insert
+     * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
+     * @return string error message if not empty the insertion will be aborted
+     */
+    function preInsertDocument($docid, $multiple = false)
+    {
+    }
+    /**
+     * virtual method use before insert document in folder
+     *
+     * @deprecated hook use Dir::preInsertDocument instead
      *
      * @param int $docid document identifier to insert
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
@@ -134,8 +146,19 @@ class Dir extends PDir
     }
     /**
      * virtual method use after insert document in folder
+     * @api hook method use after insert document in folder
+     * @see Dir::insertDocument
+     * @param int $docid document identifier to insert
+     * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
+     * @return string error message
+     */
+    function postInsertDocument($docid, $multiple = false)
+    {
+    }
+    /**
+     * virtual method use after insert document in folder
      *
-     * @warning This hook may be replaced by Dir::postInsertDocument() in the the next version
+     * @deprecated hook use Dir::postInsertDocument instead
      *
      * @param int $docid document identifier to insert
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
@@ -156,7 +179,7 @@ class Dir extends PDir
     function postMInsertDoc($tdocid)
     {
         foreach ($tdocid as $docid) {
-            $this->postInsertDoc($docid);
+            $this->postInsertDocument($docid);
         }
     }
     /**
@@ -260,7 +283,7 @@ class Dir extends PDir
         $qf->query = "";
         if (!$qf->Exists()) {
             // use pre virtual method
-            if (!$noprepost) $err = $this->preInsertDoc($docid);
+            if (!$noprepost) $err = $this->preInsertDocument($docid);
             if ($err != "") return $err;
             // verify if doc family is autorized
             if ((!$forcerestrict) && (!$this->isAuthorized($doc->fromid))) return sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document") , $doc->title, $this->title);
@@ -325,7 +348,7 @@ class Dir extends PDir
                 
                 $this->updateFldRelations();
                 // use post virtual method
-                if (!$noprepost) $err = $this->postInsertDoc($docid, false);
+                if (!$noprepost) $err = $this->postInsertDocument($docid, false);
             }
         }
         return $err;
@@ -405,7 +428,7 @@ class Dir extends PDir
                 $qf->dirid = $this->initid; // the reference folder is the initial id
                 $qf->query = "";
                 // use post virtual method
-                if (!$noprepost) $err = $this->preInsertDoc($tdoc["initid"], true);
+                if (!$noprepost) $err = $this->preInsertDocument($tdoc["initid"], true);
                 
                 if ($err == "") {
                     $err = $qf->Add();
@@ -906,7 +929,12 @@ class Dir extends PDir
         $lpdoc = $this->getContent(true, $filter, "", "ITEM", "only");
         $terr = array();
         while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
-            if ($doc->defDoctype == 'D') $terr = array_merge($terr, $doc->reviveItems());
+            if ($doc->defDoctype == 'D') {
+                /**
+                 * @var Dir $doc
+                 */
+                $terr = array_merge($terr, $doc->reviveItems());
+            }
             $terr[$doc->id] = $doc->undelete();
         }
         return $terr;

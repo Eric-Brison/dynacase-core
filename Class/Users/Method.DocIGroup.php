@@ -250,7 +250,7 @@ class _IGROUP extends _GROUP
      * update groups table in USER database
      * @return string error message
      */
-    function postInsertDoc($docid, $multiple = false)
+    function postInsertDocument($docid, $multiple = false)
     {
         $err = "";
         if ($multiple == false) {

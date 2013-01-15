@@ -148,7 +148,7 @@ class _ARCHIVING extends Dir
         return $err;
     }
     
-    function preInsertDoc()
+    function preInsertDocument()
     {
         if ($this->getRawValue("arc_status") != "O") {
             return _("archieve status must be open to modify content");
