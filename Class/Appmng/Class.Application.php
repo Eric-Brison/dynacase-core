@@ -1183,23 +1183,17 @@ create sequence SEQ_ID_APPLICATION start 10;
             // init acl
             $acl = new Acl($this->dbaccess);
             $acl->Init($this, $app_acl, $update);
+            // init actions
+            $action = new Action($this->dbaccess);
+            $action->Init($this, $action_desc , $update);
             // init father if has
             if ($this->childof != "") {
                 // init ACL & ACTION
-                $app_acl = array();
-                $action_desc = array();
-                include ("{$this->childof}/{$this->childof}.app");
                 // init acl
-                $acl = new Acl($this->dbaccess);
-                $acl->Init($this, $app_acl, $update);
+                simpleQuery($this->dbaccess, sprintf("INSERT INTO acl SELECT nextval('seq_id_acl') as id, %d as id_application, acl.name, acl.grant_level, acl.description, acl.group_default from acl as acl,application as app where acl.id_application=app.id and app.name='%s' and acl.name NOT IN (SELECT acl.name from acl as acl, application as app  where id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof), pg_escape_string($this->name)));
                 // init actions
-                $action = new Action($this->dbaccess);
-                $action->Init($this, $action_desc, false);
+                simpleQuery($this->dbaccess, sprintf("INSERT INTO action SELECT nextval('seq_id_action') as id, %d as id_application, action.name, action.short_name, action.long_name, action.script, action.function, action.layout, action.available, action.acl, action.grant_level, action.openaccess, action.root, action.icon, action.toc, action.father, action.toc_order from action as action,application as app where action.id_application=app.id and app.name='%s' and action.name NOT IN (SELECT action.name from action as action, application as app  where action.id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof), pg_escape_string($this->name)));
             }
-            // init actions
-            $action = new Action($this->dbaccess);
-            
-            $action->Init($this, array_merge($action_desc, $action_desc_ini) , $update);
             //----------------------------------
             // init application constant
             if (file_exists(GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/{$name}/{$name}_init.php")) {
