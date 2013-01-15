@@ -14,7 +14,7 @@ export pubdir utildir applib targetdir utildir libdir
 TAR = tar
 GZIP_ENV = --best
 
-SUBDIR = Class Zone Action Api App Supervisor CONTRIB Doc Expire Images programs Share Style
+SUBDIR = Class Zone Action Api App Supervisor CONTRIB Doc Expire Images programs Share Style Config
 
 TOP_MODULES = indexq.php index.php whattext wsh.php guest.php wcheck wstop wstart resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess pack.php authent.php
 
@@ -50,12 +50,6 @@ $(pubdir)/.htaccess: htaccess
 
 $(pubdir)/FDLGEN:
 	mkdir -p $@
-$(pubdir)/config:
-	mkdir -p $@
-$(pubdir)/config/dbaccess.php.in: dbaccess.php.in $(pubdir)/config
-	cp $< $@
-$(pubdir)/config/local-dbaccess.php.sample: local-dbaccess.php.sample $(pubdir)/config
-	cp $< $@
 
 $(pubdir)/var:
 	mkdir -p $@
@@ -113,7 +107,7 @@ $(pubdir)/FREEDOM:
 $(pubdir)/FREEDOM/freedom.cron: freedom.cron $(pubdir)/FREEDOM
 	cp $< $@
 
-publish: $(pubdir)/config/dbaccess.php.in $(pubdir)/config/local-dbaccess.php.sample $(pubdir)/var/session/.htaccess $(pubdir)/var/cache/image/.htaccess $(pubdir)/var/cache/file/.htaccess $(pubdir)/var/tmp/.htaccess $(pubdir)/var/upload/.htaccess $(pubdir)/$(applib) $(pubdir)/$(applib)/FREEDOM.vault $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron
+publish: $(pubdir)/var/session/.htaccess $(pubdir)/var/cache/image/.htaccess $(pubdir)/var/cache/file/.htaccess $(pubdir)/var/tmp/.htaccess $(pubdir)/var/upload/.htaccess $(pubdir)/$(applib) $(pubdir)/$(applib)/FREEDOM.vault $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron
 
 
 webinst-test:

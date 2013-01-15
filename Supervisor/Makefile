@@ -24,9 +24,5 @@ $(pubdir)/$(appname)/.htaccess: htaccess
 	cp $< $@
 $(pubdir)/$(appname)/.htaccess.in: htaccess.in
 	cp $< $@
-$(pubdir)/$(appname)/mime.conf: mime.conf $(pubdir)/$(appname)
-	cp $< $@
-$(pubdir)/$(appname)/mime-user.conf.sample: mime-user.conf.sample $(pubdir)/$(appname)
-	cp $< $@
 
-publish:  $(pubdir)/$(appname)/index.html $(pubdir)/$(appname)/supervisor.css $(pubdir)/$(appname)/supervisor.js $(pubdir)/$(appname)/getServices.php $(pubdir)/$(appname)/shttpd $(pubdir)/$(appname)/.htaccess $(pubdir)/$(appname)/.htaccess.in $(pubdir)/$(appname)/mime.conf $(pubdir)/$(appname)/mime-user.conf.sample
+publish:  $(pubdir)/$(appname)/index.html $(pubdir)/$(appname)/supervisor.css $(pubdir)/$(appname)/supervisor.js $(pubdir)/$(appname)/getServices.php $(pubdir)/$(appname)/shttpd $(pubdir)/$(appname)/.htaccess $(pubdir)/$(appname)/.htaccess.in
