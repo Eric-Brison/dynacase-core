@@ -5,7 +5,7 @@ ErrorDocument 500 "You must reset dynacase admin password to access to this page
 
 AuthType Basic
 AuthName "Dynacase Platform Administration"
-AuthUserFile @prefix@/admin/.htpasswd
+AuthUserFile @prefix@/supervisor/.htpasswd
 Require valid-user
 
 DirectoryIndex index.html

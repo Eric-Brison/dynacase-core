@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Performance tests</title>
-<link rel="stylesheet" type="text/css" href="perfotest.css" />  
+<link rel="stylesheet" type="text/css" href="perfotest.css" />
 <script type="text/javascript" src="../../../lib/data/fdl-data.js"></script>
 <script type="text/javascript" src="../../../lib/jquery/jquery.js"></script>
 
@@ -22,7 +22,7 @@
 
 
   function tracemsg(msg) {
-   
+
      if (document.getElementById('error')) document.getElementById('error').innerHTML = document.getElementById('error').innerHTML + '<div>'+msg+'</div>';
 
   }
@@ -30,10 +30,10 @@
   function connect()   {
 
     console.log('Connect()');
-  
-    var urld = window.location.protocol+'//'+window.location.hostname+window.location.pathname.substr(0,window.location.pathname.indexOf('/admin/'));
- 
-   document.getElementById('authent').style.display = 'none'; 
+
+    var urld = window.location.protocol+'//'+window.location.hostname+window.location.pathname.substr(0,window.location.pathname.indexOf('/supervisor/'));
+
+   document.getElementById('authent').style.display = 'none';
 
    if (C==null) {
      tracemsg('Contacting Dynacase : '+urld);
@@ -54,7 +54,7 @@
           return;
        } else {
           var password =  document.getElementById('pwdadmin').value;
-  	  var u = C.setAuthentification( { login : 'admin', password : password });
+	  var u = C.setAuthentification( { login : 'admin', password : password });
           if (!u) {
              tracemsg('Authentication : '+C.getLastErrorMessage());
              document.getElementById('pwdadmin').value = '';
@@ -63,12 +63,12 @@
           }
         }
       }
-    
+
     tracemsg('Authentication success');
     document.getElementById('authent').style.display = 'none';
     document.getElementById('redo').style.display='block';
   }
- 
+
 function redoperfounit() {
   $('#redo').css('display', 'none');
   $('#inprogress').css('display', 'block');
@@ -79,13 +79,13 @@ function redoperfounit() {
 	function getDocuments(ids) {
 		var now;
 		for ( var i = 0; i < ids.length; i++) {
-			
+
 			now=new Date().getTime();
 			var d = C.getDocument( {
 				id : ids[i]
 			});
 	console.log(d);
-			
+
 			displayDocumentTime(d._data.debuginfo,(new Date().getTime() - now)/1000 , d._data.evalDebugTime, 'result');
 		}
 
@@ -116,7 +116,7 @@ function redoperfounit() {
 		for ( var i = 0; i < criteria.length; i++) {
 			date=new Date();
 			now=date.getTime();
-			
+
 			var d = C.getSearchDocument();
             if (d) {
 			console.log(d);
@@ -132,7 +132,7 @@ function redoperfounit() {
 	}
 
 	function displayDocumentTime(debug,abstime,evaltime,bodyid) {
-		
+
 		var t=document.getElementById(bodyid);
 		console.log(evaltime);
 		totalTime.all+=abstime*1000;
@@ -171,7 +171,7 @@ console.log('progress visible');
 		 console.log('total',totalTime);
     document.getElementById('redo').value='Redo the test';
 		 document.getElementById('redo').style.display='block';
-  
+
 	}
 
 	function viewTotal() {
@@ -203,7 +203,7 @@ console.log('progress visible');
   </div>
 </div>
 <div id="content" style="display:none">
-  <table rules="all" class="total" > 
+  <table rules="all" class="total" >
     <tr><td>total time</td><td>total network time</td><td>total js time</td><td>total server time</td></tr>
     <tr><td id='totalTime'></td><td id='totalNetworkTime'></td><td id='totalJsTime'></td><td id='totalServerTime'></td></tr></table>
   <h2>getDocument</h2>

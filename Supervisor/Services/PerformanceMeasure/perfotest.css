@@ -11,10 +11,10 @@ body {
     box-shadow:0px 2px 2px #ccc;
     z-index:1000;
 }
-#authent { 
-    border:1px solid red; 
-    border-radius:5px; 
-    margin:10px; 
+#authent {
+    border:1px solid red;
+    border-radius:5px;
+    margin:10px;
     padding:10px;
 }
 #authent a, #redo {

@@ -15,8 +15,8 @@ dbaccess="$WIFF_CONTEXT_ROOT"/config/dbaccess.php
 
 prefixtpl="$WIFF_CONTEXT_ROOT"/WHAT/Lib.Prefix.php.in
 prefix="$WIFF_CONTEXT_ROOT"/WHAT/Lib.Prefix.php
-htaccesstpl="$WIFF_CONTEXT_ROOT"/admin/.htaccess.in
-htaccess="$WIFF_CONTEXT_ROOT"/admin/.htaccess
+htaccesstpl="$WIFF_CONTEXT_ROOT"/supervisor/.htaccess.in
+htaccess="$WIFF_CONTEXT_ROOT"/supervisor/.htaccess
 corepost="$WIFF_CONTEXT_ROOT"/CORE/CORE_post
 
 if [ ! -f "$dbaccesstpl" ]; then

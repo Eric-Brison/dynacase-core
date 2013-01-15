@@ -132,26 +132,28 @@ if test "x$PEAR" = "x" ; then
   AC_MSG_RESULT($PEAR)
 fi
 
-AC_OUTPUT(Makefile \
-          App/Access/ACCESS_init.php \
-          App/Appmng/APPMNG_init.php \
-          App/Authent/AUTHENT_init.php \
-          App/Core/CORE_init.php \
-          App/Dav/DAV_init.php \
-          App/Dav/DAV_conf.apache \
-          App/Fdl/FDL_init.php \
-          App/Fdc/FDC_init.php \
-          App/Fdl/tsearch2_fr.sql \
-          App/Fgsearch/FGSEARCH_init.php \
-          App/Freedom/FREEDOM_init.php  \
-          App/Fusers/FUSERS_init.php \
-          App/Generic/GENERIC_init.php \
-          App/Vault/VAULT_init.php \
-          Api/SetDocVaultIndex.php \
-          Api/updateclass.php \
-          FREEDOM.vault \
-          Share/Lib.Prefix.php  \
-          Admin/htaccess \
-          htaccess \
-          info.xml \
-	  Test/info.xml )
+AC_OUTPUT(
+    Makefile \
+    App/Access/ACCESS_init.php \
+    App/Appmng/APPMNG_init.php \
+    App/Authent/AUTHENT_init.php \
+    App/Core/CORE_init.php \
+    App/Dav/DAV_init.php \
+    App/Dav/DAV_conf.apache \
+    App/Fdl/FDL_init.php \
+    App/Fdc/FDC_init.php \
+    App/Fdl/tsearch2_fr.sql \
+    App/Fgsearch/FGSEARCH_init.php \
+    App/Freedom/FREEDOM_init.php  \
+    App/Fusers/FUSERS_init.php \
+    App/Generic/GENERIC_init.php \
+    App/Vault/VAULT_init.php \
+    Api/SetDocVaultIndex.php \
+    Api/updateclass.php \
+    FREEDOM.vault \
+    Share/Lib.Prefix.php  \
+    Supervisor/htaccess \
+    htaccess \
+    info.xml \
+    Test/info.xml
+)

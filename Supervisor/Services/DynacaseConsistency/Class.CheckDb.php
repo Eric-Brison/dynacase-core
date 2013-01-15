@@ -31,19 +31,19 @@ class checkDb
      * @var array
      */
     private $tout;
-    
+
     const OK = "green";
     const KO = "red";
     const BOF = "orange";
-    
+
     public function __construct($connect)
     {
         $r = @pg_connect($connect);
         $this->connect = $connect;
-        
+
         if ($r) $this->r = $r;
     }
-    
+
     public function checkConnection()
     {
         $this->tout["main connection db"] = array(
@@ -52,7 +52,7 @@ class checkDb
         );
         return ($this->r != null);
     }
-    
+
     public function checkUnreferenceUsers()
     {
         $result = pg_query($this->r, "SELECT * from groups where iduser not in (select id from users);");
@@ -67,7 +67,7 @@ class checkDb
             "msg" => $msg
         );
     }
-    
+
     public function checkDateStyle()
     {
         $result = pg_query($this->r, "show DateStyle;");
@@ -82,7 +82,7 @@ class checkDb
             $status = self::KO;
             $msg = sprintf("Mismatch locale : database : %s, application : %s", $dateStyle, $lcDate);
         }
-        
+
         $this->tout["dateStyle"] = array(
             "status" => $status,
             "msg" => $msg
@@ -102,7 +102,7 @@ class checkDb
             "msg" => $msg
         );
     }
-    
+
     public function checkUnreferencedAction()
     {
         $result = pg_query($this->r, "SELECT * from action where id_application not in (select id from application);");
@@ -117,7 +117,7 @@ class checkDb
             "msg" => $msg
         );
     }
-    
+
     public function checkUnreferencedParameters()
     {
         $result = pg_query($this->r, "SELECT * from paramdef where appid  not in (select id from application);");
@@ -136,7 +136,7 @@ class checkDb
             "msg" => $msg
         );
     }
-    
+
     public function checkUnreferencedAcl()
     {
         $result = pg_query($this->r, "SELECT * from acl where id_application not in (select id from application);");
@@ -151,7 +151,7 @@ class checkDb
             "msg" => $msg
         );
     }
-    
+
     public function getUnreferencedPermission()
     {
         $result = pg_query($this->r, "SELECT * from permission where id_acl not in (select id from acl);");
@@ -167,7 +167,7 @@ class checkDb
             "msg" => $msg
         );
     }
-    
+
     public function checkDoubleFrom()
     {
         $result = pg_query($this->r, "SELECT * from (SELECT id, count(id) as c  from doc group by id) as Z where Z.c > 1;");
@@ -196,7 +196,7 @@ class checkDb
             "msg" => $msg
         );
     }
-    
+
     public function checkMultipleAlive()
     {
         $result = pg_query($this->r, "select id, title from docread where id in (SELECT m AS id  FROM (SELECT min(id) AS m, initid, count(initid) AS c  FROM docread WHERE locked != -1 AND doctype != 'T' GROUP BY docread.initid) AS z where z.c > 1);");
@@ -211,7 +211,7 @@ class checkDb
             "msg" => $msg
         );
     }
-    
+
     public function checkInheritance()
     {
         $result = pg_query($this->r, "select * from docfam");
@@ -231,7 +231,7 @@ class checkDb
             "msg" => implode("<br/>", $pout)
         );
     }
-    
+
     public function checkNetworkUser()
     {
         // Test User LDAP (NetworkUser Module)
@@ -246,10 +246,10 @@ class checkDb
         $ldapmode = $this->getGlobalParam("NU_LDAP_MODE");
         if ($nuAppExists && $ldaphost) {
             include_once ('../../../NU/Lib.NU.php');
-            
+
             $ldapBindDn = $this->getGlobalParam('NU_LDAP_BINDDN');
             $ldapPassword = $this->getGlobalParam('NU_LDAP_PASSWORD');
-            
+
             $baseList = array();
             array_push($baseList, array(
                 'dn' => $this->getGlobalParam('NU_LDAP_USER_BASE_DN') ,
@@ -259,11 +259,11 @@ class checkDb
                 'dn' => $this->getGlobalParam('NU_LDAP_GROUP_BASE_DN') ,
                 'filter' => $this->getGlobalParam('NU_LDAP_GROUP_FILTER')
             ));
-            
+
             foreach ($baseList as $base) {
                 $testName = sprintf("connection to '%s'", $base['dn']);
                 $this->tout[$testName] = array();
-                
+
                 $uri = getLDAPUri($ldapmode, $ldaphost, $ldapport);
                 $conn = ldap_connect($uri);
                 if ($conn === false) {
@@ -271,10 +271,10 @@ class checkDb
                     $this->tout[$testName]['msg'] = sprintf("Could not connect to LDAP server '%s': %s", $uri, $php_errormsg);
                     continue;
                 }
-                
+
                 ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3);
                 ldap_set_option($conn, LDAP_OPT_REFERRALS, 0);
-                
+
                 if ($ldapmode == 'tls') {
                     $ret = ldap_start_tls($conn);
                     if ($ret === false) {
@@ -283,7 +283,7 @@ class checkDb
                         continue;
                     }
                 }
-                
+
                 $bind = ldap_bind($conn, $ldapBindDn, $ldapPassword);
                 if ($bind === false) {
                     $this->tout[$testName]['status'] = self::KO;
@@ -291,7 +291,7 @@ class checkDb
                     ldap_close($conn);
                     continue;
                 }
-                
+
                 $res = ldap_search($conn, $base['dn'], sprintf("(&(objectClass=*)%s)", $base['filter']));
                 if ($res === false) {
                     $this->tout[$testName]['status'] = self::KO;
@@ -299,7 +299,7 @@ class checkDb
                     ldap_close($conn);
                     continue;
                 }
-                
+
                 $count = ldap_count_entries($conn, $res);
                 if ($count === false) {
                     $this->tout[$testName]['status'] = self::KO;
@@ -313,14 +313,14 @@ class checkDb
                     ldap_close($conn);
                     continue;
                 }
-                
+
                 $this->tout[$testName]['status'] = self::OK;
                 $this->tout[$testName]['msg'] = sprintf("Search returned %s entries.", $count);
                 ldap_close($conn);
             }
         }
     }
-    
+
     private static function verifyDbAttr(&$oa, $pgtype, &$rtype)
     {
         $err = '';
@@ -351,7 +351,7 @@ class checkDb
                     break;
             }
         }
-        
+
         if ($rtype != $pgtype) {
             $err = sprintf("expected [%s], found [%s]", $rtype, $pgtype);
         }
@@ -366,7 +366,7 @@ class checkDb
     public static function verifyDbFamily($famid, NormalAttribute $aoa = null)
     {
         $cr = array();
-        
+
         $fam = new_doc('', $famid);
         if ($fam->isAlive()) {
             $sql = sprintf("select pg_attribute.attname,pg_type.typname FROM pg_attribute, pg_type where pg_type.oid=pg_attribute.atttypid and pg_attribute.attrelid=(SELECT oid from pg_class where relname='doc%d') order by pg_attribute.attname;", $fam->id);
@@ -376,7 +376,7 @@ class checkDb
                 if ($pgattr["typname"] == "timestamptz") $pgattr["typname"] = "timestamp";
                 $pgtype[$pgattr["attname"]] = $pgattr["typname"];
             }
-            
+
             if (!$aoa) {
                 $oas = $fam->getNormalAttributes();
             } else {
@@ -407,14 +407,14 @@ class checkDb
         $testName = 'attribute type';
         include_once ("../../../FDL/Class.Doc.php");
         $err = simpleQuery('', "select id from docfam", $families, true);
-        
+
         foreach ($families as $famid) {
             $cr = $this->verifyDbFamily($famid);
             if (count($cr) > 0) {
                 $err.= implode("<br/>", $cr);
             }
         }
-        
+
         $this->tout[$testName]['status'] = ($err) ? self::KO : self::OK;
         $this->tout[$testName]['msg'] = '<pre>' . $err . '</pre>';
     }
@@ -442,7 +442,7 @@ class checkDb
         }
         return $this->tout;
     }
-    
+
     private function initGlobalParam()
     {
         $result = pg_query($this->r, "SELECT * FROM paramv where  type='G'");
