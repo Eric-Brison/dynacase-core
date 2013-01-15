@@ -5166,7 +5166,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call before copy document
      * if return error message duplicate is aborted
-     * @deprecated hook use {@Doc::preDuplicate} instead
+     * @deprecated hook use {@link Doc::preDuplicate} instead
      * @see Doc::preDuplicate
      * @param Doc $copyfrom
      * @return string
