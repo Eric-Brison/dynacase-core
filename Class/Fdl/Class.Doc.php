@@ -793,8 +793,10 @@ create unique index i_docir on doc(initid, revision);";
         return sprintf('%s "%s" [#%d]', $this->fromname, $this->getTitle() , $this->id);
     }
     /**
-     * Increment sequence of family and call to {@see PostCreated()}
-     *
+     * Increment sequence of family and call to Doc::PostCreated
+     * send mail if workflow is attached to it
+     * affect profil
+     * @see Doc::PostCreated
      *
      * @return void
      */
@@ -869,7 +871,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * set default values and creation date
-     * the access control is provided by {@see createDoc()} function.
+     * the access control is provided by {@see Doc::createDoc()} function.
      * call {@see Doc::PreCreated()} method before execution
      *
      * @return string error message, if no error empty string
@@ -1105,7 +1107,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * disable edit control for setValue/modify/store
      * the document can be modified without testing edit acl
-     * @see enableEditControl
+     * @see Doc::enableEditControl
      * @api disable edit control for setValue/modify/store
      */
     final public function disableEditControl()
@@ -1116,7 +1118,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * default edit control enable
      * restore control which are disabled by disableEditControl
-     * @see disableEditControl
+     * @see Doc::disableEditControl
      * @api default edit control enable
      */
     final public function enableEditControl()
@@ -1357,7 +1359,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * @api verify document can be locked by current user
-     * @see canUnLock
+     * @see Doc::canUnLock
      * @return boolean true if current user can lock file
      */
     public function canLock()
@@ -1365,7 +1367,7 @@ create unique index i_docir on doc(initid, revision);";
         return ($this->CanLockFile() == "");
     }
     /**
-     * @see canLock
+     * @see Doc::canLock
      * @api verify document can be unlocked by current user
      * @return bool true if current user can lock file
      */
@@ -1375,8 +1377,8 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * test if the document can be unlocked
-     * @see CanLockFile()
-     * @see CanUpdateDoc()
+     * @see Doc::CanLockFile()
+     * @see Doc::CanUpdateDoc()
      * @return string empty means user can update else message of the raison
      */
     final public function CanUnLockFile()
@@ -1401,7 +1403,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * test if the document is locked
-     * @see canLockFile()
+     * @see Doc::canLockFile()
      * @api verify if document is locked
      * @param bool $my if true test if it is lock of current user
      *
@@ -1701,7 +1703,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * To restore a document which is in the trash
-     * @see undelete
+     * @see Doc::undelete
      * @deprecated use {@link Doc::undelete} instead
      * @return string error message (empty message if no errors);
      */
@@ -1713,7 +1715,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * To restore a document which is in the trash
      * @api restore deleted document
-     * @see delete
+     * @see Doc::delete
      * @return string error message (empty message if no errors);
      */
     final public function undelete()
@@ -2681,7 +2683,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * no in postUpdate method :: call this only if real change (values)
      * @deprecated hook use {@link Doc::postStore} instead
-     * @warning This hook may be replaced by postStore in the the next version.
+     * @see Doc::postStore
      * @return string error message
      */
     function postModify()
@@ -2773,7 +2775,7 @@ create unique index i_docir on doc(initid, revision);";
      * call when doc is being revised before new document is created
      * if return non null string revision will ne aborted
      * @api hook called when revise document - before revise it
-     * @see revise
+     * @see Doc::revise
      * @return string error message, if no error empty string
      */
     function preRevise()
@@ -2782,7 +2784,6 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call when doc is revised after new document is created
      * the error message will appeared like message
-     * @warning This hook may be replaced by postUndelete in the the next version.
      * @api hook called when revise document - after it is revided
      * @see Doc::revise
      * @return string message - message is added to history
@@ -2793,7 +2794,6 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call when doc is being undelete
      * if return non null string undelete will ne aborted
-     * @warning This hook may be replaced by preUndelete in the the next version.
      * @api hook called before undelete document
      * @see Doc::undelete
      * @return string error message, if no error empty string
@@ -2813,7 +2813,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call when doc is being undelete
      * if return non null string undelete will ne aborted
-     * @deprecated use {@link Doc:::preUndelete} instead
+     * @deprecated hook use {@link Doc:::preUndelete} instead
      * @see Doc::preUndelete
      * @return string error message, if no error empty string
      */
@@ -2823,7 +2823,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * call when doc is revived after resurrection in database
      * the error message will appeared like message
-     * @deprecated use {@link Doc:::postUndelete} instead
+     * @deprecated hook use {@link Doc:::postUndelete} instead
      * @see Doc::postUndelete
      * @return string warning message, if no warning empty string
      */
@@ -4093,7 +4093,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * delete a value of an attribute
-     * @see setValue
+     * @see Doc::setValue
      * @param string $attrid attribute identifier
      * @api clear value of an attribute
      * @return string error message
@@ -4114,7 +4114,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * delete a value of an attribute
-     * @see setValue
+     * @see Doc::setValue
      * @param string $attrid attribute identifier
      * @deprecated use {@link Doc::clearValue} instead
      * @see Doc::clearValue
@@ -5283,7 +5283,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * the auto lock is unlocked when the user discard edition or when he's modify document
      * @api lock document
-     * @param bool $auto if true it is a automatic lock due to an edition (@see editcard()}
+     * @param bool $auto if true it is a automatic lock due to an edition (@see Doc::editcard()}
      * @param int $userid if set lock with another userid, the edit control will be disabled
      *
      * @return string error message, if no error empty string, if message
@@ -6019,7 +6019,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return an html anchor to a document
      * @api get an html anchor to a document
-     * @see getHtmlValue
+     * @see Doc::getHtmlValue
      * @param string $attrid attribute identifier
      * @param string $target html target in case of link
      * @param int $htmllink
@@ -8194,7 +8194,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return application parameter value
      * @deprecated use instead getParam global function or parameterManager
-     * @see parameterManager
+     * @see Doc::parameterManager
      * @param  string  $param parameter
      * @param  string  $defv default return value
      * @return string  returns parameter value ou default value
@@ -8226,7 +8226,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $def default value if document not found
      * @param boolean $latest search title in latest revision
      * @return string
-     * @see getCustomTitle::getSpecTitle()
+     * @see Doc::getCustomTitle()
      */
     final public function getTitle($id = "-1", $def = "", $latest = false)
     {
@@ -8266,7 +8266,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $id docuemnt identifier to set else use current document title
      * @param string $def default value if document not found
      * @param bool $latest force use latest revision of document
-     * @see getTitle
+     * @see Doc::getTitle
      * @return string
      */
     function getHTMLTitle($id = "-1", $def = "", $latest = false)
@@ -8376,7 +8376,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return value of an attribute for the document referenced
-     * @see getRValue
+     * @see Doc::getRValue
      * @api get value of an attribute for the document referenced
      * @param int $docid document identifier
      * @param string $attrid attribute identifier
@@ -8426,7 +8426,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return value of an property for the document referenced
      * @api get value of an property for the document referenced
-     * @see getPropertyValue
+     * @see Doc::getPropertyValue
      * @param int $docid document identifier
      * @param string $propid property identifier
      * @param bool $latest always last revision of document if true
@@ -8465,7 +8465,7 @@ create unique index i_docir on doc(initid, revision);";
         return $action->user->fid;
     }
     /**
-     * alias for @see Doc:userDocId
+     * alias for Doc::userDocId
      * @searchLabel My user account id
      * @searchType account
      * @searchType docid("IUSER")
