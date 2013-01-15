@@ -311,7 +311,7 @@ class _IGROUP extends _GROUP
      * update groups table in USER database before suppress
      * @return string error message
      */
-    function postUnlinkDoc($docid, $multiple = false)
+    function postRemoveDocument($docid, $multiple = false)
     {
         
         $err = "";

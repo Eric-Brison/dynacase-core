@@ -154,7 +154,7 @@ class _ARCHIVING extends Dir
             return _("archieve status must be open to modify content");
         }
     }
-    function preUnlinkDoc()
+    function preRemoveDocument()
     {
         if ($this->getRawValue("arc_status") != "O") {
             return _("archieve status must be open to modify content");

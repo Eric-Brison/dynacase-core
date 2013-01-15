@@ -58,6 +58,16 @@ class deprecatedHookManager
             "newName" => "preInsertDocument",
             "call" => '$docid, $multiple',
             "declare" => '$docid, $multiple = false'
+        ) ,
+        "postUnlinkDoc" => array(
+            "newName" => "postRemoveDocument",
+            "call" => '$docid, $multiple',
+            "declare" => '$docid, $multiple = false'
+        ) ,
+        "preUnlinkDoc" => array(
+            "newName" => "preRemoveDocument",
+            "call" => '$docid, $multiple',
+            "declare" => '$docid, $multiple = false'
         )
     );
     private $content = '';
@@ -153,6 +163,15 @@ class deprecatedHookManager
         }
         return '';
     }
+    
+    protected function getOriginalName($name)
+    {
+        foreach ($this->deprecatedHooks as $dName => $nName) {
+            if (strtolower($nName["newName"]) == strtolower($name)) return $nName["newName"];
+            if (strtolower($dName) == strtolower($name)) return $dName;
+        }
+        return $name;
+    }
     public function generateCompatibleMethods()
     {
         $alias = '';
@@ -162,7 +181,7 @@ class deprecatedHookManager
             $alias.= "\n/**\n*generated alias : new method name\n";
             $alias.= sprintf("*@deprecated declare %s instead\n", $nHook);
             $alias.= sprintf("*/\n");
-            $alias.= sprintf('public function %s(%s) {return self::%s(%s);}', $nHook, $this->getArgDeclareHook($dHook) , $dHook, $this->getArgCallHook($dHook));
+            $alias.= sprintf('public function %s(%s) {return self::%s(%s);}', $this->getOriginalName($nHook) , $this->getArgDeclareHook($dHook) , $this->getOriginalName($dHook) , $this->getArgCallHook($dHook));
             $alias.= "\n";
         }
         
@@ -172,7 +191,7 @@ class deprecatedHookManager
             $alias.= "\n/**\n*generated alias : old compatibility\n";
             $alias.= sprintf("*@deprecated alias for %s\n", $nHook);
             $alias.= sprintf("*/\n");
-            $alias.= sprintf('public function %s(%s) {return self::%s(%s);}', $dHook, $this->getArgDeclareHook($dHook) , $nHook, $this->getArgCallHook($dHook));
+            $alias.= sprintf('public function %s(%s) {return self::%s(%s);}', $dHook, $this->getArgDeclareHook($dHook) , $this->getOriginalName($nHook) , $this->getArgCallHook($dHook));
             $alias.= "\n";
         }
         return $alias;

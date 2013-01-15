@@ -121,7 +121,7 @@ class Dir extends PDir
         return $err;
     }
     /**
-     * virtual method use before insert document in folder
+     * hook method use before insert document in folder
      *
      * @api hook method use before insert document in folder
      *
@@ -183,9 +183,33 @@ class Dir extends PDir
         }
     }
     /**
-     * virtual method use after unlink document in folder
+     * hook method use after unlink document in folder
      *
-     * @warning This hook may be replaced by Dir::preRemoveDocument() in the the next version
+     * @api hook method use before remove document to folder
+     *
+     * @param int $docid document identifier to unlink
+     * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
+     * @return string error message if not empty the insert will be aborted
+     */
+    function preRemoveDocument($docid, $multiple = false)
+    {
+    }
+    /**
+     * hook method use after unlink document in folder
+     *
+     * @api hook method use after remove document of folder
+     *
+     * @param int $docid document identifier to unlink
+     * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
+     * @return string error message
+     */
+    function postRemoveDocument($docid, $multiple = false)
+    {
+    }
+    /**
+     * hook method use after unlink document in folder
+     *
+     * @deprecated hook use {@link Doc::preRemoveDocument} instead
      *
      * @param int $docid document identifier to unlink
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
@@ -195,9 +219,9 @@ class Dir extends PDir
     {
     }
     /**
-     * virtual method use after unlink document in folder
+     * hook method use after unlink document in folder
      *
-     * @warning This hook may be replaced by Dir::postRemoveDocument() in the the next version
+     * @deprecated hook use {@link Doc::postRemoveDocument} instead
      *
      * @param int $docid document identifier to unlink
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
@@ -554,7 +578,7 @@ class Dir extends PDir
      * @api remove a document reference from this folder
      *
      * @param int $docid document ident for the deletion
-     * @param bool $noprepost if true then the virtuals methods {@link Dir::preUnlinkDoc()} and {@link Dir::postUnlinkDoc()} are not called
+     * @param bool $noprepost if true then the virtuals methods {@link Dir::preRemoveDocument()} and {@link Dir::postRemoveDocument()} are not called
      * @param bool $nocontrol if true no test acl "modify"
      * @return string error message, if no error empty string
      */
@@ -566,7 +590,7 @@ class Dir extends PDir
             if ($err != "") return $err;
         }
         // use pre virtual method
-        if (!$noprepost) $err = $this->preUnlinkDoc($docid);
+        if (!$noprepost) $err = $this->preRemoveDocument($docid);
         if ($err != "") return $err;
         
         $doc = new_Doc($this->dbaccess, $docid);
@@ -607,7 +631,7 @@ class Dir extends PDir
         // use post virtual method
         if (!$noprepost) {
             $this->updateFldRelations();
-            $err = $this->postUnlinkDoc($docid);
+            $err = $this->postRemoveDocument($docid);
         }
         
         global $action;

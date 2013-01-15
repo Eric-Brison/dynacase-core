@@ -76,7 +76,7 @@ class _GROUP extends Dir
      * update groups table in USER database before suppress
      * @return string error message
      */
-    function postUnlinkDoc($docid, $multiple = false)
+    function postRemoveDocument($docid, $multiple = false)
     {
         $this->SetGroupMail();
         $this->refreshMembers();
