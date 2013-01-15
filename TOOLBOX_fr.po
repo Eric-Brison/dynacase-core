@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-15 11:53+0100\n"
+"POT-Creation-Date: 2013-01-15 17:08+0100\n"
 "PO-Revision-Date: 2013-01-15 11:49+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -1371,9 +1371,6 @@ msgstr "Création abandonnée : famille inconnue : %s"
 
 msgid "Current_state"
 msgstr "Courant"
-
-msgid "Data api"
-msgstr "Api données"
 
 msgid "Data cannot be saved"
 msgstr "Les données ne peuvent être sauvées"
@@ -4211,9 +4208,6 @@ msgstr "ajout d'un nouveau profil %s"
 msgid "add to bookmarks"
 msgstr "Marquer ce dossier"
 
-msgid "addState: missing parameter"
-msgstr "addState: paramètre manquant"
-
 msgid "addactivity"
 msgstr "Activité"
 
@@ -4282,9 +4276,6 @@ msgstr "affectation pour le document %s"
 msgid "already deleted"
 msgstr "déjà supprimé"
 
-msgid "alterTransitiontype: missing parameter"
-msgstr "alterTransitiontype: paramètre manquant"
-
 #, c-format
 msgid "an error has occured: %s"
 msgstr "Une erreur a été produite: %s"
@@ -4329,24 +4320,11 @@ msgstr "{right} n'est pas inclus dans le document"
 msgid "appdesc"
 msgstr "Description"
 
-#, c-format
-msgid "application %s not defined"
-msgstr "l'application %s n'est pas définie"
-
-msgid "application name not set"
-msgstr "Le nom de l'application n'est pas renseigné"
-
-msgid "application not initialized"
-msgstr "application non initialisée"
-
 msgid "application parameters"
 msgstr "paramètres applicatif"
 
 msgid "application parameters list"
 msgstr "Liste des paramètres applicatif"
-
-msgid "application ressource"
-msgstr "ressource application"
 
 msgid "application version"
 msgstr "version application"
@@ -4470,39 +4448,8 @@ msgstr "l'attribut %s n'a pas été trouvé [%s]"
 msgid "attribute %s unknow in family %s [%d]"
 msgstr "attribut %s inconnu pour la famille %s [%d]"
 
-#, c-format
-msgid "attribute [%s] already exists : cannot add it"
-msgstr "attribut [%s] déjà présent : ne peut être ajouté"
-
-#, c-format
-msgid ""
-"attribute [%s] identifier syntax is unavalaible. Must have only alphanumeric "
-"characters and must not includes spaces"
-msgstr ""
-"La syntaxe de l'idenitifiant d'attribut [%s] est non valide. Seuls des "
-"caractères alphanumérique sont autorisés et les espaces sont exclus."
-
-#, c-format
-msgid "attribute [%s] not exists : cannot delete it"
-msgstr "L'attribut [%s] n'existe pas : impossible de le supprimer"
-
-#, c-format
-msgid "attribute [%s] not exists : cannot modify it"
-msgstr "L'attribut [%s] n'existe pas : impossible de le modifier"
-
-#, c-format
-msgid "attribute [%s] visibility must be one of H,R,W,S,O,I,U"
-msgstr "La visibilité de l'attribut [%s] ne peut être que  H,R,W,S,O,I,U"
-
 msgid "attribute id"
 msgstr "Identifiant de l'attribut"
-
-msgid "attribute identifier is null"
-msgstr "l'identifiant de l'attribut est nul"
-
-#, c-format
-msgid "attribute unknow %s"
-msgstr "attribut %s inconnu"
 
 msgid "attributes"
 msgstr "attributs"
@@ -4524,10 +4471,6 @@ msgstr "échec de l'authentification"
 
 msgid "authent reqpassword"
 msgstr "Mot de passe oublié ?"
-
-#, c-format
-msgid "authentication failed for %s"
-msgstr "échec d'authentification pour %s"
 
 msgid "author"
 msgstr "auteur"
@@ -4673,10 +4616,6 @@ msgid ""
 msgstr ""
 "ne peut créer le répertoire %s\n"
 "Le répertoire père doit être créé au préalable"
-
-#, c-format
-msgid "cannot create document for family [%s]"
-msgstr "création de document impossible pour la famille [%s]"
 
 #, c-format
 msgid "cannot create from family [%s]"
@@ -4952,10 +4891,6 @@ msgstr "Changement du paramètre 'tagable' en '%s'"
 
 msgid "change title family"
 msgstr "changement du titre de famille"
-
-#, c-format
-msgid "change version to %s"
-msgstr "Nouvelle version %s"
 
 msgid "changeCheckBoolClasses Error"
 msgstr "Erreur changeCheckBoolClasses"
@@ -5282,17 +5217,6 @@ msgstr "mes paramètres"
 msgid "cycle family must be defined"
 msgstr "la famille cycle doit être renseignée"
 
-#, c-format
-msgid "data:document %s is not a family"
-msgstr "Document %s n'est pas une famille"
-
-#, c-format
-msgid "data:family %s not alive"
-msgstr "Famille %s non vivante"
-
-msgid "data:getsubfamilies no family parameter"
-msgstr "data:getsubfamilies pas de famille donnée en paramètre"
-
 msgid "database access for webdav"
 msgstr "coordonnées d'accès à la base de données webdav"
 
@@ -5478,22 +5402,6 @@ msgid "document #%s not found. Unaffectation aborded"
 msgstr "document n°%s inconnu. Suppression de l'affectation abandonnée"
 
 #, c-format
-msgid "document %d deleted"
-msgstr "document %d supprimé"
-
-#, c-format
-msgid "document %d inserted"
-msgstr "document %d inséré"
-
-#, c-format
-msgid "document %d moved"
-msgstr "Document %d déplacé"
-
-#, c-format
-msgid "document %d unlinked"
-msgstr "Document %d non lié"
-
-#, c-format
 msgid "document %s : set icon to '%s'"
 msgstr "document %s : affecte l'icone à '%s'"
 
@@ -5528,10 +5436,6 @@ msgstr "Le document [%s] n'est pas une famille"
 #, c-format
 msgid "document %s is not a folder"
 msgstr "le document %s n'est pas un dossier"
-
-#, c-format
-msgid "document %s not exist"
-msgstr "document %s n'existe pas"
 
 #, c-format
 msgid "document %s not exists"
@@ -5583,17 +5487,8 @@ msgstr "document %s inexistant"
 msgid "document not exists yet"
 msgstr "le document n'existe pas encore"
 
-msgid "document not initialized"
-msgstr "document non initialisé"
-
 msgid "document not referenced"
 msgstr "document non référencé"
-
-msgid "document not set"
-msgstr "document non renseigné"
-
-msgid "document ressource"
-msgstr "ressource document"
 
 #, c-format
 msgid "document too big (%dKo): no highlight"
@@ -5667,9 +5562,6 @@ msgstr "Dynacase cron essai d'exécution"
 
 msgid "dynamic control"
 msgstr "contrôle dynamique"
-
-msgid "dynlabel"
-msgstr "Label dynacase"
 
 msgid "edit"
 msgstr "Modifier"
@@ -5770,9 +5662,6 @@ msgstr "fichier vide"
 
 msgid "empty password : not changed"
 msgstr "mot de passe vide : non changé"
-
-msgid "empty reference"
-msgstr "Référence vide"
 
 msgid "enable forum"
 msgstr "Autoriser les forums"
@@ -6125,9 +6014,6 @@ msgstr "taille de la police"
 msgid "for"
 msgstr "pour"
 
-msgid "format in date"
-msgstr "Format de date"
-
 msgid "forum"
 msgstr "forum"
 
@@ -6271,9 +6157,6 @@ msgstr "Récupération de la valeur d'un attribut de document"
 msgid "get value of an attribute"
 msgstr "donne la valeur d'un attribut"
 
-msgid "getSelection: no configuration set"
-msgstr "Pas de configuration affectée"
-
 msgid "global edit detail search"
 msgstr "Détail d'édition pour la recherche globale"
 
@@ -6309,9 +6192,6 @@ msgstr "le groupe n°%d n'existe pas"
 
 msgid "group cannot be revived"
 msgstr "Un groupe ne peut être restauré"
-
-msgid "group document request"
-msgstr "requête groupée de documents"
 
 msgid "group has not identificator"
 msgstr "Le groupe n'a pas d'identificateur"
@@ -6647,9 +6527,6 @@ msgstr "Vue principale"
 msgid "main view line displayed"
 msgstr "édition des colonnes"
 
-msgid "maintenance in progress"
-msgstr "Maintenance en cours"
-
 msgid "make a new document revision"
 msgstr "faire une nouvelle révision de document"
 
@@ -6718,20 +6595,12 @@ msgid "method %s executed for %s "
 msgstr "méthode %s exécutée pour %s"
 
 #, c-format
-msgid "method %s not defined"
-msgstr "la méthode %s n'est pas définie"
-
-#, c-format
 msgid "method %s not executed : %s"
 msgstr "la méthode %s n'a pas été exécutée : %s"
 
 #, c-format
 msgid "method %s not found"
 msgstr "méthode %s non trouvée"
-
-#, c-format
-msgid "method %s not possible"
-msgstr "méthode %s non accessible"
 
 msgid "million bytes"
 msgstr "million d'octets"
@@ -6817,9 +6686,6 @@ msgstr "modifier les familles préférées"
 
 msgid "modify user parameters"
 msgstr "modification des paramètres utilisateur"
-
-msgid "modifyTransition: missing parameter"
-msgstr "modifyTransition: paramètre manquant"
 
 msgid "modifyacl"
 msgstr "modifier les droits"
@@ -7090,12 +6956,6 @@ msgstr "pas de dossier"
 msgid "no freedom DB access"
 msgstr "pas d'accès à la base de données DYNACASE"
 
-msgid "no identificator"
-msgstr "pas d'identificateur"
-
-msgid "no identifier set"
-msgstr "aucun identificateur fourni"
-
 msgid "no image"
 msgstr "pas d'image"
 
@@ -7153,10 +7013,6 @@ msgstr "vous n'avez pas la permission de créer ce type (%d) de document "
 #, c-format
 msgid "no privilege to create this kind (%s) of document"
 msgstr "vous n'avez pas la permission de créer ce type (%s) de document "
-
-#, c-format
-msgid "no privilege view for %d"
-msgstr "pas de privilège \"voir\" pour %d"
 
 msgid "no profile"
 msgstr "Pas de profil"
@@ -7238,16 +7094,6 @@ msgstr "ce n'est pas un dossier statique %s"
 msgid "not added"
 msgstr "pas ajouté"
 
-msgid "not authenticated"
-msgstr "non authentifié"
-
-msgid "not authenticated:ERRNO_BUG_639"
-msgstr "non authentifié : ERRNO_BUG_639"
-
-#, c-format
-msgid "not authorized : parameter %s is not a user parameter"
-msgstr "non autorisé: le paramètre %s n'est pas un paramètre utilisateur"
-
 msgid "not equal"
 msgstr "pas égal"
 
@@ -7270,17 +7116,8 @@ msgstr "%s non présent dans %s"
 msgid "nothing action"
 msgstr "action nulle"
 
-msgid "nothing to add"
-msgstr "rien à ajouter"
-
 msgid "nothing to export. Do export before"
 msgstr "Rien à exporter. Faire l'exportation avant"
-
-msgid "nothing to insert"
-msgstr "rien à insérer"
-
-msgid "nothing to unlink"
-msgstr "rien à supprimer"
 
 msgid "number of card by page"
 msgstr "nombre de cartes par page"
@@ -7398,10 +7235,6 @@ msgid "param not changed"
 msgstr "Inchangé"
 
 #, c-format
-msgid "parameter %s not exists"
-msgstr "paramètre %s n'existe pas"
-
-#, c-format
 msgid "parameters for %s step"
 msgstr "Paramètre de l'étape %s"
 
@@ -7411,10 +7244,6 @@ msgstr "paramètre pour la transition %s"
 
 msgid "parameters values"
 msgstr "valeurs des paramètres"
-
-#, c-format
-msgid "parent attribute [%s] not exists : cannot add it"
-msgstr "L'attribut parent [%s] n'existe pas : impossible de l'ajouter"
 
 #, c-format
 msgid "parenthesis number mismatch : %d left, %d right"
@@ -7770,9 +7599,6 @@ msgstr "ou"
 msgid "reqpasswd_submit"
 msgstr "Envoyer"
 
-msgid "request empty reference"
-msgstr "Requête d'une référence vide"
-
 msgid "request not found"
 msgstr "requête non trouvée"
 
@@ -7782,9 +7608,6 @@ msgstr "réinitialisation du profil %s"
 
 msgid "reset to default"
 msgstr "configuration par défaut"
-
-msgid "reset version"
-msgstr "identifiant de version effacé"
 
 msgid "response for this forum entry"
 msgstr "réponse pour cette entrée"
@@ -7835,9 +7658,6 @@ msgstr "révision"
 
 msgid "revision date"
 msgstr "date de révision"
-
-msgid "revision of document"
-msgstr "révision du document"
 
 msgid "revival document"
 msgstr "restauration du document"
@@ -8232,14 +8052,6 @@ msgstr "date de suppression"
 msgid "switch search mode (basic/advanced)"
 msgstr "recherche simple / recherche avancée"
 
-#, c-format
-msgid ""
-"syntax error for order %s. May be an integer or a relative upto or downto "
-"identificator"
-msgstr ""
-"Erreur de syntaxe pour l'ordre %s. Il est possible que ce soit à cause d'un "
-"chiffre ou un problème de majuscule/minuscule dans l'identifiant"
-
 msgid ""
 "system id already set in database\n"
 "This kind of document can not be duplicated"
@@ -8258,14 +8070,6 @@ msgstr "t"
 
 msgid "tag"
 msgstr "tag"
-
-#, c-format
-msgid "target folder [%s] is not a folder"
-msgstr "le dossier destination [%s] n'est pas un dossier"
-
-#, c-format
-msgid "target folder [%s] is not set"
-msgstr "le dossier destination [%s] n'est pas déclaré"
 
 #, c-format
 msgid "task %s is not done correctly"
@@ -8760,10 +8564,6 @@ msgstr "l'utilisateur %s %s a été ajouté\n"
 msgid "user %s %s has been modified\n"
 msgstr "l'utilisateur %s %s a été modifié\n"
 
-#, c-format
-msgid "user %s not found"
-msgstr "Utilisateur %s introuvable"
-
 msgid "user cannot be revived"
 msgstr "L'utilisateur ne peut pas être ressuscité"
 
@@ -8772,9 +8572,6 @@ msgstr "L'utilisateur n'a pas d'identificateur"
 
 msgid "user is deactivated"
 msgstr "l'utilisateur est désactivé"
-
-msgid "user not initialized"
-msgstr "utilisateur non initialisé"
 
 msgid "user not know"
 msgstr "utilisateur inconnu"
@@ -8790,9 +8587,6 @@ msgstr "préférences utilisateur"
 
 msgid "user preferences when export family"
 msgstr "préférence utilisateur pour l'exportation de document"
-
-msgid "user ressource"
-msgstr "ressource utilisateur"
 
 msgid "userlogin"
 msgstr "Login"
@@ -9032,10 +8826,6 @@ msgstr "cycle de vie"
 #, c-format
 msgid "workflow associated %s [%d] is corrupted"
 msgstr "Le cycle de vie associé %s [%d] est corrompu"
-
-#, c-format
-msgid "workflow file %s is not writable"
-msgstr "le fichier \"%s\" du workflow n'est pas modifiable"
 
 msgid "workflow has been recomposed"
 msgstr "le cycle de vie a été regénéré"
