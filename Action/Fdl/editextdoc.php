@@ -65,7 +65,6 @@ function editextdoc(&$action)
         }
         
         $doc = createDoc($dbaccess, $classid);
-        if ($usefor == 'D' || $usefor == 'Q') $doc->state = '';
         if (!$doc) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , $classid));
     } else {
         $doc = new_Doc($dbaccess, $docid, true); // always latest revision

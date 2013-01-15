@@ -1,19 +1,15 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-03 09:19+0100\n"
-"PO-Revision-Date: 2013-01-03 09:20+0100\n"
+"POT-Creation-Date: 2013-01-15 11:53+0100\n"
+"PO-Revision-Date: 2013-01-15 11:49+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 
 msgid " Access Control for"
 msgstr "Contrôle des accès pour"
@@ -490,9 +486,6 @@ msgstr "Accès à la lecture"
 msgid "Access To Read Only"
 msgstr "Accès en lecture seule"
 
-msgid "Access choose masters families"
-msgstr "Accès au choix des familles visibles administratives"
-
 msgid "Access explanation"
 msgstr "Explications"
 
@@ -784,8 +777,8 @@ msgstr ""
 msgid ""
 "Attribute Error: impossible to found the family for docid attribute '%s'"
 msgstr ""
-"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid "
-"'%s'"
+"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid '%"
+"s'"
 
 #, c-format
 msgid "Attribute [%s] is not found"
@@ -1667,10 +1660,6 @@ msgstr "UTF-8"
 msgid "Edit"
 msgstr "Éditer"
 
-#, c-format
-msgid "Edit %s"
-msgstr "Éditer %s"
-
 msgid "Edit any access"
 msgstr "Editer n'importe quel accès"
 
@@ -1854,10 +1843,6 @@ msgid "Family '%s' is not valid or alive."
 msgstr "La famille '%s' n'est pas valide ou en vie."
 
 #, c-format
-msgid "Family (#%d) is not referenced"
-msgstr "la famille (%d) n'est pas référencée"
-
-#, c-format
 msgid "Family (#%s) not exists"
 msgstr "La famille (n°%s) n'existe pas"
 
@@ -1867,9 +1852,6 @@ msgstr "Création de famille"
 #, c-format
 msgid "Family [%s] not found"
 msgstr "La famille [%s] n'a pas été trouvée"
-
-msgid "Family is not instanciate"
-msgstr "La famille n'est pas instanciée"
 
 msgid "Family preferences"
 msgstr "Préférences des familles"
@@ -2141,8 +2123,8 @@ msgstr "Image (PNG)"
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;"
-"%s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;%"
+"s&gt; will be sended with result rapport"
 msgstr ""
 "L'import %s est en cours. Lorsque la mise à jour sera finie, un email sera "
 "envoyé à \n"
@@ -2666,9 +2648,6 @@ msgstr "Pas d'importation directe : limite atteinte"
 msgid "No document found for <strong>%s</strong>%s"
 msgstr "Aucun document pour la recherche \"<strong>%s</strong>\"%s"
 
-msgid "No family first"
-msgstr "Pas de famille ouverte par défaut"
-
 msgid "No identificator"
 msgstr "Pas d'identificateurs"
 
@@ -2766,15 +2745,9 @@ msgstr "Offline"
 msgid "Ok"
 msgstr "Ok"
 
-msgid "One Familly Management"
-msgstr "Gestion par famille"
-
 #, c-format
 msgid "One document for <strong>%s</strong>%s"
 msgstr "Un document trouvé pour <strong>%s</strong>%s"
-
-msgid "Onefam"
-msgstr "Une famille"
 
 msgid "Online help"
 msgstr "Aide en ligne"
@@ -3455,9 +3428,6 @@ msgstr "Vues spéciales"
 msgid "Specific import in csv format"
 msgstr "Importation spécifiques au format CSV"
 
-msgid "Starting of"
-msgstr "Démarrage de"
-
 msgid "State"
 msgstr "État"
 
@@ -3665,9 +3635,6 @@ msgstr "Prévision des minuteurs"
 
 msgid "Title"
 msgstr "Titre"
-
-msgid "To choose other families"
-msgstr "Pour choisir d'autres familles"
 
 msgid "To create and modify users and groups"
 msgstr "Pour créer et modifier des utilisateurs et des groups"
@@ -4807,8 +4774,8 @@ msgid "cannot open %s layout file"
 msgstr "ne peut ouvrir le fichier template %s"
 
 #, c-format
-msgid "cannot open %s layout file : %s"
-msgstr "ne peut pas ouvrir le fichier modèle %s : %s "
+msgid "cannot open layout file : %s"
+msgstr "ne peut ouvrir le fichier de template : %s"
 
 msgid "cannot produce sql request"
 msgstr "ne peut produire la requête sql"
@@ -5017,9 +4984,6 @@ msgstr "choisir une valeur pour %s"
 
 msgid "choose preferred families"
 msgstr "Choix des familles préférées"
-
-msgid "choose user families"
-msgstr "Choix des familles personnelles"
 
 msgid "choose workflow"
 msgstr "choisir un cycle"
@@ -5348,9 +5312,6 @@ msgstr "mort"
 msgid "declaration syntax does not match special help input '%s'"
 msgstr "Syntaxe de déclaration ne correspond pas à une aide à la saisie '%s'"
 
-msgid "default background color"
-msgstr "couleur de fond"
-
 msgid "default delay before expiration of password in day"
 msgstr "délai d'expiration du mot de passe par défaut (en jours)"
 
@@ -5371,9 +5332,6 @@ msgstr "famille répertoire par défaut"
 
 msgid "default import values"
 msgstr "Valeurs par défaut pour l'import"
-
-msgid "default opened family"
-msgstr "famille ouverte par défaut"
 
 msgid "default sort by family"
 msgstr "tri par défaut par famille"
@@ -5497,9 +5455,6 @@ msgstr "voir un document confidentiel"
 
 msgid "display logo"
 msgstr "afficher le logo"
-
-msgid "display mode"
-msgstr "mode d'affichage"
 
 msgid "displayable"
 msgstr "Affichable"
@@ -5764,12 +5719,6 @@ msgstr "importation format Vcard"
 msgid "edit mail"
 msgstr "éditer un mail"
 
-msgid "edit master preferences"
-msgstr "editer les préférences administratives"
-
-msgid "edit preferences"
-msgstr "editer les préférences"
-
 msgid "edit profile access"
 msgstr "édition des profiles d'accès"
 
@@ -6004,12 +5953,6 @@ msgstr "exportXml : ne peut écrire le fichier %s"
 
 msgid "familly"
 msgstr "famille"
-
-msgid "familly list"
-msgstr "liste des familles"
-
-msgid "familly result"
-msgstr "résultat des familles"
 
 #, c-format
 msgid "family %s does not implement IMailRecipent - missing getMail method"
@@ -6316,23 +6259,8 @@ msgstr "Récupère toutes les valeurs d'un document"
 msgid "get attribute for fck toobar"
 msgstr "récupère les attributs pour la barre d'outils FCK"
 
-msgid "get data for createtree family"
-msgstr "récupération de données pour l'arbre des familles"
-
-msgid "get ext display configuration"
-msgstr "Récupération de la configuration d'affichage"
-
 msgid "get family import schema"
 msgstr "récupération du schéma d'une famille"
-
-msgid "get master preferences"
-msgstr "récupération des préférences d'administration"
-
-msgid "get menu with family concordance"
-msgstr "récupération du menu de famille"
-
-msgid "get preferences"
-msgstr "récupération des préférences"
 
 msgid "get search methods"
 msgstr "récupération des méthodes de recherche"
@@ -6440,9 +6368,6 @@ msgstr "Icone"
 
 msgid "icon already set. No update allowed"
 msgstr "icone déjà affectée. Pas de mise à jour possible."
-
-msgid "icon column number"
-msgstr "nombre de colonne d'icones"
 
 msgid "icon size"
 msgstr "taille des icones"
@@ -6737,9 +6662,6 @@ msgstr "Gérer les colonnes"
 msgid "manual date"
 msgstr "Date manuelle"
 
-msgid "master choose families"
-msgstr "choix des familles administratives"
-
 msgid "max items return when open a folder"
 msgstr "nombre d'éléments maximum visibles dans un dossier"
 
@@ -6881,9 +6803,6 @@ msgstr "modification du fichier %s"
 msgid "modify folder"
 msgstr "modifier le contenu du dossier"
 
-msgid "modify master preferences"
-msgstr "modifier les préférences administratives"
-
 msgid "modify object acl"
 msgstr "modification des droits"
 
@@ -6892,9 +6811,6 @@ msgstr "modification des paramètres"
 
 msgid "modify parameters :"
 msgstr "modifier les paramètres"
-
-msgid "modify preferences"
-msgstr "modifier les préférences"
 
 msgid "modify preferred families"
 msgstr "modifier les familles préférées"
@@ -7379,18 +7295,6 @@ msgstr "objet"
 msgid "object control"
 msgstr "contrôle des objets"
 
-msgid "one familly root"
-msgstr "racine gestion par famille"
-
-msgid "one family extjs view"
-msgstr "interface extjs"
-
-msgid "one family generic root"
-msgstr "racine generic gestion par famille"
-
-msgid "one family multi document"
-msgstr "Document multiple"
-
 msgid "one id equal"
 msgstr "un des identifiants égal"
 
@@ -7440,9 +7344,6 @@ msgstr "Ouvrir le document pour l'éditer ou le voir"
 msgid "open file with your editor"
 msgstr "ouvrir le fichier avec votre éditeur"
 
-msgid "open first family"
-msgstr " Ouverte en premier"
-
 msgid "open folder"
 msgstr "Ouvrir le dossier"
 
@@ -7473,9 +7374,6 @@ msgstr "ou"
 
 msgid "order"
 msgstr "ordre"
-
-msgid "other families"
-msgstr "Autres familles"
 
 msgid "other folders"
 msgstr "Autres dossiers"
@@ -7818,9 +7716,6 @@ msgstr "valeur à utiliser"
 msgid "realm name for http authenticate"
 msgstr "nom du royaume pour authentification HTTP"
 
-msgid "redirect to generic"
-msgstr "rediriger vers generic"
-
 msgid "reference"
 msgstr "référence"
 
@@ -8150,9 +8045,6 @@ msgstr "à %s"
 msgid "set RSS usable"
 msgstr "rendre le RSS utilisable"
 
-msgid "set as first family view"
-msgstr "enregistrer la famille comme la première à voir"
-
 #, c-format
 msgid "set default folder to '%s'"
 msgstr "affecte le dossier par défaut à '%s'"
@@ -8168,9 +8060,6 @@ msgstr "affecte le cycle de vie par défaut à '%s'"
 #, c-format
 msgid "set doctype to '%s'"
 msgstr "affecter le doctype à '%s'"
-
-msgid "set ext display configuration"
-msgstr "affecte la configuration d'affichage"
 
 #, c-format
 msgid "set for %s, unset for %s"
@@ -8255,9 +8144,6 @@ msgstr "Vue %s"
 msgid "specific control"
 msgstr "Contrôle dédié"
 
-msgid "specific family menu"
-msgstr "Menu de famille spécifique"
-
 msgid "specmessage"
 msgstr "message spécifique"
 
@@ -8318,8 +8204,8 @@ msgstr ""
 "<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
 "p>\n"
 "<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
-"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème"
-"%20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
+"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
+"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
@@ -9102,12 +8988,6 @@ msgid "visibility %s does not allow modify attribute %s for document %s"
 msgstr ""
 "la visibilité %s ne permet pas de modifier l'attribut %s du document %s"
 
-msgid "visible master families"
-msgstr "familles administratives visibles"
-
-msgid "visible user families"
-msgstr "familles personnelles visibles"
-
 msgid "waiting : document not set"
 msgstr "en attente : document non affecté"
 
@@ -9276,948 +9156,3 @@ msgstr "l'identifiant système {left} est différent de {right}"
 
 msgid "{left} title include {right}"
 msgstr "le titre de {left} inclus {right}"
-
-#~ msgid " 0 means no delay"
-#~ msgstr " 0 signifie pas de limite"
-
-#~ msgid " Profil for"
-#~ msgstr "Profil pour"
-
-#~ msgid " Profil for "
-#~ msgstr "Profil pour"
-
-#~ msgid "%d digits"
-#~ msgstr "%d chiffres"
-
-#~ msgid "%d lowercase alpha characters"
-#~ msgstr "%d lettres minuscules"
-
-#~ msgid "%d symbol characters"
-#~ msgstr "%d caractères spéciaux"
-
-#~ msgid "%d uppercase alpha characters"
-#~ msgstr "%d lettres majuscules"
-
-#~ msgid "%s migrated\n"
-#~ msgstr "%s migré\n"
-
-#~ msgid "(private)"
-#~ msgstr "(privé)"
-
-#~ msgid "Access To All Users"
-#~ msgstr "Accès à tous les utilisateurs"
-
-#~ msgid "Access To All Users in my domain"
-#~ msgstr "Acces aux utilisateurs de mon domaine"
-
-#~ msgid "Access To Import Contacts"
-#~ msgstr "Accès à l'importation des utilisateurs"
-
-#~ msgid "Access To Manage Address Book"
-#~ msgstr "Accès à la gestion du carnet d'adresses"
-
-#~ msgid "Access To View Address Book"
-#~ msgstr "Accès pour voir le carnet d'adresses"
-
-#~ msgid ""
-#~ "Access denied\n"
-#~ "Need ACL %s for action %s [%s]"
-#~ msgstr ""
-#~ "Accès refusé\n"
-#~ "ACL %s nécessaire pour l'action %s [%s]"
-
-#~ msgid "Access description"
-#~ msgstr "Description"
-
-#~ msgid "Account"
-#~ msgstr "Compte"
-
-#~ msgid "Action '%s' not declared for application %s (%d)"
-#~ msgstr "Action '%s' non déclarée pour l'application %s (%d)"
-
-#~ msgid "Add new card (duplicate title)"
-#~ msgstr "Ajout nouvelle carte (titre dupliqué)"
-
-#~ msgid "Address book searches"
-#~ msgstr "Adress book : recherche rapide"
-
-#~ msgid "All manuals"
-#~ msgstr "Tous les manuels"
-
-#~ msgid "Application %s (%s) not available"
-#~ msgstr "Application %s (%s) non disponible"
-
-#~ msgid "Authentification failure before account desactivation"
-#~ msgstr ""
-#~ "Nombre de connexion avec mot de passe incorrect avant désactivation du "
-#~ "compte"
-
-#~ msgid "Book in my space"
-#~ msgstr "Réserver dans mon espace"
-
-#~ msgid "Cancel the change state"
-#~ msgstr "Annulation du changement d'état"
-
-#~ msgid "Change state %s"
-#~ msgstr "Changement d'état vers %s"
-
-#~ msgid "Change state to %s"
-#~ msgstr "Changement d'état vers %s"
-
-#~ msgid "Clear message"
-#~ msgstr "Effacer le message"
-
-#~ msgid "Complete view"
-#~ msgstr "Vue complète"
-
-#~ msgid "Computed from"
-#~ msgstr "Calculé depuis"
-
-#~ msgid "Context  : [%s]"
-#~ msgstr "Contexte : [%s]"
-
-#~ msgid "Continue (Y|N) ?"
-#~ msgstr "Continuer (Y (oui) |N (non)) ?"
-
-#~ msgid "Coordonates"
-#~ msgstr "Coordonnées"
-
-#~ msgid "Create other database for %s (%s)"
-#~ msgstr "Création d'autres bases pour %s (%s)"
-
-#~ msgid "Database : [%s]"
-#~ msgstr "Base de données : [%s]"
-
-#~ msgid "Document %s is not tagable"
-#~ msgstr "Le document %s ne peut pas avoir de tag"
-
-#~ msgid "Document id not found"
-#~ msgstr "L'identifiant du document est introuvable"
-
-#~ msgid "Domain %s"
-#~ msgstr "Domaine %s"
-
-#~ msgid "Edit Url Gate"
-#~ msgstr "édition des URLs pour le portail"
-
-#~ msgid "Enter name for database ? "
-#~ msgstr "Nom de la base de donnée ?"
-
-#~ msgid "Error %s"
-#~ msgstr "Erreur %s"
-
-#~ msgid "Error : Process %s [%d]: status %d in %d seconds"
-#~ msgstr "Erreur : Processus %s [%d]: statut %d in %d seconds"
-
-#~ msgid "Error : User account is desactivated\n"
-#~ msgstr "Erreur: Compte utilisateur désactivé\n"
-
-#~ msgid "Error : User doesn't exists\n"
-#~ msgstr "Erreur: L'utilisateur n'existe pas\n"
-
-#~ msgid "Error: missing or empty --config"
-#~ msgstr "Erreur: --config manquant ou absent"
-
-#~ msgid "Fax"
-#~ msgstr "Fax"
-
-#~ msgid "Gate"
-#~ msgstr "Portail"
-
-#~ msgid "Group '%s' not exists"
-#~ msgstr "Le groupe '%s' n'existe pas"
-
-# ne pas mettre de '
-#~ msgid "Homepage"
-#~ msgstr "Accueil"
-
-#~ msgid "I can't find hostname alias"
-#~ msgstr "Alias de hostname introuvable"
-
-#~ msgid "Import document description"
-#~ msgstr "Importer les documents"
-
-#~ msgid "Import from"
-#~ msgstr "Importation à partir de"
-
-#~ msgid "Import vcard"
-#~ msgstr "Importation Vcard"
-
-#~ msgid "Keep address book card"
-#~ msgstr "Garde la carte originale"
-
-#~ msgid "Linked from"
-#~ msgstr "Lié par"
-
-#~ msgid "Logical name %s already use other document"
-#~ msgstr "Le nom logique %s déjà utilisé pour un autre document"
-
-#~ msgid "Manuals"
-#~ msgstr "Manuels"
-
-#~ msgid "Max user reach. Use search filter"
-#~ msgstr "Utiliser la recherche pour voir la suite"
-
-#~ msgid "Members"
-#~ msgstr "Membres"
-
-#~ msgid "Members detection are disactived for the group"
-#~ msgstr "La récupération des membres est désactivé pour ce groupe"
-
-#~ msgid "Method %s::%s() not contains %s tag comment"
-#~ msgstr ""
-#~ "La méthode %s::%s ne contient pas le code \"%s\" dans le commentaire"
-
-#~ msgid "Method %s::%s() not contains @templateController tag comment"
-#~ msgstr ""
-#~ "La méthode %s::%s() ne contient pas @templateController dans son "
-#~ "commentaire "
-
-#~ msgid "My firstname and lastname"
-#~ msgstr "Mon prénom et mon nom"
-
-#~ msgid "New GATE page"
-#~ msgstr "Portail"
-
-#~ msgid "New version has been installed."
-#~ msgstr "Une nouvelle version vient d'être installée."
-
-#~ msgid "No identifier found for relation %s"
-#~ msgstr "Aucun identificateur pour la relation %s"
-
-#~ msgid "No privilege to define accessibilities"
-#~ msgstr "Aucun privilège pour définir les droits d'accès"
-
-#~ msgid "Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
-#~ msgstr "Non autorisé : nécessite le privilège DOMAIN_MASTER"
-
-#~ msgid "Only one line by personn is authorized"
-#~ msgstr "Une seule ligne par personne est autorisée"
-
-#~ msgid "Only owner of document can restore it"
-#~ msgstr "Seul le propriétaire peut restaurer un document"
-
-#~ msgid "Person"
-#~ msgstr "Personne"
-
-#~ msgid "Personnel"
-#~ msgstr "Personnel"
-
-#~ msgid "Phone"
-#~ msgstr "Téléphone"
-
-#~ msgid "Process %s [%d] executed in %d seconds"
-#~ msgstr "Processus %s [%d] exécuté en %d secondes"
-
-#~ msgid "Professional"
-#~ msgstr "Professionnel"
-
-#~ msgid "Replace address book card if has permission else duplicate"
-#~ msgstr "Remplace la carte si permission accordée sinon duplication"
-
-#~ msgid "Role '%s' not exists"
-#~ msgstr "Le rôle '%s' n'existe pas"
-
-#~ msgid "Save geometry"
-#~ msgstr "Sauver la disposition"
-
-#~ msgid "Save without change state"
-#~ msgstr "Sauver sans changement d'état"
-
-#~ msgid "Secretary"
-#~ msgstr "Secrétariat"
-
-#~ msgid ""
-#~ "Send mail error : Relation to attribute %s not found. Relation key %s "
-#~ "doe'nt link to a document"
-#~ msgstr ""
-#~ "Échec lors de l'envoi du mail: La relation vers l'attribut %s est "
-#~ "introuvable: La clé %s n'est pas liée à un document"
-
-#~ msgid "Set by \"%s\" attribute from template profil \"%s\""
-#~ msgstr "Obtenu par l'attribut \"%s\" depuis le profil dynamique \"%s\""
-
-#~ msgid "Set by %s attribute from template profil \"%s\""
-#~ msgstr "Obtenu par l'attribut %s depuis le profil dynamique \"%s\""
-
-#~ msgid "Set in my space to read it"
-#~ msgstr "Mettre dans mon espace"
-
-#~ msgid "Society"
-#~ msgstr "Société"
-
-#~ msgid ""
-#~ "The change state to %s has been aborted.\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Le changement d'état vers %s n'a pas pu être réalisé.\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "The change state to %s has been realized. But the following warning is "
-#~ "appeared.\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Le changement d'état vers %s a réussi avec l'avertissement suivant.\n"
-#~ "%s "
-
-#~ msgid "To"
-#~ msgstr "Vers"
-
-#~ msgid "Today's date"
-#~ msgstr "Aujourd'hui"
-
-#~ msgid ""
-#~ "Too many members to display there here (%d). Use Open menu to display "
-#~ "them."
-#~ msgstr ""
-#~ "Trop de membres (%d) dans ce groupe pour être affichés. Utiliser le menu "
-#~ "ouvrir pour les voir."
-
-#~ msgid ""
-#~ "Too many members to display there here. Use Open context menu to display "
-#~ "them."
-#~ msgstr ""
-#~ "Il y a trop de membres dans le groupe pour afficher la liste ici. "
-#~ "Utiliser le menu \"Ouvrir\" à partir du menu contextuel."
-
-#~ msgid "Transition parameters"
-#~ msgstr "Paramètres pour le changement d'état"
-
-#~ msgid "User Card"
-#~ msgstr "Carnet d'adresses"
-
-#~ msgid "User Card Management"
-#~ msgstr "Carnet d'adresses"
-
-#~ msgid "VCARD"
-#~ msgstr "VCARD"
-
-#~ msgid "VCARD Import Result"
-#~ msgstr "Résultat de l'importation VCARD"
-
-#~ msgid "Vcard example"
-#~ msgstr "Exemple de Vcard"
-
-#~ msgid "View notice messages"
-#~ msgstr "Voir tous les messages"
-
-#~ msgid "View only access set. Green or Red flag"
-#~ msgstr "Voir que les accès définis. Les cercles verts ou rouges."
-
-#~ msgid "View profil definition"
-#~ msgstr "Voir la définition du profil"
-
-#~ msgid "View workflow graph"
-#~ msgstr "Voir le graphe du cycle de vie"
-
-#~ msgid "Welcome Page"
-#~ msgstr "Page d'accueil"
-
-#~ msgid "What User Management"
-#~ msgstr "Gestion des utilisateurs"
-
-#~ msgid "With Activity"
-#~ msgstr "Avec les activités"
-
-#~ msgid "Xml schema"
-#~ msgstr "Xml Schéma"
-
-#~ msgid "You must clear navigator cache."
-#~ msgstr "Vous devez effacer le cache de votre navigateur."
-
-#~ msgid "access to documents of my space"
-#~ msgstr "Accéder aux documents de mon espace"
-
-#~ msgid "active user"
-#~ msgstr "Utilisateur activé"
-
-#~ msgid "add to prefered"
-#~ msgstr "ajouter à mes préférés"
-
-#~ msgid "address book add a prefered contacts"
-#~ msgstr "Adress book : ajout d'un préféré"
-
-#~ msgid "address book choose main view column"
-#~ msgstr "Carnet d'adresse : choisir les colonnes"
-
-#~ msgid "address book css"
-#~ msgstr "CSS carnet d'adresse"
-
-#~ msgid "address book frame page"
-#~ msgstr "Adress book : frames"
-
-#~ msgid "address book main page"
-#~ msgstr "Adress book : page principale"
-
-#~ msgid "address book prefered contacts"
-#~ msgstr "Adress book : préférés"
-
-#~ msgid "address book set user param"
-#~ msgstr "Adress book : position du p. utilisteur"
-
-#~ msgid "address book speed search"
-#~ msgstr "Adress book : recherche rapide"
-
-#~ msgid "adduser"
-#~ msgstr "Ajouter un utilisateur"
-
-#~ msgid "admin view"
-#~ msgstr "vue administrateur"
-
-#~ msgid "anakeen"
-#~ msgstr "anakeen"
-
-#~ msgid "authentication failed"
-#~ msgstr "échec d'authentification"
-
-#~ msgid "book the document to modify it with offline application"
-#~ msgstr "réserver le document pour le modifier avec l'application offline"
-
-#~ msgid "callbackreqpasswd_callback_not_ok"
-#~ msgstr ""
-#~ "<p>Le système n'a pas pu traiter votre demande.</p>\n"
-#~ "<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus "
-#~ "valide. Dans ce cas, veuillez renouveller votre demande.</p>\n"
-#~ "<p>Si le problème persiste, veuillez prendre contact avec <a href="
-#~ "\"mailto:[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot"
-#~ "%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
-
-#~ msgid "callbackreqpasswd_callback_ok"
-#~ msgstr ""
-#~ "<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe "
-#~ "vous a été envoyé par mail.</p>"
-
-#~ msgid "cannot connect to %s"
-#~ msgstr "ne peut se connecter à %s"
-
-#~ msgid "cannot control : object not initialized : %s"
-#~ msgstr "contrôle impossible : objet non initialisé : %s"
-
-#~ msgid ""
-#~ "cannot lock document %s [%d] (rev %d) : fixed. Get the latest version"
-#~ msgstr "le fichier %s [%d] (rév. %d) est figé. Utilisez la dernière version"
-
-#~ msgid "cannot lock file %s [%d] : already locked by %s."
-#~ msgstr "le fichier %s [%d] est déjà verrouillé par %s."
-
-#~ msgid "cannot open %s configuration file"
-#~ msgstr "ne peut ouvrir le fichier de configuration %s"
-
-#~ msgid "categorie"
-#~ msgstr "Catégorie"
-
-#~ msgid "category"
-#~ msgstr "catégorie"
-
-#~ msgid "changegroup"
-#~ msgstr "Changement de groupe"
-
-#~ msgid "choose document"
-#~ msgstr "choisi un document"
-
-#~ msgid "clear"
-#~ msgstr "Effacer"
-
-#~ msgid "click to reload favorites"
-#~ msgstr "Cliquer ici pour raffraichir mes favoris"
-
-#~ msgid "confidentiality"
-#~ msgstr "confidentialité"
-
-#~ msgid "confirm delete"
-#~ msgstr "retirer des préférés ?"
-
-#~ msgid "confirm delete all favorite"
-#~ msgstr "Vider la liste des préférés ?"
-
-#~ msgid "contact"
-#~ msgstr "Contact..."
-
-#~ msgid "current (<i>%s</i>)"
-#~ msgstr "courant (<i>%s</i>)"
-
-#~ msgid "current user account"
-#~ msgstr "mon compte"
-
-#~ msgid "current_state"
-#~ msgstr "courant"
-
-#~ msgid "delete all favorites"
-#~ msgstr "Suppression des préférés (tous)"
-
-#~ msgid "delete from prefered"
-#~ msgstr "supprimer des contacts préférés"
-
-#~ msgid "desactived user"
-#~ msgstr "Utilisateur désactivé"
-
-#~ msgid "diff"
-#~ msgstr "diff"
-
-#~ msgid "direct"
-#~ msgstr "direct"
-
-#~ msgid "document %s is not a group"
-#~ msgstr "le document %s n'est pas un groupe"
-
-#~ msgid "domain"
-#~ msgstr "Domaine"
-
-#~ msgid "domaingroup"
-#~ msgstr "Domaine"
-
-#~ msgid "double click to edit"
-#~ msgstr "Double clic pour éditer"
-
-#~ msgid "double-clic to update document"
-#~ msgstr "double-cliquez pour mettre à jour le document"
-
-#~ msgid "drag to move. Use ctrl-&uarr; &darr; to up/down"
-#~ msgstr ""
-#~ "glisser/déposer pour déplacer. Utiliser ctrl-&uarr; &darr; pour monter/"
-#~ "descendre"
-
-#~ msgid "e1"
-#~ msgstr "e1"
-
-#~ msgid "e2"
-#~ msgstr "e2"
-
-#~ msgid "edit by object"
-#~ msgstr "édition par objet"
-
-#~ msgid "elinkEncode::attribute not found %s"
-#~ msgstr "elinkEncode :  attribut non trouvé %s"
-
-#~ msgid "err_add_user"
-#~ msgstr "Impossible de creer l'utilisateur"
-
-#~ msgid "eui:Abstract display"
-#~ msgstr "Résumé"
-
-#~ msgid "eui:Cancel deletion"
-#~ msgstr "Annuler la suppression"
-
-#~ msgid "eui:Cancel locking"
-#~ msgstr "Annuler le verrouillage"
-
-#~ msgid "eui:Cancel remove"
-#~ msgstr "Annuler"
-
-#~ msgid "eui:Create a search"
-#~ msgstr "Créer une recherche"
-
-#~ msgid "eui:Delete"
-#~ msgstr "Supprimer"
-
-#~ msgid "eui:Display"
-#~ msgstr "Affichage"
-
-#~ msgid "eui:Document Selection"
-#~ msgstr "Sélection"
-
-#~ msgid "eui:Duplicate document"
-#~ msgstr "Dupliquer"
-
-#~ msgid "eui:Edit document"
-#~ msgstr "Modifier"
-
-#~ msgid "eui:Export all documents"
-#~ msgstr "Exporter le contenu du dossier"
-
-#~ msgid "eui:Export selected documents"
-#~ msgstr "Exporter les documents sélectionnés"
-
-#~ msgid "eui:Grid display"
-#~ msgstr "Grille"
-
-#~ msgid "eui:Historic"
-#~ msgstr "Historique"
-
-#~ msgid "eui:Icon display"
-#~ msgstr "Icones"
-
-#~ msgid "eui:Lock"
-#~ msgstr "Verrouiller"
-
-#~ msgid "eui:Lock selected documents"
-#~ msgstr "Verrouiller les documents sélectionnés"
-
-#~ msgid "eui:Lock selection"
-#~ msgstr "Verrouiller la sélection"
-
-#~ msgid "eui:Remove from folder"
-#~ msgstr "Retirer du dossier"
-
-#~ msgid "eui:Rss Link"
-#~ msgstr "Lien RSS"
-
-#~ msgid "eui:Selection"
-#~ msgstr "Sélection"
-
-#~ msgid "eui:Send Mail"
-#~ msgstr "Envoyer un mail"
-
-#~ msgid "eui:Sure delete ?"
-#~ msgstr "Etes vous sûr de vouloir supprimer ?"
-
-#~ msgid "eui:Sure lock selected document ?"
-#~ msgstr "Etes vous sûr de verrouiller les documents sélectionnés ?"
-
-#~ msgid "eui:Sure remove from folder ?"
-#~ msgstr "Etes vous sûr de vouloir enlever le document du dossier ?"
-
-#~ msgid "eui:Tools"
-#~ msgstr "Outils"
-
-#~ msgid "eui:Tree display"
-#~ msgstr "Arbre"
-
-#~ msgid "eui:Unlock"
-#~ msgstr "Déverrouiller"
-
-#~ msgid "eui:View Document"
-#~ msgstr "Voir"
-
-#~ msgid "eui:View Properties"
-#~ msgstr "Propriétés"
-
-#~ msgid "eui:View print version"
-#~ msgstr "Version imprimable"
-
-#~ msgid "eui:itemlistmenu tag not found"
-#~ msgstr "itemlistmenu tag non trouvé"
-
-#~ msgid "eui:no id in itemlistmenu"
-#~ msgstr "Pas d'identifiant dans itemlistmenu"
-
-#~ msgid "eui:no itemmenu tags found"
-#~ msgstr "Aucun tag itemmenu trouvé"
-
-#~ msgid "expire date"
-#~ msgstr "date d'expiration"
-
-#~ msgid "expire date format is not correct : will be set to default"
-#~ msgstr ""
-#~ "le format de la date d'expiration est incorrecte : la date par défaut "
-#~ "sera prise en compte"
-
-#~ msgid "expire default delay (in day)"
-#~ msgstr "délai d'expiration par défaut (en jours)"
-
-#~ msgid "expires"
-#~ msgstr "expiration"
-
-#~ msgid "fck image browser"
-#~ msgstr "fck navigateur d'images"
-
-#~ msgid "fck image upload"
-#~ msgstr "fck téléchargement"
-
-#~ msgid "first"
-#~ msgstr "premier"
-
-#~ msgid "firstname"
-#~ msgstr "Prénom"
-
-#~ msgid "freedom address book"
-#~ msgstr "Carnet d'Adresses Dynacase"
-
-#~ msgid "freedom cron try execute"
-#~ msgstr "Cron Dynacase essai d'execution"
-
-#~ msgid "full text search document"
-#~ msgstr "recherche plein texte"
-
-#~ msgid "fullname"
-#~ msgstr "Utilisateur"
-
-#~ msgid "function examples"
-#~ msgstr "exemples de fonctions"
-
-#~ msgid "gate geometry"
-#~ msgstr "disposition du portail"
-
-#~ msgid "gate page"
-#~ msgstr "Page du portail"
-
-#~ msgid "gate urls"
-#~ msgstr "urls du portail"
-
-#~ msgid "group list"
-#~ msgstr "les groupes"
-
-#~ msgid "groupdesc"
-#~ msgstr "Description"
-
-#~ msgid "groups"
-#~ msgstr "Groupes"
-
-#~ msgid "if not set, will be the current date more delay"
-#~ msgstr "si vide, ce sera la date courante plus le délai"
-
-#~ msgid "import vcard"
-#~ msgstr "Importation Vcard"
-
-#~ msgid "in database"
-#~ msgstr "dans la base de données"
-
-#~ msgid "insert the document to see it with offline application"
-#~ msgstr "insérer le document pour le voir avec l'application offline"
-
-#~ msgid "invert order"
-#~ msgstr "ordre inverse"
-
-#~ msgid "last"
-#~ msgstr "dernier"
-
-#~ msgid "lastname"
-#~ msgstr "Nom"
-
-#~ msgid "login"
-#~ msgstr "Nom de connexion"
-
-#~ msgid "mail will be calculated from domain"
-#~ msgstr "l'adresse email sera calculée à partir du domaine"
-
-#~ msgid "my favorites"
-#~ msgstr "Mes préférés..."
-
-#~ msgid "my id"
-#~ msgstr "mon identificateur"
-
-#~ msgid "my last name"
-#~ msgstr "mon nom de famille"
-
-#~ msgid "name displayed in the right of the foot"
-#~ msgstr "nom affiché dans le bas de la fenêtre (à droite)"
-
-#~ msgid "name must containt only alphanumeric characters: invalid  [%s]"
-#~ msgstr ""
-#~ "le nom ne doit contenir que des caractères alpha-numérique: invalide [%s]"
-
-#~ msgid "no import file specified"
-#~ msgstr "pas de fichier d'import spécifié"
-
-#~ msgid "no mail"
-#~ msgstr "pas d'email"
-
-#~ msgid "no tag specified"
-#~ msgstr "Aucun tag spécifié"
-
-#~ msgid "no trash image"
-#~ msgstr "image de la poubelle non trouvée"
-
-#~ msgid "no valid document group : %s"
-#~ msgstr "groupe de document invalide : %s"
-
-#~ msgid "no valid group : %s"
-#~ msgstr "groupe invalide : %s"
-
-#~ msgid "no vcard file specified"
-#~ msgstr "pas de fichier vcard spécifié"
-
-#~ msgid "nomail"
-#~ msgstr "pas d'email"
-
-#~ msgid "not defined"
-#~ msgstr "non défini"
-
-#~ msgid "number of members"
-#~ msgstr "Nombre de membres"
-
-#~ msgid "one word equal"
-#~ msgstr "un des mots égal"
-
-#~ msgid "other"
-#~ msgstr "Autres..."
-
-#~ msgid "other infos"
-#~ msgstr "Autres informations..."
-
-#~ msgid "other sites"
-#~ msgstr "Autres sites..."
-
-#~ msgid "othergroup"
-#~ msgstr "Autres"
-
-#~ msgid "parameters for %s state"
-#~ msgstr "paramètres pour l'état %s"
-
-#~ msgid "password"
-#~ msgstr "Mot de passe"
-
-#~ msgid "phones"
-#~ msgstr "Téléphones"
-
-#~ msgid "pre-import:%s"
-#~ msgstr "pré-Import:%s"
-
-#~ msgid "preferential doc gate id"
-#~ msgstr "identifiant de portail par défaut"
-
-#~ msgid "private card"
-#~ msgstr "carte privée"
-
-#~ msgid "public card - read access"
-#~ msgstr "carte publique - accès lecture"
-
-#~ msgid "public card - write access"
-#~ msgstr "carte publique - accès écriture"
-
-#~ msgid "quick search"
-#~ msgstr "recherche rapide"
-
-#~ msgid "remove from my space"
-#~ msgstr "Enlever de mon espace"
-
-#~ msgid "remove the document from my space"
-#~ msgstr "Enlever le document de mon espace"
-
-#~ msgid "rev"
-#~ msgstr "rev"
-
-#~ msgid "revision comment"
-#~ msgstr "commentaire de révision"
-
-#~ msgid "revision comment for autorevision"
-#~ msgstr " commentaire de révision pour révision automatique"
-
-#~ msgid "search in all contact fields"
-#~ msgstr "recherche dans tout les champs"
-
-#~ msgid "select"
-#~ msgstr "sélectionner"
-
-#~ msgid "set view control to '%s'"
-#~ msgstr "affecte le contrôle de vue à '%s'"
-
-#~ msgid "society"
-#~ msgstr "société"
-
-#~ msgid "socname"
-#~ msgstr "Nom"
-
-#~ msgid "specific import"
-#~ msgstr "Import spécifique"
-
-#~ msgid "subject for new password request"
-#~ msgstr "Le sujet du mail pour les demandes de mot de passe"
-
-#~ msgid "subject for new password response"
-#~ msgstr "Le sujet du mail pour les réponses aux demandes de mot de passe"
-
-#~ msgid "submitreqpasswd_mail_callbackurl"
-#~ msgstr ""
-#~ "<p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce "
-#~ "n'est pas le cas, veuillez détruire ce message.</p>\n"
-#~ "<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
-#~ "suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL]guest.php"
-#~ "[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token="
-#~ "[CALLBACK_TOKEN]\">[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
-#~ "app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p>"
-
-#~ msgid "submitreqpasswd_mail_hello"
-#~ msgstr "Bonjour"
-
-#~ msgid "tab usercard"
-#~ msgstr "onglets carnet d'adresses"
-
-#~ msgid "the date syntax must be like : DD/MM/AAAA"
-#~ msgstr "la date doit être de la forme JJ/MM/AAAA"
-
-#~ msgid "the file %s (rev %d) must be locked before"
-#~ msgstr "le fichier %s (rév %d) doit être verrouillé au préalable"
-
-#~ msgid "the login syntax is like : john.doe"
-#~ msgstr "La syntaxe d'un login est de la forme : jean.martin"
-
-#~ msgid "the user identification is unknow"
-#~ msgstr "l'identification de l'utilisateur est inconnue"
-
-#~ msgid "titlecreateg"
-#~ msgstr "Création d'un groupe"
-
-#~ msgid "titlecreateu"
-#~ msgstr "Création d'utilisateur"
-
-#~ msgid "titlegroup"
-#~ msgstr "Liste des groupes"
-
-#~ msgid "titlemodifyg"
-#~ msgstr "Modification du groupe"
-
-#~ msgid "titlemodifyu"
-#~ msgstr "Modification de l'utilisateur"
-
-#~ msgid "titleuser"
-#~ msgstr "Liste des utilisateurs"
-
-#~ msgid "to"
-#~ msgstr "vers"
-
-#~ msgid "toedit"
-#~ msgstr "éditer"
-
-#~ msgid "too many similar document %s <B>ignored</B> "
-#~ msgstr "trop de documents similaires trouvés %s <B>ignoré</B> "
-
-#~ msgid "typeview"
-#~ msgstr "typeview"
-
-#~ msgid "unchanged"
-#~ msgstr "inchangé"
-
-#~ msgid "usage %s --famid=<family id> [--force=yes]"
-#~ msgstr "usage %s --famid=<family id> [--force=yes]"
-
-#~ msgid "use what gate"
-#~ msgstr "utiliser le portail what"
-
-#~ msgid "user"
-#~ msgstr "utilisateur"
-
-#~ msgid "user account edition"
-#~ msgstr "modifier compte utilisateur"
-
-#~ msgid "user account modification"
-#~ msgstr "modifier compte utilisateur"
-
-#~ msgid "user own account edition"
-#~ msgstr "modification compte personnel"
-
-#~ msgid "user own account modification"
-#~ msgstr "modifier compte personnel"
-
-#~ msgid "user status"
-#~ msgstr "état utilisateur"
-
-#~ msgid "usercard home page"
-#~ msgstr "Annuaire"
-
-#~ msgid "vcs file"
-#~ msgstr "fichier VCS"
-
-#~ msgid "version"
-#~ msgstr "version"
-
-#~ msgid "view log"
-#~ msgstr "voir les messages"
-
-#~ msgid "view my space"
-#~ msgstr "Voir mon espace"
-
-#~ msgid "view_detail"
-#~ msgstr "détails"
-
-#~ msgid "visibility"
-#~ msgstr "visibilité"
-
-#~ msgid "web"
-#~ msgstr "Web"
-
-#~ msgid ""
-#~ "what id already set in freedom\n"
-#~ "This kind of document can not be duplicated"
-#~ msgstr "ce type de document ne peut être dupliqué"
