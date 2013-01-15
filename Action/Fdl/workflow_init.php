@@ -57,7 +57,7 @@ function workflow_init(&$action)
     $s->setObjectReturn();
     $s->search();
     while ($doc = $s->getNextDoc()) {
-        $doc->postModify();
+        $doc->postStore();
     }
     
     $action->addWarningMsg(_("workflow has been recomposed"));

@@ -141,20 +141,20 @@ class _ARCHIVING extends Dir
         }
         return $err;
     }
-    function postModify()
+    function postStore()
     {
-        $err = parent::postModify();
+        $err = parent::postStore();
         $err.= $this->createProfil();
         return $err;
     }
     
-    function preInsertDoc()
+    function preInsertDocument()
     {
         if ($this->getRawValue("arc_status") != "O") {
             return _("archieve status must be open to modify content");
         }
     }
-    function preUnlinkDoc()
+    function preRemoveDocument()
     {
         if ($this->getRawValue("arc_status") != "O") {
             return _("archieve status must be open to modify content");

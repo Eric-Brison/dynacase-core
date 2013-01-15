@@ -56,7 +56,7 @@ class _IGROUP extends _GROUP
         "description" => "GRP_DESC"
     );
     var $ldapobjectclass = "posixGroup";
-    function specRefresh()
+    function preRefresh()
     {
         //  $err=$this->ComputeGroup();
         $err = "";
@@ -74,7 +74,7 @@ class _IGROUP extends _GROUP
         if ($this->getRawValue("grp_isrefreshed") == "0") $err.= _("this groups must be refreshed");
         return $err;
     }
-    public function preRevive()
+    public function preUndelete()
     {
         return _("group cannot be revived");
     }
@@ -155,7 +155,7 @@ class _IGROUP extends _GROUP
             }
         }
     }
-    public function postModify()
+    public function postStore()
     {
         return $this->synchronizeSystemGroup();
     }
@@ -250,7 +250,7 @@ class _IGROUP extends _GROUP
      * update groups table in USER database
      * @return string error message
      */
-    function postInsertDoc($docid, $multiple = false)
+    function postInsertDocument($docid, $multiple = false)
     {
         $err = "";
         if ($multiple == false) {
@@ -280,7 +280,7 @@ class _IGROUP extends _GROUP
      * update groups table in USER database
      * @return string error message
      */
-    function postMInsertDoc($tdocid)
+    function postInsertMultipleDocuments($tdocid)
     {
         
         $err = "";
@@ -311,7 +311,7 @@ class _IGROUP extends _GROUP
      * update groups table in USER database before suppress
      * @return string error message
      */
-    function postUnlinkDoc($docid, $multiple = false)
+    function postRemoveDocument($docid, $multiple = false)
     {
         
         $err = "";

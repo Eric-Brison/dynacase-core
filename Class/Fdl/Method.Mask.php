@@ -58,7 +58,7 @@ class _MASK extends Doc
      * suppress unmodified attributes visibilities
      * to simplify the mask structure
      */
-    function postModify()
+    function postStore()
     {
         $tneed = $this->getMultipleRawValues("MSK_NEEDEEDS");
         $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");

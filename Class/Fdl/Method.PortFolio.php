@@ -99,7 +99,7 @@ class _PORTFOLIO extends Dir
         
         return $err;
     }
-    function postInsertDoc($docid, $multiple = false)
+    function postInsertDocument($docid, $multiple = false)
     {
         $doc = new_Doc($this->dbaccess, $docid);
         if ($doc->doctype == "S") {

@@ -24,7 +24,7 @@ namespace {
          */
         const PMGT0002 = 'Cannot set parameter "%s" for application "%s" : %s';
         /**
-         * @errorCode The global parameter key not exists
+         * @errorCode The global parameter key not existsc
          * also when parameter is not declared as global
          */
         const PMGT0003 = 'Global parameter "%s" not found';

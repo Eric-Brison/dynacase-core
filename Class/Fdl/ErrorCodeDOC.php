@@ -128,7 +128,8 @@ class ErrorCodeDOC
     const DOC0111 = 'preImport error in "%s" document when update it: %s';
     /**
      * @errorCode
-     * update doc error after postModify method
+     * update doc error after postStore method
+     * @see Doc::store
      */
     const DOC0112 = 'update error in "%s" document : %s';
     /**

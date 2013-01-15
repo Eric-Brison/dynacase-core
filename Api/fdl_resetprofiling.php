@@ -53,7 +53,7 @@ if (!$uid) {
         $du->setValue("us_passwd2", $password);
         $err = $du->Add();
         if ($err == "") {
-            $err = $du->postModify();
+            $err = $du->postStore();
             if ($err == "") {
                 $err = $du->modify();
                 if ($err == "") {

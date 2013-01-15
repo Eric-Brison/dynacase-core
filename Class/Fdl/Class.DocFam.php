@@ -111,7 +111,7 @@ create unique index idx_idfam on docfam(id);";
         if ($include && ($this->id > 0) && ($this->isAffected())) {
             $adoc = "Doc" . $this->id;
             $GEN = getGen($dbaccess);
-            if (@include_once ("FDL$GEN/Class.$adoc.php")) {
+            if (include_once ("FDL$GEN/Class.$adoc.php")) {
                 $adoc = "ADoc" . $this->id;
                 $this->attributes = new $adoc();
                 uasort($this->attributes->attr, "tordered");
@@ -135,7 +135,7 @@ create unique index idx_idfam on docfam(id);";
      * based on name
      * @return string
      */
-    function getSpecTitle()
+    function getCustomTitle()
     {
         $r = $this->name . '#title';
         $i = _($r);
@@ -151,7 +151,7 @@ create unique index idx_idfam on docfam(id);";
         return $values["title"];
     }
     
-    function postModify()
+    function postStore()
     {
         include_once ("FDL/Lib.Attr.php");
         return refreshPhpPgDoc($this->dbaccess, $this->id);

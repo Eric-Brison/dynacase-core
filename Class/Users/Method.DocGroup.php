@@ -26,9 +26,8 @@ class _GROUP extends Dir
      * reconstruct mail group & recompute parent group
      *
      * @return string error message, if no error empty string
-     * @see postModify::PostModify()
      */
-    function postModify()
+    function postStore()
     {
         
         $err = $this->SetGroupMail();
@@ -57,7 +56,7 @@ class _GROUP extends Dir
      * update groups table in USER database
      * @return string error message
      */
-    function postInsertDoc($docid, $multiple = false)
+    function postInsertDocument($docid, $multiple = false)
     {
         $this->SetGroupMail();
         $this->refreshMembers();
@@ -67,7 +66,7 @@ class _GROUP extends Dir
      * update groups table in USER database
      * @return string error message
      */
-    function postMInsertDoc($tdocid)
+    function postInsertMultipleDocuments($tdocid)
     {
         $this->SetGroupMail();
         $this->refreshMembers();
@@ -77,7 +76,7 @@ class _GROUP extends Dir
      * update groups table in USER database before suppress
      * @return string error message
      */
-    function postUnlinkDoc($docid, $multiple = false)
+    function postRemoveDocument($docid, $multiple = false)
     {
         $this->SetGroupMail();
         $this->refreshMembers();

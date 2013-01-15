@@ -81,9 +81,9 @@ class _DSEARCH extends DocSearch
         }
     }
     
-    function postModify()
+    function postStore()
     {
-        $err = parent::postModify();
+        $err = parent::postStore();
         $err.= $this->updateFromXmlFilter();
         $err.= $this->updateXmlFilter();
         if ((!$err) && ($this->isChanged())) $err = $this->modify();
@@ -646,7 +646,7 @@ class _DSEARCH extends DocSearch
                 /**
                  * add parameters in title
                  */
-                function getSpecTitle()
+                function getCustomTitle()
                 {
                     $tkey = $this->getMultipleRawValues("SE_KEYS");
                     $taid = $this->getMultipleRawValues("SE_ATTRIDS");

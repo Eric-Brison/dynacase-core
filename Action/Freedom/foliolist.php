@@ -50,7 +50,7 @@ function foliolist(&$action)
             $dir->setValue("SE_SUBLEVEL", "1");
             $dir->setValue("SE_ORDERBY", "title");
             $dir->Add();
-            $dir->SpecRefresh();
+            $dir->preRefresh();
             $dir->Modify();
             SetHttpVar("dirid", $dir->initid); // redirect dirid to new temporary search
             
@@ -63,7 +63,7 @@ function foliolist(&$action)
                 $dir->setValue("SE_IDCFLD", $folioid);
                 $dir->setValue("SE_ORDERBY", "title");
                 //     $dir->Add();
-                $dir->SpecRefresh();
+                $dir->preRefresh();
                 $dir->Modify();
             }
             //    SetHttpVar("dirid",$dir->initid); // redirect dirid to new temporary search

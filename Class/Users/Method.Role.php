@@ -42,7 +42,7 @@ class _ROLE extends Doc
         $role = $this->getAccount();
         if ($role) $role->Delete();
     }
-    public function preRevive()
+    public function preUndelete()
     {
         return _("role cannot be revived");
     }
@@ -71,11 +71,9 @@ class _ROLE extends Doc
      * synchro with User table
      *
      * @return string error message, if no error empty string
-     * @see Doc::PostModify()
      */
-    public function postModify()
+    public function postStore()
     {
-        
         $err = $this->userSynchronize();
         return $err;
     }
@@ -97,6 +95,7 @@ class _ROLE extends Doc
                 $sR->fid = $this->initid;
                 $sR->accounttype = 'R';
                 $sR->password_new = uniqid("role");
+                /** @noinspection PhpDeprecationInspection */
                 $sR->isgroup = 'N';
                 $err = $sR->add();
                 if ($err == "") {

@@ -363,7 +363,7 @@ class DocSearch extends PDocSearch
         return "";
     }
     
-    function SpecRefresh()
+    function preRefresh()
     {
         $err = "";
         

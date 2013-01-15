@@ -37,7 +37,7 @@ function fdl_forumcreate(&$action)
     $forum->setValue("forum_docid", $doc->id);
     $forum->setProfil($doc->profid);
     $forum->Add();
-    $forum->postModify();
+    $forum->postStore();
     
     $doc->forumid = $forum->id;
     $doc->modify(true, array(

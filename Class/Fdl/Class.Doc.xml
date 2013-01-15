@@ -86,6 +86,7 @@ Class _[PHPclassName] extends [DocParent] {
    }
    
    [METHODS]
+        [HOOKALIAS]
 
 }
 

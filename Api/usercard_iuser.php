@@ -142,7 +142,7 @@ if ($query->nb > 0) {
                     $iuser->setValue("US_WHATID", $v["id"]);
                     $iuser->Add();
                     $iuser->refresh();
-                    $iuser->postModify();
+                    $iuser->postStore();
                     $iuser->modify();
                     print "$reste)";
                     printf(_("%s igroup created\n") , $title);

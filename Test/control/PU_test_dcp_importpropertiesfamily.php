@@ -23,6 +23,7 @@ class TestImportFamilyProperty extends TestCaseDcpDocument
         }
         catch(\Exception $e) {
             $err = $e->getMessage();
+            error_log($err);
         }
         $this->assertNotEmpty($err, "no import error detected");
         if (!is_array($expectedErrors)) $expectedErrors = array(
@@ -104,15 +105,23 @@ class TestImportFamilyProperty extends TestCaseDcpDocument
                     //"CPRF0002",
                     
                 )
-            ),
-                        array(
-                            "PU_data_dcp_badfamprop6.ods",
-                            array(
-                                "MTHD0001",
-                                "MTHD0002",
-                                "Nothing"
-                            )
-                        )
+            ) ,
+            array(
+                "PU_data_dcp_badfamprop6.ods",
+                array(
+                    "MTHD0001",
+                    "MTHD0002",
+                    "Nothing"
+                )
+            ) ,
+            array(
+                "PU_data_dcp_badfamprop7.ods",
+                array(
+                    "MTHD0003",
+                    "postModify",
+                    "postStore"
+                )
+            )
         );
     }
 }

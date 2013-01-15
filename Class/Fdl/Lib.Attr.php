@@ -331,6 +331,7 @@ function AttrToPhp($dbaccess, $tdoc)
             ) , "_", $tdoc["name"]));
         }
         $phpAdoc->Set("docTitle", str_replace('"', '\\"', $tdoc["title"]));
+        $phpAdoc->set("HOOKALIAS", "");
         //----------------------------------
         // Add specials methods
         $cmethod = ""; // method file which is use as inherit virtual class
@@ -354,6 +355,9 @@ function AttrToPhp($dbaccess, $tdoc)
                 }
             }
             $contents = preg_replace('%(?:  //[^\n]*\@begin-method-ignore|  /\*+[^/]*?\@begin-method-ignore)(.*?)(?:  //[^\n]*\@end-method-ignore[^\n]*|  /\*+[^/]*?\@end-method-ignore[^/]*?\*/)%xms', '', $contents);
+            $dm = new deprecatedHookManager();
+            $dm->inspectContent($contents);
+            $phpAdoc->set("HOOKALIAS", $dm->generateCompatibleMethods());
             $phpAdoc->Set("METHODS", str_replace(array(
                 "<?php\n",
                 "<?php\r\n",

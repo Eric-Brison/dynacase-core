@@ -378,7 +378,7 @@ class DocOooFormat
                 if (trim($vv) == "") $thval[] = $vv;
                 else {
                     $thc = new_doc($this->doc->dbaccess, trim($vv));
-                    if ($thc->isAlive()) $thval[] = $thc->getSpecTitle();
+                    if ($thc->isAlive()) $thval[] = $thc->getCustomTitle();
                     else $thval[] = "th error $vv";
                 }
             }
@@ -387,7 +387,7 @@ class DocOooFormat
             if ($avalue == "") $oooval = $avalue;
             else {
                 $thc = new_doc($this->doc->dbaccess, $avalue);
-                if ($thc->isAlive()) $oooval = $thc->getSpecTitle();
+                if ($thc->isAlive()) $oooval = $thc->getCustomTitle();
                 else $oooval = "th error $avalue";
             }
         }

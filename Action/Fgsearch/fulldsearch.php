@@ -45,7 +45,7 @@ function fulldsearch(&$action)
         $err = $search->Add();
         
         if ($err != "") $action->exitError($err);
-        $search->SpecRefresh();
+        $search->preRefresh();
         
         setHttpVar("dirid", $search->id);
         fullsearchresult($action);

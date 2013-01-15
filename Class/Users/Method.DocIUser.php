@@ -51,9 +51,9 @@ class _IUSER extends Doc implements IMailRecipient
     );
     var $defaultview = "FDL:VIEWBODYCARD";
     var $defaultedit = "FDL:EDITBODYCARD";
-    function specRefresh()
+    function preRefresh()
     {
-        $err = parent::SpecRefresh();
+        $err = parent::preRefresh();
         
         if ($this->getRawValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is deactivated");
         // refresh MEID itself
@@ -95,7 +95,7 @@ class _IUSER extends Doc implements IMailRecipient
         return ($this->getRawValue("US_STATUS") != 'D');
     }
     
-    public function preRevive()
+    public function preUndelete()
     {
         return _("user cannot be revived");
     }
@@ -260,7 +260,7 @@ class _IUSER extends Doc implements IMailRecipient
     /**
      * update/synchro system user
      */
-    public function postModify()
+    public function postStore()
     {
         $err = $this->synchronizeSystemUser();
         if (!$err) $this->refreshRoles();
