@@ -207,7 +207,6 @@ This can be solved by:<br/>
         </process>
 
         <process command="programs/record_application FDL I"/>
-        <process command="programs/record_application ONEFAM I"/>
         <process command="programs/record_application GENERIC I"/>
         <process command="programs/record_application FUSERS I"/>
         <process command="programs/record_application FREEDOM I"/>
@@ -502,10 +501,6 @@ This can be solved by:<br/>
         <process command="programs/pre_migration GENERIC"/>
         <process command="programs/record_application GENERIC U"/>
         <process command="programs/post_migration GENERIC"/>
-
-        <process command="programs/pre_migration ONEFAM"/>
-        <process command="programs/record_application ONEFAM U"/>
-        <process command="programs/post_migration ONEFAM"/>
 
         <process command="programs/pre_migration FUSERS"/>
         <process command="programs/record_application FUSERS U"/>
