@@ -106,8 +106,19 @@ class deprecatedHookManager
                 }
             }
         }
+        $this->testDoubleDeclaration();
     }
     
+    private function testDoubleDeclaration()
+    {
+        foreach ($this->deprecatedHooks as $dName => $info) {
+            $nTestingName = strtolower($info["newName"]);
+            $dTestingName = strtolower($dName);
+            if (in_array($nTestingName, $this->methods) && in_array($dTestingName, $this->methods)) {
+                throw new \Dcp\Exception("MTHD0003", $dName, $info["newName"]);
+            }
+        }
+    }
     protected function getDeprecatedHookList()
     {
         $dh = array_keys($this->deprecatedHooks);

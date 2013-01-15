@@ -948,12 +948,18 @@ class importDocumentDescription
             return;
         }
         if (class_exists("CheckTagable")) {
+            /** @noinspection PhpUndefinedClassInspection
+             * Defined in dynacase-tags module
+             */
             $check = new CheckTagable();
         } else {
             $this->tcr[$this->nLine]["err"] = ErrorCode::getError('PROP0102', "TAGABLE", "dynacase-tags");
             error_log("ERROR:" . $this->tcr[$this->nLine]["err"]);
             return;
         }
+        /**
+         * @var CheckData $check
+         */
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         if ($this->tcr[$this->nLine]["err"]) return;
         $this->doc->tagable = $data[1] === "no" ? "" : $data[1];
