@@ -68,6 +68,11 @@ class deprecatedHookManager
             "newName" => "preRemoveDocument",
             "call" => '$docid, $multiple',
             "declare" => '$docid, $multiple = false'
+        ) ,
+        "postMInsertDoc" => array(
+            "newName" => "postInsertMultipleDocuments",
+            "call" => '$tdocid',
+            "declare" => '$tdocid'
         )
     );
     private $content = '';

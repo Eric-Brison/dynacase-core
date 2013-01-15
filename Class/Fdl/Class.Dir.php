@@ -143,10 +143,11 @@ class Dir extends PDir
      */
     function preInsertDoc($docid, $multiple = false)
     {
+        deprecatedFunction("hook");
     }
     /**
      * virtual method use after insert document in folder
-     * @api hook method use after insert document in folder
+     * @api hook method called after insert document in folder
      * @see Dir::insertDocument
      * @param int $docid document identifier to insert
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
@@ -166,21 +167,37 @@ class Dir extends PDir
      */
     function postInsertDoc($docid, $multiple = false)
     {
+        deprecatedFunction("hook");
+    }
+    /**
+     * hook method use after insert multiple document in this folder
+     * must be redefined to optimize algorithm
+     *
+     * @api hook method called after insert document in folder
+     * @see Dir::insertMultipleDocuments
+     *
+     * @param array $tdocid array of document identifier to insert
+     * @return string warning message
+     */
+    function postInsertMultipleDocuments($tdocid)
+    {
+        foreach ($tdocid as $docid) {
+            $this->postInsertDocument($docid);
+        }
     }
     /**
      * virtual method use after insert multiple document in this folder
      * must be redefined to optimize algorithm
      *
-     * @warning This hook may be replaced by Dir::postInsertMultipleDocuments() in the the next version
+     * @deprecated hook use {@Dir::postInsertMultipleDocuments} instead
      *
      * @param array $tdocid array of document identifier to insert
-     * @return string error message
+     * @return string warning message
      */
     function postMInsertDoc($tdocid)
     {
-        foreach ($tdocid as $docid) {
-            $this->postInsertDocument($docid);
-        }
+        deprecatedFunction("hook");
+        return $this->postInsertMultipleDocuments($tdocid);
     }
     /**
      * hook method use after unlink document in folder
@@ -217,6 +234,7 @@ class Dir extends PDir
      */
     function preUnlinkDoc($docid, $multiple = false)
     {
+        deprecatedFunction("hook");
     }
     /**
      * hook method use after unlink document in folder
@@ -229,6 +247,7 @@ class Dir extends PDir
      */
     function postUnlinkDoc($docid, $multiple = false)
     {
+        deprecatedFunction("hook");
     }
     /**
      * Test if current user can add or delete document in this folder
@@ -386,7 +405,7 @@ class Dir extends PDir
      * if mode is static the user see the revision which has been inserted
      *
      * @deprecated use {@link Dir::InsertMultipleDocuments} instead
-     * @see Dir::InsertMultipleDocuments
+     * @see insertMultipleDocuments::InsertMultipleDocuments
      *
      * @param $tdocs
      * @param string $mode latest|static
@@ -399,7 +418,7 @@ class Dir extends PDir
     function InsertMDoc($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
     {
         deprecatedFunction();
-        return $this->InsertMultipleDocuments($tdocs, $mode, $noprepost, $tinserted, $twarning);
+        return $this->insertMultipleDocuments($tdocs, $mode, $noprepost, $tinserted, $twarning);
     }
     /**
      * insert multiple document reference in this folder
@@ -417,7 +436,7 @@ class Dir extends PDir
      * @internal param \doc $array array document  for the insertion
      * @return string error message, if no error empty string
      */
-    function InsertMultipleDocuments($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
+    function insertMultipleDocuments($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
     {
         
         $err = $this->canModify();
@@ -480,7 +499,7 @@ class Dir extends PDir
         // use post virtual method
         if (!$noprepost) {
             $this->updateFldRelations();
-            $err.= $this->postMInsertDoc($tAddeddocids);
+            $err.= $this->postInsertMultipleDocuments($tAddeddocids);
         }
         
         return $err;

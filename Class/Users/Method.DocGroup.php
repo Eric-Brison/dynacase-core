@@ -66,7 +66,7 @@ class _GROUP extends Dir
      * update groups table in USER database
      * @return string error message
      */
-    function postMInsertDoc($tdocid)
+    function postInsertMultipleDocuments($tdocid)
     {
         $this->SetGroupMail();
         $this->refreshMembers();
