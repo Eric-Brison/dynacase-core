@@ -172,9 +172,11 @@ class Dir extends PDir
     /**
      * hook method use after insert multiple document in this folder
      * must be redefined to optimize algorithm
+     * by default call Dir::postInsertDocument for each document
      *
-     * @api hook method called after insert document in folder
+     * @api hook method called after insert several documents in folder
      * @see Dir::insertMultipleDocuments
+     * @see Dir::postInsertDocument
      *
      * @param array $tdocid array of document identifier to insert
      * @return string warning message
@@ -182,11 +184,31 @@ class Dir extends PDir
     function postInsertMultipleDocuments($tdocid)
     {
         foreach ($tdocid as $docid) {
-            $this->postInsertDocument($docid);
+            $this->postInsertDocument($docid, true);
         }
     }
     /**
-     * virtual method use after insert multiple document in this folder
+     * hook method use after insert multiple document in this folder
+     * must be redefined to optimize algorithm
+     * by default call Dir::preInsertDocument for each document
+     *
+     * @api hook method called before insert several documents in folder
+     * @see Dir::preInsertDocument
+     * @see Dir::insertMultipleDocuments
+     *
+     * @param array $tdocid array of document identifier to insert
+     * @return string warning message
+     */
+    function preInsertMultipleDocuments($tdocid)
+    {
+        $err = '';
+        foreach ($tdocid as $docid) {
+            $err.= $this->preInsertDocument($docid, true);
+        }
+        return $err;
+    }
+    /**
+     * hook method use after insert multiple document in this folder
      * must be redefined to optimize algorithm
      *
      * @deprecated hook use {@Dir::postInsertMultipleDocuments} instead
@@ -438,7 +460,8 @@ class Dir extends PDir
      */
     function insertMultipleDocuments($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
     {
-        
+        $err = $this->preInsertMultipleDocuments($tdocs);
+        if ($err != "") return $err;
         $err = $this->canModify();
         if ($err != "") return $err;
         $tAddeddocids = array();
