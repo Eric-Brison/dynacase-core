@@ -150,7 +150,6 @@ AC_OUTPUT(
     App/Vault/VAULT_init.php \
     Api/SetDocVaultIndex.php \
     Api/updateclass.php \
-    FREEDOM.vault \
     Share/Lib.Prefix.php  \
     Supervisor/htaccess \
     htaccess \
