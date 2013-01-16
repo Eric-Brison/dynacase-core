@@ -45,6 +45,10 @@ function AttrToPhp($dbaccess, $tdoc)
         $phpAdoc->Set("fromid", "");
         $phpAdoc->Set("pinit", "DocCtrl");
     } else {
+        $parentFile = sprintf("%s/FDLGEN/Class.Doc%d.php", DEFAULT_PUBDIR, $tdoc["fromid"]);
+        if ((!file_exists($parentFile)) || filesize($parentFile) == 0) {
+            throw new \Dcp\Exception("FAM0600", $parentFile, $tdoc["name"]);
+        }
         $phpAdoc->Set("fromid", $tdoc["fromid"]);
         if ($tdoc["classname"] != "Doc" . $tdoc["fromid"]) {
             $phpAdoc->Set("DocParent", $tdoc["classname"]);

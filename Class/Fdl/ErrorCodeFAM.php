@@ -67,4 +67,8 @@ class ErrorCodeFAM
      * the family name must not reference only a family
      */
     const FAM0502 = 'family name "%s" is already use for "%s" document';
+    /**
+     * @errorCode the family class file is not found
+     */
+    const FAM0600 = 'parent class family file "%s" not found for "%s" family';
 }
