@@ -134,7 +134,6 @@ fi
 
 AC_OUTPUT(
     Makefile \
-    App/Appmng/APPMNG_init.php \
     App/Authent/AUTHENT_init.php \
     App/Core/CORE_init.php \
     App/Dav/DAV_init.php \

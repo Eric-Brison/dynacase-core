@@ -5,6 +5,6 @@
 export targetdir
 export utildir
 
-SUBDIR = Appmng Authent Core Dav Fdc Fdl Fgsearch Freedom Fusers Generic Vault
+SUBDIR = Authent Core Dav Fdc Fdl Fgsearch Freedom Fusers Generic Vault
 
 include $(utildir)/PubRule

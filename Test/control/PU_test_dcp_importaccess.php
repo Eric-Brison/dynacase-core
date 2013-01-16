@@ -70,9 +70,7 @@ class TestImportAccess extends TestCaseDcpDocument
                 "PU_data_dcp_badaccess2.ods",
                 array(
                     "ACCS0002",
-                    "USER2",
-                    "ACCS0004",
-                    "acl test",
+                    "SYSTEM2",
                     "ACCS0004",
                     "acl test",
                     "ACCS0003",
@@ -93,10 +91,10 @@ class TestImportAccess extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_goodaccess1.ods",
                 "GADMIN",
-                "APPMNG",
+                "FDL",
                 array(
-                    "USER",
-                    "ADMIN"
+                    "SYSTEM",
+                    "NORMAL"
                 )
             )
         );

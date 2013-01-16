@@ -201,9 +201,6 @@ This can be solved by:<br/>
         <process command="programs/record_application AUTHENT I">
             <label lang="en">Record authent application in database</label>
         </process>
-        <process command="programs/record_application APPMNG I">
-            <label lang="en">Record appmng application in database</label>
-        </process>
 
         <process command="programs/record_application FDL I"/>
         <process command="programs/record_application GENERIC I"/>
@@ -450,9 +447,6 @@ This can be solved by:<br/>
         </process>
         <process command="programs/record_application AUTHENT U">
             <label lang="en">Update authent application in database</label>
-        </process>
-        <process command="programs/record_application APPMNG U">
-            <label lang="en">Update appmng application in database</label>
         </process>
         <process command="programs/post_migration CORE">
             <label lang="en">Migration second level</label>
