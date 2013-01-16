@@ -422,7 +422,8 @@ function getDocProperties($id, $latest = true, array $prop = array(
  * @param int $id identifier of the object
  * @param array $sqlfilters add sql supply condition
  *
- * @return array false if error occured
+ * @param array $result
+ * @return array false if error occured or if cocument not found
  */
 function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
 {
@@ -436,13 +437,14 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
     $fromid = getFromId($dbaccess, $id);
     if ($fromid > 0) $table = "doc$fromid";
     else if ($fromid == - 1) $table = "docfam";
-    
+    if ($fromid == 0) return false; // no document can be found
     $sqlcond = "";
     if (count($sqlfilters) > 0) $sqlcond = "and (" . implode(") and (", $sqlfilters) . ")";
     if (count($result) == 0) {
         $userMemberOf = DocPerm::getMemberOfVector();
         $sql = sprintf("select *,getaperm('%s',profid) as uperm from only %s where id=%d %s", $userMemberOf, $table, $id, $sqlcond);
     } else {
+        
         $scol = implode($result, ",");
         $sql = "select $scol from only $table where id=$id $sqlcond;";
     }
