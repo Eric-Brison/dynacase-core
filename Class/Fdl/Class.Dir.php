@@ -741,6 +741,7 @@ class Dir extends PDir
             $this->clearValue("FLD_ALLBUT");
             $this->modify();
         }
+        return "";
     }
     function hasNoRestriction()
     {
