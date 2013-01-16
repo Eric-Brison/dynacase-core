@@ -9,7 +9,3 @@ export appname
 
 include $(utildir)/PubRule
 
-$(pubdir)/authent.php: authent.php
-	cd $(pubdir);ln -sf  ./$(appname)/$< .
-
-publish: $(pubdir)/authent.php

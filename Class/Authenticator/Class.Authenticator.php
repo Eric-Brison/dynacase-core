@@ -105,6 +105,13 @@ abstract class Authenticator
         }
         return 0;
     }
+
+    public function getAuthApp() {
+        if (isset($this->parms['auth']['app'])) {
+            return $this->parms['auth']['app'];
+        }
+        return false;
+    }
     
     abstract function checkAuthentication();
     abstract function checkAuthorization($opt);

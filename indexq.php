@@ -56,7 +56,7 @@ if ($authtype == 'apache') {
 
         case -1:
             // User must change his password
-            AuthenticatorManager::$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
+            AuthenticatorManager::$auth->logout("authent.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
             exit(0);
             break;
 
@@ -64,7 +64,7 @@ if ($authtype == 'apache') {
             sleep(1); // for robots
             // Redirect to authentication
             global $_POST;
-            AuthenticatorManager::$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
+            AuthenticatorManager::$auth->logout("authent.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
             AuthenticatorManager::$auth->askAuthentication(array());
             
             exit(0);
@@ -73,31 +73,19 @@ if ($authtype == 'apache') {
     $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
 }
 
-if (file_exists('maintenance.lock')) {
-    if ($_SERVER['PHP_AUTH_USER'] != 'admin') {
+$account = AuthenticatorManager::getAccount();
+if ($account === false) {
+    throw new \Dcp\Exception(_("User must be authenticate"));
+}
+if (ActionRouter::inMaintenance()) {
+    if ($account->login != 'admin') {
         include_once ('TOOLBOX/stop.php');
         exit(0);
     }
 }
-#
-# This is the main body of App manager
-# It is used to launch application and
-# function giving them all necessary environment
-# element
-#
-#
-// First control
-if (!isset($_SERVER['PHP_AUTH_USER'])) {
-    Header("Location:guest.php");
-    exit;
-}
-// ----------------------------------------
+$actionRouter = new ActionRouter($account, AuthenticatorManager::$auth);
 
-/**
- * @var Action $action
- */
-$action = null;
-getmainAction(AuthenticatorManager::$auth, $action);
+global $action;
 $deb = gettimeofday();
 $ticainit = $deb["sec"] + $deb["usec"] / 1000000;
 $trace = $action->read("trace");
@@ -105,7 +93,8 @@ $trace["url"] = $_SERVER["REQUEST_URI"];
 $trace["init"] = sprintf("%.03fs", $ticainit - $tic1);
 $out = '';
 $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/tracetime.js");
-executeAction($action, $out);
+
+$actionRouter->executeAction($out);
 //usort($TSQLDELAY, "sortqdelay");
 addLogMsg($TSQLDELAY);
 $deb = gettimeofday();
@@ -125,4 +114,3 @@ $out = str_replace("<head>", sprintf('<head><script>%s</script>', $strace) , $ou
 $out = str_replace('</head>', sprintf('<script type="text/javascript">%s</script></head>', $logcode) , $out);
 echo ($out);
 $action->unregister("trace");
-?>

@@ -1,56 +1,61 @@
 <?php
-
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
-$pgservice_core="@CORE_DB@";
-$pgservice_freedom="@FREEDOM_DB@";;
-$freedom_context="default";
-$dbpsql=$pgservice_core;
-
+$pgservice_core = "@CORE_DB@";
+$pgservice_freedom = "@FREEDOM_DB@";;
+$freedom_context = "default";
+$dbpsql = $pgservice_core;
+$useIndexAsGuest = false;
 /*
  ** Authentication mode : apache / basic / html / open
  ** --------------------------------------------------
- */
+*/
 $freedom_authtype = '@AUTHTYPE@';
 
 $freedom_authtypeparams = array(
-        'html' => array (
-                'cookie' => 'freedom_auth',
-                'authurl' => 'guest.php?sole=A&app=AUTHENT&action=LOGINFORM',
-                'username' => 'auth_user',
-                'password' => 'auth_pass',
-                ),
-        'open' => array(),
-        'basic' => array(
-                'realm' => 'freedom',
-                ),
-        );
-
+    'html' => array(
+        'cookie' => 'freedom_auth',
+        'auth' => array(
+            'app' => 'AUTHENT',
+            'action' => 'LOGINFORM',
+            'args' => 'sole=A'
+        ) ,
+        'username' => 'auth_user',
+        'password' => 'auth_pass',
+    ) ,
+    'open' => array() ,
+    'basic' => array(
+        'realm' => 'freedom',
+    ) ,
+);
 /*
- ** Providers : how username / password tuple is validated 
+ ** Providers : how username / password tuple is validated
  ** ------------------------------------------------------
- */
+*/
 $freedom_authprovider = 'freedom';
 
 $freedom_providers = array(
-                'freedom' => array(
-                                      'connection' => 'service='.$pgservice_core,
-                          ),
-                'file' => array(
-                                'authfile' => '@prefix@/.freedompwd',
-                                ),
-        );
-
+    'freedom' => array(
+        'connection' => 'service=' . $pgservice_core,
+    ) ,
+    'file' => array(
+        'authfile' => '@prefix@/.freedompwd',
+    ) ,
+);
 /*
  ** Include local/override config
  ** -----------------------------
- */
-$local_dbaccess = dirname(__FILE__).DIRECTORY_SEPARATOR.'local-dbaccess.php';
-if( file_exists($local_dbaccess) ) {
-  include($local_dbaccess);
+*/
+$local_dbaccess = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'local-dbaccess.php';
+if (file_exists($local_dbaccess)) {
+    include ($local_dbaccess);
 }
-
 ?>
