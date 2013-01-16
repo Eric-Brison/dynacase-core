@@ -148,17 +148,19 @@ class _ARCHIVING extends Dir
         return $err;
     }
     
-    function preInsertDocument()
+    function preInsertDocument($docid, $multiple = false)
     {
         if ($this->getRawValue("arc_status") != "O") {
             return _("archieve status must be open to modify content");
         }
+        return '';
     }
-    function preRemoveDocument()
+    function preRemoveDocument($docid, $multiple = false)
     {
         if ($this->getRawValue("arc_status") != "O") {
             return _("archieve status must be open to modify content");
         }
+        return '';
     }
     /**
      * return specfic filters instead of normal content
@@ -178,6 +180,7 @@ class _ARCHIVING extends Dir
      */
     function createProfil()
     {
+        $err = '';
         $prfid = $this->getRawValue("arc_profil");
         if ($prfid) {
             $prf = new_doc($this->dbaccess, $prfid);

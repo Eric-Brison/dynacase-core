@@ -79,7 +79,9 @@ if ($query->nb > 0) {
     foreach ($tid as $k => $v) {
         if (strstr($v["usefor"], 'W')) {
             updateDoc($dbaccess, $v);
-            
+            /**
+             * @var WDOc $wdoc
+             */
             $wdoc = createDoc($dbaccess, $v["id"]);
             $wdoc->CreateProfileAttribute(); // add special attribute for workflow
             activateTrigger($dbaccess, $v["id"]);
@@ -93,11 +95,17 @@ if ($query->nb > 0) {
 }
 function updateDoc($dbaccess, $v)
 {
-    $phpfile = createDocFile($dbaccess, $v);
-    print "$phpfile [" . $v["title"] . "(" . $v["name"] . ")]\n";
-    $msg = PgUpdateFamilly($dbaccess, $v["id"], $v["name"]);
-    print $msg;
-    activateTrigger($dbaccess, $v["id"]);
+    try {
+        $phpfile = createDocFile($dbaccess, $v);
+        print "$phpfile [" . $v["title"] . "(" . $v["name"] . ")]\n";
+        $msg = PgUpdateFamilly($dbaccess, $v["id"], $v["name"]);
+        print $msg;
+        activateTrigger($dbaccess, $v["id"]);
+    }
+    catch(\Dcp\Exception $e) {
+        print $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";
+        error_log($e->getMessage());
+    }
 }
 // recursive sort by fromid
 function pushfam($fromid, &$tid, $tfam)

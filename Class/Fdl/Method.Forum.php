@@ -36,7 +36,9 @@ class _FORUM extends Doc
         $max++;
         return $max;
     }
-    
+    /**
+     * @templateController default view for forum
+     */
     function forum_view()
     {
         global $action;
