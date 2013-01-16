@@ -143,7 +143,6 @@ AC_OUTPUT(
     App/Fdl/tsearch2_fr.sql \
     App/Fgsearch/FGSEARCH_init.php \
     App/Freedom/FREEDOM_init.php  \
-    App/Fusers/FUSERS_init.php \
     App/Generic/GENERIC_init.php \
     App/Vault/VAULT_init.php \
     Api/SetDocVaultIndex.php \

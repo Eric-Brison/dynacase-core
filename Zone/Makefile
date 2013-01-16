@@ -5,6 +5,6 @@
 export targetdir
 export utildir
 
-SUBDIR = Authent Core Dav Fdc Fdl Freedom Fusers Generic Usercard Users
+SUBDIR = Authent Core Dav Fdc Fdl Freedom Generic Usercard
 
 include $(utildir)/PubRule

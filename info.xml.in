@@ -204,7 +204,6 @@ This can be solved by:<br/>
 
         <process command="programs/record_application FDL I"/>
         <process command="programs/record_application GENERIC I"/>
-        <process command="programs/record_application FUSERS I"/>
         <process command="programs/record_application FREEDOM I"/>
         <process command="programs/record_application FGSEARCH I"/>
         <process command="programs/record_application VAULT I"/>
@@ -490,10 +489,6 @@ This can be solved by:<br/>
         <process command="programs/pre_migration GENERIC"/>
         <process command="programs/record_application GENERIC U"/>
         <process command="programs/post_migration GENERIC"/>
-
-        <process command="programs/pre_migration FUSERS"/>
-        <process command="programs/record_application FUSERS U"/>
-        <process command="programs/post_migration FUSERS"/>
 
         <process command="programs/pre_migration FREEDOM"/>
         <process command="programs/record_application FREEDOM U"/>
