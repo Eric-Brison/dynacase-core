@@ -693,7 +693,7 @@ class _DSEARCH extends DocSearch
                     $tkey = $this->getMultipleRawValues("SE_KEYS");
                     $taid = $this->getMultipleRawValues("SE_ATTRIDS");
                     $tf = $this->getMultipleRawValues("SE_FUNCS");
-                    if ((count($taid) > 1) || ($taid[0] != "")) {
+                    if ((count($taid) > 1) || (!empty($taid[0]))) {
                         
                         $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
                         $zpi = $fdoc->GetNormalAttributes();

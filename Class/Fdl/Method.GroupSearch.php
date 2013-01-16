@@ -17,7 +17,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-class _GROUPSEARCH extends Dir
+class _MSEARCH extends DocSearch
 {
     /*
      * @end-method-ignore
@@ -25,7 +25,7 @@ class _GROUPSEARCH extends Dir
     var $defaultedit = "FDL:EDITBODYCARD";
     var $defaultview = "FDL:VIEWBODYCARD";
     
-    function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true)
+    function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
         $tidsearch = $this->getMultipleRawValues("SEG_IDCOND");
         $wsql = array();
