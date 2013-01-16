@@ -198,9 +198,6 @@ This can be solved by:<br/>
         <process command="programs/init_admin_passwd">
             <label lang="en">Initialize admin password</label>
         </process>
-        <process command="programs/record_application ACCESS I">
-            <label lang="en">Record access application in database</label>
-        </process>
         <process command="programs/record_application AUTHENT I">
             <label lang="en">Record authent application in database</label>
         </process>
@@ -450,9 +447,6 @@ This can be solved by:<br/>
         <process command="programs/app_post CORE U"/>
         <process command="programs/record_application CORE U">
             <label lang="en">Update core application in database</label>
-        </process>
-        <process command="programs/record_application ACCESS U">
-            <label lang="en">Update access application in database</label>
         </process>
         <process command="programs/record_application AUTHENT U">
             <label lang="en">Update authent application in database</label>
