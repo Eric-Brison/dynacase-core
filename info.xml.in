@@ -206,7 +206,6 @@ This can be solved by:<br/>
         <process command="programs/record_application GENERIC I"/>
         <process command="programs/record_application FREEDOM I"/>
         <process command="programs/record_application FGSEARCH I"/>
-        <process command="programs/record_application VAULT I"/>
         <process command="programs/record_application DAV I"/>
         <process command="programs/record_application FDC I"/>
 
@@ -498,10 +497,6 @@ This can be solved by:<br/>
         <process command="programs/pre_migration FGSEARCH"/>
         <process command="programs/record_application FGSEARCH U"/>
         <process command="programs/post_migration FGSEARCH"/>
-
-        <process command="programs/pre_migration VAULT"/>
-        <process command="programs/record_application VAULT U"/>
-        <process command="programs/post_migration VAULT"/>
 
         <process command="programs/pre_migration DAV"/>
         <process command="programs/app_post DAV U"/>

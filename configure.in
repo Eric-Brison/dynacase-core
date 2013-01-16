@@ -144,7 +144,6 @@ AC_OUTPUT(
     App/Fgsearch/FGSEARCH_init.php \
     App/Freedom/FREEDOM_init.php  \
     App/Generic/GENERIC_init.php \
-    App/Vault/VAULT_init.php \
     Api/SetDocVaultIndex.php \
     Api/updateclass.php \
     Share/Lib.Prefix.php  \
