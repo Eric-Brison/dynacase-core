@@ -149,6 +149,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
             )
         );
     }
+    
     public function dataWrongValue()
     {
         return array(
@@ -166,6 +167,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
             )
         );
     }
+    
     public function dataDefaultInherited()
     {
         return array(
@@ -228,7 +230,9 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 array(
                     'TST_P1' => 'PFirst',
                     "TST_P2" => "10",
-                    "TST_P3" => "11"
+                    "TST_P3" => "11",
+                    'TST_P6' => '20',
+                    'TST_P7' => '21'
                 )
             ) ,
             array(
@@ -242,7 +246,9 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 array(
                     "TST_P1" => 'PSecond',
                     "TST_P2" => "10",
-                    "TST_P3" => "11"
+                    "TST_P3" => "11",
+                    'TST_P6' => '20',
+                    'TST_P7' => '21'
                 )
             ) ,
             array(
@@ -256,7 +262,9 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 array(
                     "TST_P1" => 'PThird',
                     "TST_P2" => "10",
-                    "TST_P3" => "11"
+                    "TST_P3" => "11",
+                    'TST_P6' => '20',
+                    'TST_P7' => '21'
                 )
             )
         );
@@ -417,6 +425,26 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 "TST_DEFAULTFAMILY1",
                 'TST_P3',
                 '11'
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY1",
+                'TST_P4',
+                '12'
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY1",
+                'TST_P6',
+                "8\n9\n10"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY1",
+                'TST_P7',
+                "30\n32\n21"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY1",
+                'TST_P8',
+                "11\n12"
             )
         );
     }

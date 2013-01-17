@@ -29,6 +29,11 @@ class _TST_FAMILYDEFAULT extends Doc
         return 1;
     }
     
+    public function addAllPlusOne($ar1, $ar2, $val)
+    {
+        return $ar1 + $ar2 + $val + 1;
+    }
+    
     public function oneMore($x)
     {
         return $x + 1;
