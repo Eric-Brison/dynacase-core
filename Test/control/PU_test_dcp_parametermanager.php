@@ -44,7 +44,7 @@ class TestParameterManager extends TestCaseDcpApplication
     {
         $appTest = new \Application(self::$dbaccess);
         $appTest->name = self::appName;
-        $appTest->childof = 'ONEFAM';
+        $appTest->childof = 'TST_PARAMETER_MANAGER';
         $err = $appTest->Add();
         
         $this->assertEmpty($err, "Cannot create application : $err");
@@ -154,7 +154,6 @@ class TestParameterManager extends TestCaseDcpApplication
             array(
                 "init" => array(
                     "VERSION" => "4.0.8",
-                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 2",
                         "descr" => "Name of test one",
@@ -187,7 +186,7 @@ class TestParameterManager extends TestCaseDcpApplication
             array(
                 "init" => array(
                     "VERSION" => "0.3.2-2",
-                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128",
+                    "PARENT_USER_PARAMETER" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 2",
                         "descr" => "Name of test one",
@@ -202,12 +201,12 @@ class TestParameterManager extends TestCaseDcpApplication
                     )
                 ) ,
                 "set" => array(
-                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128,127",
+                    "PARENT_USER_PARAMETER" => "128,127",
                     "TST_NAMEP1" => "Test 3",
                 ) ,
                 "expect" => array(
                     "TST_NAMEP1" => "Test 3",
-                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128,127",
+                    "PARENT_USER_PARAMETER" => "128,127",
                     "TST_GLOB2" => "Test global 2"
                 )
             )
@@ -219,7 +218,7 @@ class TestParameterManager extends TestCaseDcpApplication
             array(
                 "init" => array(
                     "VERSION" => "4.0.8",
-                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128",
+                    "PARENT_USER_GLOBAL_PARAMETER" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 2",
                         "descr" => "Name of test one",
@@ -251,7 +250,7 @@ class TestParameterManager extends TestCaseDcpApplication
             array(
                 "init" => array(
                     "VERSION" => "0.3.2-2",
-                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128",
+                    "PARENT_USER_PARAMETER" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 2",
                         "descr" => "Name of test one",
@@ -267,13 +266,13 @@ class TestParameterManager extends TestCaseDcpApplication
                 ) ,
                 "set" => array(
                     "VERSION" => "4.0.7",
-                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128,127",
+                    "PARENT_USER_PARAMETER" => "128,127",
                     "TST_NAMEP1" => "Test 3",
                 ) ,
                 "expect" => array(
                     "TST_NAMEP1" => "Test 3",
                     "VERSION" => "4.0.7",
-                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128,127",
+                    "PARENT_USER_PARAMETER" => "128,127",
                     "TST_GLOB2" => "Test global 2"
                 )
             )
@@ -286,7 +285,7 @@ class TestParameterManager extends TestCaseDcpApplication
             array(
                 array(
                     "VERSION" => "0.3.2-2",
-                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128",
+                    "PARENT_PARAMETER" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 1",
                         "descr" => "Name of test one",
@@ -303,7 +302,7 @@ class TestParameterManager extends TestCaseDcpApplication
                 array(
                     "TST_NAMEP1" => "Test 1",
                     "VERSION" => "0.3.2-2",
-                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128",
+                    "PARENT_PARAMETER" => "128",
                     "TST_GLOB1" => "Test global 1"
                 )
             )
@@ -316,7 +315,7 @@ class TestParameterManager extends TestCaseDcpApplication
             array(
                 array(
                     "VERSION" => "0.3.2-2",
-                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128",
+                    "PARENT_USER_GLOBAL_PARAMETER" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 1",
                         "descr" => "Name of test one",
