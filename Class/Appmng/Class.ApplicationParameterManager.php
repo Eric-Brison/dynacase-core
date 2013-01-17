@@ -45,20 +45,24 @@ class ApplicationParameterManager
      */
     public static function getUserParameterValue($application, $parameterName, $userId = null)
     {
-        if ($userId === null) {
-            $userId = getCurrentUser()->id;
-        }
-        $applicationId = self::getApplicationId($application, $parameterName);
-        if (isset(self::$cache[$applicationId . ' ' . $parameterName . ' ' . $userId])) {
-            return self::$cache[$applicationId . ' ' . $parameterName . ' ' . $userId];
-        }
-        $sql = sprintf("select val from paramv where appid=%d and type='U%d' and name='%s';", $applicationId, $userId, pg_escape_string($parameterName));
-        $return = null;
-        simpleQuery("", $sql, $return, true, true, true);
-        if ($return !== false) {
-            self::$cache[$applicationId . ' ' . $parameterName . ' ' . $userId] = $return;
-            return $return;
-        } else {
+        try {
+            if ($userId === null) {
+                $userId = getCurrentUser()->id;
+            }
+            $applicationId = self::getApplicationId($application, $parameterName);
+            if (isset(self::$cache[$applicationId . ' ' . $parameterName . ' ' . $userId])) {
+                return self::$cache[$applicationId . ' ' . $parameterName . ' ' . $userId];
+            }
+            $sql = sprintf("select val from paramv where appid=%d and type='U%d' and name='%s';", $applicationId, $userId, pg_escape_string($parameterName));
+            $return = null;
+            simpleQuery("", $sql, $return, true, true, true);
+            if ($return !== false) {
+                self::$cache[$applicationId . ' ' . $parameterName . ' ' . $userId] = $return;
+                return $return;
+            } else {
+                return null;
+            }
+        } catch (Dcp\ApplicationParameterManager\Exception $exception) {
             return null;
         }
 
@@ -70,8 +74,6 @@ class ApplicationParameterManager
      * @param string|int|Application $application logical name or id or object of the application, you can use
      * { @link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
-     *
-     * @throws Dcp\ApplicationParameterManager\Exception
      *
      * @return string the value of a common parameter (USER="Y")
      */
@@ -89,24 +91,26 @@ class ApplicationParameterManager
      * {@link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      *
-     * @throws Dcp\ApplicationParameterManager\Exception
-     *
      * @return string the value of a common parameter (USER="N")
      */
     public static function getCommonParameterValue($application, $parameterName)
     {
-        $applicationId = self::getApplicationId($application, $parameterName);
-        if (isset(self::$cache[$applicationId . ' ' . $parameterName])) {
-            return self::$cache[$applicationId . ' ' . $parameterName];
-        }
-        $sql = sprintf("select val from paramv where appid=%d and type !~ '^U' and name='%s';",
-            $applicationId, $parameterName, pg_escape_string($parameterName));
-        $return = null;
-        simpleQuery("", $sql, $return, true, true, true);
-        if ($return !== false) {
-            self::$cache[$applicationId . ' ' . $parameterName] = $return;
-            return $return;
-        } else {
+        try {
+            $applicationId = self::getApplicationId($application, $parameterName);
+            if (isset(self::$cache[$applicationId . ' ' . $parameterName])) {
+                return self::$cache[$applicationId . ' ' . $parameterName];
+            }
+            $sql = sprintf("select val from paramv where appid=%d and type !~ '^U' and name='%s';",
+                $applicationId, $parameterName, pg_escape_string($parameterName));
+            $return = null;
+            simpleQuery("", $sql, $return, true, true, true);
+            if ($return !== false) {
+                self::$cache[$applicationId . ' ' . $parameterName] = $return;
+                return $return;
+            } else {
+                return null;
+            }
+        } catch (Dcp\ApplicationParameterManager\Exception $exception) {
             return null;
         }
 
@@ -187,6 +191,8 @@ class ApplicationParameterManager
      * @param string $parameterName logical name of the parameter
      * @param string $value value of the parameter
      *
+     * @throws Dcp\ApplicationParameterManager\Exception
+     *
      * @return void
      */
     public static function setUserParameterDefaultValue($application, $parameterName, $value)
@@ -254,28 +260,28 @@ class ApplicationParameterManager
      * { @link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      *
-     * @throws Dcp\ApplicationParameterManager\Exception
-     *
      * @return string value of the parameter
      */
     public static function getParameterValue($application, $parameterName)
     {
-        $applicationId = self::getApplicationId($application, $parameterName);
+        try {
+            $applicationId = self::getApplicationId($application, $parameterName);
+            $type = self::getParameter($applicationId, $parameterName);
+            $return = null;
 
-        $type = self::getParameter($applicationId, $parameterName);
-
-        $return = null;
-
-        if ($type["isuser"] === "Y") {
-            $return = self::getUserParameterValue($applicationId, $parameterName);
-            if ($return === null) {
-                $return = self::getUserParameterDefaultValue($applicationId, $parameterName);
+            if ($type["isuser"] === "Y") {
+                $return = self::getUserParameterValue($applicationId, $parameterName);
+                if ($return === null) {
+                    $return = self::getUserParameterDefaultValue($applicationId, $parameterName);
+                }
+            } else {
+                $return = self::getCommonParameterValue($applicationId, $parameterName);
             }
-        } else {
-            $return = self::getCommonParameterValue($applicationId, $parameterName);
-        }
 
-        return $return;
+            return $return;
+        } catch (Dcp\ApplicationParameterManager\Exception $exception) {
+            return null;
+        }
 
     }
 
@@ -379,7 +385,7 @@ class ApplicationParameterManager
                 WHERE
                 (paramdef.appid = app.id OR paramdef.appid = parent.id or paramdef.appid = 1)
                 and app.id = %d;",
-                 $applicationId);
+            $applicationId);
         simpleQuery('', $sql, $result, false, false, true);
         if (empty($result)) {
             throw new \Dcp\ApplicationParameterManager\Exception("APM0003", $applicationId);
@@ -438,6 +444,13 @@ class ApplicationParameterManager
 
     }
 
+    /**
+     * Get global parameter application
+     *
+     * @param string $parameterName global parameter name
+     *
+     * @return null|string null if not find, string otherwise
+     */
     private static function getGlobalParameterApplicationName($parameterName)
     {
         $sql = sprintf("select paramv.appid from paramv, application where paramv.type='G' and application.id=paramv.appid and paramv.name='%s';", pg_escape_string($parameterName));
@@ -446,6 +459,13 @@ class ApplicationParameterManager
         return $result;
     }
 
+    /**
+     *
+     * Convert application logical name to application id
+     *
+     * @param string $applicationName application name
+     * @return null|int
+     */
     private static function convertApplicationNameToId($applicationName)
     {
         $sql = sprintf("select id from application where name = '%s';", pg_escape_string($applicationName));
@@ -454,6 +474,11 @@ class ApplicationParameterManager
         return $applicationId;
     }
 
+    /**
+     * Return global action
+     *
+     * @return Action|null
+     */
     private static function getAction()
     {
         global $action;
