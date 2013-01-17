@@ -124,7 +124,7 @@ publish-test:
 webinst: webinst-test
 
 clean:
-	rm -f *.*~ config.* Makefile configure \
+	rm -f *.*~ config.* Makefile configure info.xml\
 	      dynacase-core-*-*.webinst \
 	      $(PACKAGE)-$(VERSION).tar.gz \
 	      apache.conf \

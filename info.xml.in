@@ -12,6 +12,7 @@
         <installer version="1.3.0" comp="ge"/>
         <module name="dynacase-jquery-installer"  version="1.7.2" comp="ge"/>
         <module name="dynacase-jquery-ui-installer" version="1.8.21" comp="ge"/>
+        <module name="dynacase-json2" version="1.0.0" comp="ge"/>
         <module name="dynacase-jquery-dataTables-installer" />
         <module name="dynacase-ckeditor-installer"/>
     </requires>
@@ -211,7 +212,6 @@ This can be solved by:<br/>
         <process command="programs/record_application FUSERS I"/>
         <process command="programs/record_application FREEDOM I"/>
         <process command="programs/record_application FGSEARCH I"/>
-        <process command="programs/record_application DATA  I"/>
         <process command="programs/record_application VAULT I"/>
         <process command="programs/record_application DAV I"/>
         <process command="programs/record_application FDC I"/>
@@ -514,10 +514,6 @@ This can be solved by:<br/>
         <process command="programs/pre_migration FGSEARCH"/>
         <process command="programs/record_application FGSEARCH U"/>
         <process command="programs/post_migration FGSEARCH"/>
-
-        <process command="programs/pre_migration DATA"/>
-        <process command="programs/record_application DATA U"/>
-        <process command="programs/post_migration DATA"/>
 
         <process command="programs/pre_migration VAULT"/>
         <process command="programs/record_application VAULT U"/>
