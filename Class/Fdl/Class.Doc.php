@@ -1496,7 +1496,6 @@ create unique index i_docir on doc(initid, revision);";
     {
         
         $r = $def;
-        
         if (isset($this->_paramValue[$idp])) return $this->_paramValue[$idp];
         $r = $this->getParameterFamilyRawValue($idp, $def);
         /**
@@ -1506,9 +1505,27 @@ create unique index i_docir on doc(initid, revision);";
         if (!$paramAttr) return $def;
         if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "") {
             $this->_paramValue[$idp] = $r;
-            $val = $this->getValueMethod($paramAttr->phpfunc);
-            if ($val != $paramAttr->phpfunc) {
-                $r = $val;
+            if ($paramAttr->inArray()) {
+                $attributes_array = $this->attributes->getArrayElements($paramAttr->fieldSet->id);
+                $max = 0;
+                foreach ($attributes_array as $attr) {
+                    $count = count($this->rawValueToArray($this->getFamilyParameterValue($attr->id)));
+                    if ($count > $max) $max = $count;
+                }
+                $tmpVal = "";
+                for ($i = 0; $i < $max; $i++) {
+                    $val = $this->applyMethod($paramAttr->phpfunc, "", $i);
+                    if ($val != $paramAttr->phpfunc) {
+                        if ($tmpVal) $tmpVal.= "\n";
+                        $tmpVal.= $val;
+                    }
+                }
+                $r = $tmpVal;
+            } else {
+                $val = $this->getValueMethod($paramAttr->phpfunc);
+                if ($val != $paramAttr->phpfunc) {
+                    $r = $val;
+                }
             }
         } else if ($r) {
             $this->_paramValue[$idp] = $r;
