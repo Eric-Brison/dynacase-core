@@ -13,20 +13,39 @@ namespace Dcp\Pu;
  */
 
 require_once 'PU_testcase_dcp.php';
+require_once 'PU_testcase_dcp_application.php';
 
-class TestApplicationParameterManeger extends TestCaseDcp
+class TestApplicationParameterManeger extends TestCaseDcpApplication
 {
 
     const appName = "DCPTEST2";
 
     /**
+     * Add conf
+     *
+     * @return array
+     */
+    public static function appConfig()
+    {
+        return array(
+            "appRoot" => join(DIRECTORY_SEPARATOR, array(
+                DEFAULT_PUBDIR,
+                "DCPTEST",
+                "app"
+            )),
+            "appName" => "TST_PARAMETER_MANAGER"
+        );
+    }
+
+    /**
+     * @param $parameters
      * @return \Application
      */
     private function initTestApplication($parameters)
     {
         $appTest = new \Application(self::$dbaccess);
         $appTest->name = self::appName;
-        $appTest->childof = 'ONEFAM';
+        $appTest->childof = 'TST_PARAMETER_MANAGER';
         $err = $appTest->Add();
 
         $this->assertEmpty($err, "Cannot create application : $err");
@@ -59,14 +78,13 @@ class TestApplicationParameterManeger extends TestCaseDcp
 
     /**
      * @dataProvider dataGetParam
-     * @expectedException Dcp\ApplicationParameterManager\Exception
      */
     public function testGetUnknownParam($parameters)
     {
 
         $this->initTestApplication($parameters);
 
-        \ApplicationParameterManager::getParameterValue(self::appName, "UNKNOWN_OPTION_VALUE");
+        $this->assertEquals(null, \ApplicationParameterManager::getParameterValue(self::appName, "UNKNOWN_OPTION_VALUE"));
     }
 
     /**
@@ -133,10 +151,10 @@ class TestApplicationParameterManeger extends TestCaseDcp
 
         foreach ($newValues as $k => $v) {
 
-            \ApplicationParameterManager::setParameterValue(\ApplicationParameterManager::GLOBAL_PARAMETER,$k, $v);
+            \ApplicationParameterManager::setParameterValue(\ApplicationParameterManager::GLOBAL_PARAMETER, $k, $v);
         }
         foreach ($expectedValues as $k => $v) {
-            $this->assertEquals($v, \ApplicationParameterManager::getParameterValue(\ApplicationParameterManager::GLOBAL_PARAMETER,$k), sprintf("wrong value for %s", $k));
+            $this->assertEquals($v, \ApplicationParameterManager::getParameterValue(\ApplicationParameterManager::GLOBAL_PARAMETER, $k), sprintf("wrong value for %s", $k));
         }
     }
 
@@ -166,7 +184,7 @@ class TestApplicationParameterManeger extends TestCaseDcp
 
         $this->initTestApplication($parameters);
         $applicationParameters = \ApplicationParameterManager::getParameters(self::appName);
-        $filterFunction = function($value) use ($applicationParameters) {
+        $filterFunction = function ($value) use ($applicationParameters) {
             foreach ($applicationParameters as $currentApplicationParameters) {
                 if ($currentApplicationParameters["name"] == $value) {
                     return false;
@@ -193,14 +211,13 @@ class TestApplicationParameterManeger extends TestCaseDcp
     }
 
 
-
     public function dataUserSetGlobalParameter()
     {
         return array(
             array(
                 "init" => array(
                     "VERSION" => "4.0.8",
-                    "ONEFAM_MIDS" => "128",
+                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 2",
                         "descr" => "Name of test one",
@@ -233,7 +250,7 @@ class TestApplicationParameterManeger extends TestCaseDcp
             array(
                 "init" => array(
                     "VERSION" => "0.3.2-2",
-                    "ONEFAM_MIDS" => "128",
+                    "PARENT_USER_GLOBAL_PARAMETER_VALUE" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 2",
                         "descr" => "Name of test one",
@@ -248,12 +265,12 @@ class TestApplicationParameterManeger extends TestCaseDcp
                     )
                 ),
                 "set" => array(
-                    "ONEFAM_IDS" => "128,127",
+                    "PARENT_USER_PARAMETER" => "128,127",
                     "TST_NAMEP1" => "Test 3",
                 ),
                 "expect" => array(
                     "TST_NAMEP1" => "Test 3",
-                    "ONEFAM_IDS" => "128,127",
+                    "PARENT_USER_PARAMETER" => "128,127",
                     "TST_GLOB2" => "Test global 2"
                 )
             )
@@ -266,7 +283,7 @@ class TestApplicationParameterManeger extends TestCaseDcp
             array(
                 "init" => array(
                     "VERSION" => "4.0.8",
-                    "ONEFAM_MIDS" => "128",
+                    "PARENT_GLOBAL_PARAMETER" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 2",
                         "descr" => "Name of test one",
@@ -298,7 +315,7 @@ class TestApplicationParameterManeger extends TestCaseDcp
             array(
                 "init" => array(
                     "VERSION" => "0.3.2-2",
-                    "ONEFAM_MIDS" => "128",
+                    "PARENT_PARAMETER" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 2",
                         "descr" => "Name of test one",
@@ -314,13 +331,13 @@ class TestApplicationParameterManeger extends TestCaseDcp
                 ),
                 "set" => array(
                     "VERSION" => "4.0.7",
-                    "ONEFAM_MIDS" => "128,127",
+                    "PARENT_PARAMETER" => "128,127",
                     "TST_NAMEP1" => "Test 3",
                 ),
                 "expect" => array(
                     "TST_NAMEP1" => "Test 3",
                     "VERSION" => "4.0.7",
-                    "ONEFAM_MIDS" => "128,127",
+                    "PARENT_PARAMETER" => "128,127",
                     "TST_GLOB2" => "Test global 2"
                 )
             )
@@ -333,7 +350,7 @@ class TestApplicationParameterManeger extends TestCaseDcp
             array(
                 array(
                     "VERSION" => "0.3.2-2",
-                    "ONEFAM_MIDS" => "128",
+                    "PARENT_PARAMETER" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 1",
                         "descr" => "Name of test one",
@@ -350,7 +367,7 @@ class TestApplicationParameterManeger extends TestCaseDcp
                 array(
                     "TST_NAMEP1" => "Test 1",
                     "VERSION" => "0.3.2-2",
-                    "ONEFAM_MIDS" => "128",
+                    "PARENT_PARAMETER" => "128",
                     "TST_GLOB1" => "Test global 1"
                 )
             )
@@ -363,7 +380,7 @@ class TestApplicationParameterManeger extends TestCaseDcp
             array(
                 array(
                     "VERSION" => "0.3.2-2",
-                    "ONEFAM_MIDS" => "128",
+                    "PARENT_PARAMETER" => "128",
                     "TST_NAMEP1" => array(
                         "val" => "Test 1",
                         "descr" => "Name of test one",
@@ -385,28 +402,28 @@ class TestApplicationParameterManeger extends TestCaseDcp
     }
 
     public function dataGetParameters()
-        {
-            return array(
+    {
+        return array(
+            array(
                 array(
-                    array(
-                        "VERSION" => "0.3.2-2",
-                        "ONEFAM_MIDS" => "128",
-                        "TST_NAMEP1" => array(
-                            "val" => "Test 1",
-                            "descr" => "Name of test one",
-                            "global" => "N",
-                            "user" => "N"
-                        ),
-                        "TST_GLOB1" => array(
-                            "val" => "Test global 2",
-                            "descr" => "Name of the glob",
-                            "global" => "Y",
-                            "user" => "N"
-                        )
+                    "VERSION" => "0.3.2-2",
+                    "PARENT_PARAMETER" => "128",
+                    "TST_NAMEP1" => array(
+                        "val" => "Test 1",
+                        "descr" => "Name of test one",
+                        "global" => "N",
+                        "user" => "N"
+                    ),
+                    "TST_GLOB1" => array(
+                        "val" => "Test global 2",
+                        "descr" => "Name of the glob",
+                        "global" => "Y",
+                        "user" => "N"
                     )
                 )
-            );
-        }
+            )
+        );
+    }
 }
 
 ?>

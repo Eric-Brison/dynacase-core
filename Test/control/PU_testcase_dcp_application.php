@@ -9,7 +9,7 @@ namespace Dcp\Pu;
 
 require_once 'PU_testcase_dcp.php';
 
-class TestCaseDcpApplication extends TestCaseDcp
+abstract class TestCaseDcpApplication extends TestCaseDcp
 {
     protected static $app;
     
@@ -34,7 +34,7 @@ class TestCaseDcpApplication extends TestCaseDcp
         self::beginTransaction();
         
         $config = static ::appConfig();
-        if (!is_array($config)) {
+        if (!is_array($config) && !empty($config)) {
             throw new \Exception(sprintf("::appConfig() did not returned an array (returned type is %s).", gettype($config)));
         }
         if (!isset($config['appRoot']) || !isset($config['appName'])) {
@@ -64,12 +64,14 @@ class TestCaseDcpApplication extends TestCaseDcp
         self::rollbackTransaction();
         self::resetIncludePath();
     }
+
     /**
      * Set up a false Action object can be used to execute action
      *
      * @param string $appRoot root path to application folder
      * @param string $appName application name
      *
+     * @throws \Exception
      * @return void
      */
     protected static function setUpTestApplication($appRoot, $appName)
@@ -100,6 +102,17 @@ class TestCaseDcpApplication extends TestCaseDcp
         }
         
         $myAction->parent->setVolatileParam('CORE_PUBDIR', DEFAULT_PUBDIR);
+    }
+
+    /**
+     * Config of the application
+     *
+     * Need to have appRoot, and appName keys
+     *
+     * @return array
+     */
+    protected static function appConfig() {
+        return array();
     }
 }
 ?>
