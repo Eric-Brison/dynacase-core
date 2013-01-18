@@ -14,11 +14,7 @@
  * @subpackage CORE
  */
 
-require_once 'WHAT/autoload.php';
-include_once ('Class.DbObj.php');
-include_once ('Class.User.php');
-include_once ('Class.QueryDb.php');
-include_once ('Class.Application.php');
+require_once ('WHAT/autoload.php');
 
 define("THROW_EXITERROR", 1968);
 /**
@@ -296,7 +292,6 @@ create sequence SEQ_ID_ACTION;
         if ($this->Exists($this->name, $this->id_application, $this->id)) return "Action {$this->name} already exists...";
         return '';
     }
-
     /**
      * get parameter value of action'sapplication
      * shorcut to Application::getParam
@@ -522,7 +517,6 @@ create sequence SEQ_ID_ACTION;
         if (is_array($q)) return $q[0]["acl"];
         return false;
     }
-
     /**
      * execute the action
      * test if current user can execute it
