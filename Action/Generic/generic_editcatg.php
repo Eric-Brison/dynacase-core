@@ -19,7 +19,7 @@
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_editcatg(&$action)
+function generic_editcatg(Action &$action)
 {
     // -----------------------------------
     global $dbaccess;
@@ -42,7 +42,9 @@ function generic_editcatg(&$action)
     $tref = array();
     $tlabel = array();
     $tlevel = array();
-    
+    /**
+     * @var NormalAttribute $a
+     */
     $enum = $a->getEnum();
     foreach ($enum as $k => $v) {
         $k = str_replace("\\.", "-dot-", $k);

@@ -18,6 +18,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
 {
     public static function getCommonImportFile()
     {
+        setLanguage("fr_FR");
         return "PU_data_dcp_enumfamily1.ods";
     }
     /**
@@ -64,6 +65,8 @@ class TestGetEnum extends TestCaseDcpCommonFamily
      */
     public function testGetEnumLabel($famid, $attrid, array $expectedKeys, array $expectedLabel)
     {
+        $a = _("TST_ENUMFAM1#tst_enuma#a");
+        $a = _("TST_ENUMFAM1#tst_enum2#0");
         $fam = new_doc(self::$dbaccess, $famid);
         $this->assertTrue($fam->isAlive() , sprintf("family %s not found", $famid));
         /**
@@ -106,7 +109,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                     "c"
                 ) ,
                 'labels' => array(
-                    "A",
+                    "Lettre A", // translated A in i18n catalog
                     "B",
                     "C"
                 )
@@ -123,7 +126,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                     "1.12"
                 ) ,
                 'labels' => array(
-                    "Zéro",
+                    "Zéfiro",
                     "ZéroUn",
                     "ZéroDeux",
                     "Un",
@@ -180,7 +183,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                     "c"
                 ) ,
                 'labels' => array(
-                    "A",
+                    "Lettre A", // translated A in i18n catalog
                     "B",
                     "C"
                 )
@@ -197,9 +200,9 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                     "12"
                 ) ,
                 'labels' => array(
-                    "Zéro",
-                    "Zéro/ZéroUn",
-                    "Zéro/ZéroDeux",
+                    "Zéfiro",
+                    "Zéfiro/ZéroUn",
+                    "Zéfiro/ZéroDeux",
                     "Un",
                     "Un/UnUn",
                     "Un/UnDeux"
@@ -245,9 +248,9 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                 'family' => 'TST_ENUMFAM1',
                 'attrid' => 'TST_ENUM2',
                 'keysLabel' => array(
-                    "0" => "Zéro",
-                    "01" => "Zéro/ZéroUn",
-                    "02" => "Zéro/ZéroDeux",
+                    "0" => "Zéfiro",
+                    "01" => "Zéfiro/ZéroUn",
+                    "02" => "Zéfiro/ZéroDeux",
                     "1" => "Un",
                     "11" => "Un/UnUn",
                     "12" => "Un/UnDeux"

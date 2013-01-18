@@ -598,7 +598,6 @@ function AttrToPhp($dbaccess, $tdoc)
      */
     function refreshPhpPgDoc($dbaccess, $docid)
     {
-        
         $query = new QueryDb($dbaccess, "DocFam");
         $query->AddQuery("doctype='C'");
         $query->AddQuery("id=$docid");
@@ -614,9 +613,23 @@ function AttrToPhp($dbaccess, $tdoc)
             // -----------------------------
             // activate trigger by trigger
             activateTrigger($dbaccess, $docid);
+            resetSystemEnum($docid);
         }
         
         return '';
+    }
+    /**
+     * reset and record system enum into docenum table
+     * @param int $famid
+     */
+    function resetSystemEnum($famid)
+    {
+        $sql = sprintf("select * from docattr where docid=%d and type = 'enum' and (phpfile is null or phpfile='-') and options ~ 'system=yes'", $famid);
+        simpleQuery('', $sql, $results);
+        foreach ($results as $attr) {
+            $attrid = $attr["id"];
+            importDocumentDescription::recordEnum($famid, $attrid, $attr["phpfunc"], true);
+        }
     }
     /**
      * complete attribute properties from  parent attribute

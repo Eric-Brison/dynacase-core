@@ -101,6 +101,7 @@ function updateDoc($dbaccess, $v)
         $msg = PgUpdateFamilly($dbaccess, $v["id"], $v["name"]);
         print $msg;
         activateTrigger($dbaccess, $v["id"]);
+        resetSystemEnum($v["id"]);
     }
     catch(\Dcp\Exception $e) {
         print $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";

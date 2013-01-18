@@ -1210,13 +1210,75 @@ class importDocumentDescription
                 else $oattr->phpconstraint = '';
                 if ($this->structAttr->options) $oattr->options = $this->structAttr->options;
                 else $oattr->options = '';
-                if (((($this->structAttr->phpfile != "") && ($this->structAttr->phpfile != "-")) || (($this->structAttr->type != "enum") && ($this->structAttr->type != "enumlist"))) || ($oattr->phpfunc == "") || (strpos($oattr->options, "system=yes") !== false)) $oattr->phpfunc = $this->structAttr->phpfunc; // don(t modify  enum possibilities
+                
+                if (((($this->structAttr->phpfile != "") && ($this->structAttr->phpfile != "-")) || (($this->structAttr->type != "enum") && ($this->structAttr->type != "enumlist"))) || ($oattr->phpfunc == "") || (strpos($oattr->options, "system=yes") !== false)) {
+                    // don't modify  enum possibilities if exists and non system
+                    $oattr->phpfunc = $this->structAttr->phpfunc;
+                    if ($oattr->type == "enum") {
+                        if (strlen($this->structAttr->phpfile) < 2) {
+                            // don't record if enum comes from function
+                            $reset = (strpos($oattr->options, "system=yes") !== false);
+                            $this->recordEnum($this->doc->id, $oattr->id, $this->structAttr->phpfunc, $reset);
+                            //$oattr->phpfunc = "-";
+                            
+                        }
+                    }
+                }
                 if ($oattr->isAffected()) $err = $oattr->Modify();
                 else $err = $oattr->Add();
                 
                 $this->tcr[$this->nLine]["err"].= $err;
             }
         }
+    }
+    /**
+     * @param int $famid family identifier
+     * @param string $attrid attribute identifier
+     * @param string $phpfunc enum flat description
+     * @param bool $reset set to true to delete old items before recorded
+     * @return string error message
+     */
+    public static function recordEnum($famid, $attrid, $phpfunc, $reset = false)
+    {
+        static $oe = null;
+        
+        $err = '';
+        if ($oe === null) $oe = new DocEnum();
+        $enums = array();
+        EnumAttributeTools::flatEnumNotationToEnumArray($phpfunc, $enums);
+        $oe->famid = $famid;
+        $oe->attrid = $attrid;
+        $oe->eorder = 0;
+        if ($reset) {
+            $sql = sprintf("delete from docenum where famid='%s' and attrid='%s'", pg_escape_string($famid) , pg_escape_string($attrid));
+            simpleQuery('', $sql);
+        }
+        
+        foreach ($enums as $itemKey => $itemLabel) {
+            $oe->label = $itemLabel;
+            $oe->eorder++;
+            $antiItemKey = str_replace("\\.", "--dot--", $itemKey);
+            if (strpos($antiItemKey, '.') !== false) {
+                $tkeys = explode(".", $itemKey);
+                $oe->key = array_pop($tkeys);
+                $oe->parentkey = array_pop($tkeys);
+            } else {
+                
+                $oe->key = str_replace("\\.", ".", $itemKey);
+                
+                $oe->parentkey = '';
+            }
+            $err = '';
+            if ($oe->exists()) {
+                // $err=$oe->add();
+                // " skipped [$itemKey]";
+                
+            } else {
+                // " added  [$itemKey]";
+                $err.= $oe->add();
+            }
+        }
+        return $err;
     }
     /**
      * analyze IATTR

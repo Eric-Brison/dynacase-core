@@ -21,7 +21,7 @@ include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/Lib.Attr.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_modkind(&$action)
+function generic_modkind(Action & $action)
 {
     // -----------------------------------
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -50,7 +50,7 @@ function generic_modkind(&$action)
                 }
             }
             $ple = $le;
-            $tsenum[$k] = stripslashes($ref . str_replace(".", "-dot-", $v) . "|" . $tlabel[$k]);
+            $tsenum[stripslashes($ref . str_replace(".", "-dot-", $v)) ] = $tlabel[$k];
         }
     }
     
@@ -60,22 +60,39 @@ function generic_modkind(&$action)
     ));
     if ($attr->isAffected()) {
         
-        if (preg_match("/\[([a-z]+)\](.*)/", $attr->phpfunc, $reg)) {
-            $funcformat = $reg[1];
-        } else {
-            $funcformat = "";
+        $oe = new DocEnum($action->dbaccess);
+        $oe->savePoint("enum");
+        $oe->exec_query(sprintf("delete from docenum where famid=%d and attrid='%s'", $famid, $aid));
+        $oe->famid = $famid;
+        $oe->attrid = $aid;
+        $oe->eorder = 0;
+        foreach ($tsenum as $key => $label) {
+            if (strpos($key, '.') === false) {
+                $oe->key = str_replace('-dot-', '.', $key);
+                $oe->parentkey = '';
+            } else {
+                $keys = explode('.', $key);
+                $oe->key = str_replace('-dot-', '.', array_pop($keys));
+                $oe->parentkey = str_replace('-dot-', '.', array_pop($keys));
+            }
+            $oe->eorder++;
+            $oe->label = $label;
+            if (!$oe->exists()) $oe->add();
+            else $oe->modify();
         }
-        $attr->phpfunc = str_replace("-dot-", "\\.", implode(",", str_replace(',', '\,', ($tsenum))));
-        if ($funcformat != "") $attr->phpfunc = "[$funcformat]" . $attr->phpfunc;
-        $attr->modify();
-        
-        refreshPhpPgDoc($dbaccess, $famid);
+        $oe->commitPoint("enum");
+    } else {
+        $action->exitError(sprintf(_("Cannot update enum. Attribute '%s'[family %s] not found") , $aid, $famid));
     }
     
     $fdoc = new_doc($dbaccess, $famid);
+    /**
+     * @var NormalAttribute $a;
+     */
     $a = $fdoc->getAttribute($aid);
     if ($a) {
         $enum = $a->getenum();
+        $tvkind = array();
         foreach ($enum as $kk => $ki) {
             $klabel = $a->getEnumLabel($ki);
             //array_pop(explode('/',$ki,substr_count($kk, '.')+1));

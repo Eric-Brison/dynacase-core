@@ -69,6 +69,9 @@ function linkenum($famid, $attrid)
          * @var NormalAttribute $a
          */
         $a = $soc->getAttribute($attrid);
+        if ($a->phpfunc == "-") {
+            return EnumAttributeTools::getFlatEnumNotation($soc->id, $a->id);
+        }
         return $a->phpfunc;
     }
     return "";
