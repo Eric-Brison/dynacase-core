@@ -55,6 +55,11 @@ namespace {
         const CORE0008 = 'Action "%s"  not available for application "%s"';
         /**
          * @errorCode
+         * action from an admin application is launched from non admin mode
+         */
+        const CORE0009 = 'Action "%s" [%s]  from application "%s" [%s] must be run in admin mode';
+        /**
+         * @errorCode
          * for beautifier
          */
         private function _bo()
