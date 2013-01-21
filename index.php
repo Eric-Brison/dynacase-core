@@ -22,45 +22,35 @@ include_once ('WHAT/Lib.Main.php');
 include_once ('WHAT/Class.AuthenticatorManager.php');
 include_once ('WHAT/Class.ActionRouter.php');
 
-$authtype = getAuthType();
 $guestMode = getDbAccessValue("useIndexAsGuest");
 
 $needToBeGuest = false;
-if ($authtype == 'apache') {
-    // Apache has already handled the authentication
-    global $_SERVER;
-    if ($_SERVER['PHP_AUTH_USER'] == "") {
-        header('HTTP/1.0 403 Forbidden');
-        echo _("User must be authenticate");
-        exit;
-    }
-} else {
-    $noAsk = ($guestMode == true);
-    $status = AuthenticatorManager::checkAccess(null, $noAsk);
-    switch ($status) {
-        case AuthenticatorManager::AccessOk: // it'good, user is authentified
-            $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
-            break;
 
-        case AuthenticatorManager::AccessBug:
-            // User must change his password
-            // $action->session->close();
-            AuthenticatorManager::$auth->logout("authent.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
-            exit(0);
-            break;
+$noAsk = ($guestMode == true);
+$status = AuthenticatorManager::checkAccess(null, $noAsk);
+switch ($status) {
+    case AuthenticatorManager::AccessOk: // it'good, user is authentified
+        $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
+        break;
 
-        case AuthenticatorManager::NeedAsk:
-            $needToBeGuest = true;
-            break;
+    case AuthenticatorManager::AccessBug:
+        // User must change his password
+        // $action->session->close();
+        AuthenticatorManager::$auth->logout("authent.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
+        exit(0);
+        break;
 
-        default:
-            sleep(1); // for robots
-            // Redirect to authentication
-            AuthenticatorManager::$auth->askAuthentication(array());
-            // AuthenticatorManager::$auth->askAuthentication(array("error" => $status));
-            // Redirect($action, 'AUTHENT', 'LOGINFORM&error='.$status.'&auth_user='.urlencode($_POST['auth_user']));
-            exit(0);
-    }
+    case AuthenticatorManager::NeedAsk:
+        $needToBeGuest = true;
+        break;
+
+    default:
+        sleep(1); // for robots
+        // Redirect to authentication
+        AuthenticatorManager::$auth->askAuthentication(array());
+        // AuthenticatorManager::$auth->askAuthentication(array("error" => $status));
+        // Redirect($action, 'AUTHENT', 'LOGINFORM&error='.$status.'&auth_user='.urlencode($_POST['auth_user']));
+        exit(0);
 }
 
 $account = AuthenticatorManager::getAccount();

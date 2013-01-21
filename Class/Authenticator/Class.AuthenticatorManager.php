@@ -44,22 +44,17 @@ class AuthenticatorManager
         $error = self::AccessOk;
         self::$provider_errno = 0;
         if ($authtype == null) $authtype = getAuthType();
-        if ($authtype == 'apache') {
-            // Apache has already handled the authentication
-            return self::AccessOk;
-        } else {
-            if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype)) {
-                print sprintf("Invalid authtype '%s'", $authtype);
-                exit;
-            }
-            $authClass = strtolower($authtype) . "Authenticator";
-            if (!@include_once ('WHAT/Class.' . $authClass . '.php')) {
-                print "Unknown authtype " . $_GET['authtype'];
-                exit;
-            }
-            $auth = new $authClass($authtype, "__for_logout__");
+        if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype)) {
+            print sprintf("Invalid authtype '%s'", $authtype);
+            exit;
         }
-        
+        $authClass = strtolower($authtype) . "Authenticator";
+        if (!@include_once ('WHAT/Class.' . $authClass . '.php')) {
+            print "Unknown authtype " . $_GET['authtype'];
+            exit;
+        }
+        $auth = new $authClass($authtype, "__for_logout__");
+
         $authProviderList = getAuthProviderList();
         $status = false;
         foreach ($authProviderList as $authProvider) {

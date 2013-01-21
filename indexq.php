@@ -37,41 +37,27 @@ function sortqdelay($a, $b)
     return 0;
 }
 
-$authtype = getAuthType();
+$status = AuthenticatorManager::checkAccess();
+switch ($status) {
+    case AuthenticatorManager::AccessOk: // it'good, user is authentified
+        break;
 
-if ($authtype == 'apache') {
-    // Apache has already handled the authentication
-    global $_SERVER;
-    if ($_SERVER['PHP_AUTH_USER'] == "") {
-        header('HTTP/1.0 403 Forbidden');
-        echo _("User must be authenticate");
-        exit;
-    }
-} else {
-    
-    $status = AuthenticatorManager::checkAccess();
-    switch ($status) {
-        case 0: // it'good, user is authentified
-            break;
+    case AuthenticatorManager::AccessBug:
+        // User must change his password
+        AuthenticatorManager::$auth->logout("authent.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
+        exit(0);
+        break;
 
-        case -1:
-            // User must change his password
-            AuthenticatorManager::$auth->logout("authent.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
-            exit(0);
-            break;
-
-        default:
-            sleep(1); // for robots
-            // Redirect to authentication
-            global $_POST;
-            AuthenticatorManager::$auth->logout("authent.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
-            AuthenticatorManager::$auth->askAuthentication(array());
-            
-            exit(0);
-    }
-    
-    $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
+    case AuthenticatorManager::NeedAsk:
+    default:
+        sleep(1); // for robots
+        // Redirect to authentication
+        global $_POST;
+        AuthenticatorManager::$auth->askAuthentication(array());
+        exit(0);
 }
+
+$_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
 
 $account = AuthenticatorManager::getAccount();
 if ($account === false) {
