@@ -11,23 +11,14 @@
                 <div id="apropos">
                     <div class="intro">&rarr; à propos</div>
                     <div class="en">
-                        <p>
-                            Tous droits réservés <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>
-                            .
-                        </p>
-                        <p>La version entreprise est supportée par Anakeen et permet d'accéder à des releases de maintenance et des patches correctifs sur des dépôts privés.</p>
-                        <p>La version entreprise permet le changement de licence en accord avec <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>.</p>
-                        <p>La version communautaire n'est pas supportée et est distribuée sous licence <a target="_blank" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License V3 - AGPL V3</a>.</p>
-                        <p>
-                            <a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase</a>
-                            ,
-                            <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>
-                            et les logos associés sont des marques déposées <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>.</p>
-                        <p>
-                            <a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase Platform</a>
-                            est développé en <a href="http://www.php.net" target="_blank">PHP</a>.
-                            .
-                        </p>
+			<p>Le core Dynacase Platform est distribué sous licence <a target="_blank" href="http://www.gnu.org/licenses/lgpl-3.0.html">GNU Lesser General Public License V3 - LGPL V3</a>.</p>
+			<br/>
+                        <p>La <em>version entreprise</em> est supportée par Anakeen et permet d'accéder à ses services : consulting, expertise, support, patch correctifs, etc.</p>
+			<p>Elle donne accès à des modules complémentaires : DocumentGrid, SearchCriteria, Dashboard, Tags, etc.</p>
+			<p>Elle permet le changement de licence en accord avec <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>. </p>
+			<br/>
+                        <p><a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase</a>, <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a> et les logos associés sont des marques déposées <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>.</p>
+                        <p><a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase Platform</a> est développé en <a href="http://www.php.net" target="_blank">PHP</a>.</p>
                         [IF HAVE_EXTERNALS]
                         <a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase Platform</a>
                         utilise les logiciels Open Source suivants&nbsp;:
@@ -75,7 +66,7 @@
                         <div>
                             <a href="http://www.dynacase.org/" target="_blank">
                                 <img src="[IMG:dc-control-130x60.png]" alt="Dynacase Control logo"/>
-                                <div class="label">Gèrez, administrez vos déploiements et les contextes avec Dynacase Control.</div>
+                                <div class="label">Gérez, administrez vos déploiements et les contextes avec Dynacase Control.</div>
                             </a>
                             <div class="clear"></div>
                         </div>
