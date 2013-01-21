@@ -3446,7 +3446,7 @@ create unique index i_docir on doc(initid, revision);";
                                                     $tvalues[$kvalue] = preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
                                                 }
                                             } else {
-                                                return sprintf(_("value [%s] is not a valid date") , $avalue);
+                                                return sprintf(_("local config for date not found"));
                                             }
                                         }
                                         break;
@@ -3468,7 +3468,7 @@ create unique index i_docir on doc(initid, revision);";
                                                     $tvalues[$kvalue] = preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
                                                 }
                                             } else {
-                                                return sprintf(_("value [%s] is not a valid timestamp") , $avalue);
+                                                return sprintf(_("local config for timestamp not found"));
                                             }
                                         }
                                         break;

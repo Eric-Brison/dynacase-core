@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-15 17:08+0100\n"
-"PO-Revision-Date: 2013-01-15 11:49+0100\n"
+"POT-Creation-Date: 2013-01-18 16:52+0100\n"
+"PO-Revision-Date: 2013-01-18 16:59+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -4618,6 +4618,10 @@ msgstr ""
 "Le répertoire père doit être créé au préalable"
 
 #, c-format
+msgid "cannot create document for family [%s]"
+msgstr "création de document impossible pour la famille [%s]"
+
+#, c-format
 msgid "cannot create from family [%s]"
 msgstr "création impossible depuis la famille [%s]"
 
@@ -4891,6 +4895,10 @@ msgstr "Changement du paramètre 'tagable' en '%s'"
 
 msgid "change title family"
 msgstr "changement du titre de famille"
+
+#, c-format
+msgid "change version to %s"
+msgstr "changement vers la version %s"
 
 msgid "changeCheckBoolClasses Error"
 msgstr "Erreur changeCheckBoolClasses"
@@ -5217,6 +5225,14 @@ msgstr "mes paramètres"
 msgid "cycle family must be defined"
 msgstr "la famille cycle doit être renseignée"
 
+#, c-format
+msgid "data:document %s is not a family"
+msgstr "Le document %s n'est pas une famille"
+
+#, c-format
+msgid "data:family %s not alive"
+msgstr "La famille %s n'est pas vivante"
+
 msgid "database access for webdav"
 msgstr "coordonnées d'accès à la base de données webdav"
 
@@ -5402,6 +5418,22 @@ msgid "document #%s not found. Unaffectation aborded"
 msgstr "document n°%s inconnu. Suppression de l'affectation abandonnée"
 
 #, c-format
+msgid "document %d deleted"
+msgstr "Le document %d est supprimé"
+
+#, c-format
+msgid "document %d inserted"
+msgstr "Le document %d est inséré"
+
+#, c-format
+msgid "document %d moved"
+msgstr "Le document %d est déplacé"
+
+#, c-format
+msgid "document %d unlinked"
+msgstr "Le document %d est enlevé"
+
+#, c-format
 msgid "document %s : set icon to '%s'"
 msgstr "document %s : affecte l'icone à '%s'"
 
@@ -5436,6 +5468,10 @@ msgstr "Le document [%s] n'est pas une famille"
 #, c-format
 msgid "document %s is not a folder"
 msgstr "le document %s n'est pas un dossier"
+
+#, c-format
+msgid "document %s not exist"
+msgstr "Le document %s n'existe pas"
 
 #, c-format
 msgid "document %s not exists"
@@ -5487,8 +5523,14 @@ msgstr "document %s inexistant"
 msgid "document not exists yet"
 msgstr "le document n'existe pas encore"
 
+msgid "document not initialized"
+msgstr "Le document n'est pas initialisé"
+
 msgid "document not referenced"
 msgstr "document non référencé"
+
+msgid "document not set"
+msgstr ""
 
 #, c-format
 msgid "document too big (%dKo): no highlight"
@@ -6014,6 +6056,9 @@ msgstr "taille de la police"
 msgid "for"
 msgstr "pour"
 
+msgid "format in date"
+msgstr ""
+
 msgid "forum"
 msgstr "forum"
 
@@ -6474,6 +6519,12 @@ msgstr "référencer le document"
 
 msgid "list"
 msgstr "Liste"
+
+msgid "local config for date not found"
+msgstr "Configuration de la date locale introuvable"
+
+msgid "local config for timestamp not found"
+msgstr "Configuration du timestamp local introuvable"
 
 msgid "lock file to edit"
 msgstr "verrouillez le document pour le modifier"
@@ -7013,6 +7064,10 @@ msgstr "vous n'avez pas la permission de créer ce type (%d) de document "
 #, c-format
 msgid "no privilege to create this kind (%s) of document"
 msgstr "vous n'avez pas la permission de créer ce type (%s) de document "
+
+#, c-format
+msgid "no privilege view for %d"
+msgstr ""
 
 msgid "no profile"
 msgstr "Pas de profil"
@@ -7609,6 +7664,9 @@ msgstr "réinitialisation du profil %s"
 msgid "reset to default"
 msgstr "configuration par défaut"
 
+msgid "reset version"
+msgstr ""
+
 msgid "response for this forum entry"
 msgstr "réponse pour cette entrée"
 
@@ -7658,6 +7716,9 @@ msgstr "révision"
 
 msgid "revision date"
 msgstr "date de révision"
+
+msgid "revision of document"
+msgstr ""
 
 msgid "revival document"
 msgstr "restauration du document"
@@ -8070,6 +8131,14 @@ msgstr "t"
 
 msgid "tag"
 msgstr "tag"
+
+#, c-format
+msgid "target folder [%s] is not a folder"
+msgstr ""
+
+#, c-format
+msgid "target folder [%s] is not set"
+msgstr ""
 
 #, c-format
 msgid "task %s is not done correctly"

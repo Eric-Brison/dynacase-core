@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-15 17:08+0100\n"
+"POT-Creation-Date: 2013-01-18 16:52+0100\n"
 "PO-Revision-Date: 2012-09-12 09:47+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -4501,6 +4501,10 @@ msgid ""
 msgstr ""
 
 #, c-format
+msgid "cannot create document for family [%s]"
+msgstr ""
+
+#, c-format
 msgid "cannot create from family [%s]"
 msgstr ""
 
@@ -4760,6 +4764,10 @@ msgid "change tagable parameter to '%s'"
 msgstr ""
 
 msgid "change title family"
+msgstr ""
+
+#, c-format
+msgid "change version to %s"
 msgstr ""
 
 msgid "changeCheckBoolClasses Error"
@@ -5085,6 +5093,14 @@ msgstr ""
 msgid "cycle family must be defined"
 msgstr ""
 
+#, c-format
+msgid "data:document %s is not a family"
+msgstr ""
+
+#, c-format
+msgid "data:family %s not alive"
+msgstr ""
+
 msgid "database access for webdav"
 msgstr ""
 
@@ -5270,6 +5286,22 @@ msgid "document #%s not found. Unaffectation aborded"
 msgstr ""
 
 #, c-format
+msgid "document %d deleted"
+msgstr ""
+
+#, c-format
+msgid "document %d inserted"
+msgstr ""
+
+#, c-format
+msgid "document %d moved"
+msgstr ""
+
+#, c-format
+msgid "document %d unlinked"
+msgstr ""
+
+#, c-format
 msgid "document %s : set icon to '%s'"
 msgstr ""
 
@@ -5303,6 +5335,10 @@ msgstr ""
 
 #, c-format
 msgid "document %s is not a folder"
+msgstr ""
+
+#, c-format
+msgid "document %s not exist"
 msgstr ""
 
 #, c-format
@@ -5355,7 +5391,13 @@ msgstr ""
 msgid "document not exists yet"
 msgstr ""
 
+msgid "document not initialized"
+msgstr ""
+
 msgid "document not referenced"
+msgstr ""
+
+msgid "document not set"
 msgstr ""
 
 #, c-format
@@ -5871,6 +5913,9 @@ msgstr ""
 msgid "for"
 msgstr ""
 
+msgid "format in date"
+msgstr ""
+
 msgid "forum"
 msgstr ""
 
@@ -6325,6 +6370,12 @@ msgid "link document"
 msgstr ""
 
 msgid "list"
+msgstr ""
+
+msgid "local config for date not found"
+msgstr ""
+
+msgid "local config for timestamp not found"
 msgstr ""
 
 msgid "lock file to edit"
@@ -6861,6 +6912,10 @@ msgstr ""
 
 #, c-format
 msgid "no privilege to create this kind (%s) of document"
+msgstr ""
+
+#, c-format
+msgid "no privilege view for %d"
 msgstr ""
 
 msgid "no profile"
@@ -7450,6 +7505,9 @@ msgstr ""
 msgid "reset to default"
 msgstr ""
 
+msgid "reset version"
+msgstr ""
+
 msgid "response for this forum entry"
 msgstr ""
 
@@ -7498,6 +7556,9 @@ msgid "revision"
 msgstr ""
 
 msgid "revision date"
+msgstr ""
+
+msgid "revision of document"
 msgstr ""
 
 msgid "revival document"
@@ -7905,6 +7966,14 @@ msgid "t"
 msgstr ""
 
 msgid "tag"
+msgstr ""
+
+#, c-format
+msgid "target folder [%s] is not a folder"
+msgstr ""
+
+#, c-format
+msgid "target folder [%s] is not set"
 msgstr ""
 
 #, c-format
