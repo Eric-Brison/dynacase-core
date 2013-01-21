@@ -39,7 +39,7 @@ function report_export_csv(Action & $action)
     $usage = new ActionUsage($action);
     $defaultDocArg = array();
     
-    $id = $usage->addNeededParameter("id", "the id of the report");
+    $id = $usage->addRequiredParameter("id", "the id of the report");
     $currentDoc = null;
     if ($id != "") {
         $currentDoc = new_Doc($dbaccess, $id);

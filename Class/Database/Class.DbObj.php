@@ -155,7 +155,6 @@ class DbObj
     /**
      * Select object from its fields
      * if fields has more then one variable, need to use an array
-     * @api Select object from its fields
      * @param int|array $id
      * @return bool|string
      */
@@ -274,7 +273,6 @@ class DbObj
     }
     /**
      * affect object with a set of values
-     * @api affect object with a set of values
      * @param array $array indexed array of values , index if the column attribute
      */
     function Affect($array)
@@ -301,7 +299,6 @@ class DbObj
         return $this->isset;
     }
     /**
-     * @api hook call after affect method
      * @see affect
      */
     function Complete()
@@ -313,7 +310,6 @@ class DbObj
      * Method use before Add method
      * This method should be replaced by the Child Class
      * if return error message, modify is aborded
-     * @api hook call before add method
      * @return string error message, if no error empty string
      * @see Add()
      */
@@ -325,7 +321,6 @@ class DbObj
     /** 
      * Method use after Add method
      * This method should be replaced by the Child Class
-     * @api hook call after add method
      *
      * @return string error message, if no error empty string, if message
      * error not empty the Add method is not completed
@@ -341,7 +336,6 @@ class DbObj
      * This method should be replaced by the Child Class
      * if return error message, modify is aborded
      *
-     * @api hook call before modify method
      * @return string error message, if no error empty string
      * @see Modify()
      */
@@ -354,7 +348,6 @@ class DbObj
      * Method use after Modify method
      * This method should be replaced by the Child Class
      *
-     * @api hook call after modify method
      * @return string error message, if no error empty string, if message
      * error not empty the Modify method is not completed
      * @see Modify()
@@ -367,7 +360,6 @@ class DbObj
     }
     /**
      * if return error message, deletion is aborded
-     * @api hook call before delete method
      * @see delete
      * @return string
      */
@@ -379,7 +371,6 @@ class DbObj
     }
     /**
      * Method use after delete method
-     * @api hook call after delete method
      * @see delete
      * @return string
      */
@@ -392,7 +383,6 @@ class DbObj
     /**
      * Method use before select method
      * @param mixed $id the id use by select
-     * @api hook call before delete method
      * @see select
      * @return string
      */
@@ -404,7 +394,6 @@ class DbObj
     /**
      * Method use after select method
      * @param mixed $id the id use by select
-     * @api hook call after delete method
      * @see select
      * @return string
      */
@@ -416,7 +405,6 @@ class DbObj
     }
     /**
      * Add the object to the database
-     * @api record new object to database
      * @param bool $nopost PostInsert method not apply if true
      * @param bool $nopre PreInsert method not apply if true
      * @return string error message, if no error empty string
@@ -452,7 +440,6 @@ class DbObj
     }
     /** 
      * Save the object to the database
-     * @api record affected object to database
      * @param bool $nopost PostUpdate() and method not apply if true
      * @param string $sfields only this column will ne updated if empty all fields
      * @param bool $nopre PreUpdate() method not apply if true
@@ -509,7 +496,6 @@ class DbObj
     }
     /**
      * Delete the object on the database
-     * @api delete affected object on database
      * @param bool $nopost PostUpdate() and method not apply if true
      * @return string error message, if no error empty string
      */
@@ -704,7 +690,6 @@ class DbObj
     }
     /**
      * Send a request to database
-     * @api send request to database
      * @param string $sql the query
      * @param int $lvl level set to 0 (internal purpose only)
      * @param bool $prepare set to true to use pg_prepare, restrict to use single query
@@ -804,7 +789,6 @@ class DbObj
     }
     /**
      * number of return rows after exec_query
-     * @api number of return rows after exec_query
      * @see exec_query
      * @return int
      */
@@ -921,7 +905,6 @@ class DbObj
     }
     /**
      * set a database transaction save point
-     * @api set a database transaction save point
      * @param string $point
      * @return string error message
      */
@@ -954,7 +937,6 @@ class DbObj
     }
     /**
      * revert to transaction save point
-     * @api cencel trasaction since point
      * @param string $point revert point
      * @return string error message
      */
@@ -986,7 +968,6 @@ class DbObj
     }
     /**
      * commit transaction save point
-     * @api accept transaction point
      * @param string $point
      * @return string error message
      */

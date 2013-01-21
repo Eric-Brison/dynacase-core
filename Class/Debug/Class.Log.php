@@ -36,6 +36,13 @@ class Log
     private $tic;
     private $ptext;
     // ------------------------------------------------------------------------
+    
+    /**
+     * @api initialize log manager
+     * @param string $logfile
+     * @param string $application
+     * @param string $function
+     */
     public function Log($logfile = "", $application = "", $function = "")
     {
         $this->usesyslog = 0;

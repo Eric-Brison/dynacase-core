@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 /**
  * Update the SQL structure of a table of a DbObj Object
  *
@@ -25,7 +25,7 @@ $usage = new ApiUsage();
 
 $usage->setDefinitionText("Update the SQL structure of a table of a DbObj Object");
 $appclass = $usage->addOptionnalParameter('appc', "application class folder", null, 'WHAT');
-$class = $usage->addNeededParameter('class', 'Class name');
+$class = $usage->addRequiredParameter('class', 'Class name');
 $db = $usage->addOptionnalParameter('dbcoord', "Database name", null, getDbAccess());
 
 $usage->verify();

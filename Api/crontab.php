@@ -21,7 +21,7 @@ include_once ("FDL/Lib.Util.php");
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("API script to manipulate user crontab");
-$cmd = $usage->addNeededParameter("cmd", "command to execute", array(
+$cmd = $usage->addRequiredParameter("cmd", "command to execute", array(
     "list",
     "register",
     "unregister"

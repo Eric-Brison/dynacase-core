@@ -129,7 +129,6 @@ function clearCacheDoc($id = 0)
  * @param bool $latest if true set to latest revision of doc
  * @global array $gdocs optimize for speed
  *
- * @api get document from database
  * @code
  * $myDoc=new_doc("", $myIdentifier);
  * if ($myDoc->isAlive()) {
@@ -221,7 +220,6 @@ function new_Doc($dbaccess, $id = '', $latest = false)
  * create a new document object in type concordance
  *
  * the document is set with default values and default profil of the family
- * @api create new document
  * @param string $dbaccess database specification
  * @param string $fromid identifier of the family document (the number or internal name)
  * @param bool $control if false don't control the user hability to create this kind of document
@@ -283,7 +281,6 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
  *
  * the document is set with default values and has no profil
  * the create privilege is not tested in this case
- * @api create temporary document
  * @param string $dbaccess database specification
  * @param string $fromid identifier of the family document (the number or internal name)
  * @param bool $defaultvalue set to false to not set default values

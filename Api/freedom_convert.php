@@ -22,9 +22,8 @@ include_once ("FDL/Class.Doc.php");
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("Convert document");
-$famId = $usage->addNeededParameter("tofamid", "family filter"); // familly filter
-$docid = $usage->addNeededParameter("docid", "document id to be converted"); // document
-
+$famId = $usage->addRequiredParameter("tofamid", "family filter"); // familly filter
+$docid = $usage->addRequiredParameter("docid", "document id to be converted"); // document
 $usage->verify();
 
 $appl = new Application();
@@ -43,5 +42,4 @@ if ($doc->isAffected()) {
 } else {
     print "document  $docid not found";
 }
-
 ?>

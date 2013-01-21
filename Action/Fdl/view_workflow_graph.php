@@ -33,7 +33,7 @@ function view_workflow_graph(Action & $action)
 {
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("Generate graph image for workflow");
-    $docid = $usage->addNeededParameter("id", "workflow id");
+    $docid = $usage->addRequiredParameter("id", "workflow id");
     $type = $usage->addOptionnalParameter("type", "graph detail level", array(
         "justactivity",
         "simple",

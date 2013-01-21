@@ -18,7 +18,7 @@ function callbackreqpasswd(Action & $action)
     $action->lay->set('CALLBACK_NOT_OK', False);
     $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
     $au = new ActionUsage($action);
-    $token = $au->addNeededParameter("token", "token number");
+    $token = $au->addRequiredParameter("token", "token number");
     $uid = $au->addOptionnalParameter("uid", "user id");
     $pwd1 = $au->addOptionnalParameter("pwd1", "new password 1");
     $pwd2 = $au->addOptionnalParameter("pwd2", "new password 2");
@@ -113,7 +113,6 @@ function callbackreqpasswd(Action & $action)
     
     return "";
 }
-
 
 function authLog($txt)
 {

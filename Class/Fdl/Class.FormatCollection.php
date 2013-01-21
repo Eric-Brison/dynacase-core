@@ -94,7 +94,6 @@ class FormatCollection
     }
     /**
      * default value returned when attribute not found in document
-     * @api define default value returned when value is null
      * @param $s
      * @return \FormatCollection
      */
@@ -105,7 +104,6 @@ class FormatCollection
     }
     /**
      * document list to format
-     * @api document list to format
      * @param DocumentList $l
      * @return FormatCollection
      */
@@ -155,7 +153,6 @@ class FormatCollection
     /**
      * add a property to render
      * by default id and title are rendered
-     * @api add a property to render
      * @param string $props
      * @throws \Dcp\Fmtc\Exception
      * @return FormatCollection
@@ -171,7 +168,6 @@ class FormatCollection
     /**
      * add an attribute to render
      * by default no attributes are rendered
-     * @api add an document attribute to render
      * @param string $attrid
      * @return FormatCollection
      */
@@ -203,7 +199,6 @@ class FormatCollection
     }
     /**
      * return formatted document list to be easily exported in other format
-     * @api compute rendering and get it
      * @throws \Dcp\Fmtc\Exception
      * @return array
      */

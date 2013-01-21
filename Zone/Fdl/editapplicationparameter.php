@@ -17,7 +17,7 @@ function editapplicationparameter(Action & $action)
 {
     
     $usage = new ActionUsage($action);
-    $parameterid = $usage->addNeededParameter("parameterId", _("Parameter's id"));
+    $parameterid = $usage->addRequiredParameter("parameterId", _("Parameter's id"));
     $appid = $usage->addOptionnalParameter("appId", _("Application Id"));
     $default = $usage->addOptionnalParameter("emptyValue", _("value for empty field"));
     $value = $usage->addOptionnalParameter("value", _("value in field"));
@@ -113,7 +113,7 @@ function editapplicationparameter(Action & $action)
     }
     $label = $paramdef[0]["descr"] ? _($paramdef[0]["descr"]) : "";
     $action->lay->set("label", $label);
-
+    
     $action->parent->addJsRef("lib/jquery/jquery.js");
     $action->parent->addJsRef("FDL/Layout/editparameter.js");
     return true;

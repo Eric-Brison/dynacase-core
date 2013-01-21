@@ -33,7 +33,7 @@ $usage->setDefinitionText("Export 1nf");
  * Args
  */
 $parms = array(
-    'config' => $usage->addNeededParameter("config", "configuration file") ,
+    'config' => $usage->addRequiredParameter("config", "configuration file") ,
     'outputsql' => $usage->addOptionnalParameter("outputsql", "File to output sql", null, "") ,
     'outputpgservice' => $usage->addOptionnalParameter("outputpgservice", "Pgservice to output", null, "") ,
     'tmppgservice' => $usage->addOptionnalParameter("tmppgservice", "Tmp pgservice name", null, 'tmp_1nf') ,

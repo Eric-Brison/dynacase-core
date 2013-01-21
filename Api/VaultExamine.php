@@ -34,7 +34,7 @@ $test = $usage->addOptionnalParameter("test", "Enable/disable test mode: do not 
 ) , "no");
 $test = ($test == "yes" ? true : false);
 /* --cmd=check */
-$command = $usage->addNeededParameter("cmd", "Examine command", array(
+$command = $usage->addRequiredParameter("cmd", "Examine command", array(
     "check-all",
     "check-noref",
     "check-nofile",

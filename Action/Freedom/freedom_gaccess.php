@@ -30,7 +30,7 @@ function freedom_gaccess(Action & $action)
     $usage = new ActionUsage($action);
     $usage->setStrictMode(false);
     $usage->setDefinitionText("view or modify document accessibilities");
-    $docid = $usage->addNeededParameter("id", "document identifier to profil");
+    $docid = $usage->addRequiredParameter("id", "document identifier to profil");
     $gid = $usage->addOptionnalParameter("gid", "group identificator, view user access for this group");
     $green = ($usage->addOptionnalParameter("allgreen", "view only up acl", array(
         "Y",
