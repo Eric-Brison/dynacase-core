@@ -28,6 +28,10 @@ margin:0;padding:0;
 div.htmltext p:first-child, div.htmltext h1:first-child, div.htmltext h2:first-child, div.htmltext h3:first-child {
     margin-top:0px;
 }
+
+div.htmltext p:last-child, div.htmltext h1:last-child, div.htmltext h2:last-child, div.htmltext h3:last-child {
+    margin-bottom: 0px;
+}
 div.frame .content {
     overflow: auto;
 }
