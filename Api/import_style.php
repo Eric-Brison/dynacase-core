@@ -35,7 +35,7 @@ function getStyleInherit($name, &$sty_colorsh, &$sty_consth, &$sty_localsh)
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("update list of available style");
-$name = $usage->addNeededParameter("name", "name of style file");
+$name = $usage->addRequiredParameter("name", "name of style file");
 $html = ($usage->addOptionnalParameter("html", "html") != "");
 
 $usage->verify();

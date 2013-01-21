@@ -38,7 +38,7 @@ class TestUsage extends TestCaseDcp
         $usage = '';
         try {
             $u = new \ApiUsage();
-            $u->addNeededParameter($argNeeded, $def);
+            $u->addRequiredParameter($argNeeded, $def);
             $u->verify();
         }
         catch(\Exception $e) {
@@ -58,7 +58,7 @@ class TestUsage extends TestCaseDcp
         $error = '';
         try {
             $u = new \ApiUsage();
-            $u->addNeededParameter($argNeeded, $def);
+            $u->addRequiredParameter($argNeeded, $def);
             $u->verify(true);
         }
         catch(\Dcp\ApiUsage\Exception $e) {

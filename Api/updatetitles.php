@@ -22,9 +22,8 @@ include_once ("FDL/Class.Doc.php");
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("Update titles");
-$className = $usage->addNeededParameter("class", "classname filter"); // classname filter
-$famId = $usage->addNeededParameter("famid", "family filter"); // familly filter
-
+$className = $usage->addRequiredParameter("class", "classname filter"); // classname filter
+$famId = $usage->addRequiredParameter("famid", "family filter"); // familly filter
 $usage->verify();
 
 $appl = new Application();

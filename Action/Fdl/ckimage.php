@@ -28,7 +28,7 @@ function ckimage(Action & $action)
     
     $usage = new ActionUsage($action);
     /* Internal numFunc */
-    $numFunc = $usage->addNeededParameter("CKEditorFuncNum", "CKEditorFuncNum");
+    $numFunc = $usage->addRequiredParameter("CKEditorFuncNum", "CKEditorFuncNum");
     
     $startpage = $usage->addOptionnalParameter("page", "pageNumber", array() , "0");
     $key = $usage->addOptionnalParameter("key", "key", array() , "");

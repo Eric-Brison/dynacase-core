@@ -23,7 +23,7 @@ include_once ("FREEDOM/freedom_import.php");
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Import documents from description file");
-$filename = $usage->addNeededParameter("file", "the description file path");
+$filename = $usage->addRequiredParameter("file", "the description file path");
 $analyze = $usage->addOptionnalParameter("analyze", "analyze only", array(
     "yes",
     "no"

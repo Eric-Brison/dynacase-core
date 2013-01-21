@@ -57,7 +57,6 @@ class OOoLayout extends Layout
     protected $dom;
     /**
      * construct template using an open document text file
-     * @api initialize open document template
      * @param string $caneva open document file of the template
      * @param Action $action current action
      * @param Doc $doc document
@@ -601,7 +600,6 @@ class OOoLayout extends Layout
     }
     /**
      * set key/value pair assume key if XML fragment well formed
-     * @api set key to template
      * @param string $tag the key to replace
      * @param string|string[] $val the value for the key
      */
@@ -619,7 +617,6 @@ class OOoLayout extends Layout
     }
     /**
      * set key/value pair and XML entity encode
-     * @api set key to template -
      * @param string $tag the key to replace
      * @param string $val the value for the key
      */
@@ -655,7 +652,6 @@ class OOoLayout extends Layout
     }
     /**
      * get value of $tag key
-     * @api get jey value previouly set by ::set
      * @param string $tag
      */
     public function get($tag)
@@ -1402,7 +1398,6 @@ class OOoLayout extends Layout
     }
     /**
      * Initialize of list to be used in table or list
-     * @api set values for a multiple value
      * @param string $key the key variable
      * @param array $t the values of the key
      */
@@ -1463,7 +1458,6 @@ class OOoLayout extends Layout
     }
     /*
      * set array to be use in repeat set like table, list-item or section
-     * @api set values to complete open document table
      * @param array $data the arry to set
     */
     public function setrepeatable(array $data)
@@ -1872,7 +1866,6 @@ class OOoLayout extends Layout
     /**
      * generate OOo document
      * get temporary file path of result
-     * @api generate ODT file and get file path
      * @throws Dcp\Layout\Exception
      * @return string odt file path
      */

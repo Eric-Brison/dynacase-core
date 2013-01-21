@@ -20,7 +20,7 @@ include_once ("FDL/import_file.php");
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("to big importation");
-$fimport = $usage->addNeededParameter("file", "file name");
+$fimport = $usage->addRequiredParameter("file", "file name");
 $usage->verify();
 
 if (seemsODS($fimport)) {

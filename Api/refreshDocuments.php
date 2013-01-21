@@ -41,7 +41,7 @@ function color_warning($msg)
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Refresh documents ");
-$famId = $usage->addNeededParameter("famid", "the family identifier used to filter");
+$famId = $usage->addRequiredParameter("famid", "the family identifier used to filter");
 $method = $usage->addOptionnalParameter("method", "method to use)", array() , "refresh");
 $arg = $usage->addOptionnalParameter("arg", "optional method argument to set when calling method");
 $revision = $usage->addOptionnalParameter("revision", "use all revision", array(

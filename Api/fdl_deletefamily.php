@@ -22,7 +22,7 @@ include_once ("FDL/Class.DocFam.php");
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Delete family document and its documents");
-$docid = $usage->addNeededParameter("famid", "special docid");
+$docid = $usage->addRequiredParameter("famid", "special docid");
 $force = ($usage->addOptionnalParameter("force", "force", null, "yes") == "yes") ? true : false;
 $usage->verify();
 
@@ -47,7 +47,7 @@ destroyFamily($dbaccess, $docid, $force);
 function destroyFamily($dbaccess, $idfam, $force = false)
 {
     global $action;
-
+    
     $tdoc = getTDoc($dbaccess, $idfam);
     if ($tdoc) {
         $resid = $tdoc["id"];

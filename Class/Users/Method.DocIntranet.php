@@ -308,7 +308,6 @@ class _IGROUPUSER extends Doc
     }
     /**
      * return system account object conform to whatid
-     * @api get system account corresponding to this document
      * @return Account return false if not found
      */
     function getAccount($nocache = false)

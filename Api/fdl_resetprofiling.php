@@ -24,8 +24,8 @@ include_once ("FDL/Class.Doc.php");
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("Reset profiling use when restore context from archive");
-$user = $usage->addNeededParameter("login", "login");
-$password = $usage->addNeededParameter("password", "password");
+$user = $usage->addRequiredParameter("login", "login");
+$password = $usage->addRequiredParameter("password", "password");
 
 $usage->verify();
 /**

@@ -417,7 +417,6 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return family parameter
      *
-     * @api get parameter value
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      * @return string parameter value
@@ -441,7 +440,6 @@ create unique index idx_idfam on docfam(id);";
     }
     /**
      * return all family parameter - seach in parents if parameter value is null
-     * @api get all parameter's value (use family parents if needed)
      *
      * @return array string parameter value
      */
@@ -451,7 +449,6 @@ create unique index idx_idfam on docfam(id);";
     }
     /**
      * return own family parameters values - no serach in parent families
-     * @api get all parameter's value (only these family)
      * @return array string parameter value
      */
     function getOwnParams()
@@ -477,7 +474,6 @@ create unique index idx_idfam on docfam(id);";
     /**
      * set family parameter value
      *
-     * @api set new parameter value
      * @param string $idp parameter identifier
      * @param string $val value of the parameter
      * @return string error message
@@ -566,7 +562,6 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return all family default values
      * search in parents families if value is null
-     * @api get all default values (parent families)
      *
      * @return array string default value
      */
@@ -576,7 +571,6 @@ create unique index idx_idfam on docfam(id);";
     }
     /**
      * return own default value not inherit default
-     * @api get all default values of family itself (no use parents)
      *
      * @return array string default value
      */
@@ -587,7 +581,6 @@ create unique index idx_idfam on docfam(id);";
     /**
      * set family default value
      *
-     * @api set a new default value
      * @param string $idp parameter identifier
      * @param string $val value of the default
      * @return void
@@ -803,7 +796,6 @@ create unique index idx_idfam on docfam(id);";
         return $this->_configuration;
     }
     /**
-     * @api get XML Schema for create XML document of these family
      * @return string
      */
     function getXmlSchema()
@@ -857,7 +849,6 @@ create unique index idx_idfam on docfam(id);";
     */
     /**
      * Reset properties configuration
-     * @api Reset properties configuration
      * @return \DocFam
      */
     public function resetPropertiesParameters()
@@ -867,7 +858,6 @@ create unique index idx_idfam on docfam(id);";
     }
     /**
      * Get a property's parameter's value
-     * @api Get a property's parameter's value
      * @param string $propName The property's name
      * @param string $pName The parameter's name
      * @return bool|string boolean false on error, string containing the parameter's value
@@ -892,7 +882,6 @@ create unique index idx_idfam on docfam(id);";
     /**
      * Set a parameter's value on a property
      *
-     * @api Set a parameter's value on a property
      * Note: The value is set on the object but not saved in the
      * database, so it's your responsibility to call modify() if you
      * want to make the change persistent.
@@ -924,7 +913,6 @@ create unique index idx_idfam on docfam(id);";
     }
     /**
      * Get sortable properties.
-     * @api get sortable properties.
      * @return array properties' Names with their set of parameters
      */
     public function getSortProperties()

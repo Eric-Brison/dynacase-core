@@ -23,7 +23,7 @@ global $action;
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Manage application");
-$appname = $usage->addNeededParameter("appname", "application name");
+$appname = $usage->addRequiredParameter("appname", "application name");
 $method = $usage->addOptionnalParameter("method", "action to do", array(
     "init",
     "update",

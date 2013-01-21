@@ -40,6 +40,8 @@ class DocumentList implements Iterator, Countable
     /**
      * get number of returned documents
      * can be upper of real length due to callback map
+     *
+     * @api Get number of returned documents
      * @return int
      */
     public function count()
@@ -134,6 +136,8 @@ class DocumentList implements Iterator, Countable
     }
     /**
      * set document identifiers to be used in iterator
+     *
+     * @api Set document identifiers to be used in iterator
      * @param int[] $ids document identifiers
      * @param bool $useInitid if true identifier must ne initid else must be latest ids
      */

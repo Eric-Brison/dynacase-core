@@ -21,10 +21,10 @@ include_once ("FDL/Class.DocFam.php");
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Update attribute value for a document set");
-$sObject = $usage->addNeededParameter("objectFile", "serialized object");
-$sArg = $usage->addNeededParameter("argsFile", "serialized args");
-$method = $usage->addNeededParameter("method", "method to apply");
-$statusFile = $usage->addNeededParameter("statusFile", "status file output");
+$sObject = $usage->addRequiredParameter("objectFile", "serialized object");
+$sArg = $usage->addRequiredParameter("argsFile", "serialized args");
+$method = $usage->addRequiredParameter("method", "method to apply");
+$statusFile = $usage->addRequiredParameter("statusFile", "status file output");
 $usage->verify();
 /**
  * @var UpdateAttribute $ua

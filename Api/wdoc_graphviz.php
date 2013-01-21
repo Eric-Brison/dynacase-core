@@ -795,7 +795,7 @@ if ($dbaccess == "") {
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Create graph image for workflow");
-$docid = $usage->addNeededParameter("docid", "workflow identificator");
+$docid = $usage->addRequiredParameter("docid", "workflow identificator");
 $orient = $usage->addOptionnalParameter("orient", "orientation", array(
     "LR",
     "TB",

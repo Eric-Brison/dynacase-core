@@ -156,7 +156,6 @@ class SearchDoc
     protected $returnsFields = array();
     /**
      * initialize with family
-     * @api search contructor
      *
      * @param string $dbaccess database coordinate
      * @param int|string $fromid family identifier to filter
@@ -259,6 +258,7 @@ class SearchDoc
     /**
      * add join condition
      *
+     * @api Add join condition
      * @code
      * $s=new searchDoc();
      $s->trash='only';
@@ -614,7 +614,6 @@ class SearchDoc
         deprecatedFunction();
         return $this->getNextDoc();
     }
-
     /**
      * can, be use in loop
      * ::search must be call before

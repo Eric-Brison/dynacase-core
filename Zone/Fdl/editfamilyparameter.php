@@ -15,8 +15,8 @@ include_once ("FDL/editcard.php");
 function editfamilyparameter(Action & $action)
 {
     $usage = new ActionUsage($action);
-    $famid = $usage->addNeededParameter("famid", _("family id"));
-    $attrid = $usage->addNeededParameter("attrid", _("attribute id"));
+    $famid = $usage->addRequiredParameter("famid", _("family id"));
+    $attrid = $usage->addRequiredParameter("attrid", _("attribute id"));
     $default = $usage->addOptionnalParameter("emptyValue", _("value for empty field"));
     $value = $usage->addOptionnalParameter("value", _("value in field"));
     $onChange = $usage->addOptionnalParameter("submitOnChange", _("Sending input on change?"));

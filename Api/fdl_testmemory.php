@@ -21,8 +21,12 @@ global $appl;
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("List Animal");
-$mode = $usage->addNeededParameter("mode", "Mode", array("TABLE", "OBJECT", "ITEM"));
-$family = $usage->addNeededParameter("famid", "family identificator");
+$mode = $usage->addRequiredParameter("mode", "Mode", array(
+    "TABLE",
+    "OBJECT",
+    "ITEM"
+));
+$family = $usage->addRequiredParameter("famid", "family identificator");
 $slice = $usage->addOptionnalParameter("slice", "number of document to retrieve", null, 10);
 $usage->verify();
 
