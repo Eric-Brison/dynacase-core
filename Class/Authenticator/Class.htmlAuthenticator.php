@@ -234,7 +234,7 @@ class htmlAuthenticator extends Authenticator
         return $session_auth->read($name);
     }
     
-    public function run()
+    public function logon()
     {
         include_once ('WHAT/Class.ActionRouter.php');
         include_once ('WHAT/Class.Account.php');
@@ -276,4 +276,5 @@ class htmlAuthenticator extends Authenticator
         
         $actionRouter->executeAction();
     }
+
 }

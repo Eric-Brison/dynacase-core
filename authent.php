@@ -12,10 +12,11 @@ $auth = getAuthenticator();
 if ($auth === false) {
     throw new \Dcp\Exception("Could not get authenticator.");
 }
-if (!method_exists($auth, 'run')) {
-    throw new \Dcp\Exception("Authenticator '%s' does not provide a run() method.", get_class($auth));
+
+if (!method_exists($auth, 'logon')) {
+    throw new \Dcp\Exception("Authenticator '%s' does not provide a logon() method.", get_class($auth));
 }
-$auth->run();
+$auth->logon();
 
 function getAuthenticator($authtype = '') {
     if ($authtype == '') {
