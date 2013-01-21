@@ -39,6 +39,12 @@ class apacheAuthenticator extends Authenticator
 
     function logout($redir_uri = '')
     {
+        if ($redir_uri == '') {
+            $pUri = parse_url($_SERVER['REQUEST_URI']);
+            if (preg_match(':(?P<path>.*/)[^/]*$:', $pUri['path'], $m)) {
+                $redir_uri = $m['path'];
+            }
+        }
         header('Location: ' . $redir_uri);
         return true;
     }

@@ -115,7 +115,10 @@ class basicAuthenticator extends Authenticator
     {
         setcookie('logout', 'true', 0);
         if ($redir_uri == '') {
-            $redir_uri = getParam('CORE_BASEURL');
+            $pUri = parse_url($_SERVER['REQUEST_URI']);
+            if (preg_match(':(?P<path>.*/)[^/]*$:', $pUri['path'], $m)) {
+                $redir_uri = $m['path'];
+            }
         }
         header('Location: ' . $redir_uri);
         return TRUE;
@@ -131,4 +134,3 @@ class basicAuthenticator extends Authenticator
         return '';
     }
 }
-?>

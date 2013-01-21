@@ -13,10 +13,14 @@ if ($auth === false) {
     throw new \Dcp\Exception("Could not get authenticator.");
 }
 
-if (!method_exists($auth, 'logon')) {
-    throw new \Dcp\Exception("Authenticator '%s' does not provide a logon() method.", get_class($auth));
+if (isset($_REQUEST['logout'])) {
+    AuthenticatorManager::closeAccess();
+} else {
+    if (!method_exists($auth, 'logon')) {
+        throw new \Dcp\Exception(sprintf("Authenticator '%s' does not provide a logon() method.", get_class($auth)));
+    }
+    $auth->logon();
 }
-$auth->logon();
 
 function getAuthenticator($authtype = '') {
     if ($authtype == '') {
