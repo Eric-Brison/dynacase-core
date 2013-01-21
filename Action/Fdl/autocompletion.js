@@ -61,9 +61,9 @@ function sendAutoChoice(event,docid,  choiceButton,attrid, iopt,expnameid,idx ) 
 
 	if ((! inp)||(inp==null)) {
 		alert('[TEXT: input not found]'+attrid);
-	} else {    
+	} else {
 		inp.focus();
-		activeAutoInit(event,docid,  inp,iopt,expnameid,idx );    
+		activeAutoInit(event,docid,  inp,iopt,expnameid,idx );
 		_forceone=true;
 		callSuggestions(inp.value);
 	}
@@ -71,7 +71,7 @@ function sendAutoChoice(event,docid,  choiceButton,attrid, iopt,expnameid,idx ) 
 
 var onKeyDownHandlerDefined = false;
 function activeAutoInit(event,docid,  inp,iopt,expnameid,idx ) {
-	var CORE_STANDURL='?sole=Y'; 
+	var CORE_STANDURL='?sole=Y';
 	var index='';
 	var domindex=''; // needed to set values in arrays
 	var iskey=inp.id;
@@ -102,12 +102,12 @@ function activeAutoInit(event,docid,  inp,iopt,expnameid,idx ) {
 		attrid=inp.name.substr(1,ic-1);
 		if (idx == undefined || idx==-1) index=getRowNumber(inp, 'tarray');
 		else index=idx;
-		domindex = inp.id.substring(attrid.length);    
+		domindex = inp.id.substring(attrid.length);
 	} else {
 		attrid=inp.name.substr(1,inp.name.length-1);;
 	}
 	if (expnameid) attrid=expnameid;
-	if (!iopt) iopt=''; 
+	if (!iopt) iopt='';
 	_adresseRecherche = CORE_STANDURL+'&app=FDL&action=AUTOCOMPLETION&docid='+docid+'&attrid='+attrid+'&index='+index+'&domindex='+domindex+iopt;
 
 }
@@ -121,7 +121,7 @@ function addPostValue(post,thename,thevalue) {
 	if( autocompletion_enctype == 'urlencoded' ) {
 		return post+"&"+encodeURIComponentPlusSpaces(thename)+"="+encodeURIComponentPlusSpaces(thevalue);
 	}
-	
+
 	var bs = new String("\r\n--" + BOUNDARY + "\r\n");
 	bs += "Content-Disposition: form-data; name=\""+thename+"\"\r\n\r\n";
 	bs += thevalue;
@@ -133,7 +133,7 @@ function addPostValue(post,thename,thevalue) {
 function completeChoiceAuto(index) {
 	if (index < 0) return;
 	if (! _xmlHttp) return;
-	var allvalues = _xmlHttp.responseXML.getElementsByTagName('values');  
+	var allvalues = _xmlHttp.responseXML.getElementsByTagName('values');
 	var values=allvalues[index].getElementsByTagName('val');
 
 	var tval = new Array();
@@ -236,8 +236,8 @@ var _adresseRecherche = "options.php" //l'adresse à interroger pour trouver les
 		var ie=_documentForm.elements.length;
 		for (var i=0;i<ie;i++) {
 			if (_documentForm.elements[i].name && _documentForm.elements[i].name!='') {
-				if(_documentForm.elements[i].tagName.toLowerCase() == 'input' && 
-					(_documentForm.elements[i].type.toLowerCase() == 'checkbox' || 
+				if(_documentForm.elements[i].tagName.toLowerCase() == 'input' &&
+					(_documentForm.elements[i].type.toLowerCase() == 'checkbox' ||
 					 _documentForm.elements[i].type.toLowerCase() == 'radio')) {
 					if(_documentForm.elements[i].checked) {
 						bs=addPostValue(bs,_documentForm.elements[i].name,_documentForm.elements[i].value);
@@ -251,7 +251,7 @@ var _adresseRecherche = "options.php" //l'adresse à interroger pour trouver les
 		}
 
 		_xmlHttp.onreadystatechange=function() {
-			if(_xmlHttp.readyState==4) {	
+			if(_xmlHttp.readyState==4) {
 				if (_xmlHttp.responseXML) {
 
 					var liste = traiteXmlSuggestions(_xmlHttp.responseXML);
@@ -260,8 +260,8 @@ var _adresseRecherche = "options.php" //l'adresse à interroger pour trouver les
 						metsEnPlace(valeur,liste);
 						if (_forceone && (liste.length == 1)) {
 							completeChoiceAuto(0);
-						}		  
-					} 
+						}
+					}
 				} else if (_xmlHttp.responseText) {
 					if (_xmlHttp.responseText.substring(0,5) != '<?xml')
 						alert('['+_xmlHttp.responseText+']');
@@ -292,7 +292,7 @@ function traiteXmlSuggestions(xmlDoc) {
 	for (var i=0; i < options.length; i++) {
 		optionsListe.push(options[i].firstChild.data);
 	}
-	if (options.length==0) {    
+	if (options.length==0) {
 		var status = xmlDoc.getElementsByTagName('status');
 		if (status.length==1) {
 			var msg=status[0].getAttribute('warning');
@@ -352,7 +352,7 @@ function calculateOffsetTop(r){
                 n=n.nextSibling;
             }
             t=calculateOffset(n,"offsetTop");
-        } 
+        }
         if ((t==0) && r.previousSibling) {
              n=r.previousSibling;
             while (n && n.nodeType!=1) {
@@ -416,7 +416,7 @@ function cleanCompletionDiv() {
 		_completeDiv.removeChild(_completeDiv.childNodes[0]);
 	}
 	_completeDiv.style.height='auto';
-	_completeDiv.style.overflow='';   
+	_completeDiv.style.overflow='';
 }
 function metsEnPlace(valeur, liste){
 	cleanCompletionDiv();
@@ -425,7 +425,7 @@ function metsEnPlace(valeur, liste){
 		_completeDiv.style.overflow='auto';
 	} else {
 		_completeDiv.style.height='auto';
-		_completeDiv.style.overflow='';    
+		_completeDiv.style.overflow='';
 	}
 
 	// mise en place des suggestions
@@ -462,12 +462,17 @@ function metsEnPlace(valeur, liste){
 		hideCompleteDiv();
 	}
 }
+var deleteCompleteDiv=function(){
+    hideCompleteDiv();
+    cleanCompletionDiv();
+};
 
 function displayWarning(warning){
 	cleanCompletionDiv();
 	var ow=document.createElement("SPAN");
 	ow.className="Error";
 	ow.innerHTML=warning;
+    ow.onmousedown=deleteCompleteDiv;
 	_completeDiv.appendChild(ow);
 	showCompleteDiv();
 }
@@ -493,7 +498,7 @@ var onKeyDownHandler=function(event){
 	if(event) {
 		_lastKeyCode=event.keyCode;
 		if (_lastKeyCode==13) { // on CR
-			var e = (event.target) ? event.target : ((event.srcElement) ? event.srcElement : null);	
+			var e = (event.target) ? event.target : ((event.srcElement) ? event.srcElement : null);
 			if (e && e.getAttribute('autoinput')=='1') {
 				if (_completeDiv && _completeDiv.style.visibility=='visible') stopPropagation(event); // stop submit
 				completeChoiceAuto(_highlightedSuggestionIndex);
