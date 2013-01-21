@@ -9,85 +9,75 @@
         <div class="page">
             <div class="left-block"><!-- block dynacase -->
                 <div id="apropos">
-                    <div class="intro">&rarr; about</div>
+                    <div class="intro">&rarr; à propos</div>
                     <div class="en">
                         <p>
-                            All rights reserved under the granted license by
-                            <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>
+                            Tous droits réservés <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>
                             .
                         </p>
-                        <p>The enterprise edition is guaranteed and allows access to corrective patch on private repository.</p>
-                        <p>
-                            The enterprise edition allows the customer to change the license in agreement with
-                            <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>
-                            .
-                        </p>
-                        <p>
-                            The community edition is not guaranteed and necessarily under
-                            <a target="_blank" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License V3 - AGPL V3</a>
-                            .
-                        </p>
+                        <p>La version entreprise est supportée par Anakeen et permet d'accéder à des releases de maintenance et des patches correctifs sur des dépôts privés.</p>
+                        <p>La version entreprise permet le changement de licence en accord avec <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>.</p>
+                        <p>La version communautaire n'est pas supportée et est distribuée sous licence <a target="_blank" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License V3 - AGPL V3</a>.</p>
                         <p>
                             <a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase</a>
-                            and
+                            ,
                             <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>
-                            and associated logos are trademarks of
-                            <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>
-                            .
-                        </p>
+                            et les logos associés sont des marques déposées <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>.</p>
                         <p>
                             <a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase Platform</a>
-                            is written in
-                            <a href="http://www.php.net" target="_blank">PHP</a>
+                            est développé en <a href="http://www.php.net" target="_blank">PHP</a>.
                             .
                         </p>
                         [IF HAVE_EXTERNALS]
                         <a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase Platform</a>
-                        uses the following open source components&nbsp;: 
+                        utilise les logiciels Open Source suivants&nbsp;:
                         <ul>
                             [BLOCK EXTERNALS]
                             <li>
                                 <a href="[site]" target="_blank">[name]</a>
-                                <a href="[license]" target="_blank">(license)</a>
+                                <a href="[license]" target="_blank">(licence)</a>
                             </li>
                             [ENDBLOCK EXTERNALS]
+                            <li>
+                                <a href="http://www.dynacase.org/pages/open-source.html" target="_blank">plus...</a>
+                            </li>
                         </ul>
                         [ENDIF HAVE_EXTERNALS]
                     </div>
                 </div> <!-- block apropos -->
             </div> <!-- enf of block left-block -->
             <div class="right-block"><!-- block dynacase -->
-                <div class="intro">&rarr; welcome</div>
+                <div class="intro">&rarr; bienvenue</div>
                 <div id="hello"><!-- block hello -->
                     <div id="header">
-                        <div class="title"> Dynacase Platform</div>
-                        <div class="content">The open source case management platform.</div>
+                        <div class="title"> Dynacase Platform 3.2</div>
+                        <div class="content">Simplifie & accélère le développement | Facilite & sécurise l'exécution</div>
                         <div class="version">
-                            installed version
+                            Version installée
                             <span>[version]</span>
                         </div>
                     </div>
-                    <div id="welcome">
-                        Hello [userRealName],
-                        <br />
-                        congratulations, Dynacase Platform is ready to run.
+                    <div id="welcome">Félicitations, Dynacase Platform est prêt à fonctionner.</div>
+                    <div class="documentation">Pour plus d'information, nous vous invitons à vous rendre sur le
+                        <a href="http://docs.anakeen.com/dynacase/3.2/" target="_blank">
+                        centre de documentation Dynacase
+                        </a>
                     </div>
-                    <div class="description"></div>
+                    </div>
                     <div class="links">
                         <div>
-                            <a href="http://www.dynacase.org/freedom_3/install/wiff" target="_blank">
-                                <img src="[IMG:dc-control-130x60.png]" />
-                                <div class="label">Manage repository, context and archive with Control.</div>
+                            <a href="http://www.dynacase.org" target="_blank">
+                                <img src="[IMG:dc-platform-130x60.png]" alt="Dynacase Platform logo"/>
+                                <div class="label">Développez vos applications avec Dynacase Platform</div>
                             </a>
+                            <div class="clear"></div>
                         </div>
                         <div>
-                            <a href="http://www.dynacase.org" target="_blank">
-                                <img src="[IMG:dc-platform-130x60.png]" />
-                                <div class="label">Build your case management applications with Platform</div>
-                                
+                            <a href="http://www.dynacase.org/" target="_blank">
+                                <img src="[IMG:dc-control-130x60.png]" alt="Dynacase Control logo"/>
+                                <div class="label">Gèrez, administrez vos déploiements et les contextes avec Dynacase Control.</div>
                             </a>
-                            <div class="manual">Reference manual : <a class="manual" href="[CORE_STANDURL]app=CORE&action=HELPVIEW&filename=dynacase-core.pdf">Dynacase-core.pdf</a>
-                                </div>
+                            <div class="clear"></div>
                         </div>
                     </div>
                     <div class="clear">

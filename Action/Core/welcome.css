@@ -1,5 +1,5 @@
 html { background-color:[COLOR_WHITE]; padding:0; margin:0px; }
-body { font-family:Trebuchet MS, Helvetica, sans; background-color:#fff; padding:0px; margin:0px; color:[COLOR_A1]; }
+body { font-family:Ubuntu, Trebuchet MS, Helvetica, sans; background-color:#fff; padding:0px; margin:0px; color:[COLOR_A4]; }
 
 img { border:0; }
 a, a:link, a:visited { }
@@ -17,7 +17,7 @@ p { margin:0; padding:0 }
     padding:0; 
     margin:0; 
     position:fixed; 
-    width:30%;
+    width:20%;
     left:0px;
 }
 #apropos { padding:10px; color:[COLOR_C7]; }
@@ -31,26 +31,26 @@ p { margin:0; padding:0 }
 /* 
  * right block
  */
-.right-block { margin:0 0 0 30%; padding:10px; }
-.right-block .intro { text-align:right; font-size:80%; font-weight:bold; color:[COLOR_A0]; }
+.right-block { margin:0 0 0 20%; padding:10px; }
+.right-block .intro { text-align:right; font-size:80%; font-weight:bold; }
 
 #hello {  padding:60px 40px; }
 
-#header { color:[COLOR_A7];}
+#header { text-align:center;}
 #header .title { font-weight:bold; font-size:400%; }
 #header div.content { font-weight:bold; font-size:200%; }
-#welcome { margin:50px 0 60px 0px; font-size:200%;  }
+#welcome { text-align:center; margin:50px 0 60px 0px; font-size:200%;  }
 #header .version {  margin:10px 0 0 0; font-size:100%; }
 #header .version span {  color:[COLOR_A0]; }
 
 
 
 
-.links { }
-.links > div { float:left; width:160px;  margin:10px 25px 10px 0px; overflow:auto; }
-.links a { color:[COLOR_A0]; display:block; text-decoration:none; }
-.links div.label { clear:both; padding:0px; font-size:100%; }
-.links img {  float:left; margin-right:10px;  }
+.links { text-align:center; padding: 60px 40px; }
+.links > div { width:48%; float:left;}
+.links a { margin-right 10%; display:block; }
+.links .label { padding:0px 30px; font-size:150%; }
+.links img { }
 
 div.manual {
     margin-top:20px;
@@ -72,3 +72,9 @@ a.manual {
 
 
 .clear { clear:both; }
+
+.documentation {
+    text-align: center;
+    font-size: 200%;
+    font-weight: bold;
+}
