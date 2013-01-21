@@ -15,11 +15,6 @@
  */
 /**
  */
-// ---------------------------------------------------------------------------
-// $Id: Class.Log.php,v 1.15 2008/10/31 16:57:18 jerome Exp $
-// yannick.lebriquer@anakeen.com
-// ---------------------------------------------------------------------------
-$CLASS_LOG_PHP = "";
 /**
  * Log manager
  * log message according to CORE_LOGLEVEL parameter
@@ -35,6 +30,42 @@ class Log
     private $fin;
     private $tic;
     private $ptext;
+    /**
+     * Constant to set log to debug level
+     * Debug level is used by Core.
+     * It's used to assert taht Core works properly
+     */
+    const DEBUG = "D";
+    /**
+     * Constant to set log to callstack level
+     */
+    const CALLSTACK = "C";
+    /**
+     * Constant to set log to trace level
+     * The trace level is a level reserved for user usage.
+     * Core will never log with this level
+     */
+    const TRACE = "T";
+    /**
+     * Constant to set log to info level
+     */
+    const INFO = "I";
+    /**
+     * Constant to set log to warning level
+     */
+    const WARNING = "W";
+    /**
+     * Constant to set log to error level
+     */
+    const ERROR = "E";
+    /**
+     * Constant to set log to fatal level
+     */
+    const FATAL = "F";
+    /**
+     * Constant to set log to deprecated level
+     */
+    const DEPRECATED = "O";
     // ------------------------------------------------------------------------
     
     /**
@@ -68,14 +99,23 @@ class Log
      */
     public function debug($string)
     {
-        $this->wlog("D", $string);
+        $this->wlog(Log::DEBUG, $string);
     }
     /**
      * @param string $string message text
      */
     public function callstack($string)
     {
-        $this->wlog("C", $string);
+        $this->wlog(Log::CALLSTACK, $string);
+    }
+    /**
+     * log with trace level
+     * @api log with trace level
+     * @param string $string mesage text
+     */
+    public function trace($string)
+    {
+        $this->wlog(Log::TRACE, $string);
     }
     /**
      * log with info level
@@ -84,7 +124,7 @@ class Log
      */
     public function info($string)
     {
-        $this->wlog("I", $string);
+        $this->wlog(Log::INFO, $string);
     }
     /**
      * log with warning level
@@ -93,7 +133,7 @@ class Log
      */
     public function warning($string)
     {
-        $this->wlog("W", $string);
+        $this->wlog(Log::WARNING, $string);
     }
     /**
      * log with error level
@@ -102,7 +142,7 @@ class Log
      */
     public function error($string)
     {
-        $this->wlog("E", $string);
+        $this->wlog(Log::ERROR, $string);
     }
     /**
      * log with fatal level
@@ -111,7 +151,7 @@ class Log
      */
     public function fatal($string)
     {
-        $this->wlog("F", $string);
+        $this->wlog(Log::FATAL, $string);
     }
     /**
      * log with deprecated level
@@ -122,7 +162,7 @@ class Log
      */
     public function deprecated($string)
     {
-        $this->wlog("O", $string);
+        $this->wlog(Log::DEPRECATED, $string);
     }
     /**
      * to set start time
@@ -188,7 +228,7 @@ class Log
     }
     /**
      * main log function
-     * @param string $sta log code (one character : IWEFDO)
+     * @param string $sta log code (one character : IWEFDOT)
      * @param string $str message to log
      * @param null $args unused
      * @param int $facility syslog level
@@ -215,11 +255,11 @@ class Log
                 fclose($fd);
             } else {
                 switch ($sta) {
-                    case "D":
+                    case Log::DEBUG:
                         $pri = LOG_DEBUG;
                         break;
 
-                    case "O":
+                    case Log::DEPRECATED:
                         $class = (isset($td[4]["class"])) ? $td[4]["class"] : '';
                         $td = @debug_backtrace(false);
                         if ($str) {
@@ -229,20 +269,24 @@ class Log
                         $pri = LOG_INFO;
                         break;
 
-                    case "I":
+                    case Log::INFO:
                         $pri = LOG_INFO;
                         break;
 
-                    case "W":
+                    case Log::WARNING:
                         $pri = LOG_WARNING;
                         break;
 
-                    case "E":
+                    case Log::ERROR:
                         $pri = LOG_ERR;
                         break;
 
-                    case "F":
+                    case Log::FATAL:
                         $pri = LOG_ALERT;
+                        break;
+
+                    case Log::TRACE:
+                        $pri = LOG_DEBUG;
                         break;
 
                     default:

@@ -53,7 +53,7 @@ fi
 AC_MSG_NOTICE([PubRule located at $PUBRULE])
 
 AC_SUBST(LOGLEVEL)
-LOGLEVEL=IWEF
+LOGLEVEL=WEF
 AC_ARG_WITH(log-level,
 [  --with-log-level=log-level   Set Log Level], LOGLEVEL=$withval)
 
