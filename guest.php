@@ -18,6 +18,13 @@
 
 include_once ('WHAT/Class.ActionRouter.php');
 
+$allowGuest = getParam('CORE_ALLOW_GUEST', 'no');
+if ($allowGuest != 'yes') {
+    $e = new Dcp\Core\Exception("CORE0010");
+    $e->addHttpHeader('HTTP/1.0 503 Guest access not allowed');
+    throw $e;
+}
+
 if (ActionRouter::inMaintenance()) {
     include_once ('TOOLBOX/stop.php');
     exit(0);
