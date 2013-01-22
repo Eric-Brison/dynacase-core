@@ -22,6 +22,10 @@ if (isset($_REQUEST['logout'])) {
     $auth->logon();
 }
 
+/**
+ * @param string $authtype
+ * @return Authenticator
+ */
 function getAuthenticator($authtype = '') {
     if ($authtype == '') {
         $authtype = getAuthType();

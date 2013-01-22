@@ -166,7 +166,7 @@ class AuthenticatorManager
         return self::AccessOk;
     }
     
-    public function closeAccess()
+    public static function closeAccess()
     {
         $authtype = getAuthType();
         $authClass = strtolower($authtype) . "Authenticator";

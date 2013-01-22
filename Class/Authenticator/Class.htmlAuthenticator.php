@@ -65,7 +65,7 @@ class htmlAuthenticator extends Authenticator
         return Authenticator::AUTH_NOK;
     }
     /**
-     * retrieve authentification session
+     * retrieve authentication session
      * @return Session the session object
      */
     public function getAuthSession()
@@ -133,9 +133,11 @@ class htmlAuthenticator extends Authenticator
         header(sprintf('Location: %s', $location));
         return TRUE;
     }
+
     /**
      * return url used to connect user
      * @param array $extendedArg
+     * @throws Dcp\Exception
      * @return string
      */
     public function getAuthUrl(array $extendedArg = array())
