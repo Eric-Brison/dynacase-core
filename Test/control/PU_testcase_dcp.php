@@ -55,6 +55,11 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     {
         global $action;
     }
+    
+    public static function log($text)
+    {
+        file_put_contents(TestSuiteDcp::logFile, sprintf("[%s] %s\n",date("Y-m-d H:i:s"),$text), FILE_APPEND);
+    }
     /**
      * Make a begin in the db
      *

@@ -230,6 +230,9 @@ class DocFormFormat
                 break;
 
             case "option":
+                /** @noinspection PhpDeprecationInspection
+                 * only for very old compatibility
+                 */
                 $input = $this->formatOption($value);
                 break;
 
@@ -875,7 +878,6 @@ class DocFormFormat
 
                     case "bool":
                         $lay = new Layout("FDL/Layout/editenumbool.xml", $action);
-                        
                         $lset = next($enuml);
                         $boolkeys = array_keys($enuml);
                         if ($value == key($enuml)) $lay->set("checkedyesno", "checked");

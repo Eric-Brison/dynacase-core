@@ -79,6 +79,7 @@ if [ "$1" = "I" ] ; then
         DocFam \
         DocHisto \
         DocLog \
+        DocEnum \
         DocWait \
         DocPermExt \
         DocPerm \

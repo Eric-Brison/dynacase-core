@@ -516,7 +516,6 @@ class EnumAttributeValue extends StandardAttributeValue
 {
     public function __construct(NormalAttribute $oa, $v)
     {
-        
         $this->value = $v;
         $this->displayValue = $oa->getEnumLabel($v);
     }
