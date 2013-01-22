@@ -596,6 +596,9 @@ msgstr ""
 msgid "Allocate"
 msgstr ""
 
+msgid "Allow guest access"
+msgstr ""
+
 msgid "Analyse fdl.csv"
 msgstr ""
 

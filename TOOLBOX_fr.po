@@ -598,6 +598,9 @@ msgstr "Voir les droits explicites"
 msgid "Allocate"
 msgstr "Affecter"
 
+msgid "Allow guest access"
+msgstr "Autoriser l'accès invité"
+
 msgid "Analyse fdl.csv"
 msgstr "Analyse fdl.csv"
 
