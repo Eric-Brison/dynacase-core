@@ -39,9 +39,10 @@ function AddLogMsg($msg, $cut = 80)
     global $action;
     if (isset($action->parent)) $action->parent->AddLogMsg($msg, $cut);
 }
+
 /**
  * send a message to system log
- * @param string $functioName
+ * @param string $msg
  */
 function deprecatedFunction($msg = '')
 {
@@ -570,9 +571,12 @@ function getUserId()
     
     return 0;
 }
+
 /**
  * exec list of unix command in background
  * @param array $tcmd unix command strings
+ * @param $result
+ * @param $err
  */
 function bgexec($tcmd, &$result, &$err)
 {
@@ -629,15 +633,20 @@ function getJsVersion()
     
     return $nv;
 }
+
 /**
  * produce an anchor mailto '<a ...>'
  * @param string $to a valid mail address or list separated by comma -supported by client-
- * @param string $anchor content <a...>anchor content</a>
+ * @param string $acontent
  * @param string $subject
  * @param string $cc
  * @param string $bcc
- * @param array $treated as html anchor attribute : key is attribute name and value.. value
- * @param string $force link to be produced according the value
+ * @param string $from
+ * @param array $anchorattr
+ * @param string $forcelink
+ * @internal param string $anchor content <a...>anchor content</a>
+ * @internal param array $treated as html anchor attribute : key is attribute name and value.. value
+ * @internal param string $force link to be produced according the value
  * @return string like user admin dbname anakeen
  */
 function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = "", $from = "", $anchorattr = array() , $forcelink = "")
@@ -818,6 +827,7 @@ function getLcdate()
 /**
  *
  * @param string $core_lang
+ * @return bool|array
  */
 function getLocaleConfig($core_lang = '')
 {
