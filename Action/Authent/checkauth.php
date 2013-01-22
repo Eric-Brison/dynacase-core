@@ -26,11 +26,11 @@ function checkauth(Action & $action)
     $status = AuthenticatorManager::checkAccess();
     //error_log("checkauth: AuthenticatorManager::checkAccess() = {$status}");
     switch ($status) {
-        case 0: // it'good, user is authentified, just log the connexion
+        case AuthenticatorManager::AccessOk: // it'good, user is authentified, just log the connexion
             AuthenticatorManager::secureLog("success", "welcome", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], AuthenticatorManager::$auth->getAuthUser() , $_SERVER["HTTP_USER_AGENT"]);
             break;
 
-        case -1:
+        case AuthenticatorManager::AccessBug:
             // User must change his password
             $action->session->close();
             global $_POST;

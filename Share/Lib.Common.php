@@ -517,7 +517,6 @@ function getAuthTypeParams($freedomctx = "")
     }
     
     if (!array_key_exists(getAuthType() , $freedom_authtypeparams)) {
-        error_log(__FUNCTION__ . ":" . __LINE__ . "> authtype " . getAuthType() . " does not exists in freedom_authtypeparams");
         return array();
     }
     

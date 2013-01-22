@@ -16,45 +16,19 @@
 /**
  */
 
-if (file_exists('maintenance.lock')) {
+include_once ('WHAT/Class.ActionRouter.php');
+
+if (ActionRouter::inMaintenance()) {
     include_once ('TOOLBOX/stop.php');
     exit(0);
 }
 
 include_once ('WHAT/Lib.Main.php');
+include_once ('WHAT/Class.ActionRouter.php');
 
-$authtype = getAuthType();
-if ($authtype != 'basic') {
-    unset($_SERVER['PHP_AUTH_USER']);
+$account = new Account();
+if ($account->setLoginName("anonymous") === false) {
+    throw new \Dcp\Exception(sprintf("anonymous account not found."));
 }
-#
-# This is the main body of App manager
-# It is used to launch application and
-# function giving them all necessary environment
-# element
-#
-#
-
-/**
- * @var Action $action
- */
-$action = null;
-getmainAction($auth = null, $action);
-/**
- * @var Action $action
- */
-if ($action->user->id != ANONYMOUS_ID) {
-    // reopen a new anonymous session
-    setcookie(Session::PARAMNAME, $action->session->id, 0);
-    unset($_SERVER['PHP_AUTH_USER']); // cause IE send systematicaly AUTH_USER & AUTH_PASSWD
-    $action->session->Set("");
-    $action->parent->SetSession($action->session);
-}
-if ($action->user->id != ANONYMOUS_ID) {
-    // reverify
-    print "<B>:~((</B>";
-    exit;
-}
-
-executeAction($action);
-?>
+$actionRouter = new ActionRouter($account);
+$actionRouter->executeAction();

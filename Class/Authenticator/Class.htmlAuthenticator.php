@@ -129,14 +129,9 @@ class htmlAuthenticator extends Authenticator
             $session->register('fromuri', $_SERVER['REQUEST_URI']);
         }
         
-        if (array_key_exists('authurl', $this->parms)) {
-            
-            header(sprintf('Location: %s', $this->getAuthUrl($args)));
-            return TRUE;
-        }
-        
-        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: no authurl of askAuthentication() method defined for " . $this->parms{'type'} . $this->parms{'provider'} . "Provider");
-        return FALSE;
+        $location = $this->getAuthUrl($args);
+        header(sprintf('Location: %s', $location));
+        return TRUE;
     }
     /**
      * return url used to connect user
@@ -145,20 +140,19 @@ class htmlAuthenticator extends Authenticator
      */
     public function getAuthUrl(array $extendedArg = array())
     {
+        if (!isset($this->parms['auth']['app'])) {
+            throw new \Dcp\Exception("Missing html/auth/app config.");
+        }
+        $location = 'authent.php?app=' . $this->parms['auth']['app'];
+        if (isset($this->parms['auth']['action'])) {
+            $location.= '&action=' . $this->parms['auth']['action'];
+        }
+        if (isset($this->parms['auth']['args'])) {
+            $location.= '&' . $this->parms['auth']['args'];
+        }
         $sargs = '';
-        foreach ($extendedArg as $k => $v) $sargs.= sprintf("&%s=%s", $k, urlencode($v));
-        $location = '';
-        if (substr($this->parms{'authurl'}, 0, 9) == "guest.php") {
-            $dirname = dirname($_SERVER["SCRIPT_NAME"]);
-            $location = str_replace('//', '/', $dirname . '/' . $this->parms{'authurl'});
-            if (strpos($location, '?') === false && $sargs != '') {
-                $sargs = sprintf('?%s', $sargs);
-            }
-        } else {
-            $location = $this->parms{'authurl'};
-            if (strpos($location, '?') === false && $sargs != '') {
-                $sargs = sprintf('?%s', $sargs);
-            }
+        foreach ($extendedArg as $k => $v) {
+            $sargs.= sprintf("&%s=%s", $k, urlencode($v));
         }
         return $location . $sargs;
     }
@@ -168,7 +162,6 @@ class htmlAuthenticator extends Authenticator
      */
     public function connectTo($uri)
     {
-        
         $this->getAuthSession()->register('fromuri', $uri);
         header(sprintf('Location: %s', $this->getAuthUrl()));
         exit(0);
@@ -209,8 +202,8 @@ class htmlAuthenticator extends Authenticator
             $session_auth->close();
         }
         if ($redir_uri == "") {
-            if (array_key_exists('authurl', $this->parms)) {
-                header('Location: ' . $this->parms['authurl']);
+            if (isset($this->parms['auth']['app'])) {
+                header('Location: ' . $this->getAuthUrl());
                 return TRUE;
             }
             $redir_uri = GetParam("CORE_BASEURL");
@@ -240,5 +233,48 @@ class htmlAuthenticator extends Authenticator
         $session_auth = $this->getAuthSession();
         return $session_auth->read($name);
     }
+    
+    public function logon()
+    {
+        include_once ('WHAT/Class.ActionRouter.php');
+        include_once ('WHAT/Class.Account.php');
+        
+        $app = $this->getAuthApp();
+        if ($app === false || $app == '') {
+            throw new \Dcp\Exception("Missing or empty auth app definition.");
+        }
+        
+        $account = new Account();
+        if ($account->setLoginName("anonymous") === false) {
+            throw new \Dcp\Exception(sprintf("anonymous account not found."));
+        }
+        $actionRouter = new ActionRouter($account);
+        
+        $allowList = array(
+            array(
+                'app' => 'AUTHENT'
+            ) ,
+            array(
+                'app' => 'CORE',
+                'action' => 'CORE_CSS'
+            )
+        );
+        $action = $actionRouter->getAction();
+        $app = $action->parent;
+        $allowed = false;
+        foreach ($allowList as $allow) {
+            if (isset($allow['app']) && $allow['app'] == $app->name) {
+                if (!isset($allow['action']) || $allow['action'] == $action->name) {
+                    $allowed = true;
+                    break;
+                }
+            }
+        }
+        if (!$allowed) {
+            throw new \Dcp\Exception(sprintf("Unauthorized app '%s' with action '%s' for authentication with '%s'.", $action->parent->name, $action->name, get_class($this)));
+        }
+        
+        $actionRouter->executeAction();
+    }
+
 }
-?>
