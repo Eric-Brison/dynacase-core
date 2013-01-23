@@ -20,15 +20,16 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Lib.Dir.php");
 include_once ("GENERIC/generic_util.php");
 
-function editexport(&$action)
+function editexport(Action & $action)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id", 0);
-    
+    $action->parent->addJsRef("lib/jquery/jquery.js");
     $doc = new_Doc($dbaccess, $docid);
-    
+    $exportId = uniqid("export");
     $action->lay->Set("dirid", $docid);
     $action->lay->Set("title", $doc->title);
+    $action->lay->Set("exportid", $exportId);
     $famid = 0;
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, $famid, "TABLE");
     $selectclass = array();

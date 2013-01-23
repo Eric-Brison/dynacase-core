@@ -83,8 +83,8 @@ function report_export_csv(Action & $action)
         'ISO'
     ) , $default);
     
-    $displayForm = $usage->addHidden("displayForm", "");
-    $updateDefault = $usage->addHidden("updateDefault", "");
+    $displayForm = $usage->addHiddenParameter("displayForm", "");
+    $updateDefault = $usage->addHiddenParameter("updateDefault", "");
     
     $usage->setStrictMode(false);
     $usage->verify();

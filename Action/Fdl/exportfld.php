@@ -45,12 +45,20 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
     $nopref = (GetHttpVars("wcolumn") == "-"); // no preference read
     $eformat = GetHttpVars("eformat", "I"); // export format
     $selection = GetHttpVars("selection"); // export selection  object (JSON)
+    $statusOnly = (GetHttpVars("statusOnly") != ""); // export selection  object (JSON)
+    $exportId = GetHttpVars("exportId"); // export status id
+    if ($statusOnly) {
+        
+        header('Content-Type: application/json');
+        $action->lay->noparse = true;
+        $action->lay->template = json_encode($action->read($exportId));
+        return;
+    }
     if ($eformat == "X") {
         // XML redirect
         include_once ("FDL/exportxmlfld.php");
         exportxmlfld($action, $aflid, $famid);
     }
-    
     if ((!$fldid) && $selection) {
         $selection = json_decode($selection);
         include_once ("DATA/Class.DocumentSelection.php");
@@ -58,8 +66,10 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
         $os = new Fdl_DocumentSelection($selection);
         $ids = $os->getIdentificators();
         $s = new SearchDoc($dbaccess);
+        $s->setObjectReturn(true);
         $s->addFilter(getSqlCond($ids, "id", true));
-        $tdoc = $s->search();
+        $s->setOrder("fromid, id");
+        $s->search();
         $fname = "selection";
     } else {
         if (!$fldid) $action->exitError(_("no export folder specified"));
@@ -73,9 +83,16 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
             "_",
             ""
         ) , $fld->title);
-        $tdoc = internalGetDocCollection($dbaccess, $fldid, "0", "ALL", array() , $action->user->id, "TABLE", $famid);
+        
+        recordStatus($action, $exportId, _("Retrieve documents from database"));
+        
+        $s = new SearchDoc($dbaccess, $famid);
+        $s->setObjectReturn(true);
+        $s->setOrder("fromid, id");
+        $s->useCollection($fld->initid);
+        $s->search();
     }
-    usort($tdoc, "orderbyfromid");
+    //usort($tdoc, "orderbyfromid");
     $foutdir = '';
     if ($wfile) {
         $foutdir = uniqid(getTmpDir() . "/exportfld");
@@ -90,17 +107,18 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
     if (!$wutf8) fputs_utf8($fout, "", true);
     
     $ef = array(); //   files to export
-    if (count($tdoc) > 0) {
+    if ($s->count() > 0) {
         
         $send = "\n"; // string to be writed in last
         $doc = createDoc($dbaccess, 0);
         // compose the csv file
-        reset($tdoc);
-        
         $tmoredoc = array();
-        foreach ($tdoc as $k => $zdoc) {
-            if (!is_array($zdoc)) continue;
-            if ($zdoc["doctype"] == "C") {
+        
+        recordStatus($action, $exportId, _("Record system families"));
+        
+        while ($doc = $s->getNextDoc()) {
+            
+            if ($doc->doctype == "C") {
                 $wname = "";
                 $cvname = "";
                 $cpname = "";
@@ -108,7 +126,6 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
                 /**
                  * @var Docfam $doc
                  */
-                $doc->Affect($zdoc, true);
                 // it is a family
                 if ($wprof) {
                     if ($doc->profid != $doc->id) {
@@ -154,7 +171,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
                                         $m = getTDoc($dbaccess, $did);
                                         if ($m) {
                                             $tmoredoc[$m["id"]] = $m;
-                                            if ($m["cv_mskid"] != '') {
+                                            if (!empty($m["cv_mskid"])) {
                                                 $tmskid = $doc->rawValueToArray($m["cv_mskid"]);
                                                 foreach ($tmskid as $kmsk => $imsk) {
                                                     if ($imsk != "") {
@@ -163,7 +180,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
                                                     }
                                                 }
                                             }
-                                            if ($m["tm_tmail"] != '') {
+                                            if (!empty($m["tm_tmail"])) {
                                                 $tmskid = $doc->rawValueToArray(str_replace('<BR>', "\n", $m["tm_tmail"]));
                                                 foreach ($tmskid as $kmsk => $imsk) {
                                                     if ($imsk != "") {
@@ -191,10 +208,24 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
             }
         }
         
-        $tdoc = array_merge($tdoc, $tmoredoc);
-        $cachedoc = array();
-        foreach ($tdoc as $k => $zdoc) {
-            if ($cachedoc[$zdoc["fromid"]]) $doc = $cachedoc[$zdoc["fromid"]];
+        $s->rewind();
+        $rc = $s->count();
+        $c = 0;
+        while ($doc = $s->getNextDoc()) {
+            $c++;
+            if ($c % 20 == 0) {
+                recordStatus($action, $exportId, sprintf(_("Record documents %d/%d") , $c, $rc));
+            }
+            
+            exportonedoc($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
+        }
+        $more = new DocumentList();
+        $more->addDocumentIdentifiers(array_keys($tmoredoc));
+        foreach ($more as $doc) {
+            exportonedoc($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
+        }
+        /*foreach ($tdoc as $k => $zdoc) {
+            if (!empty($cachedoc[$zdoc["fromid"]])) $doc = $cachedoc[$zdoc["fromid"]];
             else {
                 $cachedoc[$zdoc["fromid"]] = createDoc($dbaccess, $zdoc["fromid"], false);
                 $doc = $cachedoc[$zdoc["fromid"]];
@@ -205,7 +236,8 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
             if ($doc->doctype != "C") {
                 exportonedoc($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
             }
-        }
+        }*/
+        
         fputs_utf8($fout, $send);
     }
     fclose($fout);
@@ -222,6 +254,8 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
         system(sprintf("cd %s && zip -r fdl * > /dev/null", escapeshellarg($foutdir)) , $ret);
         if (is_file("$foutdir/fdl.zip")) {
             $foutname = $foutdir . "/fdl.zip";
+            recordStatus($action, $exportId, _("Export done") , true);
+            
             Http_DownloadFile($foutname, "$fname.zip", "application/x-zip", false, false);
             //if (deleteContentDirectory($foutdir)) rmdir($foutdir);
             
@@ -229,10 +263,23 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
             $action->exitError(_("Zip Archive cannot be created"));
         }
     } else {
+        
+        recordStatus($action, $exportId, _("Export done") , true);
+        
         Http_DownloadFile($foutname, "$fname.csv", "text/csv", false, false);
         unlink($foutname);
     }
+    
+    recordStatus($action, $exportId, _("Export done") , true);
     exit;
+}
+
+function recordStatus(Action & $action, $exportId, $msg, $endStatus = false)
+{
+    $action->register($exportId, array(
+        "status" => $msg,
+        "end" => $endStatus
+    ));
 }
 function fputs_utf8($r, $s, $iso = false)
 {

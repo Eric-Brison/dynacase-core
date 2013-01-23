@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-21 10:19+0100\n"
-"PO-Revision-Date: 2013-01-21 10:23+0100\n"
+"POT-Creation-Date: 2013-01-23 11:19+0100\n"
+"PO-Revision-Date: 2013-01-23 11:19+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -938,7 +938,9 @@ msgstr "Le nom logique %s ne peut être affecté qu'après création du document
 
 #, c-format
 msgid "Cannot update enum. Attribute '%s'[family %s] not found"
-msgstr "Ne peut pas mettre à jour l'énuméré. L'attribut '%s' [famille %s] est inconnu."
+msgstr ""
+"Ne peut pas mettre à jour l'énuméré. L'attribut '%s' [famille %s] est "
+"inconnu."
 
 #, c-format
 msgid "Cannot write to log %s"
@@ -1820,6 +1822,9 @@ msgid "Export archive file with data file - fdl.csv- and attached files"
 msgstr ""
 "Export d'une archive avec le fichier de description -fdl.csv- et les "
 "fichiers attachés"
+
+msgid "Export done"
+msgstr "Fin de l'exportation"
 
 #, c-format
 msgid "Failed to copy %s to %s"
@@ -2998,6 +3003,16 @@ msgstr "Ré-affectation"
 msgid "Reason for change state"
 msgstr "Raison du changement d'état"
 
+#, c-format
+msgid "Record documents %d/%d"
+msgstr "Enregistrement des documents %d/%d"
+
+msgid "Record system families"
+msgstr "Enregistrement des familles systèmes"
+
+msgid "Redo export"
+msgstr "Relancer l'exportation"
+
 msgid "Ref"
 msgstr "Réf"
 
@@ -3113,6 +3128,9 @@ msgstr "Droits résultants"
 
 msgid "Result value"
 msgstr "Valeur résultante"
+
+msgid "Retrieve documents from database"
+msgstr "Récupération des documents"
 
 msgid "Return to reference document"
 msgstr "Retour au document de référence"
