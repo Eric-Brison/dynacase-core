@@ -27,7 +27,7 @@ $mode = $usage->addRequiredParameter("mode", "Mode", array(
     "ITEM"
 ));
 $family = $usage->addRequiredParameter("famid", "family identificator");
-$slice = $usage->addOptionnalParameter("slice", "number of document to retrieve", null, 10);
+$slice = $usage->addOptionalParameter("slice", "number of document to retrieve", null, 10);
 $usage->verify();
 
 $dbaccess = $appl->GetParam("FREEDOM_DB");

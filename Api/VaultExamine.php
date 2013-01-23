@@ -26,9 +26,9 @@ if ($dbaccess == "") {
 $usage = new ApiUsage();
 $usage->setDefinitionText("Examine vault files");
 /* --vaultname */
-$vaultname = $usage->addOptionnalParameter("vault", "Name of the vault to examine", null, "FREEDOM");
+$vaultname = $usage->addOptionalParameter("vault", "Name of the vault to examine", null, "FREEDOM");
 /* --test */
-$test = $usage->addOptionnalParameter("test", "Enable/disable test mode: do not delete anything, just print what would be done", array(
+$test = $usage->addOptionalParameter("test", "Enable/disable test mode: do not delete anything, just print what would be done", array(
     "yes",
     "no"
 ) , "no");
@@ -41,7 +41,7 @@ $command = $usage->addRequiredParameter("cmd", "Examine command", array(
     "clean-unref"
 ) , null);
 /* --csv */
-$csv = $usage->addOptionnalParameter("csv", "Output in CSV format", array(
+$csv = $usage->addOptionalParameter("csv", "Output in CSV format", array(
     1,
     0,
     "yes",

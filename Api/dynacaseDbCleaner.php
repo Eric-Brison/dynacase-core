@@ -23,7 +23,7 @@ global $action;
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("Clean base");
-$real = ($usage->addOptionnalParameter("real", "real (yes or no)") == "yes");
+$real = ($usage->addOptionalParameter("real", "real (yes or no)") == "yes");
 
 $usage->verify();
 

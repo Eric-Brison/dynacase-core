@@ -34,30 +34,30 @@ function view_workflow_graph(Action & $action)
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("Generate graph image for workflow");
     $docid = $usage->addRequiredParameter("id", "workflow id");
-    $type = $usage->addOptionnalParameter("type", "graph detail level", array(
+    $type = $usage->addOptionalParameter("type", "graph detail level", array(
         "justactivity",
         "simple",
         "activity",
         "complet",
         "cluster"
     ) , "justactivity");
-    $format = $usage->addOptionnalParameter("format", "image format", array(
+    $format = $usage->addOptionalParameter("format", "image format", array(
         "png",
         "svg",
         "dot"
     ) , "png");
-    $orient = $usage->addOptionnalParameter("orient", "orientation", array(
+    $orient = $usage->addOptionalParameter("orient", "orientation", array(
         "LR",
         "TB"
     ) , "LR");
-    $size = $usage->addOptionnalParameter("size", "image size", array() , "auto");
-    $ratio = $usage->addOptionnalParameter("ratio", "ration", array(
+    $size = $usage->addOptionalParameter("size", "image size", array() , "auto");
+    $ratio = $usage->addOptionalParameter("ratio", "ration", array(
         "fill",
         "compress",
         "auto",
         "expand"
     ) , "fill");
-    $tool = $usage->addOptionnalParameter("tool", "tool used to generate", array(
+    $tool = $usage->addOptionalParameter("tool", "tool used to generate", array(
         "dot",
         "sfdp",
         "neato",

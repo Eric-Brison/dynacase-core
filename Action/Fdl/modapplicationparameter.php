@@ -16,7 +16,7 @@ function modapplicationparameter(Action & $action)
     $appid = $usage->addRequiredParameter("appid", "application id");
     $name = $usage->addRequiredParameter("name", "parameter name");
     $type = $usage->addRequiredParameter("type", "type of parameter");
-    $value = $usage->addOptionnalParameter("value", "value for parameter");
+    $value = $usage->addOptionalParameter("value", "value for parameter");
     $usage->setStrictMode();
     $usage->verify();
     

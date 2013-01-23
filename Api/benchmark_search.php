@@ -41,10 +41,10 @@ $parms = array();
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Benchmark search");
-$parms['famid'] = $usage->addOptionnalParameter("famid", "family id", null, $default_famid);
-$parms['word'] = $usage->addOptionnalParameter("word", "word to search", null, $default_word);
-$parms['limit'] = $usage->addOptionnalParameter("limit", "number of element to search", null, $default_limit);
-$parms['resetcperm'] = $usage->addOptionnalParameter("resetcperm", "reseting permission", null, $default_resetcperm);
+$parms['famid'] = $usage->addOptionalParameter("famid", "family id", null, $default_famid);
+$parms['word'] = $usage->addOptionalParameter("word", "word to search", null, $default_word);
+$parms['limit'] = $usage->addOptionalParameter("limit", "number of element to search", null, $default_limit);
+$parms['resetcperm'] = $usage->addOptionalParameter("resetcperm", "reseting permission", null, $default_resetcperm);
 
 $usage->verify();
 

@@ -33,8 +33,8 @@ if ($dbaccess == "") {
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Execute Dynacase Processes");
-$docid = $usage->addOptionnalParameter("docid", "special docid", null, 0);
-$comment = base64_decode($usage->addOptionnalParameter("comment", "additionnal comment", null, ""));
+$docid = $usage->addOptionalParameter("docid", "special docid", null, 0);
+$comment = base64_decode($usage->addOptionalParameter("comment", "additionnal comment", null, ""));
 $usage->verify();
 
 if (($docid == 0) && (!is_numeric($docid))) $docid = getFamIdFromName($dbaccess, $docid);

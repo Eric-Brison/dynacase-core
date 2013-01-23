@@ -21,12 +21,12 @@ include_once ("FDL/sendmail.php");
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("Send mail using freedom sendmail");
-$to = $usage->addOptionnalParameter("to", "email to send to");
-$cc = $usage->addOptionnalParameter("cc", "cc");
-$bcc = $usage->addOptionnalParameter("bcc", "bcc");
-$subject = $usage->addOptionnalParameter("subject", "subject");
-$file = $usage->addOptionnalParameter("file", "file (can be a file name or stdin");
-$htmlmode = $usage->addOptionnalParameter("htmlmode", "activacte htmlmode");
+$to = $usage->addOptionalParameter("to", "email to send to");
+$cc = $usage->addOptionalParameter("cc", "cc");
+$bcc = $usage->addOptionalParameter("bcc", "bcc");
+$subject = $usage->addOptionalParameter("subject", "subject");
+$file = $usage->addOptionalParameter("file", "file (can be a file name or stdin");
+$htmlmode = $usage->addOptionalParameter("htmlmode", "activacte htmlmode");
 
 $usage->verify();
 /**

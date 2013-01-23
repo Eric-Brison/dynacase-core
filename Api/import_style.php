@@ -36,7 +36,7 @@ $usage = new ApiUsage();
 
 $usage->setDefinitionText("update list of available style");
 $name = $usage->addRequiredParameter("name", "name of style file");
-$html = ($usage->addOptionnalParameter("html", "html") != "");
+$html = ($usage->addOptionalParameter("html", "html") != "");
 
 $usage->verify();
 

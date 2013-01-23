@@ -30,8 +30,8 @@ function ckimage(Action & $action)
     /* Internal numFunc */
     $numFunc = $usage->addRequiredParameter("CKEditorFuncNum", "CKEditorFuncNum");
     
-    $startpage = $usage->addOptionnalParameter("page", "pageNumber", array() , "0");
-    $key = $usage->addOptionnalParameter("key", "key", array() , "");
+    $startpage = $usage->addOptionalParameter("page", "pageNumber", array() , "0");
+    $key = $usage->addOptionalParameter("key", "key", array() , "");
     
     $usage->setStrictMode(false);
     

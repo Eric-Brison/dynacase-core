@@ -31,16 +31,16 @@ function freedom_gaccess(Action & $action)
     $usage->setStrictMode(false);
     $usage->setDefinitionText("view or modify document accessibilities");
     $docid = $usage->addRequiredParameter("id", "document identifier to profil");
-    $gid = $usage->addOptionnalParameter("gid", "group identificator, view user access for this group");
-    $green = ($usage->addOptionnalParameter("allgreen", "view only up acl", array(
+    $gid = $usage->addOptionalParameter("gid", "group identificator, view user access for this group");
+    $green = ($usage->addOptionalParameter("allgreen", "view only up acl", array(
         "Y",
         "N"
     ) , "N") == "Y");
-    $viewgroup = ($usage->addOptionnalParameter("group", "view group", array(
+    $viewgroup = ($usage->addOptionalParameter("group", "view group", array(
         "Y",
         "N"
     ) , "N") == "Y");
-    $limit = $usage->addOptionnalParameter("memberLimit", "when gid option is set, limit members to display", array() , 100);
+    $limit = $usage->addOptionalParameter("memberLimit", "when gid option is set, limit members to display", array() , 100);
     $usage->verify();
     // edition of group accessibilities
     // ---------------------

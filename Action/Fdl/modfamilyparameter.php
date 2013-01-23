@@ -16,7 +16,7 @@ function modfamilyparameter(Action & $action)
     $usage = new ActionUsage($action);
     $famid = $usage->addRequiredParameter("famid", "family id");
     $attrid = $usage->addRequiredParameter("attrid", "attribute id");
-    $value = $usage->addOptionnalParameter("value", "value in field");
+    $value = $usage->addOptionalParameter("value", "value in field");
     $usage->setStrictMode();
     $usage->verify();
     

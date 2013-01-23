@@ -11,7 +11,7 @@
 function editsubmit(Action & $action)
 {
     $usage = new ActionUsage($action);
-    $label = $usage->addOptionnalParameter("label", "Label of submit button", array() , _("Submit"));
+    $label = $usage->addOptionalParameter("label", "Label of submit button", array() , _("Submit"));
     $usage->setStrictMode();
     $usage->verify();
     

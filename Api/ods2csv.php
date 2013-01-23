@@ -145,7 +145,7 @@ $usage = new ApiUsage();
 
 $usage->setDefinitionText("Convert OpenDocument Spreadsheet to csv (semicolon)");
 $odsfile = $usage->addRequiredParameter("odsfile", "ods file (input)"); // file ods (input)
-$csvfile = $usage->addOptionnalParameter("csvfile", "xml file (output)"); // file xml (output)
+$csvfile = $usage->addOptionalParameter("csvfile", "xml file (output)"); // file xml (output)
 $usage->verify();
 
 $err = ods2content($odsfile, $content);

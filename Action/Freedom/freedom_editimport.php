@@ -24,13 +24,13 @@ function freedom_editimport(Action & $action)
     
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("Import document interface");
-    $classid = $usage->addOptionnalParameter("classid", "family used to view schema");
-    $dirid = $usage->addOptionnalParameter("dirid", "directory to place imported doc");
-    $descr = ($usage->addOptionnalParameter("descr", "view information", array(
+    $classid = $usage->addOptionalParameter("classid", "family used to view schema");
+    $dirid = $usage->addOptionalParameter("dirid", "directory to place imported doc");
+    $descr = ($usage->addOptionalParameter("descr", "view information", array(
         "Y",
         "N"
     ) , "Y") == "Y");
-    $policy = ($usage->addOptionnalParameter("policy", "view policy options", array(
+    $policy = ($usage->addOptionalParameter("policy", "view policy options", array(
         "Y",
         "N"
     ) , "Y") == "Y");

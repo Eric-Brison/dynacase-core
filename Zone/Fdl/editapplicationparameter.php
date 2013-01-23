@@ -18,12 +18,12 @@ function editapplicationparameter(Action & $action)
     
     $usage = new ActionUsage($action);
     $parameterid = $usage->addRequiredParameter("parameterId", _("Parameter's id"));
-    $appid = $usage->addOptionnalParameter("appId", _("Application Id"));
-    $default = $usage->addOptionnalParameter("emptyValue", _("value for empty field"));
-    $value = $usage->addOptionnalParameter("value", _("value in field"));
-    $onChange = $usage->addOptionnalParameter("submitOnChange", _("Sending input on change?"));
-    $localSubmit = $usage->addOptionnalParameter("localSubmit", _("Adding button to submit")) == "yes" ? true : false;
-    $submitLabel = $usage->addOptionnalParameter("submitLabel", _("Label of submit button") , array() , _("Submit"));
+    $appid = $usage->addOptionalParameter("appId", _("Application Id"));
+    $default = $usage->addOptionalParameter("emptyValue", _("value for empty field"));
+    $value = $usage->addOptionalParameter("value", _("value in field"));
+    $onChange = $usage->addOptionalParameter("submitOnChange", _("Sending input on change?"));
+    $localSubmit = $usage->addOptionalParameter("localSubmit", _("Adding button to submit")) == "yes" ? true : false;
+    $submitLabel = $usage->addOptionalParameter("submitLabel", _("Label of submit button") , array() , _("Submit"));
     $usage->setStrictMode();
     $usage->verify();
     

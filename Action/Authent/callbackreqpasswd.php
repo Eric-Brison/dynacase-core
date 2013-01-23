@@ -19,9 +19,9 @@ function callbackreqpasswd(Action & $action)
     $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
     $au = new ActionUsage($action);
     $token = $au->addRequiredParameter("token", "token number");
-    $uid = $au->addOptionnalParameter("uid", "user id");
-    $pwd1 = $au->addOptionnalParameter("pwd1", "new password 1");
-    $pwd2 = $au->addOptionnalParameter("pwd2", "new password 2");
+    $uid = $au->addOptionalParameter("uid", "user id");
+    $pwd1 = $au->addOptionalParameter("pwd1", "new password 1");
+    $pwd2 = $au->addOptionalParameter("pwd2", "new password 2");
     $au->verify();
     // Retrieve token from database
     $utok = new UserToken($action->dbaccess, $token);
