@@ -1,5 +1,5 @@
-html { background-color:[COLOR_WHITE]; padding:0; margin:0px; }
-body { font-family:Ubuntu, Trebuchet MS, Helvetica, sans; background-color:#fff; padding:0px; margin:0px; color:[COLOR_A4]; }
+html { background-color:[COLOR_A0]; padding:0; margin:0px; }
+body { font-family:Ubuntu, Trebuchet MS, Helvetica, sans; background-color:[COLOR_A0]; padding:0px; margin:0px; color:[COLOR_A4]; }
 
 img { border:0; }
 a, a:link, a:visited { }
@@ -12,13 +12,23 @@ p { margin:0; padding:0 }
  * left block
  */
 .left-block {
-    background-color:[COLOR_A0]; 
-    height:100%; 
-    padding:0; 
-    margin:0; 
-    position:fixed; 
-    width:20%;
-    left:0px;
+   background-color:[COLOR_A0]; 
+   position: relative;
+   width:20%;
+   top:20px;
+   left:0;
+   float:left;
+}
+/* 
+ * right block
+*/
+.right-block { 
+   margin-top:20px;
+   float:left;
+   display:table-cell;
+   padding:10px; 
+   width:75%;
+   background-color:[COLOR_C9]; 
 }
 #apropos { padding:10px; color:[COLOR_C7]; }
 #apropos em { font-style:normal; font-weight: bold; }
@@ -31,12 +41,7 @@ p { margin:0; padding:0 }
 #apropos p { margin-bottom:10px; }
 #apropos a.anakeen, #apropos a.anakeen:visited, #apropos a.anakeen:hover { font-weight:bold; text-decoration:none; }
 
-/* 
- * right block
- */
-.right-block { margin:0 0 0 20%; padding:10px; }
 .right-block .intro { text-align:right; font-size:80%; font-weight:bold; }
-
 #hello {  padding:60px 40px; }
 
 #header { text-align:center;}
@@ -64,10 +69,8 @@ a.manual {
     background-repeat: no-repeat;
 }
 #footer { 
-    text-align:right;
-    position:fixed;
-    bottom:0px;
-    width:100%;
+    padding-top:10px;
+    text-align:center;
     background-color:[COLOR_A0];
     color:[COLOR_A9];
 }
