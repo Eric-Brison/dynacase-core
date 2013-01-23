@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+echo "CORE_postmigr_3.2.5" > "$wpub/CORE_postmigr_3.2.5.log"
+
+if [ -z "$wpub" ]; then
+	echo "Undefined or empty wpub environment variable!"
+	exit 1
+fi
+
+if [ -d "$wpub/admin" ]; then
+
+    if [ -f "$wpub/admin/mime-user.conf" ]; then
+        mv "$wpub/admin/mime-user.conf" "$wpub/config/"
+    fi
+
+    if [ -f "$wpub/admin/.htpasswd" ]; then
+        mv "$wpub/admin/.htpasswd" "$wpub/config/"
+    fi
+
+    for file in `ls -1 "$wpub/admin"`; do
+        mv "$wpub/admin/$file" "$wpub/supervisor/"
+    done;
+
+    rmdir "$wpub/admin"
+
+fi
