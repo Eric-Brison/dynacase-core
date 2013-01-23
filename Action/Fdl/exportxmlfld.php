@@ -16,12 +16,7 @@
 /**
  */
 
-include_once ("FDL/Lib.Dir.php");
-include_once ("FDL/Lib.Util.php");
-include_once ("FDL/Class.DocAttr.php");
-include_once ("VAULT/Class.VaultFile.php");
-include_once ("FDL/import_file.php");
-include_once ("FDL/Class.SearchDoc.php");
+include_once ("FDL/exportfld.php");
 /**
  * Exportation as xml of documents from folder or searches
  * @param Action &$action current action
@@ -51,6 +46,7 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
     $selection = $action->getArgument("selection"); // export selection  object (JSON)
     $log = $action->getArgument("log"); // log file
     $configxml = $action->getArgument("config");
+    $exportId = $action->getArgument("exportId"); // export status id
     $flog = false;
     if ($log) {
         $flog = fopen($log, "w");
@@ -94,6 +90,7 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
     }
     // set the export's search
     $exportname = '';
+    $fld = null;
     if ($specSearch) {
         $s = $specSearch;
         $s->setObjectReturn();
@@ -133,6 +130,8 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
         
         $s->dirid = $fld->id;
     }
+    
+    recordStatus($action, $exportId, _("Retrieve documents from database"));
     $s->search();
     $err = $s->searchError();
     if ($err) exportExit($action, $err);
@@ -143,12 +142,18 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
     //copy($fname,"$foutdir/fdl.xsd");
     $xsd = array();
     $count = 0;
-    if ($flog) {
+    if ($flog && $fld) {
         fputs($flog, sprintf("EXPORT OPTION ID : %s <%s>\n", $fldid, $fld->getTitle()));
     }
     
+    $rc = $s->count();
+    $c = 0;
     while ($doc = $s->getNextDoc()) {
         //print $doc->exportXml();
+        $c++;
+        if ($c % 20 == 0) {
+            recordStatus($action, $exportId, sprintf(_("Record documents %d/%d") , $c, $rc));
+        }
         if ($doc->doctype != 'C') {
             $ftitle = str_replace(array(
                 '/',
@@ -195,6 +200,7 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
         system(sprintf("cd %s && zip -r %s -- * > /dev/null", escapeshellarg($foutdir) , escapeshellarg($zipfile)) , $ret);
         if (is_file($zipfile)) {
             system(sprintf("rm -fr %s", $foutdir));
+            recordStatus($action, $exportId, _("Export done") , true);
             Http_DownloadFile($zipfile, "$exportname.zip", "application/x-zip", false, false, true);
         } else {
             exportExit($action, _("Zip Archive cannot be created"));
@@ -256,12 +262,15 @@ EOF;
             system(sprintf("rm -fr %s", escapeshellarg($foutdir)));
             
             if (!$outputFile) {
+                recordStatus($action, $exportId, _("Export done") , true);
+                
                 Http_DownloadFile($xmlfile, "$exportname.xml", "text/xml", false, false, true);
             }
         } else {
             exportExit($action, _("Xml file cannot be created"));
         }
     }
+    recordStatus($action, $exportId, _("Export done") , true);
 }
 function exportExit(Action & $action, $err)
 {

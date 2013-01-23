@@ -570,15 +570,15 @@ class _DSEARCH extends DocSearch
                         foreach ($taid as $k => $v) {
                             $cond1 = $this->getSqlCond($taid[$k], trim($tf[$k]) , $tkey[$k]);
                             if ($cond == "") {
-                                if ($tlp[$k] == "yes") $cond = '(' . $cond1 . " ";
+                                if (isset($tlp[$k]) && $tlp[$k] == "yes") $cond = '(' . $cond1 . " ";
                                 else $cond = $cond1 . " ";
-                                if ($tlr[$k] == "yes") $cond.= ')';
+                                if (isset($tlr[$k]) && $tlr[$k] == "yes") $cond.= ')';
                             } elseif ($cond1 != "") {
-                                if ($tols[$k] != "") $ol1 = $tols[$k];
+                                if (isset($tols[$k]) && $tols[$k] != "") $ol1 = $tols[$k];
                                 else $ol1 = $ol;
-                                if ($tlp[$k] == "yes") $cond.= $ol1 . ' (' . $cond1 . " ";
+                                if (isset($tlp[$k]) && $tlp[$k] == "yes") $cond.= $ol1 . ' (' . $cond1 . " ";
                                 else $cond.= $ol1 . " " . $cond1 . " ";
-                                if ($tlr[$k] == "yes") $cond.= ') ';
+                                if (isset($tlr[$k]) && $tlr[$k] == "yes") $cond.= ') ';
                             }
                         }
                     }
@@ -725,7 +725,7 @@ class _DSEARCH extends DocSearch
                                     else if ($type === "account") $type = "account[]";
                                 }
                                 $tcond[]["condition"] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $type) , $displayValue);
-                                if ($tkey[$k][0] == '?') {
+                                if (isset($tkey[$k][0]) && $tkey[$k][0] == '?') {
                                     $tparm[substr($tkey[$k], 1) ] = $taid[$k];
                                 }
                             } else {

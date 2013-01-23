@@ -28,6 +28,44 @@ function testexport(s) {
       f.wcolumn.className='';
     }
 }
+    function pollingExport(exportId) {
+        $.ajax({
+              url: '?',
+              dataType: 'json',
+              data: {exportId:exportId,statusOnly:1,app:'FDL',action:'EXPORTFLD'},
+              success: function(data) {
+                  var bExport=$('#bExport');
+                  bExport.val(data.status);
+                  if (stopExportPolling < 1) {
+                    if (! data.end) setTimeout(function () {pollingExport(exportId);},500);
+                    else {
+                    bExport.attr('disabled',false);
+                    bExport.val("[TEXT:Redo export]");
+                     }
+                  } else {
+                    //bExport.val("[TEXT:Export done]");
+                    bExport.val("[TEXT:Redo export]");
+                    bExport.attr('disabled',false);
+
+
+                 }
+              }});
+
+    }
+    stopExportPolling=0;
+    $(document).ready(function() {
+
+        $('#outputfile').load(function() {
+            stopExportPolling++;
+             $('#outputfile').css("height","100px")
+        });
+        $('#exportForm').submit(function() {
+            stopExportPolling=0;
+            setTimeout(function () {$('#bExport').attr('disabled',true);},20);
+            setTimeout(function () {pollingExport($('#iExportId').val());},200);
+
+        });
+    });
 </script>
 <style>
 option.pref { 
@@ -40,11 +78,12 @@ select.disable {
 <h2 style="text-align:center">[TEXT:Export Documents from] </h2>
 <h3 style="text-align:center">[title]</h3>
 
-<form 
-      name="dexport"style="display:inline"
+<form target="outputfile" id="exportForm"
+      name="dexport" style="display:inline"
       method="POST" ENCTYPE="multipart/form-data"
       action="[CORE_STANDURL]&app=FDL&id=[dirid]"       >
 <input type="hidden" name="action" value="EXPORTFLD"></input>
+<input type="hidden" id="iExportId" name="exportId" value="[exportid]"></input>
 <table align="center">
 <tr><td></td><td></td><td rowspan="7"><img align="left" src="[IMG:ardown.png]"></td></tr>
 <tr><td align="right" style="cursor:help" title="[TEXT:Prefer choose Latin if you are under microsoft else use UTF-8]">
@@ -84,9 +123,10 @@ select.disable {
   <option value="Y" >[TEXT:XML data (only one xml file)]</option>
 </select></td></tr>
 
-<tr><td colspan="3" align="right"><input type="submit" value="[TEXT:Export]"></td></tr>
+<tr><td colspan="3" align="right"><input id="bExport" type="submit" value="[TEXT:Export]"></td></tr>
 </table>
 
 </form>
 
+        <iframe name="outputfile" id="outputfile" src="about:blank" frameborder="0" border="0" cellspacing="0" width="100%" marginwidth="0" marginheight="0" style="border:none;width:90%;height:30px"></iframe>
 [ZONE FDL:HTMLFOOT]
