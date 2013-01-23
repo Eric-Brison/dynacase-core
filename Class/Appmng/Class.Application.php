@@ -277,7 +277,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * Verify an application name exists
      * @param string $app_name application reference name
-     * @param int $id_application optionnal numeric id to verify if not itself
+     * @param int $id_application optional numeric id to verify if not itself
      * @return bool
      */
     public function exists($app_name, $id_application = 0)

@@ -36,7 +36,7 @@ namespace {
          */
         private $text = '';
         /**
-         * optionnals arguments
+         * optionals arguments
          *
          * @var array
          */
@@ -85,7 +85,7 @@ namespace {
             global $action;
             $this->action = & $action;
             $this->addHiddenParameter("api", "api file to use");
-            $this->addOptionnalParameter('userid', "user system id or login name to execute function - default is (admin)", array() , 1);
+            $this->addOptionalParameter('userid', "user system id or login name to execute function - default is (admin)", array() , 1);
             $this->addEmptyParameter('help', "Show usage");
         }
         /**
@@ -156,7 +156,7 @@ namespace {
          *
          * @param string $argName argument name
          * @param string $argDefinition argument définition
-         * @param array $restriction optionnal enumeration for argument
+         * @param array $restriction optional enumeration for argument
          *
          * @return string argument value
          */
@@ -172,7 +172,7 @@ namespace {
          *
          * @param string $argName argument name
          * @param string $argDefinition argument définition
-         * @param array $restriction optionnal enumeration for argument
+         * @param array $restriction optional enumeration for argument
          *
          * @return string argument value
          */
@@ -187,14 +187,14 @@ namespace {
             return $this->action->getArgument($argName);
         }
         /**
-         * add optionnal argument
+         * add optional argument
          *
-         * @see addOptionnalParameter::addOptionParameter
+         * @see addOptionalParameter::addOptionParameter
          *
          * @deprecated use { @link Application::addOptionParameter } instead
          * @param string $argName argument name
          * @param string $argDefinition argument définition
-         * @param array $restriction optionnal enumeration for argument
+         * @param array $restriction optional enumeration for argument
          * @param string $default default value if no value set
          *
          * @return string argument value
@@ -202,21 +202,21 @@ namespace {
         public function addOption($argName, $argDefinition, array $restriction = null, $default = null)
         {
             deprecatedFunction();
-            return $this->addOptionnalParameter($argName, $argDefinition, $restriction, $default);
+            return $this->addOptionalParameter($argName, $argDefinition, $restriction, $default);
         }
         /**
-         * add optionnal argument
+         * add optional argument
          *
-         * @api add optionnal argument
+         * @api add optional argument
          *
          * @param string $argName argument name
          * @param string $argDefinition argument definition
-         * @param array $restriction optionnal enumeration for argument
+         * @param array $restriction optional enumeration for argument
          * @param string $default default value if no value set
          *
          * @return string argument value
          */
-        public function addOptionnalParameter($argName, $argDefinition, array $restriction = null, $default = null)
+        public function addOptionalParameter($argName, $argDefinition, array $restriction = null, $default = null)
         {
             $this->optArgs[] = array(
                 "name" => $argName,

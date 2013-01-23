@@ -22,7 +22,7 @@ include_once ("FDL/Class.DocFam.php");
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("Adding key to doc");
-$docid = $usage->addOptionnalParameter("docid", "special docid", null, 0);
+$docid = $usage->addOptionalParameter("docid", "special docid", null, 0);
 
 $usage->verify();
 

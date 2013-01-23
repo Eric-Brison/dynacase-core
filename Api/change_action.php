@@ -31,7 +31,7 @@ $usage->setDefinitionText("Change an attribute of an WHAT Action");
 $appname = $usage->addRequiredParameter("appname", "application name");
 $actionname = $usage->addRequiredParameter("actname", "action name");
 $attribute = $usage->addRequiredParameter("attribute", "attribute name");
-$value = $usage->addOptionnalParameter("value", "value to set", null, "");
+$value = $usage->addOptionalParameter("value", "value to set", null, "");
 $usage->verify();
 
 $app = new Application();

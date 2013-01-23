@@ -24,7 +24,7 @@ include_once ("FDL/Class.SearchDoc.php");
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Init view privilege ");
-$accountOnly = $usage->addOptionnalParameter("reset-account", "reset account members of", array(
+$accountOnly = $usage->addOptionalParameter("reset-account", "reset account members of", array(
     "yes",
     "no"
 ) , "no");

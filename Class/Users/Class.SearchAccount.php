@@ -133,7 +133,7 @@ class SearchAccount
      * $s->addFilter("mail ~ '%s'", $mailExpr);
      * @endcode
      * @param string $filter sql filter
-     * @param string $arg optionnal arguments
+     * @param string $arg optional arguments
      */
     public function addFilter($filter, $arg = null)
     {

@@ -796,22 +796,22 @@ if ($dbaccess == "") {
 $usage = new ApiUsage();
 $usage->setDefinitionText("Create graph image for workflow");
 $docid = $usage->addRequiredParameter("docid", "workflow identificator");
-$orient = $usage->addOptionnalParameter("orient", "orientation", array(
+$orient = $usage->addOptionalParameter("orient", "orientation", array(
     "LR",
     "TB",
     "BT",
     "RL"
 ) , "LR");
 
-$ratio = $usage->addOptionnalParameter("ratio", "ratio", array(
+$ratio = $usage->addOptionalParameter("ratio", "ratio", array(
     "auto",
     "fill",
     "compress",
     "expand"
 ) , "auto");
-$isize = $usage->addOptionnalParameter("size", "image size", array() , "10");
+$isize = $usage->addOptionalParameter("size", "image size", array() , "10");
 
-$type = $usage->addOptionnalParameter("type", "type of output", array(
+$type = $usage->addOptionalParameter("type", "type of output", array(
     "complet",
     "activity",
     "justactivity",

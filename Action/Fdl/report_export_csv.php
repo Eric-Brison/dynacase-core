@@ -51,33 +51,33 @@ function report_export_csv(Action & $action)
     $expVarName = $usage->addHiddenParameter("exportId", "expert ident");
     $statusOnly = $usage->addHiddenParameter("statusOnly", "get status only");
     
-    $refresh = $usage->addOptionnalParameter("refresh", "would you refresh doc before build report", array(
+    $refresh = $usage->addOptionalParameter("refresh", "would you refresh doc before build report", array(
         "TRUE",
         "FALSE"
     ) , "FALSE");
     
     $default = isset($defaultDocArg["kind"]) ? $defaultDocArg["kind"] : 'simple';
-    $kind = $usage->addOptionnalParameter("kind", "the kind of report", array(
+    $kind = $usage->addOptionalParameter("kind", "the kind of report", array(
         "simple",
         "pivot"
     ) , $default);
     $default = isset($defaultDocArg["pivot"]) ? $defaultDocArg["pivot"] : 'id';
-    $pivot = $usage->addOptionnalParameter("pivot", "the pivot attr", array() , $default);
+    $pivot = $usage->addOptionalParameter("pivot", "the pivot attr", array() , $default);
     
     $default = isset($defaultDocArg["stripHtmlTag"]) ? $defaultDocArg["stripHtmlTag"] : false;
-    $applyHtmlStrip = $usage->addOptionnalParameter("stripHtmlTag", "strip html tags", array() , $default);
+    $applyHtmlStrip = $usage->addOptionalParameter("stripHtmlTag", "strip html tags", array() , $default);
     $applyHtmlStrip = ($applyHtmlStrip != "1");
     
     $default = isset($defaultArgument["delimiter"]) ? $defaultArgument["delimiter"] : ';';
-    $argumentsCSV["delimiter"] = $usage->addOptionnalParameter("delimiter", "the CSV delimiter", array() , $default);
+    $argumentsCSV["delimiter"] = $usage->addOptionalParameter("delimiter", "the CSV delimiter", array() , $default);
     $default = isset($defaultArgument["enclosure"]) ? $defaultArgument["enclosure"] : '"';
-    $argumentsCSV["enclosure"] = $usage->addOptionnalParameter("enclosure", "the CSV enclosure", array() , $default);
+    $argumentsCSV["enclosure"] = $usage->addOptionalParameter("enclosure", "the CSV enclosure", array() , $default);
     $default = isset($defaultArgument["encoding"]) ? $defaultArgument["encoding"] : 'ISO-8859-15//TRANSLIT';
-    $argumentsCSV["encoding"] = $usage->addOptionnalParameter("encoding", "the CSV encoding", array() , $default);
+    $argumentsCSV["encoding"] = $usage->addOptionalParameter("encoding", "the CSV encoding", array() , $default);
     $default = isset($defaultArgument["decimalSeparator"]) ? $defaultArgument["decimalSeparator"] : '.';
-    $argumentsCSV["decimalSeparator"] = $usage->addOptionnalParameter("decimalSeparator", "the decimalSeparator", array() , $default);
+    $argumentsCSV["decimalSeparator"] = $usage->addOptionalParameter("decimalSeparator", "the decimalSeparator", array() , $default);
     $default = isset($defaultArgument["dateFormat"]) ? $defaultArgument["dateFormat"] : 'US';
-    $argumentsCSV["dateFormat"] = $usage->addOptionnalParameter("dateFormat", "the dateFormat", array(
+    $argumentsCSV["dateFormat"] = $usage->addOptionalParameter("dateFormat", "the dateFormat", array(
         'US',
         'FR',
         'ISO'

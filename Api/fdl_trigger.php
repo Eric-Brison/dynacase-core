@@ -22,8 +22,8 @@ include_once ("FDL/Lib.Attr.php");
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("Return sql code to inject trigget in base");
-$docid = $usage->addOptionnalParameter("docid", "special docid", null, 0);
-$trigger = $usage->addOptionnalParameter("trigger", "trigger", null, "-");
+$docid = $usage->addOptionalParameter("docid", "special docid", null, 0);
+$trigger = $usage->addOptionalParameter("trigger", "trigger", null, "-");
 $trig = ($trigger != "-");
 $drop = ($trigger == "N");
 

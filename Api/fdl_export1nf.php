@@ -34,12 +34,12 @@ $usage->setDefinitionText("Export 1nf");
  */
 $parms = array(
     'config' => $usage->addRequiredParameter("config", "configuration file") ,
-    'outputsql' => $usage->addOptionnalParameter("outputsql", "File to output sql", null, "") ,
-    'outputpgservice' => $usage->addOptionnalParameter("outputpgservice", "Pgservice to output", null, "") ,
-    'tmppgservice' => $usage->addOptionnalParameter("tmppgservice", "Tmp pgservice name", null, 'tmp_1nf') ,
-    'tmpschemaname' => $usage->addOptionnalParameter('tmpschemaname', "Tmp shema name", null, 'tmp_1nf') ,
-    'tmpemptydb' => $usage->addOptionnalParameter("tmpemptydb", "Tmp empty database", null, "yes") ,
-    'sqllog' => $usage->addOptionnalParameter("sqllog", "File to log", null, "") ,
+    'outputsql' => $usage->addOptionalParameter("outputsql", "File to output sql", null, "") ,
+    'outputpgservice' => $usage->addOptionalParameter("outputpgservice", "Pgservice to output", null, "") ,
+    'tmppgservice' => $usage->addOptionalParameter("tmppgservice", "Tmp pgservice name", null, 'tmp_1nf') ,
+    'tmpschemaname' => $usage->addOptionalParameter('tmpschemaname', "Tmp shema name", null, 'tmp_1nf') ,
+    'tmpemptydb' => $usage->addOptionalParameter("tmpemptydb", "Tmp empty database", null, "yes") ,
+    'sqllog' => $usage->addOptionalParameter("sqllog", "File to log", null, "") ,
 );
 
 $usage->verify();

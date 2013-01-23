@@ -24,9 +24,9 @@ include_once ('Class.Application.php');
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("Update the SQL structure of a table of a DbObj Object");
-$appclass = $usage->addOptionnalParameter('appc', "application class folder", null, 'WHAT');
+$appclass = $usage->addOptionalParameter('appc', "application class folder", null, 'WHAT');
 $class = $usage->addRequiredParameter('class', 'Class name');
-$db = $usage->addOptionnalParameter('dbcoord', "Database name", null, getDbAccess());
+$db = $usage->addOptionalParameter('dbcoord', "Database name", null, getDbAccess());
 
 $usage->verify();
 

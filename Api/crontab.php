@@ -26,8 +26,8 @@ $cmd = $usage->addRequiredParameter("cmd", "command to execute", array(
     "register",
     "unregister"
 ));
-$file = $usage->addOptionnalParameter("file", "path to cronfile (needed for cmd=register|unregister)", null, NULL);
-$user = $usage->addOptionnalParameter("user", "id of user", null, NULL);
+$file = $usage->addOptionalParameter("file", "path to cronfile (needed for cmd=register|unregister)", null, NULL);
+$user = $usage->addOptionalParameter("user", "id of user", null, NULL);
 $usage->verify();
 /*function usage()
 {

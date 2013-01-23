@@ -30,7 +30,7 @@ if ($dbaccess == "") {
 }
 $usage = new ApiUsage();
 $usage->setDefinitionText("Generate Php Document Classes");
-$docid = $usage->addOptionnalParameter("docid", "special docid", null, 0);
+$docid = $usage->addOptionalParameter("docid", "special docid", null, 0);
 $usage->verify();
 
 if (($docid !== 0) && (!is_numeric($docid))) {

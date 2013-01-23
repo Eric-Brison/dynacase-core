@@ -19,7 +19,7 @@
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("get parameter value");
-$parname = $usage->addOptionnalParameter("param", "Parameter name");
+$parname = $usage->addOptionalParameter("param", "Parameter name");
 
 $usage->verify();
 

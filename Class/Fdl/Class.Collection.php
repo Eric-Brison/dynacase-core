@@ -254,7 +254,7 @@ class Fdl_Collection extends Fdl_Document
         return $out;
     }
     /**
-     * return document list from a keyword and optionnaly family identifier
+     * return document list from a keyword and optionaly family identifier
      * @param string $key
      * @param string $mode search method : regexp or word
      * @param int $famid filter on family

@@ -24,9 +24,9 @@ global $pubdir, $appl;
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("Initialisation of the FREEDOM VAULT based on the VAULT/FREEDOM.vault file");
-$dirname = $usage->addOptionnalParameter("path", "path to vault", null, "$pubdir/vaultfs");
-$fsname = $usage->addOptionnalParameter("name", "Fs name", null, "FREEDOM");
-$size_in_bytes = $usage->addOptionnalParameter("size", "Vault size", null, 500 * 1024 * 1024); // 500Mb
+$dirname = $usage->addOptionalParameter("path", "path to vault", null, "$pubdir/vaultfs");
+$fsname = $usage->addOptionalParameter("name", "Fs name", null, "FREEDOM");
+$size_in_bytes = $usage->addOptionalParameter("size", "Vault size", null, 500 * 1024 * 1024); // 500Mb
 
 $usage->verify();
 
