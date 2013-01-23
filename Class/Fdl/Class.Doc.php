@@ -2201,7 +2201,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return all the attributes except frame & menu & action
-     * @param boolean $onlyopt get only optionnal attributes
+     * @param boolean $onlyopt get only optional attributes
      *
      * @return NormalAttribute[]
      */
@@ -4943,7 +4943,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @api set state for a document controled by a workflow
      * @param string $newstate the new state
-     * @param string $comment optionnal comment to set in history
+     * @param string $comment optional comment to set in history
      * @param bool $force is true when it is the second passage (without interactivity)
      * @param bool $withcontrol set to false if you want to not verify control permission ot transition
      * @param bool $wm1 set to false if you want to not apply m1 methods
@@ -6571,7 +6571,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $target window target name for hyperlink destination
      * @param bool $ulink if false hyperlink are not generated
      * @param bool $abstract if true only abstract attribute are generated
-     * @param bool $onlyopt if true only optionnal attributes are displayed
+     * @param bool $onlyopt if true only optional attributes are displayed
      */
     function viewbodycard($target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
     {
@@ -7306,7 +7306,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * value for edit interface
      * @templateController default control for HTML form document edition
-     * @param bool $onlyopt if true only optionnal attributes are displayed
+     * @param bool $onlyopt if true only optional attributes are displayed
      */
     function editbodycard($target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
     {
