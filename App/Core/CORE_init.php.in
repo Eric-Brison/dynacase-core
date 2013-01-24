@@ -340,7 +340,7 @@ $app_const = array(
         "global" => "Y"
     ) ,
     "CORE_START_APP" => array(
-        "val" => "WEBDESK",
+        "val" => "CORE",
         "descr" => N_("default start application") ,
         "user" => "N",
         "global" => "Y"
