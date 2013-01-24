@@ -1,0 +1,16 @@
+php_value session.name "adminsession"
+php_value session.use_cookies 1
+ErrorDocument 500 "You must reset dynacase admin password to access to this page."
+
+
+AuthType Basic
+AuthName "Dynacase Platform Administration"
+AuthUserFile @prefix@/supervisor/.htpasswd
+Require valid-user
+
+DirectoryIndex index.html
+
+<FilesMatch ".*">
+  Order Deny,Allow
+  Allow from All
+</FilesMatch>

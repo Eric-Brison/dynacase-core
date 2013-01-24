@@ -13,7 +13,7 @@
         <module name="dynacase-jquery-installer"  version="1.7.2" comp="ge"/>
         <module name="dynacase-jquery-ui-installer" version="1.8.21" comp="ge"/>
         <module name="dynacase-json2" version="1.0.0" comp="ge"/>
-        <module name="dynacase-datajs" />
+        <module name="dynacase-datajs"/>
         <module name="dynacase-jquery-dataTables-installer" />
         <module name="dynacase-ckeditor-installer"/>
     </requires>
@@ -198,22 +198,14 @@ This can be solved by:<br/>
         <process command="programs/init_admin_passwd">
             <label lang="en">Initialize admin password</label>
         </process>
-        <process command="programs/record_application ACCESS I">
-            <label lang="en">Record access application in database</label>
-        </process>
         <process command="programs/record_application AUTHENT I">
             <label lang="en">Record authent application in database</label>
-        </process>
-        <process command="programs/record_application APPMNG I">
-            <label lang="en">Record appmng application in database</label>
         </process>
 
         <process command="programs/record_application FDL I"/>
         <process command="programs/record_application GENERIC I"/>
-        <process command="programs/record_application FUSERS I"/>
         <process command="programs/record_application FREEDOM I"/>
         <process command="programs/record_application FGSEARCH I"/>
-        <process command="programs/record_application VAULT I"/>
         <process command="programs/record_application DAV I"/>
         <process command="programs/record_application FDC I"/>
 
@@ -451,14 +443,8 @@ This can be solved by:<br/>
         <process command="programs/record_application CORE U">
             <label lang="en">Update core application in database</label>
         </process>
-        <process command="programs/record_application ACCESS U">
-            <label lang="en">Update access application in database</label>
-        </process>
         <process command="programs/record_application AUTHENT U">
             <label lang="en">Update authent application in database</label>
-        </process>
-        <process command="programs/record_application APPMNG U">
-            <label lang="en">Update appmng application in database</label>
         </process>
         <process command="programs/post_migration CORE">
             <label lang="en">Migration second level</label>
@@ -503,10 +489,6 @@ This can be solved by:<br/>
         <process command="programs/record_application GENERIC U"/>
         <process command="programs/post_migration GENERIC"/>
 
-        <process command="programs/pre_migration FUSERS"/>
-        <process command="programs/record_application FUSERS U"/>
-        <process command="programs/post_migration FUSERS"/>
-
         <process command="programs/pre_migration FREEDOM"/>
         <process command="programs/record_application FREEDOM U"/>
         <process command="programs/app_post FREEDOM U"/>
@@ -515,10 +497,6 @@ This can be solved by:<br/>
         <process command="programs/pre_migration FGSEARCH"/>
         <process command="programs/record_application FGSEARCH U"/>
         <process command="programs/post_migration FGSEARCH"/>
-
-        <process command="programs/pre_migration VAULT"/>
-        <process command="programs/record_application VAULT U"/>
-        <process command="programs/post_migration VAULT"/>
 
         <process command="programs/pre_migration DAV"/>
         <process command="programs/app_post DAV U"/>

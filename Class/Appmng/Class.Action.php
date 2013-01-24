@@ -63,7 +63,7 @@ class Action extends DbObj
     public $toc;
     public $father;
     public $toc_order;
-    
+
     var $id_fields = array(
         "id"
     );
@@ -557,6 +557,15 @@ create sequence SEQ_ID_ACTION;
             $e = new Dcp\Core\Exception("CORE0008", $this->name, $this->parent->name);
             $e->addHttpHeader('HTTP/1.0 503 Action unavalaible');
             throw $e;
+        }
+        // check if we are in an admin application and user can execute it
+        $appTag = $this->parent->tag;
+        if (preg_match('/(\W|\A)ADMIN(\W|\Z)/i', $appTag)) {
+            if(!$this->parent->isInAdminMode()){
+                $e = new Dcp\Exception("CORE0009", $this->short_name, $this->name, $this->parent->name, $this->parent->short_name);
+                $e->addHttpHeader('HTTP/1.0 503 Action forbidden');
+                throw $e;
+            }
         }
         // check if this action is permitted
         if (!$this->HasPermission($this->acl)) {

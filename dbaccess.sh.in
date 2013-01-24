@@ -1,4 +1,0 @@
-export pgservice_core="@PGSERVICE_CORE@"
-export pgservice_freedom="@PGSERVICE_FREEDOM@"
-export freedom_context="@FREEDOM_CONTEXT@"
-export dbpsql=$pgservice_core

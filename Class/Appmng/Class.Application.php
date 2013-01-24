@@ -142,6 +142,11 @@ create sequence SEQ_ID_APPLICATION start 10;
     public $jsref = array();
     public $jscode = array();
     public $logmsg = array();
+    /**
+     * true if application is launched from admin context
+     * @var bool
+     */
+    protected $adminMode = false;
     
     public $cssref = array();
     public $csscode = array();
@@ -694,6 +699,32 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         $this->session->unregister("warningmsg");
     }
+
+    /**
+     * mark the application as launched from admin context
+     *
+     * @param bool $enable true to enable admin mode, false to disable it
+     */
+    public function setAdminMode($enable = true)
+    {
+        if($this->hasParent()){
+            $this->parent->setAdminMode($enable);
+        } else {
+            $this->adminMode = ($enable ? true : false);
+        }
+    }
+
+    /**
+     * @return bool true if application is launched from admin context
+     */
+    public function isInAdminMode()
+    {
+        if ($this->hasParent()) {
+            return $this->parent->isInAdminMode();
+        }
+        return $this->adminMode === true;
+    }
+
     /**
      * Test permission for current user in current application
      *

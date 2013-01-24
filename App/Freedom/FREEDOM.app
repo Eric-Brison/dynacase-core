@@ -29,7 +29,7 @@ $app_desc = array (
 "description"	=>N_("Documents administration"),//long description
 "access_free"	=>"N",			//Access free ? (Y,N)
 "icon"		=>"freedom.png",	//Icon
-"displayable"	=>"Y",			//Should be displayed on an app list (Y,N)
+"displayable"	=>"N",			//Should be displayed on an app list (Y,N)
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)
 "iorder"        =>130,
 "tag"           =>"CORE"
@@ -51,22 +51,12 @@ $app_acl = array (
    "description"        =>N_("Access To Read Only"),
    "group_default"       =>"Y"),
   array(
-   "name"               =>"FREEDOM_GED",
-   "description"        =>N_("Access To Main Interface"),
-   "group_default"       =>"N"),
-     array(
-      "name"               =>"FREEDOM_HISTO",
-      "description"        =>N_("Access to document history"),
-      "group_default"       =>"Y")
+   "name"               =>"FREEDOM_HISTO",
+   "description"        =>N_("Access to document history"),
+   "group_default"       =>"Y")
 );
 
 $action_desc = array (
-  array( 
-   "name"		=>"FREEDOM_FRAME",
-   "short_name"		=>N_("Freedoms frame"),
-   "acl"		=>"FREEDOM_GED",
-   "root"		=>"Y"
-  ) ,
   array( 
    "name"		=>"FREEDOM_LIST",
    "short_name"		=>N_("Freedoms list"),

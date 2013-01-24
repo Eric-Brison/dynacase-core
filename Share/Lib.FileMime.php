@@ -261,7 +261,7 @@ function loadUserMimeConf()
     
     $rules = array();
     
-    $conf_file = sprintf("%s%sadmin%smime-user.conf", DEFAULT_PUBDIR, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+    $conf_file = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "mime-user.conf";
     if (!file_exists($conf_file) || !is_readable($conf_file)) {
         return $rules;
     }
@@ -294,8 +294,8 @@ function loadMimeConf()
     include_once ('WHAT/Lib.Prefix.php');
     
     $rules = array();
-    
-    $conf_file = sprintf("%s%sadmin%smime.conf", DEFAULT_PUBDIR, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+
+    $conf_file = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "mime.conf";
     $xml = simplexml_load_file($conf_file);
     if ($xml === false) {
         error_log(__FUNCTION__ . " " . sprintf("Could not load MIME config '%s'.", $conf_file));

@@ -271,7 +271,7 @@ create sequence seq_id_users start 10;";
         if (isset($this->password_new) && ($this->password_new != "")) {
             $this->computepass($this->password_new, $this->password);
             if ($this->id == 1) {
-                $this->setAdminHtpasswd($this->password_new);
+                $this->setSupervisorHtpasswd($this->password_new);
             }
         }
         //expires and passdelay
@@ -303,7 +303,7 @@ create sequence seq_id_users start 10;";
             
             $this->computepass($this->password_new, $this->password);
             if ($this->id == 1) {
-                $this->setAdminHtpasswd($this->password_new);
+                $this->setSupervisorHtpasswd($this->password_new);
             }
         }
         
@@ -592,7 +592,7 @@ create sequence seq_id_users start 10;";
                     'password'
                 ) , true);
                 if ($err == '') {
-                    if ($this->id == 1) $this->setAdminHtpasswd($pass);
+                    if ($this->id == 1) $this->setSupervisorHtpasswd($pass);
                     $log = new Log("", "Session", "Authentication");
                     $facility = constant(getParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
                     $log->wlog("S", sprintf('User %s password crypted with salted SHA256 algorithm.', $this->login) , NULL, $facility);
@@ -692,7 +692,6 @@ union
     }
     /**
      * get the first incumbent which has $acl privilege
-     * @param Action $action
      * @param Doc $doc document to verify
      * @param string $acl document acl name
      * @return string incumbent's name which has privilege
@@ -1061,11 +1060,28 @@ union
         }
         return $token;
     }
+
+    /**
+     * Set password for the admin account in the `admin' subdir
+     *
+     * @deprecated use {@link Account::setSupervisorHtpasswd} instead
+     * @see Account::setSupervisorHtpasswd
+     *
+     * @param string $admin_passwd the password
+     * @return string error message, emptuy string if no error
+     */
+    function setAdminHtpasswd($admin_passwd)
+    {
+        deprecatedFunction();
+        return $this->setSupervisorHtpasswd($admin_passwd);
+    }
+
     /**
      * Set password for the admin account in the `admin' subdir
      * @param string $admin_passwd the password
+     * @return string error message, emptuy string if no error
      */
-    function setAdminHtpasswd($admin_passwd)
+    function setSupervisorHtpasswd($admin_passwd)
     {
         include_once ('WHAT/Lib.Prefix.php');
         
@@ -1076,10 +1092,10 @@ union
             return $err;
         }
         
-        $adminDir = $pubdir . DIRECTORY_SEPARATOR . 'admin';
-        $tmpFile = @tempnam($adminDir, '.htpasswd');
+        $supervisorDir = $pubdir . DIRECTORY_SEPARATOR . 'supervisor';
+        $tmpFile = @tempnam($supervisorDir, '.htpasswd');
         if ($tmpFile === false) {
-            $err = sprintf("Error creating temporary file in '%s'.", $adminDir);
+            $err = sprintf("Error creating temporary file in '%s'.", $supervisorDir);
             return $err;
         }
         if (chmod($tmpFile, 0600) === false) {
@@ -1093,7 +1109,7 @@ union
             unlink($tmpFile);
             return $err;
         }
-        $htpasswdFile = $adminDir . DIRECTORY_SEPARATOR . '.htpasswd';
+        $htpasswdFile = $supervisorDir . DIRECTORY_SEPARATOR . '.htpasswd';
         if (rename($tmpFile, $htpasswdFile) === false) {
             $err = sprintf("Error renaming temporary file '%s' to '%s'.", $tmpFile, $htpasswdFile);
             unlink($tmpFile);
