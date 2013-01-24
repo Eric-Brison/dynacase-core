@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-23 11:19+0100\n"
+"POT-Creation-Date: 2013-01-24 16:42+0100\n"
 "PO-Revision-Date: 2013-01-23 11:19+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -498,6 +498,9 @@ msgstr "Privilège"
 msgid "Access path list"
 msgstr "Liste des chemins d'accès"
 
+msgid "Access to change password function"
+msgstr "Accès à l'action de changement de mot de passe"
+
 msgid "Access to document history"
 msgstr "Accès à l'historique des documents"
 
@@ -837,6 +840,20 @@ msgstr "Squelette binaire"
 
 msgid "Bookmarks"
 msgstr "Signets"
+
+msgid "CHANGE_PASSWORD:The old password is not good"
+msgstr "Le mot de passe actuel est faux"
+
+#, c-format
+msgid "CHANGE_PASSWORD:The provided password is not good (%s)"
+msgstr "Le nouveau mot de passe n'est pas valide (%s)"
+
+#, c-format
+msgid "CHANGE_PASSWORD:Unable to change password (%s)"
+msgstr "Impossible de changer le mot de passe (%s)"
+
+msgid "CHANGE_PASSWORD:You can't modify your account"
+msgstr "Vous ne pouvez pas modifier votre mot de passe"
 
 msgid "CSV"
 msgstr "CSV"
@@ -3945,6 +3962,36 @@ msgstr "WID : '%s' n'est pas un cycle"
 msgid "WID : workflow '%s' not found"
 msgstr "WID : cycle '%s' introuvable"
 
+msgid "WIDGET_CHANGE_PASSWORD:Change"
+msgstr "Modifier"
+
+msgid "WIDGET_CHANGE_PASSWORD:Loading..."
+msgstr "Chargement..."
+
+msgid "WIDGET_CHANGE_PASSWORD:New password"
+msgstr "Nouveau mot de passe"
+
+msgid "WIDGET_CHANGE_PASSWORD:New passwords are not identical"
+msgstr "Le nouveau mot de passe et sa vérification ne sont pas identiques"
+
+msgid "WIDGET_CHANGE_PASSWORD:Old password"
+msgstr "Mot de passe actuel"
+
+msgid "WIDGET_CHANGE_PASSWORD:Password updated"
+msgstr "Mot de passe mis à jour"
+
+msgid "WIDGET_CHANGE_PASSWORD:Verify new password"
+msgstr "Vérification du mot de passe"
+
+msgid "WIDGET_CHANGE_PASSWORD:You need to provide a new password"
+msgstr "Vous devez fournir un nouveau mot de passe"
+
+msgid "WIDGET_CHANGE_PASSWORD:You need to provide the old password"
+msgstr "Vous devez fournir le mot de passe actuel"
+
+msgid "WIDGET_CHANGE_PASSWORD:You need to provide twice the new password"
+msgstr "Vous devez fournir la vérification"
+
 #, c-format
 msgid "Warning : %s"
 msgstr "Avertissement : %s"
@@ -4923,6 +4970,9 @@ msgstr "Changement du paramètre 'tagable' en '%s'"
 
 msgid "change title family"
 msgstr "changement du titre de famille"
+
+msgid "change user password"
+msgstr "Changer le mot de passe de l'utilisateur"
 
 #, c-format
 msgid "change version to %s"
@@ -6030,9 +6080,6 @@ msgstr "filtre sur le login et le nom"
 #, c-format
 msgid "find %s more than one, created aborded\n"
 msgstr "%s trouvé plus d'une fois, création abandonnée\n"
-
-msgid "first family used"
-msgstr "première famille utilisée"
 
 msgid "fixed"
 msgstr "figé"
@@ -7401,9 +7448,6 @@ msgstr "post-it de %s"
 msgid "precise search"
 msgstr "Précisez la recherche"
 
-msgid "prefered contacts"
-msgstr "Préférés"
-
 msgid "prefered search"
 msgstr "Recherche préférée"
 
@@ -7876,9 +7920,6 @@ msgstr "exécutée le "
 
 msgid "second background color"
 msgstr "couleur secondaire pour le fond"
-
-msgid "second family used"
-msgstr "seconde famille utilisée"
 
 msgid "security"
 msgstr "sécurité"
@@ -9040,3 +9081,12 @@ msgstr "l'identifiant système {left} est différent de {right}"
 
 msgid "{left} title include {right}"
 msgstr "le titre de {left} inclus {right}"
+
+#~ msgid "first family used"
+#~ msgstr "première famille utilisée"
+
+#~ msgid "prefered contacts"
+#~ msgstr "Préférés"
+
+#~ msgid "second family used"
+#~ msgstr "seconde famille utilisée"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-23 11:19+0100\n"
+"POT-Creation-Date: 2013-01-24 16:42+0100\n"
 "PO-Revision-Date: 2012-09-12 09:47+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -496,6 +496,9 @@ msgstr ""
 msgid "Access path list"
 msgstr ""
 
+msgid "Access to change password function"
+msgstr "Access to change password function"
+
 msgid "Access to document history"
 msgstr ""
 
@@ -826,6 +829,20 @@ msgstr ""
 
 msgid "Bookmarks"
 msgstr ""
+
+msgid "CHANGE_PASSWORD:The old password is not good"
+msgstr "The old password is not good"
+
+#, c-format
+msgid "CHANGE_PASSWORD:The provided password is not good (%s)"
+msgstr "The provided password is not good (%s)"
+
+#, c-format
+msgid "CHANGE_PASSWORD:Unable to change password (%s)"
+msgstr "Unable to change password (%s)"
+
+msgid "CHANGE_PASSWORD:You can't modify your account"
+msgstr "You can't modify your account"
 
 msgid "CSV"
 msgstr ""
@@ -3841,6 +3858,36 @@ msgstr ""
 msgid "WID : workflow '%s' not found"
 msgstr ""
 
+msgid "WIDGET_CHANGE_PASSWORD:Change"
+msgstr "Change"
+
+msgid "WIDGET_CHANGE_PASSWORD:Loading..."
+msgstr "Loading..."
+
+msgid "WIDGET_CHANGE_PASSWORD:New password"
+msgstr "New password"
+
+msgid "WIDGET_CHANGE_PASSWORD:New passwords are not identical"
+msgstr "New passwords are not identical"
+
+msgid "WIDGET_CHANGE_PASSWORD:Old password"
+msgstr "Old password"
+
+msgid "WIDGET_CHANGE_PASSWORD:Password updated"
+msgstr "Password updated"
+
+msgid "WIDGET_CHANGE_PASSWORD:Verify new password"
+msgstr "Verify new password"
+
+msgid "WIDGET_CHANGE_PASSWORD:You need to provide a new password"
+msgstr "You need to provide a new password"
+
+msgid "WIDGET_CHANGE_PASSWORD:You need to provide the old password"
+msgstr "You need to provide the old password"
+
+msgid "WIDGET_CHANGE_PASSWORD:You need to provide twice the new password"
+msgstr "You need to provide twice the new password"
+
 #, c-format
 msgid "Warning : %s"
 msgstr ""
@@ -4790,6 +4837,9 @@ msgid "change tagable parameter to '%s'"
 msgstr ""
 
 msgid "change title family"
+msgstr ""
+
+msgid "change user password"
 msgstr ""
 
 #, c-format
@@ -5884,9 +5934,6 @@ msgstr ""
 
 #, c-format
 msgid "find %s more than one, created aborded\n"
-msgstr ""
-
-msgid "first family used"
 msgstr ""
 
 msgid "fixed"
@@ -7240,9 +7287,6 @@ msgstr ""
 msgid "precise search"
 msgstr ""
 
-msgid "prefered contacts"
-msgstr ""
-
 msgid "prefered search"
 msgstr ""
 
@@ -7714,9 +7758,6 @@ msgid "searchdate prefix"
 msgstr "at "
 
 msgid "second background color"
-msgstr ""
-
-msgid "second family used"
 msgstr ""
 
 msgid "security"
