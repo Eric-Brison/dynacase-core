@@ -2,11 +2,14 @@
 
 set -e
 
-echo "CORE_postmigr_3.2.5" > "$wpub/CORE_postmigr_3.2.5.log"
-
 if [ -z "$wpub" ]; then
 	echo "Undefined or empty wpub environment variable!"
 	exit 1
+fi
+
+if [ -z "$pgservice_core" ]; then
+    echo "Undefined or empty pgservice_core!"
+    exit 1
 fi
 
 if [ -d "$wpub/admin" ]; then
@@ -25,4 +28,44 @@ if [ -d "$wpub/admin" ]; then
 
     rmdir "$wpub/admin"
 
+fi
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << SQL
+-- Hide the VAULT application and child
+UPDATE application SET available = 'N' WHERE name = 'VAULT' OR childof = 'VAULT';
+SQL
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error disabling application 'VAULT'."
+    exit $RET
+fi
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << SQL
+-- Hide the FUSERS application and child
+UPDATE application SET available = 'N' WHERE name = 'FUSERS' OR childof = 'FUSERS';
+SQL
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error disabling application 'FUSERS'."
+    exit $RET
+fi
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << SQL
+-- Hide the APPMNG application and child
+UPDATE application SET available = 'N' WHERE name = 'APPMNG' OR childof = 'APPMNG';
+SQL
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error disabling application 'APPMNG'."
+    exit $RET
+fi
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << SQL
+-- Hide the ACCESS application and child
+UPDATE application SET available = 'N' WHERE name = 'ACCESS' OR childof = 'ACCESS';
+SQL
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error disabling application 'ACCESS'."
+    exit $RET
 fi
