@@ -36,7 +36,7 @@ Options -Indexes
 </FilesMatch>
 
 
-<FilesMatch "^(index|indexq|guest|data|nu|notifier|authent).php$">
+<FilesMatch "^(admin|index|indexq|guest|data|nu|notifier|authent).php$">
         Order Deny,Allow
         Allow from All
 </FilesMatch>
