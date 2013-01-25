@@ -60,7 +60,7 @@ create table doccount ( famid int not null,
                    aid text not null,                    
                    filter text not null,
                    c int  );
-create index i_doccount on dochisto(famid,aid);
+create index i_doccount on doccount(famid,aid);
 ";
     
     function deleteAll()
