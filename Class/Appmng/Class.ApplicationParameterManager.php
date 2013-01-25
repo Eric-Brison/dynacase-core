@@ -211,14 +211,14 @@ class ApplicationParameterManager
             throw new \Dcp\ApplicationParameterManager\Exception("APM0008", $parameterName);
         }
         
-        $type = ($isGlobal === "G") ? PARAM_GLB : PARAM_APP;
-        
         $action = self::getAction();
         if ($action) {
             $parameter = $action->parent->param;
         } else {
             $parameter = new Param(getDbAccess());
         }
+
+        $type = ($isGlobal === "G") ? PARAM_GLB : PARAM_APP;
         
         $err = $parameter->set($parameterName, $value, $type, $applicationId);
         
