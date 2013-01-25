@@ -30,7 +30,7 @@ function change_user_password(Action & $action)
 
         $user = new_Doc('', $action->user->fid);
         /* @var $user _IUSER */
-        $err = $user->control("edit");
+        $err = $user->canEdit();
         if ($err) {
             throw new Exception(_("CHANGE_PASSWORD:You can't modify your account"));
         }
@@ -44,9 +44,14 @@ function change_user_password(Action & $action)
             throw new Exception(sprintf(_("CHANGE_PASSWORD:The provided password is not good (%s)"), $err["err"]));
         }
 
+        $err = $user->testForcePassword($newPassword1);
+        if ($err) {
+            throw new Exception(sprintf(_("CHANGE_PASSWORD:The provided password is not good (%s)"), $err));
+        }
+
         $err = $user->setPassword($newPassword1);
         if ($err) {
-            throw new Exception(sprintf(_("CHANGE_PASSWORD:Unable to change password (%s)"), $err["err"]));
+            throw new Exception(sprintf(_("CHANGE_PASSWORD:Unable to change password (%s)"), $err));
         }
 
     } catch (Exception $e) {
