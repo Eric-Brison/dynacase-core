@@ -6700,7 +6700,7 @@ create unique index i_docir on doc(initid, revision);";
                      * @var FieldSetAttribute $pSet
                      */
                     $pSet = $currentFrame->fieldSet;
-                    if (($pSet->id != "") && ($pSet->id != "FIELD_HIDDENS")) {
+                    if ($pSet && ($pSet->id != "") && ($pSet->id != "FIELD_HIDDENS")) {
                         $frames[$k]["tag"] = "TAG" . $pSet->id;
                         $frames[$k]["TAB"] = true;
                         $ttabs[$pSet->id] = array(
@@ -6718,7 +6718,7 @@ create unique index i_docir on doc(initid, revision);";
                     $frames[$k]["IMAGES"] = "IMAGES_$k";
                     $this->lay->SetBlockData($frames[$k]["IMAGES"], $tableimage);
                     $frames[$k]["notloaded"] = false;
-                    if ($oaf->type == "frame" && (count($tableframe) + count($tableimage)) == 0) {
+                    if ($oaf && $oaf->type == "frame" && (count($tableframe) + count($tableimage)) == 0) {
                         if (!$frames[$k]["viewtpl"]) {
                             $frames[$k]["viewtpl"] = true;
                             $frames[$k]["zonetpl"] = _("Loading...");
