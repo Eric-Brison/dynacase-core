@@ -60,6 +60,11 @@ namespace {
         const CORE0009 = 'Action "%s" [%s]  from application "%s" [%s] must be run in admin mode';
         /**
          * @errorCode
+         * Guest acess is not allowed (see CORE_ALLOW_GUEST)
+         */
+        const CORE0010 = 'Guest access not allowed';
+        /**
+         * @errorCode
          * for beautifier
          */
         private function _bo()

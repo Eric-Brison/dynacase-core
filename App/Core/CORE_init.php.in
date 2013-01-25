@@ -378,6 +378,13 @@ $app_const = array(
         "descr" => N_("core_layout_execute_recursion_limit") ,
         "user" => "N",
         "global" => "Y"
+    ) ,
+    // Allow use of guest.php
+    "CORE_ALLOW_GUEST" => array(
+        "val" => "yes",
+        "descr" => N_("Allow guest access") ,
+        "kind" => "enum(yes|no)",
+        "global" => "Y"
     )
 );
 
