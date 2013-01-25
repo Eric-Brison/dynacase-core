@@ -53,10 +53,6 @@ $app_acl = array(
     array(
         "name" => "SYSTEM",
         "description" => N_("Access to system documents"),
-        "group_default" => "N"),
-    array(
-        "name" => "CHANGE_USER_PASSWORD",
-        "description" => N_("Access to change password function"),
         "group_default" => "N")
 );
 
@@ -521,12 +517,6 @@ $action_desc = array(
         "name" => "REPORT_EXPORT_CSV",
         "short_name" => N_("export a report"),
         "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "CHANGE_USER_PASSWORD",
-        "short_name" => N_("change user password"),
-        "acl" => "CHANGE_USER_PASSWORD",
-        "root" => "N"
     )
 
 );
