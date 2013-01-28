@@ -54,6 +54,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
         $action->lay->template = json_encode($action->read($exportId));
         return;
     }
+    setMaxExecutionTimeTo(3600);
     if ($eformat == "X") {
         // XML redirect
         include_once ("FDL/exportxmlfld.php");
