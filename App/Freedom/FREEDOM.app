@@ -61,12 +61,7 @@ $action_desc = array (
    "name"		=>"FREEDOM_LIST",
    "short_name"		=>N_("Freedoms list"),
    "acl"		=>"FREEDOM_READ"
-  ) ,
-  array( 
-   "name"		=>"ADMIN_TIMERS",
-   "short_name"		=>N_("Timers management"),
-   "acl"		=>"FREEDOM_ADMIN"
-  ) ,
+  ),
   array( 
    "name"		=>"TIMERS_ADMIN_RESULT",
    "short_name"		=>N_("Timers management result"),
