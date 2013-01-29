@@ -6,10 +6,9 @@ include_once ("FDL/Class.DocFam.php");
 global $action;
 
 $parent = null;
-$appl = new Application();
-$appl->Set("FUSERS", $parent);
 
-$dbaccess = $appl->GetParam("FREEDOM_DB");
+
+$dbaccess = $action->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
     $action->exitError("Empty parameter 'FREEDOM_DB'.");
 }
