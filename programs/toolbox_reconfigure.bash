@@ -42,6 +42,7 @@ if [ ! -x "$corepost" ]; then
 fi
 # rewrite configuration files
 sed  -e"s;@AUTHTYPE@;$authtype;" -e"s;@CORE_DB@;$core_db;" -e"s;@FREEDOM_DB@;$freedom_db;" -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" "$dbaccesstpl" > "$dbaccess"
+sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;"  "$prefixtpl" > "$prefix"
 
 sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" "$htaccesstpl" > "$htaccess"
 
