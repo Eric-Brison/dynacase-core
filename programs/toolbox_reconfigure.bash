@@ -14,7 +14,6 @@ user_password=`"$WIFF_ROOT"/wiff --getValue=user_password`
 if [ -z "$freedom_db" ]; then
     freedom_db=$core_db
 fi
-apacheuser=`"$WIFF_ROOT"/wiff --getValue=apacheuser`
 
 dbaccesstpl="$WIFF_CONTEXT_ROOT"/config/dbaccess.php.in
 dbaccess="$WIFF_CONTEXT_ROOT"/config/dbaccess.php
@@ -43,7 +42,7 @@ if [ ! -x "$corepost" ]; then
 fi
 # rewrite configuration files
 sed  -e"s;@AUTHTYPE@;$authtype;" -e"s;@CORE_DB@;$core_db;" -e"s;@FREEDOM_DB@;$freedom_db;" -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" "$dbaccesstpl" > "$dbaccess"
-sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" -e"s;@HTTPUSER@;$apacheuser;" "$prefixtpl" > "$prefix"
+
 sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" "$htaccesstpl" > "$htaccess"
 
 log "Setting CORE_DB in paramv..."

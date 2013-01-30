@@ -107,10 +107,6 @@ DBPORT=5432
 AC_ARG_WITH(dbport,
 [  --with-dbport=port number  the database port (default 5432)], DBPORT=$withval)
 
-AC_SUBST(HTTPUSER)
-HTTPUSER=http
-AC_ARG_WITH(httpuser,
-[  --with-httpuser=user id for httpd process (default http)], HTTPUSER=$withval)
 
 dnl get php pear path
 AC_SUBST(PEAR)

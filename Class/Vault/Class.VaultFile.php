@@ -26,12 +26,9 @@ class VaultFile
      * @var int file ideentificator
      */
     public $idf;
-    public $u_owner = HTTP_USER;
-    public $g_owner = HTTP_USER;
     public $f_mode = 0600;
     public $d_mode = 0700;
     public $type = "fs";
-    public $use_cache = true;
     /**
      * @var VaultDiskStorage
      */
@@ -47,15 +44,11 @@ class VaultFile
         if ($this->chrono) $this->logger->warning("Running with chrono !!!!");
         $this->dbaccess = $access;
         
-        $this->u_owner = HTTP_USER;
-        $this->g_owner = HTTP_USER;
         $this->f_mode = 0600;
         $this->d_mode = 0700;
         $this->type = "fs";
-        $this->use_cache = TRUE;
         switch ($this->type) {
             case "fs":
-                $this->use_cache = FALSE;
                 $this->logger->debug("Set Storage Type to FS");
                 $this->storage = new VaultDiskStorage($access);
                 break;
@@ -93,38 +86,13 @@ function retrieve($id_file, &$infos)
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Retrieve");
     if (isset($info)) unset($infos);
-    if ($this->use_cache) {
-        $msg = $this->cache->Show($id_file, $infosC);
-        if ($msg != '') {
-            $msg = $this->storage->Show($id_file, $infosS);
-            if ($msg != '') {
-                $msg = $this->cache->StoreIn($id_file, $info["path"], $info["size"]);
-                if ($msg == '') {
-                    $msg = $this->cache->Show($id_file, $infosC);
-                    $info = $infoC;
-                    return '';
-                } else {
-                    $this->logger->warning("Cache insertion failure [$msg].");
-                    $info = $infoS;
-                    return '';
-                }
-            } else {
-                $this->logger->error($msg);
-                $info = NULL;
-                return ($msg);
-            }
-        } else {
-            $info = $infosC;
-            return ('');
-        }
-    } else {
-        $infos = new stdClass();
-        $msg = $this->storage->Show($id_file, $infos);
-        
-        if ($msg != '') $this->logger->error($msg);
-        if ($this->chrono) $this->logger->end("Retrieve");
-        return ($msg);
-    }
+    
+    $infos = new stdClass();
+    $msg = $this->storage->Show($id_file, $infos);
+    
+    if ($msg != '') $this->logger->error($msg);
+    if ($this->chrono) $this->logger->end("Retrieve");
+    return ($msg);
 }
 // ---------------------------------------------------------
 function store($infile, $public_access, &$id, $fsname = "", $te_name = "", $te_id_file = 0)
@@ -173,7 +141,7 @@ function rename($id_file, $newname)
 {
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Rename");
-    
+    $msg = '';
     if ($newname != "") {
         $nn = str_replace(array(
             '/',
@@ -240,7 +208,7 @@ function destroy($id)
 {
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Destroy");
-    if ($this->use_cache) $this->cache->Delete($id);
+    
     $msg = $this->storage->Destroy($id);
     if ($msg != '') $this->logger->error($msg);
     if ($this->chrono) $this->logger->end("Destroy");
