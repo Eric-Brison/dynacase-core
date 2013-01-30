@@ -27,7 +27,6 @@ $usage->setDefinitionText("Initialisation of the FREEDOM VAULT based on the VAUL
 $dirname = $usage->addOptionalParameter("path", "path to vault", null, "$pubdir/vaultfs");
 $fsname = $usage->addOptionalParameter("name", "Fs name", null, "FREEDOM");
 $size_in_bytes = $usage->addOptionalParameter("size", "Vault size", null, 500 * 1024 * 1024); // 500Mb
-
 $usage->verify();
 
 $dbaccess = $appl->GetParam("FREEDOM_DB");
@@ -38,11 +37,8 @@ if (!is_dir($dirname)) {
         mkdir($dirname . "/", VAULT_DMODE);
     }
 }
-if (is_dir($dirname)) {
-    if (!chown($dirname, HTTP_USER) || !chgrp($dirname, HTTP_USER)) {
-        $err = sprintf(_("cannot change owner of %s: aborted\n") , $dirname);
-    }
-} else {
+if (!is_dir($dirname)) {
+    
     $err = sprintf(_("cannot create directory %s\nParent directory must be create before") , $dirname);
 }
 if ($err == "") {

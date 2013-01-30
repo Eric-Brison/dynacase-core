@@ -48,7 +48,7 @@ class DbObjCtrl extends DbObj
         // must be set by child
         return 0;
     }
-    function PostSelect()
+    function PostSelect($id)
     {
         
         if ($this->IsControlled()) {
