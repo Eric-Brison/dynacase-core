@@ -36,7 +36,7 @@ if [ ! -x "$corepost" ]; then
 fi
 # initialize configuration files
 sed  -e"s;@AUTHTYPE@;$authtype;" -e"s;@CORE_DB@;$core_db;" -e"s;@FREEDOM_DB@;$freedom_db;" "$dbaccesstpl" > "$dbaccess"
-
+sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" "$prefixtpl" > "$prefix"
 sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" "$htaccesstpl" > "$htaccess"
 
 sed -i.orig -e "s;^\([[:space:]]*php_value[[:space:]][[:space:]]*session\.save_path[[:space:]][[:space:]]*\).*$;\1\"${WIFF_CONTEXT_ROOT}/var/session\";" "$WIFF_CONTEXT_ROOT"/.htaccess
