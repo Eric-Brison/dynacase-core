@@ -429,11 +429,19 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
                 if (!is_array($oldfile)) {
                     $vid1 = 0;
                     $vid2 = 0;
-                    if (preg_match(PREGEXPFILE, $rtold[0], $reg)) $vid1 = $reg[2];
-                    if (preg_match(PREGEXPFILE, $oldfile, $reg)) $vid2 = $reg[2];
+                    if (isset($rtold[0]) && preg_match(PREGEXPFILE, $rtold[0], $reg)) {
+                        $vid1 = $reg[2];
+                    }
+                    if (preg_match(PREGEXPFILE, $oldfile, $reg)) {
+                        $vid2 = $reg[2];
+                    }
                     
-                    if (($vid1 > 0) && ($vid2 > 0) && ($vid1 > $vid2)) $rt[$k] = $rtold[0]; // in case of DAV auto clone when revised doc
-                    else $rt[$k] = $oldfile;
+                    if (($vid1 > 0) && ($vid2 > 0) && ($vid1 > $vid2)) {
+                        $rt[$k] = $rtold[0];
+                    } // in case of DAV auto clone when revised doc
+                    else {
+                        $rt[$k] = $oldfile;
+                    }
                 } else {
                     
                     if (isset($oldfile[$k])) {
