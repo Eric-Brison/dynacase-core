@@ -6798,10 +6798,12 @@ create unique index i_docir on doc(initid, revision);";
                     $tableframe[$v]["name"] = $this->GetLabel($attr->id);
                     if (($attr->type == "htmltext") && (count($tableframe) == 1)) {
                         $keys = array_keys($listattr);
-                        $na = $listattr[$keys[$iattr]]; // next attribute
-                        if ($na->fieldSet->id != $attr->fieldSet->id) { // only when only one attribute in frame
-                            $tableframe[$v]["ndisplay"] = "none";
-                            $tableframe[$v]["wvalue"] = "1%";
+                        if (isset($keys[$iattr])) {
+                            $na = $listattr[$keys[$iattr]]; // next attribute
+                            if ($na->fieldSet->id != $attr->fieldSet->id) { // only when only one attribute in frame
+                                $tableframe[$v]["ndisplay"] = "none";
+                                $tableframe[$v]["wvalue"] = "1%";
+                            }
                         }
                     }
                     
