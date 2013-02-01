@@ -85,7 +85,14 @@ class AuthenticatorManager
                         break;
                 }
             }
-            self::secureLog("failure", "invalid credential", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $_REQUEST["auth_user"], $_SERVER["HTTP_USER_AGENT"]);
+            $remote_addr = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : "";
+            $auth_user =  isset($_REQUEST["auth_user"]) ? $_REQUEST["auth_user"] : "";
+            $http_user_agent = isset($_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "";
+            self::secureLog("failure", "invalid credential",
+                self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'],
+                $remote_addr,
+                $auth_user,
+                $http_user_agent);
             // count login failure
             if (getParam("AUTHENT_FAILURECOUNT") > 0) {
                 $wu = new Account();
@@ -177,7 +184,11 @@ class AuthenticatorManager
         self::$auth = new $authClass($authtype, "__for_logout__");
 
         if (method_exists(self::$auth, 'logout')) {
-            self::secureLog("close", "see you tomorrow", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], self::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
+            if (is_object(self::$auth->provider)) {
+                self::secureLog("close", "see you tomorrow", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], self::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
+            }else {
+                self::secureLog("close", "see you tomorrow");
+            }
             self::$auth->logout(null);
             exit(0);
         }
