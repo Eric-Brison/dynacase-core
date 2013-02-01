@@ -184,7 +184,11 @@ class AuthenticatorManager
         self::$auth = new $authClass($authtype, "__for_logout__");
 
         if (method_exists(self::$auth, 'logout')) {
-            self::secureLog("close", "see you tomorrow", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], self::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
+            if (is_object(self::$auth->provider)) {
+                self::secureLog("close", "see you tomorrow", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], self::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
+            }else {
+                self::secureLog("close", "see you tomorrow");
+            }
             self::$auth->logout(null);
             exit(0);
         }
