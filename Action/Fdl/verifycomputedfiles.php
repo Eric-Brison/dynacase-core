@@ -5,7 +5,6 @@
  * @package FDL
 */
 /**
- * Specific menu for family
  *
  * @author Anakeen
  * @version $Id: verifycomputedfiles.php,v 1.5 2008/04/14 10:12:14 eric Exp $
@@ -13,20 +12,18 @@
  * @package FDL
  * @subpackage
  */
-/**
- */
 
-include_once ("FDL/Class.Doc.php");
+include_once "FDL/Class.Doc.php";
 /**
- * Edit an attribute inline
+ * Verify if a file has been computed
  * @param Action &$action current action
- * @global docid Http var : document identifier to see
- * @global attrid Http var : the id of attribute to edit
  */
-function verifycomputedfiles(&$action)
+function verifycomputedfiles(Action &$action)
 {
-    $docid = GetHttpVars("id");
-    $attrid = GetHttpVars("attrid");
+    $usage = new ActionUsage($action);
+
+    $docid =  $usage->addRequiredParameter("id", "docid");
+
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     header('Content-type: text/xml; charset=utf-8');
@@ -35,16 +32,21 @@ function verifycomputedfiles(&$action)
     
     $action->lay->set("CODE", "OK");
     $action->lay->set("warning", "");
-    $action->lay->set("modjsft", $modjsft);
     
     $doc = new_Doc($dbaccess, $docid);
-    if (!$doc->isAffected()) $err = sprintf(_("cannot see unknow reference %s") , $docid);
+    $err = "";
+    if (!$doc->isAffected()) {
+        $err = sprintf(_("cannot see unknow reference %s") , $docid);
+    }
+    $files = array();
     if ($err == "") {
         $action->lay->set("docid", $doc->id);
         $files = $doc->GetFilesProperties();
     }
     
-    if ($err != "") $action->lay->set("CODE", "KO");
+    if ($err != "") {
+        $action->lay->set("CODE", "KO");
+    }
     $action->lay->set("warning", $err);
     $action->lay->set("delay", microtime_diff(microtime() , $mb));
     
@@ -61,4 +63,3 @@ function verifycomputedfiles(&$action)
     $action->lay->set("count", count($files));
     $action->lay->set("docid", $doc->id);
 }
-?>
