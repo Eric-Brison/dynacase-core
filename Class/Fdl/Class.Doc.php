@@ -2438,7 +2438,8 @@ create unique index i_docir on doc(initid, revision);";
                 $info = vault_properties($vidin, $engine);
                 // in case of server not reach : try again
                 if (!is_object($info)) {
-                    return '';
+                    // not found : create it
+                    $info=new VaultFileInfo();
                 }
                 if ($info->teng_state == TransformationEngine::error_connect) {
                     $info->teng_state = TransformationEngine::status_inprogress;
