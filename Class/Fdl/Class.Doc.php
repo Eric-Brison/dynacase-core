@@ -2437,7 +2437,12 @@ create unique index i_docir on doc(initid, revision);";
                 $vidout = 0;
                 $info = vault_properties($vidin, $engine);
                 // in case of server not reach : try again
-                if ($info->teng_state == TransformationEngine::error_connect) $info->teng_state = TransformationEngine::status_inprogress;
+                if (!is_object($info)) {
+                    return '';
+                }
+                if ($info->teng_state == TransformationEngine::error_connect) {
+                    $info->teng_state = TransformationEngine::status_inprogress;
+                }
                 if ((!$info->teng_vid) || ($info->teng_state == TransformationEngine::status_inprogress)) {
                     $vf = newFreeVaultFile($this->dbaccess);
                     if (!$info->teng_vid) {
