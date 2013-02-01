@@ -47,9 +47,6 @@ class TestHelpUsage extends TestCaseDcp
                 "DocRelInit"
             ) ,
             array(
-                "export_useracl"
-            ) ,
-            array(
                 "fdl_adoc"
             ) ,
             array(
@@ -114,9 +111,6 @@ class TestHelpUsage extends TestCaseDcp
             ) ,
             array(
                 "import_style"
-            ) ,
-            array(
-                "import_useracl"
             ) ,
             array(
                 "initViewPrivileges"
