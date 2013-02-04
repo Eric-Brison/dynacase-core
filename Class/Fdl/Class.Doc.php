@@ -5737,7 +5737,8 @@ create unique index i_docir on doc(initid, revision);";
                                     $oa = $this->GetAttribute($sattrid);
                                     if (($k >= 0) && ($oa && $oa->repeat)) {
                                         $tval = $this->getMultipleRawValues($sattrid);
-                                        $ovalue = chop($tval[$k]);
+
+                                        $ovalue = isset($tval[$k])?chop($tval[$k]):'';
                                     } else {
                                         // get property also
                                         $ovalue = $this->getRawValue($sattrid);
