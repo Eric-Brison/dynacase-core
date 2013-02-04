@@ -4285,9 +4285,11 @@ create unique index i_docir on doc(initid, revision);";
                     elseif (is_string($res)) $res = array(
                         "err" => $res
                     );
-                } elseif ($res["sug"] && (!is_array($res["sug"]))) $res["sug"] = array(
-                    $res["sug"]
-                );
+                } elseif (!empty($res["sug"]) && (!is_array($res["sug"]))) {
+                    $res["sug"] = array(
+                        $res["sug"]
+                    );
+                }
                 if (is_array($res) && $res["err"] != "") $this->constraintbroken = "[$attrid] " . $res["err"];
                 return $res;
             }
