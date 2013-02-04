@@ -50,8 +50,9 @@ function fdl_method(Action & $action)
     
     if (!$noredirect) {
         if ($zone) $opt = "&zone=$zone";
-        if ($location = $_SERVER["HTTP_REFERER"]) {
-            Header("Location: $location");
+        $referer = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : null;
+        if ($referer) {
+            Header("Location: $referer");
             exit;
         } else {
             redirect($action, "FDL", sprintf("FDL_CARD%s&id=%d", $opt, $doc->id));
