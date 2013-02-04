@@ -20,14 +20,14 @@ include_once ("FDL/Class.Doc.php");
 /**
  * Edit an attribute inline
  * @param Action &$action current action
- * @global docid Http var : document identifier to see
- * @global attrid Http var : the id of attribute to edit
+ * @global string $docid Http var : document identifier to see
+ * @global string $attrid Http var : the id of attribute to edit
  */
 function editattribute(&$action)
 {
-    $docid = GetHttpVars("docid");
-    $attrid = GetHttpVars("attrid");
-    $modjsft = GetHttpVars("modjsft", "modattr");
+    $docid = $action->getArgument("docid");
+    $attrid = $action->getArgument("attrid");
+    $modjsft = $action->getArgument("modjsft", "modattr");
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     header('Content-type: text/xml; charset=utf-8');
@@ -38,7 +38,7 @@ function editattribute(&$action)
     $action->lay->set("warning", "");
     if ($modjsft == "undefined") $modjsft = "modattr";
     $action->lay->set("modjsft", $modjsft);
-    
+    $err='';
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $err = sprintf(_("cannot see unknow reference %s") , $docid);
     if ($err == "") {

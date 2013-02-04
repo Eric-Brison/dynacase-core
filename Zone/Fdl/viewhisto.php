@@ -149,6 +149,7 @@ function viewhisto(Action & $action)
     $action->lay->Set("nodetail", ($iversion > 1));
     
     $action->lay->Set("hasversion", $hasVersion);
+    $action->lay->Set("latestVersion", $doc->version);
     $action->lay->SetBlockData("TABLEBODY", $trdoc);
 }
 ?>
