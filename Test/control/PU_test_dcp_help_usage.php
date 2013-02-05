@@ -146,9 +146,6 @@ class TestHelpUsage extends TestCaseDcp
                 "usercard_iuser"
             ) ,
             array(
-                "usercard_ldapinit"
-            ) ,
-            array(
                 "accountRefreshGroup"
             ) ,
             array(
