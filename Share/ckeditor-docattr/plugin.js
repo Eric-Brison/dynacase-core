@@ -11,7 +11,7 @@ CKEDITOR.plugins.add('docattr', {
                 multiSelect:false,
 
                 panel:{
-                    css:[ CKEDITOR.getUrl(editor.skinPath + 'editor.css') ].concat(config.contentsCss)
+                    css:[ CKEDITOR.skin.getPath('editor') ].concat(config.contentsCss)
                 },
 
                 init:function () {
@@ -38,21 +38,17 @@ CKEDITOR.plugins.add('docattr', {
 
 CKEDITOR.plugins.setLang('docattr', 'en',
     {
-        docattr:{
-            title:'Key',
-            label:'Key',
-            group:"Template Keys",
-            nogroup : "No keys : you can reload the document to try to add new key"
-        }
+        title:'Key',
+        label:'Key',
+        group:"Template Keys",
+        nogroup : "No keys : you can reload the document to try to add new key"
     }
 );
 CKEDITOR.plugins.setLang('docattr', 'fr',
     {
-        docattr:{
-            title:'Clefs',
-            label:"Clefs",
-            group:"Clef de template",
-            nogroup : "Pas de clefs : essayez de recharger le document"
-        }
+        title:'Clefs',
+        label:"Clefs",
+        group:"Clef de template",
+        nogroup : "Pas de clefs : essayez de recharger le document"
     }
 );
