@@ -62,14 +62,16 @@ class TaskRequest extends DbObj
     
     public $dbtable = "taskrequest";
     
-    public $sqlcreate = "
-create table taskrequest ( tid int not null primary key,   
-                   fkey text,            
-                   uid int not null,
-                   uname text,
-                   status char,
-                   date timestamp default now(),
-                   comment text  );
-";
+    public $sqlcreate = <<< 'SQL'
+CREATE TABLE taskrequest (
+    tid TEXT NOT NULL PRIMARY KEY,
+    fkey TEXT,
+    uid INT NOT NULL,
+    uname TEXT,
+    status CHAR,
+    date TIMESTAMP DEFAULT NOW(),
+    comment TEXT
+);
+SQL;
 }
 ?>
