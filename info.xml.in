@@ -5,16 +5,16 @@
     <description lang="fr">Serveur d'application dynacase core</description>
 
     <replaces>
-        <module name="dynacase-platform" />
+        <module name="dynacase-platform"/>
     </replaces>
 
     <requires>
         <installer version="1.3.0" comp="ge"/>
-        <module name="dynacase-jquery-installer"  version="1.7.2" comp="ge"/>
+        <module name="dynacase-jquery-installer" version="1.7.2" comp="ge"/>
         <module name="dynacase-jquery-ui-installer" version="1.8.21" comp="ge"/>
         <module name="dynacase-json2" version="1.0.0" comp="ge"/>
         <module name="dynacase-datajs"/>
-        <module name="dynacase-jquery-dataTables-installer" />
+        <module name="dynacase-jquery-dataTables-installer"/>
         <module name="dynacase-ckeditor-installer"/>
     </requires>
 
@@ -47,26 +47,55 @@
             <label lang="en">Check database empty</label>
         </check>
 
-        <check type="syscommand" command="rm"/>
-        <check type="syscommand" command="file"/>
-        <check type="syscommand" command="mkdir"/>
-        <check type="syscommand" command="tar"/>
-        <check type="syscommand" command="zip"/>
+        <check type="syscommand" command="rm">
+            <label lang="en">Check "rm". To delete some working files</label>
+        </check>
+        <check type="syscommand" command="file">
+            <label lang="en">Check "file". To detect mime file type</label>
+        </check>
+        <check type="syscommand" command="mkdir">
+            <label lang="en">Check "mkdir". To create directory</label>
+        </check>
+        <check type="syscommand" command="tar">
+            <label lang="en">Check "Tar". To import document's archive</label>
+        </check>
+        <check type="syscommand" command="zip">
+            <label lang="en">Check "Zip". To import/export archive</label>
+        </check>
         <check type="exec" cmd="zip -Z store &lt; /dev/null &gt; /dev/null 2&gt;&amp;1">
-            <label lang="en">Check zip support for -Z store flag</label>
+            <label lang="en">Check zip support for -Z store flag. Use for openDocument writting</label>
             <help>Your zip command does not seems to support the -Z store flag. Please install info-zip >= 3.0</help>
         </check>
-        <check type="syscommand" command="unzip"/>
-        <check type="syscommand" command="dot"/>
-        <check type="syscommand" command="convert"/>
-        <check type="syscommand" command="recode"/>
-        <check type="syscommand" command="html2ps"/>
-        <check type="syscommand" command="ps2pdf"/>
-        <check type="syscommand" command="php"/>
-        <check type="syscommand" command="ldapdelete" optional="yes"/>
-        <check type="syscommand" command="psql"/>
-        <check type="syscommand" command="pg_dump"/>
-        <check type="syscommand" command="msgcat"/>
+        <check type="syscommand" command="unzip">
+            <label lang="en">Check "unzip". To import archive and openDocument</label>
+        </check>
+        <check type="syscommand" command="dot">
+            <label lang="en">Check "dot". To display workflow graph</label>
+        </check>
+        <check type="syscommand" command="convert">
+            <label lang="en">Check "convert". To resize images</label>
+        </check>
+        <check type="syscommand" command="recode">
+            <label lang="en">Check "recode". For send pdf email</label>
+        </check>
+        <check type="syscommand" command="html2ps">
+            <label lang="en">Check "html2ps". For send pdf email</label>
+        </check>
+        <check type="syscommand" command="ps2pdf">
+            <label lang="en">Check "ps2pdf". For send pdf email</label>
+        </check>
+        <check type="syscommand" command="php">
+            <label lang="en">Check "php". Core language</label>
+        </check>
+        <check type="syscommand" command="psql">
+            <label lang="en">Check "psql". Postgresql Client</label>
+        </check>
+        <check type="syscommand" command="pg_dump">
+            <label lang="en">Check "pg_dump". To archive database</label>
+        </check>
+        <check type="syscommand" command="msgcat">
+            <label lang="en">Check "msgcat". To construct language catalogue</label>
+        </check>
 
         <!-- Check PHP functions/extensions -->
 
@@ -103,7 +132,8 @@ This can be solved by:<br/>
             </help>
         </check>
         <check type="phpfunction" function="token_get_all">
-            <help>You might need to install a php-tokenizer package from your distribution in order to have tokenizer support in
+            <help>You might need to install a php-tokenizer package from your distribution in order to have tokenizer
+                support in
                 PHP.
             </help>
         </check>
@@ -123,10 +153,13 @@ This can be solved by:<br/>
                 PHP.
             </help>
         </check>
-         <check type="exec" cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
-                    <label lang="en">Check iconv in libc</label>
-                    <help>Your PHP iconv extension is compiled with a non-GLIBC implementation of iconv, and it might not work as expected.</help>
-                 </check>
+        <check type="exec"
+               cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
+            <label lang="en">Check iconv in libc</label>
+            <help>Your PHP iconv extension is compiled with a non-GLIBC implementation of iconv, and it might not work
+                as expected.
+            </help>
+        </check>
         <check type="phpfunction" function="mb_get_info">
             <help>You might need to install a php-mbstring package from your distribution in order to have mbstring
                 support in PHP.
@@ -150,7 +183,9 @@ This can be solved by:<br/>
         </check>
         <check type="exec" cmd="php -r 'exit(extension_loaded(&quot;suhosin&quot;)?1:0);'">
             <label lang="en">Check suhosin is not active</label>
-            <help>The PHP suhosin extension MUST NOT be active! Please deactivate the PHP suhosin extension (as unconfigured suhosin can cause silent corruption of form data).</help>
+            <help>The PHP suhosin extension MUST NOT be active! Please deactivate the PHP suhosin extension (as
+                unconfigured suhosin can cause silent corruption of form data).
+            </help>
         </check>
 
         <check type="phpclass" class="XSLTProcessor">
@@ -160,7 +195,7 @@ This can be solved by:<br/>
         </check>
         <check type="phpclass" class="Collator">
             <help>You might need to install a php-intl package from your distribution in order to have
-              Internationalization (Collator class) support in PHP.
+                Internationalization (Collator class) support in PHP.
             </help>
         </check>
 
@@ -289,26 +324,55 @@ This can be solved by:<br/>
             <label lang="en">Check database access</label>
         </check>
 
-        <check type="syscommand" command="rm"/>
-        <check type="syscommand" command="file"/>
-        <check type="syscommand" command="mkdir"/>
-        <check type="syscommand" command="tar"/>
-        <check type="syscommand" command="zip"/>
+        <check type="syscommand" command="rm">
+            <label lang="en">Check "rm". To delete some working files</label>
+        </check>
+        <check type="syscommand" command="file">
+            <label lang="en">Check "file". To detect mime file type</label>
+        </check>
+        <check type="syscommand" command="mkdir">
+            <label lang="en">Check "mkdir". To create directory</label>
+        </check>
+        <check type="syscommand" command="tar">
+            <label lang="en">Check "Tar". To import document's archive</label>
+        </check>
+        <check type="syscommand" command="zip">
+            <label lang="en">Check "Zip". To import/export archive</label>
+        </check>
         <check type="exec" cmd="zip -Z store &lt; /dev/null &gt; /dev/null 2&gt;&amp;1">
-            <label lang="en">Check zip command support for -Z store flag</label>
+            <label lang="en">Check zip support for -Z store flag. Use for openDocument writting</label>
             <help>Your zip command does not seems to support the -Z store flag. Please install info-zip >= 3.0</help>
         </check>
-        <check type="syscommand" command="unzip"/>
-        <check type="syscommand" command="dot"/>
-        <check type="syscommand" command="convert"/>
-        <check type="syscommand" command="recode"/>
-        <check type="syscommand" command="html2ps"/>
-        <check type="syscommand" command="ps2pdf"/>
-        <check type="syscommand" command="php"/>
-        <check type="syscommand" command="ldapdelete" optional="yes"/>
-        <check type="syscommand" command="psql"/>
-        <check type="syscommand" command="pg_dump"/>
-        <check type="syscommand" command="msgcat"/>
+        <check type="syscommand" command="unzip">
+            <label lang="en">Check "unzip". To import archive and openDocument</label>
+        </check>
+        <check type="syscommand" command="dot">
+            <label lang="en">Check "dot". To display workflow graph</label>
+        </check>
+        <check type="syscommand" command="convert">
+            <label lang="en">Check "convert". To resize images</label>
+        </check>
+        <check type="syscommand" command="recode">
+            <label lang="en">Check "recode". For send pdf email</label>
+        </check>
+        <check type="syscommand" command="html2ps">
+            <label lang="en">Check "html2ps". For send pdf email</label>
+        </check>
+        <check type="syscommand" command="ps2pdf">
+            <label lang="en">Check "ps2pdf". For send pdf email</label>
+        </check>
+        <check type="syscommand" command="php">
+            <label lang="en">Check "php". Core language</label>
+        </check>
+        <check type="syscommand" command="psql">
+            <label lang="en">Check "psql". Postgresql Client</label>
+        </check>
+        <check type="syscommand" command="pg_dump">
+            <label lang="en">Check "pg_dump". To archive database</label>
+        </check>
+        <check type="syscommand" command="msgcat">
+            <label lang="en">Check "msgcat". To construct language catalogue</label>
+        </check>
 
         <!-- Check PHP functions/extensions -->
 
@@ -346,7 +410,8 @@ This can be solved by:<br/>
         </check>
 
         <check type="phpfunction" function="token_get_all">
-            <help>You might need to install a php-tokenizer package from your distribution in order to have tokenizer support in
+            <help>You might need to install a php-tokenizer package from your distribution in order to have tokenizer
+                support in
                 PHP.
             </help>
         </check>
@@ -367,10 +432,11 @@ This can be solved by:<br/>
                 PHP.
             </help>
         </check>
-        <check type="exec" cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
+        <check type="exec"
+               cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
             <label lang="en">Check iconv in libc</label>
             <help>Iconv might not work as you want</help>
-         </check>
+        </check>
         <check type="phpfunction" function="mb_get_info">
             <help>You might need to install a php-mbstring package from your distribution in order to have mbstring
                 support in PHP.
@@ -391,7 +457,9 @@ This can be solved by:<br/>
         </check>
         <check type="exec" cmd="php -r 'exit(extension_loaded(&quot;suhosin&quot;)?1:0);'">
             <label lang="en">Check suhosin is not active</label>
-            <help>The PHP suhosin extension MUST NOT be active! Please deactivate the PHP suhosin extension (as unconfigured suhosin can cause silent corruption of form data).</help>
+            <help>The PHP suhosin extension MUST NOT be active! Please deactivate the PHP suhosin extension (as
+                unconfigured suhosin can cause silent corruption of form data).
+            </help>
         </check>
 
         <check type="phpclass" class="XSLTProcessor">
@@ -401,7 +469,7 @@ This can be solved by:<br/>
         </check>
         <check type="phpclass" class="Collator">
             <help>You might need to install a php-intl package from your distribution in order to have
-              Internationalization (Collator class) support in PHP.
+                Internationalization (Collator class) support in PHP.
             </help>
         </check>
 
