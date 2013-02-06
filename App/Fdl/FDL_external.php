@@ -351,19 +351,11 @@ function lfamilies($dbaccess, $name = '', $subfam = "")
  * @param int $dirid identifier of folder for restriction to a folder tree (deprecated)
  * @param array $filter additionnals SQL filters
  * @param string $idid the document id to use (default: id)
+ * @param bool $withDiacritic to search with accent
  * @return array/string*3 array of (title, identifier, title)
  */
-function lfamilly($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , $idid = "id")
+function lfamily($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , $idid = "id", $withDiacritic = false)
 {
-    //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
-    global $action;
-    
-    if (!is_array($filter)) {
-        if (trim($filter) != "") $filter = array(
-            $filter
-        );
-        else $filter = array();
-    }
     $only = false;
     if ($famid[0] == '-') {
         $only = true;
@@ -377,13 +369,39 @@ function lfamilly($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() ,
             return sprintf(_("family %s not found") , $famName);
         }
     }
-    if ($name != "" && is_string($name)) {
-        $name = pg_escape_string($name);
-        $filter[] = "title ~* '$name'";
+    $s = new SearchDoc($dbaccess, $famid); //$famid=-(abs($famid));
+    if ($only) {
+        $s->only = true;
     }
-    //$famid=-(abs($famid));
-    if ($only) $famid = - ($famid);
-    $tinter = internalGetDocCollection($dbaccess, $dirid, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
+    if (!is_array($filter)) {
+        if (trim($filter) != "") $filter = array(
+            $filter
+        );
+        else $filter = array();
+    }
+    if (count($filter) > 0) {
+        foreach ($filter as $f) {
+            $s->addFilter($f);
+        }
+    }
+    
+    if ($name != "" && is_string($name)) {
+        if (!$withDiacritic) {
+            $name = setDiacriticRules(mb_strtolower($name));
+        }
+        $s->addFilter("title ~* '%s'", $name);
+    }
+    $s->setSlice(100);
+    
+    if ($dirid) $s->useCollection($dirid);
+    $s->returnsOnly(array(
+        "title",
+        $idid
+    ));
+    $tinter = $s->search();
+    if ($s->getError()) {
+        return $s->getError();
+    }
     
     $tr = array();
     
@@ -396,10 +414,44 @@ function lfamilly($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() ,
     }
     return $tr;
 }
-// alias name
-function lfamily($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , $idid = "id")
+/**
+ * create preg rule to search without diacritic
+ * @see lfamily
+ * @param string $text
+ * @return string rule for preg
+ */
+function setDiacriticRules($text)
 {
-    return lfamilly($dbaccess, $famid, $name, $dirid, $filter, $idid);
+    $dias = array(
+        "a|à|á|â|ã|ä|å",
+        "o|ò|ó|ô|õ|ö|ø",
+        "e|è|é|ê|ë",
+        "c|ç",
+        "i|ì|í|î|ï",
+        "u|ù|ú|û|ü",
+        "y|ÿ",
+        "n|ñ"
+    );
+    foreach ($dias as $dia) {
+        $text = preg_replace("/[" . str_replace("|", "", $dia) . "]/u", "[$dia]", $text);
+    }
+    return $text;
+}
+// alias name
+
+/**
+ * @deprecated use lfamily instead
+ * @param $dbaccess
+ * @param $famid
+ * @param string $name
+ * @param int $dirid
+ * @param array $filter
+ * @param string $idid
+ * @return mixed
+ */
+function lfamilly($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , $idid = "id")
+{
+    return lfamily($dbaccess, $famid, $name, $dirid, $filter, $idid);
 }
 /**
  * list of documents of a same family and their specific attributes
@@ -723,7 +775,7 @@ function lmask($dbaccess, $name, $maskfamid = "")
         //    $filter[]="msk_famid='$maskfamid'"; // when workflow will have attribut to say the compatible families
         
     }
-    return lfamilly($dbaccess, "MASK", $name, 0, $filter);
+    return lfamily($dbaccess, "MASK", $name, 0, $filter);
 }
 // view control list
 function lcvdoc($dbaccess, $name, $cvfamid = "")
@@ -767,7 +819,7 @@ function lsearches($dbaccess, $name)
     $filter = array(
         "fromid=5 or fromid=16"
     );
-    return lfamilly($dbaccess, "SEARCH", $name, 0, $filter);
+    return lfamily($dbaccess, "SEARCH", $name, 0, $filter);
 }
 /**
  * tab list not filters
@@ -1020,7 +1072,10 @@ function getSortProperties($dbaccess, $famid, $name = "")
     }
     return $ret;
 }
-
+/**
+ * @param NormalAttribute $oa
+ * @return string
+ */
 function _getParentLabel($oa)
 {
     if ($oa && $oa->fieldSet && $oa->fieldSet->id != 'FIELD_HIDDENS') {
@@ -1033,7 +1088,7 @@ function laction($dbaccess, $famid, $name, $type)
 {
     $filter = array();
     $filter[] = "act_type='$type'";
-    return lfamilly($dbaccess, $famid, $name, 0, $filter);
+    return lfamily($dbaccess, $famid, $name, 0, $filter);
 }
 /**
  * return list of what application

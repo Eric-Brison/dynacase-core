@@ -31,6 +31,7 @@ class SuiteDcpAttribute
         $suite->addTestSuite('Dcp\Pu\TestGetSearchMethods');
         $suite->addTestSuite('Dcp\Pu\TestGetSortAttributes');
         $suite->addTestSuite('Dcp\Pu\TestGetSortProperties');
+        $suite->addTestSuite('Dcp\Pu\TestLFamily');
         // $suite->addTestSuite('Dcp\Pu\TestAutocompletion'); // This test requires a bootstrap.php with ob_start()
         // ...
         return $suite;
