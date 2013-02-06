@@ -5,5 +5,6 @@ if [ -z "$pgservice_core" ]; then
 	exit 1
 fi
 
-
 "$wpub"/wsh.php --api=updateclass  --appc=FDL --class=DocEnum
+
+"$wpub"/wsh.php --api=updateclass  --appc=FDL --class=TaskRequest
