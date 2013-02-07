@@ -33,12 +33,18 @@ $action_desc = array(
         "acl" => "TST_ACCESS_ACL_1",
         "short_name" => "Test Access Action #1",
         "root" => "Y"
-    ) ,
+    ),
     array(
         "name" => "TST_ACCESS_ACTION_2",
         "toc" => "Y",
         "acl" => "TST_ACCESS_ACL_2",
         "short_name" => "Test Access Action #2",
+    ),
+    array(
+        "name" => "TST_ACCESS_ACTION_FREE",
+        "toc" => "Y",
+        "acl" => Action::ACCESS_FREE,
+        "short_name" => "Test Access Action Access Free",
     )
 );
 ?>
