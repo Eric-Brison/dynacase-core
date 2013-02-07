@@ -18,29 +18,33 @@
 include_once ("GENERIC/generic_util.php");
 function generic_root(Action & $action)
 {
-    
-    $famid = GetHttpVars("famid"); // family restriction
+
+    $usage = new ActionUsage($action);
+    $famid = $usage->addRequiredParameter("famid", "id or logical name of the family"); // family restriction
+    $usage->setStrictMode(false);
+    $usage->verify(true);
+
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    if ($famid && (!is_numeric($famid))) $famid = getFamIdFromName($dbaccess, $famid);
-    if ($famid != "") $action->register("DEFAULT_FAMILY", $famid); // for old compatibility
+    if ($famid && (!is_numeric($famid))) {
+        $famid = getFamIdFromName($dbaccess, $famid);
+    }
+    if ($famid != "") {
+        $action->register("DEFAULT_FAMILY", $famid); // for old compatibility
+    }
     $action->lay->set("famid", $famid);
     $smode = getSplitMode($action);
     
     switch ($smode) {
         case "H":
-            
             $action->lay->set("rows", $action->getParam("GENEA_HEIGHT") . ",*");
             $action->lay->set("cols", "");
             break;
 
-        default:
         case "V":
-            
+        default:
             $action->lay->set("cols", $action->getParam("GENEA_WIDTH") . ",*");
             $action->lay->set("rows", "");
-            break;
     }
     $action->lay->set("GTITLE", _($action->parent->short_name));
     $action->lay->set("famid", $famid);
 }
-?>
