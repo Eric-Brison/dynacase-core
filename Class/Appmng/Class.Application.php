@@ -735,6 +735,9 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function hasPermission($acl_name, $app_name = "", $strict = false)
     {
+        if(Action::ACCESS_FREE == $acl_name){
+            return true;
+        }
         if (!isset($this->user) || !is_object($this->user)) {
             $this->log->warning("Action {$this->parent->name}:{$this->name} requires authentification");
             return FALSE;
