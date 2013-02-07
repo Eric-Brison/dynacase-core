@@ -16,8 +16,8 @@
 /**
  */
 
-include_once ("GENERIC/generic_util.php");
-include_once ("FDL/Lib.Attr.php");
+require_once "GENERIC/generic_util.php";
+require_once "FDL/Lib.Attr.php";
 // -----------------------------------
 function family_defaultmenu(Action & $action)
 {
@@ -33,10 +33,13 @@ function family_defaultmenu(Action & $action)
     $defaultMenu = array();
     $fdoc = new_Doc($dbaccess, $famid);
     
-    if ($catg > 1) $fld = new_Doc($dbaccess, $catg);
-    else $fld = new_Doc($dbaccess, $dirid);
+    if ($catg > 1) {
+        $fld = new_Doc($dbaccess, $catg);
+    }
+    else {
+        $fld = new_Doc($dbaccess, $dirid);
+    }
     //change famid if it is a simplesearch
-    $sfamid = $famid;
     $sfdoc = $fdoc; // search family
     if ($fld->isAlive()) {
         $sfamid = $fld->getRawValue("se_famid");
@@ -55,25 +58,26 @@ function family_defaultmenu(Action & $action)
             "id" => $famid,
             "name" => $fdoc->name
         );
-    } else $child = array();
+    } else {
+        $child = array();
+    }
     
     $onlyonefam = (getInherit($action, $famid) == "N");
-    if (!$onlyonefam) $child+= $fdoc->GetChildFam($fdoc->id, true);
-    
-    $tnewmenu = array();
+    if (!$onlyonefam) {
+        $child+= $fdoc->GetChildFam($fdoc->id, true);
+    }
+
     if ($action->HasPermission("GENERIC")) {
-        foreach ($child as $k => $vid) {
+        foreach ($child as $vid) {
             $defaultMenuCreate[] = array(
                 "label" => DocFam::getLangTitle($vid) ,
                 "target" => "finfo",
-                
                 "url" => sprintf("?app=GENERIC&amp;action=GENERIC_EDIT&amp;classid=%s", $vid["id"])
             );
         }
     }
     if (count($defaultMenuCreate)) {
         $defaultMenu["create"] = array(
-            
             "label" => _("Creation") ,
             "title" => _("Document creation") ,
             "items" => $defaultMenuCreate
@@ -84,9 +88,8 @@ function family_defaultmenu(Action & $action)
     /**
      * @var NormalAttribute $a
      */
-    foreach ($lattr as $k => $a) {
+    foreach ($lattr as $a) {
         if ((($a->type == "enum") || ($a->type == "enumlist")) && (($a->phpfile != "-") && ($a->getOption("bmenu") != "no"))) {
-            
             $tmkind = array();
             $enum = $a->getenum();
             $enumItems = array();
@@ -94,7 +97,6 @@ function family_defaultmenu(Action & $action)
                 $klabel = $a->getenumLabel($kk);
                 $tmpArray = explode('/', $klabel, substr_count($kk, '.') + 0);
                 $klabel = array_pop($tmpArray);
-                
                 $enumItems[] = array(
                     "label" => $klabel,
                     "data-level" => (substr_count($kk, '.') - substr_count($kk, '\.')) ,
@@ -111,8 +113,6 @@ function family_defaultmenu(Action & $action)
     }
     //--------------------- tools menu -----------------------
     $toolsItemMenu = array();
-    $searchItemMenu = array();
-    
     if ($action->HasPermission("GENERIC")) {
         $d = new_doc($dbaccess, 16);
         if ($d->control("create") == "" && $d->control("icreate") == "") {
@@ -141,7 +141,6 @@ function family_defaultmenu(Action & $action)
     }
     
     if (($dirid < 1000000000) && ($catg > 1)) {
-        
         $toolsItemMenu['memosearch'] = array(
             "label" => _("memosearch") ,
             "target" => "fhidden",
@@ -155,11 +154,6 @@ function family_defaultmenu(Action & $action)
         "target" => "_self",
         "url" => sprintf('?app=GENERIC&amp;action=GENERIC_SEARCH&amp;catg=0&amp;onefam=%s&amp;mysearches=yes&amp;famid=%s', $onefamOrigin, $famid)
     );
-    /*
-    $toolsItemMenu['searches'] = array(
-                                      "label" => _("Searches") ,
-                                      "items"=>$searchItemMenu);
-    */
     if ($action->HasPermission("GED", "FREEDOM")) {
         $toolsItemMenu['folders'] = array(
             "label" => _("folders") ,
@@ -181,8 +175,7 @@ function family_defaultmenu(Action & $action)
             "url" => sprintf('?app=GENERIC&action=GENERIC_EDITFAMCATG&famid=%s', $famid)
         );
     }
-    
-    $globalItemMenu = array();
+
     $lmenu = $fdoc->GetMenuAttributes();
     $firstGlobalMenu = true;
     foreach ($lmenu as $k => $v) {

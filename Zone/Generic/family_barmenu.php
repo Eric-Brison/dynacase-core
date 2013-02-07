@@ -16,7 +16,7 @@
 /**
  */
 
-include_once ("GENERIC/family_defaultmenu.php");
+include_once "GENERIC/family_defaultmenu.php";
 // -----------------------------------
 function family_barmenu(Action & $action)
 {
@@ -33,23 +33,6 @@ function family_barmenu(Action & $action)
     $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.menubar.js', false, $packName);
     
     $action->parent->addCssRef('lib/jquery-ui/devel-src/themes/base/jquery.ui.all.css');
-    /*
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.core.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.accordion.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.autocomplete.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.button.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.datepicker.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.dialog.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.menu.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.menubar.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.progressbar.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.resizable.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.selectable.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.slider.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.spinner.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.tabs.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.tooltip.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.theme.css',false,'menubarcss');*/
     $defaultMenu = family_defaultmenu($action);
     $menu = getOnefamMenu($onefamOrigin, $famid, $defaultMenu);
     $action->lay->set("familyMenu", objectMenu2Html($menu, false));
@@ -58,13 +41,19 @@ function family_barmenu(Action & $action)
 
 function getOnefamMenu($onefam, $famid, $defaultMenu)
 {
-    if (!$onefam) return $defaultMenu;
+    if (!$onefam) {
+        return $defaultMenu;
+    }
     $sql = sprintf("SELECT val from paramv where name = 'ONEFAM_MENU' and appid = (select id from application where name='%s')", pg_escape_string($onefam));
     simpleQuery('', $sql, $onefamMenu, true, true);
-    if (!$onefamMenu) return $defaultMenu;
+    if (!$onefamMenu) {
+        return $defaultMenu;
+    }
     $confOnefam = json_decode($onefamMenu, true);
     $famName = getNameFromId(getDbAccess() , $famid);
-    if (!isset($confOnefam["families"][$famName])) return $defaultMenu;
+    if (!isset($confOnefam["families"][$famName])) {
+        return $defaultMenu;
+    }
     $specMenu = $confOnefam["families"][$famName];
     if (!$specMenu) return $defaultMenu;
     $standardMenu = $specMenu["standardMenu"];
@@ -109,7 +98,6 @@ function getOnefamMenu($onefam, $famid, $defaultMenu)
         }
         $defaultMenu = array_merge($defaultMenu, $customMenu);
     }
-    //print_r2($defaultMenu);
     return $defaultMenu;
 }
 
@@ -155,4 +143,3 @@ function objectMenu2Html(array $menulist, $ul = true, $level = 0)
     if ($ul) $s.= "</ul>";
     return $s;
 }
-?>
