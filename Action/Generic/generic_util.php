@@ -261,10 +261,12 @@ function setFamilyParameter(&$action, $famid, $attrid, $value)
     $tmode = explode(",", $action->getParam($attrid));
     // explode parameters
     foreach ($tmode as $k => $v) {
-        list($fid, $val) = explode("|", $v);
+        $values = explode("|", $v);
+        $fid = isset($values[0]) ? $values[0] : "";
+        $val = isset($values[1]) ? $values[1] : "";
         $tview[$fid] = $val;
     }
-    if ($tview[$famid] != $value) {
+    if (isset($tview[$famid]) && $tview[$famid] != $value) {
         $tview[$famid] = $value;
         // implode parameters to change user preferences
         $tmode = array();
