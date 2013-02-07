@@ -104,33 +104,18 @@ class htmlAuthenticator extends Authenticator
     public function askAuthentication($args)
     {
         if (empty($args)) $args = array();
-        $parsed_referer = parse_url(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "");
-        
-        $referer_uri = "";
-        if ($parsed_referer['path'] != "") {
-            $referer_uri.= $parsed_referer['path'];
-        }
-        if (!empty($parsed_referer['query'])) {
-            $referer_uri.= "?" . $parsed_referer['query'];
-        }
-        if (!empty($parsed_referer['fragment'])) {
-            $referer_uri.= "#" . $parsed_referer['fragment'];
-        }
         $session = $this->getAuthSession();
         /* Force removal of username if it already exists on the session */
         $session->register('username', '');
         $session->setuid(ANONYMOUS_ID);
-        //     error_log("referer_uri = ".$referer_uri." / REQUEST_URI = ".$_SERVER['REQUEST_URI']);
-        if ($referer_uri == "") {
-            //       error_log("Setting fromuri = ".$_SERVER['REQUEST_URI']);
-            $session->register('fromuri', $_SERVER['REQUEST_URI']);
-        } else if ($session->read('fromuri') == "" && $referer_uri != $_SERVER['REQUEST_URI']) {
-            //       error_log("Setting fromuri = ".$_SERVER['REQUEST_URI']);
-            $session->register('fromuri', $_SERVER['REQUEST_URI']);
+        /* Redirect user to authentication handler */
+        if (isset($args['redirect_uri'])) {
+
         }
-        
-        $location = $this->getAuthUrl($args);
-        header(sprintf('Location: %s', $location));
+        if (!isset($args['redirect_uri'])) {
+            $args['redirect_uri'] = $_SERVER['REQUEST_URI'];
+        }
+        header(sprintf('Location: %s', $this->getAuthUrl($args)));
         return TRUE;
     }
 
@@ -142,14 +127,14 @@ class htmlAuthenticator extends Authenticator
      */
     public function getAuthUrl(array $extendedArg = array())
     {
-        if (!isset($this->parms['auth']['app'])) {
+        if (empty($this->parms['auth']['app'])) {
             throw new \Dcp\Exception("Missing html/auth/app config.");
         }
         $location = 'authent.php?app=' . $this->parms['auth']['app'];
-        if (isset($this->parms['auth']['action'])) {
+        if (!empty($this->parms['auth']['action'])) {
             $location.= '&action=' . $this->parms['auth']['action'];
         }
-        if (isset($this->parms['auth']['args'])) {
+        if (!empty($this->parms['auth']['args'])) {
             $location.= '&' . $this->parms['auth']['args'];
         }
         $sargs = '';
@@ -164,8 +149,8 @@ class htmlAuthenticator extends Authenticator
      */
     public function connectTo($uri)
     {
-        $this->getAuthSession()->register('fromuri', $uri);
-        header(sprintf('Location: %s', $this->getAuthUrl()));
+        $location = sprintf('%s&redirect_uri=%s', $this->getAuthUrl(), urlencode($uri));
+        header(sprintf('Location: %s', $location));
         exit(0);
     }
     /**

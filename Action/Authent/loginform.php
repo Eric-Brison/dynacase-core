@@ -64,7 +64,8 @@ function loginform(Action & $action)
     $act_redir = GetHttpVars("actd", "");
     $arg_redir = GetHttpVars("argd", ""); // redirect url
     $domain = GetHttpVars("domain");
-    
+    $redirect_uri = GetHttpVars("redirect_uri", "");
+
     $action->lay->set("app_redir", $app_redir);
     $action->lay->set("act_redir", $act_redir);
     $action->lay->set("arg_redir", $arg_redir);
@@ -72,6 +73,7 @@ function loginform(Action & $action)
     $action->lay->set("auth_user", htmlspecialchars($auth_user));
     $action->lay->set("passfocus", ($auth_user !== "" ? true : false));
     $action->lay->set("error", $merr);
+    $action->lay->set("redirect_uri", htmlspecialchars($redirect_uri));
     
     $action->lay->set('authent_show_reqpasswd', $action->getParam('AUTHENT_SHOW_REQPASSWD') != 'no');
     
@@ -88,5 +90,8 @@ function loginform(Action & $action)
     }
     $action->lay->setBlockData('LANG', $lang_block);
     $action->parent->short_name = sprintf(_("%s Authentification") , $action->getParam("CORE_CLIENT"));
+
+    header('HTTP/1.1 401 Authentication Required');
+    header('WWW-Authenticate: html-form');
 }
 ?>

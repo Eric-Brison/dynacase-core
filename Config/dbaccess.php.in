@@ -26,7 +26,7 @@ $freedom_authtypeparams = array(
         'auth' => array(
             'app' => 'AUTHENT',
             'action' => 'LOGINFORM',
-            'args' => 'sole=A'
+            'args' => ''
         ) ,
         'username' => 'auth_user',
         'password' => 'auth_pass',
