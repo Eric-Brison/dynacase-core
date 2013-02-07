@@ -26,31 +26,29 @@ TODAY=`date`
 AC_SUBST(APPNAME)
 APPNAME=TOOLBOX
 
+AC_SUBST(ROOTDIR)
+ROOTDIR=`pwd`
+
+
 AC_SUBST(LOGDATE)
-LOGDATE=`(git log -1 || echo 2012) | grep Date |cut -c6-`
+LOGDATE=`(git log -1 || echo 2013) | grep Date |cut -c6-`
 LICENSE="http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License"
 AC_SUBST(LICENSE)
 
 ac_default_prefix=/usr/share/what
 
 AC_SUBST(PUBRULE)
-PUBRULE=
+PUBRULE="$(pwd)/buildTools"
 AC_ARG_WITH(pubrule, [  --with-pubrule=dir	Path to PubRule], PUBRULE=$withval)
-if test "x$PUBRULE" != "x"; then
-  PUBRULEDIR=$PUBRULE
+if test -z ${PUBRULE}; then
+    PUBRULE=`pwd`
+fi
+if test -f $PUBRULE/PubRule; then
+    AC_MSG_NOTICE([PubRule located at $PUBRULE])
 else
-  if test "x$PUBRULEDIR" == "x"; then
-     AC_CHECK_FILE($HOME/anakeen/devtools/PubRule, PUBRULEDIR=$HOME/anakeen/devtools/)
-     if test "x$PUBRULEDIR" = "x"; then
-          PUBRULEDIR=`pwd`
-     fi
-  fi
+    AC_MSG_ERROR([Could not find PubRule])
 fi
-AC_CHECK_FILE($PUBRULEDIR/PubRule, PUBRULE=$PUBRULEDIR)
-if test "x$PUBRULE" = "x"; then
-  AC_MSG_ERROR([Could not find PubRule])
-fi
-AC_MSG_NOTICE([PubRule located at $PUBRULE])
+
 
 AC_SUBST(LOGLEVEL)
 LOGLEVEL=WEF

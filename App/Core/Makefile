@@ -9,6 +9,7 @@ export appname
 
 
 include $(utildir)/PubRule
+include $(rootdir)/corePubRule.mk
 
 
 DISTFILES += Makefile  $(appname).app $(appname)_init.php.in $(appname)_post file.htaccess core_migration.sql core_database_utils.sql

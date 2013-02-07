@@ -8,5 +8,6 @@ appname = $(shell basename `pwd` | tr [a-z] [A-Z])
 export appname
 
 include $(utildir)/PubRule
+include $(rootdir)/corePubRule.mk
 
 DISTFILES += appadmin.php.in updateclass.php.in

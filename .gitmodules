@@ -1,0 +1,3 @@
+[submodule "buildTools"]
+	path = buildTools
+	url = git@github.com:Anakeen/dynacase-buildtools.git

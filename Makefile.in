@@ -5,11 +5,12 @@ PACKAGE = @PACKAGE@
 VERSION = @VERSION@
 utildir=@PUBRULE@
 pubdir = @prefix@
+rootdir = @ROOTDIR@
 srcdir = @srcdir@
 libdir = $(pubdir)/lib
 applib = @PACKAGELIB@
 appname = @APPNAME@
-export pubdir utildir applib targetdir utildir libdir
+export pubdir utildir applib targetdir utildir libdir rootdir
 
 TAR = tar
 GZIP_ENV = --best

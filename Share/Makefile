@@ -7,6 +7,7 @@ appname = WHAT
 export appname
 
 include $(utildir)/PubRule
+include $(rootdir)/corePubRule.mk
 
 SUBDIR= htmlarea ckeditor-quicksave ckeditor-docattr jscalendar jsXMLParser tsearch2 mozillaplugin jscolor
 
