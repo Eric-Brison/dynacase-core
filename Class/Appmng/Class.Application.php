@@ -36,15 +36,15 @@ class Application extends DbObj
         "name",
         "short_name",
         "description",
-        "access_free",
+        "access_free", //@deprecated
         "available",
         "icon",
         "displayable",
         "with_frame",
         "childof",
-        "objectclass",
-        "ssl",
-        "machine",
+        "objectclass", //@deprecated
+        "ssl", //@deprecated
+        "machine", //@deprecated
         "iorder",
         "tag"
     );
@@ -55,14 +55,30 @@ class Application extends DbObj
     public $name;
     public $short_name;
     public $description;
+    /**
+     * @deprecated
+     * @var $access_free
+     */
     public $access_free;
     public $available;
     public $icon;
     public $displayable;
     public $with_frame;
     public $childof;
+    /**
+     * @deprecated
+     * @var $objectclass
+     */
     public $objectclass;
+    /**
+     * @deprecated
+     * @var $ssl
+     */
     public $ssl;
+    /**
+     * @deprecated
+     * @var $machine
+     */
     public $machine;
     public $iorder;
     public $tag;
@@ -275,7 +291,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     
     public function preUpdate()
     {
-        if ($this->dbid == - 1) return FALSE;
+        if ($this->dbid == - 1) return false;
         if ($this->Exists($this->name, $this->id)) return "Ce nom d'application existe deja...";
         return '';
     }
@@ -740,7 +756,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         if (!isset($this->user) || !is_object($this->user)) {
             $this->log->warning("Action {$this->parent->name}:{$this->name} requires authentification");
-            return FALSE;
+            return false;
         }
         if ($this->user->id == 1) return true; // admin can do everything
         if ($app_name == "") {
@@ -748,7 +764,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             $acl = new Acl($this->dbaccess);
             if (!$acl->Set($acl_name, $this->id)) {
                 $this->log->warning("Acl $acl_name not available for App $this->name");
-                return FALSE;
+                return false;
             }
             if (!$this->permission) {
                 $permission = new Permission($this->dbaccess, array(
@@ -1158,7 +1174,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param bool $update set to true when update application
      * @return bool true if init is done, false if error
      */
-    public function initApp($name, $update = FALSE)
+    public function initApp($name, $update = false)
     {
         
         $this->log->info("Init : $name");
@@ -1276,7 +1292,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function updateApp()
     {
         $name = $this->name;
-        $this->InitApp($name, TRUE);
+        $this->InitApp($name, true);
     }
     /**
      * Update All available application
