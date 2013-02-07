@@ -16,29 +16,31 @@
 /**
  */
 
-include_once ("FDL/Class.DocSearch.php");
-include_once ("FDL/Lib.Dir.php");
+require_once "FDL/Lib.Dir.php";
 
-include_once ("FDL/freedom_util.php");
-include_once ("GENERIC/generic_util.php");
-include_once ("GENERIC/generic_list.php");
-// -----------------------------------
+require_once "FDL/freedom_util.php";
+require_once "GENERIC/generic_util.php";
+require_once "GENERIC/generic_list.php";
+
 function generic_tab(Action & $action)
 {
     // Get all the params
-    $keyword = GetHttpVars("keyword"); // keyword to search
     $dirid = GetHttpVars("catg", -1); // folder where search
     $tab = GetHttpVars("tab", 1); // tab index
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $famid = getDefFam($action);
     $emptyfld = false;
-    if ($famid == "0") $action->exitError(_("cookies seem to be blocked"));
+    if ($famid == "0") {
+        $action->exitError(_("cookies seem to be blocked"));
+    }
     if (($famid != "") && (!is_numeric($famid))) $famid = getFamIdFromName($dbaccess, $famid);
     
     $fdoc = new DocFam($dbaccess, $famid);
     
-    if ($dirid == - 1) $dirid = $fdoc->dfldid;
+    if ($dirid == - 1) {
+        $dirid = $fdoc->dfldid;
+    }
     if ($dirid == 0) {
         $dirid = getDefU($action, "GENE_PREFSEARCH");
         if (!is_numeric($dirid)) {
@@ -67,9 +69,15 @@ function generic_tab(Action & $action)
     $sqlfilter = array();
     $dir = new_Doc($dbaccess, $dirid);
     // control open
-    if ($dir->defDoctype == 'S') $aclctrl = "execute";
-    else $aclctrl = "open";
-    if (($err = $dir->Control($aclctrl)) != "") $action->exitError($err);
+    if ($dir->defDoctype == 'S') {
+        $aclctrl = "execute";
+    }
+    else {
+        $aclctrl = "open";
+    }
+    if (($err = $dir->Control($aclctrl)) != "") {
+        $action->exitError($err);
+    }
     
     if (($dir->defDoctype == 'S') && ($tab == 0)) {
         // parmeters for redirect in case of parametrizable search
@@ -95,11 +103,10 @@ function generic_tab(Action & $action)
         $sdoc->setValue('se_famid', $famid);
         
         $sdoc->Add();
-        //    $sqlfilter[]= "locked != -1";
-        $wkdoc = createDoc($dbaccess, $famid, false);
-        // $sqlfilter[]= "doctype='".$wkdoc->defDoctype."'";
-        //    $sqlfilter[] = "usefor != 'D'";
-        if ($tabletter[$tab] != "") $sqlfilter[] = "title ~* '^[" . $tabletter[$tab] . "].*'";
+
+        if ($tabletter[$tab] != "") {
+            $sqlfilter[] = "title ~* '^[" . $tabletter[$tab] . "].*'";
+        }
         
         $only = (getInherit($action, $famid) == "N");
         
@@ -113,8 +120,4 @@ function generic_tab(Action & $action)
     }
     
     generic_list($action);
-    //  redirect($action,GetHttpVars("app"),"GENERIC_LIST&tab=$tab&dirid=".$sdoc->id."&catg=$dirid");
-    
-    
 }
-?>
