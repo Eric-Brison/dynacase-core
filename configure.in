@@ -134,7 +134,6 @@ AC_OUTPUT(
     App/Dav/DAV_conf.apache \
     App/Fdl/FDL_init.php \
     App/Fdc/FDC_init.php \
-    App/Fdl/tsearch2_fr.sql \
     App/Fgsearch/FGSEARCH_init.php \
     App/Freedom/FREEDOM_init.php  \
     App/Generic/GENERIC_init.php \

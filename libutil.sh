@@ -107,26 +107,7 @@ function pgVersion {
     perl -e 'print join("", map { sprintf("%03d", $_) } split(/\./, $ARGV[0]))' "$VERSION" 2> /dev/null
 }
 
-function pgInitTsearch2 {
-    for TSEARCH2 in \
-	/usr/share/postgresql/8.1/contrib/tsearch2.sql \
-	/usr/share/postgresql/8.2/contrib/tsearch2.sql \
-	/usr/share/pgsql/contrib/tsearch2.sql \
-	; do
-	if [ -f "$TSEARCH2" ]; then
-	    echo "Initializing tsearch2 support with '$TSEARCH2'..."
-	    psql -f "$TSEARCH2" > /dev/null
-	    RET=$?
-	    if [ $RET -ne 0 ]; then
-		echo "Error occured while loading '$TSEARCH2' in database!"
-		exit $RET
-	    fi
-	    return 0
-	fi
-    done
-    echo "Could not find tsearch2.sql script !"
-    return -1
-}
+
 
 function restartHttpd {
     if [ -n "$APACHE_INIT_SCRIPT" ]; then
