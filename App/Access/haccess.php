@@ -43,16 +43,16 @@ function accessGetAccounts($accountType, $filterName = '', $limit = 15)
 
 function accessGetApps($filterName = '', $limit = 35)
 {
-    $condaTs = "access_free != 'Y'";
-    
+    $condaTs = "app.id = acl.id_application";
+
     if ($filterName) {
         $name = pg_escape_string(mb_strtolower($filterName));
-        $cond = sprintf(" and (lower(name) ~'%s' or lower(short_name) ~ '%s' )", $name, $name);
-        $condaTs.= $cond;
+        $cond = sprintf("and (lower(app.name) ~'%s' or lower(app.short_name) ~ '%s' )", $name, $name);
+        $condaTs .= $cond;
     }
-    $sql = sprintf("select id, name, short_name from application where $condaTs order by name");
-    
-    simpleQuery(getDbAccess() , $sql, $result);
+    $sql = sprintf("select app.id, app.name, app.short_name from application as app, acl as acl WHERE $condaTs group by app.id, app.name, app.short_name order by app.name;");
+
+    simpleQuery(getDbAccess(), $sql, $result);
     $t = array();
     //$t[]=array($sql,'g','f');
     foreach ($result as $aAccount) {

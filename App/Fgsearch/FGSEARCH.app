@@ -25,7 +25,6 @@ $app_desc = array (
 "name"		=>"FGSEARCH",		//Name
 "short_name"	=>N_("fgsearch"),		//Short name
 "description"	=>N_("freedom global search"),//long description
-"access_free"	=>"N",			//Access free ? (Y,N)
 "icon"		=>"fgsearch.png",		//Icon
 "displayable"	=>"Y",			//Should be displayed on an app list (Y,N)
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)

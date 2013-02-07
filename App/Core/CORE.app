@@ -27,7 +27,6 @@ $app_desc = array(
     "name" => "CORE", //Name
     "short_name" => N_("Core"), //Short name
     "description" => N_("Core Application Manager"), //long description
-    "access_free" => "Y", //Access type (ALL,RESTRICT)
     "icon" => "core.png", //Icon
     "displayable" => "N", //Should be displayed on an app list
     "with_frame" => "Y", //Use multiframe ? (Y,N)

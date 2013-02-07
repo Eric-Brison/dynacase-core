@@ -26,7 +26,6 @@ $app_desc = array (
 		   "name"	 =>"FDC",		//Name
 		   "short_name"	=>N_("Common functions"),    	//Short name
 		   "description"=>N_("Common function for FREEDOM client API"),  //long description
-		   "access_free"=>"Y",			//Access free ? (Y,N)
 		   "icon"	=>"freecommon.gif",	//Icon
 		   "displayable"=>"N",			//Should be displayed on an app list (Y,N)
 		   "with_frame"	=>"N",			//Use multiframe ? (Y,N)

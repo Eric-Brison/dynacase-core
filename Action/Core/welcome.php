@@ -30,42 +30,4 @@ function welcome(Action &$action)
         }
     }
     $action->lay->setBlockData("EXTERNALS", $trd);
-    // retrieve installed applications
-    $query = new QueryDb($action->dbaccess, "Application");
-    $query->basic_elem->sup_where = array(
-        "available='Y'",
-        "displayable='Y'",
-        "tag!='CORE' or tag is null"
-    );
-    $list = $query->Query(0, 0, "TABLE");
-    $ap = 0;
-    $lapps = array();
-    if ($query->nb > 0) {
-        foreach ($list as $appli) {
-            if ($appli["access_free"] == "N") {
-                $action->log->debug("Access not free for :" . $appli["name"]);
-                if (isset($action->user)) {
-                    if ($action->user->id != 1) { // no control for user Admin
-                        // search  acl for root action
-                        $queryact = new QueryDb($action->dbaccess, "Action");
-                        $queryact->AddQuery("id_application=" . $appli["id"]);
-                        $queryact->AddQuery("root='Y'");
-                        $listact = $queryact->Query(0, 0, "TABLE");
-                        $root_acl_name = $listact[0]["acl"];
-                        if (!$action->HasPermission($root_acl_name, $appli["id"])) continue;
-                    }
-                }
-            } else {
-                continue;
-            }
-            $lapps[$ap]["name"] = $appli["name"];
-            $lapps[$ap]["desc"] = $action->text($appli["description"]); // translate
-            $lapps[$ap]["sname"] = $action->text($appli["short_name"]); // translate
-            $lapps[$ap]["icon"] = $action->parent->getImageLink($appli["icon"]);
-            if ($lapps[$ap]["icon"] == "CORE/Images/noimage.png") $lapps[$ap]["icon"] = $appli["name"] . "/Images/" . $appli["icon"];
-            $ap++;
-        }
-    }
-    $action->lay->set("appsdev", count($lapps) > 0);
-    $action->lay->setBlockData("apps", $lapps);
 }

@@ -27,7 +27,6 @@ $app_desc = array (
 "name"		=>"FREEDOM",		//Name
 "short_name"	=>N_("Docs admin"),		//Short name
 "description"	=>N_("Documents administration"),//long description
-"access_free"	=>"N",			//Access free ? (Y,N)
 "icon"		=>"freedom.png",	//Icon
 "displayable"	=>"N",			//Should be displayed on an app list (Y,N)
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)

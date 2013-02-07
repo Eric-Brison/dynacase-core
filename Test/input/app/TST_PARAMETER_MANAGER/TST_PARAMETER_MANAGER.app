@@ -11,7 +11,6 @@ $app_desc = array(
     "name" => "TST_PARAMETER_MANAGER",
     "short_name" => "TST_PARAMETER_MANAGER",
     "description" => "TST_PARAMETER_MANAGER",
-    "access_free" => "N",
     "displayable" => "Y",
 );
 

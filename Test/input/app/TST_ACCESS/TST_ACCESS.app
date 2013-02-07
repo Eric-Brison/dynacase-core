@@ -11,7 +11,6 @@ $app_desc = array(
     "name" => "TST_ACCESS",
     "short_name" => "Tst Access",
     "description" => "Test Access Permission",
-    "access_free" => "N",
     "displayable" => "Y",
 );
 
