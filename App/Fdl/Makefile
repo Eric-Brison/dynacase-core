@@ -9,10 +9,11 @@ export appname
 
 
 include $(utildir)/PubRule
+include $(rootdir)/corePubRule.mk
 
 
-DISTFILES += Makefile  $(appname).app $(appname)_init.php.in $(appname)_init.sh fdl.ods freeaction.ods \
-	 fdl.sql
+
+DISTFILES += Makefile  $(appname).app $(appname)_init.php.in $(appname)_init.sh fdl.ods freeaction.ods 
 
 $(pubdir)/$(appname)/$(appname)_init.sh : $(appname)_init.sh
 	cp $< $@
@@ -38,6 +39,6 @@ $(pubdir)/EXTERNALS/helppage.php: $(pubdir)/EXTERNALS
 	ln -sf ../FDL/helppage.php helppage.php
 
 
-publish: $(pubdir)/$(appname)/$(appname)_init.sh $(pubdir)/$(appname)/fdl.ods $(pubdir)/$(appname)/freeaction.ods $(pubdir)/EXTERNALS/fdl.php $(pubdir)/EXTERNALS/helppage.php 
+publish: $(pubdir)/$(appname)/$(appname)_init.sh $(pubdir)/$(appname)/fdl.ods $(pubdir)/$(appname)/freeaction.ods $(pubdir)/EXTERNALS/fdl.php $(pubdir)/EXTERNALS/helppage.php
 
 

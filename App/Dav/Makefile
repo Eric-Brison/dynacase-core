@@ -7,6 +7,7 @@ export appname
 SUBDIR = Windows
 
 include $(utildir)/PubRule
+include $(rootdir)/corePubRule.mk
 
 $(pubdir)/$(appname)/DAV_conf.apache: DAV_conf.apache $(pubdir)/$(appname)
 	cp $< $@
