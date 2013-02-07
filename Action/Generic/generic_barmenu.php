@@ -13,14 +13,11 @@
  * @package FDL
  * @subpackage
  */
-/**
- */
 
-include_once ("GENERIC/barmenu.php");
-// -----------------------------------
-function generic_barmenu(&$action)
+
+include_once "GENERIC/barmenu.php";
+
+function generic_barmenu(Action &$action)
 {
-    // -----------------------------------
     barmenu($action);
 }
-?>
