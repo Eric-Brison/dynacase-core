@@ -1,3 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=100"> <!-- IE latest mode -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+[CSS:REF]
+<style type="text/css">
+[CSS:CODE]
+</style>
+[JS:REF]
+<script language="JavaScript">
+<!--
+[JS:CODE]
+//-->
+</script>
+</head>
+
 <script language="JavaScript">
 <!--
 
@@ -80,7 +97,7 @@ function initZone() {
 -->
 
 </script>
-
+<body>
 <div id="zonehelp" class="zhelp" style="visibility:hidden">
 <div class="title">[TEXT:Help to the connection]</div>
 <div class="content">
@@ -123,6 +140,7 @@ This is necessary to guarantee that yours informations are accessible only by yo
 <input type="hidden" name="appd" value="[app_redir]">
 <input type="hidden" name="actd" value="[act_redir]">
 <input type="hidden" name="argd" value="[arg_redir]">
+<input type="hidden" name="redirect_uri" value="[redirect_uri]" />
 
 <div id="authform" class="authmain" style="visibility:hidden">
 
@@ -177,3 +195,6 @@ This is necessary to guarantee that yours informations are accessible only by yo
 addEvent(window,'load',initZone);
 addEvent(window,'resize',centerZone);
 </script>
+
+</body>
+</html>

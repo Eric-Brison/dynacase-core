@@ -22,7 +22,9 @@ function checkauth(Action & $action)
     include_once ('WHAT/Class.htmlAuthenticator.php');
     include_once ('WHAT/Class.User.php');
     include_once ('WHAT/Class.Log.php');
-    
+
+    $redirect_uri = GetHttpVars('redirect_uri', '');
+
     $status = AuthenticatorManager::checkAccess();
     //error_log("checkauth: AuthenticatorManager::checkAccess() = {$status}");
     switch ($status) {
@@ -41,14 +43,14 @@ function checkauth(Action & $action)
         default:
             AuthenticatorManager::$auth->askAuthentication(array(
                 'error' => $status,
-                'auth_user' => $_POST['auth_user']
+                'auth_user' => $_POST['auth_user'],
+                'redirect_uri' => $redirect_uri
             ));
             exit(0);
     }
-    
-    $fromuri = AuthenticatorManager::$session->read('fromuri');
-    if (($fromuri == "") || (preg_match('/app=AUTHENT/', $fromuri))) {
-        $fromuri = ".";
+
+    if (($redirect_uri == "") || (preg_match('/app=AUTHENT/', $redirect_uri))) {
+        $redirect_uri = ".";
     }
     $lang = array();;
     include_once ('CORE/lang.php');
@@ -57,12 +59,10 @@ function checkauth(Action & $action)
         //     error_log(__CLASS__."::".__FUNCTION__." "."Registering vaviable CORE_LANG = '".$core_lang."' in session_auth");
         AuthenticatorManager::$session->register('CORE_LANG', $core_lang);
     }
-    //   error_log(__CLASS__."::".__FUNCTION__." ".'Redirect Location: '.$fromuri);
-    // clean $fromuri
-    $fromuri = preg_replace('!//+!', '/', $fromuri);
-    $fromuri = preg_replace('!&&+!', '&', $fromuri);
+    $redirect_uri = preg_replace('!//+!', '/', $redirect_uri);
+    $redirect_uri = preg_replace('!&&+!', '&', $redirect_uri);
     // Redirect to initial page
-    header('Location: ' . $fromuri);
+    header('Location: ' . $redirect_uri);
     exit(0);
 }
 ?>
