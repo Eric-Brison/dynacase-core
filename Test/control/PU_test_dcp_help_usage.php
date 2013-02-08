@@ -119,9 +119,6 @@ class TestHelpUsage extends TestCaseDcp
                 "migr_2.5.1"
             ) ,
             array(
-                "migr_sql2.0"
-            ) ,
-            array(
                 "ods2csv"
             ) ,
             array(

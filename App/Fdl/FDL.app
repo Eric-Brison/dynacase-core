@@ -26,7 +26,6 @@ $app_desc = array(
     "name" => "FDL", //Name
     "short_name" => N_("Freedoms lib"), //Short name
     "description" => N_("Freedoms library"), //long description
-    "access_free" => "N", //Access free ? (Y,N)
     "icon" => "fdl.gif",
     "displayable" => "N", //Should be displayed on an app list (Y,N)
     "iorder" => 20, // install order

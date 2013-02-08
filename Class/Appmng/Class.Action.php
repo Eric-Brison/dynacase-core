@@ -24,6 +24,10 @@ define("THROW_EXITERROR", 1968);
  */
 class Action extends DbObj
 {
+    /**
+     * fake ACL to allow an action to be access free without its application being access_free
+     */
+    const ACCESS_FREE = "";
     var $fields = array(
         "id",
         "id_application",
@@ -288,7 +292,7 @@ create sequence SEQ_ID_ACTION;
     }
     public function PreUpdate()
     {
-        if ($this->dbid == - 1) return FALSE;
+        if ($this->dbid == - 1) return false;
         if ($this->Exists($this->name, $this->id_application, $this->id)) return "Action {$this->name} already exists...";
         return '';
     }
@@ -470,7 +474,7 @@ create sequence SEQ_ID_ACTION;
      */
     public function hasPermission($acl_name = "", $app_name = "", $strict = false)
     {
-        if ($acl_name == "") return (true); // no control for this action
+        if (self::ACCESS_FREE == $acl_name) return (true); // no control for this action
         return ($this->parent->HasPermission($acl_name, $app_name, $strict));
     }
     /** 
@@ -502,7 +506,7 @@ create sequence SEQ_ID_ACTION;
         return "";
     }
     /**
-     * return id from name for an application
+     * return acl name for an action
      * @param string $actname action name
      * @param string $appid application id (default itself)
      * @return string (false if not found)
@@ -674,7 +678,7 @@ create sequence SEQ_ID_ACTION;
      * @param bool $update set to true if update only
      * @return string none
      */
-    public function Init($app, $action_desc, $update = FALSE)
+    public function Init($app, $action_desc, $update = false)
     {
         if (sizeof($action_desc) == 0) {
             $this->log->info("No action available");
@@ -740,7 +744,7 @@ create sequence SEQ_ID_ACTION;
                 /**
                  * @var Action $act
                  */
-                $find = FALSE;
+                $find = false;
                 reset($action_desc);
                 while ((list($k2, $v2) = each($action_desc)) && (!$find)) {
                     $find = ($v2["name"] == $act->name);

@@ -25,7 +25,6 @@ $app_desc = array (
 "name"		=>"GENERIC",		//Name
 "short_name"	=>N_("Generic"),		//Short name
 "description"	=>N_("generic Management"),//long description
-"access_free"	=>"N",			//Access free ? (Y,N)
 "icon"		=>"generic.gif",	//Icon
 "displayable"	=>"N",			//Should be displayed on an app list (Y,N)
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)

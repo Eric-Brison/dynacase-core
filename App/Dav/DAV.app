@@ -5,7 +5,6 @@ $app_desc = array (
 "name"		=>"DAV",		//Name
 "short_name"	=>N_("Dav"),		//Short name
 "description"	=>N_("WebDav FREEDOM system file"),//long description
-"access_free"	=>"N",			//Access free ? (Y,N)
 "icon"		=>"dav.gif",	//Icon
 "displayable"	=>"N",			//Should be displayed on an app list (Y,N)
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)
