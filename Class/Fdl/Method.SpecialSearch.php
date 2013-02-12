@@ -101,7 +101,7 @@ class _SSEARCH extends DocSearch
      * @return array array of document array
      */
     
-    public function getContent($controlview = true, $filter = array() , $famid = "", $unusedType = "TABLE", $unusedTrash = "")
+    public function getContent($controlview = true, array $filter = array() , $famid = "", $unusedType = "TABLE", $unusedTrash = "")
     {
         $uid = 0;
         if ($controlview) $uid = 1;
