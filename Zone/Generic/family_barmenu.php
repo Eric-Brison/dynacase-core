@@ -22,8 +22,8 @@ function family_barmenu(Action & $action)
 {
     $onefamOrigin = $action->getArgument("onefam");
     $famid = $action->getArgument("famid");
-    //$action->parent->addJsRef('lib/jquery-ui/jquery-1.7.1.js');
     $action->parent->addJsRef('lib/jquery/jquery.js');
+    $action->parent->addJsRef('GENERIC:generic_list.js');
     $packName = 'menubarjs';
     $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.core.js', false, $packName);
     $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.widget.js', false, $packName);

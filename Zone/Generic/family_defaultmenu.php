@@ -151,7 +151,7 @@ function family_defaultmenu(Action & $action)
     
     $toolsItemMenu['viewsearch'] = array(
         "label" => _("View my searches") ,
-        "target" => "_self",
+        "target" => "_overlay",
         "url" => sprintf('?app=GENERIC&amp;action=GENERIC_SEARCH&amp;catg=0&amp;onefam=%s&amp;mysearches=yes&amp;famid=%s', $onefamOrigin, $famid)
     );
     if ($action->HasPermission("GED", "FREEDOM")) {

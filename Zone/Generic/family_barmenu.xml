@@ -18,7 +18,7 @@
                     } else {
                         window.open(url, target);
                     }
-                } else if (url) {
+                } else if (target !== "_overlay" && url) {
                     window.open(url, target);
                 }
             }
