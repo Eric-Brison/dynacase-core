@@ -101,10 +101,20 @@ function getOnefamMenu($onefam, $famid, $defaultMenu)
     return $defaultMenu;
 }
 
+/**
+ * Convert an array description menu to standard jQuery UI menu def
+ *
+ * @param array $menulist
+ * @param bool $ul with ul
+ * @param int $level
+ * @return string
+ */
 function objectMenu2Html(array $menulist, $ul = true, $level = 0)
 {
-    $s = '';
-    if ($ul) $s = '<ul>';
+    $htmlReturn = '';
+    if ($ul) {
+        $htmlReturn = '<ul>';
+    }
     foreach ($menulist as $k => $aMenu) {
         if (!empty($aMenu["items"])) {
             $attrs = '';
@@ -113,33 +123,46 @@ function objectMenu2Html(array $menulist, $ul = true, $level = 0)
                     $attrs.= sprintf(' %s="%s" ', $ki, $item);
                 }
             }
-            if ($aMenu["label"]) $label = _($aMenu["label"]);
-            else $label = '';
-            $s.= sprintf('<li><a href="#%s"%s>%s</a>', $k, $attrs, mb_ucfirst($label));
+            $label = !empty($aMenu["label"]) ? _($aMenu["label"]) : "";
+            $htmlReturn.= sprintf('<li><a href="#%s"%s>%s</a>', $k, $attrs, mb_ucfirst($label));
             
-            $s.= objectMenu2Html($aMenu["items"], true, $level + 1);
+            $htmlReturn.= objectMenu2Html($aMenu["items"], true, $level + 1);
         } else {
             $noanchor = (empty($aMenu["url"])) && (empty($aMenu["href"]));
-            $s.= "\n<li";
+            $htmlReturn.= "\n<li";
             
-            $s.= " level=\"$level\" ";
+            $htmlReturn.= " level=\"$level\" ";
             
             if ($level == 0) {
-                if ($aMenu["url"]) $aMenu["href"] = $aMenu["url"];
-                $s.= '><div role="button"';
+                if (!empty($aMenu["url"])) {
+                    $aMenu["href"] = $aMenu["url"];
+                }
+                $htmlReturn.= '><div role="button"';
             }
-            if (!$noanchor) $s.= "><a";
+            if (!$noanchor) {
+                $htmlReturn.= "><a";
+            }
             foreach ($aMenu as $ki => $item) {
-                if ($ki != "label") $s.= sprintf(' %s="%s" ', $ki, $item);
+                if ($ki != "label") {
+                    $htmlReturn.= sprintf(' %s="%s" ', $ki, $item);
+                }
             }
-            $s.= '>';
-            if ($aMenu["label"]) $s.= mb_ucfirst(_($aMenu["label"]));
+            $htmlReturn.= '>';
+            if (!empty($aMenu["label"])) {
+                $htmlReturn.= mb_ucfirst(_($aMenu["label"]));
+            }
             
-            if (!$noanchor) $s.= "</a> ";
-            if ($level == 0) $s.= '</div>';
+            if (!$noanchor) {
+                $htmlReturn.= "</a> ";
+            }
+            if ($level == 0) {
+                $htmlReturn.= '</div>';
+            }
         }
-        $s.= "</li>\n";
+        $htmlReturn.= "</li>\n";
     }
-    if ($ul) $s.= "</ul>";
-    return $s;
+    if ($ul) {
+        $htmlReturn.= "</ul>\n";
+    }
+    return $htmlReturn;
 }

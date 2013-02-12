@@ -110,8 +110,12 @@ function generic_list(&$action)
     if ($famid > 0) {
         if ($sqlorder != "") {
             $ndoc = createDoc($dbaccess, $sfamid, false);
-            if ($sqlorder[0] == "-") $sqlorder = substr($sqlorder, 1);
-            if (!in_array($sqlorder, $ndoc->fields)) setHttpVar("sqlorder", "");
+            if ($sqlorder[0] == "-") {
+                $sqlorder = substr($sqlorder, 1);
+            }
+            if (!in_array($sqlorder, $ndoc->fields)) {
+                setHttpVar("sqlorder", "");
+            }
         }
     }
     if ($clearkey) {
@@ -255,7 +259,9 @@ function getFamilySearches(Action $action, $dbaccess, $famid)
     if ($fdoc->dfldid > 0) {
         $homefld = new_Doc($dbaccess, $fdoc->dfldid);
         $stree = array();
-        if ($homefld->id > 0) $stree = internalGetDocCollection($dbaccess, $homefld->id, "0", "ALL", array() , $action->user->id, "TABLE", 5);
+        if ($homefld->id > 0) {
+            $stree = internalGetDocCollection($dbaccess, $homefld->id, "0", "ALL", array() , $action->user->id, "TABLE", 5);
+        }
         
         foreach ($stree as $k => $v) {
             if (($v["doctype"] == "S") && ($v["fromid"] != $fdoc->id)) {
@@ -305,6 +311,7 @@ function getFamilySearches(Action $action, $dbaccess, $famid)
     }
     $action->lay->set("MSEARCH", (count($stree) > 0));
     $action->lay->SetBlockData("USERSEARCH", $streeSearch);
-    if (count($streeSearch) > 0) $action->lay->set("ONESEARCH", true);
+    if (count($streeSearch) > 0) {
+        $action->lay->set("ONESEARCH", true);
+    }
 }
-?>
