@@ -404,7 +404,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         
         $ressourceLocation = $this->getRessourceLocation($type, $ref, $needparse, $packName, true);
-        
+        if (!$ressourceLocation) {
+            $wng = sprintf(_("Cannot find %s ressource file") , $ref);
+            $this->addLogMsg($wng);
+            $this->log->warning($wng);
+        }
         if ($type == 'js') {
             $this->jsref[$ressourceLocation] = $ressourceLocation;
         } elseif ($type == 'css') {
@@ -500,7 +504,13 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (substr($ref, 0, 2) == './') {
             $ref = substr($ref, 2);
         }
-        return $this->getRessourceLocation('css', $ref, $needparse, $packName);
+        $rl = $this->getRessourceLocation('css', $ref, $needparse, $packName);
+        if (!$rl) {
+            $msg = sprintf(_("Cannot find %s ressource file") , $ref);
+            $this->addLogMsg($msg);
+            $this->log->warning($msg);
+        }
+        return $rl;
     }
     /**
      * Get dynacase JS link
@@ -511,14 +521,20 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param bool $needparse if true will be parsed by the template engine (false by default)
      * @param string $packName use it to pack all the ref with the same packName into a single file
      *
-     * @return string the src of the JS or "" if non existent ref
+     * @return string the src of the JS or "" if ref not exists
      */
     public function getJsLink($ref, $needparse = false, $packName = '')
     {
         if (substr($ref, 0, 2) == './') {
             $ref = substr($ref, 2);
         }
-        return $this->getRessourceLocation('js', $ref, $needparse, $packName);
+        $rl = $this->getRessourceLocation('js', $ref, $needparse, $packName);
+        if (!$rl) {
+            $msg = sprintf(_("Cannot find %s ressource file") , $ref);
+            $this->addLogMsg($msg);
+            $this->log->warning($msg);
+        }
+        return $rl;
     }
     /**
      * Add a CSS in an action
@@ -715,7 +731,6 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         $this->session->unregister("warningmsg");
     }
-
     /**
      * mark the application as launched from admin context
      *
@@ -723,13 +738,12 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function setAdminMode($enable = true)
     {
-        if($this->hasParent()){
+        if ($this->hasParent()) {
             $this->parent->setAdminMode($enable);
         } else {
             $this->adminMode = ($enable ? true : false);
         }
     }
-
     /**
      * @return bool true if application is launched from admin context
      */
@@ -740,7 +754,6 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return $this->adminMode === true;
     }
-
     /**
      * Test permission for current user in current application
      *
@@ -751,7 +764,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function hasPermission($acl_name, $app_name = "", $strict = false)
     {
-        if(Action::ACCESS_FREE == $acl_name){
+        if (Action::ACCESS_FREE == $acl_name) {
             return true;
         }
         if (!isset($this->user) || !is_object($this->user)) {
