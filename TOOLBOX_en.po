@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-24 17:36+0100\n"
+"POT-Creation-Date: 2013-02-13 09:28+0100\n"
 "PO-Revision-Date: 2012-09-12 09:47+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -11,21 +11,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
+#: tempCatalog.php:1098
 msgid " Change password for"
 msgstr ""
 
+#: tempCatalog.php:100
 msgid " Choose an existing document profil"
 msgstr ""
 
+#: tempCatalog.php:93
 msgid " Choose an existing family profil"
 msgstr ""
 
+#: tempCatalog.php:114
 msgid " Modify acls for transitions"
 msgstr ""
 
+#: tempCatalog.php:97
 msgid " No privilege to change acl for document access"
 msgstr ""
 
+#: tempCatalog.php:89
 msgid " No privilege to change acl for familly access"
 msgstr ""
 
@@ -34,27 +40,37 @@ msgstr ""
 msgid " Please, see your manager"
 msgstr "Please, see your manager"
 
+#: Action/Freedom/search_fulltext.php:62 tempCatalog.php:660
 msgid " any familly"
 msgstr ""
 
+#: tempCatalog.php:663 tempCatalog.php:721
 msgid " cancel"
 msgstr ""
 
+#: tempCatalog.php:279 tempCatalog.php:825
 msgid " change icon"
 msgstr ""
 
+#: tempCatalog.php:883
 msgid " change title"
 msgstr ""
 
+#: tempCatalog.php:455
 msgid " choose value"
 msgstr ""
 
+#: tempCatalog.php:886
 msgid " comment for revision"
 msgstr ""
 
+#: tempCatalog.php:633 tempCatalog.php:659
 msgid " familly"
 msgstr ""
 
+#: tempCatalog.php:632 tempCatalog.php:700 tempCatalog.php:722
+#: tempCatalog.php:770 tempCatalog.php:806 tempCatalog.php:852
+#: tempCatalog.php:882 tempCatalog.php:1010 tempCatalog.php:1024
 msgid " folder containt"
 msgstr ""
 
@@ -62,39 +78,52 @@ msgstr ""
 msgid " from any folder"
 msgstr ""
 
+#: Action/Freedom/search_fulltext.php:77 tempCatalog.php:658
 msgid " from current folder"
 msgstr ""
 
+#: tempCatalog.php:723
 msgid " history"
 msgstr ""
 
+#: tempCatalog.php:571
 msgid " input not found"
 msgstr ""
 
+#: tempCatalog.php:826
 msgid " lauch importation"
 msgstr ""
 
+#: tempCatalog.php:655
 msgid " match"
 msgstr ""
 
+#: tempCatalog.php:657
 msgid " only latest revision"
 msgstr ""
 
+#: tempCatalog.php:141
 msgid " profile access"
 msgstr ""
 
+#: tempCatalog.php:887
 msgid " revise document"
 msgstr ""
 
+#: tempCatalog.php:656
 msgid " search for"
 msgstr ""
 
+#: tempCatalog.php:654
 msgid " search words"
 msgstr ""
 
+#: tempCatalog.php:379 tempCatalog.php:419 tempCatalog.php:423
+#: tempCatalog.php:428 tempCatalog.php:662 tempCatalog.php:720
 msgid " send search"
 msgstr ""
 
+#: tempCatalog.php:661
 msgid " view files"
 msgstr ""
 
@@ -113,10 +142,12 @@ msgstr ""
 msgid "%d answers"
 msgstr ""
 
+#: Action/Fdl/viewtimers.php:88 Class/Fdl/Class.Document.php:962
 #, c-format
 msgid "%d day"
 msgstr ""
 
+#: Action/Fdl/viewtimers.php:87 Class/Fdl/Class.Document.php:961
 #, c-format
 msgid "%d days"
 msgstr ""
@@ -126,6 +157,7 @@ msgstr ""
 msgid "%d document"
 msgstr ""
 
+#: Zone/Freedom/folder_barmenu.php:39 Action/Fdl/editinsertdocument.php:94
 #, c-format
 msgid "%d documents"
 msgstr ""
@@ -148,18 +180,22 @@ msgstr ""
 msgid "%d group(s) to update\n"
 msgstr ""
 
+#: Action/Fdl/viewtimers.php:97 Class/Fdl/Class.Document.php:971
 #, c-format
 msgid "%d hour"
 msgstr ""
 
+#: Action/Fdl/viewtimers.php:96 Class/Fdl/Class.Document.php:970
 #, c-format
 msgid "%d hours"
 msgstr ""
 
+#: Action/Fdl/viewtimers.php:105 Class/Fdl/Class.Document.php:979
 #, c-format
 msgid "%d minute"
 msgstr ""
 
+#: Action/Fdl/viewtimers.php:104 Class/Fdl/Class.Document.php:978
 #, c-format
 msgid "%d minutes"
 msgstr ""
@@ -211,6 +247,7 @@ msgstr ""
 msgid "%s affected user"
 msgstr ""
 
+#: Action/Generic/generic_tab.php:95
 #, c-format
 msgid "%s all "
 msgstr ""
@@ -285,6 +322,7 @@ msgstr ""
 msgid "%s has been added in %s folder"
 msgstr ""
 
+#: Action/Freedom/freedom_mod.php:41 Action/Generic/generic_mod.php:51
 #, c-format
 msgid "%s has been created"
 msgstr ""
@@ -299,6 +337,7 @@ msgstr ""
 msgid "%s has been locked"
 msgstr ""
 
+#: Action/Freedom/freedom_mod.php:38 Action/Generic/generic_mod.php:48
 #, c-format
 msgid "%s has been modified"
 msgstr ""
@@ -425,6 +464,7 @@ msgstr ""
 msgid "&lt; or equal"
 msgstr ""
 
+#: Class/Fdl/Class.DocFormFormat.php:1684 tempCatalog.php:36
 msgid "(Other input)"
 msgstr ""
 
@@ -449,6 +489,8 @@ msgstr ""
 msgid "(only)"
 msgstr ""
 
+#: Zone/Fdl/modcard.php:73 Zone/Fdl/modcard.php:84
+#: Class/Fdl/Class.WDoc.php:814 Class/Fdl/Class.Doc.php:808
 #, c-format
 msgid "(substitute of %s) : "
 msgstr ""
@@ -461,6 +503,7 @@ msgstr ""
 msgid "<it's a message>"
 msgstr ""
 
+#: tempCatalog.php:814
 msgid "A?"
 msgstr ""
 
@@ -469,9 +512,11 @@ msgstr ""
 msgid "API file %s not found\n"
 msgstr ""
 
+#: tempCatalog.php:900
 msgid "A_Copy"
 msgstr ""
 
+#: tempCatalog.php:902
 msgid "A_Link"
 msgstr ""
 
@@ -479,6 +524,7 @@ msgstr ""
 msgid "AbbrKbyte"
 msgstr ""
 
+#: tempCatalog.php:946
 msgid "Abstract card"
 msgstr ""
 
@@ -498,6 +544,7 @@ msgstr ""
 msgid "Access Generic Master Management"
 msgstr ""
 
+#: tempCatalog.php:729
 msgid "Access Path Folder List"
 msgstr ""
 
@@ -517,6 +564,7 @@ msgstr ""
 msgid "Access To Read Only"
 msgstr ""
 
+#: tempCatalog.php:228
 msgid "Access explanation"
 msgstr ""
 
@@ -524,6 +572,7 @@ msgstr ""
 msgid "Access for exchange documents"
 msgstr ""
 
+#: tempCatalog.php:227
 msgid "Access name"
 msgstr ""
 
@@ -543,6 +592,7 @@ msgstr ""
 msgid "Access to system documents"
 msgstr ""
 
+#: tempCatalog.php:178 tempCatalog.php:515 tempCatalog.php:584
 msgid "Accord"
 msgstr ""
 
@@ -551,15 +601,20 @@ msgstr ""
 msgid "Acl [%s] not available for App %s"
 msgstr ""
 
+#: tempCatalog.php:105 tempCatalog.php:116
 msgid "Acls not activated"
 msgstr ""
 
+#: tempCatalog.php:108 tempCatalog.php:111
 msgid "Acls not initialize"
 msgstr ""
 
+#: Class/Fdl/Method.Mask.php:195 Class/Fdl/Method.Mask.php:300
+#: tempCatalog.php:619
 msgid "Action"
 msgstr ""
 
+#: tempCatalog.php:595 tempCatalog.php:596
 msgid "Action to do"
 msgstr ""
 
@@ -567,6 +622,7 @@ msgstr ""
 msgid "Activate Transformation Engine"
 msgstr ""
 
+#: tempCatalog.php:91 tempCatalog.php:106 tempCatalog.php:117
 msgid "Activate acls"
 msgstr ""
 
@@ -574,6 +630,7 @@ msgstr ""
 msgid "Activate file indexing with TE"
 msgstr ""
 
+#: tempCatalog.php:307 tempCatalog.php:366
 msgid "Activity"
 msgstr ""
 
@@ -601,6 +658,7 @@ msgstr ""
 msgid "Add acl %s for %s"
 msgstr ""
 
+#: tempCatalog.php:1057
 msgid "Add filter"
 msgstr ""
 
@@ -609,39 +667,57 @@ msgstr ""
 msgid "Add it in %s folder"
 msgstr ""
 
+#: tempCatalog.php:786 tempCatalog.php:976
 msgid "Add new document (similar document)"
 msgstr ""
 
+#: tempCatalog.php:29 tempCatalog.php:74 tempCatalog.php:125
+#: tempCatalog.php:195 tempCatalog.php:201 tempCatalog.php:329
+#: tempCatalog.php:335 tempCatalog.php:343 tempCatalog.php:345
 msgid "Add new entry"
 msgstr ""
 
+#: tempCatalog.php:1005
 msgid "Add or modify item's category"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:259 Action/Fdl/popupfamdetail.php:227
+#: tempCatalog.php:276
 msgid "Add postit"
 msgstr ""
 
+#: tempCatalog.php:1062 tempCatalog.php:1069
 msgid "Add search engine"
 msgstr ""
 
+#: tempCatalog.php:1061 tempCatalog.php:1068
 msgid "Add search engine to your browser"
 msgstr ""
 
+#: tempCatalog.php:58 tempCatalog.php:66
 msgid "Add section"
 msgstr ""
 
+#: tempCatalog.php:55
 msgid "Add section popup"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:237 Action/Fdl/popupfamdetail.php:216
+#: Action/Generic/popuplistdetail.php:181 tempCatalog.php:275
+#: tempCatalog.php:705
 msgid "Add to basket"
 msgstr ""
 
+#: tempCatalog.php:926
 msgid "Add top folder"
 msgstr ""
 
+#: Zone/Fdl/editfamilyparameter.php:23
+#: Zone/Fdl/editapplicationparameter.php:25
 msgid "Adding button to submit"
 msgstr ""
 
+#: tempCatalog.php:775
 msgid "Additionnals informations about import document"
 msgstr ""
 
@@ -649,9 +725,11 @@ msgstr ""
 msgid "Admin edit"
 msgstr "Edit as admin"
 
+#: tempCatalog.php:1066
 msgid "Advanced search"
 msgstr "Advanced search"
 
+#: tempCatalog.php:587
 msgid "Affectation"
 msgstr ""
 
@@ -678,6 +756,7 @@ msgstr ""
 msgid "Affected to %s %s"
 msgstr ""
 
+#: tempCatalog.php:387
 msgid "All To basket"
 msgstr ""
 
@@ -697,9 +776,11 @@ msgstr "Concatenate all JS scripts for consultation"
 msgid "All js in one for edition"
 msgstr "Concatenate all JS scripts for edition"
 
+#: tempCatalog.php:870
 msgid "All set only"
 msgstr ""
 
+#: tempCatalog.php:268
 msgid "Allocate"
 msgstr ""
 
@@ -707,21 +788,27 @@ msgstr ""
 msgid "Allow guest access"
 msgstr ""
 
+#: tempCatalog.php:924
 msgid "Analyse fdl.csv"
 msgstr ""
 
+#: tempCatalog.php:931
 msgid "Analysis Results"
 msgstr ""
 
+#: tempCatalog.php:927
 msgid "Analyze"
 msgstr ""
 
+#: tempCatalog.php:920
 msgid "Analyze Archive"
 msgstr ""
 
+#: tempCatalog.php:985
 msgid "Analyze only"
 msgstr ""
 
+#: tempCatalog.php:182
 msgid "Answers"
 msgstr ""
 
@@ -740,21 +827,27 @@ msgstr ""
 msgid "Application not found: [%s]"
 msgstr ""
 
+#: tempCatalog.php:160 tempCatalog.php:337 tempCatalog.php:599
 msgid "Apply"
 msgstr ""
 
+#: tempCatalog.php:684
 msgid "Apply my preferences"
 msgstr ""
 
+#: tempCatalog.php:132
 msgid "Apply name"
 msgstr ""
 
+#: tempCatalog.php:248
 msgid "April"
 msgstr ""
 
+#: tempCatalog.php:640
 msgid "Archive import"
 msgstr ""
 
+#: tempCatalog.php:726
 msgid "Archive import in progress"
 msgstr ""
 
@@ -762,6 +855,7 @@ msgstr ""
 msgid "Archive menu"
 msgstr ""
 
+#: tempCatalog.php:888
 msgid "Archives"
 msgstr ""
 
@@ -770,6 +864,7 @@ msgstr ""
 msgid "Archiving into %s"
 msgstr ""
 
+#: tempCatalog.php:51
 msgid "Attribut"
 msgstr ""
 
@@ -777,9 +872,11 @@ msgstr ""
 msgid "Attribut relation"
 msgstr ""
 
+#: tempCatalog.php:9
 msgid "Attribute"
 msgstr ""
 
+#: Api/set_param.php:44 Action/Fdc/setparamu.php:50
 #, c-format
 msgid ""
 "Attribute %s found is not alone\n"
@@ -791,6 +888,7 @@ msgstr ""
 msgid "Attribute %s modified to %s"
 msgstr ""
 
+#: Api/set_param.php:42 Action/Fdc/setparamu.php:48
 #, c-format
 msgid "Attribute %s not found\n"
 msgstr ""
@@ -831,12 +929,15 @@ msgstr ""
 msgid "Attribute format should not be empty on attribute '%s' in family '%s'."
 msgstr ""
 
+#: tempCatalog.php:28 tempCatalog.php:498 tempCatalog.php:549
 msgid "Attribute not found"
 msgstr ""
 
+#: tempCatalog.php:807
 msgid "Attributes definition"
 msgstr ""
 
+#: tempCatalog.php:252
 msgid "August"
 msgstr ""
 
@@ -844,6 +945,7 @@ msgstr ""
 msgid "Authentication failures before account deactivation"
 msgstr ""
 
+#: tempCatalog.php:308 tempCatalog.php:318
 msgid "Author"
 msgstr ""
 
@@ -851,33 +953,43 @@ msgstr ""
 msgid "Automatic profil creation not possible for this kind of family"
 msgstr ""
 
+#: tempCatalog.php:790
 msgid "Background Import"
 msgstr ""
 
+#: tempCatalog.php:1065
 msgid "Basic search"
 msgstr "basic search"
 
+#: tempCatalog.php:389 tempCatalog.php:415
 msgid "Basket to here"
 msgstr ""
 
+#: tempCatalog.php:730
 msgid "Batch Action Choose"
 msgstr ""
 
+#: tempCatalog.php:898
 msgid "Batch Choose"
 msgstr ""
 
+#: tempCatalog.php:835
 msgid "BatchProcess"
 msgstr ""
 
+#: tempCatalog.php:554
 msgid "Be carreful, this transition is not defined in workflow"
 msgstr ""
 
+#: tempCatalog.php:966
 msgid "Be carreful."
 msgstr ""
 
+#: tempCatalog.php:488
 msgid "Binary file layout"
 msgstr ""
 
+#: tempCatalog.php:829
 msgid "Bookmarks"
 msgstr ""
 
@@ -900,9 +1012,11 @@ msgstr "Unable to change password (%s)"
 msgid "CHANGE_PASSWORD:You can't modify your account"
 msgstr "You can't modify your account"
 
+#: tempCatalog.php:957
 msgid "CSV"
 msgstr ""
 
+#: tempCatalog.php:958
 msgid "CSV specification file"
 msgstr ""
 
@@ -921,18 +1035,29 @@ msgstr ""
 msgid "CVID : view control '%s' not found"
 msgstr ""
 
+#: tempCatalog.php:548
 msgid "Call method"
 msgstr ""
 
+#: Action/Fdl/editextdoc.php:100 tempCatalog.php:56 tempCatalog.php:156
+#: tempCatalog.php:158 tempCatalog.php:161 tempCatalog.php:290
+#: tempCatalog.php:338 tempCatalog.php:438 tempCatalog.php:487
+#: tempCatalog.php:558 tempCatalog.php:570 tempCatalog.php:578
+#: tempCatalog.php:600 tempCatalog.php:606 tempCatalog.php:624
+#: tempCatalog.php:631 tempCatalog.php:868 tempCatalog.php:885
+#: tempCatalog.php:909 tempCatalog.php:1003
 msgid "Cancel"
 msgstr ""
 
+#: tempCatalog.php:157
 msgid "Cancel changes and close window"
 msgstr ""
 
+#: tempCatalog.php:155
 msgid "Cancel changes and quit edit mode"
 msgstr ""
 
+#: tempCatalog.php:557
 msgid "Cancel the change step"
 msgstr ""
 
@@ -970,12 +1095,22 @@ msgstr ""
 msgid "Cannot create directory %s for xml import"
 msgstr ""
 
+#: tempCatalog.php:581
 msgid "Cannot do this action. Parent window is closed"
 msgstr ""
 
+#: tempCatalog.php:582
 msgid "Cannot do this action. The function of parent window is not found"
 msgstr ""
 
+#: Class/Appmng/Class.Application.php:408
+#: Class/Appmng/Class.Application.php:509
+#: Class/Appmng/Class.Application.php:533
+#, c-format
+msgid "Cannot find %s ressource file"
+msgstr ""
+
+#: Action/Fdl/specialhelp.php:66
 #, c-format
 msgid "Cannot find help function %s"
 msgstr ""
@@ -985,6 +1120,7 @@ msgstr ""
 msgid "Cannot include '%s'"
 msgstr ""
 
+#: tempCatalog.php:25
 msgid "Cannot open document"
 msgstr ""
 
@@ -1008,15 +1144,19 @@ msgstr ""
 msgid "Caught Exception : %s\n"
 msgstr ""
 
+#: tempCatalog.php:967
 msgid "Certain attribute can be not use for import"
 msgstr ""
 
+#: tempCatalog.php:623
 msgid "Change State"
 msgstr "Next step"
 
+#: tempCatalog.php:432
 msgid "Change category"
 msgstr ""
 
+#: tempCatalog.php:605
 msgid "Change content"
 msgstr ""
 
@@ -1042,6 +1182,7 @@ msgstr ""
 msgid "Change creation profil to %s [%d]"
 msgstr ""
 
+#: tempCatalog.php:284
 msgid "Change creation profile"
 msgstr ""
 
@@ -1050,9 +1191,11 @@ msgstr ""
 msgid "Change creation view control to %s [%d]"
 msgstr ""
 
+#: tempCatalog.php:286
 msgid "Change current folder"
 msgstr ""
 
+#: tempCatalog.php:285
 msgid "Change default folder"
 msgstr ""
 
@@ -1060,21 +1203,28 @@ msgstr ""
 msgid "Change default search"
 msgstr ""
 
+#: tempCatalog.php:954
 msgid "Change enum"
 msgstr ""
 
+#: tempCatalog.php:824
 msgid "Change family structure"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:248 Action/Fdl/popupfamdetail.php:68
+#: tempCatalog.php:572 tempCatalog.php:575
 msgid "Change icon"
 msgstr ""
 
+#: tempCatalog.php:130
 msgid "Change logical name"
 msgstr ""
 
+#: tempCatalog.php:516 tempCatalog.php:585
 msgid "Change my ask"
 msgstr ""
 
+#: tempCatalog.php:1095 tempCatalog.php:1101
 msgid "Change password"
 msgstr ""
 
@@ -1082,6 +1232,7 @@ msgstr ""
 msgid "Change password by token"
 msgstr ""
 
+#: tempCatalog.php:229
 msgid "Change privilege"
 msgstr ""
 
@@ -1100,6 +1251,8 @@ msgstr ""
 msgid "Change profil to default subfolder profil : %d"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:146 Action/Generic/popuplistdetail.php:135
+#: tempCatalog.php:269
 msgid "Change profile"
 msgstr ""
 
@@ -1115,9 +1268,11 @@ msgstr ""
 msgid "Change root folder"
 msgstr ""
 
+#: tempCatalog.php:262 tempCatalog.php:430 tempCatalog.php:588
 msgid "Change state"
 msgstr "Next step"
 
+#: tempCatalog.php:546
 msgid "Change state to"
 msgstr "Next step to"
 
@@ -1125,12 +1280,15 @@ msgstr "Next step to"
 msgid "Change step"
 msgstr ""
 
+#: tempCatalog.php:536
 msgid "Change the document state to"
 msgstr ""
 
+#: tempCatalog.php:884
 msgid "Change title"
 msgstr ""
 
+#: tempCatalog.php:615
 msgid "Change user"
 msgstr ""
 
@@ -1150,96 +1308,132 @@ msgid ""
 "ChangeState :: the new state '%s' is not known or is not allowed from %s"
 msgstr ""
 
+#: tempCatalog.php:602 tempCatalog.php:603 tempCatalog.php:734
+#: tempCatalog.php:911 tempCatalog.php:1045
 msgid "Changes will be loosed if you continue"
 msgstr ""
 
+#: tempCatalog.php:78
 msgid "Characteristic"
 msgstr ""
 
+#: tempCatalog.php:890
 msgid "Choose Archive"
 msgstr ""
 
+#: tempCatalog.php:1123
 msgid "Choose Gate Urls"
 msgstr ""
 
+#: tempCatalog.php:614
 msgid "Choose User"
 msgstr ""
 
+#: tempCatalog.php:648
 msgid "Choose Worflow"
 msgstr ""
 
+#: tempCatalog.php:682
 msgid "Choose a family to import only set of attributes"
 msgstr ""
 
+#: tempCatalog.php:1018
 msgid "Choose a father category"
 msgstr ""
 
+#: tempCatalog.php:52
 msgid "Choose an attribute"
 msgstr ""
 
+#: tempCatalog.php:736
 msgid "Choose another family document"
 msgstr ""
 
+#: tempCatalog.php:761
 msgid "Choose column export"
 msgstr ""
 
+#: tempCatalog.php:683
 msgid "Choose columns"
 msgstr ""
 
+#: tempCatalog.php:39
 msgid "Choose document before set options"
 msgstr ""
 
+#: tempCatalog.php:760
 msgid "Choose export column"
 msgstr ""
 
+#: tempCatalog.php:401
 msgid "Choose family"
 msgstr ""
 
+#: tempCatalog.php:573
 msgid "Choose in icon list"
 msgstr ""
 
+#: tempCatalog.php:400
 msgid "Choose mask family"
 msgstr ""
 
+#: tempCatalog.php:1008
 msgid "Choose new categories"
 msgstr ""
 
+#: tempCatalog.php:915 tempCatalog.php:916
 msgid "Choose visibles families"
 msgstr ""
 
+#: Action/Fdl/popupfamdetail.php:180 tempCatalog.php:287
 msgid "Choose workflow"
 msgstr ""
 
+#: tempCatalog.php:479
 msgid "Circular layout graphs"
 msgstr ""
 
+#: tempCatalog.php:393
 msgid "Clear Folder"
 msgstr ""
 
+#: tempCatalog.php:765
 msgid "Clear preferences"
 msgstr ""
 
+#: tempCatalog.php:166 tempCatalog.php:341
 msgid "Clear this translation"
 msgstr ""
 
+#: tempCatalog.php:1121
 msgid "Click here to logout"
 msgstr ""
 
+#: tempCatalog.php:580
 msgid "Click to access to the document"
 msgstr ""
 
+#: tempCatalog.php:43
 msgid "Click to clear button to change value"
 msgstr ""
 
+#: tempCatalog.php:202
 msgid "Click to clear message"
 msgstr ""
 
+#: tempCatalog.php:213
 msgid "Click to update document"
 msgstr ""
 
+#: Zone/Fdl/viewbarmenu.php:83 tempCatalog.php:120
 msgid "Click to view menu"
 msgstr ""
 
+#: Class/Fdl/Class.DocFormFormat.php:920 tempCatalog.php:230
+#: tempCatalog.php:456 tempCatalog.php:457 tempCatalog.php:491
+#: tempCatalog.php:493 tempCatalog.php:517 tempCatalog.php:586
+#: tempCatalog.php:881 tempCatalog.php:914 tempCatalog.php:917
+#: tempCatalog.php:1073
 msgid "Close"
 msgstr ""
 
@@ -1247,9 +1441,11 @@ msgstr ""
 msgid "Close archive"
 msgstr ""
 
+#: tempCatalog.php:1079
 msgid "Close help"
 msgstr ""
 
+#: tempCatalog.php:947
 msgid "Column mode"
 msgstr ""
 
@@ -1258,9 +1454,11 @@ msgstr ""
 msgid "Column type '%s' is not managed for export."
 msgstr ""
 
+#: tempCatalog.php:552
 msgid "Comment"
 msgstr ""
 
+#: tempCatalog.php:553
 msgid "Comment for change state"
 msgstr ""
 
@@ -1272,18 +1470,23 @@ msgstr "Common function for Dynacase Platform client API"
 msgid "Common functions"
 msgstr ""
 
+#: tempCatalog.php:464
 msgid "Complete (cluster)"
 msgstr ""
 
+#: tempCatalog.php:489
 msgid "Composing the email"
 msgstr ""
 
+#: Action/Freedom/freedom_access.php:63 Action/Freedom/freedom_gaccess.php:278
 msgid "Computed from profil"
 msgstr ""
 
+#: tempCatalog.php:356
 msgid "Conditions"
 msgstr ""
 
+#: tempCatalog.php:353
 msgid "Confidential Document"
 msgstr ""
 
@@ -1307,18 +1510,15 @@ msgstr ""
 msgid "Config file %s : unknow attribute name %s"
 msgstr ""
 
+#: tempCatalog.php:271
 msgid "Confirm"
 msgstr ""
 
+#: tempCatalog.php:1100
 msgid "Confirm password"
 msgstr ""
 
-msgid "Confirm unattach activated timers matched "
-msgstr ""
-
-msgid "Confirm unattach all activated timers"
-msgstr ""
-
+#: tempCatalog.php:1097
 msgid "Connect now"
 msgstr ""
 
@@ -1332,9 +1532,11 @@ msgstr "Connection to pg service '%s' OK!"
 msgid "Connection to temporary pg service '%s' OK !"
 msgstr ""
 
+#: tempCatalog.php:497
 msgid "Constraint test"
 msgstr ""
 
+#: tempCatalog.php:147 tempCatalog.php:568
 msgid "Constraints"
 msgstr ""
 
@@ -1347,6 +1549,7 @@ msgstr ""
 msgid "Control characters are not allowed"
 msgstr ""
 
+#: tempCatalog.php:80
 msgid "Control view for new document"
 msgstr ""
 
@@ -1355,12 +1558,15 @@ msgstr ""
 msgid "Conversion as %s has failed "
 msgstr ""
 
+#: tempCatalog.php:858
 msgid "Copy reference"
 msgstr ""
 
+#: tempCatalog.php:899
 msgid "Copy the containt of folder in batch document"
 msgstr ""
 
+#: tempCatalog.php:901
 msgid "Copy the reference of folder in batch document"
 msgstr ""
 
@@ -1400,6 +1606,8 @@ msgstr ""
 msgid "Could not open '%s' for reading."
 msgstr ""
 
+#: Zone/Fdl/editbarmenu.php:36 Action/Fdl/editextdoc.php:91
+#: Action/Generic/generic_edit.php:85 tempCatalog.php:732
 msgid "Create"
 msgstr ""
 
@@ -1412,6 +1620,7 @@ msgstr ""
 msgid "Create %s"
 msgstr ""
 
+#: tempCatalog.php:629
 msgid "Create New"
 msgstr ""
 
@@ -1429,18 +1638,24 @@ msgstr ""
 msgid "Create Tables ..."
 msgstr ""
 
+#: tempCatalog.php:391
 msgid "Create a batch"
 msgstr ""
 
+#: tempCatalog.php:731
 msgid "Create a new  process document"
 msgstr ""
 
+#: tempCatalog.php:897
 msgid "Create new family"
 msgstr ""
 
+#: tempCatalog.php:855
 msgid "Create subfolder"
 msgstr ""
 
+#: Zone/Generic/family_defaultmenu.php:81 tempCatalog.php:735
+#: tempCatalog.php:828 tempCatalog.php:937 tempCatalog.php:938
 msgid "Creation"
 msgstr ""
 
@@ -1462,9 +1677,11 @@ msgstr ""
 msgid "Current_state"
 msgstr "Current step"
 
+#: tempCatalog.php:33
 msgid "Data cannot be saved"
 msgstr ""
 
+#: tempCatalog.php:309 tempCatalog.php:319
 msgid "Date"
 msgstr ""
 
@@ -1476,9 +1693,11 @@ msgstr ""
 msgid "DbObj::Adds error in multiple insertion"
 msgstr ""
 
+#: tempCatalog.php:256
 msgid "December"
 msgstr ""
 
+#: tempCatalog.php:8
 msgid "Default Values and Parameters"
 msgstr ""
 
@@ -1486,9 +1705,12 @@ msgstr ""
 msgid "Default delay for account expiration (days)"
 msgstr "Default delay for account expiration (days)"
 
+#: tempCatalog.php:81
 msgid "Default search"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:81 Action/Generic/popuplistdetail.php:90
+#: tempCatalog.php:289 tempCatalog.php:437
 msgid "Delete"
 msgstr ""
 
@@ -1502,18 +1724,23 @@ msgstr ""
 msgid "Delete acl %s for %s"
 msgstr ""
 
+#: tempCatalog.php:162
 msgid "Delete this section"
 msgstr ""
 
+#: tempCatalog.php:104 tempCatalog.php:115
 msgid "Desactivate acls"
 msgstr ""
 
+#: tempCatalog.php:780
 msgid "Description of the import format"
 msgstr ""
 
+#: tempCatalog.php:613
 msgid "Detail Permissions"
 msgstr ""
 
+#: tempCatalog.php:310 tempCatalog.php:320
 msgid "Diff"
 msgstr ""
 
@@ -1522,6 +1749,7 @@ msgstr ""
 msgid "Dir::insertFolder identifier [%s] must be numeric"
 msgstr ""
 
+#: tempCatalog.php:788
 msgid "Direct Import"
 msgstr ""
 
@@ -1530,6 +1758,7 @@ msgstr ""
 msgid "Direct set through document itself \"%s\""
 msgstr ""
 
+#: tempCatalog.php:477
 msgid "Directed graph"
 msgstr ""
 
@@ -1541,9 +1770,12 @@ msgstr ""
 msgid "Display available choices"
 msgstr ""
 
+#: Class/Fdl/Class.DocFormFormat.php:1638 tempCatalog.php:31
+#: tempCatalog.php:550
 msgid "Do choice"
 msgstr "Select"
 
+#: tempCatalog.php:1088
 msgid "Do connection"
 msgstr "Connect"
 
@@ -1561,6 +1793,7 @@ msgstr "Properties"
 msgid "Docs admin"
 msgstr ""
 
+#: tempCatalog.php:95 tempCatalog.php:618 tempCatalog.php:832
 msgid "Document"
 msgstr ""
 
@@ -1569,6 +1802,8 @@ msgstr ""
 msgid "Document %s has been destroyed."
 msgstr ""
 
+#: Action/Fdl/fdl_card.php:70 Action/Fdl/exportfile.php:50
+#: Action/Fdl/impcard.php:49
 #, c-format
 msgid "Document %s in %s state not found"
 msgstr ""
@@ -1613,6 +1848,7 @@ msgstr ""
 msgid "Document context menu"
 msgstr ""
 
+#: Zone/Generic/family_defaultmenu.php:82
 msgid "Document creation"
 msgstr ""
 
@@ -1646,12 +1882,15 @@ msgstr ""
 msgid "Doing search request"
 msgstr ""
 
+#: tempCatalog.php:685
 msgid "Don't care preferences"
 msgstr ""
 
+#: tempCatalog.php:621
 msgid "Done date"
 msgstr ""
 
+#: tempCatalog.php:468
 msgid "Dot"
 msgstr ""
 
@@ -1660,9 +1899,11 @@ msgstr ""
 msgid "Doucment [%s] not found"
 msgstr ""
 
+#: tempCatalog.php:60 tempCatalog.php:69
 msgid "Down"
 msgstr ""
 
+#: tempCatalog.php:483
 msgid "Draw graph"
 msgstr ""
 
@@ -1676,6 +1917,8 @@ msgstr ""
 msgid "Dump to '%s' returned with exitcode %s"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:213 Action/Generic/popuplistdetail.php:157
+#: tempCatalog.php:272 tempCatalog.php:273 tempCatalog.php:434
 msgid "Duplicate"
 msgstr ""
 
@@ -1714,12 +1957,15 @@ msgstr ""
 msgid "EXPORT_CSV : identifiant unique"
 msgstr "id (unique identifier)"
 
+#: tempCatalog.php:506
 msgid "EXPORT_CSV CSV options :"
 msgstr "CSV options: "
 
+#: tempCatalog.php:505
 msgid "EXPORT_CSV Click to show options"
 msgstr "View CSV options"
 
+#: tempCatalog.php:511
 msgid "EXPORT_CSV Date format :"
 msgstr "Date Format :"
 
@@ -1735,21 +1981,27 @@ msgstr "Date format ISO"
 msgid "EXPORT_CSV Date format US"
 msgstr "Date format US"
 
+#: tempCatalog.php:509
 msgid "EXPORT_CSV Decimal separator :"
 msgstr "Decimal separator: "
 
+#: tempCatalog.php:500
 msgid "EXPORT_CSV Definition of the export param :"
 msgstr "Definition of export parameters"
 
+#: tempCatalog.php:507
 msgid "EXPORT_CSV Delimiter :"
 msgstr "Field delimiter: "
 
+#: tempCatalog.php:508
 msgid "EXPORT_CSV Enclosure :"
 msgstr "Text delimiter: "
 
+#: tempCatalog.php:510
 msgid "EXPORT_CSV Encoding :"
 msgstr "Charset: "
 
+#: tempCatalog.php:513
 msgid "EXPORT_CSV Exporter"
 msgstr "Export"
 
@@ -1757,12 +2009,15 @@ msgstr "Export"
 msgid "EXPORT_CSV ISO-8859-15 (european)"
 msgstr "ISO-8859-15 (european)"
 
+#: tempCatalog.php:503
 msgid "EXPORT_CSV Kind of export :"
 msgstr "Export type: "
 
+#: tempCatalog.php:502
 msgid "EXPORT_CSV Select export kind :"
 msgstr "Select export type"
 
+#: tempCatalog.php:504
 msgid "EXPORT_CSV Select pivot :"
 msgstr "Select pivot: "
 
@@ -1770,6 +2025,7 @@ msgstr "Select pivot: "
 msgid "EXPORT_CSV Simple"
 msgstr "Simple"
 
+#: tempCatalog.php:501
 msgid "EXPORT_CSV help"
 msgstr "Help"
 
@@ -1781,15 +2037,20 @@ msgstr "Pivot"
 msgid "EXPORT_CSV utf8"
 msgstr "UTF-8"
 
+#: Action/Generic/popuplistdetail.php:63 tempCatalog.php:260
+#: tempCatalog.php:348 tempCatalog.php:429
 msgid "Edit"
 msgstr ""
 
+#: Action/Fdl/popupfamdetail.php:80 tempCatalog.php:280
 msgid "Edit attributes"
 msgstr ""
 
+#: Action/Fdl/popupfamdetail.php:91 tempCatalog.php:953
 msgid "Edit enum attributes"
 msgstr ""
 
+#: tempCatalog.php:159 tempCatalog.php:336
 msgid "Edit help"
 msgstr ""
 
@@ -1801,9 +2062,11 @@ msgstr ""
 msgid "Edit state bar menu"
 msgstr ""
 
+#: tempCatalog.php:48 tempCatalog.php:61 tempCatalog.php:70
 msgid "Edit translations"
 msgstr ""
 
+#: tempCatalog.php:46
 msgid "Empty Post-It"
 msgstr ""
 
@@ -1812,12 +2075,15 @@ msgstr ""
 msgid "Emptying temporary database '%s' ..."
 msgstr ""
 
+#: tempCatalog.php:669
 msgid "Encoding"
 msgstr ""
 
+#: tempCatalog.php:1081
 msgid "Enter your login"
 msgstr ""
 
+#: tempCatalog.php:1083
 msgid "Enter your password"
 msgstr ""
 
@@ -1934,6 +2200,7 @@ msgstr ""
 msgid "Expiration delay must not be 0 to keep expiration date"
 msgstr ""
 
+#: tempCatalog.php:693 tempCatalog.php:854
 msgid "Export"
 msgstr ""
 
@@ -1941,18 +2208,26 @@ msgstr ""
 msgid "Export 1NF done"
 msgstr ""
 
+#: tempCatalog.php:667
 msgid "Export Documents from"
 msgstr ""
 
+#: Action/Fdl/report_export_csv.php:286 tempCatalog.php:514
 msgid "Export Done"
 msgstr ""
 
+#: tempCatalog.php:392
 msgid "Export Folder"
 msgstr ""
 
+#: tempCatalog.php:674
 msgid "Export archive file with data file - fdl.csv- and attached files"
 msgstr ""
 
+#: Action/Fdl/exportfld.php:258 Action/Fdl/exportfld.php:268
+#: Action/Fdl/exportfld.php:274 Action/Fdl/exportxmlfld.php:203
+#: Action/Fdl/exportxmlfld.php:265 Action/Fdl/exportxmlfld.php:273
+#: tempCatalog.php:665
 msgid "Export done"
 msgstr ""
 
@@ -1966,9 +2241,11 @@ msgstr ""
 msgid "Failed to copy %s to vault"
 msgstr ""
 
+#: tempCatalog.php:77
 msgid "Familly Document"
 msgstr ""
 
+#: Action/Fdl/viewextdoc.php:107 tempCatalog.php:87 tempCatalog.php:837
 msgid "Family"
 msgstr ""
 
@@ -1987,6 +2264,7 @@ msgstr ""
 msgid "Family (#%s) not exists"
 msgstr ""
 
+#: tempCatalog.php:893
 msgid "Family Creation"
 msgstr ""
 
@@ -1995,9 +2273,11 @@ msgstr ""
 msgid "Family [%s] not found"
 msgstr ""
 
+#: tempCatalog.php:998
 msgid "Family preferences"
 msgstr ""
 
+#: tempCatalog.php:246
 msgid "February"
 msgstr ""
 
@@ -2010,15 +2290,19 @@ msgstr ""
 msgid "File System already exists"
 msgstr ""
 
+#: Action/Fdl/getfiletransstatus.php:49 Class/Fdl/Lib.Vault.php:266
 msgid "File:: Processing"
 msgstr ""
 
+#: Action/Fdl/getfiletransstatus.php:53 Class/Fdl/Lib.Vault.php:270
 msgid "File:: Waiting"
 msgstr ""
 
+#: Action/Fdl/getfiletransstatus.php:57 Class/Fdl/Lib.Vault.php:274
 msgid "File:: converted"
 msgstr ""
 
+#: Action/Fdl/getfiletransstatus.php:61 Class/Fdl/Lib.Vault.php:278
 msgid "File:: failed"
 msgstr ""
 
@@ -2048,6 +2332,7 @@ msgid ""
 "The Size Limit was specified in the HTML form."
 msgstr ""
 
+#: tempCatalog.php:675
 msgid "Files"
 msgstr ""
 
@@ -2065,16 +2350,20 @@ msgstr ""
 msgid "Filling family table '%s' and relatives"
 msgstr ""
 
+#: Zone/Generic/family_defaultmenu.php:108
 #, c-format
 msgid "Filter on %s"
 msgstr ""
 
+#: tempCatalog.php:184
 msgid "Firstname"
 msgstr ""
 
+#: tempCatalog.php:474
 msgid "Fit to screen"
 msgstr ""
 
+#: tempCatalog.php:625 tempCatalog.php:834
 msgid "Folder"
 msgstr ""
 
@@ -2087,6 +2376,7 @@ msgstr ""
 msgid "For %s of %s"
 msgstr ""
 
+#: tempCatalog.php:616
 msgid "For Account"
 msgstr ""
 
@@ -2094,9 +2384,11 @@ msgstr ""
 msgid "For export functions"
 msgstr ""
 
+#: tempCatalog.php:687
 msgid "Format export"
 msgstr ""
 
+#: tempCatalog.php:690
 msgid "Formated data"
 msgstr ""
 
@@ -2105,6 +2397,7 @@ msgstr ""
 msgid "Found <strong>%d</strong>  Result for <strong>%s</strong>%s"
 msgstr ""
 
+#: tempCatalog.php:950
 msgid "Freedom"
 msgstr "Dynacase"
 
@@ -2180,6 +2473,7 @@ msgstr "Document preview"
 msgid "Freedoms view folder"
 msgstr "View as folder"
 
+#: tempCatalog.php:235 tempCatalog.php:242
 msgid "Friday"
 msgstr ""
 
@@ -2188,6 +2482,7 @@ msgstr ""
 msgid "From %s state to"
 msgstr ""
 
+#: tempCatalog.php:1060
 msgid "Full search"
 msgstr ""
 
@@ -2199,12 +2494,15 @@ msgstr ""
 msgid "Generic"
 msgstr ""
 
+#: tempCatalog.php:779
 msgid "Get Xml schema"
 msgstr ""
 
+#: tempCatalog.php:1015 tempCatalog.php:1029
 msgid "Go"
 msgstr ""
 
+#: tempCatalog.php:647
 msgid "Go to Archives"
 msgstr ""
 
@@ -2213,33 +2511,43 @@ msgstr ""
 msgid "Group \"%s\""
 msgstr ""
 
-#: Zone/Generic/family_defaultmenu.php:160
+#: Zone/Generic/family_defaultmenu.php:153
 msgid "Handle my searches"
 msgstr ""
+
+#: tempCatalog.php:942
 msgid "Help"
 msgstr ""
 
+#: tempCatalog.php:50 tempCatalog.php:340
 msgid "Help description"
 msgstr ""
 
+#: tempCatalog.php:49 tempCatalog.php:339
 msgid "Help name"
 msgstr ""
 
+#: tempCatalog.php:1078
 msgid "Help to the connection"
 msgstr ""
 
+#: tempCatalog.php:351
 msgid "Helps"
 msgstr ""
 
+#: tempCatalog.php:874
 msgid "Hide group access"
 msgstr ""
 
+#: tempCatalog.php:530
 msgid "Histo:Comment"
 msgstr "Comment"
 
+#: tempCatalog.php:528
 msgid "Histo:Date"
 msgstr "Date"
 
+#: tempCatalog.php:529
 msgid "Histo:User"
 msgstr "User"
 
@@ -2247,68 +2555,91 @@ msgstr "User"
 msgid "Historic"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:190 Action/Fdl/popupfamdetail.php:192
+#: Action/Generic/popuplistdetail.php:146 tempCatalog.php:270
 msgid "History"
 msgstr ""
 
+#: tempCatalog.php:298
 msgid "History for"
 msgstr ""
 
+#: tempCatalog.php:809
 msgid "ID"
 msgstr ""
 
+#: tempCatalog.php:772
 msgid "Icons view"
 msgstr ""
 
+#: tempCatalog.php:679
 msgid "Identificators"
 msgstr ""
 
+#: tempCatalog.php:962
 msgid ""
 "If an attribut is a multiline string, use the \\ n characters to specify the "
 "new line"
 msgstr ""
 
+#: tempCatalog.php:467
 msgid "Image"
 msgstr ""
 
+#: Action/Freedom/freedom_import_dir.php:42
+#: Action/Freedom/freedom_bgimport.php:54
 #, c-format
 msgid ""
 "Import %s is in progress. When update will be finished an email to &lt;"
 "%s&gt; will be sended with result rapport"
 msgstr ""
 
+#: tempCatalog.php:639 tempCatalog.php:889
 msgid "Import Archive"
 msgstr ""
 
+#: tempCatalog.php:956 tempCatalog.php:986
 msgid "Import CSV"
 msgstr ""
 
+#: tempCatalog.php:928
 msgid "Import Direct"
 msgstr ""
 
+#: tempCatalog.php:773 tempCatalog.php:774 tempCatalog.php:793
 msgid "Import Documents"
 msgstr ""
 
+#: tempCatalog.php:725 tempCatalog.php:741 tempCatalog.php:766
+#: tempCatalog.php:919
 msgid "Import Result"
 msgstr ""
 
+#: tempCatalog.php:848
 msgid "Import Tar"
 msgstr ""
 
+#: tempCatalog.php:789 tempCatalog.php:792
 msgid "Import after analyze done"
 msgstr ""
 
+#: tempCatalog.php:984
 msgid "Import description file"
 msgstr ""
 
+#: tempCatalog.php:744
 msgid "Import document description now"
 msgstr ""
 
+#: tempCatalog.php:847
 msgid "Import documents"
 msgstr ""
 
+#: tempCatalog.php:945
 msgid "Import file"
 msgstr ""
 
+#: tempCatalog.php:688
 msgid "Importation data"
 msgstr ""
 
@@ -2340,9 +2671,11 @@ msgstr ""
 msgid "Inherit from \"%s\""
 msgstr ""
 
+#: tempCatalog.php:12 tempCatalog.php:18
 msgid "Inherit value"
 msgstr ""
 
+#: tempCatalog.php:92 tempCatalog.php:99 tempCatalog.php:109
 msgid "Initialize acls"
 msgstr ""
 
@@ -2351,6 +2684,7 @@ msgstr ""
 msgid "Insert all into %s archive"
 msgstr ""
 
+#: tempCatalog.php:390
 msgid "Insert documents"
 msgstr ""
 
@@ -2364,12 +2698,15 @@ msgstr ""
 msgid "Insert the content in %s"
 msgstr ""
 
+#: tempCatalog.php:210
 msgid "Inserted in a domain"
 msgstr ""
 
+#: tempCatalog.php:808
 msgid "Inspect another family"
 msgstr ""
 
+#: tempCatalog.php:1120
 msgid "Internet explorer site"
 msgstr ""
 
@@ -2378,15 +2715,19 @@ msgstr ""
 msgid "Invalid directory '%s'."
 msgstr ""
 
+#: tempCatalog.php:764
 msgid "Invert all columns"
 msgstr ""
 
+#: tempCatalog.php:948
 msgid "Invert split"
 msgstr ""
 
+#: tempCatalog.php:63
 msgid "It cannot be empty"
 msgstr ""
 
+#: tempCatalog.php:35
 msgid "It is not the latest document"
 msgstr ""
 
@@ -2395,27 +2736,35 @@ msgstr ""
 msgid "It must contains at least %d characters (total length)"
 msgstr ""
 
+#: tempCatalog.php:30
 msgid "Item cannot be empty"
 msgstr ""
 
+#: tempCatalog.php:245
 msgid "January"
 msgstr ""
 
+#: tempCatalog.php:1112
 msgid "Javascript must be enabled in your navigator"
 msgstr ""
 
+#: tempCatalog.php:251
 msgid "July"
 msgstr ""
 
+#: tempCatalog.php:250
 msgid "June"
 msgstr ""
 
+#: tempCatalog.php:460
 msgid "Just activities"
 msgstr ""
 
+#: tempCatalog.php:461
 msgid "Just states"
 msgstr ""
 
+#: tempCatalog.php:787 tempCatalog.php:977
 msgid "Keep original document"
 msgstr ""
 
@@ -2453,18 +2802,24 @@ msgstr ""
 msgid "LDAP server root"
 msgstr ""
 
+#: tempCatalog.php:10 tempCatalog.php:16
 msgid "Label"
 msgstr ""
 
+#: Zone/Fdl/editfamilyparameter.php:24
+#: Zone/Fdl/editapplicationparameter.php:26
 msgid "Label of submit button"
 msgstr ""
 
+#: tempCatalog.php:478
 msgid "Large undirected graphs"
 msgstr ""
 
+#: tempCatalog.php:527
 msgid "Last History"
 msgstr ""
 
+#: tempCatalog.php:522
 msgid "Last log"
 msgstr ""
 
@@ -2473,9 +2828,11 @@ msgstr ""
 msgid "Last traces of %s document : %s"
 msgstr ""
 
+#: tempCatalog.php:185
 msgid "Lastname"
 msgstr ""
 
+#: tempCatalog.php:929
 msgid "Lauch Import"
 msgstr ""
 
@@ -2484,18 +2841,23 @@ msgstr ""
 msgid "Layout \"%s\" : Controller not allowed"
 msgstr ""
 
+#: tempCatalog.php:470
 msgid "Left Right"
 msgstr ""
 
+#: tempCatalog.php:876
 msgid "Legend"
 msgstr ""
 
+#: tempCatalog.php:879
 msgid "Legend:Acl set"
 msgstr "Acl set"
 
+#: tempCatalog.php:878
 msgid "Legend:Acl's type"
 msgstr "Acl's type"
 
+#: tempCatalog.php:877
 msgid "Legend:Actors"
 msgstr "Actors"
 
@@ -2511,6 +2873,7 @@ msgstr "Account multpile attribute"
 msgid "Legend:Groups"
 msgstr "Groups"
 
+#: tempCatalog.php:880
 msgid "Legend:Legacy"
 msgstr "Acl inherited"
 
@@ -2526,12 +2889,15 @@ msgstr "Users"
 msgid "Limit of text size (in Ko) for highlight text"
 msgstr ""
 
+#: tempCatalog.php:818
 msgid "Link"
 msgstr ""
 
+#: Action/Freedom/freedom_access.php:68 Action/Freedom/freedom_gaccess.php:284
 msgid "Linked from profil"
 msgstr ""
 
+#: tempCatalog.php:771
 msgid "List view"
 msgstr ""
 
@@ -2549,18 +2915,24 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:113 Action/Generic/popuplistdetail.php:102
+#: tempCatalog.php:261
 msgid "Lock"
 msgstr ""
 
+#: tempCatalog.php:526
 msgid "Log:Code"
 msgstr ""
 
+#: tempCatalog.php:525
 msgid "Log:Comment"
 msgstr ""
 
+#: tempCatalog.php:523
 msgid "Log:Date"
 msgstr ""
 
+#: tempCatalog.php:524
 msgid "Log:User"
 msgstr ""
 
@@ -2574,12 +2946,15 @@ msgstr ""
 msgid "Logical name %s already use in document %s"
 msgstr ""
 
+#: tempCatalog.php:183
 msgid "Login"
 msgstr ""
 
+#: tempCatalog.php:45
 msgid "MB_Cc"
 msgstr ""
 
+#: tempCatalog.php:44
 msgid "MB_To"
 msgstr ""
 
@@ -2600,12 +2975,15 @@ msgstr ""
 msgid "Manage families"
 msgstr ""
 
+#: tempCatalog.php:247
 msgid "March"
 msgstr ""
 
+#: tempCatalog.php:399
 msgid "Mask title"
 msgstr ""
 
+#: tempCatalog.php:323
 msgid ""
 "Master document has been closed.\n"
 "Close window ?"
@@ -2620,9 +2998,11 @@ msgstr ""
 msgid "Maximum 20 views by control"
 msgstr ""
 
+#: tempCatalog.php:85
 msgid "Maximum number of revision"
 msgstr ""
 
+#: tempCatalog.php:249
 msgid "May"
 msgstr ""
 
@@ -2669,6 +3049,8 @@ msgstr ""
 msgid "Modification for attribute %s for family %s"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:65 tempCatalog.php:1006 tempCatalog.php:1016
+#: tempCatalog.php:1030
 msgid "Modify"
 msgstr ""
 
@@ -2676,18 +3058,23 @@ msgstr ""
 msgid "Modify Attributes"
 msgstr ""
 
+#: tempCatalog.php:103
 msgid "Modify acls"
 msgstr ""
 
+#: tempCatalog.php:96
 msgid "Modify acls for documents"
 msgstr ""
 
+#: tempCatalog.php:88
 msgid "Modify acls for familly"
 msgstr ""
 
+#: tempCatalog.php:6
 msgid "Modify default Values"
 msgstr ""
 
+#: tempCatalog.php:7
 msgid "Modify parameters Values"
 msgstr ""
 
@@ -2696,9 +3083,11 @@ msgstr ""
 msgid "Modify table"
 msgstr ""
 
+#: tempCatalog.php:231 tempCatalog.php:238
 msgid "Monday"
 msgstr ""
 
+#: tempCatalog.php:418
 msgid "More options"
 msgstr ""
 
@@ -2707,12 +3096,15 @@ msgstr ""
 msgid "Move file from %s to %s"
 msgstr ""
 
+#: tempCatalog.php:859
 msgid "Move reference"
 msgstr ""
 
+#: tempCatalog.php:1128
 msgid "My system user id"
 msgstr ""
 
+#: tempCatalog.php:1127
 msgid "My user account id"
 msgstr ""
 
@@ -2720,9 +3112,11 @@ msgstr ""
 msgid "N"
 msgstr ""
 
+#: tempCatalog.php:816
 msgid "N?"
 msgstr ""
 
+#: tempCatalog.php:27
 msgid "NOT Clear"
 msgstr ""
 
@@ -2746,15 +3140,19 @@ msgstr ""
 msgid "Name of the zoo"
 msgstr ""
 
+#: tempCatalog.php:1099
 msgid "New password"
 msgstr ""
 
+#: Zone/Generic/family_defaultmenu.php:129 tempCatalog.php:944
 msgid "New report"
 msgstr ""
 
+#: Zone/Generic/family_defaultmenu.php:120 tempCatalog.php:943
 msgid "New search"
 msgstr ""
 
+#: tempCatalog.php:67 tempCatalog.php:72
 msgid "New section"
 msgstr ""
 
@@ -2762,6 +3160,7 @@ msgstr ""
 msgid "New state"
 msgstr ""
 
+#: tempCatalog.php:562
 msgid "Next"
 msgstr ""
 
@@ -2769,12 +3168,15 @@ msgstr ""
 msgid "No Icon specified"
 msgstr ""
 
+#: tempCatalog.php:90
 msgid "No acl for family"
 msgstr ""
 
+#: tempCatalog.php:98
 msgid "No acl for new documents of this family"
 msgstr ""
 
+#: tempCatalog.php:410
 msgid "No columns has been defined"
 msgstr ""
 
@@ -2782,6 +3184,7 @@ msgstr ""
 msgid "No default value"
 msgstr ""
 
+#: tempCatalog.php:746
 msgid "No direct import : limit is reached"
 msgstr ""
 
@@ -2790,6 +3193,9 @@ msgstr ""
 msgid "No document found for <strong>%s</strong>%s"
 msgstr ""
 
+#: Zone/Fdl/viewbarmenu.php:27 Action/Fdl/popupeditstate.php:23
+#: Action/Fdl/popupdocdetail.php:24 Action/Fdl/popupfamdetail.php:24
+#: Action/Generic/popuplistdetail.php:25
 msgid "No identificator"
 msgstr ""
 
@@ -2798,21 +3204,27 @@ msgstr ""
 msgid "No identifier found for relation '%s' %s in %s file"
 msgstr ""
 
+#: tempCatalog.php:743 tempCatalog.php:745
 msgid "No import : no document detected"
 msgstr ""
 
+#: tempCatalog.php:14
 msgid "No one default values"
 msgstr ""
 
+#: tempCatalog.php:20
 msgid "No one parameters"
 msgstr ""
 
+#: tempCatalog.php:107 tempCatalog.php:112 tempCatalog.php:119
 msgid "No privilege to change acls"
 msgstr ""
 
+#: tempCatalog.php:583
 msgid "No result"
 msgstr ""
 
+#: tempCatalog.php:564
 msgid "No results"
 msgstr ""
 
@@ -2820,9 +3232,11 @@ msgstr ""
 msgid "No strip Html tags"
 msgstr ""
 
+#: tempCatalog.php:84
 msgid "No workflow"
 msgstr ""
 
+#: tempCatalog.php:871
 msgid "Normal view"
 msgstr ""
 
@@ -2838,6 +3252,8 @@ msgid ""
 "limit %d has been reached"
 msgstr ""
 
+#: tempCatalog.php:94 tempCatalog.php:101 tempCatalog.php:110
+#: tempCatalog.php:118
 msgid "Not enough access to define privileges"
 msgstr ""
 
@@ -2861,22 +3277,23 @@ msgstr ""
 msgid "Not enough uppercase characters."
 msgstr ""
 
+#: tempCatalog.php:255
 msgid "November"
 msgstr ""
 
+#: tempCatalog.php:359 tempCatalog.php:364 tempCatalog.php:372
 msgid "OP_AND"
 msgstr ""
 
+#: tempCatalog.php:358 tempCatalog.php:363 tempCatalog.php:371
 msgid "OP_GLOB"
 msgstr ""
 
+#: tempCatalog.php:360 tempCatalog.php:365 tempCatalog.php:373
 msgid "OP_OR"
 msgstr ""
 
-#, c-format
-msgid "Object Permission : permission %s needed (%s) - # %d"
-msgstr ""
-
+#: tempCatalog.php:254
 msgid "October"
 msgstr ""
 
@@ -2884,6 +3301,7 @@ msgstr ""
 msgid "Offline menu"
 msgstr ""
 
+#: tempCatalog.php:566 tempCatalog.php:913
 msgid "Ok"
 msgstr ""
 
@@ -2892,6 +3310,10 @@ msgstr ""
 msgid "One document for <strong>%s</strong>%s"
 msgstr ""
 
+#: tempCatalog.php:47 tempCatalog.php:167 tempCatalog.php:168
+#: tempCatalog.php:190 tempCatalog.php:191 tempCatalog.php:196
+#: tempCatalog.php:197 tempCatalog.php:198 tempCatalog.php:207
+#: tempCatalog.php:208 tempCatalog.php:1047 tempCatalog.php:1048
 msgid "Online help"
 msgstr ""
 
@@ -2900,24 +3322,31 @@ msgstr ""
 msgid "Only %s %s can view and edit"
 msgstr ""
 
+#: tempCatalog.php:961
 msgid "Only one line by document is authorized"
 msgstr ""
 
+#: tempCatalog.php:64
 msgid "Only these characters are allowed : a..z, A..Z, 0..9, _, -"
 msgstr ""
 
+#: tempCatalog.php:388
 msgid "Open in folio"
 msgstr ""
 
+#: tempCatalog.php:1074
 msgid "Open in new window"
 msgstr ""
 
+#: tempCatalog.php:369
 msgid "Opt"
 msgstr ""
 
+#: tempCatalog.php:921
 msgid "Options import"
 msgstr ""
 
+#: tempCatalog.php:574
 msgid "Or upload a new icon"
 msgstr ""
 
@@ -2925,6 +3354,7 @@ msgstr ""
 msgid "Other..."
 msgstr ""
 
+#: tempCatalog.php:121
 msgid "Others"
 msgstr ""
 
@@ -2938,9 +3368,11 @@ msgstr ""
 msgid "Output file '%s' is already opened."
 msgstr ""
 
+#: tempCatalog.php:11
 msgid "Own Default Value"
 msgstr ""
 
+#: tempCatalog.php:17
 msgid "Own Parameter Value"
 msgstr ""
 
@@ -2963,9 +3395,11 @@ msgstr "PG Error: Connection to pg service '%s' failed!"
 msgid "PG Error: Connection to temporary pg service '%s' failed !"
 msgstr ""
 
+#: tempCatalog.php:560
 msgid "Page"
 msgstr ""
 
+#: tempCatalog.php:15
 msgid "Parameter"
 msgstr ""
 
@@ -3001,9 +3435,11 @@ msgstr ""
 msgid "Parameter's id"
 msgstr ""
 
+#: tempCatalog.php:408
 msgid "Parameters for"
 msgstr ""
 
+#: tempCatalog.php:282
 msgid "Parameters values"
 msgstr ""
 
@@ -3011,12 +3447,15 @@ msgstr ""
 msgid "Parametre cycle"
 msgstr ""
 
+#: tempCatalog.php:1096
 msgid "Password has been cnanged"
 msgstr ""
 
+#: tempCatalog.php:312
 msgid "Past Revisions"
 msgstr ""
 
+#: tempCatalog.php:861
 msgid "Permissions"
 msgstr ""
 
@@ -3030,9 +3469,11 @@ msgstr ""
 msgid "Pivot rendering %d/%d"
 msgstr ""
 
+#: tempCatalog.php:695 tempCatalog.php:769 tempCatalog.php:851
 msgid "PortFolio"
 msgstr ""
 
+#: tempCatalog.php:727
 msgid "PortFolio search"
 msgstr ""
 
@@ -3045,24 +3486,31 @@ msgstr ""
 msgid "Possible file upload attack: filename '%s'."
 msgstr ""
 
+#: tempCatalog.php:668
 msgid "Prefer choose Latin if you are under microsoft else use UTF-8"
 msgstr ""
 
+#: Zone/Generic/family_defaultmenu.php:168 tempCatalog.php:952
 msgid "Preferences"
 msgstr ""
 
+#: tempCatalog.php:999
 msgid "Preferences for"
 msgstr ""
 
+#: tempCatalog.php:559
 msgid "Previous"
 msgstr ""
 
+#: tempCatalog.php:203 tempCatalog.php:204 tempCatalog.php:347
 msgid "Print"
 msgstr ""
 
+#: tempCatalog.php:226
 msgid "Privilege input"
 msgstr ""
 
+#: tempCatalog.php:225
 msgid "Privilege view"
 msgstr ""
 
@@ -3076,9 +3524,11 @@ msgstr ""
 msgid "Process %s [%d] executed in %.03f seconds"
 msgstr ""
 
+#: tempCatalog.php:827
 msgid "Processes plan"
 msgstr ""
 
+#: tempCatalog.php:850
 msgid "Processes to exec"
 msgstr ""
 
@@ -3087,6 +3537,7 @@ msgstr ""
 msgid "Profil for document's archive %s"
 msgstr ""
 
+#: tempCatalog.php:671 tempCatalog.php:836
 msgid "Profile"
 msgstr ""
 
@@ -3094,12 +3545,19 @@ msgstr ""
 msgid "Profile of"
 msgstr ""
 
+#: tempCatalog.php:1122 tempCatalog.php:1124
 msgid "Progress bar"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:43 Action/Fdl/fdl_forummenu.php:38
+#: Action/Fdl/popupfamdetail.php:44 Action/Generic/popuplistdetail.php:41
+#: tempCatalog.php:258 tempCatalog.php:386 tempCatalog.php:853
 msgid "Properties"
 msgstr ""
 
+#: tempCatalog.php:495 tempCatalog.php:539 tempCatalog.php:551
+#: tempCatalog.php:579 tempCatalog.php:694 tempCatalog.php:699
+#: tempCatalog.php:724 tempCatalog.php:1023
 msgid "Properties:"
 msgstr ""
 
@@ -3108,6 +3566,7 @@ msgstr ""
 msgid "Property '%s' is not valid (family '%s')."
 msgstr ""
 
+#: tempCatalog.php:257
 msgid "PubliPreview"
 msgstr ""
 
@@ -3115,9 +3574,7 @@ msgstr ""
 msgid "Purge archive"
 msgstr ""
 
-msgid "Purge history"
-msgstr ""
-
+#: tempCatalog.php:912
 msgid "Quick Save"
 msgstr ""
 
@@ -3125,18 +3582,23 @@ msgstr ""
 msgid "REPORT_pivot"
 msgstr ""
 
+#: tempCatalog.php:212
 msgid "RSS link"
 msgstr ""
 
+#: tempCatalog.php:481
 msgid "Radial layouts graphs"
 msgstr ""
 
+#: tempCatalog.php:925
 msgid "Raw archive"
 msgstr ""
 
+#: tempCatalog.php:689
 msgid "Raw data only"
 msgstr ""
 
+#: tempCatalog.php:686
 msgid ""
 "Raw data set database value. Formated data : data are exported like can see "
 "it in navigator."
@@ -3146,6 +3608,7 @@ msgstr ""
 msgid "Reaffect"
 msgstr ""
 
+#: tempCatalog.php:597 tempCatalog.php:598
 msgid "Reason for change state"
 msgstr ""
 
@@ -3158,9 +3621,11 @@ msgstr ""
 msgid "Record system families"
 msgstr ""
 
+#: tempCatalog.php:664 tempCatalog.php:666
 msgid "Redo export"
 msgstr ""
 
+#: tempCatalog.php:845
 msgid "Ref"
 msgstr ""
 
@@ -3168,12 +3633,16 @@ msgstr ""
 msgid "Reference"
 msgstr ""
 
+#: tempCatalog.php:846
 msgid "Reference Manuel"
 msgstr ""
 
+#: App/Fdl/fdlsearches.php:127 Action/Freedom/rnavigate.php:49
+#: Action/Freedom/rnavigate.php:59
 msgid "Referenced from"
 msgstr ""
 
+#: tempCatalog.php:856
 msgid "Refresh folder"
 msgstr ""
 
@@ -3181,6 +3650,7 @@ msgstr ""
 msgid "Relation cycle"
 msgstr ""
 
+#: tempCatalog.php:799
 msgid "Relation document"
 msgstr ""
 
@@ -3192,6 +3662,7 @@ msgstr ""
 msgid "Reload document"
 msgstr ""
 
+#: tempCatalog.php:867
 msgid "Reload page"
 msgstr ""
 
@@ -3210,6 +3681,7 @@ msgstr ""
 msgid "Remove duplicate reference '%s' in family '%s'"
 msgstr ""
 
+#: Action/Fdl/popupfamdetail.php:125 tempCatalog.php:283
 msgid "Rename"
 msgstr ""
 
@@ -3222,21 +3694,27 @@ msgstr ""
 msgid "Reopen archive"
 msgstr ""
 
+#: tempCatalog.php:620
 msgid "Rest delay"
 msgstr ""
 
+#: tempCatalog.php:354
 msgid "Restricted Access"
 msgstr ""
 
+#: tempCatalog.php:747
 msgid "Result Analyze Documents"
 msgstr ""
 
+#: tempCatalog.php:748
 msgid "Result Import Documents"
 msgstr ""
 
+#: tempCatalog.php:767
 msgid "Result Import TAR Documents"
 msgstr ""
 
+#: tempCatalog.php:13 tempCatalog.php:19
 msgid "Result value"
 msgstr ""
 
@@ -3244,12 +3722,16 @@ msgstr ""
 msgid "Retrieve documents from database"
 msgstr ""
 
+#: tempCatalog.php:179
 msgid "Return to reference document"
 msgstr ""
 
+#: tempCatalog.php:306 tempCatalog.php:315
 msgid "Rev"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:135 Action/Generic/popuplistdetail.php:124
+#: tempCatalog.php:267
 msgid "Revise"
 msgstr ""
 
@@ -3258,6 +3740,7 @@ msgstr ""
 msgid "Role \"%s\""
 msgstr ""
 
+#: tempCatalog.php:82
 msgid "Root folder"
 msgstr ""
 
@@ -3281,12 +3764,17 @@ msgstr ""
 msgid "SMTP port"
 msgstr ""
 
+#: tempCatalog.php:466
 msgid "SVG"
 msgstr ""
 
+#: tempCatalog.php:236 tempCatalog.php:243
 msgid "Saturday"
 msgstr ""
 
+#: Zone/Fdl/editbarmenu.php:42 Action/Fdl/editextdoc.php:91
+#: tempCatalog.php:154 tempCatalog.php:577 tempCatalog.php:1002
+#: tempCatalog.php:1032 tempCatalog.php:1033
 msgid "Save"
 msgstr ""
 
@@ -3294,12 +3782,15 @@ msgstr ""
 msgid "Save !"
 msgstr ""
 
+#: tempCatalog.php:151
 msgid "Save and quit edit mode"
 msgstr ""
 
+#: tempCatalog.php:153
 msgid "Save and stay in edition"
 msgstr ""
 
+#: tempCatalog.php:32
 msgid "Save changes ?"
 msgstr ""
 
@@ -3307,6 +3798,7 @@ msgstr ""
 msgid "Save default values"
 msgstr ""
 
+#: tempCatalog.php:42
 msgid "Save in progress"
 msgstr ""
 
@@ -3314,9 +3806,11 @@ msgstr ""
 msgid "Save parameters"
 msgstr ""
 
+#: tempCatalog.php:762
 msgid "Save preferences"
 msgstr ""
 
+#: tempCatalog.php:626 tempCatalog.php:830
 msgid "Search"
 msgstr ""
 
@@ -3326,42 +3820,59 @@ msgstr ""
 msgid "Search %s"
 msgstr ""
 
+#: tempCatalog.php:1012 tempCatalog.php:1026
 msgid "Search Words"
 msgstr ""
 
+#: tempCatalog.php:1011 tempCatalog.php:1013 tempCatalog.php:1025
+#: tempCatalog.php:1027
 msgid "Search containing characters"
 msgstr ""
 
+#: tempCatalog.php:409
 msgid "Search criteria"
 msgstr ""
 
+#: tempCatalog.php:304
 msgid "Search in current revision"
 msgstr ""
 
+#: tempCatalog.php:313
 msgid "Search in past revision"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:358 Action/Generic/popuplistdetail.php:215
+#: tempCatalog.php:278
 msgid "Search linked documents"
 msgstr ""
 
+#: tempCatalog.php:414
 msgid "Search to insert"
 msgstr ""
 
+#: tempCatalog.php:54
 msgid "Section free key"
 msgstr ""
 
+#: tempCatalog.php:62 tempCatalog.php:71 tempCatalog.php:145
+#: tempCatalog.php:163 tempCatalog.php:350 tempCatalog.php:352
 msgid "Section key"
 msgstr ""
 
+#: tempCatalog.php:164
 msgid "Section name"
 msgstr ""
 
+#: tempCatalog.php:165
 msgid "Section text"
 msgstr ""
 
+#: tempCatalog.php:57 tempCatalog.php:349
 msgid "Sections"
 msgstr ""
 
+#: Zone/Fdl/popupcard.php:310 Action/Fdl/popupdocdetail.php:120
+#: tempCatalog.php:86
 msgid "Security"
 msgstr ""
 
@@ -3369,6 +3880,7 @@ msgstr ""
 msgid "See below information about conversion"
 msgstr ""
 
+#: tempCatalog.php:865
 msgid "See detail for "
 msgstr ""
 
@@ -3376,26 +3888,33 @@ msgstr ""
 msgid "See latest information about it."
 msgstr ""
 
+#: tempCatalog.php:864
 msgid "See members detail"
 msgstr ""
 
+#: tempCatalog.php:670
 msgid "Select Profil if it is to globaly reuse file to reinitialize profil"
 msgstr ""
 
+#: tempCatalog.php:763
 msgid "Select all columns"
 msgstr ""
 
+#: tempCatalog.php:440
 msgid "Select group appartenance"
 msgstr ""
 
+#: tempCatalog.php:678
 msgid ""
 "Select identifier to set the second column -specid- this file can only "
 "reimport in the same database"
 msgstr ""
 
+#: tempCatalog.php:170 tempCatalog.php:176
 msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
 msgstr ""
 
+#: tempCatalog.php:783
 msgid "Send Analyze"
 msgstr ""
 
@@ -3403,9 +3922,11 @@ msgstr ""
 msgid "Send document"
 msgstr ""
 
+#: tempCatalog.php:609
 msgid "Send document searches"
 msgstr ""
 
+#: tempCatalog.php:486
 msgid "Send mail"
 msgstr ""
 
@@ -3448,18 +3969,24 @@ msgstr ""
 msgid "Send mail info : can't send mail %s: no sendee found"
 msgstr ""
 
+#: tempCatalog.php:547
 msgid "Send mail with template"
 msgstr ""
 
+#: tempCatalog.php:1014 tempCatalog.php:1028
 msgid "Send search"
 msgstr ""
 
+#: tempCatalog.php:534
 msgid "Send the email and change document state to"
 msgstr ""
 
+#: Zone/Fdl/editfamilyparameter.php:22
+#: Zone/Fdl/editapplicationparameter.php:24
 msgid "Sending input on change?"
 msgstr ""
 
+#: tempCatalog.php:253
 msgid "September"
 msgstr ""
 
@@ -3496,6 +4023,7 @@ msgstr ""
 msgid "Set by %s through template profil \"%s\""
 msgstr ""
 
+#: tempCatalog.php:281
 msgid "Set default values"
 msgstr ""
 
@@ -3504,6 +4032,9 @@ msgstr ""
 msgid "Set from template profil \"%s\""
 msgstr ""
 
+#: tempCatalog.php:73 tempCatalog.php:124 tempCatalog.php:194
+#: tempCatalog.php:200 tempCatalog.php:328 tempCatalog.php:334
+#: tempCatalog.php:342 tempCatalog.php:344
 msgid "Set new entry"
 msgstr ""
 
@@ -3547,33 +4078,44 @@ msgstr ""
 msgid "Something wrong. No acl found in %s (user #%d)"
 msgstr ""
 
+#: tempCatalog.php:65
 msgid "Sorry but this section key already exists !"
 msgstr ""
 
+#: Zone/Generic/barmenu.php:324 Zone/Generic/family_defaultmenu.php:322
+#: Zone/Generic/family_defaultmenu.php:333 tempCatalog.php:939
 msgid "Sort"
 msgstr ""
 
+#: tempCatalog.php:265
 msgid "Special edit"
 msgstr ""
 
+#: tempCatalog.php:264
 msgid "Special view"
 msgstr ""
 
+#: tempCatalog.php:777
 msgid "Specific import in csv format"
 msgstr ""
 
+#: tempCatalog.php:316 tempCatalog.php:367 tempCatalog.php:1055
 msgid "State"
 msgstr ""
 
+#: tempCatalog.php:556
 msgid "StateConfirm"
 msgstr "Confirm"
 
+#: Zone/Fdl/popupdocmenu.php:30 tempCatalog.php:102 tempCatalog.php:150
 msgid "States"
 msgstr ""
 
+#: tempCatalog.php:496
 msgid "Status"
 msgstr ""
 
+#: tempCatalog.php:186
 msgid "Status for sending mail"
 msgstr ""
 
@@ -3581,6 +4123,7 @@ msgstr ""
 msgid "Steps"
 msgstr ""
 
+#: tempCatalog.php:512
 msgid "Strip HTML tags :"
 msgstr ""
 
@@ -3588,15 +4131,20 @@ msgstr ""
 msgid "Strip Html tags"
 msgstr ""
 
+#: Zone/Fdl/editsubmit.php:14 Zone/Fdl/editfamilyparameter.php:24
+#: Zone/Fdl/editapplicationparameter.php:26
 msgid "Submit"
 msgstr ""
 
+#: tempCatalog.php:1031
 msgid "Suggestion"
 msgstr ""
 
+#: tempCatalog.php:237 tempCatalog.php:244
 msgid "Sunday"
 msgstr ""
 
+#: tempCatalog.php:641
 msgid "Supported format"
 msgstr ""
 
@@ -3605,6 +4153,9 @@ msgstr ""
 msgid "Suppress %d document(s)"
 msgstr ""
 
+#: Zone/Fdl/popupfam.php:70 Zone/Fdl/popupfam.php:100
+#: Zone/Generic/barmenu.php:156 Zone/Generic/family_defaultmenu.php:195
+#: Action/Fdl/popupdocdetail.php:635 Action/Fdl/popupdocdetail.php:674
 #, c-format
 msgid "Sure %s ?"
 msgstr ""
@@ -3623,18 +4174,38 @@ msgstr ""
 msgid "Sure duplicate ?"
 msgstr ""
 
+#: tempCatalog.php:833
 msgid "System document"
 msgstr ""
 
+#: Test/input/family/Class.WTestBadImp12.php:18
+#: Test/input/family/Class.WTestBadImp13.php:18
+#: Test/input/family/Class.WTestBadImp11.php:18
+#: Test/input/family/Class.WTestExtra.php:19
+#: Test/input/family/Class.WTestImp4.php:19
+#: Test/input/family/Class.WTestBadImp10.php:18
+#: Test/input/family/Class.WTestBadImp17.php:19
+#: Test/input/family/Class.WTestBadImp9.php:19
 msgid "T1"
 msgstr ""
 
+#: Test/input/family/Class.WTestBadImp12.php:21
+#: Test/input/family/Class.WTestBadImp13.php:21
+#: Test/input/family/Class.WTestExtra.php:22
+#: Test/input/family/Class.WTestImp4.php:22
+#: Test/input/family/Class.WTestBadImp10.php:21
+#: Test/input/family/Class.WTestBadImp17.php:22
+#: Test/input/family/Class.WTestBadImp9.php:22
 msgid "T3"
 msgstr ""
 
+#: tempCatalog.php:815
 msgid "T?"
 msgstr ""
 
+#: Action/Fdl/getfiletransformation.php:140
+#: Action/Fdl/getfiletransformation.php:172
+#: Action/Fdl/getfiletransstatus.php:73 Class/Fdl/Lib.Vault.php:212
 msgid "TE engine activate but TE-CLIENT not found"
 msgstr ""
 
@@ -3663,6 +4234,13 @@ msgstr ""
 msgid "Table '%s' unknown !"
 msgstr ""
 
+#: Test/input/family/Class.WTestBadImp12.php:20
+#: Test/input/family/Class.WTestBadImp13.php:20
+#: Test/input/family/Class.WTestExtra.php:21
+#: Test/input/family/Class.WTestImp4.php:21
+#: Test/input/family/Class.WTestBadImp10.php:20
+#: Test/input/family/Class.WTestBadImp17.php:21
+#: Test/input/family/Class.WTestBadImp9.php:21
 msgid "Tconvalescent"
 msgstr ""
 
@@ -3671,9 +4249,11 @@ msgstr ""
 msgid "Template [%s] not found"
 msgstr ""
 
+#: tempCatalog.php:1130
 msgid "The \"Foo\" string"
 msgstr ""
 
+#: tempCatalog.php:1107
 msgid ""
 "The apache configuration seems incorrect. I cannot read .htaccess file. May "
 "be parameter allowOverride is not set to All"
@@ -3694,6 +4274,7 @@ msgstr ""
 msgid "The document <%s> is not a folder"
 msgstr ""
 
+#: tempCatalog.php:555
 msgid "The document can become inconsistent and can not be used properly"
 msgstr ""
 
@@ -3712,6 +4293,7 @@ msgstr ""
 msgid "The file %s has been correctly extracted"
 msgstr ""
 
+#: tempCatalog.php:960
 msgid ""
 "The first four fields must not be change, they identified the card structure"
 msgstr ""
@@ -3731,9 +4313,11 @@ msgstr ""
 msgid "The next state will be \"%s\"."
 msgstr ""
 
+#: tempCatalog.php:959
 msgid "The separator field is the semicolon(;)"
 msgstr ""
 
+#: tempCatalog.php:34
 msgid ""
 "The submitted file does not comes from the latest version of the document "
 "and might have been modified by other users. If you continue, theses changes "
@@ -3759,15 +4343,15 @@ msgstr ""
 msgid "This document has been deleted"
 msgstr ""
 
+#: tempCatalog.php:234 tempCatalog.php:241
 msgid "Thursday"
 msgstr ""
 
+#: tempCatalog.php:622
 msgid "Timer result"
 msgstr ""
 
-msgid "Timers history"
-msgstr ""
-
+#: tempCatalog.php:617
 msgid "Timers management"
 msgstr ""
 
@@ -3775,12 +4359,15 @@ msgstr ""
 msgid "Timers management result"
 msgstr ""
 
+#: tempCatalog.php:540
 msgid "Timers prevision"
 msgstr ""
 
+#: tempCatalog.php:317
 msgid "Title"
 msgstr ""
 
+#: tempCatalog.php:1059 tempCatalog.php:1063 tempCatalog.php:1071
 msgid "ToSearch"
 msgstr ""
 
@@ -3788,12 +4375,16 @@ msgstr ""
 msgid "Too many incorrect password attempts."
 msgstr "Too many incorrect password attempts."
 
+#: tempCatalog.php:41
 msgid "Too many input file. The maximum accepted is"
 msgstr ""
 
+#: Zone/Generic/family_defaultmenu.php:338 tempCatalog.php:381
+#: tempCatalog.php:831 tempCatalog.php:940 tempCatalog.php:941
 msgid "Tools"
 msgstr ""
 
+#: tempCatalog.php:471
 msgid "Top Bottom"
 msgstr ""
 
@@ -3813,15 +4404,25 @@ msgstr ""
 msgid "Transformation Engine timeout connection (in seconds)"
 msgstr ""
 
+#: tempCatalog.php:113
 msgid "Transitions"
 msgstr ""
 
+#: Test/input/family/Class.WTestBadImp12.php:19
+#: Test/input/family/Class.WTestBadImp13.php:19
+#: Test/input/family/Class.WTestExtra.php:20
+#: Test/input/family/Class.WTestImp4.php:20
+#: Test/input/family/Class.WTestBadImp10.php:19
+#: Test/input/family/Class.WTestBadImp17.php:20
+#: Test/input/family/Class.WTestBadImp9.php:20
 msgid "Tsick"
 msgstr ""
 
+#: tempCatalog.php:232 tempCatalog.php:239
 msgid "Tuesday"
 msgstr ""
 
+#: tempCatalog.php:1131
 msgid "Two cents"
 msgstr ""
 
@@ -3860,24 +4461,24 @@ msgstr ""
 msgid "Unarchiving from %s"
 msgstr ""
 
-msgid "Unattach Timers"
-msgstr ""
-
+#: tempCatalog.php:480 tempCatalog.php:482
 msgid "Undirected graphs"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:124 Action/Generic/popuplistdetail.php:113
+#: tempCatalog.php:266 tempCatalog.php:431
 msgid "Unlock"
 msgstr ""
 
-msgid "Until done date"
-msgstr ""
-
+#: tempCatalog.php:59 tempCatalog.php:68
 msgid "Up"
 msgstr ""
 
+#: tempCatalog.php:223 tempCatalog.php:862
 msgid "Update Access in progress"
 msgstr ""
 
+#: tempCatalog.php:866
 msgid "Update access"
 msgstr ""
 
@@ -3885,6 +4486,7 @@ msgstr ""
 msgid "Update by importation"
 msgstr ""
 
+#: tempCatalog.php:785 tempCatalog.php:975
 msgid "Update document if has permission else ignored"
 msgstr ""
 
@@ -3892,6 +4494,7 @@ msgstr ""
 msgid "Update history done"
 msgstr ""
 
+#: Zone/Fdl/viewacl.php:89 Action/Freedom/freedom_gaccess.php:249
 msgid "Update profiling is in progress."
 msgstr ""
 
@@ -3900,9 +4503,11 @@ msgstr ""
 msgid "Update profiling of %d documents is in progress."
 msgstr ""
 
+#: tempCatalog.php:645
 msgid "Upload archive"
 msgstr ""
 
+#: tempCatalog.php:152
 msgid "Use Ctrl-S to save and stay in edit mode"
 msgstr ""
 
@@ -3916,9 +4521,11 @@ msgstr ""
 msgid "User must be authenticate"
 msgstr "User must be authenticated"
 
+#: tempCatalog.php:589 tempCatalog.php:590
 msgid "User to affect"
 msgstr ""
 
+#: tempCatalog.php:181
 msgid "Users"
 msgstr ""
 
@@ -3926,27 +4533,38 @@ msgstr ""
 msgid "Utilisateur fixe"
 msgstr ""
 
+#: tempCatalog.php:490 tempCatalog.php:492 tempCatalog.php:630
+#: tempCatalog.php:651 tempCatalog.php:908 tempCatalog.php:918
+#: tempCatalog.php:997
 msgid "Validate"
 msgstr ""
 
+#: tempCatalog.php:218 tempCatalog.php:305 tempCatalog.php:314
+#: tempCatalog.php:604 tempCatalog.php:739 tempCatalog.php:1051
 msgid "Version"
 msgstr ""
 
+#: tempCatalog.php:817
 msgid "Vi"
 msgstr ""
 
+#: tempCatalog.php:380
 msgid "View"
 msgstr ""
 
+#: tempCatalog.php:768
 msgid "View Archive"
 msgstr ""
 
+#: tempCatalog.php:646
 msgid "View Archives"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:325 tempCatalog.php:277
 msgid "View XML"
 msgstr ""
 
+#: tempCatalog.php:778
 msgid "View Xml Schema"
 msgstr ""
 
@@ -3954,12 +4572,15 @@ msgstr ""
 msgid "View Zones for FOOTER"
 msgstr ""
 
+#: tempCatalog.php:965
 msgid "View all attributes ?"
 msgstr ""
 
+#: tempCatalog.php:263
 msgid "View all properties"
 msgstr ""
 
+#: tempCatalog.php:346
 msgid "View all rows"
 msgstr ""
 
@@ -3967,9 +4588,11 @@ msgstr ""
 msgid "View answers"
 msgstr ""
 
+#: tempCatalog.php:875
 msgid "View color legend"
 msgstr ""
 
+#: tempCatalog.php:219
 msgid "View cycle graph"
 msgstr ""
 
@@ -3977,30 +4600,40 @@ msgstr ""
 msgid "View default values and parameters"
 msgstr ""
 
+#: tempCatalog.php:180
 msgid "View document reference"
 msgstr ""
 
+#: tempCatalog.php:126
 msgid "View family"
 msgstr ""
 
+#: tempCatalog.php:696
 msgid "View folder content"
 msgstr ""
 
+#: tempCatalog.php:697 tempCatalog.php:698
 msgid "View folder properties"
 msgstr ""
 
+#: tempCatalog.php:872 tempCatalog.php:873
 msgid "View group access"
 msgstr ""
 
+#: tempCatalog.php:435
 msgid "View headers"
 msgstr ""
 
+#: tempCatalog.php:740 tempCatalog.php:1052
 msgid "View historique"
 msgstr ""
 
+#: tempCatalog.php:1001
 msgid "View inherit family"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:54 Action/Generic/popuplistdetail.php:52
+#: tempCatalog.php:259
 msgid "View latest"
 msgstr ""
 
@@ -4008,6 +4641,7 @@ msgstr ""
 msgid "View my ask"
 msgstr ""
 
+#: Zone/Generic/family_defaultmenu.php:147 tempCatalog.php:951
 msgid "View my searches"
 msgstr ""
 
@@ -4015,9 +4649,11 @@ msgstr ""
 msgid "View next results"
 msgstr ""
 
+#: tempCatalog.php:869
 msgid "View only access set. Green flag"
 msgstr ""
 
+#: tempCatalog.php:211
 msgid "View postit"
 msgstr ""
 
@@ -4025,18 +4661,24 @@ msgstr ""
 msgid "View print version"
 msgstr ""
 
+#: tempCatalog.php:433
 msgid "View properties"
 msgstr ""
 
+#: tempCatalog.php:321
 msgid "View revision"
 msgstr ""
 
+#: tempCatalog.php:122 tempCatalog.php:193
 msgid "View selection"
 msgstr ""
 
+#: tempCatalog.php:1000
 msgid "View tab letters"
 msgstr ""
 
+#: Action/Authent/authent.php:37
+#: Class/Authenticator/Class.AuthenticatorManager.php:210
 msgid ""
 "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
 "pour acceder a cette ressource"
@@ -4057,33 +4699,43 @@ msgstr ""
 msgid "WID : workflow '%s' not found"
 msgstr ""
 
+#: tempCatalog.php:450
 msgid "WIDGET_CHANGE_PASSWORD:Change"
 msgstr "Change"
 
+#: tempCatalog.php:449
 msgid "WIDGET_CHANGE_PASSWORD:Loading..."
 msgstr "Loading..."
 
+#: tempCatalog.php:446
 msgid "WIDGET_CHANGE_PASSWORD:New password"
 msgstr "New password"
 
+#: tempCatalog.php:454
 msgid "WIDGET_CHANGE_PASSWORD:New passwords are not identical"
 msgstr "New passwords are not identical"
 
+#: tempCatalog.php:445
 msgid "WIDGET_CHANGE_PASSWORD:Old password"
 msgstr "Old password"
 
+#: tempCatalog.php:448
 msgid "WIDGET_CHANGE_PASSWORD:Password updated"
 msgstr "Password updated"
 
+#: tempCatalog.php:447
 msgid "WIDGET_CHANGE_PASSWORD:Verify new password"
 msgstr "Verify new password"
 
+#: tempCatalog.php:452
 msgid "WIDGET_CHANGE_PASSWORD:You need to provide a new password"
 msgstr "You need to provide a new password"
 
+#: tempCatalog.php:451
 msgid "WIDGET_CHANGE_PASSWORD:You need to provide the old password"
 msgstr "You need to provide the old password"
 
+#: tempCatalog.php:453
 msgid "WIDGET_CHANGE_PASSWORD:You need to provide twice the new password"
 msgstr "You need to provide twice the new password"
 
@@ -4096,36 +4748,47 @@ msgstr ""
 msgid "WebDav FREEDOM system file"
 msgstr "Dynacase WebDAV file system"
 
+#: tempCatalog.php:233 tempCatalog.php:240
 msgid "Wednesday"
 msgstr ""
 
+#: tempCatalog.php:462
 msgid "With States and activities"
 msgstr ""
 
+#: tempCatalog.php:463
 msgid "With conditions"
 msgstr ""
 
+#: tempCatalog.php:677
 msgid "With files"
 msgstr ""
 
+#: tempCatalog.php:681
 msgid "With identificators"
 msgstr ""
 
+#: tempCatalog.php:673
 msgid "With profil"
 msgstr ""
 
+#: tempCatalog.php:676
 msgid "Without files"
 msgstr ""
 
+#: tempCatalog.php:680
 msgid "Without identificators"
 msgstr ""
 
+#: tempCatalog.php:672
 msgid "Without profil"
 msgstr ""
 
+#: tempCatalog.php:83 tempCatalog.php:838
 msgid "Workflow"
 msgstr ""
 
+#: tempCatalog.php:458
 msgid "Workflow - parameters"
 msgstr ""
 
@@ -4158,9 +4821,11 @@ msgstr ""
 msgid "XML config parsed OK !"
 msgstr ""
 
+#: tempCatalog.php:691
 msgid "XML data (Zip with one xml by document)"
 msgstr ""
 
+#: tempCatalog.php:692
 msgid "XML data (only one xml file)"
 msgstr ""
 
@@ -4191,12 +4856,15 @@ msgstr ""
 msgid "Y"
 msgstr ""
 
+#: tempCatalog.php:224 tempCatalog.php:863
 msgid "You can close window now or waiting the end of processing"
 msgstr ""
 
+#: tempCatalog.php:1117
 msgid "You must upgrade to version 6 or more"
 msgstr ""
 
+#: tempCatalog.php:1115
 msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
 msgstr ""
 
@@ -4204,18 +4872,23 @@ msgstr ""
 msgid "You must use only a-z, 0-9, _, - caracters"
 msgstr ""
 
+#: tempCatalog.php:1118
 msgid "You use an too old Internet explorer navigator"
 msgstr ""
 
+#: tempCatalog.php:1108
 msgid "You use an too old Netscape navigator"
 msgstr ""
 
+#: tempCatalog.php:1116
 msgid "You use version an to old version of Internet Explorer"
 msgstr ""
 
+#: tempCatalog.php:1114
 msgid "You use version an to old version of Netscape (Mozilla)"
 msgstr ""
 
+#: tempCatalog.php:1113
 msgid ""
 "Your navigator does not accept cookies.\n"
 "Cookies must be enabled to use correctly this application"
@@ -4229,6 +4902,7 @@ msgstr ""
 msgid "Zip Archive cannot be created"
 msgstr ""
 
+#: tempCatalog.php:643
 msgid "Zip File"
 msgstr ""
 
@@ -4257,6 +4931,7 @@ msgstr ""
 msgid "[%s] must match /%s/"
 msgstr ""
 
+#: tempCatalog.php:140
 msgid "access date"
 msgstr ""
 
@@ -4268,12 +4943,15 @@ msgstr ""
 msgid "access path folder list"
 msgstr ""
 
+#: tempCatalog.php:728
 msgid "access path folder list:"
 msgstr ""
 
+#: tempCatalog.php:706
 msgid "access path list"
 msgstr ""
 
+#: tempCatalog.php:1129
 msgid "account attribute"
 msgstr ""
 
@@ -4281,6 +4959,9 @@ msgstr ""
 msgid "acking detection : clear token"
 msgstr ""
 
+#: Action/Generic/generic_importcsv.php:164
+#: Class/Fdl/Class.importDocument.php:131 tempCatalog.php:755
+#: tempCatalog.php:935 tempCatalog.php:1040
 msgid "action"
 msgstr ""
 
@@ -4296,6 +4977,8 @@ msgid ""
 "match"
 msgstr ""
 
+#: Action/Fdl/viewtimers.php:55 Action/Fdl/viewtimers.php:61
+#: Class/Fdl/Class.Document.php:933 Class/Fdl/Class.Document.php:938
 msgid "actions"
 msgstr ""
 
@@ -4308,6 +4991,7 @@ msgstr ""
 msgid "activity for %s"
 msgstr ""
 
+#: tempCatalog.php:174 tempCatalog.php:994
 msgid "add"
 msgstr ""
 
@@ -4338,9 +5022,11 @@ msgstr ""
 msgid "add batch document"
 msgstr ""
 
+#: App/Generic/GENERIC.app:85 tempCatalog.php:1017
 msgid "add category"
 msgstr ""
 
+#: tempCatalog.php:970
 msgid "add column"
 msgstr ""
 
@@ -4397,6 +5083,7 @@ msgstr ""
 msgid "add negative acl %s"
 msgstr ""
 
+#: tempCatalog.php:1021
 msgid "add new category"
 msgstr ""
 
@@ -4405,18 +5092,24 @@ msgstr ""
 msgid "add new profil %s"
 msgstr ""
 
+#: tempCatalog.php:839
 msgid "add to bookmarks"
 msgstr ""
 
+#: tempCatalog.php:377
 msgid "addactivity"
 msgstr "Activity"
 
+#: tempCatalog.php:375
 msgid "addcond"
 msgstr ""
 
+#: Action/Fdl/import_tar.php:146 Action/Fdl/import_tar.php:188
+#: Class/Fdl/Class.ImportSingleDocument.php:358
 msgid "added"
 msgstr ""
 
+#: tempCatalog.php:188
 msgid "address"
 msgstr ""
 
@@ -4428,6 +5121,7 @@ msgstr ""
 msgid "address of the webdav server for freedav"
 msgstr ""
 
+#: tempCatalog.php:376 tempCatalog.php:1058
 msgid "addstate"
 msgstr ""
 
@@ -4451,6 +5145,13 @@ msgstr ""
 msgid "affect user to a document"
 msgstr ""
 
+#: Test/input/family/Class.WTestBadImp12.php:13
+#: Test/input/family/Class.WTestBadImp13.php:13
+#: Test/input/family/Class.WTestExtra.php:14
+#: Test/input/family/Class.WTestImp4.php:14
+#: Test/input/family/Class.WTestBadImp10.php:13
+#: Test/input/family/Class.WTestBadImp17.php:14
+#: Test/input/family/Class.WTestBadImp9.php:14
 msgid "alive"
 msgstr ""
 
@@ -4466,9 +5167,11 @@ msgstr ""
 msgid "allocated"
 msgstr ""
 
+#: tempCatalog.php:135
 msgid "allocated to"
 msgstr ""
 
+#: Action/Fdl/affect.php:66 Class/Fdl/Class.WDoc.php:146
 #, c-format
 msgid "allocation for %s document"
 msgstr ""
@@ -4511,6 +5214,9 @@ msgstr ""
 msgid "any families"
 msgstr ""
 
+#: tempCatalog.php:417 tempCatalog.php:422 tempCatalog.php:427
+#: tempCatalog.php:607 tempCatalog.php:716 tempCatalog.php:794
+#: tempCatalog.php:797 tempCatalog.php:1070
 msgid "any familly"
 msgstr "any familiy"
 
@@ -4535,6 +5241,7 @@ msgstr ""
 msgid "apply a method to a document"
 msgstr ""
 
+#: Action/Freedom/timers_admin_result.php:125 Class/Fdl/Method.Timer.php:218
 #, c-format
 msgid "apply method %s"
 msgstr ""
@@ -4565,6 +5272,7 @@ msgstr ""
 msgid "argument %s=>%s"
 msgstr ""
 
+#: tempCatalog.php:295
 msgid "ask"
 msgstr ""
 
@@ -4660,6 +5368,7 @@ msgstr ""
 msgid "attribute %s not an array"
 msgstr ""
 
+#: Zone/Fdl/editarray.php:54 Action/Fdl/exportfile.php:76
 #, c-format
 msgid "attribute %s not found"
 msgstr ""
@@ -4678,6 +5387,7 @@ msgstr ""
 msgid "attribute id"
 msgstr ""
 
+#: tempCatalog.php:520
 msgid "attributes"
 msgstr ""
 
@@ -4689,9 +5399,11 @@ msgstr ""
 msgid "attributes modification"
 msgstr ""
 
+#: tempCatalog.php:396 tempCatalog.php:404
 msgid "attrname"
 msgstr ""
 
+#: tempCatalog.php:394
 msgid "atype"
 msgstr ""
 
@@ -4699,9 +5411,11 @@ msgstr ""
 msgid "auth_failure"
 msgstr "Authentication failed : try again"
 
+#: tempCatalog.php:1084
 msgid "authent reqpassword"
 msgstr "Lost password?"
 
+#: tempCatalog.php:134
 msgid "author"
 msgstr ""
 
@@ -4783,9 +5497,11 @@ msgstr ""
 msgid "boolean"
 msgstr ""
 
+#: tempCatalog.php:1089
 msgid "callbackreqpasswd_mail_hello"
 msgstr "Hello"
 
+#: tempCatalog.php:1090
 msgid "callbackreqpasswd_mail_password"
 msgstr ""
 "<p>You new password is now:</p>\n"
@@ -4803,6 +5519,8 @@ msgstr ""
 msgid "can't connect mnogosearch db"
 msgstr ""
 
+#: tempCatalog.php:333 tempCatalog.php:538 tempCatalog.php:708
+#: tempCatalog.php:857 tempCatalog.php:860
 msgid "cancel"
 msgstr ""
 
@@ -4950,6 +5668,8 @@ msgstr ""
 msgid "cannot load xml layout file : %s"
 msgstr ""
 
+#: Class/Fdl/Class.DocHtmlFormat.php:626
+#: Class/Fdl/Class.DocFormFormat.php:1351
 #, c-format
 msgid "cannot load xml template : %s"
 msgstr ""
@@ -4983,10 +5703,22 @@ msgstr ""
 msgid "cannot see unknow folder"
 msgstr ""
 
+#: Zone/Fdl/forum_entry.php:29 Action/Fdl/fdl_forumaddentry.php:87
+#: Action/Fdl/fdl_forumdelentry.php:41
 #, c-format
 msgid "cannot see unknow forum reference %s"
 msgstr ""
 
+#: Zone/Fdl/viewcard.php:82 Action/Fdl/fdl_card.php:59
+#: Action/Fdl/verifycomputedfiles.php:39 Action/Fdl/modattribute.php:44
+#: Action/Fdl/specialhelp.php:37 Action/Fdl/editattribute.php:43
+#: Action/Fdl/editinsertdocument.php:37 Action/Fdl/fdl_forumaddentry.php:35
+#: Action/Fdl/getfiletransformation.php:42 Action/Fdl/fdl_forumopen.php:30
+#: Action/Fdl/insertdocument.php:37 Action/Fdl/fdl_forumcreate.php:30
+#: Action/Fdl/settxtfile.php:55 Action/Fdl/fdl_forumdelentry.php:32
+#: Action/Fdl/fdl_getvalue.php:39 Action/Fdl/fdl_forumclose.php:30
+#: Action/Freedom/freedom_card.php:32 Action/Freedom/forum_setdefault.php:31
+#: Action/Generic/generic_card.php:32
 #, c-format
 msgid "cannot see unknow reference %s"
 msgstr ""
@@ -5075,10 +5807,13 @@ msgstr ""
 msgid "cannot write  %s"
 msgstr ""
 
+#: Action/Fdl/exportxmlfld.php:54 Class/Fdl/Class.importDocument.php:113
+#: Class/Fdl/Class.importDocument.php:164
 #, c-format
 msgid "cannot write log in %s"
 msgstr ""
 
+#: tempCatalog.php:425 tempCatalog.php:714
 msgid "case sensitive"
 msgstr ""
 
@@ -5091,6 +5826,7 @@ msgstr ""
 msgid "change"
 msgstr ""
 
+#: Zone/Fdl/modcard.php:178 Class/Fdl/Class.Document.php:601
 #, c-format
 msgid "change %s"
 msgstr ""
@@ -5100,6 +5836,7 @@ msgstr ""
 msgid "change application tag to '%s'"
 msgstr ""
 
+#: App/Generic/GENERIC.app:130 tempCatalog.php:1007 tempCatalog.php:1009
 msgid "change category"
 msgstr ""
 
@@ -5166,6 +5903,7 @@ msgstr ""
 msgid "change state : %s to %s"
 msgstr ""
 
+#: Action/Freedom/timers_admin_result.php:120 Class/Fdl/Method.Timer.php:211
 #, c-format
 msgid "change state to %s"
 msgstr ""
@@ -5197,6 +5935,7 @@ msgstr ""
 msgid "change version to %s"
 msgstr ""
 
+#: tempCatalog.php:37
 msgid "changeCheckBoolClasses Error"
 msgstr ""
 
@@ -5204,6 +5943,7 @@ msgstr ""
 msgid "changed"
 msgstr ""
 
+#: tempCatalog.php:758 tempCatalog.php:1043
 msgid "changes"
 msgstr ""
 
@@ -5224,6 +5964,7 @@ msgstr ""
 msgid "choose inputs for %s"
 msgstr ""
 
+#: App/Freedom/FREEDOM.app:513 tempCatalog.php:798
 msgid "choose preferred families"
 msgstr ""
 
@@ -5247,9 +5988,13 @@ msgstr ""
 msgid "clear file"
 msgstr ""
 
+#: Class/Fdl/Class.DocFormFormat.php:386 Class/Fdl/Class.DocFormFormat.php:390
+#: Class/Fdl/Class.DocFormFormat.php:393 Class/Fdl/Class.DocFormFormat.php:396
+#: tempCatalog.php:123 tempCatalog.php:199
 msgid "clear inputs"
 msgstr ""
 
+#: Class/Fdl/Class.DocFormFormat.php:334 tempCatalog.php:192
 msgid "clear selected inputs"
 msgstr ""
 
@@ -5273,12 +6018,16 @@ msgstr ""
 msgid "client name"
 msgstr ""
 
+#: App/Fdl/FDL.app:467 Action/Fdl/popupdocdetail.php:314
+#: Action/Fdl/fdl_forummenu.php:60
 msgid "close forum"
 msgstr ""
 
+#: tempCatalog.php:1072
 msgid "close search online help"
 msgstr ""
 
+#: tempCatalog.php:442
 msgid "collapse all"
 msgstr ""
 
@@ -5291,9 +6040,11 @@ msgstr ""
 msgid "color picker"
 msgstr ""
 
+#: tempCatalog.php:385
 msgid "column"
 msgstr ""
 
+#: tempCatalog.php:964
 msgid "column order"
 msgstr ""
 
@@ -5302,6 +6053,7 @@ msgstr ""
 msgid "comparison between<br>%s (rev %d) and %s (rev %d)"
 msgstr ""
 
+#: tempCatalog.php:642
 msgid "compressed tar"
 msgstr ""
 
@@ -5309,6 +6061,8 @@ msgstr ""
 msgid "concat stylecss+sizecss"
 msgstr ""
 
+#: Zone/Fdl/viewcard.php:187 Zone/Fdl/viewfolder.php:204
+#: Class/Fdl/Class.DocCtrl.php:117
 msgid "confidential"
 msgstr ""
 
@@ -5325,6 +6079,7 @@ msgstr ""
 msgid "confirm mail sended before change state"
 msgstr ""
 
+#: tempCatalog.php:537
 msgid "confirm manually send"
 msgstr ""
 
@@ -5342,6 +6097,7 @@ msgstr ""
 msgid "connexion to %s has failed"
 msgstr ""
 
+#: tempCatalog.php:822
 msgid "constraint"
 msgstr ""
 
@@ -5379,9 +6135,17 @@ msgstr ""
 msgid "control :: user identifier is null"
 msgstr ""
 
+#: tempCatalog.php:142
 msgid "control view"
 msgstr ""
 
+#: Test/input/family/Class.WTestBadImp12.php:17
+#: Test/input/family/Class.WTestBadImp13.php:17
+#: Test/input/family/Class.WTestExtra.php:18
+#: Test/input/family/Class.WTestImp4.php:18
+#: Test/input/family/Class.WTestBadImp10.php:17
+#: Test/input/family/Class.WTestBadImp17.php:18
+#: Test/input/family/Class.WTestBadImp9.php:18
 msgid "convalescent"
 msgstr ""
 
@@ -5424,6 +6188,7 @@ msgstr ""
 msgid "convertion from %s to %s family"
 msgstr ""
 
+#: Action/Generic/generic_tab.php:35
 msgid "cookies seem to be blocked"
 msgstr ""
 
@@ -5502,6 +6267,7 @@ msgstr ""
 msgid "create family"
 msgstr ""
 
+#: App/Fdl/FDL.app:472 Action/Fdl/popupdocdetail.php:292
 msgid "create forum"
 msgstr ""
 
@@ -5518,6 +6284,8 @@ msgstr ""
 msgid "create profile access"
 msgstr ""
 
+#: Zone/Generic/barmenu.php:253 Zone/Generic/family_defaultmenu.php:248
+#: App/Fdl/FDL_external.php:1052
 msgid "createdate"
 msgstr "Creation date"
 
@@ -5540,6 +6308,7 @@ msgstr ""
 msgid "creation : workflow %s not exists"
 msgstr ""
 
+#: tempCatalog.php:139
 msgid "creation date"
 msgstr ""
 
@@ -5556,6 +6325,7 @@ msgstr ""
 msgid "csv file <%s> wroted"
 msgstr ""
 
+#: tempCatalog.php:782
 msgid "csv, ods, xml, zip (xml) supported import files"
 msgstr ""
 
@@ -5591,12 +6361,17 @@ msgstr ""
 msgid "database record date style"
 msgstr ""
 
+#: tempCatalog.php:543
 msgid "date"
 msgstr ""
 
-msgid "days"
-msgstr ""
-
+#: Test/input/family/Class.WTestBadImp12.php:14
+#: Test/input/family/Class.WTestBadImp13.php:14
+#: Test/input/family/Class.WTestExtra.php:15
+#: Test/input/family/Class.WTestImp4.php:15
+#: Test/input/family/Class.WTestBadImp10.php:14
+#: Test/input/family/Class.WTestBadImp17.php:15
+#: Test/input/family/Class.WTestBadImp9.php:15
 msgid "dead"
 msgstr ""
 
@@ -5613,6 +6388,7 @@ msgstr ""
 msgid "default document family"
 msgstr ""
 
+#: tempCatalog.php:922
 msgid "default file family"
 msgstr ""
 
@@ -5624,9 +6400,11 @@ msgstr ""
 msgid "default folder already set. Auto ignored"
 msgstr ""
 
+#: tempCatalog.php:923
 msgid "default folder family"
 msgstr ""
 
+#: tempCatalog.php:983
 msgid "default import values"
 msgstr ""
 
@@ -5642,9 +6420,11 @@ msgstr ""
 msgid "default style"
 msgstr ""
 
+#: Zone/Fdl/editcard.php:187 Class/Fdl/Class.DocFam.php:235
 msgid "default value"
 msgstr ""
 
+#: Action/Freedom/freedom_edit.php:153 Action/Generic/generic_edit.php:82
 msgid "default values"
 msgstr ""
 
@@ -5653,6 +6433,7 @@ msgstr ""
 msgid "default values for %s"
 msgstr ""
 
+#: tempCatalog.php:398 tempCatalog.php:407
 msgid "default visibility"
 msgstr ""
 
@@ -5669,9 +6450,14 @@ msgstr ""
 msgid "del entry from a document forum"
 msgstr ""
 
+#: tempCatalog.php:288 tempCatalog.php:436
 msgid "delconfirm"
 msgstr ""
 
+#: App/Generic/GENERIC.app:80 Class/Fdl/Class.DocCtrl.php:83
+#: tempCatalog.php:357 tempCatalog.php:362 tempCatalog.php:370
+#: tempCatalog.php:995 tempCatalog.php:1053 tempCatalog.php:1054
+#: tempCatalog.php:1056
 msgid "delete"
 msgstr "Delete"
 
@@ -5680,10 +6466,7 @@ msgstr "Delete"
 msgid "delete %s for %s"
 msgstr ""
 
-#, c-format
-msgid "delete %s on server %s...\n"
-msgstr ""
-
+#: tempCatalog.php:892
 msgid "delete archive"
 msgstr ""
 
@@ -5704,9 +6487,11 @@ msgstr ""
 msgid "delete imported tar"
 msgstr ""
 
+#: tempCatalog.php:707
 msgid "delete link"
 msgstr ""
 
+#: tempCatalog.php:171 tempCatalog.php:177
 msgid "delete selected"
 msgstr ""
 
@@ -5714,6 +6499,8 @@ msgstr ""
 msgid "descr"
 msgstr ""
 
+#: Zone/Fdl/viewacl.php:53 Class/Fdl/Class.Document.php:400
+#: Class/Appmng/Class.Action.php:884
 msgid "description"
 msgstr "Description"
 
@@ -5722,9 +6509,11 @@ msgstr "Description"
 msgid "destroyed by archive purge from %s"
 msgstr ""
 
+#: tempCatalog.php:383
 msgid "detail"
 msgstr ""
 
+#: tempCatalog.php:843
 msgid "detailled"
 msgstr ""
 
@@ -5744,6 +6533,7 @@ msgstr ""
 msgid "directory to upload archive"
 msgstr ""
 
+#: Action/Fdl/popupfamdetail.php:249 Class/Fdl/Class.DocFam.php:383
 msgid "disable forum"
 msgstr ""
 
@@ -5764,6 +6554,12 @@ msgstr ""
 msgid "doc %d indexed"
 msgstr ""
 
+#: Zone/Generic/barmenu.php:245 Zone/Generic/family_defaultmenu.php:240
+#: App/Fdl/FDL_external.php:908 App/Fdl/FDL_external.php:1048
+#: Class/Fdl/Method.DetailSearch.php:703 Class/Fdl/Method.DetailSearch.php:781
+#: Class/Fdl/Method.DetailSearch.php:987 Class/Fdl/Method.Report.php:43
+#: tempCatalog.php:751 tempCatalog.php:979 tempCatalog.php:981
+#: tempCatalog.php:1036
 msgid "doctitle"
 msgstr "Title"
 
@@ -5852,6 +6648,8 @@ msgstr ""
 msgid "document %s not exist"
 msgstr ""
 
+#: Action/Freedom/folioparams.php:35 Action/Freedom/openfolio.php:24
+#: Action/Freedom/foliotab.php:38
 #, c-format
 msgid "document %s not exists"
 msgstr ""
@@ -5866,6 +6664,8 @@ msgstr ""
 msgid "document '%s' [revision %d] has no state"
 msgstr ""
 
+#: Action/Fdl/restoredoc.php:39 Action/Fdl/settxtfile.php:115
+#: Action/Fdc/getdocvalues.php:39
 #, c-format
 msgid "document [%s] not found"
 msgstr ""
@@ -5874,6 +6674,7 @@ msgstr ""
 msgid "document already revised"
 msgstr ""
 
+#: Action/Freedom/createprof.php:67 Class/Fdl/Class.Doc.php:807
 #, c-format
 msgid "document creation"
 msgstr ""
@@ -5882,9 +6683,11 @@ msgstr ""
 msgid "document deleted"
 msgstr ""
 
+#: tempCatalog.php:518
 msgid "document differences"
 msgstr ""
 
+#: App/Fdl/FDL_external.php:913 Class/Fdl/Method.Report.php:45
 msgid "document id"
 msgstr ""
 
@@ -5915,6 +6718,8 @@ msgstr ""
 msgid "document not initialized"
 msgstr ""
 
+#: Action/Fdl/editextdoc.php:80 Action/Freedom/freedom_edit.php:173
+#: Action/Generic/generic_edit.php:102 Class/Fdl/Class.Doc.php:7343
 msgid "document not referenced"
 msgstr ""
 
@@ -5929,6 +6734,7 @@ msgstr ""
 msgid "document too big (%dKo): no highlight"
 msgstr ""
 
+#: tempCatalog.php:610
 msgid "document(s)"
 msgstr ""
 
@@ -5936,6 +6742,7 @@ msgstr ""
 msgid "documents"
 msgstr ""
 
+#: tempCatalog.php:749 tempCatalog.php:1034
 msgid "documents to examine"
 msgstr ""
 
@@ -5947,27 +6754,35 @@ msgstr ""
 msgid "done\n"
 msgstr ""
 
+#: tempCatalog.php:465
 msgid "dotFormat"
 msgstr ""
 
+#: tempCatalog.php:473
 msgid "dotNoSize"
 msgstr ""
 
+#: tempCatalog.php:469
 msgid "dotOrient"
 msgstr ""
 
+#: tempCatalog.php:475
 msgid "dotRatio"
 msgstr ""
 
+#: tempCatalog.php:472
 msgid "dotSize"
 msgstr ""
 
+#: tempCatalog.php:476
 msgid "dotTool"
 msgstr ""
 
+#: tempCatalog.php:459
 msgid "dotType"
 msgstr ""
 
+#: tempCatalog.php:991
 msgid "downk"
 msgstr ""
 
@@ -5975,12 +6790,15 @@ msgstr ""
 msgid "download file"
 msgstr ""
 
+#: tempCatalog.php:169 tempCatalog.php:175
 msgid "drag to move"
 msgstr ""
 
+#: tempCatalog.php:173
 msgid "duplicate"
 msgstr ""
 
+#: App/Freedom/FREEDOM.app:274 tempCatalog.php:703
 msgid "duplicate document"
 msgstr ""
 
@@ -6028,6 +6846,7 @@ msgstr ""
 msgid "edit default folder"
 msgstr ""
 
+#: Class/Fdl/Class.DocCtrl.php:77 tempCatalog.php:702
 msgid "edit document"
 msgstr ""
 
@@ -6099,6 +6918,9 @@ msgstr ""
 msgid "edition to affect user"
 msgstr ""
 
+#: tempCatalog.php:565 tempCatalog.php:601 tempCatalog.php:638
+#: tempCatalog.php:652 tempCatalog.php:709 tempCatalog.php:733
+#: tempCatalog.php:910
 msgid "edition: "
 msgstr ""
 
@@ -6106,6 +6928,7 @@ msgstr ""
 msgid "electronic messages cannot be modified"
 msgstr ""
 
+#: tempCatalog.php:821
 msgid "elink"
 msgstr ""
 
@@ -6114,6 +6937,7 @@ msgstr ""
 msgid "elinkEncode::attribute not found %s in %s : %s"
 msgstr ""
 
+#: Action/Fdl/mailcard.php:150 tempCatalog.php:532
 msgid "email sended"
 msgstr ""
 
@@ -6129,6 +6953,7 @@ msgstr ""
 msgid "empty password : not changed"
 msgstr ""
 
+#: Action/Fdl/popupfamdetail.php:238 Class/Fdl/Class.DocFam.php:383
 msgid "enable forum"
 msgstr ""
 
@@ -6140,9 +6965,11 @@ msgstr ""
 msgid "ending"
 msgstr ""
 
+#: tempCatalog.php:1004
 msgid "enum attribute list"
 msgstr ""
 
+#: tempCatalog.php:23 tempCatalog.php:24
 msgid "enumerate input not found"
 msgstr ""
 
@@ -6158,6 +6985,7 @@ msgstr ""
 msgid "equal"
 msgstr ""
 
+#: tempCatalog.php:936
 msgid "err"
 msgstr ""
 
@@ -6177,12 +7005,14 @@ msgstr "LDAP server cannot be contacted"
 msgid "errldaporginit"
 msgstr ""
 
+#: tempCatalog.php:1106
 msgid "errno_bug_639_message"
 msgstr ""
 "<p>You must re-initialize your password.</p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Re-initialize my "
 "password</a></p>"
 
+#: tempCatalog.php:759 tempCatalog.php:1044
 msgid "error"
 msgstr ""
 
@@ -6216,10 +7046,14 @@ msgstr ""
 msgid "error in filename"
 msgstr ""
 
+#: Action/Fdl/import_tar.php:267 Action/Generic/generic_importcsv.php:151
+#: Class/Fdl/Class.ImportDescription.php:1056
 #, c-format
 msgid "error in import keys : %s"
 msgstr ""
 
+#: Zone/Fdl/viewtpl.php:41 Zone/Fdl/edittpl.php:39
+#: Class/Fdl/Class.Doc.php:6470
 #, c-format
 msgid "error in pzone format %s"
 msgstr ""
@@ -6233,6 +7067,7 @@ msgstr ""
 msgid "error storing configuration property (%s, %s, %s)"
 msgstr ""
 
+#: tempCatalog.php:849
 msgid "exec plan"
 msgstr ""
 
@@ -6260,6 +7095,7 @@ msgstr ""
 msgid "existing key item %s"
 msgstr ""
 
+#: tempCatalog.php:441
 msgid "expand all"
 msgstr ""
 
@@ -6313,6 +7149,8 @@ msgstr ""
 msgid "exportXml : cannot write file %s"
 msgstr ""
 
+#: tempCatalog.php:355 tempCatalog.php:416 tempCatalog.php:421
+#: tempCatalog.php:426 tempCatalog.php:715
 msgid "familly"
 msgstr ""
 
@@ -6333,10 +7171,14 @@ msgid ""
 "family %s does not implement IMailRecipient - missing getMailTitle method"
 msgstr ""
 
+#: Action/Freedom/editexportchoosecols.php:29
+#: Action/Freedom/modexportchoosecols.php:31
 #, c-format
 msgid "family %s not exists"
 msgstr ""
 
+#: Api/fdl_deletefamily.php:41 Api/fdl_adoc.php:40
+#: App/Fdl/FDL_external.php:369
 #, c-format
 msgid "family %s not found"
 msgstr ""
@@ -6345,6 +7187,7 @@ msgstr ""
 msgid "family id"
 msgstr ""
 
+#: tempCatalog.php:217 tempCatalog.php:738 tempCatalog.php:1050
 msgid "family manual"
 msgstr ""
 
@@ -6359,9 +7202,11 @@ msgstr ""
 msgid "family search result"
 msgstr ""
 
+#: tempCatalog.php:896
 msgid "family title"
 msgstr ""
 
+#: tempCatalog.php:754 tempCatalog.php:934 tempCatalog.php:1039
 msgid "familyname"
 msgstr ""
 
@@ -6369,9 +7214,11 @@ msgstr ""
 msgid "fgsearch"
 msgstr "Global search"
 
+#: tempCatalog.php:395 tempCatalog.php:403
 msgid "fieldset"
 msgstr ""
 
+#: tempCatalog.php:819
 msgid "file"
 msgstr ""
 
@@ -6433,6 +7280,7 @@ msgstr ""
 msgid "file {left} contain the word {right}"
 msgstr ""
 
+#: tempCatalog.php:933
 msgid "filename"
 msgstr ""
 
@@ -6449,6 +7297,8 @@ msgstr ""
 msgid "find %s more than one, created aborded\n"
 msgstr ""
 
+#: Zone/Fdl/viewcard.php:188 Zone/Fdl/viewfolder.php:210
+#: Action/Freedom/search_fulltext.php:208
 msgid "fixed"
 msgstr ""
 
@@ -6487,9 +7337,12 @@ msgstr ""
 msgid "folder/search %s not found"
 msgstr ""
 
+#: tempCatalog.php:752 tempCatalog.php:932 tempCatalog.php:1037
 msgid "foldername"
 msgstr ""
 
+#: Zone/Generic/family_defaultmenu.php:161 tempCatalog.php:717
+#: tempCatalog.php:972
 msgid "folders"
 msgstr ""
 
@@ -6509,6 +7362,7 @@ msgstr ""
 msgid "font size"
 msgstr ""
 
+#: tempCatalog.php:402 tempCatalog.php:776 tempCatalog.php:891
 msgid "for"
 msgstr ""
 
@@ -6520,6 +7374,7 @@ msgstr ""
 msgid "forum allowed"
 msgstr ""
 
+#: tempCatalog.php:2
 msgid "forum answer"
 msgstr ""
 
@@ -6527,6 +7382,7 @@ msgstr ""
 msgid "forum closed"
 msgstr ""
 
+#: tempCatalog.php:4
 msgid "forum delete"
 msgstr ""
 
@@ -6534,15 +7390,19 @@ msgstr ""
 msgid "forum disallowed"
 msgstr ""
 
+#: tempCatalog.php:3
 msgid "forum edit"
 msgstr ""
 
+#: tempCatalog.php:75
 msgid "forum modification are not saved"
 msgstr ""
 
+#: tempCatalog.php:79
 msgid "forum on new documents"
 msgstr ""
 
+#: tempCatalog.php:1 tempCatalog.php:330
 msgid "forum open/close"
 msgstr ""
 
@@ -6550,6 +7410,7 @@ msgstr ""
 msgid "forum opened"
 msgstr ""
 
+#: tempCatalog.php:138
 msgid "forum state"
 msgstr ""
 
@@ -6557,9 +7418,11 @@ msgstr ""
 msgid "forum_id"
 msgstr "forum"
 
+#: tempCatalog.php:634
 msgid "founded"
 msgstr ""
 
+#: tempCatalog.php:813
 msgid "frame"
 msgstr ""
 
@@ -6584,9 +7447,11 @@ msgstr "Dynacase database"
 msgid "freedom global search"
 msgstr "Global search"
 
+#: tempCatalog.php:420 tempCatalog.php:713
 msgid "from current folder"
 msgstr ""
 
+#: tempCatalog.php:220
 msgid "fromdate"
 msgstr ""
 
@@ -6594,6 +7459,7 @@ msgstr ""
 msgid "full phrase"
 msgstr ""
 
+#: tempCatalog.php:844
 msgid "fulltext"
 msgstr ""
 
@@ -6601,6 +7467,7 @@ msgstr ""
 msgid "fulltext index mode"
 msgstr ""
 
+#: tempCatalog.php:820
 msgid "func"
 msgstr ""
 
@@ -6692,9 +7559,12 @@ msgstr ""
 msgid "global search results"
 msgstr ""
 
+#: Action/Fdl/popupdocdetail.php:224 Action/Fdl/popupfamdetail.php:203
+#: Action/Generic/popuplistdetail.php:168 tempCatalog.php:274
 msgid "goaccess"
 msgstr "Control access"
 
+#: tempCatalog.php:209
 msgid "goto forum"
 msgstr ""
 
@@ -6729,6 +7599,9 @@ msgstr ""
 msgid "height of the frame for abstract card"
 msgstr ""
 
+#: tempCatalog.php:216 tempCatalog.php:737 tempCatalog.php:803
+#: tempCatalog.php:804 tempCatalog.php:1022 tempCatalog.php:1049
+#: tempCatalog.php:1085
 msgid "help"
 msgstr "Help"
 
@@ -6753,18 +7626,23 @@ msgstr ""
 msgid "highlight background color"
 msgstr ""
 
+#: tempCatalog.php:303
 msgid "histoError"
 msgstr "Error"
 
+#: tempCatalog.php:300
 msgid "histoInfo"
 msgstr "Info"
 
+#: tempCatalog.php:301
 msgid "histoMessage"
 msgstr "Message"
 
+#: tempCatalog.php:299
 msgid "histoNotice"
 msgstr "Notice"
 
+#: tempCatalog.php:302
 msgid "histoWarning"
 msgstr "Warning"
 
@@ -6776,6 +7654,7 @@ msgstr ""
 msgid "hour number where timer can be execute until date is reached"
 msgstr ""
 
+#: tempCatalog.php:384
 msgid "icon"
 msgstr ""
 
@@ -6791,6 +7670,8 @@ msgstr "icon size"
 msgid "icreate"
 msgstr ""
 
+#: Action/Fdl/editchangestate.php:101 Action/Fdl/editchangestate.php:107
+#: tempCatalog.php:753 tempCatalog.php:1038
 msgid "id"
 msgstr ""
 
@@ -6818,6 +7699,7 @@ msgstr ""
 msgid "identificator not equal"
 msgstr ""
 
+#: tempCatalog.php:963
 msgid "if you want to change order of column"
 msgstr ""
 
@@ -6847,6 +7729,7 @@ msgstr ""
 msgid "import csv"
 msgstr ""
 
+#: tempCatalog.php:955
 msgid "import edition"
 msgstr ""
 
@@ -6855,9 +7738,11 @@ msgstr ""
 msgid "import file %s not found"
 msgstr ""
 
+#: tempCatalog.php:644 tempCatalog.php:781
 msgid "import file:"
 msgstr ""
 
+#: tempCatalog.php:978
 msgid "import keys"
 msgstr ""
 
@@ -6888,12 +7773,20 @@ msgstr ""
 msgid "incorrect global filter %s"
 msgstr ""
 
+#: Class/Fdl/Class.DocHtmlFormat.php:860 Class/Fdl/Class.DocHtmlFormat.php:865
+#: Class/Fdl/Class.DocHtmlFormat.php:877 Class/Fdl/Class.Document.php:163
+#: Class/Fdl/Class.Document.php:170 Class/Fdl/Class.Document.php:177
+#: Class/Fdl/Class.DocAttribute.php:1015
+#: Class/Fdl/Class.FormatCollection.php:585
+#: Class/Fdl/Class.DocOooFormat.php:355
 msgid "information access deny"
 msgstr ""
 
+#: tempCatalog.php:637
 msgid "informations"
 msgstr ""
 
+#: tempCatalog.php:894
 msgid "inherit from"
 msgstr ""
 
@@ -6901,6 +7794,7 @@ msgstr ""
 msgid "init workflow profile attributes"
 msgstr ""
 
+#: tempCatalog.php:128
 msgid "initial reference"
 msgstr ""
 
@@ -6986,24 +7880,34 @@ msgstr ""
 msgid "is not empty"
 msgstr ""
 
+#: tempCatalog.php:297
 msgid "it is the first"
 msgstr ""
 
+#: tempCatalog.php:296
 msgid "it is the last"
 msgstr ""
 
+#: tempCatalog.php:21 tempCatalog.php:22
 msgid "item already set"
 msgstr ""
 
+#: tempCatalog.php:711
 msgid "keyword"
 msgstr ""
 
+#: tempCatalog.php:561 tempCatalog.php:563
 msgid "keyword filter"
 msgstr ""
 
+#: Zone/Generic/family_barmenu.php:126 Zone/Generic/family_barmenu.php:152
+#: Class/Fdl/Class.Document.php:361 Class/Fdl/Method.DetailSearch.php:945
+#: Class/Fdl/Method.DetailSearch.php:1070 Class/Fdl/Method.Report.php:500
+#: Class/Fdl/Class.DocCollection.php:350
 msgid "label"
 msgstr ""
 
+#: tempCatalog.php:989
 msgid "labeltext"
 msgstr ""
 
@@ -7023,6 +7927,7 @@ msgstr ""
 msgid "last search text typed"
 msgstr ""
 
+#: tempCatalog.php:541 tempCatalog.php:987
 msgid "level"
 msgstr ""
 
@@ -7031,12 +7936,15 @@ msgstr ""
 msgid "limit reached, only %d members has been displayed"
 msgstr ""
 
+#: tempCatalog.php:750 tempCatalog.php:1035
 msgid "line"
 msgstr ""
 
+#: tempCatalog.php:704
 msgid "link document"
 msgstr ""
 
+#: tempCatalog.php:382
 msgid "list"
 msgstr ""
 
@@ -7052,9 +7960,15 @@ msgstr ""
 msgid "lock file to edit"
 msgstr ""
 
+#: Zone/Fdl/viewfolder.php:221 Zone/Fdl/viewfolder.php:226
+#: Action/Freedom/search_fulltext.php:206
+#: Action/Freedom/search_fulltext.php:207
+#: Class/Fdl/Method.DetailSearch.php:708 Class/Fdl/Method.DetailSearch.php:786
+#: Class/Fdl/Class.Doc.php:1588 tempCatalog.php:1046
 msgid "locked"
 msgstr ""
 
+#: tempCatalog.php:136
 msgid "locked by"
 msgstr ""
 
@@ -7079,9 +7993,11 @@ msgstr ""
 msgid "logo of our society"
 msgstr ""
 
+#: tempCatalog.php:444
 msgid "loop detected. You must undo this selection"
 msgstr ""
 
+#: tempCatalog.php:205
 msgid "mail"
 msgstr ""
 
@@ -7089,9 +8005,12 @@ msgstr ""
 msgid "mail dest is empty"
 msgstr ""
 
+#: tempCatalog.php:484 tempCatalog.php:485 tempCatalog.php:531
+#: tempCatalog.php:533
 msgid "mail edition"
 msgstr ""
 
+#: tempCatalog.php:189
 msgid "mailstatus"
 msgstr ""
 
@@ -7103,9 +8022,11 @@ msgstr ""
 msgid "make a new document revision"
 msgstr ""
 
+#: tempCatalog.php:840
 msgid "manage bookmarks"
 msgstr ""
 
+#: tempCatalog.php:291
 msgid "manual date"
 msgstr ""
 
@@ -7122,15 +8043,19 @@ msgstr ""
 msgid "maximum document can be imported directly"
 msgstr ""
 
+#: tempCatalog.php:325
 msgid "mdoc close all docs"
 msgstr ""
 
+#: tempCatalog.php:324
 msgid "mdoc show next docs"
 msgstr ""
 
+#: tempCatalog.php:327
 msgid "mdoc: open in a new window"
 msgstr ""
 
+#: tempCatalog.php:326
 msgid "mdoc: remove doc"
 msgstr ""
 
@@ -7146,6 +8071,7 @@ msgstr ""
 msgid "memory max for PHP in Mo"
 msgstr ""
 
+#: Zone/Generic/family_defaultmenu.php:138 tempCatalog.php:949
 msgid "memosearch"
 msgstr ""
 
@@ -7157,6 +8083,7 @@ msgstr ""
 msgid "menuctrlkey"
 msgstr ""
 
+#: tempCatalog.php:756 tempCatalog.php:1041
 msgid "message"
 msgstr ""
 
@@ -7185,9 +8112,12 @@ msgstr ""
 msgid "method %s not found"
 msgstr ""
 
+#: tempCatalog.php:293
 msgid "mini view"
 msgstr ""
 
+#: Action/Freedom/search_fulltext.php:47
+#: Action/Freedom/edit_search_fulltext.php:28
 msgid "mnogosearch php extension not loaded"
 msgstr ""
 
@@ -7199,6 +8129,7 @@ msgstr ""
 msgid "modification or creation"
 msgstr ""
 
+#: Class/Fdl/Class.DocCtrl.php:95 tempCatalog.php:996
 msgid "modify"
 msgstr "Modify"
 
@@ -7212,6 +8143,8 @@ msgstr ""
 msgid "modify [%s] attribute"
 msgstr ""
 
+#: App/Fdl/FDL.app:261 Class/Fdl/Class.DocCtrl.php:101
+#: Class/Fdl/Class.DocCtrl.php:105
 msgid "modify acl"
 msgstr ""
 
@@ -7282,6 +8215,7 @@ msgstr ""
 msgid "modoption: document [%d] is not alive"
 msgstr ""
 
+#: tempCatalog.php:795
 msgid "more families"
 msgstr ""
 
@@ -7293,6 +8227,7 @@ msgstr ""
 msgid "move file query into directory"
 msgstr ""
 
+#: tempCatalog.php:1110
 msgid "mozilla site"
 msgstr ""
 
@@ -7305,10 +8240,12 @@ msgstr ""
 msgid "my search %s"
 msgstr ""
 
+#: Action/Generic/generic_search.php:63
 #, c-format
 msgid "my searches about %s"
 msgstr ""
 
+#: tempCatalog.php:811
 msgid "name"
 msgstr "Name"
 
@@ -7356,6 +8293,7 @@ msgstr ""
 msgid "need to select workflow"
 msgstr ""
 
+#: tempCatalog.php:1111
 msgid "nestcape site"
 msgstr ""
 
@@ -7368,13 +8306,17 @@ msgstr ""
 msgid "new card"
 msgstr ""
 
+#: tempCatalog.php:1020
 msgid "new category"
 msgstr ""
 
+#: Action/Fdl/import_tar.php:258 Action/Generic/generic_importcsv.php:130
+#: Class/Fdl/Class.ImportDescription.php:1076
 #, c-format
 msgid "new column order %s"
 msgstr ""
 
+#: tempCatalog.php:411
 msgid "new document"
 msgstr ""
 
@@ -7391,12 +8333,16 @@ msgstr ""
 msgid "new familly document"
 msgstr ""
 
+#: tempCatalog.php:331
 msgid "new forum answer"
 msgstr ""
 
+#: tempCatalog.php:412
 msgid "new guide-card"
 msgstr ""
 
+#: Action/Fdl/import_tar.php:271 Action/Generic/generic_importcsv.php:155
+#: Class/Fdl/Class.ImportDescription.php:1060
 #, c-format
 msgid "new import keys : %s"
 msgstr ""
@@ -7406,6 +8352,7 @@ msgstr ""
 msgid "new item %s"
 msgstr ""
 
+#: tempCatalog.php:406
 msgid "new needed"
 msgstr ""
 
@@ -7418,9 +8365,11 @@ msgstr ""
 msgid "new profile document"
 msgstr ""
 
+#: Action/Freedom/search.php:59 Action/Freedom/search_fulltext.php:54
 msgid "new search "
 msgstr ""
 
+#: tempCatalog.php:413
 msgid "new search guide-card"
 msgstr ""
 
@@ -7434,12 +8383,15 @@ msgstr ""
 msgid "new user # %d"
 msgstr ""
 
+#: tempCatalog.php:397 tempCatalog.php:405
 msgid "new visibility"
 msgstr ""
 
+#: Action/Generic/generic_list.php:134
 msgid "next"
 msgstr ""
 
+#: tempCatalog.php:993
 msgid "next level"
 msgstr ""
 
@@ -7486,6 +8438,7 @@ msgstr ""
 msgid "no columns specified"
 msgstr ""
 
+#: Zone/Fdl/viewhisto.php:28 Action/Freedom/revision.php:28
 msgid "no comment"
 msgstr ""
 
@@ -7494,6 +8447,7 @@ msgstr ""
 msgid "no compatible type with operator %s"
 msgstr ""
 
+#: tempCatalog.php:907
 msgid "no control"
 msgstr ""
 
@@ -7510,6 +8464,7 @@ msgstr ""
 msgid "no delay specified in timer %s [%d]"
 msgstr ""
 
+#: Action/Freedom/forum_setdefault.php:32 tempCatalog.php:895
 msgid "no document family"
 msgstr ""
 
@@ -7518,6 +8473,15 @@ msgstr ""
 msgid "no document match '%s'"
 msgstr ""
 
+#: Zone/Fdl/forum_entry.php:26 Action/Fdl/gotowask.php:30
+#: Action/Fdl/fdl_card.php:52 Action/Fdl/specialhelp.php:33
+#: Action/Fdl/editinsertdocument.php:33 Action/Fdl/viewwask.php:31
+#: Action/Fdl/fdl_forumaddentry.php:33 Action/Fdl/getfiletransformation.php:38
+#: Action/Fdl/fdl_forumopen.php:28 Action/Fdl/insertdocument.php:33
+#: Action/Fdl/fdl_forumcreate.php:28 Action/Fdl/fdl_forumdelentry.php:30
+#: Action/Fdl/setwask.php:32 Action/Fdl/fdl_getvalue.php:35
+#: Action/Fdl/fdl_forumclose.php:28 Action/Fdl/editwask.php:30
+#: Action/Freedom/forum_setdefault.php:29
 msgid "no document reference"
 msgstr ""
 
@@ -7537,6 +8501,8 @@ msgstr ""
 msgid "no export folder specified"
 msgstr ""
 
+#: Zone/Fdl/viewcard.php:208 Action/Fdl/editoption.php:43
+#: Action/Generic/generic_edit.php:184 Class/Fdl/Class.DocSearch.php:427
 msgid "no family"
 msgstr ""
 
@@ -7544,6 +8510,7 @@ msgstr ""
 msgid "no family identificator"
 msgstr ""
 
+#: tempCatalog.php:1019
 msgid "no father category (its a top category)"
 msgstr ""
 
@@ -7560,6 +8527,8 @@ msgstr ""
 msgid "no file specified : change icon aborted"
 msgstr ""
 
+#: Class/Fdl/Class.DocHtmlFormat.php:391 Class/Fdl/Method.DocImg.php:67
+#: Class/Fdl/Class.DocFormFormat.php:540
 msgid "no filename"
 msgstr "No file"
 
@@ -7567,6 +8536,7 @@ msgstr "No file"
 msgid "no files"
 msgstr ""
 
+#: Class/Fdl/Class.Doc.php:7053 tempCatalog.php:627
 msgid "no folder"
 msgstr ""
 
@@ -7582,9 +8552,11 @@ msgstr ""
 msgid "no inheritance"
 msgstr ""
 
+#: tempCatalog.php:980
 msgid "no key2"
 msgstr ""
 
+#: Action/Fdl/enum_choice.php:40 Action/Fdl/autocompletion.php:44
 msgid "no label"
 msgstr ""
 
@@ -7597,6 +8569,7 @@ msgstr ""
 msgid "no login : passwd unchanged"
 msgstr ""
 
+#: Action/Fdl/enum_choice.php:92 Action/Fdl/autocompletion.php:167
 #, c-format
 msgid "no match for %s"
 msgstr ""
@@ -7629,14 +8602,24 @@ msgstr ""
 msgid "no privilege %s for %s |%d]"
 msgstr ""
 
+#: Zone/Fdl/modcard.php:64 Zone/Fdl/editcard.php:63
+#: Action/Fdl/editextdoc.php:64 Action/Generic/generic_edit.php:77
 #, c-format
 msgid "no privilege to create interactivaly this kind (%s) of document"
 msgstr ""
 
+#: Zone/Fdl/modcard.php:61 Zone/Fdl/duplicate.php:32 Zone/Fdl/editcard.php:61
+#: Action/Fdl/editextdoc.php:68 Action/Freedom/search.php:57
+#: Action/Freedom/freedom_edit.php:156 Action/Freedom/batchexec.php:42
+#: Action/Freedom/freedom_preview.php:43 Action/Generic/generic_edit.php:87
+#: Class/Fdl/Class.Dir.php:61 Class/Fdl/Class.Dir.php:73
+#: Class/Fdl/Class.Dir.php:84
 #, c-format
 msgid "no privilege to create this kind (%d) of document"
 msgstr ""
 
+#: Action/Fdl/editextdoc.php:63 Action/Freedom/freedom_addbatch.php:43
+#: Action/Generic/generic_edit.php:76
 #, c-format
 msgid "no privilege to create this kind (%s) of document"
 msgstr ""
@@ -7646,6 +8629,7 @@ msgstr ""
 msgid "no privilege view for %d"
 msgstr ""
 
+#: tempCatalog.php:904
 msgid "no profile"
 msgstr ""
 
@@ -7657,12 +8641,15 @@ msgstr ""
 msgid "no revisable"
 msgstr ""
 
+#: tempCatalog.php:628
 msgid "no search"
 msgstr ""
 
+#: Zone/Generic/barmenu.php:223 Zone/Generic/family_defaultmenu.php:215
 msgid "no sort"
 msgstr ""
 
+#: Class/Fdl/Class.Doc.php:7012 tempCatalog.php:594
 msgid "no state"
 msgstr ""
 
@@ -7706,6 +8693,7 @@ msgstr ""
 msgid "no view control"
 msgstr ""
 
+#: tempCatalog.php:650
 msgid "no workflow"
 msgstr ""
 
@@ -7721,6 +8709,7 @@ msgstr ""
 msgid "none families are described to be used as recipient"
 msgstr ""
 
+#: tempCatalog.php:801
 msgid "noone document"
 msgstr ""
 
@@ -7729,6 +8718,7 @@ msgstr ""
 msgid "not a freestate document %s"
 msgstr ""
 
+#: Action/Fdl/editinsertdocument.php:38 Action/Fdl/insertdocument.php:38
 #, c-format
 msgid "not a static folder %s"
 msgstr ""
@@ -7753,6 +8743,7 @@ msgstr ""
 msgid "not locked"
 msgstr ""
 
+#: Class/Fdl/Class.DocPerm.php:63 Class/Fdl/Class.DocPermExt.php:55
 msgid "not perm for admin"
 msgstr ""
 
@@ -7802,6 +8793,7 @@ msgstr ""
 msgid "one value of {left} include {right}"
 msgstr ""
 
+#: tempCatalog.php:424 tempCatalog.php:712
 msgid "only latest revision"
 msgstr ""
 
@@ -7825,9 +8817,12 @@ msgstr ""
 msgid "open folder"
 msgstr ""
 
+#: App/Fdl/FDL.app:462 Action/Fdl/popupdocdetail.php:303
+#: Action/Fdl/fdl_forummenu.php:49
 msgid "open forum"
 msgstr ""
 
+#: tempCatalog.php:292
 msgid "open in new window"
 msgstr ""
 
@@ -7840,18 +8835,23 @@ msgstr ""
 msgid "operator [%s] not allowed"
 msgstr ""
 
+#: tempCatalog.php:494
 msgid "option: "
 msgstr ""
 
+#: tempCatalog.php:823
 msgid "options"
 msgstr ""
 
+#: Class/Fdl/Class.DocSearch.php:30 tempCatalog.php:53
 msgid "or"
 msgstr ""
 
+#: tempCatalog.php:810
 msgid "order"
 msgstr ""
 
+#: tempCatalog.php:144
 msgid "other folders"
 msgstr ""
 
@@ -7864,9 +8864,13 @@ msgstr ""
 msgid "output file [%s] not found"
 msgstr ""
 
+#: Action/Fdl/editextdoc.php:112 tempCatalog.php:148 tempCatalog.php:149
+#: tempCatalog.php:569
 msgid "override constraints"
 msgstr ""
 
+#: App/Fdl/FDL_external.php:911 Class/Fdl/Method.DetailSearch.php:707
+#: Class/Fdl/Method.DetailSearch.php:785 Class/Fdl/Method.Report.php:48
 msgid "owner"
 msgstr ""
 
@@ -7920,9 +8924,11 @@ msgstr ""
 msgid "php file %s needed for request not found"
 msgstr ""
 
+#: tempCatalog.php:1119
 msgid "please upgrade to Internet explorer 6.0 or greater"
 msgstr ""
 
+#: tempCatalog.php:1109
 msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
 msgstr ""
 
@@ -7930,12 +8936,15 @@ msgstr ""
 msgid "plug inserted in footer"
 msgstr ""
 
+#: tempCatalog.php:973
 msgid "policy"
 msgstr ""
 
+#: tempCatalog.php:974
 msgid "policy if same keys"
 msgstr ""
 
+#: tempCatalog.php:784
 msgid "policy if same title"
 msgstr ""
 
@@ -7956,6 +8965,7 @@ msgstr ""
 msgid "possible incorrect conversion HTML to ODT %s"
 msgstr ""
 
+#: tempCatalog.php:294
 msgid "post it"
 msgstr ""
 
@@ -7972,12 +8982,15 @@ msgstr ""
 msgid "prefered search"
 msgstr ""
 
+#: Action/Generic/generic_list.php:138
 msgid "prev"
 msgstr ""
 
+#: tempCatalog.php:992
 msgid "previous level"
 msgstr ""
 
+#: tempCatalog.php:143
 msgid "primary folder"
 msgstr ""
 
@@ -7989,6 +9002,7 @@ msgstr ""
 msgid "private key is not valid"
 msgstr ""
 
+#: tempCatalog.php:742
 msgid "proceed background import"
 msgstr ""
 
@@ -8071,6 +9085,7 @@ msgstr ""
 msgid "profil id unkonow %s"
 msgstr ""
 
+#: tempCatalog.php:903
 msgid "profile access"
 msgstr ""
 
@@ -8224,6 +9239,7 @@ msgstr ""
 msgid "query tar document import"
 msgstr ""
 
+#: tempCatalog.php:40
 msgid "quick save not possible"
 msgstr ""
 
@@ -8231,6 +9247,8 @@ msgstr ""
 msgid "read disabled"
 msgstr ""
 
+#: Zone/Fdl/viewcard.php:190 Class/Fdl/Class.DocFormFormat.php:127
+#: Class/Fdl/Method.Mask.php:40
 msgid "read only"
 msgstr ""
 
@@ -8250,9 +9268,11 @@ msgstr ""
 msgid "realm name for http authenticate"
 msgstr ""
 
+#: tempCatalog.php:127 tempCatalog.php:988
 msgid "reference"
 msgstr ""
 
+#: tempCatalog.php:129
 msgid "reference for this revision"
 msgstr ""
 
@@ -8279,6 +9299,8 @@ msgstr ""
 msgid "related documents of %s"
 msgstr ""
 
+#: Action/Freedom/freedom_searchprocess.php:39
+#: Action/Generic/generic_isearch.php:41
 msgid "related search aborted : no parameter found"
 msgstr ""
 
@@ -8287,18 +9309,23 @@ msgstr ""
 msgid "remove state : %s"
 msgstr ""
 
+#: tempCatalog.php:791 tempCatalog.php:930
 msgid "report to (mail address)"
 msgstr ""
 
+#: tempCatalog.php:1093
 msgid "reqpasswd_email"
 msgstr "E-mail address"
 
+#: tempCatalog.php:1091
 msgid "reqpasswd_login"
 msgstr "Login"
 
+#: tempCatalog.php:1092
 msgid "reqpasswd_or"
 msgstr "or"
 
+#: tempCatalog.php:1094
 msgid "reqpasswd_submit"
 msgstr "Submit"
 
@@ -8315,9 +9342,11 @@ msgstr ""
 msgid "reset version"
 msgstr ""
 
+#: tempCatalog.php:5
 msgid "response for this forum entry"
 msgstr ""
 
+#: tempCatalog.php:544
 msgid "rest delay"
 msgstr ""
 
@@ -8337,6 +9366,7 @@ msgstr ""
 msgid "restore original file"
 msgstr ""
 
+#: tempCatalog.php:796
 msgid "restrict to preferred families"
 msgstr ""
 
@@ -8362,12 +9392,19 @@ msgstr ""
 msgid "retry file conversion"
 msgstr ""
 
+#: App/Fdl/FDL_external.php:909 Class/Fdl/Method.DetailSearch.php:704
+#: Class/Fdl/Method.DetailSearch.php:782 Class/Fdl/Method.DetailSearch.php:988
+#: Class/Fdl/Method.Report.php:44
 msgid "revdate"
 msgstr "Revision date"
 
+#: tempCatalog.php:311 tempCatalog.php:322
 msgid "revised by"
 msgstr ""
 
+#: App/Fdl/FDL_external.php:910 Class/Fdl/Method.DetailSearch.php:706
+#: Class/Fdl/Method.DetailSearch.php:784 Class/Fdl/Method.DetailSearch.php:990
+#: Class/Fdl/Method.Report.php:46 tempCatalog.php:137
 msgid "revision"
 msgstr ""
 
@@ -8414,6 +9451,7 @@ msgstr ""
 msgid "rss unavaible for users"
 msgstr ""
 
+#: tempCatalog.php:332
 msgid "save"
 msgstr ""
 
@@ -8421,6 +9459,7 @@ msgstr ""
 msgid "save document"
 msgstr ""
 
+#: tempCatalog.php:76
 msgid "save forum edition"
 msgstr ""
 
@@ -8428,6 +9467,7 @@ msgstr ""
 msgid "save geometry of mini view"
 msgstr ""
 
+#: tempCatalog.php:718
 msgid "save query in current folder"
 msgstr ""
 
@@ -8435,10 +9475,13 @@ msgstr ""
 msgid "search"
 msgstr ""
 
+#: Action/Generic/generic_search.php:104
 #, c-format
 msgid "search  contains %s in all state"
 msgstr ""
 
+#: Action/Freedom/search.php:64 Action/Generic/generic_search_kind.php:50
+#: Action/Generic/generic_search.php:101 Class/Fdl/Class.Collection.php:350
 #, c-format
 msgid "search %s"
 msgstr ""
@@ -8457,10 +9500,12 @@ msgstr ""
 msgid "search a generict"
 msgstr ""
 
+#: Action/Generic/generic_search.php:107
 #, c-format
 msgid "search contains %s in %s"
 msgstr ""
 
+#: App/Freedom/FREEDOM.app:391 tempCatalog.php:710
 msgid "search document"
 msgstr ""
 
@@ -8472,6 +9517,7 @@ msgstr ""
 msgid "search document to insert in a folder"
 msgstr ""
 
+#: Action/Fgsearch/fullsearch.php:67 Action/Fgsearch/fullsearchresult.php:244
 msgid "search dynacase documents"
 msgstr "search documents"
 
@@ -8479,6 +9525,7 @@ msgstr "search documents"
 msgid "search for "
 msgstr ""
 
+#: tempCatalog.php:653
 msgid "search fulltext"
 msgstr ""
 
@@ -8486,10 +9533,13 @@ msgstr ""
 msgid "search in inherited family by family"
 msgstr ""
 
+#: Class/Fdl/Class.SearchDoc.php:1099 Class/Fdl/Lib.Dir.php:151
 #, c-format
 msgid "search join syntax error : %s"
 msgstr ""
 
+#: tempCatalog.php:361 tempCatalog.php:368 tempCatalog.php:374
+#: tempCatalog.php:378
 msgid "search methods"
 msgstr "Search methods"
 
@@ -8497,6 +9547,7 @@ msgstr "Search methods"
 msgid "search mode"
 msgstr ""
 
+#: tempCatalog.php:1067
 msgid "search online help"
 msgstr "Start search"
 
@@ -8508,9 +9559,11 @@ msgstr ""
 msgid "search result"
 msgstr ""
 
+#: tempCatalog.php:635
 msgid "search time"
 msgstr ""
 
+#: tempCatalog.php:719
 msgid "search title"
 msgstr ""
 
@@ -8518,6 +9571,7 @@ msgstr ""
 msgid "search with kind criteria"
 msgstr ""
 
+#: tempCatalog.php:1075
 msgid "searchdate prefix"
 msgstr "at "
 
@@ -8545,6 +9599,7 @@ msgstr ""
 msgid "send document"
 msgstr ""
 
+#: tempCatalog.php:535
 msgid "send mail"
 msgstr ""
 
@@ -8562,6 +9617,7 @@ msgstr ""
 msgid "send mail copy"
 msgstr ""
 
+#: Action/Freedom/timers_admin_result.php:113 Class/Fdl/Method.Timer.php:202
 #, c-format
 msgid "send mail with template %s [%d]"
 msgstr ""
@@ -8570,6 +9626,7 @@ msgstr ""
 msgid "send search"
 msgstr ""
 
+#: tempCatalog.php:206
 msgid "senddoc"
 msgstr ""
 
@@ -8632,6 +9689,7 @@ msgstr ""
 msgid "set icon to '%s'"
 msgstr ""
 
+#: tempCatalog.php:131
 msgid "set logical name"
 msgstr ""
 
@@ -8682,6 +9740,13 @@ msgstr "Show language selection in login panel"
 msgid "show request for password"
 msgstr "Show password request link in login panel"
 
+#: Test/input/family/Class.WTestBadImp12.php:16
+#: Test/input/family/Class.WTestBadImp13.php:16
+#: Test/input/family/Class.WTestExtra.php:17
+#: Test/input/family/Class.WTestImp4.php:17
+#: Test/input/family/Class.WTestBadImp10.php:16
+#: Test/input/family/Class.WTestBadImp17.php:17
+#: Test/input/family/Class.WTestBadImp9.php:17
 msgid "sick"
 msgstr ""
 
@@ -8690,6 +9755,7 @@ msgstr ""
 msgid "similar document %s found. keep similar"
 msgstr ""
 
+#: tempCatalog.php:842
 msgid "simple"
 msgstr ""
 
@@ -8720,12 +9786,15 @@ msgstr ""
 msgid "specialview %s"
 msgstr ""
 
+#: Class/Fdl/Class.Doc.php:7041 tempCatalog.php:905
 msgid "specific control"
 msgstr ""
 
+#: tempCatalog.php:757 tempCatalog.php:1042
 msgid "specmessage"
 msgstr ""
 
+#: tempCatalog.php:841
 msgid "speed"
 msgstr ""
 
@@ -8741,6 +9810,9 @@ msgstr ""
 msgid "starting"
 msgstr ""
 
+#: Zone/Generic/barmenu.php:236 Zone/Generic/family_defaultmenu.php:231
+#: App/Fdl/FDL_external.php:1044 Class/Fdl/Method.DetailSearch.php:701
+#: tempCatalog.php:133
 msgid "state"
 msgstr ""
 
@@ -8748,6 +9820,8 @@ msgstr ""
 msgid "static array"
 msgstr ""
 
+#: App/Fdl/FDL_external.php:912 Class/Fdl/Method.DetailSearch.php:700
+#: Class/Fdl/Method.DetailSearch.php:778 Class/Fdl/Method.Report.php:47
 msgid "step"
 msgstr ""
 
@@ -8763,20 +9837,24 @@ msgstr ""
 msgid "style sheet"
 msgstr ""
 
+#: Zone/Fdl/viewbarmenu.php:79 Action/Fdl/viewextdoc.php:114
 msgid "submenu"
 msgstr ""
 
+#: tempCatalog.php:1104
 msgid "submitreqpasswd_form_send_error_external_auth"
 msgstr ""
 "<p>Your account uses an external authentication.</p>\n"
 "<p>You cannot change your password from this application.</p>\n"
 "<p>Please use the application dedicated to your authentication system.</p>"
 
+#: tempCatalog.php:1103
 msgid "submitreqpasswd_form_send_error_invalid_args"
 msgstr ""
 "<p>The login or e-mail address is not valid</p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Back</a></p>"
 
+#: tempCatalog.php:1105
 msgid "submitreqpasswd_form_send_error_unknown"
 msgstr ""
 "<p>The server accountered an error processing your request</p>\n"
@@ -8785,6 +9863,7 @@ msgstr ""
 "[ON_ERROR_CONTACT]</a></p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Back</a></p>"
 
+#: tempCatalog.php:1102
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""
 "<p>Your request has been taken into account.</p>\n"
@@ -8795,12 +9874,15 @@ msgstr ""
 msgid "substring"
 msgstr ""
 
+#: tempCatalog.php:499
 msgid "suggestions"
 msgstr ""
 
+#: tempCatalog.php:969
 msgid "suppress column"
 msgstr ""
 
+#: tempCatalog.php:611 tempCatalog.php:612
 msgid "suppress document"
 msgstr ""
 
@@ -8808,6 +9890,7 @@ msgstr ""
 msgid "suppression date"
 msgstr ""
 
+#: tempCatalog.php:1064
 msgid "switch search mode (basic/advanced)"
 msgstr "basic/advanced mode"
 
@@ -8832,6 +9915,7 @@ msgstr ""
 msgid "t"
 msgstr ""
 
+#: tempCatalog.php:1125
 msgid "tag"
 msgstr ""
 
@@ -8963,6 +10047,7 @@ msgstr ""
 msgid "the end date (%s) is before the begin date (%s)"
 msgstr ""
 
+#: Action/Fdl/enum_choice.php:177 Class/Fdl/Class.DocAttribute.php:1092
 #, c-format
 msgid "the external pluggin file %s cannot be read"
 msgstr ""
@@ -8982,9 +10067,11 @@ msgstr ""
 msgid "the pluggins function description '%s' is not conform for %s attribut"
 msgstr ""
 
+#: tempCatalog.php:593
 msgid "the state will be removed"
 msgstr ""
 
+#: tempCatalog.php:591
 msgid "the state will be unchanged"
 msgstr ""
 
@@ -8997,6 +10084,7 @@ msgstr ""
 msgid "the two passwords must be the same"
 msgstr ""
 
+#: tempCatalog.php:26
 msgid "these needed attributes are empty"
 msgstr ""
 
@@ -9016,6 +10104,7 @@ msgstr ""
 msgid "this system user cannot be deleted"
 msgstr ""
 
+#: tempCatalog.php:542
 msgid "timer"
 msgstr ""
 
@@ -9023,6 +10112,7 @@ msgstr ""
 msgid "timer already set"
 msgstr ""
 
+#: tempCatalog.php:545
 msgid "timeraction"
 msgstr ""
 
@@ -9057,6 +10147,7 @@ msgstr ""
 msgid "to choose value from special interface"
 msgstr ""
 
+#: tempCatalog.php:971
 msgid "to insert document in sub folder"
 msgstr ""
 
@@ -9070,9 +10161,11 @@ msgstr ""
 msgid "to the %s state"
 msgstr ""
 
+#: tempCatalog.php:221
 msgid "todate"
 msgstr ""
 
+#: tempCatalog.php:222 tempCatalog.php:1126
 msgid "today"
 msgstr ""
 
@@ -9084,6 +10177,7 @@ msgstr ""
 msgid "top url to find help documentation"
 msgstr ""
 
+#: tempCatalog.php:636
 msgid "total count"
 msgstr ""
 
@@ -9091,6 +10185,13 @@ msgstr ""
 msgid "town of our society"
 msgstr ""
 
+#: Test/input/family/Class.WTestBadImp12.php:15
+#: Test/input/family/Class.WTestBadImp13.php:15
+#: Test/input/family/Class.WTestExtra.php:16
+#: Test/input/family/Class.WTestImp4.php:16
+#: Test/input/family/Class.WTestBadImp10.php:15
+#: Test/input/family/Class.WTestBadImp17.php:16
+#: Test/input/family/Class.WTestBadImp9.php:16
 msgid "transfered"
 msgstr ""
 
@@ -9099,9 +10200,12 @@ msgstr ""
 msgid "try add acl %s"
 msgstr ""
 
+#: App/Fdl/fdlsearches.php:126 Action/Freedom/rnavigate.php:58
+#: Action/Freedom/rnavigate.php:80 tempCatalog.php:812
 msgid "type"
 msgstr ""
 
+#: tempCatalog.php:608
 msgid "type characters to filter document on it's title"
 msgstr ""
 
@@ -9128,6 +10232,7 @@ msgstr ""
 msgid "unattachTimer : the timer parameter is not a document of TIMER family"
 msgstr ""
 
+#: tempCatalog.php:592
 msgid "unchanged state"
 msgstr ""
 
@@ -9164,6 +10269,9 @@ msgstr ""
 msgid "unknow attribute '%s'"
 msgstr ""
 
+#: Action/Fdl/gotowask.php:32 Action/Fdl/viewwask.php:33
+#: Action/Fdl/setwask.php:34 Action/Fdl/editwask.php:32
+#: Class/Fdl/Class.Doc.php:6899
 #, c-format
 msgid "unknow document reference '%s'"
 msgstr ""
@@ -9173,6 +10281,10 @@ msgstr ""
 msgid "unknow item %s"
 msgstr ""
 
+#: Action/Fdl/fdl_card.php:54 Action/Fdl/specialhelp.php:35
+#: Action/Fdl/editinsertdocument.php:35
+#: Action/Fdl/getfiletransformation.php:40 Action/Fdl/insertdocument.php:35
+#: Action/Fdl/fdl_getvalue.php:37
 #, c-format
 msgid "unknow logical reference '%s'"
 msgstr ""
@@ -9201,10 +10313,12 @@ msgstr ""
 msgid "unknow virtual user identificateur %s"
 msgstr ""
 
+#: Action/Fdl/enum_choice.php:62 Action/Fdl/autocompletion.php:66
 #, c-format
 msgid "unknown attribute %s"
 msgstr ""
 
+#: Action/Fdl/modattribute.php:61 Action/Fdl/editattribute.php:55
 #, c-format
 msgid "unknown attribute %s for document %s"
 msgstr ""
@@ -9253,6 +10367,7 @@ msgstr ""
 msgid "unreferenced document"
 msgstr ""
 
+#: tempCatalog.php:172
 msgid "unselect"
 msgstr ""
 
@@ -9307,6 +10422,9 @@ msgstr ""
 msgid "update logical name from %s to %s"
 msgstr ""
 
+#: Action/Freedom/freedom_import_dir.php:43
+#: Action/Freedom/freedom_bgimport.php:44
+#: Action/Freedom/freedom_bgimport.php:55
 #, c-format
 msgid "update of %s catalogue has failed,"
 msgstr ""
@@ -9328,12 +10446,15 @@ msgstr ""
 msgid "updated by import"
 msgstr ""
 
+#: tempCatalog.php:805
 msgid "updateldap"
 msgstr "Update LDAP server"
 
+#: tempCatalog.php:802
 msgid "updatetitle"
 msgstr "Update Title Cards"
 
+#: tempCatalog.php:990
 msgid "upk"
 msgstr ""
 
@@ -9394,6 +10515,7 @@ msgstr ""
 msgid "user preferences when export family"
 msgstr ""
 
+#: tempCatalog.php:187
 msgid "username"
 msgstr "Name"
 
@@ -9424,12 +10546,17 @@ msgstr ""
 msgid "value [%s] is not a valid timestamp"
 msgstr ""
 
+#: Zone/Fdl/editfamilyparameter.php:20
+#: Zone/Fdl/editapplicationparameter.php:22
 msgid "value for empty field"
 msgstr ""
 
+#: Zone/Fdl/editfamilyparameter.php:21
+#: Zone/Fdl/editapplicationparameter.php:23
 msgid "value in field"
 msgstr ""
 
+#: tempCatalog.php:982
 msgid "values use for new document (not for update)"
 msgstr ""
 
@@ -9451,6 +10578,7 @@ msgstr ""
 msgid "vault file is not initialized"
 msgstr ""
 
+#: tempCatalog.php:38
 msgid "vconstraint input not found id="
 msgstr ""
 
@@ -9491,6 +10619,7 @@ msgstr ""
 msgid "view acl"
 msgstr ""
 
+#: tempCatalog.php:968
 msgid "view all columns"
 msgstr ""
 
@@ -9514,15 +10643,19 @@ msgstr ""
 msgid "view confidential"
 msgstr ""
 
+#: tempCatalog.php:146 tempCatalog.php:567
 msgid "view constraints"
 msgstr ""
 
+#: tempCatalog.php:906
 msgid "view control"
 msgstr ""
 
+#: tempCatalog.php:439 tempCatalog.php:443
 msgid "view detail"
 msgstr ""
 
+#: Class/Fdl/Class.DocCtrl.php:69 tempCatalog.php:800
 msgid "view document"
 msgstr ""
 
@@ -9534,6 +10667,7 @@ msgstr ""
 msgid "view document option"
 msgstr ""
 
+#: tempCatalog.php:519
 msgid "view equality attributes"
 msgstr ""
 
@@ -9541,6 +10675,7 @@ msgstr ""
 msgid "view graph of workflow"
 msgstr ""
 
+#: tempCatalog.php:521
 msgid "view hidden attributes"
 msgstr ""
 
@@ -9564,9 +10699,7 @@ msgstr ""
 msgid "view list"
 msgstr ""
 
-msgid "view object acl"
-msgstr ""
-
+#: tempCatalog.php:701
 msgid "view properties"
 msgstr ""
 
@@ -9611,9 +10744,11 @@ msgstr ""
 msgid "waiting conversion file"
 msgstr ""
 
+#: tempCatalog.php:1076 tempCatalog.php:1086
 msgid "warning_name"
 msgstr "Your name is required"
 
+#: tempCatalog.php:1077 tempCatalog.php:1087
 msgid "warning_pass"
 msgstr "Your password is required"
 
@@ -9645,9 +10780,11 @@ msgstr ""
 msgid "word"
 msgstr ""
 
+#: tempCatalog.php:214 tempCatalog.php:215
 msgid "wordedit"
 msgstr ""
 
+#: tempCatalog.php:649
 msgid "workflow"
 msgstr ""
 
@@ -9656,6 +10793,7 @@ msgstr ""
 msgid "workflow associated %s [%d] is corrupted"
 msgstr ""
 
+#: Action/Fdl/workflow_init.php:63 tempCatalog.php:576
 msgid "workflow has been recomposed"
 msgstr ""
 
@@ -9708,13 +10846,18 @@ msgstr ""
 msgid "you cannot create this kind [%s] of folder"
 msgstr ""
 
+#: Action/Fdl/fdl_forumaddentry.php:41 Action/Fdl/fdl_forumopen.php:32
+#: Action/Fdl/fdl_forumcreate.php:32 Action/Fdl/fdl_forumdelentry.php:37
+#: Action/Fdl/fdl_forumclose.php:32
 #, c-format
 msgid "you don't have privilege to edit forum for document %s"
 msgstr ""
 
+#: tempCatalog.php:1082
 msgid "yourpassword"
 msgstr "Password :"
 
+#: tempCatalog.php:1080
 msgid "yourusername"
 msgstr "Login :"
 
