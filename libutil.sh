@@ -5,10 +5,10 @@ function pgIsRunning {
 
 function pgDbExists {
     pgDb=$1
-    if [ -z $pgDb ]; then
+    if [ -z "$pgDb" ]; then
 	return 1
     fi
-    if [ $z "$PGUSER" ]; then
+    if [ -z "$PGUSER" ]; then
 	export PGUSER="postgres"
     fi
     psql -l -tA \
@@ -19,7 +19,7 @@ function pgDbExists {
 
 function pgLanguageExists {
     pgLanguage=$1
-    if [ -z $pgLanguage ]; then
+    if [ -z "$pgLanguage" ]; then
 	return 1
     fi
     LANG=`psql -At -c "select lanname from pg_language where lanname='$pgLanguage'" 2> /dev/null`
@@ -35,7 +35,7 @@ function pgLanguageExists {
 
 function pgRoleExists {
     pgRole=$1
-    if [ -z $pgRole ]; then
+    if [ -z "$pgRole" ]; then
 	return 1
     fi
     ROLE=`psql -At -c "select rolname from pg_roles where rolname='$pgRole'" 2> /dev/null`
@@ -51,7 +51,7 @@ function pgRoleExists {
 
 function pgTableExists {
     tableName=$1
-    if [ -z $tableName ]; then
+    if [ -z "$tableName" ]; then
 	return 1
     fi
     TABLE=`psql -At -c "select tablename from pg_tables where tablename='$tableName'" 2> /dev/null`
@@ -84,7 +84,7 @@ function pgTableIndexExists {
 
 function pgExecuteSqlFile {
     pgFile=$1
-    if [ -z $pgFile ]; then
+    if [ -z "$pgFile" ]; then
 	return 1
     fi
     psql -f "$pgFile"
@@ -104,20 +104,20 @@ function pgVersion {
     if [ -z "$VERSION" ]; then
 	return -1
     fi
-    perl -e 'print join("", map { sprintf("%03d", $_) } split(/\./, $ARGV[0]))' "$VERSION" 2> /dev/null
+    php -r 'print(join(array_walk(explode(".",$argv[1]),function($e){$e=printf("%03d",$e);})));' "$VERSION" 2> /dev/null
 }
 
 
 
 function restartHttpd {
     if [ -n "$APACHE_INIT_SCRIPT" ]; then
-	$APACHE_INIT_SCRIPT restart
+	"$APACHE_INIT_SCRIPT" restart
 	return $?
     fi
     for RC_INIT_DIR in /etc/init.d /etc/rc.d/init.d; do
 	for SCRIPT in httpd apache apache2; do
-	    if [ -x $RC_INIT_DIR/$SCRIPT ]; then
-		$RC_INIT_DIR/$SCRIPT restart
+	    if [ -x "$RC_INIT_DIR/$SCRIPT" ]; then
+		"$RC_INIT_DIR/$SCRIPT" restart
 		return $?
 	    fi
 	done
@@ -149,3 +149,42 @@ function getHttpdGroupname {
 function versionCompare {
     php -r 'print(version_compare($argv[1],$argv[2]));' "$1" "$2"
 }
+
+function getContextRoot {
+    if [ -n "$wpub" -a -f "$wpub/wsh.php" ]; then
+	echo "$wpub"
+    elif [ -n "$WIFF_CONTEXT_ROOT" -a -f "$WIFF_CONTEXT_ROOT/wsh.php" ]; then
+	echo "$WIFF_CONTEXT_ROOT"
+    else
+	echo ""
+    fi
+}
+
+function getInstallUtilsLocation {
+    local _CONTEXT_ROOT=`getContextRoot`
+    if [ -z "$_CONTEXT_ROOT" ]; then
+	echo ""
+	return
+    fi
+    local _LOC="$_CONTEXT_ROOT/WHAT/Class.InstallUtils.php"
+    if [ ! -f "$_LOC" ]; then
+	echo ""
+	return
+    fi
+    echo "$_LOC"
+}
+
+function installUtils {
+    local _INSTALL_UTILS=`getInstallUtilsLocation`
+    if [ -z "$_INSTALL_UTILS" ]; then
+	echo "InstallUtils not found." 1>&2
+	return 1
+    fi
+    local _FUNCTION=$1
+    if [ $# -gt 0 ]; then
+	shift
+    fi
+    php "$_INSTALL_UTILS" "$_FUNCTION" "$@"
+}
+
+# vim: tabstop=8 softtabstop=4 shiftwidth=4 noexpandtab
