@@ -16,14 +16,14 @@
 /**
  */
 
-include_once ("GENERIC/family_defaultmenu.php");
+include_once "GENERIC/family_defaultmenu.php";
 // -----------------------------------
 function family_barmenu(Action & $action)
 {
     $onefamOrigin = $action->getArgument("onefam");
     $famid = $action->getArgument("famid");
-    //$action->parent->addJsRef('lib/jquery-ui/jquery-1.7.1.js');
     $action->parent->addJsRef('lib/jquery/jquery.js');
+    $action->parent->addJsRef('GENERIC:generic_list.js');
     $packName = 'menubarjs';
     $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.core.js', false, $packName);
     $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.widget.js', false, $packName);
@@ -33,23 +33,6 @@ function family_barmenu(Action & $action)
     $action->parent->addJsRef('lib/jquery-ui/devel-src/ui/jquery.ui.menubar.js', false, $packName);
     
     $action->parent->addCssRef('lib/jquery-ui/devel-src/themes/base/jquery.ui.all.css');
-    /*
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.core.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.accordion.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.autocomplete.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.button.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.datepicker.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.dialog.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.menu.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.menubar.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.progressbar.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.resizable.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.selectable.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.slider.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.spinner.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.tabs.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.tooltip.css',false,'menubarcss');
-    $action->parent->addCssRef('lib/jquery-ui/src/themes/base/jquery.ui.theme.css',false,'menubarcss');*/
     $defaultMenu = family_defaultmenu($action);
     $menu = getOnefamMenu($onefamOrigin, $famid, $defaultMenu);
     $action->lay->set("familyMenu", objectMenu2Html($menu, false));
@@ -58,13 +41,19 @@ function family_barmenu(Action & $action)
 
 function getOnefamMenu($onefam, $famid, $defaultMenu)
 {
-    if (!$onefam) return $defaultMenu;
+    if (!$onefam) {
+        return $defaultMenu;
+    }
     $sql = sprintf("SELECT val from paramv where name = 'ONEFAM_MENU' and appid = (select id from application where name='%s')", pg_escape_string($onefam));
     simpleQuery('', $sql, $onefamMenu, true, true);
-    if (!$onefamMenu) return $defaultMenu;
+    if (!$onefamMenu) {
+        return $defaultMenu;
+    }
     $confOnefam = json_decode($onefamMenu, true);
     $famName = getNameFromId(getDbAccess() , $famid);
-    if (!isset($confOnefam["families"][$famName])) return $defaultMenu;
+    if (!isset($confOnefam["families"][$famName])) {
+        return $defaultMenu;
+    }
     $specMenu = $confOnefam["families"][$famName];
     if (!$specMenu) return $defaultMenu;
     $standardMenu = $specMenu["standardMenu"];
@@ -109,14 +98,23 @@ function getOnefamMenu($onefam, $famid, $defaultMenu)
         }
         $defaultMenu = array_merge($defaultMenu, $customMenu);
     }
-    //print_r2($defaultMenu);
     return $defaultMenu;
 }
 
+/**
+ * Convert an array description menu to standard jQuery UI menu def
+ *
+ * @param array $menulist
+ * @param bool $ul with ul
+ * @param int $level
+ * @return string
+ */
 function objectMenu2Html(array $menulist, $ul = true, $level = 0)
 {
-    $s = '';
-    if ($ul) $s = '<ul>';
+    $htmlReturn = '';
+    if ($ul) {
+        $htmlReturn = '<ul>';
+    }
     foreach ($menulist as $k => $aMenu) {
         if (!empty($aMenu["items"])) {
             $attrs = '';
@@ -125,34 +123,46 @@ function objectMenu2Html(array $menulist, $ul = true, $level = 0)
                     $attrs.= sprintf(' %s="%s" ', $ki, $item);
                 }
             }
-            if ($aMenu["label"]) $label = _($aMenu["label"]);
-            else $label = '';
-            $s.= sprintf('<li><a href="#%s"%s>%s</a>', $k, $attrs, mb_ucfirst($label));
+            $label = !empty($aMenu["label"]) ? _($aMenu["label"]) : "";
+            $htmlReturn.= sprintf('<li><a href="#%s"%s>%s</a>', $k, $attrs, mb_ucfirst($label));
             
-            $s.= objectMenu2Html($aMenu["items"], true, $level + 1);
+            $htmlReturn.= objectMenu2Html($aMenu["items"], true, $level + 1);
         } else {
             $noanchor = (empty($aMenu["url"])) && (empty($aMenu["href"]));
-            $s.= "\n<li";
+            $htmlReturn.= "\n<li";
             
-            $s.= " level=\"$level\" ";
+            $htmlReturn.= " level=\"$level\" ";
             
             if ($level == 0) {
-                if ($aMenu["url"]) $aMenu["href"] = $aMenu["url"];
-                $s.= '><div role="button"';
+                if (!empty($aMenu["url"])) {
+                    $aMenu["href"] = $aMenu["url"];
+                }
+                $htmlReturn.= '><div role="button"';
             }
-            if (!$noanchor) $s.= "><a";
+            if (!$noanchor) {
+                $htmlReturn.= "><a";
+            }
             foreach ($aMenu as $ki => $item) {
-                if ($ki != "label") $s.= sprintf(' %s="%s" ', $ki, $item);
+                if ($ki != "label") {
+                    $htmlReturn.= sprintf(' %s="%s" ', $ki, $item);
+                }
             }
-            $s.= '>';
-            if ($aMenu["label"]) $s.= mb_ucfirst(_($aMenu["label"]));
+            $htmlReturn.= '>';
+            if (!empty($aMenu["label"])) {
+                $htmlReturn.= mb_ucfirst(_($aMenu["label"]));
+            }
             
-            if (!$noanchor) $s.= "</a> ";
-            if ($level == 0) $s.= '</div>';
+            if (!$noanchor) {
+                $htmlReturn.= "</a> ";
+            }
+            if ($level == 0) {
+                $htmlReturn.= '</div>';
+            }
         }
-        $s.= "</li>\n";
+        $htmlReturn.= "</li>\n";
     }
-    if ($ul) $s.= "</ul>";
-    return $s;
+    if ($ul) {
+        $htmlReturn.= "</ul>\n";
+    }
+    return $htmlReturn;
 }
-?>
