@@ -122,7 +122,7 @@ class VaultDiskFs extends DbObj
         // --------------------------------------------------------------------
         $query = new QueryDb($this->dbaccess, $this->dbtable);
         $query->basic_elem->sup_where = array(
-            "r_path='" . $path . "'"
+            "r_path=E'" . pg_escape_string($path) . "'"
         );
         $t = $query->Query(0, 0, "TABLE");
         return ($query->nb > 0);

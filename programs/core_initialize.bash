@@ -36,11 +36,23 @@ if [ ! -x "$corepost" ]; then
     exit 1
 fi
 # initialize configuration files
-sed  -e"s;@AUTHTYPE@;$authtype;" -e"s;@CORE_DB@;$core_db;" -e"s;@FREEDOM_DB@;$freedom_db;" -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" "$dbaccesstpl" > "$dbaccess"
-sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;"  "$prefixtpl" > "$prefix"
-sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" "$htaccesstpl" > "$htaccess"
 
-sed -i.orig -e "s;^\([[:space:]]*php_value[[:space:]][[:space:]]*session\.save_path[[:space:]][[:space:]]*\).*$;\1\"${WIFF_CONTEXT_ROOT}/var/session\";" "$WIFF_CONTEXT_ROOT"/.htaccess
+. "$WIFF_CONTEXT_ROOT/libutil.sh"
+
+(
+    set -e
+    cp "$dbaccesstpl" "$dbaccess" && installUtils replace -f "$dbaccess" +s +e ".@AUTHTYPE@." "$authtype" ".@CORE_DB@." "$core_db" ".@FREEDOM_DB@." "$freedom_db" -q "@prefix@" "$WIFF_CONTEXT_ROOT"
+    cp "$prefixtpl" "$prefix" && installUtils replace -f "$prefix" +s +e ".@prefix@." "$WIFF_CONTEXT_ROOT"
+    V=$(installUtils doublequote -q "$WIFF_CONTEXT_ROOT")
+    cp "$htaccesstpl" "$htaccess" && installUtils replace -f "$htaccess" +em '@prefix@(.*)$' "\"$V\$1\""
+    V=$(installUtils doublequote -q "$WIFF_CONTEXT_ROOT")
+    installUtils replace -f .htaccess +em '^(\s*php_value\s+session\.save_path\s+).*$' "\$1\"$V/var/session\""
+)
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error regenerating files from templates."
+    exit $RET
+fi
 
 if [ "$mod_deflate" = "yes" ]; then
     cat <<EOF >> "$WIFF_CONTEXT_ROOT/.htaccess"

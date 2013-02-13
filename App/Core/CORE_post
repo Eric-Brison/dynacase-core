@@ -103,7 +103,8 @@ if [ "$1" = "U" ] ; then
     fi
 
     log "Setting CORE_PUBDIR in paramv..."
-    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val = '$wpub' WHERE name = 'CORE_PUBDIR'"
+    V=$(installUtils pg_escape_string "$wpub")
+    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val = '$V' WHERE name = 'CORE_PUBDIR'"
     RET=$?
     if [ $RET -ne 0 ]; then
 	echo "Error setting CORE_PUBDIR"
