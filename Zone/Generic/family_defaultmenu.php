@@ -133,7 +133,7 @@ function family_defaultmenu(Action & $action)
         }
     }
 
-    if (($dirid < 1000000000) && ($catg > 1)) {
+    if (empty($onefamOrigin) && ($dirid < 1000000000) && ($catg > 1)) {
         $toolsItemMenu['memosearch'] = array(
             "label" => _("memosearch") ,
             "target" => "fhidden",
