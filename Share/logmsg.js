@@ -123,17 +123,50 @@ function windowExist(Name, NoOpen) {
     return w;
 }
 var warnmsg = '';
+/**
+ * Display a warning message
+ *
+ * If in an extjs context use extjs
+ * Or try to find
+ *
+ * @param logmsg
+ */
 function displayWarningMsg(logmsg) {
-    var msg = logmsg;
+    var msg = logmsg, generateParentList, parentList = [], i, length, currentParent, isFunction,
+        current$;
+    isFunction = function(obj) {
+      return typeof obj === 'function';
+    };
     if (window.parent.Ext) {
         msg = msg.replace(new RegExp("\n", "ig"), '<br/>');
         msg = msg.replace(new RegExp("\n", "ig"), '<br/>');
         window.parent.Ext.Msg.alert('Warning', msg);
+        return '';
     } else {
-        setTimeout(function () {
-            alert(msg);
-        }, 1000);
+        generateParentList = function generateParentList(parent) {
+            parentList.unshift(parent);
+            if (parent !== parent.top && parent.parent) {
+                generateParentList(parent.parent);
+            }
+        }(window);
+        for (i = 0, length = parentList.length; i < length; i += 1) {
+            currentParent = parentList[i];
+            if (currentParent && currentParent.dcp && isFunction(currentParent.dcp.displayWarningMessage)) {
+                setTimeout(function () {
+                    currentParent.dcp.displayWarningMessage(logmsg)
+                }, 100);
+                return '';
+            }else if(currentParent && currentParent.$ && currentParent.$.isFunction(currentParent.$().dialog)) {
+                setTimeout(function () {
+                    currentParent.$('<div><div class="ui-state-error"><p>'+
+                    '<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>' +
+                    currentParent.$('<div/>').text(logmsg).html().replace(/\n/g,"<br/>","g")+'</p></div></div>'
+                ).dialog({modal:true,title:'⚠'})}, 500);
+                return '';
+            }
+        }
     }
+    setTimeout(function () {alert(msg);},1000);
 }
 function displayLogMsg(logmsg) {
 
