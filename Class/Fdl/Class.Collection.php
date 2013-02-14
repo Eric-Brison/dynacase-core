@@ -39,11 +39,22 @@ class Fdl_Collection extends Fdl_Document
     private $contentRecursiveLevel = 0;
     private $contentMap = null;
     private $onlyAttributes = null;
+    
+    private $debug = false;
     /**
      * Internal document list
      * @var DocumentList
      */
     private $documentList = null;
+    /**
+     * set true to add extra info about query
+     * info are set in info field
+     * @param bool $debug
+     */
+    public function setDebugMode($debug)
+    {
+        $this->debug = (!empty($debug));
+    }
     
     public function setContentCompleteProperties($value)
     {
@@ -166,12 +177,13 @@ class Fdl_Collection extends Fdl_Document
             }
             if ($err == "") {
                 $s->search();
-                $out->info = $s->getSearchInfo();
+                if ($this->debug) $out->info = $s->getSearchInfo();
                 $err = $s->getError();
                 if ($err) {
                     $this->setError($out->info["error"]);
                 } else {
-                    $this->useDocumentList($s->getDocumentList());
+                    $dl = $s->getDocumentList();
+                    $this->useDocumentList($dl);
                     return $this->getDocumentListContent();
                 }
             }
@@ -214,10 +226,10 @@ class Fdl_Collection extends Fdl_Document
             $content = array();
             $s = $dl->getSearchDocument();
             if ($this->contentMap) $dl->listMap($this->contentMap);
-            $out->info = $s->getSearchInfo();
+            if ($this->debug) $out->info = $s->getSearchInfo();
             $out->slice = $s->slice;
             $out->start = $s->start;
-            $this->setError($out->info["error"]);
+            if (isset($out->info["error"])) $this->setError($out->info["error"]);
             $tmpdoc = new Fdl_Document();
             if ($this->onlyAttributes !== null) {
                 $tmpdoc->usePartialDocument($this->onlyAttributes);
@@ -244,7 +256,7 @@ class Fdl_Collection extends Fdl_Document
                 $s->start = 0;
                 $s->reset();
                 $oc = $s->onlyCount();
-                $out->info["totalCount"] = $s->getSearchInfo();
+                if ($this->debug) $out->info["totalCount"] = $s->getSearchInfo();
                 if ($oc) $out->totalCount = $oc;
             }
         }
@@ -340,7 +352,7 @@ class Fdl_Collection extends Fdl_Document
             $s->search();
             $info = $s->getSearchInfo();
             $out->error = $info["error"];
-            $out->info = $info;
+            if ($this->debug) $out->info = $info;
             
             if (!$out->error) {
                 /**
