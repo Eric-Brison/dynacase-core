@@ -24,7 +24,7 @@
 
     reloadCurrentWindow = function reloadCurrentWindow(url) {
         if (url === "reload") {
-            window.location.reload();
+            window.location.href=window.location.href;
         } else if (url) {
             window.location = url;
         }
