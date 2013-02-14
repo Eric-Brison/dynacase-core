@@ -932,6 +932,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 return $url;
             }
         }
+        if ($size !== null) return 'resizeimg.php?img=' . $this->noimage . '&size=' . $size;
         return $this->noimage;
     }
     /**
