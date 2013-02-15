@@ -9,7 +9,7 @@
  *
  * @author Anakeen
  * @version $Id: Class.Upload.php,v 1.2 2003/08/18 15:46:42 eric Exp $
- * 
+ *
  * @package FDL
  * @subpackage CORE
  */
@@ -157,7 +157,7 @@ class uploader
             }
             // check to see if the file is of type specified
             if ($accept_type) {
-                $pattern = preg_quote($accept_type);
+                $pattern = preg_quote($accept_type, "/");
                 if (preg_match("/$pattern/", $this->file["type"])) {
                     $this->accepted = True;
                 } else {

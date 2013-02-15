@@ -290,7 +290,7 @@ function getFamAttribute($dbaccess, $famid, $type = "text", $param = false, $nam
     }
     $name = strtolower($name);
     // HERE HERE HERE
-    $pattern_name = preg_quote($name);
+    $pattern_name = preg_quote($name, "/");
     $pattern_type = ($type);
     foreach ($tinter as $k => $v) {
         if (($name == "") || (preg_match("/$pattern_name/i", $v->getLabel() , $reg)) || (preg_match("/$pattern_name/", $v->id, $reg))) {
@@ -327,7 +327,7 @@ function lfamilies($dbaccess, $name = '', $subfam = "")
     
     $name = strtolower($name);
     // HERE HERE HERE
-    $pattern_name = preg_quote($name);
+    $pattern_name = preg_quote($name, "/");
     while (list($k, $v) = each($tinter)) {
         $ftitle = DocFam::getLangTitle($v);
         if (($name == "") || (preg_match("/$pattern_name/i", $ftitle, $reg))) {
@@ -680,7 +680,7 @@ function lenum($val, $enum)
     
     $tr = array();
     // HERE HERE HERE
-    $pattern_val = preg_quote($val);
+    $pattern_val = preg_quote($val, "/");
     while (list($k, $v) = each($tenum)) {
         
         if (($val == "") || (preg_match("/$pattern_val/i", $v, $reg))) $tr[] = array(
@@ -737,7 +737,7 @@ function lenumvalues($enum, $val = "")
             ',',
             '.'
         ) , $label);
-        if (($val == "") || (preg_match("!" . preg_quote($val) . "!i", $slabel, $reg))) $tr[] = array(
+        if (($val == "") || (preg_match("!" . preg_quote($val, "/") . "!i", $slabel, $reg))) $tr[] = array(
             "$slabel",
             $slabel,
             $key
@@ -902,7 +902,7 @@ function getReportColumns($dbaccess, $famid, $name = "")
 {
     $doc = createDoc($dbaccess, $famid, false);
     $tr = array();
-    $pattern = preg_quote($name);
+    $pattern = preg_quote($name, "/");
     // Properties
     $propList = array(
         "title" => _("doctitle") ,
@@ -950,7 +950,7 @@ function getReportSortableColumns($dbaccess, $famid, $name = "")
 {
     $doc = createDoc($dbaccess, $famid, false);
     $tr = array();
-    $pattern = preg_quote($name);
+    $pattern = preg_quote($name, "/");
     // Properties
     $propList = getSortProperties($dbaccess, $famid, $name);
     foreach ($propList as $prop) {
@@ -986,7 +986,7 @@ function getSortAttr($dbaccess, $famid, $name = "", $sort = true)
     $doc = createDoc($dbaccess, $famid, false);
     
     $tr = array();
-    $pattern_name = preg_quote($name);
+    $pattern_name = preg_quote($name, "/");
     
     if ($sort) {
         $tr = getSortProperties($dbaccess, $famid, $name);
@@ -1019,7 +1019,7 @@ function getSortAttr($dbaccess, $famid, $name = "", $sort = true)
  */
 function getSortProperties($dbaccess, $famid, $name = "")
 {
-    $pattern = preg_quote($name);
+    $pattern = preg_quote($name, "/");
     $docfam = new DocFam($dbaccess, $famid);
     $props = $docfam->getSortProperties();
     $ret = array();
@@ -1148,7 +1148,7 @@ function lapi($name = "")
     
     $tr = array();
     // HERE HERE HERE
-    $pattern_name = preg_quote($name);
+    $pattern_name = preg_quote($name, "/");
     foreach ($tapi as $k => $v) {
         $v0 = trim($v);
         if (($name == "") || (preg_match("/$pattern_name/i", $v0, $reg))) $tr[] = array(
@@ -1170,7 +1170,7 @@ function lstates($dbaccess, $wid, $name = "")
          */
         $states = $doc->getStates();
         // HERE HERE HERE
-        $pattern_name = preg_quote($name);
+        $pattern_name = preg_quote($name, "/");
         foreach ($states as $k => $v) {
             if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) $tr[] = array(
                 $v . ' (' . _($v) . ')',
@@ -1194,7 +1194,7 @@ function ldocstates($dbaccess, $docid, $name = "")
              */
             $states = $wdoc->getStates();
             // HERE HERE HERE
-            $pattern_name = preg_quote($name);
+            $pattern_name = preg_quote($name, "/");
             foreach ($states as $k => $v) {
                 if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) $tr[] = array(
                     $v . ' (' . _($v) . ')',
@@ -1213,7 +1213,7 @@ function lmethods($dbaccess, $famid, $name = "")
     $tr = array();
     if ($doc) {
         $methods = get_class_methods($doc);
-        $pattern_name = preg_quote($name);
+        $pattern_name = preg_quote($name, "/");
         foreach ($methods as $k => $v) {
             if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) $tr[] = array(
                 $v,

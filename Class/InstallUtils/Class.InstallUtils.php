@@ -100,7 +100,7 @@ EOF;
             foreach ($vars as $var) {
                 $modifier = '';
                 if ($var['regex'] === false) {
-                    $var['key'] = preg_quote($var['key']);
+                    $var['key'] = preg_quote($var['key'], "/");
                 } else {
                     $modifier = $var['regex'];
                 }
@@ -188,7 +188,7 @@ EOF;
             if ($string['quote']) {
                 $string['value'] = '"' . $string['value'] . '"';
             }
-            print($string['value'] . PHP_EOL);
+            print ($string['value'] . PHP_EOL);
         }
     }
     public static function pg_escape_string_usage()

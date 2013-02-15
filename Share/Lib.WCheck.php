@@ -22,7 +22,7 @@ function GetDbVersion($dbid, &$tmachine, $usePreviousVersion = false)
 {
     $tver = array();
     $tmachine = array();
-
+    
     $rq = pg_query($dbid, "select paramv.val, application.name, application.machine from paramv, application  where paramv.name='VERSION' and paramv.appid=application.id");
     if ($rq === false) {
         return $tver;
@@ -32,12 +32,12 @@ function GetDbVersion($dbid, &$tmachine, $usePreviousVersion = false)
         $tver[$row["name"]] = $row["val"];
         $tmachine[$row["name"]] = $row["machine"];
     }
-
+    
     if ($usePreviousVersion) {
         /*
          * Overwrite versions with previous versions (if available)
          * for post migration scripts
-         */
+        */
         $rq = pg_query($dbid, "select paramv.val, application.name, application.machine from paramv, application  where paramv.name='PREVIOUS_VERSION' and paramv.appid=application.id");
         if ($rq === false) {
             return $tver;
@@ -48,7 +48,7 @@ function GetDbVersion($dbid, &$tmachine, $usePreviousVersion = false)
             }
         }
     }
-
+    
     return ($tver);
 }
 //---------------------------------------------------
@@ -164,7 +164,7 @@ function getCheckApp($pubdir, &$tapp, $usePreviousVersion = false)
         $tvdb = GetDbVersion($dbid, $tmachine, $usePreviousVersion);
         $tvfile = GetFileVersion("$pubdir");
         pg_close($dbid);
-
+        
         $ta = array_unique(array_merge(array_keys($tvdb) , array_keys($tvfile)));
         foreach ($ta as $k => $v) {
             if (!isset($tvfile[$v])) {
@@ -208,14 +208,14 @@ function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
     
     $tvdb = GetDbVersion($dbid, $tmachine, $usePreviousVersion);
     $tiorder = getAppOrder($pubdir);
-
+    
     foreach ($tiorder as $k => $v) {
         $tapp[$k]["iorder"] = $v;
     }
     uasort($tapp, "cmpapp");
     foreach ($tapp as $k => $v) {
         $migr = array();
-        $pattern = preg_quote($k);
+        $pattern = preg_quote($k, "/");
         // search Migration file
         if ($dir = @opendir("$pubdir/$k")) {
             while (($file = readdir($dir)) !== false) {

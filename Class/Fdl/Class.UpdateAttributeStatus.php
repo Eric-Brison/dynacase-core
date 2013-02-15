@@ -90,7 +90,7 @@ class UpdateAttributeStatus
         if ($this->content === null) $this->readStatus();
         $lines = array();
         foreach ($this->content as $line) {
-            if (preg_match(sprintf("/^[0-9T:-]{19} [\w-]* ?%s/u", preg_quote($code)) , $line)) $lines[] = $line;
+            if (preg_match(sprintf("/^[0-9T:-]{19} [\w-]* ?%s/u", preg_quote($code, "/")) , $line)) $lines[] = $line;
         }
         return $lines;
     }
