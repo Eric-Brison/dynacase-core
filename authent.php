@@ -19,6 +19,11 @@ if (isset($_REQUEST['logout'])) {
     if (!method_exists($auth, 'logon')) {
         throw new \Dcp\Exception(sprintf("Authenticator '%s' does not provide a logon() method.", get_class($auth)));
     }
+    // default application is AUTHENT
+    if (!isset($_GET["app"])) $_GET["app"]="AUTHENT";
+    /**
+     * @var htmlAuthenticator $auth
+     */
     $auth->logon();
 }
 
