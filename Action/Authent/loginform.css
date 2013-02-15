@@ -64,6 +64,12 @@ html, body.core {
     color: #888;
     text-shadow: 0 1px 0 white;
 }
+.authmain .banner .realm {
+    margin-top: 5px;
+    color: #888;
+    font-size:120%;
+    text-shadow: 0 1px 0 white;
+}
 
 
 .authmain .zoneinput {
@@ -79,7 +85,6 @@ html, body.core {
 .authmain .zoneinput .label {
   white-space : nowrap;
   width:100%;
-  margin-top:1em;
   color: #999;
 }
 .authmain .input input {
@@ -89,7 +94,7 @@ html, body.core {
   padding: 6px 2px 6px 2px;
   margin-top: 2px;
   margin-right: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   border: 1px solid #E5E5E5;
   background: #FBFBFB;
   outline: 0;

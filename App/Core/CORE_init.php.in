@@ -300,7 +300,7 @@ $app_const = array(
         "global" => "Y"
     ) ,
     "CORE_REALM" => array(
-        "val" => "Dynacase Connection",
+        "val" => "Dynacase",
         "descr" => N_("realm name for http authenticate") ,
         "style" => "N",
         "global" => "Y"

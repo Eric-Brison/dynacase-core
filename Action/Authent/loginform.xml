@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=100"> <!-- IE latest mode -->
+<title>[CORE_CLIENT]</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 [CSS:REF]
 <style type="text/css">
@@ -148,6 +149,7 @@ function initZone() {
 
       <div class="banner"> 
 	<div class="societe">[CORE_CLIENT]</div>
+	<div class="realm">[CORE_REALM]</div>
       </div>
 
       <div class="zoneinput">
@@ -178,7 +180,7 @@ function initZone() {
       [IF authent_show_reqpasswd]
       <a href="[CORE_BASEURL]app=AUTHENT&amp;action=REQPASSWD">[TEXT:authent reqpassword]</a>
       [ENDIF authent_show_reqpasswd]
-      <a href="javascript:display_help()">[TEXT:help]</a>
+      <a href="javascript:display_help()">[TEXT:loginform:help]</a>
 
     </div>
 
