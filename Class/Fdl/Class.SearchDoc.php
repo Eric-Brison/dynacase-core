@@ -1289,7 +1289,7 @@ class SearchDoc
                 $where = sprintf('map_%s.key = doc%s.%s', $attr->id, $fromid, $attr->id);
                 
                 $sqlM = preg_replace('/ where /i', ", $map where ($where) and ", $sqlM);
-                $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column)) , sprintf("map_%s.label", $attr->id) , $this->orderby);
+                $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column, "/")) , sprintf("map_%s.label", $attr->id) , $this->orderby);
                 break;
 
             case 'docid':
@@ -1302,7 +1302,7 @@ class SearchDoc
                     if ($opt_doctitle == 'auto') {
                         $opt_doctitle = sprintf('%s_title', $attr->id);
                     }
-                    $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column)) , $opt_doctitle, $this->orderby);
+                    $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column, "/")) , $opt_doctitle, $this->orderby);
                 }
         }
         return $sqlM;
