@@ -14,7 +14,7 @@ $app_desc = array(
     "icon" => "authent.gif", //Icon
     "displayable" => "N", //Should be displayed on an app list (Y,N)
     "iorder" => 10, // install order
-    "tag" => "CORE"
+    "tag" => "CORE SYSTEM"
 );
 
 $action_desc = array(

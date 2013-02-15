@@ -9,7 +9,7 @@ $app_desc = array (
 "displayable"	=>"N",			//Should be displayed on an app list (Y,N)
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)
 "childof"	=>"",		// 	
-"tag"		=>"CORE",		// 	
+"tag"		=>"CORE SYSTEM",		//
 );
 
 

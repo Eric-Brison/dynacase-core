@@ -29,7 +29,7 @@ $app_desc = array(
     "icon" => "fdl.gif",
     "displayable" => "N", //Should be displayed on an app list (Y,N)
     "iorder" => 20, // install order
-    "tag" => "CORE"
+    "tag" => "CORE SYSTEM"
 );
 
 $app_acl = array(

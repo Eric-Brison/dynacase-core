@@ -31,7 +31,7 @@ $app_desc = array(
     "displayable" => "N", //Should be displayed on an app list
     "with_frame" => "Y", //Use multiframe ? (Y,N)
     "iorder" => 0, // install order first
-    "tag" => "CORE"
+    "tag" => "CORE SYSTEM"
 );
 
 $action_desc = array(
