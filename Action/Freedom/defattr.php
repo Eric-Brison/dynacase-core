@@ -164,9 +164,10 @@ function defattr(Action & $action)
                     $oDocAttr->visibility = $oa->visibility;
                     $oDocAttr->labeltext = $oa->labelText;
                     $oDocAttr->frameid = (isset($oa->fieldSet) && $oa->fieldSet->id != "FIELD_HIDDENS") ? $oa->fieldSet->id : '';
-                    
+
+                    $oDocAttr->phpconstraint = $oa->phpconstraint;
                     $oDocAttr->options = $oa->options;
-                    if (is_a($oDocAttr, "NormalAttribute")) {
+                    if (is_a($oa, "NormalAttribute")) {
                         $oDocAttr->abstract = ($oa->isInAbstract) ? "Y" : "N";
                         $oDocAttr->title = ($oa->isInTitle) ? "Y" : "N";
                         $oDocAttr->needed = ($oa->needed) ? "Y" : "N";
@@ -174,7 +175,6 @@ function defattr(Action & $action)
                         $oDocAttr->elink = $oa->elink;
                         $oDocAttr->phpfile = $oa->phpfile;
                         $oDocAttr->phpfunc = $oa->phpfunc;
-                        $oDocAttr->phpconstraint = $oa->phpconstraint;
                     }
                 }
             }
