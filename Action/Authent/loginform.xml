@@ -98,78 +98,70 @@ function initZone() {
 
 </script>
 <body>
-<div id="zonehelp" class="zhelp" style="visibility:hidden">
-<div class="title">[TEXT:Help to the connection]</div>
-<div class="content">
-    [IF isEnglish]
-    <p>
+  <div id="zonehelp" class="zhelp" style="visibility:hidden">
+    <div class="title">[TEXT:Help to the connection]</div>
+    <div class="content">
+      [IF isEnglish]
+      <p>
         This window allows you to log on the application, that is indicate to the applications whom you are.
-        </p>
-    <p>
-This is necessary to guarantee that yours informations are accessible only by you. To log on, it is necessary to fill the login and password (If you do not possess it contact your administrator). </p>
-<p>Pay attention, this password is your identification : be sure to keep it safe and do not spread it ! </p>
-<p>Mind the case (use of the characters capital letter and small letter) during the fill of your login and password!
-</p>
-
-    [ENDIF isEnglish]
-    [IFNOT isEnglish]
-    <p>
+      </p>
+      <p>
+      This is necessary to guarantee that yours informations are accessible only by you. To log on, it is necessary to fill the login and password (If you do not possess it contact your administrator). </p>
+      <p>Pay attention, this password is your identification : be sure to keep it safe and do not spread it ! </p>
+      <p>Mind the case (use of the characters capital letter and small letter) during the fill of your login and password!
+      </p>
+      
+      [ENDIF isEnglish]
+      [IFNOT isEnglish]
+      <p>
         Cette fen&ecirc;tre permet de vous identifier.
-    </p>
-    <p>
+      </p>
+      <p>
         Ceci est n&eacute;cessaire pour garantir que les informations vous concernant
         sont accessibles seulement par vous-m&ecirc;me. Pour vous identifier, il vous
         faut saisir un nom d'utilisateur et un mot de passe (si vous n'en
         poss&eacute;dez pas adressez-vous au gestionnaire du site).
     </p>
     <p>
-        Attention, ce mot de passe est le garant de votre identification&nbsp;:
-        conservez le pr&eacute;cieusement et ne le diffusez pas&nbsp;!
+      Attention, ce mot de passe est le garant de votre identification&nbsp;:
+      conservez le pr&eacute;cieusement et ne le diffusez pas&nbsp;!
     </p>
     <p>
-        Il est important de respecter la casse (utilisation des caract&egrave;res
-        majuscules et minuscules) lors de la saisie de votre nom d'utilisateur et
-        mot de passe.
+      Il est important de respecter la casse (utilisation des caract&egrave;res
+      majuscules et minuscules) lors de la saisie de votre nom d'utilisateur et
+      mot de passe.
     </p>
     [ENDIF isEnglish]
-</div>
-<div class="close"><a href="javascript:close_help()">[TEXT:Close help]</a></div>
-</div>
-
+    </div>
+    <div class="close"><a href="javascript:close_help()">[TEXT:Close help]</a></div>
+  </div>
+  
 <form action="[CORE_BASEURL]app=AUTHENT&amp;action=CHECKAUTH" method="post" name="loginform" style="display:inline">
-<input type="hidden" name="appd" value="[app_redir]">
-<input type="hidden" name="actd" value="[act_redir]">
-<input type="hidden" name="argd" value="[arg_redir]">
-<input type="hidden" name="redirect_uri" value="[redirect_uri]" />
+  <input type="hidden" name="appd" value="[app_redir]" />
+  <input type="hidden" name="actd" value="[act_redir]" />
+  <input type="hidden" name="argd" value="[arg_redir]" />
+  <input type="hidden" name="redirect_uri" value="[redirect_uri]" />
+  
+  <div id="authform" class="authmain" style="visibility:hidden">
 
-<div id="authform" class="authmain" style="visibility:hidden">
+    <div class="form">
 
-  <div class="form">
+      <div class="banner"> 
+	<div class="societe">[CORE_CLIENT]</div>
+      </div>
 
-    <div class="banner">
-      <table cellspacing="0"><tr>
-        <td><img width="48px" src="[CORE_LOGOCLIENT]" needresize="1"/></td>
-        <td><span class="societe">[CORE_CLIENT]</span><br>[CORE_REALM]</td>
-      </tr></table>
-    </div>
-
-    <div class="zoneinput">
-      <table cellspacing="0">
-        <tr>
-          <td class="label">[TEXT:yourusername]</td>
-          <td class="input"><input id="auth_user" placeholder="[TEXT:Enter your login]" name="auth_user" type="text" autocapitalize="off" autocorrect="off"  value="[auth_user]" /></td>
-        </tr>
-        <tr>
-          <td class="label">[TEXT:yourpassword]</td>
-          <td class="input"><input id="auth_pass" placeholder="[TEXT:Enter your password]" name="auth_pass" type="password" value="" /></td>
-        </tr>
-      </table>
-    </div>
-
-    <div id="msgerr" class="message">[error]</div>
-
-    <div class="buttons">
-
+      <div class="zoneinput">
+	<div class="label">[TEXT:yourusername]</div>
+	<div class="input">
+	  <input id="auth_user" placeholder="[TEXT:Enter your login]" name="auth_user" type="text" autocapitalize="off" autocorrect="off"  value="[auth_user]" />
+	</div>
+	<div class="label">[TEXT:yourpassword]</div>
+	<div class="input">
+	  <input id="auth_pass" placeholder="[TEXT:Enter your password]" name="auth_pass" type="password" value="" />
+	</div>
+	<div id="msgerr" class="message">[error]</div>
+	<div class="action">
+	  <a href="javascript:login(this.document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');">[TEXT:Do connection]</a>
       [IF authent_show_lang_selection]
       <select name="CORE_LANG" onchange="window.location.href='[CORE_BASEURL]app=AUTHENT&amp;action=LOGINFORM&amp;lang='+this.options[this.selectedIndex].value">
         [BLOCK LANG]
@@ -177,11 +169,16 @@ This is necessary to guarantee that yours informations are accessible only by yo
         [ENDBLOCK LANG]
       </select>
       [ENDIF authent_show_lang_selection]
+	</div>
+      </div>
+      
+      
+    <div class="buttons">
+      
       [IF authent_show_reqpasswd]
       <a href="[CORE_BASEURL]app=AUTHENT&amp;action=REQPASSWD">[TEXT:authent reqpassword]</a>
       [ENDIF authent_show_reqpasswd]
       <a href="javascript:display_help()">[TEXT:help]</a>
-      <a href="javascript:login(this.document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');">[TEXT:Do connection]</a>
 
     </div>
 
@@ -192,8 +189,8 @@ This is necessary to guarantee that yours informations are accessible only by yo
 </form>
 
 <script>
-addEvent(window,'load',initZone);
-addEvent(window,'resize',centerZone);
+  addEvent(window,'load',initZone);
+  addEvent(window,'resize',centerZone);
 </script>
 
 </body>
