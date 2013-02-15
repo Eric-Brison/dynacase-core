@@ -156,27 +156,33 @@ function displayWarningMsg(logmsg) {
             currentParent = parentList[i];
             if (currentParent && currentParent.dcp && isFunction(currentParent.dcp.displayWarningMessage)) {
                 setTimeout(function () {
-                    currentParent.dcp.displayWarningMessage(logmsg)
+                    currentParent.dcp.displayWarningMessage(logmsg);
                 }, 100);
                 return '';
             }else if(currentParent && currentParent.$ && currentParent.$.isFunction(currentParent.$().dialog)) {
                 setTimeout(function () {
-                    currentParent.$('<div><div class="ui-state-error"><p>'+
-                    '<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>' +
+                    currentParent.$('<div><div class="ui-state-highlight"><p>'+
+                    '<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>' +
                     currentParent.$('<div/>').text(logmsg).html().replace(/\n/g,"<br/>","g")+'</p></div></div>'
-                ).dialog({modal:true,title:'⚠'})}, 500);
+                    ).dialog({
+                                position : { at : 'top'},
+                                modal:true,
+                                title:'<span class="ui-icon ui-icon-info"></span>'
+                            });
+                }, 500);
                 return '';
             }
         }
     }
     setTimeout(function () {alert(msg);},1000);
+    return '';
 }
 function displayLogMsg(logmsg) {
-
+    var i, logi;
     if (logmsg.length == 0) return;
 
     if ("console" in window) {
-        for (var i = 0; i < logmsg.length; i++) {
+        for (i = 0; i < logmsg.length; i++) {
             console.log(logmsg[i]);
         }
     }
