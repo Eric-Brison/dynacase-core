@@ -9,9 +9,9 @@ export appname
 include $(utildir)/PubRule
 include $(rootdir)/corePubRule.mk
 
-SUBDIR= htmlarea ckeditor-quicksave ckeditor-docattr jscalendar jsXMLParser mozillaplugin jscolor
+SUBDIR= ckeditor-quicksave ckeditor-docattr jscalendar jsXMLParser mozillaplugin jscolor
 
-publish: $(pubdir)/log.sh $(pubdir)/WHAT/Lib.Prefix.php.in $(pubdir)/htmlarea $(pubdir)/jscalendar $(pubdir)/php2V2 $(pubdir)/FDL/geticon.php
+publish: $(pubdir)/log.sh $(pubdir)/WHAT/Lib.Prefix.php.in $(pubdir)/jscalendar $(pubdir)/php2V2 $(pubdir)/FDL/geticon.php
 
 $(pubdir)/log.sh: log.sh
 	cp $< $@
@@ -21,12 +21,6 @@ $(pubdir)/WHAT/Lib.Prefix.php.in: Lib.Prefix.php.in
 
 $(pubdir)/FDL/geticon.php: geticon.php
 	ln -s ../WHAT/geticon.php $@
-
-$(pubdir)/htmlarea :
-	cp -r htmlarea $(pubdir)
-	mkdir -p $(pubdir)/htmlarea/htmlarea
-	ln -s ../images $(pubdir)/htmlarea/htmlarea/images
-	ln -s ../popups $(pubdir)/htmlarea/htmlarea/popups
 
 $(pubdir)/jscalendar :
 	cp -r jscalendar $(pubdir)
