@@ -3,8 +3,8 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
-var isNetscape = navigator.appName == "Netscape";
-var isIE = navigator.appName == "Microsoft Internet Explorer";
+var isNetscape = navigator.appName === "Netscape";
+var isIE = navigator.appName === "Microsoft Internet Explorer";
 var isIE6 = /msie 6/i.test(navigator.userAgent);
 var isIE7 = /msie 7/i.test(navigator.userAgent);
 var isIE8 = /msie 8/i.test(navigator.userAgent);
@@ -21,8 +21,7 @@ function getMouseButton(event) {
     return button;
 }
 
-var windows = new Object();
-;
+var windows = {};
 
 function displayPropertyNames(obj) {
     var names = "";
@@ -42,9 +41,9 @@ function getConnexeWindows(w) {
 
     try {
         cw = getChildFrames(w.top);
-
-        if ((w.top.opener) && (w.top.opener != w.top)) cw = cw + getConnexeWindows(w.top.opener);
-
+        if ((w.top.opener) && (w.top.opener != w.top)) {
+            cw = cw + getConnexeWindows(w.top.opener);
+        }
     }
     catch (ex) {
     }
@@ -68,28 +67,29 @@ function getChildFrames(w) {
         catch (ex) {
             fname = '';
         }
-        if (fname && (fname != '')) windows[fname] = w.frames[i];
+        if (fname && (fname != '')) {
+            windows[fname] = w.frames[i];
+        }
         fnames = fnames + ' ' + i + fname;
-
         fnames = fnames + getChildFrames(w.frames[i]);
-
     }
 
     return fnames;
 }
 
 function windowExist(Name, NoOpen) {
-
+    var w;
     getChildFrames(window);
 
     if (windows[Name]) {
-
-        if (windows[Name] == 'none') return false;
-
-        if (windows[Name].closed) return false;
-
+        if (windows[Name] == 'none') {
+            return false;
+        }
+        if (windows[Name].closed) {
+            return false;
+        }
         try {
-            var w = windows[Name].document;
+            w = windows[Name].document;
         }
         catch (ex) {
             windows[Name] = 'none';
@@ -100,18 +100,22 @@ function windowExist(Name, NoOpen) {
 
     if (window.parent) {
         getChildFrames(window.parent);
-        if (windows[Name]) return  windows[Name];
+        if (windows[Name]) {
+            return  windows[Name];
+        }
     }
 
     getConnexeWindows(window);
-    if (windows[Name]) return  windows[Name];
+    if (windows[Name]) {
+        return  windows[Name];
+    }
 
     // ---------------------
     // Try open
     if (NoOpen == '') {
         var dy = self.screen.availHeight;
         var dx = self.screen.availWidth;
-        var w = window.open('', Name, 'top=' + dy + ',left=' + dx + 'menubar=no,resizable=no,scrollbars=no,width=1,height=1');
+        w = window.open('', Name, 'top=' + dy + ',left=' + dx + 'menubar=no,resizable=no,scrollbars=no,width=1,height=1');
         if (w.opener && (w.opener.location.href == self.location.href) && (w.location.href == 'about:blank')) {
             w.close();
             windows[Name] = 'none';
@@ -132,8 +136,7 @@ var warnmsg = '';
  * @param logmsg
  */
 function displayWarningMsg(logmsg) {
-    var msg = logmsg, generateParentList, parentList = [], i, length, currentParent, isFunction,
-        current$;
+    var msg = logmsg, generateParentList, parentList = [], i, length, currentParent, isFunction;
     isFunction = function(obj) {
       return typeof obj === 'function';
     };
@@ -184,7 +187,9 @@ function displayLogMsg(logmsg) {
         // redirect to foot function
         if (window.name != "foot") {
             var wfoot = windowExist('foot');
-            if (wfoot)  wfoot.displayLogMsg(logmsg);
+            if (wfoot)  {
+                wfoot.displayLogMsg(logmsg);
+            }
         }
         return;
     }
@@ -194,11 +199,12 @@ function displayLogMsg(logmsg) {
         var k = 0;
 
         if ((log.options) && (log.options.length > 0)) {
-            if (log.options[log.options.length - 1].className == "CORETblCell")
+            if (log.options[log.options.length - 1].className == "CORETblCell") {
                 classn = 'CORETblCellAltern';
+            }
             k = log.options.length;
         }
-        for (var i = 0; i < logmsg.length; i++) {
+        for (i = 0; i < logmsg.length; i++) {
             log.options[k] = new Option(logmsg[i], '', false, false);
             log.options[k].className = classn;
             k = log.options.length;
@@ -206,8 +212,11 @@ function displayLogMsg(logmsg) {
         log.selectedIndex = log.options.length - 1;
 
         logi = top.foot.document.getElementById('ilog');
-        if ((!log.options) || (log.options.length == 0)) logi.style.display = 'none';
-        else logi.style.display = 'inline';
+        if ((!log.options) || (log.options.length == 0)) {
+            logi.style.display = 'none';
+        } else {
+            logi.style.display = 'inline';
+        }
     }
 
 }
@@ -239,27 +248,30 @@ function delEvent(o, e, f) {
     }
 }
 function correctPNG() {// correctly handle PNG transparency in Win IE 5.5 and IE < 7.0
-    if (isIE6) for (var i = 0; i < document.images.length; i++) _correctOnePNG(document.images[i]);
+    if (isIE6) {
+        for (var i = 0; i < document.images.length; i++) {
+            _correctOnePNG(document.images[i]);
+        }
+    }
 }
 function correctOnePNG(img, iknowitisapng) {// correctly handle PNG transparency in Win IE 5.5 and < 7.0
-    if (isIE6) _correctOnePNG(img, iknowitisapng);
+    if (isIE6) {
+        _correctOnePNG(img, iknowitisapng);
+    }
 }
 
 function _correctOnePNG(img, iknowitisapng) {// correctly handle PNG transparency in Win IE 5.5 or higher.
-    if (img.className == 'icon') return;
+    if (img.className == 'icon') {
+        return;
+    }
     var imgName = img.src.toUpperCase();
     if ((iknowitisapng == true) || (imgName.substring(imgName.length - 3, imgName.length) == "PNG")) {
-
         img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + img.src + "',sizingMethod='scale') ";
         img.style.width = img.width;
         img.style.height = img.height;
         img.src = 'Images/1x1.gif';
     }
-
 }
-
-//if (isIE6) addEvent(window,"load",correctPNG);
-
 function sendActionNotification(code, arg) {
 
     if (window) {
@@ -273,9 +285,7 @@ function sendActionNotification(code, arg) {
             if (window.opener.receiptActionNotification) {
                 window.opener.receiptActionNotification(code, arg);
             }
-        } catch (e) {
-
-        }
+        } catch (e) {}
     }
     if (window.parent && (window != window.parent)) {
         if (window.parent.receiptActionNotification) {
@@ -294,8 +304,12 @@ var CGCURSOR = 'auto'; // current global cursor
 function globalcursor(c, w) {
     var theSheet;
 
-    if (!w) w = window;
-    if ((!w) && (c == CGCURSOR)) return;
+    if (!w) {
+        w = window;
+    }
+    if ((!w) && (c == CGCURSOR)) {
+        return;
+    }
     if (!w.document.styleSheets) {
         if (w.document.createStyleSheet) {
             w.document.createStyleSheet("javascript:''");
@@ -309,12 +323,17 @@ function globalcursor(c, w) {
     }
 
     unglobalcursor();
-    //  w.document.body.style.cursor=c;
 
-    if (w.document.styleSheets.length == 1) theSheet = w.document.styleSheets[0];
-    else theSheet = w.document.styleSheets[1];
+    if (w.document.styleSheets.length == 1) {
+        theSheet = w.document.styleSheets[0];
+    }
+    else {
+        theSheet = w.document.styleSheets[1];
+    }
 
-    if (!theSheet) return;
+    if (!theSheet) {
+        return;
+    }
     if (theSheet.addRule) {
         theSheet.addRule("*", "cursor:" + c + " ! important", 0);
     } else if (theSheet.insertRule) {
@@ -324,14 +343,15 @@ function globalcursor(c, w) {
 
 }
 function unglobalcursor(w) {
-    if (!w) w = window;
-    if (!w.document.styleSheets) return;
+    if (!w) {
+        w = window;
+    }
+    if (!w.document.styleSheets) {
+        return;
+    }
     var theRules;
     var theSheet;
     var r0;
-    var s = '';
-
-    //  w.document.body.style.cursor='auto';
 
     if (w.document.styleSheets.length == 1) theSheet = w.document.styleSheets[0];
     else theSheet = w.document.styleSheets[1];
@@ -343,14 +363,7 @@ function unglobalcursor(w) {
     else return;
     if (theRules.length > 0) {
         r0 = theRules[0].selectorText;
-        /* for (var i=0; i<theSheet.rules.length; i++) {
-         s=s+'\n'+theSheet.rules[i].selectorText;
-         s=s+'-'+theSheet.rules[i].style;
-         }*/
-        //  alert(s);
-
         if ((r0 == '*') || (r0 == '')) {
-
             if (theSheet.removeRule) {
                 theSheet.removeRule(0);
             } else if (theSheet.deleteRule) {
@@ -359,10 +372,8 @@ function unglobalcursor(w) {
         }
     }
     CGCURSOR = 'auto';
-    ;
 
 }
-
 function include_js(script_filename) {
     var jsver = is_already_include_js(script_filename);
     if (jsver >= 0) {
@@ -370,7 +381,9 @@ function include_js(script_filename) {
         var js = document.createElement('script');
         js.setAttribute('language', 'javascript');
         js.setAttribute('type', 'text/javascript');
-        if (jsver > 0) script_filename += '?wv=' + jsver;
+        if (jsver > 0) {
+            script_filename += '?wv=' + jsver;
+        }
         js.setAttribute('src', script_filename);
         html_doc.appendChild(js);
     }
@@ -378,20 +391,23 @@ function include_js(script_filename) {
 }
 function is_already_include_js(file) {
     var html_doc = document.getElementsByTagName('script');
-    var i = 0;
+    var i;
     var jssrc;
     var pat = /wv=([0-9]+)/;
     var rp;
     var jsver = 0;
-    //    var absfile=getAbsPath(file);
     for (i = 0; i < html_doc.length; i++) {
         jssrc = html_doc[i].getAttribute('src');
         if (jssrc) {
-            if (jssrc == file) return -1;
-            if (jssrc.indexOf(file) >= 0) return -1;
-            //if (absfile == html_doc[i].src) return -1;
-            if ((!jsver) && ( rp = pat.exec(jssrc)))     jsver = rp[1];
-
+            if (jssrc == file) {
+                return -1;
+            }
+            if (jssrc.indexOf(file) >= 0) {
+                return -1;
+            }
+            if ((!jsver) && ( rp = pat.exec(jssrc))) {
+                jsver = rp[1];
+            }
         }
     }
     return jsver;
