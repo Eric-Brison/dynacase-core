@@ -1311,7 +1311,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * test if the document can be modified by the current user
-     * the difference between ::canUpdateDoc is that document is not need to be locked
+     * the document is not need to be locked
      * @param bool $verifyDomain
      * @return string empty means user can update else message of the raison
      */
@@ -2439,7 +2439,7 @@ create unique index i_docir on doc(initid, revision);";
                 // in case of server not reach : try again
                 if (!is_object($info)) {
                     // not found : create it
-                    $info=new VaultFileInfo();
+                    $info = new VaultFileInfo();
                 }
                 if ($info->teng_state == TransformationEngine::error_connect) {
                     $info->teng_state = TransformationEngine::status_inprogress;
@@ -5737,8 +5737,8 @@ create unique index i_docir on doc(initid, revision);";
                                     $oa = $this->GetAttribute($sattrid);
                                     if (($k >= 0) && ($oa && $oa->repeat)) {
                                         $tval = $this->getMultipleRawValues($sattrid);
-
-                                        $ovalue = isset($tval[$k])?chop($tval[$k]):'';
+                                        
+                                        $ovalue = isset($tval[$k]) ? chop($tval[$k]) : '';
                                     } else {
                                         // get property also
                                         $ovalue = $this->getRawValue($sattrid);
