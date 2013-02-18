@@ -421,16 +421,26 @@ class importSingleDocument
                     } elseif (count($lsdoc) == 1) {
                         // no double title found
                         $this->tcr["action"] = "updated"; # N_("updated")
+                        
+                        /**
+                         * @var Doc $doc
+                         */
+                        $doc = $lsdoc[0];
                         if (!$this->analyze) {
-                            $err = $lsdoc[0]->preImport($extra);
+                            $err = $doc->preImport($extra);
                             if ($err != "") {
                                 if ($err) $this->setError("DOC0109", $this->doc->name, $err);
                                 
                                 return $this;
                             }
                         }
-                        $lsdoc[0]->transfertValuesFrom($this->doc);
-                        $this->doc = $lsdoc[0];
+                        $err = $doc->transfertValuesFrom($this->doc);
+                        if ($err != "") {
+                            $this->setError("DOC0113", $this->doc->name, $err);
+                            
+                            return $this;
+                        }
+                        $this->doc = $doc;
                         $this->tcr["id"] = $this->doc->id;
                         if (!$this->analyze) {
                             if (($this->specId != "") && (!is_numeric(trim($this->specId))) && ($this->doc->name == "")) {

@@ -38,7 +38,8 @@ class TestAttributeDate extends TestCaseDcpCommonFamily
         $target = createDoc(self::$dbaccess, self::testFamily);
         $this->assertTrue(is_object($target) , sprintf("cannot create %s ", self::testFamily));
         
-        $target->transfertValuesFrom($origin);
+        $err = $target->transfertValuesFrom($origin);
+        $this->assertEmpty($err, sprintf("cannot transfert values from %s", self::testFamily));
         $err = $target->add();
         $this->assertEmpty($err, sprintf("cannot add %s ", self::testFamily));
         $newId = $target->id;
