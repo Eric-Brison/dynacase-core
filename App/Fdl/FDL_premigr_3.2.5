@@ -5,6 +5,36 @@ if [ -z "$pgservice_core" ]; then
 	exit 1
 fi
 
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'EOF'
+DELETE FROM docattr
+WHERE docid IN (
+    --
+    -- Get families that inherits from family DIR (inclusive)
+    --
+    WITH RECURSIVE child_fams(id, fromid) AS (
+	SELECT id, fromid FROM docfam WHERE name = 'DIR'
+	UNION
+	SELECT docfam.id, docfam.fromid FROM docfam, child_fams WHERE child_fams.id = docfam.fromid
+    ) SELECT id FROM child_fams
+) AND
+id ~ '^:?fld_root$' RETURNING *;
+EOF
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error deleting 'fdl_root' menu attribute."
+    exit $RET
+fi
+
 "$wpub"/wsh.php --api=updateclass  --appc=FDL --class=DocEnum
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error updating class DocEnum."
+    exit $RET
+fi
 
 "$wpub"/wsh.php --api=updateclass  --appc=FDL --class=TaskRequest
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error updating class TaskRequest."
+    exit $RET
+fi
