@@ -1,25 +1,38 @@
 <?xml version="1.0"?>
-<module name="@PACKAGE@-test" disabled="no" version="@VERSION@" release="@RELEASE@" basecomponent="no">
-  <description>Test case for dynacase-core.</description>
+<module name="@PACKAGE@-test" disabled="no" version="@VERSION@" release="@RELEASE@"
+        basecomponent="no">
+    <description>Test case for dynacase-core.</description>
 
-  <replaces>
-      <module name="dynacase-platform-test" />
-  </replaces>
+    <replaces>
+        <module name="dynacase-platform-test"/>
+    </replaces>
 
-  <requires>
-    <module name="@PACKAGE@" />
-  </requires>
+    <requires>
+        <module name="@PACKAGE@"/>
+    </requires>
 
-  <post-install>
-    <process command="programs/update_catalog" />
-  </post-install>
+    <pre-install>
+        <check type="syscommand" command="xmllint">
+            <label lang="en">Check "xmllint". To check xml files</label>
+        </check>
+    </pre-install>
 
-  <post-upgrade>
-    <process command="programs/update_catalog" />
-  </post-upgrade>
-  
-  <changelog> 
-   
-  </changelog>
+    <post-install>
+        <process command="programs/update_catalog"/>
+    </post-install>
+
+    <pre-upgrade>
+        <check type="syscommand" command="xmllint">
+            <label lang="en">Check "xmllint". To check xml files</label>
+        </check>
+    </pre-upgrade>
+
+    <post-upgrade>
+        <process command="programs/update_catalog"/>
+    </post-upgrade>
+
+    <changelog>
+
+    </changelog>
 
 </module>
