@@ -1138,15 +1138,17 @@ create unique index i_docir on doc(initid, revision);";
      * copy values from anothers document (must be same family or descendant)
      *
      * @param Doc &$from document source for the transfert
+     * @return string error message from setValue, if no error, empty string
      */
     final public function transfertValuesFrom(&$from)
     {
         
         $values = $from->getValues();
-        
+        $err = "";
         foreach ($values as $k => $v) {
-            $this->setValue($k, $v);
+            $err.= ($err ? '\n' : '') . $this->setValue($k, $v);
         }
+        return $err;
     }
     /**
      * convert to another family
@@ -5096,7 +5098,8 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var Doc $copy
          */
-        $copy->transfertValuesFrom($this);
+        $err = $copy->transfertValuesFrom($this);
+        if ($err != "") return $err;
         
         $copy->id = "";
         $copy->initid = "";

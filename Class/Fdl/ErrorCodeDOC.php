@@ -134,6 +134,12 @@ class ErrorCodeDOC
     const DOC0112 = 'update error in "%s" document : %s';
     /**
      * @errorCode
+     * update doc error after transfert values from old doc
+     * @see Doc::store
+     */
+    const DOC0113 = 'transfertvalues error in document "%s" update: %s';
+    /**
+     * @errorCode
      * the document cannot be inserted in folder target
      * @note when DOC has defined a folder target
      */
