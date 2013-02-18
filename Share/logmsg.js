@@ -165,7 +165,6 @@ function displayWarningMsg(logmsg) {
                     '<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>' +
                     currentParent.$('<div/>').text(logmsg).html().replace(/\n/g,"<br/>","g")+'</p></div></div>'
                     ).dialog({
-                                position : { at : 'top'},
                                 modal:true,
                                 title:'<span class="ui-icon ui-icon-info"></span>'
                             });
