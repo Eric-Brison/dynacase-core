@@ -737,7 +737,7 @@ function lenumvalues($enum, $val = "")
             ',',
             '.'
         ) , $label);
-        if (($val == "") || (preg_match("!" . preg_quote($val, "/") . "!i", $slabel, $reg))) $tr[] = array(
+        if (($val == "") || (preg_match("!" . preg_quote($val, "!") . "!i", $slabel, $reg))) $tr[] = array(
             "$slabel",
             $slabel,
             $key

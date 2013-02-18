@@ -82,7 +82,7 @@ function getMainAction($auth, &$action)
     $CORE_LOGLEVEL = $core->GetParam("CORE_LOGLEVEL", "IWEF");
     // ----------------------------------------
     // Init PUBLISH URL from script name
-    $pattern = preg_quote($indexphp, "/");
+    $pattern = preg_quote($indexphp, "|");
     if (preg_match("|(.*)/$pattern|", $_SERVER['SCRIPT_NAME'], $reg)) {
         // determine publish url (detect ssl require)
         if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = "off";
