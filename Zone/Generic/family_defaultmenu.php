@@ -347,7 +347,7 @@ function getAttributeOrder(Action & $action, $attrName, $orderBy)
         /*
          * Invert the sort sign and extract attr name
         */
-        if ($usort[0] == "-") {
+        if ((!empty($usort)) && $usort[0] == "-") {
             $invertedSortSign = "";
             $sortAttr = substr($usort, 1);
         } else {
