@@ -4,6 +4,31 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
+/**
+ * Group order, all group have one user with same name, and one role with same name
+ *
+ *                         +--------+           +----------+
+ *                         +   A    |           |     F    |
+ *                +--------+        +----------->          |
+ *                |        +-----+--+           +----------+
+ *                |              |  +-------+
+ *                |              |          |
+ *                |        +-----v----+    +v-----------+
+ *                |        |          |    |            |
+ *                |        |     B    |    |     C      |
+ *                |        +--------+-+    +----+-------+
+ *                |                 |           |
+ *                |                 |           |                      +-----------+
+ *                |               +-v-----------v--+                   |           |
+ *                |               |        D       |                   |   G       |
+ *                |               |                |                   +-----------+
+ *                |               +----+-----------+
+ *                |                    |
+ *                |            +-------v----------+
+ *                +------------>                  |
+ *                             |        E         |
+ *                             +------------------+
+ */
 
 namespace Dcp\Pu;
 /**
@@ -84,7 +109,7 @@ class TestRoleMove extends TestCaseDcpCommonFamily
         /* @var $eGroup \_IGROUP */
         /* @var $gGroup \_IGROUP */
         $eGroup->insertDocument($gGroup->getPropertyValue("id"));
-        $eTogGroup = new \Group(self::$dbaccess, array($eGroup->getRawValue("us_whatid"), $gGroup->getRawValue("us_whatid")));
+        $eTogGroup = new \Group(self::$dbaccess, array($eGroup->getRawValue("us_whatid")));
         $eTogGroup->resetAccountMemberOf(true);
         $this->analyzeUserGroupAndRole($user);
         $this->analyzeGroupUserAndRole($group);
@@ -100,12 +125,21 @@ class TestRoleMove extends TestCaseDcpCommonFamily
         /* @var $cGroup \_IGROUP */
         /* @var $aGroup \_IGROUP */
         $aGroup->removeDocument($cGroup->getPropertyValue("id"));
+        $cInternalGroup = new \Group(self::$dbaccess, array($cGroup->getRawValue("us_whatid")));
+        $cInternalGroup->resetAccountMemberOf(true);
         $this->analyzeUserGroupAndRole($user);
         $this->analyzeGroupUserAndRole($group);
     }
 
+    /**
+     * Analyze a user against the role and group definition
+     *
+     * @param  array $user contains "name" user logical name, roles : array of role logical name, groups array of group logical name
+     * @return void
+     */
     protected function analyzeUserGroupAndRole($user)
     {
+        $dbaccess = self::$dbaccess;
         $userDoc = new_doc(self::$dbaccess, $user["name"]);
         /* @var $userDoc \_IUSER */
         $currentRoles = $userDoc->getAccount()->getAllRoles();
@@ -114,9 +148,11 @@ class TestRoleMove extends TestCaseDcpCommonFamily
         }, $currentRoles);
         $this->assertEmpty(array_diff($user["roles"], $currentRoles), sprintf("User %s have not all needed roles (%s instead of %s)",
                     $user["name"], var_export($currentRoles, true), var_export($user["roles"], true)));
+        $this->assertEmpty(array_diff($currentRoles, $user["roles"]), sprintf("User %s have more than all needed roles (%s instead of %s)",
+                    $user["name"], var_export($currentRoles, true), var_export($user["roles"], true)));
         $groups = $user["groups"];
-        $groups = array_map(function ($groupName) {
-            return array("name" => $groupName, "id" => getIdFromName(self::$dbaccess, $groupName));
+        $groups = array_map(function ($groupName) use($dbaccess) {
+            return array("name" => $groupName, "id" => getIdFromName($dbaccess, $groupName));
         }, $groups);
         $userGroups = $userDoc->getAllUserGroups();
         foreach ($groups as $currentGroupId) {
@@ -124,6 +160,12 @@ class TestRoleMove extends TestCaseDcpCommonFamily
         }
     }
 
+    /**
+     * Analyze a user against the role and users definition
+     *
+     * @param  array $user contains "name" user logical name, roles : array of role logical name, users array of user logical name
+     * @return void
+     */
     protected function analyzeGroupUserAndRole($group)
     {
         $currentGroup = new_doc(self::$dbaccess, $group["name"]);
@@ -133,6 +175,8 @@ class TestRoleMove extends TestCaseDcpCommonFamily
             return $role["login"];
         }, $currentRoles);
         $this->assertEmpty(array_diff($group["roles"], $currentRoles), sprintf("Group %s have not all needed roles (%s instead of %s)",
+                            $group["name"], var_export($currentRoles, true), var_export($group["roles"], true)));
+        $this->assertEmpty(array_diff($currentRoles, $group["roles"]), sprintf("Group %s have more than all needed roles (%s instead of %s)",
                             $group["name"], var_export($currentRoles, true), var_export($group["roles"], true)));
         $usersName = $group["users"];
         /* @var $userDoc \_IUSER */
@@ -349,7 +393,7 @@ JSON;
         "user" :  {
             "name" :   "IUSER_E",
             "groups" : ["GROUP_A", "GROUP_B", "GROUP_D", "GROUP_E"],
-            "roles" :  ["role_user_e", "role_a", "role_a1", "role_b", "role_d", "role_e"]
+            "roles" :  ["role_user_e", "role_a", "role_a1", "role_b", "role_d", "role_e", "role_c"]
         },
         "group" : {
             "name" :  "GROUP_A",
