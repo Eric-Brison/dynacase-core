@@ -43,7 +43,6 @@ function barmenu(&$action)
     ));
     
     popupInit("helpmenu", array(
-        'help',
         'import',
         'importtar',
         'planexec'
