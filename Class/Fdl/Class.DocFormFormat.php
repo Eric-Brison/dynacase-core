@@ -976,7 +976,11 @@ class DocFormFormat
             {
                 $isDisabled = "";
                 if (($this->visibility == "R") || ($this->visibility == "S")) $isDisabled = $this->idisabled;
-                list($hh, $mm) = explode(":", $value);
+                if (strpos($value,':')!==false) {
+                    list($hh, $mm) = explode(":", $value);
+                } else {
+                    $hh=$mm=0;
+                }
                 $input = "<input $isDisabled size=2 maxlength=2 onchange=\"chtime('{$this->attridk}')\" type=\"text\"  value=\"" . $hh . "\" id=\"hh" . $this->attridk . "\">:";
                 
                 $input.= "<input $isDisabled size=2 maxlength=2 onchange=\"chtime('{$this->attridk}')\" type=\"text\"  value=\"" . $mm . "\"id=\"mm" . $this->attridk . "\">";
