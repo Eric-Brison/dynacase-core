@@ -24,8 +24,14 @@ function rezizelocalimage($img, $size, $basedest)
     $source = $img;
     
     $dest = DEFAULT_PUBDIR . $basedest;
+    if ($size[0] == 'H') {
+        $size = substr($size, 1);
+        $h = "x";
+    } else {
+        $h = '';
+    }
     
-    $cmd = sprintf("convert  -thumbnail %d %s %s", $size, escapeshellarg($source) , escapeshellarg($dest));
+    $cmd = sprintf("convert  -thumbnail $h%d %s %s", $size, escapeshellarg($source) , escapeshellarg($dest));
     system($cmd);
     if (file_exists($dest)) return $basedest;
     return false;
@@ -65,7 +71,7 @@ function getVaultPauth($vid)
                             $free = $row[2];
                             
                             if (!$free) return false;
-                            
+                            $ext = '';
                             if (preg_match('/\.([^\.]*)$/', $name, $reg)) {
                                 $ext = $reg[1];
                             }
@@ -95,13 +101,22 @@ function getVaultCacheImage($vid, $size)
     return $basedest;
 }
 
-$size = $_GET["size"];
+$size = isset($_GET["size"]) ? $_GET["size"] : null;
+if (!$size) {
+    if (isset($_GET["width"])) $size = $_GET["width"];
+}
+if (!$size) {
+    $heigth = isset($_GET["height"]) ? $_GET["height"] : null;
+    if ($heigth) {
+        $size = "H" . $heigth;
+    }
+}
 $img = $_GET["img"];
 if (!$img) {
     $vid = $_GET["vid"];
     if ($vid > 0) $img = "vaultid=$vid";
 }
-
+$location = '';
 $dir = dirname($_SERVER["SCRIPT_NAME"]);
 $ldir = DEFAULT_PUBDIR;
 if (preg_match("/vaultid=([0-9]+)/", $img, $vids)) {
