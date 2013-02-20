@@ -60,6 +60,18 @@ function setUsort(Action & $action, $aorder, $famid = "")
         }
     }
     
+    if (!isset($tr[$famid])) {
+        /*
+         * Handle the case when no order is memorized and "title"
+         * is clicked: invert title sort order
+        */
+        if ($aorder == 'title') {
+            $aorder = '-title';
+        } elseif ($aorder == '-title') {
+            $aorder = 'title';
+        }
+    }
+    
     $sqlorder = $aorder;
     if ($aorder[0] == "-") $sqlorder = substr($aorder, 1);
     $a = $fdoc->getAttribute($sqlorder);
