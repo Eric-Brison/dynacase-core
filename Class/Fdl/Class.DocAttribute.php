@@ -290,6 +290,9 @@ class BasicAttribute
  */
 class NormalAttribute extends BasicAttribute
 {
+    const _cEnum = "_CACHE_ENUM";
+    const _cEnumLabel = "_CACHE_ENUMLABEL";
+    const _cParent = "_CACHE_PARENT";
     /**
      * @var bool
      */
@@ -332,6 +335,10 @@ class NormalAttribute extends BasicAttribute
         0 => "\n",
         1 => ", "
     );
+    /**
+     * @var array
+     */
+    private static $_cache = array();
     /**
      * Normal Attribute constructor : non structural attribute
      *
@@ -1073,10 +1080,14 @@ class NormalAttribute extends BasicAttribute
      */
     function getEnum()
     {
-        global $__tenum; // for speed optimization
-        global $__tlenum;
+        $cached = self::_cacheFetch(self::_cEnum, array(
+            $this->docid,
+            $this->id
+        ));
+        if ($cached !== null) {
+            return $cached;
+        }
         
-        if (isset($__tenum[$this->id])) return $__tenum[$this->id]; // not twice
         if (($this->type == "enum") || ($this->type == "enumlist")) {
             // set the enum array
             $this->enum = array();
@@ -1107,9 +1118,27 @@ class NormalAttribute extends BasicAttribute
                 } else {
                     AddWarningMsg(sprintf(_("invalid syntax for [%s] for enum attribute") , $this->phpfunc));
                 }
+                self::_cacheStore(self::_cEnum, array(
+                    $this->docid,
+                    $this->id
+                ) , $this->enum);
+                self::_cacheStore(self::_cEnumLabel, array(
+                    $this->docid,
+                    $this->id
+                ) , $this->enumlabel);
             } else {
                 // static enum
-                $sql = sprintf("select * from docenum where famid=%d and attrid='%s' order by eorder", $this->docid, pg_escape_string($this->id));
+                $famId = $this->_getRecursiveParentFamHavingAttribute($this->docid, $this->id);
+                
+                $cached = self::_cacheFetch(self::_cEnum, array(
+                    $famId,
+                    $this->id
+                ));
+                if ($cached !== null) {
+                    return $cached;
+                }
+                
+                $sql = sprintf("select * from docenum where famid=%d and attrid='%s' order by eorder", $famId, pg_escape_string($this->id));
                 
                 simpleQuery('', $sql, $enums);
                 
@@ -1133,10 +1162,16 @@ class NormalAttribute extends BasicAttribute
                         $this->enumlabel[$enumKey] = $enumLabel;
                     }
                 }
+                self::_cacheStore(self::_cEnum, array(
+                    $famId,
+                    $this->id
+                ) , $this->enum);
+                self::_cacheStore(self::_cEnumLabel, array(
+                    $famId,
+                    $this->id
+                ) , $this->enumlabel);
             }
         }
-        $__tenum[$this->id] = $this->enum;
-        $__tlenum[$this->id] = $this->enumlabel;
         return $this->enum;
     }
     
@@ -1179,9 +1214,9 @@ class NormalAttribute extends BasicAttribute
      */
     function resetEnum()
     {
-        global $__tenum;
-        $__tenum[$this->id] = $this->enum;
-        $__tlenum[$this->id] = $this->enumlabel;
+        self::_cacheFlush(self::_cEnum);
+        self::_cacheFlush(self::_cEnumLabel);
+        self::_cacheFlush(self::_cParent);
     }
     /**
      * return array of enumeration definition
@@ -1193,13 +1228,26 @@ class NormalAttribute extends BasicAttribute
      */
     function getEnumLabel($enumid = null)
     {
-        global $__tlenum;
-        
+        $implode = false;
         $this->getEnum();
         
-        $implode = false;
-        if (isset($__tlenum[$this->id])) { // is set
-            if ($enumid === null) return $__tlenum[$this->id];
+        $cached = self::_cacheFetch(self::_cEnumLabel, array(
+            $this->docid,
+            $this->id
+        ));
+        if ($cached === null) {
+            $famId = $this->_getRecursiveParentFamHavingAttribute($this->docid, $this->id);
+            if ($famId !== $this->docid) {
+                $cached = self::_cacheFetch(self::_cEnumLabel, array(
+                    $famId,
+                    $this->id
+                ));
+            }
+        }
+        if ($cached !== null) {
+            if ($enumid === null) {
+                return $cached;
+            }
             if (strstr($enumid, "\n")) {
                 $enumid = explode("\n", $enumid);
                 $implode = true;
@@ -1207,16 +1255,17 @@ class NormalAttribute extends BasicAttribute
             if (is_array($enumid)) {
                 $tv = array();
                 foreach ($enumid as $v) {
-                    if (isset($__tlenum[$this->id][$v])) $tv[] = $__tlenum[$this->id][$v];
-                    else $tv[] = $enumid;
+                    $tv[] = (isset($cached[$v])) ? $cached[$v] : $v;
                 }
-                if ($implode) return implode("\n", $tv);
+                if ($implode) {
+                    return implode("\n", $tv);
+                }
                 return $tv;
             } else {
-                if (isset($__tlenum[$this->id][$enumid])) return $__tlenum[$this->id][$enumid];
-                else return $enumid;
+                return (isset($cached[$enumid])) ? $cached[$enumid] : $enumid;
             }
         }
+        
         return null;
     }
     /**
@@ -1233,17 +1282,29 @@ class NormalAttribute extends BasicAttribute
         $err = '';
         if ($key == "") return "";
         
+        $famId = $this->docid;
+        $attrId = $this->id;
+        
         $a = new DocAttr($dbaccess, array(
-            $this->docid,
-            $this->id
+            $famId,
+            $attrId
         ));
+        if (!$a->isAffected()) {
+            /* Search attribute in parents */
+            $a = $this->_getDocAttrFromParents($dbaccess, $famId, $attrId);
+            if ($a === false) {
+                $err = sprintf(_("unknow attribute %s (family %s)") , $attrId, $famId);
+                return $err;
+            }
+        }
         if ($a->isAffected()) {
+            $famId = $a->docid;
             $oe = new DocEnum($dbaccess, array(
-                $this->docid,
-                $this->id,
+                $famId,
+                $attrId,
                 $key
             ));
-            $tenum = $this->getEnum();
+            $this->getEnum();
             
             $key = str_replace(array(
                 '|'
@@ -1256,25 +1317,98 @@ class NormalAttribute extends BasicAttribute
                 '_'
             ) , $label);
             if (!$oe->isAffected()) {
-                
-                $tenum[$key] = $label;
-                global $__tenum; // modify cache
-                global $__tlenum;
-                $__tenum[$this->id][$key] = $label;
-                $__tlenum[$this->id][$key] = $label;
-                
-                $oe->attrid = $this->id;
-                $oe->famid = $this->docid;
+                $oe->attrid = $attrId;
+                $oe->famid = $famId;
                 $oe->key = $key;
                 $oe->label = $label;
-                // convert array to string
+                /* Store enum in database */
                 $err = $oe->add();
+                if ($err == '') {
+                    /* Update cache */
+                    $cachedEnum = self::_cacheFetch(self::_cEnum, array(
+                        $famId,
+                        $this->id
+                    ) , array());
+                    $cachedEnumLabel = self::_cacheFetch(self::_cEnumLabel, array(
+                        $famId,
+                        $this->id
+                    ) , array());
+                    $cachedEnum[$key] = $label;
+                    $cachedEnumLabel[$key] = $label;
+                    self::_cacheStore(self::_cEnum, array(
+                        $famId,
+                        $this->id
+                    ) , $cachedEnum);
+                    self::_cacheStore(self::_cEnumLabel, array(
+                        $famId,
+                        $this->id
+                    ) , $cachedEnumLabel);
+                }
             }
         } else {
-            $err = sprintf(_("unknow attribute %s (family %s)") , $this->id, $this->docid);
+            $err = sprintf(_("unknow attribute %s (family %s)") , $attrId, $famId);
         }
-        
         return $err;
+    }
+    private function _getRecursiveParentFamHavingAttribute($famId, $attrId)
+    {
+        $cached = self::_cacheFetch(self::_cParent, array(
+            $famId,
+            $attrId
+        ));
+        if ($cached !== null) {
+            return $cached;
+        }
+        $sql = <<<'EOF'
+WITH RECURSIVE parent_attr(fromid, docid, id) AS (
+    SELECT
+        docfam.fromid,
+        docattr.docid,
+        docattr.id
+    FROM
+        docattr,
+        docfam
+    WHERE
+        docattr.docid = docfam.id
+        AND
+        docattr.docid = %d
+
+    UNION
+
+    SELECT
+        docfam.fromid,
+        docattr.docid,
+        docattr.id
+    FROM
+        docattr,
+        docfam,
+        parent_attr
+    WHERE
+        docattr.docid = parent_attr.fromid
+        AND
+        parent_attr.fromid = docfam.id
+)
+SELECT docid FROM parent_attr WHERE id = '%s' LIMIT 1;
+EOF;
+        $sql = sprintf($sql, pg_escape_string($famId) , pg_escape_string($attrId));
+        $parentFamId = false;
+        simpleQuery('', $sql, $parentFamId, true, true);
+        if ($parentFamId !== false) {
+            self::_cacheStore(self::_cParent, array(
+                $famId,
+                $attrId
+            ) , $parentFamId);
+        }
+        return $parentFamId;
+    }
+    private function _getDocAttrFromParents($dbaccess, $famId, $attrId)
+    {
+        $parentFamId = $this->_getRecursiveParentFamHavingAttribute($famId, $attrId);
+        if ($parentFamId === false) {
+            return false;
+        }
+        $a = new DocAttr($dbaccess, $parentFamId, $attrId);
+        return $a;
     }
     /**
      * Test if an enum key existe
@@ -1289,6 +1423,92 @@ class NormalAttribute extends BasicAttribute
         $this->getEnum();
         if (isset($this->enum[$key])) return true;
         return false;
+    }
+    /**
+     * Construct a string key
+     *
+     * @param mixed $k key
+     * @return string
+     */
+    private static function _cacheKey($k)
+    {
+        if (is_scalar($k)) {
+            return $k;
+        } else if (is_array($k)) {
+            return implode(':', $k);
+        }
+        return serialize($k);
+    }
+    /**
+     * Check if an entry exists for the given key
+     *
+     * @param string $cacheId cache Id
+     * @param string $k key
+     * @return bool true if it exists, false if it does not exists
+     */
+    private static function _cacheExists($cacheId, $k)
+    {
+        $k = self::_cacheKey($k);
+        return isset(self::$_cache[$cacheId][$k]);
+    }
+    /**
+     * Add (or update) a key/value
+     *
+     * @param string $cacheId cache Id
+     * @param string $k key
+     * @param mixed $v value
+     * @return bool true on success, false on failure
+     */
+    private static function _cacheStore($cacheId, $k, $v)
+    {
+        $k = self::_cacheKey($k);
+        self::$_cache[$cacheId][$k] = $v;
+        return true;
+    }
+    /**
+     * Fetch the key's value
+     *
+     * @param string $cacheId cache Id
+     * @param string $k key
+     * @param mixed $onCacheMiss value returned on cache miss (default is null)
+     * @return null|mixed null on failure, mixed value on success
+     */
+    private static function _cacheFetch($cacheId, $k, $onCacheMiss = null)
+    {
+        if (self::_cacheExists($cacheId, $k)) {
+            $k = self::_cacheKey($k);
+            return self::$_cache[$cacheId][$k];
+        }
+        return $onCacheMiss;
+    }
+    /**
+     * Remove a key and it's value from the cache
+     *
+     * @param string $cacheId cache Id
+     * @param string $k key
+     * @return bool true on success, false on failure
+     */
+    private static function _cacheRemove($cacheId, $k)
+    {
+        if (self::_cacheExists($cacheId, $k)) {
+            $k = self::_cacheKey($k);
+            unset(self::$_cache[$cacheId][$k]);
+        }
+        return true;
+    }
+    /**
+     * Flush the cache contents
+     *
+     * @param string|null $cacheId cache Id or null (default) to flush all caches
+     * @return void
+     */
+    private static function _cacheFlush($cacheId = null)
+    {
+        if ($cacheId === null) {
+            self::$_cache = array();
+        } else {
+            self::$_cache[$cacheId] = array();
+        }
     }
 }
 /**

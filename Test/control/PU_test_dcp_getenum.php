@@ -82,6 +82,63 @@ class TestGetEnum extends TestCaseDcpCommonFamily
         $this->assertEquals($expectedKeys, $keys, "enum keys mismatch");
         $this->assertEquals($expectedLabel, $labels, "enum label mismatch");
     }
+    /**
+     * @dataProvider dataInheritedGetEnum
+     *
+     * @param $familyIdList
+     * @param $attrId
+     * @param $expectedEnum
+     */
+    public function testInheritedGetEnum($familyIdList, $attrId, $expectedEnum)
+    {
+        /**
+         * @var \DocFam $fam
+         * @var \NormalAttribute $attr
+         */
+        foreach ($familyIdList as $familyId) {
+            $fam = new_doc(self::$dbaccess, $familyId);
+            $attr = $fam->getAttribute($attrId);
+            $enum = $attr->getEnum();
+            $this->assertTrue(is_array($enum) , sprintf("getEnum() on '%s' from '%s' is not an array (found type '%s').", $attrId, $fam->name, gettype($enum)));
+            $this->assertTrue(count($expectedEnum) === count($enum) , sprintf("Count mismatch for getEnum() on '%s' from '%s': found '%d' while expecting '%d'.", $attrId, $fam->name, count($enum) , count($expectedEnum)));
+            $diff = array_diff_key($expectedEnum, $enum);
+            $this->assertTrue(count($diff) === 0, sprintf("getEnum() on '%s' from '%s' returned unexpected keys.", $attrId, $fam->name));
+        }
+    }
+    /**
+     * @dataProvider dataInheritedAddEnum
+     *
+     * @param $addEnums
+     * @param $expectedEnums
+     */
+    public function testInheritedAddEnum($addEnums, $expectedEnums)
+    {
+        /**
+         * @var \DocFam $fam
+         * @var \NormalAttribute $attr
+         */
+        foreach ($addEnums as $familyId => $attrs) {
+            $fam = new_doc(self::$dbaccess, $familyId);
+            foreach ($attrs as $attrId => $enums) {
+                $attr = $fam->getAttribute($attrId);
+                foreach ($enums as $enumKey => $enumValue) {
+                    $err = $attr->addEnum(self::$dbaccess, $enumKey, $enumValue);
+                    $this->assertEmpty($err, sprintf("addEnum() returned unexpected error: %s", $err));
+                }
+            }
+        }
+        foreach ($expectedEnums as $familyId => $attrs) {
+            $fam = new_doc(self::$dbaccess, $familyId);
+            foreach ($attrs as $attrId => $expectedEnum) {
+                $attr = $fam->getAttribute($attrId);
+                $enum = $attr->getEnum();
+                $this->assertTrue(is_array($enum) , sprintf("getEnum() on '%s' from '%s' is not an array (found type '%s').", $attrId, $fam->name, gettype($enum)));
+                $this->assertTrue(count($expectedEnum) === count($enum) , sprintf("Count mismatch for getEnum() on '%s' from '%s': found '%d' while expecting '%d'.", $attrId, $fam->name, count($enum) , count($expectedEnum)));
+                $diff = array_diff_key($expectedEnum, $enum);
+                $this->assertTrue(count($diff) === 0, sprintf("getEnum() on '%s' from '%s' returned unexpected keys.", $attrId, $fam->name));
+            }
+        }
+    }
     public function dataGetEnum()
     {
         return array(
@@ -254,6 +311,159 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                     "1" => "Un",
                     "11" => "Un/UnUn",
                     "12" => "Un/UnDeux"
+                )
+            )
+        );
+    }
+    public function dataInheritedGetEnum()
+    {
+        return array(
+            array(
+                'families' => array(
+                    'TST_INHERIT_GETENUM_A1',
+                    'TST_INHERIT_GETENUM_B1',
+                    'TST_INHERIT_GETENUM_C1'
+                ) ,
+                'attrid' => 'TST_ENUM1',
+                'expectedEnum' => array(
+                    'ZERO' => 'Zéro',
+                    'ONE' => 'Un',
+                    'TWO' => 'Deux'
+                )
+            ) ,
+            array(
+                'families' => array(
+                    'TST_INHERIT_GETENUM_A2',
+                    'TST_INHERIT_GETENUM_B2',
+                    'TST_INHERIT_GETENUM_C2',
+                    'TST_INHERIT_GETENUM_D2'
+                ) ,
+                'attrid' => 'TST_ENUM1',
+                'expectedEnum' => array(
+                    'ZERO' => 'Zéro',
+                    'ONE' => 'Un',
+                    'TWO' => 'Deux'
+                )
+            ) ,
+            array(
+                'families' => array(
+                    'TST_INHERIT_GETENUM_A3',
+                    'TST_INHERIT_GETENUM_B3',
+                    'TST_INHERIT_GETENUM_C3',
+                    'TST_INHERIT_GETENUM_D3'
+                ) ,
+                'attrid' => 'TST_ENUM1',
+                'expectedEnum' => array(
+                    'ZERO' => 'Zéro',
+                    'ONE' => 'Un',
+                    'TWO' => 'Deux'
+                )
+            )
+        );
+    }
+    public function dataInheritedAddEnum()
+    {
+        return array(
+            array(
+                'addEnums' => array(
+                    'TST_INHERIT_ADDENUM_B1' => array(
+                        'TST_ENUM1' => array(
+                            'THREE' => 'Trois'
+                        )
+                    ) ,
+                    'TST_INHERIT_ADDENUM_C1' => array(
+                        'TST_ENUM1' => array(
+                            'FOUR' => 'Quatre'
+                        )
+                    ) ,
+                    'TST_INHERIT_ADDENUM_D1' => array(
+                        'TST_ENUM1' => array(
+                            'FIVE' => 'Cinq'
+                        )
+                    ) ,
+                ) ,
+                'expectedEnums' => array(
+                    'TST_INHERIT_ADDENUM_B1' => array(
+                        'TST_ENUM1' => array(
+                            'ZERO' => 'Zéro',
+                            'ONE' => 'Un',
+                            'TWO' => 'Two',
+                            'THREE' => 'Trois',
+                            'FOUR' => 'Quatre',
+                            'FIVE' => 'Cinq'
+                        )
+                    ) ,
+                    'TST_INHERIT_ADDENUM_C1' => array(
+                        'TST_ENUM1' => array(
+                            'ZERO' => 'Zéro',
+                            'ONE' => 'Un',
+                            'TWO' => 'Two',
+                            'THREE' => 'Trois',
+                            'FOUR' => 'Quatre',
+                            'FIVE' => 'Cinq'
+                        )
+                    ) ,
+                    'TST_INHERIT_ADDENUM_D1' => array(
+                        'TST_ENUM1' => array(
+                            'ZERO' => 'Zéro',
+                            'ONE' => 'Un',
+                            'TWO' => 'Two',
+                            'THREE' => 'Trois',
+                            'FOUR' => 'Quatre',
+                            'FIVE' => 'Cinq'
+                        )
+                    ) ,
+                )
+            ) ,
+            array(
+                'addEnums' => array(
+                    'TST_INHERIT_ADDENUM_B2' => array(
+                        'TST_ENUM1' => array(
+                            'THREE' => 'Trois'
+                        )
+                    ) ,
+                    'TST_INHERIT_ADDENUM_C2' => array(
+                        'TST_ENUM1' => array(
+                            'FOUR' => 'Quatre'
+                        )
+                    ) ,
+                    'TST_INHERIT_ADDENUM_D2' => array(
+                        'TST_ENUM1' => array(
+                            'FIVE' => 'Cinq'
+                        )
+                    ) ,
+                ) ,
+                'expectedEnums' => array(
+                    'TST_INHERIT_ADDENUM_B2' => array(
+                        'TST_ENUM1' => array(
+                            'ZERO' => 'Zéro',
+                            'ONE' => 'Un',
+                            'TWO' => 'Two',
+                            'THREE' => 'Trois',
+                            'FOUR' => 'Quatre',
+                            'FIVE' => 'Cinq'
+                        )
+                    ) ,
+                    'TST_INHERIT_ADDENUM_C2' => array(
+                        'TST_ENUM1' => array(
+                            'ZERO' => 'Zéro',
+                            'ONE' => 'Un',
+                            'TWO' => 'Two',
+                            'THREE' => 'Trois',
+                            'FOUR' => 'Quatre',
+                            'FIVE' => 'Cinq'
+                        )
+                    ) ,
+                    'TST_INHERIT_ADDENUM_D2' => array(
+                        'TST_ENUM1' => array(
+                            'ZERO' => 'Zéro',
+                            'ONE' => 'Un',
+                            'TWO' => 'Two',
+                            'THREE' => 'Trois',
+                            'FOUR' => 'Quatre',
+                            'FIVE' => 'Cinq'
+                        )
+                    ) ,
                 )
             )
         );
