@@ -39,10 +39,7 @@ function fulleditdsearch(&$action)
     $action->lay->set("searchtitle", _("detailled search"));
     $action->lay->set("substitute", $substitute);
     
-    $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, array(
-        1,
-        2
-    ) , "TABLE");
+    $tclassdoc = getNonSystemFamilies($dbaccess, $action->user->id, "TABLE");
     foreach ($tclassdoc as $k => $cdoc) {
         $selectclass[$k]["idcdoc"] = $cdoc["initid"];
         $selectclass[$k]["classname"] = $cdoc["title"];
