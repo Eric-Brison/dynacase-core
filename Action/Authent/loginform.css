@@ -57,7 +57,7 @@ html, body.core {
 }
 .authmain .banner .societe {
     display: inline;
-    background: transparent url('[CORE_LOGOCLIENT]') no-repeat 0 50%;
+    background: transparent url('resizeimg.php?img=[CORE_LOGOCLIENT]&height=24') no-repeat 0 50%;
     padding: 10px 10px 10px 50px;
     font-weight : bold;
     font-size: 200%;
