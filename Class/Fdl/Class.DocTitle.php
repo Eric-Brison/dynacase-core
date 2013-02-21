@@ -65,7 +65,7 @@ class DocTitle
         foreach ($la as $oa) {
             $type = $oa->type;
             $latest = $oa->getOption("docrev", "latest") == "latest";
-            if ($type == "docid" || $type == "account") {
+            if ($type == "docid" || $type == "account" || $type == "thesaurus") {
                 $ids = $doc->getMultipleRawValues($oa->id);
                 $realId = array();
                 foreach ($ids as $rid) {

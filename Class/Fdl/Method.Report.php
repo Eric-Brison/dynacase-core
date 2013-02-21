@@ -277,9 +277,13 @@ class _REPORT extends _DSEARCH
                 default:
                     $val = "-";
                 }
+                $footRight = '';
+                if (isset($tcolumn2[$tcols[$k]])) {
+                    $footRight = $tcolumn2[$tcols[$k]]["rightfornumber"];
+                }
                 $tlfoots[] = array(
                     "footval" => $val,
-                    "rightfornumber" => $tcolumn2[$tcols[$k]]["rightfornumber"]
+                    "rightfornumber" => $footRight
                 );
         }
         $this->lay->setBlockData("TFOOT", $tlfoots);
