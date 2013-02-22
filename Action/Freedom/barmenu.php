@@ -22,7 +22,7 @@ include_once ("FDL/freedom_util.php");
 
 include_once ("FDL/popup_util.php");
 // -----------------------------------
-function barmenu(&$action)
+function barmenu(Action &$action)
 {
     // -----------------------------------
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -106,7 +106,6 @@ function barmenu(&$action)
     popupActive("searchmenu", 1, 'newsearchfulltext');
     // if ($action->GetParam("TE_ACTIVATE") == "yes") popupActive("searchmenu",1,'newsearchfulltext');
     //else popupInvisible("searchmenu",1,'newsearchfulltext');
-    popupActive("helpmenu", 1, 'help');
     popupActive("bookmarks", 1, 'managebook');
     popupActive("bookmarks", 1, 'addtobook');
     $rootlabel = getTDoc($dbaccess, 9);
