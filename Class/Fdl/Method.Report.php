@@ -143,9 +143,13 @@ class _REPORT extends _DSEARCH
         }
         
         $tcols = $this->getMultipleRawValues("REP_IDCOLS");
+        $tDisplayOption = $this->getMultipleRawValues("REP_DISPLAYOPTION");
         foreach ($tcols as $k => & $vcol) {
             if ($vcol) {
-                $tcolumn2[$vcol] = $tcolumn1[$vcol];
+                $tcolumn2[$k] = $tcolumn1[$vcol];
+                if ($tDisplayOption[$k] == "docid") {
+                    $tcolumn2[$k]["collabel"].= ' (' . _("report:docid") . ')';
+                }
             }
         }
         $this->lay->setBlockData("COLS", $tcolumn2);
@@ -184,7 +188,11 @@ class _REPORT extends _DSEARCH
         else $limit = min($limit, $maxDisplayLimit);
         $s->setSlice($limit);
         $s->search();
-        
+        $err = $s->getError();
+        if ($err) {
+            addWarningMsg($err);
+            return $err;
+        }
         $needRemoveLast = false;
         if ($s->count() >= $maxDisplayLimit) {
             addWarningMsg(sprintf(_("Max display limit %s reached. Use export to see all") , $maxDisplayLimit - 1));
@@ -207,8 +215,9 @@ class _REPORT extends _DSEARCH
             reset($tcolumn2);
             reset($tcolor);
             
-            foreach ($tcolumn2 as $kc => $vc) {
-                if ($rdoc->getRawValue($kc) == "") $tcell[$kc] = array(
+            foreach ($tcolumn2 as $ki => $vc) {
+                $kc = $vc["colid"];
+                if ($rdoc->getRawValue($kc) == "") $tcell[$ki] = array(
                     "cellval" => ""
                 );
                 else {
@@ -233,18 +242,22 @@ class _REPORT extends _DSEARCH
                             break;
 
                         default:
-                            $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getRawValue($kc) , $target, $ulink);
+                            if ($tDisplayOption[$ki] == "docid") {
+                                $cval = $rdoc->getRawValue($kc);
+                            } else {
+                                $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getRawValue($kc) , $target, $ulink);
+                            }
                             if ($lattr[$kc]->type == "image") $cval = "<img width=\"40px\" src=\"$cval\">";
                         }
-                        $tcell[$kc] = array(
+                        $tcell[$ki] = array(
                             "cellval" => $cval,
                             "rawval" => $rdoc->getRawValue($kc)
                         );
                 }
-                $tcell[$kc]["bgcell"] = current($tcolor);
+                $tcell[$ki]["bgcell"] = current($tcolor);
                 next($tcolor);
-                $tcell[$kc]["tdoddoreven"] = $tdodd ? "tdodd" : "tdeven";
-                $tcell[$kc]["rightfornumber"] = (isset($lattr[$kc]) && $lattr[$kc]->type == "money") ? "right" : "left";
+                $tcell[$ki]["tdoddoreven"] = $tdodd ? "tdodd" : "tdeven";
+                $tcell[$ki]["rightfornumber"] = (isset($lattr[$kc]) && $lattr[$kc]->type == "money") ? "right" : "left";
                 $tdodd = !$tdodd;
             }
             $this->lay->setBlockData("row$k", $tcell);
@@ -268,22 +281,30 @@ class _REPORT extends _DSEARCH
                     $val = 0;
                     foreach ($trow as $kr => $vr) {
                         $ctr = $this->lay->getBlockData($vr["CELLS"]);
-                        $val+= $ctr[$tcols[$k]]["rawval"];
+                        if (isset($ctr[$k]["rawval"])) $val+= $ctr[$k]["rawval"];
                     }
                     if ($v == "MOY") $val = $val / count($trow);
+                    if (!$rdoc) {
+                        $rdoc = createTmpDoc($this->dbaccess, $this->getRawValue("se_famid"));
+                    }
                     $val = $rdoc->getHtmlValue($lattr[$tcols[$k]], $val, $target, $ulink);
                     break;
 
                 default:
                     $val = "-";
                 }
+                $footRight = '';
+                if (isset($tcolumn2[$k])) {
+                    $footRight = $tcolumn2[$k]["rightfornumber"];
+                }
                 $tlfoots[] = array(
                     "footval" => $val,
-                    "rightfornumber" => $tcolumn2[$tcols[$k]]["rightfornumber"]
+                    "rightfornumber" => $footRight
                 );
-        }
-        $this->lay->setBlockData("TFOOT", $tlfoots);
-        $this->lay->set("TITLE", $this->getHTMLTitle());
+            }
+            $this->lay->setBlockData("TFOOT", $tlfoots);
+            $this->lay->set("TITLE", $this->getHTMLTitle());
+            return $err;
     }
     /**
      * Generate data struct to csv export of a report
@@ -313,6 +334,7 @@ class _REPORT extends _DSEARCH
         // print_r($search->getSearchInfo());
         $famDoc = createDoc($this->dbaccess, $famId, false);
         $tcols = $this->getMultipleRawValues("rep_idcols");
+        $tcolsOption = $this->getMultipleRawValues("rep_displayoption");
         
         $search->returnsOnly($tcols);
         
@@ -322,7 +344,7 @@ class _REPORT extends _DSEARCH
             return $this->generatePivotCSV($search, $tcols, $famDoc, $pivotId, $refresh, $separator, $dateFormat);
         } else {
             $this->setStatus(_("Doing render"));
-            return $this->generateBasicCSV($search, $tcols, $famDoc, $refresh, $separator, $dateFormat, $stripHtmlTags);
+            return $this->generateBasicCSV($search, $tcols, $tcolsOption, $famDoc, $refresh, $separator, $dateFormat, $stripHtmlTags);
         }
     }
     
@@ -452,7 +474,7 @@ class _REPORT extends _DSEARCH
      *
      * @return array
      */
-    protected function generateBasicCSV(SearchDoc $search, Array $columns, Doc $famDoc, $refresh, $separator, $dateFormat, $stripHtmlFormat = true)
+    protected function generateBasicCSV(SearchDoc $search, Array $columns, Array $displayOptions, Doc $famDoc, $refresh, $separator, $dateFormat, $stripHtmlFormat = true)
     {
         $fc = new FormatCollection();
         $dl = $search->getDocumentList();
@@ -495,18 +517,24 @@ class _REPORT extends _DSEARCH
         $this->setStatus(_("Doing csv render"));
         $out = array();
         $line = array();
-        foreach ($columns as $col) {
+        foreach ($columns as $kc => $col) {
             if (isset(Doc::$infofields[$col]["label"])) {
-                $line[] = _(Doc::$infofields[$col]["label"]);
-            } else $line[] = $famDoc->getLabel($col);
+                $line[$kc] = _(Doc::$infofields[$col]["label"]);
+            } else {
+                $line[$kc] = $famDoc->getLabel($col);
+                if ($displayOptions[$kc] == "docid") $line[$kc].= ' (' . _("report:docid") . ')';
+            }
         }
         $out[] = $line;
-        
         foreach ($r as $k => $render) {
             $line = array();
-            foreach ($columns as $col) {
+            foreach ($columns as $kc => $col) {
                 $cellValue = '';
+                $dDocid = ($displayOptions[$kc] == "docid");
                 if (isset($render["attributes"][$col])) {
+                    /**
+                     * @var StandardAttributeValue $dv
+                     */
                     $dv = $render["attributes"][$col];
                     if (is_array($dv)) {
                         $vs = array();
@@ -514,16 +542,17 @@ class _REPORT extends _DSEARCH
                             if (is_array($rv)) {
                                 $vsv = array();
                                 foreach ($rv as $rvv) {
-                                    $vsv[] = $rvv->displayValue;
+                                    $vsv[] = ($dDocid) ? $rvv->value : $rvv->displayValue;
                                 }
                                 $vs[] = implode(', ', $vsv);
                             } else {
-                                $vs[] = strtr($rv->displayValue, "\n", "\r");
+                                $vs[] = strtr(($dDocid) ? $rv->value : $rv->displayValue, "\n", "\r");
                             }
                         }
                         $cellValue = implode(empty($isAttrInArray[$col]) ? ", " : "\n", $vs);
                     } else {
-                        $cellValue = $dv->displayValue;
+                        
+                        $cellValue = ($dDocid) ? $dv->value : $dv->displayValue;
                     }
                 } else {
                     if (isset($render["properties"][$col])) {

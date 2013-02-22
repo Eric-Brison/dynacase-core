@@ -339,6 +339,7 @@ class FormatCollection
                 $info = new EnumAttributeValue($oa, $value);
                 break;
 
+            case 'thesaurus':
             case 'docid':
             case 'account':
                 $info = new DocidAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);

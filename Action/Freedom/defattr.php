@@ -165,7 +165,7 @@ function defattr(Action & $action)
                     $oDocAttr->labeltext = $oa->labelText;
                     $oDocAttr->frameid = (isset($oa->fieldSet) && $oa->fieldSet->id != "FIELD_HIDDENS") ? $oa->fieldSet->id : '';
 
-                    $oDocAttr->phpconstraint = $oa->phpconstraint;
+                    $oDocAttr->phpconstraint = isset($oa->phpconstraint)?$oa->phpconstraint:'';
                     $oDocAttr->options = $oa->options;
                     if (is_a($oa, "NormalAttribute")) {
                         $oDocAttr->abstract = ($oa->isInAbstract) ? "Y" : "N";

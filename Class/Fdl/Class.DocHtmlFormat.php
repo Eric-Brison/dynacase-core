@@ -900,16 +900,17 @@ class DocHtmlFormat
                 else {
                     $thc = new_doc($this->doc->dbaccess, trim($vv));
                     if ($thc->isAlive()) $thval[] = $this->doc->getDocAnchor(trim($vv) , $this->target, $this->htmlLink, $thc->getCustomTitle());
-                    else $thval[] = "th error $vv";
+                    else $thval[] = "th error1 $vv";
                 }
             }
             $htmlval = implode("<br/>", $thval);
         } else {
             if ($avalue == "") $htmlval = $avalue;
             else {
+                $avalue = trim($avalue);
                 $thc = new_doc($this->doc->dbaccess, $avalue);
                 if ($thc->isAlive()) $htmlval = $this->doc->getDocAnchor(trim($avalue) , $this->target, $this->htmlLink, $thc->getCustomTitle());
-                else $htmlval = "th error $avalue";
+                else $htmlval = "th error2 [$avalue]";
             }
         }
         return $htmlval;
