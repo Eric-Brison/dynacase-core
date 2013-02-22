@@ -922,17 +922,32 @@ function getReportColumns($dbaccess, $famid, $name = "")
             );
         }
     }
+    $relTypes = array(
+        "docid",
+        "account",
+        "thesaurus"
+    );
     // Attributes
     $attrList = $doc->getNormalAttributes();
     foreach ($attrList as $attr) {
+        if ($attr->type == "array") continue;
         if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel() , $m))) {
             $html = '<b><i>' . _getParentLabel($attr) . '</i></b><br/><span>&nbsp;&nbsp;' . $attr->getLabel() . '</span>';
             $tr[] = array(
                 $html,
                 $attr->id,
                 $attr->getLabel() ,
-                $attr->getOption('sortable')
+                ''
             );
+            if (in_array($attr->type, $relTypes)) {
+                $html = '<b><i>' . _getParentLabel($attr) . '</i></b><br/><span>&nbsp;&nbsp;' . $attr->getLabel() . '<i> (' . _("report:docid") . ')</i></span>';
+                $tr[] = array(
+                    $html,
+                    $attr->id,
+                    sprintf("%s (%s)", $attr->getLabel() , _("report:docid")) ,
+                    "docid"
+                );
+            }
         }
     }
     return $tr;
