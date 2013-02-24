@@ -1,88 +1,120 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-      [CSS:REF]
-      <meta http-equiv="X-UA-Compatible" content="IE=100" /> <!-- IE latest mode -->
-    </head>
-    <body id="body" class="fr">
-      <div class="header"></div>
-      <div class="page">
-	<div class="left-block"><!-- block dynacase -->
-	  <div id="apropos">
-	    <div class="intro">&rarr; à propos</div>
-	    <div class="en">
-	      <p>Le core Dynacase Platform est distribué sous licence <a target="_blank" href="http://www.gnu.org/licenses/lgpl-3.0.html">GNU Lesser General Public License V3 - LGPL V3</a>.</p>
-	      <br/>
-	      <p>La <em>version entreprise</em> est supportée par Anakeen et permet d'accéder à ses services : consulting, expertise, support, patch correctifs, etc.</p>
-	      <p>Elle donne accès à des modules complémentaires : DocumentGrid, SearchCriteria, Dashboard, Tags, etc.</p>
-	      <p>Elle permet le changement de licence en accord avec <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>. </p>
-	      <br/>
-	      <p><a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase</a>, <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a> et les logos associés sont des marques déposées <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>.</p>
-	      <p><a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase Platform</a> est développé en <a href="http://www.php.net" target="_blank">PHP</a>.</p>
-	      [IF HAVE_EXTERNALS]
-	      <a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase Platform</a>
-	      utilise les logiciels Open Source suivants&nbsp;:
-	      <ul>
-		[BLOCK EXTERNALS]
-		<li>
-		  <a href="[site]" target="_blank">[name]</a>
-		  <a href="[license]" target="_blank">(licence)</a>
-		</li>
-		[ENDBLOCK EXTERNALS]
-		<li>
-		  <a href="http://www.dynacase.org/pages/open-source.html" target="_blank">plus...</a>
-		</li>
-	      </ul>
-                        [ENDIF HAVE_EXTERNALS]
-	    </div>
-	  </div> <!-- block apropos -->
-	</div> <!-- enf of block left-block -->
-	<div class="right-block">
-	  <div class="intro">&rarr; bienvenue</div>
-	  <div id="hello"><!-- block hello -->
-	    <div id="header">
-	      <div class="title"> Dynacase Platform 3.2</div>
-	      <div class="content">Simplifie & accélère le développement | Facilite & sécurise l'exécution</div>
-                        <div class="version">
-			  Version installée
-			  <span>[version]</span>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome - [CORE_CLIENT]</title>
+    <meta charset='utf-8'>
+    [CSS:REF]
+</head>
+<body id="body" class="fr">
+    <div class="header"></div>
+    <div class="page">
+        <div class="left-block">
+            <!-- block dynacase -->
+            <div id="apropos">
+                <div class="intro">&rarr; à propos</div>
+                <div class="en">
+                    <p>
+                        Le core Dynacase Platform est distribué sous licence
+                        <a target="_blank" href="http://www.gnu.org/licenses/lgpl-3.0.html">GNU Lesser General Public License V3 - LGPL V3</a>
+                        .
+                    </p>
+                    <br/>
+                    <p>
+                        La <em>version entreprise</em>
+                        est supportée par Anakeen et permet d'accéder à ses services : consulting, expertise, support, patch correctifs, etc.
+                    </p>
+                    <p>
+                        Elle donne accès à des modules complémentaires : DocumentGrid, SearchCriteria, Dashboard, Tags, etc.
+                    </p>
+                    <p>
+                        Elle permet le changement de licence en accord avec
+                        <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>
+                        .
+                    </p>
+                    <br/>
+                    <p>
+                        <a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase</a>
+                        ,
+                        <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>
+                        et les logos associés sont des marques déposées
+                        <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>
+                        .
+                    </p>
+                    <p>
+                        <a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase Platform</a>
+                        est développé en
+                        <a href="http://www.php.net" target="_blank">PHP</a>
+                        .
+                    </p>
+                    [IF HAVE_EXTERNALS]
+                    <a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase Platform</a>
+                    utilise les logiciels Open Source suivants&nbsp;:
+                    <ul>
+                        [BLOCK EXTERNALS]
+                        <li>
+                            <a href="[site]" target="_blank">[name]</a>
+                            <a href="[license]" target="_blank">(licence)</a>
+                        </li>
+                        [ENDBLOCK EXTERNALS]
+                        <li>
+                            <a href="http://www.dynacase.org/pages/open-source.html" target="_blank">plus...</a>
+                        </li>
+                    </ul>
+                    [ENDIF HAVE_EXTERNALS]
+                </div>
+            </div>
+            <!-- block apropos --> </div>
+        <!-- enf of block left-block -->
+        <div class="right-block">
+            <div class="intro">&rarr; bienvenue</div>
+            <div id="hello">
+                <!-- block hello -->
+                <div id="header">
+                    <div class="title">Dynacase Platform 3.2</div>
+                    <div class="content">
+                        Simplifie &amp; accélère le développement | Facilite &amp; sécurise l'exécution
+                    </div>
+                    <div class="version">
+                        Version installée
+                        <span>[version]</span>
+                    </div>
+                </div>
+                <div id="welcome">Félicitations, Dynacase Platform est prêt à fonctionner.</div>
+                <div class="documentation">
+                    Pour plus d'information, nous vous invitons à vous rendre sur le
+                    <a href="http://docs.anakeen.com/dynacase/3.2/" target="_blank">centre de documentation Dynacase</a>
+                </div>
+            </div>
+            <div class="links">
+                <div>
+                    <a href="http://www.dynacase.org" target="_blank">
+                        <img src="[IMG:dc-platform-130x60.png]" alt="Dynacase Platform logo"/>
+                        <div class="label">Développez vos applications avec Dynacase Platform</div>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+                <div>
+                    <a href="http://www.dynacase.org/" target="_blank">
+                        <img src="[IMG:dc-control-130x60.png]" alt="Dynacase Control logo"/>
+                        <div class="label">
+                            Gérez, administrez vos déploiements et les contextes avec Dynacase Control.
                         </div>
-	    </div>
-	    <div id="welcome">Félicitations, Dynacase Platform est prêt à fonctionner.</div>
-	    <div class="documentation">Pour plus d'information, nous vous invitons à vous rendre sur le
-	    <a href="http://docs.anakeen.com/dynacase/3.2/" target="_blank">
-	      centre de documentation Dynacase
-	    </a>
-	    </div>
-	  </div>
-	  <div class="links">
-	    <div>
-	      <a href="http://www.dynacase.org" target="_blank">
-		<img src="[IMG:dc-platform-130x60.png]" alt="Dynacase Platform logo"/>
-		<div class="label">Développez vos applications avec Dynacase Platform</div>
-	      </a>
-	      <div class="clear"></div>
-	    </div>
-	    <div>
-	      <a href="http://www.dynacase.org/" target="_blank">
-		<img src="[IMG:dc-control-130x60.png]" alt="Dynacase Control logo"/>
-		<div class="label">Gérez, administrez vos déploiements et les contextes avec Dynacase Control.</div>
-	      </a>
-	      <div class="clear"></div>
-	    </div>
-	  </div>
-	  <div class="clear"></div>
-	</div>
-      </div><!-- block hello -->
-      <div class="clear"></div>
-    </div><!-- page -->
-    <div id="footer">
-      <div class="copy">
-	&copy; 2010-[thisyear] 
-	<a href="http://www.anakeen.com" target="_blank">Anakeen</a>
-      </div>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
     </div>
-    
-      
-    </body>
-  </html>
+    <!-- block hello -->
+    <div class="clear"></div>
+    <!-- page -->
+    <div id="footer">
+        <div class="copy">
+            &copy; 2010-[thisyear]
+            <a href="http://www.anakeen.com" target="_blank">Anakeen</a>
+        </div>
+    </div>
+
+</body>
+</html>
