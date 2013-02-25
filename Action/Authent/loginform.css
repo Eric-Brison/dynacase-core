@@ -1,5 +1,7 @@
 
-html, body.core {
+html, body {
+  padding: 0;
+  margin: 0;
   background-color: #DBE5E7;
   font-size: 11pt;
 }
@@ -49,22 +51,27 @@ html, body.core {
 .authmain table {
   width:100%;
 }
+.head {
+    text-align: center;
+    display: block;
+    background: transparent url('resizeimg.php?img=[CORE_LOGOCLIENT]&height=30') no-repeat 10px 50%;
+    margin: 50px 0 0 0;
+    padding: 10px 100px 10px 100px;
+    border-bottom: 1px solid #aaa;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+    font-weight : bold;
+    font-size: 200%;
+    color: #4E767E;
+    text-shadow: -1px -1px 0 #82A5AC, 1px 1px 0 #DBE5E7;
+    background-color: #B5CBCF;
+}
 
 .banner {
     text-align : center;
-    margin-bottom : 20px;
-}
-.banner .societe {
-    display: inline;
-    background: transparent url('resizeimg.php?img=CORE/Images/logo-mini.png&height=30') no-repeat 0 50%;
-    padding: 10px 10px 10px 30px;
-    font-weight : bold;
-    font-size: 200%;
-    color: #7A7A7A;
-    text-shadow: 0 1px 0 white;
+    margin-bottom : 10px;
 }
 .banner .realm {
-    margin-top: 5px;
     color: #888;
     font-size:120%;
     text-shadow: 0 1px 0 white;
@@ -108,14 +115,29 @@ html, body.core {
     margin-top:1em;
 }
 
-.authmain .zoneinput .action select {
-    color: #888
+select.lang,
+.authmain .zoneinput .action a {
+    border-radius: 3px;
+    border: 1px solid #aaa;
+    cursor:pointer;
 }
-.authmain .zoneinput .action select option {
-    color: #888
+select.lang {
+    color: #888;
+    padding: 3px 10px;
 }
 .authmain .zoneinput .action a {
     float: right;
+    background-color: #E4E4E4;
+    padding: 5px 10px;
+}
+.authmain .zoneinput .action a:hover {
+    background-color: #08C;
+    color: #fff;
+    text-decoration: none;
+    border-color: #436170;
+}
+select.lang {
+    color: #888;
 }
 .authmain .input input:focus {
   border-color: #AAA;

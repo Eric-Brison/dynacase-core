@@ -99,6 +99,11 @@ function initZone() {
 
 </script>
 <body>
+
+  <div class="head">
+    <div class="societe">[CORE_CLIENT]</div>
+  </div>
+  
   <div id="zonehelp" class="zhelp" style="visibility:hidden">
     <div class="title">[TEXT:Help to the connection]</div>
     <div class="content">
@@ -150,7 +155,6 @@ function initZone() {
     <div id="main" style="visibility:hidden">
       
       <div id="idbanner" class="banner"> 
-	<div class="societe">[CORE_CLIENT]</div>
 	<div class="realm">[CORE_REALM]</div>
       </div>
       
@@ -168,19 +172,20 @@ function initZone() {
 	  <div id="msgerr" class="message">[error]</div>
 	  <div class="action">
 	    <a href="javascript:login(this.document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');">[TEXT:Do connection]</a>
-	    [IF authent_show_lang_selection]
-	    <select name="CORE_LANG" onchange="window.location.href='[CORE_BASEURL]app=AUTHENT&amp;action=LOGINFORM&amp;lang='+this.options[this.selectedIndex].value">
-	      [BLOCK LANG]
-	      <option value="[LANG_VALUE]" [IF LANG_IS_SELECTED]selected[ENDIF LANG_IS_SELECTED]>[LANG_LABEL]</option>
-	      [ENDBLOCK LANG]
-	    </select>
-	    [ENDIF authent_show_lang_selection]
+	    <div style="clear:both"></div>
 	</div>
 	</div>
 	
       
 	<div class="buttons">
 	  
+	    [IF authent_show_lang_selection]
+	    <select class="lang" name="CORE_LANG" onchange="window.location.href='[CORE_BASEURL]app=AUTHENT&amp;action=LOGINFORM&amp;lang='+this.options[this.selectedIndex].value">
+	      [BLOCK LANG]
+	      <option value="[LANG_VALUE]" [IF LANG_IS_SELECTED]selected[ENDIF LANG_IS_SELECTED]>[LANG_LABEL]</option>
+	      [ENDBLOCK LANG]
+	    </select>
+	    [ENDIF authent_show_lang_selection]
 	  [IF authent_show_reqpasswd]
 	  <a href="[CORE_BASEURL]app=AUTHENT&amp;action=REQPASSWD">[TEXT:authent reqpassword]</a>
 	  [ENDIF authent_show_reqpasswd]
