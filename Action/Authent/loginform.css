@@ -1,56 +1,62 @@
-
 html, body {
-  padding: 0;
-  margin: 0;
-  background-color: #DBE5E7;
-  font-size: 11pt;
+    padding: 0;
+    margin: 0;
+    background-color: #DBE5E7;
+    font-size: 11pt;
 }
+
 .zhelp {
-  width:60%;
-  background-color : #fff;
-  color: #666;
-  padding : 20px;
-  border : 1px solid #fff;
-  border-radius : 8px;
-  box-shadow: rgba(200, 200, 200, 0.7) 0 4px 10px -1px;
+    width: 60%;
+    background-color: #fff;
+    color: #666;
+    padding: 20px;
+    border: 1px solid #fff;
+    border-radius: 8px;
+    box-shadow: rgba(200, 200, 200, 0.7) 0 4px 10px -1px;
 }
+
 .zhelp .title {
-  font-size: 150%;
-  font-weight : bold;
-  border-top:0;
-  border-left:0;
-  border-right:0;
-  padding : 20px 0px 5px 0px;
-  margin : 10px 0px 20px 0px;
-  text-align:left;
+    font-size: 150%;
+    font-weight: bold;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    padding: 20px 0 5px 0;
+    margin: 10px 0 20px 0;
+    text-align: left;
 }
+
 .zhelp p {
-  font-size: 11pt;
+    font-size: 11pt;
 }
+
 .zhelp .content {
-  font-size: 14pt;
-  text-align : justify;
-  padding : 0 0 10px 10px;
+    font-size: 14pt;
+    text-align: justify;
+    padding: 0 0 10px 10px;
 }
 
 .authmain {
-  margin: 0 auto 0 auto;
+    margin: 0 auto 0 auto;
 }
+
 .authmain a {
     color: #08C;
 }
+
 .authmain a:hover {
     color: #029;
     background-color: inherit;
 }
+
 .authmain a:visited {
     color: #08C;
 }
 
-
 .authmain table {
-  width:100%;
+    width: 100%;
 }
+
 .head {
     text-align: center;
     display: block;
@@ -59,8 +65,8 @@ html, body {
     padding: 10px 100px 10px 100px;
     border-bottom: 1px solid #aaa;
     border-top: 1px solid #ddd;
-    box-shadow: 0 3px 5px rgba(0,0,0,0.2);
-    font-weight : bold;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
     font-size: 200%;
     color: #4E767E;
     text-shadow: -1px -1px 0 #82A5AC, 1px 1px 0 #DBE5E7;
@@ -68,15 +74,15 @@ html, body {
 }
 
 .banner {
-    text-align : center;
-    margin-bottom : 10px;
-}
-.banner .realm {
-    color: #888;
-    font-size:120%;
-    text-shadow: 0 1px 0 white;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
+.banner .realm {
+    color: #888;
+    font-size: 120%;
+    text-shadow: 0 1px 0 white;
+}
 
 .authmain .zoneinput {
     width: 300px;
@@ -90,83 +96,92 @@ html, body {
 }
 
 .authmain .zoneinput .label {
-  white-space : nowrap;
-  width:100%;
-  color: #999;
+    white-space: nowrap;
+    width: 100%;
+    color: #999;
 }
+
 .authmain .input input {
-  color: #575757;
-  line-height: 1;
-  width: 100%;
-  padding: 6px 2px 6px 2px;
-  margin-top: 2px;
-  margin-right: 6px;
-  margin-bottom: 10px;
-  border: 1px solid #BEC8DA;
-  background: #DBE5E7;
-  outline: 0;
-  -webkit-box-shadow: inset 1px 1px 2px rgba(200, 200, 200, 0.2);
-  box-shadow: inset 1px 1px 2px rgba(126, 119, 119, 0.2);
-  border-radius: 3px;
-  font-size: 16px;
+    color: #575757;
+    line-height: 1;
+    width: 100%;
+    padding: 6px 2px 6px 2px;
+    margin-top: 2px;
+    margin-right: 6px;
+    margin-bottom: 10px;
+    border: 1px solid #BEC8DA;
+    background: #DBE5E7;
+    outline: 0;
+    -webkit-box-shadow: inset 1px 1px 2px rgba(200, 200, 200, 0.2);
+    box-shadow: inset 1px 1px 2px rgba(126, 119, 119, 0.2);
+    border-radius: 3px;
+    font-size: 16px;
 }
 
 .authmain .zoneinput .action {
-    margin-top:1em;
+    margin-top: 1em;
 }
 
 select.lang,
 .authmain .zoneinput .action a {
     border-radius: 3px;
     border: 1px solid #aaa;
-    cursor:pointer;
+    cursor: pointer;
 }
+
 select.lang {
     color: #888;
     padding: 3px 10px;
 }
+
 .authmain .zoneinput .action a {
     float: right;
     background-color: #E4E4E4;
     padding: 5px 10px;
 }
+
 .authmain .zoneinput .action a:hover {
     background-color: #08C;
     color: #fff;
     text-decoration: none;
     border-color: #436170;
 }
+
 select.lang {
     color: #888;
 }
+
 .authmain .input input:focus {
-  border-color: #AAA;
+    border-color: #AAA;
 }
+
 .authmain .message {
-  text-align : center;
-  color : red;
-  text-transform : lowercase;
+    text-align: center;
+    color: red;
+    text-transform: lowercase;
 }
+
 .zhelp .close, .authmain .buttons {
-  text-align : center;
-  margin : 10px 0px 10px 0px;
-  padding : 5px 0px 10px 0px;
-  background-repeat: no-repeat;
+    text-align: center;
+    margin: 10px 0 10px 0;
+    padding: 5px 0 10px 0;
+    background-repeat: no-repeat;
 
 }
+
 .zhelp .close, .authmain .buttons a {
     padding-left: 20px;
 }
 
-
 div.zoneinput input::-webkit-input-placeholder {
-  color:  #aaa;
-  font-weight : normal; 
-  text-shadow: 0 1px 1px #fff;   
+    color: #aaa;
+    font-weight: normal;
+    text-shadow: 0 1px 1px #fff;
 }
+
 div.zoneinput input:-moz-placeholder {
-  color:   #aaa;
-  font-weight : normal;    
-  text-shadow: 0 1px 1px #fff;   
+    color: #aaa;
+    font-weight: normal;
+    text-shadow: 0 1px 1px #fff;
 }
 

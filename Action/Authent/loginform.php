@@ -74,7 +74,8 @@ function loginform(Action & $action)
     $action->lay->set("passfocus", ($auth_user !== "" ? true : false));
     $action->lay->set("error", $merr);
     $action->lay->set("redirect_uri", htmlspecialchars($redirect_uri));
-    
+    $action->lay->set("baseurl", htmlspecialchars(getParam("CORE_BASEURL")));
+
     $action->lay->set('authent_show_reqpasswd', $action->getParam('AUTHENT_SHOW_REQPASSWD') != 'no');
     
     $action->lay->set('authent_show_lang_selection', $action->getParam('AUTHENT_SHOW_LANG_SELECTION') != 'no');

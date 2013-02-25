@@ -1,209 +1,225 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=100"> <!-- IE latest mode -->
-<title>[CORE_CLIENT]</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-[CSS:REF]
-<style type="text/css">
-[CSS:CODE]
-</style>
-[JS:REF]
-<script language="JavaScript">
-<!--
-[JS:CODE]
-//-->
-</script>
+    <!-- IE latest mode -->
+    <title>[CORE_CLIENT]</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    [CSS:REF]
+    <style type="text/css">
+        [CSS:CODE]
+    </style>
+    [JS:REF]
+    <script>
+        <!--
+        [JS:CODE]
+        //-->
+    </script>
+    <script>
+        <!--
+
+        var isNN = (navigator.appName.indexOf("Netscape") != -1);
+        if (isNN) {
+            document.captureEvents(Event.KEYPRESS);
+        }
+        document.onkeypress = trackEnter;
+
+        function trackEnter(evt) {
+            var intKeyCode;
+
+            if (isNN) {
+                intKeyCode = evt.which;
+            }
+            else {
+                intKeyCode = window.event.keyCode;
+            }
+
+            if (intKeyCode == 13) { // enter key
+                login(document.loginform, "[TEXT:warning_name]", '[TEXT:warning_pass]');
+                return false;
+            } else
+                return true;
+        }
+
+        function login(aform, usermsg, passmsg) {
+            var user = aform.auth_user.value;
+            var pass = aform.auth_pass.value;
+            if (user == "") {
+                document.getElementById('msgerr').innerHTML = usermsg;
+                document.forms['loginform'].elements['auth_user'].focus();
+                return;
+            }
+            if (pass == "") {
+                document.getElementById('msgerr').innerHTML = passmsg;
+                document.forms['loginform'].elements['auth_pass'].focus();
+                return;
+            }
+            aform.submit();
+        }
+
+        function aumilieu(eid) {
+            var winH = getFrameHeight();
+            var winW = getFrameWidth();
+            if (document.getElementById) { // DOM3 = IE5, NS6
+                var divlogo = document.getElementById(eid);
+                divlogo.style.position = 'absolute';
+                if ((winH > 0) && (winW > 0)) {
+                    divlogo.style.top = (winH / 2 - (divlogo.offsetHeight / 2) + document.body.scrollTop) + 'px';
+                    divlogo.style.left = (winW / 2 - (divlogo.offsetWidth / 2)) + 'px';
+                }
+            }
+            return true;
+        }
+
+        function display_help() {
+            aumilieu('zonehelp', 2);
+            document.getElementById('zonehelp').style.visibility = 'visible';
+            document.getElementById('zonehelp').style.zIndex = 100;
+        }
+        function close_help() {
+            document.getElementById('zonehelp').style.visibility = 'hidden';
+        }
+        function centerZone() {
+            aumilieu('main');
+            aumilieu('zonehelp');
+        }
+        function initZone() {
+            centerZone();
+            var focus = 'auth_[IFNOT passfocus]user[ENDIF passfocus][IF passfocus]pass[ENDIF passfocus]';
+
+            document.getElementById('zonehelp').style.visibility = 'hidden';
+            document.getElementById('main').style.visibility = 'visible';
+
+            var ifocus = document.getElementById(focus);
+            if (ifocus) ifocus.focus();
+
+        }
+        -->
+    </script>
 </head>
 
-<script language="JavaScript">
-<!--
-
-var isNN = (navigator.appName.indexOf("Netscape") != -1);
-if (isNN) {
-  document.captureEvents(Event.KEYPRESS)
-}
-document.onkeypress = trackEnter
-
-function trackEnter(evt)
-{
-  var intKeyCode;
-
-  if (isNN)
-    intKeyCode = evt.which;
-  else
-    intKeyCode = window.event.keyCode;
-
-  if (intKeyCode == 13) { // enter key
-    login(document.loginform,"[TEXT:warning_name]",'[TEXT:warning_pass]');
-    return false;
-  } else
-    return true;
-}
-
-function login(aform, usermsg, passmsg)
-{
-  var user = aform.auth_user.value;
-  var pass = aform.auth_pass.value;
-  if (user == "") {
-    document.getElementById('msgerr').innerHTML  = usermsg;
-    document.forms['loginform'].elements['auth_user'].focus(); 
-    return;
-  }
-  if (pass == "") {
-    document.getElementById('msgerr').innerHTML  = passmsg;
-    document.forms['loginform'].elements['auth_pass'].focus(); 
-    return;
-  }
-  aform.submit();
-}
-
-function aumilieu(eid) {
-   var winH=getFrameHeight();
-   var winW=getFrameWidth();
-   if (document.getElementById) { // DOM3 = IE5, NS6
-   var divlogo = document.getElementById(eid);
-   divlogo.style.position = 'absolute';
-   if ((winH>0) && (winW>0)) {
-     divlogo.style.top = (winH/2 - (divlogo.offsetHeight/2)+ document.body.scrollTop)+'px';
-     divlogo.style.left = (winW/2 - (divlogo.offsetWidth/2))+'px';
-   }
- }
- return true;
-}
-
-function display_help() {
-  aumilieu('zonehelp', 2);
-  document.getElementById('zonehelp').style.visibility = 'visible';
-  document.getElementById('zonehelp').style.zIndex = 100;
-}
-function close_help() {
-  document.getElementById('zonehelp').style.visibility = 'hidden';
-}
-function centerZone() {
-aumilieu('main');
-aumilieu('zonehelp');
-}
-function initZone() {
-  centerZone();
-  var focus='auth_[IFNOT passfocus]user[ENDIF passfocus][IF passfocus]pass[ENDIF passfocus]';
-  
-  document.getElementById('zonehelp').style.visibility = 'hidden';
-  document.getElementById('main').style.visibility = 'visible';
-  
-  var ifocus=document.getElementById(focus);
-  if (ifocus) ifocus.focus();
-  
-}
--->
-
-</script>
 <body>
 
-  <div class="head">
+<div class="head">
     <div class="societe">[CORE_CLIENT]</div>
-  </div>
-  
-  <div id="zonehelp" class="zhelp" style="visibility:hidden">
+</div>
+
+<div id="zonehelp" class="zhelp" style="visibility:hidden">
     <div class="title">[TEXT:Help to the connection]</div>
     <div class="content">
-      [IF isEnglish]
-      <p>
-        This window allows you to log on the application, that is indicate to the applications whom you are.
-      </p>
-      <p>
-      This is necessary to guarantee that yours informations are accessible only by you. To log on, it is necessary to fill the login and password (If you do not possess it contact your administrator). </p>
-      <p>Pay attention, this password is your identification : be sure to keep it safe and do not spread it ! </p>
-      <p>Mind the case (use of the characters capital letter and small letter) during the fill of your login and password!
-      </p>
-      
-      [ENDIF isEnglish]
-      [IFNOT isEnglish]
-      <p>
-        Cette fen&ecirc;tre permet de vous identifier.
-      </p>
-      <p>
-        Ceci est n&eacute;cessaire pour garantir que les informations vous concernant
-        sont accessibles seulement par vous-m&ecirc;me. Pour vous identifier, il vous
-        faut saisir un nom d'utilisateur et un mot de passe (si vous n'en
-        poss&eacute;dez pas adressez-vous au gestionnaire du site).
-    </p>
-    <p>
-      Attention, ce mot de passe est le garant de votre identification&nbsp;:
-      conservez le pr&eacute;cieusement et ne le diffusez pas&nbsp;!
-    </p>
-    <p>
-      Il est important de respecter la casse (utilisation des caract&egrave;res
-      majuscules et minuscules) lors de la saisie de votre nom d'utilisateur et
-      mot de passe.
-    </p>
-    [ENDIF isEnglish]
+        [IF isEnglish]
+        <p>
+            This window allows you to log on the application, that is indicate to the applications whom you are.
+        </p>
+
+        <p>
+            This is necessary to guarantee that yours informations are accessible only by you. To log on, it is
+            necessary to fill the login and password (If you do not possess it contact your administrator). </p>
+
+        <p>Pay attention, this password is your identification : be sure to keep it safe and do not spread it ! </p>
+
+        <p>Mind the case (use of the characters capital letter and small letter) during the fill of your login and
+            password!
+        </p>
+
+        [ENDIF isEnglish]
+        [IFNOT isEnglish]
+        <p>
+            Cette fen&ecirc;tre permet de vous identifier.
+        </p>
+
+        <p>
+            Ceci est n&eacute;cessaire pour garantir que les informations vous concernant
+            sont accessibles seulement par vous-m&ecirc;me. Pour vous identifier, il vous
+            faut saisir un nom d'utilisateur et un mot de passe (si vous n'en
+            poss&eacute;dez pas adressez-vous au gestionnaire du site).
+        </p>
+
+        <p>
+            Attention, ce mot de passe est le garant de votre identification&nbsp;:
+            conservez le pr&eacute;cieusement et ne le diffusez pas&nbsp;!
+        </p>
+
+        <p>
+            Il est important de respecter la casse (utilisation des caract&egrave;res
+            majuscules et minuscules) lors de la saisie de votre nom d'utilisateur et
+            mot de passe.
+        </p>
+        [ENDIF isEnglish]
     </div>
     <div class="close"><a href="javascript:close_help()">[TEXT:Close help]</a></div>
-  </div>
-
-  
-<form action="[CORE_BASEURL]app=AUTHENT&amp;action=CHECKAUTH" method="post" name="loginform" style="display:inline">
-  <input type="hidden" name="appd" value="[app_redir]" />
-  <input type="hidden" name="actd" value="[act_redir]" />
-  <input type="hidden" name="argd" value="[arg_redir]" />
-  <input type="hidden" name="redirect_uri" value="[redirect_uri]" />
-  
-  <div id="authform" class="authmain" style="visibility:hidden">
-
-
-    <div id="main" style="visibility:hidden">
-      
-      <div id="idbanner" class="banner"> 
-	<div class="realm">[CORE_REALM]</div>
-      </div>
-      
-      <div class="form">
-	
-	<div class="zoneinput">
-	  <div class="label">[TEXT:yourusername]</div>
-	  <div class="input">
-	    <input id="auth_user" placeholder="[TEXT:Enter your login]" name="auth_user" type="text" autocapitalize="off" autocorrect="off"  value="[auth_user]" />
-	  </div>
-	  <div class="label">[TEXT:yourpassword]</div>
-	  <div class="input">
-	    <input id="auth_pass" placeholder="[TEXT:Enter your password]" name="auth_pass" type="password" value="" />
-	  </div>
-	  <div id="msgerr" class="message">[error]</div>
-	  <div class="action">
-	    <a href="javascript:login(this.document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');">[TEXT:Do connection]</a>
-	    <div style="clear:both"></div>
-	</div>
-	</div>
-	
-      
-	<div class="buttons">
-	  
-	    [IF authent_show_lang_selection]
-	    <select class="lang" name="CORE_LANG" onchange="window.location.href='[CORE_BASEURL]app=AUTHENT&amp;action=LOGINFORM&amp;lang='+this.options[this.selectedIndex].value">
-	      [BLOCK LANG]
-	      <option value="[LANG_VALUE]" [IF LANG_IS_SELECTED]selected[ENDIF LANG_IS_SELECTED]>[LANG_LABEL]</option>
-	      [ENDBLOCK LANG]
-	    </select>
-	    [ENDIF authent_show_lang_selection]
-	  [IF authent_show_reqpasswd]
-	  <a href="[CORE_BASEURL]app=AUTHENT&amp;action=REQPASSWD">[TEXT:authent reqpassword]</a>
-	  [ENDIF authent_show_reqpasswd]
-	  <a href="javascript:display_help()">[TEXT:loginform:help]</a>
-	  
-	</div>
-	
-      </div>
-
-  </div>
-
 </div>
+
+
+<form action="[baseurl]app=AUTHENT&amp;action=CHECKAUTH" method="post" name="loginform" style="display:inline">
+    <input type="hidden" name="appd" value="[app_redir]"/>
+    <input type="hidden" name="actd" value="[act_redir]"/>
+    <input type="hidden" name="argd" value="[arg_redir]"/>
+    <input type="hidden" name="redirect_uri" value="[redirect_uri]"/>
+
+    <div id="authform" class="authmain" style="visibility:hidden">
+
+
+        <div id="main" style="visibility:hidden">
+
+            <div id="idbanner" class="banner">
+                <div class="realm">[CORE_REALM]</div>
+            </div>
+
+            <div class="form">
+
+                <div class="zoneinput">
+                    <label for="auth_user" class="label">[TEXT:yourusername]</label>
+                    <div class="input">
+                        <input id="auth_user" placeholder="[TEXT:Enter your login]" name="auth_user" type="text"
+                               autocapitalize="off" autocorrect="off" value="[auth_user]"/>
+                    </div>
+                    <label for="auth_pass" class="label">[TEXT:yourpassword]</label>
+                    <div class="input">
+                        <input id="auth_pass" placeholder="[TEXT:Enter your password]" name="auth_pass" type="password"
+                               value=""/>
+                    </div>
+                    <div id="msgerr" class="message">[error]</div>
+                    <div class="action">
+                        <a href="javascript:login(this.document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');">
+                            [TEXT:Do connection]</a>
+                        <div style="clear:both"></div>
+                    </div>
+                </div>
+
+
+                <div class="buttons">
+
+                    [IF authent_show_lang_selection]
+                    <select class="lang" name="CORE_LANG"
+                            onchange="window.location.href='[baseurl]app=AUTHENT&amp;action=LOGINFORM&amp;lang='+this.options[this.selectedIndex].value">
+                        [BLOCK LANG]
+                        [IF LANG_IS_SELECTED]
+                        <option value="[LANG_VALUE]" selected="selected">[LANG_LABEL]</option>
+                        [ENDIF LANG_IS_SELECTED]
+                        [IFNOT LANG_IS_SELECTED]
+                        <option value="[LANG_VALUE]">[LANG_LABEL]</option>
+                        [ENDIF LANG_IS_SELECTED]
+                        [ENDBLOCK LANG]
+                    </select>
+                    [ENDIF authent_show_lang_selection]
+                    [IF authent_show_reqpasswd]
+                    <a href="[baseurl]app=AUTHENT&amp;action=REQPASSWD">[TEXT:authent reqpassword]</a>
+                    [ENDIF authent_show_reqpasswd]
+                    <a href="javascript:display_help()">[TEXT:loginform:help]</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </form>
 
 <script>
-  addEvent(window,'load',initZone);
-  addEvent(window,'resize',centerZone);
+    addEvent(window, 'load', initZone);
+    addEvent(window, 'resize', centerZone);
 </script>
 
 </body>
