@@ -1,6 +1,6 @@
 
 html, body.core {
-  background-color : #FBFBFB;
+  background-color: #DBE5E7;
   font-size: 11pt;
 }
 .zhelp {
@@ -32,7 +32,6 @@ html, body.core {
 }
 
 .authmain {
-  width:300px;
   margin: 0 auto 0 auto;
 }
 .authmain a {
@@ -51,20 +50,20 @@ html, body.core {
   width:100%;
 }
 
-.authmain .banner {
+.banner {
     text-align : center;
-    margin-bottom:20px;
+    margin-bottom : 20px;
 }
-.authmain .banner .societe {
+.banner .societe {
     display: inline;
-    background: transparent url('resizeimg.php?img=[CORE_LOGOCLIENT]&height=24') no-repeat 0 50%;
-    padding: 10px 10px 10px 50px;
+    background: transparent url('resizeimg.php?img=CORE/Images/logo-mini.png&height=30') no-repeat 0 50%;
+    padding: 10px 10px 10px 30px;
     font-weight : bold;
     font-size: 200%;
-    color: #888;
+    color: #7A7A7A;
     text-shadow: 0 1px 0 white;
 }
-.authmain .banner .realm {
+.banner .realm {
     margin-top: 5px;
     color: #888;
     font-size:120%;
@@ -73,13 +72,14 @@ html, body.core {
 
 
 .authmain .zoneinput {
+    width: 300px;
     background-color: #fff;
     padding: 20px;
     margin: 0 auto 0 auto;
-    border: 1px solid #e8e8e8;
+    border: 1px solid #BEBCD5;
     font-size: 11pt;
-    border-radius: 3px;
-    box-shadow: rgba(200, 200, 200, 0.7) 0 4px 10px;
+    border-radius: 5px;
+    box-shadow: rgba(128, 128, 128, 0.7) 0 4px 10px;
 }
 
 .authmain .zoneinput .label {
@@ -88,20 +88,20 @@ html, body.core {
   color: #999;
 }
 .authmain .input input {
-  color: #555;
+  color: #575757;
   line-height: 1;
   width: 100%;
   padding: 6px 2px 6px 2px;
   margin-top: 2px;
   margin-right: 6px;
   margin-bottom: 10px;
-  border: 1px solid #E5E5E5;
-  background: #FBFBFB;
+  border: 1px solid #BEC8DA;
+  background: #DBE5E7;
   outline: 0;
   -webkit-box-shadow: inset 1px 1px 2px rgba(200, 200, 200, 0.2);
-  box-shadow: inset 1px 1px 2px rgba(200, 200, 200, 0.2);
+  box-shadow: inset 1px 1px 2px rgba(126, 119, 119, 0.2);
   border-radius: 3px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .authmain .zoneinput .action {
@@ -138,12 +138,13 @@ html, body.core {
 
 
 div.zoneinput input::-webkit-input-placeholder {
-  color:  #c4c4c4;
+  color:  #aaa;
   font-weight : normal; 
   text-shadow: 0 1px 1px #fff;   
 }
 div.zoneinput input:-moz-placeholder {
-    color:   #82A0B5;
+  color:   #aaa;
   font-weight : normal;    
+  text-shadow: 0 1px 1px #fff;   
 }
 
