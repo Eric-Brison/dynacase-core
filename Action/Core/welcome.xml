@@ -11,7 +11,6 @@
         <div class="left-block">
             <!-- block dynacase -->
             <div id="apropos">
-                <div class="intro">&rarr; à propos</div>
                 <div class="en">
                     <p>
                         Le core Dynacase Platform est distribué sous licence
@@ -66,7 +65,7 @@
             <!-- block apropos --> </div>
         <!-- enf of block left-block -->
         <div class="right-block">
-            <div class="intro">&rarr; bienvenue</div>
+            <a class="intro" href="authent.php?action=LOGOUT">&rarr; Se déconnecter</a>
             <div id="hello">
                 <!-- block hello -->
                 <div id="header">
@@ -82,28 +81,29 @@
                 <div id="welcome">Félicitations, Dynacase Platform est prêt à fonctionner.</div>
                 <div class="documentation">
                     Pour plus d'information, nous vous invitons à vous rendre sur le
-                    <a href="http://docs.anakeen.com/dynacase/3.2/" target="_blank">centre de documentation Dynacase</a>
+                    <a href="http://docs.anakeen.com/" target="_blank">centre de documentation Dynacase</a>
                 </div>
             </div>
+	    [IF isAdmin]<div class="admin-link">
+	    <a class="admin-link" href="admin.php" target="_blank">Accès à l'administration de la plateforme</a>
+	    </div>[ENDIF isAdmin]
             <div class="links">
-                <div>
-                    <a href="http://www.dynacase.org" target="_blank">
-                        <img src="[IMG:dc-platform-130x60.png]" alt="Dynacase Platform logo"/>
-                        <div class="label">Développez vos applications avec Dynacase Platform</div>
-                    </a>
-                    <div class="clear"></div>
-                </div>
-                <div>
-                    <a href="http://www.dynacase.org/" target="_blank">
-                        <img src="[IMG:dc-control-130x60.png]" alt="Dynacase Control logo"/>
-                        <div class="label">
-                            Gérez, administrez vos déploiements et les contextes avec Dynacase Control.
-                        </div>
-                    </a>
-                    <div class="clear"></div>
-                </div>
+	      <div>
+		<a href="http://www.dynacase.org" target="_blank">
+		  <img src="[IMG:dc-platform-130x60.png]" alt="Dynacase Platform logo"/>
+		  <div class="label">Développez vos applications avec Dynacase Platform</div>
+		</a>
+	      </div>
+	      <div>
+		<a href="http://www.dynacase.org/" target="_blank">
+		  <img src="[IMG:dc-control-130x60.png]" alt="Dynacase Control logo"/>
+		  <div class="label">
+		    Gérez, administrez vos déploiements et les contextes avec Dynacase Control.
+		  </div>
+		</a>
+	      </div>
+	      <div class="clear"></div>
             </div>
-            <div class="clear"></div>
         </div>
     </div>
     <!-- block hello -->
