@@ -1960,7 +1960,7 @@ msgstr "Pages de favico de Dynacase"
 #: Class/Fdl/Class.Doc.php:999
 #, c-format
 msgid "Dynamic template %s not an odt file "
-msgstr "Le fichier %s utilié pour un modèle dynamique n'est pas un odt"
+msgstr "Le fichier %s utilisé pour un modèle dynamique n'est pas un odt"
 
 #: Class/Fdl/Class.Doc.php:990 Class/Fdl/Class.Doc.php:994
 #, c-format
