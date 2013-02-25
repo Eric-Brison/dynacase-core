@@ -34,15 +34,14 @@ p { margin:0; padding:0 }
 #apropos em { font-style:normal; font-weight: bold; }
 #apropos ul { margin-left:0; padding-left: 20px; }
 #apropos li { }
-#apropos .intro { text-align:right; font-size:80%; font-weight:bold; color:[COLOR_WHITE]; }
 #apropos div.fr, #apropos div.en { padding:20px 15px 0 15px; }
 #apropos a, #apropos a:link, #apropos a:visited   { color:[COLOR_C3]; text-decoration:underline; }
 #apropos a:hover { text-decoration:none; background-color:[COLOR_A6]; }
 #apropos p { margin-bottom:10px; }
 #apropos a.anakeen, #apropos a.anakeen:visited, #apropos a.anakeen:hover { font-weight:bold; text-decoration:none; }
 
-.right-block .intro { text-align:right; font-size:80%; font-weight:bold; }
-#hello {  padding:60px 40px; }
+.right-block .intro { display:block; text-align:right; font-size:80%; font-weight:bold; }
+#hello {  padding: 60px 40px; }
 
 #header { text-align:center;}
 #header .title { font-weight:bold; font-size:400%; }
@@ -56,7 +55,7 @@ p { margin:0; padding:0 }
 
 .links { text-align:center; padding: 60px 40px; }
 .links > div { width:48%; float:left;}
-.links a { margin-right 10%; display:block; }
+.links a { margin-bottom: 30px; display:block; }
 .links .label { max-width:50%; margin: 1em auto 0 auto; font-size:150%; }
 .links img { }
 
@@ -83,5 +82,25 @@ a.manual {
     text-align: center;
     font-size: 200%;
     font-weight: bold;
-    margin: 0 20% 0 20%;
+}
+
+.admin-link {
+    text-align: center;
+}
+.admin-link a {
+    color: [COLOR_C7];
+    font-size: 150%;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.5em 1em;
+    color: #fff;
+    background-color: #3E8FA8;
+    box-shadow: inset 1px 1px 4px rgba(0,0,0,0.2),inset 3px 3px 8px rgba(0,0,0,0.1), inset -1px -1px 4px rgba(0,0,0,0.2), inset -3px -3px 8px rgba(0,0,0,0.1)  ;
+}
+.admin-link a:hover{
+    background-color: #FF620A;
+    text-decoration: none;
+    border-color: 1px solid #777;
+    box-shadow: inset 1px 1px 4px rgba(0,0,0,0.2),inset 3px 3px 8px rgba(0,0,0,0.1), inset -1px -1px 4px rgba(0,0,0,0.2), inset -3px -3px 8px rgba(0,0,0,0.1)  ;
 }

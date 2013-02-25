@@ -13,6 +13,7 @@ function welcome(Action &$action)
     $action->lay->set("version", $action->GetParam("VERSION"));
     $action->lay->set("userRealName", $action->user->firstname . " " . $action->user->lastname);
     $action->lay->set("userDomain", getParam("CORE_CLIENT"));
+    $action->lay->set("isAdmin", (file_exists('admin.php') && $action->canExecute("CORE_ADMIN_ROOT", "CORE_ADMIN") === ''));
     // 3rd parties developpement
     $fext = $action->getLayoutFile("externals-dev.xml");
     $action->lay->set("HAVE_EXTERNALS", false);
