@@ -9,7 +9,7 @@
     </replaces>
 
     <requires>
-        <installer version="1.3.0" comp="ge"/>
+        <installer version="1.4.0" comp="ge"/>
         <module name="dynacase-jquery-installer" version="1.7.2" comp="ge"/>
         <module name="dynacase-jquery-ui-installer" version="1.8.21" comp="ge"/>
         <module name="dynacase-json2" version="1.0.0" comp="ge"/>
