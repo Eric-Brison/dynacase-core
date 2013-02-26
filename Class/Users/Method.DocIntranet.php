@@ -132,20 +132,24 @@ class _IGROUPUSER extends Doc
         global $action;
         
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/mktree.js");
+        $action->parent->addCssRef($action->GetParam("CORE_PUBURL") . "/USERCARD/Layout/choosegroup.css");
+
         $err = '';
         $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
-            if (!$user->isAffected()) return sprintf(_("user #%d does not exist") , $iduser);
+            if (!$user->isAffected()){
+                return sprintf(_("user #%d does not exist") , $iduser);
+            }
             $ugroup = $user->GetGroupsId();
         } else {
-            $user = new Account();
             $ugroup = array(
                 "2"
             ); // default what group
-            
         }
+
         $tgroup = array();
+
         $this->lay->set("wid", ($iduser == "") ? "0" : $iduser);
         
         $q2 = new queryDb("", "Account");
@@ -157,12 +161,18 @@ class _IGROUPUSER extends Doc
         if ($groups) {
             foreach ($groups as $k => $v) {
                 $groupuniq[$v["id"]] = $v;
-                $groupuniq[$v["id"]]["checkbox"] = "";
-                if (in_array($v["id"], $ugroup)) $groupuniq[$v["id"]]["checkbox"] = "checked";
+                if (in_array($v["id"], $ugroup)){
+                    $groupuniq[$v["id"]]["checkbox"] = "checked";
+                } else {
+                    $groupuniq[$v["id"]]["checkbox"] = "";
+                }
             }
+        } else {
+            $groups = array();
         }
-        if (!$groups) $groups = array();
+
         $iconGroup = $this->getIcon('', 14);
+
         if ($mgroups) {
             foreach ($mgroups as $k => $v) {
                 $cgroup = $this->_getChildsGroup($v["id"], $groups);
@@ -177,8 +187,11 @@ class _IGROUPUSER extends Doc
                     $tgroup[$k]["icon"] = $iconGroup;
                 }
                 $groupuniq[$v["id"]] = $v;
-                $groupuniq[$v["id"]]["checkbox"] = "";
-                if (in_array($v["id"], $ugroup)) $groupuniq[$v["id"]]["checkbox"] = "checked";
+                if (in_array($v["id"], $ugroup)){
+                    $groupuniq[$v["id"]]["checkbox"] = "checked";
+                } else {
+                    $groupuniq[$v["id"]]["checkbox"] = "";
+                }
             }
         }
         $this->lay->setBlockData("LI", $tgroup);

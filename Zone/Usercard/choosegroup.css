@@ -1,0 +1,18 @@
+#iviewgroup{
+    position: fixed;
+    float: right;
+    right: 0;
+    bottom: auto;
+    left: auto;
+    top: 50px;
+    width: 40%;
+    height: 50%;
+    display: none
+}
+
+span.selected:hover,
+span.unselected:hover,
+span.hselected:hover {
+    color: black;
+    text-decoration: underline overline;
+}

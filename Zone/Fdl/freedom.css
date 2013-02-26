@@ -782,7 +782,7 @@ SPAN.selected {
 
 SPAN.unselected {
   cursor: pointer;
- color:[CORE_TEXTFGCOLOR];
+  color:[CORE_TEXTFGCOLOR];
   border-style: none;
   padding:1px;
   height:20px;
