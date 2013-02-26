@@ -32,28 +32,39 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
         
         self::connectUser();
         self::beginTransaction();
-        
-        $config = static ::appConfig();
-        if (!is_array($config) && !empty($config)) {
-            throw new \Exception(sprintf("::appConfig() did not returned an array (returned type is %s).", gettype($config)));
+        /* configList can be a single app or a list of apps */
+        $configList = static::appConfig();
+        if (!is_array($configList) && !empty($configList)) {
+            throw new \Exception(sprintf("::appConfig() did not returned an array (returned type is %s).", gettype($configList)));
         }
-        if (!isset($config['appRoot']) || !isset($config['appName'])) {
-            throw new \Exception(sprintf("Missing 'appRoot' or 'appName'."));
+        /* If configList is a single app, then wrap it in an array of a single app */
+        if (isset($configList['appRoot']) || isset($configList['appName'])) {
+            $configList = array(
+                $configList
+            );
         }
-
-        self::setIncludePath(ini_get('include_path') . ':' . $config['appRoot']);
-
-        self::setUpTestApplication($config['appRoot'], $config['appName']);
-        
-        if (isset($config['import'])) {
-            if (is_scalar($config['import'])) {
-                $config['import'] = array(
-                    $config['import']
-                );
+        foreach ($configList as $i => $config) {
+            if (!is_array($config) && !empty($config)) {
+                throw new \Exception(sprintf("::appConfig() at index %d is not an array (returned type is %s).", $i, gettype($config)));
             }
-            if (is_array($config['import'])) {
-                foreach ($config['import'] as $import) {
-                    self::importDocument($import);
+            if (!isset($config['appRoot']) || !isset($config['appName'])) {
+                throw new \Exception(sprintf("Missing 'appRoot' or 'appName'."));
+            }
+            
+            self::setIncludePath(ini_get('include_path') . ':' . $config['appRoot']);
+            
+            self::setUpTestApplication($config['appRoot'], $config['appName']);
+            
+            if (isset($config['import'])) {
+                if (is_scalar($config['import'])) {
+                    $config['import'] = array(
+                        $config['import']
+                    );
+                }
+                if (is_array($config['import'])) {
+                    foreach ($config['import'] as $import) {
+                        self::importDocument($import);
+                    }
                 }
             }
         }
@@ -64,7 +75,6 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
         self::rollbackTransaction();
         self::resetIncludePath();
     }
-
     /**
      * Set up a false Action object can be used to execute action
      *
@@ -103,7 +113,6 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
         
         $myAction->parent->setVolatileParam('CORE_PUBDIR', DEFAULT_PUBDIR);
     }
-
     /**
      * Config of the application
      *
@@ -111,7 +120,8 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
      *
      * @return array
      */
-    protected static function appConfig() {
+    protected static function appConfig()
+    {
         return array();
     }
 }
