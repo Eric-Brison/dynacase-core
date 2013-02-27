@@ -19,12 +19,15 @@ if [ -d "$wpub/admin" ]; then
     fi
 
     if [ -f "$wpub/admin/.htpasswd" ]; then
-        mv "$wpub/admin/.htpasswd" "$wpub/config/"
+        mv "$wpub/admin/.htpasswd" "$wpub/supervisor/"
     fi
 
-    for file in `ls -1 "$wpub/admin"`; do
-        mv "$wpub/admin/$file" "$wpub/supervisor/"
-    done;
+    (
+        shopt -s nullglob dotglob
+        for file in "$wpub"/admin/*; do
+            mv "$file" "$wpub/supervisor/"
+        done
+    )
 
     rmdir "$wpub/admin"
 
