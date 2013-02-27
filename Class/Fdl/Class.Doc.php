@@ -4009,8 +4009,29 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
     /**
-     * return the related value by linked attributes
-     * @param string $RidAttr attribute identifier
+     * Return the related value by linked attributes.
+     *
+     * Can be used to retrieve a value by traversing multiple docid.
+     *
+     * For example,
+     * @code
+     * $val = $this->getRValue("id1:id2:id3")
+     * @endcode
+     * is a shortcut for
+     * @code
+     * $id1 = $this->getRawValue("id1");
+     * $doc1 = new_Doc('', $id1);
+     * $id2 = $doc1->getRawValue("id2");
+     * $doc2 = new_Doc('', $id2);
+     * $val = $doc2->getRawValue('', "id3");
+     * @endcode
+     *
+     * @warning
+     * Each of the traversed docid **must** be a docid or an account, and **must not** be multiple.\n
+     * Elsewhere, the returned value is $def
+     * @endwarning
+     *
+     * @param string $RidAttr attributes identifier chain (separated by ':')
      * @param string $def $def default return value
      * @param bool $latest always last revision of document
      * @param bool $html return formated value for html
@@ -8348,10 +8369,27 @@ create unique index i_docir on doc(initid, revision);";
         return date($format);
     }
     /**
-     * return value of an attribute for the document referenced
+     * Return the related value by linked attributes starting from referenced document.
+     *
+     * Can be used to retrieve a value by traversing multiple docid.
+     *
+     * For example,
+     * @code
+     * $val = $this->getDocValue("id", "id1:id2:id3")
+     * @endcode
+     * is a shortcut for
+     * @code
+     * $doc = new_Doc('', "id");
+     * $val = $doc->getRValue("id1:id2:id3");
+     * @endcode
+     *
+     * @warning
+     * Each of the traversed docid **must** be a docid or an account, and **must not** be multiple.\n
+     * Elsewhere, the returned value is $def
+     * @endwarning
      * @see Doc::getRValue
      * @param int $docid document identifier
-     * @param string $attrid attribute identifier
+     * @param string $attrid attributes identifier chain (separated by ':')
      * @param string $def $def default return value
      * @param bool $latest always last revision of document
      * @return array|string
