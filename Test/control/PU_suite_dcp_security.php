@@ -17,6 +17,7 @@ class SuiteDcpSecurity
         $suite->addTestSuite('Dcp\Pu\TestDocControl');
         $suite->addTestSuite('Dcp\Pu\TestRole');
         $suite->addTestSuite('Dcp\Pu\TestRoleMove');
+        $suite->addTestSuite('Dcp\Pu\TestAppInheritAcl');
         // ...
         return $suite;
     }

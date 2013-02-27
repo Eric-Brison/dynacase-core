@@ -1248,6 +1248,10 @@ create sequence SEQ_ID_APPLICATION start 10;
                 simpleQuery($this->dbaccess, sprintf("INSERT INTO acl (id,id_application,name,grant_level,description, group_default) SELECT nextval('seq_id_acl') as id, %d as id_application, acl.name, acl.grant_level, acl.description, acl.group_default from acl as acl,application as app where acl.id_application=app.id and app.name='%s' and acl.name NOT IN (SELECT acl.name from acl as acl, application as app  where id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof) , pg_escape_string($this->name)));
                 // init actions
                 simpleQuery($this->dbaccess, sprintf("INSERT INTO action (id, id_application, name, short_name, long_name,script,function,layout,available,acl,grant_level,openaccess,root,icon,toc,father,toc_order) SELECT nextval('seq_id_action') as id, %d as id_application, action.name, action.short_name, action.long_name, action.script, action.function, action.layout, action.available, action.acl, action.grant_level, action.openaccess, action.root, action.icon, action.toc, action.father, action.toc_order from action as action,application as app where action.id_application=app.id and app.name='%s' and action.name NOT IN (SELECT action.name from action as action, application as app  where action.id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof) , pg_escape_string($this->name)));
+                $err = $this->_initACLWithGroupDefault();
+                if ($err != '') {
+                    return false;
+                }
             }
             //----------------------------------
             // init application constant
@@ -1426,5 +1430,34 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function hasParent()
     {
         return (is_object($this->parent) && ($this->parent !== $this));
+    }
+    /**
+     * Initialize ACLs with group_default='Y'
+     */
+    private function _initACLWithGroupDefault()
+    {
+        $res = array();
+        try {
+            simpleQuery($this->dbaccess, sprintf("SELECT * FROM acl WHERE id_application = %s AND group_default = 'Y'", $this->id) , $res, false, false, true);
+        }
+        catch(Exception $e) {
+            return $e->getMessage();
+        }
+        foreach ($res as $acl) {
+            $permission = new Permission($this->dbaccess);
+            if ($permission->Exists(GALL_ID, $this->id, $acl['id'])) {
+                continue;
+            }
+            $permission->Affect(array(
+                'id_user' => GALL_ID,
+                'id_application' => $this->id,
+                'id_acl' => $acl['id']
+            ));
+            $err = $permission->Add();
+            if ($err != '') {
+                return $err;
+            }
+        }
+        return '';
     }
 }
