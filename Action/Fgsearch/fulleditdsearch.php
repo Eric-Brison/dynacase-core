@@ -48,6 +48,9 @@ function fulleditdsearch(&$action)
     $action->lay->SetBlockData("SELECTFAM", $selectclass);
     
     if ($famid > 0) {
+        /**
+         * @var _DSEARCH $search
+         */
         $search = createTmpDoc($dbaccess, 16);
         
         $search->setValue("se_famid", $famid);
