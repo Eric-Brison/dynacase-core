@@ -152,7 +152,7 @@ function family_defaultmenu(Action & $action)
         $toolsItemMenu['viewsearch'] = array(
             "label" => _("Handle my searches") ,
             "target" => "_overlay",
-            "url" => sprintf('?app=ONEFAM&amp;action=ONEFAM_MANAGE_SEARCH&amp;famId=%s', $famid)
+            "url" => sprintf('?app=%s&amp;action=ONEFAM_MANAGE_SEARCH&amp;famId=%s', $onefamOrigin, $famid)
         );
     }
 
