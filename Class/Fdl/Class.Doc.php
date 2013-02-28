@@ -7131,32 +7131,34 @@ create unique index i_docir on doc(initid, revision);";
             // Compute value elements
             $value = chop($this->getRawValue($i));
             
-            if (($value != "") && ($attr->mvisibility != "H") && ($attr->mvisibility != "I")) {
-                
+            if (($attr->mvisibility != "H") && ($attr->mvisibility != "I")) {
+                $dValue = '';
                 switch ($attr->type) {
                     case "image":
-                        
-                        $img = "<IMG align=\"absbottom\" height=\"30px\" SRC=\"" . $this->GetHtmlValue($listattr[$i], $value, $target, $ulink) . "&height=30\">";
-                        $tableframe[] = array(
-                            "name" => $attr->getLabel() ,
-                            "aid" => $attr->id,
-                            "value" => $img
-                        );
+                        $iValue = $this->GetHtmlValue($listattr[$i], $value, $target, $ulink);
+                        if ($iValue != "") {
+                            if ($value) {
+                                $dValue = "<img align=\"absbottom\" height=\"30px\" src=\"" . $iValue . "&height=30\">";
+                            } else {
+                                $dValue = "<img align=\"absbottom\" height=\"30px\" src=\"" . $iValue . "\">";
+                            }
+                        }
                         break;
 
                     default:
-                        // print values
-                        $tableframe[] = array(
-                            "name" => $attr->getLabel() ,
-                            "aid" => $attr->id,
-                            "value" => $this->GetHtmlValue($listattr[$i], $value, $target, $ulink = 1, -1, true, true)
-                        );
+                        $dValue = $this->getHtmlValue($listattr[$i], $value, $target, $ulink = 1, -1, true, true);
                         
                         break;
                 }
+                if ($dValue !== '') {
+                    $tableframe[] = array(
+                        "name" => $attr->getLabel() ,
+                        "aid" => $attr->id,
+                        "value" => $dValue
+                    );
+                }
             }
         }
-        
         $this->lay->SetBlockData("TABLEVALUE", $tableframe);
     }
     /**
