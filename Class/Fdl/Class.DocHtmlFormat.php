@@ -343,7 +343,16 @@ class DocHtmlFormat
                 $htmlval = $action->GetParam("CORE_BASEURL") . "app=FDL" . "&action=EXPORTFILE$opt&cache=no&vid=$vid&docid=" . $this->doc->id . "&attrid=" . $this->oattr->id . "&index=$idx"; // upload name
                 
             } else {
-                $htmlval = $action->parent->getImageLink($avalue);
+                if (empty($avalue)) {
+                    $localImage = $this->oattr->getOption('showempty');
+                    if ($localImage) {
+                        $htmlval = $action->parent->getImageLink($localImage);
+                    } else {
+                        $htmlval = $action->parent->getImageLink($avalue);
+                    }
+                } else {
+                    $htmlval = $action->parent->getImageLink($avalue);
+                }
             }
         }
         return $htmlval;
@@ -1091,7 +1100,11 @@ class DocHtmlFormat
      */
     public function formatColor($kvalue, $avalue)
     {
-        $htmlval = sprintf("<span style=\"background-color:%s\">%s</span>", $avalue, $avalue);
+        if ($avalue) {
+            $htmlval = sprintf("<span style=\"background-color:%s\">%s</span>", $avalue, $avalue);
+        } else {
+            $htmlval = '';
+        }
         return $htmlval;
     }
     private function rowattrReplace($s, $index)
