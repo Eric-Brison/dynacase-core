@@ -2666,12 +2666,13 @@ create unique index i_docir on doc(initid, revision);";
         $title1 = "";
         foreach ($ltitle as $k => $v) {
             if ($this->getRawValue($v->id) != "") {
-                if ($v->type == "enum") $title1.= $this->GetHtmlValue($v, $this->getRawValue($v->id)) . " ";
-                else $title1.= $this->getRawValue($v->id) . " ";
+                if ($v->inArray() && ($v->getOption('multiple') == 'yes')) {
+                    $title1.= mb_trim(str_replace("<BR>", " ", $this->getRawValue($v->id))) . " ";
+                } else $title1.= $this->getRawValue($v->id) . " ";
             }
         }
-        if (chop($title1) != "") $this->title = mb_substr(chop(str_replace("\n", " ", $title1)) , 0, 255); // restric to 256 char
-        $this->title = mb_substr(chop(str_replace("\n", " ", $this->getCustomTitle())) , 0, 255);
+        if (mb_trim($title1) != "") $this->title = mb_substr(mb_trim(str_replace("\n", " ", $title1)) , 0, 255); // restric to 256 char
+        $this->title = mb_substr(mb_trim(str_replace("\n", " ", $this->getCustomTitle())) , 0, 255);
     }
     /**
      * call after construct
