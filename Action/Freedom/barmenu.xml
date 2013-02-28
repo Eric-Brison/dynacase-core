@@ -92,7 +92,7 @@ function SendSearchId(e,id) {
 <!-- ------------ MENU HELP --------------------- -->
 <div  id="helpmenu" class="popup">
      <a  id="import" href="#" onClick="subwindow(300,800,'_blank','[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_MAINIMPORT&dirid='+parent.ffolder.dirid);closeAllMenu();">[TEXT:Import documents]</a>
-     <a  id="importtar" href="#" target="_blank" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDITIMPORTTAR&classid=7&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:Import Tar]</a>
+     <a  id="importtar" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDITIMPORTTAR&classid=7&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:Import Tar]</a>
      <a  id="planexec" href="#" onClick="subwindow([FDL_HD2SIZE],[FDL_VD2SIZE],'fplanexec','[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_PLANEXEC');closeAllMenu();">[TEXT:exec plan]</a>
 </div>
 
