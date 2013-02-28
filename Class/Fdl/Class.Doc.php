@@ -8546,6 +8546,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function updateVaultIndex()
     {
+        if (empty($this->id)) return;
         $dvi = new DocVaultIndex($this->dbaccess);
         $err = $dvi->DeleteDoc($this->id);
         $fa = $this->GetFileAttributes();
@@ -8568,10 +8569,12 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         
-        foreach ($tvid as $k => $vid) {
-            $dvi->docid = $this->id;
-            $dvi->vaultid = $vid;
-            $dvi->Add();
+        foreach ($tvid as $vid) {
+            if ($vid > 0) {
+                $dvi->docid = $this->id;
+                $dvi->vaultid = $vid;
+                $dvi->Add();
+            }
         }
     }
     // ===================
