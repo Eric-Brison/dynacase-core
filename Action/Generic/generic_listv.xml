@@ -25,15 +25,6 @@
     [JS:CODE]
     document.dirid='[dirid]';
 
-if (document.all) {
-  window.onscroll = floatMenu; /* position fixed not IE supported yet */
-  window.onload = floatMenu; /* position fixed not IE supported yet */
-}
-function floatMenu () {
-  document.getElementById('barmenu').style.position = 'absolute';
-   document.getElementById('barmenu').style.top = getScrollYOffset();
-    return true;
-}
 document.needreload=true;
 var prevselid;
 var PDS='';
