@@ -1100,7 +1100,11 @@ class DocHtmlFormat
      */
     public function formatColor($kvalue, $avalue)
     {
-        $htmlval = sprintf("<span style=\"background-color:%s\">%s</span>", $avalue, $avalue);
+        if ($avalue) {
+            $htmlval = sprintf("<span style=\"background-color:%s\">%s</span>", $avalue, $avalue);
+        } else {
+            $htmlval = '';
+        }
         return $htmlval;
     }
     private function rowattrReplace($s, $index)
