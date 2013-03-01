@@ -70,6 +70,10 @@ BUTTON, input[type="button"], input[type="submit"] {
   vertical-align:top;
   overflow:hidden;
   border:1px outset;
+[IF ISIE]
+ width: 19px;
+ height: 19px;
+ [ENDIF ISIE]
   color:[input-text-normal-color];
   background-color:[input-background-normal-color];
   background-image: [input-background-image];
