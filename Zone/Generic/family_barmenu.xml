@@ -1,10 +1,19 @@
 <script>
     $(document).ready(function () {
+        var $bar1 = $("#bar1");
+
+        $.widget( "ui.menu", $.ui.menu, {
+          select: function() {
+            this.active = this.active || $();
+            this._super();
+          }
+        });
+
         function select(event, ui) {
-            var ia = ui.item.children('a')[0];
-            var url = ia.getAttribute('url');
-            var tconfirm = ia.getAttribute('confirm');
-            var target = ia.getAttribute('target');
+            var ia = ui.item.children('a');
+            var url = ia.attr('url');
+            var tconfirm = ia.attr('confirm');
+            var target = ia.attr('target');
             var confirmated = true;
             if (tconfirm) {
                 if (!confirm(tconfirm)) {
@@ -32,11 +41,15 @@
             $(".ui-menubar ul.ui-menu").css("max-height", ($(window).height() - 50) + "px");
         }
 
-        $("#bar1").menubar({
+        $bar1.menubar({
             position : {
                 within : $("#mainbarmenu").add(window).first()
             },
-            select :   select
+            create : function() {
+                $("#barmenuLoading").hide();
+                $("#mainbarmenu").show();
+            },
+            select : select
         });
         $(window).resize(function () {
             adjustFixed();
@@ -78,11 +91,20 @@
         [IF ISIE6] width:inherit; [ENDIF ISIE6]
         min-width:130px;
     }
+    .menu-loading {
+        text-align: center;
+        padding: 0.4em 0;
+        width: 100%;
+    }
 </style>
-<div id="mainbarmenu" class="menu">
+<div id="mainbarmenu" class="menu" style="display : none;">
     <ul id="bar1" class="menubar">
         [familyMenu]
     </ul>
+</div>
+
+<div id="barmenuLoading" class="menu-loading ui-widget-header">
+    [TEXT:Loading menu]...
 </div>
 
 [IFNOT ISIE6]
