@@ -265,7 +265,7 @@ function popUp(x,y,w,h,cid,text,bgcolor,textcolor,fontstyleset,title,titlecolor,
       titlebar.style.backgroundImage="url('Images/tabvig.png')";
       var bsavegeo=(noDecoration)?'<div id="'+cid+'_max" class="btn_max" style="display:none;background-image:url(Images/byellow.png);height:10px;width:10px;float:right;"></div>':'<div id="'+cid+'_max" class="btn_max" style="cursor:pointer;background-image:url(Images/byellow.png);height:10px;width:10px;float:right;"></div>'; // <img style="cursor:default" src="Images/byellow.png" id="'+cid+'_max">
       var tmp=(isresize)?bsavegeo+'<div id="'+cid+'_min" class="btn_min" style="cursor:pointer;background-image:url(Images/bgreen.png);height:10px;width:10px;float:right;"></div>':'';//'<img title="Minimise/Maximise" style="cursor:default" src="Images/bgreen.png"  id="'+cid+'_min">'+bsavegeo:'';
-      titlebar.innerHTML='<span title="Close" id="'+cid+'_ti" style="position:absolute; left:3px; top:1px; font:bold 9pt sans-serif; color:'+titletextcolor+'; height:18px; overflow:hidden; clip-height:16px;">'+title+'</span><div id="'+cid+'_btt" style="position:absolute; width:48px; left:'+(tw-48)+'px; top:2px; text-align:right">'+'<div id="'+cid+'_cls" class="btn_cls" style="cursor:pointer;background-image:url(Images/bred.png);height:10px;width:10px;float:right;"></div>'+tmp+'</div>';//'<img style="cursor:default" src="Images/bred.png" title="Close" id="'+cid+'_cls"></div>';
+      titlebar.innerHTML='<span title="Close" id="'+cid+'_ti" style="position:absolute; left:3px; top:1px; font:bold 9pt sans-serif; color:'+titletextcolor+'; height:18px; overflow:hidden; clip-height:16px;">'+htmlescape(title)+'</span><div id="'+cid+'_btt" style="position:absolute; width:48px; left:'+(tw-48)+'px; top:2px; text-align:right">'+'<div id="'+cid+'_cls" class="btn_cls" style="cursor:pointer;background-image:url(Images/bred.png);height:10px;width:10px;float:right;"></div>'+tmp+'</div>';//'<img style="cursor:default" src="Images/bred.png" title="Close" id="'+cid+'_cls"></div>';
       tw=(ie5)?w-7:w-13;
       var content=new subBox(2,ht+4,tw,h-15-ht,bgcolor,cid+'_c');
       content.style.borderColor=bordercolor;
@@ -332,7 +332,7 @@ function popUp(x,y,w,h,cid,text,bgcolor,textcolor,fontstyleset,title,titlecolor,
 	var posn=(ns4)? 'screenX='+x+',screenY='+y: 'left='+x+',top='+y;
 	var win=window.open(t , "abc"+ctr , "status=no,menubar=no,width="+w+",height="+h+",resizable="+((isresize)?"yes":"no")+",scrollbars=yes,"+posn);
 	if(!isExt){
-	  t='<html><head><title>'+title+'</title></head><body bgcolor="'+bgcolor+'"><font style="font:'+fontstyleset+'; color:'+textcolor+'">'+text+'</font></body></html>';
+	  t='<html><head><title>'+htmlescape(title)+'</title></head><body bgcolor="'+bgcolor+'"><font style="font:'+fontstyleset+'; color:'+textcolor+'">'+text+'</font></body></html>';
 	  win.document.write(t);
 	  win.document.close();
 	}}}}}
