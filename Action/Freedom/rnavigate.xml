@@ -49,7 +49,7 @@ function processReqChange() {
       // ...processing statements go here...
       //  alert(req.responseText);
       if (req.responseXML) {
-	var path=req.responseXML.getElementsByTagName("path")[0].firstChild.nodeValue;
+	var path=htmlescape(req.responseXML.getElementsByTagName("path")[0].firstChild.nodeValue);
 	var elts = req.responseXML.getElementsByTagName("relation");
 	
 	if (elts.length >= 0) {
@@ -116,7 +116,7 @@ function processReqChange() {
 	      od.appendChild(oa);
 	    }
 	    icon=elt.getElementsByTagName("icon")[0].firstChild.nodeValue;
-	    title=elt.getElementsByTagName("title")[0].firstChild.nodeValue;
+	    title=htmlescape(elt.getElementsByTagName("title")[0].firstChild.nodeValue);
 	    aid=elt.getElementsByTagName("aid")[0].firstChild.nodeValue;
 	    alabel=elt.getElementsByTagName("alabel")[0].firstChild.nodeValue;
 	    if (parseInt(sdocid)>0) {
