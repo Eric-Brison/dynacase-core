@@ -22,7 +22,7 @@ include_once ("FDL/freedom_util.php");
 
 include_once ("FDL/popup_util.php");
 // -----------------------------------
-function folder_barmenu(&$action)
+function folder_barmenu(Action & $action)
 {
     // -----------------------------------
     // Get all the params
@@ -34,7 +34,7 @@ function folder_barmenu(&$action)
     $dir = new_Doc($dbaccess, $dirid);
     
     $action->lay->Set("wtarget", $target);
-    $action->lay->set("title", $dir->getTitle());
+    $action->lay->set("title", $dir->getHTMLTitle());
     $action->lay->set("pds", $dir->urlWhatEncodeSpec("")); // parameters for searches
     if ($nbdoc > 1) $action->lay->set("nbdoc", sprintf(_("%d documents") , $nbdoc));
     else $action->lay->set("nbdoc", sprintf(_("%d document") , $nbdoc));
@@ -63,7 +63,7 @@ function folder_barmenu(&$action)
                     $toolmenu[] = "arch" . $archive->id;
                     $tarch[] = array(
                         "archid" => $archive->id,
-                        "archtitle" => sprintf(_("Insert all into %s archive") , $archive->getTitle())
+                        "archtitle" => sprintf(_("Insert all into %s archive") , $archive->getHTMLTitle())
                     );
                 }
             }
