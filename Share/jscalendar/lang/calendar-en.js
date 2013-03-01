@@ -101,6 +101,8 @@ Calendar._TT["NEXT_YEAR"] = "Next year (hold for menu)";
 Calendar._TT["SEL_DATE"] = "Select date";
 Calendar._TT["DRAG_TO_MOVE"] = "Drag to move";
 Calendar._TT["PART_TODAY"] = " (today)";
+Calendar._TT["DATE_INCORRECT"] = "Incorrect date : %s";
+Calendar._TT["DATE_OUTRANGE"] = "Year must be between %1$s and %2$s for picker to work. Enter another year.";
 
 // the following is to inform that "%s" is to be the first day of week
 // %s will be replaced with the day name.

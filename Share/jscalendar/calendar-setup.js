@@ -170,7 +170,11 @@ Calendar.setup = function (params) {
 		cal.setDateFormat(dateFmt);
 		if (mustCreate)
 			cal.create();
-		cal.parseDate(dateEl.value || dateEl.innerHTML);
+		var err = cal.parseDate(dateEl.value || dateEl.innerHTML);
+        if (err) {
+            alert(err);
+            return;
+        }
 		cal.refresh();
 		if (!params.position)
 			cal.showAtElement(params.button || params.displayArea || params.inputField, params.align);
@@ -196,8 +200,8 @@ function Calendar_Init(inf,ibu,sht,dateformat) {
 			showsTime      :    sht,            // will display a time selector
 			button         :    ibu,   // trigger for the calendar (button ID)
 			singleClick    :    true,           // double-click mode
-			step           :    1                // show all years in drop-down boxes (instead of every other year as default)
-
+			step           :    1,                // show all years in drop-down boxes (instead of every other year as default)
+            range: [1000, 9999]
 		});
 	}
 }

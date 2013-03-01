@@ -23,8 +23,8 @@ Calendar = function (firstDayOfWeek, dateStr, onSelected, onClose) {
 	this.onClose = onClose || null;
 	this.dragging = false;
 	this.hidden = false;
-	this.minYear = 1970;
-	this.maxYear = 2050;
+	this.minYear = 1000;
+	this.maxYear = 9999;
 	this.dateFormat = Calendar._TT["DEF_DATE_FORMAT"];
 	this.ttDateFormat = Calendar._TT["TT_DATE_FORMAT"];
 	this.isPopup = true;
@@ -50,7 +50,6 @@ Calendar = function (firstDayOfWeek, dateStr, onSelected, onClose) {
 	this.activeYear = null;
 	// Information
 	this.dateClicked = false;
-
 	// one-time initializations
 	if (typeof Calendar._SDN == "undefined") {
 		// table of short day names
@@ -718,7 +717,6 @@ Calendar.prototype.create = function (_par) {
 		this.isPopup = false;
 	}
 	this.date = this.dateStr ? new Date(this.dateStr) : new Date();
-
 	var table = Calendar.createElement("table");
 	this.table = table;
 	table.cellSpacing = 0;
@@ -1057,13 +1055,6 @@ Calendar.prototype._init = function (firstDayOfWeek, date) {
 	var today = new Date();
 	//this.table.style.visibility = "hidden";
 	var year = date.getFullYear();
-	if (year < this.minYear) {
-		year = this.minYear;
-		date.setFullYear(year);
-	} else if (year > this.maxYear) {
-		year = this.maxYear;
-		date.setFullYear(year);
-	}
 	this.firstDayOfWeek = firstDayOfWeek;
 	this.date = new Date(date);
 	var month = date.getMonth();
@@ -1413,7 +1404,10 @@ Calendar.prototype.parseDate = function (str, fmt) {
 		    case "%Y":
 		    case "%y":
 			y = parseInt(a[i], 10);
-			(y < 100) && (y += (y > 29) ? 1900 : 2000);
+                if (y < this.minYear) {
+                    return Calendar._TT["DATE_OUTRANGE"].replace("%1$s", this.minYear).replace("%2$s", this.maxYear);
+                }
+			//(y < 100) && (y += (y > 29) ? 1900 : 2000);
 			break;
 
 		    case "%b":
@@ -1462,7 +1456,7 @@ Calendar.prototype.parseDate = function (str, fmt) {
 			m = a[i]-1;
 		} else if (parseInt(a[i], 10) > 31 && y == 0) {
 			y = parseInt(a[i], 10);
-			(y < 100) && (y += (y > 29) ? 1900 : 2000);
+			//(y < 100) && (y += (y > 29) ? 1900 : 2000);
 		} else if (d == 0) {
 			d = a[i];
 		}
@@ -1721,7 +1715,7 @@ Date.prototype.print = function (str) {
 // global object that remembers the calendar
 window.calendar = null;
 function padout2(number) { return (number < 10) ? '0' + number : number; }
-function padout4(number) { return (number < 30) ? '20' + padout2(number) : (number < 100) ? '19' + padout2(number) : number; }
+function padout4(number) { return (number < 10) ? '00' + padout2(number) : (number < 100) ? '00' + (number) : (number < 1000) ? '0' + (number) :number; }
 
 
 function control_date(event, th) {
@@ -1732,15 +1726,10 @@ function control_date(event, th) {
   if ((th.value!="") && (th.value!=" ")) {
 
 
-    if (r != null) {    
-      nd.setFullYear(r[3],r[2]-1,r[1]);
-      th.readOnly=true; // to say OK
-      th.value= padout2(nd.getDate())+'/'+padout2(nd.getMonth()+1)+'/'+padout4(nd.getFullYear());
-		     
-    } else {
+    if (r == null) {
       var oldvalue=th.value;
       th.value= padout2(nd.getDate())+'/'+padout2(nd.getMonth()+1)+'/'+padout4(nd.getFullYear());
-      alert('date incorrecte : '+oldvalue);
+      alert(Calendar._TT["DATE_INCORRECT"].replace("%s",oldvalue));
       th.select();
       th.focus();
    
