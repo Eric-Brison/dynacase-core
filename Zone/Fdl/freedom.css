@@ -33,7 +33,12 @@ div.htmltext p:last-child, div.htmltext h1:last-child, div.htmltext h2:last-chil
     margin-bottom: 0px;
 }
 div.frame .content {
+    [IFNOT ISIE]
     overflow: auto;
+    [ENDIF ISIE]
+    [IF ISIE]
+    overflow: hidden;
+    [ENDIF ISIE]
 }
 span.familyTitle {
   font-size:70%;
@@ -198,7 +203,10 @@ DIV.barmenu A {
 TD.editbutton, TD.nowrap {
   white-space:nowrap;
   [IFNOT ISIE]width:2px;[ENDIF ISIE]
-  [IF ISIE]width:50px;[ENDIF ISIE]
+  [IF ISIE]
+width:50px;
+    padding-left: 4px !important;
+[ENDIF ISIE]
 }
 TD[type=docid][multiple=true]+TD.editbutton, 
 TABLE[type=docid][multiple=true] TD.editbutton,

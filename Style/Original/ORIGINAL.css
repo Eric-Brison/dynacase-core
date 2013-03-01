@@ -23,6 +23,10 @@ TABLE.headbarmenu TD {
 
 input[type="button"],BUTTON,input[type="reset"],input[type="select"],input[type="submit"] {  
   -moz-border-radius:25px;
+    [IF ISIE]
+    width: 19px;
+    height: 19px;
+    [ENDIF ISIE]
 }
 
 input[type="text"],TEXTAREA { 
