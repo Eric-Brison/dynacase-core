@@ -1,5 +1,5 @@
 <script>
-    $(function () {
+    $(document).ready(function () {
         function select(event, ui) {
             var ia = ui.item.children('a')[0];
             var url = ia.getAttribute('url');
@@ -39,9 +39,9 @@
             select :   select
         });
         $(window).resize(function () {
-            adjustFixed()
+            adjustFixed();
         });
-        adjustFixed()
+        adjustFixed();
     });
 </script>
 <style>
@@ -89,5 +89,5 @@
 <div id="fakeBarMenu" style="margin-bottom:10px">&nbsp;</div>
 [ENDIF ISIE6]
 
-<iframe name="fhidden" style="display:none" src="about:blank"></iframe>
+<iframe name="fhidden" style="display:none;" src="[IMG:1x1.gif]"></iframe>
 
