@@ -78,7 +78,8 @@ Calendar._TT["MON_FIRST"] = "Commencer par lundi";
 Calendar._TT["SUN_FIRST"] = "Commencer par dimanche";
 Calendar._TT["CLOSE"] = "Fermer";
 Calendar._TT["TODAY"] = "Aujourd'hui";
-
+Calendar._TT["DATE_INCORRECT"] = "Date incorrecte : %s";
+Calendar._TT["DATE_OUTRANGE"] = "L'année doit être comprise entre %1$s et %2$s pour que le calendrier fonctionne. Saisissez une autre année.";
 // the following is to inform that "%s" is to be the first day of week
 // %s will be replaced with the day name.
 Calendar._TT["DAY_FIRST"] = "Afficher %s en premier";
