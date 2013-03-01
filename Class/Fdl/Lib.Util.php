@@ -224,12 +224,11 @@ function stringDateToUnixTs($isodate, $utc = false)
 function isValidDate($date)
 {
     if ((strlen($date) > 0) && (strlen($date) < 3)) return false;
-    $c = strtotime($date);
-    if ($c !== false && $c != - 1) return true;
-    // replace month/day
-    $date = preg_replace('/(\d+)\/(\d+)\/(.*)/', '${2}/${1}/${3}', $date);
-    $c = strtotime($date);
-    return ($c !== false && $c != - 1);
+    $date = stringDateToIso($date, "");
+    if (preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)/', $date, $reg)) {
+        return checkdate($reg[2], $reg[3], $reg[1]);
+    }
+    return false;
 }
 /**
  * convert string date to iso
@@ -525,6 +524,7 @@ function unaccent_($text)
     }
     return str_replace($search, $replace, $text);
 }
+
 function unaccent_iso8859_1($string)
 {
     $string = strtr($string, "\xA1\xAA\xBA\xBF\xC0\xC1\xC2\xC3\xC5\xC7
