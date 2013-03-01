@@ -137,10 +137,14 @@ function objectMenu2Html(array $menulist, $ul = true, $level = 0)
                 if (!empty($aMenu["url"])) {
                     $aMenu["href"] = $aMenu["url"];
                 }
-                $htmlReturn.= '><div role="button"';
+                $htmlReturn.= '><div role="button" class="div-button ui-button-text-only ui-button ui-widget ui-button-text-only ui-menubar-link" ';
             }
             if (!$noanchor) {
-                $htmlReturn.= "><a";
+                if ($level === 0) {
+                    $htmlReturn.= "><a class='ui-button-text' ";
+                }else {
+                    $htmlReturn.= "><a";
+                }
             }
             foreach ($aMenu as $ki => $item) {
                 if ($ki != "label") {

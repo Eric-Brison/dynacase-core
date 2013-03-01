@@ -38,8 +38,6 @@
             },
             select :   select
         });
-        $('#bar1 div[role="button"]').addClass("ui-button-text-only ui-button ui-widget ui-button-text-only ui-menubar-link");
-        $('#bar1 div[role="button"] a').addClass("ui-button-text");
         $(window).resize(function () {
             adjustFixed()
         });
