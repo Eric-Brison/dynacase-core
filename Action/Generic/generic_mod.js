@@ -100,7 +100,7 @@ function viewConstraint(inp, info) {
         sp.innerHTML = info.err;
         info.displayed = true;
         ntr.appendChild(sp);
-        addEvent(sp, "click", function() {
+        addEvent(ntr, "click", function() {
             ntr.style.display = 'none';
             try {
                 inp.focus();
