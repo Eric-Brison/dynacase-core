@@ -2952,6 +2952,9 @@ msgstr "Vue en liste"
 msgid "Load dump file into '%s' ..."
 msgstr "Chargement du fichier de dump dans '%s'"
 
+msgid "Loading menu"
+msgstr "Chargement du menu"
+
 #: Class/Fdl/Class.Form1NF.php:1538
 #, c-format
 msgid "Loading of dump '%s' returned with exitcode %s"
