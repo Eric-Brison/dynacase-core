@@ -2297,27 +2297,36 @@ function unseltr() {
 var specMovetr=null;
 function movetr(tr, sourcetr) {
 
-    if (! sourcetr) sourcetr=seltr;
+    var textAreaConf = {};
+
+    if (! sourcetr) {
+        sourcetr=seltr;
+    }
 
     var trnode= sourcetr;
     var pnode = tr;
     var refreshHTMLText = function refreshHTMLText(node) {
-      var conf = {};
-      var i;
-      var textareas = node.getElementsByTagName('textarea');
-      for (i =0, length = textareas.length; i < length; i++) {
-         if (textareas[i].getAttribute('type') == 'htmltext') {
-            conf = window.htmlText.deactivateEditor(textareas[i].id, true);
-            window.htmlText.initEditor(textareas[i].id, conf);
-         }
+      var conf = {}, i, length, textareas = node.getElementsByTagName('textarea');
+      if (textareas && textareas.length > 0) {
+          for (i =0, length = textareas.length; i < length; i++) {
+              if (textareas[i].getAttribute('type') === 'htmltext') {
+                  conf = textAreaConf[textareas[i].id] || {};
+                  window.htmlText.initEditor(textareas[i].id, conf);
+              }
+          }
       }
     };
     var synchronizeHTMLText = function synchronizeHTMLText(node) {
-      var i;
-      var textareas = node.getElementsByTagName('textarea');
-      for (i =0, length = textareas.length; i < length; i++) {
-       window.htmlText.synchronizeWithTextArea(textareas[i].id);
-      }
+        var i, length, textareas = node.getElementsByTagName('textarea'), conf;
+        if (textareas && textareas.length > 0) {
+            for (i =0, length = textareas.length; i < length; i++) {
+                if (textareas[i].getAttribute('type') === 'htmltext') {
+                    conf = window.htmlText.deactivateEditor(textareas[i].id, true);
+                    textAreaConf[textareas[i].id] = conf;
+                    window.htmlText.synchronizeWithTextArea(textareas[i].id);
+                }
+            }
+        }
     };
     if (sourcetr) {
         if (pnode && trnode)  {
@@ -2326,9 +2335,8 @@ function movetr(tr, sourcetr) {
 
             trnode.parentNode.insertBefore(trnode,pnode);
 
-            window.setTimeout(refreshHTMLText, 1, trnode);
-            window.setTimeout(refreshHTMLText, 1, pnode);
-
+            window.setTimeout(function() {refreshHTMLText(trnode)}, 1);
+            window.setTimeout(function() {refreshHTMLText(pnode)}, 1);
         }
 
         resetTrInputs(trnode);
