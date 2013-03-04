@@ -5985,7 +5985,7 @@ create unique index i_docir on doc(initid, revision);";
             }
         } else {
             if (!$title) $a = $this->getHTMLTitle($id, '', $latest);
-            else $a = $title;
+            else $a = $this->htmlEncode($title);
         }
         return $a;
     }

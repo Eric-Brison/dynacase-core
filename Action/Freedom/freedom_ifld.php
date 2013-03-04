@@ -24,7 +24,7 @@ include_once ('FDL/Class.Dir.php');
 // -----------------------------------
 // search all folder where is docid
 // -----------------------------------
-function freedom_ifld(&$action)
+function freedom_ifld(Action & $action)
 {
     // -----------------------------------
     $docid = GetHttpVars("id");
@@ -33,6 +33,7 @@ function freedom_ifld(&$action)
     
     $lfather = array_reverse(fatherFld($dbaccess, $doc->initid));
     
+    $lmax = 0;
     $lprev = 0;
     while (list($k, $v) = each($lfather)) {
         // recompute level for indentation
@@ -41,7 +42,7 @@ function freedom_ifld(&$action)
         $lprev = $v["level"];
     }
     
-    $action->lay->Set("TITLE", $doc->title);
+    $action->lay->Set("TITLE", $doc->getHTMLTitle());
     $action->lay->SetBlockData("IFLD", $lfather);
 }
 
@@ -62,7 +63,7 @@ function fatherFld($dbaccess, $docid, $level = 0, $lfldid = array() , $lcdoc = a
                     // permission view folder
                     $ldoc1 = array(
                         "level" => $level,
-                        "ftitle" => $fld->title,
+                        "ftitle" => $fld->getHTMLTitle() ,
                         "fid" => $fld->id
                     );
                     

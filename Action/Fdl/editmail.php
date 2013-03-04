@@ -81,7 +81,7 @@ function editmail(Action & $action)
     $action->lay->Set("ulink", $ulink);
     $action->lay->Set("mzone", $zone);
     $action->lay->Set("dochead", $dochead);
-    $action->lay->Set("title", $doc->title);
+    $action->lay->Set("title", $doc->getHTMLTitle());
     $action->lay->set("VIEWDOC", $viewdoc);
 }
 ?>

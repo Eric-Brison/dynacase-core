@@ -407,7 +407,7 @@ function lfamily($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , 
     
     foreach ($tinter as $k => $v) {
         $tr[] = array(
-            $v["title"],
+            htmlspecialchars($v["title"]) ,
             $v[$idid],
             $v["title"]
         );
@@ -658,7 +658,7 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
         
         $mail = $account->mail ? (' (' . mb_substr($account->mail, 0, 40) . ')') : '';
         $tr[] = array(
-            $account->lastname . " " . $account->firstname . $mail,
+            htmlspecialchars($account->lastname . " " . $account->firstname . $mail) ,
             $account->fid,
             $account->lastname . " " . $account->firstname
         );

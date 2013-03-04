@@ -169,7 +169,7 @@ function updatePopDocTitle() {
     var fpopdoc_t= window.parent.document.getElementById(l);
     if (fpopdoc_t) {
       if (window.document && (window.document.title!="")) {
-	fpopdoc_t.innerHTML=window.document.title;
+	fpopdoc_t.innerHTML=htmlescape(window.document.title);
       } else {
 	fpopdoc_t.innerHTML="mini vue";
       }

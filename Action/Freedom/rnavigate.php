@@ -20,7 +20,7 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/Class.DocRel.php");
 
-function rnavigate(&$action)
+function rnavigate(Action & $action)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id");
@@ -83,6 +83,7 @@ function rnavigate(&$action)
     }
     
     if (count($tlay) > 0) {
+        $taid = array();
         foreach ($tlay as $k => $v) {
             $taid[$v["aid"]] = $v["aid"];
         }
