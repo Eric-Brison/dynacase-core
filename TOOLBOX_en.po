@@ -2040,7 +2040,7 @@ msgstr "UTF-8"
 #: Action/Generic/popuplistdetail.php:63 tempCatalog.php:260
 #: tempCatalog.php:348 tempCatalog.php:429
 msgid "Edit"
-msgstr ""
+msgstr "Modify"
 
 #: Action/Fdl/popupfamdetail.php:80 tempCatalog.php:280
 msgid "Edit attributes"
@@ -2056,7 +2056,7 @@ msgstr ""
 
 #: Action/Generic/popuplistdetail.php:74
 msgid "Edit in new window"
-msgstr ""
+msgstr "Modify in new window"
 
 #: App/Fdl/FDL.app:173
 msgid "Edit state bar menu"
