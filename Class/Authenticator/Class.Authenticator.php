@@ -62,6 +62,9 @@ abstract class Authenticator
             global $action;
             //     error_log("Using authentication provider [".$providerClass."]");
             $this->provider = new $providerClass($authprovider, $this->parms);
+            if (!is_a($this->provider, 'Provider')) {
+                throw new Dcp\Exception(__METHOD__ . " " . sprintf("Error: provider with class '%s' does not inherits from class 'Provider'.", $providerClass));
+            }
         } else {
             $this->parms = array_merge($tx, $ta);
         }
@@ -105,8 +108,9 @@ abstract class Authenticator
         }
         return 0;
     }
-
-    public function getAuthApp() {
+    
+    public function getAuthApp()
+    {
         if (isset($this->parms['auth']['app'])) {
             return $this->parms['auth']['app'];
         }

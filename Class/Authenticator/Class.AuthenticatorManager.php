@@ -30,9 +30,14 @@ class AuthenticatorManager
      * @var Session
      */
     public static $session = null;
-    const NeedAsk = 6;
-    const AccessOk = 0;
     const AccessBug = - 1;
+    const AccessOk = 0;
+    const AccessHasNoLocalAccount = 1;
+    const AccessMaxLoginFailure = 2;
+    const AccessAccountIsNotActive = 3;
+    const AccessAccountHasExpired = 4;
+    const AccessNotAuthorized = 5;
+    const NeedAsk = 6;
     /**
      * @var Authenticator|htmlAuthenticator
      */
@@ -41,6 +46,9 @@ class AuthenticatorManager
     
     public static function checkAccess($authtype = null, $noask = false)
     {
+        /*
+         * Part 1: check authentication
+        */
         $error = self::AccessOk;
         self::$provider_errno = 0;
         if ($authtype == null) $authtype = getAuthType();
@@ -54,7 +62,7 @@ class AuthenticatorManager
             exit;
         }
         self::$auth = new $authClass($authtype, "__for_logout__");
-
+        
         $authProviderList = getAuthProviderList();
         $status = false;
         foreach ($authProviderList as $authProvider) {
@@ -86,13 +94,9 @@ class AuthenticatorManager
                 }
             }
             $remote_addr = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : "";
-            $auth_user =  isset($_REQUEST["auth_user"]) ? $_REQUEST["auth_user"] : "";
+            $auth_user = isset($_REQUEST["auth_user"]) ? $_REQUEST["auth_user"] : "";
             $http_user_agent = isset($_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "";
-            self::secureLog("failure", "invalid credential",
-                self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'],
-                $remote_addr,
-                $auth_user,
-                $http_user_agent);
+            self::secureLog("failure", "invalid credential", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $remote_addr, $auth_user, $http_user_agent);
             // count login failure
             if (getParam("AUTHENT_FAILURECOUNT") > 0) {
                 $wu = new Account();
@@ -115,49 +119,15 @@ class AuthenticatorManager
             return $error;
         }
         // Authentication success
-        $login = self::$auth->getAuthUser();
-        $wu = new Account();
-        $existu = false;
-        if ($wu->SetLoginName($login)) {
-            $existu = true;
+        /*
+         * Part 2: check authorization
+        */
+        $ret = self::checkAuthorization();
+        if ($ret !== self::AccessOk) {
+            return $ret;
         }
         
-        if (!$existu) {
-            self::secureLog("failure", "login have no Dynacase account", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
-            return 1;
-        }
-        
-        if ($wu->id != 1) {
-            
-            include_once ("FDL/freedom_util.php");
-            /**
-             * @var _IUSER $du
-             */
-            $du = new_Doc(getParam("FREEDOM_DB") , $wu->fid);
-            // First check if account is active
-            if ($du->isAccountInactive()) {
-                self::secureLog("failure", "inactive account", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
-                self::clearGDocs();
-                return 3;
-            }
-            // check if the account expiration date is elapsed
-            if ($du->accountHasExpired()) {
-                self::secureLog("failure", "account has expired", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
-                self::clearGDocs();
-                return 4;
-            }
-            // check count of login failure
-            $maxfail = getParam("AUTHENT_FAILURECOUNT");
-            if ($maxfail > 0 && $du->getRawValue("us_loginfailure", 0) >= $maxfail) {
-                self::secureLog("failure", "max connection (" . $maxfail . ") attempts exceeded", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
-                self::clearGDocs();
-                return 2;
-            }
-            // authen OK, max login failure OK => reset count of login failure
-            $du->disableEditControl();
-            $du->resetLoginFailure();
-            $du->enableEditControl();
-        }
+        $login = AuthenticatorManager::$auth->getAuthUser();
         /*
          * All authenticators are not necessarily based on sessions (i.e. 'basic')
         */
@@ -182,17 +152,17 @@ class AuthenticatorManager
             exit;
         }
         self::$auth = new $authClass($authtype, "__for_logout__");
-
+        
         if (method_exists(self::$auth, 'logout')) {
             if (is_object(self::$auth->provider)) {
-                self::secureLog("close", "see you tomorrow", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], self::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
-            }else {
+                self::secureLog("close", "see you tomorrow", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], self::$auth->getAuthUser() , $_SERVER["HTTP_USER_AGENT"]);
+            } else {
                 self::secureLog("close", "see you tomorrow");
             }
             self::$auth->logout(null);
             exit(0);
         }
-
+        
         header('HTTP/1.0 500 Internal Error');
         print sprintf("logout method not supported by authtype '%s'", $authtype);
         exit(0);
@@ -220,7 +190,7 @@ class AuthenticatorManager
         return 0;
     }
     
-    private static function clearGDocs()
+    public static function clearGDocs()
     {
         global $gdocs;
         $gdocs = array();
@@ -234,5 +204,126 @@ class AuthenticatorManager
             return $account;
         }
         return false;
+    }
+    /**
+     * Get Provider's protocol version.
+     *
+     * @param Provider $provider
+     * @return int version (0, 1, etc.)
+     */
+    public static function _getProviderProtocolVersion(Provider $provider)
+    {
+        if (!isset($provider->PROTOCOL_VERSION)) {
+            return 0;
+        }
+        return $provider->PROTOCOL_VERSION;
+    }
+    /**
+     * Main authorization check entry point
+     *
+     * @return int
+     * @throws \Dcp\Exception
+     */
+    private static function checkAuthorization()
+    {
+        $login = AuthenticatorManager::$auth->getAuthUser();
+        $wu = new Account();
+        $existu = false;
+        if ($wu->SetLoginName($login)) {
+            $existu = true;
+        }
+        
+        if (!$existu) {
+            AuthenticatorManager::secureLog("failure", "login have no Dynacase account", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+            return AuthenticatorManager::AccessHasNoLocalAccount;
+        }
+        
+        $protoVersion = self::_getProviderProtocolVersion(self::$auth->provider);
+        if (!is_integer($protoVersion)) {
+            throw new \Dcp\Exception(sprintf("Invalid provider protocol version '%s' for provider '%s'.", $protoVersion, get_class(self::$auth->provider)));
+        }
+        
+        switch ($protoVersion) {
+            case 0:
+                return self::protocol_0_authorization(array(
+                    'username' => $login,
+                    'dcp_account' => $wu
+                ));
+                break;
+        }
+        throw new \Dcp\Exception(sprintf("Unsupported provider protocol version '%s' for provider '%s'.", $protoVersion, get_class(self::$auth->provider)));
+    }
+    /**
+     * Protocol 0: check only Dynacase's authorization.
+     *
+     * @param array $opt
+     * @return int
+     */
+    private function protocol_0_authorization($opt)
+    {
+        $authz = self::checkProviderAuthorization($opt);
+        if ($authz !== self::AccessOk) {
+            return $authz;
+        }
+        return self::checkDynacaseAuthorization($opt);
+    }
+    /**
+     * Check Provider's authorization.
+     *
+     * @param array $opt
+     * @return int
+     */
+    private static function checkProviderAuthorization($opt)
+    {
+        $authz = self::$auth->checkAuthorization($opt);
+        if ($authz === true) {
+            return self::AccessOk;
+        }
+        return self::AccessNotAuthorized;
+    }
+    /**
+     * Check Dynacase's authorization.
+     *
+     * @param array $opt
+     * @throws \Dcp\Exception
+     * @return int
+     */
+    private static function checkDynacaseAuthorization($opt)
+    {
+        $login = $opt['username'];
+        $wu = $opt['dcp_account'];
+        if ($wu->id != 1) {
+            
+            include_once ("FDL/freedom_util.php");
+            /**
+             * @var _IUSER $du
+             */
+            $du = new_Doc(getParam("FREEDOM_DB") , $wu->fid);
+            // First check if account is active
+            if (!$du->isAccountActive()) {
+                AuthenticatorManager::secureLog("failure", "inactive account", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+                AuthenticatorManager::clearGDocs();
+                return AuthenticatorManager::AccessAccountIsNotActive;
+            }
+            // check if the account expiration date is elapsed
+            if ($du->accountHasExpired()) {
+                AuthenticatorManager::secureLog("failure", "account has expired", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+                AuthenticatorManager::clearGDocs();
+                return AuthenticatorManager::AccessAccountHasExpired;
+            }
+            // check count of login failure
+            $maxfail = getParam("AUTHENT_FAILURECOUNT");
+            if ($maxfail > 0 && $du->getRawValue("us_loginfailure", 0) >= $maxfail) {
+                AuthenticatorManager::secureLog("failure", "max connection (" . $maxfail . ") attempts exceeded", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+                AuthenticatorManager::clearGDocs();
+                return AuthenticatorManager::AccessMaxLoginFailure;
+            }
+            // authen OK, max login failure OK => reset count of login failure
+            $du->disableEditControl();
+            $du->resetLoginFailure();
+            $du->enableEditControl();
+        }
+        
+        return AuthenticatorManager::AccessOk;
     }
 }

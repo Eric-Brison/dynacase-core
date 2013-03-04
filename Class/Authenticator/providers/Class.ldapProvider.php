@@ -18,7 +18,6 @@
 include_once ("WHAT/Class.Provider.php");
 class ldapProvider extends Provider
 {
-    
     public function validateCredential($username, $password)
     {
         
@@ -51,12 +50,6 @@ class ldapProvider extends Provider
         }
         $this->errno = 0;
         return FALSE;
-    }
-    
-    public function validateAuthorization($opt)
-    {
-        $this->errno = 0;
-        return TRUE;
     }
     /**
      * @param User $whatuser
@@ -113,4 +106,3 @@ class ldapProvider extends Provider
         return $err;
     }
 }
-?>
