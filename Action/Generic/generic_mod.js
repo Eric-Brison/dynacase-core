@@ -146,32 +146,32 @@ function undisplayConstraint() {
 
 function updateOpenerLink(data) {
     if (window.parent != null && window.parent.opener != null) {
-        var wop=window.parent.opener;
-        var inp;
+        var windowParentOpener=window.parent.opener;
+        var docIdInput, docIdButton;
 
-        inp=wop.document.getElementById('ilink_'+data.attrid);
-        if (inp) inp.value=data.title;
-
-        // special for doc multiple
-        inp=wop.document.getElementById('mdocid_work'+data.attrid);
-        if (inp) {
-             inp.value=data.id;
-             wop.addmdocs('_'+data.attrid);
-        } else { 
-            // normal case
-            inp=wop.document.getElementById(data.attrid);
-            if (inp) {
-                inp.value=data.id;
-                if (data.recallhelper)
-                    var ic=wop.document.getElementById('ic_ilink_'+data.attrid);
-                    if (ic) {
-                      ic.onclick.apply(ic, []);
-                      
-                }
-            }
-            
+        docIdInput = windowParentOpener.document.getElementById('ilink_'+data.attrid);
+        if (docIdInput) {
+            docIdInput.value=data.title;
         }
 
-        wop.disableReadAttribute();
+        // special for doc multiple
+        docIdInput=windowParentOpener.document.getElementById('mdocid_work'+data.attrid);
+        if (docIdInput) {
+            docIdInput.value=data.id;
+            windowParentOpener.addmdocs('_'+data.attrid);
+        } else {
+            // normal case
+            docIdInput=windowParentOpener.document.getElementById(data.attrid);
+            if (docIdInput) {
+                docIdInput.value=data.id;
+                if (data.recallhelper) {
+                    docIdButton = windowParentOpener.document.getElementById('ic_ilink_'+data.attrid);
+                }
+                if (docIdButton) {
+                    docIdButton.onclick.call(docIdButton);
+                }
+            }
+        }
+        windowParentOpener.disableReadAttribute();
     }
 }
