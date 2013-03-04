@@ -29,10 +29,7 @@ function mailcard(Action & $action)
     // control sending
     $err = $doc->control('send');
     if ($err != "") $action->exitError($err);
-    
-    $mailto = "";
-    $mailcc = "";
-    $mailbcc = "";
+
     $tmailto = $tmailcc = $tmailbcc = array();
     $mailfrom = GetHttpVars("_mail_from");
     
@@ -114,8 +111,7 @@ function mailcard(Action & $action)
         if ($uid > 0) {
             $tu = getTDoc($dbaccess, $uid);
             $wuid = getv($tu, "us_whatid");
-            //      $err=$doc->addHistoryEntry(_("document received for"),HISTO_NOTICE,"RCPTDOC",$wuid);
-            $err = $doc->addUTag($wuid, "TOVIEW");
+            $doc->addUTag($wuid, "TOVIEW");
         }
     }
     
@@ -304,7 +300,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
             
             if ($szone) {
                 
-                $sgen = $doc->viewDoc($zonebodycard, "mail", $ulink, false, true);
+                $doc->viewDoc($zonebodycard, "mail", $ulink, false, true);
                 
                 $doc->lay->Set("absurl", $absurl);
                 $doc->lay->Set("baseurl", $baseurl);
@@ -405,7 +401,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                 $afiles = $doc->GetFileAttributes();
                 $taids = array_keys($afiles);
                 if (count($afiles) > 0) {
-                    foreach ($tcids as $kf => $vaf) {
+                    foreach ($tcids as $vaf) {
                         $tf = explode("+", $vaf);
                         if (count($tf) == 1) {
                             $aid = $tf[0];
@@ -415,13 +411,13 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                             $index = $tf[1];
                         }
                         if (in_array($aid, $taids)) {
-                            $tva = array();
-                            $cidindex = "";
                             if ($afiles[$aid]->repeat) $va = $doc->getMultipleRawValues($aid, "", $index);
                             else $va = $doc->getRawValue($aid);
                             
                             if ($va != "") {
-                                list($mime, $vid) = explode("|", $va);
+                                $ticon = explode("|", $va);
+                                $mime = empty($ticon[0]) ? false : $ticon[0];
+                                $vid = empty($ticon[1]) ? false : $ticon[1];
                                 
                                 if ($vid != "") {
                                     /**
@@ -464,7 +460,9 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                 if (!$szone) {
                     $va = $doc->icon;
                     if ($va != "") {
-                        list($mime, $vid) = explode("|", $va);
+                        $ticon = explode("|", $va);
+                        $mime = empty($ticon[0]) ? false : $ticon[0];
+                        $vid = empty($ticon[1]) ? false : $ticon[1];
                         
                         if ($vid != "") {
                             /**
@@ -506,7 +504,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
             }
             // ---------------------------
             // add inserted image
-            foreach ($ifiles as $k => $v) {
+            foreach ($ifiles as $v) {
                 if (file_exists($pubdir . "/$v")) {
                     
                     $multi_rel->addSubpart('', array(
@@ -543,7 +541,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
             }
             // Other files,
             if (count($addfiles) > 0) {
-                foreach ($addfiles as $kf => $vf) {
+                foreach ($addfiles as $vf) {
                     if (count($vf) == 3) {
                         $fview = $vf[0];
                         $fname = $vf[1];
@@ -629,7 +627,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
         if (isset($binfile) && is_file($binfile)) unlink($binfile);
         
         $tmpfile = array_merge($tmpfile, $tfiles);
-        foreach ($tmpfile as $k => $v) {
+        foreach ($tmpfile as $v) {
             if (file_exists($v) && (substr($v, 0, 9) == getTmpDir() . "/")) unlink($v);
         }
     }
@@ -736,15 +734,19 @@ function realfile($src)
     if ($src == "cid:icon") {
         $va = $doc->icon;
     } else {
-        if (substr($src, 0, 4) == "cid:") $va = $doc->getRawValue(substr($src, 4));
-        elseif (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)$/", $src, $reg)) {
+        if (substr($src, 0, 4) == "cid:"){
+            $va = $doc->getRawValue(substr($src, 4));
+        } elseif (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)$/", $src, $reg)) {
             $va = copyvault(str_replace('&amp;', '&', $reg[2]));
             $tmpfile[] = $va;
-        } else $va = $src;
+        } else {
+            $va = $src;
+        }
     }
     
     if ($va != "") {
-        list($mime, $vid) = explode("|", $va);
+        $ticon = explode("|", $va);
+        $vid = empty($ticon[1])?false:$ticon[1];
         
         if ($vid != "") {
             $info = null;
@@ -755,15 +757,17 @@ function realfile($src)
                 $f = $info->path;
             }
         } else {
-            
-            if (file_exists($pubdir . "/$va")) $f = $pubdir . "/$va";
-            elseif (file_exists($pubdir . "/Images/$va")) $f = $pubdir . "/Images/$va";
-            elseif ((substr($va, 0, 12) == getTmpDir() . '/img') && file_exists($va)) $f = $va;
+            if (file_exists($va)) {
+                $f = $va;
+            } elseif (file_exists($pubdir . "/$va")) {
+                $f = $pubdir . "/$va";
+            } elseif (file_exists($pubdir . "/Images/$va")){
+                $f = $pubdir . "/Images/$va";
+            } elseif ((substr($va, 0, 12) == getTmpDir() . '/img') && file_exists($va)) {
+                $f = $va;
+            }
         }
     }
-    //   $mime=trim(`file -ib "$f"`);
-    //   print "<br>[$mime][$f][$va]";
-    //   if (substr($mime,0,5) != "image") $f="";
     if ($f) return "src=\"$f\"";
     return "";
 }
