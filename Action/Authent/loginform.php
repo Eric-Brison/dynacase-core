@@ -16,9 +16,6 @@
  */
 /**
  */
-include_once ('Class.Session.php');
-include_once ('Class.User.php');
-include_once ('Class.QueryDb.php');
 include_once ('Lib.Http.php');
 /**
  * PHP Authentification control
@@ -29,6 +26,7 @@ function loginform(Action & $action)
     $action->parent->AddCssRef("AUTHENT:loginform.css", true);
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
+    $action->parent->addJsRef("AUTHENT:loginform.js");
     $ulang = GetHttpVars("lang");
     if ($ulang) {
         setLanguage($ulang);
@@ -65,7 +63,7 @@ function loginform(Action & $action)
     $arg_redir = GetHttpVars("argd", ""); // redirect url
     $domain = GetHttpVars("domain");
     $redirect_uri = GetHttpVars("redirect_uri", "");
-
+    
     $action->lay->set("app_redir", $app_redir);
     $action->lay->set("act_redir", $act_redir);
     $action->lay->set("arg_redir", $arg_redir);
@@ -75,7 +73,7 @@ function loginform(Action & $action)
     $action->lay->set("error", $merr);
     $action->lay->set("redirect_uri", htmlspecialchars($redirect_uri));
     $action->lay->set("baseurl", htmlspecialchars(getParam("CORE_BASEURL")));
-
+    
     $action->lay->set('authent_show_reqpasswd', $action->getParam('AUTHENT_SHOW_REQPASSWD') != 'no');
     
     $action->lay->set('authent_show_lang_selection', $action->getParam('AUTHENT_SHOW_LANG_SELECTION') != 'no');
@@ -90,8 +88,9 @@ function loginform(Action & $action)
         $lang_block[$k]['LANG_IS_SELECTED'] = ($ulang == $k);
     }
     $action->lay->setBlockData('LANG', $lang_block);
+    $action->lay->set("ulang", $ulang);
     $action->parent->short_name = sprintf(_("%s Authentification") , $action->getParam("CORE_CLIENT"));
-
+    
     header('HTTP/1.1 401 Authentication Required');
     header('WWW-Authenticate: html-form');
 }

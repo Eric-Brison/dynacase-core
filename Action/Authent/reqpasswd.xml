@@ -1,16 +1,43 @@
-<div class="page">
-<form action="[CORE_BASEURL]app=AUTHENT&action=SUBMITREQPASSWD" method="post" id="form" name="form">
-<p class="input-login">
-<label for="form_login">[TEXT:reqpasswd_login]</label>
-<input type="text" name="form_login" id="form_login" /></li>
-</p>
-<p class="or">
-[TEXT:reqpasswd_or]
-</p>
-<p class="input-mail">
-<label for="form_email">[TEXT:reqpasswd_email]</label>
-<input type="text" name="form_email" id="form_email" />
-</p>
-<input type="submit" name="submit" id="submit" value="[TEXT:reqpasswd_submit]" />
-</form>
+<div class="head">
+    <div class="societe">[CORE_CLIENT]</div>
 </div>
+<form action="[CORE_BASEURL]app=AUTHENT&action=SUBMITREQPASSWD"
+      method="post" id="form" name="form">
+    <div id="authform" class="authmain" style="visibility:hidden">
+
+
+        <div id="main" style="visibility:hidden">
+
+            <div id="idbanner" class="banner">
+                <div class="realm">[CORE_REALM]</div>
+            </div>
+
+            <div class="form">
+                <div class="zoneinput">
+                    <label for="form_login" class="label">[TEXT:reqpasswd_login]
+                    </label>
+                    <div class="input">
+                        <input type="text" placeholder="[TEXT:Enter your login]"
+                               name="form_login" id="form_login" autocapitalize="off"
+                               autocorrect="off"/>
+                    </div>
+                    <p class="or">
+                        [TEXT:reqpasswd_or]
+                    </p>
+                    <label for="form_email" class="label">[TEXT:reqpasswd_email]
+                    </label>
+                    <div class="input">
+                        <input type="text" name="form_email" id="form_email"
+                               autocapitalize="off" autocorrect="off"
+                               placeholder="[TEXT:Enter your email]"/>
+                    </div>
+                    <div class="action">
+                        <a id="submit" href="javascript:this.document.form.submit();">
+                            [TEXT:reqpasswd_submit]</a>
+                        <div style="clear:both"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

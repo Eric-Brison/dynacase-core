@@ -26,7 +26,11 @@ function submitreqpasswd(Action & $action)
     $submitted_login = GetHttpVars('form_login');
     $submitted_email = GetHttpVars('form_email');
     
+    $action->parent->AddCssRef('AUTHENT:loginform.css', true);
     $action->parent->AddCssRef('AUTHENT:submitreqpasswd.css');
+    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
+    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
+    $action->parent->addJsRef("AUTHENT:loginform.js");
     
     $action->lay->set('FORM_SEND_OK', False);
     $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', False);
