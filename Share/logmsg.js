@@ -161,13 +161,23 @@ function displayWarningMsg(logmsg) {
                 return '';
             }else if(currentParent && currentParent.$ && currentParent.$.isFunction(currentParent.$().dialog)) {
                 setTimeout(function () {
-                    currentParent.$('<div><div class="ui-state-highlight"><p>'+
-                    '<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>' +
-                    currentParent.$('<div/>').text(logmsg).html().replace(/\n/g,"<br/>","g")+'</p></div></div>'
-                    ).dialog({
-                                modal:true,
-                                title:'<span class="ui-icon ui-icon-info"></span>'
-                            });
+                    var parent$ = currentParent.$, i, logMsgs, length,
+                    $wrapper = parent$('<p></p>');
+                    logMsgs = logmsg.split("\n");
+                    for (i = 0 , length = logMsgs.length ; i < length; i+=1) {
+                        $wrapper.append(parent$("<span></span>").text(logMsgs[i]));
+                        if (i < length -1) {
+                            $wrapper.append("<br/>");
+                        }
+                    }
+
+                    $wrapper = parent$('<div class="ui-state-highlight"></div>').append($wrapper);
+
+                    parent$('<div></div>').append($wrapper)
+                        .dialog({
+                            modal:true,
+                            title:'<span class="ui-icon ui-icon-info"></span>'
+                        });
                 }, 500);
                 return '';
             }
