@@ -22,7 +22,9 @@ function autocompletion(Action & $action)
 {
     // list of choice to be insert in attribute values
     $docid = GetHttpVars("docid"); // document being edition
-    if (!$docid) $docid = GetHttpVars("classid", 0); // in case of docid is null
+    if (!$docid){
+        $docid = GetHttpVars("classid", 0);
+    } // in case of docid is null
     $attrid = GetHttpVars("attrid", 0); // attribute need to enum
     $sorm = GetHttpVars("sorm", "single"); // single or multiple
     $index = GetHttpVars("index", ""); // index of the attributes for arrays
@@ -31,7 +33,9 @@ function autocompletion(Action & $action)
     $skey = GetHttpVars("skey"); // use only when enum (filter key)
     header('Content-type: text/xml; charset=utf-8');
     
-    if ($enum != "") $attrid = $enum;
+    if ($enum != ""){
+        $attrid = $enum;
+    }
     $err = '';
     $canitem = false;
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -63,8 +67,15 @@ function autocompletion(Action & $action)
         $oattr = new NormalAttribute($attrid, $doc->id, $label, "text", $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, $fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint, $usefor, $eformat, $options);
     } else {
         $oattr = $doc->GetAttribute($attrid);
-        if (!$oattr) $err = sprintf(_("unknown attribute %s") , $attrid);
+        if (!$oattr){
+            $err = sprintf(_("unknown attribute %s") , $attrid);
+        }
     }
+
+    $xmlDocument = new DOMDocument();
+    $xmlRoot = $xmlDocument->createElement("status");
+    $xmlDocument->appendChild($xmlRoot);
+
     if ($err == "") {
         $notalone = "true";
         
@@ -158,8 +169,11 @@ function autocompletion(Action & $action)
         $oattr->phpfunc = preg_replace('/([\s|,|:|\(])CT\[([^]]+)\]/e', "'\\1'.'$linkprefix'.strtolower('\\2')", $oattr->phpfunc);
         
         $res = getResPhpFunc($doc, $oattr, $rargids, $tselect, $tval, true, $index);
+
         if (!is_array($res)) {
-            if ($res == "") $res = sprintf(_("error in calling function %s\n%s") , $oattr->phpfunc, $res);
+            if ($res == ""){
+                $res = sprintf(_("error in calling function %s\n%s") , $oattr->phpfunc, $res);
+            }
             $err = $res;
         }
         if ($err == "") {
@@ -218,7 +232,7 @@ function autocompletion(Action & $action)
             }
             
             if ($err == "") {
-                $targids = array();
+                $xmlCibles = $xmlDocument->createElement("cibles");
                 // add  index for return args only if the element is not in a array
                 while (list($k, $v) = each($rargids)) {
                     $linkprefix = "ilink_";
@@ -237,27 +251,51 @@ function autocompletion(Action & $action)
                     if ($isILink) {
                         $targid = $linkprefix . $targid;
                     }
-                    $targids[] = array(
-                        "attrid" => $targid
-                    );
+                    $xmlCible = $xmlDocument->createElement("cible", $targid);
+                    $xmlCibles->appendChild($xmlCible);
                 }
-                
-                $action->lay->SetBlockData("cibles", $targids);
-                $topt = array();
+                $xmlRoot->appendChild($xmlCibles);
+
+
                 foreach ($res as $k => $v) {
-                    $topt[$k]["choice"] = $v[0];
-                    $topt[$k]["cindex"] = $k;
-                    unset($v[0]);
-                    $topt[$k]["values"] = '<val><![CDATA[' . stripslashes(implode("]]></val><val><![CDATA[", $v)) . ']]></val>';
+
+                    $xmlOption = $xmlDocument->createElement("option");
+                    $xmlOption->setAttribute("value", $k);
+
+                    //title
+                    $title = array_shift($v);
+                    $xmlOptionTitle = $xmlDocument->createElement("title");
+                    $xmlOptionTitleCData = $xmlDocument->createCDATASection($title);
+                    $xmlOptionTitle->appendChild($xmlOptionTitleCData);
+
+                    $xmlOption->appendChild($xmlOptionTitle);
+
+                    //values
+                    $xmlOptionValues = $xmlDocument->createElement("values");
+                    foreach($v as $value){
+                        $xmlOptionCurrentValue = $xmlDocument->createElement("val");
+                        $xmlOptionCurrentValueCData = $xmlDocument->createCDATASection($value);
+                        $xmlOptionCurrentValue->appendChild($xmlOptionCurrentValueCData);
+                        $xmlOptionValues->appendChild($xmlOptionCurrentValue);
+                    }
+
+                    $xmlOption->appendChild($xmlOptionValues);
+
+                    $xmlRoot->appendChild($xmlOption);
                 }
-                
-                $action->lay->SetBlockData("SELECT", $topt);
-                $action->lay->Set("count", count($tselect));
+
+                $xmlRoot->setAttribute("count", count($tselect));
             }
         }
     }
-    
-    $action->lay->Set("autowarning", str_replace('"', "&quot;", $err));
+
+    if($err){
+        $xmlRoot->setAttribute("warning", $err);
+    }
+
+    $action->lay->noparse = true;
+    $action->lay->template = $xmlDocument->saveXML();
+
     $action->lay->action = null; // don't want parameters - conflict with possible parameters
     
 }
