@@ -138,7 +138,9 @@ function completeChoiceAuto(index) {
 
 	var tval = new Array();
 	for (var i=0; i < values.length; i++) {
-		if (values[i].firstChild)    tval.push(values[i].firstChild.data);
+		if (values[i].firstChild){
+            tval.push(values[i].textContent || values[i].innerText || values[i].text);
+        }
 		else tval.push('');
 	}
 
@@ -290,7 +292,7 @@ function traiteXmlSuggestions(xmlDoc) {
 	}
 
 	for (var i=0; i < options.length; i++) {
-		optionsListe.push(options[i].firstChild.data);
+		optionsListe.push(options[i].textContent || options[i].innerText || options[i].text);
 	}
 	if (options.length==0) {
 		var status = xmlDoc.getElementsByTagName('status');
@@ -308,7 +310,7 @@ function traiteXmlSuggestions(xmlDoc) {
 		_ciblesListe = new Array();
 
 		for (i=0; i < cibles.length; i++) {
-			_ciblesListe.push(cibles[i].firstChild.data);
+			_ciblesListe.push(cibles[i].textContent || cibles[i].innerText || cibles[i].text);
 		}
 	}
 	return optionsListe;
