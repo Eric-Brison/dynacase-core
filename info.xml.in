@@ -15,7 +15,7 @@
         <module name="dynacase-json2" version="1.0.0" comp="ge"/>
         <module name="dynacase-datajs"/>
         <module name="dynacase-jquery-dataTables-installer"/>
-        <module name="dynacase-ckeditor-installer"  version="4.0.1"/>
+        <module name="dynacase-ckeditor-installer" />
     </requires>
 
     <parameters>
