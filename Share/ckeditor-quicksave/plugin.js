@@ -18,13 +18,15 @@ CKEDITOR.plugins.add('quicksave', {
 
 CKEDITOR.plugins.setLang('quicksave', 'en',
     {
-        title : 'Quick save',
-        toolbar:'Quick save'
+        quicksave:{
+            toolbar:'Quick save'
+        }
     }
 );
 CKEDITOR.plugins.setLang('quicksave', 'fr',
     {
-        title : 'Sauvegarde rapide',
-        toolbar:'Sauvegarde rapide'
+        quicksave:{
+            toolbar:'Sauvegarde rapide'
+        }
     }
 );
