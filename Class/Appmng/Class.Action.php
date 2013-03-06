@@ -540,8 +540,6 @@ create sequence SEQ_ID_ACTION;
             if ($this->openaccess != 'Y') {
                 $allow = false;
                 if ($this->auth->token && $this->auth->token["context"]) {
-                    print $this->auth->token->context;
-                    //$this->exitForbidden('may be open');
                     $context = unserialize($this->auth->token["context"]);
                     if (is_array($context) && (count($context) > 0)) {
                         $allow = true;
