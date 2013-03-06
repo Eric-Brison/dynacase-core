@@ -544,11 +544,10 @@ array(
    "acl"		=>"FREEDOM_READ"
   )  ,
   array( 
-   "name"		=>"RNAVIGATE2",
+   "name"		=>"RNAVIGATE_JSON",
    "short_name"		=>N_("navigate between relations next"),
    "acl"		=>"FREEDOM_READ",
-   "function"           =>"rnavigate2",
-   "layout"		=>"rnavigate2.xml",
+   "function"           =>"rnavigate_json",
    "script"		=>"rnavigate.php"
   ),
 

@@ -16,112 +16,163 @@
 /**
  */
 
-include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Lib.Dir.php");
-include_once ("FDL/Class.DocRel.php");
 
-function rnavigate(Action & $action)
+function rnavigate(Action & $action, $onlyGetResult = false)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    $docid = GetHttpVars("id");
+
+    $usage = new ActionUsage($action);
+    $docid = $usage->addRequiredParameter("id", "id of the current document");
+    $usage->setStrictMode(false);
+    $usage->verify(true);
+
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/common.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     $limit = 100;
-    
+
     $doc = new_Doc($dbaccess, $docid);
-    if ($doc->locked == - 1) $doc = new_Doc($dbaccess, $doc->getLatestId());
+    if ($doc->locked == -1) {
+        $doc = new_Doc($dbaccess, $doc->getLatestId());
+    }
     $idocid = $doc->initid;
-    
+
     $rdoc = new DocRel($dbaccess, $idocid);
     $rdoc->sinitid = $idocid;
-    
-    $action->lay->set("Title", $doc->title);
-    $tlay = array();
-    
+
+    $action->lay->set("Title", $doc->getHTMLTitle());
+
+    $relationsFrom = array();
+    $relationsTo = array();
+
+    $i18nFolder = _("folder");
+
     $trel = $rdoc->getIRelations("", "", $limit);
-    if (count($trel) == 0) {
-        $tlay['_F'] = array(
-            "iconsrc" => "",
-            "initid" => 0,
-            "title" => "",
-            "aid" => "",
-            "alabel" => "",
-            "type" => _("Referenced from")
+    foreach ($trel as $currentResult) {
+        $relationsFrom[$currentResult["sinitid"]] = array(
+            "iconsrc" => $doc->getIcon($currentResult["sicon"]),
+            "initid" => $currentResult["sinitid"],
+            "title" => $currentResult["stitle"],
+            "url" => "?app=FDL&action=OPENDOC&mode=view&id=" . $currentResult["sinitid"],
+            "attributeId" => $currentResult["type"]
         );
     }
-    foreach ($trel as $k => $v) {
-        $tlay[$v["sinitid"] . '_F'] = array(
-            "iconsrc" => $doc->getIcon($v["sicon"]) ,
-            "initid" => $v["sinitid"],
-            "title" => $v["stitle"],
-            "aid" => $v["type"],
-            "alabel" => $v["type"] ? _($v["type"]) : "",
-            "type" => _("Referenced from")
-        );
-    }
-    
+
     $trel = $rdoc->getRelations("", "", $limit);
-    if (count($trel) == 0) {
-        $tlay['_T'] = array(
-            "iconsrc" => "",
-            "initid" => 0,
-            "title" => "",
-            "aid" => "",
-            "alabel" => "",
-            "type" => _("Reference")
+    foreach ($trel as $currentResult) {
+        $relationsTo[$currentResult["cinitid"]] = array(
+            "iconsrc" => $doc->getIcon($currentResult["cicon"]),
+            "initid" => $currentResult["cinitid"],
+            "title" => $currentResult["ctitle"],
+            "url" => "?app=FDL&action=OPENDOC&mode=view&id=" . $currentResult["sinitid"],
+            "attributeId" => $currentResult["type"]
         );
     }
-    foreach ($trel as $k => $v) {
-        $tlay[$v["cinitid"] . '_T'] = array(
-            "iconsrc" => $doc->getIcon($v["cicon"]) ,
-            "initid" => $v["cinitid"],
-            "title" => $v["ctitle"],
-            "aid" => $v["type"],
-            "alabel" => $v["type"] ? _($v["type"]) : "",
-            "type" => _("Reference")
-        );
-    }
-    
-    if (count($tlay) > 0) {
-        $taid = array();
-        foreach ($tlay as $k => $v) {
-            $taid[$v["aid"]] = $v["aid"];
-        }
-        $q = new QueryDb($dbaccess, "DocAttr");
-        $q->AddQuery(GetSqlCond($taid, "id"));
-        $l = $q->Query(0, 0, "TABLE");
-        if ($l) {
-            $la = array();
-            foreach ($l as $k => $v) {
-                $la[$v["id"]] = $v["labeltext"];
+    /* Get attribute that have the relation */
+
+    $attributesId = array_unique(array_merge(array_map(function ($value) {
+            return $value["attributeId"];
+        }, $relationsFrom)
+        , array_map(function ($value) {
+            return $value["attributeId"];
+        }, $relationsTo)));
+    $attributesId = array_filter($attributesId);
+    if (!empty($attributesId)) {
+        $query = new QueryDb($dbaccess, "DocAttr");
+        $query->AddQuery(GetSqlCond($attributesId, "id"));
+        $queryResults = $query->Query(0, 0, "TABLE");
+        if ($queryResults) {
+            $attributesValues = array();
+            foreach ($queryResults as $currentResult) {
+                $attributesValues[$currentResult["id"]] = $currentResult["labeltext"];
             }
-            foreach ($tlay as $k => $v) {
-                if ($la[$v["aid"]]) $tlay[$k]["alabel"] = $la[$v["aid"]];
-                else if ($tlay[$k]["aid"] == 'folder') $tlay[$k]["alabel"] = _("folder");
+            foreach ($relationsFrom as &$currentRelation) {
+                if (isset($attributesValues[$currentRelation["attributeId"]])) {
+                    $currentRelation["attributeLabel"] = $attributesValues[$currentRelation["attributeId"]] != "folder" ? $attributesValues[$currentRelation["attributeId"]] : $i18nFolder;
+                }
+            }
+            foreach ($relationsTo as &$currentRelation) {
+                if (isset($attributesValues[$currentRelation["attributeId"]])) {
+                    $currentRelation["attributeLabel"] = $attributesValues[$currentRelation["attributeId"]] != "folder" ? $attributesValues[$currentRelation["attributeId"]] : $i18nFolder;
+                }
             }
         }
     }
     // Verify visibility for current user
-    $tids = array();
-    foreach ($tlay as $k => $v) {
-        $tids[] = $v["initid"];
+    $tids = array_unique(array_merge(array_map(function ($value) {
+        if (!empty($value["initid"])) {
+            return $value["initid"];
+        } else {
+            return null;
+        }
+    }, $relationsFrom), array_map(function ($value) {
+        if (!empty($value["initid"])) {
+            return $value["initid"];
+        } else {
+            return null;
+        }
+    }, $relationsTo)));
+    $tids = array_filter($tids);
+    if (!empty($tids)) {
+        $vdoc = getVisibleDocsFromIds($dbaccess, $tids, $action->user->id);
+        $tids = array_map(function ($value) {
+            return $value["initid"];
+        }, $vdoc);
     }
-    $vdoc = getVisibleDocsFromIds($dbaccess, $tids, $action->user->id);
-    
-    $tids = array();
-    if (is_array($vdoc)) foreach ($vdoc as $k => $v) $tids[] = $v["initid"];
-    
-    foreach ($tlay as $k => $v) {
-        if ((!in_array($v["initid"], $tids)) && ($v["initid"] != 0)) unset($tlay[$k]);
+
+    $filtersOnlyVisible = function ($value) use ($tids) {
+        return in_array($value["initid"], $tids);
+    };
+
+    $relationsFrom = array_filter($relationsFrom, $filtersOnlyVisible);
+    $relationsTo = array_filter($relationsTo, $filtersOnlyVisible);
+
+    $results = array(
+        "currentDocument" => array(
+            "id" => $docid,
+            "title" => $doc->getHTMLTitle()
+        ),
+        "relationsTo" => $relationsTo,
+        "relationsFrom" => $relationsFrom
+    );
+
+    if ($onlyGetResult) {
+        return $results;
+    } else {
+        $initData = array(
+            "i18n" => array(
+                "view document" => _("view document"),
+                "noone document" => _("noone document"),
+                "referenced from" => _("Referenced from"),
+                "referenced" => _("Reference")
+            ),
+            'core_stand_url' => getParam("CORE_STANDURL"),
+            'initial_data' => $results
+        );
+        $action->lay->set("init_data", json_encode($initData, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP ));
+        $action->lay->set("RNAVIGATE_JS", $action->parent->getJsLink("FREEDOM:rnavigate.js"));
+        return null;
     }
-    
-    $action->lay->setBlockData("RELS", $tlay);
-    $action->lay->set("docid", $docid);
+
 }
 
-function rnavigate2(&$action)
+function rnavigate_json(&$action)
 {
-    header('Content-type: text/xml; charset=utf-8');
-    rnavigate($action);
+    $return = array(
+        "success" => true,
+        "error" => "",
+        "data" => array()
+    );
+
+    try {
+        $return["data"] = rnavigate($action, true);
+    } catch (Exception $e) {
+        $return["success"] = false;
+        $return["error"][] = $e->getMessage();
+        unset($return["data"]);
+    }
+
+    $action->lay->template = json_encode($return);
+    $action->lay->noparse = true;
+    header('Content-type: application/json');
 }
-?>
