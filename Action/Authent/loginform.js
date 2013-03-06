@@ -67,14 +67,17 @@ function centerZone() {
 }
 function initZone() {
     centerZone();
+    
+    if (document.getElementById('zonehelp')) document.getElementById('zonehelp').style.visibility = 'hidden';
+    document.getElementById('main').style.visibility = 'visible';
     var focus = document.getElementById("passfocus");
     if (focus) {
      focus = document.getElementById("passfocus").value ? 'auth_pass' : 'auth_user';
         var ifocus = document.getElementById(focus);
-        if (ifocus) ifocus.focus();
+        if (ifocus) {
+            ifocus.focus();
+        }
     }
-    if (document.getElementById('zonehelp')) document.getElementById('zonehelp').style.visibility = 'hidden';
-    document.getElementById('main').style.visibility = 'visible';
 
 }
 addEvent(window, 'load', initZone);
