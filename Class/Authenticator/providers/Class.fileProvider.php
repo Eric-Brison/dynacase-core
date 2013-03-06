@@ -18,7 +18,6 @@
 include_once ("WHAT/Class.Provider.php");
 class fileProvider extends Provider
 {
-    
     private function readPwdFile($pwdfile)
     {
         $fh = fopen($pwdfile, 'r');
@@ -76,11 +75,4 @@ class fileProvider extends Provider
         $this->errno = 0;
         return false;
     }
-    
-    public function validateAuthorization($opt)
-    {
-        $this->errno = 0;
-        return TRUE;
-    }
 }
-?>

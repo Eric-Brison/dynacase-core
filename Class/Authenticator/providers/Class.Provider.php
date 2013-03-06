@@ -32,7 +32,11 @@ abstract class Provider
     }
     
     abstract function validateCredential($username, $password);
-    abstract function validateAuthorization($opt);
+    
+    public function validateAuthorization($opt)
+    {
+        return true;
+    }
     
     public function canICreateUser()
     {
@@ -47,4 +51,3 @@ abstract class Provider
         return FALSE;
     }
 }
-?>

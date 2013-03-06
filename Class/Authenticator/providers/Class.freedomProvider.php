@@ -34,18 +34,4 @@ class freedomProvider extends Provider
         }
         return FALSE;
     }
-    /**
-     * checks if a user can't connect to Dynacase
-     *
-     * @return bool true if ok
-     */
-    public function validateAuthorization($opt)
-    {
-        if (array_key_exists('username', $opt)) {
-            $user = new User();
-            if ($user->setLoginName($opt['username'])) return ($user->status != 'D');
-        }
-        return FALSE;
-    }
 }
-?>
