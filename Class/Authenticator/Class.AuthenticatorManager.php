@@ -259,7 +259,7 @@ class AuthenticatorManager
      * @param array $opt
      * @return int
      */
-    private function protocol_0_authorization($opt)
+    private static function protocol_0_authorization($opt)
     {
         $authz = self::checkProviderAuthorization($opt);
         if ($authz !== self::AccessOk) {
