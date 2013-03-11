@@ -152,7 +152,7 @@ window.htmlText.setValue = function setValue(htmlTextId, value) {
     } else {
         throw new Exception("unable to set content : " + htmlTextId + " doesn't exist");
     }
-}
+};
 
 window.htmlText.getValue = function getValue(htmlTextId) {
     if (CKEDITOR.instances && CKEDITOR.instances[htmlTextId] && CKEDITOR.instances[htmlTextId].getData) {
@@ -160,10 +160,10 @@ window.htmlText.getValue = function getValue(htmlTextId) {
     } else {
         throw "unable to get content : " + htmlTextId + " doesn't exist";
     }
-}
+};
 
 window.htmlText.deactivateEditor = function deactivateEditor(htmlTextId, noUpdate) {
     var currentConfig = CKEDITOR.instances[htmlTextId].config;
     CKEDITOR.instances[htmlTextId].destroy(noUpdate);
     return currentConfig;
-}
+};
