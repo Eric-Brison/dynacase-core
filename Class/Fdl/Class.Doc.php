@@ -7135,7 +7135,7 @@ create unique index i_docir on doc(initid, revision);";
                 $dValue = '';
                 switch ($attr->type) {
                     case "image":
-                        $iValue = $this->GetHtmlValue($listattr[$i], $value, $target, $ulink);
+                        $iValue = $this->GetHtmlValue($listattr[$i], $value, $target, $ulink, -1, true, true);
                         if ($iValue != "") {
                             if ($value) {
                                 $dValue = "<img align=\"absbottom\" height=\"30px\" src=\"" . $iValue . "&height=30\">";

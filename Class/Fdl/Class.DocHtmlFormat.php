@@ -66,6 +66,8 @@ class DocHtmlFormat
         $this->htmlLink = $htmlLink;
         $this->useEntities = $useEntities;
         $this->abstractMode = $abstractMode;
+
+        $showEmpty = $this->oattr->getOption('showempty');
         
         if (($this->oattr->repeat) && ($this->index <= 0)) {
             $tvalues = explode("\n", $value);
@@ -75,184 +77,187 @@ class DocHtmlFormat
         $this->attrid = $this->oattr->id;
         $thtmlval = array();
         foreach ($tvalues as $kvalue => $avalue) {
-            
-            switch ($atype) {
-                case "idoc":
-                    $htmlval = $this->formatIDoc($kvalue, $avalue);
-                    break;
+            if($abstractMode && empty($avalue) && !$showEmpty){
+                $thtmlval[$kvalue] = '';
+            } else {
+                switch ($atype) {
+                    case "idoc":
+                        $htmlval = $this->formatIDoc($kvalue, $avalue);
+                        break;
 
-                case "image":
-                    $htmlval = $this->formatImage($kvalue, $avalue);
-                    break;
+                    case "image":
+                        $htmlval = $this->formatImage($kvalue, $avalue);
+                        break;
 
-                case "file":
-                    
-                    $htmlval = $this->formatFile($kvalue, $avalue);
-                    break;
+                    case "file":
 
-                case "longtext":
-                case "xml":
-                    
-                    $htmlval = $this->formatLongtext($kvalue, $avalue);
-                    break;
+                        $htmlval = $this->formatFile($kvalue, $avalue);
+                        break;
 
-                case "password":
-                    
-                    $htmlval = $this->formatPassword($kvalue, $avalue);
-                    break;
+                    case "longtext":
+                    case "xml":
 
-                case "enum":
-                    
-                    $htmlval = $this->formatEnum($kvalue, $avalue);
-                    break;
+                        $htmlval = $this->formatLongtext($kvalue, $avalue);
+                        break;
 
-                case "array":
-                    
-                    $htmlval = $this->formatArray($kvalue, $avalue);
-                    break;
+                    case "password":
 
-                case "doc":
-                    $htmlval = $this->formatDoc($kvalue, $avalue);
-                    break;
+                        $htmlval = $this->formatPassword($kvalue, $avalue);
+                        break;
 
-                case "account":
-                    $htmlval = $this->formatAccount($kvalue, $avalue);
-                    break;
+                    case "enum":
 
-                case "docid":
-                    $htmlval = $this->formatDocid($kvalue, $avalue);
-                    break;
+                        $htmlval = $this->formatEnum($kvalue, $avalue);
+                        break;
 
-                case "thesaurus":
-                    
-                    $htmlval = $this->formatThesaurus($kvalue, $avalue);
-                    break;
+                    case "array":
 
-                case "option":
-                    
-                    $htmlval = $this->formatOption($kvalue, $avalue);
-                    break;
+                        $htmlval = $this->formatArray($kvalue, $avalue);
+                        break;
 
-                case 'money':
-                    
-                    $htmlval = $this->formatMoney($kvalue, $avalue);
-                    break;
+                    case "doc":
+                        $htmlval = $this->formatDoc($kvalue, $avalue);
+                        break;
 
-                case 'htmltext':
-                    
-                    $htmlval = $this->formatHtmltext($kvalue, $avalue);
-                    break;
+                    case "account":
+                        $htmlval = $this->formatAccount($kvalue, $avalue);
+                        break;
 
-                case 'date':
-                    
-                    $htmlval = $this->formatDate($kvalue, $avalue);
-                    break;
+                    case "docid":
+                        $htmlval = $this->formatDocid($kvalue, $avalue);
+                        break;
 
-                case 'time':
-                    
-                    $htmlval = $this->formatTime($kvalue, $avalue);
-                    break;
+                    case "thesaurus":
 
-                case 'timestamp':
-                    
-                    $htmlval = $this->formatTimeStamp($kvalue, $avalue);
-                    
-                    break;
+                        $htmlval = $this->formatThesaurus($kvalue, $avalue);
+                        break;
 
-                case 'ifile':
-                    
-                    $htmlval = $this->formatIfile($kvalue, $avalue);
-                    break;
+                    case "option":
 
-                case 'color':
-                    $htmlval = $this->formatColor($kvalue, $avalue);
-                    break;
+                        $htmlval = $this->formatOption($kvalue, $avalue);
+                        break;
 
-                default:
-                    $htmlval = $this->formatDefault($kvalue, $avalue);
-                    
-                    break;
-            }
-            
-            $abegin = $aend = '';
-            if ($htmlval == '' && $this->oattr->getOption('showempty')) {
-                $htmlval = $this->oattr->getOption('showempty');
-            } else if (($this->cFormat != "") && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
-                //printf($htmlval);
-                $htmlval = sprintf($this->cFormat, $htmlval);
-            }
-            // add link if needed
-            if ($this->htmlLink && ($this->oattr->link != "")) {
-                $ititle = "";
-                $hlink = $this->oattr->link;
-                if ($hlink[0] == "[") {
-                    if (preg_match('/\[(.*)\](.*)/', $hlink, $reg)) {
-                        $hlink = $reg[2];
-                        $ititle = str_replace("\"", "'", $reg[1]);
-                    }
+                    case 'money':
+
+                        $htmlval = $this->formatMoney($kvalue, $avalue);
+                        break;
+
+                    case 'htmltext':
+
+                        $htmlval = $this->formatHtmltext($kvalue, $avalue);
+                        break;
+
+                    case 'date':
+
+                        $htmlval = $this->formatDate($kvalue, $avalue);
+                        break;
+
+                    case 'time':
+
+                        $htmlval = $this->formatTime($kvalue, $avalue);
+                        break;
+
+                    case 'timestamp':
+
+                        $htmlval = $this->formatTimeStamp($kvalue, $avalue);
+
+                        break;
+
+                    case 'ifile':
+
+                        $htmlval = $this->formatIfile($kvalue, $avalue);
+                        break;
+
+                    case 'color':
+                        $htmlval = $this->formatColor($kvalue, $avalue);
+                        break;
+
+                    default:
+                        $htmlval = $this->formatDefault($kvalue, $avalue);
+
+                        break;
                 }
-                if ($ulink = $this->doc->urlWhatEncode($hlink, $kvalue)) {
-                    if ($this->target == "ext") {
-                        if (preg_match("/FDL_CARD.*id=([0-9]+)/", $ulink, $reg)) {
-                            
-                            $abegin = $this->doc->getDocAnchor($reg[1], $this->target, true, html_entity_decode($htmlval, ENT_QUOTES, 'UTF-8'));
-                            $htmlval = '';
-                            $aend = "";
-                        } else if (true || preg_match("/^http:/", $ulink, $reg)) {
-                            $ec = getSessionValue("ext:targetUrl");
-                            
-                            if ($ec) {
-                                $ec = str_replace("%V%", $ulink, $ec);
-                                $ec = str_replace("%L%", $this->oattr->getLabel() , $ec);
-                                $ecu = str_replace("'", "\\'", $this->doc->urlWhatEncode($ec));
-                                $abegin = "<a  onclick='parent.$ecu'>";
-                            } else {
-                                $ltarget = $this->oattr->getOption("ltarget");
-                                $abegin = "<a target=\"$ltarget\"  href=\"$ulink\">";
+
+                $abegin = $aend = '';
+                if ($htmlval == '' && $showEmpty) {
+                    $htmlval = $showEmpty;
+                } else if (($this->cFormat != "") && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
+                    //printf($htmlval);
+                    $htmlval = sprintf($this->cFormat, $htmlval);
+                }
+                // add link if needed
+                if ($this->htmlLink && ($this->oattr->link != "")) {
+                    $ititle = "";
+                    $hlink = $this->oattr->link;
+                    if ($hlink[0] == "[") {
+                        if (preg_match('/\[(.*)\](.*)/', $hlink, $reg)) {
+                            $hlink = $reg[2];
+                            $ititle = str_replace("\"", "'", $reg[1]);
+                        }
+                    }
+                    if ($ulink = $this->doc->urlWhatEncode($hlink, $kvalue)) {
+                        if ($this->target == "ext") {
+                            if (preg_match("/FDL_CARD.*id=([0-9]+)/", $ulink, $reg)) {
+
+                                $abegin = $this->doc->getDocAnchor($reg[1], $this->target, true, html_entity_decode($htmlval, ENT_QUOTES, 'UTF-8'));
+                                $htmlval = '';
+                                $aend = "";
+                            } else if (true || preg_match("/^http:/", $ulink, $reg)) {
+                                $ec = getSessionValue("ext:targetUrl");
+
+                                if ($ec) {
+                                    $ec = str_replace("%V%", $ulink, $ec);
+                                    $ec = str_replace("%L%", $this->oattr->getLabel() , $ec);
+                                    $ecu = str_replace("'", "\\'", $this->doc->urlWhatEncode($ec));
+                                    $abegin = "<a  onclick='parent.$ecu'>";
+                                } else {
+                                    $ltarget = $this->oattr->getOption("ltarget");
+                                    $abegin = "<a target=\"$ltarget\"  href=\"$ulink\">";
+                                }
+
+                                $aend = "</a>";
                             }
-                            
-                            $aend = "</a>";
-                        }
-                    } else if ($this->target == "mail") {
-                        $scheme = "";
-                        if (preg_match("/^([[:alpha:]]*):(.*)/", $ulink, $reg)) {
-                            $scheme = $reg[1];
-                        }
-                        $abegin = "<a target=\"$this->target\"  href=\"";
-                        if ($scheme == "") $abegin.= $action->GetParam("CORE_URLINDEX", ($action->GetParam("CORE_ABSURL") . "/")) . $ulink;
-                        else $abegin.= $ulink;
-                        $abegin.= "\">";
-                        $aend = "</a>";
-                    } else {
-                        $ltarget = $this->oattr->getOption("ltarget");
-                        if ($ltarget != "") $this->target = $ltarget;
-                        $ltitle = $this->oattr->getOption("ltitle");
-                        if ($ltitle != "") $ititle = str_replace("\"", "'", $ltitle);
-                        $abegin = "<a target=\"$this->target\" title=\"$ititle\" onmousedown=\"document.noselect=true;\" href=\"";
-                        $abegin.= $ulink . "\" ";
-                        if ($this->htmlLink > 1) {
+                        } else if ($this->target == "mail") {
                             $scheme = "";
                             if (preg_match("/^([[:alpha:]]*):(.*)/", $ulink, $reg)) {
                                 $scheme = $reg[1];
                             }
-                            if (($scheme == "") || ($scheme == "http")) {
-                                if ($scheme == "") $ulink.= "&ulink=1";
-                                $abegin.= " oncontextmenu=\"popdoc(event,'$ulink');return false;\" ";
+                            $abegin = "<a target=\"$this->target\"  href=\"";
+                            if ($scheme == "") $abegin.= $action->GetParam("CORE_URLINDEX", ($action->GetParam("CORE_ABSURL") . "/")) . $ulink;
+                            else $abegin.= $ulink;
+                            $abegin.= "\">";
+                            $aend = "</a>";
+                        } else {
+                            $ltarget = $this->oattr->getOption("ltarget");
+                            if ($ltarget != "") $this->target = $ltarget;
+                            $ltitle = $this->oattr->getOption("ltitle");
+                            if ($ltitle != "") $ititle = str_replace("\"", "'", $ltitle);
+                            $abegin = "<a target=\"$this->target\" title=\"$ititle\" onmousedown=\"document.noselect=true;\" href=\"";
+                            $abegin.= $ulink . "\" ";
+                            if ($this->htmlLink > 1) {
+                                $scheme = "";
+                                if (preg_match("/^([[:alpha:]]*):(.*)/", $ulink, $reg)) {
+                                    $scheme = $reg[1];
+                                }
+                                if (($scheme == "") || ($scheme == "http")) {
+                                    if ($scheme == "") $ulink.= "&ulink=1";
+                                    $abegin.= " oncontextmenu=\"popdoc(event,'$ulink');return false;\" ";
+                                }
                             }
+                            $abegin.= ">";
+                            $aend = "</a>";
                         }
-                        $abegin.= ">";
-                        $aend = "</a>";
+                    } else {
+                        $abegin = "";
+                        $aend = "";
                     }
                 } else {
                     $abegin = "";
                     $aend = "";
                 }
-            } else {
-                $abegin = "";
-                $aend = "";
+
+                $thtmlval[$kvalue] = $abegin . $htmlval . $aend;
             }
-            
-            $thtmlval[$kvalue] = $abegin . $htmlval . $aend;
         }
         
         return implode("<BR>", $thtmlval);
