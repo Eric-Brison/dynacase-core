@@ -2321,7 +2321,7 @@ function movetr(tr, sourcetr) {
         if (textareas && textareas.length > 0) {
             for (i =0, length = textareas.length; i < length; i++) {
                 if (textareas[i].getAttribute('type') === 'htmltext') {
-                    conf = window.htmlText.deactivateEditor(textareas[i].id, true);
+                    conf = window.htmlText.deactivateEditor(textareas[i].id, false);
                     textAreaConf[textareas[i].id] = conf;
                     window.htmlText.synchronizeWithTextArea(textareas[i].id);
                 }
