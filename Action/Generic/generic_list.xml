@@ -177,7 +177,7 @@
             <option style="border-top:solid 1px [COLOR_BLACK];height:2px;font-size:1px" disabled value=""></option>
             [ENDIF MSEARCH]
             [BLOCK USERSEARCH]
-            <option isreport="[isreport]" isparam="[isparam]" style="background-color:[gui_color]" value="[id] [selected]">[title]</option>
+            <option isreport="[isreport]" isparam="[isparam]" style="background-color:[gui_color]" value="[id]" [selected]>[title]</option>
             [ENDBLOCK USERSEARCH]
         </select>
         [ENDIF ONESEARCH]
