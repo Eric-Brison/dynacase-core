@@ -562,6 +562,8 @@ function initializeSysFamSelector(select, input) {
 }
 
 function setSysFamSelector(select) {
+    var options, i, option;
+
     if (!select || !select.peer || !select.se_sysfam_input) {
         return;
     }
@@ -573,9 +575,9 @@ function setSysFamSelector(select) {
         /* Empty main <select/> */
         $(select).children('option').remove();
         /* Copy back options from peer <select/> into main <select/> */
-        var options = $(select.peer).children('option');
-        for (var i = 0; i < options.length; i++) {
-            var option = options[i].cloneNode(true);
+        options = $(select.peer).children('option');
+        for (i = 0; i < options.length; i++) {
+            option = options[i].cloneNode(true);
             option.selected = option.text == selectedText;
             select.appendChild(option);
         }
@@ -594,7 +596,11 @@ function setSysFamSelector(select) {
     /**
      * Setting selected explicitly for IE
      */
-    if (isIE) $("#famid").find('option[selected="selected"]').attr("selected", 'selected');
+    if (isIE) {
+        // The use of $("#famid") make an issue (#3757) on IE6 in the report family
+        // Please keep the document.getElementById selector
+        $(document.getElementById("famid")).find('option[selected="selected"]').attr("selected", 'selected');
+    }
 }
 
 function newStepIs(type) {
