@@ -25,6 +25,27 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'EOF'
+UPDATE doc set name='PRF_CV_IGROUP' where id=501;
+UPDATE doc set name='MSK_IGROUP_ADMIN' where id=502;
+UPDATE doc set name='MSK_IGROUP_MEMBERS' where id=503;
+UPDATE doc set name='PRF_ADMIN_EDIT' where id=504;
+UPDATE doc set name='PRF_ADMIN_DIR' where id=505;
+UPDATE doc set name='MSK_IUSER_ADMIN' where id=506;
+UPDATE doc set name='MSK_IUSER_MYACCOUNT' where id=507;
+UPDATE doc set name='CV_IUSER_ACCOUNT' where id=508;
+UPDATE doc set name='PRF_IUSER_OWNER' where id=509;
+UPDATE doc set name='PRF_ADMIN_CREATION' where id=510;
+UPDATE doc set name='PRF_FAMILY_DEFAULT' where id=511;
+UPDATE doc set name='PRF_ADMIN_SEARCH' where id=512;
+UPDATE doc set name='MSK_IGROUP_RESTRICTION' where id=513;
+EOF
+
+if [ $RET -ne 0 ]; then
+    echo "Error setting logical name for account families."
+    exit $RET
+fi
+
 "$wpub"/wsh.php --api=updateclass  --appc=FDL --class=DocEnum
 RET=$?
 if [ $RET -ne 0 ]; then
