@@ -53,6 +53,7 @@ function alleditjs(Action & $action)
     
     $dynamics = array(
         "FDL/Layout/editcommon.js",
+        "FDL/Layout/editload.js",
         "FDL/Layout/editidoc.js",
         "FDL/Layout/enum_choice.js",
         "FDL/Layout/viewdoc.js",
