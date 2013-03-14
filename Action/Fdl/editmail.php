@@ -31,6 +31,9 @@ include_once ("FDL/Class.Doc.php");
  */
 function editmail(Action & $action)
 {
+    include_once ("FDL/editutil.php");
+    editmode($action);
+    
     $docid = GetHttpVars("mid");
     $zone = GetHttpVars("mzone");
     $ulink = GetHttpVars("ulink");
