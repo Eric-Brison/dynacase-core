@@ -288,6 +288,9 @@ This can be solved by:<br/>
         <process command="./wsh.php --api=importDocuments --file=./FUSERS/accountprofil.ods">
             <label>Profiling accounts</label>
         </process>
+        <process command="programs/account_init">
+            <label>Initialize account families</label>
+        </process>
 
         <process command="./wsh.php --api=importDocuments --file=./FDL/defaultprofil.ods">
             <label>Profiling system families</label>
