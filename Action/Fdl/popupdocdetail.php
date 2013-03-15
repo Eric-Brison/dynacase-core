@@ -456,15 +456,17 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
                     if ($tz[$k] != "") {
                         if ($ti[$k] == "") $cvk = "CV$k";
                         else $cvk = $ti[$k];
+                        $menuTradKey = $cvdoc->getPropertyValue("name") . "#menu#" . $cvk;
+                        $txtTradKey = $cvdoc->getPropertyValue("name") . "#label#" . $cvk;
                         if ($v == "VEDIT") {
                             if ($cud) {
                                 if ($cvdoc->control($cvk) == "") {
                                     $tv[$cvk] = array(
                                         "typeview" => N_("specialedit") , # N_("specialedit %s")
                                         "idview" => $cvk,
-                                        "menu" => $tmenu[$k],
+                                        "menu" => $tmenu[$k] ? (_($menuTradKey) != $menuTradKey ? _($menuTradKey) : $tmenu[$k]) : "",
                                         "zoneview" => $tz[$k],
-                                        "txtview" => $tl[$k]
+                                        "txtview" => $tl[$k] ? (_($txtTradKey) != $txtTradKey ? _($txtTradKey) : $tl[$k]) : ""
                                     );
                                 }
                             }
@@ -473,9 +475,9 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
                                 $tv[$cvk] = array(
                                     "typeview" => N_("specialview") , # N_("specialview %s")
                                     "idview" => $cvk,
-                                    "menu" => $tmenu[$k],
+                                    "menu" => $tmenu[$k] ? (_($menuTradKey) != $menuTradKey ? _($menuTradKey) : $tmenu[$k]) : "",
                                     "zoneview" => $tz[$k],
-                                    "txtview" => $tl[$k]
+                                    "txtview" => $tl[$k] ? (_($txtTradKey) != $txtTradKey ? _($txtTradKey) : $tl[$k]) : ""
                                 );
                             }
                         }
