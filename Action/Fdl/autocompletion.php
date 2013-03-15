@@ -22,7 +22,7 @@ function autocompletion(Action & $action)
 {
     // list of choice to be insert in attribute values
     $docid = GetHttpVars("docid"); // document being edition
-    if (!$docid){
+    if (!$docid) {
         $docid = GetHttpVars("classid", 0);
     } // in case of docid is null
     $attrid = GetHttpVars("attrid", 0); // attribute need to enum
@@ -33,7 +33,7 @@ function autocompletion(Action & $action)
     $skey = GetHttpVars("skey"); // use only when enum (filter key)
     header('Content-type: text/xml; charset=utf-8');
     
-    if ($enum != ""){
+    if ($enum != "") {
         $attrid = $enum;
     }
     $err = '';
@@ -67,15 +67,15 @@ function autocompletion(Action & $action)
         $oattr = new NormalAttribute($attrid, $doc->id, $label, "text", $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, $fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint, $usefor, $eformat, $options);
     } else {
         $oattr = $doc->GetAttribute($attrid);
-        if (!$oattr){
+        if (!$oattr) {
             $err = sprintf(_("unknown attribute %s") , $attrid);
         }
     }
-
+    
     $xmlDocument = new DOMDocument();
     $xmlRoot = $xmlDocument->createElement("status");
     $xmlDocument->appendChild($xmlRoot);
-
+    
     if ($err == "") {
         $notalone = "true";
         
@@ -117,15 +117,7 @@ function autocompletion(Action & $action)
                 '&comma;',
                 '&point;'
             ) , $eval);
-            $oattr->phpfunc = sprintf("lenumvalues('%s,'%s):li_%s,%s", str_replace(array(
-                ',',
-                '(',
-                ')'
-            ) , array(
-                '---',
-                '&lpar;',
-                '&rpar;'
-            ) , $eval) , str_replace(array(
+            $oattr->phpfunc = sprintf("fdlGetEnumValues('%s,'%s,'%s):li_%s,%s", $oattr->docid, $oattr->id, str_replace(array(
                 ')',
                 '(',
                 ','
@@ -169,9 +161,9 @@ function autocompletion(Action & $action)
         $oattr->phpfunc = preg_replace('/([\s|,|:|\(])CT\[([^]]+)\]/e', "'\\1'.'$linkprefix'.strtolower('\\2')", $oattr->phpfunc);
         
         $res = getResPhpFunc($doc, $oattr, $rargids, $tselect, $tval, true, $index);
-
+        
         if (!is_array($res)) {
-            if ($res == ""){
+            if ($res == "") {
                 $res = sprintf(_("error in calling function %s\n%s") , $oattr->phpfunc, $res);
             }
             $err = $res;
@@ -255,47 +247,44 @@ function autocompletion(Action & $action)
                     $xmlCibles->appendChild($xmlCible);
                 }
                 $xmlRoot->appendChild($xmlCibles);
-
-
+                
                 foreach ($res as $k => $v) {
-
+                    
                     $xmlOption = $xmlDocument->createElement("option");
                     $xmlOption->setAttribute("value", $k);
-
                     //title
                     $title = array_shift($v);
                     $xmlOptionTitle = $xmlDocument->createElement("title");
                     $xmlOptionTitleCData = $xmlDocument->createCDATASection($title);
                     $xmlOptionTitle->appendChild($xmlOptionTitleCData);
-
+                    
                     $xmlOption->appendChild($xmlOptionTitle);
-
                     //values
                     $xmlOptionValues = $xmlDocument->createElement("values");
-                    foreach($v as $value){
+                    foreach ($v as $value) {
                         $xmlOptionCurrentValue = $xmlDocument->createElement("val");
                         $xmlOptionCurrentValueCData = $xmlDocument->createCDATASection($value);
                         $xmlOptionCurrentValue->appendChild($xmlOptionCurrentValueCData);
                         $xmlOptionValues->appendChild($xmlOptionCurrentValue);
                     }
-
+                    
                     $xmlOption->appendChild($xmlOptionValues);
-
+                    
                     $xmlRoot->appendChild($xmlOption);
                 }
-
+                
                 $xmlRoot->setAttribute("count", count($tselect));
             }
         }
     }
-
-    if($err){
+    
+    if ($err) {
         $xmlRoot->setAttribute("warning", $err);
     }
-
+    
     $action->lay->noparse = true;
     $action->lay->template = $xmlDocument->saveXML();
-
+    
     $action->lay->action = null; // don't want parameters - conflict with possible parameters
     
 }

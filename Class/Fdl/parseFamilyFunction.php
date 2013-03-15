@@ -275,7 +275,7 @@ class parseFamilyFunction
             }
         }
         $r = strlen($arg) - 1;
-        $c = $arg[strlen($arg) - 1];
+        $c = ($r >= 0) ? $arg[$r] : '';
         while ($c == ' ' && $r > 0) {
             $r--;
             $c = $arg[$r];
