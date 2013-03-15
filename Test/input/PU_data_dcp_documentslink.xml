@@ -16,9 +16,9 @@
             <tst_longtext>Première ligne
 Et deuxième ligne</tst_longtext>
             <tst_array><tst_coltext>Ligne n°1</tst_coltext>
-                <tst_coldate>01/11/2011</tst_coldate></tst_array>
+                <tst_coldate>2011-11-01</tst_coldate></tst_array>
             <tst_array><tst_coltext>Ligne n°2</tst_coltext>
-                <tst_coldate>02/11/2011</tst_coldate></tst_array></tst_frame>
+                <tst_coldate>2011-11-02</tst_coldate></tst_array></tst_frame>
 
     </tst_linkdoc>
     <tst_linkdoc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_linkdoc.xsd"
@@ -27,7 +27,7 @@ Et deuxième ligne</tst_longtext>
         <tst_frame><tst_title>Test</tst_title>
             <tst_longtext>Long</tst_longtext>
             <tst_array><tst_coltext>Ligne un</tst_coltext>
-                <tst_coldate>15/11/2011</tst_coldate></tst_array></tst_frame>
+                <tst_coldate>2011-11-15</tst_coldate></tst_array></tst_frame>
 
     </tst_linkdoc>
 </documents>
