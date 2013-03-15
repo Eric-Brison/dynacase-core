@@ -790,85 +790,125 @@ class SearchDoc
      */
     public static function getGeneralFilter($keywords, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
     {
-        if ((strstr($keywords, '"') == false) && (strstr($keywords, '~') == false)) {
-            $filter = self::getFullFilter($keywords, $useSpell, $pertinenceOrder, $highlightWords);
-        } else {
-            
-            $filter = self::getMiscFilter($keywords, $useSpell, $pertinenceOrder);
-        }
-        return $filter;
-    }
-    /**
-     * return sql filter from some words or expressions
-     * @static
-     * @param string $keywords
-     * @param bool $useSpell
-     * @param string $pertinenceOrder return pertinence order
-     * @return string sql filter
-     */
-    protected static function getMiscFilter($keywords, $useSpell = false, &$pertinenceOrder = '')
-    {
-        $workFilter = preg_replace('/\s+(OR)\s+/u', '|||', $keywords);
-        $workFilter = preg_replace('/\s+(AND)\s+/u', '&&&', $workFilter);
-        $workFilter = preg_replace('/\s+/u', '&space;', $workFilter);
-        // exacts keys
-        preg_match_all('/(?m)"([^"]+)"/u', $workFilter, $matches);
-        $exactsKeys = $matches[0];
-        // delete matches from keywords
-        $workFilter = preg_replace('/(?m)"([^"]+)"/u', "", $workFilter);
-        // regexp keys
-        preg_match_all('/(?m)~([\p{L}]+)/u', $workFilter, $matches);
-        $regexpKeys = $matches[0];
-        // delete matches from keywords
-        $workFilter = preg_replace('/(?m)~([\p{L}]+)/u', "", $workFilter);
-        // full word keys
-        preg_match_all('/(?m)([\p{L}]+)/u', $workFilter, $matches);
-        $fullsKeys = $matches[0];
-        // delete matches from keywords
-        $workFilter = preg_replace('/(?m)"([\p{L}]+)"/u', "", $workFilter);
-        /* print_r2(array(
-            "exact" => $exactsKeys,
-            "regexp" => $regexpKeys,
-            "full" => $fullsKeys,
-            "final"=>$workFilter
-        ));*/
-        
-        $filter = $keywords;
-        $rank = $keywords;
-        foreach ($exactsKeys as $aKey) {
-            $aKey = str_replace('&space;', ' ', $aKey);
-            $repl = sprintf("svalues ~* E'\\\\y%s\\\\y'", pg_escape_string(substr($aKey, 1, -1)));
-            $filter = str_replace($aKey, $repl, $filter);
-            $repl = unaccent(substr($aKey, 1, -1));
-            $rank = str_replace($aKey, $repl, $rank);
-        }
-        foreach ($fullsKeys as $aKey) {
-            if ($useSpell) {
-                $rKey = self::testSpell($aKey);
-            } else {
-                $rKey = $aKey;
+        $filter = "";
+        $rank = "";
+        $words = array();
+        $currentOperator = "and";
+        $parenthesisBalanced = 0;
+        $filterElement = "";
+        $parenthesis = "";
+        $rankElement = "";
+
+        $convertOperatorToTs = function($operator) {
+            if ($operator === "") {
+                return "";
             }
-            $repl = sprintf("fulltext @@ to_tsquery('french','%s')", pg_escape_string(unaccent($rKey)));
-            
-            $filter = str_replace($aKey, $repl, $filter);
-            $rank = str_replace($aKey, $rKey, $rank);
+            if ($operator === "and") {
+                return "&";
+            } else if($operator === "or") {
+                return "|";
+            } else {
+                throw new \Dcp\Exception(sprintf(_("SEARCH_DOC:Unknown operator %s"), $operator));
+            }
+        };
+
+        $filterElements = \Dcp\Lex\GeneralFilter::analyze($keywords);
+
+        $isOnlyWord = true;
+
+        foreach($filterElements as $currentFilter) {
+            if (!in_array($currentFilter["mode"], array(
+                \Dcp\Lex\GeneralFilter::MODE_OR,
+                \Dcp\Lex\GeneralFilter::MODE_AND,
+                \Dcp\Lex\GeneralFilter::MODE_OPEN_PARENTHESIS,
+                \Dcp\Lex\GeneralFilter::MODE_CLOSE_PARENTHESIS,
+                \Dcp\Lex\GeneralFilter::MODE_WORD
+            ))) {
+                $isOnlyWord = false;
+                break;
+            }
         }
-        foreach ($regexpKeys as $aKey) {
-            $repl = sprintf("svalues ~* E'%s'", pg_escape_string(substr($aKey, 1)));
-            $filter = str_replace($aKey, $repl, $filter);
+
+        foreach($filterElements as $currentElement) {
+            switch ($currentElement["mode"]) {
+                case \Dcp\Lex\GeneralFilter::MODE_OR:
+                    $currentOperator = "or";
+                    break;
+                case \Dcp\Lex\GeneralFilter::MODE_AND:
+                    $currentOperator = "and";
+                    break;
+                case \Dcp\Lex\GeneralFilter::MODE_OPEN_PARENTHESIS:
+                    $parenthesis = "(";
+                    $parenthesisBalanced += 1;
+                    break;
+                case \Dcp\Lex\GeneralFilter::MODE_CLOSE_PARENTHESIS:
+                    $parenthesis = ")";
+                    $parenthesisBalanced -= 1;
+                    break;
+                case \Dcp\Lex\GeneralFilter::MODE_WORD:
+                    $filterElement = $currentElement["word"];
+                    if ($useSpell) {
+                        $filterElement = self::testSpell($currentElement["word"]);
+                    }
+                    $rankElement = unaccent($filterElement);
+                    $words[] = $filterElement;
+                    if ($isOnlyWord) {
+                        $filterElement = pg_escape_string(unaccent($filterElement));
+                    } else {
+                        $to_tsquery =  sprintf("to_tsquery('french','%s')", pg_escape_string(unaccent($filterElement)));
+                        $filterElement = "((numnode($to_tsquery) = 0) or (fulltext @@ $to_tsquery))";
+                    }
+                    break;
+                case \Dcp\Lex\GeneralFilter::MODE_STRING:
+                    $rankElement = unaccent($currentElement["word"]);
+                    $filterElement = sprintf("svalues ~* E'\\\\y%s\\\\y'", pg_escape_string(preg_quote($currentElement["word"])));
+                    break;
+                case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_END:
+                    $rankElement = unaccent($currentElement["word"]);
+                    $filterElement = sprintf("svalues ~* E'\\\\y%s'", pg_escape_string(preg_quote($currentElement["word"])));
+                    break;
+                case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BEGIN:
+                    $rankElement = unaccent($currentElement["word"]);
+                    $filterElement = sprintf("svalues ~* E'%s\\\\y'", pg_escape_string(preg_quote($currentElement["word"])));
+                    break;
+                case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BOTH:
+                    $rankElement = unaccent($currentElement["word"]);
+                    $filterElement = sprintf("svalues ~* E'%s'", pg_escape_string(preg_quote($currentElement["word"])));
+                    break;
+            }
+            if ($filterElement) {
+                if ($isOnlyWord) {
+                    $filter .= $filter ? " ".$convertOperatorToTs($currentOperator). " ". $filterElement : $filterElement;
+                } else {
+                    $filter .= $filter ? " ".$currentOperator. " ". $filterElement : $filterElement;
+                }
+                $rank .= $rank ? " ".$convertOperatorToTs($currentOperator). " ". $rankElement : $rankElement;
+                $filterElement = "";
+                $currentOperator = "and";
+            } else if ($parenthesis){
+                if ($isOnlyWord) {
+                    $filter .= $filter && $parenthesis === "(" ? " ".$convertOperatorToTs($currentOperator). " ". $parenthesis : $parenthesis;
+                } else {
+                    $filter .= $filter && $parenthesis === "(" ? " ".$currentOperator. " ". $parenthesis : $parenthesis;
+                }
+                $rank .= $rank && $parenthesis === "("  ? " ".$convertOperatorToTs($currentOperator). " ". $parenthesis : $parenthesis;
+                $currentOperator = "";
+                $parenthesis = "";
+            }
         }
-        // add implicit AND
-        $filter = preg_replace("/'\\)\\s+svalues/", "') and svalues", $filter);
-        $filter = preg_replace("/'\\)\\s+fulltext/", "') and fulltext", $filter);
-        $filter = preg_replace("/'\\s+fulltext/", "' and fulltext", $filter);
-        $filter = preg_replace("/'\\s+svalues/", "' and svalues", $filter);
-        
-        $rank = preg_replace('/\s+(OR)\s+/u', '|', $rank);
-        $rank = preg_replace('/\s+(AND)\s+/u', '&', $rank);
-        $rank = preg_replace('/\s+/u', '&', $rank);
-        $rank = str_replace('~', '', $rank);
-        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string(unaccent($rank)));
-        return ($filter);
+        if ($parenthesisBalanced !== 0) {
+            throw new \Dcp\Exception(sprintf(_("SEARCH_DOC:Unbalenced parenthesis %s"), $keywords));
+        }
+
+        if ($isOnlyWord) {
+            $filter = sprintf("fulltext @@ to_tsquery('french','%s')", $filter);
+        }
+
+        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string($rank));
+
+        $highlightWords = implode("|", $words);
+
+        return $filter;
     }
     /**
      * return a document part where general filter term is found
@@ -895,38 +935,6 @@ class SearchDoc
         return $h;
     }
     /**
-     * get full filter from some words
-     * @static
-     * @param string $words
-     * @param bool $useSpell
-     * @param string $pertinenceOrder return pertinence order
-     * @param string $highlightWords
-     * @return string sql filter
-     */
-    protected static function getFullFilter($words, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
-    {
-        $filter = trim($words, "'");
-        
-        $filter = preg_replace('/\p{S}/u', ' ', $filter);
-        $filter = preg_replace('/\p{Po}/u', ' ', $filter);
-        $filter = preg_replace('/\s+(OR)\s+/u', '|', trim($filter));
-        $filter = preg_replace('/\s+(AND)\s+/u', '&', $filter);
-        $filter = preg_replace('/\s*\)\s*/u', ')', $filter);
-        $filter = preg_replace('/\s*\(\s*/u', '(', $filter);
-        $filter = preg_replace('/\s+/u', '&', $filter);
-        $filter = preg_replace('/([\p{L}\)])\(/u', '\\1&(', $filter);
-        if ($useSpell) {
-            $filter = preg_replace("/(?m)([\p{L}]+)/ue", "self::testSpell('\\1')", $filter);
-        }
-        
-        $fullKey = pg_escape_string(unaccent($filter));
-        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", $fullKey);
-        $highlightWords = $fullKey;
-        //print_r2($pertinenceOrder);
-        $q = sprintf("fulltext @@ to_tsquery('french','%s')", $fullKey);
-        return $q;
-    }
-    /**
      * detect if word is a word of language
      * if not the near word is set to do an OR condition
      * @static
@@ -941,7 +949,10 @@ class SearchDoc
             if (!$pspell_link) $pspell_link = pspell_new($language, "", "", "utf-8", PSPELL_FAST);
             if ((!is_numeric($word)) && (!pspell_check($pspell_link, $word))) {
                 $suggestions = pspell_suggest($pspell_link, $word);
-                $sug = unaccent($suggestions[0]);
+                $sug = false;
+                if (isset($suggestions[0])) {
+                    $sug = unaccent($suggestions[0]);
+                }
                 if ($sug && ($sug != unaccent($word)) && (!strstr($sug, ' '))) {
                     $word = sprintf("(%s|%s)", $word, $sug);
                 }
