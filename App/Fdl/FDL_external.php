@@ -691,10 +691,43 @@ function lenum($val, $enum)
     return $tr;
 }
 /**
+ * list of enum possibilities
+ * @internal use for enum when eformat=auto
+ * @param string $famid family identifier
+ * @param string $attrid enum identifier
+ * @param string $val  label filter
+ * @return array/string*2 array of (enum, enum)
+ */
+function fdlGetEnumValues($famid, $attrid, $val = '')
+{
+    $doc = new_doc('', $famid);
+    /**
+     * @var NormalAttribute $enumAttribute
+     */
+    $enumAttribute = $doc->getAttribute($attrid);
+    if (!$enumAttribute) {
+        return sprintf("enum attribute %s not found [family %s]", $attrid, $famid);
+    }
+    $tenumLabel = $enumAttribute->getEnumLabel();
+    $tr = array();
+    foreach ($tenumLabel as $key => $label) {
+        if (($val == "") || (preg_match("!" . preg_quote($val, "!") . "!i", $label, $reg))) {
+            $tr[] = array(
+                htmlspecialchars($label, ENT_NOQUOTES) ,
+                $label,
+                $key
+            );
+        }
+    }
+    
+    return $tr;
+}
+/**
  * return list of string for multiple static choice
  *
  * @param string $val filter value - can be empty => see all choices
  * @param string $enum possible choices like 'the first|the second|the last'
+ * @deprecated replaced by fdlGetEnumValues
  * @return array/string*2 array of (enum, enum)
  */
 function lenumvalues($enum, $val = "")
@@ -725,11 +758,10 @@ function lenumvalues($enum, $val = "")
         ')'
     ) , $enum);
     
-    $oa = new NormalAttribute('z', '1', 'l', 'enum', '', '', 10, '', 'W', 'N', 'N', 'N', $f = null, '', $enum, '');
-    
+    $tenum = $tenumLabel = array();
+    EnumAttributeTools::flatEnumNotationToEnumArray($enum, $tenum, $tenumLabel);
     $tr = array();
-    $tenum = $oa->getEnumLabel();
-    foreach ($tenum as $key => $label) {
+    foreach ($tenumLabel as $key => $label) {
         $slabel = str_replace(array(
             '&comma;',
             '&point;'
