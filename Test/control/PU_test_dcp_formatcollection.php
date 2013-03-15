@@ -63,6 +63,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
      */
     public function testRenderFormatCollection($docName, $attrName, $expectRender, $expectContainRender = array())
     {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
@@ -245,7 +246,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 array(
                     "value" => "23.4567",
                     "displayValue" => "23,46"
-                )
+                ) ,
             ) ,
             array(
                 "TST_FMTCOL3",

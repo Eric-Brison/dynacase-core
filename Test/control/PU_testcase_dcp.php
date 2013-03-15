@@ -58,7 +58,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     
     public static function log($text)
     {
-        file_put_contents(TestSuiteDcp::logFile, sprintf("[%s] %s\n",date("Y-m-d H:i:s"),$text), FILE_APPEND);
+        file_put_contents(TestSuiteDcp::logFile, sprintf("[%s] %s\n", date("Y-m-d H:i:s") , $text) , FILE_APPEND);
     }
     /**
      * Make a begin in the db
@@ -284,6 +284,26 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         if (self::$include_path !== null) {
             ini_set('include_path', self::$include_path);
         }
+    }
+    /**
+     * Mark test as incomplete (skip) if a core param is not equal
+     * to the required value.
+     *
+     * @param string $paramName the core parameter name
+     * @param string $requiredValue the required value
+     * @param bool $markTestIncomplete automatically calls the markTestIncomplete() method if the value is different
+     * @return bool
+     */
+    public function requiresCoreParamEquals($paramName, $requiredValue, $markTestIncomplete = true)
+    {
+        $value = getParam($paramName, '');
+        if ($value === $requiredValue) {
+            return true;
+        }
+        if ($markTestIncomplete === true) {
+            $this->markTestIncomplete(sprintf("Test requires %s '%s' (found '%s').", $paramName, $requiredValue, $value));
+        }
+        return false;
     }
 }
 ?>

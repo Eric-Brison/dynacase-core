@@ -51,6 +51,7 @@ class TestReport extends TestCaseDcpAction
      */
     public function testDefaultReport()
     {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $this->setCurrentParameters('id', 'RAPPORT_4e6e2c77b36ed');
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__, $csvContent);
@@ -61,6 +62,7 @@ class TestReport extends TestCaseDcpAction
      */
     public function testPivotCustomPivotReport()
     {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $this->setCurrentParameters('id', 'RAPPORT_4e6e2c77b36ed');
         $this->setCurrentParameters('kind', 'pivot');
         $this->setCurrentParameters('pivot', 'all_element_text');
@@ -73,6 +75,7 @@ class TestReport extends TestCaseDcpAction
      */
     public function testCustomCSVOption()
     {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $this->setCurrentParameters('id', 'RAPPORT_4e6e2c77b36ed');
         $this->setCurrentParameters('delimiter', '"');
         $this->setCurrentParameters('enclosure', ',');
@@ -86,6 +89,7 @@ class TestReport extends TestCaseDcpAction
      */
     public function testCustomDateFormat()
     {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $this->setCurrentParameters('id', 'RAPPORT_4e6e2c77b36ed');
         $this->setCurrentParameters('dateFormat', 'ISO');
         $csvContent = $this->testAction->execute();
@@ -101,6 +105,7 @@ class TestReport extends TestCaseDcpAction
      */
     public function testDecimalSeparator()
     {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $this->setCurrentParameters('id', 'RAPPORT_4e6e2c77b36ed');
         $this->setCurrentParameters('decimalSeparator', '%');
         $csvContent = $this->testAction->execute();

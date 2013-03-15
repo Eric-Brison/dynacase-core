@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace Dcp\Pu;
 /**
@@ -46,13 +46,18 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
         self::connectUser();
         self::beginTransaction();
         
-        $cf = static ::getCommonImportFile();
+        $cf = static::getCommonImportFile();
         if ($cf) {
             if (!is_array($cf)) $cf = array(
                 $cf
             );
             foreach ($cf as $f) {
-                self::importDocument($f);
+                try {
+                    self::importDocument($f);
+                }
+                catch(\Dcp\Exception $e) {
+                    throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
+                }
             }
         }
     }
