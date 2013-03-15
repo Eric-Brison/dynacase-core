@@ -31,6 +31,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
      */
     public function testGoodSetValue($attrid, $value, $converted = false)
     {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $d = createDoc(self::$dbaccess, $this->famName);
         $this->assertTrue(is_object($d) , "cannot create TST_FAMSETVALUE document");
         
@@ -92,6 +93,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
      */
     public function testOldValue(array $before, array $after, array $notchanged)
     {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $d = createDoc(self::$dbaccess, $this->famName);
         $this->assertTrue(is_object($d) , "cannot create TST_FAMSETVALUE document");
         $err = '';

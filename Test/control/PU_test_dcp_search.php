@@ -169,6 +169,8 @@ class TestSearch extends TestCaseDcpDocument
      */
     public function testOnlyCountFilterSearch($data)
     {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
+        
         if (isset($data['import'])) {
             $this->importDocument($data['import']);
         }
