@@ -190,16 +190,16 @@ function ec_setIValuePlus(winfo,iid,v) {
                     $.each(values, function(index, val) {
                         if (oi.value==val) {
                             oi.checked=true;
-                            oi.onclick.apply(oi,[]);
+                            $(oi).trigger('click');
                             ret=true;
                         } else if (oi.checked == true && valueToCheck < 0){
                             oi.checked = false;
-                            oi.onclick.apply(oi,[]);
+                            $(oi).trigger('click');
                         }
                     });
                 } else if (oi.value==v) {
                     oi.checked=true;
-                    oi.onclick.apply(oi,[]);
+                    $(oi).trigger('click');
                     ret=true;
                 }
             }
