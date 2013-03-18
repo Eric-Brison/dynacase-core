@@ -1120,6 +1120,7 @@ class importDocumentDescription
      */
     protected function isTypeCompatible($curType, $newType)
     {
+        if ($curType == $newType) return true;
         $tc = array(
             "docid" => "account",
             "text" => "longtext",
@@ -1127,7 +1128,7 @@ class importDocumentDescription
             "file" => "image",
             "image" => "file"
         );
-        return $tc[$curType] == $newType;
+        return isset($tc[$curType]) && ($tc[$curType] == $newType);
     }
     /**
      * analyze IATTR
