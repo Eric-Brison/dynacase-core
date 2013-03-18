@@ -187,3 +187,9 @@ function fgSearchOnFocus(ob) {
 	document.getElementById('send-search').disabled = false;
     }
 }
+
+function triggerResults() {
+    $('#nextresult').load(function() {
+        hideThrobberMask();
+        });
+}
