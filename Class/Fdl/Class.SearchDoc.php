@@ -798,53 +798,56 @@ class SearchDoc
         $filterElement = "";
         $parenthesis = "";
         $rankElement = "";
-
-        $convertOperatorToTs = function($operator) {
+        
+        $convertOperatorToTs = function ($operator)
+        {
             if ($operator === "") {
                 return "";
             }
             if ($operator === "and") {
                 return "&";
-            } else if($operator === "or") {
+            } else if ($operator === "or") {
                 return "|";
             } else {
-                throw new \Dcp\Exception(sprintf(_("SEARCH_DOC:Unknown operator %s"), $operator));
+                throw new \Dcp\Exception(sprintf(_("SEARCH_DOC:Unknown operator %s") , $operator));
             }
         };
-
+        
         $filterElements = \Dcp\Lex\GeneralFilter::analyze($keywords);
-
+        
         $isOnlyWord = true;
-
-        foreach($filterElements as $currentFilter) {
+        foreach ($filterElements as $currentFilter) {
             if (!in_array($currentFilter["mode"], array(
                 \Dcp\Lex\GeneralFilter::MODE_OR,
                 \Dcp\Lex\GeneralFilter::MODE_AND,
                 \Dcp\Lex\GeneralFilter::MODE_OPEN_PARENTHESIS,
                 \Dcp\Lex\GeneralFilter::MODE_CLOSE_PARENTHESIS,
-                \Dcp\Lex\GeneralFilter::MODE_WORD
+                \Dcp\Lex\GeneralFilter::MODE_WORD,
             ))) {
                 $isOnlyWord = false;
                 break;
             }
         }
-
-        foreach($filterElements as $currentElement) {
+        foreach ($filterElements as $currentElement) {
             switch ($currentElement["mode"]) {
                 case \Dcp\Lex\GeneralFilter::MODE_OR:
                     $currentOperator = "or";
                     break;
+
                 case \Dcp\Lex\GeneralFilter::MODE_AND:
                     $currentOperator = "and";
                     break;
+
                 case \Dcp\Lex\GeneralFilter::MODE_OPEN_PARENTHESIS:
                     $parenthesis = "(";
-                    $parenthesisBalanced += 1;
+                    $parenthesisBalanced+= 1;
                     break;
+
                 case \Dcp\Lex\GeneralFilter::MODE_CLOSE_PARENTHESIS:
                     $parenthesis = ")";
-                    $parenthesisBalanced -= 1;
+                    $parenthesisBalanced-= 1;
                     break;
+
                 case \Dcp\Lex\GeneralFilter::MODE_WORD:
                     $filterElement = $currentElement["word"];
                     if ($useSpell) {
@@ -855,22 +858,26 @@ class SearchDoc
                     if ($isOnlyWord) {
                         $filterElement = pg_escape_string(unaccent($filterElement));
                     } else {
-                        $to_tsquery =  sprintf("to_tsquery('french','%s')", pg_escape_string(unaccent($filterElement)));
+                        $to_tsquery = sprintf("to_tsquery('french','%s')", pg_escape_string(unaccent($filterElement)));
                         $filterElement = "((numnode($to_tsquery) = 0) or (fulltext @@ $to_tsquery))";
                     }
                     break;
+
                 case \Dcp\Lex\GeneralFilter::MODE_STRING:
                     $rankElement = unaccent($currentElement["word"]);
                     $filterElement = sprintf("svalues ~* E'\\\\y%s\\\\y'", pg_escape_string(preg_quote($currentElement["word"])));
                     break;
+
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_END:
                     $rankElement = unaccent($currentElement["word"]);
                     $filterElement = sprintf("svalues ~* E'\\\\y%s'", pg_escape_string(preg_quote($currentElement["word"])));
                     break;
+
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BEGIN:
                     $rankElement = unaccent($currentElement["word"]);
                     $filterElement = sprintf("svalues ~* E'%s\\\\y'", pg_escape_string(preg_quote($currentElement["word"])));
                     break;
+
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BOTH:
                     $rankElement = unaccent($currentElement["word"]);
                     $filterElement = sprintf("svalues ~* E'%s'", pg_escape_string(preg_quote($currentElement["word"])));
@@ -878,36 +885,37 @@ class SearchDoc
             }
             if ($filterElement) {
                 if ($isOnlyWord) {
-                    $filter .= $filter ? " ".$convertOperatorToTs($currentOperator). " ". $filterElement : $filterElement;
+                    $filter.= $filter ? $convertOperatorToTs($currentOperator) . $filterElement : $filterElement;
                 } else {
-                    $filter .= $filter ? " ".$currentOperator. " ". $filterElement : $filterElement;
+                    $filter.= $filter ? " " . $currentOperator . " " . $filterElement : $filterElement;
                 }
-                $rank .= $rank ? " ".$convertOperatorToTs($currentOperator). " ". $rankElement : $rankElement;
+                $rank.= $rank ? " " . $convertOperatorToTs($currentOperator) . " " . $rankElement : $rankElement;
                 $filterElement = "";
                 $currentOperator = "and";
-            } else if ($parenthesis){
+            } else if ($parenthesis) {
                 if ($isOnlyWord) {
-                    $filter .= $filter && $parenthesis === "(" ? " ".$convertOperatorToTs($currentOperator). " ". $parenthesis : $parenthesis;
+                    
+                    $filter.= $filter && $parenthesis === "(" ? $convertOperatorToTs($currentOperator) . $parenthesis : $parenthesis;
                 } else {
-                    $filter .= $filter && $parenthesis === "(" ? " ".$currentOperator. " ". $parenthesis : $parenthesis;
+                    $filter.= $filter && $parenthesis === "(" ? " " . $currentOperator . " " . $parenthesis : $parenthesis;
                 }
-                $rank .= $rank && $parenthesis === "("  ? " ".$convertOperatorToTs($currentOperator). " ". $parenthesis : $parenthesis;
+                $rank.= $rank && $parenthesis === "(" ? " " . $convertOperatorToTs($currentOperator) . " " . $parenthesis : $parenthesis;
                 $currentOperator = "";
                 $parenthesis = "";
             }
         }
         if ($parenthesisBalanced !== 0) {
-            throw new \Dcp\Exception(sprintf(_("SEARCH_DOC:Unbalenced parenthesis %s"), $keywords));
+            throw new \Dcp\Exception(sprintf(_("SEARCH_DOC:Unbalenced parenthesis %s") , $keywords));
         }
-
         if ($isOnlyWord) {
+            $filter = str_replace(')(', ')&(', $filter);
             $filter = sprintf("fulltext @@ to_tsquery('french','%s')", $filter);
         }
-
-        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string($rank));
-
+        
+        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string($rank));
+        
         $highlightWords = implode("|", $words);
-
+        
         return $filter;
     }
     /**

@@ -1,6 +1,11 @@
 <?php
-namespace Dcp\Lex;
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 
+namespace Dcp\Lex;
 /**
  * Analyse a general filter string
  * @package Dcp\Lex
@@ -27,7 +32,6 @@ class GeneralFilter
     const MODE_CLOSE_PARENTHESIS = "close_parenthesis";
     const MODE_OR = "or";
     const MODE_AND = "and";
-
     /**
      * List of tokens in priority order
      * @var array
@@ -45,7 +49,6 @@ class GeneralFilter
         '/^([\p{L}\p{S}\p{N}]+)/u' => self::T_WORD,
         '/^(\p{P})/u' => self::T_PUNCTUATION,
     );
-
     /**
      * Analyze a general filter string
      *
@@ -65,18 +68,17 @@ class GeneralFilter
         while ($offset < strlen($source)) {
             $result = static::_match($source, $offset);
             if ($result === false) {
-                throw new LexException(sprintf(_("LEX_GENERAL_FILTER:Unable to parse %s"), $source));
+                throw new LexException(sprintf(_("LEX_GENERAL_FILTER:Unable to parse %s") , $source));
             }
             $tokens[] = $result;
-            $offset += strlen($result['match']);
+            $offset+= strlen($result['match']);
         }
         if ($onlyToken) {
             return $tokens;
-        }else {
+        } else {
             return static::_convertToken($tokens);
         }
     }
-
     /**
      * Analyze a fragment of source
      *
@@ -87,7 +89,7 @@ class GeneralFilter
     protected static function _match($line, $offset)
     {
         $string = substr($line, $offset);
-
+        
         foreach (static::$_terminals as $pattern => $name) {
             if (preg_match($pattern, $string, $matches)) {
                 return array(
@@ -98,7 +100,6 @@ class GeneralFilter
         }
         return false;
     }
-
     /**
      * Convert the tokens in filter element
      *
@@ -111,16 +112,16 @@ class GeneralFilter
         $keys = array();
         // Mode are word, partial_begin, partial_end, partial_both, string, false
         $currentMode = false;
-
+        
         $inEscape = false;
         $currentWord = "";
-
+        
         foreach ($tokens as $value) {
             if ($inEscape) {
                 if ($currentMode === false) {
                     $currentMode = self::MODE_WORD;
                 }
-                $currentWord .= $value["match"];
+                $currentWord.= $value["match"];
                 $inEscape = false;
                 continue;
             }
@@ -140,11 +141,11 @@ class GeneralFilter
                     $currentWord = "";
                     $currentMode = false;
                 } else {
-                    $currentWord .= $value["match"];
+                    $currentWord.= $value["match"];
                 }
             }
             if ($currentMode === self::MODE_STRING) {
-                $currentWord .= $value["match"];
+                $currentWord.= $value["match"];
                 continue;
             }
             if ($value["token"] === self::T_WHITESPACE) {
@@ -162,7 +163,7 @@ class GeneralFilter
                 if ($currentMode === false) {
                     $currentMode = self::MODE_PARTIAL_BEGIN;
                 } else {
-                    $currentWord .= $value["match"];
+                    $currentWord.= $value["match"];
                 }
             }
             if ($value["token"] === self::T_STAR_END) {
@@ -173,7 +174,9 @@ class GeneralFilter
                 }
             }
             if ($value["token"] === self::T_OPEN_PARENTHESIS) {
-                $keys[] = array("mode" => self::MODE_OPEN_PARENTHESIS);
+                $keys[] = array(
+                    "mode" => self::MODE_OPEN_PARENTHESIS
+                );
                 continue;
             }
             if ($value["token"] === self::T_CLOSE_PARENTHESIS) {
@@ -184,29 +187,35 @@ class GeneralFilter
                     );
                 }
                 $currentWord = "";
-                $keys[] = array("mode" => self::MODE_CLOSE_PARENTHESIS);
+                $keys[] = array(
+                    "mode" => self::MODE_CLOSE_PARENTHESIS
+                );
                 continue;
             }
             if ($value["token"] === self::T_OR) {
-                $keys[] = array("mode" => self::MODE_OR);
+                $keys[] = array(
+                    "mode" => self::MODE_OR
+                );
                 continue;
             }
             if ($value["token"] === self::T_AND) {
-                $keys[] = array("mode" => self::MODE_AND);
+                $keys[] = array(
+                    "mode" => self::MODE_AND
+                );
                 continue;
             }
             if ($value["token"] === self::T_WORD) {
                 if ($currentMode === false) {
                     $currentMode = self::MODE_WORD;
                 }
-                $currentWord .= $value["match"];
+                $currentWord.= $value["match"];
             }
-            if ($value["token"] === self::T_PUNCTUATION) {
+            /*if ($value["token"] === self::T_PUNCTUATION) {
                 if ($currentMode === false) {
                     $currentMode = self::MODE_WORD;
                 }
                 $currentWord .= $value["match"];
-            }
+            }*/
         }
         if ($currentWord !== "") {
             $keys[] = array(
@@ -220,5 +229,4 @@ class GeneralFilter
 
 class LexException extends \Dcp\Exception
 {
-
 }

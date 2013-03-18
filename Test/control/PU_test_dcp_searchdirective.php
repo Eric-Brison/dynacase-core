@@ -71,7 +71,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $dl = $s->getDocumentList();
         // print_r($s->getSearchInfo());
         if (count($expectedDocName) != $s->count()) {
-            $this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
+            $this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl) . print_r($s->getSearchInfo() , true));
         }
         $index = 0;
         /**
@@ -98,7 +98,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $dl = $s->getDocumentList();
         
         if (count($expectedDocName) > $s->count()) {
-            $this->assertLessThanOrEqual(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
+            $this->assertLessThanOrEqual(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl) . print_r($s->getSearchInfo() , true));
         }
         //   print_r($s->getSearchInfo());print $this->getFilterResult($dl);print_r($expectedDocName);
         //$this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
@@ -108,7 +108,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
          */
         foreach ($dl as $doc) {
             if (!empty($expectedDocName[$index])) {
-                $this->assertEquals($expectedDocName[$index], $doc->name);
+                $this->assertEquals($expectedDocName[$index], $doc->name, print_r($s->getSearchInfo() , true));
             }
             $index++;
         }
@@ -821,7 +821,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             ) ,
             
             array(
-                "'téléphone",
+                '"téléphone"',
                 array(
                     "TST_FULL2",
                     "TST_FULL1"
@@ -849,7 +849,11 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                "téléphones |&portables",
+                'téléphones "portables"',
+                array()
+            ) ,
+            array(
+                'téléphones "portable"',
                 array(
                     "TST_FULL1"
                 )
@@ -861,13 +865,11 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                "téléphones AND 'portables'",
-                array(
-                    "TST_FULL1"
-                )
+                '"téléphones" AND portables',
+                array()
             ) ,
             array(
-                "'téléphones AND 'portables",
+                '"téléphone" AND portables',
                 array(
                     "TST_FULL1"
                 )
@@ -968,7 +970,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                '~télé',
+                'télé*',
                 array(
                     "TST_FULL2",
                     "TST_FULL9",
@@ -976,7 +978,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                '~télé fixes',
+                'télé* fixes',
                 array(
                     "TST_FULL2"
                 )
@@ -1004,7 +1006,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                '~mais "fixe"',
+                'mais* "fixe"',
                 array(
                     "TST_FULL2"
                 )
