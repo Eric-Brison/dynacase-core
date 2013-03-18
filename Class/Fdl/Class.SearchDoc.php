@@ -740,6 +740,8 @@ class SearchDoc
         } else {
             $filter = $this->getGeneralFilter(trim($keywords) , $useSpell, $this->pertinenceOrder, $this->highlightWords);
             $this->addFilter($filter);
+            //  print_r2(array("key"=>$keywords, "filter"=>$filter));
+            
         }
     }
     /**
@@ -859,7 +861,11 @@ class SearchDoc
                         $filterElement = pg_escape_string(unaccent($filterElement));
                     } else {
                         $to_tsquery = sprintf("to_tsquery('french','%s')", pg_escape_string(unaccent($filterElement)));
-                        $filterElement = "((numnode($to_tsquery) = 0) or (fulltext @@ $to_tsquery))";
+                        if (mb_strlen($filterElement) > 2) {
+                            $filterElement = "(fulltext @@ $to_tsquery)";
+                        } else {
+                            $filterElement = "((numnode($to_tsquery) = 0) or (fulltext @@ $to_tsquery))";
+                        }
                     }
                     break;
 

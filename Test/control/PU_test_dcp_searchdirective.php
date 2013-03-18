@@ -44,14 +44,14 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $dl = $s->getDocumentList();
         // print_r($s->getSearchInfo());
         if (count($expectedDocName) != $s->count()) {
-            $this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
+            $this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl) . print_r($s->getSearchInfo() , true));
         }
         $index = 0;
         /**
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $this->assertEquals($expectedDocName[$index], $doc->name);
+            $this->assertEquals($expectedDocName[$index], $doc->name, print_r($s->getSearchInfo() , true));
             $index++;
         }
     }
@@ -96,12 +96,11 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $err = $s->getError();
         $this->assertEmpty($err, "search error : $err");
         $dl = $s->getDocumentList();
-        
+        // just test first results done by expected
         if (count($expectedDocName) > $s->count()) {
             $this->assertLessThanOrEqual(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl) . print_r($s->getSearchInfo() , true));
         }
-        //   print_r($s->getSearchInfo());print $this->getFilterResult($dl);print_r($expectedDocName);
-        //$this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
+        
         $index = 0;
         /**
          * @var \Doc $doc
@@ -821,7 +820,22 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             ) ,
             
             array(
+                "le téléphone",
+                array(
+                    "TST_FULL2",
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
                 '"téléphone"',
+                array(
+                    "TST_FULL2",
+                    "TST_FULL1"
+                )
+            ) ,
+            
+            array(
+                'le "téléphone"',
                 array(
                     "TST_FULL2",
                     "TST_FULL1"
@@ -1010,6 +1024,24 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 array(
                     "TST_FULL2"
                 )
+            ) ,
+            array(
+                '*ne',
+                array(
+                    "TST_FULL5",
+                    "TST_FULL2",
+                    "TST_FULL9",
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
+                '*ca*',
+                array(
+                    "TST_FULL3",
+                    "TST_FULL4",
+                    "TST_FULL6",
+                    "TST_FULL9"
+                )
             )
         );
     }
@@ -1073,7 +1105,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                '"rouge" OR chevaux OR ~télé',
+                '"rouge" OR chevaux OR télé*',
                 "",
                 array(
                     "TST_FULL8",
