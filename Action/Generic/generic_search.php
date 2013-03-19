@@ -102,8 +102,7 @@ function generic_search(Action & $action)
         if ($sdirid > 0) {
             if ($doc->id == getDefFld($action)) {
                 $sdoc->title = sprintf(_("search  contains %s in all state") , $keyword);
-            }
-            else {
+            } else {
                 $sdoc->title = sprintf(_("search contains %s in %s") , $keyword, $doc->getTitle());
             }
         }
@@ -113,13 +112,18 @@ function generic_search(Action & $action)
         
         $only = (getInherit($action, $famid) == "N");
         
-        $sqlfilter = $sdoc->getSqlGeneralFilters($keyword, "yes", false, $full);
+        $sqlfilter = array(
+            SearchDoc::getGeneralFilter($keyword, $useSpell = true)
+        );
+        $action->addLogMsg($sqlfilter);
+        
         $sqlorder = getDefUSort($action, "title");
         if ($sqlorder == "") {
             $sdoc->clearValue("se_orderby");
         }
         
         $query = getSqlSearchDoc($dbaccess, $sdirid, ($only) ? -($sfamid) : $sfamid, $sqlfilter, false, true, "", false);
+        $action->addLogMsg($query);
         $sdoc->AddQuery($query);
         executeGenericList($action, array(
             "onefam" => $onefamOrigin,
@@ -128,7 +132,6 @@ function generic_search(Action & $action)
             "dirid" => $sdoc->id,
             "catg" => $catgid
         ));
-
     } else {
         executeGenericList($action, array(
             "onefam" => $onefamOrigin,
