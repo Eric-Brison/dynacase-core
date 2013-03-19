@@ -1,0 +1,27 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Toolbox\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-19T18:29:08+01:00\n"
+"PO-Revision-Date: 2013-03-13 10:13+0100\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"Language: \n"
+
+msgid "ROLE#role_fr_ident"
+msgstr "Identifier"
+
+msgid "ROLE#role_login"
+msgstr "Reference"
+
+msgid "ROLE#role_name"
+msgstr "Label"
+
+msgid "ROLE#title"
+msgstr "Role"
+
+msgid "ROLE#us_whatid"
+msgstr "System id"

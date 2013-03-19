@@ -1,0 +1,28 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Toolbox\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-19T18:29:08+01:00\n"
+"PO-Revision-Date: 2013-03-13 10:13+0100\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"Language: \n"
+
+#: App/Fusers/accountprofil.ods.csv:219
+msgid "PRF_CV_IGROUP#label#ADMIN"
+msgstr "Management"
+
+#: App/Fusers/accountprofil.ods.csv:219
+msgid "PRF_CV_IGROUP#label#CG"
+msgstr "Groups"
+
+#: App/Fusers/accountprofil.ods.csv:219
+msgid "PRF_CV_IGROUP#label#MEMBERS"
+msgstr "Membres' detail"
+
+#: App/Fusers/accountprofil.ods.csv:219
+msgid "PRF_CV_IGROUP#label#RESTRICT"
+msgstr "Restriction"

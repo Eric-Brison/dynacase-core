@@ -1,0 +1,81 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Toolbox\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-19T18:29:08+01:00\n"
+"PO-Revision-Date: 2013-03-13 10:13+0100\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"Language: \n"
+
+msgid "GROUP#ba_title"
+msgstr "Title"
+
+msgid "GROUP#fld_fr_prof"
+msgstr "Default profile"
+
+msgid "GROUP#fld_fr_rest"
+msgstr "Restrictions"
+
+msgid "GROUP#fld_tfam"
+msgstr ""
+
+msgid "GROUP#fr_basic"
+msgstr "Basic"
+
+msgid "GROUP#grp_adduser"
+msgstr "Members' management"
+
+msgid "GROUP#grp_fr"
+msgstr "Groups"
+
+msgid "GROUP#grp_fr_ident"
+msgstr "Identification"
+
+msgid "GROUP#grp_hasmail"
+msgstr "Without group adress mail"
+
+msgid "GROUP#grp_hasmail#[bool]yes"
+msgstr "Mail regrouped"
+
+msgid "GROUP#grp_hasmail#elabel"
+msgstr "Skip mail calculation for group with a lot of members"
+
+msgid "GROUP#grp_hasmail#no"
+msgstr "Without mail adress"
+
+msgid "GROUP#grp_idgroup"
+msgstr "Subgroups"
+
+msgid "GROUP#grp_idgroup#showempty"
+msgstr "No subgroup"
+
+msgid "GROUP#grp_idpgroup"
+msgstr "Parents' group"
+
+msgid "GROUP#grp_idpgroup#showempty"
+msgstr "No parent's group"
+
+msgid "GROUP#grp_isrefreshed"
+msgstr "Is refreshed"
+
+msgid "GROUP#grp_isrefreshed#0"
+msgstr "no"
+
+msgid "GROUP#grp_isrefreshed#1"
+msgstr "yes"
+
+msgid "GROUP#grp_mail"
+msgstr "mail"
+
+msgid "GROUP#grp_name"
+msgstr "name"
+
+msgid "GROUP#grp_refresh"
+msgstr "Refresh"
+
+msgid "GROUP#title"
+msgstr "Group of people"
