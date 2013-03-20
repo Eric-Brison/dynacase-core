@@ -46,6 +46,13 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+"$wpub"/wsh.php --api=dynacaseDbCleaner
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error: dynacaseDbCleaner returned with exit code '$RET'"
+    exit $RET
+fi
+
 "$wpub"/wsh.php --api=updateclass  --appc=FDL --class=DocEnum
 RET=$?
 if [ $RET -ne 0 ]; then
