@@ -141,21 +141,29 @@ function enumjschoice(&$action)
  */
 function getFuncVar($n, $def = "", $whttpvars, &$doc, &$oa)
 {
-    if ($whttpvars) return GetHttpVars("_" . strtolower($n) , $def);
-    else {
-        $h = GetHttpVars(strtolower($n));
-        if ($h) return $h;
-        if (!$oa) return ($n);
-        if (($oa->repeat) || $oa->inArray()) $r = $doc->getMultipleRawValues($n);
-        else $r = $doc->getRawValue($n);
-        if ($r === "") return false;
-        return $r;
+    if ($whttpvars) {
+        return GetHttpVars("_" . strtolower($n) , $def);
     }
+    $h = GetHttpVars(strtolower($n));
+    if ($h) {
+        return $h;
+    }
+    if (!$oa) {
+        return ($n);
+    }
+    if (($oa->repeat) || $oa->inArray()) {
+        $r = $doc->getMultipleRawValues($n);
+    } else {
+        $r = $doc->getRawValue($n);
+    }
+    if ($r === "") {
+        return false;
+    }
+
+    return $r;
 }
 function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselect, &$tval, $whttpvars = true, $index = "")
 {
-    global $action;
-    
     $phpfunc = $oattr->phpfunc;
     $phpfunc = str_replace(array(
         '\)',
@@ -166,12 +174,14 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
     ) , $phpfunc);
     $oParse = new parseFamilyFunction();
     $strucFunc = $oParse->parse($phpfunc);
-    if ($strucFunc->getError()) return $strucFunc->getError();
+    if ($strucFunc->getError()){
+        return $strucFunc->getError();
+    }
     
     if (!preg_match('/(.*)\((.*)\)\:(.*)/', $phpfunc, $reg)) {
         return sprintf(_("the pluggins function description '%s' is not conform for %s attribut") , $phpfunc, $oattr->id);
     }
-    $callfunc = $reg[1];
+    $callfunc = $oParse->functionName;
     if (!function_exists($callfunc)) {
         if (!@file_exists("EXTERNALS/$oattr->phpfile")) {
             return sprintf(_("the external pluggin file %s cannot be read") , $oattr->phpfile);
@@ -180,9 +190,10 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         }
     }
     if (!function_exists($callfunc)) {
+        error_log(__METHOD__." $callfunc not found from ".$oattr->phpfile);
         return sprintf(_("function '%s' declared in %s is not found") , $callfunc, $oattr->id);
     }
-    $rargids = explode(",", $reg[3]); // return args
+    $rargids = $oParse->outputs; // return args
     // change parameters familly
     $iarg = preg_replace('/\{([^\}]+)\}/e',
     //"/\{([a-zA-Z0-9_]+)\}/e",
@@ -197,75 +208,107 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
             ')',
             '('
         ) , $inpArg->name);
-        if ($v != " ") $v = trim($v);
+        if ($v != " "){
+            $v = trim($v);
+        }
         
         $unser = @unserialize($v); // try unserial to see if it is object
-        if ($unser != "") $arg[$k] = $unser;
-        elseif ($inpArg->type == "string") $arg[$k] = $v;
-        elseif ($v == "A") {
+        if ($unser != ""){
+            $arg[$k] = $unser;
+        } elseif ($inpArg->type == "string") {
+            $arg[$k] = $v;
+        } elseif ($v == "A") {
             global $action;
             $arg[$k] = & $action;
-        } else if ($v == "D") $arg[$k] = $doc->dbaccess;
-        else if ($v == "I") $arg[$k] = $doc->id;
-        else if ($v == "WIID") $arg[$k] = getHttpVars("wiid");
-        else if ($v == "K") $arg[$k] = $index;
-        else if ($v == "T") $arg[$k] = & $doc;
-        else if (($v[0] == "'") || ($v[0] == '"')) {
+        } elseif ($v == "D") {
+            $arg[$k] = $doc->dbaccess;
+        } elseif ($v == "I") {
+            $arg[$k] = $doc->id;
+        } else if ($v == "WIID") {
+            $arg[$k] = getHttpVars("wiid");
+        } elseif ($v == "K") {
+            $arg[$k] = $index;
+        } elseif ($v == "T") {
+            $arg[$k] = &$doc;
+        } elseif (($v[0] == "'") || ($v[0] == '"')) {
             $lc = substr($v, -1);
-            if ($lc == $v[0]) $arg[$k] = mb_substr($v, 1, -1);
-            else $arg[$k] = mb_substr($v, 1);
-        } else if ($doc->getPropertyValue($v) !== false) $arg[$k] = $doc->getPropertyValue($v);
-        else {
+            if ($lc == $v[0]){
+                $arg[$k] = mb_substr($v, 1, -1);
+            } else {
+                $arg[$k] = mb_substr($v, 1);
+            }
+        } elseif ($doc->getPropertyValue($v) !== false){
+            $arg[$k] = $doc->getPropertyValue($v);
+        } else {
             // can be values or family parameter
             $a = $doc->GetAttribute($v);
             if ($index === "") {
                 $ta = getFuncVar($v, $v, $whttpvars, $doc, $a);
-                if ($ta === false) return false;
-                
+                if ($ta === false){
+                    return false;
+                }
                 if (is_array($ta)) {
                     unset($ta["-1"]); // suppress hidden row because not set yet
                     $arg[$k] = $ta;
-                } else $arg[$k] = trim($ta);
+                } else {
+                    $arg[$k] = trim($ta);
+                }
             } else {
                 if ($a && ($a->usefor == "Q")) {
                     if (($a->fieldSet->id == $oattr->fieldSet->id)) { // search with index
                         $ta = getFuncVar($v, $v, $whttpvars, $doc, $a);
-                        if ($ta === false) return false;
+                        if ($ta === false) {
+                            return false;
+                        }
                         $arg[$k] = trim($ta[$index]);
                     } else {
                         $arg[$k] = $doc->getFamilyParameterValue($v);
                     }
-                } else if ($a && $a->inArray()) {
+                } elseif ($a && $a->inArray()) {
                     if (($a->fieldSet->id == $oattr->fieldSet->id)) { // search with index
                         $ta = getFuncVar($v, $v, $whttpvars, $doc, $a);
-                        if ($ta === false) return false;
+                        if ($ta === false){
+                            return false;
+                        }
                         $arg[$k] = trim($ta[$index]);
                     } else {
                         $ta = getFuncVar($v, $v, $whttpvars, $doc, $a);
-                        if ($ta === false) return false;
-                        
+                        if ($ta === false) {
+                            return false;
+                        }
                         if (is_array($ta)) {
                             unset($ta["-1"]); // suppress hidden row because not set yet
                             $arg[$k] = $ta;
-                        } else $arg[$k] = trim($ta);
+                        } else {
+                            $arg[$k] = trim($ta);
+                        }
                         $arg[$k] = $ta;
                     }
                 } else {
                     $ta = getFuncVar($v, $v, $whttpvars, $doc, $a);
-                    if ($ta === false) return false;
+                    if ($ta === false) {
+                        return false;
+                    }
                     if (is_array($ta)) {
-                        if ($index !== "") $arg[$k] = trim($ta[$index]);
-                        else $arg[$k] = $ta;
-                    } else $arg[$k] = trim($ta);
+                        if ($index !== "") {
+                            $arg[$k] = trim($ta[$index]);
+                        }
+                        else {
+                            $arg[$k] = $ta;
+                        }
+                    } else {
+                        $arg[$k] = trim($ta);
+                    }
                 }
             }
             if ($a && ($a->usefor == "Q")) {
-                if (getFuncVar($v, false, $whttpvars, $doc, $a) === false) $arg[$k] = $doc->getFamilyParameterValue($v);
+                if (getFuncVar($v, false, $whttpvars, $doc, $a) === false) {
+                    $arg[$k] = $doc->getFamilyParameterValue($v);
+                }
             }
         }
     }
     try {
-        
         $res = call_user_func_array($callfunc, $arg);
     }
     catch(Exception $e) {
@@ -273,7 +316,6 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
     }
     
     if (is_array($res) && (count($res) > 0)) {
-        // addslahes for JS array
         reset($res);
         foreach ($res as $k => $v) {
             if (!is_array($v)) {
@@ -288,14 +330,9 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
                     return $err;
                 }
                 // not for the title
-                if ($k2 > 0) $res[$k][$k2] = addslashes(str_replace("\r", "", str_replace("\n", "\\n", $v2))); // because JS array
-                else $res[$k][$k2] = str_replace(array(
-                    "<script",
-                    "/script>"
-                ) , array(
-                    "&lt;",
-                    "&gt;"
-                ) , $res[$k][$k2]);
+                if ($k2 > 0) {
+                    $res[$k][$k2] = str_replace("\r", "", $v2);
+                }
             }
         }
         $tselect = array();
@@ -311,8 +348,6 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
             $tval[$k]["attrv"] = "['" . implode("','", $v) . "']";
             $ki++;
         }
-    } else {
-        $res = BasicAttribute::encodeXml($res, true);
     }
     
     return $res;

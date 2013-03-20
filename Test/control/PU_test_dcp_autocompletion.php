@@ -301,18 +301,58 @@ class TestAutocompletion extends TestCaseDcpAction
                     'attr' => 'S_TITLE_2',
                     'http:vars' => array(
                         '_s_title_2' => 'Relation'
-                    ) ,
+                    ),
                     'expected:warning' => '',
                     'expected:results' => array(
                         array(
                             'Test Relation 2',
                             'Test Relation 2'
-                        ) ,
+                        ),
                         array(
                             'Test Relation 3',
                             'Test Relation 3'
                         )
-                    ) ,
+                    ),
+                    'expected:cibles' => array(
+                        's_title_2'
+                    )
+                )
+            ) ,
+            array(
+                // issue #3713
+                array(
+                    'fam' => 'TST_AUTOCOMPLETION',
+                    'attr' => 'S_TITLE_2',
+                    'http:vars' => array(
+                        '_s_title_2' => 'Quoted'
+                    ),
+                    'expected:warning' => '',
+                    'expected:results' => array(
+                        array(
+                            'Quoted " title "',
+                            'Quoted " title "'
+                        )
+                    ),
+                    'expected:cibles' => array(
+                        's_title_2'
+                    )
+                )
+            ) ,
+            array(
+                // issue #3734
+                array(
+                    'fam' => 'TST_AUTOCOMPLETION',
+                    'attr' => 'S_TITLE_2',
+                    'http:vars' => array(
+                        '_s_title_2' => 'CDATA'
+                    ),
+                    'expected:warning' => '',
+                    'expected:results' => array(
+                        array(
+                            'CDATA injection]]></error>',
+                            'CDATA injection]]></error>'
+                        )
+                    ),
                     'expected:cibles' => array(
                         's_title_2'
                     )
