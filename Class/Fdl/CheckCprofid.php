@@ -7,7 +7,7 @@
 
 class CheckCprofid extends CheckData
 {
-    protected $folderName;
+    protected $profilName;
     /**
      * @var Doc
      */
@@ -24,7 +24,7 @@ class CheckCprofid extends CheckData
     function check(array $data, &$doc = null)
     {
         
-        $this->folderName = $data[1];
+        $this->profilName = $data[1];
         $this->doc = $doc;
         $this->checkProfil();
         return $this;
@@ -35,12 +35,12 @@ class CheckCprofid extends CheckData
      */
     protected function checkProfil()
     {
-        if ($this->folderName) {
-            $d = new_doc('', $this->folderName);
+        if ($this->profilName) {
+            $d = new_doc('', $this->profilName);
             if (!$d->isAlive()) {
-                $this->addError(ErrorCode::getError('CPRF0001', $this->folderName, $this->doc->name));
+                $this->addError(ErrorCode::getError('CPRF0001', $this->profilName, $this->doc->name));
             } elseif (!is_a($d, "Doc")) {
-                $this->addError(ErrorCode::getError('CPRF0002', $this->folderName, $this->doc->name));
+                $this->addError(ErrorCode::getError('CPRF0002', $this->profilName, $this->doc->name));
             }
         }
     }
