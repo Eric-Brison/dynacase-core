@@ -21,14 +21,16 @@ UPDATE doc set id=510 where name='PRF_ADMIN_CREATION';
 UPDATE doc set id=511 where name='PRF_FAMILY_DEFAULT';
 UPDATE doc set id=512 where name='PRF_ADMIN_SEARCH';
 UPDATE doc set id=513 where name='MSK_IGROUP_RESTRICTION';
-begin;
-delete from docfrom;
-insert INTO docfrom (id, fromid) select id, fromid from doc;
-update docfrom set fromid=-1 where id in (select id from docfam);
-end;
 EOF
 
 if [ $RET -ne 0 ]; then
     echo "Error setting logical name for account families."
+    exit $RET
+fi
+
+"$WIFF_CONTEXT_ROOT/wsh.php" --api=dynacaseDbCleaner
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error: dynacaseDbCleaner returned with exit code '$RET'"
     exit $RET
 fi
