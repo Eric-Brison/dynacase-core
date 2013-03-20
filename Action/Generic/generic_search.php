@@ -102,25 +102,37 @@ function generic_search(Action & $action)
         if ($sdirid > 0) {
             if ($doc->id == getDefFld($action)) {
                 $sdoc->title = sprintf(_("search  contains %s in all state") , $keyword);
-            }
-            else {
+            } else {
                 $sdoc->title = sprintf(_("search contains %s in %s") , $keyword, $doc->getTitle());
             }
         }
         $sdoc->setValue("se_famid", $sfamid);
         $sdoc->Add();
-        $full = ($mode == "FULL");
         
         $only = (getInherit($action, $famid) == "N");
         
-        $sqlfilter = $sdoc->getSqlGeneralFilters($keyword, "yes", false, $full);
+        try {
+            $sqlfilter = array(
+                SearchDoc::getGeneralFilter($keyword, $useSpell = true)
+            );
+        }
+        catch(Exception $e) {
+            $err = $e->getMessage();
+            addWarningMsg($err);
+            $sqlfilter = array(
+                'false'
+            );
+        }
+        //$action->addLogMsg($sqlfilter);
         $sqlorder = getDefUSort($action, "title");
         if ($sqlorder == "") {
             $sdoc->clearValue("se_orderby");
         }
         
         $query = getSqlSearchDoc($dbaccess, $sdirid, ($only) ? -($sfamid) : $sfamid, $sqlfilter, false, true, "", false);
+        
         $sdoc->AddQuery($query);
+        
         executeGenericList($action, array(
             "onefam" => $onefamOrigin,
             "mode" => $mode,
@@ -128,7 +140,6 @@ function generic_search(Action & $action)
             "dirid" => $sdoc->id,
             "catg" => $catgid
         ));
-
     } else {
         executeGenericList($action, array(
             "onefam" => $onefamOrigin,

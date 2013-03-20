@@ -30,12 +30,11 @@ include_once ("FDL/freedom_util.php");
  */
 function fullsearchresult(Action & $action)
 {
-    
-    $famid = GetHttpVars("famid", 0);
-    $keyword = GetHttpVars("_se_key", GetHttpVars("keyword")); // keyword to search
-    $target = GetHttpVars("target"); // target window when click on document
-    $page = GetHttpVars("page", 0); // page number
-    $dirid = GetHttpVars("dirid", 0); // special search
+    $famid = $action->getArgument("famid", 0);
+    $keyword = $action->getArgument("_se_key", $action->getArgument("keyword")); // keyword to search
+    $target = $action->getArgument("target"); // target window when click on document
+    $page = $action->getArgument("page", 0); // page number
+    $dirid = $action->getArgument("dirid", 0); // special search
     $slice = 10;
     $start = $page * $slice;
     
@@ -152,7 +151,7 @@ function fullsearchresult(Action & $action)
         catch(Exception $e) {
             $action->exitError(sprintf(_("Incorrect filter %s") , $keyword));
         }
-        
+       
         if ($start == 0) {
             if ($s->count() < ($slice + 1)) $globalCount = $s->count();
             else {
@@ -163,6 +162,7 @@ function fullsearchresult(Action & $action)
                 } else {
                     foreach ($sqlfilters as $filter) $sc->addFilter($filter);
                 }
+                $sc->addFilter("usefor !~ '^S'");
                 $sc->excludeConfidential();
                 $globalCount = $sc->onlyCount();
             }

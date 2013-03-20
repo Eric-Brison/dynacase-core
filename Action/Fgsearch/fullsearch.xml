@@ -4,6 +4,7 @@
 addEvent(window,"load",resizeiframe);
 [IF key]addEvent(window,"load",searchIfKeyword);[ENDIF key]
 addEvent(window,"load",searchFocusFirst);
+addEvent(window,"load",triggerResults);
 addEvent(window,"resize",resizeiframe);
 var basicSearch = true;
 var guideKeyword = "[guideKeyword]";

@@ -265,17 +265,18 @@ function getFamilySearches(Action $action, $dbaccess, $famid)
         
         foreach ($stree as $k => $v) {
             if (($v["doctype"] == "S") && ($v["fromid"] != $fdoc->id)) {
+                $stitle = htmlspecialchars($v["title"]);
                 $streeSearch[$v["id"]] = $v;
-                $streeSearch[$v["id"]]["selected"] = ($v["id"] == $catgid) ? "selected" : "";
+                $streeSearch[$v["id"]]["selected"] = ($v["id"] == $catgid) ? "1" : "0";
                 $streeSearch[$v["id"]]["isreport"] = "0";
                 $streeSearch[$v["id"]]["isparam"] = "0";
                 $keys = getv($v, "se_keys");
                 if (preg_match('/\?/', $keys)) {
-                    $streeSearch[$v["id"]]["title"] = "(P)" . $streeSearch[$v["id"]]["title"];
+                    $streeSearch[$v["id"]]["title"] = "(P)" . $stitle;
                     $streeSearch[$v["id"]]["isparam"] = "1";
                 }
                 if ($v["fromid"] == 25) {
-                    $streeSearch[$v["id"]]["title"] = "(R)" . $streeSearch[$v["id"]]["title"];
+                    $streeSearch[$v["id"]]["title"] = "(R)" . $stitle;
                     $streeSearch[$v["id"]]["isreport"] = "1";
                 }
             }
@@ -296,7 +297,7 @@ function getFamilySearches(Action $action, $dbaccess, $famid)
     $streeSearch = array();
     foreach ($stree as $k => $v) {
         if (!isset($streeSearch[$v["id"]])) $streeSearch[$v["id"]] = $v;
-        $streeSearch[$v["id"]]["selected"] = ($v["id"] == $catgid) ? "selected" : "";
+        $streeSearch[$v["id"]]["selected"] = ($v["id"] == $catgid) ? "1" : "0";
         $streeSearch[$v["id"]]["isreport"] = "0";
         $streeSearch[$v["id"]]["isparam"] = "0";
         $keys = getv($v, "se_keys");

@@ -13,117 +13,27 @@
     <style type="text/css">[CSS:CODE]</style>
     [JS:REF]
     <script>
-        <!--
+
         [JS:CODE]
         document.dirid = '[dirid]';
 
         document.needreload = true;
-        var prevselid;
 
-        // view select document
-        function vselect(th) {
-            if (prevselid)  document.getElementById(prevselid).setAttribute("selected", 0);
-            th.setAttribute("selected", 1);
-            prevselid = th.id;
-        }
-        function vedit(e, id) {
-            if (!e) e = window.event;
 
-            if (e.ctrlKey) {
-                subwindow([FDL_VD2SIZE], [FDL_HD2SIZE], 'fedit' + id, '[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&latest=Y&id=' + id);
-            } else {
-                subwindow([FDL_VD2SIZE], [FDL_HD2SIZE], 'finfo[famid]', '[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&&latest=Y&id=' + id);
-            }
-        }
         var catgid = parseInt('[catg]');
 
         var PDS = '';
-        function KeySendSimpleSearch(e) {
-            var keyCode;
-
-            if (window.event) keyCode = window.event.keyCode;
-            else keyCode = e.which;
-
-            if (keyCode == 13) {
-                SendSimpleSearch(e)
-            }
-        }
         function SendSimpleSearch(event) {
-            var isreport = false;
-            var isparam = false;
+               sendSimpleSearchP(event,'[famid]','[ONEFAMORIGIN]','[dirid]','[folderid]','[pds]');
+           }
 
-            var did = document.getElementById('csid');
-            var fldid = [folderid];
-            var key = document.getElementById('searchkey').value;
-            var mode = document.getElementById('searchmode').value;
-            var dmainid = document.getElementById('cellmain');
-            var pds = '[pds]';
 
-            if (did) {
-                fldid = did.options[did.selectedIndex].value;
-                isreport = (did.options[did.selectedIndex].getAttribute('isreport') == '1');
-                isparam = (did.options[did.selectedIndex].getAttribute('isparam') == '1');
-            }
-            if (isreport) {
-                subwindow([FDL_VD2SIZE], [FDL_HD2SIZE], 'finfo[famid]', '[CORE_STANDURL]&app=FDL&action=FDL_CARD&dochead=Y&latest=Y&id=' + fldid);
-            } else {
-                if (isparam) {
-                    if (fldid != parseInt('[catg]', 10)) {
 
-                        key = false;
-                        document.getElementById('searchkey').value = '';
-                    } else {
-                        if (key == '') pds = '';
-                    }
-                }
-
-                if (dmainid) {
-                    dmainid.innerHTML = '<img  src="Images/loading.gif" style="background-color:#FFFFFF;border:groove black 2px;padding:4px;-moz-border-radius:4px">';
-                    dmainid.style.textAlign = 'center';
-                }
-                if ((fldid > 0) && (!key)) document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&onefam=[ONEFAMORIGIN]&tab=0&clearkey=Y&famid=[famid]&catg=' + fldid + '&dirid=' + fldid + pds);
-                else if (key)  document.location.replace('[CORE_STANDURL]app=[APPNAME]&onefam=[ONEFAMORIGIN]&action=GENERIC_SEARCH&famid=[famid]&dirid=[dirid]&catg=' + fldid + pds + '&keyword=' + key + '&mode=' + mode);
-                else document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&tab=0&onefam=[ONEFAMORIGIN]&famid=[famid]&catg=-1&clearkey=Y');
-            }
-            return true;
-        }
-
-        function changeMode(o) {
-            var mode = document.getElementById('searchmode').value;
-            if (mode == 'FULL') {
-                document.getElementById('searchmode').value = 'REGEXP';
-                o.value = '~';
-                o.title = "[TEXT:Search containing characters]";
-            } else {
-                document.getElementById('searchmode').value = 'FULL';
-                o.title = "[TEXT:Search Words]";
-                o.value = '*';
-            }
-        }
-        function focusInput(event, did) {
-            var i;
-            if (did) {
-                var isreport = (did.options[did.selectedIndex].getAttribute('isreport') == '1');
-                if (isreport) {
-                    SendSimpleSearch(event);
-                    i = 0;
-                    did.selectedIndex = 0;
-                    for (i = 0; i < did.options.length; i++) {
-                        if (did.options[i].defaultSelected) did.selectedIndex = i;
-                    }
-                }
-            }
-            i = document.getElementById('searchkey');
-            try {
-                if (i) {
-                    i.focus();
-                }
-            } catch (e) {
-            }
-        }
-        addEvent(window, "load", focusInput);
         addEvent(window, "load", function () {
             if (window.parent && window.parent.multidoc) window.parent.multidoc(window.document);
+
+          //  $('#csid').button();
+
         });
         function resizeTable() {
             var widthStr = "[ACARD_WIDTH]";
@@ -151,7 +61,7 @@
             }
         }
         $(window).on("load resize", resizeTable);
-        -->
+
     </script>
 </head>
 
@@ -161,28 +71,39 @@
     [ZONE FDL:POPUPDOCMENU?mzone=GENERIC:POPUPLISTDETAIL%26famid=[famid]]
     <div id="main">
 
-        <input id="searchmode" name="mode" type="hidden" value="REGEXP">
-        <input id="searchbutton" class="searchbutton" title="[TEXT:Search containing characters]" type="button" value="~"
-       onclick="changeMode(this)">
-        [IF FULLMODE]
-        <script>changeMode(document.getElementById('searchbutton'))</script>
-        [ENDIF FULLMODE]
-        <input onMouseUp="return true" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]" id="searchkey"/>
-        [IF ONESEARCH]
-        <select id="csid" onchange="focusInput(event,this)">
-            <option value="0">-</option>
-            [BLOCK SYSSEARCH]
-            <option isreport="[isreport]" isparam="[isparam]" style="background-color:[gui_color]" value="[id]" [selected]>[title]</option>
-            [ENDBLOCK SYSSEARCH][IF MSEARCH]
-            <option style="border-top:solid 1px [COLOR_BLACK];height:2px;font-size:1px" disabled value=""></option>
-            [ENDIF MSEARCH]
-            [BLOCK USERSEARCH]
-            <option isreport="[isreport]" isparam="[isparam]" style="background-color:[gui_color]" value="[id]" [selected]>[title]</option>
-            [ENDBLOCK USERSEARCH]
-        </select>
-        [ENDIF ONESEARCH]
-        <input title="[TEXT:Send search]" onclick="SendSimpleSearch(event);return false" type="button" value="[TEXT:Go]">
 
+        <table cellspacing="0" cellpadding="0" id="searchheader"><tr>
+            [IF ONESEARCH]
+            <td class="select-search-button">
+
+                <span id="selectsearches" title="[TEXT:Select search]"  class="ui-icon ui-icon-triangle-1-s" ></span>
+
+
+                <ul id="searches">
+                    [BLOCK SYSSEARCH]
+                    <li  ><a style="background-color:[gui_color]" data-isparam="[isparam]" data-isreport="[isreport]" data-searchid="[id]" data-selected="[selected]">[title]</a></li>
+                    [ENDBLOCK SYSSEARCH]
+                    [IF MSEARCH] <li  >--</li> [ENDIF MSEARCH]
+                    [BLOCK USERSEARCH]
+                    <li  ><a style="background-color:[gui_color]" data-isparam="[isparam]" data-isreport="[isreport]" data-searchid="[id]" data-selected="[selected]">[title]</a></li>
+                    [ENDBLOCK USERSEARCH]
+                </ul>
+            </td>
+            <td class="selected-search" id="selected-search" >
+                <table cellspacing="0" cellpadding="0" ><tr><td><p class="selected-search-text" id="selected-search-text"></p></td>
+                    <td><span id="close-select-search" title="[TEXT:Delete selected search]"  class="ui-icon ui-icon-close"></span></td></tr></table>
+
+
+
+
+            </td>
+            [ENDIF ONESEARCH]
+            <td class="search-input-key"><input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[TEXT:Search document]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/></td>
+            <td class="css-icon-search ">
+                <span title="[TEXT:Send search]" onclick="SendSimpleSearch(event);return false" class="ui-icon ui-icon-search"></span>
+            </td>
+        </tr></table>
+        </div>
         <table class="transparent" cellspacing="0" width="100%">
             <tr>
                 <td align="left" width="30px">
@@ -234,7 +155,7 @@
                         <img align="right" width="30px" id="ic[id]" documentId="[id]"
                          hrefDoc='?app=GENERIC&amp;action=GENERIC_EDIT&amp;latest=Y&amp;id=[id]'
                          needresize="1" src="[iconsrc]" class="aicon" title="[TEXT:Modify]"
-                        onclick="document.noselect=true;vselect(this.parentNode);vedit(event,'[id]');"/>
+                        onclick="document.noselect=true;vselect(this.parentNode);vedit(event,'[id]','[famid]');"/>
                         [ENDIF canedit]
                         <img align="right" title="[emblemt]" src="[emblem]" width="20px"/>
                         [IF postitid]

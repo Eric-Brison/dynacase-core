@@ -25,3 +25,65 @@ div.docresume[selected="1"], tr.docresume[selected="1"] {
 tr.docresume:nth-child(even) {
     background-color: [COLOR_A9];
 }
+
+#searchkey {
+    text-align: left;
+    border:none;
+    margin:0;
+}
+#searchgo {
+    border:none;
+    margin:0;
+}
+#searchkey::-webkit-input-placeholder {
+    color: #aaa;
+    text-shadow: 0 1px 1px #fff;
+}
+#searchkey:-moz-placeholder {
+    color: #aaa;
+    text-shadow: 0 1px 1px #fff;
+}
+
+#searchheader {
+  border: solid 1px [COLOR_A5];
+}
+#searchheader .ui-buttonset{
+  /*float:left;*/
+}
+#searches { position: absolute;float:left;
+    [IF ISIE6]width: 100px;[ENDIF ISIE6]
+}
+#searches li a {white-space: nowrap; }
+#searchheader > span, #searchheader input {
+   /* float:left;*/
+}
+.selected-search {
+   /*max-width:30px;*/
+  [IF ISIE6]max-width:100px;[ENDIF ISIE6]
+    background-color:[COLOR_A9];
+}
+.search-input-key {
+   min-width:100px;
+}
+.search-input-key input {
+   width:100%;
+   [IF ISIE6]width: 100px;[ENDIF ISIE6]
+}
+.select-search-button {
+   width:10px;
+}
+.ui-icon-search, .ui-icon-close, .ui-icon-triangle-1-s {
+    cursor:pointer;
+}
+ #selected-search-text {
+     [IFNOT ISIE6]white-space: nowrap;
+     max-width:125px;
+    overflow:hidden;
+    text-overflow: ellipsis;[ENDIF ISIE6]
+     margin:0;
+     font-style:italic;
+
+}
+
+
+

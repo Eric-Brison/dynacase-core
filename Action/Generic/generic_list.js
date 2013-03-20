@@ -1,7 +1,75 @@
+function KeySendSimpleSearch(e) {
+    var keyCode;
+
+    if (window.event) keyCode=window.event.keyCode;
+    else keyCode = e.which;
+
+    if (keyCode==13) {
+        SendSimpleSearch(e)
+    }
+}
+
+function sendSimpleSearchP(event, famid, onefamOrigin, dirId, folderId, pds) {
+    var isreport = false;
+    var isparam = false;
+
+
+    var fldid = folderId;
+    var key = document.getElementById('searchkey').value;
+    var dmainid = document.getElementById('cellmain');
+
+    var selectedsearch=$("a[data-selected=1]");
+    if (selectedsearch) {
+
+        fldid = selectedsearch.attr("data-searchid");
+
+        isreport = (selectedsearch.attr("data-isreport") == '1');
+        isparam = (selectedsearch.attr("data-isparam") == '1');
+    }
+    if (isreport) {
+        subwindow(300, 400, 'finfo'+famid, '?app=FDL&action=FDL_CARD&dochead=Y&latest=Y&id=' + fldid);
+    } else {
+        if (isparam) {
+            if (fldid != parseInt('[catg]', 10)) {
+
+                key = false;
+                document.getElementById('searchkey').value = '';
+            } else {
+                if (key == '') pds = '';
+            }
+        }
+
+        if (dmainid) {
+            dmainid.innerHTML = '<img  src="Images/loading.gif" style="background-color:#FFFFFF;border:groove black 2px;padding:4px;-moz-border-radius:4px">';
+            dmainid.style.textAlign = 'center';
+        }
+        if ((fldid > 0) && (!key)) document.location.replace('?app=GENERIC&action=GENERIC_TAB&onefam='+onefamOrigin+'&tab=0&clearkey=Y&famid='+famid+'&catg=' + fldid + '&dirid=' + fldid + pds);
+        else if (key)  document.location.replace('?app=GENERIC&onefam='+onefamOrigin+'&action=GENERIC_SEARCH&famid='+famid+'&dirid='+dirId+'&catg=' + fldid + pds + '&keyword=' + key );
+        else document.location.replace('?app=GENERIC&action=GENERIC_TAB&tab=0&onefam='+onefamOrigin+'&famid='+famid+'&catg=-1&clearkey=Y');
+    }
+
+}
+
+
+var prevselid;
+// view select document
+function vselect(th) {
+    if (prevselid)  document.getElementById(prevselid).setAttribute("selected",0);
+    th.setAttribute("selected",1);
+    prevselid = th.id;
+}
+function vedit(e,id,famid) {
+    if (!e) e=window.event;
+
+    if (e.ctrlKey) {
+        subwindow(400,500,'fedit'+id,'?app=GENERIC&action=GENERIC_EDIT&latest=Y&id='+id);
+    } else {
+        subwindow(400,500,'finfo'+famid,'?app=GENERIC&action=GENERIC_EDIT&&latest=Y&id='+id);
+    }
+}
 (function ($, window) {
 
     var tryAllParent, reloadCurrentWindow;
-
     tryAllParent = function tryAllParent(window, functionStringName) {
         var i, length, args = Array.prototype.slice.call(arguments),
             currentWindow = args.shift(),
@@ -24,20 +92,89 @@
 
     reloadCurrentWindow = function reloadCurrentWindow(url) {
         if (url === "reload") {
-            window.location.href=window.location.href;
+            window.location.href = window.location.href;
         } else if (url) {
             window.location = url;
         }
     };
 
+
+
+
+
+    focusInput= function focusInput(event) {
+        $("#searchkey").focus();
+                            // set cursor at the end when reset value
+                            var iVal=document.getElementById('searchkey');
+                            var pVal=iVal.value;
+                            iVal.value='';
+                            iVal.value=pVal;
+           };
+
     $(document).on("ready", function () {
-        $("#mainbarmenu").on("click", "[target=_overlay]", function () {
-            var $this = $(this), href = $this.attr("url") || $this.attr("href");
-            if (tryAllParent(window, "openIframeOverlay", href, reloadCurrentWindow) === false) {
-                window.open(href);
+            $("#mainbarmenu").on("click", "[target=_overlay]", function () {
+                var $this = $(this), href = $this.attr("url") || $this.attr("href");
+                if (tryAllParent(window, "openIframeOverlay", href, reloadCurrentWindow) === false) {
+                    window.open(href);
+                }
+                return false;
+            });
+            $("#selectsearches")
+
+                .click(function () {
+                    var menu = $(this).next().show().position({
+                        my: "left top",
+                        at: "left bottom",
+                        of: this
+                    });
+                    $(document).one("click", function () {
+                        menu.hide();
+                    });
+                    return false;
+                })
+               // .buttonset()
+                .next()
+                .hide()
+                .menu();
+
+            $("#searches").on("click","a",function(event) {
+                $(this).parent().parent().find("a").attr("data-selected","0");
+
+                $(this).attr("data-selected","1");
+                if ($(this).attr("data-isreport")=="1") {
+                    // direct display reports
+                    SendSimpleSearch(event);
+                   $(this).attr("data-selected","0");
+                } else {
+                    // display selected search
+                    $("#selected-search-text").text($(this).text());
+                    $("#selected-search").show();
+
+                    focusInput();
+
+                }
+            });
+           /* $('#searchkey').button();
+            $('#searchgo').button({
+                text: false,
+                icons: {
+                    primary: "ui-icon-search"
+                }});*/
+            $("#selected-search-text").text($('a[data-selected="1"]').text());
+            if ($('a[data-selected="1"]').length > 0) {
+                $("#selected-search").show();
+            } else {
+                $("#selected-search").hide();
             }
-            return false;
-        });
-    });
+            $("#close-select-search").click(function() {
+                $('a[data-selected="1"]').attr("data-selected","0");
+                $("#selected-search").hide();
+
+            });
+            focusInput();
+        }
+
+
+    );
 
 }($, window));
