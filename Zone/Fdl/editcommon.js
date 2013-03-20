@@ -1066,6 +1066,7 @@ function disableReadAttribute() {
                             vin = getInputValue(tain[c][k],kj);
                             if ((vin == '') || (vin == ' ')) {
                                 if (lin[j].getAttribute('readonly') != 'readonly') ndis = false;
+                                if (lin[j].getAttribute('autoReadOnly') == "1") ndis = false;
                             }
                         }
                         incr=document.getElementById('icr_'+tain[c][0]+'_'+kj);
@@ -1081,7 +1082,9 @@ function disableReadAttribute() {
 
                                 disabledIE(lin[j]);
                             } else {
+                                // in this case : input help
                                 lin[j].readOnly=ndis;
+                                lin[j].setAttribute('autoReadOnly',(ndis?1:0));
                             }
                             inc=document.getElementById('ic_'+aid);
                             ind=document.getElementById('ic_'+aid);
