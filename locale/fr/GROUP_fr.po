@@ -1,0 +1,83 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-19T18:29:08+01:00\n"
+"PO-Revision-Date: 2013-03-12 18:06+0100\n"
+"Last-Translator: Anakeen <dev@anakeen.com>\n"
+"Language-Team: French <distrib@anakeen.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+
+msgid "GROUP#ba_title"
+msgstr "Titre"
+
+msgid "GROUP#fld_fr_prof"
+msgstr "Profils par défaut"
+
+msgid "GROUP#fld_fr_rest"
+msgstr "Restrictions"
+
+msgid "GROUP#fld_tfam"
+msgstr ""
+
+msgid "GROUP#fr_basic"
+msgstr "Basique"
+
+msgid "GROUP#grp_adduser"
+msgstr "Gérer les membres"
+
+msgid "GROUP#grp_fr"
+msgstr "Groupes"
+
+msgid "GROUP#grp_fr_ident"
+msgstr "Identification"
+
+msgid "GROUP#grp_hasmail"
+msgstr "Sans adresse mail de groupe"
+
+msgid "GROUP#grp_hasmail#[bool]yes"
+msgstr "adresses regroupées"
+
+msgid "GROUP#grp_hasmail#elabel"
+msgstr ""
+"permet d'éviter le calcul du mail de groupe lorsque le groupe contient "
+"beaucoup de membres"
+
+msgid "GROUP#grp_hasmail#no"
+msgstr "sans adresse mail"
+
+msgid "GROUP#grp_idgroup"
+msgstr "Sous groupes"
+
+msgid "GROUP#grp_idgroup#showempty"
+msgstr "Aucun sous groupe"
+
+msgid "GROUP#grp_idpgroup"
+msgstr "Groupes parents"
+
+msgid "GROUP#grp_idpgroup#showempty"
+msgstr "Aucun groupe parent"
+
+msgid "GROUP#grp_isrefreshed"
+msgstr "Est rafraîchi"
+
+msgid "GROUP#grp_isrefreshed#0"
+msgstr "non"
+
+msgid "GROUP#grp_isrefreshed#1"
+msgstr "oui"
+
+msgid "GROUP#grp_mail"
+msgstr "Mail"
+
+msgid "GROUP#grp_name"
+msgstr "Nom"
+
+msgid "GROUP#grp_refresh"
+msgstr "Rafraîchir"
+
+msgid "GROUP#title"
+msgstr "Groupe de personnes"

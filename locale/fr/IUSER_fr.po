@@ -1,0 +1,168 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-19T18:29:08+01:00\n"
+"PO-Revision-Date: 2013-03-12 18:06+0100\n"
+"Last-Translator: Anakeen <dev@anakeen.com>\n"
+"Language-Team: French <distrib@anakeen.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+
+msgid "IUSER#title"
+msgstr "Utilisateur"
+
+msgid "IUSER#us_accexpiredate"
+msgstr "Date d'expiration du compte"
+
+msgid "IUSER#us_activateaccount"
+msgstr "Activer le compte"
+
+msgid "IUSER#us_activateaccount#submenu"
+msgstr "Compte"
+
+msgid "IUSER#us_daydelay"
+msgstr "Délai d'expiration en jours"
+
+msgid "IUSER#us_daydelay#elabel"
+msgstr "mettre -1 pour annuler l'expiration"
+
+msgid "IUSER#us_defaultgroup"
+msgstr "Groupe par défaut"
+
+msgid "IUSER#us_desactivateaccount"
+msgstr "Désactiver le compte"
+
+msgid "IUSER#us_desactivateaccount#submenu"
+msgstr "Compte"
+
+msgid "IUSER#us_expires"
+msgstr "Date d'expiration epoch"
+
+msgid "IUSER#us_expiresd"
+msgstr "Date d'expiration"
+
+msgid "IUSER#us_expirest"
+msgstr "Heure d'expiration"
+
+msgid "IUSER#us_extmail"
+msgstr "Mail principal"
+
+msgid "IUSER#us_fname"
+msgstr "Prénom"
+
+msgid "IUSER#us_fr_default"
+msgstr "Paramètre"
+
+msgid "IUSER#us_fr_ident"
+msgstr "État civil"
+
+msgid "IUSER#us_fr_intranet"
+msgstr "Identification intranet"
+
+msgid "IUSER#us_fr_privacy"
+msgstr "Confidentialité"
+
+msgid "IUSER#us_fr_security"
+msgstr "Sécurité"
+
+msgid "IUSER#us_fr_substitute"
+msgstr "Suppléants"
+
+msgid "IUSER#us_fr_userchange"
+msgstr "Mot de passe"
+
+msgid "IUSER#us_group"
+msgstr "Groupe (titre)"
+
+msgid "IUSER#us_groups"
+msgstr "Groupes d'appartenance"
+
+msgid "IUSER#us_groups#showempty"
+msgstr "Aucun groupe"
+
+msgid "IUSER#us_idgroup"
+msgstr "Groupe"
+
+msgid "IUSER#us_incumbents"
+msgstr "Titulaires"
+
+msgid "IUSER#us_inituser"
+msgstr "Actualiser les utilisateurs"
+
+msgid "IUSER#us_ldapdn"
+msgstr "Login LDAP"
+
+msgid "IUSER#us_lname"
+msgstr "Nom"
+
+msgid "IUSER#us_login"
+msgstr "Login"
+
+msgid "IUSER#us_login#elabel"
+msgstr "saisissez '-' pour indiquer qu'il n'y a pas de login"
+
+msgid "IUSER#us_loginfailure"
+msgstr "Échecs de connexion"
+
+msgid "IUSER#us_mail"
+msgstr "Mail"
+
+msgid "IUSER#us_meid"
+msgstr "Utilisateur id"
+
+msgid "IUSER#us_menuresetlogfails"
+msgstr "Réinitialiser échecs de connexion"
+
+msgid "IUSER#us_menuresetlogfails#submenu"
+msgstr "Compte"
+
+msgid "IUSER#us_passdelay"
+msgstr "Délai d'expiration epoch"
+
+msgid "IUSER#us_passwd1"
+msgstr "Nouveau mot de passe"
+
+msgid "IUSER#us_passwd2"
+msgstr "Confirmation mot de passe"
+
+msgid "IUSER#us_rolegorigin"
+msgstr "Groupe"
+
+msgid "IUSER#us_roles"
+msgstr "Rôle"
+
+msgid "IUSER#us_rolesorigin"
+msgstr "Origine"
+
+msgid "IUSER#us_rolesorigin#group"
+msgstr "Obtenu par"
+
+msgid "IUSER#us_rolesorigin#internal"
+msgstr "Affectation directe"
+
+msgid "IUSER#us_status"
+msgstr "État du compte"
+
+msgid "IUSER#us_status#A"
+msgstr "Activé"
+
+msgid "IUSER#us_status#D"
+msgstr "Désactivé"
+
+msgid "IUSER#us_substitute"
+msgstr "Suppléant"
+
+msgid "IUSER#us_t_roles"
+msgstr "Rôles"
+
+msgid "IUSER#us_t_roles#showempty"
+msgstr "Aucun rôle"
+
+msgid "IUSER#us_tab_system"
+msgstr "Système"
+
+msgid "IUSER#us_whatid"
+msgstr "Identifiant"
