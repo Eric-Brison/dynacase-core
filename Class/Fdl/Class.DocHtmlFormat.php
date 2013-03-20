@@ -179,9 +179,23 @@ class DocHtmlFormat
                 }
 
                 $abegin = $aend = '';
-                if ($htmlval == '' && $showEmpty) {
+                if ($htmlval === '' && $showEmpty) {
+                    if($abstractMode){
+                        // if we are not in abstract mode, the same heuristic is at array level,
+                        // but arrays does not exists in abstract mode
+                        if (!$oattr->inArray()) {
+                            $htmlval = $showEmpty;
+                        } elseif ((count($tvalues) > 1)) {
+                            // we are in an array, ensure the array is not totally empty
+                            $htmlval = $showEmpty;
+                        }
+                    } else {
+                        $htmlval = $showEmpty;
+                    }
+                } elseif ($htmlval === "\t" && $oattr->inArray() && $showEmpty) {
+                    // array with single empty line
                     $htmlval = $showEmpty;
-                } else if (($this->cFormat != "") && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
+                } elseif (($this->cFormat != "") && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
                     //printf($htmlval);
                     $htmlval = sprintf($this->cFormat, $htmlval);
                 }

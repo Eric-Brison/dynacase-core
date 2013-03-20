@@ -7129,7 +7129,7 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($listattr as $i => $attr) {
             //------------------------------
             // Compute value elements
-            $value = chop($this->getRawValue($i));
+            $value = $this->getRawValue($i);
             
             if (($attr->mvisibility != "H") && ($attr->mvisibility != "I")) {
                 $dValue = '';
