@@ -108,15 +108,22 @@ function generic_search(Action & $action)
         }
         $sdoc->setValue("se_famid", $sfamid);
         $sdoc->Add();
-        $full = ($mode == "FULL");
         
         $only = (getInherit($action, $famid) == "N");
         
-        $sqlfilter = array(
-            SearchDoc::getGeneralFilter($keyword, $useSpell = true)
-        );
+        try {
+            $sqlfilter = array(
+                SearchDoc::getGeneralFilter($keyword, $useSpell = true)
+            );
+        }
+        catch(Exception $e) {
+            $err = $e->getMessage();
+            addWarningMsg($err);
+            $sqlfilter = array(
+                'false'
+            );
+        }
         //$action->addLogMsg($sqlfilter);
-        
         $sqlorder = getDefUSort($action, "title");
         if ($sqlorder == "") {
             $sdoc->clearValue("se_orderby");
@@ -125,6 +132,7 @@ function generic_search(Action & $action)
         $query = getSqlSearchDoc($dbaccess, $sdirid, ($only) ? -($sfamid) : $sfamid, $sqlfilter, false, true, "", false);
         
         $sdoc->AddQuery($query);
+        
         executeGenericList($action, array(
             "onefam" => $onefamOrigin,
             "mode" => $mode,
