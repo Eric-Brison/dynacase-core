@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-18 15:01+0100\n"
-"PO-Revision-Date: 2013-03-18 15:05+0100\n"
+"POT-Creation-Date: 2013-03-20 11:54+0100\n"
+"PO-Revision-Date: 2013-03-20 11:54+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1749,6 +1749,10 @@ msgstr "Suppression n°%d du dossier %s"
 msgid "Delete acl %s for %s"
 msgstr "Suppression Acl %s pour %s"
 
+#: tempCatalog.php:1024
+msgid "Delete selected search"
+msgstr "Enlever la recherche sélectionnée"
+
 #: tempCatalog.php:161
 msgid "Delete this section"
 msgstr "Supprimer cette rubrique"
@@ -2542,7 +2546,7 @@ msgstr "Générique"
 msgid "Get Xml schema"
 msgstr "Récupérer le schéma XML"
 
-#: tempCatalog.php:1013 tempCatalog.php:1027
+#: tempCatalog.php:1013
 msgid "Go"
 msgstr "Go"
 
@@ -3905,18 +3909,21 @@ msgstr "Recherche"
 msgid "Search %s"
 msgstr "Recherche %s"
 
-#: tempCatalog.php:1010 tempCatalog.php:1024
+#: tempCatalog.php:1010
 msgid "Search Words"
 msgstr "Recherche des mots"
 
-#: tempCatalog.php:1009 tempCatalog.php:1011 tempCatalog.php:1023
-#: tempCatalog.php:1025
+#: tempCatalog.php:1009 tempCatalog.php:1011
 msgid "Search containing characters"
 msgstr "Recherche contenant les caractères"
 
 #: tempCatalog.php:409
 msgid "Search criteria"
 msgstr "Critères de recherche"
+
+#: tempCatalog.php:1025 tempCatalog.php:1026
+msgid "Search document"
+msgstr "Rechercher des documents"
 
 #: tempCatalog.php:303
 msgid "Search in current revision"
@@ -3999,6 +4006,10 @@ msgstr ""
 "Sélectionnez identificateur pour remplir la deuxième colonne -specid-. Le "
 "fichier exporté ne pourra être réutilisé que dans la même base de données"
 
+#: tempCatalog.php:1023
+msgid "Select search"
+msgstr "Sélectionner une recherche"
+
 #: tempCatalog.php:169 tempCatalog.php:175
 msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
 msgstr ""
@@ -4067,7 +4078,7 @@ msgstr "Échec lors de l'envoi du mail %s: aucun destinataire trouvé"
 msgid "Send mail with template"
 msgstr "Envoi d'un courriel avec le modèle"
 
-#: tempCatalog.php:1012 tempCatalog.php:1026
+#: tempCatalog.php:1012 tempCatalog.php:1027
 msgid "Send search"
 msgstr "Lancer la recherche"
 
@@ -7628,7 +7639,7 @@ msgstr "mode d'indexation fulltext"
 msgid "func"
 msgstr "ft"
 
-#: Action/Fdl/enum_choice.php:183
+#: Action/Fdl/enum_choice.php:194
 #, c-format
 msgid "function '%s' declared in %s is not found"
 msgstr "fonction '%s' déclaré dans le %s est introuvable"
@@ -9677,7 +9688,7 @@ msgstr "recherche %s est %s dans %s"
 msgid "search a generict"
 msgstr "rechercher une carte"
 
-#: Action/Generic/generic_search.php:107
+#: Action/Generic/generic_search.php:106
 #, c-format
 msgid "search contains %s in %s"
 msgstr "recherche contenant %s dans %s"
@@ -10236,7 +10247,7 @@ msgstr "La syntaxe d'un email est de la forme : jean.martin@quelquepart.org"
 msgid "the end date (%s) is before the begin date (%s)"
 msgstr "La date de fin (%s) est antérieure à la date de début (%s)"
 
-#: Action/Fdl/enum_choice.php:177 Class/Fdl/Class.DocAttribute.php:1103
+#: Action/Fdl/enum_choice.php:187 Class/Fdl/Class.DocAttribute.php:1103
 #, c-format
 msgid "the external pluggin file %s cannot be read"
 msgstr "le fichier externe %s ne peut être lu"
@@ -10251,7 +10262,7 @@ msgstr "Le login ne doit pas être vide"
 msgid "the method '%s' is not known for the object class %s"
 msgstr "La méthode '%s' n'est pas connu de la classe d'objet %s"
 
-#: Action/Fdl/enum_choice.php:172
+#: Action/Fdl/enum_choice.php:182
 #, c-format
 msgid "the pluggins function description '%s' is not conform for %s attribut"
 msgstr ""

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-18 15:01+0100\n"
+"POT-Creation-Date: 2013-03-20 11:54+0100\n"
 "PO-Revision-Date: 2013-03-04 13:51+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1724,6 +1724,10 @@ msgstr ""
 msgid "Delete acl %s for %s"
 msgstr ""
 
+#: tempCatalog.php:1024
+msgid "Delete selected search"
+msgstr ""
+
 #: tempCatalog.php:161
 msgid "Delete this section"
 msgstr ""
@@ -2502,7 +2506,7 @@ msgstr ""
 msgid "Get Xml schema"
 msgstr ""
 
-#: tempCatalog.php:1013 tempCatalog.php:1027
+#: tempCatalog.php:1013
 msgid "Go"
 msgstr ""
 
@@ -3838,17 +3842,20 @@ msgstr ""
 msgid "Search %s"
 msgstr ""
 
-#: tempCatalog.php:1010 tempCatalog.php:1024
+#: tempCatalog.php:1010
 msgid "Search Words"
 msgstr ""
 
-#: tempCatalog.php:1009 tempCatalog.php:1011 tempCatalog.php:1023
-#: tempCatalog.php:1025
+#: tempCatalog.php:1009 tempCatalog.php:1011
 msgid "Search containing characters"
 msgstr ""
 
 #: tempCatalog.php:409
 msgid "Search criteria"
+msgstr ""
+
+#: tempCatalog.php:1025 tempCatalog.php:1026
+msgid "Search document"
 msgstr ""
 
 #: tempCatalog.php:303
@@ -3928,6 +3935,10 @@ msgid ""
 "reimport in the same database"
 msgstr ""
 
+#: tempCatalog.php:1023
+msgid "Select search"
+msgstr ""
+
 #: tempCatalog.php:169 tempCatalog.php:175
 msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
 msgstr ""
@@ -3991,7 +4002,7 @@ msgstr ""
 msgid "Send mail with template"
 msgstr ""
 
-#: tempCatalog.php:1012 tempCatalog.php:1026
+#: tempCatalog.php:1012 tempCatalog.php:1027
 msgid "Send search"
 msgstr ""
 
@@ -7489,7 +7500,7 @@ msgstr ""
 msgid "func"
 msgstr ""
 
-#: Action/Fdl/enum_choice.php:183
+#: Action/Fdl/enum_choice.php:194
 #, c-format
 msgid "function '%s' declared in %s is not found"
 msgstr ""
@@ -9526,7 +9537,7 @@ msgstr ""
 msgid "search a generict"
 msgstr ""
 
-#: Action/Generic/generic_search.php:107
+#: Action/Generic/generic_search.php:106
 #, c-format
 msgid "search contains %s in %s"
 msgstr ""
@@ -10070,7 +10081,7 @@ msgstr ""
 msgid "the end date (%s) is before the begin date (%s)"
 msgstr ""
 
-#: Action/Fdl/enum_choice.php:177 Class/Fdl/Class.DocAttribute.php:1103
+#: Action/Fdl/enum_choice.php:187 Class/Fdl/Class.DocAttribute.php:1103
 #, c-format
 msgid "the external pluggin file %s cannot be read"
 msgstr ""
@@ -10085,7 +10096,7 @@ msgstr ""
 msgid "the method '%s' is not known for the object class %s"
 msgstr ""
 
-#: Action/Fdl/enum_choice.php:172
+#: Action/Fdl/enum_choice.php:182
 #, c-format
 msgid "the pluggins function description '%s' is not conform for %s attribut"
 msgstr ""
