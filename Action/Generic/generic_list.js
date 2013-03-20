@@ -1,7 +1,75 @@
+function KeySendSimpleSearch(e) {
+    var keyCode;
+
+    if (window.event) keyCode=window.event.keyCode;
+    else keyCode = e.which;
+
+    if (keyCode==13) {
+        SendSimpleSearch(e)
+    }
+}
+
+function sendSimpleSearchP(event, famid, onefamOrigin, dirId, folderId, pds) {
+    var isreport = false;
+    var isparam = false;
+
+
+    var fldid = folderId;
+    var key = document.getElementById('searchkey').value;
+    var dmainid = document.getElementById('cellmain');
+
+    var selectedsearch=$("a[data-selected=1]");
+    if (selectedsearch) {
+
+        fldid = selectedsearch.attr("data-searchid");
+
+        isreport = (selectedsearch.attr("data-isreport") == '1');
+        isparam = (selectedsearch.attr("data-isparam") == '1');
+    }
+    if (isreport) {
+        subwindow(300, 400, 'finfo'+famid, '?app=FDL&action=FDL_CARD&dochead=Y&latest=Y&id=' + fldid);
+    } else {
+        if (isparam) {
+            if (fldid != parseInt('[catg]', 10)) {
+
+                key = false;
+                document.getElementById('searchkey').value = '';
+            } else {
+                if (key == '') pds = '';
+            }
+        }
+
+        if (dmainid) {
+            dmainid.innerHTML = '<img  src="Images/loading.gif" style="background-color:#FFFFFF;border:groove black 2px;padding:4px;-moz-border-radius:4px">';
+            dmainid.style.textAlign = 'center';
+        }
+        if ((fldid > 0) && (!key)) document.location.replace('?app=GENERIC&action=GENERIC_TAB&onefam='+onefamOrigin+'&tab=0&clearkey=Y&famid='+famid+'&catg=' + fldid + '&dirid=' + fldid + pds);
+        else if (key)  document.location.replace('?app=GENERIC&onefam='+onefamOrigin+'&action=GENERIC_SEARCH&famid='+famid+'&dirid='+dirId+'&catg=' + fldid + pds + '&keyword=' + key );
+        else document.location.replace('?app=GENERIC&action=GENERIC_TAB&tab=0&onefam='+onefamOrigin+'&famid='+famid+'&catg=-1&clearkey=Y');
+    }
+
+}
+
+
+var prevselid;
+// view select document
+function vselect(th) {
+    if (prevselid)  document.getElementById(prevselid).setAttribute("selected",0);
+    th.setAttribute("selected",1);
+    prevselid = th.id;
+}
+function vedit(e,id,famid) {
+    if (!e) e=window.event;
+
+    if (e.ctrlKey) {
+        subwindow(400,500,'fedit'+id,'?app=GENERIC&action=GENERIC_EDIT&latest=Y&id='+id);
+    } else {
+        subwindow(400,500,'finfo'+famid,'?app=GENERIC&action=GENERIC_EDIT&&latest=Y&id='+id);
+    }
+}
 (function ($, window) {
 
     var tryAllParent, reloadCurrentWindow;
-
     tryAllParent = function tryAllParent(window, functionStringName) {
         var i, length, args = Array.prototype.slice.call(arguments),
             currentWindow = args.shift(),
@@ -29,6 +97,10 @@
             window.location = url;
         }
     };
+
+
+
+
 
     focusInput= function focusInput(event) {
         $("#searchkey").focus();

@@ -115,7 +115,7 @@ function generic_search(Action & $action)
         $sqlfilter = array(
             SearchDoc::getGeneralFilter($keyword, $useSpell = true)
         );
-        $action->addLogMsg($sqlfilter);
+        //$action->addLogMsg($sqlfilter);
         
         $sqlorder = getDefUSort($action, "title");
         if ($sqlorder == "") {
@@ -123,7 +123,7 @@ function generic_search(Action & $action)
         }
         
         $query = getSqlSearchDoc($dbaccess, $sdirid, ($only) ? -($sfamid) : $sfamid, $sqlfilter, false, true, "", false);
-        $action->addLogMsg($query);
+        
         $sdoc->AddQuery($query);
         executeGenericList($action, array(
             "onefam" => $onefamOrigin,
