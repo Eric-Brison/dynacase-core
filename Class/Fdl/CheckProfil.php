@@ -186,7 +186,8 @@ class CheckProfil extends CheckData
             $adocids = array();
             foreach ($aids as $naid) {
                 $aType = $this->dynDoc->getAttribute($naid)->type;
-                if (($aType == "docid") || ($aType == "account")) {
+                $isuserOption = $this->dynDoc->getAttribute($naid)->getOption("isuser");
+                if (($aType == "docid" && $isuserOption == "yes") || ($aType == "account")) {
                     $adocids[] = $naid;
                 }
             }
