@@ -1117,6 +1117,7 @@ class importDocumentDescription
      * Verify compatibility between 2 type
      * @param string $curType
      * @param string $newType
+     * @return bool
      */
     protected function isTypeCompatible($curType, $newType)
     {
@@ -1126,7 +1127,11 @@ class importDocumentDescription
             "text" => "longtext",
             "longtext" => "htmltext",
             "file" => "image",
-            "image" => "file"
+            "image" => "file",
+            "integer" => "int", // old compatibility
+            "float" => "double"
+            // old compatibility
+            
         );
         return isset($tc[$curType]) && ($tc[$curType] == $newType);
     }
