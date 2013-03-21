@@ -324,14 +324,14 @@ class DocFormFormat
                         if (preg_match('/[A-Z_\-0-9]+:[A-Z_\-0-9]+\(/i', $phpfunc)) {
                             $mheight = $this->oattr->getOption('mheight', 30);
                             $mwidth = $this->oattr->getOption('mwidth', 290);
-                            $input.= "<input id=\"ic_{$this->linkPrefix}$attridk\" type=\"button\" value=\"Z\"" . " title=\"" . $ititle . "\"" . " onclick=\"sendSpecialChoice(event,'{$this->linkPrefix}${attridk}'," . $docid . ",'$attrid','{$this->index}','$mheight','$mwidth')\">";
+                            $input.= "<input id=\"ic_{$this->linkPrefix}$attridk\" type=\"button\" class=\"inlineButton\" value=\"Z\"" . " title=\"" . $ititle . "\"" . " onclick=\"sendSpecialChoice(event,'{$this->linkPrefix}${attridk}'," . $docid . ",'$attrid','{$this->index}','$mheight','$mwidth')\">";
                         } else {
-                            $ib = "<input id=\"ic_{$this->linkPrefix}$attridk\" type=\"button\" value=\"&#133;\"" . " title=\"" . $ititle . "\"" . " onclick=\"sendAutoChoice(event," . $docid . ",this,'{$this->linkPrefix}${attridk}','{$this->iOptions}','$attrid','{$this->index}')\">";
+                            $ib = "<input id=\"ic_{$this->linkPrefix}$attridk\" type=\"button\" class=\"inlineButton\" value=\"&#133;\"" . " title=\"" . $ititle . "\"" . " onclick=\"sendAutoChoice(event," . $docid . ",this,'{$this->linkPrefix}${attridk}','{$this->iOptions}','$attrid','{$this->index}')\">";
                             $input.= $ib;
                         }
                         // clear button
                         if (($this->oattr->type == "docid" || $this->oattr->type == "account") && ($this->oattr->getOption("multiple") == "yes")) {
-                            $ib = "<input id=\"ix_$attridk\" type=\"button\" value=\"&times;\"" . " title=\"" . _("clear selected inputs") . "\" disabled " . " onclick=\"clearDocIdInputs('$attridk','mdocid_isel_$attridk',this)\">";
+                            $ib = "<input id=\"ix_$attridk\" type=\"button\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear selected inputs") . "\" disabled " . " onclick=\"clearDocIdInputs('$attridk','mdocid_isel_$attridk',this)\">";
                             //$input.="</td><td>";
                             $input.= $ib;
                         } elseif (preg_match('/(.*)\((.*)\)\:(.*)/', $phpfunc, $reg)) {
@@ -383,20 +383,20 @@ class DocFormFormat
                                     }
                                 }
                                 
-                                $input.= "<input id=\"ix_$attridk\" type=\"button\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearInputs([$jarg],'{$this->index}','$attridk' $jOutsideArg)\">";
+                                $input.= "<input id=\"ix_$attridk\" type=\"button\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearInputs([$jarg],'{$this->index}','$attridk' $jOutsideArg)\">";
                             }
                         }
                     } else if (($this->oattr->type == "date") || ($this->oattr->type == "timestamp")) {
-                        $input.= "<input id=\"ix_$attridk\" type=\"button\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearInputs(['$attrid'],'{$this->index}')\">";
+                        $input.= "<input id=\"ix_$attridk\" type=\"button\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearInputs(['$attrid'],'{$this->index}')\">";
                         if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
                     } else if ($this->oattr->type == "color") {
-                        $input.= "<input id=\"ix_$attridk\" type=\"button\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearInputs(['$attrid'],'{$this->index}')\">";
+                        $input.= "<input id=\"ix_$attridk\" type=\"button\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearInputs(['$attrid'],'{$this->index}')\">";
                         $input.= "</td><td class=\"nowrap\">";
                     } else if ($this->oattr->type == "time") {
-                        $input.= "<input id=\"ix_$attridk\" type=\"button\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearTime('$attridk')\">";
+                        $input.= "<input id=\"ix_$attridk\" type=\"button\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearTime('$attridk')\">";
                         if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
                     } else if (($this->oattr->type == "file") || ($this->oattr->type == "image")) {
-                        $input.= "<input id=\"ix_$attridk\" type=\"button\" style=\"vertical-align:baseline\" value=\"&times;\"" . " title=\"" . _("clear file") . "\"" . " title1=\"" . _("clear file") . "\"" . " value1=\"&times;\"" . " title2=\"" . _("restore original file") . "\"" . " value2=\"&minus;\"" . " onclick=\"clearFile(this,'$attridk')\">";
+                        $input.= "<input id=\"ix_$attridk\" type=\"button\" style=\"vertical-align:baseline\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear file") . "\"" . " title1=\"" . _("clear file") . "\"" . " value1=\"&times;\"" . " title2=\"" . _("restore original file") . "\"" . " value2=\"&minus;\"" . " onclick=\"clearFile(this,'$attridk')\">";
                         if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
                     } else {
                         if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
@@ -424,7 +424,7 @@ class DocFormFormat
                     
                     if ($this->oattr->getOption("elsymbol") != "") $isymbol = $this->oattr->getOption("elsymbol");
                     if ($this->oattr->getOption("eltitle") != "") $ititle = str_replace("\"", "'", $this->oattr->getOption("eltitle"));
-                    $input.= "<input type=\"button\" value=\"$isymbol\"" . " title=\"" . $ititle . "\"" . " onclick=\"$jsfunc;";
+                    $input.= "<input type=\"button\" class=\"inlineButton\" value=\"$isymbol\"" . " title=\"" . $ititle . "\"" . " onclick=\"$jsfunc;";
                     
                     $input.= "\">";
                 }
@@ -436,7 +436,7 @@ class DocFormFormat
                         if (($res["err"] == "") && (count($res["sug"]) > 0)) $color = 'orange';
                         if (($res["err"] != "")) $color = 'tomato';
                         
-                        $input.= "<input style=\"background-color:$color;\"type=\"button\" class=\"constraint\" id=\"co_$attridk\" value=\"C\"" . " onclick=\"vconstraint(this," . $this->doc->fromid . ",'$attrid');\">";
+                        $input.= "<input style=\"background-color:$color;\"type=\"button\" class=\"constraint inlineButton\" id=\"co_$attridk\" value=\"C\"" . " onclick=\"vconstraint(this," . $this->doc->fromid . ",'$attrid');\">";
                     }
                 }
             } elseif ($this->oattr->type == "htmltext") {
@@ -921,7 +921,7 @@ class DocFormFormat
                 
                 $input.= " >&nbsp;";
                 if (!(($this->visibility == "R") || ($this->visibility == "S"))) {
-                    $input.= "<input id=\"ic_{$this->attridk}\" type=\"button\" value=\"&#133;\"" . " title=\"" . _("color picker") . "\" onclick=\"jscolor.init(); document.getElementById('{$this->attridk}').color.showPicker()\"" . ">";
+                    $input.= "<input id=\"ic_{$this->attridk}\" type=\"button\" class=\"inlineButton\" value=\"&#133;\"" . " title=\"" . _("color picker") . "\" onclick=\"jscolor.init(); document.getElementById('{$this->attridk}').color.showPicker()\"" . ">";
                 }
                 return $input;
             }
@@ -976,10 +976,10 @@ class DocFormFormat
             {
                 $isDisabled = "";
                 if (($this->visibility == "R") || ($this->visibility == "S")) $isDisabled = $this->idisabled;
-                if (strpos($value,':')!==false) {
+                if (strpos($value, ':') !== false) {
                     list($hh, $mm) = explode(":", $value);
                 } else {
-                    $hh=$mm=0;
+                    $hh = $mm = 0;
                 }
                 $input = "<input $isDisabled size=2 maxlength=2 onchange=\"chtime('{$this->attridk}')\" type=\"text\"  value=\"" . $hh . "\" id=\"hh" . $this->attridk . "\">:";
                 
