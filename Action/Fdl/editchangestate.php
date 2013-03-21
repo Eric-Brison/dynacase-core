@@ -53,7 +53,7 @@ function editchangestate(Action & $action)
             if ($v == $nextstate) {
                 $tr = $wdoc->getTransition($doc->state, $v);
                 $tinputs = array();
-                if (is_array($tr["ask"])) {
+                if (!empty($tr["ask"]) && is_array($tr["ask"])) {
                     foreach ($tr["ask"] as $ka => $va) {
                         /**
                          * @var NormalAttribute $oa
@@ -83,7 +83,7 @@ function editchangestate(Action & $action)
                         }
                     }
                 }
-                $action->lay->set("noreason", ($tr["nr"] == true));
+                $action->lay->set("noreason", ((!empty($tr["nr"]) && $tr["nr"] == true)));
                 $action->lay->set("viewext", $viewext);
                 $action->lay->setBlockData("FINPUTS", $tinputs);
             }

@@ -311,6 +311,8 @@ function stringDateToIso($date, $format = false, $withT = false)
 function Iso8601ToJD($isodate)
 {
     if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/", $isodate, $reg)) {
+        if (!isset($reg[4])) $reg[4] = 0;
+        if (!isset($reg[5])) $reg[5] = 0;
         return cal2jd("CE", $reg[1], $reg[2], $reg[3], $reg[4], $reg[5], 0);
     }
     return false;
