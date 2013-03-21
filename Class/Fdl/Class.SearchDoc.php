@@ -861,10 +861,12 @@ class SearchDoc
                         $filterElement = pg_escape_string(unaccent($filterElement));
                     } else {
                         $to_tsquery = sprintf("to_tsquery('french','%s')", pg_escape_string(unaccent($filterElement)));
-                        if (mb_strlen($filterElement) > 2) {
-                            $filterElement = "(fulltext @@ $to_tsquery)";
+                        simpleQuery('', sprintf("select %s", $to_tsquery) , $indexedWord, true, true);
+                        if ($indexedWord) {
+                            $filterElement = sprintf("(fulltext @@ '%s')", pg_escape_string($indexedWord));
                         } else {
-                            $filterElement = "((numnode($to_tsquery) = 0) or (fulltext @@ $to_tsquery))";
+                            //ignore stop words
+                            $filterElement = "";
                         }
                     }
                     break;
