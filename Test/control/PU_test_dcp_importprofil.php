@@ -88,7 +88,10 @@ class TestImportProfil extends TestCaseDcpDocument
                     "PRFL0201",
                     'tst_title',
                     'TST_DYNPDOC3',
-                    "PRFL0203"
+                    "PRFL0203",
+                    'TST_DYNPDOC4',
+                    "PRFL0201",
+                    "tst_reltwo"
                 )
             ) ,
             

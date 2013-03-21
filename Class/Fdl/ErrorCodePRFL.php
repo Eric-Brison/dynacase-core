@@ -66,7 +66,7 @@ class ErrorCodePRFL
      * @errorCode
      * attribute in dynamic profil must reference relation attribute (docid)
      */
-    const PRFL0201 = 'attribute "%s" is not a relation in acl for "%s" dynamic profil, available are %s';
+    const PRFL0201 = 'attribute "%s" is not a relation in acl for "%s" dynamic profil (not an account or a docid with isuser=yes), available are %s';
     /**
      * @errorCode
      * family profy cannot be dynamic

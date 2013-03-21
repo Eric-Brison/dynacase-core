@@ -2299,7 +2299,7 @@ create unique index i_docir on doc(initid, revision);";
                     if ($v->getOption("isuser") != "") {
                         if ($v->getOption("isuser") == "yes") $tsb[$v->id] = $v;
                         $wopt = true;
-                    } else $tsa[$v->id] = $v;
+                    }
                 } elseif ($v->type == "account") {
                     $wopt = true;
                     if ($v->getOption("isuser") != "no") $tsb[$v->id] = $v;
