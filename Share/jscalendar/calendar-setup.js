@@ -201,7 +201,8 @@ function Calendar_Init(inf,ibu,sht,dateformat) {
 			button         :    ibu,   // trigger for the calendar (button ID)
 			singleClick    :    true,           // double-click mode
 			step           :    1,                // show all years in drop-down boxes (instead of every other year as default)
-            range: [1000, 9999]
+            range          :    [1000, 9999],
+            cache          :    true
 		});
 	}
 }
