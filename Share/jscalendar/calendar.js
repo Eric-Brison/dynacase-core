@@ -1325,6 +1325,7 @@ Calendar.prototype.showAtElement = function (el, opts) {
 	this.element.style.display = "block";
     this.element.style.visibility = "hidden";
 	Calendar.continuation_for_the_fucking_khtml_browser = function() {
+        if (p.width || p.height) return ;
 		var w = self.element.offsetWidth;
 		var h = self.element.offsetHeight;
 		self.element.style.display = "none";
@@ -1353,7 +1354,6 @@ Calendar.prototype.showAtElement = function (el, opts) {
 		p.height = h + 40;
 		self.monthsCombo.style.display = "none";
 		fixPosition(p);
-
 		self.showAt(p.x, p.y);
 	};
 	if (Calendar.is_khtml)
@@ -1471,8 +1471,7 @@ Calendar.prototype.parseDate = function (str, fmt) {
 };
 
 Calendar.prototype.hideShowCovered = function () {
-	if (!Calendar.is_ie && !Calendar.is_opera)
-		return;
+	if (!Calendar.is_ie && !Calendar.is_opera) return;
 	var self = this;
 	Calendar.continuation_for_the_fucking_khtml_browser = function() {
 		function getVisib(obj){
@@ -1494,7 +1493,6 @@ Calendar.prototype.hideShowCovered = function () {
 
 		var tags = new Array("applet", "iframe", "select");
 		var el = self.element;
-
 		var p = Calendar.getAbsolutePos(el);
 		var EX1 = p.x;
 		var EX2 = el.offsetWidth + EX1;
@@ -1507,7 +1505,6 @@ Calendar.prototype.hideShowCovered = function () {
 
 			for (var i = ar.length; i > 0;) {
 				cc = ar[--i];
-
 				p = Calendar.getAbsolutePos(cc);
 				var CX1 = p.x;
 				var CX2 = cc.offsetWidth + CX1;
