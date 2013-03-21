@@ -812,6 +812,17 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
+                "le",
+                array()
+            ) ,
+            array(
+                "le téléphone",
+                array(
+                    "TST_FULL2",
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
                 "téléphone",
                 array(
                     "TST_FULL2",
@@ -820,7 +831,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             ) ,
             
             array(
-                "le téléphone",
+                "le avec téléphone",
                 array(
                     "TST_FULL2",
                     "TST_FULL1"
@@ -836,6 +847,20 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             
             array(
                 'le "téléphone"',
+                array(
+                    "TST_FULL2",
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
+                'le avec "téléphone"',
+                array(
+                    "TST_FULL2",
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
+                "le téléphone",
                 array(
                     "TST_FULL2",
                     "TST_FULL1"
