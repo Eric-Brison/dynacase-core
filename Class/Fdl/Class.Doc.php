@@ -3248,7 +3248,7 @@ create unique index i_docir on doc(initid, revision);";
             $value = $tval;
         }
         if (is_array($value)) {
-            if ($oattr->type == 'htmltext') {
+            if ($oattr && $oattr->type == 'htmltext') {
                 $value = $this->arrayToRawValue($value, "\r");
                 if ($value === '') {
                     $value = DELVALUE;
@@ -3257,7 +3257,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (count($value) == 0) $value = DELVALUE;
                 elseif ((count($value) == 1) && (first($value) === "" || first($value) === null) && (substr(key($value) , 0, 1) != "s")) $value = "\t"; // special tab for array of one empty cell
                 else {
-                    if ($oattr->repeat && (count($value) == 1) && substr(key($value) , 0, 1) == "s") {
+                    if ($oattr && $oattr->repeat && (count($value) == 1) && substr(key($value) , 0, 1) == "s") {
                         $ov = $this->getMultipleRawValues($attrid);
                         $rank = intval(substr(key($value) , 1));
                         if (count($ov) < ($rank - 1)) { // fill array if not set
@@ -8638,10 +8638,10 @@ create unique index i_docir on doc(initid, revision);";
             foreach ($tms as $k => $v) {
                 $t = new_doc($this->dbaccess, $v["timerid"]);
                 if ($t->isAlive()) {
-                    $dyn = trim(strtok($t->getRawValue("tm_dyndate") , " "));
-                    if ($dyn) {
-                        $execdate = $this->getRawValue($dyn);
-                        $previousExecdate = $this->getOldRawValue($dyn);
+                    $dynDateAttr = trim(strtok($t->getRawValue("tm_dyndate") , " "));
+                    if ($dynDateAttr) {
+                        $execdate = $this->getRawValue($dynDateAttr);
+                        $previousExecdate = $this->getOldRawValue($dynDateAttr);
                         // detect if need reset timer : when date has changed
                         if ($previousExecdate && ($execdate != $previousExecdate)) {
                             if ($v["originid"]) $ori = new_doc($this->dbaccess, $v["originid"]);
