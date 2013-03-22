@@ -111,9 +111,9 @@ if (!$size) {
         $size = "H" . $heigth;
     }
 }
-$img = $_GET["img"];
+$img = isset($_GET["img"]) ? $_GET["img"] : null;
 if (!$img) {
-    $vid = $_GET["vid"];
+    $vid = isset($_GET["vid"]) ? $_GET["vid"] : null;
     if ($vid > 0) $img = "vaultid=$vid";
 }
 $location = '';
