@@ -52,7 +52,13 @@ tr.docresume:nth-child(even) {
     border-color: [COLOR_A7] [COLOR_A5] [COLOR_A5] [COLOR_A7];
     background-color: [COLOR_C6];
 }
-#searches { position: absolute;float:left;
+#searches {
+    position: absolute;
+    float:left;
+    max-height: 400px;
+    overflow-x: hidden;
+    font-size: 11px;
+    overflow-y: auto;
     [IF ISIE6]width: 100px;[ENDIF ISIE6]
 }
 #searches li a { white-space: nowrap; }
@@ -81,10 +87,10 @@ tr.docresume:nth-child(even) {
 [ENDIF ISIE6]
 
 #selected-search-text {
-     [IFNOT ISIE6]white-space: nowrap;
+     [IFNOT ISIE6][IFNOT ISIE8]white-space: nowrap;
      max-width:125px;
      overflow:hidden;
-     text-overflow: ellipsis;[ENDIF ISIE6]
+     text-overflow: ellipsis;[ENDIF ISIE8][ENDIF ISIE6]
      margin:0;
      color: [COLOR_A0];
 }
