@@ -8637,11 +8637,21 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             foreach ($tms as $k => $v) {
                 $t = new_doc($this->dbaccess, $v["timerid"]);
-                $this->unattachTimer($t);
                 if ($t->isAlive()) {
-                    if ($v["originid"]) $ori = new_doc($this->dbaccess, $v["originid"]);
-                    else $ori = null;
-                    $this->attachTimer($t, $ori);
+                    $dyn = trim(strtok($t->getRawValue("tm_dyndate") , " "));
+                    if ($dyn) {
+                        $execdate = $this->getRawValue($dyn);
+                        $previousExecdate = $this->getOldRawValue($dyn);
+                        // detect if need reset timer : when date has changed
+                        if ($previousExecdate && ($execdate != $previousExecdate)) {
+                            if ($v["originid"]) $ori = new_doc($this->dbaccess, $v["originid"]);
+                            else $ori = null;
+                            $this->unattachTimer($t);
+                            $this->attachTimer($t, $ori);
+                        }
+                    }
+                } else {
+                    $this->unattachTimer($t);
                 }
             }
         }
