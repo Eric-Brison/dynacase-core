@@ -93,12 +93,14 @@ tr.docresume:nth-child(even) {
    min-width:120px;
 }
 .search-input-key input {
-   border-radius : 3px 0 0 3px;
-   border: solid 1px [COLOR_C6];
-   background-color:  [COLOR_C6];
-   width:100%;
-   height: 1.7em;
-   [IF ISIE6]width: 100px;[ENDIF ISIE6]
+    font-family: tahoma, arial, helvetica, sans-serif;
+    font-size: [SIZE_LARGE]
+    border-radius : 3px 0 0 3px;
+    border: solid 1px [COLOR_C6];
+    background-color:  [COLOR_C6];
+    padding-right: 16px;
+    height: 1.7em;
+    [IF ISIE6]width: 100px;[ENDIF ISIE6]
 }
 .search-input-key input:focus,
 .search-input-key input:hover {

@@ -99,7 +99,7 @@
             [ENDIF ONESEARCH]
             <td class="search-input-key">
 	      <div class="css-search-zone">
-		<input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[TEXT:Search document]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/>
+		<input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[TEXT:generic:search placeholder]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/>
 		<span class="css-icon-search">
 		  <span title="[TEXT:Send search]" onclick="SendSimpleSearch(event);return false" class="ui-icon ui-icon-search"></span>
 		</span>
