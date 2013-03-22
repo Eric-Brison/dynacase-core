@@ -66,3 +66,10 @@ if [ $RET -ne 0 ]; then
     echo "Error updating class TaskRequest."
     exit $RET
 fi
+
+"$wpub"/wsh.php --api=updateclass  --appc=FDL --class=DocTimer
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error updating class DocTimer."
+    exit $RET
+fi

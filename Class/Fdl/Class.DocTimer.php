@@ -26,6 +26,7 @@ class DocTimer extends DbObj
         "title", // title document attached
         "fromid", // fromid of docid
         "attachdate", // date of attachement
+        "referencedate", // reference date
         "tododate", // date to execute
         "donedate", // executed date
         "actions", // actions to execute
@@ -63,13 +64,18 @@ class DocTimer extends DbObj
      */
     public $docid;
     /**
+     * Reference date to compute process execution date
+     * @public string $referencedate
+     */
+    public $referencedate;
+    /**
      * Executed date
-     * @public date $donedate
+     * @public string $donedate
      */
     public $donedate;
     /**
      * Attach date to document
-     * @public date $attachdate
+     * @public string $attachdate
      */
     public $attachdate;
     /**
@@ -102,6 +108,7 @@ create table doctimer ( id serial,
                    title text,
                    fromid int not null,
                    attachdate timestamp,
+                   referencedate timestamp,
                    tododate timestamp,
                    donedate timestamp,
                    actions text,
@@ -217,7 +224,7 @@ create table doctimer ( id serial,
                 $err = $this->modify();
                 $this->id = "";
                 $this->level++;
-                $acts = $timer->getPrevisions($this->attachdate, false, $this->level, 1);
+                $acts = $timer->getPrevisions($this->referencedate ? $this->referencedate : $this->attachdate, false, $this->level, 1);
                 if (count($acts) == 1) {
                     $act = current($acts);
                     if ($act["execdate"]) {

@@ -27,12 +27,12 @@ class _TIMER extends Doc
     private $lineActions;
     /**
      * attach timer to a document
-     * @param _TIMER &$timer the timer document
+     * @param Doc &$doc the document where timer will be attached
      * @param Doc &$origin the document which comes from the attachement
-     * @param date $tododate special date to trigger the actions
+     * @param string $referenceDate reference date to trigger the actions
      * @return string error - empty if no error -
      */
-    function attachDocument(&$doc, &$origin, $tododate = null)
+    function attachDocument(&$doc, &$origin, $referenceDate = null)
     {
         include_once ("FDL/Class.DocTimer.php");
         
@@ -41,6 +41,7 @@ class _TIMER extends Doc
         $dt->docid = $doc->initid;
         $dt->title = $doc->title;
         $dt->attachdate = $doc->getTimeDate(); // now
+        if ($referenceDate == null) $referenceDate = $dt->attachdate;
         $dt->level = 0;
         if ($origin) $dt->originid = $origin->id;
         $dt->fromid = $doc->fromid;
@@ -48,19 +49,26 @@ class _TIMER extends Doc
         $dates = $this->getMultipleRawValues("tm_delay");
         $hours = $this->getMultipleRawValues("tm_hdelay");
         
-        if (((count($dates) == 0) || $dates[0] + $hours[0] == 0) && ($tododate == null)) {
-            $err = sprintf(_("no delay specified in timer %s [%d]") , $this->title, $this->id);
+        if ((count($dates) == 0)) {
+            $err = sprintf(_("no processes specified in timer %s [%d]") , $this->title, $this->id);
         } else {
             
-            $acts = $this->getPrevisions($dt->attachdate, false, 0, 1);
+            $acts = $this->getPrevisions($referenceDate, false, 0, 1);
             if (count($acts) == 1) {
                 $act = current($acts);
                 $dt->actions = serialize($act["actions"]);
                 
+                $jdRef = StringDateToJD($referenceDate);
+                $jdRef+= doubleval($this->getRawValue("tm_refdaydelta"));
+                $jdRef+= doubleval($this->getRawValue("tm_refhourdelta")) / 24;
+                $deltaReferenceDate = jd2cal($jdRef);
+                $dt->referencedate = $deltaReferenceDate;
+
                 $day = doubleval($dates[0]);
                 $hour = doubleval($hours[0]);
-                if ($tododate) $dt->tododate = $tododate;
-                else $dt->tododate = $this->getTimeDate(24 * $day + $hour);
+                $jdTodo = $jdRef;
+                $jdTodo+= $day + ($hour / 24);
+                $dt->tododate = jd2cal($jdTodo);
                 $err = $dt->Add();
             } else $err = sprintf(_("no level 0 specified in timer %s [%d]") , $this->title, $this->id);
         }
@@ -99,8 +107,8 @@ class _TIMER extends Doc
     }
     /**
      * get prevision for an activate timer
-     * @param date $adate attach date
-     * @param date $tododate todo date may be false if not an already attached timer
+     * @param string $adate attach date
+     * @param string $tododate todo date may be false if not an already attached timer
      * @param int $level from level
      * @param int $maxOccur slice level (since level+maxOccur)
      * @return array array of prevision
@@ -116,7 +124,7 @@ class _TIMER extends Doc
         $first = true;
         $tprev = array();
         $jdstart = $jdattach; //$jdnow-$spentDelay;
-        //compute jdstart first
+        //compute jdstart firstMD
         $max = min(($level + $maxOccur) , count($this->lineActions));
         for ($clevel = 0; $clevel < $level; $clevel++) {
             $prev[$clevel] = $this->lineActions[$clevel];
@@ -197,10 +205,13 @@ class _TIMER extends Doc
                             case "tmail":
                                 $tva = $this->rawValueToArray(str_replace('<BR>', "\n", $va));
                                 foreach ($tva as $idmail) {
+                                    /**
+                                     * @var _MAILTEMPLATE $tm
+                                     */
                                     $tm = new_doc($this->dbaccess, $idmail);
                                     if ($tm->isAlive()) {
                                         $msg = sprintf(_("send mail with template %s [%d]") , $tm->title, $tm->id);
-                                        $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
+                                        $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $level, $msg));
                                         $err = $tm->sendDocument($doc);
                                         $tmsg[] = $msg;
                                     }
@@ -209,14 +220,14 @@ class _TIMER extends Doc
 
                             case "state":
                                 $msg = sprintf(_("change state to %s") , _($va));
-                                $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
+                                $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $level, $msg));
                                 $err = $doc->setState($va);
                                 $tmsg[] = $msg;
                                 break;
 
                             case "method":
                                 $msg = sprintf(_("apply method %s") , $va);
-                                $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $msg));
+                                $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $level, $msg));
                                 $err = $doc->applyMethod($va);
                                 $tmsg[] = $msg;
                                 break;
@@ -224,7 +235,7 @@ class _TIMER extends Doc
                         
                         if ($err) {
                             $gerr.= "$err\n";
-                            $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $this->level, $err) , HISTO_ERROR);
+                            $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $level, $err) , HISTO_ERROR);
                         }
                     }
                 }
