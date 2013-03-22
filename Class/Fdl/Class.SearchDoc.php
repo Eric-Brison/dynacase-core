@@ -800,6 +800,7 @@ class SearchDoc
         $filterElement = "";
         $parenthesis = "";
         $rankElement = "";
+        $stringWords = array();
         
         $convertOperatorToTs = function ($operator)
         {
@@ -873,6 +874,7 @@ class SearchDoc
 
                 case \Dcp\Lex\GeneralFilter::MODE_STRING:
                     $rankElement = unaccent($currentElement["word"]);
+                    $stringWords[] = $rankElement;
                     $filterElement = sprintf("svalues ~* E'\\\\y%s\\\\y'", pg_escape_string(preg_quote($currentElement["word"])));
                     break;
 
@@ -922,7 +924,7 @@ class SearchDoc
         
         $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string($rank));
         
-        $highlightWords = implode("|", $words);
+        $highlightWords = implode("|", array_merge($words, $stringWords));
         
         return $filter;
     }

@@ -151,7 +151,7 @@ function fullsearchresult(Action & $action)
         catch(Exception $e) {
             $action->exitError(sprintf(_("Incorrect filter %s") , $keyword));
         }
-       
+        
         if ($start == 0) {
             if ($s->count() < ($slice + 1)) $globalCount = $s->count();
             else {
@@ -197,7 +197,6 @@ function fullsearchresult(Action & $action)
             $displayedIds[] = $doc->initid;
             $c++;
             $tdocs[$k]["number"] = $c + $start;
-            
             $tdocs[$k]["title"] = $doc->getHTMLTitle();
             $tdocs[$k]["id"] = $doc->id;
             $tdocs[$k]["htext"] = str_replace('[', '&#1B;', nl2br($s->getHighLightText($doc, '<strong>', '</strong>', $action->GetParam("FULLTEXT_HIGHTLIGHTSIZE", 200))));
