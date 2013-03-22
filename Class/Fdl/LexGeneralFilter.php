@@ -1,9 +1,9 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html GNU Lesser General Public License
  * @package FDL
- */
+*/
 
 namespace Dcp\Lex;
 /**
@@ -46,8 +46,9 @@ class GeneralFilter
         '/^(\))/' => self::T_CLOSE_PARENTHESIS,
         '/^(\*(?=\s|\z))/' => self::T_STAR_END,
         '/^(\*)/' => self::T_STAR_BEGIN,
-        '/^([\p{L}\p{S}\p{N}]+)/u' => self::T_WORD,
-        '/^(\p{P})/u' => self::T_PUNCTUATION,
+        // '/^([\p{L}\p{N}-]+)/u' => self::T_WORD,
+        '/^([\p{L}\p{N}]+(?:-[\p{L}][\p{L}\p{N}]*)?)/u' => self::T_WORD, // 2013-45 is not a word, but sous-marin is a word
+        '/^([\p{P}\p{S}])/u' => self::T_PUNCTUATION,
     );
     /**
      * Analyze a general filter string
@@ -210,12 +211,12 @@ class GeneralFilter
                 }
                 $currentWord.= $value["match"];
             }
-            /*if ($value["token"] === self::T_PUNCTUATION) {
-                if ($currentMode === false) {
-                    $currentMode = self::MODE_WORD;
+            if ($value["token"] === self::T_PUNCTUATION) {
+                if ($currentMode === false || $currentMode === self::MODE_WORD) {
+                    $currentMode = self::MODE_STRING;
                 }
-                $currentWord .= $value["match"];
-            }*/
+                $currentWord.= $value["match"];
+            }
         }
         if ($currentWord !== "") {
             $keys[] = array(
