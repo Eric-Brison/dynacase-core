@@ -28,7 +28,6 @@ tr.docresume:nth-child(even) {
 
 #searchkey {
     text-align: left;
-    border:none;
     margin:0;
 }
 #searchgo {
@@ -45,44 +44,89 @@ tr.docresume:nth-child(even) {
 }
 
 #searchheader {
-  border: solid 1px [COLOR_A5];
-}
-#searchheader .ui-buttonset{
-  /*float:left;*/
+    border-radius: 3px;
+    margin-left:5px;
+    margin-top: 3px;
+    margin-bottom: 10px;
+    border: solid 1px [COLOR_A7];
+    border-color: [COLOR_A7] [COLOR_A5] [COLOR_A5] [COLOR_A7];
+    background-color: [COLOR_C6];
 }
 #searches { position: absolute;float:left;
     [IF ISIE6]width: 100px;[ENDIF ISIE6]
 }
-#searches li a {white-space: nowrap; }
-#searchheader > span, #searchheader input {
-   /* float:left;*/
-}
+#searches li a { white-space: nowrap; }
 .selected-search {
-   /*max-width:30px;*/
-  [IF ISIE6]max-width:100px;[ENDIF ISIE6]
-    background-color:[COLOR_A9];
+    [IF ISIE6]max-width:100px;[ENDIF ISIE6]
 }
-.search-input-key {
-   min-width:100px;
-}
-.search-input-key input {
-   width:100%;
-   [IF ISIE6]width: 100px;[ENDIF ISIE6]
+.select-search-button,
+.selected-search {
+    cursor: pointer;
+    border-style: solid;
+    border-width: 1px;
+    background-color: [COLOR_A7];
 }
 .select-search-button {
-   width:10px;
+   border-color: [COLOR_WHITE] [COLOR_A5] [COLOR_A5] [COLOR_WHITE];
+   border-radius: 3px 0 0 3px;
 }
-.ui-icon-search, .ui-icon-close, .ui-icon-triangle-1-s {
-    cursor:pointer;
+.selected-search {
+   border-color: [COLOR_WHITE] [COLOR_A5] [COLOR_A5] [COLOR_WHITE];
+   border-radius: 0 3px 3px 0;
+   padding-left: 5px;
 }
- #selected-search-text {
+[IFNOT ISIE6]
+#close-select-search {  visibility:hidden; }
+.selected-search:hover #close-select-search {  visibility:visible; }
+[ENDIF ISIE6]
+
+#selected-search-text {
      [IFNOT ISIE6]white-space: nowrap;
      max-width:125px;
-    overflow:hidden;
-    text-overflow: ellipsis;[ENDIF ISIE6]
+     overflow:hidden;
+     text-overflow: ellipsis;[ENDIF ISIE6]
      margin:0;
-     font-style:italic;
+     color: [COLOR_A0];
+}
 
+.search-input-key {
+   min-width:120px;
+}
+.search-input-key input {
+   border-radius : 3px 0 0 3px;
+   border: solid 1px [COLOR_C6];
+   background-color:  [COLOR_C6];
+   width:100%;
+   height: 1.7em;
+   [IF ISIE6]width: 100px;[ENDIF ISIE6]
+}
+.search-input-key input:focus,
+.search-input-key input:hover {
+   background-color:  [COLOR_WHITE];
+   border: solid 1px [COLOR_C6];
+}
+
+.select-search-button {
+    background-color:  [COLOR_A7] ;
+    width:10px;
+    border-right: solid 1px [COLOR_A5];
+}
+.css-search-zone {
+    position: relative;
+    border: 0;
+    float: right;
+    margin: 1px 5px 1px 5px;
+}
+.css-icon-search {
+    position: absolute;
+    right: 0;
+    top: 0.3em;
+    cursor: pointer;
+    height: 100%;   
+}
+
+.ui-icon-search, .ui-icon-close, .ui-icon-triangle-1-s {
+    cursor:pointer;
 }
 
 
