@@ -318,6 +318,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             }
         }
     }
+    
     public function dataOptionSearchCriteria()
     {
         return array(
@@ -389,6 +390,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         
         $this->assertTrue(($count == $expectedCount) , sprintf("onlyCount() returned '%s' while expecting '%s' (query = [%s]).", $count, $expectedCount, $search->getOriginalQuery()));
     }
+    
     public function dataSearchDocOnlyCount()
     {
         return array(
@@ -496,6 +498,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $s2 = join(', ', $expectedTitles);
         $this->assertTrue($s1 == $s2, sprintf("Expected titles not found: titles = [%s] / expected titles = [%s] / sql = [%s]", $s1, $s2, $search->getOriginalQuery()));
     }
+    
     function dataSearchDocSetOrder()
     {
         return array(
@@ -636,6 +639,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $s2 = join(', ', $expectedTitles);
         $this->assertTrue($s1 == $s2, sprintf("Expected titles not found: titles = [%s] / expected titles = [%s] / sql = [%s]", $s1, $s2, $search->getOriginalQuery()));
     }
+    
     function dataSearchDocSetOrderWithCollection()
     {
         return array(
@@ -751,6 +755,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             )
         );
     }
+    
     private function getFilterResult(\DocumentList $dl)
     {
         $names = array();
@@ -758,7 +763,12 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $names[] = $doc->name;
+            if (is_array($doc)) {
+                
+                $names[] = $doc["name"];
+            } else {
+                $names[] = $doc->name;
+            }
         }
         return implode(",", $names);
     }
@@ -794,6 +804,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             )
         );
     }
+    
     public function dataGeneralFilter()
     {
         return array(
@@ -808,7 +819,9 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL2",
                     "TST_FULL9",
                     "TST_FULL1",
-                    "TST_FULL8"
+                    "TST_FULL8",
+                    "TST_FULL10",
+                    "TST_FULL11"
                 )
             ) ,
             array(
@@ -830,6 +843,51 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             
+            array(
+                "1000",
+                array(
+                    "TST_FULL10"
+                )
+            ) ,
+            array(
+                "jean-marte",
+                array(
+                    "TST_FULL11"
+                )
+            ) ,
+            array(
+                "j'marte",
+                array(
+                    "TST_FULL11"
+                )
+            ) ,
+            array(
+                "jean marte",
+                array(
+                    "TST_FULL10",
+                    "TST_FULL11"
+                )
+            ) ,
+            array(
+                "@somewhere.com",
+                array(
+                    "TST_FULL10",
+                    "TST_FULL11"
+                )
+            ) ,
+            array(
+                "@somewhere",
+                array(
+                    "TST_FULL10",
+                    "TST_FULL11"
+                )
+            ) ,
+            array(
+                "2013-03-05",
+                array(
+                    "TST_FULL11"
+                )
+            ) ,
             array(
                 "le avec téléphone",
                 array(
@@ -868,17 +926,35 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             ) ,
             array(
                 "'téléphone'",
+                array()
+            ) ,
+            array(
+                "Dièse#3",
                 array(
-                    "TST_FULL2",
-                    "TST_FULL1"
+                    "TST_FULL10",
+                )
+            ) ,
+            array(
+                '"Dièse#3"',
+                array(
+                    "TST_FULL10",
+                )
+            ) ,
+            array(
+                '2012/03/05',
+                array(
+                    "TST_FULL10",
+                )
+            ) ,
+            array(
+                '2012/03',
+                array(
+                    "TST_FULL10",
                 )
             ) ,
             array(
                 "'-;=téléphone_%'",
-                array(
-                    "TST_FULL2",
-                    "TST_FULL1"
-                )
+                array()
             ) ,
             
             array(
@@ -1070,6 +1146,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             )
         );
     }
+    
     public function dataGeneralSortFilter()
     {
         return array(

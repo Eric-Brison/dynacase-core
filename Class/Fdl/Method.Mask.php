@@ -181,7 +181,7 @@ class _MASK extends Doc
             }
             
             if (isset($tneedeeds[$attr->id])) {
-                if (($tneedeeds[$attr->id] == "Y") || (($tneedeeds[$attr->id] == "-") && ($attr->needed))) $tmask[$k]["waneed"] = "bold";
+                if (($tneedeeds[$attr->id] == "Y") || (($tneedeeds[$attr->id] == "-") && (!empty($attr->needed)))) $tmask[$k]["waneed"] = "bold";
                 else $tmask[$k]["waneed"] = "normal";
                 if ($tneedeeds[$attr->id] != "-") $tmask[$k]["bgcolor"] = getParam("CORE_BGCOLORALTERN");
             } else $tmask[$k]["waneed"] = $tmask[$k]["wneed"];
@@ -196,7 +196,7 @@ class _MASK extends Doc
             
             $tmask[$k]["displayorder"] = ($attr->ordered) ? $attr->ordered : -2;
             if ($attr->type == "menu" || $attr->type == "action") $tmask[$k]["displayorder"]+= 1000000; // at then end
-            if (($attr->ordered > 0) && $attr->fieldSet->id && $attr->fieldSet->ordered < - 1) {
+            if (($attr->ordered > 0) && $attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->ordered < - 1) {
                 $attr->fieldSet->ordered = $attr->ordered - 1;
                 $tmask[$attr->fieldSet->id]["displayorder"] = $attr->ordered - 1;
                 if ($attr->fieldSet->fieldSet && $attr->fieldSet->fieldSet->id) {
@@ -281,7 +281,7 @@ class _MASK extends Doc
                 $newelem[$k]["wneed"] = (!empty($attr->needed)) ? "bold" : "normal";
                 $newelem[$k]["neweltid"] = $k;
                 $newelem[$k]["attrinfo"] = $attr->id;
-                if ($attr->fieldSet->id && $attr->fieldSet->id != 'FIELD_HIDDENS') {
+                if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id != 'FIELD_HIDDENS') {
                     $newelem[$k]["attrinfo"].= '/' . $attr->fieldSet->id;
                     if ($attr->fieldSet->fieldSet->id && $attr->fieldSet->fieldSet->id != 'FIELD_HIDDENS') $newelem[$k]["attrinfo"].= '/' . $attr->fieldSet->fieldSet->id;
                 }
@@ -295,7 +295,7 @@ class _MASK extends Doc
                     $newelem[$k]["disabled"] = "disabled";
                 }
                 
-                if ($attr->fieldSet->docid > 0) $newelem[$k]["framelabel"] = $attr->fieldSet->getLabel();
+                if ($attr->fieldSet && $attr->fieldSet->docid > 0) $newelem[$k]["framelabel"] = $attr->fieldSet->getLabel();
                 else $newelem[$k]["framelabel"] = "";
                 if (!empty($attr->waction)) $newelem[$k]["framelabel"] = _("Action");
                 
@@ -318,7 +318,7 @@ class _MASK extends Doc
                 }
                 $newelem[$k]["displayorder"] = ($attr->ordered) ? $attr->ordered : -2;
                 if ($attr->type == "menu" || $attr->type == "action") $newelem[$k]["displayorder"]+= 1000000; // at then end
-                if (($attr->ordered > 0) && $attr->fieldSet->id && $attr->fieldSet->ordered < - 1) {
+                if (($attr->ordered > 0) && $attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->ordered < - 1) {
                     $attr->fieldSet->ordered = $attr->ordered - 1;
                     $newelem[$attr->fieldSet->id]["displayorder"] = $attr->ordered - 1;
                     if ($attr->fieldSet->fieldSet && $attr->fieldSet->fieldSet->id) {
