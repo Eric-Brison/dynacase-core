@@ -75,9 +75,8 @@
         <table cellspacing="0" cellpadding="0" id="searchheader"><tr>
             [IF ONESEARCH]
             <td class="select-search-button">
-
-                <span id="selectsearches" title="[TEXT:Select search]"  class="ui-icon ui-icon-triangle-1-s" ></span>
-
+                <span id="selectsearches" title="[TEXT:Select search]"  class="ui-icon ui-icon-triangle-1-s" >
+		</span>
 
                 <ul id="searches">
                     [BLOCK SYSSEARCH]
@@ -98,10 +97,14 @@
 
             </td>
             [ENDIF ONESEARCH]
-            <td class="search-input-key"><input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[TEXT:Search document]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/></td>
-            <td class="css-icon-search ">
-                <span title="[TEXT:Send search]" onclick="SendSimpleSearch(event);return false" class="ui-icon ui-icon-search"></span>
-            </td>
+            <td class="search-input-key">
+	      <div class="css-search-zone">
+		<input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[TEXT:Search document]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/>
+		<span class="css-icon-search">
+		  <span title="[TEXT:Send search]" onclick="SendSimpleSearch(event);return false" class="ui-icon ui-icon-search"></span>
+		</span>
+	      </div>
+	    </td>
         </tr></table>
         </div>
         <table class="transparent" cellspacing="0" width="100%">
