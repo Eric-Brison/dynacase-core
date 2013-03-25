@@ -294,6 +294,21 @@ class TestImportFamily extends TestCaseDcpDocument
                 array(
                     "ATTR1701"
                 )
+            ) ,
+            // Enum modattr phpfunc
+            array(
+                "PU_data_dcp_badmodattr1.ods",
+                array(
+                    "ATTR1702",
+                    "ATTR_ENUM_B"
+                )
+            ) ,
+            array(
+                "PU_data_dcp_badmodattr2.ods",
+                array(
+                    "ATTR1702",
+                    "ATTR_ENUM_B"
+                )
             )
         );
     }
