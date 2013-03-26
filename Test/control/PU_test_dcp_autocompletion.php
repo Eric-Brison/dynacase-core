@@ -74,9 +74,9 @@ class TestAutocompletion extends TestCaseDcpAction
         $this->resetCurrentParameters();
     }
     /**
-     * @dataProvider dataAutocompletion
+     * @dataProvider dataMainAutocompletion
      */
-    public function testAutocompletion($data)
+    public function testMainAutocompletion($data)
     {
         global $ZONE_ARGS;
         $ZONE_ARGS = array();
@@ -245,7 +245,7 @@ class TestAutocompletion extends TestCaseDcpAction
         }
         return '';
     }
-    public function dataAutocompletion()
+    public function dataMainAutocompletion()
     {
         return array(
             array(
@@ -301,18 +301,18 @@ class TestAutocompletion extends TestCaseDcpAction
                     'attr' => 'S_TITLE_2',
                     'http:vars' => array(
                         '_s_title_2' => 'Relation'
-                    ),
+                    ) ,
                     'expected:warning' => '',
                     'expected:results' => array(
                         array(
                             'Test Relation 2',
                             'Test Relation 2'
-                        ),
+                        ) ,
                         array(
                             'Test Relation 3',
                             'Test Relation 3'
                         )
-                    ),
+                    ) ,
                     'expected:cibles' => array(
                         's_title_2'
                     )
@@ -325,14 +325,14 @@ class TestAutocompletion extends TestCaseDcpAction
                     'attr' => 'S_TITLE_2',
                     'http:vars' => array(
                         '_s_title_2' => 'Quoted'
-                    ),
+                    ) ,
                     'expected:warning' => '',
                     'expected:results' => array(
                         array(
                             'Quoted " title "',
                             'Quoted " title "'
                         )
-                    ),
+                    ) ,
                     'expected:cibles' => array(
                         's_title_2'
                     )
@@ -345,14 +345,14 @@ class TestAutocompletion extends TestCaseDcpAction
                     'attr' => 'S_TITLE_2',
                     'http:vars' => array(
                         '_s_title_2' => 'CDATA'
-                    ),
+                    ) ,
                     'expected:warning' => '',
                     'expected:results' => array(
                         array(
                             'CDATA injection]]></error>',
                             'CDATA injection]]></error>'
                         )
-                    ),
+                    ) ,
                     'expected:cibles' => array(
                         's_title_2'
                     )
