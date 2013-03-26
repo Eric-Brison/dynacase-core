@@ -8,6 +8,7 @@ if [ -z "$pgservice_core" ]; then
 fi
 
 PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'EOF'
+delete from docread where name in ('PRF_CV_IGROUP', 'MSK_IGROUP_ADMIN','MSK_IGROUP_MEMBERS','PRF_ADMIN_EDIT','PRF_ADMIN_DIR','MSK_IUSER_MYACCOUNT','CV_IUSER_ACCOUNT','PRF_IUSER_OWNER','MSK_IUSER_ADMIN','PRF_ADMIN_CREATION','PRF_FAMILY_DEFAULT','PRF_ADMIN_SEARCH','MSK_IGROUP_RESTRICTION');
 UPDATE doc set id=501,initid=501 where name='PRF_CV_IGROUP';
 UPDATE doc set id=502,initid=502 where name='MSK_IGROUP_ADMIN';
 UPDATE doc set id=503,initid=503 where name='MSK_IGROUP_MEMBERS';
