@@ -584,6 +584,10 @@ This can be solved by:<br/>
     <pre-remove></pre-remove>
     <post-remove></post-remove>
 
+    <post-restore>
+        <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron"/>
+    </post-restore>
+
     <reconfigure>
         <process command="programs/toolbox_reconfigure"/>
     </reconfigure>
