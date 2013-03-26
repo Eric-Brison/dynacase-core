@@ -291,6 +291,9 @@ This can be solved by:<br/>
         <process command="programs/account_init">
             <label>Initialize account families</label>
         </process>
+        <process command="./wsh.php --api=importDocuments --file=./FUSERS/accountcv.ods">
+            <label>Set view control for accounts</label>
+        </process>
 
         <process command="./wsh.php --api=importDocuments --file=./FDL/defaultprofil.ods">
             <label>Profiling system families</label>
@@ -554,6 +557,10 @@ This can be solved by:<br/>
 
         <process command="./wsh.php --api=importDocuments --file=./FUSERS/accountprofil.ods">
             <label>Profiling accounts</label>
+        </process>
+
+        <process command="./wsh.php --api=importDocuments --file=./FUSERS/accountcv.ods">
+            <label>Reset view control for accounts</label>
         </process>
         <process command="programs/pre_migration GENERIC"/>
         <process command="programs/record_application GENERIC U"/>
