@@ -118,6 +118,20 @@ class ErrorCodeATTR
      */
     const ATTR0603 = 'bad output format "%s" in attribute "%s" ';
     /**
+     * @errorCode the basic type set in a MODATTR cannot be changed
+     */
+    const ATTR0604 = 'incompatible redefinition of type for "%s" attribute (family "%s"). New type "%s" is not compatible with origin "%s"';
+    /**
+     * @errorCode a MODATTR attribute is not defined in its ancestor
+     * Cannot modify an attribute which has not defined before
+     */
+    const ATTR0605 = 'attribute modification for "%s" attribute (family "%s") is not found in ancestor';
+    /**
+     * @errorCode a enum MODATTR attribute cannot redefine its items
+     * If need redefine, a ATTR must be used (not a MODATTR) to redefine the attribut and cut inheritance
+     */
+    const ATTR0606 = 'enum attribute modification for "%s" attribute (family "%s"): the enum items cannot be redefined';
+    /**
      * @errorCode
      * The attribute's order must be a number
      */
