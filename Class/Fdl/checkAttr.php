@@ -239,11 +239,12 @@ class CheckAttr extends CheckData
      */
     private function checkType()
     {
-        
         $type = $this->structAttr->type;
         if (!$type) {
             if (!$this->isModAttr) {
                 $this->addError(ErrorCode::getError('ATTR0600', $this->attrid));
+            } else {
+                $this->checkModAttrType();
             }
         } elseif (!in_array($type, $this->types)) {
             $basicType = $this->getType();
@@ -267,8 +268,84 @@ class CheckAttr extends CheckData
                         }
                     }
                 }
+                if ($this->isModAttr) {
+                    $this->checkModAttrType();
+                }
+            }
+        } else {
+            if ($this->isModAttr) {
+                $this->checkModAttrType();
             }
         }
+    }
+    /**
+     * Verify id modattr of enum if compatible whith origin
+     */
+    private function checkModAttrType()
+    {
+        $type = $this->structAttr->type;
+        
+        $basicType = $this->getType();
+        $originAttr = $this->getOriginAttr($this->attrid, $this->doc->fromid);
+        if ($originAttr) {
+            $originType = $originAttr["type"];
+            $basicOriginType = $this->getType($originType);
+            if ($basicOriginType == "enum") {
+                if (trim($this->structAttr->phpfunc) != '') {
+                    $this->addError(ErrorCode::getError('ATTR0606', $this->attrid, $this->doc->name));
+                }
+            }
+            if (!$type) return;
+            if (!$this->isCompatibleModType($basicOriginType, $basicType)) {
+                
+                $this->addError(ErrorCode::getError('ATTR0604', $this->attrid, $this->doc->name, $type, $originType));
+            }
+        } else {
+            $this->addError(ErrorCode::getError('ATTR0605', $this->attrid, $this->doc->name));
+        }
+    }
+    
+    private function getOriginAttr($attrid, $docid)
+    {
+        $sqlPattern = <<< 'SQL'
+    select * from docattr where docid in (
+    with recursive adocfam(id, fromid, famname) as (
+     select  docfam.id, docfam.fromid, docfam.name as famname from docfam where docfam.id=%d
+       union
+     select  docfam.id, docfam.fromid, docfam.name as famname  from docfam, adocfam where  docfam.id = adocfam.fromid
+    ) select id from adocfam
+    ) and id='%s' order by docid desc;
+SQL;
+        
+        $attrid = pg_escape_string($attrid);
+        $sql = sprintf($sqlPattern, $docid, $attrid);
+        simpleQuery('', $sql, $r);
+        if (count($r) > 0) {
+            return $r[0];
+        }
+        return null;
+    }
+    
+    private function isCompatibleModType($typeA, $typeB)
+    {
+        if ($typeA == $typeB) return true;
+        $compatibleText = array(
+            'text',
+            'htmltext',
+            'longtext'
+        );
+        if (in_array($typeA, $compatibleText) && in_array($typeB, $compatibleText)) return true;
+        $compatibleNumbers = array(
+            'double',
+            'money'
+        );
+        if (in_array($typeA, $compatibleNumbers) && in_array($typeB, $compatibleNumbers)) return true;
+        $compatibleRelation = array(
+            'docid',
+            'account',
+            'thesaurus'
+        );
+        if (in_array($typeA, $compatibleRelation) && in_array($typeB, $compatibleRelation)) return true;
     }
     /**
      * test syntax order
@@ -533,9 +610,11 @@ class CheckAttr extends CheckData
         return false;
     }
     
-    private function getType()
+    private function getType($type = null)
     {
-        $type = trim($this->structAttr->type);
+        if ($type === null) {
+            $type = trim($this->structAttr->type);
+        }
         $rtype = '';
         if (preg_match('/^([a-z]+)\(["\'].+["\']\)$/i', $type, $reg)) {
             $rtype = $reg[1];

@@ -93,6 +93,36 @@ class TestImportFamily extends TestCaseDcpDocument
     public function dataBadFamilyFiles()
     {
         return array(
+            // type modattr
+            array(
+                "PU_data_dcp_badmodattr1.ods",
+                array(
+                    "ATTR0604",
+                    "TST_BADMODFAM_2",
+                    "attr_int",
+                    '"int"',
+                    "TST_BADMODFAM_3",
+                    "attr_date",
+                    '"date"'
+                )
+            ) ,
+            // enum redfinition
+            array(
+                "PU_data_dcp_badmodattr2.ods",
+                array(
+                    "ATTR0606",
+                    "attr_enum_a",
+                    "TST_BADMODFAM_4"
+                )
+            ) ,
+            // undefined modattr
+            array(
+                "PU_data_dcp_badmodattr3.ods",
+                array(
+                    "ATTR0605",
+                    "attr_undefined"
+                )
+            ) ,
             // test attribute too long
             array(
                 "PU_data_dcp_badattr1.ods",
@@ -293,21 +323,6 @@ class TestImportFamily extends TestCaseDcpDocument
                 "PU_data_dcp_badattr14.ods",
                 array(
                     "ATTR1701"
-                )
-            ) ,
-            // Enum modattr phpfunc
-            array(
-                "PU_data_dcp_badmodattr1.ods",
-                array(
-                    "ATTR1702",
-                    "ATTR_ENUM_B"
-                )
-            ) ,
-            array(
-                "PU_data_dcp_badmodattr2.ods",
-                array(
-                    "ATTR1702",
-                    "ATTR_ENUM_B"
                 )
             )
         );
