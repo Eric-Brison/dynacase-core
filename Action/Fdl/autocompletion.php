@@ -104,6 +104,8 @@ function autocompletion(Action & $action)
         $action->lay->set("ititle", $ititle);
         // Utf8_decode_POST(); // because default is iso8859-1
         if ($enum != "") {
+            // Correct multiple call error
+            $oattr = clone $oattr;
             //if (seems_utf8($skey)) $skey=utf8_decode($skey);
             $canitem = (!$oattr->existEnum(trim($skey)));
             if (trim($skey) == '' && strpos($oattr->phpfunc, "linkenum") !== false) {
