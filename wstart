@@ -38,6 +38,11 @@ ln -sf ../*/Docs/* .
 popd > /dev/null
 #refresh version identificator
 "$wpub/wsh.php" --api=refreshjsversion >/dev/null
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error regenerating autoloader cache or refreshing JS version"
+    exit $RET
+fi
 #clear current sessions
 PGSERVICE="$pgservice_core" psql -c "delete from sessions where name='freedom_param'" > /dev/null
 

@@ -1,0 +1,18 @@
+# - Lines that start with '#' are comments.
+# - Blank/empty lines are ignored.
+# - Non-empty lines contains a shell glob pattern (suitable for consumption by
+# http://php.net/manual/en/function.fnmatch.php) and checks for a match against
+# the file's basename relative to the location of the .autoloader-ignore file.
+
+ckeditor
+config
+context
+expire
+fckeditor
+FDLGEN
+Images
+jscalendar
+locale
+programs
+var
+vaultfs
