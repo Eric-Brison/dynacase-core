@@ -182,15 +182,22 @@ function ec_setIValuePlus(winfo, iid, v) {
                     if (oi.value == val) {
                         oi.checked = true;
                         $(oi).trigger('click');
+                        /**
+                         * Must revaluate checked because click event change it.
+                         * Can't prevent default click event because checkbox will not be checked in ie.
+                         */
+                        oi.checked = true;
                         ret = true;
                     } else if (oi.checked == true && valueToCheck < 0) {
                         oi.checked = false;
                         $(oi).trigger('click');
+                        oi.checked = false;
                     }
                 });
             } else if (oi.value == v) {
                 oi.checked = true;
                 $(oi).trigger('click');
+                oi.checked = true;
                 ret = true;
             }
         }
