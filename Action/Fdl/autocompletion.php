@@ -31,7 +31,9 @@ function autocompletion(Action & $action)
     $domindex = GetHttpVars("domindex", ""); // index in dom of the attributes for arrays
     $enum = GetHttpVars("enum"); // special case when it is an enum
     $skey = GetHttpVars("skey"); // use only when enum (filter key)
-    header('Content-type: text/xml; charset=utf-8');
+    if (!empty($_SERVER["HTTP_HOST"])) {
+        header('Content-type: text/xml; charset=utf-8');
+    }
     
     if ($enum != "") {
         $attrid = $enum;

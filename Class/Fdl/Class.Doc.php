@@ -4240,7 +4240,7 @@ create unique index i_docir on doc(initid, revision);";
                                     if ($attr->inArray()) {
                                         $pas = $this->rawValueToArray($this->getFamilyParameterValue($input->name));
                                         if ($index == - 1) $args[$ki] = $pas;
-                                        else $args[$ki] = $pas[$index];
+                                        else $args[$ki] = isset($pas[$index]) ? $pas[$index] : null;
                                     } else {
                                         $args[$ki] = $this->getFamilyParameterValue($input->name);
                                     }
