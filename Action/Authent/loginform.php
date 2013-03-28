@@ -26,7 +26,7 @@ function loginform(Action & $action)
     $action->parent->AddCssRef("AUTHENT:loginform.css", true);
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
-    $action->parent->addJsRef("AUTHENT:loginform.js");
+    $action->parent->addJsRef("AUTHENT:loginform.js", true);
     $ulang = GetHttpVars("lang");
     if ($ulang) {
         setLanguage($ulang);
