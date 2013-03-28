@@ -286,7 +286,7 @@ class CheckAttr extends CheckData
         $type = $this->structAttr->type;
         
         $basicType = $this->getType();
-        $originAttr = $this->getOriginAttr($this->attrid, $this->doc->fromid);
+        $originAttr = $this->getOriginAttr($this->attrid, $this->doc->fromid, $this->doc->id);
         if ($originAttr) {
             $originType = $originAttr["type"];
             $basicOriginType = $this->getType($originType);
@@ -305,12 +305,12 @@ class CheckAttr extends CheckData
         }
     }
     
-    private function getOriginAttr($attrid, $docid)
+    private function getOriginAttr($attrid, $fromid, $docid)
     {
         $sqlPattern = <<< 'SQL'
     select * from docattr where docid in (
     with recursive adocfam(id, fromid, famname) as (
-     select  docfam.id, docfam.fromid, docfam.name as famname from docfam where docfam.id=%d
+     select  docfam.id, docfam.fromid, docfam.name as famname from docfam where docfam.id=%d or docfam.id=%d
        union
      select  docfam.id, docfam.fromid, docfam.name as famname  from docfam, adocfam where  docfam.id = adocfam.fromid
     ) select id from adocfam
@@ -318,7 +318,7 @@ class CheckAttr extends CheckData
 SQL;
         
         $attrid = pg_escape_string($attrid);
-        $sql = sprintf($sqlPattern, $docid, $attrid);
+        $sql = sprintf($sqlPattern, $docid, $fromid, $attrid);
         simpleQuery('', $sql, $r);
         if (count($r) > 0) {
             return $r[0];
@@ -346,6 +346,7 @@ SQL;
             'thesaurus'
         );
         if (in_array($typeA, $compatibleRelation) && in_array($typeB, $compatibleRelation)) return true;
+        return false;
     }
     /**
      * test syntax order
