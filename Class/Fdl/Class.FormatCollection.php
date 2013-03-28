@@ -42,9 +42,17 @@ class FormatCollection
     private $fmtAttrs = array();
     private $ncAttribute = '';
     /**
+     * @var int family icon size in pixel
+     */
+    public $familyIconSize = 24;
+    /**
      * @var int relation icon size in pixel
      */
     public $relationIconSize = 14;
+    /**
+     * @var int mime type icon size in pixel
+     */
+    public $mimeTypeIconSize = 14;
     /**
      * @var int thumbnail width in pixel
      */
@@ -247,7 +255,7 @@ class FormatCollection
             case self::title:
                 return $doc->getTitle();
             case self::propIcon:
-                return $doc->getIcon('', 24);
+                return $doc->getIcon('', $this->familyIconSize);
             case self::propId:
                 return intval($doc->id);
             case self::propInitid:
@@ -346,7 +354,7 @@ class FormatCollection
                 break;
 
             case 'file':
-                $info = new FileAttributeValue($oa, $value, $doc, $index);
+                $info = new FileAttributeValue($oa, $value, $doc, $index, $this->mimeTypeIconSize);
                 break;
 
             case 'image':
@@ -530,7 +538,7 @@ class FileAttributeValue extends StandardAttributeValue
     public $url = '';
     public $mime = '';
     public $icon = '';
-    public function __construct(NormalAttribute $oa, $v, Doc $doc, $index)
+    public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $iconMimeSize = 24)
     {
         
         $this->value = $v;
@@ -543,7 +551,7 @@ class FileAttributeValue extends StandardAttributeValue
             $this->displayValue = $this->fileName;
             
             $iconFile = getIconMimeFile($this->mime);
-            if ($iconFile) $this->icon = "Images/" . $iconFile;
+            if ($iconFile) $this->icon = $doc->getIcon($iconFile, $iconMimeSize);
             $this->url = $doc->getFileLink($oa->id, $index);
         }
     }
