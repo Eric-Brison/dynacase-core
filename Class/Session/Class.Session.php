@@ -445,6 +445,23 @@ class Session extends DbObj
             unlink($sessionFile);
         }
     }
+    /**
+     * Delete all user's sessions except the current session.
+     *
+     * @param string $userId The user id (default is $this->userid)
+     * @param string $exceptSessionId The session id to keep (default is $this->id)
+     * @return string empty string on success, or the SQL error message
+     */
+    function deleteUserSessionsExcept($userId = '', $exceptSessionId = '')
+    {
+        if ($userId == '') {
+            $userId = $this->userid;
+        }
+        if ($exceptSessionId == '') {
+            $exceptSessionId = $this->id;
+        }
+        return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid = %d AND id != '%s'", $userId, pg_escape_string($exceptSessionId)));
+    }
 } // Class Session
 
 ?>
