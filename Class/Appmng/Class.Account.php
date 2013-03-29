@@ -569,6 +569,7 @@ create sequence seq_id_users start 10;";
         srand((double)microtime() * 1000000);
         for ($i = 0; $i < 16; $i++) $salt.= $salt_space[rand(0, strlen($salt_space) - 1) ];
         $passk = crypt($pass, "\$5\${$salt}");
+        $this->_deleteUserSessions();
     }
     /**
      * @param string $pass clear password to test
@@ -1060,7 +1061,6 @@ union
         }
         return $token;
     }
-
     /**
      * Set password for the admin account in the `admin' subdir
      *
@@ -1075,7 +1075,6 @@ union
         deprecatedFunction();
         return $this->setSupervisorHtpasswd($admin_passwd);
     }
-
     /**
      * Set password for the admin account in the `admin' subdir
      * @param string $admin_passwd the password
@@ -1229,5 +1228,14 @@ union
         }
         
         return $err;
+    }
+    private function _deleteUserSessions()
+    {
+        if (AuthenticatorManager::$session !== null && AuthenticatorManager::$session->userid == $this->id) {
+            AuthenticatorManager::$session->deleteUserSessionsExcept();
+        } else {
+            $session = new Session($this->dbaccess);
+            $session->deleteUserSessionsExcept($this->id);
+        }
     }
 }
