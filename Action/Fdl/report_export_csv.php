@@ -51,10 +51,10 @@ function report_export_csv(Action & $action)
     $expVarName = $usage->addHiddenParameter("exportId", "expert ident");
     $statusOnly = $usage->addHiddenParameter("statusOnly", "get status only");
     
-    $refresh = $usage->addOptionalParameter("refresh", "would you refresh doc before build report", array(
+    $refresh = ($usage->addOptionalParameter("refresh", "would you refresh doc before build report", array(
         "TRUE",
         "FALSE"
-    ) , "FALSE");
+    ) , "FALSE") == "TRUE");
     
     $default = isset($defaultDocArg["kind"]) ? $defaultDocArg["kind"] : 'simple';
     $kind = $usage->addOptionalParameter("kind", "the kind of report", array(
