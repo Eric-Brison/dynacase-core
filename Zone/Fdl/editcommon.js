@@ -2117,6 +2117,15 @@ function downtr(trnode) {
 var specDeltr=false;
 function delseltr() {
   if (seltr) {
+      //delete ckeditor element before line
+      var textareas = seltr.getElementsByTagName('textarea');
+      if (textareas && textareas.length > 0) {
+          for (var i =0, length = textareas.length; i < length; i++) {
+              if (textareas[i].getAttribute('type') === 'htmltext') {
+                  window.htmlText.deactivateEditor(textareas[i].id, false);
+              }
+          }
+      }
       var parent = seltr.parentNode;
       if (indextr==-1) indextr=parent.childNodes.length;
     parent.removeChild(seltr);
