@@ -516,6 +516,11 @@ $action_desc = array(
         "name" => "REPORT_EXPORT_CSV",
         "short_name" => N_("export a report"),
         "acl" => "NORMAL"
+    ),
+    array(
+        "name" => "GET_ENUM_LABEL",
+        "short_name" => N_("get enum label from key"),
+        "acl" => "NORMAL"
     )
 
 );

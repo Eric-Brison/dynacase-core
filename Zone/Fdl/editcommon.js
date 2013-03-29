@@ -182,23 +182,53 @@ function disableClearDocIdInputs(attrid, inpsel) {
 }
 
 
-function updateEnumauto(o,idsel,idval) {
-  var nv=o.value;
-  var sel=document.getElementById(idsel);
-  var ival=document.getElementById(idval);
-  if (sel && ival) {
-    var find=false;
-    for (var k=0;k<sel.options.length;k++) {
-      if (sel.options[k].value==nv) find=true;
+function addValuesInEnumAutoList(values, sel, o, ival) {
+    var nv=o.value.split("\n");
+    values = values.split("\n");
+    for (var k = 0; k < values.length; k++) {
+        if (values[k]) {
+            addinlist(sel, values[k], nv[k], false);
+        }
     }
-    if (! find)    addinlist(sel,ival.value,nv,false);
-    transfertDocIdInputs(sel,o);
-    sel.options[sel.options.length - 1].selected=true;
-    ival.value='';
-    ival.disabled=false;
+    transfertDocIdInputs(sel, o);
+    sel.options[sel.options.length - 1].selected = true;
+    ival.value = '';
+    ival.disabled = false;
     ival.focus();
-    disableClearDocIdInputs(o.id,sel);
-  }
+    disableClearDocIdInputs(o.id, sel);
+}
+
+function updateEnumauto(o,idsel,idval) {
+    var nv=o.value.split("\n");
+    var sel=document.getElementById(idsel);
+    var ival=document.getElementById(idval);
+    if (o.value === " ") {
+        clearDocIdInputs(o.id, idsel, document.getElementById("ix_"+ o.id), true);
+    } else if (sel && ival) {
+        var find=false;
+        for (var k=0;k<sel.options.length;k++) {
+            if (_inarray(sel.options[k].value, nv)) find=true;
+        }
+        if (! find)    {
+            if (!ival.value) {
+                $.post("?app=FDL&action=GET_ENUM_LABEL", {
+                    "keys": o.value,
+                    "attrid": o.id,
+                    "famid": (typeof document.getElementById("fedit").classid.item !== 'undefined') ? document.getElementById("fedit").classid.item(0).value : document.getElementById("fedit").classid.values
+                }, function(data) {
+                    if (data.success) {
+                        addValuesInEnumAutoList(data.data, sel, o, ival);
+                    } else {
+                        displayWarningMsg(data.error);
+                    }
+                })
+            } else {
+                addValuesInEnumAutoList(ival.value, sel, o, ival);
+            }
+        } else {
+            addValuesInEnumAutoList("", sel, o, ival);
+        }
+    }
 }
 
 function updateIfr(ifr) {
