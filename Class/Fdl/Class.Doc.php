@@ -2896,6 +2896,48 @@ create unique index i_docir on doc(initid, revision);";
         return $def;
     }
     /**
+     * get a typed value of an attribute
+     *
+     * return value of an attribute
+     * return null if value is empty
+     * return an array for multiple value
+     * return date in iso8601 format, number in int or double
+     * @param string $idAttr attribute identifier
+     * @throws Dcp\Exception DOC0114 code
+     * @see ErrorCodeDoc::DOC0114
+     * @return mixed the typed value
+     */
+    final public function getAttributeValue($idAttr)
+    {
+        /**
+         * @var \NormalAttribute $oa
+         */
+        $oa = $this->getAttribute($idAttr);
+        if (!$oa) {
+            throw new Dcp\Exception('DOC0114', $idAttr, $this->title, $this->fromname);
+        }
+        
+        if (empty($oa->isNormal)) {
+            throw new Dcp\Exception('DOC0116', $idAttr, $this->title, $this->fromname);
+        }
+        return Dcp\AttributeValue::getTypedValue($this, $oa);
+    }
+    /**
+     * @param string $idAttrattribute identifier
+     * @param mixed $value the new value
+     * @throws Dcp\Exception DOC0115 code
+     * @see ErrorCodeDoc::DOC0115
+     * @return void
+     */
+    final public function setAttributeValue($idAttr, $value)
+    {
+        $oa = $this->getAttribute($idAttr);
+        if (!$oa) {
+            throw new Dcp\Exception('DOC0115', $idAttr, $this->title, $this->fromname);
+        }
+        Dcp\AttributeValue::setTypedValue($this, $oa, $value);
+    }
+    /**
      * return the value of an attribute document
      * @deprecated use {@link Doc::getRawValue} instead
      * @param string $idAttr attribute identifier
