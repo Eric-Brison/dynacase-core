@@ -232,10 +232,11 @@ function isValidDate($date)
 }
 /**
  * convert string date to iso
+ * @note if the $date input is not recognised like a date the function return the original $date argument
  *
- * @param string $date DD/MM/YYYY HH:MM
- * @param string $format to indicate locale
- * @param bool $withT to add a T : YYYY-MM-DDTHH:MM
+ * @param string $date DD/MM/YYYY HH:MM or YYYY-MM-DD HH:MM or YYYY-MM-DDTHH:MM
+ * @param bool|string optionnal input $format to indicate locale : french default is "%d/%m/%Y %H:%M". If not set use locale configuration of server
+ * @param bool $withT to add a T between day and hour: YYYY-MM-DDTHH:MM
  * @return string YYYY-MM-DD HH:MM
  */
 function stringDateToIso($date, $format = false, $withT = false)
