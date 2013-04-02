@@ -363,6 +363,15 @@ class Session extends DbObj
         return '';
     }
     
+    function deleteMaxAgedSessions()
+    {
+        $maxage = getParam('CORE_SESSIONMAXAGE', '');
+        if ($maxage != '') {
+            return $this->exec_query(sprintf("DELETE FROM sessions WHERE last_seen < timestamp 'now()' - interval '%s'", pg_escape_string($maxage)));
+        }
+        return '';
+    }
+    
     function gcSessions()
     {
         $gcP = $this->getSessionGcProbability();
@@ -378,6 +387,10 @@ class Session extends DbObj
             $err = $this->deleteGuestExpiredSessions();
             if ($err != "") {
                 error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error cleaning up guest sessions: " . $err);
+            }
+            $err = $this->deleteMaxAgedSessions();
+            if ($err != "") {
+                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error cleaning up max-aged sessions: " . $err);
             }
         }
         return "";
