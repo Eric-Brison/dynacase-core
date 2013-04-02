@@ -249,7 +249,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
         $doubleMultiple = false;
         
         if (!$oa) $this->markTestIncomplete("cannot find $attrid attribute");
-        if ($oa->inArray() && $oa->getOption("multiple") == "yes") {
+        if ($oa->isMultipleInArray()) {
             $doubleMultiple = true;
         } elseif ($oa->isMultiple()) {
             $singleMultiple = true;
@@ -342,7 +342,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
         $doubleMultiple = false;
         
         if (!$oa) $this->markTestIncomplete("cannot find $attrid attribute");
-        if ($oa->inArray() && $oa->getOption("multiple") == "yes") {
+        if ($oa->isMultipleInArray()) {
             $doubleMultiple = true;
         } elseif ($oa->isMultiple()) {
             $singleMultiple = true;
