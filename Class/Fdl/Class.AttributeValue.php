@@ -92,10 +92,11 @@ class AttributeValue
 
             case 'timestamp':
             case 'date':
-                $typedValue = stringDateToIso($rawValue, false, true);
+                $isoDate = stringDateToIso($rawValue, false, true);
                 if (strlen($rawValue) == 16) {
-                    $typedValue.= ':00';
+                    $isoDate.= ':00';
                 }
+                $typedValue = new \DateTime($isoDate);
                 break;
 
             case 'time':

@@ -82,6 +82,30 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         }
     }
     /**
+     * @dataProvider dataGetDateValues
+     */
+    public function testGetDateValues($docName, array $expectedValues)
+    {
+        $d = new_doc(self::$dbaccess, $docName);
+        $this->assertTrue($d->isAlive() , sprintf("cannot access %s document", $docName));
+        foreach ($expectedValues as $attrid => $expectedValue) {
+            $value = $d->getAttributeValue($attrid);
+            $stringDates = array();
+            $oa = $d->getAttribute($attrid);
+            switch ($oa->type) {
+                case 'date':
+                    $stringDates = $this->date2string($value, 'Y-m-d');
+                    break;
+
+                case 'timestamp':
+                    $stringDates = $this->date2string($value, 'Y-m-d\TH:i:s');
+                    break;
+            }
+            // convert docName to docId
+            $this->assertTrue($stringDates === $expectedValue, sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedValue, true) , $this->getDump($stringDates) , $d->getRawValue($attrid)));
+        }
+    }
+    /**
      * @dataProvider dataSetRelationValues
      */
     public function testSetRelationValues($docName, array $expectedValues)
@@ -98,6 +122,36 @@ class TestTypedValue extends TestCaseDcpCommonFamily
             
             $this->assertTrue($expectedDocId === $value, sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedDocId) , $this->getDump($value, true) , $d->getRawValue($attrid)));
         }
+    }
+    
+    private function date2string($dates, $format)
+    {
+        if (is_array($dates)) {
+            $expectedDate = array();
+            /**
+             * @var \DateTime $aDate
+             */
+            foreach ($dates as $aDate) {
+                if (is_array($aDate)) {
+                    $expectDocId2 = array();
+                    /**
+                     * @var \DateTime $dates2
+                     */
+                    foreach ($aDate as $dates2) {
+                        $expectDocId2[] = $dates2 ? $dates2->format($format) : null;
+                    }
+                    $expectedDate[] = $expectDocId2;
+                } else {
+                    $expectedDate[] = $aDate ? $aDate->format($format) : null;
+                }
+            }
+        } else {
+            /**
+             * @var \DateTime $dates
+             */
+            $expectedDate = $dates ? $dates->format($format) : null;
+        }
+        return $expectedDate;
     }
     
     private function docNames2docIds($docNames)
@@ -161,6 +215,39 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         }
     }
     
+    public function dataGetDateValues()
+    {
+        return array(
+            array(
+                'TST_DOCTYPE1',
+                array(
+                    "tst_date" => '2013-04-20',
+                    "tst_timestamp" => '2013-09-30T10:00:00',
+                    "tst_dates" => array(
+                        "2013-04-20"
+                    ) ,
+                    "tst_timestamps" => array(
+                        "2013-09-30T10:00:00"
+                    )
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE2',
+                array(
+                    "tst_date" => '2020-05-23',
+                    "tst_timestamp" => '2013-09-30T20:10:41',
+                    "tst_dates" => array(
+                        "2020-05-23",
+                        "2017-04-13"
+                    ) ,
+                    "tst_timestamps" => array(
+                        "2013-09-30T20:10:41",
+                        "2014-05-23T00:00:00"
+                    )
+                )
+            )
+        );
+    }
     public function dataGetRelationValues()
     {
         return array(
@@ -308,11 +395,16 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                     "Deux"
                 ) ,
                 "VALUE0001"
-            ),
+            ) ,
             array(
                 'TST_DOCTYPE0',
                 "tst_RELS2",
-                array(array("23"),"24"),
+                array(
+                    array(
+                        "23"
+                    ) ,
+                    "24"
+                ) ,
                 "VALUE0003"
             )
         );
@@ -353,10 +445,8 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                     "tst_int" => 4,
                     "tst_money" => 4.67,
                     "tst_double" => 3.14159,
-                    "tst_date" => "2012-11-30",
                     "tst_time" => "12:54:00",
                     "tst_rel" => "12",
-                    "tst_timestamp" => "2014-07-23T11:23:34",
                     "tst_enum" => "a",
                     "tst_color" => "#ff23e6",
                     
@@ -384,9 +474,11 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                         null,
                         1.72
                     ) ,
-                    //                    "tst_dates" => array() ,
-                    //                    "tst_times" => array() ,
-                    //                    "tst_timestamps" => array() ,
+                    
+                    "tst_times" => array(
+                        "12:00:00"
+                    ) ,
+                    
                     "tst_enumms" => array(
                         "a",
                         "c",
@@ -471,10 +563,8 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                     "tst_money" => 4.67,
                     "tst_htmltext" => '<p>Mon premier paragraphe</p>',
                     "tst_double" => 3.14159,
-                    "tst_date" => "2012-11-30",
                     "tst_time" => "12:54:00",
                     "tst_rel" => "12",
-                    "tst_timestamp" => "2014-07-23T11:23:34",
                     "tst_enum" => "a",
                     "tst_color" => "#ff23e6",
                     
@@ -502,12 +592,10 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                         null,
                         1.72
                     ) ,
-                    //                    "tst_dates" => array() ,
                     "tst_times" => array(
                         "10:00:00",
                         "20:59:59"
                     ) ,
-                    //                    "tst_timestamps" => array() ,
                     "tst_enumms" => array(
                         "a",
                         "c",
@@ -564,9 +652,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                     "tst_int" => 1,
                     "tst_money" => 2.54,
                     "tst_double" => 3.1415926,
-                    "tst_date" => "2013-04-20",
                     "tst_time" => "01:00:00",
-                    "tst_timestamp" => "2013-09-30T10:00:00",
                     "tst_enum" => "a",
                     "tst_color" => "#f3f",
                     "tst_enums" => array(
@@ -586,14 +672,8 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                     ) ,
                     "tst_doubles" => array(-54.0
                     ) ,
-                    "tst_dates" => array(
-                        "2013-04-20"
-                    ) ,
                     "tst_times" => array(
                         "10:00:00"
-                    ) ,
-                    "tst_timestamps" => array(
-                        "2013-09-30T10:00:00"
                     ) ,
                     "tst_enumms" => array(
                         "a"
@@ -652,9 +732,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                     "tst_int" => 0,
                     "tst_money" => 3.0,
                     "tst_double" => - 54.0,
-                    "tst_date" => "2020-05-23",
                     "tst_time" => "14:17:43",
-                    "tst_timestamp" => "2013-09-30T20:10:41",
                     "tst_enum" => "c",
                     "tst_color" => "#50ED42",
                     "tst_enums" => array(
@@ -680,14 +758,8 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                         2.7182818,
                         1.61803398875
                     ) ,
-                    "tst_dates" => array(
-                        "2020-05-23"
-                    ) ,
                     "tst_times" => array(
                         "04:07:03"
-                    ) ,
-                    "tst_timestamps" => array(
-                        "2013-09-30T20:10:41"
                     ) ,
                     "tst_enumms" => array(
                         "c"
