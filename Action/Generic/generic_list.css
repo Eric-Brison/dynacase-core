@@ -120,22 +120,14 @@ tr.docresume:nth-child(even) {
     border-right: solid 1px [COLOR_A5];
 }
 .css-search-zone {
-    position: relative;
     border: 0;
     float: right;
     margin: 1px 5px 1px 5px;
 }
 .css-icon-search {
-    position: absolute;
-    right: 0;
-    top: 0.3em;
     cursor: pointer;
     height: 100%;   
 }
-
 .ui-icon-search, .ui-icon-close, .ui-icon-triangle-1-s {
     cursor:pointer;
 }
-
-
-

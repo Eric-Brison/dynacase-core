@@ -77,16 +77,6 @@
             <td class="select-search-button">
                 <span id="selectsearches" title="[TEXT:Select search]"  class="ui-icon ui-icon-triangle-1-s" >
 		</span>
-
-                <ul id="searches">
-                    [BLOCK SYSSEARCH]
-                    <li  ><a style="background-color:[gui_color]" data-isparam="[isparam]" data-isreport="[isreport]" data-searchid="[id]" data-selected="[selected]">[title]</a></li>
-                    [ENDBLOCK SYSSEARCH]
-                    [IF MSEARCH] <li  >--</li> [ENDIF MSEARCH]
-                    [BLOCK USERSEARCH]
-                    <li  ><a style="background-color:[gui_color]" data-isparam="[isparam]" data-isreport="[isreport]" data-searchid="[id]" data-selected="[selected]">[title]</a></li>
-                    [ENDBLOCK USERSEARCH]
-                </ul>
             </td>
             <td class="selected-search" id="selected-search" >
                 <table cellspacing="0" cellpadding="0" ><tr><td><p class="selected-search-text" id="selected-search-text"></p></td>
@@ -98,13 +88,15 @@
             </td>
             [ENDIF ONESEARCH]
             <td class="search-input-key">
-	      <div class="css-search-zone">
-		<input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[TEXT:generic:search placeholder]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/>
-		<span class="css-icon-search">
-		  <span title="[TEXT:Send search]" onclick="SendSimpleSearch(event);return false" class="ui-icon ui-icon-search"></span>
-		</span>
-	      </div>
-	    </td>
+                <div class="css-search-zone">
+                    <input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[TEXT:generic:search placeholder]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/>
+                </div>
+            </td>
+            <td>
+                <span class="css-icon-search">
+                    <span title="[TEXT:Send search]" onclick="SendSimpleSearch(event);return false" class="ui-icon ui-icon-search"></span>
+                </span>
+            </td>
         </tr></table>
         </div>
         <table class="transparent" cellspacing="0" width="100%">
@@ -195,6 +187,17 @@
             </tr>
         </table>
     </div>
+
+
+    <ul id="searches">
+        [BLOCK SYSSEARCH]
+        <li  ><a style="background-color:[gui_color]" data-isparam="[isparam]" data-isreport="[isreport]" data-searchid="[id]" data-selected="[selected]">[title]</a></li>
+        [ENDBLOCK SYSSEARCH]
+        [IF MSEARCH] <li  >--</li> [ENDIF MSEARCH]
+        [BLOCK USERSEARCH]
+        <li  ><a style="background-color:[gui_color]" data-isparam="[isparam]" data-isreport="[isreport]" data-searchid="[id]" data-selected="[selected]">[title]</a></li>
+        [ENDBLOCK USERSEARCH]
+    </ul>
     <!--  FOOT HTML -->
 
 </body>
