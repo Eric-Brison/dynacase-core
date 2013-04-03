@@ -144,15 +144,20 @@ class ErrorCodeDOC
      */
     const DOC0114 = 'attribute "%s" not exists in document "%s" (family "%s") : cannot get its value';
     /**
-     * @errorCode the attribute be an array
-     * @see Doc::getAttributeValue
+     * @errorCode the attribute must exists to set its value
+     * @see Doc::setAttributeValue
      */
-    const DOC0115 = 'attribute "%s" is not an array in document "%s" (family "%s") : cannot use array value';
+    const DOC0115 = 'attribute "%s" not exists in document "%s" (family "%s") : cannot set any value';
     /**
      * @errorCode a value cannot be associated to a structured  attribute. It must not be an TAB or FRAME attribute type.
      * @see Doc::getAttributeValue
      */
     const DOC0116 = 'attribute "%s" is a structured attribute in document "%s" (family "%s") : it cannot has any values';
+    /**
+     * @errorCode a value cannot be set to a structured  attribute. It must not be an TAB or FRAME attribute type.
+     * @see Doc::setAttributeValue
+     */
+    const DOC0117 = 'attribute "%s" is a structured attribute in document "%s" (family "%s") : it cannot set values';
     /**
      * @errorCode
      * the document cannot be inserted in folder target

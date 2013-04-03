@@ -2935,6 +2935,9 @@ create unique index i_docir on doc(initid, revision);";
         if (!$oa) {
             throw new Dcp\Exception('DOC0115', $idAttr, $this->title, $this->fromname);
         }
+        if (empty($oa->isNormal)) {
+            throw new Dcp\Exception('DOC0117', $idAttr, $this->title, $this->fromname);
+        }
         Dcp\AttributeValue::setTypedValue($this, $oa, $value);
     }
     /**
@@ -3324,8 +3327,8 @@ create unique index i_docir on doc(initid, revision);";
             }
             if ($value === " ") {
                 $value = ""; // erase value
-                if (!empty($this->$attrid)) {
-                    //print "change by delete $attrid  <BR>";
+                if ((!empty($this->$attrid)) || ($this->$attrid === "0")) {
+                    //print "change by delete $attrid  <BR>\n";
                     if ($this->_setValueDetectChange) {
                         $this->hasChanged = true;
                         $this->_oldvalue[$attrid] = $this->$attrid;
