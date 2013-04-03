@@ -62,9 +62,11 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         $this->assertTrue($d->isAlive() , sprintf("cannot access %s document", $docName));
         try {
             $d->setAttributeValue($attrid, $value);
+            $this->assertTrue(false, "no error detected need $expectedErrorCode");
         }
         catch(\Dcp\Exception $e) {
             $this->assertEquals($expectedErrorCode, $e->getDcpCode() , sprintf('"not correct code : %s"', $e->getMessage()));
+            $this->log($e->getMessage());
         }
     }
     /**
@@ -123,35 +125,63 @@ class TestTypedValue extends TestCaseDcpCommonFamily
             $this->assertTrue($expectedDocId === $value, sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedDocId) , $this->getDump($value, true) , $d->getRawValue($attrid)));
         }
     }
+    /**
+     * @dataProvider dataSetAndGetValues
+     */
+    public function testSetGetValues($docName, array $setValues, array $expectedValues)
+    {
+        $d = new_doc(self::$dbaccess, $docName);
+        $this->assertTrue($d->isAlive() , sprintf("cannot access %s document", $docName));
+        foreach ($setValues as $attrid => $newValue) {
+            $d->setAttributeValue($attrid, $newValue);
+        }
+        $d->store(); // verify database record
+        foreach ($expectedValues as $attrid => $expectedValue) {
+            $oriValue = $value = $d->getAttributeValue($attrid);
+            
+            $oa = $d->getAttribute($attrid);
+            switch ($oa->type) {
+                case 'date':
+                    $value = $this->date2string($value, 'Y-m-d');
+                    break;
+
+                case 'timestamp':
+                    $value = $this->date2string($value, 'Y-m-d\TH:i:s');
+                    break;
+            }
+            
+            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedValue) , $this->getDump($value, true) , $this->getDump($oriValue)));
+        }
+    }
     
     private function date2string($dates, $format)
     {
         if (is_array($dates)) {
-            $expectedDate = array();
+            $stringDate = array();
             /**
              * @var \DateTime $aDate
              */
             foreach ($dates as $aDate) {
                 if (is_array($aDate)) {
-                    $expectDocId2 = array();
+                    $Datess = array();
                     /**
                      * @var \DateTime $dates2
                      */
                     foreach ($aDate as $dates2) {
-                        $expectDocId2[] = $dates2 ? $dates2->format($format) : null;
+                        $Datess[] = $dates2 ? $dates2->format($format) : null;
                     }
-                    $expectedDate[] = $expectDocId2;
+                    $stringDate[] = $Datess;
                 } else {
-                    $expectedDate[] = $aDate ? $aDate->format($format) : null;
+                    $stringDate[] = $aDate ? $aDate->format($format) : null;
                 }
             }
         } else {
             /**
              * @var \DateTime $dates
              */
-            $expectedDate = $dates ? $dates->format($format) : null;
+            $stringDate = $dates ? $dates->format($format) : null;
         }
-        return $expectedDate;
+        return $stringDate;
     }
     
     private function docNames2docIds($docNames)
@@ -208,11 +238,73 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         foreach ($expectedValues as $attrid => $value) {
             $d->setAttributeValue($attrid, $value);
         }
-        
+        $d->store(); // verify database record
         foreach ($expectedValues as $attrid => $expectedValue) {
             $value = $d->getAttributeValue($attrid);
             $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue) , $this->getDump($value, true)));
         }
+    }
+    
+    public function dataSetAndGetValues()
+    {
+        return array(
+            array(
+                'TST_DOCTYPE1',
+                array(
+                    "tst_date" => '2013-04-21',
+                    "tst_time" => '10:00',
+                    "tst_int" => "23",
+                    "tst_double" => "24",
+                    "tst_timestamp" => '2013-09-30T10:00:00',
+                    "tst_dates" => array(
+                        "2013-04-20"
+                    ) ,
+                    "tst_timestamps" => array(
+                        "2013-09-30T10:00:00"
+                    )
+                ) ,
+                array(
+                    "tst_date" => '2013-04-21',
+                    "tst_time" => '10:00:00',
+                    "tst_int" => 23,
+                    "tst_double" => 24.0,
+                    "tst_timestamp" => '2013-09-30T10:00:00',
+                    "tst_dates" => array(
+                        "2013-04-20"
+                    ) ,
+                    "tst_timestamps" => array(
+                        "2013-09-30T10:00:00"
+                    )
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE1',
+                array(
+                    "tst_date" => new \DateTime('2013-04-21') ,
+                    "tst_time" => '1:2:5',
+                    "tst_timestamp" => new \DateTime('2013-09-30 10:00:00') ,
+                    "tst_dates" => array(
+                        new \DateTime("2013-04-20") ,
+                        new \DateTime("2013-4-2") ,
+                    ) ,
+                    "tst_timestamps" => array(
+                        new \DateTime("2013-09-30T10:00:00")
+                    )
+                ) ,
+                array(
+                    "tst_date" => '2013-04-21',
+                    "tst_time" => '01:02:05',
+                    "tst_timestamp" => '2013-09-30T10:00:00',
+                    "tst_dates" => array(
+                        "2013-04-20",
+                        "2013-04-02"
+                    ) ,
+                    "tst_timestamps" => array(
+                        "2013-09-30T10:00:00"
+                    )
+                )
+            )
+        );
     }
     
     public function dataGetDateValues()
@@ -406,6 +498,56 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                     "24"
                 ) ,
                 "VALUE0003"
+            ) ,
+            array(
+                'TST_DOCTYPE0',
+                "tst_int",
+                23.0,
+                "VALUE0005"
+            ) ,
+            array(
+                'TST_DOCTYPE0',
+                "tst_time",
+                "10:70:00",
+                "VALUE0001"
+            ) ,
+            array(
+                'TST_DOCTYPE0',
+                "tst_time",
+                "10:aa:00",
+                "VALUE0001"
+            ) ,
+            array(
+                'TST_DOCTYPE0',
+                "tst_time",
+                "23",
+                "VALUE0001"
+            ) ,
+            array(
+                'TST_DOCTYPE0',
+                "tst_double",
+                array(
+                    "23"
+                ) ,
+                "VALUE0006"
+            ) ,
+            array(
+                'TST_DOCTYPE0',
+                "tst_double",
+                "23a",
+                "VALUE0001"
+            ) ,
+            array(
+                'TST_DOCTYPE1',
+                "tst_double",
+                new \DateTime() ,
+                "VALUE0005"
+            ) ,
+            array(
+                'TST_DOCTYPE1',
+                "tst_title",
+                new \DateTime() ,
+                "VALUE0005"
             )
         );
     }

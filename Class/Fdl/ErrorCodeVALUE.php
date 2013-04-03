@@ -15,9 +15,9 @@ namespace {
     class ErrorCodeVALUE
     {
         /**
-         * @errorCode value cannot be used to modify document attribute
+         * @errorCode value cannot be used to modify document attribute - detected in internal Doc::setValue
          */
-        const VALUE0001 = 'attribute "%s", (family "%s", document "%s") : set value error : "%s"';
+        const VALUE0001 = 'attribute "%s", (family "%s", document "%s") : set internal value error : "%s"';
         /**
          * @errorCode for multiple attribute only array values can be set
          */
@@ -31,6 +31,39 @@ namespace {
          * @see Doc::setAttributeValue
          */
         const VALUE0004 = 'attribute "%s" is not defined for document "%s" (family "%s") : update aborted';
+
+        /**
+         * @errorCode a int attribute must containt int value
+         * @see Doc::setAttributeValue
+         */
+        const VALUE0005 = 'attribute "%s", (family "%s", document "%s") : set value error : "%s"';
+
+        /**
+         * @errorCode a non multiple attribute cannot has an array value
+         * @see Doc::setAttributeValue
+         */
+        const VALUE0006 = 'attribute "%s", (family "%s", document "%s") : cannot set single attribute with an array  "%s"';
+
+
+        /**
+         * @errorCode a int attribute must containt int value
+         * @see Doc::setAttributeValue
+         */
+        const VALUE0200 = 'a int attribute value must be a int type or a string. Found "%s" (%s).';
+
+        /**
+         * @errorCode a double attribute must containt double or int value
+         * @see Doc::setAttributeValue
+         */
+        const VALUE0201 = 'a double attribute value must be a double or int type or a string. Found "%s" (%s).';
+
+        /**
+         * @errorCode only scalar type can be used for
+         * @see Doc::setAttributeValue
+         */
+        const VALUE0202 = 'a attribute value must not be an object. Found "%s" (%s).';
+
+
         /**
          * @errorCode the attribute be an array
          * @see Doc::getAttributeValue
@@ -47,6 +80,6 @@ namespace {
 namespace Dcp\AttributeValue {
     class Exception extends \Dcp\Exception
     {
-       
+
     }
 }
