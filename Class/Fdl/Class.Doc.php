@@ -3443,16 +3443,22 @@ create unique index i_docir on doc(initid, revision);";
                                         break;
 
                                     case 'time':
-                                        $tt = explode(":", $avalue);
-                                        if (count($tt) == 2) {
-                                            list($hh, $mm) = $tt;
-                                            $tvalues[$kvalue] = sprintf("%02d:%02d", intval($hh) % 24, intval($mm) % 60);
-                                        } else if (count($tt) == 3) {
-                                            list($hh, $mm, $ss) = $tt;
-                                            $tvalues[$kvalue] = sprintf("%02d:%02d:%02d", intval($hh) % 24, intval($mm) % 60, intval($ss) % 60);
+                                        if (preg_match('/^(\d\d?):(\d\d?):?(\d\d?)?$/', $avalue, $reg)) {
+                                            $hh = intval($reg[1]);
+                                            $mm = intval($reg[2]);
+                                            $ss = isset($reg[3]) ? intval($reg[3]) : 0; // seconds are optionals
+                                            if ($hh < 0 || $hh > 23 || $mm < 0 || $mm > 59 || $ss < 0 || $ss > 59) {
+                                                return sprintf(_("value [%s] is out of limit time") , $avalue);
+                                            }
+                                            if (isset($reg[3])) {
+                                                $tvalues[$kvalue] = sprintf("%02d:%02d:%02d", $hh, $mm, $ss);
+                                            } else {
+                                                $tvalues[$kvalue] = sprintf("%02d:%02d", $hh, $mm);
+                                            }
                                         } else {
                                             return sprintf(_("value [%s] is not a valid time") , $avalue);
                                         }
+                                        
                                         break;
 
                                     case 'date':
@@ -3556,7 +3562,7 @@ create unique index i_docir on doc(initid, revision);";
                                     case 'text':
                                         $tvalues[$kvalue] = str_replace("\r", " ", $tvalues[$kvalue]);
                                         break;
-                                    }
+                                }
                             }
                         }
                     }
