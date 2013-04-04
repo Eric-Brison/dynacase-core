@@ -35,6 +35,7 @@ class SuiteDcpAttribute
         $suite->addTestSuite('Dcp\Pu\TestLFamily');
         $suite->addTestSuite('DCP\PU\TestGetDocTitle');
         $suite->addTestSuite('Dcp\Pu\TestAutocompletion'); // This test requires a bootstrap.php with ob_start()
+        $suite->addTestSuite('Dcp\Pu\TestGetTextualValue');
         // ...
         return $suite;
     }
