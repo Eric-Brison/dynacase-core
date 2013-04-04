@@ -11,22 +11,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: App/Fusers/accountprofil.ods.csv:237
+#: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#label#EGROUP"
 msgstr "Groups"
 
-#: App/Fusers/accountprofil.ods.csv:237
+#: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#label#ESUBSTITUTE"
 msgstr "Change substitute"
 
-#: App/Fusers/accountprofil.ods.csv:237
+#: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#label#EUSER"
 msgstr "Admin edit"
 
-#: App/Fusers/accountprofil.ods.csv:237
+#: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#menu#EGROUP"
 msgstr "Account"
 
-#: App/Fusers/accountprofil.ods.csv:237
+#: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#menu#ESUBSTITUTE"
 msgstr "Account"

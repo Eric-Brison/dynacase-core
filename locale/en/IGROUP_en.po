@@ -11,12 +11,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IGROUP#grp_choosegroup"
 msgstr "Choose group"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IGROUP#grp_fr_intranet"
 msgstr "System"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IGROUP#grp_roles"
 msgstr "Associated roles"
 
@@ -26,11 +29,14 @@ msgstr "No role"
 msgid "IGROUP#title"
 msgstr "Users' group"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IGROUP#us_login"
 msgstr "Login"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IGROUP#us_meid"
 msgstr "Group id"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IGROUP#us_whatid"
 msgstr "Id system"

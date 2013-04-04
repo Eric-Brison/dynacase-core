@@ -14,126 +14,161 @@ msgstr ""
 msgid "IUSER#title"
 msgstr "Users"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_accexpiredate"
 msgstr "Account expiration date"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_activateaccount"
 msgstr "Activate account"
 
 msgid "IUSER#us_activateaccount#submenu"
 msgstr "Account"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_daydelay"
 msgstr "Expiration deadline in day"
 
 msgid "IUSER#us_daydelay#elabel"
 msgstr "enter -1 to cancel expiration"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_defaultgroup"
 msgstr "Default group"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_desactivateaccount"
 msgstr "Desactivate account"
 
 msgid "IUSER#us_desactivateaccount#submenu"
 msgstr "Account"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_expires"
 msgstr "Expiration date epoch"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_expiresd"
 msgstr "Expiration date"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_expirest"
 msgstr "Expiration hour"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_extmail"
 msgstr "Main mail"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_fname"
 msgstr "First name"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_fr_default"
 msgstr "Parameter"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_fr_ident"
 msgstr "Civil status"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_fr_intranet"
 msgstr "Intranet login"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_fr_privacy"
 msgstr "Privacy"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_fr_security"
 msgstr "Security"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_fr_substitute"
 msgstr "Substitute"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_fr_userchange"
 msgstr "Password"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_group"
 msgstr "Group (title)"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_groups"
 msgstr "User's groups"
 
 msgid "IUSER#us_groups#showempty"
 msgstr "No group"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_idgroup"
 msgstr "Group"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_incumbents"
 msgstr "Holders"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_inituser"
 msgstr "Refresh users"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_ldapdn"
 msgstr "Login LDAP"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_lname"
 msgstr "Name"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_login"
 msgstr "Login"
 
 msgid "IUSER#us_login#elabel"
 msgstr "Enter '-' if you don't want a login"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_loginfailure"
 msgstr "Login failure"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_mail"
 msgstr "Mail"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_meid"
 msgstr "User id"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_menuresetlogfails"
 msgstr "Reset log fails"
 
 msgid "IUSER#us_menuresetlogfails#submenu"
 msgstr "Account"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_passdelay"
 msgstr "Deadline epoch"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_passwd1"
 msgstr "New password"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_passwd2"
 msgstr "Confirm password"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_rolegorigin"
 msgstr "Group"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_roles"
 msgstr "Role"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_rolesorigin"
 msgstr "Origin"
 
@@ -143,6 +178,7 @@ msgstr "Obtained by"
 msgid "IUSER#us_rolesorigin#internal"
 msgstr "Affectation direct"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_status"
 msgstr "Account status"
 
@@ -152,17 +188,21 @@ msgstr "Activated"
 msgid "IUSER#us_status#D"
 msgstr "Deactivated"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_substitute"
 msgstr "Substitute"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_t_roles"
 msgstr "Roles"
 
 msgid "IUSER#us_t_roles#showempty"
 msgstr "No role"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_tab_system"
 msgstr "System"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "IUSER#us_whatid"
 msgstr "Identifier"
