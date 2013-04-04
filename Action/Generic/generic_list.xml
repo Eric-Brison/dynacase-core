@@ -97,6 +97,9 @@
                     <span title="[TEXT:Send search]" onclick="SendSimpleSearch(event);return false" class="ui-icon ui-icon-search"></span>
                 </span>
             </td>
+            <td class="select-search-button">
+                <span id="id-search-help" title="[TEXT:Help search]" class="ui-icon ui-icon-help"></span>
+            </td>
         </tr></table>
         </div>
         <table class="transparent" cellspacing="0" width="100%">

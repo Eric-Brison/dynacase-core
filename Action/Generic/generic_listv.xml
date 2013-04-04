@@ -77,12 +77,17 @@
              <td class="search-input-key">
 	       <div class="css-search-zone">
 		 <input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[TEXT:generic#search]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/>
-		 <span class="css-icon-search ">
-		   <span title="[TEXT:Send search]" onclick="SendSimpleSearch(event);return false" class="ui-icon ui-icon-search"></span>
-		 </span>
 	       </div>
              </td>
-         </tr></table>
+        <td>
+            <span class="css-icon-search">
+                <span title="[TEXT:Send search]" onclick="SendSimpleSearch(event);return false" class="ui-icon ui-icon-search"></span>
+            </span>
+        </td>
+        <td class="select-search-button">
+            <span id="id-search-help" title="[TEXT:Help search]" class="ui-icon ui-icon-help"></span>
+        </td>
+    </tr></table>
 
 <table class="transparent" cellspacing="0" width="100%"><tr >
 <td align="left" width="30px"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[prev]&dirid=[dirid]&catg=[catg]&onglet=[onglet]&famid=[famid][pds]">[previcon]</a></td>

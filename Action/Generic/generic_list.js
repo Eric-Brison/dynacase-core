@@ -110,6 +110,10 @@ function vedit(e,id,famid) {
            };
 
     $(document).on("ready", function () {
+            $("#id-search-help").on("click", function() {
+                    window.parent.parent.displayOverlay('aide', this);
+                    return false;
+                });
 
             $("#mainbarmenu").on("click", "[target=_overlay]", function () {
                 var $this = $(this), href = $this.attr("url") || $this.attr("href");

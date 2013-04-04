@@ -128,6 +128,6 @@ tr.docresume:nth-child(even) {
     cursor: pointer;
     height: 100%;   
 }
-.ui-icon-search, .ui-icon-close, .ui-icon-triangle-1-s {
+.ui-icon-search, .ui-icon-close, .ui-icon-triangle-1-s, #id-search-help {
     cursor:pointer;
 }
