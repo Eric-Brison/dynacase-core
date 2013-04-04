@@ -2847,6 +2847,9 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         if ($otitle) {
+            /**
+             * @var NormalAttribute $otitle
+             */
             $idt = $otitle->id;
             
             $this->title = str_replace("\n", " ", $title);
@@ -5864,7 +5867,10 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * convert flat attribute value to an array for multiple attributes
+     *
+     * use only for specific purpose. If need typed attributes use Doc::getAttribute()
      * @api convert flat attribute value to an array
+     * @see Doc::getAttributeValue
      * @param string $v value
      * @return array
      */
