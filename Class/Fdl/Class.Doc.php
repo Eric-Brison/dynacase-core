@@ -2877,7 +2877,7 @@ create unique index i_docir on doc(initid, revision);";
     
     
     /**
-     * return the value of an attribute document
+     * return the raw value (database value) of an attribute document
      * @api get the value of an attribute
      * @param string $idAttr attribute identifier
      * @param string $def default value returned if attribute not found or if is empty
@@ -2889,6 +2889,7 @@ create unique index i_docir on doc(initid, revision);";
      $level = $doc->getRawValue("tst_level","0");
      }
      * @endcode
+     * @see Doc::getAttributeValue
      * @return string the attribute value
      */
     final public function getRawValue($idAttr, $def = "")
@@ -2904,7 +2905,8 @@ create unique index i_docir on doc(initid, revision);";
      * return value of an attribute
      * return null if value is empty
      * return an array for multiple value
-     * return date in iso8601 format, number in int or double
+     * return date in DateTime format, number in int or double
+     * @api get typed value of an attribute
      * @param string $idAttr attribute identifier
      * @throws Dcp\Exception DOC0114 code
      * @see ErrorCodeDoc::DOC0114
@@ -2926,10 +2928,15 @@ create unique index i_docir on doc(initid, revision);";
         return Dcp\AttributeValue::getTypedValue($this, $oa);
     }
     /**
-     * @param string $idAttrattribute identifier
-     * @param mixed $value the new value
-     * @throws Dcp\Exception DOC0115 code
+     * Set a value to a document's attribute
+     * the affectation is only in object. To set modification in database the Doc::store() method must be
+     * call after modification
+     * @api Set a value to an attribute
+     * @param string $idAttr attribute identifier
+     * @param mixed $value the new value - value format must be compatible with type
+     * @throws Dcp\Exception
      * @see ErrorCodeDoc::DOC0115
+     * @see ErrorCodeDoc::DOC0117
      * @return void
      */
     final public function setAttributeValue($idAttr, $value)
@@ -3272,6 +3279,7 @@ create unique index i_docir on doc(initid, revision);";
      * If value is empty no modification are set. To reset a value use Doc::clearValue method.
      * an array can be use as value for values which are in arrays
      * @api affect value for an attribute
+     * @see Doc::setAttributeValue
      * @param string $attrid attribute identifier
      * @param string $value new value for the attribute
      * @param int $index only for array values affect value in a specific row
