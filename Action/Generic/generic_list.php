@@ -282,8 +282,8 @@ function getFamilySearches(Action $action, $dbaccess, $famid)
             }
         }
     }
-    
-    $action->lay->set("ONESEARCH", (count($streeSearch) > 0));
+    $hasSysSearch = count($streeSearch) > 0;
+    $action->lay->set("ONESEARCH", ($hasSysSearch));
     
     $action->lay->SetBlockData("SYSSEARCH", $streeSearch);
     // search user searches for family
@@ -310,7 +310,7 @@ function getFamilySearches(Action $action, $dbaccess, $famid)
             $streeSearch[$v["id"]]["isreport"] = "1";
         }
     }
-    $action->lay->set("MSEARCH", (count($stree) > 0));
+    $action->lay->set("MSEARCH", (count($streeSearch) > 0 && $hasSysSearch));
     $action->lay->SetBlockData("USERSEARCH", $streeSearch);
     if (count($streeSearch) > 0) {
         $action->lay->set("ONESEARCH", true);

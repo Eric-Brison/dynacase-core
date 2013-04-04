@@ -83,13 +83,8 @@ function generic_search(Action & $action)
             "catg" => $catgid
         ));
     } elseif ($keyword) {
-        if ($keyword[0] != ">") {
-            $dirid = $catgid;
-            $doc = new_Doc($dbaccess, $dirid);
-        } else { // search sub searches
-            $keyword = substr($keyword, 1);
-            $doc = new_Doc($dbaccess, $dirid);
-        }
+        $dirid = $catgid;
+        $doc = new_Doc($dbaccess, $dirid);
         $sdirid = 0;
         if ($doc->defDoctype == 'S') { // case of search in search doc
             $sdirid = $doc->id;
