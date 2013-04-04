@@ -247,7 +247,7 @@ class UpdateAttribute
         
         $oa = $this->getFamilyAttribute($attrid);
         $singleMultiple = $doubleMultiple = false;
-        if ($oa->inArray() && $oa->getOption("multiple") == "yes") {
+        if ($oa->isMultipleInArray()) {
             $doubleMultiple = true;
         } elseif ($oa->isMultiple()) {
             $singleMultiple = true;
@@ -279,7 +279,7 @@ class UpdateAttribute
         
         $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $valueToAdd));
         $oa = $this->getFamilyAttribute($attrid);
-        if ($oa->inArray() && $oa->getOption("multiple") == "yes") {
+        if ($oa->isMultipleInArray()) {
             //double multiple
             $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\",E'\$',E'<BR>%s','gn')  where locked != -1 and \"%s\" is not null and initid in (%s)", $this->famid, $pattrid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
             
@@ -441,7 +441,7 @@ class UpdateAttribute
         $oa = $this->getFamilyAttribute($attrid);
         $attrid = $oa->id;
         $singleMultiple = $doubleMultiple = false;
-        if ($oa->inArray() && $oa->getOption("multiple") == "yes") {
+        if ($oa->isMultipleInArray()) {
             $doubleMultiple = true;
         } elseif ($oa->isMultiple()) {
             $singleMultiple = true;
@@ -529,7 +529,7 @@ class UpdateAttribute
         $oa = $this->getFamilyAttribute($attrid);
         $attrid = $oa->id;
         $singleMultiple = $doubleMultiple = false;
-        if ($oa->inArray() && $oa->getOption("multiple") == "yes") {
+        if ($oa->isMultipleInArray()) {
             $doubleMultiple = true;
         } elseif ($oa->isMultiple()) {
             $singleMultiple = true;

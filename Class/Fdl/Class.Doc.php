@@ -2847,6 +2847,9 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         if ($otitle) {
+            /**
+             * @var NormalAttribute $otitle
+             */
             $idt = $otitle->id;
             
             $this->title = str_replace("\n", " ", $title);
@@ -2874,7 +2877,7 @@ create unique index i_docir on doc(initid, revision);";
     
     
     /**
-     * return the value of an attribute document
+     * return the raw value (database value) of an attribute document
      * @api get the value of an attribute
      * @param string $idAttr attribute identifier
      * @param string $def default value returned if attribute not found or if is empty
@@ -2886,6 +2889,7 @@ create unique index i_docir on doc(initid, revision);";
      $level = $doc->getRawValue("tst_level","0");
      }
      * @endcode
+     * @see Doc::getAttributeValue
      * @return string the attribute value
      */
     final public function getRawValue($idAttr, $def = "")
@@ -2894,6 +2898,57 @@ create unique index i_docir on doc(initid, revision);";
         if (isset($this->$lidAttr) && ($this->$lidAttr != "")) return $this->$lidAttr;
         
         return $def;
+    }
+    /**
+     * get a typed value of an attribute
+     *
+     * return value of an attribute
+     * return null if value is empty
+     * return an array for multiple value
+     * return date in DateTime format, number in int or double
+     * @api get typed value of an attribute
+     * @param string $idAttr attribute identifier
+     * @throws Dcp\Exception DOC0114 code
+     * @see ErrorCodeDoc::DOC0114
+     * @return mixed the typed value
+     */
+    final public function getAttributeValue($idAttr)
+    {
+        /**
+         * @var \NormalAttribute $oa
+         */
+        $oa = $this->getAttribute($idAttr);
+        if (!$oa) {
+            throw new Dcp\Exception('DOC0114', $idAttr, $this->title, $this->fromname);
+        }
+        
+        if (empty($oa->isNormal)) {
+            throw new Dcp\Exception('DOC0116', $idAttr, $this->title, $this->fromname);
+        }
+        return Dcp\AttributeValue::getTypedValue($this, $oa);
+    }
+    /**
+     * Set a value to a document's attribute
+     * the affectation is only in object. To set modification in database the Doc::store() method must be
+     * call after modification
+     * @api Set a value to an attribute
+     * @param string $idAttr attribute identifier
+     * @param mixed $value the new value - value format must be compatible with type
+     * @throws Dcp\Exception
+     * @see ErrorCodeDoc::DOC0115
+     * @see ErrorCodeDoc::DOC0117
+     * @return void
+     */
+    final public function setAttributeValue($idAttr, $value)
+    {
+        $oa = $this->getAttribute($idAttr);
+        if (!$oa) {
+            throw new Dcp\Exception('DOC0115', $idAttr, $this->title, $this->fromname);
+        }
+        if (empty($oa->isNormal)) {
+            throw new Dcp\Exception('DOC0117', $idAttr, $this->title, $this->fromname);
+        }
+        Dcp\AttributeValue::setTypedValue($this, $oa, $value);
     }
     /**
      * return the value of an attribute document
@@ -3140,6 +3195,11 @@ create unique index i_docir on doc(initid, revision);";
             $err = $this->completeArrayRow($idAttr, false);
             if ($err == "") {
                 $ta = $this->attributes->getArrayElements($a->id);
+                $attrOut = array_diff(array_keys($tv) , array_keys($ta));
+                if ($attrOut) {
+                    return sprintf(_('attribute "%s" is not a part of array "%s"') , implode(', ', $attrOut) , $idAttr);
+                }
+                
                 $ti = array();
                 $err = "";
                 // add in each columns
@@ -3219,6 +3279,7 @@ create unique index i_docir on doc(initid, revision);";
      * If value is empty no modification are set. To reset a value use Doc::clearValue method.
      * an array can be use as value for values which are in arrays
      * @api affect value for an attribute
+     * @see Doc::setAttributeValue
      * @param string $attrid attribute identifier
      * @param string $value new value for the attribute
      * @param int $index only for array values affect value in a specific row
@@ -3282,8 +3343,8 @@ create unique index i_docir on doc(initid, revision);";
             }
             if ($value === " ") {
                 $value = ""; // erase value
-                if (!empty($this->$attrid)) {
-                    //print "change by delete $attrid  <BR>";
+                if ((!empty($this->$attrid)) || ($this->$attrid === "0")) {
+                    //print "change by delete $attrid  <BR>\n";
                     if ($this->_setValueDetectChange) {
                         $this->hasChanged = true;
                         $this->_oldvalue[$attrid] = $this->$attrid;
@@ -3398,16 +3459,22 @@ create unique index i_docir on doc(initid, revision);";
                                         break;
 
                                     case 'time':
-                                        $tt = explode(":", $avalue);
-                                        if (count($tt) == 2) {
-                                            list($hh, $mm) = $tt;
-                                            $tvalues[$kvalue] = sprintf("%02d:%02d", intval($hh) % 24, intval($mm) % 60);
-                                        } else if (count($tt) == 3) {
-                                            list($hh, $mm, $ss) = $tt;
-                                            $tvalues[$kvalue] = sprintf("%02d:%02d:%02d", intval($hh) % 24, intval($mm) % 60, intval($ss) % 60);
+                                        if (preg_match('/^(\d\d?):(\d\d?):?(\d\d?)?$/', $avalue, $reg)) {
+                                            $hh = intval($reg[1]);
+                                            $mm = intval($reg[2]);
+                                            $ss = isset($reg[3]) ? intval($reg[3]) : 0; // seconds are optionals
+                                            if ($hh < 0 || $hh > 23 || $mm < 0 || $mm > 59 || $ss < 0 || $ss > 59) {
+                                                return sprintf(_("value [%s] is out of limit time") , $avalue);
+                                            }
+                                            if (isset($reg[3])) {
+                                                $tvalues[$kvalue] = sprintf("%02d:%02d:%02d", $hh, $mm, $ss);
+                                            } else {
+                                                $tvalues[$kvalue] = sprintf("%02d:%02d", $hh, $mm);
+                                            }
                                         } else {
                                             return sprintf(_("value [%s] is not a valid time") , $avalue);
                                         }
+                                        
                                         break;
 
                                     case 'date':
@@ -3511,7 +3578,7 @@ create unique index i_docir on doc(initid, revision);";
                                     case 'text':
                                         $tvalues[$kvalue] = str_replace("\r", " ", $tvalues[$kvalue]);
                                         break;
-                                    }
+                                }
                             }
                         }
                     }
@@ -5813,7 +5880,10 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * convert flat attribute value to an array for multiple attributes
+     *
+     * use only for specific purpose. If need typed attributes use Doc::getAttribute()
      * @api convert flat attribute value to an array
+     * @see Doc::getAttributeValue
      * @param string $v value
      * @return array
      */
