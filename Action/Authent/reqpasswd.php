@@ -22,7 +22,7 @@ function reqpasswd(Action & $action)
     $action->parent->AddCssRef('AUTHENT:reqpasswd.css');
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
-    $action->parent->addJsRef("AUTHENT:loginform.js");
+    $action->parent->addJsRef("AUTHENT:loginform.js", true);
     $lang = $action->getArgument("lang");
     setLanguage($lang);
     return "";

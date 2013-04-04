@@ -13,7 +13,7 @@
     div.errormsg {
     margin : 10px;
     padding : 10px;
-    color : [COLOR_ERRORCOLOR];
+    color : [CORE_ERRORCOLOR];
     text-align:left;
     }
     div.errormsg:first-line{
@@ -21,69 +21,62 @@
     }
 </style>
 
-
+<div class="head">
+<div class="societe">[CORE_CLIENT]</div>
+</div>
         [IF finish]<div id="authform" class="authmain">
-        <center>
-      <div class="success form">
-       [TEXT:Password has been cnanged].<br/>
-       <a href=".">[TEXT:Connect now]</a>
-      </div> [ENDIF finish]
-        </center></div>
+<div id="main">
+    <div class="form">
+        <div class="zoneinput">
+            <div class="success form">
+                [TEXT:Password has been cnanged].<br/>
+                <div class="action">
+                    <a href=".">[TEXT:Connect now]</a>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+[ENDIF finish]
         [IFNOT finish]
+
+    <div id="authform" class="authmain" style="visibility:hidden">
 <form class="password"
       name="chgpwd"
+      id="chgpwd"
       method="POST" ENCTYPE="multipart/form-data"
       action="?app=AUTHENT&amp;action=CALLBACKREQPASSWD">
 
 <input type="hidden" name="uid" value="[uid]"/>
 <input type="hidden" name="token" value="[token]"/>
-<div id="authform" class="authmain">
-<center>
+<div id="main" style="visibility:hidden">
+
+          <div id="idbanner" class="banner">
+              <div class="realm">[CORE_REALM]<br/>[TEXT: Change password for] <strong>[username]</strong></div>
+          </div>
   <div class="form">
 
-    <div class="banner">
-      <table cellspacing="0"><tr>
-        <td><img width="48px" src="[CORE_LOGOCLIENT]" needresize="1"/></td>
-        <td><span class="societe">[CORE_CLIENT]</span><br/>[TEXT: Change password for] <strong>[username]</strong></td>
-      </tr></table>
-    </div>
-
     <div class="zoneinput">
-      <table cellspacing="0">
-        <tr>
-            <div class="pwd1">
+        <label for="pwd1" class="label" >[TEXT:New password] : </label>
+        <div class="input">
+            <input autocomplete="off"  type="password" name ="pwd1" id="pwd1"/>
+        </div>
+        <label for="pwd2" class="label">[TEXT:Confirm password] : </label>
+        <div class="input">
+            <input  autocomplete="off" type="password" name ="pwd2" id="pwd2"/>
+        </div>
 
-                </div>
-                <div class="pwd1">
-
-                </div>
-          <td class="label"><label for="pwd1">[TEXT:New password] : </label></td>
-          <td class="input"><input autocomplete="off"  type="password" name ="pwd1" id="pwd1"/></td>
-        </tr>
-        <tr>
-          <td class="label"><label for="pwd2">[TEXT:Confirm password] : </label></td>
-          <td class="input"><input  autocomplete="off" type="password" name ="pwd2" id="pwd2"/></td>
-        </tr>
-      </table>
+        <div id="msgerr" class="errormsg">[errortxt]</div>
+        <div class="action">
+            <a id="submit" href="javascript:document.chgpwd.submit();">[TEXT:Change password]</a>
+            <div style="clear:both"></div>
+        </div>
     </div>
-
-    <div id="msgerr" class="errormsg">[errortxt]</div>
-
-    <div class="buttons">
-
-      <a href="javascript:document.chgpwd.submit();">[TEXT:Change password]</a>
-
-    </div>
-
   </div>
-</center>
 </div>
-<input style="visibility:hidden" type="submit"/>
-</form>  [ENDIF finish]
-
-<script>
-//addEvent(window,'load',initZone);
-//addEvent(window,'resize',centerZone);
-</script>
+</form>
+</div>
+        [ENDIF finish]
 
         [ZONE CORE:HTMLFOOT]

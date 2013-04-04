@@ -15,7 +15,9 @@ function trackEnter(evt) {
     }
 
     if (intKeyCode == 13) { // enter key
-        login(document.loginform, "[TEXT:warning_name]", '[TEXT:warning_pass]');
+        if (document.loginform) login(document.loginform, "[TEXT:warning_name]", '[TEXT:warning_pass]');
+        else if (document.reqform) document.reqform.submit();
+        else if (document.chgpwd) document.chgpwd.submit();
         return false;
     } else
         return true;
