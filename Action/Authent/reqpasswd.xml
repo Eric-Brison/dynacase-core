@@ -2,7 +2,7 @@
     <div class="societe">[CORE_CLIENT]</div>
 </div>
 <form action="[CORE_BASEURL]app=AUTHENT&action=SUBMITREQPASSWD"
-      method="post" id="form" name="form">
+      method="post" id="reqform" name="reqform">
     <div id="authform" class="authmain" style="visibility:hidden">
 
 

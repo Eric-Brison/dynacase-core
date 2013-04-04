@@ -13,7 +13,7 @@ function callbackreqpasswd(Action & $action)
     $action->parent->AddCssRef('AUTHENT:loginform.css', true);
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
-    
+    $action->parent->addJsRef("AUTHENT:loginform.js", true);
     $action->lay->set('CALLBACK_OK', False);
     $action->lay->set('CALLBACK_NOT_OK', False);
     $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
