@@ -11,30 +11,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#ba_title"
 msgstr "Titre"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#fld_fr_prof"
 msgstr "Profils par défaut"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#fld_fr_rest"
 msgstr "Restrictions"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#fld_tfam"
 msgstr ""
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#fr_basic"
 msgstr "Basique"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#grp_adduser"
 msgstr "Gérer les membres"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#grp_fr"
 msgstr "Groupes"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#grp_fr_ident"
 msgstr "Identification"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#grp_hasmail"
 msgstr "Sans adresse mail de groupe"
 
@@ -49,18 +58,21 @@ msgstr ""
 msgid "GROUP#grp_hasmail#no"
 msgstr "sans adresse mail"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#grp_idgroup"
 msgstr "Sous groupes"
 
 msgid "GROUP#grp_idgroup#showempty"
 msgstr "Aucun sous groupe"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#grp_idpgroup"
 msgstr "Groupes parents"
 
 msgid "GROUP#grp_idpgroup#showempty"
 msgstr "Aucun groupe parent"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#grp_isrefreshed"
 msgstr "Est rafraîchi"
 
@@ -70,12 +82,15 @@ msgstr "non"
 msgid "GROUP#grp_isrefreshed#1"
 msgstr "oui"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#grp_mail"
 msgstr "Mail"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#grp_name"
 msgstr "Nom"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "GROUP#grp_refresh"
 msgstr "Rafraîchir"
 

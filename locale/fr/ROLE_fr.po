@@ -11,17 +11,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "ROLE#role_fr_ident"
 msgstr "Identification"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "ROLE#role_login"
 msgstr "Référence"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "ROLE#role_name"
 msgstr "Libellé"
 
 msgid "ROLE#title"
 msgstr "Rôle"
 
+#: App/Fusers/accountprofil.ods.csv
 msgid "ROLE#us_whatid"
 msgstr "Identifiant système"
