@@ -835,6 +835,8 @@ class DocFormFormat
         private function formatEnum($value)
         {
             global $action;
+            
+            $trueNotd = $this->notd;
             if ($this->oattr->eformat == "") $this->oattr->eformat = $this->oattr->getOption("eformat");
             if (($this->oattr->repeat) && (!$this->oattr->inArray())) { // enumlist
                 switch ($this->oattr->eformat) {
@@ -897,7 +899,7 @@ class DocFormFormat
                 if (($this->visibility == "R") || ($this->visibility == "S")) $lay->set("disabled", $this->idisabled);
                 else $lay->set("disabled", "");
                 
-                $lay->set("NOTD", $this->notd);
+                $lay->set("NOTD", $trueNotd);
                 $input = $lay->gen();
                 return $input;
             }
