@@ -44,6 +44,24 @@ namespace {
          */
         const VALUE0006 = 'attribute "%s", (family "%s", document "%s") : cannot set single attribute with an array  "%s"';
 
+        /**
+         * @errorCode error during set a complete array
+         * @see Doc::setAttributeValue
+         */
+        const VALUE0007 = 'attribute "%s", (family "%s", document "%s") : cannot update array  "%s"';
+
+        /**
+         * @errorCode only array values must be used to set a complete array
+         * @see Doc::setAttributeValue
+         */
+        const VALUE0008 = 'attribute "%s", (family "%s", document "%s") : array value is requires to set array attribute  "%s"';
+
+        /**
+         * @errorCode error during set a complete array. Each row must be an array
+         * @see Doc::setAttributeValue
+         */
+        const VALUE0009 = 'attribute "%s", (family "%s", document "%s") : a row is not an array. Cannot update array  "%s"';
+
 
         /**
          * @errorCode a int attribute must containt int value

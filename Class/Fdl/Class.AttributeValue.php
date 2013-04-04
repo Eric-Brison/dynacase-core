@@ -198,6 +198,20 @@ private static function getArrayValues(\Doc & $doc, \NormalAttribute & $oAttr)
     }
     throw new \Dcp\AttributeValue\Exception('VALUE0100', $oAttr->id, $doc->title, $doc->fromname);
 }
+
+private static function setTypedArrayValue(\Doc & $doc, \NormalAttribute & $oAttr, array $value)
+{
+    $doc->clearArrayValues($oAttr->id);
+    foreach ($value as $row) {
+        if (!is_array($row)) {
+            throw new \Dcp\AttributeValue\Exception('VALUE0009', $oAttr->id, $doc->fromname, $doc->getTitle() , print_r($row, true));
+        }
+        $err = $doc->addArrayRow($oAttr->id, $row);
+        if ($err) {
+            throw new \Dcp\AttributeValue\Exception('VALUE0007', $oAttr->id, $doc->fromname, $doc->getTitle() , $err);
+        }
+    }
+}
 /**
  * Set a new value to an attribute document
  * @param \Doc $doc
@@ -213,7 +227,11 @@ public static function setTypedValue(\Doc & $doc, \NormalAttribute & $oAttr, $va
     }
     $err = '';
     if ($value === null) {
-        $err = $doc->clearValue($oAttr->id);
+        if ($oAttr->type == "array") {
+            self::setTypedArrayValue($doc, $oAttr, array());
+        } else {
+            $err = $doc->clearValue($oAttr->id);
+        }
     } else if ($oAttr->isMultiple()) {
         
         if (!is_array($value)) {
@@ -241,8 +259,10 @@ public static function setTypedValue(\Doc & $doc, \NormalAttribute & $oAttr, $va
             }
         }
     } elseif ($oAttr->type == "array") {
-        // TODO
-        
+        if (!is_array($value)) {
+            throw new \Dcp\AttributeValue\Exception('VALUE0008', $oAttr->id, $doc->fromname, $doc->getTitle() , print_r($value, true));
+        }
+        self::setTypedArrayValue($doc, $oAttr, $value);
     } else {
         if (is_array($value)) {
             throw new \Dcp\AttributeValue\Exception('VALUE0006', $oAttr->id, $doc->fromname, $doc->getTitle() , print_r($value, true));

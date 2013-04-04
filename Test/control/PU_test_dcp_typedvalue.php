@@ -250,7 +250,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         return array(
             array(
                 'TST_DOCTYPE1',
-                array(
+                "set" => array(
                     "tst_date" => '2013-04-21',
                     "tst_time" => '10:00',
                     "tst_int" => "23",
@@ -263,7 +263,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                         "2013-09-30T10:00:00"
                     )
                 ) ,
-                array(
+                "get" => array(
                     "tst_date" => '2013-04-21',
                     "tst_time" => '10:00:00',
                     "tst_int" => 23,
@@ -279,7 +279,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
             ) ,
             array(
                 'TST_DOCTYPE1',
-                array(
+                "set" => array(
                     "tst_date" => new \DateTime('2013-04-21') ,
                     "tst_time" => '1:2:5',
                     "tst_timestamp" => new \DateTime('2013-09-30 10:00:00') ,
@@ -291,7 +291,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                         new \DateTime("2013-09-30T10:00:00")
                     )
                 ) ,
-                array(
+                "get" => array(
                     "tst_date" => '2013-04-21',
                     "tst_time" => '01:02:05',
                     "tst_timestamp" => '2013-09-30T10:00:00',
@@ -301,6 +301,221 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                     ) ,
                     "tst_timestamps" => array(
                         "2013-09-30T10:00:00"
+                    )
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE2',
+                "set" => array(
+                    "tst_t_numbers" => array(
+                        array(
+                            "tst_ints1" => "23",
+                            "tst_doubles1" => 23.6
+                        )
+                    )
+                ) ,
+                "get" => array(
+                    
+                    "tst_t_numbers" => array(
+                        array(
+                            "tst_ints1" => 23,
+                            "tst_doubles1" => 23.6
+                        )
+                    )
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE2',
+                "set" => array(
+                    "tst_t_numbers" => array(
+                        array(
+                            "tst_ints1" => "20",
+                            "tst_doubles1" => 20.0
+                        ) ,
+                        array(
+                            "tst_ints1" => "21"
+                        ) ,
+                        array(
+                            "tst_doubles1" => "22.2"
+                        ) ,
+                        array() ,
+                        array(
+                            "tst_ints1" => "23",
+                            "tst_doubles1" => 23.6
+                        ) ,
+                        array(
+                            "tst_ints1" => 0,
+                            "tst_doubles1" => 0
+                        ) ,
+                    )
+                ) ,
+                "get" => array(
+                    
+                    "tst_t_numbers" => array(
+                        array(
+                            "tst_ints1" => 20,
+                            "tst_doubles1" => 20.0
+                        ) ,
+                        array(
+                            "tst_ints1" => 21,
+                            "tst_doubles1" => null
+                        ) ,
+                        array(
+                            "tst_ints1" => null,
+                            "tst_doubles1" => 22.2
+                        ) ,
+                        array(
+                            "tst_ints1" => null,
+                            "tst_doubles1" => null
+                        ) ,
+                        array(
+                            "tst_ints1" => 23,
+                            "tst_doubles1" => 23.6
+                        ) ,
+                        array(
+                            "tst_ints1" => 0,
+                            "tst_doubles1" => 0.0
+                        )
+                    )
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE2',
+                "set" => array(
+                    "tst_texts" => array(
+                        ''
+                    )
+                ) ,
+                "get" => array(
+                    "tst_texts" => array() // last empty values are deleted
+                    
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE2',
+                "set" => array(
+                    "tst_texts" => array(
+                        '',
+                        ''
+                    )
+                ) ,
+                "get" => array(
+                    "tst_texts" => array() // last empty values are deleted
+                    
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE2',
+                "set" => array(
+                    "tst_texts" => array(
+                        '',
+                        'a',
+                        ''
+                    )
+                ) ,
+                "get" => array(
+                    "tst_texts" => array(
+                        null,
+                        'a'
+                    ) // last empty values are deleted
+                    
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE2',
+                "set" => array(
+                    "tst_t_text" => array(
+                        array(
+                            "tst_texts" => ''
+                        )
+                    )
+                ) ,
+                "get" => array(
+                    "tst_texts" => array(
+                        null
+                    ) // last empty values are not deleted
+                    
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE2',
+                "set" => array(
+                    "tst_t_text" => array(
+                        array(
+                            "tst_texts" => ''
+                        ) ,
+                        array(
+                            "tst_texts" => null
+                        )
+                    )
+                ) ,
+                "get" => array(
+                    "tst_texts" => array(
+                        null,
+                        null
+                    ) // last empty values are not deleted
+                    
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE2',
+                "set" => array(
+                    "tst_t_numbers" => null
+                ) ,
+                "get" => array(
+                    "tst_t_numbers" => array()
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE2',
+                "set" => array(
+                    "tst_t_numbers" => array()
+                ) ,
+                "get" => array(
+                    "tst_t_numbers" => array()
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE2',
+                "set" => array(
+                    "tst_t_numbers" => array(
+                        array(
+                            "tst_ints1" => "20",
+                            "tst_doubles1" => 20.0
+                        ) ,
+                        array(
+                            "tst_ints1" => "21"
+                        ) ,
+                        array(
+                            "tst_doubles1" => "22.2"
+                        ) ,
+                        array() ,
+                        array() ,
+                    )
+                ) ,
+                "get" => array(
+                    
+                    "tst_t_numbers" => array(
+                        array(
+                            "tst_ints1" => 20,
+                            "tst_doubles1" => 20.0
+                        ) ,
+                        array(
+                            "tst_ints1" => 21,
+                            "tst_doubles1" => null
+                        ) ,
+                        array(
+                            "tst_ints1" => null,
+                            "tst_doubles1" => 22.2
+                        ) ,
+                        array(
+                            "tst_ints1" => null,
+                            "tst_doubles1" => null
+                        ) ,
+                        array(
+                            "tst_ints1" => null,
+                            "tst_doubles1" => null
+                        ) ,
                     )
                 )
             )
@@ -548,6 +763,40 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                 "tst_title",
                 new \DateTime() ,
                 "VALUE0005"
+            ) ,
+            array(
+                'TST_DOCTYPE1',
+                "tst_t_numbers",
+                new \DateTime() ,
+                "VALUE0008"
+            ) ,
+            array(
+                'TST_DOCTYPE1',
+                "tst_t_numbers",
+                array(
+                    new \DateTime()
+                ) ,
+                "VALUE0009"
+            ) ,
+            array(
+                'TST_DOCTYPE1',
+                "tst_t_numbers",
+                array(
+                    23,
+                    45
+                ) ,
+                "VALUE0009"
+            ) ,
+            array(
+                'TST_DOCTYPE1',
+                "tst_t_numbers",
+                array(
+                    array(
+                        23,
+                        45
+                    )
+                ) ,
+                "VALUE0007"
             )
         );
     }
