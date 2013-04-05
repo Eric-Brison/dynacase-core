@@ -27,6 +27,7 @@ class DocHtmlFormat
      * @var string
      */
     private $cFormat = '';
+    private $cancelFormat = false;
     private $htmlLink = true;
     private $useEntities = true;
     private $abstractMode = false;
@@ -45,6 +46,8 @@ class DocHtmlFormat
         $this->doc = $doc;
     }
     /**
+     * get html fragment for a value of an attribute
+     * for multiple values if index >= 0 the value must be the ith value of array values
      * @param NormalAttribute $oattr
      * @param string $value raw value
      * @param string $target
@@ -62,14 +65,15 @@ class DocHtmlFormat
         $this->target = $target;
         $this->index = $index;
         $this->cFormat = $this->oattr->format;
+        $this->cancelFormat = false;
         $atype = $this->oattr->type;
         $this->htmlLink = $htmlLink;
         $this->useEntities = $useEntities;
         $this->abstractMode = $abstractMode;
-
+        
         $showEmpty = $this->oattr->getOption('showempty');
         
-        if (($this->oattr->repeat) && ($this->index <= 0)) {
+        if (($this->oattr->repeat) && ($this->index < 0)) {
             $tvalues = explode("\n", $value);
         } else {
             $tvalues[$this->index] = $value;
@@ -77,7 +81,7 @@ class DocHtmlFormat
         $this->attrid = $this->oattr->id;
         $thtmlval = array();
         foreach ($tvalues as $kvalue => $avalue) {
-            if($abstractMode && empty($avalue) && !$showEmpty){
+            if ($abstractMode && empty($avalue) && !$showEmpty) {
                 $thtmlval[$kvalue] = '';
             } else {
                 switch ($atype) {
@@ -90,28 +94,28 @@ class DocHtmlFormat
                         break;
 
                     case "file":
-
+                        
                         $htmlval = $this->formatFile($kvalue, $avalue);
                         break;
 
                     case "longtext":
                     case "xml":
-
+                        
                         $htmlval = $this->formatLongtext($kvalue, $avalue);
                         break;
 
                     case "password":
-
+                        
                         $htmlval = $this->formatPassword($kvalue, $avalue);
                         break;
 
                     case "enum":
-
+                        
                         $htmlval = $this->formatEnum($kvalue, $avalue);
                         break;
 
                     case "array":
-
+                        
                         $htmlval = $this->formatArray($kvalue, $avalue);
                         break;
 
@@ -128,43 +132,43 @@ class DocHtmlFormat
                         break;
 
                     case "thesaurus":
-
+                        
                         $htmlval = $this->formatThesaurus($kvalue, $avalue);
                         break;
 
                     case "option":
-
+                        
                         $htmlval = $this->formatOption($kvalue, $avalue);
                         break;
 
                     case 'money':
-
+                        
                         $htmlval = $this->formatMoney($kvalue, $avalue);
                         break;
 
                     case 'htmltext':
-
+                        
                         $htmlval = $this->formatHtmltext($kvalue, $avalue);
                         break;
 
                     case 'date':
-
+                        
                         $htmlval = $this->formatDate($kvalue, $avalue);
                         break;
 
                     case 'time':
-
+                        
                         $htmlval = $this->formatTime($kvalue, $avalue);
                         break;
 
                     case 'timestamp':
-
+                        
                         $htmlval = $this->formatTimeStamp($kvalue, $avalue);
-
+                        
                         break;
 
                     case 'ifile':
-
+                        
                         $htmlval = $this->formatIfile($kvalue, $avalue);
                         break;
 
@@ -174,13 +178,14 @@ class DocHtmlFormat
 
                     default:
                         $htmlval = $this->formatDefault($kvalue, $avalue);
-
+                        
                         break;
                 }
-
+                
                 $abegin = $aend = '';
+                
                 if ($htmlval === '' && $showEmpty) {
-                    if($abstractMode){
+                    if ($abstractMode) {
                         // if we are not in abstract mode, the same heuristic is at array level,
                         // but arrays does not exists in abstract mode
                         if (!$oattr->inArray()) {
@@ -195,7 +200,7 @@ class DocHtmlFormat
                 } elseif ($htmlval === "\t" && $oattr->inArray() && $showEmpty) {
                     // array with single empty line
                     $htmlval = $showEmpty;
-                } elseif (($this->cFormat != "") && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
+                } elseif (($this->cFormat != "" && $this->cancelFormat === false) && ($htmlval !== '') && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
                     //printf($htmlval);
                     $htmlval = sprintf($this->cFormat, $htmlval);
                 }
@@ -212,13 +217,13 @@ class DocHtmlFormat
                     if ($ulink = $this->doc->urlWhatEncode($hlink, $kvalue)) {
                         if ($this->target == "ext") {
                             if (preg_match("/FDL_CARD.*id=([0-9]+)/", $ulink, $reg)) {
-
+                                
                                 $abegin = $this->doc->getDocAnchor($reg[1], $this->target, true, html_entity_decode($htmlval, ENT_QUOTES, 'UTF-8'));
                                 $htmlval = '';
                                 $aend = "";
                             } else if (true || preg_match("/^http:/", $ulink, $reg)) {
                                 $ec = getSessionValue("ext:targetUrl");
-
+                                
                                 if ($ec) {
                                     $ec = str_replace("%V%", $ulink, $ec);
                                     $ec = str_replace("%L%", $this->oattr->getLabel() , $ec);
@@ -228,7 +233,7 @@ class DocHtmlFormat
                                     $ltarget = $this->oattr->getOption("ltarget");
                                     $abegin = "<a target=\"$ltarget\"  href=\"$ulink\">";
                                 }
-
+                                
                                 $aend = "</a>";
                             }
                         } else if ($this->target == "mail") {
@@ -269,7 +274,7 @@ class DocHtmlFormat
                     $abegin = "";
                     $aend = "";
                 }
-
+                
                 $thtmlval[$kvalue] = $abegin . $htmlval . $aend;
             }
         }
@@ -415,6 +420,7 @@ class DocHtmlFormat
         } else {
             if ($this->oattr->getOption('showempty')) {
                 $htmlval = $this->oattr->getOption('showempty');
+                $this->cancelFormat = true;
             } else {
                 $htmlval = _("no filename");
             }
@@ -865,7 +871,7 @@ class DocHtmlFormat
     {
         if ($this->oattr->format != "") {
             
-            $this->cFormat = "";
+            $this->cancelFormat = true;
             $multiple = ($this->oattr->getOption("multiple") == "yes");
             $dtarget = $this->target;
             if ($this->target != "mail") {
@@ -917,7 +923,7 @@ class DocHtmlFormat
      */
     public function formatThesaurus($kvalue, $avalue)
     {
-        $this->cFormat = "";
+        $this->cancelFormat = true;
         $multiple = ($this->oattr->getOption("multiple") == "yes");
         if ($multiple) {
             $avalue = str_replace("\n", "<BR>", $avalue);
@@ -979,10 +985,15 @@ class DocHtmlFormat
     {
         if ($avalue == '' && $this->oattr->getOption('showempty')) {
             $htmlval = $this->oattr->getOption('showempty');
+            $this->cancelFormat = true;
         } else {
-            $htmlval = money_format('%!.2n', doubleval($avalue));
-            $htmlval = str_replace(" ", "&nbsp;", $htmlval); // need to replace space by non breaking spaces
-            
+            if ($avalue !== '') {
+                $htmlval = money_format('%!.2n', doubleval($avalue));
+                $htmlval = str_replace(" ", "&nbsp;", $htmlval); // need to replace space by non breaking spaces
+                
+            } else {
+                $htmlval = '';
+            }
         }
         return $htmlval;
     }
@@ -998,6 +1009,7 @@ class DocHtmlFormat
     {
         if ($avalue == '' && $this->oattr->getOption('showempty')) {
             $avalue = $this->oattr->getOption('showempty');
+            $this->cancelFormat = true;
         }
         $shtmllink = $this->htmlLink ? "true" : "false";
         $avalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->doc->getDocAnchor('\\2',\"$this->target\",$shtmllink)", $avalue);
@@ -1047,7 +1059,7 @@ class DocHtmlFormat
         } else {
             $htmlval = stringDateToLocaleDate($avalue);
         }
-        $this->cFormat = "";
+        $this->cancelFormat = true;
         return $htmlval;
     }
     /**
@@ -1064,10 +1076,14 @@ class DocHtmlFormat
             if ($avalue) $htmlval = strftime($this->cFormat, strtotime($avalue));
             else $htmlval = $avalue;
         } else {
-            $htmlval = substr($avalue, 0, 5); // do not display second
-            
+            if ($avalue) {
+                $htmlval = (string)substr($avalue, 0, 5); // do not display second
+                
+            } else {
+                $htmlval = '';
+            }
         }
-        $this->cFormat = "";
+        $this->cancelFormat = true;
         return $htmlval;
     }
     /**
@@ -1088,7 +1104,7 @@ class DocHtmlFormat
         } else {
             $htmlval = stringDateToLocaleDate($avalue);
         }
-        $this->cFormat = "";
+        $this->cancelFormat = true;
         return $htmlval;
     }
     /**

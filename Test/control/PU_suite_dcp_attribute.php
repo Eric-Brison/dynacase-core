@@ -20,6 +20,7 @@ class SuiteDcpAttribute
         $suite = new FrameworkDcp('Package');
         
         $suite->addTestSuite('DCP\PU\TestTypedValue');
+        $suite->addTestSuite('DCP\PU\TestHtmlValue');
         $suite->addTestSuite('Dcp\Pu\TestAddArrayRow');
         $suite->addTestSuite('Dcp\Pu\TestGetResPhpFunc');
         $suite->addTestSuite('Dcp\Pu\TestGetEnum');
