@@ -59,10 +59,11 @@ function addmdocs(n) {
   var ti;
   var nid,ntitle,nval;
 
-  if(addmdocsSemaphore[n]) {
+  var lockId = n;
+  if(addmdocsSemaphore[lockId]) {
 	  return;
   }
-  addmdocsSemaphore[n] = true;
+  addmdocsSemaphore[lockId] = true;
 
 
   tiid=[];
@@ -112,7 +113,7 @@ function addmdocs(n) {
       }
     }
   }
-  addmdocsSemaphore[n] = false;
+  addmdocsSemaphore[lockId] = false;
 }
 function addmdocsattrid(attrid,nid,ntitle) {
   var isel;
