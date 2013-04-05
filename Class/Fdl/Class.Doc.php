@@ -3426,9 +3426,15 @@ create unique index i_docir on doc(initid, revision);";
                                         }
                                         $tvalues[$kvalue] = str_replace(",", ".", $avalue);
                                         $tvalues[$kvalue] = str_replace(" ", "", $tvalues[$kvalue]);
-                                        if (($avalue != "\t") && (!is_numeric($tvalues[$kvalue]))) {
-                                            return sprintf(_("value [%s] is not a number") , $tvalues[$kvalue]);
+                                        if ($avalue != "\t") {
+                                            if (!is_numeric($tvalues[$kvalue])) {
+                                                return sprintf(_("value [%s] is not a number") , $tvalues[$kvalue]);
+                                            } else {
+                                                $tvalues[$kvalue] = (string)((double)$tvalues[$kvalue]); // delete non signifiant zeros
+                                                
+                                            }
                                         }
+                                        
                                         break;
 
                                     case 'money':
@@ -6108,7 +6114,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         if ($index != - 1) $v = $this->getMultipleRawValues($attrid, "", $index);
         else $v = $this->getRawValue($attrid);
-        if ($v == "") return $v;
+        
         return $this->GetHtmlValue($this->getAttribute($attrid) , $v, $target, $htmllink, $index, $entities, $abstract);
     }
     /**
