@@ -823,6 +823,7 @@ class NormalAttribute extends BasicAttribute
                 $return = $this->getTextualValueEnum($doc, $index);
                 break;
 
+            case 'account':
             case 'thesaurus':
             case 'docid':
                 $return = $this->getTextualValueDocId($doc, $index);
