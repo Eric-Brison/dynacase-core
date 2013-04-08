@@ -1,0 +1,23 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BASE \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2013-04-08T14:34:11+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/misc.ods.csv
+msgid "BASE#ba_title"
+msgstr "Title"
+
+#: App/Fdl/misc.ods.csv
+msgid "BASE#fr_basic"
+msgstr "Basic"
+
+msgid "BASE#title"
+msgstr "Basic"
