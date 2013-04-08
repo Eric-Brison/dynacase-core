@@ -159,17 +159,6 @@ class ApplicationParameterManager
             throw new \Dcp\ApplicationParameterManager\Exception("APM0006", $applicationId, $parameterName, $err);
         }
         self::$cache[$applicationId . ' ' . $parameterName . ' ' . $userId] = $value;
-        
-        if ($action) {
-            $action->parent->session->closeAll($userId);
-            if ($action->parent->session->isAffected()) {
-                $session = $action->parent->session;
-            } else {
-                $session = new Session(Session::PARAMNAME);
-            }
-            
-            $session->closeAll($userId);
-        }
     }
     /**
      * Set the user parameter default value
@@ -217,7 +206,7 @@ class ApplicationParameterManager
         } else {
             $parameter = new Param(getDbAccess());
         }
-
+        
         $type = ($isGlobal === "G") ? PARAM_GLB : PARAM_APP;
         
         $err = $parameter->set($parameterName, $value, $type, $applicationId);
@@ -226,16 +215,6 @@ class ApplicationParameterManager
             throw new \Dcp\ApplicationParameterManager\Exception("APM0009", $parameterName, $applicationId, $err);
         }
         self::$cache[$applicationId . ' ' . $parameterName] = $value;
-        
-        if ($action) {
-            $action->parent->session->closeAll();
-            if ($action->parent->session->isAffected()) {
-                $session = $action->parent->session;
-            } else {
-                $session = new Session(Session::PARAMNAME);
-            }
-            $session->closeAll();
-        }
     }
     /**
      * Get a parameter value in the database

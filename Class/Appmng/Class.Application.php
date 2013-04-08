@@ -235,18 +235,20 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         
         if ($session != "") $this->SetSession($session);
-        $sessparam = false;
         $this->param = new Param($this->dbaccess);
-        if ($this->session) $sessparam = $this->session->read("sessparam" . $this->id, false);
-        if ($sessparam) {
-            $this->param->appid = $this->id;
-            $this->param->buffer = $sessparam;
-            $this->InitStyle(false);
+        $style = false;
+        if ($this->session) $style = $this->session->read("userCoreStyle", false);
+        
+        if ($style) {
+            $this->InitStyle(false, $style);
         } else {
             $this->InitStyle();
-            $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : false, $this->style->name);
-            if ($this->session) $this->session->register("sessparam" . $this->id, $this->param->buffer);
         }
+        if ((!$style) && $this->session) {
+            $this->session->register("userCoreStyle", $this->getParam("STYLE"));
+        }
+        
+        $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : false, $this->style->name);
         if (!$this->rootdir) $this->rootdir = $this->Getparam("CORE_PUBDIR");
         if ($this->available == "N") {
             // error
@@ -819,7 +821,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * create style parameters
      * @param bool $init
      */
-    public function initStyle($init = true)
+    public function initStyle($init = true, $useStyle = '')
     {
         if ($init == true) {
             if (isset($this->user)) $pstyle = new Param($this->dbaccess, array(
@@ -843,15 +845,17 @@ create sequence SEQ_ID_APPLICATION start 10;
             
             $this->style->Set($this);
         } else {
-            $style = $this->getParam("STYLE");
+            $style = ($useStyle) ? $useStyle : $this->getParam("STYLE");
             $this->style = new Style($this->dbaccess, $style);
             
             $this->style->Set($this);
         }
-        if ("Y" == $this->style->parsable) {
-            $this->AddCssRef("$style:gen.css", true);
-        } else {
-            $this->AddCssRef("STYLE/$style/Layout/gen.css");
+        if ($style) {
+            if ("Y" == $this->style->parsable) {
+                $this->AddCssRef("$style:gen.css", true);
+            } else {
+                $this->AddCssRef("STYLE/$style/Layout/gen.css");
+            }
         }
         $size = $this->getParam("FONTSIZE", "normal");
         $this->AddCssRef("WHAT/Layout/size-$size.css");
