@@ -538,6 +538,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return $rl;
     }
+
     /**
      * Add a CSS in an action
      *
@@ -549,10 +550,32 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param bool $needparse if true will be parsed by the template engine (false by default)
      * @param string $packName use it to pack all the ref with the same packName into a single file
      *
+     * @throws Dcp\Style\Exception
      * @return string the path of the added ref or "" if the ref is not valid
      */
-    public function addCssRef($ref, $needparse = false, $packName = '')
+    public function addCssRef($ref, $needparse = null, $packName = '')
     {
+        $currentFileRule = $this->style->getRule('css', $ref);
+        if(is_array($currentFileRule)){
+            if(isset($currentFileRule['flags']) && ($currentFileRule['flags'] & Style::RULE_FLAG_PARSE_ON_RUNTIME)){
+                if(is_array($currentFileRule['runtime_parser']) && isset($currentFileRule['runtime_parser']['className']) && null !== $currentFileRule['parse_on_runtime']['className']){
+                    throw new \Dcp\Style\Exception("STY0007", 'custom parse_on_runtime class is not supported yet');
+                }
+                $parseOnLoad = true;
+                if( (null !== $needparse) && ($parseOnLoad !== $needparse) ){
+                    $this->log->warning(
+                        sprintf("%s was added with needParse to %s but style has a rule saying %s"),
+                        $ref,
+                        var_export($needparse, true),
+                        var_export($parseOnLoad, true)
+                    );
+                }
+                $needparse = $parseOnLoad;
+            }
+        }
+        if(null === $needparse){
+            $needparse = false;
+        }
         if (substr($ref, 0, 2) == './') $ref = substr($ref, 2);
         return $this->AddRessourceRef('css', $ref, $needparse, $packName);
     }
@@ -852,7 +875,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         if ($style) {
             if ("Y" == $this->style->parsable) {
-                $this->AddCssRef("$style:gen.css", true);
+deprecatedFunction("use of parsable property on style is deprecated");                $this->AddCssRef("$style:gen.css", true);
             } else {
                 $this->AddCssRef("STYLE/$style/Layout/gen.css");
             }

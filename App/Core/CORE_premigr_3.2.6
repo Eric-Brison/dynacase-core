@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -e
+
+if [ -z "$wpub" ]; then
+    echo "Undefined or empty wpub environment variable!"
+    exit 1
+fi
+
+if [ -z "$pgservice_core" ]; then
+    echo "Undefined or empty pgservice_core!"
+    exit 1
+fi
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << SQL
+-- add column files_definition to table style
+ALTER TABLE style ADD COLUMN rules text;
+SQL
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error adding column rules to table style."
+    exit $RET
+fi
+
+$wpub/wsh.php --api=updateclass --class=Style
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error updating class Style."
+    exit $RET
+fi
+
+exit 0
