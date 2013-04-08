@@ -195,16 +195,6 @@ class ParameterManager
         if (isset(self::$cache[$appName][$name])) self::$cache[$appName][$name] = $value;
         
         $a = self::getAction();
-        if ($a) {
-            $a->parent->session->closeAll();
-            if ($a->parent->session->isAffected()) {
-                $s = $a->parent->session;
-            } else {
-                $s = new Session(Session::PARAMNAME);
-            }
-            
-            $s->closeAll();
-        }
     }
     private static function setUserApplicationTypeParameter($userId, $appName, $appId, $name, $value)
     {
@@ -225,17 +215,5 @@ class ParameterManager
             throw new \Dcp\PMGT\Exception("PMGT0005", $name, $appName, $err);
         }
         if (isset(self::$cache[$appName][$name])) self::$cache[$appName][$name] = $value;
-        
-        $a = self::getAction();
-        if ($a) {
-            $a->parent->session->closeAll($userId);
-            if ($a->parent->session->isAffected()) {
-                $s = $a->parent->session;
-            } else {
-                $s = new Session(Session::PARAMNAME);
-            }
-            
-            $s->closeAll($userId);
-        }
     }
 }

@@ -95,15 +95,6 @@ class Param extends DbObj
         if ($pdef->isAffected()) {
             if ($pdef->isglob == 'Y') {
                 $appid = $pdef->appid;
-                if ($action) {
-                    if ($type[0] != PARAM_USER) {
-                        $action->parent->session->close(); // need to refresh all application parameters
-                        $action->parent->session->set(); // reopen current session
-                        
-                    } else {
-                        $action->parent->session->replaceGlobalParam($name, $val);
-                    }
-                }
             }
         }
         $this->appid = $appid;
@@ -156,20 +147,21 @@ class Param extends DbObj
             PARAM_USER . $userid,
             "1"
         ));
+        $out = array();
         if ($psize->val != '') $size = $psize->val;
         else $size = 'normal';
         $size = 'SIZE_' . strtoupper($size);
-        $query = new QueryDb($this->dbaccess, "Param");
+        
         if ($appid) {
             if ($userid) {
-                $list = $query->Query(0, 0, "TABLE", "select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where " . "(paramv.type = '" . PARAM_GLB . "') " . " OR (paramv.type='" . PARAM_APP . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_USER . $userid . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_USER . $userid . "' and paramdef.isglob='Y')" . " OR (paramv.type='" . PARAM_STYLE . $styleid . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_STYLE . $styleid . "' and paramdef.isglob='Y')" . " OR (paramv.type='" . PARAM_STYLE . $size . "')" . " order by paramv.name, paramv.type desc");
+                $sql = "select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where " . "(paramv.type = '" . PARAM_GLB . "') " . " OR (paramv.type='" . PARAM_APP . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_USER . $userid . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_USER . $userid . "' and paramdef.isglob='Y')" . " OR (paramv.type='" . PARAM_STYLE . $styleid . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_STYLE . $styleid . "' and paramdef.isglob='Y')" . " OR (paramv.type='" . PARAM_STYLE . $size . "')" . " order by paramv.name, paramv.type desc";
             } else {
-                $list = $query->Query(0, 0, "TABLE", sprintf("SELECT * from paramv where type='G' or (type='A' and appid=%d);", $appid));
+                $sql = sprintf("SELECT * from paramv where type='G' or (type='A' and appid=%d);", $appid);
             }
-        }
-        $out = array();
-        if ($query->nb != 0) {
-            while (list($k, $v) = each($list)) {
+            
+            simpleQuery($this->dbaccess, $sql, $list);
+            
+            foreach ($list as $v) {
                 $out[$v["name"]] = $v["val"];
             }
         } else {

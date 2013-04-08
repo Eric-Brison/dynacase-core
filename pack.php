@@ -31,7 +31,7 @@ function exitError($text)
     exit;
 }
 
-$cookName = 'freedom_param'; // see Session::PARAMNAME .. not included here to be independant
+$cookName = 'dcpsession'; // see Session::PARAMNAME .. not included here to be independant
 if (!isset($_COOKIE[$cookName])) exitError('Not connected');
 $sessid = $_COOKIE[$cookName];
 

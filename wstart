@@ -44,7 +44,7 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 #clear current sessions
-PGSERVICE="$pgservice_core" psql -c "delete from sessions where name='freedom_param'" > /dev/null
+PGSERVICE="$pgservice_core" psql -c "delete from sessions where name='dcpsession'" > /dev/null
 
 #change pg mode connection
 cdb=`"$wpub/wsh.php" --api=get_param --param=CORE_DBCONNECT`

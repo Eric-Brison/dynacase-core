@@ -49,14 +49,17 @@ function getMainAction($auth, &$action)
         }
     }
     
-    if (isset($_COOKIE[Session::PARAMNAME])) $sess_num = $_COOKIE[Session::PARAMNAME];
-    else $sess_num = GetHttpVars(Session::PARAMNAME); //$_GET["session"];
-    $session = new Session();
-    if (!$session->Set($sess_num)) {
-        print "<strong>:~((</strong>";
-        exit;
-    };
-    
+    if (isset($auth->auth_session)) {
+        $session = $auth->auth_session;
+    } else {
+        $session = new Session();
+        if (isset($_COOKIE[Session::PARAMNAME])) $sess_num = $_COOKIE[Session::PARAMNAME];
+        else $sess_num = GetHttpVars(Session::PARAMNAME); //$_GET["session"];
+        if (!$session->Set($sess_num)) {
+            print "<strong>:~((</strong>";
+            exit;
+        };
+    }
     $core = new Application();
     $core->Set("CORE", $CoreNull, $session);
     
