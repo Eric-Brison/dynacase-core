@@ -154,11 +154,16 @@ class Param extends DbObj
         
         if ($appid) {
             if ($userid) {
-                $sql = "select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where " . "(paramv.type = '" . PARAM_GLB . "') " . " OR (paramv.type='" . PARAM_APP . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_USER . $userid . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_USER . $userid . "' and paramdef.isglob='Y')" . " OR (paramv.type='" . PARAM_STYLE . $styleid . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_STYLE . $styleid . "' and paramdef.isglob='Y')" . " OR (paramv.type='" . PARAM_STYLE . $size . "')" . " order by paramv.name, paramv.type desc";
+                $styleIdPG=pg_escape_string($styleid);
+                $sql=sprintf("select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where
+(paramv.type = '%s')  OR
+(paramv.appid=%d and (paramv.type='%s' or paramv.type='%s%d' or paramv.type='%s%s')) OR
+(paramdef.isglob='Y' and (paramv.type='%s%d' or paramv.type='%s%s')) OR
+(paramv.type='%s%s')
+order by paramv.name, paramv.type desc",PARAM_GLB,$appid,PARAM_APP,PARAM_USER,$userid,PARAM_STYLE,$styleIdPG,PARAM_USER,$userid,PARAM_STYLE,$styleIdPG,PARAM_STYLE,pg_escape_string($size));
             } else {
                 $sql = sprintf("SELECT * from paramv where type='G' or (type='A' and appid=%d);", $appid);
             }
-            
             simpleQuery($this->dbaccess, $sql, $list);
             
             foreach ($list as $v) {
