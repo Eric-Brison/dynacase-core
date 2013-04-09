@@ -15,7 +15,7 @@ function setparamu(appname,parname,parval) {
     r = new ActiveXObject("Microsoft.XMLHTTP");
   }
   if (r) {     
-    r.open("GET", corestandurl+'&app=FDC&action=SETPARAMU&appname='+appname+'&parname='+parname+'&parval='+parval,false);   
+    r.open("GET", corestandurl+'&app=FDC&action=SETPARAMU&appname='+appname+'&parname='+parname+'&parval='+encodeURIComponent(parval),false);
     r.send('');
     if(r.status == 200) { 
       if (r.responseXML) {

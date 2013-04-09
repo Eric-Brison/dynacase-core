@@ -79,7 +79,7 @@ border-style:none none solid none;
  <br/>
 <div style="text-align:right">
  <a class="state" title="[thetitle]"  onclick="submitEdit(event);return true">[TEXT:StateConfirm]</a> |
- <a title="[TEXT:Cancel the change step]"  onclick="window.parent.hidebox('POPDOC')">[TEXT:Cancel] </a>
+ <a title="[TEXT:Cancel the change step]"  onclick="window.parent.$('#POPDOC_s').dialog('close');">[TEXT:Cancel] </a>
 </div>
 </form>
 [ZONE FDL:HTMLFOOT]

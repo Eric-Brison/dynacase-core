@@ -50,6 +50,9 @@ function viewcard(Action & $action)
     $action->lay->set("ulink", $ulink);
     // Set the globals elements
     $action->parent->AddJsRef(sprintf("?app=FDL&amp;action=ALLVIEWJS&amp;wv=%s", $action->getParam('WVERSION')));
+    $action->parent->addJsRef("lib/jquery/jquery.js");
+    $action->parent->addJsRef("lib/jquery-ui/js/jquery-ui.js");
+    $action->parent->addCssRef("lib/jquery-ui/css/smoothness/jquery-ui.css");
     /*
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/WHAT/Layout/AnchorPosition.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");

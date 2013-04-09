@@ -36,7 +36,7 @@ if (parseInt('[latestwaskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FD
 <IMG  style="float:left" class="emblem" title="[locked]" SRC="[emblem]">
    [IF forum]<a href="#forum" style="border:0px"><IMG  style="border:0px;float:left;cursor:pointer" class="emblem" title="[TEXT:goto forum]" SRC="[IMG:forum.png]"></a>[ENDIF forum]
    [IF inDomain]<IMG  style="float:left" class="emblem" title="[TEXT:Inserted in a domain]"  SRC="[IMG:domainsync.png]">[ENDIF inDomain]
-   [IF postitid]<IMG  style="float:left;cursor:pointer" class="emblem" title="[TEXT:View postit]" onclick="showbox('POSTIT')" SRC="[IMG:stickynotes.png]">[ENDIF postitid]
+   [IF postitid]<IMG  style="float:left;cursor:pointer" class="emblem" title="[TEXT:View postit]" onclick="postit('[CORE_STANDURL]&app=FDL&action=FDL_CARD&dochead=N&id=[postitid]')" SRC="[IMG:stickynotes.png]">[ENDIF postitid]
   [IF RSS]<a href="[rsslink]"><IMG  style="float:left;border:none" class="emblem" title="[TEXT:RSS link]" SRC="[IMG:rss22.png]"></a>[ENDIF RSS]
   <span class="familyTitle">[classtitle]</span><br>
 <span class="FREEDOMTextBigTitle documentTitle"><a title="[TEXT:Click to update document]" href="[ITSELF]">[title]</a></span>
