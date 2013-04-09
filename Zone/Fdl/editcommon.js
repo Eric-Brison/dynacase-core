@@ -59,10 +59,11 @@ function addmdocs(n) {
   var ti;
   var nid,ntitle,nval;
 
-  if(addmdocsSemaphore[n]) {
+  var lockId = n;
+  if(addmdocsSemaphore[lockId]) {
 	  return;
   }
-  addmdocsSemaphore[n] = true;
+  addmdocsSemaphore[lockId] = true;
 
 
   tiid=[];
@@ -112,7 +113,7 @@ function addmdocs(n) {
       }
     }
   }
-  addmdocsSemaphore[n] = false;
+  addmdocsSemaphore[lockId] = false;
 }
 function addmdocsattrid(attrid,nid,ntitle) {
   var isel;
@@ -1978,7 +1979,7 @@ function  nodereplacestr(n,s1,s2) {
 	      if (attr.value.search(rs1) != -1) {
 		avalue=attr.value.replace(regs1,s2);
 
-		if (isIE && ((attr.name == 'onclick') || (attr.name == 'onmousedown') || (attr.name == 'onmouseover')|| (attr.name == 'onfocus'))) {
+		if (isIE && ((attr.name == 'onclick') || (attr.name == 'onmousedown') || (attr.name == 'onmouseover') || (attr.name == 'onfocus') || (attr.name == 'onchange'))) {
 			kids[i][attr.name]=new Function(avalue); // special for IE5.5+
 		} else  attr.value=avalue;
 
@@ -2230,12 +2231,37 @@ function afterCloneBug(o1,o2) {
                     } catch(e) {
                       setIValue(ti2[i], value);
                     }
+                } else if (ti1[i].tagName == 'SELECT' && ti1[i].getAttribute('multiple') !== null) {
+                    copySelectOptions(ti1[i], ti2[i], true);
                 } else {
                     setIValue(ti2[i], getIValue(ti1[i]));
                 }
             }
         }
     }
+}
+
+/**
+ * Copy options from a source <select/> to a destination <select/>
+ *
+ * @param dst Source <select/> node
+ * @param src Destination <select/> node
+ * @param overwrite boolean true to delete existing option nodes in the destination <select/>, false to keep existing option nodes (default)
+ */
+function copySelectOptions(src, dst, overwrite) {
+    if (overwrite === true) {
+        for (var i = 0; i < dst.childNodes.length; i++) {
+            if (dst.childNodes[i].tagName == 'OPTION') {
+                dst.removeChild(dst.childNode[i]);
+            }
+        }
+    }
+    for (var i = 0; i < src.childNodes.length; i++) {
+        if (src.childNodes[i].tagName == 'OPTION') {
+            dst.appendChild(src.childNodes[i].cloneNode(true));
+        }
+    }
+    dst.size = src.size;
 }
 
 // change input (id) value (v) in node n
