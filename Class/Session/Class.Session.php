@@ -74,7 +74,6 @@ class Session extends DbObj
                         name text not null,
                         last_seen timestamp not null DEFAULT now() );
                   create unique index sessions_idx on sessions(id);
-                  create index sessions_idx_name on sessions(name);
                   create index sessions_idx_userid on sessions(userid);";
     
     var $sessiondb;
