@@ -1,0 +1,45 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: IMAGE \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2013-04-08T16:42:29+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/misc.ods.csv
+msgid "IMAGE#img_catg"
+msgstr "Category"
+
+msgid "IMAGE#img_catg#1"
+msgstr "Photo"
+
+msgid "IMAGE#img_catg#2"
+msgstr "Picture"
+
+#: App/Fdl/misc.ods.csv
+msgid "IMAGE#img_description"
+msgstr "Description"
+
+#: App/Fdl/misc.ods.csv
+msgid "IMAGE#img_file"
+msgstr "Picture"
+
+#: App/Fdl/misc.ods.csv
+msgid "IMAGE#img_fr_char"
+msgstr "Description"
+
+#: App/Fdl/misc.ods.csv
+msgid "IMAGE#img_frfile"
+msgstr "Picture"
+
+#: App/Fdl/misc.ods.csv
+msgid "IMAGE#img_title"
+msgstr "Title"
+
+msgid "IMAGE#title"
+msgstr "Picture"

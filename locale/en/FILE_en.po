@@ -1,0 +1,55 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FILE \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2013-04-08T16:42:29+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/misc.ods.csv
+msgid "FILE#fi_description"
+msgstr "Summary"
+
+#: App/Fdl/misc.ods.csv
+msgid "FILE#fi_file"
+msgstr "Main file"
+
+#: App/Fdl/misc.ods.csv
+msgid "FILE#fi_fr_oformat"
+msgstr "Files"
+
+#: App/Fdl/misc.ods.csv
+msgid "FILE#fi_frdesc"
+msgstr "Description"
+
+#: App/Fdl/misc.ods.csv
+msgid "FILE#fi_keyword"
+msgstr "Key words"
+
+#: App/Fdl/misc.ods.csv
+msgid "FILE#fi_ofile"
+msgstr "File"
+
+#: App/Fdl/misc.ods.csv
+msgid "FILE#fi_subject"
+msgstr "Subject"
+
+#: App/Fdl/misc.ods.csv
+msgid "FILE#fi_title"
+msgstr "Title"
+
+#: App/Fdl/misc.ods.csv
+msgid "FILE#fi_titlew"
+msgstr "Title"
+
+#: App/Fdl/misc.ods.csv
+msgid "FILE#ft_t_oformat"
+msgstr "Others"
+
+msgid "FILE#title"
+msgstr "Files"

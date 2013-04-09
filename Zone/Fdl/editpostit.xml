@@ -3,12 +3,12 @@
 [V_PIT_TITLE]
 
 <select onchange="colorsel2(this)" id="pit_ncolor" name="_pit_ncolor">
-<option value="#f7f58c" onmouseover="colorsel(this)" style="background-color:#f7f58c">Jaune</option>
-<option value="#bbf78c" onmouseover="colorsel(this)" style="background-color:#bbf78c">Vert</option>
-<option value="#8ce5f7" onmouseover="colorsel(this)" style="background-color:#8ce5f7">Bleu</option>
-<option value="#f7d78c" onmouseover="colorsel(this)" style="background-color:#f7d78c">Orange</option>
-<option value="#b98cf7" onmouseover="colorsel(this)" style="background-color:#b98cf7">Violet</option>
-<option value="#eaa6a4" onmouseover="colorsel(this)" style="background-color:#eaa6a4">Rouge</option>
+<option value="#f7f58c" onmouseover="colorsel(this)" style="background-color:#f7f58c">[TEXT:POST_IT:Yellow]</option>
+<option value="#bbf78c" onmouseover="colorsel(this)" style="background-color:#bbf78c">[TEXT:POST_IT:Green]</option>
+<option value="#8ce5f7" onmouseover="colorsel(this)" style="background-color:#8ce5f7">[TEXT:POST_IT:Blue]</option>
+<option value="#f7d78c" onmouseover="colorsel(this)" style="background-color:#f7d78c">[TEXT:POST_IT:Orange]</option>
+<option value="#b98cf7" onmouseover="colorsel(this)" style="background-color:#b98cf7">[TEXT:POST_IT:Purple]</option>
+<option value="#eaa6a4" onmouseover="colorsel(this)" style="background-color:#eaa6a4">[TEXT:POST_IT:Red]</option>
 </select>
 
 <textarea id="pit_ncom" style="width:100%;font-size: 120%;font-weight: bold;background-color:#f7f58c" name="_pit_ncom"></textarea>

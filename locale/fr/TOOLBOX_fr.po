@@ -2855,6 +2855,24 @@ msgstr "Erreur PG : connexion au pg service dynacase '%s' en échec !"
 msgid "PG Error: Connection to temporary pg service '%s' failed !"
 msgstr "Erreur PG : connexion au pg service temporaire '%s' en échec !"
 
+msgid "POST_IT:Blue"
+msgstr "Bleu"
+
+msgid "POST_IT:Green"
+msgstr "Vert"
+
+msgid "POST_IT:Orange"
+msgstr "Orange"
+
+msgid "POST_IT:Purple"
+msgstr "Violet"
+
+msgid "POST_IT:Red"
+msgstr "Rouge"
+
+msgid "POST_IT:Yellow"
+msgstr "Jaune"
+
 msgid "Page"
 msgstr "Page"
 

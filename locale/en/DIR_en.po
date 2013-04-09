@@ -1,0 +1,116 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: DIR \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2013-04-08T14:34:11+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#ba_desc"
+msgstr "Description"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_allbut"
+msgstr "All or nothing"
+
+msgid "DIR#fld_allbut#0"
+msgstr "All except"
+
+msgid "DIR#fld_allbut#1"
+msgstr "Only"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_copybasket"
+msgstr "Insert in the basket"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_fam"
+msgstr "Families (title)"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_famids"
+msgstr "Families"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_fr_prof"
+msgstr "Profils by default"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_fr_rest"
+msgstr "Restrictions"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_insertdoc"
+msgstr "Insert documents"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_open"
+msgstr "Open"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_openfolio"
+msgstr "Open as a portfolio"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_pdir"
+msgstr "Profil by default for the folder (title)"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_pdirid"
+msgstr "Profil by default for the folder"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_pdoc"
+msgstr "Profil by default for the document (title)"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_pdocid"
+msgstr "Profil by default for the document"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_setsysrss"
+msgstr "RSS visible/hidden for the users"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_subfam"
+msgstr "Sub family restriction"
+
+msgid "DIR#fld_subfam#[bool]yes"
+msgstr "Add the sub families"
+
+msgid "DIR#fld_subfam#no"
+msgstr "Do not add the sub families"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#fld_tfam"
+msgstr "Filtered families"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#gui_color"
+msgstr "Intercalary color"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#gui_isrss"
+msgstr "Usable as RSS"
+
+msgid "DIR#gui_isrss#[bool]no"
+msgstr "No"
+
+msgid "DIR#gui_isrss#yes"
+msgstr "Yes"
+
+#: App/Fdl/misc.ods.csv
+msgid "DIR#gui_sysrss"
+msgstr "Internal RSS"
+
+msgid "DIR#gui_sysrss#"
+msgstr ""
+
+msgid "DIR#title"
+msgstr "Directory"

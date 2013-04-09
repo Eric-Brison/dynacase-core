@@ -2766,6 +2766,24 @@ msgstr "PG Error: Connection to pg service '%s' failed!"
 msgid "PG Error: Connection to temporary pg service '%s' failed !"
 msgstr ""
 
+msgid "POST_IT:Blue"
+msgstr "Blue"
+
+msgid "POST_IT:Green"
+msgstr "Green"
+
+msgid "POST_IT:Orange"
+msgstr "Orange"
+
+msgid "POST_IT:Purple"
+msgstr "Purple"
+
+msgid "POST_IT:Red"
+msgstr "Red"
+
+msgid "POST_IT:Yellow"
+msgstr "Yellow"
+
 msgid "Page"
 msgstr ""
 
