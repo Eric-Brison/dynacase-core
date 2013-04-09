@@ -16,7 +16,7 @@
 /**
  */
 
-function viewdocjs(&$action)
+function viewdocjs(Action & $action)
 {
     
     setHeaderCache("text/javascript");

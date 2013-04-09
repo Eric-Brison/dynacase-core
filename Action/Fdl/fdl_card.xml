@@ -5,6 +5,7 @@
 	<meta name="document-id" content="[id]"/>
 	<meta name="document-initid" content="[initid]"/>
 	<meta name="document-icon" content="[docicon]"/>
+      <meta name="document-mviewgeo" content="[mviewgeo]"/>
    <title>[TITLE]</title>
    
    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->

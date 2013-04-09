@@ -5,50 +5,136 @@
  */
 
 include_js('WHAT/Layout/AnchorPosition.js');
-include_js('FDL/Layout/common.js');;
+include_js('FDL/Layout/common.js');
 include_js('WHAT/Layout/DHTMLapi.js');
 include_js('WHAT/Layout/AnchorPosition.js');
 include_js('WHAT/Layout/geometry.js');
 include_js('FDL/Layout/iframe.js');
 
+function displayWindow(height, width, ref, title, x, y, id, backgroundcolor) {
+    var dialogFrame = $("#"+id+"_s");
+    var oldFrame = $("#oldFrame_"+id);
+    if (dialogFrame.length <= 0) {
+        dialogFrame = $('<iframe id="'+id+'_s" style="padding: 0;" frameborder="0"  allowtransparency="yes"></iframe>').appendTo('body');
+    } else {
+         if (dialogFrame.dialog("isOpen") == true) {
+             var position = dialogFrame.dialog("option", "position");
+             x = position[0];
+             y = position[1];
+             height = dialogFrame.dialog("option", "height");
+             width = dialogFrame.dialog("option", "width");
+         } else {
+             x = parseFloat(oldFrame.attr("data-posX"));
+             y = parseFloat(oldFrame.attr("data-posY"));
+             height = oldFrame.height();
+             width = oldFrame.width();
+         }
+        dialogFrame.attr("src", ref);
+    }
 
+   dialogFrame.dialog({
+        autoOpen:true,
+        modal:false,
+        draggable:true,
+        resizable:true,
+        height:height,
+        width:width,
+        title: title,
+        open:function (event, ui) {
+            if (isIE) {
+                $('body').css('overflow', 'hidden');
+            }
+        },
+        position:[x, y],
+        beforeClose:function () {
+            $(this).attr("src", "Images/1x1.gif");
+            return false;
+        },
+        dragStop: function(event, ui) {
+            if (id == "POPDOC") {
+                var newParam = parseInt(ui.position.left) +"+"+parseInt(ui.position.top)+"+"+parseInt($(this).width())+"x"+parseInt($(this).height());
+                setparamu("FDL", "MVIEW_GEO", newParam);
+            }
+        },
+        resizeStop: function(event, ui) {
+            if (id == "POPDOC") {
+                var newParam =parseInt(ui.position.left)+"+"+parseInt(ui.position.top)+"+"+parseInt(ui.size.width)+"x"+parseInt(ui.size.height);
+                setparamu("FDL", "MVIEW_GEO", newParam);
+            }
+        }
+    });
+    dialogFrame.width(width).height(height);
+    dialogFrame.attr("src", ref);
+    if (backgroundcolor) {
+        dialogFrame.css("background-color", backgroundcolor);
+        dialogFrame.parent().find(".ui-dialog-titlebar").removeClass("ui-widget-header").css("background-color", backgroundcolor);
+    }
+
+    dialogFrame.on("load", function () {
+            var $this = $(this), doc, oldFrame, position;
+            doc = this.contentDocument || this.contentWindow.document;
+            if (doc) {
+                if (title !== false) {
+                    dialogFrame.dialog("option", "title", $("<div/>").text((doc.title || title)).html());
+                }
+                if (backgroundcolor &&  doc.getElementById("documentBody")) {
+                    doc.getElementById("documentBody").style.backgroundColor =  backgroundcolor;
+                }
+            }
+            if (doc && doc.location && doc.location.href &&
+                doc.location.href.toLowerCase().indexOf("images/1x1.gif") > -1) {
+                oldFrame = $("#oldFrame_"+id);
+                if (oldFrame.length === 0) {
+                    oldFrame = $('<div id="oldFrame_'+id+'" style="display : none;"></div>');
+                    $("body").append(oldFrame);
+                }
+                oldFrame.empty();
+                if (dialogFrame.dialog("isOpen") == true) {
+                    position = dialogFrame.dialog("option", "position");
+                    oldFrame.height(dialogFrame.dialog("option", "height"));
+                    oldFrame.width(dialogFrame.dialog("option", "width"));
+                    oldFrame.attr({
+                        "data-posX": position[0],
+                        "data-posY": position[1]
+                    });
+                    if (isIE) $this.dialog("close");
+                }
+                if (isIE) {
+                    $('body').css('overflow', 'auto');
+
+                }
+                oldFrame.append($this);
+            }
+        });
+}
 function popdoc(event,url,title) {
-    
-//    if(window.parent.Ext){
-//        //alert('ExtJS is detected');
-//        console.log(event,url);
-//        window.parent.Ext.fdl.Interface.prototype.publish('openurl',url,"???",{opener:window});         
-//        //return me;
-//    } else {
-
-  if (event) event.cancelBubble=true;     
-  if (ctrlPushed(event)) {
-    subwindow([FDL_HD2SIZE],[FDL_VD2SIZE],'_blank',url);
-  } else {
+  if (event) event.cancelBubble=true;
+    if (ctrlPushed(event)) {
+        window.open(
+            url,
+            '_blank',
+            'resizable=yes,scrollbars=yes,width='+[FDL_VD2SIZE]+',height='+[FDL_HD2SIZE]);
+    } else {
+        var scrolly=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        if (! title) title='';
+        var mviewgeo = $("meta[name=document-mviewgeo]").attr("content");
+        var x = [mgeox],
+            y = [mgeoy],
+            h = [mgeoh],
+            w = [mgeow];
+        if (mviewgeo != undefined) {
+            var match = mviewgeo.match(/([0-9]+)\+([0-9]+)\+([0-9]+)x([0-9]+)/);
+            x = parseInt(match[1]);
+            y = parseInt(match[2]);
+            w = parseInt(match[3]);
+            h = parseInt(match[4]);
+        }
+        displayWindow(h, w, url, title, x, y +scrolly, 'POPDOC');
+    }
+}
+function poptext(text,title) {
 
     var dpopdoc = document.getElementById('POPDOC_s');
-    var fpopdoc;
-    var scrolly=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-    if (! dpopdoc) {
-    	if (! title) title='[TEXT:mini view]';
-      new popUp([mgeox], [mgeoy] + scrolly, [mgeow], [mgeoh], 'POPDOC', url, 'white', '#00385c', '16pt serif', title, '[COLOR_B5]', '[CORE_TEXTBGCOLOR]', '[COLOR_B7]', '[CORE_BGCOLORALTERN]', '[CORE_BGCOLORALTERN]', true, true, true, true, true, false);
-    } else {      
-      if ((getObjectTop(dpopdoc) < scrolly) || 
-	  (getObjectTop(dpopdoc) > (getInsideWindowHeight() + scrolly))	){
-	// popup is not visible in scrolled window => move to visible part
-	movePopup('POPDOC' ,[mgeox], [mgeoy]+scrolly);
-      } 
-      changecontent( 'POPDOC' , url );
-      showbox( 'POPDOC');
-
-    }
-  }
-  
-//    }
-}
-function poptext(text,title) {   
-
-	var dpopdoc = document.getElementById('POPDOC_s');
 	var fpopdoc;
 	var scrolly=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
 	if (! dpopdoc) {
@@ -99,19 +185,7 @@ function postit(url,x,y,w,h) {
   if (!y) y=110;
   if (!w) w=300;
   if (!h) h=200;
-  var dpostit = document.getElementById('POSTIT_s');
-  if (! dpostit) {
-    new popUp(x, y, w, h, 'POSTIT', url, '#faff77', '#00385c', '16pt serif', '[TEXT:post it]', 'yellow', '[CORE_BGCOLORALTERN]', 'yellow', 'transparent', '#faff77', true, true, true, true, true, false,true);
-    
-  } else {
-    if ((getObjectTop(dpostit) < document.body.scrollTop) || 
-	(getObjectTop(dpostit) > (getInsideWindowHeight() +document.body.scrollTop))	){
-      // popup is not visible in scrolled window => move to visible part
-      movePopup('POSTIT' ,250, 210+document.body.scrollTop);
-    } 
-    changecontent( 'POSTIT' , url );
-    showbox( 'POSTIT');
-  }
+    displayWindow(h, w, url, false, x, y, 'POSTIT', "#FF6");
 }
 
 

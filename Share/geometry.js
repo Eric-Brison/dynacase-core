@@ -116,11 +116,14 @@ function autoVresize() {
     dh=sh-ih;
   
   //    alert('V['+sh+']['+ih+']['+dh+',SH['+document.body.scrollHeight);
-  if (dh > 0) {
-	  window.resizeBy(dw,dh);
-	  if(window.extResize){
-		  window.extResize(dw,dh);
-	  };
+    if (dh > 0) {
+        try {
+            window.resizeBy(dw,dh);
+            if(window.extResize){
+                window.extResize(dw,dh);
+            }
+        } catch (e) {
+        }
   }
 
 }

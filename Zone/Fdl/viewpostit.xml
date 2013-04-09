@@ -15,7 +15,7 @@ DIV.tableborder {
 
 </style>
 [BLOCK TEXT]
-<fieldset style="margin:2pt;background-color:[color];"><legend style="border-style:groove groove none groove;border-width: 2px;border-color:[color];background-color:[color];color:black;-moz-border-radius:25px;">[user] [date]</legend>
+<fieldset style="margin:2pt;background-color:[color] !important;"><legend style="border-style:groove groove none groove;border-width: 2px;border-color:[color];background-color:[color];color:black;-moz-border-radius:25px;">[user] [date]</legend>
 <div style="color:black;background:[CORE_INPUTBGCOLOR];background-color:[color];margin:2pt;border: 1pt inset [color]">[comments]</div>
 </fieldset>
 

@@ -92,6 +92,9 @@ function fdl_card(&$action)
     
     SetHttpVar("viewbarmenu", 1);
     
+    $mgeo = $action->getParam("MVIEW_GEO");
+    $action->lay->set("mviewgeo", $mgeo);
+    
     $action->lay->set("RSS", ($doc->getRawValue("gui_isrss")));
     $action->lay->set("rsslink", $doc->getRssLink());
     $action->lay->Set("TITLE", $doc->getHtmlTitle());
