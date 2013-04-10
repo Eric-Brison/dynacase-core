@@ -43,8 +43,6 @@ if [ $RET -ne 0 ]; then
     echo "Error regenerating autoloader cache or refreshing JS version"
     exit $RET
 fi
-#clear current sessions
-PGSERVICE="$pgservice_core" psql -c "delete from sessions where name='dcpsession'" > /dev/null
 
 #change pg mode connection
 cdb=`"$wpub/wsh.php" --api=get_param --param=CORE_DBCONNECT`
@@ -53,9 +51,6 @@ if [ "$cdb" == 'persistent' ] ; then
 else
   sed -ibak -e"s/pg_pconnect/pg_connect/g" "$wpub/WHAT/Lib.Common.php"
 fi
-
-#/bin/rm -f /var/run/php/sess_*
-#/bin/rm -f /var/lib/php/session/sess_*
 
 if [ -f "$wpub/maintenance.lock" ]; then
     rm -f "$wpub/maintenance.lock"
