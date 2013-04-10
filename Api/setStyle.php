@@ -6,8 +6,15 @@
 */
 
 $usage = new ApiUsage();
-$usage->setDefinitionText("apply given style");
-$styFilePath = $usage->addRequiredParameter("style", "path to style file");
+$usage->setDefinitionText("apply given style - if no style is set then update current style");
+$styFilePath = $usage->addOptionalParameter("style", "path to style file");
+if (!$styFilePath) {
+    /**
+     * @var Action $action
+     */
+    $defautStyle=$action->getParam("STYLE");
+    $styFilePath=sprintf("STYLE/%s/%s.sty", $defautStyle,$defautStyle);
+}
 $verbose = ('yes' === $usage->addOptionalParameter('verbose', 'verbose', array(
     'yes',
     'no'
@@ -109,7 +116,6 @@ class styleManager
         }
         /** @noinspection PhpIncludeInspection */
         require $customRulesFilePath;
-        
         return empty($sty_rules) ? array() : $sty_rules;
     }
     

@@ -110,7 +110,7 @@ class TestHelpUsage extends TestCaseDcp
                 "import_size"
             ) ,
             array(
-                "import_style"
+                "setStyle"
             ) ,
             array(
                 "initViewPrivileges"

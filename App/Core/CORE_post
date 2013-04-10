@@ -86,8 +86,6 @@ if [ "$1" = "I" ] ; then
 	echo "An error occured while setting DateStyle to '$PGDATESTYLE'"
 	exit $RET
     fi
-    "$wpub"/wsh.php --api=import_size
-    "$wpub"/wsh.php  --api=setStyle --style=STYLE/MODERN/MODERN.sty
 fi
 
 
@@ -121,6 +119,9 @@ if [ "$1" = "U" ] ; then
 	echo "An error occured while executing '$wpub/WHAT/getprivilege.sql' : $RET"
 	exit $RET
     fi
+
+    "$wpub"/wsh.php --api=import_size
+    
 
     echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | PGSERVICE=$pgservice_core psql
 fi
