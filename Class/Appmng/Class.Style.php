@@ -14,18 +14,18 @@ namespace {
      * @package FDL
      * @subpackage CORE
      */
-
+    
     class Style extends DbObj
     {
         const RULE_FLAG_PARSE_ON_RUNTIME = 1;
-
+        
         var $fields = array(
             "name",
             "description",
             "parsable",
             "rules"
         );
-
+        
         var $id_fields = array(
             "name"
         );
@@ -37,7 +37,7 @@ namespace {
          * @var Application
          */
         public $parent;
-
+        
         var $sqlcreate = "
     create table style (
         name text not null,
@@ -48,95 +48,102 @@ namespace {
     );
     create sequence SEQ_ID_STYLE start 10000;
 ";
-
+        
         var $dbtable = "style";
-
+        
         protected $_expanded_rules = array();
-
-        public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0){
+        
+        public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+        {
             parent::__construct($dbaccess, $id, $res, $dbid);
-            if(!empty($this->rules)){
+            if (!empty($this->rules)) {
                 $this->_expanded_rules = json_decode($this->rules, true);
             }
         }
-
+        
         public function preupdate()
         {
             $this->encodeRules();
         }
-
+        
         public function preInsert()
         {
             $this->encodeRules();
         }
-
-        protected function encodeRules(){
+        
+        protected function encodeRules()
+        {
             $this->rules = json_encode($this->_expanded_rules);
         }
-
+        
         function set(&$parent)
         {
             $this->parent = & $parent;
         }
-
+        
         function getImageUrl($img, $default)
         {
             $root = $this->parent->Getparam("CORE_PUBDIR");
-
+            
             $socStyle = $this->parent->Getparam("CORE_SOCSTYLE");
             // first see if i have an society style
             if (($socStyle != "") && file_exists($root . "/STYLE/" . $socStyle . "/Images/" . $img)) {
                 return ("STYLE/" . $socStyle . "/Images/" . $img);
             }
-
+            
             if (file_exists($root . "/STYLE/" . $this->name . "/Images/" . $img)) {
                 return ("STYLE/" . $this->name . "/Images/" . $img);
             } else {
                 return ($default);
             }
         }
-
+        
         function getLayoutFile($layname, $default = "")
         {
             $root = $this->parent->Getparam("CORE_PUBDIR");
-
+            
             $socStyle = $this->parent->Getparam("CORE_SOCSTYLE");
             // first see if i have an society style
             if ($socStyle != "") {
                 $file = $root . "/STYLE/" . $socStyle . "/Layout/" . $layname;
                 if (file_exists($file)) return ($file);
             }
-
+            
             $file = $root . "/STYLE/" . $this->name . "/Layout/" . $layname;
             if (file_exists($file)) return ($file);
-
+            
             return ($default);
         }
-
-        public function setRules(Array $filesDefinition){
+        
+        public function setRules(Array $filesDefinition)
+        {
             $this->_expanded_rules = $filesDefinition;
         }
-
-        public function setRule($fileType, $file, $definition){
+        
+        public function setRule($fileType, $file, $definition)
+        {
             $this->_expanded_rules[$fileType][$file] = $definition;
         }
-
-        public function getRules(){
+        
+        public function getRules()
+        {
             return $this->_expanded_rules;
         }
-
-        public function getRule($fileType, $file){
-            if(!isset($this->_expanded_rules[$fileType])){
+        
+        public function getRule($fileType, $file)
+        {
+            $file = substr($file, 4); // delete "css/"
+            if (!isset($this->_expanded_rules[$fileType])) {
                 return null;
             }
-
+            
             if (!isset($this->_expanded_rules[$fileType][$file])) {
                 return null;
             }
             return $this->_expanded_rules[$fileType][$file];
         }
     }
-
+    
     class ErrorCodeSTY
     {
         /**
@@ -167,11 +174,26 @@ namespace {
          * @errorCode unimplemented feature
          */
         const STY0007 = 'unimplemented feature: %s';
-
+        /**
+         * @errorCode when try create target directory
+         * @see dcpCssCopyDirectory
+         */
+        const STY0008 = 'cannot create target directory: %s';
+        /**
+         * @errorCode when try create view target directory
+         * @see dcpCssCopyDirectory
+         */
+        const STY0009 = 'origin "%s" is not a directory';
+        /**
+         * @errorCode copy error when copy directory for css
+         * @see dcpCssCopyDirectory
+         */
+        const STY0010 = 'cannot copy from origin "%s" to "%s"';
     }
 }
 
-namespace Dcp\Style {
+namespace Dcp\Style
+{
     class Exception extends \Dcp\Exception
     {
         /**
@@ -182,29 +204,31 @@ namespace Dcp\Style {
             if (true) $a = 1;
         }
     }
-
-    interface IParser{
+    
+    interface IParser
+    {
         /**
          * @param string|string[] $srcFiles path or array of path of source file(s) relative to server root
          * @param array $options
          * @param array $styleConfig full style configuration
          */
         public function __construct($srcFiles, Array $options, Array $styleConfig);
-
         /**
          * @param string $destFile destination file path relative to server root (if null, parsed result is returned)
          * @throws Exception
          * @return mixed
          */
-        public function gen($destFile = null);}
-
-    interface ICssParser extends IParser{}
-
+        public function gen($destFile = null);
+    }
+    
+    interface ICssParser extends IParser
+    {
+    }
+    
     class dcpCssConcatParser implements ICssParser
     {
-
+        
         protected $_srcFiles = null;
-
         /**
          * @param string|string[] $srcFiles path or array of path of source file(s) relative to server root
          * @param array $options
@@ -215,10 +239,11 @@ namespace Dcp\Style {
             if (is_array($srcFiles)) {
                 $this->_srcFiles = $srcFiles;
             } else {
-                $this->_srcFiles = array($srcFiles);
+                $this->_srcFiles = array(
+                    $srcFiles
+                );
             }
         }
-
         /**
          * @param string $destFile destination file path relative to server root (if null, parsed result is returned)
          * @throws Exception
@@ -233,12 +258,12 @@ namespace Dcp\Style {
             if (!is_dir($fullTargetDirname) && (false === mkdir($fullTargetDirname, 0777, true))) {
                 throw new Exception("STY0005", "$fullTargetDirname dir could not be created for file $destFile");
             }
-
+            
             $targetHandler = fopen($fullTargetPath, 'w');
             if (false === $targetHandler) {
                 throw new Exception("STY0005", "$destFile dir could not be created");
             }
-
+            
             foreach ($this->_srcFiles as $srcPath) {
                 $srcFullPath = $pubDir . DIRECTORY_SEPARATOR . $srcPath;
                 if (!is_readable($srcFullPath)) {
@@ -258,12 +283,11 @@ namespace Dcp\Style {
             }
         }
     }
-
+    
     class dcpCssTemplateParser implements ICssParser
     {
-
+        
         protected $_srcFiles = null;
-
         /**
          * @param string|string[] $srcFiles path or array of path of source file(s) relative to server root
          * @param array $options array of options
@@ -274,10 +298,11 @@ namespace Dcp\Style {
             if (is_array($srcFiles)) {
                 $this->_srcFiles = $srcFiles;
             } else {
-                $this->_srcFiles = array($srcFiles);
+                $this->_srcFiles = array(
+                    $srcFiles
+                );
             }
         }
-
         /**
          * @param string $destFile destination file path relative to server root (if null, parsed result is returned)
          * @throws Exception
@@ -298,16 +323,18 @@ namespace Dcp\Style {
                     }
                     throw new Exception("STY0004", $msg);
                 }
-                $template .= file_get_contents($srcFullPath);
+                $template.= file_get_contents($srcFullPath);
             }
-
             // prepare target dir
             $fullTargetPath = $pubDir . DIRECTORY_SEPARATOR . $destFile;
             $fullTargetDirname = dirname($fullTargetPath);
             if (!is_dir($fullTargetDirname) && (false === mkdir($fullTargetDirname, 0777, true))) {
                 throw new Exception("STY0005", "$fullTargetDirname dir could not be created for file $destFile");
             }
-
+            $explorerP = getExplorerParamtersName();
+            foreach ($explorerP as $ep) {
+                $action->parent->SetVolatileParam($ep, null);
+            }
             $lay = new \Layout("", $action, $template);
             $template = $lay->gen();
             if (false === file_put_contents($fullTargetPath, $template)) {
@@ -315,6 +342,55 @@ namespace Dcp\Style {
             }
         }
     }
+    
+    class dcpCssCopyDirectory implements ICssParser
+    {
+        
+        protected $_srcFiles = null;
+        /**
+         * @param string|string[] $srcFiles path or array of path of source file(s) relative to server root
+         * @param array $options array of options
+         * @param array $styleConfig full style configuration
+         */
+        public function __construct($srcFiles, Array $options, Array $styleConfig)
+        {
+            if (is_array($srcFiles)) {
+                $this->_srcFiles = $srcFiles;
+            } else {
+                $this->_srcFiles = array(
+                    $srcFiles
+                );
+            }
+        }
+        /**
+         * @param string $destFile destination file path relative to server root (if null, parsed result is returned)
+         * @throws Exception
+         * @return mixed
+         */
+        public function gen($destFile = null)
+        {
+            $template = '';
+            $pubDir = \ApplicationParameterManager::getScopedParameterValue("CORE_PUBDIR", DEFAULT_PUBDIR);
+            global $action;
+            foreach ($this->_srcFiles as $srcPath) {
+                $srcFullPath = $pubDir . DIRECTORY_SEPARATOR . $srcPath;
+                if (!is_dir($srcFullPath)) {
+                    
+                    throw new Exception("STY0009", $srcFullPath);
+                }
+                if (!is_dir($destFile)) {
+                    $r = mkdir($destFile);
+                    if ($r === false) {
+                        throw new Exception("STY0008", $destFile);
+                    }
+                }
+                $cpCmd = sprintf("cp -r %s/* %s", escapeshellarg($srcFullPath) , escapeshellarg($destFile));
+                $r = shell_exec("$cpCmd 2>&1 && echo 1");
+                if ($r === null) {
+                    throw new Exception("STY0010", $srcFullPath, $destFile);
+                }
+            }
+        }
+    }
 }
 
-?>
