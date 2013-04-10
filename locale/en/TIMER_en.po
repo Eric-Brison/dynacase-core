@@ -1,0 +1,83 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TIMER \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2013-04-10 16:29+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "TIMER#title"
+msgstr "timer"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_delay"
+msgstr "Notice (in days)"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_dyndate"
+msgstr "Reference date"
+
+msgid "TIMER#tm_dyndate#elabel"
+msgstr "First action's execution's date"
+
+msgid "TIMER#tm_dyndate#showempty"
+msgstr "Timer's attachment date"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_family"
+msgstr "Family"
+
+msgid "TIMER#tm_family#elabel"
+msgstr "compatible family with this timer"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_fr_ident"
+msgstr "Identification"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_hdelay"
+msgstr "Notice (in hours)"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_iteration"
+msgstr "Iterations' number"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_method"
+msgstr "Method"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_refdaydelta"
+msgstr "Interval (in days)"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_refhourdelta"
+msgstr "Interval (in hours)"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_state"
+msgstr "New state"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_t_config"
+msgstr "Configuration"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_title"
+msgstr "Title"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_tmail"
+msgstr "Mail template"
+
+#: App/Fdl/searches.ods.csv
+msgid "TIMER#tm_workflow"
+msgstr "Cyce family"
+
+msgid "TIMER#tm_workflow#elabel"
+msgstr "Cycle family for state choice"

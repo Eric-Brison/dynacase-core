@@ -24,7 +24,7 @@ pages_not_php = fam2po.php po2js.php
 
 include $(utildir)/PubRule
 
-TRANSFAM += App/Fusers/account.ods App/Fusers/accountprofil.ods App/Fdl/fdl.ods App/Fdl/misc.ods App/Fdl/searches.ods
+TRANSFAM += App/Fusers/account.ods App/Fusers/accountprofil.ods App/Fdl/fdl.ods App/Fdl/misc.ods App/Fdl/workflows.ods App/Fdl/freeaction.ods App/Fdl/searches.ods
 
 #FIXME: DISTFILES
 

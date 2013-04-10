@@ -1,0 +1,199 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: EXEC \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2013-04-10 13:44+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_action"
+msgstr "action"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_api"
+msgstr "api"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_application"
+msgstr "application"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_bgexec"
+msgstr "execute now"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_date"
+msgstr "Execution date"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_detail"
+msgstr "detail"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_detaillog"
+msgstr "log"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_elapsed"
+msgstr "execution duration"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_fr_batch"
+msgstr "treatment"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_fr_cr"
+msgstr "report"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_fr_date"
+msgstr "dates"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_fr_ident"
+msgstr "identification"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_fr_param"
+msgstr "parameter"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_handnextdate"
+msgstr "to execute the"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_idadmin"
+msgstr "administrator"
+
+msgid "EXEC#exec_idadmin#elabel"
+msgstr "will recieve execution report copy in mail"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_idref"
+msgstr "following"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_iduser"
+msgstr "performer"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_idvar"
+msgstr "variable"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_nextdate"
+msgstr "next execution date"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_periodday"
+msgstr "period in day"
+
+msgid "EXEC#exec_periodday#elabel"
+msgstr "to do every n day"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_perioddaynumber"
+msgstr "day of the week"
+
+msgid "EXEC#exec_perioddaynumber#"
+msgstr "---"
+
+msgid "EXEC#exec_perioddaynumber#1"
+msgstr "Monday"
+
+msgid "EXEC#exec_perioddaynumber#2"
+msgstr "Tuesday"
+
+msgid "EXEC#exec_perioddaynumber#3"
+msgstr "Wednesday"
+
+msgid "EXEC#exec_perioddaynumber#4"
+msgstr "Thursday"
+
+msgid "EXEC#exec_perioddaynumber#5"
+msgstr "Friday"
+
+msgid "EXEC#exec_perioddaynumber#6"
+msgstr "Saturday"
+
+msgid "EXEC#exec_perioddaynumber#7"
+msgstr "Sunday"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_periodenddate"
+msgstr "to"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_periodhour"
+msgstr "period in hours"
+
+msgid "EXEC#exec_periodhour#elabel"
+msgstr "to do every n hours"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_periodmin"
+msgstr "period in minutes"
+
+msgid "EXEC#exec_periodmin#elabel"
+msgstr "to do every n minutes"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_prevdate"
+msgstr "previous execution date"
+
+msgid "EXEC#exec_prevdate#ltitle"
+msgstr "See previous execution"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_ref"
+msgstr "referer (title)"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_reset"
+msgstr "abandon the current execution"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_state"
+msgstr "status"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_status"
+msgstr "execution"
+
+msgid "EXEC#exec_status#none"
+msgstr "No"
+
+msgid "EXEC#exec_status#progressing"
+msgstr "Ongoing"
+
+msgid "EXEC#exec_status#waiting"
+msgstr "waiting"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_statusdate"
+msgstr "execution since"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_t_parameters"
+msgstr "parameters"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_title"
+msgstr "title"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_user"
+msgstr "performer (title)"
+
+#: App/Fdl/searches.ods.csv
+msgid "EXEC#exec_valuevar"
+msgstr "value"
+
+msgid "EXEC#title"
+msgstr "process"
