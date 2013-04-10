@@ -55,6 +55,7 @@ function generic_list(&$action)
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/AnchorPosition.js", false, $packGeneric);
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/common.js", false, $packGeneric);
     $action->parent->AddJsRef($action->Getparam("CORE_PUBURL") . "/FDL/Layout/popupfunc.js", false, $packGeneric);
+    $action->parent->addCssRef("css/dcp/main.css");
     $action->parent->addCssRef("GENERIC:generic_list.css", true);
     //change famid if it is a simplesearch
     $sfamid = $famid;

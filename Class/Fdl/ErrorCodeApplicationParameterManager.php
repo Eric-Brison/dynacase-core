@@ -44,7 +44,7 @@ namespace {
         /**
          * @errorCode Unable to get parameter
          */
-        const APM008 = 'The parameter %s of the application %s is not found ';
+        const APM0008 = 'The parameter %s of the application %s is not found';
         /**
          * @errorCode Error during record  application parameter value
          */
@@ -53,7 +53,10 @@ namespace {
          * @errorCode Unable to get application id, when parameter is global need a parameter name
          */
         const APM0010 = 'Unable to get application id, when parameter is global need a parameter name';
-
+        /**
+         * @errorCode Error during record  global application parameter value
+         */
+        const APM0011 = 'Cannot set parameter "%s" no value detected';
         /**
          * for beautifier
          */

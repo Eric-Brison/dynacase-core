@@ -20,6 +20,10 @@ function core_css(Action & $action)
     $type = $action->getArgument("type");
     $packName = $action->getArgument("pack");
     $nfFile = array();
+    
+    if ($layout != '') {
+        $action->lay->template = '';
+    }
     if ($packName) {
         $packSession = $action->read("RSPACK_" . $packName);
         $action->lay->template = '';
@@ -40,15 +44,23 @@ function core_css(Action & $action)
             }
         }
     } else {
+        
         if (preg_match("/([A-Z_0-9-]+):([^:]+):{0,1}[A-Z]{0,1}/", $layout, $reg)) {
             $action->lay->template = '';
             $lfile = getLayoutFile($reg[1], strtolower($reg[2]));
             if ($lfile) $action->lay = new Layout($lfile, $action);
+        } else {
+            if (preg_match("/^css/", $layout, $reg) && strpos($layout, '..') === false) {
+                
+                if (is_file($layout)) $action->lay = new Layout($layout, $action);
+            }
         }
     }
+    
     if ($action->lay->template == '') {
         $nfFile[] = $layout;
     }
+    
     $mimetype = '';
     if ($type == '' || $type == 'css') {
         

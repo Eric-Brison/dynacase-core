@@ -19,14 +19,23 @@
 include_once ('Class.Log.php');
 include_once ('Class.DbObj.php');
 include_once ('Class.ParamDef.php');
-
+/** @deprecated use Param::PARAM_APP instead */
 define("PARAM_APP", "A");
+/** @deprecated use Param::PARAM_GLB instead */
 define("PARAM_GLB", "G");
+/** @deprecated use Param::PARAM_USER instead */
 define("PARAM_USER", "U");
+/** @deprecated use Param::PARAM_STYLE instead */
 define("PARAM_STYLE", "S");
 
 class Param extends DbObj
 {
+    
+    const PARAM_APP = "A";
+    const PARAM_GLB = "G";
+    const PARAM_USER = "U";
+    const PARAM_STYLE = "S";
+    
     var $fields = array(
         "name",
         "type",
@@ -81,7 +90,7 @@ class Param extends DbObj
         $this->buffer = array_merge($this->buffer, $this->GetAll($appid, $userid, $styleid));
     }
     
-    function Set($name, $val, $type = PARAM_GLB, $appid = '')
+    function Set($name, $val, $type = self::PARAM_GLB, $appid = '')
     {
         global $action;
         if ($action) {
@@ -108,8 +117,8 @@ class Param extends DbObj
         else $err = $this->Add();
         
         $otype = '';
-        if ($type == PARAM_GLB) $otype = PARAM_APP;
-        elseif ($type == PARAM_APP) $otype = PARAM_GLB;
+        if ($type == self::PARAM_GLB) $otype = self::PARAM_APP;
+        elseif ($type == self::PARAM_APP) $otype = self::PARAM_GLB;
         if ($otype) {
             // delete incompatible parameter
             $paramo = new Param($this->dbaccess, array(
@@ -144,7 +153,7 @@ class Param extends DbObj
         if ($appid == "") $appid = $this->appid;
         $psize = new Param($this->dbaccess, array(
             "FONTSIZE",
-            PARAM_USER . $userid,
+            self::PARAM_USER . $userid,
             "1"
         ));
         $out = array();
@@ -154,13 +163,10 @@ class Param extends DbObj
         
         if ($appid) {
             if ($userid) {
-                $styleIdPG=pg_escape_string($styleid);
-                $sql=sprintf("select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where
-(paramv.type = '%s')  OR
-(paramv.appid=%d and (paramv.type='%s' or paramv.type='%s%d' or paramv.type='%s%s')) OR
-(paramdef.isglob='Y' and (paramv.type='%s%d' or paramv.type='%s%s')) OR
-(paramv.type='%s%s')
-order by paramv.name, paramv.type desc",PARAM_GLB,$appid,PARAM_APP,PARAM_USER,$userid,PARAM_STYLE,$styleIdPG,PARAM_USER,$userid,PARAM_STYLE,$styleIdPG,PARAM_STYLE,pg_escape_string($size));
+                $styleIdPG = pg_escape_string($styleid);
+                $sql = sprintf("select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where
+(paramv.type = '%s')  OR (paramv.appid=%d and (paramv.type='%s' or paramv.type='%s%d' or paramv.type='%s%s')) OR (paramdef.isglob='Y' and (paramv.type='%s%d' or paramv.type='%s%s')) OR
+(paramv.type='%s%s') order by paramv.name, paramv.type desc", self::PARAM_GLB, $appid, self::PARAM_APP, self::PARAM_USER, $userid, self::PARAM_STYLE, $styleIdPG, self::PARAM_USER, $userid, self::PARAM_STYLE, $styleIdPG, self::PARAM_STYLE, pg_escape_string($size));
             } else {
                 $sql = sprintf("SELECT * from paramv where type='G' or (type='A' and appid=%d);", $appid);
             }
@@ -179,7 +185,7 @@ order by paramv.name, paramv.type desc",PARAM_GLB,$appid,PARAM_APP,PARAM_USER,$u
     {
         $query = new QueryDb($this->dbaccess, "Param");
         
-        $tlist = $query->Query(0, 0, "TABLE", "select  distinct on(paramv.name, paramv.appid) paramv.*,  paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and paramdef.isuser='Y' and (" . " (type = '" . PARAM_GLB . "') " . " OR (type='" . PARAM_APP . "')" . " OR (type='" . PARAM_STYLE . $styleid . "' )" . " OR (type='" . PARAM_USER . $userid . "' ))" . " order by paramv.name, paramv.appid, paramv.type desc");
+        $tlist = $query->Query(0, 0, "TABLE", "select  distinct on(paramv.name, paramv.appid) paramv.*,  paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and paramdef.isuser='Y' and (" . " (type = '" . self::PARAM_GLB . "') " . " OR (type='" . self::PARAM_APP . "')" . " OR (type='" . self::PARAM_STYLE . $styleid . "' )" . " OR (type='" . self::PARAM_USER . $userid . "' ))" . " order by paramv.name, paramv.appid, paramv.type desc");
         
         return ($tlist);
     }
@@ -193,10 +199,10 @@ order by paramv.name, paramv.type desc",PARAM_GLB,$appid,PARAM_APP,PARAM_USER,$u
     {
         $query = new QueryDb($this->dbaccess, "Param");
         if ($onlystyle) {
-            $query->AddQuery("type='" . PARAM_STYLE . $styleid . "'");
+            $query->AddQuery("type='" . self::PARAM_STYLE . $styleid . "'");
             $tlist = $query->Query(0, 0, "TABLE");
         } else {
-            $tlist = $query->Query(0, 0, "TABLE", "select  distinct on(paramv.name, paramv.appid) paramv.*,  paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and paramdef.isstyle='Y' and (" . " (type = '" . PARAM_GLB . "') " . " OR (type='" . PARAM_APP . "')" . " OR (type='" . PARAM_STYLE . $styleid . "' ))" . " order by paramv.name, paramv.appid, paramv.type desc");
+            $tlist = $query->Query(0, 0, "TABLE", "select  distinct on(paramv.name, paramv.appid) paramv.*,  paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and paramdef.isstyle='Y' and (" . " (type = '" . self::PARAM_GLB . "') " . " OR (type='" . self::PARAM_APP . "')" . " OR (type='" . self::PARAM_STYLE . $styleid . "' ))" . " order by paramv.name, paramv.appid, paramv.type desc");
         }
         return ($tlist);
     }
@@ -205,7 +211,7 @@ order by paramv.name, paramv.type desc",PARAM_GLB,$appid,PARAM_APP,PARAM_USER,$u
     {
         $query = new QueryDb($this->dbaccess, "Param");
         
-        $tlist = $query->Query(0, 0, "TABLE", "select  paramv.*, paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and  (" . " (type = '" . PARAM_GLB . "') " . " OR (type='" . PARAM_APP . "'))" . " order by paramv.appid, paramv.name, type desc");
+        $tlist = $query->Query(0, 0, "TABLE", "select  paramv.*, paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and  (" . " (type = '" . self::PARAM_GLB . "') " . " OR (type='" . self::PARAM_APP . "'))" . " order by paramv.appid, paramv.name, type desc");
         
         return ($tlist);
     }

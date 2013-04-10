@@ -71,7 +71,8 @@ $app_const = array(
     "STYLE" => array(
         "val" => "MODERN",
         "descr" => N_("default style") ,
-        "user" => "Y"
+        "kind" => "static",
+        "user" => "N"
     ) ,
     "FONTSIZE" => array(
         "val" => "normal",

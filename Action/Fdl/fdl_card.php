@@ -92,6 +92,8 @@ function fdl_card(&$action)
     
     SetHttpVar("viewbarmenu", 1);
     
+    $action->parent->addCssRef("css/dcp/main.css");
+    $action->parent->addCssRef("css/dcp/document-view.css");
     $mgeo = $action->getParam("MVIEW_GEO");
     $action->lay->set("mviewgeo", $mgeo);
     

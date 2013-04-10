@@ -9,9 +9,8 @@
    <meta http-equiv="X-UA-Compatible" content="IE=100" /> <!-- IE latest mode -->
 <link rel="icon" href="[DYNACASE_FAVICO]" />
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
-<link rel="stylesheet" type="text/css" href="[CORE_SSTANDURL]app=FDL&amp;action=ALLVIEWCSS&amp;wv=[WVERSION]" />
 
-[CSS:REF]
+[CSS:CUSTOMREF]
 
 
    <style type="text/css">
