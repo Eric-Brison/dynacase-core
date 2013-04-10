@@ -34,9 +34,14 @@ class styleManager
         }
     }
     
-    public function __construct(Action $action, $styFilePath)
+    public function __construct(Action $action)
     {
         $this->action = $action;
+    }
+    
+    public function loadStyle($styFilePath)
+    {
+        
         $styleDefinition = $this->loadStyleDefinition($styFilePath);
         $this->computeStyleColors($styleDefinition);
     }
@@ -175,6 +180,7 @@ class styleManager
         }
         
         if (!$style->isAffected()) {
+            $style->name = $styleName;
             $err = $style->Add();
             if ($err) {
                 throw new \Dcp\Style\Exception("STY0003", "error when registering style");
@@ -189,7 +195,7 @@ class styleManager
         $query = new QueryDb("", "Param");
         $query->AddQuery(sprintf("type ~ '^%s'", Param::PARAM_STYLE)); //all of them, regardless of the style they come from
         $oldParamList = $query->Query();
-        if (count($oldParamList) > 0) {
+        if (!empty($oldParamList)) {
             foreach ($oldParamList as $oldParam) {
                 /** @var $oldParam Param */
                 $oldParam->delete();
@@ -342,6 +348,8 @@ class styleManager
     }
 }
 /** @global $action Action */
-$sm = new styleManager($action, $styFilePath);
+$sm = new styleManager($action);
 $sm->setVerbose($verbose);
+$sm->loadStyle($styFilePath);
 $sm->applyStyle();
+

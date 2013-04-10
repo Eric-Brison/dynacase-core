@@ -165,7 +165,7 @@ function newPopdiv(event,divtitle,x,y,w,h) {
     var fpopdiv;
     var scrolly=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
     if (! dpopdiv) {
-      new popUp(x, y, w, h, 'POPDIV', 'zou', '[CORE_BGCOLOR]', '[CORE_TEXTFGCOLOR]', '16pt serif', divtitle, '[COLOR_B5]', '[CORE_TEXTFGCOLOR]', '[COLOR_B7]', '[CORE_BGCOLORALTERN]', 'black', true, true, true, true, false, false,true);
+      new popUp(x, y, w, h, 'POPDIV', 'zou', "[CORE_BGCOLOR]", '[CORE_TEXTFGCOLOR]', '16pt serif', divtitle, '[COLOR_B5]', '[CORE_TEXTFGCOLOR]', '[COLOR_B7]', "[CORE_BGCOLORALTERN]", 'black', true, true, true, true, false, false,true);
     
     } else {
       if ((getObjectTop(dpopdiv) < scrolly) || 
