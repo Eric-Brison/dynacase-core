@@ -19,10 +19,11 @@
 include_once ('Class.QueryDb.php');
 include_once ('Class.Application.php');
 
-function htmlhead(&$action)
+function htmlhead(Action & $action)
 {
     
     $title = GetHttpVars("title");
     $action->lay->set("TITLE", $title);
+    $action->parent->addCssRef("css/dcp/core.css");
 }
 ?>

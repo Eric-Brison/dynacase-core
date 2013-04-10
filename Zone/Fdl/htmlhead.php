@@ -15,9 +15,10 @@
 /**
  */
 
-function htmlhead(&$action)
+function htmlhead(Action & $action)
 {
-    $title = GetHttpVars("title");
+    $title = $action->getArgument("title");
     $action->lay->set("doctitle", $title);
+    $action->parent->addCssRef("css/dcp/main.css");
 }
 ?>

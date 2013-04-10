@@ -18,7 +18,7 @@
 
 include_once ("FDL/Class.Doc.php");
 
-function impcard(&$action)
+function impcard(Action & $action)
 {
     // GetAllParameters
     $mime = GetHttpVars("mime"); // send to be view by word editor
@@ -43,6 +43,7 @@ function impcard(&$action)
         $doc = new_Doc($dbaccess, $docid);
     }
     
+    $action->parent->addCssRef("css/dcp/main.css");
     if ($state != "") {
         $docid = $doc->getRevisionState($state, true);
         if ($docid == 0) {
@@ -67,6 +68,9 @@ function impcard(&$action)
     }
     $action->lay->set("TITLE", $doc->getTitle());
     if (($zonebodycard == "") && ($vid != "")) {
+        /**
+         * @var CVDOC $cvdoc
+         */
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
         $tview = $cvdoc->getView($vid);
         $zonebodycard = $tview["CV_ZVIEW"];

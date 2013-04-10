@@ -31,7 +31,7 @@ function viewhisto(Action & $action)
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/common.js");
     $action->parent->addJsRef("lib/jquery/jquery.js");
     $action->parent->addJsRef("lib/jquery-ui/js/jquery-ui.js");
-    $action->parent->addCssRef("lib/jquery-ui/css/smoothness/jquery-ui.css");
+    $action->parent->addCssRef("css/dcp/jquery-ui.css");
     $action->parent->addJsRef("lib/jquery-dataTables/js/jquery.dataTables.min.js");
     $action->parent->addCssRef("lib/jquery-dataTables/css/jquery.dataTables_themeroller.css");
     $action->parent->addJsRef("FDL/Layout/viewhisto.js");

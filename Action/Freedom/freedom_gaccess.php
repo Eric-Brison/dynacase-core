@@ -48,7 +48,7 @@ function freedom_gaccess(Action & $action)
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/AnchorPosition.js");
     $action->parent->addJsRef("lib/jquery/jquery.js");
-    $action->parent->addCssRef("lib/jquery-ui/css/smoothness/jquery-ui.css");
+    $action->parent->addCssRef("css/dcp/jquery-ui.css");
     $doc = new_Doc($dbaccess, $docid);
     $err = $doc->control("viewacl");
     if ($err != "") $action->exitError($err);

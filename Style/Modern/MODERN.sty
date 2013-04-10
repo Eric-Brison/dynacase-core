@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 // ---------------------------------------------------------------
 // $Id: DEFAULT.sty,v 1.10 2008/02/25 17:23:21 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Style/Default/DEFAULT.sty,v $
@@ -8,64 +13,128 @@
 //  O   dev@anakeen.com
 // ---------------------------------------------------------------
 
-
 //global $sty_desc, $sty_const;
-
-$sty_desc = array (
-    "name"        => "MODERN",         //Name
-    "description" => N_("Modern CSS"), //long description
-    "parsable"    => "Y"               //If Y, dynacase will parse the CSS. Note: in this case, relative urls start from CORE_URL position (defaults to N)
+$sty_desc = array(
+    "name" => "MODERN", //Name
+    "description" => N_("Modern CSS") , //long description
+    "parsable" => "Y"
+    //If Y, dynacase will parse the CSS. Note: in this case, relative urls start from CORE_URL position (defaults to N)
+    
 );
-
 // global parameters which can be use for other css
-$sty_const = array (  
-    "COLOR_BLACK"        =>"#000000",
-    "COLOR_WHITE"        =>"#FFFFFF",
-    "CORE_BGIMAGE"       =>"none",
-    "CORE_BGCOLOR"       =>"COLOR_WHITE",
-    "CORE_FGIMG"         =>"url('Images/tabvig.png')",
-    "CORE_FGIMGMENU"     =>"none",
-    "CORE_TEXTFGCOLOR"   =>"COLOR_BLACK",
-    "CORE_TEXTBGCOLOR"   =>"COLOR_BLACK",
-    "CORE_BGCOLORALTERN" =>"COLOR_B0",
-    "CORE_FGCOLOR"       =>"COLOR_B0",
-    "CORE_BGCOLORHIGH"   =>"COLOR_C2",
-    "CORE_ACOLOR"        =>"#15428B",
-    "CORE_INPUTBGCOLOR"  =>"none",
-    "CORE_BGCELLCOLOR"   =>"COLOR_WHITE",
-    "CORE_ERRORCOLOR"    =>"red"
+$sty_const = array(
+    "COLOR_BLACK" => "#000000",
+    "COLOR_WHITE" => "#FFFFFF",
+    "CORE_BGIMAGE" => "none",
+    "CORE_BGCOLOR" => "COLOR_WHITE",
+    "CORE_FGIMG" => "url('Images/tabvig.png')",
+    "CORE_FGIMGMENU" => "none",
+    "CORE_TEXTFGCOLOR" => "COLOR_BLACK",
+    "CORE_TEXTBGCOLOR" => "COLOR_BLACK",
+    "CORE_BGCOLORALTERN" => "COLOR_B0",
+    "CORE_FGCOLOR" => "COLOR_B0",
+    "CORE_BGCOLORHIGH" => "COLOR_C2",
+    "CORE_ACOLOR" => "#15428B",
+    "CORE_INPUTBGCOLOR" => "none",
+    "CORE_BGCELLCOLOR" => "COLOR_WHITE",
+    "CORE_ERRORCOLOR" => "red"
 );
-  
-// style color variable to compute colors 
+// style color variable to compute colors
 // COLORS_A0 -> COLORS_A9
 // COLORS_B0 -> COLORS_B9
 // COLORS_C0 -> COLORS_C9
 $sty_colors = array(
-    "A"=>'#2A3B47',
-    "B"=>'#99D5FF',
-    "C"=>"#EBF7FF"
+    "A" => '#2A3B47',
+    "B" => '#99D5FF',
+    "C" => "#EBF7FF"
 );
-
-
 // local variable for compose style css
-
 $sty_local = array(
-    "input-text-normal-color"=>"COLOR_BLACK",
-    "input-text-hover-color"=>"COLOR_BLACK",
-    "input-text-focus-color"=>"COLOR_BLACK",
-    "input-text-disabled-color"=>"COLOR_A3",
-    "input-background-normal-color"=>"COLOR_A9",
-    "input-background-hover-color"=>"COLOR_C7",
-    "input-background-focus-color"=>"COLOR_C5",
-    "input-background-disabled-color"=>"COLOR_A8",
-    "menu-background-disabled-color"=>"COLOR_A9",
-    "menu-background-hover-color"=>"COLOR_C5",
-    "menu-background-normal-color"=>"COLOR_A9",
-    "menu-text-normal-color"=>"COLOR_BLACK",
-    "menu-text-disabled-color"=>"COLOR_A3",
-    "menu-text-hover-color"=>"COLOR_BLACK",
-    "input-background-image"=>"url('STYLE/MODERN/Images/tabvig.png')",
-    "tabs-sprite-image"=>"url('STYLE/MODERN/Images/tabs-sprite.gif')"
+    "input-text-normal-color" => "COLOR_BLACK",
+    "input-text-hover-color" => "COLOR_BLACK",
+    "input-text-focus-color" => "COLOR_BLACK",
+    "input-text-disabled-color" => "COLOR_A3",
+    "input-background-normal-color" => "COLOR_A9",
+    "input-background-hover-color" => "COLOR_C7",
+    "input-background-focus-color" => "COLOR_C5",
+    "input-background-disabled-color" => "COLOR_A8",
+    "menu-background-disabled-color" => "COLOR_A9",
+    "menu-background-hover-color" => "COLOR_C5",
+    "menu-background-normal-color" => "COLOR_A9",
+    "menu-text-normal-color" => "COLOR_BLACK",
+    "menu-text-disabled-color" => "COLOR_A3",
+    "menu-text-hover-color" => "COLOR_BLACK",
+    "input-background-image" => "url('STYLE/MODERN/Images/tabvig.png')",
+    "tabs-sprite-image" => "url('STYLE/MODERN/Images/tabs-sprite.gif')"
 );
 
+$sty_rules = array(
+    'css' => array(
+        'dcp/main.css' => array(
+            "src" => array(
+                "CORE/Layout/core.css",
+                "FDL/Layout/freedom.css",
+                "WHAT/Layout/size-normal.css",
+                "FDL/Layout/document.css",
+                "STYLE/MODERN/Layout/MODERN.css"
+            ) ,
+            "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
+            "deploy_parser" => array(
+                "className" => '\Dcp\Style\dcpCssTemplateParser'
+            )
+        ) ,
+        'dcp/core.css' => array(
+            "src" => array(
+                "CORE/Layout/core.css",
+                "WHAT/Layout/size-normal.css",
+                "STYLE/MODERN/Layout/MODERN.css"
+            ) ,
+            "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
+            "deploy_parser" => array(
+                "className" => '\Dcp\Style\dcpCssTemplateParser'
+            )
+        ) ,
+        'dcp/document-edit.css' => array(
+            "src" => array(
+                "CORE/Layout/core.css",
+                "FDL/Layout/freedom.css",
+                "WHAT/Layout/size-normal.css",
+                "FDL/Layout/editdoc.css",
+                "FDL/Layout/autocompletion.css",
+                "FDL/Layout/popup.css",
+                "FDL/Layout/document.css",
+                "FDL/Layout/document.css",
+                "STYLE/MODERN/Layout/MODERN.css",
+                "STYLE/MODERN/Layout/calendar.css"
+            ) ,
+            "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
+            "deploy_parser" => array(
+                "className" => '\Dcp\Style\dcpCssTemplateParser'
+            )
+        ) ,
+        'dcp/system.css' => array(
+            "src" => array(
+                "STYLE/MODERN/Layout/MODERN.css",
+                "WHAT/Layout/size-normal.css"
+            ) ,
+            "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
+            "deploy_parser" => array(
+                "className" => '\Dcp\Style\dcpCssTemplateParser'
+            )
+        ) ,
+        'dcp/jquery-ui.css' => array(
+            "src" => array(
+                "lib/jquery-ui/css/smoothness/jquery-ui.css"
+            )
+        ) ,
+        'dcp/images' => array(
+            "src" => array(
+                "lib/jquery-ui/css/smoothness/images"
+            ) ,
+            "deploy_parser" => array(
+                "className" => '\Dcp\Style\dcpCssCopyDirectory'
+            )
+        )
+    )
+);
 ?>

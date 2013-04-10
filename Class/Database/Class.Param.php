@@ -19,7 +19,6 @@
 include_once ('Class.Log.php');
 include_once ('Class.DbObj.php');
 include_once ('Class.ParamDef.php');
-
 /** @deprecated use Param::PARAM_APP instead */
 define("PARAM_APP", "A");
 /** @deprecated use Param::PARAM_GLB instead */
@@ -31,12 +30,12 @@ define("PARAM_STYLE", "S");
 
 class Param extends DbObj
 {
-
+    
     const PARAM_APP = "A";
     const PARAM_GLB = "G";
     const PARAM_USER = "U";
     const PARAM_STYLE = "S";
-
+    
     var $fields = array(
         "name",
         "type",
@@ -164,13 +163,10 @@ class Param extends DbObj
         
         if ($appid) {
             if ($userid) {
-                $styleIdPG=pg_escape_string($styleid);
-                $sql=sprintf("select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where
-(paramv.type = '%s')  OR
-(paramv.appid=%d and (paramv.type='%s' or paramv.type='%s%d' or paramv.type='%s%s')) OR
-(paramdef.isglob='Y' and (paramv.type='%s%d' or paramv.type='%s%s')) OR
-(paramv.type='%s%s')
-order by paramv.name, paramv.type desc",PARAM_GLB,$appid,PARAM_APP,PARAM_USER,$userid,PARAM_STYLE,$styleIdPG,PARAM_USER,$userid,PARAM_STYLE,$styleIdPG,PARAM_STYLE,pg_escape_string($size));
+                $styleIdPG = pg_escape_string($styleid);
+                $sql = sprintf("select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where
+(paramv.type = '%s')  OR (paramv.appid=%d and (paramv.type='%s' or paramv.type='%s%d' or paramv.type='%s%s')) OR (paramdef.isglob='Y' and (paramv.type='%s%d' or paramv.type='%s%s')) OR
+(paramv.type='%s%s') order by paramv.name, paramv.type desc", self::PARAM_GLB, $appid, self::PARAM_APP, self::PARAM_USER, $userid, self::PARAM_STYLE, $styleIdPG, self::PARAM_USER, $userid, self::PARAM_STYLE, $styleIdPG, self::PARAM_STYLE, pg_escape_string($size));
             } else {
                 $sql = sprintf("SELECT * from paramv where type='G' or (type='A' and appid=%d);", $appid);
             }

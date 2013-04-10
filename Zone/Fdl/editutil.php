@@ -44,6 +44,6 @@ function editmode(Action & $action)
 {
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
     $action->parent->AddJsRef(sprintf("%sapp=FDL&action=ALLEDITJS&wv=%s", $action->GetParam("CORE_SSTANDURL") , $action->GetParam("WVERSION")));
-    $action->parent->AddCssRef(sprintf("%sapp=FDL&action=ALLEDITCSS&wv=%s", $action->GetParam("CORE_SSTANDURL") , $action->GetParam("WVERSION")));
+    $action->parent->addCssRef("css/dcp/document-edit.css");
 }
 ?>

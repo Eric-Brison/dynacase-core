@@ -182,18 +182,28 @@ function stripUrlSlahes($url)
  */
 function initExplorerParam(Application & $app, $defaultValue = false)
 {
-    $app->SetVolatileParam("ISIE", $defaultValue);
-    $app->SetVolatileParam("ISIE6", $defaultValue);
-    $app->SetVolatileParam("ISIE7", $defaultValue);
-    $app->SetVolatileParam("ISIE8", $defaultValue);
-    $app->SetVolatileParam("ISIE9", $defaultValue);
-    $app->SetVolatileParam("ISIE10", $defaultValue);
-    $app->SetVolatileParam("ISAPPLEWEBKIT", $defaultValue);
-    $app->SetVolatileParam("ISSAFARI", $defaultValue);
-    $app->SetVolatileParam("ISCHROME", $defaultValue);
+    $explorerP = getExplorerParamtersName();
+    foreach ($explorerP as $ep) {
+        $app->SetVolatileParam($ep, $defaultValue);
+    }
     if (!empty($_SERVER["HTTP_HOST"])) {
         initExplorerWebParam($app);
     }
+}
+
+function getExplorerParamtersName()
+{
+    return array(
+        "ISIE",
+        "ISIE6",
+        "ISIE7",
+        "ISIE8",
+        "ISIE9",
+        "ISIE10",
+        "ISAPPLEWEBKIT",
+        "ISSAFARI",
+        "ISCHROME"
+    );
 }
 /**
  * set volatile patram to detect web user agent
