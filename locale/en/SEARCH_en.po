@@ -1,0 +1,188 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SEARCH \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2013-04-09 16:43+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#gui_color"
+msgstr "guide color"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#gui_isrss"
+msgstr "Use as RSS feed"
+
+msgid "SEARCH#gui_isrss#[bool]no"
+msgstr "no"
+
+msgid "SEARCH#gui_isrss#yes"
+msgstr "yes"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#gui_sysrss"
+msgstr "RSS system feed"
+
+msgid "SEARCH#gui_sysrss#[bool]no"
+msgstr "no"
+
+msgid "SEARCH#gui_sysrss#yes"
+msgstr "yes"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_acl"
+msgstr "Document"
+
+msgid "SEARCH#se_acl#delete"
+msgstr "Deletable"
+
+msgid "SEARCH#se_acl#edit"
+msgstr "Alterable"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_archive"
+msgstr "in archive"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_case"
+msgstr "mode "
+
+msgid "SEARCH#se_case#full"
+msgstr "full word"
+
+msgid "SEARCH#se_case#no"
+msgstr "case insensitive"
+
+msgid "SEARCH#se_case#yes"
+msgstr "case sensitive"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_ccfld"
+msgstr "current father's folder"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_cfld"
+msgstr "from folder"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_crit"
+msgstr "criteria"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_fam"
+msgstr "family"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_famid"
+msgstr "family (id)"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_famonly"
+msgstr "Without inherited families"
+
+msgid "SEARCH#se_famonly#no"
+msgstr "With inherited families"
+
+msgid "SEARCH#se_famonly#yes"
+msgstr "Without inherited families"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_idcfld"
+msgstr "id of current father's folder"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_idfld"
+msgstr "root folder"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_key"
+msgstr "keyword"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_latest"
+msgstr "revision"
+
+msgid "SEARCH#se_latest#allfixed"
+msgstr "without current revision"
+
+msgid "SEARCH#se_latest#fixed"
+msgstr "last revision"
+
+msgid "SEARCH#se_latest#lastfixed"
+msgstr "last of fixed revisions"
+
+msgid "SEARCH#se_latest#no"
+msgstr "all revisions"
+
+msgid "SEARCH#se_latest#yes"
+msgstr "current"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_memo"
+msgstr "Use in sub-menus"
+
+msgid "SEARCH#se_memo#[bool]no"
+msgstr "no"
+
+msgid "SEARCH#se_memo#yes"
+msgstr "yes"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_open"
+msgstr "open"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_openfolio"
+msgstr "open as portfolio"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_orderby"
+msgstr "Order by"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_setsysrss"
+msgstr "RSS visible/hidden to users"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_sqlselect"
+msgstr "sql request"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_static"
+msgstr "Static request"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_sublevel"
+msgstr "search depth"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_sysfam"
+msgstr "include system documents"
+
+msgid "SEARCH#se_sysfam#[bool]no"
+msgstr "no"
+
+msgid "SEARCH#se_sysfam#yes"
+msgstr "yes"
+
+#: App/Fdl/searches.ods.csv
+msgid "SEARCH#se_trash"
+msgstr "in trash"
+
+msgid "SEARCH#se_trash#also"
+msgstr "also"
+
+msgid "SEARCH#se_trash#no"
+msgstr "no"
+
+msgid "SEARCH#se_trash#only"
+msgstr "only"
+
+msgid "SEARCH#title"
+msgstr "search"

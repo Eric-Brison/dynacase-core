@@ -1,0 +1,153 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: REPORT \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2013-04-09 17:45+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_caption"
+msgstr "description"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_coloreven"
+msgstr "even color"
+
+msgid "REPORT#rep_coloreven#elabel"
+msgstr "background color for even rows"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_colorhf"
+msgstr "header color"
+
+msgid "REPORT#rep_colorhf#elabel"
+msgstr "background color for header and footer"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_colorodd"
+msgstr "odd color"
+
+msgid "REPORT#rep_colorodd#elabel"
+msgstr "background color for odd rows"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_colors"
+msgstr "color"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_csv"
+msgstr "Export CSV"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_displayoption"
+msgstr "Presentation's option"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_foots"
+msgstr "footer"
+
+msgid "REPORT#rep_foots#CARD"
+msgstr "Cardinality"
+
+msgid "REPORT#rep_foots#MOY"
+msgstr "Mean"
+
+msgid "REPORT#rep_foots#NONE"
+msgstr " "
+
+msgid "REPORT#rep_foots#SUM"
+msgstr "Sum"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_fr_param"
+msgstr "Parameters"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_fr_presentation"
+msgstr "Presentation"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_idcols"
+msgstr "column id"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_idsort"
+msgstr "Sort id"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_imp"
+msgstr "Printable version"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_lcols"
+msgstr "label"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_limit"
+msgstr "limit"
+
+msgid "REPORT#rep_limit#elabel"
+msgstr "Maximum number of displayed documents"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_maxdisplaylimit"
+msgstr "Maximum number of displayed rows"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_ordersort"
+msgstr "Order"
+
+msgid "REPORT#rep_ordersort#asc"
+msgstr "ascending"
+
+msgid "REPORT#rep_ordersort#desc"
+msgstr "descending"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_sort"
+msgstr "sort"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_style"
+msgstr "style"
+
+msgid "REPORT#rep_style# "
+msgstr "Personalized..."
+
+msgid "REPORT#rep_style#reportHBlue"
+msgstr "Horizontal blue"
+
+msgid "REPORT#rep_style#reportHInverse"
+msgstr "Horizontal reverse video"
+
+msgid "REPORT#rep_style#reportHYellow"
+msgstr "Horizontal yellow"
+
+msgid "REPORT#rep_style#reportVGreen"
+msgstr "Vertical green"
+
+msgid "REPORT#rep_style#standard1"
+msgstr "Standard (Theme 1)"
+
+msgid "REPORT#rep_style#standard2"
+msgstr "Standard (Theme 2)"
+
+msgid "REPORT#rep_style#standard3"
+msgstr "Standard (Theme 3)"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_tab_presentation"
+msgstr "Presentation"
+
+#: App/Fdl/searches.ods.csv
+msgid "REPORT#rep_tcols"
+msgstr "Columns"
+
+msgid "REPORT#title"
+msgstr "report"
