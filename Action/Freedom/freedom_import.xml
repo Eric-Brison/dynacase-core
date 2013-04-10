@@ -13,6 +13,9 @@ TR.ignored TD{
 TR.added TD{
    background-color:#adf4b2;
 }
+TR.warning TD{
+   background-color:#FBC95E;
+}
 LI {
 	white-space:nowrap;
 	}
@@ -42,30 +45,21 @@ TD, TH {
            }
        }
        if (editw) {
-          var b=editw.document.getElementById('bgimport');
-           if (b) {
-               b.disabled=true;
-               if ([nbdoc]+[nbprof]>0) {
-                 b.disabled=false;
-                 b.value="[TEXT:proceed background import]";
-               } else {
-                 b.value="[TEXT:No import : no document detected]";
-               }
-           }
-           b=editw.document.getElementById('fgimport');
-           if (b) {
-                b.disabled=true;
-                if (([nbdoc]<[FDL_MAX_FGEXPORTDOC]) && ([nbdoc]+[nbprof]>0)){
-                    b.disabled=false;
-                    b.value="[TEXT:Import document description now]";
-                 } else {
-                    if ([nbdoc]<[FDL_MAX_FGEXPORTDOC]) {
-                       b.value="[TEXT:No import : no document detected]";
-                    } else {
-                       b.value="[TEXT:No direct import : limit is reached]"+" : "+ [FDL_MAX_FGEXPORTDOC];
-                    }
-                 }
-           }
+       var b=editw.document.getElementById('bgimport');
+       if (b) {
+       b.disabled=false;
+       b.value="[TEXT:proceed background import]";
+       }
+       b=editw.document.getElementById('fgimport');
+       if (b) {
+       if ([nbdoc]>=[FDL_MAX_FGEXPORTDOC]) {
+       b.value="[TEXT:No direct import : limit is reached]"+" : "+ [FDL_MAX_FGEXPORTDOC];
+       b.disabled=true;
+       } else {
+       b.disabled=false;
+       b.value="[TEXT:Import document description now]";
+       }
+       }
        }
    </script>
 
@@ -77,8 +71,13 @@ TD, TH {
 
 
    <H1>[IF analyze][TEXT:Result Analyze Documents][ENDIF analyze][IFNOT analyze][TEXT:Result Import Documents][ENDIF analyze]</H1>
-<H3>[nbdoc] [TEXT:documents to examine].</H3>
-
+[IFNOT haswarning]<H3>[nbdoc] [TEXT:documents to examine].</H3>[ENDIF haswarning]
+[IF haserror]
+    <h4 style="background-color: [CORE_ERRORCOLOR]">[TEXT:An error occured, check the details for more information]</h4>
+    [ENDIF haserror]
+    [IF haswarning]
+    <h4 style="background-color: #FBC95E">[TEXT:Some element couldn't be fully analyze, warnings can become errors or be corrected when importing]</h4>
+    [ENDIF haswarning]
 <table width="100%" >
 
 <thead><tr><th>[TEXT:line]</th>

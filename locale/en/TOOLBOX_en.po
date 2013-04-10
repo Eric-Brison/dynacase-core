@@ -8,10 +8,10 @@ msgstr ""
 "PO-Revision-Date: 2013-04-04 17:26+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
@@ -595,6 +595,9 @@ msgid "Allocate"
 msgstr ""
 
 msgid "Allow guest access"
+msgstr ""
+
+msgid "An error occured, check the details for more information"
 msgstr ""
 
 msgid "Analyse fdl.csv"
@@ -1554,6 +1557,11 @@ msgstr ""
 msgid "Edit translations"
 msgstr ""
 
+msgid ""
+"Element can't be perfectly analyze, some error might occur or be corrected "
+"when importing"
+msgstr ""
+
 msgid "Empty Post-It"
 msgstr ""
 
@@ -2162,8 +2170,8 @@ msgstr ""
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;"
-"%s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;%"
+"s&gt; will be sended with result rapport"
 msgstr ""
 
 msgid "Import Archive"
@@ -2624,9 +2632,6 @@ msgstr ""
 
 #, c-format
 msgid "No identifier found for relation '%s' %s in %s file"
-msgstr ""
-
-msgid "No import : no document detected"
 msgstr ""
 
 msgid "No one default values"
@@ -3288,6 +3293,11 @@ msgstr ""
 msgid ""
 "Some constraint attribute are not respected.\n"
 "You must correct these values before save document."
+msgstr ""
+
+msgid ""
+"Some element couldn't be fully analyze, warnings can become errors or be "
+"corrected when importing"
 msgstr ""
 
 #, c-format
@@ -6289,9 +6299,6 @@ msgstr ""
 msgid "method %s not found"
 msgstr ""
 
-msgid "mini view"
-msgstr ""
-
 msgid "mnogosearch php extension not loaded"
 msgstr ""
 
@@ -6920,9 +6927,6 @@ msgstr ""
 
 #, c-format
 msgid "possible incorrect conversion HTML to ODT %s"
-msgstr ""
-
-msgid "post it"
 msgstr ""
 
 #, c-format
@@ -8251,6 +8255,9 @@ msgid "waiting : document not set"
 msgstr ""
 
 msgid "waiting conversion file"
+msgstr ""
+
+msgid "warning"
 msgstr ""
 
 msgid "warning_name"

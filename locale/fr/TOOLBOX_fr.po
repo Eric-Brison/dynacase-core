@@ -5,13 +5,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-04 17:25+0200\n"
+"PO-Revision-Date: 2013-04-10 11:02+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
@@ -599,6 +599,11 @@ msgstr "Affecter"
 msgid "Allow guest access"
 msgstr "Autoriser l'accès invité"
 
+msgid "An error occured, check the details for more information"
+msgstr ""
+"Une erreur a été détectée, consultez le compte-rendu ci-dessous pour plus "
+"d'information"
+
 msgid "Analyse fdl.csv"
 msgstr "Analyse fdl.csv"
 
@@ -704,8 +709,8 @@ msgstr ""
 msgid ""
 "Attribute Error: impossible to found the family for docid attribute '%s'"
 msgstr ""
-"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid "
-"'%s'"
+"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid '%"
+"s'"
 
 #, c-format
 msgid "Attribute [%s] is not found"
@@ -1581,6 +1586,11 @@ msgstr "Barre de menu d'édition"
 msgid "Edit translations"
 msgstr "Modifier les traductions"
 
+msgid ""
+"Element can't be perfectly analyze, some error might occur or be corrected "
+"when importing"
+msgstr "L'élément ne peut pas être parfaitement analysé, des erreurs peuvent apparaître ou être corrigées lors de l'importation"
+
 msgid "Empty Post-It"
 msgstr "Post-It vide"
 
@@ -2232,8 +2242,8 @@ msgstr "Image (PNG)"
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;"
-"%s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;%"
+"s&gt; will be sended with result rapport"
 msgstr ""
 "L'import %s est en cours. Lorsque la mise à jour sera finie, un email sera "
 "envoyé à \n"
@@ -2712,9 +2722,6 @@ msgid "No identifier found for relation '%s' %s in %s file"
 msgstr ""
 "Impossible de trouver d'identifiant pour la relation '%s' %s dans le fichier "
 "%s"
-
-msgid "No import : no document detected"
-msgstr "Par d'importation : pas de document détectés"
 
 msgid "No one default values"
 msgstr "Aucune valeur par défaut"
@@ -3398,6 +3405,11 @@ msgid ""
 msgstr ""
 "Certaines contraintes d'attributs ne sont pas respectées\n"
 "Vous devez corriger ces valeurs avant de sauver le document"
+
+msgid ""
+"Some element couldn't be fully analyze, warnings can become errors or be "
+"corrected when importing"
+msgstr "Certains éléments n'ont pas pu être totalement analysés, les avertissements peuvent devenir des erreurs ou être corrigés lors de l'importation"
 
 #, c-format
 msgid "Something wrong. No acl found in %s (user #%d)"
@@ -6461,9 +6473,6 @@ msgstr "la méthode %s n'a pas été exécutée : %s"
 msgid "method %s not found"
 msgstr "méthode %s non trouvée"
 
-msgid "mini view"
-msgstr "mini vue"
-
 msgid "mnogosearch php extension not loaded"
 msgstr "extension php mnogosearch non chargée"
 
@@ -7100,9 +7109,6 @@ msgstr "onglets chemise"
 #, c-format
 msgid "possible incorrect conversion HTML to ODT %s"
 msgstr "possible erreur de conversion HTML vers ODT %s"
-
-msgid "post it"
-msgstr "post-it"
 
 #, c-format
 msgid "postit of %s"
@@ -7771,8 +7777,8 @@ msgstr ""
 "<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
 "p>\n"
 "<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
-"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème"
-"%20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
+"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
+"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""
@@ -8452,6 +8458,9 @@ msgstr "en attente : document non affecté"
 msgid "waiting conversion file"
 msgstr "en attente de conversion"
 
+msgid "warning"
+msgstr "Avertissement"
+
 msgid "warning_name"
 msgstr "la saisie de votre nom est obligatoire."
 
@@ -8623,8 +8632,20 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Confirm unattach all activated timers"
 #~ msgstr "Confirmer l'annulation de tous les minuteurs actifs"
 
+#~ msgid ""
+#~ "Element can't be perfectly analyze, some error might occur when importing"
+#~ msgstr ""
+#~ "L'élément ne peut pas être parfaitement analysé, des erreurs peuvent "
+#~ "apparaître lors de l'importation"
+
 #~ msgid "Go"
 #~ msgstr "Go"
+
+#~ msgid "No import : error detected"
+#~ msgstr "Pas d'importation: une erreur a été détectée"
+
+#~ msgid "No import : no document detected"
+#~ msgstr "Par d'importation : pas de document détectés"
 
 #~ msgid "Object Permission : permission %s needed (%s) - # %d"
 #~ msgstr "Permission objet :: permission %s requise (%s) - n° %d"
@@ -8644,6 +8665,13 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Search containing characters"
 #~ msgstr "Recherche contenant les caractères"
 
+#~ msgid ""
+#~ "Some element couldn't be fully analyze, you might have importation's "
+#~ "errors"
+#~ msgstr ""
+#~ "Certains éléments n'ont pas pu être totalement analysés, des erreurs "
+#~ "peuvent apparaître lors de l'importation"
+
 #~ msgid "Timers history"
 #~ msgstr "Historique des minuteurs"
 
@@ -8662,8 +8690,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "delete %s on server %s...\n"
 #~ msgstr "suppression de %s sur le serveur %s...\n"
 
+#~ msgid "mini view"
+#~ msgstr "mini vue"
+
 #~ msgid "no delay specified in timer %s [%d]"
 #~ msgstr "pas de durée spécifiée dans le minuteur %s [%d]"
+
+#~ msgid "post it"
+#~ msgstr "post-it"
 
 #~ msgid "search online help"
 #~ msgstr "Aide à la recherche"

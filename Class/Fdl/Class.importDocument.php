@@ -53,7 +53,18 @@ class ImportDocument
             if ($status != 0) {
                 $err = sprintf(_("cannot extract archive %s: status : %s") , $file, $status);
                 $this->cr[] = array(
-                    "err" => $err
+                    "err" => $err,
+                    "msg" => "",
+                    "specmsg" => "",
+                    "folderid" => 0,
+                    "foldername" => "",
+                    "filename" => "",
+                    "title" => "",
+                    "id" => "",
+                    "values" => array() ,
+                    "familyid" => 0,
+                    "familyname" => "",
+                    "action" => " "
                 );
             } else {
                 $onlycsv = hasfdlpointcsv($untardir);
@@ -127,6 +138,8 @@ class ImportDocument
      */
     public function writeHtmlCr(Layout & $lay)
     {
+        $hasError = false;
+        $haswarning = false;
         foreach ($this->cr as $k => $v) {
             $this->cr[$k]["taction"] = _($v["action"]); // translate action
             $this->cr[$k]["order"] = $k; // translate action
@@ -138,12 +151,16 @@ class ImportDocument
                     
                 }
             }
+            if ($v["action"] == "ignored") $hasError = true;
+            if ($v["action"] == "warning") $haswarning = true;
         }
         $nbdoc = count(array_filter($this->cr, array(
             $this,
             "isdoc"
         )));
         $lay->SetBlockData("ADDEDDOC", $this->cr);
+        $lay->set("haserror", $hasError);
+        $lay->set("haswarning", $haswarning);
         $lay->Set("nbdoc", $nbdoc);
         $lay->set("analyze", ($this->onlyAnalyze));
         $lay->Set("nbprof", count(array_filter($this->cr, array(
