@@ -538,7 +538,6 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return $rl;
     }
-
     /**
      * Add a CSS in an action
      *
@@ -556,24 +555,19 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function addCssRef($ref, $needparse = null, $packName = '')
     {
         $currentFileRule = $this->style->getRule('css', $ref);
-        if(is_array($currentFileRule)){
-            if(isset($currentFileRule['flags']) && ($currentFileRule['flags'] & Style::RULE_FLAG_PARSE_ON_RUNTIME)){
-                if(is_array($currentFileRule['runtime_parser']) && isset($currentFileRule['runtime_parser']['className']) && null !== $currentFileRule['parse_on_runtime']['className']){
+        if (is_array($currentFileRule)) {
+            if (isset($currentFileRule['flags']) && ($currentFileRule['flags'] & Style::RULE_FLAG_PARSE_ON_RUNTIME)) {
+                if (isset($currentFileRule['runtime_parser']) && is_array($currentFileRule['runtime_parser']) && isset($currentFileRule['runtime_parser']['className']) && null !== $currentFileRule['parse_on_runtime']['className']) {
                     throw new \Dcp\Style\Exception("STY0007", 'custom parse_on_runtime class is not supported yet');
                 }
                 $parseOnLoad = true;
-                if( (null !== $needparse) && ($parseOnLoad !== $needparse) ){
-                    $this->log->warning(
-                        sprintf("%s was added with needParse to %s but style has a rule saying %s"),
-                        $ref,
-                        var_export($needparse, true),
-                        var_export($parseOnLoad, true)
-                    );
+                if ((null !== $needparse) && ($parseOnLoad !== $needparse)) {
+                    $this->log->warning(sprintf("%s was added with needParse to %s but style has a rule saying %s") , $ref, var_export($needparse, true) , var_export($parseOnLoad, true));
                 }
                 $needparse = $parseOnLoad;
             }
         }
-        if(null === $needparse){
+        if (null === $needparse) {
             $needparse = false;
         }
         if (substr($ref, 0, 2) == './') $ref = substr($ref, 2);
@@ -849,17 +843,17 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($init == true) {
             if (isset($this->user)) $pstyle = new Param($this->dbaccess, array(
                 "STYLE",
-                PARAM_USER . $this->user->id,
+                Param::PARAM_USER . $this->user->id,
                 "1"
             ));
             else $pstyle = new Param($this->dbaccess, array(
                 "STYLE",
-                PARAM_USER . ANONYMOUS_ID,
+                Param::PARAM_USER . ANONYMOUS_ID,
                 "1"
             ));
             if (!$pstyle->isAffected()) $pstyle = new Param($this->dbaccess, array(
                 "STYLE",
-                PARAM_APP,
+                Param::PARAM_APP,
                 "1"
             ));
             
@@ -874,14 +868,10 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->style->Set($this);
         }
         if ($style) {
-            if ("Y" == $this->style->parsable) {
-deprecatedFunction("use of parsable property on style is deprecated");                $this->AddCssRef("$style:gen.css", true);
-            } else {
-                $this->AddCssRef("STYLE/$style/Layout/gen.css");
-            }
+            //  $this->AddCssRef("css/dcp/system.css");
+            
+            
         }
-        $size = $this->getParam("FONTSIZE", "normal");
-        $this->AddCssRef("WHAT/Layout/size-$size.css");
     }
     
     public function setLayoutVars($lay)
@@ -1073,11 +1063,11 @@ deprecatedFunction("use of parsable property on style is deprecated");          
     public function setParam($key, $val)
     {
         if (is_array($val)) {
-            if (isset($val["global"]) && $val["global"] == "Y") $type = PARAM_GLB;
-            else $type = PARAM_APP;
+            if (isset($val["global"]) && $val["global"] == "Y") $type = Param::PARAM_GLB;
+            else $type = Param::PARAM_APP;
             $this->param->Set($key, $val["val"], $type, $this->id);
         } else { // old method
-            $this->param->Set($key, $val, PARAM_APP, $this->id);
+            $this->param->Set($key, $val, Param::PARAM_APP, $this->id);
         }
     }
     /**
@@ -1090,7 +1080,7 @@ deprecatedFunction("use of parsable property on style is deprecated");          
      */
     public function setParamU($key, $val)
     {
-        return $this->param->Set($key, $val, PARAM_USER . $this->user->id, $this->id);
+        return $this->param->Set($key, $val, Param::PARAM_USER . $this->user->id, $this->id);
     }
     /**
      * declare new application parameter
@@ -1130,8 +1120,8 @@ deprecatedFunction("use of parsable property on style is deprecated");          
             // migrate paramv values in case of type changes
             $newValues = $pdef->getValues();
             if ($oldValues['isglob'] != $newValues['isglob']) {
-                $ptype = $oldValues['isglob'] == 'Y' ? PARAM_GLB : PARAM_APP;
-                $ptypeNew = $newValues['isglob'] == 'Y' ? PARAM_GLB : PARAM_APP;
+                $ptype = $oldValues['isglob'] == 'Y' ? Param::PARAM_GLB : Param::PARAM_APP;
+                $ptypeNew = $newValues['isglob'] == 'Y' ? Param::PARAM_GLB : Param::PARAM_APP;
                 $pv = new Param($this->dbaccess, array(
                     $pdef->name,
                     $ptype,

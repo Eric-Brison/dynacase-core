@@ -471,10 +471,13 @@ class Layout
         $out = preg_replace("/\[JS:CODENLOG\]/e", "\$this->GenJsCode(false)", $out);
     }
     
-    protected function GenCssRef()
+    protected function GenCssRef($oldCompatibility = true)
     {
         $js = "";
         if (empty($this->action->parent)) return "";
+        if ($oldCompatibility) {
+            $this->action->parent->addCssRef("css/dcp/system.css");
+        }
         $list = $this->action->parent->GetCssRef();
         foreach ($list as $k => $v) {
             $js.= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$v\">\n";
@@ -497,6 +500,7 @@ class Layout
     protected function ParseCss(&$out)
     {
         $out = preg_replace("/\[CSS:REF\]/e", "\$this->GenCssRef()", $out);
+        $out = preg_replace("/\[CSS:CUSTOMREF\]/e", "\$this->GenCssRef(false)", $out);
         
         $out = preg_replace("/\[CSS:CODE\]/e", "\$this->GenCssCode()", $out);
     }
