@@ -98,7 +98,6 @@ class Dir extends PDir
             }
             global $action;
             $action->parent->param->Set("FREEDOM_IDBASKET", $basid, PARAM_USER . $this->userid, $action->parent->GetIdFromName("FREEDOM"));
-            $action->parent->session->close();
         }
         
         return $home;
