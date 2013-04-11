@@ -584,6 +584,10 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
     $searchinmail = false;
     $s = new SearchAccount();
     $s->setSlice($limit);
+    if (preg_match('/usemailfilter\s*=([^|]*)/', $options, $regMatch)) {
+        $searchinmail = trim($regMatch[1]);
+        $searchinmail = ($searchinmail == "yes");
+    }
     if (preg_match('/role\s*=([^|]*)/', $options, $regRole)) {
         $roles = explode(',', $regRole[1]);
         
