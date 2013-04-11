@@ -504,12 +504,13 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @return string the src of the CSS or "" if non existent ref
      */
-    public function getCssLink($ref, $needparse = false, $packName = '')
+    public function getCssLink($ref, $needparse = null, $packName = '')
     {
         if (substr($ref, 0, 2) == './') {
             $ref = substr($ref, 2);
         }
-        $rl = $this->getRessourceLocation('css', $ref, $needparse, $packName);
+        $styleParseRule = $this->detectCssParse($ref, $needparse);
+        $rl = $this->getRessourceLocation('css', $ref, $styleParseRule, $packName);
         if (!$rl) {
             $msg = sprintf(_("Cannot find %s ressource file") , $ref);
             $this->addLogMsg($msg);
@@ -557,6 +558,15 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function addCssRef($ref, $needparse = null, $packName = '')
     {
+        $styleParseRule = $this->detectCssParse($ref, $needparse);
+        
+        if (substr($ref, 0, 2) == './') $ref = substr($ref, 2);
+        return $this->AddRessourceRef('css', $ref, $styleParseRule, $packName);
+    }
+    
+    private function detectCssParse($ref, $askParse)
+    {
+        $needparse = $askParse;
         $currentFileRule = $this->style->getRule('css', $ref);
         if (is_array($currentFileRule)) {
             if (isset($currentFileRule['flags']) && ($currentFileRule['flags'] & Style::RULE_FLAG_PARSE_ON_RUNTIME)) {
@@ -565,16 +575,14 @@ create sequence SEQ_ID_APPLICATION start 10;
                 }
                 $parseOnLoad = true;
                 if ((null !== $needparse) && ($parseOnLoad !== $needparse)) {
-                    $this->log->warning(sprintf("%s was added with needParse to %s but style has a rule saying %s") , $ref, var_export($needparse, true) , var_export($parseOnLoad, true));
+                    $this->log->warning(sprintf("%s was added with needParse to %s but style has a rule saying %s", $ref, var_export($needparse, true) , var_export($parseOnLoad, true)));
                 }
                 $needparse = $parseOnLoad;
             }
         }
-        if (null === $needparse) {
-            $needparse = false;
-        }
-        if (substr($ref, 0, 2) == './') $ref = substr($ref, 2);
-        return $this->AddRessourceRef('css', $ref, $needparse, $packName);
+        $needparse = $needparse ? true : false;
+        
+        return $needparse;
     }
     /**
      * Get the current CSS ref of the current action
