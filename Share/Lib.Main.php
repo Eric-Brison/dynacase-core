@@ -105,14 +105,15 @@ function getMainAction($auth, &$action)
     if ($urlindex) $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($urlindex));
     else $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($puburl . "/"));
     
+    $sessKey = md5($session->id . getParam("WVERSION"));
     $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
     $core->SetVolatileParam("CORE_ABSURL", stripUrlSlahes($puburl . "/")); // absolute links
     $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
     $core->SetVolatileParam("CORE_ROOTURL", "?sole=R$add_args&");
     $core->SetVolatileParam("CORE_BASEURL", "?sole=A$add_args&");
-    $core->SetVolatileParam("CORE_SBASEURL", "?sole=A&freedom_param={$session->id}$add_args&");
+    $core->SetVolatileParam("CORE_SBASEURL", "?sole=A&_uKey_=$sessKey$add_args&");
     $core->SetVolatileParam("CORE_STANDURL", "?sole=Y$add_args&");
-    $core->SetVolatileParam("CORE_SSTANDURL", "?sole=Y&freedom_param={$session->id}$add_args&");
+    $core->SetVolatileParam("CORE_SSTANDURL", "?sole=Y&_uKey_=$sessKey$add_args&");
     $core->SetVolatileParam("CORE_ASTANDURL", "$puburl/$indexphp?sole=Y$add_args&"); // absolute links
     // ----------------------------------------
     // Init Application & Actions Objects
