@@ -44,7 +44,7 @@ function getDefFld(Action & $action)
     return 0;
 }
 // return attribute sort default
-function getDefUSort(Action & $action, $def = "title", $famid = "")
+function getDefUSort(Action & $action, $def = "-revdate", $famid = "")
 {
     if (!$famid) $famid = getDefFam($action);
     $pu = $action->GetParam("GENERIC_USORT");
@@ -256,7 +256,7 @@ function getFamilyParameter(&$action, $famid, $key, $def = "")
 /**
  * set family attribute for generic application
  */
-function setFamilyParameter(Action &$action, $famid, $attrid, $value)
+function setFamilyParameter(Action & $action, $famid, $attrid, $value)
 {
     $tmode = explode(",", $action->getParam($attrid));
     // explode parameters
@@ -266,7 +266,7 @@ function setFamilyParameter(Action &$action, $famid, $attrid, $value)
         $val = isset($values[1]) ? $values[1] : "";
         $tview[$fid] = $val;
     }
-    if ((!isset($tview[$famid])) ||  $tview[$famid] != $value) {
+    if ((!isset($tview[$famid])) || $tview[$famid] != $value) {
         $tview[$famid] = $value;
         // implode parameters to change user preferences
         $tmode = array();

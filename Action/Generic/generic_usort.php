@@ -62,13 +62,14 @@ function setUsort(Action & $action, $aorder, $famid = "")
     
     if (!isset($tr[$famid])) {
         /*
-         * Handle the case when no order is memorized and "title"
-         * is clicked: invert title sort order
+         * Handle the case when no order is memorized and "revdate"
+         * is clicked: invert revdate sort order
         */
-        if ($aorder == 'title') {
-            $aorder = '-title';
-        } elseif ($aorder == '-title') {
-            $aorder = 'title';
+        /* This should be in sync with the default value $def from getDefUSort() */
+        if ($aorder == 'revdate') {
+            $aorder = '-revdate';
+        } elseif ($aorder == '-revdate') {
+            $aorder = 'revdate';
         }
     }
     
