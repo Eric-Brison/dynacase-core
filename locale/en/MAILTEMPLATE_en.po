@@ -1,0 +1,181 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MAILTEMPLATE \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2013-04-10 15:15+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "MAILTEMPLATE#title"
+msgstr "mail template"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_attach"
+msgstr "Attachment"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_body"
+msgstr "Body"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_copymode"
+msgstr "-"
+
+msgid "MAILTEMPLATE#tmail_copymode#bcc"
+msgstr "Bcc"
+
+msgid "MAILTEMPLATE#tmail_copymode#cc"
+msgstr "Cc"
+
+msgid "MAILTEMPLATE#tmail_copymode#to"
+msgstr "To"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_dest"
+msgstr "Reciever"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_desttype"
+msgstr "type"
+
+msgid "MAILTEMPLATE#tmail_desttype#A"
+msgstr "Text's attribute"
+
+msgid "MAILTEMPLATE#tmail_desttype#D"
+msgstr "Relation's attribute"
+
+msgid "MAILTEMPLATE#tmail_desttype#DE"
+msgstr "Family relation's parameter"
+
+msgid "MAILTEMPLATE#tmail_desttype#E"
+msgstr "Family text's parameter"
+
+msgid "MAILTEMPLATE#tmail_desttype#F"
+msgstr "Fixed adress"
+
+msgid "MAILTEMPLATE#tmail_desttype#P"
+msgstr "Global parameters"
+
+msgid "MAILTEMPLATE#tmail_desttype#WA"
+msgstr "Cycle's attribute"
+
+msgid "MAILTEMPLATE#tmail_desttype#WD"
+msgstr "Cycle's relation"
+
+msgid "MAILTEMPLATE#tmail_desttype#WE"
+msgstr "Cycle's parameter"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_family"
+msgstr "Family"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_format"
+msgstr "Format"
+
+msgid "MAILTEMPLATE#tmail_format#html"
+msgstr "HTML"
+
+msgid "MAILTEMPLATE#tmail_format#htmlpdf"
+msgstr "HTML & PDF"
+
+msgid "MAILTEMPLATE#tmail_format#pdf"
+msgstr "PDF"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_fr"
+msgstr "Header"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_fr_content"
+msgstr "Content"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_from"
+msgstr "From"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_fromtype"
+msgstr "type"
+
+msgid "MAILTEMPLATE#tmail_fromtype#A"
+msgstr "Text's attribute"
+
+msgid "MAILTEMPLATE#tmail_fromtype#D"
+msgstr "Relation's attribute"
+
+msgid "MAILTEMPLATE#tmail_fromtype#DE"
+msgstr "Family relation's parameter"
+
+msgid "MAILTEMPLATE#tmail_fromtype#E"
+msgstr "Family text's parameter"
+
+msgid "MAILTEMPLATE#tmail_fromtype#F"
+msgstr "Fixed adress"
+
+msgid "MAILTEMPLATE#tmail_fromtype#P"
+msgstr "Global parameters"
+
+msgid "MAILTEMPLATE#tmail_fromtype#WA"
+msgstr "Cycle's attribute"
+
+msgid "MAILTEMPLATE#tmail_fromtype#WD"
+msgstr "Cycle's relation"
+
+msgid "MAILTEMPLATE#tmail_fromtype#WE"
+msgstr "Cycle's parameter"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_recip"
+msgstr "reciever"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_savecopy"
+msgstr "Save a copy"
+
+msgid "MAILTEMPLATE#tmail_savecopy#elabel"
+msgstr "save a message copy on server when sending"
+
+msgid "MAILTEMPLATE#tmail_savecopy#no"
+msgstr "No copy"
+
+msgid "MAILTEMPLATE#tmail_savecopy#yes"
+msgstr "Copy on server"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_subject"
+msgstr "subject"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_t_attach"
+msgstr "Attachments"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_t_from"
+msgstr "Sender"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_title"
+msgstr "Title"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_ulink"
+msgstr "With links"
+
+msgid "MAILTEMPLATE#tmail_ulink#no"
+msgstr "Without link"
+
+msgid "MAILTEMPLATE#tmail_ulink#yes"
+msgstr "With links"
+
+#: App/Fdl/searches.ods.csv
+msgid "MAILTEMPLATE#tmail_workflow"
+msgstr "Cycle's family"
+
+msgid "MAILTEMPLATE#tmail_workflow#elabel"
+msgstr "family to recover comment or transition settings"

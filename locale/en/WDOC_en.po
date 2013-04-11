@@ -1,0 +1,65 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WDOC \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2013-04-10 17:32+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/searches.ods.csv
+msgid "WDOC#dpdoc_fam"
+msgstr "family (title)"
+
+msgid "WDOC#dpdoc_fam#elabel"
+msgstr "family used for dynamic profile"
+
+#: App/Fdl/searches.ods.csv
+msgid "WDOC#dpdoc_famid"
+msgstr "family"
+
+#: App/Fdl/searches.ods.csv
+msgid "WDOC#dpdoc_fr_dyn"
+msgstr "dynamic profile"
+
+msgid "WDOC#title"
+msgstr "workflow"
+
+#: App/Fdl/searches.ods.csv
+msgid "WDOC#wf_desc"
+msgstr "description"
+
+#: App/Fdl/searches.ods.csv
+msgid "WDOC#wf_fam"
+msgstr "family (title)"
+
+msgid "WDOC#wf_fam#elabel"
+msgstr "family compatible with workflow"
+
+#: App/Fdl/searches.ods.csv
+msgid "WDOC#wf_famid"
+msgstr "family"
+
+#: App/Fdl/searches.ods.csv
+msgid "WDOC#wf_graph"
+msgstr "See graph"
+
+#: App/Fdl/searches.ods.csv
+msgid "WDOC#wf_graphc"
+msgstr "See complete graph"
+
+#: App/Fdl/searches.ods.csv
+msgid "WDOC#wf_init"
+msgstr "initialisation"
+
+#: App/Fdl/searches.ods.csv
+msgid "WDOC#wf_tab_states"
+msgstr "States"
+
+#: App/Fdl/searches.ods.csv
+msgid "WDOC#wf_tab_transitions"
+msgstr "Transitions"
