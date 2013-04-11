@@ -124,10 +124,12 @@ function popdoc(event,url,title) {
             w = [mgeow];
         if (mviewgeo != undefined) {
             var match = mviewgeo.match(/([0-9]+)\+([0-9]+)\+([0-9]+)x([0-9]+)/);
-            x = parseInt(match[1]);
-            y = parseInt(match[2]);
-            w = parseInt(match[3]);
-            h = parseInt(match[4]);
+            if (match && match.length >4) {
+                x = parseInt(match[1]);
+                y = parseInt(match[2]);
+                w = parseInt(match[3]);
+                h = parseInt(match[4]);
+            }
         }
         displayWindow(h, w, url, title, x, y +scrolly, 'POPDOC');
     }
