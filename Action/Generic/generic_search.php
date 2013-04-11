@@ -119,7 +119,7 @@ function generic_search(Action & $action)
             );
         }
         //$action->addLogMsg($sqlfilter);
-        $sqlorder = getDefUSort($action, "title");
+        $sqlorder = getDefUSort($action);
         if ($sqlorder == "") {
             $sdoc->clearValue("se_orderby");
         }

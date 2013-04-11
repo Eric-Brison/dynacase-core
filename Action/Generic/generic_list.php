@@ -104,7 +104,8 @@ function generic_list(&$action)
     $action->lay->Set("previcon", "");
     
     if ($sqlorder == "") {
-        $sqlorder = getDefUSort($action, "title", $sfamid);
+        /* This should be in sync with the default value $def from getDefUSort() */
+        $sqlorder = getDefUSort($action, "-revdate", $sfamid);
         setHttpVar("sqlorder", $sqlorder);
     }
     
