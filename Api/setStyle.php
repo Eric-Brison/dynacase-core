@@ -12,8 +12,8 @@ if (!$styFilePath) {
     /**
      * @var Action $action
      */
-    $defautStyle=$action->getParam("STYLE");
-    $styFilePath=sprintf("STYLE/%s/%s.sty", $defautStyle,$defautStyle);
+    $defautStyle = $action->getParam("STYLE");
+    $styFilePath = sprintf("STYLE/%s/%s.sty", $defautStyle, $defautStyle);
 }
 $verbose = ('yes' === $usage->addOptionalParameter('verbose', 'verbose', array(
     'yes',
@@ -89,7 +89,7 @@ class styleManager
         //load rules (rules.d)
         $customRulesDirPath = dirname($styFilePath) . DIRECTORY_SEPARATOR . self::CUSTOM_RULES_DIR_NAME;
         if (is_dir($customRulesDirPath) && is_readable($customRulesDirPath)) {
-            $customRules = $styleDefinition['sty_rules'];
+            $customRules = & $styleDefinition['sty_rules'];
             $customRulesFiles = scandir($customRulesDirPath);
             if (false !== $customRulesFiles) {
                 foreach ($customRulesFiles as $customRulesFile) {
@@ -98,7 +98,6 @@ class styleManager
                 }
             }
         }
-        
         return $styleDefinition;
     }
     
