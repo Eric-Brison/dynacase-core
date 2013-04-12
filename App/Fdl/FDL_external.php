@@ -643,13 +643,11 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
     $condName = "";
     if ($filterName) {
         $tname = explode(' ', $filterName);
-        $filterName = pg_escape_string($filterName);
         $condmail = '';
-        if ($searchinmail) $condmail = sprintf("or (mail ~* '%s')", $filterName);
-        if (count($tname) > 1) {
-            $condName = sprintf(" (coalesce(firstname,'') || ' ' || coalesce(lastname,'') ~* '%s' $condmail)", $filterName);
-        } else {
-            $condName = sprintf(" (firstname ~* '%s' or lastname ~* '%s' $condmail)", $filterName, $filterName);
+        if ($searchinmail) $condmail = sprintf("|| ' ' || coalesce(mail,'')");
+        foreach ($tname as $name) {
+            if ($condName) $condName.= " AND ";
+            $condName.= sprintf("(coalesce(firstname,'') || ' ' || coalesce(lastname,'') %s ~* '%s')", $condmail, pg_escape_string(setDiacriticRules($name)));
         }
     }
     
