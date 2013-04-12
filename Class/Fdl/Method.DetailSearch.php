@@ -870,6 +870,7 @@ class _DSEARCH extends DocSearch
                     $famid = $this->getRawValue("SE_FAMID", 0);
                     $onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
                     $dirid = GetHttpVars("dirid");
+                    $alsosub = getHttpVars("alsosub") == "Y";
                     $this->lay->set("ACTION", $action->name);
                     $tclassdoc = array();
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
@@ -908,20 +909,18 @@ class _DSEARCH extends DocSearch
                         }
                     } else {
                         if ($onlysubfam) {
-                            $alsosub = true;
                             if (!is_numeric($onlysubfam)) $onlysubfam = getFamIdFromName($this->dbaccess, $onlysubfam);
                             $cdoc = new_Doc($this->dbaccess, $onlysubfam);
                             $tsub = $cdoc->GetChildFam($cdoc->id, false);
+                            $tclassdoc[$classid] = array(
+                                "id" => $cdoc->id,
+                                "title" => $cdoc->title,
+                                "usefor" => ''
+                            );
                             if ($alsosub) {
-                                $tclassdoc[$classid] = array(
-                                    "id" => $cdoc->id,
-                                    "title" => $cdoc->title,
-                                    "usefor" => ''
-                                );
                                 $tclassdoc = array_merge($tclassdoc, $tsub);
-                            } else {
-                                $tclassdoc = $tsub;
                             }
+                            if (!$this->id) $this->setValue("se_famonly", $alsosub ? "no" : "yes");
                             $first = current($tclassdoc);
                             if ($classid == "") $classid = $first["id"];
                         } else {
