@@ -22,6 +22,7 @@ function generic_prefs(Action & $action)
 {
     $famid = $action->getArgument("famid"); // family id
     $dirid = $action->getArgument("dirid"); // last searched
+    $onefamOrigin = $action->getArgument("onefam");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     
     $dbaccess = $action->getParam("FREEDOM_DB");
@@ -34,7 +35,7 @@ function generic_prefs(Action & $action)
     $action->lay->set("famtitle", $fdoc->title);
     $action->lay->set("famid", $famid);
     $action->lay->set("dirid", $dirid);
-    
+    $action->lay->set("onefam", $onefamOrigin);
     $tabletters = getTabLetter($action, $famid);
     if ($tabletters == 'Y') $action->lay->set("lettercheck", "checked");
     else $action->lay->set("lettercheck", "");
