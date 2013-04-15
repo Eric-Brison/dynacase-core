@@ -96,6 +96,18 @@ class FormatCollection
      * state property
      */
     const propState = "state";
+    /**
+     * revision date
+     */
+    const revdate = "revdate";
+    /**
+     * access date
+     */
+    const adate = "adate";
+    /**
+     * creation date
+     */
+    const cdate = "cdate";
     public function __construct()
     {
         $this->propsKeys = array_keys(Doc::$infofields);
@@ -264,11 +276,29 @@ class FormatCollection
                 return $this->getState($doc);
             case self::propUrl:
                 return sprintf("?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=%d", $doc->id);
+            case self::revdate:
+                return $this->getFormatDate(date("c", $doc->$propName));
+            case self::cdate:
+            case self::adate:
+                return $this->getFormatDate($doc->$propName);
             default:
                 return $doc->$propName;
         }
     }
-    
+    private function getFormatDate($v)
+    {
+        if ($this->dateStyle === DateAttributeValue::defaultStyle) return stringDateToLocaleDate($v);
+        else if ($this->dateStyle === DateAttributeValue::isoStyle) return stringDateToIso($v, false, true);
+        else if ($this->dateStyle === DateAttributeValue::isoWTStyle) return stringDateToIso($v, false, false);
+        else if ($this->dateStyle === DateAttributeValue::frenchStyle) {
+            if (getLcdate() == "iso") { // FR
+                $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
+                if (strlen($v) < 11) return substr($ldate, 0, strlen($v));
+                else return $ldate;
+            }
+        }
+        return stringDateToLocaleDate($v);
+    }
     private function getState(Doc $doc)
     {
         $s = new StatePropertyValue();
