@@ -856,7 +856,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                "j'marte",
+                "o'marte",
                 array(
                     "TST_FULL11"
                 )
@@ -1127,12 +1127,25 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
+                "comme l'éclair",
+                array(
+                    "TST_FULL8"
+                )
+            ) ,
+            array(
+                "comme l'éclair jaunes",
+                array(
+                    "TST_FULL8"
+                )
+            ) ,
+            array(
                 '*ne',
                 array(
                     "TST_FULL5",
                     "TST_FULL2",
                     "TST_FULL9",
-                    "TST_FULL1"
+                    "TST_FULL1",
+                    "TST_FULL8"
                 )
             ) ,
             array(
@@ -1204,6 +1217,41 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL8",
                     "TST_FULL3",
                     "TST_FULL5"
+                )
+            ) ,
+            array(
+                "comme l'éclair jaune",
+                "",
+                array(
+                    "TST_FULL8"
+                )
+            ) ,
+            array(
+                "comme l'éclair'   jaune",
+                "",
+                array(
+                    "TST_FULL8"
+                )
+            ) ,
+            array(
+                "comme l'éclair jaunes",
+                "",
+                array(
+                    "TST_FULL8"
+                )
+            ) ,
+            array(
+                "comme les éclairs jaunes",
+                "",
+                array(
+                    "TST_FULL8"
+                )
+            ) ,
+            array(
+                "comme l'éclair jaun*",
+                "",
+                array(
+                    "TST_FULL8"
                 )
             ) ,
             array(

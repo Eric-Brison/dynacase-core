@@ -235,7 +235,7 @@ class SearchDoc
      */
     public static function getUserViewVector($uid)
     {
-        $memberOf = User::getUserMemberOf($uid);
+        $memberOf = Account::getUserMemberOf($uid);
         if ($memberOf === null) {
             return '';
         }
@@ -899,7 +899,7 @@ class SearchDoc
                 } else {
                     $filter.= $filter ? " " . $currentOperator . " " . $filterElement : $filterElement;
                 }
-                $rank.= $rank ? " " . $convertOperatorToTs($currentOperator) . " " . $rankElement : $rankElement;
+                $rank.= $rank ? $convertOperatorToTs($currentOperator) . $rankElement : $rankElement;
                 $filterElement = "";
                 $currentOperator = "and";
             } else if ($parenthesis) {
@@ -909,7 +909,7 @@ class SearchDoc
                 } else {
                     $filter.= $filter && $parenthesis === "(" ? " " . $currentOperator . " " . $parenthesis : $parenthesis;
                 }
-                $rank.= $rank && $parenthesis === "(" ? " " . $convertOperatorToTs($currentOperator) . " " . $parenthesis : $parenthesis;
+                $rank.= $rank && $parenthesis === "(" ? $convertOperatorToTs($currentOperator) . $parenthesis : $parenthesis;
                 $currentOperator = "";
                 $parenthesis = "";
             }
@@ -922,7 +922,7 @@ class SearchDoc
             $filter = sprintf("fulltext @@ to_tsquery('french','%s')", $filter);
         }
         
-        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string($rank));
+        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string(preg_replace('/\s+/u', '&', $rank)));
         
         $highlightWords = implode("|", array_merge($words, $stringWords));
         
