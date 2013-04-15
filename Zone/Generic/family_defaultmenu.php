@@ -27,16 +27,15 @@ function family_defaultmenu(Action & $action)
     $catg = $action->getArgument("catg", 1); // catg where search
     $pds = $action->getArgument("pds"); // special extra parameters used by parametrable searches
     $dbaccess = $action->GetParam("FREEDOM_DB");
-
+    
     $onefamOrigin = $action->getArgument("onefam"); // onefam origin
     $famid = getDefFam($action);
     $defaultMenu = array();
     $fdoc = new_Doc($dbaccess, $famid);
-
+    
     if ($catg > 1) {
         $fld = new_Doc($dbaccess, $catg);
-    }
-    else {
+    } else {
         $fld = new_Doc($dbaccess, $dirid);
     }
     //change famid if it is a simplesearch
@@ -47,7 +46,7 @@ function family_defaultmenu(Action & $action)
             $sfdoc = new_Doc($dbaccess, $sfamid);
             if (!$sfdoc->isAlive()) {
                 $sfdoc = $fdoc; // restore if dead
-
+                
             }
         }
     }
@@ -61,12 +60,12 @@ function family_defaultmenu(Action & $action)
     } else {
         $child = array();
     }
-
+    
     $onlyonefam = (getInherit($action, $famid) == "N");
     if (!$onlyonefam) {
         $child+= $fdoc->GetChildFam($fdoc->id, true);
     }
-
+    
     if ($action->HasPermission("GENERIC")) {
         foreach ($child as $vid) {
             $defaultMenuCreate[] = array(
@@ -113,7 +112,7 @@ function family_defaultmenu(Action & $action)
     }
     //--------------------- tools menu -----------------------
     $toolsItemMenu = array();
-    if (empty($onefamOrigin) && $action->HasPermission("GENERIC") ) {
+    if (empty($onefamOrigin) && $action->HasPermission("GENERIC")) {
         $d = new_doc($dbaccess, 16);
         if ($d->control("create") == "" && $d->control("icreate") == "") {
             $toolsItemMenu['newsearch'] = array(
@@ -122,7 +121,7 @@ function family_defaultmenu(Action & $action)
                 "url" => sprintf('?app=GENERIC&amp;action=GENERIC_EDIT&amp;se_memo=yes&amp;classid=16&amp;onlysubfam=%s&amp;sfamid=%s', $famid, $famid)
             );
         }
-
+        
         $d = new_doc($dbaccess, 25);
         if ($d->control("create") == "" && $d->control("icreate") == "") {
             $toolsItemMenu['newreport'] = array(
@@ -132,7 +131,7 @@ function family_defaultmenu(Action & $action)
             );
         }
     }
-
+    
     if (empty($onefamOrigin) && ($dirid < 1000000000) && ($catg > 1)) {
         $toolsItemMenu['memosearch'] = array(
             "label" => _("memosearch") ,
@@ -141,21 +140,21 @@ function family_defaultmenu(Action & $action)
             psearchid=%s', $famid, $catg)
         );
     }
-
+    
     if (empty($onefamOrigin)) {
         $toolsItemMenu['viewsearch'] = array(
             "label" => _("View my searches") ,
             "target" => "_overlay",
             "url" => sprintf('?app=GENERIC&amp;action=GENERIC_SEARCH&amp;catg=0&amp;onefam=%s&amp;mysearches=yes&amp;famid=%s', $onefamOrigin, $famid)
         );
-    }else {
+    } else {
         $toolsItemMenu['viewsearch'] = array(
             "label" => _("Handle my searches") ,
             "target" => "_overlay",
             "url" => sprintf('?app=%s&amp;action=ONEFAM_MANAGE_SEARCH&amp;famId=%s', $onefamOrigin, $famid)
         );
     }
-
+    
     if (empty($onefamOrigin) && $action->HasPermission("GED", "FREEDOM")) {
         $toolsItemMenu['folders'] = array(
             "label" => _("folders") ,
@@ -163,24 +162,23 @@ function family_defaultmenu(Action & $action)
             "url" => sprintf('?app=FREEDOM&amp;action=FREEDOM_FRAME&amp;dirid=%s&amp;famid=%s', getDefFld($action) , $famid)
         );
     }
-
+    
     $toolsItemMenu['prefs'] = array(
         "label" => _("Preferences") ,
         "target" => "_self",
-        "url" => sprintf('?app=GENERIC&amp;action=GENERIC_PREFS&amp;dirid=%s&amp;famid=%s', getDefFld($action) , $famid)
+        "url" => sprintf('?app=GENERIC&amp;action=GENERIC_PREFS&amp;dirid=%s&amp;famid=%s&amp;onefam=%s', getDefFld($action) , $famid, $onefamOrigin)
     );
-
-
+    
     $lmenu = $fdoc->GetMenuAttributes();
     $firstGlobalMenu = true;
     foreach ($lmenu as $k => $v) {
         if ($v->getOption("global") == "yes") {
             $confirm = ($v->getOption("lconfirm") == "yes");
-
+            
             $vis = MENU_ACTIVE;
             if ($v->precond != "") $vis = $fdoc->ApplyMethod($v->precond, MENU_ACTIVE);
             if ($vis == MENU_ACTIVE) {
-
+                
                 $textConfirm = '';
                 if ($firstGlobalMenu) {
                     $toolsItemMenu['family'] = array(
@@ -189,7 +187,7 @@ function family_defaultmenu(Action & $action)
                     );
                     $firstGlobalMenu = false;
                 }
-
+                
                 if ($confirm) {
                     $textConfirm = $v->getOption("tconfirm");
                     if (!$textConfirm) $textConfirm = sprintf(_("Sure %s ?") , addslashes($v->getLabel()));
@@ -203,7 +201,7 @@ function family_defaultmenu(Action & $action)
             }
         }
     }
-
+    
     $action->lay->Set("topid", getDefFld($action));
     $action->lay->Set("dirid", $dirid);
     $action->lay->Set("catg", $catg);
@@ -262,14 +260,14 @@ function family_defaultmenu(Action & $action)
                 );
         }
     }
-
+    
     while (list($k, $v) = each($tsort)) {
         $tmsort[$v["said"]] = "sortdoc" . $v["said"];
     }
     $lattr = $sfdoc->GetSortAttributes();
     foreach ($lattr as $k => $a) {
         $pType = parseType($a->type);
-
+        
         if ($pType['type'] == 'docid') {
             $doctitleAttr = $a->getOption('doctitle');
             if ($doctitleAttr != '') {
@@ -295,7 +293,7 @@ function family_defaultmenu(Action & $action)
                 continue;
             }
         }
-
+        
         $tsort[$a->id] = array(
             "said" => $a->id,
             "satitle" => $a->getLabel() ,
@@ -303,12 +301,12 @@ function family_defaultmenu(Action & $action)
         );
         $tmsort[$a->id] = "sortdoc" . $a->id;
     }
-
+    
     $action->lay->set("ukey", getDefUKey($action));
     // select the current sort
     $csort = $action->getArgument("sqlorder");
     if ($csort == "") $csort = getDefUSort($action, "--");
-
+    
     if (($csort == '') || ($csort == '--')) {
         $csort = '-';
         $cselect = "&bull;";
@@ -318,7 +316,7 @@ function family_defaultmenu(Action & $action)
     } else {
         $cselect = "&darr;";
     }
-
+    
     $sortTitle = _("Sort");
     $sortItemMenu = array();
     foreach ($tsort as $k => $v) {

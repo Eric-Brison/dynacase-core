@@ -29,7 +29,7 @@ span.view {
 </td></tr>
 <tr><td align="right">
 <input type="submit" value="[TEXT:Save]">
-<input type="reset" onclick="document.location.href='[CORE_STANDURL]app=GENERIC&action=GENERIC_TAB&tab=0&dirid=[dirid]&famid=[famid]'" value="[TEXT:Cancel]">
+<input type="reset" onclick="document.location.href='[CORE_STANDURL]app=GENERIC&action=GENERIC_TAB&tab=0&dirid=[dirid]&famid=[famid]&onefam=[onefam]'" value="[TEXT:Cancel]">
 </td></tr></table>
 </form>
 
