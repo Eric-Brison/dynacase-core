@@ -1558,7 +1558,7 @@ class OOoLayout extends Layout
     {
     }
     
-    protected function GenCssRef()
+    protected function GenCssRef($oldCompatibility = true)
     {
         return "";
     }
