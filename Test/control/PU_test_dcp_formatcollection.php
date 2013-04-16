@@ -47,6 +47,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $d1->state = "E3";
         $d1->modify();
     }
+    
     protected $famName = 'TST_FMTCOL';
     /**
      * @dataProvider dataRenderProfilRelationFormatCollection
@@ -156,6 +157,26 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $this->assertEquals($expectActivity, $fstate->activity, "incorrect state activity");
         $this->assertEquals($expectDisplayValue, $fstate->displayValue, sprintf("incorrect state display value : %s", print_r($fstate, true)));
     }
+    /**
+     * @dataProvider dataPropertyRenderFormatCollection
+     */
+    public function testPropertyRenderFormatCollection($docName, $propertyName, $format, $expectedFormat)
+    {
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s->setObjectReturn();
+        $dl = $s->search()->getDocumentList();
+        $fc = new \FormatCollection();
+        $fc->useCollection($dl);
+        $fc->addProperty($fc::propName)->addProperty($propertyName);
+        $fc->setDateStyle($format);
+        
+        $r = $fc->render();
+        $this->assertEquals($s->count() , count($r) , "render must have same entry count has collection");
+        
+        $propertyValue = $this->getRenderProp($r, $docName, $propertyName);
+        $this->assertRegExp($expectedFormat, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+    }
+    
     private function getRenderValue(array $r, $docName, $attrName)
     {
         foreach ($r as $format) {
@@ -175,6 +196,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         }
         return null;
     }
+    
     public function dataUnknowRenderFormatCollection()
     {
         
@@ -188,6 +210,66 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 "TST_FMTCOL2",
                 "tst_x",
                 ""
+            )
+        );
+    }
+    
+    public function dataPropertyRenderFormatCollection()
+    {
+        return array(
+            array(
+                "TST_FMTCOL1",
+                "adate",
+                \DateAttributeValue::frenchStyle,
+                '/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                "adate",
+                \DateAttributeValue::isoWTStyle,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                "adate",
+                \DateAttributeValue::isoStyle,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d)T?(\d\d)?:?(\d\d)?:?(\d\d)?/'
+            ) ,
+            array(
+                "TST_FMTCOL2",
+                "cdate",
+                \DateAttributeValue::frenchStyle,
+                '/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
+            ) ,
+            array(
+                "TST_FMTCOL2",
+                "cdate",
+                \DateAttributeValue::isoWTStyle,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
+            ) ,
+            array(
+                "TST_FMTCOL2",
+                "cdate",
+                \DateAttributeValue::isoStyle,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d)T?(\d\d)?:?(\d\d)?:?(\d\d)?/'
+            ) ,
+            array(
+                "TST_FMTCOL3",
+                "revdate",
+                \DateAttributeValue::frenchStyle,
+                '/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
+            ) ,
+            array(
+                "TST_FMTCOL3",
+                "revdate",
+                \DateAttributeValue::isoWTStyle,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
+            ) ,
+            array(
+                "TST_FMTCOL3",
+                "revdate",
+                \DateAttributeValue::isoStyle,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d)T?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             )
         );
     }
@@ -220,6 +302,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             )
         );
     }
+    
     public function dataRenderFormatCollection()
     {
         
