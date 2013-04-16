@@ -2,6 +2,8 @@
 <html>
 <head>
     <!-- IE latest mode -->
+    <link rel="icon" href="[DYNACASE_FAVICO]" />
+    <link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
     <title>[CORE_CLIENT]</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     [CSS:REF]
