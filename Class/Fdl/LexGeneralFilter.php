@@ -47,7 +47,7 @@ class GeneralFilter
         '/^(\*(?=\s|\z))/' => self::T_STAR_END,
         '/^(\*)/' => self::T_STAR_BEGIN,
         // '/^([\p{L}\p{N}-]+)/u' => self::T_WORD,
-        '/^([\p{L}\p{N}]+(?:-[\p{L}][\p{L}\p{N}]*)?)/u' => self::T_WORD, // 2013-45 is not a word, but sous-marin is a word
+        '/^([\p{L}\']?[\p{L}\p{N}]+(?:-[\p{L}][\p{L}\p{N}]*)?)/u' => self::T_WORD, // 2013-45 is not a word, but sous-marin is a word
         '/^([\p{P}\p{S}])/u' => self::T_PUNCTUATION,
     );
     /**
