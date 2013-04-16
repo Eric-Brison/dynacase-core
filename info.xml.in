@@ -219,6 +219,9 @@ This can be solved by:<br/>
         <check type="apachemodule" module="mod_rewrite">
             <help>You might need to install and/or load the mod_rewrite Apache module.</help>
         </check>
+        <check type="apachemodule" module="mod_headers">
+            <help>You might need to install and/or load the mod_headers Apache module.</help>
+        </check>
 
     </pre-install>
 
@@ -498,6 +501,9 @@ This can be solved by:<br/>
         </check>
         <check type="apachemodule" module="mod_rewrite">
             <help>You might need to install and/or load the mod_rewrite Apache module.</help>
+        </check>
+        <check type="apachemodule" module="mod_headers">
+            <help>You might need to install and/or load the mod_headers Apache module.</help>
         </check>
 
     </pre-upgrade>

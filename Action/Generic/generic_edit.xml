@@ -8,7 +8,6 @@
 	<meta name="document-initid" content="[initid]"/>
 	<meta name="document-icon" content="[docicon]"/>
    <title>[title]</title>
-   <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 <link rel="shortcut icon" href="[shorticon]">
 
 [CSS:CUSTOMREF]
