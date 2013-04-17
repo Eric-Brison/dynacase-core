@@ -245,9 +245,12 @@ class _REPORT extends _DSEARCH
                             if ($tDisplayOption[$ki] == "docid") {
                                 $cval = $rdoc->getRawValue($kc);
                             } else {
-                                $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getRawValue($kc) , $target, $ulink);
+                                $cval = $rdoc->getPropertyValue($kc);
+                                if ($cval === false) {
+                                    $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getRawValue($kc) , $target, $ulink);
+                                }
                             }
-                            if ($lattr[$kc]->type == "image") $cval = "<img width=\"40px\" src=\"$cval\">";
+                            if (isset($lattr[$kc]) && $lattr[$kc]->type == "image") $cval = "<img width=\"40px\" src=\"$cval\">";
                         }
                         $tcell[$ki] = array(
                             "cellval" => $cval,
@@ -287,7 +290,9 @@ class _REPORT extends _DSEARCH
                     if (!$rdoc) {
                         $rdoc = createTmpDoc($this->dbaccess, $this->getRawValue("se_famid"));
                     }
-                    $val = $rdoc->getHtmlValue($lattr[$tcols[$k]], $val, $target, $ulink);
+                    if (isset($lattr[$tcols[$k]])) {
+                        $val = $rdoc->getHtmlValue($lattr[$tcols[$k]], $val, $target, $ulink);
+                    }
                     break;
 
                 default:
