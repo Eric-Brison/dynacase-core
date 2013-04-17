@@ -8,7 +8,6 @@
       <meta name="document-mviewgeo" content="[mviewgeo]"/>
    <title>[TITLE]</title>
    
-   <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 [IFNOT nocss]
 <link rel="shortcut icon" href="[shorticon]">
 [ENDIF nocss]

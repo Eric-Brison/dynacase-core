@@ -39,6 +39,7 @@ Options -Indexes
 <FilesMatch "^(admin|index|indexq|guest|data|nu|notifier|authent).php$">
         Order Deny,Allow
         Allow from All
+        Header set X-UA-Compatible "IE=Edge"
 </FilesMatch>
 
 <FilesMatch "\.(gif|jpe?g|png|xpm|ico|js|html|css|svg|pdf)$">
