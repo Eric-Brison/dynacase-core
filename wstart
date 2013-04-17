@@ -52,6 +52,13 @@ else
   sed -ibak -e"s/pg_pconnect/pg_connect/g" "$wpub/WHAT/Lib.Common.php"
 fi
 
+"$wpub/wsh.php" --api=setStyle >/dev/null
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error setting style"
+    exit $RET
+fi
+
 if [ -f "$wpub/maintenance.lock" ]; then
     rm -f "$wpub/maintenance.lock"
 fi
