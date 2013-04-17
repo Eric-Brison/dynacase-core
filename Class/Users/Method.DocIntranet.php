@@ -133,12 +133,12 @@ class _IGROUPUSER extends Doc
         
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/mktree.js");
         $action->parent->addCssRef($action->GetParam("CORE_PUBURL") . "/USERCARD/Layout/choosegroup.css");
-
+        
         $err = '';
         $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
-            if (!$user->isAffected()){
+            if (!$user->isAffected()) {
                 return sprintf(_("user #%d does not exist") , $iduser);
             }
             $ugroup = $user->GetGroupsId();
@@ -146,10 +146,11 @@ class _IGROUPUSER extends Doc
             $ugroup = array(
                 "2"
             ); // default what group
+            
         }
-
+        
         $tgroup = array();
-
+        
         $this->lay->set("wid", ($iduser == "") ? "0" : $iduser);
         
         $q2 = new queryDb("", "Account");
@@ -160,8 +161,12 @@ class _IGROUPUSER extends Doc
         
         if ($groups) {
             foreach ($groups as $k => $v) {
+                $v["login"] = htmlspecialchars($v["login"]);
+                $v["firstname"] = htmlspecialchars($v["firstname"]);
+                $v["lastname"] = htmlspecialchars($v["lastname"]);
                 $groupuniq[$v["id"]] = $v;
-                if (in_array($v["id"], $ugroup)){
+                
+                if (in_array($v["id"], $ugroup)) {
                     $groupuniq[$v["id"]]["checkbox"] = "checked";
                 } else {
                     $groupuniq[$v["id"]]["checkbox"] = "";
@@ -170,11 +175,14 @@ class _IGROUPUSER extends Doc
         } else {
             $groups = array();
         }
-
+        
         $iconGroup = $this->getIcon('', 14);
-
+        
         if ($mgroups) {
             foreach ($mgroups as $k => $v) {
+                $v["login"] = htmlspecialchars($v["login"]);
+                $v["firstname"] = htmlspecialchars($v["firstname"]);
+                $v["lastname"] = htmlspecialchars($v["lastname"]);
                 $cgroup = $this->_getChildsGroup($v["id"], $groups);
                 $tgroup[$k] = $v;
                 $tgroup[$k]["SUBUL"] = $cgroup;
@@ -186,8 +194,9 @@ class _IGROUPUSER extends Doc
                 } else {
                     $tgroup[$k]["icon"] = $iconGroup;
                 }
+                
                 $groupuniq[$v["id"]] = $v;
-                if (in_array($v["id"], $ugroup)){
+                if (in_array($v["id"], $ugroup)) {
                     $groupuniq[$v["id"]]["checkbox"] = "checked";
                 } else {
                     $groupuniq[$v["id"]]["checkbox"] = "";
