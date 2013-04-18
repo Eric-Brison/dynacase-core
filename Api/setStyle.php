@@ -55,6 +55,7 @@ class styleManager
     
     protected function loadStyleDefinition($styFilePath)
     {
+        $styFilePath = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . $styFilePath;
         $this->log("load style definition from $styFilePath");
         if (!is_readable($styFilePath)) {
             if (!file_exists($styFilePath)) {
