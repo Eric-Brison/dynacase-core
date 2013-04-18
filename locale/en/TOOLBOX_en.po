@@ -329,10 +329,6 @@ msgid "%s profile"
 msgstr ""
 
 #, c-format
-msgid "%s style updated\n"
-msgstr ""
-
-#, c-format
 msgid "%s timer"
 msgstr ""
 
@@ -1807,8 +1803,8 @@ msgstr ""
 "        </ul>\n"
 "    </li>\n"
 "    <li>\n"
-"        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
-"\">)</em><br/>\n"
+"        <em class=\"help-operator\">(</em> and <em class=\"help-operator\">)"
+"</em><br/>\n"
 "        Parenthesis express priorities between operators.\n"
 "        <ul>\n"
 "            <li>\n"
@@ -3864,6 +3860,10 @@ msgid "Y"
 msgstr ""
 
 msgid "You can close window now or waiting the end of processing"
+msgstr ""
+
+msgid ""
+"You don't have access to any content. Please contact your administrator."
 msgstr ""
 
 msgid "You must upgrade to version 6 or more"
@@ -7589,8 +7589,8 @@ msgid "submitreqpasswd_form_send_error_unknown"
 msgstr ""
 "<p>The server accountered an error processing your request</p>\n"
 "<p>Retry your request, and if the problem persist, please contact <a href="
-"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request"
-"\">[ON_ERROR_CONTACT]</a></p>"
+"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request\">"
+"[ON_ERROR_CONTACT]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""

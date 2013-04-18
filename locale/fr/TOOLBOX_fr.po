@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-10 11:02+0200\n"
+"PO-Revision-Date: 2013-04-18 13:19+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "MIME-Version: 1.0\n"
@@ -332,10 +332,6 @@ msgstr "Minuteur persistent %s"
 #, c-format
 msgid "%s profile"
 msgstr "Profil %s"
-
-#, c-format
-msgid "%s style updated\n"
-msgstr "%s style mis à jour\n"
 
 #, c-format
 msgid "%s timer"
@@ -1589,7 +1585,9 @@ msgstr "Modifier les traductions"
 msgid ""
 "Element can't be perfectly analyze, some error might occur or be corrected "
 "when importing"
-msgstr "L'élément ne peut pas être parfaitement analysé, des erreurs peuvent apparaître ou être corrigées lors de l'importation"
+msgstr ""
+"L'élément ne peut pas être parfaitement analysé, des erreurs peuvent "
+"apparaître ou être corrigées lors de l'importation"
 
 msgid "Empty Post-It"
 msgstr "Post-It vide"
@@ -3409,7 +3407,9 @@ msgstr ""
 msgid ""
 "Some element couldn't be fully analyze, warnings can become errors or be "
 "corrected when importing"
-msgstr "Certains éléments n'ont pas pu être totalement analysés, les avertissements peuvent devenir des erreurs ou être corrigés lors de l'importation"
+msgstr ""
+"Certains éléments n'ont pas pu être totalement analysés, les avertissements "
+"peuvent devenir des erreurs ou être corrigés lors de l'importation"
 
 #, c-format
 msgid "Something wrong. No acl found in %s (user #%d)"
@@ -3997,6 +3997,10 @@ msgstr "O"
 msgid "You can close window now or waiting the end of processing"
 msgstr ""
 "Vous pouvez fermer la fenêtre maintenant ou attendre la fin du traitement"
+
+msgid ""
+"You don't have access to any content. Please contact your administrator."
+msgstr "Vous n'avez accès à aucun contenu. Veuillez contacter votre administrateur."
 
 msgid "You must upgrade to version 6 or more"
 msgstr "Vous devez mettre à jour avec la version 6 au minimum"
@@ -8619,6 +8623,9 @@ msgstr "l'identifiant système {left} est différent de {right}"
 
 msgid "{left} title include {right}"
 msgstr "le titre de {left} inclus {right}"
+
+#~ msgid "%s style updated\n"
+#~ msgstr "%s style mis à jour\n"
 
 #~ msgid "Advanced search"
 #~ msgstr "Recherche avancée"
