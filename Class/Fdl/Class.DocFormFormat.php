@@ -1337,11 +1337,14 @@ class DocFormFormat
                 global $action;
                 
                 $height = $oattr->getOption("height", false);
+                $help = $doc->getHelpPage();
+                
                 $lay->set("tableheight", $height);
                 $lay->set("readonly", ($oattr->mvisibility == 'U'));
                 $lay->set("thspan", "1");
                 $lay->set("aehelp", false);
-                
+                $lay->set("ehelp", ($help->isAlive()) ? $help->getAttributeHelpUrl($oattr->id) : false);
+                $lay->set("ehelpid", ($help->isAlive()) ? $help->id : false);
                 if (($zone != "") && preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $zone, $reg)) {
                     $attrid = $oattr->id;
                     $ta = $doc->attributes->getArrayElements($attrid);
