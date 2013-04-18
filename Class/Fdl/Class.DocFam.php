@@ -379,9 +379,6 @@ create unique index idx_idfam on docfam(id);";
                     }
                     break;
 
-                case 'forumid':
-                    $this->lay->set("forum", ($this->forumid == "" ? _("disable forum") : _("enable forum")));
-                    break;
 
                 case 'maxrev':
                     if (!$this->maxrev) {

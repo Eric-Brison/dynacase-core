@@ -268,7 +268,6 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
         }
         $doc->icon = $cdoc->icon; // inherit from its familly
         $doc->usefor = $cdoc->usefor; // inherit from its familly
-        $doc->forumid = $cdoc->forumid; // inherit from its familly
         $doc->atags = $cdoc->atags;
         if ($defaultvalues) $doc->setDefaultValues($cdoc->getDefValues());
         $doc->ApplyMask();

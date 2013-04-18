@@ -288,39 +288,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "submenu" => "",
             "barmenu" => "false"
         ) ,
-        "createforum" => array(
-            "descr" => mb_ucfirst(_("create forum")) ,
-            "url" => "$surl&app=FDL&action=FDL_FORUMCREATE&docid=$docid",
-            "confirm" => "false",
-            "control" => "false",
-            "tconfirm" => "",
-            "target" => "_self",
-            "visibility" => POPUP_INVISIBLE,
-            "submenu" => "",
-            "barmenu" => "false"
-        ) ,
-        "openforum" => array(
-            "descr" => mb_ucfirst(_("open forum")) ,
-            "url" => "$surl&app=FDL&action=FDL_FORUMOPEN&docid=$docid",
-            "confirm" => "false",
-            "control" => "false",
-            "tconfirm" => "",
-            "target" => "_self",
-            "visibility" => POPUP_INVISIBLE,
-            "submenu" => "",
-            "barmenu" => "false"
-        ) ,
-        "closeforum" => array(
-            "descr" => mb_ucfirst(_("close forum")) ,
-            "url" => "$surl&app=FDL&action=FDL_FORUMCLOSE&docid=$docid",
-            "confirm" => "false",
-            "control" => "false",
-            "tconfirm" => "",
-            "target" => "_self",
-            "visibility" => POPUP_INVISIBLE,
-            "submenu" => "",
-            "barmenu" => "false"
-        ) ,
+
         "toxml" => array(
             "descr" => mb_ucfirst(_("View XML")) ,
             "url" => "$surl&app=FDL&action=VIEWXML&id=$docid",
@@ -652,12 +620,12 @@ function addFamilyPopup(&$tlink, Doc & $doc)
         
         $confirm = false;
         $control = false;
-        $v->link = $v->getLink($doc->id);
+        $alink = $v->getLink($doc->id);
         if ($v->getOption("lconfirm") == "yes") $confirm = true;
         if ($v->getOption("lcontrol") == "yes") $control = true;
         
-        if (preg_match('/\[(.*)\](.*)/', $v->link, $reg)) {
-            $v->link = $reg[2];
+        if (preg_match('/\[(.*)\](.*)/', $alink, $reg)) {
+            $alink = $reg[2];
             $tlink[$k]["target"] = $reg[1];
         } else {
             $tlink[$k]["target"] = $v->id . "_" . $doc->id;
@@ -668,7 +636,7 @@ function addFamilyPopup(&$tlink, Doc & $doc)
         $tlink[$k]["barmenu"] = ($v->getOption("barmenu") == "yes") ? "true" : "false";
         $tlink[$k]["idlink"] = $v->id;
         $tlink[$k]["descr"] = $v->getLabel();
-        $tlink[$k]["url"] = addslashes($doc->urlWhatEncode($v->link));
+        $tlink[$k]["url"] = addslashes($doc->urlWhatEncode($alink));
         $tlink[$k]["confirm"] = $confirm ? "true" : "false";
         $tlink[$k]["control"] = $control;
         $tlink[$k]["mwidth"] = $v->getOption("mwidth");
@@ -691,6 +659,7 @@ function addDocOfflinePopup(&$tlink, Doc & $doc, $target = "_self", $menu = 'off
 {
     if (file_exists("OFFLINE/off_popupdocfolder.php")) {
         include_once ("OFFLINE/off_popupdocfolder.php");
+        /** @noinspection PhpUndefinedFunctionInspection */
         addOfflinePopup($tlink, $doc, $target, $menu);
     }
 }
@@ -822,16 +791,6 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
     if ($action->parent->Haspermission("FREEDOM_HISTO", "FREEDOM")) {
         $tlink["histo"]["visibility"] = POPUP_ACTIVE;
     }
-    // Forum
-    $tlink["createforum"]["visibility"] = POPUP_INVISIBLE;
-    $tlink["openforum"]["visibility"] = POPUP_INVISIBLE;
-    $tlink["closeforum"]["visibility"] = POPUP_INVISIBLE;
-    $ff = $fdoc->forumid;
-    if ($ff != "" && $doc->Control("edit") == "") {
-        $vf = intval($doc->forumid);
-        if ($vf == 0) $tlink["createforum"]["visibility"] = POPUP_ACTIVE;
-        $tlink["closeforum"]["visibility"] = ($vf > 0 ? POPUP_ACTIVE : POPUP_INVISIBLE);
-        $tlink["openforum"]["visibility"] = ($vf < 0 ? POPUP_ACTIVE : POPUP_INVISIBLE);
-    }
+
 }
 ?>

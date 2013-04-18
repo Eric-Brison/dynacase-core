@@ -552,11 +552,6 @@ array(
   ),
 
   array( 
-   "name"		=>"FORUM_SETDEFAULT",
-   "short_name"		=>N_("disable/enable forum on documents"),
-   "acl"		=>"FREEDOM_MASTER"
-  ) ,
-  array( 
    "name"		=>"SETLOGICALNAME",
    "short_name"		=>N_("set logical name identificator"),
    "acl"		=>"FREEDOM_MASTER"

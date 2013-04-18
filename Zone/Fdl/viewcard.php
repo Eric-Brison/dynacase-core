@@ -226,12 +226,7 @@ function viewcard(Action & $action)
             $action->lay->Set("waskid", "1");
         }
     }
-    
-    if ($doc->doctype == 'F' || $doc->doctype == 'D') {
-        $action->lay->Set("forum", (abs(intval($doc->forumid)) > 0 ? true : false));
-    } else {
-        $action->lay->Set("forum", false);
-    }
+
     
     if (($target == "mail") && ($doc->icon != "")) $action->lay->Set("iconsrc", "cid:icon");
     else $action->lay->Set("iconsrc", $doc->geticon());

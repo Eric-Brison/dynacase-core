@@ -32,7 +32,6 @@ define("POS_VACL", 7);
 define("POS_MACL", 8);
 define("POS_ULCK", 9);
 define("POS_CONF", 10); // confidential
-define("POS_FORUM", 11); // edit forum
 define("POS_WASK", 12); // view all askes
 // family profil
 define("POS_CREATE", 5);
@@ -117,10 +116,6 @@ class DocCtrl extends DocLDAP
             "pos" => POS_CONF, # N_("confidential")
             "description" => "view confidential"
         ) , #  N_("view confidential")
-        "forum" => array(
-            "pos" => POS_FORUM, # N_("forum")
-            "description" => "edit forum"
-        ) , #  N_("edit forum")
         "wask" => array(
             "pos" => POS_WASK, # N_("wask")
             "description" => "view answers"

@@ -161,9 +161,7 @@
                         [IF inDomain]
                         <img align="right" needresize="1" src="[IMG:domainsync.png]" width="20px"/>
                         [ENDIF inDomain]
-                        [IF forumid]
-                        <img align="right" needresize="1" src="[IMG:forum.png]" width="20px"/>
-                        [ENDIF forumid]
+
                         <a class="title" style="float:left;" id="t[id]">[title]</a>
                         <i class="statetext" style="float:right;border-color:[statecolor];">[state]</i>
                         <div style="clear:both"></div>

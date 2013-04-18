@@ -84,7 +84,6 @@ class Doc extends DocCtrl
         "state",
         "wid",
         "postitid",
-        "forumid",
         "domainid",
         "lockdomainid",
         "cvid",
@@ -256,13 +255,6 @@ class Doc extends DocCtrl
             "filterable" => false,
             "label" => "prop_postitid"
         ) , # N_("prop_postitid")
-        "forumid" => array(
-            "type" => "docid",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "forum_id"
-        ) , # N_("forum_id")
         "cvid" => array(
             "type" => "integer",
             "displayable" => false,
@@ -534,12 +526,6 @@ class Doc extends DocCtrl
      */
     public $archiveid;
     /**
-     * Forum Document
-     *
-     * @var int
-     */
-    public $forumid;
-    /**
      * @var string logical name family
      */
     public $fromname;
@@ -696,7 +682,6 @@ create table doc ( id int not null,
                    attrids text DEFAULT '',
                    fulltext tsvector,
                    postitid text,
-                   forumid int,
                    domainid text,
                    lockdomainid int,
                    cvid int,
@@ -1640,11 +1625,7 @@ create unique index i_docir on doc(initid, revision);";
             $msg = $this->PreDocDelete();
             if ($msg != '') return $msg;
         }
-        
-        if (abs(intval($this->forumid)) > 0) {
-            $df = new_Doc($this->dbaccess, abs(intval($this->forumid)));
-            $df->delete($really, $control, $nopost);
-        }
+
         
         if ($really) {
             if ($this->id != "") {
@@ -4893,13 +4874,11 @@ create unique index i_docir on doc(initid, revision);";
         $locked = $this->locked;
         $allocated = $this->allocated;
         $postitid = $this->postitid; // transfert post-it to latest revision
-        $forumid = $this->forumid; // transfert forum to latest revision
         $this->locked = - 1; // the file is archived
         $this->lmodify = 'N'; // not locally modified
         $this->allocated = 0; // cannot allocated fixed document
         $this->owner = $this->userid; // rev user
         $this->postitid = 0;
-        $this->forumid = 0;
         $date = gettimeofday();
         $this->revdate = $date['sec']; // change rev date
         $point = "revision" . $this->id;
@@ -4939,7 +4918,6 @@ create unique index i_docir on doc(initid, revision);";
         $this->allocated = $allocated; // report the allocate
         $this->revision = $this->revision + 1;
         $this->postitid = $postitid;
-        $this->forumid = $forumid;
         
         $err = $this->Add();
         if ($err != "") {
@@ -7174,20 +7152,7 @@ create unique index i_docir on doc(initid, revision);";
             $this->lay->Set("allocate", $user->firstname . " " . $user->lastname);
             $this->lay->Set("allocateid", $user->fid);
         }
-        
-        if ($this->forumid == "") {
-            $this->lay->Set("forum", _("forum disallowed"));
-            $this->lay->Set("hforum", false);
-        } else if ($this->forumid === 0) {
-            $this->lay->Set("forum", _("forum allowed"));
-            $this->lay->Set("hforum", false);
-        } else {
-            if ($this->forumid > 0) $this->lay->Set("forum", _("forum opened"));
-            else $this->lay->Set("forum", _("forum closed"));
-            $this->lay->Set("hforum", true);
-            $this->lay->Set("forumid", abs($this->forumid));
-        }
-        
+
         $tms = $this->getAttachedTimers();
         
         $this->lay->Set("Timers", (count($tms) > 0));

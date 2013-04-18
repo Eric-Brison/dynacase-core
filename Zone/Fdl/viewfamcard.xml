@@ -17,9 +17,6 @@ li.warning {
 <table  width="100%" cellspacing="0">
 <tbody>
 
-<tr class="FREEDOMBack1">
-   <td width="50%" class="FREEDOMlabel">[TEXT:forum on new documents] : </td><td  >[forum]</A></td></tr>
-
 <tr class="FREEDOMBack1" style="display:[cvdisplay]">
    <td width="50%" class="FREEDOMlabel">[TEXT:Control view for new document] : </td><td  ><a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[ccvid]">[cvtitle]</A></td></tr>
 <tr class="FREEDOMBack1" style="display:[cflddisplay]">

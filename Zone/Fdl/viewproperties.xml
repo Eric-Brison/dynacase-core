@@ -12,7 +12,7 @@
 <tr><td class="FREEDOMLabel">[TEXT:allocated to]&nbsp;:&nbsp;</td>  <td>[IF allocateid]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[allocateid]">[ENDIF allocateid][allocate][IF allocateid]</a>[ENDIF allocateid]</td></tr>
 <tr><td class="FREEDOMLabel">[TEXT:locked by]&nbsp;:&nbsp;</td>  <td>[IF lockedid]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[lockedid]">[ENDIF lockedid][locked] [lockdomain][IF lockedid]</a>[ENDIF lockedid]</td></tr>
 <tr><td class="FREEDOMLabel">[TEXT:revision]&nbsp;:&nbsp;</td>   <td>[REVISION] <i><b>[version]</b></i></td></tr>
-<tr><td class="FREEDOMLabel">[TEXT:forum state]&nbsp;:&nbsp;</td>     <td>[IF hforum]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[forumid]">[ENDIF hforum][forum][IF hforum]</a>[ENDIF hforum]</td></tr>
+
 
 <tr class="FREEDOMBack2"><td  colspan="2" height="1px"></td></tr>
 <tr><td class="FREEDOMLabel">[TEXT:creation date]&nbsp;:&nbsp;</td><td>[CDATE]</td></tr>
