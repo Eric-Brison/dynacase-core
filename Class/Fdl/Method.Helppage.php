@@ -376,22 +376,22 @@ class _HELPPAGE extends Doc
         $this->lay->setBlockData('ALLLANGS', $all_langs);
         
         $descriptions = $this->getArrayRawValues("help_t_help");
-        $first = true;
+        $first = false;
         foreach ($descriptions as & $v) {
-            $v["firstdesc"] = $first;
-            if ($v["help_description"]) {
-                $first = false;
+            if (!$first && $v["help_lang"] === $user_lang) {
+                $first = true;
+                $v["firstdesc"] = true;
+                $v["firsttitle"] = true;
+            } else {
+                $v["firstdesc"] = false;
+                $v["firsttitle"] = false;
             }
+        }
+        if (!$first) {
+            $descriptions[0]["firstdesc"] = true;
+            $descriptions[0]["firsttitle"] = true;
         }
         $this->lay->setBlockData('DESCR', $descriptions);
-        
-        $first = true;
-        foreach ($descriptions as & $v) {
-            $v["firsttitle"] = $first;
-            if ($v["help_name"]) {
-                $first = false;
-            }
-        }
         $this->lay->setBlockData('TITLES', $descriptions);
         // construct aides
         $aides = array();
@@ -401,7 +401,7 @@ class _HELPPAGE extends Doc
         $s->search();
         while ($doc = $s->getNextDoc()) {
             $aides[] = array(
-                'AIDE' => $doc->getDocAnchor($doc->id, $target, true, false, false) ,
+                'AIDE' => $doc->getDocAnchor($doc->id, $target, true, $doc->getTitle() , false) ,
             );
         }
         $this->lay->setBlockData('LEFTHELPS', $aides);
