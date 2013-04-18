@@ -4664,13 +4664,16 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $allrevision set to false to get a tag to a specific version
      * @return DocUTag|bool
      */
-    final public function getUTag($tag, $allrevision = true)
+    final public function getUTag($tag, $allrevision = true, $uid = null)
     {
         if (!$this->initid) return "";
+        if ($uid === null) {
+            $uid = $this->userid;
+        }
         
         include_once ("FDL/Class.DocUTag.php");
         $q = new QueryDb($this->dbaccess, "docUTag");
-        $q->addQuery("uid=" . intval($this->userid));
+        $q->addQuery("uid=" . intval($uid));
         if ($tag) $q->addQuery("tag = '" . pg_escape_string($tag) . "'");
         if ($allrevision) $q->addQuery("initid = " . $this->initid);
         else $q->addQuery("id = " . $this->id);
@@ -8773,15 +8776,44 @@ create unique index i_docir on doc(initid, revision);";
     {
         $err = '';
         if (!$userid) $userid = $this->userid;
-        if ($this->locked != $userid) {
+        
+        if ($domainId != '') {
+            /*
+             * Memorize current core lock and lock document
+            */
+            if ($this->lockdomainid != $domainId) {
+                /*
+                 * Memorize current core lock if lockdomain changes
+                */
+                $this->addUTag(1, 'LOCKTODOMAIN_LOCKED', $this->locked);
+            }
             $err = $this->lock(false, $userid);
+            if ($err != '') {
+                return $err;
+            }
+        } else {
+            /*
+             * Restore core lock
+            */
+            $tag = $this->getUTag('LOCKTODOMAIN_LOCKED', true, 1);
+            if ($tag !== false) {
+                $this->delUTag(1, 'LOCKTODOMAIN_LOCKED');
+                $this->locked = $tag->comment;
+                $err = $this->modify(true, array(
+                    "locked"
+                ) , true);
+                if ($err != '') {
+                    return $err;
+                }
+            }
         }
-        if ((!$err) && ($this->locked == $userid)) {
-            $this->lockdomainid = $domainId;
-            $err = $this->modify(true, array(
-                "lockdomainid"
-            ) , true);
-        }
+        /*
+         * Set or remove domain's lock
+        */
+        $this->lockdomainid = $domainId;
+        $err = $this->modify(true, array(
+            "lockdomainid"
+        ) , true);
         return $err;
     }
     /**
