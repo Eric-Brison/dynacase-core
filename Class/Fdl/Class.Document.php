@@ -309,7 +309,6 @@ class Fdl_Document
                 $props["wid"] = intval($props["wid"]);
                 $props["cvid"] = intval($props["cvid"]);
                 $props["prelid"] = intval($props["prelid"]);
-                $props["forumid"] = intval($props["forumid"]);
                 $props["profid"] = intval($props["profid"]);
                 $props["dprofid"] = intval($props["dprofid"]);
                 $props["fromid"] = intval($props["fromid"]);

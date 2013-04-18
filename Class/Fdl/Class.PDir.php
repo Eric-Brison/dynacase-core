@@ -29,8 +29,7 @@ class PDir extends DocCollection
         "modify",
         "send",
         "unlock",
-        "confidential",
-        "forum"
+        "confidential"
     );
     // --------------------------------------------------------------------
     var $defDoctype = 'P';

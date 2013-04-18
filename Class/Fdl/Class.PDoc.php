@@ -28,7 +28,6 @@ class PDoc extends Doc
         "send",
         "unlock",
         "confidential",
-        "forum",
         "wask"
     );
     // --------------------------------------------------------------------
