@@ -195,7 +195,6 @@ $famid = "") // folder containt special fam id
             $tdoc[$k]["emblemw"] = "0";
             $tdoc[$k]["canedit"] = 1;
             $tdoc[$k]["postitid"] = ($doc->postitid > 0) ? $doc->postitid : false;
-            $tdoc[$k]["forumid"] = ($doc->forumid > 0) ? $doc->forumid : false;
             $tdoc[$k]["inDomain"] = $doc->isInDomain();
             
             $tdoc[$k]["emblem"] = $doc->getEmblem();

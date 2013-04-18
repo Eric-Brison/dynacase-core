@@ -18,7 +18,7 @@
 
 include_once ("FDL/popupdoc.php");
 
-function popupfamdetail(&$action)
+function popupfamdetail(Action &$action)
 {
     $docid = GetHttpVars("id");
     if ($docid == "") $action->exitError(_("No identificator"));
@@ -27,7 +27,7 @@ function popupfamdetail(&$action)
     popupdoc($action, $popup);
 }
 
-function getpopupfamdetail(&$action, $docid)
+function getpopupfamdetail(Action &$action, $docid)
 {
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -234,28 +234,6 @@ function getpopupfamdetail(&$action, $docid)
             "submenu" => "",
             "barmenu" => "false"
         ) ,
-        "forumenabled" => array(
-            "descr" => _("enable forum") ,
-            "url" => "$surl&app=FREEDOM&action=FORUM_SETDEFAULT&id=$docid&st=Y",
-            "confirm" => "false",
-            "control" => "false",
-            "tconfirm" => "",
-            "target" => "_self",
-            "visibility" => POPUP_INACTIVE,
-            "submenu" => "",
-            "barmenu" => "false"
-        ) ,
-        "forumdisabled" => array(
-            "descr" => _("disable forum") ,
-            "url" => "$surl&app=FREEDOM&action=FORUM_SETDEFAULT&id=$docid&st=N",
-            "confirm" => "false",
-            "control" => "false",
-            "tconfirm" => "",
-            "target" => "_self",
-            "visibility" => POPUP_INACTIVE,
-            "submenu" => "",
-            "barmenu" => "false"
-        ) ,
         "exportpref" => array(
             "descr" => _("export preferences") ,
             "url" => "$surl&app=FREEDOM&action=EDITEXPORTCHOOSECOLS&id=$docid",
@@ -284,10 +262,15 @@ function getpopupfamdetail(&$action, $docid)
     
     return $tlink;
 }
+
+
 /**
  * Add control view menu
+ * @param Action $action
+ * @param string $tlink
+ * @param DocFam $doc
  */
-function changeFamMenuVisibility(&$action, &$tlink, &$doc)
+function changeFamMenuVisibility(Action &$action, &$tlink, &$doc)
 {
     $clf = ($doc->CanEdit() == "");
     
@@ -342,13 +325,7 @@ function changeFamMenuVisibility(&$action, &$tlink, &$doc)
         $tlink["histo"]["visibility"] = POPUP_INVISIBLE;
     }
     
-    if ($doc->forumid == "") {
-        $tlink["forumdisabled"]["visibility"] = POPUP_INVISIBLE;
-        $tlink["forumenabled"]["visibility"] = POPUP_CTRLACTIVE;
-    } else {
-        $tlink["forumdisabled"]["visibility"] = POPUP_CTRLACTIVE;
-        $tlink["forumenabled"]["visibility"] = POPUP_INVISIBLE;
-    }
+
     include_once ("FDL/Class.SearchDoc.php");
     $s = new SearchDoc($doc->dbaccess, "HELPPAGE");
     $s->addFilter("help_family='%d'", $doc->id);

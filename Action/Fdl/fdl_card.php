@@ -107,11 +107,7 @@ function fdl_card(&$action)
     $action->lay->Set("docicon", $doc->getIcon('', 16));
     $action->lay->Set("pds", $doc->urlWhatEncodeSpec(""));
     
-    $action->lay->Set("forum", false);
-    if (($doc->doctype == 'F' || $doc->doctype == 'D') && abs(intval($doc->forumid)) > 0) {
-        $action->lay->Set("forumid", abs($doc->forumid));
-        $action->lay->Set("forum", ($doc->forumid != "" ? true : false));
-    }
+
     
     if (($zone == "") && ($vid != "")) {
         $cvdoc = new_Doc($dbaccess, $doc->cvid);

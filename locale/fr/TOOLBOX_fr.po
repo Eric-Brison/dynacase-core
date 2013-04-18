@@ -8,10 +8,10 @@ msgstr ""
 "PO-Revision-Date: 2013-04-18 13:19+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
@@ -705,8 +705,8 @@ msgstr ""
 msgid ""
 "Attribute Error: impossible to found the family for docid attribute '%s'"
 msgstr ""
-"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid '%"
-"s'"
+"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid "
+"'%s'"
 
 #, c-format
 msgid "Attribute [%s] is not found"
@@ -2240,8 +2240,8 @@ msgstr "Image (PNG)"
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;%"
-"s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;"
+"%s&gt; will be sended with result rapport"
 msgstr ""
 "L'import %s est en cours. Lorsque la mise à jour sera finie, un email sera "
 "envoyé à \n"
@@ -4150,9 +4150,6 @@ msgstr "ajouter un document importé"
 msgid "add document import from XML"
 msgstr "ajout d'un document pour l'import XML"
 
-msgid "add entry in a document forum"
-msgstr "répondre"
-
 msgid "add enum html input attribute"
 msgstr "Ajout entrée dans un énuméré"
 
@@ -4636,10 +4633,6 @@ msgid "cannot load xml template : %s"
 msgstr "Le modèle XML ne peut être chargé : %s"
 
 #, c-format
-msgid "cannot modify forum %s"
-msgstr "modification du forum impossible : %s"
-
-#, c-format
 msgid "cannot object update %s"
 msgstr "ne peut mettre à jour %s"
 
@@ -4656,10 +4649,6 @@ msgstr "ne peut produire la requête sql"
 
 msgid "cannot see unknow folder"
 msgstr "dossier inconnu, ne peut être consulté"
-
-#, c-format
-msgid "cannot see unknow forum reference %s"
-msgstr "impossible de voir le forum, la référence %s est inconnue"
 
 #, c-format
 msgid "cannot see unknow reference %s"
@@ -4895,9 +4884,6 @@ msgstr "logo du client"
 msgid "client name"
 msgstr "nom du client"
 
-msgid "close forum"
-msgstr "Fermer le forum"
-
 msgid "collapse all"
 msgstr "replier tout"
 
@@ -5080,9 +5066,6 @@ msgstr "Créer des documents manuellement"
 msgid "create family"
 msgstr "création de famille"
 
-msgid "create forum"
-msgstr "créer le forum"
-
 msgid "create help"
 msgstr "Créer une aide"
 
@@ -5211,9 +5194,6 @@ msgstr "Définir les attributs de tri"
 msgid "definition of enumerate attribute %s of %s family"
 msgstr "définition de l'attribut énuméré %s de la famille %s"
 
-msgid "del entry from a document forum"
-msgstr "supprimer une entrée de forum"
-
 msgid "delconfirm"
 msgstr "Voulez-vous supprimer"
 
@@ -5273,12 +5253,6 @@ msgstr "mode de vues par familles"
 
 msgid "directory to upload archive"
 msgstr "Répertoire de stockage de l'archive"
-
-msgid "disable forum"
-msgstr "Interdire les forums"
-
-msgid "disable/enable forum on documents"
-msgstr "Autoriser/interdire les forums sur les documents"
 
 msgid "display a confidential doc"
 msgstr "voir un document confidentiel"
@@ -5519,9 +5493,6 @@ msgstr "éditer les propriétés du document"
 msgid "edit family preference"
 msgstr "éditer les préférences par familles"
 
-msgid "edit forum"
-msgstr " éditer le forum"
-
 msgid "edit icard "
 msgstr "éditer une carte virtuelle"
 
@@ -5585,9 +5556,6 @@ msgstr "fichier vide"
 
 msgid "empty password : not changed"
 msgstr "mot de passe vide : non changé"
-
-msgid "enable forum"
-msgstr "Autoriser les forums"
 
 msgid "enavpreview"
 msgstr "publi-pévisualisation"
@@ -5907,45 +5875,6 @@ msgstr "taille de la police"
 msgid "for"
 msgstr "pour"
 
-msgid "forum"
-msgstr "forum"
-
-msgid "forum allowed"
-msgstr "autorisé"
-
-msgid "forum answer"
-msgstr "répondre"
-
-msgid "forum closed"
-msgstr "fermé"
-
-msgid "forum delete"
-msgstr "supprimer"
-
-msgid "forum disallowed"
-msgstr "non autorisé"
-
-msgid "forum edit"
-msgstr "modifier"
-
-msgid "forum modification are not saved"
-msgstr "Les modifications du forum ne sont pas sauvegardées."
-
-msgid "forum on new documents"
-msgstr "Forum pour les nouveaux documents"
-
-msgid "forum open/close"
-msgstr "déplier/replier le fil de discussion"
-
-msgid "forum opened"
-msgstr "ouvert"
-
-msgid "forum state"
-msgstr "Forum"
-
-msgid "forum_id"
-msgstr "identifiant du forum"
-
 msgid "founded"
 msgstr "nombre de document(s) trouvé(s)"
 
@@ -6064,9 +5993,6 @@ msgstr "Résultat de la recherche globale"
 
 msgid "goaccess"
 msgstr "accessibilités..."
-
-msgid "goto forum"
-msgstr "aller au forum"
 
 #, c-format
 msgid "goto latest %s"
@@ -6448,9 +6374,6 @@ msgstr "mémoire maximum pour PHP en Mo"
 msgid "memosearch"
 msgstr "mémo recherche"
 
-msgid "menu forum"
-msgstr "menu forum"
-
 msgid "menuctrlkey"
 msgstr "Autre..."
 
@@ -6642,9 +6565,6 @@ msgstr "la duplication est nommée : %s"
 
 msgid "new familly document"
 msgstr "nouvelle famille de document"
-
-msgid "new forum answer"
-msgstr "ajouter une entrée"
 
 msgid "new guide-card"
 msgstr "Nouvel intercalaire"
@@ -6998,9 +6918,6 @@ msgstr "ouvrir le fichier avec votre éditeur"
 
 msgid "open folder"
 msgstr "Ouvrir le dossier"
-
-msgid "open forum"
-msgstr "Ouvrir le forum"
 
 msgid "open in new window"
 msgstr "Ouvrir dans une nouvelle fenêtre"
@@ -7397,9 +7314,6 @@ msgstr "réinitialisation du profil %s"
 msgid "reset version"
 msgstr "réinitialisation de la version"
 
-msgid "response for this forum entry"
-msgstr "réponse pour cette entrée"
-
 msgid "rest delay"
 msgstr "durée restante"
 
@@ -7477,14 +7391,8 @@ msgstr "Le flux RSS est maintenant accessible pour les utilisateurs"
 msgid "rss unavaible for users"
 msgstr "Le flux RSS est rendu NON accessible pour les utilisateurs"
 
-msgid "save"
-msgstr "Sauver"
-
 msgid "save document"
 msgstr "sauvegarde de document"
-
-msgid "save forum edition"
-msgstr "sauver les modifications"
 
 msgid "save geometry of mini view"
 msgstr "sauve la disposition de la mini vue"
@@ -7781,8 +7689,8 @@ msgstr ""
 "<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
 "p>\n"
 "<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
-"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
-"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
+"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème"
+"%20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""
@@ -8545,10 +8453,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de document"
 msgid "you cannot create this kind [%s] of folder"
 msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
-#, c-format
-msgid "you don't have privilege to edit forum for document %s"
-msgstr "vous n'avez pas les droits pour modifier le forum du document %s"
-
 msgid "yourpassword"
 msgstr "Mot de passe : "
 
@@ -8688,23 +8592,113 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Until done date"
 #~ msgstr "Historique des minuteurs vieux de plus de n jours"
 
+#~ msgid "add entry in a document forum"
+#~ msgstr "répondre"
+
+#~ msgid "cannot modify forum %s"
+#~ msgstr "modification du forum impossible : %s"
+
+#~ msgid "cannot see unknow forum reference %s"
+#~ msgstr "impossible de voir le forum, la référence %s est inconnue"
+
+#~ msgid "close forum"
+#~ msgstr "Fermer le forum"
+
 #~ msgid "close search online help"
 #~ msgstr "Fermer l'aide à la recherche"
+
+#~ msgid "create forum"
+#~ msgstr "créer le forum"
 
 #~ msgid "days"
 #~ msgstr "jours"
 
+#~ msgid "del entry from a document forum"
+#~ msgstr "supprimer une entrée de forum"
+
 #~ msgid "delete %s on server %s...\n"
 #~ msgstr "suppression de %s sur le serveur %s...\n"
+
+#~ msgid "disable forum"
+#~ msgstr "Interdire les forums"
+
+#~ msgid "disable/enable forum on documents"
+#~ msgstr "Autoriser/interdire les forums sur les documents"
+
+#~ msgid "edit forum"
+#~ msgstr " éditer le forum"
+
+#~ msgid "enable forum"
+#~ msgstr "Autoriser les forums"
+
+#~ msgid "forum"
+#~ msgstr "forum"
+
+#~ msgid "forum allowed"
+#~ msgstr "autorisé"
+
+#~ msgid "forum answer"
+#~ msgstr "répondre"
+
+#~ msgid "forum closed"
+#~ msgstr "fermé"
+
+#~ msgid "forum delete"
+#~ msgstr "supprimer"
+
+#~ msgid "forum disallowed"
+#~ msgstr "non autorisé"
+
+#~ msgid "forum edit"
+#~ msgstr "modifier"
+
+#~ msgid "forum modification are not saved"
+#~ msgstr "Les modifications du forum ne sont pas sauvegardées."
+
+#~ msgid "forum on new documents"
+#~ msgstr "Forum pour les nouveaux documents"
+
+#~ msgid "forum open/close"
+#~ msgstr "déplier/replier le fil de discussion"
+
+#~ msgid "forum opened"
+#~ msgstr "ouvert"
+
+#~ msgid "forum state"
+#~ msgstr "Forum"
+
+#~ msgid "forum_id"
+#~ msgstr "identifiant du forum"
+
+#~ msgid "goto forum"
+#~ msgstr "aller au forum"
+
+#~ msgid "menu forum"
+#~ msgstr "menu forum"
 
 #~ msgid "mini view"
 #~ msgstr "mini vue"
 
+#~ msgid "new forum answer"
+#~ msgstr "ajouter une entrée"
+
 #~ msgid "no delay specified in timer %s [%d]"
 #~ msgstr "pas de durée spécifiée dans le minuteur %s [%d]"
 
+#~ msgid "open forum"
+#~ msgstr "Ouvrir le forum"
+
 #~ msgid "post it"
 #~ msgstr "post-it"
+
+#~ msgid "response for this forum entry"
+#~ msgstr "réponse pour cette entrée"
+
+#~ msgid "save"
+#~ msgstr "Sauver"
+
+#~ msgid "save forum edition"
+#~ msgstr "sauver les modifications"
 
 #~ msgid "search online help"
 #~ msgstr "Aide à la recherche"
@@ -8714,3 +8708,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "view object acl"
 #~ msgstr "voir les droits"
+
+#~ msgid "you don't have privilege to edit forum for document %s"
+#~ msgstr "vous n'avez pas les droits pour modifier le forum du document %s"

@@ -5,7 +5,7 @@
  * @package FDL
 */
 /**
- * Enable/disable forum for documents
+ * add new logical name
  *
  * @author Anakeen
  * @version $Id: setlogicalname.php,v 1.3 2008/09/26 12:34:57 eric Exp $

@@ -446,37 +446,6 @@ $action_desc = array(
         "short_name" => N_("search document to insert in a folder"),
         "acl" => "NORMAL"
     ),
-
-    array(
-        "name" => "FDL_FORUMADDENTRY",
-        "short_name" => N_("add entry in a document forum"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FDL_FORUMDELENTRY",
-        "short_name" => N_("del entry from a document forum"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FDL_FORUMOPEN",
-        "short_name" => N_("open forum"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FDL_FORUMCLOSE",
-        "short_name" => N_("close forum"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FDL_FORUMCREATE",
-        "short_name" => N_("create forum"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FDL_FORUMMENU",
-        "short_name" => N_("menu forum"),
-        "acl" => "NORMAL"
-    ),
     array(
         "name" => "CKIMAGE",
         "short_name" => N_("ck image browser"),
