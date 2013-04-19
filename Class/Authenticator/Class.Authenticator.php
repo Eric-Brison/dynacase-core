@@ -36,8 +36,8 @@ abstract class Authenticator
         
         include_once ('WHAT/Lib.Common.php');
         
-        if ($authtype == "") throw new Dcp\Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: authentication mode not set");
-        if ($authprovider == "") throw new Dcp\Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: authentication provider not set");
+        if ($authtype == "") throw new Dcp\Exception(__METHOD__ . " " . "Error: authentication mode not set");
+        if ($authprovider == "") throw new Dcp\Exception(__METHOD__ . " " . "Error: authentication provider not set");
         
         $tx = array(
             'type' => $authtype,
@@ -49,15 +49,18 @@ abstract class Authenticator
             $this->parms = array_merge($tx, $ta, $tp);
             
             if (!array_key_exists('provider', $this->parms)) {
-                throw new Dcp\Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: provider parm not specified at __construct");
+                throw new Dcp\Exception(__METHOD__ . " " . "Error: provider parm not specified at __construct");
             }
             $providerClass = $this->parms{'provider'} . 'Provider';
-            $ret = @include_once ('WHAT/Class.' . $providerClass . '.php');
+            
+            $classFile = 'WHAT/Class.' . $providerClass . '.php';
+            $ret = file_exists($classFile);
             if ($ret === FALSE) {
-                throw new Dcp\Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: WHAT/Class." . $providerClass . ".php not found");
+                throw new Dcp\Exception(__METHOD__ . " " . "Error: ." . $classFile . " not found");
             }
+            include_once ($classFile);
             if (!class_exists($providerClass)) {
-                throw new Dcp\Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: " . $providerClass . " class not found");
+                throw new Dcp\Exception(__METHOD__ . " " . "Error: " . $providerClass . " class not found");
             }
             global $action;
             //     error_log("Using authentication provider [".$providerClass."]");
@@ -72,8 +75,8 @@ abstract class Authenticator
     
     public function freedomUserExists($username)
     {
-        @include_once ('FDL/Class.Doc.php');
-        @include_once ('WHAT/Class.User.php');
+        include_once ('FDL/Class.Doc.php');
+        include_once ('WHAT/Class.User.php');
         
         $u = new Account();
         if ($u->SetLoginName($username)) {

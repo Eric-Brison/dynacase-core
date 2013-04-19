@@ -14,7 +14,10 @@
  */
 /**
  */
-
+/**
+ * Class Provider
+ * @method initializeUser
+ */
 abstract class Provider
 {
     

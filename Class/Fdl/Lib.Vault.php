@@ -189,27 +189,24 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
         if ($tea != "yes") return '';
         $tea = getParam("TE_FULLTEXT");
         if ($tea != "yes") return '';
-        if (@include_once ("WHAT/Class.TEClient.php")) {
-            global $action;
-            include_once ("FDL/Class.TaskRequest.php");
-            $of = new VaultDiskStorage($dbaccess, $vid);
-            $filename = $of->getPath();
-            $urlindex = getOpenTeUrl();
-            $callback = $urlindex . "&sole=Y&app=FDL&action=SETTXTFILE&docid=$docid&attrid=" . $attrid . "&index=$index";
-            $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
-            $err = $ot->sendTransformation('utf8', $vid, $filename, $callback, $info);
-            if ($err == "") {
-                $tr = new TaskRequest($dbaccess);
-                $tr->tid = $info["tid"];
-                $tr->fkey = $vid;
-                $tr->status = $info["status"];
-                $tr->comment = $info["comment"];
-                $tr->uid = $action->user->id;
-                $tr->uname = $action->user->firstname . " " . $action->user->lastname;
-                $err = $tr->Add();
-            }
-        } else {
-            AddWarningMsg(_("TE engine activate but TE-CLIENT not found"));
+        
+        global $action;
+        include_once ("FDL/Class.TaskRequest.php");
+        $of = new VaultDiskStorage($dbaccess, $vid);
+        $filename = $of->getPath();
+        $urlindex = getOpenTeUrl();
+        $callback = $urlindex . "&sole=Y&app=FDL&action=SETTXTFILE&docid=$docid&attrid=" . $attrid . "&index=$index";
+        $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
+        $err = $ot->sendTransformation('utf8', $vid, $filename, $callback, $info);
+        if ($err == "") {
+            $tr = new TaskRequest($dbaccess);
+            $tr->tid = $info["tid"];
+            $tr->fkey = $vid;
+            $tr->status = $info["status"];
+            $tr->comment = $info["comment"];
+            $tr->uid = $action->user->id;
+            $tr->uname = $action->user->firstname . " " . $action->user->lastname;
+            $err = $tr->Add();
         }
     }
     return $err;
@@ -229,66 +226,62 @@ function convertFile($infile, $engine, $outfile, &$info)
     if (file_exists($infile) && ($engine != "")) {
         $tea = getParam("TE_ACTIVATE");
         if ($tea != "yes") return _("TE not activated");
-        
-        if (@include_once ("WHAT/Class.TEClient.php")) {
-            
-            $callback = "";
-            $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
-            $vid = '';
-            $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
-            if ($err == "") {
-                include_once ("FDL/Class.TaskRequest.php");
-                $dbaccess = GetParam("FREEDOM_DB");
-                $tr = new TaskRequest($dbaccess);
-                $tr->tid = $info["tid"];
-                $tr->fkey = $vid;
-                $tr->status = $info["status"];
-                $tr->comment = $info["comment"];
-                $tr->uid = $action->user->id;
-                $tr->uname = $action->user->firstname . " " . $action->user->lastname;
-                $err = $tr->Add();
-            }
-            $tid = 0;
-            if ($err == "") {
-                $tid = $info["tid"];
-                if ($tid == 0) $err = _("no task identificator");
-            }
-            // waiting response
-            if ($err == "") {
-                $status = "";
-                setMaxExecutionTimeTo(3600);
-                while (($status != 'K') && ($status != 'D') && ($err == "")) {
-                    $err = $ot->getInfo($tid, $info);
-                    $status = $info["status"];
-                    if ($err == "") {
-                        switch ($info["status"]) {
-                            case 'P':
-                                $statusmsg = _("File:: Processing");
-                                break;
+        l $callback = "";
+        $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
+        $vid = '';
+        $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
+        if ($err == "") {
+            include_once ("FDL/Class.TaskRequest.php");
+            $dbaccess = GetParam("FREEDOM_DB");
+            $tr = new TaskRequest($dbaccess);
+            $tr->tid = $info["tid"];
+            $tr->fkey = $vid;
+            $tr->status = $info["status"];
+            $tr->comment = $info["comment"];
+            $tr->uid = $action->user->id;
+            $tr->uname = $action->user->firstname . " " . $action->user->lastname;
+            $err = $tr->Add();
+        }
+        $tid = 0;
+        if ($err == "") {
+            $tid = $info["tid"];
+            if ($tid == 0) $err = _("no task identificator");
+        }
+        // waiting response
+        if ($err == "") {
+            $status = "";
+            setMaxExecutionTimeTo(3600);
+            while (($status != 'K') && ($status != 'D') && ($err == "")) {
+                $err = $ot->getInfo($tid, $info);
+                $status = $info["status"];
+                if ($err == "") {
+                    switch ($info["status"]) {
+                        case 'P':
+                            $statusmsg = _("File:: Processing");
+                            break;
 
-                            case 'W':
-                                $statusmsg = _("File:: Waiting");
-                                break;
+                        case 'W':
+                            $statusmsg = _("File:: Waiting");
+                            break;
 
-                            case 'D':
-                                $statusmsg = _("File:: converted");
-                                break;
+                        case 'D':
+                            $statusmsg = _("File:: converted");
+                            break;
 
-                            case 'K':
-                                $statusmsg = _("File:: failed");
-                                break;
+                        case 'K':
+                            $statusmsg = _("File:: failed");
+                            break;
 
-                            default:
-                                $statusmsg = $info["status"];
-                        }
+                        default:
+                            $statusmsg = $info["status"];
                     }
-                    
-                    sleep(2);
                 }
-                if (($err == "") && ($status == 'D')) {
-                    include_once ("FDL/insertfile.php");
-                    $err = getTEFile($tid, $outfile, $info);
-                }
+                
+                sleep(2);
+            }
+            if (($err == "") && ($status == 'D')) {
+                include_once ("FDL/insertfile.php");
+                $err = getTEFile($tid, $outfile, $info);
             }
         }
     } else {

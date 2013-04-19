@@ -123,21 +123,18 @@ function downloadTid($tid, $title)
     $tea = getParam("TE_ACTIVATE");
     $err = '';
     if ($tea != "yes") return '';
-    if (@include_once ("WHAT/Class.TEClient.php")) {
-        global $action;
-        include_once ("FDL/insertfile.php");
-        
-        $filename = uniqid(getTmpDir() . "/tid-" . $tid);
-        $err = getTEFile($tid, $filename, $info);
-        $mime = getSysMimeFile($filename, basename($filename));
-        $ext = getExtension($mime);
-        if ($ext) $ext = '.' . $ext;
-        if ($err == "") {
-            Http_DownloadFile($filename, $title . "$ext", $mime, false, false);
-            @unlink($filename);
-        }
-    } else {
-        AddWarningMsg(_("TE engine activate but TE-CLIENT not found"));
+    include_once ("WHAT/Class.TEClient.php");
+    global $action;
+    include_once ("FDL/insertfile.php");
+    
+    $filename = uniqid(getTmpDir() . "/tid-" . $tid);
+    $err = getTEFile($tid, $filename, $info);
+    $mime = getSysMimeFile($filename, basename($filename));
+    $ext = getExtension($mime);
+    if ($ext) $ext = '.' . $ext;
+    if ($err == "") {
+        Http_DownloadFile($filename, $title . "$ext", $mime, false, false);
+        @unlink($filename);
     }
     
     return $err;
