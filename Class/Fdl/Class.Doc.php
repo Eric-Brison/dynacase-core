@@ -553,6 +553,10 @@ class Doc extends DocCtrl
      */
     private $_paramValue = array();
     /**
+     * @var string last modify error when refresh
+     */
+    private $lastRefreshError = '';
+    /**
      * identification of special views
      *
      * @var array
@@ -922,7 +926,8 @@ create unique index i_docir on doc(initid, revision);";
             if ($err != "") return ($err);
         }
         if ($this->locked == - 1) $this->lmodify = 'N';
-        if ($this->isFixed()) return _("cannot update fixed document");
+        $err = $this->docIsCleanToModify();
+        if ($err) return $err;
         if ($this->constraintbroken) return (sprintf(_("constraint broken %s") , $this->constraintbroken));
         $this->RefreshTitle();
         if ($this->hasChanged) {
@@ -935,13 +940,42 @@ create unique index i_docir on doc(initid, revision);";
         }
         return '';
     }
+    
+    private function docIsCleanToModify()
+    {
+        if ($this->initid > 0 && $this->fromid > 0) {
+            simpleQuery($this->dbaccess, sprintf("select initid, id, revision, locked from only doc%d where initid=%d", $this->fromid, $this->initid) , $r);
+            
+            $cAlive = 0;
+            $imAlive = false;
+            foreach ($r as $docInfo) {
+                if (($docInfo["id"] == $this->id) && ($docInfo["locked"] == - 1)) {
+                    return ErrorCode::getError('DOC0118', $this->getTitle() , $this->id);
+                } elseif ($docInfo["locked"] != - 1) {
+                    if ($docInfo["id"] == $this->id) $imAlive = true;
+                    $cAlive++;
+                }
+            }
+            if ($this->locked != - 1 && $cAlive == 1 && $imAlive) {
+                return ''; // OK
+                
+            } elseif ($cAlive > 1) {
+                // multiple alive already set : need fix it
+                fixMultipleAliveDocument($this);
+                if ($this->isFixed()) { // if locked now ?
+                    return ErrorCode::getError('DOC0119', $this->getTitle() , $this->id);
+                }
+            }
+        }
+        return '';
+    }
     /**
      * optimize for speed : memorize object for future use
      * @return string
      */
     function PostUpdate()
     {
-        
+        fixMultipleAliveDocument($this);
         if ($this->hasChanged) {
             $this->computeDProfil();
             if ($this->doctype != 'C') {
@@ -1274,18 +1308,24 @@ create unique index i_docir on doc(initid, revision);";
                 $create = true;
             }
             if ($err == '') {
+                $this->lastRefreshError = '';
                 $info->refresh = $this->refresh();
-                $info->postStore = $this->postStore();
-                /** @noinspection PhpDeprecationInspection
-                 * compatibility until postModify exists
-                 */
-                $info->postModify = $info->postStore;
-                if ($this->hasChanged) {
-                    //in case of change in postStore
-                    $err = $this->modify();
-                    if ($err) $info->errorCode = storeInfo::UPDATE_ERROR;
+                $err = $this->lastRefreshError;
+                if ($err) {
+                    $info->errorCode = storeInfo::UPDATE_ERROR;
+                } else {
+                    $info->postStore = $this->postStore();
+                    /** @noinspection PhpDeprecationInspection
+                     * compatibility until postModify exists
+                     */
+                    $info->postModify = $info->postStore;
+                    if ($this->hasChanged) {
+                        //in case of change in postStore
+                        $err = $this->modify();
+                        if ($err) $info->errorCode = storeInfo::UPDATE_ERROR;
+                    }
+                    if ($err == "" && (!$create)) $this->addHistoryEntry(_("save document") , HISTO_INFO, "MODIFY");
                 }
-                if ($err == "" && (!$create)) $this->addHistoryEntry(_("save document") , HISTO_INFO, "MODIFY");
             } else {
                 $info->errorCode = storeInfo::CREATE_ERROR;
             }
@@ -1625,7 +1665,6 @@ create unique index i_docir on doc(initid, revision);";
             $msg = $this->PreDocDelete();
             if ($msg != '') return $msg;
         }
-
         
         if ($really) {
             if ($this->id != "") {
@@ -5682,7 +5721,7 @@ create unique index i_docir on doc(initid, revision);";
         $msg.= $this->SpecRefreshGen();
         $msg.= $this->postRefresh();
         if ($this->hasChanged && $this->id > 0) {
-            $msg.= $this->modify(); // refresh title
+            $this->lastRefreshError = $this->modify(); // refresh title
             
         }
         if (!$changed) $this->enableEditControl();
@@ -7152,7 +7191,7 @@ create unique index i_docir on doc(initid, revision);";
             $this->lay->Set("allocate", $user->firstname . " " . $user->lastname);
             $this->lay->Set("allocateid", $user->fid);
         }
-
+        
         $tms = $this->getAttachedTimers();
         
         $this->lay->Set("Timers", (count($tms) > 0));

@@ -89,8 +89,7 @@ function generic_edit(Action & $action)
         if ($usefor != "") $doc->doctype = 'T';
     } else {
         $doc = new_Doc($dbaccess, $docid, true); // always latest revision
-        $rev = getLatestRevisionNumber($dbaccess, $doc->initid, $doc->fromid);
-        if ($doc->revision != $rev) $action->ExitError(sprintf("document %d : multiple alive revision (%d <> %d)", $doc->initid, $doc->revision, $rev));
+        fixMultipleAliveDocument($doc);
         $docid = $doc->id;
         setHttpVar("id", $doc->id);
         $err = $doc->lock(true); // autolock
