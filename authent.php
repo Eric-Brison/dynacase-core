@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 
 include_once ('WHAT/autoload.php');
 include_once ('WHAT/Class.ActionRouter.php');
@@ -20,18 +25,18 @@ if (isset($_REQUEST['logout'])) {
         throw new \Dcp\Exception(sprintf("Authenticator '%s' does not provide a logon() method.", get_class($auth)));
     }
     // default application is AUTHENT
-    if (!isset($_GET["app"])) $_GET["app"]="AUTHENT";
+    if (!isset($_GET["app"])) $_GET["app"] = "AUTHENT";
     /**
      * @var htmlAuthenticator $auth
      */
     $auth->logon();
 }
-
 /**
  * @param string $authtype
  * @return Authenticator
  */
-function getAuthenticator($authtype = '') {
+function getAuthenticator($authtype = '')
+{
     if ($authtype == '') {
         $authtype = getAuthType();
     }
@@ -39,8 +44,10 @@ function getAuthenticator($authtype = '') {
         return false;
     }
     $authClass = strtolower($authtype) . "Authenticator";
-    if (!@include_once (DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . 'WHAT' . DIRECTORY_SEPARATOR . 'Class.' . $authClass . '.php')) {
+    $authFile = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . 'WHAT' . DIRECTORY_SEPARATOR . 'Class.' . $authClass . '.php';
+    if (!file_exists($authFile)) {
         return false;
     }
+    include_once ($authFile);
     return new $authClass($authtype, "__for_logout__");
 }

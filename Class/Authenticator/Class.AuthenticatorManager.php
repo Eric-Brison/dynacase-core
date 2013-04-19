@@ -27,7 +27,7 @@ include_once ('WHAT/Class.Log.php');
 class AuthenticatorManager
 {
     /**
-     * @var Session
+     * @var \Session
      */
     public static $session = null;
     const AccessBug = - 1;
@@ -57,10 +57,12 @@ class AuthenticatorManager
             exit;
         }
         $authClass = strtolower($authtype) . "Authenticator";
-        if (!@include_once ('WHAT/Class.' . $authClass . '.php')) {
-            print "Unknown authtype " . $_GET['authtype'];
+        $authFile = 'WHAT/Class.' . $authClass . '.php';
+        if (!file_exists($authFile)) {
+            print "Unknown authtype " . $authtype;
             exit;
         }
+        include_once ($authFile);
         self::$auth = new $authClass($authtype, "__for_logout__");
         
         $authProviderList = getAuthProviderList();
@@ -133,6 +135,9 @@ class AuthenticatorManager
         */
         if (method_exists(self::$auth, 'getAuthSession')) {
             self::$session = self::$auth->getAuthSession();
+            /**
+             * @var self::$session Session
+             */
             if (self::$session->read('username') == "") {
                 self::secureLog("failure", "username should exists in session", $authprovider = "", $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
                 exit(0);
@@ -147,10 +152,12 @@ class AuthenticatorManager
     {
         $authtype = getAuthType();
         $authClass = strtolower($authtype) . "Authenticator";
-        if (!@include_once ('WHAT/Class.' . $authClass . '.php')) {
+        $authFile = 'WHAT/Class.' . $authClass . '.php';
+        if (!file_exists($authFile)) {
             print "Unknown authtype " . $_GET['authtype'];
             exit;
         }
+        include_once ($authFile);
         self::$auth = new $authClass($authtype, "__for_logout__");
         
         if (method_exists(self::$auth, 'logout')) {
