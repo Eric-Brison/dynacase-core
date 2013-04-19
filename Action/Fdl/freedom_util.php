@@ -567,7 +567,7 @@ function controlTdoc(&$tdoc, $aclname)
  */
 function getDocObject($dbaccess, $v, $k = 0)
 {
-    /* @var array $_OgetDocObject */
+    /* @var Doc[][] $_OgetDocObject */
     static $_OgetDocObject;
     
     if ($v["doctype"] == "C") {
@@ -760,7 +760,7 @@ function getDocFromUserId($dbaccess, $userid)
     $tdoc = array();
     $user = new Account("", $userid);
     if (!$user->isAffected()) return false;
-    if ($user->isgroup == "Y") {
+    if ($user->accounttype == "G") {
         $filter = array(
             "us_whatid = '$userid'"
         );
@@ -793,6 +793,31 @@ function isFixedDoc($dbaccess, $id)
     ));
     if (!$tdoc) return null;
     return ($tdoc["locked"] == - 1);
+}
+/**
+ * lock oldest alive revision in case of conflict
+ * @param Doc $doc
+ */
+function fixMultipleAliveDocument(Doc & $doc)
+{
+    if ($doc->id && $doc->fromid > 0) {
+        simpleQuery($doc->dbaccess, sprintf("select id from only doc%d where initid=%d and locked != -1 order by id", $doc->fromid, $doc->initid) , $r);
+        array_pop($r); // last stay alive
+        if (count($r) > 0) {
+            $rid = array();
+            foreach ($r as $docInfo) {
+                simpleQuery($doc->dbaccess, sprintf("update doc set locked= -1 where id=%d", $docInfo["id"]));
+                $rid[] = $docInfo["id"];
+                if ($docInfo["id"] == $doc->id) {
+                    $doc->locked = - 1;
+                }
+            }
+            $doc->addHistoryEntry(sprintf(_("Fix multiple alive document #%s") , implode(', ', $rid)) , DocHisto::WARNING);
+            addWarningMsg(sprintf(_("Fix multiple alive revision for \"%s\"") , $doc->getTitle()));
+            global $action;
+            $action->log->warning(sprintf(_("Fix multiple alive document for \"%s\" #%s") , $doc->getTitle() , implode(', ', $rid)));
+        }
+    }
 }
 
 function ComputeVisibility($vis, $fvis, $ffvis = '')

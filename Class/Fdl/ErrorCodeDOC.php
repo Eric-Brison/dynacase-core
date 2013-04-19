@@ -159,6 +159,16 @@ class ErrorCodeDOC
      */
     const DOC0117 = 'attribute "%s" is a structured attribute in document "%s" (family "%s") : it cannot set values';
     /**
+     * @errorCode try to update a document revised
+     * @see Doc::store
+     */
+    const DOC0118 = 'cannot update fixed document "%s" (#%d)';
+    /**
+     * @errorCode try to update a document revised
+     * @see Doc::store
+     */
+    const DOC0119 = 'the document "%s" (#%d) became fixed because another revision more recent has been created';
+    /**
      * @errorCode
      * the document cannot be inserted in folder target
      * @note when DOC has defined a folder target

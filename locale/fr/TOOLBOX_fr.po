@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-18 13:19+0200\n"
+"PO-Revision-Date: 2013-04-19 15:19+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -2068,6 +2068,18 @@ msgstr "Prénom"
 msgid "Fit to screen"
 msgstr "Ajuster à l'écran"
 
+#, c-format
+msgid "Fix multiple alive document #%s"
+msgstr "Verrouillage des révisions vivantes concurrentes #%s"
+
+#, c-format
+msgid "Fix multiple alive document for \"%s\" #%s"
+msgstr "Verrouillage des révisions vivantes concurrentes pour le document \"%s\" #%s"
+
+#, c-format
+msgid "Fix multiple alive revision for \"%s\""
+msgstr "Verrouillage des révisions vivantes concurrentes pour le document \"%s\""
+
 msgid "Folder"
 msgstr "Dossier"
 
@@ -4000,7 +4012,8 @@ msgstr ""
 
 msgid ""
 "You don't have access to any content. Please contact your administrator."
-msgstr "Vous n'avez accès à aucun contenu. Veuillez contacter votre administrateur."
+msgstr ""
+"Vous n'avez accès à aucun contenu. Veuillez contacter votre administrateur."
 
 msgid "You must upgrade to version 6 or more"
 msgstr "Vous devez mettre à jour avec la version 6 au minimum"
@@ -4712,9 +4725,6 @@ msgstr "ne peut pas déverrouiller"
 #, c-format
 msgid "cannot update file %s (rev %d) : fixed. Get the latest version"
 msgstr "le fichier %s (rév. %d) est figé. Utilisez la dernière version"
-
-msgid "cannot update fixed document"
-msgstr "Un document figé ne peut pas être mis à jour"
 
 msgid "cannot update inconsistent document"
 msgstr "ne peut mettre à jour un document inconsistent"
@@ -8600,6 +8610,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "cannot see unknow forum reference %s"
 #~ msgstr "impossible de voir le forum, la référence %s est inconnue"
+
+#~ msgid "cannot update fixed document"
+#~ msgstr "Un document figé ne peut pas être mis à jour"
 
 #~ msgid "close forum"
 #~ msgstr "Fermer le forum"

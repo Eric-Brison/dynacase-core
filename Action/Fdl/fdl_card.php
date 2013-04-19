@@ -63,7 +63,8 @@ function fdl_card(&$action)
         $err = $doc->UnLock(true);
         if ($err != "") $action->ExitError($err);
     }
-    
+
+    fixMultipleAliveDocument($doc);
     if ($state != "") {
         $docid = $doc->getRevisionState($state, true);
         if ($docid == 0) {
