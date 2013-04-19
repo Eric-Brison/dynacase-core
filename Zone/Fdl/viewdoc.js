@@ -97,7 +97,23 @@ function displayWindow(height, width, ref, title, x, y, id, backgroundcolor) {
                         "data-posX": position[0],
                         "data-posY": position[1]
                     });
-                    if (isIE) $this.dialog("close");
+                    var $header = $(".header");
+                    var links = $header.find(".barmenu").find("a");
+                    links.each(function() {
+                        if ($(this).css("visibility") == "visible") {
+                            var onclick = $("#onclicksave").attr("data-onclick");
+                            this.onclick = new Function(onclick);
+                        } else {
+                            this.style.visibility='visible';
+                        }
+                    });
+                    $header.css("cursor", "auto");
+                    if (isIE) {
+                        $header.css("filter", '');
+                        $this.dialog("close");
+                    } else {
+                        $header.css('opacity', 1.0);
+                    }
                 }
                 if (isIE) {
                     $('body').css('overflow', 'auto');
@@ -255,15 +271,35 @@ function updatePopDocTitle() {
 
 function viewwaitbarmenu(thea,bar,title) {
     if (bar && thea) {
-	var la=bar.getElementsByTagName('a');
-	for (var i=0;i<la.length;i++) {
-	    la[i].style.visibility='hidden';
-	}
-	thea.onclick='';
-	thea.style.visibility='visible';
-	globalcursor('wait');
-	setTimeout('viewwait(true)',500); 
-	setbodyopacity(0.5);
+        var dialogs = $(".ui-dialog");
+        var open = false;
+        dialogs.each(function() {
+            if ($(this).dialog("isOpen")) {
+                open = true;
+                $(this).dialog("close");
+            }
+        });
+        var onclick = $(thea).attr('onclick');
+        var la=bar.getElementsByTagName('a');
+        for (var i=0;i<la.length;i++) {
+            la[i].style.visibility='hidden';
+        }
+        thea.onclick='';
+        thea.style.visibility='visible';
+        if (!open) {
+            globalcursor('wait');
+            setTimeout('viewwait(true)',500);
+            setbodyopacity(0.5);
+        } else {
+            var $header = $(".header");
+            $header.append('<span style="visibility: hidden;" data-onclick="'+onclick+'" id="onclicksave"></span>');
+            $header.css("cursor", "wait");
+            if (isIE) {
+                $header.css("filter", 'alpha(opacity50)');
+            } else {
+                $header.css('opacity', 0.5);
+            }
+        }
     }
 }
 // op 
