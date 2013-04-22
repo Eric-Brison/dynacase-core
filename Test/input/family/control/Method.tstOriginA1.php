@@ -23,10 +23,7 @@ class _TSTA extends _TSTCOMMONINHERIT
         return "A";
     }
     
-    protected function getANumber()
-    {
-        return "879";
-    }
+  
     /**
      * @begin-method-ignore
      * this part will be deleted when construct document class until end-method-ignore
