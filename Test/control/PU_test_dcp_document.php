@@ -211,7 +211,7 @@ class TestDocument extends TestCaseDcpCommonFamily
         
         $err = $doc->setFile($attrName, $filePathName, $fileName, $index);
         $this->assertEmpty($err, sprintf("storeFile(%s, %s, %s, %s) returned with error: %s", $attrName, $filePathName, $fileName, $index, $err));
-
+        
         $value = $doc->getMultipleRawValues($attrName, '', $index);
         $this->assertNotEmpty($value, sprintf("value of '%s' at index %s should not be empty", $attrName, $index));
     }
@@ -226,7 +226,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     public function testSaveFile($docId, $attrName, $filePathName, $fileName = '', $index = - 1)
     {
         /**
-         * @var \stream $fd
+         * @var \resource $fd
          */
         $fd = @fopen($filePathName, 'r');
         $this->assertFalse(($fd === false) , sprintf("error openging file '%s': %s", $filePathName, isset($php_errormsg) ? $php_errormsg : ''));
@@ -274,6 +274,9 @@ class TestDocument extends TestCaseDcpCommonFamily
         
         $exception = '';
         $vid = '';
+        /**
+         * @var \VaultFileInfo $info
+         */
         $info = null;
         try {
             $vid = $doc->vaultRegisterFile($filename, $ftitle, $info);

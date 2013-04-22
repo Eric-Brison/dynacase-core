@@ -20,6 +20,7 @@ class SuiteDcp
         
         $suite->addTestSuite('Dcp\Pu\TestDocument');
         $suite->addTestSuite('Dcp\Pu\TestMultipleAlive');
+        $suite->addTestSuite('Dcp\Pu\TestDoubleInherit');
         $suite->addTestSuite('Dcp\Pu\TestSetLogicalName');
         $suite->addTestSuite('Dcp\Pu\TestOooLayout');
         $suite->addTestSuite('Dcp\Pu\TestOooSimpleLayout');
