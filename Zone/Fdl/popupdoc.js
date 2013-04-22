@@ -120,6 +120,7 @@ function menuSend(event, menuurl, cible, coord, barmenu) {
         cible.style.width = '30px';
         if (barmenu) {
             cible.style.position = "fixed";
+            cible.style.zIndex = "2";
         } else {
              cible.style.position = "";
         }
