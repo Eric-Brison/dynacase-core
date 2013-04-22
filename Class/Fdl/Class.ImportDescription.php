@@ -858,8 +858,9 @@ class importDocumentDescription
             $this->tcr[$this->nLine]["msg"] = sprintf(_("change methods to '%s'") , $this->doc->methods);
             $tmethods = explode("\n", $this->doc->methods);
             foreach ($tmethods as $method) {
-                if (!file_exists(sprintf("FDL/%s", $method))) {
-                    $this->tcr[$this->nLine]["err"].= sprintf("Method file '%s' not found.", $method);
+                $fileMethod = ($method[0] == '*') ? substr($method, 1) : $method;
+                if (!file_exists(sprintf("FDL/%s", $fileMethod))) {
+                    $this->tcr[$this->nLine]["err"].= sprintf("Method file '%s' not found.", $fileMethod);
                 }
             }
             if ($this->tcr[$this->nLine]["err"]) $this->tcr[$this->nLine]["action"] = "ignored";
