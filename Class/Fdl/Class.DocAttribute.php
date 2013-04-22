@@ -565,6 +565,8 @@ class NormalAttribute extends BasicAttribute
                 } else {
                     return sprintf("<%s>%s</%s>", $this->id, $v, $this->id);
                 }
+            case 'thesaurus':
+            case 'account':
             case 'docid':
                 if (!$v) {
                     return sprintf('<%s xsi:nil="true"/>', $this->id);
