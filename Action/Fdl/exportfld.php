@@ -473,7 +473,7 @@ function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, 
                 );
             }
             $value = implode("\n", $tf);
-        } else if ($attr->type == "docid") {
+        } else if ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
             if ($value != "") {
                 if (strstr($value, "\n") || ($attr->getOption("multiple") == "yes")) {
                     $tid = $doc->rawValueToArray($value);
