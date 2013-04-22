@@ -97,17 +97,20 @@ function displayWindow(height, width, ref, title, x, y, id, backgroundcolor) {
                         "data-posX": position[0],
                         "data-posY": position[1]
                     });
+                    var onclick = $("#onclicksave").attr("data-onclick");
                     var $header = $(".header");
-                    var links = $header.find(".barmenu").find("a");
-                    links.each(function() {
-                        if ($(this).css("visibility") == "visible") {
-                            var onclick = $("#onclicksave").attr("data-onclick");
-                            this.onclick = new Function(onclick);
-                        } else {
-                            this.style.visibility='visible';
-                        }
-                    });
-                    $header.css("cursor", "auto");
+                    if (onclick) {
+                        var links = $header.find(".barmenu").find("a");
+                        links.each(function() {
+                            if ($(this).css("visibility") == "visible") {
+                                this.onclick = new Function(onclick);
+                            } else {
+                                this.style.visibility='visible';
+                            }
+                        });
+                        $header.css("cursor", "auto");
+                        $("#onclicksave").attr("data-onclick", "");
+                    }
                     if (isIE) {
                         $header.css("filter", '');
                         $this.dialog("close");
