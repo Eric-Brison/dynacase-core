@@ -226,7 +226,7 @@ function convertFile($infile, $engine, $outfile, &$info)
     if (file_exists($infile) && ($engine != "")) {
         $tea = getParam("TE_ACTIVATE");
         if ($tea != "yes") return _("TE not activated");
-        l $callback = "";
+        $callback = "";
         $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
         $vid = '';
         $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
