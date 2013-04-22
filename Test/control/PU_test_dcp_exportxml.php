@@ -187,6 +187,11 @@ class TestExportXml extends TestCaseDcpCommonFamily
                 "TST_OUTREL1"
             ) ,
             array(
+                "TST_REL1",
+                "tst_account",
+                "TST_U_USERONE"
+            ) ,
+            array(
                 "TST_REL2",
                 "tst_relmul",
                 "TST_OUTREL1,TST_OUTREL2,TST_OUTREL3"
