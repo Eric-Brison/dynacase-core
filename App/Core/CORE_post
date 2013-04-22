@@ -120,6 +120,16 @@ if [ "$1" = "U" ] ; then
 	exit $RET
     fi
 
+
+    DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
+    PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE\" SET  standard_conforming_strings ='off';"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while setting standard_conforming_strings to 'off'"
+	exit $RET
+    fi
+
+
     "$wpub"/wsh.php --api=import_size
     "$wpub"/wsh.php --api=setStyle --style=STYLE/MODERN/MODERN.sty
     
