@@ -1138,8 +1138,7 @@ class DocFormFormat
              */
             public function getLayArray(&$lay, &$doc, &$oattr, $row = - 1)
             {
-                global $action;
-                
+                static $defValues = null;
                 $attrid = $oattr->id;
                 $ta = $doc->attributes->getArrayElements($attrid);
                 
@@ -1178,8 +1177,15 @@ class DocFormFormat
                     }
                 }
                 // get default values
-                $ddoc = createDoc($doc->dbaccess, $doc->fromid == 0 ? $doc->id : $doc->fromid, false);
-                $ddoc->setDefaultValues($ddoc->getFamilyDocument()->getDefValues() , true, true);
+                $cid = $doc->fromid == 0 ? $doc->id : $doc->fromid;
+                
+                if (!isset($defValues[$cid])) {
+                    $ddoc = createTmpDoc($doc->dbaccess, $cid, false);
+                    $ddoc->setDefaultValues($ddoc->getFamilyDocument()->getDefValues() , true, true);
+                    $defValues[$cid] = $ddoc;
+                } else {
+                    $ddoc = $defValues[$cid];
+                }
                 
                 $tad = $ddoc->attributes->getArrayElements($attrid);
                 $tval = array();
