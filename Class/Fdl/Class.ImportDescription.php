@@ -955,7 +955,7 @@ class importDocumentDescription
             } else {
                 
                 if ($force || ($previousValue === null)) {
-                    $this->doc->setParam($attrid, $newValue);
+                    $this->doc->setParam($attrid, $newValue, false);
                     $this->tcr[$this->nLine]["msg"] = "reset default parameter";
                 }
                 $this->tcr[$this->nLine]["msg"].= sprintf(_("add default value %s %s") , $attrid, $data[2]);
