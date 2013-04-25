@@ -379,7 +379,6 @@ create unique index idx_idfam on docfam(id);";
                     }
                     break;
 
-
                 case 'maxrev':
                     if (!$this->maxrev) {
                         if ($this->schar == 'S') {
@@ -479,6 +478,10 @@ create unique index idx_idfam on docfam(id);";
     {
         $this->setChanged();
         $idp = strtolower($idp);
+        if (!$this->getAttribute($idp)) {
+            return ErrorCode::getError('DOC0120', $idp, $this->getTitle() , $this->name);
+        }
+        
         if (is_array($val)) $val = $this->arrayToRawValue($val);
         $err = '';
         if ($this->isComplete()) $err = $this->checkSyntax($idp, $val);

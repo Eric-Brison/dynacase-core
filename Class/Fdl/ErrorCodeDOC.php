@@ -169,6 +169,11 @@ class ErrorCodeDOC
      */
     const DOC0119 = 'the document "%s" (#%d) became fixed because another revision more recent has been created';
     /**
+     * @errorCode when update family parameter
+     * @see DocFal::setParam
+     */
+    const DOC0120 = 'cannot set family parameter "%s". It is not a parameter for "%s" ("%s") family';
+    /**
      * @errorCode
      * the document cannot be inserted in folder target
      * @note when DOC has defined a folder target

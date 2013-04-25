@@ -559,9 +559,11 @@ function specialmodcard(Action & $action, $usefor)
                 $value = (implode("\n", str_replace("\n", "<BR>", $v)));
             } else $value = ($v);
             $value = trim($value);
-            if ($usefor == "D") $cdoc->setDefValue($attrid, $value);
-            else if ($usefor == "Q") $err.= $cdoc->setParam($attrid, $value);
-            $tmod[$attrid] = $value;
+            if ($cdoc->getAttribute($attrid)) {
+                if ($usefor == "D") $cdoc->setDefValue($attrid, $value);
+                else if ($usefor == "Q") $err.= $cdoc->setParam($attrid, $value);
+                $tmod[$attrid] = $value;
+            }
         }
     }
     // ------------------------------
