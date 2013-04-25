@@ -96,9 +96,11 @@ if ($absindex == '') {
     $absindex = "$puburl/"; // try default
     
 }
-if ($absindex) $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($absindex));
-else $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($puburl . "/"));
+$core_externurl = ($absindex) ? stripUrlSlahes($absindex) : stripUrlSlahes($puburl . "/");
+$core_mailaction = $core->getParam("CORE_MAILACTION");
+$core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
 
+$core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl . "/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
@@ -108,6 +110,7 @@ $core->SetVolatileParam("CORE_SBASEURL", "$absindex?sole=A&"); // no session
 $core->SetVolatileParam("CORE_STANDURL", "$absindex?sole=Y&");
 $core->SetVolatileParam("CORE_SSTANDURL", "$absindex?sole=Y&"); // no session
 $core->SetVolatileParam("CORE_ASTANDURL", "$absindex?sole=Y&"); // absolute links
+$core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
 initExplorerParam($core);
 
 if (!$core->user->isAffected()) {

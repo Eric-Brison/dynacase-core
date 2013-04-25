@@ -6026,10 +6026,23 @@ create unique index i_docir on doc(initid, revision);";
                     $a = "<a>" . sprintf(_("unknown document id %s") , $id) . "</a>";
                 }
             } else {
+                /* Setup base URL */
                 $ul = '?';
-                if ($target == "mail") {
-                    $ul = GetParam("CORE_EXTERNURL") . "?";
+                switch ($target) {
+                    case "mail":
+                        $js = false;
+                        $ul = GetParam("CORE_MAILACTIONURL");
+                        $ul.= "&amp;id=$id";
+                        break;
+
+                    case "ext":
+                        $ul.= "&amp;app=FDL&amp;action=VIEWEXTDOC&amp;id=$id";
+                        break;
+
+                    default:
+                        $ul.= "&amp;app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=$id";
                 }
+                /* Add target's specific elements to base URL */
                 if ($target == "ext") {
                     //$ec=getSessionValue("ext:targetRelation");
                     $jslatest = ($latest) ? 'true' : 'false';
@@ -6056,7 +6069,6 @@ create unique index i_docir on doc(initid, revision);";
                                 $ul.= "&amp;state=" . $matches[1];
                             }
                         }
-                        $ul.= "&amp;app=FDL&amp;action=VIEWEXTDOC&amp;id=$id";
                         $a = "<a href=\"$ul\">$title</a>";
                     }
                 } else {
@@ -6067,7 +6079,6 @@ create unique index i_docir on doc(initid, revision);";
                             $ul.= "&amp;state=" . $matches[1];
                         }
                     }
-                    $ul.= "&amp;app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=$id";
                     if ($js) $ajs = "oncontextmenu=\"popdoc(event,'$ul');return false;\"";
                     else $ajs = "";
                     

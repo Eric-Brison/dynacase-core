@@ -102,10 +102,12 @@ function getMainAction($auth, &$action)
     }
     $puburl = stripUrlSlahes($puburl);
     $urlindex = $core->getParam("CORE_URLINDEX");
-    if ($urlindex) $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($urlindex));
-    else $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($puburl . "/"));
+    $core_externurl = ($urlindex) ? stripUrlSlahes($urlindex) : stripUrlSlahes($puburl . "/");
+    $core_mailaction = $core->getParam("CORE_MAILACTION");
+    $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
     
     $sessKey = md5($session->id . getParam("WVERSION"));
+    $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
     $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
     $core->SetVolatileParam("CORE_ABSURL", stripUrlSlahes($puburl . "/")); // absolute links
     $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
@@ -115,6 +117,7 @@ function getMainAction($auth, &$action)
     $core->SetVolatileParam("CORE_STANDURL", "?sole=Y$add_args&");
     $core->SetVolatileParam("CORE_SSTANDURL", "?sole=Y&_uKey_=$sessKey$add_args&");
     $core->SetVolatileParam("CORE_ASTANDURL", "$puburl/$indexphp?sole=Y$add_args&"); // absolute links
+    $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
     // ----------------------------------------
     // Init Application & Actions Objects
     $appl = new Application();
