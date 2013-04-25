@@ -472,13 +472,14 @@ create unique index idx_idfam on docfam(id);";
      *
      * @param string $idp parameter identifier
      * @param string $val value of the parameter
+     * @param bool $check set to false when construct family
      * @return string error message
      */
-    public function setParam($idp, $val)
+    public function setParam($idp, $val, $check = true)
     {
         $this->setChanged();
         $idp = strtolower($idp);
-        if (!$this->getAttribute($idp)) {
+        if ($check && !$this->getAttribute($idp)) {
             return ErrorCode::getError('DOC0120', $idp, $this->getTitle() , $this->name);
         }
         
