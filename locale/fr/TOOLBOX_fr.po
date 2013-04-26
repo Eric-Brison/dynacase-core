@@ -5,13 +5,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-19 15:19+0200\n"
+"PO-Revision-Date: 2013-04-26 12:10+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
@@ -705,8 +705,8 @@ msgstr ""
 msgid ""
 "Attribute Error: impossible to found the family for docid attribute '%s'"
 msgstr ""
-"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid "
-"'%s'"
+"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid '%"
+"s'"
 
 #, c-format
 msgid "Attribute [%s] is not found"
@@ -2062,6 +2062,9 @@ msgstr "Remplissage de la table famille '%s' et afférentes"
 msgid "Filter on %s"
 msgstr "Filtre sur %s"
 
+msgid "First page"
+msgstr "Première page"
+
 msgid "Firstname"
 msgstr "Prénom"
 
@@ -2074,11 +2077,13 @@ msgstr "Verrouillage des révisions vivantes concurrentes #%s"
 
 #, c-format
 msgid "Fix multiple alive document for \"%s\" #%s"
-msgstr "Verrouillage des révisions vivantes concurrentes pour le document \"%s\" #%s"
+msgstr ""
+"Verrouillage des révisions vivantes concurrentes pour le document \"%s\" #%s"
 
 #, c-format
 msgid "Fix multiple alive revision for \"%s\""
-msgstr "Verrouillage des révisions vivantes concurrentes pour le document \"%s\""
+msgstr ""
+"Verrouillage des révisions vivantes concurrentes pour le document \"%s\""
 
 msgid "Folder"
 msgstr "Dossier"
@@ -2252,8 +2257,8 @@ msgstr "Image (PNG)"
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;"
-"%s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;%"
+"s&gt; will be sended with result rapport"
 msgstr ""
 "L'import %s est en cours. Lorsque la mise à jour sera finie, un email sera "
 "envoyé à \n"
@@ -2435,6 +2440,9 @@ msgstr "Derniers historiques"
 
 msgid "Last log"
 msgstr "Derniers logs"
+
+msgid "Last page"
+msgstr "Dernière page"
 
 #, c-format
 msgid "Last traces of %s document : %s"
@@ -2701,6 +2709,9 @@ msgstr "Nouvel état"
 
 msgid "Next"
 msgstr "Suivant"
+
+msgid "Next page"
+msgstr "Page suivante"
 
 msgid "No Icon specified"
 msgstr "Pas d'icone définie"
@@ -2972,6 +2983,9 @@ msgstr "Préférences pour"
 
 msgid "Previous"
 msgstr "Précédent"
+
+msgid "Previous page"
+msgstr "Page précédente"
 
 msgid "Print"
 msgstr "Imprimer"
@@ -3397,6 +3411,9 @@ msgstr "Obtenu depuis le profil lié \"%s\""
 #, c-format
 msgid "SetBlock:error [%s]"
 msgstr "SetBlock : erreur [%s]"
+
+msgid "Showing %br to %er of %nd documents%t%t%p%n"
+msgstr "Affiche les documents %br à %er sur %nd au total%t%t%p%n"
 
 #, c-format
 msgid "Skip already added property '%s' in family '%s'"
@@ -7699,8 +7716,8 @@ msgstr ""
 "<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
 "p>\n"
 "<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
-"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème"
-"%20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
+"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
+"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""

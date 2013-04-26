@@ -47,8 +47,9 @@ function generic_list(&$action)
     setHttpVar("target", $target);
     if (!($famid > 0)) $famid = getDefFam($action);
     
+    $paginationType = "basic";
     $column = generic_viewmode($action, $famid); // choose the good view mode
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $packGeneric = "";
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/DHTMLapi.js", false, $packGeneric);
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js", false, $packGeneric);
@@ -57,6 +58,16 @@ function generic_list(&$action)
     $action->parent->AddJsRef($action->Getparam("CORE_PUBURL") . "/FDL/Layout/popupfunc.js", false, $packGeneric);
     $action->parent->addCssRef("css/dcp/main.css");
     $action->parent->addCssRef("GENERIC:generic_list.css", true);
+    
+    $applicationPaginationConfig = json_decode(ApplicationParameterManager::getParameterValue($onefamOrigin, "ONEFAM_FAMCONFIG") , true);
+    if (!empty($applicationPaginationConfig)) {
+        $famName = getNameFromId($dbaccess, $famid);
+        if (isset($applicationPaginationConfig[$famName]) && isset($applicationPaginationConfig[$famName]["paginationType"]) && !empty($applicationPaginationConfig[$famName]["paginationType"])) {
+            $paginationType = $applicationPaginationConfig[$famName]["paginationType"];
+        } else if (isset($applicationPaginationConfig["*"]) && isset($applicationPaginationConfig["*"]["paginationType"]) && !empty($applicationPaginationConfig["*"]["paginationType"])) {
+            $paginationType = $applicationPaginationConfig["*"]["paginationType"];
+        }
+    }
     //change famid if it is a simplesearch
     $sfamid = $famid;
     if ($dirid) {
@@ -74,11 +85,13 @@ function generic_list(&$action)
     $dir = new_Doc($dbaccess, $dirid);
     $catg = new_Doc($dbaccess, $catgid);
     $action->lay->set("folderid", "0");
+    $pds = "";
     if ($catg->doctype == 'D') $action->lay->set("folderid", $catg->id);
     $action->lay->Set("pds", "");
     if ($catgid) {
         $catg = new_Doc($dbaccess, $catgid);
-        $action->lay->Set("pds", $catg->urlWhatEncodeSpec(""));
+        $pds = $catg->urlWhatEncodeSpec("");
+        $action->lay->Set("pds", $pds);
         
         $action->lay->Set("fldtitle", $dir->getHTMLTitle());
     } else {
@@ -89,6 +102,7 @@ function generic_list(&$action)
             $action->lay->Set("fldtitle", $dir->getHTMLTitle());
         }
     }
+    
     $action->lay->Set("ONEFAMORIGIN", $onefamOrigin);
     $action->lay->Set("famtarget", $target);
     $action->lay->Set("dirid", $dirid);
@@ -131,7 +145,7 @@ function generic_list(&$action)
             
         }
         $only = (getInherit($action, $famid) == "N");
-        viewfolder($action, true, false, $column, $slice, array() , ($only) ? -(abs($famid)) : abs($famid));
+        viewfolder($action, true, false, $column, $slice, array() , ($only) ? -(abs($famid)) : abs($famid) , $paginationType);
         // can see next
         $action->lay->Set("nexticon", $action->GetIcon("next.png", N_("next") , 16));
     }
@@ -189,7 +203,17 @@ function generic_list(&$action)
         
         $action->lay->SetBlockData("ONGLET", $onglet);
     }
-    
+    $paginationConfig = array(
+        "type" => $paginationType,
+        "onefamconfig" => $onefamOrigin,
+        "tab" => $tab,
+        "dirid" => $dirid,
+        "catg" => $catgid,
+        "famid" => $famid,
+        "pds" => $pds,
+        "onglet" => $wonglet ? "Y" : "N"
+    );
+    $action->parent->setVolatileParam("paginationConfig", $paginationConfig);
     $action->lay->Set("onglet", $wonglet ? "Y" : "N");
     $action->lay->Set("hasOnglet", (!empty($wonglet)));
     

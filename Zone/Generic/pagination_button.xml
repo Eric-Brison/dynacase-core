@@ -1,0 +1,2 @@
+<a class="paginationbutton" data-type="[buttonclass]"
+           href="?app=[APPNAME]&amp;action=GENERIC_LIST&amp;tab=[tab]&amp;page=[page]&amp;dirid=[dirid]&amp;catg=[catg]&amp;onglet=[onglet]&amp;onefam=[onefamconfig]&amp;famid=[famid][pds]">[buttontitle]</a>

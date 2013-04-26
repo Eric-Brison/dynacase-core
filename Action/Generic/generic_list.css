@@ -9,6 +9,25 @@ div.popupsource {
   margin: 2px 4px 1px 4px;
 
 }
+div.docresume {
+  margin: 2px 0 0 0;
+
+}
+#innermain {
+    height:200px;
+    overflow:auto;
+    border:none;
+    margin:0 0 0 3px;
+    padding:0;
+}
+.searchFooter {
+    background-color: [COLOR_B4];
+}
+.searchHeader {
+    background-color: [COLOR_B4];
+    padding-left:10px;
+    font-weight: bold;
+}
 
 div.docresume:hover, tr.docresume:hover {
   background-color:[CORE_BGCOLORHIGH]!important;
