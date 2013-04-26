@@ -92,7 +92,7 @@ function generic_tab(Action & $action)
          */
         $sdoc = createTmpDoc($dbaccess, 5); // new DocSearch
         if ($dir->id == $fdoc->dfldid) {
-            $sdoc->title = sprintf(_("%s all ") , $tabletter[$tab]);
+            $sdoc->title = sprintf(_("%s all of %s") , $tabletter[$tab], $fdoc->getHTMLTitle());
             $sdirid = 0; // search in all DB
             
         } else {

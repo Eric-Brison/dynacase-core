@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-19 15:19+0200\n"
+"PO-Revision-Date: 2013-04-26 14:45+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -192,8 +192,8 @@ msgid "%s affected user"
 msgstr "Utilisateur affecté %s"
 
 #, c-format
-msgid "%s all "
-msgstr "%s tout"
+msgid "%s all of %s"
+msgstr "%s Tous les documents \"%s\""
 
 #, c-format
 msgid "%s application has no aclss"
@@ -2062,6 +2062,9 @@ msgstr "Remplissage de la table famille '%s' et afférentes"
 msgid "Filter on %s"
 msgstr "Filtre sur %s"
 
+msgid "First page"
+msgstr "Première page"
+
 msgid "Firstname"
 msgstr "Prénom"
 
@@ -2074,11 +2077,13 @@ msgstr "Verrouillage des révisions vivantes concurrentes #%s"
 
 #, c-format
 msgid "Fix multiple alive document for \"%s\" #%s"
-msgstr "Verrouillage des révisions vivantes concurrentes pour le document \"%s\" #%s"
+msgstr ""
+"Verrouillage des révisions vivantes concurrentes pour le document \"%s\" #%s"
 
 #, c-format
 msgid "Fix multiple alive revision for \"%s\""
-msgstr "Verrouillage des révisions vivantes concurrentes pour le document \"%s\""
+msgstr ""
+"Verrouillage des révisions vivantes concurrentes pour le document \"%s\""
 
 msgid "Folder"
 msgstr "Dossier"
@@ -2436,6 +2441,9 @@ msgstr "Derniers historiques"
 msgid "Last log"
 msgstr "Derniers logs"
 
+msgid "Last page"
+msgstr "Dernière page"
+
 #, c-format
 msgid "Last traces of %s document : %s"
 msgstr "Dernières traces du document %s : %s"
@@ -2701,6 +2709,9 @@ msgstr "Nouvel état"
 
 msgid "Next"
 msgstr "Suivant"
+
+msgid "Next page"
+msgstr "Page suivante"
 
 msgid "No Icon specified"
 msgstr "Pas d'icone définie"
@@ -2972,6 +2983,9 @@ msgstr "Préférences pour"
 
 msgid "Previous"
 msgstr "Précédent"
+
+msgid "Previous page"
+msgstr "Page précédente"
 
 msgid "Print"
 msgstr "Imprimer"
@@ -3397,6 +3411,9 @@ msgstr "Obtenu depuis le profil lié \"%s\""
 #, c-format
 msgid "SetBlock:error [%s]"
 msgstr "SetBlock : erreur [%s]"
+
+msgid "Showing %br to %er of %nd documents%t%t%p%n"
+msgstr "Affiche les documents %br à %er sur %nd au total%t%t%p%n"
 
 #, c-format
 msgid "Skip already added property '%s' in family '%s'"
@@ -8537,6 +8554,9 @@ msgstr "l'identifiant système {left} est différent de {right}"
 
 msgid "{left} title include {right}"
 msgstr "le titre de {left} inclus {right}"
+
+#~ msgid "%s all "
+#~ msgstr "%s tout"
 
 #~ msgid "%s style updated\n"
 #~ msgstr "%s style mis à jour\n"

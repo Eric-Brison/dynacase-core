@@ -1987,10 +1987,25 @@ msgstr ""
 msgid "Filter on %s"
 msgstr ""
 
+msgid "First page"
+msgstr ""
+
 msgid "Firstname"
 msgstr ""
 
 msgid "Fit to screen"
+msgstr ""
+
+#, c-format
+msgid "Fix multiple alive document #%s"
+msgstr ""
+
+#, c-format
+msgid "Fix multiple alive document for \"%s\" #%s"
+msgstr ""
+
+#, c-format
+msgid "Fix multiple alive revision for \"%s\""
 msgstr ""
 
 msgid "Folder"
@@ -2344,6 +2359,9 @@ msgstr ""
 msgid "Last log"
 msgstr ""
 
+msgid "Last page"
+msgstr ""
+
 #, c-format
 msgid "Last traces of %s document : %s"
 msgstr ""
@@ -2596,6 +2614,9 @@ msgid "New state"
 msgstr ""
 
 msgid "Next"
+msgstr ""
+
+msgid "Next page"
 msgstr ""
 
 msgid "No Icon specified"
@@ -2859,6 +2880,9 @@ msgid "Preferences for"
 msgstr ""
 
 msgid "Previous"
+msgstr ""
+
+msgid "Previous page"
 msgstr ""
 
 msgid "Print"
@@ -3272,6 +3296,9 @@ msgstr ""
 
 #, c-format
 msgid "SetBlock:error [%s]"
+msgstr ""
+
+msgid "Showing %br to %er of %nd documents%t%t%p%n"
 msgstr ""
 
 #, c-format
@@ -4009,9 +4036,6 @@ msgstr ""
 msgid "add document import from XML"
 msgstr ""
 
-msgid "add entry in a document forum"
-msgstr ""
-
 msgid "add enum html input attribute"
 msgstr ""
 
@@ -4479,10 +4503,6 @@ msgid "cannot load xml template : %s"
 msgstr ""
 
 #, c-format
-msgid "cannot modify forum %s"
-msgstr ""
-
-#, c-format
 msgid "cannot object update %s"
 msgstr ""
 
@@ -4498,10 +4518,6 @@ msgid "cannot produce sql request"
 msgstr ""
 
 msgid "cannot see unknow folder"
-msgstr ""
-
-#, c-format
-msgid "cannot see unknow forum reference %s"
 msgstr ""
 
 #, c-format
@@ -4559,9 +4575,6 @@ msgstr ""
 
 #, c-format
 msgid "cannot update file %s (rev %d) : fixed. Get the latest version"
-msgstr ""
-
-msgid "cannot update fixed document"
 msgstr ""
 
 msgid "cannot update inconsistent document"
@@ -4730,9 +4743,6 @@ msgid "client logo"
 msgstr ""
 
 msgid "client name"
-msgstr ""
-
-msgid "close forum"
 msgstr ""
 
 msgid "collapse all"
@@ -4915,9 +4925,6 @@ msgstr ""
 msgid "create family"
 msgstr ""
 
-msgid "create forum"
-msgstr ""
-
 msgid "create help"
 msgstr ""
 
@@ -5046,9 +5053,6 @@ msgstr ""
 msgid "definition of enumerate attribute %s of %s family"
 msgstr ""
 
-msgid "del entry from a document forum"
-msgstr ""
-
 msgid "delconfirm"
 msgstr ""
 
@@ -5107,12 +5111,6 @@ msgid "differents view mode by family"
 msgstr ""
 
 msgid "directory to upload archive"
-msgstr ""
-
-msgid "disable forum"
-msgstr ""
-
-msgid "disable/enable forum on documents"
 msgstr ""
 
 msgid "display a confidential doc"
@@ -5354,9 +5352,6 @@ msgstr ""
 msgid "edit family preference"
 msgstr ""
 
-msgid "edit forum"
-msgstr ""
-
 msgid "edit icard "
 msgstr ""
 
@@ -5419,9 +5414,6 @@ msgid "empty file"
 msgstr ""
 
 msgid "empty password : not changed"
-msgstr ""
-
-msgid "enable forum"
 msgstr ""
 
 msgid "enavpreview"
@@ -5731,45 +5723,6 @@ msgstr ""
 msgid "for"
 msgstr ""
 
-msgid "forum"
-msgstr ""
-
-msgid "forum allowed"
-msgstr ""
-
-msgid "forum answer"
-msgstr ""
-
-msgid "forum closed"
-msgstr ""
-
-msgid "forum delete"
-msgstr ""
-
-msgid "forum disallowed"
-msgstr ""
-
-msgid "forum edit"
-msgstr ""
-
-msgid "forum modification are not saved"
-msgstr ""
-
-msgid "forum on new documents"
-msgstr ""
-
-msgid "forum open/close"
-msgstr ""
-
-msgid "forum opened"
-msgstr ""
-
-msgid "forum state"
-msgstr ""
-
-msgid "forum_id"
-msgstr "forum"
-
 msgid "founded"
 msgstr ""
 
@@ -5888,9 +5841,6 @@ msgstr ""
 
 msgid "goaccess"
 msgstr "Control access"
-
-msgid "goto forum"
-msgstr ""
 
 #, c-format
 msgid "goto latest %s"
@@ -6267,9 +6217,6 @@ msgstr ""
 msgid "memosearch"
 msgstr ""
 
-msgid "menu forum"
-msgstr ""
-
 msgid "menuctrlkey"
 msgstr ""
 
@@ -6458,9 +6405,6 @@ msgid "new duplicate document is named : %s"
 msgstr ""
 
 msgid "new familly document"
-msgstr ""
-
-msgid "new forum answer"
 msgstr ""
 
 msgid "new guide-card"
@@ -6813,9 +6757,6 @@ msgid "open file with your editor"
 msgstr ""
 
 msgid "open folder"
-msgstr ""
-
-msgid "open forum"
 msgstr ""
 
 msgid "open in new window"
@@ -7209,9 +7150,6 @@ msgstr ""
 msgid "reset version"
 msgstr ""
 
-msgid "response for this forum entry"
-msgstr ""
-
 msgid "rest delay"
 msgstr ""
 
@@ -7289,13 +7227,7 @@ msgstr ""
 msgid "rss unavaible for users"
 msgstr ""
 
-msgid "save"
-msgstr ""
-
 msgid "save document"
-msgstr ""
-
-msgid "save forum edition"
 msgstr ""
 
 msgid "save geometry of mini view"
@@ -8335,10 +8267,6 @@ msgstr ""
 msgid "you cannot create this kind [%s] of folder"
 msgstr ""
 
-#, c-format
-msgid "you don't have privilege to edit forum for document %s"
-msgstr ""
-
 msgid "yourpassword"
 msgstr "Password :"
 
@@ -8422,6 +8350,9 @@ msgstr ""
 
 #~ msgid "Basic search"
 #~ msgstr "basic search"
+
+#~ msgid "forum_id"
+#~ msgstr "forum"
 
 #~ msgid "search online help"
 #~ msgstr "Start search"

@@ -1,0 +1,2 @@
+<a class="pagination-button" data-type="[buttonclass]"
+        [IFNOT buttonvisible]style="visibility:hidden" [ENDIF buttonvisible]  [IF buttonvisible] href="?app=[APPNAME]&amp;action=GENERIC_LIST&amp;tab=[tab]&amp;page=[page]&amp;dirid=[dirid]&amp;catg=[catg]&amp;ongleti=[onglet]&amp;onefam=[onefamconfig]&amp;famid=[famid][pds]" [ENDIF buttonvisible] >[buttontitle]</a>

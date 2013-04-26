@@ -58,6 +58,22 @@ function vselect(th) {
     th.setAttribute("selected",1);
     prevselid = th.id;
 }
+function resizeBodyHeigth() {
+    var foot=$('#searchFooter');
+    var cBody=$('#innermain');
+    var fh=foot.outerHeight();
+    var y=cBody.position().top;
+    var bh=document.documentElement.clientHeight;
+    var delta=0;
+    var newHeight=bh-fh-y-delta;
+    cBody.height(newHeight);
+
+}
+$(window).on("load", function () {
+    if (!isIE) {
+        $('body').css('visibility','visible').hide().show();
+    }
+});
 function vedit(e,id,famid) {
     if (!e) e=window.event;
 

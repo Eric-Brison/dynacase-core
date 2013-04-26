@@ -24,17 +24,25 @@ include_once ("FDL/Class.QueryDir.php");
 // -----------------------------------
 function viewfolder(Action & $action, $with_abstract = false, $with_popup = true, $column = false, $slice = "-", // view all document (not slice by slice)
 $sqlfilters = array() , // more filters to see specials doc
-$famid = "") // folder containt special fam id
-
+$famid = "", // folder containt special fam id
+$paginationType = "none")
 {
     // -----------------------------------
     // Get all the params
     $dirid = GetHttpVars("dirid"); // directory to see
     $refresh = GetHttpVars("refresh", "no"); // force folder refresh
+    
+    /**
+     * @var int $startpage
+     */
     $startpage = GetHttpVars("page", "0"); // page number
     $target = GetHttpVars("target", "fdoc"); // target for hyperlinks
     $sqlorder = GetHttpVars("sqlorder", null); // order sort attribute
     $viewone = (GetHttpVars("viewone", "N") == "Y"); // direct view if only one
+    
+    /**
+     * @var int $slice
+     */
     if ($slice == "-") $slice = $action->GetParam("FDL_FOLDERMAXITEM", 1000);
     // $column = ($with_popup && ($action->getParam("FREEDOM_VIEW")=="column"));
     // Set the globals elements
@@ -70,10 +78,7 @@ $famid = "") // folder containt special fam id
         $action->exitError(_("cannot see unknow folder"));
     }
     
-    if ($startpage > 0) {
-        $pagefolder = $action->Read("pagefolder");
-        $start = $pagefolder[$startpage];
-    } else $start = 0;
+    $start = $startpage * $slice;
     
     $terr = getChildDocError($dbaccess, $dirid);
     if (count($terr) > 0) {
@@ -111,8 +116,9 @@ $famid = "") // folder containt special fam id
     //$ldoc = getChildDoc($dbaccess, $dirid,$start,$slice,$sqlfilters,$action->user->id,"TABLE",$famid,
     //$distinct, $sqlorder);
     $sd->search();
-    $hasNext = ($sd->count() > $slice);
-    if ($viewone && ($sd->count() == 1)) {
+    $count = $sd->count();
+    $hasNext = ($count > $slice);
+    if ($viewone && ($count == 1)) {
         
         $doc1 = $sd->getNextDoc();
         
@@ -449,6 +455,32 @@ $famid = "") // folder containt special fam id
     $action->lay->Set("hasNext", $hasNext);
     $action->lay->Set("wtarget", $target);
     
+    $last = $startpage;
+    $rangeTo = $start + $count - 1;
+    
+    if (!$hasNext) $rangeTo++;
+    if ($paginationType != "" && !preg_match("/(^basic$|^none$|%f|%l|%er|%np|%nd)/", $paginationType) && ($start != 0 || ($start == 0 && $hasNext))) {
+        $sd->reset();
+        $sd->setSlice('ALL');
+        $sd->setStart(0);
+        $count = $sd->onlyCount();
+        $last = intval($count / $slice) - 1;
+        if ($count % $slice != 0) $last++;
+    }
+    
+    $searchConfig = array(
+        "next" => $startpage + 1,
+        "prev" => $startpage - 1,
+        "last" => $last,
+        "numberofpage" => $last + 1,
+        "pagenumber" => $startpage + 1,
+        "numberofdocuments" => $count,
+        "rangefrom" => ($rangeTo > 0) ? $start + 1 : 0,
+        "rangeto" => $rangeTo,
+        "hasnext" => $hasNext
+    );
+    
+    $action->parent->setVolatileParam("searchConfig", $searchConfig);
     return $nbdoc;
 }
 

@@ -34,18 +34,18 @@
     }
 
 
-
     addEvent(window,"load",function () {if (window.parent && window.parent.multidoc) window.parent.multidoc(window.document);});
+       $(window).on("load resize", resizeBodyHeigth);
 
 </script>   
  </head>
 
-<body class="freedom"  >
+<body class="freedom"  [IFNOT ISIE]style="visibility:hidden"[ENDIF ISIE]>
 
 
 [ZONE [APPNAME]:FAMILY_BARMENU?catg=[catg]&onefam=[ONEFAMORIGIN]&famid=[famid]&pds=[pds]]
 [ZONE FDL:POPUPDOCMENU?mzone=GENERIC:POPUPLISTDETAIL%26famid=[famid]]
-<div >
+<div>
 
 
     <table cellspacing="0" cellpadding="0" id="searchheader"><tr>
@@ -87,13 +87,9 @@
         </td>
     </tr></table>
 
-<table class="transparent" cellspacing="0" width="100%"><tr >
-<td align="left" width="30px"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[prev]&dirid=[dirid]&catg=[catg]&onglet=[onglet]&famid=[famid][pds]">[previcon]</a></td>
-
-
-<td align="left"><i><b>[fldtitle]</b></i></td>
-[IF hasNext]<td align="right" width="30px"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[next]&dirid=[dirid]&catg=[catg]&onglet=[onglet]&famid=[famid][pds]">[nexticon]</a></td>[ENDIF hasNext]
-</tr></table>
+    <div class="searchHeader" cellspacing="0" width="100%">
+            <span class="searchTitle"> [fldtitle]</span>
+        </div>
 
 <table class="transparent"  width="100%">
 <tr>
@@ -102,12 +98,12 @@
 [BLOCK ONGLET]
 <tr><td class="[ongclass]" align="center" onmouseover="if (className != 'onglets') className='ongleth';" 
                        onmouseout="if (className != 'onglets') className='onglet';" 
-                       onclick="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_TAB&catg=[catg]&tab=[ongdir]&famid=[famid][pds]'">[onglabel]</td></tr>
+                       onclick="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_TAB&amp;onefam=[ONEFAMORIGIN]&catg=[catg]&tab=[ongdir]&famid=[famid][pds]'">[onglabel]</td></tr>
 [ENDBLOCK ONGLET]
 </table>
 </td>
 <td valign="top">
-
+    <div id="innermain">
                     [BLOCK TABLEBODY]
 
 <table class="tableborder" cellspacing="0" style="margin-top:5pt" width="100%" >
@@ -139,16 +135,15 @@
 </table>
 
                     [ENDBLOCK TABLEBODY]
-
+</div>
 <!-- /TABLEBODY -->
 </td>
 </tr>
 </table>
 
-<table class="transparent" cellspacing="0" width="100%"><tr>
-<td align="left"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[prev]&dirid=[dirid]&catg=[catg]&onglet=[onglet]&famid=[famid][pds]">[previcon]</a></td>
-[IF hasNext]<td align="right"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[next]&dirid=[dirid]&catg=[catg]&onglet=[onglet]&famid=[famid][pds]">[nexticon]</a></td>[ENDIF hasNext]
-</tr></table>
+    <div class="searchFooter" id="searchFooter">
+        [ZONE GENERIC:PAGINATION]
+        </div>
 </div>
 <!--  FOOT HTML -->
 

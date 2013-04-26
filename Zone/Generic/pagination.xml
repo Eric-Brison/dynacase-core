@@ -1,0 +1,22 @@
+[IF pagination]
+<table class="transparent" cellspacing="0" width="100%">
+    <tr>
+        <td align="left">
+            [alignleft]
+        </td>
+
+        [IF centeralign]
+        <td align="center">
+            [aligncenter]
+        </td>
+        [ENDIF centeralign]
+
+        [IF rightalign]
+        <td align="right">
+            [alignright]
+        </td>
+        [ENDIF rightalign]
+
+    </tr>
+</table>
+        [ENDIF pagination]
