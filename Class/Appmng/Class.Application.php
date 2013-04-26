@@ -244,7 +244,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         } else {
             $this->InitStyle();
         }
-        if ((!$style) && $this->session) {
+        if ($this->session) {
             $this->session->register("userCoreStyle", $this->getParam("STYLE"));
         }
         

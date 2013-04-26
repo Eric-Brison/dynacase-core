@@ -33,6 +33,6 @@ $fj = fopen($cible, "w");
 fputs($fj, $fc);
 fclose($fj);
 
-$action->parent->param->Set("WVERSION", $nv);
+$action->parent->param->Set("WVERSION", $nv + 1);
 print "$cible [$nv]\n";
 ?>

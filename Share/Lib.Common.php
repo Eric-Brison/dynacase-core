@@ -39,7 +39,6 @@ function AddLogMsg($msg, $cut = 80)
     global $action;
     if (isset($action->parent)) $action->parent->AddLogMsg($msg, $cut);
 }
-
 /**
  * send a message to system log
  * @param string $msg
@@ -571,7 +570,6 @@ function getUserId()
     
     return 0;
 }
-
 /**
  * exec list of unix command in background
  * @param array $tcmd unix command strings
@@ -624,7 +622,7 @@ function getJsVersion()
 {
     include_once ("Class.QueryDb.php");
     $q = new QueryDb("", "param");
-    $q->AddQuery("name='VERSION'");
+    $q->AddQuery("name='WVERSION'");
     $l = $q->Query(0, 0, "TABLE");
     $nv = 0;
     foreach ($l as $k => $v) {
@@ -633,7 +631,6 @@ function getJsVersion()
     
     return $nv;
 }
-
 /**
  * produce an anchor mailto '<a ...>'
  * @param string $to a valid mail address or list separated by comma -supported by client-
