@@ -7,7 +7,6 @@
 <BASE HREF="[baseurl]">
 <STYLE TYPE="text/css">
 [ZONE CORE:SYSTEMCSS]
-[ZONE CORE:GENCSS]
 
 
 		@page { size: 21cm 29.7cm }

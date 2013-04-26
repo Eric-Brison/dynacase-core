@@ -118,6 +118,4 @@ function viewbarmenu(Action & $action)
     $action->lay->set("other", $other);
     $action->lay->setBlockData("LINKS", $popup);
     $action->lay->set("id", $docid);
-    
-    $action->lay->Set("canmail", (($doc->usefor != "P") && ($doc->control('send') == "")));
 }
