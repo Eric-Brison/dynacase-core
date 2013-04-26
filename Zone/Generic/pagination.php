@@ -78,6 +78,10 @@ function pagination(Action & $action)
             case "documentNumber":
                 $type = _("Showing %br to %er of %nd documents%t%t%p%n");
                 break;
+            default:
+                if ($type) {
+                    $type=_($type);
+                }
         }
         
         $parts = explode("%t", $type);
