@@ -29,7 +29,10 @@ function mailcard(Action & $action)
     // control sending
     $err = $doc->control('send');
     if ($err != "") $action->exitError($err);
-
+    $famMail = new_doc($dbaccess, 'MAIL');
+    $err = $famMail->control('create');
+    if ($err != "") $action->exitError($err);
+    
     $tmailto = $tmailcc = $tmailbcc = array();
     $mailfrom = GetHttpVars("_mail_from");
     
@@ -734,7 +737,7 @@ function realfile($src)
     if ($src == "cid:icon") {
         $va = $doc->icon;
     } else {
-        if (substr($src, 0, 4) == "cid:"){
+        if (substr($src, 0, 4) == "cid:") {
             $va = $doc->getRawValue(substr($src, 4));
         } elseif (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)$/", $src, $reg)) {
             $va = copyvault(str_replace('&amp;', '&', $reg[2]));
@@ -746,7 +749,7 @@ function realfile($src)
     
     if ($va != "") {
         $ticon = explode("|", $va);
-        $vid = empty($ticon[1])?false:$ticon[1];
+        $vid = empty($ticon[1]) ? false : $ticon[1];
         
         if ($vid != "") {
             $info = null;
@@ -761,7 +764,7 @@ function realfile($src)
                 $f = $va;
             } elseif (file_exists($pubdir . "/$va")) {
                 $f = $pubdir . "/$va";
-            } elseif (file_exists($pubdir . "/Images/$va")){
+            } elseif (file_exists($pubdir . "/Images/$va")) {
                 $f = $pubdir . "/Images/$va";
             } elseif ((substr($va, 0, 12) == getTmpDir() . '/img') && file_exists($va)) {
                 $f = $va;

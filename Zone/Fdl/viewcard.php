@@ -226,7 +226,6 @@ function viewcard(Action & $action)
             $action->lay->Set("waskid", "1");
         }
     }
-
     
     if (($target == "mail") && ($doc->icon != "")) $action->lay->Set("iconsrc", "cid:icon");
     else $action->lay->Set("iconsrc", $doc->geticon());
@@ -263,7 +262,9 @@ function viewcard(Action & $action)
     $action->lay->Set("HEAD", $dochead);
     $action->lay->Set("ACTIONS", (getHttpVars("viewbarmenu") == 1));
     
-    $action->lay->Set("amail", (($doc->usefor != "P") && ($doc->control('send') == "")) ? "inline" : "none");
+    $famMail = new_doc($dbaccess, 'MAIL');
+    $canCreateMail = $famMail->control('create') == "";
+    $action->lay->Set("amail", (($doc->usefor != "P") && $canCreateMail && ($doc->control('send') == "")) ? "inline" : "none");
     // update access date
     $doc->adate = $doc->getTimeDate(0, true);
     $doc->modify(true, array(

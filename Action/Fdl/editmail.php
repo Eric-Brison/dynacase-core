@@ -69,6 +69,7 @@ function editmail(Action & $action)
     $err = $doc->control('send');
     if ($err != "") $action->exitError($err);
     
+    $action->parent->setVolatileParam("overrideICreate", "true"); // used in editcard
     if ($zone == "") $zone = $doc->defaultmview;
     $zo = $doc->getZoneOption("$zone");
     
