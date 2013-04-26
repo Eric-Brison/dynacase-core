@@ -6,7 +6,7 @@ $(function () {
         "lastpage": "ui-icon-circle-arrow-e",
         "firstpage": "ui-icon-circle-arrow-w"
     };
-    $(".paginationbutton").each(function () {
+    $(".pagination-button").each(function () {
         $(this).button({
             "text": false,
             "icons": {

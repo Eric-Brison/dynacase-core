@@ -21,10 +21,10 @@ div.docresume {
     padding:0;
 }
 .searchFooter {
-    background-color: [COLOR_B4];
+    /*background-color: [COLOR_B4];*/
 }
 .searchHeader {
-    background-color: [COLOR_B4];
+   /* background-color: [COLOR_B4];*/
     padding-left:10px;
     font-weight: bold;
 }
@@ -149,4 +149,8 @@ tr.docresume:nth-child(even) {
 }
 .ui-icon-search, .ui-icon-close, .ui-icon-triangle-1-s, #id-search-help {
     cursor:pointer;
+}
+
+.pagination-button {
+    font-size: 0.7em !important;
 }

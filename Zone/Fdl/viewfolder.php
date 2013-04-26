@@ -459,7 +459,7 @@ $paginationType = "none")
     $rangeTo = $start + $count - 1;
     
     if (!$hasNext) $rangeTo++;
-    if ($paginationType != "none" && ($start != 0 || ($start == 0 && $hasNext))) {
+    if ($paginationType != "" && !preg_match("/(^basic$|^none$|%f|%l|%er|%np|%nd)/", $paginationType) && ($start != 0 || ($start == 0 && $hasNext))) {
         $sd->reset();
         $sd->setSlice('ALL');
         $sd->setStart(0);
@@ -475,7 +475,7 @@ $paginationType = "none")
         "numberofpage" => $last + 1,
         "pagenumber" => $startpage + 1,
         "numberofdocuments" => $count,
-        "rangefrom" => $start + 1,
+        "rangefrom" => ($rangeTo > 0) ? $start + 1 : 0,
         "rangeto" => $rangeTo,
         "hasnext" => $hasNext
     );

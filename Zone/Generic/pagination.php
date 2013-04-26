@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 function pagination(Action & $action)
 {
@@ -41,12 +41,17 @@ function pagination(Action & $action)
         "aligncenter",
         "alignright"
     );
-    
     $paginationDefButton = array(
-        "%n" => $searchConfig["hasnext"] ? getButtonLayout("nextpage", $paginationConfig, $searchConfig["next"], _("Next page")) : "",
+        /*  "%n" => $searchConfig["hasnext"] ? getButtonLayout("nextpage", $paginationConfig, $searchConfig["next"], _("Next page")) : "",
         "%p" => $searchConfig["pagenumber"] != 1 ? getButtonLayout("prevpage", $paginationConfig, $searchConfig["prev"], _("Previous page")) : "",
         "%l" => $searchConfig["hasnext"] ? getButtonLayout("lastpage", $paginationConfig, $searchConfig["last"], _("Last page")) : "",
         "%f" => $searchConfig["pagenumber"] != 1 ? getButtonLayout("firstpage", $paginationConfig, "0", _("First page")) : ""
+        */
+        
+        "%n" => getButtonLayout("nextpage", $paginationConfig, $searchConfig["next"], _("Next page") , $searchConfig["hasnext"]) ,
+        "%p" => getButtonLayout("prevpage", $paginationConfig, $searchConfig["prev"], _("Previous page") , $searchConfig["pagenumber"] != 1) ,
+        "%l" => getButtonLayout("lastpage", $paginationConfig, $searchConfig["last"], _("Last page") , $searchConfig["hasnext"]) ,
+        "%f" => getButtonLayout("firstpage", $paginationConfig, "0", _("First page") , $searchConfig["pagenumber"] != 1)
     );
     
     $paginationDefOther = array(
@@ -63,7 +68,7 @@ function pagination(Action & $action)
         $type = $paginationConfig["type"];
         switch ($paginationConfig["type"]) {
             case "basic":
-                $type = "%p%t%t%n";
+                $type = "%p%t%cp%t%n";
                 break;
 
             case "pageNumber":
@@ -82,6 +87,7 @@ function pagination(Action & $action)
         foreach ($parts as $k => $v) {
             if ($k > 2) break;
 
+            
             if (!empty($v)) {
                 $v = str_replace(array_keys($paginationDefOther) , array_values($paginationDefOther) , $v);
                 $action->lay->set($layoutKeys[$k], str_replace(array_keys($paginationDefButton) , array_values($paginationDefButton) , $v));
@@ -92,7 +98,7 @@ function pagination(Action & $action)
     }
 }
 
-function getButtonLayout($buttonName, $paginationConfig, $page, $buttonTitle)
+function getButtonLayout($buttonName, $paginationConfig, $page, $buttonTitle, $visible = true)
 {
     $lay = new Layout("GENERIC/Layout/pagination_button.xml");
     foreach ($paginationConfig as $key => $value) {
@@ -101,5 +107,6 @@ function getButtonLayout($buttonName, $paginationConfig, $page, $buttonTitle)
     $lay->set("page", $page);
     $lay->set("buttonclass", $buttonName);
     $lay->set("buttontitle", $buttonTitle);
+    $lay->set("buttonvisible", $visible == true);
     return $lay->gen();
 }

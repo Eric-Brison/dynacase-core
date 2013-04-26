@@ -111,7 +111,7 @@
         </tr></table>
         </div>
 
-    <div class="searchHeader" cellspacing="0" width="100%">
+    <div class="searchHeader ui-widget-header" cellspacing="0" width="100%">
         <span class="searchTitle"> [fldtitle]</span>
     </div>
 
@@ -172,7 +172,7 @@
             </tr>
         </table>
 
-    <div class="searchFooter" id="searchFooter">
+    <div class="searchFooter ui-widget-header" id="searchFooter">
     [ZONE GENERIC:PAGINATION]
     </div>
 
