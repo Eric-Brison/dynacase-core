@@ -18,17 +18,11 @@
 
 function systemcss(&$action)
 {
-    $style = $action->getParam("STYLE", "DEFAULT");
-    $file = GetParam("CORE_PUBDIR") . "/STYLE/$style/Layout/gen.css";
     
-    $tstyle = file_get_contents($file);
-    
-    $size = $action->getParam("FONTSIZE", "normal");
-    
-    $file = $action->GetParam("CORE_PUBDIR") . "/WHAT/Layout/size-$size.css";
+    $file = GetParam("CORE_PUBDIR") . "/css/dcp/main.css";
     
     $tsize = file_get_contents($file);
     
-    $action->lay->template = $tstyle . "\n" . $tsize;
+    $action->lay->template = $tsize;
 }
 ?>

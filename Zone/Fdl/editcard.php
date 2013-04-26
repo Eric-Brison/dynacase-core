@@ -30,6 +30,8 @@ function editcard(Action & $action)
     $vid = GetHttpVars("vid"); // special controlled view
     $mskid = GetHttpVars("mskid"); // special mask
     $dbaccess = $action->GetParam("FREEDOM_DB");
+    
+    $temporaryMode = $action->getParam("overrideICreate") == "true";
     editmode($action);
     if (!is_numeric($classid)) $classid = getFamIdFromName($dbaccess, $classid);
     $doc = $fdoc = null;
@@ -57,10 +59,12 @@ function editcard(Action & $action)
     if (($usefor == "D") && ($zonebodycard == "")) $zonebodycard = "FDL:EDITBODYCARD"; // always default view for default document
     if ($docid == 0) { // new document
         if ($classid > 0) {
-            $doc = createDoc($dbaccess, $classid, true, ($usefor != "D"));
+            if (!$doc) $doc = createDoc($dbaccess, $classid, true, ($usefor != "D"));
             if (!$doc) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , $classid));
             $fdoc = new DocFam($dbaccess, $classid);
-            if ($fdoc->control('icreate') != "") $action->exitError(sprintf(_("no privilege to create interactivaly this kind (%s) of document") , $fdoc->title));
+            if (!$temporaryMode) {
+                if ($fdoc->control('icreate') != "") $action->exitError(sprintf(_("no privilege to create interactivaly this kind (%s) of document") , $fdoc->title));
+            }
         }
     } else { // modify document
         $doc = new_Doc($dbaccess, $docid);
