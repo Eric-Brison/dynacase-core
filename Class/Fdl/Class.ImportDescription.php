@@ -64,7 +64,7 @@ class importDocumentDescription
             $this->fdoc = fopen($importFile, "r");
         }
         if (!$this->fdoc) {
-            throw new Dcp\Exception(sprintf("no import file found : %s") , $importFile);
+            throw new Dcp\Exception(sprintf("no import file found : %s", $importFile));
         }
         $this->dbaccess = getParam("FREEDOM_DB");;
     }
