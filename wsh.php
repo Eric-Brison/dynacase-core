@@ -86,31 +86,9 @@ $core->session = new Session();
 if (!isset($_GET["userid"])) $core->user = new Account("", 1); //admin
 $CORE_LOGLEVEL = $core->GetParam("CORE_LOGLEVEL", "IWEF");
 
-$hostname = LibSystem::getHostName();
-$puburl = $core->GetParam("CORE_PUBURL", "http://" . $hostname . "/freedom");
-
 ini_set("memory_limit", -1);
 
-$absindex = $core->GetParam("CORE_URLINDEX");
-if ($absindex == '') {
-    $absindex = "$puburl/"; // try default
-    
-}
-$core_externurl = ($absindex) ? stripUrlSlahes($absindex) : stripUrlSlahes($puburl . "/");
-$core_mailaction = $core->getParam("CORE_MAILACTION");
-$core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
-
-$core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
-$core->SetVolatileParam("CORE_PUBURL", "."); // relative links
-$core->SetVolatileParam("CORE_ABSURL", $puburl . "/"); // absolute links
-$core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
-$core->SetVolatileParam("CORE_ROOTURL", "$absindex?sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "$absindex?sole=A&");
-$core->SetVolatileParam("CORE_SBASEURL", "$absindex?sole=A&"); // no session
-$core->SetVolatileParam("CORE_STANDURL", "$absindex?sole=Y&");
-$core->SetVolatileParam("CORE_SSTANDURL", "$absindex?sole=Y&"); // no session
-$core->SetVolatileParam("CORE_ASTANDURL", "$absindex?sole=Y&"); // absolute links
-$core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
+initMainVolatileParam($core);
 initExplorerParam($core);
 
 if (!$core->user->isAffected()) {
