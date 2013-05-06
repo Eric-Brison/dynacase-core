@@ -78,12 +78,12 @@ function pagination(Action & $action)
             case "documentNumber":
                 $type = _("Showing %br to %er of %nd documents%t%t%p%n");
                 break;
+
             default:
                 if ($type) {
-                    $type=_($type);
+                    $type = _($type);
                 }
         }
-        
         $parts = explode("%t", $type);
         $action->lay->set("centeralign", count($parts) > 1);
         $action->lay->set("rightalign", count($parts) > 2);
