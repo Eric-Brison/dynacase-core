@@ -85,36 +85,7 @@ function getMainAction($auth, &$action)
     $CORE_LOGLEVEL = $core->GetParam("CORE_LOGLEVEL", "IWEF");
     // ----------------------------------------
     // Init PUBLISH URL from script name
-    $pattern = preg_quote($indexphp, "|");
-    if (preg_match("|(.*)/$pattern|", $_SERVER['SCRIPT_NAME'], $reg)) {
-        // determine publish url (detect ssl require)
-        if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = "off";
-        if ($_SERVER['HTTPS'] != 'on') $puburl = "http://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $reg[1];
-        else $puburl = "https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $reg[1];
-    } else {
-        // it is not allowed
-        print "<strong>:~(</strong>";
-        exit;
-    }
-    $add_args = "";
-    if (array_key_exists('authtype', $_GET)) {
-        $add_args.= "&authtype=" . $_GET['authtype'];
-    }
-    $puburl = stripUrlSlahes($puburl);
-    $urlindex = $core->getParam("CORE_URLINDEX");
-    if ($urlindex) $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($urlindex));
-    else $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($puburl . "/"));
-    
-    $sessKey = md5($session->id . getParam("WVERSION"));
-    $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
-    $core->SetVolatileParam("CORE_ABSURL", stripUrlSlahes($puburl . "/")); // absolute links
-    $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
-    $core->SetVolatileParam("CORE_ROOTURL", "?sole=R$add_args&");
-    $core->SetVolatileParam("CORE_BASEURL", "?sole=A$add_args&");
-    $core->SetVolatileParam("CORE_SBASEURL", "?sole=A&_uKey_=$sessKey$add_args&");
-    $core->SetVolatileParam("CORE_STANDURL", "?sole=Y$add_args&");
-    $core->SetVolatileParam("CORE_SSTANDURL", "?sole=Y&_uKey_=$sessKey$add_args&");
-    $core->SetVolatileParam("CORE_ASTANDURL", "$puburl/$indexphp?sole=Y$add_args&"); // absolute links
+    initMainVolatileParam($core, $session);
     // ----------------------------------------
     // Init Application & Actions Objects
     $appl = new Application();
@@ -276,6 +247,85 @@ function initExplorerWebParam(Application & $app)
     $app->SetVolatileParam("ISAPPLEWEBKIT", ($ISAPPLEWEBKIT === true));
     $app->SetVolatileParam("ISSAFARI", ($ISSAFARI === true));
     $app->SetVolatileParam("ISCHROME", ($ISCHROME === true));
+}
+/**
+ * Set various core URLs params
+ *
+ * @param Application $core
+ * @param Session $session
+ */
+function initMainVolatileParam(Application & $core, Session & $session = null)
+{
+    if (php_sapi_name() == 'cli') {
+        _initMainVolatileParamCli($core);
+    } else {
+        _initMainVolatileParamWeb($core, $session);
+    }
+}
+
+function _initMainVolatileParamCli(Application & $core)
+{
+    $hostname = LibSystem::getHostName();
+    $puburl = $core->GetParam("CORE_PUBURL", "http://" . $hostname . "/freedom");
+    
+    $absindex = $core->GetParam("CORE_URLINDEX");
+    if ($absindex == '') {
+        $absindex = "$puburl/"; // try default
+        
+    }
+    $core_externurl = ($absindex) ? stripUrlSlahes($absindex) : stripUrlSlahes($puburl . "/");
+    $core_mailaction = $core->getParam("CORE_MAILACTION");
+    $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
+    
+    $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
+    $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
+    $core->SetVolatileParam("CORE_ABSURL", $puburl . "/"); // absolute links
+    $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
+    $core->SetVolatileParam("CORE_ROOTURL", "$absindex?sole=R&");
+    $core->SetVolatileParam("CORE_BASEURL", "$absindex?sole=A&");
+    $core->SetVolatileParam("CORE_SBASEURL", "$absindex?sole=A&"); // no session
+    $core->SetVolatileParam("CORE_STANDURL", "$absindex?sole=Y&");
+    $core->SetVolatileParam("CORE_SSTANDURL", "$absindex?sole=Y&"); // no session
+    $core->SetVolatileParam("CORE_ASTANDURL", "$absindex?sole=Y&"); // absolute links
+    $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
+}
+
+function _initMainVolatileParamWeb(Application & $core, Session & $session = null)
+{
+    $indexphp = basename($_SERVER["SCRIPT_NAME"]);
+    $pattern = preg_quote($indexphp, "|");
+    if (preg_match("|(.*)/$pattern|", $_SERVER['SCRIPT_NAME'], $reg)) {
+        // determine publish url (detect ssl require)
+        if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = "off";
+        if ($_SERVER['HTTPS'] != 'on') $puburl = "http://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $reg[1];
+        else $puburl = "https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $reg[1];
+    } else {
+        // it is not allowed
+        print "<strong>:~(</strong>";
+        exit;
+    }
+    $add_args = "";
+    if (array_key_exists('authtype', $_GET)) {
+        $add_args.= "&authtype=" . $_GET['authtype'];
+    }
+    $puburl = stripUrlSlahes($puburl);
+    $urlindex = $core->getParam("CORE_URLINDEX");
+    $core_externurl = ($urlindex) ? stripUrlSlahes($urlindex) : stripUrlSlahes($puburl . "/");
+    $core_mailaction = $core->getParam("CORE_MAILACTION");
+    $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
+    
+    $sessKey = isset($session->id) ? md5($session->id . getParam("WVERSION")) : md5(uniqid("", true));
+    $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
+    $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
+    $core->SetVolatileParam("CORE_ABSURL", stripUrlSlahes($puburl . "/")); // absolute links
+    $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
+    $core->SetVolatileParam("CORE_ROOTURL", "?sole=R$add_args&");
+    $core->SetVolatileParam("CORE_BASEURL", "?sole=A$add_args&");
+    $core->SetVolatileParam("CORE_SBASEURL", "?sole=A&_uKey_=$sessKey$add_args&");
+    $core->SetVolatileParam("CORE_STANDURL", "?sole=Y$add_args&");
+    $core->SetVolatileParam("CORE_SSTANDURL", "?sole=Y&_uKey_=$sessKey$add_args&");
+    $core->SetVolatileParam("CORE_ASTANDURL", "$puburl/$indexphp?sole=Y$add_args&"); // absolute links
+    $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
 }
 /**
  * execute action

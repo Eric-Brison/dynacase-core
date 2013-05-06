@@ -2554,6 +2554,9 @@ msgstr "À"
 msgid "Mail %s sent to %s"
 msgstr "Message %s envoyé à %s"
 
+msgid "Mail action URL"
+msgstr "URL d'action mail"
+
 msgid "Mail template document reference to ask new password"
 msgstr ""
 "Référence du modèle de mail utilisé pour la demande de changement de mot de "

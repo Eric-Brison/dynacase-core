@@ -86,28 +86,9 @@ $core->session = new Session();
 if (!isset($_GET["userid"])) $core->user = new Account("", 1); //admin
 $CORE_LOGLEVEL = $core->GetParam("CORE_LOGLEVEL", "IWEF");
 
-$hostname = LibSystem::getHostName();
-$puburl = $core->GetParam("CORE_PUBURL", "http://" . $hostname . "/freedom");
-
 ini_set("memory_limit", -1);
 
-$absindex = $core->GetParam("CORE_URLINDEX");
-if ($absindex == '') {
-    $absindex = "$puburl/"; // try default
-    
-}
-if ($absindex) $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($absindex));
-else $core->SetVolatileParam("CORE_EXTERNURL", stripUrlSlahes($puburl . "/"));
-
-$core->SetVolatileParam("CORE_PUBURL", "."); // relative links
-$core->SetVolatileParam("CORE_ABSURL", $puburl . "/"); // absolute links
-$core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
-$core->SetVolatileParam("CORE_ROOTURL", "$absindex?sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "$absindex?sole=A&");
-$core->SetVolatileParam("CORE_SBASEURL", "$absindex?sole=A&"); // no session
-$core->SetVolatileParam("CORE_STANDURL", "$absindex?sole=Y&");
-$core->SetVolatileParam("CORE_SSTANDURL", "$absindex?sole=Y&"); // no session
-$core->SetVolatileParam("CORE_ASTANDURL", "$absindex?sole=Y&"); // absolute links
+initMainVolatileParam($core);
 initExplorerParam($core);
 
 if (!$core->user->isAffected()) {

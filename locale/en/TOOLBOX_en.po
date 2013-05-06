@@ -2471,6 +2471,9 @@ msgstr ""
 msgid "Mail %s sent to %s"
 msgstr ""
 
+msgid "Mail action URL"
+msgstr "Mail action URL"
+
 msgid "Mail template document reference to ask new password"
 msgstr ""
 

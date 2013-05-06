@@ -386,6 +386,12 @@ $app_const = array(
         "descr" => N_("Allow guest access") ,
         "kind" => "enum(yes|no)",
         "global" => "Y"
+    ) ,
+    "CORE_MAILACTION" => array(
+        "val" => "",
+        "descr" => N_("Mail action URL") ,
+        "user" => "N",
+        "global" => "Y"
     )
 );
 
@@ -411,4 +417,3 @@ if (isset($lang)) {
         "global" => "Y"
     );
 }
-?>
