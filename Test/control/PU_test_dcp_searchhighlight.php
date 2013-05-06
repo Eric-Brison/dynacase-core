@@ -94,6 +94,12 @@ class TestSearchHighlight extends TestCaseDcpCommonFamily
                     "<b>espèces</b>",
                     "<b>chien</b>"
                 )
+            ) ,
+            array(
+                "d'année",
+                array(
+                    "<b>années</b>"
+                )
             )
         );
     }
