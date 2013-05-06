@@ -1207,8 +1207,10 @@ class DocFormFormat
                         "aehelp" => ($help->isAlive()) ? $help->getAttributeHelpUrl($v->id) : false,
                         "aehelpid" => ($help->isAlive()) ? $help->id : false
                     );
+                    
+                    $tvale = $ddoc->getRawValue($tad[$k]->id) === "\t" ? "" : $ddoc->getRawValue($tad[$k]->id);
                     $tilabel[] = array(
-                        "ilabel" => getHtmlInput($doc, $v, $ddoc->getRawValue($tad[$k]->id) , DocFormFormat::arrayIndex) ,
+                        "ilabel" => getHtmlInput($doc, $v, $tvale, DocFormFormat::arrayIndex) ,
                         "ihw" => (!$visible) ? "0px" : $width,
                         "bgcolor" => $v->getOption("bgcolor", "inherit") ,
                         "tdstyle" => $v->getOption("cellbodystyle") ,
@@ -1301,7 +1303,6 @@ class DocFormFormat
                     foreach ($ta as $ka => $va) {
                         
                         $visible = ($va->mvisibility != "H");
-                        
                         $tivalue[] = array(
                             "eivalue" => getHtmlInput($doc, $va, $tval[$ka][$k], $pindex . $k) ,
                             "bgcolor" => $va->getOption("bgcolor", "inherit") ,
