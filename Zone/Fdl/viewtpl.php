@@ -49,7 +49,7 @@ function viewtpl(Action & $action)
     
     $appname = $reg['app'];
     $doc = new_doc($dbaccess, $docid);
-    if ($doc->isAlive()) {
+    if ($doc->isAffected()) {
         $action->lay = new Layout($doc->getZoneFile($zone) , $action);
         $doc->lay = & $action->lay;
         

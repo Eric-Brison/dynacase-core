@@ -111,7 +111,7 @@ if ($query->nb > 0) {
         } else {
             // search in all usercard same title
             if ($mail != "") $filter = array(
-                "us_mail = '$mail'"
+                "us_mail = '".pg_escape_string($mail)."'"
             );
             else $filter = array(
                 "lower(title) = '" . pg_escape_string($title) . "'"
