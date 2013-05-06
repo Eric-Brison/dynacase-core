@@ -21,11 +21,19 @@ include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/freedom_util.php");
 include_once ("FDL/Class.QueryDir.php");
 // -----------------------------------
-// -----------------------------------
-function viewfolder(Action & $action, $with_abstract = false, $with_popup = true, $column = false, $slice = "-", // view all document (not slice by slice)
-$sqlfilters = array() , // more filters to see specials doc
-$famid = "", // folder containt special fam id
-$paginationType = "none")
+
+/**
+ * @param Action $action
+ * @param bool $with_abstract
+ * @param bool $with_popup
+ * @param bool $column
+ * @param string $slice if "-" view all document (not slice by slice)
+ * @param array $sqlfilters  more filters to see specials doc
+ * @param string $famid folder containt special fam id
+ * @param string $paginationType pagination type
+ * @return int
+ */
+function viewfolder(Action & $action, $with_abstract = false, $with_popup = true, $column = false, $slice = "-", $sqlfilters = array() , $famid = "", $paginationType = "none")
 {
     // -----------------------------------
     // Get all the params
@@ -459,7 +467,7 @@ $paginationType = "none")
     $rangeTo = $start + $count - 1;
     
     if (!$hasNext) $rangeTo++;
-    if ($paginationType != "" && !preg_match("/(^basic$|^none$|%f|%l|%er|%np|%nd)/", $paginationType) && ($start != 0 || ($start == 0 && $hasNext))) {
+    if ($paginationType != "" && preg_match("/(^pageNumber$|^documentNumber$|%f|%l|%er|%np|%nd)/", $paginationType) && ($start != 0 || ($start == 0 && $hasNext))) {
         $sd->reset();
         $sd->setSlice('ALL');
         $sd->setStart(0);
@@ -499,7 +507,6 @@ function getAbstractDetail(Doc & $doc, $target)
 {
     $tout = array();
     $lattr = $doc->GetAbstractAttributes();
-    $emptytableabstract = array();
     foreach ($lattr as $ka => $attr) {
         $val = $doc->GetHtmlAttrValue($ka, $target, 2, -1, true, true);
         

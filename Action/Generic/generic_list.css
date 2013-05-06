@@ -27,6 +27,7 @@ div.docresume {
    /* background-color: [COLOR_B4];*/
     padding-left:10px;
     font-weight: bold;
+    padding: 2px;
 }
 
 div.docresume:hover, tr.docresume:hover {
