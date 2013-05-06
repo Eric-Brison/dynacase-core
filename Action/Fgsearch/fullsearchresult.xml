@@ -2,7 +2,7 @@
 <body>
 [IF displayTopBar]
 <div id="searchtop">
-    <div class="bresume">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></div>
+    <div class="bresume">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a></span>[ENDIF notthenend]</div>
  <div class="date">([TEXT:searchdate prefix][searchdate])</div></div>[ENDIF displayTopBar]
 <div id="results" >
   
@@ -21,7 +21,7 @@
   [ENDBLOCK DOCS]
   [IF displayBottomBar]
   <div id="searchbottom">
-    <div class="bresume">[resulttext] [IF notthenend]<span id="nextresultbuttonbottom"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></div>
+    <div class="bresume">[resulttext] [IF notthenend]<span id="nextresultbuttonbottom"><a onclick="sendNextSearch()">[theFollowingText]</a></span>[ENDIF notthenend]</div>
   </div>[ENDIF displayBottomBar] 
 </div>
 
