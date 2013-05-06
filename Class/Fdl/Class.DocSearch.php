@@ -42,6 +42,24 @@ class DocSearch extends PDocSearch
         PDocSearch::__construct($dbaccess, $id, $res, $dbid);
         if (((!isset($this->fromid))) || ($this->fromid == "")) $this->fromid = FAM_SEARCH;
     }
+
+
+    public function preCreated() {
+        return $this->updateSearchAuthor();
+    }
+
+    /**
+     * the author is the current user if not already set
+     * @return string
+     */
+    public function updateSearchAuthor()
+    {
+        $err = '';
+        if (!$this->getRawValue("se_author")) {
+            $err = $this->setValue("se_author", $this->getUserId());
+        }
+        return $err;
+    }
     /**
      * to affect a special query to a SEARCH document
      * must be call after the add method When use this method others filter parameters are ignored.
