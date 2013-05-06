@@ -191,10 +191,10 @@ class CheckProfil extends CheckData
                     $adocids[] = $naid;
                 }
             }
-            if (!in_array($aid, $aids)) {
+            if (!in_array(strtolower($aid) , $aids)) {
                 $this->addError(ErrorCode::getError('PRFL0200', $aid, $this->prfName, implode(', ', $adocids)));
             } else {
-                if (!in_array($aid, $adocids)) {
+                if (!in_array(strtolower($aid) , $adocids)) {
                     $this->addError(ErrorCode::getError('PRFL0201', $aid, $this->prfName, implode(', ', $adocids)));
                 }
             }
