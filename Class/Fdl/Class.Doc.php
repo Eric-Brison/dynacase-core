@@ -6031,7 +6031,7 @@ create unique index i_docir on doc(initid, revision);";
                 switch ($target) {
                     case "mail":
                         $js = false;
-                        $ul = GetParam("CORE_MAILACTIONURL");
+                        $ul = htmlspecialchars(GetParam("CORE_MAILACTIONURL"));
                         $ul.= "&amp;id=$id";
                         break;
 
