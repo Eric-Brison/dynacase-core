@@ -210,7 +210,7 @@ create unique index idx_idfam on docfam(id);";
             $tDefPar[$aid] = array(
                 "aid" => $aid,
                 "alabel" => $oa->getLabel() ,
-                "defown" => $pPowns[$aid],
+                "defown" => isset($pPowns[$aid]) ? $pPowns[$aid] : null,
                 "definh" => ($this->fromid) ? $this->getFamilyDocument()->getParameterRawValue($aid) : '',
                 "defresult" => $this->getHtmlValue($oa, $d->getFamilyParameterValue($aid))
             );
