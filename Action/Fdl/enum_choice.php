@@ -159,7 +159,7 @@ function getFuncVar($n, $def = "", $whttpvars, &$doc, &$oa)
     if ($r === "") {
         return false;
     }
-
+    
     return $r;
 }
 function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselect, &$tval, $whttpvars = true, $index = "")
@@ -174,7 +174,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
     ) , $phpfunc);
     $oParse = new parseFamilyFunction();
     $strucFunc = $oParse->parse($phpfunc);
-    if ($strucFunc->getError()){
+    if ($strucFunc->getError()) {
         return $strucFunc->getError();
     }
     
@@ -190,7 +190,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         }
     }
     if (!function_exists($callfunc)) {
-        error_log(__METHOD__." $callfunc not found from ".$oattr->phpfile);
+        error_log(__METHOD__ . " $callfunc not found from " . $oattr->phpfile);
         return sprintf(_("function '%s' declared in %s is not found") , $callfunc, $oattr->id);
     }
     $rargids = $oParse->outputs; // return args
@@ -208,12 +208,12 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
             ')',
             '('
         ) , $inpArg->name);
-        if ($v != " "){
+        if ($v != " ") {
             $v = trim($v);
         }
         
         $unser = @unserialize($v); // try unserial to see if it is object
-        if ($unser != ""){
+        if ($unser != "") {
             $arg[$k] = $unser;
         } elseif ($inpArg->type == "string") {
             $arg[$k] = $v;
@@ -229,26 +229,26 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         } elseif ($v == "K") {
             $arg[$k] = $index;
         } elseif ($v == "T") {
-            $arg[$k] = &$doc;
+            $arg[$k] = & $doc;
         } elseif (($v[0] == "'") || ($v[0] == '"')) {
             $lc = substr($v, -1);
-            if ($lc == $v[0]){
+            if ($lc == $v[0]) {
                 $arg[$k] = mb_substr($v, 1, -1);
             } else {
                 $arg[$k] = mb_substr($v, 1);
             }
-        } elseif ($doc->getPropertyValue($v) !== false){
+        } elseif ($doc->getPropertyValue($v) !== false) {
             $arg[$k] = $doc->getPropertyValue($v);
         } else {
             // can be values or family parameter
             $a = $doc->GetAttribute($v);
             if ($index === "") {
                 $ta = getFuncVar($v, $v, $whttpvars, $doc, $a);
-                if ($ta === false){
+                if ($ta === false) {
                     return false;
                 }
                 if (is_array($ta)) {
-                    unset($ta["-1"]); // suppress hidden row because not set yet
+                    unset($ta["__1x_"]); // suppress hidden row because not set yet
                     $arg[$k] = $ta;
                 } else {
                     $arg[$k] = trim($ta);
@@ -267,7 +267,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
                 } elseif ($a && $a->inArray()) {
                     if (($a->fieldSet->id == $oattr->fieldSet->id)) { // search with index
                         $ta = getFuncVar($v, $v, $whttpvars, $doc, $a);
-                        if ($ta === false){
+                        if ($ta === false) {
                             return false;
                         }
                         $arg[$k] = trim($ta[$index]);
@@ -292,8 +292,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
                     if (is_array($ta)) {
                         if ($index !== "") {
                             $arg[$k] = trim($ta[$index]);
-                        }
-                        else {
+                        } else {
                             $arg[$k] = $ta;
                         }
                     } else {
