@@ -142,11 +142,18 @@ This can be solved by:<br/>
                 PHP.
             </help>
         </check>
-        <!--<check type="ncurses" optional="yes"><help>You might need to install a php-ncurses package from your distribution in order to have ncurses support in PHP.</help></check>-->
         <check type="phpfunction" function="pspell_new" optional="yes">
             <help>You might need to install a php-pspell package from your distribution in order to have spelling
                 support in PHP.
             </help>
+        </check>
+        <check type="exec" cmd="php -r 'exit(pspell_new(&quot;en&quot;)!==false?0:1);'">
+            <label lang="en">Check english spelling dictionary</label>
+            <help>English spelling dictionary not found: you might need to install a aspell-en package from your distribution in order to have english spelling support.</help>
+        </check>
+        <check type="exec" cmd="php -r 'exit(pspell_new(&quot;fr&quot;)!==false?0:1);'">
+            <label lang="en">Check french spelling dictionary</label>
+            <help>French spelling dictionary not found: you might need to install a aspell-fr package from your distribution in order to have french spelling support.</help>
         </check>
         <check type="phpfunction" function="iconv">
             <help>You might need to install a php-iconv package from your distribution in order to have iconv support in
@@ -430,11 +437,18 @@ This can be solved by:<br/>
                 PHP.
             </help>
         </check>
-        <!--<check type="ncurses" optional="yes"><help>You might need to install a php-ncurses package from your distribution in order to have ncurses support in PHP.</help></check>-->
         <check type="phpfunction" function="pspell_new" optional="yes">
             <help>You might need to install a php-pspell package from your distribution in order to have spelling
                 support in PHP.
             </help>
+        </check>
+        <check type="exec" cmd="php -r 'exit(pspell_new(&quot;en&quot;)!==false?0:1);'">
+            <label lang="en">Check english spelling dictionary</label>
+            <help>English spelling dictionary not found: you might need to install a aspell-en package from your distribution in order to have english spelling support.</help>
+        </check>
+        <check type="exec" cmd="php -r 'exit(pspell_new(&quot;fr&quot;)!==false?0:1);'">
+            <label lang="en">Check french spelling dictionary</label>
+            <help>French spelling dictionary not found: you might need to install a aspell-fr package from your distribution in order to have french spelling support.</help>
         </check>
         <check type="phpfunction" function="iconv">
             <help>You might need to install a php-iconv package from your distribution in order to have iconv support in
