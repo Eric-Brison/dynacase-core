@@ -36,28 +36,9 @@ function editcard(Action & $action)
     if (!is_numeric($classid)) $classid = getFamIdFromName($dbaccess, $classid);
     $doc = $fdoc = null;
     if (($usefor == "D") && ($zonebodycard == "")) $zonebodycard = "FDL:EDITBODYCARD"; // always default view for default document
-    if ($docid == 0) { // new document
-        if ($classid > 0) {
-            $doc = createDoc($dbaccess, $classid, true, ($usefor != "D"));
-        }
-    } else { // modify document
-        $doc = new_Doc($dbaccess, $docid);
-        $docid = $doc->id;
-        if ($doc->isConfidential()) {
-            redirect($action, "FDL", "FDL_CONFIDENTIAL&&id=" . $doc->id);
-        }
-        $classid = $doc->fromid;
-    }
     
-    $usefor = GetHttpVars("usefor"); // default values for a document
-    $vid = GetHttpVars("vid"); // special controlled view
-    $mskid = GetHttpVars("mskid"); // special mask
-    $dbaccess = $action->GetParam("FREEDOM_DB");
-    editmode($action);
-    if (!is_numeric($classid)) $classid = getFamIdFromName($dbaccess, $classid);
-    
-    if (($usefor == "D") && ($zonebodycard == "")) $zonebodycard = "FDL:EDITBODYCARD"; // always default view for default document
-    if ($docid == 0) { // new document
+    if ($docid == 0) {
+        // new document
         if ($classid > 0) {
             if (!$doc) $doc = createDoc($dbaccess, $classid, true, ($usefor != "D"));
             if (!$doc) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , $classid));
@@ -66,12 +47,14 @@ function editcard(Action & $action)
                 if ($fdoc->control('icreate') != "") $action->exitError(sprintf(_("no privilege to create interactivaly this kind (%s) of document") , $fdoc->title));
             }
         }
-    } else { // modify document
+    } else {
+        // update document
         $doc = new_Doc($dbaccess, $docid);
         $docid = $doc->id;
         if ($doc->isConfidential()) {
             redirect($action, "FDL", "FDL_CONFIDENTIAL&&id=" . $doc->id);
         }
+        $classid = $doc->fromid;
         $fdoc = new DocFam($dbaccess, $classid);
     }
     
