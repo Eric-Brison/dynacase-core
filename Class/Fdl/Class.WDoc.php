@@ -524,7 +524,7 @@ class WDoc extends Doc
             $oattr->docid = $cid;
             $oattr->visibility = "W";
             $oattr->type = 'enum';
-            $oattr->options = "autocreated=yes";
+            $oattr->options = "autocreated=yes|system=yes";
             $oattr->phpfunc = "F|" . _("Utilisateur fixe") . ",D|" . _("Attribut relation") . ",PR|" . _("Relation parametre") . ",WD|" . _("Relation cycle") . ",WPR|" . _("Parametre cycle");
             $oattr->id = $aid;
             $oattr->frameid = $afaid;
@@ -561,7 +561,7 @@ class WDoc extends Doc
             $oattr->visibility = "W";
             $oattr->type = 'enum';
             $oattr->link = "";
-            $oattr->options = "eformat=bool|autocreated=yes";
+            $oattr->options = "eformat=bool|autocreated=yes|system=yes";
             $oattr->phpfunc = "no|" . _("affect no lock") . ",yes|" . _("affect auto lock");
             $oattr->id = $aid;
             $oattr->frameid = $afaid;
@@ -579,7 +579,7 @@ class WDoc extends Doc
             $oattr->visibility = "W";
             $oattr->type = 'enum';
             $oattr->link = "";
-            $oattr->options = "eformat=bool|autocreated=yes";
+            $oattr->options = "eformat=bool|autocreated=yes|system=yes";
             $oattr->phpfunc = "no|" . _("affect no mail") . ",yes|" . _("affect auto mail");
             $oattr->id = $aid;
             $oattr->frameid = $afaid;
