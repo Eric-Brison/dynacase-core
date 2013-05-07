@@ -426,7 +426,7 @@ function createSentMessage($to, $from, $cc, $bcc, $subject, &$mimemail, &$doc = 
             if ($htmlPart !== null && $htmlBody != '') {
                 // Re-link the HTML part CIDs
                 foreach ($partList as $i => & $part) {
-                    $cid = preg_replace('/^<(.+)>$/', '\1', $part->_headers['Content-ID']);
+                    $cid = preg_replace('/^<(.+)>$/', '\1', isset($part->_headers['Content-ID'])?$part->_headers['Content-ID']:'');
                     if ($cid != '') {
                         $htmlBody = str_replace(sprintf("cid:%s", $cid) , $msg->getfileLink('emsg_attach', $i) , $htmlBody);
                     }
@@ -452,7 +452,7 @@ function createSentMessage($to, $from, $cc, $bcc, $subject, &$mimemail, &$doc = 
         foreach ($mimemail->_parts as $k => $v) {
             $tmpfile = tempnam(getTmpDir() , 'fdl_attach');
             file_put_contents($tmpfile, $v["body"]);
-            $msg->storeFile("emsg_attach", $tmpfile, $v["name"], $k);
+            $msg->setFile("emsg_attach", $tmpfile, $v["name"], $k);
             @unlink($tmpfile);
         }
         
