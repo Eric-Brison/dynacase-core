@@ -202,6 +202,9 @@ class _MAILTEMPLATE extends Doc
                                 if (strpos($aid, ':')) $mail = $udoc->getRValue($aid);
                                 else {
                                     if ($type == "DE") {
+                                        /**
+                                         * @var _IUSER|_IGROUP|_ROLE $aDoc
+                                         */
                                         $aDoc = new_Doc("", $vdocid);
                                         $mail = '';
                                         if (method_exists($aDoc, "getMail")) $mail = $aDoc->getMail();
@@ -244,7 +247,7 @@ class _MAILTEMPLATE extends Doc
                     " ",
                     ", "
                 ) , html_entity_decode($subject, ENT_COMPAT, "UTF-8"));
-                $pfout = $this->generateMailInstance($doc, $this->getRawValue("tmail_body"));
+                $pfout = $this->generateMailInstance($doc, $this->getRawValue("tmail_body") , $this->getAttribute("tmail_body"));
                 // delete empty address
                 $dest['to'] = array_filter($dest['to'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
                 $dest['cc'] = array_filter($dest['cc'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
@@ -353,15 +356,17 @@ class _MAILTEMPLATE extends Doc
          * update template with document values
          * @param Doc $doc
          * @param string $tpl template content
+         * @param NormalAttribute|bool $oattr
          * @return string
          */
-        private function generateMailInstance(Doc & $doc, $tpl)
+        private function generateMailInstance(Doc & $doc, $tpl, $oattr = false)
         {
             global $action;
             $tpl = str_replace("&#x5B;", "[", $tpl); // replace [ convverted in Doc::setValue()
             $doc->lay = new Layout("", $action, $tpl);
             
             $ulink = ($this->getRawValue("tmail_ulink") == "yes");
+            /* Expand layout's [TAGS] */
             $doc->viewdefaultcard("mail", $ulink, false, true);
             foreach ($this->keys as $k => $v) $doc->lay->set($k, $v);
             $body = $doc->lay->gen();
@@ -369,6 +374,10 @@ class _MAILTEMPLATE extends Doc
                 "/SRC=\"([^\"]+)\"/e",
                 "/src=\"([^\"]+)\"/e"
             ) , "\$this->srcfile('\\1')", $body);
+            /* Expand remaining HTML constructions */
+            if ($oattr !== false && $oattr->type == 'htmltext') {
+                $body = $doc->getHtmlValue($oattr, $body, "mail", $ulink);
+            }
             return $body;
         }
         /**
