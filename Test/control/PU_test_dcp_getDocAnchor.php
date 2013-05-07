@@ -68,7 +68,7 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
                             "value" => "http://www1.example.net/"
                         )
                     ) ,
-                    "expected_href" => "http://www1.example.net/?app=FDL&action=OPENDOC&mode=view&amp;id=%ID%&amp;latest=Y"
+                    "expected_href" => "http://www1.example.net/?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=%ID%&amp;latest=Y"
                 )
             ) ,
             array(
@@ -86,7 +86,7 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
                             "value" => ""
                         )
                     ) ,
-                    "expected_href" => "http://www2.example.net/?app=FOO&action=BAR&amp;id=%ID%&amp;latest=Y"
+                    "expected_href" => "http://www2.example.net/?app=FOO&amp;action=BAR&amp;id=%ID%&amp;latest=Y"
                 )
             )
         );
