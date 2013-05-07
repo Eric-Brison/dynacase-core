@@ -93,9 +93,12 @@ function generic_edit(Action & $action)
         $docid = $doc->id;
         setHttpVar("id", $doc->id);
         $err = $doc->lock(true); // autolock
-        if ($err != "") redirectAsGuest($action);
-        if ($err != "") $action->ExitError($err);
-        if ($err == "") $action->AddActionDone("LOCKFILE", $doc->id);
+        if ($err != "") {
+            redirectAsGuest($action);
+            $action->ExitError($err);
+        } else {
+            $action->AddActionDone("LOCKFILE", $doc->id);
+        }
         
         $classid = $doc->fromid;
         if (!$doc->isAlive()) $action->ExitError(_("document not referenced"));
@@ -115,7 +118,7 @@ function generic_edit(Action & $action)
     else $action->lay->Set("shorticon", $doc->getIcon());
     $action->lay->Set("docicon", $doc->getIcon('', 16));
     $action->lay->Set("STITLE", addJsSlashes($action->lay->get("title"))); // for include in JS
-    $param_zone_footer = json_decode($doc->getParam("FOOTER_ZONE_EDIT") , true);
+    $param_zone_footer = json_decode($action->getParam("FOOTER_ZONE_EDIT") , true);
     $zone_footer = array();
     foreach ($param_zone_footer as $zone) {
         $zone_footer[] = array(
