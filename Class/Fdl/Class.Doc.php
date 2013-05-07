@@ -4397,10 +4397,12 @@ create unique index i_docir on doc(initid, revision);";
             if ($res !== true) {
                 if (!is_array($res)) {
                     if ($res === false) $res = array(
-                        "err" => _("constraint error")
+                        "err" => _("constraint error") ,
+                        "sug" => array()
                     );
                     elseif (is_string($res)) $res = array(
-                        "err" => $res
+                        "err" => $res,
+                        "sug" => array()
                     );
                 } elseif (!empty($res["sug"]) && (!is_array($res["sug"]))) {
                     $res["sug"] = array(
