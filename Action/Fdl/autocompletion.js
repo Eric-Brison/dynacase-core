@@ -439,7 +439,7 @@ function metsEnPlace(valeur, liste){
 		nouveauDiv.setAttribute('index',f);
 		setStylePourElement(nouveauDiv,"AutoCompleteDiv");
 		var nouveauSpan=document.createElement("SPAN");
-		nouveauSpan.innerHTML=liste[f]; // le texte de la suggestion
+		nouveauSpan.innerHTML=liste[f] ? liste[f] : "&nbsp;"; // le texte de la suggestion
 		nouveauDiv.appendChild(nouveauSpan);
 		_completeDiv.appendChild(nouveauDiv)
 	}
