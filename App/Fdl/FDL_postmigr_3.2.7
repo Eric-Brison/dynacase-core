@@ -16,6 +16,7 @@ fi
 PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<EOF
 -- update
 UPDATE doc5 set se_author=users.fid from users where users.id=doc5.owner and se_author is null and locked != -1 and doctype != 'T';
+DELETE FROM paramv where name='FONTSIZE' and appid = (select id from application where name='CORE') and type ~ '^U';
 EOF
 RET=$?
 if [ $RET -ne 0 ]; then

@@ -77,7 +77,7 @@ $app_const = array(
     "FONTSIZE" => array(
         "val" => "normal",
         "descr" => N_("font size") ,
-        "user" => "Y",
+        "user" => "N",
         "kind" => "enum(small|normal|large|x-large)"
     ) ,
     "CORE_PUBDIR" => "@prefix@",
