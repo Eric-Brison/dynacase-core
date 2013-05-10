@@ -10,10 +10,10 @@
 <tr  class="[classback]">
   [IF nonelabel]<td valign="top" colspan="3" class="FREEDOMText" >[value]</td>[ENDIF nonelabel]
   [IF normallabel]
-  <td valign="top"  class="FREEDOMLabel"  width="[wvalue]"><span style="display:[ndisplay]">[name]</span></td>
+  <td valign="top"  class="FREEDOMLabel leftlabel"  width="[wvalue]"><span style="display:[ndisplay]">[name]</span></td>
   <td valign="top" style="width:1px"><span style="display:[ndisplay]">:</span></td>
   <td valign="top" class="FREEDOMText" >[value]</td>[ENDIF normallabel]
-  [IF uplabel]<td valign="top" colspan="3" class="FREEDOMText" ><P style="margin:0px" ><u>[name]</u>&nbsp;:&nbsp;</P><div style="margin-left:20px">[value]</div></td>[ENDIF uplabel]
+  [IF uplabel]<td valign="top" colspan="3" class="FREEDOMText uplabel" ><P style="margin:0px" ><span>[name]</span>&nbsp;:&nbsp;</P><div style="margin-left:20px">[value]</div></td>[ENDIF uplabel]
 </tr>
 [ENDBLOCK [TABLEVALUE]]
 </table></div>[ENDIF viewtpl]

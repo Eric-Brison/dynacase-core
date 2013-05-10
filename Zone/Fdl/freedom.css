@@ -108,6 +108,12 @@ TR.FREEDOMOpt TD {
   text-align:right;
   font-weight: bold;
 }
+TD.uplabel span {
+    text-decoration: underline;
+}
+TD.leftlabel span, TD.uplabel span, TH.headerarray, span.dyp-frame-opener {
+    text-transform:capitalize;
+}
 TD.FREEDOMLabel:first-letter {
   text-transform:capitalize;
 }
