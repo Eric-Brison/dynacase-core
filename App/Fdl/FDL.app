@@ -283,7 +283,7 @@ $action_desc = array(
     ),
     array(
         "name" => "FDL_SETUSERTAG",
-        "short_name" => N_("set user tag to an document"),
+        "short_name" => N_("set user tag to a document"),
         "acl" => "NORMAL"
     ),
     array(
