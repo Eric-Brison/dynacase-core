@@ -713,7 +713,7 @@ class DocHtmlFormat
             foreach ($ta as $k => $v) {
                 $tval[$k] = $this->doc->getMultipleRawValues($k);
                 $nbitem = max($nbitem, count($tval[$k]));
-                $lay->set("L_" . strtoupper($v->id) , ucfirst($v->getLabel()));
+                $lay->set("L_" . strtoupper($v->id) , $v->getLabel());
             }
             // view values
             $tvattr = array();
