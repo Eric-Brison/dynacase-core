@@ -1187,8 +1187,10 @@ create sequence SEQ_ID_APPLICATION start 10;
                 $this->SetParamDef($k, $v); // update definition
                 if ($update) {
                     // don't modify old parameters
-                    if ($this->param->Get($k, null) === null) $this->SetParam($k, $v); // set only new parameters or static variable like VERSION
-                    
+                    if ($this->param && $this->param->Get($k, null) === null) {
+                        // set only new parameters or static variable like VERSION
+                        $this->SetParam($k, $v);
+                    }
                 } else {
                     $this->SetParam($k, $v);
                 }
@@ -1276,6 +1278,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 simpleQuery($this->dbaccess, sprintf("INSERT INTO acl (id,id_application,name,grant_level,description, group_default) SELECT nextval('seq_id_acl') as id, %d as id_application, acl.name, acl.grant_level, acl.description, acl.group_default from acl as acl,application as app where acl.id_application=app.id and app.name='%s' and acl.name NOT IN (SELECT acl.name from acl as acl, application as app  where id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof) , pg_escape_string($this->name)));
                 // init actions
                 simpleQuery($this->dbaccess, sprintf("INSERT INTO action (id, id_application, name, short_name, long_name,script,function,layout,available,acl,grant_level,openaccess,root,icon,toc,father,toc_order) SELECT nextval('seq_id_action') as id, %d as id_application, action.name, action.short_name, action.long_name, action.script, action.function, action.layout, action.available, action.acl, action.grant_level, action.openaccess, action.root, action.icon, action.toc, action.father, action.toc_order from action as action,application as app where action.id_application=app.id and app.name='%s' and action.name NOT IN (SELECT action.name from action as action, application as app  where action.id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof) , pg_escape_string($this->name)));
+                $this->log->info(sprintf("Update Actions from %s parent", $this->childof));
                 $err = $this->_initACLWithGroupDefault();
                 if ($err != '') {
                     return false;
@@ -1325,11 +1328,39 @@ create sequence SEQ_ID_APPLICATION start 10;
                 )); // use by generic application
                 
             }
+            $this->updateChildApplications();
         } else {
             $this->log->info("No {$name}/{$name}.app available");
             return false;
         }
         return true;
+    }
+    /**
+     * update action/acl/param for application's childs
+     * @throws Dcp\Exception|Exception
+     */
+    private function updateChildApplications()
+    {
+        $sql = sprintf("select id, name from application where childof ='%s'", pg_escape_string($this->name));
+        
+        simpleQuery($this->dbaccess, $sql, $childIds);
+        foreach ($childIds as $childApp) {
+            $childId = $childApp["id"];
+            $childName = $childApp["name"];
+            $a = new Application($this->dbaccess, $childId);
+            
+            if ($a->isAffected()) {
+                try {
+                    $a->set($childName, $noParent);
+                    $a->initApp($childName, true);
+                }
+                catch(\Dcp\Exception $e) {
+                    if ($e->getDcpCode() != "CORE0007") {
+                        throw $e;
+                    }
+                }
+            }
+        }
     }
     /**
      * update application description
