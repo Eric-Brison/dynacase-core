@@ -387,7 +387,7 @@ function handleActionException(Exception $e)
     }
     
     errorLogException($e);
-    if (isset($action) && is_a($action, 'Action')) {
+    if (isset($action) && is_a($action, 'Action') && isset($action->parent)) {
         if ($action->parent->name === ApplicationParameterManager::getParameterValue("CORE", "CORE_START_APP")) {
             $action->parent->session->Close();
             $action->exitError(_("You don't have access to any content. Please contact your administrator."));

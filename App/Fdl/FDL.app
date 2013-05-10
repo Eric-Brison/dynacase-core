@@ -282,6 +282,11 @@ $action_desc = array(
         "acl" => "NORMAL"
     ),
     array(
+        "name" => "FDL_SETUSERTAG",
+        "short_name" => N_("set user tag to an document"),
+        "acl" => "NORMAL"
+    ),
+    array(
         "name" => "FDL_CONFIDENTIAL",
         "short_name" => N_("display a confidential doc"),
         "acl" => "NORMAL"
