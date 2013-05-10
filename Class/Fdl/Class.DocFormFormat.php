@@ -1420,7 +1420,7 @@ class DocFormFormat
                     foreach ($ta as $k => $v) {
                         $tval[$k] = $doc->getMultipleRawValues($k);
                         $nbitem = max($nbitem, count($tval[$k]));
-                        $lay->set("L_" . strtoupper($v->id) , ucfirst($v->getLabel()));
+                        $lay->set("L_" . strtoupper($v->id) , $v->getLabel());
                     }
                     
                     $lay->set("attrid", $attrid);
