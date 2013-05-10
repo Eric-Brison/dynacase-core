@@ -19,13 +19,19 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-class _PUBLIMAIL extends Doc
+class _PUBLIMAIL extends Dir
 {
     /*
      * @end-method-ignore
     */
     var $defaultedit = "FDL:FDL_PUBEDIT";
     var $defaultmview = "FDL:FDL_PUBMAIL:T";
+    /**
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     * @templateController
+     */
     function fdl_pubsendmail($target = "_self", $ulink = true, $abstract = false)
     {
         $this->viewdefaultcard($target, $ulink, $abstract);
@@ -46,16 +52,31 @@ class _PUBLIMAIL extends Doc
             }
         }
     }
+    /**
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     * @templateController
+     */
     function fdl_pubprintone($target = "_self", $ulink = true, $abstract = false)
     {
-        return $this->fdl_pubsendmail($target, $ulink, $abstract);
+        $this->fdl_pubsendmail($target, $ulink, $abstract);
     }
+    /**
+     * @templateController
+     */
     function fdl_pubedit()
     {
         $this->editattr();
-        $famid = $this->getRawValue("PUBM_IDFAM", "USER");
+        $famid = $this->getRawValue("PUBM_IDFAM", "IUSER");
         $udoc = createDoc($this->dbaccess, $famid, false);
+        if (!$udoc) {
+            addWarningMsg(sprintf(_("fdl_pubedit error: family %s not found") , $famid));
+            AddLogMsg(sprintf(_("fdl_pubedit error: family %s not found") , $famid));
+            return false;
+        }
         $listattr = $udoc->GetNormalAttributes();
+        $tatt = array();
         foreach ($listattr as $k => $v) {
             $tatt[$k] = array(
                 "aid" => "[" . strtoupper($k) . "]",
@@ -78,11 +99,13 @@ class _PUBLIMAIL extends Doc
         }
         $this->lay->set("famattr", sprintf(_("%s attribute") , $this->getRawValue("pubm_fam", "personne")));
         $this->lay->setBlockData("ATTR", $tatt);
+        return true;
     }
     /**
      * Fusion all document to be printed
      * @param Action &$action current action
-     * @global uid Http var : user document id (if not all use rpresent in folder)
+     * @global uid string Http var : user document id (if not all use rpresent in folder)
+     * @templateController
      */
     function fdl_pubprint($target = "_self", $ulink = true, $abstract = false)
     {
@@ -92,6 +115,7 @@ class _PUBLIMAIL extends Doc
         $subject = $this->getRawValue("pubm_title");
         $body = $this->getRawValue("pubm_body");
         $zonebodycard = "FDL:FDL_PUBPRINTONE:S"; // define view zone
+        $tlay = array();
         if ($udocid > 0) {
             $t[] = getTDoc($this->dbaccess, $udocid);
         } else {
@@ -116,7 +140,6 @@ class _PUBLIMAIL extends Doc
                 );
             }
         }
-        if ($err) $action->AddWarningMsg($err);
         if (count($t) == 0) $action->AddWarningMsg(_("no available persons found"));
         
         $this->lay->setBlockData("DOCS", $tlay);
@@ -126,19 +149,26 @@ class _PUBLIMAIL extends Doc
      * Fusion all document to be displayed
      * idem as fdl_pubprint but without new page
      * @param Action &$action current action
-     * @global uid Http var : user document id (if not all use rpresent in folder)
+     * @global uid string Http var : user document id (if not all use rpresent in folder)
+     * @templateController
      */
     function fdl_pubdisplay($target = "_self", $ulink = true, $abstract = false)
     {
-        return $this->fdl_pubprint($target, $ulink, $abstract);
+        $this->fdl_pubprint($target, $ulink, $abstract);
     }
+    /**
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     * @templateController
+     */
     function fdl_pubmail($target = "_self", $ulink = true, $abstract = false)
     {
         include_once ("FDL/mailcard.php");
         global $action;
         $subject = $this->getRawValue("pubm_title");
         $body = $this->getRawValue("pubm_body");
-        
+        $err = "";
         $t = $this->getContent();
         $mailattr = strtolower($this->getRawValue("PÜBM_MAILATT", "us_mail"));
         
@@ -183,7 +213,7 @@ class _PUBLIMAIL extends Doc
     }
     /**
      * Preview of each document to be printed
-     *
+     * @templateController
      */
     function fdl_pubpreview($target = "_self", $ulink = true, $abstract = false)
     {
@@ -192,20 +222,19 @@ class _PUBLIMAIL extends Doc
     }
     /**
      * Preview of each document to be printed
+     * @templateController
      */
     function fdl_pubnavpreview($target = "_self", $ulink = true, $abstract = false)
     {
         
         $t = $this->getContent();
-        
+        $tlay = array();
         foreach ($t as $k => $v) {
             $tlay[] = array(
                 "udocid" => $v["id"],
                 "utitle" => $v["title"]
             );
         }
-        
-        if ($err) $action->AddWarningMsg($err);
         
         $this->lay->setBlockData("DOCS", $tlay);
         $this->lay->set("dirid", $this->id);
