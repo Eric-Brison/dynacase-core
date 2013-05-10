@@ -1,4 +1,4 @@
-[IF caption]<fieldset ><legend>[caption]</legend>[ENDIF caption]
+[IF caption]<fieldset ><legend><span class="dyp-frame-opener">[caption]</span></legend>[ENDIF caption]
     <table width="100%" class="tarray[IF issort] sortable[ENDIF issort][IFNOT caption] border[ENDIF caption]">
         <thead>
             <tr>
