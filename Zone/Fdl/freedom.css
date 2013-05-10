@@ -111,7 +111,7 @@ TR.FREEDOMOpt TD {
 TD.uplabel span {
     text-decoration: underline;
 }
-TD.leftlabel span, TD.uplabel span, TH.headerarray, span.dyp-frame-opener {
+TD.leftlabel:first-letter, TD.uplabel:first-letter, TH.headerarray:first-letter, span.dyp-frame-opener:first-letter {
     text-transform:capitalize;
 }
 TD.FREEDOMLabel:first-letter {
