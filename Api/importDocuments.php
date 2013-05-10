@@ -33,6 +33,11 @@ $archive = $usage->addOptionalParameter("archive", "description file is an stand
     "no"
 ) , "no");
 $logfile = $usage->addOptionalParameter("log", "log file output");
+$policy = $usage->addOptionalParameter("policy", "policy import - \n\t\t[update] to auto update same document (the default), \n\t\t[add] to always create new document, \n\t\t[keep] to do nothing if same document already present", array(
+    "update",
+    "add",
+    "keep"
+));
 $htmlmode = $usage->addOptionalParameter("htmlmode", "analyze report mode in html", array(
     "yes",
     "no"
