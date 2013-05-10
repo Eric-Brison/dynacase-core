@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-26 14:45+0200\n"
+"PO-Revision-Date: 2013-05-10 15:19+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -7620,6 +7620,9 @@ msgstr "Mettre le document sous contrôle"
 
 msgid "set user parameter"
 msgstr "affecte les paramètres utilisateur"
+
+msgid "set user tag to a document"
+msgstr "ajouter un tag utilisateur à un document"
 
 msgid "setWaskAnswer::invalid parameters"
 msgstr "setWaskAnswer:: paramètres invalides"

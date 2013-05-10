@@ -571,7 +571,7 @@ function showFieldset(event,o,n,docid,force) {
 		  requestUrlSend(cible,'?app=FDL&action=IMPCARD&zone=FDL:VIEWBODYCARD:S&id='+docid+'&onlytab='+tabname);
 	  } else {
 		  if (prevtabname && (prevtabname != tabname)) {
-		  requestUrlSend(null,'?app=DATA&action=DOCUMENT&method=addusertag&tag=lasttab&id='+docid+'&comment='+tabname);
+		  requestUrlSend(null,'?app=FDL&action=FDL_SETUSERTAG&tag=lasttab&id='+docid+'&value='+tabname);
 		  }
 	  }
   }
