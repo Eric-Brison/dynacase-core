@@ -246,6 +246,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
          */
         $cdoc = new_doc($dbaccess, $fromid);
         
+        if (!$cdoc->isAffected()) return false;
         if ($control) {
             $err = $cdoc->control('create');
             if ($err != "") return false;
