@@ -12,20 +12,11 @@ $usage->verify();
 /**
  * @var Action $action
  */
-
+$handlerCode = '';
 if ($handlerName != "SessionHandler") {
+    
     if (!class_exists($handlerName)) {
         $action->exitError(sprintf("class handler %s not found", $handlerName));
-    }
-    
-    if (!interface_exists("SessionHandlerInterface", false)) {
-        $action->exitError(sprintf("interface SessionHandlerInterface not found : must be in PHP 5.4"));
-    }
-    
-    $h = new $handlerName();
-    
-    if (!is_a($h, "SessionHandlerInterface")) {
-        $action->exitError(sprintf("class handler %s not implement SessionHandlerInterface", $handlerName));
     }
     $ref = new ReflectionClass($handlerName);
     $filePath = $ref->getFileName();
@@ -36,13 +27,23 @@ if ($handlerName != "SessionHandler") {
             $filePath = $basefilePath;
         }
     }
-    
-    $handlerCode = sprintf('<?php require_once("%s");$handler = new %s();session_set_save_handler($handler, true);', $filePath, $handlerName);
-    
+    $h = new $handlerName();
+    if (interface_exists("SessionHandlerInterface", false) && is_a($h, "SessionHandlerInterface")) {
+        // PHP 5.4 method used
+        $handlerCode = sprintf('<?php require_once("%s");$handler = new %s();session_set_save_handler($handler, true);', $filePath, $handlerName);
+    } else {
+        // Old method compatible PHP 5.3
+        if ($ref->hasMethod("open") && $ref->hasMethod("close") && $ref->hasMethod("read") && $ref->hasMethod("write") && $ref->hasMethod("destroy") && $ref->hasMethod("gc")) {
+            // PHP 5.3 mode
+            $handlerCode = sprintf('<?php require_once("%s");$handler = new %s();session_set_save_handler(array($handler, "open"), array($handler, "close"),array($handler, "read"),array($handler, "write"),array($handler, "destroy"),array($handler, "gc"));register_shutdown_function("session_write_close");', $filePath, $handlerName);
+        } else {
+            $action->exitError(sprintf('class "%s" incompatible with session handler', $handlerName));
+        }
+    }
     file_put_contents("config/sessionHandler.php", $handlerCode);
     printf("Write config/sessionHandler.php Done.\n");
 } else {
-    $handlerCode = '<?php';
+    $handlerCode = '';
     file_put_contents("config/sessionHandler.php", $handlerCode);
     printf("Reset config/sessionHandler.php Done.\n");
 }
