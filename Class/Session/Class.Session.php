@@ -82,6 +82,9 @@ class Session extends DbObj
     var $session_name = self::PARAMNAME;
     function __construct($session_name = self::PARAMNAME)
     {
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            include_once ("config/sessionHandler.php");
+        }
         parent::__construct();
         if ($session_name != '') $this->session_name = $session_name;
         $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());

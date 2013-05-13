@@ -8,6 +8,7 @@
 /**
  */
 
+include_once ("config/sessionHandler.php");
 function setHeaderCache($type)
 {
     $mime = "text/plain";
