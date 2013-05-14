@@ -73,10 +73,7 @@ $sty_rules = array(
     'css' => array(
         'dcp/main.css' => array(
             "src" => array(
-                "CORE/Layout/core.css",
-                "FDL/Layout/freedom.css",
-                "WHAT/Layout/size-normal.css",
-                "STYLE/MODERN/Layout/MODERN.css"
+                "style" => "STYLE/MODERN/Layout/MODERN.css"
             ) ,
             "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
             "deploy_parser" => array(
@@ -85,9 +82,7 @@ $sty_rules = array(
         ) ,
         'dcp/core.css' => array(
             "src" => array(
-                "CORE/Layout/core.css",
-                "WHAT/Layout/size-normal.css",
-                "STYLE/MODERN/Layout/MODERN.css"
+                "style" => "STYLE/MODERN/Layout/MODERN.css"
             ) ,
             "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
             "deploy_parser" => array(
@@ -96,7 +91,7 @@ $sty_rules = array(
         ) ,
         'dcp/document-view.css' => array(
             "src" => array(
-                "FDL/Layout/document.css"
+                "document" => "FDL/Layout/document.css"
             ) ,
             // "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
             "deploy_parser" => array(
@@ -105,11 +100,7 @@ $sty_rules = array(
         ) ,
         'dcp/document-edit.css' => array(
             "src" => array(
-                "FDL/Layout/editdoc.css",
-                "FDL/Layout/autocompletion.css",
-                "FDL/Layout/popup.css",
-                "FDL/Layout/document.css",
-                "STYLE/MODERN/Layout/calendar.css"
+                "jscalendar" => "STYLE/MODERN/Layout/calendar.css"
             ) ,
             "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
             "deploy_parser" => array(
@@ -118,8 +109,7 @@ $sty_rules = array(
         ) ,
         'dcp/system.css' => array(
             "src" => array(
-                "STYLE/MODERN/Layout/MODERN.css",
-                "WHAT/Layout/size-normal.css"
+                "style" => "STYLE/MODERN/Layout/MODERN.css"
             ) ,
             "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
             "deploy_parser" => array(

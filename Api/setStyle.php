@@ -324,6 +324,7 @@ class styleManager
             if (!isset($classInterfaces['Dcp\Style\ICssParser'])) {
                 throw new \Dcp\Style\Exception("STY0006", "class $deployParserClass does not implements \\Dcp\\Style\\ICssParser");
             }
+            $this->log(print_r($src, true));
             /** @var $parser \Dcp\Style\ICssParser */
             $parser = new $deployParserClass($src, $deployParserOptions, $this->styleConfig);
             $parser->gen($destFile);
