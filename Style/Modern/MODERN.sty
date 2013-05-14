@@ -74,47 +74,22 @@ $sty_rules = array(
         'dcp/main.css' => array(
             "src" => array(
                 "style" => "STYLE/MODERN/Layout/MODERN.css"
-            ) ,
-            "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
-            "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpCssTemplateParser'
             )
         ) ,
         'dcp/core.css' => array(
             "src" => array(
                 "style" => "STYLE/MODERN/Layout/MODERN.css"
-            ) ,
-            "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
-            "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpCssTemplateParser'
-            )
-        ) ,
-        'dcp/document-view.css' => array(
-            "src" => array(
-                "document" => "FDL/Layout/document.css"
-            ) ,
-            // "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
-            "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpCssTemplateParser'
             )
         ) ,
         'dcp/document-edit.css' => array(
             "src" => array(
                 "jscalendar" => "STYLE/MODERN/Layout/calendar.css"
-            ) ,
-            "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
-            "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpCssTemplateParser'
             )
         ) ,
         'dcp/system.css' => array(
             "src" => array(
                 "style" => "STYLE/MODERN/Layout/MODERN.css"
-            ) ,
-            "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
-            "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpCssTemplateParser'
-            )
+            ) 
         )
     )
 );
