@@ -661,7 +661,7 @@ DIV.icon{
 IMG.aicon, IMG.aiconnoh {
 	margin:0pt;
 	padding:0pt;
-	border-radius:0px 0px 0px 25px;
+	border-radius:0px 0px 0px 5px;
 }
 IMG.aicon:hover {
   cursor: pointer;

@@ -7556,12 +7556,14 @@ create unique index i_docir on doc(initid, revision);";
                 else $currentFrameText = mb_ucfirst($currentFrame->GetLabel());
                 if (($listattr[$i]->mvisibility == "H") || ($listattr[$i]->mvisibility == "R")) {
                     // special case for hidden values
-                    $thidden[$ih]["hname"] = "_" . $listattr[$i]->id;
-                    $thidden[$ih]["hid"] = $listattr[$i]->id;
-                    if (($value == "") && ($this->id == 0)) $thidden[$ih]["hvalue"] = GetHttpVars($listattr[$i]->id);
-                    else $thidden[$ih]["hvalue"] = chop(htmlentities($value, ENT_COMPAT, "UTF-8"));
-                    
-                    $thidden[$ih]["inputtype"] = getHtmlInput($this, $listattr[$i], $value, "", "", true);
+                    if ($listattr[$i]->type != "array") {
+                        $thidden[$ih]["hname"] = "_" . $listattr[$i]->id;
+                        $thidden[$ih]["hid"] = $listattr[$i]->id;
+                        if (($value == "") && ($this->id == 0)) $thidden[$ih]["hvalue"] = GetHttpVars($listattr[$i]->id);
+                        else $thidden[$ih]["hvalue"] = chop(htmlentities($value, ENT_COMPAT, "UTF-8"));
+                        
+                        $thidden[$ih]["inputtype"] = getHtmlInput($this, $listattr[$i], $value, "", "", true);
+                    }
                     $ih++;
                 } else {
                     $tableframe[$v]["value"] = chop(htmlentities($value, ENT_COMPAT, "UTF-8"));
