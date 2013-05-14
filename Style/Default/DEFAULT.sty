@@ -60,10 +60,10 @@ $sty_rules = array(
     'css' => array(
         'dcp/main.css' => array(
             "src" => array(
-                "CORE/Layout/core.css",
-                "FDL/Layout/freedom.css",
-                "WHAT/Layout/size-normal.css",
-                "STYLE/DEFAULT/Layout/DEFAULT.css"
+                'core' => "CORE/Layout/core.css",
+                "fdl" => "FDL/Layout/freedom.css",
+                "size" => "WHAT/Layout/size-normal.css",
+                "style" => "STYLE/DEFAULT/Layout/DEFAULT.css"
             ) ,
             "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
             "deploy_parser" => array(
@@ -72,9 +72,9 @@ $sty_rules = array(
         ) ,
         'dcp/core.css' => array(
             "src" => array(
-                "CORE/Layout/core.css",
-                "WHAT/Layout/size-normal.css",
-                "STYLE/DEFAULT/Layout/DEFAULT.css"
+                "core" => "CORE/Layout/core.css",
+                "size" => "WHAT/Layout/size-normal.css",
+                "style" => "STYLE/DEFAULT/Layout/DEFAULT.css"
             ) ,
             "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
             "deploy_parser" => array(
@@ -83,7 +83,7 @@ $sty_rules = array(
         ) ,
         'dcp/document-view.css' => array(
             "src" => array(
-                "FDL/Layout/document.css"
+                "document" => "FDL/Layout/document.css"
             ) ,
             // "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
             "deploy_parser" => array(
@@ -92,12 +92,11 @@ $sty_rules = array(
         ) ,
         'dcp/document-edit.css' => array(
             "src" => array(
-                "FDL/Layout/editdoc.css",
-                "FDL/Layout/autocompletion.css",
-                "FDL/Layout/popup.css",
-                "FDL/Layout/document.css",
-                "STYLE/DEFAULT/Layout/DEFAULT.css",
-                "jscalendar/Layout/calendar-win2k-2.css"
+                "edit" => "FDL/Layout/editdoc.css",
+                "autocompletion" => "FDL/Layout/autocompletion.css",
+                "popup" => "FDL/Layout/popup.css",
+                "document" => "FDL/Layout/document.css",
+                "jscalendar" => "jscalendar/Layout/calendar-win2k-2.css"
             ) ,
             "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
             "deploy_parser" => array(
@@ -106,8 +105,8 @@ $sty_rules = array(
         ) ,
         'dcp/system.css' => array(
             "src" => array(
-                "STYLE/DEFAULT/Layout/DEFAULT.css",
-                "WHAT/Layout/size-normal.css"
+                "style" => "STYLE/DEFAULT/Layout/DEFAULT.css",
+                "size" => "WHAT/Layout/size-normal.css"
             ) ,
             "flags" => Style::RULE_FLAG_PARSE_ON_RUNTIME,
             "deploy_parser" => array(
