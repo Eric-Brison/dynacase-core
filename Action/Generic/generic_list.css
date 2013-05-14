@@ -155,3 +155,8 @@ tr.docresume:nth-child(even) {
 .pagination-button {
     font-size: 0.7em !important;
 }
+
+div.noresults {
+    text-align: center;
+    margin: 10px;
+}

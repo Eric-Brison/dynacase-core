@@ -166,6 +166,7 @@
                         [ABSTRACTVALUES]
                     </div>
                     [ENDBLOCK TABLEBODY]
+                    [IFNOT nbdoc]<div class="noresults">[TEXT:No results]</div>[ENDIF nbdoc]
                     <br/>
                     </div>
                     <!-- /TABLEBODY --> </td>

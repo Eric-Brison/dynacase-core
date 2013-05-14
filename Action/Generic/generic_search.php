@@ -93,7 +93,7 @@ function generic_search(Action & $action)
         }
         /* @var $sdoc DocSearch */
         $sdoc = createTmpDoc($dbaccess, 5); //new DocSearch($dbaccess);
-        $sdoc->title = sprintf(_("search %s") , $keyword);
+        $sdoc->title = sprintf(_("Search : %s") , $keyword);
         if ($sdirid > 0) {
             if ($doc->id == getDefFld($action)) {
                 $sdoc->title = sprintf(_("search  contains %s in all state") , $keyword);
