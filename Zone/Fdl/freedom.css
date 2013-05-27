@@ -696,6 +696,7 @@ TEXTAREA.autoresize {
   overflow:hidden;
   vertical-align:text-top;
   width:100%;
+  padding:0;
 }
 input[type="file"] { 
 	width:auto;
