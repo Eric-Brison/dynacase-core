@@ -94,7 +94,7 @@ label.ui-state-active {
    /* background-color: [COLOR_B5];*/
     }
 label.ui-state-default {
-        font-size:90%;
+        font-size:92%;
     }
 .ui-state-default .ui-icon-empty {
     background-image:none;
