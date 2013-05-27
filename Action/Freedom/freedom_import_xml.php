@@ -421,6 +421,9 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
             $xs->close();
         }
         catch(Exception $e) {
+            if ($xs) {
+                $xs->close();
+            }
             return $e->getMessage();
         }
         return '';
