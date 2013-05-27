@@ -170,9 +170,19 @@ class ErrorCodeDOC
     const DOC0119 = 'the document "%s" (#%d) became fixed because another revision more recent has been created';
     /**
      * @errorCode when update family parameter
-     * @see DocFal::setParam
+     * @see DocFam::setParam
      */
     const DOC0120 = 'cannot set family parameter "%s". It is not a parameter for "%s" ("%s") family';
+    /**
+     * @errorCode application tag must not contain \n character
+     * @see Doc::addATag
+     */
+    const DOC0121 = 'cannot add application tag "%s" (document #%d). Application tag must not contain \n character';
+    /**
+     * @errorCode application tag must not be empty
+     * @see Doc::addATag
+     */
+    const DOC0122 = 'cannot add application tag (document #%d). Application tag must not be empty';
     /**
      * @errorCode
      * the document cannot be inserted in folder target

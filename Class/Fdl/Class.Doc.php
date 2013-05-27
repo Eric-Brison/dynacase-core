@@ -4591,12 +4591,15 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Add a application tag for the document
      * if it is already set no set twice
+     * A application tag must not contains "\n" character
      * @param string $tag the tag to add
      * @return string error message
      */
     final public function addATag($tag)
     {
         $err = "";
+        if (strpos($tag, "\n") !== false) return ErrorCode::getError('DOC0121', $tag, $this->id);
+        if (!$tag) return ErrorCode::getError('DOC0122', $this->id);
         if ($this->atags == "") {
             $this->atags = $tag;
             $err = $this->modify(true, array(
@@ -4621,7 +4624,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function getATag($tag)
     {
         if ($this->atags == "") return false;
-        return (preg_match("/\b$tag\b/", $this->atags) > 0);
+        return (preg_match(sprintf('/^(%s)$/m', preg_quote($tag, '/')) , $this->atags) > 0);
     }
     /**
      * Delete a application tag for the document
@@ -4633,9 +4636,10 @@ create unique index i_docir on doc(initid, revision);";
     {
         $err = "";
         if ($this->atags == "") return "";
-        $atags = preg_replace("/\b$tag\b/", "", $this->atags);
+        $atags = preg_replace(sprintf('/^%s$/m', preg_quote($tag, '/')) , '', $this->atags);
         $atags = str_replace("\n\n", "\n", $atags);
         $atags = preg_replace("/\n$/m", '', $atags);
+        $atags = preg_replace("/^\n/", '', $atags);
         if ($atags != $this->atags) {
             $this->atags = $atags;
             $err = $this->modify(true, array(
