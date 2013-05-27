@@ -47,11 +47,9 @@ TABLE.hborder TBODY td.odd {
 }
 TABLE.hborder THEAD td.even {
   background-color:[COLOR_B8];
-  overflow:ellipsis;
 }
 TABLE.hborder THEAD td.odd {
   background-color:[COLOR_B9];
-  overflow:ellipsis;
 }
 TABLE.hborder td.odd,  TABLE.hborder td.even {
   width:[cellwidth];
@@ -137,6 +135,7 @@ table.hborder thead td.head11 {
 table.bodyacl td.firstcol {
    white-space:nowrap;
    overflow:hidden;
+  text-overflow: ellipsis;
 }
 table.bodyacl td.bedit {
    width:30px;
