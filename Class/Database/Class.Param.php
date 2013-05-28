@@ -99,9 +99,10 @@ class Param extends DbObj
         $this->name = $name;
         $this->val = $val;
         $this->type = $type;
-        $pdef = new paramdef($this->dbaccess, $name);
         
-        if ($pdef->isAffected()) {
+        $pdef = ParamDef::getParamDef($name, $appid);
+        
+        if ($pdef && $pdef->isAffected()) {
             if ($pdef->isglob == 'Y') {
                 $appid = $pdef->appid;
             }

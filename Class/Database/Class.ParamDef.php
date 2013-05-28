@@ -61,7 +61,8 @@ class ParamDef extends DbObj
     public $kind;
     
     var $id_fields = array(
-        "name"
+        "name",
+        "appid"
     );
     
     var $dbtable = "paramdef";
@@ -75,7 +76,33 @@ class ParamDef extends DbObj
               appid  int4,
               descr    text,
               kind    text);
-      create unique index paramdef_idx1 on paramdef(name);
+      create unique index paramdef_idxna on paramdef(name, appid);
                  ';
+    /**
+     * get Param def object from name
+     * @param string $name parameter name
+     * @param int $appid application id
+     * @return ParamDef
+     */
+    public static function getParamDef($name, $appid = null)
+    {
+        $d = null;
+        if ($appid == null) {
+            simpleQuery('', sprintf("select * from paramdef where name='%s'", pg_escape_string($name)) , $paramDefValues, false, true);
+        } else {
+            $sql = <<< 'SQL'
+            SELECT * from paramdef
+            where name='%s'
+              and (isglob='Y' or appid=%d or appid=1 or appid=(select id from application where name=(select childof from application where id=%d)));
+SQL;
+            $sqlp = sprintf($sql, pg_escape_string($name) , $appid, $appid);
+            simpleQuery('', $sqlp, $paramDefValues, false, true);
+        }
+        if (!empty($paramDefValues)) {
+            $d = new ParamDef();
+            $d->Affect($paramDefValues);
+        }
+        return $d;
+    }
 }
 ?>
