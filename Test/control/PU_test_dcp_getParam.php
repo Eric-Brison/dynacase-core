@@ -55,6 +55,117 @@ class TestGetParam extends TestCaseDcp
         
         $this->assertTrue(($value !== null) , "Returned value is not set.");
     }
+    /**
+     * @param $paramName
+     * @param $appName
+     * @param $expectedProps
+     * @dataProvider dataGetParamDef
+     */
+    public function testGetParamDef($paramName, $appName, $expectedProps)
+    {
+        
+        $appId = null;
+        if ($appName) {
+            simpleQuery(self::$dbaccess, sprintf("select id from application where name='%s'", pg_escape_string($appName)) , $appId, true, true);
+        }
+        $paramDef = \ParamDef::getParamDef($paramName, $appId);
+        if (empty($expectedProps)) {
+            $this->assertEmpty($paramDef, "parameter $paramName must not be found");
+        } else {
+            $this->assertNotEmpty($paramDef, "parameter $paramName must be found in app  #$appId");
+            foreach ($expectedProps as $kProp => $vProp) {
+                $this->assertEquals($vProp, $paramDef->$kProp, "wrong property $kProp" . print_r($paramDef->getValues() , true));
+            }
+        }
+    }
+    
+    public function dataGetParamDef()
+    {
+        return array(
+            array(
+                'name' => 'CORE_NON_EXISTING_PARAM',
+                'app' => 'FDL',
+                'expected' => ''
+            ) ,
+            array(
+                'name' => 'AUTHENT_SHOW_LANG_SELECTION',
+                'app' => 'FDL',
+                'expected' => ''
+            ) ,
+            array(
+                'name' => 'AUTHENT_SHOW_LANG_SELECTION',
+                'app' => 'AUTHENT',
+                'expected' => array(
+                    "name" => "AUTHENT_SHOW_LANG_SELECTION",
+                    "isglob" => "N"
+                )
+            ) ,
+            array(
+                'name' => 'VERSION',
+                'app' => 'AUTHENT',
+                'expected' => array(
+                    "name" => "VERSION",
+                    "isglob" => "N"
+                )
+            ) ,
+            array(
+                'name' => 'CORE_CLIENT',
+                'app' => 'CORE',
+                'expected' => array(
+                    "name" => "CORE_CLIENT",
+                    "isglob" => "Y"
+                )
+            ) ,
+            array(
+                'name' => 'CORE_CLIENT',
+                'app' => '',
+                'expected' => array(
+                    "name" => "CORE_CLIENT",
+                    "isglob" => "Y"
+                )
+            ) ,
+            array(
+                'name' => 'CORE_CLIENT',
+                'app' => 'FDL',
+                'expected' => array(
+                    "name" => "CORE_CLIENT",
+                    "isglob" => "Y"
+                )
+            ) ,
+            array(
+                'name' => 'CORE_CLIENT',
+                'app' => 'FDL',
+                'expected' => array(
+                    "name" => "CORE_CLIENT",
+                    "isglob" => "Y"
+                )
+            ) ,
+            array(
+                'name' => 'SMTP_HOST',
+                'app' => '',
+                'expected' => array(
+                    "name" => "SMTP_HOST",
+                    "isglob" => "Y"
+                )
+            ) ,
+            array(
+                'name' => 'SMTP_HOST',
+                'app' => 'FDL',
+                'expected' => array(
+                    "name" => "SMTP_HOST",
+                    "isglob" => "Y"
+                )
+            ) ,
+            array(
+                'name' => 'SMTP_HOST',
+                'app' => 'APPMNG',
+                'expected' => array(
+                    "name" => "SMTP_HOST",
+                    "isglob" => "Y"
+                )
+            )
+        );
+    }
     
     public function dataGetCoreParamNonExisting()
     {

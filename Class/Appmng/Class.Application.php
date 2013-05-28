@@ -1101,9 +1101,11 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function setParamDef($key, $val)
     {
         // add new param definition
-        $pdef = new ParamDef($this->dbaccess, $key);
+        $pdef = ParamDef::getParamDef($key, $this->id);
+        
         $oldValues = array();
-        if (!$pdef->isAffected()) {
+        if (!$pdef) {
+            $pdef = new ParamDef($this->dbaccess);
             $pdef->name = $key;
             $pdef->isuser = "N";
             $pdef->isstyle = "N";
@@ -1126,23 +1128,27 @@ create sequence SEQ_ID_APPLICATION start 10;
             else $pdef->isglob = "N";
         }
         
-        if ($pdef->isAffected()) {
-            $pdef->Modify();
-            // migrate paramv values in case of type changes
-            $newValues = $pdef->getValues();
-            if ($oldValues['isglob'] != $newValues['isglob']) {
-                $ptype = $oldValues['isglob'] == 'Y' ? Param::PARAM_GLB : Param::PARAM_APP;
-                $ptypeNew = $newValues['isglob'] == 'Y' ? Param::PARAM_GLB : Param::PARAM_APP;
-                $pv = new Param($this->dbaccess, array(
-                    $pdef->name,
-                    $ptype,
-                    $pdef->appid
-                ));
-                if ($pv->isAffected()) {
-                    $pv->set($pv->name, $pv->val, $ptypeNew, $pv->appid);
+        if ($pdef->appid == $this->id) {
+            if ($pdef->isAffected()) {
+                $pdef->Modify();
+                // migrate paramv values in case of type changes
+                $newValues = $pdef->getValues();
+                if ($oldValues['isglob'] != $newValues['isglob']) {
+                    $ptype = $oldValues['isglob'] == 'Y' ? Param::PARAM_GLB : Param::PARAM_APP;
+                    $ptypeNew = $newValues['isglob'] == 'Y' ? Param::PARAM_GLB : Param::PARAM_APP;
+                    $pv = new Param($this->dbaccess, array(
+                        $pdef->name,
+                        $ptype,
+                        $pdef->appid
+                    ));
+                    if ($pv->isAffected()) {
+                        $pv->set($pv->name, $pv->val, $ptypeNew, $pv->appid);
+                    }
                 }
+            } else {
+                $pdef->Add();
             }
-        } else $pdef->Add();
+        }
     }
     /**
      * Add temporary parameter to ths application
@@ -1319,6 +1325,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             
             if ($this->id > 1) {
                 $this->SetParamDef("APPNAME", array(
+                    "descr" => "$name application",
                     "val" => $name,
                     "kind" => "static"
                 )); // use by generic application
