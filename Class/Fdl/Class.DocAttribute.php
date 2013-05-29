@@ -434,6 +434,7 @@ class NormalAttribute extends BasicAttribute
                 return $this->enum_getXmlSchema($la);
             case 'thesaurus':
             case 'docid':
+            case 'account':
                 return $this->docid_getXmlSchema($la);
             case 'date':
                 return $this->date_getXmlSchema($la);
