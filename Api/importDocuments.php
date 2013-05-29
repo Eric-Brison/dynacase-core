@@ -79,10 +79,13 @@ if ($dirid) {
     if (!$dir->isAlive()) {
         $action->exitError(sprintf("folder %s not found (dir option)", $dirid));
     }
+    $dirid = $dir->id;
+    SetHttpVar("dirid", $dirid);
 }
 $oImport = new ImportDocument();
 if ($strict == 'no') $oImport->setStrict(false);
 
+if ($dirid) $oImport->setTargetDirectory($dirid);
 $cr = $oImport->importDocuments($action, $filename, $analyze != "no", $archive == "yes");
 
 $filetmp = false;
