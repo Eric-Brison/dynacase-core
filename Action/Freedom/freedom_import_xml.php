@@ -29,6 +29,8 @@ function freedom_import_xml(Action & $action, $filename = "")
     
     $opt["analyze"] = (substr(strtolower(getHttpVars("analyze", "N")) , 0, 1) == "y");
     $opt["policy"] = getHttpVars("policy", "update");
+    $opt["dirid"] = getHttpVars("dirid", getHttpVars("dir", 0));
+    
     $dbaccess = $action->getParam("FREEDOM_DB");
     global $_FILES;
     
@@ -71,6 +73,7 @@ function freedom_import_xmlzip(Action & $action, $filename = "")
     
     $opt["analyze"] = (substr(strtolower(getHttpVars("analyze", "Y")) , 0, 1) == "y");
     $opt["policy"] = getHttpVars("policy", "update");
+    $opt["dirid"] = getHttpVars("dirid", getHttpVars("dir", 0));
     $dbaccess = $action->getParam("FREEDOM_DB");
     global $_FILES;
     setMaxExecutionTimeTo(300);
@@ -139,7 +142,9 @@ function extractFilesFromXmlDirectory($splitdir)
     if ($handle = opendir($splitdir)) {
         while (false !== ($file = readdir($handle))) {
             if ($file[0] != ".") {
-                $err.= extractFileFromXmlDocument("$splitdir/$file");
+                if (!is_dir("$splitdir/$file")) {
+                    $err.= extractFileFromXmlDocument("$splitdir/$file");
+                }
             }
         }
     }
@@ -290,7 +295,7 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
         "DOC",
         $famid,
         ($id) ? $id : $name,
-        '-'
+        ''
     );
     
     $rootAttrs = $root->attributes;
@@ -364,7 +369,9 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
                         $title = $item->getAttribute("title");
                         if ($vid) {
                             $val[] = "$mime|$vid|$title";
-                        } else $val[] = '';
+                        } else {
+                            $val[] = '';
+                        }
                     }
                     break;
 
@@ -380,93 +387,97 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
             }
             $tord[] = $v->id;
             $tdoc[] = implode("\n", $val);
-        }
-        //$log = csvAddDoc($dbaccess, $tdoc, $importdirid, $analyze, $splitdir, $policy, $tkey, $prevalues, $tord);
-        $o = new importSingleDocument();
-        if ($tkey) $o->setKey($tkey);
-        if ($tord) $o->setOrder($tord);
-        $o->analyzeOnly($analyze);
-        $o->setPolicy($policy);
-        $o->setFilePath($splitdir);
-        if ($folders) {
-            $folders = str_replace(',', ' ', $folders);
-            $tfolders = explode(' ', $folders);
-            foreach ($tfolders as $k => $aFolder) {
-                if (!$aFolder) unset($tfolders[$k]);
-            }
-            
-            if ($tfolders) $o->setTargetDirectories($tfolders);
+    }
+    //$log = csvAddDoc($dbaccess, $tdoc, $importdirid, $analyze, $splitdir, $policy, $tkey, $prevalues, $tord);
+    $o = new importSingleDocument();
+    if ($tkey) $o->setKey($tkey);
+    if ($tord) $o->setOrder($tord);
+    $o->analyzeOnly($analyze);
+    $o->setPolicy($policy);
+    $o->setFilePath($splitdir);
+    if ($folders) {
+        $folders = str_replace(',', ' ', $folders);
+        $tfolders = explode(' ', $folders);
+        foreach ($tfolders as $k => $aFolder) {
+            if (!$aFolder) unset($tfolders[$k]);
         }
         
-        $o->import($tdoc);
-        $log = $o->getImportResult();
-        
-        if ($msg) $log["err"].= "\n" . $msg;
-        return '';
+        if ($tfolders) {
+            $o->setTargetDirectories($tfolders);
+        }
+    } elseif (!empty($opt["dirid"])) {
+        $o->setTargetDirectory($opt["dirid"]);
     }
     
-    function splitZipXmlDocument($zipfiles, $splitdir)
-    {
-        $err = "";
-        $zipfiles = realpath($zipfiles);
-        $ll = exec(sprintf("cd %s && unzip %s", $splitdir, $zipfiles) , $out, $retval);
-        if ($retval != 0) $err = sprintf(_("export Xml : cannot unzip %s : %s") , $zipfiles, $ll);
-        return $err;
+    $o->import($tdoc);
+    $log = $o->getImportResult();
+    
+    if ($msg) $log["err"].= "\n" . $msg;
+    return '';
+}
+
+function splitZipXmlDocument($zipfiles, $splitdir)
+{
+    $err = "";
+    $zipfiles = realpath($zipfiles);
+    $ll = exec(sprintf("cd %s && unzip %s", $splitdir, $zipfiles) , $out, $retval);
+    if ($retval != 0) $err = sprintf(_("export Xml : cannot unzip %s : %s") , $zipfiles, $ll);
+    return $err;
+}
+function splitXmlDocument($xmlfiles, $splitdir)
+{
+    try {
+        $xs = new XMLSplitter($splitdir);
+        $xs->split($xmlfiles);
+        $xs->close();
     }
-    function splitXmlDocument($xmlfiles, $splitdir)
-    {
-        try {
-            $xs = new XMLSplitter($splitdir);
-            $xs->split($xmlfiles);
+    catch(Exception $e) {
+        if ($xs) {
             $xs->close();
         }
-        catch(Exception $e) {
-            if ($xs) {
-                $xs->close();
-            }
-            return $e->getMessage();
-        }
-        return '';
+        return $e->getMessage();
+    }
+    return '';
+}
+
+function base64_decodefile($filename)
+{
+    $dir = dirname($filename);
+    $tmpdest = uniqid(getTmpDir() . "/fdlbin");
+    $chunkSize = 1024 * 30;
+    $src = fopen($filename, 'rb');
+    $dst = fopen($tmpdest, 'wb');
+    while (!feof($src)) {
+        fwrite($dst, base64_decode(fread($src, $chunkSize)));
+    }
+    fclose($dst);
+    fclose($src);
+    rename($tmpdest, $filename);
+}
+
+class XMLParseErrorException extends Exception
+{
+    public $userInfo = '';
+    public function __construct($filename)
+    {
+        set_error_handler(array(
+            $this,
+            "errorHandler"
+        ));
+        $dom = new DomDocument();
+        $dom->load($filename);
+        restore_error_handler();
+        $this->message = "XML Parse Error in $filename";
+        parent::__construct();
     }
     
-    function base64_decodefile($filename)
+    public function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        $dir = dirname($filename);
-        $tmpdest = uniqid(getTmpDir() . "/fdlbin");
-        $chunkSize = 1024 * 30;
-        $src = fopen($filename, 'rb');
-        $dst = fopen($tmpdest, 'wb');
-        while (!feof($src)) {
-            fwrite($dst, base64_decode(fread($src, $chunkSize)));
+        $pos = strpos($errstr, "]:");
+        if ($pos) {
+            $errstr = substr($errstr, $pos + 2);
         }
-        fclose($dst);
-        fclose($src);
-        rename($tmpdest, $filename);
+        $this->userInfo.= "$errstr";
     }
-    
-    class XMLParseErrorException extends Exception
-    {
-        public $userInfo = '';
-        public function __construct($filename)
-        {
-            set_error_handler(array(
-                $this,
-                "errorHandler"
-            ));
-            $dom = new DomDocument();
-            $dom->load($filename);
-            restore_error_handler();
-            $this->message = "XML Parse Error in $filename";
-            parent::__construct();
-        }
-        
-        public function errorHandler($errno, $errstr, $errfile, $errline)
-        {
-            $pos = strpos($errstr, "]:");
-            if ($pos) {
-                $errstr = substr($errstr, $pos + 2);
-            }
-            $this->userInfo.= "$errstr";
-        }
-    }
+}
 ?>

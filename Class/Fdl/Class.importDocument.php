@@ -20,6 +20,10 @@ class ImportDocument
     
     private $onlyAnalyze = false;
     /**
+     * @var int folder to insert documents
+     */
+    private $dirid = 0;
+    /**
      * set strict mode
      * @param bool $strict set to false to accept error when import
      * @return void
@@ -27,6 +31,11 @@ class ImportDocument
     public function setStrict($strict)
     {
         $this->strict = ($strict && true);
+    }
+    
+    public function setTargetDirectory($dirid)
+    {
+        $this->dirid = $dirid;
     }
     /**
      * @param Action $action current action
@@ -68,10 +77,10 @@ class ImportDocument
                 );
             } else {
                 $onlycsv = hasfdlpointcsv($untardir);
-                $famid = 7; // file
-                $dfldid = 2; // folder
-                $dirid = 0; // directory to place imported doc
-                $this->cr = import_directory($action, $untardir, $dirid, $famid, $dfldid, $onlycsv, $onlyAnalyze);
+                $simpleFamilyFile = 7; // file
+                $simpleFamilyFolder = 2; // folder
+                $dirid = $this->dirid; // directory to insert imported doc
+                $this->cr = import_directory($action, $untardir, $dirid, $simpleFamilyFile, $simpleFamilyFolder, $onlycsv, $onlyAnalyze);
             }
         } else {
             $ext = substr($file, strrpos($file, '.') + 1);
@@ -83,7 +92,7 @@ class ImportDocument
                 include_once ("FREEDOM/freedom_import_xml.php");
                 $this->cr = freedom_import_xmlzip($action, $file);
             } else {
-                $this->cr = add_import_file($action, $file);
+                $this->cr = add_import_file($action, $file, $this->dirid);
             }
         }
         if ($this->strict) {
@@ -141,6 +150,8 @@ class ImportDocument
         $hasError = false;
         $haswarning = false;
         foreach ($this->cr as $k => $v) {
+            if (!isset($v["msg"])) $v["msg"] = '';
+            if (!isset($v["values"])) $v["values"] = null;
             $this->cr[$k]["taction"] = _($v["action"]); // translate action
             $this->cr[$k]["order"] = $k; // translate action
             $this->cr[$k]["svalues"] = "";
@@ -184,6 +195,9 @@ class ImportDocument
                 $countok = 0;
                 $counterr = 0;
                 foreach ($this->cr as $v) {
+                    
+                    if (!isset($v["msg"])) $v["msg"] = '';
+                    if (!isset($v["values"])) $v["values"] = null;
                     $chg = "";
                     if (is_array($v["values"])) {
                         foreach ($v["values"] as $ka => $va) {

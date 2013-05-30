@@ -72,7 +72,7 @@ function analyze_tar(&$action, $selfile)
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $selectclass = array();
     
-    $doc = new_Doc($dbaccess, $classid);
+
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
     
     foreach ($tclassdoc as $k => $cdoc) {

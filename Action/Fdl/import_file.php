@@ -26,10 +26,13 @@ include_once ("FDL/Class.DocAttrLDAP.php");
 define("ALTSEPCHAR", ' --- ');
 define("SEPCHAR", ';');
 
-function add_import_file(Action & $action, $fimport)
+function add_import_file(Action & $action, $fimport, $dirid = 0)
 {
     setMaxExecutionTimeTo(300);
-    $dirid = GetHttpVars("dirid", 0); // directory to place imported doc
+    if ($dirid == 0) {
+        $dirid = GetHttpVars("dirid", 0); // directory to place imported doc
+        
+    }
     $analyze = (GetHttpVars("analyze", "N") == "Y"); // just analyze
     $policy = GetHttpVars("policy", "update");
     $reinit = GetHttpVars("reinitattr");
@@ -98,7 +101,8 @@ function getOrder(array $orderdata)
 function AddVaultFile($dbaccess, $path, $analyze, &$vid)
 {
     global $importedFiles;
-    
+
+    $err='';
     $path = str_replace("//", "/", $path);
     // return same if already imported (case of multi links)
     if (isset($importedFiles[$path])) {

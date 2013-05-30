@@ -18,27 +18,18 @@
 /**
  * View scheam family
  * @param Action &$action current action
- * @global id Http var : family identifier to see
- * @global latest Http var : (Y|N|L|P) if Y force view latest revision, L : latest fixed revision, P : previous revision
- * @global state Http var : to view document in latest fixed state (only if revision > 0)
- * @global abstract Http var : (Y|N) if Y view only abstract attribute
- * @global props Http var : (Y|N) if Y view properties also
- * @global zonebodycard Http var : if set, view other specific representation
- * @global vid Http var : if set, view represention describe in view control (can be use only if doc has controlled view)
- * @global ulink Http var : (Y|N)if N hyperlink are disabled
- * @global target Http var : is set target of hyperlink can change (default _self)
- * @global inline Http var : (Y|N) set to Y for binary template. View in navigator
- * @global reload Http var : (Y|N) if Y update freedom folders in client navigator
- * @global dochead Http var :  (Y|N) if N don't see head of document (not title and icon)
+ * @global string $id Http var : family identifier to see
  */
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
-function fdl_familyschema(&$action)
+function fdl_familyschema(Action & $action)
 {
     // -----------------------------------
     $docid = getHttpVars("id");
     $dbaccess = $action->getParam("FREEDOM_DB");
-    
+    /**
+     * @var DocFam $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAlive()) $action->exitError(_("no family identificator"));
     if ($doc->doctype != 'C') $action->exitError(sprintf(_("document %s is not a family") , $docid));
