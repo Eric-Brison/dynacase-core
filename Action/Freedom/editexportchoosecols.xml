@@ -80,6 +80,8 @@ function invertAllColumns() {
 <a onclick="selectAllColumns()">[TEXT:Select all columns]</a> | 
 <a onclick="invertAllColumns()">[TEXT:Invert all columns]</a> | 
 <a onclick="document.fcols.clear.value='yes';document.fcols.submit()">[TEXT:Clear preferences]</a>
+<br/>
+<hr/>
 <form name="fcols" style="display:inline"
       method="POST" ENCTYPE="multipart/form-data"
       action="[CORE_STANDURL]&app=FREEDOM&action=MODEXPORTCHOOSECOLS">

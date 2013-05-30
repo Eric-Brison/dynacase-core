@@ -130,7 +130,11 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                     $fattr = $fimgattr->id;
                                 } else {
                                     $ddoc = & $defaultdoc;
+                                    if ($ffileattr) {
                                     $fattr = $ffileattr->id;
+                                    } else {
+                                        $tr[$index]["err"] = "no file attribute";
+                                    }
                                 }
                                 $tr[$index]["familyname"] = $ddoc->getTitle();
                                 $tr[$index]["familyid"] = $ddoc->fromid;
@@ -141,6 +145,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                     $err = $ddoc->Add();
                                     if ($err != "") {
                                         $tr[$index]["action"] = N_("not added");
+                                         $tr[$index]["err"] =$err;
                                     } else {
                                         $ddoc->addHistoryEntry(sprintf("create by import from archive %s", substr(basename($ldir) , 0, -2)));
                                         $tr[$index]["action"] = N_("added");

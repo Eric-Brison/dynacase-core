@@ -101,7 +101,8 @@ function getOrder(array $orderdata)
 function AddVaultFile($dbaccess, $path, $analyze, &$vid)
 {
     global $importedFiles;
-    
+
+    $err='';
     $path = str_replace("//", "/", $path);
     // return same if already imported (case of multi links)
     if (isset($importedFiles[$path])) {
