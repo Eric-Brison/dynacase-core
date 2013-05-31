@@ -184,6 +184,11 @@ class ErrorCodeDOC
      */
     const DOC0122 = 'cannot add application tag (document #%d). Application tag must not be empty';
     /**
+     * @errorCode when update attribute family default value
+     * @see DocFam::setDefValue
+     */
+    const DOC0123 = 'cannot set default value for "%s". It is not an attribute for "%s" ("%s") family';
+    /**
      * @errorCode
      * the document cannot be inserted in folder target
      * @note when DOC has defined a folder target
