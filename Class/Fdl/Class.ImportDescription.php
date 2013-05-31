@@ -1001,7 +1001,7 @@ class importDocumentDescription
                 // reset default
                 $this->tcr[$this->nLine]["msg"] = sprintf("keep default value %s : %s. No use %s", $attrid, $ownDef[$attrid], $data[2]);
             } else {
-                $this->doc->setDefValue($attrid, $defv);
+                $this->doc->setDefValue($attrid, $defv, false);
                 if ($force || (!$this->doc->getParameterRawValue($attrid))) {
                     // TODO : not really exact here : must verify if it is really a parameter
                     //$this->doc->setParam($attrid, $defv);
@@ -1586,4 +1586,5 @@ class importDocumentDescription
             if ($this->tcr[$this->nLine]["err"]) $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+    
     

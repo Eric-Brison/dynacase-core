@@ -222,14 +222,14 @@ create unique index idx_idfam on docfam(id);";
         foreach ($defValues as $aid => $dv) {
             $oa = $d->getAttribute($aid);
             $value = $d->getRawValue($aid);
-            $ownValue = $ownDefValues[$aid];
+            $ownValue = isset($ownDefValues[$aid]) ? $ownDefValues[$aid] : null;
             
             if ($oa) {
                 $oa->setVisibility('R');
                 $label = $oa->getLabel();
                 if ($oa->usefor == 'Q') {
                     $value = $d->getFamilyParameterValue($aid);
-                    if ($ownParValues[$aid]) {
+                    if (!empty($ownParValues[$aid])) {
                         $ownValue = $ownParValues[$aid];
                     } else {
                         if ($ownValue) $ownValue.= ' <em>(' . _("default value") . ")</em>";
@@ -479,15 +479,44 @@ create unique index idx_idfam on docfam(id);";
     {
         $this->setChanged();
         $idp = strtolower($idp);
-        if ($check && !$this->getAttribute($idp)) {
+        $oa = $this->getAttribute($idp);
+        if ($check && !$oa) {
             return ErrorCode::getError('DOC0120', $idp, $this->getTitle() , $this->name);
         }
         
         if (is_array($val)) $val = $this->arrayToRawValue($val);
+        if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
+            $err = $this->convertDateToiso($oa, $val);
+            if ($err) return $err;
+        }
+        
         $err = '';
         if ($this->isComplete()) $err = $this->checkSyntax($idp, $val);
         if (!$err) $this->setXValue("param", strtolower($idp) , $val);
         return $err;
+    }
+    
+    private function convertDateToiso(BasicAttribute $oa, &$val)
+    {
+        $localeconfig = getLocaleConfig();
+        if ($localeconfig !== false) {
+            if ($oa->type == "date" || $oa->type == "timestamp") {
+                if ($oa->type == "date") {
+                    $dateFormat = $localeconfig['dateFormat'];
+                } else {
+                    $dateFormat = $localeconfig['dateTimeFormat'];
+                }
+                
+                $tDates = explode("\n", $val);
+                foreach ($tDates as $k => $date) {
+                    $tDates[$k] = stringDateToIso($date, $dateFormat);
+                }
+                $val = implode("\n", $tDates);
+            } else {
+                return sprintf(_("local config for date not found"));
+            }
+        }
+        return '';
     }
     /**
      * Verify is family is under construction
@@ -584,11 +613,21 @@ create unique index idx_idfam on docfam(id);";
      *
      * @param string $idp parameter identifier
      * @param string $val value of the default
-     * @return void
+     * @return string error message
      */
-    function setDefValue($idp, $val)
+    function setDefValue($idp, $val, $check = true)
     {
+        $idp = strtolower($idp);
+        $oa = $this->getAttribute($idp);
+        $err = '';
+        if ($check && !$oa) {
+            return ErrorCode::getError('DOC0123', $idp, $this->getTitle() , $this->name);
+        }
+        if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
+            $err = $this->convertDateToiso($oa, $val);
+        }
         $this->setXValue("defval", $idp, $val);
+        return $err;
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ X VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
     
