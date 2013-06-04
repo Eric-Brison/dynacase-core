@@ -15,7 +15,7 @@
     background: -webkit-gradient(linear,0% 0,0% 100%,from([COLOR_A9]),to([COLOR_A7]));
     background: -moz-linear-gradient(270deg,[COLOR_A9],[COLOR_A7]);
    -webkit-border-radius: 5px 5px 0px 0px;
-    -moz-border-radius: 5px 5px 0px 0px;;
+    -moz-border-radius: 5px 5px 0px 0px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-left-radius: 0px;

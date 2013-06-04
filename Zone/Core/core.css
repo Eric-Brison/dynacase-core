@@ -146,7 +146,7 @@ color: [CORE_TEXTFGCOLOR];
 .TABOdd {
   background: [CORE_BGCOLORALTERN];
   border-color: [CORE_BGCOLORALTERN];
-  border-style:solid none none none;;
+  border-style:solid none none none;
   border-width: 1px 0pt 0pt 0pt;
   color: [CORE_TEXTBGCOLOR];
 }
