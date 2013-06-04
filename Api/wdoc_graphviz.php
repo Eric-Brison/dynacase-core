@@ -399,15 +399,7 @@ class DotWorkflow
             if (count($tm) > 0) {
                 $e2 = 'tmfirst';
                 
-                $tmlabel = str_replace(array(
-                    "\n",
-                    ' ',
-                    '<BR>'
-                ) , array(
-                    "\\n,",
-                    "\\n",
-                    ",\\n"
-                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState) , $this->wdoc->arrayToRawValue($tm) , '_self', false));
+                $tmlabel = $this->quoteLabel($this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState) , $this->wdoc->arrayToRawValue($tm) , '_self', false));
                 $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
                 $this->lines[] = '"' . str_replace(" ", "\\n", $e2) . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=octagon,color="' . $this->style['timer-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
                 $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -415,15 +407,7 @@ class DotWorkflow
             }
             if (count($mt) > 0) {
                 $e2 = 'mtfirst';
-                $tmlabel = str_replace(array(
-                    "\n",
-                    ' ',
-                    '<BR>'
-                ) , array(
-                    "\\n,",
-                    "\\n",
-                    ",\\n"
-                ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
+                $tmlabel = $this->quoteLabel($this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
                 $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
                 $this->lines[] = '"' . $e2 . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=house,color="' . $this->style['mail-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
                 $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -436,6 +420,21 @@ class DotWorkflow
                 $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
             }
         }
+    }
+    
+    private function quoteLabel($s)
+    {
+        return str_replace(array(
+            "\n",
+            ' ',
+            '"',
+            '<BR>',
+        ) , array(
+            "\\n,",
+            "\\n",
+            "&quot;",
+            ",\\n"
+        ) , $s);
     }
     /**
      * define mail node
@@ -455,15 +454,7 @@ class DotWorkflow
             $ex = 'mt' . $index;
             $tmlabel = "mail";
             
-            $tmlabel = str_replace(array(
-                "\n",
-                ' ',
-                '<BR>',
-            ) , array(
-                "\\n,",
-                "\\n",
-                ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->arrayToRawValue($mtrans) , '_self', false));
+            $tmlabel = $this->quoteLabel($this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->arrayToRawValue($mtrans) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
             
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false, tooltip="mail",style=bold,shape=house,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
@@ -487,15 +478,7 @@ class DotWorkflow
         if (count($mt) > 0) {
             $ex = 'mtf' . $index;
             
-            $tmlabel = str_replace(array(
-                "\n",
-                ' ',
-                '<BR>'
-            ) , array(
-                "\\n,",
-                "\\n",
-                ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $t["e2"]) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
+            $tmlabel = $this->quoteLabel($this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $t["e2"]) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,tooltip="mail",style=bold,shape=house,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -520,15 +503,7 @@ class DotWorkflow
         if (count($mt) > 0) {
             $ex = 'tmf' . $index;
             
-            $tmlabel = str_replace(array(
-                "\n",
-                ' ',
-                '<BR>'
-            ) , array(
-                "\\n,",
-                "\\n",
-                ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $t["e2"]) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
+            $tmlabel = $this->quoteLabel($this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $t["e2"]) , $this->wdoc->arrayToRawValue($mt) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,tooltip="timer",style=bold,shape=octagon,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -554,15 +529,7 @@ class DotWorkflow
         
         if (count($ttrans) > 0) {
             $ex = 'tm' . $index;
-            $tmlabel = str_replace(array(
-                "\n",
-                ' ',
-                '<BR>'
-            ) , array(
-                "\\n,",
-                "\\n",
-                ",\\n"
-            ) , $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->arrayToRawValue($ttrans) , '_self', false));
+            $tmlabel = $this->quoteLabel($this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]) , $this->wdoc->arrayToRawValue($ttrans) , '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,tooltip="timer",shape=octagon,color="' . $this->style['timer-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s",labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
@@ -730,9 +697,11 @@ class DotWorkflow
     {
         if ($s) return str_replace(array(
             " ",
+            '"',
             "_"
         ) , array(
             "\\n",
+            "&quot;",
             "\\n"
         ) , _($s));
         return '';
