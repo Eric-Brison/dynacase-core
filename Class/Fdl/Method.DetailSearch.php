@@ -281,8 +281,11 @@ class _DSEARCH extends DocSearch
         /**
          * @var NormalAttribute $oa
          */
-        if ($oa) $atype = $oa->type;
-        else if (Doc::$infofields[$col]) $atype = Doc::$infofields[$col]["type"];
+        if ($oa) {
+            $atype = $oa->type;
+        } elseif (Doc::$infofields[$col]) {
+            $atype = Doc::$infofields[$col]["type"];
+        }
         if (($atype == "date" || $atype == "timestamp")) {
             if ($col == 'revdate') {
                 if ($op == "=") {
@@ -299,8 +302,12 @@ class _DSEARCH extends DocSearch
                 }
                 
                 $cfgdate = getLocaleConfig();
-                if ($val) $val = stringDateToIso($val, $cfgdate['dateFormat']);
-                if ($val2) $val2 = stringDateToIso($val2, $cfgdate['dateFormat']);
+                if ($val) {
+                    $val = stringDateToIso($val, $cfgdate['dateFormat']);
+                }
+                if ($val2) {
+                    $val2 = stringDateToIso($val2, $cfgdate['dateFormat']);
+                }
                 
                 if (($atype == "timestamp") && ($op == "=")) {
                     
@@ -353,17 +360,24 @@ class _DSEARCH extends DocSearch
                 break;
 
             case "~*":
-                if (trim($val) != "") $cond = " " . $col . " " . trim($op) . " " . $this->_pg_val($val) . " ";
+                if (trim($val) != "") {
+                    $cond = " " . $col . " " . trim($op) . " " . $this->_pg_val($val) . " ";
+                }
                 break;
 
             case "~^":
-                if (trim($val) != "") $cond = " " . $col . "~* '^" . pg_escape_string(trim($val)) . "' ";
+                if (trim($val) != "") {
+                    $cond = " " . $col . "~* '^" . pg_escape_string(trim($val)) . "' ";
+                }
                 break;
 
             case "~y":
-                if (!is_array($val)) $val = $this->rawValueToArray($val);
-                if (count($val) > 0) $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
-                
+                if (!is_array($val)) {
+                    $val = $this->rawValueToArray($val);
+                }
+                if (count($val) > 0) {
+                    $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
+                }
                 break;
 
             case "><":
@@ -377,8 +391,9 @@ class _DSEARCH extends DocSearch
                     case "uid":
                         $err = simpleQuery(getDbAccessCore() , sprintf("select id from users where firstname ~* '%s' or lastname ~* '%s'", pg_escape_string($val) , pg_escape_string($val)) , $ids, true);
                         if ($err == "") {
-                            if (count($ids) == 0) $cond = "false";
-                            elseif (count($ids) == 1) {
+                            if (count($ids) == 0) {
+                                $cond = "false";
+                            } elseif (count($ids) == 1) {
                                 $cond = " " . $col . " = " . intval($ids[0]) . " ";
                             } else {
                                 $cond = " " . $col . " in (" . implode(',', $ids) . ") ";
@@ -392,14 +407,20 @@ class _DSEARCH extends DocSearch
                             $otitle = $oa->getOption("doctitle");
                             if (!$otitle) {
                                 $fid = $oa->format;
-                                if (!$fid && $oa->type == "account") $fid = "IUSER";
-                                if (!$fid) $err = sprintf(_("no compatible type with operator %s") , $op);
-                                else {
-                                    if (!is_numeric($fid)) $fid = getFamidFromName($this->dbaccess, $fid);
+                                if (!$fid && $oa->type == "account") {
+                                    $fid = "IUSER";
+                                }
+                                if (!$fid) {
+                                    $err = sprintf(_("no compatible type with operator %s") , $op);
+                                } else {
+                                    if (!is_numeric($fid)) {
+                                        $fid = getFamidFromName($this->dbaccess, $fid);
+                                    }
                                     $err = simpleQuery($this->dbaccess, sprintf("select id from doc%d where title ~* '%s'", $fid, pg_escape_string($val)) , $ids, true);
                                     if ($err == "") {
-                                        if (count($ids) == 0) $cond = "false";
-                                        elseif (count($ids) == 1) {
+                                        if (count($ids) == 0) {
+                                            $cond = "false";
+                                        } elseif (count($ids) == 1) {
                                             $cond = " " . $col . " = '" . intval($ids[0]) . "' ";
                                         } else {
                                             $cond = " " . $col . " in ('" . implode("','", $ids) . "') ";
@@ -407,7 +428,9 @@ class _DSEARCH extends DocSearch
                                     }
                                 }
                             } else {
-                                if ($otitle == "auto") $otitle = $oa->id . "_title";
+                                if ($otitle == "auto") {
+                                    $otitle = $oa->id . "_title";
+                                }
                                 $oat = $this->searchfam->getAttribute($otitle);
                                 if ($oat) {
                                     $cond = " " . $oat->id . " ~* '" . pg_escape_string(trim($val)) . "' ";
@@ -418,8 +441,9 @@ class _DSEARCH extends DocSearch
                         } elseif ($col == "fromid") {
                             $err = simpleQuery($this->dbaccess, sprintf("select id from docfam where title ~* '%s'", pg_escape_string($val)) , $ids, true);
                             if ($err == "") {
-                                if (count($ids) == 0) $cond = "false";
-                                elseif (count($ids) == 1) {
+                                if (count($ids) == 0) {
+                                    $cond = "false";
+                                } elseif (count($ids) == 1) {
                                     $cond = " " . $col . " = " . intval($ids[0]) . " ";
                                 } else {
                                     $cond = " " . $col . " in (" . implode(",", $ids) . ") ";
@@ -429,972 +453,961 @@ class _DSEARCH extends DocSearch
                         break;
 
                     default:
-                        if ($atype) $err = sprintf(_("attribute %s : %s type is not allowed with %s operator") , $col, $atype, $op);
-                        else $err = sprintf(_("attribute %s not found [%s]") , $col, $atype);
-                    }
-                    break;
-
-                case "~@":
-                    if (trim($val) != "") {
-                        $cond = " " . $col . '_txt' . " ~ '" . strtolower($val) . "' ";
-                    }
-                    break;
-
-                case "=@":
-                case "@@":
-                    if (trim($val) != "") {
-                        $tstatickeys = explode(' ', $val);
-                        if (count($tstatickeys) > 1) {
-                            $keyword = str_replace(" ", "&", trim($val));
+                        if ($atype) {
+                            $err = sprintf(_("attribute %s : %s type is not allowed with %s operator") , $col, $atype, $op);
                         } else {
-                            $keyword = trim($val);
+                            $err = sprintf(_("attribute %s not found [%s]") , $col, $atype);
                         }
-                        if ($op == "@@") $cond = " " . $col . '_vec' . " @@ to_tsquery('french','." . unaccent(strtolower($keyword)) . "') ";
-                        else if ($op == "=@") $cond = "fulltext @@ to_tsquery('french','" . unaccent(strtolower($keyword)) . "') ";
-                    }
-                    break;
+                }
+                break;
 
-                default:
-                    
-                    switch ($atype) {
-                        case "enum":
-                            $enum = $oa->getEnum();
-                            if (strrpos($val, '.') !== false) $val = substr($val, strrpos($val, '.') + 1);
-                            $tkids = array();;
-                            foreach ($enum as $k => $v) {
-                                if (in_array($val, explode(".", $k))) {
-                                    $tkids[] = substr($k, strrpos("." . $k, '.'));
-                                }
-                            }
-                            
-                            if ($op == '=') {
-                                if ($oa->repeat) {
-                                    $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $tkids)) . ")\\\\y' ";
-                                } else {
-                                    $cond = " $col='" . implode("' or $col='", $tkids) . "'";
-                                }
-                            } elseif ($op == '!=') {
-                                if ($oa->repeat) {
-                                    $cond1 = " " . $col . " !~ E'\\\\y(" . pg_escape_string(implode('|', $tkids)) . ")\\\\y' ";
-                                } else {
-                                    $cond1 = " $col !='" . implode("' and $col != '", $tkids) . "'";
-                                }
-                                $cond = " (($cond1) or ($col is null))";
-                            } elseif ($op == '!~*') {
-                                $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op) , $this->_pg_val($val));
-                            }
-                            
-                            break;
+            case "~@":
+                if (trim($val) != "") {
+                    $cond = " " . $col . '_txt' . " ~ '" . strtolower($val) . "' ";
+                }
+                break;
 
-                        default:
-                            if ($atype == "docid") {
-                                if (!is_numeric($val)) $val = getIdFromName($this->dbaccess, $val);
-                            }
-                            $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
-                            if (($op == '!=') || ($op == '!~*')) {
-                                $cond = "(($cond1) or ($col is null))";
-                            } else $cond = $cond1;
-                        }
-                    }
-                    if (!$cond) $cond = "true";
-                    elseif ($stateCol == "activity") {
-                        $cond = sprintf("(%s and locked != -1)", $cond);
-                    } elseif ($stateCol == "fixstate") {
-                        $cond = sprintf("(%s and locked = -1)", $cond);
-                    }
-                    return $cond;
-                }
-                
-                private static function _pg_val($s)
-                {
-                    if (substr($s, 0, 2) == ':@') {
-                        return " " . trim(strtok(substr($s, 2) , " \t")) . " ";
-                    } else return " '" . pg_escape_string(trim($s)) . "' ";
-                }
-                /**
-                 * return array of sql filter needed to search wanted document
-                 */
-                function getSqlDetailFilter()
-                {
-                    $ol = $this->getRawValue("SE_OL");
-                    $tkey = $this->getMultipleRawValues("SE_KEYS");
-                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
-                    $tf = $this->getMultipleRawValues("SE_FUNCS");
-                    $tlp = $this->getMultipleRawValues("SE_LEFTP");
-                    $tlr = $this->getMultipleRawValues("SE_RIGHTP");
-                    $tols = $this->getMultipleRawValues("SE_OLS");
-                    
-                    if ($ol == "") {
-                        // try in old version
-                        $ols = $this->getMultipleRawValues("SE_OLS");
-                        $ol = isset($ols[1]) ? $ols[1] : '';
-                        if ($ol) {
-                            $this->setValue("SE_OL", $ol);
-                            $this->modify();
-                        }
-                    }
-                    if ($ol == "") $ol = "and";
-                    $cond = "";
-                    if (!$this->searchfam) {
-                        $this->searchfam = new_doc($this->dbaccess, $this->getRawValue("se_famid"));
-                    }
-                    if ((count($taid) > 1) || (count($taid) > 0 && $taid[0] != "")) {
-                        // special loop for revdate
-                        foreach ($tkey as $k => $v) {
-                            // Does it looks like a method name?
-                            $methodName = $this->getMethodName($v);
-                            if ($methodName != '') {
-                                // it's method call
-                                $workdoc = $this->getSearchFamilyDocument();
-                                if (!$workdoc) {
-                                    $workdoc = $this;
-                                }
-                                if (!$workdoc->isValidSearchMethod($workdoc, $methodName)) {
-                                    return 'false';
-                                }
-                                $rv = $workdoc->ApplyMethod($v);
-                                $tkey[$k] = $rv;
-                            }
-                            if (substr($v, 0, 1) == "?") {
-                                // it's a parameter
-                                $rv = getHttpVars(substr($v, 1) , "-");
-                                if ($rv == "-") return (false);
-                                if ($rv === "" || $rv === " ") unset($taid[$k]);
-                                else $tkey[$k] = $rv;
-                            }
-                            if ($taid[$k] == "revdate") {
-                                list($dd, $mm, $yyyy) = explode("/", $tkey[$k]);
-                                if ($yyyy > 0) $tkey[$k] = mktime(0, 0, 0, $mm, $dd, $yyyy);
-                            }
-                        }
-                        foreach ($taid as $k => $v) {
-                            $cond1 = $this->getSqlCond($taid[$k], trim($tf[$k]) , $tkey[$k]);
-                            if ($cond == "") {
-                                if (isset($tlp[$k]) && $tlp[$k] == "yes") $cond = '(' . $cond1 . " ";
-                                else $cond = $cond1 . " ";
-                                if (isset($tlr[$k]) && $tlr[$k] == "yes") $cond.= ')';
-                            } elseif ($cond1 != "") {
-                                if (isset($tols[$k]) && $tols[$k] != "") $ol1 = $tols[$k];
-                                else $ol1 = $ol;
-                                if (isset($tlp[$k]) && $tlp[$k] == "yes") $cond.= $ol1 . ' (' . $cond1 . " ";
-                                else $cond.= $ol1 . " " . $cond1 . " ";
-                                if (isset($tlr[$k]) && $tlr[$k] == "yes") $cond.= ') ';
-                            }
-                        }
-                    }
-                    if (trim($cond) == "") $cond = "true";
-                    return $cond;
-                }
-                /**
-                 * return true if the search has parameters
-                 */
-                function isParameterizable()
-                {
-                    $tkey = $this->getMultipleRawValues("SE_KEYS");
-                    if (empty($tkey)) return false;
-                    if ((count($tkey) > 1) || ($tkey[0] != "")) {
-                        foreach ($tkey as $k => $v) {
-                            
-                            if ($v && $v[0] == '?') {
-                                return true;
-                                //if (getHttpVars(substr($v,1),"-") == "-") return true;
-                                
-                            }
-                        }
-                    }
-                    return false;
-                }
-                /**
-                 * return true if the search need parameters
-                 */
-                function needParameters()
-                {
-                    $tkey = $this->getMultipleRawValues("SE_KEYS");
-                    
-                    if ((count($tkey) > 1) || ($tkey[0] != "")) {
-                        
-                        foreach ($tkey as $k => $v) {
-                            
-                            if ($v && $v[0] == '?') {
-                                if (getHttpVars(substr($v, 1) , "-") == "-") return true;
-                            }
-                        }
-                    }
-                    return false;
-                }
-                /**
-                 * Add parameters
-                 */
-                function urlWhatEncodeSpec($l)
-                {
-                    $tkey = $this->getMultipleRawValues("SE_KEYS");
-                    
-                    if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
-                        
-                        foreach ($tkey as $k => $v) {
-                            
-                            if ($v && $v[0] == '?') {
-                                if (getHttpVars(substr($v, 1) , "-") != "-") {
-                                    $l.= '&' . substr($v, 1) . "=" . getHttpVars(substr($v, 1));
-                                }
-                            }
-                        }
-                    }
-                    
-                    return $l;
-                }
-                /**
-                 * add parameters in title
-                 */
-                function getCustomTitle()
-                {
-                    $tkey = $this->getMultipleRawValues("SE_KEYS");
-                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
-                    $l = "";
-                    if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
-                        $tl = array();
-                        foreach ($tkey as $k => $v) {
-                            
-                            if ($v && $v[0] == '?') {
-                                $vh = getHttpVars(substr($v, 1) , "-");
-                                if (($vh != "-") && ($vh != "")) {
-                                    
-                                    if (is_numeric($vh)) {
-                                        $fam = $this->getSearchFamilyDocument();
-                                        if ($fam) {
-                                            $oa = $fam->getAttribute($taid[$k]);
-                                            if ($oa && $oa->type == "docid") {
-                                                $vh = $this->getTitle($vh);
-                                            }
-                                        }
-                                    }
-                                    $tl[] = $vh;
-                                }
-                            }
-                        }
-                        if (count($tl) > 0) {
-                            $l = " (" . implode(", ", $tl) . ")";
-                        }
-                    }
-                    return $this->getRawValue("ba_title") . $l;
-                }
-                /**
-                 * @templateController default detailed search view
-                 * @param string $target
-                 * @param bool $ulink
-                 * @param bool $abstract
-                 */
-                function viewdsearch($target = "_self", $ulink = true, $abstract = false)
-                {
-                    // Compute value to be inserted in a  layout
-                    $this->viewattr();
-                    //-----------------------------------------------
-                    // display already condition written
-                    $tkey = $this->getMultipleRawValues("SE_KEYS");
-                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
-                    $tf = $this->getMultipleRawValues("SE_FUNCS");
-                    if ((count($taid) > 1) || (!empty($taid[0]))) {
-                        
-                        $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
-                        $zpi = $fdoc->GetNormalAttributes();
-                        $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
-                        $zpi["fixstate"] = new BasicAttribute("fixstate", $this->fromid, _("state"));
-                        $zpi["activity"] = new BasicAttribute("activity", $this->fromid, _("activity"));
-                        $zpi["title"] = new BasicAttribute("title", $this->fromid, _("doctitle"));
-                        $zpi["revdate"] = new BasicAttribute("revdate", $this->fromid, _("revdate"));
-                        $zpi["cdate"] = new BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
-                        $zpi["revision"] = new BasicAttribute("cdate", $this->fromid, _("revision"));
-                        $zpi["owner"] = new BasicAttribute("owner", $this->fromid, _("owner"));
-                        $zpi["locked"] = new BasicAttribute("owner", $this->fromid, _("locked"));
-                        $zpi["allocated"] = new BasicAttribute("owner", $this->fromid, _("allocated"));
-                        $zpi["svalues"] = new BasicAttribute("svalues", $this->fromid, _("any values"));
-                        $tcond = array();
-                        foreach ($taid as $k => $v) {
-                            if (isset($zpi[$v])) {
-                                $label = $zpi[$v]->getLabel();
-                                if ($label == "") $label = $v;
-                                if ($v == "activity") {
-                                    $fdoc->state = $tkey[$k];
-                                    $displayValue = $fdoc->getStatelabel();
-                                } else {
-                                    $displayValue = ($tkey[$k] != "") ? _($tkey[$k]) : $tkey[$k];
-                                }
-                                $type = $zpi[$taid[$k]]->type;
-                                if ($zpi[$taid[$k]]->isMultiple() || $zpi[$taid[$k]]->inArray()) {
-                                    if ($type === "docid") $type = "docid[]";
-                                    else if ($type === "account") $type = "account[]";
-                                }
-                                $tcond[]["condition"] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $type) , $displayValue);
-                                if (isset($tkey[$k][0]) && $tkey[$k][0] == '?') {
-                                    $tparm[substr($tkey[$k], 1) ] = $taid[$k];
-                                }
-                            } else {
-                                addWarningMsg(sprintf("property %s not know", $v));
-                            }
-                        }
-                        $this->lay->SetBlockData("COND", $tcond);
-                    }
-                    $this->lay->Set("ddetail", "");
-                }
-                /**
-                 * return true if the sqlselect is writted by hand
-                 * @return bool
-                 */
-                function isStaticSql()
-                {
-                    return ($this->getRawValue("se_static") != "");
-                }
-                /**
-                 * return family use for search
-                 * @return Doc
-                 */
-                private function getSearchFamilyDocument()
-                {
-                    static $fam = null;
-                    if (!$fam) $fam = createTmpDoc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
-                    return $fam;
-                }
-                /**
-                 * @templateController
-                 * @param string $target
-                 * @param bool $ulink
-                 * @param bool $abstract
-                 */
-                function paramdsearch($target = "_self", $ulink = true, $abstract = false)
-                {
-                    // Compute value to be inserted in a  layout
-                    $this->viewattr();
-                    $tparm = $tcond = array();
-                    //-----------------------------------------------
-                    // display already condition written
-                    $tkey = $this->getMultipleRawValues("SE_KEYS");
-                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
-                    $tf = $this->getMultipleRawValues("SE_FUNCS");
-                    $zpi = $toperator = array();
-                    if ((count($taid) > 1) || ($taid[0] != "")) {
-                        
-                        $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
-                        $zpi = $fdoc->GetNormalAttributes();
-                        $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
-                        $zpi["fixstate"] = new BasicAttribute("state", $this->fromid, _("fixstate"));
-                        $zpi["activity"] = new BasicAttribute("state", $this->fromid, _("activity"));
-                        $zpi["title"] = new BasicAttribute("title", $this->fromid, _("doctitle"));
-                        $zpi["revdate"] = new BasicAttribute("revdate", $this->fromid, _("revdate"));
-                        $zpi["cdate"] = new BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
-                        $zpi["revision"] = new BasicAttribute("cdate", $this->fromid, _("revision"));
-                        $zpi["owner"] = new BasicAttribute("owner", $this->fromid, _("owner"));
-                        $zpi["locked"] = new BasicAttribute("owner", $this->fromid, _("locked"));
-                        $zpi["allocated"] = new BasicAttribute("owner", $this->fromid, _("allocated"));
-                        $zpi["svalues"] = new BasicAttribute("svalues", $this->fromid, _("any values"));
-                        
-                        foreach ($taid as $k => $v) {
-                            if ($tkey[$k][0] == '?') {
-                                $tparm[substr($tkey[$k], 1) ] = $taid[$k];
-                                $toperator[substr($tkey[$k], 1) ] = $tf[$k];
-                            }
-                        }
-                        $this->lay->SetBlockData("COND", $tcond);
-                    }
-                    
-                    $this->lay->Set("ddetail", "");
-                    if (count($tparm) > 0) {
-                        include_once ("FDL/editutil.php");
-                        global $action;
-                        editmode($action);
-                        
-                        $doc = $this->getSearchFamilyDocument();
-                        $inputset = array();
-                        $ki = 0; // index numeric
-                        $tinputs = $ttransfert = array();
-                        foreach ($tparm as $k => $v) {
-                            if (isset($inputset[$v])) {
-                                // need clone when use several times the same attribute
-                                $vz = $v . "Z" . $ki;
-                                $zpi[$vz] = $zpi[$v];
-                                $zpi[$vz]->id = $vz;
-                                $v = $vz;
-                            }
-                            if ($zpi[$v]->fieldSet->type == 'array') $zpi[$v]->fieldSet->type = 'frame'; // no use array configuration for help input
-                            $ki++;
-                            $inputset[$v] = true;
-                            
-                            $ttransfert[] = array(
-                                "idi" => $v,
-                                "idp" => $k,
-                                "value" => getHttpVars($k)
-                            );
-                            $tinputs[$k]["label"] = $zpi[$v]->getLabel();
-                            $type = $zpi[$v]->type;
-                            if ($zpi[$v]->isMultiple() || $zpi[$v]->inArray()) {
-                                if ($type === "docid") $type = "docid[]";
-                                else if ($type === "account") $type = "account[]";
-                            }
-                            $tinputs[$k]["operator"] = $this->getOperatorLabel($toperator[$k], $type);
-                            if (($toperator[$k] == "=~*" || $toperator[$k] == "~*") && $zpi[$v]->type == "docid") $zpi[$v]->type = "text"; // present like a search when operator is text search
-                            if ($zpi[$v]->visibility == 'R') $zpi[$v]->mvisibility = 'W';
-                            if ($zpi[$v]->visibility == 'S') $zpi[$v]->mvisibility = 'W';
-                            if (isset($zpi[$v]->id)) {
-                                $zpi[$v]->isAlone = true;
-                                $tinputs[$k]["inputs"] = getHtmlInput($doc, $zpi[$v], getHttpVars($k));
-                            } else {
-                                $aotxt = new BasicAttribute($v, $doc->id, "eou");
-                                if ($v == "revdate") $aotxt->type = "date";
-                                $tinputs[$k]["inputs"] = getHtmlInput($doc, $aotxt, getHttpVars($k));
-                            }
-                        }
-                        $this->lay->setBlockData("PARAM", $tinputs);
-                        $this->lay->setBlockData("TRANSFERT", $ttransfert);
-                        $this->lay->setBlockData("PINPUTS", $ttransfert);
-                        $this->lay->Set("ddetail", "none");
-                        $this->lay->set("stext", _("send search"));
-                        $this->lay->set("saction", getHttpVars("saction", "FREEDOM_VIEW"));
-                        $this->lay->set("sapp", getHttpVars("sapp", "FREEDOM"));
-                        $this->lay->set("sid", getHttpVars("sid", "dirid"));
-                        $this->lay->set("starget", getHttpVars("starget", ""));
-                        $this->lay->set("icon", $this->getIcon());
-                    }
-                }
-                // -----------------------------------
-                
-                /**
-                 *
-                 * @templateController default detailed search edit view
-                 */
-                function editdsearch()
-                {
-                    /**
-                     * @var Action $action
-                     */
-                    global $action;
-                    $classid = GetHttpVars("sfamid", 0);
-                    $famid = $this->getRawValue("SE_FAMID", 0);
-                    $onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
-                    $dirid = GetHttpVars("dirid");
-                    $alsosub = getHttpVars("alsosub") == "Y";
-                    $this->lay->set("ACTION", $action->name);
-                    $tclassdoc = array();
-                    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
-                    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
-                    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
-                    
-                    if ($dirid > 0) {
-                        /**
-                         * @var Dir $dir
-                         */
-                        $dir = new_Doc($this->dbaccess, $dirid);
-                        if (method_exists($dir, "isAuthorized")) {
-                            if ($dir->isAuthorized($classid)) {
-                                // verify if classid is possible
-                                if ($dir->hasNoRestriction()) {
-                                    $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
-                                    $tclassdoc[] = array(
-                                        "id" => 0,
-                                        "title" => _("any families") ,
-                                        "usefor" => ''
-                                    );
-                                } else {
-                                    $tclassdoc = $dir->getAuthorizedFamilies();
-                                    $this->lay->set("restrict", true);
-                                }
-                            } else {
-                                $tclassdoc = $dir->getAuthorizedFamilies();
-                                $first = current($tclassdoc);
-                                $famid1 = ($first["id"]);
-                                $this->lay->set("restrict", true);
-                                $tfamids = array_keys($tclassdoc);
-                                if (!in_array($famid, $tfamids)) $famid = $famid1;
-                            }
-                        } else {
-                            $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
-                        }
+            case "=@":
+            case "@@":
+                if (trim($val) != "") {
+                    $tstatickeys = explode(' ', $val);
+                    if (count($tstatickeys) > 1) {
+                        $keyword = str_replace(" ", "&", trim($val));
                     } else {
-                        if ($onlysubfam) {
-                            if (!is_numeric($onlysubfam)) $onlysubfam = getFamIdFromName($this->dbaccess, $onlysubfam);
-                            $cdoc = new_Doc($this->dbaccess, $onlysubfam);
-                            $tsub = $cdoc->GetChildFam($cdoc->id, false);
-                            $tclassdoc[$classid] = array(
-                                "id" => $cdoc->id,
-                                "title" => $cdoc->title,
-                                "usefor" => ''
-                            );
-                            if ($alsosub) {
-                                $tclassdoc = array_merge($tclassdoc, $tsub);
-                            }
-                            if (!$this->id) $this->setValue("se_famonly", $alsosub ? "no" : "yes");
-                            $first = current($tclassdoc);
-                            if ($classid == "") $classid = $first["id"];
-                        } else {
-                            $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
-                            $tclassdoc[] = array(
-                                "id" => 0,
-                                "title" => _("any families") ,
-                                "usefor" => ''
-                            );
-                        }
+                        $keyword = trim($val);
                     }
-                    $sLabelArray = array();
-                    foreach ($this->top as $k => $v) {
-                        $sLabel = array();
-                        if (isset($v["slabel"]) && is_array($v["slabel"])) {
-                            foreach ($v["slabel"] as $key => $value) {
-                                $sLabel[$key] = _($value);
-                            }
-                        }
-                        $sLabelArray[$k] = array(
-                            "label" => _($v["label"]) ,
-                            "slabel" => $sLabel
-                        );
+                    if ($op == "@@") {
+                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','." . unaccent(strtolower($keyword)) . "') ";
+                    } elseif ($op == "=@") {
+                        $cond = "fulltext @@ to_tsquery('french','" . unaccent(strtolower($keyword)) . "') ";
                     }
-                    $this->lay->set("topInformation", json_encode($sLabelArray));
-                    $this->lay->set("onlysubfam", $onlysubfam);
-                    $selfam = false;
-                    $selectclass = array();
-                    foreach ($tclassdoc as $k => $tdoc) {
-                        $selectclass[$k]["idcdoc"] = $tdoc["id"];
-                        $selectclass[$k]["classname"] = $tdoc["title"];
-                        $selectclass[$k]["system_fam"] = (substr($tdoc["usefor"], 0, 1) == 'S') ? true : false;
-                        if (abs($tdoc["id"]) == abs($famid)) {
-                            $selfam = true;
-                            $selectclass[$k]["selected"] = 'selected="selected"';
-                            if ($famid < 0) $this->lay->set("selfam", $tdoc["title"] . " " . _("(only)"));
-                            else $this->lay->set("selfam", $tdoc["title"]);
-                        } else $selectclass[$k]["selected"] = "";
-                    }
-                    if (!$selfam) {
-                        $famid = abs($this->getRawValue("se_famid"));
-                        if ($this->id && $famid) {
-                            $selectclass[] = array(
-                                "idcdoc" => $famid,
-                                "classname" => $this->getTitle($famid) ,
-                                "selected" => "selected"
-                            );
-                        } else {
-                            reset($tclassdoc);
-                            $first = current($tclassdoc);
-                            $famid = $first["id"];
-                        }
-                    }
-                    $this->lay->Set("dirid", $dirid);
-                    $this->lay->Set("classid", $this->fromid);
-                    $this->lay->SetBlockData("SELECTCLASS", $selectclass);
-                    $this->lay->set("has_permission_fdl_system", $action->parent->hasPermission('FDL', 'SYSTEM'));
-                    $this->lay->set("se_sysfam", ($this->getRawValue('se_sysfam') == 'yes') ? true : false);
-                    $this->setFamidInLayout();
-                    // display attributes
-                    $tattr = array();
-                    $internals = array(
-                        "title" => _("doctitle") ,
-                        "revdate" => _("revdate") ,
-                        "cdate" => _("cdate") ,
-                        "revision" => _("revision") ,
-                        "owner" => _("id owner") ,
-                        "locked" => _("id locked") ,
-                        "allocated" => _("id allocated") ,
-                        "svalues" => _("any values")
-                    );
-                    
-                    $tattr[] = array(
-                        "attrid" => "_prop",
-                        "attrtype" => "set",
-                        "attrdisabled" => "disabled",
-                        "attrname" => _("DocProperties") ,
-                        "ismultiple" => 'no'
-                    );
-                    
-                    foreach ($internals as $k => $v) {
-                        if ($k == "revdate") $type = "date";
-                        else if ($k == "owner") $type = "uid";
-                        else if ($k == "locked") $type = "uid";
-                        else if ($k == "allocated") $type = "uid";
-                        else if ($k == "cdate") $type = "date";
-                        else if ($k == "revision") $type = "int";
-                        else if ($k == "state") $type = "docid";
-                        else $type = "text";
-                        
-                        $tattr[] = array(
-                            "attrid" => $k,
-                            "ismultiple" => 'no',
-                            "attrtype" => $type,
-                            "attrdisabled" => "",
-                            "attrname" => $v
-                        );
-                    }
-                    
-                    $fdoc = new_Doc($this->dbaccess, abs($famid));
-                    $tmpDoc = createTmpDoc($this->dbaccess, abs($famid));
-                    $zpi = $fdoc->GetNormalAttributes();
-                    
-                    foreach ($zpi as $k => $v) {
-                        if ($v->type == "array" || $v->type == "password") {
-                            continue;
-                        }
-                        $opt_searchcriteria = $v->getOption("searchcriteria", "");
-                        if ($opt_searchcriteria == "hidden" || $opt_searchcriteria == "restricted") {
-                            continue;
-                        }
-                        
-                        $type = $v->type;
-                        if ($v->getOption("doctitle") && $v->isMultiple()) $type = "docidtitle[]";
-                        $tset = $this->editGetSetAttribute($v->fieldSet);
-                        if (count($tset) > 0) $tattr = array_merge($tattr, array_reverse($tset));
-                        
-                        $tattr[] = array(
-                            "attrid" => $v->id,
-                            "ismultiple" => ($v->isMultiple()) ? 'yes' : 'no',
-                            "attrtype" => $type,
-                            "attrdisabled" => "",
-                            "attrname" => $v->getLabel()
-                        );
-                    }
-                    if ($action->getParam("ISIE6")) {
-                        // cannot disable select option with IE6
-                        foreach ($tattr as $ka => $va) {
-                            if (!empty($va["attrdisabled"])) unset($tattr[$ka]);
-                        }
-                    }
-                    $this->lay->SetBlockData("ATTR", $tattr);
-                    $tfunc = array();
-                    foreach ($this->top as $k => $v) {
-                        $display = '';
-                        if (isset($v["type"])) {
-                            $ctype = implode(",", $v["type"]);
-                            if (!in_array('text', $v["type"])) $display = 'none'; // first is title
-                            
-                        } else $ctype = "";
-                        
-                        $tfunc[] = array(
-                            "funcid" => $k,
-                            "functype" => $ctype,
-                            "funcdisplay" => $display,
-                            "funcname" => _($v["label"])
-                        );
-                    }
-                    $this->lay->SetBlockData("FUNC", $tfunc);
-                    foreach ($tfunc as $k => $v) {
-                        if (($v["functype"] != "") && (strpos($v["functype"], "enum") === false)) unset($tfunc[$k]);
-                    }
-                    $this->lay->SetBlockData("FUNCSTATE", $tfunc);
-                    $this->lay->Set("icon", $fdoc->getIcon());
-                    
-                    if ($this->getRawValue("SE_LATEST") == "no") $this->lay->Set("select_all", "selected");
-                    else $this->lay->Set("select_all", "");
-                    $states = array();
-                    //-----------------------------------------------
-                    // display state
-                    $wdoc = null;
-                    if ($fdoc->wid > 0) {
-                        $wdoc = new_Doc($this->dbaccess, $fdoc->wid);
-                        /**
-                         * @var Wdoc $wdoc
-                         */
-                        $states = $wdoc->getStates();
-                        
-                        $tstates = array();
-                        foreach ($states as $k => $v) {
-                            $tstates[] = array(
-                                "step" => "state",
-                                "stateid" => $v,
-                                "statename" => _($v)
-                            );
-                            $activity = $wdoc->getActivity($v);
-                            
-                            $tstates[] = array(
-                                "step" => "activity",
-                                "stateid" => $v,
-                                "statename" => ($activity) ? _($activity) : _($v)
-                            );
-                        }
-                        $this->lay->SetBlockData("STATE", $tstates);
-                        $this->lay->Set("dstate", "inline");
-                    } else {
-                        $this->lay->Set("dstate", "none");
-                    }
-                    //-----------------------------------------------
-                    // display already condition written
-                    $tol = $this->getMultipleRawValues("SE_OLS");
-                    $tkey = $this->getMultipleRawValues("SE_KEYS");
-                    $taid = $this->getMultipleRawValues("SE_ATTRIDS");
-                    $tf = $this->getMultipleRawValues("SE_FUNCS");
-                    $tlp = $this->getMultipleRawValues("SE_LEFTP");
-                    $trp = $this->getMultipleRawValues("SE_RIGHTP");
-                    
-                    $cond = "";
-                    $tcond = array();
-                    if ((count($taid) > 1) || ($taid && $taid[0] != "")) {
-                        foreach ($taid as $k => $keyId) {
-                            $docid_aid = 0;
-                            $v = $tkey[$k];
-                            $oa = $fdoc->getAttribute($keyId);
-                            $tcond[$k] = array(
-                                "OLCOND" => "olcond$k",
-                                "ATTRCOND" => "attrcond$k",
-                                "FUNCCOND" => "funccond$k",
-                                "ISENUM" => (($keyId == "state") || ($keyId == "fixstate") || ($keyId == "activity") || ($oa && $oa->type == "enum")) ,
-                                "SSTATE" => "sstate$k",
-                                "ols_and_selected" => ($tol[$k] == "and") ? "selected" : "",
-                                "ols_or_selected" => ($tol[$k] == "or") ? "selected" : "",
-                                "leftp_none_selected" => ($tlp[$k] != "yes") ? "selected" : "",
-                                "leftp_open_selected" => ($tlp[$k] == "yes") ? "selected" : "",
-                                "rightp_none_selected" => ($trp[$k] != "yes") ? "selected" : "",
-                                "rightp_open_selected" => ($trp[$k] == "yes") ? "selected" : "",
-                                "key" => $v
-                            );
-                            $tattr = array();
-                            if ($keyId == "state" || ($keyId == "fixstate") || ($keyId == "activity")) {
-                                $tstates = array();
-                                $stateselected = false;
-                                foreach ($states as $ks => $vs) {
-                                    if ($keyId != "activity") {
-                                        $tstates[] = array(
-                                            "sstateid" => $vs,
-                                            "sstep" => "state",
-                                            "sstate_selected" => ($vs == $v) ? "selected" : "",
-                                            "sstatename" => _($vs)
-                                        );
-                                    } else {
-                                        $activity = $wdoc->getActivity($vs);
-                                        $tstates[] = array(
-                                            "sstateid" => $vs,
-                                            "sstep" => "activity",
-                                            "sstate_selected" => ($vs == $v) ? "selected" : "",
-                                            "sstatename" => ($activity) ? _($activity) : _($vs)
-                                        );
-                                    }
-                                    if ($vs == $v) $stateselected = true;
-                                }
-                                if (!$stateselected) $tcond[$k]["ISENUM"] = false;
-                                $this->lay->SetBlockData("sstate$k", $tstates);
-                                
-                                $tattr[] = array(
-                                    "attrid" => $keyId,
-                                    "ismultiple" => 'no',
-                                    "attrtype" => "enum",
-                                    "attrdisabled" => '',
-                                    "attrselected" => "selected",
-                                    "attrname" => _($keyId)
-                                );
-                            } else {
-                                if ($oa && $oa->type == "enum") {
-                                    /**
-                                     * @var NormalAttribute $oa
-                                     */
-                                    $te = $oa->getEnum();
-                                    $tstates = array();
-                                    $enumselected = false;
-                                    foreach ($te as $ks => $vs) {
-                                        $tstates[] = array(
-                                            "sstateid" => $ks,
-                                            "sstate_selected" => ($ks == $v) ? "selected" : "",
-                                            "sstatename" => $vs
-                                        );
-                                        if ($ks == $v) $enumselected = true;
-                                    }
-                                    $this->lay->SetBlockData("sstate$k", $tstates);
-                                    if (!$enumselected) $tcond[$k]["ISENUM"] = false;
-                                }
-                                
-                                $tattr[] = array(
-                                    "attrid" => "_prop",
-                                    "ismultiple" => 'no',
-                                    "attrtype" => "set",
-                                    "attrdisabled" => "disabled",
-                                    "attrselected" => "",
-                                    "attrname" => _("DocProperties")
-                                );
-                                
-                                foreach ($internals as $ki => $vi) {
-                                    if ($ki == "revdate") $type = "date";
-                                    else if ($ki == "owner") $type = "docid";
-                                    else $type = "text";
-                                    
-                                    $tattr[] = array(
-                                        "attrid" => $ki,
-                                        "ismultiple" => 'no',
-                                        "attrtype" => $type,
-                                        "attrselected" => ($keyId == $ki) ? "selected" : "",
-                                        "attrdisabled" => "",
-                                        "attrname" => $vi
-                                    );
-                                }
-                                
-                                $this->editGetSetAttribute(null, true);
-                                foreach ($zpi as $ki => $vi) {
-                                    $type = $vi->type;
-                                    
-                                    $tset = $this->editGetSetAttribute($vi->fieldSet);
-                                    if (count($tset) > 0) $tattr = array_merge($tattr, array_reverse($tset));
-                                    
-                                    $tattr[] = array(
-                                        "attrid" => $vi->id,
-                                        "ismultiple" => ($vi->isMultiple()) ? 'yes' : 'no',
-                                        "attrtype" => $type,
-                                        "attrselected" => ($keyId == $vi->id) ? "selected" : "",
-                                        "attrdisabled" => "",
-                                        "attrname" => $vi->getLabel()
-                                    );
-                                }
-                            }
-                            
-                            $this->lay->SetBlockData("attrcond$k", $tattr);
-                            
-                            $tfunc = array();
-                            foreach ($this->top as $ki => $vi) {
-                                $oa = $fdoc->getAttribute($keyId);
-                                if ($oa) $type = $oa->type;
-                                else $type = '';
-                                if ($type == "") {
-                                    if ($keyId == "title") $type = "text";
-                                    elseif ($keyId == "cdate") $type = "date";
-                                    elseif ($keyId == "fixstate") $type = "enum";
-                                    elseif ($keyId == "activity") $type = "enum";
-                                    elseif ($keyId == "revision") $type = "int";
-                                    elseif ($keyId == "allocated") $type = "docid";
-                                    elseif ($keyId == "locked") $type = "docid";
-                                    elseif ($keyId == "revdate") $type = "date";
-                                    elseif ($keyId == "owner") $type = "docid";
-                                    elseif ($keyId == "svalues") $type = "text";
-                                    elseif ($keyId == "state") $type = "enum";
-                                } else {
-                                    if (($oa->isMultiple() || $oa->inArray()) && $type === "docid") $type = "docid[]";
-                                    else if (($oa->isMultiple() || $oa->inArray()) && $type === "account") $type = "account[]";
-                                    else if ($oa->inArray() && ($oa->type != 'file')) $type = "array";
-                                }
-                                $display = '';
-                                $ctype = '';
-                                if (isset($vi["type"])) {
-                                    if (!in_array($type, $vi["type"])) $display = 'none';
-                                    $ctype = implode(",", $vi["type"]);
-                                }
-                                if ($tf[$k] == $ki && $display == '' && ((($type == 'docid' || $type == 'account') && ($ki == '=' || $ki == '!=')) || (($type == 'docid[]' || $type == 'account[]') && $ki == '~y'))) {
-                                    $docid_aid = $keyId;
-                                }
-                                $tfunc[] = array(
-                                    "func_id" => $ki,
-                                    "func_selected" => ($tf[$k] == $ki) ? "selected" : "",
-                                    "func_display" => $display,
-                                    "func_type" => $ctype,
-                                    "func_name" => $this->getOperatorLabel($ki, $type)
-                                );
-                            }
-                            
-                            $this->lay->SetBlockData("funccond$k", $tfunc);
-                            
-                            $tols = array();
-                            foreach ($this->tol as $ki => $vi) {
-                                $tols[] = array(
-                                    "ol_id" => $ki,
-                                    "ol_selected" => ($tol[$k] == $ki) ? "selected" : "",
-                                    "ol_name" => _($vi)
-                                );
-                            }
-                            $this->lay->SetBlockData("olcond$k", $tols);
-                            
-                            if ((is_numeric($v) || empty($v)) && isset($docid_aid) && !empty($docid_aid)) {
-                                $tcond[$k]["ISENUM"] = false;
-                                $tcond[$k]["ISDOCID"] = true;
-                                $tcond[$k]["DOCID_AID"] = $docid_aid;
-                                $tcond[$k]["DOCID_AIDINDEX"] = $docid_aid . $k;
-                                $tcond[$k]["DOCID_TITLE"] = $this->getTitle($v);
-                                $tcond[$k]["FAMID"] = abs($famid);
-                                $tcond[$k]["ISSEARCHMETHOD"] = false;
-                            } else {
-                                $tcond[$k]["ISDOCID"] = false;
-                                $tcond[$k]["DOCID_AID"] = 0;
-                                $tcond[$k]["DOCID_AIDINDEX"] = 0;
-                                $tcond[$k]["DOCID_TITLE"] = '';
-                                $tcond[$k]["FAMID"] = abs($famid);
-                                $isSearchMethod = false;
-                                if ($oa) {
-                                    $attrType = $oa->type;
-                                    if ($oa->format != '') {
-                                        // Recompose full attr spec: <attrType>("<format>")
-                                        $attrType = sprintf('%s("%s")', $attrType, $oa->format);
-                                    }
-                                    $methods = $tmpDoc->getSearchMethods($oa->id, $attrType);
-                                    
-                                    foreach ($methods as $method) {
-                                        if ($method['method'] == $v) {
-                                            $isSearchMethod = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                                $tcond[$k]["ISSEARCHMETHOD"] = $isSearchMethod;
-                            }
-                        }
-                    }
-                    if (count($tcond) > 0) $this->lay->SetBlockData("CONDITIONS", $tcond);
-                    // Add select for enum attributes
-                    $tenums = array();
-                    foreach ($zpi as $k => $v) {
-                        if (($v->type == "enum") || ($v->type == "enumlist")) {
-                            $tenums[] = array(
-                                "SELENUM" => "ENUM$k",
-                                "attrid" => $v->id
-                            );
-                            $tenum = $v->getEnum();
-                            $te = array();
-                            foreach ($tenum as $ke => $ve) {
-                                $te[] = array(
-                                    "enumkey" => $ke,
-                                    "enumlabel" => $ve
-                                );
-                            }
-                            $this->lay->setBlockData("ENUM$k", $te);
-                        }
-                    }
-                    
-                    $this->lay->setBlockData("ENUMS", $tenums);
-                    
-                    $this->lay->Set("id", $this->id);
-                    $this->editattr();
                 }
-                /**
-                 * @param BasicAttribute $fs
-                 * @param bool $reset
-                 * @return array
-                 */
-                private function editGetSetAttribute($fs, $reset = false)
-                {
-                    static $setAttribute = array();
-                    $level = 0;
-                    $tset = array();
-                    if ($reset) $setAttribute = array();
-                    while ($fs && $fs->id != 'FIELD_HIDDENS') {
-                        if (!in_array($fs->id, $setAttribute)) {
-                            $tset[] = array(
-                                "attrid" => $fs->id,
-                                "attrtype" => "set",
-                                "attrdisabled" => "disabled",
-                                "attrselected" => "",
-                                "attrname" => $fs->getLabel()
-                            );
-                            $setAttribute[] = $fs->id;
-                            $level++;
-                            $fs = $fs->fieldSet;
-                        } else {
-                            break;
-                        }
-                    }
-                    return $tset;
-                }
+                break;
+
+            default:
                 
-                private function getMethodName($methodStr)
-                {
-                    $parseMethod = new parseFamilyMethod();
-                    $parseMethod->parse($methodStr);
-                    $err = $parseMethod->getError();
-                    if ($err) {
-                        return '';
+                switch ($atype) {
+                    case "enum":
+                        $enum = $oa->getEnum();
+                        if (strrpos($val, '.') !== false) {
+                            $val = substr($val, strrpos($val, '.') + 1);
+                        }
+                        $tkids = array();;
+                        foreach ($enum as $k => $v) {
+                            if (in_array($val, explode(".", $k))) {
+                                $tkids[] = substr($k, strrpos("." . $k, '.'));
+                            }
+                        }
+                        
+                        if ($op == '=') {
+                            if ($oa->repeat) {
+                                $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $tkids)) . ")\\\\y' ";
+                            } else {
+                                $cond = " $col='" . implode("' or $col='", $tkids) . "'";
+                            }
+                        } elseif ($op == '!=') {
+                            if ($oa->repeat) {
+                                $cond1 = " " . $col . " !~ E'\\\\y(" . pg_escape_string(implode('|', $tkids)) . ")\\\\y' ";
+                            } else {
+                                $cond1 = " $col !='" . implode("' and $col != '", $tkids) . "'";
+                            }
+                            $cond = " (($cond1) or ($col is null))";
+                        } elseif ($op == '!~*') {
+                            $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op) , $this->_pg_val($val));
+                        }
+                        
+                        break;
+
+                    default:
+                        if ($atype == "docid") {
+                            if (!is_numeric($val)) $val = getIdFromName($this->dbaccess, $val);
+                        }
+                        $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
+                        if (($op == '!=') || ($op == '!~*')) {
+                            $cond = "(($cond1) or ($col is null))";
+                        } else {
+                            $cond = $cond1;
+                        }
                     }
-                    return $parseMethod->methodName;
-                }
-                /**
-                 * @begin-method-ignore
-                 * this part will be deleted when construct document class until end-method-ignore
-                 */
             }
-            /*
-             * @end-method-ignore
-            */
+            if (!$cond) {
+                $cond = "true";
+            } elseif ($stateCol == "activity") {
+                $cond = sprintf("(%s and locked != -1)", $cond);
+            } elseif ($stateCol == "fixstate") {
+                $cond = sprintf("(%s and locked = -1)", $cond);
+            }
+            return $cond;
+    }
+    
+    private static function _pg_val($s)
+    {
+        if (substr($s, 0, 2) == ':@') {
+            return " " . trim(strtok(substr($s, 2) , " \t")) . " ";
+        } else return " '" . pg_escape_string(trim($s)) . "' ";
+    }
+    /**
+     * return array of sql filter needed to search wanted document
+     */
+    function getSqlDetailFilter()
+    {
+        $ol = $this->getRawValue("SE_OL");
+        $tkey = $this->getMultipleRawValues("SE_KEYS");
+        $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+        $tf = $this->getMultipleRawValues("SE_FUNCS");
+        $tlp = $this->getMultipleRawValues("SE_LEFTP");
+        $tlr = $this->getMultipleRawValues("SE_RIGHTP");
+        $tols = $this->getMultipleRawValues("SE_OLS");
+        
+        if ($ol == "") {
+            // try in old version
+            $ols = $this->getMultipleRawValues("SE_OLS");
+            $ol = isset($ols[1]) ? $ols[1] : '';
+            if ($ol) {
+                $this->setValue("SE_OL", $ol);
+                $this->modify();
+            }
+        }
+        if ($ol == "") $ol = "and";
+        $cond = "";
+        if (!$this->searchfam) {
+            $this->searchfam = new_doc($this->dbaccess, $this->getRawValue("se_famid"));
+        }
+        if ((count($taid) > 1) || (count($taid) > 0 && $taid[0] != "")) {
+            // special loop for revdate
+            foreach ($tkey as $k => $v) {
+                // Does it looks like a method name?
+                $methodName = $this->getMethodName($v);
+                if ($methodName != '') {
+                    // it's method call
+                    $workdoc = $this->getSearchFamilyDocument();
+                    if (!$workdoc) {
+                        $workdoc = $this;
+                    }
+                    if (!$workdoc->isValidSearchMethod($workdoc, $methodName)) {
+                        return 'false';
+                    }
+                    $rv = $workdoc->ApplyMethod($v);
+                    $tkey[$k] = $rv;
+                }
+                if (substr($v, 0, 1) == "?") {
+                    // it's a parameter
+                    $rv = getHttpVars(substr($v, 1) , "-");
+                    if ($rv == "-") return (false);
+                    if ($rv === "" || $rv === " ") unset($taid[$k]);
+                    else $tkey[$k] = $rv;
+                }
+                if ($taid[$k] == "revdate") {
+                    list($dd, $mm, $yyyy) = explode("/", $tkey[$k]);
+                    if ($yyyy > 0) $tkey[$k] = mktime(0, 0, 0, $mm, $dd, $yyyy);
+                }
+            }
+            foreach ($taid as $k => $v) {
+                $cond1 = $this->getSqlCond($taid[$k], trim($tf[$k]) , $tkey[$k]);
+                if ($cond == "") {
+                    if (isset($tlp[$k]) && $tlp[$k] == "yes") $cond = '(' . $cond1 . " ";
+                    else $cond = $cond1 . " ";
+                    if (isset($tlr[$k]) && $tlr[$k] == "yes") $cond.= ')';
+                } elseif ($cond1 != "") {
+                    if (isset($tols[$k]) && $tols[$k] != "") $ol1 = $tols[$k];
+                    else $ol1 = $ol;
+                    if (isset($tlp[$k]) && $tlp[$k] == "yes") $cond.= $ol1 . ' (' . $cond1 . " ";
+                    else $cond.= $ol1 . " " . $cond1 . " ";
+                    if (isset($tlr[$k]) && $tlr[$k] == "yes") $cond.= ') ';
+                }
+            }
+        }
+        if (trim($cond) == "") $cond = "true";
+        return $cond;
+    }
+    /**
+     * return true if the search has parameters
+     */
+    function isParameterizable()
+    {
+        $tkey = $this->getMultipleRawValues("SE_KEYS");
+        if (empty($tkey)) return false;
+        if ((count($tkey) > 1) || ($tkey[0] != "")) {
+            foreach ($tkey as $k => $v) {
+                
+                if ($v && $v[0] == '?') {
+                    return true;
+                    //if (getHttpVars(substr($v,1),"-") == "-") return true;
+                    
+                }
+            }
+        }
+        return false;
+    }
+    /**
+     * return true if the search need parameters
+     */
+    function needParameters()
+    {
+        $tkey = $this->getMultipleRawValues("SE_KEYS");
+        
+        if ((count($tkey) > 1) || ($tkey[0] != "")) {
+            
+            foreach ($tkey as $k => $v) {
+                
+                if ($v && $v[0] == '?') {
+                    if (getHttpVars(substr($v, 1) , "-") == "-") return true;
+                }
+            }
+        }
+        return false;
+    }
+    /**
+     * Add parameters
+     */
+    function urlWhatEncodeSpec($l)
+    {
+        $tkey = $this->getMultipleRawValues("SE_KEYS");
+        
+        if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
+            
+            foreach ($tkey as $k => $v) {
+                
+                if ($v && $v[0] == '?') {
+                    if (getHttpVars(substr($v, 1) , "-") != "-") {
+                        $l.= '&' . substr($v, 1) . "=" . getHttpVars(substr($v, 1));
+                    }
+                }
+            }
+        }
+        
+        return $l;
+    }
+    /**
+     * add parameters in title
+     */
+    function getCustomTitle()
+    {
+        $tkey = $this->getMultipleRawValues("SE_KEYS");
+        $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+        $l = "";
+        if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
+            $tl = array();
+            foreach ($tkey as $k => $v) {
+                
+                if ($v && $v[0] == '?') {
+                    $vh = getHttpVars(substr($v, 1) , "-");
+                    if (($vh != "-") && ($vh != "")) {
+                        
+                        if (is_numeric($vh)) {
+                            $fam = $this->getSearchFamilyDocument();
+                            if ($fam) {
+                                $oa = $fam->getAttribute($taid[$k]);
+                                if ($oa && $oa->type == "docid") {
+                                    $vh = $this->getTitle($vh);
+                                }
+                            }
+                        }
+                        $tl[] = $vh;
+                    }
+                }
+            }
+            if (count($tl) > 0) {
+                $l = " (" . implode(", ", $tl) . ")";
+            }
+        }
+        return $this->getRawValue("ba_title") . $l;
+    }
+    /**
+     * @templateController default detailed search view
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     */
+    function viewdsearch($target = "_self", $ulink = true, $abstract = false)
+    {
+        // Compute value to be inserted in a  layout
+        $this->viewattr();
+        //-----------------------------------------------
+        // display already condition written
+        $tkey = $this->getMultipleRawValues("SE_KEYS");
+        $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+        $tf = $this->getMultipleRawValues("SE_FUNCS");
+        if ((count($taid) > 1) || (!empty($taid[0]))) {
+            
+            $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
+            $zpi = $fdoc->GetNormalAttributes();
+            $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
+            $zpi["fixstate"] = new BasicAttribute("fixstate", $this->fromid, _("state"));
+            $zpi["activity"] = new BasicAttribute("activity", $this->fromid, _("activity"));
+            $zpi["title"] = new BasicAttribute("title", $this->fromid, _("doctitle"));
+            $zpi["revdate"] = new BasicAttribute("revdate", $this->fromid, _("revdate"));
+            $zpi["cdate"] = new BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
+            $zpi["revision"] = new BasicAttribute("cdate", $this->fromid, _("revision"));
+            $zpi["owner"] = new BasicAttribute("owner", $this->fromid, _("owner"));
+            $zpi["locked"] = new BasicAttribute("owner", $this->fromid, _("locked"));
+            $zpi["allocated"] = new BasicAttribute("owner", $this->fromid, _("allocated"));
+            $zpi["svalues"] = new BasicAttribute("svalues", $this->fromid, _("any values"));
+            $tcond = array();
+            foreach ($taid as $k => $v) {
+                if (isset($zpi[$v])) {
+                    $label = $zpi[$v]->getLabel();
+                    if ($label == "") $label = $v;
+                    if ($v == "activity") {
+                        $fdoc->state = $tkey[$k];
+                        $displayValue = $fdoc->getStatelabel();
+                    } else {
+                        $displayValue = ($tkey[$k] != "") ? _($tkey[$k]) : $tkey[$k];
+                    }
+                    $type = $zpi[$taid[$k]]->type;
+                    if ($zpi[$taid[$k]]->isMultiple() || $zpi[$taid[$k]]->inArray()) {
+                        if ($type === "docid") $type = "docid[]";
+                        else if ($type === "account") $type = "account[]";
+                    }
+                    $tcond[]["condition"] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $type) , $displayValue);
+                    if (isset($tkey[$k][0]) && $tkey[$k][0] == '?') {
+                        $tparm[substr($tkey[$k], 1) ] = $taid[$k];
+                    }
+                } else {
+                    addWarningMsg(sprintf("property %s not know", $v));
+                }
+            }
+            $this->lay->SetBlockData("COND", $tcond);
+        }
+        $this->lay->Set("ddetail", "");
+    }
+    /**
+     * return true if the sqlselect is writted by hand
+     * @return bool
+     */
+    function isStaticSql()
+    {
+        return ($this->getRawValue("se_static") != "");
+    }
+    /**
+     * return family use for search
+     * @return Doc
+     */
+    private function getSearchFamilyDocument()
+    {
+        static $fam = null;
+        if (!$fam) $fam = createTmpDoc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
+        return $fam;
+    }
+    /**
+     * @templateController
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     */
+    function paramdsearch($target = "_self", $ulink = true, $abstract = false)
+    {
+        // Compute value to be inserted in a  layout
+        $this->viewattr();
+        $tparm = $tcond = array();
+        //-----------------------------------------------
+        // display already condition written
+        $tkey = $this->getMultipleRawValues("SE_KEYS");
+        $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+        $tf = $this->getMultipleRawValues("SE_FUNCS");
+        $zpi = $toperator = array();
+        if ((count($taid) > 1) || ($taid[0] != "")) {
+            
+            $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
+            $zpi = $fdoc->GetNormalAttributes();
+            $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
+            $zpi["fixstate"] = new BasicAttribute("state", $this->fromid, _("fixstate"));
+            $zpi["activity"] = new BasicAttribute("state", $this->fromid, _("activity"));
+            $zpi["title"] = new BasicAttribute("title", $this->fromid, _("doctitle"));
+            $zpi["revdate"] = new BasicAttribute("revdate", $this->fromid, _("revdate"));
+            $zpi["cdate"] = new BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
+            $zpi["revision"] = new BasicAttribute("cdate", $this->fromid, _("revision"));
+            $zpi["owner"] = new BasicAttribute("owner", $this->fromid, _("owner"));
+            $zpi["locked"] = new BasicAttribute("owner", $this->fromid, _("locked"));
+            $zpi["allocated"] = new BasicAttribute("owner", $this->fromid, _("allocated"));
+            $zpi["svalues"] = new BasicAttribute("svalues", $this->fromid, _("any values"));
+            
+            foreach ($taid as $k => $v) {
+                if ($tkey[$k][0] == '?') {
+                    $tparm[substr($tkey[$k], 1) ] = $taid[$k];
+                    $toperator[substr($tkey[$k], 1) ] = $tf[$k];
+                }
+            }
+            $this->lay->SetBlockData("COND", $tcond);
+        }
+        
+        $this->lay->Set("ddetail", "");
+        if (count($tparm) > 0) {
+            include_once ("FDL/editutil.php");
+            global $action;
+            editmode($action);
+            
+            $doc = $this->getSearchFamilyDocument();
+            $inputset = array();
+            $ki = 0; // index numeric
+            $tinputs = $ttransfert = array();
+            foreach ($tparm as $k => $v) {
+                if (isset($inputset[$v])) {
+                    // need clone when use several times the same attribute
+                    $vz = $v . "Z" . $ki;
+                    $zpi[$vz] = $zpi[$v];
+                    $zpi[$vz]->id = $vz;
+                    $v = $vz;
+                }
+                if ($zpi[$v]->fieldSet->type == 'array') $zpi[$v]->fieldSet->type = 'frame'; // no use array configuration for help input
+                $ki++;
+                $inputset[$v] = true;
+                
+                $ttransfert[] = array(
+                    "idi" => $v,
+                    "idp" => $k,
+                    "value" => getHttpVars($k)
+                );
+                $tinputs[$k]["label"] = $zpi[$v]->getLabel();
+                $type = $zpi[$v]->type;
+                if ($zpi[$v]->isMultiple() || $zpi[$v]->inArray()) {
+                    if ($type === "docid") $type = "docid[]";
+                    else if ($type === "account") $type = "account[]";
+                }
+                $tinputs[$k]["operator"] = $this->getOperatorLabel($toperator[$k], $type);
+                if (($toperator[$k] == "=~*" || $toperator[$k] == "~*") && $zpi[$v]->type == "docid") $zpi[$v]->type = "text"; // present like a search when operator is text search
+                if ($zpi[$v]->visibility == 'R') $zpi[$v]->mvisibility = 'W';
+                if ($zpi[$v]->visibility == 'S') $zpi[$v]->mvisibility = 'W';
+                if (isset($zpi[$v]->id)) {
+                    $zpi[$v]->isAlone = true;
+                    $tinputs[$k]["inputs"] = getHtmlInput($doc, $zpi[$v], getHttpVars($k));
+                } else {
+                    $aotxt = new BasicAttribute($v, $doc->id, "eou");
+                    if ($v == "revdate") $aotxt->type = "date";
+                    $tinputs[$k]["inputs"] = getHtmlInput($doc, $aotxt, getHttpVars($k));
+                }
+            }
+            $this->lay->setBlockData("PARAM", $tinputs);
+            $this->lay->setBlockData("TRANSFERT", $ttransfert);
+            $this->lay->setBlockData("PINPUTS", $ttransfert);
+            $this->lay->Set("ddetail", "none");
+            $this->lay->set("stext", _("send search"));
+            $this->lay->set("saction", getHttpVars("saction", "FREEDOM_VIEW"));
+            $this->lay->set("sapp", getHttpVars("sapp", "FREEDOM"));
+            $this->lay->set("sid", getHttpVars("sid", "dirid"));
+            $this->lay->set("starget", getHttpVars("starget", ""));
+            $this->lay->set("icon", $this->getIcon());
+        }
+    }
+    // -----------------------------------
+    
+    /**
+     *
+     * @templateController default detailed search edit view
+     */
+    function editdsearch()
+    {
+        /**
+         * @var Action $action
+         */
+        global $action;
+        $classid = GetHttpVars("sfamid", 0);
+        $famid = $this->getRawValue("SE_FAMID", 0);
+        $onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
+        $dirid = GetHttpVars("dirid");
+        $alsosub = getHttpVars("alsosub") == "Y";
+        $this->lay->set("ACTION", $action->name);
+        $tclassdoc = array();
+        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
+        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
+        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
+        
+        if ($dirid > 0) {
+            /**
+             * @var Dir $dir
+             */
+            $dir = new_Doc($this->dbaccess, $dirid);
+            if (method_exists($dir, "isAuthorized")) {
+                if ($dir->isAuthorized($classid)) {
+                    // verify if classid is possible
+                    if ($dir->hasNoRestriction()) {
+                        $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
+                        $tclassdoc[] = array(
+                            "id" => 0,
+                            "title" => _("any families") ,
+                            "usefor" => ''
+                        );
+                    } else {
+                        $tclassdoc = $dir->getAuthorizedFamilies();
+                        $this->lay->set("restrict", true);
+                    }
+                } else {
+                    $tclassdoc = $dir->getAuthorizedFamilies();
+                    $first = current($tclassdoc);
+                    $famid1 = ($first["id"]);
+                    $this->lay->set("restrict", true);
+                    $tfamids = array_keys($tclassdoc);
+                    if (!in_array($famid, $tfamids)) $famid = $famid1;
+                }
+            } else {
+                $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
+            }
+        } else {
+            if ($onlysubfam) {
+                if (!is_numeric($onlysubfam)) $onlysubfam = getFamIdFromName($this->dbaccess, $onlysubfam);
+                $cdoc = new_Doc($this->dbaccess, $onlysubfam);
+                $tsub = $cdoc->GetChildFam($cdoc->id, false);
+                $tclassdoc[$classid] = array(
+                    "id" => $cdoc->id,
+                    "title" => $cdoc->title,
+                    "usefor" => ''
+                );
+                if ($alsosub) {
+                    $tclassdoc = array_merge($tclassdoc, $tsub);
+                }
+                if (!$this->id) $this->setValue("se_famonly", $alsosub ? "no" : "yes");
+                $first = current($tclassdoc);
+                if ($classid == "") $classid = $first["id"];
+            } else {
+                $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
+                $tclassdoc[] = array(
+                    "id" => 0,
+                    "title" => _("any families") ,
+                    "usefor" => ''
+                );
+            }
+        }
+        $sLabelArray = array();
+        foreach ($this->top as $k => $v) {
+            $sLabel = array();
+            if (isset($v["slabel"]) && is_array($v["slabel"])) {
+                foreach ($v["slabel"] as $key => $value) {
+                    $sLabel[$key] = _($value);
+                }
+            }
+            $sLabelArray[$k] = array(
+                "label" => _($v["label"]) ,
+                "slabel" => $sLabel
+            );
+        }
+        $this->lay->set("topInformation", json_encode($sLabelArray));
+        $this->lay->set("onlysubfam", $onlysubfam);
+        $selfam = false;
+        $selectclass = array();
+        foreach ($tclassdoc as $k => $tdoc) {
+            $selectclass[$k]["idcdoc"] = $tdoc["id"];
+            $selectclass[$k]["classname"] = $tdoc["title"];
+            $selectclass[$k]["system_fam"] = (substr($tdoc["usefor"], 0, 1) == 'S') ? true : false;
+            if (abs($tdoc["id"]) == abs($famid)) {
+                $selfam = true;
+                $selectclass[$k]["selected"] = 'selected="selected"';
+                if ($famid < 0) $this->lay->set("selfam", $tdoc["title"] . " " . _("(only)"));
+                else $this->lay->set("selfam", $tdoc["title"]);
+            } else $selectclass[$k]["selected"] = "";
+        }
+        if (!$selfam) {
+            $famid = abs($this->getRawValue("se_famid"));
+            if ($this->id && $famid) {
+                $selectclass[] = array(
+                    "idcdoc" => $famid,
+                    "classname" => $this->getTitle($famid) ,
+                    "selected" => "selected"
+                );
+            } else {
+                reset($tclassdoc);
+                $first = current($tclassdoc);
+                $famid = $first["id"];
+            }
+        }
+        $this->lay->Set("dirid", $dirid);
+        $this->lay->Set("classid", $this->fromid);
+        $this->lay->SetBlockData("SELECTCLASS", $selectclass);
+        $this->lay->set("has_permission_fdl_system", $action->parent->hasPermission('FDL', 'SYSTEM'));
+        $this->lay->set("se_sysfam", ($this->getRawValue('se_sysfam') == 'yes') ? true : false);
+        $this->setFamidInLayout();
+        // display attributes
+        $tattr = array();
+        $internals = array(
+            "title" => _("doctitle") ,
+            "revdate" => _("revdate") ,
+            "cdate" => _("cdate") ,
+            "revision" => _("revision") ,
+            "owner" => _("id owner") ,
+            "locked" => _("id locked") ,
+            "allocated" => _("id allocated") ,
+            "svalues" => _("any values")
+        );
+        
+        $tattr["_prop"] = array(
+            "attrid" => "_prop",
+            "attrtype" => "set",
+            "attrdisabled" => "disabled",
+            "attrname" => _("DocProperties") ,
+            "ismultiple" => 'no'
+        );
+        
+        foreach ($internals as $k => $v) {
+            if ($k == "revdate") $type = "date";
+            else if ($k == "owner") $type = "uid";
+            else if ($k == "locked") $type = "uid";
+            else if ($k == "allocated") $type = "uid";
+            else if ($k == "cdate") $type = "date";
+            else if ($k == "revision") $type = "int";
+            else if ($k == "state") $type = "docid";
+            else $type = "text";
+            
+            $tattr[$k] = array(
+                "attrid" => $k,
+                "ismultiple" => 'no',
+                "attrtype" => $type,
+                "attrdisabled" => "",
+                "attrname" => $v
+            );
+        }
+        
+        $fdoc = new_Doc($this->dbaccess, abs($famid));
+        $tmpDoc = createTmpDoc($this->dbaccess, abs($famid));
+        $zpi = $fdoc->GetNormalAttributes();
+        
+        foreach ($zpi as $k => $v) {
+            if ($v->type == "array" || $v->type == "password") {
+                continue;
+            }
+            $opt_searchcriteria = $v->getOption("searchcriteria", "");
+            if ($opt_searchcriteria == "hidden" || $opt_searchcriteria == "restricted") {
+                continue;
+            }
+            
+            $type = $v->type;
+            if ($v->getOption("doctitle") && $v->isMultiple()) $type = "docidtitle[]";
+            $tset = $this->editGetSetAttribute($v->fieldSet);
+            if (count($tset) > 0) $tattr = array_merge($tattr, array_reverse($tset));
+            
+            $tattr[$v->id] = array(
+                "attrid" => $v->id,
+                "ismultiple" => ($v->isMultiple()) ? 'yes' : 'no',
+                "attrtype" => $type,
+                "attrdisabled" => "",
+                "attrname" => $v->getLabel()
+            );
+        }
+        if ($action->getParam("ISIE6")) {
+            // cannot disable select option with IE6
+            foreach ($tattr as $ka => $va) {
+                if (!empty($va["attrdisabled"])) unset($tattr[$ka]);
+            }
+        }
+        $this->lay->SetBlockData("ATTR", $tattr);
+        $tfunc = array();
+        foreach ($this->top as $k => $v) {
+            $display = '';
+            if (isset($v["type"])) {
+                $ctype = implode(",", $v["type"]);
+                if (!in_array('text', $v["type"])) $display = 'none'; // first is title
+                
+            } else $ctype = "";
+            
+            $tfunc[] = array(
+                "funcid" => $k,
+                "functype" => $ctype,
+                "funcdisplay" => $display,
+                "funcname" => _($v["label"])
+            );
+        }
+        $this->lay->SetBlockData("FUNC", $tfunc);
+        foreach ($tfunc as $k => $v) {
+            if (($v["functype"] != "") && (strpos($v["functype"], "enum") === false)) unset($tfunc[$k]);
+        }
+        $this->lay->SetBlockData("FUNCSTATE", $tfunc);
+        $this->lay->Set("icon", $fdoc->getIcon());
+        
+        if ($this->getRawValue("SE_LATEST") == "no") $this->lay->Set("select_all", "selected");
+        else $this->lay->Set("select_all", "");
+        $states = array();
+        //-----------------------------------------------
+        // display state
+        $wdoc = null;
+        if ($fdoc->wid > 0) {
+            $wdoc = new_Doc($this->dbaccess, $fdoc->wid);
+            /**
+             * @var Wdoc $wdoc
+             */
+            $states = $wdoc->getStates();
+            
+            $tstates = array();
+            foreach ($states as $k => $v) {
+                $tstates[] = array(
+                    "step" => "state",
+                    "stateid" => $v,
+                    "statename" => _($v)
+                );
+                $activity = $wdoc->getActivity($v);
+                
+                $tstates[] = array(
+                    "step" => "activity",
+                    "stateid" => $v,
+                    "statename" => ($activity) ? _($activity) : _($v)
+                );
+            }
+            $this->lay->SetBlockData("STATE", $tstates);
+            $this->lay->Set("dstate", "inline");
+        } else {
+            $this->lay->Set("dstate", "none");
+        }
+        //-----------------------------------------------
+        // display already condition written
+        $tol = $this->getMultipleRawValues("SE_OLS");
+        $tkey = $this->getMultipleRawValues("SE_KEYS");
+        $taid = $this->getMultipleRawValues("SE_ATTRIDS");
+        $tf = $this->getMultipleRawValues("SE_FUNCS");
+        $tlp = $this->getMultipleRawValues("SE_LEFTP");
+        $trp = $this->getMultipleRawValues("SE_RIGHTP");
+        
+        $cond = "";
+        $tcond = array();
+        if ((count($taid) > 1) || ($taid && $taid[0] != "")) {
+            foreach ($taid as $k => $keyId) {
+                $docid_aid = 0;
+                $v = $tkey[$k];
+                $oa = $fdoc->getAttribute($keyId);
+                $tcond[$k] = array(
+                    "OLCOND" => "olcond$k",
+                    "ATTRCOND" => "attrcond$k",
+                    "FUNCCOND" => "funccond$k",
+                    "ISENUM" => (($keyId == "state") || ($keyId == "fixstate") || ($keyId == "activity") || ($oa && $oa->type == "enum")) ,
+                    "SSTATE" => "sstate$k",
+                    "ols_and_selected" => ($tol[$k] == "and") ? "selected" : "",
+                    "ols_or_selected" => ($tol[$k] == "or") ? "selected" : "",
+                    "leftp_none_selected" => ($tlp[$k] != "yes") ? "selected" : "",
+                    "leftp_open_selected" => ($tlp[$k] == "yes") ? "selected" : "",
+                    "rightp_none_selected" => ($trp[$k] != "yes") ? "selected" : "",
+                    "rightp_open_selected" => ($trp[$k] == "yes") ? "selected" : "",
+                    "key" => $v
+                );
+                $tattrSelect = array();
+                if ($keyId == "state" || ($keyId == "fixstate") || ($keyId == "activity")) {
+                    $tstates = array();
+                    $stateselected = false;
+                    foreach ($states as $ks => $vs) {
+                        if ($keyId != "activity") {
+                            $tstates[] = array(
+                                "sstateid" => $vs,
+                                "sstep" => "state",
+                                "sstate_selected" => ($vs == $v) ? "selected" : "",
+                                "sstatename" => _($vs)
+                            );
+                        } else {
+                            $activity = $wdoc->getActivity($vs);
+                            $tstates[] = array(
+                                "sstateid" => $vs,
+                                "sstep" => "activity",
+                                "sstate_selected" => ($vs == $v) ? "selected" : "",
+                                "sstatename" => ($activity) ? _($activity) : _($vs)
+                            );
+                        }
+                        if ($vs == $v) $stateselected = true;
+                    }
+                    if (!$stateselected) $tcond[$k]["ISENUM"] = false;
+                    $this->lay->SetBlockData("sstate$k", $tstates);
+                    
+                    $tattrSelect[] = array(
+                        "attrid" => $keyId,
+                        "ismultiple" => 'no',
+                        "attrtype" => "enum",
+                        "attrdisabled" => '',
+                        "attrselected" => "selected",
+                        "attrname" => _($keyId)
+                    );
+                } else {
+                    if ($oa && $oa->type == "enum") {
+                        /**
+                         * @var NormalAttribute $oa
+                         */
+                        $te = $oa->getEnum();
+                        $tstates = array();
+                        $enumselected = false;
+                        foreach ($te as $ks => $vs) {
+                            $tstates[] = array(
+                                "sstateid" => $ks,
+                                "sstate_selected" => ($ks == $v) ? "selected" : "",
+                                "sstatename" => $vs
+                            );
+                            if ($ks == $v) $enumselected = true;
+                        }
+                        $this->lay->SetBlockData("sstate$k", $tstates);
+                        if (!$enumselected) $tcond[$k]["ISENUM"] = false;
+                    }
+                    
+                    $tattrSelect = $tattr;
+                    foreach ($tattrSelect as $ki => $vi) {
+                        $tattrSelect[$ki]["attrselected"] = "";
+                    }
+                    
+                    foreach ($internals as $ki => $vi) {
+                        if (isset($tattrSelect[$ki])) {
+                            $tattrSelect[$ki]["attrselected"] = ($keyId == $ki) ? "selected" : "";
+                        }
+                    }
+                    
+                    $this->editGetSetAttribute(null, true);
+                    foreach ($zpi as $ki => $vi) {
+                        if (isset($tattrSelect[$ki])) {
+                            $tattrSelect[$vi->id]["attrselected"] = ($keyId == $vi->id) ? "selected" : "";
+                        }
+                    }
+                }
+                $this->lay->SetBlockData("attrcond$k", $tattrSelect);
+                
+                $tfunc = array();
+                foreach ($this->top as $ki => $vi) {
+                    $oa = $fdoc->getAttribute($keyId);
+                    if ($oa) $type = $oa->type;
+                    else $type = '';
+                    if ($type == "") {
+                        if ($keyId == "title") $type = "text";
+                        elseif ($keyId == "cdate") $type = "date";
+                        elseif ($keyId == "fixstate") $type = "enum";
+                        elseif ($keyId == "activity") $type = "enum";
+                        elseif ($keyId == "revision") $type = "int";
+                        elseif ($keyId == "allocated") $type = "uid";
+                        elseif ($keyId == "locked") $type = "uid";
+                        elseif ($keyId == "revdate") $type = "date";
+                        elseif ($keyId == "owner") $type = "uid";
+                        elseif ($keyId == "svalues") $type = "text";
+                        elseif ($keyId == "state") $type = "enum";
+                    } else {
+                        if (($oa->isMultiple() || $oa->inArray()) && $type === "docid") $type = "docid[]";
+                        else if (($oa->isMultiple() || $oa->inArray()) && $type === "account") $type = "account[]";
+                        else if ($oa->inArray() && ($oa->type != 'file')) $type = "array";
+                    }
+                    $display = '';
+                    $ctype = '';
+                    if (isset($vi["type"])) {
+                        if (!in_array($type, $vi["type"])) $display = 'none';
+                        $ctype = implode(",", $vi["type"]);
+                    }
+                    if ($tf[$k] == $ki && $display == '' && ((($type == 'docid' || $type == 'account') && ($ki == '=' || $ki == '!=')) || (($type == 'docid[]' || $type == 'account[]') && $ki == '~y'))) {
+                        $docid_aid = $keyId;
+                    }
+                    $tfunc[] = array(
+                        "func_id" => $ki,
+                        "func_selected" => ($tf[$k] == $ki) ? "selected" : "",
+                        "func_display" => $display,
+                        "func_type" => $ctype,
+                        "func_name" => $this->getOperatorLabel($ki, $type)
+                    );
+                }
+                
+                $this->lay->SetBlockData("funccond$k", $tfunc);
+                
+                $tols = array();
+                foreach ($this->tol as $ki => $vi) {
+                    $tols[] = array(
+                        "ol_id" => $ki,
+                        "ol_selected" => ($tol[$k] == $ki) ? "selected" : "",
+                        "ol_name" => _($vi)
+                    );
+                }
+                $this->lay->SetBlockData("olcond$k", $tols);
+                
+                if ((is_numeric($v) || empty($v)) && isset($docid_aid) && !empty($docid_aid)) {
+                    $tcond[$k]["ISENUM"] = false;
+                    $tcond[$k]["ISDOCID"] = true;
+                    $tcond[$k]["ISDOCIDMULTIPLE"] = $oa->isMultiple();
+                    $tcond[$k]["DOCID_AID"] = $docid_aid;
+                    $tcond[$k]["DOCID_AIDINDEX"] = $docid_aid . $k;
+                    $tcond[$k]["DOCID_TITLE"] = $this->getTitle($v);
+                    $tcond[$k]["FAMID"] = abs($famid);
+                    $tcond[$k]["ISSEARCHMETHOD"] = false;
+                } else {
+                    $tcond[$k]["ISDOCID"] = false;
+                    $tcond[$k]["ISDOCIDMULTIPLE"] = false;
+                    $tcond[$k]["DOCID_AID"] = 0;
+                    $tcond[$k]["DOCID_AIDINDEX"] = 0;
+                    $tcond[$k]["DOCID_TITLE"] = '';
+                    $tcond[$k]["FAMID"] = abs($famid);
+                    $isSearchMethod = false;
+                    if ($oa) {
+                        $attrType = $oa->type;
+                        if ($oa->format != '') {
+                            // Recompose full attr spec: <attrType>("<format>")
+                            $attrType = sprintf('%s("%s")', $attrType, $oa->format);
+                        }
+                        $methods = $tmpDoc->getSearchMethods($oa->id, $attrType);
+                        
+                        foreach ($methods as $method) {
+                            if ($method['method'] == $v) {
+                                $isSearchMethod = true;
+                                break;
+                            }
+                        }
+                    }
+                    $tcond[$k]["ISSEARCHMETHOD"] = $isSearchMethod;
+                }
+            }
+        }
+        if (count($tcond) > 0) $this->lay->SetBlockData("CONDITIONS", $tcond);
+        // Add select for enum attributes
+        $tenums = array();
+        foreach ($zpi as $k => $v) {
+            if (($v->type == "enum") || ($v->type == "enumlist")) {
+                $tenums[] = array(
+                    "SELENUM" => "ENUM$k",
+                    "attrid" => $v->id
+                );
+                $tenum = $v->getEnum();
+                $te = array();
+                foreach ($tenum as $ke => $ve) {
+                    $te[] = array(
+                        "enumkey" => $ke,
+                        "enumlabel" => $ve
+                    );
+                }
+                $this->lay->setBlockData("ENUM$k", $te);
+            }
+        }
+        
+        $this->lay->setBlockData("ENUMS", $tenums);
+        
+        $this->lay->Set("id", $this->id);
+        $this->editattr();
+    }
+    /**
+     * @param BasicAttribute $fs
+     * @param bool $reset
+     * @return array
+     */
+    private function editGetSetAttribute($fs, $reset = false)
+    {
+        static $setAttribute = array();
+        $level = 0;
+        $tset = array();
+        if ($reset) $setAttribute = array();
+        while ($fs && $fs->id != 'FIELD_HIDDENS') {
+            if (!in_array($fs->id, $setAttribute)) {
+                $tset[$fs->id] = array(
+                    "attrid" => $fs->id,
+                    "attrtype" => "set",
+                    "attrdisabled" => "disabled",
+                    "attrselected" => "",
+                    "attrname" => $fs->getLabel()
+                );
+                $setAttribute[] = $fs->id;
+                $level++;
+                $fs = $fs->fieldSet;
+            } else {
+                break;
+            }
+        }
+        return $tset;
+    }
+    
+    private function getMethodName($methodStr)
+    {
+        $parseMethod = new parseFamilyMethod();
+        $parseMethod->parse($methodStr);
+        $err = $parseMethod->getError();
+        if ($err) {
+            return '';
+        }
+        return $parseMethod->methodName;
+    }
+    /**
+     * @begin-method-ignore
+     * this part will be deleted when construct document class until end-method-ignore
+     */
+}
+/*
+ * @end-method-ignore
+*/
 ?>

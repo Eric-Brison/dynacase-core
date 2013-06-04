@@ -41,8 +41,9 @@ function autocompletion(Action & $action)
     $err = '';
     $canitem = false;
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    $docid = intval($docid);
+    
     $doc = new_Doc($dbaccess, $docid);
+    $docid = $doc->id;
     $action->lay->Set("count", 0);
     if ($docid == 0) {
         // specific interface
