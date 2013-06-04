@@ -62,11 +62,6 @@ $action_desc = array (
    "acl"		=>"FREEDOM_READ"
   ),
   array( 
-   "name"		=>"TIMERS_ADMIN_RESULT",
-   "short_name"		=>N_("Timers management result"),
-   "acl"		=>"FREEDOM_ADMIN"
-  ) ,
-  array( 
    "name"		=>"BATCHEXEC",
    "short_name"		=>N_("batch execution"),
    "acl"		=>"FREEDOM_ADMIN"
