@@ -218,7 +218,7 @@ tr.FREEDOMBack2 td.opt {
   </select>
 	</td>
 <td class="und" >
-  <select class="cond" name="_se_attrids[]"  onchange="filterfunc(this)" >
+  <select class="cond" data-needfilter="1" name="_se_attrids[]"  onchange="filterfunc(this)" >
   [BLOCK [ATTRCOND]]<option [attrselected] atype="[attrtype]" [attrdisabled] class="[attrtype]" value="[attrid]" ismultiple="[ismultiple]">[attrname]</option>
   [ENDBLOCK [ATTRCOND]]
   </select></td>
@@ -234,9 +234,11 @@ tr.FREEDOMBack2 td.opt {
 	   <input  type="text"  size="20" name="_se_keys[]" value="[key]">
 	  [ENDIF ISDOCID]
 	  [IF ISDOCID]
-		<input type="hidden"  name="_se_keys[]"  attrid="[DOCID_AIDINDEX]" value="[key]">
-		<input autocomplete="off" autoinput="1" onfocus="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');activeAuto(event,[FAMID],this,'','[DOCID_AID]','')"   onchange="addmdocs('_[DOCID_AID]')" type="text" attrid="ilink_[DOCID_AIDINDEX]" value="[DOCID_TITLE]">
-        <input type="hidden"  id="mdocid_work[DOCID_AID]" value="" onchange="$('#[DOCID_AID]').val(this.value)">
+		<input autocomplete="off" autoinput="1"  onfocus="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');activeAuto(event,[FAMID],this,'','[DOCID_AID]','')"   onchange="addmdocs('_[DOCID_AID]')" type="text" attrid="ilink_[DOCID_AIDINDEX]" value="[DOCID_TITLE]">
+                <input id="ic[DOCID_AIDINDEX]" type="button" onclick="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');sendAutoChoice(event,'[FAMID]',this,'ilink_[DOCID_AID]',null,'[DOCID_AID]')"  value="&#133;">
+           <input id="ix[DOCID_AIDINDEX]" type="button" onclick="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');clearInputs(['ilink_[DOCID_AID]','[DOCID_AID]'],null,'[DOCID_AID]' )" title="" value="&times;">
+        <input [IFNOT key]type="hidden"[ENDIF key]  name="_se_keys[]"  attrid="[DOCID_AIDINDEX]" value="[key]">
+        [IF ISDOCIDMULTIPLE]<input type="hidden"  id="mdocid_work[DOCID_AID]" value="" onchange="$('#[DOCID_AID]').val(this.value)">[ENDIF ISDOCIDMULTIPLE]
 	  [ENDIF ISDOCID]
   [ENDIF ISENUM]
   [IF ISENUM]

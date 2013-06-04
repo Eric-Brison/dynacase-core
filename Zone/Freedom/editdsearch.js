@@ -274,7 +274,7 @@ function getOperatorLabel(id, attributeType) {
     return op["label"];
 }
 
-function filterfunc(th) {
+function filterfunc(th, onlyUpdate) {
     var p = th.parentNode;
     var opt = th.options[th.selectedIndex];
     var atype = opt.getAttribute('atype');
@@ -334,6 +334,10 @@ function filterfunc(th) {
 
         }
 
+    }
+
+    if (onlyUpdate) {
+        return;
     }
     if (needresetselect) {
         so.options[ifirst].selected = true;
@@ -677,4 +681,8 @@ function recycleDocId(aid, uniqueAid) {
 $(document).ready(function () {
     initializeMethodSelectors();
     activateStatesButton();
+    $('select[data-needfilter="1"]').each(function (oIndex, oSelect) {
+
+        filterfunc(oSelect, true);
+    });
 });
