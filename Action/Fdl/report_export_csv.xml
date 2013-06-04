@@ -145,9 +145,20 @@
               success: function(data) {
                   $('#bExport').val(data.status);
                   if (stopExportPolling < 1) {
-                    if (! data.end) setTimeout(function () {pollingExport(exportId);},500);
+                    if (! data.end) {
+                        setTimeout(function () {pollingExport(exportId);},500);
+                    } else {
+                        setTimeout(function () {
+                        $('#bExport').removeAttr('disabled').val("[TEXT:Re-export report]");
+                        }
+                        ,2000);
+                    }
                   } else {
-    $('#bExport').val('[TEXT:Export Done]');
+                     $('#bExport').val("[TEXT:Export Done]");
+                    setTimeout(function () {
+                        $('#bExport').removeAttr('disabled').val("[TEXT:Re-export report]");
+                        }
+                        ,2000);
                  }
               }});
 

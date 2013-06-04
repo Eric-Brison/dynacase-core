@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-05-14 09:46+0200\n"
+"PO-Revision-Date: 2013-06-04 16:53+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1446,9 +1446,6 @@ msgstr "Recherche en cours"
 
 msgid "Don't care preferences"
 msgstr "Ne pas tenir compte des préférences"
-
-msgid "Done date"
-msgstr "Date d'exécution"
 
 msgid "Dot"
 msgstr "Dot"
@@ -3067,6 +3064,9 @@ msgstr ""
 "Données brutes de la base de données. Données formatées : données telles que "
 "les voit l'utilisateur depuis son navigateur"
 
+msgid "Re-export report"
+msgstr "Exporter de nouveau"
+
 msgid "Reaffect"
 msgstr "Ré-affectation"
 
@@ -3131,9 +3131,6 @@ msgstr "Renommer le fichier en %s"
 
 msgid "Reopen archive"
 msgstr "Réouverture de l'archive"
-
-msgid "Rest delay"
-msgstr "Durée restante"
 
 msgid "Restricted Access"
 msgstr "Accès restreint"
@@ -3652,15 +3649,6 @@ msgstr "Ce document a été supprimé"
 
 msgid "Thursday"
 msgstr "Jeudi"
-
-msgid "Timer result"
-msgstr "Résultat"
-
-msgid "Timers management"
-msgstr "Gestion des minuteurs"
-
-msgid "Timers management result"
-msgstr "Résultat gestion des minuteurs"
 
 msgid "Timers prevision"
 msgstr "Prévision des minuteurs"
@@ -8587,6 +8575,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Confirm unattach all activated timers"
 #~ msgstr "Confirmer l'annulation de tous les minuteurs actifs"
 
+#~ msgid "Done date"
+#~ msgstr "Date d'exécution"
+
 #~ msgid ""
 #~ "Element can't be perfectly analyze, some error might occur when importing"
 #~ msgstr ""
@@ -8614,6 +8605,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Reference Manuel"
 #~ msgstr "Manuel de référence"
 
+#~ msgid "Reimport report"
+#~ msgstr "Réimporter le rapport"
+
+#~ msgid "Rest delay"
+#~ msgstr "Durée restante"
+
 #~ msgid "Search Words"
 #~ msgstr "Recherche des mots"
 
@@ -8627,8 +8624,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ "Certains éléments n'ont pas pu être totalement analysés, des erreurs "
 #~ "peuvent apparaître lors de l'importation"
 
+#~ msgid "Timer result"
+#~ msgstr "Résultat"
+
 #~ msgid "Timers history"
 #~ msgstr "Historique des minuteurs"
+
+#~ msgid "Timers management"
+#~ msgstr "Gestion des minuteurs"
+
+#~ msgid "Timers management result"
+#~ msgstr "Résultat gestion des minuteurs"
 
 #~ msgid "Unattach Timers"
 #~ msgstr "Désactiver les minuteurs"
