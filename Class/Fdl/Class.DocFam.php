@@ -479,9 +479,13 @@ create unique index idx_idfam on docfam(id);";
     {
         $this->setChanged();
         $idp = strtolower($idp);
-        $oa = $this->getAttribute($idp);
-        if ($check && !$oa) {
-            return ErrorCode::getError('DOC0120', $idp, $this->getTitle() , $this->name);
+        
+        $oa = null;
+        if ($check) {
+            $oa = $this->getAttribute($idp); // never use getAttribute if not check
+            if (!$oa) {
+                return ErrorCode::getError('DOC0120', $idp, $this->getTitle() , $this->name);
+            }
         }
         
         if (is_array($val)) $val = $this->arrayToRawValue($val);
