@@ -62,7 +62,27 @@ function displayWindow(height, width, ref, title, x, y, id, backgroundcolor) {
                 setparamu("FDL", "MVIEW_GEO", newParam);
             }
         }
-    });
+    }).bind('dialogdragstart dialogresizestart', function(event, ui) {
+
+           var overlay = $(this).find('.hidden-dialog-overlay');
+           if (!overlay.length) {
+               overlay = $('<div class="hidden-dialog-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;z-order:100000;"></div>');
+               overlay.appendTo(this.parentNode);
+               if (isIE6) {
+                   overlay.css("height","1000px").css("width","100%");
+               }
+           }
+           else {
+               overlay.show();
+           }
+           if (event.type=="dialogdragstart") {
+               overlay.css("cursor", "move");
+           } else if (event.type=="dialogresizestart") {
+               overlay.css("cursor", "nw-resize");
+           }
+       }).bind('dialogdragstop dialogresizestop', function() {
+           $(this.parentNode).find('.hidden-dialog-overlay').hide();
+       });
     dialogFrame.width(width).height(height);
     dialogFrame.attr("src", ref);
     if (backgroundcolor) {
