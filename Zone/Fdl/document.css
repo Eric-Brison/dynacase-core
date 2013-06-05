@@ -35,3 +35,9 @@
 .document .documentTitle a:link,.document .documentTitle a:visited {
     color: [COLOR_BLACK];
 }
+
+.hidden-dialog-overlay {
+    background-color:[COLOR_WHITE];
+    opacity:0.3;
+    filter: alpha(opacity = 30);
+}
