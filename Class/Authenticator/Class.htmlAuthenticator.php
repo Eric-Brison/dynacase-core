@@ -72,9 +72,9 @@ class htmlAuthenticator extends Authenticator
     {
         if (!$this->auth_session) {
             include_once ('WHAT/Class.Session.php');
-            $this->auth_session = new Session($this->parms{'cookie'});
-            if (array_key_exists($this->parms{'cookie'}, $_COOKIE)) {
-                $this->auth_session->Set($_COOKIE[$this->parms{'cookie'}]);
+            $this->auth_session = new Session(Session::PARAMNAME);
+            if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
+                $this->auth_session->Set($_COOKIE[Session::PARAMNAME]);
             } else {
                 $this->auth_session->Set();
             }
@@ -114,7 +114,6 @@ class htmlAuthenticator extends Authenticator
         header(sprintf('Location: %s', $this->getAuthUrl($args)));
         return TRUE;
     }
-
     /**
      * return url used to connect user
      * @param array $extendedArg
@@ -145,7 +144,7 @@ class htmlAuthenticator extends Authenticator
      */
     public function connectTo($uri)
     {
-        $location = sprintf('%s&redirect_uri=%s', $this->getAuthUrl(), urlencode($uri));
+        $location = sprintf('%s&redirect_uri=%s', $this->getAuthUrl() , urlencode($uri));
         header(sprintf('Location: %s', $location));
         exit(0);
     }
@@ -179,9 +178,9 @@ class htmlAuthenticator extends Authenticator
      */
     public function logout($redir_uri = '')
     {
+        include_once ('WHAT/Class.Session.php');
         $session_auth = $this->getAuthSession();
-        if (array_key_exists($this->parms{'cookie'}, $_COOKIE)) {
-            //       error_log("Closing auth session for cookie : ".$this->parms{'cookie'});
+        if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
             $session_auth->close();
         }
         if ($redir_uri == "") {
@@ -259,5 +258,4 @@ class htmlAuthenticator extends Authenticator
         
         $actionRouter->executeAction();
     }
-
 }

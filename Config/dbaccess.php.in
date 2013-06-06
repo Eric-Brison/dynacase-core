@@ -22,7 +22,6 @@ $freedom_authtype = '@AUTHTYPE@';
 
 $freedom_authtypeparams = array(
     'html' => array(
-        'cookie' => 'dcpsession',
         'auth' => array(
             'app' => 'AUTHENT',
             'action' => 'LOGINFORM',
