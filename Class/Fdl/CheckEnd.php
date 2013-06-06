@@ -69,7 +69,7 @@ class CheckEnd extends CheckData
         foreach ($la as & $oa) {
             $foa = $oa->fieldSet;
             if (!$foa) {
-                $this->addError(ErrorCode::getError('ATTR0203', $oa->id,$this->doc->name));
+                $this->addError(ErrorCode::getError('ATTR0203', $oa->id, $this->doc->name));
             } elseif ((!is_a($foa, "FieldSetAttribute")) && ($foa->type != 'array')) {
                 $this->addError(ErrorCode::getError('ATTR0204', $foa->id, $oa->id));
             } else {
@@ -181,7 +181,7 @@ class CheckEnd extends CheckData
     }
     private function checkDefault()
     {
-        $defaults = $this->doc->getDefValues();
+        $defaults = $this->doc->getOwnDefValues();
         foreach ($defaults as $attrid => $def) {
             /**
              * @var $oa NormalAttribute
@@ -213,7 +213,7 @@ class CheckEnd extends CheckData
     
     private function checkParameters()
     {
-        $parameters = $this->doc->getParams();
+        $parameters = $this->doc->getOwnParams();
         foreach ($parameters as $attrid => $def) {
             /**
              * @var $oa NormalAttribute
@@ -224,7 +224,8 @@ class CheckEnd extends CheckData
             } else {
                 if ($oa->usefor != 'Q') {
                     // TODO : cannot test here because DEFAULT set parameters systematicaly
-                   // $this->addError(ErrorCode::getError('INIT0006', $attrid, $this->doc->name));
+                    // $this->addError(ErrorCode::getError('INIT0006', $attrid, $this->doc->name));
+                    
                 } else {
                     $oParse = new parseFamilyMethod();
                     $strucFunc = $oParse->parse($def);

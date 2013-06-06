@@ -36,6 +36,7 @@ function add_import_file(Action & $action, $fimport, $dirid = 0)
     $analyze = (GetHttpVars("analyze", "N") == "Y"); // just analyze
     $policy = GetHttpVars("policy", "update");
     $reinit = GetHttpVars("reinitattr");
+    $reset = GetHttpVars("reset");
     $comma = GetHttpVars("comma", SEPCHAR);
     
     $if = new importDocumentDescription($fimport);
@@ -43,6 +44,7 @@ function add_import_file(Action & $action, $fimport, $dirid = 0)
     $if->analyzeOnly($analyze);
     $if->setPolicy($policy);
     $if->reinitAttribute($reinit == "yes");
+    $if->reset($reset);
     $if->setComma($comma);
     return $if->import();
 }
@@ -101,8 +103,8 @@ function getOrder(array $orderdata)
 function AddVaultFile($dbaccess, $path, $analyze, &$vid)
 {
     global $importedFiles;
-
-    $err='';
+    
+    $err = '';
     $path = str_replace("//", "/", $path);
     // return same if already imported (case of multi links)
     if (isset($importedFiles[$path])) {
