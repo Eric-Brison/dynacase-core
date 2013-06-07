@@ -742,11 +742,6 @@ class WDoc extends Doc
             if (!$foundTo) return (sprintf(_("ChangeState :: the new state '%s' is not known or is not allowed from %s") , _($newstate) , _($this->doc->state)));
             if (!$foundFrom) return (sprintf(_("ChangeState :: the initial state '%s' is not known") , _($this->doc->state)));
         }
-        // verify if completed doc
-        if ($wneed) {
-            $err = $this->doc->isCompleteNeeded();
-            if ($err != "") return $err;
-        }
         // verify if privilege granted
         if ($withcontrol) $err = $this->control($tname);
         if ($err != "") return $err;
@@ -789,6 +784,11 @@ class WDoc extends Doc
                 $this->doc->unlock(true);
                 return (sprintf(_("Error : %s") , $err));
             }
+        }
+        // verify if completed doc
+        if ($wneed) {
+            $err = $this->doc->isCompleteNeeded();
+            if ($err != "") return $err;
         }
         // change the state
         $oldstate = $this->doc->state == "" ? " " : $this->doc->state;
