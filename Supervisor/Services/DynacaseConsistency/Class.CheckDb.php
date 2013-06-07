@@ -263,7 +263,7 @@ class checkDb
             foreach ($baseList as $base) {
                 $testName = sprintf("connection to '%s'", $base['dn']);
                 $this->tout[$testName] = array();
-                
+                /** @noinspection PhpUndefinedFunctionInspection */
                 $uri = getLDAPUri($ldapmode, $ldaphost, $ldapport);
                 $conn = ldap_connect($uri);
                 if ($conn === false) {
@@ -352,7 +352,12 @@ class checkDb
         );
         return;
     }
-    
+    /**
+     * @param NormalAttribute $oa
+     * @param string $pgtype
+     * @param string $rtype
+     * @return string
+     */
     private static function verifyDbAttr(&$oa, $pgtype, &$rtype)
     {
         $err = '';
@@ -393,6 +398,7 @@ class checkDb
      * detected sql type inconsistence with declaration
      * @param $famid
      * @param NormalAttribute $aoa if wan't test only one attribute
+     * @throws Dcp\Exception
      * @return array empty array if no error, else an item string by error detected
      */
     public static function verifyDbFamily($famid, NormalAttribute $aoa = null)
@@ -402,7 +408,7 @@ class checkDb
         $fam = new_doc('', $famid);
         if ($fam->isAlive()) {
             $sql = sprintf("select pg_attribute.attname,pg_type.typname FROM pg_attribute, pg_type where pg_type.oid=pg_attribute.atttypid and pg_attribute.attrelid=(SELECT oid from pg_class where relname='doc%d') order by pg_attribute.attname;", $fam->id);
-            $err = simpleQuery('', $sql, $res);
+            simpleQuery('', $sql, $res);
             $pgtype = array();
             foreach ($res as $pgattr) {
                 if ($pgattr["typname"] == "timestamptz") $pgattr["typname"] = "timestamp";
@@ -430,6 +436,68 @@ class checkDb
         }
         return $cr;
     }
+    
+    public static function getOrpheanAttributes($famid)
+    {
+        
+        $d = new Doc();
+        $fam = new_doc('', $famid);
+        $sql = sprintf("select column_name from information_schema.columns where table_name = 'doc%d'", $fam->id);
+        simpleQuery('', $sql, $res, true);
+        
+        $nAttributes = $fam->getNormalAttributes();
+        $oasIds = array_keys($nAttributes);
+        $oasIds = array_merge($oasIds, $d->fields, $d->sup_fields, array(
+            "fulltext",
+            "svalues"
+        ));
+        
+        foreach ($nAttributes as $attrid => $oa) {
+            if ($oa->type == "file") {
+                $oasIds[] = $attrid . '_txt';
+                $oasIds[] = $attrid . '_vec';
+            }
+        }
+        
+        $orphean = array();
+        foreach ($res as $dbAttr) {
+            if (!in_array($dbAttr, $oasIds)) {
+                if ($dbAttr != "forumid") {
+                    $orphean[] = $dbAttr;
+                }
+            }
+        }
+        return $orphean;
+    }
+    /**
+     * detected sql type inconsistence with declaration
+     * @param int $famid
+     * @throws Dcp\Exception
+     * @internal param \NormalAttribute $aoa if wan't test only one attribute
+     * @return array empty array if no error, else an item string by error detected
+     */
+    public static function verifyDbAttrOrphean($famid)
+    {
+        $cr = array();
+        /**
+         * @var DocFam $fam
+         */
+        $fam = new_doc('', $famid);
+        if ($fam->isAlive()) {
+            $orphean = self::getOrpheanAttributes($famid);
+            if ($orphean) {
+                $cr[] = sprintf("\nfamily \"%s\", column '%s' - not part of family", $fam->getTitle() , implode(",", $orphean));
+                $cr[] = sprintf("\ttry : drop view family.%s; ", strtolower($fam->name));
+                foreach ($orphean as $orpAttr) {
+                    $cr[] = sprintf("\tand : alter table doc%d drop column %s; ", $fam->id, $orpAttr);
+                }
+                $cr[] = "\n";
+            }
+        } else {
+            throw new Dcp\Exception("no family $famid");
+        }
+        return $cr;
+    }
     /**
      * verify attribute sql type
      * @return void
@@ -448,6 +516,26 @@ class checkDb
         }
         
         $this->tout[$testName]['status'] = ($err) ? self::KO : self::OK;
+        $this->tout[$testName]['msg'] = '<pre>' . $err . '</pre>';
+    }
+    /**
+     * verify attribute sql type
+     * @return void
+     */
+    public function checkAttributeOrphean()
+    {
+        $testName = 'attribute orphean';
+        include_once ("../../../FDL/Class.Doc.php");
+        $err = simpleQuery('', "select id from docfam", $families, true);
+        
+        foreach ($families as $famid) {
+            $cr = $this->verifyDbAttrOrphean($famid);
+            if (count($cr) > 0) {
+                $err.= implode("<br/>", $cr);
+            }
+        }
+        
+        $this->tout[$testName]['status'] = ($err) ? self::BOF : self::OK;
         $this->tout[$testName]['msg'] = '<pre>' . $err . '</pre>';
     }
     /**
@@ -471,6 +559,7 @@ class checkDb
             $this->checkMultipleAlive();
             $this->checkNetworkUser();
             $this->checkAttributeType();
+            $this->checkAttributeOrphean();
             $this->checkDynacaseDbCleaner();
         }
         return $this->tout;
@@ -491,7 +580,7 @@ class checkDb
         if (!$this->tparam) {
             $this->initGlobalParam();
         }
-        return $this->tparam[$key];
+        return isset($this->tparam[$key]) ? $this->tparam[$key] : null;
     }
 }
 ?>

@@ -49,7 +49,11 @@ if (count($argv) == 1) {
 foreach ($argv as $k => $v) {
     
     if (preg_match("/--([^=]+)=(.*)/", $v, $reg)) {
-        $_GET[$reg[1]] = $reg[2];
+        if (substr($reg[1],-2)=="[]") {
+            $_GET[substr($reg[1],0,-2)][] = $reg[2];
+        } else {
+            $_GET[$reg[1]] = $reg[2];
+        }
     } else if (preg_match("/--(.+)/", $v, $reg)) {
         if ($reg[1] == "listapi") {
             print "application list :\n";

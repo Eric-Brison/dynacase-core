@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-06-04 16:53+0200\n"
+"PO-Revision-Date: 2013-06-07 14:25+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -3131,6 +3131,18 @@ msgstr "Renommer le fichier en %s"
 
 msgid "Reopen archive"
 msgstr "Réouverture de l'archive"
+
+msgid "Reset attribute structure"
+msgstr "Réinitialisation de la structure du document"
+
+msgid "Reset defaults values"
+msgstr "Réinitialisation des valeurs par défaut"
+
+msgid "Reset enums definition"
+msgstr "Réinitialisation de la définition des énumérés"
+
+msgid "Reset parameters values"
+msgstr "Réinitialisation des valeurs de paramètres"
 
 msgid "Restricted Access"
 msgstr "Accès restreint"

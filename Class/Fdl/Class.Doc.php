@@ -1503,6 +1503,10 @@ create unique index i_docir on doc(initid, revision);";
      * @api return family parameter value
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
+     * @note The value of parameter can come from inherited family if its own value is empty.
+     The value of parameter comes from default configuration value if no one value are set in its family or in a parent family.
+     the default configuration value comes from inherited family if no default configuration.
+     In last case, if no values and no configurated default values, the $def argument is returned
      * @return string parameter value
      */
     public function getFamilyParameterValue($idp, $def = "")
@@ -1511,9 +1515,7 @@ create unique index i_docir on doc(initid, revision);";
         $r = $def;
         if (isset($this->_paramValue[$idp])) return $this->_paramValue[$idp];
         $r = $this->getParameterFamilyRawValue($idp, $def);
-        /**
-         * @var NormalAttribute $paramAttr
-         */
+        /* @var NormalAttribute $paramAttr */
         $paramAttr = $this->getAttribute($idp);
         if (!$paramAttr) return $def;
         if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "") {

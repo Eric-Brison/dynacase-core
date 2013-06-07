@@ -46,6 +46,14 @@ $reinit = $usage->addOptionalParameter("reinitattr", "reset attribute before imp
     "yes",
     "no"
 ));
+$reset = $usage->addOptionalParameter("reset", "reset options", array(
+    "default",
+    "parameters",
+    "attributes",
+    "structure",
+    "properties",
+    "enums"
+));
 $to = $usage->addOptionalParameter("to", "email address to send report");
 $dirid = $usage->addOptionalParameter("dir", "folder where imported documents are put");
 

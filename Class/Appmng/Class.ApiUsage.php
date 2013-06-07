@@ -404,11 +404,15 @@ namespace {
             foreach ($allArgs as $arg) {
                 $value = $this->action->getArgument($arg["name"], null);
                 if ($value !== null && $arg["restriction"]) {
-                    if (!in_array($value, $arg["restriction"])) {
+                    $values=(!is_array($value))?array($value):$value;
+                        foreach ($values as $aValue) {
+                    if (!in_array($aValue, $arg["restriction"])) {
                         $error = sprintf("argument '%s' must be one of these values : %s\n", $arg["name"], implode(", ", $arg["restriction"]));
                         
                         $this->exitError($error);
                     }
+                    }
+
                 }
                 $argsKey[] = $arg["name"];
             }

@@ -419,8 +419,16 @@ create unique index idx_idfam on docfam(id);";
      */
     final public function getParameterRawValue($idp, $def = "")
     {
-        if ($def === "") $def = $this->getDefValue($idp);
-        return $this->getXValue("param", $idp, $def);
+        
+        $pValue = $this->getXValue("param", $idp);
+        if ($pValue === '') {
+            $defsys = $this->getDefValue($idp);
+            if ($defsys !== '') {
+                return $defsys;
+            }
+            return $def;
+        }
+        return $pValue;
     }
     /**
      * use in Doc::getParameterFamilyValue
@@ -622,10 +630,13 @@ create unique index idx_idfam on docfam(id);";
     function setDefValue($idp, $val, $check = true)
     {
         $idp = strtolower($idp);
-        $oa = $this->getAttribute($idp);
         $err = '';
-        if ($check && !$oa) {
-            return ErrorCode::getError('DOC0123', $idp, $this->getTitle() , $this->name);
+        $oa = null;
+        if ($check) {
+            $oa = $this->getAttribute($idp);
+            if (!$oa) {
+                return ErrorCode::getError('DOC0123', $idp, $this->getTitle() , $this->name);
+            }
         }
         if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
             $err = $this->convertDateToiso($oa, $val);
@@ -681,6 +692,7 @@ create unique index idx_idfam on docfam(id);";
         $defval = $this->$X;
         
         if ($this->$Xval) return $this->$Xval;
+        
         $XS[$this->id] = $defval;
         $this->$Xval = array();
         $inhIds = array();
@@ -699,7 +711,7 @@ create unique index idx_idfam on docfam(id);";
         foreach ($inhIds as $famId) {
             $txvalh = $this->explodeX($XS[$famId]);
             foreach ($txvalh as $aid => $dval) {
-                $txval[$aid] = ($dval == '-') ? '' : $dval;
+                $txval[$aid] = ($dval == '-') ? null : $dval;
             }
         }
         if ($this->isComplete()) {
@@ -745,7 +757,7 @@ create unique index idx_idfam on docfam(id);";
         foreach ($txval as $k => $v) {
             if ($k && ($v !== '')) $tdefattr[] = "$k|$v";
         }
-        
+        $this->$tval = null;
         $this->$X = "[" . implode("][", $tdefattr) . "]";
     }
     

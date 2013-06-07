@@ -17,7 +17,9 @@ class CheckReset extends CheckData
         "attributes",
         "default",
         "properties",
-        "parameters"
+        "parameters",
+        "structure",
+        "enums"
     );
     /**
      * @param array $data
