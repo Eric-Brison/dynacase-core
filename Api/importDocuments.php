@@ -42,7 +42,7 @@ $htmlmode = $usage->addOptionalParameter("htmlmode", "analyze report mode in htm
     "yes",
     "no"
 ) , "yes");
-$reinit = $usage->addOptionalParameter("reinitattr", "reset attribute before import family update", array(
+$reinit = $usage->addOptionalParameter("reinitattr", "reset attribute before import family update (deprecated)", array(
     "yes",
     "no"
 ));
@@ -63,6 +63,10 @@ $strict = $usage->addOptionalParameter("strict", "don't import if one error dete
 ) , "yes");
 $usage->verify();
 
+
+if ($reinit=="yes") {
+    $action->log->deprecated("importDocuments :reinitattr option is deprecated, use --reset=attributes");
+}
 if (!file_exists($filename)) {
     $action->ExitError(sprintf(_("import file %s not found") , $filename));
 }

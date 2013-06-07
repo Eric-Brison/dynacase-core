@@ -265,7 +265,7 @@ class Log
                         if ($str) {
                             $str.= ' ';
                         }
-                        $str.= sprintf("%s called in %s%s%s(), file %s:%s", $td[3]["function"], $class, $class ? '::' : '', $td[4]["function"], isset($td[4]["file"]) ? $td[4]["file"] : '', isset($td[4]["line"]) ? $td[4]["line"] : '');
+                        $str.= sprintf("%s called in %s%s%s(), file %s:%s", isset($td[3]["function"])?$td[3]["function"]:'', $class, $class ? '::' : '', isset($td[4]["function"])?$td[4]["function"]:'', isset($td[4]["file"]) ? $td[4]["file"] : '', isset($td[4]["line"]) ? $td[4]["line"] : '');
                         $pri = LOG_INFO;
                         break;
 
