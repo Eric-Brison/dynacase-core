@@ -91,12 +91,42 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         foreach ($expectedvalues as $attrid => $expectedValue) {
             
             $value = $d->getDefValue($attrid);
-            $this->assertEquals($expectedValue, $value, sprintf("not the expected default value attribute %s", $attrid));
+            $this->assertEquals($expectedValue, $value, sprintf("not the expected default value attribute %s has %s", $attrid, $d->defval));
         }
         foreach ($expectedParams as $attrid => $expectedValue) {
             
             $value = $d->getParameterRawValue($attrid);
             $this->assertEquals($expectedValue, $value, sprintf("not the expected default value parameter %s", $attrid));
+        }
+    }
+    /**
+     * @dataProvider dataDefaultInheritedWithDefaultArg
+     */
+    public function testFamilyParamvalueInheritedWithDefaultArg($famid, $default, array $expectedParams)
+    {
+        /**
+         * @var  \DocFam $d
+         */
+        $d = new_Doc(self::$dbaccess, $famid);
+        $this->assertTrue(is_object($d) , sprintf("cannot get %s family", $famid));
+        
+        foreach ($expectedParams as $attrid => $expectedValue) {
+            
+            $value = $d->getParameterRawValue($attrid, $default);
+            $this->assertEquals($expectedValue, $value, sprintf("not the expected default value parameter %s", $attrid));
+        }
+    }
+    /**
+     * @dataProvider dataDocParamvalueInheritedWithDefaultArg
+     */
+    public function testDocParamvalueInheritedWithDefaultArg($famid, $default, array $expectedParams)
+    {
+        $d = createDoc(self::$dbaccess, $famid, false, false);
+        $this->assertTrue(is_object($d) , sprintf("cannot create %s1 document", $famid));
+        
+        foreach ($expectedParams as $attrid => $expectedvalue) {
+            $value = $d->getFamilyParameterValue($attrid, $default);
+            $this->assertEquals($expectedvalue, $value, sprintf("not the expected default value attribute %s", $attrid));
         }
     }
     /**
@@ -121,15 +151,15 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
     {
         $d = createDoc(self::$dbaccess, $famid);
         $value = $d->getFamilyParameterValue($attrid);
-        $this->assertEquals($expectedValue, $value, sprintf("parameter %s has not correct initial value", $attrid));
         $f = $d->getFamilyDocument();
+        $this->assertEquals($expectedValue, $value, sprintf("parameter %s has not correct initial value, family has \"%s\"", $attrid, $f->param . $f->getParameterRawValue($attrid)));
         $err = $f->setParam($attrid, '');
         $this->assertEmpty($err, "parameter set error : $err");
         $f->modify();
         $d2 = createDoc(self::$dbaccess, $famid);
         $f = $d2->getFamilyDocument();
         $value = $d2->getFamilyParameterValue($attrid);
-        $this->assertEquals($expectedDefaultValue, $value, sprintf("parameter %s has not correct default value", $attrid));
+        $this->assertEquals($expectedDefaultValue, $value, sprintf("parameter %s has not correct default value , family has \"%s\"", $attrid, $f->getParameterRawValue($attrid)));
     }
     
     public function dataInitialParam()
@@ -146,6 +176,61 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 "TST_P5",
                 50,
                 34
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY3",
+                "TST_P5",
+                51,
+                50
+            )
+        );
+    }
+    
+    public function dataDefaultInheritedWithDefaultArg()
+    {
+        return array(
+            array(
+                "TST_DEFAULTFAMILY2",
+                "34",
+                array(
+                    'TST_P1' => 'PFirst',
+                    "TST_P2" => "10",
+                    "TST_P3" => "::oneMore(TST_P2)",
+                    "TST_P4" => "40",
+                    'TST_P6' => '20'
+                )
+            )
+        );
+    }
+    
+    public function dataDocParamvalueInheritedWithDefaultArg()
+    {
+        return array(
+            array(
+                "TST_DEFAULTFAMILY2",
+                "341",
+                array(
+                    "TST_P0" => "341",
+                    'TST_P1' => 'PFirst',
+                    "TST_P2" => "10",
+                    "TST_P3" => "11",
+                    "TST_P4" => "40",
+                    'TST_P6' => '20',
+                    'TST_P7' => '21'
+                )
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY4",
+                "341",
+                array(
+                    "TST_P0" => "341",
+                    'TST_P1' => 'PThird',
+                    "TST_P2" => "10",
+                    "TST_P3" => "11",
+                    "TST_P4" => "40",
+                    'TST_P6' => '20',
+                    'TST_P7' => '21'
+                )
             )
         );
     }

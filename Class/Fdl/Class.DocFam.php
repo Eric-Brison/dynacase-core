@@ -419,8 +419,16 @@ create unique index idx_idfam on docfam(id);";
      */
     final public function getParameterRawValue($idp, $def = "")
     {
-        if ($def === "") $def = $this->getDefValue($idp);
-        return $this->getXValue("param", $idp, $def);
+        
+        $pValue = $this->getXValue("param", $idp);
+        if ($pValue === '') {
+            $defsys = $this->getDefValue($idp);
+            if ($defsys !== '') {
+                return $defsys;
+            }
+            return $def;
+        }
+        return $pValue;
     }
     /**
      * use in Doc::getParameterFamilyValue
@@ -703,7 +711,7 @@ create unique index idx_idfam on docfam(id);";
         foreach ($inhIds as $famId) {
             $txvalh = $this->explodeX($XS[$famId]);
             foreach ($txvalh as $aid => $dval) {
-                $txval[$aid] = ($dval == '-') ? '' : $dval;
+                $txval[$aid] = ($dval == '-') ? null : $dval;
             }
         }
         if ($this->isComplete()) {
