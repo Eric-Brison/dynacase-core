@@ -13,7 +13,6 @@ if [ -z "$pgservice_core" ]; then
 fi
 
 
-
 $wpub/wsh.php --api=updateclass --class=ParamDef
 RET=$?
 if [ $RET -ne 0 ]; then
@@ -30,4 +29,9 @@ if [ $RET -ne 0 ]; then
     echo "Error delete index to table paramdef."
     exit $RET
 fi
+
+PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where (id = 'us_iddomain' or id= 'us_domain') and docid < 200;"
+
+# Delete parasite parameters
+"$wpub/wsh.php" --api=cleanFamilyParameter
 exit 0
