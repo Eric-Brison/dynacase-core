@@ -61,7 +61,12 @@ while ($fam = $s->getNextDoc()) {
                 $fam->setParam($aid, '', false);
             } else {
                 // it's a good param
-                
+                $sql = sprintf("select id from docattr where (id='%s' or id=':%s') and docid=%d", $oa->id, $oa->id, $oa->docid);
+                simpleQuery($action->dbaccess, $sql, $dbAttrid, true, true);
+                if (!$dbAttrid) {
+                    $deleting[] = $aid;
+                    $fam->setParam($aid, '', false);
+                }
             }
         }
     }
