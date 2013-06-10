@@ -30,7 +30,7 @@ if ($dbaccess == "") {
 }
 $usage = new ApiUsage();
 $usage->setDefinitionText("Delete parameter values which are not real parameters");
-$verifyOnly=$usage->addEmptyParameter("verify-only","only verify, do not changes");
+$verifyOnly = $usage->addEmptyParameter("verify-only", "only verify, do not changes");
 $usage->verify();
 /**
  * @var Action $action
@@ -54,11 +54,11 @@ while ($fam = $s->getNextDoc()) {
         $oa = $fam->getAttribute($aid);
         if (!$oa) {
             $deleting[] = $aid;
-            $fam->setParam($aid, '');
+            $fam->setParam($aid, '', false);
         } else {
             if ($oa->usefor != 'Q') {
                 $deleting[] = $aid;
-                $fam->setParam($aid, '');
+                $fam->setParam($aid, '', false);
             } else {
                 // it's a good param
                 
@@ -68,11 +68,11 @@ while ($fam = $s->getNextDoc()) {
     $after = $fam->param;
     if ($before != $after) {
         printf("Change from \n\t%s to \n\t%s", $before, $after);
-        if (! $verifyOnly) {
-        $err=$fam->modify();
-        $err = '';
-        if (!$err) print "changed";
-        else print $err;
+        if (!$verifyOnly) {
+            $err = $fam->modify();
+            $err = '';
+            if (!$err) print "changed";
+            else print $err;
         }
     } else print ": clean - nothing to do";
 }
