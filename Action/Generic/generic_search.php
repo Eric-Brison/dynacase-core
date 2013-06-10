@@ -107,9 +107,13 @@ function generic_search(Action & $action)
         $only = (getInherit($action, $famid) == "N");
         
         try {
-            $sqlfilter = array(
-                SearchDoc::getGeneralFilter($keyword, $useSpell = true)
-            );
+            if (!SearchDoc::checkGeneralFilter($keyword)) {
+                throw new \Dcp\Exception(sprintf(_("incorrect global filter %s") , $keyword));
+            } else {
+                $sqlfilter = array(
+                    SearchDoc::getGeneralFilter($keyword, $useSpell = true)
+                );
+            }
         }
         catch(Exception $e) {
             $err = $e->getMessage();

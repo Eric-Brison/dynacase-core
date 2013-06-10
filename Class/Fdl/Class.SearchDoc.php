@@ -750,7 +750,7 @@ class SearchDoc
      * @param string $keyword
      * @return bool
      */
-    private function checkGeneralFilter($keyword)
+    public static function checkGeneralFilter($keyword)
     {
         // test parentensis count
         if (preg_match('/\(\s*\)/u', $keyword)) return false;
@@ -910,7 +910,7 @@ class SearchDoc
                     $filter.= $filter && $parenthesis === "(" ? " " . $currentOperator . " " . $parenthesis : $parenthesis;
                 }
                 $rank.= $rank && $parenthesis === "(" ? $convertOperatorToTs($currentOperator) . $parenthesis : $parenthesis;
-                $currentOperator = "";
+                $currentOperator = $parenthesis === "(" ? "" : "and";
                 $parenthesis = "";
             }
         }

@@ -1002,6 +1002,19 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
+                "(téléphones) fixes",
+                array(
+                    "TST_FULL2"
+                )
+            ) ,
+            array(
+                "(marté) @",
+                array(
+                    "TST_FULL10",
+                    "TST_FULL11"
+                )
+            ) ,
+            array(
                 "cheval",
                 array(
                     "TST_FULL3",
