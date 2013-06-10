@@ -748,8 +748,8 @@ create unique index idx_idfam on docfam(id);";
         $tval = "_xt$X";
         if (is_array($val)) $val = $this->arrayToRawValue($val);
         
-        if (!isset($this->$tval)) $this->getXValues($X);
-        $txval = $this->$tval;
+        $txval= $this->explodeX($this->$X);
+
         $txval[strtolower($idp) ] = $val;
         $this->$tval = $txval;
         
