@@ -34,7 +34,12 @@
           //  $('#csid').button();
 
         });
+        var resizeInProgress=false;
         function resizeTable() {
+                if (resizeInProgress) {
+                    window.clearTimeout(resizeInProgress);
+                }
+
                    var widthStr = "[ACARD_WIDTH]";
                    var index = widthStr.indexOf("%");
                    var $cellmain = $('#cellmain');
@@ -65,6 +70,10 @@
                        }
                    }
                resizeBodyHeigth();
+                    resizeInProgress=window.setTimeout(function() {
+                        resizeBodyHeigth(); // need resize after in case of content disposition has changed
+                    },200)
+
                }
 
                $(window).on("load resize", resizeTable);
