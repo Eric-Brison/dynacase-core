@@ -572,6 +572,7 @@ function setSysFamSelector(select) {
         return;
     }
     var selectedText = select.options[select.selectedIndex].text;
+    var selectedValue = select.options[select.selectedIndex].value;
     if (select.se_sysfam_input.checked) {
         /*
          * Show system families
@@ -601,9 +602,7 @@ function setSysFamSelector(select) {
      * Setting selected explicitly for IE
      */
     if (isIE) {
-        // The use of $("#famid") make an issue (#3757) on IE6 in the report family
-        // Please keep the document.getElementById selector
-        $(document.getElementById("famid")).find('option[selected="selected"]').attr("selected", 'selected');
+        $(select).val(selectedValue);
     }
 }
 
