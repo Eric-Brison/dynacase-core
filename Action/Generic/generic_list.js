@@ -9,6 +9,22 @@ function KeySendSimpleSearch(e) {
     }
 }
 
+
+function sendSort(onefamOrigin, dirid,catg, famid, order) {
+    var url='?app=GENERIC&action=GENERIC_USORT&onefam='+onefamOrigin+'&famid='+famid+'&aorder='+order;
+
+    var reTab=/tab=(\d+)/
+    var r=reTab.exec(window.location.href);
+    if (r && r[1]) {
+        url += '&tab='+r[1];
+        url += '&catg='+catg;
+    } else {
+        url += '&catg='+dirid;
+    }
+    window.location.href=url;
+
+}
+
 function sendSimpleSearchP(event, famid, onefamOrigin, dirId, folderId, pds) {
     var isreport = false;
     var isparam = false;
@@ -18,7 +34,7 @@ function sendSimpleSearchP(event, famid, onefamOrigin, dirId, folderId, pds) {
     var key = document.getElementById('searchkey').value;
     var dmainid = document.getElementById('cellmain');
 
-    var selectedsearch=$("a[data-selected=1]");
+    var selectedsearch=$('a[data-selected="1"]');
     if (selectedsearch) {
 
         fldid = selectedsearch.attr("data-searchid");

@@ -324,7 +324,7 @@ function family_defaultmenu(Action & $action)
         if ($csort == $k) $sortTitle = $v["satitle"] . $cselect;
         $sortItemMenu[] = array(
             "label" => $dsort . '&nbsp;' . $v["satitle"],
-            "href" => sprintf('?app=GENERIC&amp;action=GENERIC_USORT&amp;onefam=%s&amp;catg=%s&amp;famid=%s&amp;aorder=%s', $onefamOrigin, $dirid, $famid, $v["aorder"])
+            "href" => sprintf("javascript:sendSort('%s','%s','%s','%s','%s')", $onefamOrigin, $dirid, $catg, $famid, $v["aorder"])
         );
     }
     $defaultMenu["sort"] = array(

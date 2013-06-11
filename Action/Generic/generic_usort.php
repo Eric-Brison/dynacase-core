@@ -26,6 +26,7 @@ function generic_usort(Action & $action)
     $aorder = $action->getArgument("aorder"); // id for controlled object
     $catg = $action->getArgument("catg"); // id for controlled object
     $onefamOrigin = $action->getArgument("onefam"); // onefam origin
+    $tab = $action->getArgument("tab", 0); // tab index
     $sfamid = '';
     if ($catg) {
         $dir = new_doc($action->dbaccess, $catg);
@@ -34,11 +35,14 @@ function generic_usort(Action & $action)
         }
     }
     
-    $action->parent->param->Set("GENERIC_USORT", setUsort($action, $aorder, $sfamid) , PARAM_USER . $action->user->id, $action->parent->id);
+    $action->parent->param->Set("GENERIC_USORT", setUsort($action, $aorder, $sfamid) , Param::PARAM_USER . $action->user->id, $action->parent->id);
     
     $famid = getDefFam($action);
-    
-    redirect($action, $action->GetParam("APPNAME", "GENERIC") , "GENERIC_LIST&onefam=$onefamOrigin&dirid=$catg&tab=0&famid=$famid", $action->GetParam("CORE_STANDURL"));
+    if ($tab) {
+        redirect($action, $action->GetParam("APPNAME", "GENERIC") , "GENERIC_TAB&onefam=$onefamOrigin&catg=$catg&famid=$famid&tab=$tab", $action->GetParam("CORE_STANDURL"));
+    } else {
+        redirect($action, $action->GetParam("APPNAME", "GENERIC") , "GENERIC_LIST&onefam=$onefamOrigin&dirid=$catg&tab=0&famid=$famid&tab=$tab", $action->GetParam("CORE_STANDURL"));
+    }
 }
 
 function setUsort(Action & $action, $aorder, $famid = "")
