@@ -140,15 +140,27 @@ function redoperfounit() {
 		totalTime.network+=parseInt(((abstime-parseFloat(debug.all))*1000)-evaltime);
 		totalTime.server+=parseFloat(debug.all)*1000;
 		viewTotal();
-		t.innerHTML+='<tr><td>'+abstime*1000+'ms</td><td>'+parseInt(((abstime-parseFloat(debug.all))*1000)-evaltime)+'ms</td><td>'+evaltime+'ms</td><td>'+debug.all+'</td><td>'+debug.queries+'</td><td>'+debug.action+'</td><td>'+debug.initauthent+'</td><td>'+debug.memory+'</td></tr>';
-	}
+        var tr = document.createElement('tr');
+        var row = [abstime*1000+'ms', parseInt(((abstime-parseFloat(debug.all))*1000)-evaltime)+'ms', evaltime+'ms', debug.all, debug.queries, debug.action, debug.initauthent, debug.memory];
+        for (var i = 0; i < row.length; i++) {
+            var td = document.createElement('td');
+            var text = document.createTextNode(row[i]);
+            td.appendChild(text);
+            tr.appendChild(td);
+        }
+        t.appendChild(tr);
+    }
 	function perfounit() {
 
 console.log('progress visible');
         totalTime={all:0,js:0,server:0,network:0};
-        document.getElementById('resultsearch').innerHTML='';
-        document.getElementById('resultcontent').innerHTML='';
-        document.getElementById('result').innerHTML='';
+        var reset = ['resultsearch', 'resultcontent', 'result'];
+        for (var i = 0; i < reset.length; i++) {
+            var elmt = document.getElementById(reset[i]);
+            while (elmt.firstChild) {
+                elmt.removeChild(elmt.firstChild);
+            }
+        }
 		getDocuments( [ 9, 11, 12, 13 , 14, 501, 501, 502, 503, 504, 505, 506, 507]);
 		getContentDocuments( [ 9, 121, 11, 12, 13 ]);
 		searchDocuments([{
