@@ -1,28 +1,19 @@
 <?php
 /*
+ * Clean parasite attributes
+ *
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-/**
- * Generate Php Document Classes
- *
- * @author Anakeen
- * @version $Id: fdl_adoc.php,v 1.20 2008/10/30 17:34:31 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
- */
-/**
- */
-// refreah for a classname
-// use this only if you have changed title attributes
+
 include_once ("FDL/Class.DocFam.php");
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Delete attributes parameters and values which are not defined in family");
 $docid = $usage->addRequiredParameter("famid", "family identifier - 0 means all families");
 $verifyOnly = $usage->addEmptyParameter("verify-only", "only verify, do not changes");
+$withoutConfirm = $usage->addEmptyParameter("without-confirm", "ask confirmation before operating");
 $usage->verify();
 
 class cleanFamily
@@ -31,13 +22,13 @@ class cleanFamily
      * @var DocFam
      */
     public $doc = null;
-    public $tcr = array();
+    public $messages = array();
     public $dryrun = false;
     
     public function clean(DocFam $fam)
     {
         $this->doc = $fam;
-        $this->tcr = array();
+        $this->messages = array();
         $this->cleanDefaultAndParametersValues();
         $this->cleanStructure();
     }
@@ -56,7 +47,7 @@ class cleanFamily
             foreach ($orpheanAttributes as $orpheanAttrId) {
                 $sql[] = sprintf("alter table doc%d drop column %s cascade; ", $this->doc->id, $orpheanAttrId);
                 
-                $this->tcr[].= "Destroy values for \"$orpheanAttrId\".";
+                $this->messages[].= "Destroy values for \"$orpheanAttrId\".";
             }
             $sql[] = sprintf("create view family.\"%s\" as select * from doc%d", strtolower($this->doc->name) , $this->doc->id);
             if (!$this->dryrun) {
@@ -67,14 +58,13 @@ class cleanFamily
         }
     }
     
-    function cleanDefaultAndParametersValues()
+    public function cleanDefaultAndParametersValues()
     {
-        
         $defs = $this->doc->getOwnDefValues();
         foreach ($defs as $aid => $v) {
             if (!$this->doc->getAttribute($aid)) {
                 $this->doc->setDefValue($aid, '', false);
-                $this->tcr[].= "Clear default value \"$aid\".";
+                $this->messages[].= "Clear default value \"$aid\".";
             }
         }
         $defs = $this->doc->getOwnParams();
@@ -82,7 +72,7 @@ class cleanFamily
             $oa = $this->doc->getAttribute($aid);
             if (!$oa || $oa->usefor != 'Q') {
                 $this->doc->setParam($aid, '', false);
-                $this->tcr[].= "Clear parameter value \"$aid\".";
+                $this->messages[].= "Clear parameter value \"$aid\".";
             }
         }
         
@@ -91,9 +81,9 @@ class cleanFamily
         }
     }
     
-    function getMessage($sep = "\n")
+    public function getMessage($sep = "\n")
     {
-        return implode($sep, $this->tcr);
+        return implode($sep, $this->messages);
     }
 }
 /**
@@ -101,11 +91,11 @@ class cleanFamily
  */
 // First Part: Workflow
 print "\t === Deleting parasite attributes ===\n";
-if ($verifyOnly) print "\nJust Verify...\n";
+
 $s = new SearchDoc($action->dbaccess, "-1");
 $s->setObjectReturn(true);
 $s->setOrder("initid");
-
+$fam = null;
 if ($docid) {
     $fam = new_Doc($action->dbaccess, $docid);
     if (!$fam->isAlive()) {
@@ -115,6 +105,18 @@ if ($docid) {
         $action->exitError(sprintf("%s is not a family reference", $docid));
     }
     $s->addFilter("id = %d", $fam->id);
+}
+
+if ($verifyOnly) {
+    print "\nJust Verify...\n";
+} elseif (!$withoutConfirm) {
+    printf("The suppression of attributes is irreversible.\nConfirm deleting parasites for %s [Y|N] ? ", $docid ? $fam->name : "all families");
+    $confirm = strtolower(trim(fgets(STDIN)));
+    if ($confirm != "y" && $confirm != "yes") {
+        print "\nAborted.\n";
+        exit(0);
+    }
+    print "\nCleaning in progress...\n";
 }
 
 $s->search();
@@ -130,8 +132,9 @@ while ($fam = $s->getNextDoc()) {
     $msg = $c->getMessage("\n\t");
     if ($msg) {
         printf("\n\"%s\" %s cleaning\n", $fam->getTitle() , $fam->name);
-        print "\t$msg";
+        print "\t$msg\n";
+    } else {
+        printf("\"%s\" %s is clean. Nothing to do.\n", $fam->getTitle() , $fam->name);
     }
 }
-//print_r2($deleting);
 print "\n";
