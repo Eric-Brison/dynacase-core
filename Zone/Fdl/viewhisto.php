@@ -36,6 +36,12 @@ function viewhisto(Action & $action)
     $action->parent->addCssRef("lib/jquery-dataTables/css/jquery.dataTables_themeroller.css");
     $action->parent->addJsRef("FDL/Layout/viewhisto.js");
     
+    $localeconfig = getLocaleConfig();
+    if ($localeconfig !== false) {
+        $formatDate = $localeconfig['dateFormat'] . " %H:%M:%S";
+    } else {
+        $formatDate = '';
+    }
     $doc = new_Doc($dbaccess, $docid, true);
     
     if ($doc->wid) {
@@ -48,7 +54,7 @@ function viewhisto(Action & $action)
     
     $action->lay->Set("lastColor", $doc->getStateColor('transparent'));
     $action->lay->Set("docid", $doc->id);
-    $action->lay->Set("lastDate", strftime("%Y-%m-%d %T", $doc->revdate));
+    $action->lay->Set("lastDate", stringDateToLocaleDate(strftime("%Y-%m-%d %T", $doc->revdate) , $formatDate));
     $action->lay->Set("pastRevision", ($doc->revision > 0));
     $tc = $doc->getHisto();
     $tlc = array();
@@ -64,7 +70,7 @@ function viewhisto(Action & $action)
           } else $stime=$reg[1];
         */
         $tlc[] = array(
-            "cdate" => $stime,
+            "cdate" => stringDateToLocaleDate($stime, $formatDate) ,
             "cauthor" => $vc["uname"],
             "clevel" => $vc["level"],
             "ccomment" => nl2br(htmlentities($vc["comment"], ENT_COMPAT, "UTF-8"))
@@ -104,7 +110,7 @@ function viewhisto(Action & $action)
         $hastate = $hastate | ($state != "");
         $trdoc[$k]["color"] = ($color == "") ? "transparent" : $color;
         
-        $trdoc[$k]["date"] = strftime("%Y-%m-%d %T", $rdoc->revdate);
+        $trdoc[$k]["date"] = stringDateToLocaleDate(strftime("%Y-%m-%d %T", $rdoc->revdate) , $formatDate);
         // special table for versions
         if (!in_array($rdoc->version, array_keys($tversion))) {
             $tversion[$rdoc->version] = "vtr" . $iversion++;
@@ -131,7 +137,7 @@ function viewhisto(Action & $action)
             } else $stime=$reg[1];
             */
             $tlc[] = array(
-                "cdate" => $stime,
+                "cdate" => stringDateToLocaleDate($stime, $formatDate) ,
                 "cauthor" => $vc["uname"],
                 "clevel" => $vc["level"],
                 "ccomment" => nl2br(htmlentities($vc["comment"], ENT_COMPAT, "UTF-8"))
