@@ -752,8 +752,11 @@ class SearchDoc
      */
     public static function checkGeneralFilter($keyword)
     {
-        // test parentensis count
+        // no symbol allowed
         if (preg_match('/\(\s*\)/u', $keyword)) return false;
+        // test parentensis count
+        $keyword = str_replace('\(', '-', $keyword);
+        $keyword = str_replace('\)', '-', $keyword);
         if (substr_count($keyword, '(') != substr_count($keyword, ')')) return false;
         $si = strlen($keyword); // be carrefyl no use mb_strlen here : it is wanted
         $pb = 0;
