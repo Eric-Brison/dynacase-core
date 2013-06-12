@@ -1033,6 +1033,39 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
+                "fushia",
+                array(
+                    "TST_FULL5",
+                    "TST_FULL8"
+                )
+            ) ,
+            array(
+                '*\(fushia\)*',
+                array(
+                    "TST_FULL5"
+                )
+            ) ,
+            array(
+                '*\(fushia*',
+                array(
+                    "TST_FULL5"
+                )
+            ) ,
+            array(
+                '*fushia\)* OR *mineux\)*',
+                array(
+                    "TST_FULL4",
+                    "TST_FULL5"
+                )
+            ) ,
+            array(
+                '*fush*',
+                array(
+                    "TST_FULL5",
+                    "TST_FULL8"
+                )
+            ) ,
+            array(
                 "portable OR fixe",
                 array(
                     "TST_FULL2",
