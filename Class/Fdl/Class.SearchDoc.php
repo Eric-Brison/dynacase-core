@@ -754,7 +754,7 @@ class SearchDoc
     {
         // no symbol allowed
         if (preg_match('/\(\s*\)/u', $keyword)) return false;
-        // test parentensis count
+        // test parenthensis count
         $keyword = str_replace('\(', '-', $keyword);
         $keyword = str_replace('\)', '-', $keyword);
         if (substr_count($keyword, '(') != substr_count($keyword, ')')) return false;
@@ -878,17 +878,40 @@ class SearchDoc
                 case \Dcp\Lex\GeneralFilter::MODE_STRING:
                     $rankElement = unaccent($currentElement["word"]);
                     $stringWords[] = $rankElement;
-                    $filterElement = sprintf("svalues ~* E'\\\\y%s\\\\y'", pg_escape_string(preg_quote($currentElement["word"])));
+                    if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, 0, 1))) {
+                        $begin = '[£|\\\\s]';
+                    } else {
+                        $begin = '\\\\y';
+                    }
+                    if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, -1))) {
+                        $end = '[£|\\\\s]';
+                    } else {
+                        $end = '\\\\y';
+                    }
+                    
+                    $filterElement = sprintf("svalues ~* E'%s%s%s'", $begin, pg_escape_string(preg_quote($currentElement["word"])) , $end);
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_END:
                     $rankElement = unaccent($currentElement["word"]);
-                    $filterElement = sprintf("svalues ~* E'\\\\y%s'", pg_escape_string(preg_quote($currentElement["word"])));
+                    
+                    if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, 0, 1))) {
+                        $begin = '[£|\\\\s]';
+                    } else {
+                        $begin = '\\\\y';
+                    }
+                    $filterElement = sprintf("svalues ~* E'%s%s'", $begin, pg_escape_string(preg_quote($currentElement["word"])));
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BEGIN:
                     $rankElement = unaccent($currentElement["word"]);
-                    $filterElement = sprintf("svalues ~* E'%s\\\\y'", pg_escape_string(preg_quote($currentElement["word"])));
+                    
+                    if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, -1))) {
+                        $end = '[£|\\\\s]';
+                    } else {
+                        $end = '\\\\y';
+                    }
+                    $filterElement = sprintf("svalues ~* E'%s%s'", pg_escape_string(preg_quote($currentElement["word"])) , $end);
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BOTH:

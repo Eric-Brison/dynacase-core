@@ -869,14 +869,14 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                "@somewhere.com",
+                "*@somewhere.com",
                 array(
                     "TST_FULL10",
                     "TST_FULL11"
                 )
             ) ,
             array(
-                "@somewhere",
+                "*@somewhere*",
                 array(
                     "TST_FULL10",
                     "TST_FULL11"
@@ -1008,7 +1008,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                "(marté) @",
+                "(marté) *@*",
                 array(
                     "TST_FULL10",
                     "TST_FULL11"
@@ -1033,11 +1033,73 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
+                "équidés",
+                array(
+                    "TST_FULL3",
+                    "TST_FULL8"
+                )
+            ) ,
+            array(
+                "-équidé-",
+                array(
+                    "TST_FULL3"
+                )
+            ) ,
+            array(
+                "villa",
+                array(
+                    "TST_FULL5",
+                    "TST_FULL2"
+                )
+            ) ,
+            array(
+                "*villa*",
+                array(
+                    "TST_FULL5",
+                    "TST_FULL2"
+                )
+            ) ,
+            array(
+                '"*villa*"',
+                array(
+                    "TST_FULL2"
+                )
+            ) ,
+            array(
                 "fushia",
                 array(
                     "TST_FULL5",
                     "TST_FULL8"
                 )
+            ) ,
+            array(
+                '\(fushia',
+                array(
+                    "TST_FULL5"
+                )
+            ) ,
+            array(
+                '"(fushia)"',
+                array(
+                    "TST_FULL5"
+                )
+            ) ,
+            array(
+                '"\(bordeaux"',
+                array(
+                    "TST_FULL4"
+                )
+            ) ,
+            
+            array(
+                '*fushia\)',
+                array(
+                    "TST_FULL5"
+                )
+            ) ,
+            array(
+                '\(fush',
+                array()
             ) ,
             array(
                 '*\(fushia\)*',
