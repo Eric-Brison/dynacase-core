@@ -14,7 +14,7 @@
  * @par Reference manual:
  * The Dynacase Reference Manual gives you all informations you need to design, code, test your applications.
  This manual should be your daily companion, with all answers to all questions when developping on Dynacase Platform.
- * ==> http://www.dynacase.org/documentation
+ * ==> http://docs.anakeen.com
  *
  * @par Explanation of related pages
  * @li Methods for document menus@n These methods are tagged with @@apiExpose tag@n List methods which can be called by FDL:FDL_METHOD action
