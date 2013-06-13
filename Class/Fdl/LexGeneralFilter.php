@@ -116,11 +116,13 @@ class GeneralFilter
         
         $inEscape = false;
         $currentWord = "";
-        
         foreach ($tokens as $value) {
             if ($inEscape) {
                 if ($currentMode === false) {
-                    $currentMode = self::MODE_WORD;
+                    $currentMode = self::MODE_STRING;
+                }
+                if ($currentMode == self::MODE_WORD) {
+                    $currentWord.= '\\';
                 }
                 $currentWord.= $value["match"];
                 $inEscape = false;
@@ -168,7 +170,7 @@ class GeneralFilter
                 }
             }
             if ($value["token"] === self::T_STAR_END) {
-                if ($currentMode === false || $currentMode === "word") {
+                if ($currentMode === false || $currentMode === self::MODE_WORD) {
                     $currentMode = self::MODE_PARTIAL_END;
                 } else if ($currentMode === self::MODE_PARTIAL_BEGIN) {
                     $currentMode = self::MODE_PARTIAL_BOTH;
