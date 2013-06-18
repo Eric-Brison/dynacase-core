@@ -27,6 +27,7 @@ function generic_usort(Action & $action)
     $catg = $action->getArgument("catg"); // id for controlled object
     $onefamOrigin = $action->getArgument("onefam"); // onefam origin
     $tab = $action->getArgument("tab", 0); // tab index
+    $dirid = $action->getArgument("dirid", 0); // collection id
     $sfamid = '';
     if ($catg) {
         $dir = new_doc($action->dbaccess, $catg);
@@ -41,7 +42,7 @@ function generic_usort(Action & $action)
     if ($tab) {
         redirect($action, $action->GetParam("APPNAME", "GENERIC") , "GENERIC_TAB&onefam=$onefamOrigin&catg=$catg&famid=$famid&tab=$tab", $action->GetParam("CORE_STANDURL"));
     } else {
-        redirect($action, $action->GetParam("APPNAME", "GENERIC") , "GENERIC_LIST&onefam=$onefamOrigin&dirid=$catg&tab=0&famid=$famid&tab=$tab", $action->GetParam("CORE_STANDURL"));
+        redirect($action, $action->GetParam("APPNAME", "GENERIC") , "GENERIC_LIST&onefam=$onefamOrigin&dirid=$dirid&tab=0&famid=$famid&tab=$tab", $action->GetParam("CORE_STANDURL"));
     }
 }
 
