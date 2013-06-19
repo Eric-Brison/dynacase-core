@@ -11,7 +11,7 @@ include $(rootdir)/corePubRule.mk
 
 SUBDIR= ckeditor-quicksave ckeditor-docattr jscalendar jsXMLParser mozillaplugin jscolor
 
-publish: $(pubdir)/log.sh $(pubdir)/WHAT/Lib.Prefix.php.in $(pubdir)/jscalendar $(pubdir)/php2V2 $(pubdir)/FDL/geticon.php
+publish: $(pubdir)/log.sh $(pubdir)/WHAT/Lib.Prefix.php.in $(pubdir)/jscalendar $(pubdir)/FDL/geticon.php
 
 $(pubdir)/log.sh: log.sh
 	cp $< $@
@@ -25,5 +25,3 @@ $(pubdir)/FDL/geticon.php: geticon.php
 $(pubdir)/jscalendar :
 	cp -r jscalendar $(pubdir)
 
-$(pubdir)/php2V2 :
-	cp -f php2V2 $(pubdir)/API

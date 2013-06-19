@@ -29,13 +29,7 @@ class TestHelpUsage extends TestCaseDcp
                 "appadmin"
             ) ,
             array(
-                "benchmark_search"
-            ) ,
-            array(
                 "change_action"
-            ) ,
-            array(
-                "cleanFileName"
             ) ,
             array(
                 "crontab"
@@ -53,9 +47,6 @@ class TestHelpUsage extends TestCaseDcp
                 "processExecute"
             ) ,
             array(
-                "fdl_dbaccess"
-            ) ,
-            array(
                 "fdl_deletefamily"
             ) ,
             array(
@@ -65,16 +56,10 @@ class TestHelpUsage extends TestCaseDcp
                 "fdl_export1nf"
             ) ,
             array(
-                "fdl_pkey"
-            ) ,
-            array(
                 "fdl_resetprofiling"
             ) ,
             array(
                 "fdl_sendmail"
-            ) ,
-            array(
-                "fdl_testmemory"
             ) ,
             array(
                 "fdl_trigger"
@@ -86,12 +71,9 @@ class TestHelpUsage extends TestCaseDcp
                 "dynacaseDbCleaner"
             ) ,
             array(
-                "freedom_convert"
-            ) ,
-            array(
                 "freedom_import"
             ) ,
-            array(//deprecated
+            array( //deprecated
                 "freedom_refresh"
             ) ,
             array(
@@ -114,9 +96,6 @@ class TestHelpUsage extends TestCaseDcp
             ) ,
             array(
                 "initViewPrivileges"
-            ) ,
-            array(
-                "migr_2.5.1"
             ) ,
             array(
                 "ods2csv"
