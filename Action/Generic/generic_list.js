@@ -17,10 +17,9 @@ function sendSort(onefamOrigin, dirid,catg, famid, order) {
     var r=reTab.exec(window.location.href);
     if (r && r[1]) {
         url += '&tab='+r[1];
-        url += '&catg='+catg;
-    } else {
-        url += '&catg='+dirid;
     }
+    url += '&catg='+catg;
+    url += '&dirid='+dirid;
     window.location.href=url;
 
 }
