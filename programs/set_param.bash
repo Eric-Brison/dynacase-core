@@ -10,5 +10,5 @@ fi
 value=`"$WIFF_ROOT"/wiff --getValue="$2"`
 
 if [ -n "$value" ]; then
-    "$wpub/wsh.php" --api=set_param --param="$1" --value="$value"
+    "$wpub/wsh.php" --api=setApplicationParameter --param="$1" --value="$value"
 fi

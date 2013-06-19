@@ -13,7 +13,7 @@ if [ -z "$pgservice_core" ]; then
 fi
 
 
-$wpub/wsh.php --api=fdl_deletefamily --famid=FORUM
+$wpub/wsh.php --api=destroyFamily --famid=FORUM
 RET=$?
 if [ $RET -ne 0 ]; then
     echo "Error delete FORUM."

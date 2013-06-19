@@ -26,28 +26,28 @@ class TestHelpUsage extends TestCaseDcp
     {
         return array(
             array(
-                "appadmin"
+                "manageApplications"
             ) ,
             array(
                 "change_action"
             ) ,
             array(
-                "crontab"
+                "manageContextCrontab"
             ) ,
             array(
                 "csv2sql"
             ) ,
             array(
-                "DocRelInit"
+                "initializeDocrelTable"
             ) ,
             array(
-                "fdl_adoc"
+                "generateDocumentClass"
             ) ,
             array(
                 "processExecute"
             ) ,
             array(
-                "fdl_deletefamily"
+                "destroyFamily"
             ) ,
             array(
                 "fdl_execute"
@@ -68,7 +68,7 @@ class TestHelpUsage extends TestCaseDcp
                 "fixMultipleAliveRevision"
             ) ,
             array(
-                "dynacaseDbCleaner"
+                "cleanContext"
             ) ,
             array(
                 "freedom_import"
@@ -83,7 +83,7 @@ class TestHelpUsage extends TestCaseDcp
                 "fulltextReinit"
             ) ,
             array(
-                "get_param"
+                "getApplicationParameter"
             ) ,
             array(
                 "importDocuments"
@@ -110,7 +110,7 @@ class TestHelpUsage extends TestCaseDcp
                 "SetDocVaultIndex"
             ) ,
             array(
-                "set_param"
+                "setApplicationParameter"
             ) ,
             array(
                 "updateclass"
@@ -119,13 +119,13 @@ class TestHelpUsage extends TestCaseDcp
                 "updatetitles"
             ) ,
             array(
-                "usercard_iuser"
+                "refreshUserAccount"
             ) ,
             array(
-                "accountRefreshGroup"
+                "refreshGroups"
             ) ,
             array(
-                "VaultExamine"
+                "checkVault"
             ) ,
             array(
                 "vault_init"

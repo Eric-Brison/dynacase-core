@@ -284,7 +284,7 @@ This can be solved by:<br/>
             <label>Create Account families</label>
         </process>
 
-        <process command="./wsh.php --api=usercard_iuser">
+        <process command="./wsh.php --api=refreshUserAccount">
             <label>Update user account documents</label>
         </process>
         <process command="./wsh.php --api=importDocuments --file=./FUSERS/accountinit.ods">
@@ -321,7 +321,7 @@ This can be solved by:<br/>
         <process command="programs/app_post DAV I"/>
         <process command="programs/app_post DAV U"/>
 
-        <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron"/>
+        <process command="wsh.php --api=manageContextCrontab --cmd=register --file=FREEDOM/freedom.cron"/>
 
         <process command="programs/update_catalog"/>
     </post-install>
@@ -598,7 +598,7 @@ This can be solved by:<br/>
 
         <process command="programs/record_application FDC U"/>
 
-        <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron"/>
+        <process command="wsh.php --api=manageContextCrontab --cmd=register --file=FREEDOM/freedom.cron"/>
 
         <process command="programs/update_catalog"/>
     </post-upgrade>
@@ -607,7 +607,7 @@ This can be solved by:<br/>
     <post-remove></post-remove>
 
     <post-restore>
-        <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron"/>
+        <process command="wsh.php --api=manageContextCrontab --cmd=register --file=FREEDOM/freedom.cron"/>
     </post-restore>
 
     <reconfigure>

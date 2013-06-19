@@ -321,9 +321,9 @@ class checkDb
         }
     }
     
-    public function checkDynacaseDbCleaner()
+    public function checkcleanContext()
     {
-        $testName = "dynacaseDbCleaner cron job execution";
+        $testName = "cleanContext cron job execution";
         $sql = "SELECT min(cdate) AS mincdate, count(id) AS count FROM doc WHERE doctype = 'T' AND cdate < now() - INTERVAL '24h'";
         try {
             simpleQuery('', $sql, $res, false, false, true);
@@ -332,8 +332,8 @@ class checkDb
                 $err = sprintf("<p>Oldest temporary document is &gt; 24 hours: <code>%s</code></p>", htmlspecialchars($res[0]['mincdate']));
                 $err.= "<p>Dynacase crontab might not be active or correctly registered.</p>";
                 $err.= "<ul>";
-                $err.= "<li>Check that the Dynacase crontab 'FREEDOM/freedom.cron' is correctly registered in the Apache's user crontab: <pre>./wsh.php --api=crontab --cmd=list</pre></li>";
-                $err.= "<li>If the crontab is not registered, try to register it: <pre>./wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron</pre>";
+                $err.= "<li>Check that the Dynacase crontab 'FREEDOM/freedom.cron' is correctly registered in the Apache's user crontab: <pre>./wsh.php --api=manageContextCrontab --cmd=list</pre></li>";
+                $err.= "<li>If the crontab is not registered, try to register it: <pre>./wsh.php --api=manageContextCrontab --cmd=register --file=FREEDOM/freedom.cron</pre>";
                 $err.= "<li>If the crontab is correctly registered but not executed, check that the system's cron daemon is correctly running.</li>";
                 $err.= "</ul>";
                 throw new Exception($err);
@@ -560,7 +560,7 @@ class checkDb
             $this->checkNetworkUser();
             $this->checkAttributeType();
             $this->checkAttributeOrphean();
-            $this->checkDynacaseDbCleaner();
+            $this->checkcleanContext();
         }
         return $this->tout;
     }

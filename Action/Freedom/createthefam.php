@@ -52,7 +52,7 @@ function createthefam(&$action)
     }
     
     $wsh = getWshCmd();
-    $cmd = $wsh . "--userid={$action->user->id} --api=fdl_adoc --docid=" . $doc->initid;
+    $cmd = $wsh . "--userid={$action->user->id} --api=generateDocumentClass --docid=" . $doc->initid;
     
     $err = exec($cmd, $out, $ret);
     

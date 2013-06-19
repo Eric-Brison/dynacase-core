@@ -386,6 +386,10 @@ msgid "A?"
 msgstr ""
 
 #, c-format
+msgid "API %s is deprecated. You should use %s instead."
+msgstr ""
+
+#, c-format
 msgid "API file %s not found\n"
 msgstr ""
 
