@@ -303,9 +303,8 @@ class DocFormFormat
                         $phpfunc = preg_replace('/([\s|,|:|\(])CT\[([^]]+)\]/e', "'\\1'.'$linkPrefixCT'.strtolower('\\2')", $phpfunc);
                         // capture title
                         //if (isUTF8($oattr->getLabel())) $oattr->labelText=utf8_decode($oattr->getLabel());
-                        $ititle = sprintf(_("choose inputs for %s") , ($this->oattr->getLabel()));
-                        if ($this->oattr->getOption("ititle") != "") $ititle = str_replace("\"", "'", $this->oattr->getOption("ititle"));
-                        
+                        $ititle = sprintf(_("choose inputs for %s") , str_replace("\"", "&quot;", $this->oattr->getLabel()));
+                        if ($this->oattr->getOption("ititle") != "") $ititle = str_replace("\"", "&quot;", $this->oattr->getOption("ititle"));
                         if ($phpfunc[0] == "[") {
                             if (preg_match('/\[(.*)\](.*)/', $phpfunc, $reg)) {
                                 $phpfunc = $reg[2];
