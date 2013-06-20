@@ -1,9 +1,11 @@
 <?php
 
 
-include_once("FDL[GEN]/Class.[DocParent1].php");
+namespace {
+
 [include]
-Class ADoc[docid] extends [AParent] {
+[IF GEN] include_once("FDL[GEN]/Class.[FileClassParent].php"); [ENDIF GEN]
+class ADoc[docid] extends [AParent] {
     // for familly : [title]
 
    function __construct () {
@@ -31,13 +33,29 @@ Class ADoc[docid] extends [AParent] {
    }
 }
 
-     [BLOCK INDIRECT]
+
+        }
+
+namespace {
+
+        [IF STARMETHOD]
 // redirect class : to simulate double inherit
-Class [docNameIndirect] extends [RedirectDocParent] {
+class [docNameIndirect] extends [RedirectDocParent] {
    [METHODS2]
 }
-     [ENDBLOCK INDIRECT]
-Class _[PHPclassName] extends [DocParent] {
+        [ENDIF STARMETHOD]
+
+[IF METHODS]
+class [PHPmethodName] extends [ClassDocParent] {
+   [METHODS]
+   [HOOKALIAS]
+
+}
+[ENDIF METHODS]
+}
+
+namespace Dcp\Family {
+class [PHPclassName] extends [DocParent] {
    //  family : [title]
 
    public $dbtable="doc[docid]";
@@ -51,13 +69,14 @@ Class _[PHPclassName] extends [DocParent] {
      public $fromid=[docid];
      public $fromname='[docName]';
      public $fromtitle="[docTitle]";
+     const familyName='[docName]';
 
    function __construct ($dbaccess='', $id='',$res='',$dbid=0) {
-    $this->attributes = new ADoc[docid]();
-    
-
-    if (isset($this->attributes->fields))  $this->fields += $this->attributes->fields;
-    [pinit]::__construct($dbaccess, intval($id), $res, $dbid);
+        if (empty($this->attributes)) {
+           $this->attributes = new \ADoc[docid]();
+          if (isset($this->attributes->fields))  $this->fields += $this->attributes->fields;
+        }
+    parent::__construct($dbaccess, intval($id), $res, $dbid);
 
      $this->postConstructor();
 //    uasort($this->attributes->attr,"tordered"); 
@@ -85,15 +104,16 @@ Class _[PHPclassName] extends [DocParent] {
        return $err;
    }
    
-   [METHODS]
-        [HOOKALIAS]
+
 
 }
-
+}
      [BLOCK CLASSALIAS]
 // alias name for the class
-Class Doc[docid] extends  _[PHPclassName]{
+namespace {
+    class_alias('\Dcp\Family\[PHPclassName]','_[PHPclassName]');
+    class_alias('\Dcp\Family\[PHPclassName]' , 'Doc[docid]');
 }
-     [ENDBLOCK CLASSALIAS]
+[ENDBLOCK CLASSALIAS]
 
 ?>

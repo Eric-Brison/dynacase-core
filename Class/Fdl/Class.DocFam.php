@@ -177,14 +177,18 @@ create unique index idx_idfam on docfam(id);";
         $err = '';
         if (strstr($this->usefor, 'W')) {
             $classw = $this->classname;
-            $w = new $classw();
-            if ($w) {
-                if (is_a($w, "WDoc")) {
-                    /**
-                     * @var WDoc $w
-                     */
-                    $err = $w->createProfileAttribute($this->id);
+            if ($classw) {
+                $w = new $classw();
+                if ($w) {
+                    if (is_a($w, "WDoc")) {
+                        /**
+                         * @var WDoc $w
+                         */
+                        $err = $w->createProfileAttribute($this->id);
+                    }
                 }
+            } else {
+                $err = "workflow need class";
             }
         }
         return $err;
@@ -748,8 +752,8 @@ create unique index idx_idfam on docfam(id);";
         $tval = "_xt$X";
         if (is_array($val)) $val = $this->arrayToRawValue($val);
         
-        $txval= $this->explodeX($this->$X);
-
+        $txval = $this->explodeX($this->$X);
+        
         $txval[strtolower($idp) ] = $val;
         $this->$tval = $txval;
         

@@ -138,7 +138,8 @@ class CheckWorkflow
      */
     public function verifyWorkflowComplete()
     {
-        $this->checkIsAWorkflow();
+        $this->verifyWorkflowClass();
+        
         if (!$this->getErrorMessage()) {
             $this->checkAskAttributes();
         }
@@ -325,14 +326,15 @@ class CheckWorkflow
     
     public function checkFileName()
     {
-        if (!file_exists($this->getWorkflowClassFile())) {
-            $this->addCodeError('WFL0005', $this->className);
+        $fileName = $this->getWorkflowClassFile();
+        if (!file_exists($fileName)) {
+            $this->addCodeError('WFL0005', $fileName, $this->className);
         }
     }
     
     public static function checkPhpClass($name)
     {
-        if (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]+$/', $name)) {
+        if (preg_match('/^[a-zA-Z_][a-zA-Z0-9_\\\\]+$/', $name)) {
             return true;
         } else {
             return false;
@@ -341,7 +343,17 @@ class CheckWorkflow
     
     public function getWorkflowClassFile()
     {
-        return sprintf('FDL/Class.%s.php', $this->className);
+        $classFile = \Dcp\DirectoriesAutoloader::instance(null, null)->getClassFile($this->className);
+        
+        if ($classFile === null) {
+            \Dcp\DirectoriesAutoloader::instance(null, null)->forceRegenerate($this->className);
+            $classFile = \Dcp\DirectoriesAutoloader::instance(null, null)->getClassFile($this->className);
+        }
+        
+        if (!$classFile) {
+            $classFile = sprintf("FDL/Class.%s.php", $this->className);
+        }
+        return $classFile;
     }
 }
 ?>

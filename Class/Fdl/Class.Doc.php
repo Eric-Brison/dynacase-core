@@ -2182,7 +2182,7 @@ create unique index i_docir on doc(initid, revision);";
              */
             $mdoc = new_Doc($this->dbaccess, $mid);
             if ($mdoc->isAlive()) {
-                if (is_a($mdoc, '_MASK')) {
+                if (is_a($mdoc, '\Dcp\Family\Mask')) {
                     
                     $maskFam = $mdoc->getRawValue("msk_famid");
                     if (!in_array($maskFam, $this->getFromDoc())) {

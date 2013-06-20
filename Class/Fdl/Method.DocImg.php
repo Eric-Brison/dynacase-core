@@ -78,6 +78,7 @@ class _IMAGE extends Doc
     function postStore()
     {
         $this->SetValue("IMG_TITLE", $this->vault_filename("IMG_FILE"));
+        return '';
     }
     /**
      * @begin-method-ignore

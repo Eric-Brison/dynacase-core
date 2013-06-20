@@ -27,7 +27,11 @@ class ADoc
      */
     public $attr = array();
     public $fromname = '';
-    public $isOrdered=false;
+    public $isOrdered = false;
+    /**
+     * @var Array
+     */
+    public $fields = array();
     /**
      * @var array family ancestors ids
      */
@@ -64,8 +68,8 @@ class ADoc
     {
         $tsa = array();
         if (isset($this->attr)) {
-            foreach ($this->attr as &$v) {
-                if ((isset($v->isNormal)) && ((($v->usefor != "Q") && (!$onlyopt)) || (($v->usefor == "O") && ($onlyopt)))) $tsa[$v->id] = &$v;
+            foreach ($this->attr as & $v) {
+                if ((isset($v->isNormal)) && ((($v->usefor != "Q") && (!$onlyopt)) || (($v->usefor == "O") && ($onlyopt)))) $tsa[$v->id] = & $v;
             }
         }
         return $tsa;
