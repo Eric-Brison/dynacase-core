@@ -20,6 +20,7 @@ $app_const = array(
     "FREEDOM_DB" => array(
         "val" => "user=@DBUSER@ dbname=@DBNAME@",
         "global" => "Y",
+        "kind" => "readonly",
         "descr" => N_("freedom database")
     ) ,
     "ENUM_TITLE_SIZE" => array(

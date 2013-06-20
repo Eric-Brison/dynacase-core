@@ -80,8 +80,16 @@ $app_const = array(
         "user" => "N",
         "kind" => "enum(small|normal|large|x-large)"
     ) ,
-    "CORE_PUBDIR" => "@prefix@",
-    "CORE_DB" => "",
+    "CORE_PUBDIR" => array(
+        "val" => "@prefix@",
+        "descr" => N_("Publication directory") ,
+        "kind" => "readonly"
+    ) ,
+    "CORE_DB" => array(
+        "val" => "",
+        "kind" => "readonly",
+        "descr" => N_("Database information")
+    ) ,
     "CORE_TMPDIR" => "./var/tmp",
     "CORE_TMPDIR_MAXAGE" => array(
         "val" => "2",
@@ -118,7 +126,7 @@ $app_const = array(
         "val" => "url('CORE/Images/bg.gif')",
         "descr" => N_("background color or image") ,
         "user" => "N",
-        "kind" => "color",
+        "kind" => "readonly",
         "style" => "N",
         "global" => "N"
     ) ,
@@ -126,7 +134,7 @@ $app_const = array(
         "val" => "url('CORE/Images/bgssl.gif')",
         "descr" => N_("background color or image in security mode") ,
         "user" => "N",
-        "kind" => "color",
+        "kind" => "readonly",
         "style" => "Y",
         "global" => "N"
     ) ,
@@ -135,20 +143,22 @@ $app_const = array(
         "descr" => N_("background image for bar") ,
         "user" => "N",
         "style" => "Y",
-        "global" => "N"
+        "global" => "N",
+        "kind" => "readonly"
     ) ,
     "CORE_FGIMGMENU" => array(
         "val" => "none",
         "descr" => N_("background image for menu") ,
         "user" => "N",
         "style" => "Y",
-        "global" => "N"
+        "global" => "N",
+        "kind" => "readonly"
     ) ,
     "CORE_BGCELLCOLOR" => array(
         "val" => "snow",
         "descr" => N_("background color for table cells") ,
         "user" => "N",
-        "kind" => "color",
+        "kind" => "readonly",
         "style" => "Y",
         "global" => "N"
     ) , // normal bg in cells
@@ -156,7 +166,7 @@ $app_const = array(
         "val" => "#DEDEEF",
         "descr" => N_("second background color") ,
         "user" => "N",
-        "kind" => "color",
+        "kind" => "readonly",
         "style" => "Y",
         "global" => "N"
     ) ,
@@ -164,7 +174,7 @@ $app_const = array(
         "val" => "lightsteelblue",
         "descr" => N_("highlight background color") ,
         "user" => "N",
-        "kind" => "color",
+        "kind" => "readonly",
         "style" => "Y",
         "global" => "N"
     ) ,
@@ -172,7 +182,7 @@ $app_const = array(
         "val" => "darkslateblue",
         "descr" => N_("inverse video background color") ,
         "user" => "N",
-        "kind" => "color",
+        "kind" => "readonly",
         "style" => "Y",
         "global" => "N"
     ) , // inverse video bg
@@ -180,7 +190,7 @@ $app_const = array(
         "val" => "black",
         "descr" => N_("text color") ,
         "user" => "N",
-        "kind" => "color",
+        "kind" => "readonly",
         "style" => "Y",
         "global" => "N"
     ) , // normal text
@@ -188,7 +198,7 @@ $app_const = array(
         "val" => "white",
         "descr" => N_("inverse video color text") ,
         "user" => "N",
-        "kind" => "color",
+        "kind" => "readonly",
         "style" => "Y",
         "global" => "N"
     ) , // inverse video text
@@ -196,7 +206,7 @@ $app_const = array(
         "val" => "#b8ceef",
         "descr" => N_("input color bg") ,
         "user" => "N",
-        "kind" => "color",
+        "kind" => "readonly",
         "style" => "Y",
         "global" => "N"
     ) , // input color bg
@@ -204,7 +214,7 @@ $app_const = array(
         "val" => "dodgerblue",
         "descr" => N_("anchor color") ,
         "user" => "N",
-        "kind" => "color",
+        "kind" => "readonly",
         "style" => "Y",
         "global" => "N"
     ) , // anchor color
@@ -212,7 +222,7 @@ $app_const = array(
         "val" => "#E51616",
         "descr" => N_("error color") ,
         "user" => "N",
-        "kind" => "color",
+        "kind" => "readonly",
         "style" => "Y",
         "global" => "N"
     ) ,
@@ -317,7 +327,7 @@ $app_const = array(
         "descr" => N_("icon size") ,
         "user" => "Y",
         "style" => "N",
-        "kind" => "enum(small|normal)",
+        "kind" => "readonly",
         "global" => "Y"
     ) ,
     "CORE_LOGDURATION" => array(
@@ -338,6 +348,7 @@ $app_const = array(
         "val" => "squirrel",
         "descr" => N_("squirrelmail install dir (relative)") ,
         "user" => "N",
+        "kind" => "readonly",
         "global" => "Y"
     ) ,
     "CORE_START_APP" => array(
