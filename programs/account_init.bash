@@ -29,9 +29,9 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
-"$WIFF_CONTEXT_ROOT/wsh.php" --api=dynacaseDbCleaner
+"$WIFF_CONTEXT_ROOT/wsh.php" --api=cleanContext
 RET=$?
 if [ $RET -ne 0 ]; then
-    echo "Error: dynacaseDbCleaner returned with exit code '$RET'"
+    echo "Error: cleanContext returned with exit code '$RET'"
     exit $RET
 fi

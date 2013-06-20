@@ -26,37 +26,28 @@ class TestHelpUsage extends TestCaseDcp
     {
         return array(
             array(
-                "appadmin"
-            ) ,
-            array(
-                "benchmark_search"
+                "manageApplications"
             ) ,
             array(
                 "change_action"
             ) ,
             array(
-                "cleanFileName"
-            ) ,
-            array(
-                "crontab"
+                "manageContextCrontab"
             ) ,
             array(
                 "csv2sql"
             ) ,
             array(
-                "DocRelInit"
+                "initializeDocrelTable"
             ) ,
             array(
-                "fdl_adoc"
+                "generateDocumentClass"
             ) ,
             array(
                 "processExecute"
             ) ,
             array(
-                "fdl_dbaccess"
-            ) ,
-            array(
-                "fdl_deletefamily"
+                "destroyFamily"
             ) ,
             array(
                 "fdl_execute"
@@ -65,16 +56,10 @@ class TestHelpUsage extends TestCaseDcp
                 "fdl_export1nf"
             ) ,
             array(
-                "fdl_pkey"
-            ) ,
-            array(
                 "fdl_resetprofiling"
             ) ,
             array(
                 "fdl_sendmail"
-            ) ,
-            array(
-                "fdl_testmemory"
             ) ,
             array(
                 "fdl_trigger"
@@ -83,15 +68,12 @@ class TestHelpUsage extends TestCaseDcp
                 "fixMultipleAliveRevision"
             ) ,
             array(
-                "dynacaseDbCleaner"
-            ) ,
-            array(
-                "freedom_convert"
+                "cleanContext"
             ) ,
             array(
                 "freedom_import"
             ) ,
-            array(//deprecated
+            array( //deprecated
                 "freedom_refresh"
             ) ,
             array(
@@ -101,7 +83,7 @@ class TestHelpUsage extends TestCaseDcp
                 "fulltextReinit"
             ) ,
             array(
-                "get_param"
+                "getApplicationParameter"
             ) ,
             array(
                 "importDocuments"
@@ -116,9 +98,6 @@ class TestHelpUsage extends TestCaseDcp
                 "initViewPrivileges"
             ) ,
             array(
-                "migr_2.5.1"
-            ) ,
-            array(
                 "ods2csv"
             ) ,
             array(
@@ -131,7 +110,7 @@ class TestHelpUsage extends TestCaseDcp
                 "SetDocVaultIndex"
             ) ,
             array(
-                "set_param"
+                "setApplicationParameter"
             ) ,
             array(
                 "updateclass"
@@ -140,13 +119,13 @@ class TestHelpUsage extends TestCaseDcp
                 "updatetitles"
             ) ,
             array(
-                "usercard_iuser"
+                "refreshUserAccount"
             ) ,
             array(
-                "accountRefreshGroup"
+                "refreshGroups"
             ) ,
             array(
-                "VaultExamine"
+                "checkVault"
             ) ,
             array(
                 "vault_init"

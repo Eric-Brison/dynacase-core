@@ -14,14 +14,9 @@
  * @package FDL
  * @subpackage WSH
  */
-/**
- */
-$usage = new ApiUsage();
+global $action;
 
-$usage->setDefinitionText("get parameter value");
-$parname = $usage->addOptionalParameter("param", "Parameter name");
+$action->log->deprecated(sprintf(_("API %s is deprecated. You should use %s instead.") , "get_param", "getApplicationParameter"));
 
-$usage->verify();
-
-print getParam($parname) . "\n";
+include_once ("API/getApplicationParameter.php");
 ?>

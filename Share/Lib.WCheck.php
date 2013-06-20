@@ -237,16 +237,16 @@ function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
         }
         switch ($v["chk"]) {
             case "I":
-                $cmd[] = "$pubdir/wsh.php  --api=appadmin --method=init --appname=$k";
-                $cmd[] = "$pubdir/wsh.php  --api=appadmin --method=update --appname=$k";
+                $cmd[] = "$pubdir/wsh.php  --api=manageApplications --method=init --appname=$k";
+                $cmd[] = "$pubdir/wsh.php  --api=manageApplications --method=update --appname=$k";
                 break;
 
             case "U":
-                $cmd[] = "$pubdir/wsh.php  --api=appadmin --method=update --appname=$k";
+                $cmd[] = "$pubdir/wsh.php  --api=manageApplications --method=update --appname=$k";
                 break;
 
             case "D":
-                $cmd[] = "#$pubdir/wsh.php  --api=appadmin --method=delete --appname=$k";
+                $cmd[] = "#$pubdir/wsh.php  --api=manageApplications --method=delete --appname=$k";
                 break;
 
             case "R":
@@ -286,7 +286,7 @@ function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
     
     $tact = array_merge($dump, $cmd);
     
-    $tact[] = "$pubdir/wsh.php  --api=dynacaseDbCleaner";
+    $tact[] = "$pubdir/wsh.php  --api=cleanContext";
     $tact[] = "$pubdir/wstart";
     global $_SERVER;
     if (empty($_GET['httpdrestart']) || ($_GET['httpdrestart'] != 'no')) {

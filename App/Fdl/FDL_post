@@ -111,7 +111,7 @@ if [ "$1" = "I" ] ; then
     #$wpub/wsh.php --api=vault_init
     
     # $wpub/wsh.php --app=FDL --action=FREEDOM_INIT  
-    # psql $dbfreename anakeen -f $wpub/API/dynacaseDbCleaner.sql
+    # psql $dbfreename anakeen -f $wpub/API/cleanContext.sql
 fi
 
 #------------------------------
@@ -141,7 +141,7 @@ if [ "$1" = "U" ] ; then
 	exit $RET
     fi
 
-    "$wpub"/wsh.php --api=fdl_adoc
+    "$wpub"/wsh.php --api=generateDocumentClass
     "$wpub"/wsh.php --api=fdl_trigger | PGSERVICE="$pgservice_freedom" psql
     "$wpub"/wsh.php --api=fdl_trigger --trigger=Y | PGSERVICE="$pgservice_freedom" psql
 
