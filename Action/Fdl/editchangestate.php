@@ -137,12 +137,13 @@ function editchangestate(Action & $action)
         $action->lay->set("Explanations", nl2br(implode("\n", $explanation)));
         
         $style = $action->parent->getParam("STYLE");
-        
-        $action->parent->AddCssRef("STYLE/DEFAULT/Layout/EXT-ADAPTER-SYSTEM.css");
-        if (file_exists(DEFAULT_PUBDIR . "/STYLE/$style/Layout/EXT-ADAPTER-USER.css")) {
-            $action->parent->AddCssRef("STYLE/$style/Layout/EXT-ADAPTER-USER.css");
-        } else {
-            $action->parent->AddCssRef("STYLE/DEFAULT/Layout/EXT-ADAPTER-USER.css");
+        if ($viewext) {
+            $action->parent->AddCssRef("STYLE/DEFAULT/Layout/EXT-ADAPTER-SYSTEM.css");
+            if (file_exists(DEFAULT_PUBDIR . "/STYLE/$style/Layout/EXT-ADAPTER-USER.css")) {
+                $action->parent->AddCssRef("STYLE/$style/Layout/EXT-ADAPTER-USER.css");
+            } else {
+                $action->parent->AddCssRef("STYLE/DEFAULT/Layout/EXT-ADAPTER-USER.css");
+            }
         }
     }
 }
