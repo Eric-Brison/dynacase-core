@@ -150,8 +150,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
     //    print("doctype:".$res["doctype"]);
     $classname = "";
     if (($id == '')) {
-        include_once ("FDL/Class.DocFile.php");
-        $doc = new DocFile($dbaccess);
+        $doc = new \Dcp\Family\Document($dbaccess);
         
         return ($doc);
     }
@@ -210,8 +209,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
         }
         return ($doc);
     } else {
-        include_once ("FDL/Class.DocFile.php");
-        $doc = new DocFile($dbaccess, $id);
+        $doc = new \Dcp\Family\Document($dbaccess, $id);
         
         return ($doc);
     }

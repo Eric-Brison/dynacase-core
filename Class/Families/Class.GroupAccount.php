@@ -5,44 +5,21 @@
  * @package FDL
 */
 /**
- * Set WHAT user & mail parameters
+ * Group account
+ */
+namespace Dcp\Core;
+
+/**
+ * Class GroupAccount
  *
- * @author Anakeen
- * @version $Id: Method.DocIGroup.php,v 1.40 2008/09/04 09:48:26 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage USERCARD
+ * @method \Account getAccount
+ * @method array getSystemIds
+ * @method string setGroups
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _IGROUP extends _GROUP
+class GroupAccount extends \Dcp\Family\Group
 {
     public $wuser;
-    public function setGroups()
-    {
-        return '';
-    }
-    /**
-     * @param array $accountIds
-     */
-    public function getSystemIds(array $accountIds)
-    {
-        return array();
-    }
-    /**
-     * @param bool $real
-     * @return Account
-     */
-    public function getAccount($real = false)
-    {
-    }
-    /*
-     * @end-method-ignore
-    */
+
     var $cviews = array(
         "FUSERS:FUSERS_IGROUP"
     );
@@ -147,7 +124,7 @@ class _IGROUP extends _GROUP
         $tgid = $this->getMultipleRawValues("GRP_IDPGROUP");
         foreach ($tgid as $gid) {
             /**
-             * @var _IGROUP $gdoc
+             * @var \Dcp\Family\Igroup $gdoc
              */
             $gdoc = new_Doc($this->dbaccess, $gid);
             if ($gdoc->isAlive()) {
@@ -169,11 +146,11 @@ class _IGROUP extends _GROUP
         
         $fid = $this->id;
         /**
-         * @var Account $user
+         * @var \Account $user
          */
         $user = $this->getAccount();
         if (!$user) {
-            $user = new Account(""); // create new user
+            $user = new \Account(""); // create new user
             $this->wuser = & $user;
         }
         // get system role ids
@@ -196,12 +173,12 @@ class _IGROUP extends _GROUP
             $dfldid = $fdoc->dfldid;
             if ($dfldid != "") {
                 /**
-                 * @var Dir $dfld
+                 * @var \Dir $dfld
                  */
                 $dfld = new_doc($this->dbaccess, $dfldid);
                 if ($dfld->isAlive()) {
                     if (count($tgid) == 0) $dfld->insertDocument($this->initid);
-                    else $dfld->delFile($this->initid);
+                    else $dfld->removeDocument($this->initid);
                 }
             }
             
@@ -257,12 +234,12 @@ class _IGROUP extends _GROUP
             $gid = $this->getRawValue("US_WHATID");
             if ($gid > 0) {
                 /**
-                 * @var _IUSER $du
+                 * @var \Dcp\Family\Iuser $du
                  */
                 $du = new_Doc($this->dbaccess, $docid);
                 $uid = $du->getRawValue("us_whatid");
                 if ($uid > 0) {
-                    $g = new Group("", $uid);
+                    $g = new \Group("", $uid);
                     $g->iduser = $uid;
                     $g->idgroup = $gid;
                     $err = $g->Add();
@@ -288,10 +265,10 @@ class _IGROUP extends _GROUP
         $gid = $this->getRawValue("US_WHATID");
         if ($gid > 0) {
             
-            $g = new Group("");
+            $g = new \Group("");
             foreach ($tdocid as $k => $docid) {
                 /**
-                 * @var _IUSER $du
+                 * @var \Dcp\Family\Iuser $du
                  */
                 $du = new_Doc($this->dbaccess, $docid);
                 $uid = $du->getRawValue("us_whatid");
@@ -318,12 +295,12 @@ class _IGROUP extends _GROUP
         $gid = $this->getRawValue("US_WHATID");
         if ($gid > 0) {
             /**
-             * @var _IUSER $du
+             * @var \Dcp\Family\Iuser $du
              */
             $du = new_Doc($this->dbaccess, $docid);
             $uid = $du->getRawValue("us_whatid");
             if ($uid > 0) {
-                $g = new Group("", $gid);
+                $g = new \Group("", $gid);
                 $g->iduser = $gid;
                 $err = $g->SuppressUser($uid);
                 if ($err == "") {
@@ -392,7 +369,7 @@ class _IGROUP extends _GROUP
      */
     function deleteMember($docid)
     {
-        $err = $this->DelFile($docid, true); // without postInsert
+        $err = $this->removeDocument($docid, true); // without postInsert
         $this->setValue("grp_isrefreshed", "0");
         $this->modify(true, array(
             "grp_isrefreshed"
@@ -417,11 +394,11 @@ class _IGROUP extends _GROUP
                 
                 $this->SetValue("US_MEID", $this->id);
                 // search group of the group
-                $g = new Group("", $wid);
+                $g = new \Group("", $wid);
                 $tglogin = $tgid = array();
                 if (count($g->groups) > 0) {
                     foreach ($g->groups as $gid) {
-                        $gt = new Account("", $gid);
+                        $gt = new \Account("", $gid);
                         $tgid[$gid] = $gt->fid;
                         $tglogin[$gid] = $this->getTitle($gt->fid);
                     }
@@ -477,12 +454,4 @@ class _IGROUP extends _GROUP
         }
         return $err;
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

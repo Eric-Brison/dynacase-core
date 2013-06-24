@@ -8,17 +8,11 @@
  * Specials methods for Role family
  *
  */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _ROLE extends Doc
+namespace Dcp\Core;
+class RoleAccount extends \Dcp\Family\Document
 {
-    /*
-     * @end-method-ignore
-    */
     /**
-     * @var Account system role
+     * @var \Account system role
      */
     protected $sysRole = null;
     
@@ -89,7 +83,7 @@ class _ROLE extends Doc
             
             if (!$sR) {
                 // try create it
-                $sR = new Account();
+                $sR = new \Account();
                 $sR->login = $this->getRawValue('role_login');
                 $sR->lastname = $this->getRawValue('role_name');
                 $sR->fid = $this->initid;
@@ -136,7 +130,7 @@ class _ROLE extends Doc
     /**
      * return system user object conform to whatid
      * @param bool $nocache
-     * @return Account|null return null if not found
+     * @return \Account|null return null if not found
      */
     function getAccount($nocache = false)
     {
@@ -147,7 +141,7 @@ class _ROLE extends Doc
         if (empty($this->sysRole)) {
             $wid = $this->getRawValue("us_whatid");
             if ($wid > 0) {
-                $this->sysRole = new Account("", $wid);
+                $this->sysRole = new \Account("", $wid);
             }
         }
         if (!$this->sysRole) return null;
@@ -168,12 +162,4 @@ class _ROLE extends Doc
         
         return $err;
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

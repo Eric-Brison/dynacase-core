@@ -15,59 +15,67 @@ namespace Dcp\Family {
 	/** porte-documents  */
 	class Basket extends Dir { const familyName="BASKET";}
 	/** Aide en ligne  */
-	class Helppage extends Document { const familyName="HELPPAGE";}
+	class Helppage extends \Dcp\Core\HelpPage { const familyName="HELPPAGE";}
 	/** mail  */
-	class Mail extends Document { const familyName="MAIL";}
+	class Mail extends \Dcp\Core\MailEdit { const familyName="MAIL";}
 	/** modèle de mail  */
-	class Mailtemplate extends Document { const familyName="MAILTEMPLATE";}
+	class Mailtemplate extends \Dcp\Core\MailTemplate { const familyName="MAILTEMPLATE";}
 	/** message envoyé  */
-	class Sentmessage extends Document { const familyName="SENTMESSAGE";}
+	class Sentmessage extends \Dcp\Core\SentEmail { const familyName="SENTMESSAGE";}
 	/** Archive  */
-	class Archiving extends Dir { const familyName="ARCHIVING";}
+	class Archiving extends \Dcp\Core\Archiving { const familyName="ARCHIVING";}
 	/** post it  */
-	class Postit extends Document { const familyName="POSTIT";}
+	class Postit extends \Dcp\Core\PostitView { const familyName="POSTIT";}
 	/** Groupe de personnes  */
-	class Group extends Dir { const familyName="GROUP";}
+	class Group extends \Dcp\Core\AccountCollection { const familyName="GROUP";}
 	/** Rôle  */
-	class Role extends Document { const familyName="ROLE";}
+	class Role extends \Dcp\Core\RoleAccount { const familyName="ROLE";}
 	/** Groupe d'utilisateurs  */
-	class Igroup extends Group { const familyName="IGROUP";}
+	class Igroup extends \Dcp\Core\GroupAccount { const familyName="IGROUP";}
 	/** utilisateur  */
-	class Iuser extends Document { const familyName="IUSER";}
+	class Iuser extends \Dcp\Core\UserAccount { const familyName="IUSER";}
 	/** recherche  */
 	class Search extends \DocSearch { const familyName="SEARCH";}
-	/** recherche groupée  */
-	class Msearch extends Search { const familyName="MSEARCH";}
-	/** recherche détaillée  */
-	class Dsearch extends Search { const familyName="DSEARCH";}
-	/** recherche spécialisée  */
-	class Ssearch extends Search { const familyName="SSEARCH";}
-	/** rapport  */
-	class Report extends Dsearch { const familyName="REPORT";}
+	/** Recherche groupée  */
+	class Msearch extends \Dcp\Core\GroupedSearch { const familyName="MSEARCH";}
+	/** Recherche détaillée  */
+	class Dsearch extends \Dcp\Core\DetailSearch { const familyName="DSEARCH";}
+	/** Recherche spécialisée  */
+	class Ssearch extends \Dcp\Core\SpecialSearch { const familyName="SSEARCH";}
+	/** Rapport  */
+	class Report extends \Dcp\Core\Report { const familyName="REPORT";}
 	/** cycle de vie  */
 	class Wdoc extends \WDoc { const familyName="WDOC";}
 	/** masque de saisie  */
-	class Mask extends Base { const familyName="MASK";}
+	class Mask extends \Dcp\Core\Mask { const familyName="MASK";}
 	/** contrôle de vues  */
 	class Cvdoc extends \CVDoc { const familyName="CVDOC";}
 	/** état libre  */
 	class Freestate extends Document { const familyName="FREESTATE";}
 	/** accord  */
-	class Wask extends Document { const familyName="WASK";}
+	class Wask extends \Dcp\Core\Wask { const familyName="WASK";}
 	/** minuteur  */
-	class Timer extends Document { const familyName="TIMER";}
+	class Timer extends \Dcp\Core\Timer { const familyName="TIMER";}
 	/** fichiers  */
-	class File extends Document { const familyName="FILE";}
+	class File extends \Dcp\Core\File { const familyName="FILE";}
 	/** image  */
-	class Image extends Document { const familyName="IMAGE";}
+	class Image extends \Dcp\Core\Image { const familyName="IMAGE";}
 	/** texte  */
 	class Text extends Base { const familyName="TEXT";}
 	/** chemise  */
-	class Portfolio extends Dir { const familyName="PORTFOLIO";}
+	class Portfolio extends \Dcp\Core\PortFolio { const familyName="PORTFOLIO";}
 	/** intercalaire  */
 	class Guidecard extends Dir { const familyName="GUIDECARD";}
 	/** intercalaire dynamique  */
 	class Sguidecard extends Dsearch { const familyName="SGUIDECARD";}
+	/** traitement  */
+	class Batch extends \Dcp\Core\BatchDocument { const familyName="BATCH";}
+	/** processus  */
+	class Exec extends \Dcp\Core\ExecProcessus { const familyName="EXEC";}
+	/** publipostage  */
+	class Publimail extends \Dcp\Core\Emailing { const familyName="PUBLIMAIL";}
+	/** action basique  */
+	class Basicbatch extends Batch { const familyName="BASICBATCH";}
 }
 namespace Dcp\AttributeIdentifiers {
 	/** de base  */
@@ -547,7 +555,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [menu] RSS visible/masquée aux utilisateurs */
 		const se_setsysrss='se_setsysrss';
 	}
-	/** recherche groupée  */
+	/** Recherche groupée  */
 	class Msearch extends Search {
 		/** [frame] critère */
 		const se_crit='se_crit';
@@ -560,7 +568,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [text] Recherche (titre) */
 		const seg_cond='seg_cond';
 	}
-	/** recherche détaillée  */
+	/** Recherche détaillée  */
 	class Dsearch extends Search {
 		/** [frame] Conditions */
 		const se_fr_detail='se_fr_detail';
@@ -587,7 +595,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [enum] Type */
 		const se_typefilter='se_typefilter';
 	}
-	/** recherche spécialisée  */
+	/** Recherche spécialisée  */
 	class Ssearch extends Search {
 		/** [frame] Fonction */
 		const se_fr_function='se_fr_function';
@@ -598,7 +606,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [text] argument PHP */
 		const se_phparg='se_phparg';
 	}
-	/** rapport  */
+	/** Rapport  */
 	class Report extends Dsearch {
 		/** [tab] Présentation */
 		const rep_tab_presentation='rep_tab_presentation';
@@ -878,5 +886,143 @@ namespace Dcp\AttributeIdentifiers {
 		const pfl_idcopytab='pfl_idcopytab';
 		/** [text] onglet à copier */
 		const pfl_copytab='pfl_copytab';
+	}
+	/** traitement  */
+	class Batch extends Portfolio {
+		/** [menu] planification */
+		const batch_plan='batch_plan';
+		/** [frame] identification */
+		const batch_fr_ident='batch_fr_ident';
+		/** [text] titre */
+		const batch_title='batch_title';
+		/** [longtext] description */
+		const batch_desc='batch_desc';
+		/** [docid] id famille */
+		const batch_idfam='batch_idfam';
+		/** [text] famille */
+		const batch_fam='batch_fam';
+	}
+	/** processus  */
+	class Exec {
+		/** [frame] identification */
+		const exec_fr_ident='exec_fr_ident';
+		/** [docid("IUSER")] exécutant */
+		const exec_iduser='exec_iduser';
+		/** [text] exécutant (titre) */
+		const exec_user='exec_user';
+		/** [docid("BATCH")] issue de */
+		const exec_idref='exec_idref';
+		/** [text] référent (titre) */
+		const exec_ref='exec_ref';
+		/** [text] titre */
+		const exec_title='exec_title';
+		/** [enum] exécution */
+		const exec_status='exec_status';
+		/** [timestamp] exécution depuis */
+		const exec_statusdate='exec_statusdate';
+		/** [frame] traitement */
+		const exec_fr_batch='exec_fr_batch';
+		/** [text] application */
+		const exec_application='exec_application';
+		/** [text] action */
+		const exec_action='exec_action';
+		/** [text] api */
+		const exec_api='exec_api';
+		/** [array] paramètres */
+		const exec_t_parameters='exec_t_parameters';
+		/** [text] variable */
+		const exec_idvar='exec_idvar';
+		/** [text] valeur */
+		const exec_valuevar='exec_valuevar';
+		/** [frame] dates */
+		const exec_fr_date='exec_fr_date';
+		/** [timestamp] précédente date d'exécution */
+		const exec_prevdate='exec_prevdate';
+		/** [timestamp] prochaine date d'exécution */
+		const exec_nextdate='exec_nextdate';
+		/** [timestamp] à exécuter le */
+		const exec_handnextdate='exec_handnextdate';
+		/** [int] période en jours */
+		const exec_periodday='exec_periodday';
+		/** [int] période en heures */
+		const exec_periodhour='exec_periodhour';
+		/** [int] période en minutes */
+		const exec_periodmin='exec_periodmin';
+		/** [timestamp] jusqu'au */
+		const exec_periodenddate='exec_periodenddate';
+		/** [enum] jour de la semaine */
+		const exec_perioddaynumber='exec_perioddaynumber';
+		/** [frame] compte-rendu */
+		const exec_fr_cr='exec_fr_cr';
+		/** [timestamp("%A %d %B %Y %X")] date d'exécution */
+		const exec_date='exec_date';
+		/** [time("%H:%M:%S")] durée d'exécution */
+		const exec_elapsed='exec_elapsed';
+		/** [text] status */
+		const exec_state='exec_state';
+		/** [ifile] détail */
+		const exec_detail='exec_detail';
+		/** [longtext] log */
+		const exec_detaillog='exec_detaillog';
+		/** [menu] exécuter maintenant */
+		const exec_bgexec='exec_bgexec';
+		/** [menu] abandonner l'exécution en cours */
+		const exec_reset='exec_reset';
+		/** [frame] paramètre */
+		const exec_fr_param='exec_fr_param';
+		/** [docid("IUSER")] administrateur */
+		const exec_idadmin='exec_idadmin';
+	}
+	/** publipostage  */
+	class Publimail extends Batch {
+		/** [frame] basique */
+		const fr_basic='fr_basic';
+		/** [text] titre */
+		const ba_title='ba_title';
+		/** [frame] identification */
+		const pubm_fr_ident='pubm_fr_ident';
+		/** [text] sujet */
+		const pubm_title='pubm_title';
+		/** [frame] Corps */
+		const pubm_fr_body='pubm_fr_body';
+		/** [htmltext] corps du message */
+		const pubm_body='pubm_body';
+		/** [image] image de fond */
+		const pubm_bgimg='pubm_bgimg';
+		/** [frame] Attachements */
+		const pubm_fr_att='pubm_fr_att';
+		/** [array] Attachements */
+		const pubm_t_att='pubm_t_att';
+		/** [text] Description */
+		const pubm_adesc='pubm_adesc';
+		/** [file] Fichier */
+		const pubm_fdesc='pubm_fdesc';
+		/** [action] envoyer */
+		const pubm_send='pubm_send';
+		/** [action] prévisualisation */
+		const pubm_preview='pubm_preview';
+		/** [action] afficher */
+		const pubm_display='pubm_display';
+		/** [action] imprimer */
+		const pubm_print='pubm_print';
+		/** [frame] Configuration */
+		const pubm_fr_config='pubm_fr_config';
+		/** [docid] id famille */
+		const pubm_idfam='pubm_idfam';
+		/** [text] famille du lot */
+		const pubm_fam='pubm_fam';
+		/** [text] attribut mail */
+		const pubm_mailatt='pubm_mailatt';
+	}
+	/** action basique  */
+	class Basicbatch extends Batch {
+		/** [action] verrouiller */
+		const bbatch_lock='bbatch_lock';
+		/** [action] déverrouiller */
+		const bbatch_unlock='bbatch_unlock';
+		/** [action] supprimer */
+		const bbatch_delete='bbatch_delete';
+		/** [action] dupliquer */
+		const bbatch_copy='bbatch_copy';
 	}
 }

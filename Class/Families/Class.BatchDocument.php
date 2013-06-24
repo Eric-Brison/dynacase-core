@@ -7,23 +7,10 @@
 /**
  * Method for batch freedom processes
  *
- * @author Anakeen
- * @version $Id: Method.BatchDoc.php,v 1.2 2005/09/21 16:02:21 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _BATCH extends _PORTFOLIO
+namespace Dcp\Core;
+class BatchDocument extends \Dcp\Family\Portfolio
 {
-    /*
-     * @end-method-ignore
-    */
     function filterContent()
     {
     }
@@ -40,12 +27,4 @@ class _BATCH extends _PORTFOLIO
         
         return parent::getContent($controlview, $filter, $famid, $insertguide);
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

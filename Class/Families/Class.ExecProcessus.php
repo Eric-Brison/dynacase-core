@@ -7,23 +7,10 @@
 /**
  * Method for processes family
  *
- * @author Anakeen
- * @version $Id: Method.Execute.php,v 1.9 2008/12/02 13:21:27 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _EXEC extends Doc
+namespace Dcp\Core;
+class ExecProcessus extends \Dcp\Family\Document
 {
-    /*
-     * @end-method-ignore
-    */
     private $execuserid;
     /**
      * execute the action describe in the object
@@ -34,7 +21,7 @@ class _EXEC extends Doc
     function bgExecute($comment = "")
     {
         /**
-         * @var Action $action
+         * @var \Action $action
          */
         global $action;
         
@@ -172,12 +159,4 @@ class _EXEC extends Doc
         $err = $this->control('edit');
         return ($err == "");
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

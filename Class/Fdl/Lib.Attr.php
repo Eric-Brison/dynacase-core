@@ -450,6 +450,7 @@ function AttrIdToPhp($dbaccess, $tdoc)
     
     $query = new QueryDb($dbaccess, "DocAttr");
     $query->AddQuery(sprintf("docid=%d", $tdoc["id"]));
+    $query->AddQuery(sprintf("id !~ ':'"));
     $query->order_by = "ordered";
     $attrs = $query->Query(0, 0, "TABLE");
     

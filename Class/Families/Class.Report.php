@@ -4,21 +4,11 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-/*
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
-*/
 /**
  * document to present a report on one family document
- *
- * @author Anakeen
- * @version $Id: Method.Report.php,v 1.20 2008/11/20 09:34:20 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage GED
- *
  */
-class _REPORT extends _DSEARCH
+namespace Dcp\Core;
+class Report extends \Dcp\Family\Dsearch
 {
     /*
      * @end-method-ignore
@@ -65,7 +55,7 @@ class _REPORT extends _DSEARCH
         $tcolumn1 = array();
         $tcolumn2 = array();
         /**
-         * @var NormalAttribute $v
+         * @var \NormalAttribute $v
          */
         while (list($k, $v) = each($lattr)) {
             //    if ($v->visibility=="H") continue;
@@ -177,7 +167,7 @@ class _REPORT extends _DSEARCH
             }
         }
         $order.= " " . $this->getRawValue("REP_ORDERSORT");
-        $s = new SearchDoc($this->dbaccess, $this->getRawValue("se_famid"));
+        $s = new \SearchDoc($this->dbaccess, $this->getRawValue("se_famid"));
         $s->useCollection($this->initid);
         $s->setOrder($order);
         $s->returnsOnly($tcols);
@@ -331,7 +321,7 @@ class _REPORT extends _DSEARCH
         
         $mb0 = microtime(true);
         $this->setStatus(_("Doing search request"));
-        $search = new SearchDoc($this->dbaccess, $famId);
+        $search = new \SearchDoc($this->dbaccess, $famId);
         $search->dirid = $this->initid;
         $search->slice = $limit;
         $search->orderby = trim($order . " " . $this->getRawValue("rep_ordersort"));
@@ -362,7 +352,7 @@ class _REPORT extends _DSEARCH
         ));
     }
     
-    protected function generatePivotCSV(SearchDoc $search, Array $columns, Doc $famDoc, $pivotId, $refresh, $separator, $dateFormat)
+    protected function generatePivotCSV(\SearchDoc $search, Array $columns, \Doc $famDoc, $pivotId, $refresh, $separator, $dateFormat)
     {
         $convertFormat = array(
             "dateFormat" => $dateFormat,
@@ -423,6 +413,7 @@ class _REPORT extends _DSEARCH
                 $currentAttribute = $famDoc->getAttribute($currentColumnID);
                 $resultSingleArray[$currentColumnID][] = $currentAttribute ? $currentAttribute->getTextualValue($currentDoc, -1, $convertFormat) : $this->convertInternalElement($currentColumnID, $currentDoc);
             }
+            $nbElement=0;
             foreach ($multipleAttributes as $currentKey => $currentArrayID) {
                 foreach ($currentArrayID as $currentColumnID) {
                     $currentAttribute = $famDoc->getAttribute($currentColumnID);
@@ -438,7 +429,7 @@ class _REPORT extends _DSEARCH
         }
         //Generate result array
         $firstRow = array();
-        $twoDimStruct = new TwoDimensionStruct();
+        $twoDimStruct = new \TwoDimensionStruct();
         //Generate first line
         $firstRow[] = _("REPORT_pivot");
         $twoDimStruct->addColumn($resultSingleArray[$pivotColumnName]);
@@ -473,15 +464,15 @@ class _REPORT extends _DSEARCH
     /**
      * Generate a basic CSV export
      *
-     * @param SearchDoc $search the result of the report
+     * @param \SearchDoc $search the result of the report
      * @param array $columns an array of id
-     * @param Doc $famDoc the associated family doc
+     * @param \Doc $famDoc the associated family doc
      *
      * @return array
      */
-    protected function generateBasicCSV(SearchDoc $search, Array $columns, Array $displayOptions, Doc $famDoc, $refresh, $separator, $dateFormat, $stripHtmlFormat = true)
+    protected function generateBasicCSV(\SearchDoc $search, Array $columns, Array $displayOptions, \Doc $famDoc, $refresh, $separator, $dateFormat, $stripHtmlFormat = true)
     {
-        $fc = new FormatCollection();
+        $fc = new \FormatCollection();
         $dl = $search->getDocumentList();
         $fc->useCollection($dl);
         if ($separator) $fc->setDecimalSeparator($separator);
@@ -489,15 +480,15 @@ class _REPORT extends _DSEARCH
         $fc->stripHtmlTags($stripHtmlFormat);
         switch ($dateFormat) {
             case 'US':
-                $fc->setDateStyle(DateAttributeValue::isoWTStyle);
+                $fc->setDateStyle(\DateAttributeValue::isoWTStyle);
                 break;
 
             case 'FR':
-                $fc->setDateStyle(DateAttributeValue::frenchStyle);
+                $fc->setDateStyle(\DateAttributeValue::frenchStyle);
                 break;
 
             case 'ISO':
-                $fc->setDateStyle(DateAttributeValue::isoStyle);
+                $fc->setDateStyle(\DateAttributeValue::isoStyle);
                 break;
         }
         $isAttrInArray = array();
@@ -516,15 +507,15 @@ class _REPORT extends _DSEARCH
         $fc->setNc('-');
         $fc->setHookAdvancedStatus(function ($s)
         {
-            _REPORT::setStatus($s);
+            \Dcp\Family\Report::setStatus($s);
         });
         $r = $fc->render();
         $this->setStatus(_("Doing csv render"));
         $out = array();
         $line = array();
         foreach ($columns as $kc => $col) {
-            if (isset(Doc::$infofields[$col]["label"])) {
-                $line[$kc] = _(Doc::$infofields[$col]["label"]);
+            if (isset(\Doc::$infofields[$col]["label"])) {
+                $line[$kc] = _(\Doc::$infofields[$col]["label"]);
             } else {
                 $line[$kc] = $famDoc->getLabel($col);
                 if ($displayOptions[$kc] == "docid") $line[$kc].= ' (' . _("report:docid") . ')';
@@ -538,7 +529,7 @@ class _REPORT extends _DSEARCH
                 $dDocid = ($displayOptions[$kc] == "docid");
                 if (isset($render["attributes"][$col])) {
                     /**
-                     * @var StandardAttributeValue $dv
+                     * @var \StandardAttributeValue $dv
                      */
                     $dv = $render["attributes"][$col];
                     if (is_array($dv)) {
@@ -574,7 +565,7 @@ class _REPORT extends _DSEARCH
         
         return $out;
     }
-    protected function convertInternalElement($internalName, Doc $doc)
+    protected function convertInternalElement($internalName, \Doc $doc)
     {
         switch ($internalName) {
             case "revdate":
@@ -603,12 +594,4 @@ class _REPORT extends _DSEARCH
     {
         $this->viewreport($target, $ulink, $abstract);
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

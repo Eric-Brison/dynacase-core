@@ -5,25 +5,11 @@
  * @package FDL
 */
 /**
- * Detailled search
- *
- * @author Anakeen
- * @version $Id: Method.DetailSearch.php,v 1.73 2009/01/08 17:52:54 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage GED
+ * archive documents
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _ARCHIVING extends Dir
+namespace Dcp\Core;
+class Archiving extends \Dcp\Family\Dir
 {
-    /*
-     * @end-method-ignore
-    */
     /**
      * all document's folder are archieved
      * @apiExpose
@@ -33,9 +19,8 @@ class _ARCHIVING extends Dir
     {
         $err = $this->canEdit();
         if (!$err) {
-            include_once ("FDL/Class.SearchDoc.php");
             
-            $s = new SearchDoc($this->dbaccess);
+            $s = new \SearchDoc($this->dbaccess);
             $s->dirid = $this->id;
             $s->orderby = '';
             $s->setObjectReturn();
@@ -70,7 +55,7 @@ class _ARCHIVING extends Dir
             if (!$err) {
                 include_once ("FDL/Class.SearchDoc.php");
                 
-                $s = new SearchDoc($this->dbaccess);
+                $s = new \SearchDoc($this->dbaccess);
                 $s->addFilter("archiveid=%d", $this->id);
                 $s->orderby = '';
                 $s->setObjectReturn();
@@ -102,7 +87,7 @@ class _ARCHIVING extends Dir
             if (!$err) {
                 include_once ("FDL/Class.SearchDoc.php");
                 
-                $s = new SearchDoc($this->dbaccess);
+                $s = new \SearchDoc($this->dbaccess);
                 $s->addFilter("archiveid=%d", $this->id);
                 $s->orderby = '';
                 $s->setObjectReturn();
@@ -202,12 +187,4 @@ class _ARCHIVING extends Dir
         
         return $err;
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

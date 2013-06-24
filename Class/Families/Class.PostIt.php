@@ -5,25 +5,11 @@
  * @package FDL
 */
 /**
- * Generated Header (not documented yet)
- *
- * @author Anakeen
- * @version $Id: Method.PostIt.php,v 1.9 2007/08/06 15:42:25 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
+ * templates for postit
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _POSTIT extends Doc
+namespace Dcp\Core;
+class PostitView extends \Dcp\Family\Document
 {
-    /*
-     * @end-method-ignore
-    */
     
     var $defaultview = "FDL:VIEWPOSTIT:T";
     var $defaultedit = "FDL:EDITPOSTIT:T";
@@ -139,13 +125,6 @@ class _POSTIT extends Doc
         
         $tcomment = $this->getRawValue("PIT_NCOM");
         if ($tcomment == "") return (_("no message : post-it creation aborted"));
+        return '';
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

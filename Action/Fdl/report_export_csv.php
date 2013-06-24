@@ -245,10 +245,10 @@ function report_export_csv(Action & $action)
         $action->parent->setVolatileParam("exportSession", $expVarName);
         $reportFamId = getIdFromName($dbaccess, "REPORT");
         /**
-         * @var _REPORT $currentDoc
+         * @var \Dcp\Family\Report $currentDoc
          */
-        $familyIdArray = $currentDoc->getFromDoc();
         
+        $familyIdArray = $currentDoc->getFromDoc();
         if (in_array($reportFamId, $familyIdArray)) {
             switch ($kind) {
                 case "pivot":

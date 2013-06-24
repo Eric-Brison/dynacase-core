@@ -20,7 +20,7 @@ SUBDIR = Class Zone Action Api App Supervisor Doc Expire Images programs Share S
 TOP_MODULES = indexq.php index.php whattext wsh.php guest.php wcheck wstop wstart resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess pack.php authent.php .autoloader-ignore
 
 pages_not_xml = info.xml
-pages_not_php = fam2po.php po2js.php stubFamily.php
+pages_not_php = fam2po.php po2js.php
 
 include $(utildir)/PubRule
 
@@ -125,7 +125,7 @@ publish-test:
 webinst: webinst-test
 
 stub:
-	php stub.php App/Fdl/fdl.ods App/Fusers/account.ods App/Fdl/searches.ods App/Fdl/workflows.ods App/Fdl/misc.ods > stubFamily.php
+	php  $(utildir)/genStubFamilyClass.php App/Fdl/fdl.ods App/Fusers/account.ods App/Fdl/searches.ods App/Fdl/workflows.ods App/Fdl/misc.ods App/Fdl/freeaction.ods > Class/Stubs/stubCoreFamilies.php
 
 clean:
 	rm -f *.*~ config.* Makefile configure info.xml\

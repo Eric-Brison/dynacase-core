@@ -6,29 +6,15 @@
 */
 /**
  * Detailled search
- *
- * @author Anakeen
- * @version $Id: Method.DetailSearch.php,v 1.73 2009/01/08 17:52:54 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage GED
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _DSEARCH extends DocSearch
+namespace Dcp\Core;
+class DetailSearch extends \Dcp\Family\Search
 {
-    /*
-     * @end-method-ignore
-    */
     var $defaultedit = "FREEDOM:EDITDSEARCH"; #N_("include") N_("equal") N_("equal") _("not equal") N_("is empty") N_("is not empty") N_("one value equal")
     var $defaultview = "FREEDOM:VIEWDSEARCH"; #N_("not include") N_("begin by") N_("not equal") N_("&gt; or equal") N_("&lt; or equal")  N_("content file word") N_("content file expression")
     
     /**
-     * @var DocFam|null
+     * @var \DocFam|null
      */
     protected $searchfam = null;
     /**
@@ -177,10 +163,10 @@ class _DSEARCH extends DocSearch
     }
     /**
      * cast SimpleXMLElment to stdClass
-     * @param SimpleXMLElement $xml
-     * @return stdClass return  object or value if it is a leaf
+     * @param \SimpleXMLElement $xml
+     * @return \stdClass return  object or value if it is a leaf
      */
-    public function simpleXml2StdClass(SimpleXMLElement $xml)
+    public function simpleXml2StdClass(\SimpleXMLElement $xml)
     {
         $std = null;
         if ($xml->count() == 0) {
@@ -193,7 +179,7 @@ class _DSEARCH extends DocSearch
                     );
                     array_push($std->$k, $this->simpleXml2StdClass($se));
                 } else {
-                    if ($std === null) $std = new stdClass();
+                    if ($std === null) $std = new \stdClass();
                     $std->$k = $this->simpleXml2StdClass($se);
                 }
             }
@@ -220,7 +206,7 @@ class _DSEARCH extends DocSearch
             if ($type[0] != "generated") {
                 $this->defaultedit = "FDL:EDITBODYCARD";
                 /**
-                 * @var NormalAttribute $oa
+                 * @var \NormalAttribute $oa
                  */
                 $this->getAttribute('se_t_detail', $oa);
                 $oa->setVisibility('R');
@@ -279,12 +265,12 @@ class _DSEARCH extends DocSearch
         $atype = '';
         $oa = $this->searchfam->getAttribute($col);
         /**
-         * @var NormalAttribute $oa
+         * @var \NormalAttribute $oa
          */
         if ($oa) {
             $atype = $oa->type;
-        } elseif (Doc::$infofields[$col]) {
-            $atype = Doc::$infofields[$col]["type"];
+        } elseif (\Doc::$infofields[$col]) {
+            $atype = \Doc::$infofields[$col]["type"];
         }
         if (($atype == "date" || $atype == "timestamp")) {
             if ($col == 'revdate') {
@@ -732,17 +718,17 @@ class _DSEARCH extends DocSearch
             
             $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
             $zpi = $fdoc->GetNormalAttributes();
-            $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
-            $zpi["fixstate"] = new BasicAttribute("fixstate", $this->fromid, _("state"));
-            $zpi["activity"] = new BasicAttribute("activity", $this->fromid, _("activity"));
-            $zpi["title"] = new BasicAttribute("title", $this->fromid, _("doctitle"));
-            $zpi["revdate"] = new BasicAttribute("revdate", $this->fromid, _("revdate"));
-            $zpi["cdate"] = new BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
-            $zpi["revision"] = new BasicAttribute("cdate", $this->fromid, _("revision"));
-            $zpi["owner"] = new BasicAttribute("owner", $this->fromid, _("owner"));
-            $zpi["locked"] = new BasicAttribute("owner", $this->fromid, _("locked"));
-            $zpi["allocated"] = new BasicAttribute("owner", $this->fromid, _("allocated"));
-            $zpi["svalues"] = new BasicAttribute("svalues", $this->fromid, _("any values"));
+            $zpi["state"] = new \BasicAttribute("state", $this->fromid, _("step"));
+            $zpi["fixstate"] = new \BasicAttribute("fixstate", $this->fromid, _("state"));
+            $zpi["activity"] = new \BasicAttribute("activity", $this->fromid, _("activity"));
+            $zpi["title"] = new \BasicAttribute("title", $this->fromid, _("doctitle"));
+            $zpi["revdate"] = new \BasicAttribute("revdate", $this->fromid, _("revdate"));
+            $zpi["cdate"] = new \BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
+            $zpi["revision"] = new \BasicAttribute("cdate", $this->fromid, _("revision"));
+            $zpi["owner"] = new \BasicAttribute("owner", $this->fromid, _("owner"));
+            $zpi["locked"] = new \BasicAttribute("owner", $this->fromid, _("locked"));
+            $zpi["allocated"] = new \BasicAttribute("owner", $this->fromid, _("allocated"));
+            $zpi["svalues"] = new \BasicAttribute("svalues", $this->fromid, _("any values"));
             $tcond = array();
             foreach ($taid as $k => $v) {
                 if (isset($zpi[$v])) {
@@ -781,7 +767,7 @@ class _DSEARCH extends DocSearch
     }
     /**
      * return family use for search
-     * @return Doc
+     * @return \Doc
      */
     private function getSearchFamilyDocument()
     {
@@ -810,17 +796,17 @@ class _DSEARCH extends DocSearch
             
             $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
             $zpi = $fdoc->GetNormalAttributes();
-            $zpi["state"] = new BasicAttribute("state", $this->fromid, _("step"));
-            $zpi["fixstate"] = new BasicAttribute("state", $this->fromid, _("fixstate"));
-            $zpi["activity"] = new BasicAttribute("state", $this->fromid, _("activity"));
-            $zpi["title"] = new BasicAttribute("title", $this->fromid, _("doctitle"));
-            $zpi["revdate"] = new BasicAttribute("revdate", $this->fromid, _("revdate"));
-            $zpi["cdate"] = new BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
-            $zpi["revision"] = new BasicAttribute("cdate", $this->fromid, _("revision"));
-            $zpi["owner"] = new BasicAttribute("owner", $this->fromid, _("owner"));
-            $zpi["locked"] = new BasicAttribute("owner", $this->fromid, _("locked"));
-            $zpi["allocated"] = new BasicAttribute("owner", $this->fromid, _("allocated"));
-            $zpi["svalues"] = new BasicAttribute("svalues", $this->fromid, _("any values"));
+            $zpi["state"] = new \BasicAttribute("state", $this->fromid, _("step"));
+            $zpi["fixstate"] = new \BasicAttribute("state", $this->fromid, _("fixstate"));
+            $zpi["activity"] = new \BasicAttribute("state", $this->fromid, _("activity"));
+            $zpi["title"] = new \BasicAttribute("title", $this->fromid, _("doctitle"));
+            $zpi["revdate"] = new \BasicAttribute("revdate", $this->fromid, _("revdate"));
+            $zpi["cdate"] = new \BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
+            $zpi["revision"] = new \BasicAttribute("cdate", $this->fromid, _("revision"));
+            $zpi["owner"] = new \BasicAttribute("owner", $this->fromid, _("owner"));
+            $zpi["locked"] = new \BasicAttribute("owner", $this->fromid, _("locked"));
+            $zpi["allocated"] = new \BasicAttribute("owner", $this->fromid, _("allocated"));
+            $zpi["svalues"] = new \BasicAttribute("svalues", $this->fromid, _("any values"));
             
             foreach ($taid as $k => $v) {
                 if ($tkey[$k][0] == '?') {
@@ -872,7 +858,7 @@ class _DSEARCH extends DocSearch
                     $zpi[$v]->isAlone = true;
                     $tinputs[$k]["inputs"] = getHtmlInput($doc, $zpi[$v], getHttpVars($k));
                 } else {
-                    $aotxt = new BasicAttribute($v, $doc->id, "eou");
+                    $aotxt = new \BasicAttribute($v, $doc->id, "eou");
                     if ($v == "revdate") $aotxt->type = "date";
                     $tinputs[$k]["inputs"] = getHtmlInput($doc, $aotxt, getHttpVars($k));
                 }
@@ -898,7 +884,7 @@ class _DSEARCH extends DocSearch
     function editdsearch()
     {
         /**
-         * @var Action $action
+         * @var \Action $action
          */
         global $action;
         $classid = GetHttpVars("sfamid", 0);
@@ -914,7 +900,7 @@ class _DSEARCH extends DocSearch
         
         if ($dirid > 0) {
             /**
-             * @var Dir $dir
+             * @var \Dir $dir
              */
             $dir = new_Doc($this->dbaccess, $dirid);
             if (method_exists($dir, "isAuthorized")) {
@@ -1120,7 +1106,7 @@ class _DSEARCH extends DocSearch
         if ($fdoc->wid > 0) {
             $wdoc = new_Doc($this->dbaccess, $fdoc->wid);
             /**
-             * @var Wdoc $wdoc
+             * @var \Wdoc $wdoc
              */
             $states = $wdoc->getStates();
             
@@ -1211,7 +1197,7 @@ class _DSEARCH extends DocSearch
                 } else {
                     if ($oa && $oa->type == "enum") {
                         /**
-                         * @var NormalAttribute $oa
+                         * @var \NormalAttribute $oa
                          */
                         $te = $oa->getEnum();
                         $tstates = array();
@@ -1363,7 +1349,7 @@ class _DSEARCH extends DocSearch
         $this->editattr();
     }
     /**
-     * @param BasicAttribute $fs
+     * @param \BasicAttribute $fs
      * @param bool $reset
      * @return array
      */
@@ -1394,7 +1380,7 @@ class _DSEARCH extends DocSearch
     
     private function getMethodName($methodStr)
     {
-        $parseMethod = new parseFamilyMethod();
+        $parseMethod = new \parseFamilyMethod();
         $parseMethod->parse($methodStr);
         $err = $parseMethod->getError();
         if ($err) {
@@ -1402,12 +1388,4 @@ class _DSEARCH extends DocSearch
         }
         return $parseMethod->methodName;
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

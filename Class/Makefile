@@ -5,6 +5,6 @@
 export targetdir
 export utildir
 
-SUBDIR = Appmng Authent Authenticator Crontab Database Dav Debug Fdl Form Layout Mail Session Users Vault InstallUtils
+SUBDIR = Families Appmng Authent Authenticator Crontab Database Dav Debug Fdl Form Layout Mail Session Users Vault InstallUtils
 
 include $(utildir)/PubRule

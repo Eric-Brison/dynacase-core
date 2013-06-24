@@ -5,30 +5,12 @@
  * @package FDL
 */
 /**
- * Generated Header (not documented yet)
+ * Mask document
  *
- * @author Anakeen
- * @version $Id: Method.Mask.php,v 1.23 2008/09/12 10:14:48 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage GED
  */
-/**
- */
-// ---------------------------------------------------------------
-// $Id: Method.Mask.php,v 1.23 2008/09/12 10:14:48 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/freedom/Class/Freedom/Method.Mask.php,v $
-// ---------------------------------------------------------------
-
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _MASK extends Doc
+namespace Dcp\Core;
+class Mask extends \Dcp\Family\Base
 {
-    /*
-     * @end-method-ignore
-    */
     
     var $defaultedit = "FREEDOM:EDITMASK";
     var $defaultview = "FREEDOM:VIEWMASK";
@@ -160,7 +142,7 @@ class _MASK extends Doc
         
         foreach ($tmpdoc->attributes->attr as $k => $attr) {
             /**
-             * @var $attr NormalAttribute|ActionAttribute
+             * @var $attr \NormalAttribute|\ActionAttribute
              */
             if (!$attr->visibility) continue;
             if ($attr->usefor == 'Q') continue;
@@ -269,7 +251,7 @@ class _MASK extends Doc
             uasort($tattr, "tordered");
             foreach ($tattr as $k => $attr) {
                 /**
-                 * @var $attr NormalAttribute|FieldSetAttribute|ActionAttribute
+                 * @var $attr \NormalAttribute|\FieldSetAttribute|\ActionAttribute
                  */
                 if ($attr->usefor == "Q") continue; // not parameters
                 if ($attr->docid == 0) continue; // not parameters
@@ -346,8 +328,8 @@ class _MASK extends Doc
     }
     /** 
      * use to usort attributes
-     * @param BasicAttribute $a
-     * @param BasicAttribute $b
+     * @param \BasicAttribute $a
+     * @param \BasicAttribute $b
      */
     static function sortnewelem($a, $b)
     {
@@ -360,12 +342,4 @@ class _MASK extends Doc
         if (isset($b["displayorder"])) return -1;
         return 0;
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

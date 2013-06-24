@@ -7,38 +7,26 @@
 /**
  * PortFolio Methods
  *
- * @author Anakeen
- * @version $Id: Method.PortFolio.php,v 1.17 2008/01/22 16:44:48 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage GED
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _PORTFOLIO extends Dir
+namespace Dcp\Core;
+class PortFolio extends \Dcp\Family\Dir
 {
-    /*
-     * @end-method-ignore
-    */
     /**
      * Call to create default tabs
      */
     function PostCreated()
     {
-        if ($this->revision > 0) return;
-        if (!method_exists($this, "addfile")) return;
+        if ($this->revision > 0) return '';
+        if (!method_exists($this, "addfile")) return '';
         // copy all guide-card from default values
-        $err = $this->CreateDefaultTabsFromParameter();
+        $this->CreateDefaultTabsFromParameter();
         return $this->CreateDefaultTabs();
     }
     
     function ReCreateDefaultTabs()
     {
         include_once ("FDL/Lib.Dir.php");
+        $err='';
         $child = getChildDir($this->dbaccess, 1, $this->initid, false, "TABLE");
         if (count($child) == 0) {
             $err = $this->CreateDefaultTabs();
@@ -118,11 +106,14 @@ class _PORTFOLIO extends Dir
      */
     function getContent($controlview = true, array $filter = array() , $famid = "", $insertguide = false, $unused = "")
     {
-        $tdoc = Dir::getContent($controlview, $filter, $famid);
+        $tdoc = \Dir::getContent($controlview, $filter, $famid);
         if ($insertguide) {
             $todoc = array();
             foreach ($tdoc as $k => $v) {
                 if (($v["doctype"] == "D") || ($v["doctype"] == "S")) {
+                    /**
+                     * @var \DocCollection $dir
+                     */
                     $dir = new_Doc($this->dbaccess, $v["id"]);
                     $todoc = array_merge($todoc, $dir->getContent($controlview, $filter));
                     unset($tdoc[$k]);
@@ -139,12 +130,4 @@ class _PORTFOLIO extends Dir
         }
         return $tdoc;
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

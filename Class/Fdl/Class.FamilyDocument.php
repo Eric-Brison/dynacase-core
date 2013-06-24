@@ -11,6 +11,6 @@ class Document extends \PDoc
 {
     
     var $defDoctype = 'F';
-    var $defClassname = 'DocFile';
+    var $defClassname = '\Dcp\Family\Document';
 }
 ?>
