@@ -16,7 +16,6 @@
 /**
  */
 
-include_once ("FDL/sendmail.php");
 
 $usage = new ApiUsage();
 
@@ -36,6 +35,8 @@ $from = getMailAddr($action->user->id);
 if ($from == "") $from = getParam('SMTP_FROM');
 if ($from == "") $from = $from = $action->user->login . '@' . php_uname('n');
 
+
+include_once ("FDL/sendmail.php");
 $themail = new Fdl_Mail_mime();
 if ($file && $file != 'stdin') {
     $mime = trim(shell_exec(sprintf("file -ib %s", escapeshellarg($file))));
