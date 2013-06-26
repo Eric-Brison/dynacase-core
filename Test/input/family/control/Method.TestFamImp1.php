@@ -24,7 +24,7 @@ class _TST_FAMIMP1 extends Doc
     /**
      * @end-method-ignore
      */
-    public function preImport(array $extra)
+    public function preImport(array $extra=array())
     {
         $tkey = $tval = array();
         foreach ($extra as $id => $val) {
