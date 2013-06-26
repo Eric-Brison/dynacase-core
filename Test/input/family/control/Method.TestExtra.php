@@ -21,7 +21,7 @@ class _TEST_EXTRA extends Doc
      * @end-method-ignore
      */
     
-    public function preImport(array $extra)
+    public function preImport(array $extra=array())
     {
         $err = parent::preImport($extra);
         if ($err == "") {
@@ -32,7 +32,7 @@ class _TEST_EXTRA extends Doc
         return $err;
     }
     
-    public function postImport(array $extra)
+    public function postImport(array $extra=array())
     {
         $err = parent::postImport($extra);
         if ($err == "") {
