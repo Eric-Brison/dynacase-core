@@ -69,8 +69,8 @@ class VaultDiskDir extends DbObj
     {
         $td = explode('/', $d);
         $dend = intval(end($td));
-        
-        $lastkey = end(array_keys($td));
+        $ak = array_keys($td);
+        $lastkey = end($ak);
         if ($dend < $max) {
             $td[$lastkey]++;
         } else {
