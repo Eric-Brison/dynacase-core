@@ -12,7 +12,7 @@ class CheckClass extends CheckData
      */
     protected $className;
     /**
-     * @var string ftle where class is defined
+     * @var string file where class is defined
      */
     protected $fileName;
     /**
@@ -22,7 +22,7 @@ class CheckClass extends CheckData
     /**
      * @param array $data
      * @param Doc $doc
-     * @return CheckMethod
+     * @return CheckClass
      */
     function check(array $data, &$doc = null)
     {
@@ -39,7 +39,7 @@ class CheckClass extends CheckData
     
     protected function checkClassSyntax()
     {
-        if (!preg_match('/^[A-Z][A-Z_0-9\\\\]{1,62}$/i', $this->className)) {
+        if (!preg_match('/^[A-Z][A-Z_0-9\\\\]*$/i', $this->className)) {
             $this->addError(ErrorCode::getError('CLASS0001', $this->className, $this->doc->name));
         }
         return false;

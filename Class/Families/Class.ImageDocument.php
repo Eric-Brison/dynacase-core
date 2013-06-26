@@ -64,7 +64,6 @@ class Image extends \Dcp\Family\Document
     
     function postStore()
     {
-        $this->SetValue("IMG_TITLE", $this->vault_filename("IMG_FILE"));
-        return '';
+        return $this->SetValue("IMG_TITLE", $this->vault_filename("IMG_FILE"));
     }
 }
