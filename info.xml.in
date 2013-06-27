@@ -563,12 +563,14 @@ This can be solved by:<br/>
             <label>Authent mail template</label>
         </process>
         <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv"/>
-        <process command="programs/app_post FDL U"/>
-        <process command="programs/post_migration FDL"/>
 
         <process command="./wsh.php --api=importDocuments --file=./FUSERS/account.ods">
             <label>Update Account families</label>
         </process>
+
+
+        <process command="programs/app_post FDL U"/>
+        <process command="programs/post_migration FDL"/>
 
         <process command="./wsh.php --api=importDocuments --file=./FUSERS/accountprofil.ods">
             <label>Profiling accounts</label>

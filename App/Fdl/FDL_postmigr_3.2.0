@@ -33,6 +33,13 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+$wpub/wsh.php --api=destroyFamily --famid=FORUM
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error delete FORUM."
+    exit $RET
+fi
+
 "$wpub/wsh.php" --api=migrExtendedAcls
 RET=$?
 if [ $RET -ne 0 ]; then
@@ -40,6 +47,7 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+"$wpub/wsh.php" --api=generateDocumentClass
 "$wpub/wsh.php" --api=initViewPrivileges
 RET=$?
 if [ $RET -ne 0 ]; then
