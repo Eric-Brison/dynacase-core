@@ -5,26 +5,10 @@
  * @package FDL
 */
 /**
- * Generated Header (not documented yet)
- *
- * @author Anakeen
- * @version $Id: Method.DocText.php,v 1.2 2003/08/18 15:47:04 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
+ * help document for family
  */
-/**
- */
-// ---------------------------------------------------------------
-// $Id: Method.DocText.php,v 1.2 2003/08/18 15:47:04 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/freedom/Class/Fdl/Method.DocText.php,v $
-// ---------------------------------------------------------------
-
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _HELPPAGE extends Doc
+namespace Dcp\Core;
+class HelpPage extends \Dcp\Family\Document
 {
     /*
      * @end-method-ignore
@@ -82,9 +66,11 @@ class _HELPPAGE extends Doc
         }
         return $err;
     }
+
     /**
      * Check 'view' control acl against the help_family family profile
-     * @param $aclname
+     * @param string $aclname
+     * @param bool $strict
      * @return string non-empty string with error message when forbidden or empty string if allowed
      */
     public function Control($aclname, $strict = false)
@@ -178,6 +164,7 @@ class _HELPPAGE extends Doc
         $helpname = '';
         $helplangiso = '';
         $lang_key = '';
+        $helpdescription='';
         // search user lang
         foreach ($help_values as $lang => $help) {
             if ($lang == $user_lang) {
@@ -395,7 +382,7 @@ class _HELPPAGE extends Doc
         $this->lay->setBlockData('TITLES', $descriptions);
         // construct aides
         $aides = array();
-        $s = new SearchDoc($this->dbaccess, 'HELPPAGE');
+        $s = new \SearchDoc($this->dbaccess, 'HELPPAGE');
         $s->setObjectReturn();
         $s->orderby = 'title';
         $s->search();
@@ -437,7 +424,7 @@ class _HELPPAGE extends Doc
     }
     /**
      *
-     * @param string $section
+     * @param array $section
      * @param string $user_lang
      * @return string
      */
@@ -453,10 +440,11 @@ class _HELPPAGE extends Doc
         foreach ($section as $lang => $sec) {
             return $lang;
         }
+        return '';
     }
     /**
      *
-     * @param string $section
+     * @param array $section
      * @return string
      */
     public function getSectionKey($section)

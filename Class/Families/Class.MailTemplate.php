@@ -5,19 +5,13 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
+
 /**
  * Mail template document
- * @class _MAILTEMPLATE
  */
-class _MAILTEMPLATE extends Doc
+namespace Dcp\Core;
+class MailTemplate extends \Dcp\Family\Document
 {
-    /**
-     * @end-method-ignore
-     */
     public $ifiles = array();
     public $sendercopy = true;
     public $keys = array();
@@ -65,7 +59,7 @@ class _MAILTEMPLATE extends Doc
      * @param array $keys extra keys used for template
      * @return string error - empty if no error -
      */
-    public function sendDocument(Doc & $doc, $keys = array())
+    public function sendDocument(\Doc & $doc, $keys = array())
     {
         global $action;
         
@@ -75,7 +69,7 @@ class _MAILTEMPLATE extends Doc
         if ($doc->isAffected()) {
             $this->keys = $keys;
             
-            $multi_mix = new Fdl_Mail_mimePart('', array(
+            $multi_mix = new \Fdl_Mail_mimePart('', array(
                 'content_type' => 'multipart/mixed'
             ));
             $multi_rel = $multi_mix->addSubpart('', array(
@@ -101,7 +95,7 @@ class _MAILTEMPLATE extends Doc
             $wdoc = null;
             if ($doc->wid) {
                 /**
-                 * @var WDoc $wdoc
+                 * @var \WDoc $wdoc
                  */
                 $wdoc = new_doc($this->dbaccess, $doc->wid);
             }
@@ -185,10 +179,10 @@ class _MAILTEMPLATE extends Doc
                             if (strpos($vdocid, "\n")) {
                                 $tvdoc = $this->rawValueToArray($vdocid);
                                 $tmail = array();
-                                $it = new DocumentList();
+                                $it = new \DocumentList();
                                 $it->addDocumentIdentifiers($tvdoc);
                                 /**
-                                 * @var _IUSER|_IGROUP|_ROLE $aDoc
+                                 * @var \Dcp\Family\IUSER|\Dcp\Family\IGROUP|\Dcp\Family\ROLE $aDoc
                                  */
                                 foreach ($it as $aDoc) {
                                     $umail = '';
@@ -203,7 +197,7 @@ class _MAILTEMPLATE extends Doc
                                 else {
                                     if ($type == "DE") {
                                         /**
-                                         * @var _IUSER|_IGROUP|_ROLE $aDoc
+                                         * @var \Dcp\Family\IUSER|\Dcp\Family\IGROUP|\Dcp\Family\ROLE $aDoc
                                          */
                                         $aDoc = new_Doc("", $vdocid);
                                         $mail = '';
@@ -354,16 +348,16 @@ class _MAILTEMPLATE extends Doc
         }
         /**
          * update template with document values
-         * @param Doc $doc
+         * @param \Doc $doc
          * @param string $tpl template content
-         * @param NormalAttribute|bool $oattr
+         * @param \NormalAttribute|bool $oattr
          * @return string
          */
-        private function generateMailInstance(Doc & $doc, $tpl, $oattr = false)
+        private function generateMailInstance(\Doc & $doc, $tpl, $oattr = false)
         {
             global $action;
             $tpl = str_replace("&#x5B;", "[", $tpl); // replace [ convverted in Doc::setValue()
-            $doc->lay = new Layout("", $action, $tpl);
+            $doc->lay = new \Layout("", $action, $tpl);
             
             $ulink = ($this->getRawValue("tmail_ulink") == "yes");
             /* Expand layout's [TAGS] */
@@ -428,7 +422,7 @@ class _MAILTEMPLATE extends Doc
                     'CORE_URLINDEX',
                     'CORE_PUBURL'
                 ) as $url) {
-                    $url = $this->getParam($url);
+                    $url = getParam($url);
                     if (strlen($url) <= 0) {
                         continue;
                     }

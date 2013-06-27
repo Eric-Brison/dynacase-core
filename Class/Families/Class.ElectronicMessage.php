@@ -5,19 +5,12 @@
  * @package FDL
 */
 /**
- * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
+ * Sent email document
  */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _SENTMESSAGE extends Doc
+namespace Dcp\Core;
+class SentEmail extends \Dcp\Family\Document
 {
-    /*
-     * @end-method-ignore
-    */
+
     var $defaultview = "FDL:VIEWEMESSAGE";
     /**
      * @templateController
@@ -35,9 +28,13 @@ class _SENTMESSAGE extends Doc
         $filter[] = "us_mail='" . pg_escape_string($from) . "'";
         $tdir = internalGetDocCollection($this->dbaccess, 0, "0", 1, $filter, 1, "LIST", "IUSER");
         if (count($tdir) == 1) {
-            $vphoto = $tdir[0]->getValue("us_photo");
+            /**
+             * @var \Dcp\Family\Iuser $first
+             */
+            $first=$tdir[0];
+            $vphoto = $first->getRawValue("us_photo");
             if ($vphoto) {
-                $photo = $tdir[0]->GetHtmlAttrValue("us_photo");
+                $photo = $first->GetHtmlAttrValue("us_photo");
                 $this->lay->set("photo", $photo);
                 $this->lay->set("hasphoto", ($photo != ""));
             }
@@ -82,12 +79,4 @@ class _SENTMESSAGE extends Doc
         if (($this->id > 0) && ($this->doctype != 'C') && ($aclname == "edit") && ($this->getFamilyParameterValue("emsg_editcontrol") != "freeedit")) return _("electronic messages cannot be modified");
         else return parent::control($aclname, $strict);
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

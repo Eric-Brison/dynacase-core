@@ -5,30 +5,17 @@
  * @package FDL
 */
 /**
- * Mail template document
- *
- * @author Anakeen
- * @version $Id: Method.Timer.php,v 1.8 2009/01/16 12:53:10 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
+ * Timer document
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _TIMER extends Doc
+namespace Dcp\Core;
+class Timer extends \Dcp\Family\Document
 {
-    /*
-     * @end-method-ignore
-    */
+
     private $lineActions;
     /**
      * attach timer to a document
-     * @param Doc &$doc the document where timer will be attached
-     * @param Doc &$origin the document which comes from the attachement
+     * @param \Doc &$doc the document where timer will be attached
+     * @param \Doc &$origin the document which comes from the attachement
      * @param string $referenceDate reference date to trigger the actions
      * @return string error - empty if no error -
      */
@@ -36,7 +23,7 @@ class _TIMER extends Doc
     {
         include_once ("FDL/Class.DocTimer.php");
         
-        $dt = new DocTimer($this->dbaccess);
+        $dt = new \DocTimer($this->dbaccess);
         $dt->timerid = $this->id;
         $dt->docid = $doc->initid;
         $dt->title = $doc->title;
@@ -76,15 +63,15 @@ class _TIMER extends Doc
     }
     /**
      * unattach timer to a document
-     * @param _TIMER &$timer the timer document
-     * @param Doc &$origin the document which comes from the attachement
+     * @param \Dcp\Family\Timer &$timer the timer document
+     * @param \Doc &$origin the document which comes from the attachement
      * @return string error - empty if no error -
      */
     function unattachAllDocument(&$doc, &$origin = null, &$c = 0)
     {
         include_once ("FDL/Class.DocTimer.php");
         
-        $dt = new DocTimer($this->dbaccess);
+        $dt = new \DocTimer($this->dbaccess);
         if ($origin) $err = $dt->unattachFromOrigin($doc->initid, $origin->initid, $c);
         else $err = $dt->unattachAll($doc->initid, $c);
         
@@ -92,15 +79,15 @@ class _TIMER extends Doc
     }
     /**
      * unattach timer to a document
-     * @param _TIMER &$timer the timer document
-     * @param Doc &$origin the document which comes from the attachement
+     * @param \Dcp\Family\Timer &$timer the timer document
+     * @param \Doc &$origin the document which comes from the attachement
      * @return string error - empty if no error -
      */
     function unattachDocument(&$doc)
     {
         include_once ("FDL/Class.DocTimer.php");
         
-        $dt = new DocTimer($this->dbaccess);
+        $dt = new \DocTimer($this->dbaccess);
         $err = $dt->unattachDocument($doc->initid, $this->id);
         
         return $err;
@@ -206,7 +193,7 @@ class _TIMER extends Doc
                                 $tva = $this->rawValueToArray(str_replace('<BR>', "\n", $va));
                                 foreach ($tva as $idmail) {
                                     /**
-                                     * @var _MAILTEMPLATE $tm
+                                     * @var \Dcp\Family\MAILTEMPLATE $tm
                                      */
                                     $tm = new_doc($this->dbaccess, $idmail);
                                     if ($tm->isAlive()) {
@@ -248,12 +235,4 @@ class _TIMER extends Doc
         $msg = implode(".\n", $tmsg);
         return $gerr;
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

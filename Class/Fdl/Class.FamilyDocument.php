@@ -5,11 +5,9 @@
  * @package FDL
 */
 
-/**
- * Class DocFile
- * @deprecated only need for migrated
- */
-class DocFile extends \PDoc
+namespace Dcp\Family;
+
+class Document extends \PDoc
 {
     
     var $defDoctype = 'F';

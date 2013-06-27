@@ -5,47 +5,21 @@
  * @package FDL
 */
 /**
- * User manipulation
+ * User account document
  *
- * @author Anakeen
- * @version $Id: Method.DocIUser.php,v 1.49 2008/08/13 14:07:54 jerome Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage USERCARD
  */
+namespace Dcp\Core;
 /**
+ * Class UserAccount
+ * @method \Account getAccount
+ * @method array getSystemIds
+ * @method string setGroups
  */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _IUSER extends Doc implements IMailRecipient
+class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
 {
-    public $wuser; #_("Admin edit")
-    public function setGroups()
-    {
-        return '';
-    }
-    /**
-     * @param bool $real
-     * @return Account
-     */
-    public function getAccount($real = false)
-    {
-        return null;
-    }
-    public function getSystemIds(array $accountIds)
-    {
-        return '';
-    }
-    function ExistsLogin($login, $unused = 0)
-    {
-        return false;
-    }
-    /**
-     * @end-method-ignore
-     */
-    
+
+
+    public $wuser;
     var $eviews = array(
         "USERCARD:CHOOSEGROUP"
     );
@@ -65,12 +39,12 @@ class _IUSER extends Doc implements IMailRecipient
         } else {
             if ($this->getRawValue("us_login") != '-') $err = _("user has not identificator");
             /**
-             * @var NormalAttribute $oa
+             * @var \NormalAttribute $oa
              */
             $oa = $this->getAttribute("us_passwd1");
             if ($oa) $oa->needed = true;
             /**
-             * @var NormalAttribute $oa
+             * @var \NormalAttribute $oa
              */
             $oa = $this->getAttribute("us_passwd2");
             if ($oa) $oa->needed = true;
@@ -153,7 +127,7 @@ class _IUSER extends Doc implements IMailRecipient
         $tgid = $this->getMultipleRawValues("US_IDGROUP");
         foreach ($tgid as $gid) {
             /**
-             * @var _IGROUP $gdoc
+             * @var \Dcp\Family\Igroup $gdoc
              */
             $gdoc = new_Doc($this->dbaccess, $gid);
             if ($gdoc->isAlive()) {
@@ -200,10 +174,10 @@ class _IUSER extends Doc implements IMailRecipient
                 
                 $this->SetValue("US_MEID", $this->id);
                 // search group of the user
-                $g = new Group("", $wid);
+                $g = new \Group("", $wid);
                 $tgid = array();
                 if (count($g->groups) > 0) {
-                    $gt = new Account($this->dbaccess);
+                    $gt = new \Account($this->dbaccess);
                     foreach ($g->groups as $gid) {
                         $gt->select($gid);
                         $tgid[] = $gt->fid;
@@ -230,7 +204,7 @@ class _IUSER extends Doc implements IMailRecipient
         $err = '';
         if ($grpid) {
             /**
-             * @var _IGROUP $grp
+             * @var \Dcp\Family\Igroup $grp
              */
             $grp = new_doc($this->dbaccess, $grpid);
             if ($grp->isAlive()) {
@@ -244,7 +218,7 @@ class _IUSER extends Doc implements IMailRecipient
     {
         $err = "";
         /**
-         * @var Action $action
+         * @var \Action $action
          */
         global $action;
         $ed = $action->getParam("AUTHENT_ACCOUNTEXPIREDELAY");
@@ -305,7 +279,7 @@ class _IUSER extends Doc implements IMailRecipient
             $newuser = false;
             $user = $this->getAccount();
             if (!$user) {
-                $user = new Account(""); // create new user
+                $user = new \Account(""); // create new user
                 $this->wuser = & $user;
                 $newuser = true;
             }
@@ -573,7 +547,7 @@ class _IUSER extends Doc implements IMailRecipient
     {
         global $action;
         
-        $this->lay = new Layout(getLayoutFile("FDL", "editbodycard.xml") , $action);
+        $this->lay = new \Layout(getLayoutFile("FDL", "editbodycard.xml") , $action);
         
         $this->attributes->attr['us_tab_system']->visibility = 'R';
         $this->attributes->attr['us_fr_userchange']->visibility = 'R';

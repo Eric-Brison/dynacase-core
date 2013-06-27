@@ -73,7 +73,7 @@ function refreshOneGroup($gid, $refresh)
     if ($g->fid > 0 && $g->accounttype == 'G') {
         $dbaccess = GetParam("FREEDOM_DB");
         /**
-         * @var _IGROUP $doc
+         * @var \Dcp\Family\Igroup $doc
          */
         $doc = new_Doc($dbaccess, $g->fid);
         if ($doc->isAlive()) {

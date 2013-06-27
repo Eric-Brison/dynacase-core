@@ -6,20 +6,9 @@
 */
 /**
  * Methods for emailing family
- *
- * @author Anakeen
- * @version $Id: Method.Emailing.php,v 1.14 2008/08/14 09:59:14 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _PUBLIMAIL extends Dir
+namespace Dcp\Core;
+class Emailing extends \Dcp\Family\Batch
 {
     /*
      * @end-method-ignore
@@ -103,7 +92,7 @@ class _PUBLIMAIL extends Dir
     }
     /**
      * Fusion all document to be printed
-     * @param Action &$action current action
+     * @param \Action &$action current action
      * @global uid string Http var : user document id (if not all use rpresent in folder)
      * @templateController
      */
@@ -148,7 +137,7 @@ class _PUBLIMAIL extends Dir
     /**
      * Fusion all document to be displayed
      * idem as fdl_pubprint but without new page
-     * @param Action &$action current action
+     * @param \Action &$action current action
      * @global uid string Http var : user document id (if not all use rpresent in folder)
      * @templateController
      */
@@ -239,12 +228,4 @@ class _PUBLIMAIL extends Dir
         $this->lay->setBlockData("DOCS", $tlay);
         $this->lay->set("dirid", $this->id);
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

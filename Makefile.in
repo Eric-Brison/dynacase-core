@@ -124,6 +124,9 @@ publish-test:
 
 webinst: webinst-test
 
+stub:
+	php  $(utildir)/genStubFamilyClass.php App/Fdl/fdl.ods App/Fusers/account.ods App/Fdl/searches.ods App/Fdl/workflows.ods App/Fdl/misc.ods App/Fdl/freeaction.ods > Class/Stubs/stubCoreFamilies.php
+
 clean:
 	rm -f *.*~ config.* Makefile configure info.xml\
 	      dynacase-core-*-*.webinst \

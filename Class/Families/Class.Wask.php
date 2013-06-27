@@ -7,27 +7,14 @@
 /**
  * Ask documents
  *
- * @author Anakeen
- * @version $Id: Method.SpecialSearch.php,v 1.3 2007/08/01 14:07:12 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage GED
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _WASK extends Doc
+namespace Dcp\Core;
+class Wask extends \Dcp\Family\Document
 {
     /**
-     * @var _WASK
+     * @var \Dcp\Family\Wask
      */
     private $prdoc = null;
-    /*
-     * @end-method-ignore
-    */
     function postConstructor()
     {
         $this->dacls["answer"] = array(
@@ -60,7 +47,7 @@ class _WASK extends Doc
     
     function DocControl($aclname)
     {
-        return Doc::Control($aclname);
+        return \Doc::Control($aclname);
     }
     /**
      * Special control in case of dynamic controlled profil
@@ -92,12 +79,4 @@ class _WASK extends Doc
             $this->doc = & $doc;
         }
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

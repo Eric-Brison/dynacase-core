@@ -14,10 +14,6 @@ fi
 
 
 $wpub/wsh.php --api=destroyFamily --famid=FORUM
-RET=$?
-if [ $RET -ne 0 ]; then
-    echo "Error delete FORUM."
-    exit $RET
-fi
+# no control error because can be alreday deleted
 
 exit 0

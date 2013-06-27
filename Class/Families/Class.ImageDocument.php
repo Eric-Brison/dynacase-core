@@ -7,23 +7,10 @@
 /**
  * Image document
  *
- * @author Anakeen
- * @version $Id: Method.DocImg.php,v 1.8 2008/03/10 10:45:52 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _IMAGE extends Doc
+namespace Dcp\Core;
+class Image extends \Dcp\Family\Document
 {
-    /*
-     * @end-method-ignore
-    */
     
     var $defaultview = "FDL:VIEWIMGCARD";
     
@@ -77,14 +64,6 @@ class _IMAGE extends Doc
     
     function postStore()
     {
-        $this->SetValue("IMG_TITLE", $this->vault_filename("IMG_FILE"));
+        return $this->SetValue("IMG_TITLE", $this->vault_filename("IMG_FILE"));
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

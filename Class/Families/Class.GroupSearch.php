@@ -6,22 +6,10 @@
 */
 /**
  * Grouped searches
- *
- * @author Anakeen
- * @version $Id: Method.GroupSearch.php,v 1.3 2005/06/28 08:37:46 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage GED
  */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _MSEARCH extends DocSearch
+namespace Dcp\Core;
+class GroupedSearch extends \Dcp\Family\Search
 {
-    /*
-     * @end-method-ignore
-    */
     var $defaultedit = "FDL:EDITBODYCARD";
     var $defaultview = "FDL:VIEWBODYCARD";
     
@@ -32,7 +20,7 @@ class _MSEARCH extends DocSearch
         $query[] = "select * from doc1 limit 0;"; // null query
         foreach ($tidsearch as $k => $v) {
             /**
-             * @var DocSearch $doc
+             * @var \Dcp\Family\Search $doc
              */
             $doc = new_Doc($this->dbaccess, $v);
             
@@ -57,12 +45,4 @@ class _MSEARCH extends DocSearch
     {
         return false;
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

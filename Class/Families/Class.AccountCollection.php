@@ -7,17 +7,9 @@
 /**
  * Specials methods for GROUP family
  *
- * @author Anakeen
- * @version $Id: Method.DocGroup.php,v 1.15 2007/02/16 07:36:28 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage USERCARD
  */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _GROUP extends Dir
+namespace Dcp\Core;
+class AccountCollection extends \Dcp\Family\Dir
 {
     /*
      * @end-method-ignore
@@ -107,7 +99,7 @@ class _GROUP extends Dir
         if (!$nomail) $nomail = ($this->getRawValue("grp_hasmail") == "no");
         if (!$nomail) {
             
-            $s = new SearchDoc($this->dbaccess);
+            $s = new \SearchDoc($this->dbaccess);
             $s->useCollection($this->initid);
             $r = $s->search();
             foreach ($r as $account) {
@@ -141,7 +133,7 @@ class _GROUP extends Dir
         $tpgroup = array();
         $tidpgroup = array();
         /**
-         * @var _GROUP $v
+         * @var \Dcp\Family\Group $v
          */
         while (list($k, $v) = each($tgroup)) {
             $v->RefreshGroup();
@@ -185,12 +177,4 @@ class _GROUP extends Dir
         }
         return '';
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

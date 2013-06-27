@@ -299,7 +299,7 @@ class _IGROUPUSER extends Doc
                     if (!method_exists($gdoc, "deleteMember")) AddWarningMsg("no group $gid/" . $gdoc->id);
                     else {
                         // $gdoc->deleteMember($this->id);
-                        $err = $gdoc->delFile($this->id);
+                        $err = $gdoc->removeDocument($this->id);
                         $tgid[$gid] = $gid;
                     }
                 }
@@ -315,7 +315,7 @@ class _IGROUPUSER extends Doc
     /**
      * return document objet from what id (user or group)
      * @param int $wid what identifier
-     * @return _IUSER|_IGROUP the object document (false if not found)
+     * @return \Dcp\Family\Iuser|\Dcp\Family\IGROUP the object document (false if not found)
      */
     function getDocUser($wid)
     {

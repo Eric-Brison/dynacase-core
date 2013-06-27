@@ -129,7 +129,7 @@ class ErrorCodeWFL
      * @errorCode
      * the file of the workflow PHP class is not found
      */
-    const WFL0005 = 'file name for %s not found';
+    const WFL0005 = 'file name "%s" for %s not found';
     /**
      * @errorCode
      * the workflow class must be a descendant of WDoc class

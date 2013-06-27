@@ -244,6 +244,11 @@ class importDocumentDescription
                     break;
                     // -----------------------------------
                     
+                case "CLASS":
+                    $this->doClass($data);
+                    break;
+                    // -----------------------------------
+                    
                 case "METHOD":
                     $this->doMethod($data);
                     break;
@@ -409,6 +414,7 @@ class importDocumentDescription
                 }
                 if ($data[2] && ($data[2] != '-')) $this->doc->title = $data[2];
                 if ($data[4] && ($data[4] != '-')) $this->doc->classname = $data[4]; // new classname for familly
+                if ($data[4] == "--") $this->doc->classname = '';
                 $this->tcr[$this->nLine]["err"].= $check->checkClass($data, $this->doc)->getErrors();
                 
                 if ($data[5] && ($data[5] != '-')) $this->doc->name = $data[5]; // internal name
@@ -927,6 +933,27 @@ class importDocumentDescription
         }
     }
     /**
+     * analyze CLASS
+     * @param array $data line of description file
+     */
+    protected function doClass(array $data)
+    {
+        if (!$this->doc) return;
+        $data = array_map("trim", $data);
+        $check = new CheckClass();
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
+        if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
+            $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
+            $this->tcr[$this->nLine]["action"] = "warning";
+            return;
+        }
+        if ($this->tcr[$this->nLine]["err"]) {
+            $this->tcr[$this->nLine]["action"] = "ignored";
+            return;
+        }
+        $this->doc->classname = $data[1];
+    }
+    /**
      * analyze METHOD
      * @param array $data line of description file
      */
@@ -965,11 +992,13 @@ class importDocumentDescription
         } else $this->doc->methods = $aMethod;
         
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change methods to '%s'") , $this->doc->methods);
-        $tmethods = explode("\n", $this->doc->methods);
-        foreach ($tmethods as $method) {
-            $fileMethod = ($method[0] == '*') ? substr($method, 1) : $method;
-            if (!file_exists(sprintf("FDL/%s", $fileMethod))) {
-                $this->tcr[$this->nLine]["err"].= sprintf("Method file '%s' not found.", $fileMethod);
+        if ($this->doc->methods) {
+            $tmethods = explode("\n", $this->doc->methods);
+            foreach ($tmethods as $method) {
+                $fileMethod = ($method[0] == '*') ? substr($method, 1) : $method;
+                if (!file_exists(sprintf("FDL/%s", $fileMethod))) {
+                    $this->tcr[$this->nLine]["err"].= sprintf("Method file '%s' not found.", $fileMethod);
+                }
             }
         }
         if ($this->tcr[$this->nLine]["err"]) $this->tcr[$this->nLine]["action"] = "ignored";

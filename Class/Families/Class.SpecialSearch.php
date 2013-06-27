@@ -5,25 +5,12 @@
  * @package FDL
 */
 /**
- * Detailled search
- *
- * @author Anakeen
- * @version $Id: Method.SpecialSearch.php,v 1.3 2007/08/01 14:07:12 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage GED
+ * Special search
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _SSEARCH extends DocSearch
+
+namespace Dcp\Core;
+class SpecialSearch extends \Dcp\Family\Search
 {
-    /*
-     * @end-method-ignore
-    */
     
     var $defaultedit = "FDL:EDITBODYCARD";
     var $defaultview = "FDL:VIEWBODYCARD";
@@ -117,12 +104,4 @@ class _SSEARCH extends DocSearch
         if (is_array($t)) return count($t);
         return -1;
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/*
- * @end-method-ignore
-*/
-?>

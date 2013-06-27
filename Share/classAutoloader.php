@@ -1,5 +1,6 @@
 <?php
 /*
+ * @author Gérald Croes
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
@@ -57,7 +58,8 @@ interface IClassHunter {
 /**
  * Class in charge of detecting classes declarations in files (only for PHP 5.3)
  *
- * @author dev@dynacase.org <dev@dynacase.org>
+ * @author Gérald Croes
+ * @author Anakeen
  *
  */
 class ClassHunterForPHP5_3 implements IClassHunter
@@ -177,13 +179,18 @@ class DirectoriesAutoloader
      *
      * @return \dcp\DirectoriesAutoloader
      */
-    public function forceRegenerate()
+    public function forceRegenerate($className)
     {
         $this->_canRegenerate = true;
         $this->_classes = array();
+        $this->_regenerate($className);
         $this->_saveIncache();
+
         return self::$_instance;
     }
+
+
+
     //--- Cache
     private $_cachePath;
     private $_cacheFileName = 'directoriesautoloader.cache.php';
@@ -328,6 +335,7 @@ class DirectoriesAutoloader
             throw $e;
         }
         $this->_unlock();
+        return false;
     }
     /**
      * autoloader
@@ -379,7 +387,7 @@ class DirectoriesAutoloader
             $directories = new \AppendIterator();
             //add all paths that we want to browse
             if ($recursive) {
-                $directories->append(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory), \RecursiveIteratorIterator::LEAVES_ONLY, \RecursiveIteratorIterator::CATCH_GET_CHILD));
+                $directories->append(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory) , \RecursiveIteratorIterator::LEAVES_ONLY, \RecursiveIteratorIterator::CATCH_GET_CHILD));
             } else {
                 $directories->append(new \DirectoryIterator($directory));
             }
@@ -397,8 +405,8 @@ class DirectoriesAutoloader
             $files->setExtension('.php');
             foreach ($files as $fileName) {
                 $classes = $this->_classHunterStrategy->find((string)$fileName);
-                foreach ($classes as $className => $fileName) {
-                    $this->_classes[strtolower($className) ] = $fileName;
+                foreach ($classes as $className => $fileName2) {
+                    $this->_classes[strtolower($className) ] = $fileName2;
                 }
             }
             
@@ -415,6 +423,15 @@ class DirectoriesAutoloader
      * @var array $_classes
      */
     private $_classes = array();
+    /**
+     * get file path where className is defined
+     * @param string $className
+     * @return string|null
+     */
+    public function getClassFile($className)
+    {
+        return isset($this->_classes[strtolower($className) ]) ? $this->_classes[strtolower($className) ] : null;
+    }
     /**
      * write cache file
      *
@@ -476,12 +493,12 @@ class DirectoriesAutoloader
             }
         }
         if (isset($this->_classes[$className])) {
-            include_once('WHAT/Lib.Prefix.php');
+            include_once ('WHAT/Lib.Prefix.php');
             if (!file_exists(DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . $this->_classes[$className])) {
                 return false;
             }
             require_once $this->_classes[$className];
-            if (!class_exists($className, false)) {
+            if (!class_exists($className, false) && !interface_exists($className, false)) {
                 return false;
             }
             return true;
@@ -527,6 +544,8 @@ class DirectoriesAutoloader
                 $aFamName = $aFam["name"];
                 $aFamId = $aFam["id"];
                 $this->_classes['_' . strtolower($aFamName) ] = sprintf("%s/Class.Doc%d.php", $genDirectory, $aFamId);
+                $this->_classes['dcp\\family\\' . strtolower($aFamName) ] = sprintf("%s/Class.Doc%d.php", $genDirectory, $aFamId);
+                $this->_classes['dcp\\attributeidentifiers\\' . strtolower($aFamName) ] = sprintf("%s/Class.Attrid%d.php", $genDirectory, $aFamId);
             }
         }
         return self::$_instance;
