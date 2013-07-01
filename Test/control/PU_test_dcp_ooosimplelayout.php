@@ -275,6 +275,20 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
                         "Bold"
                     )
                 )
+            ) ,
+            array(
+                "TST_OOOS4",
+                "PU_dcp_data_simple1.odt",
+                array(
+                    array(
+                        "office:body//table:table/table:table-row[1]/table:table-cell[1]//text:p/text:span",
+                        "Html colonne"
+                    ) ,
+                    array(
+                        "office:body//table:table/table:table-row[2]/table:table-cell[1]//text:section/text:p",
+                        "C'est un test <<\"hivers\" & \"été\">>"
+                    )
+                )
             )
         );
     }
