@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-06-19 14:52+0200\n"
+"PO-Revision-Date: 2013-07-03 14:55+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "MIME-Version: 1.0\n"
@@ -6458,7 +6458,7 @@ msgid "modification or creation"
 msgstr "modification ou création"
 
 msgid "modify"
-msgstr "Modifier"
+msgstr "Contenu"
 
 #, c-format
 msgid "modify %s family"

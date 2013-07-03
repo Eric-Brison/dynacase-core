@@ -17,8 +17,7 @@ namespace Dcp\Core;
  */
 class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
 {
-
-
+    
     public $wuser;
     var $eviews = array(
         "USERCARD:CHOOSEGROUP"
@@ -238,6 +237,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     {
         $err = $this->synchronizeSystemUser();
         if (!$err) $this->refreshRoles();
+        return $err;
     }
     /**
      * Modify system account from document IUSER
