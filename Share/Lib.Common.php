@@ -653,7 +653,7 @@ function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = ""
     
     if ($to == "") return '';
     $classcode = '';
-    if ($forcelink == "mailto" || $forcelink == "squirrel") {
+    if ($forcelink == "mailto") {
         $target = $forcelink;
     } else {
         $target = strtolower(GetParam("CORE_MAIL_LINK", "optimal"));
@@ -673,20 +673,6 @@ function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = ""
     $subject = str_replace(" ", "%20", $subject);
     
     switch ($target) {
-        case "squirrel":
-            $link = ' <a ';
-            $link.= 'href="' . $prot . "://" . $host . ":" . $port . "/" . GetParam("CORE_MAIL_SQUIRRELBASE", "squirrel") . "/src/compose.php?";
-            $link.= "&send_to=" . $to;
-            $link.= ($subject != "" ? '&subject=' . $subject : '');
-            $link.= ($cc != "" ? '&cc=' . $cc : '');
-            $link.= ($bcc != "" ? '&bcc=' . $bcc : '');
-            $link.= '"';
-            $link.= $attrcode;
-            $link.= '>';
-            $link.= $acontent;
-            $link.= '</a>';
-            break;
-
         case "mailto":
             $link = '<a ';
             $link.= 'href="mailto:' . $to . '"';

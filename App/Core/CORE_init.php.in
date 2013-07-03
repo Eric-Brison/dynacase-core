@@ -341,14 +341,7 @@ $app_const = array(
         "val" => "optimal",
         "descr" => N_("produce link for") ,
         "user" => "Y",
-        "kind" => "enum(optimal|mailto|squirrel)",
-        "global" => "Y"
-    ) ,
-    "CORE_MAIL_SQUIRRELBASE" => array(
-        "val" => "squirrel",
-        "descr" => N_("squirrelmail install dir (relative)") ,
-        "user" => "N",
-        "kind" => "readonly",
+        "kind" => "enum(optimal|mailto)",
         "global" => "Y"
     ) ,
     "CORE_START_APP" => array(
