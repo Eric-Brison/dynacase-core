@@ -551,9 +551,6 @@ msgstr "Ajout un bouton pour l'envoi du formulaire"
 msgid "Additionnals informations about import document"
 msgstr "Informations sur les formats d'importation"
 
-msgid "Admin edit"
-msgstr "Administrer"
-
 msgid "Affectation"
 msgstr "Affectation"
 
@@ -7696,9 +7693,6 @@ msgstr "rapide"
 msgid "split view mode by family"
 msgstr "mode de découpage par famille"
 
-msgid "squirrelmail install dir (relative)"
-msgstr "squirrelmail:  répertoire d'installation (relatif)"
-
 msgid "starting"
 msgstr "commençant par..."
 
@@ -8585,6 +8579,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "%s style updated\n"
 #~ msgstr "%s style mis à jour\n"
 
+#~ msgid "Admin edit"
+#~ msgstr "Administrer"
+
 #~ msgid "Advanced search"
 #~ msgstr "Recherche avancée"
 
@@ -8777,6 +8774,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "search online help"
 #~ msgstr "Aide à la recherche"
+
+#~ msgid "squirrelmail install dir (relative)"
+#~ msgstr "squirrelmail:  répertoire d'installation (relatif)"
 
 #~ msgid "switch search mode (basic/advanced)"
 #~ msgstr "recherche simple / recherche avancée"
