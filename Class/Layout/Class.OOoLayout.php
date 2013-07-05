@@ -815,6 +815,7 @@ class OOoLayout extends Layout
                     if (strpos($strNewContent, '<text:p>') !== false) {
                         $strNewContent = str_replace('<', '--Lower.Than--', $strNewContent);
                         $strNewContent = str_replace('>', '--Greater.Than--', $strNewContent);
+                        $strNewContent = htmlspecialchars_decode($strNewContent);
                     }
                     $objNodeNested->nodeValue = str_replace($strOldContent, $strNewContent, $objNodeNested->nodeValue);
                 }
