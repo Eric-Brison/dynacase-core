@@ -128,6 +128,7 @@ function importXmlDirectory($dbaccess, $splitdir, $opt)
             $err = importXmlDocument($dbaccess, "$splitdir/$file", $log, $opt);
             $tlog[] = $log;
         }
+        closedir($handle);
     }
     
     return $tlog;
@@ -147,6 +148,7 @@ function extractFilesFromXmlDirectory($splitdir)
                 }
             }
         }
+        closedir($handle);
     }
     return $err;
 }
