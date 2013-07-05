@@ -3219,6 +3219,7 @@ create unique index i_docir on doc(initid, revision);";
                 $ta = $this->attributes->getArrayElements($a->id);
                 $attrOut = array_diff(array_keys($tv) , array_keys($ta));
                 if ($attrOut) {
+                    $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
                     return sprintf(_('attribute "%s" is not a part of array "%s"') , implode(', ', $attrOut) , $idAttr);
                 }
                 
