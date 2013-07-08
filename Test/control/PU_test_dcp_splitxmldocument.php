@@ -220,6 +220,7 @@ class TestSplitXmlDocument extends TestCaseDcp
             $file = $dir . DIRECTORY_SEPARATOR . $file;
             $this->rm_Rf($file);
         }
+        closedir($fh);
         rmdir($dir);
         return true;
     }
