@@ -129,11 +129,20 @@ stub:
 
 clean:
 	rm -f *.*~ config.* Makefile configure info.xml\
-	      dynacase-core-*-*.webinst \
-	      $(PACKAGE)-$(VERSION).tar.gz \
-	      apache.conf \
-	      App/Core/CORE_init.php \
-	      App/Access/ACCESS_init.php \
-	      App/Authent/AUTHENT_init.php \
-	      App/Appmng/APPMNG_init.php \
-	      Api/updateclass.php
+		dynacase-core-*-*.webinst \
+		$(PACKAGE)-$(VERSION).tar.gz \
+		apache.conf \
+		App/Authent/AUTHENT_init.php \
+		App/Core/CORE_init.php \
+		App/Dav/DAV_init.php \
+		App/Dav/DAV_conf.apache \
+		App/Fdl/FDL_init.php \
+		App/Fdc/FDC_init.php \
+		App/Fgsearch/FGSEARCH_init.php \
+		App/Freedom/FREEDOM_init.php  \
+		App/Generic/GENERIC_init.php \
+		Api/updateclass.php \
+		Share/Lib.Prefix.php  \
+		Supervisor/htaccess \
+		htaccess \
+		Test/info.xml
