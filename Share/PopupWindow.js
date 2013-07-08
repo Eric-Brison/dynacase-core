@@ -198,9 +198,6 @@ function PopupWindow_hidePopupWindows(e) {
 	}
 // Run this immediately to attach the event listener
 function PopupWindow_attachListener() {
-	if (document.layers) {
-		document.captureEvents(Event.MOUSEUP);
-		}
 	window.popupWindowOldEventListener = document.onmouseup;
 	if (window.popupWindowOldEventListener != null) {
 		document.onmouseup = new Function("window.popupWindowOldEventListener(); PopupWindow_hidePopupWindows();");

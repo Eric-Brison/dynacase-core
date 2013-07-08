@@ -1,7 +1,5 @@
 var isNN = (navigator.appName.indexOf("Netscape") != -1);
-if (isNN) {
-    document.captureEvents(Event.KEYPRESS);
-}
+
 document.onkeypress = trackEnter;
 
 function trackEnter(evt) {
