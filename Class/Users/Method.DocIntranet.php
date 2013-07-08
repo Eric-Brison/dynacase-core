@@ -281,15 +281,11 @@ class _IGROUPUSER extends Doc
                 foreach ($gadd as $gid) {
                     $g->iduser = $gAccount->id;
                     $g->idgroup = $gid;
-                    $aerr = '';
-                    if ($aerr == "") {
-                        // insert in folder group
-                        $gdoc = $this->getDocUser($gid);
-                        //  $gdoc->insertMember($this->id);
-                        $gdoc->insertDocument($this->id); // add in group is set here by postInsert
-                        $tgid[$gid] = $gid;
-                    }
-                    $err.= $aerr;
+                    // insert in folder group
+                    $gdoc = $this->getDocUser($gid);
+                    //  $gdoc->insertMember($this->id);
+                    $err.= $gdoc->insertDocument($this->id); // add in group is set here by postInsert
+                    $tgid[$gid] = $gid;
                 }
                 foreach ($gdel as $gid) {
                     $g->iduser = $gid;
