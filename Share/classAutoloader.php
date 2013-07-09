@@ -185,12 +185,9 @@ class DirectoriesAutoloader
         $this->_classes = array();
         $this->_regenerate($className);
         $this->_saveIncache();
-
+        
         return self::$_instance;
     }
-
-
-
     //--- Cache
     private $_cachePath;
     private $_cacheFileName = 'directoriesautoloader.cache.php';
@@ -370,6 +367,7 @@ class DirectoriesAutoloader
     private function _includesAll()
     {
         $cwd = getcwd();
+        $err = "";
         //include known classes
         foreach ($this->_directories as $directory => $recursive) {
             /*
@@ -403,16 +401,28 @@ class DirectoriesAutoloader
             //restrict files to php ones
             $files = new ExtensionFilterIteratorDecorator($directories);
             $files->setExtension('.php');
+            
             foreach ($files as $fileName) {
                 $classes = $this->_classHunterStrategy->find((string)$fileName);
                 foreach ($classes as $className => $fileName2) {
-                    $this->_classes[strtolower($className) ] = $fileName2;
+                    if (isset($this->_classes[strtolower($className) ]) && realpath($fileName2) !== realpath($this->_classes[strtolower($className) ])) {
+                        $err.= ($err ? "\n" : '') . sprintf(_("Class %s from file %s already declared in autoload with file %s") , $className, $fileName2, $this->_classes[strtolower($className) ]);
+                    } else {
+                        $this->_classes[strtolower($className) ] = $fileName2;
+                    }
                 }
             }
-            
             if ($changedCwd) {
                 chdir($cwd);
             }
+        }
+        if ($err) {
+            require_once "WHAT/Class.Log.php";
+            global $CORE_LOGLEVEL;
+            $CORE_LOGLEVEL = "WEI";
+            $log = new \Log();
+            $log->error($err);
+            throw new DirectoriesAutoloaderException($err);
         }
         //error_log('included all classes as ' . var_export($this->_classes, true));
         
