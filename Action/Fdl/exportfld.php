@@ -494,6 +494,8 @@ function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, 
                     if ($n) $value = $n;
                 }
             }
+        } else if ($attr->type == "htmltext") {
+            $value = $attr->prepareHtmltextForExport($value);
         } else {
             $value = preg_replace("/(\&[a-zA-Z0-9\#]+;)/es", "strtr('\\1',\$trans)", $value);
             // invert HTML entities which ascii code like &#232;

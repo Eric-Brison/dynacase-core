@@ -407,6 +407,24 @@ class NormalAttribute extends BasicAttribute
         $this->needed = $need;
     }
     /**
+     * Parse htmltext and replace id by logicalname for links
+     *
+     * @param string $value Formated value of attribute
+     * @return string Value transformed
+     */
+    function prepareHtmltextForExport($value)
+    {
+        if ($this->type == "htmltext") {
+            $value = preg_replace_callback('/(data-initid=")([0-9]+)/', function ($matches)
+            {
+                $name = getNameFromId(getDbAccess() , $matches[2]);
+                return $matches[1] . ($name ? $name : $matches[2]);
+            }
+            , $value);
+        }
+        return $value;
+    }
+    /**
      * Generate the xml schema fragment
      *
      * @param array $la array of DocAttribute
@@ -1598,8 +1616,15 @@ class FieldSetAttribute extends BasicAttribute
         $la = $doc->getAttributes();
         $xmlvalues = array();
         foreach ($la as $k => $v) {
+            /**
+             * @var NormalAttribute $v
+             */
             if ($v->fieldSet && $v->fieldSet->id == $this->id && (empty($opt->exportAttributes[$doc->fromid]) || in_array($v->id, $opt->exportAttributes[$doc->fromid]))) {
-                $xmlvalues[] = $v->getXmlValue($doc, $opt);
+                $value = $v->getXmlValue($doc, $opt);
+                if ($v->type == "htmltext" && $opt !== false) {
+                    $value = $v->prepareHtmltextForExport($value);
+                }
+                $xmlvalues[] = $value;
             }
         }
         if ($opt->flat) return implode("\n", $xmlvalues);
