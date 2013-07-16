@@ -288,7 +288,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "submenu" => "",
             "barmenu" => "false"
         ) ,
-
+        
         "toxml" => array(
             "descr" => mb_ucfirst(_("View XML")) ,
             "url" => "$surl&app=FDL&action=VIEWXML&id=$docid",
@@ -434,7 +434,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
                                         "idview" => $cvk,
                                         "menu" => $tmenu[$k] ? (_($menuTradKey) != $menuTradKey ? _($menuTradKey) : $tmenu[$k]) : "",
                                         "zoneview" => $tz[$k],
-                                        "txtview" => $tl[$k] ? (_($txtTradKey) != $txtTradKey ? _($txtTradKey) : $tl[$k]) : ""
+                                        "txtview" => $tl[$k] ? (_($txtTradKey) != $txtTradKey ? _($txtTradKey) : $tl[$k]) : sprintf(_("Unlabeled view (%s)") , $ti[$k])
                                     );
                                 }
                             }
@@ -445,7 +445,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
                                     "idview" => $cvk,
                                     "menu" => $tmenu[$k] ? (_($menuTradKey) != $menuTradKey ? _($menuTradKey) : $tmenu[$k]) : "",
                                     "zoneview" => $tz[$k],
-                                    "txtview" => $tl[$k] ? (_($txtTradKey) != $txtTradKey ? _($txtTradKey) : $tl[$k]) : ""
+                                    "txtview" => $tl[$k] ? (_($txtTradKey) != $txtTradKey ? _($txtTradKey) : $tl[$k]) : sprintf(_("Unlabeled view (%s)") , $ti[$k])
                                 );
                             }
                         }
@@ -791,6 +791,5 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
     if ($action->parent->Haspermission("FREEDOM_HISTO", "FREEDOM")) {
         $tlink["histo"]["visibility"] = POPUP_ACTIVE;
     }
-
 }
 ?>
