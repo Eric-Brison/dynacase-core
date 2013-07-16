@@ -1623,6 +1623,34 @@ class FieldSetAttribute extends BasicAttribute
                 $value = $v->getXmlValue($doc, $opt);
                 if ($v->type == "htmltext" && $opt !== false) {
                     $value = $v->prepareHtmltextForExport($value);
+                    if ($opt->withFile) {
+                        $value = preg_replace_callback('/(&lt;img.*?)src="(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) use ($opt)
+                        {
+                            if (isset($matches[7])) {
+                                $docid = $matches[8];
+                                $attrid = $matches[9];
+                                $index = $matches[10] == "-1" ? 0 : $matches[10];
+                            } else {
+                                $docid = $matches[4];
+                                $index = $matches[6] == "-1" ? 0 : $matches[6];
+                                $attrid = $matches[5];
+                            }
+                            $doc = new_Doc(getDbAccess() , $docid);
+                            $attr = $doc->getAttribute($attrid);
+                            $tfiles = $doc->vault_properties($attr);
+                            $f = $tfiles[$index];
+                            if (is_file($f["path"])) {
+                                if ($opt->outFile) {
+                                    return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"], $f["path"]);
+                                } else {
+                                    return sprintf('%s title="%s" src="data:%s;base64,%s"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"], base64_encode(file_get_contents($f["path"])));
+                                }
+                            } else {
+                                return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"]);
+                            }
+                        }
+                        , $value);
+                    }
                 }
                 $xmlvalues[] = $value;
             }

@@ -213,6 +213,41 @@ function extractFileFromXmlDocument($file)
             } else {
                 fputs($nf, $buffer);
             }
+        } else if (preg_match("/&lt;img.*?src=\"data:[^;]*;base64,(.*)/", $buffer, $reg)) {
+            if (preg_match("/&lt;img.*?title=\"([^\"]+)\"/", $buffer, $regtitle)) {
+                $title = $regtitle[1];
+            } else if (preg_match("/&lt;img.*?title='([^']+)'/", $buffer, $regtitle)) {
+                $title = $regtitle[1];
+            } else $title = "noname";
+            mkdir(sprintf("%s/%s/%d", $dir, $mediadir, $mediaindex));
+            $rfin = sprintf("%s/%d/%s", $mediadir, $mediaindex, $title);
+            $fin = sprintf("%s/%s", $dir, $rfin);
+            $fi = fopen($fin, "w");
+            if (preg_match("/(.*)(&lt;img.*?)src=\"data:[^;]*;base64,/", $buffer, $regend)) {
+                $chaintoput = $regend[1] . $regend[2] . ' src="file://' . $rfin . '"';
+                fputs($nf, $chaintoput);
+            }
+            if (preg_match("/&lt;img.*?src=\"data:[^;]*;base64,([^\"]*)\"(.*)/", $buffer, $regend)) {
+                // end of file
+                fputs($fi, $regend[1]);
+                fputs($nf, $regend[2]);
+            } else {
+                // find end of file
+                fputs($fi, $reg[1]);
+                $findtheend = false;
+                while (!feof($f) && (!$findtheend)) {
+                    $buffer = fgets($f, 4096);
+                    if (preg_match("/([^\"]*)\"(.*)/", $buffer, $regend)) {
+                        fputs($fi, $regend[1]);
+                        fputs($nf, $regend[2]);
+                        $findtheend = true;
+                    } else {
+                        fputs($fi, $buffer);
+                    }
+                }
+            }
+            fclose($fi);
+            base64_decodefile($fin);
         } else {
             fputs($nf, $buffer);
         }

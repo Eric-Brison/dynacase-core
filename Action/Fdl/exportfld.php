@@ -496,6 +496,34 @@ function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, 
             }
         } else if ($attr->type == "htmltext") {
             $value = $attr->prepareHtmltextForExport($value);
+            if ($wfile) {
+                $value = preg_replace_callback('/(<img.*?src=")(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) use (&$ef)
+                {
+                    if (isset($matches[7])) {
+                        $docid = $matches[8];
+                        $attrid = $matches[9];
+                        $index = $matches[10] == "-1" ? 0 : $matches[10];
+                    } else {
+                        $docid = $matches[4];
+                        $index = $matches[6] == "-1" ? 0 : $matches[6];
+                        $attrid = $matches[5];
+                    }
+                    $doc = new_Doc(getDbAccess() , $docid);
+                    $attr = $doc->getAttribute($attrid);
+                    $tfiles = $doc->vault_properties($attr);
+                    $f = $tfiles[$index];
+                    
+                    $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', unaccent($doc->title)) . "_D";
+                    $fname = $ldir . '/' . unaccent($f["name"]);
+                    $ef[$fname] = array(
+                        "path" => $f["path"],
+                        "ldir" => $ldir,
+                        "fname" => unaccent($f["name"])
+                    );
+                    return $matches[1] . "file://" . $fname . '"';
+                }
+                , $value);
+            }
         } else {
             $value = preg_replace("/(\&[a-zA-Z0-9\#]+;)/es", "strtr('\\1',\$trans)", $value);
             // invert HTML entities which ascii code like &#232;
