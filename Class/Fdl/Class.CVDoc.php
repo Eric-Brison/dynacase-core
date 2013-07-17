@@ -114,6 +114,19 @@ class CVDoc extends Doc
         );
     }
     
+    function isLabelValid($value)
+    {
+        $err = '';
+        $sug = array();
+        if (strlen(trim($value)) == 0) {
+            $err = _("Label must not be empty");
+        }
+        return array(
+            'err' => $err,
+            'sug' => $sug
+        );
+    }
+    
     function getView($vid)
     {
         $ti = $this->getMultipleRawValues("CV_IDVIEW");
@@ -146,6 +159,11 @@ class CVDoc extends Doc
             $tv[$v] = $this->getView($v);
         }
         return $tv;
+    }
+    
+    function preImport($extra)
+    {
+        return $this->verifyAllConstraints();
     }
     
     function postStore()
