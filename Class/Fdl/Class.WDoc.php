@@ -276,7 +276,7 @@ class WDoc extends Doc
      */
     public function getTransitionMailTemplates($transName)
     {
-        return $this->getMultipleRawValues($this->_Aid("_trans_pa_mtid", $transName));
+        return $this->getMultipleRawValues($this->_Aid("_trans_mtid", $transName));
     }
     /**
      * get the mail templates ids according to state
@@ -960,7 +960,7 @@ class WDoc extends Doc
             $cask = array();
             foreach ($vasks as $askid) {
                 /**
-                 * @var $ask _WASK
+                 * @var $ask \Dcp\Family\WASK
                  */
                 $ask = new_doc($this->dbaccess, $askid);
                 $ask->set($this->doc);
@@ -1002,7 +1002,7 @@ class WDoc extends Doc
             foreach ($tmtid as $mtid) {
                 $keys = array();
                 /**
-                 * @var $mt _MAILTEMPLATE
+                 * @var $mt \Dcp\Family\MAILTEMPLATE
                  */
                 $mt = new_doc($this->dbaccess, $mtid);
                 if ($mt->isAlive()) {
@@ -1024,7 +1024,7 @@ class WDoc extends Doc
                 $keys = array();
                 $mt = new_doc($this->dbaccess, $mtid);
                 /**
-                 * @var _MAILTEMPLATE $mt
+                 * @var \Dcp\Family\MAILTEMPLATE $mt
                  */
                 if ($mt->isAlive()) {
                     $keys["WCOMMENT"] = nl2br($comment);
@@ -1055,7 +1055,7 @@ class WDoc extends Doc
         
         if ($mtid) {
             /**
-             * @var _TIMER $mt
+             * @var \Dcp\Family\TIMER $mt
              */
             $mt = new_doc($this->dbaccess, $mtid);
             if ($mt->isAlive()) {
