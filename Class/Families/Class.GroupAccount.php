@@ -76,9 +76,9 @@ class GroupAccount extends \Dcp\Family\Group
     function getLDAPMember()
     {
         $g = $this->getAccount();
-        $g->getAllMembers();
+        $members = $g->getAllMembers();
         $tdn = array();
-        foreach ($g as $k => $v) {
+        foreach ($members as $k => $v) {
             $du = getTDoc($this->dbaccess, $v["fid"]);
             $tdnu = explode("\n", $du["ldapdn"]);
             if (count($tdnu) > 0) {
