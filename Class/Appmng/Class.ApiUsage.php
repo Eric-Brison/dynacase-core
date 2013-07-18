@@ -29,6 +29,7 @@ namespace {
     class ApiUsage
     {
         const THROW_EXITHELP = 1988;
+        const GET_USAGE = null;
         /**
          * usage text
          *
@@ -85,8 +86,26 @@ namespace {
             global $action;
             $this->action = & $action;
             $this->addHiddenParameter("api", "api file to use");
-            $this->addOptionalParameter('userid', "user system id or login name to execute function - default is (admin)", array() , 1);
+            $this->addOptionalParameter('userid', "user system id or login name to execute function - default is (admin)", null, 1);
             $this->addEmptyParameter('help', "Show usage");
+        }
+        
+        public static function isScalar($argVal, $argName, $apiUsage)
+        {
+            $err = "";
+            if (!is_scalar($argVal)) {
+                if (is_array($argVal)) $err = sprintf("Argument doesn't support multiple value (values got are [%s])", implode(",", $argVal));
+                else $err = sprintf("Value type %s isn't authorized for argument, must be a scalar", gettype($argVal));
+            }
+            return $err;
+        }
+        public static function isArray($argVal, $argName, $apiUsage)
+        {
+            $err = "";
+            if (!is_array($argVal)) {
+                $err = sprintf("Value type %s isn't authorized for argument, must be an array", gettype($argVal));
+            }
+            return $err;
         }
         /**
          * add textual definition of program
@@ -172,11 +191,11 @@ namespace {
          *
          * @param string $argName argument name
          * @param string $argDefinition argument définition
-         * @param array $restriction optional enumeration for argument
+         * @param array|callable $restriction optional enumeration for argument
          *
          * @return string argument value
          */
-        public function addRequiredParameter($argName, $argDefinition, array $restriction = null)
+        public function addRequiredParameter($argName, $argDefinition, $restriction = null)
         {
             $this->needArgs[] = array(
                 "name" => $argName,
@@ -211,12 +230,12 @@ namespace {
          *
          * @param string $argName argument name
          * @param string $argDefinition argument definition
-         * @param array $restriction optional enumeration for argument
+         * @param array|callable $restriction optional enumeration for argument
          * @param string $default default value if no value set
          *
          * @return string argument value
          */
-        public function addOptionalParameter($argName, $argDefinition, array $restriction = null, $default = null)
+        public function addOptionalParameter($argName, $argDefinition, $restriction = null, $default = null)
         {
             $this->optArgs[] = array(
                 "name" => $argName,
@@ -276,7 +295,9 @@ namespace {
             $usage = '';
             foreach ($args as $arg) {
                 $res = '';
-                if ($arg["restriction"]) {
+                if (is_callable($arg["restriction"])) {
+                    $res = call_user_func($arg["restriction"], \ApiUsage::GET_USAGE, $arg["name"], $this);
+                } elseif (is_array($arg["restriction"])) {
                     $res = ' [' . implode('|', $arg["restriction"]) . ']';
                 }
                 $default = "";
@@ -392,7 +413,7 @@ namespace {
             }
             foreach ($this->needArgs as $arg) {
                 $value = $this->action->getArgument($arg["name"]);
-                if ($value == '') {
+                if ($value === '') {
                     $error = sprintf("argument '%s' expected\n", $arg["name"]);
                     
                     $this->exitError($error);
@@ -403,16 +424,18 @@ namespace {
             
             foreach ($allArgs as $arg) {
                 $value = $this->action->getArgument($arg["name"], null);
-                if ($value !== null && $arg["restriction"]) {
-                    $values=(!is_array($value))?array($value):$value;
-                        foreach ($values as $aValue) {
-                    if (!in_array($aValue, $arg["restriction"])) {
-                        $error = sprintf("argument '%s' must be one of these values : %s\n", $arg["name"], implode(", ", $arg["restriction"]));
-                        
-                        $this->exitError($error);
+                if ($value !== null) {
+                    if (is_callable($arg["restriction"])) {
+                        $error = call_user_func($arg["restriction"], $value, $arg["name"], $this);
+                    } else {
+                        $error = \ApiUsage::isScalar($value, $arg["name"], $this);
                     }
+                    if ($error) $this->exitError(sprintf("Error checking argument %s type: %s", $arg["name"], $error));
+                    
+                    if (is_array($arg["restriction"]) && !is_callable($arg["restriction"]) && !empty($arg["restriction"])) {
+                        $error = $this->matchValues($value, $arg["restriction"]);
+                        if ($error) $this->exitError(sprintf("Error for argument '%s' : %s", $arg["name"], $error));
                     }
-
                 }
                 $argsKey[] = $arg["name"];
             }
@@ -426,10 +449,29 @@ namespace {
                 }
             }
         }
+        /**
+         * @param $value
+         * @param $restrictions
+         * @return string
+         */
+        public static function matchValues($value, $restrictions)
+        {
+            $error = "";
+            $values = (!is_array($value)) ? array(
+                $value
+            ) : $value;
+            foreach ($values as $aValue) {
+                if (!in_array($aValue, $restrictions)) {
+                    $error = sprintf("argument must be one of these values : %s\n", implode(", ", $restrictions));
+                }
+            }
+            return $error;
+        }
     }
 }
 
-namespace Dcp\ApiUsage {
+namespace Dcp\ApiUsage
+{
     class Exception extends \Dcp\Exception
     {
         private $usage = '';
