@@ -413,7 +413,7 @@ namespace {
             }
             foreach ($this->needArgs as $arg) {
                 $value = $this->action->getArgument($arg["name"]);
-                if ($value === '') {
+                if ($value === '' || is_bool($value)) {
                     $error = sprintf("argument '%s' expected\n", $arg["name"]);
                     
                     $this->exitError($error);
