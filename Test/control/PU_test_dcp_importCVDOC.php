@@ -21,6 +21,7 @@ class TestImportCVDOC extends TestCaseDcpCommonFamily
      */
     public function testErrorImportCVDOC($familyFile, array $expectedErrors)
     {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         
         $err = '';
         try {
