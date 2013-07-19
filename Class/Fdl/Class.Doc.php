@@ -60,6 +60,8 @@ define("PREGEXPFILE", "/([^\|]*)\|([0-9]*)\|?(.*)?/");
  */
 class Doc extends DocCtrl
 {
+    const USEMASKCVVIEW = - 1;
+    const USEMASKCVEDIT = - 2;
     public $fields = array(
         "id",
         "owner",
@@ -2157,6 +2159,20 @@ create unique index i_docir on doc(initid, revision);";
         }
         
         if ($mid == 0) $mid = $this->mid;
+        if (($mid == Doc::USEMASKCVVIEW || $mid == Doc::USEMASKCVEDIT) && $this->cvid) {
+            /**
+             * @var \Dcp\Family\CVDoc $cvdoc
+             */
+            $cvdoc = new_Doc($this->dbaccess, $this->cvid);
+            if ($cvdoc->isAlive()) {
+                $cvdoc->set($this);
+                $vid = $this->getDefaultView(($mid == Doc::USEMASKCVEDIT) , "id");
+                if ($vid != '') {
+                    $tview = $cvdoc->getView($vid);
+                    $mid = ($tview !== false) ? $tview["CV_MSKID"] : 0;
+                }
+            }
+        }
         if ($mid == 0) {
             if (($this->wid > 0) && ($this->wid != $this->id)) {
                 // search mask from workflow
@@ -2178,7 +2194,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($mid) {
             if (!$argMid) $argMid = $mid;
             /**
-             * @var $mdoc _MASK
+             * @var \Dcp\Family\MASK $mdoc
              */
             $mdoc = new_Doc($this->dbaccess, $mid);
             if ($mdoc->isAlive()) {
@@ -4818,7 +4834,7 @@ create unique index i_docir on doc(initid, revision);";
                 $waskids = $wdoc->getDocumentWasks($this->state, $control);
                 foreach ($waskids as $k => $waskid) {
                     /**
-                     * @var _WASK $wask
+                     * @var \Dcp\Family\WASK $wask
                      */
                     $wask = new_doc($this->dbaccess, $waskid);
                     if ($wask->isAlive()) {
@@ -5327,7 +5343,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Put document in an archive
-     * @param _ARCHIVING $archive the archive document
+     * @param \Dcp\Family\ARCHIVING $archive the archive document
      * @return string error message
      */
     final public function archive(&$archive)
@@ -5360,7 +5376,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Delete document in an archive
-     * @param _ARCHIVING $archive the archive document
+     * @param \Dcp\Family\ARCHIVING $archive the archive document
      *
      * @return string error message
      */
@@ -7056,7 +7072,7 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($answers as $ka => $ans) {
             $utags = $this->searchUTags("ASK_" . $ans["waskid"], false, true);
             /**
-             * @var _WASK $wask
+             * @var \Dcp\Family\WASK $wask
              */
             $wask = new_doc($this->dbaccess, $ans["waskid"]);
             $wask->set($this);
@@ -7535,6 +7551,10 @@ create unique index i_docir on doc(initid, revision);";
                 $changeframe = false;
                 
                 if ($v > 0) { // one value detected
+                    
+                    /**
+                     * @var BasicAttribute $oaf
+                     */
                     if ($nextFrameId) {
                         
                         $oaf = $this->getAttribute($nextFrameId);
@@ -8716,7 +8736,7 @@ create unique index i_docir on doc(initid, revision);";
     
     /**
      * attach timer to a document
-     * @param _TIMER &$timer the timer document
+     * @param \Dcp\Family\TIMER &$timer the timer document
      * @param Doc &$origin the document which comes from the attachement
      * @param string $execdate date to execute first action YYYY-MM-DD HH:MM:SS
      * @return string error - empty if no error -
@@ -8744,7 +8764,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * unattach timer to a document
-     * @param _TIMER &$timer the timer document
+     * @param \Dcp\Family\TIMER &$timer the timer document
      * @return string error - empty if no error -
      */
     final public function unattachTimer(&$timer)
@@ -8796,7 +8816,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function unattachAllTimers(&$origin = null)
     {
         /**
-         * @var $timer _TIMER
+         * @var \Dcp\Family\TIMER $timer
          */
         $timer = createTmpDoc($this->dbaccess, "TIMER");
         $c = 0;
@@ -8858,9 +8878,10 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * attach lock to specific domain.
      * @param int $domainId domain identifier
+     * @param int $userid system user's id
      * @return string error message
      */
-    public function lockToDomain($domainId, $userid = '')
+    public function lockToDomain($domainId, $userid = 0)
     {
         $err = '';
         if (!$userid) $userid = $this->userid;
@@ -9036,7 +9057,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Get the helppage document associated to the document family.
      * @param string $fromid get the helppage for this family id (default is the family of the current document)
-     * @return _HELPPAGE the helppage document on success, or a non-alive document if no helppage is associated with the family
+     * @return \Dcp\Family\HELPPAGE the helppage document on success, or a non-alive document if no helppage is associated with the family
      */
     public function getHelpPage($fromid = "")
     {
