@@ -73,3 +73,7 @@ if [ $RET -ne 0 ]; then
     echo "Error updating class DocTimer."
     exit $RET
 fi
+
+rm -f "$wpub"/DATA/Class.Document.php
+rm -f "$wpub"/DATA/Class.DocumentSelection.php
+rm -f "$wpub"/DATA/Class.Collection.php
