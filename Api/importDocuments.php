@@ -46,14 +46,21 @@ $reinit = $usage->addOptionalParameter("reinitattr", "reset attribute before imp
     "yes",
     "no"
 ));
-$reset = $usage->addOptionalParameter("reset", "reset options", array(
-    "default",
-    "parameters",
-    "attributes",
-    "structure",
-    "properties",
-    "enums"
-));
+$reset = $usage->addOptionalParameter("reset", "reset options", function ($values, $argName, ApiUsage $apiusage)
+{
+    $opt = array(
+        "default",
+        "parameters",
+        "attributes",
+        "structure",
+        "properties",
+        "enums"
+    );
+    if ($values === ApiUsage::GET_USAGE) return sprintf(" [%s] ", implode('|', $opt));
+    
+    $error = $apiusage->matchValues($values, $opt);
+    if ($error) $apiusage->exitError(sprintf("Error: wrong value for argument 'reset' : %s", $error));
+});
 $to = $usage->addOptionalParameter("to", "email address to send report");
 $dirid = $usage->addOptionalParameter("dir", "folder where imported documents are put");
 
@@ -63,8 +70,7 @@ $strict = $usage->addOptionalParameter("strict", "don't import if one error dete
 ) , "yes");
 $usage->verify();
 
-
-if ($reinit=="yes") {
+if ($reinit == "yes") {
     $action->log->deprecated("importDocuments :reinitattr option is deprecated, use --reset=attributes");
 }
 if (!file_exists($filename)) {
