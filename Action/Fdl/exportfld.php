@@ -34,7 +34,7 @@ include_once ("FDL/import_file.php");
  * @global string $selection Http var :  JSON document selection object
  * @return void
  */
-function exportfld(Action & $action, $aflid = "0", $famid = "")
+function exportfld(Action & $action, $aflid = "0", $famid = "", $outputfolder = "")
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $fldid = GetHttpVars("id", $aflid);
@@ -96,13 +96,15 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
     //usort($tdoc, "orderbyfromid");
     $foutdir = '';
     if ($wfile) {
-        $foutdir = uniqid(getTmpDir() . "/exportfld");
+        if ($outputfolder) $foutdir = $outputfolder;
+        else $foutdir = uniqid(getTmpDir() . "/exportfld");
         if (!mkdir($foutdir)) exit();
         
         $foutname = $foutdir . "/fdl.csv";
     } else {
         $foutname = uniqid(getTmpDir() . "/exportfld") . ".csv";
     }
+    
     $fout = fopen($foutname, "w");
     // set encoding
     if (!$wutf8) fputs_utf8($fout, "", true);
@@ -254,12 +256,17 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
         if ($err) $action->addWarningMsg($err);
         system(sprintf("cd %s && zip -r fdl * > /dev/null", escapeshellarg($foutdir)) , $ret);
         if (is_file("$foutdir/fdl.zip")) {
-            $foutname = $foutdir . "/fdl.zip";
-            recordStatus($action, $exportId, _("Export done") , true);
-            
-            Http_DownloadFile($foutname, "$fname.zip", "application/x-zip", false, false);
-            //if (deleteContentDirectory($foutdir)) rmdir($foutdir);
-            
+            if (!$outputfolder) {
+                $foutname = $foutdir . "/fdl.zip";
+                recordStatus($action, $exportId, _("Export done") , true);
+                
+                Http_DownloadFile($foutname, "$fname.zip", "application/x-zip", false, false);
+                //if (deleteContentDirectory($foutdir)) rmdir($foutdir);
+                
+            } else {
+                recordStatus($action, $exportId, _("Export done") , true);
+                return;
+            }
         } else {
             $action->exitError(_("Zip Archive cannot be created"));
         }

@@ -177,6 +177,74 @@ class TestExportXml extends TestCaseDcpCommonFamily
         }
         $this->assertNotNull($this->dom->documentElement, sprintf("Invalid XML export for folder '%s': %s", $folderId, ($catchedMessage != '') ? $catchedMessage : '<no-error-message>'));
     }
+    /**
+     * Test that exported documents have no param columns
+     * @param array $archiveFile
+     * @param $needles
+     * @param $type
+     * @throws \Dcp\Exception
+     * @dataProvider dataExportImage
+     */
+    public function testExportImageXmlZip($archiveFile, $needles, $type)
+    {
+        include_once ('FDL/exportfld.php');
+
+        $oImport = new \ImportDocument();
+        $oImport->importDocuments(self::getAction() , $archiveFile, false, true);
+        $err = $oImport->getErrorMessage();
+        if ($err) throw new \Dcp\Exception($err);
+        
+        $folderId = "TEXT_FOLDER_EXPORT_IMAGE";
+        $famid = "TST_EXPORT_IMAGE";
+        $testFolder = uniqid(getTmpDir() . "/testexportimage");
+        $testExtarctFolder = uniqid(getTmpDir() . "/testexportextractimage");
+        mkdir($testFolder);
+        $testarchivefile = $testFolder . "/xml";
+        if ($type == "X") $testarchivefile.= ".zip";
+        else $testarchivefile.= ".xml";
+        SetHttpVar("wfile", "Y");
+        
+        exportxmlfld(self::getAction() , $folderId, $famid, null, $testarchivefile, $type, "Y", null, false);
+        
+        if ($type == "X") extractTar($testarchivefile, $testExtarctFolder);
+        else $testExtarctFolder = $testFolder;
+        
+        $output = array();
+        exec(sprintf("cat %s/*.xml", escapeshellarg($testExtarctFolder)) , $output);
+        foreach ($needles as $needle) {
+            $found = false;
+            foreach ($output as $line) {
+                if (stripos($line, $needle) !== false) {
+                    $found = true;
+                    break;
+                }
+            }
+            $this->assertTrue($found, sprintf("file %s not found in export archive", $needle));
+        }
+        if (deleteContentDirectory($testFolder)) rmdir($testFolder);
+    }
+    
+    public function dataExportImage()
+    {
+        return array(
+            array(
+                "./DCPTEST/PU_dcp_data_exportcsvimage.zip",
+                array(
+                    "PU_data_dcp_exportdocimageexample.png",
+                    "PU_data_dcp_exportdocimage.ods"
+                ) ,
+                "X"
+            ) ,
+            array(
+                "./DCPTEST/PU_dcp_data_exportcsvimage.zip",
+                array(
+                    "PU_data_dcp_exportdocimageexample.png",
+                    "PU_data_dcp_exportdocimage.ods"
+                ) ,
+                "Y"
+            )
+        );
+    }
     
     public function dataDocumentFiles()
     {
