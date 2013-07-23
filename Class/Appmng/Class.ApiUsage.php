@@ -295,9 +295,10 @@ namespace {
             $usage = '';
             foreach ($args as $arg) {
                 $res = '';
-                if (is_callable($arg["restriction"])) {
+                
+                if ($this->isCallable($arg["restriction"])) {
                     $res = call_user_func($arg["restriction"], \ApiUsage::GET_USAGE, $arg["name"], $this);
-                } elseif (is_array($arg["restriction"])) {
+                } elseif (!empty($arg["restriction"]) && is_array($arg["restriction"])) {
                     $res = ' [' . implode('|', $arg["restriction"]) . ']';
                 }
                 $default = "";
@@ -309,6 +310,27 @@ namespace {
                 $usage.= sprintf("$string%s%s\n", $arg["def"], $res, $default);
             }
             return $usage;
+        }
+        
+        protected function isCallable($f)
+        {
+            if (empty($f)) {
+                return false;
+            }
+            if (!is_callable($f, true)) {
+                return false;
+            }
+            if (is_object($f) && ($f instanceof Closure)) {
+                return true;
+            }
+            if (is_array($f) && (is_scalar($f[0]))) {
+                return false;
+            }
+            if (is_callable($f, false)) { // many many time to search
+                return true;
+            }
+            
+            return false;
         }
         /**
          * return usage text for the action
@@ -425,14 +447,14 @@ namespace {
             foreach ($allArgs as $arg) {
                 $value = $this->action->getArgument($arg["name"], null);
                 if ($value !== null) {
-                    if (is_callable($arg["restriction"])) {
+                    if ($this->isCallable($arg["restriction"])) {
                         $error = call_user_func($arg["restriction"], $value, $arg["name"], $this);
                     } else {
                         $error = \ApiUsage::isScalar($value, $arg["name"], $this);
                     }
                     if ($error) $this->exitError(sprintf("Error checking argument %s type: %s", $arg["name"], $error));
                     
-                    if (is_array($arg["restriction"]) && !is_callable($arg["restriction"]) && !empty($arg["restriction"])) {
+                    if (is_array($arg["restriction"])  && !empty($arg["restriction"]) && !$this->isCallable($arg["restriction"])) {
                         $error = $this->matchValues($value, $arg["restriction"]);
                         if ($error) $this->exitError(sprintf("Error for argument '%s' : %s", $arg["name"], $error));
                     }
