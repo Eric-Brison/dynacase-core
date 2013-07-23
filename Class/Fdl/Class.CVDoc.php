@@ -161,7 +161,7 @@ class CVDoc extends Doc
         return $tv;
     }
     
-    function preImport($extra)
+    function preImport(array $extra=array())
     {
         return $this->verifyAllConstraints();
     }
