@@ -25,7 +25,8 @@ class TestExportXml extends TestCaseDcpCommonFamily
         return array(
             "PU_data_dcp_exportfamily.ods",
             "PU_data_dcp_exportrelation.ods",
-            "PU_data_dcp_exporttitlelimits.ods"
+            "PU_data_dcp_exporttitlelimits.ods",
+            "PU_data_dcp_exportdocimagexml.ods"
         );
     }
     /**
@@ -188,14 +189,15 @@ class TestExportXml extends TestCaseDcpCommonFamily
     public function testExportImageXmlZip($archiveFile, $needles, $type)
     {
         include_once ('FDL/exportfld.php');
-
+        include_once ('Lib.FileDir.php');
+        
         $oImport = new \ImportDocument();
         $oImport->importDocuments(self::getAction() , $archiveFile, false, true);
         $err = $oImport->getErrorMessage();
         if ($err) throw new \Dcp\Exception($err);
         
-        $folderId = "TEXT_FOLDER_EXPORT_IMAGE";
-        $famid = "TST_EXPORT_IMAGE";
+        $folderId = "TEXT_FOLDER_EXPORT_IMAGE_XML";
+        $famid = "TST_EXPORT_IMAGE_XML";
         $testFolder = uniqid(getTmpDir() . "/testexportimage");
         $testExtarctFolder = uniqid(getTmpDir() . "/testexportextractimage");
         mkdir($testFolder);
@@ -221,14 +223,14 @@ class TestExportXml extends TestCaseDcpCommonFamily
             }
             $this->assertTrue($found, sprintf("file %s not found in export archive", $needle));
         }
-        if (deleteContentDirectory($testFolder)) rmdir($testFolder);
+        remove_dir($testFolder);
     }
     
     public function dataExportImage()
     {
         return array(
             array(
-                "./DCPTEST/PU_dcp_data_exportcsvimage.zip",
+                "./DCPTEST/PU_dcp_data_exportxmlimage.zip",
                 array(
                     "PU_data_dcp_exportdocimageexample.png",
                     "PU_data_dcp_exportdocimage.ods"
@@ -236,7 +238,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
                 "X"
             ) ,
             array(
-                "./DCPTEST/PU_dcp_data_exportcsvimage.zip",
+                "./DCPTEST/PU_dcp_data_exportxmlimage.zip",
                 array(
                     "PU_data_dcp_exportdocimageexample.png",
                     "PU_data_dcp_exportdocimage.ods"
