@@ -14,7 +14,7 @@ class TestCaseDcpAction extends TestCaseDcp
     /**
      * Action to test initiate by setUpAction
      * 
-     * @var Action
+     * @var \Action
      */
     protected $testAction;
     

@@ -101,7 +101,9 @@ function AttrToPhp($dbaccess, $tdoc)
             $type = trim(strtok($v->type, "("));
             if ($type == "docid") {
                 $parentDoctitle = "";
-                if (preg_match("/doctitle=([A-Za-z0-9_-]+)/", $pa[substr($v->id, 1) ]["options"], $reg)) $parentDoctitle = $reg[1];
+                if (isset($pa[substr($v->id, 1)]) && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $pa[substr($v->id, 1)]["options"], $reg)) {
+                    $parentDoctitle = $reg[1];
+                }
                 // add title auto
                 if (preg_match("/doctitle=([A-Za-z0-9_-]+)/", $v->options, $reg)) {
                     $doctitle = $reg[1];
