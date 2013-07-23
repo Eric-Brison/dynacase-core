@@ -34,7 +34,7 @@ include_once ("FDL/import_file.php");
  * @global string $selection Http var :  JSON document selection object
  * @return void
  */
-function exportfld(Action & $action, $aflid = "0", $famid = "")
+function exportfld(Action & $action, $aflid = "0", $famid = "", $outputfolder = "")
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $fldid = GetHttpVars("id", $aflid);
@@ -96,13 +96,15 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
     //usort($tdoc, "orderbyfromid");
     $foutdir = '';
     if ($wfile) {
-        $foutdir = uniqid(getTmpDir() . "/exportfld");
+        if ($outputfolder) $foutdir = $outputfolder;
+        else $foutdir = uniqid(getTmpDir() . "/exportfld");
         if (!mkdir($foutdir)) exit();
         
         $foutname = $foutdir . "/fdl.csv";
     } else {
         $foutname = uniqid(getTmpDir() . "/exportfld") . ".csv";
     }
+    
     $fout = fopen($foutname, "w");
     // set encoding
     if (!$wutf8) fputs_utf8($fout, "", true);
@@ -254,12 +256,17 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
         if ($err) $action->addWarningMsg($err);
         system(sprintf("cd %s && zip -r fdl * > /dev/null", escapeshellarg($foutdir)) , $ret);
         if (is_file("$foutdir/fdl.zip")) {
-            $foutname = $foutdir . "/fdl.zip";
-            recordStatus($action, $exportId, _("Export done") , true);
-            
-            Http_DownloadFile($foutname, "$fname.zip", "application/x-zip", false, false);
-            //if (deleteContentDirectory($foutdir)) rmdir($foutdir);
-            
+            if (!$outputfolder) {
+                $foutname = $foutdir . "/fdl.zip";
+                recordStatus($action, $exportId, _("Export done") , true);
+                
+                Http_DownloadFile($foutname, "$fname.zip", "application/x-zip", false, false);
+                //if (deleteContentDirectory($foutdir)) rmdir($foutdir);
+                
+            } else {
+                recordStatus($action, $exportId, _("Export done") , true);
+                return;
+            }
         } else {
             $action->exitError(_("Zip Archive cannot be created"));
         }
@@ -493,6 +500,36 @@ function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, 
                     $n = getNameFromId($dbaccess, $value);
                     if ($n) $value = $n;
                 }
+            }
+        } else if ($attr->type == "htmltext") {
+            $value = $attr->prepareHtmltextForExport($value);
+            if ($wfile) {
+                $value = preg_replace_callback('/(<img.*?src=")(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) use (&$ef)
+                {
+                    if (isset($matches[7])) {
+                        $docid = $matches[8];
+                        $attrid = $matches[9];
+                        $index = $matches[10] == "-1" ? 0 : $matches[10];
+                    } else {
+                        $docid = $matches[4];
+                        $index = $matches[6] == "-1" ? 0 : $matches[6];
+                        $attrid = $matches[5];
+                    }
+                    $doc = new_Doc(getDbAccess() , $docid);
+                    $attr = $doc->getAttribute($attrid);
+                    $tfiles = $doc->vault_properties($attr);
+                    $f = $tfiles[$index];
+                    
+                    $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', unaccent($doc->title)) . "_D";
+                    $fname = $ldir . '/' . unaccent($f["name"]);
+                    $ef[$fname] = array(
+                        "path" => $f["path"],
+                        "ldir" => $ldir,
+                        "fname" => unaccent($f["name"])
+                    );
+                    return $matches[1] . "file://" . $fname . '"';
+                }
+                , $value);
             }
         } else {
             $value = preg_replace("/(\&[a-zA-Z0-9\#]+;)/es", "strtr('\\1',\$trans)", $value);

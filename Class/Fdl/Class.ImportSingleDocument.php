@@ -19,7 +19,7 @@ include_once ("FDL/import_file.php");
 
 class importSingleDocument
 {
-    
+    private $currentAttrid = "";
     protected $dirid = 0;
     protected $analyze = false;
     protected $importFilePath = '';
@@ -315,6 +315,13 @@ class importSingleDocument
                             else $this->tcr["values"][$attr->getLabel() ] = $dv;
                         }
                     } else {
+                        if ($attr->type == "htmltext" && !$this->analyze) {
+                            $this->currentAttrid = $attrid;
+                            $dv = preg_replace_callback('/(<img.*?src=")file:\/\/(.*?)(".*?\/>)/', array(
+                                $this,
+                                "importHtmltextFiles"
+                            ) , $dv);
+                        }
                         $errv = $this->doc->setValue($attr->id, $dv);
                         if ($errv) {
                             $this->setError("DOC0100", $attr->id, $errv);
@@ -552,6 +559,29 @@ class importSingleDocument
             }
             if ($this->doc->id) clearCacheDoc($this->doc->id); // clear cache to clean unused
             return $this;
+        }
+        public function importHtmltextFiles($matches)
+        {
+            $dvCahnged = $matches[0];
+            $absfile = "$this->importFilePath/$matches[2]";
+            $err = AddVaultFile(getDbAccess() , $absfile, $this->analyze, $vfid);
+            if ($err != "" || $this->analyze) {
+                $this->setError("DOC0102", $err, $matches[2], $this->currentAttrid, $this->doc->name);
+            } else {
+                $fileImgAttrid = "img_file";
+                /**
+                 * @var Doc $imgDoc
+                 */
+                $imgDoc = createDoc(getDbAccess() , "IMAGE");
+                
+                if (is_object($imgDoc)) {
+                    $imgDoc->setAttributeValue($fileImgAttrid, $vfid);
+                    $err = $imgDoc->store();
+                    if ($err) $this->setError("DOC0100", $this->currentAttrid, $err);
+                    else $dvCahnged = $matches[1] . htmlspecialchars($imgDoc->getFileLink($fileImgAttrid)) . $matches[3];
+                }
+            }
+            return $dvCahnged;
         }
         /**
          * insert imported document into a folder

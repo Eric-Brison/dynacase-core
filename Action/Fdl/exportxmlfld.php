@@ -33,7 +33,7 @@ include_once ("FDL/exportfld.php");
  * @param string $eformat X : zip (xml inside), Y: global xml file
  * @param string $eformat X : zip (xml inside), Y: global xml file
  */
-function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', Fdl_DocumentSelection $aSelection = null)
+function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', Fdl_DocumentSelection $aSelection = null, $toDownload = true)
 {
     setMaxExecutionTimeTo(3600); // 60 minutes
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -201,7 +201,7 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
         if (is_file($zipfile)) {
             system(sprintf("rm -fr %s", $foutdir));
             recordStatus($action, $exportId, _("Export done") , true);
-            Http_DownloadFile($zipfile, "$exportname.zip", "application/x-zip", false, false, true);
+            if ($toDownload) Http_DownloadFile($zipfile, "$exportname.zip", "application/x-zip", false, false, true);
         } else {
             exportExit($action, _("Zip Archive cannot be created"));
         }

@@ -407,6 +407,24 @@ class NormalAttribute extends BasicAttribute
         $this->needed = $need;
     }
     /**
+     * Parse htmltext and replace id by logicalname for links
+     *
+     * @param string $value Formated value of attribute
+     * @return string Value transformed
+     */
+    function prepareHtmltextForExport($value)
+    {
+        if ($this->type == "htmltext") {
+            $value = preg_replace_callback('/(data-initid=")([0-9]+)/', function ($matches)
+            {
+                $name = getNameFromId(getDbAccess() , $matches[2]);
+                return $matches[1] . ($name ? $name : $matches[2]);
+            }
+            , $value);
+        }
+        return $value;
+    }
+    /**
      * Generate the xml schema fragment
      *
      * @param array $la array of DocAttribute
@@ -1598,8 +1616,43 @@ class FieldSetAttribute extends BasicAttribute
         $la = $doc->getAttributes();
         $xmlvalues = array();
         foreach ($la as $k => $v) {
+            /**
+             * @var NormalAttribute $v
+             */
             if ($v->fieldSet && $v->fieldSet->id == $this->id && (empty($opt->exportAttributes[$doc->fromid]) || in_array($v->id, $opt->exportAttributes[$doc->fromid]))) {
-                $xmlvalues[] = $v->getXmlValue($doc, $opt);
+                $value = $v->getXmlValue($doc, $opt);
+                if ($v->type == "htmltext" && $opt !== false) {
+                    $value = $v->prepareHtmltextForExport($value);
+                    if ($opt->withFile) {
+                        $value = preg_replace_callback('/(&lt;img.*?)src="(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) use ($opt)
+                        {
+                            if (isset($matches[7])) {
+                                $docid = $matches[8];
+                                $attrid = $matches[9];
+                                $index = $matches[10] == "-1" ? 0 : $matches[10];
+                            } else {
+                                $docid = $matches[4];
+                                $index = $matches[6] == "-1" ? 0 : $matches[6];
+                                $attrid = $matches[5];
+                            }
+                            $doc = new_Doc(getDbAccess() , $docid);
+                            $attr = $doc->getAttribute($attrid);
+                            $tfiles = $doc->vault_properties($attr);
+                            $f = $tfiles[$index];
+                            if (is_file($f["path"])) {
+                                if ($opt->outFile) {
+                                    return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"], $f["path"]);
+                                } else {
+                                    return sprintf('%s title="%s" src="data:%s;base64,%s"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"], base64_encode(file_get_contents($f["path"])));
+                                }
+                            } else {
+                                return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"]);
+                            }
+                        }
+                        , $value);
+                    }
+                }
+                $xmlvalues[] = $value;
             }
         }
         if ($opt->flat) return implode("\n", $xmlvalues);
