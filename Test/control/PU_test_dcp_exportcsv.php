@@ -15,7 +15,8 @@ class TestExportCsv extends TestCaseDcpCommonFamily
     {
         return array(
             "PU_data_dcp_exportfamilycsv.ods",
-            "PU_data_dcp_exportdoccsv.ods"
+            "PU_data_dcp_exportdoccsv.ods",
+            "PU_data_dcp_exportdocimage.ods"
         );
     }
     /**
@@ -28,32 +29,32 @@ class TestExportCsv extends TestCaseDcpCommonFamily
     public function testExportImage($archiveFile, $needles)
     {
         include_once ('FDL/exportfld.php');
-
+        include_once ('Lib.FileDir.php');
+        
         $oImport = new \ImportDocument();
-        $oImport->importDocuments(self::getAction(), $archiveFile, false, true);
+        $oImport->importDocuments(self::getAction() , $archiveFile, false, true);
         $err = $oImport->getErrorMessage();
         if ($err) throw new \Dcp\Exception($err);
-
+        
         $folderId = "TEXT_FOLDER_EXPORT_IMAGE";
         $famid = "TST_EXPORT_IMAGE";
         $testFolder = uniqid(getTmpDir() . "/testexportimage");
         $testExtarctFolder = uniqid(getTmpDir() . "/testexportextractimage");
         SetHttpVar("wfile", "Y");
         SetHttpVar("eformat", "I");
-
-        exportfld(self::getAction(), $folderId, $famid, $testFolder);
-
+        
+        exportfld(self::getAction() , $folderId, $famid, $testFolder);
+        
         $testarchivefile = $testFolder . "/fdl.zip";
         extractTar($testarchivefile, $testExtarctFolder);
-
+        
         $output = array();
-        exec(sprintf("ls -R %s", escapeshellarg($testExtarctFolder)), $output);
+        exec(sprintf("ls -R %s", escapeshellarg($testExtarctFolder)) , $output);
         foreach ($needles as $needle) {
             $this->assertContains($needle, $output, sprintf("file %s not found in export archive", $needle));
         }
-
-        if (deleteContentDirectory($testFolder)) rmdir($testFolder);
-
+        
+        remove_dir($testFolder);
     }
     /**
      * Test that exported documents have no param columns
