@@ -405,7 +405,8 @@ class DirectoriesAutoloader
             foreach ($files as $fileName) {
                 $classes = $this->_classHunterStrategy->find((string)$fileName);
                 foreach ($classes as $className => $fileName2) {
-                    if (isset($this->_classes[strtolower($className) ]) && realpath($fileName2) !== realpath($this->_classes[strtolower($className) ])) {
+                    $fileName1 = (isset($this->_classes[strtolower($className) ])) ? $this->_classes[strtolower($className) ] : null;
+                    if ($fileName1 !== null && realpath($fileName1) !== false && realpath($fileName2) !== realpath($fileName1)) {
                         $err.= ($err ? "\n" : '') . sprintf(_("Class %s from file %s already declared in autoload with file %s") , $className, $fileName2, $this->_classes[strtolower($className) ]);
                     } else {
                         $this->_classes[strtolower($className) ] = $fileName2;
