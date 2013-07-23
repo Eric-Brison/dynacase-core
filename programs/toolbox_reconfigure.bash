@@ -80,23 +80,23 @@ fi
 
 log "Updating vault r_path..."
 if [ "$vault_save" == "no" ]; then
-    PGSERVICE="$freedom_db" psql -c "DELETE FROM vaultdiskfsstorage;DELETE FROM vaultdiskdirstorage;DELETE FROM vaultdiskstorage; "
+    PGSERVICE="$freedom_db" psql -c "UPDATE vaultdiskdirstorage set free_entries = 0 where free_entries > 0;"
     RET=$?
     if [ $RET -ne 0 ]; then
-	echo "Error updating vault r_path"
+	echo "Error reinitializing vault table"
 	exit $RET
     fi
-else
-    logger "update vault data"
-    V=$(installUtils pg_escape_string "$vault_root")
-    PGSERVICE="$freedom_db" psql -c "UPDATE vaultdiskfsstorage SET r_path = '$V' || '/' || id_fs; "
-
-    RET=$?
-    if [ $RET -ne 0 ]; then
-	echo "Error updating vault r_path"
-        exit $RET
-    fi
 fi
+logger "update vault data"
+V=$(installUtils pg_escape_string "$vault_root")
+PGSERVICE="$freedom_db" psql -c "UPDATE vaultdiskfsstorage SET r_path = '$V' || '/' || id_fs; "
+
+RET=$?
+if [ $RET -ne 0 ]; then
+echo "Error updating vault r_path"
+    exit $RET
+fi
+
 
 log "Setting DateStyle to match CORE_LCDATE..."
 CURRENT_DATABASE=`PGSERVICE="$core_db" psql -tA -c "SELECT current_database()"`

@@ -122,7 +122,7 @@ class VaultDiskDir extends DbObj
             if ($err == "") {
                 $dirpath = $rpath . "/" . $npath;
                 if (!is_dir($dirpath)) {
-                    mkdir($dirpath, VAULT_DMODE);
+                    mkdir($dirpath, VAULT_DMODE, true);
                 }
             } else {
                 error_log("Vault dirs full");
