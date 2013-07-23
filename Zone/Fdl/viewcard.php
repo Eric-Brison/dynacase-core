@@ -104,6 +104,14 @@ function viewcard(Action & $action)
         );
     }
     $action->lay->SetBlockData("ZONE_FOOTER", $zone_footer);
+    /*
+     *  doc->cvid | vid != '' || mask to apply
+     * -----------+-----------++-----------------
+     *      0     |     0     || setMask(0)
+     *      0     |     1     || (!) Not possible as a vid is the id of a view in doc->cvid
+     *      1     |     0     || setMask(Doc::USEMASKCVVIEW)
+     *      1     |     1     || setMask(cvid->vid->mskid) OR setMask(0)
+    */
     
     if ($doc->wid > 0) {
         $err = $doc->setMask(0);
@@ -118,19 +126,23 @@ function viewcard(Action & $action)
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
         $cvdoc->set($doc);
         if ($vid != "") {
+            /*
+             * Apply mask from requested view
+            */
             $err = $cvdoc->control($vid); // control special view
             if ($err != "") $action->exitError($err);
-        } else {
-            // search preferred view
-            $vid = $doc->getDefaultView(false, "id");
-            if ($vid) setHttpVar("vid", $vid);
-        }
-        if ($vid != "") {
             $tview = $cvdoc->getView($vid);
             $err = $doc->setMask($tview["CV_MSKID"]);
             if ($err) addWarningMsg($err);
-            
             if ($zonebodycard == "") $zonebodycard = $tview["CV_ZVIEW"];
+        } else {
+            /*
+             * Apply mask from default VIEW view
+            */
+            $doc->setMask(Doc::USEMASKCVVIEW);
+            /* Propagate default view id */
+            $vid = $doc->getDefaultView(false, "id");
+            if ($vid) setHttpVar("vid", $vid);
         }
     }
     // set emblem

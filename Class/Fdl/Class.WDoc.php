@@ -745,6 +745,8 @@ class WDoc extends Doc
         // verify if privilege granted
         if ($withcontrol) $err = $this->control($tname);
         if ($err != "") return $err;
+        /* Set edition mask from view control if a view control is applied on the document */
+        $this->doc->setMask(Doc::USEMASKCVEDIT);
         
         if ($wm0 && (!empty($tr["m0"]))) {
             // apply first method (condition for the change)

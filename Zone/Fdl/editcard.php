@@ -36,7 +36,6 @@ function editcard(Action & $action)
     if (!is_numeric($classid)) $classid = getFamIdFromName($dbaccess, $classid);
     $doc = $fdoc = null;
     if (($usefor == "D") && ($zonebodycard == "")) $zonebodycard = "FDL:EDITBODYCARD"; // always default view for default document
-    
     if ($docid == 0) {
         // new document
         if ($classid > 0) {
@@ -83,31 +82,85 @@ function editcard(Action & $action)
         /**
          * @var CVDoc $cvdoc
          */
-        $cvdoc = null;
-        if ($doc->cvid > 0) {
-            if (!$vid) $vid = $doc->getDefaultView(true, "id");
-            
-            if ($vid) setHttpVar("vid", $vid);
-            // special controlled view
+        /*
+         *  doc->cvid | vid != '' | mskid != '' || mask to apply
+         * -----------+-----------+-------------++-----------------
+         *      0     |     0     |      0      || setMask(0)
+         *      0     |     0     |      1      || setMask(mskid)
+         *      0     |     1     |      0      || (!) Not possible as a vid is the id of a view in doc->cvid
+         *      0     |     1     |      1      || (!) Not possible as a vid is the id of a view in doc->cvid
+         *      1     |     0     |      0      || setMask(Doc::USEMASKCVEDIT)
+         *      1     |     0     |      1      || setMask(mskid)
+         *      1     |     1     |      0      || setMask(cvid->vid->mskid) OR setMask(Doc::USEMASKCVEDIT)
+         *      1     |     1     |      1      || setMask(cvid->vid->mskid) OR setMask(Doc::USEMASKCVEDIT)
+        */
+        if ($doc->cvid) {
             $cvdoc = new_Doc($dbaccess, $doc->cvid);
-            $cvdoc->set($doc);
-        }
-        
-        if (($vid != "") && ($doc->cvid > 0)) {
-            $err = $cvdoc->control(trim($vid)); // control special view
-            if ($err != "") $action->exitError("CV:" . $cvdoc->title . "\n" . $err);
-            $tview = $cvdoc->getView($vid);
-            $err = $doc->setMask($tview["CV_MSKID"]);
-            if ($err) addWarningMsg($err);
+            if (!$cvdoc->isAlive()) {
+                $err = "document not alive";
+                $action->exitError("CV:" . $doc->cvid . "\n" . $err);
+                return;
+            }
             
-            if ($zonebodycard == "") $zonebodycard = $tview["CV_ZVIEW"];
-        }
-        
-        if (($vid == "") && ($mskid != "")) {
-            $mdoc = new_Doc($dbaccess, $mskid);
-            if ($mdoc->isAlive() && ($mdoc->control('view') == "")) {
-                $err = $doc->setMask($mdoc->id);
-                if ($err) addWarningMsg($err);
+            if ($vid != '') {
+                $err = $cvdoc->control(trim($vid));
+                if ($err != '') {
+                    $action->exitError("CV:" . $cvdoc->title . "\n" . $err);
+                    return;
+                }
+                $tview = $cvdoc->getView($vid);
+                if (isset($tview['CV_MSKID']) && $tview['CV_MSKID'] != '') {
+                    $err = $doc->setMask($tview["CV_MSKID"]);
+                    if ($err != '') {
+                        addWarningMsg($err);
+                    }
+                } else {
+                    $doc->setMask(Doc::USEMASKCVEDIT);
+                }
+                if ($zonebodycard == "") {
+                    $zonebodycard = $tview["CV_ZVIEW"];
+                }
+            } else {
+                $vid = $doc->getDefaultView(true, "id");
+                setHttpVar("vid", $vid);
+                
+                if ($mskid != '') {
+                    /**
+                     * Apply specified mask
+                     *
+                     * @var \Dcp\Family\MASK $mask
+                     */
+                    $mask = new_Doc($dbaccess, $mskid);
+                    if ($mask->isAlive() && $mask->control('view') == '') {
+                        $err = $doc->setMask($mask->id);
+                        if ($err != '') {
+                            addWarningMsg($err);
+                        }
+                    }
+                } else {
+                    $doc->setMask(Doc::USEMASKCVEDIT);
+                }
+            }
+        } else {
+            if ($vid != '') {
+                /* Not possible to have a vid without a doc->cvid */
+            } else {
+                if ($mskid != '') {
+                    /**
+                     * Apply specified mask
+                     *
+                     * @var \Dcp\Family\MASK $mask
+                     */
+                    $mask = new_Doc($dbaccess, $mskid);
+                    if ($mask->isAlive() && $mask->control('view') == '') {
+                        $err = $doc->setMask($mask->id);
+                        if ($err != '') {
+                            addWarningMsg($err);
+                        }
+                    }
+                } else {
+                    $doc->setMask(0);
+                }
             }
         }
         
