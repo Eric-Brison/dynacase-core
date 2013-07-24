@@ -49,7 +49,7 @@ function fulleditdsearch(&$action)
     
     if ($famid > 0) {
         /**
-         * @var _DSEARCH $search
+         * @var \Dcp\Family\DSEARCH $search
          */
         $search = createTmpDoc($dbaccess, 16);
         

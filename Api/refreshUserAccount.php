@@ -90,7 +90,7 @@ if ($query->nb > 0) {
         }
         if ($foundoc) {
             /**
-             * @var _IUSER|_IGROUP $udoc
+             * @var \Dcp\Family\IUSER|_IGROUP $udoc
              */
             if (method_exists($udoc, "RefreshGroup")) $udoc->RefreshGroup();
             else if (method_exists($udoc, "RefreshDocUser")) $udoc->RefreshDocUser();
@@ -120,7 +120,7 @@ if ($query->nb > 0) {
                     
                     $udoc = new_Doc($dbaccess, $tdoc[0]->id);
                     /**
-                     * @var _IUSER $udoc
+                     * @var \Dcp\Family\IUSER $udoc
                      */
                     $udoc->setValue("US_WHATID", $v["id"]);
                     $udoc->refresh();

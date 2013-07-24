@@ -913,7 +913,7 @@ class Fdl_Document
         $timers = $this->doc->getAttachedTimers();
         foreach ($timers as $k => $v) {
             /**
-             * @var _TIMER $timer
+             * @var \Dcp\Family\TIMER $timer
              */
             $timer = new_doc($this->dbaccess, $v["timerid"]);
             if ($timer->isAlive()) {

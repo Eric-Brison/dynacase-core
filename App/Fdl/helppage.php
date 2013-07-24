@@ -32,7 +32,7 @@ function helppage_editsection(Action & $action, $dbaccess, $docid)
     include_once ('FDL/editutil.php');
     editmode($action);
     /**
-     * @var _HELPPAGE $doc
+     * @var \Dcp\Family\HELPPAGE $doc
      */
     $doc = new_Doc($dbaccess, $docid);
     $action->lay->set('DOCID', $docid);
@@ -66,7 +66,7 @@ function helppage_edithelp(Action & $action, $dbaccess, $docid)
     include_once ('FDL/editutil.php');
     editmode($action);
     /**
-     * @var _HELPPAGE $doc
+     * @var \Dcp\Family\HELPPAGE $doc
      */
     $doc = new_Doc($dbaccess, $docid);
     $action->lay->set('DOCID', $docid);

@@ -324,7 +324,7 @@ class Fdl_Collection extends Fdl_Document
                 }
             } elseif (is_object($filter)) {
                 /**
-                 * @var _DSEARCH $sw
+                 * @var \Dcp\Family\DSEARCH $sw
                  */
                 if (!$sw) {
                     $sw = createTmpDoc($this->dbaccess, "DSEARCH");
@@ -356,7 +356,7 @@ class Fdl_Collection extends Fdl_Document
             
             if (!$out->error) {
                 /**
-                 * @var _DSEARCH $ws
+                 * @var \Dcp\Family\DSEARCH $ws
                  */
                 $ws = createTmpDoc($this->dbaccess, "DSEARCH");
                 $ws->setValue("ba_title", sprintf(_("search %s") , $key));

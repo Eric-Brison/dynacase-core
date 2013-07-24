@@ -69,7 +69,7 @@ function callbackreqpasswd(Action & $action)
             // verify force
             
             /**
-             * @var _IUSER $udoc
+             * @var \Dcp\Family\IUSER $udoc
              */
             $udoc = new_doc($action->dbaccess, $u->fid);
             $udoc->disableEditControl();

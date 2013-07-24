@@ -106,7 +106,7 @@ class AuthenticatorManager
                     if ($wu->id != 1) {
                         include_once ("FDL/freedom_util.php");
                         /**
-                         * @var _IUSER $du
+                         * @var \Dcp\Family\IUSER $du
                          */
                         $du = new_Doc(getParam("FREEDOM_DB") , $wu->fid);
                         if ($du->isAlive()) {
@@ -303,7 +303,7 @@ class AuthenticatorManager
             
             include_once ("FDL/freedom_util.php");
             /**
-             * @var _IUSER $du
+             * @var \Dcp\Family\IUSER $du
              */
             $du = new_Doc(getParam("FREEDOM_DB") , $wu->fid);
             // First check if account is active
