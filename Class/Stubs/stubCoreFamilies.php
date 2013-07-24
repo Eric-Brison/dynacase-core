@@ -147,6 +147,15 @@ namespace Dcp\AttributeIdentifiers {
 		/** [menu] Forcer la propagation du profil */
 		const prf_forcecomputing='prf_forcecomputing';
 	}
+	/** profil de dossier  */
+	class Pdir extends Pdoc {
+	}
+	/** profil de recherche  */
+	class Psearch extends Pdoc {
+	}
+	/** profil de famille  */
+	class Pfam extends Pdoc {
+	}
 	/** porte-documents  */
 	class Basket extends Dir {
 		/** [menu] insérer le porte-document */
@@ -886,6 +895,12 @@ namespace Dcp\AttributeIdentifiers {
 		const pfl_idcopytab='pfl_idcopytab';
 		/** [text] onglet à copier */
 		const pfl_copytab='pfl_copytab';
+	}
+	/** intercalaire  */
+	class Guidecard extends Dir {
+	}
+	/** intercalaire dynamique  */
+	class Sguidecard extends Dsearch {
 	}
 	/** traitement  */
 	class Batch extends Portfolio {
