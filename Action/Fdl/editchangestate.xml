@@ -5,81 +5,94 @@ attrNtitle=[Wattrntitle];
 addEvent(window,'load',disableReadAttribute);
 addEvent(window,'load',resizePopDoc);
 addEvent(window,'unload',function () {autoUnlock('[docid]');});
+
+//setTimeout(resizePopDoc, 2000);
 function resizePopDoc() {
     var p=window.parent;
-    var pb=p.document.getElementById('POPDOC_b');
-    var ps=p.document.getElementById('POPDOC_s');
-    var pc=p.document.getElementById('POPDOC_c');
-    var prs=p.document.getElementById('POPDOC_rs');
-    var ih=sh=0;
 
-    if (isIE) {
-        sh=document.body.scrollHeight+8;
-        ih=document.documentElement.offsetHeight;
+    if (!p) {
+        return;
+    }
+    var dpop= p.$('#POPDOC_s');
+    if (! dpop) {
+        return;
+    }
+    var ih=0;
+    var sh=0;
+    ih=document.body.clientHeight;
+
+    if (ih < 100) {
+        ih=100; // min heigth
     } else {
-        sh=document.body.scrollHeight;
-        ih=getFrameHeight()-4;
-    }
-    if (pb) {
-        var delta=(sh - parseInt(pb.style.height));
-        if (pb) pb.style.height=(sh+50)+'px';
-        if (ps) ps.style.height=(sh+50)+'px';
-        if (pc) {
-            var pcd=parseInt(pc.style.height)+delta+50;
-            pc.style.height=pcd+'px';
-        }
-        if (prs) {
-
-            var prsd=parseInt(prs.style.top)+delta+50;
-
-    console.log("top",prs, delta, prsd);
-            prs.style.top=prsd+'px';
+        var ph=p.$('html')[0].offsetHeight;
+        // max heigth
+        if (ph > 200 && ih > ph) {
+            ih=ph-80;
+        } else if (ph > 100 && ih > ph) {
+            ih=ph;
         }
     }
+
+    dpop.dialog("option", "height", ih+80);
 }
 </script>
 <style>
-a.state:hover { 
-          background-color:[wcolor];
-           }
-a.state { 
-border-color:[wcolor];
-border-width:1px;
-border-style:none none solid none;
- }
+.state:hover {
+    background-color:[wcolor];
+}
+.state {
+    border-color:[wcolor];
+    border-width:1px;
+    border-style:none none solid none;
+}
+.askComment {
+  margin-left:20px;
+  width:90%;
+}
+.askLabel {
+  vertical-align: top;
+}
+.askValueTable {
+  width : 100%;
+}
+.askValue {
+  padding-left:20px;
+}
+.askButton {
+  text-align:right
+}
 </style>
 
-<p>[Explanations]</p>
-<form  class="fborder document" 
+<p class="askExplanation">[Explanations]</p>
+<form  class="fborder document askForm"
        id="fedit" 
        name="modifydoc" 
        target="_parent"
        onsubmit="if (document.isSubmitted) return false;if (!canmodify()) return false;document.isSubmitted=true;enableall();viewwait(true);return true"
        method="POST"  ENCTYPE="multipart/form-data" 
-       action="[CORE_STANDURL]&app=FREEDOM&action=MODSTATE&id=[docid]" >
+       action="[CORE_STANDURL]&amp;app=FREEDOM&amp;action=MODSTATE&amp;id=[docid]" >
 <input type="hidden" name="newstate" value="[nextstate]">
 <input type="hidden" name="viewext" value="[viewext]">
 <input type="hidden" name="wiid" value="[docid]">
 
 [BLOCK FINPUTS]
-<div style="display:[idisplay];"  id="TWF[aid]" class="FREEDOMBack1">
-  <span  valign="top" class="[labelclass]">[alabel]&nbsp;:&nbsp;</span><br>
-
-  <table width="100%"><tr><td style="padding-left:20px">[avalue]</td></tr></table>
+<div style="display:[idisplay];"  id="TWF[aid]" class="FREEDOMBack1 askInput">
+  <span  valign="top" class="[labelclass] askLabel">[alabel]&nbsp;:&nbsp;</span><br/>
+  <table class="askValueTable"><tr><td class="askValue">[avalue]</td></tr></table>
 </div>
 [ENDBLOCK FINPUTS]
 
 
 [IFNOT noreason]
-[TEXT:Comment] : <br/><textarea style="margin-left:20px;width:90%" name="comment" title="[TEXT:Comment for change state]"></textarea>
+[TEXT:Comment] : <br/><textarea class="askComment" name="comment" title="[TEXT:Comment for change state]"></textarea>
 [ENDIF noreason]
 [IFNOT realtransition]<div class="Error"><p>[TEXT:Be carreful, this transition is not defined in workflow]</p>
 <p>[TEXT:The document can become inconsistent and can not be used properly]</p></div>[ENDIF realtransition]
 
  <br/>
-<div style="text-align:right">
- <a class="state" title="[thetitle]"  onclick="submitEdit(event);return true">[TEXT:StateConfirm]</a> |
- <a title="[TEXT:Cancel the change step]"  onclick="window.parent.$('#POPDOC_s').dialog('close');">[TEXT:Cancel] </a>
+<div class="askButton">
+ <a class="state askSubmit" title="[thetitle]"  onclick="submitEdit(event);return true">[TEXT:StateConfirm]</a> |
+ <a class="askCancel" title="[TEXT:Cancel the change step]"  onclick="window.parent.$('#POPDOC_s').dialog('close');">[TEXT:Cancel] </a>
 </div>
 </form>
 [ZONE FDL:HTMLFOOT]
