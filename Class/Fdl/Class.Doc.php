@@ -2159,18 +2159,23 @@ create unique index i_docir on doc(initid, revision);";
         }
         
         if ($mid == 0) $mid = $this->mid;
-        if (($mid == Doc::USEMASKCVVIEW || $mid == Doc::USEMASKCVEDIT) && $this->cvid) {
-            /**
-             * @var \Dcp\Family\CVDoc $cvdoc
-             */
-            $cvdoc = new_Doc($this->dbaccess, $this->cvid);
-            if ($cvdoc->isAlive()) {
-                $cvdoc->set($this);
-                $vid = $this->getDefaultView(($mid == Doc::USEMASKCVEDIT) , "id");
-                if ($vid != '') {
-                    $tview = $cvdoc->getView($vid);
-                    $mid = ($tview !== false) ? $tview["CV_MSKID"] : 0;
+        if ($mid == Doc::USEMASKCVVIEW || $mid == Doc::USEMASKCVEDIT) {
+            if ($this->cvid) {
+                /**
+                 * @var \Dcp\Family\CVDoc $cvdoc
+                 */
+                $cvdoc = new_Doc($this->dbaccess, $this->cvid);
+                if ($cvdoc->isAlive()) {
+                    $cvdoc->set($this);
+                    $vid = $this->getDefaultView(($mid == Doc::USEMASKCVEDIT) , "id");
+                    if ($vid != '') {
+                        $tview = $cvdoc->getView($vid);
+                        $mid = ($tview !== false) ? $tview["CV_MSKID"] : 0;
+                    }
                 }
+            }
+            if ($mid == Doc::USEMASKCVVIEW || $mid == Doc::USEMASKCVEDIT) {
+                $mid = 0;
             }
         }
         if ($mid == 0) {
