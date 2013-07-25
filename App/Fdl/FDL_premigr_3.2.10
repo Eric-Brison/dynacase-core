@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -z "$pgservice_core" ]; then
+	echo "Undefined or empty pgservice_core!"
+	exit 1
+fi
+
+
+
+"$wpub"/wsh.php --api=updateclass  --appc=FDL --class=DocEnum
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error updating class DocEnum."
+    exit $RET
+fi

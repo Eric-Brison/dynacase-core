@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-07-30 08:54+0200\n"
+"PO-Revision-Date: 2013-07-30 09:34+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1610,6 +1610,9 @@ msgstr "Vidage de la base temporaire '%s'"
 msgid "Encoding"
 msgstr "Encodage"
 
+msgid "English"
+msgstr "Anglais"
+
 msgid "Enter your email"
 msgstr "Entrez votre courriel"
 
@@ -2178,6 +2181,9 @@ msgstr "prévisualisation de document"
 
 msgid "Freedoms view folder"
 msgstr "visualisation de contenu de dossier"
+
+msgid "French"
+msgstr "Français"
 
 msgid "Friday"
 msgstr "Vendredi"
@@ -6026,6 +6032,9 @@ msgstr "Récupère toutes les valeurs d'un document"
 msgid "get attribute for fck toobar"
 msgstr "récupère les attributs pour la barre d'outils FCK"
 
+msgid "get enum items definition"
+msgstr "définition des élements d'énumérés"
+
 msgid "get enum label from key"
 msgstr "Récupère le libellé de l'énuméré à partir de sa clé"
 
@@ -6502,6 +6511,9 @@ msgstr "Modifier le document"
 
 msgid "modify document option"
 msgstr "modifier les options d'un document"
+
+msgid "modify enum items definition"
+msgstr "modification des énumérés"
 
 #, c-format
 msgid "modify enumerate attributes for family : %s"

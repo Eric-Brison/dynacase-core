@@ -68,6 +68,16 @@ $action_desc = array(
         "acl" => "FAMILY"
     ),
     array(
+        "name" => "GETENUMITEMS",
+        "short_name" => N_("get enum items definition"),
+        "acl" => "FAMILY"
+    ),
+    array(
+        "name" => "MODENUMITEMS",
+        "short_name" => N_("modify enum items definition"),
+        "acl" => "FAMILY"
+    ),
+    array(
         "name" => "MODAPPLICATIONPARAMETER",
         "short_name" => N_("modify application parameter"),
         "acl" => "FAMILY"

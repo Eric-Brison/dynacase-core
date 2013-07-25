@@ -96,6 +96,7 @@ class LibSystem
         }
         $cmd = array_shift($args);
         pcntl_exec($cmd, $args, $envs);
+        return 0;
     }
     
     static function getAbsolutePath($path)
@@ -112,6 +113,16 @@ class LibSystem
             $dir = getTmpDir();
         }
         return tempnam($dir, $prefix);
+    }
+    /**
+     * force new index
+     */
+    static function reloadLocaleCache()
+    {
+        exec(sprintf("%s/whattext 2>&1", escapeshellarg(DEFAULT_PUBDIR)) , $output, $ret);
+        if ($ret) {
+            error_log(implode(",", $output));
+        }
     }
 }
 ?>

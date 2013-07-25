@@ -710,7 +710,7 @@ function fdlGetEnumValues($famid, $attrid, $val = '')
     if (!$enumAttribute) {
         return sprintf("enum attribute %s not found [family %s]", $attrid, $famid);
     }
-    $tenumLabel = $enumAttribute->getEnumLabel();
+    $tenumLabel = $enumAttribute->getEnumLabel(null, false);
     $tr = array();
     foreach ($tenumLabel as $key => $label) {
         if (($val == "") || (preg_match("!" . preg_quote($val, "!") . "!i", $label, $reg))) {
@@ -997,7 +997,7 @@ function reportChooseColumns(&$action, $id)
      */
     $doc = new_doc("", $id);
     if ($doc->doctype == "C") {
-        $doc=createTmpDoc($doc->dbaccess, $id);
+        $doc = createTmpDoc($doc->dbaccess, $id);
         $doc->setValue(\Dcp\AttributeIdentifiers\Report::se_famid, getHttpVars("_se_famid"));
     }
     $doc->lay = & $action->lay;

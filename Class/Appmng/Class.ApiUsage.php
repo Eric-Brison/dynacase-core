@@ -452,9 +452,9 @@ namespace {
                     } else {
                         $error = \ApiUsage::isScalar($value, $arg["name"], $this);
                     }
-                    if ($error) $this->exitError(sprintf("Error checking argument %s type: %s", $arg["name"], $error));
+                    if ($error) $this->exitError(sprintf("Error checking argument \"%s\" : %s", $arg["name"], $error));
                     
-                    if (is_array($arg["restriction"])  && !empty($arg["restriction"]) && !$this->isCallable($arg["restriction"])) {
+                    if (is_array($arg["restriction"]) && !empty($arg["restriction"]) && !$this->isCallable($arg["restriction"])) {
                         $error = $this->matchValues($value, $arg["restriction"]);
                         if ($error) $this->exitError(sprintf("Error for argument '%s' : %s", $arg["name"], $error));
                     }
