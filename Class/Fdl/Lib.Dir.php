@@ -427,7 +427,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
             
             if ($fld->fromid == getFamIdFromName($dbaccess, "SSEARCH")) {
                 /**
-                 * @var _SSEARCH $fld
+                 * @var \Dcp\Family\SSEARCH $fld
                  */
                 return $fld->getDocList($start, $slice, $qtype, $userid);
             }

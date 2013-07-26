@@ -100,7 +100,7 @@ function retrieveUserDoc(Action $action, $login = "", $email = "")
         return NULL;
     }
     /**
-     * @var _IUSER $uDoc
+     * @var \Dcp\Family\IUSER $uDoc
      */
     $uDoc = $s->getNextDoc();
     $email = $uDoc->getMail();
@@ -142,7 +142,7 @@ function sendCallback(Action $action, _IUSER $userdoc)
     
     $callback_token = $token->getToken();
     /**
-     * @var _MAILTEMPLATE $mt
+     * @var \Dcp\Family\MAILTEMPLATE $mt
      */
     $mt = new_doc($action->dbaccess, $action->GetParam("AUTHENT_MAILASKPWD"));
     if (!$mt->isAlive()) {

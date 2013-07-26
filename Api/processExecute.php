@@ -65,7 +65,7 @@ function verifyExecDocuments($dbaccess)
         //print_r2($s->getDebugInfo());
         while ($de = $s->getNextDoc()) {
             /**
-             * @var _EXEC $de
+             * @var \Dcp\Family\EXEC $de
              */
             /**
              * Logging in bgexecute
@@ -73,7 +73,7 @@ function verifyExecDocuments($dbaccess)
             $status = $de->bgExecute(_("dynacase cron try execute"));
             $del = new_Doc($dbaccess, $de->getLatestId(false, true));
             /**
-             * @var _EXEC $del
+             * @var \Dcp\Family\EXEC $del
              */
             $del->clearValue("exec_status");
             $del->clearValue("exec_handnextdate");

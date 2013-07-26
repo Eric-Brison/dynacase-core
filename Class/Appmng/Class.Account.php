@@ -517,7 +517,7 @@ create sequence seq_id_users start 10;";
         if ($dbaccess == "") return _("no freedom DB access");
         if ($this->fid <> "") {
             /**
-             * @var _IUSER $iuser
+             * @var \Dcp\Family\IUSER $iuser
              */
             $iuser = new_Doc($dbaccess, $this->fid);
             
@@ -537,7 +537,7 @@ create sequence seq_id_users start 10;";
                 //Create a new doc IUSER
                 
                 /**
-                 * @var _IUSER $iuser
+                 * @var \Dcp\Family\IUSER $iuser
                  */
                 $iuser = createDoc($dbaccess, $fam);
                 $iuser->SetValue("US_WHATID", $this->id);
@@ -549,7 +549,7 @@ create sequence seq_id_users start 10;";
                 $err = $iuser->refreshDocUser();
             } else {
                 /**
-                 * @var _IUSER $iuser
+                 * @var \Dcp\Family\IUSER $iuser
                  */
                 $iuser = $tdoc[0];
                 $this->fid = $iuser->id;

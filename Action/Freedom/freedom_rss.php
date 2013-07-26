@@ -89,7 +89,7 @@ function freedom_rss(Action & $action)
     $lattr = array();
     if ($report) {
         /**
-         * @var _REPORT $tmpdoc
+         * @var \Dcp\Family\REPORT $tmpdoc
          */
         $tmpdoc = createDoc($dbaccess, getIdFromName($dbaccess, "REPORT") , false);
         $fdoc = createDoc($dbaccess, $doc->getRawValue("SE_FAMID") , false);

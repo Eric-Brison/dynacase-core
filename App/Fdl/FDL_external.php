@@ -114,7 +114,7 @@ function lmail($dbaccess, $name)
         $dl = $s->search()->getDocumentList();
         foreach ($dl as $dest) {
             /**
-             * @var _IUSER $dest
+             * @var \Dcp\Family\IUSER $dest
              */
             $mailTitle = $dest->getMailTitle();
             $mail = $dest->getMail();
