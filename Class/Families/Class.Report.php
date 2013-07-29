@@ -336,7 +336,7 @@ class Report extends \Dcp\Family\Dsearch
         if ($isPivotExport) {
             $search->search();
             $this->setStatus(_("Doing render"));
-            return $this->generatePivotCSV($search, $tcols, $famDoc, $pivotId, $refresh, $separator, $dateFormat);
+            return $this->generatePivotCSV($search, $tcols, $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags);
         } else {
             $this->setStatus(_("Doing render"));
             return $this->generateBasicCSV($search, $tcols, $tcolsOption, $famDoc, $refresh, $separator, $dateFormat, $stripHtmlTags);
@@ -352,11 +352,12 @@ class Report extends \Dcp\Family\Dsearch
         ));
     }
     
-    protected function generatePivotCSV(\SearchDoc $search, Array $columns, \Doc $famDoc, $pivotId, $refresh, $separator, $dateFormat)
+    protected function generatePivotCSV(\SearchDoc $search, Array $columns, \Doc $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags)
     {
         $convertFormat = array(
             "dateFormat" => $dateFormat,
-            'decimalSeparator' => $separator
+            'decimalSeparator' => $separator,
+            'stripHtmlTags' => $stripHtmlTags
         );
         
         $pivotColumnName = uniqid();
@@ -413,7 +414,7 @@ class Report extends \Dcp\Family\Dsearch
                 $currentAttribute = $famDoc->getAttribute($currentColumnID);
                 $resultSingleArray[$currentColumnID][] = $currentAttribute ? $currentAttribute->getTextualValue($currentDoc, -1, $convertFormat) : $this->convertInternalElement($currentColumnID, $currentDoc);
             }
-            $nbElement=0;
+            $nbElement = 0;
             foreach ($multipleAttributes as $currentKey => $currentArrayID) {
                 foreach ($currentArrayID as $currentColumnID) {
                     $currentAttribute = $famDoc->getAttribute($currentColumnID);
@@ -528,28 +529,10 @@ class Report extends \Dcp\Family\Dsearch
                 $cellValue = '';
                 $dDocid = ($displayOptions[$kc] == "docid");
                 if (isset($render["attributes"][$col])) {
-                    /**
-                     * @var \StandardAttributeValue $dv
-                     */
-                    $dv = $render["attributes"][$col];
-                    if (is_array($dv)) {
-                        $vs = array();
-                        foreach ($dv as $rv) {
-                            if (is_array($rv)) {
-                                $vsv = array();
-                                foreach ($rv as $rvv) {
-                                    $vsv[] = ($dDocid) ? $rvv->value : $rvv->displayValue;
-                                }
-                                $vs[] = implode(', ', $vsv);
-                            } else {
-                                $vs[] = strtr(($dDocid) ? $rv->value : $rv->displayValue, "\n", "\r");
-                            }
-                        }
-                        $cellValue = implode(empty($isAttrInArray[$col]) ? ", " : "\n", $vs);
-                    } else {
-                        
-                        $cellValue = ($dDocid) ? $dv->value : $dv->displayValue;
-                    }
+                    $cellValue = \FormatCollection::getDisplayValue($render["attributes"][$col], $famDoc->getAttribute($col) , -1, array(
+                        'displayDocId' => ($displayOptions[$kc] == "docid") ,
+                        'stripHtmlTags' => $stripHtmlFormat
+                    ));
                 } else {
                     if (isset($render["properties"][$col])) {
                         $cellValue = $render["properties"][$col];

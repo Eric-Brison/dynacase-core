@@ -108,9 +108,14 @@ class FormatCollection
      * creation date
      */
     const cdate = "cdate";
-    public function __construct()
+    public function __construct($doc = null)
     {
         $this->propsKeys = array_keys(Doc::$infofields);
+        if ($doc !== null) {
+            $this->dl = array(
+                $doc
+            );
+        }
     }
     /**
      * default value returned when attribute not found in document
@@ -318,7 +323,7 @@ class FormatCollection
         }
         return $s;
     }
-    private function getInfo(NormalAttribute $oa, $value, $doc = null)
+    public function getInfo(NormalAttribute $oa, $value, $doc = null)
     {
         $info = null;
         if ($oa->isMultiple()) {
@@ -424,6 +429,55 @@ class FormatCollection
             "cost" => $cost,
             "count" => $sum
         );
+    }
+    public static function getDisplayValue($info, $oAttr, $index = - 1, $configuration = array())
+    {
+        $attrInArray = ($oAttr->inArray());
+        $attrIsMultiple = ($oAttr->getOption('multiple') == 'yes');
+        $sepRow = isset($configuration['multipleSeparator'][0]) ? $configuration['multipleSeparator'][0] : "\n";
+        $sepMulti = isset($configuration['multipleSeparator'][1]) ? $configuration['multipleSeparator'][1] : ", ";
+        $displayDocId = ($configuration['displayDocId'] === true);
+        
+        if (is_array($info) && $index >= 0) {
+            $info = array(
+                $info[$index]
+            );
+        }
+        
+        $result = '';
+        if (!$attrInArray) {
+            if ($attrIsMultiple) {
+                $multiList = array();
+                foreach ($info as $data) {
+                    $multiList[] = $displayDocId ? $data->value : $data->displayValue;
+                }
+                $result = join($sepMulti, $multiList);
+            } else {
+                $result = $displayDocId ? $info->value : $info->displayValue;
+            }
+        } else {
+            $rowList = array();
+            if ($attrIsMultiple) {
+                foreach ($info as $multiData) {
+                    $multiList = array();
+                    foreach ($multiData as $data) {
+                        $multiList[] = $displayDocId ? $data->value : $data->displayValue;
+                    }
+                    $rowList[] = join($sepMulti, $multiList);
+                }
+            } else {
+                if (!is_array($info)) {
+                    $info = array(
+                        $info
+                    );
+                }
+                foreach ($info as $data) {
+                    $rowList[] = $displayDocId ? $data->value : $data->displayValue;
+                }
+            }
+            $result = join($sepRow, $rowList);
+        }
+        return $result;
     }
 }
 
