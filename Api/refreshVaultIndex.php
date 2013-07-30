@@ -31,11 +31,8 @@ $parms = array();
 $usage = new ApiUsage();
 $usage->setDefinitionText("Re-initialize docvaultindex table");
 /* --dryrun=no|yes (default 'no') */
-$parms['dryrun'] = $usage->addOptionalParameter("dryrun", "Only output SQL queries that would be executed", array(
-    "yes",
-    "no"
-) , "no");
-if ($parms['dryrun'] == 'yes') {
+$parms['dryrun'] = $usage->addEmptyParameter("dryrun", "Only output SQL queries that would be executed");
+if ($parms['dryrun'] == 'yes' || $parms['dryrun'] === true) {
     $parms['dryrun'] = true;
 } else {
     $parms['dryrun'] = false;
@@ -56,24 +53,24 @@ if ($parms['famid'] != 'all') {
     }
 }
 /* --transaction=no|yes (default 'no') */
-$parms['transaction'] = $usage->addOptionalParameter("transaction", "Execute whole operation in a single transaction", array(
-    "yes",
-    "no"
-) , "no");
-if ($parms['transaction'] == 'yes') {
+$parms['transaction'] = $usage->addEmptyParameter("transaction", "Execute whole operation in a single transaction");
+if ($parms['transaction'] == 'yes' || $parms['transaction'] === true) {
     $parms['transaction'] = true;
 } else {
     $parms['transaction'] = false;
 }
 /* --realclean=yes|no (default 'yes') */
-$parms['realclean'] = $usage->addOptionalParameter("realclean", "Delete everything in docvaultindex at the beginning of the operation", array(
-    "yes",
-    "no"
-) , "yes");
+$parms['realclean'] = $usage->addHiddenParameter("realclean", "Delete everything in docvaultindex at the beginning of the operation - old yes/no");
+$parms['softclean'] = $usage->addEmptyParameter("softclean", "Don't delete everything in docvaultindex before begin operation");
+
 if ($parms['realclean'] == 'yes' && $parms['famid'] == 'all') {
     $parms['realclean'] = true;
 } else {
-    $parms['realclean'] = false;
+    if ($parms['realclean'] == 'no') {
+        $parms['realclean'] = false;
+    } else {
+        $parms['realclean'] = !$parms['softclean'];
+    }
 }
 $usage->verify();
 /**
@@ -86,6 +83,10 @@ if (is_numeric($parms['famid'])) {
     $q->AddQuery(sprintf("id = %s", pg_escape_string($parms['famid'])));
 }
 $famIconList = $q->Query(0, 0, "TABLE");
+if (! $famIconList) {
+    $famIconList=array();
+}
+
 /**
  * Load all file attributes
  */
@@ -121,6 +122,7 @@ if ($parms['transaction']) {
  * and --realclean=yes
  */
 if ($parms['famid'] == 'all' && $parms['realclean']) {
+    print sprintf("-- Deleting all indexes ...\n");
     sqlexec($o, $parms, "DELETE FROM docvaultindex");
     
     if (!$parms['transaction']) {
@@ -182,7 +184,12 @@ foreach ($famIconList as $i => $fam) {
 if ($parms['transaction']) {
     sqlexec($o, $parms, "COMMIT;");
 }
-
+/**
+ * @param DbObj $dbobj
+ * @param array $parms
+ * @param string $sql
+ * @return string
+ */
 function sqlexec(&$dbobj, &$parms, $sql)
 {
     if ($parms['dryrun']) {

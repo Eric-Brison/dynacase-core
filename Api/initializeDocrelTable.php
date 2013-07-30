@@ -32,11 +32,8 @@ $parms = array();
 $usage = new ApiUsage();
 $usage->setDefinitionText("Re-initialize docrel table");
 /* --dryrun=no|yes (default 'no') */
-$parms['dryrun'] = $usage->addOptionalParameter("dryrun", "Only output SQL queries that would be executed", array(
-    "yes",
-    "no"
-) , "no");
-if ($parms['dryrun'] == 'yes') {
+$parms['dryrun'] = $usage->addEmptyParameter("dryrun", "Only output SQL queries that would be executed");
+if ($parms['dryrun'] == 'yes' || $parms['dryrun'] === true) {
     $parms['dryrun'] = true;
 } else {
     $parms['dryrun'] = false;
@@ -57,24 +54,24 @@ if ($parms['famid'] != 'all') {
     }
 }
 /* --transaction=no|yes (default 'no') */
-$parms['transaction'] = $usage->addOptionalParameter("transaction", "Execute whole operation in a single transaction", array(
-    "yes",
-    "no"
-) , "no");
-if ($parms['transaction'] == 'yes') {
+$parms['transaction'] = $usage->addEmptyParameter("transaction", "Execute whole operation in a single transaction");
+if ($parms['transaction'] == 'yes' || $parms['transaction'] === true) {
     $parms['transaction'] = true;
 } else {
     $parms['transaction'] = false;
 }
 /* --realclean=yes|no (default 'yes') */
-$parms['realclean'] = $usage->addOptionalParameter("realclean", "Delete everything in docrel at the beginning of the operation", array(
-    "yes",
-    "no"
-) , "yes");
+$parms['realclean'] = $usage->addHiddenParameter("realclean", "Delete everything in docrel at the beginning of the operation - old yes/no");
+$parms['softclean'] = $usage->addEmptyParameter("softclean", "Don't delete everything in decrel before begin operation");
+
 if ($parms['realclean'] == 'yes' && $parms['famid'] == 'all') {
     $parms['realclean'] = true;
 } else {
-    $parms['realclean'] = false;
+    if ($parms['realclean'] == 'no') {
+        $parms['realclean'] = false;
+    } else {
+        $parms['realclean'] = !$parms['softclean'];
+    }
 }
 $usage->verify();
 /**
@@ -176,7 +173,12 @@ sqlexec($o, $parms, "CREATE INDEX i_docrelc ON docrel (cinitid)");
 if ($parms['transaction']) {
     sqlexec($o, $parms, "COMMIT;");
 }
-
+/**
+ * @param DbObj $dbobj
+ * @param array $parms
+ * @param string $sql
+ * @return string
+ */
 function sqlexec(&$dbobj, &$parms, $sql)
 {
     if ($parms['dryrun']) {

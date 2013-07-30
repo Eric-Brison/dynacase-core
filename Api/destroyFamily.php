@@ -19,7 +19,14 @@ include_once ("FDL/Class.DocFam.php");
 $usage = new ApiUsage();
 $usage->setDefinitionText("Delete family document and its documents");
 $docid = $usage->addRequiredParameter("famid", "special docid");
-$force = ($usage->addOptionalParameter("force", "force", null, "yes") == "yes") ? true : false;
+$force = $usage->addHiddenParameter("force", "force without transaction");
+
+$transaction = $usage->addEmptyParameter("transaction", "abort deletion if one of query failed");
+if (!$force) {
+    $force = !$transaction;
+} else {
+    $force = ($force == "yes");
+}
 $usage->verify();
 
 $appl = new Application();
