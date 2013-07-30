@@ -1,0 +1,184 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Choose report columns]]
+<style>
+
+.aselected {
+            background-color: [COLOR_B5];
+            }
+
+
+fieldset.floating span:hover { 
+        background-color: [COLOR_C3];                          
+}
+fieldset.floating span { 
+        cursor: pointer;
+}
+fieldset.floating {
+  float:left;
+}
+
+.atab {
+  /*  background-color:#cba4de;*/ /* violet */
+  /.*  background-color:#f0f0f0;*/
+}
+.aframe {
+  /*  background-color:#6eb9d5;*/ /* sky blue */
+    margin-left:50px;
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: top;
+
+}
+.aarray {
+      /* background-color:#f3cc81; *//* orange */
+
+
+}
+.alegend {
+   /* font-weight: bold;*/
+}
+
+.alegend:first-letter {
+     text-transform:capitalize;
+}
+
+.aattr {
+}
+.alabel {
+    cursor:pointer;
+    display:inline-block;
+}
+.alabel:first-letter {
+     text-transform:capitalize;
+}
+</style>
+<script>
+
+$(document).ready(function () {
+    var maxRank=0;
+
+    $('form').on("click", "input.iattr", function () {
+        var ch=$(this).attr('checked')
+        if (ch) {
+            $(this).attr('data-rank', maxRank++).parent().addClass("aselected");
+        } else {
+            $(this).parent().removeClass("aselected");
+        }
+        sendToReport();
+    });
+
+    $(window).focus(function() {
+        initFromReport()
+    });
+
+
+
+     function sortByrank(field){
+        return function (a,b) {
+           var A = parseInt(a[field]), B = parseInt(b[field]);
+           return ((A < B) ? -1 : (A > B) ? +1 : 0) * 1;
+        }
+    }
+
+    function sendToReport() {
+        var idcols=Ih.docGetFormValue('rep_idcols');
+        var lcols=Ih.docGetFormValue('rep_lcols');
+        var displayoption=Ih.docGetFormValue('rep_displayoption');
+        var colors=Ih.docGetFormValue('rep_colors');
+        var foots=Ih.docGetFormValue('rep_foots');
+        var chs=$('input.iattr:checked');
+        var i=0;
+        var cols=[];
+        for ( i=0; i< chs.length; i++ ) {
+            var chi=$(chs[i]);
+            var color=colors[chi.attr('data-rank')-1];
+            if (! color) {
+                color='';
+            }
+            var foot=foots[chi.attr('data-rank')-1];
+            if (! foot) {
+                foot='';
+            }
+            var doption=chi.attr('data-doption');
+            cols.push({idcols: chi.val(),
+                       colors: color,
+                       foots:foot,
+                       displayoption:doption,
+                       rank:chi.attr('data-rank'),
+                       lcols:$('label[for="'+chi.attr('id')+'"]').text()
+                    });
+        }
+
+        cols.sort(sortByrank('rank'));
+        Ih.docClearTableRow('rep_tcols');
+
+        for ( i=0; i<cols.length; i++) {
+            Ih.docAddTableRow({
+                rep_idcols:cols[i].idcols,
+                rep_lcols:cols[i].lcols,
+                rep_displayoption:cols[i].displayoption,
+                rep_colors:cols[i].colors,
+                rep_foots:cols[i].foots});
+        }
+        if (window.opener) {
+            // need to see colors attributes
+            window.opener.jscolor.init();
+        }
+    }
+
+    function initFromReport() {
+        var cols=Ih.docGetFormValue('rep_idcols');
+        var opt=Ih.docGetFormValue('rep_displayoption');
+        var ai=null;
+        maxRank=1;
+
+        $('input.iattr').removeAttr('checked');
+        $('div.aattr').removeClass('aselected');
+        if (cols) {
+            for (var i=0; i< cols.length; i++) {
+                ai=$('#i'+cols[i]+opt[i]);
+                if (ai.length == 0) {
+                    if (cols[i]+opt[i]) {
+                        alert("[TEXT:report unknow column] : "+cols[i]+opt[i]);
+                    }
+                } else {
+                    ai.attr('checked','checked').attr("data-rank", i+1).parent().addClass("aselected");
+                }
+            }
+            maxRank=cols.length+1;
+        }
+    }
+
+    initFromReport();
+});
+
+
+
+</script>
+
+<img align="right"  src="[famicon]">
+<h1>[TEXT:Choose report columns] : [famtitle]</h1>
+<br/>
+<hr/>
+<form name="fcols" style="display:inline"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FREEDOM&action=MODEXPORTCHOOSECOLS">
+<input type="hidden" name="id" value="[famid]">
+<input type="hidden" name="clear" value="">
+
+[BLOCK ATTRS]
+[IF newframe]<fieldset class="aframe"><legend class="alegend">[attrname]</legend>[ENDIF newframe]
+[IF newarray]<fieldset class="aarray"><legend class="alegend">[attrname]</legend>[ENDIF newarray]
+[IF newtab]<fieldset class="atab"><legend class="alegend">[attrname]</legend>[ENDIF newtab]
+[IF endframe]</fieldset>[ENDIF endframe]
+[IF endarray]</fieldset>[ENDIF endarray]
+[IF endtab]</fieldset>[ENDIF endtab]
+
+[IF goodattr]
+<div class="aattr">
+<input id="i[attrid][doption]"  class="iattr" type="checkbox" name="ch[]" data-doption="[doption]" value="[attrid]">
+<label for="i[attrid][doption]"  title="[attrid]" class="alabel">[attrname]</label></div>
+    [ENDIF goodattr]
+[ENDBLOCK ATTRS]
+</fieldset>
+</form>
+[ZONE FDL:HTMLFOOT]

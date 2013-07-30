@@ -8,6 +8,8 @@
  * document to present a report on one family document
  */
 namespace Dcp\Core;
+
+use \Dcp\AttributeIdentifiers\Report as MyAttributes;
 class Report extends \Dcp\Family\Dsearch
 {
     /*
@@ -93,6 +95,197 @@ class Report extends \Dcp\Family\Dsearch
         $this->lay->setBlockData("COLUMN2", $tcolumn2);
     }
     /**
+     * Secondary view to choose columns
+     * @templateController
+     */
+    public function reportchoosecolumns($target = "_self", $ulink = true, $abstract = false)
+    {
+        global $action;
+        
+        $action->parent->addJsRef("lib/jquery/jquery.js");
+        
+        $doc = new_doc($this->dbaccess, $this->getRawValue(MyAttributes::se_famid));
+        $toa = $doc->getNormalAttributes();
+        $tattr = array();
+        
+        $colums = getReportColumns($this->dbaccess, $doc->id);
+        
+        $proFrame = new \FieldSetAttribute("_prop", $doc->id, _("Document Properties"));
+        $proAttr = array();
+        foreach ($colums as $k => $col) {
+            $colId = $col[1];
+            if (isset(\Doc::$infofields[$colId])) {
+                $proAttr[$colId] = new \NormalAttribute($colId, $doc->id, _(\Doc::$infofields[$colId]["label"]) , "text", "", false, $k, "", "R", false, false, false, $proFrame, "", "", "");
+            }
+        }
+        $toa = array_merge($proAttr, $toa);
+        $relTypes = array(
+            "docid",
+            "account",
+            "thesaurus"
+        );
+        
+        $currentArray = '';
+        $currentTab = '';
+        $currentFrame = '';
+        $currentStruct = '';
+        
+        $structArray = '';
+        $structTab = '';
+        $structFrame = '';
+        /**
+         * @var \NormalAttribute $oa
+         */
+        foreach ($toa as $oa) {
+            
+            if ($oa->type == "array") continue;
+            
+            $struct = $oa->fieldSet->id;
+            
+            $structTab = $structFrame = $structArray = '';
+            if ($struct) {
+                $soa = $doc->getAttribute($struct);
+                if ($struct == '_prop') {
+                    $soa = $proFrame;
+                }
+                $structArray = $structFrame = $structTab = '';
+                if ($soa->type == "array") {
+                    $structArray = $soa->id;
+                } else if ($soa->type == "frame") {
+                    $structFrame = $soa->id;
+                }
+                if (isset($soa->fieldSet) && $soa->fieldSet->id != "FIELD_HIDDENS") {
+                    if ($soa->fieldSet->type == "tab") {
+                        $structTab = $soa->fieldSet->id;
+                    }
+                    if ($soa->fieldSet->type == "frame") {
+                        $structFrame = $soa->fieldSet->id;
+                        if (isset($soa->fieldSet->fieldSet) && $soa->fieldSet->fieldSet->type == "tab") {
+                            $structTab = $soa->fieldSet->fieldSet->id;
+                        }
+                    }
+                }
+            }
+            if ($currentStruct) {
+                $soa = $doc->getAttribute($currentStruct);
+                if ($currentStruct == '_prop') {
+                    $soa = $proFrame;
+                }
+                $currentArray = $currentFrame = $currentTab = '';
+                if ($soa->type == "array") {
+                    $currentArray = $soa->id;
+                } else if ($soa->type == "frame") {
+                    $currentFrame = $soa->id;
+                }
+                if (isset($soa->fieldSet) && $soa->fieldSet->id != "FIELD_HIDDENS") {
+                    if ($soa->fieldSet->type == "tab") {
+                        $currentTab = $soa->fieldSet->id;
+                    }
+                    if ($soa->fieldSet->type == "frame") {
+                        $currentFrame = $soa->fieldSet->id;
+                        if (isset($soa->fieldSet->fieldSet) && $soa->fieldSet->fieldSet->type == "tab") {
+                            $currentTab = $soa->fieldSet->fieldSet->id;
+                        }
+                    }
+                }
+            }
+            if ($struct) {
+                if ($structArray != $currentArray && $currentArray) {
+                    $tattr[] = $this->getColumnBlockItem($doc, $currentArray, false);
+                }
+                if ($structFrame != $currentFrame && $currentFrame) {
+                    $tattr[] = $this->getColumnBlockItem($doc, $currentFrame, false);
+                }
+                if ($structTab != $currentTab && $currentTab) {
+                    $tattr[] = $this->getColumnBlockItem($doc, $currentTab, false);
+                }
+                if ($structTab != $currentTab && $structTab) {
+                    
+                    $tattr[] = $this->getColumnBlockItem($doc, $structTab, true);
+                }
+                if ($structFrame != $currentFrame && $structFrame) {
+                    $tattr[] = $this->getColumnBlockItem($doc, $structFrame, true);
+                }
+                if ($structArray != $currentArray && $structArray) {
+                    $tattr[] = $this->getColumnBlockItem($doc, $structArray, true);
+                }
+                $tattr[] = array(
+                    "attrid" => $oa->id,
+                    "doption" => '',
+                    "newframe" => false,
+                    "newtab" => false,
+                    "newarray" => false,
+                    "endframe" => false,
+                    "goodattr" => true,
+                    "endtab" => false,
+                    "endarray" => false,
+                    "need" => $oa->needed,
+                    "hidden" => $oa->visibility == 'H',
+                    "attrname" => htmlspecialchars($oa->getLabel())
+                );
+                if (in_array($oa->type, $relTypes)) {
+                    $tattr[] = array(
+                        "attrid" => $oa->id,
+                        "doption" => 'docid',
+                        "newframe" => false,
+                        "newtab" => false,
+                        "newarray" => false,
+                        "endframe" => false,
+                        "goodattr" => true,
+                        "endtab" => false,
+                        "endarray" => false,
+                        "need" => $oa->needed,
+                        "hidden" => $oa->visibility == 'H',
+                        "attrname" => htmlspecialchars($oa->getLabel()) . '<i> (' . _("report:docid") . ')</i>'
+                    );
+                }
+            }
+            
+            $currentStruct = $struct;
+        }
+        
+        if ($structArray) {
+            $tattr[] = $this->getColumnBlockItem($doc, $structArray, false);
+        }
+        if ($structFrame) {
+            $tattr[] = $this->getColumnBlockItem($doc, $structFrame, false);
+        }
+        if ($structTab) {
+            $tattr[] = $this->getColumnBlockItem($doc, $structTab, false);
+        }
+        
+        $this->lay->setBlockData("ATTRS", $tattr);
+        $this->lay->set("famid", $doc->id);
+        $this->lay->set("famtitle", $doc->getHtmlTitle());
+        $this->lay->set("famicon", $doc->getIcon("", 48));
+    }
+    
+    protected function getColumnBlockItem(\Doc & $doc, $attrid, $isNew)
+    {
+        /**
+         * @var \NormalAttribute $soa
+         */
+        $soa = $doc->getAttribute($attrid);
+        if ($attrid == "_prop") {
+            $soa = new \FieldSetAttribute("_prop", $doc->id, _("Document Properties"));
+        }
+        return array(
+            "attrid" => $soa->id,
+            "goodattr" => false,
+            "doption" => '',
+            "newframe" => $isNew && $soa->type == "frame",
+            "newtab" => $isNew && $soa->type == "tab",
+            "newarray" => $isNew && $soa->type == "array",
+            "endframe" => (!$isNew) && $soa->type == "frame",
+            "endtab" => (!$isNew) && $soa->type == "tab",
+            "endarray" => (!$isNew) && $soa->type == "array",
+            "need" => $soa->needed,
+            "hidden" => $soa->visibility == 'H',
+            "selected" => false,
+            "attrname" => $soa->getLabel()
+        );
+    }
+    /**
      * Compute the values for the view display
      * @templateController
      *
@@ -173,7 +366,7 @@ class Report extends \Dcp\Family\Dsearch
         $s->returnsOnly($tcols);
         $s->setObjectReturn();
         $limit = intval($limit);
-        $maxDisplayLimit = $this->getFamilyParameterValue("rep_maxdisplaylimit", 1000) + 1;
+        $maxDisplayLimit = intval($this->getFamilyParameterValue("rep_maxdisplaylimit", 1000)) + 1;
         if ($limit == 0) $limit = $maxDisplayLimit;
         else $limit = min($limit, $maxDisplayLimit);
         $s->setSlice($limit);
@@ -413,7 +606,7 @@ class Report extends \Dcp\Family\Dsearch
                 $currentAttribute = $famDoc->getAttribute($currentColumnID);
                 $resultSingleArray[$currentColumnID][] = $currentAttribute ? $currentAttribute->getTextualValue($currentDoc, -1, $convertFormat) : $this->convertInternalElement($currentColumnID, $currentDoc);
             }
-            $nbElement=0;
+            $nbElement = 0;
             foreach ($multipleAttributes as $currentKey => $currentArrayID) {
                 foreach ($currentArrayID as $currentColumnID) {
                     $currentAttribute = $famDoc->getAttribute($currentColumnID);

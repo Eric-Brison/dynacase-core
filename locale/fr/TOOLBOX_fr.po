@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-07-23 13:27+0200\n"
+"PO-Revision-Date: 2013-07-30 08:54+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1062,6 +1062,9 @@ msgstr "Choisissez la famille du masque"
 msgid "Choose new categories"
 msgstr "Choisissez de nouvelles catégories"
 
+msgid "Choose report columns"
+msgstr "Choisir les colonnes du rapport"
+
 msgid "Choose visibles families"
 msgstr "Choix des familles visibles"
 
@@ -1070,6 +1073,10 @@ msgstr "Choisir un cycle"
 
 msgid "Circular layout graphs"
 msgstr "Modèle circulaire de graphe"
+
+#, c-format
+msgid "Class %s from file %s already declared in autoload with file %s"
+msgstr "Classe %s du fichier %s déjà déclaré dans le fichier %s"
 
 msgid "Clear Folder"
 msgstr "Vider le dossier"
@@ -1407,6 +1414,9 @@ msgstr "Document %s enlevé"
 
 msgid "Document Profile"
 msgstr "Profil du document"
+
+msgid "Document Properties"
+msgstr "Propriétés du document"
 
 msgid "Document basket"
 msgstr "Porte-document"
@@ -3748,12 +3758,12 @@ msgstr "Désarchivé depuis %s"
 msgid "Undirected graphs"
 msgstr "Graphe non-directionnel"
 
-msgid "Unlock"
-msgstr "Déverrouiller"
-
 #, c-format
 msgid "Unlabeled view (%s)"
 msgstr "Vue sans label (%s)"
+
+msgid "Unlock"
+msgstr "Déverrouiller"
 
 msgid "Up"
 msgstr "Monter"
@@ -4543,8 +4553,8 @@ msgstr ""
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href="
-"\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a>"
+"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
+"[CORE_EXTERNURL]</a>"
 
 msgid "can't access file"
 msgstr "Accès au fichier impossible"
@@ -7341,6 +7351,9 @@ msgstr "état supprimé : %s"
 msgid "report to (mail address)"
 msgstr "rapport à (email)"
 
+msgid "report unknow column"
+msgstr "Colonne inconnue du rapport"
+
 msgid "report:docid"
 msgstr "id"
 
@@ -8594,6 +8607,10 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Basic search"
 #~ msgstr "Recherche simple"
+
+#, fuzzy
+#~ msgid "Choose report column"
+#~ msgstr "Choisir les colonnes du rapport"
 
 #~ msgid "Confirm unattach activated timers matched "
 #~ msgstr "Confirmer l'annulation des minuteurs provenant des documents "

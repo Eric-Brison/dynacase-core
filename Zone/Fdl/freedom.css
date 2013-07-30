@@ -209,10 +209,10 @@ DIV.barmenu A {
 TD.editbutton, TD.nowrap {
   white-space:nowrap;
   [IFNOT ISIE]width:2px;[ENDIF ISIE]
-  [IF ISIE]
-width:50px;
+  [IF ISIE6]
+width:5px;
     padding-left: 4px !important;
-[ENDIF ISIE]
+[ENDIF ISIE6]
 }
 TD[type=docid][multiple=true]+TD.editbutton, 
 TABLE[type=docid][multiple=true] TD.editbutton,
