@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: REPORT \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-09 17:45+0200\n"
+"PO-Revision-Date: 2013-07-29 17:51+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -148,6 +148,12 @@ msgstr "Presentation"
 #: App/Fdl/searches.ods.csv
 msgid "REPORT#rep_tcols"
 msgstr "Columns"
+
+msgid "REPORT#rep_tcols#lsymbol"
+msgstr "Choose columns"
+
+msgid "REPORT#rep_tcols#ltitle"
+msgstr "Choose report displayed columns"
 
 msgid "REPORT#title"
 msgstr "report"

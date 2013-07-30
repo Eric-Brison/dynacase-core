@@ -986,6 +986,23 @@ function getReportColumns($dbaccess, $famid, $name = "")
     }
     return $tr;
 }
+
+function reportChooseColumns(&$action, $id)
+{
+    // print "DB=$dbaccess, NOM=$nom ID=$id";
+    // $action->lay->set("enclosname", $nom);
+    
+    /**
+     * @var \Dcp\Family\Report $doc
+     */
+    $doc = new_doc("", $id);
+    if ($doc->doctype == "C") {
+        $doc=createTmpDoc($doc->dbaccess, $id);
+        $doc->setValue(\Dcp\AttributeIdentifiers\Report::se_famid, getHttpVars("_se_famid"));
+    }
+    $doc->lay = & $action->lay;
+    $doc->reportchoosecolumns();
+}
 /**
  * Get columns (attribute or property) than can be used to order the
  * report's result.

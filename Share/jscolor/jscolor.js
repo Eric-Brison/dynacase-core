@@ -71,7 +71,8 @@ var jscolor = {
 		var e = document.getElementsByTagName('input');
 		for(var i=0; i<e.length; i+=1) {
 			var m;
-			if(!e[i].color && e[i].className && (m = e[i].className.match(matchClass))) {
+			if(!e[i].color && e[i].className && (m = e[i].className.match(matchClass)) && e[i].id.substr(e[i].id.length-4,4) != '_1x_') {
+                // no use colors in array footers
 				var prop = {};
 				if(m[3]) {
 					try {
