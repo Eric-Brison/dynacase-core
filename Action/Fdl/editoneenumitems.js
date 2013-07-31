@@ -10,6 +10,9 @@ $(function () {
                modal:true
             });
             console.log("envent recieve is == ", data);
+        },
+        redraw: function () {
+            fitHeight();
         }
     });
 
@@ -17,7 +20,7 @@ $(function () {
        var tbody= $(".dataTables_scrollBody");
        var tfoot=$('#newLine');
        var windowHeight = $(window).height();
-       // console.log('resize', windowHeight,tbody.offset(), footH) ;
+
        if (tbody.offset()) {
            var offY=tbody.offset().top;
            var footH=tfoot.height();
@@ -26,12 +29,5 @@ $(function () {
            setTimeout(fitHeight, 500);
        }
     }
-
-     $(window).on(
-            'resize',
-            fitHeight
-     );
-
-    fitHeight();
 
 });

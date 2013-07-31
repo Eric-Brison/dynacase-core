@@ -23,12 +23,12 @@
 
     var editableClass = "editable";
 
-    var htmlEncode = function htmlEncode(value){
-      return $('<div/>').text(value).html();
+    var htmlEncode = function htmlEncode(value) {
+        return $('<div/>').text(value).html();
     };
 
-    var htmlDecode = function htmlDecode(value){
-      return $('<div/>').html(value).text();
+    var htmlDecode = function htmlDecode(value) {
+        return $('<div/>').html(value).text();
     };
 
     $.widget("dcpui.editenumitems", {
@@ -65,7 +65,7 @@
                     },
                     {
                         "aTargets": [3],
-                        "mDataProp": "active",
+                        "mDataProp": "disabled",
                         "sTitle": "Active",
                         "bSortable": false,
                         "bSearchable": false,
@@ -82,7 +82,7 @@
                 ],
                 bSort: false,
                 bFilter: true,
-                "sScrollY": "200px"
+                sScrollY: "200px"
             }
         },
 
@@ -173,7 +173,6 @@
 
             $.each(toChangeKey, function (index, value) {
                 var rowData = widget._dataTableWidget.fnGetData(value);
-                rowData.disabled = !rowData.active;
                 rowData.localeLabel = [];
                 $.each(localeIds, function (i, locale) {
                     rowData.localeLabel.push({
@@ -215,9 +214,8 @@
         },
 
         _drawCallback: function _drawCallback(oSettings) {
-            var trigger = $.proxy(this._trigger, this);
-            trigger("redraw");
             if (this._firstDraw) {
+                this._indexRowChanged = [];
                 this._initActiveButtonSet(this._dataTableElement);
                 this._initiateHeader();
                 this._initWidgetHeader();
@@ -227,6 +225,8 @@
 
                 this._createNewLine();
                 this._firstDraw = false;
+
+                this._trigger("redraw");
             }
         },
 
@@ -240,15 +240,15 @@
             $element.find(".activebuttonset").buttonset()
                 .find(".ui-button").on("click", function (e) {
                     if ($(this).text() === widget._activeButtonLabel.on) {
-                        widget._updateRow(true, $(this).parent(), true);
-                    } else if ($(this).text() === widget._activeButtonLabel.off) {
                         widget._updateRow(false, $(this).parent(), true);
+                    } else if ($(this).text() === widget._activeButtonLabel.off) {
+                        widget._updateRow(true, $(this).parent(), true);
                     }
                 });
         },
 
         _initActiveDeleteButton: function _initiActiveDeleteButton($element) {
-            $element.find(".activedeletebutton").button().on("click.editenumitems", {"widget": this, "row": $element}, this._deleteClick);
+            $element.find(".activedeletebutton").button().one("click.editenumitems", {"widget": this, "row": $element}, this._deleteClick);
         },
 
         _createNewLine: function _createNewLine() {
@@ -259,7 +259,7 @@
                 $oldLineElems = $newLine.find("td");
 
             $.each(this.options.dataTableOptions.aoColumnDefs, function (index, col) {
-                if (this.mDataProp != "active") {
+                if (this.mDataProp != "disabled") {
                     var aTarget = this.aTargets[0],
                         width = $(".dataTable").find("th").eq(aTarget).css("width"),
                         value = "";
@@ -281,27 +281,33 @@
         },
 
         _initiateDataTable: function _initiateDataTable(data) {
-            var element = this._dataTableElement;
+            if (!$.isPlainObject(data)) {
+                this._error(data);
+            } else if (data.error) {
+                this._error(data.error);
+            } else {
+                var element = this._dataTableElement;
 
-            this.options.dataTableOptions = this._generateDataTableOptions(data.localeConfig, data.items);
+                this.options.dataTableOptions = this._generateDataTableOptions(data.localeConfig, data.items);
 
-            this.options.dataTableOptions.aaData = this._generateDataTableData(data.items, this.options.dataTableOptions.aoColumnDefs);
+                this.options.dataTableOptions.aaData = this._generateDataTableData(data.items, this.options.dataTableOptions.aoColumnDefs);
 
-            this.famTitle = data.familyTitle;
-            this.enumLabel = data.enumLabel;
+                this.famTitle = data.familyTitle;
+                this.enumLabel = data.enumLabel;
 
-            this._dataTableWidget = element.dataTable(this.options.dataTableOptions);
+                this._dataTableWidget = element.dataTable(this.options.dataTableOptions);
+            }
 
         },
 
         _getActiveDeleteButton: function (lineData) {
-            return '<button class="activedeletebutton" data-index="' + lineData.iDataRow + '">Delete row</button>';
+            return '<button class="activedeletebutton" data-index="' + lineData.iDataRow + '">Remove</button>';
         },
 
         _getActiveRadioButton: function (lineData) {
             return '<div class="activebuttonset" >' +
-                '<input type="radio" id="activebuttonset_' + lineData.key + '_on" name="activebuttonset_' + lineData.key + '" ' + (lineData.active ? 'checked="checked"' : "") + '/><label for="activebuttonset_' + lineData.key + '_on">' + this._activeButtonLabel.on + '</label>' +
-                '<input type="radio" id="activebuttonset_' + lineData.key + '_off" name="activebuttonset_' + lineData.key + '"' + (!lineData.active ? 'checked="checked"' : "") + '/><label for="activebuttonset_' + lineData.key + '_off">' + this._activeButtonLabel.off + '</label>' +
+                '<input type="radio" id="activebuttonset_' + lineData.key + '_on" name="activebuttonset_' + lineData.key + '" ' + (!lineData.disabled ? 'checked="checked"' : "") + '/><label for="activebuttonset_' + lineData.key + '_on">' + this._activeButtonLabel.on + '</label>' +
+                '<input type="radio" id="activebuttonset_' + lineData.key + '_off" name="activebuttonset_' + lineData.key + '"' + (lineData.disabled ? 'checked="checked"' : "") + '/><label for="activebuttonset_' + lineData.key + '_off">' + this._activeButtonLabel.off + '</label>' +
                 '</div>';
         },
 
@@ -341,7 +347,7 @@
         },
 
         _addNewRow: function () {
-            var newLine = {"active": true, "newline": true};
+            var newLine = {"disabled": false, "newline": true};
 
             $("#newLine").find("input").each(function () {
                 newLine[$(this).attr("data-id")] = $(this).val();
@@ -363,8 +369,11 @@
             $trNode.find("." + editableClass).on("click.editenumitems", {"widget": this}, this._rowClick);
         },
 
-        _updateOrder: function _updateOrder(newOrder, lineNumber) {
+        _updateOrder: function _updateOrder(newOrder, lineNumber, aData) {
             this._dataTableWidget.fnUpdate(newOrder, lineNumber, 0, false, false);
+            if (this._lastRow.key == aData.key) {
+                this._lastRow = aData;
+            }
         },
 
         _findLastRow: function () {
@@ -401,18 +410,17 @@
                 }
             });
 
-            if (!newLine) {
-                $.each(datas, function (index, aData) {
-                    if (lineData.key != aData.key) {
-                        if (lineOrder < aData.order) {
-                            widget._updateOrder(aData.order - 2, index);
-                        }
-                        if (linePut && linePut <= aData.order) {
-                            widget._updateOrder(aData.order + 2, index);
-                        }
+            if (newLine) lineOrder = lineData.order;
+            $.each(datas, function (index, aData) {
+                if (lineData.key != aData.key) {
+                    if (lineOrder < aData.order && !newLine) {
+                        widget._updateOrder(aData.order - 2, index, aData);
                     }
-                });
-            }
+                    if (linePut && linePut <= aData.order) {
+                        widget._updateOrder(aData.order + 2, index, aData);
+                    }
+                }
+            });
 
             if (!linePut) {
                 var newOrder = $tr.length * 2;
@@ -481,7 +489,7 @@
                 this._dataTableWidget.fnUpdate(value, aPos[0], aPos[2], false, false);
             }
 
-            if (aPos[2] == widget._columnIndex.order || aPos[2] == widget._columnIndex.active) {
+            if (aPos[2] == widget._columnIndex.order || aPos[2] == widget._columnIndex.disabled) {
                 widget._initActiveButtonSet($td.parent());
                 widget._initActiveDeleteButton($td.parent());
             }
@@ -533,9 +541,10 @@
                 widget._error("Can't delete already created row");
             } else {
                 widget._addAndReorganizeOrder("", dataIndex);
-                widget._dataTableWidget.fnDeleteRow($trNode.get(0));
+                widget._dataTableWidget.fnDeleteRow(dataIndex);
 
                 widget._removeDataToSave(indexOfElem);
+                widget._lastRow = widget._findLastRow();
             }
         },
 
