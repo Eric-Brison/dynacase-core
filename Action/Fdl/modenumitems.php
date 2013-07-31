@@ -61,46 +61,57 @@ function modenumitems(Action & $action)
         return '';
     });
     $usage->setStrictMode(false);
-    $usage->verify();
-    $fam = new_doc("", $famid);
-    /**
-     * @var NormalAttribute $oa
-     */
-    $oa = $fam->getAttribute($enumId);
-    $enums = DocEnum::getFamilyEnums($fam->id, $oa->id);
-    
-    $items = json_decode($modifications, true);
-    foreach ($items as $item) {
-        if (empty($item["key"])) {
-            $action->exitError(sprintf("all keys must be not empty"));
-        }
-    }
-    
-    $enumKeys = array_keys($oa->getEnumLabel());
-    $es = new EnumStructure();
-    $err = '';
+    $out = array();
     try {
+        $usage->verify(true);
+    }
+    catch(\Dcp\ApiUsage\Exception $e) {
+        $err = $e->getDcpMessage();
+        $out = array(
+            "error" => $err
+        );
+    }
+    if (empty($err)) {
+        $fam = new_doc("", $famid);
         /**
-         * @var EnumStructure $item
+         * @var NormalAttribute $oa
          */
+        $oa = $fam->getAttribute($enumId);
+        $enums = DocEnum::getFamilyEnums($fam->id, $oa->id);
+        
+        $items = json_decode($modifications, true);
         foreach ($items as $item) {
-            $es->affect($item);
-            if (in_array($es->key, $enumKeys)) {
-                DocEnum::modifyEnum($fam->id, $oa->id, $es);
-            } else {
-                DocEnum::addEnum($fam->id, $oa->id, $es);
+            if (empty($item["key"])) {
+                $err = sprintf("all keys must be not empty");
             }
         }
+        if (empty($err)) {
+            $enumKeys = array_keys($oa->getEnumLabel());
+            $es = new EnumStructure();
+            $err = '';
+            try {
+                /**
+                 * @var EnumStructure $item
+                 */
+                foreach ($items as $item) {
+                    $es->affect($item);
+                    if (in_array($es->key, $enumKeys)) {
+                        DocEnum::modifyEnum($fam->id, $oa->id, $es);
+                    } else {
+                        DocEnum::addEnum($fam->id, $oa->id, $es);
+                    }
+                }
+            }
+            catch(\Dcp\Exception $e) {
+                $err = $e->getDcpMessage();
+            }
+        }
+        $out = array(
+            "familyName" => $fam->name,
+            "enumId" => $oa->id,
+            "error" => $err
+        );
     }
-    catch(\Dcp\Exception $e) {
-        $err = $e->getDcpMessage();
-    }
-    $out = array(
-        "familyName" => $fam->name,
-        "enumId" => $oa->id,
-        "error" => $err
-    );
-    
     LibSystem::reloadLocaleCache();
     $action->lay->template = json_encode($out);
     $action->lay->noparse = true;

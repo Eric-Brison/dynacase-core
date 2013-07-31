@@ -48,58 +48,73 @@ function getenumitems(Action & $action)
         }
         return '';
     });
+    $out = array();
     
-    $usage->verify();
-    $fam = new_doc("", $famid);
-    $oa = $fam->getAttribute($enumId);
-    $enums = DocEnum::getFamilyEnums($fam->id, $oa->id);
-    
-    $lang = array();
-    include_once ('CORE/lang.php');
-    
-    $items = array();
-    foreach ($enums as $enum) {
-        $key = $enum["key"];
-        $items[$key] = array(
-            "key" => $key,
-            "label" => $enum["label"],
-            "parentKey" => $enum["parentkey"],
-            "active" => empty($enum["disabled"]) ,
-            "order" => $enum["eorder"]
+    try {
+        $usage->verify(true);
+    }
+    catch(\Dcp\ApiUsage\Exception $e) {
+        $err = $e->getDcpMessage();
+        $out = array(
+            "error" => $err
         );
     }
-    $localeConfig = array();
-    foreach ($lang as $klang => $locale) {
-        if (empty($locale["localeLabel"])) {
-            $locale["localeLabel"] = $locale["label"];
-        }
-        $localeConfig[] = array_merge($locale, array(
-            "id" => $klang,
-            "flag" => sprintf("Images/flags/%s.png", strtolower(substr($klang, -2)))
-        ));
-        setLanguage($klang);
+    
+    if (empty($err)) {
+        $fam = new_doc("", $famid);
+        $oa = $fam->getAttribute($enumId);
+        $enums = DocEnum::getFamilyEnums($fam->id, $oa->id);
+        
+        $lang = array();
+        include_once ('CORE/lang.php');
+        
+        $items = array();
+        
         foreach ($enums as $enum) {
             $key = $enum["key"];
-            $lkey = sprintf("%s#%s#%s", $fam->name, $oa->id, $key);
-            $l10n = _($lkey);
-            if ($l10n == $lkey) {
-                $l10n = '';
-            }
-            $items[$enum["key"]]["locale"][] = array(
-                "lang" => $klang,
-                "label" => $l10n
+            $items[$key] = array(
+                "key" => $key,
+                "label" => $enum["label"],
+                "parentKey" => $enum["parentkey"],
+                "disabled" => ($enum["disabled"] == "t") ,
+                "active" => ($enum["disabled"] != "t") ,
+                "order" => $enum["eorder"]
             );
         }
+        $localeConfig = array();
+        foreach ($lang as $klang => $locale) {
+            if (empty($locale["localeLabel"])) {
+                $locale["localeLabel"] = $locale["label"];
+            }
+            $localeConfig[] = array_merge($locale, array(
+                "id" => $klang,
+                "flag" => sprintf("Images/flags/%s.png", strtolower(substr($klang, -2)))
+            ));
+            setLanguage($klang);
+            foreach ($enums as $enum) {
+                $key = $enum["key"];
+                $lkey = sprintf("%s#%s#%s", $fam->name, $oa->id, $key);
+                $l10n = _($lkey);
+                if ($l10n == $lkey) {
+                    $l10n = '';
+                }
+                $items[$enum["key"]]["locale"][] = array(
+                    "lang" => $klang,
+                    "label" => $l10n
+                );
+            }
+        }
+        
+        $out = array(
+            "error" => '',
+            "familyName" => $fam->name,
+            "familyTitle" => $fam->getHtmlTitle() ,
+            "enumId" => $oa->id,
+            "enumLabel" => $oa->getLabel() ,
+            "items" => $items,
+            "localeConfig" => $localeConfig
+        );
     }
-    
-    $out = array(
-        "familyName" => $fam->name,
-        "familyTitle" => $fam->getHtmlTitle() ,
-        "enumId" => $oa->id,
-        "enumLabel" => $oa->getLabel() ,
-        "items" => $items,
-        "localeConfig" => $localeConfig
-    );
     $action->lay->template = json_encode($out);
     $action->lay->noparse = true;
     header('Content-type: application/json');
