@@ -1,0 +1,86 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Modify enum items]]
+
+<style>
+.enummain {
+    width:100%;
+
+}
+
+.enumframe {
+    width:100%;
+    border:none;
+    padding:0;
+    margin:0;
+}
+.leftside {
+    vertical-align:top;
+    width:220px;
+
+}
+
+.rightside {
+    vertical-align:top;
+    }
+ul.enumlist {
+    border-width:3px;
+    padding: 0;
+}
+ul.enumlist li {
+    border-color: inherit;
+       border-style: solid none none;
+       border-width: 1px;
+}
+
+ul.enumlist a.ui-state-highlight {
+    border:none;
+   margin:0;
+    }
+
+ul.enumlist a.ui-state-highlight.ui-state-hover {
+    border-style: solid;
+    border-width: 1px;
+    }
+
+h1 {
+    background-color: #F3F3F3;
+     border-bottom: 1px solid #BBBBBB;
+     color: #999999;
+     height: 3em;
+}
+.enumlistblock {
+    overflow-y:auto;
+    height: 200px;
+}
+.oldlink  {
+    float: right;
+    font-size: 9pt;
+}
+
+</style>
+
+<h1><img src="[famicon]" />[title]
+        [IF linkOld]
+<a class="oldlink" href="?&app=GENERIC&action=GENERIC_EDITFAMCATG&amp;famid=[familyid]">[TEXT:Access to old enum interface]</a> [ENDIF linkOld]</h1>
+[IF NOENUMS]
+        <h2>[TEXT:No editable enums].</h2>
+[ENDIF NOENUMS]
+[IFNOT NOENUMS]
+<table class="enummain">
+    <tr>
+        <td class="leftside">
+            <div class="enumlistblock">
+            <ul id="enumlist" class="enumlist">
+                [BLOCK ENUMS]
+                <!-- FDL&amp;action=EDITONEENUMITEMS -->
+                <li><a data-enumid="[enumid]" class="item"
+                       url="?app=FDL&amp;action=EDITONEENUMITEMS&amp;famid=[famid]&amp;enumid=[enumid]">[label]</a></li>[ENDBLOCK ENUMS]
+            </ul></div>
+        </td>
+        <td class="rightside" id="iframelist"></td>
+    </tr>
+</table>
+        [ENDIF NOENUMS]
+
+
+
+[ZONE FDL:HTMLFOOT]
