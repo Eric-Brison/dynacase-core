@@ -104,6 +104,8 @@
             "bDestroy": true
         },
 
+        _orderTitle: "[TEXT:tooltip order]",
+
         _dataTableWidget: null,
 
         _dataTableElement: $(),
@@ -176,23 +178,23 @@
         },
 
         _createSaveButton: function _createSaveButton() {
-            var buttonSave = $('<button class="saveButton" title="[TEXT:Save change]">[TEXT:Save]</button>').button({
-                    "disabled": true
-                }).on("click", $.proxy(this._modEnumItems, this)),
-                buttonReload = $('<button class="reloadButton" title="[TEXT:Cancel change]">[TEXT:Reload]</button>').button()
-                    .on("click", $.proxy(this._beforeOnReload, this)),
-                buttonHelp = $('<button class="helpButton">[TEXT:Help]</button>').button()
-                    .on("click", $.proxy(this._showHelp, this)),
+            var buttonSave = $('<button class="saveButton" title="[TEXT:Save change]">[TEXT:Save]</button>').on("click", $.proxy(this._modEnumItems, this)),
+                buttonReload = $('<button class="reloadButton" title="[TEXT:Cancel change]">[TEXT:Reload]</button>').on("click", $.proxy(this._beforeOnReload, this)),
+                buttonHelp = $('<button class="helpButton">[TEXT:Help]</button>').button().on("click", $.proxy(this._showHelp, this)),
                 buttonsDiv = $("<div></div>").append(buttonSave).append(buttonReload).addClass("headerButton");
 
             if (this.options.saveOnBottom) {
-                console.log("adding button div to new line === ", $("#newLine"));
                 $("#newLine").append(buttonsDiv.clone(true).css("text-align", "right"));
             }
             if (this.options.helpMessage) {
                 buttonsDiv.append(buttonHelp);
             }
             $("#titleHeader").prepend(buttonsDiv.css("float", "right"));
+            $(".saveButton").button({
+                "disabled": true
+            });
+            $(".reloadButton").button();
+
         },
 
         _showHelp: function _showHelp(e) {
@@ -279,7 +281,7 @@
 
         _initWidgetHeader: function _initWidgetHeader() {
             var title = this._convertStringWithInfo(this.options.title);
-            $("#titleHeader").html('<h2 class="title" title="'+this.options.enumid+'">' + title + '</h2>').addClass("ui-state-default");
+            $("#titleHeader").html('<h2 class="title" title="' + this.options.enumid + '">' + title + '</h2>').addClass("ui-state-default");
         },
 
         _initActiveButtonSet: function _initActiveButtonSet($element) {
@@ -304,20 +306,27 @@
                 html = "",
                 widget = this,
                 $newLine = $("#newLine"),
-                $oldLineElems = $newLine.find("td");
+                $oldLineElems = $newLine.find("td"),
+                foundValue;
 
             $.each(this.options.dataTableOptions.aoColumnDefs, function (index, col) {
                 if (this.mDataProp != "disabled") {
                     var aTarget = this.aTargets[0],
                         width = $(".dataTable").find("th").eq(aTarget).css("width"),
-                        value = "";
+                        value = "",
+                        title = "";
+
                     if ($oldLineElems.length > 0) {
                         value = $oldLineElems.eq(aTarget).find("input").val();
                     }
-                    html += '<td><input type="text" class="ui-widget ui-widget-content ui-state-active newLineField" data-id="' + this.mDataProp + '" placeholder="' + this.sTitle + '" style="width:' + width + '" value="' + value + '"/></td>';
+
+                    if (this.mDataProp == "order") {
+                        title = widget._orderTitle;
+                    }
+                    html += '<td><input type="text" class="ui-widget ui-widget-content ui-state-active newLineField" data-id="' + this.mDataProp + '" placeholder="' + this.sTitle + '" style="width:' + width + '" value="' + value + '" title="' + title + '"/></td>';
                 }
             });
-            html += '<td><button id="addNewEnum">[TEXT:Add]</button></td>';
+            html += '<td><button id="addNewEnum">[TEXT:EnumWidget:Add]</button></td>';
             var newLine = $("<table></table>").prepend(tr.append(html)),
                 newLineTitle = $('<h3>[TEXT:Add new enum choice: ]</h3>').addClass("ui-widget footerTitle");
 
@@ -600,7 +609,8 @@
 
         _addDataToSave: function (dataIndex) {
             this._indexRowChanged.push(dataIndex);
-            $(".saveButton").each(function() {
+            console.log("adding data");
+            $(".saveButton").each(function () {
                 $(this).button("enable");
             });
         },
@@ -608,7 +618,7 @@
         _removeDataToSave: function (indexOfElem) {
             this._indexRowChanged.splice(indexOfElem, 1);
             if (this._indexRowChanged.length <= 0) {
-                $(".saveButton").each(function() {
+                $(".saveButton").each(function () {
                     $(this).button("disable");
                 });
             }
@@ -618,14 +628,20 @@
             if ($("#rowToChange").length > 0 || $(this).find(".activebuttonset").length > 0) {
                 return false;
             }
-            var widget = e.data.widget;
-            var $this = $(this);
-            var val = $this.text();
-            var updateRow = $.proxy(widget._updateRow, widget);
+            var widget = e.data.widget,
+                $this = $(this),
+                val = $this.text(),
+                updateRow = $.proxy(widget._updateRow, widget),
+                aPos = widget._dataTableWidget.fnGetPosition(this),
+                title = "";
 
             widget._trigger("rowclick", e, {widget: widget, elem: $this});
 
-            $this.html('<input type="text" id="rowToChange" />').find("input").val(val);
+            if (aPos[2] == widget._columnIndex.order) {
+                title = widget._orderTitle;
+            }
+
+            $this.html('<input type="text" id="rowToChange" />').find("input").val(val).attr("title", title);
 
             $("#rowToChange").focus().one("blur.editenumitems",function (e) {
                 updateRow(htmlEncode($(this).val()), this);
