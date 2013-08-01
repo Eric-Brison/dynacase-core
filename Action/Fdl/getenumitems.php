@@ -104,13 +104,25 @@ function getenumitems(Action & $action)
                 );
             }
         }
-        
+        $parentLabel = ''; // get parent label - not use direct parent label if the same
+        $label = $oa->getLabel();
+        if (!empty($oa->fieldSet)) {
+            $parentLabel = $oa->fieldSet->getLabel();
+            if ($parentLabel == $label) {
+                if (!empty($oa->fieldSet->fieldSet)) {
+                    $parentLabel = $oa->fieldSet->fieldSet->getLabel();
+                } else {
+                    $parentLabel = '';
+                }
+            }
+        }
         $out = array(
             "error" => '',
             "familyName" => $fam->name,
             "familyTitle" => $fam->getHtmlTitle() ,
             "enumId" => $oa->id,
             "enumLabel" => $oa->getLabel() ,
+            "parentLabel" => $parentLabel,
             "items" => $items,
             "localeConfig" => $localeConfig
         );
