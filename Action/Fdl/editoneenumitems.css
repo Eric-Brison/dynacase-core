@@ -1,3 +1,37 @@
 .rowToUpdate {
     background-color: yellowgreen !important;
 }
+
+.title {
+    text-align: left;
+    margin-left: 4px;
+    width: 50%;
+}
+
+.ui-button {
+    height: 2em;
+}
+
+.ui-button-text-only .ui-button-text {
+    padding: 0.2em 1em;
+}
+
+.ui-widget {
+    font-size: inherit;
+}
+
+.footerTitle{
+    margin: 0 4px;
+}
+
+.headerButton {
+    margin-top: 1em;
+}
+
+.newLineField {
+    border-bottom: 1px solid white !important;
+    border-right: 1px solid white !important;
+    border-top: 1px solid #DDD !important;
+    border-left: 1px solid #DDD !important;
+    background-color: #F0F0F0;
+}

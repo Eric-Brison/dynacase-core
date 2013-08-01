@@ -36,9 +36,12 @@
 //Options to be used as defaults
         options: {
             withlocale: true,
+            saveOnBottom: false,
             famid: "",
             enumid: "",
             rowToUpdateClass: "rowToUpdate",
+            title: "%f: %s &gt; %e",
+            helpMessage: "",
             dataTableOptions: {
                 aoColumnDefs: [
                     {
@@ -46,13 +49,14 @@
                         "mDataProp": "order",
                         "bSearchable": false,
                         "bSortable": false,
-                        "sClass": editableClass,
+                        "sClass": editableClass + " ui-widget",
                         "sWidth": "60px",
                         "sTitle": "Rank"
                     },
                     {
                         "aTargets": [1],
                         "mDataProp": "key",
+                        "sClass": "ui-widget",
                         "bSortable": false,
                         "sTitle": "Key"
                     },
@@ -60,7 +64,7 @@
                         "aTargets": [2],
                         "bSortable": false,
                         "mDataProp": "label",
-                        "sClass": editableClass,
+                        "sClass": editableClass + " ui-widget",
                         "sTitle": "Label"
                     },
                     {
@@ -69,6 +73,7 @@
                         "sTitle": "Active",
                         "bSortable": false,
                         "bSearchable": false,
+                        "sClass": "ui-widget",
                         "sWidth": "125px",
                         "bUseRendered": false,
                         fnRender: function (data) {
@@ -109,6 +114,8 @@
 
         enumLabel: "",
 
+        enumParentLabel: "",
+
         _originalData: {},
 
         _lastRow: null,
@@ -116,8 +123,8 @@
         _indexRowChanged: [],
 
         _activeButtonLabel: {
-            "on": "ON",
-            "off": "OFF"
+            "on": "[TEXT:ON]",
+            "off": "[TEXT:OFF]"
         },
 
         _columnIndex: {},
@@ -132,7 +139,18 @@
 
             this._getEnumItems();
 
-            $(window).on('resize', $.proxy(this._resizeWindow, this));
+            $(window).on({
+                'resize': $.proxy(this._resizeWindow, this),
+                "beforeunload": $.proxy(this._unloadWindow, this)
+            });
+        },
+
+        _unloadWindow: function (e) {
+            if (this._indexRowChanged.length > 0) {
+                e.preventDefault();
+                return this._convertStringWithInfo("[TEXT:Some change in the enum '%s > %e' are not saved do you really wish to quit?]");
+
+            }
         },
 
         _resizeWindow: function _resizeWindow() {
@@ -145,6 +163,7 @@
         _getEnumItems: function () {
             var parent = this;
 
+            this._firstDraw = true;
             $.ajax({
                 "type": "GET",
                 "url": "?app=FDL&action=GETENUMITEMS",
@@ -157,13 +176,36 @@
         },
 
         _createSaveButton: function _createSaveButton() {
-            var button = $('<button id="saveButton">Save change</button>').button({
-                "disabled": true
-            }).on("click", $.proxy(this.modEnumItems, this));
-            $("#addNewEnum").parent().append(button);
+            var buttonSave = $('<button class="saveButton" title="[TEXT:Save change]">[TEXT:Save]</button>').button({
+                    "disabled": true
+                }).on("click", $.proxy(this._modEnumItems, this)),
+                buttonReload = $('<button class="reloadButton" title="[TEXT:Cancel change]">[TEXT:Reload]</button>').button()
+                    .on("click", $.proxy(this._beforeOnReload, this)),
+                buttonHelp = $('<button class="helpButton">[TEXT:Help]</button>').button()
+                    .on("click", $.proxy(this._showHelp, this)),
+                buttonsDiv = $("<div></div>").append(buttonSave).append(buttonReload).addClass("headerButton");
+
+            if (this.options.saveOnBottom) {
+                console.log("adding button div to new line === ", $("#newLine"));
+                $("#newLine").append(buttonsDiv.clone(true).css("text-align", "right"));
+            }
+            if (this.options.helpMessage) {
+                buttonsDiv.append(buttonHelp);
+            }
+            $("#titleHeader").prepend(buttonsDiv.css("float", "right"));
         },
 
-        modEnumItems: function modEnumItems() {
+        _showHelp: function _showHelp(e) {
+            console.log("click on show help");
+            this._message(this.options.helpMessage);
+        },
+
+        _beforeOnReload: function _beforeOnReload(e) {
+            this._confirm("[TEXT:Some changes are not saved, do you really wish to reload?]",
+                $.proxy(this._getEnumItems, this), e);
+        },
+
+        _modEnumItems: function _modEnumItems() {
             var widget = this,
                 toChangeKey = widget._indexRowChanged,
                 toSendData = [],
@@ -207,7 +249,6 @@
                 this._error(data.error);
                 this._dataTableWidget.fnProcessingIndicator(false);
             } else {
-                this._firstDraw = true;
                 this._getEnumItems();
             }
 
@@ -224,14 +265,21 @@
                 this._dataTableElement.find("tbody tr").find("." + editableClass).on("click.editenumitems", {"widget": this}, this._rowClick);
 
                 this._createNewLine();
+                this._createSaveButton();
+
                 this._firstDraw = false;
 
                 this._trigger("redraw");
             }
         },
 
+        _convertStringWithInfo: function (str) {
+            return str.replace("%f", this.famTitle).replace("%e", this.enumLabel).replace("%s", this.enumParentLabel);
+        },
+
         _initWidgetHeader: function _initWidgetHeader() {
-            $("#titleHeader").html('<h3>' + this.famTitle + ': ' + this.enumLabel + '</h3>').addClass("ui-state-default").css("text-align", "center");
+            var title = this._convertStringWithInfo(this.options.title);
+            $("#titleHeader").html('<h2 class="title" title="'+this.options.enumid+'">' + title + '</h2>').addClass("ui-state-default");
         },
 
         _initActiveButtonSet: function _initActiveButtonSet($element) {
@@ -266,18 +314,19 @@
                     if ($oldLineElems.length > 0) {
                         value = $oldLineElems.eq(aTarget).find("input").val();
                     }
-                    html += '<td><input type="text" class="ui-widget ui-widget-content ui-corner-all ui-state-active" data-id="' + this.mDataProp + '" placeholder="' + this.sTitle + '" style="width:' + width + '" value="' + value + '"/></td>';
+                    html += '<td><input type="text" class="ui-widget ui-widget-content ui-state-active newLineField" data-id="' + this.mDataProp + '" placeholder="' + this.sTitle + '" style="width:' + width + '" value="' + value + '"/></td>';
                 }
             });
-            html += '<td><button id="addNewEnum">Add</button></td>';
-            var newLine = $("<table></table>").prepend(tr.append(html));
+            html += '<td><button id="addNewEnum">[TEXT:Add]</button></td>';
+            var newLine = $("<table></table>").prepend(tr.append(html)),
+                newLineTitle = $('<h3>[TEXT:Add new enum choice: ]</h3>').addClass("ui-widget footerTitle");
 
             if ($newLine.find("table").length > 0) {
-                $newLine.find("table").remove("table");
+                $newLine.find("table").remove();
+                $newLine.find(".footerTitle").remove()
             }
-            $newLine.append(newLine).addClass(" ui-state-default");
+            $newLine.append(newLine).addClass(" ui-state-default").prepend(newLineTitle);
             $("#addNewEnum").button().on("click", $.proxy(this._addNewRow, this));
-            this._createSaveButton();
         },
 
         _initiateDataTable: function _initiateDataTable(data) {
@@ -292,8 +341,9 @@
 
                 this.options.dataTableOptions.aaData = this._generateDataTableData(data.items, this.options.dataTableOptions.aoColumnDefs);
 
-                this.famTitle = data.familyTitle;
-                this.enumLabel = data.enumLabel;
+                this.famTitle = data.familyTitle || "";
+                this.enumLabel = data.enumLabel || "";
+                this.enumParentLabel = data.parentLabel || "";
 
                 this._dataTableWidget = element.dataTable(this.options.dataTableOptions);
             }
@@ -301,7 +351,7 @@
         },
 
         _getActiveDeleteButton: function (lineData) {
-            return '<button class="activedeletebutton" data-index="' + lineData.iDataRow + '">Remove</button>';
+            return '<button class="activedeletebutton" data-index="' + lineData.iDataRow + '">[TEXT:Remove]</button>';
         },
 
         _getActiveRadioButton: function (lineData) {
@@ -337,7 +387,7 @@
                 }
             });
 
-            var searchField = $(".searchField");
+            var searchField = $("th.searchField");
             searchField.on({
                 "keyup.editenumitems": widget._searchFieldKeyup
             }, {
@@ -354,7 +404,7 @@
             });
 
             if (this._findKey(newLine.key) >= 0) {
-                this._error("Key already exists, must be unique");
+                this._error("[TEXT:Key already exists, must be unique]");
                 return false;
             }
 
@@ -474,7 +524,7 @@
             if (aPos[2] == widget._columnIndex.order) {
                 if (parseInt(value) % 2 == 0) {
                     if (!fromButton) $td.html(aData);
-                    widget._error("Order must be an odd number");
+                    widget._error("[TEXT:Order must be an odd number]");
                     return false;
                 }
                 widget._addAndReorganizeOrder(value, aPos[0]);
@@ -482,7 +532,7 @@
                 if (aPos[2] == widget._columnIndex.key) {
                     if (widget._findKey(value) >= 0) {
                         if (!fromButton) $td.html(aData);
-                        widget._error("Key already exists, must be unique");
+                        widget._error("[TEXT:Key already exists, must be unique]");
                         return false;
                     }
                 }
@@ -538,7 +588,7 @@
                 indexOfElem = $.inArray(dataIndex, widget._indexRowChanged);
 
             if (indexOfElem < 0) {
-                widget._error("Can't delete already created row");
+                widget._error("[TEXT:Can't delete already created row]");
             } else {
                 widget._addAndReorganizeOrder("", dataIndex);
                 widget._dataTableWidget.fnDeleteRow(dataIndex);
@@ -550,13 +600,17 @@
 
         _addDataToSave: function (dataIndex) {
             this._indexRowChanged.push(dataIndex);
-            $("#saveButton").button("enable");
+            $(".saveButton").each(function() {
+                $(this).button("enable");
+            });
         },
 
         _removeDataToSave: function (indexOfElem) {
             this._indexRowChanged.splice(indexOfElem, 1);
             if (this._indexRowChanged.length <= 0) {
-                $("#saveButton").button("disable");
+                $(".saveButton").each(function() {
+                    $(this).button("disable");
+                });
             }
         },
 
@@ -649,7 +703,7 @@
                     aoColumnDefs.push({
                         "aTargets": [aTargets],
                         "mDataProp": locale.id,
-                        "sClass": editableClass,
+                        "sClass": editableClass + " ui-widget",
                         "sTitle": locale.localeLabel
                     });
                 }
@@ -665,6 +719,19 @@
             event = event || {};
             onError(error || "");
             this._trigger("error", event, { error: error });
+        },
+
+        _confirm: function _confirm(message, callBack, event) {
+            event = event || {};
+            this._trigger("confirm", event, {
+                msg: message,
+                callback: callBack
+            });
+        },
+
+        _message: function _message(message, event) {
+            event = event || {};
+            this._trigger("message", event, { msg: message });
         },
 
 // Destroy an instantiated plugin and clean up
