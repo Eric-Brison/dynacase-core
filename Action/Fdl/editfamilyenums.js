@@ -53,7 +53,7 @@
 
             resizeHeights();
             $('a.item').removeClass('ui-state-highlight');
-            o.addClass('ui-state-highlight');
+            o.addClass('ui-state-highlight enum-loaded ui-state-active');
         });
 
         resizeHeights();

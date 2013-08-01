@@ -31,9 +31,9 @@ ul.enumlist li {
        border-width: 1px;
 }
 
-ul.enumlist a.ui-state-highlight {
+.ui-menu .ui-menu-item ul.enumlist a.ui-state-highlight {
     border:none;
-   margin:0;
+    margin:0;
     }
 
 ul.enumlist a.ui-state-highlight.ui-state-hover {
@@ -55,7 +55,12 @@ h1 {
     float: right;
     font-size: 9pt;
 }
-
+.enum-parent {
+    font-weight: normal;
+}
+.ui-menu .ui-menu-item a.ui-state-hover.enum-loaded, .ui-menu .ui-menu-item a.ui-state-active.enum-loaded {
+  font-weight: bold;
+}
 </style>
 
 <h1><img src="[famicon]" />[title]
@@ -72,8 +77,8 @@ h1 {
             <ul id="enumlist" class="enumlist">
                 [BLOCK ENUMS]
                 <!-- FDL&amp;action=EDITONEENUMITEMS -->
-                <li><a data-enumid="[enumid]" class="item"
-                       url="?app=FDL&amp;action=EDITONEENUMITEMS&amp;famid=[famid]&amp;enumid=[enumid]">[label]</a></li>[ENDBLOCK ENUMS]
+                <li><a data-enumid="[enumid]" class="item" title="[enumid]"
+                       url="?app=FDL&amp;action=EDITONEENUMITEMS&amp;famid=[famid]&amp;enumid=[enumid]"><div class="enum-parent ui-widget-header">[parentLabel]</div><div class="enum-label">[label]</div></a></li>[ENDBLOCK ENUMS]
             </ul></div>
         </td>
         <td class="rightside" id="iframelist"></td>

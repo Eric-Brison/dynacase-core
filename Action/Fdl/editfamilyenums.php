@@ -49,9 +49,21 @@ function editfamilyenums(Action & $action)
      */
     foreach ($lattr as $k => $oa) {
         if ((($oa->type == "enum") || ($oa->type == "enumlist")) && (($oa->phpfile == "") || ($oa->phpfile == "-")) && ($oa->getOption("system") != "yes")) {
-            
+            $parentLabel='';
+            $label=$oa->getLabel();
+            if (! empty($oa->fieldSet)) {
+                $parentLabel=$oa->fieldSet->getLabel();
+                if ($parentLabel== $label) {
+                    if (! empty($oa->fieldSet->fieldSet)) {
+                        $parentLabel=$oa->fieldSet->fieldSet->getLabel();
+                    } else {
+                        $parentLabel='';
+                    }
+                }
+            }
             $tcf[] = array(
-                "label" => $oa->getLabel() ,
+                "label" =>  $label,
+                "parentLabel" => $parentLabel,
                 "famid" => $oa->docid,
                 "enumid" => $oa->id
             );
