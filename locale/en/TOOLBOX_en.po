@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-07-03 14:56+0200\n"
+"PO-Revision-Date: 2013-08-02 15:49+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: \n"
@@ -450,6 +450,9 @@ msgstr ""
 msgid "Access to edit action"
 msgstr ""
 
+msgid "Access to old enum interface"
+msgstr ""
+
 msgid "Access to system documents"
 msgstr ""
 
@@ -514,6 +517,9 @@ msgid "Add new document (similar document)"
 msgstr ""
 
 msgid "Add new entry"
+msgstr ""
+
+msgid "Add new enum choice: "
 msgstr ""
 
 msgid "Add or modify item's category"
@@ -783,6 +789,9 @@ msgstr ""
 msgid "Call method"
 msgstr ""
 
+msgid "Can't delete already created row"
+msgstr ""
+
 msgid "Cancel"
 msgstr ""
 
@@ -1034,6 +1043,9 @@ msgstr ""
 msgid "Choose new categories"
 msgstr ""
 
+msgid "Choose report columns"
+msgstr ""
+
 msgid "Choose visibles families"
 msgstr ""
 
@@ -1041,6 +1053,10 @@ msgid "Choose workflow"
 msgstr ""
 
 msgid "Circular layout graphs"
+msgstr ""
+
+#, c-format
+msgid "Class %s from file %s already declared in autoload with file %s"
 msgstr ""
 
 msgid "Clear Folder"
@@ -1378,6 +1394,9 @@ msgstr ""
 msgid "Document Profile"
 msgstr ""
 
+msgid "Document Properties"
+msgstr ""
+
 msgid "Document basket"
 msgstr ""
 
@@ -1533,6 +1552,9 @@ msgstr "UTF-8"
 msgid "Edit"
 msgstr "Modify"
 
+msgid "Edit Enum Items"
+msgstr ""
+
 msgid "Edit attributes"
 msgstr ""
 
@@ -1551,6 +1573,33 @@ msgstr ""
 msgid "Edit translations"
 msgstr ""
 
+msgid "EditEnumHelpMessage"
+msgstr ""
+"<p> An enumerated value is characterized by: </p>\n"
+"<ul>\n"
+"<li> its rank : it allows you to organize the values ​​</li>\n"
+"<li> its key : unique identifier of the value </li>\n"
+"<li> its label : the untranslated text used in the absence of translation </"
+"li>\n"
+"<li> its translations : in all languages ​​as configured for your application. "
+"</li>\n"
+"</ul>\n"
+"<p>\n"
+"Changes in the characteristics-the key is non-modifiable are by clicking on "
+"the feature. At the end of editing, press the [Enter] key or clicking "
+"outside the edit field, commits the change. </p>\n"
+"<p>\n"
+"The ranks of the values ​​are even numbers. If you want to edit a row, you "
+"simply enter an odd integer. The value will be moved directly between peers "
+"rank lower and upper. The modified rank is recalculated. </p>\n"
+"<p>\n"
+"Adding value is made using the form at the bottom of the page. </p>\n"
+"<p>\n"
+"All changes of values ​​are highlighted by a color change of the row. </p>\n"
+"<p>\n"
+"Changes remain local. Record on the server and use by applications is "
+"effective only upon record via the [Save] button. </p>"
+
 msgid ""
 "Element can't be perfectly analyze, some error might occur or be corrected "
 "when importing"
@@ -1566,6 +1615,9 @@ msgstr ""
 msgid "Encoding"
 msgstr ""
 
+msgid "English"
+msgstr ""
+
 msgid "Enter your email"
 msgstr ""
 
@@ -1574,6 +1626,46 @@ msgstr ""
 
 msgid "Enter your password"
 msgstr ""
+
+#, c-format
+msgid "Enum attributes for %s"
+msgstr ""
+
+msgid "EnumWidget:Add"
+msgstr "Add"
+
+msgid "EnumWidget:Cancel change"
+msgstr "Cancel change"
+
+msgid "EnumWidget:Key"
+msgstr "Key"
+
+msgid "EnumWidget:Label"
+msgstr "Label"
+
+msgid "EnumWidget:OFF"
+msgstr "OFF"
+
+msgid "EnumWidget:ON"
+msgstr "ON"
+
+msgid "EnumWidget:Rank"
+msgstr "Rank"
+
+msgid "EnumWidget:Reload"
+msgstr "Reload"
+
+msgid "EnumWidget:Remove"
+msgstr "Remove"
+
+msgid "EnumWidget:Save change"
+msgstr "Save change"
+
+msgid "EnumWidget:Translate"
+msgstr "Translate"
+
+msgid "EnumWidget:tooltip order"
+msgstr "Display rank for item"
 
 msgid "Error"
 msgstr ""
@@ -1804,8 +1896,8 @@ msgstr ""
 "        </ul>\n"
 "    </li>\n"
 "    <li>\n"
-"        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
-"\">)</em><br/>\n"
+"        <em class=\"help-operator\">(</em> and <em class=\"help-operator\">)"
+"</em><br/>\n"
 "        Parenthesis express priorities between operators.\n"
 "        <ul>\n"
 "            <li>\n"
@@ -2092,6 +2184,9 @@ msgstr "Document preview"
 msgid "Freedoms view folder"
 msgstr "View as folder"
 
+msgid "French"
+msgstr ""
+
 msgid "Friday"
 msgstr ""
 
@@ -2313,6 +2408,9 @@ msgid "Just states"
 msgstr ""
 
 msgid "Keep original document"
+msgstr ""
+
+msgid "Key already exists, must be unique"
 msgstr ""
 
 #, c-format
@@ -2562,6 +2660,9 @@ msgstr ""
 msgid "Modify default Values"
 msgstr ""
 
+msgid "Modify enum items"
+msgstr ""
+
 msgid "Modify parameters Values"
 msgstr ""
 
@@ -2646,6 +2747,9 @@ msgstr ""
 
 #, c-format
 msgid "No document found for <strong>%s</strong>%s"
+msgstr ""
+
+msgid "No editable enums"
 msgstr ""
 
 msgid "No identificator"
@@ -2755,6 +2859,9 @@ msgid "Options import"
 msgstr ""
 
 msgid "Or upload a new icon"
+msgstr ""
+
+msgid "Order must be an odd number"
 msgstr ""
 
 msgid "Other..."
@@ -3333,6 +3440,14 @@ msgstr ""
 
 #, c-format
 msgid ""
+"Some change in the enum '%s > %e' are not saved do you really wish to quit?"
+msgstr ""
+
+msgid "Some changes are not saved, do you really wish to reload?"
+msgstr ""
+
+#, c-format
+msgid ""
 "Some characters are not authorized for file name %s. They are replaced by -"
 msgstr ""
 
@@ -3614,11 +3729,11 @@ msgstr ""
 msgid "Undirected graphs"
 msgstr ""
 
-msgid "Unlock"
-msgstr ""
-
 #, c-format
 msgid "Unlabeled view (%s)"
+msgstr ""
+
+msgid "Unlock"
 msgstr ""
 
 msgid "Up"
@@ -5385,6 +5500,9 @@ msgstr ""
 msgid "edit mail"
 msgstr ""
 
+msgid "edit one enum items"
+msgstr ""
+
 msgid "edit profile access"
 msgstr ""
 
@@ -5835,6 +5953,9 @@ msgid "get all values of document"
 msgstr ""
 
 msgid "get attribute for fck toobar"
+msgstr ""
+
+msgid "get enum items definition"
 msgstr ""
 
 msgid "get enum label from key"
@@ -6307,6 +6428,12 @@ msgid "modify document"
 msgstr ""
 
 msgid "modify document option"
+msgstr ""
+
+msgid "modify enum items"
+msgstr ""
+
+msgid "modify enum items definition"
 msgstr ""
 
 #, c-format
@@ -7150,6 +7277,9 @@ msgstr ""
 msgid "report to (mail address)"
 msgstr ""
 
+msgid "report unknow column"
+msgstr ""
+
 msgid "report:docid"
 msgstr "id"
 
@@ -7546,8 +7676,8 @@ msgid "submitreqpasswd_form_send_error_unknown"
 msgstr ""
 "<p>The server accountered an error processing your request</p>\n"
 "<p>Retry your request, and if the problem persist, please contact <a href="
-"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request"
-"\">[ON_ERROR_CONTACT]</a></p>"
+"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request\">"
+"[ON_ERROR_CONTACT]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""

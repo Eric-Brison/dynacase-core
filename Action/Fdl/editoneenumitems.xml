@@ -1,4 +1,4 @@
-[ZONE FDL:HTMLHEAD]
+[ZONE FDL:HTMLHEAD?title=[TEXT:Edit Enum Items]]
 <style>
 table.dataTable, body {
     overflow-y:hidden;

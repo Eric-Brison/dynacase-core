@@ -1,5 +1,5 @@
 .rowToUpdate {
-    background-color: yellowgreen !important;
+    background-color: #F9CCCC !important;
 }
 
 .title {
@@ -20,7 +20,7 @@
     font-size: inherit;
 }
 
-.footerTitle{
+.footerTitle {
     margin: 0 4px;
 }
 
@@ -37,5 +37,51 @@
 }
 
 .helpMessage {
-    width:500px;
+    width: 500px;
+}
+
+.disabledEnum {
+    color: #555
+}
+
+.error {
+    color: red;
+}
+
+.translate-form fieldset {
+    padding: 0;
+    border: 0;
+    margin-top: 25px;
+}
+
+.form-icon-flag {
+    height: 1.5em;
+}
+
+.form-label {
+    font-style: italic;
+}
+
+.translate-form label, .translate-form input {
+    display: block;
+}
+
+.translate-form input.text {
+    margin-bottom: 12px;
+    width: 95%;
+    padding: .4em;
+}
+
+.translate-form fieldset {
+    padding: 0;
+    border: 0;
+    margin-top: 25px;
+}
+
+.edit-label {
+    width:100%;
+}
+
+.edit-order {
+    width:100%;
 }

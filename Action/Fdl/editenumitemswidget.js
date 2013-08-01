@@ -51,21 +51,21 @@
                         "bSortable": false,
                         "sClass": editableClass + " ui-widget",
                         "sWidth": "60px",
-                        "sTitle": "Rank"
+                        "sTitle": "[TEXT:EnumWidget:Rank]"
                     },
                     {
                         "aTargets": [1],
                         "mDataProp": "key",
                         "sClass": "ui-widget",
                         "bSortable": false,
-                        "sTitle": "Key"
+                        "sTitle": "[TEXT:EnumWidget:Key]"
                     },
                     {
                         "aTargets": [2],
                         "bSortable": false,
                         "mDataProp": "label",
                         "sClass": editableClass + " ui-widget",
-                        "sTitle": "Label"
+                        "sTitle": "[TEXT:EnumWidget:Label]"
                     },
                     {
                         "aTargets": [3],
@@ -104,7 +104,7 @@
             "bDestroy": true
         },
 
-        _orderTitle: "[TEXT:tooltip order]",
+        _orderTitle: "[TEXT:EnumWidget:tooltip order]",
 
         _dataTableWidget: null,
 
@@ -125,13 +125,15 @@
         _indexRowChanged: [],
 
         _activeButtonLabel: {
-            "on": "[TEXT:ON]",
-            "off": "[TEXT:OFF]"
+            "on": "[TEXT:EnumWidget:ON]",
+            "off": "[TEXT:EnumWidget:OFF]"
         },
 
         _columnIndex: {},
 
         _localeId: [],
+        _localeConfig: [],
+        _translateInit: false,
 
         //Setup widget (eg. element creation, apply theming
         // , bind events etc.)
@@ -178,8 +180,8 @@
         },
 
         _createSaveButton: function _createSaveButton() {
-            var buttonSave = $('<button class="saveButton" title="[TEXT:Save change]">[TEXT:Save]</button>').on("click", $.proxy(this._modEnumItems, this)),
-                buttonReload = $('<button class="reloadButton" title="[TEXT:Cancel change]">[TEXT:Reload]</button>').on("click", $.proxy(this._beforeOnReload, this)),
+            var buttonSave = $('<button class="saveButton" title="[TEXT:EnumWidget:Save change]">[TEXT:Save]</button>').on("click", $.proxy(this._modEnumItems, this)),
+                buttonReload = $('<button class="reloadButton" title="[TEXT:EnumWidget:Cancel change]">[TEXT:EnumWidget:Reload]</button>').on("click", $.proxy(this._beforeOnReload, this)),
                 buttonHelp = $('<button class="helpButton">[TEXT:Help]</button>').button().on("click", $.proxy(this._showHelp, this)),
                 buttonsDiv = $("<div></div>").append(buttonSave).append(buttonReload).addClass("headerButton");
 
@@ -198,7 +200,6 @@
         },
 
         _showHelp: function _showHelp(e) {
-            console.log("click on show help");
             this._message(this.options.helpMessage);
         },
 
@@ -256,10 +257,19 @@
 
         },
 
+        _rowCallback: function _rowCallback(nRow, aData) {
+            if (aData.disabled == true) {
+                $(nRow).addClass("disabledEnum");
+            } else {
+                $(nRow).removeClass("disabledEnum");
+            }
+        },
+
         _drawCallback: function _drawCallback(oSettings) {
             if (this._firstDraw) {
                 this._indexRowChanged = [];
                 this._initActiveButtonSet(this._dataTableElement);
+                this._initActiveTranslateButton(this._dataTableElement);
                 this._initiateHeader();
                 this._initWidgetHeader();
 
@@ -290,8 +300,10 @@
             $element.find(".activebuttonset").buttonset()
                 .find(".ui-button").on("click", function (e) {
                     if ($(this).text() === widget._activeButtonLabel.on) {
+                        $(this).parent().parent().parent().removeClass("disabledEnum");
                         widget._updateRow(false, $(this).parent(), true);
                     } else if ($(this).text() === widget._activeButtonLabel.off) {
+                        $(this).parent().parent().parent().addClass("disabledEnum");
                         widget._updateRow(true, $(this).parent(), true);
                     }
                 });
@@ -300,6 +312,9 @@
         _initActiveDeleteButton: function _initiActiveDeleteButton($element) {
             $element.find(".activedeletebutton").button().one("click.editenumitems", {"widget": this, "row": $element}, this._deleteClick);
         },
+        _initActiveTranslateButton: function _initActiveTranslateButton($element) {
+            $element.find(".activetranslatebutton").button();
+        },
 
         _createNewLine: function _createNewLine() {
             var tr = $("<tr></tr>"),
@@ -307,10 +322,10 @@
                 widget = this,
                 $newLine = $("#newLine"),
                 $oldLineElems = $newLine.find("td"),
-                foundValue;
+                hasValue = false;
 
             $.each(this.options.dataTableOptions.aoColumnDefs, function (index, col) {
-                if (this.mDataProp != "disabled") {
+                if (this.mDataProp != "disabled" ) {
                     var aTarget = this.aTargets[0],
                         width = $(".dataTable").find("th").eq(aTarget).css("width"),
                         value = "",
@@ -318,14 +333,21 @@
 
                     if ($oldLineElems.length > 0) {
                         value = $oldLineElems.eq(aTarget).find("input").val();
+                        if (value) hasValue = true;
                     }
 
                     if (this.mDataProp == "order") {
                         title = widget._orderTitle;
+
                     }
+                    if  (this.mDataProp == "locale") {
+                        html += '<td  style="width:' + width +  '"/></td>';
+                    } else {
                     html += '<td><input type="text" class="ui-widget ui-widget-content ui-state-active newLineField" data-id="' + this.mDataProp + '" placeholder="' + this.sTitle + '" style="width:' + width + '" value="' + value + '" title="' + title + '"/></td>';
+                    }
                 }
             });
+
             html += '<td><button id="addNewEnum">[TEXT:EnumWidget:Add]</button></td>';
             var newLine = $("<table></table>").prepend(tr.append(html)),
                 newLineTitle = $('<h3>[TEXT:Add new enum choice: ]</h3>').addClass("ui-widget footerTitle");
@@ -335,7 +357,28 @@
                 $newLine.find(".footerTitle").remove()
             }
             $newLine.append(newLine).addClass(" ui-state-default").prepend(newLineTitle);
-            $("#addNewEnum").button().on("click", $.proxy(this._addNewRow, this));
+
+            $newLine.find("input").off("keyup").on("keyup", function () {
+                var addEnumButton = $("#addNewEnum"),
+                    hasValue = false;
+
+                if ($(this).val()) {
+                    addEnumButton.button("enable");
+                } else {
+                    $("#newLine").find("input").each(function () {
+                        if ($(this).val()) {
+                            hasValue = true;
+                            return false;
+                        }
+                    });
+                    if (hasValue)  addEnumButton.button("enable");
+                    else  addEnumButton.button("disable");
+                }
+            });
+
+            $("#addNewEnum").button({
+                disabled: !hasValue
+            }).off("click").on("click", $.proxy(this._addNewRow, this));
         },
 
         _initiateDataTable: function _initiateDataTable(data) {
@@ -359,8 +402,12 @@
 
         },
 
+        _getTranslateButton: function (lineData) {
+                  return '<button class="activetranslatebutton" data-index="' + lineData.iDataRow + '">[TEXT:EnumWidget:Translate]</button>';
+              },
+
         _getActiveDeleteButton: function (lineData) {
-            return '<button class="activedeletebutton" data-index="' + lineData.iDataRow + '">[TEXT:Remove]</button>';
+            return '<button class="activedeletebutton" data-index="' + lineData.iDataRow + '">[TEXT:EnumWidget:Remove]</button>';
         },
 
         _getActiveRadioButton: function (lineData) {
@@ -423,6 +470,7 @@
             this._addAndReorganizeOrder(newLine.order, indexes[0], true);
 
             this._initActiveDeleteButton($trNode.addClass(this.options.rowToUpdateClass));
+            this._initActiveTranslateButton($trNode.addClass(this.options.rowToUpdateClass));
 
             this._addDataToSave(indexes[0]);
             $trNode.find("." + editableClass).on("click.editenumitems", {"widget": this}, this._rowClick);
@@ -490,7 +538,8 @@
 
                 widget._initActiveButtonSet($tr.last());
                 widget._initActiveDeleteButton($tr.last());
-
+                widget._initActiveTranslateButton($tr.last());
+console.log("redraw",$tr.last() );
                 lineData.order = newOrder;
                 lineData.orderBeforeThan = null;
                 widget._dataTableWidget.fnUpdate(lineData, lineNumber, undefined, false, false);
@@ -551,15 +600,16 @@
             if (aPos[2] == widget._columnIndex.order || aPos[2] == widget._columnIndex.disabled) {
                 widget._initActiveButtonSet($td.parent());
                 widget._initActiveDeleteButton($td.parent());
+                widget._initActiveTranslateButton($td.parent());
             }
-            this._setRowToChange($td, aPos);
+            this._setRowToChange($td.parent(), aPos);
         },
 
-        _setRowToChange: function _setRowToChange($td, dataTableIndex) {
+        _setRowToChange: function _setRowToChange($tr, dataTableIndex) {
             var data = this._dataTableWidget.fnGetData(dataTableIndex[0]),
                 originalData = this._originalData[data.key],
                 changeInLine = false,
-                $tr = $td.parent(),
+
                 widget = this;
 
             if (originalData) {
@@ -606,10 +656,84 @@
                 widget._lastRow = widget._findLastRow();
             }
         },
+        _translateClick: function (e) {
+            var widget = e.data.widget
+            var trNode=$(this).parent();
+            while (trNode && !trNode.is("tr")) {
+                trNode=trNode.parent();
+            }
+            trNode=trNode.get(0);
+            var langs=widget._localeId;
+            var langsConfig=widget._localeConfig;
+            var rowData=widget._dataTableWidget.fnGetData(trNode);
+           console.log("translate click", langsConfig, rowData);
+
+            var dialogForm=$('#dialog-translate');
+
+            if (dialogForm.length == 0) {
+                var htmlDialog='<div id="dialog-translate" title="Update translation" class="translate-form"></div>';
+                $('body').append(htmlDialog);
+
+                dialogForm=$('#dialog-translate');
+                dialogForm.dialog({
+                           autoOpen: false,
+                           height: 300,
+                           width: 350,
+                           modal: true,
+                           buttons: {
+                           "[TEXT:EnumWidget:Translate]": function() {
+                                   // @todo save data
+                               var trNode=$(this).dialog( "option", "rowTr");
+                               var rowGridData=$(this).dialog( "option", "rowGridData");
+                               var idlang;
+                               for (var li= 0; li < langsConfig.length; li++ ) {
+                                   idlang=langsConfig[li].id;
+                                    rowGridData[idlang]=$('#trans-'+idlang).val();
+                               }
+                               //rowGridData["en_US"]='toto en'+rowGridData.label;
+                               //rowGridData["fr_FR"]='toto fr'+rowGridData.label;
+                               widget._dataTableWidget.fnUpdate(rowGridData,trNode, undefined, false, false);
+
+                               widget._setRowToChange($(trNode), [widget._dataTableWidget.fnGetPosition(trNode)]);
+                               widget._initActiveButtonSet($(trNode));
+                               widget._initActiveDeleteButton($(trNode));
+                               widget._initActiveTranslateButton($(trNode));
+                               $( this ).dialog( "close" );
+                                },
+                           Cancel: function() {
+                               $( this ).dialog( "close" );
+                           }
+                           },
+                           close: function() {
+
+                           }
+                           });
+            }
+            var formDialog='<p >'+"[TEXT:EnumWidget:Translate] : <span class='form-label'>"+rowData.label+'</span></p><form>'
+                           +'<fieldset>';
+            var idl;
+            var ivalue;
+            for (var i=0; i< langsConfig.length; i++) {
+                idl=langsConfig[i].id;
+                ivalue=rowData[idl];
+                if (ivalue == undefined) {
+                    ivalue='';
+                }
+                formDialog   += '<label for="trans-'+idl+'"><img class="form-icon-flag" src="' +langsConfig[i].flag + '"> '+langsConfig[i].localeLabel+ ' </label>';
+                formDialog   += '<input type="text" name="'+idl+'" id="trans-'+idl+'" value="'+ivalue+ '" class="text ui-widget-content ui-corner-all" />'
+            }
+
+
+            formDialog   +='</fieldset></form>';
+            dialogForm.html(formDialog).dialog().dialog('open').dialog( "option", "title", "[TEXT:EnumWidget:Translate] " + rowData.key );
+            dialogForm.dialog( "option", "rowGridData", rowData);
+            dialogForm.dialog( "option", "rowTr", trNode);
+
+        },
 
         _addDataToSave: function (dataIndex) {
             this._indexRowChanged.push(dataIndex);
-            console.log("adding data");
+
             $(".saveButton").each(function () {
                 $(this).button("enable");
             });
@@ -639,9 +763,18 @@
 
             if (aPos[2] == widget._columnIndex.order) {
                 title = widget._orderTitle;
-            }
 
-            $this.html('<input type="text" id="rowToChange" />').find("input").val(val).attr("title", title);
+            }
+            var colName='';
+            for (var ci in widget._columnIndex) {
+                if (widget._columnIndex[ci]==aPos[2]) {
+                    colName=ci;
+                }
+            }
+            console.log(widget._columnIndex, aPos);
+
+
+            $this.html('<input type="text" id="rowToChange" />').find("input").val(val).attr("title", title).addClass('edit-'+colName);
 
             $("#rowToChange").focus().one("blur.editenumitems",function (e) {
                 updateRow(htmlEncode($(this).val()), this);
@@ -665,7 +798,7 @@
         _generateDataTableOptions: function _generateDataTableOptions(localeConfigs, items) {
             var options = {},
                 widget = this;
-            if (this.options.withlocale) options.aoColumnDefs = this._generateDataTableColumns(localeConfigs);
+            if (this.options.withlocale) options.aoColumnDefs = this._addTranslationColumn(localeConfigs);
             else options.aoColumnDefs = this.options.dataTableOptions.aoColumnDefs;
 
             $.each(options.aoColumnDefs, function (index, column) {
@@ -674,9 +807,47 @@
                 }
             });
 
-            options.fnDrawCallback = this.options.dataTableOptions.fnServerData || $.proxy(this._drawCallback, this);
+            options.fnDrawCallback = this.options.dataTableOptions.fnDrawCallback || $.proxy(this._drawCallback, this);
+
+            options.fnRowCallback  = this.options.dataTableOptions.fnDrawCallback || $.proxy(this._rowCallback, this);
 
             return $.extend(true, options, this._dataTableDefaultOptions, this.options.dataTableOptions);
+        },
+        _addTranslationColumn: function _addTranslationColumn(localeConfigs) {
+            var aoColumnDefs = this.options.dataTableOptions.aoColumnDefs,
+                            lastIndexColumnDefs = aoColumnDefs.length ,
+                            widget = this,
+                            aTargets = lastIndexColumnDefs - 1;
+
+
+
+            $.each(localeConfigs, function (index, locale) {
+                if ($.inArray(locale.id, widget._localeId) < 0) {
+                    widget._localeId.push(locale.id);
+                    widget._localeConfig.push(locale);
+                }
+            });
+            if (! widget._translateInit) {
+                aoColumnDefs.push({
+                            "aTargets": [aTargets],
+                            "mDataProp": 'locale',
+                            "bSortable": false,
+                            "bSearchable": false,
+                            "sClass":  " ui-widget",
+                            "sTitle": "[TEXT:EnumWidget:Translate]",
+                            "bUseRendered": false,
+                            "fnRender": function (data) {
+                                    return this._getTranslateButton(data.aData);
+                            }
+                        });
+                aoColumnDefs[lastIndexColumnDefs -1 ].aTargets = [aoColumnDefs.length - 1];
+
+                $(widget.element).on("click.translate", ".activetranslatebutton", {"widget": this }, this._translateClick);
+            }
+
+            widget._translateInit=true;
+
+            return aoColumnDefs;
         },
 
         _generateDataTableData: function _generateDataTableData(items, columDefs) {
