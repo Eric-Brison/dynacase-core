@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-07-31 17:44+0200\n"
+"PO-Revision-Date: 2013-08-01 15:51+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -492,6 +492,9 @@ msgstr "Activation de l'indexation plein texte avec TE"
 msgid "Activity"
 msgstr "Activité"
 
+msgid "Add"
+msgstr ""
+
 #, c-format
 msgid "Add %d document(s)"
 msgstr "Ajout de %d document(s)"
@@ -523,6 +526,9 @@ msgstr "Ajout nouveau document (document similaire)"
 
 msgid "Add new entry"
 msgstr "Ajouter la nouvelle entrée"
+
+msgid "Add new enum choice: "
+msgstr ""
 
 msgid "Add or modify item's category"
 msgstr "Ajouter uo modifier des valeurs de catégorie"
@@ -802,8 +808,14 @@ msgstr "Le contrôle de vue '%s' n'a pas été trouvé"
 msgid "Call method"
 msgstr "Appel de la méthode"
 
+msgid "Can't delete already created row"
+msgstr ""
+
 msgid "Cancel"
 msgstr "Annuler"
+
+msgid "Cancel change"
+msgstr ""
 
 msgid "Cancel changes and close window"
 msgstr "Annuler les changements et fermer la fenêtre"
@@ -1595,6 +1607,34 @@ msgstr "Barre de menu d'édition"
 
 msgid "Edit translations"
 msgstr "Modifier les traductions"
+
+msgid "EditEnumHelpMessage"
+msgstr ""
+"<p data-title='Aide'>Cette interface vous permet de gérer les valeurs possibles de l'énuméré :</p>\n"
+"<ul>\n"
+"<li> ordonner les valeurs pour leur présentation aux utilisateurs</li>\n"
+"<li>ajouter de nouvelles valeurs</li>\n"
+"<li>activer et désactiver une valeur</li>\n"
+"<li>traduire les valeurs en fonction des langues disponibles</li>\n"
+"</ul>\n"
+"\n"
+"<p>Une valeur d'énuméré est caractérisée par :</p>\n"
+"<ul>\n"
+"<li>son 'Rang' : il permet d'ordonner les valeurs;</li>\n"
+"<li>sa clé : identifiant unique de la valeur;</li>\n"
+"<li>son label : le texte non traduit, utilisé en l'absence de traduction;</li>\n"
+"<li>ses traductions dans autant que de langues configurées pour votre application.</li>\n"
+"</ul>\n"
+"<p>\n"
+"Les modifications des caractéristiques -la clé est non modifiable- se font en cliquant directement sur la caractéristique. En fin de modification, l'appuie sur la touche [Entrée] ou en cliquant hors du champ de modification, valide la modification.</p>\n"
+"<p>\n"
+"Les rangs des valeurs sont des nombres pairs. Si vous souhaitez modifiez un rang, il vous suffit de saisir un entier impair. La valeur sera déplacée entre les rang pairs directement inférieur et supérieur. Le rang modifié est recalculé.</p>\n"
+"<p>\n"
+"L'ajout d'une valeur est réalisée à l'aide du formulaire en bas de page.</p>\n"
+"<p>\n"
+"Toutes les modifications de valeurs sont mise en évidence par un changement de couleur de la ligne concernée.</p>\n"
+"<p>\n"
+"Les modifications restent locales. L'enregistrement sur le serveur et leur utilisation par les applications n'est effective que lors de leur enregistrement via le bouton Enregistrer].</p>"
 
 msgid ""
 "Element can't be perfectly analyze, some error might occur or be corrected "
@@ -2420,6 +2460,9 @@ msgstr "Que les états"
 msgid "Keep original document"
 msgstr "Garde le document original"
 
+msgid "Key already exists, must be unique"
+msgstr ""
+
 #, c-format
 msgid "LDAP Attribute added to %s %s"
 msgstr "Attribut LDAP ajouté à %s %s"
@@ -2837,6 +2880,12 @@ msgstr "Pas assez de majuscules"
 msgid "November"
 msgstr "Novembre"
 
+msgid "OFF"
+msgstr ""
+
+msgid "ON"
+msgstr ""
+
 msgid "OP_AND"
 msgstr "et"
 
@@ -2883,6 +2932,9 @@ msgstr "Options d'importation"
 
 msgid "Or upload a new icon"
 msgstr "Ou télécharger un nouvel icone"
+
+msgid "Order must be an odd number"
+msgstr ""
 
 msgid "Other..."
 msgstr "Autre..."
@@ -3143,11 +3195,17 @@ msgstr "Relations entre documents"
 msgid "Relation parametre"
 msgstr "Relation paramètre"
 
+msgid "Reload"
+msgstr ""
+
 msgid "Reload document"
 msgstr "Recharger le document"
 
 msgid "Reload page"
 msgstr "Recharger la page"
+
+msgid "Remove"
+msgstr ""
 
 #, c-format
 msgid "Remove duplicate attribute '%s' in family '%s'"
@@ -3257,6 +3315,9 @@ msgstr "Sauver et quitter le mode édition"
 
 msgid "Save and stay in edition"
 msgstr "Sauver et rester en modification"
+
+msgid "Save change"
+msgstr ""
 
 msgid "Save changes ?"
 msgstr "Sauver les changements ?"
@@ -3473,6 +3534,14 @@ msgstr "Affiche les documents %br à %er sur %nd au total%t%t%p%n"
 #, c-format
 msgid "Skip already added property '%s' in family '%s'"
 msgstr "Evitement de la propriété '%s' déjà ajoutée dans la famille '%s'"
+
+#, c-format
+msgid ""
+"Some change in the enum '%s > %e' are not saved do you really wish to quit?"
+msgstr ""
+
+msgid "Some changes are not saved, do you really wish to reload?"
+msgstr ""
 
 #, c-format
 msgid ""

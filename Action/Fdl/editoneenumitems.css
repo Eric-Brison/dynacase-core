@@ -35,3 +35,7 @@
     border-left: 1px solid #DDD !important;
     background-color: #F0F0F0;
 }
+
+.helpMessage {
+    width:500px;
+}

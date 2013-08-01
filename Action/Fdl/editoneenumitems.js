@@ -5,11 +5,12 @@ $(function () {
         enumid: $("#enumid").val(),
         withlocale: true,
         title: "%s &gt; %e",
-        helpMessage: "[TEXT:The help message]",
+        helpMessage: "<div class='helpMessage'>[ZONE FDL:GETEDITENUMHELPMESSAGE]</div>",
         error: function (e, data) {
             var dialogModal = $("#dialogModal");
             dialogModal.html('<div class="message error">' + data.error + '</div>').dialog({
                 modal: true,
+                width:'auto',
                 close: function () {
                     $(this).dialog("destroy");
                 }
@@ -20,6 +21,7 @@ $(function () {
             dialogModal.html('<div class="message confirm">' + data.msg + '</div>')
                 .dialog({
                     modal: true,
+                    width:'auto',
                     buttons: {
                         "Reload data": function () {
                             data.callback();
@@ -39,6 +41,7 @@ $(function () {
             dialogModal.html('<div class="message">' + data.msg + '</div>')
                 .dialog({
                     modal: true,
+                    width:'auto',
                     buttons: {
                         "OK": function () {
                             $(this).dialog("close");
@@ -48,7 +51,12 @@ $(function () {
                         $(this).dialog("destroy");
                     }
                 });
+            var mTitle=$(".message p").attr("data-title");
+            if (mTitle) {
+                dialogModal.dialog( "option", "title", mTitle );
+            }
         },
+
         redraw: function () {
             fitHeight();
         }
