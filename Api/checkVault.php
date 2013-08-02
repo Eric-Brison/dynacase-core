@@ -28,11 +28,9 @@ $usage->setDefinitionText("Examine vault files");
 /* --vaultname */
 $vaultname = $usage->addOptionalParameter("vault", "Name of the vault to examine", null, "FREEDOM");
 /* --test */
-$test = $usage->addOptionalParameter("test", "Enable/disable test mode: do not delete anything, just print what would be done", array(
-    "yes",
-    "no"
-) , "no");
-$test = ($test == "yes" ? true : false);
+$test = $usage->addEmptyParameter("test", "Enable/disable test mode: do not delete anything, just print what would be done");
+
+$test = (($test == "yes" || $test === true) ? true : false);
 /* --cmd=check */
 $command = $usage->addRequiredParameter("cmd", "Examine command", array(
     "check-all",
@@ -41,13 +39,8 @@ $command = $usage->addRequiredParameter("cmd", "Examine command", array(
     "clean-unref"
 ) , null);
 /* --csv */
-$csv = $usage->addOptionalParameter("csv", "Output in CSV format", array(
-    1,
-    0,
-    "yes",
-    "no"
-) , "no");
-$csv = ($csv == 1 || $csv == "yes") ? true : false;
+$csv = $usage->addEmptyParameter("csv", "Output in CSV format");
+$csv = ($csv === "1" || $csv === true || $csv == "yes") ? true : false;
 
 $usage->verify();
 
