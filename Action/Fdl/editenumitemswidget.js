@@ -64,6 +64,10 @@
                         "aTargets": [2],
                         "bSortable": false,
                         "mDataProp": "label",
+                        "bUseRendered": false,
+                        "fnRender": function (data) {
+                            return '<span title="' + this._getTranslateTooltip(data.aData) + '">' + (data.aData.label || "") + '</span>';
+                        },
                         "sClass": editableClass + " ui-widget",
                         "sTitle": "[TEXT:EnumWidget:Label]"
                     },
@@ -280,9 +284,12 @@
                 this._createSaveButton();
 
                 this._firstDraw = false;
-
                 this._trigger("redraw");
             }
+            this.element.find("[title]").tipsy({
+                gravity: this._getTipsyGravity,
+                html: true
+            });
         },
 
         _convertStringWithInfo: function (str) {
@@ -291,6 +298,7 @@
 
         _initWidgetHeader: function _initWidgetHeader() {
             var title = this._convertStringWithInfo(this.options.title);
+
             $("#titleHeader").html('<h2 class="title" title="' + this.options.enumid + '">' + title + '</h2>').addClass("ui-state-default");
         },
 
@@ -325,7 +333,7 @@
                 hasValue = false;
 
             $.each(this.options.dataTableOptions.aoColumnDefs, function (index, col) {
-                if (this.mDataProp != "disabled" ) {
+                if (this.mDataProp != "disabled") {
                     var aTarget = this.aTargets[0],
                         width = $(".dataTable").find("th").eq(aTarget).css("width"),
                         value = "",
@@ -340,10 +348,10 @@
                         title = widget._orderTitle;
 
                     }
-                    if  (this.mDataProp == "locale") {
-                        html += '<td  style="width:' + width +  '"/></td>';
+                    if (this.mDataProp == "locale") {
+                        html += '<td  style="width:' + width + '"/></td>';
                     } else {
-                    html += '<td><input type="text" class="ui-widget ui-widget-content ui-state-active newLineField" data-id="' + this.mDataProp + '" placeholder="' + this.sTitle + '" style="width:' + width + '" value="' + value + '" title="' + title + '"/></td>';
+                        html += '<td><input type="text" class="ui-widget ui-widget-content ui-state-active newLineField" data-id="' + this.mDataProp + '" placeholder="' + this.sTitle + '" style="width:' + width + '" value="' + value + '" title="' + title + '"/></td>';
                     }
                 }
             });
@@ -402,9 +410,22 @@
 
         },
 
+        _getTranslateTooltip: function (lineData) {
+            var langConfig = this._localeConfig,
+                html = "<table class='translateTooltip'>",
+                data = lineData;
+
+            $.each(langConfig, function (index, lang) {
+                html += "<tr><td><img class='form-icon-flag' src='" + lang.flag + "' alt='" + lang.id + "'/></td><td><span class='langLabel'>" + lang.localeLabel + ": </span></td><td><span class='langValue'>" + data[lang.id] + "</span></td></tr>";
+            });
+
+            html += "</table>";
+            return html;
+        },
+
         _getTranslateButton: function (lineData) {
-                  return '<button class="activetranslatebutton" data-index="' + lineData.iDataRow + '">[TEXT:EnumWidget:Translate]</button>';
-              },
+            return '<button class="activetranslatebutton" data-index="' + lineData.iDataRow + '" title="' + this._getTranslateTooltip(lineData.aData) + '">[TEXT:EnumWidget:Translate]</button>';
+        },
 
         _getActiveDeleteButton: function (lineData) {
             return '<button class="activedeletebutton" data-index="' + lineData.iDataRow + '">[TEXT:EnumWidget:Remove]</button>';
@@ -443,7 +464,8 @@
                 }
             });
 
-            var searchField = $("th.searchField");
+            var searchField = $("th").find(".searchField");
+
             searchField.on({
                 "keyup.editenumitems": widget._searchFieldKeyup
             }, {
@@ -453,8 +475,18 @@
         },
 
         _addNewRow: function () {
-            var newLine = {"disabled": false, "newline": true};
+            var newLine = {
+                "disabled": false,
+                "newline": true
+            };
+            var locale = {};
 
+            $.each(this._localeId, function(index, value) {
+               locale[value] = "";
+            });
+
+            console.log("locale is === ", locale);
+            newLine.locale = locale;
             $("#newLine").find("input").each(function () {
                 newLine[$(this).attr("data-id")] = $(this).val();
             });
@@ -539,7 +571,7 @@
                 widget._initActiveButtonSet($tr.last());
                 widget._initActiveDeleteButton($tr.last());
                 widget._initActiveTranslateButton($tr.last());
-console.log("redraw",$tr.last() );
+
                 lineData.order = newOrder;
                 lineData.orderBeforeThan = null;
                 widget._dataTableWidget.fnUpdate(lineData, lineNumber, undefined, false, false);
@@ -602,6 +634,7 @@ console.log("redraw",$tr.last() );
                 widget._initActiveDeleteButton($td.parent());
                 widget._initActiveTranslateButton($td.parent());
             }
+            //$td.find(["title"]).tipsy()
             this._setRowToChange($td.parent(), aPos);
         },
 
@@ -656,78 +689,79 @@ console.log("redraw",$tr.last() );
                 widget._lastRow = widget._findLastRow();
             }
         },
-        _translateClick: function (e) {
-            var widget = e.data.widget
-            var trNode=$(this).parent();
-            while (trNode && !trNode.is("tr")) {
-                trNode=trNode.parent();
-            }
-            trNode=trNode.get(0);
-            var langs=widget._localeId;
-            var langsConfig=widget._localeConfig;
-            var rowData=widget._dataTableWidget.fnGetData(trNode);
-           console.log("translate click", langsConfig, rowData);
 
-            var dialogForm=$('#dialog-translate');
+        _translateClick: function (e) {
+            var widget = e.data.widget;
+            var trNode = $(this).parent();
+
+            while (trNode && !trNode.is("tr")) {
+                trNode = trNode.parent();
+            }
+            trNode = trNode.get(0);
+
+            var langsConfig = widget._localeConfig;
+            var rowData = widget._dataTableWidget.fnGetData(trNode);
+
+            var dialogForm = $('#dialog-translate');
 
             if (dialogForm.length == 0) {
-                var htmlDialog='<div id="dialog-translate" title="Update translation" class="translate-form"></div>';
+                var htmlDialog = '<div id="dialog-translate" title="Update translation" class="translate-form"></div>';
                 $('body').append(htmlDialog);
 
-                dialogForm=$('#dialog-translate');
+                dialogForm = $('#dialog-translate');
                 dialogForm.dialog({
-                           autoOpen: false,
-                           height: 300,
-                           width: 350,
-                           modal: true,
-                           buttons: {
-                           "[TEXT:EnumWidget:Translate]": function() {
-                                   // @todo save data
-                               var trNode=$(this).dialog( "option", "rowTr");
-                               var rowGridData=$(this).dialog( "option", "rowGridData");
-                               var idlang;
-                               for (var li= 0; li < langsConfig.length; li++ ) {
-                                   idlang=langsConfig[li].id;
-                                    rowGridData[idlang]=$('#trans-'+idlang).val();
-                               }
-                               //rowGridData["en_US"]='toto en'+rowGridData.label;
-                               //rowGridData["fr_FR"]='toto fr'+rowGridData.label;
-                               widget._dataTableWidget.fnUpdate(rowGridData,trNode, undefined, false, false);
+                    autoOpen: false,
+                    height: 300,
+                    width: 350,
+                    modal: true,
+                    buttons: {
+                        "[TEXT:EnumWidget:Translate]": function () {
+                            // @todo save data
+                            var trNode = $(this).dialog("option", "rowTr");
+                            var rowGridData = $(this).dialog("option", "rowGridData");
+                            var idlang;
+                            for (var li = 0; li < langsConfig.length; li++) {
+                                idlang = langsConfig[li].id;
+                                rowGridData[idlang] = $('#trans-' + idlang).val();
+                            }
+                            //rowGridData["en_US"]='toto en'+rowGridData.label;
+                            //rowGridData["fr_FR"]='toto fr'+rowGridData.label;
+                            widget._dataTableWidget.fnUpdate(rowGridData, trNode, undefined, false, false);
 
-                               widget._setRowToChange($(trNode), [widget._dataTableWidget.fnGetPosition(trNode)]);
-                               widget._initActiveButtonSet($(trNode));
-                               widget._initActiveDeleteButton($(trNode));
-                               widget._initActiveTranslateButton($(trNode));
-                               $( this ).dialog( "close" );
-                                },
-                           Cancel: function() {
-                               $( this ).dialog( "close" );
-                           }
-                           },
-                           close: function() {
+                            widget._setRowToChange($(trNode), [widget._dataTableWidget.fnGetPosition(trNode)]);
+                            widget._initActiveButtonSet($(trNode));
+                            widget._initActiveDeleteButton($(trNode));
+                            widget._initActiveTranslateButton($(trNode));
+                            $(this).dialog("close");
+                        },
+                        Cancel: function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                    close: function () {
 
-                           }
-                           });
+                    }
+                });
             }
-            var formDialog='<p >'+"[TEXT:EnumWidget:Translate] : <span class='form-label'>"+rowData.label+'</span></p><form>'
-                           +'<fieldset>';
+            var formDialog = '<p >' + "[TEXT:EnumWidget:Translate] : <span class='form-label'>" + rowData.label + '</span></p><form>'
+                + '<fieldset>';
             var idl;
             var ivalue;
-            for (var i=0; i< langsConfig.length; i++) {
-                idl=langsConfig[i].id;
-                ivalue=rowData[idl];
+            for (var i = 0; i < langsConfig.length; i++) {
+                idl = langsConfig[i].id;
+                ivalue = rowData[idl];
                 if (ivalue == undefined) {
-                    ivalue='';
+                    ivalue = '';
                 }
-                formDialog   += '<label for="trans-'+idl+'"><img class="form-icon-flag" src="' +langsConfig[i].flag + '"> '+langsConfig[i].localeLabel+ ' </label>';
-                formDialog   += '<input type="text" name="'+idl+'" id="trans-'+idl+'" value="'+ivalue+ '" class="text ui-widget-content ui-corner-all" />'
+                formDialog += '<label for="trans-' + idl + '"><img class="form-icon-flag" src="' + langsConfig[i].flag + '"> ' + langsConfig[i].localeLabel + ' </label>';
+                formDialog += '<input type="text" name="' + idl + '" id="trans-' + idl + '" value="' + ivalue + '" class="text ui-widget-content ui-corner-all" />'
             }
 
 
-            formDialog   +='</fieldset></form>';
-            dialogForm.html(formDialog).dialog().dialog('open').dialog( "option", "title", "[TEXT:EnumWidget:Translate] " + rowData.key );
-            dialogForm.dialog( "option", "rowGridData", rowData);
-            dialogForm.dialog( "option", "rowTr", trNode);
+            formDialog += '</fieldset></form>';
+            dialogForm.html(formDialog).dialog().dialog('open').dialog("option", "title", "[TEXT:EnumWidget:Translate] " + rowData.key);
+            dialogForm.dialog("option", "rowGridData", rowData);
+            dialogForm.dialog("option", "rowTr", trNode);
 
         },
 
@@ -765,24 +799,34 @@ console.log("redraw",$tr.last() );
                 title = widget._orderTitle;
 
             }
-            var colName='';
+            var colName = '';
             for (var ci in widget._columnIndex) {
-                if (widget._columnIndex[ci]==aPos[2]) {
-                    colName=ci;
+                if (widget._columnIndex[ci] == aPos[2]) {
+                    colName = ci;
                 }
             }
             console.log(widget._columnIndex, aPos);
 
-
-            $this.html('<input type="text" id="rowToChange" />').find("input").val(val).attr("title", title).addClass('edit-'+colName);
+            $this.find("[title]").tipsy("hide");
+            $this.html('<input type="text" id="rowToChange" />').find("input").val(val).attr("title", title).addClass('edit-' + colName);
 
             $("#rowToChange").focus().one("blur.editenumitems",function (e) {
+                $(this).tipsy("hide");
                 updateRow(htmlEncode($(this).val()), this);
-            }).on("keypress.editenumitems", function (e) {
+            }).on("keypress.editenumitems",function (e) {
                     if (e.keyCode == 13) {
                         $(this).trigger("blur.editenumitems");
                     }
+                }).tipsy({
+                    gravity: this._getTipsyGravity,
+                    html: true
                 });
+        },
+
+        _getTipsyGravity: function () {
+            var autoNS = $.proxy($.fn.tipsy.autoNS, this),
+                autoWE = $.proxy($.fn.tipsy.autoWE, this);
+            return  autoNS() + autoWE();
         },
 
         _searchFieldKeyup: function (e) {
@@ -809,16 +853,15 @@ console.log("redraw",$tr.last() );
 
             options.fnDrawCallback = this.options.dataTableOptions.fnDrawCallback || $.proxy(this._drawCallback, this);
 
-            options.fnRowCallback  = this.options.dataTableOptions.fnDrawCallback || $.proxy(this._rowCallback, this);
+            options.fnRowCallback = this.options.dataTableOptions.fnDrawCallback || $.proxy(this._rowCallback, this);
 
             return $.extend(true, options, this._dataTableDefaultOptions, this.options.dataTableOptions);
         },
         _addTranslationColumn: function _addTranslationColumn(localeConfigs) {
             var aoColumnDefs = this.options.dataTableOptions.aoColumnDefs,
-                            lastIndexColumnDefs = aoColumnDefs.length ,
-                            widget = this,
-                            aTargets = lastIndexColumnDefs - 1;
-
+                lastIndexColumnDefs = aoColumnDefs.length ,
+                widget = this,
+                aTargets = lastIndexColumnDefs - 1;
 
 
             $.each(localeConfigs, function (index, locale) {
@@ -827,25 +870,26 @@ console.log("redraw",$tr.last() );
                     widget._localeConfig.push(locale);
                 }
             });
-            if (! widget._translateInit) {
+            if (!widget._translateInit) {
                 aoColumnDefs.push({
-                            "aTargets": [aTargets],
-                            "mDataProp": 'locale',
-                            "bSortable": false,
-                            "bSearchable": false,
-                            "sClass":  " ui-widget",
-                            "sTitle": "[TEXT:EnumWidget:Translate]",
-                            "bUseRendered": false,
-                            "fnRender": function (data) {
-                                    return this._getTranslateButton(data.aData);
-                            }
-                        });
-                aoColumnDefs[lastIndexColumnDefs -1 ].aTargets = [aoColumnDefs.length - 1];
+                    "aTargets": [aTargets],
+                    "mDataProp": 'locale',
+                    "bSortable": false,
+                    "bSearchable": false,
+                    "sClass": " ui-widget",
+                    "sTitle": "[TEXT:EnumWidget:Translate]",
+                    "bUseRendered": false,
+                    "sWidth": "125px",
+                    "fnRender": function (data) {
+                        return this._getTranslateButton(data);
+                    }
+                });
+                aoColumnDefs[lastIndexColumnDefs - 1].aTargets = [aoColumnDefs.length - 1];
 
                 $(widget.element).on("click.translate", ".activetranslatebutton", {"widget": this }, this._translateClick);
             }
 
-            widget._translateInit=true;
+            widget._translateInit = true;
 
             return aoColumnDefs;
         },
