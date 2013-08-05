@@ -23,11 +23,11 @@ $(function () {
                     modal: true,
                     width:'auto',
                     buttons: {
-                        "Reload data": function () {
+                        "[TEXT:EnumWidget:Reload data]": function () {
                             data.callback();
                             $(this).dialog("close");
                         },
-                        "Cancel": function () {
+                        "[TEXT:EnumWidget:Cancel]": function () {
                             $(this).dialog("close");
                         }
                     },

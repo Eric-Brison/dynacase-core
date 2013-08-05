@@ -2,13 +2,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-08-02 15:49+0200\n"
+"PO-Revision-Date: 2013-08-02 17:55+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
@@ -1634,6 +1634,9 @@ msgstr ""
 msgid "EnumWidget:Add"
 msgstr "Add"
 
+msgid "EnumWidget:Cancel"
+msgstr "Cancel"
+
 msgid "EnumWidget:Cancel change"
 msgstr "Cancel change"
 
@@ -1642,6 +1645,9 @@ msgstr "Key"
 
 msgid "EnumWidget:Label"
 msgstr "Label"
+
+msgid "EnumWidget:No translation"
+msgstr "No translation"
 
 msgid "EnumWidget:OFF"
 msgstr "OFF"
@@ -1654,6 +1660,9 @@ msgstr "Rank"
 
 msgid "EnumWidget:Reload"
 msgstr "Reload"
+
+msgid "EnumWidget:Reload data"
+msgstr "Reload data"
 
 msgid "EnumWidget:Remove"
 msgstr "Remove"
@@ -2274,8 +2283,8 @@ msgstr ""
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;"
-"%s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;%"
+"s&gt; will be sended with result rapport"
 msgstr ""
 
 msgid "Import Archive"

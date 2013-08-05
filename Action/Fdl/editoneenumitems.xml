@@ -1,8 +1,6 @@
 [ZONE FDL:HTMLHEAD?title=[TEXT:Edit Enum Items]]
 <style>
-table.dataTable, body {
-    overflow-y:hidden;
-}
+
 </style>
 
         <input type="hidden" value="[famid]" id="famid"/>

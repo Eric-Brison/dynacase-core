@@ -49,7 +49,11 @@
                         "mDataProp": "order",
                         "bSearchable": false,
                         "bSortable": false,
+                        "bUseRendered": false,
                         "sClass": editableClass + " ui-widget",
+                        "fnRender": function (data) {
+                            return '<span>' + (data.aData.order || "") + '</span>';
+                        },
                         "sWidth": "60px",
                         "sTitle": "[TEXT:EnumWidget:Rank]"
                     },
@@ -187,7 +191,8 @@
             var buttonSave = $('<button class="saveButton" title="[TEXT:EnumWidget:Save change]">[TEXT:Save]</button>').on("click", $.proxy(this._modEnumItems, this)),
                 buttonReload = $('<button class="reloadButton" title="[TEXT:EnumWidget:Cancel change]">[TEXT:EnumWidget:Reload]</button>').on("click", $.proxy(this._beforeOnReload, this)),
                 buttonHelp = $('<button class="helpButton">[TEXT:Help]</button>').button().on("click", $.proxy(this._showHelp, this)),
-                buttonsDiv = $("<div></div>").append(buttonSave).append(buttonReload).addClass("headerButton");
+                buttonsDiv = $("<div></div>").append(buttonSave).append(buttonReload).addClass("headerButton"),
+                disabled = this._indexRowChanged.length <= 0;
 
             if (this.options.saveOnBottom) {
                 $("#newLine").append(buttonsDiv.clone(true).css("text-align", "right"));
@@ -196,8 +201,9 @@
                 buttonsDiv.append(buttonHelp);
             }
             $("#titleHeader").prepend(buttonsDiv.css("float", "right"));
+
             $(".saveButton").button({
-                "disabled": true
+                "disabled": disabled
             });
             $(".reloadButton").button();
 
@@ -226,7 +232,7 @@
                 $.each(localeIds, function (i, locale) {
                     rowData.localeLabel.push({
                         "lang": locale,
-                        "label": rowData[locale]
+                        "label": rowData[locale] || ""
                     });
                 });
                 toSendData.push(rowData);
@@ -256,6 +262,7 @@
                 this._error(data.error);
                 this._dataTableWidget.fnProcessingIndicator(false);
             } else {
+                this._indexRowChanged = [];
                 this._getEnumItems();
             }
 
@@ -271,7 +278,6 @@
 
         _drawCallback: function _drawCallback(oSettings) {
             if (this._firstDraw) {
-                this._indexRowChanged = [];
                 this._initActiveButtonSet(this._dataTableElement);
                 this._initActiveTranslateButton(this._dataTableElement);
                 this._initiateHeader();
@@ -286,14 +292,12 @@
                 this._firstDraw = false;
                 this._trigger("redraw");
             }
-            this.element.find("[title]").tipsy({
-                gravity: this._getTipsyGravity,
-                html: true
-            });
+            this.element.find("[title]").tipsy("hide");
+            this._initTipsy(this.element.find("[title]"));
         },
 
         _convertStringWithInfo: function (str) {
-            return str.replace("%f", this.famTitle).replace("%e", this.enumLabel).replace("%s", this.enumParentLabel);
+            return str.replace("%f", this.famTitle, "g").replace("%e", this.enumLabel, "g").replace("%s", this.enumParentLabel, "g");
         },
 
         _initWidgetHeader: function _initWidgetHeader() {
@@ -416,7 +420,7 @@
                 data = lineData;
 
             $.each(langConfig, function (index, lang) {
-                html += "<tr><td><img class='form-icon-flag' src='" + lang.flag + "' alt='" + lang.id + "'/></td><td><span class='langLabel'>" + lang.localeLabel + ": </span></td><td><span class='langValue'>" + data[lang.id] + "</span></td></tr>";
+                html += "<tr><td><img class='form-icon-flag' src='" + lang.flag + "' alt='" + lang.id + "'/></td><td class='langLabel'>" + (lang.localeLabel || "") + ": </td><td class='langValue'>" + (data[lang.id] || "[TEXT:EnumWidget:No translation]") + "</td></tr>";
             });
 
             html += "</table>";
@@ -432,9 +436,11 @@
         },
 
         _getActiveRadioButton: function (lineData) {
+
+            var key = lineData.key ? lineData.key.replace('"', "&quot;", "g") : "";
             return '<div class="activebuttonset" >' +
-                '<input type="radio" id="activebuttonset_' + lineData.key + '_on" name="activebuttonset_' + lineData.key + '" ' + (!lineData.disabled ? 'checked="checked"' : "") + '/><label for="activebuttonset_' + lineData.key + '_on">' + this._activeButtonLabel.on + '</label>' +
-                '<input type="radio" id="activebuttonset_' + lineData.key + '_off" name="activebuttonset_' + lineData.key + '"' + (lineData.disabled ? 'checked="checked"' : "") + '/><label for="activebuttonset_' + lineData.key + '_off">' + this._activeButtonLabel.off + '</label>' +
+                '<input type="radio" id="activebuttonset_' + key  + '_on" name="activebuttonset_' + key  + '" ' + (!lineData.disabled ? 'checked="checked"' : "") + '/><label for="activebuttonset_' + key + '_on">' + this._activeButtonLabel.on + '</label>' +
+                '<input type="radio" id="activebuttonset_' + key  + '_off" name="activebuttonset_' + key + '"' + (lineData.disabled ? 'checked="checked"' : "") + '/><label for="activebuttonset_' + key + '_off">' + this._activeButtonLabel.off + '</label>' +
                 '</div>';
         },
 
@@ -481,11 +487,10 @@
             };
             var locale = {};
 
-            $.each(this._localeId, function(index, value) {
-               locale[value] = "";
+            $.each(this._localeId, function (index, value) {
+                locale[value] = "";
             });
 
-            console.log("locale is === ", locale);
             newLine.locale = locale;
             $("#newLine").find("input").each(function () {
                 newLine[$(this).attr("data-id")] = $(this).val();
@@ -596,6 +601,17 @@
             return indexOfKey;
         },
 
+        _reinitField: function (value, $td) {
+            var widget= this,
+                title = $td.find("[original-title]").attr("original-title"),
+                span = $("<span></span>").html(value).attr("title", title);
+
+            $td.find("input").remove();
+            $td.append(span);
+
+            widget._initTipsy($td.find("[title]"));
+        },
+
         _updateRow: function (value, element, fromButton) {
             var $element = $(element),
                 $td = $element.parent(),
@@ -604,16 +620,13 @@
                 aData = this._dataTableWidget.fnGetData($td.get(0));
 
             if (value == aData) {
-                if (!fromButton) {
-                    $td.find("input").remove();
-                    $td.html(value);
-                }
+                if (!fromButton) widget._reinitField(value, $td);
                 return false;
             }
 
             if (aPos[2] == widget._columnIndex.order) {
                 if (parseInt(value) % 2 == 0) {
-                    if (!fromButton) $td.html(aData);
+                    if (!fromButton) widget._reinitField(value, $td);
                     widget._error("[TEXT:Order must be an odd number]");
                     return false;
                 }
@@ -621,7 +634,7 @@
             } else {
                 if (aPos[2] == widget._columnIndex.key) {
                     if (widget._findKey(value) >= 0) {
-                        if (!fromButton) $td.html(aData);
+                        if (!fromButton) widget._reinitField(value, $td);
                         widget._error("[TEXT:Key already exists, must be unique]");
                         return false;
                     }
@@ -634,8 +647,9 @@
                 widget._initActiveDeleteButton($td.parent());
                 widget._initActiveTranslateButton($td.parent());
             }
-            //$td.find(["title"]).tipsy()
+
             this._setRowToChange($td.parent(), aPos);
+            widget._initTipsy($td.find("[title]"));
         },
 
         _setRowToChange: function _setRowToChange($tr, dataTableIndex) {
@@ -732,6 +746,8 @@
                             widget._initActiveButtonSet($(trNode));
                             widget._initActiveDeleteButton($(trNode));
                             widget._initActiveTranslateButton($(trNode));
+                            console.log("initiate tipsy for ", $(trNode).find("td").find("[orignial-title]"), $(trNode).find("td").find("[title]"))
+                            widget._initTipsy($(trNode).find("td").find("[title]"));
                             $(this).dialog("close");
                         },
                         Cancel: function () {
@@ -743,7 +759,7 @@
                     }
                 });
             }
-            var formDialog = '<p >' + "[TEXT:EnumWidget:Translate] : <span class='form-label'>" + rowData.label + '</span></p><form>'
+            var formDialog = '<p >' + "[TEXT:EnumWidget:Translate] : <span class='form-label'>" + (rowData.label || "") + '</span></p><form>'
                 + '<fieldset>';
             var idl;
             var ivalue;
@@ -791,13 +807,13 @@
                 val = $this.text(),
                 updateRow = $.proxy(widget._updateRow, widget),
                 aPos = widget._dataTableWidget.fnGetPosition(this),
-                title = "";
+                tipsyElem = $this.find("[original-title]"),
+                title = tipsyElem.attr("original-title");
 
             widget._trigger("rowclick", e, {widget: widget, elem: $this});
 
             if (aPos[2] == widget._columnIndex.order) {
                 title = widget._orderTitle;
-
             }
             var colName = '';
             for (var ci in widget._columnIndex) {
@@ -805,22 +821,27 @@
                     colName = ci;
                 }
             }
-            console.log(widget._columnIndex, aPos);
 
-            $this.find("[title]").tipsy("hide");
+            tipsyElem.tipsy("hide");
             $this.html('<input type="text" id="rowToChange" />').find("input").val(val).attr("title", title).addClass('edit-' + colName);
 
-            $("#rowToChange").focus().one("blur.editenumitems",function (e) {
+            var $rowChange = $("#rowToChange").focus().one("blur.editenumitems",function (e) {
                 $(this).tipsy("hide");
                 updateRow(htmlEncode($(this).val()), this);
-            }).on("keypress.editenumitems",function (e) {
+            }).on("keypress.editenumitems", function (e) {
                     if (e.keyCode == 13) {
                         $(this).trigger("blur.editenumitems");
                     }
-                }).tipsy({
-                    gravity: this._getTipsyGravity,
-                    html: true
                 });
+
+            widget._initTipsy($rowChange);
+        },
+
+        _initTipsy: function ($element) {
+            return $element.tipsy({
+                gravity: this._getTipsyGravity,
+                html: true
+            });
         },
 
         _getTipsyGravity: function () {

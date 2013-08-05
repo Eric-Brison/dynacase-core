@@ -1,3 +1,11 @@
+table.dataTable, body {
+    overflow-y:hidden;
+}
+
+table.dataTable {
+    min-width: 600px;
+}
+
 .rowToUpdate {
     background-color: #F9CCCC !important;
 }
