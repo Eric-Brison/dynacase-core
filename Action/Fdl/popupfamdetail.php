@@ -18,7 +18,7 @@
 
 include_once ("FDL/popupdoc.php");
 
-function popupfamdetail(Action &$action)
+function popupfamdetail(Action & $action)
 {
     $docid = GetHttpVars("id");
     if ($docid == "") $action->exitError(_("No identificator"));
@@ -27,7 +27,7 @@ function popupfamdetail(Action &$action)
     popupdoc($action, $popup);
 }
 
-function getpopupfamdetail(Action &$action, $docid)
+function getpopupfamdetail(Action & $action, $docid)
 {
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -89,7 +89,7 @@ function getpopupfamdetail(Action &$action, $docid)
         ) ,
         "editenum" => array(
             "descr" => _("Edit enum attributes") ,
-            "url" => "$surl&app=GENERIC&action=GENERIC_EDITFAMCATG&famid=$docid",
+            "url" => "$surl&app=FDL&action=EDITFAMILYENUMS&viewoldinterface=yes&famid=$docid",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
@@ -262,15 +262,13 @@ function getpopupfamdetail(Action &$action, $docid)
     
     return $tlink;
 }
-
-
 /**
  * Add control view menu
  * @param Action $action
  * @param string $tlink
  * @param DocFam $doc
  */
-function changeFamMenuVisibility(Action &$action, &$tlink, &$doc)
+function changeFamMenuVisibility(Action & $action, &$tlink, &$doc)
 {
     $clf = ($doc->CanEdit() == "");
     
@@ -324,8 +322,10 @@ function changeFamMenuVisibility(Action &$action, &$tlink, &$doc)
     if (!$action->parent->Haspermission("FREEDOM_READ", "FREEDOM")) {
         $tlink["histo"]["visibility"] = POPUP_INVISIBLE;
     }
+    if (!$action->parent->Haspermission("FDL", "FAMILY")) {
+        $tlink["histo"]["editenum"] = POPUP_INVISIBLE;
+    }
     
-
     include_once ("FDL/Class.SearchDoc.php");
     $s = new SearchDoc($doc->dbaccess, "HELPPAGE");
     $s->addFilter("help_family='%d'", $doc->id);

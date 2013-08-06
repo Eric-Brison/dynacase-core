@@ -57,6 +57,11 @@ $app_acl = array(
 
 $action_desc = array(
     array(
+        "name" => "EDITONEENUMITEMS",
+        "short_name" => N_("edit one enum items"),
+        "acl" => "NORMAL"
+    ),
+    array(
         "name" => "NONE",
         "short_name" => N_("nothing action"),
         "acl" => "NORMAL",
@@ -65,6 +70,26 @@ $action_desc = array(
     array(
         "name" => "MODFAMILYPARAMETER",
         "short_name" => N_("modify family parameter"),
+        "acl" => "FAMILY"
+    ),
+    array(
+        "name" => "GETENUMITEMS",
+        "short_name" => N_("get enum items definition"),
+        "acl" => "FAMILY"
+    ),
+    array(
+        "name" => "MODENUMITEMS",
+        "short_name" => N_("modify enum items definition"),
+        "acl" => "FAMILY"
+    ),
+    array(
+        "name" => "GETENUMITEMS",
+        "short_name" => N_("get enum items definition"),
+        "acl" => "FAMILY"
+    ),
+    array(
+        "name" => "MODENUMITEMS",
+        "short_name" => N_("modify enum items definition"),
         "acl" => "FAMILY"
     ),
     array(
@@ -398,6 +423,11 @@ $action_desc = array(
         "name" => "ADDENUMITEM",
         "short_name" => N_("add enum html input attribute"),
         "acl" => "NORMAL"
+    ),
+    array(
+        "name" => "EDITFAMILYENUMS",
+        "short_name" => N_("modify enum items"),
+        "acl" => "FAMILY"
     ),
     array(
         "name" => "AFFECT",

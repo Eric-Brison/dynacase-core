@@ -856,7 +856,7 @@ class DocFormFormat
                         $lay = new Layout("FDL/Layout/editenumlist.xml", $action);
                 }
             } else {
-                $enuml = $this->oattr->getenumlabel();
+                $enuml = $this->oattr->getenumlabel(null, false);
                 $lunset = current($enuml);
                 if ($value == "") {
                     if (($this->oattr->eformat == 'bool') || ($this->oattr->getOption("eunset") != "yes")) $value = key($enuml);
@@ -1640,7 +1640,7 @@ class DocFormFormat
                 $tvalue = $doc->rawValueToArray($value);
                 
                 $lay->set("lvalue", $value);
-                $enuml = $oattr->getenumlabel();
+                $enuml = $oattr->getenumlabel(null, false);
                 if ($esort == 'key' || $esort == 'label') {
                     $enuml = $this->sortEnumMap($enuml, $esort);
                 }

@@ -848,14 +848,15 @@ class NormalAttribute extends BasicAttribute
      * Return array of enumeration definition
      * the array's keys are the enum key and the values are the labels
      *
+     * @param bool $returnDisabled if false disabled enum are not returned
      * @return array
      */
-    function getEnum()
+    function getEnum($returnDisabled = true)
     {
         $cached = self::_cacheFetch(self::_cEnum, array(
             $this->docid,
             $this->id
-        ));
+        ) , null, $returnDisabled);
         if ($cached !== null) {
             return $cached;
         }
@@ -905,7 +906,7 @@ class NormalAttribute extends BasicAttribute
                 $cached = self::_cacheFetch(self::_cEnum, array(
                     $famId,
                     $this->id
-                ));
+                ) , null, $returnDisabled);
                 if ($cached !== null) {
                     return $cached;
                 }
@@ -943,6 +944,12 @@ class NormalAttribute extends BasicAttribute
                     $this->id
                 ) , $this->enumlabel);
             }
+        }
+        if (!$returnDisabled) {
+            return self::_cacheFetch(self::_cEnum, array(
+                $this->docid,
+                $this->id
+            ) , null, $returnDisabled);
         }
         return $this->enum;
     }
@@ -995,25 +1002,25 @@ class NormalAttribute extends BasicAttribute
      * the array'skeys are the enum single key and the values are the complete labels
      *
      * @param string $enumid the key of enumerate (if no parameter all labels are returned
-     *
+     * @param bool $returnDisabled if false disabled enum are not returned
      * @return array|string|null
      */
-    function getEnumLabel($enumid = null)
+    function getEnumLabel($enumid = null, $returnDisabled = true)
     {
         $implode = false;
-        $this->getEnum();
+        $this->getEnum($returnDisabled);
         
         $cached = self::_cacheFetch(self::_cEnumLabel, array(
             $this->docid,
             $this->id
-        ));
+        ) , null, $returnDisabled);
         if ($cached === null) {
             $famId = $this->_getRecursiveParentFamHavingAttribute($this->docid, $this->id);
             if ($famId !== $this->docid) {
                 $cached = self::_cacheFetch(self::_cEnumLabel, array(
                     $famId,
                     $this->id
-                ));
+                ) , null, $returnDisabled);
             }
         }
         if ($cached !== null) {
@@ -1131,7 +1138,7 @@ class NormalAttribute extends BasicAttribute
         if ($cached !== null) {
             return $cached;
         }
-        $sql = <<<'EOF'
+        $sql = <<<'SQL'
 WITH RECURSIVE parent_attr(fromid, docid, id) AS (
     SELECT
         docfam.fromid,
@@ -1161,7 +1168,7 @@ WITH RECURSIVE parent_attr(fromid, docid, id) AS (
         parent_attr.fromid = docfam.id
 )
 SELECT docid FROM parent_attr WHERE id = '%s' LIMIT 1;
-EOF;
+SQL;
         $sql = sprintf($sql, pg_escape_string($famId) , pg_escape_string($attrId));
         $parentFamId = false;
         simpleQuery('', $sql, $parentFamId, true, true);
@@ -1243,13 +1250,27 @@ EOF;
      * @param string $cacheId cache Id
      * @param string $k key
      * @param mixed $onCacheMiss value returned on cache miss (default is null)
+     * @param bool $returnDisabled if false unreturn disabled enums
      * @return null|mixed null on failure, mixed value on success
      */
-    private static function _cacheFetch($cacheId, $k, $onCacheMiss = null)
+    private static function _cacheFetch($cacheId, $k, $onCacheMiss = null, $returnDisabled = true)
     {
         if (self::_cacheExists($cacheId, $k)) {
-            $k = self::_cacheKey($k);
-            return self::$_cache[$cacheId][$k];
+            $ks = self::_cacheKey($k);
+            if (!$returnDisabled) {
+                $famId = $k[0];
+                $attrid = $k[1];
+                $disabledKeys = DocEnum::getDisabledKeys($famId, $attrid);
+                if (!empty($disabledKeys)) {
+                    $cached = self::$_cache[$cacheId][$ks];
+                    foreach ($disabledKeys as $dKey) {
+                        unset($cached[$dKey]);
+                    }
+                    return $cached;
+                }
+            }
+            
+            return self::$_cache[$cacheId][$ks];
         }
         return $onCacheMiss;
     }
@@ -1611,7 +1632,7 @@ class EnumAttributeTools
      */
     public static function getFlatEnumNotation($famid, $attrid)
     {
-        $sql = sprintf("select * from docenum where famid='%s' and attrid='%s'", pg_escape_string($famid) , pg_escape_string($attrid));
+        $sql = sprintf("select * from docenum where famid='%s' and attrid='%s' and (disabled is null or not disabled)", pg_escape_string($famid) , pg_escape_string($attrid));
         simpleQuery('', $sql, $results);
         $tItems = array();
         $hierarchy = array();

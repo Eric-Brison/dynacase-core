@@ -11,6 +11,7 @@
  */
 $lang["fr_FR"] = array(
     "label" => "Français",
+    "localeLabel" => _("French") ,
     "flag" => "",
     "locale" => "fr",
     "dateFormat" => "%d/%m/%Y",

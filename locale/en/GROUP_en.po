@@ -6,44 +6,44 @@ msgstr ""
 "PO-Revision-Date: 2013-03-13 10:13+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+"Language: \n"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#ba_title"
 msgstr "Title"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#fld_fr_prof"
 msgstr "Default profile"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#fld_fr_rest"
 msgstr "Restrictions"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#fld_tfam"
 msgstr ""
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#fr_basic"
 msgstr "Basic"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#grp_adduser"
 msgstr "Members' management"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#grp_fr"
 msgstr "Groups"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#grp_fr_ident"
 msgstr "Identification"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#grp_hasmail"
 msgstr "Without group adress mail"
 
@@ -56,21 +56,21 @@ msgstr "Skip mail calculation for group with a lot of members"
 msgid "GROUP#grp_hasmail#no"
 msgstr "Without mail adress"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#grp_idgroup"
 msgstr "Subgroups"
 
 msgid "GROUP#grp_idgroup#showempty"
 msgstr "No subgroup"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#grp_idpgroup"
 msgstr "Parents' group"
 
 msgid "GROUP#grp_idpgroup#showempty"
 msgstr "No parent's group"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#grp_isrefreshed"
 msgstr "Is refreshed"
 
@@ -80,15 +80,15 @@ msgstr "no"
 msgid "GROUP#grp_isrefreshed#1"
 msgstr "yes"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#grp_mail"
 msgstr "mail"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#grp_name"
 msgstr "name"
 
-#: App/Fusers/accountprofil.ods.csv
+#: App/Fdl/searches.ods.csv
 msgid "GROUP#grp_refresh"
 msgstr "Refresh"
 

@@ -1,0 +1,113 @@
+table.dataTable, body {
+    overflow-y:hidden;
+}
+
+table.dataTable {
+    min-width: 600px;
+}
+
+.rowToUpdate {
+    background-color: #F9CCCC !important;
+}
+
+.title {
+    text-align: left;
+    margin-left: 4px;
+    display: inline-block;
+}
+
+.ui-button {
+    height: 2em;
+}
+
+.ui-button-text-only .ui-button-text {
+    padding: 0.2em 1em;
+}
+
+.ui-widget {
+    font-size: inherit;
+}
+
+.footerTitle {
+    margin: 0 4px;
+}
+
+.headerButton {
+    margin-top: 1em;
+}
+
+.newLineField {
+    border-bottom: 1px solid white !important;
+    border-right: 1px solid white !important;
+    border-top: 1px solid #DDD !important;
+    border-left: 1px solid #DDD !important;
+    background-color: #F0F0F0;
+}
+
+.helpMessage {
+    width: 500px;
+}
+
+.disabledEnum {
+    color: #555
+}
+
+.error {
+    color: red;
+}
+
+.translate-form fieldset {
+    padding: 0;
+    border: 0;
+    margin-top: 25px;
+}
+
+.form-icon-flag {
+    height: 1.5em;
+}
+
+.form-label {
+    font-style: italic;
+}
+
+.translate-form label, .translate-form input {
+    display: block;
+}
+
+.translate-form input.text {
+    margin-bottom: 12px;
+    width: 95%;
+    padding: .4em;
+}
+
+.translate-form fieldset {
+    padding: 0;
+    border: 0;
+    margin-top: 25px;
+}
+
+.langLabel, .langValue {
+    color: white;
+    text-align: left;
+}
+
+.edit-label, .edit-order {
+    width: 100%;
+    border-bottom: 1px solid white !important;
+    border-right: 1px solid white !important;
+    border-top: 1px solid #DDD !important;
+    border-left: 1px solid #DDD !important;
+    background-color: #F0F0F0;
+}
+
+.editable.ui-widget > span {
+    display: block;
+}
+
+.editable.ui-widget > span:hover {
+    background-color: #F0F0F0;
+    border-bottom: 1px solid white !important;
+    border-right: 1px solid white !important;
+    border-top: 1px solid #DDD !important;
+    padding: 2px 0;
+}
