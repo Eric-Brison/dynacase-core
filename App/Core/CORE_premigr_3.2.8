@@ -12,6 +12,7 @@ if [ -z "$pgservice_core" ]; then
     exit 1
 fi
 
+rm -f "$wpub"/[A-Z_]*/po2js.php
 
 $wpub/wsh.php --api=updateclass --class=ParamDef
 RET=$?
