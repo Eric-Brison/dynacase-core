@@ -234,6 +234,9 @@ This can be solved by:<br/>
         <process command="programs/core_initialize">
             <label lang="en">Initialize system database</label>
         </process>
+        <process command="programs/check_autoloader">
+            <label lang="en">Check autoloader</label>
+        </process>
         <process command="programs/record_application CORE I">
             <label lang="en">Record core application in database</label>
         </process>
@@ -544,6 +547,10 @@ This can be solved by:<br/>
 
         <process command="programs/pre_migration FDL"/>
         <process command="programs/record_application FDL U"/>
+
+        <process command="programs/check_autoloader">
+            <label lang="en">Check autoloader</label>
+        </process>
 
         <process command="./wsh.php --api=importDocuments --file=./FDL/fdl.ods">
             <label>Update basic system families</label>
