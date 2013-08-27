@@ -270,8 +270,8 @@ create unique index i_docenum on docenum(famid, attrid,  key);
          * @var NormalAttribute $oa
          */
         $oa->resetEnum();
-        $curLabel = $oa->getEnumLabel($enumId);
-        if ($curLabel != $label) {
+        //$curLabel = $oa->getEnumLabel($enumId);
+        if ($label !== null) {
             
             $moFile = self::getMoFilename($fam->name, $lang);
             $poFile = sprintf("%s.po", (substr($moFile, 0, -3)));
@@ -296,9 +296,12 @@ msgstr ""
             }
             // add new entry
             $localeKey = sprintf("%s#%s#%s", $fam->name, $oa->id, $enumId);
-            $msgEntry = sprintf('msgid "%s"
-msgstr "%s"', str_replace('"', '\\"', $localeKey) , str_replace('"', '\\"', $label));
+            $msgEntry = sprintf('msgid "%s"' . "\n" . 'msgstr "%s"', str_replace('"', '\\"', $localeKey) , str_replace('"', '\\"', $label));
             $content = file_get_contents($poFile);
+            // fuzzy old entry
+            $match = sprintf('msgid "%s"', $localeKey);
+            $content = str_replace($match, "#, fuzzy\n$match", $content);
+            
             file_put_contents($poFile, $msgEntry . "\n\n" . $content);
             $cmd = sprintf("(msguniq --use-first %s | msgfmt - -o %s; rm -f %s) 2>&1", escapeshellarg($poFile) , escapeshellarg($moFile) , escapeshellarg($poFile));
             

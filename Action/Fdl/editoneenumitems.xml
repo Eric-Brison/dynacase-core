@@ -6,7 +6,6 @@
         <input type="hidden" value="[famid]" id="famid"/>
                 <input type="hidden" value="[enumid]" id="enumid"/>
 <div id="editenumwidget">
-
 </div>
 <div id="dialogModal" style="display:none;">
 
