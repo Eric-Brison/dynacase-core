@@ -17,7 +17,7 @@ GZIP_ENV = --best
 
 SUBDIR = Class Zone Action Api App Supervisor Doc Expire Images programs Share Style Config locale
 
-TOP_MODULES = indexq.php index.php whattext wsh.php guest.php wcheck wstop wstart resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess pack.php authent.php .autoloader-ignore
+TOP_MODULES = indexq.php index.php whattext wsh.php guest.php wcheck wstop wstart resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess pack.php authent.php
 
 pages_not_xml = info.xml
 pages_not_php = fam2po.php po2js.php
@@ -50,7 +50,9 @@ $(pubdir)/wcontrol.xml: wcontrol.xml
 	cp $< $@
 $(pubdir)/.htaccess: htaccess
 	cp $< $@
-$(pubdir)/.autoloader-ignore: autoloader-ignore
+$(pubdir)/.autoloader-ignore.d:
+	mkdir -p $@
+$(pubdir)/.autoloader-ignore.d/@PACKAGE@: autoloader-ignore-d $(pubdir)/.autoloader-ignore.d
 	cp $< $@
 
 $(pubdir)/FDLGEN:
@@ -112,7 +114,7 @@ $(pubdir)/FREEDOM:
 $(pubdir)/FREEDOM/freedom.cron: freedom.cron $(pubdir)/FREEDOM
 	cp $< $@
 
-publish: $(pubdir)/var/session/.htaccess $(pubdir)/var/cache/image/.htaccess $(pubdir)/var/cache/file/.htaccess $(pubdir)/var/tmp/.htaccess $(pubdir)/var/upload/.htaccess $(pubdir)/$(applib) $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron
+publish: $(pubdir)/var/session/.htaccess $(pubdir)/var/cache/image/.htaccess $(pubdir)/var/cache/file/.htaccess $(pubdir)/var/tmp/.htaccess $(pubdir)/var/upload/.htaccess $(pubdir)/$(applib) $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron $(pubdir)/.autoloader-ignore.d/@PACKAGE@
 
 
 webinst-test:
