@@ -120,6 +120,7 @@
 
         _firstDraw: true,
 
+        _noResize: false,
         famTitle: "",
 
         enumLabel: "",
@@ -168,7 +169,9 @@
         _resizeWindow: function _resizeWindow() {
             if (this._dataTableWidget) {
                 this._firstDraw = true;
-                this._dataTableWidget.fnAdjustColumnSizing();
+                if (! this._noResize) {
+                    this._dataTableWidget.fnAdjustColumnSizing();
+                }
             }
         },
 
@@ -423,7 +426,10 @@
                 this.enumLabel = data.enumLabel || "";
                 this.enumParentLabel = data.parentLabel || "";
 
+                this._noResize=true;
                 this._dataTableWidget = element.dataTable(this.options.dataTableOptions);
+                this._dataTableWidget.fnAdjustColumnSizing();
+                this._noResize=false;
                 this._hideWaiting();
             }
 
