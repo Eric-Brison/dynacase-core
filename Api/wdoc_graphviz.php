@@ -189,10 +189,10 @@ class DotWorkflow
     private function setTransitionState($e1, $index)
     {
         $color = $this->wdoc->getColor($e1);
-        $saction = $this->getActivity($e1);
+        $saction = $this->getActivityLabel($e1);
         $tt = sprintf('label="%s"', $this->_n($e1));
         $tt.= ',shape = circle, style=filled, fixedsize=true,width=1.0,   fontname=sans';
-        if ($saction) $tt.= ', tooltip="' . $this->_n($e1) . '"';
+        if ($saction) $tt.= ', tooltip="' . $e1 . '"';
         
         if ($color) $tt.= ',fillcolor="' . $color . '"';
         
@@ -217,7 +217,7 @@ class DotWorkflow
                 $t = $this->wdoc->transitions[$tr["t"]];
                 if ($t["m0"]) $e2 = "m0" . $k;
                 elseif ($t["m0"]) $e2 = "m1" . $k;
-                $e1 = $this->getActivity($tr["e1"]);
+                $e1 = $this->getActivityId($tr["e1"]);
                 if ($this->existsTransition($tr["e2"], $tr["e1"], $tr["t"])) continue;
                 
                 $this->lines[] = sprintf('"%s" -> "%s" [labelfontsize=6,color="%s" ,labelfontname=sans, label="%s"];', $e1, $e2, $this->style['arrow-color'], $this->_n($tr["t"]));
@@ -242,7 +242,7 @@ class DotWorkflow
         $m2 = isset($t["m2"]) ? $t["m2"] : null;
         $m3 = isset($t["m3"]) ? $t["m3"] : null;
         $ask = isset($t["ask"]) ? $t["ask"] : null;
-        $act = $this->getActivity($e1);
+        $act = $this->getActivityId($e1);
         
         if ($this->linkSameTransition($tr, $index)) {
             
@@ -387,7 +387,7 @@ class DotWorkflow
         $this->lines[] = '"' . $e1 . '" [shape = point,style=filled, width=0.3, fixedsize=true,fontname=sans,color="' . $this->style['start-color'] . '"];';;
         
         if (count($tm) == 0 && count($mt) == 0) {
-            $e2 = $this->getActivity($this->wdoc->firstState);
+            $e2 = $this->getActivityId($this->wdoc->firstState);
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
         } else {
             
@@ -416,7 +416,7 @@ class DotWorkflow
             
             if ($e1 != 'D') {
                 //attach to first state
-                $e2 = $this->getActivity($this->wdoc->firstState);
+                $e2 = $this->getActivityId($this->wdoc->firstState);
                 $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
             }
         }
@@ -553,7 +553,7 @@ class DotWorkflow
         $this->lines[] = sprintf('"%s" -> "%s" [labelfontsize=6,color="%s" %s,labelfontname=sans, label="%s"];', $e1, $e2, $this->style['arrow-color'], $tmain, _($tr["t"]));
     }
     
-    private function getActivity($e)
+    private function getActivityLabel($e)
     {
         $act = $this->wdoc->getActivity($e);
         if (!$act) {
@@ -568,7 +568,7 @@ class DotWorkflow
         
         $e1 = $tr["e1"];
         $e2 = $tr["e2"];
-        $act = $this->getActivity($e1);
+        $act = $this->getActivityId($e1);
         $tmain = '';
         if (isset($this->wdoc->autonext[$tr["e1"]]) && ($this->wdoc->autonext[$e1] == $e2)) {
             $tmain = sprintf('color="%s",style="setlinewidth(3)",arrowsize=1.0', $this->style['autonext-color']);
@@ -593,10 +593,10 @@ class DotWorkflow
         $states = $this->wdoc->getStates();
         foreach ($states as $k => $v) {
             $color = $this->wdoc->getColor($v);
-            $saction = $this->getActivity($v);
+            $saction = $this->getActivityLabel($v);
             $tt = sprintf('label="%s"', $this->_n($v));
             $tt.= ',shape = circle, style=filled, fixedsize=true,width=1.0,   fontname=sans';
-            if ($saction) $tt.= ', tooltip="' . $saction . '"';
+            if ($saction) $tt.= ', tooltip="' . $v . '"';
             
             if ($color) $tt.= ',fillcolor="' . $color . '"';
             
@@ -632,7 +632,7 @@ class DotWorkflow
         $states = $this->wdoc->getStates();
         foreach ($states as $k => $v) {
             $color = $this->wdoc->getColor($v);
-            $sact = $this->getActivity($v);
+            $sact = $this->getActivityLabel($v);
             if (!$sact) {
                 //$sact = "activity $v";
                 
@@ -643,11 +643,15 @@ class DotWorkflow
                 
                 if ($color) $tt.= ',fillcolor="' . $color . '"';
                 
-                $this->lines[] = '"' . $sact . '" [' . $tt . '];';
+                $this->lines[] = '"' . $this->getActivityId($v) . '" [' . $tt . '];';
             }
         }
     }
-    
+
+    private function getActivityId($state) {
+        return "act_".$state;
+    }
+
     private function isEndState($e)
     {
         foreach ($this->wdoc->cycle as $t) {
