@@ -1,0 +1,23 @@
+# - Lines that start with '#' are comments.
+# - Blank/empty lines are ignored.
+# - Non-empty lines contains a shell glob pattern (suitable for consumption by
+# http://php.net/manual/en/function.fnmatch.php) and checks for a match against
+# the filename relative to the location context's root.
+
+FDLGEN/*
+Images/*
+ckeditor/*
+ckeditor/*
+config/*
+context/*
+expire/*
+fckeditor/*
+jscalendar/*
+lib/ext/*
+lib/jquery-dataTables/*
+lib/jquery-ui/*
+lib/zendframework/*
+locale/*
+programs/*
+var/*
+vaultfs/*

@@ -188,6 +188,15 @@ class DirectoriesAutoloader
         
         return self::$_instance;
     }
+    /*
+     * Enable dryrun/test mode
+    */
+    private $_dryRun = false;
+    public function dryRun($dryRun = true)
+    {
+        $this->_dryRun = $dryRun;
+        return self::$_instance;
+    }
     //--- Cache
     private $_cachePath;
     private $_cacheFileName = 'directoriesautoloader.cache.php';
@@ -274,6 +283,9 @@ class DirectoriesAutoloader
      */
     private function _lock()
     {
+        if ($this->_dryRun) {
+            return;
+        }
         if ($this->_lockfd !== false) {
             throw new DirectoriesAutoloaderException(sprintf("Cache lock is already opened."));
         }
@@ -291,6 +303,9 @@ class DirectoriesAutoloader
      */
     private function _unlock()
     {
+        if ($this->_dryRun) {
+            return;
+        }
         if ($this->_lockfd === false) {
             throw new DirectoriesAutoloaderException(sprintf("Cache lock not opened."));
         }
@@ -455,6 +470,9 @@ class DirectoriesAutoloader
      */
     private function _saveIncache()
     {
+        if ($this->_dryRun) {
+            return;
+        }
         foreach ($this->_classes as $className => & $fileName) {
             if (substr($fileName, 0, 2) == './') {
                 $fileName = substr($fileName, 2);

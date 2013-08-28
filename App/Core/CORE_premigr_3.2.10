@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+if [ -z "$wpub" ]; then
+    echo "Undefined or empty wpub environment variable!"
+    exit 1
+fi
+
+if [ -z "$pgservice_core" ]; then
+    echo "Undefined or empty pgservice_core!"
+    exit 1
+fi
+
+rm -f "$wpub"/[A-Z_]*/po2js.php
+
+exit 0
