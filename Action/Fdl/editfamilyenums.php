@@ -44,29 +44,36 @@ function editfamilyenums(Action & $action)
     
     $lattr = $fam->getAttributes();
     $tcf = array();
+    $lastFieldId = '';
     /**
      * @var NormalAttribute $oa
      */
     foreach ($lattr as $k => $oa) {
         if ((($oa->type == "enum") || ($oa->type == "enumlist")) && (($oa->phpfile == "") || ($oa->phpfile == "-")) && ($oa->getOption("system") != "yes")) {
-            $parentLabel='';
-            $label=$oa->getLabel();
-            if (! empty($oa->fieldSet)) {
-                $parentLabel=$oa->fieldSet->getLabel();
-                if ($parentLabel== $label) {
-                    if (! empty($oa->fieldSet->fieldSet)) {
-                        $parentLabel=$oa->fieldSet->fieldSet->getLabel();
+            $parentLabel = '';
+            $parentId = '';
+            $label = $oa->getLabel();
+            if (!empty($oa->fieldSet)) {
+                $parentLabel = $oa->fieldSet->getLabel();
+                $parentId = $oa->fieldSet->id;
+                if ($parentLabel == $label) {
+                    if (!empty($oa->fieldSet->fieldSet)) {
+                        $parentLabel = $oa->fieldSet->fieldSet->getLabel();
+                        $parentId = $oa->fieldSet->fieldSet->id;
                     } else {
-                        $parentLabel='';
+                        $parentId = "";
+                        $parentLabel = '';
                     }
                 }
             }
             $tcf[] = array(
-                "label" =>  $label,
+                "label" => $label,
                 "parentLabel" => $parentLabel,
+                "sameParent" => ($parentId == $lastFieldId) ,
                 "famid" => $oa->docid,
                 "enumid" => $oa->id
             );
+            $lastFieldId = $parentId;
         }
     }
     

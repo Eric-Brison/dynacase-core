@@ -7,7 +7,8 @@ table.dataTable {
 }
 
 .rowToUpdate {
-    background-color: #F9CCCC !important;
+    /*background-color: #CCCCF9 !important;*/
+    border:none;
 }
 
 .title {
@@ -102,6 +103,10 @@ table.dataTable {
 
 .editable.ui-widget > span {
     display: block;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    padding: 2px 0;
 }
 
 .editable.ui-widget > span:hover {
@@ -109,5 +114,18 @@ table.dataTable {
     border-bottom: 1px solid white !important;
     border-right: 1px solid white !important;
     border-top: 1px solid #DDD !important;
-    padding: 2px 0;
+}
+.reload-dialog {
+    text-align: center;
+    margin:5px;
+    height: 3em;
+}
+.no-dialog-title .ui-dialog-titlebar {
+    display:none;
+}
+.enum-on.ui-state-active {
+    /*background: #b5eac5;*/
+}
+.enum-off.ui-state-active {
+    background: #f49d90;
 }

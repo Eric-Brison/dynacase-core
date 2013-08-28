@@ -39,7 +39,7 @@
             saveOnBottom: false,
             famid: "",
             enumid: "",
-            rowToUpdateClass: "rowToUpdate",
+            rowToUpdateClass: "rowToUpdate ui-state-highlight",
             title: "%f: %s &gt; %e",
             helpMessage: "",
             dataTableOptions: {
@@ -120,6 +120,7 @@
 
         _firstDraw: true,
 
+        _noResize: false,
         famTitle: "",
 
         enumLabel: "",
@@ -168,13 +169,27 @@
         _resizeWindow: function _resizeWindow() {
             if (this._dataTableWidget) {
                 this._firstDraw = true;
-                this._dataTableWidget.fnAdjustColumnSizing();
+                if (! this._noResize) {
+                    this._dataTableWidget.fnAdjustColumnSizing();
+                }
             }
+        },
+
+        _showWaiting: function () {
+             $("<div>[TEXT:Loading enum data ...]</div>").addClass("reload-dialog").dialog({
+                 modal: true,
+                 resizable:false,
+                 height:100,
+                 dialogClass: 'no-dialog-title' // Hide title bar
+                });
+        },
+        _hideWaiting: function () {
+             $(".reload-dialog").dialog( "close").remove();
         },
 
         _getEnumItems: function () {
             var parent = this;
-
+            this._showWaiting();
             this._firstDraw = true;
             $.ajax({
                 "type": "GET",
@@ -308,7 +323,6 @@
 
         _initActiveButtonSet: function _initActiveButtonSet($element) {
             var widget = this;
-
             $element.find(".activebuttonset").buttonset()
                 .find(".ui-button").on("click", function (e) {
                     if ($(this).text() === widget._activeButtonLabel.on) {
@@ -350,7 +364,8 @@
 
                     if (this.mDataProp == "order") {
                         title = widget._orderTitle;
-
+                    } else {
+                        title = this.sTitle;
                     }
                     if (this.mDataProp == "locale") {
                         html += '<td  style="width:' + width + '"/></td>';
@@ -399,6 +414,8 @@
             } else if (data.error) {
                 this._error(data.error);
             } else {
+
+                $('.tipsy').hide();
                 var element = this._dataTableElement;
 
                 this.options.dataTableOptions = this._generateDataTableOptions(data.localeConfig, data.items);
@@ -409,7 +426,11 @@
                 this.enumLabel = data.enumLabel || "";
                 this.enumParentLabel = data.parentLabel || "";
 
+                this._noResize=true;
                 this._dataTableWidget = element.dataTable(this.options.dataTableOptions);
+                this._dataTableWidget.fnAdjustColumnSizing();
+                this._noResize=false;
+                this._hideWaiting();
             }
 
         },
@@ -439,8 +460,8 @@
 
             var key = lineData.key ? lineData.key.replace('"', "&quot;", "g") : "";
             return '<div class="activebuttonset" >' +
-                '<input type="radio" id="activebuttonset_' + key  + '_on" name="activebuttonset_' + key  + '" ' + (!lineData.disabled ? 'checked="checked"' : "") + '/><label for="activebuttonset_' + key + '_on">' + this._activeButtonLabel.on + '</label>' +
-                '<input type="radio" id="activebuttonset_' + key  + '_off" name="activebuttonset_' + key + '"' + (lineData.disabled ? 'checked="checked"' : "") + '/><label for="activebuttonset_' + key + '_off">' + this._activeButtonLabel.off + '</label>' +
+                '<input type="radio" id="activebuttonset_' + key  + '_on" name="activebuttonset_' + key  + '" ' + (!lineData.disabled ? 'checked="checked"' : "") + '/><label class="enum-on" for="activebuttonset_' + key + '_on">' + this._activeButtonLabel.on + '</label>' +
+                '<input type="radio" id="activebuttonset_' + key  + '_off" name="activebuttonset_' + key + '"' + (lineData.disabled ? 'checked="checked"' : "") + '/><label class="enum-off" for="activebuttonset_' + key + '_off">' + this._activeButtonLabel.off + '</label>' +
                 '</div>';
         },
 
@@ -725,7 +746,7 @@
                 dialogForm = $('#dialog-translate');
                 dialogForm.dialog({
                     autoOpen: false,
-                    height: 300,
+                    height: "auto",
                     width: 350,
                     modal: true,
                     buttons: {
@@ -738,15 +759,13 @@
                                 idlang = langsConfig[li].id;
                                 rowGridData[idlang] = $('#trans-' + idlang).val();
                             }
-                            //rowGridData["en_US"]='toto en'+rowGridData.label;
-                            //rowGridData["fr_FR"]='toto fr'+rowGridData.label;
                             widget._dataTableWidget.fnUpdate(rowGridData, trNode, undefined, false, false);
 
                             widget._setRowToChange($(trNode), [widget._dataTableWidget.fnGetPosition(trNode)]);
                             widget._initActiveButtonSet($(trNode));
                             widget._initActiveDeleteButton($(trNode));
                             widget._initActiveTranslateButton($(trNode));
-                            console.log("initiate tipsy for ", $(trNode).find("td").find("[orignial-title]"), $(trNode).find("td").find("[title]"))
+                           // console.log("initiate tipsy for ", $(trNode).find("td").find("[orignial-title]"), $(trNode).find("td").find("[title]"))
                             widget._initTipsy($(trNode).find("td").find("[title]"));
                             $(this).dialog("close");
                         },
@@ -775,7 +794,7 @@
 
 
             formDialog += '</fieldset></form>';
-            dialogForm.html(formDialog).dialog().dialog('open').dialog("option", "title", "[TEXT:EnumWidget:Translate] " + rowData.key);
+            dialogForm.html(formDialog).dialog().dialog('open').dialog("option", "title", "[TEXT:EnumWidget:Translate] " + '"' + rowData.key+ '"');
             dialogForm.dialog("option", "rowGridData", rowData);
             dialogForm.dialog("option", "rowTr", trNode);
 
