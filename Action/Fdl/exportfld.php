@@ -532,9 +532,17 @@ function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, 
                 , $value);
             }
         } else {
-            $value = preg_replace("/(\&[a-zA-Z0-9\#]+;)/es", "strtr('\\1',\$trans)", $value);
+            $value = preg_replace_callback('/(\&[a-zA-Z0-9\#]+;)/s', function ($matches) use ($trans)
+            {
+                return strtr($matches[1], $trans);
+            }
+            , $value);
             // invert HTML entities which ascii code like &#232;
-            $value = preg_replace("/\&#([0-9]+);/es", "chr('\\1')", $value);
+            $value = preg_replace_callback('/\&#([0-9]+);/s', function ($matches)
+            {
+                return chr($matches[1]);
+            }
+            , $value);
         }
         fputs_utf8($fout, str_replace(array(
             "\n",

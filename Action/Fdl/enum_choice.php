@@ -194,11 +194,12 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         return sprintf(_("function '%s' declared in %s is not found") , $callfunc, $oattr->id);
     }
     $rargids = $oParse->outputs; // return args
-    // change parameters familly
-    $iarg = preg_replace('/\{([^\}]+)\}/e',
-    //"/\{([a-zA-Z0-9_]+)\}/e",
-    "getAttr('\\1')", $reg[2]);
-    $argids = explode(",", $iarg); // input args
+    // change parameters family
+    $iarg = preg_replace_callback('/\{([^\}]+)\}/', function ($matches)
+    {
+        return getAttr($matches[1]);
+    }
+    , $reg[2]);
     $arg = array();
     foreach ($strucFunc->inputs as $k => $inpArg) {
         $v = str_replace(array(

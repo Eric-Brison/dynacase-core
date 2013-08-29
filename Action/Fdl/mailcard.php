@@ -337,12 +337,20 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                 exit;
             }
             
-            $sgen1 = preg_replace("/src=\"(FDL\/geticon[^\"]+)\"/ei", "imgvaultfile('\\1')", $sgen);
+            $sgen1 = preg_replace_callback('/src="(FDL\/geticon[^"]+)"/i', function ($matches)
+            {
+                return imgvaultfile($matches[1]);
+            }
+            , $sgen);
             
-            $sgen1 = preg_replace(array(
-                "/SRC=\"([^\"]+)\"/e",
-                "/src=\"([^\"]+)\"/e"
-            ) , "srcfile('\\1')", $sgen1);
+            $sgen1 = preg_replace_callback(array(
+                '/SRC="([^"]+)"/',
+                '/src="([^"]+)"/'
+            ) , function ($matches)
+            {
+                return srcfile($matches[1]);
+            }
+            , $sgen1);
             
             $pfout = uniqid(getTmpDir() . "/" . $doc->id);
             $fout = fopen($pfout, "w");
@@ -366,7 +374,11 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                 
                 $sgen = $docmail2->gen();
             }
-            $sgen2 = preg_replace("/src=\"([^\"]+)\"/ei", "realfile('\\1')", $sgen);
+            $sgen2 = preg_replace_callback('/src="([^"]+)"/i', function ($matches)
+            {
+                return realfile($matches[1]);
+            }
+            , $sgen);
             
             $ppdf = uniqid(getTmpDir() . "/" . $doc->id) . ".pdf.html";
             $fout = fopen($ppdf, "w");
