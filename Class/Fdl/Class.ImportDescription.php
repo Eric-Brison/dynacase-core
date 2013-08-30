@@ -702,7 +702,7 @@ class importDocumentDescription
     protected function doSearch(array $data)
     {
         $err = '';
-        if ($data[1] > 0) {
+        if ($data[1] != '') {
             $this->tcr[$this->nLine]["id"] = $data[1];
             /**
              * @var DocSearch $search
@@ -711,8 +711,13 @@ class importDocumentDescription
             if (!$search->isAffected()) {
                 $search = createDoc($this->dbaccess, 5);
                 if (!$this->analyze) {
+                    if ($data[1] && is_numeric($data[1])) {
                     $search->id = $data[1]; // static id
+                    }
                     $err = $search->Add();
+                    if ($data[1] && !is_numeric($data[1])) {
+                        $search->setLogicalName($data[1]);
+                    }
                 }
                 $this->tcr[$this->nLine]["msg"] = sprintf(_("update %s search") , $data[3]);
                 $this->tcr[$this->nLine]["action"] = "updated";
@@ -740,7 +745,7 @@ class importDocumentDescription
                 $this->tcr[$this->nLine]["err"].= $err;
             }
             
-            if ($data[2] > 0) { // dirid
+            if ($data[2] != '') { // dirid
                 
                 /**
                  * @var Dir $dir
