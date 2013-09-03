@@ -300,7 +300,11 @@ class DocFormFormat
                         $phpfunc = $this->oattr->phpfunc;
                         
                         $linkPrefixCT = "ilink_";
-                        $phpfunc = preg_replace('/([\s|,|:|\(])CT\[([^]]+)\]/e', "'\\1'.'$linkPrefixCT'.strtolower('\\2')", $phpfunc);
+                        $phpfunc = preg_replace_callback('/([\s|,|:|\(])CT\[([^]]+)\]/', function ($matches) use ($linkPrefixCT)
+                        {
+                            return $matches[1] . $linkPrefixCT . strtolower($matches[2]);
+                        }
+                        , $phpfunc);
                         // capture title
                         //if (isUTF8($oattr->getLabel())) $oattr->labelText=utf8_decode($oattr->getLabel());
                         $ititle = sprintf(_("choose inputs for %s") , str_replace("\"", "&quot;", $this->oattr->getLabel()));
@@ -1452,7 +1456,11 @@ class DocFormFormat
                         $tivalue = array();
                         
                         foreach ($tr as $kd => $td) {
-                            $val = preg_replace('/\[([^\]]*)\]/e', "\$this->rowattrReplace(\$doc,'\\1',$k)", $td);
+                            $val = preg_replace_callback('/\[([^\]]*)\]/', function ($matches) use ($doc, $k)
+                            {
+                                return DocFormFormat::rowattrReplace($doc, $matches[1], $k);
+                            }
+                            , $td);
                             $tivalue[] = array(
                                 "eivalue" => $val,
                                 "ehvis" => "visible",
@@ -1466,7 +1474,11 @@ class DocFormFormat
                     }
                     $tilabel = array();
                     foreach ($tr as $kd => $td) {
-                        $dval = preg_replace('/\[([^\]]*)\]/e', "\$this->rowattrReplace(\$doc,'\\1','" . DocFormFormat::arrayIndex . "',\$defval)", $td);
+                        $dval = preg_replace_callback('/\[([^\]]*)\]/', function ($matches) use ($doc, $defval)
+                        {
+                            return DocFormFormat::rowattrReplace($doc, $matches[1], DocFormFormat::arrayIndex, $defval);
+                        }
+                        , $td);
                         $tilabel[] = array(
                             "ilabel" => $dval,
                             "ihw" => "auto",
@@ -1503,9 +1515,10 @@ class DocFormFormat
              * @param string $s
              * @param int $index
              * @param string $defval
+             * @private
              * @return array|mixed|string
              */
-            private function rowattrReplace(&$doc, $s, $index, &$defval = null)
+            public static function rowattrReplace(&$doc, $s, $index, &$defval = null)
             {
                 if (substr($s, 0, 2) == "L_") return "[$s]";
                 if (substr($s, 0, 2) == "V_") {

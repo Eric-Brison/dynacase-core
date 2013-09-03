@@ -457,9 +457,17 @@ class DocOooFormat
         $html_body = str_replace("\r", "", $html_body);
         
         $html_body = preg_replace("/<!--.*?-->/ms", "", $html_body); //delete comments
-        $html_body = preg_replace("/<td(\s[^>]*?)?>(.*?)<\/td>/mse", "\$this->getHtmlTdContent('\\1','\\2')", $html_body); // accept only text in td tag
+        $html_body = preg_replace_callback('/<td(\s[^>]*?)?>(.*?)<\/td>/ms', function ($matches)
+        {
+            return DocOooFormat::getHtmlTdContent($matches[1], $matches[2]);
+        }
+        , $html_body); // accept only text in td tag
         $html_body = cleanhtml($html_body);
-        $html_body = preg_replace("/(<\/?)([^\s>]+)([^>]*)(>)/e", "toxhtmltag('\\1','\\2','\\3','\\4')", $html_body); // begin tag transform to pseudo xhtml
+        $html_body = preg_replace_callback('/(<\/?)([^\s>]+)([^>]*)(>)/', function ($matches)
+        {
+            return toxhtmltag($matches[1], $matches[2], $matches[3], $matches[4]);
+        }
+        , $html_body); // begin tag transform to pseudo xhtml
         $html_body = str_replace(array(
             '\"',
             '&quot;'
@@ -622,7 +630,7 @@ class DocOooFormat
      * @param string $data html content (innerHTML)
      * @return string raw content
      */
-    private static function getHtmlTdContent($attr, $data)
+    public static function getHtmlTdContent($attr, $data)
     {
         $data = preg_replace('|<(/?[^> ]+)(\s[^>]*?)?>|ms', '', $data); // delete all tags
         return '<td>' . $data . '</td>';

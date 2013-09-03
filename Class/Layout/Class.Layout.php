@@ -221,10 +221,21 @@ class Layout
         $this->ParseBlock($out);
         return ($out);
     }
-    
+    /**
+     * need for php5.3 - not accept anonymous method which use this
+     * @param array $matches
+     * @return string
+     */
+    private function pregSetBlock($matches)
+    {
+        return $this->SetBlock($matches[1], $matches[2]);
+    }
     protected function ParseBlock(&$out)
     {
-        $out = preg_replace("/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/se", "\$this->SetBlock('\\1','\\2')", $out);
+        $out = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', array(
+            $this,
+            "pregSetBlock"
+        ) , $out);
     }
     
     protected function TestIf($name, $block, $not = false)
@@ -248,15 +259,39 @@ class Layout
         }
         return ($out);
     }
+    /**
+     * need for php5.3 - not accept anonymous method which use this
+     * @param array $matches
+     * @return string
+     */
+    private function pregTestIf($matches)
+    {
+        return $this->TestIf($matches[2], $matches[3], $matches[1]);
+    }
     
     protected function ParseIf(&$out)
     {
-        $out = preg_replace("/(?m)\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se", "\$this->TestIf('\\2','\\3','\\1')", $out);
+        $out = preg_replace_callback('/(?m)\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', array(
+            $this,
+            "pregTestIf"
+        ) , $out);
+    }
+    /**
+     * need for php5.3 - not accept anonymous method which use this
+     * @param array $matches
+     * @return string
+     */
+    private function pregExecute($matches)
+    {
+        return $this->execute($matches[1], $matches[2]);
     }
     
     protected function ParseZone(&$out)
     {
-        $out = preg_replace("/\[ZONE\s+([^:]*):([^\]]*)\]/e", "\$this->execute('\\1','\\2')", $out);
+        $out = preg_replace_callback('/\[ZONE\s+([^:]*):([^\]]*)\]/', array(
+            $this,
+            "pregExecute"
+        ) , $out);
     }
     
     protected function ParseKey(&$out)
@@ -376,19 +411,37 @@ class Layout
     protected function ParseRef(&$out)
     {
         if (!$this->action) return;
-        $out = preg_replace("/\[IMG:([^\|\]]+)\|([0-9]+)\]/e", "\$this->action->parent->getImageLink('\\1',true,'\\2')", $out);
+        $out = preg_replace_callback('/\[IMG:([^\|\]]+)\|([0-9]+)\]/', function ($matches)
+        {
+            global $action;
+            return $action->parent->getImageLink($matches[1], true, $matches[2]);
+        }
+        , $out);
         
-        $out = preg_replace("/\[IMG:([^\]\|]+)\]/e", "\$this->action->parent->getImageLink('\\1')", $out);
+        $out = preg_replace_callback('/\[IMG:([^\]\|]+)\]/', function ($matches)
+        {
+            global $action;
+            return $action->parent->getImageLink($matches[1]);
+        }
+        , $out);
         
-        $out = preg_replace("/\[IMGF:([^\]]*)\]/e", "\$this->action->GetFilteredImageUrl('\\1')", $out);
-        
-        $out = preg_replace("/\[SCRIPT:([^\]]*)\]/e", "\$this->action->GetScriptUrl('\\1')", $out);
+        $out = preg_replace_callback('/\[IMGF:([^\]]*)\]/', function ($matches)
+        {
+            global $action;
+            return $action->parent->GetFilteredImageUrl($matches[1]);
+        }
+        , $out);
     }
     
     protected function ParseText(&$out)
     {
-        
-        $out = preg_replace("/\[TEXT:([^\]]*)\]/e", "\$this->Text('\\1')", $out);
+        $out = preg_replace_callback('/\[TEXT:([^\]]*)\]/', function ($matches)
+        {
+            $s = $matches[1];
+            if ($s == "") return $s;
+            return _($s);
+        }
+        , $out);
     }
     
     protected function Text($s)
@@ -461,14 +514,30 @@ class Layout
         }
         return ($out);
     }
-    
+    private function pregGenJsCodeTrue($matches)
+    {
+        return $this->GenJsCode(true);
+    }
+    private function pregGenJsCodeFalse($matches)
+    {
+        return $this->GenJsCode(false);
+    }
     protected function ParseJs(&$out)
     {
-        $out = preg_replace("/\[JS:REF\]/e", "\$this->GenJsRef()", $out);
+        $out = preg_replace_callback('/\[JS:REF\]/', array(
+            $this,
+            "GenJsRef"
+        ) , $out);
         
-        $out = preg_replace("/\[JS:CODE\]/e", "\$this->GenJsCode(true)", $out);
+        $out = preg_replace_callback('/\[JS:CODE\]/', array(
+            $this,
+            "pregGenJsCodeTrue"
+        ) , $out);
         
-        $out = preg_replace("/\[JS:CODENLOG\]/e", "\$this->GenJsCode(false)", $out);
+        $out = preg_replace_callback('/\[JS:CODENLOG\]/', array(
+            $this,
+            "pregGenJsCodeFalse"
+        ) , $out);
     }
     
     protected function GenCssRef($oldCompatibility = true)
@@ -497,13 +566,25 @@ class Layout
         }
         return ($out);
     }
-    
+    private function pregGenCssRefFalse($matches)
+    {
+        return $this->GenCssRef(false);
+    }
     protected function ParseCss(&$out)
     {
-        $out = preg_replace("/\[CSS:REF\]/e", "\$this->GenCssRef()", $out);
-        $out = preg_replace("/\[CSS:CUSTOMREF\]/e", "\$this->GenCssRef(false)", $out);
+        $out = preg_replace_callback('/\[CSS:REF\]/', array(
+            $this,
+            "GenCssRef"
+        ) , $out);
+        $out = preg_replace_callback('/\[CSS:CUSTOMREF\]/', array(
+            $this,
+            "pregGenCssRefFalse"
+        ) , $out);
         
-        $out = preg_replace("/\[CSS:CODE\]/e", "\$this->GenCssCode()", $out);
+        $out = preg_replace_callback('/\[CSS:CODE\]/', array(
+            $this,
+            "GenCssCode"
+        ) , $out);
     }
     /**
      * Generate text from template with data included
