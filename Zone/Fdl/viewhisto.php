@@ -85,15 +85,23 @@ function viewhisto(Action & $action)
     $action->lay->Set("VIEWREV", $viewrev);
     $action->lay->Set("notice", $notice);
     $hastate = false;
-    $ldoc = $doc->GetRevisions("TABLE");
+    
+    $s = new SearchDoc($action->dbaccess);
+    $s->addFilter("initid = %d", $doc->initid);
+    $s->setOrder("revision desc");
+    $s->latest = false;
+    $s->setObjectReturn();
+    $dl = $s->search()->getDocumentList();
     
     $hasnotice = false;
     $trdoc = array();
     $tversion = array();
     $iversion = 0;
     $hasVersion = false;
-    foreach ($ldoc as $k => $zdoc) {
-        $rdoc = getDocObject($dbaccess, $zdoc);
+    /**
+     * @var Doc $rdoc
+     */
+    foreach ($dl as $k => $rdoc) {
         if ($rdoc->locked != - 1) continue;
         if ($rdoc->control('view')) continue;
         $trdoc[$k]["owner"] = Account::getDisplayName($rdoc->owner);
@@ -151,7 +159,7 @@ function viewhisto(Action & $action)
     if (!$hasnotice) $action->lay->Set("notice", true);
     // not display detail display
     $action->lay->Set("STATE", $hastate);
-    $action->lay->Set("viewdiff", (count($ldoc) > 1));
+    $action->lay->Set("viewdiff", ($s->count() > 1));
     $action->lay->Set("nodetail", ($iversion > 1));
     
     $action->lay->Set("hasversion", $hasVersion);
