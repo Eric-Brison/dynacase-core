@@ -6300,11 +6300,13 @@ create unique index i_docir on doc(initid, revision);";
         
         if (get_class($this) == "DocFam") {
             $cid = "fam";
+            $famId = $this->id;
         } else {
             if ($this->doctype == 'C') return '';
             if (intval($this->fromid) == 0) return '';
             
             $cid = $this->fromid;
+            $famId = $this->fromid;
         }
         
         $sql = "";
@@ -6322,14 +6324,18 @@ create unique index i_docir on doc(initid, revision);";
                 $opt_searchcriteria = $v->getOption("searchcriteria", "");
                 if (($v->type != "array") && ($v->type != "frame") && ($v->type != "tab") && ($v->type != "idoc")) {
                     // values += any attribute
-                    $tvalues[] = array(
-                        "attrid" => $k
-                    );
-                    // svalues += attribute allowed to be indexed
-                    if (($v->type != "file") && ($v->type != "image") && ($v->type != "password") && ($opt_searchcriteria != "hidden")) {
-                        $tsearch[] = array(
+                    if ($v->docid == $famId) {
+                        $tvalues[] = array(
                             "attrid" => $k
                         );
+                    }
+                    // svalues += attribute allowed to be indexed
+                    if (($v->type != "file") && ($v->type != "image") && ($v->type != "password") && ($opt_searchcriteria != "hidden")) {
+                        if ($v->docid == $famId) {
+                            $tsearch[] = array(
+                                "attrid" => $k
+                            );
+                        }
                         $fulltext_c[] = array(
                             "attrid" => $k
                         );
@@ -6342,9 +6348,11 @@ create unique index i_docir on doc(initid, revision);";
                         "vecid" => $k . "_vec"
                     );
                     // svalues += file attributes
-                    $tsearch[] = array(
-                        "attrid" => $k . "_txt"
-                    );
+                    if ($v->docid == $famId) {
+                        $tsearch[] = array(
+                            "attrid" => $k . "_txt"
+                        );
+                    }
                 }
             }
             // fulltext += abstract attributes
