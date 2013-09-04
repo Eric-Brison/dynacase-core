@@ -6,6 +6,7 @@ delete from dochisto where id>1000000000;
 delete from docattr where docid not in (select id from doc);
 
 delete from docperm where not exists (select 1 from docread where docid=id );
+delete from docpermext where not exists (select 1 from docread where docid=id);
 
 --delete from docperm where userid not in (select iduser from groups) and userid not in (select num from vgroup) and userid not in (select idgroup from groups);
 -- cluster idx_perm on docperm;
