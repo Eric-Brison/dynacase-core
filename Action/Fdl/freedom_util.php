@@ -702,7 +702,7 @@ function getIdFromName($dbaccess, $name, $famid = "")
  */
 function getInitidFromName($name)
 {
-    simpleQuery(getDbAccess() , sprintf("select initid from docread where name = '%s' limit 1", pg_escape_string($name)) , $initid, true, true);
+    simpleQuery(getDbAccess() , sprintf("select initid from docread, docname  where docread.id=docname.id and docname.name= '%s';", pg_escape_string($name)) , $initid, true, true);
     return $initid;
 }
 /**
