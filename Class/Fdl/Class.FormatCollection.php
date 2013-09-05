@@ -383,6 +383,9 @@ class FormatCollection
                 break;
 
             case 'thesaurus':
+                $info = new ThesaurusAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
+                break;
+
             case 'docid':
             case 'account':
                 $info = new DocidAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
@@ -655,6 +658,7 @@ class DocidAttributeValue extends StandardAttributeValue
     
     public $url;
     public $icon = null;
+    protected $visible = true;
     
     public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
@@ -674,6 +678,7 @@ class DocidAttributeValue extends StandardAttributeValue
                 $this->url = $this->getDocUrl($v, $oa->getOption("docrev"));
             }
         } else {
+            $this->visible = false;
             if ($relationNoAccessText) $this->displayValue = $relationNoAccessText;
             else $this->displayValue = $oa->getOption("noaccesstext", _("information access deny"));
         }
@@ -692,6 +697,30 @@ class DocidAttributeValue extends StandardAttributeValue
             }
         }
         return $ul;
+    }
+}
+class ThesaurusAttributeValue extends DocidAttributeValue
+{
+    static $thcDoc = null;
+    static $thcDocTitle = array();
+    public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
+    {
+        parent::__construct($oa, $v, $doc, $iconsize, $relationNoAccessText);
+        if ($this->visible) {
+            if (isset(self::$thcDocTitle[$this->value])) {
+                // use local cache
+                $this->displayValue = self::$thcDocTitle[$this->value];
+            } else {
+                if (self::$thcDoc === null) {
+                    self::$thcDoc = createTmpDoc("", "THCONCEPT");
+                }
+                $rawValue = getTDoc('', $this->value);
+                self::$thcDoc->affect($rawValue);
+                $this->displayValue = self::$thcDoc->getTitle();
+                // set local cache
+                self::$thcDocTitle[$this->value] = $this->displayValue;
+            }
+        }
     }
 }
 
