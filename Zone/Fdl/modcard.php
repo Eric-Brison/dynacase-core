@@ -97,6 +97,8 @@ function modcard(Action & $action, &$ndocid, &$info = array())
         $tview = $cvdoc->getView($vid);
         $doc->setMask($tview["CV_MSKID"]); // apply mask to avoid modification of invisible attribute
         
+    } else if ($doc->cvid > 0) {
+        $doc->setMask($doc::USEMASKCVEDIT);
     }
     // ------------------------------
     $err = setPostVars($doc, $info);

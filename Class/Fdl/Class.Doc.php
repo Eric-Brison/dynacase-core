@@ -2216,10 +2216,25 @@ create unique index i_docir on doc(initid, revision);";
                             }
                         }
                         $tdiff = array_diff(array_keys($oas) , array_keys($tvis));
+                        // compute frame before because has no order
+                        foreach ($tdiff as $k) {
+                            $v = $oas[$k];
+                            if ($v->type == "frame") {
+                                $oas[$k]->mvisibility = ComputeVisibility($v->visibility, isset($v->fieldSet) ? $v->fieldSet->mvisibility : '', '');
+                            }
+                        }
+                        foreach ($tdiff as $k) {
+                            $v = $oas[$k];
+                            if ($v->type == "array") {
+                                $oas[$k]->mvisibility = ComputeVisibility($v->visibility, isset($v->fieldSet) ? $v->fieldSet->mvisibility : '', isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
+                            }
+                        }
                         // recompute loosed attributes
                         foreach ($tdiff as $k) {
                             $v = $oas[$k];
-                            $oas[$k]->mvisibility = ComputeVisibility($v->visibility, isset($v->fieldSet) ? $v->fieldSet->mvisibility : '', isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
+                            if ($v->type != "frame") {
+                                $oas[$k]->mvisibility = ComputeVisibility($v->visibility, isset($v->fieldSet) ? $v->fieldSet->mvisibility : '', isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
+                            }
                         }
                         // modify needed attribute also
                         $tneed = $mdoc->getNeedeeds();
