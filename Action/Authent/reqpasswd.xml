@@ -1,7 +1,7 @@
 <div class="head">
     <div class="societe">[CORE_CLIENT]</div>
 </div>
-<form action="[CORE_BASEURL]app=AUTHENT&action=SUBMITREQPASSWD"
+<form action="[CORE_BASEURL]app=AUTHENT&amp;action=SUBMITREQPASSWD"
       method="post" id="reqform" name="reqform">
     <div id="authform" class="authmain" style="visibility:hidden">
 
@@ -32,7 +32,8 @@
                                placeholder="[TEXT:Enter your email]"/>
                     </div>
                     <div class="action">
-                        <a id="submit" href="javascript:this.document.form.submit();">
+
+                        <a id="submit" onclick="document.getElementById('reqform').submit();">
                             [TEXT:reqpasswd_submit]</a>
                         <div style="clear:both"></div>
                     </div>
