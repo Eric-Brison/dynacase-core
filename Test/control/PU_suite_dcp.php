@@ -19,6 +19,7 @@ class SuiteDcp
         $suite = new FrameworkDcp('Package');
         
         $suite->addTestSuite('Dcp\Pu\TestDocument');
+        $suite->addTestSuite('Dcp\Pu\TestNewDoc');
         $suite->addTestSuite('Dcp\Pu\TestMultipleAlive');
         $suite->addTestSuite('Dcp\Pu\TestDoubleInherit');
         $suite->addTestSuite('Dcp\Pu\TestSetLogicalName');
