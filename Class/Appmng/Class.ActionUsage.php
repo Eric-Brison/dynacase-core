@@ -37,7 +37,7 @@ class ActionUsage extends ApiUsage
         $this->action = $action;
         $this->setDefinitionText(_($action->short_name));
         $this->addRequiredParameter('app', "application name");
-        $this->addRequiredParameter('action', "action name");
+        $this->addOptionalParameter('action', "action name");
         $this->addHiddenParameter('sole', "display mode (deprecated)");
     }
     /**
