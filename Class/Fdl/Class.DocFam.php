@@ -500,7 +500,13 @@ create unique index idx_idfam on docfam(id);";
             }
         }
         
-        if (is_array($val)) $val = $this->arrayToRawValue($val);
+        if (is_array($val)) {
+            if ($oa && $oa->type == 'htmltext') {
+                $val = $this->arrayToRawValue($val, "\r");
+            } else {
+                $val = $this->arrayToRawValue($val);
+            }
+        }
         if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
             $err = $this->convertDateToiso($oa, $val);
             if ($err) return $err;

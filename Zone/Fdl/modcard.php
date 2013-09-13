@@ -558,9 +558,10 @@ function specialmodcard(Action & $action, $usefor)
             if (is_array($v)) {
                 if (isset($v["-1"])) unset($v["-1"]);
                 if (isset($v["__1x_"])) unset($v["__1x_"]);
-                $value = (implode("\n", str_replace("\n", "<BR>", $v)));
-            } else $value = ($v);
-            $value = trim($value);
+                $value = $v;
+            } else {
+                $value = trim($v);
+            }
             if ($cdoc->getAttribute($attrid)) {
                 if ($usefor == "D") $cdoc->setDefValue($attrid, $value);
                 else if ($usefor == "Q") $err.= $cdoc->setParam($attrid, $value);
