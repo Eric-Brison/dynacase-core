@@ -912,21 +912,24 @@ function getLatestDocIds($dbaccess, $ids)
     return null;
 }
 /**
- * return latest id of document from its initid
+ * return latest id of document from its initid or other id
  *
  * @param string $dbaccess database specification
- * @param array $ids array of document identificators
+ * @param int $initid  document identificator
  * @return array identifier relative to latest revision. if one or several documents document not exists the identifier not appear in result so the array count of result can be lesser than parameter
  */
 function getLatestDocId($dbaccess, $initid)
 {
     if (is_array($initid)) return null;
     // first more quick if alive
-    $err = simpleQuery($dbaccess, sprintf("select id from docread where initid='%d' and locked != -1", $initid) , $id, true, true);
-    if (($err == '') && ($id > 0)) return $id;
+    simpleQuery($dbaccess, sprintf("select id from docread where initid='%d' and locked != -1", $initid) , $id, true, true);
+    if ($id > 0) return $id;
     // second for zombie document
-    $err = simpleQuery($dbaccess, sprintf("select id from docread where initid='%d' order by id desc limit 1", $initid) , $id, true, true);
-    if ($err == '') return $id;
+    simpleQuery($dbaccess, sprintf("select id from docread where initid='%d' order by id desc limit 1", $initid) , $id, true, true);
+    if ($id > 0) return $id;
+    // it is not really on initid
+    simpleQuery($dbaccess, sprintf("select id from docread where initid=(select initid from docread where id=%d) and locked != -1", $initid) , $id, true, true);
+    if ($id > 0) return $id;
     return null;
 }
 /**
