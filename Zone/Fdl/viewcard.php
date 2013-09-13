@@ -6,14 +6,6 @@
 */
 /**
  * View document zone
- *
- * @author Anakeen
- * @version $Id: viewcard.php,v 1.93 2009/01/04 18:36:37 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
- */
-/**
  */
 
 include_once ("FDL/Class.Doc.php");
@@ -25,7 +17,6 @@ include_once ("Class.QueryGen.php");
 include_once ("FDL/freedom_util.php");
 include_once ("FDL/family_help.php");
 include_once ("VAULT/Class.VaultFile.php");
-// -----------------------------------
 // -----------------------------------
 function viewcard(Action & $action)
 {
@@ -134,7 +125,9 @@ function viewcard(Action & $action)
             $tview = $cvdoc->getView($vid);
             $err = $doc->setMask($tview["CV_MSKID"]);
             if ($err) addWarningMsg($err);
-            if ($zonebodycard == "") $zonebodycard = $tview["CV_ZVIEW"];
+            if ($zonebodycard == "") {
+                $zonebodycard = $tview["CV_ZVIEW"];
+            }
         } else {
             /*
              * Apply mask from default VIEW view
@@ -142,7 +135,13 @@ function viewcard(Action & $action)
             $doc->setMask(Doc::USEMASKCVVIEW);
             /* Propagate default view id */
             $vid = $doc->getDefaultView(false, "id");
-            if ($vid) setHttpVar("vid", $vid);
+            if ($vid) {
+                setHttpVar("vid", $vid);
+                if ($zonebodycard == "") {
+                    $tview = $cvdoc->getView($vid);
+                    $zonebodycard = $tview["CV_ZVIEW"];
+                }
+            }
         }
     }
     // set emblem
@@ -197,7 +196,7 @@ function viewcard(Action & $action)
     $action->lay->Set("revision", $doc->revision);
     
     $action->lay->Set("lockedid", 0);
-    $action->lay->Set("comment", $doc->comment);
+    $action->lay->Set("comment", '');
     
     if ($doc->confidential > 0) $action->lay->Set("locked", _("confidential"));
     else if ($doc->locked == - 1) $action->lay->Set("locked", _("fixed"));

@@ -114,8 +114,6 @@ function editcard(Action & $action)
                     if ($err != '') {
                         addWarningMsg($err);
                     }
-                } else {
-                    $doc->setMask(Doc::USEMASKCVEDIT);
                 }
                 if ($zonebodycard == "") {
                     $zonebodycard = $tview["CV_ZVIEW"];
@@ -123,6 +121,10 @@ function editcard(Action & $action)
             } else {
                 $vid = $doc->getDefaultView(true, "id");
                 setHttpVar("vid", $vid);
+                if ($zonebodycard == "") {
+                    $tview = $cvdoc->getView($vid);
+                    $zonebodycard = $tview["CV_ZVIEW"];
+                }
                 
                 if ($mskid != '') {
                     /**
