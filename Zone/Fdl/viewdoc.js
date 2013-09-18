@@ -61,6 +61,7 @@ function displayWindow(height, width, ref, title, x, y, id, backgroundcolor) {
                 var newParam =parseInt(ui.position.left)+"+"+parseInt(ui.position.top)+"+"+parseInt(ui.size.width)+"x"+parseInt(ui.size.height);
                 setparamu("FDL", "MVIEW_GEO", newParam);
             }
+            dialogFrame.width(ui.size.width).height(ui.size.height);
         }
     }).bind('dialogdragstart dialogresizestart', function(event, ui) {
 
@@ -84,6 +85,7 @@ function displayWindow(height, width, ref, title, x, y, id, backgroundcolor) {
            $(this.parentNode).find('.hidden-dialog-overlay').hide();
        });
     dialogFrame.width(width).height(height);
+
     dialogFrame.attr("src", ref);
     if (backgroundcolor) {
         dialogFrame.css("background-color", backgroundcolor);
