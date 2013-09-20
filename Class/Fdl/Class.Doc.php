@@ -2515,6 +2515,11 @@ create unique index i_docir on doc(initid, revision);";
                         $nc = file_put_contents($filename, $value);
                         $vidout = 0;
                         $err = $vf->Store($filename, false, $vidout, "", $engine, $vidin);
+                        if ($err) {
+                            $this->addHistoryEntry(sprintf(_("convert file %s as %s failed : %s") , $info->name, $engine, $err) , HISTO_ERROR);
+                            error_log($err);
+                            return '';
+                        }
                         $info = vault_properties($vidin);
                         if (!$isimage) {
                             unlink($filename);

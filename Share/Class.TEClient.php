@@ -63,6 +63,13 @@ class TransformationEngine
         $err = "";
         
         clearstatcache(); // to reset filesize
+        if (! file_exists($filename)) {
+            $err = sprintf("file %s not found",$filename );
+            $info = array(
+                "status" => self::error_emptyfile
+            );
+            return $err;
+        }
         $size = filesize($filename);
         if ($size <= 0) {
             $err = _("empty file");
