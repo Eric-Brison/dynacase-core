@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-08-27 15:51+0200\n"
+"PO-Revision-Date: 2013-09-20 08:33+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -6949,7 +6949,7 @@ msgstr "pas d'opérateur détecté"
 
 #, c-format
 msgid "no permission to modify this attribute %s"
-msgstr "vous n'avez pas le permission de modifier cet attribut : %s"
+msgstr "vous n'avez pas la permission de modifier cet attribut : %s"
 
 #, c-format
 msgid "no privilege %s for %s"
