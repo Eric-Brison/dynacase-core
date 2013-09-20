@@ -8,7 +8,7 @@ addEvent(window,'unload',function () {autoUnlock('[docid]');});
 
 //setTimeout(resizePopDoc, 2000);
 function resizePopDoc() {
-    var p=window.parent;
+    var p=window.parent, width;
 
     if (!p) {
         return;
@@ -33,7 +33,10 @@ function resizePopDoc() {
         }
     }
 
-    dpop.dialog("option", "height", ih+80);
+    width = dpop.width();
+    dpop.dialog("option", {"height" : ih+80});
+    dpop.width(width);
+
 }
 </script>
 <style>
