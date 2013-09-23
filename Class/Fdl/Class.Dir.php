@@ -742,6 +742,16 @@ class Dir extends PDir
         }
         return "";
     }
+    /**
+     * @deprecated use postStore() instead
+     * @return string
+     */
+    public function postModify()
+    {
+        deprecatedFunction();
+        return self::postStore();
+    }
+    
     function hasNoRestriction()
     {
         if (!$this->authfam) {

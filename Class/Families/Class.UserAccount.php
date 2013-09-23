@@ -240,6 +240,15 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         return $err;
     }
     /**
+     * @deprecated use postStore() instead
+     * @return string
+     */
+    public function postModify()
+    {
+        deprecatedFunction();
+        return self::postStore();
+    }
+    /**
      * Modify system account from document IUSER
      */
     function synchronizeSystemUser()
