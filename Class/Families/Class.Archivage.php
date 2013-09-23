@@ -132,7 +132,15 @@ class Archiving extends \Dcp\Family\Dir
         $err.= $this->createProfil();
         return $err;
     }
-    
+    /**
+     * @deprecated use postStore() instead
+     * @return string
+     */
+    public function postModify()
+    {
+        deprecatedFunction();
+        return self::postStore();
+    }
     function preInsertDocument($docid, $multiple = false)
     {
         if ($this->getRawValue("arc_status") != "O") {

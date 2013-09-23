@@ -76,6 +76,15 @@ class DetailSearch extends \Dcp\Family\Search
         return $err;
     }
     /**
+     * @deprecated use postStore() instead
+     * @return string
+     */
+    public function postModify()
+    {
+        deprecatedFunction();
+        return self::postStore();
+    }
+    /**
      * update somes attributes from Xml filter
      * @return string error message
      */

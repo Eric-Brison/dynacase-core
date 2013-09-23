@@ -27,6 +27,15 @@ class AccountCollection extends \Dcp\Family\Dir
         return $err;
     }
     /**
+     * @deprecated use postStore() instead
+     * @return string
+     */
+    public function postModify()
+    {
+        deprecatedFunction();
+        return self::postStore();
+    }
+    /**
      * recompute only parent group
      * @apiExpose
      *

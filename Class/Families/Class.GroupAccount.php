@@ -8,7 +8,6 @@
  * Group account
  */
 namespace Dcp\Core;
-
 /**
  * Class GroupAccount
  *
@@ -19,7 +18,7 @@ namespace Dcp\Core;
 class GroupAccount extends \Dcp\Family\Group
 {
     public $wuser;
-
+    
     var $cviews = array(
         "FUSERS:FUSERS_IGROUP"
     );
@@ -136,7 +135,15 @@ class GroupAccount extends \Dcp\Family\Group
     {
         return $this->synchronizeSystemGroup();
     }
-    
+    /**
+     * @deprecated use postStore() instead
+     * @return string
+     */
+    public function postModify()
+    {
+        deprecatedFunction();
+        return self::postStore();
+    }
     public function synchronizeSystemGroup()
     {
         $uid = $this->getRawValue("US_WHATID");
