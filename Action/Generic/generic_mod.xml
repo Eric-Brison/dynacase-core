@@ -40,7 +40,7 @@ if (window.parent) {
         }
         window.parent.disableReadAttribute();
     } else {
-        undisplayConstraint();
+        window.parent.undisplayConstraint();
             if (updateOpenerData) updateOpenerLink(updateOpenerData);
             if (warning) {
             //window.parent.displayWarningMsg(warning); // not need :set by global fonction
