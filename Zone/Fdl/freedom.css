@@ -213,6 +213,12 @@ TD.editbutton, TD.nowrap {
 width:5px;
     padding-left: 4px !important;
 [ENDIF ISIE6]
+[IF ISIE9]
+    width:5px;
+[ENDIF ISIE9]
+[IF ISIE10]
+    width:5px;
+[ENDIF ISIE10]
 }
 TD[type=docid][multiple=true]+TD.editbutton, 
 TABLE[type=docid][multiple=true] TD.editbutton,
@@ -995,10 +1001,7 @@ DIV.static {
  */
 
 
-div.tabsh span.invalid {
-  border:solid 1px [CORE_ERRORCOLOR];
-  background-color:[CORE_ERRORCOLOR];
-}
+
 div.fullscreen {
   width:100%;
   position:absolute;

@@ -133,8 +133,53 @@ span.invalid,
 table.invalid,
 fieldset.invalid {
     border: solid 1px [CORE_ERRORCOLOR] !important;
+    background-color: #ffc0cb ! important;
 }
 
 input[type="text"].invalid {
     border: solid 1px [CORE_ERRORCOLOR] !important;
+}
+.document div.tabsh span.invalid {
+  background:#FF8B8B;
+  border:none!important;
+}
+.tipsy-constraint .tipsy-inner {
+    background-color:#C71212;
+    font-weight: bold;
+    color: white;
+    box-shadow: 5px 5px 2px grey;
+}
+.tipsy-constraint.constraint-over .tipsy-inner {
+    background-color:#ff4500;
+}
+
+.tipsy-constraint.constraint-over .tipsy-arrow-n {
+   border-bottom-color: #ff4500;
+}
+.tipsy-constraint.constraint-over  {
+    z-index: 100001;  /* one more tipsy itself */
+    opacity: 1 !important;
+}
+ .tipsy-constraint .tipsy-arrow-n {
+    border-bottom-color: #C71212;
+}
+.tipsy-constraint:hover {
+    z-index: 100002;  /* two more tipsy itself */
+    opacity: 1 !important;
+}
+.close-constraint {
+    [IFNOT ISIE8]
+    float: right;
+    left: 15px;
+    position: relative;
+    top: -13px;
+    [ENDIF ISIE8]
+    border: none;
+    cursor: pointer;
+}
+
+.tipsy-inner {
+    [IF ISIE6]
+    width:200px;
+    [ENDIF ISIE6]
 }

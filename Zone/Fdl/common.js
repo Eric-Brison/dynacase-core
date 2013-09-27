@@ -540,10 +540,10 @@ function showFieldset(event,o,n,docid,force) {
   var ln,i;
   var prevtabname=o.id.substr(3);
   for ( i=0;i<btag.length;i++) {
-	  if (btag[i].className=='tabsel') prevtabname=btag[i].id.substr(3);
-    btag[i].className='';
+    if (btag[i].className=='tabsel') prevtabname=btag[i].id.substr(3);
+    $(btag[i]).removeClass('tabsel');
   }
-  o.className='tabsel';
+  $(o).addClass('tabsel');
   var loaded=true;
   if (force) loaded=false;
   for ( i=0;i<ttr.length;i++) {
@@ -553,12 +553,19 @@ function showFieldset(event,o,n,docid,force) {
     	  if (! force) loaded=(ttr[i].getAttribute('loaded') != "no");
     	  if (loaded) {
 	        ttr[i].style.display='';
+
+              $(ttr[i]).find(".hastipsy").each(function() {
+                           $(this).tipsy('show');
+                        });
     	  } else {
     		  ttr[i].parentNode.removeChild(ttr[i]);
     		  i--;
     	  }
       } else {
 	    ttr[i].style.display='none';
+          $(ttr[i]).find(".hastipsy").each(function() {
+             $(this).tipsy('hide');
+          });
       }
     } 
   } 
