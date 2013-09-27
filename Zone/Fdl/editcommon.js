@@ -2982,3 +2982,152 @@ function elinkvalue(attrid) {
 
   return '';
 }
+
+
+function viewConstraint(inp, info) {
+    if (inp) {
+        var realinp = inp;
+        if ((inp.style.display == 'none') || (inp.type == 'hidden')) {
+            var oinp = inp.parentNode.firstChild;
+            while (oinp
+                && ((oinp.tagName != 'INPUT' && oinp.tagName != 'SELECT') || (oinp.type == 'hidden' || (oinp.style && oinp.style.display == 'none')))) {
+                oinp = oinp.nextSibling;
+            }
+            if (oinp && oinp.tagName == 'INPUT')
+                inp = oinp;
+            else {
+                if (oinp && oinp.tagName == 'SELECT')
+                    inp = oinp;
+                else
+                    inp = inp.parentNode;
+            }
+        }
+        $(inp).addClass('invalid hastipsy');
+
+
+        var ntr = document.createElement("div");
+
+        if (inp.id) {
+            ntr.id = 'constraint_' + inp.id;
+        }
+        var sp = document.createElement("span");
+        sp.innerHTML = info.err;
+
+        var imgc = document.createElement("img");
+        imgc.setAttribute('class', "close-constraint");
+        imgc.setAttribute('id', 'cimg_' + inp.id);
+        imgc.setAttribute('src', "[IMG:closeconstraint.png]");
+        imgc.setAttribute('title', "[TEXT:Close message]");
+
+        info.displayed = true;
+        ntr.appendChild(imgc);
+        ntr.appendChild(sp);
+
+        // add suggestion
+        if (info.sug && (info.sug.length > 0)) {
+            $(inp).data("hasSuggest", true);
+            var br = document.createElement("br");
+            ntr.appendChild(br);
+            var s = document.createElement("select");
+            s.setAttribute('id', "csel_" + inp.id);
+            s.options[s.options.length] = new Option('[TEXT:Suggestion]', '');
+            addEvent(s, "change", function () {
+                realinp.value = s.options[s.selectedIndex].value;
+                realinp.onchange.apply(realinp, []);
+            });
+            for (var i in info.sug) {
+                s.options[s.options.length] = new Option(info.sug[i],
+                    info.sug[i]);
+            }
+            ntr.appendChild(s);
+        }
+
+
+        $(inp).on("mouseover",function () {
+            var $this = $(this);
+            if ($this.hasClass('invalid')) {
+                $this.attr('classover', 'constraint-over');
+                showAConstraint($this);
+            }
+        }).on("mouseout", function () {
+                var $this = $(this);
+                if ($this.hasClass('invalid')) {
+                    $this.attr('classover', '');
+                    if ($this.data('tipsyClosed')) {
+                        if ($this.data('hasSuggest')) {
+                            showAConstraint($this);
+                        } else {
+                            setTimeout(function () {
+                                $this.tipsy('hide');
+                            }, 500);
+                        }
+                    } else {
+                        showAConstraint($this);
+                    }
+                }
+            });
+
+
+        var constraintHtml = $(ntr).html();
+        $(inp).data('constraintMessage', constraintHtml).data('tipsyClosed', false);
+        $(inp).tipsy({className: function () {
+            var $this = $(this);
+
+            var className = 'tipsy-constraint';
+            var classOver = $this.attr('classover');
+            if (classOver) {
+                className += ' ' + classOver;
+            }
+            return className;
+        },
+            delayOut: 1000,
+            trigger: "manual",
+            html: true,
+            title: function () {
+                return $(this).data('constraintMessage');
+            }}).tipsy('show');
+
+        var $body = $('body');
+        if (!$body.data('hasCloseBind')) {
+            $body.on('click', ".tipsy .close-constraint", function () {
+                var inppoitee = $('#' + this.id.substr(5));
+                $(inppoitee).data('tipsyClosed', true).tipsy('hide');
+            });
+            $body.data('hasCloseBind', true);
+        }
+        if (info.sug) {
+            if (!$body.data('hasChangeBind')) {
+                $body.on('change', '.tipsy select', function () {
+                    var inppoitee = $('#' + this.id.substr(5));
+                    $(inppoitee).val($(this).val());
+                    $(inppoitee).trigger('change');
+                });
+                $body.data('hasChangeBind', true);
+            }
+        }
+    }
+}
+function undisplayConstraint() {
+    $(".invalid").removeClass('invalid');
+    $(".hastipsy").each(function() {
+                 $(this).tipsy('hide').removeClass('hastipsy').data('tipsy',null);
+
+
+              });
+    $('.tipsy').remove();
+}
+
+function showAConstraint(inp) {
+    $(inp).tipsy('show');
+    if ($(inp).data('tipsyClosed')) {
+        if (!$(inp).data('hasSuggest')) {
+        var aTipsy = $(inp).data('tipsy');
+        if (aTipsy) {
+            var tip = aTipsy.tip();
+            if (tip) {
+                tip.find('img.close-constraint').hide();
+            }
+        }
+        }
+    }
+}

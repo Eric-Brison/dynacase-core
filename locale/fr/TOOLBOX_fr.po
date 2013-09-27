@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-09-20 08:33+0200\n"
+"PO-Revision-Date: 2013-09-27 16:25+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1122,6 +1122,9 @@ msgstr "Clôture de l'archive"
 
 msgid "Close help"
 msgstr "Fermer l'aide"
+
+msgid "Close message"
+msgstr "Cacher le message"
 
 msgid "Column mode"
 msgstr "Mode colonne"
@@ -3586,7 +3589,9 @@ msgstr ""
 "voulez vous vraiment quitter?"
 
 msgid "Some changes are not saved, do you really wish to reload?"
-msgstr "Certaines modifications n'ont pas été sauvegardées, voulez vous vraiment actualiser les données ?"
+msgstr ""
+"Certaines modifications n'ont pas été sauvegardées, voulez vous vraiment "
+"actualiser les données ?"
 
 #, c-format
 msgid ""
