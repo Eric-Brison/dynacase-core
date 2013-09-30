@@ -3070,6 +3070,8 @@ function viewConstraint(inp, info) {
 
         var constraintHtml = $(ntr).html();
         $(inp).data('constraintMessage', constraintHtml).data('tipsyClosed', false);
+
+        $(inp).data('tipsy', null);
         $(inp).tipsy({className: function () {
             var $this = $(this);
 
