@@ -131,7 +131,7 @@ class CVDoc extends Doc
     {
         $ti = $this->getMultipleRawValues("CV_IDVIEW");
         foreach ($ti as $k => $v) {
-            if ($v == $vid) {
+            if ($v === $vid) {
                 // found it
                 $tl = $this->getMultipleRawValues("CV_LVIEW");
                 $tz = $this->getMultipleRawValues("CV_ZVIEW");
@@ -161,7 +161,7 @@ class CVDoc extends Doc
         return $tv;
     }
     
-    function preImport(array $extra=array())
+    function preImport(array $extra = array())
     {
         return $this->verifyAllConstraints();
     }
