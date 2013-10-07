@@ -95,13 +95,13 @@ function editcard(Action & $action)
          *      1     |     1     |      1      || setMask(cvid->vid->mskid) OR setMask(Doc::USEMASKCVEDIT)
         */
         if ($doc->cvid) {
+            
             $cvdoc = new_Doc($dbaccess, $doc->cvid);
             if (!$cvdoc->isAlive()) {
                 $err = "document not alive";
                 $action->exitError("CV:" . $doc->cvid . "\n" . $err);
                 return;
             }
-            
             if ($vid != '') {
                 $err = $cvdoc->control(trim($vid));
                 if ($err != '') {
@@ -121,7 +121,7 @@ function editcard(Action & $action)
             } else {
                 $vid = $doc->getDefaultView(true, "id");
                 setHttpVar("vid", $vid);
-                if ($zonebodycard == "") {
+                if ($vid && $zonebodycard == "") {
                     $tview = $cvdoc->getView($vid);
                     $zonebodycard = $tview["CV_ZVIEW"];
                 }
