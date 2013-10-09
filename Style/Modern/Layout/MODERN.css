@@ -106,6 +106,14 @@ input[type="text"]:hover,  TEXTAREA:hover,  SELECT:hover {
   color:[input-text-hover-color];
   background-color:[input-background-hover-color];
    }
+
+.documentEdit .static {
+  border-style:inset;
+  border-color:[input-text-disabled-color];
+  color:[input-text-disabled-color];
+  background-color:[input-background-normal-color];
+}
+
 input[type="text"]:focus,  textarea:focus, input.sffocus, textarea.sffocus {
   border-style:inset;
   color:[input-text-focus-color];

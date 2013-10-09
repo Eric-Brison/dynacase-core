@@ -584,11 +584,14 @@ class DocFormFormat
         private function formatHtmlText($value)
         {
             if (($this->visibility == "H") || ($this->visibility == "R")) {
-                $input = "<textarea    name=\"{$this->attrin}\">$value</textarea>";
+                $input = sprintf('<textarea style="display:none" name="%s" id="%s">%s</textarea>', $this->attrin, $this->attridk, $value);
             } elseif ($this->visibility == "S") {
                 // no input : just text
-                if ($value == "") $value = '<br/>';
-                $input = "<div class=\"static\" name=\"{$this->attrin}\">$value</div>";
+                $input = sprintf('<textarea style="display:none" name="%s" id="%s">%s</textarea>', $this->attrin, $this->attridk, $value);
+                if ($value == "") {
+                    $value = '<br/>';
+                }
+                $input.= sprintf('<div class="static" attrid="%s">%s</div>', $this->attrin, $value);
             } else {
                 global $action;
                 $lay = new Layout("FDL/Layout/ckeditor.xml", $action);
