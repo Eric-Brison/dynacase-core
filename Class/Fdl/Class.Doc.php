@@ -2454,11 +2454,15 @@ create unique index i_docir on doc(initid, revision);";
      * update $attrid_txt table column
      * @param string $attrid file attribute identifier
      * @param int $index index in case of multiple attribute
+     * @apiExpose
      * @return string error message
      */
     public function resetConvertVaultFile($attrid, $index)
     {
-        $err = '';
+        $err = $this->canEdit();
+        if ($err) {
+            return $err;
+        }
         $val = $this->getMultipleRawValues($attrid, false, $index);
         if (($index == - 1) && (count($val) == 1)) {
             $val = $val[0];
