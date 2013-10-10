@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-20T11:54:53+01:00\n"
-"PO-Revision-Date: 2013-10-10 10:49+0200\n"
+"PO-Revision-Date: 2013-10-10 15:50+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -24,10 +24,9 @@ msgid "CV_IUSER_ACCOUNT#label#EUSER"
 msgstr "Admininistrer"
 
 #: App/Fdl/searches.ods.csv
-#, fuzzy
 msgid "CV_IUSER_ACCOUNT#menu#EGROUP"
-msgstr "Gestion des groupes"
+msgstr "Gestion du compte"
 
 #: App/Fdl/searches.ods.csv
 msgid "CV_IUSER_ACCOUNT#menu#ESUBSTITUTE"
-msgstr "Gestion des groupes"
+msgstr "Gestion du compte"
