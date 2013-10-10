@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-20T11:54:53+01:00\n"
-"PO-Revision-Date: 2013-03-19 17:14+0100\n"
+"PO-Revision-Date: 2013-10-10 10:49+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,7 @@ msgstr ""
 
 #: App/Fdl/searches.ods.csv
 msgid "CV_IUSER_ACCOUNT#label#EGROUP"
-msgstr "Groupes"
+msgstr "Changer de groupes"
 
 #: App/Fdl/searches.ods.csv
 msgid "CV_IUSER_ACCOUNT#label#ESUBSTITUTE"
@@ -21,12 +21,13 @@ msgstr "Modifier le suppléant"
 
 #: App/Fdl/searches.ods.csv
 msgid "CV_IUSER_ACCOUNT#label#EUSER"
-msgstr "Admin edit"
+msgstr "Admininistrer"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "CV_IUSER_ACCOUNT#menu#EGROUP"
-msgstr "Compte"
+msgstr "Gestion des groupes"
 
 #: App/Fdl/searches.ods.csv
 msgid "CV_IUSER_ACCOUNT#menu#ESUBSTITUTE"
-msgstr "Compte"
+msgstr "Gestion des groupes"
