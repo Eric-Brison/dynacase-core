@@ -8,7 +8,6 @@
  *  Control view Class Document
  *
  * @author Anakeen
- * @version $Id: Class.CVDoc.php,v 1.7 2006/04/03 14:56:26 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  */
@@ -19,6 +18,7 @@ include_once ('FDL/Class.Doc.php');
 /**
  * Control view Class
  */
+use \Dcp\AttributeIdentifiers\Cvdoc as MyAttributes;
 class CVDoc extends Doc
 {
     /**
@@ -90,9 +90,7 @@ class CVDoc extends Doc
         $dc = new DocCtrl($this->dbaccess);
         $originals = $dc->dacls;
         
-        if ($this->nbId > 20) {
-            $err = _("Maximum 20 views by control");
-        } elseif (!preg_match('!^[0-9a-z_-]+$!i', $value)) {
+        if (!preg_match('!^[0-9a-z_-]+$!i', $value)) {
             $err = _("You must use only a-z, 0-9, _, - caracters");
         } elseif (array_key_exists($value, $originals)) {
             $err = _("Impossible to name a view like a control acl");
@@ -133,21 +131,51 @@ class CVDoc extends Doc
         foreach ($ti as $k => $v) {
             if ($v === $vid) {
                 // found it
-                $tl = $this->getMultipleRawValues("CV_LVIEW");
-                $tz = $this->getMultipleRawValues("CV_ZVIEW");
-                $tk = $this->getMultipleRawValues("CV_KVIEW");
-                $tm = $this->getMultipleRawValues("CV_MSKID");
+                $tl = $this->getMultipleRawValues(MyAttributes::cv_lview);
+                $tz = $this->getMultipleRawValues(MyAttributes::cv_zview);
+                $tk = $this->getMultipleRawValues(MyAttributes::cv_kview);
+                $tm = $this->getMultipleRawValues(MyAttributes::cv_mskid);
+                $tmenu = $this->getMultipleRawValues(MyAttributes::cv_menu);
                 
                 return array(
                     "CV_IDVIEW" => $v,
                     "CV_LVIEW" => $tl[$k],
                     "CV_ZVIEW" => $tz[$k],
                     "CV_KVIEW" => $tk[$k],
-                    "CV_MSKID" => $tm[$k]
+                    "CV_MSKID" => $tm[$k],
+                    "CV_MENU" => $tmenu[$k]
                 );
             }
         }
         return false;
+    }
+    /**
+     * @param string $vid view identifier
+     * @return string the locale label
+     */
+    public function getLocaleViewLabel($vid)
+    {
+        $key = $this->getPropertyValue("name") . "#label#" . $vid;
+        $lkey = _($key);
+        if ($lkey != $key) {
+            return $lkey;
+        }
+        $view = $this->getView($vid);
+        return isset($view["CV_LVIEW"]) ? $view["CV_LVIEW"] : sprintf(_("Unlabeled view (%s)") , $vid);
+    }
+    /**
+     * @param string $vid view identifier
+     * @return string the locale menu label
+     */
+    public function getLocaleViewMenu($vid)
+    {
+        $key = $this->getPropertyValue("name") . "#menu#" . $vid;
+        $lkey = _($key);
+        if ($lkey != $key) {
+            return $lkey;
+        }
+        $view = $this->getView($vid);
+        return isset($view["CV_MENU"]) ? $view["CV_MENU"] : sprintf(_("Unlabeled menu (%s)") , $vid);
     }
     
     function getViews()
