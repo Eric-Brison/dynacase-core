@@ -883,7 +883,7 @@ class NormalAttribute extends BasicAttribute
                     if (function_exists($reg[1])) {
                         $this->phpfunc = call_user_func_array($reg[1], $args);
                         
-                        EnumAttributeTools::flatEnumNotationToEnumArray($this->phpfunc, $this->enum, $this->enumlabel);
+                        EnumAttributeTools::flatEnumNotationToEnumArray($this->phpfunc, $this->enum, $this->enumlabel, $br);
                     } else {
                         AddWarningMsg(sprintf(_("function [%s] not exists") , $this->phpfunc));
                         $this->phpfunc = "";
@@ -1513,9 +1513,10 @@ class EnumAttributeTools
      * @param string $phpfunc the flat notation
      * @param array $theEnum [out] the enum array converted
      * @param array $theEnumlabel [out] the enum array converted - with complete labels in case of levels
+     * @param string $locale the prefix key for locale values (if empty no locale are set)
      * @return array
      */
-    public static function flatEnumNotationToEnumArray($phpfunc, array & $theEnum, array & $theEnumlabel = array())
+    public static function flatEnumNotationToEnumArray($phpfunc, array & $theEnum, array & $theEnumlabel = array() , $locale = '')
     {
         
         if (!$phpfunc) return array();
@@ -1548,6 +1549,14 @@ class EnumAttributeTools
                         '\.',
                         ','
                     ) , $enumValue);
+                    
+                    if ($locale) {
+                        $translatedEnumValue = _($locale . $enumKey);
+                        if ($translatedEnumValue != $locale . $enumKey) {
+                            $enumValue = $translatedEnumValue;
+                        }
+                    }
+                    
                     $theEnum[str_replace(array(
                         '-dot-',
                         '-comma-'
@@ -1583,6 +1592,13 @@ class EnumAttributeTools
                         '\.',
                         ','
                     ) , $tmpKey);
+                    
+                    if ($locale) {
+                        $translatedEnumValue = _($locale . $enumlabelKey);
+                        if ($translatedEnumValue != $locale . $enumlabelKey) {
+                            $enumValue = $translatedEnumValue;
+                        }
+                    }
                     $enumlabelValue = $theEnum[$tmpKey] . '/' . $enumValue;
                     $enumlabelValue = str_replace(array(
                         '-dot-',
@@ -1632,7 +1648,7 @@ class EnumAttributeTools
      */
     public static function getFlatEnumNotation($famid, $attrid)
     {
-        $sql = sprintf("select * from docenum where famid='%s' and attrid='%s' and (disabled is null or not disabled)", pg_escape_string($famid) , pg_escape_string($attrid));
+        $sql = sprintf("select * from docenum where famid='%s' and attrid='%s' and (disabled is null or not disabled) order by eorder", pg_escape_string($famid) , pg_escape_string($attrid));
         simpleQuery('', $sql, $results);
         $tItems = array();
         $hierarchy = array();
