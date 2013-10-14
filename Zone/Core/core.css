@@ -215,6 +215,7 @@ color: [CORE_TEXTFGCOLOR];
 
 .Error {  
   color: [CORE_ERRORCOLOR];
+  white-space:normal;
 }
 .COREError {
   color: [CORE_ERRORCOLOR];
