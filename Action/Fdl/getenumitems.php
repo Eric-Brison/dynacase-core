@@ -104,6 +104,7 @@ function getenumitems(Action & $action)
                 );
             }
         }
+        setLanguage($action->getParam("CORE_LANG"));
         $parentLabel = ''; // get parent label - not use direct parent label if the same
         $label = $oa->getLabel();
         if (!empty($oa->fieldSet)) {
