@@ -342,7 +342,7 @@ function resetbodyopacity() {
 function setbodyopacity(op) {
   if (isIE) {
     op=parseInt(op*100);
-     document.body.style.filter='alpha(opacity'+ op + ')';;
+     document.body.style.filter='alpha(opacity='+ op + ')';
   } else {
      document.body.style.opacity=op;
   }
