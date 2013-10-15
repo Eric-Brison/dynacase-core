@@ -74,8 +74,10 @@ function reqViewMenu() {
                 return;
             }
         } else {
-            alert("There was a problem retrieving the XML data:\n" +
+            if (MENUREQ.status > 0) {
+                alert("There was a problem retrieving the XML data:\n" +
                 MENUREQ.statusText);
+            }
             return;
         }
     }

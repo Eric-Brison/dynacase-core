@@ -97,8 +97,10 @@ function XMLprocessverificationfiles() {
 
 
     } else {
-      alert("There was a problem retrieving the XML data:\n" +
-	    XHT_FILES.statusText+' code :'+XHT_FILES.status);
+        if (XHT_FILES.status > 0) {
+            alert("There was a problem retrieving the XML data:\n" +
+	            XHT_FILES.statusText+' code :'+XHT_FILES.status);
+        }
       return;
     }
   } 

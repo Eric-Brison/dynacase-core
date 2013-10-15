@@ -83,8 +83,10 @@ function XmlInsertHtml() {
       // ...processing statements go here...
       insertXMlResponse(REQINSERTHTML.responseXML);
     } else {
-      alert("There was a problem retrieving the XML data:\n" +
+        if (REQINSERTHTML.status > 0) {
+            alert("There was a problem retrieving the XML data:\n" +
 	    REQINSERTHTML.statusText+' code :'+REQINSERTHTML.status);
+        }
       return;
     }
   } 
