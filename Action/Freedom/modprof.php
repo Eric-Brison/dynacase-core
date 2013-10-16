@@ -24,10 +24,9 @@ include_once ("FDL/Class.Dir.php");
 include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function modprof(&$action)
+function modprof(Action & $action)
 {
     // -----------------------------------
-    
     // Get all the params
     $docid = GetHttpVars("docid");
     $createp = GetHttpVars("create", 0); // 1 if use for create profile (only for familly)
@@ -52,6 +51,10 @@ function modprof(&$action)
     
     if ($profid == "private") {
         $prof = getMyProfil($dbaccess);
+        if (!$prof) {
+            $doc->unlock(true); // auto lock
+            $action->exitError(_("No privilege to set private profil"));
+        }
         $profid = $prof->id;
     }
     
@@ -74,10 +77,14 @@ function modprof(&$action)
         }
         if ($doc->profid != $profid) $doc->addHistoryEntry(sprintf(_("Change profil to %s [%d]") , $doc->getTitle($profid) , $profid));
         if ($doc->cvid != $cvid) $doc->addHistoryEntry(sprintf(_("Change view control  to %s [%d]") , $doc->getTitle($cvid) , $cvid));
+        // specific control
         $doc->setProfil($profid); // change profile
         $doc->setCvid($cvid); // change view control
-        // specific control
-        if ($doc->profid == $doc->id) $doc->SetControl();
+        if ($doc->profid == $doc->id) {
+            $doc->SetControl();
+            $doc->setProfil($doc->id); // force recompute of view of specific profil itself
+            
+        }
         
         $doc->disableEditControl(); // need because new profil is not enable yet
         
@@ -87,7 +94,6 @@ function modprof(&$action)
     if ($err != "") $action->exitError($err);
     
     $doc->unlock(true); // auto unlock
-    
     if ($redirid) $docid = $redirid;
     redirect($action, "FDL", "FDL_CARD&props=Y&id=$docid", $action->GetParam("CORE_STANDURL"));
 }
