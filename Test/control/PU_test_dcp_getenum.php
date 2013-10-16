@@ -203,7 +203,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                     "1.12"
                 ) ,
                 'labels' => array(
-                    "Zéro",
+                    "Zéfiro",
                     "ZéroUn",
                     "ZéroDeux",
                     "Un",
@@ -277,9 +277,9 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                     "12"
                 ) ,
                 'labels' => array(
-                    "Zéro",
-                    "Zéro/ZéroUn",
-                    "Zéro/ZéroDeux",
+                    "Zéfiro",
+                    "Zéfiro/ZéroUn",
+                    "Zéfiro/ZéroDeux",
                     "Un",
                     "Un/UnUn",
                     "Un/UnDeux"
