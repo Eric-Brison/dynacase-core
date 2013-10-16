@@ -711,7 +711,7 @@ function fdlGetEnumValues($famid, $attrid, $val = '')
     $tenumLabel = $enumAttribute->getEnumLabel(null, false);
     $tr = array();
     foreach ($tenumLabel as $key => $label) {
-        if (($val == "") || (preg_match("!" . preg_quote($val, "!") . "!i", $label, $reg))) {
+        if (($val == "") || (preg_match("!" . preg_quote($val, "!") . "!iu", $label, $reg))) {
             $tr[] = array(
                 htmlspecialchars($label, ENT_NOQUOTES) ,
                 $label,
