@@ -1024,14 +1024,16 @@ function getMyProfil($dbaccess, $create = true)
     if (!$p->isAffected()) {
         if ($create) {
             $p = createDoc($dbaccess, "PDIR");
-            $p->name = $pname;
-            $p->setValue("ba_title", sprintf(_("Personal profile for %s %s") , $action->user->firstname, $action->user->lastname));
-            $p->setValue("prf_desc", sprintf(_("Only %s %s can view and edit") , $action->user->firstname, $action->user->lastname));
-            
-            $err = $p->Add();
-            if ($err == "") {
-                $err = $p->setControl(); //activate the profile
+            if ($p) {
+                $p->name = $pname;
+                $p->setValue("ba_title", sprintf(_("Personal profile for %s %s") , $action->user->firstname, $action->user->lastname));
+                $p->setValue("prf_desc", sprintf(_("Only %s %s can view and edit") , $action->user->firstname, $action->user->lastname));
                 
+                $err = $p->Add();
+                if ($err == "") {
+                    $err = $p->setControl(); //activate the profile
+                    $p->setProfil($p->id);
+                }
             }
         } else {
             $p = false;
