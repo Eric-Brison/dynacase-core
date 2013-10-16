@@ -40,15 +40,13 @@ $logdelete = sprintf("DELETE FROM doclog where date < '%s'", Doc::getDate(-($dur
 simpleQuery($dbaccess, $logdelete);
 
 global $_SERVER;
-$dir = dirname($_SERVER["argv"][0]);
 
-$dbfreedom = getServiceName($dbaccess);
 if ($real || $full) {
     print "Full clean.\n";
-    system(sprintf("PGSERVICE=%s psql -a -f %s/API/cleanFullContext.sql | logger -t %s", escapeshellarg($dbfreedom) , escapeshellarg($dir) , escapeshellarg("cleanContext(" . $action->GetParam("CORE_CLIENT") . ")")));
+    fullDbClean($action, $dbaccess);
 } else {
     print "Basic clean.\n";
-    system(sprintf("PGSERVICE=%s psql -a -f %s/API/cleanContext.sql | logger -t %s", escapeshellarg($dbfreedom) , escapeshellarg($dir) , escapeshellarg("cleanContext(" . $action->GetParam("CORE_CLIENT") . ")")));
+    basicDbClean($action, $dbaccess);
 }
 // Cleanup session files
 $core_db = $action->GetParam('CORE_DB');
@@ -56,6 +54,57 @@ $sessionUtils = new SessionUtils($core_db);
 $sessionUtils->deleteExpiredSessionFiles();
 
 cleanTmpFiles();
+
+function mkTmpScript($script, $prefix)
+{
+    $tmpDir = getTmpDir();
+    $tmpScript = tempnam($tmpDir, $prefix);
+    if ($tmpScript === false) {
+        throw new Exception(sprintf("Error creating temporary file in '%s'.", $tmpDir));
+    }
+    if (file_put_contents($tmpScript, $script) === false) {
+        throw new Exception(sprintf("Error writing to temporary file '%s'.", $tmpScript));
+    }
+    return $tmpScript;
+}
+
+function fullDbClean(Action & $action, $dbaccess)
+{
+    $dbfreedom = getServiceName($dbaccess);
+    $script = <<<'EOF'
+#!/bin/bash
+PGSERVICE=%s psql -a -f %s/API/cleanFullContext.sql | logger -t %s
+exit ${PIPESTATUS[0]}
+EOF;
+    $script = sprintf($script, escapeshellarg($dbfreedom) , escapeshellarg(DEFAULT_PUBDIR) , escapeshellarg("cleanContext(" . $action->GetParam("CORE_CLIENT") . ")"));
+    $tmpScript = mkTmpScript($script, 'fullDbClean');
+    $out = array();
+    $ret = 0;
+    exec(sprintf("bash %s 2>&1", $tmpScript) , $out, $ret);
+    if ($ret !== 0) {
+        throw new Exception(sprintf("Error executing '%s': %s", $tmpScript, join("\n", $out)));
+    }
+    unlink($tmpScript);
+}
+
+function basicDbClean(Action & $action, $dbaccess)
+{
+    $dbfreedom = getServiceName($dbaccess);
+    $script = <<<'EOF'
+#!/bin/bash
+PGSERVICE=%s psql -a -f %s/API/cleanContext.sql | logger -t %s
+exit ${PIPESTATUS[0]}
+EOF;
+    $script = sprintf($script, escapeshellarg($dbfreedom) , escapeshellarg(DEFAULT_PUBDIR) , escapeshellarg("cleanContext(" . $action->GetParam("CORE_CLIENT") . ")"));
+    $tmpScript = mkTmpScript($script, 'basicDbClean');
+    $out = array();
+    $ret = 0;
+    exec(sprintf("bash %s 2>&1", $tmpScript) , $out, $ret);
+    if ($ret !== 0) {
+        throw new Exception(sprintf("Error executing '%s': %s", $tmpScript, join("\n", $out)));
+    }
+    unlink($tmpScript);
+}
 
 function cleanTmpFiles()
 {
