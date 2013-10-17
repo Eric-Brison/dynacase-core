@@ -7358,7 +7358,7 @@ create unique index i_docir on doc(initid, revision);";
                                     $values = explode("<BR>", $va);
                                     $ovalues = array();
                                     foreach ($values as $ka => $vaa) {
-                                        $ovalues[] = $this->GetOOoValue($oa, $vaa);
+                                        $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa));
                                     }
                                     //print_r(array($oa->id=>$ovalues));
                                     $tmkeys[$kindex]["V_" . strtoupper($kaid) ] = $ovalues;
@@ -7381,7 +7381,7 @@ create unique index i_docir on doc(initid, revision);";
                             $ovalues = array();
                             $v->setOption("multiple", "no");
                             foreach ($values as $ka => $va) {
-                                $ovalues[] = $this->GetOOoValue($v, $va);
+                                $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($v, $va));
                             }
                             $v->setOption("multiple", "yes");
                             //print_r(array("V_".strtoupper($v->id)=>$ovalues,"raw"=>$values));
