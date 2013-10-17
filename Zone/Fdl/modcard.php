@@ -103,40 +103,49 @@ function modcard(Action & $action, &$ndocid, &$info = array())
     // ------------------------------
     $err = setPostVars($doc, $info);
     
-    if ((!$noredirect) && ($err != "")) $action->Addwarningmsg($err);
+    if ((!$noredirect) && ($err != "")) {
+        $action->Addwarningmsg($err);
+    }
+    if (!$err) {
+        // verify preStore.
+        $err = $doc->preStore();
+        if (!$err) {
+            if (($action->getArgument("noconstraint") != "Y") || ($action->user->id != 1)) {
+                $err = $doc->verifyAllConstraints(false, $info);
+            }
+        }
+    }
     // verify attribute constraint
-    if (((GetHttpVars("noconstraint") != "Y") || ($action->user->id != 1)) && (($err.= $doc->verifyAllConstraints(false, $info)) != "")) {
+    if ($err && !$noredirect) {
         // redirect to edit action
         //get action where to redirect
         $eapp = getHttpVars("eapp");
         $eact = getHttpVars("eact");
         $eparams = getHttpVars("eparams");
         $appl = $action->parent;
-        if (!$noredirect) {
-            if ($eapp) {
-                $appl->Set($eapp, $action->parent->parent);
-                $action->set($eact, $appl);
-                if ($eparams) {
-                    $eparams = explode('&', $eparams);
-                    foreach ($eparams as $eparam) {
-                        $eparam = explode('=', $eparam);
-                        setHttpVar($eparam[0], $eparam[1]);
-                    }
+        if ($eapp) {
+            $appl->Set($eapp, $action->parent->parent);
+            $action->set($eact, $appl);
+            if ($eparams) {
+                $eparams = explode('&', $eparams);
+                foreach ($eparams as $eparam) {
+                    $eparam = explode('=', $eparam);
+                    setHttpVar($eparam[0], $eparam[1]);
                 }
-            } else {
-                if ($appl->name != "GENERIC") {
-                    global $core;
-                    $appl->Set("GENERIC", $core);
-                }
-                $action->Set("GENERIC_EDIT", $appl);
             }
-            setHttpVar("zone", getHttpVars("ezone"));
-            setHttpVar("viewconstraint", "Y");
-            $action->addWarningMsg(_("Some constraint attribute are not respected.\nYou must correct these values before save document."));
-            $action->addWarningMsg($err);
-            echo ($action->execute());
-            exit;
+        } else {
+            if ($appl->name != "GENERIC") {
+                global $core;
+                $appl->Set("GENERIC", $core);
+            }
+            $action->Set("GENERIC_EDIT", $appl);
         }
+        setHttpVar("zone", getHttpVars("ezone"));
+        setHttpVar("viewconstraint", "Y");
+        $action->addWarningMsg(_("Some constraint attribute are not respected.\nYou must correct these values before save document."));
+        $action->addWarningMsg($err);
+        echo ($action->execute());
+        exit;
     }
     if ($err == "") {
         try {
