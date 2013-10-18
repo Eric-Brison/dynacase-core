@@ -16,7 +16,11 @@
   padding-right: 3px;
   border-bottom: 1px solid [COLOR_C2];
 }
-
+.AutoCompleteContaint {
+    width:100%;
+    margin-right: 15px;
+    display:block;
+}
 .AutoCompleteDivAct {
   display: block; 
   background-color: [COLOR_C2]; 

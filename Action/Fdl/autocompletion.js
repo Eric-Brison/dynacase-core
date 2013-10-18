@@ -49,7 +49,7 @@ var _wdate=new Date();
  * Encode a string for using as a POST urlencoded variable name or value.
  * Spaces (normally encoded as '%20') are replaced with '+' (plus sign).
  *
- * @param String str the string to encode
+ * @param string str the string to encode
  * @returns String the encoded string
  */
 function encodeURIComponentPlusSpaces(str) {
@@ -104,7 +104,7 @@ function activeAutoInit(event,docid,  inp,iopt,expnameid,idx ) {
 		else index=idx;
 		domindex = inp.id.substring(attrid.length);
 	} else {
-		attrid=inp.name.substr(1,inp.name.length-1);;
+		attrid=inp.name.substr(1,inp.name.length-1);
 	}
 	if (expnameid) attrid=expnameid;
 	if (!iopt) iopt='';
@@ -433,17 +433,21 @@ function cleanCompletionDiv() {
 		_completeDiv.removeChild(_completeDiv.childNodes[0]);
 	}
 	_completeDiv.style.height='auto';
-	_completeDiv.style.overflow='';
+	_completeDiv.style.overflowY='';
 }
 function metsEnPlace(valeur, liste){
 	cleanCompletionDiv();
 	if (liste.length > 10) {
 		_completeDiv.style.height='100px';
-		_completeDiv.style.overflow='auto';
+		_completeDiv.style.overflowY='auto';
 	} else {
 		_completeDiv.style.height='auto';
-		_completeDiv.style.overflow='';
+		_completeDiv.style.overflowY='';
 	}
+
+    var secondDiv=document.createElement("SPAN");
+    setStylePourElement(secondDiv, 'AutoCompleteContaint');
+    _completeDiv.appendChild(secondDiv);
 
 	// mise en place des suggestions
 	for(var f=0; f<liste.length; ++f){
@@ -453,10 +457,9 @@ function metsEnPlace(valeur, liste){
 		nouveauDiv.onmouseout=divOnMouseOut;
 		nouveauDiv.setAttribute('index',f);
 		setStylePourElement(nouveauDiv,"AutoCompleteDiv");
-		var nouveauSpan=document.createElement("SPAN");
-		nouveauSpan.innerHTML=liste[f] ? liste[f] : "&nbsp;"; // le texte de la suggestion
-		nouveauDiv.appendChild(nouveauSpan);
-		_completeDiv.appendChild(nouveauDiv)
+        nouveauDiv.innerHTML=liste[f] ? liste[f] : "&nbsp;"; // le texte de la suggestion
+
+        secondDiv.appendChild(nouveauDiv);
 	}
 	if( isIE6 ) {
 		var iframe=document.createElement("IFRAME");
@@ -474,7 +477,7 @@ function metsEnPlace(valeur, liste){
 			var nw=_completeDiv.scrollWidth-2; // substract the padding
 			var ld=_completeDiv.getElementsByTagName('div');
 			for (var ild=0;ild<ld.length;ild++) {
-				ld[ild].style.width=nw;
+				//ld[ild].style.width=nw;
 			}
 		}
 	} else {
@@ -524,7 +527,7 @@ var onKeyDownHandler=function(event){
 			}
 		}
 	}
-}
+};
 
 var _eventKeycode = null;
 
@@ -554,14 +557,14 @@ var onKeyUpHandler=function(event){
 		}
 		// 13 = touche entrée
 		if(_eventKeycode==13||_eventKeycode==3){
-			var d=_inputField;
 
-			// on mets en place l'ensemble du champ texte en repoussant la selection
+
+            // on mets en place l'ensemble du champ texte en repoussant la selection
 			if(_inputField.createTextRange){
 				var t=_inputField.createTextRange();
 				t.moveStart("character",_inputField.value.length);
 				_inputField.select()
-			} else if (d.setSelectionRange){
+			} else if (_inputField.setSelectionRange){
 				_inputField.setSelectionRange(_inputField.value.length,_inputField.value.length)
 			}
 		} else {
@@ -588,7 +591,7 @@ var onKeyUpHandler=function(event){
 		// si on a préssé une touche autre que haut/bas/enter
 		PressAction();
 	}
-}
+};
 
 //Change la suggestion selectionné.
 //cette méthode traite les touches haut, bas et enter
@@ -668,7 +671,6 @@ function PressAction(){
 	case 33:
 	case 34:
 	case 35:
-	case 35:
 	case 36:
 	case 37:
 	case 39:
@@ -720,7 +722,7 @@ function blurThenGetFocus(){
 	_cursorUpDownPressed=true;
 	_inputField.blur();
 	setTimeout("_inputField.focus();",10);
-	return
+	return;
 }
 
 //taille de la selection dans le champ input
