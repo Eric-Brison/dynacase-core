@@ -385,9 +385,24 @@ function calculateWidth(){
 
 function setCompleteDivSize(){
 	if(_completeDiv){
+        var maxW=0;
+        var minW=calculateWidth();
 		_completeDiv.style.left=calculateOffsetLeft(_inputField)+"px";
 		_completeDiv.style.top=calculateOffsetTop(_inputField)+_inputField.offsetHeight-1+"px";
-		_completeDiv.style.width=calculateWidth()+"px"
+
+		_completeDiv.style.minWidth=minW+"px";
+        maxW=$(window).width() - calculateOffsetLeft(_inputField) -20; // for hypotetical scrollbar
+        if (maxW > minW) {
+            _completeDiv.style.maxWidth=maxW+'px';
+            _completeDiv.style.width="auto";
+        } else {
+            _completeDiv.style.maxWidth='';
+            _completeDiv.style.width=minW+'px';
+        }
+        if (isIE6) {
+            _completeDiv.style.width=minW+'px';
+        }
+        //console.log('min', minW, 'max', maxW, 'win',$(window).width(), 'left',  _completeDiv.style.left);
 	}
 }
 
@@ -452,7 +467,9 @@ function metsEnPlace(valeur, liste){
 	PressAction();
 	if(_completeDivRows>0)  {
 		_completeDiv.scrollTop='0px';
-		if  ((_completeDivRows<11) && (_completeDiv.scrollHeight > _completeDiv.clientHeight))   _completeDiv.style.height=_completeDiv.scrollHeight+20;
+		if  ((_completeDivRows<11) && (_completeDiv.scrollHeight > _completeDiv.clientHeight)) {
+            _completeDiv.style.height=_completeDiv.scrollHeight+20;
+        }
 		if (_completeDiv.scrollWidth > _completeDiv.clientWidth) { // force width to can select rigth side
 			var nw=_completeDiv.scrollWidth-2; // substract the padding
 			var ld=_completeDiv.getElementsByTagName('div');
@@ -770,13 +787,15 @@ function trimCR(chaine){
 
 //Cache completement les choix de completion
 function hideCompleteDiv(){
-	_completeDiv.style.visibility="hidden"
+	_completeDiv.style.visibility="hidden";
+	_completeDiv.style.display="none";
 }
 
 //Rends les choix de completion visibles
 function showCompleteDiv(){
 	_completeDiv.style.visibility="visible";
-	setCompleteDivSize()
+	_completeDiv.style.display="";
+	setCompleteDivSize();
 }
 
 //Change la suggestion en surbrillance

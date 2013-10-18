@@ -210,7 +210,7 @@ TD.editbutton, TD.nowrap {
   white-space:nowrap;
   [IFNOT ISIE]width:2px;[ENDIF ISIE]
   [IF ISIE6]
-width:5px;
+width:60px;
     padding-left: 4px !important;
 [ENDIF ISIE6]
 [IF ISIE9]
