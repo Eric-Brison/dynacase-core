@@ -256,11 +256,8 @@ function setDocDefaultValues(Doc & $doc)
              */
             if ($attr->type == "enum") {
                 $attr->setOption("eunset", "yes");
-                $attr->setOption("eformat", "list");
-                if (($attr->phpfile == "") || ($attr->phpfile == "-")) {
-                    $attr->phpfunc = ' |' . _("No default value") . ',' . $attr->phpfunc;
-                    $attr->resetEnum();
-                }
+                $attr->setOption("eformat", "auto");
+                $attr->setOption("etype", "free");
             } elseif ($attr->type == "array") {
                 $attr->setOption("empty", "yes");
             }

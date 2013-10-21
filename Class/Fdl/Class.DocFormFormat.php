@@ -1665,7 +1665,7 @@ class DocFormFormat
                 if (($etype == "free") && ($eformat != "auto")) {
                     $enuml['...'] = _("Other...");
                 }
-                if (($eformat == "") && ($value == " ") && ($oattr->getOption("eunset") == "yes")) {
+                if (($eformat == "" || $eformat == "list") && ($value == " ") && ($oattr->getOption("eunset") == "yes")) {
                     $enuml[' '] = _("Do choice");
                 }
                 
@@ -1746,7 +1746,7 @@ class DocFormFormat
                     }
                 }
                 $lay->setBlockData("OPTIONS", $topt);
-                $lay->set("NBOPT", max(count($topt),1));
+                $lay->set("NBOPT", max(count($topt) , 1));
                 $lay->set("value", $value);
                 $lay->set("docid", ($doc->id == 0) ? $doc->fromid : $doc->id);
                 $lay->set("index", $index);
