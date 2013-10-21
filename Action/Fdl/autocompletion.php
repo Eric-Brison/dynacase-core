@@ -184,20 +184,20 @@ function autocompletion(Action & $action)
                     if (!$canitem) {
                         $err = sprintf(_("existing key item %s") , $skey);
                     } else {
-                        if ($oattr->getOption("etype") == "open") {
-                            $res = array(
-                                array(
-                                    sprintf(_("new item %s") , $skey) ,
-                                    $skey . ' ' . _("(new item)") ,
-                                    $skey
-                                )
-                            );
-                            $err = "";
-                        } elseif ($oattr->getOption("etype") == "free") {
+                        if ($oattr->getOption("etype") == "free" || $action->getArgument("usefor") == "D") {
                             $res = array(
                                 array(
                                     sprintf(_("free item %s") , $skey) ,
                                     $skey . ' ' . _("(free item)") ,
+                                    $skey
+                                )
+                            );
+                            $err = "";
+                        } elseif ($oattr->getOption("etype") == "open") {
+                            $res = array(
+                                array(
+                                    sprintf(_("new item %s") , $skey) ,
+                                    $skey . ' ' . _("(new item)") ,
                                     $skey
                                 )
                             );
