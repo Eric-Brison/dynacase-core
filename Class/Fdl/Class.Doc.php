@@ -4023,6 +4023,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function vaultRegisterFile($filename, $ftitle = "", &$info = null)
     {
+        include_once ('FDL/Lib.Vault.php');
+        
         $vaultid = 0;
         $err = vault_store($filename, $vaultid, $ftitle);
         if ($err != '') {
