@@ -851,7 +851,7 @@ function setLanguage($lang)
         }
     }
     
-    $td = "freedom-catalog$number";
+    $td = "main-catalog$number";
     
     putenv("LANG=" . $lang); // needed for old Linux kernel < 2.4
     bindtextdomain($td, "$pubdir/locale");

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 DIRNAME=`dirname "$0"`
 REAL_DIRNAME=`cd "$DIRNAME" 1> /dev/null 2>&1 && pwd`
@@ -11,49 +11,74 @@ export wpub=$REAL_DIRNAME
 shopt -s nullglob
 
 function whattext ()
-{    
+{
     ntf="$wpub/locale/.gettextnumber"
     if [ ! -f "$ntf" ]; then
-	echo "0" > "$ntf"
+        echo "0" > "$ntf"
     fi
     numberone=`cat "$ntf"`
-    numbertwo=`expr "$numberone" + 1`
+    numbertwo=`date +"%s"`
     today=`date "+%F %T"`
     for lang_dir in "$wpub"/locale/*; do
-	if [ ! -d "$lang_dir/LC_MESSAGES" ]; then
-	    continue
-	fi
+        if [ ! -d "$lang_dir/LC_MESSAGES" ]; then
+            continue
+        fi           
 
-	pushd "$lang_dir/LC_MESSAGES" >/dev/null
-	mv freedom-catalog.mo freedom-catalog.mo.old 1> /dev/null 2>&1
-	
-        find . -type l -name "freedom-catalog[0-9]*.mo" -exec /bin/rm {} \;
+        pushd "$lang_dir/LC_MESSAGES" >/dev/null
+        rm -f freedom-catalog*.mo # old catalogs
+        if [ -f "main-catalog.mo" ]; then
+            mv -f main-catalog.mo main-catalog.mo.old 
+        fi
 
-	if [ -h "freedom-catalog$numberone.mo" ]; then
-	    \rm "freedom-catalog$numberone.mo"
-	fi
-        for mo in `ls *.mo` ; do
-	    msgunfmt --force-po "$mo" -o "$mo.po"
-	done
-	msgcat  --use-first  *.po > freedom-catalog.po
+        find . -type l -name "main-catalog[0-9]*.mo" -exec /bin/rm {} \;
 
-	msgfmt freedom-catalog.po  -o freedom-catalog.mo
-	rm -f *.po *.old
-	if [ ! -a "freedom-catalog$numbertwo.mo" ]; then
-	    \ln -s freedom-catalog.mo "freedom-catalog$numbertwo.mo" && echo "$numbertwo" > "$ntf"
-	    
-	fi
-	popd >/dev/null
+        if [ -h "main-catalog$numberone.mo" ]; then
+            \rm "main-catalog$numberone.mo"
+        fi
 
-	if [ -d "$lang_dir/js" ]; then
-	  pushd "$lang_dir/js" > /dev/null
-	  echo '{"fdl:creationDate":"'$today'"}'> null-mo.js
-	  php "$wpub/programs/json_concat" *mo.js > catalog.js
-	  \rm null-mo.js
-	  popd >/dev/null
-	fi
+        for mo in *.mo ; do
+            msgunfmt --force-po "$mo" -o "$mo.po"
+        done
+
+        if [ -d "./SRC" ]; then
+            for po in ./SRC/*.po ; do
+                    msgfmt -c -o /dev/null $po # verify syntax
+            done
+            msgcat --use-first -o allmo.tmp ./SRC/*.po *.po
+            msgfmt -o main-catalog.mo allmo.tmp
+            rm allmo.tmp
+        else
+            msgcat --use-first -o allmo.tmp *.po
+            msgfmt -o main-catalog.mo allmo.tmp
+            rm allmo.tmp
+        fi
+
+        rm -f *.po *.old
+
+        if [ ! -a "main-catalog$numbertwo.mo" ]; then
+            \ln -s main-catalog.mo "main-catalog$numbertwo.mo" && echo "$numbertwo" > "$ntf"
+
+        fi
+        popd >/dev/null
+
+        if [ -d "$lang_dir/js" ]; then
+            pushd "$lang_dir/js" > /dev/null
+            echo '{"fdl:creationDate":"'$today'"}'> null-mo.js
+            if [ -d "./SRC" ]; then
+                for po in ./SRC/*.po ; do
+                    msgfmt -c -o /dev/null $po
+                    php "$wpub/programs/po2js" $po > $po.mo.js 
+                done
+                php "$wpub/programs/json_concat" *mo.js ./SRC/*mo.js > catalog.js 
+                \rm -f ./SRC/*mo.js
+            else
+                php "$wpub/programs/json_concat" *mo.js  > catalog.js 
+            fi
+            \rm null-mo.js
+            popd >/dev/null
+        fi
     done
-
 }
 whattext
-exit 0
+
+
