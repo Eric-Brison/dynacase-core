@@ -20,7 +20,49 @@ include_once ("Lib.Prefix.php");
 function N_($s)
 {
     return ($s);
-} // to tag gettext without change text immediatly
+}
+if (!function_exists('pgettext')) {
+    function pgettext($context, $msgid)
+    {
+        $contextString = "{$context}\004{$msgid}";
+        $translation = _($contextString);
+        if ($translation === $contextString) return $msgid;
+        else return $translation;
+    }
+    
+    function npgettext($context, $msgid, $msgid_plural, $num)
+    {
+        $contextString = "{$context}\004{$msgid}";
+        $contextStringp = "{$context}\004{$msgid_plural}";
+        $translation = ngettext($contextString, $contextStringp, $num);
+        if ($translation === $contextString) {
+            return $msgid;
+        } else if ($translation === $contextStringp) {
+            return $msgid_plural;
+        } else {
+            return $translation;
+        }
+    }
+}
+// New gettext keyword for regular strings with optional context argument
+function ___($message, $context = "")
+{
+    if ($context != "") {
+        return pgettext($context, $message);
+    } else {
+        return _($message);
+    }
+}
+// New gettext keyword for plural strings with optional context argument
+function n___($message, $message_plural, $num, $context = "")
+{
+    if ($context != "") {
+        return npgettext($context, $message, $message_plural, abs($num));
+    } else {
+        return ngettext($message, $message_plural, abs($num));
+    }
+}
+// to tag gettext without change text immediatly
 // library of utilies functions
 function print_r2($z, $ret = false)
 {

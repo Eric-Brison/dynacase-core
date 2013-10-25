@@ -44,11 +44,11 @@ function whattext ()
             for po in ./SRC/*.po ; do
                     msgfmt -c -o /dev/null $po # verify syntax
             done
-            msgcat --use-first -o allmo.tmp ./SRC/*.po *.po
+            msgcat --use-first -o allmo.tmp customFamily*po ./SRC/*.po *.po
             msgfmt -o main-catalog.mo allmo.tmp
             rm allmo.tmp
         else
-            msgcat --use-first -o allmo.tmp *.po
+            msgcat --use-first -o allmo.tmp customFamily*po *.po
             msgfmt -o main-catalog.mo allmo.tmp
             rm allmo.tmp
         fi
