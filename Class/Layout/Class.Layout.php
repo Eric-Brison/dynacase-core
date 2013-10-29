@@ -435,11 +435,15 @@ class Layout
     
     protected function ParseText(&$out)
     {
-        $out = preg_replace_callback('/\[TEXT:([^\]]*)\]/', function ($matches)
+        $out = preg_replace_callback('/\[TEXT(\([^\)]*\))?:([^\]]*)\]/', function ($matches)
         {
-            $s = $matches[1];
+            $s = $matches[2];
             if ($s == "") return $s;
-            return _($s);
+            if (!$matches[1]) {
+                return _($s);
+            } else {
+                return ___($s, trim($matches[1], '()'));
+            }
         }
         , $out);
     }
