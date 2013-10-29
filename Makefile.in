@@ -22,7 +22,12 @@ TOP_MODULES = indexq.php index.php whattext wsh.php guest.php wcheck wstop wstar
 pages_not_xml = info.xml
 pages_not_php = fam2po.php po2js.php
 
+
 include $(utildir)/PubRule
+
+PHPPOFIND = App Action Zone Api Class Share wsh.php index.php lang_en.php lang_fr.php
+LAYOUTPOFIND = App Action Zone Class 
+JSPOFIND = Zone
 
 TRANSFAM += App/Fusers/account.ods App/Fusers/accountprofil.ods App/Fdl/fdl.ods App/Fdl/misc.ods App/Fdl/workflows.ods App/Fdl/freeaction.ods App/Fdl/searches.ods
 
