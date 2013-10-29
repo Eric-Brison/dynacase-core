@@ -45,10 +45,42 @@ class TestGetText extends TestCaseDcp
         setLanguage($lang);
         $this->assertEquals($expectedText, sprintf(n___($text, $textp, $num, $ctx) , $num));
     }
+    /**
+     * @dataProvider dataTextlayout
+     */
+    public function testTextlayout($text, $lang, $expectedText)
+    {
+        setLanguage($lang);
+        $lay = new \Layout("", self::getAction());
+        $lay->template = $text;
+        $genText = $lay->gen();
+        
+        $this->assertEquals($expectedText, $genText);
+    }
     
+    public function dataTextlayout()
+    {
+        return array(
+            array(
+                "<p>[TEXT:dcptest:Hello]</p>",
+                "fr_FR",
+                "<p>Bonjour</p>"
+            ) ,
+            
+            array(
+                "<p>[TEXT(dcpctx1):dcptest:Test locale]</p>",
+                "fr_FR",
+                "<p>test avec contexte un</p>"
+            ) ,
+            array(
+                "<p>[TEXT(dcpctx2):dcptest:Test locale]</p>",
+                "fr_FR",
+                "<p>test avec contexte deux</p>"
+            )
+        );
+    }
     public function dataPluralContext()
     {
-        $i18n = _("éà");
         $i18n = _("dcptest:Hello");
         $i18n = _("dcptest:Good Bye");
         $i18n = n___("dcptest:%d symbol", "dcptest:%d symbols", 45);
@@ -198,15 +230,13 @@ class TestGetText extends TestCaseDcp
             array(
                 "dcptest:%d symbol",
                 "dcptest:%d symbols",
-                "fr_FR",
-                -1,
+                "fr_FR", -1,
                 "-1 symbole simple"
             ) ,
             array(
                 "dcptest:%d symbol",
                 "dcptest:%d symbols",
-                "fr_FR",
-                -3,
+                "fr_FR", -3,
                 "-3 symboles complexes"
             ) ,
             array(
@@ -240,22 +270,19 @@ class TestGetText extends TestCaseDcp
             array(
                 "dcptest:%.02f symbol",
                 "dcptest:%.02f symbols",
-                "fr_FR",
-                -0.6,
+                "fr_FR", -0.6,
                 "-0.60 symbole simple"
             ) ,
             array(
                 "dcptest:%.02f symbol",
                 "dcptest:%.02f symbols",
-                "fr_FR",
-                -0.2,
+                "fr_FR", -0.2,
                 "-0.20 symbole simple"
             ) ,
             array(
                 "dcptest:%.02f symbol",
                 "dcptest:%.02f symbols",
-                "fr_FR",
-                -1.2,
+                "fr_FR", -1.2,
                 "-1.20 symbole simple"
             ) ,
             /*
@@ -333,8 +360,7 @@ class TestGetText extends TestCaseDcp
             array(
                 "dcptest:%d symbol",
                 "dcptest:%d symbols",
-                "en_US",
-                -1,
+                "en_US", -1,
                 "-1 simple symbol"
             ) ,
             array(

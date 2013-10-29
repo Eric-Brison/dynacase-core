@@ -40,15 +40,15 @@ function whattext ()
             msgunfmt --force-po "$mo" -o "$mo.po"
         done
 
-        if [ -d "./SRC" ]; then
-            for po in ./SRC/*.po ; do
+        if [ -d "./src" ]; then
+            for po in ./src/*.po ; do
                     msgfmt -c -o /dev/null $po # verify syntax
             done
-            msgcat --use-first -o allmo.tmp customFamily*po ./SRC/*.po *.po
+            msgcat --use-first -o allmo.tmp  header*.po customFamily*po ./src/*.po *.po
             msgfmt -o main-catalog.mo allmo.tmp
             rm allmo.tmp
         else
-            msgcat --use-first -o allmo.tmp customFamily*po *.po
+            msgcat --use-first -o allmo.tmp  header*.po *.po
             msgfmt -o main-catalog.mo allmo.tmp
             rm allmo.tmp
         fi
@@ -64,13 +64,13 @@ function whattext ()
         if [ -d "$lang_dir/js" ]; then
             pushd "$lang_dir/js" > /dev/null
             echo '{"fdl:creationDate":"'$today'"}'> null-mo.js
-            if [ -d "./SRC" ]; then
-                for po in ./SRC/*.po ; do
+            if [ -d "./src" ]; then
+                for po in ./src/*.po ; do
                     msgfmt -c -o /dev/null $po
                     php "$wpub/programs/po2js" $po > $po.mo.js 
                 done
-                php "$wpub/programs/json_concat" *mo.js ./SRC/*mo.js > catalog.js 
-                \rm -f ./SRC/*mo.js
+                php "$wpub/programs/json_concat" *mo.js ./src/*mo.js > catalog.js
+                \rm -f ./src/*mo.js
             else
                 php "$wpub/programs/json_concat" *mo.js  > catalog.js 
             fi
