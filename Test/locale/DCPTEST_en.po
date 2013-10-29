@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPTEST VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-24 17:28+0200\n"
-"PO-Revision-Date: 2013-10-25 11:43+0200\n"
+"POT-Creation-Date: 2013-10-29 17:10+0100\n"
+"PO-Revision-Date: 2013-10-29 17:13+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -17,28 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: control/PU_test_dcp_gettext.php:35
-msgid "dcptest:Hello"
-msgstr "Hello world"
-
-#: control/PU_test_dcp_gettext.php:36
-msgid "dcptest:Good Bye"
-msgstr "Good bye world"
-
-#: control/PU_test_dcp_gettext.php:37
-#, php-format
-msgid "dcptest:%d symbol"
-msgid_plural "dcptest:%d symbols"
-msgstr[0] "%d simple symbol"
-msgstr[1] "%d complex symbols"
-
-#, php-format
-msgid "dcptest:%.02f symbol"
-msgid_plural "dcptest:%.02f symbols"
-msgstr[0] "%.02f simple symbol"
-msgstr[1] "%.02f complex symbols"
-
-#: control/PU_test_dcp_gettext.php:38
 #, php-format
 msgctxt "dcpctx1"
 msgid "%d symbol"
@@ -46,16 +24,130 @@ msgid_plural "%d symbols"
 msgstr[0] "%d very simple symbol"
 msgstr[1] "%d very complex symbols"
 
-#: control/PU_test_dcp_gettext.php:39
+#, php-format
+msgid "Cannot insert : %s."
+msgstr ""
+
+#, php-format
+msgid "Cannot move : %s."
+msgstr ""
+
+#, php-format
+msgid "Document %d is locked."
+msgstr ""
+
+#, php-format
+msgid "Document %d not alive."
+msgstr ""
+
+#, php-format
+msgid "Document %s exists."
+msgstr ""
+
+msgid "Name of the glob"
+msgstr ""
+
+msgid "Name of the zoo"
+msgstr ""
+
+#, php-format
+msgid "One of these documents %s not alive."
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "T1"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "T3"
+msgstr ""
+
+msgid "TEST_EXTRA:Extra state not found"
+msgstr ""
+
+msgid "TST_ENUMFAM1#tst_enum2#0"
+msgstr ""
+
+msgid "TST_ENUMFAM1#tst_enuma#a"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "Tconvalescent"
+msgstr ""
+
+#. _COMMENT Search Label
+msgid "The \"Foo\" string"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "Tsick"
+msgstr ""
+
+#. _COMMENT Search Label
+msgid "Two cents"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "alive"
+msgstr ""
+
+#, php-format
+msgid "cannot object update %s"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "convalescent"
+msgstr ""
+
+#, php-format
+msgid "dcptest:%.02f symbol"
+msgid_plural "dcptest:%02f symbols"
+msgstr[0] "%.02f simple symbol"
+msgstr[1] "%.02f complex symbols"
+
+#, php-format
+msgid "dcptest:%d symbol"
+msgid_plural "dcptest:%d symbols"
+msgstr[0] "%d simple symbol"
+msgstr[1] "%d complex symbols"
+
+msgid "dcptest:Good Bye"
+msgstr "Good bye world"
+
+msgid "dcptest:Hello"
+msgstr "Hello world"
+
 msgid "dcptest:Test locale"
 msgstr "test without context"
 
-#: control/PU_test_dcp_gettext.php:40
 msgctxt "dcpctx1"
 msgid "dcptest:Test locale"
 msgstr "test with first context"
 
-#: control/PU_test_dcp_gettext.php:41
 msgctxt "dcpctx2"
 msgid "dcptest:Test locale"
 msgstr "test with second context"
+
+#. _COMMENT Sharp Label
+msgid "dead"
+msgstr ""
+
+#, php-format
+msgid "error ::addFile %s %s"
+msgstr ""
+
+#, php-format
+msgid "error ::moveDocument %s %s"
+msgstr ""
+
+#, php-format
+msgid "not present %s in %s"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "sick"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "transfered"
+msgstr ""

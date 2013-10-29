@@ -219,6 +219,8 @@ class TestGetText extends TestCaseDcp
     }
     public function data3Underscore()
     {
+        $i18n = n___("dcptest:%d symbol", "dcptest:%d symbols",1);
+        $i18n = n___("dcptest:%.02f symbol", "dcptest:%02f symbols",1);
         return array(
             array(
                 "dcptest:%d symbol",
