@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DCPTEST VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-29 17:10+0100\n"
+"PO-Revision-Date: 2013-10-29 17:13+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1\n"
+
+#, php-format
+msgctxt "dcpctx1"
+msgid "%d symbol"
+msgid_plural "%d symbols"
+msgstr[0] "%d symbole très simple"
+msgstr[1] "%d symboles très complexes"
+
+#, php-format
+msgid "Cannot insert : %s."
+msgstr ""
+
+#, php-format
+msgid "Cannot move : %s."
+msgstr ""
+
+#, php-format
+msgid "Document %d is locked."
+msgstr ""
+
+#, php-format
+msgid "Document %d not alive."
+msgstr ""
+
+#, php-format
+msgid "Document %s exists."
+msgstr ""
+
+msgid "Name of the glob"
+msgstr "Nom du glob"
+
+msgid "Name of the zoo"
+msgstr "Nom du zoo"
+
+#, php-format
+msgid "One of these documents %s not alive."
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "T1"
+msgstr "T1"
+
+#. _COMMENT Sharp Label
+msgid "T3"
+msgstr "T3"
+
+msgid "TEST_EXTRA:Extra state not found"
+msgstr "État extra introuvable"
+
+msgid "TST_ENUMFAM1#tst_enum2#0"
+msgstr "Zéfiro"
+
+msgid "TST_ENUMFAM1#tst_enuma#a"
+msgstr "Lettre A"
+
+#. _COMMENT Sharp Label
+msgid "Tconvalescent"
+msgstr "Tconvalescent"
+
+#. _COMMENT Search Label
+msgid "The \"Foo\" string"
+msgstr "La chaîne de caractère \"Foo\""
+
+#. _COMMENT Sharp Label
+msgid "Tsick"
+msgstr "Tsick"
+
+#. _COMMENT Search Label
+msgid "Two cents"
+msgstr "Deux centimes"
+
+#. _COMMENT Sharp Label
+msgid "alive"
+msgstr "vivant"
+
+#, php-format
+msgid "cannot object update %s"
+msgstr "ne peut mettre à jour %s"
+
+#. _COMMENT Sharp Label
+msgid "convalescent"
+msgstr "convalescent"
+
+#, php-format
+msgid "dcptest:%.02f symbol"
+msgid_plural "dcptest:%02f symbols"
+msgstr[0] "%.02f symbole simple"
+msgstr[1] "%.02f symboles complexes"
+
+#, php-format
+msgid "dcptest:%d symbol"
+msgid_plural "dcptest:%d symbols"
+msgstr[0] "%d symbole simple"
+msgstr[1] "%d symboles complexes"
+
+msgid "dcptest:Good Bye"
+msgstr "Au revoir"
+
+msgid "dcptest:Hello"
+msgstr "Bonjour"
+
+msgid "dcptest:Test locale"
+msgstr "test sans contexte"
+
+msgctxt "dcpctx1"
+msgid "dcptest:Test locale"
+msgstr "test avec contexte un"
+
+msgctxt "dcpctx2"
+msgid "dcptest:Test locale"
+msgstr "test avec contexte deux"
+
+#. _COMMENT Sharp Label
+msgid "dead"
+msgstr "mort"
+
+#, php-format
+msgid "error ::addFile %s %s"
+msgstr "erreur ::addfile %s %s"
+
+#, php-format
+msgid "error ::moveDocument %s %s"
+msgstr "erreur ::moveDocument %s %s"
+
+#, php-format
+msgid "not present %s in %s"
+msgstr "%s non présent dans %s"
+
+#. _COMMENT Sharp Label
+msgid "sick"
+msgstr "malade"
+
+#. _COMMENT Sharp Label
+msgid "transfered"
+msgstr "transféré"

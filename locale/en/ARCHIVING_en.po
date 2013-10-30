@@ -5,20 +5,20 @@ msgstr ""
 "PO-Revision-Date: 2013-04-10 13:06+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_clear"
 msgstr "Empty archive content"
 
 msgid "ARCHIVING#arc_clear#submenu"
 msgstr "Archiving"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_close"
 msgstr "Archive documents"
 
@@ -28,40 +28,40 @@ msgstr "Archiving document include in archive"
 msgid "ARCHIVING#arc_close#submenu"
 msgstr "Archiving"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_clotdate"
 msgstr "Closing date"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_fr_purge"
 msgstr "Purge"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_list"
 msgstr "View documents"
 
 msgid "ARCHIVING#arc_list#submenu"
 msgstr "Archiving"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_listc"
 msgstr "View archived documents"
 
 msgid "ARCHIVING#arc_listc#submenu"
 msgstr "Archiving"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_modprof"
 msgstr "Manage archived documents rights"
 
 msgid "ARCHIVING#arc_modprof#submenu"
 msgstr "Archiving"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_profil"
 msgstr "Relevant profile"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_purge"
 msgstr "Destroy archived documents"
 
@@ -71,15 +71,15 @@ msgstr "Permanently delete archived documents"
 msgid "ARCHIVING#arc_purge#submenu"
 msgstr "Archiving"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_purgedate"
 msgstr "Destruction date"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_purgemanif"
 msgstr "Destroyed documents"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_reopen"
 msgstr "Retrieve archived documents"
 
@@ -89,7 +89,7 @@ msgstr "Retrieve archived documents"
 msgid "ARCHIVING#arc_reopen#submenu"
 msgstr "Archiving"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_status"
 msgstr "Status"
 
@@ -102,15 +102,15 @@ msgstr "Opened"
 msgid "ARCHIVING#arc_status#P"
 msgstr "Purged"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#arc_tab_purge"
 msgstr "Purge"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#gui_color"
 msgstr ""
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/fdl.ods.csv
 msgid "ARCHIVING#gui_isrss"
 msgstr ""
 

@@ -695,12 +695,15 @@ class OOoLayout extends Layout
      */
     protected function ParseText(&$out = null)
     {
-        
-        $this->template = preg_replace_callback('/\[TEXT:([^\]]*)\]/', function ($matches)
+        $this->template = preg_replace_callback('/\[TEXT(\([^\)]*\))?:([^\]]*)\]/', function ($matches)
         {
-            $s = $matches[1];
+            $s = $matches[2];
             if ($s == "") return $s;
-            return _($s);
+            if (!$matches[1]) {
+                return _($s);
+            } else {
+                return ___($s, trim($matches[1], '()'));
+            }
         }
         , $this->template);
     }

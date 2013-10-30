@@ -5,49 +5,49 @@ msgstr ""
 "PO-Revision-Date: 2013-04-10 14:32+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#fld_open"
 msgstr "open"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#fld_openfolio"
 msgstr "open as portfolio"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_copytab"
 msgstr "tab to copy"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_def"
 msgstr "default portfolio"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_fr_init"
 msgstr "Portfolio display"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_idcopytab"
 msgstr "tab id to copy"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_iddef"
 msgstr "Default portfolio id"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_idlinktab"
 msgstr "tab id to link"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_linktab"
 msgstr "tab to link"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_liststyle"
 msgstr "List's style"
 
@@ -57,11 +57,11 @@ msgstr "Icon"
 msgid "PORTFOLIO#pfl_liststyle#list"
 msgstr "List"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_open"
 msgstr "open"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_savedispo"
 msgstr "Last disposition display"
 
@@ -74,7 +74,7 @@ msgstr "Yes"
 msgid "PORTFOLIO#pfl_savedispo#elabel"
 msgstr "Display last seen documents"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_savetab"
 msgstr "Display last seen tab"
 
@@ -84,11 +84,11 @@ msgstr "No"
 msgid "PORTFOLIO#pfl_savetab#1"
 msgstr "Yes"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_t_copytab"
 msgstr "Tab to copy for new documents"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "PORTFOLIO#pfl_t_linktab"
 msgstr "Tab to link (dynamic)"
 

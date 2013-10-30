@@ -6,27 +6,27 @@ msgstr ""
 "PO-Revision-Date: 2013-03-13 10:13+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
-"Language: \n"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#label#EGROUP"
 msgstr "Groups"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#label#ESUBSTITUTE"
 msgstr "Change substitute"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#label#EUSER"
 msgstr "Admin edit"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#menu#EGROUP"
 msgstr "Account"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#menu#ESUBSTITUTE"
 msgstr "Account"
