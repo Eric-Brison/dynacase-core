@@ -5,35 +5,35 @@ msgstr ""
 "PO-Revision-Date: 2013-04-10 15:02+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "TEXT#ba_title"
 msgstr "title"
 
 msgid "TEXT#title"
 msgstr "text"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "TEXT#txt_fr_anx"
 msgstr "appendixes"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "TEXT#txt_img"
 msgstr "images"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "TEXT#txt_img_ori"
 msgstr "source"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "TEXT#txt_t_img"
 msgstr "images"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/misc.ods.csv
 msgid "TEXT#txt_text"
 msgstr "text"

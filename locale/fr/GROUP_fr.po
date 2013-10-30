@@ -6,44 +6,44 @@ msgstr ""
 "PO-Revision-Date: 2013-03-12 18:06+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#ba_title"
 msgstr "Titre"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#fld_fr_prof"
 msgstr "Profils par défaut"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#fld_fr_rest"
 msgstr "Restrictions"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#fld_tfam"
 msgstr ""
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#fr_basic"
 msgstr "Basique"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#grp_adduser"
 msgstr "Gérer les membres"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#grp_fr"
 msgstr "Groupes"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#grp_fr_ident"
 msgstr "Identification"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#grp_hasmail"
 msgstr "Sans adresse mail de groupe"
 
@@ -58,21 +58,21 @@ msgstr ""
 msgid "GROUP#grp_hasmail#no"
 msgstr "sans adresse mail"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#grp_idgroup"
 msgstr "Sous groupes"
 
 msgid "GROUP#grp_idgroup#showempty"
 msgstr "Aucun sous groupe"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#grp_idpgroup"
 msgstr "Groupes parents"
 
 msgid "GROUP#grp_idpgroup#showempty"
 msgstr "Aucun groupe parent"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#grp_isrefreshed"
 msgstr "Est rafraîchi"
 
@@ -82,15 +82,15 @@ msgstr "non"
 msgid "GROUP#grp_isrefreshed#1"
 msgstr "oui"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#grp_mail"
 msgstr "Mail"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#grp_name"
 msgstr "Nom"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "GROUP#grp_refresh"
 msgstr "Rafraîchir"
 

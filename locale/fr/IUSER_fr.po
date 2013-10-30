@@ -6,169 +6,169 @@ msgstr ""
 "PO-Revision-Date: 2013-03-12 18:06+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 
 msgid "IUSER#title"
 msgstr "Utilisateur"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_accexpiredate"
 msgstr "Date d'expiration du compte"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_activateaccount"
 msgstr "Activer le compte"
 
 msgid "IUSER#us_activateaccount#submenu"
 msgstr "Compte"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_daydelay"
 msgstr "Délai d'expiration en jours"
 
 msgid "IUSER#us_daydelay#elabel"
 msgstr "mettre -1 pour annuler l'expiration"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_defaultgroup"
 msgstr "Groupe par défaut"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_desactivateaccount"
 msgstr "Désactiver le compte"
 
 msgid "IUSER#us_desactivateaccount#submenu"
 msgstr "Compte"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_expires"
 msgstr "Date d'expiration epoch"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_expiresd"
 msgstr "Date d'expiration"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_expirest"
 msgstr "Heure d'expiration"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_extmail"
 msgstr "Mail principal"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_fname"
 msgstr "Prénom"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_fr_default"
 msgstr "Paramètre"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_fr_ident"
 msgstr "État civil"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_fr_intranet"
 msgstr "Identification intranet"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_fr_privacy"
 msgstr "Confidentialité"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_fr_security"
 msgstr "Sécurité"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_fr_substitute"
 msgstr "Suppléants"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_fr_userchange"
 msgstr "Mot de passe"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_group"
 msgstr "Groupe (titre)"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_groups"
 msgstr "Groupes d'appartenance"
 
 msgid "IUSER#us_groups#showempty"
 msgstr "Aucun groupe"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_idgroup"
 msgstr "Groupe"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_incumbents"
 msgstr "Titulaires"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_inituser"
 msgstr "Actualiser les utilisateurs"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_ldapdn"
 msgstr "Login LDAP"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_lname"
 msgstr "Nom"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_login"
 msgstr "Login"
 
 msgid "IUSER#us_login#elabel"
 msgstr "saisissez '-' pour indiquer qu'il n'y a pas de login"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_loginfailure"
 msgstr "Échecs de connexion"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_mail"
 msgstr "Mail"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_meid"
 msgstr "Utilisateur id"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_menuresetlogfails"
 msgstr "Réinitialiser échecs de connexion"
 
 msgid "IUSER#us_menuresetlogfails#submenu"
 msgstr "Compte"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_passdelay"
 msgstr "Délai d'expiration epoch"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_passwd1"
 msgstr "Nouveau mot de passe"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_passwd2"
 msgstr "Confirmation mot de passe"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_rolegorigin"
 msgstr "Groupe"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_roles"
 msgstr "Rôle"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_rolesorigin"
 msgstr "Origine"
 
@@ -178,7 +178,7 @@ msgstr "Obtenu par"
 msgid "IUSER#us_rolesorigin#internal"
 msgstr "Affectation directe"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_status"
 msgstr "État du compte"
 
@@ -188,21 +188,21 @@ msgstr "Activé"
 msgid "IUSER#us_status#D"
 msgstr "Désactivé"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_substitute"
 msgstr "Suppléant"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_t_roles"
 msgstr "Rôles"
 
 msgid "IUSER#us_t_roles#showempty"
 msgstr "Aucun rôle"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_tab_system"
 msgstr "Système"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/account.ods.csv
 msgid "IUSER#us_whatid"
 msgstr "Identifiant"

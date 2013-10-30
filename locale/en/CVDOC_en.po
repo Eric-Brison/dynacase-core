@@ -5,17 +5,17 @@ msgstr ""
 "PO-Revision-Date: 2013-04-10 12:08+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_desc"
 msgstr "Description"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_displayed"
 msgstr "Displayable"
 
@@ -25,27 +25,27 @@ msgstr "no"
 msgid "CVDOC#cv_displayed#yes"
 msgstr "yes"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_fam"
 msgstr "Family"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_famid"
 msgstr "family id"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_fr_default"
 msgstr "Default view"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_idcview"
 msgstr "Default view id"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_idview"
 msgstr "id view"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_kview"
 msgstr "type"
 
@@ -55,53 +55,53 @@ msgstr "Consultation"
 msgid "CVDOC#cv_kview#VEDIT"
 msgstr "Edition"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_lcview"
 msgstr "View creation"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_lview"
 msgstr "label"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_menu"
 msgstr "menu"
 
 msgid "CVDOC#cv_menu#elabel"
 msgstr "submenu name"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_msk"
 msgstr "mask"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_mskid"
 msgstr "mask id"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_order"
 msgstr "order"
 
 msgid "CVDOC#cv_order#elabel"
 msgstr "Profiling access order"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_t_views"
 msgstr "views"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_zview"
 msgstr "zone"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#dpdoc_fam"
 msgstr "family"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#dpdoc_famid"
 msgstr "family id"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fdl/workflows.ods.csv
 msgid "CVDOC#dpdoc_fr_dyn"
 msgstr "dynamic profile"
 

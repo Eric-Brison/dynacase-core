@@ -6,23 +6,23 @@ msgstr ""
 "PO-Revision-Date: 2013-03-13 10:13+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
-"Language: \n"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/accountprofil.ods.csv
 msgid "PRF_CV_IGROUP#label#ADMIN"
 msgstr "Management"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/accountprofil.ods.csv
 msgid "PRF_CV_IGROUP#label#CG"
 msgstr "Groups"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/accountprofil.ods.csv
 msgid "PRF_CV_IGROUP#label#MEMBERS"
 msgstr "Membres' detail"
 
-#: App/Fdl/searches.ods.csv
+#: App/Fusers/accountprofil.ods.csv
 msgid "PRF_CV_IGROUP#label#RESTRICT"
 msgstr "Restriction"
