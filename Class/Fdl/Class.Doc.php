@@ -624,10 +624,6 @@ class Doc extends DocCtrl
     private $fathers = null;
     private $childs = null;
     /**
-     * @var bool to send once vault error
-     */
-    private $vaultErrorSent = false;
-    /**
      * @var DocHtmlFormat
      */
     private $htmlFormater = null;
@@ -6807,7 +6803,6 @@ create unique index i_docir on doc(initid, revision);";
         $frametpl = '';
         
         $iattr = 0;
-        $nextFrameId = '';
         $onlytab = strtolower(getHttpVars("onlytab"));
         $tabonfly = false; // I want tab on fly
         $showonlytab = ($onlytab ? $onlytab : false);
@@ -6835,10 +6830,6 @@ create unique index i_docir on doc(initid, revision);";
                 if ($currentFrameId != $attr->fieldSet->id) {
                     if (($attr->fieldSet->mvisibility != "H") && ($attr->fieldSet->mvisibility != "I")) {
                         $changeframe = true;
-                        $nextFrameId = $currentFrameId;
-                        $currentFrameId = $attr->fieldSet->id;
-                        $currentFrame = $attr->fieldSet;
-                        $v++;
                     }
                 }
             } else {
@@ -6891,15 +6882,11 @@ create unique index i_docir on doc(initid, revision);";
             //------------------------------
             // change frame if needed
             if ($changeframe) { // to generate  fieldset
+                $oaf = $this->getAttribute($currentFrameId);
+                
+                $frametpl = $oaf->getOption("viewtemplate");
                 $changeframe = false;
-                if (($v + $nbimg) > 0) { // one value detected
-                    if ($nextFrameId) {
-                        $oaf = $this->getAttribute($nextFrameId);
-                        $nextFrameId = '';
-                    } else {
-                        $oaf = $this->getAttribute($currentFrameId);
-                    }
-                    $frametpl = $oaf->getOption("viewtemplate");
+                if ((($v + $nbimg) > 0) || $frametpl) { // one value detected
                     $frames[$k]["frametext"] = ($oaf && $oaf->getOption("vlabel") != "none") ? mb_ucfirst($this->GetLabel($oaf->id)) : "";
                     $frames[$k]["frameid"] = $oaf->id;
                     $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
@@ -6943,6 +6930,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
                 $v = 0;
                 $nbimg = 0;
+                $currentFrameId = $attr->fieldSet->id;
             }
             if ($htmlvalue === false) {
                 $goodvalue = false;
@@ -7020,10 +7008,12 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         }
-        
-        if (($v + $nbimg) > 0) // // last fieldset
+        $oaf = $this->getAttribute($currentFrameId);
+        if ($oaf) {
+            $frametpl = $oaf->getOption("viewtemplate");
+        }
+        if ((($v + $nbimg) > 0) || $frametpl) // // last fieldset
         {
-            $oaf = $this->getAttribute($currentFrameId);
             if ($oaf) $frames[$k]["frametext"] = ($oaf->getOption("vlabel") != "none") ? mb_ucfirst($this->GetLabel($currentFrameId)) : "";
             else $frames[$k]["frametext"] = '';
             $frames[$k]["frameid"] = $currentFrameId;
@@ -7559,7 +7549,6 @@ create unique index i_docir on doc(initid, revision);";
         $ttabs = array();
         $frametpl = '';
         $iattr = 0;
-        $nextFrameId = '';
         foreach ($listattr as $i => $attr) {
             $iattr++;
             // Compute value elements
