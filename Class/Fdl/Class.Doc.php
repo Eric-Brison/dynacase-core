@@ -7573,35 +7573,20 @@ create unique index i_docir on doc(initid, revision);";
                 addWarningMsg(sprintf(_("unknow set for attribute %s %s") , $attr->id, $attr->getLabel()));
                 continue;
             }
-            $frametpl = $attr->fieldSet->getOption("edittemplate");
             
             if ($currentFrameId != $attr->fieldSet->id) {
-                if ($frametpl) {
-                    $changeframe = true;
-                    $nextFrameId = $currentFrameId;
-                    $currentFrameId = $attr->fieldSet->id;
-                    $currentFrame = $attr->fieldSet;
-                    $v++;
-                } elseif ($currentFrameId != "") $changeframe = true;
+                if ($currentFrameId != "") $changeframe = true;
             }
             if ($changeframe) { // to generate final frametext
                 $changeframe = false;
-                
-                if ($v > 0) { // one value detected
-                    
-                    /**
-                     * @var BasicAttribute $oaf
-                     */
-                    if ($nextFrameId) {
-                        
-                        $oaf = $this->getAttribute($nextFrameId);
-                        $nextFrameId = '';
-                    } else {
-                        $oaf = $this->getAttribute($currentFrameId);
-                    }
+                /**
+                 * @var BasicAttribute $oaf
+                 */
+                $oaf = $this->getAttribute($currentFrameId);
+                if ($v > 0 || $frametpl) { // one value detected
                     if ($oaf->getOption("vlabel") == "none") $currentFrameText = '';
                     else $currentFrameText = mb_ucfirst($oaf->GetLabel());
-                    $frametpl = $oaf->getOption("edittemplate");
+                    
                     $frames[$k]["frametext"] = $currentFrameText;
                     $frames[$k]["frameid"] = $oaf->id;
                     $frames[$k]["tag"] = "";
@@ -7628,11 +7613,18 @@ create unique index i_docir on doc(initid, revision);";
                 }
                 $v = 0;
             }
+            
+            $currentFrameId = $listattr[$i]->fieldSet->id;
+            $currentFrame = $attr->fieldSet;
+            
+            if ($currentFrame->mvisibility == 'R' || $currentFrame->mvisibility == 'H' || $currentFrame->mvisibility == 'I') {
+                $frametpl = '';
+            } else {
+                $frametpl = $currentFrame->getOption("edittemplate");
+            }
             if (!$frametpl) {
                 //------------------------------
                 // Set the table value elements
-                $currentFrameId = $listattr[$i]->fieldSet->id;
-                $currentFrame = $listattr[$i]->fieldSet;
                 if ($currentFrame->getOption("vlabel") == "none") $currentFrameText = '';
                 else $currentFrameText = mb_ucfirst($currentFrame->GetLabel());
                 if (($listattr[$i]->mvisibility == "H") || ($listattr[$i]->mvisibility == "R")) {
@@ -7690,17 +7682,15 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         // Out
-        if ($v > 0) { // latest fieldset
-            if ($nextFrameId) {
-                
-                $oaf = $this->getAttribute($nextFrameId);
-                $nextFrameId = '';
-            } else {
-                $oaf = $this->getAttribute($currentFrameId);
-            }
+        $oaf = $this->getAttribute($currentFrameId);
+        if ($oaf->mvisibility == 'R' || $oaf->mvisibility == 'H' || $oaf->mvisibility == 'I') {
+            $frametpl = '';
+        } else {
+            $frametpl = $oaf->getOption("edittemplate");
+        }
+        if ($v > 0 || $frametpl) { // latest fieldset
             if ($oaf->getOption("vlabel") == "none") $currentFrameText = '';
             else $currentFrameText = mb_ucfirst($oaf->GetLabel());
-            $frametpl = $oaf->getOption("edittemplate");
             $frames[$k]["frametext"] = $currentFrameText;
             $frames[$k]["frameid"] = $oaf->id;
             $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
