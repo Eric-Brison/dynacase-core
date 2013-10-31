@@ -21,6 +21,9 @@ foreach ($argv as $js_file) {
         error_log(sprintf("Error reading content from '%s'.", $js_file));
         exit(1);
     }
+    if (empty($js)) {
+        continue;
+    }
     $js_dec = json_decode($js);
     if ($js_dec === null) {
         error_log(sprintf("Error decoding json from '%s': %s.", $js_file, json_last_errmsg()));
