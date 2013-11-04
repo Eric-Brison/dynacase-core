@@ -852,7 +852,6 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array() , $fromid = fal
     if (!($initid > 0)) return false;
     $dbid = getDbid($dbaccess);
     $table = "doc";
-    if (!$fromid) $fromid = getFromId($dbaccess, $initid);
     if (!$fromid) {
         $err = simpleQuery($dbaccess, sprintf("select fromid from docread where initid=%d and locked != -1", $initid) , $tf, true);
         if (count($tf) > 0) {
