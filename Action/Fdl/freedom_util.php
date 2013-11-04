@@ -944,15 +944,16 @@ function getRevTDoc($dbaccess, $initid, $rev)
     global $action;
     
     if (!($initid > 0)) return false;
-    $dbid = getDbid($dbaccess);
-    $table = "doc";
+    $table = "docread";
     $fromid = getFromId($dbaccess, $initid);
+    $sql = sprintf("select fromid from docread where initid=%d and revision=%d", $initid, $rev);
+    simpleQuery($dbaccess, $sql, $fromid, true, true);
     if ($fromid > 0) $table = "doc$fromid";
     else if ($fromid == - 1) $table = "docfam";
     
     $userMember = DocPerm::getMemberOfVector();
     $sql = sprintf("select *,getaperm('%s',profid) as uperm from only %s where initid=%d and revision=%d ", $userMember, $table, $initid, $rev);
-    $err = simpleQuery($dbaccess, $sql, $result, false, true);
+    simpleQuery($dbaccess, $sql, $result, false, true);
     if ($result) {
         return $result;
     }
@@ -974,12 +975,10 @@ function getLatestRevisionNumber($dbaccess, $initid, $fromid = 0)
     $initid = intval($initid);
     if (!($initid > 0)) return false;
     $dbid = getDbid($dbaccess);
-    $table = "doc";
-    if (!$fromid) $fromid = getFromId($dbaccess, $initid);
-    if ($fromid > 0) $table = "doc$fromid";
-    else if ($fromid == - 1) $table = "docfam";
+    $table = "docread";
+    if ($fromid == - 1) $table = "docfam";
     
-    $result = @pg_query($dbid, "SELECT revision from only $table where initid=$initid order by revision desc limit 1;");
+    $result = @pg_query($dbid, "SELECT revision from $table where initid=$initid order by revision desc limit 1;");
     if ($result && (pg_num_rows($result) > 0)) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
         return $arr['revision'];
