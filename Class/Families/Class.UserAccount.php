@@ -9,6 +9,7 @@
  *
  */
 namespace Dcp\Core;
+use Dcp\AttributeIdentifiers\Iuser as MyAttributes;
 /**
  * Class UserAccount
  * @method \Account getAccount
@@ -146,32 +147,37 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             $wuser = $this->getAccount(true);
             
             if ($wuser->isAffected()) {
-                $this->SetValue("US_WHATID", $wuser->id);
-                $this->SetValue("US_LNAME", $wuser->lastname);
-                $this->SetValue("US_FNAME", $wuser->firstname);
-                $this->SetValue("US_PASSWD1", " ");
-                $this->SetValue("US_PASSWD2", " ");
-                $this->SetValue("US_LOGIN", $wuser->login);
-                $this->SetValue("US_STATUS", $wuser->status);
-                $this->SetValue("US_PASSDELAY", $wuser->passdelay);
-                $this->SetValue("US_EXPIRES", $wuser->expires);
-                $this->SetValue("US_DAYDELAY", $wuser->passdelay / 3600 / 24);
+                $this->SetValue(MyAttributes::us_whatid, $wuser->id);
+                $this->SetValue(MyAttributes::us_lname, $wuser->lastname);
+                $this->SetValue(MyAttributes::us_fname, $wuser->firstname);
+                $this->SetValue(MyAttributes::us_passwd1, " ");
+                $this->SetValue(MyAttributes::us_passwd2, " ");
+                $this->SetValue(MyAttributes::us_login, $wuser->login);
+                $this->SetValue(MyAttributes::us_status, $wuser->status);
+                $this->SetValue(MyAttributes::us_passdelay, $wuser->passdelay);
+                $this->SetValue(MyAttributes::us_expires, $wuser->expires);
+                $this->SetValue(MyAttributes::us_daydelay, $wuser->passdelay / 3600 / 24);
+                if ($wuser->substitute > 0) {
+                    $this->setValue(MyAttributes::us_substitute, $wuser->getFidFromUid($wuser->substitute));
+                } else {
+                    $this->clearValue(MyAttributes::us_substitute);
+                }
                 
                 $rolesIds = $wuser->getRoles(false);
                 $this->SetValue("us_roles", $rolesIds);
                 
                 $mail = $wuser->getMail();
-                if (!$mail) $this->clearValue("US_MAIL");
-                else $this->SetValue("US_MAIL", $mail);
+                if (!$mail) $this->clearValue(MyAttributes::us_mail);
+                else $this->SetValue(MyAttributes::us_mail, $mail);
                 if ($wuser->passdelay <> 0) {
-                    $this->SetValue("US_EXPIRESD", strftime("%Y-%m-%d", $wuser->expires));
-                    $this->SetValue("US_EXPIREST", strftime("%H:%M", $wuser->expires));
+                    $this->SetValue(MyAttributes::us_expiresd, strftime("%Y-%m-%d", $wuser->expires));
+                    $this->SetValue(MyAttributes::us_expirest, strftime("%H:%M", $wuser->expires));
                 } else {
-                    $this->SetValue("US_EXPIRESD", " ");
-                    $this->SetValue("US_EXPIREST", " ");
+                    $this->SetValue(MyAttributes::us_expiresd, " ");
+                    $this->SetValue(MyAttributes::us_expirest, " ");
                 }
                 
-                $this->SetValue("US_MEID", $this->id);
+                $this->SetValue(MyAttributes::us_meid, $this->id);
                 // search group of the user
                 $g = new \Group("", $wid);
                 $tgid = array();
@@ -181,10 +187,10 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                         $gt->select($gid);
                         $tgid[] = $gt->fid;
                     }
-                    $this->clearArrayValues("us_groups");
-                    $this->SetValue("us_idgroup", $tgid);
+                    $this->clearArrayValues(MyAttributes::us_groups);
+                    $this->SetValue(MyAttributes::us_idgroup, $tgid);
                 } else {
-                    $this->clearArrayValues("us_groups");
+                    $this->clearArrayValues(MyAttributes::us_groups);
                 }
                 $err = $this->modify();
             } else {
@@ -220,7 +226,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
          * @var \Action $action
          */
         global $action;
-        $ed = $action->getParam("AUTHENT_ACCOUNTEXPIREDELAY");
+        $ed = floatval($action->getParam("AUTHENT_ACCOUNTEXPIREDELAY"));
         if ($ed > 0) {
             $expdate = time() + ($ed * 24 * 3600);
             $err = $this->SetValue("us_accexpiredate", strftime("%Y-%m-%d 00:00:00", $expdate));
@@ -604,7 +610,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     function increaseLoginFailure()
     {
         if ($this->getRawValue("us_whatid") == 1) return ""; // it makes non sense for admin
-        $lf = $this->getRawValue("us_loginfailure", 0) + 1;
+        $lf = intval($this->getRawValue("us_loginfailure", 0)) + 1;
         $err = $this->SetValue("us_loginfailure", $lf);
         if ($err == "") {
             $err = $this->modify(false, array(

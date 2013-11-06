@@ -190,7 +190,7 @@ create sequence seq_id_users start 10;";
             if (!$substituteId) $err = sprintf(_("cannot set substitute %s id not found") , $substitute);
         }
         if ($err) return $err;
-        if ($this->substitute == $this->id) {
+        if ($substitute == $this->id) {
             $err = sprintf(_("cannot substitute itself"));
         }
         if ($err) return $err;
@@ -379,7 +379,8 @@ create sequence seq_id_users start 10;";
     /**
      * return system user identifier from user document reference
      * @static
-     * @param $fid
+     * @see getFidFromUid
+     * @param int $fid
      * @return int
      */
     static function getUidFromFid($fid)
@@ -389,6 +390,21 @@ create sequence seq_id_users start 10;";
             simpleQuery('', sprintf("select id from users where fid=%d", $fid) , $uid, true, true);
         }
         return $uid;
+    }
+    /**
+     * return user document reference from system user identifier
+     * @static
+     * @see getUidFromFid
+     * @param int $fid
+     * @return int
+     */
+    static function getFidFromUid($uid)
+    {
+        $fid = 0;
+        if ($uid) {
+            simpleQuery('', sprintf("select fid from users where id=%d", $uid) , $fid, true, true);
+        }
+        return $fid;
     }
     /**
      * update user from IUSER document
