@@ -6031,6 +6031,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function getFileLink($attrid, $index = - 1, $cache = false, $inline = false, $otherValue = '')
     {
+        if ($index === '' || $index === null) {
+            $index = - 1;
+        }
         if (!$otherValue) {
             if ($index >= 0) $avalue = $this->getMultipleRawValues($attrid, "", $index);
             else $avalue = $this->getRawValue($attrid);
@@ -6043,9 +6046,15 @@ create unique index i_docir on doc(initid, revision);";
         if (preg_match(PREGEXPFILE, $avalue, $reg)) {
             $vid = $reg[2];
             // will be rewrited by apache rules
-            return sprintf("file/%s/%d/%s/%s/%s?cache=%s&inline=%s", $this->id, $vid, $attrid, $index, rawurlencode($reg[3]) , $cache ? "yes" : "no", $inline ? "yes" : "no");
-            //return sprintf("%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d", "", $cache ? "yes" : "no", $inline ? "yes" : "no", $vid, $this->id, $attrid, $index);
-            
+            //rewrite to  sprintf("%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d", "", $cache ? "yes" : "no", $inline ? "yes" : "no", $vid, $this->id, $attrid, $index);
+            $url = sprintf("file/%s/%d/%s/%s/%s?cache=%s&inline=%s", $this->id, $vid, $attrid, $index, rawurlencode($reg[3]) , $cache ? "yes" : "no", $inline ? "yes" : "no");
+            if ($this->cvid > 0) {
+                $viewId = getHttpVars("vid");
+                if ($viewId) {
+                    $url.= '&cvViewid=' . $viewId;
+                }
+            }
+            return $url;
         }
         return '';
     }
