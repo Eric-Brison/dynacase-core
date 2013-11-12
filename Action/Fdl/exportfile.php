@@ -38,14 +38,17 @@ function exportfile(Action & $action)
     $state = GetHttpVars("state"); // search doc in this state
     $type = GetHttpVars("type"); // [pdf|png]
     $pngpage = GetHttpVars("page"); // [pdf|png]
+    $cvViewId = GetHttpVars("cvViewid"); // view control id
     $isControled = false;
     $othername = '';
+    
     if ($vaultid == 0) {
         
         $doc = new_Doc($dbaccess, $docid);
         if ($state != "") {
             $docid = $doc->getRevisionState($state, true);
             if ($docid == 0) {
+                header('HTTP/1.0 404 Document Not Found');
                 $action->exitError(sprintf(_("Document %s in %s state not found") , $doc->title, _($state)));
             }
             $doc = new_Doc($dbaccess, $docid);
@@ -56,9 +59,16 @@ function exportfile(Action & $action)
                 $doc = new_Doc($dbaccess, $docid);
             }
         }
+        if (!$doc->isAffected()) {
+            header('HTTP/1.0 404 Document Not Found');
+            $action->exitError(sprintf(_("Document %s not found") , $docid));
+        }
         // ADD CONTROL ACCESS HERE
         $err = $doc->control("view");
-        if ($err != "") $action->exiterror($err);
+        if ($err != "") {
+            header('HTTP/1.0 403 Forbidden');
+            $action->exiterror($err);
+        }
         $isControled = true;
         if ($doc->doctype == "C") {
             /**
@@ -72,7 +82,39 @@ function exportfile(Action & $action)
             $ovalue = $tvalue[$index];
         }
         $oa = $doc->getAttribute($attrid);
-        if (!$oa) $action->exitError(sprintf(_("attribute %s not found") , $attrid));
+        if (!$oa) {
+            header('HTTP/1.0 404 Attribute Not Found');
+            $action->exitError(sprintf(_("attribute %s not found") , $attrid));
+        } else {
+            if ($cvViewId != "" && $doc->cvid > 0) {
+                /**
+                 * @var $cvdoc CVDOC
+                 */
+                $cvdoc = new_Doc($dbaccess, $doc->cvid);
+                $cvdoc->set($doc);
+                /*
+                 * Apply mask from requested view
+                */
+                $err = $cvdoc->control($cvViewId); // control special view
+                if ($err != "") {
+                    header('HTTP/1.0 403 Forbidden');
+                    $action->exitError($err);
+                }
+                $tview = $cvdoc->getView($cvViewId);
+                if ($tview) {
+                    $mask = $tview["CV_MSKID"];
+                    if ($mask) {
+                        $doc->applyMask($mask);
+                    }
+                }
+            } else {
+                $doc->applyMask(Doc::USEMASKCVVIEW);
+            }
+            if ($oa->mvisibility == "I") {
+                header('HTTP/1.0 403 Forbidden');
+                $action->exitError(sprintf(_("Cannot see attribute %s") , $attrid));
+            }
+        }
         if ($oa->getOption("preventfilechange") == "yes") {
             if (preg_match(PREGEXPFILE, $ovalue, $reg)) {
                 $vaultid = $reg[2];
@@ -81,6 +123,7 @@ function exportfile(Action & $action)
         }
         
         if ($ovalue == "") {
+            header('HTTP/1.0 404 File Not Found');
             print (sprintf(_("no file referenced for %s document") , $doc->title));
             exit;
         }
@@ -127,9 +170,9 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
         if ($err != "") $err = sprintf(_("PDF conversion not found")) . "\n$err";
     } else {
         $err = $vf->Show($vaultid, $info);
-        //print_r2(substr($info->mime_s,0,5));
-        //print_r2("width=".$width);
-        if (substr($info->mime_s, 0, 5) == "image") $type = "original";
+        if (substr($info->mime_s, 0, 5) == "image") {
+            $type = "original";
+        }
         
         if ($type == "png") {
             $teng_name = 'pdf';
@@ -232,11 +275,8 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                 if ($info) $err = sprintf(_("conversion png not found for %s") , $info->name) . "\n$err";
             }
         } else {
-            $err = $vf->Show($vaultid, $info);
-            //print_r2(substr($info->mime_s,0,5));
-            //print_r2("width=".$width);
+            
             if ((substr($info->mime_s, 0, 5) == "image") && ($width > 0)) {
-                //print_r2($info);
                 $dest = rezizelocalimage($info->path, $width, $width . "-" . $info->id_file . ".png");
                 if ($dest) Http_DownloadFile($dest, $info->name . ".png", "image/png", $inline);
             }
@@ -271,7 +311,6 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                 // header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
                 // header("Pragma: "); // HTTP 1.0
                 header('Content-type: image/jpeg');
-
                 // Calcul des nouvelles dimensions
                 list($owidth, $oheight) = getimagesize($filename);
                 $newwidth = $width;
@@ -305,7 +344,7 @@ function sendimgerror($text)
     if (seems_utf8($text)) $text = utf8_decode($text); // support only iso8859
     $ts = explode("\n", $text);
     $width = 0;
-    foreach ($ts as  $string) {
+    foreach ($ts as $string) {
         $width = max($width, strlen($string));
     }
     // Create image width dependant on width of the string
