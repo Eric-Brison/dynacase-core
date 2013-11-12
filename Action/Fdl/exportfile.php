@@ -37,7 +37,6 @@ function exportfile(Action & $action)
     $latest = GetHttpVars("latest");
     $state = GetHttpVars("state"); // search doc in this state
     $type = GetHttpVars("type"); // [pdf|png]
-    $pngwidth = GetHttpVars("width"); // [pdf|png]
     $pngpage = GetHttpVars("page"); // [pdf|png]
     $isControled = false;
     $othername = '';
@@ -77,8 +76,6 @@ function exportfile(Action & $action)
         if ($oa->getOption("preventfilechange") == "yes") {
             if (preg_match(PREGEXPFILE, $ovalue, $reg)) {
                 $vaultid = $reg[2];
-                $mimetype = $reg[1];
-                $info = vault_properties($vaultid);
                 $othername = vault_uniqname($vaultid);
             }
         }
@@ -274,8 +271,7 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                 // header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
                 // header("Pragma: "); // HTTP 1.0
                 header('Content-type: image/jpeg');
-                
-                $mb = microtime();
+
                 // Calcul des nouvelles dimensions
                 list($owidth, $oheight) = getimagesize($filename);
                 $newwidth = $width;
@@ -309,7 +305,7 @@ function sendimgerror($text)
     if (seems_utf8($text)) $text = utf8_decode($text); // support only iso8859
     $ts = explode("\n", $text);
     $width = 0;
-    foreach ($ts as $k => $string) {
+    foreach ($ts as  $string) {
         $width = max($width, strlen($string));
     }
     // Create image width dependant on width of the string
@@ -330,7 +326,6 @@ function sendimgerror($text)
         // Length of the string
         $len = strlen($string);
         // Y-coordinate of character, X changes, Y is static
-        $ypos = 0;
         // Loop through the string
         for ($i = 0; $i < $len; $i++) {
             // Position of the character horizontally
@@ -386,4 +381,3 @@ function createPdf2Png($file, $vid)
         bgexec($cmd, $result, $err);
     }
 }
-?>
