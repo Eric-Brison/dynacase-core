@@ -26,19 +26,30 @@ define("RESIZEDIR", DEFAULT_PUBDIR . "/var/cache/file/");
 function exportfile(Action & $action)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    $docid = GetHttpVars("docid", GetHttpVars("id", 0)); // same docid id
-    $attrid = GetHttpVars("attrid", 0);
-    $vaultid = GetHttpVars("vaultid", 0); // only for public file
-    $index = GetHttpVars("index");
-    //  $imgheight = GetHttpVars("height");
-    $imgwidth = GetHttpVars("width");
-    $inline = (GetHttpVars("inline") == "yes");
-    $cache = (GetHttpVars("cache", "yes") == "yes");
-    $latest = GetHttpVars("latest");
-    $state = GetHttpVars("state"); // search doc in this state
-    $type = GetHttpVars("type"); // [pdf|png]
-    $pngpage = GetHttpVars("page"); // [pdf|png]
-    $cvViewId = GetHttpVars("cvViewid"); // view control id
+    $usage=new ActionUsage($action);
+    $usage->setText("Download document attached file");
+    $docid=$usage->addOptionalParameter("docid", "document identifier", null, 0);
+    if (! $docid) {
+        $docid=$usage->addHiddenParameter("id", "document identifier");
+    }
+
+    $usage->addHiddenParameter("vid", "vault file identifier - not used"); // only for construct url
+    $usage->addHiddenParameter("filename", "vault file name - not used"); // only for construct url
+    $attrid=$usage->addOptionalParameter("attrid", "attribute identifier");
+    $vaultid=$usage->addOptionalParameter("vaultid", "public file identifier");
+    $index=$usage->addOptionalParameter("index", "attribute index identifier");
+    $imgwidth=$usage->addOptionalParameter("width", "image width use only when file is image");
+    $inline=($usage->addOptionalParameter("inline", "inline download", array("yes","no"))=="yes");
+    $cache=($usage->addOptionalParameter("cache", "use http cache", array("yes","no"), "yes")=="yes");
+    $latest=$usage->addOptionalParameter("latest", "use latest revision", array("Y","N"));
+    $state=$usage->addOptionalParameter("state", "search doc in this state");
+    $type=$usage->addOptionalParameter("type", "transformation type", array("png","pdf"));
+    $pngpage=$usage->addOptionalParameter("page", "page number if type=pdf");
+
+    $cvViewId=$usage->addOptionalParameter("cvViewid", "view control id");
+
+    $usage->setStrictMode(false);
+    $usage->verify();
     $isControled = false;
     $othername = '';
     
