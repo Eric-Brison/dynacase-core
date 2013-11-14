@@ -464,13 +464,11 @@ class DocFormFormat
                 $info = null;
                 if ($vf->Show($reg[2], $info) == "") {
                     $vid = $reg[2];
-                    $fname = "<A target=\"_self\" href=\"" . GetParam("CORE_BASEURL") . "app=FDL&action=EXPORTFILE&vid=$vid&docid=$this->docid&attrid={$this->attrid}&index={$this->index}\" title=\"{$info->name}\">";
+                    $imageUrl = $this->doc->getFileLink($this->attrid, $this->index, false, false);
+                    $fname = sprintf('<a target="_self" href="%s"  title="%s">', $imageUrl, htmlspecialchars($info->name));
                     // put image
-                    $fname.= "<IMG  id=\"img_{$this->attridk}\" style=\"vertical-align:bottom;border:none;width:30px\" SRC=\"";
-                    $fname.= GetParam("CORE_BASEURL") . "app=FDL&action=EXPORTFILE&width=30&vid=$vid&docid=" . $this->docid . "&attrid=" . $this->attrid . "&index={$this->index}";
-                    $fname.= "\">";
-                    
-                    $fname.= "</A>";
+                    $fname.= sprintf('<img id="img_%s" style="vertical-align:bottom;border:none;width:30px" src="%s&width=30">', $this->attridk, $this->doc->getFileLink($this->attrid, $this->index, false, true));
+                    $fname.= "</a>";
                     if ($this->oattr->getOption("preventfilechange") == "yes") {
                         include_once ("FDL/Lib.Vault.php");
                         $check = vault_uniqname($vid);
@@ -530,7 +528,7 @@ class DocFormFormat
                         //$this->onChange="onclick=\"var sid=getsessionid('".$docid."','$vid');this.href='asdav://$DAV/freedav/vid-'+sid+'/'.$info->name."e";
                         $fname = "<A title=\"" . _("open file with your editor") . "\" href=\"#\" {$this->onChange}><img style=\"border:none\" src=\"Images/davedit.png\">";
                     } else {
-                        $fname = "<A target=\"_self\" title=\"" . _("download file") . "\" href=\"" . $action->GetParam("CORE_BASEURL") . "app=FDL&action=EXPORTFILE&vid=$vid&docid={$this->docid}&attrid={$this->attrid}&index={$this->index}\">";
+                        $fname = sprintf('<A target="_self" title="%s" href="%s">', _("download file") , $this->doc->getFileLink($this->attrid, $this->index, false, false));
                     }
                     $fname.= $info->name;
                     $fname.= "</A>";

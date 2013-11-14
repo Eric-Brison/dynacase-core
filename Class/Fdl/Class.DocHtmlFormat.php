@@ -362,10 +362,7 @@ class DocHtmlFormat
                 if (($this->oattr->repeat) && ($this->index <= 0)) $idx = $kvalue;
                 else $idx = $this->index;
                 $inline = $this->oattr->getOption("inline");
-                if ($inline == "yes") $opt = "&inline=yes";
-                else $opt = "";
-                $htmlval = $action->GetParam("CORE_BASEURL") . "app=FDL" . "&action=EXPORTFILE$opt&cache=no&vid=$vid&docid=" . $this->doc->id . "&attrid=" . $this->oattr->id . "&index=$idx"; // upload name
-                
+                $htmlval = $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes"));
             } else {
                 if (empty($avalue)) {
                     $localImage = $this->oattr->getOption('showempty');
