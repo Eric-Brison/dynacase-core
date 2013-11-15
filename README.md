@@ -1,53 +1,36 @@
-# Dynacase Core
+-------------------------
 
-![Dynacase Platform](https://raw.github.com/Anakeen/dynacase-platform/3.2-integration/Images/Fdl/logo.png)
+![Dynacase Platform](https://raw.github.com/Anakeen/dynacase-core/3.2-integration/Images/Fdl/logo.png) 
 
-_Create dynamic business applications with an open source platform._  
+_Create dynamic business applications faster and safer with an open source platform._
 
-Dynacase Platform offers an innovative Open Source PHP Platform for Case Management. Dynacase Platform integrates Business Process Management (BPM), Enterprise Content Management (ECM) and Collaboration Management.  
+Dynacase Platform is an innovative Open Source PHP platform to develop business applications without 
+the disadvantages of a specific development. This is possible thanks to core features provided ‘out-of-the-box’ 
+(account management, rights management...), but also through the pre-designed modules for information 
+management and business process management.
 
-Dynacase Platform is an open source development platform, with core functionality provided ‘out-of-the-box’, in pre-designed modules.
+----------------
 
 ## Getting Help
 
-
-### Documentation 
-
-[Dynacase reference manual](https://github.com/Anakeen/dynacase-platform/raw/3.2-integration/Doc/Manuel/dynacase-core.pdf) reference manual for Dynacase Platform
-
-[Dynacase operating manual](https://github.com/Anakeen/dynacase-doc-platform-operating-manual/) guide to install Dynacase Platform
-
-[Dynacase Onefam reference guide](https://github.com/Anakeen/dynacase-doc-onefam-reference/) to configure applications based on Onefam.
-
-### Wiki
-
-[Dynacase wiki](http://www.dynacase.org/) Dynacase Platform Community Site
-
-### Forum 
-
-[Dynacase Forum](http://forum.dynacase.org/) the better place for getting some help by the community.  
-
-### Bug report
-
-Use [Dynacase Bug Report](http://dev.dynacase.org/) to be sure that major bugs don't go unnoticed by developers. 
-
-### Commercial Support, Licensing
-
-If you want information go to [Anakeen](http://anakeen.com) (ISV of Dynacase).
-
+* [Dynacase sources](https://gihub.com/Anakeen) Dynacase modules and documentation sources
+* [Dynacase site](http://www.dynacase.org/) Dynacase Platform community site
+* [Dynacase technical ressources](https://docs.anakeen.com) : manuals, guides, etc.
+* [Dynacase Forum](http://forum.dynacase.org/) the better place for getting some help by the community.  
+* [Dynacase Bug Report](http://dev.dynacase.org/) to be sure that major bugs don't go unnoticed by developers. 
 
 ## Contributing
 
-
 Dynacase is an open source project. You can help us by contributing to documentation, reporting bugs, forking the code to add features or make bug fixes or promoting it on twitter, etc.
 
+## Commercial Support, Licensing
+
+If you want information go to [Anakeen](http://www.anakeen.com) (ISV of Dynacase).
 
 ## Legal Stuff
 
-
-All rights reserved under the granted license by Anakeen (ISV of Dynacase).
-The enterprise edition is guaranteed and allows access to corrective patch on private repository.
-The enterprise edition allows the customer to change the license in agreement with Anakeen.
-The community edition is not guaranteed and necessarily under GNU Affero General Public License V3 - AGPL V3.
-Dynacase and Anakeen and associated logos are trademarks of Anakeen.
-Dynacase is written in PHP.  
+Dynacase Platform is released by Anakeen under LGPLv3. 
+The ISV modules are released under the granted license by Anakeen.
+The enterprise edition is composed of Dynacase Platform and the ISV modules and allows access
+to corrective patchs on a private repository. 
+Dynacase and Anakeen and associated logos are trademarks of Anakeen.  
