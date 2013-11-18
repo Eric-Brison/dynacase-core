@@ -1659,11 +1659,11 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function delete($really = false, $control = true, $nopost = false)
     {
-        $msg = '';
+        $err = '';
         if ($control) {
             // Control if the doc can be deleted
-            $msg = $this->PreDocDelete();
-            if ($msg != '') return $msg;
+            $err = $this->PreDocDelete();
+            if ($err != '') return $err;
         }
         
         if ($really) {
@@ -1679,11 +1679,13 @@ create unique index i_docir on doc(initid, revision);";
             }
         } else {
             // Control if the doc can be deleted
-            if ($this->doctype == 'Z') $msg = _("already deleted");
-            if ($msg != '') return $msg;
+            if ($this->doctype == 'Z') $err = _("already deleted");
+            if ($err != '') return $err;
             
-            if (!$nopost) $msg = $this->PreDelete();
-            if ($msg != '') return $msg;
+            if (!$nopost) {
+                $err = $this->preDelete();
+                if ($err != '') return $err;
+            }
             
             if ($this->doctype != 'Z') {
                 
@@ -1703,27 +1705,34 @@ create unique index i_docir on doc(initid, revision);";
                     "really" => $really
                 ));
                 
-                $this->modify(true, array(
+                $err = $this->modify(true, array(
                     "doctype",
                     "revdate",
                     "locked",
                     "owner",
                     "lmodify"
                 ) , true);
-                if (!$nopost) $msg = $this->PostDelete();
-                // delete all revision also
-                $rev = $this->GetRevisions();
-                foreach ($rev as $k => $v) {
-                    if ($v->doctype != 'Z') {
-                        $v->doctype = 'Z'; // Zombie Doc
-                        if ($v->locked == - 1) $v->modify(true, array(
-                            "doctype"
-                        ) , true);
+                if ($err == "") {
+                    if (!$nopost) {
+                        $msg = $this->postDelete();
+                        if ($msg != '') {
+                            $this->addHistoryEntry($msg, HISTO_MESSAGE);
+                        }
+                    }
+                    // delete all revision also
+                    $rev = $this->GetRevisions();
+                    foreach ($rev as $k => $v) {
+                        if ($v->doctype != 'Z') {
+                            $v->doctype = 'Z'; // Zombie Doc
+                            if ($v->locked == - 1) $v->modify(true, array(
+                                "doctype"
+                            ) , true);
+                        }
                     }
                 }
             }
         }
-        return $msg;
+        return $err;
     }
     /**
      * To restore a document which is in the trash
@@ -1764,7 +1773,7 @@ create unique index i_docir on doc(initid, revision);";
                         ) , true);
                         $this->addHistoryEntry(_("revival document") , HISTO_MESSAGE, "REVIVE");
                         $msg = $this->postUndelete();
-                        if ($msg) $this->addHistoryEntry($msg);
+                        if ($msg) $this->addHistoryEntry($msg, HISTO_MESSAGE);
                         $this->addLog('undelete');
                         $rev = $this->getRevisions();
                         /**
@@ -5294,8 +5303,10 @@ create unique index i_docir on doc(initid, revision);";
         
         if ($copyfile) $copy->duplicateFiles();
         
-        $copy->postDuplicate($this);
-        if ($err != "") AddWarningMsg($err);
+        $msg = $copy->postDuplicate($this);
+        if ($msg != "") {
+            $copy->addHistoryEntry($msg, HISTO_MESSAGE);
+        }
         
         $copy->Modify();
         if ($linkfld && method_exists($copy, "insertFolder")) {
