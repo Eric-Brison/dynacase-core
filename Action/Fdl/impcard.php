@@ -21,27 +21,34 @@ include_once ("FDL/Class.Doc.php");
 function impcard(Action & $action)
 {
     // GetAllParameters
-    $mime = GetHttpVars("mime"); // send to be view by word editor
-    $ext = GetHttpVars("ext", "html"); // extension
-    $docid = GetHttpVars("id");
-    $zonebodycard = GetHttpVars("zone"); // define view action
-    $valopt = GetHttpVars("opt"); // value of  options
-    $vid = GetHttpVars("vid"); // special controlled view
-    $state = GetHttpVars("state"); // search doc in this state
-    $inline = (strtolower(substr(getHttpVars("inline") , 0, 1)) == "y"); // view file inline
-    $latest = GetHttpVars("latest");
-    $view = GetHttpVars("view"); // if print view css print
+    $usage = new ActionUsage($action);
+    $usage->setText("view document in HTML page");
+    $docid = $usage->addRequiredParameter("id", "document identifier");
+    $mime = $usage->addOptionalParameter("mime", "other mime type header to send");
+    $ext = $usage->addOptionalParameter("ext", "file extension if inline is no", null, "html");
+    $inline = $usage->addOptionalParameter("inline", "inline (yes|no) - if set to 'no', mime must be set also");
+    $inline = (strtolower(substr($inline, 0, 1)) == "y"); // view file inline
+    $zonebodycard = $usage->addOptionalParameter("zone", "special document view zone");
+    $vid = $usage->addOptionalParameter("vid", "special controlled view");
+    $state = $usage->addOptionalParameter("state", "search doc in this state");
+    $latest = $usage->addOptionalParameter("latest", "get document in latest version if Y", array(
+        "Y",
+        "N",
+        "L",
+        "P"
+    ));
+    $view = $usage->addOptionalParameter("view", "add view css print", array(
+        "print"
+    ));
+    
+    $usage->setStrictMode(false);
+    $usage->verify();
     $szone = false;
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $action->lay->set("viewprint", ($view == "print"));
-    if ($valopt != "") {
-        include_once ("FDL/editoption.php");
-        $doc = getdocoption($action);
-        $docid = $doc->id;
-    } else {
-        $doc = new_Doc($dbaccess, $docid);
-    }
+    
+    $doc = new_Doc($dbaccess, $docid);
     
     $action->parent->addCssRef("css/dcp/main.css");
     if ($state != "") {
