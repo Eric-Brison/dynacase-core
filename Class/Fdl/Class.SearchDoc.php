@@ -622,7 +622,7 @@ class SearchDoc
      *
      * @api get next document results
      *
-     * @return Doc|array or null if this is the end
+     * @return Doc|array|bool  false if this is the end
      */
     public function getNextDoc()
     {
