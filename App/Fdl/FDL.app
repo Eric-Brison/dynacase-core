@@ -327,24 +327,7 @@ $action_desc = array(
         "short_name" => N_("restore document from trash"),
         "acl" => "EDIT"
     ),
-    array(
-        "name" => "EDITOPTION",
-        "short_name" => N_("interface to change document option"),
-        "acl" => "EDIT"
-    ),
-    array(
-        "name" => "MODOPTION",
-        "short_name" => N_("modify document option"),
-        "acl" => "EDIT"
-    ),
 
-    array(
-        "name" => "VIEWOPTION",
-        "short_name" => N_("view document option"),
-        "script" => "editoption.php",
-        "function" => "viewoption",
-        "acl" => "NORMAL"
-    ),
 
     array(
         "name" => "VIEWXML",
