@@ -18,7 +18,7 @@
 
 include_once ("FDL/Class.Dir.php");
 // -----------------------------------
-function duplicate(&$action, $dirid, $docid, $temporary = false)
+function duplicate(Action & $action, $dirid, $docid, $temporary = false)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     // test if doc with values
@@ -54,9 +54,12 @@ function duplicate(&$action, $dirid, $docid, $temporary = false)
     }
     
     if (($dirid > 0) && ($copy->id > 0)) {
+        /**
+         * @var Dir $fld
+         */
         $fld = new_Doc($dbaccess, $dirid);
         if ($fld->isAlive()) {
-            $err = $fld->AddFile($copy->id);
+            $err = $fld->insertDocument($copy->id);
             if ($err != "") {
                 $copy->Delete();
                 $action->exitError($err);
