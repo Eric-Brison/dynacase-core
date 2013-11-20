@@ -162,6 +162,28 @@ class Layout
     {
         $this->corresp["$p_nom_block"]["[$p_nom_modele]"] = ($p_nom == NULL ? $p_nom_modele : "$p_nom");
     }
+
+
+
+    /**
+     * set encoded data to fill a block
+     * @api set data to fill a block
+     * @param string $p_nom_block block name
+     * @param array $data data to fill the block
+     */
+    public function eSetBlockData($p_nom_block,  $data = NULL) {
+        if (is_array($data)) {
+            foreach ($data as &$aRow) {
+                if (is_array($aRow)) {
+            foreach ($aRow as &$aData) {
+                    $aData=htmlspecialchars($aData, ENT_QUOTES);
+            }
+                }
+            }
+        }
+        $this->setBlockData($p_nom_block, $data);
+    }
+
     /**
      * set data to fill a block
      * @api set data to fill a block
@@ -394,6 +416,15 @@ class Layout
     {
         $this->pkey[$tag] = "[$tag]";
         $this->rkey[$tag] = $val;
+    }
+    /**
+     * set key/value pair and XML entity encode
+     * @param string $tag the key to replace
+     * @param string $val the value for the key
+     */
+    public function eSet($tag, $val)
+    {
+        $this->set($tag, htmlspecialchars($val,ENT_QUOTES));
     }
     /**
      * return the value set for a key
