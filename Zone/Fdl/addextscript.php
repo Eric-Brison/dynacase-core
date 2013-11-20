@@ -18,11 +18,11 @@
 function addextscript(Action & $action)
 {
     $debug = $action->getArgument("debug");
-    $action->lay->set("debug", $debug);
+    $action->lay->eset("debug", $debug);
     $lang = strtolower(strtok($action->getParam("CORE_LANG") , "_"));
     
     if (file_exists(sprintf("%s/lib/ext/src/locale/ext-lang-%s.js", DEFAULT_PUBDIR, $lang))) {
-        $action->lay->set("lang", $lang);
+        $action->lay->eset("lang", $lang);
     } else {
         $action->lay->set("lang", false);
     }

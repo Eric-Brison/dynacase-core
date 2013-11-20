@@ -19,7 +19,7 @@
 include_once ("FDL/popupdocdetail.php");
 include_once ("FDL/popupfamdetail.php");
 
-function editbarmenu(&$action)
+function editbarmenu(Action &$action)
 {
     $docid = GetHttpVars("id");
     $zonebodycard = GetHttpVars("zone"); // define view action
@@ -31,15 +31,15 @@ function editbarmenu(&$action)
     $action->lay->Set("SELFTARGET", ($rtarget == "_self"));
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
-    $action->lay->Set("id", $docid);
+    $action->lay->eSet("id", $docid);
     if (($docid === 0) || ($docid === "") || ($docid === "0")) {
         $action->lay->Set("editaction", _("Create"));
-        if ($usefor == "D") $action->lay->Set("editaction", _("Save default values"));
-        if ($usefor == "Q") $action->lay->Set("editaction", _("Save parameters"));
+        if ($usefor == "D") $action->lay->eSet("editaction", _("Save default values"));
+        if ($usefor == "Q") $action->lay->eSet("editaction", _("Save parameters"));
         $doc = createDoc($dbaccess, $classid);
     } else {
         $doc = new_Doc($dbaccess, $docid);
-        $action->lay->Set("editaction", _("Save"));
+        $action->lay->eSet("editaction", _("Save"));
         $action->lay->Set("id", $doc->id);
     }
     
@@ -48,11 +48,11 @@ function editbarmenu(&$action)
         else $zonebodycard = $doc->defaultedit;
     }
     
-    if ((!$docid) && (($usefor == "Q") || ($usefor == "D"))) $action->lay->set("id", $classid);
+    if ((!$docid) && (($usefor == "Q") || ($usefor == "D"))) $action->lay->eset("id", $classid);
     $action->lay->Set("boverdisplay", "none");
     $action->lay->Set("INPUTCONSTRAINT", false);
-    $action->lay->Set("rzone", $rzone);
-    $action->lay->Set("rvid", $rvid);
+    $action->lay->Set("rzone", urlencode($rzone));
+    $action->lay->Set("rvid", urlencode($rvid));
     $action->lay->Set("admin", ($action->user->id == 1));
     $action->lay->Set("NOSAVE", (preg_match("/[A-Z]+:[^:]+:V/", $zonebodycard, $reg)));
     if (GetHttpVars("viewconstraint") == "Y") {

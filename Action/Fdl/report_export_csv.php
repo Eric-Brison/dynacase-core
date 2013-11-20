@@ -119,8 +119,8 @@ function report_export_csv(Action & $action)
             );
         }
     }
-    
-    $action->lay->setBlockData("addedArguments", $addedArguments);
+
+    $action->lay->eSetBlockData("addedArguments", $addedArguments);
     
     if ($csvTmpFile) {
         
@@ -147,9 +147,9 @@ function report_export_csv(Action & $action)
     }
     
     if ($displayForm) {
-        $action->lay->set("id", $id);
+        $action->lay->set("id", $currentDoc->id);
         $expVarName = uniqid("EXPCSV");
-        $action->lay->set("exportId", $expVarName);
+        $action->lay->eset("exportId", $expVarName);
         $action->Register($expVarName, array(
             "status" => "init"
         ));
@@ -237,9 +237,9 @@ function report_export_csv(Action & $action)
         );
         $action->lay->setBlockData("dateFormats", $dateFormats);
         
-        $action->lay->set("delimiter", $argumentsCSV["delimiter"]);
-        $action->lay->set("enclosure", $argumentsCSV["enclosure"]);
-        $action->lay->set("decimalSeparator", $argumentsCSV["decimalSeparator"]);
+        $action->lay->eset("delimiter", $argumentsCSV["delimiter"]);
+        $action->lay->eset("enclosure", $argumentsCSV["enclosure"]);
+        $action->lay->eset("decimalSeparator", $argumentsCSV["decimalSeparator"]);
     } else {
         
         $action->parent->setVolatileParam("exportSession", $expVarName);

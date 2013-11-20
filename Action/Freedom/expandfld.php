@@ -29,10 +29,8 @@ function expandfld(Action &$action)
     $inavmode = GetHttpVars("inavmode"); // root directory
     $dir = new_Doc($dbaccess, $dirid);
     $navigate = $action->getParam('FREEDOM_VIEWFRAME'); // standard navigation
-    $action->lay->Set("dirid", $dirid);
-    $action->lay->Set("reptitle", $dir->title);
     
-    $action->lay->Set("navmode", $navigate);
+    $action->lay->eSet("navmode", $navigate);
     if ($inavmode == 'inverse') {
         if ($navigate == 'navigator') $action->lay->Set("navmode", "folder");
         else if ($navigate == 'folder') $action->lay->Set("navmode", "navigator");
@@ -60,6 +58,7 @@ function expandfld(Action &$action)
     ));
     $ldir = getChildDir($dbaccess, $action->user->id, $dir->id, false, "TABLE");
     $stree = "";
+    $nbfolders=0;
     if (count($ldir) > 0) {
         $nbfolders = 1;
         while (list($k, $doc) = each($ldir)) {

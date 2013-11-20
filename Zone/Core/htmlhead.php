@@ -23,7 +23,7 @@ function htmlhead(Action & $action)
 {
     
     $title = GetHttpVars("title");
-    $action->lay->set("TITLE", $title);
+    $action->lay->eset("TITLE", $title);
     $action->parent->addCssRef("css/dcp/core.css");
 }
 ?>

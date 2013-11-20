@@ -16,11 +16,11 @@
 /**
  */
 // -----------------------------------
-function foliosearch(&$action)
+function foliosearch(Action &$action)
 {
     // -----------------------------------
     // Get all the params
     $docid = GetHttpVars("id", 0); // portfolio id
-    $action->lay->set("docid", $docid);
+    $action->lay->set("docid", urlencode($docid));
 }
 ?>

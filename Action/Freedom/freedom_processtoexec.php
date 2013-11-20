@@ -22,18 +22,18 @@ include_once ("GENERIC/generic_util.php");
 /**
  * Interface to edit new process
  * @param Action &$action current action
- * @global id Http var : document identifier for process document
+ * @global string $id Http var : document identifier for process document
  */
-function freedom_processtoexec(&$action)
+function freedom_processtoexec(Action &$action)
 {
     // -----------------------------------
     // Get all the params
     $docid = GetHttpVars("id"); // id doc to search
-    $action->lay->set("docid", $docid);
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $doc = new_Doc($dbaccess, $docid);
+    $action->lay->set("docid", $doc->id);
     if ($doc->isAlive()) {
         $la = $doc->GetActionAttributes();
         if (count($la) == 0) $action - exitError(_("no action found for %s document") , $doc->title);

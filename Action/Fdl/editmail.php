@@ -80,11 +80,11 @@ function editmail(Action & $action)
         else $action->lay->Set("iconmime", $action->parent->getImageLink("mime-document2.png"));
     }
     
-    $action->lay->Set("from", $from);
-    $action->lay->Set("mid", $docid);
-    $action->lay->Set("ulink", $ulink);
-    $action->lay->Set("mzone", $zone);
-    $action->lay->Set("dochead", $dochead);
+    $action->lay->eSet("from", $from);
+    $action->lay->Set("mid", $doc->id);
+    $action->lay->eSet("ulink", $ulink);
+    $action->lay->eSet("mzone", $zone);
+    $action->lay->eSet("dochead", $dochead);
     $action->lay->Set("title", $doc->getHTMLTitle());
     $action->lay->set("VIEWDOC", $viewdoc);
 }

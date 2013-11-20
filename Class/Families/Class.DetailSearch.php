@@ -875,12 +875,12 @@ class DetailSearch extends \Dcp\Family\Search
             $this->lay->setBlockData("PARAM", $tinputs);
             $this->lay->setBlockData("TRANSFERT", $ttransfert);
             $this->lay->setBlockData("PINPUTS", $ttransfert);
-            $this->lay->Set("ddetail", "none");
-            $this->lay->set("stext", _("send search"));
-            $this->lay->set("saction", getHttpVars("saction", "FREEDOM_VIEW"));
-            $this->lay->set("sapp", getHttpVars("sapp", "FREEDOM"));
-            $this->lay->set("sid", getHttpVars("sid", "dirid"));
-            $this->lay->set("starget", getHttpVars("starget", ""));
+            $this->lay->eSet("ddetail", "none");
+            $this->lay->eset("stext", _("send search"));
+            $this->lay->eset("saction", getHttpVars("saction", "FREEDOM_VIEW"));
+            $this->lay->eset("sapp", getHttpVars("sapp", "FREEDOM"));
+            $this->lay->eset("sid", getHttpVars("sid", "dirid"));
+            $this->lay->eset("starget", getHttpVars("starget", ""));
             $this->lay->set("icon", $this->getIcon());
         }
     }
@@ -901,7 +901,7 @@ class DetailSearch extends \Dcp\Family\Search
         $onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
         $dirid = GetHttpVars("dirid");
         $alsosub = getHttpVars("alsosub") == "Y";
-        $this->lay->set("ACTION", $action->name);
+        $this->lay->set("ACTION", urlencode($action->name));
         $tclassdoc = array();
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
@@ -976,7 +976,7 @@ class DetailSearch extends \Dcp\Family\Search
             );
         }
         $this->lay->set("topInformation", json_encode($sLabelArray));
-        $this->lay->set("onlysubfam", $onlysubfam);
+        $this->lay->set("onlysubfam", urlencode($onlysubfam));
         $selfam = false;
         $selectclass = array();
         foreach ($tclassdoc as $k => $tdoc) {
@@ -1004,7 +1004,7 @@ class DetailSearch extends \Dcp\Family\Search
                 $famid = $first["id"];
             }
         }
-        $this->lay->Set("dirid", $dirid);
+        $this->lay->Set("dirid", urlencode($dirid));
         $this->lay->Set("classid", $this->fromid);
         $this->lay->SetBlockData("SELECTCLASS", $selectclass);
         $this->lay->set("has_permission_fdl_system", $action->parent->hasPermission('FDL', 'SYSTEM'));

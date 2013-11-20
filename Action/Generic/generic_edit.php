@@ -50,14 +50,14 @@ function generic_edit(Action & $action)
     $mskid = $action->getArgument("mskid"); // special mask
     $autoclose = $action->getArgument("autoclose"); // to close window after modification
     $recallhelper = $action->getArgument("recallhelper"); // to recall helper input
-    $action->lay->Set("vid", $vid);
-    $action->lay->Set("ezone", $zonebodycard); // use for return in case of constraint
-    $action->lay->Set("rzone", $rzone);
-    $action->lay->Set("rvid", $rvid);
-    $action->lay->Set("rtarget", $rtarget);
-    $action->lay->Set("autoclose", $autoclose);
-    $action->lay->Set("recallhelper", $recallhelper);
-    $action->lay->Set("updateAttrid", $updateAttrid);
+    $action->lay->eSet("vid", $vid);
+    $action->lay->eSet("ezone", $zonebodycard); // use for return in case of constraint
+    $action->lay->eSet("rzone", $rzone);
+    $action->lay->eSet("rvid", $rvid);
+    $action->lay->eSet("rtarget", $rtarget);
+    $action->lay->eSet("autoclose", $autoclose);
+    $action->lay->eSet("recallhelper", $recallhelper);
+    $action->lay->eSet("updateAttrid", $updateAttrid);
     $action->lay->Set("SELFTARGET", ($rtarget == "_self"));
     // Set the globals elements
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -79,10 +79,10 @@ function generic_edit(Action & $action)
         } else {
             $action->lay->Set("title", _("new card"));
         }
-        if ($usefor == "D") $action->lay->Set("title", _("default values"));
-        if ($usefor == "Q") $action->lay->Set("title", _("parameters values"));
+        if ($usefor == "D") $action->lay->eSet("title", _("default values"));
+        if ($usefor == "Q") $action->lay->eSet("title", _("parameters values"));
         
-        $action->lay->Set("editaction", $action->text("Create"));
+        $action->lay->eSet("editaction", $action->text("Create"));
         $doc = createDoc($dbaccess, $classid);
         if (!$doc) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , $classid));
         if ($usefor == 'D' || $usefor == 'Q') $doc->state = '';
@@ -117,7 +117,6 @@ function generic_edit(Action & $action)
     if ($action->read("navigator") == "EXPLORER") $action->lay->Set("shorticon", getParam("DYNACASE_FAVICO"));
     else $action->lay->Set("shorticon", $doc->getIcon());
     $action->lay->Set("docicon", $doc->getIcon('', 16));
-    $action->lay->Set("STITLE", addJsSlashes($action->lay->get("title"))); // for include in JS
     $param_zone_footer = json_decode($action->getParam("FOOTER_ZONE_EDIT") , true);
     $zone_footer = array();
     foreach ($param_zone_footer as $zone) {
@@ -181,29 +180,28 @@ function generic_edit(Action & $action)
     if ($doc->fromid > 0) {
         $fdoc = $doc->getFamilyDocument();
         $action->lay->Set("wid", ($fdoc->schar == 'R'));
-        $action->lay->Set("FTITLE", $fdoc->gettitle());
+        $action->lay->eSet("FTITLE", $fdoc->gettitle());
     } else {
-        $action->lay->Set("FTITLE", _("no family"));
+        $action->lay->eSet("FTITLE", _("no family"));
     }
     if ($state) { // see only if it is a transitionnal doc
         if ($doc->locked == - 1) $action->lay->Set("state", $action->text($state));
         else {
             
-            $action->lay->Set("state", $action->Text($doc->getStateActivity($doc->getState())));
+            $action->lay->eSet("state", $action->Text($doc->getStateActivity($doc->getState())));
         }
         $action->lay->Set("viewstate", "inherit");
         $action->lay->Set("wid", ($doc->wid > 0) ? $doc->wid : $doc->state);
     }
-    $action->lay->Set("version", $doc->version);
+    $action->lay->eSet("version", $doc->version);
     
     $action->lay->Set("initid", ($doc->initid != '') ? $doc->initid : 0);
-    $action->lay->Set("id", $docid);
-    $action->lay->Set("dirid", $dirid);
+    $action->lay->eSet("id", $doc->id);
     
     $action->lay->set("VALTERN", ($action->GetParam("FDL_VIEWALTERN", "yes") == "yes"));
     // information propagation
-    $action->lay->Set("classid", $classid);
-    $action->lay->Set("dirid", $dirid);
+    $action->lay->eSet("classid", $classid);
+    $action->lay->eSet("dirid", $dirid);
     // Set help URL
     $help = $doc->getHelpPage();
     $action->lay->Set("helpurl", ($help->isAlive()) ? $help->getAttributeHelpUrl() : false);

@@ -23,7 +23,7 @@ include_once ("FDL/Class.Doc.php");
  * @global string $docid Http var : document identifier to see
  * @global string $attrid Http var : the id of attribute to edit
  */
-function editattribute(&$action)
+function editattribute(Action &$action)
 {
     $docid = $action->getArgument("docid");
     $attrid = $action->getArgument("attrid");
@@ -37,7 +37,7 @@ function editattribute(&$action)
     $action->lay->set("CODE", "OK");
     $action->lay->set("warning", "");
     if ($modjsft == "undefined") $modjsft = "modattr";
-    $action->lay->set("modjsft", $modjsft);
+    $action->lay->eset("modjsft", $modjsft);
     $err='';
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $err = sprintf(_("cannot see unknow reference %s") , $docid);

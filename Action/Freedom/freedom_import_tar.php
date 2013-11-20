@@ -18,7 +18,7 @@
 
 include_once ("FDL/import_tar.php");
 
-function freedom_import_tar(&$action)
+function freedom_import_tar(Action &$action)
 {
     
     global $_FILES;
@@ -28,8 +28,11 @@ function freedom_import_tar(&$action)
     $onlycsv = (GetHttpVars("onlycsv") != ""); // only files described in fdl.csv files
     $analyze = (GetHttpVars("analyze", "N") == "Y"); // just analyze
     $uploaddir = getTarUploadDir($action);
-    
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+
+    $err='';
+    $fname='';
+    $report='';
+    $extract='';
     if ($_FILES['tar']['error'] != UPLOAD_ERR_OK) {
         switch ($_FILES['tar']['error']) {
             case UPLOAD_ERR_INI_SIZE:
@@ -68,10 +71,10 @@ function freedom_import_tar(&$action)
         }
     }
     
-    $action->lay->set("filename", $fname);
-    $action->lay->set("report", $report);
-    $action->lay->set("extract", $extract);
-    $action->lay->set("dirid", $dirid);
+    $action->lay->eset("filename", $fname);
+    $action->lay->eset("report", $report);
+    $action->lay->eset("extract", $extract);
+    $action->lay->eset("dirid", $dirid);
 }
 
 function extractTar($tar, $untardir, $mime = "")

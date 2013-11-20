@@ -24,14 +24,13 @@ include_once ("FDL/Class.DocAttr.php");
 include_once ("FREEDOM/freedom_mod.php");
 include_once ("VAULT/Class.VaultFile.php");
 
-function changetitle(&$action)
+function changetitle(Action &$action)
 {
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id", 0);
     $ntitle = GetHttpVars("ititle", "");
-    
-    $action->lay->Set("docid", $docid);
+
     
     $doc = new_Doc($dbaccess, $docid);
     

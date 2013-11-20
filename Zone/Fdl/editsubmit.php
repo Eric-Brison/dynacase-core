@@ -15,5 +15,5 @@ function editsubmit(Action & $action)
     $usage->setStrictMode();
     $usage->verify();
     
-    $action->lay->set("submit_label", $label);
+    $action->lay->eset("submit_label", $label);
 }

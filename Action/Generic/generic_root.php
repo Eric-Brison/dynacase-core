@@ -31,20 +31,19 @@ function generic_root(Action & $action)
     if ($famid != "") {
         $action->register("DEFAULT_FAMILY", $famid); // for old compatibility
     }
-    $action->lay->set("famid", $famid);
     $smode = getSplitMode($action);
     
     switch ($smode) {
         case "H":
-            $action->lay->set("rows", $action->getParam("GENEA_HEIGHT") . ",*");
-            $action->lay->set("cols", "");
+            $action->lay->eset("rows", $action->getParam("GENEA_HEIGHT") . ",*");
+            $action->lay->eset("cols", "");
             break;
 
         case "V":
         default:
-            $action->lay->set("cols", $action->getParam("GENEA_WIDTH") . ",*");
-            $action->lay->set("rows", "");
+            $action->lay->eset("cols", $action->getParam("GENEA_WIDTH") . ",*");
+            $action->lay->eset("rows", "");
     }
-    $action->lay->set("GTITLE", _($action->parent->short_name));
-    $action->lay->set("famid", $famid);
+    $action->lay->eset("GTITLE", _($action->parent->short_name));
+    $action->lay->set("famid", urlencode($famid));
 }

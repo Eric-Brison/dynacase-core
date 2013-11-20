@@ -119,14 +119,14 @@ function editextdoc(&$action)
         }
     }
     $action->lay->set("documentMenu", json_encode($im));
-    $action->lay->set("rtarget", $rtarget);
-    $action->lay->set("title", ($docid) ? $doc->getTitle() : $doc->getTitle($doc->fromid));
-    $action->lay->set("vid", $vid);
-    $action->lay->set("rvid", $rvid);
-    $action->lay->set("rzone", $rzone);
-    $action->lay->set("ezone", $ezone);
+    $action->lay->eset("rtarget", $rtarget);
+    $action->lay->eset("title", ($docid) ? $doc->getTitle() : $doc->getTitle($doc->fromid));
+    $action->lay->eset("vid", $vid);
+    $action->lay->eset("rvid", $rvid);
+    $action->lay->eset("rzone", $rzone);
+    $action->lay->eset("ezone", $ezone);
     $action->lay->set("id", $doc->id);
-    $action->lay->set("classid", $classid);
+    $action->lay->eset("classid", $classid);
     if ($docid) $action->lay->set("STITLE", addJsSlashes($doc->getHTMLTitle()));
     else $action->lay->set("STITLE", addJsSlashes(sprintf(_("Creation %s") , $doc->getHTMLTitle($doc->fromid))));
     $style = $action->parent->getParam("STYLE");

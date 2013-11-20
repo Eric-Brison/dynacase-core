@@ -18,7 +18,7 @@
 function htmlhead(Action & $action)
 {
     $title = $action->getArgument("title");
-    $action->lay->set("doctitle", $title);
+    $action->lay->eset("doctitle", $title);
     $action->parent->addCssRef("css/dcp/main.css");
 }
 ?>

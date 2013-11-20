@@ -44,8 +44,7 @@ function freedom_editimport(Action & $action)
     $query->AddQuery("doctype='C'");
     
     $selectclass = array();
-    
-    $doc = new_Doc($dbaccess, $classid);
+
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
     
     while (list($k, $cdoc) = each($tclassdoc)) {
@@ -59,9 +58,9 @@ function freedom_editimport(Action & $action)
     
     $action->lay->set("mailaddr", getMailAddr($action->user->id));
     
-    $action->lay->Set("descr", $descr);
-    $action->lay->Set("policy", $policy);
+    $action->lay->Set("descr", (bool)$descr);
+    $action->lay->Set("policy", (bool)$policy);
     
-    $action->lay->Set("dirid", $dirid);
+    $action->lay->eSet("dirid", $dirid);
 }
 ?>

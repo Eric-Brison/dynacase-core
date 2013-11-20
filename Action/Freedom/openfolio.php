@@ -11,7 +11,7 @@ include_once ("FDL/Class.Doc.php");
 include_once ('FREEDOM/Lib.portfolio.php');
 // -----------------------------------
 // -----------------------------------
-function openfolio(&$action)
+function openfolio(Action &$action)
 {
     // -----------------------------------
     // Set the globals elements
@@ -24,7 +24,7 @@ function openfolio(&$action)
         $action->exitError(sprintf(_("document %s not exists") , $docid));
     }
     $action->lay->Set("dirid", $folio->initid);
-    $action->lay->Set("docid", $docid);
+    $action->lay->Set("docid", urlencode($docid));
     $action->lay->Set("title", $folio->title);
     
     $dir = new_Doc($dbaccess, $folio->initid);

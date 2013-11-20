@@ -18,7 +18,7 @@
 
 include_once ("FREEDOM/freedom_import_tar.php");
 
-function freedom_ana_tar(&$action)
+function freedom_ana_tar(Action &$action)
 {
     
     global $_FILES;
@@ -27,6 +27,7 @@ function freedom_ana_tar(&$action)
     $analyze = GetHttpVars("analyze", "Y"); // just analyze
     $filename = GetHttpVars("filename"); // the select filename
     $ldir = getTarUploadDir($action);
+    $selfile='';
     if ($handle = opendir($ldir)) {
         while (false !== ($file = readdir($handle))) {
             if ($file[0] != ".") {
@@ -60,7 +61,7 @@ function freedom_ana_tar(&$action)
     $action->lay->Set("importtext", sprintf(_("proceed background import of %d documents") , $nbdoc));
 }
 
-function analyze_tar(&$action, $selfile)
+function analyze_tar(Action &$action, $selfile)
 {
     $dirid = GetHttpVars("dirid"); // directory to place imported doc
     $famid = GetHttpVars("famid", 7); // default import family
@@ -84,6 +85,7 @@ function analyze_tar(&$action, $selfile)
     $action->lay->SetBlockData("SELECTCLASS", $selectclass);
     
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, 2, "TABLE");
+    $selectfld=array();
     foreach ($tclassdoc as $k => $cdoc) {
         $selectfld[$k]["idcdoc"] = $cdoc["initid"];
         $selectfld[$k]["classname"] = $cdoc["title"];
@@ -99,6 +101,9 @@ function analyze_tar(&$action, $selfile)
     $dirtitle = $dir->title;
     if (!method_exists($dir, "addfile")) {
         $action->AddWarningMsg(sprintf(_("The document <%s> is not a folder") , $dirtitle));
+        /**
+         * @var Dir $dir
+         */
         $dir = createDoc($dbaccess, "DIR");
         $dir = $dir->getHome();
         $dirtitle = $dir->title;
@@ -114,7 +119,7 @@ function analyze_tar(&$action, $selfile)
             $pdir->setValue("BA_TITLE", $filename);
             $err = $pdir->Add();
             if ($err != "") $action->exitError($err);
-            $err = $dir->AddFile($pdir->id);
+            $err = $dir->insertDocument($pdir->id);
             if ($err != "") $action->exitError($err);
             $dirid = $pdir->id;
             $dirtitle = $dirtitle . "/" . $pdir->title;
@@ -137,17 +142,17 @@ function analyze_tar(&$action, $selfile)
         }
     }
     
-    $action->lay->Set("dirid", $dirid);
+    $action->lay->eSet("dirid", $dirid);
     $action->lay->SetBlockCorresp("ADDEDDOC", "filename");
     $action->lay->SetBlockCorresp("ADDEDDOC", "err");
     $action->lay->SetBlockCorresp("ADDEDDOC", "anaclass");
     $action->lay->SetBlockData("ADDEDDOC", $tr);
-    $action->lay->Set("selfile", $selfile);
+    $action->lay->eSet("selfile", $selfile);
     $action->lay->Set("oselected", $onlycsv ? "checked" : "");
     $action->lay->Set("notoselected", $onlycsv ? "" : "checked");
     $action->lay->Set("tselected", $topfld ? "checked" : "");
     $action->lay->Set("fdisabled", $onlycsv ? "disabled" : "");
-    $action->lay->Set("mailaddr", getMailAddr($action->user->id));
+    $action->lay->eSet("mailaddr", getMailAddr($action->user->id));
     $action->lay->Set("bgdisabled", (count($tr) > 0) ? "" : "disabled");
     
     return count($tr);

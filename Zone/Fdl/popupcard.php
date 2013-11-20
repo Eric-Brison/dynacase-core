@@ -19,7 +19,7 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/popupfam.php");
 // -----------------------------------
-function popupcard(&$action)
+function popupcard(Action &$action)
 {
     // -----------------------------------
     // ------------------------------
@@ -34,10 +34,10 @@ function popupcard(&$action)
     $kdiv = 1; // only one division
     $fdoc = getTDoc($dbaccess, $doc->fromid);
     
-    $action->lay->Set("id", $docid);
+    $action->lay->Set("id", $doc->id);
     $action->lay->Set("ftitle", addjsslashes($fdoc["title"]));
     $action->lay->Set("profid", $doc->profid);
-    $action->lay->Set("ddocid", $doc->ddocid); // default doc id for pre-inserted values
+    $action->lay->Set("ddocid", "0"); // default doc id for pre-inserted values
     include_once ("FDL/popup_util.php");
     // ------------------------------------------------------
     // definition of popup menu
@@ -347,7 +347,7 @@ function popupcard(&$action)
     }
     $action->lay->SetBlockData("SUBMENU", $tsubmenu);
     $action->lay->SetBlockData("SUBDIVMENU", $tsubmenu);
-    $action->lay->Set("zone", $zone);
+    $action->lay->eSet("zone", $zone);
     /*
     if (($specialmenu!="") && (in_array($specialmenu,$doc->specialmenu))) {
     if (method_exists($doc,$specialmenu)) {

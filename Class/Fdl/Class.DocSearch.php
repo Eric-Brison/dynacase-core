@@ -402,13 +402,13 @@ class DocSearch extends PDocSearch
         global $action;
         
         $rtarget = getHttpVars("rtarget");
-        $this->lay->set("rtarget", $rtarget);
+        $this->lay->eset("rtarget", $rtarget);
         $this->lay->set("restrict", false);
         $this->lay->set("archive", false);
         
         $farch = new_doc($this->dbaccess, "ARCHIVING");
         if ($farch) $this->lay->set("archive", ($farch->control("view") == ""));
-        $this->lay->set("thekey", $this->getRawValue("se_key"));
+        $this->lay->eset("thekey", $this->getRawValue("se_key"));
         $dirid = GetHttpVars("dirid"); // to set restriction family
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
@@ -442,7 +442,7 @@ class DocSearch extends PDocSearch
             $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
         }
         
-        $this->lay->set("selfam", _("no family"));
+        $this->lay->eset("selfam", _("no family"));
         $selectclass = array();
         foreach ($tclassdoc as $k => $cdoc) {
             $selectclass[$k]["idcdoc"] = $cdoc["id"];
@@ -450,8 +450,8 @@ class DocSearch extends PDocSearch
             $selectclass[$k]["system_fam"] = (substr($cdoc["usefor"], 0, 1) == 'S') ? true : false;
             if (abs($cdoc["initid"]) == abs($famid)) {
                 $selectclass[$k]["selected"] = "selected";
-                if ($famid < 0) $this->lay->set("selfam", $cdoc["title"] . " " . !!_("(only)"));
-                else $this->lay->set("selfam", $cdoc["title"]);
+                if ($famid < 0) $this->lay->eset("selfam", $cdoc["title"] . " " . !!_("(only)"));
+                else $this->lay->eset("selfam", $cdoc["title"]);
             } else $selectclass[$k]["selected"] = "";
         }
         

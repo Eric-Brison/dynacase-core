@@ -20,7 +20,7 @@ include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/freedom_util.php");
 include_once ('FREEDOM/Lib.portfolio.php');
 // -----------------------------------
-function foliotab(&$action)
+function foliotab(Action &$action)
 {
     // -----------------------------------
     // Get all the params
@@ -36,7 +36,7 @@ function foliotab(&$action)
     
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("document %s not exists") , $docid));
-    $action->lay->set("docid", $docid);
+    $action->lay->set("docid", $doc->id);
     $action->lay->set("dirid", $doc->initid);
     $action->lay->set("title", $doc->title);
     

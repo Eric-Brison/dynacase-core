@@ -90,6 +90,7 @@ function generic_list(&$action)
     $action->lay->Set("pds", "");
     if ($catgid) {
         $catg = new_Doc($dbaccess, $catgid);
+        $catgid=$catg->id;
         $pds = $catg->urlWhatEncodeSpec("");
         $action->lay->Set("pds", $pds);
         
@@ -103,12 +104,12 @@ function generic_list(&$action)
         }
     }
     
-    $action->lay->Set("ONEFAMORIGIN", $onefamOrigin);
-    $action->lay->Set("famtarget", $target);
-    $action->lay->Set("dirid", $dirid);
-    $action->lay->Set("tab", $tab);
-    $action->lay->Set("catg", $catgid);
-    $action->lay->Set("famid", $famid);
+    $action->lay->eSet("ONEFAMORIGIN", $onefamOrigin);
+    $action->lay->eSet("famtarget", $target);
+    $action->lay->eSet("dirid", $dir->id);
+    $action->lay->eSet("tab", $tab);
+    $action->lay->eSet("catg", $catgid);
+    $action->lay->eSet("famid", $famid);
     $mode = getSearchMode($action, $famid);
     $action->lay->Set("FULLMODE", ($mode == "FULL"));
     $slice = $action->GetParam("CARD_SLICE_LIST", 5);
@@ -217,7 +218,7 @@ function generic_list(&$action)
     $action->lay->Set("onglet", $wonglet ? "Y" : "N");
     $action->lay->Set("hasOnglet", (!empty($wonglet)));
     
-    $action->lay->set("tkey", str_replace('"', '&quot;', getDefUKey($action)));
+    $action->lay->eset("tkey",  getDefUKey($action));
 }
 
 function generic_viewmode(Action & $action, $famid)

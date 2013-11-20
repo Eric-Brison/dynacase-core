@@ -235,12 +235,12 @@ function freedom_gaccess(Action & $action)
     }
     // print_r2($tacl);
     $action->lay->setBlockData("GROUPS", $tg);
-    $action->lay->set("docid", $docid);
+    $action->lay->set("docid", $doc->id);
     
-    $action->lay->set("allgreen", $action->getArgument("allgreen", "N"));
-    $action->lay->set("viewgroup", $viewgroup);
-    $action->lay->set("group", $action->getArgument("group", "N"));
-    $action->lay->set("isgreen", $green);
+    $action->lay->eset("allgreen", $action->getArgument("allgreen", "N"));
+    $action->lay->set("viewgroup", (bool)$viewgroup);
+    $action->lay->eset("group", $action->getArgument("group", "N"));
+    $action->lay->set("isgreen", (bool)$green);
     $err = $doc->control("modifyacl");
     $action->lay->set("profcount", "");
     $action->lay->set("cellWidth", "65");

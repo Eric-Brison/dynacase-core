@@ -20,21 +20,19 @@ include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
 
-function createfam(&$action)
+function createfam(Action &$action)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id", 0);
     $classid = GetHttpVars("classid", 0); // use when new doc or change class
-    $dirid = GetHttpVars("dirid", 0); // directory to place doc if new doc
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
-    
-    $action->lay->Set("docid", $docid);
-    $action->lay->Set("dirid", $dirid);
+
     
     $doc = new_Doc($dbaccess, $docid);
+    $action->lay->Set("docid", $doc->id);
     
-    $action->lay->Set("TITLE", _("creation of document family"));
-    $action->lay->Set("ftitle", _("untitle family"));
+    $action->lay->eSet("TITLE", _("creation of document family"));
+    $action->lay->eSet("ftitle", _("untitle family"));
     // when modification
     if (($classid == 0) && ($docid != 0)) $classid = $doc->fromid;
     else

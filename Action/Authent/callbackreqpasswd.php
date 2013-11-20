@@ -25,11 +25,7 @@ function callbackreqpasswd(Action & $action)
     $au->verify();
     // Retrieve token from database
     $utok = new UserToken($action->dbaccess, $token);
-    if (!is_object($utok)) {
-        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "new UserToken(" . $token . ") returned with error : " . $utok);
-        $action->exitError(_("Cannot access interface to change password"));
-        return "";
-    }
+
     if (!$utok->isAffected()) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "no element found for token " . $token);
         $action->exitError(_("Cannot access interface to change password"));
@@ -59,10 +55,10 @@ function callbackreqpasswd(Action & $action)
         return "";
     }
     
-    $action->lay->set("uid", $u->id);
-    $action->lay->set("token", $token);
+    $action->lay->eset("uid", $u->id);
+    $action->lay->eset("token", $token);
     $finish = false;
-    $action->lay->set("username", $u->getDisplayName($u->id));
+    $action->lay->eset("username", $u->getDisplayName($u->id));
     $err = '';
     if ($uid == $utok->userid) {
         if ($pwd1 != '' && $pwd2 == $pwd1) {

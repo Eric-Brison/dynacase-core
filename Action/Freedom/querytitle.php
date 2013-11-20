@@ -22,15 +22,15 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
 
-function querytitle(&$action)
+function querytitle(Action &$action)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id", 0);
     
     $doc = new_Doc($dbaccess, $docid);
-    $action->lay->Set("APP_TITLE", _($action->parent->description));
-    $action->lay->Set("docid", $docid);
-    $action->lay->Set("title", $doc->title);
+    $action->lay->eSet("APP_TITLE", _($action->parent->description));
+    $action->lay->Set("docid", $doc->id);
+    $action->lay->eSet("title", $doc->title);
     $action->lay->Set("iconsrc", $doc->geticon());
 }
 ?>

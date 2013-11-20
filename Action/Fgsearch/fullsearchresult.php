@@ -40,7 +40,7 @@ function fullsearchresult(Action & $action)
     
     $action->lay->set("isdetail", false);
     $action->lay->set("page", $page + 1);
-    $action->lay->set("dirid", $dirid);
+    $action->lay->eset("dirid", $dirid);
     $action->lay->set("SUBSEARCH", ($start > 0));
     $initpage = false;
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
@@ -224,12 +224,12 @@ function fullsearchresult(Action & $action)
         
         $action->lay->setBlockData("DOCS", $tdocs);
         
-        $action->lay->set("dirid", $dirid);
+        $action->lay->eset("dirid", $dirid);
         if ($dirid != 0) {
             $sdoc = new_doc($dbaccess, $dirid);
             if ($sdoc->isAffected()) {
                 $action->lay->set("isdetail", false);
-                $action->lay->set("searchtitle", $sdoc->title);
+                $action->lay->eset("searchtitle", $sdoc->title);
                 $action->lay->set("dirid", $sdoc->id);
             }
         }
@@ -238,18 +238,15 @@ function fullsearchresult(Action & $action)
         $action->lay->set("notfirst", false);
         $action->lay->set("notthenend", false);
     }
-    $action->lay->set("famid", $famid);
-    $action->lay->set("searchtitle", sprintf(_("Search %s") , $keyword));
-    if ($fkeyword == "") $action->lay->set("key", _("search dynacase documents"));
-    else $action->lay->set("key", str_replace("\"", "&quot;", $fkeyword));
+
     
     $famsuffix = ($famid == 0 ? "" : sprintf("<span class=\"families\">(%s %s)</span>", _("family search result") , $famtitle));
     if ($globalCount == 0) {
-        $action->lay->set("resulttext", sprintf(_("No document found for <strong>%s</strong>%s") , $keyword, $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("No document found for <strong>%s</strong>%s") , htmlspecialchars($keyword), $famsuffix));
     } else if ($globalCount == 1) {
-        $action->lay->set("resulttext", sprintf(_("One document for <strong>%s</strong>%s") , $keyword, $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("One document for <strong>%s</strong>%s") , htmlspecialchars($keyword), $famsuffix));
     } else {
-        $action->lay->set("resulttext", sprintf(_("Found <strong>%d</strong>  Result for <strong>%s</strong>%s") , $globalCount, $keyword, $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("Found <strong>%d</strong>  Result for <strong>%s</strong>%s") , $globalCount, htmlspecialchars($keyword), $famsuffix));
     }
     $action->lay->set("displayBottomBar", ($globalCount == 0 ? false : true));
     $action->lay->set("displayTopBar", ($page == 0));

@@ -24,14 +24,14 @@ include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/freedom_util.php");
 include_once ('FREEDOM/Lib.portfolio.php');
 // -----------------------------------
-function foliosel(&$action)
+function foliosel(Action &$action)
 {
     // -----------------------------------
     // Get all the params
     $selid = GetHttpVars("selid", 0); //
     $selected = (GetHttpVars("selected", "N") == "Y"); // is selected
     //  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
-    $action->lay->set("selid", $selid);
+    $action->lay->eset("selid", $selid);
     $action->lay->set("selected", $selected ? "true" : "false");
 }
 ?>

@@ -21,20 +21,22 @@ include_once ("GENERIC/generic_util.php");
 /**
  * Display list of enumrate attribute for a family
  * @param Action &$action current action
- * @global famid Http var : family document identifier where find enum attributes
+ * @global string $famid Http var : family document identifier where find enum attributes
  */
 function generic_chooseenumattr(&$action)
 {
     $famid = GetHttpVars("famid", getDefFam($action));
-    $action->lay->set("famid", $famid);
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     
     $tcf = array();
-    
+    /**
+     * @var DocFam $fdoc
+     */
     $fdoc = new_doc($dbaccess, $famid);
+    $action->lay->set("famid", $fdoc->id);
     
-    $lattr = $fdoc->getAttributes();
+    $lattr = $fdoc->getNormalAttributes();
     foreach ($lattr as $k => $a) {
         if ((($a->type == "enum") || ($a->type == "enumlist")) && (($a->phpfile == "") || ($a->phpfile == "-")) && ($a->getOption("system") != "yes")) {
             
