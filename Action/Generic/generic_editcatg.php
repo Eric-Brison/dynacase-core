@@ -28,7 +28,7 @@ function generic_editcatg(Action &$action)
     
     $aid = GetHttpVars("aid"); // attribute id
     $famid = GetHttpVars("fid"); // family id
-    $action->lay->set("aid", $aid);
+    $action->lay->eset("aid", $aid);
     $doc = new_Doc($dbaccess, $famid);
     
     $err = $doc->control("edit"); // need edit permission
@@ -37,7 +37,7 @@ function generic_editcatg(Action &$action)
     $a = $doc->getAttribute($aid);
     $action->lay->set("fid", $a->docid);
     
-    $action->lay->set("TITLE", sprintf(_("definition of enumerate attribute %s of %s family") , $a->getLabel() , $doc->title));
+    $action->lay->eset("TITLE", sprintf(_("definition of enumerate attribute %s of %s family") , $a->getLabel() , $doc->title));
     $action->lay->set("icon", $doc->getIcon());
     $tref = array();
     $tlabel = array();

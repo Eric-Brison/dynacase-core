@@ -43,6 +43,9 @@ function barmenu(Action & $action)
     else $fld = new_Doc($dbaccess, $dirid);
     //change famid if it is a simplesearch
     $sfamid = $famid;
+    /**
+     * @var DocFam $sfdoc
+     */
     $sfdoc = $fdoc; // search family
     if ($fld->isAlive()) {
         $sfamid = $fld->getRawValue("se_famid");
@@ -80,9 +83,9 @@ function barmenu(Action & $action)
     $action->lay->Set("dcreate", (count($tchild) > 0) ? "" : "none");
     $action->lay->Set("cancreate", (count($tchild) > 0));
     
-    $action->lay->Set("ftitle", $fdoc->gettitle());
+    $action->lay->Set("ftitle", $fdoc->getHtmltitle());
     
-    $action->lay->Set("famid", $famid);
+    $action->lay->Set("famid", urlencode($famid));
     $action->lay->Set("splitmode", getSplitMode($action, $famid));
     
     include_once ("FDL/popup_util.php");
@@ -146,6 +149,7 @@ function barmenu(Action & $action)
     ));
     
     $lmenu = $fdoc->GetMenuAttributes();
+    $tmenu=array();
     foreach ($lmenu as $k => $v) {
         if ($v->getOption("global") == "yes") {
             $confirm = ($v->getOption("lconfirm") == "yes");
@@ -213,8 +217,8 @@ function barmenu(Action & $action)
     }
     
     $action->lay->Set("topid", getDefFld($action));
-    $action->lay->Set("dirid", $dirid);
-    $action->lay->Set("catg", $catg);
+    $action->lay->Set("dirid", urlencode($dirid));
+    $action->lay->Set("catg", urlencode($catg));
     //----------------------------
     // sort menu
     $tsort = array();
@@ -267,7 +271,7 @@ function barmenu(Action & $action)
                 );
         }
     }
-    
+    $tmsort=array();
     while (list($k, $v) = each($tsort)) {
         $tmsort[$v["said"]] = "sortdoc" . $v["said"];
     }
@@ -321,10 +325,10 @@ function barmenu(Action & $action)
         $cselect = "&darr;";
     }
     
-    $action->lay->set("sortby", _("Sort"));
+    $action->lay->eset("sortby", _("Sort"));
     foreach ($tsort as $k => $v) {
         $tsort[$k]["dsort"] = ($csort == $k) ? $cselect : "&nbsp;"; // use puce
-        if ($csort == $k) $action->lay->set("sortby", $v["satitle"] . $cselect);
+        if ($csort == $k) $action->lay->eset("sortby", $v["satitle"] . $cselect);
     }
     popupInit("sortmenu", $tmsort);
     reset($tmsort);

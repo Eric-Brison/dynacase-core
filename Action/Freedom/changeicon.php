@@ -21,7 +21,7 @@ include_once ("FDL/Class.DocAttr.php");
 include_once ("FREEDOM/freedom_mod.php");
 include_once ("VAULT/Class.VaultFile.php");
 
-function changeicon(&$action)
+function changeicon(Action &$action)
 {
     global $_FILES;
     
@@ -29,8 +29,7 @@ function changeicon(&$action)
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id", 0);
-    
-    $action->lay->Set("docid", $docid);
+
     
     $doc = new_Doc($dbaccess, $docid);
     $err = $doc->canEdit();

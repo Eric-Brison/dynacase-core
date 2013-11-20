@@ -37,7 +37,7 @@ function fulleditdsearch(&$action)
     if (!is_numeric($famid)) $famid = getFamIdFromName($dbaccess, $famid);
     if ($famid == 0) $famid = 7; // FILE family
     $action->lay->set("searchtitle", _("detailled search"));
-    $action->lay->set("substitute", $substitute);
+    $action->lay->set("substitute", (bool)$substitute);
     
     $tclassdoc = getNonSystemFamilies($dbaccess, $action->user->id, "TABLE");
     foreach ($tclassdoc as $k => $cdoc) {

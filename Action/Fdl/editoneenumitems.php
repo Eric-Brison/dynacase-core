@@ -17,8 +17,8 @@ function editoneenumitems(Action & $action)
     //Maybe use exception and try vatch to send info in json for datatable
     $usage->verify();
     
-    $action->lay->set("famid", $famid);
-    $action->lay->set("enumid", $enumid);
+    $action->lay->eset("famid", $famid);
+    $action->lay->eset("enumid", $enumid);
     
     $action->parent->addCssRef("css/dcp/jquery-ui.css");
     $action->parent->addCssRef("lib/tipsy/src/stylesheets/tipsy.css");

@@ -33,7 +33,7 @@ function popupcard(&$action)
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $doc = new_Doc($dbaccess, $docid);
     $kdiv = 1; // only one division
-    $action->lay->Set("id", $docid);
+    $action->lay->Set("id", $doc->id);
     
     include_once ("FDL/popup_util.php");
     // ------------------------------------------------------
@@ -73,7 +73,7 @@ function popupcard(&$action)
     } else {
         if ($cud || $clf) {
             popupActive('popupcard', $kdiv, 'editdoc');
-            $action->lay->Set("deltitle", $doc->title);
+            $action->lay->eSet("deltitle", $doc->getTitle());
             popupActive('popupcard', $kdiv, 'delete');
             popupActive('popupcard', $kdiv, 'chgcatg');
         } else {

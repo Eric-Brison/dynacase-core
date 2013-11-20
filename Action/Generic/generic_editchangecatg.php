@@ -22,7 +22,7 @@
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_editchangecatg(&$action)
+function generic_editchangecatg(Action &$action)
 {
     // -----------------------------------
     global $docid;
@@ -33,7 +33,7 @@ function generic_editchangecatg(&$action)
     $homefld = new_Doc($dbaccess, getDefFld($action));
     
     $doc = new_Doc($dbaccess, $docid);
-    $action->lay->Set("username", $doc->title);
+    $action->lay->eSet("username", $doc->getTitle());
     
     $stree = getChildCatg($homefld->id, 1, true);
     
@@ -47,6 +47,6 @@ function generic_editchangecatg(&$action)
     
     $action->lay->SetBlockData("CATG", $stree);
     $action->lay->Set("topdir", getDefFld($action));
-    $action->lay->Set("docid", $docid);
+    $action->lay->Set("docid", $doc->id);
 }
 ?>

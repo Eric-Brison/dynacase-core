@@ -21,17 +21,20 @@
 // ---------------------------------------------------------------
 include_once ("FDL/Lib.Dir.php");
 
-function editdfld(&$action)
+function editdfld(Action &$action)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id", 0);
     $firstfld = (GetHttpVars("current", "N") == "Y");
-    
-    $action->lay->Set("docid", $docid);
+
     
     $action->lay->Set("TITLE", _("change root folder"));
-    
+
+    /**
+     * @var DocFam $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
+    $action->lay->Set("docid", $doc->id);
     
     $action->lay->Set("doctitle", $doc->title);
     $sqlfilters = array();

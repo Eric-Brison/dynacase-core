@@ -27,7 +27,7 @@ function editapplicationparameter(Action & $action)
     $usage->setStrictMode();
     $usage->verify();
     
-    $action->lay->set("parameterid", $parameterid);
+    $action->lay->eset("parameterid", $parameterid);
     
     $paramdef = array();
     $err = simpleQuery($action->dbaccess, sprintf("SELECT * from paramdef where name='%s'", pg_escape_string($parameterid)) , $paramdef);
@@ -85,8 +85,8 @@ function editapplicationparameter(Action & $action)
         $onChange = "yes";
     }
     
-    $action->lay->set("local_submit", $localSubmit);
-    $action->lay->set("submit_label", $submitLabel);
+    $action->lay->set("local_submit", (bool)$localSubmit);
+    $action->lay->eset("submit_label", $submitLabel);
     $action->lay->set("on_change", "");
     $action->lay->set("change", ($onChange != ""));
     if ($enum) {
@@ -107,9 +107,9 @@ function editapplicationparameter(Action & $action)
                 );
             }
         }
-        $action->lay->SetBlockData("options", $values);
+        $action->lay->eSetBlockData("options", $values);
     } else {
-        $action->lay->set("value", $value);
+        $action->lay->eset("value", $value);
     }
     $label = $paramdef[0]["descr"] ? _($paramdef[0]["descr"]) : "";
     $action->lay->set("label", $label);

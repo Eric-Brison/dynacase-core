@@ -57,21 +57,19 @@ function loginform(Action & $action)
         }
     }
     $auth_user = GetHttpVars("auth_user");
-    $auth_pass = GetHttpVars("auth_pass");
     $app_redir = GetHttpVars("appd", "CORE");
     $act_redir = GetHttpVars("actd", "");
     $arg_redir = GetHttpVars("argd", ""); // redirect url
-    $domain = GetHttpVars("domain");
     $redirect_uri = GetHttpVars("redirect_uri", "");
     
-    $action->lay->set("app_redir", $app_redir);
-    $action->lay->set("act_redir", $act_redir);
-    $action->lay->set("arg_redir", $arg_redir);
+    $action->lay->eset("app_redir", $app_redir);
+    $action->lay->eset("act_redir", $act_redir);
+    $action->lay->eset("arg_redir", $arg_redir);
     $action->lay->set("title", _("welcome"));
-    $action->lay->set("auth_user", htmlspecialchars($auth_user));
+    $action->lay->eset("auth_user", $auth_user);
     $action->lay->set("passfocus", ($auth_user !== "" ? true : false));
     $action->lay->set("error", $merr);
-    $action->lay->set("redirect_uri", htmlspecialchars($redirect_uri));
+    $action->lay->eset("redirect_uri", $redirect_uri);
     $action->lay->set("baseurl", htmlspecialchars(getParam("CORE_BASEURL")));
     
     $action->lay->set('authent_show_reqpasswd', $action->getParam('AUTHENT_SHOW_REQPASSWD') != 'no');
@@ -88,7 +86,7 @@ function loginform(Action & $action)
         $lang_block[$k]['LANG_IS_SELECTED'] = ($ulang == $k);
     }
     $action->lay->setBlockData('LANG', $lang_block);
-    $action->lay->set("ulang", $ulang);
+    $action->lay->set("ulang", urlencode($ulang));
     $action->parent->short_name = sprintf(_("%s Authentification") , $action->getParam("CORE_CLIENT"));
     
     header('HTTP/1.1 401 Authentication Required');

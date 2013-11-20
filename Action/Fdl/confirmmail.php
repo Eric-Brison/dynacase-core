@@ -29,7 +29,7 @@ function confirmmail(&$action)
     $ulink = GetHttpVars("ulink");
     editmail($action);
     
-    $action->lay->Set("ulink", $ulink);
-    $action->lay->Set("state", $nextstate);
-    $action->lay->Set("tstate", _($nextstate));
+    $action->lay->eSet("ulink", $ulink);
+    $action->lay->eSet("state", $nextstate);
+    $action->lay->eSet("tstate", _($nextstate));
 }

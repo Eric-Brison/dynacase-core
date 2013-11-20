@@ -42,28 +42,7 @@ var beforeUnload=function(){
       onbeforeunload="if (document.isChanged && (! document.isSubmitted) && (! document.isCancelled))return '[STITLE] : [TEXT:Changes will be loosed if you continue]'";
       onUnLoad="if ((! document.isCancelled)&& (!document.isSubmitted)) autoUnlock('[id]');closechoose();"
      >
-<!-- for idoc -->
-<form id="fviewidoc"
-      name="fviewidoc"style="display:inline"
-      method="POST" ENCTYPE="multipart/form-data"
-      action="[CORE_STANDURL]&app=FREEDOM&action=VIEWICARD"
-       >
-<input type="hidden" name="xml">
-<input type="hidden" name="famid">
-</form>
 
-<form id="fidoc"
-      name="fidoc" style="display:inline"
-      method="POST" ENCTYPE="multipart/form-data"
-      action="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_IEDIT"
-      >
-<input type="hidden" name="xml">
-<input type="hidden" name="famid">
-<input type="hidden" name="attrid">
-<input type="hidden" name="type_attr">
-</form>
-
-<!-- end for idoc -->
 
 <!-- Title Table -->
 <form  id="fedit"  

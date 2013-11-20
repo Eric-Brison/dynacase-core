@@ -51,7 +51,7 @@ function ckupload(Action & $action)
         $err.= _("Unable to store the file");
     }
     
-    $action->lay->set("FUNCNUM", $funcNum);
+    $action->lay->set("FUNCNUM", intval($funcNum));
     $action->lay->set("err", $err);
 }
 ?>

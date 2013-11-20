@@ -18,7 +18,7 @@
 
 include_once ("FREEDOM/freedom_import_tar.php");
 
-function freedom_view_tar(&$action)
+function freedom_view_tar(Action &$action)
 {
     
     global $_FILES;
@@ -27,6 +27,9 @@ function freedom_view_tar(&$action)
     $filename = GetHttpVars("filename"); // the select filename
     $dirid = GetHttpVars("dirid"); // directory to place imported doc
     $ldir = getTarUploadDir($action);
+    $selfile='';
+    $ttar=array();
+    $nbdoc=0;
     if ($handle = opendir($ldir)) {
         while (false !== ($file = readdir($handle))) {
             if ($file[0] != ".") {
@@ -71,11 +74,11 @@ function freedom_view_tar(&$action)
         )
     ));
     
-    $action->lay->Set("selfile", $selfile);
+    $action->lay->Set("selfile", urlencode($selfile));
     
     $action->lay->set("huge", ($action->Read("navigator", "") == "EXPLORER") ? "" : "huge");
     
-    $action->lay->Set("dirid", $dirid);
+    $action->lay->eSet("dirid", $dirid);
     $action->lay->Set("nbdoc", "$nbdoc");
 }
 
@@ -115,5 +118,6 @@ function see_directory(&$action, $ldir, &$tfile, $level = 0)
         $action->lay->setBlockData("DIR", $tfile);
         return count($tfile);
     }
+    return 0;
 }
 ?>

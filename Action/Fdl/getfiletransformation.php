@@ -52,8 +52,8 @@ function getfiletransformation(Action & $action)
         $err = $doc->control("view");
         if ($err != "") $action->exitError($err);
         
-        $action->lay->Set("TITLE", $doc->title);
-        $action->lay->Set("id", $docid);
+        $action->lay->Set("TITLE", $doc->getHtmltitle());
+        $action->lay->Set("id", $doc->id);
         $action->lay->Set("icon", $doc->getIcon());
         
         if ($zone == "") $zone = $doc->defaultview;
@@ -90,14 +90,14 @@ function getfiletransformation(Action & $action)
             if ($err == "") {
                 $action->lay->set("tid", $info["tid"]);
                 $action->lay->set("status", $info["status"]);
-                $action->lay->set("message", $info["comment"]);
+                $action->lay->eset("message", $info["comment"]);
                 $action->lay->set("processtext", sprintf(_("processing <b>%s</b> transformation") , $engine));
             } else {
                 
                 $action->lay->set("tid", "");
                 $action->lay->set("status", "K");
-                $action->lay->set("message", $err);
-                $action->lay->set("processtext", sprintf(_("cannot lauch <b>%s</b> transformation") , $engine));
+                $action->lay->eset("message", $err);
+                $action->lay->eset("processtext", sprintf(_("cannot lauch <b>%s</b> transformation") , $engine));
             }
         }
     }

@@ -24,8 +24,8 @@ function freedom_editstate(&$action)
     $docid = GetHttpVars("id", 0);
     
     $doc = new_Doc($dbaccess, $docid);
-    $action->lay->Set("docid", $docid);
-    $action->lay->Set("title", $doc->title);
+    $action->lay->Set("docid", $doc->id);
+    $action->lay->Set("title", $doc->getHTMLTitle());
     
     $action->lay->set("tablehead", "tableborder");
     

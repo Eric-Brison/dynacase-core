@@ -47,6 +47,6 @@ function freedom_applybatch(&$action)
     }
     
     $action->lay->setBlockData("BATCHFAMS", $tb);
-    $action->lay->set("dirid", $dirid);
+    $action->lay->set("dirid", urlencode($dirid));
 }
 ?>

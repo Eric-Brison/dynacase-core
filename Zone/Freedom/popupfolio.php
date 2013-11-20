@@ -17,7 +17,7 @@
  */
 //
 include_once ("FDL/Class.Doc.php");
-function popupfolio(&$action)
+function popupfolio(Action &$action)
 {
     // -----------------------------------
     // ------------------------------
@@ -51,6 +51,9 @@ function popupfolio(&$action)
     Popupinvisible('popupfolio', $kdiv, 'newsgc');
     
     if ($dir->doctype == "D") {
+        /**
+         * @var Dir $dir
+         */
         Popupactive('popupfolio', $kdiv, 'newdoc');
         if ($dir->control("modify") == "") {
             Popupactive('popupfolio', $kdiv, 'insertbasket');
@@ -75,8 +78,8 @@ function popupfolio(&$action)
     }
     popupGen($kdiv);
     // set dirid to folio if is in search
-    if ($dir->doctype == 'S') $action->lay->set("dirid", $folioid);
-    else $action->lay->set("dirid", $dirid);
+    if ($dir->doctype == 'S') $action->lay->eset("dirid", $folioid);
+    else $action->lay->eset("dirid", $dirid);
     
     setFamidInLayout($action);
 }

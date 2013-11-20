@@ -30,7 +30,7 @@ function ckimage(Action & $action)
     /* Internal numFunc */
     $numFunc = $usage->addRequiredParameter("CKEditorFuncNum", "CKEditorFuncNum");
     
-    $startpage = $usage->addOptionalParameter("page", "pageNumber", array() , "0");
+    $startpage = intval($usage->addOptionalParameter("page", "pageNumber", array() , "0"));
     $key = $usage->addOptionalParameter("key", "key", array() , "");
     
     $usage->setStrictMode(false);
@@ -47,7 +47,6 @@ function ckimage(Action & $action)
     $limg = internalGetDocCollection($dbaccess, 0, $start, $slice, $sqlfilters, $action->user->id, "TABLE", "IMAGE");
     $wimg = createDoc($dbaccess, "IMAGE", false);
     $oaimg = $wimg->getAttribute("img_file");
-    
     foreach ($limg as $k => $img) {
         $wimg->id = $img["id"];
         $limg[$k]["imgsrc"] = $wimg->GetHtmlValue($oaimg, $img["img_file"]);
@@ -58,7 +57,7 @@ function ckimage(Action & $action)
         }
     }
     
-    $action->lay->set("key", $key);
+    $action->lay->eSet("key", $key);
     if (($startpage == 0) && (count($limg) < $slice)) {
         $action->lay->set("morepages", false);
     } else {
@@ -74,6 +73,6 @@ function ckimage(Action & $action)
     
     $action->lay->setBlockData("IMAGES", $limg);
     $action->lay->set("NOIMAGES", (count($limg) == 0));
-    $action->lay->set("FUNCNUM", $numFunc);
+    $action->lay->set("FUNCNUM", urlencode($numFunc));
 }
 ?>

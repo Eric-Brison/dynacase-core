@@ -20,13 +20,13 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/Lib.Dir.php");
 
-function editprof(&$action)
+function editprof(Action &$action)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id", 0);
     $createp = GetHttpVars("create", 0); // 1 if use for create profile (only for familly)
-    $action->lay->Set("docid", $docid);
-    $action->lay->Set("create", $createp);
+
+    $action->lay->Set("create", intval($createp));
     
     if ($createp) $action->lay->Set("TITLE", _("change creation profile"));
     else $action->lay->Set("TITLE", _("change profile"));
@@ -37,8 +37,8 @@ function editprof(&$action)
     // control view acl
     $err = $doc->Control("viewacl");
     if ($err != "") $action->ExitError($err);
-    
-    $action->lay->Set("doctitle", _("new profile document"));
+    $action->lay->Set("docid", $doc->id);
+    $action->lay->eSet("doctitle", _("new profile document"));
     
     $selectclass = array();
     if (($doc->usefor != "P") && (strstr($doc->usefor, 'W') === false) && ($doc->fromid != 28)) { // cannot redirect profil document (only normal document) also workflow and iw control
@@ -64,9 +64,14 @@ function editprof(&$action)
     if ($docid > 0) {
         
         $doc->GetFathersDoc();
-        $action->lay->Set("doctitle", $doc->title);
+        $action->lay->eSet("doctitle", $doc->title);
         
-        if ($createp) $sprofid = abs($doc->cprofid);
+        if ($createp) {
+            /**
+             * @var DocFam $doc
+             */
+            $sprofid = abs($doc->cprofid);
+        }
         else {
             $sprofid = abs($doc->profid);
             // select dynamic profil if set
@@ -96,6 +101,11 @@ function editprof(&$action)
     }
 }
 
+/**
+ * @param Action $action
+ * @param Doc $doc
+ * @param bool $createp
+ */
 function setControlView(&$action, &$doc, $createp = false)
 {
     
@@ -112,6 +122,9 @@ function setControlView(&$action, &$doc, $createp = false)
         $tcv[$k]["selcv"] = "";
         
         if ($createp) {
+            /**
+             * @var DocFam $doc
+             */
             if ($v["id"] == $doc->ccvid) $tcv[$k]["selcv"] = "selected";
         } else {
             if ($v["id"] == $doc->cvid) $tcv[$k]["selcv"] = "selected";

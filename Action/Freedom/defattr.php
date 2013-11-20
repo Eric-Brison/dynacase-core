@@ -37,9 +37,9 @@ function defattr(Action & $action)
     $docid = $doc->id;
     
     if ($doc->fromid) {
-        $action->lay->set("inherit", sprintf(_("Inherit from \"%s\"") , $doc->getTitle($doc->fromid)));
+        $action->lay->eset("inherit", sprintf(_("Inherit from \"%s\"") , $doc->getTitle($doc->fromid)));
     } else {
-        $action->lay->set("inherit", _("no inheritance"));
+        $action->lay->eset("inherit", _("no inheritance"));
     }
     $fromids = $doc->getFromDoc();
     
@@ -56,6 +56,9 @@ function defattr(Action & $action)
     
     $oDocAttr = new DocAttr($dbaccess);
     $oAttrs = $doc->getAttributes();
+    /**
+     * @var NormalAttribute $oa
+     */
     foreach ($oAttrs as $oa) {
         if (($oa->usefor == 'A') && (empty($attrs[$oa->id]))) {
             
@@ -83,10 +86,10 @@ function defattr(Action & $action)
     }
     
     uasort($attrs, 'reOrderAttr');
-    $action->lay->Set("docid", $docid);
-    $action->lay->Set("dirid", $dirid);
+    $action->lay->Set("docid", $doc->id);
+    $action->lay->eSet("dirid", $dirid);
     // build values type array
-    $action->lay->Set("TITLE", _("new document family"));
+    $action->lay->eSet("TITLE", _("new document family"));
     // when modification
     if (($classid == 0) && ($docid != 0)) $classid = $doc->fromid;
     else
@@ -109,7 +112,7 @@ function defattr(Action & $action)
         // control if user can update
         $err = $doc->CanLockFile();
         if ($err != "") $action->ExitError($err);
-        $action->lay->Set("TITLE", $doc->title);
+        $action->lay->Set("TITLE", $doc->getHTMLTitle());
     }
     if (($classid > 0) || ($doc->doctype = 'C')) {
         

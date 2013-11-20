@@ -18,7 +18,7 @@
 
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
-function popupfam(&$action, &$tsubmenu)
+function popupfam(Action &$action, &$tsubmenu)
 {
     // -----------------------------------
     // ------------------------------
@@ -31,7 +31,7 @@ function popupfam(&$action, &$tsubmenu)
     $doc = new_Doc($dbaccess, $docid);
     //  if ($doc->doctype=="C") return; // not for familly
     $kdiv = 1; // only one division
-    $action->lay->Set("id", $docid);
+    $action->lay->Set("id", $doc->id);
     
     include_once ("FDL/popup_util.php");
     // -------------------- Menu menu ------------------

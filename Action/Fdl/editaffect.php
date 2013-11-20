@@ -37,10 +37,10 @@ function editaffect(&$action)
     $doc = new_doc($dbaccess, $docid);
     editmode($action);
     
-    $action->lay->Set("id", $docid);
-    $action->lay->Set("title", $doc->title);
+    $action->lay->Set("id", $doc->id);
+    $action->lay->Set("title", $doc->getHTMLTitle());
     $action->lay->set("VIEWDOC", $viewdoc);
-    $action->lay->set("affecttitle", sprintf(_("Affectation for %s") , $doc->title));
+    $action->lay->eset("affecttitle", sprintf(_("Affectation for %s") , $doc->getTitle()));
     // search free states
     $sqlfilters = array(
         "(frst_famid='" . $doc->fromid . "') or (frst_famid is null) or (frst_famid='')"
@@ -60,13 +60,13 @@ function editaffect(&$action)
     $action->lay->set("viewstate", ($doc->wid == 0));
     $state = $doc->getState();
     if ($state) {
-        $action->lay->set("textstate", sprintf(_("From %s state to") , $state));
+        $action->lay->eset("textstate", sprintf(_("From %s state to") , $state));
         $action->lay->set("colorstate", $doc->getStateColor("transparent"));
     } else {
-        $action->lay->set("textstate", _("New state"));
+        $action->lay->eset("textstate", _("New state"));
         $action->lay->set("colorstate", "transparent");
     }
     
-    $action->lay->setBlockData("freestate", $tstate);
+    $action->lay->eSetBlockData("freestate", $tstate);
 }
 ?>

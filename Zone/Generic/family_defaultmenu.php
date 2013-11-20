@@ -201,10 +201,7 @@ function family_defaultmenu(Action & $action)
             }
         }
     }
-    
-    $action->lay->Set("topid", getDefFld($action));
-    $action->lay->Set("dirid", $dirid);
-    $action->lay->Set("catg", $catg);
+
     //----------------------------
     // sort menu
     $tsort = array();
@@ -301,8 +298,7 @@ function family_defaultmenu(Action & $action)
         );
         $tmsort[$a->id] = "sortdoc" . $a->id;
     }
-    
-    $action->lay->set("ukey", getDefUKey($action));
+
     // select the current sort
     $csort = $action->getArgument("sqlorder");
     if ($csort == "") $csort = getDefUSort($action, "--");

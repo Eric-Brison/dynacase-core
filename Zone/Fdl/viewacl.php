@@ -27,9 +27,7 @@ function viewacl(Action & $action)
     // ------------------------
     $docid = intval($action->getArgument("docid"));
     $userid = intval($action->getArgument("userid"));
-    
-    $action->lay->Set("docid", $docid);
-    $action->lay->Set("userid", $userid);
+
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
@@ -37,6 +35,7 @@ function viewacl(Action & $action)
     $err = $doc->control('viewacl');
     if ($err) $action->exitError($err);
     //-------------------
+
     $perm = new DocPerm($dbaccess, array(
         $doc->profid,
         $userid
@@ -48,6 +47,9 @@ function viewacl(Action & $action)
     $tableacl = array();
     
     $user = new Account($dbaccess, $userid);
+
+    $action->lay->Set("docid", $doc->id);
+    $action->lay->Set("userid", $user->id);
     foreach ($acls as $k => $acl) {
         $tableacl[$k]["aclname"] = mb_ucfirst(_($acl));
         $tableacl[$k]["acldesc"] = " (" . _($doc->dacls[$acl]["description"]) . ")";

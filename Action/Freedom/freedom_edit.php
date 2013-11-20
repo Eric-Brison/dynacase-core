@@ -20,14 +20,14 @@ include_once ("GENERIC/generic_edit.php");
 /**
  * Edit or create a document
  * @param Action &$action current action
- * @global id Http var : document identifier to édit (empty means create)
- * @global classid Http var : family identifier use for create
- * @global dirid Http var : folder identifier to add when create
- * @global usefor Http var : set to  "D" for edit default values
- * @global onlysubfam Http var : to show in family list only sub family of classid
- * @global alsosubfam Http var : N default (Y|N) in case of only sub fam view also the mother family
+ * @global string $id Http var : document identifier to édit (empty means create)
+ * @global string $classid Http var : family identifier use for create
+ * @global string $dirid Http var : folder identifier to add when create
+ * @global string $usefor Http var : set to  "D" for edit default values
+ * @global string $onlysubfam Http var : to show in family list only sub family of classid
+ * @global string $alsosubfam Http var : N default (Y|N) in case of only sub fam view also the mother family
  */
-function freedom_edit(&$action)
+function freedom_edit(Action &$action)
 {
     // -----------------------------------
     // Get All Parameters
@@ -47,7 +47,7 @@ function freedom_edit(&$action)
     $tmpDoc = createDoc($action->dbaccess, $classid);
     $isSystemDoc = (is_object($tmpDoc) && substr($tmpDoc->usefor, 0, 1) == 'S');
     unset($tmpDoc);
-    
+    $doc=null;
     if ($docid > 0) {
         $doc = new_Doc($dbaccess, $docid);
         if (!$doc->isAlive()) $action->exitError(sprintf(_("document id %d not found") , $docid));
@@ -59,6 +59,9 @@ function freedom_edit(&$action)
     } else {
         // new document select special classes
         if ($dirid > 0) {
+            /**
+             * @var Dir $dir
+             */
             $dir = new_Doc($dbaccess, $dirid);
             if (method_exists($dir, "isAuthorized")) {
                 if ($dir->locked == - 1) $dir = new_Doc($dbaccess, $dir->getLatestId());
@@ -112,7 +115,7 @@ function freedom_edit(&$action)
     generic_edit($action);
     // build list of class document
     $selectclass = array();
-    
+    $k=0;
     if ($tclassdoc) {
         $first = false;
         foreach ($tclassdoc as $k => $cdoc) {
@@ -155,6 +158,7 @@ function freedom_edit(&$action)
             $doc = createDoc($dbaccess, $classid); // the doc inherit from chosen class
             if ($doc === false) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , $classid));
             // restrict to possible family creation permission
+            $tfid=array();
             foreach ($selectclass as $k => $cdoc) {
                 $tfid[] = abs($cdoc["idcdoc"]);
             }
@@ -179,10 +183,10 @@ function freedom_edit(&$action)
         }
     }
     
-    $action->lay->Set("id", $docid);
-    $action->lay->Set("dirid", $dirid);
-    $action->lay->Set("onlysubfam", $onlysubfam);
-    $action->lay->Set("alsosubfam", GetHttpVars("alsosubfam"));
+    $action->lay->eSet("id", $docid);
+    $action->lay->eSet("dirid", $dirid);
+    $action->lay->eSet("onlysubfam", $onlysubfam);
+    $action->lay->eSet("alsosubfam", GetHttpVars("alsosubfam"));
     if ($docid > 0) $action->lay->Set("doctype", $doc->doctype);
     // sort by classname
     uasort($selectclass, "cmpselect");

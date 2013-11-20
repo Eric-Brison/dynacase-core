@@ -84,7 +84,7 @@ function editchangestate(Action & $action)
                     }
                 }
                 $action->lay->set("noreason", ((!empty($tr["nr"]) && $tr["nr"] == true)));
-                $action->lay->set("viewext", $viewext);
+                $action->lay->eSet("viewext", $viewext);
                 $action->lay->setBlockData("FINPUTS", $tinputs);
             }
         }
@@ -132,9 +132,9 @@ function editchangestate(Action & $action)
         } else {
             $explanation[] = sprintf(_("The next state will be \"%s\".") , _($nextstate));
         }
-        $action->lay->set("thetitle", sprintf("%s", mb_ucfirst($transitionLabel)));
-        $action->lay->set("nextstate", $nextstate);
-        $action->lay->set("Explanations", nl2br(implode("\n", $explanation)));
+        $action->lay->eset("thetitle", sprintf("%s", mb_ucfirst($transitionLabel)));
+        $action->lay->eset("nextstate", $nextstate);
+        $action->lay->eset("Explanations", nl2br(implode("\n", $explanation)));
         
         $style = $action->parent->getParam("STYLE");
         if ($viewext) {

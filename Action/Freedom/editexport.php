@@ -27,8 +27,8 @@ function editexport(Action & $action)
     $action->parent->addJsRef("lib/jquery/jquery.js");
     $doc = new_Doc($dbaccess, $docid);
     $exportId = uniqid("export");
-    $action->lay->Set("dirid", $docid);
-    $action->lay->Set("title", $doc->title);
+    $action->lay->Set("dirid", $doc->id);
+    $action->lay->Set("title", $doc->getHTMLTitle());
     $action->lay->Set("exportid", $exportId);
     $famid = 0;
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, $famid, "TABLE");

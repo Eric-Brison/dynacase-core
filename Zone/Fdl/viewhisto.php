@@ -50,7 +50,7 @@ function viewhisto(Action & $action)
         $action->lay->Set("lastState", $doc->getHtmlTitle());
     }
     $action->lay->Set("lastRevision", $doc->revision);
-    $action->lay->Set("lastOwner", Account::getDisplayName($doc->owner));
+    $action->lay->eSet("lastOwner", Account::getDisplayName($doc->owner));
     
     $action->lay->Set("lastColor", $doc->getStateColor('transparent'));
     $action->lay->Set("docid", $doc->id);
@@ -79,11 +79,11 @@ function viewhisto(Action & $action)
     $action->lay->SetBlockData("LASTCOMMENT", $tlc);
     
     $action->lay->Set("title", $doc->getHTMLTitle());
-    $action->lay->Set("target", $target);
-    $action->lay->Set("VIEWAPP", $viewapp);
-    $action->lay->Set("VIEWACT", $viewact);
-    $action->lay->Set("VIEWREV", $viewrev);
-    $action->lay->Set("notice", $notice);
+    $action->lay->eSet("target", $target);
+    $action->lay->eSet("VIEWAPP", $viewapp);
+    $action->lay->eSet("VIEWACT", $viewact);
+    $action->lay->eSet("VIEWREV", $viewrev);
+    $action->lay->eSet("notice", $notice);
     $hastate = false;
     
     $s = new SearchDoc($action->dbaccess);
@@ -163,7 +163,7 @@ function viewhisto(Action & $action)
     $action->lay->Set("nodetail", ($iversion > 1));
     
     $action->lay->Set("hasversion", $hasVersion);
-    $action->lay->Set("latestVersion", $doc->version);
+    $action->lay->eSet("latestVersion", $doc->version);
     $action->lay->SetBlockData("TABLEBODY", $trdoc);
 }
 ?>

@@ -179,8 +179,8 @@ function editcard(Action & $action)
         }
     }
     if ($zonebodycard == "") $zonebodycard = "FDL:EDITBODYCARD";
-    $action->lay->Set("classid", $classid);
-    $action->lay->Set("usefor", $usefor);
+    $action->lay->eSet("classid", $classid);
+    $action->lay->eSet("usefor", $usefor);
     
     if ($usefor == "D") {
         setDocDefaultValues($doc);

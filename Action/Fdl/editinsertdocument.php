@@ -20,8 +20,8 @@ include_once ("FDL/Class.Dir.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global id Http var : folder document identifier to see
- * @global famid Http var : family to use for search
+ * @global string $id Http var : folder document identifier to see
+ * @global string $famid Http var : family to use for search
  */
 function editinsertdocument(&$action)
 {
@@ -33,6 +33,9 @@ function editinsertdocument(&$action)
     if ($docid == "") $action->exitError(_("no document reference"));
     if (!is_numeric($docid)) $docid = getIdFromName($dbaccess, $docid);
     if (intval($docid) == 0) $action->exitError(sprintf(_("unknow logical reference '%s'") , GetHttpVars("id")));
+    /**
+     * @var Dir $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     if ($doc->defDoctype != 'D') $action->exitError(sprintf(_("not a static folder %s") , $doc->title));
@@ -51,6 +54,7 @@ function editinsertdocument(&$action)
     $action->lay->set("restrict", false);
     
     if (!$famid) {
+        $classid=0;
         if (method_exists($doc, "isAuthorized")) {
             if ($doc->isAuthorized($classid)) {
                 // verify if classid is possible
@@ -73,20 +77,19 @@ function editinsertdocument(&$action)
         $action->lay->SetBlockData("SELECTCLASS", $tclassdoc);
         $action->lay->set("famid", false);
     } else {
-        $action->lay->set("famid", $famid);
-        
         $fdoc = new_Doc($dbaccess, $famid);
+        $action->lay->set("famid", $fdoc->id);
         $action->lay->set("famicon", $fdoc->getIcon());
         $action->lay->set("famtitle", sprintf(_("Search %s") , $fdoc->title));
     }
     $action->lay->set("docid", $doc->id);
     $fdoc = $doc->getFamilyDocument();
-    $action->lay->set("classtitle", $fdoc->title);
+    $action->lay->eset("classtitle", $fdoc->title);
     $action->lay->set("iconsrc", $doc->getIcon());
-    $action->lay->set("TITLE", sprintf(_("Content managing of %s") , $doc->title));
-    $action->lay->set("version", $doc->version);
+    $action->lay->eset("TITLE", sprintf(_("Content managing of %s") , $doc->title));
+    $action->lay->eset("version", $doc->version);
     $action->lay->set("hasstate", ($doc->getState() != ""));
-    $action->lay->set("state", $doc->getState());
+    $action->lay->eset("state", $doc->getState());
     $action->lay->set("statecolor", $doc->getStateColor());
     $action->lay->set("count", count($l));
     

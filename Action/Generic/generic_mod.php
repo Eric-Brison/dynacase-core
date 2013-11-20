@@ -111,7 +111,7 @@ function generic_mod(Action & $action)
             }
         }
         $action->lay->set("constraintinfo", json_encode($info));
-        $action->lay->set("quicksave", $quicksave);
+        $action->lay->set("quicksave", (bool)$quicksave);
         if ($rzone != "") $zone = "&zone=$rzone";
         else $zone = "";
         if ($rvid != "") $zone = "&vid=$rvid";

@@ -73,17 +73,6 @@ $action_desc = array(
         "name" => "HELPVIEW",
     ),
     array(
-        "name" => "PROGRESSBAR",
-    ),
-    array(
-        "name" => "PROGRESSBAR1",
-    ),
-    array(
-        "name" => "PROGRESSBAR2",
-        "script" => "progressbar.php",
-        "function" => "progressbar2"
-    ),
-    array(
         "name" => "CHANGE_USER_PASSWORD",
         "short_name" => N_("change user password"),
         "root" => "N"

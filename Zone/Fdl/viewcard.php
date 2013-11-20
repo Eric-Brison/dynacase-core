@@ -182,7 +182,7 @@ function viewcard(Action & $action)
     $action->lay->set("viewbarmenu", ($zo == "V"));
     
     $action->lay->set("LGTEXTERROR", strlen($err));
-    $action->lay->set("TEXTERROR", nl2br($err));
+    $action->lay->eset("TEXTERROR", nl2br($err));
     $action->lay->Set("ZONEBODYCARD", $doc->viewDoc($zonebodycard, $target, $ulink, $abstract));
     /*
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
@@ -261,7 +261,7 @@ function viewcard(Action & $action)
     $action->lay->Set("version", $doc->version);
     
     $action->lay->Set("title", $doc->getHTMLTitle());
-    $action->lay->Set("id", $docid);
+    $action->lay->Set("id", $doc->id);
     
     if ($abstract) {
         // only 3 properties for abstract mode

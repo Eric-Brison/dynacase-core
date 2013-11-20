@@ -33,13 +33,13 @@ function folder_barmenu(Action & $action)
     
     $dir = new_Doc($dbaccess, $dirid);
     
-    $action->lay->Set("wtarget", $target);
+    $action->lay->set("wtarget", urlencode($target));
     $action->lay->set("title", $dir->getHTMLTitle());
     $action->lay->set("pds", $dir->urlWhatEncodeSpec("")); // parameters for searches
     if ($nbdoc > 1) $action->lay->set("nbdoc", sprintf(_("%d documents") , $nbdoc));
     else $action->lay->set("nbdoc", sprintf(_("%d document") , $nbdoc));
     
-    $action->lay->set("dirid", $dirid);
+    $action->lay->set("dirid", urlencode($dirid));
     $tarch = array();
     $toolmenu = array(
         'tobasket',

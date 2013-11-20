@@ -22,7 +22,6 @@ function generic_modprefs(Action & $action)
 {
 
     $famid = GetHttpVars("famid"); // family id
-    $dirid = GetHttpVars("dirid"); // last searched
     $dispo = GetHttpVars("dispo"); // last searched
     $letters = GetHttpVars("letters"); // want tab letters
     $inherit = GetHttpVars("inherit"); // search in inherit
@@ -63,9 +62,6 @@ function generic_modprefs(Action & $action)
     if ($inherit == 1) setInherit($action, $famid, 'Y');
     else setInherit($action, $famid, 'N');
 
-    $action->lay->set("famtitle", $fdoc->title);
-    $action->lay->set("famid", $famid);
-    $action->lay->set("famname", $fdoc->getPropertyValue("name"));
-    $action->lay->set("dirid", $dirid);
+    $action->lay->eset("famname", $fdoc->getPropertyValue("name"));
 }
 ?>

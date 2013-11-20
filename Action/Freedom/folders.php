@@ -46,8 +46,8 @@ function folders(Action &$action)
     if ($dirid == 0) $dirid = $action->getParam("ROOTFLD", getFirstDir($dbaccess));
     
     $doc = new_Doc($dbaccess, $dirid);
-    $action->lay->Set("dirid", $dirid);
-    $action->lay->Set("reptitle", str_replace('"', '\"', $doc->title));
+    $action->lay->Set("dirid", urlencode($dirid));
+    $action->lay->eSet("reptitle", str_replace('"', '\"', $doc->title));
     $action->lay->Set("icon", $doc->getIcon());
     // ------------------------------------------------------
     // definition of popup menu

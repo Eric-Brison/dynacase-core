@@ -27,8 +27,8 @@ function editfamilyparameter(Action & $action)
     
     editmode($action);
     
-    $action->lay->set("famid", $famid);
-    $action->lay->set("attrid", strtolower($attrid));
+    $action->lay->eset("famid", $famid);
+    $action->lay->eset("attrid", strtolower($attrid));
     /**
      * @var DocFam $doc
      */
@@ -43,15 +43,15 @@ function editfamilyparameter(Action & $action)
             $action->lay->template = sprintf(_("Attribute [%s] is not found") , $attrid);
             return false;
         }
-        $action->lay->set("label", $attr->getLabel());
+        $action->lay->eset("label", $attr->getLabel());
         
         if ($onChange == "no") {
             $onChange = "";
         } elseif ($onChange == "yes" || (!$onChange && !$localSubmit)) {
             $onChange = "yes";
         }
-        $action->lay->set("local_submit", $localSubmit);
-        $action->lay->set("submit_label", $submitLabel);
+        $action->lay->eset("local_submit", $localSubmit);
+        $action->lay->eset("submit_label", $submitLabel);
         
         if (!$value) {
             if ($default !== null) {

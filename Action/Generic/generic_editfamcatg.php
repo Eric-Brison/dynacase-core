@@ -26,9 +26,9 @@ include_once ("GENERIC/generic_util.php");
 function generic_editfamcatg(&$action)
 {
     $famid = GetHttpVars("famid", getDefFam($action));
-    $action->lay->set("famid", $famid);
     $dbaccess = $action->getParam("FREEDOM_DB");
     $fam = new_doc($dbaccess, $famid);
-    $action->lay->set("GTITLE", $fam->getTitle());
+    $action->lay->set("famid", $fam->id);
+    $action->lay->set("GTITLE", $fam->getHtmlTitle());
 }
 ?>

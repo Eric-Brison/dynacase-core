@@ -21,17 +21,16 @@
 // ---------------------------------------------------------------
 include_once ("FDL/Lib.Dir.php");
 
-function editwdoc(&$action)
+function editwdoc(Action &$action)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id", 0);
-    $current = (GetHttpVars("current", "N") == "Y");
-    
-    $action->lay->Set("docid", $docid);
+
     
     $doc = new_Doc($dbaccess, $docid);
+    $action->lay->Set("docid", $doc->id);
     
-    $action->lay->Set("doctitle", $doc->title);
+    $action->lay->eSet("doctitle", $doc->getTitle());
     $sqlfilters = array();
     
     $wid = $doc->wid;

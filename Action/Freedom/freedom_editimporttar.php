@@ -19,16 +19,14 @@
 include_once ("FDL/import_file.php");
 include_once ("FDL/Lib.Dir.php");
 // -----------------------------------
-function freedom_editimporttar(&$action)
+function freedom_editimporttar(Action &$action)
 {
     // -----------------------------------
     // Get all the params
-    $classid = GetHttpVars("classid", 7); // doc familly
-    $dirid = GetHttpVars("dirid", 10); // directory to place imported doc (default unclassed folder)
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dirid = GetHttpVars("dirid", 0); // directory to place imported doc (default unclassed folder)
     
-    $action->lay->set("maxsize", sprintf("max %s bytes", ini_get('upload_max_filesize')));
+    $action->lay->eset("maxsize", sprintf("max %s bytes", ini_get('upload_max_filesize')));
     
-    $action->lay->Set("dirid", $dirid);
+    $action->lay->eSet("dirid", $dirid);
 }
 ?>

@@ -362,7 +362,7 @@ class DocHtmlFormat
                 if (($this->oattr->repeat) && ($this->index <= 0)) $idx = $kvalue;
                 else $idx = $this->index;
                 $inline = $this->oattr->getOption("inline");
-                $htmlval = $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes"));
+                $htmlval = $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes"),$avalue);
             } else {
                 if (empty($avalue)) {
                     $localImage = $this->oattr->getOption('showempty');

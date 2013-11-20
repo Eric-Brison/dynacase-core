@@ -116,6 +116,7 @@ testSplit();
 [ENDBLOCK USORT]
 [IF ISIE6]<iframe class="innerFixer" src="[IMG:1x1.gif]"></iframe>[ENDIF ISIE6]
 </div>
+</div>
 
 <!-- ------------ MENU TOOL --------------------- -->
 <div  id="helpmenu" class="popup[IF ISIE6] select-free[ENDIF ISIE6]" >

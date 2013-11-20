@@ -74,7 +74,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
     if (($err = $dir->Control($aclctrl)) != "") $action->exitError($err);
     
     $action->lay->Set("dirtitle", stripslashes($dir->getHtmlTitle()));
-    $action->lay->Set("dirid", $dirid);
+    $action->lay->eSet("dirid", $dirid);
     
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
@@ -461,7 +461,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
     
     $action->lay->Set("nbdoc", $nbdoc);
     $action->lay->Set("hasNext", $hasNext);
-    $action->lay->Set("wtarget", $target);
+    $action->lay->eSet("wtarget", $target);
     
     $last = $startpage;
     $rangeTo = $start + $count - 1;

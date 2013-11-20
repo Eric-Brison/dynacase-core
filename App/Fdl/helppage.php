@@ -35,8 +35,8 @@ function helppage_editsection(Action & $action, $dbaccess, $docid)
      * @var \Dcp\Family\HELPPAGE $doc
      */
     $doc = new_Doc($dbaccess, $docid);
-    $action->lay->set('DOCID', $docid);
-    $action->lay->set('DOCTITLE', $doc->getTitle());
+    $action->lay->eset('DOCID', $docid);
+    $action->lay->eset('DOCTITLE', $doc->getTitle());
     
     $helps = $doc->getHelpByLang();
     $langs = $doc->getFamilyLangs();
@@ -44,7 +44,7 @@ function helppage_editsection(Action & $action, $dbaccess, $docid)
     $action->lay->set('JSONLANGS', json_encode($langs));
     
     $section_key = GetHttpVars('edit_section_key', '');
-    $action->lay->set('SECTIONKEY', $section_key);
+    $action->lay->eset('SECTIONKEY', $section_key);
     
     $langitems = array();
     foreach ($langs as $lang_key => $lang_name) {
@@ -69,13 +69,13 @@ function helppage_edithelp(Action & $action, $dbaccess, $docid)
      * @var \Dcp\Family\HELPPAGE $doc
      */
     $doc = new_Doc($dbaccess, $docid);
-    $action->lay->set('DOCID', $docid);
-    $action->lay->set('DOCTITLE', $doc->getTitle());
+    $action->lay->eset('DOCID', $docid);
+    $action->lay->eset('DOCTITLE', $doc->getTitle());
     
     $helps = $doc->getHelpByLang();
     $langs = $doc->getFamilyLangs();
     
-    $action->lay->set('JSONLANGS', json_encode($langs));
+    $action->lay->eset('JSONLANGS', json_encode($langs));
     
     $helplangs = array();
     $index = 0;
