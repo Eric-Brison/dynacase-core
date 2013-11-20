@@ -19,6 +19,7 @@ include_once ("WHAT/Lib.Prefix.php");
 include_once ("WHAT/Lib.Http.php");
 include_once ("WHAT/Lib.Common.php");
 
+define("MAX_RESIZE_IMG_SIZE", 512); // maximum size to prevent attack
 function rezizelocalimage($img, $size, $basedest)
 {
     $source = $img;
@@ -31,23 +32,14 @@ function rezizelocalimage($img, $size, $basedest)
         $h = '';
     }
     
+    $size = min(MAX_RESIZE_IMG_SIZE, $size);
+    
     $cmd = sprintf("convert  -thumbnail $h%d %s %s", $size, escapeshellarg($source) , escapeshellarg($dest));
     system($cmd);
     if (file_exists($dest)) return $basedest;
     return false;
 }
 
-function copylocalimage($img, $size, $basedest)
-{
-    $source = $img;
-    
-    $dest = DEFAULT_PUBDIR . $basedest;
-    
-    $cmd = sprintf("/bin/cp %s %s", escapeshellarg($source) , escapeshellarg($dest));
-    system($cmd);
-    if (file_exists($dest)) return $basedest;
-    return false;
-}
 function getVaultPauth($vid)
 {
     
@@ -70,7 +62,9 @@ function getVaultPauth($vid)
                             $name = $row[1];
                             $free = $row[2];
                             
-                            if (!$free) return false;
+                            if (!$free) {
+                                return false;
+                            }
                             $ext = '';
                             if (preg_match('/\.([^\.]*)$/', $name, $reg)) {
                                 $ext = $reg[1];
@@ -97,18 +91,36 @@ function getVaultPauth($vid)
 
 function getVaultCacheImage($vid, $size)
 {
-    $basedest = "/var/cache/image/$size-vid$vid.png";
+    $basedest = sprintf("/var/cache/image/%s-vid%d.png", $size, $vid);
     return $basedest;
 }
 
 $size = isset($_GET["size"]) ? $_GET["size"] : null;
 if (!$size) {
-    if (isset($_GET["width"])) $size = $_GET["width"];
+    if (isset($_GET["width"])) {
+        $size = $_GET["width"];
+    }
 }
 if (!$size) {
     $heigth = isset($_GET["height"]) ? $_GET["height"] : null;
     if ($heigth) {
         $size = "H" . $heigth;
+    }
+}
+
+if (!preg_match('/^H?[0-9]+(px)?$/', $size)) {
+    header('HTTP/1.0 400 Bad request');
+    print "Wrong image size";
+    exit;
+} else {
+    if ($size[0] == 'H') {
+        $isize = intval(substr($size, 1));
+        $isize = min(MAX_RESIZE_IMG_SIZE, $isize);
+        $size = "H" . $isize;
+    } else {
+        $isize = intval($size);
+        $isize = min(MAX_RESIZE_IMG_SIZE, $isize);
+        $size = $isize;
     }
 }
 $img = isset($_GET["img"]) ? $_GET["img"] : null;
@@ -129,15 +141,11 @@ if (preg_match("/vaultid=([0-9]+)/", $img, $vids)) {
     } else {
         $localimage = getVaultPauth(intval($vid));
         if ($localimage) {
-            $tsize = getimagesize($localimage);
-            
-            $width = intval($tsize[0]);
-            if ($width > $size) {
-                $newimg = rezizelocalimage($localimage, $size, $basedest);
-            } else {
-                $newimg = copylocalimage($localimage, $size, $basedest);
-            }
+            $newimg = rezizelocalimage($localimage, $size, $basedest);
             if ($newimg) $location = "$ldir/$newimg";
+        } else {
+            header('HTTP/1.0 404 Not found');
+            exit;
         }
     }
 } else {
@@ -145,12 +153,46 @@ if (preg_match("/vaultid=([0-9]+)/", $img, $vids)) {
     $turl = (parse_url($img));
     $path = $turl["path"];
     
+    $realfile = realpath($path);
+    if (!$realfile) {
+        header('HTTP/1.0 404 Not found');
+        exit;
+    }
+    $itselfName = $_SERVER["SCRIPT_FILENAME"];
+    $itselfdir = dirname($itselfName);
+    //printf("\n[%s] [%s]\n", $itselfdir, substr(dirname($realfile), 0,strlen($itselfdir)));
+    if (substr(dirname($realfile) , 0, strlen($itselfdir)) != $itselfdir) {
+        if (!is_link($path)) {
+            header('HTTP/1.0 403 Forbidden');
+            exit;
+        }
+    }
+    
+    if (strtok(substr($realfile, strlen($itselfdir)) , '/') == "var") {
+        header('HTTP/1.0 403 Forbidden');
+        exit;
+    }
+    
+    $cmd = sprintf('file -ib %s', escapeshellarg($realfile));
+    
+    $tsize = getimagesize($realfile);
+    if (!$tsize) {
+        header('HTTP/1.0 403 Forbidden');
+        exit;
+    }
+    
+    if (preg_match('%[0-9]+/[0-9]+\.[a-z]+$%', $realfile)) {
+        header('HTTP/1.0 403 Forbidden');
+        exit;
+    }
+    
     if (strstr($path, $dir) == $path) {
         $localimage = substr($path, strlen($dir));
     } else {
         $localimage = $img;
     }
-    $basedest = "/var/cache/image/$size-" . basename(str_replace("/", "_", $localimage)) . ".png";
+    
+    $basedest = sprintf("/var/cache/image/%s-%s.png", $size, basename(str_replace("/", "_", $localimage)));
     $dest = DEFAULT_PUBDIR . $basedest;
     
     if (file_exists($dest) && filemtime($dest) >= filemtime(DEFAULT_PUBDIR . "/$localimage")) {
@@ -163,8 +205,6 @@ if (preg_match("/vaultid=([0-9]+)/", $img, $vids)) {
 //print("<hr>Location: $location");
 if ($location) $location = "/" . ltrim($location, "/");
 else $location = $img;
-
 Http_DownloadFile($location, basename($location) , "image/png", true, true);
-//Header("Location: $location");
-
-?>
+// if here file has not be sent
+header('HTTP/1.0 404 Not found');
