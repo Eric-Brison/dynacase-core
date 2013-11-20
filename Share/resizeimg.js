@@ -30,7 +30,7 @@ function resizeImages() {
 	    
       if (w > 0) {
 	if ((sfEls1[i].src.indexOf('&') != -1) && (sfEls1[i].src.indexOf('geticon') == -1)) return;
-	sfEls1[i].src='resizeimg.php?size='+w+'&img='+sfEls1[i].src;
+	sfEls1[i].src='resizeimg.php?size='+w+'&img='+encodeURIComponent(sfEls1[i].getAttribute('src'));
 	sfEls1[i].removeAttribute('needresize');
 	c++;
       } else {
