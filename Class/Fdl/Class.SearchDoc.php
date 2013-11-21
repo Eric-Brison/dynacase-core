@@ -260,20 +260,27 @@ class SearchDoc
      *
      * @api Add join condition
      * @code
-     * $s=new searchDoc();
-     $s->trash='only';
-     $s->join("id = dochisto(id)");
-     $s->addFilter("dochisto.uid = %d",$this->getSystemUserId());
-     * // search all document which has been deleted by search DELETE code in history
-     $s->addFilter("dochisto.code = 'DELETE'");
-     $s->distinct=true;
-     $result= $s->search();
+      $s=new searchDoc();
+      $s->trash='only';
+      $s->join("id = dochisto(id)");
+      $s->addFilter("dochisto.uid = %d",$this->getSystemUserId());
+      // search all document which has been deleted by search DELETE code in history
+      $s->addFilter("dochisto.code = 'DELETE'");
+      $s->distinct=true;
+      $result= $s->search();
      * @endcode
      * @param string $jointure
+     * @throws Dcp\Exception
      */
     public function join($jointure)
     {
-        $this->join = $jointure;
+        if (empty($jointure)) {
+            $this->join = '';
+        } elseif (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $jointure, $reg)) {
+            $this->join = $jointure;
+        } else {
+            throw new \Dcp\SearchDoc\Exception("SD0001", $jointure);
+        }
     }
     /**
      * count results
@@ -738,16 +745,15 @@ class SearchDoc
      * @api add global filter based on keyword
      * @param string $keywords
      * @param bool $useSpell use spell french checker
+     * @throws Dcp\SearchDoc\Exception SD0004 SD0003 SD0002
      */
     public function addGeneralFilter($keywords, $useSpell = false)
     {
         if (!$this->checkGeneralFilter($keywords)) {
-            $this->debuginfo["error"] = sprintf(_("incorrect global filter %s") , $keywords);
+            throw new \Dcp\SearchDoc\Exception("SD0004", $keywords);
         } else {
             $filter = $this->getGeneralFilter(trim($keywords) , $useSpell, $this->pertinenceOrder, $this->highlightWords);
             $this->addFilter($filter);
-            //  print_r2(array("key"=>$keywords, "filter"=>$filter));
-            
         }
     }
     /**
@@ -797,6 +803,7 @@ class SearchDoc
      * @param bool $useSpell
      * @param string $pertinenceOrder return pertinence order
      * @param string $highlightWords return words to be use by SearchHighlight class
+     * @throws Dcp\SearchDoc\Exception
      * @return string sql filter
      */
     public static function getGeneralFilter($keywords, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
@@ -821,7 +828,7 @@ class SearchDoc
             } else if ($operator === "or") {
                 return "|";
             } else {
-                throw new \Dcp\Exception(sprintf(_("SEARCH_DOC:Unknown operator %s") , $operator));
+                throw new \Dcp\SearchDoc\Exception("SD0002", $operator);
             }
         };
         
@@ -947,7 +954,7 @@ class SearchDoc
             }
         }
         if ($parenthesisBalanced !== 0) {
-            throw new \Dcp\Exception(sprintf(_("SEARCH_DOC:Unbalenced parenthesis %s") , $keywords));
+            throw new \Dcp\SearchDoc\Exception("SD0003", $keywords);
         }
         if ($isOnlyWord) {
             $filter = str_replace(')(', ')&(', $filter);
@@ -1149,7 +1156,7 @@ class SearchDoc
         }
         $maintable = $table; // can use join only on search
         if ($join) {
-            if (preg_match("/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/", $join, $reg)) {
+            if (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $join, $reg)) {
                 $joinid = getFamIdFromName($dbaccess, $reg[3]);
                 $jointable = ($joinid) ? "doc" . $joinid : $reg[3];
                 
@@ -1241,8 +1248,8 @@ class SearchDoc
                                 $qsql = "select $selectfields " . "from $table where initid in ($sfldids)  " . "and  $sqlcond ";
                             } else {
                                 /*$qsql= "select $selectfields ".
-                                "from (select childid from fld where $sqlfld) as fld2 inner join $table on (initid=childid)  ".
-                                "where  $sqlcond ";*/
+                                    "from (select childid from fld where $sqlfld) as fld2 inner join $table on (initid=childid)  ".
+                                    "where  $sqlcond ";*/
                                 $qsql = "select $selectfields " . "from $only $table where initid in ($sfldids)  " . "and  $sqlcond ";
                             }
                         }
@@ -1390,3 +1397,4 @@ class SearchDoc
         return false;
     }
 }
+

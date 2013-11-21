@@ -107,41 +107,42 @@ function fullsearchresult(Action & $action)
         $keys = '';
         
         $s = new SearchDoc($dbaccess, $famid);
-        $s->addFilter("usefor !~ '^S'");
-        $s->setObjectReturn();
-        if ($keyword != "") {
-            $s->addGeneralFilter($keyword, true);
-            $s->setPertinenceOrder();
-        } else {
-            $sdoc = new_doc($dbaccess, $dirid);
-            $tkeys = $sdoc->getMultipleRawValues("se_keys");
-            foreach ($tkeys as $k => $v) if (!$v) unset($tkeys[$k]);
-            $keys = implode('|', $tkeys);
-        }
-        if ($famfilter != "") $sqlfilters[] = $famfilter;
         
-        if ($dirid) {
-            $s->useCollection($dirid);
-            $vardids = "did_$dirid";
-        } else {
-            $vardids = "did_$famid$keys";
-            foreach ($sqlfilters as $filter) {
-                $s->addFilter($filter);
-            }
-        }
-        $displayedIds = array();
-        if ($start > 0) {
-            $displayedIds = $action->read($vardids);
-            if ($displayedIds && count($displayedIds) > 0) {
-                $sqlExclude = sprintf("initid not in (%s)", implode(",", $displayedIds));
-                $s->addFilter($sqlExclude);
-            } else {
-                $s->setStart($start);
-            }
-        }
-        $s->setSlice($slice + 1);
-        $s->excludeConfidential();
         try {
+            $s->addFilter("usefor !~ '^S'");
+            $s->setObjectReturn();
+            if ($keyword != "") {
+                $s->addGeneralFilter($keyword, true);
+                $s->setPertinenceOrder();
+            } else {
+                $sdoc = new_doc($dbaccess, $dirid);
+                $tkeys = $sdoc->getMultipleRawValues("se_keys");
+                foreach ($tkeys as $k => $v) if (!$v) unset($tkeys[$k]);
+                $keys = implode('|', $tkeys);
+            }
+            if ($famfilter != "") $sqlfilters[] = $famfilter;
+            
+            if ($dirid) {
+                $s->useCollection($dirid);
+                $vardids = "did_$dirid";
+            } else {
+                $vardids = "did_$famid$keys";
+                foreach ($sqlfilters as $filter) {
+                    $s->addFilter($filter);
+                }
+            }
+            $displayedIds = array();
+            if ($start > 0) {
+                $displayedIds = $action->read($vardids);
+                if ($displayedIds && count($displayedIds) > 0) {
+                    $sqlExclude = sprintf("initid not in (%s)", implode(",", $displayedIds));
+                    $s->addFilter($sqlExclude);
+                } else {
+                    $s->setStart($start);
+                }
+            }
+            $s->setSlice($slice + 1);
+            $s->excludeConfidential();
             $s->search();
             if ($s->getError()) {
                 addLogMsg($s->getSearchInfo());
@@ -238,15 +239,14 @@ function fullsearchresult(Action & $action)
         $action->lay->set("notfirst", false);
         $action->lay->set("notthenend", false);
     }
-
     
     $famsuffix = ($famid == 0 ? "" : sprintf("<span class=\"families\">(%s %s)</span>", _("family search result") , $famtitle));
     if ($globalCount == 0) {
-        $action->lay->set("resulttext", sprintf(_("No document found for <strong>%s</strong>%s") , htmlspecialchars($keyword), $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("No document found for <strong>%s</strong>%s") , htmlspecialchars($keyword) , $famsuffix));
     } else if ($globalCount == 1) {
-        $action->lay->set("resulttext", sprintf(_("One document for <strong>%s</strong>%s") , htmlspecialchars($keyword), $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("One document for <strong>%s</strong>%s") , htmlspecialchars($keyword) , $famsuffix));
     } else {
-        $action->lay->set("resulttext", sprintf(_("Found <strong>%d</strong>  Result for <strong>%s</strong>%s") , $globalCount, htmlspecialchars($keyword), $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("Found <strong>%d</strong>  Result for <strong>%s</strong>%s") , $globalCount, htmlspecialchars($keyword) , $famsuffix));
     }
     $action->lay->set("displayBottomBar", ($globalCount == 0 ? false : true));
     $action->lay->set("displayTopBar", ($page == 0));

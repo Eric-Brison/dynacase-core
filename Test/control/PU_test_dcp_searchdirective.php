@@ -144,15 +144,19 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
      * @param $filter
      * @dataProvider dataErrorGeneralFilter
      */
-    public function testErrorGeneralFilter($filter)
+    public function testErrorGeneralFilter($filter, $expectedCore)
     {
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
-        $s->addGeneralFilter($filter);
-        $s->setObjectReturn();
-        $s->search();
-        
-        $err = $s->getError();
-        $this->assertNotEmpty($err, "search error must not be empty");
+        $code = '';
+        try {
+            $s->addGeneralFilter($filter);
+            $s->setObjectReturn();
+            $s->search();
+        }
+        catch(\Dcp\SearchDoc\Exception $e) {
+            $code = $e->getDcpCode();
+        }
+        $this->assertEquals($expectedCore, $code, "search error must not be empty");
     }
     /**
      * test "usefor" system search
@@ -195,13 +199,20 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
     {
         return array(
             array(
-                "test ()"
+                "test ()",
+                "SD0004"
             ) ,
             array(
-                "(test) or (test"
+                "(test) or (test",
+                "SD0004"
             ) ,
             array(
-                "(test) or )test("
+                "(test) or )test(",
+                "SD0004"
+            ) ,
+            array(
+                '(coucou) OR " (DF"Oio)',
+                "SD0003"
             )
         );
     }
