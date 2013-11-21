@@ -136,7 +136,10 @@ class SearchDoc
     private $mode = "TABLE";
     private $count = - 1;
     private $index = 0;
-    private $result;
+    /**
+     * @var bool|array
+     */
+    private $result=false;
     private $searchmode;
     /**
      * @var string pertinence order in case of full searches
@@ -176,55 +179,54 @@ class SearchDoc
      */
     public function onlyCount()
     {
-        if (!$this->result) {
-            /**  @var Dir $fld */
-            $fld = new_Doc($this->dbaccess, $this->dirid);
-            $userid = $this->userid;
-            if ($fld->fromid != getFamIdFromName($this->dbaccess, "SSEARCH")) {
-                if ($this->debug) $debuginfo = array();
-                else $debuginfo = null;
-                $tqsql = $this->getQueries();
-                $this->debuginfo["query"] = $tqsql[0];
-                $count = 0;
-                if (!is_array($tqsql)) {
-                    $this->debuginfo["err"] = _("cannot produce sql request");
-                    return 0;
-                }
-                foreach ($tqsql as $sql) {
-                    if ($sql) {
-                        if (preg_match('/from\s+(?:only\s+)?([a-z0-9_\-]*)/', $sql, $reg)) $maintable = $reg[1];
-                        else $maintable = '';
-                        $maintabledot = ($maintable) ? $maintable . '.' : '';
-                        
-                        $mainid = ($maintable) ? "$maintable.id" : "id";
-                        $distinct = "";
-                        if (preg_match('/^\s*select\s+distinct(\s+|\(.*?\))/iu', $sql, $m)) {
-                            $distinct = "distinct ";
-                        }
-                        $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/iu', "select count($distinct$mainid) from ", $sql, 1);
-                        if ($userid != 1) {
-                            $sql.= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
-                        }
-                        $dbid = getDbid($this->dbaccess);
-                        $mb = microtime(true);
-                        $q = @pg_query($dbid, $sql);
-                        if (!$q) {
-                            $this->debuginfo["query"] = $sql;
-                            $this->debuginfo["error"] = pg_last_error($dbid);
-                        } else {
-                            $result = pg_fetch_array($q, 0, PGSQL_ASSOC);
-                            $count+= $result["count"];
-                            $this->debuginfo["query"] = $sql;
-                            $this->debuginfo["delay"] = sprintf("%.03fs", microtime(true) - $mb);
-                        }
+        /**  @var Dir $fld */
+        $fld = new_Doc($this->dbaccess, $this->dirid);
+        $userid = $this->userid;
+        if ($fld->fromid != getFamIdFromName($this->dbaccess, "SSEARCH")) {
+            if ($this->debug) $debuginfo = array();
+            else $debuginfo = null;
+            $tqsql = $this->getQueries();
+            $this->debuginfo["query"] = $tqsql[0];
+            $count = 0;
+            if (!is_array($tqsql)) {
+                $this->debuginfo["err"] = _("cannot produce sql request");
+                return 0;
+            }
+            foreach ($tqsql as $sql) {
+                if ($sql) {
+                    if (preg_match('/from\s+(?:only\s+)?([a-z0-9_\-]*)/', $sql, $reg)) $maintable = $reg[1];
+                    else $maintable = '';
+                    $maintabledot = ($maintable) ? $maintable . '.' : '';
+                    
+                    $mainid = ($maintable) ? "$maintable.id" : "id";
+                    $distinct = "";
+                    if (preg_match('/^\s*select\s+distinct(\s+|\(.*?\))/iu', $sql, $m)) {
+                        $distinct = "distinct ";
+                    }
+                    $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/iu', "select count($distinct$mainid) from ", $sql, 1);
+                    if ($userid != 1) {
+                        $sql.= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
+                    }
+                    $dbid = getDbid($this->dbaccess);
+                    $mb = microtime(true);
+                    $q = @pg_query($dbid, $sql);
+                    if (!$q) {
+                        $this->debuginfo["query"] = $sql;
+                        $this->debuginfo["error"] = pg_last_error($dbid);
+                    } else {
+                        $result = pg_fetch_array($q, 0, PGSQL_ASSOC);
+                        $count+= $result["count"];
+                        $this->debuginfo["query"] = $sql;
+                        $this->debuginfo["delay"] = sprintf("%.03fs", microtime(true) - $mb);
                     }
                 }
-                $this->count = $count;
-                return $count;
-            } else {
-                $this->count = count($fld->getContent());
             }
-        } else $this->count();
+            $this->count = $count;
+            return $count;
+        } else {
+            $this->count = count($fld->getContent());
+        }
+        
         return $this->count;
     }
     /**
@@ -260,14 +262,14 @@ class SearchDoc
      *
      * @api Add join condition
      * @code
-      $s=new searchDoc();
-      $s->trash='only';
-      $s->join("id = dochisto(id)");
-      $s->addFilter("dochisto.uid = %d",$this->getSystemUserId());
-      // search all document which has been deleted by search DELETE code in history
-      $s->addFilter("dochisto.code = 'DELETE'");
-      $s->distinct=true;
-      $result= $s->search();
+     $s=new searchDoc();
+     $s->trash='only';
+     $s->join("id = dochisto(id)");
+     $s->addFilter("dochisto.uid = %d",$this->getSystemUserId());
+     // search all document which has been deleted by search DELETE code in history
+     $s->addFilter("dochisto.code = 'DELETE'");
+     $s->distinct=true;
+     $result= $s->search();
      * @endcode
      * @param string $jointure
      * @throws Dcp\Exception
@@ -293,11 +295,13 @@ class SearchDoc
      */
     public function count()
     {
-        if ($this->count == - 1) {
-            if ($this->searchmode == "ITEM") {
-                $this->count = $this->countDocs();
-            } else {
-                $this->count = count($this->result);
+        if ($this->isExecuted()) {
+            if ($this->count == - 1) {
+                if ($this->searchmode == "ITEM") {
+                    $this->count = $this->countDocs();
+                } else {
+                    $this->count = count($this->result);
+                }
             }
         }
         return $this->count;
@@ -345,7 +349,7 @@ class SearchDoc
      */
     public function isExecuted()
     {
-        return ($this->result != false);
+        return ($this->result !== false);
     }
     /**
      * Return sql filters used for request
@@ -417,12 +421,16 @@ class SearchDoc
         $this->index = 0;
         $this->searchmode = $this->mode;
         if ($this->mode == "ITEM") {
-            // change search mode because ITEM mode not supported for Specailized searches
-            $fld = new_Doc($this->dbaccess, $this->dirid);
-            if ($fld->fromid == getFamIdFromName($this->dbaccess, "SSEARCH")) $this->searchmode = "TABLE";
+            if ($this->dirid) {
+                // change search mode because ITEM mode not supported for Specailized searches
+                $fld = new_Doc($this->dbaccess, $this->dirid);
+                if ($fld->fromid == getFamIdFromName($this->dbaccess, "SSEARCH")) {
+                    $this->searchmode = "TABLE";
+                }
+            }
         }
         $debuginfo = array();
-        
+        $this->count = - 1;
         $this->result = internalGetDocCollection($this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters() , $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
         if ($this->searchmode == "TABLE") $this->count = count($this->result); // memo cause array is unset by shift
         $this->debuginfo = $debuginfo;

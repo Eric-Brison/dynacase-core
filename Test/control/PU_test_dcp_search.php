@@ -301,7 +301,6 @@ class TestSearch extends TestCaseDcpDocument
         $s = new \SearchDoc(self::$dbaccess, $family);
         $s->onlyCount();
         
-        $s->reset();
         if ($criteria) $s->addFilter($criteria, $arg);
         
         $t = $s->search();
