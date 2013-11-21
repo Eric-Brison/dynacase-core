@@ -40,7 +40,7 @@ class VaultDiskFs extends DbObj
     var $dbtable_tmpl = "vaultdiskfs%s";
     var $order_by = "";
     var $seq_tmpl = "seq_id_vaultdiskfs%s";
-    var $sqlcreate_tmpl = "
+    var $sqlcreate_tmpl = <<<EOF
            create table vaultdiskfs%s  ( id_fs     int not null,
                                  fsname text,
                                  primary key (id_fs),
@@ -51,7 +51,11 @@ class VaultDiskFs extends DbObj
                                  max_entries_by_dir   int,
                                  r_path varchar(2048)
                                );
-           create sequence seq_id_vaultdiskfs%s start 10;";
+           create sequence seq_id_vaultdiskfs%s start 10;
+
+EOF;
+    
+    
     /**
      * @var int file system id (10 is the first)
      */
@@ -66,6 +70,11 @@ class VaultDiskFs extends DbObj
      * @var string path to vault root
      */
     public $r_path;
+    private $htaccess = <<<EOF
+Order Allow,Deny
+Deny from all
+
+EOF;
     // --------------------------------------------------------------------
     function __construct($dbaccess, $id_fs = '')
     {
@@ -78,20 +87,23 @@ class VaultDiskFs extends DbObj
     
     function createArch($maxsize, $path, $fsname = "-")
     {
-        $err = '';
-        if (!is_dir($path)) $err = sprintf(_("%s directory not found") , $path);
-        elseif (!is_writable($path)) $err = sprintf(_("%s directory not writable") , $path);
-        if ($err == "") {
-            $this->fsname = $fsname;
-            $this->max_size = $maxsize;
-            $this->free_size = $maxsize;
-            $this->subdir_cnt_bydir = VAULT_MAXDIRBYDIR;
-            $this->subdir_deep = 1;
-            $this->max_entries_by_dir = VAULT_MAXENTRIESBYDIR;
-            $this->r_path = $path;
-            $err = $this->Add();
+        if (!is_dir($path)) {
+            return sprintf(_("%s directory not found") , $path);
         }
-        return $err;
+        if (!is_writable($path)) {
+            return sprintf(_("%s directory not writable") , $path);
+        }
+        if (($err = $this->setHtaccess($path)) != "") {
+            return $err;
+        }
+        $this->fsname = $fsname;
+        $this->max_size = $maxsize;
+        $this->free_size = $maxsize;
+        $this->subdir_cnt_bydir = VAULT_MAXDIRBYDIR;
+        $this->subdir_deep = 1;
+        $this->max_entries_by_dir = VAULT_MAXENTRIESBYDIR;
+        $this->r_path = $path;
+        return $this->Add();
     }
     /**
      * verify if fs is availlable (file system is mounted)
@@ -228,5 +240,16 @@ class VaultDiskFs extends DbObj
         }
         return '';
     }
+    // --------------------------------------------------------------------
+    private function setHtaccess($path)
+    {
+        $htaccess = sprintf("%s/.htaccess", $path);
+        if (file_exists($htaccess)) {
+            return "";
+        }
+        if (file_put_contents($htaccess, $this->htaccess) === false) {
+            return sprintf(_("Error writing content to '%s'.") , $htaccess);
+        }
+        return "";
+    }
 }
-?>

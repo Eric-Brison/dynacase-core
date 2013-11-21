@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ -z "$wpub" ]; then
+    echo "Undefined or empty wpub environment variable!"
+    exit 1
+fi
+
+if [ -z "$pgservice_core" ]; then
+    echo "Undefined or empty pgservice_core!"
+    exit 1
+fi
+
+_IFS=$IFS
+IFS=$'\n'
+
+HTACCESS_LIST=($(PGSERVICE="$pgservice_core" psql -tA -c "SELECT r_path || '/.htaccess' FROM vaultdiskfsstorage"))
+
+for HTACCESS in ${HTACCESS_LIST[*]}; do
+    if [ -z "$HTACCESS" ]; then
+        continue;
+    fi
+    if [ -e "$HTACCESS" ]; then
+        continue;
+    fi
+    cat <<'EOF' > "$HTACCESS"
+Order Allow,Deny
+Deny from all
+EOF
+done
+
+IFS=$_IFS
