@@ -363,7 +363,13 @@ class SearchDoc
      */
     public function search()
     {
-        if ($this->getError()) return array();
+        if ($this->getError()) {
+            if ($this->mode == "ITEM") {
+                return null;
+            } else {
+                return array();
+            }
+        }
         if ($this->fromid) {
             if (!is_numeric($this->fromid)) {
                 $fromid = getFamIdFromName($this->dbaccess, $this->fromid);
