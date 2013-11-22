@@ -139,7 +139,7 @@ class SearchDoc
     /**
      * @var bool|array
      */
-    private $result=false;
+    private $result = false;
     private $searchmode;
     /**
      * @var string pertinence order in case of full searches
@@ -155,6 +155,7 @@ class SearchDoc
      */
     
     private $resultQPos = 0;
+    protected $originalDirId = 0;
     
     protected $returnsFields = array();
     /**
@@ -176,6 +177,8 @@ class SearchDoc
      * @api send query search and only count results
      *
      * @return int the number of results
+     * @throws Dcp\SearchDoc\Exception
+     * @throws Dcp\Db\Exception
      */
     public function onlyCount()
     {
@@ -185,6 +188,8 @@ class SearchDoc
         if ($fld->fromid != getFamIdFromName($this->dbaccess, "SSEARCH")) {
             if ($this->debug) $debuginfo = array();
             else $debuginfo = null;
+            
+            $this->recursiveSearchInit();
             $tqsql = $this->getQueries();
             $this->debuginfo["query"] = $tqsql[0];
             $count = 0;
@@ -371,6 +376,8 @@ class SearchDoc
      * the query is sent to database
      * @api send query
      * @return array|null|SearchDoc array of documents if no setObjectReturn else itself
+     * @throws Dcp\SearchDoc\Exception
+     * @throws Dcp\Db\Exception
      */
     public function search()
     {
@@ -405,19 +412,7 @@ class SearchDoc
             if ($this->only) $this->fromid = - (abs($fromid));
             else $this->fromid = $fromid;
         }
-        if ($this->recursiveSearch && $this->dirid) {
-            /**
-             * @var DocSearch $tmps
-             */
-            $tmps = createTmpDoc($this->dbaccess, "SEARCH");
-            $tmps->setValue("se_idfld", $this->dirid);
-            $tmps->setValue("se_latest", "yes");
-            $err = $tmps->add();
-            if ($err == "") {
-                $tmps->addQuery($tmps->getQuery()); // compute internal sql query
-                $this->dirid = $tmps->id;
-            }
-        }
+        $this->recursiveSearchInit();
         $this->index = 0;
         $this->searchmode = $this->mode;
         if ($this->mode == "ITEM") {
@@ -531,13 +526,19 @@ class SearchDoc
      * set recursive mode for folder searches
      * can be use only if collection set if a static folder
      * @param bool $recursiveMode set to true to use search in sub folders when collection is folder
+     * @param int $level Indicate depth to inspect subfolders
+     * @throws Dcp\SearchDoc\Exception
      * @api set recursive mode for folder searches
      * @see SearchDoc::useCollection
      * @return void
      */
-    public function setRecursiveSearch($recursiveMode = true)
+    public function setRecursiveSearch($recursiveMode = true, $level = 2)
     {
         $this->recursiveSearch = $recursiveMode;
+        if (!is_int($level) || $level < 0) {
+            throw new \Dcp\SearchDoc\Exception("SD0006", $level);
+        }
+        $this->folderRecursiveLevel = $level;
     }
     /**
      * return debug info if debug mode enabled
@@ -599,6 +600,7 @@ class SearchDoc
         $dir = new_doc($this->dbaccess, $dirid);
         if ($dir->isAlive()) {
             $this->dirid = $dir->initid;
+            $this->originalDirId = $this->dirid;
             return true;
         }
         $this->debuginfo["error"] = sprintf(_("collection %s not exists") , $dirid);
@@ -1114,6 +1116,29 @@ class SearchDoc
             }
         } else {
             $this->excludeFilter = '';
+        }
+    }
+    
+    protected function recursiveSearchInit()
+    {
+        if ($this->recursiveSearch && $this->dirid) {
+            if (!$this->originalDirId) {
+                $this->originalDirId = $this->dirid;
+            }
+            /**
+             * @var DocSearch $tmps
+             */
+            $tmps = createTmpDoc($this->dbaccess, "SEARCH");
+            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_famid, $this->fromid);
+            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_idfld, $this->originalDirId);
+            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_latest, "yes");
+            $err = $tmps->add();
+            if ($err == "") {
+                $tmps->addQuery($tmps->getQuery()); // compute internal sql query
+                $this->dirid = $tmps->id;
+            } else {
+                throw new \Dcp\SearchDoc\Exception("SD0005", $err);
+            }
         }
     }
     /**
