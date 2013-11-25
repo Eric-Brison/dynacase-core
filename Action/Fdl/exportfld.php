@@ -374,7 +374,10 @@ function exportProfil($fout, $dbaccess, $docid)
     }
     // add extended Acls
     if ($doc->extendedAcls) {
-        simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d", $doc->profid) , $eAcls);
+        $extAcls=array_keys($doc->extendedAcls);
+        $aclCond=GetSqlCond($extAcls, "acl");
+        simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s", $doc->profid, $aclCond) , $eAcls);
+
         foreach ($eAcls as $aAcl) {
             $uid = $aAcl["userid"];
             if ($uid >= STARTIDVGROUP) {
