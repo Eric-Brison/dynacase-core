@@ -34,6 +34,10 @@ define("GADMIN_ID", 4);
  */
 class Account extends DbObj
 {
+    const ANONYMOUS_ID = ANONYMOUS_ID;
+    const GALL_ID = GALL_ID;
+    const GADMIN_ID = GADMIN_ID;
+    
     var $fields = array(
         "id",
         "lastname",
@@ -284,7 +288,7 @@ create sequence seq_id_users start 10;";
         //Add default group to user
         $group = new group($this->dbaccess);
         $group->iduser = $this->id;
-        $gid = GALL_ID; //2 = default group
+        $gid = Account::GALL_ID; //2 = default group
         $group->idgroup = $gid;
         // not added here it is added by freedom (generally)
         //    if (! $this->fid)   $group->Add();
@@ -676,7 +680,7 @@ union
         $this->Add(true);
         $group->iduser = $this->id;
         // Create default group
-        $this->id = GALL_ID;
+        $this->id = Account::GALL_ID;
         $this->lastname = "Utilisateurs";
         $this->firstname = "";
         $this->login = "all";
@@ -686,7 +690,7 @@ union
         $group->idgroup = $this->id;
         $group->Add(true);
         // Create anonymous user
-        $this->id = ANONYMOUS_ID;
+        $this->id = Account::ANONYMOUS_ID;
         $this->lastname = "anonymous";
         $this->firstname = "guest";
         $this->login = "anonymous";
@@ -694,15 +698,15 @@ union
         $this->accounttype = "U";
         $this->Add(true);
         // Create admin group
-        $this->id = GADMIN_ID;
+        $this->id = Account::GADMIN_ID;
         $this->lastname = "Administrateurs";
         $this->firstname = "";
         $this->login = "gadmin";
         $this->isgroup = "Y";
         $this->accounttype = "G";
         $this->Add(true);
-        $group->idgroup = GALL_ID;
-        $group->iduser = GADMIN_ID;
+        $group->idgroup = Account::GALL_ID;
+        $group->iduser = Account::GADMIN_ID;
         $group->Add(true);
         // Store error messages
         

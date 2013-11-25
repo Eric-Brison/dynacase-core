@@ -859,7 +859,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             ));
             else $pstyle = new Param($this->dbaccess, array(
                 "STYLE",
-                Param::PARAM_USER . ANONYMOUS_ID,
+                Param::PARAM_USER . Account::ANONYMOUS_ID,
                 "1"
             ));
             if (!$pstyle->isAffected()) $pstyle = new Param($this->dbaccess, array(
@@ -1263,7 +1263,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                         $this->Add();
                     }
                     $this->param = new Param();
-                    $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : ANONYMOUS_ID);
+                    $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : Account::ANONYMOUS_ID);
                 }
             } else {
                 $this->log->info("can't init $name");
@@ -1511,11 +1511,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         foreach ($res as $acl) {
             $permission = new Permission($this->dbaccess);
-            if ($permission->Exists(GALL_ID, $this->id, $acl['id'])) {
+            if ($permission->Exists(Account::GALL_ID, $this->id, $acl['id'])) {
                 continue;
             }
             $permission->Affect(array(
-                'id_user' => GALL_ID,
+                'id_user' => Account::GALL_ID,
                 'id_application' => $this->id,
                 'id_acl' => $acl['id']
             ));

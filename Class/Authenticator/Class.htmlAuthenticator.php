@@ -107,7 +107,7 @@ class htmlAuthenticator extends Authenticator
         $session = $this->getAuthSession();
         /* Force removal of username if it already exists on the session */
         $session->register('username', '');
-        $session->setuid(ANONYMOUS_ID);
+        $session->setuid(Account::ANONYMOUS_ID);
         if (!isset($args['redirect_uri'])) {
             $args['redirect_uri'] = $_SERVER['REQUEST_URI'];
         }
