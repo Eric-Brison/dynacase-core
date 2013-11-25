@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-30 09:44+0100\n"
-"PO-Revision-Date: 2013-09-27 16:25+0200\n"
+"POT-Creation-Date: 2013-11-21 12:27+0100\n"
+"PO-Revision-Date: 2013-11-21 14:41+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -60,9 +60,6 @@ msgstr " famille"
 
 msgid " folder containt"
 msgstr " contenu du dossier"
-
-msgid " from any folder"
-msgstr "dans l'ensemble des dossiers"
 
 msgid " from current folder"
 msgstr "à partir du dossier courant"
@@ -872,6 +869,10 @@ msgid "Cannot open document"
 msgstr "Ne peut ouvrir le document"
 
 #, php-format
+msgid "Cannot see attribute %s"
+msgstr "Ne peut voir l'attribut %s"
+
+#, php-format
 msgid "Cannot set logical name %s because object is not affected"
 msgstr "Le nom logique %s ne peut être affecté qu'après création du document"
 
@@ -1056,9 +1057,6 @@ msgstr "Choix des colonnes à exporter"
 
 msgid "Choose columns"
 msgstr "Choisirs les colonnes"
-
-msgid "Choose document before set options"
-msgstr "Choisissez un document avant de choisir les options"
 
 msgid "Choose export column"
 msgstr "Choix des colonnes à exporter"
@@ -1428,6 +1426,10 @@ msgid "Document %s is not alive"
 msgstr "Le document [%s] n'est pas vivant"
 
 #, php-format
+msgid "Document %s not found"
+msgstr "Document %s non trouvé"
+
+#, php-format
 msgid "Document %s umounted"
 msgstr "Document %s enlevé"
 
@@ -1792,6 +1794,10 @@ msgstr "Erreur lors de l'ouverture %s du fichier %s"
 #, php-format
 msgid "Error sending file"
 msgstr "Erreur lors de l'envoi du fichier"
+
+#, php-format
+msgid "Error writing content to '%s'."
+msgstr "Erreur d'écriture du contenu dans '%s'."
 
 #, php-format
 msgid "Error writing to ouput file '%s'."
@@ -2254,9 +2260,6 @@ msgstr "Suppression de documents"
 
 msgid "Freedom group accessibilities"
 msgstr "Droits des groupes Dynacase"
-
-msgid "Freedom imodification"
-msgstr "Modification de documents virtuels"
 
 msgid "Freedom initialisation"
 msgstr "Initialisation dynacase"
@@ -2898,7 +2901,7 @@ msgid "No privilege to change acls"
 msgstr "Pas de privilège pour modifier les droits"
 
 msgid "No privilege to set private profil"
-msgstr ""
+msgstr "Pas de privilège pour mettre un profil privé"
 
 msgid "No result"
 msgstr "Pas de résultats"
@@ -2962,9 +2965,6 @@ msgstr "Octobre"
 
 msgid "Offline menu"
 msgstr "Offline"
-
-msgid "Ok"
-msgstr "Ok"
 
 #, php-format
 msgid "One document for <strong>%s</strong>%s"
@@ -3171,9 +3171,6 @@ msgstr "Profil"
 msgid "Profile of"
 msgstr "Profil de"
 
-msgid "Progress bar"
-msgstr "Barre de progression"
-
 msgid "Properties"
 msgstr "Propriétés"
 
@@ -3193,9 +3190,6 @@ msgstr "Repertoire d'installation"
 #, php-format
 msgid "Purge archive"
 msgstr "Purge de l'archive"
-
-msgid "Quick Save"
-msgstr "Sauver vite"
 
 msgid "REPORT_pivot"
 msgstr "REPORT_pivot"
@@ -3864,9 +3858,6 @@ msgstr "vers privé"
 msgid "Twprocess_public"
 msgstr "vers public"
 
-msgid "Udm_Find Error : "
-msgstr "Udm_Find_Error : "
-
 msgid "Unable to store the file"
 msgstr "Impossible d'enregistrer le fichier"
 
@@ -3890,7 +3881,7 @@ msgstr "Graphe non-directionnel"
 
 #, php-format
 msgid "Unlabeled menu (%s)"
-msgstr ""
+msgstr "Menu sans label (%s)"
 
 #, php-format
 msgid "Unlabeled view (%s)"
@@ -4409,9 +4400,6 @@ msgstr "pas de courriel"
 msgid "affect user to a document"
 msgstr "affecter un utilisateur à un document"
 
-msgid "all"
-msgstr "tous les mots"
-
 #, php-format
 msgid "all columns are hiddens"
 msgstr "toutes les colonnes sont cachées"
@@ -4450,9 +4438,6 @@ msgstr "et ajout dans dossier %s"
 #. _COMMENT Sharp Label
 msgid "answer"
 msgstr "Répondre"
-
-msgid "any"
-msgstr "un des mots"
 
 msgid "any families"
 msgstr "toutes familles"
@@ -4559,7 +4544,7 @@ msgstr "attribut %s non trouvé pour le document %s [%d]"
 
 #, php-format
 msgid "attribute \"%s\" is not a part of array \"%s\""
-msgstr ""
+msgstr "l'attribut \"%s\" ne fait pas partie du array \"%s\""
 
 #, php-format
 msgid "attribute %s"
@@ -4686,9 +4671,6 @@ msgstr "entre"
 msgid "bookmark folders"
 msgstr "signets des dossiers"
 
-msgid "boolean"
-msgstr "booléen"
-
 msgid "callbackreqpasswd_mail_hello"
 msgstr "Bonjour"
 
@@ -4698,14 +4680,11 @@ msgstr ""
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
-"[CORE_EXTERNURL]</a>"
+"<p>Vous pouvez vous connecter sur <a href="
+"\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a>"
 
 msgid "can't access file"
 msgstr "Accès au fichier impossible"
-
-msgid "can't connect mnogosearch db"
-msgstr "connexion à la base de données mnogosearch impossible"
 
 msgid "cancel"
 msgstr "Annuler"
@@ -5022,9 +5001,6 @@ msgstr "changement vers la version %s"
 msgid "changeCheckBoolClasses Error"
 msgstr "Erreur changeCheckBoolClasses"
 
-msgid "changed"
-msgstr "modifié"
-
 msgid "changes"
 msgstr "modifications"
 
@@ -5071,9 +5047,6 @@ msgstr "cliquer sur le bouton .. pour lié le document correctement"
 
 msgid "clic to the [...] button to link document correctly"
 msgstr "cliquer sur le bouton [...] pour lié le document correctement"
-
-msgid "click to change option"
-msgstr "Cliquez pour changer les options"
 
 msgid "client logo"
 msgstr "logo du client"
@@ -5664,9 +5637,6 @@ msgstr "contrôle dynamique"
 msgid "edit"
 msgstr "Modifier"
 
-msgid "edit args of actions in workflow edition "
-msgstr "édition des arguments des actions dans l'édition des cycles"
-
 msgid "edit attribute inline"
 msgstr "Éditer les attribut en ligne"
 
@@ -5692,12 +5662,6 @@ msgstr "éditer les propriétés du document"
 
 msgid "edit family preference"
 msgstr "éditer les préférences par familles"
-
-msgid "edit icard "
-msgstr "éditer une carte virtuelle"
-
-msgid "edit icard 2 "
-msgstr "éditer une carte virtuelle 2"
 
 msgid "edit import vcard"
 msgstr "importation format Vcard"
@@ -5725,9 +5689,6 @@ msgstr "éditer pour l'ajout ou modification de catégorie"
 
 msgid "edit to change category"
 msgstr "édition pour changer de catégorie"
-
-msgid "edit workflow transitions "
-msgstr "édition des transitions des cycles"
 
 msgid "edition"
 msgstr "édition"
@@ -5759,9 +5720,6 @@ msgstr "fichier vide"
 
 msgid "enavpreview"
 msgstr "publi-pévisualisation"
-
-msgid "ending"
-msgstr "se terminant par..."
 
 msgid "enum attribute list"
 msgstr "liste des attributs énumérés"
@@ -6103,16 +6061,13 @@ msgid "freedom global search"
 msgstr "Recherche générale dynacase"
 
 msgid "french"
-msgstr ""
+msgstr "Français"
 
 msgid "from current folder"
 msgstr "à partir du dossier courant"
 
 msgid "fromdate"
 msgstr "date de début"
-
-msgid "full phrase"
-msgstr "la phrase entière"
 
 msgid "fulltext"
 msgstr "plein texte"
@@ -6403,9 +6358,6 @@ msgstr "insertion de document dans un dossier"
 msgid "interface insert document in a folder"
 msgstr "interface d'insertion de documents dans un dossier"
 
-msgid "interface to change document option"
-msgstr "interface pour changer les options d'un document"
-
 msgid "interface to change state"
 msgstr "Interface pour le changement d'état"
 
@@ -6619,9 +6571,6 @@ msgstr "la méthode %s n'a pas été exécutée : %s"
 msgid "method %s not found"
 msgstr "méthode %s non trouvée"
 
-msgid "mnogosearch php extension not loaded"
-msgstr "extension php mnogosearch non chargée"
-
 msgid "mode to navigate in folders"
 msgstr "mode de navigation pour les dossiers"
 
@@ -6661,9 +6610,6 @@ msgstr "Modifier les valeurs par défaut"
 msgid "modify document"
 msgstr "Modifier le document"
 
-msgid "modify document option"
-msgstr "modifier les options d'un document"
-
 msgid "modify enum items"
 msgstr "modifier les énumérés"
 
@@ -6700,10 +6646,6 @@ msgstr "modifier les familles préférées"
 #. _COMMENT Sharp Label
 msgid "modifyacl"
 msgstr "modifier les droits"
-
-#, php-format
-msgid "modoption: document [%d] is not alive"
-msgstr "modoption: document [%d] n'est pas en vie"
 
 msgid "more families"
 msgstr "toutes les familles"
@@ -7172,9 +7114,6 @@ msgstr "Ouvrir la chemise"
 msgid "operator [%s] not allowed"
 msgstr "l'opérateur {%s] n'est pas autorisé"
 
-msgid "option: "
-msgstr "option: "
-
 msgid "options"
 msgstr "options"
 
@@ -7546,7 +7485,7 @@ msgstr "actualisation %s"
 
 #, php-format
 msgid "regeneration of file template %s"
-msgstr ""
+msgstr "Régénération du fichier de template %s"
 
 #, php-format
 msgid "reinit all attributes"
@@ -7722,9 +7661,6 @@ msgstr "recherche de document pour l'insertion dans un dossier"
 
 msgid "search dynacase documents"
 msgstr "rechercher des documents..."
-
-msgid "search for "
-msgstr "recherche de "
 
 msgid "search fulltext"
 msgstr "recherche plein texte"
@@ -7933,9 +7869,6 @@ msgstr "rapide"
 msgid "split view mode by family"
 msgstr "mode de découpage par famille"
 
-msgid "starting"
-msgstr "commençant par..."
-
 msgid "state"
 msgstr "état"
 
@@ -7979,9 +7912,6 @@ msgstr ""
 "<p>Votre demande a bien été prise en compte.</p>\n"
 "<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour "
 "finaliser la ré-initialisation de votre mot de passe.</p>"
-
-msgid "substring"
-msgstr "contenant..."
 
 msgid "suggestions"
 msgstr "suggestions"
@@ -8597,9 +8527,6 @@ msgstr "voir le document"
 msgid "view document in extjs"
 msgstr "Voir le document en extjs"
 
-msgid "view document option"
-msgstr "voir les options d'un document"
-
 msgid "view equality attributes"
 msgstr "Voir les attributs inchangés"
 
@@ -8693,9 +8620,6 @@ msgstr ""
 #, php-format
 msgid "with these conditions"
 msgstr "avec les conditions suivantes"
-
-msgid "word"
-msgstr "entiers"
 
 msgid "wordedit"
 msgstr "édition par traitement de texte"
@@ -8848,6 +8772,9 @@ msgstr "l'identifiant système {left} est différent de {right}"
 msgid "{left} title include {right}"
 msgstr "le titre de {left} inclus {right}"
 
+#~ msgid " from any folder"
+#~ msgstr "dans l'ensemble des dossiers"
+
 #~ msgid "%s all "
 #~ msgstr "%s tout"
 
@@ -8865,6 +8792,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Cancel change"
 #~ msgstr "Annuler les modifications"
+
+#~ msgid "Choose document before set options"
+#~ msgstr "Choisissez un document avant de choisir les options"
 
 #, fuzzy
 #~ msgid "Choose report column"
@@ -8884,6 +8814,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "L'élément ne peut pas être parfaitement analysé, des erreurs peuvent "
 #~ "apparaître lors de l'importation"
+
+#~ msgid "Freedom imodification"
+#~ msgstr "Modification de documents virtuels"
 
 #~ msgid "Go"
 #~ msgstr "Go"
@@ -8909,11 +8842,20 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Object Permission : permission %s needed (%s) - # %d"
 #~ msgstr "Permission objet :: permission %s requise (%s) - n° %d"
 
+#~ msgid "Ok"
+#~ msgstr "Ok"
+
 #~ msgid "Open in new window"
 #~ msgstr "Ouvrir dans une nouvelle fenêtre"
 
+#~ msgid "Progress bar"
+#~ msgstr "Barre de progression"
+
 #~ msgid "Purge history"
 #~ msgstr "Nettoyage de l'historique"
+
+#~ msgid "Quick Save"
+#~ msgstr "Sauver vite"
 
 #~ msgid "Reference Manuel"
 #~ msgstr "Manuel de référence"
@@ -8982,6 +8924,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Two cents"
 #~ msgstr "Deux centimes"
 
+#~ msgid "Udm_Find Error : "
+#~ msgstr "Udm_Find_Error : "
+
 #~ msgid "Unattach Timers"
 #~ msgstr "Désactiver les minuteurs"
 
@@ -8999,6 +8944,18 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "alive"
 #~ msgstr "vivant"
+
+#~ msgid "all"
+#~ msgstr "tous les mots"
+
+#~ msgid "any"
+#~ msgstr "un des mots"
+
+#~ msgid "boolean"
+#~ msgstr "booléen"
+
+#~ msgid "can't connect mnogosearch db"
+#~ msgstr "connexion à la base de données mnogosearch impossible"
 
 #~ msgid "cannot access to  database $db\n"
 #~ msgstr "accès à la base de données $db refusé\n"
@@ -9019,6 +8976,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "cannot update fixed document"
 #~ msgstr "Un document figé ne peut pas être mis à jour"
+
+#~ msgid "changed"
+#~ msgstr "modifié"
+
+#~ msgid "click to change option"
+#~ msgstr "Cliquez pour changer les options"
 
 #~ msgid "close forum"
 #~ msgstr "Fermer le forum"
@@ -9056,14 +9019,29 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "disable/enable forum on documents"
 #~ msgstr "Autoriser/interdire les forums sur les documents"
 
+#~ msgid "edit args of actions in workflow edition "
+#~ msgstr "édition des arguments des actions dans l'édition des cycles"
+
 #~ msgid "edit forum"
 #~ msgstr " éditer le forum"
+
+#~ msgid "edit icard "
+#~ msgstr "éditer une carte virtuelle"
+
+#~ msgid "edit icard 2 "
+#~ msgstr "éditer une carte virtuelle 2"
+
+#~ msgid "edit workflow transitions "
+#~ msgstr "édition des transitions des cycles"
 
 #~ msgid "empty password : not changed"
 #~ msgstr "mot de passe vide : non changé"
 
 #~ msgid "enable forum"
 #~ msgstr "Autoriser les forums"
+
+#~ msgid "ending"
+#~ msgstr "se terminant par..."
 
 #~ msgid "error ::addFile %s %s"
 #~ msgstr "erreur ::addfile %s %s"
@@ -9110,8 +9088,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "forum_id"
 #~ msgstr "identifiant du forum"
 
+#~ msgid "full phrase"
+#~ msgstr "la phrase entière"
+
 #~ msgid "goto forum"
 #~ msgstr "aller au forum"
+
+#~ msgid "interface to change document option"
+#~ msgstr "interface pour changer les options d'un document"
 
 #~ msgid "label"
 #~ msgstr "désignation"
@@ -9121,6 +9105,15 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "mini view"
 #~ msgstr "mini vue"
+
+#~ msgid "mnogosearch php extension not loaded"
+#~ msgstr "extension php mnogosearch non chargée"
+
+#~ msgid "modify document option"
+#~ msgstr "modifier les options d'un document"
+
+#~ msgid "modoption: document [%d] is not alive"
+#~ msgstr "modoption: document [%d] n'est pas en vie"
 
 #~ msgid "new forum answer"
 #~ msgstr "ajouter une entrée"
@@ -9137,6 +9130,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "open forum"
 #~ msgstr "Ouvrir le forum"
 
+#~ msgid "option: "
+#~ msgstr "option: "
+
 #~ msgid "password are not identicals : not changed"
 #~ msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
 
@@ -9152,6 +9148,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "save forum edition"
 #~ msgstr "sauver les modifications"
 
+#~ msgid "search for "
+#~ msgstr "recherche de "
+
 #~ msgid "search online help"
 #~ msgstr "Aide à la recherche"
 
@@ -9164,8 +9163,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "squirrelmail install dir (relative)"
 #~ msgstr "squirrelmail:  répertoire d'installation (relatif)"
 
+#~ msgid "starting"
+#~ msgstr "commençant par..."
+
 #~ msgid "submenu"
 #~ msgstr "sous-menu"
+
+#~ msgid "substring"
+#~ msgstr "contenant..."
 
 #~ msgid "switch search mode (basic/advanced)"
 #~ msgstr "recherche simple / recherche avancée"
@@ -9179,8 +9184,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "unknown login : passwd unchanged"
 #~ msgstr "login incoonu : mot de passe inchangé"
 
+#~ msgid "view document option"
+#~ msgstr "voir les options d'un document"
+
 #~ msgid "view object acl"
 #~ msgstr "voir les droits"
+
+#~ msgid "word"
+#~ msgstr "entiers"
 
 #~ msgid "you don't have privilege to edit forum for document %s"
 #~ msgstr "vous n'avez pas les droits pour modifier le forum du document %s"

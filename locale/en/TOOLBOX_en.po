@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-30 09:44+0100\n"
+"POT-Creation-Date: 2013-11-21 12:27+0100\n"
 "PO-Revision-Date: 2013-10-25 12:31+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -56,9 +56,6 @@ msgid " familly"
 msgstr ""
 
 msgid " folder containt"
-msgstr ""
-
-msgid " from any folder"
 msgstr ""
 
 msgid " from current folder"
@@ -853,6 +850,10 @@ msgid "Cannot open document"
 msgstr ""
 
 #, php-format
+msgid "Cannot see attribute %s"
+msgstr ""
+
+#, php-format
 msgid "Cannot set logical name %s because object is not affected"
 msgstr ""
 
@@ -1027,9 +1028,6 @@ msgid "Choose column export"
 msgstr ""
 
 msgid "Choose columns"
-msgstr ""
-
-msgid "Choose document before set options"
 msgstr ""
 
 msgid "Choose export column"
@@ -1398,6 +1396,10 @@ msgid "Document %s is not alive"
 msgstr ""
 
 #, php-format
+msgid "Document %s not found"
+msgstr ""
+
+#, php-format
 msgid "Document %s umounted"
 msgstr ""
 
@@ -1745,6 +1747,10 @@ msgid "Error sending file"
 msgstr ""
 
 #, php-format
+msgid "Error writing content to '%s'."
+msgstr ""
+
+#, php-format
 msgid "Error writing to ouput file '%s'."
 msgstr ""
 
@@ -1921,8 +1927,8 @@ msgstr ""
 "        </ul>\n"
 "    </li>\n"
 "    <li>\n"
-"        <em class=\"help-operator\">(</em> and <em class=\"help-operator\">)"
-"</em><br/>\n"
+"        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
+"\">)</em><br/>\n"
 "        Parenthesis express priorities between operators.\n"
 "        <ul>\n"
 "            <li>\n"
@@ -2163,9 +2169,6 @@ msgstr "Deletion of documents"
 
 msgid "Freedom group accessibilities"
 msgstr "Dynacase group rights"
-
-msgid "Freedom imodification"
-msgstr "Modify virtual document"
 
 msgid "Freedom initialisation"
 msgstr "Dynacase initialization"
@@ -2851,9 +2854,6 @@ msgstr ""
 msgid "Offline menu"
 msgstr ""
 
-msgid "Ok"
-msgstr ""
-
 #, php-format
 msgid "One document for <strong>%s</strong>%s"
 msgstr ""
@@ -3055,9 +3055,6 @@ msgstr ""
 msgid "Profile of"
 msgstr ""
 
-msgid "Progress bar"
-msgstr ""
-
 msgid "Properties"
 msgstr ""
 
@@ -3076,9 +3073,6 @@ msgstr ""
 
 #, php-format
 msgid "Purge archive"
-msgstr ""
-
-msgid "Quick Save"
 msgstr ""
 
 msgid "REPORT_pivot"
@@ -3712,9 +3706,6 @@ msgstr ""
 msgid "Twprocess_public"
 msgstr ""
 
-msgid "Udm_Find Error : "
-msgstr ""
-
 msgid "Unable to store the file"
 msgstr ""
 
@@ -4247,9 +4238,6 @@ msgstr ""
 msgid "affect user to a document"
 msgstr ""
 
-msgid "all"
-msgstr ""
-
 #, php-format
 msgid "all columns are hiddens"
 msgstr ""
@@ -4287,9 +4275,6 @@ msgstr ""
 
 #. _COMMENT Sharp Label
 msgid "answer"
-msgstr ""
-
-msgid "any"
 msgstr ""
 
 msgid "any families"
@@ -4519,9 +4504,6 @@ msgstr ""
 msgid "bookmark folders"
 msgstr ""
 
-msgid "boolean"
-msgstr ""
-
 msgid "callbackreqpasswd_mail_hello"
 msgstr "Hello"
 
@@ -4535,9 +4517,6 @@ msgstr ""
 "p>"
 
 msgid "can't access file"
-msgstr ""
-
-msgid "can't connect mnogosearch db"
 msgstr ""
 
 msgid "cancel"
@@ -4839,9 +4818,6 @@ msgstr ""
 msgid "changeCheckBoolClasses Error"
 msgstr ""
 
-msgid "changed"
-msgstr ""
-
 msgid "changes"
 msgstr ""
 
@@ -4887,9 +4863,6 @@ msgid "clic to the ... button to link document correctly"
 msgstr ""
 
 msgid "clic to the [...] button to link document correctly"
-msgstr ""
-
-msgid "click to change option"
 msgstr ""
 
 msgid "client logo"
@@ -5479,9 +5452,6 @@ msgstr ""
 msgid "edit"
 msgstr "Edit"
 
-msgid "edit args of actions in workflow edition "
-msgstr ""
-
 msgid "edit attribute inline"
 msgstr ""
 
@@ -5506,12 +5476,6 @@ msgid "edit document properties"
 msgstr ""
 
 msgid "edit family preference"
-msgstr ""
-
-msgid "edit icard "
-msgstr ""
-
-msgid "edit icard 2 "
 msgstr ""
 
 msgid "edit import vcard"
@@ -5539,9 +5503,6 @@ msgid "edit to add or modify category"
 msgstr ""
 
 msgid "edit to change category"
-msgstr ""
-
-msgid "edit workflow transitions "
 msgstr ""
 
 msgid "edition"
@@ -5573,9 +5534,6 @@ msgid "empty file"
 msgstr ""
 
 msgid "enavpreview"
-msgstr ""
-
-msgid "ending"
 msgstr ""
 
 msgid "enum attribute list"
@@ -5915,9 +5873,6 @@ msgstr ""
 msgid "fromdate"
 msgstr ""
 
-msgid "full phrase"
-msgstr ""
-
 msgid "fulltext"
 msgstr ""
 
@@ -6202,9 +6157,6 @@ msgstr ""
 msgid "interface insert document in a folder"
 msgstr ""
 
-msgid "interface to change document option"
-msgstr ""
-
 msgid "interface to change state"
 msgstr ""
 
@@ -6418,9 +6370,6 @@ msgstr ""
 msgid "method %s not found"
 msgstr ""
 
-msgid "mnogosearch php extension not loaded"
-msgstr ""
-
 msgid "mode to navigate in folders"
 msgstr ""
 
@@ -6460,9 +6409,6 @@ msgstr ""
 msgid "modify document"
 msgstr ""
 
-msgid "modify document option"
-msgstr ""
-
 msgid "modify enum items"
 msgstr ""
 
@@ -6498,10 +6444,6 @@ msgstr ""
 
 #. _COMMENT Sharp Label
 msgid "modifyacl"
-msgstr ""
-
-#, php-format
-msgid "modoption: document [%d] is not alive"
 msgstr ""
 
 msgid "more families"
@@ -6966,9 +6908,6 @@ msgstr ""
 
 #, php-format
 msgid "operator [%s] not allowed"
-msgstr ""
-
-msgid "option: "
 msgstr ""
 
 msgid "options"
@@ -7515,9 +7454,6 @@ msgstr ""
 msgid "search dynacase documents"
 msgstr "search documents"
 
-msgid "search for "
-msgstr ""
-
 msgid "search fulltext"
 msgstr ""
 
@@ -7725,9 +7661,6 @@ msgstr ""
 msgid "split view mode by family"
 msgstr ""
 
-msgid "starting"
-msgstr ""
-
 msgid "state"
 msgstr ""
 
@@ -7759,17 +7692,14 @@ msgid "submitreqpasswd_form_send_error_unknown"
 msgstr ""
 "<p>The server accountered an error processing your request</p>\n"
 "<p>Retry your request, and if the problem persist, please contact <a href="
-"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request\">"
-"[ON_ERROR_CONTACT]</a></p>"
+"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request"
+"\">[ON_ERROR_CONTACT]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""
 "<p>Your request has been taken into account.</p>\n"
 "<p>You'll receive a mail containing instructions to follow in order to "
 "complete your password reinitialization.</p>"
-
-msgid "substring"
-msgstr ""
 
 msgid "suggestions"
 msgstr ""
@@ -8370,9 +8300,6 @@ msgstr ""
 msgid "view document in extjs"
 msgstr ""
 
-msgid "view document option"
-msgstr ""
-
 msgid "view equality attributes"
 msgstr ""
 
@@ -8462,9 +8389,6 @@ msgstr ""
 
 #, php-format
 msgid "with these conditions"
-msgstr ""
-
-msgid "word"
 msgstr ""
 
 msgid "wordedit"
@@ -8629,6 +8553,9 @@ msgstr ""
 
 #~ msgid "Basic search"
 #~ msgstr "basic search"
+
+#~ msgid "Freedom imodification"
+#~ msgstr "Modify virtual document"
 
 #~ msgid "description"
 #~ msgstr "Description"
