@@ -20,19 +20,19 @@ include_once ("FDL/Class.Dir.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global id Http var : document identifier to see
- * @global latest Http var : (Y|N|L|P) if Y force view latest revision, L : latest fixed revision, P : previous revision
- * @global state Http var : to view document in latest fixed state (only if revision > 0)
- * @global abstract Http var : (Y|N) if Y view only abstract attribute
- * @global props Http var : (Y|N) if Y view properties also
- * @global zonebodycard Http var : if set, view other specific representation
- * @global vid Http var : if set, view represention describe in view control (can be use only if doc has controlled view)
- * @global ulink Http var : (Y|N)if N hyperlink are disabled
- * @global target Http var : is set target of hyperlink can change (default _self)
- * @global inline Http var : (Y|N) set to Y for binary template. View in navigator
- * @global reload Http var : (Y|N) if Y update freedom folders in client navigator
- * @global dochead Http var :  (Y|N) if N don't see head of document (not title and icon)
- * @global unlock Http var : (Y|N) set to Y to unlock the document before viewing (default N)
+ * @global string $id Http var : document identifier to see
+ * @global string $latest Http var : (Y|N|L|P) if Y force view latest revision, L : latest fixed revision, P : previous revision
+ * @global string $state Http var : to view document in latest fixed state (only if revision > 0)
+ * @global string $abstract Http var : (Y|N) if Y view only abstract attribute
+ * @global string $props Http var : (Y|N) if Y view properties also
+ * @global string $zonebodycard Http var : if set, view other specific representation
+ * @global string $vid Http var : if set, view represention describe in view control (can be use only if doc has controlled view)
+ * @global string $ulink Http var : (Y|N)if N hyperlink are disabled
+ * @global string $target Http var : is set target of hyperlink can change (default _self)
+ * @global string $inline Http var : (Y|N) set to Y for binary template. View in navigator
+ * @global string $reload Http var : (Y|N) if Y update freedom folders in client navigator
+ * @global string $dochead Http var :  (Y|N) if N don't see head of document (not title and icon)
+ * @global string $unlock Http var : (Y|N) set to Y to unlock the document before viewing (default N)
  */
 function fdl_card(&$action)
 {
@@ -44,7 +44,7 @@ function fdl_card(&$action)
     $target = GetHttpVars("target"); // may be mail
     $vid = GetHttpVars("vid"); // special controlled view
     $state = GetHttpVars("state"); // search doc in this state
-    $inline = getHttpVars("inline" == "Y"); // view file inline
+    $inline = (getHttpVars("inline") == "Y"); // view file inline
     $unlock = (getHttpVars("unlock", "N") == "Y");
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -63,7 +63,7 @@ function fdl_card(&$action)
         $err = $doc->UnLock(true);
         if ($err != "") $action->ExitError($err);
     }
-
+    
     fixMultipleAliveDocument($doc);
     if ($state != "") {
         $docid = $doc->getRevisionState($state, true);
@@ -108,9 +108,11 @@ function fdl_card(&$action)
     $action->lay->Set("docicon", $doc->getIcon('', 16));
     $action->lay->Set("pds", $doc->urlWhatEncodeSpec(""));
     
-
-    
+    $tview = array();
     if (($zone == "") && ($vid != "")) {
+        /**
+         * @var CVDoc $cvdoc
+         */
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
         if ($cvdoc->fromid == 28) {
             $cvdoc->set($doc);
@@ -135,7 +137,7 @@ function fdl_card(&$action)
         }
         if ($zo == "B") {
             // binary layout file
-            if ($tview["CV_MSKID"]) {
+            if (!empty($tview["CV_MSKID"])) {
                 $err = $doc->setMask($tview["CV_MSKID"]);
                 if ($err) addWarningMsg($err);
             }
