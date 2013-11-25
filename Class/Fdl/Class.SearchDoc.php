@@ -136,7 +136,10 @@ class SearchDoc
     private $mode = "TABLE";
     private $count = - 1;
     private $index = 0;
-    private $result;
+    /**
+     * @var bool|array
+     */
+    private $result = false;
     private $searchmode;
     /**
      * @var string pertinence order in case of full searches
@@ -152,6 +155,7 @@ class SearchDoc
      */
     
     private $resultQPos = 0;
+    protected $originalDirId = 0;
     
     protected $returnsFields = array();
     /**
@@ -173,58 +177,61 @@ class SearchDoc
      * @api send query search and only count results
      *
      * @return int the number of results
+     * @throws Dcp\SearchDoc\Exception
+     * @throws Dcp\Db\Exception
      */
     public function onlyCount()
     {
-        if (!$this->result) {
-            /**  @var Dir $fld */
-            $fld = new_Doc($this->dbaccess, $this->dirid);
-            $userid = $this->userid;
-            if ($fld->fromid != getFamIdFromName($this->dbaccess, "SSEARCH")) {
-                if ($this->debug) $debuginfo = array();
-                else $debuginfo = null;
-                $tqsql = $this->getQueries();
-                $this->debuginfo["query"] = $tqsql[0];
-                $count = 0;
-                if (!is_array($tqsql)) {
-                    $this->debuginfo["err"] = _("cannot produce sql request");
-                    return 0;
-                }
-                foreach ($tqsql as $sql) {
-                    if ($sql) {
-                        if (preg_match('/from\s+(?:only\s+)?([a-z0-9_\-]*)/', $sql, $reg)) $maintable = $reg[1];
-                        else $maintable = '';
-                        $maintabledot = ($maintable) ? $maintable . '.' : '';
-                        
-                        $mainid = ($maintable) ? "$maintable.id" : "id";
-                        $distinct = "";
-                        if (preg_match('/^\s*select\s+distinct(\s+|\(.*?\))/iu', $sql, $m)) {
-                            $distinct = "distinct ";
-                        }
-                        $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/iu', "select count($distinct$mainid) from ", $sql, 1);
-                        if ($userid != 1) {
-                            $sql.= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
-                        }
-                        $dbid = getDbid($this->dbaccess);
-                        $mb = microtime(true);
-                        $q = @pg_query($dbid, $sql);
-                        if (!$q) {
-                            $this->debuginfo["query"] = $sql;
-                            $this->debuginfo["error"] = pg_last_error($dbid);
-                        } else {
-                            $result = pg_fetch_array($q, 0, PGSQL_ASSOC);
-                            $count+= $result["count"];
-                            $this->debuginfo["query"] = $sql;
-                            $this->debuginfo["delay"] = sprintf("%.03fs", microtime(true) - $mb);
-                        }
+        /**  @var Dir $fld */
+        $fld = new_Doc($this->dbaccess, $this->dirid);
+        $userid = $this->userid;
+        if ($fld->fromid != getFamIdFromName($this->dbaccess, "SSEARCH")) {
+            if ($this->debug) $debuginfo = array();
+            else $debuginfo = null;
+            
+            $this->recursiveSearchInit();
+            $tqsql = $this->getQueries();
+            $this->debuginfo["query"] = $tqsql[0];
+            $count = 0;
+            if (!is_array($tqsql)) {
+                $this->debuginfo["err"] = _("cannot produce sql request");
+                return 0;
+            }
+            foreach ($tqsql as $sql) {
+                if ($sql) {
+                    if (preg_match('/from\s+(?:only\s+)?([a-z0-9_\-]*)/', $sql, $reg)) $maintable = $reg[1];
+                    else $maintable = '';
+                    $maintabledot = ($maintable) ? $maintable . '.' : '';
+                    
+                    $mainid = ($maintable) ? "$maintable.id" : "id";
+                    $distinct = "";
+                    if (preg_match('/^\s*select\s+distinct(\s+|\(.*?\))/iu', $sql, $m)) {
+                        $distinct = "distinct ";
+                    }
+                    $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/iu', "select count($distinct$mainid) from ", $sql, 1);
+                    if ($userid != 1) {
+                        $sql.= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
+                    }
+                    $dbid = getDbid($this->dbaccess);
+                    $mb = microtime(true);
+                    $q = @pg_query($dbid, $sql);
+                    if (!$q) {
+                        $this->debuginfo["query"] = $sql;
+                        $this->debuginfo["error"] = pg_last_error($dbid);
+                    } else {
+                        $result = pg_fetch_array($q, 0, PGSQL_ASSOC);
+                        $count+= $result["count"];
+                        $this->debuginfo["query"] = $sql;
+                        $this->debuginfo["delay"] = sprintf("%.03fs", microtime(true) - $mb);
                     }
                 }
-                $this->count = $count;
-                return $count;
-            } else {
-                $this->count = count($fld->getContent());
             }
-        } else $this->count();
+            $this->count = $count;
+            return $count;
+        } else {
+            $this->count = count($fld->getContent());
+        }
+        
         return $this->count;
     }
     /**
@@ -260,20 +267,27 @@ class SearchDoc
      *
      * @api Add join condition
      * @code
-     * $s=new searchDoc();
+     $s=new searchDoc();
      $s->trash='only';
      $s->join("id = dochisto(id)");
      $s->addFilter("dochisto.uid = %d",$this->getSystemUserId());
-     * // search all document which has been deleted by search DELETE code in history
+     // search all document which has been deleted by search DELETE code in history
      $s->addFilter("dochisto.code = 'DELETE'");
      $s->distinct=true;
      $result= $s->search();
      * @endcode
      * @param string $jointure
+     * @throws Dcp\Exception
      */
     public function join($jointure)
     {
-        $this->join = $jointure;
+        if (empty($jointure)) {
+            $this->join = '';
+        } elseif (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $jointure, $reg)) {
+            $this->join = $jointure;
+        } else {
+            throw new \Dcp\SearchDoc\Exception("SD0001", $jointure);
+        }
     }
     /**
      * count results
@@ -286,11 +300,13 @@ class SearchDoc
      */
     public function count()
     {
-        if ($this->count == - 1) {
-            if ($this->searchmode == "ITEM") {
-                $this->count = $this->countDocs();
-            } else {
-                $this->count = count($this->result);
+        if ($this->isExecuted()) {
+            if ($this->count == - 1) {
+                if ($this->searchmode == "ITEM") {
+                    $this->count = $this->countDocs();
+                } else {
+                    $this->count = count($this->result);
+                }
             }
         }
         return $this->count;
@@ -338,7 +354,7 @@ class SearchDoc
      */
     public function isExecuted()
     {
-        return ($this->result != false);
+        return ($this->result !== false);
     }
     /**
      * Return sql filters used for request
@@ -360,10 +376,18 @@ class SearchDoc
      * the query is sent to database
      * @api send query
      * @return array|null|SearchDoc array of documents if no setObjectReturn else itself
+     * @throws Dcp\SearchDoc\Exception
+     * @throws Dcp\Db\Exception
      */
     public function search()
     {
-        if ($this->getError()) return array();
+        if ($this->getError()) {
+            if ($this->mode == "ITEM") {
+                return null;
+            } else {
+                return array();
+            }
+        }
         if ($this->fromid) {
             if (!is_numeric($this->fromid)) {
                 $fromid = getFamIdFromName($this->dbaccess, $this->fromid);
@@ -388,28 +412,20 @@ class SearchDoc
             if ($this->only) $this->fromid = - (abs($fromid));
             else $this->fromid = $fromid;
         }
-        if ($this->recursiveSearch && $this->dirid) {
-            /**
-             * @var DocSearch $tmps
-             */
-            $tmps = createTmpDoc($this->dbaccess, "SEARCH");
-            $tmps->setValue("se_idfld", $this->dirid);
-            $tmps->setValue("se_latest", "yes");
-            $err = $tmps->add();
-            if ($err == "") {
-                $tmps->addQuery($tmps->getQuery()); // compute internal sql query
-                $this->dirid = $tmps->id;
-            }
-        }
+        $this->recursiveSearchInit();
         $this->index = 0;
         $this->searchmode = $this->mode;
         if ($this->mode == "ITEM") {
-            // change search mode because ITEM mode not supported for Specailized searches
-            $fld = new_Doc($this->dbaccess, $this->dirid);
-            if ($fld->fromid == getFamIdFromName($this->dbaccess, "SSEARCH")) $this->searchmode = "TABLE";
+            if ($this->dirid) {
+                // change search mode because ITEM mode not supported for Specailized searches
+                $fld = new_Doc($this->dbaccess, $this->dirid);
+                if ($fld->fromid == getFamIdFromName($this->dbaccess, "SSEARCH")) {
+                    $this->searchmode = "TABLE";
+                }
+            }
         }
         $debuginfo = array();
-        
+        $this->count = - 1;
         $this->result = internalGetDocCollection($this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters() , $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
         if ($this->searchmode == "TABLE") $this->count = count($this->result); // memo cause array is unset by shift
         $this->debuginfo = $debuginfo;
@@ -510,13 +526,19 @@ class SearchDoc
      * set recursive mode for folder searches
      * can be use only if collection set if a static folder
      * @param bool $recursiveMode set to true to use search in sub folders when collection is folder
+     * @param int $level Indicate depth to inspect subfolders
+     * @throws Dcp\SearchDoc\Exception
      * @api set recursive mode for folder searches
      * @see SearchDoc::useCollection
      * @return void
      */
-    public function setRecursiveSearch($recursiveMode = true)
+    public function setRecursiveSearch($recursiveMode = true, $level = 2)
     {
         $this->recursiveSearch = $recursiveMode;
+        if (!is_int($level) || $level < 0) {
+            throw new \Dcp\SearchDoc\Exception("SD0006", $level);
+        }
+        $this->folderRecursiveLevel = $level;
     }
     /**
      * return debug info if debug mode enabled
@@ -578,6 +600,7 @@ class SearchDoc
         $dir = new_doc($this->dbaccess, $dirid);
         if ($dir->isAlive()) {
             $this->dirid = $dir->initid;
+            $this->originalDirId = $this->dirid;
             return true;
         }
         $this->debuginfo["error"] = sprintf(_("collection %s not exists") , $dirid);
@@ -732,16 +755,15 @@ class SearchDoc
      * @api add global filter based on keyword
      * @param string $keywords
      * @param bool $useSpell use spell french checker
+     * @throws Dcp\SearchDoc\Exception SD0004 SD0003 SD0002
      */
     public function addGeneralFilter($keywords, $useSpell = false)
     {
         if (!$this->checkGeneralFilter($keywords)) {
-            $this->debuginfo["error"] = sprintf(_("incorrect global filter %s") , $keywords);
+            throw new \Dcp\SearchDoc\Exception("SD0004", $keywords);
         } else {
             $filter = $this->getGeneralFilter(trim($keywords) , $useSpell, $this->pertinenceOrder, $this->highlightWords);
             $this->addFilter($filter);
-            //  print_r2(array("key"=>$keywords, "filter"=>$filter));
-            
         }
     }
     /**
@@ -791,6 +813,7 @@ class SearchDoc
      * @param bool $useSpell
      * @param string $pertinenceOrder return pertinence order
      * @param string $highlightWords return words to be use by SearchHighlight class
+     * @throws Dcp\SearchDoc\Exception
      * @return string sql filter
      */
     public static function getGeneralFilter($keywords, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
@@ -815,7 +838,7 @@ class SearchDoc
             } else if ($operator === "or") {
                 return "|";
             } else {
-                throw new \Dcp\Exception(sprintf(_("SEARCH_DOC:Unknown operator %s") , $operator));
+                throw new \Dcp\SearchDoc\Exception("SD0002", $operator);
             }
         };
         
@@ -941,7 +964,7 @@ class SearchDoc
             }
         }
         if ($parenthesisBalanced !== 0) {
-            throw new \Dcp\Exception(sprintf(_("SEARCH_DOC:Unbalenced parenthesis %s") , $keywords));
+            throw new \Dcp\SearchDoc\Exception("SD0003", $keywords);
         }
         if ($isOnlyWord) {
             $filter = str_replace(')(', ')&(', $filter);
@@ -1095,6 +1118,29 @@ class SearchDoc
             $this->excludeFilter = '';
         }
     }
+    
+    protected function recursiveSearchInit()
+    {
+        if ($this->recursiveSearch && $this->dirid) {
+            if (!$this->originalDirId) {
+                $this->originalDirId = $this->dirid;
+            }
+            /**
+             * @var DocSearch $tmps
+             */
+            $tmps = createTmpDoc($this->dbaccess, "SEARCH");
+            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_famid, $this->fromid);
+            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_idfld, $this->originalDirId);
+            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_latest, "yes");
+            $err = $tmps->add();
+            if ($err == "") {
+                $tmps->addQuery($tmps->getQuery()); // compute internal sql query
+                $this->dirid = $tmps->id;
+            } else {
+                throw new \Dcp\SearchDoc\Exception("SD0005", $err);
+            }
+        }
+    }
     /**
      * Get the SQL queries that will be executed by the search() method
      * @return array|bool boolean false on error, or array() of queries on success.
@@ -1143,7 +1189,7 @@ class SearchDoc
         }
         $maintable = $table; // can use join only on search
         if ($join) {
-            if (preg_match("/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/", $join, $reg)) {
+            if (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $join, $reg)) {
                 $joinid = getFamIdFromName($dbaccess, $reg[3]);
                 $jointable = ($joinid) ? "doc" . $joinid : $reg[3];
                 
@@ -1235,8 +1281,8 @@ class SearchDoc
                                 $qsql = "select $selectfields " . "from $table where initid in ($sfldids)  " . "and  $sqlcond ";
                             } else {
                                 /*$qsql= "select $selectfields ".
-                                "from (select childid from fld where $sqlfld) as fld2 inner join $table on (initid=childid)  ".
-                                "where  $sqlcond ";*/
+                                    "from (select childid from fld where $sqlfld) as fld2 inner join $table on (initid=childid)  ".
+                                    "where  $sqlcond ";*/
                                 $qsql = "select $selectfields " . "from $only $table where initid in ($sfldids)  " . "and  $sqlcond ";
                             }
                         }
@@ -1384,3 +1430,4 @@ class SearchDoc
         return false;
     }
 }
+

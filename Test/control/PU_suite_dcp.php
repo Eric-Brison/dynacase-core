@@ -28,6 +28,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestFolder');
         $suite->addTestSuite('Dcp\Pu\TestSearch');
         $suite->addTestSuite('Dcp\Pu\TestSearchDirective');
+        $suite->addTestSuite('Dcp\Pu\TestSearchByFolder');
         $suite->addTestSuite('Dcp\Pu\TestSearchHighlight');
         $suite->addTestSuite('Dcp\Pu\TestSearchJoin');
         $suite->addTestSuite('Dcp\Pu\TestFormatCollection');
