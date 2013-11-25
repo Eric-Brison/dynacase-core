@@ -122,7 +122,7 @@ class Session extends DbObj
             if ((!empty($_SERVER['PHP_AUTH_USER'])) && $u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {
                 $this->open($u->id);
             } else {
-                $this->open(ANONYMOUS_ID); //anonymous session
+                $this->open(Account::ANONYMOUS_ID); //anonymous session
                 
             }
         }
@@ -193,7 +193,7 @@ class Session extends DbObj
         return $this->status;
     }
     
-    function Open($uid = ANONYMOUS_ID)
+    function Open($uid = Account::ANONYMOUS_ID)
     {
         $idsess = $this->newId();
         global $_SERVER; // use only cache with HTTP
@@ -258,11 +258,6 @@ class Session extends DbObj
             }
         }
         return ($d);
-    }
-    
-    private function logDebug($s)
-    {
-        error_log(sprintf("session %s:%s", posix_getpid() , $s));
     }
     // --------------------------------
     // Détruit une variable de session
@@ -330,13 +325,13 @@ class Session extends DbObj
     function getSessionTTL($default = 0, $ttlParamName = '')
     {
         if ($ttlParamName == '') {
-            if ($this->userid == ANONYMOUS_ID) {
+            if ($this->userid == Account::ANONYMOUS_ID) {
                 $ttlParamName = 'CORE_GUEST_SESSIONTTL';
             } else {
                 $ttlParamName = 'CORE_SESSIONTTL';
             }
         }
-        return getParam($ttlParamName, $default);
+        return intval(getParam($ttlParamName, $default));
     }
     
     function getSessionGcProbability($default = "0.01")
@@ -355,7 +350,7 @@ class Session extends DbObj
     {
         $ttl = $this->getSessionTTL(0, 'CORE_SESSIONTTL');
         if ($ttl > 0) {
-            return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid != %s AND last_seen < timestamp 'now()' - interval '%s seconds'", ANONYMOUS_ID, pg_escape_string($ttl)));
+            return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid != %s AND last_seen < timestamp 'now()' - interval '%s seconds'", Account::ANONYMOUS_ID, pg_escape_string($ttl)));
         }
         return '';
     }
@@ -364,7 +359,7 @@ class Session extends DbObj
     {
         $ttl = $this->getSessionTTL(0, 'CORE_GUEST_SESSIONTTL');
         if ($ttl > 0) {
-            return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid = %s AND last_seen < timestamp 'now()' - interval '%s seconds'", ANONYMOUS_ID, pg_escape_string($ttl)));
+            return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid = %s AND last_seen < timestamp 'now()' - interval '%s seconds'", Account::ANONYMOUS_ID, pg_escape_string($ttl)));
         }
         return '';
     }
@@ -482,5 +477,3 @@ class Session extends DbObj
         return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid = %d AND id != '%s'", $userId, pg_escape_string($exceptSessionId)));
     }
 } // Class Session
-
-?>

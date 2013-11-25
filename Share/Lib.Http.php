@@ -103,7 +103,7 @@ function redirectAsGuest(Action & $action)
 {
     $guestMode = getDbAccessValue("useIndexAsGuest");
     if ($guestMode) {
-        if ($action->user->id == ANONYMOUS_ID) {
+        if ($action->user->id == Account::ANONYMOUS_ID) {
             /**
              * @var htmlAuthenticator $auth
              */

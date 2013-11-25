@@ -182,7 +182,7 @@ class Param extends DbObj
         return ($out);
     }
     
-    function GetUser($userid = ANONYMOUS_ID, $styleid = "")
+    function GetUser($userid = Account::ANONYMOUS_ID, $styleid = "")
     {
         $query = new QueryDb($this->dbaccess, "Param");
         
@@ -217,7 +217,7 @@ class Param extends DbObj
         return ($tlist);
     }
     
-    function GetUParam($p, $u = ANONYMOUS_ID, $appid = "")
+    function GetUParam($p, $u = Account::ANONYMOUS_ID, $appid = "")
     {
         if ($appid == "") $appid = $this->appid;
         $req = "select val from paramv where name='" . $p . "' and type='U" . $u . "' and appid=" . $appid . ";";
