@@ -42,12 +42,11 @@ class DocSearch extends PDocSearch
         PDocSearch::__construct($dbaccess, $id, $res, $dbid);
         if (((!isset($this->fromid))) || ($this->fromid == "")) $this->fromid = FAM_SEARCH;
     }
-
-
-    public function preCreated() {
+    
+    public function preCreated()
+    {
         return $this->updateSearchAuthor();
     }
-
     /**
      * the author is the current user if not already set
      * @return string
@@ -355,12 +354,13 @@ class DocSearch extends PDocSearch
         }
         $filters = $this->getSqlGeneralFilters($keyword, $latest, $sensitive, $full);
         
+        $only = '';
         if ($this->getRawValue("se_famonly") == "yes") {
             if (!is_numeric($famid)) $famid = getFamIdFromName($this->dbaccess, $famid);
-            $famid = - abs($famid);
+            $only = "only";
         }
         
-        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, false, $latest == "yes", $this->getRawValue("se_trash"));
+        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, false, $latest == "yes", $this->getRawValue("se_trash") , false, $level = 2, $join = '', $only);
         
         return $query;
     }

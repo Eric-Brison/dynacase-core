@@ -37,13 +37,14 @@ class DetailSearch extends \Dcp\Family\Search
             false
         );
         $distinct = false;
+        $only = '';
         if ($latest == "lastfixed") $distinct = true;
         if ($cond != "") $filters[] = $cond;
         if ($this->getRawValue("se_famonly") == "yes") {
             if (!is_numeric($famid)) $famid = getFamIdFromName($this->dbaccess, $famid);
-            $famid = - abs($famid);
+            $only = "only";
         }
-        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash") , false);
+        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash") , false, $level = 2, $join = '', $only);
         
         return $query;
     }

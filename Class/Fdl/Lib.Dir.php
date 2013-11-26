@@ -95,18 +95,21 @@ function isSimpleFilter($sqlfilters)
  * compose query to serach document
  *
  * @param string $dbaccess database specification
- * @param array  $dirid the array of id or single id of folder where search document (0 => in all DB)
+ * @param array $dirid the array of id or single id of folder where search document (0 => in all DB)
  * @param string $fromid for a specific familly (0 => all familly) (<0 strict familly)
  * @param array $sqlfilters array of sql filter
  * @param bool $distinct
  * @param bool $latest set false if search in all revised doc
  * @param string $trash (no|only|also) search in trash or not
  * @param bool $simplesearch set false if search is about specific attributes
+ * @param int $folderRecursiveLevel
  * @param string $join defined a join table like "id = dochisto(id)"
+ * @param string $only set "only" to have only family (not descandent);
+ * @return array|bool|string
  */
 function getSqlSearchDoc($dbaccess, $dirid, $fromid, $sqlfilters = array() , $distinct = false, // if want distinct without locked
 $latest = true, // only latest document
-$trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
+$trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only = "")
 {
     
     if (($fromid != "") && (!is_numeric($fromid))) {
@@ -114,7 +117,6 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         $fromid = $m['sign'] . getFamIdFromName($dbaccess, $m['fromid']);
     }
     $table = "doc";
-    $only = "";
     $qsql = '';
     if ($trash == "only") $distinct = true;
     if ($fromid == - 1) $table = "docfam";
