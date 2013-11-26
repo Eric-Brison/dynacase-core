@@ -125,9 +125,8 @@ function fdl_card(&$action)
     }
     if ($zone == "") $zone = $doc->defaultview;
     $zo = $doc->getZoneOption($zone);
-    if ($zo == "Sxxxxxxxxx") { // waiting for special zone contradiction
-        $action->lay = new Layout(getLayoutFile("FDL", "viewscard.xml") , $action);
-        $action->lay->set("ZONESCARD", $doc->viewdoc($zone, $target, $ulink));
+    if ($zo === "S") { // waiting for special zone contradiction
+        $action->lay->template= $doc->viewdoc($zone, $target, $ulink);
     } else {
         $engine = $doc->getZoneTransform($zone);
         if ($engine) {
