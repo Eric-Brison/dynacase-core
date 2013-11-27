@@ -254,13 +254,7 @@ class importSingleDocument
             if (isset($lattr[$attrid])) {
                 $attr = $lattr[$attrid];
                 if (isset($data[$iattr]) && ($data[$iattr] != "")) {
-                    $dv = str_replace(array(
-                        '\n',
-                        ALTSEPCHAR
-                    ) , array(
-                        "\n",
-                        ';'
-                    ) , $data[$iattr]);
+                    $dv = $data[$iattr];
                     if (!isUTF8($dv)) $dv = utf8_encode($dv);
                     if (($attr->type == "file") || ($attr->type == "image")) {
                         // insert file

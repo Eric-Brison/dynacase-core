@@ -59,7 +59,10 @@ $reset = $usage->addOptionalParameter("reset", "reset options", function ($value
     if ($values === ApiUsage::GET_USAGE) return sprintf(" [%s] ", implode('|', $opt));
     
     $error = $apiusage->matchValues($values, $opt);
-    if ($error) $apiusage->exitError(sprintf("Error: wrong value for argument 'reset' : %s", $error));
+    if ($error) {
+        $apiusage->exitError(sprintf("Error: wrong value for argument 'reset' : %s", $error));
+    }
+    return '';
 });
 $to = $usage->addOptionalParameter("to", "email address to send report");
 $dirid = $usage->addOptionalParameter("dir", "folder where imported documents are put");
@@ -68,9 +71,37 @@ $strict = $usage->addOptionalParameter("strict", "don't import if one error dete
     "yes",
     "no"
 ) , "yes");
+
+$csvSeparator = $usage->addOptionalParameter("csv-separator", "character to delimiter fields - generaly comma", function ($values, $argName, ApiUsage $apiusage)
+{
+    if (!is_string($values)) {
+        return sprintf("must be a character [%s] ", print_r($values, true));
+    }
+    if (mb_strlen($values) > 2) {
+        return sprintf("must be a only one character [%s] ", $values);
+    }
+    return '';
+}
+, ";");
+
+$csvEnclosure = $usage->addOptionalParameter("csv-enclosure", "character to enclose fields - generaly double-quote", function ($values, $argName, ApiUsage $apiusage)
+{
+    if (!is_string($values)) {
+        return sprintf("must be a character [%s] ", print_r($values, true));
+    }
+    if (mb_strlen($values) > 2) {
+        return sprintf("must be a only one character [%s] ", $values);
+    }
+    return '';
+}
+, "");
+
+$csvLinebreak = $usage->addOptionalParameter("csv-linebreak", "character sequence to be import like CRLF", null, '\n');
+
 $usage->verify();
 
 if ($reinit == "yes") {
+    $reset[] = "attributes";
     $action->log->deprecated("importDocuments :reinitattr option is deprecated, use --reset=attributes");
 }
 if (!file_exists($filename)) {
@@ -102,7 +133,9 @@ if ($dirid) {
 }
 $oImport = new ImportDocument();
 if ($strict == 'no') $oImport->setStrict(false);
-
+$oImport->setCsvOptions($csvSeparator, $csvEnclosure, $csvLinebreak);
+$oImport->setPolicy($policy);
+$oImport->setReset($reset);
 if ($dirid) $oImport->setTargetDirectory($dirid);
 $cr = $oImport->importDocuments($action, $filename, $analyze != "no", $archive == "yes");
 
@@ -137,4 +170,3 @@ if ($to) {
 }
 $err = $oImport->getErrorMessage();
 if ($err) $action->ExitError($err);
-?>
