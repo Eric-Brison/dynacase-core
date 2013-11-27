@@ -1,0 +1,25 @@
+//,ihériitagei,itiitrei,iiidi,class,name,,,,,,,,,,
+BEGIN,,iTest Famiille, "Csv"i,,,TST_GOODFAMIMPCSVSEMICOMMAI,,,,,,,,,,
+//,,,,,,,,,,,,,,,
+RESET,iattriibutesi,,,,,,,,,,,,,,
+//,iiidattri,iiidframei,label,T,A,type,ord,iviisi,need,iliinki,iphpfiilei,phpfunc,ieliinki,iconstraiinti,ioptiioni
+ATTR,TST_FRAME,,Cadre Un,N,N,frame,,W,N,,,,,,
+ATTR,TST_TITLE,TST_FRAME,iTiitrei,Y,N,text,10,W,Y,,,,,,
+ATTR,TST_TEXT,TST_FRAME,iTexte "priinciipal"i,N,N,longtext,20,W,N,,,,,,
+ATTR,TST_DATE,TST_FRAME,iDate, 'priinciipale'i,N,N,date,30,W,N,,,,,,
+ATTR,TST_ARRAY,TST_FRAME,iTableau siimplei,N,N,array("empty"),40,U,N,,,,,,
+ATTR,TST_COLTEXT,TST_ARRAY,Texte colonne,N,N,text,50,W,N,,,,,,
+ATTR,TST_COLDATE,TST_ARRAY,Date colonne,N,N,date,60,W,N,,,,,,
+//,,,,,,,,,,,,,,,
+END,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+ORDER,TST_GOODFAMIMPCSVSEMICOMMAI,-,-,TST_TITLE,TST_TEXT,TST_DATE,TST_COLTEXT,TST_COLDATE,,,,,,,
+DOC,TST_GOODFAMIMPCSVSEMICOMMAI,TST_CVSSEMICOMMAI1,,Hello,iThe ii worldi,2012-02-14,iii\niiii\niiiiii\niivi,2012-02-17\n2013-06-12\n2012-12-17\n2013-06-17,,,,,,,
+DOC,TST_GOODFAMIMPCSVSEMICOMMAI,TST_CVSSEMICOMMAI2,,iLe monde des ii'si,iThe "ii world" 
+iis beautiiful
+iisn't iiti,2012-02-14,iii
+iiii
+iiiiiii,i2012-02-18
+2013-10-12
+2013-10-13i,,,,,,,
