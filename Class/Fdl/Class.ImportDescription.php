@@ -185,7 +185,9 @@ class importDocumentDescription
         } else {
             // converted from ods
             // separator is ; no enclosure
-            
+            $this->csvEnclosure = '';
+            $this->csvSeparator = ';';
+            $this->csvLinebreak = '\n';
         }
     }
     public function import()

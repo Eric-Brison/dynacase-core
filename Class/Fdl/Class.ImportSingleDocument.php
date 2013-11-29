@@ -204,6 +204,7 @@ class importSingleDocument
                 }
             }
         }
+        
         if ($tmpDoc->id > 0) {
             $this->doc = new_doc($tmpDoc->dbaccess, $tmpDoc->id, true);
             if (!$this->doc->isAffected()) $this->doc = $tmpDoc;
@@ -305,8 +306,7 @@ class importSingleDocument
                             }
                         } else {
                             // just for analyze
-                            if ($dv == $this->doc->getRawValue($attr->id)) $this->tcr["values"][$attr->getLabel() ] = ("/no change/");
-                            else $this->tcr["values"][$attr->getLabel() ] = $dv;
+                            $this->tcr["values"][$attr->getLabel() ] = $dv;
                         }
                     } else {
                         if ($attr->type == "htmltext" && !$this->analyze) {
@@ -320,8 +320,7 @@ class importSingleDocument
                         if ($errv) {
                             $this->setError("DOC0100", $attr->id, $errv);
                         }
-                        if ($this->doc->getOldRawValue($attr->id) !== false) $this->tcr["values"][$attr->getLabel() ] = $dv;
-                        else $this->tcr["values"][$attr->getLabel() ] = ("/no change/");
+                        $this->tcr["values"][$attr->getLabel() ] = $dv;
                     }
                 }
             } else if (strpos($attrid, "extra:") === 0) {

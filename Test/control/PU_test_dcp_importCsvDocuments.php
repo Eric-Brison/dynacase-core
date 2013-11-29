@@ -99,12 +99,43 @@ class TestImportCsvDocuments extends TestCaseDcp
                 "PU_data_dcp_goodfamilyforcsvsemicolonsinglequote2iso.csv",
                 ";",
                 "'"
+            ) ,
+            array(
+                "PU_data_dcp_goodfamilyforcsvsemicolon.csv",
+                ";",
+                ""
             )
         );
     }
     public function dataImportCsvFamily()
     {
         return array(
+            
+            array(
+                "file" => "PU_data_dcp_goodfamilyforcsvsemicolon.csv",
+                "separator" => ";",
+                "enclosure" => '',
+                "famname" => "TST_GOODFAMIMPCSVSEMICOLON
+                ",
+                "expect" => array(
+                    "title" => 'Test Famille, "Csv"',
+                    "alabel" => array(
+                        "tst_text" => 'Texte "principal"',
+                        "tst_date" => "Date, 'principale'"
+                    ) ,
+                    "doc" => array(
+                        array(
+                            "name" => "TST_CVSSEMICOLON1",
+                            "values" => array(
+                                "tst_title" => "Hello",
+                                "tst_text" => "The world",
+                                "tst_coltext" => "Un\nDeux",
+                                "tst_coldate" => "2012-02-17\n2013-06-12"
+                            )
+                        )
+                    )
+                )
+            ) ,
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvcommadoublequote1.csv",
                 "separator" => ",",
@@ -138,6 +169,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                     )
                 )
             ) ,
+            
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvcommadoublequote2.csv",
                 "separator" => ",",

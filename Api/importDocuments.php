@@ -72,13 +72,18 @@ $strict = $usage->addOptionalParameter("strict", "don't import if one error dete
     "no"
 ) , "yes");
 
-$csvSeparator = $usage->addOptionalParameter("csv-separator", "character to delimiter fields - generaly comma", function ($values, $argName, ApiUsage $apiusage)
+$csvSeparator = $usage->addOptionalParameter("csv-separator", "character to delimiter fields - generaly a comma", function ($values, $argName, ApiUsage $apiusage)
 {
+    if ($values === ApiUsage::GET_USAGE) {
+        return sprintf(' use single character or "auto"');
+    }
     if (!is_string($values)) {
         return sprintf("must be a character [%s] ", print_r($values, true));
     }
-    if (mb_strlen($values) > 2) {
-        return sprintf("must be a only one character [%s] ", $values);
+    if ($values != "auto") {
+        if (mb_strlen($values) > 1) {
+            return sprintf("must be a only one character [%s] ", $values);
+        }
     }
     return '';
 }
@@ -86,11 +91,16 @@ $csvSeparator = $usage->addOptionalParameter("csv-separator", "character to deli
 
 $csvEnclosure = $usage->addOptionalParameter("csv-enclosure", "character to enclose fields - generaly double-quote", function ($values, $argName, ApiUsage $apiusage)
 {
+    if ($values === ApiUsage::GET_USAGE) {
+        return sprintf(' use single character or "auto"');
+    }
     if (!is_string($values)) {
         return sprintf("must be a character [%s] ", print_r($values, true));
     }
-    if (mb_strlen($values) > 2) {
-        return sprintf("must be a only one character [%s] ", $values);
+    if ($values != "auto") {
+        if (mb_strlen($values) > 1) {
+            return sprintf("must be a only one character [%s] ", $values);
+        }
     }
     return '';
 }

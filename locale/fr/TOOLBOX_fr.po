@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-28 11:28+0100\n"
-"PO-Revision-Date: 2013-11-28 11:32+0100\n"
+"POT-Creation-Date: 2013-11-27 15:00+0100\n"
+"PO-Revision-Date: 2013-11-27 15:03+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1370,9 +1370,6 @@ msgstr "Diff"
 msgid "Dir::insertFolder identifier [%s] must be numeric"
 msgstr "Dir::insertFolder l'identificateur [%s] doit être numérique"
 
-msgid "Direct Import"
-msgstr "Importation directe"
-
 #, php-format
 msgid "Direct set through document itself \"%s\""
 msgstr "Pose directe par le document lui-même \"%s\""
@@ -1574,6 +1571,9 @@ msgstr "ISO-8859-15 (européen)"
 
 msgid "EXPORT_CSV Kind of export :"
 msgstr "Type d'export : "
+
+msgid "EXPORT_CSV Linebreak :"
+msgstr "Retour à la ligne"
 
 msgid "EXPORT_CSV Select export kind :"
 msgstr "Sélectionner le type d'export : "
@@ -2435,6 +2435,9 @@ msgstr "Importer des documents"
 msgid "Import file"
 msgstr "Fichier à importer"
 
+msgid "Import format"
+msgstr "Format d'importation"
+
 msgid "Importation data"
 msgstr "Données réimportables"
 
@@ -3005,6 +3008,12 @@ msgstr "Ouvrir dans une chemise"
 msgid "Opt"
 msgstr "Opt"
 
+msgid "Option for import"
+msgstr "Options pour l'importation"
+
+msgid "Options for csv import"
+msgstr "Options pour fichier CSV"
+
 msgid "Options import"
 msgstr "Options d'importation"
 
@@ -3123,6 +3132,9 @@ msgstr "Profil personnel de %s %s"
 #, php-format
 msgid "Pivot rendering %d/%d"
 msgstr "Composition du pivot %d/%d"
+
+msgid "Policy if same title"
+msgstr "Politique si même titre"
 
 msgid "PortFolio"
 msgstr "Chemise"
@@ -4688,8 +4700,8 @@ msgstr ""
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href="
-"\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a>"
+"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
+"[CORE_EXTERNURL]</a>"
 
 msgid "can't access file"
 msgstr "Accès au fichier impossible"
@@ -7204,9 +7216,6 @@ msgstr "politique"
 msgid "policy if same keys"
 msgstr "politique si même clef"
 
-msgid "policy if same title"
-msgstr "politique si même titre"
-
 msgid "popup in generic list"
 msgstr "popup menu dans generic list"
 
@@ -8814,6 +8823,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Confirm unattach all activated timers"
 #~ msgstr "Confirmer l'annulation de tous les minuteurs actifs"
 
+#~ msgid "Direct Import"
+#~ msgstr "Importation directe"
+
 #~ msgid "Done date"
 #~ msgstr "Date d'exécution"
 
@@ -9149,6 +9161,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "password are not identicals : not changed"
 #~ msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
+
+#~ msgid "policy if same title"
+#~ msgstr "politique si même titre"
 
 #~ msgid "post it"
 #~ msgstr "post-it"
