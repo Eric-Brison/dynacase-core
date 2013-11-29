@@ -24,6 +24,24 @@ class ImportDocument
      */
     private $dirid = 0;
     /**
+     * @var string csv separator character
+     */
+    protected $csvSeparator = ';';
+    /**
+     * @var string csv enclose character
+     */
+    protected $csvEnclosure = '';
+    /**
+     * @var string csv line-break sequence
+     */
+    protected $csvLinebreak = '\n';
+    /**
+     * @var string update|add|keep
+     */
+    protected $policy = "update";
+    
+    protected $reset = array();
+    /**
      * set strict mode
      * @param bool $strict set to false to accept error when import
      * @return void
@@ -31,6 +49,25 @@ class ImportDocument
     public function setStrict($strict)
     {
         $this->strict = ($strict && true);
+    }
+    public function setPolicy($policy)
+    {
+        $this->policy = $policy;
+    }
+    public function setReset($reset)
+    {
+        if (is_array($reset)) {
+            $this->reset = $reset;
+        } elseif (is_string($reset)) {
+            $this->reset[] = $reset;
+        }
+    }
+    
+    public function setCsvOptions($csvSeparator = ';', $csvEnclosure = '"', $csvLinebreak = '\n')
+    {
+        $this->csvSeparator = $csvSeparator;
+        $this->csvEnclosure = $csvEnclosure;
+        $this->csvLinebreak = $csvLinebreak;
     }
     
     public function setTargetDirectory($dirid)
@@ -92,7 +129,7 @@ class ImportDocument
                 include_once ("FREEDOM/freedom_import_xml.php");
                 $this->cr = freedom_import_xmlzip($action, $file);
             } else {
-                $this->cr = add_import_file($action, $file, $this->dirid);
+                $this->cr = $this->importSingleFile($file);
             }
         }
         if ($this->strict) {
@@ -103,6 +140,17 @@ class ImportDocument
             }
         }
         return $this->cr;
+    }
+    
+    public function importSingleFile($file)
+    {
+        $if = new importDocumentDescription($file);
+        $if->setImportDirectory($this->dirid);
+        $if->analyzeOnly($this->onlyAnalyze);
+        $if->setPolicy($this->policy);
+        $if->reset($this->reset);
+        $if->setCsvOptions($this->csvSeparator, $this->csvEnclosure, $this->csvLinebreak);
+        return $if->import();
     }
     /**
      * return all error message concatenated

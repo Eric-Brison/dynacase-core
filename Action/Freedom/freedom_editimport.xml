@@ -1,113 +1,201 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Import documents]]
 
-<!-- HEAD HTML -->
+<style>
+    .content .inner {
+        display : none;
+        margin-top:10px;
+        padding:10px;
+    }
+    label.ui-button {
+        width:100%;
+    }
+    input[type=file] {
+        margin:30px;
+    }
+    .ffile  {
+        text-align:center;
+    }
+    h1 {
+        margin-top:0px;
+    }
+</style>
+<div class="document">
+    <!-- Title Table -->
+    <form   id="mainform"
+            name="modifydoc"
+            style="display:inline"
+            method="POST"
+            ENCTYPE="multipart/form-data"
+            action="[CORE_STANDURL]&app=[APPNAME]">
 
-<html>
-  <head>
 
-      <title>[TEXT:Import Documents]</title>
+        <H1>[TEXT:Import Documents]</H1>
 
-
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
-[CSS:REF]
+        <input type="hidden" name="dirid" value="[dirid]">
+        <input type="hidden" id="analyze" name="analyze" value="N">
+        <input type="hidden" id="action" name="action" value="FREEDOM_IMPORT">
 
 
-   <style type="text/css">
-[CSS:CODE]
-   </style>
+        <fieldset class="ffile">
+            <legend>[TEXT:Import file (CSV, ODS, XML)] : </legend>
 
-[JS:REF]
 
-   <script language="JavaScript">
-  <!--
-    [JS:CODE]
+            <input type="file" name="file" id="ifile"
+                   accept="text/csv,application/xml,application/vnd.oasis.opendocument.spreadsheet"
+                   title="[TEXT:csv, ods, xml, zip (xml) supported import files]"
+                   onchange="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;"
+                   onblur="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;">
+            <br/>
+            <input id="banalyze" type="button" style="font-weight:bold" value="[TEXT:Send Analyze]" disabled="disabled"
+                   onclick="$('#action').val('FREEDOM_IMPORT');$('#analyze').val('Y');$('#mainform').submit()"><br/>
+            <input id="fgimport" type="button" value="[TEXT:Import after analyze done]" disabled="disabled"
+                   onclick="$('#action').val('FREEDOM_IMPORT');$('#analyze').val('N');$('#mainform').submit()">
+        </fieldset>
+
+
+        <fieldset id="fbgimport" style="visibility:hidden">
+            <legend>[TEXT:Background Import]</legend>
+            <label for="to">[TEXT:Send report to] : </label>
+            <input size="30" id="to" name="to" type="email" placeholder="[TEXT:Mail address]" value="[mailaddr]">
+            </input>
+            <br/>
+            <input id="bgimport" type="submit" disabled
+                   onmousedown="$('#action').val('FREEDOM_BGIMPORT')"
+                   value="[TEXT:Import after analyze done]">
+        </fieldset>
+        <div class="frame">
+                <div class="legend">[TEXT:Options for csv import]</div>
+                <div id="csvOption" class="content">
+
+
+                        <table class="inner" style="margin : 10px">
+                            <tr>
+                                <td>
+                                    [TEXT:EXPORT_CSV Delimiter :]
+                                </td>
+                                <td>
+                                    <input name="separator" value="[separator]" style="width : 3em;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    [TEXT:EXPORT_CSV Enclosure :]
+                                </td>
+                                <td>
+                                    <input name="enclosure" value='[enclosure]' style="width : 3em;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    [TEXT:EXPORT_CSV Linebreak :]
+                                </td>
+                                <td>
+                                    <input name="linebreak" value='[linebreak]' style="width : 3em;"/>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                </div>
+            </div>
+        [IF policy]
+        <div class="frame">
+            <div class="legend">[TEXT:Policy if same title]</div>
+            <div id="options" class="content">
+
+
+                    <div class="inner radio">
+                        <input id="pupdate" name="policy" checked="checked" type="radio" value="update" />
+                        <label for="pupdate">[TEXT:Update document if has permission else ignored]</label>
+                        <br/>
+                        <input id="padd" name="policy" type="radio" value="add"/>
+                        <label for="padd">[TEXT:Add new document (similar document)]</label>
+                        <br/>
+                        <input id="pkeep" name="policy" type="radio" value="keep"/>
+                        <label for="pkeep">[TEXT:Keep original document]</label></div>
+
+            </div>
+        </div>
+        [ENDIF policy]
+    </form>
+
+    [IF descr]
+    <div class="frame">
+        <div class="legend">[TEXT:Additionnals informations about import document]</div>
+        <div class="content">
+
+            <div class="inner"">
+
+                [TEXT:Family] :
+                <select name="classid" id="classid">
+                    <option VALUE="0">[TEXT:Select a family]</option>
+                    [BLOCK SELECTCLASS]
+                    <option VALUE="[idcdoc]"[selected]>[classname]</option>
+                [ENDBLOCK SELECTCLASS]
+            </select>
+            <hr width="50%"/>
+            <p>[TEXT:Use another import interface for a specific family]&nbsp;:</p>
+            <input disabled="disabled" type="button" value="[TEXT:Specific import in csv format]" onclick="editimport()">
+            <p>[TEXT:Get XML schema to compose XML document import file]&nbsp;:</p>
+            <input disabled="disabled" type="button" title="[TEXT:View Xml Schema]" value="[TEXT:Get Xml schema]"
+                   onclick='window.open("[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+$("#classid").val(),"_blank")'>
+            </div>
+        </div>
+    </div>
+    [ENDIF descr]
+</div>
+<script type="text/javascript">
 function editimport() {
-  var eurl;
-  var famid;
-  if (document.getElementById('classid')) {
-    famid=document.getElementById('classid').options[document.getElementById('classid').selectedIndex].value;
-    eurl='[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDITIMPORT&famid='+famid;
-    subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'editimport',eurl);
-  }
+    var eurl;
+    var famid;
+    if (document.getElementById('classid')) {
+        famid = $("#classid").val();
+        eurl = '[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDITIMPORT&famid=' + famid;
+        //subwindow([FDL_VD2SIZE], [FDL_HD2SIZE], '_blank', eurl);
+        window.open(eurl, '_blank');
+    }
 }
 
 function getWindowresult() {
-   if (window.parent && window.parent.document) {
-     var frame=window.parent.document.getElementById("resultw");
-     if (frame) {
-        return frame.getAttribute("name");
-     }
-   }
-   return "defaultAnalysis";
+    if (window.parent && window.parent.document) {
+        var frame = window.parent.document.getElementById("resultw");
+        if (frame) {
+            return frame.getAttribute("name");
+        }
+    }
+    return "defaultAnalysis";
 }
 
-  //-->
-   </script>   
 
+$(document).ready(function () {
+    $(".legend").on("click", function () {
+        var elts = $(this).parent().find(".content .inner");
+        if (elts.is(":visible")) {
+            elts.hide();
+        } else {
+            elts.show();
+        }
+    });
+    $('#mainform').attr("target", getWindowresult());
+    $('input[type=submit], button, input[type=button]').button();
+    $('.radio').buttonset();
+    $('#ifile').on("change", function () {
 
+        if ($(this).val().split('.').pop() != "csv") {
+            $("#csvOption input").attr("disabled", "disabled");
+        } else {
+             $("#csvOption input").removeAttr("disabled");
+        }
+        $('#banalyze').button("enable");
+    });
 
- </head>
-
-<body class="freedom">
-
-                         
-
-
-<!-- Title Table -->
-<form  class="fborder" 
-       name="modifydoc" 
-       method="POST" 
-       ENCTYPE="multipart/form-data" 
-       action="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_IMPORT" >
-
-      
-
-   <H1>[TEXT:Import Documents]</H1>
-
-<input type="hidden" name="dirid" value="[dirid]">
-<input type="hidden" name="analyze" value="N">
-[IF descr]<fieldset>
-<legend>[TEXT:Additionnals informations about import document]</legend>
-   [TEXT:for]
-   <select name="classid" id="classid" onchange="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_EDITIMPORT&classid='+self.document.modifydoc.classid.options[self.document.modifydoc.classid.selectedIndex].value">  
-         [BLOCK SELECTCLASS]
-           <option VALUE="[idcdoc]" [selected]>[classname]</option>   
-         [ENDBLOCK SELECTCLASS]
-    </select>
-<input type="button" value="[TEXT:Specific import in csv format]" onclick="editimport()" >
-	<input type="button" title="[TEXT:View Xml Schema]" value="[TEXT:Get Xml schema]" onclick='subwindow(200,400,"_xsd","[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+self.document.modifydoc.classid.options[self.document.modifydoc.classid.selectedIndex].value)' >
-<br/>
-</fieldset>[ENDIF descr]
-   <fieldset>
-<legend>[TEXT:Description of the import format]</legend>
-
- <label for="file"><strong>[TEXT:import file:]</strong> </label><br/>
- <input type="file" name="file" accept="text/csv,application/xml,application/vnd.oasis.opendocument.spreadsheet" title="[TEXT:csv, ods, xml, zip (xml) supported import files]" onchange="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;" onblur="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;" >
-         <br/>
- <input type="submit" style="font-weight:bold" value="[TEXT:Send Analyze]"
-        onclick="document.modifydoc.target=getWindowresult();document.modifydoc.analyze.value='Y'">
-[IF policy]<br><label for="policy"> [TEXT:policy if same title]&nbsp;:</label><br/>
-  <SELECT NAME="policy">
-            <OPTION VALUE="update">[TEXT:Update document if has permission else ignored]</OPTION>
-            <OPTION VALUE="add">[TEXT:Add new document (similar document)]</OPTION>
-            <OPTION VALUE="keep">[TEXT:Keep original document]</OPTION>
-  </SELECT>[ENDIF policy]
-</fieldset>
-<fieldset>
-<legend>[TEXT:Direct Import]</legend> 
- <input id="fgimport" type="submit" value="[TEXT:Import after analyze done]" disabled
-        onclick="document.modifydoc.target='_self';document.modifydoc.analyze.value='N'" > 
-
-</fieldset>
-<fieldset>
-<legend>[TEXT:Background Import]</legend> 
-<label for="to">[TEXT:report to (mail address)]</label>
-<input type="text" size=30 name="to" value=[mailaddr]></input><br>
-<input id="bgimport" type="submit" disabled
-       onclick="document.modifydoc.target='_self';document.modifydoc.action='[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_BGIMPORT'" 
-       value="[TEXT:Import after analyze done]">
-</fieldset>
-</form>
-<!--  FOOT HTML -->
-
-</body>
-</html>
+    $('#classid').on("change", function () {
+        if ($(this).val() != "0") {
+            $(this).parent().find('input').button("enable");
+        } else {
+             $(this).parent().find('input').button("disable");
+        }
+    });
+});
+</script>
+        [ZONE FDL:HTMLFOOT]

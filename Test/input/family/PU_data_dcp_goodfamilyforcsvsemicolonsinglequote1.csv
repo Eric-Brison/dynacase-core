@@ -1,0 +1,29 @@
+'//';'héritage';'titre';'id';'class';'name';;;;;;;;;;
+'BEGIN';;'Test Famille, "Csv"';;;'TST_GOODFAMIMPCSVSEMICOLON1';;;;;;;;;;
+'//';;;;;;;;;;;;;;;
+'RESET';'attributes';;;;;;;;;;;;;;
+'//';'idattr';'idframe';'label';'T';'A';'type';'ord';'vis';'need';'link';'phpfile';'phpfunc';'elink';'constraint';'option'
+'ATTR';'TST_FRAME';;'Cadre Un';'N';'N';'frame';;'W';'N';;;;;;
+'ATTR';'TST_TITLE';'TST_FRAME';'Titre';'Y';'N';'text';10;'W';'Y';;;;;;
+'ATTR';'TST_TEXT';'TST_FRAME';'Texte "principal"';'N';'N';'longtext';20;'W';'N';;;;;;
+'ATTR';'TST_DATE';'TST_FRAME';'Date, ''principale''';'N';'N';'date';30;'W';'N';;;;;;
+'ATTR';'TST_ARRAY';'TST_FRAME';'Tableau simple';'N';'N';'array("empty")';40;'U';'N';;;;;;
+'ATTR';'TST_COLTEXT';'TST_ARRAY';'Texte colonne';'N';'N';'text';50;'W';'N';;;;;;
+'ATTR';'TST_COLDATE';'TST_ARRAY';'Date colonne';'N';'N';'date';60;'W';'N';;;;;;
+'//';;;;;;;;;;;;;;;
+'END';;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+'ORDER';'TST_GOODFAMIMPCSVSEMICOLON1';'-';'-';'TST_TITLE';'TST_TEXT';'TST_DATE';'TST_COLTEXT';'TST_COLDATE';;;;;;;
+'DOC';'TST_GOODFAMIMPCSVSEMICOLON1';'TST_CSVSEMICOLON11';;'Hello';'The world';'2012-02-14';'Un\nDeux';'2012-02-17\n2013-06-12';;;;;;;
+'DOC';'TST_GOODFAMIMPCSVSEMICOLON1';'TST_CSVSEMICOLON12';;'Virgule , et ;';'L''être ou le n°3
+Accentué : ça c''est fait';'2012-02-14';'Un
+Deux
+Trois';'2012-02-18
+2013-10-12';;;;;;;
+'DOC';'TST_GOODFAMIMPCSVSEMICOLON1';'TST_CSVSEMICOLON13';;'quote '' double " point-virgule ; et virgule ,';'The "world" 
+is beautiful
+isn''t it';'2012-02-14';'Un
+Deux
+Trois';'2012-02-18
+2013-10-12';;;;;;;

@@ -101,15 +101,15 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                         }
                     }
                 } else {
-                    $testValue = $fValue->$expAttr;
+                    $testValue = ($fValue === null) ? null : $fValue->$expAttr;
                 }
-                $this->assertEquals($expVal, $testValue, sprintf("values is :" . print_r($testValue, true) . sprintf(json_encode($fValue))));
+                $this->assertEquals($expVal, $testValue, sprintf("values is : %s %s ", print_r($testValue, true) , json_encode($fValue)));
             }
         } else {
-            $this->assertEquals($expectRender, $fValue, sprintf("values is :" . sprintf(json_encode($fValue))));
+            $this->assertEquals($expectRender, $fValue, sprintf("values is : %s", sprintf(json_encode($fValue))));
         }
         foreach ($expectContainRender as $expAttr => $expVal) {
-            $this->assertTrue(preg_match("/$expVal/", $fValue->$expAttr) > 0, sprintf("not match for $expVal. values is :" . sprintf(json_encode($fValue))));
+            $this->assertTrue(preg_match("/$expVal/", $fValue->$expAttr) > 0, sprintf("not match for $expVal. values is : %s", json_encode($fValue)));
         }
     }
     /**

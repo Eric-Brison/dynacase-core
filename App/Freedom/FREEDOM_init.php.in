@@ -61,6 +61,25 @@ array(
 			       "descr"=> N_("user preferences when export family"),
 			       "global"=>"Y",
 			       "user"=>"Y"
+			       ),
+
+      "FREEDOM_CSVSEPARATOR" => array(
+			       "val"=>";",
+			       "descr"=> N_("user csv separator preferences when export document"),
+			       "global"=>"Y",
+			       "user"=>"Y"
+			       ),
+      "FREEDOM_CSVENCLOSURE" => array(
+			       "val"=>"",
+			       "descr"=> N_("user csv enclosure preferences when export document"),
+			       "global"=>"Y",
+			       "user"=>"Y"
+			       ),
+      "FREEDOM_CSVLINEBREAK" => array(
+			       "val"=>'\n',
+			       "descr"=> N_("user csv line break preferences when export document"),
+			       "global"=>"Y",
+			       "user"=>"Y"
 			       )
 	     
       );

@@ -24,12 +24,14 @@ class importDocumentDescription
     private $analyze = false;
     private $policy = "update";
     private $reinit = false;
-    private $comma = SEPCHAR;
+    private $csvSeparator = SEPCHAR;
+    private $csvEnclosure = '';
+    private $csvLinebreak = '\n';
     private $beginLine = 0;
     private $familyIcon = 0;
     private $nLine = 0;
     private $nbDoc = 0;
-    private $cvsFile;
+    private $ods2CsvFile = '';
     private $reset = array();
     /**
      * @var StructAttribute
@@ -46,6 +48,7 @@ class importDocumentDescription
     private $dbaccess = '';
     private $needCleanStructure = false;
     private $needCleanParamsAndDefaults = false;
+    private $importFileName = '';
     /*
      * @var ressource
     */
@@ -61,14 +64,15 @@ class importDocumentDescription
     public function __construct($importFile)
     {
         if (seemsODS($importFile)) {
-            $this->cvsFile = ods2csv($importFile);
-            $this->fdoc = fopen($this->cvsFile, "r");
+            $this->ods2CsvFile = ods2csv($importFile);
+            $this->fdoc = fopen($this->ods2CsvFile, "r");
         } else {
             $this->fdoc = fopen($importFile, "r");
         }
         if (!$this->fdoc) {
             throw new Dcp\Exception(sprintf("no import file found : %s", $importFile));
         }
+        $this->importFileName = $importFile;
         $this->dbaccess = getParam("FREEDOM_DB");;
     }
     
@@ -79,6 +83,9 @@ class importDocumentDescription
     
     public function setPolicy($policy)
     {
+        if (!$policy) {
+            $policy = "update";
+        }
         $this->policy = $policy;
     }
     
@@ -104,9 +111,104 @@ class importDocumentDescription
     }
     public function setComma($comma)
     {
-        $this->comma = $comma;
+        $this->csvSeparator = $comma;
     }
     
+    public function setCsvOptions($csvSeparator = ';', $csvEnclosure = '"', $csvLinebreak = '\n')
+    {
+        $this->csvSeparator = $csvSeparator;
+        $this->csvEnclosure = $csvEnclosure;
+        $this->csvLinebreak = $csvLinebreak;
+        
+        $this->setAutoCsvOptions();
+        return array(
+            "separator" => $this->csvSeparator,
+            "enclosure" => $this->csvEnclosure,
+            "linebreak" => $this->csvLinebreak
+        );
+    }
+
+    /**
+     * Detect csv options - separator and enclosure arguments are modified if set to auto
+     * @param $csvFileName
+     * @param string &$separator need to set to 'auto' to detect
+     * @param string &$enclosure need to set to 'auto' to detect
+     * @return array associaive array "enclosure", "separator" keys
+     * @throws Dcp\Exception
+     */
+    public static function detectAutoCsvOptions($csvFileName, &$separator = 'auto', &$enclosure = 'auto')
+    {
+        {
+            $content = file_get_contents($csvFileName);
+            if ($separator == 'auto') {
+                preg_match_all('/^["\']?([A-Z]+)["\']?([;,])/m', $content, $regs);
+                $seps = $regs[2];
+                $semicolon = 0;
+                $comma = 0;
+                if (count($seps) > 0) {
+                    foreach ($seps as $sep) {
+                        if ($sep == ';') {
+                            $semicolon++;
+                        } elseif ($sep == ';') {
+                            $comma++;
+                        }
+                    }
+                    if ($semicolon > $comma) {
+                        $separator = ';';
+                    } else {
+                        $separator = ',';
+                    }
+                } else {
+                    throw new Dcp\Exception(sprintf("cannot find csv separator in %s file", $csvFileName));
+                }
+            }
+            if ($enclosure == 'auto') {
+                preg_match_all(sprintf('/%s(["\'])([^"\']+)(["\'])%s/m', $separator, $separator) , $content, $regs);
+                $begEnclosure = $regs[1];
+                $endEnclosure = $regs[3];
+                $doublequote = 0;
+                $singlequote = 0;
+                foreach ($begEnclosure as $k => $be) {
+                    if ($begEnclosure[$k] === $endEnclosure[$k]) {
+                        if ($be === '"') {
+                            $doublequote++;
+                        } elseif ($be === "'") {
+                            $singlequote++;
+                        }
+                    }
+                }
+                if (max($doublequote, $singlequote) > 0) {
+                    if ($doublequote > $singlequote) {
+                        $enclosure = '"';
+                    } else {
+                        $enclosure = "'";
+                    }
+                } else {
+                    $enclosure = ''; // no enclosure
+                    
+                }
+            }
+        }
+        return array(
+            "separator" => $separator,
+            "enclosure" => $enclosure
+        );
+    }
+    
+    protected function setAutoCsvOptions()
+    {
+        if (!$this->ods2CsvFile) {
+            if (($this->csvSeparator == 'auto') || ($this->csvEnclosure == 'auto')) {
+                $this->detectAutoCsvOptions($this->importFileName, $this->csvSeparator, $this->csvEnclosure);
+            }
+        } else {
+            // converted from ods
+            // separator is ; no enclosure
+            $this->csvEnclosure = '';
+            $this->csvSeparator = ';';
+            $this->csvLinebreak = '\n';
+        }
+    }
     public function import()
     {
         setMaxExecutionTimeTo(300);
@@ -115,13 +217,42 @@ class importDocumentDescription
         $this->dbaccess = GetParam("FREEDOM_DB");
         $this->structAttr = null;
         $this->colOrders = array();
-        $this->cvsFile = "";
+        $this->ods2CsvFile = "";
         
         $this->nLine = 0;
         $this->beginLine = 0;
+        $csvLinebreak = $this->csvLinebreak;
+        if (!$this->csvSeparator && !$csvLinebreak) {
+            $csvLinebreak = '\n';
+        }
         while (!feof($this->fdoc)) {
-            $buffer = rtrim(fgets($this->fdoc, 16384));
-            $data = explode($this->comma, $buffer);
+            if (!$this->csvEnclosure) {
+                $buffer = rtrim(fgets($this->fdoc, 16384));
+                $data = explode($this->csvSeparator, $buffer);
+                $data = array_map(function ($v) use ($csvLinebreak)
+                {
+                    return str_replace(array(
+                        $csvLinebreak,
+                        ALTSEPCHAR
+                    ) , array(
+                        "\n",
+                        ';'
+                    ) , $v);
+                }
+                , $data);
+            } else {
+                $data = fgetcsv($this->fdoc, 0, $this->csvSeparator, $this->csvEnclosure);
+                if ($data === false) {
+                    continue;
+                }
+                if ($csvLinebreak) {
+                    $data = array_map(function ($v) use ($csvLinebreak)
+                    {
+                        return str_replace($csvLinebreak, "\n", $v);
+                    }
+                    , $data);
+                }
+            }
             $this->nLine++;
             
             if (!isUTF8($data)) $data = array_map("utf8_encode", $data);
@@ -346,8 +477,8 @@ class importDocumentDescription
         
         fclose($this->fdoc);
         
-        if ($this->cvsFile) {
-            unlink($this->cvsFile);
+        if ($this->ods2CsvFile) {
+            unlink($this->ods2CsvFile);
         } // temporary csvfile
         return $this->tcr;
     }
@@ -712,7 +843,8 @@ class importDocumentDescription
                 $search = createDoc($this->dbaccess, 5);
                 if (!$this->analyze) {
                     if ($data[1] && is_numeric($data[1])) {
-                    $search->id = $data[1]; // static id
+                        $search->id = $data[1]; // static id
+                        
                     }
                     $err = $search->Add();
                     if ($data[1] && !is_numeric($data[1])) {
@@ -1078,17 +1210,7 @@ class importDocumentDescription
         
         if (!isset($data[2])) $data[2] = '';
         $attrid = trim(strtolower($data[1]));
-        $newValue = str_replace(array(
-            '\n',
-            ALTSEPCHAR
-            //,'\\'
-            
-        ) , array(
-            "\n",
-            SEPCHAR
-            //,'\\\\'
-            
-        ) , $data[2]);
+        $newValue = $data[2];
         $opt = (isset($data[3])) ? trim(strtolower($data[3])) : null;
         $force = (str_replace(" ", "", $opt) == "force=yes");
         $params = $this->doc->getOwnParams();
@@ -1127,17 +1249,7 @@ class importDocumentDescription
         
         if (!isset($data[2])) $data[2] = '';
         $attrid = trim(strtolower($data[1]));
-        $defv = str_replace(array(
-            '\n',
-            ALTSEPCHAR
-            //,'\\'
-            
-        ) , array(
-            "\n",
-            SEPCHAR
-            //,'\\\\'
-            
-        ) , $data[2]);
+        $defv = $data[2];
         $opt = (isset($data[3])) ? trim(strtolower($data[3])) : null;
         $force = (str_replace(" ", "", $opt) == "force=yes");
         $ownDef = $this->doc->getOwnDefValues();
@@ -1483,11 +1595,6 @@ class importDocumentDescription
         if ($this->tcr[$this->nLine]["err"]) {
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
-        }
-        
-        foreach ($data as $kd => $vd) {
-            $data[$kd] = str_replace(ALTSEPCHAR, $this->comma, $vd); // restore ; semi-colon
-            
         }
         
         if (!$this->structAttr) {
