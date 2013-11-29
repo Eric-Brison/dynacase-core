@@ -3,6 +3,7 @@
 
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
    <title>[TEXT:Import Result] </title>
+      [CSS:REF]
    <style type="text/css">
 TR.updated TD{
    background-color:#efef53;
@@ -20,10 +21,10 @@ LI {
 	white-space:nowrap;
 	}
 LI.no {
-        color:#d0d0d0
+        color:#333
         }
 TD, TH {
-       font-size:10pt;
+       font-size:95%;
        font-family:sans;
        border-top: solid grey 1px;
        empty-cells:show;
@@ -35,39 +36,49 @@ TD, TH {
    <script language="JavaScript">
 
     [JS:CODE]
+
+       $(document).ready(function () {
        var editw=window.opener;
-       if (! editw) {
-           if (window.parent) {
-             var editf=editw=window.parent.document.getElementById("editw");
-            if (editf && editf.contentWindow) {
-                editw=editf.contentWindow;
-            }
-           }
-       }
+          if (! editw) {
+              if (window.parent) {
+                  var editf=editw=window.parent.document.getElementById("editw");
+                  if (editf && editf.contentWindow) {
+                      editw=editf.contentWindow;
+                  }
+              }
+          }
        if (editw) {
-       var b=editw.document.getElementById('bgimport');
-       if (b) {
-       b.disabled=false;
-       b.value="[TEXT:proceed background import]";
-       }
-       b=editw.document.getElementById('fgimport');
-       if (b) {
-       if ([nbdoc]>=[FDL_MAX_FGEXPORTDOC]) {
-       b.value="[TEXT:No direct import : limit is reached]"+" : "+ [FDL_MAX_FGEXPORTDOC];
-       b.disabled=true;
-       } else {
-       b.disabled=false;
-       b.value="[TEXT:Import document description now]";
-       }
-       }
-       }
+            editw.$("#bgimport").button("enable").val("[TEXT:proceed background import]");
+
+            b=editw.document.getElementById('fgimport');
+            if (b) {
+                if ([nbdoc]>=[FDL_MAX_FGEXPORTDOC]) {
+
+                    editw.$("#fgimport").button("disable").val("[TEXT:No direct import : limit is reached]"+" : "+ [FDL_MAX_FGEXPORTDOC]);
+                } else {
+                     editw.$("#fgimport").button("enable").val("[TEXT:Import document description now]").css('font-weight','bold');
+                     editw.$("#fbgimport").css('visibility','visible');
+                     editw.$("#banalyze").css('font-weight','normal');
+                }
+            }
+        }
+       var ybody=$(window).height() - $('#importresults tbody').offset().top - 20;
+
+           $('#importresults').dataTable({
+               "sDom":'<"top"t<"bottom"><"clear">',
+               bJQueryUI:true,
+               bSort:false,
+               sScrollY:ybody+'px',
+               iDisplayLength:5000
+           });
+       });
    </script>
 
 
 
  </head>
 
-<body class="freedom">
+<body >
 
 
    <H1>[IF analyze][TEXT:Result Analyze Documents][ENDIF analyze][IFNOT analyze][TEXT:Result Import Documents][ENDIF analyze]</H1>
@@ -78,7 +89,7 @@ TD, TH {
     [IF haswarning]
     <h4 style="background-color: #FBC95E">[TEXT:Some element couldn't be fully analyze, warnings can become errors or be corrected when importing]</h4>
     [ENDIF haswarning]
-<table width="100%" >
+<table id="importresults" width="100%" >
 
 <thead><tr><th>[TEXT:line]</th>
 <th>[TEXT:doctitle]</th>
@@ -90,10 +101,12 @@ TD, TH {
 <th>[TEXT:specmessage]</th>
 <th>[TEXT:changes]</th>
 <th>[TEXT:error]</th></tr></thead>
-<tbody  >
+<tbody>
 [BLOCK ADDEDDOC]
 <tr class="[action]"><td>[order]</td><td>[title]</td><td>[foldername]</td><td><a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id=[id]">[id]</a></td><td><a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[familyid]">[familyname]</a></td><td>[taction]</td><td>[msg]</td><td>[specmsg]</td><td>[svalues]</td><td>[err]</td></tr>
 [ENDBLOCK ADDEDDOC]
 </tbody></table>
+
+
 </body>
 </html>

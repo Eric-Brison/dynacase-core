@@ -36,15 +36,18 @@ function freedom_editimport(Action & $action)
     ) , "Y") == "Y");
     $usage->setStrictMode(false);
     $usage->verify();
-    $dbaccess = $action->GetParam("FREEDOM_DB");
-    
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
+    $action->parent->addJsRef("lib/jquery/jquery.js");
+    $action->parent->addJsRef("lib/jquery-ui/js/jquery-ui.js");
+    $action->parent->addCssRef("css/dcp/jquery-ui.css");
+    
+    $dbaccess = $action->GetParam("FREEDOM_DB");
     // build list of class document
     $query = new QueryDb($dbaccess, "Doc");
     $query->AddQuery("doctype='C'");
     
     $selectclass = array();
-
+    
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
     
     while (list($k, $cdoc) = each($tclassdoc)) {
@@ -57,6 +60,9 @@ function freedom_editimport(Action & $action)
     $action->lay->SetBlockData("SELECTCLASS", $selectclass);
     
     $action->lay->set("mailaddr", getMailAddr($action->user->id));
+    $action->lay->set("separator", $action->getParam("FREEDOM_CSVSEPARATOR"));
+    $action->lay->set("enclosure", $action->getParam("FREEDOM_CSVENCLOSURE"));
+    $action->lay->set("linebreak", $action->getParam("FREEDOM_CSVLINEBREAK"));
     
     $action->lay->Set("descr", (bool)$descr);
     $action->lay->Set("policy", (bool)$policy);

@@ -36,7 +36,7 @@ function editimport() {
 
  </head>
 
-<frameset border="1" cols="40%,*" >
+<frameset border="1" cols="400px,*" >
 
 	<frame id="editw" src="?app=FREEDOM&action=FREEDOM_EDITIMPORT[params]"  />
     <frame id="resultw" name="[resultAnalysisId]" src="?app=FREEDOM&action=FREEDOM_LOGO" frameborder="1" />
