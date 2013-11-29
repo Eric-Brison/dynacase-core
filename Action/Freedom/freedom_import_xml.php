@@ -172,7 +172,7 @@ function extractFileFromXmlDocument($file)
         $buffer = fgets($f, 4096);
         $mediaindex++;
         if (preg_match("/<([a-z_0-9-]+)[^>]*mime=\"[^\"]+\"(.*)>(.*)/", $buffer, $reg)) {
-            if (substr($reg[2], -1) != "/") { // not empty tag
+            if ((substr($reg[2], -1) != "/") && (substr($reg[2], -strlen($reg[1]) - 3) != '></' . $reg[1])) { // not empty tag
                 $tag = $reg[1];
                 if (preg_match("/<([a-z_0-9-]+)[^>]*title=\"([^\"]+)\"/", $buffer, $regtitle)) {
                     $title = $regtitle[2];
@@ -326,6 +326,10 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
         $families[$famid] = new_doc($dbaccess, $famid);
     }
     //print("family : $family $id $name $famid\n");
+    
+    /**
+     * @var DocFam[] $families
+     */
     $la = $families[$famid]->getNormalAttributes();
     $tord = array();
     $tdoc = array(
@@ -463,6 +467,7 @@ function splitZipXmlDocument($zipfiles, $splitdir)
 }
 function splitXmlDocument($xmlfiles, $splitdir)
 {
+    $xs = null;
     try {
         $xs = new XMLSplitter($splitdir);
         $xs->split($xmlfiles);
