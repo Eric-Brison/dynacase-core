@@ -37,8 +37,8 @@ function inputattribute(&$action)
     $label = GetHttpVars("label");
     $esize = GetHttpVars("esize");
     $value = GetHttpVars("value");
-    $phpfunc = GetHttpVars("phpfunc");
-    $phpfile = GetHttpVars("phpfile");
+    $phpfunc = GetHttpVars("phpfunc", "", "zone");
+    $phpfile = GetHttpVars("phpfile", "", "zone");
     $eformat = GetHttpVars("eformat");
     $options = GetHttpVars("options");
     $dbaccess = $action->GetParam("FREEDOM_DB");

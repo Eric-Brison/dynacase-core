@@ -31,6 +31,7 @@ function autocompletion(Action & $action)
     $domindex = GetHttpVars("domindex", ""); // index in dom of the attributes for arrays
     $enum = GetHttpVars("enum"); // special case when it is an enum
     $skey = GetHttpVars("skey"); // use only when enum (filter key)
+    $acId = GetHttpVars("acid", ""); // autocompletion Id
     if (!empty($_SERVER["HTTP_HOST"])) {
         header('Content-type: text/xml; charset=utf-8');
     }
@@ -46,28 +47,44 @@ function autocompletion(Action & $action)
     $docid = $doc->id;
     $action->lay->Set("count", 0);
     if ($docid == 0) {
-        // specific interface
-        $value = "";
-        $label = GetHttpVars("label", _("no label"));
-        $index = "";
-        $jsevent = "";
-        $format = "";
-        $repeat = false;
-        $order = 0;
-        $link = "";
-        $visibility = "W";
-        $needed = "N";
-        $isInTitle = false;
-        $isInAbstract = false;
-        $phpfile = GetHttpVars("phpfile");
-        $phpfunc = GetHttpVars("phpfunc");
-        $fieldSet = null;
-        $elink = "";
-        $phpconstraint = "";
-        $usefor = "";
-        $eformat = "";
-        $options = "";
-        $oattr = new NormalAttribute($attrid, $doc->id, $label, "text", $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, $fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint, $usefor, $eformat, $options);
+        try {
+            if ($acId == '') {
+                throw new Exception(sprintf(_("Missing or empty 'acid'.")));
+            }
+            $ac = $action->Read(sprintf('autocompletion.%s', $acId));
+            if ($ac === '' || $ac === '--') {
+                throw new Exception(sprintf(_("Missing value for 'autocompletion.%s'.") , $acId));
+            }
+            if (!isset($ac['phpfile'])) {
+                throw new Exception(sprintf(_("Missing 'phpfile' in 'autocompletion.%s'.") , $acId));
+            }
+            if (!isset($ac['phpfunc'])) {
+                throw new Exception(sprintf(_("Missing 'phpfunc' in 'autocompletion.%s'.") , $acId));
+            }
+            $label = isset($ac['label']) ? $ac['label'] : _("no label");
+            $phpfile = $ac['phpfile'];
+            $phpfunc = $ac['phpfunc'];
+            // specific interface
+            $index = "";
+            $format = "";
+            $repeat = false;
+            $order = 0;
+            $link = "";
+            $visibility = "W";
+            $needed = "N";
+            $isInTitle = false;
+            $isInAbstract = false;
+            $fieldSet = null;
+            $elink = "";
+            $phpconstraint = "";
+            $usefor = "";
+            $eformat = "";
+            $options = "";
+            $oattr = new NormalAttribute($attrid, $doc->id, $label, "text", $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, $fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint, $usefor, $eformat, $options);
+        }
+        catch(Exception $e) {
+            $err = $e->getMessage();
+        }
     } else {
         $oattr = $doc->GetAttribute($attrid);
         if (!$oattr) {
@@ -83,7 +100,6 @@ function autocompletion(Action & $action)
         $notalone = "true";
         
         if (preg_match("/([a-z]*)-alone/", $sorm, $reg)) {
-            $sorm = $reg[1];
             $notalone = "false";
         }
         $action->lay->set("notalone", $notalone);
@@ -112,16 +128,8 @@ function autocompletion(Action & $action)
             if (trim($skey) == '' && strpos($oattr->phpfunc, "linkenum") !== false) {
                 $oattr->getEnum();
             }
-            $eval = $oattr->phpfunc;
             
             $oattr->phpfile = "fdl.php";
-            $eval = str_replace(array(
-                '\,',
-                '\.'
-            ) , array(
-                '&comma;',
-                '&point;'
-            ) , $eval);
             $oattr->phpfunc = sprintf("fdlGetEnumValues('%s,'%s,'%s):li_%s,%s", $oattr->docid, $oattr->id, str_replace(array(
                 ')',
                 '(',
@@ -209,7 +217,7 @@ function autocompletion(Action & $action)
                 }
             } else {
                 if ($enum && (trim($skey) != "")) {
-                    foreach ($res as $kr => $kv) { // verify existed key
+                    foreach ($res as $kv) { // verify existed key
                         if (($kv[1] == trim($skey)) || ($kv[2] == trim($skey))) $canitem = false;
                     }
                     if ($canitem) {
@@ -235,7 +243,7 @@ function autocompletion(Action & $action)
             if ($err == "") {
                 $xmlCibles = $xmlDocument->createElement("cibles");
                 // add  index for return args only if the element is not in a array
-                while (list($k, $v) = each($rargids)) {
+                while (list($k,) = each($rargids)) {
                     $linkprefix = "ilink_";
                     $isILink = false;
                     $attrId = $rargids[$k];
@@ -311,4 +319,3 @@ function Utf8_decode_POST()
         }
     }
 }
-?>

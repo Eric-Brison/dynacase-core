@@ -148,7 +148,14 @@ class DocFormFormat
         $this->onChange = $this->jsEvents . " onchange=\"document.isChanged=true\" "; // use in "pleaseSave" js function
         if ($docid == 0) {
             // case of specific interface
-            $this->iOptions = str_replace('\"', '&quot;', '&phpfile=' . $this->oattr->phpfile . '&phpfunc=' . $this->oattr->phpfunc . '&label=' . ($this->oattr->getLabel()));
+            if ($this->oattr->phpfile != '' && $this->oattr->phpfunc != '') {
+                $acId = $this->_newAcId($action, array(
+                    'phpfile' => $this->oattr->phpfile,
+                    'phpfunc' => $this->oattr->phpfunc,
+                    'label' => $this->oattr->getLabel()
+                ));
+                $this->iOptions = sprintf('&acid=%s', $acId);
+            }
         } else $this->iOptions = "";
         if (($this->oattr->type != "array") && ($this->oattr->type != "htmltext") && ($this->oattr->type != "docid")) {
             if ($this->visibility != "S") {
@@ -808,7 +815,14 @@ class DocFormFormat
                 }
                 if ($this->docid == 0) {
                     // case of specific interface
-                    $this->iOptions = str_replace('"', '&quot;', '&phpfile=' . $this->oattr->phpfile . '&phpfunc=' . $this->oattr->phpfunc . '&label=' . ($this->oattr->getLabel()));
+                    if ($this->oattr->phpfile != '' && $this->oattr->phpfunc != '') {
+                        $acId = $this->_newAcId($action, array(
+                            'phpfile' => $this->oattr->phpfile,
+                            'phpfunc' => $this->oattr->phpfunc,
+                            'label' => $this->oattr->getLabel()
+                        ));
+                        $this->iOptions = sprintf('&acid=%s', $acId);
+                    }
                 }
                 $autocomplete = " autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event," . $this->docid . ",this,'{$this->iOptions}','{$this->attrid}','{$this->index}')\" ";
                 $this->onChange.= $autocomplete;
@@ -1938,5 +1952,18 @@ class DocFormFormat
                 }
                 return $enumMap;
             }
+            /**
+             * Store autocompletion's parameters in user's session and return the corresponding identifier.
+             * @param Action $action
+             * @param array $ac The autocompletion parameters array('phpfile' => $phpfile, 'phpfunc' => $phpfunc, 'label' => $label)
+             * @return string the autocompletion Id
+             */
+            private function _newAcId(Action $action, $ac)
+            {
+                $acId = sha1(serialize($ac));
+                $action->Register(sprintf('autocompletion.%s', $acId) , $ac);
+                return $acId;
+            }
         }
-?>
+        
+        

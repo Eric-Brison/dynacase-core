@@ -116,15 +116,23 @@ function redirectAsGuest(Action & $action)
  * return value of an http parameter
  * @param string $name parameter key
  * @param string $def default value if parameter is not set
+ * @param string $scope The scope for the search of the value ('zone' for $ZONE_ARGS, 'get' for $_GET, 'post' for $_POST and 'all' for searching in all)
  * @return string
  */
-function getHttpVars($name, $def = "")
+function getHttpVars($name, $def = "", $scope = "all")
 {
     global $_GET, $_POST, $ZONE_ARGS;
     
-    if (isset($ZONE_ARGS[$name])) return ($ZONE_ARGS[$name]); // try zone args first : it is set be Layout::execute for a zone
-    if (isset($_GET[$name])) return $_GET[$name];
-    if (isset($_POST[$name])) return $_POST[$name];
+    if (($scope == "all" || $scope == "zone") && isset($ZONE_ARGS[$name])) {
+        // try zone args first : it is set be Layout::execute for a zone
+        return ($ZONE_ARGS[$name]);
+    }
+    if (($scope == "all" || $scope == "get") && isset($_GET[$name])) {
+        return $_GET[$name];
+    }
+    if (($scope == "all" || $scope == "post") && isset($_POST[$name])) {
+        return $_POST[$name];
+    }
     
     return ($def);
 }

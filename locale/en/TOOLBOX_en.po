@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-21 12:27+0100\n"
+"POT-Creation-Date: 2013-11-28 11:28+0100\n"
 "PO-Revision-Date: 2013-10-25 12:31+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -2663,6 +2663,22 @@ msgstr ""
 msgid "Minimum uppercase alpha needed for user password"
 msgstr ""
 
+#, php-format
+msgid "Missing 'phpfile' in 'autocompletion.%s'."
+msgstr ""
+
+#, php-format
+msgid "Missing 'phpfunc' in 'autocompletion.%s'."
+msgstr ""
+
+#, php-format
+msgid "Missing or empty 'acid'."
+msgstr ""
+
+#, php-format
+msgid "Missing value for 'autocompletion.%s'."
+msgstr ""
+
 msgid "Modification date"
 msgstr ""
 
@@ -3212,14 +3228,6 @@ msgid "Role \"%s\""
 msgstr ""
 
 msgid "Root folder"
-msgstr ""
-
-#, php-format
-msgid "SEARCH_DOC:Unbalenced parenthesis %s"
-msgstr ""
-
-#, php-format
-msgid "SEARCH_DOC:Unknown operator %s"
 msgstr ""
 
 msgid "SMTP default from if not"

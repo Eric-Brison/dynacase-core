@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-21 12:27+0100\n"
-"PO-Revision-Date: 2013-11-21 14:41+0100\n"
+"POT-Creation-Date: 2013-11-28 11:28+0100\n"
+"PO-Revision-Date: 2013-11-28 11:32+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -2771,6 +2771,22 @@ msgid "Minimum uppercase alpha needed for user password"
 msgstr ""
 "Nombre minimum de lettres majuscules pour le mot de passe d'un utilisateur"
 
+#, php-format
+msgid "Missing 'phpfile' in 'autocompletion.%s'."
+msgstr "'phpfile' non trouvé dans 'autocompletion.%s'."
+
+#, php-format
+msgid "Missing 'phpfunc' in 'autocompletion.%s'."
+msgstr "'phpfunc' non trouvé dans 'autocompletion.%s'."
+
+#, php-format
+msgid "Missing or empty 'acid'."
+msgstr "'acid' manquant ou vide."
+
+#, php-format
+msgid "Missing value for 'autocompletion.%s'."
+msgstr "Valeur non-trouvée pour 'autocompletion.%s'."
+
 msgid "Modification date"
 msgstr "Date de dernière modification"
 
@@ -3331,14 +3347,6 @@ msgstr "le rôle \"%s\""
 
 msgid "Root folder"
 msgstr "Dossier racine"
-
-#, php-format
-msgid "SEARCH_DOC:Unbalenced parenthesis %s"
-msgstr "Recherche : Problème de parenthèses \"%s\""
-
-#, php-format
-msgid "SEARCH_DOC:Unknown operator %s"
-msgstr "Recherche : problème d'opérateur \"%s\""
 
 msgid "SMTP default from if not"
 msgstr "Adresse de retour par défaut pour le SMTP"
@@ -8865,6 +8873,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Rest delay"
 #~ msgstr "Durée restante"
+
+#~ msgid "SEARCH_DOC:Unbalenced parenthesis %s"
+#~ msgstr "Recherche : Problème de parenthèses \"%s\""
+
+#~ msgid "SEARCH_DOC:Unknown operator %s"
+#~ msgstr "Recherche : problème d'opérateur \"%s\""
 
 #~ msgid "Save change"
 #~ msgstr "Sauvegarder les changements"
