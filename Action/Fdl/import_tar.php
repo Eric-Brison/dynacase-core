@@ -131,7 +131,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                 } else {
                                     $ddoc = & $defaultdoc;
                                     if ($ffileattr) {
-                                    $fattr = $ffileattr->id;
+                                        $fattr = $ffileattr->id;
                                     } else {
                                         $tr[$index]["err"] = "no file attribute";
                                     }
@@ -145,7 +145,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                     $err = $ddoc->Add();
                                     if ($err != "") {
                                         $tr[$index]["action"] = N_("not added");
-                                         $tr[$index]["err"] =$err;
+                                        $tr[$index]["err"] = $err;
                                     } else {
                                         $ddoc->addHistoryEntry(sprintf("create by import from archive %s", substr(basename($ldir) , 0, -2)));
                                         $tr[$index]["action"] = N_("added");
@@ -223,7 +223,10 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze)
         $nline = 0;
         $nbdoc = 0;
         $tcolorder = array();
-        while ($data = fgetcsv($fcsv, 0, ";")) {
+        $separator = $enclosure = "auto";
+        importDocumentDescription::detectAutoCsvOptions($fdlcsv, $separator, $enclosure);
+        
+        while ($data = fgetcsv($fcsv, 0, $separator, $enclosure)) {
             $nline++;
             $level = substr_count($ldir, "/");
             $index = "c$level/$nline";

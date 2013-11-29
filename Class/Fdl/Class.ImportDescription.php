@@ -120,67 +120,86 @@ class importDocumentDescription
         $this->csvEnclosure = $csvEnclosure;
         $this->csvLinebreak = $csvLinebreak;
         
-        $this->detectAutoCsvOptions();
+        $this->setAutoCsvOptions();
         return array(
             "separator" => $this->csvSeparator,
             "enclosure" => $this->csvEnclosure,
             "linebreak" => $this->csvLinebreak
         );
     }
+
+    /**
+     * Detect csv options - separator and enclosure arguments are modified if set to auto
+     * @param $csvFileName
+     * @param string &$separator need to set to 'auto' to detect
+     * @param string &$enclosure need to set to 'auto' to detect
+     * @return array associaive array "enclosure", "separator" keys
+     * @throws Dcp\Exception
+     */
+    public static function detectAutoCsvOptions($csvFileName, &$separator = 'auto', &$enclosure = 'auto')
+    {
+        {
+            $content = file_get_contents($csvFileName);
+            if ($separator == 'auto') {
+                preg_match_all('/^["\']?([A-Z]+)["\']?([;,])/m', $content, $regs);
+                $seps = $regs[2];
+                $semicolon = 0;
+                $comma = 0;
+                if (count($seps) > 0) {
+                    foreach ($seps as $sep) {
+                        if ($sep == ';') {
+                            $semicolon++;
+                        } elseif ($sep == ';') {
+                            $comma++;
+                        }
+                    }
+                    if ($semicolon > $comma) {
+                        $separator = ';';
+                    } else {
+                        $separator = ',';
+                    }
+                } else {
+                    throw new Dcp\Exception(sprintf("cannot find csv separator in %s file", $csvFileName));
+                }
+            }
+            if ($enclosure == 'auto') {
+                preg_match_all(sprintf('/%s(["\'])([^"\']+)(["\'])%s/m', $separator, $separator) , $content, $regs);
+                $begEnclosure = $regs[1];
+                $endEnclosure = $regs[3];
+                $doublequote = 0;
+                $singlequote = 0;
+                foreach ($begEnclosure as $k => $be) {
+                    if ($begEnclosure[$k] === $endEnclosure[$k]) {
+                        if ($be === '"') {
+                            $doublequote++;
+                        } elseif ($be === "'") {
+                            $singlequote++;
+                        }
+                    }
+                }
+                if (max($doublequote, $singlequote) > 0) {
+                    if ($doublequote > $singlequote) {
+                        $enclosure = '"';
+                    } else {
+                        $enclosure = "'";
+                    }
+                } else {
+                    $enclosure = ''; // no enclosure
+                    
+                }
+            }
+        }
+        return array(
+            "separator" => $separator,
+            "enclosure" => $enclosure
+        );
+    }
     
-    public function detectAutoCsvOptions()
+    protected function setAutoCsvOptions()
     {
         if (!$this->ods2CsvFile) {
             if (($this->csvSeparator == 'auto') || ($this->csvEnclosure == 'auto')) {
-                $content = file_get_contents($this->importFileName);
-                if ($this->csvSeparator == 'auto') {
-                    preg_match_all('/^["\']?([A-Z]+)["\']?([;,])/m', $content, $regs);
-                    $seps = $regs[2];
-                    $semicolon = 0;
-                    $comma = 0;
-                    if (count($seps) > 0) {
-                        foreach ($seps as $sep) {
-                            if ($sep == ';') {
-                                $semicolon++;
-                            } elseif ($sep == ';') {
-                                $comma++;
-                            }
-                        }
-                        if ($semicolon > $comma) {
-                            $this->csvSeparator = ';';
-                        } else {
-                            $this->csvSeparator = ',';
-                        }
-                    } else {
-                        throw new Dcp\Exception(sprintf("cannot find csv separator in %s file", $this->importFileName));
-                    }
-                }
-                if ($this->csvEnclosure == 'auto') {
-                    preg_match_all(sprintf('/%s(["\'])([^"\']+)(["\'])%s/m', $this->csvSeparator, $this->csvSeparator) , $content, $regs);
-                    $begEnclosure = $regs[1];
-                    $endEnclosure = $regs[3];
-                    $doublequote = 0;
-                    $singlequote = 0;
-                    foreach ($begEnclosure as $k => $be) {
-                        if ($begEnclosure[$k] === $endEnclosure[$k]) {
-                            if ($be === '"') {
-                                $doublequote++;
-                            } elseif ($be === "'") {
-                                $singlequote++;
-                            }
-                        }
-                    }
-                    if (max($doublequote, $singlequote) > 0) {
-                        if ($doublequote > $singlequote) {
-                            $this->csvEnclosure = '"';
-                        } else {
-                            $this->csvEnclosure = "'";
-                        }
-                    } else {
-                        $this->csvEnclosure = ''; // no enclosure
-                        
-                    }
-                }
+                $this->detectAutoCsvOptions($this->importFileName, $this->csvSeparator, $this->csvEnclosure);
             }
         } else {
             // converted from ods
