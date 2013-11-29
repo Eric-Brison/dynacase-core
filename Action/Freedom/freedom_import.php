@@ -44,8 +44,7 @@ function freedom_import(Action & $action)
             }
         }
         return '';
-    }
-    , ';');
+    });
     $enclosure = $usage->addOptionalParameter("enclosure", "character to enclose fields - generaly double-quote", function ($values, $argName, ApiUsage $apiusage)
     {
         if ($values === ApiUsage::GET_USAGE) {
@@ -98,19 +97,23 @@ function freedom_import(Action & $action)
     $plinebreak = $action->getParam("FREEDOM_CSVLINEBREAK");
     
     if (!$analyze) {
-        if ($plinebreak != $linebreak) {
-            $action->setParamU("FREEDOM_CSVLINEBREAK", $linebreak);
-        }
-        if ($pseparator != $separator) {
-            $action->setParamU("FREEDOM_CSVSEPARATOR", $separator);
-        }
-        if ($penclosure != $enclosure) {
-            $action->setParamU("FREEDOM_CSVENCLOSURE", $enclosure);
+        if ($separator) {
+            if ($plinebreak != $linebreak) {
+                $action->setParamU("FREEDOM_CSVLINEBREAK", $linebreak);
+            }
+            if ($pseparator != $separator) {
+                $action->setParamU("FREEDOM_CSVSEPARATOR", $separator);
+            }
+            if ($penclosure != $enclosure) {
+                $action->setParamU("FREEDOM_CSVENCLOSURE", $enclosure);
+            }
         }
     }
     
     $oImport = new ImportDocument();
-    $oImport->setCsvOptions($separator, $enclosure, $linebreak);
+    if ($separator) {
+        $oImport->setCsvOptions($separator, $enclosure, $linebreak);
+    }
     $oImport->importDocuments($action, $csvfile, $analyze);
     $oImport->writeHtmlCr($action->lay);
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
