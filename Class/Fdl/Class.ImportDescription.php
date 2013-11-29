@@ -241,8 +241,7 @@ class importDocumentDescription
                 }
                 , $data);
             } else {
-                
-                $data = fgetcsv($this->fdoc, 16384, $this->csvSeparator, $this->csvEnclosure);
+                $data = fgetcsv($this->fdoc, 0, $this->csvSeparator, $this->csvEnclosure);
                 if ($data === false) {
                     continue;
                 }

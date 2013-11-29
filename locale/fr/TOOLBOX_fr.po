@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 15:00+0100\n"
-"PO-Revision-Date: 2013-11-27 15:03+0100\n"
+"POT-Creation-Date: 2013-11-29 17:38+0100\n"
+"PO-Revision-Date: 2013-11-29 18:04+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1357,9 +1357,6 @@ msgstr "Supprimer cette rubrique"
 msgid "Desactivate acls"
 msgstr "Désactiver les droits"
 
-msgid "Description of the import format"
-msgstr "Description du format d'import"
-
 msgid "Detail Permissions"
 msgstr "Détail des droits"
 
@@ -2322,6 +2319,9 @@ msgstr "Recherche générale"
 msgid "Generic"
 msgstr "Générique"
 
+msgid "Get XML schema to compose XML document import file"
+msgstr "Télécharger le schéma XML pour composer les fichiers d'importation des documents en XML"
+
 msgid "Get Xml schema"
 msgstr "Récupérer le schéma XML"
 
@@ -2435,8 +2435,8 @@ msgstr "Importer des documents"
 msgid "Import file"
 msgstr "Fichier à importer"
 
-msgid "Import format"
-msgstr "Format d'importation"
+msgid "Import file (CSV, ODS, XML)"
+msgstr "Fichier d'importation (CSV, ODS, XML)"
 
 msgid "Importation data"
 msgstr "Données réimportables"
@@ -2707,6 +2707,9 @@ msgstr "Message %s envoyé à %s"
 msgid "Mail action URL"
 msgstr "URL d'action mail"
 
+msgid "Mail address"
+msgstr "Adresse de courriel"
+
 msgid "Mail template document reference to ask new password"
 msgstr ""
 "Référence du modèle de mail utilisé pour la demande de changement de mot de "
@@ -2891,6 +2894,9 @@ msgstr "Pas de droits définis pour les nouveaux documents de cette famille"
 msgid "No columns has been defined"
 msgstr "Aucunes colonnes ont été définies"
 
+msgid "No description import file"
+msgstr "Aucun fichier de description d'importation"
+
 msgid "No direct import : limit is reached"
 msgstr "Pas d'importation directe : limite atteinte"
 
@@ -3007,9 +3013,6 @@ msgstr "Ouvrir dans une chemise"
 
 msgid "Opt"
 msgstr "Opt"
-
-msgid "Option for import"
-msgstr "Options pour l'importation"
 
 msgid "Options for csv import"
 msgstr "Options pour fichier CSV"
@@ -3472,6 +3475,9 @@ msgstr ""
 "Sélectionnez avec profil pour une réutilisation dans une autre base ou pour "
 "une sauvegarde"
 
+msgid "Select a family"
+msgstr "Sélectionner une famille"
+
 msgid "Select all columns"
 msgstr "Sélectionner tout"
 
@@ -3538,6 +3544,9 @@ msgstr "Échec lors de l'envoi du mail %s: aucun destinataire trouvé"
 
 msgid "Send mail with template"
 msgstr "Envoi d'un courriel avec le modèle"
+
+msgid "Send report to"
+msgstr "Envoyer le rapport à"
 
 msgid "Send search"
 msgstr "Lancer la recherche"
@@ -3943,6 +3952,9 @@ msgstr "Télécharger l'archive"
 
 msgid "Use Ctrl-S to save and stay in edit mode"
 msgstr "Utiliser Ctrl-S pour sauver et rester en édition"
+
+msgid "Use another import interface for a specific family"
+msgstr "Utiliser une autre interface d'importation pour une famille précise"
 
 #, php-format
 msgid "Use your home folder instead <%s>"
@@ -8823,6 +8835,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Confirm unattach all activated timers"
 #~ msgstr "Confirmer l'annulation de tous les minuteurs actifs"
 
+#~ msgid "Description of the import format"
+#~ msgstr "Description du format d'import"
+
 #~ msgid "Direct Import"
 #~ msgstr "Importation directe"
 
@@ -8840,6 +8855,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Go"
 #~ msgstr "Go"
+
+#~ msgid "Import format"
+#~ msgstr "Format d'importation"
 
 #~ msgid "Maximum 20 views by control"
 #~ msgstr "Maximum 20 vues par contrôle"
@@ -8868,6 +8886,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Open in new window"
 #~ msgstr "Ouvrir dans une nouvelle fenêtre"
 
+#~ msgid "Option for import"
+#~ msgstr "Options pour l'importation"
+
 #~ msgid "Progress bar"
 #~ msgstr "Barre de progression"
 
@@ -8882,6 +8903,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Reimport report"
 #~ msgstr "Réimporter le rapport"
+
+#~ msgid "Report to (mail address)"
+#~ msgstr "Rapport à (adresse de courriel)"
 
 #~ msgid "Rest delay"
 #~ msgstr "Durée restante"

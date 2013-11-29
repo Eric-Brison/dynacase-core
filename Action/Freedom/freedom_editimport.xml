@@ -55,8 +55,8 @@
 
         <fieldset id="fbgimport" style="visibility:hidden">
             <legend>[TEXT:Background Import]</legend>
-            <label for="to">[TEXT:Report to (mail address)]</label>
-            <input size="30" id="to" name="to" type="email" value="[mailaddr]">
+            <label for="to">[TEXT:Send report to] : </label>
+            <input size="30" id="to" name="to" type="email" placeholder="[TEXT:Mail address]" value="[mailaddr]">
             </input>
             <br/>
             <input id="bgimport" type="submit" disabled
@@ -134,9 +134,9 @@
                 [ENDBLOCK SELECTCLASS]
             </select>
             <hr width="50%"/>
-            <p>[TEXT:Use another import interface for a specific family]</p>
+            <p>[TEXT:Use another import interface for a specific family]&nbsp;:</p>
             <input disabled="disabled" type="button" value="[TEXT:Specific import in csv format]" onclick="editimport()">
-            <p>[TEXT:Get XML schema to compose XML document import file]</p>
+            <p>[TEXT:Get XML schema to compose XML document import file]&nbsp;:</p>
             <input disabled="disabled" type="button" title="[TEXT:View Xml Schema]" value="[TEXT:Get Xml schema]"
                    onclick='window.open("[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+$("#classid").val(),"_blank")'>
             </div>
