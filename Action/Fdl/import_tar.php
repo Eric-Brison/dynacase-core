@@ -225,7 +225,12 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze)
         $tcolorder = array();
         $separator = $enclosure = "auto";
         importDocumentDescription::detectAutoCsvOptions($fdlcsv, $separator, $enclosure);
-        
+        if ($separator == '') {
+            $separator = ';';
+        }
+        if ($enclosure == '') {
+            $enclosure = '"';
+        }
         while ($data = fgetcsv($fcsv, 0, $separator, $enclosure)) {
             $nline++;
             $level = substr_count($ldir, "/");
