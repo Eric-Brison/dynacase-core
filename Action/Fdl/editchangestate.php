@@ -134,7 +134,7 @@ function editchangestate(Action & $action)
         }
         $action->lay->eset("thetitle", sprintf("%s", mb_ucfirst($transitionLabel)));
         $action->lay->eset("nextstate", $nextstate);
-        $action->lay->eset("Explanations", nl2br(implode("\n", $explanation)));
+        $action->lay->set("Explanations", nl2br(implode("\n", $explanation)));
         
         $style = $action->parent->getParam("STYLE");
         if ($viewext) {
