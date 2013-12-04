@@ -1,110 +1,80 @@
-[ZONE FDL:HTMLHEAD?title=[TEXT:Import documents]]
-
-<style>
-    .content .inner {
-        display : none;
-        margin-top:10px;
-        padding:10px;
-    }
-    label.ui-button {
-        width:100%;
-    }
-    input[type=file] {
-        margin:30px;
-    }
-    .ffile  {
-        text-align:center;
-    }
-    h1 {
-        margin-top:0px;
-    }
-</style>
-<div class="document">
-    <!-- Title Table -->
-    <form   id="mainform"
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>[TEXT:Import documents]</title>
+    [CSS:CUSTOMREF]
+<body>
+    <div class="document">
+        <!-- Title Table -->
+        <form   id="mainform"
             name="modifydoc"
-            style="display:inline"
+            class="mainform"
             method="POST"
             ENCTYPE="multipart/form-data"
-            action="[CORE_STANDURL]&app=[APPNAME]">
+            action="[CORE_STANDURL]&amp;app=[APPNAME]">
 
+            <h1>[TEXT:Import Documents]</h1>
 
-        <H1>[TEXT:Import Documents]</H1>
+            <input type="hidden" name="dirid" value="[dirid]">
+            <input type="hidden" id="analyze" name="analyze" value="N">
+            <input type="hidden" id="action" name="action" value="FREEDOM_IMPORT">
 
-        <input type="hidden" name="dirid" value="[dirid]">
-        <input type="hidden" id="analyze" name="analyze" value="N">
-        <input type="hidden" id="action" name="action" value="FREEDOM_IMPORT">
+            <fieldset class="frame">
+                <legend>[TEXT:Import file (CSV, ODS, XML)] :</legend>
 
-
-        <fieldset class="ffile">
-            <legend>[TEXT:Import file (CSV, ODS, XML)] : </legend>
-
-
-            <input type="file" name="file" id="ifile"
+                <input type="file" name="file" id="ifile" class="file"
                    accept="text/csv,application/xml,application/vnd.oasis.opendocument.spreadsheet"
                    title="[TEXT:csv, ods, xml, zip (xml) supported import files]"
                    onchange="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;"
                    onblur="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;">
-            <br/>
-            <input id="banalyze" type="button" style="font-weight:bold" value="[TEXT:Send Analyze]" disabled="disabled"
-                   onclick="$('#action').val('FREEDOM_IMPORT');$('#analyze').val('Y');$('#mainform').submit()"><br/>
-            <input id="fgimport" type="button" value="[TEXT:Import after analyze done]" disabled="disabled"
-                   onclick="$('#action').val('FREEDOM_IMPORT');$('#analyze').val('N');$('#mainform').submit()">
-        </fieldset>
+                <br/>
+                <input id="banalyze" type="button" style="font-weight:bold" value="[TEXT:Send Analyze]" disabled="disabled"/>
+                <br/>
+                <input id="fgimport" type="button" value="[TEXT:Import after analyze done]" disabled="disabled"/>
+            </fieldset>
 
-
-        <fieldset id="fbgimport" style="visibility:hidden">
-            <legend>[TEXT:Background Import]</legend>
-            <label for="to">[TEXT:Send report to] : </label>
-            <input size="30" id="to" name="to" type="email" placeholder="[TEXT:Mail address]" value="[mailaddr]">
-            </input>
-            <br/>
-            <input id="bgimport" type="submit" disabled
-                   onmousedown="$('#action').val('FREEDOM_BGIMPORT')"
-                   value="[TEXT:Import after analyze done]">
-        </fieldset>
-        <div class="frame">
-                <div class="legend">[TEXT:Options for csv import]</div>
-                <div id="csvOption" class="content">
-
-
-                        <table class="inner" style="margin : 10px">
-                            <tr>
-                                <td>
-                                    [TEXT:EXPORT_CSV Delimiter :]
-                                </td>
-                                <td>
-                                    <input name="separator" value="[separator]" style="width : 3em;"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    [TEXT:EXPORT_CSV Enclosure :]
-                                </td>
-                                <td>
-                                    <input name="enclosure" value='[enclosure]' style="width : 3em;"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    [TEXT:EXPORT_CSV Linebreak :]
-                                </td>
-                                <td>
-                                    <input name="linebreak" value='[linebreak]' style="width : 3em;"/>
-                                </td>
-                            </tr>
-
-                        </table>
-
+            <fieldset id="fbgimport" class="frame">
+                <legend class="legend">[TEXT:Background Import]</legend>
+                <div class="content" style="display : none;">
+                    <label for="to">[TEXT:Send report to] :</label>
+                    <input size="30" id="to" name="to" type="email" placeholder="[TEXT:Mail address]" value="[mailaddr]"/>
+                    <br/>
+                    <input id="bgimport" type="submit" disabled
+                       onmousedown="$('#action').val('FREEDOM_BGIMPORT')"
+                       value="[TEXT:Import after analyze done]"></fieldset>
                 </div>
-            </div>
-        [IF policy]
-        <div class="frame">
-            <div class="legend">[TEXT:Policy if same title]</div>
-            <div id="options" class="content">
-
-
+            <fieldset class="frame">
+                <legend class="legend">[TEXT:Options for csv import]</legend>
+                <div id="csvOption" class="content" style="display : none;">
+                    <table class="inner">
+                        <tr>
+                            <td>[TEXT:EXPORT_CSV Delimiter :]</td>
+                            <td>
+                                <input name="separator" value="[separator]" style="width : 3em;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>[TEXT:EXPORT_CSV Enclosure :]</td>
+                            <td>
+                                <input name="enclosure" value='[enclosure]' style="width : 3em;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>[TEXT:EXPORT_CSV Linebreak :]</td>
+                            <td>
+                                <input name="linebreak" value='[linebreak]' style="width : 3em;"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+            [IF policy]
+            <fieldset class="frame">
+                <legend class="legend">[TEXT:Policy if same title]</legend>
+                <div id="options" class="content" style="display : none;">
                     <div class="inner radio">
+                        <p class="policyLabel">[TEXT:For each imported document, if a document with same title is found, then]</p>
                         <input id="pupdate" name="policy" checked="checked" type="radio" value="update" />
                         <label for="pupdate">[TEXT:Update document if has permission else ignored]</label>
                         <br/>
@@ -112,90 +82,39 @@
                         <label for="padd">[TEXT:Add new document (similar document)]</label>
                         <br/>
                         <input id="pkeep" name="policy" type="radio" value="keep"/>
-                        <label for="pkeep">[TEXT:Keep original document]</label></div>
+                        <label for="pkeep">[TEXT:Keep original document]</label>
+                    </div>
 
+                </div>
+            </fieldset>
+            [ENDIF policy]
+        </form>
+        [IF descr]
+        <fieldset class="frame">
+            <legend class="legend">[TEXT:Additionnals informations about import document]</legend>
+            <div class="content" style="display : none;">
+                <div class="inner">
+                    [TEXT:Family] :
+                    <select name="classid" id="classid">
+                        <option VALUE="0">[TEXT:Select a family]</option>
+                        [BLOCK SELECTCLASS]
+                        <option VALUE="[idcdoc]"[selected]>[classname]</option>
+                        [ENDBLOCK SELECTCLASS]
+                    </select>
+                    <hr width="50%"/>
+                    <p>
+                        [TEXT:Use another import interface for a specific family]&nbsp;:
+                    </p>
+                    <input disabled="disabled" type="button" value="[TEXT:Specific import in csv format]" onclick="editimport()">
+                    <p>
+                        [TEXT:Get XML schema to compose XML document import file]&nbsp;:
+                    </p>
+                    <input disabled="disabled" type="button" title="[TEXT:View Xml Schema]" value="[TEXT:Get Xml schema]"
+                   onclick='window.open("[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+$("#classid").val(),"_blank")'></div>
             </div>
-        </div>
-        [ENDIF policy]
-    </form>
-
-    [IF descr]
-    <div class="frame">
-        <div class="legend">[TEXT:Additionnals informations about import document]</div>
-        <div class="content">
-
-            <div class="inner"">
-
-                [TEXT:Family] :
-                <select name="classid" id="classid">
-                    <option VALUE="0">[TEXT:Select a family]</option>
-                    [BLOCK SELECTCLASS]
-                    <option VALUE="[idcdoc]"[selected]>[classname]</option>
-                [ENDBLOCK SELECTCLASS]
-            </select>
-            <hr width="50%"/>
-            <p>[TEXT:Use another import interface for a specific family]&nbsp;:</p>
-            <input disabled="disabled" type="button" value="[TEXT:Specific import in csv format]" onclick="editimport()">
-            <p>[TEXT:Get XML schema to compose XML document import file]&nbsp;:</p>
-            <input disabled="disabled" type="button" title="[TEXT:View Xml Schema]" value="[TEXT:Get Xml schema]"
-                   onclick='window.open("[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+$("#classid").val(),"_blank")'>
-            </div>
-        </div>
+        </fieldset>
+        [ENDIF descr]
     </div>
-    [ENDIF descr]
-</div>
-<script type="text/javascript">
-function editimport() {
-    var eurl;
-    var famid;
-    if (document.getElementById('classid')) {
-        famid = $("#classid").val();
-        eurl = '[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDITIMPORT&famid=' + famid;
-        //subwindow([FDL_VD2SIZE], [FDL_HD2SIZE], '_blank', eurl);
-        window.open(eurl, '_blank');
-    }
-}
-
-function getWindowresult() {
-    if (window.parent && window.parent.document) {
-        var frame = window.parent.document.getElementById("resultw");
-        if (frame) {
-            return frame.getAttribute("name");
-        }
-    }
-    return "defaultAnalysis";
-}
-
-
-$(document).ready(function () {
-    $(".legend").on("click", function () {
-        var elts = $(this).parent().find(".content .inner");
-        if (elts.is(":visible")) {
-            elts.hide();
-        } else {
-            elts.show();
-        }
-    });
-    $('#mainform').attr("target", getWindowresult());
-    $('input[type=submit], button, input[type=button]').button();
-    $('.radio').buttonset();
-    $('#ifile').on("change", function () {
-
-        if ($(this).val().split('.').pop() != "csv") {
-            $("#csvOption input").attr("disabled", "disabled");
-        } else {
-             $("#csvOption input").removeAttr("disabled");
-        }
-        $('#banalyze').button("enable");
-    });
-
-    $('#classid').on("change", function () {
-        if ($(this).val() != "0") {
-            $(this).parent().find('input').button("enable");
-        } else {
-             $(this).parent().find('input').button("disable");
-        }
-    });
-});
-</script>
-        [ZONE FDL:HTMLFOOT]
+    [JS:REF]
+</body>
+</html>

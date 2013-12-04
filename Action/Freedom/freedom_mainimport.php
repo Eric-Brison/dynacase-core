@@ -20,14 +20,14 @@
 function freedom_mainimport(Action & $action)
 {
     
-    $paramters = '';
+    $parameters = '';
     foreach ($_GET as $k => $v) {
         if ($k != "app" && $k != "action" && $k != "sole") {
-            $paramters.= sprintf("&%s=%s", $k, urlencode(($v)));
+            $parameters.= sprintf("&%s=%s", $k, urlencode(($v)));
         }
     }
     
-    $action->lay->set("params", $paramters);
+    $action->lay->set("params", $parameters);
     $windowId = uniqid("analysis");
     $action->lay->set("resultAnalysisId", $windowId);
 }

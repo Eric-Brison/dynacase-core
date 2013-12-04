@@ -519,7 +519,7 @@ msgid "Add it in %s folder"
 msgstr "Ajout dans dossier %s"
 
 msgid "Add new document (similar document)"
-msgstr "Ajout nouveau document (document similaire)"
+msgstr "un nouveau document est créé"
 
 msgid "Add new entry"
 msgstr "Ajouter la nouvelle entrée"
@@ -1546,19 +1546,19 @@ msgid "EXPORT_CSV Date format US"
 msgstr "Format US"
 
 msgid "EXPORT_CSV Decimal separator :"
-msgstr "Séparateur décimal : "
+msgstr "Séparateur décimal : "
 
 msgid "EXPORT_CSV Definition of the export param :"
 msgstr "Définition des paramètres d'export"
 
 msgid "EXPORT_CSV Delimiter :"
-msgstr "Séparateur de cellule : "
+msgstr "Séparateur de cellule :"
 
 msgid "EXPORT_CSV Enclosure :"
-msgstr "Séparateur de texte : "
+msgstr "Délimiteur de texte :"
 
 msgid "EXPORT_CSV Encoding :"
-msgstr "Jeu de caractères : "
+msgstr "Jeu de caractères :"
 
 msgid "EXPORT_CSV Exporter"
 msgstr "Exporter"
@@ -1567,10 +1567,10 @@ msgid "EXPORT_CSV ISO-8859-15 (european)"
 msgstr "ISO-8859-15 (européen)"
 
 msgid "EXPORT_CSV Kind of export :"
-msgstr "Type d'export : "
+msgstr "Type d'export :"
 
 msgid "EXPORT_CSV Linebreak :"
-msgstr "Retour à la ligne"
+msgstr "Retour à la ligne :"
 
 msgid "EXPORT_CSV Select export kind :"
 msgstr "Sélectionner le type d'export : "
@@ -2233,6 +2233,9 @@ msgstr "Pour %s de %s"
 msgid "For Account"
 msgstr "pour le compte"
 
+msgid "For each imported document, if a document with same title is found, then"
+msgstr "Pour chaque document importé, si un document ayant le même titre est trouvé, alors"
+
 msgid "For export functions"
 msgstr "Pour les fonctions d'export"
 
@@ -2535,7 +2538,7 @@ msgid "Just states"
 msgstr "Que les états"
 
 msgid "Keep original document"
-msgstr "Garde le document original"
+msgstr "les nouvelles valeurs sont ignorées"
 
 msgid "Key already exists, must be unique"
 msgstr "Cette clé existe déjà pour cet énuméré, les clés doivent être uniques"
@@ -3933,7 +3936,8 @@ msgstr "Mise à jour par importation"
 
 msgid "Update document if has permission else ignored"
 msgstr ""
-"Mets à jour le document si permission accordée sinon modification ignorée"
+"le document trouvé est mis à jour (si l'utilisateur n'a pas les droits "
+"nécessaires, les nouvelles valeurs sont ignorées)"
 
 #, php-format
 msgid "Update history done"
