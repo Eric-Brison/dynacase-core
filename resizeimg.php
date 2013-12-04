@@ -152,7 +152,9 @@ if (preg_match("/vaultid=([0-9]+)/", $img, $vids)) {
     // local file
     $turl = (parse_url($img));
     $path = $turl["path"];
-    
+    if ($path[0] == '/') {
+        $path = substr($path, 1);
+    }
     $realfile = realpath($path);
     if (!$realfile) {
         header('HTTP/1.0 404 Not found');
