@@ -142,9 +142,11 @@ class DotWorkflow
     private function setAttachStart($startPoint, $end, $limitIndex = - 1)
     {
         $transitionLink = array();
+        
         foreach ($this->wdoc->cycle as $k => $v) {
             if ($v["e2"] == $startPoint) {
                 $t = $this->wdoc->transitions[$v["t"]];
+                $kt = $v["t"];
                 if (!empty($t["m3"])) $start = "m3" . $k;
                 else {
                     $tmids = $this->wdoc->getTransitionTimers($v["t"]);
@@ -172,7 +174,8 @@ class DotWorkflow
                 }
                 if ($start && (($limitIndex == - 1) || (empty($transitionLink[$v["t"] . $v["e2"]])))) {
                     $transitionLink[$v["t"] . $v["e2"]] = true;
-                    if (empty($this->memoTr[$start][$end])) {
+                    if (empty($this->memoTr[$start][$end]) && empty($transitionLink[$kt])) {
+                        $transitionLink[$kt] = true;
                         $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans, label="%s"];', $start, $end, $this->style['arrow-label-font-color'], $this->style['arrow-color'], "");
                         
                         $this->memoTr[$start][$end] = true;
@@ -215,8 +218,8 @@ class DotWorkflow
             if (($k < $index) && ($v["e2"] == $tr["e2"]) && ($v["t"] == $tr["t"])) {
                 $e2 = $v["e2"] . $k;
                 $t = $this->wdoc->transitions[$tr["t"]];
-                if ($t["m0"]) $e2 = "m0" . $k;
-                elseif ($t["m0"]) $e2 = "m1" . $k;
+                if (!empty($t["m0"])) $e2 = "m0" . $k;
+                elseif (!empty($t["m1"])) $e2 = "m1" . $k;
                 $e1 = $this->getActivityId($tr["e1"]);
                 if ($this->existsTransition($tr["e2"], $tr["e1"], $tr["t"])) continue;
                 
@@ -252,7 +255,6 @@ class DotWorkflow
         
         $this->setTransitionState($e2, $index);
         $this->setM0M3($t, $index);
-        
         $tmain = '';
         if (isset($this->wdoc->autonext[$tr["e1"]]) && ($this->wdoc->autonext[$e1] == $e2)) {
             $tmain = sprintf('color="%s",style="setlinewidth(3)",arrowsize=1.0', $this->style['autonext-color']);
@@ -323,6 +325,7 @@ class DotWorkflow
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s",  labelfontname=sans, label="%s"];', $e2, $mi, $this->style['arrow-label-font-color'], $this->style['arrow-color'], _($tr["t"]));
             $e2 = $mi;
         }
+        $this->lines[] = sprintf('# end complete %d %s %s->%s', $index, $tr["t"], $tr["e1"], $tr["e2"]);
     }
     /**
      * declare end state and add red node to see it
@@ -647,11 +650,12 @@ class DotWorkflow
             }
         }
     }
-
-    private function getActivityId($state) {
-        return "act_".$state;
+    
+    private function getActivityId($state)
+    {
+        return "act_" . $state;
     }
-
+    
     private function isEndState($e)
     {
         foreach ($this->wdoc->cycle as $t) {
