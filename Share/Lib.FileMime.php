@@ -20,14 +20,17 @@ function getIconMimeArray()
 {
     return array(
         "application/msword" => "mime-wordprocessing",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" => "mime-wordprocessing",
         "application/ogg" => "audio-x-generic",
         "application/pdf" => "mime-pdf",
         "application/postscript" => "mime-wordprocessing",
         "application/rtf" => "mime-wordprocessing",
         "application/vnd.lotus-1-2-3" => "mime-spreadsheet",
         "application/vnd.ms-excel" => "mime-spreadsheet",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" => "mime-spreadsheet",
         "application/vnd.ms-powerpoint" => "mime-presentation",
         "application/vnd.oasis.opendocument.presentation" => "mime-presentation",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation" => "mime-presentation",
         "application/vnd.oasis.opendocument.spreadsheet" => "mime-spreadsheet",
         "application/vnd.oasis.opendocument.text" => "mime-wordprocessing",
         "application/vnd.oasis.opendocument.graphics" => "mime-vectorgfx",
@@ -294,7 +297,7 @@ function loadMimeConf()
     include_once ('WHAT/Lib.Prefix.php');
     
     $rules = array();
-
+    
     $conf_file = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "mime.conf";
     $xml = simplexml_load_file($conf_file);
     if ($xml === false) {
