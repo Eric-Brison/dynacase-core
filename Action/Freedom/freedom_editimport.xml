@@ -21,7 +21,7 @@
             <input type="hidden" id="action" name="action" value="FREEDOM_IMPORT"/>
 
             <fieldset class="frame">
-                <legend>[TEXT:Import file (CSV, ODS, XML)] :</legend>
+                <legend>[TEXT:Import file (CSV, ODS, XML, ZIP, TGZ)] :</legend>
 
                 <input type="file" name="file" id="ifile" class="file"
                    accept="text/csv,application/xml,application/vnd.oasis.opendocument.spreadsheet"
@@ -29,9 +29,22 @@
                    onchange="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;"
                    onblur="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;">
                 <br/>
+                <fieldset id="archiveOption" class="archive frame">
+                    <legend class="legend">[TEXT:Choose Archive Type]</legend>
+                    <div class="content" >
+                        <div class="radio" >
+                            <input id="pxmlzip" name="archive"type="radio" value="no" />
+                            <label for="pxmlzip">[TEXT:XML Archive]</label>
+                            <br/>
+                            <input id="pzip" name="archive" type="radio"  checked="checked"  value="yes"/>
+                            <label for="pzip">[TEXT:Other Archive]</label>
+                        </div>
+                    </div>
+                </fieldset>
                 <input id="banalyze" type="button" style="font-weight:bold" value="[TEXT:Send Analyze]" disabled="disabled"/>
                 <br/>
                 <input id="fgimport" type="button" value="[TEXT:Import after analyze done]" disabled="disabled"/>
+
             </fieldset>
 
             <fieldset id="fbgimport" class="frame">

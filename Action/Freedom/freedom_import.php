@@ -62,6 +62,10 @@ function freedom_import(Action & $action)
     }
     , "");
     
+    $archive = ($usage->addOptionalParameter("archive", "is archive", array(
+        "yes",
+        "no"
+    ) , 'no') == "yes");
     $linebreak = $usage->addOptionalParameter("linebreak", "csv linebreak", array() , '\n');
     
     $analyze = ($usage->addOptionalParameter("analyze", "analyze", array(
@@ -79,19 +83,38 @@ function freedom_import(Action & $action)
     
     setMaxExecutionTimeTo(3600); // 60 minutes
     $csvfile = '';
+    $ext = '';
     if (isset($_FILES["file"])) {
         if ($_FILES["file"]["error"]) {
             $action->exitError(_("No description import file"));
         }
         $filename = $_FILES["file"]['name'];
         $csvfile = $_FILES["file"]['tmp_name'];
-        $ext = substr($filename, strrpos($filename, '.') + 1);
+        $ext = strtolower(substr($filename, strrpos($filename, '.') + 1));
+        if ($ext === "gz") {
+            $ext = strtolower(substr($filename, strrpos($filename, '.', -4) + 1));
+        }
         rename($csvfile, $csvfile . ".$ext");
         $csvfile.= ".$ext";
     } else {
         $action->exitError(_("No description import file"));
     }
+    if ($ext === "tgz" || $ext === "tar.gz") {
+        $archive = true;
+    } elseif ($ext !== "zip") {
+        $archive = false;
+    }
     
+    if (!in_array($ext, array(
+        "csv",
+        "ods",
+        "xml",
+        "zip",
+        "tgz",
+        "tar.gz"
+    ))) {
+        $action->exitError(_("Not supported file format"));
+    }
     $pseparator = $action->getParam("FREEDOM_CSVSEPARATOR");
     $penclosure = $action->getParam("FREEDOM_CSVENCLOSURE");
     $plinebreak = $action->getParam("FREEDOM_CSVLINEBREAK");
@@ -114,7 +137,7 @@ function freedom_import(Action & $action)
     if ($separator) {
         $oImport->setCsvOptions($separator, $enclosure, $linebreak);
     }
-    $oImport->importDocuments($action, $csvfile, $analyze);
+    $oImport->importDocuments($action, $csvfile, $analyze, $archive);
     $oImport->writeHtmlCr($action->lay);
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     

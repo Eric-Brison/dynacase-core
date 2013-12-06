@@ -112,9 +112,9 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                 "folderid" => 0,
                                 "foldername" => $ldir,
                                 "filename" => $file,
-                                "title" => "",
+                                "title" => "$file",
                                 "specmsg" => "",
-                                "id" => 0,
+                                "id" => "",
                                 "anaclass" => "fileclass",
                                 "familyid" => 0,
                                 "familyname" => "",
@@ -136,7 +136,8 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                         $tr[$index]["err"] = "no file attribute";
                                     }
                                 }
-                                $tr[$index]["familyname"] = $ddoc->getTitle();
+                                
+                                $tr[$index]["familyname"] = $ddoc->fromname;
                                 $tr[$index]["familyid"] = $ddoc->fromid;
                                 $tr[$index]["action"] = N_("to be add");
                                 if (!$analyze) {
@@ -175,12 +176,12 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                             "folderid" => 0,
                             "foldername" => $ldir,
                             "filename" => $file,
-                            "title" => "",
+                            "title" => "$file",
                             "specmsg" => "",
-                            "id" => 0,
+                            "id" => "",
                             "anaclass" => "fldclass",
                             "familyid" => $newdir->fromid,
-                            "familyname" => "",
+                            "familyname" => $newdir->fromname,
                             "action" => N_("to be add")
                         );
                         if (!$analyze) {
@@ -191,6 +192,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                 $tr[$index]["action"] = N_("not added");
                             } else {
                                 $tr[$index]["action"] = N_("added");
+                                $tr[$index]["id"] = $newdir->id;
                                 if ($dirid > 0) {
                                     $dir->insertDocument($newdir->id);
                                 }
@@ -201,7 +203,6 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                     $tr = array_merge($tr, $itr);
                 }
             }
-            
             closedir($handle);
             return $tr;
         }
