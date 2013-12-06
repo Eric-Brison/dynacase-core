@@ -39,7 +39,9 @@ function freedom_editimport(Action & $action)
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     $action->parent->addJsRef("lib/jquery/jquery.js");
     $action->parent->addJsRef("lib/jquery-ui/js/jquery-ui.js");
+    $action->parent->addJsRef("FREEDOM:freedom_editimport.js");
     $action->parent->addCssRef("css/dcp/jquery-ui.css");
+    $action->parent->addCssRef("FREEDOM:freedom_editimport.css");
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
     // build list of class document
