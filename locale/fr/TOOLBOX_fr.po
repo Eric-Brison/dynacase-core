@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-29 17:38+0100\n"
-"PO-Revision-Date: 2013-11-29 18:04+0100\n"
+"POT-Creation-Date: 2013-12-06 17:54+0100\n"
+"PO-Revision-Date: 2013-12-06 17:57+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1029,6 +1029,9 @@ msgstr "Caractéristiques"
 
 msgid "Choose Archive"
 msgstr "Choisir l'archive"
+
+msgid "Choose Archive Type"
+msgstr "Choisir le type d'archive"
 
 msgid "Choose Gate Urls"
 msgstr "Choix des URLs"
@@ -2233,8 +2236,11 @@ msgstr "Pour %s de %s"
 msgid "For Account"
 msgstr "pour le compte"
 
-msgid "For each imported document, if a document with same title is found, then"
-msgstr "Pour chaque document importé, si un document ayant le même titre est trouvé, alors"
+msgid ""
+"For each imported document, if a document with same title is found, then"
+msgstr ""
+"Pour chaque document importé, si un document ayant le même titre est trouvé, "
+"alors"
 
 msgid "For export functions"
 msgstr "Pour les fonctions d'export"
@@ -2323,7 +2329,9 @@ msgid "Generic"
 msgstr "Générique"
 
 msgid "Get XML schema to compose XML document import file"
-msgstr "Télécharger le schéma XML pour composer les fichiers d'importation des documents en XML"
+msgstr ""
+"Télécharger le schéma XML pour composer les fichiers d'importation des "
+"documents en XML"
 
 msgid "Get Xml schema"
 msgstr "Récupérer le schéma XML"
@@ -2438,8 +2446,8 @@ msgstr "Importer des documents"
 msgid "Import file"
 msgstr "Fichier à importer"
 
-msgid "Import file (CSV, ODS, XML)"
-msgstr "Fichier d'importation (CSV, ODS, XML)"
+msgid "Import file (CSV, ODS, XML, ZIP, TGZ)"
+msgstr "Fichier d'importation (CSV, ODS, XML, ZIP, TGZ)"
 
 msgid "Importation data"
 msgstr "Données réimportables"
@@ -2976,6 +2984,9 @@ msgstr "Pas assez de charactères spéciaux"
 msgid "Not enough uppercase characters."
 msgstr "Pas assez de majuscules"
 
+msgid "Not supported file format"
+msgstr "Format de fichier non supporté"
+
 msgid "November"
 msgstr "Novembre"
 
@@ -3028,6 +3039,9 @@ msgstr "Ou télécharger un nouvel icone"
 
 msgid "Order must be an odd number"
 msgstr "L'ordre de l'énuméré doit être un nombre impair"
+
+msgid "Other Archive"
+msgstr "Autre archive"
 
 msgid "Other..."
 msgstr "Autre..."
@@ -4169,6 +4183,9 @@ msgstr "Cycle de vie"
 
 msgid "Workflow - parameters"
 msgstr "Paramètres d'affichage"
+
+msgid "XML Archive"
+msgstr "Archive XML"
 
 msgid "XML Error: no 'family' attribute on <table/> node."
 msgstr "Erreur XML: pas d'attribut 'family' sur le noeud <table />"
@@ -8859,6 +8876,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Go"
 #~ msgstr "Go"
+
+#~ msgid "Import file (CSV, ODS, XML)"
+#~ msgstr "Fichier d'importation (CSV, ODS, XML)"
 
 #~ msgid "Import format"
 #~ msgstr "Format d'importation"
