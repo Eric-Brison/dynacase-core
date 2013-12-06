@@ -26,7 +26,7 @@
 
     window.updateVisibilities = function updateVisibilities(canUpdate, maxImportSize) {
         if (canUpdate) {
-            $("#fgimport").button("disable").val(window.i18n.limitReached+ " : " + maxImportSize);
+            $("#fgimport").button("disable").css('font-weight', 'normal').val(window.i18n.limitReached+ " : " + maxImportSize);
             if (!$("#to").is(":visible")) {
                 $("#fbgimport").find(".legend").click();
             }
@@ -44,17 +44,23 @@
             $this.parent().find(".content").toggle();
         });
         $('#mainform').attr("target", getWindowresult());
-        $('input[type=submit], button, input[type=button]').button();
+        $('input[type=submit], button, input[type=button], input[type=file]').button();
         $('.radio').buttonset();
         $('#ifile').on("change", function() {
-            if ($(this).val().split('.').pop() != "csv") {
+            var fileExtension=$(this).val().split('.').pop().toLowerCase();
+            if (fileExtension != "csv") {
                 $("#csvOption input").attr("disabled", "disabled");
             } else {
                 $("#csvOption input").removeAttr("disabled");
             }
+            if (fileExtension == "zip") {
+                 $("#archiveOption").show();
+            } else {
+                $("#archiveOption").hide();
+            }
             $('#banalyze').button("enable");
         });
-
+        $("#archiveOption").hide();
         $('#classid').on("change", function() {
             if ($(this).val() != "0") {
                 $(this).parent().find('input').button("enable");
@@ -67,7 +73,7 @@
             $('#analyze').val('Y');
             $('#mainform').submit();
         });
-        $("fgimport").on("click", function() {
+        $("#fgimport").on("click", function() {
             $('#action').val('FREEDOM_IMPORT');
             $('#analyze').val('N');
             $('#mainform').submit();

@@ -10,6 +10,12 @@ h1 {
     margin-top:0;
 }
 
+.archive {
+    float:right;
+    position: relative;
+    top: -10px;
+}
+
 label.ui-button {
     width:100%;
 }
@@ -24,7 +30,7 @@ label.ui-button {
 
 .file {
     margin: 1.2em 0;
-    width: 100%;
+    width: 90%;
 }
 
 .mainform {

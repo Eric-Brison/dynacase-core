@@ -104,7 +104,7 @@ TD, TH {
 <th>[TEXT:error]</th></tr></thead>
 <tbody>
 [BLOCK ADDEDDOC]
-<tr class="[action]"><td>[order]</td><td>[title]</td><td>[foldername]</td><td><a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id=[id]">[id]</a></td><td><a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[familyid]">[familyname]</a></td><td>[taction]</td><td>[msg]</td><td>[specmsg]</td><td>[svalues]</td><td>[err]</td></tr>
+<tr class="[action]"><td>[order]</td><td>[title]</td><td>[foldername]</td><td><a target="_blank" href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id=[id]">[id]</a></td><td><a target="_blank" href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[familyid]">[familyname]</a></td><td>[taction]</td><td>[msg]</td><td>[specmsg]</td><td>[svalues]</td><td>[err]</td></tr>
 [ENDBLOCK ADDEDDOC]
 </tbody></table>
 
