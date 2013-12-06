@@ -16,9 +16,9 @@
 
             <h1>[TEXT:Import Documents]</h1>
 
-            <input type="hidden" name="dirid" value="[dirid]">
-            <input type="hidden" id="analyze" name="analyze" value="N">
-            <input type="hidden" id="action" name="action" value="FREEDOM_IMPORT">
+            <input type="hidden" name="dirid" value="[dirid]"/>
+            <input type="hidden" id="analyze" name="analyze" value="N"/>
+            <input type="hidden" id="action" name="action" value="FREEDOM_IMPORT"/>
 
             <fieldset class="frame">
                 <legend>[TEXT:Import file (CSV, ODS, XML)] :</legend>
@@ -42,8 +42,9 @@
                     <br/>
                     <input id="bgimport" type="submit" disabled
                        onmousedown="$('#action').val('FREEDOM_BGIMPORT')"
-                       value="[TEXT:Import after analyze done]"></fieldset>
+                       value="[TEXT:Import after analyze done]"/>
                 </div>
+            </fieldset>
             <fieldset class="frame">
                 <legend class="legend">[TEXT:Options for csv import]</legend>
                 <div id="csvOption" class="content" style="display : none;">
@@ -84,7 +85,6 @@
                         <input id="pkeep" name="policy" type="radio" value="keep"/>
                         <label for="pkeep">[TEXT:Keep original document]</label>
                     </div>
-
                 </div>
             </fieldset>
             [ENDIF policy]
@@ -105,16 +105,23 @@
                     <p>
                         [TEXT:Use another import interface for a specific family]&nbsp;:
                     </p>
-                    <input disabled="disabled" type="button" value="[TEXT:Specific import in csv format]" onclick="editimport()">
+                    <input id="configCSV" disabled="disabled" type="button" value="[TEXT:Specific import in csv format]">
                     <p>
                         [TEXT:Get XML schema to compose XML document import file]&nbsp;:
                     </p>
                     <input disabled="disabled" type="button" title="[TEXT:View Xml Schema]" value="[TEXT:Get Xml schema]"
-                   onclick='window.open("[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+$("#classid").val(),"_blank")'></div>
+                   onclick='window.open("[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+$("#classid").val(),"_blank")'>
+               </div>
             </div>
         </fieldset>
         [ENDIF descr]
     </div>
+    <script>
+        var i18n = {
+            "limitReached" : "[TEXT:No direct import : limit is reached]",
+            "importDocument" : "[TEXT:Import document description now]"
+        };
+    </script>
     [JS:REF]
 </body>
 </html>

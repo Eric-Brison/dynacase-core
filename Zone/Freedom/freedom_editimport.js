@@ -9,7 +9,7 @@
         var famid;
         if (document.getElementById('classid')) {
             famid = $("#classid").val();
-            eurl = '[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDITIMPORT&famid=' + famid;
+            eurl = '?app=GENERIC&action=GENERIC_EDITIMPORT&famid=' + famid;
             window.open(eurl, '_blank');
         }
     };
@@ -22,6 +22,18 @@
             }
         }
         return "defaultAnalysis";
+    };
+
+    window.updateVisibilities = function updateVisibilities(canUpdate, maxImportSize) {
+        if (canUpdate) {
+            $("#fgimport").button("disable").val(window.i18n.limitReached+ " : " + maxImportSize);
+            if (!$("#to").is(":visible")) {
+                $("#fbgimport").find(".legend").click();
+            }
+        } else {
+            $("#fgimport").button("enable").val(window.i18n.importDocument).css('font-weight', 'bold');
+            $("#banalyze").css('font-weight', 'normal');
+        }
     };
 
 

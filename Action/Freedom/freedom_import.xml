@@ -18,8 +18,8 @@ TR.warning TD{
    background-color:#FBC95E;
 }
 LI {
-	white-space:nowrap;
-	}
+  white-space:nowrap;
+  }
 LI.no {
         color:#333
         }
@@ -29,6 +29,11 @@ TD, TH {
        border-top: solid grey 1px;
        empty-cells:show;
        }
+#importresults_filter {
+  position: absolute;
+  top: -2.8em;
+  right: 0;
+}
    </style>
 
 [JS:REF]
@@ -52,24 +57,20 @@ TD, TH {
 
             b=editw.document.getElementById('fgimport');
             if (b) {
-                if ([nbdoc]>=[FDL_MAX_FGEXPORTDOC]) {
-
-                    editw.$("#fgimport").button("disable").val("[TEXT:No direct import : limit is reached]"+" : "+ [FDL_MAX_FGEXPORTDOC]);
-                } else {
-                     editw.$("#fgimport").button("enable").val("[TEXT:Import document description now]").css('font-weight','bold');
-                     editw.$("#fbgimport").css('visibility','visible');
-                     editw.$("#banalyze").css('font-weight','normal');
-                }
+              editw.updateVisibilities(( [nbdoc] >= [FDL_MAX_FGEXPORTDOC] ), [FDL_MAX_FGEXPORTDOC]);
             }
         }
        var ybody=$(window).height() - $('#importresults tbody').offset().top - 20;
 
            $('#importresults').dataTable({
-               "sDom":'<"top"t<"bottom"><"clear">',
+               "sDom":'f<"top"t<"bottom"><"clear">',
                bJQueryUI:true,
                bSort:false,
                sScrollY:ybody+'px',
-               iDisplayLength:5000
+               iDisplayLength:5000,
+               "oLanguage": {
+                  "sSearch": ""
+                }
            });
        });
    </script>
