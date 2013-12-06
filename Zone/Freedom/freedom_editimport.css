@@ -31,6 +31,7 @@ label.ui-button {
 .file {
     margin: 1.2em 0;
     width: 90%;
+    text-align: left;
 }
 
 .mainform {
