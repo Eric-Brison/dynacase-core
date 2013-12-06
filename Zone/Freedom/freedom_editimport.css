@@ -39,8 +39,8 @@ label.ui-button {
 
 .legend {
     cursor: pointer;
+    color: #0088CC;
 }
-
 .legend:before {
     content: "▼ "
 }
