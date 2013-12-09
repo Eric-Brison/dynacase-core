@@ -1,9 +1,10 @@
 [ZONE CORE:HTMLHEAD?title=[TEXT:Workflow - parameters]]
 
 <form 
+      id="paramWorkflow"
       name="fwkf" style="display:inline"
       method="GET"
-      action="[CORE_STANDURL]&app=FDL&action=VIEW_WORKFLOW_GRAPH"
+      action="[CORE_STANDURL]&amp;app=FDL&amp;action=VIEW_WORKFLOW_GRAPH"
    onsubmit="setifit()"
    target="wkf[id]"
        >
@@ -11,24 +12,24 @@
 <input type="hidden" value="VIEW_WORKFLOW_GRAPH" name="action">
 <input type="hidden" value="[id]" name="id">
 
-<select title="[TEXT:dotType]" name="type">
+<select title="[TEXT:dotType]" name="type" id="type">
   <option value="justactivity">[TEXT:Just activities]</option>
   <option value="simple">[TEXT:Just states]</option>
   <option value="activity">[TEXT:With States and activities]</option>
   <option value="complet">[TEXT:With conditions]</option>
   <option value="cluster">[TEXT:Complete (cluster)]</option>
   </select>
-<select title="[TEXT:dotFormat]" name="format">
+<select title="[TEXT:dotFormat]" name="format" id="format">
   <option value="svg">[TEXT:SVG]</option>
   <option selected value="png">[TEXT:Image]</option>
   <option value="dot">[TEXT:Dot]</option>
   </select>
-<select id="orient" title="[TEXT:dotOrient]" name="orient">
+<select title="[TEXT:dotOrient]" name="orient" id="orient">
   <option selected value="LR">[TEXT:Left Right]</option>
   <option value="TB">[TEXT:Top Bottom]</option>
   </select>
-<select title="[TEXT:dotSize]" name="size">
-  <option  value="auto">[TEXT:dotNoSize]</option>
+<select title="[TEXT:dotSize]" name="size" id="size">
+  <option value="auto">[TEXT:dotNoSize]</option>
   <option value="5,5">5cmx5cm</option>
   <option value="10,10">10cmx10cm</option>
   <option value="20,20">20cmx20cm</option>
@@ -37,15 +38,15 @@
   <option value="40,40">40cmx40cm</option>
   <option selected id="fit" value="40">[TEXT:Fit to screen]</option>
   </select>
-<select style="display:none" disabled title="[TEXT:dotRatio]" name="ratio">
+<select style="display:none;" disabled title="[TEXT:dotRatio]" name="ratio" id="ratio">
   <option value="fill">fill</option>
   <option value="compress">compress</option>
   <option value="expand">expand</option>
   <option value="auto">auto</option>
   </select>
-<select title="[TEXT:dotTool]" name="tool" onchange="disableOrient(this)">
+<select title="[TEXT:dotTool]" name="tool" id="tool" onchange="disableOrient(this)">
   <option value="dot">dot: [TEXT:Directed graph]</option>
-  <option  value="sfdp">sfdp: [TEXT:Large undirected graphs]</option>
+  <option value="sfdp">sfdp: [TEXT:Large undirected graphs]</option>
   <option value="circo">circo: [TEXT:Circular layout graphs]</option>
   <option value="fdp">fdp: [TEXT:Undirected graphs]</option>
   <option value="twopi">twopi: [TEXT:Radial layouts graphs]</option>
@@ -80,6 +81,65 @@ function setifit() {
 
   }
 }
+
+addEvent(window, 'load', function() {
+  if (!window.localStorage) {
+    return;
+  }
+  var setOptionSelected = function(select, value) {
+    var i, length, options = select.childNodes;
+    if (!options || !options.length) {
+      return;
+    }
+    for (i = 0, length = options.length; i < length; i++) {
+        if (options[i].nodeType !== 1) {
+          continue;
+        }
+        if (options[i].value && ((options[i].value === value) || (options[i].id === value))) {
+          options[i].selected = true;
+        } else {
+          if (options[i].selected) {
+            options[i].selected = false;
+          }
+        }
+    }
+  }, localValues, i;
+  localValues = window.localStorage.getItem("worklowGraphValues");
+  if (!localValues) {
+    return;
+  }
+  localValues = JSON.parse(localValues);
+  for (i in localValues) {
+    if (localValues.hasOwnProperty(i)) {
+      setOptionSelected(document.getElementById(i), localValues[i]);
+    }
+  }
+
+});
+
+addEvent(document.getElementById("paramWorkflow"), 'submit', function() {
+  var getSelectedValue = function(options) {
+    var i, length;
+    if (!options.length) {
+      throw "This not an array of node";
+    }
+    for (i = 0, length = options.length; i < length; i++) {
+      if (options[i].selected) {
+        return options[i].id === "fit" ? "fit" : options[i].value;
+      }
+    }
+  },
+  i, length,
+  elements = ["type","format","orient","size","ratio","tool"],
+  values = {};
+  if (!window.localStorage) {
+    return;
+  }
+  for (i = 0, length = elements.length; i < length; i++) {
+    values[elements[i]] = getSelectedValue(document.getElementById(elements[i]).childNodes);
+  }
+  window.localStorage.setItem("worklowGraphValues", JSON.stringify(values));
+});
 
 addEvent(window,'load',function z() {setifit();document.fwkf.submit();});
 

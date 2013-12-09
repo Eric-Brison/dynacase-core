@@ -1,19 +1,20 @@
 <html>
 <head>
-
-<title>Workflow - [TITLE]</title>
-<link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
-
+    <meta charset="UTF-8">
+    <title>Workflow - [TITLE]</title>
+    <link rel="shortcut icon" href="[DYNACASE_FAVICO]"/>
+    <style>
+        .nomarge {
+            margin:0px;
+            padding:0px;
+            border:none;
+        }
+    </style>
 </head>
-
-          <frameset   frameborder="no" border=0 framespacing="0" rows="*"   >
-
-<frameset frameborder="1" framespacing="3" border="3" cols="" rows="40px,*">
-
-
-  <frame  src="[CORE_STANDURL]&app=FDL&action=PARAM_WORKFLOW_GRAPH&id=[id]" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
-  <frame class="nomarge" name="wkf[id]" style="margin:0px;padding:0px;border:none" src="[IMG:1x1.gif]" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
-  </frameset>
-
+<frameset   frameborder="no" border=0 framespacing="0" rows="*"   >
+    <frameset frameborder="1" framespacing="3" border="3" cols="" rows="40px,*">
+        <frame  src="[CORE_STANDURL]&amp;app=FDL&amp;action=PARAM_WORKFLOW_GRAPH&amp;id=[id]" scrolling="needed" bordercolor="[CORE_FGCOLOR]"/>
+        <frame class="nomarge" name="wkf[id]" src="[IMG:1x1.gif]" scrolling="needed" bordercolor="[CORE_FGCOLOR]"/>
+    </frameset>
 </frameset>
 </html>
