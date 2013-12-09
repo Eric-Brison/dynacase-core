@@ -580,13 +580,7 @@ create sequence SEQ_ID_ACTION;
             global $QUERY_STRING;
             $this->log->info("{$this->parent->name}:{$this->name} [" . substr($QUERY_STRING, 48) . "]");
         }
-        // Memo last application to return case of error
-        $err = $this->Read("FT_ERROR", "");
-        if ($err == "") {
-            if ($this->parent->name != "CORE") {
-                $this->register("LAST_ACT", $this->parent->name);
-            }
-        }
+
         $this->log->push("{$this->parent->name}:{$this->name}");
         $pubdir = $this->parent->GetParam("CORE_PUBDIR");
         $nav = $this->Read("navigator");

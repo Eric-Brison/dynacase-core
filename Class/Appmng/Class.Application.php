@@ -245,7 +245,10 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->InitStyle();
         }
         if ($this->session) {
-            $this->session->register("userCoreStyle", $this->getParam("STYLE"));
+            $pStyle=$this->getParam("STYLE");
+            if ($pStyle) {
+                $this->session->register("userCoreStyle", $pStyle);
+            }
         }
         
         $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : false, $this->style->name);

@@ -4,10 +4,10 @@
     <br />
     <span class="FREEDOMTextBigTitle documentTitle">[TEXT:EXPORT_CSV Definition of the export param :]</span>
     <br />
-    <a style="float : right" href="./?sole=Y&&app=FDL&action=FDL_CARD&props=N&abstract=N&id=HELP_REPORT" target="_blank">[TEXT:EXPORT_CSV help]</a>
+    <a style="float : right" href="./?sole=Y&amp;app=FDL&amp;action=FDL_CARD&amp;props=N&amp;abstract=N&amp;id=HELP_REPORT" target="_blank">[TEXT:EXPORT_CSV help]</a>
     <br />
 
-    <form id="exportForm" name="fviewidoc" method="POST" ENCTYPE="multipart/form-data" action="[CORE_STANDURL]&app=FDL&action=REPORT_EXPORT_CSV" target="csvfile">
+    <form id="exportForm" name="fviewidoc" method="POST" ENCTYPE="multipart/form-data" action="?app=FDL&amp;action=REPORT_EXPORT_CSV" target="csvfile">
         <div id="exportKind" class="frame" style="">
             <div class="legend">[TEXT:EXPORT_CSV Select export kind :]</div>
             <div class="content" style="background-color: rgb(249, 250, 251); padding : 10px">
