@@ -218,22 +218,17 @@ class Session extends DbObj
     // --------------------------------
     function Register($k = "", $v = "")
     {
-        
         if ($k == "") {
             $this->status = self::SESSION_CT_ARGS;
             return $this->status;
         }
-        //      global $_SESSION;
-        //      $$k=$v;
         global $_SERVER; // use only cache with HTTP
         if (!empty($_SERVER['HTTP_HOST'])) {
-            //	session_register($k);
-            // session_name($this->name);
-            // session_id($this->id);
-            // @session_start();
-            $_SESSION[$k] = $v;
-            //@session_write_close(); // avoid block
-            
+            if (!isset($_SESSION[$k]) ||  $_SESSION[$k] !== $v) {
+                $_SESSION[$k] = $v;
+                session_write_close(); // avoid block
+                session_start();
+            }
         }
         
         return true;
