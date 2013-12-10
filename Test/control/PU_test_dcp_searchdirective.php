@@ -50,8 +50,9 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         /**
          * @var \Doc $doc
          */
-        foreach ($dl as $doc) {
+        foreach ($dl as $docid=>$doc) {
             $this->assertEquals($expectedDocName[$index], $doc->name, print_r($s->getSearchInfo() , true));
+            $this->assertEquals($doc->id, $docid, "document key is not correct");
             $index++;
         }
     }
@@ -77,8 +78,9 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         /**
          * @var \Doc $doc
          */
-        foreach ($dl as $doc) {
+        foreach ($dl as $docid=>$doc) {
             $this->assertEquals($expectedDocName[$index], $doc["name"]);
+            $this->assertEquals($doc["id"], $docid, "document key is not correct");
             $index++;
         }
     }
