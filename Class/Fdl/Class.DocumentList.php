@@ -101,7 +101,7 @@ class DocumentList implements Iterator, Countable
     }
     public function key()
     {
-        return $this->currentDoc->id;
+        return is_array($this->currentDoc)?$this->currentDoc["id"]:$this->currentDoc->id;
     }
     /**
      * @return Doc
