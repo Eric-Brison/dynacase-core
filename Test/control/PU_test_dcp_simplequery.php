@@ -73,6 +73,22 @@ class TestSimpleQuery extends TestCaseDcpDocument
         }
     }
     /**
+     * test return when no results
+     * @param $singleResult
+     * @param $singleColumn
+     * @param $expectedResult
+     * @return void
+     * @dataProvider dataReturnNothingSimpleQuery
+     */
+    public function testReturnNothingSimpleQuery($singleResult, $singleColumn, $expectedResult)
+    {
+        $result = "undefined";
+        $sql = "select id from docread where false;";
+        simpleQuery(self::$dbaccess, $sql, $result, $singleColumn, $singleResult);
+        
+        $this->assertTrue(($result === $expectedResult) , sprintf("No the good return : %s, expect : %s", print_r($result, true) , print_r($expectedResult, true)));
+    }
+    /**
      * test basic search criteria
      * @param string $query filter
      * @param array $arg filter arg
@@ -105,6 +121,33 @@ class TestSimpleQuery extends TestCaseDcpDocument
                     self::getAction()->user->id
                 ) ,
                 "count" => 1
+            )
+        );
+    }
+    
+    public function dataReturnNothingSimpleQuery()
+    {
+        
+        return array(
+            array(
+                "singleresult" => false,
+                "singlecolumn" => false,
+                "result" => array()
+            ) ,
+            array(
+                "singleresult" => false,
+                "singlecolumn" => true,
+                "result" => array()
+            ) ,
+            array(
+                "singleresult" => true,
+                "singlecolumn" => false,
+                "result" => array()
+            ) ,
+            array(
+                "singleresult" => true,
+                "singlecolumn" => true,
+                "result" => false
             )
         );
     }
