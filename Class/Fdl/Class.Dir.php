@@ -171,7 +171,7 @@ class Dir extends PDir
     /**
      * hook method use after insert multiple document in this folder
      * must be redefined to optimize algorithm
-     * by default call Dir::postInsertDocument for each document
+     *
      *
      * @api hook method called after insert several documents in folder
      * @see Dir::insertMultipleDocuments
@@ -182,14 +182,11 @@ class Dir extends PDir
      */
     function postInsertMultipleDocuments($tdocid)
     {
-        foreach ($tdocid as $docid) {
-            $this->postInsertDocument($docid, true);
-        }
+        return '';
     }
     /**
      * hook method use after insert multiple document in this folder
      * must be redefined to optimize algorithm
-     * by default call Dir::preInsertDocument for each document
      *
      * @api hook method called before insert several documents in folder
      * @see Dir::preInsertDocument
@@ -200,11 +197,7 @@ class Dir extends PDir
      */
     function preInsertMultipleDocuments($tdocid)
     {
-        $err = '';
-        foreach ($tdocid as $docid) {
-            $err.= $this->preInsertDocument($docid, true);
-        }
-        return $err;
+        return '';
     }
     /**
      * hook method use after insert multiple document in this folder
@@ -449,12 +442,11 @@ class Dir extends PDir
      *
      * @api insert multiple document reference in this folder
      *
-     * @param array $tdocs
+     * @param array $tdocs documents  for the insertion
      * @param string $mode latest|static static is not implemented yet
      * @param boolean $noprepost not call preInsert and postInsert method (default if false)
      * @param array $tinserted
      * @param array $twarning
-     * @internal param \doc $array array document  for the insertion
      * @return string error message, if no error empty string
      */
     function insertMultipleDocuments(array $tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
@@ -518,8 +510,7 @@ class Dir extends PDir
                         $tAddeddocids[] = $docid;
                         $tinserted[$docid] = sprintf(_("Document %s inserted") , $tdoc["title"]);
                         // use post virtual method
-                        //	    if (!$noprepost) $err=$this->postInsertDoc($tdoc["initid"],true);
-                        
+                        if (!$noprepost) $err = $this->postInsertDocument($tdoc["initid"], true);
                     }
                 } else {
                     $twarning[$docid] = $err;
