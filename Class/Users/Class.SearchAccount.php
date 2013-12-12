@@ -259,13 +259,13 @@ class SearchAccount
         return self::getLoginFromDocName($name);
     }
     /**
-     * convert logical name document to login account
+     * get login account from logical name document
      *
      * @static
-     * @api convert logical name document to login account
+     * @api get login account from logical name document
      *
-     * @param string $name lolgical name
-     * @return string login , null if not found
+     * @param string $name logical name
+     * @return string|bool login , false if not found
      */
     public static function getLoginFromDocName($name)
     {
