@@ -59,9 +59,11 @@ class AccountCollection extends \Dcp\Family\Dir
      */
     function postInsertDocument($docid, $multiple = false)
     {
-        $this->SetGroupMail();
-        $this->refreshMembers();
-        $this->specPostInsert();
+        if ($multiple == false) {
+            $this->SetGroupMail();
+            $this->refreshMembers();
+            $this->specPostInsert();
+        }
     }
     /**
      * update groups table in USER database
