@@ -455,9 +455,9 @@ function getServiceName($dbaccess)
  * send simple query to database
  * @param string $dbaccess access database coordonates
  * @param string $query sql query
- * @param string|array &$result  query result
+ * @param string|bool|array &$result  query result
  * @param bool $singlecolumn  set to true if only one field is return
- * @param bool $singleresult  set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array
+ * @param bool $singleresult  set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array, if no results and $singlecolumn is true then $results is false
  * @param bool $useStrict set to true to force exception or false to force no exception, if null use global parameter
  * @throws Dcp\Db\Exception
  * @return string error message. Empty message if no errors (when strict mode is not enable)
@@ -480,7 +480,9 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
                 else $result = pg_fetch_all($r);
                 if ($singleresult) $result = $result[0];
             } else {
-                if ($singleresult) $result = false;
+                if ($singleresult && $singlecolumn) {
+                    $result = false;
+                }
             }
             if ($SQLDEBUG) {
                 global $TSQLDELAY, $SQLDELAY;
@@ -500,14 +502,15 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
         } else {
             $err = ErrorCode::getError('DB0100', pg_last_error($dbid) , $query);
         }
-    } else $err = ErrorCode::getError('DB0102', $dbaccess, $err, $query);
+    } else {
+        $err = ErrorCode::getError('DB0102', $dbaccess, $err, $query);
+    }
     if ($err) {
         logDebugStack();
         error_log($err);
         if ($useStrict !== false) {
             if ($sqlStrict === null) $sqlStrict = (getParam("CORE_SQLSTRICT") != "no");
             if ($useStrict === true || $sqlStrict) {
-                
                 throw new \Dcp\Db\Exception($err);
             }
         }
