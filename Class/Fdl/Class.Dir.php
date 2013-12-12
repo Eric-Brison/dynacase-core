@@ -449,25 +449,33 @@ class Dir extends PDir
      *
      * @api insert multiple document reference in this folder
      *
-     * @param $tdocs
-     * @param string $mode latest|static
+     * @param array $tdocs
+     * @param string $mode latest|static static is not implemented yet
      * @param boolean $noprepost not call preInsert and postInsert method (default if false)
      * @param array $tinserted
      * @param array $twarning
      * @internal param \doc $array array document  for the insertion
      * @return string error message, if no error empty string
      */
-    function insertMultipleDocuments($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
+    function insertMultipleDocuments(array $tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
     {
-        $err = $this->preInsertMultipleDocuments($tdocs);
-        if ($err != "") return $err;
+        if (!$noprepost) {
+            $tdocids = array();
+            $isStatic = ($mode === "static");
+            foreach ($tdocs as $v) {
+                if (!empty($v["initid"])) {
+                    $tdocids[] = ($isStatic) ? $v["id"] : $v["initid"];
+                }
+            }
+            $err = $this->preInsertMultipleDocuments($tdocids);
+            if ($err != "") return $err;
+        }
         $err = $this->canModify();
         if ($err != "") return $err;
         $tAddeddocids = array();
         // verify if doc family is autorized
         $qf = new QueryDir($this->dbaccess);
         foreach ($tdocs as $tdoc) {
-            
             if (!$this->isAuthorized($tdoc["fromid"])) {
                 $warn = sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document") , $tdoc["title"], $this->title);
                 $twarning[$tdoc['id']] = $warn;
