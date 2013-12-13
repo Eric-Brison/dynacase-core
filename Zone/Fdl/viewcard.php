@@ -69,7 +69,7 @@ function viewcard(Action & $action)
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/reload.js");
         $action->unregister("reload$docid");
     } else {
-        $action->lay->set("refreshfld", GetHttpVars("refreshfld"));
+        $action->lay->eset("refreshfld", GetHttpVars("refreshfld"));
     }
     $action->lay->set("ITSELF", $_SERVER["REQUEST_URI"]);
     $doc = new_Doc($dbaccess, $docid);
