@@ -89,7 +89,7 @@ class Dir extends PDir
             if ($query->nb == 0) {
                 $bas->setvalue("ba_title", _("Document basket"));
                 $bas->setvalue("ba_desc", sprintf(_("basket of %s") , $home->title));
-                $home->name = 'FLDBASKET_' + $this->getSystemUserId();
+                $home->name = sprintf('FLDBASKET_%d', $this->getSystemUserId());
                 $bas->Add();
                 $home->insertDocument($bas->id);
                 $basid = $bas->id;
@@ -171,7 +171,7 @@ class Dir extends PDir
     /**
      * hook method use after insert multiple document in this folder
      * must be redefined to optimize algorithm
-     * by default call Dir::postInsertDocument for each document
+     *
      *
      * @api hook method called after insert several documents in folder
      * @see Dir::insertMultipleDocuments
@@ -182,14 +182,11 @@ class Dir extends PDir
      */
     function postInsertMultipleDocuments($tdocid)
     {
-        foreach ($tdocid as $docid) {
-            $this->postInsertDocument($docid, true);
-        }
+        return '';
     }
     /**
      * hook method use after insert multiple document in this folder
      * must be redefined to optimize algorithm
-     * by default call Dir::preInsertDocument for each document
      *
      * @api hook method called before insert several documents in folder
      * @see Dir::preInsertDocument
@@ -200,11 +197,7 @@ class Dir extends PDir
      */
     function preInsertMultipleDocuments($tdocid)
     {
-        $err = '';
-        foreach ($tdocid as $docid) {
-            $err.= $this->preInsertDocument($docid, true);
-        }
-        return $err;
+        return '';
     }
     /**
      * hook method use after insert multiple document in this folder
@@ -449,16 +442,17 @@ class Dir extends PDir
      *
      * @api insert multiple document reference in this folder
      *
-     * @param array $tdocs
+     * @param array $tdocs documents  for the insertion
      * @param string $mode latest|static static is not implemented yet
      * @param boolean $noprepost not call preInsert and postInsert method (default if false)
      * @param array $tinserted
      * @param array $twarning
-     * @internal param \doc $array array document  for the insertion
+     * @param array $info
      * @return string error message, if no error empty string
      */
-    function insertMultipleDocuments(array $tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
+    function insertMultipleDocuments(array $tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array() , &$info = array())
     {
+        $insertError = array();
         if (!$noprepost) {
             $tdocids = array();
             $isStatic = ($mode === "static");
@@ -468,13 +462,32 @@ class Dir extends PDir
                 }
             }
             $err = $this->preInsertMultipleDocuments($tdocids);
+            $info = array(
+                "error" => $err,
+                "preInsertMultipleDocuments" => $err,
+                "postInsertDocument" => array() ,
+                "postInsertMultipleDocuments" => '',
+                "preInsertDocument" => array() ,
+                "modifyError" => ""
+            );
             if ($err != "") return $err;
         }
         $err = $this->canModify();
-        if ($err != "") return $err;
+        if ($err != "") {
+            $info = array(
+                "error" => $err,
+                "preInsertMultipleDocuments" => "",
+                "postInsertDocument" => array() ,
+                "postInsertMultipleDocuments" => '',
+                "preInsertDocument" => array() ,
+                "modifyError" => $err
+            );
+            return $err;
+        }
         $tAddeddocids = array();
         // verify if doc family is autorized
         $qf = new QueryDir($this->dbaccess);
+        $tmsg = array();
         foreach ($tdocs as $tdoc) {
             if (!$this->isAuthorized($tdoc["fromid"])) {
                 $warn = sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document") , $tdoc["title"], $this->title);
@@ -497,15 +510,15 @@ class Dir extends PDir
                         break;
                 }
                 
-                $err = "";
+                $insertOne = "";
                 $qf->dirid = $this->initid; // the reference folder is the initial id
                 $qf->query = "";
                 // use post virtual method
-                if (!$noprepost) $err = $this->preInsertDocument($tdoc["initid"], true);
+                if (!$noprepost) $insertOne = $this->preInsertDocument($tdoc["initid"], true);
                 
-                if ($err == "") {
-                    $err = $qf->Add();
-                    if ($err == "") {
+                if ($insertOne == "") {
+                    $insertOne = $qf->Add();
+                    if ($insertOne == "") {
                         AddLogMsg(sprintf(_("Add %s in %s folder") , $tdoc["title"], $this->title));
                         $this->addHistoryEntry(sprintf(_("Document %s inserted") , $tdoc["title"]) , HISTO_INFO, "MODCONTAIN");
                         
@@ -518,20 +531,45 @@ class Dir extends PDir
                         $tAddeddocids[] = $docid;
                         $tinserted[$docid] = sprintf(_("Document %s inserted") , $tdoc["title"]);
                         // use post virtual method
-                        //	    if (!$noprepost) $err=$this->postInsertDoc($tdoc["initid"],true);
-                        
+                        if (!$noprepost) {
+                            $tmsg[$docid] = $this->postInsertDocument($tdoc["initid"], true);
+                        }
                     }
                 } else {
-                    $twarning[$docid] = $err;
+                    $twarning[$docid] = $insertOne;
                 }
+                $insertError[$docid] = $insertOne;
             }
         }
         // use post virtual method
+        $msg = '';
         if (!$noprepost) {
             $this->updateFldRelations();
-            $err.= $this->postInsertMultipleDocuments($tAddeddocids);
+            $msg = $this->postInsertMultipleDocuments($tAddeddocids);
+            $err.= $msg;
         }
-        
+        // integrate pre insert errors
+        foreach ($insertError as $oneError) {
+            if ($oneError) {
+                $err.= ($err) ? ', ' : '';
+                $err.= $oneError;
+            }
+        }
+        // integrate postInsert Error
+        foreach ($tmsg as $oneError) {
+            if ($oneError) {
+                $err.= ($err) ? ', ' : '';
+                $err.= $oneError;
+            }
+        }
+        $info = array(
+            "error" => $err,
+            "preInsertMultipleDocuments" => '',
+            "postInsertDocument" => $tmsg,
+            "postInsertMultipleDocuments" => $msg,
+            "preInsertDocument" => $insertError,
+            "modifyError" => ""
+        );
         return $err;
     }
     /**
