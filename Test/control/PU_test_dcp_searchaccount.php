@@ -331,6 +331,28 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
                     "tstLoginG1",
                     "tstLoginR1"
                 )
+            ) ,
+            array(
+                "filter" => "login ~ '%s'",
+                "arg" => '^tst.*1$',
+                "type" => \SearchAccount::userType | \SearchAccount::groupType,
+                array(
+                    "tstLoginA1",
+                    "tstLoginG1",
+                    "tstLoginU1",
+                    "tstLoginU11"
+                )
+            ) ,
+            array(
+                "filter" => "login ~ '%s'",
+                "arg" => '^tst.*1$',
+                "type" => \SearchAccount::userType | \SearchAccount::roleType,
+                array(
+                    "tstLoginA1",
+                    "tstLoginR1",
+                    "tstLoginU1",
+                    "tstLoginU11"
+                )
             )
         );
     }
