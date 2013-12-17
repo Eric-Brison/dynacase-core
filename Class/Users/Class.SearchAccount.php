@@ -190,7 +190,7 @@ class SearchAccount
     /**
      * set if use view control document's privilege to filter account
      *
-     * @deprecated use {@link SearchAccount::useViewControl} instead. Be carefull: this is the opposite!
+     * @deprecated use {@link SearchAccount::overrideViewControl} instead. Be carefull: this is the opposite!
      * @see SearchAccount::overrideViewControl
      *
      * @param bool $control
