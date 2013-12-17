@@ -354,7 +354,7 @@ class SearchAccount
             $sql.= sprintf(" and (%s) ", $aFilter);
         }
         
-        if ((!$this->returnUser) || (!$this->returnGroup) || (!$this->returnGroup)) {
+        if ((!$this->returnUser) || (!$this->returnGroup) || (!$this->returnRole)) {
             $fa = array();
             if ($this->returnUser) $fa[] = "accounttype='U'";
             if ($this->returnGroup) $fa[] = "accounttype='G'";
