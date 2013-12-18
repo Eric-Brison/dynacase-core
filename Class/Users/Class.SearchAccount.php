@@ -190,7 +190,7 @@ class SearchAccount
     /**
      * set if use view control document's privilege to filter account
      *
-     * @deprecated use {@link SearchAccount::useViewControl} instead. Be carefull: this is the opposite!
+     * @deprecated use {@link SearchAccount::overrideViewControl} instead. Be carefull: this is the opposite!
      * @see SearchAccount::overrideViewControl
      *
      * @param bool $control
@@ -354,7 +354,7 @@ class SearchAccount
             $sql.= sprintf(" and (%s) ", $aFilter);
         }
         
-        if ((!$this->returnUser) || (!$this->returnGroup) || (!$this->returnGroup)) {
+        if ((!$this->returnUser) || (!$this->returnGroup) || (!$this->returnRole)) {
             $fa = array();
             if ($this->returnUser) $fa[] = "accounttype='U'";
             if ($this->returnGroup) $fa[] = "accounttype='G'";
