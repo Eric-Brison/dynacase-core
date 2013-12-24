@@ -181,14 +181,17 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                 // search group of the user
                 $g = new \Group("", $wid);
                 $tgid = array();
+                $tgtitle = array();
                 if (count($g->groups) > 0) {
                     $gt = new \Account($this->dbaccess);
                     foreach ($g->groups as $gid) {
                         $gt->select($gid);
                         $tgid[] = $gt->fid;
+                        $tgtitle[] = $this->getTitle($gt->fid);
                     }
                     $this->clearArrayValues(MyAttributes::us_groups);
                     $this->SetValue(MyAttributes::us_idgroup, $tgid);
+                    $this->SetValue(MyAttributes::us_group, $tgtitle);
                 } else {
                     $this->clearArrayValues(MyAttributes::us_groups);
                 }
@@ -816,4 +819,3 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
 /**
  * @end-method-ignore
  */
-?>
