@@ -97,6 +97,7 @@ function editcard(Action & $action)
         if ($doc->cvid) {
             
             $cvdoc = new_Doc($dbaccess, $doc->cvid);
+            $cvdoc->set($doc);
             if (!$cvdoc->isAlive()) {
                 $err = "document not alive";
                 $action->exitError("CV:" . $doc->cvid . "\n" . $err);
