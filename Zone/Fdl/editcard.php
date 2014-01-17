@@ -48,7 +48,7 @@ function editcard(Action & $action)
         }
     } else {
         // update document
-        $doc = new_Doc($dbaccess, $docid);
+        $doc = new_Doc($dbaccess, $docid, true);
         $docid = $doc->id;
         if ($doc->isConfidential()) {
             redirect($action, "FDL", "FDL_CONFIDENTIAL&&id=" . $doc->id);
