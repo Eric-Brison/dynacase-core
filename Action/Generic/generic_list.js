@@ -192,7 +192,7 @@ function vedit(e,id,famid) {
                 icons: {
                     primary: "ui-icon-search"
                 }});*/
-            $("#selected-search-text").text($('a[data-selected="1"]').text());
+            $("#selected-search-text").text($('a[data-selected="1"]').first().text());
             if ($('a[data-selected="1"]').length > 0) {
                 $("#selected-search").show();
             } else {

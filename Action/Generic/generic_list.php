@@ -90,7 +90,7 @@ function generic_list(&$action)
     $action->lay->Set("pds", "");
     if ($catgid) {
         $catg = new_Doc($dbaccess, $catgid);
-        $catgid=$catg->id;
+        $catgid = $catg->id;
         $pds = $catg->urlWhatEncodeSpec("");
         $action->lay->Set("pds", $pds);
         
@@ -138,7 +138,7 @@ function generic_list(&$action)
     if ($clearkey) {
         $action->setParamU("GENE_LATESTTXTSEARCH", setUkey($action, $famid, $keyword = ''));
     }
-    getFamilySearches($action, $dbaccess, $famid);
+    $only = false;
     if ($dirid) {
         if ($dir->fromid == 38) {
             $famid = 0; // special researches
@@ -150,6 +150,7 @@ function generic_list(&$action)
         // can see next
         $action->lay->Set("nexticon", $action->GetIcon("next.png", N_("next") , 16));
     }
+    getFamilySearches($action, $dbaccess, $famid, $only);
     if ($startpage > 0) {
         // can see prev
         $action->lay->Set("previcon", $action->GetIcon("prev.png", N_("prev") , 16));
@@ -218,7 +219,7 @@ function generic_list(&$action)
     $action->lay->Set("onglet", $wonglet ? "Y" : "N");
     $action->lay->Set("hasOnglet", (!empty($wonglet)));
     
-    $action->lay->eset("tkey",  getDefUKey($action));
+    $action->lay->eset("tkey", getDefUKey($action));
 }
 
 function generic_viewmode(Action & $action, $famid)
@@ -270,7 +271,7 @@ function generic_viewmode(Action & $action, $famid)
         return $column;
 }
 
-function getFamilySearches(Action $action, $dbaccess, $famid)
+function getFamilySearches(Action $action, $dbaccess, $famid, $only = false)
 {
     // search searches in primary folder
     
@@ -278,33 +279,42 @@ function getFamilySearches(Action $action, $dbaccess, $famid)
      * @var DocFam $fdoc
      */
     $fdoc = new_Doc($dbaccess, $famid);
+    $famid = $fdoc->id;
     $dirid = GetHttpVars("dirid"); // search
     $catgid = GetHttpVars("catg", $dirid); // primary directory
     if ($catgid == 0) $catgid = $dirid;
     
     $streeSearch = array();
     if ($fdoc->dfldid > 0) {
-        $homefld = new_Doc($dbaccess, $fdoc->dfldid);
-        $stree = array();
-        if ($homefld->id > 0) {
-            $stree = internalGetDocCollection($dbaccess, $homefld->id, "0", "ALL", array() , $action->user->id, "TABLE", 5);
-        }
-        
-        foreach ($stree as $k => $v) {
-            if (($v["doctype"] == "S") && ($v["fromid"] != $fdoc->id)) {
-                $stitle = htmlspecialchars($v["title"]);
-                $streeSearch[$v["id"]] = $v;
-                $streeSearch[$v["id"]]["selected"] = ($v["id"] == $catgid) ? "1" : "0";
-                $streeSearch[$v["id"]]["isreport"] = "0";
-                $streeSearch[$v["id"]]["isparam"] = "0";
-                $keys = getv($v, "se_keys");
-                if (preg_match('/\?/', $keys)) {
-                    $streeSearch[$v["id"]]["title"] = "(P)" . $stitle;
-                    $streeSearch[$v["id"]]["isparam"] = "1";
+        // shared searches
+        $s = new SearchDoc($action->dbaccess, 5);
+        $s->useCollection($fdoc->dfldid);
+        $s->setObjectReturn();
+        $s->search();
+        $dl = $s->getDocumentList();
+        /**
+         * @var Doc $search
+         */
+        foreach ($dl as $ids => $search) {
+            if (($search->doctype == "S") && ($search->fromid != $fdoc->id)) {
+                if ($search->control("execute") != '') {
+                    continue;
                 }
-                if ($v["fromid"] == 25) {
-                    $streeSearch[$v["id"]]["title"] = "(R)" . $stitle;
-                    $streeSearch[$v["id"]]["isreport"] = "1";
+                $stitle = $search->getHtmlTitle();
+                
+                $streeSearch[$ids]["id"] = $ids;
+                $streeSearch[$ids]["title"] = $stitle;
+                $streeSearch[$ids]["selected"] = ($ids == $catgid) ? "1" : "0";
+                $streeSearch[$ids]["isreport"] = "0";
+                $streeSearch[$ids]["isparam"] = "0";
+                $keys = $search->getRawValue("se_keys");
+                if (preg_match('/\?/', $keys)) {
+                    $streeSearch[$ids]["title"] = "(P)" . $stitle;
+                    $streeSearch[$ids]["isparam"] = "1";
+                }
+                if ($search->fromid == 25) {
+                    $streeSearch[$ids]["title"] = "(R)" . $stitle;
+                    $streeSearch[$ids]["isreport"] = "1";
                 }
             }
         }
@@ -314,32 +324,50 @@ function getFamilySearches(Action $action, $dbaccess, $famid)
     
     $action->lay->SetBlockData("SYSSEARCH", $streeSearch);
     // search user searches for family
-    $filter[] = "owner=" . $action->user->id;
-    $filter[] = "se_famid='$famid'";
-    $filter[] = "usefor!='G'";
-    $filter[] = "doctype != 'T'";
-    $filter[] = "se_memo='yes'";
+    $s = new SearchDoc($action->dbaccess, 5);
+    $s->addFilter("owner=%d", $action->user->id);
+    // Need take account of generic parameter GENE_INHERIT
+    $child = $fdoc->getChildFam();
+    if ($only || count($child) == 0) {
+        $s->addFilter("se_famid='%s'", $fdoc->id);
+    } else {
+        $childIds = array_keys($child);
+        $childIds[] = $fdoc->id;
+        $s->addFilter($s->sqlcond($childIds, "se_famid"));
+    }
+    
+    $s->addFilter("usefor!='G'");
+    $s->addFilter("doctype != 'T'");
+    $s->addFilter("se_memo='yes'");
+    $s->setObjectReturn(true);
+    $dl = $s->search()->getDocumentList();
     $action->lay->set("MSEARCH", false);
-    $stree = internalGetDocCollection($dbaccess, "0", "0", "ALL", $filter, $action->user->id, "TABLE", 5);
-    $streeSearch = array();
-    foreach ($stree as $k => $v) {
-        if (!isset($streeSearch[$v["id"]])) $streeSearch[$v["id"]] = $v;
-        $streeSearch[$v["id"]]["selected"] = ($v["id"] == $catgid) ? "1" : "0";
-        $streeSearch[$v["id"]]["isreport"] = "0";
-        $streeSearch[$v["id"]]["isparam"] = "0";
-        $keys = getv($v, "se_keys");
-        if (preg_match('/\?/', $keys)) {
-            $streeSearch[$v["id"]]["title"] = "(P)" . $streeSearch[$v["id"]]["title"];
-            $streeSearch[$v["id"]]["isparam"] = "1";
-        }
-        if ($v["fromid"] == 25) {
-            $streeSearch[$v["id"]]["title"] = "(R)" . $streeSearch[$v["id"]]["title"];
-            $streeSearch[$v["id"]]["isreport"] = "1";
+    $utreeSearch = array();
+    foreach ($dl as $ids => $search) {
+        if (!isset($streeSearch[$ids])) {
+            if ($search->control("execute") != '') {
+                continue;
+            }
+            $stitle = $search->getHtmlTitle();
+            $utreeSearch[$ids]["id"] = $ids;
+            $utreeSearch[$ids]["title"] = $stitle;
+            $utreeSearch[$ids]["selected"] = ($ids == $catgid) ? "1" : "0";
+            $utreeSearch[$ids]["isreport"] = "0";
+            $utreeSearch[$ids]["isparam"] = "0";
+            $keys = $search->getRawValue("se_keys");
+            if (preg_match('/\?/', $keys)) {
+                $utreeSearch[$ids]["title"] = "(P)" . $stitle;
+                $utreeSearch[$ids]["isparam"] = "1";
+            }
+            if ($search->fromid == 25) {
+                $utreeSearch[$ids]["title"] = "(R)" . $stitle;
+                $utreeSearch[$ids]["isreport"] = "1";
+            }
         }
     }
-    $action->lay->set("MSEARCH", (count($streeSearch) > 0 && $hasSysSearch));
-    $action->lay->SetBlockData("USERSEARCH", $streeSearch);
-    if (count($streeSearch) > 0) {
+    $action->lay->set("MSEARCH", (count($utreeSearch) > 0 && $hasSysSearch));
+    $action->lay->SetBlockData("USERSEARCH", $utreeSearch);
+    if (count($streeSearch) + count($utreeSearch) > 0) {
         $action->lay->set("ONESEARCH", true);
     }
 }

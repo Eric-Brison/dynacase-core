@@ -118,7 +118,7 @@
                 <span id="id-search-help" title="[TEXT:Help search]" class="ui-icon ui-icon-help"></span>
             </td>
         </tr></table>
-        </div>
+
 
     <div class="searchHeader ui-widget-header" cellspacing="0" width="100%">
         <span class="searchTitle"> [fldtitle]</span>
