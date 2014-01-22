@@ -48,7 +48,7 @@ function editcard(Action & $action)
         }
     } else {
         // update document
-        $doc = new_Doc($dbaccess, $docid);
+        $doc = new_Doc($dbaccess, $docid, true);
         $docid = $doc->id;
         if ($doc->isConfidential()) {
             redirect($action, "FDL", "FDL_CONFIDENTIAL&&id=" . $doc->id);
@@ -97,6 +97,7 @@ function editcard(Action & $action)
         if ($doc->cvid) {
             
             $cvdoc = new_Doc($dbaccess, $doc->cvid);
+            $cvdoc->set($doc);
             if (!$cvdoc->isAlive()) {
                 $err = "document not alive";
                 $action->exitError("CV:" . $doc->cvid . "\n" . $err);
