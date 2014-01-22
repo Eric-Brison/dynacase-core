@@ -597,6 +597,26 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
             // try PDF
             $fps = uniqid(getTmpDir() . "/" . $doc->id) . "ps";
             $fpdf = uniqid(getTmpDir() . "/" . $doc->id) . "pdf";
+            /*
+             * Remove CSS rules as they are not interpreted by html2ps
+             * (and can cause html2ps to choke on some strings and
+             * print out raw CSS instructions in the resulting output
+             * file).
+            */
+            $html = file_get_contents($ppdf);
+            if ($html !== false) {
+                $tmp = tempnam(dirname($ppdf) , basename($ppdf) . ".cleanup");
+                if ($tmp !== false) {
+                    $html = preg_replace('#<style[^>]*>.*?</style\s*>#s', '', $html);
+                    if (file_put_contents($tmp, $html) !== false) {
+                        if (rename($tmp, $ppdf) === false) {
+                            unlink($tmp);
+                        }
+                    } else {
+                        unlink($tmp);
+                    }
+                }
+            }
             $cmdpdf = sprintf("recode u8..l9 %s && html2ps -U -i 0.5 -b %s/ %s > %s && ps2pdf %s %s", escapeshellarg($ppdf) , // recode
             escapeshellarg($pubdir) , escapeshellarg($ppdf) , escapeshellarg($fps) , // html2ps
             escapeshellarg($fps) , escapeshellarg($fpdf) // ps2pdf
