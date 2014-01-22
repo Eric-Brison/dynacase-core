@@ -46,6 +46,12 @@ function generic_tab(Action & $action)
         if (!is_numeric($dirid)) {
             $dirid = getIdFromName($action->getParam('FREEDOM_DB') , $dirid);
         }
+        if ($dirid > 0) {
+            $dir = new_Doc($dbaccess, $dirid);
+            if (!$dir->isAlive() || $dir->control("execute") != '') {
+                $dirid = 0;
+            }
+        }
     }
     if ($dirid == 0) {
         if ($fdoc->cfldid > 0) {
@@ -71,8 +77,7 @@ function generic_tab(Action & $action)
     // control open
     if ($dir->defDoctype == 'S') {
         $aclctrl = "execute";
-    }
-    else {
+    } else {
         $aclctrl = "open";
     }
     if (($err = $dir->Control($aclctrl)) != "") {
@@ -103,7 +108,7 @@ function generic_tab(Action & $action)
         $sdoc->setValue('se_famid', $famid);
         
         $sdoc->Add();
-
+        
         if ($tabletter[$tab] != "") {
             $sqlfilter[] = "title ~* '^[" . $tabletter[$tab] . "].*'";
         }
