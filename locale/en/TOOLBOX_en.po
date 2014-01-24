@@ -2059,6 +2059,10 @@ msgstr ""
 msgid "File System already exists"
 msgstr ""
 
+#, php-format
+msgid "File not found at index '%s'"
+msgstr ""
+
 msgid "File:: Processing"
 msgstr ""
 

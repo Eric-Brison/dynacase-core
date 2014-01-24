@@ -2142,6 +2142,10 @@ msgstr "Le fichier %s est valide et a été sauvegardé correctement."
 msgid "File System already exists"
 msgstr "Système de fichier déjà existant"
 
+#, php-format
+msgid "File not found at index '%s'"
+msgstr "Fichier non trouvé à l'index '%s'"
+
 msgid "File:: Processing"
 msgstr "Conversion en cours"
 
