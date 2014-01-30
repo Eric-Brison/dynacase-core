@@ -170,7 +170,7 @@ class checkDb
     
     public function checkDoubleFrom()
     {
-        $result = pg_query($this->r, "SELECT * from (SELECT id, count(id) as c  from doc group by id) as Z where Z.c > 1;");
+        $result = pg_query($this->r, "SELECT * from (SELECT id, count(id) as c  from family.documents group by id) as Z where Z.c > 1;");
         $pout = array();
         while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
             $pout[$row["id"]] = $row["c"];
@@ -184,7 +184,7 @@ class checkDb
     }
     public function checkDoubleName()
     {
-        $result = pg_query($this->r, "select * from (select name, count(name) as c from doc where name is not null and name != '' and locked != -1 group by name) as Z where Z.c >1");
+        $result = pg_query($this->r, "select * from (select name, count(name) as c from family.documents where name is not null and name != '' and locked != -1 group by name) as Z where Z.c >1");
         $pout = array();
         while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
             $pout[$row["name"]] = $row["c"];
@@ -214,7 +214,7 @@ class checkDb
     
     public function checkInheritance()
     {
-        $result = pg_query($this->r, "select * from docfam");
+        $result = pg_query($this->r, "select * from family.families");
         $pout = array();
         while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
             $fromid = intval($row["fromid"]);
@@ -324,7 +324,7 @@ class checkDb
     public function checkcleanContext()
     {
         $testName = "cleanContext cron job execution";
-        $sql = "SELECT min(cdate) AS mincdate, count(id) AS count FROM doc WHERE doctype = 'T' AND cdate < now() - INTERVAL '24h'";
+        $sql = "SELECT min(cdate) AS mincdate, count(id) AS count FROM family.documents WHERE doctype = 'T' AND cdate < now() - INTERVAL '24h'";
         try {
             simpleQuery('', $sql, $res, false, false, true);
             
@@ -407,7 +407,9 @@ class checkDb
         
         $fam = new_doc('', $famid);
         if ($fam->isAlive()) {
-            $sql = sprintf("select pg_attribute.attname,pg_type.typname FROM pg_attribute, pg_type where pg_type.oid=pg_attribute.atttypid and pg_attribute.attrelid=(SELECT oid from pg_class where relname='doc%d') order by pg_attribute.attname;", $fam->id);
+            
+            $sql = sprintf("select column_name as attname, udt_name as typname, data_type FROM information_schema.columns where table_schema='family' and table_name='%s'", strtolower($fam->name));
+            
             simpleQuery('', $sql, $res);
             $pgtype = array();
             foreach ($res as $pgattr) {
@@ -427,7 +429,7 @@ class checkDb
                 if (($oa->docid == $fam->id) && ($oa->type != "array") && ($oa->type != "frame") && ($oa->type != "tab") && ($oa->type != "") && ($oa->type != "menu")) {
                     $err = self::verifyDbAttr($oa, $pgtype[$aid], $rtype);
                     if ($err) {
-                        $cr[] = sprintf("family %s, %s (%s) : %s\n", $fam->getTitle() , $aid, $oa->type, $err) . sprintf("\ttry : drop view family.%s; \n", strtolower($fam->name)) . sprintf("\tand : alter table doc%d alter column %s type %s using %s::%s; \n", $fam->id, $aid, $rtype, $aid, $rtype);
+                        $cr[] = sprintf("family %s, %s (%s) : %s\n", $fam->getTitle() , $aid, $oa->type, $err) . sprintf("\tand : alter table family.%s alter column %s type %s using %s::%s cascade; \n", strtolower($fam->name) , $aid, $rtype, $aid, $rtype);
                     }
                 }
             }
@@ -487,9 +489,8 @@ class checkDb
             $orphean = self::getOrpheanAttributes($famid);
             if ($orphean) {
                 $cr[] = sprintf("\nfamily \"%s\", column '%s' - not part of family", $fam->getTitle() , implode(",", $orphean));
-                $cr[] = sprintf("\ttry : drop view family.%s; ", strtolower($fam->name));
                 foreach ($orphean as $orpAttr) {
-                    $cr[] = sprintf("\tand : alter table doc%d drop column %s; ", $fam->id, $orpAttr);
+                    $cr[] = sprintf("\tand : alter table family.%s drop column %s cascade; ", strtolower($fam->name) , $orpAttr);
                 }
                 $cr[] = "\n";
             }
@@ -506,7 +507,7 @@ class checkDb
     {
         $testName = 'attribute type';
         include_once ("../../../FDL/Class.Doc.php");
-        $err = simpleQuery('', "select id from docfam", $families, true);
+        $err = simpleQuery('', "select id from family.families", $families, true);
         
         foreach ($families as $famid) {
             $cr = $this->verifyDbFamily($famid);
@@ -526,7 +527,7 @@ class checkDb
     {
         $testName = 'attribute orphean';
         include_once ("../../../FDL/Class.Doc.php");
-        $err = simpleQuery('', "select id from docfam", $families, true);
+        $err = simpleQuery('', "select id from family.families", $families, true);
         
         foreach ($families as $famid) {
             $cr = $this->verifyDbAttrOrphean($famid);

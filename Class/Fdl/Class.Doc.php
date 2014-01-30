@@ -70,6 +70,7 @@ class Doc extends DocCtrl
         "version",
         "initid",
         "fromid",
+        "fromname",
         "doctype",
         "locked",
         "allocated",
@@ -606,7 +607,7 @@ class Doc extends DocCtrl
         "id"
     );
     
-    public $dbtable = "doc";
+    public $dbtable = "family.documents";
     
     public $order_by = "title, revision desc";
     
@@ -657,13 +658,14 @@ class Doc extends DocCtrl
      */
     public $defProfFamId = FAM_ACCESSDOC;
     public $sqlcreate = "
-create table doc ( id int not null,
+create table family.documents ( id int not null,
                    primary key (id),
                    owner int,
                    title varchar(256),
                    revision int DEFAULT 0,
                    initid int,
                    fromid int,
+                   fromname text,
                    doctype char DEFAULT 'F',
                    locked int DEFAULT 0,
                    archiveid int DEFAULT 0,
@@ -942,7 +944,7 @@ create unique index i_docir on doc(initid, revision);";
     private function docIsCleanToModify()
     {
         if ($this->initid > 0 && $this->fromid > 0) {
-            simpleQuery($this->dbaccess, sprintf("select initid, id, revision, locked from only doc%d where initid=%d", $this->fromid, $this->initid) , $r);
+            simpleQuery($this->dbaccess, sprintf("select initid, id, revision, locked from only %s where initid=%d", $this->dbtable, $this->initid) , $r);
             
             $cAlive = 0;
             $imAlive = false;
@@ -1091,10 +1093,10 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->doctype == 'C') return 0;
         if ($this->fromid == "") return 0;
         // cannot use currval if nextval is not use before
-        $res = pg_query($this->init_dbid() , "select nextval ('seq_doc" . $this->fromid . "')");
+        $res = pg_query($this->init_dbid() , sprintf("select nextval ('seq_%s')", pg_escape_string(strtolower($this->fromname))));
         $arr = pg_fetch_array($res, 0);
         $cur = intval($arr[0]) - 1;
-        $res = pg_query($this->init_dbid() , "select setval ('seq_doc" . $this->fromid . "',$cur)");
+        pg_query($this->init_dbid() , sprintf("select setval ('seq_%s', %d)", pg_escape_string(strtolower($this->fromname))) , $cur);
         
         return $cur;
     }
@@ -1109,7 +1111,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->fromid == 0) return 0;
         if ($this->doctype == 'C') return 0;
         // cannot use currval if nextval is not use before
-        $res = pg_query($this->init_dbid() , "select nextval ('seq_doc" . $fromid . "')");
+        $res = pg_query($this->init_dbid() , sprintf("select nextval ('seq_%s')", pg_escape_string(strtolower($this->fromname))));
         $arr = pg_fetch_array($res, 0);
         $cur = intval($arr[0]);
         return $cur;
@@ -1689,7 +1691,7 @@ create unique index i_docir on doc(initid, revision);";
             
             if ($this->doctype != 'Z') {
                 
-                if ($this->name != "") $this->exec_query(sprintf("delete from doc%d where name='%s' and doctype='Z'", $this->fromid, pg_escape_string($this->name))); // need to not have twice document with same name
+                if ($this->name != "") $this->exec_query(sprintf("delete from %s where name='%s' and doctype='Z'", $this->dbtable, pg_escape_string($this->name))); // need to not have twice document with same name
                 $this->doctype = 'Z'; // Zombie Doc
                 $this->locked = - 1;
                 $this->lmodify = 'D'; // indicate last delete revision
@@ -1758,7 +1760,7 @@ create unique index i_docir on doc(initid, revision);";
             if (!$this->isAlive()) {
                 $err = $this->preUndelete();
                 if ($err) return $err;
-                $err = simpleQuery($this->dbaccess, sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1", $this->fromid, $this->initid) , $latestId, true, true);
+                $err = simpleQuery($this->dbaccess, sprintf("SELECT id from only %s where initid = %d order by id desc limit 1", $this->dbtable, $this->initid) , $latestId, true, true);
                 if ($err == "") {
                     if (!$latestId) $err = sprintf(_("document %s [%d] is strange") , $this->title, $this->id);
                     else {
@@ -5670,16 +5672,17 @@ create unique index i_docir on doc(initid, revision);";
         
         if ($this->doctype == "C") { //  a class
             $fromid = $this->initid;
+            $tableName = $this->dbtable;
             if ($this->icon != "") {
                 // need disabled triggers to increase speed
-                $qt[] = "ALTER TABLE doc$fromid DISABLE TRIGGER ALL";
-                $qt[] = "update doc$fromid set icon='$icon' where (fromid=" . $fromid . ") AND (doctype != 'C') and ((icon='" . $this->icon . "') or (icon is null))";
-                $qt[] = "ALTER TABLE doc$fromid ENABLE TRIGGER ALL";
+                $qt[] = "ALTER TABLE $tableName DISABLE TRIGGER ALL";
+                $qt[] = "update $tableName set icon='$icon' where (fromid=" . $fromid . ") AND (doctype != 'C') and ((icon='" . $this->icon . "') or (icon is null))";
+                $qt[] = "ALTER TABLE $tableName ENABLE TRIGGER ALL";
                 $qt[] = "update docread set icon='$icon' where (fromid=" . $fromid . ") AND (doctype != 'C') and ((icon='" . $this->icon . "') or (icon is null))";
                 
                 $this->exec_query(implode(";", $qt));
             } else {
-                $q = "update doc$fromid set icon='$icon' where (fromid=" . $fromid . ") AND (doctype != 'C') and (icon is null)";
+                $q = "update $tableName set icon='$icon' where (fromid=" . $fromid . ") AND (doctype != 'C') and (icon is null)";
                 $this->exec_query($q);
             }
         }
@@ -6343,17 +6346,21 @@ create unique index i_docir on doc(initid, revision);";
         if (get_class($this) == "DocFam") {
             $cid = "fam";
             $famId = $this->id;
+            $tableName = sprintf("family.families");
+            $tableBaseName = "families";
         } else {
             if ($this->doctype == 'C') return '';
             if (intval($this->fromid) == 0) return '';
             
             $cid = $this->fromid;
             $famId = $this->fromid;
+            $tableBaseName = strtolower($this->fromname);
+            $tableName = $this->dbtable;
         }
         
         $sql = "";
         // delete all relative triggers
-        $sql.= "select droptrigger('doc" . $cid . "');";
+        $sql.= sprintf("select droptrigger('family', '%s');\n", $tableBaseName);
         if ($onlydrop) return $sql; // only drop
         if ($code) {
             $files = array();
@@ -6428,16 +6435,16 @@ create unique index i_docir on doc(initid, revision);";
             if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
                 foreach ($this->attributes->fromids as $k => $v) {
                     
-                    $sql.= "create trigger UV{$cid}_$v BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE upval$v();";
+                    $sql.= "create trigger UV{$cid}_$v BEFORE INSERT OR UPDATE ON $tableName FOR EACH ROW EXECUTE PROCEDURE upval$v();\n";
                 }
             }
             // the reset trigger must begin with 'A' letter to be proceed first (pgsql 7.3.2)
             if ($cid != "fam") {
-                $sql.= "create trigger AUVR{$cid} BEFORE UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
-                $sql.= "create trigger VFULL{$cid} BEFORE INSERT OR UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE fullvectorize$cid();";
+                $sql.= "create trigger AUVR{$cid} BEFORE UPDATE  ON $tableName FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
+                $sql.= "create trigger VFULL{$cid} BEFORE INSERT OR UPDATE  ON $tableName FOR EACH ROW EXECUTE PROCEDURE fullvectorize$cid();";
             }
-            $sql.= "create trigger zread{$cid} AFTER INSERT OR UPDATE OR DELETE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE setread();";
-            $sql.= "create trigger FIXDOC{$cid} AFTER INSERT ON doc$cid FOR EACH ROW EXECUTE PROCEDURE fixeddoc();";
+            $sql.= "create trigger zread{$cid} AFTER INSERT OR UPDATE OR DELETE ON $tableName FOR EACH ROW EXECUTE PROCEDURE setread();";
+            $sql.= "create trigger FIXDOC{$cid} AFTER INSERT ON $tableName FOR EACH ROW EXECUTE PROCEDURE fixeddoc();";
         }
         return $sql;
     }
@@ -6449,7 +6456,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function getSqlIndex()
     {
         $t = array();;
-        $id = $this->fromid;
+        $name = strtolower($this->fromname);
         if (static::$sqlindex) $sqlindex = array_merge(static::$sqlindex, Doc::$sqlindex);
         else $sqlindex = Doc::$sqlindex;
         foreach ($sqlindex as $k => $v) {
@@ -6461,9 +6468,9 @@ create unique index i_docir on doc(initid, revision);";
                 if ($v["using"][0] == "@") {
                     $v["using"] = getParam(substr($v["using"], 1));
                 }
-                $t[] = sprintf("CREATE $unique INDEX %s$id on  doc$id using %s(%s);\n", $k, $v["using"], $v["on"]);
+                $t[] = sprintf("CREATE $unique INDEX %s%s on  family.%s using %s(%s);\n", $k, $name, $name, $v["using"], $v["on"]);
             } else {
-                $t[] = sprintf("CREATE $unique INDEX %s$id on  doc$id(%s);\n", $k, $v["on"]);
+                $t[] = sprintf("CREATE $unique INDEX %s%s on  family.%s(%s);\n", $k, $name, $name, $v["on"]);
             }
         }
         return $t;

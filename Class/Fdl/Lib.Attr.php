@@ -41,9 +41,12 @@ function AttrToPhp($dbaccess, $tdoc)
     if ($tdoc["fromid"] > 0) {
         
         $tdoc["fromname"] = getNameFromId($dbaccess, $tdoc["fromid"]);
+        $phpAdoc->Set("DBfromname",strtolower($tdoc["fromname"]));
     } else {
         $tdoc["fromname"] = "Document";
+        $phpAdoc->Set("DBfromname","documents");
     }
+        $phpAdoc->Set("DBdocname",strtolower($tdoc["name"]));
     $phpAdoc->Set("docid", $tdoc["id"]);
     $phpAdoc->Set("include", "");
     $phpAdoc->Set("GEN", "");
@@ -483,15 +486,16 @@ function doubleslash($s)
     return $s;
 }
 
-function PgUpdateFamilly($dbaccess, $docid, $docname = "")
+function PgUpdateFamilly($dbaccess, $docid, $docname)
 {
     $msg = '';
-    if ($msg) return $msg;
-    $GEN = getGen($dbaccess);
+    $docname = strtolower($docname);
     $doc = new_Doc($dbaccess);
-    $err = $doc->exec_query("SELECT oid FROM pg_class where relname='doc" . $docid . "';");
-    if ($doc->numrows() == 0) {
-        $msg.= "Create table doc" . $docid . "\n";
+    $sqlTestFamily=sprintf("select table_schema, table_name from information_schema.tables where table_schema='family' and table_name='%s'" ,
+            pg_escape_string($docname));
+    simpleQuery($dbaccess, $sqlTestFamily, $result);
+    if (count($result) == 0) {
+        $msg.= "Create table family." . $docname . "\n";
         // create postgres table if new familly
         $cdoc = createTmpDoc($dbaccess, $docid, false);
         $triggers = $cdoc->sqltrigger(false, true);
@@ -500,15 +504,15 @@ function PgUpdateFamilly($dbaccess, $docid, $docname = "")
         $cdoc->Create();
         setSqlIndex($dbaccess, $docid);
         
-        $err = $doc->exec_query("SELECT oid FROM pg_class where relname='doc" . $docid . "';");
-        if ($doc->numrows() == 0) {
-            $msg.= "Cannot create Table : $err\n";
+        simpleQuery($dbaccess, $sqlTestFamily, $result);
+            if (count($result) == 0) {
+            $msg.= "Cannot create Table family." . $docname."\n";
         }
     }
-    $row = $doc->fetch_array(0, PGSQL_ASSOC);
-    $relid = $row["oid"]; // pg id of the table
+
     // create view
-    if ($docname != "") {
+    // @TODO 4456 CREATE VIEW
+    if (false && $docname != "") {
         $docname = strtolower($docname);
         $err = $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
         $updateview = false;
@@ -532,14 +536,9 @@ function PgUpdateFamilly($dbaccess, $docid, $docname = "")
         }
     }
     
-    $sqlquery = "select attname FROM pg_attribute where attrelid=$relid;";
-    $doc->exec_query($sqlquery, 1); // search existed attribute of the table
-    $nbidx = $doc->numrows();
-    $pgatt = array();
-    for ($c = 0; $c < $nbidx; $c++) {
-        $row = $doc->fetch_array($c, PGSQL_ASSOC);
-        $pgatt[$row["attname"]] = $row["attname"];
-    }
+    $sqlquery = sprintf("select column_name FROM information_schema.columns where table_schema='family' and table_name='%s';", $docname);
+    simpleQuery($dbaccess, $sqlquery, $pgatt, true);
+
     // -----------------------------
     // add column attribute
     $qattr = new QueryDb($dbaccess, "DocAttr");
@@ -627,8 +626,9 @@ function PgUpdateFamilly($dbaccess, $docid, $docname = "")
                                 $sqltype = " text";
                         }
                     }
-                    $sqlquery = "ALTER TABLE doc" . $docid . " ADD COLUMN $ka $sqltype;";
-                    $doc->exec_query($sqlquery, 1); // add new field
+                    $sqlquery = sprintf("ALTER TABLE family.%s add column %s %s",  pg_escape_string($docname) ,pg_escape_string ($ka), pg_escape_string($sqltype));
+
+                    simpleQuery($dbaccess,$sqlquery);
                     
                 }
             }

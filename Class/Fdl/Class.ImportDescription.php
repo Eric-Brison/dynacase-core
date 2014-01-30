@@ -127,7 +127,6 @@ class importDocumentDescription
             "linebreak" => $this->csvLinebreak
         );
     }
-
     /**
      * Detect csv options - separator and enclosure arguments are modified if set to auto
      * @param $csvFileName
@@ -558,8 +557,6 @@ class importDocumentDescription
                     $oattr->docid = intval($this->doc->id);
                     if ($oattr->docid > 0) {
                         $err = $oattr->exec_query(sprintf("delete from docattr where docid=%d", $oattr->docid));
-                        // $err .= $oattr->exec_query(sprintf("update docfam set defval=null,param=null  where id=%d",  $oattr->docid));
-                        
                     }
                     $this->tcr[$this->nLine]["err"].= $err;
                 }

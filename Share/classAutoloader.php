@@ -561,10 +561,10 @@ class DirectoriesAutoloader
     public function addFamilies($genDirectory)
     {
         include_once ("Lib.Common.php");
-        $sql = "select * from pg_tables where tablename = 'docfam'";
+        $sql = "select * from pg_tables where tablename = 'families'";
         $err = \simpleQuery('', $sql, $exists);
         if (count($exists) > 0) {
-            $sql = 'select id, "name" from docfam where name is not null order by id';
+            $sql = 'select id, "name" from family.families where name is not null order by id';
             $err = \simpleQuery('', $sql, $famNames);
             if ($err) {
                 throw new DirectoriesAutoloaderException('Cannot access family name [' . $err . ']');

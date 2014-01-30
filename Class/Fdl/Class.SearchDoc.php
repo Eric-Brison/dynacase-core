@@ -199,7 +199,7 @@ class SearchDoc
             }
             foreach ($tqsql as $sql) {
                 if ($sql) {
-                    if (preg_match('/from\s+(?:only\s+)?([a-z0-9_\-]*)/', $sql, $reg)) $maintable = $reg[1];
+                    if (preg_match('/from\s+(?:only\s+)?([a-z0-9_\-\.]*)/', $sql, $reg)) $maintable = $reg[1];
                     else $maintable = '';
                     $maintabledot = ($maintable) ? $maintable . '.' : '';
                     
@@ -397,7 +397,7 @@ class SearchDoc
                     if ($this->fromid < - 1) {
                         $this->only = true;
                     }
-                    $err = simpleQuery($this->dbaccess, sprintf("select doctype from docfam where id=%d", abs($this->fromid)) , $doctype, true, true);
+                    simpleQuery($this->dbaccess, sprintf("select doctype from family.families where id=%d", abs($this->fromid)) , $doctype, true, true);
                     if ($doctype != 'C') $fromid = 0;
                     else $fromid = $this->fromid;
                 } else $fromid = $this->fromid;
@@ -740,7 +740,7 @@ class SearchDoc
             if (preg_match('/^([a-z0-9_\-]+\()?([a-z0-9_\-]+)\./', $filter, $reg)) {
                 // when use join filter like "zoo_espece.es_classe='Boo'"
                 $famid = getFamIdFromName($this->dbaccess, $reg[2]);
-                if ($famid > 0) $filter = preg_replace('/^([a-z0-9_\-]+\()?([a-z0-9_\-]+)\./', '${1}doc' . $famid . '.', $filter);
+                if ($famid > 0) $filter = preg_replace('/^([a-z0-9_\-]+\()?([a-z0-9_\-]+)\./', '${1}' . familyTableName($famid) . '.', $filter);
             }
             $this->filters[] = $filter;
         }
@@ -1164,14 +1164,14 @@ class SearchDoc
         if ($this->only && strpos($fromid, '-') !== 0) {
             $fromid = '-' . $fromid;
         }
-        $table = "doc";
+        $table = "family.documents";
         $only = "";
         if ($trash == "only") $distinct = true;
-        if ($fromid == - 1) $table = "docfam";
+        if ($fromid == - 1) $table = "family.families";
         elseif ($fromid < 0) {
             $only = "only";
             $fromid = - $fromid;
-            $table = "doc$fromid";
+            $table = familyTableName($fromid);
         } else {
             if ($fromid != 0) {
                 if (isSimpleFilter($sqlfilters) && (familyNeedDocread($dbaccess, $fromid))) {
@@ -1181,7 +1181,7 @@ class SearchDoc
                         $fromid
                     ) , array_keys($fdoc->GetChildFam())) , "fromid", true);
                 } else {
-                    $table = "doc$fromid";
+                    $table = familyTableName($fromid);
                 }
             } elseif ($fromid == 0) {
                 if (isSimpleFilter($sqlfilters)) $table = "docread";
@@ -1191,7 +1191,7 @@ class SearchDoc
         if ($join) {
             if (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $join, $reg)) {
                 $joinid = getFamIdFromName($dbaccess, $reg[3]);
-                $jointable = ($joinid) ? "doc" . $joinid : $reg[3];
+                $jointable = ($joinid) ? familyTableName($joinid) : $reg[3];
                 
                 $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg[1], $reg[2], $jointable, $reg[4]); // "id = dochisto(id)";
                 $maintable = $table;
@@ -1290,7 +1290,7 @@ class SearchDoc
                 }
             } else {
                 //-------------------------------------------
-                // search familly
+                // search family
                 //-------------------------------------------
                 $docsearch = new QueryDb($dbaccess, "QueryDir");
                 $docsearch->AddQuery("dirid=$dirid");
@@ -1332,7 +1332,7 @@ class SearchDoc
                                         }
                                     }
                                     if ($fromid > 0) {
-                                        $sqlM = str_replace("from doc ", "from $only $table ", $sqlM);
+                                        $sqlM = str_replace("from family.documents ", "from $only $table ", $sqlM);
                                     }
                                     $fldFromId = ($fromid == 0) ? $fld->getRawValue('se_famid', 0) : $fromid;
                                     $sqlM = $this->injectFromClauseForOrderByLabel($fldFromId, $this->orderbyLabel, $sqlM);
@@ -1387,7 +1387,7 @@ class SearchDoc
                     $mapValues[] = sprintf("('%s', '%s')", pg_escape_string($key) , pg_escape_string($label));
                 }
                 $map = sprintf('(VALUES %s) AS map_%s(key, label)', join(', ', $mapValues) , $attr->id);
-                $where = sprintf('map_%s.key = doc%s.%s', $attr->id, $fromid, $attr->id);
+                $where = sprintf('map_%s.key = %s.%s', $attr->id, familyTableName($fromid) , $attr->id);
                 
                 $sqlM = preg_replace('/ where /i', ", $map where ($where) and ", $sqlM);
                 $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column, "/")) , sprintf("map_%s.label", $attr->id) , $this->orderby);

@@ -56,7 +56,7 @@ foreach ($tusers as $tu) {
 
 if (!$accountOnly) {
     $tfam[] = 3;
-    $err == simpleQuery($dbaccess, "select name from docfam order by id", $tfams, true);
+    $err == simpleQuery($dbaccess, "select name from family.families order by id", $tfams, true);
     $tfam = array_merge($tfam, $tfams);
     $tfam[] = - 1;
     foreach ($tfam as $famid) {
@@ -76,7 +76,7 @@ if (!$accountOnly) {
         }
     }
     print "update empty profil...";
-    $err == simpleQuery($dbaccess, "update doc set views='{0}' where (profid=0 or profid is null)");
+    $err == simpleQuery($dbaccess, "update family.documents set views='{0}' where (profid=0 or profid is null)");
 }
 print "Finish profiling.";
 ?>

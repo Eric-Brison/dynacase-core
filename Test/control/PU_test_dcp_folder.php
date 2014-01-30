@@ -50,7 +50,7 @@ class TestFolder extends TestCaseDcpCommonFamily
             $err = $d->modify();
             $this->assertEquals("", $err, sprintf("cannot database update", $a));
             
-            $sval = $this->_DBGetValue(sprintf("select ba_desc from doc2 where id=%d", $d->id));
+            $sval = $this->_DBGetValue(sprintf("select ba_desc from family.dir where id=%d", $d->id));
             $this->assertEquals($val, $sval, sprintf("document %d not locked", $a));
         } else {
             $this->markTestIncomplete(sprintf(_('Document %d not alive.') , $a));

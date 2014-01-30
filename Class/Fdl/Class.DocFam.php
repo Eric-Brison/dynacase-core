@@ -22,10 +22,10 @@ include_once ('FDL/Class.PFam.php');
 class DocFam extends PFam
 {
     
-    var $dbtable = "docfam";
+    var $dbtable = "family.families";
     
     var $sqlcreate = "
-create table docfam (cprofid int , 
+create table family.families (cprofid int ,
                      dfldid int, 
                      cfldid int, 
                      ccvid int, 
@@ -38,8 +38,8 @@ create table docfam (cprofid int ,
                      maxrev int,
                      usedocread int,
                      tagable text,
-                     configuration text) inherits (doc);
-create unique index idx_idfam on docfam(id);";
+                     configuration text) inherits (family.documents);
+create unique index idx_idfam on family.families(id);";
     var $sqltcreate = array();
     
     var $defDoctype = 'C';
@@ -707,7 +707,7 @@ create unique index idx_idfam on docfam(id);";
         $this->$Xval = array();
         $inhIds = array();
         if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
-            $sql = sprintf("select id,%s from docfam where id in (%s)", pg_escape_string($X) , implode(',', $this->attributes->fromids));
+            $sql = sprintf("select id,%s from %s where id in (%s)",  pg_escape_string($X), $this->dbtable, implode(',', $this->attributes->fromids));
             simpleQuery($this->dbaccess, $sql, $rx, false, false);
             foreach ($rx as $r) {
                 $XS[$r["id"]] = $r[$X];

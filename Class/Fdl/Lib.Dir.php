@@ -116,15 +116,15 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid) , $m);
         $fromid = $m['sign'] . getFamIdFromName($dbaccess, $m['fromid']);
     }
-    $table = "doc";
+    $table = "family.documents";
     $qsql = '';
     if ($trash == "only") $distinct = true;
-    if ($fromid == - 1) $table = "docfam";
+    if ($fromid == - 1) $table = "family.families";
     elseif ($simplesearch) $table = "docread";
     elseif ($fromid < 0) {
         $only = "only";
         $fromid = - $fromid;
-        $table = "doc$fromid";
+        $table = familyTableName($fromid);
     } else {
         if ($fromid != 0) {
             if (isSimpleFilter($sqlfilters) && (familyNeedDocread($dbaccess, $fromid))) {
@@ -134,7 +134,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $fromid
                 ) , array_keys($fdoc->GetChildFam())) , "fromid", true);
             } else {
-                $table = "doc$fromid";
+                $table = familyTableName($fromid);
             }
         } elseif ($fromid == 0) {
             if (isSimpleFilter($sqlfilters)) $table = "docread";
@@ -142,9 +142,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     }
     $maintable = $table; // can use join only on search
     if ($join) {
-        if (preg_match("/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/", $join, $reg)) {
+        if (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $join, $reg)) {
             $joinid = getFamIdFromName($dbaccess, $reg[3]);
-            $jointable = ($joinid) ? "doc" . $joinid : $reg[3];
+            $jointable = ($joinid) ? familyTableName($joinid) : $reg[3];
             
             $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg[1], $reg[2], $jointable, $reg[4]); // "id = dochisto(id)";
             $maintable = $table;
@@ -471,11 +471,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     if ($searchDoc) $tsqlfields = $searchDoc->getReturnsFields();
                     if ($tsqlfields == null) $tsqlfields = array_merge($fdoc->fields, $fdoc->sup_fields);
                     $maintable = '';
-                    if (!$join && preg_match("/from\s+([a-z0-9])*,/", $qsql)) {
+                    if (!$join && preg_match('/from\s+([a-z0-9_\.\-])*,/', $qsql)) {
                         $join = true;
                     }
                     if ($join) {
-                        if (preg_match("/from\s+([a-z0-9]*)/", $qsql, $reg)) {
+                        if (preg_match('/from\s+([a-z0-9_\.\-]*)/', $qsql, $reg)) {
                             $maintable = $reg[1];
                             $if = 0;
                             if ($maintable) {
@@ -862,7 +862,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $cdoc = new DocFam($dbaccess, $classid);
             $query->AddQuery("usefor = '" . $cdoc->usefor . "'");
         }
-        // if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",docfam.profid)");
+        
         if ($userid > 1) $query->AddQuery(sprintf("views && '%s'", searchDoc::getUserViewVector($userid)));
         if (is_array($extraFilters) && count($extraFilters) > 0) {
             foreach ($extraFilters as $filter) {
@@ -1026,9 +1026,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         if ($id == 0) return false;
         $dbid = getDbid($dbaccess);
         $fromid = false;
-        $result = pg_query($dbid, "select id from docfam where id=$id and usedocread=1");
+        $result = pg_query($dbid, "select id from family.families where id=$id and usedocread=1");
         if (pg_numrows($result) > 0) {
-            $result = pg_query($dbid, "select fromid from docfam where fromid=$id;");
+            $result = pg_query($dbid, "select fromid from family.families where fromid=$id;");
             if (pg_numrows($result) > 0) {
                 return true;
             }

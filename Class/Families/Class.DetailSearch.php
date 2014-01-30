@@ -435,7 +435,7 @@ class DetailSearch extends \Dcp\Family\Search
                                 }
                             }
                         } elseif ($col == "fromid") {
-                            $err = simpleQuery($this->dbaccess, sprintf("select id from docfam where title ~* '%s'", pg_escape_string($val)) , $ids, true);
+                            $err = simpleQuery($this->dbaccess, sprintf("select id from family.families where title ~* '%s'", pg_escape_string($val)) , $ids, true);
                             if ($err == "") {
                                 if (count($ids) == 0) {
                                     $cond = "false";

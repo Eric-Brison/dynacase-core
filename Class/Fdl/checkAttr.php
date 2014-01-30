@@ -310,9 +310,9 @@ class CheckAttr extends CheckData
         $sqlPattern = <<< 'SQL'
     select * from docattr where docid in (
     with recursive adocfam(id, fromid, famname) as (
-     select  docfam.id, docfam.fromid, docfam.name as famname from docfam where docfam.id=%d or docfam.id=%d
+     select  id, fromid, name as famname from family.families where id=%d or id=%d
        union
-     select  docfam.id, docfam.fromid, docfam.name as famname  from docfam, adocfam where  docfam.id = adocfam.fromid
+     select  family.families.id, family.families.fromid, family.families.name as famname  from family.families, adocfam where  family.families.id = adocfam.fromid
     ) select id from adocfam
     ) and id='%s' order by docid desc;
 SQL;

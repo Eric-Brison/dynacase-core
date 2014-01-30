@@ -188,7 +188,7 @@ class DocCtrl extends DocLDAP
     {
         if ($this->id == $this->profid) {
             // inhibated all doc references this profil
-            if ($this->doctype == 'P') $this->exec_query("update doc set profid=-profid where profid=" . $this->id . " and locked != -1;");
+            if ($this->doctype == 'P') $this->exec_query("update family.documents set profid=-profid where profid=" . $this->id . " and locked != -1;");
         }
         $this->profid = "0";
         $err = $this->modify(true, array(
@@ -237,7 +237,7 @@ class DocCtrl extends DocLDAP
             }
         }
         // reactivation of doc with its profil
-        if ($this->doctype == 'P') $this->exec_query("update doc set profid=-profid where profid=-" . $this->id . " and locked != -1;");
+        if ($this->doctype == 'P') $this->exec_query("update family.documents set profid=-profid where profid=-" . $this->id . " and locked != -1;");
         
         $this->profid = $this->id;
         $err = $this->modify(true, array(
@@ -502,7 +502,7 @@ class DocCtrl extends DocLDAP
                 ) , true);
                 if ($this->isRealProfile()) {
                     //propagate static profil views on linked documents
-                    $err = simpleQuery($this->dbaccess, sprintf("update doc set views='%s' where profid=%d and (dprofid is null or dprofid = 0)", $this->views, $this->id));
+                    $err = simpleQuery($this->dbaccess, sprintf("update family.documents set views='%s' where profid=%d and (dprofid is null or dprofid = 0)", $this->views, $this->id));
                 }
             } else {
                 // static profil

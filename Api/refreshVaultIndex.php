@@ -83,10 +83,9 @@ if (is_numeric($parms['famid'])) {
     $q->AddQuery(sprintf("id = %s", pg_escape_string($parms['famid'])));
 }
 $famIconList = $q->Query(0, 0, "TABLE");
-if (! $famIconList) {
-    $famIconList=array();
+if (!$famIconList) {
+    $famIconList = array();
 }
-
 /**
  * Load all file attributes
  */
@@ -137,16 +136,17 @@ $deletedFam = array();
 foreach ($attrList as $i => $attr) {
     $docid = $attr['docid'];
     $attrid = $attr['id'];
+    $table = familyTableName($docid);
     
     if (!$parms['realclean'] && !isset($deletedFam[$docid])) {
         print sprintf("-- Deleting attributes vault indexes for family '%s'...\n", $docid);
-        $sql = sprintf("DELETE FROM docvaultindex WHERE EXISTS (SELECT id FROM doc%s WHERE id = docid)", pg_escape_string($docid));
+        $sql = sprintf("DELETE FROM docvaultindex WHERE EXISTS (SELECT id FROM %s WHERE id = docid)", pg_escape_string($table));
         sqlexec($o, $parms, $sql);
         $deletedFam[$docid] = 1;
     }
     
     print sprintf("-- Indexing family '%s', attribute '%s'...\n", $docid, $attrid);
-    $sql = sprintf("SELECT vaultreindex(id, %s) FROM doc%s WHERE %s IS NOT NULL", pg_escape_string($attrid) , pg_escape_string($docid) , pg_escape_string($attrid));
+    $sql = sprintf("SELECT vaultreindex(id, %s) FROM %s WHERE %s IS NOT NULL", pg_escape_string($attrid) , pg_escape_string($table) , pg_escape_string($attrid));
     sqlexec($o, $parms, $sql);
 }
 /**
@@ -165,7 +165,7 @@ foreach ($paramList as $i => $param) {
     }
     
     print sprintf("-- Indexing family '%s', parameter '%s'...\n", $docid, $paramid);
-    $sql = sprintf("SELECT vaultreindexparam(id, param, '%s') FROM docfam WHERE id = %s", pg_escape_string($paramid) , pg_escape_string($docid) , pg_escape_string($paramid));
+    $sql = sprintf("SELECT vaultreindexparam(id, param, '%s') FROM family.families WHERE id = %s", pg_escape_string($paramid) , pg_escape_string($docid) , pg_escape_string($paramid));
     sqlexec($o, $parms, $sql);
 }
 /**
@@ -175,7 +175,7 @@ foreach ($famIconList as $i => $fam) {
     $famid = $fam['id'];
     
     print sprintf("-- Indexing icon for family '%s'...\n", $famid);
-    $sql = sprintf("SELECT vaultreindex(id, icon) FROM docfam WHERE id = %s", $famid);
+    $sql = sprintf("SELECT vaultreindex(id, icon) FROM family.families WHERE id = %s", $famid);
     sqlexec($o, $parms, $sql);
 }
 /**
