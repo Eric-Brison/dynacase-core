@@ -101,7 +101,7 @@ if ($fldid != '') {
 if ($allrev) $s->latest = false;
 if ($filter) {
     // verify validity and prevent hack
-    if (@pg_prepare(getDbid($dbaccess) , 'refreshDocument', sprintf("select id from doc%d where %s", $s->fromid, $filter)) == false) {
+    if (@pg_prepare(getDbid($dbaccess) , 'refreshDocument', sprintf("select id from %s where %s", familyTableName($s->fromid) , $filter)) == false) {
         $action->exitError(sprintf("filter not valid :%s", pg_last_error()));
     } else {
         $s->addFilter($filter);
@@ -117,7 +117,7 @@ if ($arg != "") $targ[] = $arg;
 $card = $s->count();
 printf("\n%d %s to update with %s\n", $card, $famtitle, $method);
 
-$ret = "";
+$ret = $err = "";
 while ($doc = $s->getNextDoc()) {
     $usemethod = ($method && (method_exists($doc, $method)));
     if ($method && (!method_exists($doc, $method))) {

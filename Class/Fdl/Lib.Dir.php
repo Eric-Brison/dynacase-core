@@ -24,7 +24,7 @@ include_once ('FDL/Class.DocFam.php');
 function getFirstDir($dbaccess)
 {
     // query to find first directories
-    $qsql = "select id from only doc2  where  (doctype='D') order by id LIMIT 1;";
+    $qsql = "select id from only family.dir  where  (doctype='D') order by id LIMIT 1;";
     
     $query = new QueryDb($dbaccess, "Doc");
     
@@ -540,8 +540,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     } else {
                         $fromid = abs($fromid);
                         if ($fromid > 0) {
-                            $GEN = getGen($dbaccess);
-                            include_once "FDL$GEN/Class.Doc$fromid.php";
+                            include_once (getFamilyFileName($fromid));
                         }
                     }
                 }

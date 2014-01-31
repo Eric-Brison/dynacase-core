@@ -581,24 +581,24 @@ class Doc extends DocCtrl
      */
     public $attributes = null;
     public static $sqlindex = array(
-        "doc_initid" => array(
+        "idx_initid" => array(
             "unique" => false,
             "on" => "initid"
         ) ,
-        "doc_title" => array(
+        "idx_title" => array(
             "unique" => false,
             "on" => "title"
         ) ,
-        "doc_name" => array(
+        "idx_name" => array(
             "unique" => true,
             "on" => "name,revision,doctype"
         ) ,
-        "doc_full" => array(
+        "idx_full" => array(
             "unique" => false,
             "using" => "@FDL_FULLIDX",
             "on" => "fulltext"
         ) ,
-        "doc_profid" => array(
+        "idx_profid" => array(
             "unique" => false,
             "on" => "profid"
         )
@@ -2072,9 +2072,7 @@ create unique index i_docir on doc(initid, revision);";
             // reset when use partial cache
             $fromid = ($this->doctype == 'C') ? $this->id : $this->fromid;
             $adocClassName = "ADoc" . $fromid;
-            $classname = "Doc" . $fromid;
-            $GEN = getGen($this->dbaccess);
-            $includePath = "FDL$GEN/Class.$classname.php";
+            $includePath = getFamilyFileName($fromname);
             if (file_exists($includePath)) {
                 include_once ($includePath);
                 $this->attributes = new $adocClassName();
@@ -5407,7 +5405,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (!$err) {
                     $this->addHistoryEntry(sprintf(_("Archiving into %s") , $archive->getTitle()) , HISTO_MESSAGE, "ARCHIVE");
                     $this->addLog('archive', $archive->id, sprintf(_("Archiving into %s") , $archive->getTitle()));
-                    $err = $this->exec_query(sprintf("update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1", $this->fromid, $archive->id, $archprof, $this->initid));
+                    $err = $this->exec_query(sprintf("update %s set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1", familyTableName($this->fromid) , $archive->id, $archprof, $this->initid));
                 }
             }
         } else $err = sprintf("document is already archived");
@@ -5441,7 +5439,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (!$err) {
                     $this->addHistoryEntry(sprintf(_("Unarchiving from %s") , $archive->getTitle()) , HISTO_MESSAGE, "UNARCHIVE");
                     $this->addLog('unarchive', $archive->id, sprintf(_("Unarchiving from %s") , $archive->getTitle()));
-                    $err = $this->exec_query(sprintf("update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1", $this->fromid, $this->initid));
+                    $err = $this->exec_query(sprintf("update %s set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1", familyTableName($this->fromid) , $this->initid));
                 }
             }
         } else $err = sprintf("document not archived");

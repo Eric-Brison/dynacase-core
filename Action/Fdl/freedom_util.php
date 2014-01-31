@@ -154,8 +154,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
         
         return ($doc);
     }
-    $fromid = "";
-    $gen = ""; // path GEN or not
+    $fileFamily = "";
     if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
     elseif ($latest) {
         $lid = getLatestDocId($dbaccess, $id);
@@ -180,12 +179,15 @@ function new_Doc($dbaccess, $id = '', $latest = false)
         $fromid = getFromId($dbaccess, $id);
         if ($fromid > 0) {
             $classname = "Doc$fromid";
-            $gen = getGen($dbaccess);
-        } else if ($fromid == - 1) $classname = "DocFam";
+            $fileFamily = getFamilyFileName($fromid);
+        } else if ($fromid == - 1) {
+            $classname = "DocFam";
+            $fileFamily = "FDL/Class.DocFam.php";
+        }
     }
     
     if ($classname != "") {
-        if (!include_once ("FDL$gen/Class.$classname.php")) {
+        if (!include_once ($fileFamily)) {
             AddWarningMsg(sprintf("cannot include %s class", $classname));
             return null;
         }
@@ -248,8 +250,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
         }
         
         $classname = "Doc" . $fromid;
-        $GEN = getGen($dbaccess);
-        include_once ("FDL$GEN/Class.$classname.php");
+        require_once (getFamilyFileName($cdoc->name));
         /* @var DocFam $doc */
         $doc = new $classname($dbaccess);
         
@@ -317,7 +318,7 @@ function getFromId($dbaccess, $id)
     return $fromid;
 }
 /**
- * return from name for document (not for family (use @see getFamFromId() instead)
+ * return from name for a document
  * @param string $dbaccess database specification
  * @param int $id identifier of the object
  *
@@ -458,28 +459,54 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
     }
     return false;
 }
-
-function familyTableName($fromid)
+/**
+ * @param int|string $familyIdentifier id or name of a family
+ * @return string
+ */
+function getFamilyName($familyIdentifier)
 {
     static $familyNames = null;
-    if (is_numeric($fromid)) {
-        if ($fromid == - 1) {
+    if (is_numeric($familyIdentifier)) {
+        if ($familyIdentifier == - 1) {
             $name = "families";
         } else {
-            if ($familyNames === null || empty($familyNames[$fromid])) {
+            if ($familyNames === null || empty($familyNames[$familyIdentifier])) {
                 simpleQuery('', "select id, name from family.families where name is not null", $res);
                 $familyNames = array();
                 foreach ($res as $afam) {
                     $familyNames[$afam["id"]] = $afam["name"];
                 }
             }
-            
-            $name = empty($familyNames[$fromid]) ? 'documents' : $familyNames[$fromid];
+            $name = empty($familyNames[$familyIdentifier]) ? '' : $familyNames[$familyIdentifier];
         }
     } else {
-        $name = $fromid;
+        $name = $familyIdentifier;
     }
-    return 'family.' . strtolower($name);
+    return $name;
+}
+/**
+ * @param int|string $familyIdentifier id or name of a family
+ * @return string
+ */
+function familyTableName($familyIdentifier)
+{
+    $famName = getFamilyName($familyIdentifier);
+    if (empty($famName)) {
+        $famName = "documents";
+    }
+    return 'family.' . strtolower($famName);
+}
+/**
+ * get generated file name used for a family
+ * @param string $fromname family name
+ * @return string
+ */
+function getFamilyFileName($fromname)
+{
+    if (is_numeric($fromname)) {
+        $fromname = getFamilyName($fromname);
+    }
+    return sprintf("FDLGEN/Class.Family%s.php", ucfirst(strtolower($fromname)));
 }
 /**
  * return the value of an doc array item
@@ -591,12 +618,13 @@ function getDocObject($dbaccess, $v, $k = 0)
     
     if ($v["doctype"] == "C") {
         if (!isset($_OgetDocObject[$k]["family"])) $_OgetDocObject[$k]["family"] = new DocFam($dbaccess);
+        /** @noinspection PhpUndefinedMethodInspection */
         $_OgetDocObject[$k]["family"]->Affect($v, true);
         $v["fromid"] = "family";
     } else {
         if (!isset($_OgetDocObject[$k][$v["fromid"]])) $_OgetDocObject[$k][$v["fromid"]] = createDoc($dbaccess, $v["fromid"], false, false);
     }
-    
+    /** @noinspection PhpUndefinedMethodInspection */
     $_OgetDocObject[$k][$v["fromid"]]->Affect($v, true);
     
     return $_OgetDocObject[$k][$v["fromid"]];

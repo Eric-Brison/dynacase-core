@@ -412,7 +412,7 @@ class DetailSearch extends \Dcp\Family\Search
                                     if (!is_numeric($fid)) {
                                         $fid = getFamidFromName($this->dbaccess, $fid);
                                     }
-                                    $err = simpleQuery($this->dbaccess, sprintf("select id from doc%d where title ~* '%s'", $fid, pg_escape_string($val)) , $ids, true);
+                                    $err = simpleQuery($this->dbaccess, sprintf("select id from %s where title ~* '%s'", familyTableName($fid) , pg_escape_string($val)) , $ids, true);
                                     if ($err == "") {
                                         if (count($ids) == 0) {
                                             $cond = "false";

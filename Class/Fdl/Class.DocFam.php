@@ -109,13 +109,15 @@ create unique index idx_idfam on family.families(id);";
         parent::__construct($dbaccess, $id, $res, $dbid);
         $this->doctype = 'C';
         if ($include && ($this->id > 0) && ($this->isAffected())) {
-            $adoc = "Doc" . $this->id;
-            $GEN = getGen($dbaccess);
-            if (include_once ("FDL$GEN/Class.$adoc.php")) {
-                $adoc = "ADoc" . $this->id;
-                $this->attributes = new $adoc();
-                uasort($this->attributes->attr, "tordered");
-            } else {
+            try {
+                if (file_exists(getFamilyFileName($this->name))) {
+                    include_once (getFamilyFileName($this->name));
+                    $adoc = "ADoc" . $this->id;
+                    $this->attributes = new $adoc();
+                    uasort($this->attributes->attr, "tordered");
+                }
+            }
+            catch(Exception $e) {
                 throw new Dcp\Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
             }
         }
@@ -167,6 +169,13 @@ create unique index idx_idfam on family.families(id);";
             if (!$this->schar) $this->schar = $cdoc->schar;
             if (!$this->usefor) $this->usefor = $cdoc->usefor;
             if (!$this->tagable) $this->tagable = $cdoc->tagable;
+        }
+        if ($this->name) {
+            // destroy old file if exists
+            $filePath = getFamilyFileName($this->name);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
         }
     }
     /**
@@ -568,7 +577,6 @@ create unique index idx_idfam on family.families(id);";
         
         if (is_array($val)) $vals = $val;
         else $vals[] = $val;
-        //print_r2($val);
         foreach ($vals as $ka => $av) {
             switch ($type) {
                 case 'money':
@@ -588,7 +596,6 @@ create unique index idx_idfam on family.families(id);";
                 if (!$err) {
                     // verifiy constraint
                     if ($oa->phpconstraint) {
-                        //print_r2($aid."[$ka]".$oa->phpconstraint);
                         $map[$aid] = $av;
                         $err = $this->applyMethod($oa->phpconstraint, null, $oa->isMultiple() ? $ka : -1, array() , $map);
                     }
@@ -707,7 +714,7 @@ create unique index idx_idfam on family.families(id);";
         $this->$Xval = array();
         $inhIds = array();
         if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
-            $sql = sprintf("select id,%s from %s where id in (%s)",  pg_escape_string($X), $this->dbtable, implode(',', $this->attributes->fromids));
+            $sql = sprintf("select id,%s from %s where id in (%s)", pg_escape_string($X) , $this->dbtable, implode(',', $this->attributes->fromids));
             simpleQuery($this->dbaccess, $sql, $rx, false, false);
             foreach ($rx as $r) {
                 $XS[$r["id"]] = $r[$X];

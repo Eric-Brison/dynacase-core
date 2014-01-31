@@ -570,11 +570,11 @@ class DirectoriesAutoloader
                 throw new DirectoriesAutoloaderException('Cannot access family name [' . $err . ']');
             }
             foreach ($famNames as $aFam) {
-                $aFamName = $aFam["name"];
+                $aFamName = strtolower($aFam["name"]);
                 $aFamId = $aFam["id"];
-                $this->_classes['_' . strtolower($aFamName) ] = sprintf("%s/Class.Doc%d.php", $genDirectory, $aFamId);
-                $this->_classes['dcp\\family\\' . strtolower($aFamName) ] = sprintf("%s/Class.Doc%d.php", $genDirectory, $aFamId);
-                $this->_classes['dcp\\attributeidentifiers\\' . strtolower($aFamName) ] = sprintf("%s/Class.Attrid%d.php", $genDirectory, $aFamId);
+                $this->_classes['_' . ($aFamName) ] = sprintf("%s/Class.Family%s.php", $genDirectory, ucfirst($aFamName));
+                $this->_classes['dcp\\family\\' . ($aFamName) ] = sprintf("%s/Class.Family%s.php", $genDirectory, ucfirst($aFamName));
+                $this->_classes['dcp\\attributeidentifiers\\' . ($aFamName) ] = sprintf("%s/Class.Attrid%s.php", $genDirectory, ucfirst($aFamName));
             }
         }
         return self::$_instance;

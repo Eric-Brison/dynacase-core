@@ -11,7 +11,7 @@ delete from docpermext where not exists (select 1 from docread where docid=id);
 --delete from docperm where userid not in (select iduser from groups) and userid not in (select num from vgroup) and userid not in (select idgroup from groups);
 -- cluster idx_perm on docperm;
 delete from fld where dirid not in (select initid from family.dir where locked != -1) and qtype='S';
---delete from fld where childid not in (select id from doc) and qtype='S'; 
+--delete from fld where childid not in (select id from family.documents) and qtype='S';
 update family.documents set locked=0 where locked < -1;
 --update doc set postitid=null where postitid > 0 and postitid not in (select id from doc27 where doctype != 'Z');
 delete from only family.documents;

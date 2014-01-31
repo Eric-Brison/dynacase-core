@@ -4,7 +4,7 @@
 namespace {
 
 [include]
-[IF GEN] require_once "FDL[GEN]/Class.[FileClassParent].php"; [ENDIF GEN]
+[IF GEN] require_once "[FileClassParent]"; [ENDIF GEN]
 class ADoc[docid] extends [AParent] {
     // for familly : [title]
 

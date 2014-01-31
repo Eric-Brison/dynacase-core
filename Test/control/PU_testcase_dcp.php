@@ -43,6 +43,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     
     protected function setUp()
     {
+        $this->log(sprintf("========== %s ========", $this->getName()));
         $this->connectUser("admin");
         $this->beginTransaction();
     }
