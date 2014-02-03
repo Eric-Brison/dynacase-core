@@ -30,8 +30,20 @@ begin
 end;
 $$ language 'plpgsql';
 
-
-
+-- to order family by depth
+create or replace function familyLevel(int)
+returns int as $$
+declare
+  famid alias for $1;
+  sfromid int;
+begin
+  select into sfromid fromid from family.families where id=famid;
+  if (sfromid > 0)  then
+    return 1 + familyLevel(sfromid);
+  end if;
+  return 0;
+end;
+$$ language 'plpgsql';
 
 -- change type of column
 create or replace function alter_table_column(text, text, text)
