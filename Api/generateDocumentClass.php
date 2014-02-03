@@ -15,11 +15,10 @@
 // use this only if you have changed title attributes
 include_once ("FDL/Lib.Attr.php");
 include_once ("FDL/Class.DocFam.php");
-
-$appl = new Application();
-$appl->Set("FDL", $core);
-
-$dbaccess = $appl->GetParam("FREEDOM_DB");
+/**
+ * @var Action $action
+ */
+$dbaccess = $action->dbaccess;
 if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
     exit;
@@ -39,56 +38,42 @@ if (($docid !== 0) && (!is_numeric($docid))) {
 }
 
 $query = new QueryDb($dbaccess, "DocFam");
-$query->AddQuery("doctype='C'");
-$query->order_by = "id";
+$query->AddField("familyLevel(id) as level");
+if ($docid > 0) {
+    $query->AddQuery(sprintf("id=%d", $docid));
+}
+
+$query->order_by = "level,id";
+$result = $query->Query(0, 0, "TABLE");
 
 ini_set("memory_limit", -1);
 
-if ($docid > 0) {
-    $query->AddQuery("id=$docid");
-    $tid = $query->Query(0, 0, "TABLE");
-} else {
-    // sort id by dependance
-    $table1 = $query->Query(0, 0, "TABLE");
-    $tid = array();
-    pushfam(0, $tid, $table1);
-}
-if ($query->nb > 0) {
-    $pubdir = $appl->GetParam("CORE_PUBDIR");
-    if ($query->nb > 1) {
-        $tii = array(
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            20,
-            21
-        );
-        foreach ($tii as $ii) {
-            updateDoc($dbaccess, $tid[$ii]);
-            unset($tid[$ii]);
-        }
-    }
-    // workflow at the end
-    foreach ($tid as $k => $v) {
-        if (strstr($v["usefor"], 'W')) {
-            updateDoc($dbaccess, $v);
-            /**
-             * @var WDOc $wdoc
-             */
-            $wdoc = createDoc($dbaccess, $v["id"]);
-            $wdoc->CreateProfileAttribute(); // add special attribute for workflow
-            activateTrigger($dbaccess, $v["id"]);
-        }
-    }
-    foreach ($tid as $k => $v) {
-        if (strstr($v["usefor"], 'W') === false) {
-            updateDoc($dbaccess, $v);
-        }
+foreach ($result as $k => $v) {
+    if (strstr($v["usefor"], 'W') === false) {
+        updateDoc($dbaccess, $v);
     }
 }
+// workflow at the end
+foreach ($result as $k => $v) {
+    if (strstr($v["usefor"], 'W')) {
+        updateDoc($dbaccess, $v);
+        /**
+         * @var WDOc $wdoc
+         */
+        $wdoc = createDoc($dbaccess, $v["id"]);
+        $wdoc->CreateProfileAttribute(); // add special attribute for workflow
+        activateTrigger($dbaccess, $v["id"]);
+    }
+}
+$needCompatibleView = (getParam("CORE_DBDOCVIEWCOMPAT") == "yes");
+$sql = sprintf("drop view if exists public.doc;");
+$sql.= sprintf("drop view if exists public.docfam;");
+if ($needCompatibleView) {
+    $sql.= sprintf("create view public.doc as (select * from family.documents);");
+    $sql.= sprintf("create view public.docfam as (select * from family.families);");
+}
+simpleQuery($dbaccess, $sql);
+
 function updateDoc($dbaccess, $v)
 {
     try {
@@ -102,19 +87,6 @@ function updateDoc($dbaccess, $v)
     catch(\Dcp\Exception $e) {
         print $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";
         error_log($e->getMessage());
-    }
-}
-// recursive sort by fromid
-function pushfam($fromid, &$tid, $tfam)
-{
-    
-    foreach ($tfam as $k => $v) {
-        
-        if ($v["fromid"] == $fromid) {
-            $tid[$v["id"]] = $v;
-            
-            pushfam($v["id"], $tid, $tfam);
-        }
     }
 }
 ?>
