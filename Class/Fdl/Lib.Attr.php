@@ -485,10 +485,10 @@ function doubleslash($s)
     return $s;
 }
 
-function PgUpdateFamilly($dbaccess, $docid, $docname)
+function PgUpdateFamilly($dbaccess, $docid, $oriDocname)
 {
     $msg = '';
-    $docname = strtolower($docname);
+    $docname = strtolower($oriDocname);
     $doc = new_Doc($dbaccess);
     $sqlTestFamily = sprintf("select table_schema, table_name from information_schema.tables where table_schema='family' and table_name='%s'", pg_escape_string($docname));
     simpleQuery($dbaccess, $sqlTestFamily, $result);
@@ -507,32 +507,48 @@ function PgUpdateFamilly($dbaccess, $docid, $docname)
             $msg.= "Cannot create Table family." . $docname . "\n";
         }
     }
+    
+    $sql = sprintf("select title from family.families where id=%d", $docid);
+    simpleQuery($dbaccess, $sql, $famTitle, true, true);
+    $ttmp["name"] = $oriDocname;
+    $ttmp["title"] = $famTitle;
+    $famTitle = getFamTitle($ttmp);
+    
+    if ($famTitle) {
+        $sql = sprintf("comment on table %s is '%s (\"%s\")';", familyTableName($docid) , $docname, pg_escape_string($famTitle));
+        simpleQuery($dbaccess, $sql);
+    }
     // create view
-    // @TODO 4456 CREATE VIEW
-    if (false && $docname != "") {
+    $needCompatibleView = (getParam("CORE_DBDOCVIEWCOMPAT") == "yes");
+    if ($docname != "") {
         $docname = strtolower($docname);
-        $err = $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
+        $viewName = sprintf("public.doc%s", $docid);
         $updateview = false;
-        if ($doc->numrows() == 1) {
-            // update view
-            $sql = sprintf("drop view family.\"%s\"", $docname);
-            $doc->exec_query($sql, 1);
+        
+        $sql = sprintf("select * from information_schema.views where table_schema = 'public' and table_name='doc%d'", $docid);
+        simpleQuery($dbaccess, $sql, $result);
+        if (count($result) > 0) {
+            $sql = sprintf("drop view %s", $viewName);
+            simpleQuery($dbaccess, $sql);
             $updateview = true;
         }
-        $err = $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
-        if ($doc->numrows() == 0) {
-            if (!$updateview) $msg.= "Create view family." . $docname . "\n";
+        if ($needCompatibleView) {
+            if (!$updateview) $msg.= sprintf("Create view \"%s\"\n", $viewName);
             // create postgres table if new familly
-            $sql = sprintf("create view family.\"%s\" as select * from doc%d", ($docname) , $docid);
-            $doc->exec_query($sql, 1);
+            $sql = sprintf("create view public.\"doc%d\" as select * from family.\"%s\";", $docid, $docname);
             
-            $err = $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
-            if ($doc->numrows() == 0) {
-                $msg.= "Cannot create view : $err\n";
+            if ($famTitle) {
+                $sql.= sprintf("comment on view public.\"doc%d\" is '%s (\"%s\") family';", $docid, $docname, pg_escape_string($famTitle));
+            }
+            simpleQuery($dbaccess, $sql);
+            
+            $sql = sprintf("select * from information_schema.views where table_schema = 'public' and table_name='doc%d'", $docid);
+            simpleQuery($dbaccess, $sql, $result);
+            if (count($result) == 0) {
+                $msg.= "Cannot create view : $viewName\n";
             }
         }
     }
-    
     $sqlquery = sprintf("select column_name FROM information_schema.columns where table_schema='family' and table_name='%s';", $docname);
     simpleQuery($dbaccess, $sqlquery, $pgatt, true);
     // -----------------------------
