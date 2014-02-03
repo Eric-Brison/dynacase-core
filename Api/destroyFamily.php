@@ -71,10 +71,21 @@ function destroyFamily($dbaccess, $idfam, $force = false)
             "delete from family.families where id=$resid;"
         );
         if (!$force) $tsql[] = "commit;";
-        if (!unlink("FDLGEN/Class.Doc" . $tdoc["id"] . ".php")) {
-            $action->exitError("cannot destroy $idfam file");
+
+        if (!unlink(getFamilyFileName($tdoc["id"]))) {
+            if (!$force) {
+            $action->exitError("cannot destroy $idfam family file");
+            }
         } else {
-            print "delete FDLGEN file Class.Doc" . $tdoc["id"] . ".php\n";
+            printf( "delete family class file : %s\n",getFamilyFileName($tdoc["id"]));
+        }
+        $attrFileName=sprintf("FDLGEN/Class.Attrid%s.php", ucfirst(strtolower($tdoc["name"])));
+        if (!unlink($attrFileName)) {
+            if (!$force) {
+            $action->exitError("cannot destroy $idfam attribute file");
+            }
+        } else {
+            printf( "delete attribute class file : %s\n",$attrFileName);
         }
         $res = "";
         foreach ($tsql as $sql) {
