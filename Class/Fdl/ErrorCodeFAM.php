@@ -68,6 +68,10 @@ class ErrorCodeFAM
      */
     const FAM0502 = 'family name "%s" is already use for "%s" document';
     /**
+     * @errorCode this family name must not be used
+     */
+    const FAM0503 = 'family name "%s" is reserved word';
+    /**
      * @errorCode the family class file is not found
      */
     const FAM0600 = 'parent class family file "%s" not found for "%s" family';

@@ -154,8 +154,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
         
         return ($doc);
     }
-    $fromid = "";
-    $gen = ""; // path GEN or not
+    $fileFamily = "";
     if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
     elseif ($latest) {
         $lid = getLatestDocId($dbaccess, $id);
@@ -170,7 +169,6 @@ function new_Doc($dbaccess, $id = '', $latest = false)
             $doc = $gdocs[$id];
             if (($doc->doctype != 'W') || (!isset($doc->doc))) {
                 $doc = $gdocs[$id]; // optimize for speed
-                //	if ($doc->id != $id) print_r2("<b>Error $id /".$doc->id."</b>");
                 if ($doc->id == $id) {
                     $doc->cached = 1;
                     return $doc;
@@ -181,12 +179,15 @@ function new_Doc($dbaccess, $id = '', $latest = false)
         $fromid = getFromId($dbaccess, $id);
         if ($fromid > 0) {
             $classname = "Doc$fromid";
-            $gen = getGen($dbaccess);
-        } else if ($fromid == - 1) $classname = "DocFam";
+            $fileFamily = getFamilyFileName($fromid);
+        } else if ($fromid == - 1) {
+            $classname = "DocFam";
+            $fileFamily = "FDL/Class.DocFam.php";
+        }
     }
     
     if ($classname != "") {
-        if (!include_once ("FDL$gen/Class.$classname.php")) {
+        if (!include_once ($fileFamily)) {
             AddWarningMsg(sprintf("cannot include %s class", $classname));
             return null;
         }
@@ -204,8 +205,6 @@ function new_Doc($dbaccess, $id = '', $latest = false)
                 $doc->iscached = 1;
                 $gdocs[$id] = & $doc;
             }
-            //print_r2("<b>use cache $id /".$doc->id."</b>");
-            
         }
         return ($doc);
     } else {
@@ -251,8 +250,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
         }
         
         $classname = "Doc" . $fromid;
-        $GEN = getGen($dbaccess);
-        include_once ("FDL$GEN/Class.$classname.php");
+        require_once (getFamilyFileName($cdoc->name));
         /* @var DocFam $doc */
         $doc = new $classname($dbaccess);
         
@@ -260,6 +258,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
         $doc->doctype = $doc->defDoctype; // it is a new  document (not a familly)
         $doc->cprofid = "0"; // NO CREATION PROFILE ACCESS
         $doc->fromid = $fromid;
+        $doc->fromname = $doc->attributes->fromname;
         if (!$temporary) {
             $err = $doc->setProfil($cdoc->cprofid); // inherit from its familly
             $doc->setCvid($cdoc->ccvid); // inherit from its familly
@@ -319,7 +318,7 @@ function getFromId($dbaccess, $id)
     return $fromid;
 }
 /**
- * return from name for document (not for family (use @see getFamFromId() instead)
+ * return from name for a document
  * @param string $dbaccess database specification
  * @param int $id identifier of the object
  *
@@ -332,7 +331,7 @@ function getFromName($dbaccess, $id)
     if (!is_numeric($id)) return false;
     $dbid = getDbid($dbaccess);
     $fromname = false;
-    $result = pg_query($dbid, sprintf("SELECT name from docfam where id=(select fromid from docfrom where id=%d)", $id));
+    $result = pg_query($dbid, sprintf("SELECT name from family.families where id=(select fromid from docfrom where id=%d)", $id));
     
     if (pg_num_rows($result) > 0) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
@@ -355,7 +354,7 @@ function getFamFromId($dbaccess, $id)
     if (!is_numeric($id)) return false;
     $dbid = getDbid($dbaccess);
     $fromid = false;
-    $result = pg_query($dbid, "select  fromid from docfam where id=$id;");
+    $result = pg_query($dbid, "select  fromid from family.families where id=$id;");
     
     if (pg_num_rows($result) > 0) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
@@ -428,20 +427,19 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
     if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
     if (!($id > 0)) return false;
     $dbid = getDbid($dbaccess);
-    $table = "doc";
+    $table = "family.documents";
     $fromid = getFromId($dbaccess, $id);
-    if ($fromid > 0) $table = "doc$fromid";
-    else if ($fromid == - 1) $table = "docfam";
     if ($fromid == 0) return false; // no document can be found
+    $tableName = familyTableName($fromid);
     $sqlcond = "";
     if (count($sqlfilters) > 0) $sqlcond = "and (" . implode(") and (", $sqlfilters) . ")";
     if (count($result) == 0) {
         $userMemberOf = DocPerm::getMemberOfVector();
-        $sql = sprintf("select *,getaperm('%s',profid) as uperm from only %s where id=%d %s", $userMemberOf, $table, $id, $sqlcond);
+        $sql = sprintf("select *,getaperm('%s',profid) as uperm from only %s where id=%d %s", $userMemberOf, $tableName, $id, $sqlcond);
     } else {
         
         $scol = implode($result, ",");
-        $sql = "select $scol from only $table where id=$id $sqlcond;";
+        $sql = "select $scol from only $tableName where id=$id $sqlcond;";
     }
     $sqlt1 = 0;
     if ($SQLDEBUG) $sqlt1 = microtime(); // to test delay of request
@@ -460,6 +458,55 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
         return $arr;
     }
     return false;
+}
+/**
+ * @param int|string $familyIdentifier id or name of a family
+ * @return string
+ */
+function getFamilyName($familyIdentifier)
+{
+    static $familyNames = null;
+    if (is_numeric($familyIdentifier)) {
+        if ($familyIdentifier == - 1) {
+            $name = "families";
+        } else {
+            if ($familyNames === null || empty($familyNames[$familyIdentifier])) {
+                simpleQuery('', "select id, name from family.families where name is not null", $res);
+                $familyNames = array();
+                foreach ($res as $afam) {
+                    $familyNames[$afam["id"]] = $afam["name"];
+                }
+            }
+            $name = empty($familyNames[$familyIdentifier]) ? '' : $familyNames[$familyIdentifier];
+        }
+    } else {
+        $name = $familyIdentifier;
+    }
+    return $name;
+}
+/**
+ * @param int|string $familyIdentifier id or name of a family
+ * @return string
+ */
+function familyTableName($familyIdentifier)
+{
+    $famName = getFamilyName($familyIdentifier);
+    if (empty($famName)) {
+        $famName = "documents";
+    }
+    return 'family.' . strtolower($famName);
+}
+/**
+ * get generated file name used for a family
+ * @param string $fromname family name
+ * @return string
+ */
+function getFamilyFileName($fromname)
+{
+    if (is_numeric($fromname)) {
+        $fromname = getFamilyName($fromname);
+    }
+    return sprintf("FDLGEN/Class.Family%s.php", ucfirst(strtolower($fromname)));
 }
 /**
  * return the value of an doc array item
@@ -571,12 +618,13 @@ function getDocObject($dbaccess, $v, $k = 0)
     
     if ($v["doctype"] == "C") {
         if (!isset($_OgetDocObject[$k]["family"])) $_OgetDocObject[$k]["family"] = new DocFam($dbaccess);
+        /** @noinspection PhpUndefinedMethodInspection */
         $_OgetDocObject[$k]["family"]->Affect($v, true);
         $v["fromid"] = "family";
     } else {
         if (!isset($_OgetDocObject[$k][$v["fromid"]])) $_OgetDocObject[$k][$v["fromid"]] = createDoc($dbaccess, $v["fromid"], false, false);
     }
-    
+    /** @noinspection PhpUndefinedMethodInspection */
     $_OgetDocObject[$k][$v["fromid"]]->Affect($v, true);
     
     return $_OgetDocObject[$k][$v["fromid"]];
@@ -649,7 +697,7 @@ function getFamIdFromName($dbaccess, $name)
  * return the identifier of a document from a search with title
  *
  * @param string $dbaccess database specification
- * @param string $name logical name
+ * @param string $title title to search
  * @param string $famid must be set to increase speed search
  * @param boolean $only set to true to not search in subfamilies
  * @return int 0 if not found, return negative first id found if multiple (name must be unique)
@@ -659,9 +707,10 @@ function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
     if ($famid && (!is_numeric($famid))) $famid = getFamIdFromName($dbaccess, $famid);
     if ($famid > 0) {
         $fromonly = ($only) ? "only" : "";
-        $err = simpleQuery($dbaccess, sprintf("select id from $fromonly doc%d where title='%s' and locked != -1", $famid, pg_escape_string($title)) , $id, true, true);
+        $table = familyTableName($famid);
+        simpleQuery($dbaccess, sprintf("select id from $fromonly %s where title='%s' and locked != -1", $table, pg_escape_string($title)) , $id, true, true);
     } else {
-        $err = simpleQuery($dbaccess, sprintf("select id from docread where title='%s' and locked != -1", pg_escape_string($title)) , $id, true, true);
+        simpleQuery($dbaccess, sprintf("select id from docread where title='%s' and locked != -1", pg_escape_string($title)) , $id, true, true);
     }
     
     return $id;
@@ -800,12 +849,12 @@ function isFixedDoc($dbaccess, $id)
 function fixMultipleAliveDocument(Doc & $doc)
 {
     if ($doc->id && $doc->fromid > 0) {
-        simpleQuery($doc->dbaccess, sprintf("select id from only doc%d where initid=%d and locked != -1 order by id", $doc->fromid, $doc->initid) , $r);
+        simpleQuery($doc->dbaccess, sprintf("select id from only %s where initid=%d and locked != -1 order by id", $doc->dbtable, $doc->initid) , $r);
         array_pop($r); // last stay alive
         if (count($r) > 0) {
             $rid = array();
             foreach ($r as $docInfo) {
-                simpleQuery($doc->dbaccess, sprintf("update doc set locked= -1 where id=%d", $docInfo["id"]));
+                simpleQuery($doc->dbaccess, sprintf("update family.documents set locked= -1 where id=%d", $docInfo["id"]));
                 $rid[] = $docInfo["id"];
                 if ($docInfo["id"] == $doc->id) {
                     $doc->locked = - 1;
@@ -851,16 +900,14 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array() , $fromid = fal
     
     if (!($initid > 0)) return false;
     $dbid = getDbid($dbaccess);
-    $table = "doc";
     if (!$fromid) {
-        $err = simpleQuery($dbaccess, sprintf("select fromid from docread where initid=%d and locked != -1", $initid) , $tf, true);
+        simpleQuery($dbaccess, sprintf("select fromname from docread where initid=%d and locked != -1", $initid) , $tf, true);
         if (count($tf) > 0) {
             $fromid = $tf[0];
         }
     }
-    if ($fromid > 0) $table = "doc$fromid";
-    else if ($fromid == - 1) $table = "docfam";
     
+    $table = familyTableName($fromid);
     $sqlcond = "";
     if (count($sqlfilters) > 0) $sqlcond = "and (" . implode(") and (", $sqlfilters) . ")";
     
@@ -944,12 +991,10 @@ function getRevTDoc($dbaccess, $initid, $rev)
     global $action;
     
     if (!($initid > 0)) return false;
-    $table = "docread";
-    $fromid = getFromId($dbaccess, $initid);
     $sql = sprintf("select fromid from docread where initid=%d and revision=%d", $initid, $rev);
     simpleQuery($dbaccess, $sql, $fromid, true, true);
-    if ($fromid > 0) $table = "doc$fromid";
-    else if ($fromid == - 1) $table = "docfam";
+    
+    $table = familyTableName($fromid);
     
     $userMember = DocPerm::getMemberOfVector();
     $sql = sprintf("select *,getaperm('%s',profid) as uperm from only %s where initid=%d and revision=%d ", $userMember, $table, $initid, $rev);
@@ -976,7 +1021,7 @@ function getLatestRevisionNumber($dbaccess, $initid, $fromid = 0)
     if (!($initid > 0)) return false;
     $dbid = getDbid($dbaccess);
     $table = "docread";
-    if ($fromid == - 1) $table = "docfam";
+    if ($fromid == - 1) $table = "family.families";
     
     $result = @pg_query($dbid, "SELECT revision from $table where initid=$initid order by revision desc limit 1;");
     if ($result && (pg_num_rows($result) > 0)) {

@@ -121,6 +121,14 @@ $app_const = array(
         "kind" => "enum(yes|no)",
         "global" => "Y"
     ) ,
+    "CORE_DBDOCVIEWCOMPAT" => array(
+        "val" => "no",
+        "descr" => N_("Use document's table compatibility") ,
+        "user" => "N",
+        "style" => "N",
+        "kind" => "enum(yes|no)",
+        "global" => "Y"
+    ) ,
     // Layout Param
     "CORE_BGCOLOR" => array(
         "val" => "url('CORE/Images/bg.gif')",

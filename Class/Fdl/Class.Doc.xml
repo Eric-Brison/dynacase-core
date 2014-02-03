@@ -4,7 +4,7 @@
 namespace {
 
 [include]
-[IF GEN] require_once "FDL[GEN]/Class.[FileClassParent].php"; [ENDIF GEN]
+[IF GEN] require_once "[FileClassParent]"; [ENDIF GEN]
 class ADoc[docid] extends [AParent] {
     // for familly : [title]
 
@@ -58,12 +58,12 @@ namespace Dcp\Family {
 class [PHPclassName] extends [DocParent] {
    //  family : [title]
 
-   public $dbtable="doc[docid]";
+   public $dbtable="family.[DBdocname]";
    public $dbseq="seq_doc[docid]";
-   public $sqlcreate = array("create table doc[docid] ([sattr]) inherits (doc[fromid]);",
-     "create sequence seq_doc[docid] start 1;",
-     "alter TABLE doc[docid] ADD primary key (id);",
-     "select setval('seq_doc[docid]', count(distinct initid)+1, false )  from only doc[docid];");
+   public $sqlcreate = array("create table family.[DBdocname] ([sattr]) inherits (family.[DBfromname]);",
+     "create sequence family.seq_[DBdocname] start 1;",
+     "alter TABLE family.[DBdocname] ADD primary key (id);",
+     "select setval('family.seq_[DBdocname]', count(distinct initid)+1, false )  from only family.[DBdocname];");
    
 
      public $fromid=[docid];

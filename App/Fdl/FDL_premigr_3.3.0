@@ -14,10 +14,18 @@ fi
 
 
 
-$wpub/wsh.php --api=migrDates2iso
+
+"$wpub"/wsh.php --api=generateDocumentClass
+
+rm -f "$wpub"/FDLGEN/Class.Doc[1-9]*.php
+rm -f "$wpub"/FDLGEN/Class.Attrid[1-9]*.php
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << SQL
+
+SQL
 RET=$?
 if [ $RET -ne 0 ]; then
-    echo "Error Migrate Dates to ISO."
+    echo "Error ."
     exit $RET
 fi
 

@@ -30,8 +30,20 @@ begin
 end;
 $$ language 'plpgsql';
 
-
-
+-- to order family by depth
+create or replace function familyLevel(int)
+returns int as $$
+declare
+  famid alias for $1;
+  sfromid int;
+begin
+  select into sfromid fromid from family.families where id=famid;
+  if (sfromid > 0)  then
+    return 1 + familyLevel(sfromid);
+  end if;
+  return 0;
+end;
+$$ language 'plpgsql';
 
 -- change type of column
 create or replace function alter_table_column(text, text, text)
@@ -221,43 +233,45 @@ END;
 $$ language 'plpgsql';
 
 create or replace function fixeddoc() 
-returns trigger as '
+returns trigger as $$
 declare 
    lid int;
    lname text;
    cfromid int;
+   cfromname text;
 begin
 
 
-if (TG_OP = ''INSERT'') then
-     if (NEW.doctype = ''C'') then 
+if (TG_OP = 'INSERT') then
+     if (NEW.doctype = 'C') then
        cfromid=-1; -- for families
      else
        cfromid=NEW.fromid;
+       cfromname=lower(NEW.fromname);
        if (NEW.revision > 0) then
-         EXECUTE ''update doc'' || cfromid || '' set lmodify=''''N'''' where initid= '' || NEW.initid || '' and lmodify != ''''N'''''';
-         EXECUTE ''update doc'' || cfromid || '' set lmodify=''''L'''' where  id=(select distinct on (initid) id from only doc'' || cfromid || '' where initid = '' || NEW.initid || '' and locked = -1 order by initid, revision desc)'';
+         EXECUTE 'update family.' || cfromname || ' set lmodify=''N'' where initid= ' || NEW.initid || ' and lmodify != ''N''';
+         EXECUTE 'update family.' || cfromname || ' set lmodify=''L'' where  id=(select distinct on (initid) id from only family.' || cfromname || ' where initid = ' || NEW.initid || ' and locked = -1 order by initid, revision desc)';
        end if;
      end if;
      select into lid id from docfrom where id= NEW.id;
      if (lid = NEW.id) then 
-	update docfrom set fromid=cfromid where id=NEW.id;
+	      update docfrom set fromid=cfromid where id=NEW.id;
      else 
-	insert into docfrom (id,fromid) values (NEW.id, cfromid);
+	      insert into docfrom (id,fromid) values (NEW.id, cfromid);
      end if;
      if (NEW.name is not null) then
        select into lname name from docname where name= NEW.name;
        if (lname = NEW.name) then 
- 	 update docname set fromid=cfromid,id=NEW.id where name=NEW.name;	
+        	 update docname set fromid=cfromid,id=NEW.id where name=NEW.name;
        else 
-	 insert into docname (id,fromid,name) values (NEW.id, cfromid, NEW.name);
+	         insert into docname (id,fromid,name) values (NEW.id, cfromid, NEW.name);
        end if;
      end if;
 end if;
  
 return NEW;
 end;
-' language 'plpgsql';
+$$ language 'plpgsql';
 
 create or replace function setread() 
 returns trigger as '
@@ -275,9 +289,9 @@ if ((TG_OP = ''UPDATE'') OR (TG_OP = ''INSERT'')) then
   if  NEW.doctype != ''T'' then
      select into lid id from docread where id= NEW.id;
      if (lid = NEW.id) then 
-	update docread set id=NEW.id,owner=NEW.owner,title=NEW.title,revision=NEW.revision,initid=NEW.initid,fromid=NEW.fromid,doctype=NEW.doctype,locked=NEW.locked,allocated=NEW.allocated,archiveid=NEW.archiveid,icon=NEW.icon,lmodify=NEW.lmodify,profid=NEW.profid,views=NEW.views,usefor=NEW.usefor,revdate=NEW.revdate,version=NEW.version,cdate=NEW.cdate,adate=NEW.adate,classname=NEW.classname,state=NEW.state,wid=NEW.wid,attrids=NEW.attrids,postitid=NEW.postitid,lockdomainid=NEW.lockdomainid,domainid=NEW.domainid,cvid=NEW.cvid,name=NEW.name,dprofid=NEW.dprofid,prelid=NEW.prelid,atags=NEW.atags,confidential=NEW.confidential,ldapdn=NEW.ldapdn,values=NEW.values,fulltext=NEW.fulltext,svalues=NEW.svalues where id=NEW.id;
+	update docread set id=NEW.id,owner=NEW.owner,title=NEW.title,revision=NEW.revision,initid=NEW.initid,fromid=NEW.fromid,fromname=NEW.fromname,doctype=NEW.doctype,locked=NEW.locked,allocated=NEW.allocated,archiveid=NEW.archiveid,icon=NEW.icon,lmodify=NEW.lmodify,profid=NEW.profid,views=NEW.views,usefor=NEW.usefor,revdate=NEW.revdate,version=NEW.version,cdate=NEW.cdate,adate=NEW.adate,classname=NEW.classname,state=NEW.state,wid=NEW.wid,attrids=NEW.attrids,postitid=NEW.postitid,lockdomainid=NEW.lockdomainid,domainid=NEW.domainid,cvid=NEW.cvid,name=NEW.name,dprofid=NEW.dprofid,prelid=NEW.prelid,atags=NEW.atags,confidential=NEW.confidential,ldapdn=NEW.ldapdn,values=NEW.values,fulltext=NEW.fulltext,svalues=NEW.svalues where id=NEW.id;
      else 
-	insert into docread(id,owner,title,revision,initid,fromid,doctype,locked,allocated,archiveid,icon,lmodify,profid,views,usefor,revdate,version,cdate,adate,classname,state,wid,attrids,postitid,lockdomainid,domainid,cvid,name,dprofid,prelid,atags,confidential,ldapdn,values,fulltext,svalues) values (NEW.id,NEW.owner,NEW.title,NEW.revision,NEW.initid,NEW.fromid,NEW.doctype,NEW.locked,NEW.allocated,NEW.archiveid,NEW.icon,NEW.lmodify,NEW.profid,NEW.views,NEW.usefor,NEW.revdate,NEW.version,NEW.cdate,NEW.adate,NEW.classname,NEW.state,NEW.wid,NEW.attrids,NEW.postitid,NEW.lockdomainid,NEW.domainid,NEW.cvid,NEW.name,NEW.dprofid,NEW.prelid,NEW.atags,NEW.confidential,NEW.ldapdn,NEW.values,NEW.fulltext,NEW.svalues);
+	insert into docread(id,owner,title,revision,initid,fromid,fromname,doctype,locked,allocated,archiveid,icon,lmodify,profid,views,usefor,revdate,version,cdate,adate,classname,state,wid,attrids,postitid,lockdomainid,domainid,cvid,name,dprofid,prelid,atags,confidential,ldapdn,values,fulltext,svalues) values (NEW.id,NEW.owner,NEW.title,NEW.revision,NEW.initid,NEW.fromid,NEW.fromname,NEW.doctype,NEW.locked,NEW.allocated,NEW.archiveid,NEW.icon,NEW.lmodify,NEW.profid,NEW.views,NEW.usefor,NEW.revdate,NEW.version,NEW.cdate,NEW.adate,NEW.classname,NEW.state,NEW.wid,NEW.attrids,NEW.postitid,NEW.lockdomainid,NEW.domainid,NEW.cvid,NEW.name,NEW.dprofid,NEW.prelid,NEW.atags,NEW.confidential,NEW.ldapdn,NEW.values,NEW.fulltext,NEW.svalues);
      end if;
   end if;
 --RAISE NOTICE ''coucou %'',replace(NEW.values,''£'','' '');
@@ -292,25 +306,23 @@ create or replace FUNCTION updatevector(int) RETURNS void LANGUAGE sql AS
   'update docread set fulltext=setweight(to_tsvector(title), ''A'')|| to_tsvector(values) where id=$1;';
 
 
-create or replace function droptrigger(name) 
-returns bool as '
+create or replace function droptrigger(name, name)
+returns bool as $$
 declare 
-  tname alias for $1;
-  toid oid;
-  trigname pg_trigger%ROWTYPE;
+  schemaName alias for $1;
+  tableName alias for $2;
+  r record;
 begin
-   select into toid oid from pg_class where relname=tname;
-   --select into trigname tgname from pg_trigger where tgrelid=toid;
-   for trigname in select * from pg_trigger where tgrelid=toid  loop
---	 drop trigger quote_ident(trigname.tgname) on tname;
-         EXECUTE ''DROP TRIGGER '' || quote_ident(trigname.tgname) || '' on  '' || tname;
-   end loop;
 
+   FOR r IN EXECUTE 'select distinct on (trigger_name) trigger_name, event_object_schema, event_object_table from information_schema.triggers where event_object_schema= ''' || (schemaName) || ''' and event_object_table=''' || (tableName) || '''' LOOP
+      --RAISE NOTICE 'droping %',r.trigger_name;
+         EXECUTE 'DROP TRIGGER if exists '  || quote_ident(r.trigger_name) || ' on  ' || quote_ident(r.event_object_schema) || '.' || quote_ident(r.event_object_table);
+   end loop;
 
 
    return true;
 end;
-' language 'plpgsql' ;
+$$ language 'plpgsql' ;
 
 
 
@@ -346,64 +358,8 @@ end;
 
 
 
-
-create or replace function getdoc(int) 
-returns record as '
-declare 
-  docid alias for $1;
-  r record;
-   dfromid int;
-begin
-    select into dfromid fromid from docfrom where id=docid;
-  if (dfromid > 0) then
- FOR r IN EXECUTE ''select * from only doc'' || dfromid || ''  where id= '' || docid LOOP 
-
-  END LOOP;
-  end if;
-  return r;
-end;
-' language 'plpgsql' STABLE ;
-
-
-create or replace function relfld() 
-returns trigger as '
-declare 
-  rs record;
-  rc record;
-  cfromid int;
-  sfromid int;
-begin
-
-
-if (TG_OP = ''INSERT'') or (TG_OP = ''UPDATE'')then
-
-  select into sfromid fromid from docfrom where id=NEW.dirid;
-  select into cfromid fromid from docfrom where id=NEW.childid;
-  if (cfromid > 0) and (sfromid > 0) then
-  FOR rs IN EXECUTE ''select * from only doc'' || sfromid || ''  where id= '' || NEW.dirid || ''and doctype != ''''Z'''''' LOOP   
-  END LOOP;
- FOR rc IN EXECUTE ''select * from only doc'' || cfromid || ''  where id= '' || NEW.childid  || ''and doctype != ''''Z'''''' LOOP 
-  BEGIN
-  INSERT INTO docrel (sinitid,cinitid,stitle,ctitle,sicon,cicon,type,doctype) VALUES (rs.initid,rc.initid,rs.title,rc.title,rs.icon,rc.icon,''folder'',rc.doctype);
-	EXCEPTION
-	 WHEN UNIQUE_VIOLATION THEN
-	    sfromid := cfromid;
-	END;
-  END LOOP;
-  end if;
-end if;
- 
-if (TG_OP = ''DELETE'') then
-	delete from docrel where sinitid=OLD.dirid and cinitid=OLD.childid and type=''folder'';
-end if;
-
-
-return NEW;
-end;
-' language 'plpgsql';
-
 create or replace function fromfld() 
-returns trigger as '
+returns trigger as $$
 declare 
   rs record;
   a_fromid int;
@@ -415,52 +371,9 @@ begin
 
   return NEW;
 end;
-' language 'plpgsql';
-
-create or replace function reldocfld() 
-returns trigger as '
-declare 
-  rs record;
-  rc record;
-  cfromid int;
-  sfromid int;
-  allfld int[];
-  i int;
-  theqtype char;
-  thechildid int;
-  thedirid int;
-  msg text;
-begin
+$$ language 'plpgsql';
 
 
-if (TG_OP = ''INSERT'') or (TG_OP = ''UPDATE'')then
-  theqtype=NEW.qtype;
-  thedirid=NEW.dirid;
-  thechildid=NEW.childid;
-end if;
-if (TG_OP = ''DELETE'') then
-  theqtype=OLD.qtype;
-  thedirid=OLD.dirid;
-  thechildid=OLD.childid;
-  
-end if;
-
-if (theqtype = ''S'') and (thedirid > 0) and (thechildid > 0) then
-  select into sfromid fromid from docfrom where id=thechildid;
-  if (sfromid is null)  then
-	RAISE NOTICE ''document inconnu %'',thechildid;
-  else 
-  if (sfromid > 0)  then
---msg=''update doc'' || sfromid ||''  set fldrels=getreldocfld(initid) where initid='' || thechildid || '' and locked != -1'';
--- RAISE NOTICE ''coucou %'',msg;
-  EXECUTE ''update doc'' || sfromid ||''  set fldrels=getreldocfld(initid) where initid='' || thechildid || '' and locked != -1'' ;
- 
-  end if;
-  end if;
-  end if;
-return NEW;
-end;
-' language 'plpgsql';
 
 create or replace function vaultreindex(int, text) 
 returns bool as $$
@@ -569,21 +482,3 @@ begin
 end;
 $$ language 'plpgsql';
 
-create or replace function getreldocfld(int)
-returns int[] as $$
-declare 
-  thechildid alias for $1;
-  allfld int[];
-  i int;
-  rc record;
-begin
-  i=0;
- FOR rc IN EXECUTE 'select * from fld where childid=' || thechildid  LOOP
-  BEGIN
-     allfld[i]=rc.dirid;
-     i=i+1;
-  END;
- END LOOP; 
-return allfld;
-end;
-$$ language 'plpgsql';

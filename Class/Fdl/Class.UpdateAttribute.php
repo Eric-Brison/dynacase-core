@@ -38,6 +38,7 @@ class UpdateAttribute
     private $transaction = false;
     private $useProfiling = false;
     private $error = '';
+    private $familyTable = '';
     /**
      * @var DbObj
      */
@@ -61,6 +62,7 @@ class UpdateAttribute
             if (!is_numeric($famName)) $this->famid = getFamIdFromName($this->dbaccess, $famName);
             else $this->famid = $famName;
         }
+        $this->familyTable = familyTableName($this->famid);
         return $this->famid;
     }
     /**
@@ -220,7 +222,7 @@ class UpdateAttribute
         $this->logStatus(sprintf(_("process setValue for %d documents") , count($ids)));
         if (is_array($newValue)) $newValue = Doc::arrayToRawValue($newValue);
         $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $newValue));
-        $sql = sprintf("update doc%s set \"%s\"=E'%s' where locked != -1 and initid in (%s)", $this->famid, ($attrid) , pg_escape_string($newValue) , implode(',', $ids));
+        $sql = sprintf("update %s set \"%s\"=E'%s' where locked != -1 and initid in (%s)", $this->familyTable, ($attrid) , pg_escape_string($newValue) , implode(',', $ids));
         simpleQuery($this->dbaccess, $sql);
         foreach ($ids as $id => $initid) {
             $this->results[$initid]->changed = true;
@@ -242,7 +244,7 @@ class UpdateAttribute
             $searchValue = pg_escape_string($valueToRemove);
         }
         $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, print_r($valueToRemove, true)));
-        $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\",E'(\\\\A|\\n|<BR>)(%s)(\\\\Z|\n|<BR>)',E'\\\\1\\\\3','g')  where locked != -1 and initid in (%s)", $this->famid, $attrid, $attrid, $searchValue, implode(',', $ids));
+        $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\",E'(\\\\A|\\n|<BR>)(%s)(\\\\Z|\n|<BR>)',E'\\\\1\\\\3','g')  where locked != -1 and initid in (%s)", $this->familyTable, $attrid, $attrid, $searchValue, implode(',', $ids));
         simpleQuery($this->dbaccess, $sql);
         
         $oa = $this->getFamilyAttribute($attrid);
@@ -254,14 +256,14 @@ class UpdateAttribute
         }
         if ($oa->getOption("multiple") == "yes") {
             if ($singleMultiple) {
-                $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\", E'(\\\\A\\n)|(\\n\\\\Z)', '','g')  where locked != -1 and initid in (%s)", $this->famid, $attrid, $attrid, implode(',', $ids));
+                $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\", E'(\\\\A\\n)|(\\n\\\\Z)', '','g')  where locked != -1 and initid in (%s)", $this->familyTable, $attrid, $attrid, implode(',', $ids));
                 simpleQuery($this->dbaccess, $sql);
-                $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\", E'([\\n]+)', E'\n','g')  where locked != -1 and initid in (%s)", $this->famid, $attrid, $attrid, implode(',', $ids));
+                $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\", E'([\\n]+)', E'\n','g')  where locked != -1 and initid in (%s)", $this->familyTable, $attrid, $attrid, implode(',', $ids));
                 simpleQuery($this->dbaccess, $sql);
             } elseif ($doubleMultiple) {
-                $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\", '(\\\\A<BR>)|(<BR>\\\\Z)', '','g')  where locked != -1 and initid in (%s)", $this->famid, $attrid, $attrid, implode(',', $ids));
+                $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\", '(\\\\A<BR>)|(<BR>\\\\Z)', '','g')  where locked != -1 and initid in (%s)", $this->familyTable, $attrid, $attrid, implode(',', $ids));
                 simpleQuery($this->dbaccess, $sql);
-                $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\", '(<BR>)+', '<BR>','g')  where locked != -1 and initid in (%s)", $this->famid, $attrid, $attrid, implode(',', $ids));
+                $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\", '(<BR>)+', '<BR>','g')  where locked != -1 and initid in (%s)", $this->familyTable, $attrid, $attrid, implode(',', $ids));
                 simpleQuery($this->dbaccess, $sql);
             }
         }
@@ -281,20 +283,20 @@ class UpdateAttribute
         $oa = $this->getFamilyAttribute($attrid);
         if ($oa->isMultipleInArray()) {
             //double multiple
-            $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\",E'\$',E'<BR>%s','gn')  where locked != -1 and \"%s\" is not null and initid in (%s)", $this->famid, $pattrid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
+            $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\",E'\$',E'<BR>%s','gn')  where locked != -1 and \"%s\" is not null and initid in (%s)", $this->familyTable, $pattrid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
             
             simpleQuery($this->dbaccess, $sql);
             // trim when is first
-            $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\",E'^<BR>','','gn')  where locked != -1 and \"%s\" is not null and initid in (%s)", $this->famid, $pattrid, $pattrid, $pattrid, implode(',', $ids));
+            $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\",E'^<BR>','','gn')  where locked != -1 and \"%s\" is not null and initid in (%s)", $this->familyTable, $pattrid, $pattrid, $pattrid, implode(',', $ids));
             
             simpleQuery($this->dbaccess, $sql);
         } else {
             // add if not null
-            $sql = sprintf("update doc%s set \"%s\"=\"%s\" || E'\\n%s' where locked != -1 and \"%s\" is not null and initid in (%s)", $this->famid, $pattrid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
+            $sql = sprintf("update %s set \"%s\"=\"%s\" || E'\\n%s' where locked != -1 and \"%s\" is not null and initid in (%s)", $this->familyTable, $pattrid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
             
             simpleQuery($this->dbaccess, $sql);
             // set when is null
-            $sql = sprintf("update doc%s set \"%s\"= E'%s' where locked != -1 and \"%s\" is null and initid in (%s)", $this->famid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
+            $sql = sprintf("update %s set \"%s\"= E'%s' where locked != -1 and \"%s\" is null and initid in (%s)", $this->familyTable, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
             
             simpleQuery($this->dbaccess, $sql);
         }
@@ -314,7 +316,7 @@ class UpdateAttribute
         $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $oldvalue . '/' . $newValue));
         $this->getFamily();
         //  replace for multiple
-        $sql = sprintf("update doc%s set \"%s\"= regexp_replace(\"%s\",E'(\\\\A|\\n)%s(\\\\Z|\\n)',E'\\\\1%s\\\\2','g')  where locked != -1  and initid in (%s)", $this->famid, strtolower($attrid) , strtolower($attrid) , pg_escape_string($oldvalue) , pg_escape_string($newValue) , implode(',', $ids));
+        $sql = sprintf("update %s set \"%s\"= regexp_replace(\"%s\",E'(\\\\A|\\n)%s(\\\\Z|\\n)',E'\\\\1%s\\\\2','g')  where locked != -1  and initid in (%s)", $this->familyTable, strtolower($attrid) , strtolower($attrid) , pg_escape_string($oldvalue) , pg_escape_string($newValue) , implode(',', $ids));
         simpleQuery($this->dbaccess, $sql);
         
         foreach ($ids as $id => $initid) {

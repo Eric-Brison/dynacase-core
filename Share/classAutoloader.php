@@ -561,20 +561,20 @@ class DirectoriesAutoloader
     public function addFamilies($genDirectory)
     {
         include_once ("Lib.Common.php");
-        $sql = "select * from pg_tables where tablename = 'docfam'";
+        $sql = "select * from pg_tables where tablename = 'families'";
         $err = \simpleQuery('', $sql, $exists);
         if (count($exists) > 0) {
-            $sql = 'select id, "name" from docfam where name is not null order by id';
+            $sql = 'select id, "name" from family.families where name is not null order by id';
             $err = \simpleQuery('', $sql, $famNames);
             if ($err) {
                 throw new DirectoriesAutoloaderException('Cannot access family name [' . $err . ']');
             }
             foreach ($famNames as $aFam) {
-                $aFamName = $aFam["name"];
+                $aFamName = strtolower($aFam["name"]);
                 $aFamId = $aFam["id"];
-                $this->_classes['_' . strtolower($aFamName) ] = sprintf("%s/Class.Doc%d.php", $genDirectory, $aFamId);
-                $this->_classes['dcp\\family\\' . strtolower($aFamName) ] = sprintf("%s/Class.Doc%d.php", $genDirectory, $aFamId);
-                $this->_classes['dcp\\attributeidentifiers\\' . strtolower($aFamName) ] = sprintf("%s/Class.Attrid%d.php", $genDirectory, $aFamId);
+                $this->_classes['_' . ($aFamName) ] = sprintf("%s/Class.Family%s.php", $genDirectory, ucfirst($aFamName));
+                $this->_classes['dcp\\family\\' . ($aFamName) ] = sprintf("%s/Class.Family%s.php", $genDirectory, ucfirst($aFamName));
+                $this->_classes['dcp\\attributeidentifiers\\' . ($aFamName) ] = sprintf("%s/Class.Attrid%s.php", $genDirectory, ucfirst($aFamName));
             }
         }
         return self::$_instance;

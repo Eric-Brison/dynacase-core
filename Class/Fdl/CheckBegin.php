@@ -85,6 +85,8 @@ class CheckBegin extends CheckData
             $this->addError(ErrorCode::getError('FAM0500', $this->famTitle));
         } elseif (!preg_match('/^[a-z][a-z0-9_]{1,63}$/i', $this->famName)) {
             $this->addError(ErrorCode::getError('FAM0501', $this->famName));
+        } elseif (strtolower($this->famName) == 'families' || strtolower($this->famName) == "documents") {
+            $this->addError(ErrorCode::getError('FAM0503', $this->famName));
         } else {
             $f = getTDoc('', $this->famName);
             if ($f && $f["doctype"] != 'C') {

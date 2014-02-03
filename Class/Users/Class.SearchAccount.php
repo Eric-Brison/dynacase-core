@@ -186,7 +186,6 @@ class SearchAccount
         }
         $this->start = intval($start);
     }
-
     /**
      * set if use view control document's privilege to filter account
      *
@@ -200,7 +199,6 @@ class SearchAccount
         deprecatedFunction();
         $this->overrideViewControl(!$control);
     }
-
     /**
      * include accounts the user cannot view
      * @api include accounts the user cannot view
@@ -210,7 +208,6 @@ class SearchAccount
     {
         $this->viewControl = !$override;
     }
-
     /**
      * set object type return by ::search method
      *
@@ -242,7 +239,6 @@ class SearchAccount
         }
         $this->returnType = $type;
     }
-
     /**
      * convert logical name document to login account
      *
@@ -273,7 +269,6 @@ class SearchAccount
         simpleQuery('', $sql, $login, true, true);
         return $login;
     }
-
     /**
      * @param string $family
      * @throws Dcp\Sacc\Exception if $family is not a valid family name
@@ -337,14 +332,14 @@ class SearchAccount
         if ($this->viewControl && $u->id != 1) {
             $viewVector = SearchDoc::getUserViewVector($u->id);
             if ($this->familyFilter) {
-                $table = "doc" . $this->familyFilter;
+                $table = familyTableName($this->familyFilter);
                 $sql = sprintf("select users.* from users, $table where users.fid = $table.id and $table.views && '%s' and %s ", $viewVector, $groupRoleFilter);
             } else {
                 $sql = sprintf("select users.* from users, docread where users.fid = docread.id and docread.views && '%s' and %s ", $viewVector, $groupRoleFilter);
             }
         } else {
             if ($this->familyFilter) {
-                $table = "doc" . $this->familyFilter;
+                $table = familyTableName($this->familyFilter);
                 $sql = sprintf("select users.* from users, $table where users.fid = $table.id  and %s ", $groupRoleFilter);
             } else {
                 $sql = sprintf("select * from users where %s ", $groupRoleFilter);

@@ -62,7 +62,7 @@ class TestMultipleAlive extends TestCaseDcp
         $this->assertEmpty($err, sprintf("modify lock rev.1 error : $err"));
         // two documents are alive now $nd1 /$nd2
         clearCacheDoc();
-        simpleQuery(self::$dbaccess, sprintf("select id, title, revision, locked from only doc%d where initid=%d  order by id", $nd1->fromid, $nd1->initid) , $r);
+        simpleQuery(self::$dbaccess, sprintf("select id, title, revision, locked from only %s where initid=%d  order by id", familyTableName($nd1->fromid) , $nd1->initid) , $r);
         
         $nd1 = new_doc(self::$dbaccess, $id1);
         $this->assertTrue($nd1->isAlive() , "nd1 is not alive");

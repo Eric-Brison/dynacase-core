@@ -127,7 +127,6 @@ class importDocumentDescription
             "linebreak" => $this->csvLinebreak
         );
     }
-
     /**
      * Detect csv options - separator and enclosure arguments are modified if set to auto
      * @param $csvFileName
@@ -522,7 +521,6 @@ class importDocumentDescription
                 $this->familyIcon = "";
                 
                 if (!$this->doc->isAffected()) {
-                    
                     if (!$this->analyze) {
                         $this->doc = new DocFam($this->dbaccess);
                         
@@ -530,7 +528,7 @@ class importDocumentDescription
                         if (is_numeric($data[1])) $this->doc->fromid = $data[1];
                         else $this->doc->fromid = getFamIdFromName($this->dbaccess, $data[1]);
                         if (isset($data[5])) $this->doc->name = $data[5]; // internal name
-                        $err = $this->doc->Add();
+                        $err = $this->doc->add();
                     }
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("create %s family %s") , $data[2], $data[5]);
                     $this->tcr[$this->nLine]["action"] = "added";
@@ -558,8 +556,6 @@ class importDocumentDescription
                     $oattr->docid = intval($this->doc->id);
                     if ($oattr->docid > 0) {
                         $err = $oattr->exec_query(sprintf("delete from docattr where docid=%d", $oattr->docid));
-                        // $err .= $oattr->exec_query(sprintf("update docfam set defval=null,param=null  where id=%d",  $oattr->docid));
-                        
                     }
                     $this->tcr[$this->nLine]["err"].= $err;
                 }
@@ -681,12 +677,11 @@ class importDocumentDescription
             
             $sql = array();
             foreach ($orpheanAttributes as $orpheanAttrId) {
-                $sql[] = sprintf("alter table doc%d drop column %s cascade; ", $this->doc->id, $orpheanAttrId);
+                $sql[] = sprintf("alter table %s drop column %s cascade; ", familyTableName($this->doc->id) , $orpheanAttrId);
                 
                 $this->tcr[$this->nLine]["msg"].= "\nDestroy values for \"$orpheanAttrId\".";
             }
-            $sql[] = sprintf("create view family.\"%s\" as select * from doc%d", strtolower($this->doc->name) , $this->doc->id);
-            
+            //$sql[] = sprintf("create view family.\"%s\" as select * from doc%d", strtolower($this->doc->name) , $this->doc->id);
             foreach ($sql as $aSql) {
                 simpleQuery('', $aSql);
             }
@@ -1532,7 +1527,6 @@ class importDocumentDescription
             $aid,
             $index
         ));
-        //	print_r2($oa);
         if (substr($data[2], 0, 2) == "::") $oa->ldapname = $data[2];
         else $oa->ldapname = strtolower(trim($data[2]));
         

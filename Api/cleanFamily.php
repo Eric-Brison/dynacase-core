@@ -45,11 +45,11 @@ class cleanFamily
             
             $sql = array();
             foreach ($orpheanAttributes as $orpheanAttrId) {
-                $sql[] = sprintf("alter table doc%d drop column %s cascade; ", $this->doc->id, $orpheanAttrId);
+                $sql[] = sprintf("alter table %s drop column %s cascade; ", familyTableName($this->doc->id) , $orpheanAttrId);
                 
                 $this->messages[].= "Destroy values for \"$orpheanAttrId\".";
             }
-            $sql[] = sprintf("create view family.\"%s\" as select * from doc%d", strtolower($this->doc->name) , $this->doc->id);
+            //$sql[] = sprintf("create view family.\"%s\" as select * from doc%d", strtolower($this->doc->name) , $this->doc->id);
             if (!$this->dryrun) {
                 foreach ($sql as $aSql) {
                     simpleQuery('', $aSql);

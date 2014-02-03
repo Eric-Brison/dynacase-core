@@ -172,10 +172,10 @@ if ($query->nb > 0) {
         wbar($reste, $card, $title);
     }
     
-    $doc->exec_query("update doc127 set name='GADMIN'     where us_whatid='4'");
-    $doc->exec_query("update doc127 set name='GDEFAULT'   where us_whatid='2'");
-    $doc->exec_query("update doc128 set name='USER_ADMIN' where us_whatid='1'");
-    $doc->exec_query("update doc128 set name='USER_GUEST' where us_whatid='3'");
-    $doc->exec_query("update doc128 set cvid=508          where us_whatid='1'");
-    $doc->exec_query("update doc128 set cvid=508          where us_whatid='3'");
+    $doc->exec_query("update family.igroup set name='GADMIN'     where us_whatid='4'");
+    $doc->exec_query("update family.igroup set name='GDEFAULT'   where us_whatid='2'");
+    $doc->exec_query("update family.iuser set name='USER_ADMIN' where us_whatid='1'");
+    $doc->exec_query("update family.iuser set name='USER_GUEST' where us_whatid='3'");
+    $doc->exec_query("update family.iuser set cvid=508          where us_whatid='1'");
+    $doc->exec_query("update family.iuser set cvid=508          where us_whatid='3'");
 }

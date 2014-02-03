@@ -28,7 +28,6 @@ function AttrToPhp($dbaccess, $tdoc)
 {
     global $action;
     
-    $GEN = getGen($dbaccess);
     $phpAdoc = new Layout("FDL/Layout/Class.Doc.xml", $action);
     $phpMethods = new Layout("FDL/Layout/Class.Method.xml");
     
@@ -41,19 +40,22 @@ function AttrToPhp($dbaccess, $tdoc)
     if ($tdoc["fromid"] > 0) {
         
         $tdoc["fromname"] = getNameFromId($dbaccess, $tdoc["fromid"]);
+        $phpAdoc->Set("DBfromname", strtolower($tdoc["fromname"]));
     } else {
         $tdoc["fromname"] = "Document";
+        $phpAdoc->Set("DBfromname", "documents");
     }
+    $phpAdoc->Set("DBdocname", strtolower($tdoc["name"]));
     $phpAdoc->Set("docid", $tdoc["id"]);
     $phpAdoc->Set("include", "");
-    $phpAdoc->Set("GEN", "");
+    $phpAdoc->Set("GEN", false);
     if ($tdoc["fromid"] == 0) {
         $phpAdoc->Set("DocParent", $tdoc["classname"]);
         $phpAdoc->Set("AParent", "ADoc");
         $phpAdoc->Set("fromid", "");
         $phpAdoc->Set("pinit", '\DocCtrl');
     } else {
-        $parentFile = sprintf("%s/FDLGEN/Class.Doc%d.php", DEFAULT_PUBDIR, $tdoc["fromid"]);
+        $parentFile = sprintf("%s/%s", DEFAULT_PUBDIR, getFamilyFileName($tdoc["fromname"]));
         if ((!file_exists($parentFile)) || filesize($parentFile) == 0) {
             throw new \Dcp\Exception("FAM0600", $parentFile, $tdoc["name"]);
         }
@@ -61,15 +63,15 @@ function AttrToPhp($dbaccess, $tdoc)
         if ($tdoc["classname"] != "Doc" . $tdoc["fromid"]) {
             $phpAdoc->Set("DocParent", $tdoc["classname"]);
             $phpAdoc->Set("pinit", $tdoc["classname"]);
-            $phpAdoc->Set("include", "include_once(\"FDL$GEN/Class.Doc" . $tdoc["fromid"] . ".php\");");
+            $phpAdoc->Set("include", sprintf('require_once("%s");', getFamilyFileName($tdoc["fromname"])));
         } else {
-            $phpAdoc->Set("GEN", $GEN);
+            $phpAdoc->Set("GEN", true);
             if ($tdoc["name"]) {
                 $phpAdoc->Set("DocParent", '\\Dcp\\Family\\' . ucwords(strtolower($tdoc["fromname"])));
             } else {
                 $phpAdoc->Set("DocParent", '\\Doc' . $tdoc["fromid"]);
             }
-            $phpAdoc->Set("FileClassParent", 'Doc' . $tdoc["fromid"]);
+            $phpAdoc->Set("FileClassParent", getFamilyFileName($tdoc["fromname"]));
             if (strstr($tdoc["usefor"], 'W')) $phpAdoc->Set("pinit", '\WDoc'); // special init for workflow
             else $phpAdoc->Set("pinit", '\DocCtrl');
         }
@@ -101,7 +103,7 @@ function AttrToPhp($dbaccess, $tdoc)
             $type = trim(strtok($v->type, "("));
             if ($type == "docid") {
                 $parentDoctitle = "";
-                if (isset($pa[substr($v->id, 1)]) && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $pa[substr($v->id, 1)]["options"], $reg)) {
+                if (isset($pa[substr($v->id, 1) ]) && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $pa[substr($v->id, 1) ]["options"], $reg)) {
                     $parentDoctitle = $reg[1];
                 }
                 // add title auto
@@ -483,15 +485,15 @@ function doubleslash($s)
     return $s;
 }
 
-function PgUpdateFamilly($dbaccess, $docid, $docname = "")
+function PgUpdateFamilly($dbaccess, $docid, $oriDocname)
 {
     $msg = '';
-    if ($msg) return $msg;
-    $GEN = getGen($dbaccess);
+    $docname = strtolower($oriDocname);
     $doc = new_Doc($dbaccess);
-    $err = $doc->exec_query("SELECT oid FROM pg_class where relname='doc" . $docid . "';");
-    if ($doc->numrows() == 0) {
-        $msg.= "Create table doc" . $docid . "\n";
+    $sqlTestFamily = sprintf("select table_schema, table_name from information_schema.tables where table_schema='family' and table_name='%s'", pg_escape_string($docname));
+    simpleQuery($dbaccess, $sqlTestFamily, $result);
+    if (count($result) == 0) {
+        $msg.= "Create table family." . $docname . "\n";
         // create postgres table if new familly
         $cdoc = createTmpDoc($dbaccess, $docid, false);
         $triggers = $cdoc->sqltrigger(false, true);
@@ -500,46 +502,55 @@ function PgUpdateFamilly($dbaccess, $docid, $docname = "")
         $cdoc->Create();
         setSqlIndex($dbaccess, $docid);
         
-        $err = $doc->exec_query("SELECT oid FROM pg_class where relname='doc" . $docid . "';");
-        if ($doc->numrows() == 0) {
-            $msg.= "Cannot create Table : $err\n";
-        }
-    }
-    $row = $doc->fetch_array(0, PGSQL_ASSOC);
-    $relid = $row["oid"]; // pg id of the table
-    // create view
-    if ($docname != "") {
-        $docname = strtolower($docname);
-        $err = $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
-        $updateview = false;
-        if ($doc->numrows() == 1) {
-            // update view
-            $sql = sprintf("drop view family.\"%s\"", $docname);
-            $doc->exec_query($sql, 1);
-            $updateview = true;
-        }
-        $err = $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
-        if ($doc->numrows() == 0) {
-            if (!$updateview) $msg.= "Create view family." . $docname . "\n";
-            // create postgres table if new familly
-            $sql = sprintf("create view family.\"%s\" as select * from doc%d", ($docname) , $docid);
-            $doc->exec_query($sql, 1);
-            
-            $err = $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
-            if ($doc->numrows() == 0) {
-                $msg.= "Cannot create view : $err\n";
-            }
+        simpleQuery($dbaccess, $sqlTestFamily, $result);
+        if (count($result) == 0) {
+            $msg.= "Cannot create Table family." . $docname . "\n";
         }
     }
     
-    $sqlquery = "select attname FROM pg_attribute where attrelid=$relid;";
-    $doc->exec_query($sqlquery, 1); // search existed attribute of the table
-    $nbidx = $doc->numrows();
-    $pgatt = array();
-    for ($c = 0; $c < $nbidx; $c++) {
-        $row = $doc->fetch_array($c, PGSQL_ASSOC);
-        $pgatt[$row["attname"]] = $row["attname"];
+    $sql = sprintf("select title from family.families where id=%d", $docid);
+    simpleQuery($dbaccess, $sql, $famTitle, true, true);
+    $ttmp["name"] = $oriDocname;
+    $ttmp["title"] = $famTitle;
+    $famTitle = getFamTitle($ttmp);
+    
+    if ($famTitle) {
+        $sql = sprintf("comment on table %s is '%s (\"%s\")';", familyTableName($docid) , $docname, pg_escape_string($famTitle));
+        simpleQuery($dbaccess, $sql);
     }
+    // create view
+    $needCompatibleView = (getParam("CORE_DBDOCVIEWCOMPAT") == "yes");
+    if ($docname != "") {
+        $docname = strtolower($docname);
+        $viewName = sprintf("public.doc%s", $docid);
+        $updateview = false;
+        
+        $sql = sprintf("select * from information_schema.views where table_schema = 'public' and table_name='doc%d'", $docid);
+        simpleQuery($dbaccess, $sql, $result);
+        if (count($result) > 0) {
+            $sql = sprintf("drop view %s", $viewName);
+            simpleQuery($dbaccess, $sql);
+            $updateview = true;
+        }
+        if ($needCompatibleView) {
+            if (!$updateview) $msg.= sprintf("Create view \"%s\"\n", $viewName);
+            // create postgres table if new familly
+            $sql = sprintf("create view public.\"doc%d\" as select * from family.\"%s\";", $docid, $docname);
+            
+            if ($famTitle) {
+                $sql.= sprintf("comment on view public.\"doc%d\" is '%s (\"%s\") family';", $docid, $docname, pg_escape_string($famTitle));
+            }
+            simpleQuery($dbaccess, $sql);
+            
+            $sql = sprintf("select * from information_schema.views where table_schema = 'public' and table_name='doc%d'", $docid);
+            simpleQuery($dbaccess, $sql, $result);
+            if (count($result) == 0) {
+                $msg.= "Cannot create view : $viewName\n";
+            }
+        }
+    }
+    $sqlquery = sprintf("select column_name FROM information_schema.columns where table_schema='family' and table_name='%s';", $docname);
+    simpleQuery($dbaccess, $sqlquery, $pgatt, true);
     // -----------------------------
     // add column attribute
     $qattr = new QueryDb($dbaccess, "DocAttr");
@@ -627,9 +638,9 @@ function PgUpdateFamilly($dbaccess, $docid, $docname = "")
                                 $sqltype = " text";
                         }
                     }
-                    $sqlquery = "ALTER TABLE doc" . $docid . " ADD COLUMN $ka $sqltype;";
-                    $doc->exec_query($sqlquery, 1); // add new field
+                    $sqlquery = sprintf("ALTER TABLE family.%s add column %s %s", pg_escape_string($docname) , pg_escape_string($ka) , pg_escape_string($sqltype));
                     
+                    simpleQuery($dbaccess, $sqlquery);
                 }
             }
         }
@@ -640,9 +651,8 @@ function PgUpdateFamilly($dbaccess, $docid, $docname = "")
 
 function createDocFile($dbaccess, $tdoc)
 {
-    $GEN = getGen($dbaccess);
-    $pubdir = GetParam("CORE_PUBDIR");
-    $dfile = "$pubdir/FDL$GEN/Class.Doc" . $tdoc["id"] . ".php";
+    $pubdir = DEFAULT_PUBDIR;
+    $dfile = "$pubdir/" . getFamilyFileName($tdoc["name"]);
     
     $fphp = fopen($dfile, "w");
     if ($fphp) {
@@ -657,8 +667,7 @@ function createDocFile($dbaccess, $tdoc)
         throw new \Dcp\Exception("cannot generate  $dfile");
     }
     
-    $attrfile = "$pubdir/FDL$GEN/Class.Attrid" . $tdoc["id"] . ".php";
-    
+    $attrfile = "$pubdir/FDLGEN/Class.Attrid" . ucfirst(strtolower($tdoc["name"])) . ".php";
     $fphp = fopen($attrfile, "w");
     if ($fphp) {
         $err = fwrite($fphp, AttrIdtoPhp($dbaccess, $tdoc));

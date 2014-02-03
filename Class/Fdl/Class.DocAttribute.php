@@ -1146,7 +1146,7 @@ WITH RECURSIVE parent_attr(fromid, docid, id) AS (
         docattr.id
     FROM
         docattr,
-        docfam
+        family.families as docfam
     WHERE
         docattr.docid = docfam.id
         AND
@@ -1160,7 +1160,7 @@ WITH RECURSIVE parent_attr(fromid, docid, id) AS (
         docattr.id
     FROM
         docattr,
-        docfam,
+        family.families as docfam,
         parent_attr
     WHERE
         docattr.docid = parent_attr.fromid
