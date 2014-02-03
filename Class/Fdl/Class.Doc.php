@@ -705,8 +705,8 @@ create table docname ( name text not null,
                    primary key (name),
                    id int,
                    fromid int);
-create sequence seq_id_doc start 1000;
-create sequence seq_id_tdoc start 1000000000;
+create sequence family.seq_id_doc start 1000;
+create sequence family.seq_id_tdoc start 1000000000;
 create index i_docname on doc(name);
 create unique index i_docir on doc(initid, revision);";
     // --------------------------------------------------------------------
@@ -867,8 +867,8 @@ create unique index i_docir on doc(initid, revision);";
         if ($err != "") return $err;
         // compute new id
         if ($this->id == "") {
-            if ($this->doctype == 'T') $res = pg_query($this->init_dbid() , "select nextval ('seq_id_tdoc')");
-            else $res = pg_query($this->init_dbid() , "select nextval ('seq_id_doc')");
+            if ($this->doctype == 'T') $res = pg_query($this->init_dbid() , "select nextval ('family.seq_id_tdoc')");
+            else $res = pg_query($this->init_dbid() , "select nextval ('family.seq_id_doc')");
             $arr = pg_fetch_array($res, 0);
             $this->id = $arr[0];
         }
@@ -888,6 +888,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         if ($this->usefor == "") $this->usefor = "N";
         
+        if ($this->fromname == "" && $this->fromid > 0) $this->fromname = getFamilyName($this > fromid);
         if ($this->lmodify == "") $this->lmodify = "N";
         if ($this->locked == "") $this->locked = "0";
         if ($this->owner == "") $this->owner = $this->userid;
@@ -1093,10 +1094,10 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->doctype == 'C') return 0;
         if ($this->fromid == "") return 0;
         // cannot use currval if nextval is not use before
-        $res = pg_query($this->init_dbid() , sprintf("select nextval ('seq_%s')", pg_escape_string(strtolower($this->fromname))));
+        $res = pg_query($this->init_dbid() , sprintf("select nextval ('family.seq_%s')", pg_escape_string(strtolower($this->fromname))));
         $arr = pg_fetch_array($res, 0);
         $cur = intval($arr[0]) - 1;
-        pg_query($this->init_dbid() , sprintf("select setval ('seq_%s', %d)", pg_escape_string(strtolower($this->fromname))) , $cur);
+        pg_query($this->init_dbid() , sprintf("select setval ('family.seq_%s', %d)", pg_escape_string(strtolower($this->fromname))) , $cur);
         
         return $cur;
     }
@@ -1111,7 +1112,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->fromid == 0) return 0;
         if ($this->doctype == 'C') return 0;
         // cannot use currval if nextval is not use before
-        $res = pg_query($this->init_dbid() , sprintf("select nextval ('seq_%s')", pg_escape_string(strtolower($this->fromname))));
+        $res = pg_query($this->init_dbid() , sprintf("select nextval ('family.seq_%s')", pg_escape_string(strtolower($this->fromname))));
         $arr = pg_fetch_array($res, 0);
         $cur = intval($arr[0]);
         return $cur;
@@ -6466,9 +6467,9 @@ create unique index i_docir on doc(initid, revision);";
                 if ($v["using"][0] == "@") {
                     $v["using"] = getParam(substr($v["using"], 1));
                 }
-                $t[] = sprintf("CREATE $unique INDEX %s%s on  family.%s using %s(%s);\n", $k, $name, $name, $v["using"], $v["on"]);
+                $t[] = sprintf("CREATE $unique INDEX %s_%s on  family.%s using %s(%s);\n", $k, $name, $name, $v["using"], $v["on"]);
             } else {
-                $t[] = sprintf("CREATE $unique INDEX %s%s on  family.%s(%s);\n", $k, $name, $name, $v["on"]);
+                $t[] = sprintf("CREATE $unique INDEX %s_%s on  family.%s(%s);\n", $k, $name, $name, $v["on"]);
             }
         }
         return $t;

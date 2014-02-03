@@ -30,9 +30,13 @@ if (seemsODS($fimport)) {
     $fdoc = fopen($fimport, "r");
 }
 if (!$fdoc) exit(1);
-
+/**
+ * @var Action $action
+ */
 $dbaccess = getParam('FREEDOM_DB');
 $idoc = new doc($dbaccess);
+$nline=0;
+$tcolorder=$titles=array();
 while (!feof($fdoc)) {
     
     $buffer = rtrim(fgets($fdoc, 16384));
@@ -53,8 +57,8 @@ while (!feof($fdoc)) {
         foreach ($idoc->fields as $k => $v) {
             if ($cdoc->$v != "") $tval[$orfromid][$v] = "'" . $cdoc->$v . "'";
         }
-        $tval[$orfromid]["id"] = "(select nextval ('seq_id_doc'))";
-        $tval[$orfromid]["initid"] = "(select currval ('seq_id_doc'))";
+        $tval[$orfromid]["id"] = "(select nextval ('family.seq_id_doc'))";
+        $tval[$orfromid]["initid"] = "(select currval ('family.seq_id_doc'))";
         $tval[$orfromid]["owner"] = $action->user->id;
     } else if ($data[0] == 'DOC') {
         if (is_numeric($data[1])) $fromid = $data[1];

@@ -61,9 +61,9 @@ class [PHPclassName] extends [DocParent] {
    public $dbtable="family.[DBdocname]";
    public $dbseq="seq_doc[docid]";
    public $sqlcreate = array("create table family.[DBdocname] ([sattr]) inherits (family.[DBfromname]);",
-     "create sequence seq_[DBdocname] start 1;",
+     "create sequence family.seq_[DBdocname] start 1;",
      "alter TABLE family.[DBdocname] ADD primary key (id);",
-     "select setval('seq_[DBdocname]', count(distinct initid)+1, false )  from only family.[DBdocname];");
+     "select setval('family.seq_[DBdocname]', count(distinct initid)+1, false )  from only family.[DBdocname];");
    
 
      public $fromid=[docid];

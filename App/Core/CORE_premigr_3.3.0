@@ -46,13 +46,6 @@ $$;
 
 SELECT pg_temp.deleteAllViews('family');
 
-ALTER TABLE IF EXISTS public.docfam set schema family;
-ALTER TABLE if exists family.docfam rename to families;
-ALTER TABLE IF EXISTS public.doc set schema family;
-ALTER TABLE if exists family.doc rename to documents;
-update family.documents set fromname = family.families.name from family.families where family.families.id= family.documents.fromid;
-update docread set fromname = family.families.name from family.families where family.families.id= docread.fromid;
-
 CREATE OR REPLACE FUNCTION pg_temp.renameFamilyTable()
     RETURNS void
     LANGUAGE plpgsql
@@ -66,15 +59,37 @@ CREATE OR REPLACE FUNCTION pg_temp.renameFamilyTable()
 SELECT table_schema, table_name, substring(table_name from 4)::int as famid FROM information_schema.tables WHERE  table_schema = 'public' and table_name ~ '^doc[1-9]') as z, docfam where z.famid=docfam.id
 
         LOOP
-
-            EXECUTE 'alter table ' || quote_ident(row.table_schema) || '.' || quote_ident(row.table_name)
-                || ' set schema family';
+            EXECUTE 'alter table ' || quote_ident(row.table_schema) || '.' || quote_ident(row.table_name) || ' set schema family';
             EXECUTE 'alter table family.' || quote_ident(row.table_name) || ' rename to ' || quote_ident(row.famname);
+
             RAISE INFO 'Move: %', quote_ident(row.table_schema) || '.' || quote_ident(row.table_name) || ' to family.' || quote_ident(row.famname);
+        END LOOP;
+
+        FOR row IN
+            select sequence_schema, sequence_name, lower(docfam.name) as famname from (
+SELECT sequence_schema, sequence_name, substring(sequence_name from 8)::int as famid FROM information_schema.sequences WHERE  sequence_schema = 'public' and sequence_name ~ '^seq_doc[1-9]') as z, docfam where z.famid=docfam.id
+
+        LOOP
+
+
+            EXECUTE 'alter sequence ' || quote_ident(row.sequence_schema) || '.' || quote_ident(row.sequence_name) || ' set schema family';
+            EXECUTE 'alter table family.' || quote_ident(row.sequence_name) || ' rename to seq_' || (row.famname);
+
+            RAISE INFO 'Move: %', quote_ident(row.sequence_schema) || '.' || quote_ident(row.sequence_name) || ' to family.seq_' || (row.famname);
         END LOOP;
     END;
 $$;
 
+select pg_temp.renameFamilyTable();
+
+ALTER TABLE IF EXISTS public.docfam set schema family;
+ALTER TABLE if exists family.docfam rename to families;
+ALTER TABLE IF EXISTS public.doc set schema family;
+ALTER TABLE if exists family.doc rename to documents;
+ALTER SEQUENCE IF EXISTS seq_id_doc set schema family;
+ALTER SEQUENCE IF EXISTS seq_id_tdoc set schema family;
+update family.documents set fromname = family.families.name from family.families where family.families.id= family.documents.fromid;
+update docread set fromname = family.families.name from family.families where family.families.id= docread.fromid;
 
 SQL
 RET=$?
