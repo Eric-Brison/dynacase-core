@@ -113,6 +113,15 @@ $$ language 'plpgsql' ;
 
 -- The TRIGGERS -----------
 
+CREATE OR REPLACE FUNCTION upvaldocfam() RETURNS trigger AS $$
+declare
+begin
+NEW.values := '£' || coalesce(NEW.cprofid,0) || '£' || coalesce(NEW.dfldid,0) || '£' || coalesce(NEW.cfldid,0) || '£' || coalesce(NEW.ccvid,0) || '£' || coalesce(NEW.ddocid,0) || '£' || coalesce(NEW.methods,'') || '£' || coalesce(NEW.defval,'') || '£' || coalesce(NEW.param,'') || '£' || coalesce(NEW.maxrev,0) || '£' || coalesce(NEW.tagable,'') || '£' || coalesce(NEW.schar,'') || '£';
+NEW.attrids := '£cprofid£dfldid£cfldid£ccvid£ddocid£methods£defval£param£maxrev£tagable£schar£';
+
+return NEW;
+end;
+$$ language 'plpgsql';
 
 
 create or replace function resetvalues() 
