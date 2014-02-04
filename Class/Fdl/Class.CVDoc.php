@@ -91,7 +91,7 @@ class CVDoc extends Doc
         $originals = $dc->dacls;
         
         if (!preg_match('!^[0-9a-z_-]+$!i', $value)) {
-            $err = _("You must use only a-z, 0-9, _, - caracters");
+            $err = sprintf(_("You must use only a-z, 0-9, _, - characters : \"%s\""), $value);
         } elseif (array_key_exists($value, $originals)) {
             $err = _("Impossible to name a view like a control acl");
         } else {
