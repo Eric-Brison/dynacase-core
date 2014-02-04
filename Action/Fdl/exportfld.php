@@ -219,8 +219,9 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputfolder = 
             if ($c % 20 == 0) {
                 recordStatus($action, $exportId, sprintf(_("Record documents %d/%d") , $c, $rc));
             }
-            
-            exportonedoc($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
+            if ($doc->doctype != "C") {
+                exportonedoc($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
+            }
         }
         $more = new DocumentList();
         $more->addDocumentIdentifiers(array_keys($tmoredoc));
@@ -374,10 +375,10 @@ function exportProfil($fout, $dbaccess, $docid)
     }
     // add extended Acls
     if ($doc->extendedAcls) {
-        $extAcls=array_keys($doc->extendedAcls);
-        $aclCond=GetSqlCond($extAcls, "acl");
+        $extAcls = array_keys($doc->extendedAcls);
+        $aclCond = GetSqlCond($extAcls, "acl");
         simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s", $doc->profid, $aclCond) , $eAcls);
-
+        
         foreach ($eAcls as $aAcl) {
             $uid = $aAcl["userid"];
             if ($uid >= STARTIDVGROUP) {
