@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ -z "$wpub" ]; then
+    echo "Undefined or empty wpub environment variable!"
+    exit 1
+fi
+
+if [ -z "$pgservice_core" ]; then
+    echo "Undefined or empty pgservice_core!"
+    exit 1
+fi
+
+
+
+"$wpub"/wsh.php --api=fdl_trigger --trigger=yes --docid=-1 | PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f-
+
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error update docfam trigers'."
+    exit $RET
+fi
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << 'SQL'
+    update docfam set id=id;
+SQL
+
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error update classname'."
+    exit $RET
+fi
