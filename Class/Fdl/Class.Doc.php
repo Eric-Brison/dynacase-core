@@ -6337,7 +6337,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $code
      * @return string sql commands
      */
-    final public function SqlTrigger($onlydrop = false, $code = false)
+    final public function sqlTrigger($onlydrop = false, $code = false)
     {
         
         if (get_class($this) == "DocFam") {
@@ -6435,6 +6435,8 @@ create unique index i_docir on doc(initid, revision);";
             if ($cid != "fam") {
                 $sql.= "create trigger AUVR{$cid} BEFORE UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
                 $sql.= "create trigger VFULL{$cid} BEFORE INSERT OR UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE fullvectorize$cid();";
+            } else {
+                $sql.= "create trigger UVdocfam before insert or update on docfam FOR EACH ROW EXECUTE PROCEDURE upvaldocfam();";
             }
             $sql.= "create trigger zread{$cid} AFTER INSERT OR UPDATE OR DELETE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE setread();";
             $sql.= "create trigger FIXDOC{$cid} AFTER INSERT ON doc$cid FOR EACH ROW EXECUTE PROCEDURE fixeddoc();";

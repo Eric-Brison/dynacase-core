@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-06 17:54+0100\n"
-"PO-Revision-Date: 2013-12-06 17:57+0100\n"
+"POT-Creation-Date: 2014-02-04 17:20+0100\n"
+"PO-Revision-Date: 2014-02-04 17:23+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -4249,8 +4249,9 @@ msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
 msgstr ""
 "Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 (Firefox)"
 
-msgid "You must use only a-z, 0-9, _, - caracters"
-msgstr "Vous devez utiliser uniquement les caractères 0-9, a-z, _ et -"
+#, php-format
+msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
+msgstr "Vous devez utiliser seulement les caractères  a-z, 0-9, _ : \"%s\""
 
 msgid "You use an too old Internet explorer navigator"
 msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
@@ -8445,6 +8446,15 @@ msgstr "l'utilisateur n°%d n'existe pas"
 msgid "user cannot be revived"
 msgstr "L'utilisateur ne peut pas être ressuscité"
 
+msgid "user csv enclosure preferences when export document"
+msgstr "Préférence pour les délimiteurs CSV lors de l'exportation de document"
+
+msgid "user csv line break preferences when export document"
+msgstr "Préférence pour le retour-chariot CSV lors de l'exportation de document"
+
+msgid "user csv separator preferences when export document"
+msgstr "Préférence pour le sépareteur CSV lors de l'exportation de document"
+
 msgid "user has not identificator"
 msgstr "L'utilisateur n'a pas d'identificateur"
 
@@ -9006,6 +9016,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Until done date"
 #~ msgstr "Historique des minuteurs vieux de plus de n jours"
+
+#~ msgid "You must use only a-z, 0-9, _, - caracters"
+#~ msgstr "Vous devez utiliser uniquement les caractères 0-9, a-z, _ et -"
 
 #~ msgid "access granted to  database $db\n"
 #~ msgstr "accès à la base de données $db autorisé\n"
