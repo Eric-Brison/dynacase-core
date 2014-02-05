@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-28 11:28+0100\n"
+"POT-Creation-Date: 2014-02-04 17:20+0100\n"
 "PO-Revision-Date: 2013-10-25 12:31+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -1003,6 +1003,9 @@ msgstr ""
 msgid "Choose Archive"
 msgstr ""
 
+msgid "Choose Archive Type"
+msgstr ""
+
 msgid "Choose Gate Urls"
 msgstr ""
 
@@ -1327,9 +1330,6 @@ msgstr ""
 msgid "Desactivate acls"
 msgstr ""
 
-msgid "Description of the import format"
-msgstr ""
-
 msgid "Detail Permissions"
 msgstr ""
 
@@ -1338,9 +1338,6 @@ msgstr ""
 
 #, php-format
 msgid "Dir::insertFolder identifier [%s] must be numeric"
-msgstr ""
-
-msgid "Direct Import"
 msgstr ""
 
 #, php-format
@@ -1542,6 +1539,9 @@ msgstr "ISO-8859-15 (european)"
 
 msgid "EXPORT_CSV Kind of export :"
 msgstr "Export type: "
+
+msgid "EXPORT_CSV Linebreak :"
+msgstr ""
 
 msgid "EXPORT_CSV Select export kind :"
 msgstr "Select export type"
@@ -1927,8 +1927,8 @@ msgstr ""
 "        </ul>\n"
 "    </li>\n"
 "    <li>\n"
-"        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
-"\">)</em><br/>\n"
+"        <em class=\"help-operator\">(</em> and <em class=\"help-operator\">)"
+"</em><br/>\n"
 "        Parenthesis express priorities between operators.\n"
 "        <ul>\n"
 "            <li>\n"
@@ -2145,6 +2145,10 @@ msgstr ""
 msgid "For Account"
 msgstr ""
 
+msgid ""
+"For each imported document, if a document with same title is found, then"
+msgstr ""
+
 msgid "For export functions"
 msgstr ""
 
@@ -2229,6 +2233,9 @@ msgid "General search"
 msgstr ""
 
 msgid "Generic"
+msgstr ""
+
+msgid "Get XML schema to compose XML document import file"
 msgstr ""
 
 msgid "Get Xml schema"
@@ -2337,6 +2344,9 @@ msgid "Import documents"
 msgstr ""
 
 msgid "Import file"
+msgstr ""
+
+msgid "Import file (CSV, ODS, XML, ZIP, TGZ)"
 msgstr ""
 
 msgid "Importation data"
@@ -2607,6 +2617,9 @@ msgstr ""
 msgid "Mail action URL"
 msgstr "Mail action URL"
 
+msgid "Mail address"
+msgstr ""
+
 msgid "Mail template document reference to ask new password"
 msgstr ""
 
@@ -2780,6 +2793,9 @@ msgstr ""
 msgid "No columns has been defined"
 msgstr ""
 
+msgid "No description import file"
+msgstr ""
+
 msgid "No direct import : limit is reached"
 msgstr ""
 
@@ -2852,6 +2868,9 @@ msgstr ""
 msgid "Not enough uppercase characters."
 msgstr ""
 
+msgid "Not supported file format"
+msgstr ""
+
 msgid "November"
 msgstr ""
 
@@ -2893,6 +2912,9 @@ msgstr ""
 msgid "Opt"
 msgstr ""
 
+msgid "Options for csv import"
+msgstr ""
+
 msgid "Options import"
 msgstr ""
 
@@ -2900,6 +2922,9 @@ msgid "Or upload a new icon"
 msgstr ""
 
 msgid "Order must be an odd number"
+msgstr ""
+
+msgid "Other Archive"
 msgstr ""
 
 msgid "Other..."
@@ -3008,6 +3033,9 @@ msgstr ""
 
 #, php-format
 msgid "Pivot rendering %d/%d"
+msgstr ""
+
+msgid "Policy if same title"
 msgstr ""
 
 msgid "PortFolio"
@@ -3340,6 +3368,9 @@ msgstr ""
 msgid "Select Profil if it is to globaly reuse file to reinitialize profil"
 msgstr ""
 
+msgid "Select a family"
+msgstr ""
+
 msgid "Select all columns"
 msgstr ""
 
@@ -3398,6 +3429,9 @@ msgid "Send mail info : can't send mail %s: no sendee found"
 msgstr ""
 
 msgid "Send mail with template"
+msgstr ""
+
+msgid "Send report to"
 msgstr ""
 
 msgid "Send search"
@@ -3779,6 +3813,9 @@ msgstr ""
 msgid "Use Ctrl-S to save and stay in edit mode"
 msgstr ""
 
+msgid "Use another import interface for a specific family"
+msgstr ""
+
 #, php-format
 msgid "Use your home folder instead <%s>"
 msgstr ""
@@ -3987,6 +4024,9 @@ msgstr ""
 msgid "Workflow - parameters"
 msgstr ""
 
+msgid "XML Archive"
+msgstr ""
+
 msgid "XML Error: no 'family' attribute on <table/> node."
 msgstr ""
 
@@ -4046,7 +4086,8 @@ msgstr ""
 msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
 msgstr ""
 
-msgid "You must use only a-z, 0-9, _, - caracters"
+#, php-format
+msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
 msgstr ""
 
 msgid "You use an too old Internet explorer navigator"
@@ -6996,9 +7037,6 @@ msgstr ""
 msgid "policy if same keys"
 msgstr ""
 
-msgid "policy if same title"
-msgstr ""
-
 msgid "popup in generic list"
 msgstr ""
 
@@ -7700,8 +7738,8 @@ msgid "submitreqpasswd_form_send_error_unknown"
 msgstr ""
 "<p>The server accountered an error processing your request</p>\n"
 "<p>Retry your request, and if the problem persist, please contact <a href="
-"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request"
-"\">[ON_ERROR_CONTACT]</a></p>"
+"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request\">"
+"[ON_ERROR_CONTACT]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""
@@ -8175,6 +8213,15 @@ msgid "user %d does not exist"
 msgstr ""
 
 msgid "user cannot be revived"
+msgstr ""
+
+msgid "user csv enclosure preferences when export document"
+msgstr ""
+
+msgid "user csv line break preferences when export document"
+msgstr ""
+
+msgid "user csv separator preferences when export document"
 msgstr ""
 
 msgid "user has not identificator"
