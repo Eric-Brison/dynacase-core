@@ -32,7 +32,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
     /**
      * @dataProvider dataSetValue
      */
-    public function testSetValue($attrid, $newValue)
+    public function testSetValue($attrid, $newValue, $expectedValue)
     {
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
@@ -48,13 +48,13 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $this->assertEquals($newValue, $doc->getRawValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->id, $attrid));
+            $this->assertEquals($expectedValue, $doc->getRawValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->id, $attrid));
         }
     }
     /**
      * @dataProvider dataSetValueWithRevision
      */
-    public function testSetValueWithRevision($attrid, $newValue, $unchangedCount, $changedCount)
+    public function testSetValueWithRevision($attrid, $newValue, $expectedValue, $unchangedCount, $changedCount)
     {
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
@@ -75,7 +75,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $this->assertEquals($newValue, $doc->getRawValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->id, $attrid));
+            $this->assertEquals($expectedValue, $doc->getRawValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->id, $attrid));
             if ($results[$doc->initid]->changed) {
                 $this->assertGreaterThan($doc->initid, $doc->id, "revision not done for %s (#%d)", $doc->title, $doc->id);
                 $this->assertTrue($results[$doc->initid]->revised);
@@ -93,7 +93,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
     /**
      * @dataProvider dataSetValue
      */
-    public function testSetValueWithHistory($attrid, $newValue)
+    public function testSetValueWithHistory($attrid, $newValue, $expectedValue)
     {
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
@@ -115,7 +115,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
-            $this->assertEquals($newValue, $doc->getRawValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->initid, $attrid));
+            $this->assertEquals($expectedValue, $doc->getRawValue($attrid) , sprintf("doc %s [#%d] not correct value for %s attribute", $doc->title, $doc->initid, $attrid));
             $histo = $doc->getHisto(false, "UPDATE");
             
             $this->assertEquals($comment, $histo[0]["comment"], sprintf("not good history #%d:%s", $doc->initid, print_r($histo, true)));
@@ -152,11 +152,17 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
      */
     public function testReplaceValue($attrid, $oldvalue, $newValue, $expectedChangedCount)
     {
+        $fam = new_doc(self::$dbaccess, $this->famName);
+        $oattr = $fam->getAttribute($attrid);
         $ws = new \SearchDoc(self::$dbaccess, $this->famName);
         $ws->setObjectReturn();
         $ws->addFilter("name ~ '^TST_DUPTATTR'");
-        
-        $ws->addFilter("%s ~ E'\\\\y%s\\\\y'", $attrid, $oldvalue);
+        if ($oattr->isMultiple()) {
+            
+            $ws->addFilter("'%s' = any (%s)", $oldvalue, $attrid);
+        } else {
+            $ws->addFilter("'%s' = %s", $oldvalue, $attrid);
+        }
         $wdl = $ws->search()->getDocumentList();
         $needChanged = array();
         foreach ($wdl as $id => $doc) {
@@ -166,7 +172,11 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
         $ws->setObjectReturn();
         $ws->addFilter("name ~ '^TST_DUPTATTR'");
         
-        $ws->addFilter("%s ~ E'\\\\y%s\\\\y'", $attrid, $newValue);
+        if ($oattr->isMultiple()) {
+            $ws->addFilter("'%s' = any (%s)", $newValue, $attrid);
+        } else {
+            $ws->addFilter("'%s' = %s", $newValue, $attrid);
+        }
         $wdl = $ws->search()->getDocumentList();
         $noNeedChanged = array();
         foreach ($wdl as $id => $doc) {
@@ -228,7 +238,7 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
             $ws = new \SearchDoc(self::$dbaccess, $this->famName);
             $ws->setObjectReturn();
             $ws->addFilter("name ~ '^TST_DUPTATTR'");
-            if (!is_array($expectedAdd)) $ws->addFilter("%s ~ E'\\\\y%s\\\\y'", $attrid, $expectedAdd);
+            if (!is_array($expectedAdd)) $ws->addFilter("'%s' = any (%s)", $expectedAdd, $attrid);
             $wdl = $ws->search()->getDocumentList();
             foreach ($wdl as $id => $doc) {
                 $noNeedChanged[] = $doc->initid;
@@ -262,9 +272,9 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
             if ($singleMultiple) {
                 if (!in_array($doc->initid, $noNeedChanged)) {
                     if (is_array($expectedAdd)) {
-                        $this->assertEquals(end($expectedAdd) , end($tv) , sprintf("value \"%s\" not added : %s", print_r($valueToAdd, true) , implode(',', $tv)));
+                        $this->assertEquals(end($expectedAdd) , end($tv) , sprintf("value \"%s\" not added : %s", print_r($valueToAdd, true) , print_r($tv, true)));
                     } else {
-                        $this->assertEquals($expectedAdd, end($tv) , sprintf("value \"%s\" not added : %s", $valueToAdd, implode(',', $tv)));
+                        $this->assertEquals($expectedAdd, end($tv) , sprintf("value \"%s\" not added : %s", $valueToAdd, print_r($tv, true)));
                     }
                 }
             }
@@ -321,7 +331,13 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
         $ws = new \SearchDoc(self::$dbaccess, $this->famName);
         $ws->setObjectReturn();
         $ws->addFilter("name ~ '^TST_DUPTATTR'");
-        if (!is_array($expectedRemove)) $ws->addFilter("%s ~ E'\\\\y%s\\\\y'", $attrid, $expectedRemove);
+        if (!is_array($expectedRemove)) {
+            if ($oa->isMultiple()) {
+                $ws->addFilter("'%s' = any(%s)", pg_escape_string($expectedRemove) , $attrid);
+            } else {
+                $ws->addFilter("'%s' = %s", pg_escape_string($expectedRemove) , $attrid);
+            }
+        }
         $wdl = $ws->search()->getDocumentList();
         foreach ($wdl as $id => $doc) {
             $noNeedChanged[] = $doc->initid;
@@ -488,11 +504,13 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
         return array(
             array(
                 "TST_ENUM",
+                "3",
                 "3"
             ) ,
             array(
                 "TST_ENUMS",
-                "3\n4\n6"
+                "3\n4\n6",
+                "{3,4,6}"
             )
         );
     }
@@ -644,12 +662,21 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
             array(
                 "TST_ENUM",
                 "6",
+                "6",
                 18,
                 2
             ) ,
             array(
                 "TST_ENUMS",
                 "1\n6",
+                "{1,6}",
+                20,
+                0
+            ) ,
+            array(
+                "TST_ENUMS",
+                "{1,6}",
+                "{1,6}",
                 19,
                 1
             )

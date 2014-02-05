@@ -1,7 +1,7 @@
 REPORT_pivot;titre;color;date;docid;double;htmltext;integer;longtext;money;text;time;timestamp;;REPORT_pivot;docid_multiple;;REPORT_pivot;enum;;REPORT_pivot;"color _array";"date _array";"docid _array";"docid_multiple _array";"double _array";"enum _array";"htmltext _array";"integer _array";"longtext _array";"money _array";"text _array";"timestamp _array";"time _array"
-ייייטטטttt;ייייטטטttt;;2011-09-15;ייייטטטttt;12.25;jjhgh;1212;gfgdgfd;12.25;ייייטטטttt;12:00:00;"2011-09-29 18:01:00";;ייייטטטttt;ייייטטטttt;;ייייטטטttt;"Iles Cocos";;ייייטטטttt;#FFD970;2011-09-16;ייייטטטttt;"ייייטטטttt, test2";12.25;"Emirats Arabes unis";khggkhghhgk;121;lkjlkjlkj;12;ttyt;"2011-09-29 17:32";12:00
-test2;test2;#9CC3FF;2011-09-22;;12.25;tarattaa;121221;iuhhjhjh;121;test2;12:00:00;"2011-09-14 17:34:00";;ייייטטטttt;test2;;ייייטטטttt;Centre-Afrique;;ייייטטטttt;#75FFFF;2011-09-30;;"test2, ייייטטטttt";32.3;Andorre;jhhkjijhjhjjk;12;tempjhhjjh;25;uuuu;"2011-09-02 17:32";01:00
-;;;;;;;;;;;;;;test2;ייייטטטttt;;ייייטטטttt;Congo;;test2;#FFD36E;2011-09-06;ייייטטטttt;ייייטטטttt;12.25;"Emirats Arabes unis";123456789;12;kjhk;12.25;iiii;"2011-09-16 17:35";01:30
+ייייטטטttt;ייייטטטttt;;2011-09-15;ייייטטטttt;12.25;jjhgh;1212;gfgdgfd;12.25;ייייטטטttt;12:00:00;"2011-09-29 18:01:00";;ייייטטטttt;ייייטטטttt;;ייייטטטttt;"Iles Cocos";;ייייטטטttt;#FFD970;2011-09-16;ייייטטטttt;"ייייטטטttt, test2";12.25;"Emirats Arabes unis";khggkhghhgk;121;lkjlkjlkj;12;ttyt;"2011-09-29 17:32:00";12:00:00
+test2;test2;#9CC3FF;2011-09-22;;12.25;tarattaa;121221;iuhhjhjh;121;test2;12:00:00;"2011-09-14 17:34:00";;ייייטטטttt;test2;;ייייטטטttt;Centre-Afrique;;ייייטטטttt;#75FFFF;2011-09-30;;"test2, ייייטטטttt";32.3;Andorre;jhhkjijhjhjjk;12;tempjhhjjh;25;uuuu;"2011-09-02 17:32:00";01:00:00
+;;;;;;;;;;;;;;test2;ייייטטטttt;;ייייטטטttt;Congo;;test2;#FFD36E;2011-09-06;ייייטטטttt;ייייטטטttt;12.25;"Emirats Arabes unis";123456789;12;kjhk;12.25;iiii;"2011-09-16 17:35:00";01:30:00
 ;;;;;;;;;;;;;;test2;test2;;ייייטטטttt;Suisse;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;ייייטטטttt;"Cפte d'Ivoire";;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;ייייטטטttt;"Iles Cook";;;;;;;;;;;;;;;

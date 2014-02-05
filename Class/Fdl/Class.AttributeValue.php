@@ -60,16 +60,30 @@ class AttributeValue
         $rawValues = $doc->getMultipleRawValues($oAttr->id);
         $type = $oAttr->type;
         $typedValues = array();
-        foreach ($rawValues as $rawValue) {
-            $finalValues = ($rawValue !== '') ? explode('<BR>', $rawValue) : array();
+        foreach ($rawValues as $finalValues) {
             $finalTypedValues = array();
             foreach ($finalValues as $finalValue) {
                 $finalTypedValues[] = self::castValue($type, $finalValue);
             }
-            $typedValues[] = $finalTypedValues;
+            
+            $typedValues[] = self::rtrimNull($finalTypedValues);
         }
         
         return $typedValues;
+    }
+    /**
+     * delete last null values
+     * @param array $t
+     * @return array
+     */
+    private static function rtrimNull(array $t)
+    {
+        $i = count($t) - 1;
+        for ($k = $i; $k >= 0; $k--) {
+            if ($t[$k] === null) unset($t[$k]);
+            else break;
+        }
+        return $t;
     }
     /**
      * cast raw value to type value

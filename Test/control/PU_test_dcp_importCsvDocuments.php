@@ -43,7 +43,7 @@ class TestImportCsvDocuments extends TestCaseDcp
             $d = new_doc('', $v["name"]);
             $this->assertTrue($d->isAlive() , sprintf("document %s not found", $v["name"]));
             foreach ($v["values"] as $aid => $aval) {
-                $this->assertEquals($aval, $d->getRawValue($aid) , sprintf("incorrect attribute [%s] value : %s ", $aid, print_r($d->getValues() , true)));
+                $this->assertEquals($aval, $d->getRawValue($aid) , sprintf("Doc \"%s\" incorrect attribute [%s] value : %s ", $v["name"], $aid, print_r($d->getValues() , true)));
             }
         }
     }
@@ -129,8 +129,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Hello",
                                 "tst_text" => "The world",
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-17\n2013-06-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-17,2013-06-12}"
                             )
                         )
                     )
@@ -153,8 +153,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Hello",
                                 "tst_text" => "The world",
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-17\n2013-06-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-17,2013-06-12}"
                             )
                         ) ,
                         array(
@@ -162,8 +162,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Virgule , et ;",
                                 "tst_text" => 'The "world" end "earth"',
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-18\n2013-10-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12}"
                             )
                         )
                     )
@@ -187,8 +187,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Hello",
                                 "tst_text" => "The world",
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-17\n2013-06-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-17,2013-06-12}"
                             )
                         ) ,
                         array(
@@ -196,8 +196,59 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Virgule , et ;",
                                 "tst_text" => 'The "world" end "earth"',
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-18\n2013-10-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12}"
+                            )
+                        )
+                    )
+                )
+            ) ,
+            array(
+                "file" => "PU_data_dcp_goodfamilyforcsvcommadoublequote3.csv",
+                "separator" => ",",
+                "enclosure" => '"',
+                "famname" => "TST_GOODFAMIMPCSVCOMMA33",
+                "expect" => array(
+                    "title" => 'Test Famille, "Csv"',
+                    "alabel" => array(
+                        "tst_text" => 'Texte "principal"',
+                        "tst_date" => "Date, 'principale'"
+                    ) ,
+                    "doc" => array(
+                        array(
+                            "name" => "TST_CVSCOMMA331",
+                            "values" => array(
+                                "tst_title" => "Hello",
+                                "tst_text" => "The world\nis not enought",
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-17,2013-06-12}",
+                                "tst_collongtext" => '{"Ligne 1","Ligne 2"}',
+                                "tst_colrel" => "{10567,NULL}",
+                                "tst_colrels" => "{{10567},{5678}}"
+                            )
+                        ) ,
+                        array(
+                            "name" => "TST_CVSCOMMA332",
+                            "values" => array(
+                                "tst_title" => "Virgule , et ;",
+                                "tst_text" => 'Html tag <BR>',
+                                "tst_coltext" => "{Un,Deux,NULL}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,NULL}",
+                                "tst_collongtext" => '{"Ligne 1 <BR>.","Ligne 2",NULL}',
+                                "tst_colrel" => "{5672,7896,NULL}",
+                                "tst_colrels" => "{{12345,NULL},{5678,6789},{58,NULL}}"
+                            )
+                        ) ,
+                        array(
+                            "name" => "TST_CVSCOMMA333",
+                            "values" => array(
+                                "tst_title" => 'Trois',
+                                "tst_text" => '"été" & "hivers"',
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12}",
+                                "tst_collongtext" => "{\"Ligne 1\nSaut de ligne\",\"Ligne 2\"}",
+                                "tst_colrel" => "{5972,7896}",
+                                "tst_colrels" => "{{12345,098},{5678,6789}}"
                             )
                         )
                     )
@@ -220,8 +271,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Hello",
                                 "tst_text" => "The world",
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-17\n2013-06-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-17,2013-06-12}"
                             )
                         ) ,
                         array(
@@ -229,8 +280,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Virgule , et ;",
                                 "tst_text" => "L'être ou le n°3\nAccentué : ça c'est fait",
-                                "tst_coltext" => "Un\nDeux\nTrois",
-                                "tst_coldate" => "2012-02-18\n2013-10-12\n"
+                                "tst_coltext" => "{Un,Deux,Trois}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,NULL}"
                             )
                         ) ,
                         array(
@@ -238,8 +289,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => 'quote \' double " point-virgule ; et virgule ,',
                                 "tst_text" => "The \"world\" \nis beautiful\nisn't it",
-                                "tst_coltext" => "Un\nDeux\nTrois",
-                                "tst_coldate" => "2012-02-18\n2013-10-12\n"
+                                "tst_coltext" => "{Un,Deux,Trois}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,NULL}"
                             )
                         )
                     )
@@ -262,8 +313,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Hello",
                                 "tst_text" => "The world",
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-17\n2013-06-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-17,2013-06-12}"
                             )
                         ) ,
                         array(
@@ -271,8 +322,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Virgule , et ;",
                                 "tst_text" => "L'être ou le n°3\nAccentué : ça c'est fait",
-                                "tst_coltext" => "Un\nDeux\nTrois",
-                                "tst_coldate" => "2012-02-18\n2013-10-12\n"
+                                "tst_coltext" => "{Un,Deux,Trois}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,NULL}"
                             )
                         ) ,
                         array(
@@ -280,8 +331,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => 'quote \' double " point-virgule ; et virgule ,',
                                 "tst_text" => "The \"world\" \nis beautiful\nisn't it",
-                                "tst_coltext" => "Un\nDeux\nTrois",
-                                "tst_coldate" => "2012-02-18\n2013-10-12\n"
+                                "tst_coltext" => "{Un,Deux,Trois}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,NULL}"
                             )
                         )
                     )
@@ -304,8 +355,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Hello",
                                 "tst_text" => "The world",
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-17\n2013-06-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-17,2013-06-12}"
                             )
                         ) ,
                         array(
@@ -313,8 +364,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Virgule , et ;",
                                 "tst_text" => "L'être ou le n°3\nAccentué : ça c'est fait",
-                                "tst_coltext" => "Un\nDeux\nTrois",
-                                "tst_coldate" => "2012-02-18\n2013-10-12\n"
+                                "tst_coltext" => "{Un,Deux,Trois}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,NULL}"
                             )
                         ) ,
                         array(
@@ -322,8 +373,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => 'quote \' double " point-virgule ; et virgule ,',
                                 "tst_text" => "The \"world\" \nis beautiful\nisn't it",
-                                "tst_coltext" => "Un\nDeux\nTrois",
-                                "tst_coldate" => "2012-02-18\n2013-10-12\n"
+                                "tst_coltext" => "{Un,Deux,Trois}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,NULL}"
                             )
                         )
                     )
@@ -346,8 +397,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Hello",
                                 "tst_text" => "The world",
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-17\n2013-06-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-17,2013-06-12}"
                             )
                         ) ,
                         array(
@@ -355,8 +406,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Virgule , et ;",
                                 "tst_text" => "L'être ou le n°3\nAccentué : ça c'est fait",
-                                "tst_coltext" => "Un\nDeux\nTrois",
-                                "tst_coldate" => "2012-02-18\n2013-10-12\n"
+                                "tst_coltext" => "{Un,Deux,Trois}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,NULL}"
                             )
                         ) ,
                         array(
@@ -364,8 +415,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => 'quote \' double " point-virgule ; et virgule ,',
                                 "tst_text" => "The \"world\" \nis beautiful\nisn't it",
-                                "tst_coltext" => "Un\nDeux\nTrois",
-                                "tst_coldate" => "2012-02-18\n2013-10-12\n"
+                                "tst_coltext" => "{Un,Deux,Trois}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,NULL}"
                             )
                         )
                     )
@@ -388,8 +439,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Hello",
                                 "tst_text" => "The world",
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-17\n2013-06-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-17,2013-06-12}"
                             )
                         ) ,
                         array(
@@ -397,8 +448,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Virgule , et ;",
                                 "tst_text" => "L'être ou le n°3\nAccentué : ça c'est fait",
-                                "tst_coltext" => "Un\nDeux\nTrois",
-                                "tst_coldate" => "2012-02-18\n2013-10-12\n"
+                                "tst_coltext" => "{Un,Deux,Trois}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,NULL}"
                             )
                         ) ,
                         array(
@@ -406,8 +457,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => 'quote \' double " point-virgule ; et virgule ,',
                                 "tst_text" => "The \"world\" \nis beautiful\nisn't it",
-                                "tst_coltext" => "Un\nDeux\nTrois",
-                                "tst_coldate" => "2012-02-18\n2013-10-12\n"
+                                "tst_coltext" => "{Un,Deux,Trois}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,NULL}"
                             )
                         )
                     )
@@ -430,8 +481,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Hello",
                                 "tst_text" => "The i world",
-                                "tst_coltext" => "i\nii\niii\niv",
-                                "tst_coldate" => "2012-02-17\n2013-06-12\n2012-12-17\n2013-06-17"
+                                "tst_coltext" => "{i,ii,iii,iv}",
+                                "tst_coldate" => "{2012-02-17,2013-06-12,2012-12-17,2013-06-17}"
                             )
                         ) ,
                         array(
@@ -439,8 +490,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Le monde des i's",
                                 "tst_text" => "The \"i world\" \nis beautiful\nisn't it",
-                                "tst_coltext" => "i\nii\niii",
-                                "tst_coldate" => "2012-02-18\n2013-10-12\n2013-10-13"
+                                "tst_coltext" => "{i,ii,iii}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12,2013-10-13}"
                             )
                         )
                     )
@@ -463,8 +514,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Hello",
                                 "tst_text" => "Le monde à l'été",
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-17\n2013-06-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-17,2013-06-12}"
                             )
                         ) ,
                         array(
@@ -472,8 +523,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                             "values" => array(
                                 "tst_title" => "Virgule , et ;",
                                 "tst_text" => 'The "world" end "earth"',
-                                "tst_coltext" => "Un\nDeux",
-                                "tst_coldate" => "2012-02-18\n2013-10-12"
+                                "tst_coltext" => "{Un,Deux}",
+                                "tst_coldate" => "{2012-02-18,2013-10-12}"
                             )
                         )
                     )

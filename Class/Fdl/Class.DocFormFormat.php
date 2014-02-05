@@ -249,7 +249,7 @@ class DocFormFormat
                     $input = "<textarea {$this->onChange} $classname rows=2 name=\"" . $attrin . "\" ";
                     $input.= " id=\"" . $attridk . "\" ";
                     if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
-                    $input.= " >\n" . htmlentities((str_replace("<BR>", "\n", $value)) , ENT_COMPAT, "UTF-8") . "</textarea>";
+                    $input.= " >\n" . htmlentities($value, ENT_COMPAT, "UTF-8") . "</textarea>";
                 } else {
                     $hvalue = str_replace(array(
                         "[",
@@ -578,7 +578,7 @@ class DocFormFormat
             ) , array(
                 "&#091;",
                 "&#036;"
-            ) , htmlentities((str_replace("<BR>", "\n", $value)) , ENT_COMPAT, "UTF-8")) . "</textarea>";
+            ) , htmlentities($value, ENT_COMPAT, "UTF-8")) . "</textarea>";
             return $input;
         }
         /**
@@ -1590,11 +1590,22 @@ class DocFormFormat
                 $lay->set("aid", $idocid);
                 $lay->set("value", $value);
                 $lay->set("docid", ($doc->id == 0) ? $doc->fromid : $doc->id);
-                $value = str_replace("\n", "<BR>", $value);
                 $topt = array();
                 $lay->set("size", 1);
+                if (!is_array($value)) {
+                    $value = Doc::rawValueToArray($value);
+                }
                 if ($value != "") {
-                    $tval = explode("<BR>", $value);
+                    if (is_array($value)) {
+                        $tval = array_filter($value, function ($var)
+                        {
+                            return ($var !== null);
+                        });
+                        $lay->set("value", implode("\n", $tval));
+                    } else {
+                        $value = str_replace("\n", "<BR>", $value);
+                        $tval = explode("<BR>", $value);
+                    }
                     foreach ($tval as $k => $v) {
                         $topt[] = array(
                             "ltitle" => $doc->getTitle($v, '', $needLatest) ,

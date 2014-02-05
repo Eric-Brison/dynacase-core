@@ -22,10 +22,10 @@ include_once ("WHAT/Class.TEClient.php");
 /**
  * Modify the attrid_txt attribute
  * @param Action &$action current action
- * @global docid Http var : document identifier to modify
- * @global attrid Http var : the id of attribute to modify
- * @global index Http var : the range in case of array
- * @global tid Http var : task identifier
+ * @global string $docid Http var : document identifier to modify
+ * @global string $attrid Http var : the id of attribute to modify
+ * @global string $index Http var : the range in case of array
+ * @global string $tid Http var : task identifier
  *
  */
 function settxtfile(Action & $action)
@@ -68,7 +68,10 @@ function settxtfile(Action & $action)
                                         if ($doc->AffectColumn(array(
                                             $at
                                         ))) {
-                                            $doc->$at = sep_replace($doc->$at, $index, str_replace("\n", " ", file_get_contents($filename)));
+                                            
+                                            $txts = Doc::rawValueToArray($doc->$at);
+                                            $txts[$index] = file_get_contents($filename);
+                                            $doc->$at = Doc::arrayToRawValue($txts);
                                         }
                                     }
                                     $av = $attrid . '_vec';

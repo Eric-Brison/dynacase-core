@@ -28,9 +28,9 @@ class TestSuiteDcp
         $suite = new FrameworkDcp('Project');
         
         $suite->addTest(SuiteDcp::suite());
-        /* $suite->addTest(SuiteDcpAttribute::suite());
+        $suite->addTest(SuiteDcpAttribute::suite());
         $suite->addTest(SuiteDcpUser::suite());
-        $suite->addTest(SuiteDcpSecurity::suite());*/
+        $suite->addTest(SuiteDcpSecurity::suite());
         // ...
         printf("\nerror log in %s, messages in %s\n", self::logFile, self::msgFile);
         return $suite;

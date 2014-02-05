@@ -2739,8 +2739,19 @@ create unique index i_docir on doc(initid, revision);";
         $title1 = "";
         foreach ($ltitle as $k => $v) {
             if ($this->getRawValue($v->id) != "") {
-                if ($v->inArray() && ($v->getOption('multiple') == 'yes')) {
-                    $title1.= mb_trim(str_replace("<BR>", " ", $this->getRawValue($v->id))) . " ";
+                if ($v->isMultiple()) {
+                    $vs = Doc::rawValueToArray($this->getRawValue($v->id));
+                    foreach ($vs as $v1) {
+                        if (is_array($v1)) {
+                            foreach ($v1 as $v2) {
+                                if ($v2) $title1.= $v2 . " ";
+                            }
+                        } else {
+                            if ($v1) $title1.= $v1 . " ";
+                        }
+                    }
+                    //$title1.= mb_trim(str_replace("<BR>", " ", $this->getRawValue($v->id))) . " ";
+                    
                 } else $title1.= $this->getRawValue($v->id) . " ";
             }
         }
@@ -3369,6 +3380,8 @@ create unique index i_docir on doc(initid, revision);";
                 if ($err != "") return ($err);
             }
         }
+        $oriValue = $value;
+        //printf("\n<br/>TRY change [%s] To [%s]",$attrid, print_r($oriValue,true));
         $attrid = strtolower($attrid);
         /**
          * @var NormalAttribute $oattr
@@ -3382,6 +3395,7 @@ create unique index i_docir on doc(initid, revision);";
             $tval[$index] = $value;
             $value = $tval;
         }
+        
         if (is_array($value)) {
             if ($oattr && $oattr->type == 'htmltext') {
                 $value = $this->arrayToRawValue($value, "\r");
@@ -3390,7 +3404,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             } else {
                 if (count($value) == 0) $value = DELVALUE;
-                elseif ((count($value) == 1) && (first($value) === "" || first($value) === null) && (substr(key($value) , 0, 1) != "s")) $value = "\t"; // special tab for array of one empty cell
+                elseif ((count($value) == 1) && (first($value) === "" || first($value) === null) && (substr(key($value) , 0, 1) != "s")) $value = "{null}"; // special tab for array of one empty cell
                 else {
                     if ($oattr && $oattr->repeat && (count($value) == 1) && substr(key($value) , 0, 1) == "s") {
                         $ov = $this->getMultipleRawValues($attrid);
@@ -3444,11 +3458,16 @@ create unique index i_docir on doc(initid, revision);";
                     foreach ($tvalues as $kvalue => $avalue) {
                         if (($avalue != "") && ($avalue != "\t")) {
                             if ($oattr) {
-                                $avalue = trim($avalue);
+                                if (!is_array($avalue)) {
+                                    $avalue = trim($avalue);
+                                }
                                 $tvalues[$kvalue] = $avalue;
                                 switch ($oattr->type) {
                                     case 'account':
                                     case 'docid':
+                                        if (is_array($avalue)) {
+                                            $avalue = implode("<BR>", $avalue);
+                                        }
                                         if (!is_numeric($avalue)) {
                                             if ((!strstr($avalue, "<BR>")) && (!strstr($avalue, "\n"))) {
                                                 if ($oattr->getOption("docrev", "latest") == "latest") {
@@ -3457,29 +3476,28 @@ create unique index i_docir on doc(initid, revision);";
                                                     $tvalues[$kvalue] = getIdFromName($this->dbaccess, $avalue);
                                                 }
                                             } else {
-                                                $tnames = explode("\n", $avalue);
-                                                
-                                                $tids = array();
-                                                foreach ($tnames as $lname) {
-                                                    $mids = explode("<BR>", $lname);
-                                                    $tlids = array();
-                                                    foreach ($mids as $llname) {
-                                                        if (!is_numeric($llname)) {
-                                                            if ($oattr->getOption("docrev", "latest") == "latest") {
-                                                                $llid = getInitidFromName($llname);
-                                                            } else {
-                                                                $llid = getIdFromName($this->dbaccess, $llname);
-                                                            }
-                                                            $tlids[] = $llid ? $llid : $llname;
+                                                $mids = explode("<BR>", str_replace("\n", '<BR>', $avalue));
+                                                $tlids = array();
+                                                foreach ($mids as $llname) {
+                                                    if (!is_numeric($llname)) {
+                                                        if ($oattr->getOption("docrev", "latest") == "latest") {
+                                                            $llid = getInitidFromName($llname);
                                                         } else {
-                                                            $tlids[] = $llname;
+                                                            $llid = getIdFromName($this->dbaccess, $llname);
                                                         }
+                                                        $tlids[] = $llid ? $llid : trim($llname);
+                                                    } else {
+                                                        $tlids[] = trim($llname);
                                                     }
-                                                    $tids[] = implode('<BR>', $tlids);
                                                 }
                                                 
-                                                $tvalues[$kvalue] = implode("\n", $tids);
+                                                $tvalues[$kvalue] = $tlids;
                                             }
+                                        }
+                                        if ($oattr->isMultipleInArray() && (!is_array($tvalues[$kvalue]))) {
+                                            $tvalues[$kvalue] = array(
+                                                $tvalues[$kvalue]
+                                            );
                                         }
                                         break;
 
@@ -3660,10 +3678,16 @@ create unique index i_docir on doc(initid, revision);";
                                         break;
                                 }
                             }
+                        } elseif ($oattr->isMultipleInArray()) {
+                            $tvalues[$kvalue] = array();
                         }
                     }
-                    //print "<br/>change $attrid to :".$this->$attrid."->".implode("\n",$tvalues);
-                    $rawValue = implode("\n", $tvalues);
+                    if ($oattr->isMultiple()) {
+                        $rawValue = $this->phpArrayToPg($tvalues);
+                    } else {
+                        $rawValue = implode("\n", $tvalues);
+                    }
+                    // printf("\n<br/>change [%s] from [%s] to [%s]:->[%s]",$attrid,$this->$attrid, $rawValue, print_r($oriValue,true));
                     if ($this->_setValueDetectChange && $this->$attrid != $rawValue) {
                         $this->_oldvalue[$attrid] = $this->$attrid;
                         $this->hasChanged = true;
@@ -3697,7 +3721,9 @@ create unique index i_docir on doc(initid, revision);";
                     if ($this->AffectColumn(array(
                         $ak
                     ))) {
-                        $this->$ak = sep_replace($this->$ak, $index);
+                        $txts = self::rawValueToArray($this->$ak);
+                        $txts[$index] = '-';
+                        $this->$ak = self::arrayToRawValue($txts);
                     }
                 }
                 $this->fields[$ak] = $ak;
@@ -5981,7 +6007,76 @@ create unique index i_docir on doc(initid, revision);";
     public static function rawValueToArray($v)
     {
         if ($v === "" || $v === null) return array();
-        return explode("\n", str_replace("\r", "", $v));
+        if ($v[0] === '{') {
+            $o = self::pgArrayToPhp($v);
+            if (!is_array($o)) {
+                throw new \Dcp\Exception("CORE0100", $v);
+            }
+            return $o;
+        } else {
+            return explode("\n", str_replace("\r", "", $v));
+        }
+    }
+    
+    public static function phpArrayToPg(array $values, $fillTo = - 1)
+    {
+        if (empty($values)) return "null";
+        $fill = - 1;
+        if (is_array(current($values))) {
+            // need to pad for postgresql dimensionnals arrays
+            foreach ($values as & $value) {
+                $fill = max(count($value) , $fill);
+            }
+        }
+        foreach ($values as & $value) {
+            if ($value === '' || $value === null) $value = 'null';
+            elseif (is_array($value)) {
+                if ($fill > 0) $value = array_pad($value, $fill, null);
+                $value = self::phpArrayToPg($value);
+            } elseif (preg_match('/[,|"|\s]/u', $value) || $value === "null") {
+                $value = '"' . str_replace('"', '\\"', $value) . '"';
+            } else {
+                //$value = '"' . str_replace('"', '\\"', $value) . '"';
+                
+            }
+        }
+        
+        return '{' . implode($values, ',') . '}';
+    }
+    /**
+     * convert PG array to PHP array
+     * @param string $text
+     * @param array $output
+     * @param bool $limit
+     * @param int $offset
+     * @return array|int
+     */
+    public static function pgArrayToPhp($text, &$output = array() , $limit = false, $offset = 1)
+    {
+        if (false === $limit) {
+            $limit = strlen($text) - 1;
+            $output = array();
+        }
+        if ('{}' !== $text) do {
+            if ('{' !== $text{$offset}) {
+                preg_match("/(\\{?\"([^\"\\\\]|\\\\.)*\"|[^,{}]+)+([,}]+)/u", $text, $match, 0, $offset);
+                
+                $offset+= strlen($match[0]);
+                
+                if ($match[1] === "NULL" or $match[1] === "null") {
+                    $output[] = null;
+                } else {
+                    $output[] = ('"' !== $match[1] {
+                        0
+                    } ? $match[1] : stripcslashes(substr($match[1], 1, -1)));
+                }
+                if (isset($match[3]) && '},' === $match[3]) return $offset;
+            } else {
+                $offset = self::pgArrayToPhp($text, $output[], $limit, $offset + 1);
+            }
+        }
+        while ($limit > $offset);
+        return $output;
     }
     /**
      * convert flat attribute value to an array for multiple attributes
@@ -6004,9 +6099,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     public static function arrayToRawValue($v, $br = '<BR>')
     {
-        $v = str_replace("\n", $br, $v);
+        
         if (count($v) == 0) return "";
-        return implode("\n", $v);
+        return self::phpArrayToPg($v);
     }
     /**
      * convert array value to flat attribute value
@@ -6441,7 +6536,6 @@ create unique index i_docir on doc(initid, revision);";
             if ($cid != "fam") {
                 $sql.= "create trigger AUVR{$cid} BEFORE UPDATE  ON $tableName FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
                 $sql.= "create trigger VFULL{$cid} BEFORE INSERT OR UPDATE  ON $tableName FOR EACH ROW EXECUTE PROCEDURE fullvectorize$cid();";
-
             } else {
                 $sql.= "create trigger UVdocfam before insert or update on family.families FOR EACH ROW EXECUTE PROCEDURE upvaldocfam();";
             }

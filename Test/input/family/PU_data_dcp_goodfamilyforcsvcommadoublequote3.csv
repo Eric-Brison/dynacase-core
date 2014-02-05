@@ -1,0 +1,30 @@
+"//","héritage","titre","id","class","name",,,,,,,,,,
+"BEGIN",,"Test Famille, ""Csv""",,,"TST_GOODFAMIMPCSVCOMMA33",,,,,,,,,,
+"//",,,,,,,,,,,,,,,
+"RESET","attributes",,,,,,,,,,,,,,
+"//","idattr","idframe","label","T","A","type","ord","vis","need","link","phpfile","phpfunc","elink","constraint","option"
+"ATTR","TST_FRAME",,"Cadre Un","N","N","frame",,"W","N",,,,,,
+"ATTR","TST_TITLE","TST_FRAME","Titre","Y","N","text",10,"W","Y",,,,,,
+"ATTR","TST_TEXT","TST_FRAME","Texte ""principal""","N","N","longtext",20,"W","N",,,,,,
+"ATTR","TST_DATE","TST_FRAME","Date, 'principale'","N","N","date",30,"W","N",,,,,,
+"ATTR","TST_ARRAY","TST_FRAME","Tableau simple","N","N","array(""empty"")",40,"U","N",,,,,,
+"ATTR","TST_COLTEXT","TST_ARRAY","Texte colonne","N","N","text",50,"W","N",,,,,,
+"ATTR","TST_COLLONGTEXT","TST_ARRAY","Long colonne","N","N","longtext",60,"W","N",,,,,,
+"ATTR","TST_COLREL","TST_ARRAY","Relations","N","N","docid",60,"W","N",,,,,,"multiple=no"
+"ATTR","TST_COLRELS","TST_ARRAY","Relations","N","N","docid",60,"W","N",,,,,,"multiple=yes"
+"ATTR","TST_COLDATE","TST_ARRAY","Date colonne","N","N","date",60,"W","N",,,,,,
+"//",,,,,,,,,,,,,,,
+"END",,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+"ORDER","TST_GOODFAMIMPCSVCOMMA33","-","-","TST_TITLE","TST_TEXT","TST_DATE","TST_COLTEXT","TST_COLDATE","TST_COLLONGTEXT","TST_COLREL","TST_COLRELS",,,,
+"DOC","TST_GOODFAMIMPCSVCOMMA33","TST_CVSCOMMA331",,"Hello","The world
+is not enought","2012-02-14","{Un,Deux}","{2012-02-17,2013-06-12}","{Ligne 1,Ligne 2}","{10567}","{10567, 5678}",,,,
+"DOC","TST_GOODFAMIMPCSVCOMMA33","TST_CVSCOMMA332",,"Virgule , et ;","Html tag <BR>","2012-02-14","Un
+Deux","2012-02-18
+2013-10-12","Ligne 1 <BR>.
+Ligne 2","5672\n7896","{{12345},{5678, 6789},{58}}",,,,
+"DOC","TST_GOODFAMIMPCSVCOMMA33","TST_CVSCOMMA333",,"Trois","""été"" & ""hivers""","2012-02-14","Un
+Deux","2012-02-18
+2013-10-12","{""Ligne 1
+Saut de ligne"",""Ligne 2""}","{5972,7896}","{{""12345"", 098},{5678, 6789}}",,,,

@@ -31,7 +31,7 @@ class TestGetTextualValue extends TestCaseDcpCommonFamily
         }
         foreach ($data['get'] as $attrName => $expectedValue) {
             $value = $doc->getTextualAttrValue($attrName);
-            $this->assertTrue(($value == $expectedValue) , sprintf("Unexpected value '%s' for attribute '%s' on document '%s': expected value = '%s'", $value, $attrName, $data['docid'], $expectedValue));
+            $this->assertTrue(($value == $expectedValue) , sprintf("Unexpected value '%s' for attribute '%s' on document '%s': \nexpected value = '%s'\nRaw : %s", $value, $attrName, $data['docid'], $expectedValue, $doc->getRawValue($attrName)));
         }
     }
     public function data_getTextualValue()
@@ -67,9 +67,9 @@ class TestGetTextualValue extends TestCaseDcpCommonFamily
                         'TST_DOUBLES' => "-54.000",
                         'TST_INTS' => "0",
                         'TST_DATES' => "2013-04-20",
-                        'TST_TIMES' => "10:00",
+                        'TST_TIMES' => "10:00:00",
                         'TST_HTMLTEXTS' => '<p class="foo">Foo</p>' . "\n" . '<p class="bar">Bar</p>',
-                        'TST_TIMESTAMPS' => "2013-09-30 10:00",
+                        'TST_TIMESTAMPS' => "2013-09-30 10:00:00",
                         'TST_RELS' => "",
                         'TST_ENUMS' => "A\nB\nC",
                         'TST_COLORS' => "#f3f",
@@ -113,7 +113,7 @@ class TestGetTextualValue extends TestCaseDcpCommonFamily
                         'TST_DATES' => "2020-05-23\n2017-04-13",
                         'TST_TIMES' => "04:07:03",
                         'TST_HTMLTEXTS' => '<p class="foo">Foo</p>' . "\n" . '<p class="bar">Bar</p>',
-                        'TST_TIMESTAMPS' => "2013-09-30 20:10:41\n2014-05-23",
+                        'TST_TIMESTAMPS' => "2013-09-30 20:10:41\n2014-05-23 00:00:00",
                         'TST_RELS' => "User One\nUser Two",
                         'TST_ENUMS' => "C\n\nB",
                         'TST_COLORS' => "#50ED42",

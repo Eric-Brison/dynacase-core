@@ -54,7 +54,7 @@ namespace {
          * can use addValue only for multiple attribute
          * @see UpdateAttribute::addValue
          */
-        const UPAT0007 = 'cannot use addValue :  the attribute "%s" (%s) must be declared as multiple';
+        const UPAT0007 = 'cannot use addValue :  the attribute "%s" (%s) must be declared as single multiple';
         /**
          * @errorCode
          * can use array argument for addValue only for multiple attribute which are in array and must not have multiple=yes option
@@ -67,6 +67,12 @@ namespace {
          * @see UpdateAttribute::removeValue
          */
         const UPAT0009 = 'cannot use removeValue :  the attribute "%s" (%s) must be declared as multiple';
+        /**
+         * @errorCode
+         * can use addValue only for multiple attribute whiech are in arrays
+         * @see UpdateAttribute::addValue
+         */
+        const UPAT0010 = 'cannot use addValue :  the attribute "%s" (%s) must not be declared as multiple in array';
         /**
          * @errorCode
          * for beautifier

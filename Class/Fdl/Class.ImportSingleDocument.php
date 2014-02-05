@@ -504,7 +504,7 @@ class importSingleDocument
                         }
                         $err = $this->doc->Add();
                         if ($err != "") {
-                            $this->setError("DOC0111", $this->doc->name, $err);
+                            $this->setError("DOC0124", $this->doc->name, $err);
                             return $this;
                         }
                         $this->tcr["id"] = $this->doc->id;

@@ -362,33 +362,35 @@ class checkDb
     {
         $err = '';
         $rtype = 'text';
-        if (!$oa->inArray()) {
-            switch ($oa->type) {
-                case 'int':
-                case 'integer':
-                    $rtype = 'int4';
-                    break;
+        
+        switch ($oa->type) {
+            case 'int':
+            case 'integer':
+                $rtype = 'int4';
+                break;
 
-                case 'money':
-                case 'double':
-                case 'float':
-                    $rtype = 'float8';
-                    break;
+            case 'money':
+            case 'double':
+            case 'float':
+                $rtype = 'float8';
+                break;
 
-                case 'date':
-                    $rtype = 'date';
-                    break;
+            case 'date':
+                $rtype = 'date';
+                break;
 
-                case 'timestamp':
-                    $rtype = 'timestamp';
-                    break;
+            case 'timestamp':
+                $rtype = 'timestamp';
+                break;
 
-                case 'time':
-                    $rtype = 'time';
-                    break;
-            }
+            case 'time':
+                $rtype = 'time';
+                break;
         }
         
+        if ($oa->isMultiple()) {
+            $rtype = '_' . $rtype;
+        }
         if ($rtype != $pgtype) {
             $err = sprintf("expected [%s], found [%s]", $rtype, $pgtype);
         }

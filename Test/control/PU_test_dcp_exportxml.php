@@ -154,6 +154,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
             } else {
                 $value = $attr->getAttribute($domAttr);
             }
+            $this->assertEquals($expectedValue[$ka], $value, sprintf("incorrect value for attribute %s in %s document %s", $attrName, $docName, $this->dom->saveXML()));
             $this->assertTrue($expectedValue[$ka] === $value, sprintf("incorrect value for attribute %s in %s document", $attrName, $docName));
             $ka++;
         }

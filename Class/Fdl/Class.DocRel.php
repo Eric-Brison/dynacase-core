@@ -136,13 +136,18 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                 }
                 // reset old relations
                 pg_query($this->dbid, sprintf("delete from docrel where sinitid=%d and type='%s'", $doc->initid, pg_escape_string($v->id)));
-                if ($v->inArray()) $tv = array_unique($doc->getMultipleRawValues($v->id));
+                if ($v->inArray()) $tv = $doc->getMultipleRawValues($v->id);
                 else $tv = array(
                     $doc->$k
                 );
                 $tvrel = array();
                 foreach ($tv as $relid) {
-                    if (strpos($relid, '<BR>') !== false) {
+                    if (is_array($relid)) {
+                        $tvrel = array_merge($tvrel, array_filter($relid, function ($var)
+                        {
+                            return is_numeric($var);
+                        }));
+                    } elseif (strpos($relid, '<BR>') !== false) {
                         $tt = explode('<BR>', $relid);
                         foreach ($tt as $brelid) {
                             if (is_numeric($brelid)) $tvrel[] = intval($brelid);
@@ -181,7 +186,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                     $tin[] = sprintf("%d\t%d\t%s\t%s\t%s\t%s\t%s\t%s", $doc->initid, $row["initid"], str_replace("\t", " ", $doc->title) , str_replace("\t", " ", $row["title"]) , $doc->icon, $row["icon"], $reltype, $doc->doctype);
                     $c++;
                 }
-
+                
                 pg_copy_from($this->dbid, "docrel", $tin);
             }
         }
