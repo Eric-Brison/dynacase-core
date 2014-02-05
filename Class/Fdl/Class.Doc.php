@@ -8985,9 +8985,9 @@ create unique index i_docir on doc(initid, revision);";
             if (!in_array($this->lockdomainid, $domains)) $this->lockdomainid = '';
             else {
                 if ($this->locked > 0) {
-                    $err = simpleQuery($this->dbaccess, sprintf("select login from users where id=%d", $this->locked) , $lockLogin, true, true);
+                    $err = simpleQuery($this->dbaccess, sprintf("select id from users where id=%d", $this->locked) , $lockUserId, true, true);
                     
-                    if ($lockLogin && (!$this->isInDomain(true, $lockLogin))) {
+                    if ($lockUserId && (!$this->isInDomain(true, $lockUserId))) {
                         $this->lockdomainid = '';
                     }
                 }
@@ -9002,15 +9002,15 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * verify is doc is set in a domain
      * @param boolean $user limit domains where user as set document
-     * @param string $login another login else current user
+     * @param string $userId another user's id else current user
      * @return bool
      */
-    public function isInDomain($user = true, $login = '')
+    public function isInDomain($user = true, $userId = '')
     {
         if ($user) {
             global $action;
-            if (!$login) $login = $action->user->login;
-            if (preg_match('/_' . $login . '$/m', $this->domainid)) return true;
+            if (!$userId) $userId = $action->user->id;
+            if (preg_match('/_' . $userId . '$/m', $this->domainid)) return true;
             return false;
         } else {
             return (!empty($this->domainid));
