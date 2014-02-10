@@ -190,6 +190,11 @@ class ErrorCodeDOC
     const DOC0123 = 'cannot set default value for "%s". It is not an attribute for "%s" ("%s") family';
     /**
      * @errorCode
+     * Import Error when add document
+     */
+    const DOC0124 = 'add error in "%s" document when add it: %s';
+    /**
+     * @errorCode
      * the document cannot be inserted in folder target
      * @note when DOC has defined a folder target
      */

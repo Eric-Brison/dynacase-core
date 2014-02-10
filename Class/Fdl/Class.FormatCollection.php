@@ -323,11 +323,25 @@ class FormatCollection
         }
         return $s;
     }
+    /**
+     * delete last null values
+     * @param array $t
+     * @return array
+     */
+    private static function rtrimNull(array $t)
+    {
+        $i = count($t) - 1;
+        for ($k = $i; $k >= 0; $k--) {
+            if ($t[$k] === null) unset($t[$k]);
+            else break;
+        }
+        return $t;
+    }
     public function getInfo(NormalAttribute $oa, $value, $doc = null)
     {
         $info = null;
         if ($oa->isMultiple()) {
-            if ($oa->inArray() && $oa->getOption("multiple") == "yes") {
+            if ($oa->isMultipleInArray()) {
                 // double level multiple
                 $tv = Doc::rawValueToArray($value);
                 if (count($tv) == 1 && $tv[0] == "\t") {
@@ -335,9 +349,18 @@ class FormatCollection
                 }
                 foreach ($tv as $k => $av) {
                     if ($av) {
-                        $tvv = explode('<BR>', $av); // second level multiple
-                        foreach ($tvv as $avv) {
-                            $info[$k][] = $this->getSingleInfo($oa, $avv, $doc);
+                        if (is_array($av)) {
+                            $tvv = $this->rtrimNull($av);
+                        } else {
+                            $tvv = explode('<BR>', $av); // second level multiple
+                            
+                        }
+                        if (count($tvv) == 0) {
+                            $info[$k] = array();
+                        } else {
+                            foreach ($tvv as $avv) {
+                                $info[$k][] = $this->getSingleInfo($oa, $avv, $doc);
+                            }
                         }
                     } else {
                         $info[$k] = array();
@@ -433,13 +456,20 @@ class FormatCollection
             "count" => $sum
         );
     }
+    /**
+     * @param array|stdClass $info
+     * @param NormalAttribute $oAttr
+     * @param int $index
+     * @param array $configuration
+     * @return string
+     */
     public static function getDisplayValue($info, $oAttr, $index = - 1, $configuration = array())
     {
         $attrInArray = ($oAttr->inArray());
         $attrIsMultiple = ($oAttr->getOption('multiple') == 'yes');
         $sepRow = isset($configuration['multipleSeparator'][0]) ? $configuration['multipleSeparator'][0] : "\n";
         $sepMulti = isset($configuration['multipleSeparator'][1]) ? $configuration['multipleSeparator'][1] : ", ";
-        $displayDocId = ($configuration['displayDocId'] === true);
+        $displayDocId = (isset($configuration['displayDocId']) && $configuration['displayDocId'] === true);
         
         if (is_array($info) && $index >= 0) {
             $info = array(
@@ -613,7 +643,9 @@ class EnumAttributeValue extends StandardAttributeValue
     public function __construct(NormalAttribute $oa, $v)
     {
         $this->value = $v;
-        $this->displayValue = $oa->getEnumLabel($v);
+        if ($v) {
+            $this->displayValue = $oa->getEnumLabel($v);
+        }
     }
 }
 
@@ -666,7 +698,7 @@ class DocidAttributeValue extends StandardAttributeValue
         $this->value = $v;
         $this->displayValue = DocTitle::getRelationTitle($v, $oa->getOption("docrev", "latest") == "latest", $doc);
         if ($this->displayValue !== false) {
-            if ($v !== '') {
+            if ($v !== '' && $v !== null) {
                 if ($iconsize > 0) {
                     $prop = getDocProperties($v, $oa->getOption("docrev", "latest") == "latest", array(
                         

@@ -74,11 +74,15 @@ class DocHtmlFormat
         $showEmpty = $this->oattr->getOption('showempty');
         
         if (($this->oattr->repeat) && ($this->index < 0)) {
-            $tvalues = explode("\n", $value);
+            $tvalues = Doc::rawValueToArray($value);
         } else {
             $tvalues[$this->index] = $value;
         }
         $this->attrid = $this->oattr->id;
+        
+        if (empty($tvalues) && $showEmpty) {
+            return $showEmpty;
+        }
         $thtmlval = array();
         foreach ($tvalues as $kvalue => $avalue) {
             if ($abstractMode && empty($avalue) && !$showEmpty) {
@@ -183,8 +187,7 @@ class DocHtmlFormat
                 }
                 
                 $abegin = $aend = '';
-                
-                if ($htmlval === '' && $showEmpty) {
+                if (($htmlval === '' || $htmlval === null) && $showEmpty) {
                     if ($abstractMode) {
                         // if we are not in abstract mode, the same heuristic is at array level,
                         // but arrays does not exists in abstract mode
@@ -279,7 +282,7 @@ class DocHtmlFormat
             }
         }
         
-        return implode("<BR>", $thtmlval);
+        return implode("<br/>", $thtmlval);
     }
     /**
      * format Default attribute
@@ -362,7 +365,7 @@ class DocHtmlFormat
                 if (($this->oattr->repeat) && ($this->index <= 0)) $idx = $kvalue;
                 else $idx = $this->index;
                 $inline = $this->oattr->getOption("inline");
-                $htmlval = $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes"),$avalue);
+                $htmlval = $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes") , $avalue);
             } else {
                 if (empty($avalue)) {
                     $localImage = $this->oattr->getOption('showempty');
@@ -561,8 +564,8 @@ class DocHtmlFormat
      */
     public function formatLongtext($kvalue, $avalue)
     {
-        if ($this->useEntities) $bvalue = nl2br(htmlentities((str_replace("<BR>", "\n", $avalue)) , ENT_COMPAT, "UTF-8"));
-        else $bvalue = (str_replace("<BR>", "\n", $avalue));
+        if ($this->useEntities) $bvalue = nl2br(htmlentities($avalue, ENT_COMPAT, "UTF-8"));
+        else $bvalue = $avalue;
         $shtmllink = $this->htmlLink ? "true" : "false";
         $bvalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->doc->getDocAnchor('\\2',\"$this->target\",$shtmllink)", $bvalue);
         $htmlval = str_replace(array(
@@ -877,9 +880,24 @@ class DocHtmlFormat
             }
             $isLatest = $this->oattr->getOption("docrev", "latest") == "latest";
             if ($multiple) {
-                $avalue = str_replace("\n", "<BR>", $avalue);
-                $tval = explode("<BR>", $avalue);
+                //$avalue = str_replace("\n", "<BR>", $avalue);
+                if (is_array($avalue)) $tval = $avalue;
+                else $tval = Doc::rawValueToArray($avalue);
                 $thval = array();
+                // in case to display multiple in array itself: flating arrayc
+                $tvalu = array();
+                $multiple2 = false;
+                foreach ($tval as $kv => $vv) {
+                    if (is_array($vv)) {
+                        $tvalu = array_merge($tvalu, $vv);
+                        $multiple2 = true;
+                    } else {
+                        $tvalu[] = $vv;
+                    }
+                }
+                if ($multiple2) {
+                    $tval = array_unique($tvalu);
+                }
                 foreach ($tval as $kv => $vv) {
                     if (trim($vv) == "") $thval[] = $vv;
                     else {

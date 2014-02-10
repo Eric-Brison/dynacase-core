@@ -54,7 +54,7 @@ class TestLink extends TestCaseDcpDocument
         $doc = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($doc->isAlive() , "document $docName is not alive");
         $url = $doc->urlWhatEncode($link);
-        $this->assertEquals($expectedLink, $url, "url link is not correctly encoded");
+        $this->assertEquals($expectedLink, $url, sprintf("url link is not correctly encoded [%s]", urldecode($url)));
     }
     /**
      * @dataProvider dataParamLinks
@@ -140,7 +140,7 @@ class TestLink extends TestCaseDcpDocument
             array(
                 "linkTwo",
                 "http://test.com/?date=%tst_coldate%",
-                getLcDate() == 'iso' ? 'http://test.com/?date=2011-11-01%5Cn2011-11-02' : "http://test.com/?date=01%2F11%2F2011%5Cn02%2F11%2F2011"
+                'http://test.com/?date=%7B2011-11-01%2C2011-11-02%7D'
             ) ,
             array(
                 "linkTwo",

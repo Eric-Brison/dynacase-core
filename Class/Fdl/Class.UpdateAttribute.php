@@ -216,13 +216,21 @@ class UpdateAttribute
         }
         $this->logStatus(sprintf(_("Update history done")));
     }
-    
-    private function executeSetValue(array $ids, $attrid, $newValue)
+    /**
+     * @param array $ids
+     * @param NormalAttribute $oattr
+     * @param $newValue
+     */
+    private function executeSetValue(array $ids, $oattr, $newValue)
     {
         $this->logStatus(sprintf(_("process setValue for %d documents") , count($ids)));
         if (is_array($newValue)) $newValue = Doc::arrayToRawValue($newValue);
-        $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $newValue));
-        $sql = sprintf("update %s set \"%s\"=E'%s' where locked != -1 and initid in (%s)", $this->familyTable, ($attrid) , pg_escape_string($newValue) , implode(',', $ids));
+        elseif ($oattr->isMultiple()) {
+            $newValue = Doc::rawValueToArray($newValue);
+            $newValue = Doc::arrayToRawValue($newValue);
+        }
+        $this->logStatus(sprintf(_("argument %s=>%s") , $oattr->id, $newValue));
+        $sql = sprintf("update %s set \"%s\"=E'%s' where locked != -1 and initid in (%s)", $this->familyTable, ($oattr->id) , pg_escape_string($newValue) , implode(',', $ids));
         simpleQuery($this->dbaccess, $sql);
         foreach ($ids as $id => $initid) {
             $this->results[$initid]->changed = true;
@@ -244,8 +252,6 @@ class UpdateAttribute
             $searchValue = pg_escape_string($valueToRemove);
         }
         $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, print_r($valueToRemove, true)));
-        $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\",E'(\\\\A|\\n|<BR>)(%s)(\\\\Z|\n|<BR>)',E'\\\\1\\\\3','g')  where locked != -1 and initid in (%s)", $this->familyTable, $attrid, $attrid, $searchValue, implode(',', $ids));
-        simpleQuery($this->dbaccess, $sql);
         
         $oa = $this->getFamilyAttribute($attrid);
         $singleMultiple = $doubleMultiple = false;
@@ -254,19 +260,22 @@ class UpdateAttribute
         } elseif ($oa->isMultiple()) {
             $singleMultiple = true;
         }
-        if ($oa->getOption("multiple") == "yes") {
-            if ($singleMultiple) {
-                $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\", E'(\\\\A\\n)|(\\n\\\\Z)', '','g')  where locked != -1 and initid in (%s)", $this->familyTable, $attrid, $attrid, implode(',', $ids));
-                simpleQuery($this->dbaccess, $sql);
-                $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\", E'([\\n]+)', E'\n','g')  where locked != -1 and initid in (%s)", $this->familyTable, $attrid, $attrid, implode(',', $ids));
-                simpleQuery($this->dbaccess, $sql);
-            } elseif ($doubleMultiple) {
-                $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\", '(\\\\A<BR>)|(<BR>\\\\Z)', '','g')  where locked != -1 and initid in (%s)", $this->familyTable, $attrid, $attrid, implode(',', $ids));
-                simpleQuery($this->dbaccess, $sql);
-                $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\", '(<BR>)+', '<BR>','g')  where locked != -1 and initid in (%s)", $this->familyTable, $attrid, $attrid, implode(',', $ids));
+        if ($singleMultiple || $doubleMultiple) {
+            
+            if (!is_array($valueToRemove)) {
+                $valueToRemove = array(
+                    $valueToRemove
+                );
+            }
+            foreach ($valueToRemove as $oneValueToRemove) {
+                $sql = sprintf("update %s set \"%s\"=array_replace(\"%s\", E'%s',null)  where locked != -1 and initid in (%s)", $this->familyTable, $attrid, $attrid, $oneValueToRemove, implode(',', $ids));
                 simpleQuery($this->dbaccess, $sql);
             }
+        } else {
+            // single value
+            
         }
+        
         foreach ($ids as $id => $initid) {
             $this->results[$initid]->changed = true;
         }
@@ -283,17 +292,14 @@ class UpdateAttribute
         $oa = $this->getFamilyAttribute($attrid);
         if ($oa->isMultipleInArray()) {
             //double multiple
-            $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\",E'\$',E'<BR>%s','gn')  where locked != -1 and \"%s\" is not null and initid in (%s)", $this->familyTable, $pattrid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
+            // not supported
             
-            simpleQuery($this->dbaccess, $sql);
-            // trim when is first
-            $sql = sprintf("update %s set \"%s\"=regexp_replace(\"%s\",E'^<BR>','','gn')  where locked != -1 and \"%s\" is not null and initid in (%s)", $this->familyTable, $pattrid, $pattrid, $pattrid, implode(',', $ids));
-            
-            simpleQuery($this->dbaccess, $sql);
         } else {
             // add if not null
-            $sql = sprintf("update %s set \"%s\"=\"%s\" || E'\\n%s' where locked != -1 and \"%s\" is not null and initid in (%s)", $this->familyTable, $pattrid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
-            
+            if ($valueToAdd[0] != '{') {
+                $valueToAdd = '{' . $valueToAdd . '}';
+            }
+            $sql = sprintf("update %s set \"%s\" = array_cat(\"%s\", E'%s') where locked != -1 and \"%s\" is not null and initid in (%s)", $this->familyTable, $pattrid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
             simpleQuery($this->dbaccess, $sql);
             // set when is null
             $sql = sprintf("update %s set \"%s\"= E'%s' where locked != -1 and \"%s\" is null and initid in (%s)", $this->familyTable, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
@@ -306,17 +312,26 @@ class UpdateAttribute
         
         $this->logStatus(sprintf(_("%d documents are updated") , count($ids)));
     }
-    
-    private function executeReplaceValue(array $ids, $attrid, $oldvalue, $newValue)
+    /**
+     * @param array $ids
+     * @param NormalAttribute $oattr
+     * @param $oldvalue
+     * @param $newValue
+     */
+    private function executeReplaceValue(array $ids, $oattr, $oldvalue, $newValue)
     {
         $this->logStatus(sprintf(_("process replaceValue for %d documents") , count($ids)));
         
         if (is_array($newValue)) $newValue = Doc::arrayToRawValue($newValue);
         
-        $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $oldvalue . '/' . $newValue));
+        $this->logStatus(sprintf(_("argument %s=>%s") , $oattr->id, $oldvalue . '/' . $newValue));
         $this->getFamily();
         //  replace for multiple
-        $sql = sprintf("update %s set \"%s\"= regexp_replace(\"%s\",E'(\\\\A|\\n)%s(\\\\Z|\\n)',E'\\\\1%s\\\\2','g')  where locked != -1  and initid in (%s)", $this->familyTable, strtolower($attrid) , strtolower($attrid) , pg_escape_string($oldvalue) , pg_escape_string($newValue) , implode(',', $ids));
+        if ($oattr->isMultiple()) {
+            $sql = sprintf("update %s set \"%s\"= array_replace(\"%s\",E'%s',E'%s')  where locked != -1  and initid in (%s)", $this->familyTable, strtolower($oattr->id) , strtolower($oattr->id) , pg_escape_string($oldvalue) , pg_escape_string($newValue) , implode(',', $ids));
+        } else {
+            $sql = sprintf("update %s set \"%s\"= E'%s'  where \"%s\"= E'%s' and locked != -1  and initid in (%s)", $this->familyTable, strtolower($oattr->id) , pg_escape_string($newValue) , strtolower($oattr->id) , pg_escape_string($oldvalue) , implode(',', $ids));
+        }
         simpleQuery($this->dbaccess, $sql);
         
         foreach ($ids as $id => $initid) {
@@ -362,7 +377,7 @@ class UpdateAttribute
             $this->beginTransaction();
             if ($this->historyComment) $this->executeHistory($ids + $upToDateIds);
             if ($this->useRevision) $this->executeRevision($ids);
-            $this->executeSetValue($ids, $attrid, $newValue);
+            $this->executeSetValue($ids, $oa, $newValue);
             
             if ($this->useProfiling) $this->executeProfiling($ids);
             $this->endTransaction();
@@ -410,7 +425,7 @@ class UpdateAttribute
             $this->beginTransaction();
             if ($this->historyComment) $this->executeHistory($ids + $upToDateIds);
             if ($this->useRevision) $this->executeRevision($ids);
-            $this->executeReplaceValue($ids, $attrid, $oldValue, $newValue);
+            $this->executeReplaceValue($ids, $oa, $oldValue, $newValue);
             if ($this->useProfiling) $this->executeProfiling($ids);
             $this->endTransaction();
         }
@@ -451,6 +466,9 @@ class UpdateAttribute
         
         if (!$singleMultiple && !$doubleMultiple) {
             throw new \Dcp\Upat\Exception("UPAT0007", $attrid, $oa->docname);
+        }
+        if ($doubleMultiple) {
+            throw new \Dcp\Upat\Exception("UPAT0010", $attrid, $oa->docname);
         }
         
         $valueToAdd = $this->name2id($oa, $valueToAdd);
@@ -541,7 +559,6 @@ class UpdateAttribute
             throw new \Dcp\Upat\Exception("UPAT0009", $attrid, $oa->docname);
         }
         $valueToRemove = $this->name2id($oa, $valueToRemove);
-        
         $ids = array();
         $upToDateIds = array();
         /**
@@ -624,9 +641,12 @@ class UpdateAttribute
     }
     private function linearize($v)
     {
-        $t = explode("\n", str_replace('<BR>', "\n", $v));
+        $t = Doc::rawValueToArray($v);
         foreach ($t as $k => $vt) {
             if (!$vt) unset($t[$k]);
+            elseif (is_array($vt)) {
+                $t = array_merge($t, $vt);
+            }
         }
         return $t;
     }

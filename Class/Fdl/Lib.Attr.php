@@ -204,7 +204,7 @@ function AttrToPhp($dbaccess, $tdoc)
                         $funcformat = "";
                     }
                     
-                    if (preg_match("/([a-z]+)\([\"'](.*)[\"']\)/i", $v->type, $reg)) {
+                    if (preg_match("/([a-z]+)\\([\"'](.*)[\"']\\)/i", $v->type, $reg)) {
                         $atype = $reg[1];
                         $aformat = $reg[2];
                         if ($atype == "idoc") {
@@ -221,7 +221,7 @@ function AttrToPhp($dbaccess, $tdoc)
                         $atype = $reg[1];
                         $repeat = "true";
                     } else {
-                        if (strpos($v->options, "multiple=yes") !== false) {
+                        if (preg_match('/\bmultiple=yes\b/', $v->options) > 0) {
                             $repeat = "true";
                         } else {
                             if (isset($tnormal[strtolower($v->frameid) ])) {
@@ -308,38 +308,36 @@ function AttrToPhp($dbaccess, $tdoc)
                                 "attrid" => ($v->id)
                             );
                         }
-                        if ($repeat == "true") {
-                            $attrids[$v->id] = ($v->id) . " text"; // for the moment all repeat are text
-                            
-                        } else {
-                            switch ($atype) {
-                                case 'double':
-                                case 'float':
-                                case 'money':
-                                    $attrids[$v->id] = ($v->id) . " float8";
-                                    break;
+                        
+                        $pgRepeat = ($repeat == "true") ? '[]' : '';
+                        switch ($atype) {
+                            case 'double':
+                            case 'float':
+                            case 'money':
+                                $attrids[$v->id] = ($v->id) . " float8";
+                                break;
 
-                                case 'int':
-                                case 'integer':
-                                    $attrids[$v->id] = ($v->id) . " int4";
-                                    break;
+                            case 'int':
+                            case 'integer':
+                                $attrids[$v->id] = ($v->id) . " int4";
+                                break;
 
-                                case 'date':
-                                    $attrids[$v->id] = ($v->id) . " date";
-                                    break;
+                            case 'date':
+                                $attrids[$v->id] = ($v->id) . " date";
+                                break;
 
-                                case 'timestamp':
-                                    $attrids[$v->id] = ($v->id) . " timestamp without time zone";
-                                    break;
+                            case 'timestamp':
+                                $attrids[$v->id] = ($v->id) . " timestamp without time zone";
+                                break;
 
-                                case 'time':
-                                    $attrids[$v->id] = ($v->id) . " time";
-                                    break;
+                            case 'time':
+                                $attrids[$v->id] = ($v->id) . " time";
+                                break;
 
-                                default:
-                                    $attrids[$v->id] = ($v->id) . " text";
-                            }
+                            default:
+                                $attrids[$v->id] = ($v->id) . " text";
                         }
+                        $attrids[$v->id].= $pgRepeat;
                     }
             }
         }
@@ -598,46 +596,45 @@ function PgUpdateFamilly($dbaccess, $docid, $oriDocname)
             if ($attr->docid == $docid) { // modify my field not inherited fields
                 if (!in_array($ka, $pgatt)) {
                     $msg.= "add field $ka in table doc" . $docid . "\n";
-                    $repeat = (strpos($attr->options, "multiple=yes") !== false);
+                    $repeat = (preg_match('/\bmultiple=yes\b/', $attr->options) > 0);
+                    
                     if (!$repeat) $repeat = (isset($tattr[$attr->frameid]) && $tattr[$attr->frameid]->type == "array");
-                    if (($repeat && ($attr->type != 'tsvector'))) {
-                        
-                        $sqltype = " text"; // for the moment all repeat are text
-                        
-                    } else {
-                        $rtype = strtok($attr->type, "(");
-                        switch ($rtype) {
-                            case 'double':
-                            case 'float':
-                            case 'money':
-                                $sqltype = " float8";
-                                break;
+                    
+                    $pgRepeat = ($repeat) ? '[]' : '';
+                    $rtype = strtok($attr->type, "(");
+                    switch ($rtype) {
+                        case 'double':
+                        case 'float':
+                        case 'money':
+                            $sqltype = " float8";
+                            break;
 
-                            case 'int':
-                            case 'integer':
-                                $sqltype = " int4";
-                                break;
+                        case 'int':
+                        case 'integer':
+                            $sqltype = " int4";
+                            break;
 
-                            case 'date':
-                                $sqltype = " date";
-                                break;
+                        case 'date':
+                            $sqltype = " date";
+                            break;
 
-                            case 'timestamp':
-                                $sqltype = " timestamp without time zone";
-                                break;
+                        case 'timestamp':
+                            $sqltype = " timestamp without time zone";
+                            break;
 
-                            case 'time':
-                                $sqltype = " time";
-                                break;
+                        case 'time':
+                            $sqltype = " time";
+                            break;
 
-                            case 'tsvector':
-                                $sqltype = " tsvector";
-                                break;
+                        case 'tsvector':
+                            $sqltype = " tsvector";
+                            break;
 
-                            default:
-                                $sqltype = " text";
-                        }
+                        default:
+                            $sqltype = " text";
                     }
+                    $sqltype.= $pgRepeat;
+                    
                     $sqlquery = sprintf("ALTER TABLE family.%s add column %s %s", pg_escape_string($docname) , pg_escape_string($ka) , pg_escape_string($sqltype));
                     
                     simpleQuery($dbaccess, $sqlquery);

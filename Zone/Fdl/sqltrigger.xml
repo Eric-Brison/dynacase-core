@@ -4,14 +4,14 @@ begin
 
 [BLOCK ATTRFIELD]
 if not NEW.[attrid] isnull then
-  NEW.values := NEW.values || '£' || NEW.[attrid];
+  NEW.values := NEW.values || '£' || NEW.[attrid]::text;
   NEW.attrids := NEW.attrids || '£' || '[attrid]';
 end if;
 [ENDBLOCK ATTRFIELD]
 
 [BLOCK SEARCHFIELD]
 if not NEW.[attrid] isnull then
-  NEW.svalues := NEW.svalues || '£' || NEW.[attrid];
+  NEW.svalues := NEW.svalues || '£' || NEW.[attrid]::text;
 end if;
 [ENDBLOCK SEARCHFIELD]
 

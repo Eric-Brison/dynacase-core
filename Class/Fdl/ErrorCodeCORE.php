@@ -64,6 +64,10 @@ namespace {
          */
         const CORE0010 = 'Guest access not allowed';
         /**
+         * @errorCode Syntax like "{abd,cde}"
+         */
+        const CORE0100 = 'Invalid syntax pg array : "%s"';
+        /**
          * @errorCode
          * for beautifier
          */

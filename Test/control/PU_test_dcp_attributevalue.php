@@ -110,7 +110,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("after setvalue error : %s", $err));
         
         foreach ($notchanged as $aid => $value) {
-            $this->assertEquals($value, $d->getOldRawValue($aid) , "wrong old value $aid" . print_r($d->getValues() , true));
+            $this->assertEquals($value, $d->getOldRawValue($aid) , sprintf("wrong old value $aid \n%s\n%s", print_r($d->getValues() , true) , print_r($d->getOldRawValues() , true)));
         }
     }
     public function dataOldValue()
@@ -231,7 +231,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                     "tst_int" => 2,
                     "tst_date" => '2012-01-30',
                     "tst_docids" => null,
-                    "tst_coltext" => "Un\nDeux",
+                    "tst_coltext" => "{Un,Deux}",
                     "tst_coldate" => null,
                     "tst_colint" => null,
                 )

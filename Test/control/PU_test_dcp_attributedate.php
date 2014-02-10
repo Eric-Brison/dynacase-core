@@ -93,7 +93,7 @@ class TestAttributeDate extends TestCaseDcpCommonFamily
                         '2012-03-13'
                     ) ,
                     'tst_tss' => array(
-                        '2012-02-29 00:00',
+                        '2012-02-29 00:00:00',
                         '2012-03-13 13:45:56'
                     )
                 )

@@ -453,12 +453,12 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
             array(
                 "TST_DEFAULTFAMILY5",
                 'TST_NUMBER1',
-                "1"
+                "{1}"
             ) ,
             array(
                 "TST_DEFAULTFAMILY5",
                 'TST_TEXT1',
-                "cellule un"
+                '{"cellule un"}'
             ) ,
             array(
                 "TST_DEFAULTFAMILY5",
@@ -473,22 +473,22 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
             array(
                 "TST_DEFAULTFAMILY6",
                 'TST_TEXT1',
-                "Un\nDeux"
+                '{Un,Deux}'
             ) ,
             array(
                 "TST_DEFAULTFAMILY6",
                 'TST_TEXT2',
-                "First\nSecond"
+                "{First,Second}"
             ) ,
             array(
                 "TST_DEFAULTFAMILY6",
                 'TST_NUMBER2',
-                "10\n20"
+                "{10,20}"
             ) ,
             array(
                 "TST_DEFAULTFAMILY6",
                 'TST_DOCM2',
-                "9<BR>11\n12<BR>13"
+                "{{9,11},{12,13}}"
             )
         );
     }

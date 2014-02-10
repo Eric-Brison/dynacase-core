@@ -67,12 +67,12 @@ class DocTitle
             $latest = $oa->getOption("docrev", "latest") == "latest";
             if ($type == "docid" || $type == "account" || $type == "thesaurus") {
                 $ids = $doc->getMultipleRawValues($oa->id);
+                
                 $realId = array();
                 foreach ($ids as $rid) {
                     if (is_numeric($rid)) $realId[] = intval($rid);
-                    elseif (strpos($rid, '<BR>') !== false) {
-                        $tt = explode('<BR>', $rid);
-                        foreach ($tt as $brelid) {
+                    elseif (is_array($rid)) {
+                        foreach ($rid as $brelid) {
                             if (is_numeric($brelid)) $realId[] = intval($brelid);
                         }
                     }

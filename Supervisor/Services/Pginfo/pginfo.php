@@ -34,9 +34,32 @@ if( $conn === false ) {
 
 $query = array();
 
+
 $query['pg_settings'] = sprintf("SELECT name, setting, context, short_desc FROM pg_settings");
 
-$query['pg_stat_activity'] = sprintf("SELECT datname, procpid, client_addr, client_port, waiting, query_start, now() - query_start AS time, current_query FROM pg_stat_activity WHERE procpid != pg_backend_pid()");
+$query['pg_stat_activity'] = sprintf("SELECT datname, pid, client_addr, client_port, waiting, query_start, now() - query_start AS time, query FROM pg_stat_activity WHERE pid != pg_backend_pid()");
+
+
+$query['table size']= <<<'SQL'
+    SELECT
+        table_name,
+        pg_size_pretty(table_size) AS table_size,
+        pg_size_pretty(indexes_size) AS indexes_size,
+        pg_size_pretty(total_size) AS total_size,
+        total_size AS absolute_size
+    FROM (
+        SELECT
+            table_name,
+            pg_table_size(table_name) AS table_size,
+            pg_indexes_size(table_name) AS indexes_size,
+            pg_total_relation_size(table_name) AS total_size
+        FROM (
+            SELECT ('"' || table_schema || '"."' || table_name || '"') AS table_name
+            FROM information_schema.tables
+        ) AS all_tables
+        ORDER BY total_size DESC
+    ) AS pretty_sizes
+SQL;
 
 $query['tables'] = sprintf("SELECT s.schemaname, s.relname, c.oid, c.relfilenode, s.seq_scan, s.idx_scan, c.reltuples, c.relpages as pages FROM pg_stat_all_tables as s, pg_class as c WHERE s.relname = c.relname AND s.schemaname IN (SELECT nspname FROM pg_namespace WHERE oid = c.relnamespace) AND ( s.schemaname = 'public' OR s.schemaname = 'pg_toast' )");
 
@@ -77,7 +100,7 @@ function show_query(&$conn, &$query, &$parms) {
 
   $add = '';
   if( $orderby != '' ) {
-    $add = sprintf('ORDER BY "%s"', pg_escape_string($orderby));
+    $add = sprintf('ORDER BY %d', ($orderby));
     if( $desc != '' ) {
       $add = sprintf('%s %s', $add, pg_escape_string($desc));
     }
@@ -107,7 +130,7 @@ function show_query(&$conn, &$query, &$parms) {
   print '<table>';
   print '<thead>';
   foreach( $fields as $i => $name ) {
-    print '<td><a href="?q='.htmlspecialchars($q).'&orderby='.htmlspecialchars($name).'&desc='.htmlspecialchars($desc).'">'.htmlspecialchars($name).'</a></td>';
+    print '<td><a href="?q='.htmlspecialchars($q).'&orderby='.($i+1).'&desc='.htmlspecialchars($desc).'">'.htmlspecialchars($name).'</a></td>';
   }
   print '</thead>';
   print '<tbody>';
