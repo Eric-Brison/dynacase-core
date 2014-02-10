@@ -12,7 +12,7 @@ include $(utildir)/PubRule
 include $(rootdir)/corePubRule.mk
 
 
-DISTFILES += Makefile  $(appname).app $(appname)_init.php.in $(appname)_post file.htaccess core_migration.sql core_database_utils.sql
+DISTFILES += Makefile  $(appname).app $(appname)_init.php.in $(appname)_post file.htaccess core_migration.sql core_database_utils.sql core_migr33.sql
 
 $(pubdir)/file:
 	mkdir -p $@
@@ -23,5 +23,6 @@ $(pubdir)/file/.htaccess: file.htaccess $(pubdir)/file
 $(pubdir)/CORE/core_migration.sql: core_migration.sql $(pubdir)/CORE
 
 $(pubdir)/CORE/core_database_utils.sql: core_database_utils.sql $(pubdir)/CORE
+$(pubdir)/CORE/core_migr33.sql: core_migr33.sql $(pubdir)/CORE
 
-publish:  $(pubdir)/file/.htaccess $(pubdir)/CORE/core_migration.sql $(pubdir)/CORE/core_database_utils.sql
+publish:  $(pubdir)/file/.htaccess $(pubdir)/CORE/core_migration.sql $(pubdir)/CORE/core_database_utils.sql $(pubdir)/CORE/core_migr33.sql
