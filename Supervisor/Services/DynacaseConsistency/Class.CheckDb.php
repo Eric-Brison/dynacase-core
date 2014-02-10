@@ -220,10 +220,13 @@ class checkDb
             $fromid = intval($row["fromid"]);
             if ($fromid == 0) $fromid = "";
             $fid = intval($row["id"]);
-            $test = pg_query($this->r, sprintf("SELECT relname from pg_class where oid in (SELECT inhparent from pg_inherits where inhrelid =(SELECT oid FROM pg_class where relname='doc%d'));", $fid));
+            $fname = strtolower($row["name"]);
+            $test = pg_query($this->r, sprintf("SELECT relname from pg_class where oid in (SELECT inhparent from pg_inherits where inhrelid =(SELECT oid FROM pg_class where relname='%s'));", pg_escape_string($fname)));
             $dbfrom = pg_fetch_array($test, NULL, PGSQL_ASSOC);
-            if ($dbfrom["relname"] != "doc$fromid") {
-                $pout[] = sprintf("Family %s [%d]: fromid = %d, pg inherit=%s", $row["name"], $row["id"], $row["fromid"], $dbfrom["relname"]);
+            $fromname=$fromid?strtolower($row["fromname"]):"documents";
+
+            if ($dbfrom["relname"] != $fromname) {
+                $pout[] = sprintf("Family %s [%d]: fromname = (%s [%d]), pg inherit=%s", $row["name"], $row["id"],$fromname, $row["fromid"], $dbfrom["relname"]);
             }
         }
         $this->tout["family inheritance"] = array(
