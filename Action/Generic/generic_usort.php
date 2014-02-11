@@ -79,13 +79,13 @@ function setUsort(Action & $action, $aorder, $famid = "")
     }
     
     $sqlorder = $aorder;
-    if ($aorder[0] == "-") $sqlorder = substr($aorder, 1);
+    if (isset($aorder) && $aorder[0] == "-") $sqlorder = substr($aorder, 1);
     $a = $fdoc->getAttribute($sqlorder);
     if ($a === false) {
         $a = $fdoc->getPropertyValue($sqlorder);
     }
-    if ($a && $a->type == "text") $sqlorder = "lower($sqlorder)";
-    if ($aorder[0] == "-") $sqlorder.= " desc";
+    if ($a && isset($a->type) && $a->type == "text") $sqlorder = "lower($sqlorder)";
+    if (isset($aorder) && $aorder[0] == "-") $sqlorder.= " desc";
     
     $tr[$famid] = $aorder . ":" . $sqlorder;
     // rebuild parameter
