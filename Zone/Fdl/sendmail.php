@@ -158,7 +158,7 @@ class Fdl_Mail_mime extends Mail_mime
      * @return mixed true on success or PEAR_Error object
      * @access public
      */
-    function addAttachment($file, $c_type = 'application/octet-stream', $name = '', $isfilename = true, $encoding = 'base64', $cid = '', $charset = "UTF-8")
+    function addAttachment($file, $c_type = 'application/octet-stream', $name = '', $isfilename = true, $encoding = 'base64', $cid = '', $charset = "UTF-8", $language = '', $location = '', $n_encoding = null, $f_encoding = null, $description = '')
     {
         $filedata = ($isfilename === true) ? $this->_file2str($file) : $file;
         if ($isfilename === true) {
@@ -426,7 +426,7 @@ function createSentMessage($to, $from, $cc, $bcc, $subject, &$mimemail, &$doc = 
             if ($htmlPart !== null && $htmlBody != '') {
                 // Re-link the HTML part CIDs
                 foreach ($partList as $i => & $part) {
-                    $cid = preg_replace('/^<(.+)>$/', '\1', isset($part->_headers['Content-ID'])?$part->_headers['Content-ID']:'');
+                    $cid = preg_replace('/^<(.+)>$/', '\1', isset($part->_headers['Content-ID']) ? $part->_headers['Content-ID'] : '');
                     if ($cid != '') {
                         $htmlBody = str_replace(sprintf("cid:%s", $cid) , $msg->getfileLink('emsg_attach', $i) , $htmlBody);
                     }
