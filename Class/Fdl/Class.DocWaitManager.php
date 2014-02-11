@@ -37,7 +37,7 @@ class DocWaitManager
             ));
             
             $wd->uid = $doc->getSystemUserId();
-            $wd->localid = $doc->localid;
+            $wd->localid = isset($doc->localid) ? $doc->localid : null;
             $wd->values = serialize($doc->getValues());
             $wd->status = docWait::recording;
             $wd->title = $doc->getTitle();
