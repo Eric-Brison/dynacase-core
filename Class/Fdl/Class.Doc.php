@@ -6059,25 +6059,18 @@ create unique index i_docir on doc(initid, revision);";
         }
         if ('{}' !== $text) do {
             if ('{' !== $text{$offset}) {
-                preg_match("/(\\{?\"([^\"\\\\]|\\\\.)*\"\\s*|[^,{}]+)+([,}\\s]+)\\s*/u", $text, $match, 0, $offset);
-                if (empty($match)) {
-                    // empty array
-                    if (preg_match("/(},?\\s*)/u", substr($text, $offset) , $match)) {
-                        $offset+= strlen($match[1]);
-                        $output = array();
-                        return $offset;
-                    } else {
-                        throw new \Dcp\Exception(sprintf("Not PG array \"%s\" [offset %d]", $text, $offset));
-                    }
-                } else {
+                if (preg_match('/({?"([^"\\\\]|\\\\.)*"\\s*|[^,{}]+)*([,}\\s]+)\\s*/u', $text, $match, 0, $offset)) {
                     $offset+= strlen($match[0]);
                     $m1 = trim($match[1]);
                     if ($m1 === "NULL" or $m1 === "null") {
                         $output[] = null;
                     } else {
-                        $output[] = ('"' !== $m1{0} ? $m1 : stripcslashes(substr($m1, 1, -1)));
+                        if ($m1 === '') $output = array();
+                        else $output[] = ('"' !== $m1{0} ? $m1 : stripcslashes(substr($m1, 1, -1)));
                     }
                     if (!empty($match[3]) && str_replace(' ', '', $match[3]) === '},') return $offset;
+                } else {
+                    throw new \Dcp\Exception(sprintf("Not PG array \"%s\" [offset %d]", $text, $offset));
                 }
             } else {
                 $offset = self::pgArrayToPhp($text, $output[], $limit, $offset + 1);

@@ -1149,8 +1149,84 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                         2.7182818,
                         1.61803398875
                     ) ,
+                    "tst_longtexts" => array(
+                        "Alpha\nBéta",
+                            "A\nB\nC"
+                    ),
                     "tst_times" => array(
                         "04:07:03"
+                    ) ,
+                    "tst_enumms" => array(
+                        "c"
+                    ) ,
+                    "tst_colors" => array(
+                        "#50ED42"
+                    ) ,
+                    "tst_ints1" => array(
+                        3,
+                        null,
+                        null
+                    ) ,
+                    "tst_doubles1" => array(
+                        null,
+                        5.6,
+                        7.8
+                    ) ,
+                    "tst_t_ints" => array(
+                        array(
+                            "tst_ints" => 45
+                        ) ,
+                        array(
+                            "tst_ints" => 3654
+                        ) ,
+                        array(
+                            "tst_ints" => - 34
+                        )
+                    )
+                )
+            ),
+
+            array(
+                'TST_DOCTYPE3',
+                array(
+                    "tst_title" => "Titre Trois",
+                    "tst_longtext" => "Texte long. Html tag <BR>.",
+                    "tst_int" => 0,
+                    "tst_money" => 3.0,
+                    "tst_double" => - 54.0,
+                    "tst_time" => "14:17:43",
+                    "tst_enum" => "c",
+                    "tst_color" => "#50ED42",
+                    "tst_enums" => array(
+                        "c",
+                        null,
+                        "b"
+                    ) ,
+                    "tst_texts" => array(
+                        "Un cheval noir",
+                        "Et un autre rouge"
+                    ) ,
+                    "tst_ints" => array(
+                        45,
+                        3654, -34
+                    ) ,
+                    "tst_moneys" => array(
+                        2.54,
+                        3.0,
+                        2.72
+                    ) ,
+                    "tst_doubles" => array(
+                        3.1415926,
+                        2.7182818,
+                        1.61803398875
+                    ) ,
+                    "tst_longtexts" => array(
+                        "Alpha\nBéta",
+                            "A\nB\nC"
+                    ),
+                    "tst_times" => array(
+                        "04:07:03",
+                        "10:00:00"
                     ) ,
                     "tst_enumms" => array(
                         "c"

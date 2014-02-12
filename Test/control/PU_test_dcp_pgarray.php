@@ -343,11 +343,49 @@ class TestPgArray extends TestCaseDcp
                 )
             ) ,
             array(
+                '{"ét \"é\"","h\"ivers","o\\\'connor"}',
+                array(
+                    'ét "é"',
+                    'h"ivers',
+                    "o'connor"
+                )
+            ) ,
+            array(
                 '{{},{},{}}',
                 array(
                     array() ,
                     array() ,
                     array() ,
+                )
+            ) ,
+            array(
+                '{{},null,{}}',
+                array(
+                    array() ,
+                    null,
+                    array() ,
+                )
+            ) ,
+            array(
+                '{null,{1},null}',
+                array(
+                    null,
+                    array(
+                        "1"
+                    ) ,
+                    null
+                )
+            ) ,
+            array(
+                '{{1},null,{2}}',
+                array(
+                    array(
+                        "1"
+                    ) ,
+                    null,
+                    array(
+                        "2"
+                    ) ,
                 )
             ) ,
             array(
