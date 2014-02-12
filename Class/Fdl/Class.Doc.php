@@ -3683,7 +3683,7 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     }
                     if ($oattr->isMultiple()) {
-                        $rawValue = $this->phpArrayToPg($tvalues);
+                        $rawValue = $this->arrayToRawValue($tvalues);
                     } else {
                         $rawValue = implode("\n", $tvalues);
                     }
@@ -6018,7 +6018,7 @@ create unique index i_docir on doc(initid, revision);";
         }
     }
     
-    public static function phpArrayToPg(array $values, $fillTo = - 1)
+    public static function phpArrayToPg(array $values)
     {
         if (empty($values)) return "null";
         $fill = - 1;
@@ -6029,11 +6029,11 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         foreach ($values as & $value) {
-            if ($value === '' || $value === null) $value = 'null';
+            if ($value === '' || $value === null) $value = 'NULL';
             elseif (is_array($value)) {
                 if ($fill > 0) $value = array_pad($value, $fill, null);
                 $value = self::phpArrayToPg($value);
-            } elseif (preg_match('/[,|"|\s]/u', $value) || $value === "null") {
+            } elseif (preg_match('/[,|"|\s]/u', $value) || $value === "NULL") {
                 $value = '"' . str_replace('"', '\\"', $value) . '"';
             } else {
                 //$value = '"' . str_replace('"', '\\"', $value) . '"';
@@ -6059,18 +6059,19 @@ create unique index i_docir on doc(initid, revision);";
         }
         if ('{}' !== $text) do {
             if ('{' !== $text{$offset}) {
-                preg_match("/(\\{?\"([^\"\\\\]|\\\\.)*\"|[^,{}]+)+([,}]+)/u", $text, $match, 0, $offset);
-                
-                $offset+= strlen($match[0]);
-                
-                if ($match[1] === "NULL" or $match[1] === "null") {
-                    $output[] = null;
+                if (preg_match('/({?"([^"\\\\]|\\\\.)*"\\s*|[^,{}]+)*([,}\\s]+)\\s*/u', $text, $match, 0, $offset)) {
+                    $offset+= strlen($match[0]);
+                    $m1 = trim($match[1]);
+                    if ($m1 === "NULL" or $m1 === "null") {
+                        $output[] = null;
+                    } else {
+                        if ($m1 === '') $output = array();
+                        else $output[] = ('"' !== $m1{0} ? $m1 : stripcslashes(substr($m1, 1, -1)));
+                    }
+                    if (!empty($match[3]) && str_replace(' ', '', $match[3]) === '},') return $offset;
                 } else {
-                    $output[] = ('"' !== $match[1] {
-                        0
-                    } ? $match[1] : stripcslashes(substr($match[1], 1, -1)));
+                    throw new \Dcp\Exception(sprintf("Not PG array \"%s\" [offset %d]", $text, $offset));
                 }
-                if (isset($match[3]) && '},' === $match[3]) return $offset;
             } else {
                 $offset = self::pgArrayToPhp($text, $output[], $limit, $offset + 1);
             }
@@ -6094,10 +6095,9 @@ create unique index i_docir on doc(initid, revision);";
      * convert array value to flat attribute value
      * @api convert array value to flat attribute value
      * @param array $v
-     * @param string $br
      * @return string
      */
-    public static function arrayToRawValue($v, $br = '<BR>')
+    public static function arrayToRawValue($v)
     {
         
         if (count($v) == 0) return "";
