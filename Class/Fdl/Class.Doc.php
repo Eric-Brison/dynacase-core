@@ -6029,7 +6029,7 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         foreach ($values as & $value) {
-            if ($value === '' || $value === null) $value = 'NULL';
+            if ($value === '' || $value === null || $value === false) $value = 'NULL';
             elseif (is_array($value)) {
                 if ($fill > 0) $value = array_pad($value, $fill, null);
                 $value = self::phpArrayToPg($value);
