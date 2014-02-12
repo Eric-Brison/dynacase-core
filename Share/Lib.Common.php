@@ -840,7 +840,7 @@ function mkpasswd($length = 8, $charspace = "")
  */
 function getLcdate()
 {
-    return substr(getParam("CORE_LCDATE") , 0, 3);
+    return "iso";
 }
 /**
  *

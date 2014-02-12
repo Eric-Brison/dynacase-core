@@ -73,14 +73,10 @@ class checkDb
         $result = pg_query($this->r, "show DateStyle;");
         $row = pg_fetch_array($result, NULL);
         $msg = $dateStyle = $row[0];
-        $result = pg_query($this->r, "SELECT val from paramv where name = 'CORE_LCDATE'");
-        $row = pg_fetch_array($result, NULL);
-        $lcDate = substr($row[0], 0, 3);
-        if (($lcDate == 'iso') && ($dateStyle == "ISO, DMY")) $status = self::OK;
-        else if ($dateStyle == "SQL, DMY") $status = self::OK;
+        if ($dateStyle == "ISO, DMY") $status = self::OK;
         else {
             $status = self::KO;
-            $msg = sprintf("Mismatch locale : database : %s, application : %s", $dateStyle, $lcDate);
+            $msg = sprintf("Wrong datestyle setting : database : %s, set to : %s", $dateStyle);
         }
         
         $this->tout["dateStyle"] = array(
@@ -223,10 +219,10 @@ class checkDb
             $fname = strtolower($row["name"]);
             $test = pg_query($this->r, sprintf("SELECT relname from pg_class where oid in (SELECT inhparent from pg_inherits where inhrelid =(SELECT oid FROM pg_class where relname='%s'));", pg_escape_string($fname)));
             $dbfrom = pg_fetch_array($test, NULL, PGSQL_ASSOC);
-            $fromname=$fromid?strtolower($row["fromname"]):"documents";
-
+            $fromname = $fromid ? strtolower($row["fromname"]) : "documents";
+            
             if ($dbfrom["relname"] != $fromname) {
-                $pout[] = sprintf("Family %s [%d]: fromname = (%s [%d]), pg inherit=%s", $row["name"], $row["id"],$fromname, $row["fromid"], $dbfrom["relname"]);
+                $pout[] = sprintf("Family %s [%d]: fromname = (%s [%d]), pg inherit=%s", $row["name"], $row["id"], $fromname, $row["fromid"], $dbfrom["relname"]);
             }
         }
         $this->tout["family inheritance"] = array(

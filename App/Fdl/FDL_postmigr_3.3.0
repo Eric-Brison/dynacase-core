@@ -15,7 +15,8 @@ fi
 
 
 PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << SQL
-
+    delete from paramdef where name='CORE_LCDATE';
+    delete from paramv where name='CORE_LCDATE';
 SQL
 RET=$?
 if [ $RET -ne 0 ]; then

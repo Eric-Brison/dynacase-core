@@ -23,4 +23,26 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+CURRENT_DATABASE=`PGSERVICE="$pgservice_core"  psql -tA -c "SELECT current_database()"`
+
+if [ -z "$CURRENT_DATABASE" ]; then
+    echo "Could not get current_database from PGSERVICE=$pgservice_core"
+    exit 1
+fi
+PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$CURRENT_DATABASE\" SET DateStyle = 'ISO,DMY'"
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error: SQL error cannot set datestyle to iso': $RET"
+    exit $RET
+fi
+
+
+log "Setting standard_conforming_strings to 'off'..."
+PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$CURRENT_DATABASE\" SET standard_conforming_strings = 'off'"
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error setting standard_conforming_strings to 'off' on current database \"$CURRENT_DATABASE\""
+    exit $RET
+fi
+
 exit 0

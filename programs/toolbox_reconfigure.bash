@@ -98,26 +98,22 @@ echo "Error updating vault r_path"
 fi
 
 
-log "Setting DateStyle to match CORE_LCDATE..."
+log "Setting DateStyle to ISO, DMY..."
 CURRENT_DATABASE=`PGSERVICE="$core_db" psql -tA -c "SELECT current_database()"`
-CORE_LCDATE=`"$WIFF_CONTEXT_ROOT/wsh.php" --api=getApplicationParameter --param=CORE_LCDATE| cut -f1 -d" "`
+
 if [ -z "$CURRENT_DATABASE" ]; then
     echo "Could not get current_database from PGSERVICE=$core_db"
     exit 1
 fi
-if [ -n "$CORE_LCDATE" ]; then
-    if [ "$CORE_LCDATE" = "iso" ]; then
-        PG_DATESTYLE="ISO, DMY"
-    else
-        PG_DATESTYLE="SQL, DMY"
-    fi
-    PGSERVICE="$core_db" psql -c "ALTER DATABASE \"$CURRENT_DATABASE\" SET DateStyle = '$PG_DATESTYLE'"
-    RET=$?
-    if [ $RET -ne 0 ]; then
-        echo "Error setting DateStyle to '$PG_DATESTYLE' on current database \"$CURRENT_DATABASE\""
-        exit $RET
-    fi
+
+PG_DATESTYLE="ISO, DMY"
+PGSERVICE="$core_db" psql -c "ALTER DATABASE \"$CURRENT_DATABASE\" SET DateStyle = '$PG_DATESTYLE'"
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error setting DateStyle to '$PG_DATESTYLE' on current database \"$CURRENT_DATABASE\""
+    exit $RET
 fi
+
 
 log "Setting standard_conforming_strings to 'off'..."
 PGSERVICE="$core_db" psql -c "ALTER DATABASE \"$CURRENT_DATABASE\" SET standard_conforming_strings = 'off'"

@@ -31,7 +31,6 @@ class TestAttributeDate extends TestCaseDcpCommonFamily
      */
     public function testDateTransfert($docid, array $expectedValues)
     {
-        if (getLcdate() != 'iso') $this->markTestIncomplete("database date must be configured as iso format");
         $origin = new_doc(self::$dbaccess, $docid);
         $this->assertTrue($origin->isAlive() , "cannot find $docid document");
         
