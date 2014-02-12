@@ -105,14 +105,7 @@ $app_const = array(
         "kind" => "enum(unpersistent|persistent)",
         "global" => "Y"
     ) ,
-    "CORE_LCDATE" => array(
-        "val" => "iso : standard format 8601", # Set at install time by info.xml
-        "descr" => N_("database record date style") ,
-        "user" => "N",
-        "style" => "N",
-        "kind" => "readonly",
-        "global" => "Y"
-    ) ,
+
     "CORE_SQLSTRICT" => array(
         "val" => "yes",
         "descr" => N_("stop on sql error") ,

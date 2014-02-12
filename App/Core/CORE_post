@@ -74,13 +74,8 @@ if [ "$1" = "I" ] ; then
     "$wpub"/wsh.php  --api=manageApplications --appname=CORE
 
     log "Setting database date locale..."
-    LCDATE=`"$wpub"/wsh.php --api=getApplicationParameter --param=CORE_LCDATE| cut -f1 -d" "`
 
-    if [ "$LCDATE" = "iso" ]; then
 	PGDATESTYLE='ISO, DMY'
-    else
-	PGDATESTYLE='SQL, DMY'
-    fi
     DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
     PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE\" SET DateStyle='$PGDATESTYLE';" #2> /dev/null
     RET=$?

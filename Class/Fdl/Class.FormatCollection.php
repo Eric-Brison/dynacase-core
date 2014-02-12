@@ -296,11 +296,10 @@ class FormatCollection
         else if ($this->dateStyle === DateAttributeValue::isoStyle) return stringDateToIso($v, false, true);
         else if ($this->dateStyle === DateAttributeValue::isoWTStyle) return stringDateToIso($v, false, false);
         else if ($this->dateStyle === DateAttributeValue::frenchStyle) {
-            if (getLcdate() == "iso") { // FR
-                $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
-                if (strlen($v) < 11) return substr($ldate, 0, strlen($v));
-                else return $ldate;
-            }
+            
+            $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
+            if (strlen($v) < 11) return substr($ldate, 0, strlen($v));
+            else return $ldate;
         }
         return stringDateToLocaleDate($v);
     }
@@ -587,11 +586,10 @@ class DateAttributeValue extends StandardAttributeValue
             else if ($dateStyle === self::isoStyle) $this->displayValue = stringDateToIso($v, false, true);
             else if ($dateStyle === self::isoWTStyle) $this->displayValue = stringDateToIso($v, false, false);
             else if ($dateStyle === self::frenchStyle) {
-                if (getLcdate() == "iso") { // FR
-                    $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
-                    if (strlen($v) < 11) $this->displayValue = substr($ldate, 0, strlen($v));
-                    else $this->displayValue = $ldate;
-                }
+                
+                $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
+                if (strlen($v) < 11) $this->displayValue = substr($ldate, 0, strlen($v));
+                else $this->displayValue = $ldate;
             } else $this->displayValue = stringDateToLocaleDate($v);
         }
     }

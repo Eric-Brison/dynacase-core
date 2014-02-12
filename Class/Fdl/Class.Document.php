@@ -316,11 +316,6 @@ class Fdl_Document
                 $props["owner"] = intval($props["owner"]);
                 if ($props["domainid"]) $props["domainid"] = $this->doc->rawValueToArray($props["domainid"]);
                 else $props["domainid"] = array();
-                if (getParam("DATA_LCDATE") == "iso" && getLcdate() != 'iso') {
-                    $props["cdate"] = StringDateToIso($props["cdate"], false);
-                    $props["mdate"] = StringDateToIso($props["mdate"], false);
-                    $props["adate"] = StringDateToIso($props["adate"], false);
-                }
                 
                 if ($props["allocated"] > 0) $props["allocatedname"] = USER::getDisplayName(abs($props["allocated"]));
                 $props["ownername"] = USER::getDisplayName(abs($props["owner"]));
