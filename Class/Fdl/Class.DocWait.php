@@ -221,7 +221,7 @@ create sequence seq_waittransaction start 1;
             }
             if ($err) {
                 $this->status = self::constraint;
-                $this->statusmessage = ($info->error) ? $info->label . ' : ' . $info->error : $err;
+                $this->statusmessage = (!empty($info->error)) ? $info->label . ' : ' . $info->error : $err;
                 // $this->statusmessage=json_encode($info->error);
                 $this->modify();
             } else {
