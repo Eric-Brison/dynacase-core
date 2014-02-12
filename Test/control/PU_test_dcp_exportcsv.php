@@ -61,20 +61,11 @@ class TestExportCsv extends TestCaseDcpCommonFamily
      * @param array $data test specification
      * @dataProvider dataExportNoParam
      */
-    public function testExportNoParam($data)
+    public function testExportNoParam($docName, $noOrder)
     {
         include_once ('FDL/exportfld.php');
-        
-        foreach (array(
-            'export:doc',
-            'expect:no:order'
-        ) as $key) {
-            if (!isset($data[$key])) {
-                throw new \Exception(sprintf("Missing key '%s' in test data."));
-            }
-        }
         /* doc */
-        $doc = new_Doc(self::$dbaccess, $data['export:doc']);
+        $doc = new_Doc(self::$dbaccess, $docName);
         if (!$doc->isAlive()) {
             throw new \Exception(sprintf("Could not get document with id '%s'.", $data['export:doc']));
         }
@@ -112,7 +103,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
             if (!preg_match('/^ORDER;/', $line)) {
                 continue;
             }
-            foreach ($data['expect:no:order'] as $column) {
+            foreach ($noOrder as $column) {
                 $match = preg_match(sprintf('/;%s;/', preg_quote($column, '/')) , $line);
                 $this->assertTrue(($match <= 0) , sprintf("Found param '%s' in ORDER line '%s'.", $column, $line));
             }
@@ -139,11 +130,9 @@ class TestExportCsv extends TestCaseDcpCommonFamily
     {
         return array(
             array(
-                array(
-                    "export:doc" => "TST_EXPORT_PARAM_01",
-                    "expect:no:order" => array(
-                        "a_param_text"
-                    )
+                "export:doc" => "TST_EXPORT_PARAM_01",
+                "expect:no:order" => array(
+                    "a_param_text"
                 )
             )
         );

@@ -18,6 +18,7 @@ class SuiteDcp
     {
         $suite = new FrameworkDcp('Package');
         
+        $suite->addTestSuite('Dcp\Pu\TestPgArray');
         $suite->addTestSuite('Dcp\Pu\TestDocument');
         $suite->addTestSuite('Dcp\Pu\TestNewDoc');
         $suite->addTestSuite('Dcp\Pu\TestMultipleAlive');

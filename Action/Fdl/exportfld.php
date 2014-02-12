@@ -483,23 +483,35 @@ function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, 
                     "fname" => unaccent($f["name"])
                 );
             }
-            $value = implode("\n", $tf);
+            if ((count($tf) < 2) && (!$attr->isMultiple())) {
+                $value = implode('\n', $tf);
+            } else {
+                $value = Doc::arrayToRawValue($tf);
+            }
         } else if ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
             if ($value != "") {
-                if (strstr($value, "\n") || ($attr->getOption("multiple") == "yes")) {
+                if ($attr->isMultiple()) {
                     $tid = $doc->rawValueToArray($value);
                     $tn = array();
                     foreach ($tid as $did) {
-                        $brtid = explode("<BR>", $did);
-                        $tnbr = array();
-                        foreach ($brtid as $brid) {
-                            $n = getNameFromId($dbaccess, $brid);
-                            if ($n) $tnbr[] = $n;
-                            else $tnbr[] = $brid;
+                        if (is_array($did)) {
+                            
+                            $tnbr = array();
+                            $brtid = $did;
+                            foreach ($brtid as $brid) {
+                                $n = getNameFromId($dbaccess, $brid);
+                                if ($n) $tnbr[] = $n;
+                                else $tnbr[] = $brid;
+                            }
+                        } else {
+                            $n = getNameFromId($dbaccess, $did);
+                            if ($n) $tnbr = $n;
+                            else $tnbr = $did;
                         }
-                        $tn[] = implode('<BR>', $tnbr);
+                        
+                        $tn[] = $tnbr;
                     }
-                    $value = implode("\n", $tn);
+                    $value = Doc::arrayToRawValue($tn);
                 } else {
                     $n = getNameFromId($dbaccess, $value);
                     if ($n) $value = $n;

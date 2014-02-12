@@ -137,7 +137,7 @@ class AccountCollection extends \Dcp\Family\Dir
         include_once ("FDL/freedom_util.php");
         include_once ("FDL/Lib.Dir.php");
         
-        $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')", $this->id);
+        $sqlfilters[] = sprintf("'%s' = any(grp_idgroup)", $this->id);
         // $sqlfilters[]="fromid !=".getFamIdFromName($this->dbaccess,"IGROUP");
         $tgroup = internalGetDocCollection($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", getFamIdFromName($this->dbaccess, "GROUP"));
         
