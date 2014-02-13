@@ -483,6 +483,47 @@ function doubleslash($s)
     return $s;
 }
 
+function createOrUpdateSearchTable($familyName)
+{
+    $familyName = strtolower($familyName);
+    $sql = sprintf("select true from information_schema.tables where table_name='%s' and table_schema='search'", pg_escape_string($familyName));
+    simpleQuery('', $sql, $tableExists, true, true);
+    if (!$tableExists) {
+        if ($familyName === "documents") {
+            $sql = "create table search.documents (
+                   id int not null,primary key (id),
+                   svalues text,
+                   fulltext tsvector )";
+            simpleQuery('', $sql);
+        } else {
+            
+            $sql = sprintf("select fromname from family.families where lower(name)='%s'", pg_escape_string($familyName));
+            simpleQuery('', $sql, $familyParent, true, true);
+            if ($familyParent === false) {
+                throw new \Dcp\Exception("FAM0602", $familyName);
+            }
+            if (!$familyParent) $familyParent = 'documents';
+            else $familyParent = strtolower($familyParent);
+            $sql = sprintf("select true from information_schema.tables where table_name='%s' and table_schema='search'", $familyParent);
+            simpleQuery('', $sql, $tableParentExists, true, true);
+            
+            if (!$tableParentExists) {
+                createOrUpdateSearchTable($familyParent);
+            }
+            // try again
+            $sql = sprintf("select true from information_schema.tables where table_name='%s' and table_schema='search'", $familyParent);
+            simpleQuery('', $sql, $tableParentExists, true, true);
+            if (!$tableParentExists) {
+                throw new \Dcp\Exception("FAM0601", $familyName, $familyParent);
+            }
+            $sql = sprintf('create table search."%s" () inherits (search.%s);', $familyName, $familyParent);
+            $sql.= sprintf('ALTER TABLE search."%s" ADD CONSTRAINT %s_pkey PRIMARY KEY(id);', $familyName, $familyName);
+            $sql.= sprintf('create index %s_full on search."%s" using gin(fulltext);', $familyName, $familyName);
+            simpleQuery('', $sql);
+        }
+    }
+}
+
 function PgUpdateFamilly($dbaccess, $docid, $oriDocname)
 {
     $msg = '';
@@ -642,6 +683,7 @@ function PgUpdateFamilly($dbaccess, $docid, $oriDocname)
             }
         }
     }
+    createOrUpdateSearchTable($docname);
     
     return $msg;
 }

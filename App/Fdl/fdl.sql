@@ -136,7 +136,6 @@ declare
 begin
 
 NEW.values:='';
-NEW.svalues:='';
 NEW.attrids:='';
 
 if (NEW.doctype = 'Z') and (NEW.name is not null) then
@@ -193,7 +192,7 @@ declare
   a_weight alias for $2;
 begin
    if (a_text is null) or (a_text = '') then
-     return to_tsvector('simple','');
+     return to_tsvector('simple','a');
    else
      return setweight(to_tsvector('french',to2_ascii(a_text)), a_weight);
    end if;      
@@ -208,30 +207,7 @@ begin
 end;
 $$ language 'plpgsql' ;
 
-create or replace function fulltext() 
-returns trigger as $$
-declare 
-  good bool;
-begin
-  good := true;
-  if (TG_OP = 'UPDATE') then 
-    if (NEW.fulltext is not null) then
-      good:=(NEW.values != OLD.values);
-    end if;
-  end if;
 
-  if (good) then
-  begin
-   NEW.fulltext := setweight(to_tsvector('french',to2_ascii(NEW.title)), 'A')|| to_tsvector('french',replace(to2_ascii(NEW.values),'£',' '));
-
-     EXCEPTION
-	 WHEN OTHERS THEN
-	    RAISE NOTICE 'Error fulltext %',NEW.id;
-   end;
-   end if;
-return NEW;
-END;
-$$ language 'plpgsql';
 
 create or replace function fixeddoc() 
 returns trigger as $$
@@ -290,9 +266,9 @@ if ((TG_OP = ''UPDATE'') OR (TG_OP = ''INSERT'')) then
   if  NEW.doctype != ''T'' then
      select into lid id from docread where id= NEW.id;
      if (lid = NEW.id) then 
-	update docread set id=NEW.id,owner=NEW.owner,title=NEW.title,revision=NEW.revision,initid=NEW.initid,fromid=NEW.fromid,fromname=NEW.fromname,doctype=NEW.doctype,locked=NEW.locked,allocated=NEW.allocated,archiveid=NEW.archiveid,icon=NEW.icon,lmodify=NEW.lmodify,profid=NEW.profid,views=NEW.views,usefor=NEW.usefor,revdate=NEW.revdate,version=NEW.version,cdate=NEW.cdate,adate=NEW.adate,classname=NEW.classname,state=NEW.state,wid=NEW.wid,attrids=NEW.attrids,postitid=NEW.postitid,lockdomainid=NEW.lockdomainid,domainid=NEW.domainid,cvid=NEW.cvid,name=NEW.name,dprofid=NEW.dprofid,prelid=NEW.prelid,atags=NEW.atags,confidential=NEW.confidential,ldapdn=NEW.ldapdn,values=NEW.values,fulltext=NEW.fulltext,svalues=NEW.svalues where id=NEW.id;
+	update docread set id=NEW.id,owner=NEW.owner,title=NEW.title,revision=NEW.revision,initid=NEW.initid,fromid=NEW.fromid,fromname=NEW.fromname,doctype=NEW.doctype,locked=NEW.locked,allocated=NEW.allocated,archiveid=NEW.archiveid,icon=NEW.icon,lmodify=NEW.lmodify,profid=NEW.profid,views=NEW.views,usefor=NEW.usefor,revdate=NEW.revdate,version=NEW.version,cdate=NEW.cdate,adate=NEW.adate,classname=NEW.classname,state=NEW.state,wid=NEW.wid,attrids=NEW.attrids,postitid=NEW.postitid,lockdomainid=NEW.lockdomainid,domainid=NEW.domainid,cvid=NEW.cvid,name=NEW.name,dprofid=NEW.dprofid,prelid=NEW.prelid,atags=NEW.atags,confidential=NEW.confidential,ldapdn=NEW.ldapdn,values=NEW.values where id=NEW.id;
      else 
-	insert into docread(id,owner,title,revision,initid,fromid,fromname,doctype,locked,allocated,archiveid,icon,lmodify,profid,views,usefor,revdate,version,cdate,adate,classname,state,wid,attrids,postitid,lockdomainid,domainid,cvid,name,dprofid,prelid,atags,confidential,ldapdn,values,fulltext,svalues) values (NEW.id,NEW.owner,NEW.title,NEW.revision,NEW.initid,NEW.fromid,NEW.fromname,NEW.doctype,NEW.locked,NEW.allocated,NEW.archiveid,NEW.icon,NEW.lmodify,NEW.profid,NEW.views,NEW.usefor,NEW.revdate,NEW.version,NEW.cdate,NEW.adate,NEW.classname,NEW.state,NEW.wid,NEW.attrids,NEW.postitid,NEW.lockdomainid,NEW.domainid,NEW.cvid,NEW.name,NEW.dprofid,NEW.prelid,NEW.atags,NEW.confidential,NEW.ldapdn,NEW.values,NEW.fulltext,NEW.svalues);
+	insert into docread(id,owner,title,revision,initid,fromid,fromname,doctype,locked,allocated,archiveid,icon,lmodify,profid,views,usefor,revdate,version,cdate,adate,classname,state,wid,attrids,postitid,lockdomainid,domainid,cvid,name,dprofid,prelid,atags,confidential,ldapdn,values) values (NEW.id,NEW.owner,NEW.title,NEW.revision,NEW.initid,NEW.fromid,NEW.fromname,NEW.doctype,NEW.locked,NEW.allocated,NEW.archiveid,NEW.icon,NEW.lmodify,NEW.profid,NEW.views,NEW.usefor,NEW.revdate,NEW.version,NEW.cdate,NEW.adate,NEW.classname,NEW.state,NEW.wid,NEW.attrids,NEW.postitid,NEW.lockdomainid,NEW.domainid,NEW.cvid,NEW.name,NEW.dprofid,NEW.prelid,NEW.atags,NEW.confidential,NEW.ldapdn,NEW.values);
      end if;
   end if;
 --RAISE NOTICE ''coucou %'',replace(NEW.values,''£'','' '');
@@ -303,8 +279,7 @@ return NEW;
 end;
 ' language 'plpgsql';
 
-create or replace FUNCTION updatevector(int) RETURNS void LANGUAGE sql AS
-  'update docread set fulltext=setweight(to_tsvector(title), ''A'')|| to_tsvector(values) where id=$1;';
+
 
 
 create or replace function droptrigger(name, name)

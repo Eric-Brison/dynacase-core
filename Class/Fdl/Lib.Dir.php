@@ -469,7 +469,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     } else $fdoc = new DocRead($dbaccess);
                     $tsqlfields = null;
                     if ($searchDoc) $tsqlfields = $searchDoc->getReturnsFields();
-                    if ($tsqlfields == null) $tsqlfields = array_merge($fdoc->fields, $fdoc->sup_fields);
+                    if ($tsqlfields == null) $tsqlfields = array(
+                        "*"
+                    );
                     $maintable = '';
                     if (!$join && preg_match('/from\s+([a-z0-9_\.\-])*,/', $qsql)) {
                         $join = true;

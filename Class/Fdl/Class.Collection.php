@@ -145,16 +145,7 @@ class Fdl_Collection extends Fdl_Document
             $s->setObjectReturn();
             $key = $this->contentKey;
             if ($key) {
-                if ($this->contentKeyMode == "word") {
-                    $sqlfilters = array();
-                    $fullorderby = '';
-                    $keyword = '';
-                    DocSearch::getFullSqlFilters($key, $sqlfilters, $fullorderby, $keyword);
-                    foreach ($sqlfilters as $vfilter) $s->addFilter($vfilter);
-                    if (!$s->orderby) $s->orderby = $fullorderby;
-                } else {
-                    $s->addFilter("%s ~* '%s'", ($this->contentSearchProperty ? $this->contentSearchProperty : "svalues") , $key);
-                }
+                $s->addGeneralFilter($key);
             }
             if ($this->contentFilter) {
                 if (is_string($this->contentFilter)) {
@@ -304,16 +295,7 @@ class Fdl_Collection extends Fdl_Document
         }
         $s = new SearchDoc($this->dbaccess, $famid);
         if ($key) {
-            if ($mode == "word") {
-                $sqlfilters = array();
-                $fullorderby = '';
-                $keyword = '';
-                DocSearch::getFullSqlFilters($key, $sqlfilters, $fullorderby, $keyword);
-                foreach ($sqlfilters as $vfilter) $s->addFilter($vfilter);
-                if (!$orderby) $orderby = $fullorderby;
-            } else {
-                $s->addFilter(sprintf("%s ~* '%s'", $searchproperty, $key));
-            }
+            $s->addGeneralFilter($key);
         }
         if ($filter) {
             if (is_string($filter)) {

@@ -75,4 +75,12 @@ class ErrorCodeFAM
      * @errorCode the family class file is not found
      */
     const FAM0600 = 'parent class family file "%s" not found for "%s" family';
+    /**
+     * @errorCode The search associated table cannot be created
+     */
+    const FAM0601 = 'Cannot create search table for "%s" family (inherit from "%s")';
+    /**
+     * @errorCode The search associated table cannot be created
+     */
+    const FAM0602 = 'Cannot create search table for "%s" family : family name not found';
 }

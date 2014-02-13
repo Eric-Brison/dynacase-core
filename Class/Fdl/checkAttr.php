@@ -201,7 +201,12 @@ class CheckAttr extends CheckData
                 $this->addError(ErrorCode::getError('ATTR0101', $this->attrid));
             } else {
                 $doc = new Doc();
-                if (in_array($this->attrid, $doc->fields)) {
+                if (in_array($this->attrid, array_merge($doc->fields, array(
+                    "fulltext",
+                    "svalues",
+                    "dirid",
+                    "childid"
+                )))) {
                     $this->addError(ErrorCode::getError('ATTR0103', $this->attrid));
                 }
             }

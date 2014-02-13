@@ -28,7 +28,7 @@ if [ "$1" = "I" ] ; then
 	exit $RET
     fi
     
-    OUT=`PGSERVICE="$pgservice_freedom" psql -c 'CREATE SCHEMA family;' 2> /dev/null`
+    OUT=`PGSERVICE="$pgservice_freedom" psql -c 'CREATE SCHEMA family;CREATE SCHEMA search' 2> /dev/null`
     RET=$?
     if [ $RET -ne 0 ]; then
 	echo "An error occured while creating schema family : $RET"

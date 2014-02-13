@@ -112,11 +112,11 @@ class TestGetSearchMethods extends TestCaseDcpCommonFamily
     public function test_invalidSearchMethod($dSearchId)
     {
         /**
-         * @var \_DSEARCH $dSearch
+         * @var \Dcp\Core\DetailSearch $dSearch
          */
         $dSearch = new_Doc(self::$dbaccess, $dSearchId, true);
         $this->assertTrue($dSearch->isAlive() , sprintf("dSearch with id '%s' is not alive.", $dSearchId));
-        $sql = $dSearch->getSqlDetailFilter();
+        $sql = $dSearch->setSqlDetailFilter();
         $this->assertTrue(($sql == 'false') , sprintf("getSqlDetailFilter() did not returned (string)'false' (returned value is '%s').", $sql));
     }
     public function data_invalidSearchMethod()

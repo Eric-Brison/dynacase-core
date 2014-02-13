@@ -66,15 +66,12 @@ create table docread ( id int not null,
                    prelid int,
                    atags text,
                    confidential int,
-                   ldapdn text,
-                   fulltext tsvector,
-                   svalues text
+                   ldapdn text
                    );
 create index fromid_docread on docread(fromid);
 create index initid_docread on docread(initid);
 create index title_docread on docread(title);
-create index docty_docread on docread(doctype);
-create index full_docread on docread using gist(fulltext);";
+create index docty_docread on docread(doctype);";
     
     public $fields = array(
         "id",
@@ -113,7 +110,6 @@ create index full_docread on docread using gist(fulltext);";
     
     public $sup_fields = array(
         "values",
-        "svalues",
         "attrids"
     ); // not be in fields else trigger error
     

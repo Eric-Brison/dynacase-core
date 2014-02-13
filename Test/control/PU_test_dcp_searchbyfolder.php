@@ -50,7 +50,7 @@ class TestSearchByFolder extends TestCaseDcpCommonFamily
             $res[] = $doc->name;
         }
         
-        $this->assertEquals(count($expectedName) , $search->count() , sprintf("returns %s\n expected %s", print_r($res, true) , print_r($expectedName, true)));
+        $this->assertEquals(count($expectedName) , $search->count() , sprintf("returns %s\n expected %s\n%s", print_r($res, true) , print_r($expectedName, true) , print_r($search->getSearchInfo() , true)));
         
         foreach ($expectedName as $name) {
             $this->assertTrue(in_array($name, $res) , sprintf("%s not found, returns %s\n expected %s", $name, print_r($res, true) , print_r($expectedName, true)));
@@ -75,7 +75,7 @@ class TestSearchByFolder extends TestCaseDcpCommonFamily
         $search->setRecursiveSearch(true, $sublevel);
         $c = $search->onlyCount();
         
-        $this->assertEquals(count($expectedName) , $c, sprintf("not expected cound"));
+        $this->assertEquals(count($expectedName) , $c, sprintf("not expected cound : \n%s", print_r($search->getSearchInfo() , true)));
     }
     public function dataRecurisveSearch()
     {
