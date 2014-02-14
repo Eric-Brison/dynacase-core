@@ -72,7 +72,6 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
         if ($sqlorder == "") $sqlorder = $dir->getRawValue("se_orderby");
     } else $aclctrl = "open";
     if (($err = $dir->Control($aclctrl)) != "") $action->exitError($err);
-    
     $action->lay->Set("dirtitle", stripslashes($dir->getHtmlTitle()));
     $action->lay->eSet("dirid", $dirid);
     
@@ -115,15 +114,15 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
             $sqlorder = "fromid,title";
         }
     }
-    if ($sqlorder === null) {
+    if ($sqlorder === '') {
         $sqlorder = 'title';
     }
     $sd->setOrder($sqlorder, $orderbyLabel);
     if ($sqlfilters) foreach ($sqlfilters as $filter) $sd->addFilter($filter);
     $sd->setObjectReturn();
-    //$ldoc = getChildDoc($dbaccess, $dirid,$start,$slice,$sqlfilters,$action->user->id,"TABLE",$famid,
-    //$distinct, $sqlorder);
+    
     $sd->search();
+    //print_r2($sd->getSearchInfo());
     $count = $sd->count();
     $hasNext = ($count > $slice);
     if ($viewone && ($count == 1)) {
@@ -399,7 +398,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
                 return ($cmp == 0) ? $collator->compare($a['title'], $b['title']) : $cmp;
             });
         } else {
-            if ((GetHttpVars("sqlorder") == "") && ($slice >= $action->GetParam("FDL_FOLDERMAXITEM", 1000))) uasort($tdoc, "orderbytitle");
+            if (($sqlorder == "") && ($slice >= $action->GetParam("FDL_FOLDERMAXITEM", 1000))) uasort($tdoc, "orderbytitle");
         }
     } else {
         //error in search

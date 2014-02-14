@@ -107,13 +107,20 @@ function generic_search(Action & $action)
         $only = (getInherit($action, $famid) == "N");
         
         try {
+            $s = new SearchDoc($action->dbaccess, $sfamid);
+            if ($only) {
+                $s->only = true;
+            }
+            
             if (!SearchDoc::checkGeneralFilter($keyword)) {
                 throw new \Dcp\Exception(sprintf(_("incorrect global filter %s") , $keyword));
             } else {
-                $sqlfilter = array(
-                    SearchDoc::getGeneralFilter($keyword, $useSpell = true)
-                );
+                $s->addGeneralFilter($keyword, $useSpell = true);
             }
+            
+            $queries = $s->getQueries();
+            
+            $sdoc->AddQuery($queries[0]);
         }
         catch(Exception $e) {
             $err = $e->getMessage();
@@ -127,10 +134,6 @@ function generic_search(Action & $action)
         if ($sqlorder == "") {
             $sdoc->clearValue("se_orderby");
         }
-        
-        $query = getSqlSearchDoc($dbaccess, $sdirid, ($only) ? -($sfamid) : $sfamid, $sqlfilter, false, true, "", false);
-        
-        $sdoc->AddQuery($query);
         
         executeGenericList($action, array(
             "onefam" => $onefamOrigin,

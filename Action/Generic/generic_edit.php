@@ -158,7 +158,9 @@ function generic_edit(Action & $action)
         if ((!$docid) && $doc->defaultcreate != "") $zonebodycard = $doc->defaultcreate;
         else $zonebodycard = $doc->defaultedit;
     }
-    
+
+
+
     $action->lay->set("emblem", $doc->getEmblem());
     $action->lay->Set("HEAD", (!preg_match("/[A-Z]+:[^:]+:[T|S|U|V]/", $zonebodycard, $reg)));
     $action->lay->Set("FOOT", (!preg_match("/[A-Z]+:[^:]+:[S|U]/", $zonebodycard, $reg)));

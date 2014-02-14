@@ -26,7 +26,9 @@ $docid = $usage->addOptionalParameter("docid", "special docid", null, 0);
 $trigger = $usage->addOptionalParameter("trigger", "trigger", null, "-");
 $trig = ($trigger != "-");
 $drop = ($trigger == "N");
-
+/**
+ * @var Action $action
+ */
 $usage->verify();
 
 $appl = new Application();
@@ -42,6 +44,12 @@ if ($docid != - 1) {
     $query = new QueryDb($dbaccess, "Doc");
     $query->AddQuery("doctype='C'");
     
+    if (!is_numeric($docid)) {
+        $docid = getIdFromName($action->dbaccess, $docid);
+        if (!$docid) {
+            $action->exitError("No valid id");
+        }
+    }
     if ($docid > 0) $query->AddQuery("id=$docid");
     
     $table1 = $query->Query(0, 0, "TABLE");

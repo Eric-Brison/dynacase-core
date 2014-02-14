@@ -494,7 +494,19 @@ function familyTableName($familyIdentifier)
     if (empty($famName)) {
         $famName = "documents";
     }
-    return 'family.' . strtolower($famName);
+    return 'family."' . strtolower($famName) . '"';
+}
+/**
+ * @param int|string $familyIdentifier id or name of a family
+ * @return string
+ */
+function searchTableName($familyIdentifier)
+{
+    $famName = getFamilyName($familyIdentifier);
+    if (empty($famName)) {
+        $famName = "documents";
+    }
+    return 'search."' . strtolower($famName) . '"';
 }
 /**
  * get generated file name used for a family

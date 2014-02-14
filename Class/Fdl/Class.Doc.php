@@ -314,13 +314,6 @@ class Doc extends DocCtrl
             "filterable" => true,
             "label" => "prop_confidential"
         ) , # N_("prop_confidential")
-        "svalues" => array(
-            "type" => "fulltext",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => true,
-            "label" => "prop_svalues"
-        ) , # N_("prop_svalues")
         "ldapdn" => array(
             "type" => "text",
             "displayable" => false,
@@ -593,11 +586,6 @@ class Doc extends DocCtrl
             "unique" => true,
             "on" => "name,revision,doctype"
         ) ,
-        "idx_full" => array(
-            "unique" => false,
-            "using" => "@FDL_FULLIDX",
-            "on" => "fulltext"
-        ) ,
         "idx_profid" => array(
             "unique" => false,
             "on" => "profid"
@@ -684,7 +672,6 @@ create table family.documents ( id int not null,
                    wid int DEFAULT 0,
                    values text DEFAULT '',
                    attrids text DEFAULT '',
-                   fulltext tsvector,
                    postitid text,
                    domainid text,
                    lockdomainid int,
@@ -695,8 +682,7 @@ create table family.documents ( id int not null,
                    prelid int DEFAULT 0,
                    atags text,
                    confidential int DEFAULT 0,
-                   ldapdn text,
-                   svalues text DEFAULT ''
+                   ldapdn text
                    );
 create table docfrom ( id int not null,
                    primary key (id),
@@ -3724,8 +3710,6 @@ create unique index i_docir on doc(initid, revision);";
                 $ak = $attrid . '_vec';
                 $this->$ak = '';
                 $this->fields[$ak] = $ak;
-                $this->fulltext = '';
-                $this->fields['fulltext'] = 'fulltext'; // to enable trigger
                 $this->textsend[$attrid . $index] = array(
                     "attrid" => $attrid,
                     "index" => $index
@@ -6436,6 +6420,7 @@ create unique index i_docir on doc(initid, revision);";
             $famId = $this->id;
             $tableName = sprintf("family.families");
             $tableBaseName = "families";
+            $cname = $tableBaseName;
         } else {
             if ($this->doctype == 'C') return '';
             if (intval($this->fromid) == 0) return '';
@@ -6443,6 +6428,7 @@ create unique index i_docir on doc(initid, revision);";
             $cid = $this->fromid;
             $famId = $this->fromid;
             $tableBaseName = strtolower($this->fromname);
+            $cname = $tableBaseName;
             $tableName = $this->dbtable;
         }
         
@@ -6468,11 +6454,11 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     // svalues += attribute allowed to be indexed
                     if (($v->type != "file") && ($v->type != "image") && ($v->type != "password") && ($opt_searchcriteria != "hidden")) {
-                        if ($v->docid == $famId) {
-                            $tsearch[] = array(
-                                "attrid" => $k
-                            );
-                        }
+                        
+                        $tsearch[] = array(
+                            "attrid" => $k
+                        );
+                        
                         $fulltext_c[] = array(
                             "attrid" => $k
                         );
@@ -6485,11 +6471,9 @@ create unique index i_docir on doc(initid, revision);";
                         "vecid" => $k . "_vec"
                     );
                     // svalues += file attributes
-                    if ($v->docid == $famId) {
-                        $tsearch[] = array(
-                            "attrid" => $k . "_txt"
-                        );
-                    }
+                    $tsearch[] = array(
+                        "attrid" => $k . "_txt"
+                    );
                 }
             }
             // fulltext += abstract attributes
@@ -6517,6 +6501,7 @@ create unique index i_docir on doc(initid, revision);";
             $lay->set("hassattr", (count($tsearch) > 0));
             $lay->set("hasabsattr", (count($tabstract) > 0));
             $lay->set("docid", $this->fromid);
+            $lay->set("docname", strtolower($this->fromname));
             $sql = $lay->gen();
         } else {
             
@@ -6528,8 +6513,8 @@ create unique index i_docir on doc(initid, revision);";
             }
             // the reset trigger must begin with 'A' letter to be proceed first (pgsql 7.3.2)
             if ($cid != "fam") {
+                $sql.= "create trigger SEARCH{$cid} BEFORE INSERT OR UPDATE ON $tableName FOR EACH ROW EXECUTE PROCEDURE {$cname}_copysearch();\n";
                 $sql.= "create trigger AUVR{$cid} BEFORE UPDATE  ON $tableName FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
-                $sql.= "create trigger VFULL{$cid} BEFORE INSERT OR UPDATE  ON $tableName FOR EACH ROW EXECUTE PROCEDURE fullvectorize$cid();";
             } else {
                 $sql.= "create trigger UVdocfam before insert or update on family.families FOR EACH ROW EXECUTE PROCEDURE upvaldocfam();";
             }

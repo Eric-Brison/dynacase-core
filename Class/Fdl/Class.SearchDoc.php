@@ -156,19 +156,34 @@ class SearchDoc
     
     private $resultQPos = 0;
     protected $originalDirId = 0;
-    
+    protected $searchFilter = '';
+    protected $searchFilterOperand = 'and';
     protected $returnsFields = array();
     /**
      * initialize with family
      *
      * @param string $dbaccess database coordinate
-     * @param int|string $fromid family identifier to filter
+     * @param int|string $familyId family identifier to filter
      */
-    public function __construct($dbaccess = '', $fromid = 0)
+    public function __construct($dbaccess = '', $familyId = 0)
     {
         if ($dbaccess == "") $dbaccess = getDbAccess();
         $this->dbaccess = $dbaccess;
-        $this->fromid = trim($fromid);
+        $familyId = trim($familyId);
+        if (!empty($familyId)) {
+            if (!is_numeric($familyId)) {
+                $fromid = getFamIdFromName($this->dbaccess, $familyId);
+                if (!$fromid) {
+                    $error = sprintf(_("%s is not a family") , $familyId);
+                    $this->debuginfo["error"] = $error;
+                } else {
+                    $this->fromid = $fromid;
+                }
+            } else {
+                $this->fromid = $familyId;
+            }
+        }
+        
         $this->setOrder('title');
         $this->userid = getUserId();
     }
@@ -189,7 +204,6 @@ class SearchDoc
             if ($this->debug) $debuginfo = array();
             else $debuginfo = null;
             
-            $this->recursiveSearchInit();
             $tqsql = $this->getQueries();
             $this->debuginfo["query"] = $tqsql[0];
             $count = 0;
@@ -199,7 +213,7 @@ class SearchDoc
             }
             foreach ($tqsql as $sql) {
                 if ($sql) {
-                    if (preg_match('/from\s+(?:only\s+)?([a-z0-9_\-\.]*)/', $sql, $reg)) $maintable = $reg[1];
+                    if (preg_match('/from\s+(?:only\s+)?([a-z0-9_\-\."]*)/', $sql, $reg)) $maintable = $reg[1];
                     else $maintable = '';
                     $maintabledot = ($maintable) ? $maintable . '.' : '';
                     
@@ -412,7 +426,6 @@ class SearchDoc
             if ($this->only) $this->fromid = - (abs($fromid));
             else $this->fromid = $fromid;
         }
-        $this->recursiveSearchInit();
         $this->index = 0;
         $this->searchmode = $this->mode;
         if ($this->mode == "ITEM") {
@@ -488,8 +501,9 @@ class SearchDoc
     {
         if ($this->returnsFields) return $this->returnsFields;
         if ($this->fromid) {
-            $fdoc = createTmpDoc($this->dbaccess, $this->fromid, false);
-            if ($fdoc->isAlive()) return array_merge($fdoc->fields, $fdoc->sup_fields);
+            return array(
+                "*"
+            );
         }
         return null;
     }
@@ -763,8 +777,14 @@ class SearchDoc
             throw new \Dcp\SearchDoc\Exception("SD0004", $keywords);
         } else {
             $filter = $this->getGeneralFilter(trim($keywords) , $useSpell, $this->pertinenceOrder, $this->highlightWords);
-            $this->addFilter($filter);
+            
+            $this->addSearchFilter($filter);
         }
+    }
+    
+    public function addSearchFilter($filter)
+    {
+        $this->searchFilter = $filter;
     }
     /**
      * Verify if $keywords syntax is comptatible with a part of query
@@ -996,7 +1016,7 @@ class SearchDoc
         if ($beginTag) $oh->beginTag = $beginTag;
         if ($endTag) $oh->endTag = $endTag;
         if ($limit > 0) $oh->setLimit($limit);
-        simpleQuery($this->dbaccess, sprintf("select svalues from docread where id=%d", $doc->id) , $text, true, true);
+        simpleQuery($this->dbaccess, sprintf("select svalues from %s where id=%d", searchTableName($this->fromid) , $doc->id) , $text, true, true);
         $h = $oh->highlight($text, $this->highlightWords);
         
         return $h;
@@ -1119,27 +1139,39 @@ class SearchDoc
         }
     }
     
-    protected function recursiveSearchInit()
+    protected function constructQuery($select, $from, $where)
     {
-        if ($this->recursiveSearch && $this->dirid) {
-            if (!$this->originalDirId) {
-                $this->originalDirId = $this->dirid;
-            }
-            /**
-             * @var DocSearch $tmps
-             */
-            $tmps = createTmpDoc($this->dbaccess, "SEARCH");
-            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_famid, $this->fromid);
-            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_idfld, $this->originalDirId);
-            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_latest, "yes");
-            $err = $tmps->add();
-            if ($err == "") {
-                $tmps->addQuery($tmps->getQuery()); // compute internal sql query
-                $this->dirid = $tmps->id;
+        if ($this->searchFilter) {
+            
+            if ($this->fromid > 0) {
+                $ws = sprintf('%s.id = %s.id', searchTableName($this->fromid) , familyTableName($this->fromid));
+                $from = sprintf('%s, %s', $from, searchTableName($this->fromid));
             } else {
-                throw new \Dcp\SearchDoc\Exception("SD0005", $err);
+                $ws = sprintf('search.documents.id = docread.id');
+                $from = sprintf('%s, search.documents', $from);
             }
+            $where = sprintf("%s and %s and (%s)", $ws, $where, $this->searchFilter);
         }
+        if ($this->dirid) {
+            if ($this->recursiveSearch) {
+                $cdirid = getRChildDirId($this->dbaccess, $this->dirid, array() , 0, $this->folderRecursiveLevel);
+            } else {
+                $cdirid = array(
+                    $this->dirid
+                );
+            }
+            if ($this->fromid > 0) {
+                $famTable = familyTableName($this->fromid);
+            } else {
+                $famTable = 'docread';
+            }
+            $cidCond = $this->sqlcond($cdirid, 'fld.dirid', true);
+            $from = sprintf('%s, fld', $from, $famTable);
+            $ws = sprintf('%s.initid = fld.childid and (%s)', $famTable, $cidCond);
+            $where = sprintf("%s and %s", $ws, $where, $this->searchFilter);
+        }
+        
+        return sprintf("select %s from %s where %s", $select, $from, $where);
     }
     /**
      * Get the SQL queries that will be executed by the search() method
@@ -1184,7 +1216,19 @@ class SearchDoc
                     $table = familyTableName($fromid);
                 }
             } elseif ($fromid == 0) {
-                if (isSimpleFilter($sqlfilters)) $table = "docread";
+                if ($dirid) {
+                    $fld = new_Doc($dbaccess, $dirid);
+                    if ($fld->defDoctype == 'S') {
+                        $fromid = $fld->getRawValue(\Dcp\AttributeIdentifiers\Search::se_famid);
+                        if (!is_numeric($fromid)) {
+                            $fromid = getFamIdFromName($this->dbaccess, $fromid);
+                            $this->fromid = $fromid;
+                        }
+                        $table = familyTableName($fromid);
+                    }
+                }
+                
+                if ((!$fromid) && isSimpleFilter($sqlfilters)) $table = "docread";
             }
         }
         $maintable = $table; // can use join only on search
@@ -1201,7 +1245,7 @@ class SearchDoc
                 return false;
             }
         }
-        $maintabledot = ($maintable && $dirid == 0) ? $maintable . '.' : '';
+        $maintabledot = ($maintable) ? $maintable . '.' : '';
         
         if ($distinct) {
             $selectfields = "distinct on ($maintable.initid) $maintable.*";
@@ -1229,7 +1273,7 @@ class SearchDoc
             if (($latest) && (($trash == "no") || (!$trash))) $sqlfilters[-1] = $maintabledot . "locked != -1";
             ksort($sqlfilters);
             if (count($sqlfilters) > 0) $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
-            $qsql = "select $selectfields " . "from $only $table  " . "where  " . $sqlcond;
+            $qsql = $this->constructQuery($selectfields, "$only $table", $sqlcond);
             $qsql = $this->injectFromClauseForOrderByLabel($fromid, $this->orderbyLabel, $qsql);
         } else {
             //-------------------------------------------
@@ -1254,7 +1298,8 @@ class SearchDoc
                 elseif ($latest) $sqlfilters[-1] = "locked != -1";
                 ksort($sqlfilters);
                 if (count($sqlfilters) > 0) $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
-                
+                $qsql = $this->constructQuery($selectfields, "$only $table", $sqlcond);
+                /*
                 $sqlfld = "dirid=$dirid and qtype='S'";
                 if ($fromid == 2) $sqlfld.= " and doctype='D'";
                 if ($fromid == 5) $sqlfld.= " and doctype='S'";
@@ -1275,19 +1320,15 @@ class SearchDoc
                         } else {
                             $sfldids = implode(",", $tfldid);
                             if ($table == "docread") {
-                                /*$qsql= "select $selectfields ".
-                                                 "from $table where initid in (select childid from fld where $sqlfld)  ".
-                                                 "and  $sqlcond ";	*/
+                
                                 $qsql = "select $selectfields " . "from $table where initid in ($sfldids)  " . "and  $sqlcond ";
                             } else {
-                                /*$qsql= "select $selectfields ".
-                                    "from (select childid from fld where $sqlfld) as fld2 inner join $table on (initid=childid)  ".
-                                    "where  $sqlcond ";*/
+                
                                 $qsql = "select $selectfields " . "from $only $table where initid in ($sfldids)  " . "and  $sqlcond ";
                             }
                         }
                     }
-                }
+                }*/
             } else {
                 //-------------------------------------------
                 // search family

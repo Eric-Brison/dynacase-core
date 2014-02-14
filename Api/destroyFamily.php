@@ -60,10 +60,12 @@ function destroyFamily($dbaccess, $idfam, $force = false)
         $tsql = array();
         if (!$force) $tsql[] = "begin;";
         $tableName = familyTableName($resid);
+        $searchName = searchTableName($resid);
         $tsql+= array(
             "delete from fld where childid in (select id from $tableName);",
             "delete from $tableName;",
             "drop view if exists doc$resid;",
+            "drop table if exists $searchName;",
             "delete from docname where name='$resname'",
             "delete from docfrom where fromid=$resid",
             "drop table $tableName;",
@@ -71,21 +73,21 @@ function destroyFamily($dbaccess, $idfam, $force = false)
             "delete from family.families where id=$resid;"
         );
         if (!$force) $tsql[] = "commit;";
-
+        
         if (!unlink(getFamilyFileName($tdoc["id"]))) {
             if (!$force) {
-            $action->exitError("cannot destroy $idfam family file");
+                $action->exitError("cannot destroy $idfam family file");
             }
         } else {
-            printf( "delete family class file : %s\n",getFamilyFileName($tdoc["id"]));
+            printf("delete family class file : %s\n", getFamilyFileName($tdoc["id"]));
         }
-        $attrFileName=sprintf("FDLGEN/Class.Attrid%s.php", ucfirst(strtolower($tdoc["name"])));
+        $attrFileName = sprintf("FDLGEN/Class.Attrid%s.php", ucfirst(strtolower($tdoc["name"])));
         if (!unlink($attrFileName)) {
             if (!$force) {
-            $action->exitError("cannot destroy $idfam attribute file");
+                $action->exitError("cannot destroy $idfam attribute file");
             }
         } else {
-            printf( "delete attribute class file : %s\n",$attrFileName);
+            printf("delete attribute class file : %s\n", $attrFileName);
         }
         $res = "";
         foreach ($tsql as $sql) {

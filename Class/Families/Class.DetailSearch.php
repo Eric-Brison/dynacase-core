@@ -23,30 +23,16 @@ class DetailSearch extends \Dcp\Family\Search
     function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
         
-        if ($dirid > 0) {
-            
-            if ($subfolder) $cdirid = getRChildDirId($this->dbaccess, $dirid);
-            else $cdirid = $dirid;
-        } else $cdirid = 0;;
+        $this->setSqlGeneralFilters($famid, $keyword, $dirid, $latest);
         
-        $filters = $this->getSqlGeneralFilters($keyword, $latest, $sensitive);
-        
-        $cond = $this->getSqlDetailFilter();
+        $cond = $this->setSqlDetailFilter();
         
         if ($cond === false) return array(
             false
         );
-        $distinct = false;
-        $only = '';
-        if ($latest == "lastfixed") $distinct = true;
-        if ($cond != "") $filters[] = $cond;
-        if ($this->getRawValue("se_famonly") == "yes") {
-            if (!is_numeric($famid)) $famid = getFamIdFromName($this->dbaccess, $famid);
-            $only = "only";
-        }
-        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash") , false, $level = 2, $join = '', $only);
         
-        return $query;
+        $queries = $this->search->getQueries();
+        return $queries;
     }
     /**
      * Change queries when use filters objects instead of declarative criteria
@@ -545,7 +531,7 @@ class DetailSearch extends \Dcp\Family\Search
     /**
      * return array of sql filter needed to search wanted document
      */
-    function getSqlDetailFilter()
+    function setSqlDetailFilter()
     {
         $ol = $this->getRawValue("SE_OL");
         $tkey = $this->getMultipleRawValues("SE_KEYS");
@@ -599,7 +585,11 @@ class DetailSearch extends \Dcp\Family\Search
                 }
             }
             foreach ($taid as $k => $v) {
+                
                 $cond1 = $this->getSqlCond($taid[$k], trim($tf[$k]) , $tkey[$k]);
+                if ($taid[$k] == "svalues") {
+                    $this->search->addSearchFilter("true");
+                }
                 if ($cond == "") {
                     if (isset($tlp[$k]) && $tlp[$k] == "yes") $cond = '(' . $cond1 . " ";
                     else $cond = $cond1 . " ";
@@ -613,7 +603,9 @@ class DetailSearch extends \Dcp\Family\Search
                 }
             }
         }
-        if (trim($cond) == "") $cond = "true";
+        if (trim($cond) != "") {
+            $this->search->addFilter($cond);
+        }
         return $cond;
     }
     /**

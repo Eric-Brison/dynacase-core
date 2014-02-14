@@ -1204,7 +1204,6 @@ class DocFormFormat
                 } else {
                     $ddoc = $defValues[$cid];
                 }
-                
                 $tad = $ddoc->attributes->getArrayElements($attrid);
                 $tval = array();
                 $nbcolattr = 0; // number of column
@@ -1226,7 +1225,7 @@ class DocFormFormat
                         "aehelpid" => ($help->isAlive()) ? $help->id : false
                     );
                     
-                    $tvale = $ddoc->getRawValue($tad[$k]->id) === "\t" ? "" : $ddoc->getRawValue($tad[$k]->id);
+                    $tvale = $ddoc->getRawValue($tad[$k]->id) === "{NULL}" ? "" : $ddoc->getRawValue($tad[$k]->id);
                     $tilabel[] = array(
                         "ilabel" => getHtmlInput($doc, $v, $tvale, DocFormFormat::arrayIndex) ,
                         "ihw" => (!$visible) ? "0px" : $width,
@@ -1723,7 +1722,7 @@ class DocFormFormat
                 }
                 if (($eformat == "auto") && ($multiple == "yes")) $lay->set("isopen", false); // set by typing
                 if ($noselect && ($etype == "free")) {
-                    if ((trim($value) != "") && ($value != "\t")) {
+                    if ((trim($value) != "") && ($value != "{NULL}")) {
                         if ($eformat != "auto") {
                             $topt['...']["fvalue"] = "";
                             $topt['...']["kvalue"] = "";

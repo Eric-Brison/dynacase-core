@@ -35,7 +35,10 @@ class DocSearch extends PDocSearch
      * @public int
      */
     public $folderRecursiveLevel = 2;
-    
+    /**
+     * @var SearchDoc
+     */
+    protected $search = null;
     function DocSearch($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         
@@ -150,8 +153,15 @@ class DocSearch extends PDocSearch
     /**
      * @param bool $full set to true if wan't use full text indexing
      */
-    function getSqlGeneralFilters($keyword, $latest, $sensitive, $full = false)
+    function setSqlGeneralFilters($famid, $keyword, $cdirid = '', $latest)
     {
+        
+        $this->search = new SearchDoc($this->dbaccess, $famid);
+        $this->search->only = ($this->getRawValue("se_famonly") == "yes");
+        $this->search->latest = ($latest == "yes");
+        $this->search->trash = $this->getRawValue("se_trash");
+        if ($cdirid) $this->search->useCollection($cdirid);
+        if ($keyword) $this->search->addGeneralFilter($keyword);
         $filters = array();
         
         $acls = $this->getMultipleRawValues("se_acl");
@@ -161,78 +171,33 @@ class DocSearch extends PDocSearch
                 $dacl = $this->dacls[$acl];
                 if ($dacl) {
                     $posacl = $dacl["pos"];
-                    $filters[] = sprintf("hasaprivilege('%s', profid, %d)", DocPerm::getMemberOfVector($this->userid) , (1 << intval($posacl)));
+                    $this->search->addFilter(sprintf("hasaprivilege('%s', profid, %d)", DocPerm::getMemberOfVector($this->userid) , (1 << intval($posacl))));
                 }
             }
         }
         
         if ($latest == "fixed") {
-            $filters[] = "locked = -1";
-            $filters[] = "lmodify = 'L'";
+            $this->search->latest = false;
+            $this->search->addFilter("locked = -1");
+            $this->search->addFilter("lmodify = 'L'");
         } else if ($latest == "allfixed") {
-            $filters[] = "locked = -1";
+            $this->search->latest = false;
+            $this->search->addFilter("locked = -1");
         }
         if ($latest == "lastfixed") {
-            $filters[] = "locked = -1";
+            $this->search->latest = false;
+            $this->search->addFilter("locked = -1");
         }
         
         if ($this->getRawValue("se_archive") > 0) {
-            $filters[] = sprintf("archiveid = %d", $this->getRawValue("se_archive"));
+            $this->search->addFilter("archiveid = %d", $this->getRawValue("se_archive"));
         }
-        if ($keyword) {
-            if ($keyword[0] == '~') {
-                $full = false; // force REGEXP
-                $keyword = substr($keyword, 1);
-            } else if ($keyword[0] == '*') {
-                $full = true; // force FULLSEARCH
-                $keyword = substr($keyword, 1);
-            }
-        }
-        if ($full) {
-            $this->getFullSqlFilters($keyword, $sqlfilters, $order, $tkeys);
-            $filters = array_merge($filters, $sqlfilters);
-            $this->setValue("se_orderby", $order);
-        } else {
-            $op = ($sensitive) ? '~' : '~*';
-            //    $filters[] = "usefor != 'D'";
-            $keyword = str_replace("^", "£", $keyword);
-            $keyword = str_replace("$", "£", $keyword);
-            if (strtolower(substr($keyword, 0, 5)) == "::get") { // only get method allowed
-                // it's method call
-                $keyword = $this->ApplyMethod($keyword);
-                $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($keyword));
-            } else if ($keyword != "") {
-                // transform conjonction
-                $tkey = explode(" ", $keyword);
-                $ing = false;
-                $ckey = '';
-                foreach ($tkey as $k => $v) {
-                    if ($ing) {
-                        if ($v[strlen($v) - 1] == '"') {
-                            $ing = false;
-                            $ckey.= " " . substr($v, 0, -1);
-                            $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($ckey));
-                        } else {
-                            $ckey.= " " . $v;
-                        }
-                    } else if ($v && $v[0] == '"') {
-                        if ($v[strlen($v) - 1] == '"') {
-                            $ckey = substr($v, 1, -1);
-                            $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($ckey));
-                        } else {
-                            $ing = true;
-                            $ckey = substr($v, 1);
-                        }
-                    } else {
-                        $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($v));
-                    }
-                }
-            }
-            $this->setValue("se_orderby", " ");
-        }
+        
+        $this->setValue("se_orderby", " ");
+        
         if ($this->getRawValue("se_sysfam") == 'no' && (!$this->getRawValue("se_famid"))) {
-            $filters[] = sprintf("usefor !~ '^S'");
-            $filters[] = sprintf("doctype != 'C'");
+            $this->search->addFilter("usefor !~ '^S'");
+            $this->search->addFilter("doctype != 'C'");
         }
         return $filters;
     }
@@ -339,30 +304,12 @@ class DocSearch extends PDocSearch
     
     function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
-        if ($dirid > 0) {
-            if ($subfolder) $cdirid = getRChildDirId($this->dbaccess, $dirid, array() , 0, $this->folderRecursiveLevel);
-            else $cdirid = $dirid;
-        } else $cdirid = 0;
-        if ($keyword) {
-            if ($keyword[0] == '~') {
-                $full = false;
-                $keyword = substr($keyword, 1);
-            } else if ($keyword[0] == '*') {
-                $full = true;
-                $keyword = substr($keyword, 1);
-            }
-        }
-        $filters = $this->getSqlGeneralFilters($keyword, $latest, $sensitive, $full);
         
-        $only = '';
-        if ($this->getRawValue("se_famonly") == "yes") {
-            if (!is_numeric($famid)) $famid = getFamIdFromName($this->dbaccess, $famid);
-            $only = "only";
-        }
+        $this->setSqlGeneralFilters($famid, $keyword, $dirid, $latest);
         
-        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, false, $latest == "yes", $this->getRawValue("se_trash") , false, $level = 2, $join = '', $only);
+        $queries = $this->search->getQueries();
         
-        return $query;
+        return $queries;
     }
     /**
      * return true if the sqlselect is writted by hand
