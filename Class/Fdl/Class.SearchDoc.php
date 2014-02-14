@@ -181,6 +181,10 @@ class SearchDoc
                 }
             } else {
                 $this->fromid = $familyId;
+                if ($this->fromid < 0) {
+                    $this->only = true;
+                    $this->fromid = abs($this->fromid);
+                }
             }
         }
         
@@ -1198,6 +1202,7 @@ class SearchDoc
         }
         $table = "family.documents";
         $only = "";
+        $isStaticSearch = false;
         if ($trash == "only") $distinct = true;
         if ($fromid == - 1) $table = "family.families";
         elseif ($fromid < 0) {
@@ -1220,6 +1225,7 @@ class SearchDoc
                     $fld = new_Doc($dbaccess, $dirid);
                     if ($fld->defDoctype == 'S') {
                         $fromid = $fld->getRawValue(\Dcp\AttributeIdentifiers\Search::se_famid);
+                        $isStaticSearch = $fld->getRawValue(\Dcp\AttributeIdentifiers\Search::se_static);
                         if (!is_numeric($fromid)) {
                             $fromid = getFamIdFromName($this->dbaccess, $fromid);
                             $this->fromid = $fromid;
@@ -1231,7 +1237,11 @@ class SearchDoc
                 if ((!$fromid) && isSimpleFilter($sqlfilters)) $table = "docread";
             }
         }
-        $maintable = $table; // can use join only on search
+        $maintable = '';
+        if (!$isStaticSearch) {
+            $maintable = $table; // can use join only on search
+            
+        }
         if ($join) {
             if (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $join, $reg)) {
                 $joinid = getFamIdFromName($dbaccess, $reg[3]);

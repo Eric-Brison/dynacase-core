@@ -93,7 +93,7 @@ function isSimpleFilter($sqlfilters)
 }
 /**
  * compose query to serach document
- *
+ * @deprecated
  * @param string $dbaccess database specification
  * @param array $dirid the array of id or single id of folder where search document (0 => in all DB)
  * @param string $fromid for a specific familly (0 => all familly) (<0 strict familly)

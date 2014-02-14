@@ -109,13 +109,18 @@ function generic_tab(Action & $action)
         
         $sdoc->Add();
         
+        $s = new SearchDoc($dbaccess, $famid);
         if ($tabletter[$tab] != "") {
-            $sqlfilter[] = "title ~* '^[" . $tabletter[$tab] . "].*'";
+            $s->addFilter("title ~* '^[%s]'", $tabletter[$tab]);
+        }
+        if ($sdirid) {
+            $s->useCollection($sdirid);
         }
         
         $only = (getInherit($action, $famid) == "N");
+        $s->only = $only;
         
-        $query = getSqlSearchDoc($dbaccess, $sdirid, ($only) ? -(abs($famid)) : abs($famid) , $sqlfilter);
+        $query = $s->getQueries();
         
         $sdoc->AddQuery($query);
         

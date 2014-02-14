@@ -147,9 +147,10 @@ class DetailSearch extends \Dcp\Family\Search
         $famid = $sql = "";
         $this->object2SqlFilter($std, $famid, $sql);
         
-        $filters[] = $sql;
-        $cdirid = 0;
-        $q = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters);
+        $s = new \SearchDoc($this->dbaccess, $famid);
+        $s->addFilter($sql);
+        $q = $s->getQueries();
+        
         if (count($q) == 1) {
             $q0 = $q[0]; // need a tempo variable : don't know why
             return ($q0);

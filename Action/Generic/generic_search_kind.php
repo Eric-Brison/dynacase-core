@@ -67,11 +67,10 @@ function generic_search_kind(Action & $action)
     $kid = str_replace('\.', '-dot-', $kid);
     if (strrpos($kid, '.') !== false) $kid = substr($kid, strrpos($kid, '.') + 1); // last reference
     // clear key
-    $action->parent->param->Set("GENE_LATESTTXTSEARCH", setUkey($action, $famid, '') , PARAM_USER . $action->user->id, $action->parent->id);
+    $action->parent->param->Set("GENE_LATESTTXTSEARCH", setUkey($action, $famid, '') , Param::PARAM_USER . $action->user->id, $action->parent->id);
     
-    $sqlfilter[] = "locked != -1";
-    //  $sqlfilter[]= "doctype='F'";
-    //  $sqlfilter[]= "usefor != 'D'";
+    $s = new SearchDoc($action->dbaccess, $famid);
+    $s->addFilter("locked != -1");
     // searches for all fathers kind
     $a = $fdoc->getAttribute($aid);
     /**
@@ -87,14 +86,13 @@ function generic_search_kind(Action & $action)
     }
     if ($a->type == "enum") {
         if ($a->repeat) {
-            $sqlfilter[] = "in_textlist($aid,'" . implode("') or in_textlist($aid,'", $tkids) . "')";
+            $s->addFilter("in_textlist($aid,'" . implode("') or in_textlist($aid,'", $tkids) . "')");
         } else {
-            $sqlfilter[] = "$aid='" . implode("' or $aid='", $tkids) . "'";
+            $s->addFilter("$aid='" . implode("' or $aid='", $tkids) . "'");
         }
     }
     
-    $query = getSqlSearchDoc($dbaccess, $sdirid, $famid, $sqlfilter);
-    
+    $query = $s->getQueries();
     $sdoc->AddQuery($query);
     
     redirect($action, $action->getArgument("app") , "GENERIC_LIST&onefam=$onefamOrigin&famid=$famid&dirid=" . $sdoc->id . "&catg=" . $dirid);
