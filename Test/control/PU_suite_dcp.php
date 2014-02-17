@@ -33,6 +33,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestSearchHighlight');
         $suite->addTestSuite('Dcp\Pu\TestSearchJoin');
         $suite->addTestSuite('Dcp\Pu\TestSearchFamilies');
+        $suite->addTestSuite('Dcp\Pu\TestSearchFileContent');
         $suite->addTestSuite('Dcp\Pu\TestFormatCollection');
         $suite->addTestSuite('Dcp\Pu\TestSimpleQuery');
         $suite->addTestSuite('Dcp\Pu\TestProfil');

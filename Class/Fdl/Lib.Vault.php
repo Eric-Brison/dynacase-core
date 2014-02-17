@@ -212,10 +212,39 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
     return $err;
 }
 /**
+ * Change content of file indexing
+ * @param Doc $doc
+ * @param $attrid
+ * @param $index
+ * @param $fileContent
+ */
+function insertIntoFileContent(Doc $doc, $attrid, $index, $fileContent)
+{
+    $at = $attrid . "_txt";
+    $sql = sprintf("select %s from %s where id = %d", $at, fileContentTableName($doc->fromname) , $doc->id);
+    simpleQuery($doc->dbaccess, $sql, $previouslyValue, true, true);
+    if ($index != - 1) {
+        if ($previouslyValue) {
+            $txts = Doc::rawValueToArray($previouslyValue);
+            $txts = array_pad($txts, $index, '');
+        } else {
+            $txts = array_pad(array() , $index, '');
+        }
+        $txts[$index] = $fileContent;
+        $fileContent = Doc::arrayToRawValue($txts);
+    }
+    if ($previouslyValue === false) {
+        $sql = sprintf("insert into %s (id, %s) values (%d, '%s');", fileContentTableName($doc->fromname) , $at, $doc->id, pg_escape_string($fileContent));
+    } else {
+        $sql = sprintf("update %s set %s = '%s' where id=%d;", fileContentTableName($doc->fromname) , $at, pg_escape_string($fileContent) , $doc->id);
+    }
+    simpleQuery($doc->dbaccess, $sql);
+}
+/**
  * send request to convert and waiting
- * @param string  $infile path to file to convert
- * @param string  $engine engine name to use
- * @param string  $outfile path where to store new file
+ * @param string $infile path to file to convert
+ * @param string $engine engine name to use
+ * @param string $outfile path where to store new file
  * @param array &$info various informations for convertion process
  * @return string error message
  */

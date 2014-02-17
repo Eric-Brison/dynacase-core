@@ -3694,22 +3694,7 @@ create unique index i_docir on doc(initid, revision);";
         $oa = $this->getAttribute($attrid);
         if ($oa && $oa->usefor != 'Q') {
             if ($oa->getOption("search") != "no") {
-                $ak = $attrid . '_txt';
-                if ($index == - 1) {
-                    $this->$ak = '';
-                } else {
-                    if ($this->AffectColumn(array(
-                        $ak
-                    ))) {
-                        $txts = self::rawValueToArray($this->$ak);
-                        $txts[$index] = '-';
-                        $this->$ak = self::arrayToRawValue($txts);
-                    }
-                }
-                $this->fields[$ak] = $ak;
-                $ak = $attrid . '_vec';
-                $this->$ak = '';
-                $this->fields[$ak] = $ak;
+                
                 $this->textsend[$attrid . $index] = array(
                     "attrid" => $attrid,
                     "index" => $index
@@ -3734,7 +3719,11 @@ create unique index i_docir on doc(initid, revision);";
                 if (preg_match(PREGEXPFILE, $fval, $reg)) {
                     $vid = $reg[2];
                     $err = sendTextTransformation($this->dbaccess, $this->id, $v["attrid"], $index, $vid);
-                    if ($err != "") $this->addHistoryEntry(_("error sending text conversion") . ": $err", DocHisto::NOTICE);
+                    if ($err != "") {
+                        $this->addHistoryEntry(_("error sending text conversion") . ": $err", DocHisto::NOTICE);
+                    }
+                    
+                    insertIntoFileContent($this, $v["attrid"], $index, '');
                 }
             }
             $this->textsend = array(); //reinit
@@ -5005,16 +4994,6 @@ create unique index i_docir on doc(initid, revision);";
             $this->addHistoryEntry($err, DocHisto::ERROR, "REVERROR");
             $this->commitPoint($point);
             return $err;
-        }
-        
-        $fa = $this->GetFileAttributes(true); // copy cached values
-        $ca = array();
-        foreach ($fa as $k => $v) {
-            $ca[] = $v->id . "_txt";
-        }
-        $this->AffectColumn($ca);
-        foreach ($ca as $a) {
-            if ($this->$a != "") $this->fields[$a] = $a;
         }
         //$listvalue = $this->GetValues(); // save copy of values
         // duplicate values
@@ -6438,7 +6417,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($onlydrop) return $sql; // only drop
         if ($code) {
             $files = array();
-            $lay = new Layout("FDL/Layout/sqltrigger.xml");
+            $lay = new Layout("FDL/Layout/sqltrigger.sql");
             $na = $this->GetNormalAttributes();
             $tvalues = array();
             $tsearch = array();
@@ -6467,12 +6446,12 @@ create unique index i_docir on doc(initid, revision);";
                 if ($v->type == "file" && $opt_searchcriteria != "hidden") {
                     // fulltext += file attributes
                     $files[] = array(
-                        "attrid" => $k . "_txt",
-                        "vecid" => $k . "_vec"
+                        "ismultiple" => $v->isMultiple() ,
+                        "txtattrid" => $k . "_txt",
+                        "vecattrid" => $k . "_vec"
                     );
-                    // svalues += file attributes
                     $tsearch[] = array(
-                        "attrid" => $k . "_txt"
+                        "attrid" => $k
                     );
                 }
             }
@@ -6493,6 +6472,7 @@ create unique index i_docir on doc(initid, revision);";
             $lay->setBlockData("ATTRFIELD", $tvalues);
             $lay->setBlockData("SEARCHFIELD", $tsearch);
             $lay->setBlockData("ABSATTR", $tabstract);
+            $lay->set("FILESEARCH", count($files) > 0);
             $lay->setBlockData("FILEATTR", $files);
             $lay->setBlockData("FILEATTR2", $files);
             $lay->setBlockData("FILEATTR3", $files);
@@ -6518,7 +6498,8 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 $sql.= "create trigger UVdocfam before insert or update on family.families FOR EACH ROW EXECUTE PROCEDURE upvaldocfam();";
             }
-            $sql.= "create trigger zread{$cid} AFTER INSERT OR UPDATE OR DELETE ON $tableName FOR EACH ROW EXECUTE PROCEDURE setread();";
+            $sql.= "create trigger docdel{$cid} AFTER DELETE ON $tableName FOR EACH ROW EXECUTE PROCEDURE deletedoc();";
+            $sql.= "create trigger zread{$cid} AFTER INSERT OR UPDATE ON $tableName FOR EACH ROW EXECUTE PROCEDURE setread();";
             $sql.= "create trigger FIXDOC{$cid} AFTER INSERT ON $tableName FOR EACH ROW EXECUTE PROCEDURE fixeddoc();";
         }
         return $sql;

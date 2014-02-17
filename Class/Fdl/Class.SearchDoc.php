@@ -157,6 +157,7 @@ class SearchDoc
     private $resultQPos = 0;
     protected $originalDirId = 0;
     protected $searchFilter = '';
+    protected $fileFilter = '';
     protected $searchFilterOperand = 'and';
     protected $returnsFields = array();
     /**
@@ -790,6 +791,10 @@ class SearchDoc
     {
         $this->searchFilter = $filter;
     }
+    public function addFileFilter($filter)
+    {
+        $this->fileFilter = $filter;
+    }
     /**
      * Verify if $keywords syntax is comptatible with a part of query
      * for the moment verify only parenthesis balancing
@@ -1156,6 +1161,19 @@ class SearchDoc
             }
             $where = sprintf("%s and %s and (%s)", $ws, $where, $this->searchFilter);
         }
+        
+        if ($this->fileFilter) {
+            
+            if ($this->fromid > 0) {
+                $ws = sprintf('%s.id = %s.id', fileContentTableName($this->fromid) , familyTableName($this->fromid));
+                $from = sprintf('%s, %s', $from, fileContentTableName($this->fromid));
+            } else {
+                $ws = sprintf('filecontent.documents.id = docread.id');
+                $from = sprintf('%s, filecontent.documents', $from);
+            }
+            $where = sprintf("%s and %s and (%s)", $ws, $where, $this->fileFilter);
+        }
+        
         if ($this->dirid) {
             if ($this->recursiveSearch) {
                 $cdirid = getRChildDirId($this->dbaccess, $this->dirid, array() , 0, $this->folderRecursiveLevel);

@@ -53,6 +53,9 @@ SELECT sequence_schema, sequence_name, substring(sequence_name from 8)::int as f
         END LOOP;
     END;
 $$;
+
+
+
 CREATE OR REPLACE FUNCTION pg_temp.convertMultiple(IN _family name, IN _column name)
     RETURNS void
     LANGUAGE plpgsql

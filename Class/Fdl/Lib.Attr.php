@@ -483,7 +483,7 @@ function doubleslash($s)
     return $s;
 }
 
-function createOrUpdateSearchTable($familyName)
+function createSearchTable($familyName)
 {
     $familyName = strtolower($familyName);
     $sql = sprintf("select true from information_schema.tables where table_name='%s' and table_schema='search'", pg_escape_string($familyName));
@@ -508,7 +508,7 @@ function createOrUpdateSearchTable($familyName)
             simpleQuery('', $sql, $tableParentExists, true, true);
             
             if (!$tableParentExists) {
-                createOrUpdateSearchTable($familyParent);
+                createSearchTable($familyParent);
             }
             // try again
             $sql = sprintf("select true from information_schema.tables where table_name='%s' and table_schema='search'", $familyParent);
@@ -522,8 +522,84 @@ function createOrUpdateSearchTable($familyName)
             simpleQuery('', $sql);
         }
     }
+    $sql = sprintf("select title from family.families where lower(name)='%s'", pg_escape_string($familyName));
+    simpleQuery('', $sql, $famTitle, true, true);
+    $sql = sprintf("comment on table search.\"%s\" is 'for (\"%s\")';", $familyName, pg_escape_string($famTitle));
+    simpleQuery('', $sql);
 }
-
+function createFileContentTable($familyName)
+{
+    $familyName = strtolower($familyName);
+    $sql = sprintf("select true from information_schema.tables where table_name='%s' and table_schema='filecontent'", pg_escape_string($familyName));
+    simpleQuery('', $sql, $tableExists, true, true);
+    if (!$tableExists) {
+        if ($familyName === "documents") {
+            $sql = "create table filecontent.documents (
+                   id int not null,primary key (id))";
+            simpleQuery('', $sql);
+        } else {
+            
+            $sql = sprintf("select fromname from family.families where lower(name)='%s'", pg_escape_string($familyName));
+            simpleQuery('', $sql, $familyParent, true, true);
+            if ($familyParent === false) {
+                throw new \Dcp\Exception("FAM0602", $familyName);
+            }
+            if (!$familyParent) $familyParent = 'documents';
+            else $familyParent = strtolower($familyParent);
+            $sql = sprintf("select true from information_schema.tables where table_name='%s' and table_schema='filecontent'", $familyParent);
+            simpleQuery('', $sql, $tableParentExists, true, true);
+            
+            if (!$tableParentExists) {
+                createFileContentTable($familyParent);
+            }
+            // try again
+            $sql = sprintf("select true from information_schema.tables where table_name='%s' and table_schema='filecontent'", $familyParent);
+            simpleQuery('', $sql, $tableParentExists, true, true);
+            if (!$tableParentExists) {
+                throw new \Dcp\Exception("FAM0601", $familyName, $familyParent);
+            }
+            $sql = sprintf('create table filecontent."%s" () inherits (filecontent.%s);', pg_escape_string($familyName) , $familyParent);
+            $sql.= sprintf('ALTER TABLE filecontent."%s" ADD CONSTRAINT %s_pkey PRIMARY KEY(id);', pg_escape_string($familyName) , pg_escape_string($familyName));
+            simpleQuery('', $sql);
+        }
+    }
+    $sql = sprintf("select title from family.families where lower(name)='%s'", pg_escape_string($familyName));
+    simpleQuery('', $sql, $famTitle, true, true);
+    $sql = sprintf("comment on table filecontent.\"%s\" is 'for (\"%s\")';", $familyName, pg_escape_string($famTitle));
+    simpleQuery('', $sql);
+    $sql = sprintf("select docattr.id, docattr.labeltext from docattr,family.families where substring(docattr.type for 4) = 'file' and docattr.docid=family.families.id and lower(family.families.name)='%s'", pg_escape_string($familyName));
+    simpleQuery('', $sql, $attrIds, false, false);
+    foreach ($attrIds as $attr) {
+        $aid = $attr["id"];
+        
+        $sql = sprintf("select attributeIsMultiple('%s','%s') as multiple", pg_escape_string($familyName) , pg_escape_string($aid));
+        simpleQuery('', $sql, $isMultiple, true, true);
+        
+        foreach (array(
+            "txt",
+            "vec"
+        ) as $postfix) {
+            $sql = sprintf("select true from information_schema.columns where table_schema ='filecontent' and table_name='%s' and column_name='%s_%s'", pg_escape_string($familyName) , pg_escape_string($aid) , $postfix);
+            simpleQuery('', $sql, $columnExists, true, true);
+            if (!$columnExists) {
+                $sql = sprintf("alter table filecontent.\"%s\" add column \"%s_%s\" %s%s ;", pg_escape_string($familyName) , pg_escape_string($aid) , $postfix, ($postfix === 'txt') ? 'text' : 'tsvector', ($isMultiple ? '[]' : ''));
+                simpleQuery('', $sql);
+                if ($postfix == "vec" && !$isMultiple) {
+                    $sql = sprintf("create index full_%s on filecontent.\"%s\" using gin(%s_vec) ;", pg_escape_string($aid) , pg_escape_string($familyName) , pg_escape_string($aid));
+                    simpleQuery('', $sql);
+                }
+            }
+            
+            $sql = sprintf("comment on column filecontent.\"%s\".%s_%s is '%s %s';", $familyName, pg_escape_string($aid) , $postfix, ($postfix === 'txt') ? 'source text for' : "vector text for", pg_escape_string($attr["labeltext"]));
+            simpleQuery('', $sql);
+            $sql = sprintf("select droptrigger('filecontent', '%s')", $familyName);
+            simpleQuery('', $sql);
+            $sql = sprintf("create trigger full_%s BEFORE INSERT OR UPDATE ON filecontent.%s FOR EACH ROW EXECUTE PROCEDURE %s_fullvectorize();", $familyName, $familyName, $familyName);
+            $sql.= sprintf("create trigger searchupt_%s AFTER INSERT OR UPDATE ON filecontent.%s FOR EACH ROW EXECUTE PROCEDURE updatesearchfilecontent();", $familyName, $familyName);
+            simpleQuery('', $sql);
+        }
+    }
+}
 function PgUpdateFamilly($dbaccess, $docid, $oriDocname)
 {
     $msg = '';
@@ -615,11 +691,7 @@ function PgUpdateFamilly($dbaccess, $docid, $oriDocname)
          */
         foreach ($oattr as $ka => $attr) {
             $tattr[strtolower($attr->id) ] = $attr;
-            if ($attr->type == 'file') {
-                $tattr[strtolower($attr->id) . '_txt'] = $attr;
-                $tattr[strtolower($attr->id) . '_vec'] = clone ($attr);
-                $tattr[strtolower($attr->id) . '_vec']->type = 'tsvector';
-            } else if (substr($attr->type, 0, 5) == "docid") {
+            if (substr($attr->type, 0, 5) == "docid") {
                 if (preg_match("/doctitle=([A-Za-z0-9_-]+)/", $attr->options, $reg)) {
                     $doctitle = $reg[1];
                     if ($doctitle == "auto") $doctitle = $attr->id . "_title";
@@ -676,14 +748,19 @@ function PgUpdateFamilly($dbaccess, $docid, $oriDocname)
                     }
                     $sqltype.= $pgRepeat;
                     
-                    $sqlquery = sprintf("ALTER TABLE family.%s add column %s %s", pg_escape_string($docname) , pg_escape_string($ka) , pg_escape_string($sqltype));
+                    $sqlquery = sprintf("ALTER TABLE family.%s add column %s %s;", pg_escape_string($docname) , pg_escape_string($ka) , pg_escape_string($sqltype));
                     
+                    $sqlquery.= sprintf("comment on column family.%s.%s is '(%s) %s'", pg_escape_string($docname) , pg_escape_string($ka) , pg_escape_string($rtype) , pg_escape_string($attr->labeltext));
+                    simpleQuery($dbaccess, $sqlquery);
+                } else {
+                    $sqlquery = sprintf("comment on column family.%s.%s is '(%s) %s'", pg_escape_string($docname) , pg_escape_string($ka) , pg_escape_string(strtok($attr->type, "(")) , pg_escape_string($attr->labeltext));
                     simpleQuery($dbaccess, $sqlquery);
                 }
             }
         }
     }
-    createOrUpdateSearchTable($docname);
+    createSearchTable($docname);
+    createFileContentTable($docname);
     
     return $msg;
 }

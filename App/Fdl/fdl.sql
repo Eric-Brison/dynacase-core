@@ -37,6 +37,28 @@ begin
 end;
 $$ language 'plpgsql';
 
+
+CREATE OR REPLACE FUNCTION attributeIsMultiple(IN _family name, IN _column name)
+    RETURNS bool
+    LANGUAGE plpgsql
+    AS
+    $$
+    DECLARE
+	isMultiple bool;
+	famId int;
+    BEGIN
+      select id into famId from family.families where lower(name)=_family;
+      select true into isMultiple from docattr where docid=famId and id=_column and options ~ E'\\ymultiple=yes\\y';
+      IF isMultiple is null THEN
+         -- try if in array
+          select true into isMultiple from docattr
+               where id = (select frameid from docattr where docid=famId and id=_column)
+           and substring(type for 5) = 'array';
+      END IF;
+      RETURN isMultiple;
+    END;
+$$;
+
 -- change type of column
 create or replace function alter_table_column(text, text, text)
 returns bool as $$
@@ -117,6 +139,8 @@ $$ language 'plpgsql' ;
 
 -- The TRIGGERS -----------
 
+
+-- AFTER INSERT OR UPDATE ON family.*
 CREATE OR REPLACE FUNCTION upvaldocfam() RETURNS trigger AS $$
 declare
 begin
@@ -128,6 +152,40 @@ end;
 $$ language 'plpgsql';
 
 
+-- AFTER INSERT OR UPDATE ON filecontent.*
+CREATE OR REPLACE FUNCTION updatesearchfilecontent() RETURNS trigger AS $$
+declare
+begin
+
+update family.documents set id = id where id= NEW.id;
+
+return NEW;
+end;
+$$ language 'plpgsql';
+
+-- AFTER DELETE ON family.*
+create or replace function deletedoc()
+returns trigger as $$
+declare
+begin
+
+if (TG_OP = 'DELETE') then
+   delete from docread where id=OLD.id;
+   delete from search.documents where id=OLD.id;
+   delete from filecontent.documents where id=OLD.id;
+   --delete from fld where childid=OLD.id;
+   delete from docfrom where id=OLD.id;
+   delete from docname where id=OLD.id;
+   delete from docperm where docid=OLD.id;
+   delete from docpermext where docid=OLD.id;
+end if;
+
+return NEW;
+end;
+$$ language 'plpgsql';
+
+
+-- BEFORE UPDATE ON family.*
 create or replace function resetvalues() 
 returns trigger as $$
 declare 
@@ -158,24 +216,7 @@ return NEW;
 end;
 $$ language 'plpgsql';
 
-create or replace function initacl() 
-returns trigger as '
-declare 
-begin
-if (TG_OP = ''UPDATE'') then
-   if (NEW.cacl != 0)  and ((NEW.upacl != OLD.upacl) OR (NEW.unacl != OLD.unacl)) then
-     update docperm set cacl=0 where docid=NEW.docid;
-   end if;
-end if;
 
-if (TG_OP = ''INSERT'') then
-   if (NEW.cacl != 0) then 
-     update docperm set cacl=0 where docid=NEW.docid;
-   end if;
-end if;
-return NEW;
-end;
-' language 'plpgsql';
 
 create or replace function to2_ascii(text) 
 returns text as $$
@@ -192,7 +233,7 @@ declare
   a_weight alias for $2;
 begin
    if (a_text is null) or (a_text = '') then
-     return to_tsvector('simple','a');
+     return to_tsvector('simple','');
    else
      return setweight(to_tsvector('french',to2_ascii(a_text)), a_weight);
    end if;      
@@ -208,7 +249,7 @@ end;
 $$ language 'plpgsql' ;
 
 
-
+-- AFTER INSERT ON family.*
 create or replace function fixeddoc() 
 returns trigger as $$
 declare 
@@ -250,6 +291,8 @@ return NEW;
 end;
 $$ language 'plpgsql';
 
+
+-- AFTER INSERT OR UPDATE ON family.*
 create or replace function setread() 
 returns trigger as '
 declare 
@@ -257,10 +300,6 @@ declare
    lname text;
    cfromid int;
 begin
-
-if (TG_OP = ''DELETE'') then  
-   delete from docread where id=OLD.id;   
-end if;
 
 if ((TG_OP = ''UPDATE'') OR (TG_OP = ''INSERT'')) then
   if  NEW.doctype != ''T'' then
@@ -304,36 +343,30 @@ $$ language 'plpgsql' ;
 
 
 create or replace function disabledtrigger(name) 
-returns bool as '
+returns bool as $$
 declare 
   tname alias for $1;
 begin
-   EXECUTE ''UPDATE pg_catalog.pg_class SET reltriggers = 0 WHERE oid = '''''' || quote_ident(tname) || ''''''::pg_catalog.regclass'';
-
-
-
+   EXECUTE 'UPDATE pg_catalog.pg_class SET reltriggers = 0 WHERE oid = ''' || quote_ident(tname) || '''::pg_catalog.regclass';
    return true;
 end;
-' language 'plpgsql' ;
+$$ language 'plpgsql' ;
 
 
 
 
 create or replace function enabledtrigger(name) 
-returns bool as '
+returns bool as $$
 declare 
   tname alias for $1;
 begin
-   EXECUTE ''UPDATE pg_catalog.pg_class SET reltriggers = (SELECT pg_catalog.count(*) FROM pg_catalog.pg_trigger where pg_class.oid = tgrelid) WHERE oid =  '''''' || quote_ident(tname) || ''''''::pg_catalog.regclass;'';
-
-
-
+   EXECUTE 'UPDATE pg_catalog.pg_class SET reltriggers = (SELECT pg_catalog.count(*) FROM pg_catalog.pg_trigger where pg_class.oid = tgrelid) WHERE oid =  ''' || quote_ident(tname) || '''::pg_catalog.regclass;';
    return true;
 end;
-' language 'plpgsql' ;
+$$ language 'plpgsql' ;
 
 
-
+-- BEFORE INSERT on fld
 create or replace function fromfld() 
 returns trigger as $$
 declare 

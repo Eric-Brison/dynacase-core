@@ -447,6 +447,7 @@ class DetailSearch extends \Dcp\Family\Search
             case "~@":
                 if (trim($val) != "") {
                     $cond = " " . $col . '_txt' . " ~ '" . strtolower($val) . "' ";
+                    $this->search->addFileFilter("true");
                 }
                 break;
 
@@ -460,10 +461,11 @@ class DetailSearch extends \Dcp\Family\Search
                         $keyword = trim($val);
                     }
                     if ($op == "@@") {
-                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','." . unaccent(strtolower($keyword)) . "') ";
+                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','" . unaccent(strtolower($keyword)) . "') ";
                     } elseif ($op == "=@") {
                         $cond = "fulltext @@ to_tsquery('french','" . unaccent(strtolower($keyword)) . "') ";
                     }
+                    $this->search->addFileFilter("true");
                 }
                 break;
 
