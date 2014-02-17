@@ -47,7 +47,7 @@ class UserToken extends DbObj
     
     var $sqlcreate = "
     CREATE TABLE usertoken (
-      token VARCHAR(256) NOT NULL PRIMARY KEY,
+      token TEXT NOT NULL PRIMARY KEY,
       userid INT NOT NULL,
       expire TIMESTAMP NOT NULL,
       expendable BOOLEAN DEFAULT FALSE,

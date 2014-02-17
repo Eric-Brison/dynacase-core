@@ -32,7 +32,7 @@ class SessionCache extends DbObj
     
     var $dbtable = "session_cache";
     
-    var $sqlcreate = "create table session_cache ( index varchar(100), 
+    var $sqlcreate = "create table session_cache ( index text, 
 			    lasttime	    int);";
     
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)

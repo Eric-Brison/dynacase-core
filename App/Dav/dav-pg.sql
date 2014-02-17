@@ -10,10 +10,10 @@
 create schema dav;
 
 CREATE TABLE dav.locks (
-  token varchar(255) NOT NULL default '',
+  token text NOT NULL default '',
   path text NOT NULL default '',
   expires int NOT NULL default '0',
-  owner varchar(200) default NULL,
+  owner text default NULL,
   recursive int default '0',
   writelock int default '0',
   exclusivelock int NOT NULL default 0,
@@ -30,8 +30,8 @@ create index lockexp on  dav.locks(expires);
 
 CREATE TABLE dav.properties (
   path text NOT NULL default '',
-  name varchar(120) NOT NULL default '',
-  ns varchar(120) NOT NULL default 'DAV:',
+  name text NOT NULL default '',
+  ns text NOT NULL default 'DAV:',
   value text,
   PRIMARY KEY  (path,name,ns)
 );
@@ -44,8 +44,8 @@ create index properties_path on  dav.properties(path);
 --
 
 CREATE TABLE dav.sessions (
-  session varchar(200) NOT NULL ,
-  owner varchar(200) NOT NULL ,
+  session text NOT NULL ,
+  owner text NOT NULL ,
   vid int NOT NULL ,
   fid int NOT NULL ,
   expires int NOT NULL default '0',

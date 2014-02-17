@@ -49,7 +49,7 @@ class VaultDiskFs extends DbObj
                                  subdir_cnt_bydir   int,
                                  subdir_deep   int,
                                  max_entries_by_dir   int,
-                                 r_path varchar(2048)
+                                 r_path text
                                );
            create sequence seq_id_vaultdiskfs%s start 10;
 

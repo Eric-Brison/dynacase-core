@@ -57,8 +57,8 @@ class Param extends DbObj
     
     var $sqlcreate = '
       create table paramv (
-              name   varchar(50) not null,
-              type   varchar(21),
+              name   text not null,
+              type   text,
               appid  int4,
               val    text);
       create index paramv_idx2 on paramv(name);

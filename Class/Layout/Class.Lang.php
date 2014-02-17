@@ -78,9 +78,9 @@ class Lang extends DbObj
     
     var $sqlcreate = '
 create table lang (idapp int not null,
-lang  varchar(10) not null,
-code  varchar(60) not null,
-fmt   varchar(200) not null );
+lang  text not null,
+code  text not null,
+fmt   text not null );
 create index lang_idx1 on lang(idapp, lang, code);
 ';
     
