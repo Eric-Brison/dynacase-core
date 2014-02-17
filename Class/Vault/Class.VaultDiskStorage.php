@@ -52,7 +52,7 @@ class VaultDiskStorage extends DbObj
                                      id_dir        int,
                                      public_access bool,
                                      size int,
-                                     name varchar(2048),
+                                     name text,
 
                                      mime_t           text DEFAULT '',
                                      mime_s           text DEFAULT '',

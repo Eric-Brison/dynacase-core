@@ -45,7 +45,7 @@ class VaultDiskDir extends DbObj
                                  primary key (id_dir),
 				 id_fs          int,
 				 free_entries   int,
-                                 l_path varchar(2048)
+                                 l_path text
                                );
            create sequence seq_id_vaultdiskdir%s start 10;";
     // --------------------------------------------------------------------

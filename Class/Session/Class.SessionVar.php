@@ -34,9 +34,9 @@ class SessionVar extends DbObj
     
     var $dbtable = "session_vars";
     
-    var $sqlcreate = "create table session_vars ( session varchar(100), 
-			    key	    varchar(50),
-			    val	    varchar(200));
+    var $sqlcreate = "create table session_vars ( session text, 
+			    key	    text,
+			    val	    text);
 create index session_vars_idx on session_vars(session,key);";
 }
 ?>

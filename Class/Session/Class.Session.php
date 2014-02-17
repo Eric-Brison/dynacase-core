@@ -69,7 +69,7 @@ class Session extends DbObj
     public $status;
     var $dbtable = "sessions";
     
-    var $sqlcreate = "create table sessions ( id         varchar(100),
+    var $sqlcreate = "create table sessions ( id text,
                         userid   int,
                         name text not null,
                         last_seen timestamp not null DEFAULT now() );

@@ -84,8 +84,8 @@ class SessionConf extends DbObj
     var $dbtable = "session_conf";
     
     var $sqlcreate = "
-create table session_conf ( key	    varchar(50),
-			    val	    varchar(200));
+create table session_conf ( key	text,
+			    val	text);
 create index session_conf_idx on session_conf(key);";
     
     var $sqlinit = "

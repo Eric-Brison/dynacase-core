@@ -13,6 +13,7 @@ if [ -z "$pgservice_core" ]; then
 fi
 
 PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f "$wpub"/FDL/fdl.sql
+
 PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << SQL
 
 \i $wpub/CORE/core_migr33.sql
@@ -36,16 +37,31 @@ ALTER SEQUENCE IF EXISTS seq_id_tdoc set schema family;
 update family.documents set fromname = family.families.name from family.families where family.families.id= family.documents.fromid;
 update docread set fromname = family.families.name from family.families where family.families.id= docread.fromid;
 
-
-
 select pg_temp.dropAllTriggers();
 select pg_temp.convertAllMultiple();
 
+ALTER TABLE IF EXISTS dav.locks ALTER COLUMN token TYPE text;
+ALTER TABLE IF EXISTS dav.locks ALTER COLUMN owner TYPE text;
+ALTER TABLE IF EXISTS dav.properties ALTER COLUMN name TYPE text;
+ALTER TABLE IF EXISTS dav.properties ALTER COLUMN ns TYPE text;
+ALTER TABLE IF EXISTS dav.sessions ALTER COLUMN session TYPE text;
+ALTER TABLE IF EXISTS dav.sessions ALTER COLUMN owner TYPE text;
+ALTER TABLE IF EXISTS public.usertoken ALTER COLUMN token TYPE text;
+ALTER TABLE IF EXISTS public.paramv ALTER COLUMN name TYPE text;
+ALTER TABLE IF EXISTS public.paramv ALTER COLUMN type TYPE text;
+ALTER TABLE IF EXISTS public.lang ALTER COLUMN lang TYPE text;
+ALTER TABLE IF EXISTS public.lang ALTER COLUMN code TYPE text;
+ALTER TABLE IF EXISTS public.lang ALTER COLUMN fmt TYPE text;
+ALTER TABLE IF EXISTS public.sessions ALTER COLUMN id TYPE text;
+ALTER TABLE IF EXISTS public.session_cache ALTER COLUMN index TYPE text;
+ALTER TABLE IF EXISTS public.session_conf ALTER COLUMN key TYPE text;
+ALTER TABLE IF EXISTS public.session_conf ALTER COLUMN val TYPE text;
+ALTER TABLE IF EXISTS public.session_vars ALTER COLUMN key TYPE text;
+ALTER TABLE IF EXISTS public.session_vars ALTER COLUMN val TYPE text;
+ALTER TABLE IF EXISTS public.vaultdiskdirstorage ALTER COLUMN l_path TYPE text;
+ALTER TABLE IF EXISTS public.vaultdiskfsstorage ALTER COLUMN r_path TYPE text;
+ALTER TABLE IF EXISTS public.vaultdiskstorage ALTER COLUMN name TYPE text;
+
 SQL
-RET=$?
-if [ $RET -ne 0 ]; then
-    echo "Error adding column rules to table style."
-    exit $RET
-fi
 
 exit 0
