@@ -14,7 +14,7 @@ fi
 
 PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f "$wpub"/FDL/fdl.sql
 
-PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << SQL
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - -a << SQL
 
 \i $wpub/CORE/core_migr33.sql
 
@@ -61,6 +61,9 @@ ALTER TABLE IF EXISTS public.session_vars ALTER COLUMN val TYPE text;
 ALTER TABLE IF EXISTS public.vaultdiskdirstorage ALTER COLUMN l_path TYPE text;
 ALTER TABLE IF EXISTS public.vaultdiskfsstorage ALTER COLUMN r_path TYPE text;
 ALTER TABLE IF EXISTS public.vaultdiskstorage ALTER COLUMN name TYPE text;
+
+DROP INDEX IF EXISTS title_docread;
+CREATE INDEX title_docread ON docread USING gin (title gin_trgm_ops);
 
 SQL
 

@@ -70,9 +70,9 @@ create table docread ( id int not null,
                    );
 create index fromid_docread on docread(fromid);
 create index initid_docread on docread(initid);
-create index title_docread on docread(title);
+CREATE INDEX title_docread ON docread USING gin (title gin_trgm_ops);
 create index docty_docread on docread(doctype);";
-    
+
     public $fields = array(
         "id",
         "owner",
