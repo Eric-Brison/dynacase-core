@@ -65,6 +65,9 @@ ALTER TABLE IF EXISTS public.vaultdiskstorage ALTER COLUMN name TYPE text;
 DROP INDEX IF EXISTS title_docread;
 CREATE INDEX title_docread ON docread USING gin (title gin_trgm_ops);
 
+SELECT pg_temp.dropDocTitleIndexes();
+SELECT pg_temp.renameIndexes();
+
 SQL
 
 exit 0

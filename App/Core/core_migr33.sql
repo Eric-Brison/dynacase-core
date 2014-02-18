@@ -226,3 +226,29 @@ CREATE OR REPLACE FUNCTION pg_temp.moveFileContent()
 
     END;
 $$;
+
+CREATE OR REPLACE FUNCTION pg_temp.dropDocTitleIndexes() RETURNS VOID LANGUAGE PLPGSQL AS
+$$
+DECLARE
+  row record;
+BEGIN
+  FOR row IN
+    SELECT schemaname, indexname FROM pg_indexes WHERE indexname ~ E'^doc_title\\d+$'
+  LOOP
+    EXECUTE 'DROP INDEX ' || quote_ident(row.schemaname) || '.' || quote_ident(row.indexname) ;
+  END LOOP;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION pg_temp.renameIndexes() RETURNS VOID LANGUAGE PLPGSQL AS
+$$
+DECLARE
+  row record;
+BEGIN
+  FOR row IN
+    SELECT schemaname, indexname, regexp_replace(indexname, E'^doc_(name|initid|profid)\\d+$', E'idx_\\1')||'_'||tablename AS new_indexname FROM pg_indexes WHERE indexname ~ E'^doc_(name|initid|profid)\\d+$'
+  LOOP
+    EXECUTE 'ALTER INDEX ' || quote_ident(row.schemaname) || '.' || quote_ident(row.indexname) || ' RENAME TO ' || quote_ident(row.new_indexname) ;
+  END LOOP;
+END;
+$$;
