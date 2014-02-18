@@ -68,6 +68,8 @@ CREATE INDEX title_docread ON docread USING gin (title gin_trgm_ops);
 SELECT pg_temp.dropDocTitleIndexes();
 SELECT pg_temp.renameIndexes();
 
+DELETE FROM paramv USING application WHERE paramv.appid = application.id AND application.name = 'FDL' AND paramv.name = 'FDL_FULLIDX';
+
 SQL
 
 exit 0

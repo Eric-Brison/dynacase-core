@@ -177,13 +177,6 @@ $app_const = array(
         "user" => "N",
         "descr" => N_("Transformation Engine timeout connection (in seconds)")
     ) ,
-    "FDL_FULLIDX" => array(
-        "val" => "gist",
-        "descr" => N_("fulltext index mode") ,
-        "user" => "N",
-        "global" => "Y",
-        "kind" => "enum(gist|gin)"
-    ) ,
     "FDL_TIMERHOURLIMIT" => array(
         "val" => "2",
         "descr" => N_("hour number where timer can be execute until date is reached") ,
