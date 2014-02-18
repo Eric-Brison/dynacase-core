@@ -585,7 +585,7 @@ function createFileContentTable($familyName)
                 $sql = sprintf("alter table filecontent.\"%s\" add column \"%s_%s\" %s%s ;", pg_escape_string($familyName) , pg_escape_string($aid) , $postfix, ($postfix === 'txt') ? 'text' : 'tsvector', ($isMultiple ? '[]' : ''));
                 simpleQuery('', $sql);
                 if ($postfix == "vec" && !$isMultiple) {
-                    $sql = sprintf("create index full_%s on filecontent.\"%s\" using gin(%s_vec) ;", pg_escape_string($aid) , pg_escape_string($familyName) , pg_escape_string($aid));
+                    $sql = sprintf("create index %s_full_%s on filecontent.\"%s\" using gin(%s_vec) ;", pg_escape_string($familyName) , pg_escape_string($aid) , pg_escape_string($familyName) , pg_escape_string($aid));
                     simpleQuery('', $sql);
                 }
             }
