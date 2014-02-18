@@ -10,3 +10,4 @@ drop function if exists fulltext();
 drop function if exists updatevector(int);
 
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION IF NOT EXISTS unaccent;
