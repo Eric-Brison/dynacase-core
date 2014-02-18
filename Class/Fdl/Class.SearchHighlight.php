@@ -93,7 +93,7 @@ class SearchHighlight
             //print_r("\n\tSL".mb_strlen($s).'=='.mb_strlen($us)."\n");
             //print_r("\n\tS=$s\n");
             //print_r("\n\tUS=$us\n");
-            $q = sprintf("select ts_headline('french','%s',to_tsquery('french','%s'),'MaxFragments=1,StartSel=%s, StopSel=%s')", pg_escape_string($us) , pg_escape_string($k) , pg_escape_string($this->beginTag) , pg_escape_string($this->endTag));
+            $q = sprintf("select ts_headline('search.french','%s',to_tsquery('search.french','%s'),'MaxFragments=1,StartSel=%s, StopSel=%s')", pg_escape_string($us) , pg_escape_string($k) , pg_escape_string($this->beginTag) , pg_escape_string($this->endTag));
             $result = pg_query($this->dbid, $q);
             if (pg_numrows($result) > 0) {
                 $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
