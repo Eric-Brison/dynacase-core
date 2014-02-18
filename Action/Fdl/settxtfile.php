@@ -19,6 +19,7 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.TaskRequest.php");
 include_once ("WHAT/Class.TEClient.php");
+include_once ("FDL/Lib.Vault.php");
 /**
  * Modify the attrid_txt attribute
  * @param Action &$action current action
@@ -58,51 +59,20 @@ function settxtfile(Action & $action)
                         if (($status == 'D') && ($outfile != '')) {
                             $filename = uniqid(getTmpDir() . "/txt-" . $doc->id . '-');
                             $err = $ot->getTransformation($tid, $filename);
-                            //$err=$ot->getAndLeaveTransformation($tid,$filename);
+                            //$err = $ot->getAndLeaveTransformation($tid, $filename);
                             if ($err == "") {
-                                $at = $attrid . '_txt';
                                 if (file_exists($filename) && $info['status'] == 'D') {
-                                    if ($index == - 1) {
-                                        $doc->$at = file_get_contents($filename);
-                                    } else {
-                                        if ($doc->AffectColumn(array(
-                                            $at
-                                        ))) {
-                                            
-                                            $txts = Doc::rawValueToArray($doc->$at);
-                                            $txts[$index] = file_get_contents($filename);
-                                            $doc->$at = Doc::arrayToRawValue($txts);
-                                        }
-                                    }
-                                    $av = $attrid . '_vec';
-                                    $doc->fields[$av] = $av;
-                                    $doc->$av = '';
-                                    
-                                    $doc->fulltext = '';
-                                    $doc->fields[$at] = $at;
-                                    $doc->fields['fulltext'] = 'fulltext';
-                                    $err = $doc->modify(true, array(
-                                        'fulltext',
-                                        $at,
-                                        $av
-                                    ) , true);
+                                    $fileContent = trim(preg_replace('/\s+/', ' ', file_get_contents($filename)));
+                                    insertIntoFileContent($doc, $attrid, $index, $fileContent);
                                     $doc->addHistoryEntry(sprintf(_("text conversion done for file %s") , $doc->vault_filename($attrid, false, $index)) , HISTO_NOTICE);
+                                    
                                     if (($err == "") && ($doc->locked == - 1)) {
                                         // propagation in case of auto revision
                                         $idl = $doc->getLatestId();
                                         $ldoc = new_Doc($dbaccess, $idl);
                                         if ($doc->getRawValue($attrid) == $ldoc->getRawValue($attrid)) {
-                                            $ldoc->$at = $doc->$at;
-                                            $ldoc->$av = '';
-                                            $ldoc->fulltext = '';
-                                            $ldoc->fields[$at] = $at;
-                                            $ldoc->fields[$av] = $av;
-                                            $ldoc->fields['fulltext'] = 'fulltext';
-                                            $err = $ldoc->modify(true, array(
-                                                'fulltext',
-                                                $at,
-                                                $av
-                                            ) , true);
+                                            
+                                            insertIntoFileContent($ldoc, $attrid, $index, $fileContent);
                                         }
                                     }
                                 } else {

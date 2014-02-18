@@ -58,27 +58,27 @@ function generic_search(Action & $action)
         $sdoc = createTmpDoc($dbaccess, 5); //new DocSearch($dbaccess);
         $sdoc->title = sprintf(_("my search %s") , $keyword);
         $sdoc->setValue("se_famid", 16);
+        
+        $s = new SearchDoc($dbaccess, "SEARCH");
         $fdoc = new_doc($dbaccess, abs($famid));
         if (!$keyword) {
             $sdoc->title = sprintf(_("my searches about %s") , $fdoc->title);
         }
         $sdoc->Add();
-        $full = ($mode == "FULL");
         
-        $sqlfilter = $sdoc->getSqlGeneralFilters($keyword, "yes", false, $full);
         $sqlorder = getDefUSort($action, "title");
         if ($sqlorder == "") {
             $sdoc->clearValue("se_orderby");
         }
-        $sqlfilter[] = "owner=" . $action->user->id;
-        $sqlfilter[] = "se_famid='" . pg_escape_string($famid) . "'";
-        $query = getSqlSearchDoc($dbaccess, 0, 16, $sqlfilter, false, true, "", false);
-        
+        $s->addFilter("owner=%d", $action->user->id);
+        $s->addFilter("se_famid='%s'", pg_escape_string($famid));
+        if ($keyword) $s->addGeneralFilter($keyword);
+        $query = $s->getQueries();
         $sdoc->AddQuery($query);
         executeGenericList($action, array(
             "onefam" => $onefamOrigin,
             "mode" => $mode,
-            "famid" => $famid,
+            "famid" => "SEARCH",
             "dirid" => $sdoc->id,
             "catg" => $catgid
         ));

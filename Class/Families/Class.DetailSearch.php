@@ -147,9 +147,10 @@ class DetailSearch extends \Dcp\Family\Search
         $famid = $sql = "";
         $this->object2SqlFilter($std, $famid, $sql);
         
-        $filters[] = $sql;
-        $cdirid = 0;
-        $q = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters);
+        $s = new \SearchDoc($this->dbaccess, $famid);
+        $s->addFilter($sql);
+        $q = $s->getQueries();
+        
         if (count($q) == 1) {
             $q0 = $q[0]; // need a tempo variable : don't know why
             return ($q0);
@@ -446,6 +447,7 @@ class DetailSearch extends \Dcp\Family\Search
             case "~@":
                 if (trim($val) != "") {
                     $cond = " " . $col . '_txt' . " ~ '" . strtolower($val) . "' ";
+                    $this->search->addFileFilter("true");
                 }
                 break;
 
@@ -459,10 +461,11 @@ class DetailSearch extends \Dcp\Family\Search
                         $keyword = trim($val);
                     }
                     if ($op == "@@") {
-                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','." . unaccent(strtolower($keyword)) . "') ";
+                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','" . unaccent(strtolower($keyword)) . "') ";
                     } elseif ($op == "=@") {
                         $cond = "fulltext @@ to_tsquery('french','" . unaccent(strtolower($keyword)) . "') ";
                     }
+                    $this->search->addFileFilter("true");
                 }
                 break;
 

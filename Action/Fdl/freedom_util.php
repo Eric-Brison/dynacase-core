@@ -509,6 +509,18 @@ function searchTableName($familyIdentifier)
     return 'search."' . strtolower($famName) . '"';
 }
 /**
+ * @param int|string $familyIdentifier id or name of a family
+ * @return string
+ */
+function fileContentTableName($familyIdentifier)
+{
+    $famName = getFamilyName($familyIdentifier);
+    if (empty($famName)) {
+        $famName = "documents";
+    }
+    return 'filecontent."' . strtolower($famName) . '"';
+}
+/**
  * get generated file name used for a family
  * @param string $fromname family name
  * @return string

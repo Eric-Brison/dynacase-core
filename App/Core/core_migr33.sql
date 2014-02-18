@@ -20,6 +20,7 @@ CREATE OR REPLACE FUNCTION pg_temp.deleteAllViews(IN _schema TEXT)
         END LOOP;
     END;
 $$;
+
 CREATE OR REPLACE FUNCTION pg_temp.renameFamilyTable()
     RETURNS void
     LANGUAGE plpgsql
@@ -31,7 +32,6 @@ CREATE OR REPLACE FUNCTION pg_temp.renameFamilyTable()
         FOR row IN
             select table_schema, table_name, lower(docfam.name) as famname from (
 SELECT table_schema, table_name, substring(table_name from 4)::int as famid FROM information_schema.tables WHERE  table_schema = 'public' and table_name ~ '^doc[1-9]') as z, docfam where z.famid=docfam.id
-
         LOOP
             EXECUTE 'alter table ' || quote_ident(row.table_schema) || '.' || quote_ident(row.table_name) || ' set schema family';
             EXECUTE 'alter table family.' || quote_ident(row.table_name) || ' rename to ' || quote_ident(row.famname);
@@ -42,10 +42,7 @@ SELECT table_schema, table_name, substring(table_name from 4)::int as famid FROM
         FOR row IN
             select sequence_schema, sequence_name, lower(docfam.name) as famname from (
 SELECT sequence_schema, sequence_name, substring(sequence_name from 8)::int as famid FROM information_schema.sequences WHERE  sequence_schema = 'public' and sequence_name ~ '^seq_doc[1-9]') as z, docfam where z.famid=docfam.id
-
         LOOP
-
-
             EXECUTE 'alter sequence ' || quote_ident(row.sequence_schema) || '.' || quote_ident(row.sequence_name) || ' set schema family';
             EXECUTE 'alter table family.' || quote_ident(row.sequence_name) || ' rename to seq_' || (row.famname);
 
@@ -53,6 +50,9 @@ SELECT sequence_schema, sequence_name, substring(sequence_name from 8)::int as f
         END LOOP;
     END;
 $$;
+
+
+
 CREATE OR REPLACE FUNCTION pg_temp.convertMultiple(IN _family name, IN _column name)
     RETURNS void
     LANGUAGE plpgsql
@@ -122,7 +122,8 @@ CREATE OR REPLACE FUNCTION pg_temp.convertMultiple(IN _family name, IN _column n
 	myQuery:= 'update family.'|| _family || ' set __' || _column || ' =  ''{NULL}'' where '|| _column || E' = E''\\t''' ;
 	--RAISE NOTICE '%',myQuery;
 	EXECUTE myQuery;
-	myQuery:=  'alter table family.'|| _family || ' rename column ' || _column || ' to "~' || _column || '"';
+	--myQuery:=  'alter table family.'|| _family || ' rename column ' || _column || ' to "~' || _column || '"';
+	myQuery:=  'alter table family.'|| _family || ' drop column ' || _column ;
 	--RAISE NOTICE '%',myQuery;
 	EXECUTE myQuery;
 	myQuery:=  'alter table family.'|| _family || ' rename column __' || _column || ' to ' || _column || '';
@@ -177,5 +178,51 @@ CREATE OR REPLACE FUNCTION pg_temp.convertAllMultiple()
 		PERFORM pg_temp.convertMultiple(row.familyname, row.attrname);
 		delete from docattr where usefor='T';
 	END LOOP;
+    END;
+$$;
+
+
+CREATE OR REPLACE FUNCTION pg_temp.moveFileContent()
+    RETURNS void
+    LANGUAGE plpgsql
+    AS
+    $$
+    DECLARE
+        row     record;
+        attrs     record;
+        myQuery text;
+        isMultiple bool;
+    BEGIN
+    	FOR row IN
+            select array_agg(a.id) as attrname, lower(f.name) as familyname from docattr a, family.families f
+	    where f.id=a.docid  and  substring(a.type for 4) = 'file' group by familyname
+
+        LOOP
+            myQuery:= 'insert into filecontent.'|| row.familyname || '(id,'  || array_to_string(row.attrname, '_txt,') || '_txt) (select id' ;
+            FOR attrs IN select unnest(row.attrname) as aname
+            LOOP
+                select attributeIsMultiple(row.familyname, attrs.aname ) into isMultiple ;
+	              RAISE NOTICE 'Move % %',row.familyname, attrs.aname ;
+	              if ismultiple then
+	                myQuery:= myQuery || ', string_to_array(' || attrs.aname|| E'_txt, E''\\n'') ';
+	              else
+	                myQuery:= myQuery || ',' || attrs.aname || '_txt';
+	              end if;
+            END LOOP;
+            myQuery:= myQuery || 'from family.' || row.familyname|| '  where id not in (select id from filecontent.file))';
+
+            --RAISE NOTICE '%',myQuery;
+            EXECUTE myQuery;
+            -- clean column
+            FOR attrs IN select unnest(row.attrname) as aname
+            LOOP
+                myQuery:= 'alter table family.'|| row.familyname || ' drop column if exists ' || attrs.aname || '_txt';
+                EXECUTE myQuery;
+                myQuery:= 'alter table family.'|| row.familyname || ' drop column if exists ' || attrs.aname || '_vec';
+                EXECUTE myQuery;
+            END LOOP;
+
+	      END LOOP;
+
     END;
 $$;

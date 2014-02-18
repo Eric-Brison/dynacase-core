@@ -343,10 +343,18 @@ class TestPgArray extends TestCaseDcp
                 )
             ) ,
             array(
-                '{"ét \"é\"","h\"ivers","o\\\'connor"}',
+                '{"été, ou printemps, ou autres",hivers,"automne"}',
+                array(
+                    "été, ou printemps, ou autres",
+                    "hivers",
+                    "automne"
+                )
+            ) ,
+            array(
+                '{"ét \"é\"","h\"ivers, automne","o\\\'connor"}',
                 array(
                     'ét "é"',
-                    'h"ivers',
+                    'h"ivers, automne',
                     "o'connor"
                 )
             ) ,
@@ -407,6 +415,17 @@ class TestPgArray extends TestCaseDcp
                     array(
                         "automne",
                         "printemps"
+                    )
+                )
+            ) ,
+            array(
+                '{{"été, hivers"},{"automne, printemps"}}',
+                array(
+                    array(
+                        "été, hivers"
+                    ) ,
+                    array(
+                        "automne, printemps"
                     )
                 )
             ) ,

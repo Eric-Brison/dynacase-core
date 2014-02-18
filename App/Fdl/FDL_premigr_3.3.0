@@ -14,7 +14,8 @@ fi
 
 
 
-
+"$wpub"/wsh.php --api=generateDocumentClass
+"$wpub"/wsh.php --api=fdl_trigger | PGSERVICE="$pgservice_core" psql
 "$wpub"/wsh.php --api=generateDocumentClass
 
 rm -f "$wpub"/FDLGEN/Class.Doc[1-9]*.php
