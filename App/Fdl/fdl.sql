@@ -144,8 +144,18 @@ $$ language 'plpgsql' ;
 CREATE OR REPLACE FUNCTION upvaldocfam() RETURNS trigger AS $$
 declare
 begin
-NEW.values := '£' || coalesce(NEW.cprofid,0) || '£' || coalesce(NEW.dfldid,0) || '£' || coalesce(NEW.cfldid,0) || '£' || coalesce(NEW.ccvid,0) || '£' || coalesce(NEW.ddocid,0) || '£' || coalesce(NEW.methods,'') || '£' || coalesce(NEW.defval,'') || '£' || coalesce(NEW.param,'') || '£' || coalesce(NEW.maxrev,0) || '£' || coalesce(NEW.tagable,'') || '£' || coalesce(NEW.schar,'') || '£';
-NEW.attrids := '£cprofid£dfldid£cfldid£ccvid£ddocid£methods£defval£param£maxrev£tagable£schar£';
+NEW.avalues := '{"cprofid":' || to_json(coalesce(NEW.cprofid,0)) ||
+
+',"dfldid":'  ||  to_json(coalesce(NEW.dfldid,0))  ||
+',"cfldid":'  ||  to_json(coalesce(NEW.cfldid,0))  ||
+',"ccvid":'   ||  to_json(coalesce(NEW.ccvid,0))   ||
+',"ddocid":'  ||  to_json(coalesce(NEW.ddocid,0))  ||
+',"methods":' ||  to_json(coalesce(NEW.methods,''))||
+',"defval":'  ||  to_json(coalesce(NEW.defval,'')) ||
+',"param":'   ||  to_json(coalesce(NEW.param,''))  ||
+',"maxrev":'  ||  to_json(coalesce(NEW.maxrev,0))  ||
+',"tagable":' ||  to_json(coalesce(NEW.tagable,''))||
+',"schar":'   ||  to_json(coalesce(NEW.schar,''))  || '}';
 
 return NEW;
 end;
@@ -193,8 +203,6 @@ declare
    cfromid int;
 begin
 
-NEW.values:='';
-NEW.attrids:='';
 
 if (NEW.doctype = 'Z') and (NEW.name is not null) then
 	delete from docname where name=NEW.name;
@@ -285,20 +293,20 @@ $$ language 'plpgsql';
 
 -- AFTER INSERT OR UPDATE ON family.*
 create or replace function setread() 
-returns trigger as '
+returns trigger as $$
 declare 
    lid int;
    lname text;
    cfromid int;
 begin
 
-if ((TG_OP = ''UPDATE'') OR (TG_OP = ''INSERT'')) then
-  if  NEW.doctype != ''T'' then
+if ((TG_OP = 'UPDATE') OR (TG_OP = 'INSERT')) then
+  if  NEW.doctype != 'T' then
      select into lid id from docread where id= NEW.id;
      if (lid = NEW.id) then 
-	update docread set id=NEW.id,owner=NEW.owner,title=NEW.title,revision=NEW.revision,initid=NEW.initid,fromid=NEW.fromid,fromname=NEW.fromname,doctype=NEW.doctype,locked=NEW.locked,allocated=NEW.allocated,archiveid=NEW.archiveid,icon=NEW.icon,lmodify=NEW.lmodify,profid=NEW.profid,views=NEW.views,usefor=NEW.usefor,revdate=NEW.revdate,version=NEW.version,cdate=NEW.cdate,adate=NEW.adate,classname=NEW.classname,state=NEW.state,wid=NEW.wid,attrids=NEW.attrids,postitid=NEW.postitid,lockdomainid=NEW.lockdomainid,domainid=NEW.domainid,cvid=NEW.cvid,name=NEW.name,dprofid=NEW.dprofid,prelid=NEW.prelid,atags=NEW.atags,confidential=NEW.confidential,ldapdn=NEW.ldapdn,values=NEW.values where id=NEW.id;
+	update docread set id=NEW.id,owner=NEW.owner,title=NEW.title,revision=NEW.revision,initid=NEW.initid,fromid=NEW.fromid,fromname=NEW.fromname,doctype=NEW.doctype,locked=NEW.locked,allocated=NEW.allocated,archiveid=NEW.archiveid,icon=NEW.icon,lmodify=NEW.lmodify,profid=NEW.profid,views=NEW.views,usefor=NEW.usefor,revdate=NEW.revdate,version=NEW.version,cdate=NEW.cdate,adate=NEW.adate,classname=NEW.classname,state=NEW.state,wid=NEW.wid,postitid=NEW.postitid,lockdomainid=NEW.lockdomainid,domainid=NEW.domainid,cvid=NEW.cvid,name=NEW.name,dprofid=NEW.dprofid,prelid=NEW.prelid,atags=NEW.atags,confidential=NEW.confidential,ldapdn=NEW.ldapdn,avalues=NEW.avalues where id=NEW.id;
      else 
-	insert into docread(id,owner,title,revision,initid,fromid,fromname,doctype,locked,allocated,archiveid,icon,lmodify,profid,views,usefor,revdate,version,cdate,adate,classname,state,wid,attrids,postitid,lockdomainid,domainid,cvid,name,dprofid,prelid,atags,confidential,ldapdn,values) values (NEW.id,NEW.owner,NEW.title,NEW.revision,NEW.initid,NEW.fromid,NEW.fromname,NEW.doctype,NEW.locked,NEW.allocated,NEW.archiveid,NEW.icon,NEW.lmodify,NEW.profid,NEW.views,NEW.usefor,NEW.revdate,NEW.version,NEW.cdate,NEW.adate,NEW.classname,NEW.state,NEW.wid,NEW.attrids,NEW.postitid,NEW.lockdomainid,NEW.domainid,NEW.cvid,NEW.name,NEW.dprofid,NEW.prelid,NEW.atags,NEW.confidential,NEW.ldapdn,NEW.values);
+	insert into docread(id,owner,title,revision,initid,fromid,fromname,doctype,locked,allocated,archiveid,icon,lmodify,profid,views,usefor,revdate,version,cdate,adate,classname,state,wid,postitid,lockdomainid,domainid,cvid,name,dprofid,prelid,atags,confidential,ldapdn,avalues) values (NEW.id,NEW.owner,NEW.title,NEW.revision,NEW.initid,NEW.fromid,NEW.fromname,NEW.doctype,NEW.locked,NEW.allocated,NEW.archiveid,NEW.icon,NEW.lmodify,NEW.profid,NEW.views,NEW.usefor,NEW.revdate,NEW.version,NEW.cdate,NEW.adate,NEW.classname,NEW.state,NEW.wid,NEW.postitid,NEW.lockdomainid,NEW.domainid,NEW.cvid,NEW.name,NEW.dprofid,NEW.prelid,NEW.atags,NEW.confidential,NEW.ldapdn,NEW.avalues);
      end if;
   end if;
 --RAISE NOTICE ''coucou %'',replace(NEW.values,''£'','' '');
@@ -307,7 +315,7 @@ end if;
 	
 return NEW;
 end;
-' language 'plpgsql';
+$$ language 'plpgsql';
 
 
 
