@@ -84,7 +84,6 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
          * @var \DocumentList $al
          */
         $al = $s->search();
-        
         $expectedAccounts = array_map("mb_strtolower", $expectedAccounts);
         $loginFounds = array();
         /**
@@ -94,7 +93,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             $login = '';
             if ($doc->getAttribute("us_login")) $login = $doc->getRawValue("us_login");
             elseif ($doc->getAttribute("role_login")) $login = $doc->getRawValue("role_login");
-            $this->assertTrue(in_array($login, $expectedAccounts) , sprintf("login <%s> #%s must not be present", $login, $doc->id));
+            $this->assertTrue(in_array($login, $expectedAccounts) , sprintf("login <%s> #%s must not be present", $login, $doc->getTitle()));
             $loginFounds[] = $login;
         }
         

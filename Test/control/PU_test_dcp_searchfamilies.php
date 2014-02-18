@@ -42,7 +42,6 @@ class TestSearchFamilies extends TestCaseDcpCommonFamily
         $err = $s->getError();
         $this->assertEmpty($err, "search error : $err");
         $dl = $s->getDocumentList();
-        // print_r($s->getSearchInfo());
         $this->assertEquals(1, $s->count() , "Family $filterName not found - " . print_r($s->getSearchInfo() , true));
         
         $index = 0;

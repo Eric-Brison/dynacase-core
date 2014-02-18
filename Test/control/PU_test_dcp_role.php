@@ -33,7 +33,7 @@ class TestRole extends TestCaseDcpCommonFamily
      */
     public function testRoleByGroup(array $addTo, array $expectedRoles)
     {
-        $u = new \User(self::$dbaccess, "");
+        $u = new \Account(self::$dbaccess, "");
         $u->login = "tst_jd1";
         $u->password_new = 'a';
         $err = $u->add();
@@ -43,7 +43,7 @@ class TestRole extends TestCaseDcpCommonFamily
         
         foreach ($addTo as $aGroupName) {
             /**
-             * @var \_IGROUP $dg
+             * @var \Dcp\Family\IGROUP $dg
              */
             $dg = new_doc(self::$dbaccess, $aGroupName);
             $err = $dg->insertDocument($du->id);
@@ -69,7 +69,7 @@ class TestRole extends TestCaseDcpCommonFamily
      */
     public function testDirectRole($login, array $expectedRoles)
     {
-        $u = new \User(self::$dbaccess);
+        $u = new \Account(self::$dbaccess);
         $u->setLoginName($login);
         $this->assertTrue($u->isAffected() , "cannot find $login user");
         $uRoleIds = $u->getRoles();
@@ -88,7 +88,7 @@ class TestRole extends TestCaseDcpCommonFamily
      */
     public function testRoleMail($roleLogin, $expectRawMail, $expectCompleteMail)
     {
-        $r = new \User(self::$dbaccess);
+        $r = new \Account(self::$dbaccess);
         $r->setLoginName($roleLogin);
         $this->assertTrue($r->isAffected() , "cannot find $roleLogin role");
         
@@ -97,7 +97,7 @@ class TestRole extends TestCaseDcpCommonFamily
         $this->assertEquals($expectRawMail, $rawMail, "role raw mail test");
         $this->assertEquals($expectCompleteMail, $completeMail, "role complete mail test");
         /**
-         * @var \_ROLE $dr
+         * @var \dcp\Family\ROLE $dr
          */
         $dr = new_doc(self::$dbaccess, $r->fid);
         $this->assertTrue($dr->isAlive() , "cannot find $roleLogin document role");
