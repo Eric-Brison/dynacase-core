@@ -319,3 +319,23 @@ BEGIN
     RETURN TRUE;
 END;
 $$ LANGUAGE plpgsql;
+
+--
+-- createNewTextSearchConfigurationCopyIfNotExists function
+--
+CREATE OR REPLACE FUNCTION pg_temp.createNewTextSearchConfigurationCopyIfNotExists(arg_schema text, arg_name text, arg_copy_schema text, arg_copy_name text)
+RETURNS BOOLEAN AS
+$$
+DECLARE
+  stmt text;
+  res text;
+BEGIN
+  SELECT pg_ts_config.* INTO res FROM pg_ts_config, pg_namespace WHERE pg_ts_config.cfgnamespace = pg_namespace.oid AND pg_namespace.nspname = 'search';
+  IF FOUND THEN
+    RETURN TRUE;
+  END IF;
+  stmt := 'CREATE TEXT SEARCH CONFIGURATION ' || quote_ident(arg_schema) || '.' || quote_ident(arg_name) || ' ( COPY = ' || quote_ident(arg_copy_schema) || '.' || quote_ident(arg_copy_name) || ' );' ;
+  EXECUTE stmt;
+  RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
