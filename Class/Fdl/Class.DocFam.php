@@ -31,9 +31,9 @@ create table family.families (cprofid int ,
                      ccvid int, 
                      ddocid int,
                      methods text,
-                     defval text,
+                     defaultvalues json,
                      schar char,
-                     param text,
+                     parametervalues json,
                      genversion float,
                      maxrev int,
                      usedocread int,
@@ -55,8 +55,8 @@ create unique index idx_idfam on family.families(id);";
         "cprofid",
         "ddocid",
         "methods",
-        "defval",
-        "param",
+        "defaultvalues",
+        "parametervalues",
         "genversion",
         "usedocread",
         "schar",
@@ -71,15 +71,15 @@ create unique index idx_idfam on family.families(id);";
     public $cprofid;
     public $ddocid;
     public $methods;
-    public $defval;
-    public $param;
+    public $defaultvalues;
+    public $parametervalues;
     public $schar;
     public $maxrev;
     public $configuration;
     public $tagable;
     private $_configuration;
-    private $_xtdefval; // dynamic used by ::getParams()
-    private $_xtparam; // dynamic used by ::getDefValues()
+    private $_xtdefaultvalues; // dynamic used by ::getParams()
+    private $_xtparametervalues; // dynamic used by ::getDefValues()
     private $defaultSortProperties = array(
         'owner' => array(
             'sort' => 'no',
@@ -125,8 +125,8 @@ create unique index idx_idfam on family.families(id);";
     
     function complete()
     {
-        $this->_xtdefval = null;
-        $this->_xtparam = null;
+        $this->_xtdefaultvalues = null;
+        $this->_xtparametervalues = null;
     }
     function preDocDelete()
     {
@@ -165,7 +165,7 @@ create unique index idx_idfam on family.families(id);";
         if ($cdoc->isAlive()) {
             if (!$this->ccvid) $this->ccvid = $cdoc->ccvid;
             if (!$this->cprofid) $this->cprofid = $cdoc->cprofid;
-            if (!$this->defval) $this->defval = $cdoc->defval;
+            if (!$this->defaultvalues) $this->defaultvalues = $cdoc->defaultvalues;
             if (!$this->schar) $this->schar = $cdoc->schar;
             if (!$this->usefor) $this->usefor = $cdoc->usefor;
             if (!$this->tagable) $this->tagable = $cdoc->tagable;
@@ -212,8 +212,8 @@ create unique index idx_idfam on family.families(id);";
     {
         $d = createDoc($this->dbaccess, $this->id, false, true, false);
         $defValues = $this->getDefValues();
-        $ownDefValues = $this->explodeX($this->defval);
-        $ownParValues = $this->explodeX($this->param);
+        $ownDefValues = $this->explodeX($this->defaultvalues);
+        $ownParValues = $this->explodeX($this->parametervalues);
         $tDefVal = $tDefPar = array();
         
         $tp = $this->getParamAttributes();
@@ -433,7 +433,7 @@ create unique index idx_idfam on family.families(id);";
     final public function getParameterRawValue($idp, $def = "")
     {
         
-        $pValue = $this->getXValue("param", $idp);
+        $pValue = $this->getXValue("parametervalues", $idp);
         if ($pValue === '') {
             $defsys = $this->getDefValue($idp);
             if ($defsys !== '') {
@@ -462,7 +462,7 @@ create unique index idx_idfam on family.families(id);";
      */
     function getParams()
     {
-        return $this->getXValues("param");
+        return $this->getXValues("parametervalues");
     }
     /**
      * return own family parameters values - no serach in parent families
@@ -470,7 +470,7 @@ create unique index idx_idfam on family.families(id);";
      */
     function getOwnParams()
     {
-        return $this->explodeX($this->param);
+        return $this->explodeX($this->parametervalues);
     }
     /**
      * return the value of an list parameter document
@@ -523,7 +523,7 @@ create unique index idx_idfam on family.families(id);";
         
         $err = '';
         if ($this->isComplete()) $err = $this->checkSyntax($idp, $val);
-        if (!$err) $this->setXValue("param", strtolower($idp) , $val);
+        if (!$err) $this->setXValue("parametervalues", strtolower($idp) , $val);
         return $err;
     }
     
@@ -614,7 +614,7 @@ create unique index idx_idfam on family.families(id);";
      */
     public function getDefValue($idp, $def = "")
     {
-        $x = $this->getXValue("defval", $idp, $def);
+        $x = $this->getXValue("defaultvalues", $idp, $def);
         
         return $x;
     }
@@ -626,7 +626,7 @@ create unique index idx_idfam on family.families(id);";
      */
     public function getDefValues()
     {
-        return $this->getXValues("defval");
+        return $this->getXValues("defaultvalues");
     }
     /**
      * return own default value not inherit default
@@ -635,7 +635,7 @@ create unique index idx_idfam on family.families(id);";
      */
     function getOwnDefValues()
     {
-        return $this->explodeX($this->defval);
+        return $this->explodeX($this->defaultvalues);
     }
     /**
      * set family default value
@@ -658,7 +658,7 @@ create unique index idx_idfam on family.families(id);";
         if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
             $err = $this->convertDateToiso($oa, $val);
         }
-        $this->setXValue("defval", $idp, $val);
+        $this->setXValue("defaultvalues", $idp, $val);
         return $err;
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ X VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -688,15 +688,8 @@ create unique index idx_idfam on family.families(id);";
      */
     private function explodeX($sx)
     {
-        $txval = array();
-        $tdefattr = explode("][", substr($sx, 1, strlen($sx) - 2));
-        foreach ($tdefattr as $k => $v) {
-            
-            $aid = substr($v, 0, strpos($v, '|'));
-            $dval = substr(strstr($v, '|') , 1);
-            if ($aid) $txval[$aid] = $dval;
-        }
-        return $txval;
+        $x = json_decode($sx, true);
+        return empty($x) ? array() : $x;
     }
     /**
      * return all family default values
@@ -772,10 +765,12 @@ create unique index idx_idfam on family.families(id);";
         
         $tdefattr = array();
         foreach ($txval as $k => $v) {
-            if ($k && ($v !== '')) $tdefattr[] = "$k|$v";
+            if ($k && ($v !== '')) $tdefattr[$k] = $v;
         }
+        
         $this->$tval = null;
-        $this->$X = "[" . implode("][", $tdefattr) . "]";
+        $this->$X = json_encode($tdefattr);
+        $this->hasChanged = true;
     }
     
     final public function UpdateVaultIndex()

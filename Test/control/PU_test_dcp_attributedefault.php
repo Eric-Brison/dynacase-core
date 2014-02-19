@@ -91,7 +91,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         foreach ($expectedvalues as $attrid => $expectedValue) {
             
             $value = $d->getDefValue($attrid);
-            $this->assertEquals($expectedValue, $value, sprintf("not the expected default value attribute %s has %s", $attrid, $d->defval));
+            $this->assertEquals($expectedValue, $value, sprintf("not the expected default value attribute %s has %s", $attrid, $d->defaultvalues));
         }
         foreach ($expectedParams as $attrid => $expectedValue) {
             
@@ -152,7 +152,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         $d = createDoc(self::$dbaccess, $famid);
         $value = $d->getFamilyParameterValue($attrid);
         $f = $d->getFamilyDocument();
-        $this->assertEquals($expectedValue, $value, sprintf("parameter %s has not correct initial value, family has \"%s\"", $attrid, $f->param . $f->getParameterRawValue($attrid)));
+        $this->assertEquals($expectedValue, $value, sprintf("parameter %s has not correct initial value, family has \"%s\"", $attrid, $f->parametervalues . $f->getParameterRawValue($attrid)));
         $err = $f->setParam($attrid, '');
         $this->assertEmpty($err, "parameter set error : $err");
         $f->modify();

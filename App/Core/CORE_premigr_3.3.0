@@ -32,6 +32,8 @@ select pg_temp.renameFamilyTable();
 
 ALTER TABLE IF EXISTS public.docfam set schema family;
 ALTER TABLE if exists family.docfam rename to families;
+ALTER TABLE family.families add column defaultvalues json;
+ALTER TABLE family.families add column parametervalues json;
 ALTER TABLE IF EXISTS public.doc set schema family;
 ALTER TABLE if exists family.doc rename to documents;
 ALTER SEQUENCE IF EXISTS seq_id_doc set schema family;
