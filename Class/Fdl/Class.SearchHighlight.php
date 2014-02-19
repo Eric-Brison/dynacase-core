@@ -67,8 +67,6 @@ class SearchHighlight
         } else if ((strlen($s) / 1024) > $this->limit) {
             $headline = sprintf(_("document too big (%dKo): no highlight") , (strlen($s) / 1024));
         } else {
-            
-            $k = preg_replace('/\s+/u', '&', unaccent($k));
             // print_r("\n============\n\tK=$k\n");
             $s = self::strtr8($s, "£", ",");
             $s = preg_replace('/[ ]+ /u', ' ', $s);
@@ -89,11 +87,10 @@ class SearchHighlight
             $s = preg_replace('/»/u', '"', $s);
             $s = preg_replace('/\p{C}/u', '', $s); // delete control characters
             $s = preg_replace('/\p{S}/u', '', $s); // delete symbol characters
-            $us = unaccent($s);
             //print_r("\n\tSL".mb_strlen($s).'=='.mb_strlen($us)."\n");
             //print_r("\n\tS=$s\n");
             //print_r("\n\tUS=$us\n");
-            $q = sprintf("select ts_headline('search.french','%s',to_tsquery('search.french','%s'),'MaxFragments=1,StartSel=%s, StopSel=%s')", pg_escape_string($us) , pg_escape_string($k) , pg_escape_string($this->beginTag) , pg_escape_string($this->endTag));
+            $q = sprintf("select ts_headline('search.french','%s',to_tsquery('search.french','%s'),'MaxFragments=1,StartSel=%s, StopSel=%s')", pg_escape_string($s) , pg_escape_string($k) , pg_escape_string($this->beginTag) , pg_escape_string($this->endTag));
             $result = pg_query($this->dbid, $q);
             if (pg_numrows($result) > 0) {
                 $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
@@ -101,38 +98,8 @@ class SearchHighlight
                 //print_r("\n\tL=$headline");
                 
             }
-            
-            $pos = mb_strpos($headline, $this->beginTag);
-            if ($pos !== false) {
-                $sw = (str_replace(array(
-                    $this->beginTag,
-                    $this->endTag
-                ) , array(
-                    '',
-                    ''
-                ) , $headline));
-                
-                $offset = mb_strpos($us, $sw);
-                
-                if ($offset === false) return $headline; // case mismatch in characters
-                $nh = mb_substr($s, $offset, mb_strlen($sw));
-                //print_r("\n\tN=$nh\n");
-                //print "\nGOOD : $offset - ".mb_strlen($headline)."========\n";
-                // recompose headline with accents
-                $bo = mb_strpos($headline, $this->beginTag, 0);
-                while ($bo !== false) {
-                    $nh = mb_substr($nh, 0, $bo) . $this->beginTag . mb_substr($nh, $bo);
-                    $bo = mb_strpos($headline, $this->endTag, $bo);
-                    if ($bo) {
-                        $nh = mb_substr($nh, 0, $bo) . $this->endTag . mb_substr($nh, $bo);
-                        $bo = mb_strpos($headline, $this->beginTag, $bo);
-                    }
-                }
-                $headline = $nh;
-            }
         }
         //  print_r("\n\tT=$headline");
         return $headline;
     }
 }
-?>
