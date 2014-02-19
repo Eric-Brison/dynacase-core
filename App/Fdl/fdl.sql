@@ -217,15 +217,6 @@ end;
 $$ language 'plpgsql';
 
 
-
-create or replace function to2_ascii(text) 
-returns text as $$
-declare 
-begin
-   return translate(lower($1),'éèêëàâùüçôîïÉÈÊËÀÂÙÜÇÔÎÏ.','eeeeaauucoiieeeeaauucoii ');
-end;
-$$ language 'plpgsql' ;
-
 create or replace function setweight2(text,"char") 
 returns tsvector as $$
 declare 
@@ -235,7 +226,7 @@ begin
    if (a_text is null) or (a_text = '') then
      return to_tsvector('simple','');
    else
-     return setweight(to_tsvector('french',to2_ascii(a_text)), a_weight);
+     return setweight(to_tsvector('search.french',a_text), a_weight);
    end if;      
 end;
 $$ language 'plpgsql' ;

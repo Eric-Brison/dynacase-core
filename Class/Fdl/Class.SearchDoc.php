@@ -830,7 +830,7 @@ class SearchDoc
             $rank = preg_replace('/\s+(OR)\s+/u', '|', $keyword);
             $rank = preg_replace('/\s+(AND)\s+/u', '&', $rank);
             $rank = preg_replace('/\s+/u', '&', $rank);
-            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string(unaccent($rank)));
+            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('search.french','%s')) desc, id desc", pg_escape_string(unaccent($rank)));
         }
         if ($this->pertinenceOrder) $this->setOrder($this->pertinenceOrder);
     }
@@ -916,7 +916,7 @@ class SearchDoc
                     if ($isOnlyWord) {
                         $filterElement = pg_escape_string(unaccent($filterElement));
                     } else {
-                        $to_tsquery = sprintf("to_tsquery('french','%s')", pg_escape_string(unaccent($filterElement)));
+                        $to_tsquery = sprintf("to_tsquery('search.french','%s')", pg_escape_string($filterElement));
                         simpleQuery('', sprintf("select %s", $to_tsquery) , $indexedWord, true, true);
                         if ($indexedWord) {
                             $filterElement = sprintf("(fulltext @@ '%s')", pg_escape_string($indexedWord));
@@ -997,10 +997,10 @@ class SearchDoc
         }
         if ($isOnlyWord) {
             $filter = str_replace(')(', ')&(', $filter);
-            $filter = sprintf("fulltext @@ to_tsquery('french','%s')", $filter);
+            $filter = sprintf("fulltext @@ to_tsquery('search.french','%s')", $filter);
         }
         
-        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string(preg_replace('/\s+/u', '&', $rank)));
+        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('search.french','%s')) desc, id desc", pg_escape_string(preg_replace('/\s+/u', '&', $rank)));
         
         $highlightWords = implode("|", array_merge($words, $stringWords));
         

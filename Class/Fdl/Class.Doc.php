@@ -580,7 +580,8 @@ class Doc extends DocCtrl
         ) ,
         "idx_title" => array(
             "unique" => false,
-            "on" => "title"
+            "on" => "title gin_trgm_ops",
+            "using" => "gin"
         ) ,
         "idx_name" => array(
             "unique" => true,

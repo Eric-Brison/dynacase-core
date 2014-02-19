@@ -66,7 +66,12 @@ class TestSearchHighlight extends TestCaseDcpCommonFamily
                     "<b>téléphone</b>"
                 )
             ) ,
-            
+            array(
+                "telephone",
+                array(
+                    "<b>téléphone</b>"
+                )
+            ) ,
             array(
                 "téléphone maison",
                 array(
@@ -80,7 +85,12 @@ class TestSearchHighlight extends TestCaseDcpCommonFamily
                     "<b>maison</b>"
                 )
             ) ,
-            
+            array(
+                "màìsòñ",
+                array(
+                    "<b>maison</b>"
+                )
+            ) ,
             array(
                 "espèce cheval",
                 array(

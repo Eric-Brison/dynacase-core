@@ -461,9 +461,9 @@ class DetailSearch extends \Dcp\Family\Search
                         $keyword = trim($val);
                     }
                     if ($op == "@@") {
-                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','" . unaccent(strtolower($keyword)) . "') ";
+                        $cond = " " . $col . '_vec' . " @@ to_tsquery('search.french','" . unaccent(strtolower($keyword)) . "') ";
                     } elseif ($op == "=@") {
-                        $cond = "fulltext @@ to_tsquery('french','" . unaccent(strtolower($keyword)) . "') ";
+                        $cond = "fulltext @@ to_tsquery('search.french','" . unaccent(strtolower($keyword)) . "') ";
                     }
                     $this->search->addFileFilter("true");
                 }

@@ -281,8 +281,8 @@ class DocSearch extends PDocSearch
                             ''
                         ) , $right)) . "\\\\y' ";
                         else $q2 = "";
-                        $q3 = "fulltext @@ to_tsquery('french','" . pg_escape_string(unaccent($left)) . "') ";
-                        $q4 = "fulltext @@ to_tsquery('french','" . pg_escape_string(unaccent($right)) . "') ";
+                        $q3 = "fulltext @@ to_tsquery('search.french','" . pg_escape_string($left) . "') ";
+                        $q4 = "fulltext @@ to_tsquery('search.french','" . pg_escape_string($right) . "') ";
                         
                         if ((!$q1) && $q2) $sqlfiltersbrut[] = "($q4 and $q2) or $q3";
                         elseif ((!$q2) && $q1) $sqlfiltersbrut[] = "($q3 and $q1) or $q4";
@@ -296,10 +296,10 @@ class DocSearch extends PDocSearch
             $fullkeys = '(' . implode(")&(", $tsearchkeys) . ')';
             $fullkeys = unaccent($fullkeys);
             $fullkeys = pg_escape_string($fullkeys);
-            $sqlfilters[] = "fulltext @@ to_tsquery('french','$fullkeys') ";
+            $sqlfilters[] = "fulltext @@ to_tsquery('search.french','$fullkeys') ";
         }
         if (count($sqlfiltersbrut) > 0) $sqlfilters = array_merge($sqlfilters, $sqlfiltersbrut);
-        $sqlorder = "ts_rank(fulltext,to_tsquery('french','$fullkeys')) desc";
+        $sqlorder = "ts_rank(fulltext,to_tsquery('search.french','$fullkeys')) desc";
     }
     
     function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)

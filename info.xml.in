@@ -40,6 +40,10 @@
         <check type="pgversion" service="@core_db" predicate="ge" version="9.3.0">
             <label lang="en">Check database access</label>
         </check>
+        <check type="exec" cmd="php -r &quot;ini_set(\&quot;error_log\&quot;,null);\$c=pg_connect(\&quot;service=\$argv[1]\&quot;);if(\$c===false){exit(1);};\$q=pg_query(\$c,\&quot;SELECT name,default_version,installed_version FROM pg_available_extensions WHERE name IN (&#039;pg_trgm&#039;,&#039;unaccent&#039;)\&quot;);if(\$q===false){pg_close(\$c);exit(2);};\$r=pg_fetch_all(\$q);if(\$r===false||count(\$r)&lt;2){pg_close(\$c);exit(3);};\$chksuper=(empty(\$r[0][\&quot;installed_version\&quot;])||empty(\$r[1][\&quot;installed_version\&quot;]));if(\$chksuper){\$q=pg_query(\$c,\&quot;SELECT rolsuper FROM pg_roles WHERE rolname=CURRENT_USER\&quot;);if(\$q===false){pg_close(\$c);exit(4);};\$r=pg_fetch_all(\$q);if(\$r[0][\&quot;rolsuper\&quot;]&quot;&#039;!&#039;&quot;=\&quot;t\&quot;){pg_close(\$c);exit(5);};};pg_close(\$c);exit(0);&quot; @core_db">
+            <label lang="en">Check for Postgresql's 'pg_trgm' and 'unaccent' extensions</label>
+            <help>You must manually create Postgresql extension 'pg_trgm' and 'unaccent' or give SUPERUSER privilege to database user.</help>
+        </check>
 
         <check type="pgempty" service="@core_db" optional="yes">
             <label lang="en">Check database empty</label>
@@ -337,6 +341,10 @@ This can be solved by:<br/>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.3.0">
             <label lang="en">Check database access</label>
+        </check>
+        <check type="exec" cmd="php -r &quot;ini_set(\&quot;error_log\&quot;,null);\$c=pg_connect(\&quot;service=\$argv[1]\&quot;);if(\$c===false){exit(1);};\$q=pg_query(\$c,\&quot;SELECT name,default_version,installed_version FROM pg_available_extensions WHERE name IN (&#039;pg_trgm&#039;,&#039;unaccent&#039;)\&quot;);if(\$q===false){pg_close(\$c);exit(2);};\$r=pg_fetch_all(\$q);if(\$r===false||count(\$r)&lt;2){pg_close(\$c);exit(3);};\$chksuper=(empty(\$r[0][\&quot;installed_version\&quot;])||empty(\$r[1][\&quot;installed_version\&quot;]));if(\$chksuper){\$q=pg_query(\$c,\&quot;SELECT rolsuper FROM pg_roles WHERE rolname=CURRENT_USER\&quot;);if(\$q===false){pg_close(\$c);exit(4);};\$r=pg_fetch_all(\$q);if(\$r[0][\&quot;rolsuper\&quot;]&quot;&#039;!&#039;&quot;=\&quot;t\&quot;){pg_close(\$c);exit(5);};};pg_close(\$c);exit(0);&quot; @core_db">
+            <label lang="en">Check for Postgresql's 'pg_trgm' and 'unaccent' extensions</label>
+            <help>You must manually create Postgresql extension 'pg_trgm' and 'unaccent' or give SUPERUSER privilege to database user.</help>
         </check>
 
         <check type="syscommand" command="rm">

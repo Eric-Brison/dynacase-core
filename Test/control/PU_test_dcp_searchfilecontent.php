@@ -261,6 +261,18 @@ class TestSearchFileContent extends TestCaseDcpCommonFamily
                     "TST_FC6"
                 )
             ) ,
+            array(
+               "rhinocéros",
+                array(
+                    "TST_FC5"
+                )
+            ) ,
+            array(
+                "rhinoceros",
+                array(
+                    "TST_FC5"
+                )
+            ) ,
         );
     }
     
