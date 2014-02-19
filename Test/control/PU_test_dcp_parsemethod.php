@@ -104,6 +104,27 @@ class TestParseMethod extends TestCaseDcp
                         "OUT"
                     )
                 )
+            ) ,
+            // test with namespace
+            array(
+                'foo\\bar::getSomething("ONE","TWO"):OUT',
+                array(
+                    "methodName" => "getSomething",
+                    "className" => "foo\\bar",
+                    "inputs" => array(
+                        array(
+                            "name" => "ONE",
+                            "type" => "string"
+                        ),
+                        array(
+                            "name" => "TWO",
+                            "type" => "string"
+                        )
+                    ),
+                    "outputs" => array(
+                        "OUT"
+                    )
+                )
             )
         );
     }
