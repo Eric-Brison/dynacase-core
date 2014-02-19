@@ -731,7 +731,7 @@ create unique index i_docir on doc(initid, revision);";
      * @var bool
      * @access private
      */
-    private $hasChanged = false;
+    protected $hasChanged = false;
     
     public $paramRefresh = array();
     /**
@@ -1279,7 +1279,7 @@ create unique index i_docir on doc(initid, revision);";
             $info->errorCode = storeInfo::PRESTORE_ERROR;
             return $err;
         }
-        if (!$skipConstraint) {
+        if (!$skipConstraint && $this->doctype != 'C') {
             $err = $this->verifyAllConstraints(false, $constraint);
         }
         if ($err == '') {
