@@ -855,7 +855,13 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL1"
                 )
             ) ,
-            
+            array(
+                "telephone",
+                array(
+                    "TST_FULL2",
+                    "TST_FULL1"
+                )
+            ) ,
             array(
                 "1000",
                 array(
@@ -915,7 +921,6 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL1"
                 )
             ) ,
-            
             array(
                 'le "téléphone"',
                 array(
@@ -954,6 +959,12 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
+                'diese',
+                array(
+                    "TST_FULL10",
+                )
+            ),
+            array(
                 '2012/03/05',
                 array(
                     "TST_FULL10",
@@ -988,6 +999,12 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             ) ,
             array(
                 "téléphones AND portables",
+                array(
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
+                "telephònes AND pôrtäblès",
                 array(
                     "TST_FULL1"
                 )
