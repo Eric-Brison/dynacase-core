@@ -158,6 +158,10 @@ class parseFamilyFunction
     {
         return preg_match('/^[a-z_][a-z0-9_]*$/i', $s);
     }
+    protected function isPHPClassName($s)
+    {
+        return preg_match('/^([a-z_][a-z0-9_]*\\\\)*[a-z_][a-z0-9_]*$/i', $s);
+    }
     
     private function gotoNextArgument(&$index)
     {
