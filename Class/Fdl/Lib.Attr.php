@@ -55,7 +55,7 @@ function AttrToPhp($dbaccess, $tdoc)
         $phpAdoc->Set("fromid", "");
         $phpAdoc->Set("pinit", '\DocCtrl');
     } else {
-        $parentFile = sprintf("%s/%s", DEFAULT_PUBDIR, getFamilyFileName($tdoc["fromname"]));
+        $parentFile = sprintf("%s", DEFAULT_PUBDIR, getFamilyFileName($tdoc["fromname"]));
         if ((!file_exists($parentFile)) || filesize($parentFile) == 0) {
             throw new \Dcp\Exception("FAM0600", $parentFile, $tdoc["name"]);
         }
