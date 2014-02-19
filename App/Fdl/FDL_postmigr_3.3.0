@@ -19,8 +19,12 @@ PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << SQL
     delete from paramv where name='CORE_LCDATE';
     alter table family.documents drop column if exists svalues;
     alter table family.documents drop column if exists fulltext;
+    alter table family.documents drop column if exists values;
+    alter table family.documents drop column if exists attrids;
     alter table docread drop column if exists svalues;
     alter table docread drop column if exists fulltext;
+    alter table docread drop column if exists values;
+    alter table docread drop column if exists attrids;
     -- complete search schema
     update family.documents set id=id;
 SQL

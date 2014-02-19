@@ -54,8 +54,7 @@ create table docread ( id int not null,
                    classname text,
                    state text,
                    wid int ,  
-                   values text,  
-                   attrids text,
+                   avalues json,
                    domainid text,
                    lockdomainid int,
                    postitid text,
@@ -109,8 +108,7 @@ create index docty_docread on docread(doctype);";
     );
     
     public $sup_fields = array(
-        "values",
-        "attrids"
+        "avalues"
     ); // not be in fields else trigger error
     
 }

@@ -110,7 +110,7 @@ create unique index idx_idfam on family.families(id);";
         $this->doctype = 'C';
         if ($include && ($this->id > 0) && ($this->isAffected())) {
             try {
-                if (file_exists(getFamilyFileName($this->name))) {
+                if (file_exists(sprintf("%s/%s", DEFAULT_PUBDIR, getFamilyFileName($this->name)))) {
                     include_once (getFamilyFileName($this->name));
                     $adoc = "ADoc" . $this->id;
                     $this->attributes = new $adoc();

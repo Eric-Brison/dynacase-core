@@ -23,6 +23,8 @@ DROP FUNCTION if exists reldocfld();
 DROP FUNCTION if exists getreldocfld();
 ALTER TABLE docread add column fromname text;
 ALTER TABLE doc add column fromname text;
+ALTER TABLE docread add column avalues json;
+ALTER TABLE doc add column avalues json;
 
 
 SELECT pg_temp.deleteAllViews('family');

@@ -85,22 +85,23 @@ CREATE OR REPLACE FUNCTION [docname]_fullvectorize() RETURNS trigger AS $$
         end;
         $$ LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION upval[docid]() RETURNS trigger AS $$
-declare	
+CREATE OR REPLACE FUNCTION [docname]_avalues() RETURNS trigger AS $$
+declare
+  av text;
 begin
 
+av:='{';
 [BLOCK ATTRFIELD]
 if not NEW.[attrid] isnull then
-  NEW.values := NEW.values || '£' || NEW.[attrid]::text;
-  NEW.attrids := NEW.attrids || '£' || '[attrid]';
+  av:= av || '"[attrid]":' || to_json(NEW.[attrid]::text) || ',';
+end if;[ENDBLOCK ATTRFIELD]
+if (char_length(av) > 1) then
+  av:= substring(av for char_length(av) - 1) || '}';
+else
+  av:=  '{}';
 end if;
-[ENDBLOCK ATTRFIELD]
-
-
-[IF hasattr]
-NEW.values := NEW.values || '£';
-NEW.attrids := NEW.attrids || '£';
-[ENDIF hasattr]
+--RAISE NOTICE 'avalues %',av;
+NEW.avalues := av;
 
 return NEW;
 end;

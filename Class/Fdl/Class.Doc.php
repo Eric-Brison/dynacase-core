@@ -100,8 +100,7 @@ class Doc extends DocCtrl
     );
     
     public $sup_fields = array(
-        "values",
-        "attrids"
+        "avalues"
     ); // not be in fields else trigger error
     public static $infofields = array(
         "id" => array(
@@ -535,14 +534,9 @@ class Doc extends DocCtrl
     public $fulltext;
     /**
      * for system purpose only
-     * @var string concatenation of all values
+     * @var string json encoding of all values
      */
-    protected $values;
-    /**
-     * for system purpose only
-     * @var string concatenation of all attribute ids (use it with ::values)
-     */
-    protected $attrids;
+    protected $avalues;
     /**
      * param value cache
      * @var array
@@ -671,8 +665,7 @@ create table family.documents ( id int not null,
                    classname text,
                    state text,
                    wid int DEFAULT 0,
-                   values text DEFAULT '',
-                   attrids text DEFAULT '',
+                   avalues json ,
                    postitid text,
                    domainid text,
                    lockdomainid int,
@@ -2966,7 +2959,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function getRawValue($idAttr, $def = "")
     {
         $lidAttr = strtolower($idAttr);
-        if (isset($this->$lidAttr) && ($this->$lidAttr != "")) return $this->$lidAttr;
+        if (isset($this->$lidAttr) && ($this->$lidAttr !== "")) return $this->$lidAttr;
         
         return $def;
     }
@@ -4289,12 +4282,10 @@ create unique index i_docir on doc(initid, revision);";
      */
     private function getMoreValues()
     {
-        if (isset($this->values)) {
-            $tvalues = explode("£", $this->values);
-            $tattrids = explode("£", $this->attrids);
+        if (isset($this->avalues)) {
+            $tvalues = json_decode($this->avalues);
             
-            foreach ($tvalues as $k => $v) {
-                $attrid = $tattrids[$k];
+            foreach ($tvalues as $attrid => $v) {
                 if (($attrid != "") && empty($this->$attrid)) {
                     $this->$attrid = $v;
                     $this->mvalues[$attrid] = $v; // to be use in getValues()
@@ -4308,11 +4299,10 @@ create unique index i_docir on doc(initid, revision);";
      */
     private function resetMoreValues()
     {
-        if (isset($this->values) && $this->id) {
-            $tattrids = explode("£", $this->attrids);
+        if (isset($this->avalues) && $this->id) {
+            $tvalues = json_decode($this->avalues);
             
-            foreach ($tattrids as $k => $v) {
-                $attrid = $tattrids[$k];
+            foreach ($tvalues as $attrid => $v) {
                 if ($attrid) $this->$attrid = "";
             }
         }
@@ -6427,11 +6417,9 @@ create unique index i_docir on doc(initid, revision);";
                 $opt_searchcriteria = $v->getOption("searchcriteria", "");
                 if (($v->type != "array") && ($v->type != "frame") && ($v->type != "tab") && ($v->type != "idoc")) {
                     // values += any attribute
-                    if ($v->docid == $famId) {
-                        $tvalues[] = array(
-                            "attrid" => $k
-                        );
-                    }
+                    $tvalues[] = array(
+                        "attrid" => $k
+                    );
                     // svalues += attribute allowed to be indexed
                     if (($v->type != "file") && ($v->type != "image") && ($v->type != "password") && ($opt_searchcriteria != "hidden")) {
                         
@@ -6485,17 +6473,11 @@ create unique index i_docir on doc(initid, revision);";
             $lay->set("docname", strtolower($this->fromname));
             $sql = $lay->gen();
         } else {
-            
-            if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
-                foreach ($this->attributes->fromids as $k => $v) {
-                    
-                    $sql.= "create trigger UV{$cid}_$v BEFORE INSERT OR UPDATE ON $tableName FOR EACH ROW EXECUTE PROCEDURE upval$v();\n";
-                }
-            }
             // the reset trigger must begin with 'A' letter to be proceed first (pgsql 7.3.2)
             if ($cid != "fam") {
                 $sql.= "create trigger SEARCH{$cid} BEFORE INSERT OR UPDATE ON $tableName FOR EACH ROW EXECUTE PROCEDURE {$cname}_copysearch();\n";
                 $sql.= "create trigger AUVR{$cid} BEFORE UPDATE  ON $tableName FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
+                $sql.= "create trigger UV{$cid} BEFORE INSERT OR UPDATE ON $tableName FOR EACH ROW EXECUTE PROCEDURE {$cname}_avalues();";
             } else {
                 $sql.= "create trigger UVdocfam before insert or update on family.families FOR EACH ROW EXECUTE PROCEDURE upvaldocfam();";
             }

@@ -217,12 +217,13 @@ class checkDb
             if ($fromid == 0) $fromid = "";
             $fid = intval($row["id"]);
             $fname = strtolower($row["name"]);
-            $test = pg_query($this->r, sprintf("SELECT relname from pg_class where oid in (SELECT inhparent from pg_inherits where inhrelid =(SELECT oid FROM pg_class where relname='%s'));", pg_escape_string($fname)));
+            $test = pg_query($this->r, sprintf("SELECT inhparent::regclass as inhparent from pg_inherits where inhrelid = 'family.%s'::regclass::oid", pg_escape_string($fname)));
             $dbfrom = pg_fetch_array($test, NULL, PGSQL_ASSOC);
-            $fromname = $fromid ? strtolower($row["fromname"]) : "documents";
+            $fromname = 'family.' . ($fromid ? strtolower($row["fromname"]) : "documents");
+            $inhparent = str_replace('"', '', $dbfrom["inhparent"]);
             
-            if ($dbfrom["relname"] != $fromname) {
-                $pout[] = sprintf("Family %s [%d]: fromname = (%s [%d]), pg inherit=%s", $row["name"], $row["id"], $fromname, $row["fromid"], $dbfrom["relname"]);
+            if ($inhparent != $fromname) {
+                $pout[] = sprintf("Family %s [%d]: fromname = (%s [%d]), pg inherit=%s", $row["name"], $row["id"], $fromname, $row["fromid"], $inhparent);
             }
         }
         $this->tout["family inheritance"] = array(
@@ -442,25 +443,15 @@ class checkDb
     
     public static function getOrpheanAttributes($famid)
     {
-        
-        $d = new Doc();
-        $fam = new_doc('', $famid);
-        $sql = sprintf("select column_name from information_schema.columns where table_name = 'doc%d'", $fam->id);
+        $d = new doc();
+        $fam = new docfam('', $famid);
+        $sql = sprintf("select column_name from information_schema.columns where table_schema='family' and table_name = '%s'", strtolower($fam->name));
         simpleQuery('', $sql, $res, true);
         
         $nAttributes = $fam->getNormalAttributes();
-        $oasIds = array_keys($nAttributes);
-        $oasIds = array_merge($oasIds, $d->fields, $d->sup_fields, array(
-            "fulltext",
-            "svalues"
-        ));
         
-        foreach ($nAttributes as $attrid => $oa) {
-            if ($oa->type == "file") {
-                $oasIds[] = $attrid . '_txt';
-                $oasIds[] = $attrid . '_vec';
-            }
-        }
+        $oasIds = array_keys($nAttributes);
+        $oasIds = array_merge($oasIds, $d->fields, $d->sup_fields);
         
         $orphean = array();
         foreach ($res as $dbAttr) {
