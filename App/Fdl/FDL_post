@@ -27,12 +27,29 @@ if [ "$1" = "I" ] ; then
 	echo "Check that your database is running and acessible with the service from pgservice.conf."
 	exit $RET
     fi
-    
-    OUT=`PGSERVICE="$pgservice_freedom" psql -c 'CREATE SCHEMA family;CREATE SCHEMA search;CREATE SCHEMA filecontent' 2> /dev/null`
+
+    log "Initializing database..."
+    (cat "$wpub/CORE/core_database_utils.sql"; cat <<'EOF') | PGSERVICE="$pgservice_freedom" psql --set ON_ERROR_STOP=on -f -
+
+\set ECHO all
+
+CREATE SCHEMA IF NOT EXISTS family;
+CREATE SCHEMA IF NOT EXISTS search;
+CREATE SCHEMA IF NOT EXISTS filecontent;
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION IF NOT EXISTS unaccent;
+
+SELECT pg_temp.createNewTextSearchConfigurationCopyIfNotExists('search', 'french', 'pg_catalog', 'french');
+ALTER TEXT SEARCH CONFIGURATION search.french
+  ALTER MAPPING FOR hword, hword_part, word
+  WITH unaccent, french_stem;
+
+EOF
     RET=$?
     if [ $RET -ne 0 ]; then
-	echo "An error occured while creating schema family : $RET"
-	exit $RET
+        echo "An error occured while initializing database : $RET"
+        exit $RET
     fi
 
     log "Setting FREEDOM_DB in paramv..."
