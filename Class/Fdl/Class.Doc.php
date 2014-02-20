@@ -4280,8 +4280,8 @@ create sequence family.seq_id_tdoc start 1000000000;";
      */
     private function getMoreValues()
     {
-        if (isset($this->avalues)) {
-            $tvalues = json_decode($this->avalues);
+        if (!empty($this->avalues)) {
+            $tvalues = json_decode($this->avalues, true);
             
             foreach ($tvalues as $attrid => $v) {
                 if (($attrid != "") && empty($this->$attrid)) {
@@ -4297,8 +4297,8 @@ create sequence family.seq_id_tdoc start 1000000000;";
      */
     private function resetMoreValues()
     {
-        if (isset($this->avalues) && $this->id) {
-            $tvalues = json_decode($this->avalues);
+        if (!empty($this->avalues) && $this->id) {
+            $tvalues = json_decode($this->avalues, true);
             
             foreach ($tvalues as $attrid => $v) {
                 if ($attrid) $this->$attrid = "";
@@ -5941,7 +5941,6 @@ create sequence family.seq_id_tdoc start 1000000000;";
     {
         return $l;
     }
-
     /**
      * convert flat attribute value to an array for multiple attributes
      *
@@ -6175,7 +6174,7 @@ create sequence family.seq_id_tdoc start 1000000000;";
                             simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
                             $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
                         }
-                        $a = sprintf('<a %s onclick=\'parent.%s\'>%s</a>', $ajs,$ecu, $title) ;
+                        $a = sprintf('<a %s onclick=\'parent.%s\'>%s</a>', $ajs, $ecu, $title);
                     } else {
                         if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
                         elseif ($docrev != "fixed") {
@@ -6202,7 +6201,7 @@ create sequence family.seq_id_tdoc start 1000000000;";
                         simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
                         $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
                     }
-                    $a=sprintf('<a %s target="%s" href="%s">%s</a>', $ajs, $target, $ul, $title);
+                    $a = sprintf('<a %s target="%s" href="%s">%s</a>', $ajs, $target, $ul, $title);
                 }
             }
         } else {
@@ -7413,7 +7412,7 @@ create sequence family.seq_id_tdoc start 1000000000;";
                                 if ($oa->getOption("multiple") == "yes") {
                                     // second level
                                     $oa->setOption("multiple", "no"); //  needto have values like first level
-                                    $values = explode("<BR>", $va);
+                                    $values = (is_array($va)) ? $va : explode("<BR>", $va);
                                     $ovalues = array();
                                     foreach ($values as $ka => $vaa) {
                                         $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa));
