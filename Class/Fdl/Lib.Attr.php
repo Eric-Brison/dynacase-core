@@ -101,7 +101,7 @@ function AttrToPhp($dbaccess, $tdoc)
             $type = trim(strtok($v->type, "("));
             if ($type == "docid") {
                 $parentDoctitle = "";
-                if (isset($pa[substr($v->id, 1)]) && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $pa[substr($v->id, 1)]["options"], $reg)) {
+                if (isset($pa[substr($v->id, 1) ]) && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $pa[substr($v->id, 1) ]["options"], $reg)) {
                     $parentDoctitle = $reg[1];
                 }
                 // add title auto
@@ -238,7 +238,7 @@ function AttrToPhp($dbaccess, $tdoc)
                     
                     $atype = strtolower(trim($atype));
                     // create code for calculated attributes
-                    if ((!$v->phpfile) && preg_match('/^[a-z]*::[a-z0-9_ ]+\(/i', $v->phpfunc, $reg) && ($v->usefor != 'Q')) {
+                    if ((!$v->phpfile) && preg_match('/^(?:(?:[a-z_][a-z0-9_]*\\\\)*[a-z_][a-z0-9_]*)?::[a-z_][a-z0-9_]*\(/i', $v->phpfunc, $reg) && ($v->usefor != 'Q')) {
                         
                         $pM->parse($v->phpfunc);
                         $error = $pM->getError();
