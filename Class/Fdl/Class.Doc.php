@@ -686,9 +686,7 @@ create table docname ( name text not null,
                    id int,
                    fromid int);
 create sequence family.seq_id_doc start 1000;
-create sequence family.seq_id_tdoc start 1000000000;
-create index i_docname on doc(name);
-create unique index i_docir on doc(initid, revision);";
+create sequence family.seq_id_tdoc start 1000000000;";
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
     public $obj_acl = array(); // set by childs classes
@@ -5943,6 +5941,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         return $l;
     }
+
     /**
      * convert flat attribute value to an array for multiple attributes
      *
@@ -5950,6 +5949,7 @@ create unique index i_docir on doc(initid, revision);";
      * @api convert flat attribute value to an array
      * @see Doc::getAttributeValue
      * @param string $v value
+     * @throws Dcp\Exception
      * @return array
      */
     public static function rawValueToArray($v)
@@ -6175,7 +6175,7 @@ create unique index i_docir on doc(initid, revision);";
                             simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
                             $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
                         }
-                        $a = "<a $ajs onclick='parent.$ecu'>$title</a>";
+                        $a = sprintf('<a %s onclick=\'parent.%s\'>%s</a>', $ajs,$ecu, $title) ;
                     } else {
                         if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
                         elseif ($docrev != "fixed") {
@@ -6184,7 +6184,7 @@ create unique index i_docir on doc(initid, revision);";
                                 $ul.= "&amp;state=" . $matches[1];
                             }
                         }
-                        $a = "<a href=\"$ul\">$title</a>";
+                        $a = sprintf('<a href="%s">%s</a>', $ul, $title);
                     }
                 } else {
                     if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
@@ -6202,7 +6202,7 @@ create unique index i_docir on doc(initid, revision);";
                         simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
                         $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
                     }
-                    $a = "<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
+                    $a=sprintf('<a %s target="%s" href="%s">%s</a>', $ajs, $target, $ul, $title);
                 }
             }
         } else {
