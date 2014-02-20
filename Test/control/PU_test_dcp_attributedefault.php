@@ -489,6 +489,11 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 "TST_DEFAULTFAMILY6",
                 'TST_DOCM2',
                 "9<BR>11\n12<BR>13"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILYNAMESPACE",
+                "TEXTE",
+                "one"
             )
         );
     }
@@ -530,6 +535,11 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 "TST_DEFAULTFAMILY1",
                 'TST_P8',
                 "11\n12"
+            ) ,
+            array(
+                "TST_DEFAULTFAMILYNAMESPACE",
+                "P_TEXTE",
+                "one"
             )
         );
     }
