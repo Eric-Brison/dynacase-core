@@ -49,7 +49,7 @@ while ($fam = $s->getNextDoc()) {
     print ("\n" . $fam->getTitle() . " : #" . $fam->id);
     $pa = $fam->getOwnParams();
     
-    $before = $fam->param;
+    $before = $fam->parametervalues;
     foreach ($pa as $aid => $val) {
         $oa = $fam->getAttribute($aid);
         if (!$oa) {
@@ -70,7 +70,7 @@ while ($fam = $s->getNextDoc()) {
             }
         }
     }
-    $after = $fam->param;
+    $after = $fam->parametervalues;
     if ($before != $after) {
         printf("Change from \n\t%s to \n\t%s", $before, $after);
         if (!$verifyOnly) {

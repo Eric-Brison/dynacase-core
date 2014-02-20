@@ -740,12 +740,12 @@ class importDocumentDescription
 
                 case 'default':
                     $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("Reset defaults values"));
-                    $this->doc->defval = '';
+                    $this->doc->defaultvalues = '';
                     break;
 
                 case 'parameters':
                     $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("Reset parameters values"));
-                    $this->doc->param = '';
+                    $this->doc->parametervalues = '';
                     break;
 
                 case 'enums':

@@ -151,8 +151,8 @@ NEW.avalues := '{"cprofid":' || to_json(coalesce(NEW.cprofid,0)) ||
 ',"ccvid":'   ||  to_json(coalesce(NEW.ccvid,0))   ||
 ',"ddocid":'  ||  to_json(coalesce(NEW.ddocid,0))  ||
 ',"methods":' ||  to_json(coalesce(NEW.methods,''))||
-',"defval":'  ||  to_json(coalesce(NEW.defval,'')) ||
-',"param":'   ||  to_json(coalesce(NEW.param,''))  ||
+',"defaultvalues":'  ||  to_json(coalesce(NEW.defaultvalues,'{}')) ||
+',"parametervalues":'   ||  to_json(coalesce(NEW.parametervalues,'{}'))  ||
 ',"maxrev":'  ||  to_json(coalesce(NEW.maxrev,0))  ||
 ',"tagable":' ||  to_json(coalesce(NEW.tagable,''))||
 ',"schar":'   ||  to_json(coalesce(NEW.schar,''))  || '}';

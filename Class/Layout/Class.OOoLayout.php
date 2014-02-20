@@ -200,10 +200,11 @@ class OOoLayout extends Layout
     }
     protected function ParseBlock(&$out = null)
     {
-        $this->template = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', array(
-            $this,
-            "pregSetBlock"
-        ) , $this->template);
+        $this->template = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', function ($matches)
+        {
+            return $this->pregSetBlock($matches);
+        }
+        , $this->template);
     }
     /**
      *
@@ -256,10 +257,11 @@ class OOoLayout extends Layout
         //header('Content-type: text/xml; charset=utf-8');print $this->template;exit;
         while ($templateori != $this->template && ($level < 10)) {
             $templateori = $this->template;
-            $this->template = preg_replace_callback('/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', array(
-                $this,
-                "pregTestIf"
-            ) , $this->template);
+            $this->template = preg_replace_callback('/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', function ($matches)
+            {
+                return $this->pregTestIf($matches);
+            }
+            , $this->template);
             $level++; // to prevent infinite loop
             
         }
@@ -463,10 +465,11 @@ class OOoLayout extends Layout
     {
         deprecatedFunction();
         
-        $out = preg_replace('/\[ZONE\s*([^:]*):([^\]]*)\]/e', array(
-            $this,
-            "pregExecute"
-        ) , $out);
+        $out = preg_replace('/\[ZONE\s*([^:]*):([^\]]*)\]/e', function ($matches)
+        {
+            return $this->pregExecute($matches);
+        }
+        , $out);
     }
     /**
      * replace simple key in xml string
@@ -477,31 +480,9 @@ class OOoLayout extends Layout
             $this->template = str_replace($this->pkey, $this->rkey, $this->template);
         }
     }
-    
-    private function ParseKeyXML()
-    {
-        if (isset($this->rkeyxml)) {
-            
-            $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "p");
-            foreach ($this->rkeyxml as $k => $xmlkey) {
-                print "\n\nserach [$k]\n";
-                foreach ($lists as $list) {
-                    /**
-                     * @var $list DOMElement
-                     */
-                    $pstyle = $list->getAttribute("text:style-name");
-                    $content = $this->dom->saveXML($list);
-                    
-                    if (strstr($content, "[$k]")) {
-                        print "\n----------------\nfind C:$xmlkey $k:\n$content";
-                    }
-                }
-            }
-        }
-    }
     /**
      * read odt file and insert xmls in object
-     * @param string $odsfile path to the odt file
+     * @param string $odtfile path to the odt file
      * @return string
      */
     protected function odf2content($odtfile)
@@ -1172,7 +1153,12 @@ class OOoLayout extends Layout
         
         $level = 0;
         while ($level < 10) {
-            $replacement = preg_replace('/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se', "\$this->TestIf('\\2','\\3','\\1',\$levelPath)", $inner);
+            $replacement = preg_replace_callback('/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', function ($matches) use ($levelPath)
+            {
+                return $this->TestIf($matches[2], $matches[3], $matches[1], $levelPath);
+            }
+            
+            , $inner);
             if ($inner == $replacement) break;
             else $inner = $replacement;
             $level++;
@@ -1203,6 +1189,10 @@ class OOoLayout extends Layout
     protected function replaceRowNode(DOMNode & $row, array $levelPath)
     {
         // Inspect sub tables, rows
+        
+        /**
+         * @var DOMElement $row
+         */
         $this->replaceRowSomething($row, $levelPath, "table", "table-row", true);
         // Inspect list in sub tables
         $this->replaceRowSomething($row, $levelPath, "text", "list-item", false);
@@ -1872,7 +1862,6 @@ class OOoLayout extends Layout
             // Parse i18n text
             $this->ParseBlock();
             $this->ParseIf();
-            //$this->ParseKeyXml();
             //$this->template=$this->dom->saveXML();
             //      print $this->template;exit;
             $this->ParseKey();

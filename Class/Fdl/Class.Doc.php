@@ -686,9 +686,7 @@ create table docname ( name text not null,
                    id int,
                    fromid int);
 create sequence family.seq_id_doc start 1000;
-create sequence family.seq_id_tdoc start 1000000000;
-create index i_docname on doc(name);
-create unique index i_docir on doc(initid, revision);";
+create sequence family.seq_id_tdoc start 1000000000;";
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
     public $obj_acl = array(); // set by childs classes
@@ -731,7 +729,7 @@ create unique index i_docir on doc(initid, revision);";
      * @var bool
      * @access private
      */
-    private $hasChanged = false;
+    protected $hasChanged = false;
     
     public $paramRefresh = array();
     /**
@@ -1279,7 +1277,7 @@ create unique index i_docir on doc(initid, revision);";
             $info->errorCode = storeInfo::PRESTORE_ERROR;
             return $err;
         }
-        if (!$skipConstraint) {
+        if (!$skipConstraint && $this->doctype != 'C') {
             $err = $this->verifyAllConstraints(false, $constraint);
         }
         if ($err == '') {
@@ -4282,8 +4280,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     private function getMoreValues()
     {
-        if (isset($this->avalues)) {
-            $tvalues = json_decode($this->avalues);
+        if (!empty($this->avalues)) {
+            $tvalues = json_decode($this->avalues, true);
             
             foreach ($tvalues as $attrid => $v) {
                 if (($attrid != "") && empty($this->$attrid)) {
@@ -4299,8 +4297,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     private function resetMoreValues()
     {
-        if (isset($this->avalues) && $this->id) {
-            $tvalues = json_decode($this->avalues);
+        if (!empty($this->avalues) && $this->id) {
+            $tvalues = json_decode($this->avalues, true);
             
             foreach ($tvalues as $attrid => $v) {
                 if ($attrid) $this->$attrid = "";
@@ -5950,6 +5948,7 @@ create unique index i_docir on doc(initid, revision);";
      * @api convert flat attribute value to an array
      * @see Doc::getAttributeValue
      * @param string $v value
+     * @throws Dcp\Exception
      * @return array
      */
     public static function rawValueToArray($v)
@@ -6175,7 +6174,7 @@ create unique index i_docir on doc(initid, revision);";
                             simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
                             $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
                         }
-                        $a = "<a $ajs onclick='parent.$ecu'>$title</a>";
+                        $a = sprintf('<a %s onclick=\'parent.%s\'>%s</a>', $ajs, $ecu, $title);
                     } else {
                         if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
                         elseif ($docrev != "fixed") {
@@ -6184,7 +6183,7 @@ create unique index i_docir on doc(initid, revision);";
                                 $ul.= "&amp;state=" . $matches[1];
                             }
                         }
-                        $a = "<a href=\"$ul\">$title</a>";
+                        $a = sprintf('<a href="%s">%s</a>', $ul, $title);
                     }
                 } else {
                     if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
@@ -6202,7 +6201,7 @@ create unique index i_docir on doc(initid, revision);";
                         simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
                         $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
                     }
-                    $a = "<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
+                    $a = sprintf('<a %s target="%s" href="%s">%s</a>', $ajs, $target, $ul, $title);
                 }
             }
         } else {
@@ -7413,7 +7412,7 @@ create unique index i_docir on doc(initid, revision);";
                                 if ($oa->getOption("multiple") == "yes") {
                                     // second level
                                     $oa->setOption("multiple", "no"); //  needto have values like first level
-                                    $values = explode("<BR>", $va);
+                                    $values = (is_array($va)) ? $va : explode("<BR>", $va);
                                     $ovalues = array();
                                     foreach ($values as $ka => $vaa) {
                                         $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa));

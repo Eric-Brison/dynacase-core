@@ -32,6 +32,8 @@ select pg_temp.renameFamilyTable();
 
 ALTER TABLE IF EXISTS public.docfam set schema family;
 ALTER TABLE if exists family.docfam rename to families;
+ALTER TABLE family.families add column defaultvalues json;
+ALTER TABLE family.families add column parametervalues json;
 ALTER TABLE IF EXISTS public.doc set schema family;
 ALTER TABLE if exists family.doc rename to documents;
 ALTER SEQUENCE IF EXISTS seq_id_doc set schema family;
@@ -41,6 +43,9 @@ update docread set fromname = family.families.name from family.families where fa
 
 select pg_temp.dropAllTriggers();
 select pg_temp.convertAllMultiple();
+select pg_temp.convertParamToJSON();
+select pg_temp.convertDefvalToJSON();
+
 
 ALTER TABLE IF EXISTS dav.locks ALTER COLUMN token TYPE text;
 ALTER TABLE IF EXISTS dav.locks ALTER COLUMN owner TYPE text;

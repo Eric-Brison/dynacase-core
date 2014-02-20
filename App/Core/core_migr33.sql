@@ -252,3 +252,64 @@ BEGIN
   END LOOP;
 END;
 $$;
+
+
+CREATE OR REPLACE FUNCTION pg_temp.convertDefvalToJSON() RETURNS VOID LANGUAGE PLPGSQL AS
+$$
+DECLARE
+  row record;
+  items record;
+  item text[];
+  jsonitem text;
+BEGIN
+  FOR row IN
+    SELECT id, defval, string_to_array(substring(defval from 2 for char_length(defval)-2), '][') as tdefvals from family.families where defval is not null
+  LOOP
+      jsonitem:='{';
+      FOR items IN select unnest(row.tdefvals) as element
+      LOOP
+         select string_to_array(items.element, '|') into item;
+         jsonitem:=jsonitem || '"' || item[1] || '":' || to_json(item[2]) || ',';
+      END LOOP;
+      if (char_length(jsonitem) > 1) then
+        jsonitem:= substring(jsonitem for char_length(jsonitem) - 1) || '}';
+      else
+        jsonitem:=  '{}';
+      end if;
+
+      RAISE NOTICE '% % %',row.id, row.defval,jsonitem ;
+      update family.families set defaultvalues=jsonitem::json where id=row.id;
+  END LOOP;
+  alter table family.families drop column defval;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION pg_temp.convertParamToJSON() RETURNS VOID LANGUAGE PLPGSQL AS
+$$
+DECLARE
+  row record;
+  items record;
+  item text[];
+  jsonitem text;
+BEGIN
+  FOR row IN
+    SELECT id, param, string_to_array(substring(param from 2 for char_length(param)-2), '][') as tparams from family.families where param is not null
+  LOOP
+      jsonitem:='{';
+      FOR items IN select unnest(row.tparams) as element
+      LOOP
+         select string_to_array(items.element, '|') into item;
+         jsonitem:=jsonitem || '"' || item[1] || '":' || to_json(item[2]) || ',';
+      END LOOP;
+      if (char_length(jsonitem) > 1) then
+        jsonitem:= substring(jsonitem for char_length(jsonitem) - 1) || '}';
+      else
+        jsonitem:=  '{}';
+      end if;
+
+      RAISE NOTICE '% % %',row.id, row.param,jsonitem ;
+      update family.families set parametervalues=jsonitem::json where id=row.id;
+  END LOOP;
+  alter table family.families drop column param;
+END;
+$$;
