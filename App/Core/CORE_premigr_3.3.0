@@ -43,6 +43,9 @@ update docread set fromname = family.families.name from family.families where fa
 
 select pg_temp.dropAllTriggers();
 select pg_temp.convertAllMultiple();
+select pg_temp.convertParamToJSON();
+select pg_temp.convertDefvalToJSON();
+
 
 ALTER TABLE IF EXISTS dav.locks ALTER COLUMN token TYPE text;
 ALTER TABLE IF EXISTS dav.locks ALTER COLUMN owner TYPE text;
