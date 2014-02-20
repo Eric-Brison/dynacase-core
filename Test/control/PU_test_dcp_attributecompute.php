@@ -92,6 +92,7 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
                     'tst_text1' => 'NULL',
                     'tst_text2' => 'zero',
                     'tst_text3' => "[the][beautiful][ rainbow ,][.]",
+                    'tst_text4' => 'one',
                     "tst_number11" => array(
                         $y2 = $y1 + 10,
                         $z2 = $z1 + 10
@@ -107,4 +108,3 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
         return $out;
     }
 }
-?>

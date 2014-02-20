@@ -32,7 +32,7 @@ class parseFamilyMethod extends parseFamilyFunction
                 
                 if (!$this->isPHPName($methodName)) {
                     $this->setError(ErrorCode::getError('ATTR1252', $methodName));
-                } elseif ($className && (!$this->isPHPName($className))) {
+                } elseif ($className && (!$this->isPHPClassName($className))) {
                     $this->setError(ErrorCode::getError('ATTR1253', $className));
                 } else {
                     $inputString = substr($methCall, $this->firstParenthesis + 1, ($this->lastParenthesis - $this->firstParenthesis - 1));
