@@ -23,6 +23,9 @@ include_once ("FDL/Class.Dir.php");
 // -----------------------------------
 function generic_mod(Action & $action)
 {
+    if (check_max_input_vars($action) === false) {
+        $action->exitError(sprintf(_("Input variables exceeded %s. To increase the limit change max_input_vars in php.ini."), ini_get('max_input_vars')));
+    }
     // -----------------------------------
     // Get all the params
     $dirid = $action->getArgument("dirid", 0);
