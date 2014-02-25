@@ -34,16 +34,31 @@ include_once ("FDL/Class.Doc.php");
 function viewscard(&$action)
 {
     // GetAllParameters
-    $docid = GetHttpVars("id");
-    $abstract = (GetHttpVars("abstract", 'N') == "Y"); // view doc abstract attributes
-    $zonebodycard = GetHttpVars("zone"); // define view action
-    $ulink = (GetHttpVars("ulink", 'Y') == "Y"); // add url link
-    $target = GetHttpVars("target"); // may be mail
-    $wedit = (GetHttpVars("wedit") == "Y"); // send to be view by word editor
-    $fromedit = (GetHttpVars("fromedit", "N") == "Y"); // need to compose temporary doc
-    $latest = GetHttpVars("latest");
-    $tmime = GetHttpVars("tmime", ""); // type mime
-    $charset = GetHttpVars("chset", "UTF-8"); // charset
+    $usage = new ActionUsage($action);
+    $usage->setStrictMode(false);
+    $docid = $usage->addRequiredParameter("id", "id of the document");
+    $abstract = ($usage->addOptionalParameter("abstract", "view only abstract's attributes", array(
+        "Y",
+        "N"
+    ) , "N") == "Y");
+    $zonebodycard = $usage->addOptionalParameter("zone", "view with another specific representation", null, "");
+    $ulink = ($usage->addOptionalParameter("ulink", "enable or disable hyperlink", array(
+        "Y",
+        "N"
+    ) , "Y") == "Y");
+    $target = $usage->addOptionalParameter("target", "target for hyperlinks ('mail', '_self', etc.)", null, "");
+    $wedit = ($usage->addOptionalParameter("wedit", "view by word editor", array(
+        "Y",
+        "N"
+    ) , "N") == "Y");
+    $fromedit = ($usage->addOptionalParameter("fromedit", "compose temporary document", array(
+        "Y",
+        "N"
+    ) , "N") == "Y");
+    $latest = $usage->addOptionalParameter("latest", "view latest revision of document", null, "");
+    $tmime = $usage->addOptionalParameter("tmime", "MIME type", null, "");
+    $charset = $usage->addOptionalParameter("chset", "charset", null, "UTF-8");
+    $usage->verify();
     // Set the globals elements
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
