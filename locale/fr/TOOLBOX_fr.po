@@ -3868,8 +3868,8 @@ msgstr "Rechercher"
 msgid "Too many incorrect password attempts."
 msgstr "Trop de tentative avec un mot de passe incorrect."
 
-msgid "Too many input file. The maximum accepted is"
-msgstr "Trop de champs de type fichier dans le formulaire.\\nLe maximum est de"
+msgid "Too many files. The maximum accepted is"
+msgstr "Trop de fichiers dans le formulaire.\\nLe maximum est de"
 
 msgid "Tools"
 msgstr "Outils"

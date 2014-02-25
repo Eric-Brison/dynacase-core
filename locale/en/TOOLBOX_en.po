@@ -3713,7 +3713,7 @@ msgstr ""
 msgid "Too many incorrect password attempts."
 msgstr "Too many incorrect password attempts."
 
-msgid "Too many input file. The maximum accepted is"
+msgid "Too many files. The maximum accepted is"
 msgstr ""
 
 msgid "Tools"
