@@ -26,28 +26,40 @@ define("RESIZEDIR", DEFAULT_PUBDIR . "/var/cache/file/");
 function exportfile(Action & $action)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    $usage=new ActionUsage($action);
+    $usage = new ActionUsage($action);
     $usage->setText("Download document attached file");
-    $docid=$usage->addOptionalParameter("docid", "document identifier", null, 0);
-    if (! $docid) {
-        $docid=$usage->addHiddenParameter("id", "document identifier");
+    $docid = $usage->addOptionalParameter("docid", "document identifier", null, 0);
+    if (!$docid) {
+        $docid = $usage->addHiddenParameter("id", "document identifier");
     }
-
+    
     $usage->addHiddenParameter("vid", "vault file identifier - not used"); // only for construct url
     $usage->addHiddenParameter("filename", "vault file name - not used"); // only for construct url
-    $attrid=$usage->addOptionalParameter("attrid", "attribute identifier");
-    $vaultid=$usage->addOptionalParameter("vaultid", "public file identifier");
-    $index=$usage->addOptionalParameter("index", "attribute index identifier");
-    $imgwidth=$usage->addOptionalParameter("width", "image width use only when file is image");
-    $inline=($usage->addOptionalParameter("inline", "inline download", array("yes","no"))=="yes");
-    $cache=($usage->addOptionalParameter("cache", "use http cache", array("yes","no"), "yes")=="yes");
-    $latest=$usage->addOptionalParameter("latest", "use latest revision", array("Y","N"));
-    $state=$usage->addOptionalParameter("state", "search doc in this state");
-    $type=$usage->addOptionalParameter("type", "transformation type", array("png","pdf"));
-    $pngpage=$usage->addOptionalParameter("page", "page number if type=pdf");
-
-    $cvViewId=$usage->addOptionalParameter("cvViewid", "view control id");
-
+    $attrid = $usage->addOptionalParameter("attrid", "attribute identifier");
+    $vaultid = $usage->addOptionalParameter("vaultid", "public file identifier");
+    $index = $usage->addOptionalParameter("index", "attribute index identifier");
+    $imgwidth = $usage->addOptionalParameter("width", "image width use only when file is image");
+    $inline = ($usage->addOptionalParameter("inline", "inline download", array(
+        "yes",
+        "no"
+    )) == "yes");
+    $cache = ($usage->addOptionalParameter("cache", "use http cache", array(
+        "yes",
+        "no"
+    ) , "yes") == "yes");
+    $latest = $usage->addOptionalParameter("latest", "use latest revision", array(
+        "Y",
+        "N"
+    ));
+    $state = $usage->addOptionalParameter("state", "search doc in this state");
+    $type = $usage->addOptionalParameter("type", "transformation type", array(
+        "png",
+        "pdf"
+    ));
+    $pngpage = $usage->addOptionalParameter("page", "page number if type=pdf");
+    
+    $cvViewId = $usage->addOptionalParameter("cvViewid", "view control id");
+    
     $usage->setStrictMode(false);
     $usage->verify();
     $isControled = false;
@@ -88,8 +100,13 @@ function exportfile(Action & $action)
             $ovalue = $doc->getParameterRawValue($attrid);
             if (!$ovalue) $ovalue = $doc->getDefValue($attrid);
         } else $ovalue = $doc->getRawValue($attrid);
-        if (($index !== "") && ($index >= 0)) {
+        if (ctype_digit((string)$index) && ((int)$index >= 0)) {
+            $index = (int)$index;
             $tvalue = explode("\n", $ovalue);
+            if (!isset($tvalue[$index])) {
+                header('HTTP/1.0 404 File Not Found');
+                $action->exitError(sprintf(_("File not found at index '%s'") , $index));
+            }
             $ovalue = $tvalue[$index];
         }
         $oa = $doc->getAttribute($attrid);
