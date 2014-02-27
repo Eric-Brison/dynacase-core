@@ -337,7 +337,7 @@ class GroupAccount extends \Dcp\Family\Group
         $tu = $gAccount->GetUsersGroupList($gAccount->id);
         
         if (is_array($tu)) {
-            $this->Clear();
+            parent::Clear();
             $tfid = array();
             foreach ($tu as $k => $v) {
                 //	if ($v["fid"]>0)  $err.=$this->AddFile($v["fid"]);
@@ -458,6 +458,20 @@ class GroupAccount extends \Dcp\Family\Group
             }
             
             $err = $this->modify();
+        }
+        return $err;
+    }
+    /**
+     * Flush/empty group's content
+     */
+    function Clear()
+    {
+        $err = '';
+        $content = $this->getContent(false);
+        if (is_array($content)) {
+            foreach ($content as $tdoc) {
+                $err.= $this->removeDocument($tdoc['id']);
+            }
         }
         return $err;
     }
