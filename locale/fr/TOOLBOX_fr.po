@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-04 17:20+0100\n"
-"PO-Revision-Date: 2014-02-04 17:23+0100\n"
+"POT-Creation-Date: 2014-02-26 09:59+0100\n"
+"PO-Revision-Date: 2014-02-26 10:21+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -2481,6 +2481,14 @@ msgid "Initialize acls"
 msgstr "Initialiser les droits"
 
 #, php-format
+msgid ""
+"Input variables exceeded %s. To increase the limit change max_input_vars in "
+"php.ini."
+msgstr ""
+"Variables d'entrée dépassées %s. Veuillez contacter votre administrateur "
+"système pour augmenter max_input_vars dans php.ini."
+
+#, php-format
 msgid "Insert all into %s archive"
 msgstr "Tout insérer dans l'archive %s"
 
@@ -3865,11 +3873,13 @@ msgstr "Titre"
 msgid "ToSearch"
 msgstr "Rechercher"
 
+msgid "Too many files. The maximum accepted is"
+msgstr ""
+"Trop de fichiers dans le formulaire. Veuillez contacter votre administrateur "
+"système pour augmenter max_file_uploads dans php.ini. Le maximum est de"
+
 msgid "Too many incorrect password attempts."
 msgstr "Trop de tentative avec un mot de passe incorrect."
-
-msgid "Too many input file. The maximum accepted is"
-msgstr "Trop de champs de type fichier dans le formulaire.\\nLe maximum est de"
 
 msgid "Tools"
 msgstr "Outils"
@@ -4734,8 +4744,8 @@ msgstr ""
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
-"[CORE_EXTERNURL]</a>"
+"<p>Vous pouvez vous connecter sur <a href="
+"\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a>"
 
 msgid "can't access file"
 msgstr "Accès au fichier impossible"
@@ -8450,7 +8460,8 @@ msgid "user csv enclosure preferences when export document"
 msgstr "Préférence pour les délimiteurs CSV lors de l'exportation de document"
 
 msgid "user csv line break preferences when export document"
-msgstr "Préférence pour le retour-chariot CSV lors de l'exportation de document"
+msgstr ""
+"Préférence pour le retour-chariot CSV lors de l'exportation de document"
 
 msgid "user csv separator preferences when export document"
 msgstr "Préférence pour le sépareteur CSV lors de l'exportation de document"

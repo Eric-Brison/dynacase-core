@@ -2907,27 +2907,26 @@ function trim(aString) {
 }
 
 function verifyMaxFileUpload(f) {
-	if (!f) return true;
-	var inputs=f.getElementsByTagName("input");
-	if (! f.maxFileUpload) return true;
-	var maxfile=f.maxFileUpload.value;
-	if (! (maxfile > 0))  return true;
-	var nif=0;
-	var nifh=0; // count hidden
-	var sid;
-	for (var i=0;i<inputs.length;i++) {
-		if (inputs[i].type=="file") {
-			nif++;
-			sid=inputs[i].id;
-			if (sid && sid.substring(sid.length - 4)=='_1x_') nifh++;
-		}
-	}
-
-	if (nif > maxfile) {
-		alert("[TEXT:Too many input file. The maximum accepted is]"+" "+(maxfile-nifh));
-	    return false;
-	}
-	return true;
+    if (!f) return true;
+    var inputs = f.getElementsByTagName("input");
+    if (!f.maxFileUpload) return true;
+    var maxfile = f.maxFileUpload.value;
+    if (!(maxfile > 0))  return true;
+    var nif = 0;
+    for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].type != 'file') {
+            continue;
+        }
+        /* Count non-empty file inputs */
+        if (inputs[i].value != '') {
+            nif++;
+        }
+    }
+    if (nif > (maxfile - 1)) {
+        alert("[TEXT:Too many files. The maximum accepted is]" + " " + (maxfile - 1));
+        return false;
+    }
+    return true;
 }
 
 function documentsubmit(f) {

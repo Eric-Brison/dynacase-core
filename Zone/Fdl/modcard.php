@@ -612,4 +612,19 @@ function specialmodcard(Action & $action, $usefor)
     }
     return $err;
 }
-?>
+
+/**
+ * Check for PHP's max_input_vars corruption.
+ *
+ * The check is only performed if the action is executed with the variable checkMaxInputVars=yes
+ *
+ * @param Action $action The action that received the POSTed data
+ * @param string $inputNameValue Name and value of last input to detect corruption (default is '__detect_max_input_vars__')
+ * @return bool
+ */
+function check_max_input_vars(Action & $action, $inputNameValue = '__check_max_input_vars__') {
+    if ($action->getArgument('checkMaxInputVars') == 'yes' && $action->getArgument($inputNameValue) != $inputNameValue) {
+        return false;
+    }
+    return true;
+}
