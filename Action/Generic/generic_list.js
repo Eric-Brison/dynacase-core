@@ -179,6 +179,7 @@ function vedit(e,id,famid) {
                 } else {
                     // display selected search
                     $("#selected-search-text").text($(this).text());
+                    $("#selected-search").css('background-color',$(this).css('background-color'));
                     $("#selected-search").show();
                     document.getElementById('searchkey').value='';
                     focusInput();
@@ -192,7 +193,11 @@ function vedit(e,id,famid) {
                 icons: {
                     primary: "ui-icon-search"
                 }});*/
-            $("#selected-search-text").text($('a[data-selected="1"]').first().text());
+            var aselected=$('a[data-selected="1"]').first();
+            $("#selected-search-text").text(aselected.text());
+            if (aselected.css('background-color') != 'transparent') {
+                $("#selected-search").css('background-color',(aselected.css('background-color')));
+            }
             if ($('a[data-selected="1"]').length > 0) {
                 $("#selected-search").show();
             } else {
