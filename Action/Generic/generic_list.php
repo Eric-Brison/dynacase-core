@@ -306,6 +306,7 @@ function getFamilySearches(Action $action, $dbaccess, $famid, $only = false)
                 $streeSearch[$ids]["title"] = $stitle;
                 $streeSearch[$ids]["selected"] = ($ids == $catgid) ? "1" : "0";
                 $streeSearch[$ids]["isreport"] = "0";
+                $streeSearch[$ids]["gui_color"] = $search->getRawValue(\Dcp\AttributeIdentifiers\Search::gui_color);
                 $streeSearch[$ids]["isparam"] = "0";
                 $keys = $search->getRawValue("se_keys");
                 if (preg_match('/\?/', $keys)) {
@@ -354,6 +355,7 @@ function getFamilySearches(Action $action, $dbaccess, $famid, $only = false)
             $utreeSearch[$ids]["selected"] = ($ids == $catgid) ? "1" : "0";
             $utreeSearch[$ids]["isreport"] = "0";
             $utreeSearch[$ids]["isparam"] = "0";
+            $utreeSearch[$ids]["gui_color"] = $search->getRawValue(\Dcp\AttributeIdentifiers\Search::gui_color);
             $keys = $search->getRawValue("se_keys");
             if (preg_match('/\?/', $keys)) {
                 $utreeSearch[$ids]["title"] = "(P)" . $stitle;
