@@ -1303,29 +1303,6 @@ Calendar.prototype.showAtElement = function (el, opts) {
 			box.x = 0;
 		if (box.y < 0)
 			box.y = 0;
-		var cp = document.createElement("div");
-		var s = cp.style;
-		s.position = "absolute";
-		s.right = s.bottom = s.width = s.height = "0px";
-		document.body.appendChild(cp);
-		var br = Calendar.getAbsolutePos(cp);
-		document.body.removeChild(cp);
-		if (Calendar.is_ie) {
-			if (Calendar.is_ie7) {
-				br.y += document.body.scrollTop;
-				br.x += document.body.scrollLeft;
-			} else {
-				br.y += document.documentElement.scrollTop;
-				br.x += document.documentElement.scrollLeft;
-			}
-		} else {
-			br.y += window.scrollY;
-			br.x += window.scrollX;
-		}
-		var tmp = box.x + box.width - br.x;
-		if (tmp > 0) box.x -= tmp;
-		tmp = box.y + box.height - br.y;
-		if (tmp > 0) box.y -= tmp;
 	};
 
 	this.element.style.display = "block";
