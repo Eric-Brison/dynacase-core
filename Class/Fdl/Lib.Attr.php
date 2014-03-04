@@ -30,7 +30,6 @@ function AttrToPhp($dbaccess, $tdoc)
     
     $GEN = getGen($dbaccess);
     $phpAdoc = new Layout("FDL/Layout/Class.Doc.xml", $action);
-    $phpMethods = new Layout("FDL/Layout/Class.Method.xml");
     
     if ($tdoc["classname"] == "") { // default classname
         if ($tdoc["fromid"] == 0) $tdoc["classname"] = '\Dcp\Family\Document';
@@ -374,36 +373,37 @@ function AttrToPhp($dbaccess, $tdoc)
     //----------------------------------
     // Add specials methods
     $cmethod = ""; // method file which is use as inherit virtual class
+    $contents = '';
     $contents2 = '';
     $hasMethod = false;
     if (isset($tdoc["methods"]) && ($tdoc["methods"] != "")) {
         $tfmethods = explode("\n", $tdoc["methods"]);
-        $contents = "";
         foreach ($tfmethods as $fmethods) {
             if ($fmethods[0] == "*") {
                 $cmethod = substr($fmethods, 1);
                 $filename = GetParam("CORE_PUBDIR") . "/FDL/" . $cmethod;
-                $fd = fopen($filename, "rb");
-                $contents2 = fread($fd, filesize($filename)); // only one
-                $contents2 = preg_replace('%(?:  //[^\n]*\@begin-method-ignore|  /\*+[^/]*?\@begin-method-ignore)(.*?)(?:  //[^\n]*\@end-method-ignore[^\n]*|  /\*+[^/]*?\@end-method-ignore[^/]*?\*/)%xms', '', $contents2);
-                fclose($fd);
+                $contents2 = getMethodFileInnerContents($filename);
+                /* Skip empty method file */
+                if (strlen(trim($contents2)) <= 0) {
+                    $cmethod = '';
+                    $contents2 = '';
+                }
             } else {
                 $filename = GetParam("CORE_PUBDIR") . "/FDL/" . $fmethods;
-                $fd = fopen($filename, "rb");
-                $contents.= fread($fd, filesize($filename));
-                fclose($fd);
-                $hasMethod = true;
+                $innerContents = getMethodFileInnerContents($filename);
+                /* Concatenate non-empty method file */
+                if (strlen(trim($innerContents)) > 0) {
+                    $contents.= $innerContents;
+                    $hasMethod = true;
+                }
             }
         }
-        $contents = preg_replace('%(?:  //[^\n]*\@begin-method-ignore|  /\*+[^/]*?\@begin-method-ignore)(.*?)(?:  //[^\n]*\@end-method-ignore[^\n]*|  /\*+[^/]*?\@end-method-ignore[^/]*?\*/)%xms', '', $contents);
+    }
+    if ($hasMethod) {
         $dm = new deprecatedHookManager();
-        $dm->inspectContent($contents);
+        $dm->inspectContent("<?php\n" . $contents . "\n?>");
         $phpAdoc->set("HOOKALIAS", $dm->generateCompatibleMethods());
-        $phpAdoc->Set("METHODS", str_replace(array(
-            "<?php\n",
-            "<?php\r\n",
-            "\n?>"
-        ) , "", $contents));
+        $phpAdoc->Set("METHODS", $contents);
         $phpMethodName = sprintf("_Method_%s", $tdoc["name"]);
         $phpAdoc->set("PHPmethodName", $phpMethodName);
         $phpAdoc->set("ClassDocParent", $phpAdoc->Get("DocParent"));
@@ -413,11 +413,7 @@ function AttrToPhp($dbaccess, $tdoc)
     }
     
     if ($cmethod != "") {
-        $phpAdoc->Set("METHODS2", str_replace(array(
-            "<?php\n",
-            "<?php\r\n",
-            "\n?>"
-        ) , "", $contents2));
+        $phpAdoc->Set("METHODS2", $contents2);
         $phpAdoc->Set("STARMETHOD", true);
         $phpAdoc->Set("docNameIndirect", '_SMethod_Doc' . $tdoc["id"] . "__");
         if ($hasMethod) {
@@ -828,4 +824,24 @@ function getTypeFormat($type)
     $p = parseType($type);
     return $p['format'];
 }
-?>
+/**
+ * Get the content of a METHOD file without the PHP opening/closing tags and
+ * without the @begin-method-ignore/@end-method-ignore sections.
+ *
+ * @param $filename
+ * @return string
+ */
+function getMethodFileInnerContents($filename)
+{
+    $contents = file_get_contents($filename);
+    if ($contents === false) {
+        return '';
+    }
+    $contents = preg_replace('%(?:  //[^\n]*\@begin-method-ignore|  /\*+[^/]*?\@begin-method-ignore)(.*?)(?:  //[^\n]*\@end-method-ignore[^\n]*|  /\*+[^/]*?\@end-method-ignore[^/]*?\*/)%xms', '', $contents);
+    $contents = str_replace(array(
+        "<?php\n",
+        "<?php\r\n",
+        "\n?>"
+    ) , "", $contents);
+    return (string)$contents;
+}
