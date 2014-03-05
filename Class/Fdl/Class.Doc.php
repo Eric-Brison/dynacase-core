@@ -8589,6 +8589,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getDocValue($docid, $attrid, $def = " ", $latest = false)
     {
+        if ((!is_numeric($docid)) && ($docid != "")) {
+            $docid = getIdFromName($this->dbaccess, $docid);
+        }
         if (intval($docid) > 0) {
             if (strpos(':', $attrid) === false) {
                 $attrid = strtolower($attrid);
