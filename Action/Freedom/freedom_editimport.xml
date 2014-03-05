@@ -118,12 +118,13 @@
                     <p>
                         [TEXT:Use another import interface for a specific family]&nbsp;:
                     </p>
-                    <input id="configCSV" disabled="disabled" type="button" value="[TEXT:Specific import in csv format]">
+                    <input id="configCSV" disabled="disabled" type="button" value="[TEXT:Specific import in csv format]"
+                            onclick='window.open("?app=GENERIC&action=GENERIC_EDITIMPORT&famid="+$("#classid").val(),"_blank")' />
                     <p>
                         [TEXT:Get XML schema to compose XML document import file]&nbsp;:
                     </p>
                     <input disabled="disabled" type="button" title="[TEXT:View Xml Schema]" value="[TEXT:Get Xml schema]"
-                   onclick='window.open("[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+$("#classid").val(),"_blank")'>
+                   onclick='window.open("[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+$("#classid").val(),"_blank")'/>
                </div>
             </div>
         </fieldset>
