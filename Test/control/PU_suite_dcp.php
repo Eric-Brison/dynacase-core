@@ -70,8 +70,8 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestVaultDiskStorage');
         $suite->addTestSuite('Dcp\Pu\TestAutoloader');
         $suite->addTestSuite('Dcp\Pu\TestGettext');
+        $suite->addTestSuite('Dcp\Pu\TestFdlGen');
         // ...
         return $suite;
     }
 }
-?>
