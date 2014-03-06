@@ -39,6 +39,17 @@ class TestGetDocValue extends TestCaseDcpCommonFamily
         $this->assertEquals($expectValue, $value, "getDocValue $attrid wrong value");
     }
     /**
+     * @dataProvider dataDirectGetDocValueLogicalName
+     */
+    public function testDirectGetDocValueLogicalName($docName, $attrid, $expectValue)
+    {
+        $d = createDoc(self::$dbaccess, $this->famName);
+        $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $this->famName));
+        $value = $d->getDocValue($docName, $attrid);
+        
+        $this->assertEquals($expectValue, $value, "getDocValue $attrid wrong value");
+    }
+    /**
      * @dataProvider dataLatestGetDocValue
      */
     public function testLatestGetDocValue($docName, $attrid, $expectValue)
@@ -92,6 +103,22 @@ class TestGetDocValue extends TestCaseDcpCommonFamily
     }
     
     public function dataDirectGetDocValue()
+    {
+        
+        return array(
+            array(
+                'TST_FGV1',
+                "tst_title",
+                "Titre Un"
+            ) ,
+            array(
+                'TST_FGV2',
+                "tst_int",
+                "2"
+            )
+        );
+    }
+    public function dataDirectGetDocValueLogicalName()
     {
         
         return array(
