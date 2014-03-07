@@ -361,7 +361,7 @@ class WDoc extends Doc
             $oattr->phpfile = "fdl.php";
             $oattr->phpfunc = "lmask(D,CT,WF_FAMID):$aid,CT";
             $oattr->elink = '';
-            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",msk_famid:wf_famid,ba_title:"' . _($state) . '"}';
+            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",msk_famid:wf_famid,ba_title:"' . str_replace(':', ' ', _($state)) . '"}';
             $oattr->ordered = $ordered++;
             if ($oattr->isAffected()) $oattr->Modify();
             else $oattr->Add();
@@ -399,7 +399,7 @@ class WDoc extends Doc
             $oattr->phpfile = "fdl.php";
             $oattr->phpfunc = "lcvdoc(D,CT,WF_FAMID):$aid,CT";
             $oattr->elink = '';
-            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",cv_famid:wf_famid,ba_title:"' . _($state) . '"}';
+            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",cv_famid:wf_famid,ba_title:"' . str_replace(':', ' ', _($state)) . '"}';
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
@@ -445,7 +445,7 @@ class WDoc extends Doc
             $oattr->phpfunc = "ltimerdoc(D,CT,WF_FAMID):$aid,CT";
             $oattr->id = $aid;
             $oattr->elink = '';
-            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . _($state) . '"}';
+            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . str_replace(':', ' ', _($state)) . '"}';
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
             $oattr->labeltext = sprintf(_("%s timer") , _($state));
@@ -645,7 +645,7 @@ class WDoc extends Doc
             $oattr->phpfile = "fdl.php";
             $oattr->phpfunc = "ltimerdoc(D,CT,WF_FAMID):$aid,CT";
             $oattr->elink = "";
-            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . _($k) . '"}';
+            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . str_replace(':', ' ', _($k)) . '"}';
             
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
@@ -667,7 +667,7 @@ class WDoc extends Doc
             $oattr->phpfile = "fdl.php";
             $oattr->phpfunc = "ltimerdoc(D,CT,WF_FAMID):$aid,CT";
             $oattr->elink = "";
-            $oattr->options = 'multiple=yes|autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . _($k) . '"}';
+            $oattr->options = 'multiple=yes|autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . str_replace(':', ' ', _($k)) . '"}';
             
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
@@ -1206,4 +1206,3 @@ class WDoc extends Doc
         return $def;
     }
 }
-?>
