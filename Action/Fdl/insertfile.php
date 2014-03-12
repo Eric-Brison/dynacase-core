@@ -18,7 +18,6 @@
 
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.TaskRequest.php");
-include_once ("WHAT/Class.TEClient.php");
 include_once ("Lib.FileMime.php");
 /**
  * Modify the attrid_txt attribute
@@ -120,7 +119,7 @@ function getTEFile($tid, $filename, &$info)
 {
     global $action;
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    $ot = new TransformationEngine($action->getParam("TE_HOST") , $action->getParam("TE_PORT"));
+    $ot = new \Dcp\TransformationEngine\Client($action->getParam("TE_HOST") , $action->getParam("TE_PORT"));
     
     $err = $ot->getInfo($tid, $info);
     if ($err == "") {

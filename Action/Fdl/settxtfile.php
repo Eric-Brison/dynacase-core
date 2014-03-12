@@ -18,7 +18,6 @@
 
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.TaskRequest.php");
-include_once ("WHAT/Class.TEClient.php");
 /**
  * Modify the attrid_txt attribute
  * @param Action &$action current action
@@ -37,7 +36,7 @@ function settxtfile(Action & $action)
     $dbaccess = $action->GetParam("FREEDOM_DB");
     if (!$tid) $err = _("no task identifier found");
     else {
-        $ot = new TransformationEngine($action->getParam("TE_HOST") , $action->getParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client($action->getParam("TE_HOST") , $action->getParam("TE_PORT"));
         
         $err = $ot->getInfo($tid, $info);
         if ($err == "") {

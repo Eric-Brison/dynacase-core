@@ -8,6 +8,38 @@
 
 namespace Dcp;
 
+class Autoloader
+{
+    private static function getAutoloader()
+    {
+        return DirectoriesAutoloader::instance(DEFAULT_PUBDIR, '.autoloader.cache');
+    }
+    private static function configure(DirectoriesAutoloader $autoloader)
+    {
+        return $autoloader->addDirectory('./')->addCustomFilter('\Dcp\autoloaderIgnoreDotD');
+    }
+    /**
+     * Register Dynacase Platform autoloader.
+     */
+    public static function register()
+    {
+        require_once 'WHAT/classAutoloader.php';
+        require_once 'WHAT/classAutoloaderIgnoreDotD.php';
+        include_once 'WHAT/Lib.Prefix.php';
+        
+        self::configure(self::getAutoloader())->register();
+    }
+    /**
+     * Check if a class is known by the autoloader.
+     * @param string $pClassName The class's name
+     * @return bool true if the class is known by the autoloader, otherwise false.
+     */
+    public static function classExists($pClassName)
+    {
+        return self::getAutoloader()->classExists($pClassName);
+    }
+}
+
 class ExtensionFilterIteratorDecorator extends \FilterIterator
 {
     private $_ext;
@@ -513,15 +545,7 @@ class DirectoriesAutoloader
     private function _loadClass($pClassName)
     {
         $className = strtolower($pClassName);
-        if (count($this->_classes) === 0) {
-            if (is_readable($this->getCacheFilePath())) {
-                //error_log('Loading classes from [' . $this->getCacheFilePath() . ']');
-                $classes = array();
-                require $this->getCacheFilePath(); // load $classes here
-                $this->_classes = $classes;
-            }
-        }
-        if (isset($this->_classes[$className])) {
+        if ($this->classExists($className)) {
             include_once ('WHAT/Lib.Prefix.php');
             if (!file_exists(DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . $this->_classes[$className])) {
                 return false;
@@ -536,6 +560,24 @@ class DirectoriesAutoloader
             return true;
         }
         return false;
+    }
+    /**
+     * Check if a class exists in the autoloader's cache
+     *
+     * @param $pClassName
+     * @return bool
+     */
+    public function classExists($pClassName)
+    {
+        $className = strtolower($pClassName);
+        if (count($this->_classes) === 0) {
+            if (is_readable($this->getCacheFilePath())) {
+                $classes = array();
+                require $this->getCacheFilePath(); // load $classes here
+                $this->_classes = $classes;
+            }
+        }
+        return isset($this->_classes[$className]);
     }
     /**
      * add a directory to autoloaded directories

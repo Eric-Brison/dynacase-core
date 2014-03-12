@@ -2472,10 +2472,13 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function hasWaitingFiles()
     {
+        if (!\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+            return false;
+        }
         $dvi = new DocVaultIndex($this->dbaccess);
         $tvid = $dvi->getVaultIds($this->id);
         if (count($tvid) == 0) return false;
-        $sql = sprintf("select id_file from vaultdiskstorage where teng_state=%d and %s limit 1", TransformationEngine::status_waiting, getSqlCond($tvid, "id_file", true));
+        $sql = sprintf("select id_file from vaultdiskstorage where teng_state=%d and %s limit 1", \Dcp\TransformationEngine\Client::status_waiting, getSqlCond($tvid, "id_file", true));
         simpleQuery($this->dbaccess, $sql, $waiting, true, true);
         return ($waiting != false);
     }
@@ -2525,7 +2528,7 @@ create unique index i_docir on doc(initid, revision);";
         $value = '';
         if (is_array($va)) return "";
         $err = '';
-        if (getParam("TE_ACTIVATE") == "yes") {
+        if (getParam("TE_ACTIVATE") == "yes" && \Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
                 $vidout = 0;
@@ -2535,10 +2538,10 @@ create unique index i_docir on doc(initid, revision);";
                     // not found : create it
                     $info = new VaultFileInfo();
                 }
-                if ($info->teng_state == TransformationEngine::error_connect) {
-                    $info->teng_state = TransformationEngine::status_inprogress;
+                if ($info->teng_state == \Dcp\TransformationEngine\Client::error_connect) {
+                    $info->teng_state = \Dcp\TransformationEngine\Client::status_inprogress;
                 }
-                if ((!$info->teng_vid) || ($info->teng_state == TransformationEngine::status_inprogress)) {
+                if ((!$info->teng_vid) || ($info->teng_state == \Dcp\TransformationEngine\Client::status_inprogress)) {
                     $vf = newFreeVaultFile($this->dbaccess);
                     if (!$info->teng_vid) {
                         // create temporary file

@@ -19,7 +19,6 @@
 include_once ('Class.DbObj.php');
 include_once ('Class.QueryDb.php');
 include_once ('Class.Log.php');
-include_once ("WHAT/Class.TEClient.php");
 
 class DocVaultIndex extends DbObj
 {

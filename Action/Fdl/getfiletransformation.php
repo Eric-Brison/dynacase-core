@@ -122,8 +122,7 @@ function downloadTid($tid, $title)
 {
     $tea = getParam("TE_ACTIVATE");
     $err = '';
-    if ($tea != "yes") return '';
-    include_once ("WHAT/Class.TEClient.php");
+    if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) return '';
     global $action;
     include_once ("FDL/insertfile.php");
     
@@ -147,12 +146,12 @@ function sendRequestForFileTransformation($filename, $engine, &$info)
         
         $tea = getParam("TE_ACTIVATE");
         if ($tea != "yes") return _("TE engine is not activate");
-        if (include_once ("WHAT/Class.TEClient.php")) {
+        if (\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             global $action;
             include_once ("FDL/Class.TaskRequest.php");
             
             $callback = "";
-            $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
+            $ot = new \Dcp\TransformationEngine\Client(getParam("TE_HOST") , getParam("TE_PORT"));
             $err = $ot->sendTransformation($engine, $vid = 0, $filename, $callback, $info);
             if ($err == "") {
                 $dbaccess = GetParam("FREEDOM_DB");
@@ -173,4 +172,3 @@ function sendRequestForFileTransformation($filename, $engine, &$info)
     }
     return $err;
 }
-?>

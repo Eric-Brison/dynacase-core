@@ -467,13 +467,7 @@ msgstr ""
 msgid "Action to do"
 msgstr ""
 
-msgid "Activate Transformation Engine"
-msgstr ""
-
 msgid "Activate acls"
-msgstr ""
-
-msgid "Activate file indexing with TE"
 msgstr ""
 
 msgid "Activity"
@@ -1806,10 +1800,6 @@ msgstr ""
 
 #, php-format
 msgid "Error renaming '%s' to '%s'."
-msgstr ""
-
-#, php-format
-msgid "Error sending file"
 msgstr ""
 
 #, php-format
@@ -3894,24 +3884,6 @@ msgstr ""
 msgid "Top Bottom"
 msgstr ""
 
-msgid "Transformation Engine callback url"
-msgstr ""
-
-msgid "Transformation Engine server host name"
-msgstr ""
-
-msgid "Transformation Engine server port number"
-msgstr ""
-
-msgid "Transformation Engine timeout connection (in seconds)"
-msgstr ""
-
-msgid "Transformation server did not returned a valid error comment"
-msgstr ""
-
-msgid "Transformation server did not returned a valid task id"
-msgstr ""
-
 msgid "Transitions"
 msgstr ""
 
@@ -5799,9 +5771,6 @@ msgid "email sended"
 msgstr ""
 
 msgid "emailing"
-msgstr ""
-
-msgid "empty file"
 msgstr ""
 
 msgid "enavpreview"
@@ -7904,9 +7873,6 @@ msgid "simple"
 msgstr ""
 
 msgid "society style"
-msgstr ""
-
-msgid "socket creation error"
 msgstr ""
 
 msgid "specialedit"
