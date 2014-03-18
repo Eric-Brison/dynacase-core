@@ -74,6 +74,7 @@ class ClassHunterForPHP5_3 implements IClassHunter
      */
     public function find($pFileName)
     {
+        if (!defined("T_TRAIT")) define("T_TRAIT", 355); // defined in PHP 5.4 only
         $toReturn = array();
         $tokens = token_get_all(file_get_contents($pFileName, false));
         $currentNamespace = '';
@@ -83,7 +84,7 @@ class ClassHunterForPHP5_3 implements IClassHunter
         $whitespaceCount = 0;
         foreach ($tokens as $token) {
             if (is_array($token)) {
-                if ($token[0] === T_INTERFACE || $token[0] === T_CLASS) {
+                if ($token[0] === T_INTERFACE || $token[0] === T_CLASS || $token[0] === T_TRAIT) {
                     $classHunt = true;
                     continue;
                 } elseif ($token[0] === T_NAMESPACE) {
