@@ -315,6 +315,24 @@ function activate(th, url, wname,bar,w,h) {
     } else {
       if (!w) w=fdl_hd2size;
       if (!h) h=fdl_vd2size;
+
+      if (wname == 'fdoc') {
+          if (window.parent == window) {
+              wname='_blank';
+          } else {
+              var mif=window.parent.frames.length;
+              var foundFdoc=false;
+              for (var i=0;i<mif;i++) {
+                  if (window.parent.frames[i].name == wname) {
+                      foundFdoc=true;
+                      break;
+                  }
+              }
+              if (!foundFdoc) {
+                  wname='_blank';
+              }
+          }
+      }
       if (bar) subwindowm(h,w,wname,url);
       else subwindow(h,w,wname,url);
     }
