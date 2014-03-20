@@ -64,7 +64,7 @@ if (parseInt('[latestwaskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FD
 [ENDIF MAILVIEW]
 [IF MAILVIEW][IF HEAD]
 <table><tr><td>
-<IMG  border="0"  title="[classtitle]" alt="[classtitle]" align="absbottom" needresize="1" width="[SIZE_IMG-MEDIUM]" SRC="[iconsrc]"><br><I style="font-size:70%">[classtitle]</I></td><td><H1>[IF ulink]<a href="[CORE_EXTERNURL][CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]">[ENDIF ulink][title][IF ulink]</a>[ENDIF ulink]</H1></td></tr></table>
+<IMG  border="0"  title="[classtitle]" alt="[classtitle]" align="absbottom" needresize="1" width="[SIZE_IMG-MEDIUM]" SRC="[iconsrc]"><br><I style="font-size:70%">[classtitle]</I></td><td><H1>[IF ulink]<a href="[CORE_MAILACTIONURL]&id=[id]">[ENDIF ulink][title][IF ulink]</a>[ENDIF ulink]</H1></td></tr></table>
 [ENDIF HEAD][ENDIF MAILVIEW]
 </div>
         <!-- TABLEBODY -->
