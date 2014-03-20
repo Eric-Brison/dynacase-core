@@ -33,7 +33,7 @@ A.nounder:hover, A.nounder:link,A.nounder:visited, A.nounder {
 <P>[comment]</P>
 <HR>
 [ENDBLOCK COMMENT]
-<a class="nounder" title="[TEXT:Click to access to the document]" href="[absurl][CORE_STANDURL]app=FDL&action=FDL_CARD&latest=Y&id=[ID]">
+<a class="nounder" title="[TEXT:Click to access to the document]" href="[CORE_MAILACTIONURL]&id=[ID]">
 <div class="border" style="width:300px">
 [ZONE FDL:VIEWCARD?target=mail&zone=FDL:VIEWTHUMBCARD:T]
 </div></a>
