@@ -252,7 +252,9 @@ class GroupAccount extends \Dcp\Family\Group
                     $err = $g->Add();
                     if ($err == "OK") $err = "";
                     if ($err == "") {
+                        $du->disableEditControl();
                         $du->RefreshDocUser(); // to refresh group of user attributes
+                        $du->enableEditControl();
                         $this->RefreshGroup();
                     }
                 }
@@ -283,7 +285,11 @@ class GroupAccount extends \Dcp\Family\Group
                     $g->iduser = $uid;
                     $g->idgroup = $gid;
                     $err = $g->Add();
-                    if ($err == "") $du->RefreshDocUser();
+                    if ($err == "") {
+                        $du->disableEditControl();
+                        $du->RefreshDocUser();
+                        $du->enableEditControl();
+                    }
                 }
             }
             
@@ -311,7 +317,9 @@ class GroupAccount extends \Dcp\Family\Group
                 $g->iduser = $gid;
                 $err = $g->SuppressUser($uid);
                 if ($err == "") {
+                    $du->disableEditControl();
                     $du->RefreshDocUser();
+                    $du->enableEditControl();
                     $this->RefreshGroup();
                 }
             }
