@@ -182,7 +182,7 @@ function viewcard(Action & $action)
     $action->lay->set("viewbarmenu", ($zo == "V"));
     
     $action->lay->set("LGTEXTERROR", strlen($err));
-    $action->lay->eset("TEXTERROR", nl2br($err));
+    $action->lay->set("TEXTERROR", nl2br($err));
     $action->lay->Set("ZONEBODYCARD", $doc->viewDoc($zonebodycard, $target, $ulink, $abstract));
     /*
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
