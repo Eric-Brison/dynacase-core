@@ -6563,7 +6563,7 @@ create unique index i_docir on doc(initid, revision);";
                 
                 $ok = false;
                 if (empty($oattr)) $ok = false;
-                elseif (empty($dval)) $ok = false;
+                elseif ($dval === '' || $dval === null) $ok = false;
                 elseif (!is_a($oattr, "BasicAttribute")) $ok = false;
                 elseif ($forcedefault) $ok = true;
                 elseif (!$oattr->inArray()) $ok = true;

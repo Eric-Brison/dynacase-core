@@ -40,6 +40,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $famid));
         $value = $d->getRawValue($oa->id);
         $this->assertEquals($expectedvalue, $value, sprintf("not the expected default value attribute %s", $attrid));
+
     }
     /**
      * @dataProvider dataDefaultParamValues
@@ -362,6 +363,11 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 "TST_DEFAULTFAMILY1",
                 'TST_TITLE',
                 'The title'
+            ) ,
+            array(
+                "TST_DEFAULTFAMILY1",
+                'TST_NUMBER0',
+                '0'
             ) ,
             array(
                 "TST_DEFAULTFAMILY1",

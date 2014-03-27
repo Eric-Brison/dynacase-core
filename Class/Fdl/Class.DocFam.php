@@ -671,7 +671,7 @@ create unique index idx_idfam on docfam(id);";
         $tval2 = $this->$tval;
         $v = isset($tval2[strtolower($idp) ]) ? $tval2[strtolower($idp) ] : '';
         if ($v == "-") return $def;
-        if ($v != "") return $v;
+        if ($v !== "") return $v;
         return $def;
     }
     /**
