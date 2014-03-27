@@ -11,10 +11,14 @@ namespace Dcp\Pu;
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package Dcp\Pu
  */
-require_once 'PU_testcase_dcp_document.php';
+require_once 'PU_testcase_dcp_commonfamily.php';
 
-class TestGroup extends TestCaseDcpDocument
+class TestGroup extends TestCaseDcpCommonFamily
 {
+    protected static function getCommonImportFile()
+    {
+        return "PU_data_dcp_group.ods";
+    }
     /**
      * @dataProvider datagroupWithUserDelete
      * @param string $login
@@ -168,6 +172,72 @@ class TestGroup extends TestCaseDcpDocument
         $this->assertTrue($u->setLoginName($login) , "system group not found");
         $this->assertEquals($login, $u->login);
     }
+    /**
+     * @param $userId int|string The user performing the insertDocument()
+     * @param $groupId int|string The group on which insertDocument() is performed
+     * @param $insertUserId int|string The user inserted in the group
+     * @dataProvider data_userInsertDocument
+     */
+    public function test_userInsertDocument($userId, $groupId, $insertUserId)
+    {
+        /**
+         * @var \Dcp\Core\UserAccount $user
+         */
+        $user = new_Doc(self::$dbaccess, $userId, true);
+        if (!$user->isAlive()) {
+            $this->markTestIncomplete(sprintf("User with id '%s' is not alive.", $userId));
+        }
+        $userWhatId = $user->getRawValue('us_whatid');
+        $userAccount = new \Account(self::$dbaccess, $userWhatId);
+        /**
+         * @var \Dcp\Core\GroupAccount $group
+         */
+        $group = new_Doc(self::$dbaccess, $groupId, true);
+        if (!$group->isAlive()) {
+            $this->markTestIncomplete(sprintf("Group with id '%s' is not alive.", $groupId));
+        }
+        $groupWhatId = $group->getRawValue('us_whatid');
+        $groupAccount = new \Account(self::$dbaccess, $groupWhatId);
+        /**
+         * @var \Dcp\Core\UserAccount $insertUser
+         */
+        $insertUser = new_Doc(self::$dbaccess, $insertUserId);
+        if (!$insertUser->isAlive()) {
+            $this->markTestIncomplete(sprintf("User with id '%s' is not alive.", $insertUserId));
+        }
+        $insertUserWhatId = $insertUser->getRawValue('us_whatid');
+        $insertUserAccount = new \Account(self::$dbaccess, $insertUserWhatId);
+        /*
+         * Setuid to $userId
+        */
+        $this->sudo($user->getRawValue('us_login'));
+        /*
+         * Insert $insertUserId into $groupId
+        */
+        $group->insertDocument($insertUserId);
+        /*
+         * Check table groups
+        */
+        $groupsIdList = $insertUserAccount->getGroupsId();
+        $this->assertTrue(in_array($groupWhatId, $groupsIdList) , sprintf("User with id '%d' has not group with id '%d' as parent.", $insertUserWhatId, $groupWhatId));
+        /*
+         * Check table fld
+        */
+        $fld = $group->getContent();
+        $found = false;
+        foreach ($fld as & $doc) {
+            if ($doc['id'] == $insertUser->id) {
+                $found = true;
+                break;
+            }
+        }
+        unset($doc);
+        $this->assertTrue($found, sprintf("Group with '%d' does not contain inserted user with id '%d'.", $group->id, $insertUser->id));
+        /*
+         * Exit sudo
+        */
+        $this->exitSudo();
+    }
     
     public function datagroupWithUserDelete()
     {
@@ -257,5 +327,14 @@ class TestGroup extends TestCaseDcpDocument
             )
         );
     }
+    public function data_userInsertDocument()
+    {
+        return array(
+            array(
+                'U_1',
+                'G_1',
+                'U_2'
+            )
+        );
+    }
 }
-?>
