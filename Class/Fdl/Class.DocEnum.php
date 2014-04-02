@@ -275,16 +275,8 @@ create unique index i_docenum on docenum(famid, attrid,  key);
             
             $moFile = self::getMoFilename($fam->name, $lang);
             $poFile = sprintf("%s.po", (substr($moFile, 0, -3)));
-            
-            if (file_exists($moFile)) {
-                $cmd = sprintf("(msgunfmt %s > %s) 2>&1", escapeshellarg($moFile) , escapeshellarg($poFile));
-                
-                exec($cmd, $output, $ret);
-                if ($ret) {
-                    throw new \Dcp\Exception(sprintf("Locale : Enum %s#%s#%s error : %s", $famId, $attrid, $enumId, implode(',', $output)));
-                }
-            } else {
-                $msgInit = sprintf('msgid ""
+            $msgInit = '';
+            $msgInit = sprintf('msgid ""
 msgstr ""
 "Project-Id-Version: Custom enum for %s\n"
 "Language: %s\n"
@@ -292,6 +284,15 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"', $fam->name, substr($lang, 0, 2) , date('Y-m-d H:i:s'));
+            if (file_exists($moFile)) {
+                // Just test mo validity
+                $cmd = sprintf("(msgunfmt %s > %s) 2>&1", escapeshellarg($moFile) , escapeshellarg($poFile));
+                
+                exec($cmd, $output, $ret);
+                if ($ret) {
+                    throw new \Dcp\Exception(sprintf("Locale : Enum %s#%s#%s error : %s", $famId, $attrid, $enumId, implode(',', $output)));
+                }
+            } else {
                 file_put_contents($poFile, $msgInit);
             }
             // add new entry
@@ -301,10 +302,11 @@ msgstr ""
             // fuzzy old entry
             $match = sprintf('msgid "%s"', $localeKey);
             $content = str_replace($match, "#, fuzzy\n$match", $content);
+            // delete previous header
+            $content = str_replace('msgid ""', "#, fuzzy\nmsgid \"- HEADER DELETION -\"", $content);
             
-            file_put_contents($poFile, $msgEntry . "\n\n" . $content);
+            file_put_contents($poFile, $msgInit . $msgEntry . "\n\n" . $content);
             $cmd = sprintf("(msguniq --use-first %s | msgfmt - -o %s; rm -f %s) 2>&1", escapeshellarg($poFile) , escapeshellarg($moFile) , escapeshellarg($poFile));
-            
             exec($cmd, $output, $ret);
             if ($ret) {
                 print $cmd;
