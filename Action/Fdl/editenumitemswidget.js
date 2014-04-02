@@ -458,7 +458,7 @@
 
         _getActiveRadioButton: function (lineData) {
 
-            var key = lineData.key ? lineData.key.replace('"', "&quot;", "g") : "";
+            var key = lineData.key ? lineData.key.replace('"', "&quot;", "g").replace("'", "--", "g") : "";
             return '<div class="activebuttonset" >' +
                 '<input type="radio" id="activebuttonset_' + key  + '_on" name="activebuttonset_' + key  + '" ' + (!lineData.disabled ? 'checked="checked"' : "") + '/><label class="enum-on" for="activebuttonset_' + key + '_on">' + this._activeButtonLabel.on + '</label>' +
                 '<input type="radio" id="activebuttonset_' + key  + '_off" name="activebuttonset_' + key + '"' + (lineData.disabled ? 'checked="checked"' : "") + '/><label class="enum-off" for="activebuttonset_' + key + '_off">' + this._activeButtonLabel.off + '</label>' +
