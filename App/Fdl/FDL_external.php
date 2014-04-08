@@ -326,7 +326,7 @@ function lfamilies($dbaccess, $name = '', $subfam = "")
     $name = strtolower($name);
     // HERE HERE HERE
     $pattern_name = preg_quote($name, "/");
-    while (list($k, $v) = each($tinter)) {
+    foreach ($tinter as $v) {
         $ftitle = DocFam::getLangTitle($v);
         if (($name == "") || (preg_match("/$pattern_name/i", $ftitle, $reg))) {
             $tr[] = array(
