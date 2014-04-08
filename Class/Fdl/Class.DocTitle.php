@@ -112,7 +112,7 @@ class DocTitle
             if (!empty($relid["rid"])) $realIds[] = $relid["rid"];
         }
         if ($realIds) {
-            $sql = sprintf("select id,initid,title,views && '%s' as canaccess from docread where id in (%s)", self::getUserVector() , implode(',', $realIds));
+            $sql = sprintf("select id,initid,title,name,doctype,views && '%s' as canaccess from docread where id in (%s)", self::getUserVector() , implode(',', $realIds));
             simpleQuery($doc->dbaccess, $sql, $result);
             $accesses = array();
             foreach ($result as $access) {
@@ -122,7 +122,14 @@ class DocTitle
             foreach ($relationIds as $k => $relid) {
                 $rid = $relid["rid"];
                 if ($rid && isset($accesses[$rid])) {
-                    $relationIds[$k]["title"] = $accesses[$rid]["title"];
+                    if ($accesses[$rid]["doctype"] === "C") {
+                        $relationIds[$k]["title"] = DocFam::getLangTitle(array(
+                            "name" => $accesses[$rid]["name"],
+                            "title" => $accesses[$rid]["title"]
+                        ));
+                    } else {
+                        $relationIds[$k]["title"] = $accesses[$rid]["title"];
+                    }
                     $relationIds[$k]["canaccess"] = $accesses[$rid]["canaccess"];
                 }
             }
