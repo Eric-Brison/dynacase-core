@@ -157,8 +157,23 @@ if (preg_match("/vaultid=([0-9]+)/", $img, $vids)) {
     }
     $realfile = realpath($path);
     if (!$realfile) {
-        header('HTTP/1.0 404 Not found');
-        exit;
+        // try without directory in case of sub http directory
+        $turl = parse_url($_SERVER["REQUEST_URI"]);
+        $directory = dirname($turl["path"]);
+        
+        if (strlen($directory) > 1) {
+            if ('/' . substr($path, 0, strlen($directory) - 1) === $directory) {
+                $img = substr($path, strlen($directory));
+                $path = $img;
+                $realfile = realpath($path);
+                if (!$realfile) {
+                    header('HTTP/1.0 404 Not found');
+                }
+            }
+        } else {
+            header('HTTP/1.0 404 Not found');
+            exit;
+        }
     }
     $itselfName = $_SERVER["SCRIPT_FILENAME"];
     $itselfdir = dirname($itselfName);
@@ -204,7 +219,7 @@ if (preg_match("/vaultid=([0-9]+)/", $img, $vids)) {
         if ($newimg) $location = "$ldir/$newimg";
     }
 }
-//print("<hr>Location: $location");
+//print("<hr>Location: [$dest][$dir]/[$path][$location]<br/>");exit;
 if ($location) $location = "/" . ltrim($location, "/");
 else $location = $img;
 Http_DownloadFile($location, basename($location) , "image/png", true, true);
