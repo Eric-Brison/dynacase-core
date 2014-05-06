@@ -1,6 +1,6 @@
 <span id="sp_[id]"><select multiple size="[msize]" name="[name][]" onchange="disableReadAttribute();[IF isfree]viewOtherEnumInput('[id]');[ENDIF isfree]" id="[id]" [disabled]>
 [BLOCK OPTIONS]
-<option [selected] value="[kvalue]">[fvalue]</option>
+<option[IF selected] selected="selected"[ENDIF selected] value="[kvalue]">[fvalue]</option>
 [ENDBLOCK OPTIONS]<option  style="display:none"  value=" "></option>
 </select>
 <input [disabled] id="ix_[id]" type="button" class="inlineButton" value="&times;"

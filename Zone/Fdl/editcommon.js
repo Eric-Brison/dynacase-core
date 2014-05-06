@@ -2001,23 +2001,29 @@ var specAddtr = false;
 function addtr(trid, tbodyid) {
 
   var ntr, i, length;
-  with (document.getElementById(trid)) {
+    var trtpl=document.getElementById(trid);
+
     // need to change display before because IE doesn't want after clonage
-    style.display='';
+    trtpl.style.display='';
 
-    ntr = cloneNode(true);
-    style.display='none';
-
+    if (isIE) {
+        $(trtpl).find("option[selected], option[selected=selected]").attr('ie-selected','selected');
+    }
+    ntr = trtpl.cloneNode(true);
+    if (isIE) {
+        $(ntr).find("option[ie-selected=selected]").attr('selected','selected');
+    }
+    trtpl.style.display='none';
   // bug :: Mozilla don't clone textarea values
   if (isNetscape) {
     var newTa = ntr.getElementsByTagName('textarea');
     for (i=0, length = newTa.length; i < length; i++){
-        newTa[i].setAttribute('value',getElementsByTagName('textarea')[i].value);
+        newTa[i].setAttribute('value',trtpl.getElementsByTagName('textarea')[i].value);
         // -- this next line is for N7 + Mozilla
-        newTa[i].defaultValue = getElementsByTagName('textarea')[i].value;
+        newTa[i].defaultValue = trtpl.getElementsByTagName('textarea')[i].value;
       }
     }
-  }
+
 
   ntr.id = '';
   ntable = document.getElementById(tbodyid);

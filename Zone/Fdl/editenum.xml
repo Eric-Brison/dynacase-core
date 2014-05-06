@@ -1,6 +1,6 @@
 <span id="sp_[id]"><select  name="[name]" id="[id]"  onchange="disableReadAttribute();[IF isfree]viewOtherEnumInput('[id]');[ENDIF isfree]" [disabled]>
 [BLOCK OPTIONS]
-<option [selected] value="[kvalue]">[fvalue]</option>
+<option [IF selected]selected="selected"[ENDIF selected] value="[kvalue]">[fvalue]</option>
 [ENDBLOCK OPTIONS]
 </select>
 [IF isopen]
