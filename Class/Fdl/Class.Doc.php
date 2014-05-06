@@ -5896,7 +5896,7 @@ create unique index i_docir on doc(initid, revision);";
                             }
                             
                             if (preg_match('/^[a-z0-9_]*::/i', $sattrid)) {
-                                $urllink.= $this->getValueMethod($sattrid);
+                                $urllink.= $this->applyMethod($sattrid, $sattrid, $k);
                             } else {
                                 
                                 if (!in_array(mb_strtolower($sattrid) , $this->fields)) {
