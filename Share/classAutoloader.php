@@ -529,6 +529,9 @@ class DirectoriesAutoloader
             }
             require_once $this->_classes[$className];
             if (!class_exists($className, false) && !interface_exists($className, false)) {
+                if (function_exists("trait_exists") && trait_exists($className, false)) {
+                    return true;
+                }
                 return false;
             }
             return true;
