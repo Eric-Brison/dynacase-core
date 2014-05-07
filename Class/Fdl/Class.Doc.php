@@ -3013,6 +3013,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function setAttributeValue($idAttr, $value)
     {
+        $localRecord = array();
         $oa = $this->getAttribute($idAttr);
         if (!$oa) {
             throw new Dcp\Exception('DOC0115', $idAttr, $this->title, $this->fromname);
@@ -3020,7 +3021,21 @@ create unique index i_docir on doc(initid, revision);";
         if (empty($oa->isNormal)) {
             throw new Dcp\Exception('DOC0117', $idAttr, $this->title, $this->fromname);
         }
+        if ($oa->type === "array") {
+            // record current array values
+            $ta = $this->attributes->getArrayElements($oa->id);
+            foreach ($ta as $k => $v) {
+                $localRecord[$k] = $this->getRawValue($v->id);
+            }
+        }
         Dcp\AttributeValue::setTypedValue($this, $oa, $value);
+        if ($oa->type === "array") {
+            foreach ($localRecord as $aid => $v) {
+                if ($this->$aid !== $v) {
+                    $this->_oldvalue[$aid] = $v;
+                }
+            }
+        }
     }
     /**
      * return the value of an attribute document
