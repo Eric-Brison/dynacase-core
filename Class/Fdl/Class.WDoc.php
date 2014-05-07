@@ -808,6 +808,9 @@ class WDoc extends Doc
                 $pv = $this->getRawValue($vpid);
                 if ($pv != "") {
                     $oa = $this->getAttribute($vpid);
+                    if ($oa->type == "password") {
+                        $pv = "*****";
+                    }
                     $revcomment.= "\n-" . $oa->getLabel() . ":" . $pv;
                 }
             }
