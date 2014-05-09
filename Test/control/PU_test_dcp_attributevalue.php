@@ -101,6 +101,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             $err.= $d->setValue($aid, $value);
         }
         $d->store();
+        self::resetDocumentCache();
         // new instance
         $d = new_doc(self::$dbaccess, $d->id);
         $this->assertEmpty($err, sprintf("before setvalue error : %s", $err));
@@ -113,7 +114,137 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             $this->assertEquals($value, $d->getOldRawValue($aid) , "wrong old value $aid" . print_r($d->getValues() , true));
         }
     }
-    public function dataOldValue()
+    /**
+     * @dataProvider dataAttributeOldValue
+     */
+    public function testOldAttributeValue(array $before, array $after, array $notchanged)
+    {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
+        $d = createDoc(self::$dbaccess, $this->famName);
+        $this->assertTrue(is_object($d) , "cannot create TST_FAMSETVALUE document");
+        $err = '';
+        foreach ($before as $aid => $value) {
+            $d->setAttributeValue($aid, $value);
+        }
+        $d->store();
+        self::resetDocumentCache();
+        // new instance
+        $d = new_doc(self::$dbaccess, $d->id);
+        foreach ($after as $aid => $value) {
+            $d->setAttributeValue($aid, $value);
+        }
+        
+        foreach ($notchanged as $aid => $value) {
+            $this->assertEquals($value, $d->getOldRawValue($aid) , "wrong old attribute value $aid" . print_r(array(
+                "values" => $d->getValues() ,
+                "old" => $d->getOldRawValues()
+            ) , true));
+        }
+    }
+    public static function dataAttributeOldValue()
+    {
+        return array_merge(self::dataOldValue() , array(
+            array(
+                "before" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 2,
+                    "tst_array" => array(
+                        array(
+                            "tst_coltext" => "Un",
+                            "tst_colint" => 1,
+                            "tst_coldate" => "2014-05-07"
+                        ) ,
+                    ) ,
+                ) ,
+                "after" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 3,
+                    "tst_array" => array(
+                        array(
+                            "tst_coltext" => "Deux",
+                            "tst_colint" => 2,
+                            "tst_coldate" => "2014-05-08"
+                        )
+                    ) ,
+                ) ,
+                "cnanged" => array(
+                    "tst_title" => null,
+                    "tst_int" => 2,
+                    "tst_coltext" => "Un",
+                    "tst_colint" => 1,
+                    "tst_coldate" => "2014-05-07",
+                )
+            ) ,
+            array(
+                "before" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 2,
+                    "tst_array" => array(
+                        array(
+                            "tst_coltext" => "Un",
+                            "tst_colint" => 1,
+                            "tst_coldate" => "2014-05-07"
+                        ) ,
+                    ) ,
+                ) ,
+                "after" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 3,
+                    "tst_array" => array(
+                        array(
+                            "tst_coltext" => "Deux",
+                            "tst_colint" => 1,
+                            "tst_coldate" => "2014-05-07"
+                        )
+                    ) ,
+                ) ,
+                "cnanged" => array(
+                    "tst_title" => null,
+                    "tst_int" => 2,
+                    "tst_coltext" => "Un",
+                    "tst_colint" => null,
+                    "tst_coldate" => null,
+                )
+            ) ,
+            array(
+                "before" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 2,
+                    "tst_array" => array(
+                        array(
+                            "tst_coltext" => "Un",
+                            "tst_colint" => 1,
+                            "tst_coldate" => "2014-05-07"
+                        ) ,
+                        array(
+                            "tst_coltext" => "Deux",
+                            "tst_colint" => 2,
+                            "tst_coldate" => "2014-05-08"
+                        )
+                    ) ,
+                ) ,
+                "after" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 3,
+                    "tst_array" => array(
+                        array(
+                            "tst_coltext" => "Trois",
+                            "tst_colint" => 2,
+                            "tst_coldate" => "2014-05-08"
+                        ) ,
+                    ) ,
+                ) ,
+                "cnanged" => array(
+                    "tst_title" => null,
+                    "tst_int" => 2,
+                    "tst_coltext" => "Un\nDeux",
+                    "tst_colint" => "1\n2",
+                    "tst_coldate" => "2014-05-07\n2014-05-08",
+                )
+            )
+        ));
+    }
+    public static function dataOldValue()
     {
         return array(
             
