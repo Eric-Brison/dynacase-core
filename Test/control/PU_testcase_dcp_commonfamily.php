@@ -56,6 +56,7 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
                     self::importDocument($f);
                 }
                 catch(\Dcp\Exception $e) {
+                    self::rollbackTransaction();
                     throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
                 }
             }
@@ -67,4 +68,3 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
         self::rollbackTransaction();
     }
 }
-?>
