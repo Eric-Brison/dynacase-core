@@ -225,10 +225,9 @@ class CVDoc extends Doc
                     //	$pdoc->setValue("DPDOC_FAMID",$this->getRawValue("DPDOC_FAMID"));
                     $err = $pdoc->Add();
                     if ($err != "") return "CVDoc::Control:" . $err; // can't create profil
-                    $pdoc->setProfil($this->profid, $this->doc);
-                    
                     $pdoc->acls = $this->acls;
                     $pdoc->extendedAcls = $this->extendedAcls;
+                    $pdoc->setProfil($this->profid, $this->doc);
                     
                     $this->pdoc = & $pdoc;
                 }
