@@ -1,4 +1,4 @@
-[ZONE FDL:HTMLHEAD?title=[thetitle]]
+[ZONE FDL:HTMLHEAD?title=[thetitle_url]]
 <script>
 attrNid=[Wattrnid];
 attrNtitle=[Wattrntitle];

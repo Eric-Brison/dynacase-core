@@ -132,7 +132,9 @@ function editchangestate(Action & $action)
         } else {
             $explanation[] = sprintf(_("The next state will be \"%s\".") , _($nextstate));
         }
-        $action->lay->eset("thetitle", sprintf("%s", mb_ucfirst($transitionLabel)));
+        $thetitle = mb_ucfirst($transitionLabel);
+        $action->lay->eset("thetitle", $thetitle);
+        $action->lay->set("thetitle_url", urlencode($thetitle));
         $action->lay->eset("nextstate", $nextstate);
         $action->lay->set("Explanations", nl2br(implode("\n", $explanation)));
         
