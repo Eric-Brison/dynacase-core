@@ -1730,7 +1730,9 @@ class OOoLayout extends Layout
                 if (!in_array($parentHtml->nodeName, array(
                     'office:text',
                     'text:text-content',
-                    'text:office-text-content-main'
+                    'text:office-text-content-main',
+                    'table:table-cell',
+                    'draw:text-box'
                 ))) {
                     $htmlCleanSections[] = $htmlSection;
                     $attrid = substr($htmlSection->getAttribute("text:name") , 7);
