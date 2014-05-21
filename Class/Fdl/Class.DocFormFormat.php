@@ -114,6 +114,7 @@ class DocFormFormat
         $attrin = '_' . $this->oattr->id; // for js name => for return values from client
         if ($this->index !== "") $attridk = $this->oattr->id . '_' . $this->index;
         else $attridk = $this->oattr->id . $this->index;
+        $this->isInDuplicableTableLine = false;
         if ($this->oattr->inArray()) {
             if ($this->index == - 1) {
                 $attrin.= '[-1]';
@@ -130,7 +131,7 @@ class DocFormFormat
         if (!$this->notd) $classname = "class=\"fullresize\"";
         else $classname = "";
         if ($this->isInDuplicableTableLine == false) {
-            $this->isInDuplicableTableLine = ($this->index == DocFormFormat::arrayIndex);
+            $this->isInDuplicableTableLine = ($this->index === DocFormFormat::arrayIndex);
         }
         $this->attrid = $this->oattr->id;
         $this->docid = $docid;
