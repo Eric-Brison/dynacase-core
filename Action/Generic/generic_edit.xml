@@ -107,10 +107,10 @@ addEvent(window,"load",resetbodyopacity);
 </thead>
 
 </table>
+[IFNOT ISIE]<div id="fixspanhead" style="visibility:visible;padding:0px;margin:0px;height:0px"></div>[ENDIF ISIE]
 [ENDIF HEAD]
 [IFNOT HEAD][IF FOOT][ZONE FDL:EDITBARMENU][ENDIF FOOT]
 [ENDIF HEAD]
-[IFNOT ISIE]<div id="fixspanhead" style="visibility:visible;padding:0px;margin:0px;height:0px"></div>[ENDIF ISIE]
 [ZONE FDL:EDITCARD]
 
 [IFNOT NOFORM]
