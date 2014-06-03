@@ -258,9 +258,7 @@ class SearchDoc
      */
     public function getOriginalQuery()
     {
-        $tqsql = $this->getQueries();
-        
-        return $tqsql[0];
+        return _internalGetDocCollection(true, $this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters() , $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
     }
     /**
      * add join condition
@@ -1430,4 +1428,3 @@ class SearchDoc
         return false;
     }
 }
-
