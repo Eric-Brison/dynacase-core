@@ -417,7 +417,10 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function internalGetDocCollection($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
     {
-        global $action;
+        return _internalGetDocCollection(false, $dbaccess, $dirid, $start, $slice, $sqlfilters, $userid, $qtype, $fromid, $distinct, $orderby, $latest, $trash, $debug, $folderRecursiveLevel, $join, $searchDoc);
+    }
+    function _internalGetDocCollection($returnSqlOnly = false, $dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
+    {
         // query to find child documents
         if (($fromid != "") && (!is_numeric($fromid))) $fromid = getFamIdFromName($dbaccess, $fromid);
         if ($fromid == 0) $fromid = "";
@@ -548,18 +551,24 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             }
             if (count($tqsql) > 0) {
                 if (count($tqsql) == 1) {
+                    $usql = isset($tqsql[0]) ? $tqsql[0] : "";
                     $query = new QueryDb($dbaccess, "Doc$fromid");
-                    $mb = microtime();
-                    $tableq = $query->Query(0, 0, $qtype, $tqsql[0]);
                 } else {
                     $usql = '(' . implode($tqsql, ") union (") . ')';
                     if ($orderby) $usql.= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
                     else $usql.= " LIMIT $slice OFFSET $start;";
-                    
                     $query = new QueryDb($dbaccess, "Doc");
-                    $mb = microtime();
-                    $tableq = $query->Query(0, 0, $qtype, $usql);
                 }
+                if ($returnSqlOnly) {
+                    /*
+                     * Strip any "ORDER BY ..." trailing part and any trailing semi-colon
+                    */
+                    $usql = preg_replace('/\s+ORDER\s+BY\s+.*?$/i', '', $usql);
+                    $usql = preg_replace('/;+\s*$/', '', $usql);
+                    return $usql;
+                }
+                $mb = microtime();
+                $tableq = $query->Query(0, 0, $qtype, $usql);
                 
                 if ($query->nb > 0) {
                     if ($qtype == "ITEM") {
@@ -590,6 +599,14 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $debug["error"] = $query->basic_elem->msg_err;
                     addLogMsg($debug);
                 }
+            } else {
+                if ($returnSqlOnly) {
+                    return "";
+                }
+            }
+        } else {
+            if ($returnSqlOnly) {
+                return "";
             }
         }
         
@@ -1036,4 +1053,4 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         
         return false;
     }
-?>
+    

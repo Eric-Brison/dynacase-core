@@ -81,10 +81,6 @@ class DocSearch extends PDocSearch
         if ($query == "") return "";
         if ($this->id == "") return "";
         
-        if (substr($query, 0, 6) != "select") {
-            AddWarningMsg(sprintf(_("query [%s] not valid for select document") , $query));
-            return sprintf(_("query [%s] not valid for select document") , $query);
-        }
         $oqd = new QueryDir($this->dbaccess);
         $oqd->dirid = $this->id;
         $oqd->qtype = "M"; // multiple

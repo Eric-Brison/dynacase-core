@@ -7,10 +7,16 @@
 
 namespace Dcp\Pu;
 
-require_once 'PU_testcase_dcp_document.php';
+require_once 'PU_testcase_dcp_commonfamily.php';
 
-class TestSearch extends TestCaseDcpDocument
+class TestSearch extends TestCaseDcpCommonFamily
 {
+    public static function getCommonImportFile()
+    {
+        return array(
+            'PU_data_dcp_TestSearchGetOriginalQuery.ods'
+        );
+    }
     /*protected function setUp()    {
         parent::setUp();
     }*/
@@ -311,6 +317,54 @@ class TestSearch extends TestCaseDcpDocument
         $this->assertEquals($count, $s->count() , sprintf("Count must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
         $this->assertEquals($count, count($t) , sprintf("Count must be %d (found %d) search mode error %s %s", $count, count($t) , $criteria, $arg));
     }
+    /**
+     * @param $test
+     * @return void
+     * @dataProvider dataGetOriginalQuery
+     */
+    public function testGetOriginalQuery($test)
+    {
+        require_once 'FDL/Class.SearchDoc.php';
+        $fam = empty($test['search:family']) ? '' : $test['search:family'];
+        $s = new \SearchDoc(self::$dbaccess, $fam);
+        if (isset($test['search:filter'])) {
+            if (!is_array($test['search:filter'])) {
+                $test['search:filter'] = array(
+                    $test['search:filter']
+                );
+            }
+            foreach ($test['search:filter'] as $filter) {
+                $s->addFilter($filter);
+            }
+        }
+        if (isset($test['search:collection'])) {
+            $s->useCollection($test['search:collection']);
+        }
+        $s->setObjectReturn();
+        
+        $sql = $s->getOriginalQuery();
+        $this->assertNotEmpty($sql, sprintf("Unexpected empty original query!"));
+
+        $s->search();
+        $err = $s->getError();
+        $this->assertEmpty($err, sprintf("Unexpected SearchDoc error [%s]: %s", $sql, $err));
+        
+        $expected = array();
+        while ($doc = $s->getNextDoc()) {
+            $expected[] = $doc->name;
+        }
+        
+        $err = simpleQuery(self::$dbaccess, $sql, $res);
+        $this->assertEmpty($err, sprintf("Unexpected error in simpleQuery() [%s]: %s", $sql, $err));
+        foreach ($res as & $row) {
+            $row = $row['name'];
+        }
+        
+        $missing = array_diff($expected, $res);
+        $spurious = array_diff($res, $expected);
+        $this->assertEmpty($missing, sprintf("Unexpected missing elements [%s]: {%s}", $sql, join(', ', $missing)));
+        $this->assertEmpty($spurious, sprintf("Unexpected spurious elements [%s]: {%s}", $sql, join(', ', $spurious)));
+    }
     
     public function loginCriteria()
     {
@@ -435,5 +489,30 @@ class TestSearch extends TestCaseDcpDocument
             )
         );
     }
+    public function dataGetOriginalQuery()
+    {
+        return array(
+            array(
+                array(
+                    'search:family' => '',
+                    'search:filter' => "s_title ~ '^T'",
+                    'search:collection' => 'TST_GETORIGINALQUERY_SEARCH_3'
+                )
+            ) ,
+            array(
+                array(
+                    'search:family' => '',
+                    'search:filter' => "s_title ~ '^T'",
+                    'search:collection' => 'TST_GETORIGINALQUERY_SEARCH_4'
+                )
+            ) ,
+            array(
+                array(
+                    'search:family' => '',
+                    'search:filter' => "s_title ~ '^T'",
+                    'search:collection' => 'TST_GETORIGINALQUERY_SEARCH_5'
+                )
+            )
+        );
+    }
 }
-?>
