@@ -75,6 +75,9 @@ BUTTON, input[type="button"], input[type="submit"], input[type="reset"] {
   background-image: [input-background-image];
    }
 
+.inlineButton {
+    width:1.5em;
+}
 [IF ISIE]
 .inlineButton {
  width: 19px;

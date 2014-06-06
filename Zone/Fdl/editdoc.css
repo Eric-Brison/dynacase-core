@@ -5,7 +5,14 @@
     cursor: pointer;
 }
 
+img.edit-image {
+    max-height: 50px;
+    vertical-align: bottom;
+}
 
+input[type=file] {
+    width:100%;
+}
 input[type=button].add-doc {
     background : url('[IMG:createdoc.png|16]') no-repeat;
     width:16px;

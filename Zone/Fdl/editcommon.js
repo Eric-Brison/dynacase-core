@@ -1574,18 +1574,39 @@ function clearTime(nid) {
     t.value=' ';
   }
 }
-function clearFile(o,nid) {
-  var t=document.getElementById(nid);
-  if (t) {
-    if (t.value!=' ') {
-      t.value=' ';
-    } else {
-      t.value=document.getElementById('INIV'+nid).value;
-    }
-    updatefilebutton(o,nid);
-  }
 
+function clearFile(o,nid) {
+    var $t=$('#'+nid);
+    $t.val(' ');
+
+    $t.closest('td').find(".newFileName").css('display','none');
+    $t.closest('td').find(".fileName").css('display','');
+    $('#IF_'+nid).val('');
+    if ($('#INIV'+nid).val() != "") {
+        $('#iu_'+nid).removeAttr("disabled");
+        $t.closest('td').find(".fileName").css("text-decoration","line-through");
+        //$t.closest('td').find(".fileName img").attr("src","Images/noimage.png");
+        $t.closest('td').find(".fileName img").css("visibility","hidden");
+    }
+    $('#ix_'+nid).attr("disabled","disabled");
 }
+
+function restoreFile(o,nid) {
+
+    var $t=$('#'+nid);
+    $t.val($('#INIV'+nid).val());
+
+      $t.closest('td').find(".fileName").css('display','').css("text-decoration","");
+      $t.closest('td').find(".fileName img").css("visibility","");
+      $t.closest('td').find(".newFileName").css('display','none');
+    $('#IF_'+nid).val('');
+    $('#iu_'+nid).attr("disabled","disabled");
+    if ($('#INIV'+nid).val() != "") {
+        $('#ix_'+nid).removeAttr("disabled");
+    }
+}
+
+
 function updatefilebutton(o,nid) {
   var t=document.getElementById(nid);
   var tu=document.getElementById('IF_'+nid);
@@ -1736,7 +1757,15 @@ function changeFile(o,nid,check) {
 	  }
       }
       if ((! t.value) || t.value==' ') t.value=(o.value=='')?document.getElementById('INIV'+nid).value:o.value;
-      updatefilebutton(tix,nid);
+     // updatefilebutton(tix,nid);
+
+      var $t=$('#'+nid);
+      $t.closest('td').find(".newFileName").text(o.value.replace(/^.*\\/, "")).css('display','');
+      $t.closest('td').find(".fileName").css('display','none');
+      if ($('#INIV'+nid).val() != "") {
+        $('#iu_'+nid).removeAttr("disabled");
+      }
+      $('#ix_'+nid).removeAttr("disabled");
   }
 }
 

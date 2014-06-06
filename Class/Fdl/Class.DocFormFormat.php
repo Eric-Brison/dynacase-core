@@ -407,7 +407,7 @@ class DocFormFormat
                         $input.= "<input id=\"ix_$attridk\" type=\"button\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearTime('$attridk')\">";
                         if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
                     } else if (($this->oattr->type == "file") || ($this->oattr->type == "image")) {
-                        $input.= "<input id=\"ix_$attridk\" type=\"button\" style=\"vertical-align:baseline\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear file") . "\"" . " title1=\"" . _("clear file") . "\"" . " value1=\"&times;\"" . " title2=\"" . _("restore original file") . "\"" . " value2=\"&minus;\"" . " onclick=\"clearFile(this,'$attridk')\">";
+                        // $input.= "<input id=\"ix_$attridk\" type=\"button\" style=\"vertical-align:baseline\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear file") . "\"" . " title1=\"" . _("clear file") . "\"" . " value1=\"&times;\"" . " title2=\"" . _("restore original file") . "\"" . " value2=\"&minus;\"" . " onclick=\"clearFile(this,'$attridk')\">";
                         if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
                     } else {
                         if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
@@ -459,6 +459,58 @@ class DocFormFormat
         
         private function formatImage($value)
         {
+            $check = "";
+            $originalname = "";
+            $lay = new Layout("FDL/Layout/editimage.xml");
+            $lay->set("downloadUrl", "");
+            $lay->set("checkPfc", "");
+            if (preg_match(PREGEXPFILE, $value, $reg)) {
+                $dbaccess = getDbAccess();
+                $vf = newFreeVaultFile($dbaccess);
+                /**
+                 * @var vaultFileInfo $info
+                 */
+                $info = null;
+                if ($vf->Show($reg[2], $info) == "") {
+                    $vid = $reg[2];
+                    
+                    global $action;
+                    // $fname = sprintf('<A target="_self" title="%s" href="%s">', _("download file") , $this->doc->getFileLink($this->attrid, $this->index, false, false));
+                    $lay->set("downloadUrl", $this->doc->getFileLink($this->attrid, $this->index, false, false));
+                    
+                    $fname = $info->name;
+                    
+                    if ($this->oattr->getOption("preventfilechange") == "yes") {
+                        include_once ("FDL/Lib.Vault.php");
+                        $check = vault_uniqname($vid);
+                        $lay->set("checkPfc", $check);
+                        $lay->eset("originalValue", $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)));
+                        //$originalname = "<input id=\"IFORI{$this->attridk}\" name=\"IFORI{$this->attrin}\" type=\"hidden\" orivalue=\"" . $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)) . "\">";
+                        
+                    }
+                } else $fname = _("error in filename");
+            } elseif ($value) {
+                global $action;
+                $fname = '';
+                $lay->set("imageUrl", $action->parent->getImageLink($value, '', 30));
+            } else {
+                $fname = _("no image");
+                global $action;
+                $lay->set("imageUrl", $action->parent->getImageLink($this->oattr->getOption("defaultimage", "noimage.png") , '', 30));
+            }
+            
+            $lay->eset("fname", $fname);
+            $lay->set("id", $this->attridk);
+            $lay->set("name", $this->attrin);
+            $lay->eset("value", $value);
+            
+            $lay->set("disable", "");
+            if (($this->visibility == "R") || ($this->visibility == "S")) {
+                
+                $lay->set("disable", $this->idisabled);
+            }
+            
+            return $lay->gen();
             $originalname = '';
             
             $check = "";
@@ -513,6 +565,9 @@ class DocFormFormat
         {
             $check = "";
             $originalname = "";
+            $lay = new Layout("FDL/Layout/editfile.xml");
+            $lay->set("downloadUrl", "");
+            $lay->set("checkPfc", "");
             if (preg_match(PREGEXPFILE, $value, $reg)) {
                 $dbaccess = getDbAccess();
                 $vf = newFreeVaultFile($dbaccess);
@@ -536,28 +591,43 @@ class DocFormFormat
                         //$this->onChange="onclick=\"var sid=getsessionid('".$docid."','$vid');this.href='asdav://$DAV/freedav/vid-'+sid+'/'.$info->name."e";
                         $fname = "<A title=\"" . _("open file with your editor") . "\" href=\"#\" {$this->onChange}><img style=\"border:none\" src=\"Images/davedit.png\">";
                     } else {
-                        $fname = sprintf('<A target="_self" title="%s" href="%s">', _("download file") , $this->doc->getFileLink($this->attrid, $this->index, false, false));
+                        // $fname = sprintf('<A target="_self" title="%s" href="%s">', _("download file") , $this->doc->getFileLink($this->attrid, $this->index, false, false));
+                        $lay->set("downloadUrl", $this->doc->getFileLink($this->attrid, $this->index, false, false));
                     }
-                    $fname.= $info->name;
-                    $fname.= "</A>";
+                    $fname = $info->name;
+                    
                     if ($this->oattr->getOption("preventfilechange") == "yes") {
                         include_once ("FDL/Lib.Vault.php");
                         $check = vault_uniqname($vid);
-                        $originalname = "<input id=\"IFORI{$this->attridk}\" name=\"IFORI{$this->attrin}\" type=\"hidden\" orivalue=\"" . $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)) . "\">";
+                        $lay->set("checkPfc", $check);
+                        $lay->eset("originalValue", $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)));
+                        //$originalname = "<input id=\"IFORI{$this->attridk}\" name=\"IFORI{$this->attrin}\" type=\"hidden\" orivalue=\"" . $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)) . "\">";
+                        
                     }
                 } else $fname = _("error in filename");
             } else $fname = _("no filename");
             
+            $lay->eset("fname", $fname);
+            $lay->set("id", $this->attridk);
+            $lay->set("name", $this->attrin);
+            $lay->eset("value", $value);
+            /*
             $input = "<span id=\"IFERR" . $this->attridk . "\" class=\"Error\"></span><span class=\"FREEDOMText\">" . $fname . "</span><br/>";
             $input.= $originalname;
             // input
             $input.= "<input name=\"" . $this->attrin . "\" type=\"hidden\" value=\"" . $value . "\" id=\"" . $this->attridk . "\">";
             $input.= "<input type=\"hidden\" value=\"" . $value . "\" id=\"INIV" . $this->attridk . "\">";
-            $input.= "<span><input onchange=\"document.isChanged=true;changeFile(this,'$this->attridk','$check')\"  class=\"\" size=15 type=\"file\" id=\"IF_{$this->attridk}\" name=\"_UPL" . $this->attrin . "\" value=\"" . chop(htmlentities($value, ENT_COMPAT, "UTF-8")) . "\"";
+            $input.= "<span><input onchange=\"document.isChanged=true;changeFile(this,'$this->attridk','$check')\"  class=\"\" size=15 type=\"file\" id=\"IF_{$this->attridk}\" name=\"_UPL" .
+                $this->attrin . "\" value=\"" . chop(htmlentities($value, ENT_COMPAT, "UTF-8")) . "\"";
+            */
+            $lay->set("disable", "");
+            if (($this->visibility == "R") || ($this->visibility == "S")) {
+                
+                $lay->set("disable", $this->idisabled);
+            }
             
-            if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
             $input.= " ></span> ";
-            return $input;
+            return $lay->gen();
         }
         /**
          * HTML input for Longtext attribute
