@@ -7,11 +7,34 @@
 
 img.edit-image {
     max-height: 50px;
+    height: 2em;
     vertical-align: bottom;
 }
 
-input[type=file] {
+.fileName {
+    display:inline-block;
+
+}
+.fileButtons {
+    float:right;
+}
+.fileInput {
     width:100%;
+    display:inline-block;
+    border : 1px solid [COLOR_A5];
+}
+input.uploadFile {
+    min-width:100px;
+    display: none;
+    /*position: absolute;*/
+    padding: 5px;
+    border: 1px solid rgb(170, 170, 170)  ;
+    margin: 2px;
+}
+
+img.davIcon {
+    border:none;
+    vertical-align: bottom;
 }
 input[type=button].add-doc {
     background : url('[IMG:createdoc.png|16]') no-repeat;

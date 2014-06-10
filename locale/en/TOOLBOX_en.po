@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-26 09:59+0100\n"
+"POT-Creation-Date: 2014-06-10 15:59+0200\n"
 "PO-Revision-Date: 2014-02-26 10:21+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -1039,6 +1039,12 @@ msgstr ""
 msgid "Choose family"
 msgstr ""
 
+msgid "Choose file"
+msgstr ""
+
+msgid "Choose image"
+msgstr ""
+
 msgid "Choose in icon list"
 msgstr ""
 
@@ -1455,6 +1461,12 @@ msgid "Doucment [%s] not found"
 msgstr ""
 
 msgid "Down"
+msgstr ""
+
+msgid "Download file"
+msgstr ""
+
+msgid "Download image"
 msgstr ""
 
 msgid "Draw graph"
@@ -1927,8 +1939,8 @@ msgstr ""
 "        </ul>\n"
 "    </li>\n"
 "    <li>\n"
-"        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
-"\">)</em><br/>\n"
+"        <em class=\"help-operator\">(</em> and <em class=\"help-operator\">)"
+"</em><br/>\n"
 "        Parenthesis express priorities between operators.\n"
 "        <ul>\n"
 "            <li>\n"
@@ -3234,6 +3246,9 @@ msgstr ""
 
 #, php-format
 msgid "Reset parameters values"
+msgstr ""
+
+msgid "Restore original file"
 msgstr ""
 
 msgid "Restricted Access"
@@ -5484,9 +5499,6 @@ msgstr ""
 msgid "downk"
 msgstr ""
 
-msgid "download file"
-msgstr ""
-
 msgid "drag to move"
 msgstr ""
 
@@ -7288,10 +7300,6 @@ msgstr "workflow"
 msgid "query %s has failed"
 msgstr ""
 
-#, php-format
-msgid "query [%s] not valid for select document"
-msgstr ""
-
 msgid "query document import"
 msgstr ""
 
@@ -7400,9 +7408,6 @@ msgid "restore document"
 msgstr ""
 
 msgid "restore document from trash"
-msgstr ""
-
-msgid "restore original file"
 msgstr ""
 
 msgid "restrict to preferred families"
@@ -7752,8 +7757,8 @@ msgid "submitreqpasswd_form_send_error_unknown"
 msgstr ""
 "<p>The server accountered an error processing your request</p>\n"
 "<p>Retry your request, and if the problem persist, please contact <a href="
-"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request"
-"\">[ON_ERROR_CONTACT]</a></p>"
+"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request\">"
+"[ON_ERROR_CONTACT]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""

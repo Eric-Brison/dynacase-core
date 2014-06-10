@@ -1581,7 +1581,7 @@ function clearFile(o,nid) {
 
     $t.closest('td').find(".newFileName").css('display','none');
     $t.closest('td').find(".fileName").css('display','');
-    $('#IF_'+nid).val('');
+    $('#IF_'+nid).val('').css("display","");
     if ($('#INIV'+nid).val() != "") {
         $('#iu_'+nid).removeAttr("disabled");
         $t.closest('td').find(".fileName").css("text-decoration","line-through");
@@ -1599,14 +1599,19 @@ function restoreFile(o,nid) {
       $t.closest('td').find(".fileName").css('display','').css("text-decoration","");
       $t.closest('td').find(".fileName img").css("visibility","");
       $t.closest('td').find(".newFileName").css('display','none');
-    $('#IF_'+nid).val('');
+    $('#IF_'+nid).val('').css("display","");
     $('#iu_'+nid).attr("disabled","disabled");
     if ($('#INIV'+nid).val() != "") {
         $('#ix_'+nid).removeAttr("disabled");
     }
 }
 
+function chooseFile(o,nid) {
 
+    var $t=$('#IF_'+nid);
+    //$t.css("display","inherit");
+    $t.trigger("click");
+}
 function updatefilebutton(o,nid) {
   var t=document.getElementById(nid);
   var tu=document.getElementById('IF_'+nid);
@@ -1766,6 +1771,7 @@ function changeFile(o,nid,check) {
         $('#iu_'+nid).removeAttr("disabled");
       }
       $('#ix_'+nid).removeAttr("disabled");
+      $('#IF_'+nid).css("display","");
   }
 }
 

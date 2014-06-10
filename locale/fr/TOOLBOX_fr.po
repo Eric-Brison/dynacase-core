@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-26 09:59+0100\n"
-"PO-Revision-Date: 2014-02-26 10:21+0100\n"
+"POT-Creation-Date: 2014-06-10 15:59+0200\n"
+"PO-Revision-Date: 2014-06-10 15:59+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1067,6 +1067,12 @@ msgstr "Choix des colonnes à exporter"
 msgid "Choose family"
 msgstr "Choisissez une famille"
 
+msgid "Choose file"
+msgstr "Choisissez un fichier"
+
+msgid "Choose image"
+msgstr "Choisissez une image"
+
 msgid "Choose in icon list"
 msgstr "Choisissez dans la liste d'icones"
 
@@ -1488,6 +1494,12 @@ msgstr "Impossible de trouver le doucment [%s]"
 
 msgid "Down"
 msgstr "Descendre"
+
+msgid "Download file"
+msgstr "Télécharger le fichier"
+
+msgid "Download image"
+msgstr "Télécharger l'image"
 
 msgid "Draw graph"
 msgstr "Dessiner le graphe"
@@ -3358,6 +3370,9 @@ msgstr "Réinitialisation de la définition des énumérés"
 msgid "Reset parameters values"
 msgstr "Réinitialisation des valeurs de paramètres"
 
+msgid "Restore original file"
+msgstr "Restaurer le fichier original"
+
 msgid "Restricted Access"
 msgstr "Accès restreint"
 
@@ -4748,8 +4763,8 @@ msgstr ""
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href="
-"\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a>"
+"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
+"[CORE_EXTERNURL]</a>"
 
 msgid "can't access file"
 msgstr "Accès au fichier impossible"
@@ -5673,9 +5688,6 @@ msgstr "Type"
 
 msgid "downk"
 msgstr "descendre"
-
-msgid "download file"
-msgstr "Télécharger le fichier"
 
 msgid "drag to move"
 msgstr "glisser/déposer pour déplacer la rangée"
@@ -7501,10 +7513,6 @@ msgstr "cycle de vie"
 msgid "query %s has failed"
 msgstr "requête %s a échouée"
 
-#, php-format
-msgid "query [%s] not valid for select document"
-msgstr "la requête [%s] n'est pas valide pour une sélection de documents"
-
 msgid "query document import"
 msgstr "demande d'importation de document"
 
@@ -7614,9 +7622,6 @@ msgstr "restaurer le document"
 
 msgid "restore document from trash"
 msgstr "restaurer le document depuis la poubelle"
-
-msgid "restore original file"
-msgstr "Annuler l'effacement du fichier"
 
 msgid "restrict to preferred families"
 msgstr "restriction aux familles préférées"
@@ -9121,6 +9126,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "disable/enable forum on documents"
 #~ msgstr "Autoriser/interdire les forums sur les documents"
 
+#~ msgid "download file"
+#~ msgstr "Télécharger le fichier"
+
 #~ msgid "edit args of actions in workflow edition "
 #~ msgstr "édition des arguments des actions dans l'édition des cycles"
 
@@ -9244,8 +9252,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "post it"
 #~ msgstr "post-it"
 
+#~ msgid "query [%s] not valid for select document"
+#~ msgstr "la requête [%s] n'est pas valide pour une sélection de documents"
+
 #~ msgid "response for this forum entry"
 #~ msgstr "réponse pour cette entrée"
+
+#~ msgid "restore original file"
+#~ msgstr "Annuler l'effacement du fichier"
 
 #~ msgid "save"
 #~ msgstr "Sauver"

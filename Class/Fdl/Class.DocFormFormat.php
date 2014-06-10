@@ -459,8 +459,6 @@ class DocFormFormat
         
         private function formatImage($value)
         {
-            $check = "";
-            $originalname = "";
             $lay = new Layout("FDL/Layout/editimage.xml");
             $lay->set("downloadUrl", "");
             $lay->set("checkPfc", "");
@@ -475,7 +473,6 @@ class DocFormFormat
                     $vid = $reg[2];
                     
                     global $action;
-                    // $fname = sprintf('<A target="_self" title="%s" href="%s">', _("download file") , $this->doc->getFileLink($this->attrid, $this->index, false, false));
                     $lay->set("downloadUrl", $this->doc->getFileLink($this->attrid, $this->index, false, false));
                     
                     $fname = $info->name;
@@ -485,8 +482,7 @@ class DocFormFormat
                         $check = vault_uniqname($vid);
                         $lay->set("checkPfc", $check);
                         $lay->eset("originalValue", $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)));
-                        //$originalname = "<input id=\"IFORI{$this->attridk}\" name=\"IFORI{$this->attrin}\" type=\"hidden\" orivalue=\"" . $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)) . "\">";
-                        
+
                     }
                 } else $fname = _("error in filename");
             } elseif ($value) {
@@ -511,63 +507,14 @@ class DocFormFormat
             }
             
             return $lay->gen();
-            $originalname = '';
-            
-            $check = "";
-            if (preg_match(PREGEXPFILE, $value, $reg)) {
-                $originalname = "";
-                $dbaccess = GetParam("FREEDOM_DB");
-                $vf = newFreeVaultFile($dbaccess);
-                /**
-                 * @var vaultFileInfo $info
-                 */
-                $info = null;
-                if ($vf->Show($reg[2], $info) == "") {
-                    $vid = $reg[2];
-                    $imageUrl = $this->doc->getFileLink($this->attrid, $this->index, false, false);
-                    $fname = sprintf('<a target="_self" href="%s"  title="%s">', $imageUrl, htmlspecialchars($info->name));
-                    // put image
-                    $fname.= sprintf('<img id="img_%s" style="vertical-align:bottom;border:none;width:30px" src="%s&width=30">', $this->attridk, $this->doc->getFileLink($this->attrid, $this->index, false, true));
-                    $fname.= "</a>";
-                    if ($this->oattr->getOption("preventfilechange") == "yes") {
-                        include_once ("FDL/Lib.Vault.php");
-                        $check = vault_uniqname($vid);
-                        $originalname = "<input id=\"IFORI{$this->attridk}\" name=\"IFORI{$this->attrin}\" type=\"hidden\" orivalue=\"" . $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)) . "\">";
-                    }
-                } else $fname = _("error in filename");
-            } else {
-                global $action;
-                if ($value) {
-                    $fname = "<img id=\"img_{$this->attridk}\" style=\"vertical-align:bottom;width:30px\" SRC=\"";
-                    $fname.= $action->parent->getImageLink($value);
-                    $fname.= "\">";
-                } else {
-                    
-                    $fname = $action->GetIcon($this->oattr->getOption("defaultimage", "noimage.png") , _("no image") , 30);
-                    $fname = str_replace("<img", '<img id="img_' . $this->attridk . '" style="vertical-align:bottom"', $fname);
-                }
-            }
-            
-            $input = "<span id=\"IFERR" . $this->attridk . "\" class=\"Error\"></span><span class=\"FREEDOMText\">" . $fname . "</span><br/>";
-            $input.= $originalname;
-            // input
-            $input.= "<input name=\"" . $this->attrin . "\" type=\"hidden\" value=\"" . $value . "\" id=\"" . $this->attridk . "\">";
-            $input.= "<input type=\"hidden\" value=\"" . $value . "\" id=\"INIV" . $this->attridk . "\">";
-            
-            if (($this->visibility == "W") || ($this->visibility == "O")) {
-                $input.= "<span><input onchange=\"document.isChanged=true;changeFile(this,'$this->attridk','$check')\" $this->classname accept=\"image/*\" size=15 type=\"file\" id=\"IF_{$this->attridk}\" name=\"_UPL" . $this->attrin . "\"";
-                $input.= " ></span> ";
-            }
-            return $input;
         }
         
         private function formatFile($value)
         {
-            $check = "";
-            $originalname = "";
             $lay = new Layout("FDL/Layout/editfile.xml");
             $lay->set("downloadUrl", "");
             $lay->set("checkPfc", "");
+            $lay->set("DAV", false);
             if (preg_match(PREGEXPFILE, $value, $reg)) {
                 $dbaccess = getDbAccess();
                 $vf = newFreeVaultFile($dbaccess);
@@ -581,17 +528,17 @@ class DocFormFormat
                     
                     global $action;
                     if ($DAV) {
+                        $lay->eset("ISIESSL", false);
                         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/DAV/Layout/getsessionid.js");
                         $parms = $action->parent->GetAllParam();
                         if (isset($parms['CORE_ABSURL']) && isset($parms['ISIE']) && $parms['ISIE'] && preg_match('/^https:/i', $parms['CORE_ABSURL'])) {
-                            $this->onChange = sprintf(" onclick='asdavLaunch(getPrivateDavHref(\"%s\", \"%s\", \"%s\", this.getAttribute(\"filename\")))' filename=\"%s\"", $this->docid, $vid, $DAV, str_replace('"', '%22', $info->name));
-                        } else {
-                            $this->onChange = sprintf(" onclick='this.href=getPrivateDavHref(\"%s\",\"%s\",\"%s\",this.getAttribute(\"filename\"))' filename=\"%s\"", $this->docid, $vid, $DAV, str_replace('"', '%22', $info->name));
+                            $lay->eset("ISIESSL", true);
                         }
-                        //$this->onChange="onclick=\"var sid=getsessionid('".$docid."','$vid');this.href='asdav://$DAV/freedav/vid-'+sid+'/'.$info->name."e";
-                        $fname = "<A title=\"" . _("open file with your editor") . "\" href=\"#\" {$this->onChange}><img style=\"border:none\" src=\"Images/davedit.png\">";
+                        
+                        $lay->eset("docid", $this->docid);
+                        $lay->eset("vid", $vid);
+                        $lay->eset("DAV", $DAV);
                     } else {
-                        // $fname = sprintf('<A target="_self" title="%s" href="%s">', _("download file") , $this->doc->getFileLink($this->attrid, $this->index, false, false));
                         $lay->set("downloadUrl", $this->doc->getFileLink($this->attrid, $this->index, false, false));
                     }
                     $fname = $info->name;
@@ -601,8 +548,7 @@ class DocFormFormat
                         $check = vault_uniqname($vid);
                         $lay->set("checkPfc", $check);
                         $lay->eset("originalValue", $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)));
-                        //$originalname = "<input id=\"IFORI{$this->attridk}\" name=\"IFORI{$this->attrin}\" type=\"hidden\" orivalue=\"" . $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)) . "\">";
-                        
+
                     }
                 } else $fname = _("error in filename");
             } else $fname = _("no filename");
@@ -611,22 +557,13 @@ class DocFormFormat
             $lay->set("id", $this->attridk);
             $lay->set("name", $this->attrin);
             $lay->eset("value", $value);
-            /*
-            $input = "<span id=\"IFERR" . $this->attridk . "\" class=\"Error\"></span><span class=\"FREEDOMText\">" . $fname . "</span><br/>";
-            $input.= $originalname;
-            // input
-            $input.= "<input name=\"" . $this->attrin . "\" type=\"hidden\" value=\"" . $value . "\" id=\"" . $this->attridk . "\">";
-            $input.= "<input type=\"hidden\" value=\"" . $value . "\" id=\"INIV" . $this->attridk . "\">";
-            $input.= "<span><input onchange=\"document.isChanged=true;changeFile(this,'$this->attridk','$check')\"  class=\"\" size=15 type=\"file\" id=\"IF_{$this->attridk}\" name=\"_UPL" .
-                $this->attrin . "\" value=\"" . chop(htmlentities($value, ENT_COMPAT, "UTF-8")) . "\"";
-            */
+
             $lay->set("disable", "");
             if (($this->visibility == "R") || ($this->visibility == "S")) {
                 
                 $lay->set("disable", $this->idisabled);
             }
-            
-            $input.= " ></span> ";
+
             return $lay->gen();
         }
         /**
