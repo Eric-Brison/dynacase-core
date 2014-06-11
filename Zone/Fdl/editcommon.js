@@ -1609,8 +1609,11 @@ function restoreFile(o,nid) {
 function chooseFile(o,nid) {
 
     var $t=$('#IF_'+nid);
-    //$t.css("display","inherit");
-    $t.trigger("click");
+    if (isIE6 || isIE7 || isIE8 || isIE9) {
+       $t.css("display","block");
+    } else {
+        $t.trigger("click");
+    }
 }
 function updatefilebutton(o,nid) {
   var t=document.getElementById(nid);

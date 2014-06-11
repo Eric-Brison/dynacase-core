@@ -3,16 +3,17 @@
 <span id="IFERR[id]" class="Error"></span>
 <span class="newFileName"></span>
 <span class="fileName">
-[IFNOT downloadUrl]<img class="edit-image" src="[imageUrl]" title="[fname]"/>[ENDIF downloadUrl]
-[IF downloadUrl]<a class="downloadFile" target="_self" href="[downloadUrl]" title="[TEXT:Download image]">
-    <img class="edit-image" src="[downloadUrl]&width=30" /> [fname]</a>[ENDIF downloadUrl]
+[IFNOT downloadUrl]<div class="edit-image"><img class="edit-image" src="[imageUrl]" title="[fname]"/></div>[ENDIF downloadUrl]
+[IF downloadUrl]
+    <div class="edit-image"><img class="edit-image" src="[downloadUrl]&width=100" /></div>
+      <a class="downloadFile" target="_self" href="[downloadUrl]" title="[TEXT:Download image]">[fname]</a>[ENDIF downloadUrl]
 </span>
 
     [IFNOT disable]
     <div class="fileButtons">
         <input id="ic_[id]" type="button" style="vertical-align:baseline" class="inlineButton" value="&hellip;"
                title="[TEXT:Choose image]"  onclick="chooseFile(this,'[id]')">
-        <input id="iu_[id]" type="button" style="vertical-align:baseline" class="inlineButton" value="&crarr;"
+        <input id="iu_[id]" type="button" style="vertical-align:baseline" class="inlineButton" value="&#8634;"
                title="[TEXT:Restore original file]" disabled="disabled" onclick="restoreFile(this,'[id]')">
 
         <input id="ix_[id]" type="button" style="vertical-align:baseline" class="inlineButton" value="&times;"
@@ -23,7 +24,7 @@
 [IF checkPfc]<input id="IFORI[id]" name="IFORI[name]" type="hidden2" orivalue="[originalValue]">[ENDIF checkPfc]
 
     <input type="hidden" value="[value]" title="[fname]" id="INIV[id]"/>
-    <span><input class="uploadFile" accept="image/*" [disable] onchange="document.isChanged=true;changeFile(this,'[id]','[checkPfc]')"
+    <span><input class="uploadFile hiddenFile" accept="image/*" [disable] onchange="document.isChanged=true;changeFile(this,'[id]','[checkPfc]')"
                  class="" size="15" type="file" id="IF_[id]" name="_UPL[name]" value="" /></span>
 
 

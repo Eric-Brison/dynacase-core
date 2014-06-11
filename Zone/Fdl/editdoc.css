@@ -6,32 +6,67 @@
 }
 
 img.edit-image {
-    max-height: 50px;
-    height: 2em;
+    height: 1.6em;
+    max-width: 2em;
+    border:none;
+    padding: 0;
+    margin: 0;
+}
+
+div.edit-image {
+    display:inline-block;
     vertical-align: bottom;
+    width:2em;
+    height: 1.6em;
+    position:relative;
+}
+
+img.edit-image:hover {
+    height: auto;
+    max-width: 100px;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:1;
 }
 
 .fileName {
     display:inline-block;
+    vertical-align: bottom;
 
 }
 .fileButtons {
     float:right;
 }
+.fileButtons .inlineButton {
+    border-top:none;
+    border-bottom:none;
+}
 .fileInput {
     width:100%;
     display:inline-block;
     border : 1px solid [COLOR_A5];
+    padding:1px;
 }
 input.uploadFile {
     min-width:100px;
-    display: none;
+    /*display: none;*/
     /*position: absolute;*/
+
     padding: 5px;
     border: 1px solid rgb(170, 170, 170)  ;
     margin: 2px;
 }
 
+input.hiddenFile {
+    display: none;
+  /*  opacity: 0;
+    [IF ISIE]
+    filter:alpha(opacity: 5);
+    [ENDIF ISIE]
+    z-index:2;*/
+
+}
 img.davIcon {
     border:none;
     vertical-align: bottom;

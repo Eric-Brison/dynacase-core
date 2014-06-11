@@ -462,6 +462,7 @@ class DocFormFormat
             $lay = new Layout("FDL/Layout/editimage.xml");
             $lay->set("downloadUrl", "");
             $lay->set("checkPfc", "");
+            $lay->set("ISIE678", getParam("ISIE6") || getParam("ISIE7") || getParam("ISIE7"));
             if (preg_match(PREGEXPFILE, $value, $reg)) {
                 $dbaccess = getDbAccess();
                 $vf = newFreeVaultFile($dbaccess);
@@ -482,7 +483,6 @@ class DocFormFormat
                         $check = vault_uniqname($vid);
                         $lay->set("checkPfc", $check);
                         $lay->eset("originalValue", $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)));
-
                     }
                 } else $fname = _("error in filename");
             } elseif ($value) {
@@ -515,6 +515,7 @@ class DocFormFormat
             $lay->set("downloadUrl", "");
             $lay->set("checkPfc", "");
             $lay->set("DAV", false);
+            $lay->set("ISIE678", getParam("ISIE6") || getParam("ISIE7") || getParam("ISIE7"));
             if (preg_match(PREGEXPFILE, $value, $reg)) {
                 $dbaccess = getDbAccess();
                 $vf = newFreeVaultFile($dbaccess);
@@ -548,7 +549,6 @@ class DocFormFormat
                         $check = vault_uniqname($vid);
                         $lay->set("checkPfc", $check);
                         $lay->eset("originalValue", $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)));
-
                     }
                 } else $fname = _("error in filename");
             } else $fname = _("no filename");
@@ -557,13 +557,13 @@ class DocFormFormat
             $lay->set("id", $this->attridk);
             $lay->set("name", $this->attrin);
             $lay->eset("value", $value);
-
+            
             $lay->set("disable", "");
             if (($this->visibility == "R") || ($this->visibility == "S")) {
                 
                 $lay->set("disable", $this->idisabled);
             }
-
+            
             return $lay->gen();
         }
         /**
