@@ -462,7 +462,8 @@ class DocFormFormat
             $lay = new Layout("FDL/Layout/editimage.xml");
             $lay->set("downloadUrl", "");
             $lay->set("checkPfc", "");
-            $lay->set("ISIE678", getParam("ISIE6") || getParam("ISIE7") || getParam("ISIE7"));
+            $lay->set("ISIE678", getParam("ISIE6") || getParam("ISIE7") || getParam("ISIE8"));
+            $lay->set("hideInput", getParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
             if (preg_match(PREGEXPFILE, $value, $reg)) {
                 $dbaccess = getDbAccess();
                 $vf = newFreeVaultFile($dbaccess);
@@ -515,7 +516,8 @@ class DocFormFormat
             $lay->set("downloadUrl", "");
             $lay->set("checkPfc", "");
             $lay->set("DAV", false);
-            $lay->set("ISIE678", getParam("ISIE6") || getParam("ISIE7") || getParam("ISIE7"));
+            $lay->set("hideInput", getParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
+            $lay->set("ISIE678", getParam("ISIE6") || getParam("ISIE7") || getParam("ISIE8"));
             if (preg_match(PREGEXPFILE, $value, $reg)) {
                 $dbaccess = getDbAccess();
                 $vf = newFreeVaultFile($dbaccess);

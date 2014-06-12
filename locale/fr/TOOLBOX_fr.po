@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-10 15:59+0200\n"
-"PO-Revision-Date: 2014-06-10 15:59+0200\n"
+"POT-Creation-Date: 2014-06-12 16:29+0200\n"
+"PO-Revision-Date: 2014-06-12 16:31+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -4002,6 +4002,9 @@ msgstr "Utiliser Ctrl-S pour sauver et rester en édition"
 
 msgid "Use another import interface for a specific family"
 msgstr "Utiliser une autre interface d'importation pour une famille précise"
+
+msgid "Use old file inputs compatibity form"
+msgstr "Utiliser le champ fichier original dans les formulaires"
 
 #, php-format
 msgid "Use your home folder instead <%s>"

@@ -15,8 +15,8 @@
 </div>
 [IFNOT disable]
 <div class="fileButtons">
-    <input id="ic_[id]" type="button" style="vertical-align:baseline" class="inlineButton" value="&hellip;"
-           title="[TEXT:Choose file]"  onclick="chooseFile(this,'[id]')"/><input id="iu_[id]"
+    [IF hideInput]<input id="ic_[id]" type="button" style="vertical-align:baseline" class="inlineButton" value="&hellip;"
+           title="[TEXT:Choose file]"  onclick="chooseFile(this,'[id]')"/>[ENDIF hideInput]<input id="iu_[id]"
                    type="button" style="vertical-align:baseline" class="inlineButton" [IF ISIE678]value="u"[ENDIF ISIE678][IFNOT ISIE678]value="&#8634;"[ENDIF ISIE678]
            title="[TEXT:Restore original file]" disabled="disabled" onclick="restoreFile(this,'[id]')"/><input
                     id="ix_[id]" type="button" [IFNOT value]disabled="disable"[ENDIF value] style="vertical-align:baseline" class="inlineButton" value="&times;"
@@ -28,7 +28,8 @@
 [IF checkPfc]<input id="IFORI[id]" name="IFORI[name]" type="hidden" orivalue="[originalValue]">[ENDIF checkPfc]
 
     <input type="hidden" value="[value]" title="[fname]" id="INIV[id]"/>
-    <span><input class="uploadFile hiddenFile" [disable] onchange="document.isChanged=true;changeFile(this,'[id]','[checkPfc]')"
+    [IFNOT hideInput]<br/>[ENDIF hideInput]
+    <span><input class="uploadFile [IF hideInput]hiddenFile[ENDIF hideInput]" [disable] onchange="document.isChanged=true;changeFile(this,'[id]','[checkPfc]')"
                  class="" size="15" type="file" id="IF_[id]" name="_UPL[name]" value="" /></span>
 </div>
 

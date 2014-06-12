@@ -1589,6 +1589,7 @@ function clearFile(o,nid) {
         $t.closest('td').find(".fileName img").css("visibility","hidden");
     }
     $('#ix_'+nid).attr("disabled","disabled");
+    $('#IFERR'+nid).text('');
 }
 
 function restoreFile(o,nid) {
@@ -1604,6 +1605,7 @@ function restoreFile(o,nid) {
     if ($('#INIV'+nid).val() != "") {
         $('#ix_'+nid).removeAttr("disabled");
     }
+    $('#IFERR'+nid).text('');
 }
 
 function chooseFile(o,nid) {

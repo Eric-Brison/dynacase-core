@@ -49,6 +49,13 @@ $app_const = array(
         "user" => "Y",
         "global" => "Y"
     ) ,
+    "FDL_OLDFILEINPUTCOMPAT" => array(
+        "val" => "no",
+        "descr" => N_("Use old file inputs compatibity form") ,
+        "user" => "N",
+        "global" => "Y",
+        "kind" => "enum(yes|no)"
+    ) ,
     "FDL_FOLDERMAXITEM" => array(
         "val" => "1000",
         "descr" => N_("max items return when open a folder") ,

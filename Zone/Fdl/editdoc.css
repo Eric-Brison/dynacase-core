@@ -15,6 +15,7 @@ img.edit-image {
 
 div.edit-image {
     display:inline-block;
+    [IF ISIE6]display:inline;[ENDIF ISIE6]
     vertical-align: bottom;
     width:2em;
     height: 1.6em;
@@ -32,11 +33,13 @@ img.edit-image:hover {
 
 .fileName {
     display:inline-block;
+    [IF ISIE6]display:inline;[ENDIF ISIE6]
     vertical-align: bottom;
 
 }
 .fileButtons {
-    float:right;
+    [IFNOT ISIE6]float:right;[ENDIF ISIE6]
+    [IF ISIE6]display:inline;[ENDIF ISIE6]
 }
 .fileButtons .inlineButton {
     border-top:none;
@@ -44,7 +47,7 @@ img.edit-image:hover {
 }
 .fileInput {
     width:100%;
-    display:inline-block;
+    [IFNOT ISIE6]display:inline-block;[ENDIF ISIE6]
     border : 1px solid [COLOR_A5];
     padding:1px;
 }
@@ -52,7 +55,7 @@ input.uploadFile {
     min-width:100px;
     /*display: none;*/
     /*position: absolute;*/
-
+    width:90%;
     padding: 5px;
     border: 1px solid rgb(170, 170, 170)  ;
     margin: 2px;
@@ -60,11 +63,6 @@ input.uploadFile {
 
 input.hiddenFile {
     display: none;
-  /*  opacity: 0;
-    [IF ISIE]
-    filter:alpha(opacity: 5);
-    [ENDIF ISIE]
-    z-index:2;*/
 
 }
 img.davIcon {
