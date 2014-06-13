@@ -1688,7 +1688,11 @@ class DocFormFormat
                     $enuml['...'] = _("Other...");
                 }
                 if (($eformat == "" || $eformat == "list") && ($value == " ") && ($oattr->getOption("eunset") == "yes")) {
-                    $enuml[' '] = _("Do choice");
+                    if ($oattr->mvisibility == 'S') {
+                        $enuml[' '] = '';
+                    } else {
+                        $enuml[' '] = _("Do choice");
+                    }
                 }
                 
                 $ki = 0;
