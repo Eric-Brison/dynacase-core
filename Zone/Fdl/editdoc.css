@@ -5,7 +5,70 @@
     cursor: pointer;
 }
 
+img.edit-image {
+    height: 1.6em;
+    max-width: 2em;
+    border:none;
+    padding: 0;
+    margin: 0;
+}
 
+div.edit-image {
+    display:inline-block;
+    [IF ISIE6]display:inline;[ENDIF ISIE6]
+    vertical-align: bottom;
+    width:2em;
+    height: 1.6em;
+    position:relative;
+}
+
+img.edit-image:hover {
+    height: auto;
+    max-width: 100px;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:1;
+}
+
+.fileName {
+    display:inline-block;
+    [IF ISIE6]display:inline;[ENDIF ISIE6]
+    vertical-align: bottom;
+
+}
+.fileButtons {
+    [IFNOT ISIE6]float:right;[ENDIF ISIE6]
+    [IF ISIE6]display:inline;[ENDIF ISIE6]
+}
+.fileButtons .inlineButton {
+    border-top:none;
+    border-bottom:none;
+}
+.fileInput {
+    width:100%;
+    [IFNOT ISIE6]display:inline-block;[ENDIF ISIE6]
+    border : 1px solid [COLOR_A5];
+    padding:1px;
+}
+input.uploadFile {
+    min-width:100px;
+    /*display: none;*/
+    /*position: absolute;*/
+    width:90%;
+    padding: 5px;
+    border: 1px solid rgb(170, 170, 170)  ;
+    margin: 2px;
+}
+
+input.hiddenFile {
+    display: none;
+
+}
+img.davIcon {
+    border:none;
+    vertical-align: bottom;
+}
 input[type=button].add-doc {
     background : url('[IMG:createdoc.png|16]') no-repeat;
     width:16px;

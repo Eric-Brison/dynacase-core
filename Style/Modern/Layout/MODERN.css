@@ -53,7 +53,7 @@ A:hover {
  * INPUTS
  * ------------------------------------------
  */
-input, SELECT, OPTION, TEXTAREA, FILE {
+input, SELECT, OPTION, TEXTAREA, FILE, .fileInput  {
    color:[input-text-normal-color];
    background-color:[input-background-normal-color];
    margin:0pt;
@@ -75,6 +75,10 @@ BUTTON, input[type="button"], input[type="submit"], input[type="reset"] {
   background-image: [input-background-image];
    }
 
+.inlineButton {
+    width:1.5em;
+    cursor: pointer;
+}
 [IF ISIE]
 .inlineButton {
  width: 19px;
@@ -546,10 +550,12 @@ input[type="image"] {
 .document input[type=button].add-doc {
    /* background : url('Images/add.png') no-repeat;*/
     width:16px;
+    cursor:pointer;
 }
 .document input[type=button].view-doc {
    /* background : url('Images/accept.png') no-repeat; */
     width:16px;
+    cursor:pointer;
 }
 .document .tarray .add-button,.document .tarray .add-button:HOVER {
     background-image: url(STYLE/MODERN/Images/add.png) ;

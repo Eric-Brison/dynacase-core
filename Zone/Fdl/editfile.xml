@@ -1,0 +1,36 @@
+<div class="fileInput">
+<span id="IFERR[id]" class="Error"></span>
+        <span class="newFileName"></span>
+<div class="fileName">
+    [IFNOT DAV][IFNOT downloadUrl][fname][ENDIF downloadUrl][ENDIF DAV]
+    [IF downloadUrl]<a class="downloadFile" title="[TEXT:Download file]" target="_self" href="[downloadUrl]">[fname]</a>[ENDIF downloadUrl]
+    [IF DAV]
+    [IF ISIESSL]
+    <a title="[TEXT:open file with your editor]" href="#" filename="[fname]" onclick='asdavLaunch(getPrivateDavHref("[docid]","[vid]","[DAV]",this.getAttribute("filename")))'><img class="davIcon" src="[IMG:davedit.png]"/>[fname]</a>
+    [ENDIF ISIESSL]
+    [IFNOT ISIESSL]
+    <a title="[TEXT:open file with your editor]" href="#" filename="[fname]" onclick='this.href=getPrivateDavHref("[docid]","[vid]","[DAV]",this.getAttribute("filename"))'><img class="davIcon" src="[IMG:davedit.png]"/>[fname]</a>
+    [ENDIF ISIESSL]
+    [ENDIF DAV]
+</div>
+[IFNOT disable]
+<div class="fileButtons">
+    [IF hideInput]<input id="ic_[id]" type="button" style="vertical-align:baseline" class="inlineButton" value="&hellip;"
+           title="[TEXT:Choose file]"  onclick="chooseFile(this,'[id]')"/>[ENDIF hideInput]<input id="iu_[id]"
+                   type="button" style="vertical-align:baseline" class="inlineButton" [IF ISIE678]value="u"[ENDIF ISIE678][IFNOT ISIE678]value="&#8634;"[ENDIF ISIE678]
+           title="[TEXT:Restore original file]" disabled="disabled" onclick="restoreFile(this,'[id]')"/><input
+                    id="ix_[id]" type="button" [IFNOT value]disabled="disable"[ENDIF value] style="vertical-align:baseline" class="inlineButton" value="&times;"
+           title="[TEXT:clear file]"  onclick="clearFile(this,'[id]')"/>
+</div> [ENDIF disable]
+
+
+<input name="[name]" type="hidden" value="[value]" id="[id]">
+[IF checkPfc]<input id="IFORI[id]" name="IFORI[name]" type="hidden" orivalue="[originalValue]">[ENDIF checkPfc]
+
+    <input type="hidden" value="[value]" title="[fname]" id="INIV[id]"/>
+    [IFNOT hideInput]<br/>[ENDIF hideInput]
+    <span><input class="uploadFile [IF hideInput]hiddenFile[ENDIF hideInput]" [disable] onchange="document.isChanged=true;changeFile(this,'[id]','[checkPfc]')"
+                 class="" size="15" type="file" id="IF_[id]" name="_UPL[name]" value="" /></span>
+</div>
+
+

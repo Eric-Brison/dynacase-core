@@ -101,7 +101,8 @@ msgstr "to do every n day"
 msgid "EXEC#exec_perioddaynumber"
 msgstr "day of the week"
 
-msgid "EXEC#exec_perioddaynumber#"
+#, fuzzy
+msgid "EXEC#exec_perioddaynumber# "
 msgstr "---"
 
 msgid "EXEC#exec_perioddaynumber#1"
@@ -197,3 +198,6 @@ msgstr "value"
 
 msgid "EXEC#title"
 msgstr "process"
+
+#~ msgid "EXEC#exec_perioddaynumber#"
+#~ msgstr "---"
