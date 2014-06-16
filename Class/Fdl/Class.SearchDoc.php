@@ -735,10 +735,10 @@ class SearchDoc
                 }
                 $filter = call_user_func_array("sprintf", $fs);
             }
-            if (preg_match('/^([a-z0-9_\-]+\()?([a-z0-9_\-]+)\./', $filter, $reg)) {
+            if (preg_match('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', $filter, $reg)) {
                 // when use join filter like "zoo_espece.es_classe='Boo'"
-                $famid = getFamIdFromName($this->dbaccess, $reg[2]);
-                if ($famid > 0) $filter = preg_replace('/^([a-z0-9_\-]+\()?([a-z0-9_\-]+)\./', '${1}doc' . $famid . '.', $filter);
+                $famid = getFamIdFromName($this->dbaccess, $reg['relname']);
+                if ($famid > 0) $filter = preg_replace('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', '${1}doc' . $famid . '.', $filter);
             }
             $this->filters[] = $filter;
         }
@@ -1187,11 +1187,11 @@ class SearchDoc
         }
         $maintable = $table; // can use join only on search
         if ($join) {
-            if (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $join, $reg)) {
-                $joinid = getFamIdFromName($dbaccess, $reg[3]);
-                $jointable = ($joinid) ? "doc" . $joinid : $reg[3];
+            if (preg_match('/(?P<attr>[a-z0-9_\-:]+)\s*(?P<operator>=|<|>|<=|>=)\s*(?P<family>[a-z0-9_\-:]+)\((?P<family_attr>[^\)]*)\)/', $join, $reg)) {
+                $joinid = getFamIdFromName($dbaccess, $reg['family']);
+                $jointable = ($joinid) ? "doc" . $joinid : $reg['family'];
                 
-                $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg[1], $reg[2], $jointable, $reg[4]); // "id = dochisto(id)";
+                $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg['attr'], $reg['operator'], $jointable, $reg['family_attr']); // "id = dochisto(id)";
                 $maintable = $table;
                 $table.= ", " . $jointable;
             } else {

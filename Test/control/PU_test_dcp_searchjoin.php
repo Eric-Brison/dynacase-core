@@ -62,6 +62,16 @@ class TestSearchJoin extends TestCaseDcpCommonFamily
                 "tst_searchjoin1.tst_title = '%s'",
                 "youpi"
             ) ,
+            array(
+                "tst_title = tst_searchjoin1(tst_title)",
+                "tst_searchjoin1.tst_attr1 = '%s' OR tst_searchjoin1.tst_attr1 = 'Youpla'",
+                "Youpi"
+            ) ,
+            array(
+                "tst_title = tst_searchjoin1(tst_title)",
+                "lower(tst_searchjoin1.tst_attr1) = lower('%s') OR lower(upper(tst_searchjoin1.tst_attr1)) = lower(upper('Youpla'))",
+                "Youpi"
+            )
         );
     }
 }

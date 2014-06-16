@@ -142,7 +142,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     }
     $maintable = $table; // can use join only on search
     if ($join) {
-        if (preg_match("/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/", $join, $reg)) {
+        if (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $join, $reg)) {
             $joinid = getFamIdFromName($dbaccess, $reg[3]);
             $jointable = ($joinid) ? "doc" . $joinid : $reg[3];
             
@@ -468,17 +468,17 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 if ($fromid != - 1) { // not families
                     if ($fromid != 0) {
                         $fdoc = createDoc($dbaccess, abs($fromid) , false, false);
-                        if (preg_match("/from\s+docread/", $qsql) || $isgroup) $fdoc = new DocRead($dbaccess);
+                        if (preg_match('/from\s+docread/', $qsql) || $isgroup) $fdoc = new DocRead($dbaccess);
                     } else $fdoc = new DocRead($dbaccess);
                     $tsqlfields = null;
                     if ($searchDoc) $tsqlfields = $searchDoc->getReturnsFields();
                     if ($tsqlfields == null) $tsqlfields = array_merge($fdoc->fields, $fdoc->sup_fields);
                     $maintable = '';
-                    if (!$join && preg_match("/from\s+([a-z0-9])*,/", $qsql)) {
+                    if (!$join && preg_match('/from\s+([a-z0-9])*,/', $qsql)) {
                         $join = true;
                     }
                     if ($join) {
-                        if (preg_match("/from\s+([a-z0-9]*)/", $qsql, $reg)) {
+                        if (preg_match('/from\s+([a-z0-9]*)/', $qsql, $reg)) {
                             $maintable = $reg[1];
                             $if = 0;
                             if ($maintable) {
