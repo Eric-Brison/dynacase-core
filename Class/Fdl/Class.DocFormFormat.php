@@ -1206,6 +1206,46 @@ class DocFormFormat
                 }
                 // get default values
                 $cid = $doc->fromid == 0 ? $doc->id : $doc->fromid;
+                /*
+                 * Apply default parameters values for arrays
+                */
+                if ($oattr->usefor == 'Q') {
+                    /*
+                     * Check for manually set default parameters values
+                     * in array's columns.
+                    */
+                    $paramArrayColumns = $doc->attributes->getArrayElements($oattr->id);
+                    $defaultColumnValues = array();
+                    foreach ($paramArrayColumns as $paramColumn => $paramValues) {
+                        $v = Doc::rawValueToArray($doc->getFamilyParameterValue($paramColumn));
+                        if (count($v) > 0) {
+                            /*
+                             * If there are manually set default values, then
+                             * apply these default param values.
+                            */
+                            $defaultColumnValues[$paramColumn] = $v;
+                        }
+                    }
+                    if (count($defaultColumnValues) <= 0) {
+                        /*
+                         * Otherwise, if there are no values manually set in the array's columns,
+                         * then try to set the array's default values.
+                        */
+                        $paramDefaultArrayValues = $doc->getFamilyParameterValue($oattr->id);
+                        $defaultColumnValues = array();
+                        /* Transpose from rows to columns */
+                        /** @noinspection PhpWrongForeachArgumentTypeInspection */
+                        foreach ($paramDefaultArrayValues as $arrayRow) {
+                            foreach ($arrayRow as $columnName => $value) {
+                                $defaultColumnValues[$columnName][] = $value;
+                            }
+                        }
+                    }
+                    /*
+                     * Apply default parameters values
+                    */
+                    $doc->setDefaultValues($defaultColumnValues, false, false);
+                }
                 
                 if (!isset($defValues[$cid])) {
                     $ddoc = createTmpDoc($doc->dbaccess, $cid, false);

@@ -4363,7 +4363,7 @@ create unique index i_docir on doc(initid, revision);";
         $value = $def;
         $err = '';
         
-        if (preg_match('/([^:]*)::([^\(]+)\(([^\)]*)\)/', $method, $reg)) {
+        if (is_string($method) && preg_match('/([^:]*)::([^\(]+)\(([^\)]*)\)/', $method, $reg)) {
             
             $parseMethod = new parseFamilyMethod();
             $parseMethod->parse($method);
@@ -6613,7 +6613,7 @@ create unique index i_docir on doc(initid, revision);";
                         if ($method) {
                             $this->setValue($aid, $this->GetValueMethod($dval));
                         } else {
-                            $this->$aid = $dval; // raw data
+                            $this->setValue($aid, $dval); // raw data
                             
                         }
                     }
