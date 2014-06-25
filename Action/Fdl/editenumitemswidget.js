@@ -131,7 +131,7 @@
 
         _lastRow: null,
 
-        _indexRowChanged: [],
+        _keyRowChanged: {},
 
         _activeButtonLabel: {
             "on": "[TEXT:EnumWidget:ON]",
@@ -159,10 +159,9 @@
         },
 
         _unloadWindow: function (e) {
-            if (this._indexRowChanged.length > 0) {
+            if (this._keyRowChangedLength() > 0) {
                 e.preventDefault();
                 return this._convertStringWithInfo("[TEXT:Some change in the enum '%s > %e' are not saved do you really wish to quit?]");
-
             }
         },
 
@@ -207,7 +206,7 @@
                 buttonReload = $('<button class="reloadButton" title="[TEXT:EnumWidget:Cancel change]">[TEXT:EnumWidget:Reload]</button>').on("click", $.proxy(this._beforeOnReload, this)),
                 buttonHelp = $('<button class="helpButton">[TEXT:Help]</button>').button().on("click", $.proxy(this._showHelp, this)),
                 buttonsDiv = $("<div></div>").append(buttonSave).append(buttonReload).addClass("headerButton"),
-                disabled = this._indexRowChanged.length <= 0;
+                disabled = this._keyRowChangedLength() <= 0;
 
             if (this.options.saveOnBottom) {
                 $("#newLine").append(buttonsDiv.clone(true).css("text-align", "right"));
@@ -234,15 +233,22 @@
         },
 
         _modEnumItems: function _modEnumItems() {
-            var widget = this,
-                toChangeKey = widget._indexRowChanged,
-                toSendData = [],
-                localeIds = widget._localeId;
+            var widget = this;
+            var toSendData = [];
+            var localeIds = widget._localeId;
 
             widget._dataTableWidget.fnProcessingIndicator();
 
-            $.each(toChangeKey, function (index, value) {
-                var rowData = widget._dataTableWidget.fnGetData(value);
+            for (var key in this._keyRowChanged) {
+                if (!this._keyRowChanged.hasOwnProperty(key)) {
+                    continue;
+                }
+                /* Find the datatable row index corresponding to the changed key */
+                var rowIndex = this._findKey(key);
+                if (rowIndex === false) {
+                    continue;
+                }
+                var rowData = widget._dataTableWidget.fnGetData(rowIndex);
                 rowData.localeLabel = [];
                 $.each(localeIds, function (i, locale) {
                     rowData.localeLabel.push({
@@ -251,7 +257,7 @@
                     });
                 });
                 toSendData.push(rowData);
-            });
+            }
 
             if (toSendData.length > 0) {
                 $.ajax({
@@ -277,7 +283,7 @@
                 this._error(data.error);
                 this._dataTableWidget.fnProcessingIndicator(false);
             } else {
-                this._indexRowChanged = [];
+                this._keyRowChanged =  {};
                 this._getEnumItems();
             }
 
@@ -449,11 +455,11 @@
         },
 
         _getTranslateButton: function (lineData) {
-            return '<button class="activetranslatebutton" data-index="' + lineData.iDataRow + '" title="' + this._getTranslateTooltip(lineData.aData) + '">[TEXT:EnumWidget:Translate]</button>';
+            return '<button class="activetranslatebutton" data-key="' + lineData.key + '" data-index="' + lineData.iDataRow + '" title="' + this._getTranslateTooltip(lineData.aData) + '">[TEXT:EnumWidget:Translate]</button>';
         },
 
         _getActiveDeleteButton: function (lineData) {
-            return '<button class="activedeletebutton" data-index="' + lineData.iDataRow + '">[TEXT:EnumWidget:Remove]</button>';
+            return '<button class="activedeletebutton" data-key="' + lineData.aData.key + '" data-index="' + lineData.iDataRow + '">[TEXT:EnumWidget:Remove]</button>';
         },
 
         _getActiveRadioButton: function (lineData) {
@@ -530,13 +536,13 @@
             this._initActiveDeleteButton($trNode.addClass(this.options.rowToUpdateClass));
             this._initActiveTranslateButton($trNode.addClass(this.options.rowToUpdateClass));
 
-            this._addDataToSave(indexes[0]);
+            this._addDataToSave(newLine.key);
             $trNode.find("." + editableClass).on("click.editenumitems", {"widget": this}, this._rowClick);
         },
 
         _updateOrder: function _updateOrder(newOrder, lineNumber, aData) {
             this._dataTableWidget.fnUpdate(newOrder, lineNumber, 0, false, false);
-            if (this._lastRow.key == aData.key) {
+            if (this._lastRow && this._lastRow.key == aData.key) {
                 this._lastRow = aData;
             }
         },
@@ -553,14 +559,35 @@
             return dataToReturn;
         },
 
+        _deleteRowWithKey: function(rowKey) {
+            var keyHasBeenChanged = this._keyRowChanged.hasOwnProperty(rowKey);
+            if (!keyHasBeenChanged) {
+                this._error("[TEXT:Can't delete already created row]");
+            }
+            var rowIndex = this._getRowIndexWithKey(rowKey);
+            this._dataTableWidget.fnDeleteRow(rowIndex);
+            this._removeDataToSave(rowKey);
+        },
+
+        _getRowIndexWithKey: function(lookupKey) {
+            var rowsData = this._dataTableWidget.fnGetData();
+            for( var index = 0; index < rowsData.length; index++) {
+                if (rowsData[index].key == lookupKey) {
+                    return index;
+                }
+            }
+            return false;
+        },
+
         _addAndReorganizeOrder: function _addAndReorganizeOrder(val, lineNumber, newLine) {
             var linePut = false,
                 widget = this,
                 $tr = this._dataTableElement.find("tbody tr"),
+                rowsData = this._dataTableWidget.fnGetData();
                 lineData = this._dataTableWidget.fnGetData(lineNumber),
                 lineOrder = lineData.order,
                 datas = widget._dataTableWidget.fnGetData(),
-                value = parseInt(val);
+                value = parseInt(val, 10);
 
             $.each(datas, function (index, aData) {
                 if (aData.order == value + 1) {
@@ -568,7 +595,7 @@
                     if (aData.key != lineData.key) lineData.orderBeforeThan = aData.key;
                     widget._dataTableWidget.fnUpdate(lineData, lineNumber, undefined, false, false);
                     linePut = aData.order;
-                    if (lineData.key === widget._lastRow.key) {
+                    if (widget._lastRow && lineData.key === widget._lastRow.key) {
                         widget._lastRow = widget._findLastRow();
                     }
                     return false;
@@ -588,11 +615,12 @@
             });
 
             if (!linePut) {
-                var newOrder = $tr.length * 2;
-                if (newLine) newOrder += 2;
+                newOrder = rowsData.length * 2;
 
-                widget._lastRow.orderBeforeThan = lineData.key;
-                widget._dataTableWidget.fnUpdate(widget._lastRow, widget._findKey(widget._lastRow.key), undefined, false, false);
+                if (widget._lastRow) {
+                    widget._lastRow.orderBeforeThan = lineData.key;
+                    widget._dataTableWidget.fnUpdate(widget._lastRow, widget._findKey(widget._lastRow.key), undefined, false, false);
+                }
 
                 widget._initActiveButtonSet($tr.last());
                 widget._initActiveDeleteButton($tr.last());
@@ -646,7 +674,7 @@
             }
 
             if (aPos[2] == widget._columnIndex.order) {
-                if (parseInt(value) % 2 == 0) {
+                if (parseInt(value, 10) % 2 == 0) {
                     if (!fromButton) widget._reinitField(value, $td);
                     widget._error("[TEXT:Order must be an odd number]");
                     return false;
@@ -674,11 +702,10 @@
         },
 
         _setRowToChange: function _setRowToChange($tr, dataTableIndex) {
-            var data = this._dataTableWidget.fnGetData(dataTableIndex[0]),
-                originalData = this._originalData[data.key],
-                changeInLine = false,
-
-                widget = this;
+            var data = this._dataTableWidget.fnGetData(dataTableIndex[0]);
+            var originalData = this._originalData[data.key];
+            var changeInLine = false;
+            var widget = this;
 
             if (originalData) {
                 $.each(originalData, function (key, val) {
@@ -698,31 +725,21 @@
                 });
             } else changeInLine = true;
 
-            var indexOfElem = $.inArray(dataTableIndex[0], this._indexRowChanged);
+            var keyHasBeenChanged = this._keyRowChanged.hasOwnProperty(data.key);
             if (changeInLine) {
-                if (indexOfElem < 0) this._addDataToSave(dataTableIndex[0]);
+                if (!keyHasBeenChanged) this._addDataToSave(data.key);
                 $tr.addClass(this.options.rowToUpdateClass);
             } else {
-                if (indexOfElem >= 0) this._removeDataToSave(indexOfElem);
+                if (keyHasBeenChanged) this._removeDataToSave(data.key);
                 $tr.removeClass(this.options.rowToUpdateClass);
             }
         },
 
         _deleteClick: function (e) {
-            var widget = e.data.widget,
-                $trNode = e.data.row,
-                dataIndex = parseInt($(this).attr("data-index")),
-                indexOfElem = $.inArray(dataIndex, widget._indexRowChanged);
+            var widget = e.data.widget;
+            var dataKey = $(this).attr("data-key");
 
-            if (indexOfElem < 0) {
-                widget._error("[TEXT:Can't delete already created row]");
-            } else {
-                widget._addAndReorganizeOrder("", dataIndex);
-                widget._dataTableWidget.fnDeleteRow(dataIndex);
-
-                widget._removeDataToSave(indexOfElem);
-                widget._lastRow = widget._findLastRow();
-            }
+            return widget._deleteRowWithKey(dataKey);
         },
 
         _translateClick: function (e) {
@@ -800,17 +817,16 @@
 
         },
 
-        _addDataToSave: function (dataIndex) {
-            this._indexRowChanged.push(dataIndex);
-
+        _addDataToSave: function (key) {
+            this._keyRowChanged[key] = key;
             $(".saveButton").each(function () {
                 $(this).button("enable");
             });
         },
 
-        _removeDataToSave: function (indexOfElem) {
-            this._indexRowChanged.splice(indexOfElem, 1);
-            if (this._indexRowChanged.length <= 0) {
+        _removeDataToSave: function (key) {
+            delete this._keyRowChanged[key];
+            if (this._keyRowChangedLength() <= 0) {
                 $(".saveButton").each(function () {
                     $(this).button("disable");
                 });
@@ -1034,6 +1050,19 @@
             // For UI 1.9 the _super method can be used instead
             // this._super( "_setOption", key, value );
 
+        },
+
+// Get number of keys in keyRowChanged struct
+        _keyRowChangedLength: function() {
+            return $.map(this._keyRowChanged, function(n, i) { return i; }).length
+        },
+
+// Print internal datatable data
+        _printState: function() {
+            console.log({
+                _keyRowChanged: this._keyRowChanged,
+                fnGetData: this._dataTableWidget.fnGetData()
+            });
         }
 
     });

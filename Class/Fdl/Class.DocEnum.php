@@ -161,13 +161,23 @@ create unique index i_docenum on docenum(famid, attrid,  key);
     
     protected function setOrder($beforeThan)
     {
-        if ($beforeThan) {
+        $sql = sprintf("SELECT count(*) FROM docenum WHERE famid = %d AND attrid = '%s'", $this->famid, pg_escape_string($this->attrid));
+        simpleQuery($this->dbaccess, $sql, $count, true, true);
+        if ($beforeThan !== null) {
             $sql = sprintf("select eorder from docenum where famid=%d and attrid='%s' and key='%s'", $this->famid, pg_escape_string($this->attrid) , pg_escape_string($beforeThan));
             simpleQuery($this->dbaccess, $sql, $beforeOrder, true, true);
-            
             if ($beforeOrder) {
                 $this->eorder = $beforeOrder;
+            } else {
+                /* If the next key does not exists, then set order to count + 1 */
+                $this->eorder = $count + 1;
             }
+        } else if (empty($this->eorder)) {
+            /*
+             * If item has no beforeThan and eorder is not set, then we assume it's the last one
+             * (there is nothing after him). So, the order is the number of items + 1
+            */
+            $this->eorder = $count + 1;
         }
     }
     public static function addEnum($famId, $attrid, EnumStructure $enumStruct)
@@ -192,7 +202,9 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         $enum->disabled = ($enumStruct->disabled === true);
         $enum->needChangeOrder = true;
         $enum->eorder = $enumStruct->absoluteOrder;
-        if ($enumStruct->orderBeforeThan) {
+        if ($enumStruct->orderBeforeThan === null) {
+            $enum->setOrder(null);
+        } else {
             $enum->setOrder($enumStruct->orderBeforeThan);
         }
         $err = $enum->add();
@@ -366,4 +378,4 @@ class EnumLocale
         $this->label = $label;
     }
 }
-?>
+
