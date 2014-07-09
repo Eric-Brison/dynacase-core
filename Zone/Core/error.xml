@@ -23,7 +23,7 @@
 <script language="javascript">
 
 if (window.name == 'fhidden' || window.innerWidth == 0 || window.document.body.clientWidth == 0) {
-  alert('[serror]');
+  alert([serror]);
 }
 
 </script>

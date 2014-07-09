@@ -529,7 +529,9 @@ class Layout
             $this->action->parent->ClearLogMsg();
             // Add warning messages
             $list = $this->action->parent->GetWarningMsg();
-            if (count($list) > 0) $out.= "displayWarningMsg('" . implode("\\n---------\\n", array_unique($list)) . "');\n";
+            if (count($list) > 0) {
+                $out.= "displayWarningMsg(" . json_encode(implode("\\n---------\\n", array_unique($list)) , JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP) . ");\n";
+            }
             $this->action->parent->ClearWarningMsg();
         }
         if (!$onlylog) {
@@ -540,8 +542,8 @@ class Layout
                 $out.= "var actcode=new Array();\n";
                 $out.= "var actarg=new Array();\n";
                 foreach ($actcode as $k => $v) {
-                    $out.= "actcode[$k]='$v';\n";
-                    $out.= "actarg[$k]='" . $actarg[$k] . "';\n";
+                    $out.= sprintf("actcode[%d]=%s;\n", $k, json_encode($v, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP));
+                    $out.= sprintf("actarg[%d]=%s;\n", $k, json_encode($actarg[$k], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP));
                 }
                 $out.= "sendActionNotification(actcode,actarg);\n";
                 $this->action->clearActionDone();

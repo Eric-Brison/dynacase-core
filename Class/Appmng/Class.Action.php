@@ -632,8 +632,8 @@ create sequence SEQ_ID_ACTION;
             //      redirect($this,"CORE&sole=Y","ERROR");
             $this->lay = new Layout("CORE/Layout/error.xml", $this);
             $this->lay->set("TITLE", _("Error"));
-            $this->lay->set("error", nl2br($texterr));
-            $this->lay->set("serror", str_replace("\n", "\\n", addslashes($texterr)));
+            $this->lay->set("error", cleanhtmljs(nl2br($texterr)));
+            $this->lay->set("serror", json_encode(cleanhtmljs($texterr) , JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP));
             $this->lay->set("appname", (empty($this->parent)) ? '' : $this->parent->name);
             $this->lay->set("appact", $this->name);
             if ($this->parent && $this->parent->parent) { // reset js ans ccs

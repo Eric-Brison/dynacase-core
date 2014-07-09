@@ -740,7 +740,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         } else {
             if (!empty($_SERVER['HTTP_HOST'])) {
                 $logmsg = $this->session->read("warningmsg", array());
-                $logmsg[] = str_replace("\n", "\\n", addslashes($code));
+                $logmsg[] = $code;
                 $this->session->register("warningmsg", $logmsg);
             } else error_log("dcp warning: $code");
         }
