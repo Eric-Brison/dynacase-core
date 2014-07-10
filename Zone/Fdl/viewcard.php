@@ -71,7 +71,7 @@ function viewcard(Action & $action)
     } else {
         $action->lay->eset("refreshfld", GetHttpVars("refreshfld"));
     }
-    $action->lay->set("ITSELF", $_SERVER["REQUEST_URI"]);
+    $action->lay->eset("ITSELF", $_SERVER["REQUEST_URI"]);
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     
@@ -85,7 +85,7 @@ function viewcard(Action & $action)
     }
     $useRss = ($doc->getRawValue("gui_isrss") == "yes");
     $action->lay->set("RSS", $useRss);
-    if ($useRss) $action->lay->set("rsslink", $doc->getRssLink());
+    if ($useRss) $action->lay->eset("rsslink", $doc->getRssLink());
     
     $param_zone_footer = json_decode($action->getParam("FOOTER_ZONE_VIEW") , true);
     $zone_footer = array();
@@ -182,7 +182,7 @@ function viewcard(Action & $action)
     $action->lay->set("viewbarmenu", ($zo == "V"));
     
     $action->lay->set("LGTEXTERROR", strlen($err));
-    $action->lay->set("TEXTERROR", nl2br($err));
+    $action->lay->set("TEXTERROR", cleanhtmljs(nl2br($err)));
     $action->lay->Set("ZONEBODYCARD", $doc->viewDoc($zonebodycard, $target, $ulink, $abstract));
     /*
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
@@ -198,22 +198,22 @@ function viewcard(Action & $action)
     $action->lay->Set("lockedid", 0);
     $action->lay->Set("comment", '');
     
-    if ($doc->confidential > 0) $action->lay->Set("locked", _("confidential"));
-    else if ($doc->locked == - 1) $action->lay->Set("locked", _("fixed"));
-    else if ($doc->archiveid) $action->lay->Set("locked", _("archived"));
-    else if ($doc->control("edit") != "") $action->lay->Set("locked", _("read only"));
+    if ($doc->confidential > 0) $action->lay->eSet("locked", _("confidential"));
+    else if ($doc->locked == - 1) $action->lay->eSet("locked", _("fixed"));
+    else if ($doc->archiveid) $action->lay->eSet("locked", _("archived"));
+    else if ($doc->control("edit") != "") $action->lay->eSet("locked", _("read only"));
     else if ($doc->locked == 0) {
-        $action->lay->Set("locked", _("not locked"));
+        $action->lay->eSet("locked", _("not locked"));
     } else {
         $user = new Account("", abs($doc->locked));
-        $action->lay->Set("locked", $user->firstname . " " . $user->lastname);
+        $action->lay->eSet("locked", $user->firstname . " " . $user->lastname);
         $action->lay->Set("lockedid", $user->fid);
     }
     
     $action->lay->Set("dhelp", "none");
     if ($doc->fromid > 0) {
         $cdoc = $doc->getFamilyDocument();
-        $action->lay->Set("classtitle", $cdoc->getTitle());
+        $action->lay->eSet("classtitle", $cdoc->getTitle());
         if (getFamilyHelpFile($action, $doc->fromid)) {
             $action->lay->Set("dhelp", "");
             $action->lay->Set("helpid", $doc->fromid);
@@ -250,10 +250,10 @@ function viewcard(Action & $action)
     $state = $doc->getState();
     $action->lay->Set("statecolor", $doc->getStateColor("transparent"));
     if ($state) { // see only if it is a transitionnal doc
-        if ($doc->locked == - 1) $action->lay->Set("state", $action->text($state));
+        if ($doc->locked == - 1) $action->lay->eSet("state", $action->text($state));
         else {
             
-            $action->lay->Set("state", $action->Text($doc->getStateActivity($doc->getState())));
+            $action->lay->eSet("state", $action->Text($doc->getStateActivity($doc->getState())));
         }
         $action->lay->Set("viewstate", "inherit");
         $action->lay->Set("wid", ($doc->wid > 0) ? $doc->wid : $doc->state);
