@@ -650,8 +650,7 @@ create sequence SEQ_ID_ACTION;
     
     public function exitForbidden($texterr)
     {
-        header("HTTP/1.0 401 Authorization Required ");
-        header("HTTP/1.0 301 Access Forbidden ");
+        header("HTTP/1.0 403 Forbidden");
         print $texterr;
         exit;
     }
