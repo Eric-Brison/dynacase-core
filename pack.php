@@ -32,6 +32,21 @@ function exitError($text)
     exit;
 }
 
+function requestPath()
+{
+    $path = '/';
+    $turl = parse_url($_SERVER["REQUEST_URI"]);
+    if (isset($turl['path'])) {
+        if (substr($turl['path'], -1) != '/') {
+            $path = dirname($turl['path']) . '/';
+        } else {
+            $path = $turl['path'];
+        }
+        $path = preg_replace(':/+:', '/', $path);
+    }
+    return $path;
+}
+
 $cookName = 'dcpsession'; // see Session::PARAMNAME .. not included here to be independant
 if (!isset($_COOKIE[$cookName])) exitError('Not connected');
 $sessid = $_COOKIE[$cookName];
@@ -41,6 +56,8 @@ if (!isset($_GET["type"])) exitError('No type set');
 if ($_GET["type"] != "js" && $_GET["type"] != "css") exitError('No compatible type');
 $packName = $_GET["pack"];
 $type = $_GET["type"];
+ini_set('session.cookie_path', requestPath());
+session_name($cookName);
 session_id($sessid);
 session_start();
 
