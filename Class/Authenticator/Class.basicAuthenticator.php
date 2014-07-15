@@ -26,7 +26,7 @@ class basicAuthenticator extends Authenticator
     {
         
         if (array_key_exists('logout', $_COOKIE) && $_COOKIE['logout'] == "true") {
-            setcookie('logout', '', time() - 3600);
+            setcookie('logout', '', time() - 3600, null, null, null, true);
             return Authenticator::AUTH_ASK;
         }
         
@@ -113,7 +113,8 @@ class basicAuthenticator extends Authenticator
     
     public function logout($redir_uri = '')
     {
-        setcookie('logout', 'true', 0);
+        setcookie('logout', 'true', 0, null, null, null, true);
+
         if ($redir_uri == '') {
             $pUri = parse_url($_SERVER['REQUEST_URI']);
             if (preg_match(':(?P<path>.*/)[^/]*$:', $pUri['path'], $m)) {

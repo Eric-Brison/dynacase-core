@@ -212,26 +212,14 @@ return v;
 }
 
 function get_cookie(Name) {
-var search=Name+"=";
-var returnvalue="";
-if(d.cookie.length>0){
-offset=d.cookie.indexOf(search);
-if(offset!=-1){
-offset+=search.length;
-end=d.cookie.indexOf(";",offset);
-if(end==-1)end=d.cookie.length;
-returnvalue=unescape(d.cookie.substring(offset,end));
-}}
-return returnvalue;
+    return '';
 }
 
 function popUp(x,y,w,h,cid,text,bgcolor,textcolor,fontstyleset,title,titlecolor,titletextcolor,bordercolor,scrollcolor,shadowcolor,showonstart,isdrag,isresize,oldOK,isExt,popOnce,noDecoration){
   var okPopUp=false;
   if (popOnce){
-    if (get_cookie(cid)==""){
-      okPopUp=true;
-      d.cookie=cid+"=yes";
-    }}
+    okPopUp=true;
+    }
   else okPopUp=true;
   if(okPopUp){
     if(w3c){

@@ -145,9 +145,9 @@ class Session extends DbObj
                 $path = $turl['path'];
             }
             $path = preg_replace(':/+:', '/', $path);
-            setcookie($this->name, $id, $ttl, $path);
+            setcookie($this->name, $id, $ttl, $path, null, null, true);
         } else {
-            setcookie($this->name, $id, $ttl);
+            setcookie($this->name, $id, $ttl, null, null, null, true);
         }
     }
     /** 
@@ -163,7 +163,7 @@ class Session extends DbObj
             @session_destroy();
             //@session_write_close();
             // delete session cookie
-            setcookie($this->name, false, time() - 3600);
+            setcookie($this->name, false, time() - 3600, null, null, null, true);
             $this->Delete();
         }
         $this->status = self::SESSION_CT_CLOSE;
