@@ -67,7 +67,7 @@ class Action extends DbObj
     public $toc;
     public $father;
     public $toc_order;
-
+    
     var $id_fields = array(
         "id"
     );
@@ -563,7 +563,7 @@ create sequence SEQ_ID_ACTION;
         // check if we are in an admin application and user can execute it
         $appTag = $this->parent->tag;
         if (preg_match('/(\W|\A)ADMIN(\W|\Z)/i', $appTag)) {
-            if(!$this->parent->isInAdminMode()){
+            if (!$this->parent->isInAdminMode()) {
                 $e = new Dcp\Exception("CORE0009", $this->short_name, $this->name, $this->parent->name, $this->parent->short_name);
                 $e->addHttpHeader('HTTP/1.0 503 Action forbidden');
                 throw $e;
@@ -580,7 +580,7 @@ create sequence SEQ_ID_ACTION;
             global $QUERY_STRING;
             $this->log->info("{$this->parent->name}:{$this->name} [" . substr($QUERY_STRING, 48) . "]");
         }
-
+        
         $this->log->push("{$this->parent->name}:{$this->name}");
         $pubdir = $this->parent->GetParam("CORE_PUBDIR");
         $nav = $this->Read("navigator");
@@ -650,8 +650,7 @@ create sequence SEQ_ID_ACTION;
     
     public function exitForbidden($texterr)
     {
-        header("HTTP/1.0 401 Authorization Required ");
-        header("HTTP/1.0 301 Access Forbidden ");
+        header("HTTP/1.0 403 Forbidden");
         print $texterr;
         exit;
     }
