@@ -112,7 +112,7 @@ class Session extends DbObj
                 session_name($this->session_name);
                 session_id($id);
                 @session_start();
-                //@session_write_close(); // avoid block
+                @session_write_close(); // avoid block
                 
             }
         }
@@ -150,7 +150,7 @@ class Session extends DbObj
             setcookie($this->name, $id, $ttl, null, null, null, true);
         }
     }
-    /** 
+    /**
      * Closes session and removes all datas
      */
     function Close()
@@ -161,7 +161,7 @@ class Session extends DbObj
             session_id($this->id);
             @session_unset();
             @session_destroy();
-            //@session_write_close();
+            @session_write_close();
             // delete session cookie
             setcookie($this->name, false, time() - 3600, null, null, null, true);
             $this->Delete();
@@ -169,7 +169,7 @@ class Session extends DbObj
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
     }
-    /** 
+    /**
      * Closes all session
      */
     function CloseAll($uid = null)
@@ -182,7 +182,7 @@ class Session extends DbObj
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
     }
-    /** 
+    /**
      * Closes all user's sessions
      */
     function CloseUsers($uid = - 1)
@@ -201,7 +201,7 @@ class Session extends DbObj
             session_name($this->session_name);
             session_id($idsess);
             @session_start();
-            //@session_write_close(); // avoid block
+            @session_write_close(); // avoid block
             //	$this->initCache();
             
         }
@@ -224,11 +224,12 @@ class Session extends DbObj
         }
         global $_SERVER; // use only cache with HTTP
         if (!empty($_SERVER['HTTP_HOST'])) {
-            if (!isset($_SESSION[$k]) ||  $_SESSION[$k] !== $v) {
-                $_SESSION[$k] = $v;
-                session_write_close(); // avoid block
-                session_start();
-            }
+            session_name($this->name);
+            session_id($this->id);
+            @session_start();
+            $_SESSION[$k] = $v;
+            @session_write_close(); // avoid block
+            
         }
         
         return true;
@@ -239,20 +240,26 @@ class Session extends DbObj
     // --------------------------------
     function Read($k = "", $d = "")
     {
-        if (!empty($_SERVER['HTTP_HOST'])) {
-            //session_name($this->name);
-            //session_id($this->id);
-            //@session_start();
-            if (isset($_SESSION[$k])) {
-                $val = $_SESSION[$k];
-                //@session_write_close();
-                return $val;
-            } else {
-                //@session_write_close();
-                return ($d);
-            }
+        if (empty($_SERVER['HTTP_HOST'])) {
+            return ($d);
         }
-        return ($d);
+        /* Load session's data only once as requested by #4825 */
+        $sessionOpened = false;
+        if (!isset($_SESSION)) {
+            session_name($this->name);
+            session_id($this->id);
+            @session_start();
+            $sessionOpened = true;
+        }
+        if (isset($_SESSION[$k])) {
+            $val = $_SESSION[$k];
+        } else {
+            $val = $d;
+        }
+        if ($sessionOpened) {
+            @session_write_close();
+        }
+        return $val;
     }
     // --------------------------------
     // Détruit une variable de session
@@ -262,11 +269,11 @@ class Session extends DbObj
     {
         global $_SERVER; // use only cache with HTTP
         if (!empty($_SERVER['HTTP_HOST'])) {
-            // session_name($this->name);
-            // session_id($this->id);
-            // @session_start();
+            session_name($this->name);
+            session_id($this->id);
+            @session_start();
             unset($_SESSION[$k]);
-            //@session_write_close(); // avoid block
+            @session_write_close(); // avoid block
             
         }
         return true;
@@ -292,9 +299,9 @@ class Session extends DbObj
     {
         global $_SERVER; // use only cache with HTTP
         if (!empty($_SERVER['HTTP_HOST'])) {
-            // session_name($this->name);
-            // session_id($this->id);
-            // @session_start();
+            session_name($this->name);
+            session_id($this->id);
+            @session_start();
             foreach ($_SESSION as $k => $v) {
                 if (preg_match("/^sessparam[0-9]+$/", $k)) {
                     if (isset($v[$paramName])) {
@@ -302,7 +309,7 @@ class Session extends DbObj
                     }
                 }
             }
-            //@session_write_close(); // avoid block
+            @session_write_close(); // avoid block
             
         }
         return true;
