@@ -1234,10 +1234,12 @@ class DocFormFormat
                         $paramDefaultArrayValues = $doc->getFamilyParameterValue($oattr->id);
                         $defaultColumnValues = array();
                         /* Transpose from rows to columns */
-                        /** @noinspection PhpWrongForeachArgumentTypeInspection */
-                        foreach ($paramDefaultArrayValues as $arrayRow) {
-                            foreach ($arrayRow as $columnName => $value) {
-                                $defaultColumnValues[$columnName][] = $value;
+                        
+                        if (is_array($paramDefaultArrayValues)) {
+                            foreach ($paramDefaultArrayValues as $arrayRow) {
+                                foreach ($arrayRow as $columnName => $value) {
+                                    $defaultColumnValues[$columnName][] = $value;
+                                }
                             }
                         }
                     }
