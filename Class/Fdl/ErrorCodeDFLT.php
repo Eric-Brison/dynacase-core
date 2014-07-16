@@ -46,9 +46,9 @@ class ErrorCodeDFLT
     /**
      * @errorCode when use default for array attribute the value must be an array of array
      */
-    const DFLT0008 = 'the default array attribute reference "%s" net return a valid array ( "%s" return "%s") for "%s" family';
+    const DFLT0008 = 'the default array attribute reference "%s" not return a valid array ( "%s" return "%s") for "%s" family';
     /**
      * @errorCode when use default fot array attribute the value must be an array of array. Somes returns row are invalid
      */
-    const DFLT0009 = 'the default array attribute reference "%s" net return a valid array ( "%s" return "%s") for "%s" family : "%s"';
+    const DFLT0009 = 'the default array attribute reference "%s" not return a valid array ( "%s" return "%s") for "%s" family : "%s"';
 }
