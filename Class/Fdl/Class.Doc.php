@@ -8518,7 +8518,7 @@ create unique index i_docir on doc(initid, revision);";
             $nd = time();
         }
         $isIsoDate = (getLcdate() == "iso");
-        if ($dayhour !== "") {
+        if ($dayhour !== "" || $daymin !== "") {
             $delta = abs(intval($dayhour));
             if ($dayhour > 0) {
                 $nd = strtotime("+$delta hour", $nd);
