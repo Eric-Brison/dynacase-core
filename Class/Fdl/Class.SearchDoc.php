@@ -971,7 +971,7 @@ class SearchDoc
         }
         if ($isOnlyWord) {
             $filter = str_replace(')(', ')&(', $filter);
-            $filter = sprintf("fulltext @@ to_tsquery('french','%s')", $filter);
+            $filter = sprintf("fulltext @@ to_tsquery('french','%s')", pg_escape_string($filter));
         }
         
         $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string(preg_replace('/\s+/u', '&', $rank)));

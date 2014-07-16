@@ -327,10 +327,10 @@ class DocSearch extends PDocSearch
             $fullkeys = '(' . implode(")&(", $tsearchkeys) . ')';
             $fullkeys = unaccent($fullkeys);
             $fullkeys = pg_escape_string($fullkeys);
-            $sqlfilters[] = "fulltext @@ to_tsquery('french','$fullkeys') ";
+            $sqlfilters[] = sprintf("fulltext @@ to_tsquery('french','%s') ",pg_escape_string($fullkeys));
         }
         if (count($sqlfiltersbrut) > 0) $sqlfilters = array_merge($sqlfilters, $sqlfiltersbrut);
-        $sqlorder = "ts_rank(fulltext,to_tsquery('french','$fullkeys')) desc";
+        $sqlorder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc",pg_escape_string($fullkeys));
     }
     
     function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
