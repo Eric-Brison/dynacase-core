@@ -115,6 +115,22 @@ function generic_search(Action & $action)
                 );
             }
         }
+        catch(Dcp\SearchDoc\Exception $e) {
+            switch ($e->getDcpCode()) {
+                case "SD0007":
+                    $err = sprintf(_("incorrect global filter %s") , $keyword);
+                    addWarningMsg($err);
+
+                    break;
+
+                default:
+                    $err = $e->getMessage();
+            addWarningMsg($err);
+            }
+            $sqlfilter = array(
+                'false'
+            );
+        }
         catch(Exception $e) {
             $err = $e->getMessage();
             addWarningMsg($err);

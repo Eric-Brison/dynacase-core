@@ -886,7 +886,12 @@ class SearchDoc
                         $filterElement = pg_escape_string(unaccent($filterElement));
                     } else {
                         $to_tsquery = sprintf("to_tsquery('french','%s')", pg_escape_string(unaccent($filterElement)));
-                        simpleQuery('', sprintf("select %s", $to_tsquery) , $indexedWord, true, true);
+                        try {
+                            simpleQuery('', sprintf("select %s", $to_tsquery) , $indexedWord, true, true);
+                        }
+                        catch(Dcp\Db\Exception $e) {
+                            throw new \Dcp\SearchDoc\Exception("SD0007", unaccent($filterElement));
+                        }
                         if ($indexedWord) {
                             $filterElement = sprintf("(fulltext @@ '%s')", pg_escape_string($indexedWord));
                         } else {

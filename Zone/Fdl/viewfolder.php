@@ -123,7 +123,13 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
     $sd->setObjectReturn();
     //$ldoc = getChildDoc($dbaccess, $dirid,$start,$slice,$sqlfilters,$action->user->id,"TABLE",$famid,
     //$distinct, $sqlorder);
-    $sd->search();
+    try {
+        $sd->search();
+        $searchError = $sd->searchError();
+    }
+    catch(Dcp\Db\Exception $e) {
+        $searchError = sprintf(_("This search cannot be executed"));
+    }
     $count = $sd->count();
     $hasNext = ($count > $slice);
     if ($viewone && ($count == 1)) {
@@ -157,7 +163,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
     
     $nbseedoc = 0;
     $nbdoc = 0;
-    if (!$sd->searchError()) {
+    if (!$searchError) {
         // get date format
         if ($action->GetParam("CORE_LANG") == "fr_FR") { // date format depend of locale
             $fdate = "%d/%m/%y";
@@ -403,7 +409,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
         }
     } else {
         //error in search
-        addWarningMsg($sd->getError());
+        addWarningMsg($searchError);
         addLogMsg($sd->getSearchInfo());
     }
     // Out
