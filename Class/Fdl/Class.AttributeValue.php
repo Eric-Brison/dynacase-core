@@ -207,6 +207,11 @@ class AttributeValue
             if (!is_array($row)) {
                 throw new \Dcp\AttributeValue\Exception('VALUE0009', $oAttr->id, $doc->fromname, $doc->getTitle() , print_r($row, true));
             }
+            foreach ($row as $columnName => & $columnValue) {
+                $cAttr = $doc->getAttribute($columnName);
+                $columnValue = self::typed2string($cAttr->type, $columnValue);
+            }
+            unset($columnValue);
             $err = $doc->addArrayRow($oAttr->id, $row);
             if ($err) {
                 throw new \Dcp\AttributeValue\Exception('VALUE0007', $oAttr->id, $doc->fromname, $doc->getTitle() , $err);
