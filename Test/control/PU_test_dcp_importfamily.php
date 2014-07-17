@@ -324,6 +324,21 @@ class TestImportFamily extends TestCaseDcpDocument
                 array(
                     "ATTR1701"
                 )
+            ) ,
+            // PARAM frame errors
+            array(
+                "PU_data_dcp_badattr15.ods",
+                array(
+                    "ATTR0208",
+                    "tst_number2",
+                    "ATTR0209",
+                    "tst_number1",
+                    "ATTR0210",
+                    "tst_number4",
+                    "tst_frame2",
+                    "ATTR0903",
+                    "tst_colneed"
+                )
             )
         );
     }
