@@ -599,10 +599,10 @@ class DocFormFormat
         private function formatHtmlText($value)
         {
             if (($this->visibility == "H") || ($this->visibility == "R")) {
-                $input = sprintf('<textarea style="display:none" name="%s" id="%s">%s</textarea>', $this->attrin, $this->attridk, $value);
+                $input = sprintf('<textarea style="display:none" name="%s" id="%s">%s</textarea>', $this->attrin, $this->attridk, htmlspecialchars($value));
             } elseif ($this->visibility == "S") {
                 // no input : just text
-                $input = sprintf('<textarea style="display:none" name="%s" id="%s">%s</textarea>', $this->attrin, $this->attridk, $value);
+                $input = sprintf('<textarea style="display:none" name="%s" id="%s">%s</textarea>', $this->attrin, $this->attridk, htmlspecialchars($value));
                 if ($value == "") {
                     $value = '<br/>';
                 }
