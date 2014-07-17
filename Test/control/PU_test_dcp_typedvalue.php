@@ -305,6 +305,44 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
+                'TST_DOCTYPE1',
+                "set" => array(
+                    "tst_array5" => array(
+                        array(
+                            "tst_dates" => new \DateTime("2013-04-20")
+                        ) ,
+                        array(
+                            "tst_dates" => new \DateTime("2013-4-2")
+                        )
+                    )
+                ) ,
+                "get" => array(
+                    "tst_dates" => array(
+                        "2013-04-20",
+                        "2013-04-02"
+                    )
+                )
+            ) ,
+            array(
+                'TST_DOCTYPE1',
+                "set" => array(
+                    "tst_array8" => array(
+                        array(
+                            "tst_timestamps" => new \DateTime("2013-09-30T10:00:00")
+                        ) ,
+                        array(
+                            "tst_timestamps" => new \DateTime("2013-09-30T22:00:00")
+                        )
+                    )
+                ) ,
+                "get" => array(
+                    "tst_timestamps" => array(
+                        '2013-09-30T10:00:00',
+                        '2013-09-30T22:00:00'
+                    )
+                )
+            ) ,
+            array(
                 'TST_DOCTYPE2',
                 "set" => array(
                     "tst_t_numbers" => array(
