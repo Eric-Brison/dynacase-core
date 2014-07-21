@@ -19,8 +19,8 @@
 </style>
         [IF canEdit]
 <div class="barmenu">
-<a href="?app=GENERIC&amp;action=GENERIC_EDIT&amp;usefor=D&amp;classid=[docid]&amp;rzone=%26action%3DIMPCARD%26zone%3DFDL%3AVIEWDEFAULTVALUES%26id%3D[docid]">[TEXT:Modify default Values]</a>
-[IFNOT NOPAR]<a href="?app=GENERIC&amp;action=GENERIC_EDIT&amp;usefor=Q&amp;classid=[docid]&amp;rzone=%26action%3DIMPCARD%26zone%3DFDL%3AVIEWDEFAULTVALUES%26id%3D[docid]">[TEXT:Modify parameters Values]</a>[ENDIF NOPAR]
+<a href="?app=GENERIC&amp;action=GENERIC_EDIT&amp;usefor=D&amp;classid=[docid]&amp;rzone=FDL%3AVIEWDEFAULTVALUES">[TEXT:Modify default Values]</a>
+[IFNOT NOPAR]<a href="?app=GENERIC&amp;action=GENERIC_EDIT&amp;usefor=Q&amp;classid=[docid]&amp;rzone=FDL%3AVIEWDEFAULTVALUES">[TEXT:Modify parameters Values]</a>[ENDIF NOPAR]
 </div>[ENDIF canEdit]
 <h1>[TEXT:Default Values and Parameters]</h1>
 <div class="defaultValues" align="center">
