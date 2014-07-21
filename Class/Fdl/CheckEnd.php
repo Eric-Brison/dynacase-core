@@ -240,6 +240,30 @@ class CheckEnd extends CheckData
                 }
             }
         }
+        $this->checkSetParameters();
+    }
+    protected function checkSetParameters()
+    {
+        $this->doc->getAttributes(); // force reattach attributes
+        $la = $this->doc->getParamAttributes();
+        foreach ($la as & $oa) {
+            $foa = $oa->fieldSet;
+            if (!$foa) {
+                $this->addError(ErrorCode::getError('ATTR0208', $oa->id, $this->doc->name));
+            } elseif ((!is_a($foa, "FieldSetAttribute")) && ($foa->type != 'array')) {
+                $this->addError(ErrorCode::getError('ATTR0209', $foa->id, $oa->id));
+            } else {
+                $type = $oa->type;
+                $ftype = $oa->fieldSet->type;
+                if (($ftype != 'frame') && ($ftype != 'array')) {
+                    $this->addError(ErrorCode::getError('ATTR0210', $foa->id, $oa->id));
+                } elseif ($ftype == 'array') {
+                    if ($oa->needed) {
+                        $this->addError(ErrorCode::getError('ATTR0903', $oa->id));
+                    }
+                }
+            }
+        }
     }
     private function verifyMethod($strucFunc, $oa, &$refMeth = null)
     {

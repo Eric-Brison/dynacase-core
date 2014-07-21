@@ -78,6 +78,24 @@ class ErrorCodeATTR
     const ATTR0207 = 'this attribute structure "%s" is not a allowed for frame attribute "%s"';
     /**
      * @errorCode
+     * Parameter structure must reference a parameter
+     */
+    const ATTR0208 = 'param structure reference is not a parameter for "%s", family "%s"';
+    /**
+     * @errorCode
+     * Parameter structure must compatible with level hierarchy
+     * @note a tab has no parent,
+     * a frame must have only tab parent,
+     * another parameter must have only frame parent or array parent
+     */
+    const ATTR0209 = 'parameter structure "%s" is not possible for "%s"';
+    /**
+     * @errorCode
+     * Parameter structure must reference a frame or array parameter for parameter
+     */
+    const ATTR0210 = 'this parameter structure "%s" is not a allowed for parameter"%s"';
+    /**
+     * @errorCode
      * Attribute isTitle is Y or N
      */
     const ATTR0400 = 'invalid value "%s" for isTitle in attribute "%s"';
@@ -171,6 +189,11 @@ class ErrorCodeATTR
      * property isNeeded cannot be used when attribute is included in an array
      */
     const ATTR0902 = 'isNeeded cannot be set for  attribute included in array "%s"';
+    /**
+     * @errorCode
+     * property isNeeded cannot be used when parameter is included in an array
+     */
+    const ATTR0903 = 'isNeeded cannot be set for parameter included in array "%s"';
     /**
      * @errorCode
      * syntaxt error in method describe in link
