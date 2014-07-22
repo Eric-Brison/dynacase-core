@@ -395,8 +395,11 @@ function handleActionException(Exception $e)
             $action->exitError($e->getMessage());
         }
     } else {
-        
-        print $e->getMessage();
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            print htmlspecialchars($e->getMessage());
+        } else {
+            print $e->getMessage();
+        }
     }
 }
 

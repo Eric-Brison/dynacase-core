@@ -19,7 +19,7 @@
 include_once ("FDL/popupdocdetail.php");
 include_once ("FDL/popupfamdetail.php");
 
-function editbarmenu(Action &$action)
+function editbarmenu(Action & $action)
 {
     $docid = GetHttpVars("id");
     $zonebodycard = GetHttpVars("zone"); // define view action
@@ -51,8 +51,8 @@ function editbarmenu(Action &$action)
     if ((!$docid) && (($usefor == "Q") || ($usefor == "D"))) $action->lay->eset("id", $classid);
     $action->lay->Set("boverdisplay", "none");
     $action->lay->Set("INPUTCONSTRAINT", false);
-    $action->lay->Set("rzone", urlencode($rzone));
-    $action->lay->Set("rvid", urlencode($rvid));
+    $action->lay->eSet("rzone", $rzone);
+    $action->lay->eSet("rvid", $rvid);
     $action->lay->Set("admin", ($action->user->id == 1));
     $action->lay->Set("NOSAVE", (preg_match("/[A-Z]+:[^:]+:V/", $zonebodycard, $reg)));
     if (GetHttpVars("viewconstraint") == "Y") {
@@ -85,11 +85,11 @@ function editbarmenu(Action &$action)
             if ($v->precond != "") $mvis = $doc->ApplyMethod($v->precond, MENU_ACTIVE);
             if ($mvis == MENU_ACTIVE) {
                 $taction[$k] = array(
-                    "wadesc" => $v->getOption("llabel") ,
-                    "walabel" => ucfirst($v->getLabel()) ,
-                    "waction" => $v->waction,
-                    "wtarget" => $v->id,
-                    "wapplication" => $v->wapplication
+                    "wadesc" => htmlspecialchars($v->getOption("llabel") , ENT_QUOTES) ,
+                    "walabel" => htmlspecialchars(ucfirst($v->getLabel()) , ENT_QUOTES) ,
+                    "waction" => htmlspecialchars($v->waction, ENT_QUOTES) ,
+                    "wtarget" => htmlspecialchars($v->id, ENT_QUOTES) ,
+                    "wapplication" => htmlspecialchars($v->wapplication, ENT_QUOTES)
                 );
             }
         }

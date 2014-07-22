@@ -69,7 +69,7 @@ function viewbarmenu(Action & $action)
         else if (($v["url"] == "") && ($v["jsfunction"] == "")) unset($popup[$k]);
         else {
             $popup[$k]["menu"] = ($v["submenu"] != "");
-            $popup[$k]["self"] = (($v["target"] == "_self") && ($v["jsfunction"] == ""));
+            $popup[$k]["self"] = (($v["target"] == "_self") && ($v["jsfunction"] == "")) ? 'true' : 'false';
             if ($popup[$k]["menu"]) {
                 $idxmenu = $v["submenu"];
                 if (!isset($mpopup[$idxmenu])) {
@@ -78,18 +78,18 @@ function viewbarmenu(Action & $action)
                         "idlink" => $idxmenu,
                         "descr" => _($v["submenu"]) ,
                         "visibility" => false,
-                        "confirm" => false,
-                        "jsfunction" => false,
+                        "confirm" => "false",
+                        "jsfunction" => "false",
                         "title" => _("Click to view menu") ,
                         "barmenu" => false,
                         "m" => "",
-                        "url" => false,
-                        "target" => false,
-                        "mwidth" => false,
-                        "mheight" => false,
-                        "smid" => false,
+                        "url" => "",
+                        "target" => "",
+                        "mwidth" => "",
+                        "mheight" => "",
+                        "smid" => "",
                         "menu" => true,
-                        "tconfirm" => false,
+                        "tconfirm" => "",
                         "issubmenu" => false
                     );
                 } else {
@@ -103,8 +103,8 @@ function viewbarmenu(Action & $action)
                 $popup[$k]["descr"] = $v["descr"];
                 $popup[$k]["title"] = ucfirst($v["title"]);
                 $popup[$k]["m"] = ($v["barmenu"] == "true") ? "m" : "";
-                $popup[$k]["ISJS"] = ($v["jsfunction"] != "");
-                $popup[$k]["confirm"] = ($v["confirm"] == "true");
+                $popup[$k]["ISJS"] = ($v["jsfunction"] != "") ? 'true' : 'false';
+                $popup[$k]["confirm"] = ($v["confirm"] == "true") ? 'true' : 'false';
                 $popup[$k]["tconfirm"] = str_replace(array(
                     '"',
                     "'"
@@ -115,6 +115,15 @@ function viewbarmenu(Action & $action)
             }
         }
     }
+    foreach ($popup as & $elmt) {
+        foreach ($elmt as & $value) {
+            if (is_string($value)) {
+                $value = htmlspecialchars($value, ENT_QUOTES);
+            }
+        }
+        unset($value);
+    }
+    unset($elmt);
     $action->lay->set("other", $other);
     $action->lay->setBlockData("LINKS", $popup);
     $action->lay->set("id", $doc->id);

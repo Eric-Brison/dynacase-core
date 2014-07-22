@@ -6708,7 +6708,7 @@ create unique index i_docir on doc(initid, revision);";
         
         $reg = $this->parseZone($layout);
         if ($reg === false) {
-            return sprintf(_("error in pzone format %s") , $layout);
+            return htmlspecialchars(sprintf(_("error in pzone format %s") , $layout) , ENT_QUOTES);
         }
         
         if (array_key_exists('args', $reg)) {
