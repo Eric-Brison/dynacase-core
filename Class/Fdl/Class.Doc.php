@@ -635,7 +635,7 @@ class Doc extends DocCtrl
      * used by fulltext indexing
      * @var array
      */
-    private $textsend;
+    private $textsend = array();
     /**
      * to not detect changed when it is automatic setValue
      * @var bool
@@ -1822,10 +1822,24 @@ create unique index i_docir on doc(initid, revision);";
             $this->Complete();
             if ($more) $this->GetMoreValues();
             
-            $this->isset = true;
+            $this->_maskApplied = false;
             $this->_oldvalue = array();
-            $this->fathers = null;
+            $this->_paramValue = array();
+            $this->_setValueCompleteArrayRow = true;
+            $this->_setValueDetectChange = true;
             $this->childs = null;
+            $this->constraintbroken = false;
+            $this->fathers = null;
+            $this->hasChanged = false;
+            $this->htmlFormater = null;
+            $this->lastRefreshError = '';
+            $this->mvalues = array();
+            $this->oooFormater = null;
+            $this->textsend = array();
+            $this->withoutControl = false;
+            $this->withoutControlN = 0;
+            
+            $this->isset = true;
         }
     }
     /**
