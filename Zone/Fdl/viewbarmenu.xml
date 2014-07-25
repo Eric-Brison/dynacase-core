@@ -1,6 +1,49 @@
 <div   class="barmenu">[BLOCK LINKS]
 
+<script>
+// <![CDATA[
+function menuOpen(event, elmt) {
+    var confirm = ($(elmt).data('confirm') == 'true');
+    var tconfirm = $(elmt).data('tconfirm');
+    var m = $(elmt).data('m');
+    var mheight = $(elmt).data('mheight');
+    var mwidth = $(elmt).data('mwidth');
+    var target = $(elmt).data('target');
+    var url = $(elmt).data('url');
+    var isjs = ($(elmt).data('isjs') == 'true');
+    var jsfunction = $(elmt).data('jsfunction');
+    var self = ($(elmt).data('self') == 'true');
+    if (confirm) {
+        if (!confirm(tconfirm)) {
+            return;
+        }
+    }
+    if (!isjs) {
+        if (self) {
+            viewwaitbarmenu(elmt, elmt.parentNode);
+        }
+        if (m == 'm') {
+            subwindowm(mheight, mwidth, target, url);
+        } else {
+            subwindow(mheight, mwidth, target, url);
+        }
+    } else {
+        eval(jsfunction);
+    }
+}
+function openBarDocSubMenu(event, elmt) {
+    var id = $(elmt).data('id');
+    var idlink = $(elmt).data('idlink');
+    return bardocsubmenu(event, id, idlink, elmt);
+}
+function openBarDocMenu(event, elmt) {
+    var id = $(elmt).data('id');
+    bardocmenu(event, id, true, elmt);
+    return false;
+}
+// ]]>
+</script>
 
-[IFNOT menu]<a  title="[title]" onclick="[IF confirm]if (confirm('[tconfirm]')){[ENDIF confirm] [IFNOT ISJS][IF self]viewwaitbarmenu(this,this.parentNode);[ENDIF self]subwindow[m]('[mheight]','[mwidth]','[target]','[url]')[IF confirm]} [ENDIF confirm][ENDIF ISJS][IF ISJS][jsfunction][ENDIF ISJS]">[descr]</a>[ENDIF menu]
-[IF menu]<a  title="[title]"  onclick="bardocsubmenu(event,'[id]','[idlink]',this);">[descr]&darr;</a>[ENDIF menu]
-[ENDBLOCK LINKS] [IF other]<a   onclick="bardocmenu(event,'[id]',true,this);return false"  title="[TEXT:Click to view menu]">[TEXT:Others]&darr;</a>[ENDIF other] </div>
+[IFNOT menu]<a  title="[title]" onclick="return menuOpen(event, this);" data-confirm="[confirm]" data-tconfirm="[tconfirm]" data-m="[m]" data-mheight="[mheight]" data-mwidth="[mwidth]" data-target="[target]" data-url="[url]" data-isjs="[isjs]" data-jsfunction="[jsfunction]">[descr]</a>[ENDIF menu]
+[IF menu]<a  title="[title]"  onclick="openBarDocSubMenu(event, this);" data-id="[id]" data-idlink="[idlink]">[descr]&darr;</a>[ENDIF menu]
+[ENDBLOCK LINKS] [IF other]<a   onclick="return openBarDocMenu(event, this);"  data-id="[id]" title="[TEXT:Click to view menu]">[TEXT:Others]&darr;</a>[ENDIF other] </div>

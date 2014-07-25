@@ -24,7 +24,7 @@ include_once ("FDL/Class.Dir.php");
 function generic_mod(Action & $action)
 {
     if (check_max_input_vars($action) === false) {
-        $action->exitError(sprintf(_("Input variables exceeded %s. To increase the limit change max_input_vars in php.ini."), ini_get('max_input_vars')));
+        $action->exitError(sprintf(_("Input variables exceeded %s. To increase the limit change max_input_vars in php.ini.") , ini_get('max_input_vars')));
     }
     // -----------------------------------
     // Get all the params
@@ -107,7 +107,7 @@ function generic_mod(Action & $action)
         }
         
         $action->lay->set("autoclose", $autoclose ? "true" : "false");
-        $action->lay->set("id", $ndocid);
+        $action->lay->eSet("id", $ndocid);
         if (is_array($info)) {
             foreach ($info as $k => $v) {
                 $info[$k]["prefix"] = sprintf(_("constraint not validated for %s attribute") , $v["label"]);
@@ -115,19 +115,29 @@ function generic_mod(Action & $action)
         }
         $action->lay->set("constraintinfo", json_encode($info));
         $action->lay->set("quicksave", (bool)$quicksave);
-        if ($rzone != "") $zone = "&zone=$rzone";
+        if ($rzone != "") $zone = sprintf("&zone=%s", urlencode($rzone));
         else $zone = "";
-        if ($rvid != "") $zone = "&vid=$rvid";
+        if ($rvid != "") $zone = sprintf("&vid=%s", urlencode($rvid));
         if ($err == "-") $err = "";
         $action->lay->set("error", json_encode($err));
         $warning = $action->parent->getWarningMsg();
         if ($warning && count($warning) > 0) $warning = implode("\n", $warning);
         else $warning = '';
         $action->lay->set("warning", json_encode($warning));
-        if ($retedit) $action->lay->set("url", sprintf("?app=%s&action=%s$zone", getHttpVars("redirect_app", "GENERIC") , getHttpVars("redirect_act", "GENERIC_EDIT&id=$ndocid")));
-        else {
-            if ($viewext) $action->lay->set("url", sprintf("?app=%s&action=%s$zone", getHttpVars("redirect_app", "FDL") , getHttpVars("redirect_act", "VIEWEXTDOC$zone&refreshfld=Y&id=$ndocid")));
-            else $action->lay->set("url", sprintf("?app=%s&action=%s$zone", getHttpVars("redirect_app", "FDL") , getHttpVars("redirect_act", "FDL_CARD$zone&refreshfld=Y&id=$ndocid")));
+        if ($retedit) {
+            $ract = getHttpVars("redirect_act", null);
+            $ract = (($ract !== null) ? urlencode($ract) : "GENERIC_EDIT&id=" . urlencode($ndocid));
+            $action->lay->set("url", sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "GENERIC")) , $ract) . $zone);
+        } else {
+            if ($viewext) {
+                $ract = getHttpVars("redirect_act", null);
+                $ract = (($ract !== null) ? urlencode($ract) : "VIEWEXTDOC$zone&refreshfld=Y&id=" . urlencode($ndocid));
+                $action->lay->set("url", sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "FDL")) , $ract) . $zone);
+            } else {
+                $ract = getHttpVars("redirect_act", null);
+                $ract = (($ract !== null) ? urlencode($ract) : "FDL_CARD$zone&refreshfld=Y&id=" . urlencode($ndocid));
+                $action->lay->set("url", sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "FDL")) , $ract) . $zone);
+            }
         }
         return;
     }
@@ -136,14 +146,13 @@ function generic_mod(Action & $action)
         redirect($action, GetHttpVars("redirect_app", "GENERIC") , GetHttpVars("redirect_act", "GENERIC_LOGO") , $action->GetParam("CORE_STANDURL"));
     }
     if ($retedit) {
-        redirect($action, GetHttpVars("redirect_app", "GENERIC") , GetHttpVars("redirect_act", "GENERIC_EDIT&id=$ndocid") , $action->GetParam("CORE_STANDURL"));
+        redirect($action, GetHttpVars("redirect_app", "GENERIC") , GetHttpVars("redirect_act", "GENERIC_EDIT&id=" . urlencode($ndocid)) , $action->GetParam("CORE_STANDURL"));
     } else {
         
-        if ($rzone != "") $zone = "&zone=$rzone";
+        if ($rzone != "") $zone = sprintf("&zone=%s", urlencode($rzone));
         else $zone = "";
-        if ($rvid != "") $zone = "&vid=$rvid";
+        if ($rvid != "") $zone = sprintf("&vid=%s", urlencode($rvid));
         // $action->register("reload$ndocid","Y"); // to reload cached client file
-        redirect($action, GetHttpVars("redirect_app", "FDL") , GetHttpVars("redirect_act", "FDL_CARD$zone&refreshfld=Y&id=$ndocid") , $action->GetParam("CORE_STANDURL"));
+        redirect($action, GetHttpVars("redirect_app", "FDL") , GetHttpVars("redirect_act", "FDL_CARD$zone&refreshfld=Y&id=" . urlencode($ndocid)) , $action->GetParam("CORE_STANDURL"));
     }
 }
-?>
