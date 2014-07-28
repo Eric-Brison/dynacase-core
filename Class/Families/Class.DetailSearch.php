@@ -10,6 +10,12 @@
 namespace Dcp\Core;
 class DetailSearch extends \Dcp\Family\Search
 {
+    /**
+     * Last suggestion for constraints
+     * @var string
+     */
+    private $last_sug;
+    
     var $defaultedit = "FREEDOM:EDITDSEARCH"; #N_("include") N_("equal") N_("equal") _("not equal") N_("is empty") N_("is not empty") N_("one value equal")
     var $defaultview = "FREEDOM:VIEWDSEARCH"; #N_("not include") N_("begin by") N_("not equal") N_("&gt; or equal") N_("&lt; or equal")  N_("content file word") N_("content file expression")
     
@@ -30,9 +36,7 @@ class DetailSearch extends \Dcp\Family\Search
         } else $cdirid = 0;;
         
         $filters = $this->getSqlGeneralFilters($keyword, $latest, $sensitive);
-        
         $cond = $this->getSqlDetailFilter();
-        
         if ($cond === false) return array(
             false
         );
@@ -71,6 +75,12 @@ class DetailSearch extends \Dcp\Family\Search
     function postStore()
     {
         $err = parent::postStore();
+        try {
+            $this->getSqlDetailFilter(true);
+        }
+        catch(\Exception $e) {
+            $err.= $e->getMessage();
+        }
         $err.= $this->updateFromXmlFilter();
         $err.= $this->updateXmlFilter();
         if ((!$err) && ($this->isChanged())) $err = $this->modify();
@@ -249,6 +259,51 @@ class DetailSearch extends \Dcp\Family\Search
         return $err;
     }
     /**
+     * Check the given string is a valid Postgresql's RE
+     *
+     * @param string $str
+     * @return string empty string if valid or error message
+     */
+    private function isValidPgRegex($str)
+    {
+        $err = '';
+        $this->last_sug = '';
+        $this->savePoint(__FUNCTION__);
+        $q = sprintf("SELECT regexp_matches('', E'%s')", pg_escape_string($str));
+        try {
+            simpleQuery($this->dbaccess, $q, $res);
+        }
+        catch(\Exception $e) {
+            $err = $e->getMessage();
+        }
+        $this->rollbackPoint(__FUNCTION__);
+        if ($err != '') {
+            $err = _("invalid regular expression");
+            $this->last_sug = preg_quote($str, '');
+        }
+        return $err;
+    }
+    /**
+     * Check validity of a condition tuple (attr, op, value)
+     *
+     * @param string $attr The attribute for the condition
+     * @param string $op The operator for the condition
+     * @param string $value The value for the condition
+     * @return string empty string if valid or error message
+     */
+    public function isValidCondition($attr, $op, $value)
+    {
+        $err = '';
+        $this->getSqlCond($attr, $op, $value, '', $err, true);
+        if ($err != '') {
+            $err = sprintf(_("Invalid condition for attribute '%s' with value '%s': %s") , $attr, $value, $err);
+        }
+        return array(
+            'err' => $err,
+            'sug' => isset($this->last_sug) ? $this->last_sug : ''
+        );
+    }
+    /**
      * return sql part from operator
      * @param string $col a column : property or attribute name
      * @param string $op one of this ::top keys : =, !=, >, ....
@@ -256,7 +311,7 @@ class DetailSearch extends \Dcp\Family\Search
      * @param string $val2 second value use for test with >< operator
      * @return string the sql query part
      */
-    function getSqlCond($col, $op, $val = "", $val2 = "", &$err = "")
+    function getSqlCond($col, $op, $val = "", $val2 = "", &$err = "", $validateCond = false)
     {
         
         if ((!$this->searchfam) || ($this->searchfam->id != $this->getRawValue("se_famid"))) {
@@ -356,12 +411,22 @@ class DetailSearch extends \Dcp\Family\Search
                 break;
 
             case "~*":
+                if ($validateCond) {
+                    if (($err = $this->isValidPgRegex($val)) != '') {
+                        return '';
+                    }
+                }
                 if (trim($val) != "") {
                     $cond = " " . $col . " " . trim($op) . " " . $this->_pg_val($val) . " ";
                 }
                 break;
 
             case "~^":
+                if ($validateCond) {
+                    if (($err = $this->isValidPgRegex($val)) != '') {
+                        return '';
+                    }
+                }
                 if (trim($val) != "") {
                     $cond = " " . $col . "~* '^" . pg_escape_string(trim($val)) . "' ";
                 }
@@ -370,6 +435,11 @@ class DetailSearch extends \Dcp\Family\Search
             case "~y":
                 if (!is_array($val)) {
                     $val = $this->rawValueToArray($val);
+                }
+                if ($validateCond) {
+                    if (($err = $this->isValidPgRegex(implode('|', $val))) != '') {
+                        return '';
+                    }
                 }
                 if (count($val) > 0) {
                     $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
@@ -385,6 +455,11 @@ class DetailSearch extends \Dcp\Family\Search
             case "=~*":
                 switch ($atype) {
                     case "uid":
+                        if ($validateCond) {
+                            if (($err = $this->isValidPgRegex($val)) != '') {
+                                return '';
+                            }
+                        }
                         $err = simpleQuery(getDbAccessCore() , sprintf("select id from users where firstname ~* '%s' or lastname ~* '%s'", pg_escape_string($val) , pg_escape_string($val)) , $ids, true);
                         if ($err == "") {
                             if (count($ids) == 0) {
@@ -399,6 +474,11 @@ class DetailSearch extends \Dcp\Family\Search
 
                     case "account":
                     case "docid":
+                        if ($validateCond) {
+                            if (($err = $this->isValidPgRegex($val)) != '') {
+                                return '';
+                            }
+                        }
                         if ($oa) {
                             $otitle = $oa->getOption("doctitle");
                             if (!$otitle) {
@@ -458,6 +538,11 @@ class DetailSearch extends \Dcp\Family\Search
                 break;
 
             case "~@":
+                if ($validateCond) {
+                    if (($err = $this->isValidPgRegex($val)) != '') {
+                        return '';
+                    }
+                }
                 if (trim($val) != "") {
                     $cond = " " . $col . '_txt' . " ~ '" . strtolower($val) . "' ";
                 }
@@ -473,9 +558,9 @@ class DetailSearch extends \Dcp\Family\Search
                         $keyword = trim($val);
                     }
                     if ($op == "@@") {
-                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','." .pg_escape_string(unaccent(strtolower($keyword))) . "') ";
+                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','." . pg_escape_string(unaccent(strtolower($keyword))) . "') ";
                     } elseif ($op == "=@") {
-                        $cond = sprintf( "fulltext @@ to_tsquery('french','%s') ", pg_escape_string(unaccent(strtolower($keyword))));
+                        $cond = sprintf("fulltext @@ to_tsquery('french','%s') ", pg_escape_string(unaccent(strtolower($keyword))));
                     }
                 }
                 break;
@@ -509,6 +594,11 @@ class DetailSearch extends \Dcp\Family\Search
                             }
                             $cond = " (($cond1) or ($col is null))";
                         } elseif ($op == '!~*') {
+                            if ($validateCond) {
+                                if (($err = $this->isValidPgRegex($val)) != '') {
+                                    return '';
+                                }
+                            }
                             $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op) , $this->_pg_val($val));
                         }
                         
@@ -520,6 +610,11 @@ class DetailSearch extends \Dcp\Family\Search
                         }
                         $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
                         if (($op == '!=') || ($op == '!~*')) {
+                            if ($validateCond && $op == '!~*') {
+                                if (($err = $this->isValidPgRegex($val)) != '') {
+                                    return '';
+                                }
+                            }
                             $cond = "(($cond1) or ($col is null))";
                         } else {
                             $cond = $cond1;
@@ -545,7 +640,7 @@ class DetailSearch extends \Dcp\Family\Search
     /**
      * return array of sql filter needed to search wanted document
      */
-    function getSqlDetailFilter()
+    function getSqlDetailFilter($validateCond = false)
     {
         $ol = $this->getRawValue("SE_OL");
         $tkey = $this->getMultipleRawValues("SE_KEYS");
@@ -599,7 +694,10 @@ class DetailSearch extends \Dcp\Family\Search
                 }
             }
             foreach ($taid as $k => $v) {
-                $cond1 = $this->getSqlCond($taid[$k], trim($tf[$k]) , $tkey[$k]);
+                $cond1 = $this->getSqlCond($taid[$k], trim($tf[$k]) , $tkey[$k], "", $err, $validateCond);
+                if ($validateCond && $err != '') {
+                    throw new \Exception($err);
+                }
                 if ($cond == "") {
                     if (isset($tlp[$k]) && $tlp[$k] == "yes") $cond = '(' . $cond1 . " ";
                     else $cond = $cond1 . " ";
@@ -1168,7 +1266,8 @@ class DetailSearch extends \Dcp\Family\Search
                     "leftp_open_selected" => ($tlp[$k] == "yes") ? "selected" : "",
                     "rightp_none_selected" => ($trp[$k] != "yes") ? "selected" : "",
                     "rightp_open_selected" => ($trp[$k] == "yes") ? "selected" : "",
-                    "key" => $v
+                    "key" => $v,
+                    "rowidx" => $k
                 );
                 $tattrSelect = array();
                 if ($keyId == "state" || ($keyId == "fixstate") || ($keyId == "activity")) {

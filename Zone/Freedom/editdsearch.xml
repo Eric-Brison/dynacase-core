@@ -5,7 +5,7 @@
   $(document).ready(function() {
 
     $('#fedit').bind('submit', function() {
-      deletenew();
+      // deletenew();
     });
 
 
@@ -94,7 +94,7 @@ tr.FREEDOMBack2 td.opt {
 <tr><td><label for="latest"> [L_SE_FAMONLY]&nbsp;:</label>[V_SE_FAMONLY]</td></tr>
 <tr><td><label for="latest"> [L_SE_OL]&nbsp;:</label>[V_SE_OL]</td></tr>
 </table>
-<table border="0" cellspacing="0" width="100%">
+<table border="0" cellspacing="0" width="100%" id="Tse_t_detail">
 <thead>
 
         <!-- Template for new attribute row -->
@@ -104,34 +104,34 @@ tr.FREEDOMBack2 td.opt {
   <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="FREEDOM/Images/bin.png">
 </td>
 <td class="und" align="left">
-		 <select class="modeperso" name="_se_ols[]"   >
+		 <select class="modeperso" name="tpl!_se_ols[]"   >
   <option selected  value="">[TEXT:OP_GLOB]</option>
   <option value="and">[TEXT:OP_AND]</option>
   <option value="or">[TEXT:OP_OR]</option>
   </select>
 	</td>
 	<td class="und">
-		 <select class="modeperso" name="_se_leftp[]"   >
+		 <select class="modeperso" name="tpl!_se_leftp[]"   >
   <option selected  value="no"></option>
   <option value="yes">(</option>
   </select>
 	</td>
 <td class="und" >
-  <select class="cond"  name="_se_attrids[]"  onchange="filterfunc(this)">
+  <select class="cond"  name="tpl!_se_attrids[]"  onchange="filterfunc(this)">
   [BLOCK ATTR]<option atype="[attrtype]" class="[attrtype]" ismultiple="[ismultiple]" [attrdisabled] value="[attrid]">[attrname]</option>
   [ENDBLOCK ATTR]
   </select></td>
 <td class="und">
-  <select  name="_se_funcs[]"  onchange="filterfunc2(this)">
+  <select  name="tpl!_se_funcs[]"  onchange="filterfunc2(this)">
     [BLOCK FUNC]<option  ctype="[functype]" style="display:[funcdisplay]" value="[funcid]">[funcname]</option>
     [ENDBLOCK FUNC]
   </select></td>
 <td class="und"  >
-   <input id="thekey" type="text"  size="20"  name="_se_keys[]" ></td><td>
+   <input id="thekey" type="text"  size="20"  name="tpl!_se_keys[]" ></td><td>
    <input title="[TEXT:search methods]" type="button" value="&Sigma;" onclick="callFunction(event,this)">
    </td>
    	<td class="und">
-		 <select  class="modeperso" name="_se_rightp[]"   >
+		 <select  class="modeperso" name="tpl!_se_rightp[]"   >
   <option selected  value="no"></option>
   <option   value="yes">)</option>
   </select></td>
@@ -144,35 +144,35 @@ tr.FREEDOMBack2 td.opt {
   <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="FREEDOM/Images//bin.png">
 </td>
 <td>
-		 <select class="modeperso" name="_se_ols[]"   >
+		 <select class="modeperso" name="tpl!_se_ols[]"   >
   <option selected  value="">[TEXT:OP_GLOB]</option>
   <option value="and">[TEXT:OP_AND]</option>
   <option value="or">[TEXT:OP_OR]</option>
   </select>
 	</td>
 	<td class="und">
-		 <select class="modeperso" name="_se_leftp[]"   >
+		 <select class="modeperso" name="tpl!_se_leftp[]"   >
   <option selected  value="no"></option>
   <option value="yes">(</option>
   </select>
 	</td>
 <td class="und" >
-  <select name="_se_attrids[]" >
+  <select name="tpl!_se_attrids[]" >
      <option value="activity">[TEXT:Activity]</option>
      <option value="fixstate">[TEXT:State]</option>
   </select></td>
 <td class="und">
-  <select  name="_se_funcs[]" >
+  <select  name="tpl!_se_funcs[]" >
     [BLOCK FUNCSTATE]<option value="[funcid]">[funcname]</option>
     [ENDBLOCK FUNCSTATE]
   </select></td>
 <td class="und"  >
-  <select  name="_se_keys[]" >
+  <select  name="tpl!_se_keys[]" >
   [BLOCK STATE]<option  step="[step]" value="[stateid]">[statename]</option>
   [ENDBLOCK STATE]
   </select></td><td><input title="[TEXT:search methods]" type="button" value="&Sigma;" onclick="callFunction(event,this)"></td>
 	<td class="und">
-		 <select class="modeperso" name="_se_rightp[]"   >
+		 <select class="modeperso" name="tpl!_se_rightp[]"   >
   <option selected  value="no"></option>
   <option   value="yes">)</option>
   </select></td>
@@ -231,18 +231,18 @@ tr.FREEDOMBack2 td.opt {
 <td class="und" data-issearchmethod="[IF ISSEARCHMETHOD]yes[ENDIF ISSEARCHMETHOD][IFNOT ISSEARCHMETHOD]no[ENDIF ISSEARCHMETHOD]">
   [IFNOT ISENUM]
 	  [IFNOT ISDOCID]
-	   <input  type="text"  size="20" name="_se_keys[]" value="[key]">
+	   <input type="text"  size="20" id="_se_keys[rowidx]" name="_se_keys[]" value="[key]">
 	  [ENDIF ISDOCID]
 	  [IF ISDOCID]
 		<input autocomplete="off" autoinput="1"  onfocus="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');activeAuto(event,[FAMID],this,'','[DOCID_AID]','')"   onchange="addmdocs('_[DOCID_AID]')" type="text" attrid="ilink_[DOCID_AIDINDEX]" value="[DOCID_TITLE]">
                 <input id="ic[DOCID_AIDINDEX]" type="button" onclick="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');sendAutoChoice(event,'[FAMID]',this,'ilink_[DOCID_AID]',null,'[DOCID_AID]')"  value="&#133;">
            <input id="ix[DOCID_AIDINDEX]" type="button" onclick="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');clearInputs(['ilink_[DOCID_AID]','[DOCID_AID]'],null,'[DOCID_AID]' )" title="" value="&times;">
-        <input [IFNOT key]type="hidden"[ENDIF key]  name="_se_keys[]"  attrid="[DOCID_AIDINDEX]" value="[key]">
+        <input [IFNOT key]type="hidden"[ENDIF key] id="_se_keys[rowidx]"  name="_se_keys[]"  attrid="[DOCID_AIDINDEX]" value="[key]">
         [IF ISDOCIDMULTIPLE]<input type="hidden"  id="mdocid_work[DOCID_AID]" value="" onchange="$('#[DOCID_AID]').val(this.value)">[ENDIF ISDOCIDMULTIPLE]
 	  [ENDIF ISDOCID]
   [ENDIF ISENUM]
   [IF ISENUM]
-  <select  name="_se_keys[]" >
+  <select id="_se_keys[rowidx]" name="_se_keys[]" >
   [BLOCK [SSTATE]]<option  step="[sstep]" value="[sstateid]" [sstate_selected]>[sstatename]</option>
   [ENDBLOCK [SSTATE]]
   </select>  

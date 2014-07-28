@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-28 10:14+0200\n"
-"PO-Revision-Date: 2014-08-28 10:27+0200\n"
+"POT-Creation-Date: 2014-07-28 15:49+0200\n"
+"PO-Revision-Date: 2014-07-28 15:52+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -2537,6 +2537,10 @@ msgstr "Inspecter une autre famille"
 
 msgid "Internet explorer site"
 msgstr "Site de Microsoft"
+
+#, php-format
+msgid "Invalid condition for attribute '%s' with value '%s': %s"
+msgstr "Condition invalide pour l'attribut '%s' avec la valeur '%s': %s"
 
 #, php-format
 msgid "Invalid directory '%s'."
@@ -6473,6 +6477,9 @@ msgstr "Interface pour sauvgarder le choix des colonnes d'exportation"
 #, php-format
 msgid "invalid freestate document %s"
 msgstr "état libre %s invalide"
+
+msgid "invalid regular expression"
+msgstr "expression rationnelle invalide"
 
 #, php-format
 msgid "invalid syntax for [%s] for enum attribute"

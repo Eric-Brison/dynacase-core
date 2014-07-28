@@ -913,9 +913,32 @@ function getInputLocked() {
   return (tlock);
 }
 
+/**
+ * Recursively find child elements with the requested tag's names
+ * @param node Root node to start from
+ * @param tagNameList List af tag's names to search for
+ * @private
+ */
+function _getElementsByTagNameList(node, tagNameList) {
+    var list = [];
+    var _recurs = function(node, tagNameList, returnList) {
+        var i;
+        for (i = 0; i < tagNameList.length; i++) {
+            if (node.nodeName.toLowerCase() == tagNameList[i].toLowerCase()) {
+                returnList.push(node);
+                return;
+            }
+        }
+        for (i = 0; i < node.childNodes.length; i++) {
+            _recurs(node.childNodes[i], tagNameList, returnList);
+        }
+    };
+    _recurs(node, tagNameList, list);
+    return list;
+}
 function getInputsByName(n,node) {
-	if (! node) node=document;
-  var ti= node.getElementsByTagName("input");
+  if (! node) node=document;
+  var ti = _getElementsByTagNameList(node, ["input", "select", "textarea"]);
   var t = new Array();
   var ni;
   var pos;
@@ -927,34 +950,6 @@ function getInputsByName(n,node) {
     if ((ni == n) && (ti[i].name.substr(ti[i].name.length-7,7) != '[__1x_]')) {
 
       t.push(ti[i]);
-    }
-  }
-
-  if (t.length == 0) {
-    // try with select
-    ti= node.getElementsByTagName("select");
-
-    for (var i=0; i< ti.length; i++) {
-      pos=ti[i].name.indexOf('[');
-      if (pos==-1) ni=ti[i].name;
-      else ni=ti[i].name.substr(0,pos);
-      if ((ni == n) && (ti[i].name.substr(ti[i].name.length-7,7) != '[__1x_]')) {
-	t.push(ti[i]);
-      }
-    }
-  }
-
-  if (t.length == 0) {
-    // try with select
-    ti= node.getElementsByTagName("textarea");
-
-    for (var i=0; i< ti.length; i++) {
-      pos=ti[i].name.indexOf('[');
-      if (pos==-1) ni=ti[i].name;
-      else ni=ti[i].name.substr(0,pos);
-      if ((ni == n) && (ti[i].name.substr(ti[i].name.length-7,7) != '[__1x_]')) {
-	t.push(ti[i]);
-      }
     }
   }
 
