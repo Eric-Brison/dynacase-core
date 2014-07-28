@@ -104,6 +104,7 @@ create index full_docread on docread using gist(fulltext);";
         "cvid",
         "name",
         "dprofid",
+        "views",
         "atags",
         "prelid",
         "confidential",
