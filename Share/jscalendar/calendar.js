@@ -1258,7 +1258,8 @@ Calendar.prototype.show = function () {
 		window.calendar = this;
 		Calendar.addEvent(document, "keydown", Calendar._keyEvent);
 		Calendar.addEvent(document, "keypress", Calendar._keyEvent);
-		Calendar.addEvent(document, "mousedown", Calendar._checkCalendar);
+		Calendar.addEvent(document, "blur", Calendar._checkCalendar);
+		//Calendar.addEvent(document, "mousedown", Calendar._checkCalendar);
 	}
 	this.hideShowCovered();
 };
@@ -1271,7 +1272,8 @@ Calendar.prototype.hide = function () {
 	if (this.isPopup) {
 		Calendar.removeEvent(document, "keydown", Calendar._keyEvent);
 		Calendar.removeEvent(document, "keypress", Calendar._keyEvent);
-		Calendar.removeEvent(document, "mousedown", Calendar._checkCalendar);
+		Calendar.removeEvent(document, "blur", Calendar._checkCalendar);
+		//Calendar.removeEvent(document, "mousedown", Calendar._checkCalendar);
 	}
 	this.element.style.display = "none";
 	this.hidden = true;
@@ -1337,6 +1339,15 @@ Calendar.prototype.showAtElement = function (el, opts) {
 		p.height = h + 40;
 		self.monthsCombo.style.display = "none";
 		fixPosition(p);
+
+        var wh=$(window).height();
+
+        if (wh < p.y + h) {
+            if (p.y > h) {
+                p.y -= (el.offsetHeight + h);
+            }
+        }
+
 		self.showAt(p.x, p.y);
 	};
 	if (Calendar.is_khtml)
