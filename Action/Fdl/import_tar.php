@@ -55,8 +55,15 @@ function import_tar(&$action, $ftar, $dirid = 0, $famid = 7)
  * import a directory files
  * @param action $action current action
  * @param string $ldir local directory path
+ * @param int $dirid folder id to add new documents
+ * @param int $famid default family for raw files
+ * @param int $dfldid
+ * @param bool $onlycsv if true only fdl.csv file is imported
+ * @param bool $analyze dry-mode it true
+ * @param string $csvLinebreak default line break sequence
+ * @return array
  */
-function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, $onlycsv = false, $analyze = false)
+function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, $onlycsv = false, $analyze = false, $csvLinebreak = '\n')
 {
     // first see if fdl.csv file
     global $importedFiles;
@@ -215,7 +222,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
     return array();
 }
 
-function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze)
+function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $csvLinebreak = '\n')
 {
     $tr = array();
     $fcsv = fopen($fdlcsv, "r");
@@ -250,6 +257,13 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze)
                 "familyname" => "",
                 "action" => "-"
             );
+            if ($csvLinebreak) {
+                $data = array_map(function ($v) use ($csvLinebreak)
+                {
+                    return str_replace($csvLinebreak, "\n", $v);
+                }
+                , $data);
+            }
             switch ($data[0]) {
                     // -----------------------------------
                     
