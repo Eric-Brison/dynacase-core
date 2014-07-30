@@ -10,9 +10,9 @@ function menuOpen(event, elmt) {
     var mwidth = $(elmt).data('mwidth');
     var target = $(elmt).data('target');
     var url = $(elmt).data('url');
-    var isjs = ($(elmt).data('isjs') == 'true');
+    var isjs = ($(elmt).data('isjs') === true);
     var jsfunction = $(elmt).data('jsfunction');
-    var self = ($(elmt).data('self') == 'true');
+    var self = ($(elmt).data('self') === true);
     if (confirm) {
         if (!confirm(tconfirm)) {
             return;

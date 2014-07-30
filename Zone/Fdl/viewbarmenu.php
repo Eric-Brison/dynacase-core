@@ -103,7 +103,7 @@ function viewbarmenu(Action & $action)
                 $popup[$k]["descr"] = $v["descr"];
                 $popup[$k]["title"] = ucfirst($v["title"]);
                 $popup[$k]["m"] = ($v["barmenu"] == "true") ? "m" : "";
-                $popup[$k]["ISJS"] = ($v["jsfunction"] != "") ? 'true' : 'false';
+                $popup[$k]["isjs"] = ($v["jsfunction"] != "") ? 'true' : 'false';
                 $popup[$k]["confirm"] = ($v["confirm"] == "true") ? 'true' : 'false';
                 $popup[$k]["tconfirm"] = str_replace(array(
                     '"',
