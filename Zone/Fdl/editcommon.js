@@ -1592,15 +1592,28 @@ function clearFile(o,nid) {
     $('#IFERR'+nid).text('');
 }
 
+/*
+ * Reset an input file element.
+ *
+ * For IE <= 10, emptying the value with $elmt.val('') is not enough,
+ * so we need to replace the element with a clone of itself.
+ */
+function resetFile(attrName) {
+    var $elmt = $('#IF_'+attrName);
+    $elmt.val('');
+    $elmt.replaceWith($elmt.clone(true));
+}
+
 function restoreFile(o,nid) {
 
     var $t=$('#'+nid);
     $t.val($('#INIV'+nid).val());
 
+    resetFile(nid);
       $t.closest('td').find(".fileName").css('display','').css("text-decoration","");
       $t.closest('td').find(".fileName img").css("visibility","");
       $t.closest('td').find(".newFileName").css('display','none');
-    $('#IF_'+nid).val('').css("display","");
+    $('#IF_'+nid).css("display","");
     $('#iu_'+nid).attr("disabled","disabled");
     if ($('#INIV'+nid).val() != "") {
         $('#ix_'+nid).removeAttr("disabled");
@@ -1611,7 +1624,7 @@ function restoreFile(o,nid) {
 function chooseFile(o,nid) {
 
     var $t=$('#IF_'+nid);
-    if (isIE6 || isIE7 || isIE8 || isIE9) {
+    if (isIE6 || isIE7 || isIE8 || isIE9 || isIE10) {
        $t.css("display","block");
     } else {
         $t.trigger("click");
