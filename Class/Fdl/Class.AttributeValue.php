@@ -209,7 +209,9 @@ class AttributeValue
             }
             foreach ($row as $columnName => & $columnValue) {
                 $cAttr = $doc->getAttribute($columnName);
-                $columnValue = self::typed2string($cAttr->type, $columnValue);
+                if ($cAttr) {
+                    $columnValue = self::typed2string($cAttr->type, $columnValue);
+                }
             }
             unset($columnValue);
             $err = $doc->addArrayRow($oAttr->id, $row);

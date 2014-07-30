@@ -1,0 +1,32 @@
+;;;;;;;;;;;;;;;
+//;héritage;titre;id;class;name;;;;;;;;;;
+BEGIN;;Test archive un;;;TST_ARCHFILE;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+ATTR;TST_FRAME;;Cadre Un;N;N;frame;;W;N;;;;;;
+ATTR;TST_TITLE;TST_FRAME;Titre;Y;N;text;10;W;Y;;;;;;
+ATTR;TST_FILE;TST_FRAME;File;N;N;file;15;W;N;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+//;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+//;héritage;titre;id;class;name;;;;;;;;;;
+BEGIN;;Test archive multi;;;TST_ARCHFILES;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+ATTR;TST_FRAME;;Cadre Un;N;N;frame;;W;N;;;;;;
+ATTR;TST_TITLE;TST_FRAME;Titre;Y;N;text;10;W;Y;;;;;;
+ATTR;TST_ARRAY;TST_FRAME;Files;N;N;array;15;W;N;;;;;;
+ATTR;TST_FILES;TST_ARRAY;Files;N;N;file;30;W;N;;;;;;
+ATTR;TST_INT;TST_ARRAY;Nombre;N;N;int;32;W;N;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+//;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;

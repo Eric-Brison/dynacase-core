@@ -12,19 +12,14 @@ namespace Dcp\Pu;
  * @package Dcp\Pu
  */
 
-require_once 'PU_testcase_dcp.php';
+require_once 'PU_testcase_dcp_commonfamily.php';
 
-class TestImportArchive extends TestCaseDcp
+class TestImportArchive extends TestCaseDcpCommonFamily
 {
-    /**
-     * count error from import report message
-     * @param $err
-     * @return int|void
-     */
-    private function countErrors($err)
+    
+    protected static function getCommonImportFile()
     {
-        if (!$err) return 0;
-        return count(explode("]\n[", $err));
+        return 'PU_dcp_data_archivefamily.csv';
     }
     /**
      * @dataProvider dataDocumentFiles
@@ -79,7 +74,24 @@ class TestImportArchive extends TestCaseDcp
                         "title" => "testdcp3.txt"
                     )
                 )
-            )
+            ) ,
+            array(
+                "./DCPTEST/PU_dcp_data_archivefile.zip",
+                array(
+                    array(
+                        "family" => "TSTèARCHFILE",
+                        "title" => "Fichier un"
+                    ) ,
+                    array(
+                        "family" => "TSTèARCHFILE",
+                        "title" => "Fichier deux"
+                    ) ,
+                    array(
+                        "family" => "TSTèARCHFILES",
+                        "title" => "Fichier un et deux"
+                    )
+                )
+            ) ,
         );
     }
 }

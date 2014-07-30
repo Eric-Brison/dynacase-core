@@ -117,7 +117,7 @@ class ImportDocument
                 $simpleFamilyFile = 7; // file
                 $simpleFamilyFolder = 2; // folder
                 $dirid = $this->dirid; // directory to insert imported doc
-                $this->cr = import_directory($action, $untardir, $dirid, $simpleFamilyFile, $simpleFamilyFolder, $onlycsv, $onlyAnalyze);
+                $this->cr = import_directory($action, $untardir, $dirid, $simpleFamilyFile, $simpleFamilyFolder, $onlycsv, $onlyAnalyze, $this->csvLinebreak);
             }
         } else {
             $ext = substr($file, strrpos($file, '.') + 1);
