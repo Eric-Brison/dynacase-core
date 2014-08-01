@@ -15,6 +15,7 @@
  */
 
 require_once ('WHAT/autoload.php');
+include_once ("FDL/Lib.Util.php");
 
 define("THROW_EXITERROR", 1968);
 /**
