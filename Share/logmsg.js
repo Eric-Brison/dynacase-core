@@ -9,6 +9,7 @@ var isIE6 = /msie 6/i.test(navigator.userAgent);
 var isIE7 = /msie 7/i.test(navigator.userAgent);
 var isIE8 = /msie 8/i.test(navigator.userAgent);
 var isIE9 = /msie 9/i.test(navigator.userAgent);
+var isIE10 = /\bmsie 10\b/i.test(navigator.userAgent);
 var isSafari = navigator.userAgent.indexOf('AppleWebKit/') > -1;
 function getMouseButton(event) {
     // 1 is the left, 2 the middle, 3 the right button
