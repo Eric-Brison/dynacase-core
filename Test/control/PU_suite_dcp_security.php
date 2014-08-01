@@ -18,8 +18,8 @@ class SuiteDcpSecurity
         $suite->addTestSuite('Dcp\Pu\TestRole');
         $suite->addTestSuite('Dcp\Pu\TestRoleMove');
         $suite->addTestSuite('Dcp\Pu\TestAppInheritAcl');
+        $suite->addTestSuite('Dcp\Pu\TestEditControl');
         // ...
         return $suite;
     }
 }
-?>
