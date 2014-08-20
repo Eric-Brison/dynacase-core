@@ -259,6 +259,26 @@ class DetailSearch extends \Dcp\Family\Search
         return $err;
     }
     /**
+     * Check the given string is a valid timestamp (or date)
+     *
+     * @param $str
+     * @return string empty string if valid or error message
+     */
+    private function isValidTimestamp($str)
+    {
+        $this->last_sug = '';
+        /* Check french format */
+        if (preg_match('|^\d\d/\d\d/\d\d\d\d(\s+\d\d:\d\d(:\d\d)?)?$|', $str)) {
+            return '';
+        }
+        /* Check ISO format */
+        if (preg_match('|^\d\d\d\d-\d\d-\d\d(\s+\d\d:\d\d(:\d\d)?)?$|', $str)) {
+            return '';
+        }
+        $this->last_sug = $this->getDate(0, '', '', true);
+        return _("DetailSearch:malformed timestamp");
+    }
+    /**
      * Check the given string is a valid Postgresql's RE
      *
      * @param string $str
@@ -415,6 +435,12 @@ class DetailSearch extends \Dcp\Family\Search
                         } else {
                             $val.= ' ' . $hms;
                         }
+                    }
+                }
+                
+                if ($validateCond) {
+                    if (($err = $this->isValidTimestamp($val)) != '') {
+                        return '';
                     }
                 }
             }
