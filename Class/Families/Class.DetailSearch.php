@@ -304,6 +304,42 @@ class DetailSearch extends \Dcp\Family\Search
         );
     }
     /**
+     * Check for properly balanced conditions' parenthesis
+     */
+    private function checkConditionsParens()
+    {
+        $err = '';
+        $lp = $this->getMultipleRawValues('se_leftp');
+        $rp = $this->getMultipleRawValues('se_rightp');
+        $pc = 0;
+        foreach ($lp as $p) {
+            if ($p == 'yes') {
+                $pc++;
+            }
+        }
+        foreach ($rp as $p) {
+            if ($p == 'yes') {
+                $pc--;
+            }
+        }
+        if ($pc != 0) {
+            $err = _("DetailSearch:unbalanced parenthesis");
+        }
+        return $err;
+    }
+    /**
+     * Check global coherence of conditions
+     */
+    public function checkConditions()
+    {
+        $err = '';
+        $err.= $this->checkConditionsParens();
+        return array(
+            'err' => $err,
+            'sug' => ''
+        );
+    }
+    /**
      * return sql part from operator
      * @param string $col a column : property or attribute name
      * @param string $op one of this ::top keys : =, !=, >, ....
