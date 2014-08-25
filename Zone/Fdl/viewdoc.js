@@ -292,6 +292,10 @@ function updatePopDocTitle() {
       }
     }
   }
+  /*
+   * Preload vewwait's throbber
+   */
+  _preloadWIMG();
 }
 
 function viewwaitbarmenu(thea,bar,title) {
@@ -369,5 +373,14 @@ function viewwait(view) {
       wimgo.style.display='none';
     }
   }
+}
+/**
+ * Pre-create a hidden throbber element to allow the throbber's image
+ * to be pre-loaded before the first use.
+ *
+ * @private
+ */
+function _preloadWIMG() {
+    viewwait(false);
 }
 addEvent(window,"load",updatePopDocTitle);
