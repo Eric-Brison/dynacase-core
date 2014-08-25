@@ -3043,6 +3043,12 @@ function viewConstraint(inp, info) {
                     inp = inp.parentNode;
             }
         }
+
+         if ((inp.style.display == 'none') || (inp.type == 'hidden')) {
+             info.displayed = false;
+             return;
+         }
+
         $(inp).addClass('invalid hastipsy');
 
 

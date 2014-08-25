@@ -36,7 +36,7 @@ function setConstraint(info) {
     for ( var j in info) {
         if (!info[j].displayed) {
             tryToDisplayStructureAttribute(info[j]);
-            window.parent.displayWarningMsg(info[j].prefix+':'+info[j].err);
+            window.parent.displayWarningMsg(info[j].prefix+' : '+info[j].err);
             
         }
     }
