@@ -126,17 +126,26 @@ function generic_mod(Action & $action)
         $action->lay->set("warning", json_encode($warning));
         if ($retedit) {
             $ract = getHttpVars("redirect_act", null);
-            $ract = (($ract !== null) ? urlencode($ract) : "GENERIC_EDIT&id=" . urlencode($ndocid));
-            $action->lay->set("url", sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "GENERIC")) , $ract) . $zone);
+            if ($ract === null) {
+                $ract = "GENERIC_EDIT&id=" . urlencode($ndocid);
+            }
+            $url = sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "GENERIC")) , $ract) . $zone;
+            $action->lay->set("url", json_encode($url));
         } else {
             if ($viewext) {
                 $ract = getHttpVars("redirect_act", null);
-                $ract = (($ract !== null) ? urlencode($ract) : "VIEWEXTDOC$zone&refreshfld=Y&id=" . urlencode($ndocid));
-                $action->lay->set("url", sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "FDL")) , $ract) . $zone);
+                if ($ract === null) {
+                    $ract = "VIEWEXTDOC$zone&refreshfld=Y&id=" . urlencode($ndocid);
+                }
+                $url = sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "FDL")) , $ract) . $zone;
+                $action->lay->set("url", json_encode($url));
             } else {
                 $ract = getHttpVars("redirect_act", null);
-                $ract = (($ract !== null) ? urlencode($ract) : "FDL_CARD$zone&refreshfld=Y&id=" . urlencode($ndocid));
-                $action->lay->set("url", sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "FDL")) , $ract) . $zone);
+                if ($ract === null) {
+                    $ract = "FDL_CARD$zone&refreshfld=Y&id=" . urlencode($ndocid);
+                }
+                $url = sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "FDL")) , $ract) . $zone;
+                $action->lay->set("url", json_encode($url));
             }
         }
         return;

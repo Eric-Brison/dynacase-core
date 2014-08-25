@@ -8,6 +8,9 @@ var error=[error];
 var warning=[warning];
 var autoclose=[autoclose];
 var updateOpenerData=[updateData];
+function _redirect() {
+    window.parent.location.href = [url];
+}
 if (window.parent) {
     if (window.parent.document) {
     
@@ -35,7 +38,7 @@ if (window.parent) {
             window.parent.displayWarningMsg(error);
             if (warning) window.parent.displayWarningMsg(warning);
             if (! error) {
-                [IFNOT quicksave]window.setTimeout("window.parent.location.href='[url]'",4000);[ENDIF quicksave]
+                [IFNOT quicksave]window.setTimeout("_redirect()",4000);[ENDIF quicksave]
             }
         }
         window.parent.disableReadAttribute();
@@ -46,14 +49,14 @@ if (window.parent) {
             //window.parent.displayWarningMsg(warning); // not need :set by global fonction
                 if (!autoclose) {
                
-                window.setTimeout("window.parent.location.href='[url]'",4000);
+                window.setTimeout("_redirect()",4000);
                 } else {
                     window.setTimeout(function () {window.parent.close();},4000);
                 }
             } else {
                [IFNOT quicksave]
                if (!autoclose) {
-                window.parent.location.href='[url]';
+                    _redirect();
                } else {
                     window.setTimeout(function () {window.parent.close();},300);
                }[ENDIF quicksave]
