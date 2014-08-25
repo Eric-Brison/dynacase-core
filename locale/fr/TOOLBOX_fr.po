@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 10:38+0200\n"
-"PO-Revision-Date: 2014-07-16 10:39+0200\n"
+"PO-Revision-Date: 2014-08-25 11:27+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -5211,7 +5211,7 @@ msgstr "Erreur de contrainte"
 
 #, php-format
 msgid "constraint not validated for %s attribute"
-msgstr "contraite non validée pour l'attribut %s"
+msgstr "Contrainte non validée pour l'attribut \"%s\""
 
 msgid "construct batch document"
 msgstr "construction d'un document lot"
