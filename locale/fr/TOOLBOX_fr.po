@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-16 10:38+0200\n"
-"PO-Revision-Date: 2014-08-25 11:27+0200\n"
+"POT-Creation-Date: 2014-08-28 10:14+0200\n"
+"PO-Revision-Date: 2014-08-28 10:27+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
 
 msgid " Change password for"
 msgstr "Modification du mot de passe pour"
@@ -1789,6 +1788,9 @@ msgstr ""
 msgid "Error could not open sql log file '%s' for writing."
 msgstr "Erreur: impossible d'ouvrir le fichier de log sql '%s' en écriture."
 
+msgid "Error creating new default folder."
+msgstr "Erreur de création du nouveau répertoire par défaut."
+
 msgid "Error creating temp file for pg_dump output."
 msgstr "Erreur durant la création du fichier temporaire de sortie pour pg_dump"
 
@@ -2244,6 +2246,14 @@ msgstr "Dossier"
 
 msgid "Folder cleared"
 msgstr "Dossier vidé"
+
+#, php-format
+msgid "Folder with id '%s' is not a folder."
+msgstr "Le dossier d'identifiant '%s' n'est pas un dossier."
+
+#, php-format
+msgid "Folder with id '%s' not found."
+msgstr "Dossier avec identifiant '%s' non trouvé."
 
 #, php-format
 msgid "For %s of %s"
@@ -4770,8 +4780,8 @@ msgstr ""
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href="
-"\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a>"
+"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
+"[CORE_EXTERNURL]</a>"
 
 msgid "can't access file"
 msgstr "Accès au fichier impossible"

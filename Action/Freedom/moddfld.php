@@ -21,10 +21,9 @@ include_once ("FDL/Class.Dir.php");
 include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function moddfld(&$action)
+function moddfld(Action & $action)
 {
     // -----------------------------------
-    
     // Get all the params
     $docid = GetHttpVars("docid");
     $current = (GetHttpVars("current", "N") == "Y");
@@ -38,8 +37,23 @@ function moddfld(&$action)
     $doc = new_Doc($dbaccess, $docid);
     // create folder if auto
     if ($newfolder) {
-        
         $fldid = createAutoFolder($doc);
+        if ($fldid === false) {
+            $action->exitError(_("Error creating new default folder."));
+        }
+    } else {
+        if ($fldid === "0") {
+            $fldid = "";
+        } else {
+            $fld = new_Doc($dbaccess, $fldid);
+            if ($fld === null || !$fld->isAlive()) {
+                $action->exitError(sprintf(_("Folder with id '%s' not found.") , $fldid));
+            }
+            if ($fld->defDoctype != 'D') {
+                $action->exitError(sprintf(_("Folder with id '%s' is not a folder.") , $fld->id));
+            }
+            $fldid = $fld->id;
+        }
     }
     
     if ($current) $doc->cfldid = $fldid;
@@ -52,7 +66,5 @@ function moddfld(&$action)
     $doc->Modify();
     
     $doc->unlock(true); // disabled autolock
-    
     redirect($action, "FDL", "FDL_CARD&id=$docid", $action->GetParam("CORE_STANDURL"));
 }
-?>
