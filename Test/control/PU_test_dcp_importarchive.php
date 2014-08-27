@@ -79,15 +79,15 @@ class TestImportArchive extends TestCaseDcpCommonFamily
                 "./DCPTEST/PU_dcp_data_archivefile.zip",
                 array(
                     array(
-                        "family" => "TSTèARCHFILE",
+                        "family" => "TST_ARCHFILE",
                         "title" => "Fichier un"
                     ) ,
                     array(
-                        "family" => "TSTèARCHFILE",
+                        "family" => "TST_ARCHFILE",
                         "title" => "Fichier deux"
                     ) ,
                     array(
-                        "family" => "TSTèARCHFILES",
+                        "family" => "TST_ARCHFILES",
                         "title" => "Fichier un et deux"
                     )
                 )
@@ -95,4 +95,3 @@ class TestImportArchive extends TestCaseDcpCommonFamily
         );
     }
 }
-?>
