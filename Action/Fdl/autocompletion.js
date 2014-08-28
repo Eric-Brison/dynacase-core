@@ -545,16 +545,9 @@ var onKeyUpHandler=function(event){
 		// blurThenGetFocus();
 	}
 	// taille de la selection
-	var N=rangeSize(_inputField);
-	// taille du texte avant la selection (selection = suggestion d'autocomplétion)
-	var v=beforeRangeSize(_inputField);
 	// contenu du champ texte
 	var V=_inputField.value;
 	if(_eventKeycode!=0){
-		if(N>0&&v!=-1) {
-			// on recupere uniquement le champ texte tapé par l'utilisateur
-			V=V.substring(0,v);
-		}
 		// 13 = touche entrée
 		if(_eventKeycode==13||_eventKeycode==3){
 
@@ -723,33 +716,6 @@ function blurThenGetFocus(){
 	_inputField.blur();
 	setTimeout("_inputField.focus();",10);
 	return;
-}
-
-//taille de la selection dans le champ input
-function rangeSize(n){
-	var N=-1;
-	if(n.createTextRange){
-		var fa=document.selection.createRange().duplicate();
-		N=fa.text.length
-	}else if(n.setSelectionRange){
-		N=n.selectionEnd-n.selectionStart
-	}
-	return N
-}
-
-//taille du champ input non selectionne
-function beforeRangeSize(n){
-	var v=0;
-	if(n.createTextRange){
-		var fa=document.selection.createRange().duplicate();
-		fa.moveEnd("textedit",1);
-		v=n.value.length-fa.text.length
-	}else if(n.setSelectionRange){
-		v=n.selectionStart
-	}else{
-		v=-1
-	}
-	return v
 }
 
 //Place le curseur à la fin du champ
