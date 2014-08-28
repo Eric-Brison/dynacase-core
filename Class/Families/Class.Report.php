@@ -370,7 +370,15 @@ class Report extends \Dcp\Family\Dsearch
         if ($limit == 0) $limit = $maxDisplayLimit;
         else $limit = min($limit, $maxDisplayLimit);
         $s->setSlice($limit);
-        $s->search();
+        try {
+            $s->search();
+        }
+        catch(\Exception $e) {
+            /*
+             * Prevent exception from stopping the view's composition
+             * The error will be handled and reported with the getError() method below
+            */
+        }
         $err = $s->getError();
         if ($err) {
             addWarningMsg($err);

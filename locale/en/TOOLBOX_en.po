@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-28 10:14+0200\n"
-"PO-Revision-Date: 2014-08-28 10:25+0200\n"
+"POT-Creation-Date: 2014-08-20 16:23+0200\n"
+"PO-Revision-Date: 2014-08-20 16:23+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: \n"
@@ -1338,6 +1338,12 @@ msgstr ""
 msgid "Detail Permissions"
 msgstr ""
 
+msgid "DetailSearch:malformed timestamp"
+msgstr "malformed timestamp"
+
+msgid "DetailSearch:unbalanced parenthesis"
+msgstr "unbalanced parenthesis"
+
 msgid "Diff"
 msgstr ""
 
@@ -2436,6 +2442,10 @@ msgid "Inspect another family"
 msgstr ""
 
 msgid "Internet explorer site"
+msgstr ""
+
+#, php-format
+msgid "Invalid condition for attribute '%s' with value '%s': %s"
 msgstr ""
 
 #, php-format
@@ -6266,6 +6276,9 @@ msgstr ""
 
 #, php-format
 msgid "invalid freestate document %s"
+msgstr ""
+
+msgid "invalid regular expression"
 msgstr ""
 
 #, php-format

@@ -66,19 +66,62 @@ function downart(th) {
   return;  
 }
 
+/**
+ * Generate sequence of ids (mimic jQueryUI's uniqueId())
+ */
+var seqId = (function() {
+    var seq = 0;
+    return function() {
+        return ++seq;
+    };
+})();
+/**
+ * Rename elements with 'tpl!' prefix name by stripping the prefix
+ * and also apply a new id generated from the new name and
+ * a sequential id
+ * @param elmt
+ */
+function renameTplPrefix(elmt) {
+    var prefix = 'tpl!';
+    var name = undefined;
+    var pos;
+    var i;
+    if (elmt.nodeType == 1 /* Node.ELEMENT_NODE */) {
+        name = elmt.getAttribute('name');
+        if (name && name.substr(0, prefix.length) == prefix) {
+            name = name.substr(prefix.length);
+            /* Set new name without prefix */
+            elmt.setAttribute('name', name);
+            /* Generate new id from new name with sequential id appended */
+            pos = name.indexOf("[");
+            if (pos >= 0) {
+                name = name.substr(0, pos);
+            }
+            elmt.setAttribute('id', name + '_' + seqId());
+        }
+    }
+    if (elmt.childNodes.length > 0) {
+        for (i = 0; i < elmt.childNodes.length; i++) {
+            renameTplPrefix(elmt.childNodes[i]);
+        }
+    }
+}
 
 // use to add a sumple texr
 function addrow(newrowId,tableId) {
   
   var ntr;
-  with (document.getElementById(newrowId)) {
-    // need to change display before because IE doesn't want after clonage
-    style.display='';
-
-    ntr = cloneNode(true);
-    style.display='none';
+  var elmt = document.getElementById(newrowId);
+  if (!elmt) {
+      return;
   }
-  
+  // need to change display before because IE doesn't want after clonage
+  elmt.style.display='';
+
+  ntr = elmt.cloneNode(true);
+  renameTplPrefix(ntr);
+  elmt.style.display='none';
+
   ntr.id = '';
 
   

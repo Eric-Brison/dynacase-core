@@ -359,7 +359,7 @@ function filterfunc(th, onlyUpdate) {
             pnode.innerHTML = '';
             sec = se.cloneNode(true);
             sec.name = '_se_keys[]';
-            sec.id = '';
+            sec.id = '_se_keys_' + seqId();
             pnode.appendChild(sec);
         }
     } else if (atype == 'docid' || atype == 'account' || atype == "docidtitle[]") {
@@ -368,7 +368,7 @@ function filterfunc(th, onlyUpdate) {
             if (!egaloperator) {
                 sec = se.cloneNode(true);
                 sec.name = '_se_keys[]';
-                sec.id = '';
+                sec.id = '_se_keys_' + seqId();
                 pnode.innerHTML = '';
                 pnode.appendChild(sec);
             }
@@ -400,7 +400,7 @@ function filterfunc(th, onlyUpdate) {
                 else {
                     sec = se.cloneNode(true);
                     sec.name = '_se_keys[]';
-                    sec.id = '';
+                    sec.id = '_se_keys_' + seqId();
                     pnode.innerHTML = '';
                     pnode.appendChild(sec);
                 }
@@ -411,7 +411,7 @@ function filterfunc(th, onlyUpdate) {
         if (se != null && pnode != null) {
             sec = se.cloneNode(true);
             sec.name = '_se_keys[]';
-            sec.id = '';
+            sec.id = '_se_keys_' + seqId();
             pnode.innerHTML = '';
             pnode.appendChild(sec);
         }
