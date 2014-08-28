@@ -25,7 +25,7 @@ LI.no {
         }
 TD, TH {
        font-size:95%;
-       font-family:sans;
+       font-family:sans-serif;
        border-top: solid grey 1px;
        empty-cells:show;
        }
