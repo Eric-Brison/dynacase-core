@@ -1044,7 +1044,7 @@ union
     function getUserToken($expire = false, $oneshot = false, $context = array())
     {
         if ($expire === false) {
-            $expire = 3600 * 24 * 365 * 20;
+            $expire = UserToken::INFINITY;
         }
         if ($context && (count($context) > 0)) {
             $scontext = serialize($context);

@@ -59,6 +59,8 @@ class UserToken extends DbObj
     var $hAlg = 'sha1';
     var $rndSize = 4;
     var $expiration = 86400; // 24 hours
+    const INFINITY = "infinity";
+    
     function setHAlg($hAlg)
     {
         $this->hAlg = $hAlg;
@@ -143,4 +145,3 @@ class UserToken extends DbObj
         return '';
     }
 }
-?>
