@@ -67,13 +67,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
         if ($v["visibility"] == POPUP_INACTIVE) {
             if ($v["title"]) {
                 $v["url"] = '';
-                $v["jsfunction"] = sprintf("alert('%s')", str_replace(array(
-                    "'",
-                    "\n"
-                ) , array(
-                    "&rsquo;",
-                    '\\n'
-                ) , $v["title"]));
+                $v["jsfunction"] = htmlspecialchars(sprintf("alert(%s)", json_encode($v['title'])) , ENT_QUOTES);
             } else {
                 $v["url"] = '#';
                 $v["jsfunction"] = '';
@@ -96,17 +90,8 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
             }
             
             $v["issubmenu"] = false;
-            $v["title"] = mb_ucfirst($v["title"]);
-            
-            $v["tconfirm"] = str_replace(array(
-                "\n",
-                "\r",
-                '"'
-            ) , array(
-                "\\n",
-                '',
-                '-'
-            ) , ($v["tconfirm"]));
+            $v["title"] = htmlspecialchars(mb_ucfirst($v["title"]) , ENT_QUOTES);
+            $v["tconfirm"] = htmlspecialchars(json_encode($v["tconfirm"]) , ENT_QUOTES);
             if (!isset($v["visibility"])) $v["visibility"] = "";
             if (!isset($v["confirm"])) $v["confirm"] = "";
             if (!isset($v["color"])) $v["color"] = false;
@@ -146,7 +131,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
                     }
                     $tsubmenu[$smid] = array(
                         "idlink" => $smid,
-                        "descr" => _($v['submenu']) ,
+                        "descr" => htmlspecialchars(_($v['submenu']) , ENT_QUOTES) ,
                         "icon" => $v["icon"],
                         "visibility" => false,
                         "ICONS" => "mainicon",
@@ -196,4 +181,3 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
     $action->lay->Set("SEP", (count($tsubmenu) > 0)); // to see separator
     $action->lay->set("delay", microtime_diff(microtime() , $mb));
 }
-?>

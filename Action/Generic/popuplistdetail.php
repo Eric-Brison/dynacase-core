@@ -91,7 +91,7 @@ function popuplistdetail(&$action)
             "url" => "$surl&app=GENERIC&action=GENERIC_DEL&id=$docid",
             "confirm" => "true",
             "control" => "false",
-            "tconfirm" => sprintf(_("Sure delete %s ?") , str_replace("'", "&rsquo;", $doc->title)) ,
+            "tconfirm" => sprintf(_("Sure delete %s ?") , $doc->title) ,
             "target" => $target,
             "visibility" => POPUP_INACTIVE,
             "submenu" => "",
@@ -158,7 +158,7 @@ function popuplistdetail(&$action)
             "url" => "$surl&app=GENERIC&action=GENERIC_DUPLICATE&id=$docid",
             "confirm" => "true",
             "control" => "false",
-            "tconfirm" => sprintf(_("Sure duplicate %s ?") , str_replace("'", "&rsquo;", $doc->title)) ,
+            "tconfirm" => sprintf(_("Sure duplicate %s ?") , $doc->title) ,
             "target" => $target,
             "visibility" => POPUP_ACTIVE,
             "submenu" => "",
@@ -228,4 +228,3 @@ function popuplistdetail(&$action)
     $tlink["editdocw"]["visibility"] = $tlink["editdoc"]["visibility"];
     popupdoc($action, $tlink);
 }
-?>
