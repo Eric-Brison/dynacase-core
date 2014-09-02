@@ -188,7 +188,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
             $tdoc[$k]["id"] = $docid;
             $tdoc[$k]["fromid"] = $doc->fromid;
             // search title for freedom item
-            $title = $doc->getHtmlTitle();
+            $title = htmlspecialchars($doc->getTitle() , ENT_QUOTES);
             $tdoc[$k]["title"] = $title;
             
             if ($doc->doctype == "C") $tdoc[$k]["title"] = "<B>" . $title . "</B>";
@@ -345,7 +345,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
                     /* Generate the family header */
                     $tfamdoc[] = array(
                         "iconfamsrc" => $tdoc[$k]["iconsrc"],
-                        "ftitle" => $adoc->title,
+                        "ftitle" => htmlspecialchars($adoc->title, ENT_QUOTES) ,
                         "fid" => $doc->fromid,
                         "blockattr" => "BATT" . $doc->fromid,
                         "blockvalue" => "BVAL" . $doc->fromid
