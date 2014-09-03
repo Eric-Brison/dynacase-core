@@ -595,7 +595,7 @@ function addFamilyPopup(&$tlink, Doc & $doc)
             $tlink[$k]["target"] = $v->getOption("ltarget");
         } else if ($v->getOption("mtarget") != "") $tlink[$k]["target"] = $v->getOption("mtarget");
         $tlink[$k]["idlink"] = $v->id;
-        $tlink[$k]["descr"] = htmlspeciialchars($v->getLabel() , ENT_QUOTES);
+        $tlink[$k]["descr"] = htmlspecialchars($v->getLabel() , ENT_QUOTES);
         $tlink[$k]["title"] = $v->getOption("ltitle");
         $tlink[$k]["url"] = addslashes($doc->urlWhatEncode($v->link));
         $tlink[$k]["confirm"] = $confirm ? "true" : "false";
