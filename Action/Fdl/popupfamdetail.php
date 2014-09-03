@@ -53,7 +53,7 @@ function getpopupfamdetail(Action & $action, $docid)
         ) ,
         
         "create" => array(
-            "descr" => sprintf(_("Create %s") , $doc->gettitle()) ,
+            "descr" => sprintf(_("Create %s") , $doc->getHTMLTitle()) ,
             "url" => "$surl&app=GENERIC&action=GENERIC_EDIT&classid=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -336,4 +336,3 @@ function changeFamMenuVisibility(Action & $action, &$tlink, &$doc)
         $tlink["edithelp"]["url"] = "?app=GENERIC&action=GENERIC_EDIT&id=$helpid";
     }
 }
-?>

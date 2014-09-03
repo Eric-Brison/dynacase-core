@@ -82,7 +82,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "url" => "$surl&app=GENERIC&action=GENERIC_DEL&id=$docid",
             "confirm" => "true",
             "control" => "false",
-            "tconfirm" => sprintf(_("Sure delete %s ?") , str_replace("'", "&rsquo;", $doc->title)) ,
+            "tconfirm" => sprintf(_("Sure delete %s ?") , $doc->title) ,
             "target" => "_self",
             "visibility" => POPUP_INACTIVE,
             "submenu" => "",
@@ -359,7 +359,7 @@ function addArchivePopup(&$tlink, Doc & $doc, $target = "_self")
         while ($archive = $s->getNextDoc()) {
             if ($archive->control("modify") == "") {
                 $tlink["arch" . $archive->id] = array(
-                    "descr" => sprintf(_("Insert in %s") , $archive->getTitle()) ,
+                    "descr" => sprintf(_("Insert in %s") , $archive->getHTMLTitle()) ,
                     "url" => "?app=FREEDOM&action=ADDDIRFILE&docid=" . $doc->initid . "&dirid=" . $archive->initid,
                     "confirm" => "false",
                     "control" => "false",
@@ -372,7 +372,7 @@ function addArchivePopup(&$tlink, Doc & $doc, $target = "_self")
                 // app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=[dirid]&id=[FREEDOM_IDBASKET]
                 if (($doc->defDoctype == "S") || ($doc->defDoctype == "D")) {
                     $tlink["farch" . $archive->id] = array(
-                        "descr" => sprintf(_("Insert the content in %s") , $archive->getTitle()) ,
+                        "descr" => sprintf(_("Insert the content in %s") , $archive->getHTMLTitle()) ,
                         "url" => "?app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=" . $doc->initid . "&id=" . $archive->initid,
                         "confirm" => "true",
                         "control" => "false",
@@ -454,7 +454,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
         
         $defaultview = $doc->getDefaultView(true);
         if ($defaultview !== 0) {
-            $tlink["editdoc"]["descr"] = $cvdoc->getLocaleViewLabel($defaultview['cv_idview']);
+            $tlink["editdoc"]["descr"] = htmlspecialchars($cvdoc->getLocaleViewLabel($defaultview['cv_idview']) , ENT_QUOTES);
         }
         
         $count["specialedit"] = $count["specialview"] = 0;
@@ -483,7 +483,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
             $target = $cvdoc->getZoneOption($v["zoneview"]) === "B" ? "_download" : $target;
             if ((!$defaultview) || $defaultview["cv_idview"] !== $v["idview"]) {
                 $tlink[$v["idview"]] = array(
-                    "descr" => $mtitle,
+                    "descr" => htmlspecialchars($mtitle, ENT_QUOTES) ,
                     "url" => $url,
                     "jsfunction" => $js,
                     "confirm" => "false",
@@ -547,7 +547,7 @@ function addStatesPopup(&$tlink, Doc & $doc)
             }
             $tlink[$v] = array(
                 "title" => $tooltip,
-                "descr" => $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, mb_ucfirst(_($v))) ,
+                "descr" => htmlspecialchars($tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, mb_ucfirst(_($v))) , ENT_QUOTES) ,
                 "jsfunction" => $jsf,
                 "confirm" => "false",
                 "control" => "false",
@@ -595,14 +595,14 @@ function addFamilyPopup(&$tlink, Doc & $doc)
             $tlink[$k]["target"] = $v->getOption("ltarget");
         } else if ($v->getOption("mtarget") != "") $tlink[$k]["target"] = $v->getOption("mtarget");
         $tlink[$k]["idlink"] = $v->id;
-        $tlink[$k]["descr"] = $v->getLabel();
+        $tlink[$k]["descr"] = htmlspeciialchars($v->getLabel() , ENT_QUOTES);
         $tlink[$k]["title"] = $v->getOption("ltitle");
         $tlink[$k]["url"] = addslashes($doc->urlWhatEncode($v->link));
         $tlink[$k]["confirm"] = $confirm ? "true" : "false";
         $tlink[$k]["control"] = $control;
         $tlink[$k]["mwidth"] = $v->getOption("mwidth");
         $tlink[$k]["mheight"] = $v->getOption("mheight");
-        $tlink[$k]["tconfirm"] = $v->getOption("tconfirm", sprintf(_("Sure %s ?") , addslashes($v->getLabel())));
+        $tlink[$k]["tconfirm"] = $v->getOption("tconfirm", sprintf(_("Sure %s ?") , $v->getLabel()));
         if ($v->visibility == "H") $tlink[$k]["visibility"] = POPUP_INVISIBLE;
         else $tlink[$k]["visibility"] = ($control) ? POPUP_CTRLACTIVE : POPUP_ACTIVE;
         $tlink[$k]["submenu"] = $v->getOption("submenu");
@@ -635,13 +635,13 @@ function addFamilyPopup(&$tlink, Doc & $doc)
         } else if ($v->getOption("mtarget") != "") $tlink[$k]["target"] = $v->getOption("mtarget");
         $tlink[$k]["barmenu"] = ($v->getOption("barmenu") == "yes") ? "true" : "false";
         $tlink[$k]["idlink"] = $v->id;
-        $tlink[$k]["descr"] = $v->getLabel();
+        $tlink[$k]["descr"] = htmlspecialchars($v->getLabel() , ENT_QUOTES);
         $tlink[$k]["url"] = addslashes($doc->urlWhatEncode($alink));
         $tlink[$k]["confirm"] = $confirm ? "true" : "false";
         $tlink[$k]["control"] = $control;
         $tlink[$k]["mwidth"] = $v->getOption("mwidth");
         $tlink[$k]["mheight"] = $v->getOption("mheight");
-        $tlink[$k]["tconfirm"] = sprintf(_("Sure %s ?") , addslashes($v->getLabel()));
+        $tlink[$k]["tconfirm"] = sprintf(_("Sure %s ?") , $v->getLabel());
         if ($v->visibility == "H") $tlink[$k]["visibility"] = POPUP_INVISIBLE;
         else $tlink[$k]["visibility"] = ($control) ? POPUP_CTRLACTIVE : POPUP_ACTIVE;
         $tlink[$k]["submenu"] = $v->getOption("submenu");
@@ -792,4 +792,3 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
         $tlink["histo"]["visibility"] = POPUP_ACTIVE;
     }
 }
-?>

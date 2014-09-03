@@ -12,11 +12,11 @@
 [BLOCK ADDLINK]
 [IF URL]
 <a href="#" id="[idlink]" title="[title]" [IF color]style="background-color:[color]"[ENDIF color] visibility="[visibility]" submenu="[smid]"
-    onmouseup="if (([confirm] && confirm('[tconfirm]')) || (! [confirm])) sendMenuUrl(this,'[url]','[target]',[barmenu],'[mwidth]','[mheight]');closeDocMenu();">
+    onmouseup="if (([confirm] && confirm([tconfirm])) || (! [confirm])) sendMenuUrl(this,'[url]','[target]',[barmenu],'[mwidth]','[mheight]');closeDocMenu();">
 [IF [ICONS]]<img align="absbottom" style="margin:0px;padding:0px;border:none" src="[icon]">[ENDIF [ICONS]][descr]</a>[ENDIF URL]
 [IF JSFT]
 <a href="#" id="[idlink]"  [IF color]style="background-color:[color]"[ENDIF color] visibility="[visibility]" submenu="[smid]" title="[title]"
-    onmouseup="if (([confirm] && confirm('[tconfirm]')) || (! [confirm])) {[jsfunction];}closeDocMenu();">
+    onmouseup="if (([confirm] && confirm([tconfirm])) || (! [confirm])) {[jsfunction];}closeDocMenu();">
 [IF [ICONS]]<img align="absbottom" style="margin:0px;padding:0px;border:none"  src="[icon]">[ENDIF [ICONS]][descr]</a>[ENDIF JSFT]
 [IFNOT URL][IFNOT JSFT][IF visibility]
 <a href="#" id="[idlink]" title="[title]" [IF color]style="background-color:[color]"[ENDIF color] visibility="[visibility]" submenu="[smid]"
