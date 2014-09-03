@@ -20,7 +20,7 @@ header("HTTP/1.0 503 Service Unavailable");
 <HEAD>
 <TITLE>Dynacase Maintenance</TITLE>
 <style>
-body { font-family:Trebuchet MS, Helvetica, sans; background-color:#CCC; padding:0px; margin:0px; color:#C1C1C1; }
+body { font-family:Trebuchet MS, Helvetica, sans-serif; background-color:#CCC; padding:0px; margin:0px; color:#C1C1C1; }
 #hello { padding: 60px 40px; }
 .title { font-size: 400%; font-weight: bold; text-shadow: -1px -1px 1px #777, 1px 1px 1px #EEE; }
 .content { font-size: 200%; font-weight: bold; text-shadow: 0 1px 1px #fff; }

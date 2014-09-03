@@ -1,5 +1,5 @@
 html { background-color:[COLOR_A0]; padding:0; margin:0px; }
-body { font-family:Ubuntu, Trebuchet MS, Helvetica, sans; background-color:[COLOR_A0]; padding:0px; margin:0px; color:[COLOR_A4]; }
+body { font-family:Ubuntu, Trebuchet MS, Helvetica, sans-serif; background-color:[COLOR_A0]; padding:0px; margin:0px; color:[COLOR_A4]; }
 
 img { border:0; }
 a, a:link, a:visited { }
