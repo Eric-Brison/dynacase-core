@@ -19,9 +19,16 @@ include_once ("FDL/viewdocjs.php");
 function alleditjs(Action & $action)
 {
     $jurl = "WHAT/Layout";
+    
+    $ckeditorPath = "lib/ckeditor/4";
+    if ($action->getParam("ISIE6") || $action->getParam("ISIE7")) {
+        
+        $ckeditorPath = "lib/ckeditor/3";
+    }
+    
+    $extraCode = sprintf("CKEDITOR_BASEPATH = '%s/';", $ckeditorPath);
     $statics = array(
-        "FDL/Layout/ckeditorStaticEnvVar.js",
-        "ckeditor/ckeditor.js",
+        "$ckeditorPath/ckeditor.js",
         "$jurl/subwindow.js",
         "$jurl/geometry.js",
         "$jurl/AnchorPosition.js",
@@ -63,6 +70,6 @@ function alleditjs(Action & $action)
     viewdocjs($action);
     $action->lay->template = "";
     
-    RessourcePacker::pack_js($action, $statics, $dynamics);
+    RessourcePacker::pack_js($action, $statics, $dynamics, $extraCode);
 }
 ?>

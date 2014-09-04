@@ -20,10 +20,14 @@ class RessourcePacker
      * @param array $static_js List of static JS file to pack
      * @param array $dynamic_js List of dynamic JS file to pack
      *
-     *  @return boolean true
+     * @param string $extraCode add js code before including file
+     * @return boolean true
      */
-    static function pack_js(Action & $action, array & $static_js = array() , array & $dynamic_js = array())
+    static function pack_js(Action & $action, array & $static_js = array() , array & $dynamic_js = array() , $extraCode = '')
     {
+        print "//Pack js\n";
+        print $extraCode . "\n";
+        
         foreach ($static_js as $jsfile) {
             if (is_file($jsfile)) {
                 print sprintf("// --- <static file='%s'> ---\n", $jsfile);
