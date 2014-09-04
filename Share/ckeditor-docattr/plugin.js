@@ -3,6 +3,15 @@ CKEDITOR.plugins.add('docattr', {
 
     init:function (editor) {
         var config = editor.config;
+        var skinPath=editor.skinPath;
+
+        if (! skinPath) {
+            if (CKEDITOR.skin) {
+                skinPath=CKEDITOR.skin.path();
+            }
+        }
+
+
 
         editor.ui.addRichCombo('docattr',
             {
@@ -10,8 +19,9 @@ CKEDITOR.plugins.add('docattr', {
                 title:editor.lang.docattr.title,
                 multiSelect:false,
 
+
                 panel:{
-                    css:[ CKEDITOR.getUrl(editor.skinPath + 'editor.css') ].concat(config.contentsCss)
+                    css:[ CKEDITOR.getUrl(skinPath + 'editor.css') ].concat(config.contentsCss)
                 },
 
                 init:function () {
@@ -38,6 +48,10 @@ CKEDITOR.plugins.add('docattr', {
 
 CKEDITOR.plugins.setLang('docattr', 'en',
     {
+        title:'Key',
+        label:'Key',
+        group:"Template Keys",
+        nogroup : "No keys : you can reload the document to try to add new key",
         docattr:{
             title:'Key',
             label:'Key',
@@ -48,6 +62,10 @@ CKEDITOR.plugins.setLang('docattr', 'en',
 );
 CKEDITOR.plugins.setLang('docattr', 'fr',
     {
+        label:"Clefs",
+        title:'Clefs',
+        group:"Clef de template",
+        nogroup : "Pas de clefs : essayez de recharger le document",
         docattr:{
             title:'Clefs',
             label:"Clefs",

@@ -1,4 +1,4 @@
-CKEDITOR_BASEPATH = 'ckeditor/';
+//CKEDITOR_BASEPATH = 'lib/ckeditor4/ckeditor/';
 
 window.htmlText = {};
 
