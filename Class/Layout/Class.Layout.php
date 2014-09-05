@@ -70,7 +70,7 @@ include_once ('Class.Application.php');
  */
 class Layout
 {
-    private $strip = 'Y';
+    private $strip = 'N';
     public $encoding = "";
     /**
      * set to true to not parse template when it is generating
