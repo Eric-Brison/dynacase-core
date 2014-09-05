@@ -30,11 +30,10 @@ function moddfld(Action & $action)
     $newfolder = (GetHttpVars("autofolder", "N") == "Y");
     $fldid = GetHttpVars("dfldid");
     
-    if ($docid == 0) $action->exitError(_("the document is not referenced: cannot apply defaut folder"));
-    
     $dbaccess = $action->GetParam("FREEDOM_DB");
     // initialise object
     $doc = new_Doc($dbaccess, $docid);
+    if ($doc === null || !$doc->isAlive()) $action->exitError(sprintf(_("Document with id '%s' not found.") , $docid));
     // create folder if auto
     if ($newfolder) {
         $fldid = createAutoFolder($doc);
