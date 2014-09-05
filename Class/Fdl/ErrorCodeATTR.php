@@ -96,6 +96,10 @@ class ErrorCodeATTR
     const ATTR0210 = 'this parameter structure "%s" is not a allowed for parameter"%s"';
     /**
      * @errorCode
+     */
+    const ATTR0211 = 'parameter "%s" must not have a phpfunc with output variables';
+    /**
+     * @errorCode
      * Attribute isTitle is Y or N
      */
     const ATTR0400 = 'invalid value "%s" for isTitle in attribute "%s"';
