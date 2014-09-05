@@ -362,7 +362,7 @@ class DocHtmlFormat
                 if (($this->oattr->repeat) && ($this->index <= 0)) $idx = $kvalue;
                 else $idx = $this->index;
                 $inline = $this->oattr->getOption("inline");
-                $htmlval = $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes"),$avalue);
+                $htmlval = $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes") , $avalue);
             } else {
                 if (empty($avalue)) {
                     $localImage = $this->oattr->getOption('showempty');
@@ -633,6 +633,10 @@ class DocHtmlFormat
         if ($sort == "yes") {
             $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/sorttable.js");
         }
+        $displayRowCount = $this->oattr->getOption("displayrowcount", 10);
+        if (!is_numeric($displayRowCount)) {
+            $displayRowCount = 10;
+        }
         
         $lay = new Layout("FDL/Layout/viewdocarray.xml", $action);
         $lay->set("issort", ($sort == "yes"));
@@ -770,7 +774,7 @@ class DocHtmlFormat
                     if ($nbitem > 10) $caption.= " ($nbitem)";
                 } else {
                     $caption = "";
-                    if ($nbitem > 10) {
+                    if ($displayRowCount >= 0 && ($displayRowCount == 0 || $nbitem > $displayRowCount)) {
                         if (count($talabel) > 0) {
                             $talabel[0]["alabel"].= " ($nbitem)";
                         }

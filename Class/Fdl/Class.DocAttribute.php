@@ -92,7 +92,7 @@ class BasicAttribute
         $i = _($r);
         if ($i != $r) return $i;
         
-        $v = empty($this->_topt[$x]) ? $def : $this->_topt[$x];
+        $v = (isset($this->_topt[$x]) && $this->_topt[$x] !== '') ? $this->_topt[$x] : $def;
         return $v;
     }
     /**
