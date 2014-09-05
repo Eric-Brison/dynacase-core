@@ -498,11 +498,10 @@ class DetailSearch extends \Dcp\Family\Search
                 if (!is_array($val)) {
                     $val = $this->rawValueToArray($val);
                 }
-                if ($validateCond) {
-                    if (($err = $this->isValidPgRegex(implode('|', $val))) != '') {
-                        return '';
-                    }
+                foreach ($val as & $v) {
+                    $v = self::pgRegexpQuote($v);
                 }
+                unset($v);
                 if (count($val) > 0) {
                     $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
                 }
@@ -1558,5 +1557,17 @@ class DetailSearch extends \Dcp\Family\Search
             return '';
         }
         return $parseMethod->methodName;
+    }
+    
+    public static function pgRegexpQuote($str)
+    {
+        /*
+         * Escape Postgresql's regexp special chars into theirs UTF16 form "\u00xx"
+        */
+        return preg_replace_callback('/[.|*+?{}\[\]()\\\\^$]/u', function ($m)
+        {
+            return sprintf('\\u00%x', ord($m[0]));
+        }
+        , $str);
     }
 }
