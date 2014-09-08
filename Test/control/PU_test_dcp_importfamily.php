@@ -339,6 +339,14 @@ class TestImportFamily extends TestCaseDcpDocument
                     "ATTR0903",
                     "tst_colneed"
                 )
+            ) ,
+            // PARAM phpfunc errors
+            array(
+                "PU_data_dcp_badattr16.ods",
+                array(
+                    "ATTR0211",
+                    "tst_docid"
+                )
             )
         );
     }
