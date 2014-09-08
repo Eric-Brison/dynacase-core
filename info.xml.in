@@ -207,9 +207,6 @@ This can be solved by:<br/>
 
         <!-- Check PEAR modules -->
 
-        <check type="pearmodule" include="Crypt/CHAP.php" class="Crypt_CHAP">
-            <help>You might need to run : pear install Crypt_CHAP</help>
-        </check>
         <check type="pearmodule" include="Net/SMTP.php" class="Net_SMTP">
             <help>You might need to run : pear install Net_SMTP</help>
         </check>
@@ -498,9 +495,6 @@ This can be solved by:<br/>
 
         <!-- Check PEAR modules -->
 
-        <check type="pearmodule" include="Crypt/CHAP.php" class="Crypt_CHAP">
-            <help>You might need to run : pear install Crypt_CHAP</help>
-        </check>
         <check type="pearmodule" include="Net/SMTP.php" class="Net_SMTP">
             <help>You might need to run : pear install Net_SMTP</help>
         </check>
