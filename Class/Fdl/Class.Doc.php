@@ -7488,7 +7488,7 @@ create unique index i_docir on doc(initid, revision);";
     function setLogicalName($name, $reset = false)
     {
         if ($name) {
-            if (!preg_match("/^[A-Z][0-9A-Z\-_]*$/i", $name)) {
+            if (!CheckDoc::isWellformedLogicalName($name)) {
                 return (sprintf(_("name must begin with a letter and the containt only alphanumeric characters or - and _: invalid  [%s]") , $name));
             } elseif (!$this->isAffected()) {
                 return (sprintf(_("Cannot set logical name %s because object is not affected") , $name));
