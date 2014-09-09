@@ -7,6 +7,7 @@
 
 class CheckDoc extends CheckData
 {
+    const LOGICALNAME_RE = '/^[a-z][a-z0-9_-]*$/i';
     /**
      * @var string family reference
      */
@@ -86,10 +87,19 @@ class CheckDoc extends CheckData
     private function checkName($name)
     {
         if ($name && (!is_numeric($name))) {
-            if (!preg_match('/^[a-z][a-z0-9_]*$/i', $name)) {
+            if (!self::isWellformedLogicalName($name)) {
                 return false;
             }
         }
         return true;
+    }
+    /**
+     * Check the given logical name is well-formed.
+     * @param $name string
+     * @return bool true when well-formed or false when mal-formed
+     */
+    public static function isWellformedLogicalName($name)
+    {
+        return (preg_match(self::LOGICALNAME_RE, $name) === 1);
     }
 }
