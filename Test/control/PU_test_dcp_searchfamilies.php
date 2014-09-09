@@ -57,10 +57,12 @@ class TestSearchFamilies extends TestCaseDcpCommonFamily
                 $propValue = $doc->getRawValue($propId);
             }
             if (abs($propValue) > 0) {
+                if (!is_numeric($expectedValue)) {
                 $propValueName = getNameFromId(self::$dbaccess, abs($propValue));
                 if ($propValueName != '') {
                     $propValue = $propValueName;
                 }
+            }
             }
             $this->assertEquals($expectedValue, $propValue, sprintf("Not the good property for \"$propId\""));
         }
