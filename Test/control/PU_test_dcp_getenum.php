@@ -57,7 +57,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
         $enum = $oa->getEnum();
         foreach ($expectedKeysLabel as $key => $label) {
             
-            $this->assertEquals($label, $oa->getEnumLabel($key) , sprintf("enum single label mismatch: key %s", $key));
+            $this->assertEquals($label, $oa->getEnumLabel($key) , sprintf("enum single label mismatch: key %s\n%s", $key, print_r($enum, true)));
         }
     }
     /**
@@ -210,6 +210,42 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                     "UnUn",
                     "UnDeux"
                 )
+            ),
+            array(
+
+                'family' => 'TST_ENUMFAM1',
+                'attrid' => 'TST_ENUMNA',
+                'keys' => array(
+                    "a",
+                    "a.ab",
+                    "a.ac",
+                    "b",
+                    "b.ba",
+                    "b.bc"
+                ) ,
+                'labels' => array(
+                    "A",
+                    "AB",
+                    "AC",
+                    "B",
+                    "BAB",
+                    "BBC"
+                )
+            ),
+            array(
+
+                'family' => 'TST_ENUMFAM1',
+                'attrid' => 'TST_ENUMNUMERIC',
+                'keys' => array(
+                    "0\\.1",
+                    "1\\.2",
+                    "3\\.14"
+                ) ,
+                'labels' => array(
+                    "Zéro virgule un",
+                    "Un point 2",
+                    "Pi"
+                )
             )
         );
     }
@@ -284,6 +320,20 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                     "Un/UnUn",
                     "Un/UnDeux"
                 )
+            ),
+            array(
+                'family' => 'TST_ENUMFAM1',
+                'attrid' => 'TST_ENUMNUMERIC',
+                'keys' => array(
+                    "0.1",
+                    "1.2",
+                    "3.14"
+                ) ,
+                'labels' => array(
+                    "Zéro virgule un",
+                    "Un point 2",
+                    "Pi"
+                )
             )
         );
     }
@@ -311,6 +361,16 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                     "1" => "Un",
                     "11" => "Un/UnUn",
                     "12" => "Un/UnDeux"
+                )
+            ),
+
+            array(
+                'family' => 'TST_ENUMFAM1',
+                'attrid' => 'TST_ENUMNUMERIC',
+                'keysLabel' => array(
+                    "0.1" => "Zéro virgule un",
+                    "1.2" => "Un point 2",
+                    "3.14" => "Pi",
                 )
             )
         );

@@ -928,7 +928,7 @@ class NormalAttribute extends BasicAttribute
                         $enumLabel = $item["label"];
                     }
                     if ($item["parentkey"] !== null) {
-                        $this->enum[$this->getCompleteEnumKey($enumPath, $enums) ] = $enumLabel;
+                        $this->enum[$this->getCompleteEnumKey($enumKey, $enums) ] = $enumLabel;
                         $enumCompleteLabel = $this->getCompleteEnumlabel($enumKey, $enums, $br);
                         $this->enumlabel[$enumKey] = $enumCompleteLabel;
                     } else {
@@ -961,9 +961,9 @@ class NormalAttribute extends BasicAttribute
             if ($item["key"] === $key) {
                 if ($item["parentkey"] !== null) {
                     
-                    return sprintf("%s.%s", $this->getCompleteEnumKey($item["parentkey"], $enums) , $key);
+                    return sprintf("%s.%s", $this->getCompleteEnumKey($item["parentkey"], $enums) , $item["keyPath"]);
                 } else {
-                    return $key;
+                    return $item["keyPath"];
                 }
             }
         }
