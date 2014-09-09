@@ -800,8 +800,7 @@ class DetailSearch extends \Dcp\Family\Search
     function needParameters()
     {
         $tkey = $this->getMultipleRawValues("SE_KEYS");
-        
-        if ((count($tkey) > 1) || ($tkey[0] != "")) {
+        if ((count($tkey) > 1) || (!empty($tkey[0]))) {
             
             foreach ($tkey as $k => $v) {
                 

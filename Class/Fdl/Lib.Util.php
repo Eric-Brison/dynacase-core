@@ -67,6 +67,12 @@ function StringDateToJD($sdate)
 function FrenchDateToJD($fdate)
 {
     if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?(\.\d)*/", $fdate, $reg)) {
+        if (empty($reg[4])) {
+            $reg[4] = 0;
+        }
+        if (empty($reg[5])) {
+            $reg[5] = 0;
+        }
         return cal2jd("CE", $reg[3], $reg[2], $reg[1], $reg[4], $reg[5], 0);
     }
     return false;
