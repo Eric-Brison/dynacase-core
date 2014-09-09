@@ -1,4 +1,4 @@
-<div   class="barmenu">[BLOCK LINKS]
+<div   class="barmenu">
 
 <script>
 // <![CDATA[
@@ -43,7 +43,7 @@ function openBarDocMenu(event, elmt) {
 }
 // ]]>
 </script>
-
+    [BLOCK LINKS]
 [IFNOT menu]<a  title="[title]" onclick="return menuOpen(event, this);" data-confirm="[confirm]" data-tconfirm="[tconfirm]" data-m="[m]" data-mheight="[mheight]" data-mwidth="[mwidth]" data-target="[target]" data-url="[url]" data-isjs="[isjs]" data-jsfunction="[jsfunction]">[descr]</a>[ENDIF menu]
 [IF menu]<a  title="[title]"  onclick="openBarDocSubMenu(event, this);" data-id="[id]" data-idlink="[idlink]">[descr]&darr;</a>[ENDIF menu]
 [ENDBLOCK LINKS] [IF other]<a   onclick="return openBarDocMenu(event, this);"  data-id="[id]" title="[TEXT:Click to view menu]">[TEXT:Others]&darr;</a>[ENDIF other] </div>
