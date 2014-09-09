@@ -916,10 +916,11 @@ class NormalAttribute extends BasicAttribute
                 simpleQuery('', $sql, $enums);
                 
                 foreach ($enums as $k => $item) {
-                    $enums[$k]["key"] = str_replace('.', '\\.', $item["key"]);
+                    $enums[$k]["keyPath"] = str_replace('.', '\\.', $item["key"]);
                 }
                 foreach ($enums as $item) {
                     $enumKey = $item["key"];
+                    $enumPath = $item["keyPath"];
                     $translatedEnumValue = _($br . $enumKey);
                     if ($translatedEnumValue != $br . $enumKey) {
                         $enumLabel = $translatedEnumValue;
@@ -927,11 +928,11 @@ class NormalAttribute extends BasicAttribute
                         $enumLabel = $item["label"];
                     }
                     if ($item["parentkey"] !== null) {
-                        $this->enum[$this->getCompleteEnumKey($enumKey, $enums) ] = $enumLabel;
+                        $this->enum[$this->getCompleteEnumKey($enumPath, $enums) ] = $enumLabel;
                         $enumCompleteLabel = $this->getCompleteEnumlabel($enumKey, $enums, $br);
                         $this->enumlabel[$enumKey] = $enumCompleteLabel;
                     } else {
-                        $this->enum[$enumKey] = $enumLabel;
+                        $this->enum[$enumPath] = $enumLabel;
                         $this->enumlabel[$enumKey] = $enumLabel;
                     }
                 }
@@ -1528,7 +1529,7 @@ class EnumAttributeTools
         $theEnum = array();
         $theEnumlabel = array();
         
-        $sphpfunc = str_replace("\\.", "Ut-", $phpfunc); // to replace dot & comma separators
+        $sphpfunc = str_replace("\\.", "-dot-", $phpfunc); // to replace dot & comma separators
         $sphpfunc = str_replace("\\,", "-comma-", $sphpfunc);
         if ($sphpfunc == "-") $sphpfunc = ""; // it is recorded
         if ($sphpfunc != "") {
