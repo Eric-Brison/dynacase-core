@@ -13,6 +13,11 @@
 class CheckAttr extends CheckData
 {
     /**
+     * Type of import line : 'ATTR', 'PARAM', 'MODATTR', etc.
+     * @var string
+     */
+    private $lineType = '';
+    /**
      * @var StructAttribute
      */
     private $structAttr = null;
@@ -166,6 +171,7 @@ class CheckAttr extends CheckData
     
     public function check(array $data, &$extra = null)
     {
+        $this->lineType = $data[0];
         $this->structAttr = new StructAttribute($data);
         $this->doc = $extra;
         $this->attrid = strtolower($this->structAttr->id);
@@ -557,7 +563,9 @@ SQL;
         } else {
             // validity of method call cannot be tested here
             // it is tested in checkEnd
-            
+            if ($this->lineType == 'PARAM' && isset($strucFunc->outputs) && count($strucFunc->outputs) > 0) {
+                $this->addError(ErrorCode::getError('ATTR0211', $this->attrid));
+            }
         }
     }
     
