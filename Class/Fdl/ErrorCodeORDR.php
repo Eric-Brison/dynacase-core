@@ -45,5 +45,5 @@ class ErrorCodeORDR
      * @errorCode
      * need define attribute
      */
-    const ORDR0100 = 'attribute "%s" is not a part of "%s" family for ORDER';
+    const ORDR0100 = 'Invalid ORDER attribute: attribute "%s" is not an attribute of "%s" family';
 }
