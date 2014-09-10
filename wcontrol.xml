@@ -45,13 +45,4 @@
     <help>You might need to install a php-pspell package from your distribution in order to have spelling support in PHP.</help>
   </check>
 
-  <!-- Check PEAR modules -->
-
-  <check type="pearmodule" include="Net/SMTP.php" class="Net_SMTP">
-    <help>You might need to run : pear install Net_SMTP</help>
-  </check>
-  <check type="pearmodule" include="Mail/mime.php" class="Mail_mime">
-    <help>You might need to run : pear install Mail_Mime</help>
-  </check>
-
 </control>
