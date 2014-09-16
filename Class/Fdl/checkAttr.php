@@ -447,9 +447,7 @@ SQL;
                 $goodFile = false;
             } else {
                 $realPhpFile = realpath($phpFile);
-                // Get the shell output from the syntax check command
-                exec(sprintf('php -n -l %s 2>&1', escapeshellarg($realPhpFile)) , $output, $status);
-                if ($status != 0) {
+                if (CheckClass::phpLintFile($realPhpFile, $output) === false) {
                     $this->addError(ErrorCode::getError('ATTR1101', $phpFile, $this->attrid, implode("\n", $output)));
                     $goodFile = false;
                 } else {

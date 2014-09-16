@@ -68,9 +68,7 @@ class CheckBegin extends CheckData
         if ($phpfile) {
             $fileName = realpath($this->getClassFile($phpfile));
             if ($fileName) {
-                // Get the shell output from the syntax check command
-                exec(sprintf('php -n -l %s 2>&1', escapeshellarg($fileName)) , $output, $status);
-                if ($status != 0) {
+                if (CheckClass::phpLintFile($fileName, $output) === false) {
                     $this->addError(ErrorCode::getError('FAM0400', $this->getClassFile($phpfile) , $this->famName, implode("\n", $output)));
                 }
             } else {
@@ -121,6 +119,9 @@ class CheckBegin extends CheckData
                     if ($me) {
                         $fromId = $me['fromid'];
                         $fromName = getNameFromId(getDbAccess() , $fromId);
+                        if ($fromName == '') {
+                            throw new \Dcp\Exception("FAM0603", $fromId, $this->famName);
+                        }
                         if (($fromName != $this->parentName) && ($fromId != $this->parentName)) {
                             //print_r($p);
                             $this->addError(ErrorCode::getError('FAM0102', $fromName, $this->parentName, $this->famName));

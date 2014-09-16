@@ -561,6 +561,9 @@ class checkDb
             $this->checkAttributeType();
             $this->checkAttributeOrphean();
             $this->checkcleanContext();
+            $this->checkMissingDocumentsInDocread();
+            $this->checkSpuriousDocumentsInDocread();
+            $this->checkUnnamedFamilies();
         }
         return $this->tout;
     }
@@ -582,5 +585,88 @@ class checkDb
         }
         return isset($this->tparam[$key]) ? $this->tparam[$key] : null;
     }
+    public function checkUnnamedFamilies()
+    {
+        $sql = <<<'EOSQL'
+SELECT docfam.id AS id, docfam.name AS docfam_name, docname.name AS docname_name, docread.name AS docread_name
+FROM docfam
+    LEFT JOIN docname ON docfam.id = docname.id
+    LEFT JOIN docread ON docfam.id = docread.id
+WHERE
+    docfam.name IS NULL OR
+    docname.name IS NULL OR
+    docread.name IS NULL
+ORDER BY docfam.id ASC
+EOSQL;
+        $result = pg_query($this->r, $sql);
+        $unnamedDocfam = array();
+        $unnamedDocname = array();
+        $unnamedDocread = array();
+        while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+            if ($row['docfam_name'] == '') {
+                $unnamedDocfam[] = $row['id'];
+            }
+            if ($row['docname_name'] == '') {
+                $unnamedDocname[] = $row['id'];
+            }
+            if ($row['docread_name'] == '') {
+                $unnamedDocread[] = $row['id'];
+            }
+        }
+        $unnamedDocfamCount = count($unnamedDocfam);
+        $unnamedDocreadCount = count($unnamedDocread);
+        $unnamedDocnameCount = count($unnamedDocname);
+        $pout = array();
+        if ($unnamedDocfamCount > 0) {
+            $pout[] = sprintf("%s unnamed famil%s in docfam: <pre>{%s}</pre>", $unnamedDocfamCount, ($unnamedDocfamCount > 1 ? 'ies' : 'y') , join(', ', $unnamedDocfam));
+        }
+        if ($unnamedDocreadCount > 0) {
+            $pout[] = sprintf("%s unnamed famil%s in docfam: <pre>{%s}</pre>", $unnamedDocreadCount, ($unnamedDocreadCount > 1 ? 'ies' : 'y') , join(', ', $unnamedDocread));
+        }
+        if ($unnamedDocnameCount > 0) {
+            $pout[] = sprintf("%s unnamed famil%s in docfam: <pre>{%s}</pre>", $unnamedDocnameCount, ($unnamedDocnameCount > 1 ? 'ies' : 'y') , join(', ', $unnamedDocname));
+        }
+        $this->tout["missing family name"] = array(
+            "status" => (count($pout) <= 0) ? self::OK : self::BOF,
+            "msg" => '<ul><li>' . join('</li><li>', $pout) . '</li></ul>'
+        );
+    }
+    public function checkMissingDocumentsInDocread()
+    {
+        $result = pg_query($this->r, "SELECT id FROM doc WHERE id < 1e9 AND NOT EXISTS (SELECT 1 FROM docread WHERE docread.id = doc.id)");
+        $pout = array();
+        while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+            $pout[] = $row['id'];
+        }
+        if (count($pout) > 0) {
+            if (count($pout) > 10) {
+                $pout = array_slice($pout, 0, 10);
+                $pout[] = '…';
+            }
+            $msg = sprintf("%d missing document%s in docread: <pre>{%s}</pre>", count($pout) , (count($pout) > 1 ? 's' : '') , join(', ', $pout));
+        } else $msg = "";
+        $this->tout["missing documents in docread"] = array(
+            "status" => (count($pout) == 0) ? self::OK : self::BOF,
+            "msg" => $msg
+        );
+    }
+    public function checkSpuriousDocumentsInDocread()
+    {
+        $result = pg_query($this->r, "SELECT id FROM docread WHERE id < 1e9 AND NOT EXISTS (SELECT 1 FROM doc WHERE docread.id = doc.id)");
+        $pout = array();
+        while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+            $pout[] = $row['id'];
+        }
+        if (count($pout) > 0) {
+            if (count($pout) > 10) {
+                $pout = array_slice($pout, 0, 10);
+                $pout[] = '…';
+            }
+            $msg = sprintf("%d spurious document%s in docread: <pre>{%s}</pre>", count($pout) , (count($pout) > 1 ? 's' : '') , join(', ', $pout));
+        } else $msg = "";
+        $this->tout["spurious documents in docread"] = array(
+            "status" => (count($pout) == 0) ? self::OK : self::BOF,
+            "msg" => $msg
+        );
+    }
 }
-?>

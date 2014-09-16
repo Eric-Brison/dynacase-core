@@ -115,5 +115,3 @@ namespace {
     class_alias('\Dcp\Family\[PHPclassName]' , 'Doc[docid]');
 }
 [ENDBLOCK CLASSALIAS]
-
-?>

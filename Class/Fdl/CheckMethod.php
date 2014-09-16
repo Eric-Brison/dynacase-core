@@ -42,9 +42,7 @@ class CheckMethod extends CheckData
             $methodFile = $this->getClassFile($this->methodFile);
             $fileName = realpath($methodFile);
             if ($fileName) {
-                // Get the shell output from the syntax check command
-                exec(sprintf('php -n -l %s 2>&1', escapeshellarg($fileName)) , $output, $status);
-                if ($status != 0) {
+                if (CheckClass::phpLintFile($fileName, $output) === false) {
                     $this->addError(ErrorCode::getError('MTHD0002', $methodFile, $this->doc->name, implode("\n", $output)));
                 }
             } else {

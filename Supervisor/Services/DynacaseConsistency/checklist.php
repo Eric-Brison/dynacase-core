@@ -50,7 +50,7 @@ $tout = $a->getFullAnalyse();
 
 print '<table border=1 rules="all">';
 foreach ($tout as $k => $v) {
-    print sprintf("<tr><td><span style=\"background-color:%s;margin:3px;border:inset 2px %s\">&nbsp;&nbsp;&nbsp;</span></td><td>%s</td><td>%s</td></tr>", $v["status"], $v["status"], $k, $v["msg"]);
+    print sprintf("<tr><td><span style=\"background-color:%s;margin:3px;border:inset 2px %s\">&nbsp;&nbsp;&nbsp;</span></td><td>%s</td><td>%s</td></tr>\n", $v["status"], $v["status"], $k, $v["msg"]);
 }
 print "</table>";
 ?>
