@@ -9,7 +9,7 @@ export appname
 include $(utildir)/PubRule
 include $(rootdir)/corePubRule.mk
 
-SUBDIR= ckeditor-quicksave ckeditor-docattr jscalendar jsXMLParser mozillaplugin jscolor
+SUBDIR= ckeditor-quicksave ckeditor-docattr jscalendar jsXMLParser mozillaplugin jscolor PHPMailer Dcp
 
 publish: $(pubdir)/log.sh $(pubdir)/WHAT/Lib.Prefix.php.in $(pubdir)/jscalendar $(pubdir)/FDL/geticon.php
 

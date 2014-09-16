@@ -72,6 +72,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestFdlGen');
         $suite->addTestSuite('Dcp\Pu\TestDir');
         $suite->addTestSuite('Dcp\Pu\TestDSearch');
+        $suite->addTestSuite('Dcp\Pu\TestDcpMailMessage');
         // ...
         return $suite;
     }

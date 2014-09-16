@@ -207,12 +207,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
     $szone = false;
     $sgen = $sgen1 = '';
     
-    $multi_mix = new Fdl_Mail_mimePart('', array(
-        'content_type' => 'multipart/mixed'
-    ));
-    $multi_rel = $multi_mix->addSubpart('', array(
-        'content_type' => 'multipart/related'
-    ));
+    $message = new \Dcp\Mail\Message();
     
     if ($sendercopy && $action->getParam("FDL_BCC") == "yes") {
         $umail = getMailAddr($action->user->id);
@@ -269,17 +264,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                 }
             }
             
-            $multi_mix->addSubpart('', array(
-                'body_file' => $binfile,
-                'content_type' => $mime,
-                'charset' => 'UTF-8',
-                'filename' => sprintf("%s.%s", $doc->title, $ext) ,
-                'dfilename' => sprintf("%s.%s", $doc->title, $ext) ,
-                'encoding' => 'base64',
-                'name_encoding' => 'quoted-printable',
-                'filename_encoding' => 'quoted-printable',
-                'disposition' => 'attachment'
-            ));
+            $message->addAttachment(new \Dcp\Mail\Attachment($binfile, sprintf("%s.%s", $doc->title, $ext) , $mime));
             
             $zonebodycard = "FDL:EMPTY";
         }
@@ -387,25 +372,13 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
             fclose($fout);
         }
         // ---------------------------
-        // contruct mail_mime object
+        // construct message's body
         $htmlPart = null;
         if (preg_match("/html/", $format, $reg)) {
-            $htmlPart = $multi_rel->addSubpart('', array(
-                'body_file' => $pfout,
-                'content_type' => 'text/html',
-                'charset' => 'UTF-8',
-                'encoding' => 'quoted-printable',
-                'name_encoding' => 'quoted-printable',
-                'filename_encoding' => 'quoted-printable'
-            ));
+            $body = file_get_contents($pfout);
+            $message->setBody(new \Dcp\Mail\Body($body, 'text/html'));
         } else if ($format == "pdf") {
-            $multi_rel->addSubpart($comment, array(
-                'content_type' => 'text/plain',
-                'charset' => 'UTF-8',
-                'encoding' => 'quoted-printable',
-                'name_encoding' => 'quoted-printable',
-                'filename_encoding' => 'quoted-printable'
-            ));
+            $message->setBody(new \Dcp\Mail\Body($comment, 'text/plain'));
         }
         
         if ($format != "pdf") {
@@ -442,18 +415,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                                         
                                         $cidindex = $vaf;
                                         if (($mixed) && ($afiles[$aid]->type != "image")) $cidindex = $info->name;
-                                        $multi_mix->addSubpart('', array(
-                                            'body_file' => $info->path,
-                                            'content_type' => $info->mime_s ? $info->mime_s : $mime,
-                                            'charset' => 'UTF-8',
-                                            'filename' => $info->name,
-                                            'dfilename' => $info->name,
-                                            'encoding' => 'base64',
-                                            'name_encoding' => 'quoted-printable',
-                                            'filename_encoding' => 'quoted-printable',
-                                            'disposition' => 'attachment',
-                                            'cid' => $cidindex
-                                        ));
+                                        $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment($info->path, $info->name, ($info->mime_s ? $info->mime_s : $mime) , $cidindex));
                                     }
                                 }
                             }
@@ -484,34 +446,12 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                              * @var VaultFileInfo $info
                              */
                             if ($vf->Retrieve($vid, $info) == "") {
-                                $multi_rel->addSubpart('', array(
-                                    'body_file' => $info->path,
-                                    'content_type' => $info->mime_s ? $info->mime_s : $mime,
-                                    'charset' => 'UTF-8',
-                                    'filename' => $info->name,
-                                    'dfilename' => $info->name,
-                                    'encoding' => 'base64',
-                                    'name_encoding' => 'quoted-printable',
-                                    'filename_encoding' => 'quoted-printable',
-                                    'disposition' => 'inline',
-                                    'cid' => 'icon'
-                                ));
+                                $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment($info->path, $info->name, ($info->mime_s ? $info->mime_s : $mime) , 'icon'));
                             }
                         } else {
                             $icon = $doc->getIcon();
                             if (file_exists($pubdir . "/$icon")) {
-                                $multi_rel->addSubpart('', array(
-                                    'body_file' => sprintf("%s/%s", $pubdir, $icon) ,
-                                    'content_type' => sprintf("image/%s", fileextension($icon)) ,
-                                    'charset' => 'UTF-8',
-                                    'filename' => "icon",
-                                    'dfilename' => "icon",
-                                    'encoding' => 'base64',
-                                    'name_encoding' => 'quoted-printable',
-                                    'filename_encoding' => 'quoted-printable',
-                                    'disposition' => 'inline',
-                                    'cid' => 'icon'
-                                ));
+                                $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment(sprintf("%s/%s", $pubdir, $icon) , 'icon', sprintf("image/%s", fileextension($icon)) , 'icon'));
                             }
                         }
                     }
@@ -521,37 +461,13 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
             // add inserted image
             foreach ($ifiles as $v) {
                 if (file_exists($pubdir . "/$v")) {
-                    
-                    $multi_rel->addSubpart('', array(
-                        'body_file' => sprintf("%s/%s", $pubdir, $v) ,
-                        'content_type' => sprintf("image/%s", fileextension($v)) ,
-                        'charset' => 'UTF-8',
-                        'filename' => basename($v) ,
-                        'dfilename' => basename($v) ,
-                        'encoding' => 'base64',
-                        'name_encoding' => 'quoted-printable',
-                        'filename_encoding' => 'quoted-printable',
-                        'disposition' => 'inline',
-                        'cid' => $v
-                    ));
+                    $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment(sprintf("%s/%s", $pubdir, $v) , basename($v) , sprintf("image/%s", fileextension($v)) , $v));
                 }
             }
             
             foreach ($tfiles as $k => $v) {
                 if (file_exists($v)) {
-                    
-                    $multi_rel->addSubpart('', array(
-                        'body_file' => $v,
-                        'content_type' => trim(shell_exec(sprintf("file --mime -b %s", escapeshellarg($v)))) ,
-                        'charset' => 'UTF-8',
-                        'filename' => $k,
-                        'dfilename' => $k,
-                        'encoding' => 'base64',
-                        'name_encoding' => 'quoted-printable',
-                        'filename_encoding' => 'quoted-printable',
-                        'disposition' => 'inline',
-                        'cid' => $k
-                    ));
+                    $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment($v, $k, trim(shell_exec(sprintf("file --mime -b %s", escapeshellarg($v)))) , $k));
                 }
             }
             // Other files,
@@ -575,19 +491,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
                         }
                         $fpst = stat($fpname);
                         if (is_array($fpst) && $fpst["size"] > 0) {
-                            
-                            $multi_mix->addSubpart('', array(
-                                'body_file' => $fpname,
-                                'content_type' => $fmime,
-                                'charset' => 'UTF-8',
-                                'filename' => $fname,
-                                'dfilename' => $fname,
-                                'encoding' => 'base64',
-                                'name_encoding' => 'quoted-printable',
-                                'filename_encoding' => 'quoted-printable',
-                                'disposition' => 'attachment',
-                                'cid' => '$fname'
-                            ));
+                            $message->addAttachment(new \Dcp\Mail\Attachment($fpname, $fname, $fmime));
                         }
                     }
                 }
@@ -623,25 +527,24 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
             );
             system(($cmdpdf) , $status);
             if ($status == 0) {
-                $multi_mix->addSubpart('', array(
-                    'body_file' => $fpdf,
-                    'content_type' => 'application/pdf',
-                    'charset' => 'UTF-8',
-                    'filename' => sprintf("%s.pdf", $doc->title) ,
-                    'dfilename' => sprintf("%s.pdf", $doc->title) ,
-                    'encoding' => 'base64',
-                    'name_encoding' => 'quoted-printable',
-                    'filename_encoding' => 'quoted-printable',
-                    'disposition' => 'attachment'
-                ));
+                $message->addAttachment(new \Dcp\Mail\Attachment($fpdf, sprintf("%s.pdf", $doc->title) , 'application/pdf'));
             } else {
                 $action->addlogmsg(sprintf(_("PDF conversion failed for %s") , $doc->title));
             }
         }
-        
+        /*
         $err = sendmail($to, $from, $cc, $bcc, $subject, $multi_mix);
+        */
+        $message->setFrom($from);
+        $message->addTo($to);
+        $message->addCc($cc);
+        $message->addBcc($bcc);
+        $message->setSubject($subject);
+        $err = $message->send();
         if ($err == "") {
-            if ($savecopy) createSentMessage($to, $from, $cc, $bcc, $subject, $multi_mix, $doc);
+            if ($savecopy) {
+                createSentMessage($to, $from, $cc, $bcc, $subject, $message, $doc);
+            }
             if ($cc != "") $lsend = sprintf("%s and %s", $to, $cc);
             else $lsend = $to;
             $doc->addHistoryEntry(sprintf(_("sended to %s") , $lsend));
@@ -706,6 +609,8 @@ function srcfile($src)
     
     if (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)$/", $src, $reg)) {
         return imgvaultfile(str_replace('&amp;', '&', $reg[2]));
+    } elseif (preg_match('!^file/(?P<docid>\d+)/(?P<vid>\d+)/(?P<attrid>[^/]+)/(?P<index>[^/]+)/(?P<fname>[^?]+)!', $src, $reg)) {
+        return imgvaultfile($src);
     }
     
     if (!in_array(strtolower(fileextension($src)) , $vext)) return "";
@@ -748,6 +653,14 @@ function copyvault($src)
         return $newfile;
     }
     if (preg_match("|^FDL/geticon\.php\?vaultid=(?P<vid>\d+)|", $src, $reg)) {
+        $info = vault_properties($reg['vid']);
+        $newfile = uniqid(getTmpDir() . "/img");
+        if (!copy($info->path, $newfile)) {
+            return "";
+        }
+        return $newfile;
+    }
+    if (preg_match('!^file/(?P<docid>\d+)/(?P<vid>\d+)/(?P<attrid>[^/]+)/(?P<index>[^/]+)/(?P<fname>[^?]+)!', $src, $reg)) {
         $info = vault_properties($reg['vid']);
         $newfile = uniqid(getTmpDir() . "/img");
         if (!copy($info->path, $newfile)) {
@@ -806,4 +719,3 @@ function realfile($src)
     if ($f) return "src=\"$f\"";
     return "";
 }
-?>

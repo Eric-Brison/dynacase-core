@@ -165,16 +165,16 @@ if ($logfile) {
 if ($to) {
     include_once ("FDL/sendmail.php");
     
-    $themail = new Fdl_Mail_mime();
+    $message = new \Dcp\Mail\Message();
     
-    $themail->setHTMLBody(file_get_contents($logfile) , false);
+    $message->setBody(new \Dcp\Mail\Body(file_get_contents($logfile) , (($htmlmode == 'yes') ? 'text/html' : 'text/plain')));
     
     $from = getMailAddr($action->user->id);
     if ($from == "") $from = getParam('SMTP_FROM');
     if ($from == "") $from = $action->user->login . '@' . php_uname('n');
     
     $subject = sprintf(_("result of import  %s") , basename(GetHttpVars("file")));
-    $err = sendmail($to, $from, $cc = '', $bcc = '', $subject, $themail);
+    $err = sendmail($to, $from, $cc = '', $bcc = '', $subject, $message);
     if ($err) error_log("import sending mail: Error:$err");
     if ($filetmp) unlink($logfile);
 }

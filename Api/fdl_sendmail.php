@@ -16,7 +16,6 @@
 /**
  */
 
-
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("Send mail using freedom sendmail");
@@ -35,34 +34,53 @@ $from = getMailAddr($action->user->id);
 if ($from == "") $from = getParam('SMTP_FROM');
 if ($from == "") $from = $from = $action->user->login . '@' . php_uname('n');
 
-
 include_once ("FDL/sendmail.php");
-$themail = new Fdl_Mail_mime();
-if ($file && $file != 'stdin') {
-    $mime = trim(shell_exec(sprintf("file -ib %s", escapeshellarg($file))));
-    if (preg_match("|text/html|", $mime)) {
-        $themail->setHTMLBody($file, true);
-    } else if (preg_match("|text|", $mime)) {
-        $themail->setTxtBody($file, true);
+include_once ("WHAT/Lib.FileMime.php");
+
+$tmpfile = '';
+$message = new \Dcp\Mail\Message();
+$data = '';
+if ($file && $file == 'stdin') {
+    $data = file_get_contents('php://stdin');
+    $tmpfile = tempnam(getTmpDir() , 'fdl_sendmail_stdin');
+    file_put_contents($tmpfile, $data);
+    if ($htmlmode == 'Y') {
+        $mime = 'text/html';
     } else {
-        $themail->addAttachment($file, $mime);
-    }
-} else {
-    // stream_set_blocking(STDIN,0);
-    if ($file = 'stdin') {
-        $out = "";
-        $line = true;
-        while ($line !== false) {
-            $line = fgets(STDIN);
-            $out.= "$line\n";
+        $mime = getSysMimeFile($tmpfile);
+        $ext = getExtension($mime);
+        if ($ext != '') {
+            if (rename($tmpfile, $tmpfile . '.' . $ext) !== false) {
+                $tmpfile = $tmpfile . '.' . $ext;
+            }
         }
-        if ($htmlmode == "Y") $themail->setHTMLBody($out, false);
-        else $themail->setTxtBody($out, false);
+    }
+    $file = $tmpfile;
+} elseif ($file) {
+    $mime = getSysMimeFile($file);
+} else {
+    $mime = 'application/x-empty';
+}
+if ($file) {
+    if (preg_match('|text/html|', $mime)) {
+        $message->setBody(new \Dcp\Mail\Body(file_get_contents($file) , $mime));
+    } elseif (preg_match('|text|', $mime)) {
+        $message->setBody(new \Dcp\Mail\Body(file_get_contents($file) , $mime));
+    } else {
+        $message->addAttachment(new \Dcp\Mail\Attachment($file, basename($file) , $mime));
     }
 }
 
-if ($subject == "") $subject = basename($file);
-if ($subject == "") $subject = _("no subject");
-$err = sendmail($to, $from, $cc, $bcc, $subject, $themail);
-if ($err) print "Error:$err\n";
-?>
+if ($subject == "" && $file) {
+    $subject = basename($file);
+}
+if ($subject == "") {
+    $subject = _("no subject");
+}
+$err = sendmail($to, $from, $cc, $bcc, $subject, $message);
+if ($err) {
+    print "Error:$err\n";
+}
+if ($tmpfile != '') {
+    unlink($tmpfile);
+}
