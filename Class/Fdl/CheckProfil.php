@@ -48,7 +48,8 @@ class CheckProfil extends CheckData
     private $availablesModifier = array(
         'reset',
         'add',
-        'delete'
+        'delete',
+        'set'
     );
     /**
      * @param array $data

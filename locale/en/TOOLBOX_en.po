@@ -3192,6 +3192,9 @@ msgstr ""
 msgid "Reason for change state"
 msgstr ""
 
+msgid "Recomputing profiled documents"
+msgstr ""
+
 #, php-format
 msgid "Record documents %d/%d"
 msgstr ""
@@ -7688,6 +7691,10 @@ msgstr ""
 
 #, php-format
 msgid "set primary folder to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set profile %s"
 msgstr ""
 
 #, php-format

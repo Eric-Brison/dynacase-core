@@ -3314,6 +3314,9 @@ msgstr "Ré-affectation"
 msgid "Reason for change state"
 msgstr "Raison du changement d'état"
 
+msgid "Recomputing profiled documents"
+msgstr "Recalcul des documents profilés"
+
 #, php-format
 msgid "Record documents %d/%d"
 msgstr "Enregistrement des documents %d/%d"
@@ -7902,6 +7905,10 @@ msgstr "Nom logique mis à \"%s\""
 #, php-format
 msgid "set primary folder to '%s'"
 msgstr "affecte le dossier primaire à '%s'"
+
+#, php-format
+msgid "set profile %s"
+msgstr "reparamétrage du profil %s"
 
 #, php-format
 msgid "set special characteristics to '%s'"

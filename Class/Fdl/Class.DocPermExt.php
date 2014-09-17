@@ -96,4 +96,11 @@ create unique index idx_permext on docpermext(docid, userid,acl);";
         }
         return '';
     }
+    public static function getPermsForDoc($docid)
+    {
+        $sql = sprintf("SELECT docid, userid, acl FROM docpermext WHERE docid = %d ORDER BY docid, userid, acl", $docid);
+        $res = array();
+        simpleQuery('', $sql, $res, false, false, true);
+        return $res;
+    }
 }
