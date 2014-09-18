@@ -10,4 +10,4 @@ export wpub=$REAL_DIRNAME
 
 touch "$wpub/maintenance.lock"
 
-echo "check update needed ($wpub/wcheck)"
+echo "Dynacase access is now locked."
