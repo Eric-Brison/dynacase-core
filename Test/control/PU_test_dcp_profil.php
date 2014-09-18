@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace Dcp\Pu;
 /**
@@ -117,7 +117,98 @@ class TestProfil extends TestCaseDcpCommonFamily
         
         $this->assertEquals($expectNumber, $s->count() , sprintf("query:%s: %s", print_r($s->getSearchInfo() , true) , print_r($this->getViews($famName) , true)));
     }
-    
+    /**
+     * @dataProvider dataProfilRecomputeProfiledDocuments
+     */
+    public function testProfilRecomputeProfiledDocuments($data)
+    {
+        $profile = new_Doc('', $data['profile']);
+        simpleQuery('', sprintf('DELETE FROM dochisto WHERE id = %d', $profile->initid));
+        $this->importCsvData($data['import']);
+        $this->resetDocumentCache();
+        $profile = new_Doc('', $data['profile']);
+        $histo = $profile->getHisto();
+        $hasRecomputedProfileedDocuments = false;
+        foreach ($histo as $entry) {
+            if ($entry['code'] == 'RECOMPUTE_PROFILED_DOCUMENT') {
+                $hasRecomputedProfileedDocuments = true;
+                break;
+            }
+        }
+        $msg = sprintf("Import of profile '%s' has wrongfully %srecomputed profiled documents.", $data['profile'], $data['recomputed'] ? 'not ' : '');
+        $this->assertEquals($data['recomputed'], $hasRecomputedProfileedDocuments, $msg);
+    }
+    public function dataProfilRecomputeProfiledDocuments()
+    {
+        return array(
+            //
+            // -- Static profiles --
+            //
+            // Check that RESET always recomputes profiled documents
+            array(
+                array(
+                    "import" => "PROFIL;TST_PRF_RESET;;RESET;view=TST_GRPALL;edit=TST_GRPSUBONE",
+                    "profile" => "TST_PRF_RESET",
+                    "recomputed" => true
+                )
+            ) ,
+            array(
+                array(
+                    "import" => "PROFIL;TST_PRF_RESET;;RESET;view=TST_GRPALL;delete=TST_GRPSUBONE",
+                    "profile" => "TST_PRF_RESET",
+                    "recomputed" => true
+                )
+            ) ,
+            // Check that SET recomputes profiled documents only if changed
+            array(
+                array(
+                    "import" => "PROFIL;TST_PRF_SET;;SET;view=TST_GRPALL;edit=TST_GRPSUBONE",
+                    "profile" => "TST_PRF_SET",
+                    "recomputed" => false
+                )
+            ) ,
+            array(
+                array(
+                    "import" => "PROFIL;TST_PRF_SET;;SET;view=TST_GRPALL;delete=TST_GRPSUBONE",
+                    "profile" => "TST_PRF_SET",
+                    "recomputed" => true
+                )
+            ) ,
+            //
+            // -- Dynamic user profiles --
+            //
+            // Check that RESET always recomputes profiled documents
+            array(
+                array(
+                    "import" => "PROFIL;TST_PRF_RESET_DYNUSER;;RESET;view=tst_user;edit=tst_user",
+                    "profile" => "TST_PRF_RESET_DYNUSER",
+                    "recomputed" => true
+                )
+            ) ,
+            array(
+                array(
+                    "import" => "PROFIL;TST_PRF_RESET_DYNUSER;;RESET;view=tst_user;delete=tst_user",
+                    "profile" => "TST_PRF_RESET_DYNUSER",
+                    "recomputed" => true
+                )
+            ) ,
+            // Check that SET recomputes profiled documents only if changed
+            array(
+                array(
+                    "import" => "PROFIL;TST_PRF_SET_DYNUSER;;SET;view=tst_user;edit=tst_user",
+                    "profile" => "TST_PRF_SET_DYNUSER",
+                    "recomputed" => false
+                )
+            ) ,
+            array(
+                array(
+                    "import" => "PROFIL;TST_PRF_SET_DYNUSER;;SET;view=tst_user;delete=tst_user",
+                    "profile" => "TST_PRF_SET_DYNUSER",
+                    "recomputed" => true
+                )
+            )
+        );
+    }
     private function getViews($famid)
     {
         $famid = getFamIdFromName(self::$dbaccess, $famid);
@@ -163,9 +254,30 @@ class TestProfil extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                
+                "TST_DOCPRFBASIC",
+                "TST_PRFJOHN_BIS",
+                "john",
+                "PU_data_dcp_profilJohn.ods",
+                array(
+                    "view" => true,
+                    "edit" => false,
+                    "delete" => true
+                )
+            ) ,
+            array(
                 "TST_DOCPRFBASIC",
                 "TST_PRFJOHN",
+                "jane",
+                "PU_data_dcp_profilJohn.ods",
+                array(
+                    "view" => true,
+                    "edit" => false,
+                    "delete" => false
+                )
+            ) ,
+            array(
+                "TST_DOCPRFBASIC",
+                "TST_PRFJOHN_BIS",
                 "jane",
                 "PU_data_dcp_profilJohn.ods",
                 array(
@@ -257,6 +369,17 @@ class TestProfil extends TestCaseDcpCommonFamily
                     "delete" => false
                 )
             ) ,
+            array(
+                
+                "TST_DOCPRFBASIC",
+                "TST_PRFJOHN_BIS",
+                "jane",
+                array(
+                    "view" => true,
+                    "edit" => false,
+                    "delete" => false
+                )
+            ) ,
             
             array(
                 
@@ -269,6 +392,18 @@ class TestProfil extends TestCaseDcpCommonFamily
                     "delete" => false
                 )
             ) ,
+            array(
+                
+                "TST_DOCPRFBASIC",
+                "TST_PRFJOHN_BIS",
+                "john",
+                array(
+                    "view" => true,
+                    "edit" => true,
+                    "delete" => false
+                )
+            ) ,
+            
             array(
                 
                 "TST_DOCPRFBASIC",
@@ -418,4 +553,3 @@ class TestProfil extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

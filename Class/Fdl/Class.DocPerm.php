@@ -182,4 +182,11 @@ create unique index idx_perm on docperm(docid, userid);";
     {
         $this->upacl = $this->upacl & (~(1 << $pos));
     }
+    public static function getPermsForDoc($docid)
+    {
+        $sql = sprintf("SELECT docid, userid, upacl FROM docperm WHERE docid = %d ORDER BY docid, userid, upacl", $docid);
+        $res = array();
+        simpleQuery('', $sql, $res, false, false, true);
+        return $res;
+    }
 }

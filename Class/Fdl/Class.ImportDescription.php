@@ -127,7 +127,6 @@ class importDocumentDescription
             "linebreak" => $this->csvLinebreak
         );
     }
-
     /**
      * Detect csv options - separator and enclosure arguments are modified if set to auto
      * @param $csvFileName
@@ -1405,6 +1404,10 @@ class importDocumentDescription
         if (!($pid > 0)) $this->tcr[$this->nLine]["err"] = sprintf(_("profil id unkonow %s") , $data[1]);
         else {
             clearCacheDoc(); // need to reset computed acls
+            
+            /**
+             * @var PDoc $pdoc
+             */
             $pdoc = new_Doc($this->dbaccess, $pid);
             if ($pdoc->isAlive()) {
                 $this->tcr[$this->nLine]["msg"] = sprintf(_("change profil %s") , $data[1]);
@@ -1427,9 +1430,15 @@ class importDocumentDescription
                         $this->tcr[$this->nLine]["err"] = $pdoc->modify();
                     }
                     $optprof = strtoupper(trim($data[3]));
+                    $initialPerms = array();
+                    $profilingHasChanged = false;
                     if ($optprof == "RESET") {
                         $pdoc->removeControl();
                         $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("reset profil %s") , $pid);
+                    } elseif ($optprof == "SET") {
+                        $initialPerms = array_merge(DocPerm::getPermsForDoc($pdoc->id) , DocPermExt::getPermsForDoc($pdoc->id));
+                        $pdoc->removeControl();
+                        $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("set profile %s") , $pid);
                     }
                     $tacls = array_slice($data, 2);
                     foreach ($tacls as $acl) {
@@ -1455,8 +1464,15 @@ class importDocumentDescription
                             $this->tcr[$this->nLine]["err"] = $perr;
                         }
                     }
-                    // need reset all documents
-                    $pdoc->recomputeProfiledDocument();
+                    if ($optprof == "SET") {
+                        $newPerms = array_merge(DocPerm::getPermsForDoc($pdoc->id) , DocPermExt::getPermsForDoc($pdoc->id));
+                        $profilingHasChanged = (serialize($newPerms) != serialize($initialPerms));
+                    }
+                    if ($optprof == "RESET" || ($optprof == "SET" && $profilingHasChanged)) {
+                        // need reset all documents
+                        $pdoc->addHistoryEntry(_('Recomputing profiled documents') , DocHisto::INFO, 'RECOMPUTE_PROFILED_DOCUMENT');
+                        $pdoc->recomputeProfiledDocument();
+                    }
                 }
             } else {
                 $this->tcr[$this->nLine]["err"] = sprintf(_("profil id unknow %s") , $data[1]);
