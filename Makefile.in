@@ -17,7 +17,7 @@ GZIP_ENV = --best
 
 SUBDIR = Class Zone Action Api App Supervisor Expire Images programs Share Style Config locale
 
-TOP_MODULES = indexq.php index.php whattext wsh.php guest.php wcheck wstop wstart resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess pack.php authent.php
+TOP_MODULES = indexq.php index.php whattext wsh.php guest.php  wstop wstart resizeimg.php libutil.sh  .htaccess pack.php authent.php
 
 pages_not_xml = info.xml
 pages_not_php = fam2po.php po2js.php
@@ -41,17 +41,11 @@ $(pubdir)/index.php: index.php
 	cp $< $@
 $(pubdir)/whattext: whattext
 	cp $< $@
-$(pubdir)/wcheck: wcheck
-	cp $< $@
 $(pubdir)/wstop: wstop
 	cp $< $@
 $(pubdir)/wstart: wstart
 	cp $< $@
 $(pubdir)/libutil.sh: libutil.sh
-	cp $< $@
-$(pubdir)/wcontrol: wcontrol
-	cp $< $@
-$(pubdir)/wcontrol.xml: wcontrol.xml
 	cp $< $@
 $(pubdir)/.htaccess: htaccess
 	cp $< $@
