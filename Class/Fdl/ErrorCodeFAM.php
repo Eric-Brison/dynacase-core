@@ -71,4 +71,16 @@ class ErrorCodeFAM
      * @errorCode the family class file is not found
      */
     const FAM0600 = 'parent class family file "%s" not found for "%s" family';
+    /**
+     * @errorCode the parent's family's name is not found
+     */
+    const FAM0601 = 'parent family "%s" not found for family "%s" while generating class file.';
+    /**
+     * @errorCode the parent's family's name is not found
+     */
+    const FAM0602 = 'parent family "%s" not found for family "%s" while generating attribute class file.';
+    /**
+     * @errorCode the parent's family's name is not found
+     */
+    const FAM0603 = 'parent family "%s" not found for family "%s" while checking inheritance.';
 }

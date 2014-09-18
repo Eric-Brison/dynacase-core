@@ -19,6 +19,40 @@
 include_once ('FDL/Class.Doc.php');
 include_once ('FDL/Class.DocFam.php');
 /**
+ * Write PHP content to destination file if PHP syntax is correct.
+ *
+ * - The content is first written to a temporary file next to the
+ *   final destination file.
+ * - The syntax of the temporary file is checked.
+ * - If the syntax is correct, then the temporary file is "commited"
+ *   to the destination file.
+ *
+ * @param string $fileName destination file
+ * @param string $content content to write
+ * @return string empty string on success or error message on failure
+ */
+function __phpLintWriteFile($fileName, $content)
+{
+    $dir = dirname($fileName);
+    $temp = tempnam($dir, basename($fileName) . '.tmp');
+    if ($temp === false) {
+        return sprintf(_("Error creating temporary file in '%s'.") , $dir);
+    }
+    if (file_put_contents($temp, $content) === false) {
+        unlink($temp);
+        return sprintf(_("Error writing content to file '%s'.") , $temp);
+    }
+    if (CheckClass::phpLintFile($temp, $output) === false) {
+        // Leave temp file for syntax error analysis
+        return sprintf(_("Syntax error in file '%s': %s") , $temp, $output);
+    }
+    if (rename($temp, $fileName) === false) {
+        unlink($temp);
+        return sprintf(_("Error renaming '%s' to '%s'.") , $temp, $fileName);
+    }
+    return '';
+}
+/**
  * Generate Class.Docxxx.php files
  *
  * @param string $dbaccess database specification
@@ -38,8 +72,11 @@ function AttrToPhp($dbaccess, $tdoc)
         $tdoc["classname"] = '\\' . $tdoc["classname"];
     }
     if ($tdoc["fromid"] > 0) {
-        
-        $tdoc["fromname"] = getNameFromId($dbaccess, $tdoc["fromid"]);
+        $fromName = getNameFromId($dbaccess, $tdoc["fromid"]);
+        if ($fromName == '') {
+            throw new \Dcp\Exception("FAM0601", $tdoc["fromid"], $tdoc["name"]);
+        }
+        $tdoc["fromname"] = $fromName;
     } else {
         $tdoc["fromname"] = "Document";
     }
@@ -436,6 +473,9 @@ function AttrIdToPhp($dbaccess, $tdoc)
         $phpAdoc->Set("extend", '');
     } else {
         $fromName = getNameFromId($dbaccess, $tdoc["fromid"]);
+        if ($fromName == '') {
+            throw new \Dcp\Exception("FAM0602", $tdoc["fromid"], $tdoc["name"]);
+        }
         $phpAdoc->Set("extend", ucwords(strtolower(str_replace(array(
             ":",
             "-"
@@ -640,32 +680,16 @@ function createDocFile($dbaccess, $tdoc)
     $pubdir = GetParam("CORE_PUBDIR");
     $dfile = "$pubdir/FDL$GEN/Class.Doc" . $tdoc["id"] . ".php";
     
-    $fphp = fopen($dfile, "w");
-    if ($fphp) {
-        $err = fwrite($fphp, AttrtoPhp($dbaccess, $tdoc));
-        if ($err === false) {
-            throw new \Dcp\Exception("cannot generate  $dfile");
-        }
-        fclose($fphp);
-        @chmod($dfile, 0666); // write for nobody
-        
-    } else {
-        throw new \Dcp\Exception("cannot generate  $dfile");
+    $err = __phpLintWriteFile($dfile, AttrtoPhp($dbaccess, $tdoc));
+    if ($err != '') {
+        throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $dfile, $err));
     }
     
     $attrfile = "$pubdir/FDL$GEN/Class.Attrid" . $tdoc["id"] . ".php";
     
-    $fphp = fopen($attrfile, "w");
-    if ($fphp) {
-        $err = fwrite($fphp, AttrIdtoPhp($dbaccess, $tdoc));
-        if ($err === false) {
-            throw new \Dcp\Exception("cannot generate  $attrfile");
-        }
-        fclose($fphp);
-        @chmod($attrfile, 0666); // write for nobody
-        
-    } else {
-        throw new \Dcp\Exception("cannot access $attrfile");
+    $err = __phpLintWriteFile($attrfile, AttrIdtoPhp($dbaccess, $tdoc));
+    if ($err != '') {
+        throw new \Dcp\Exception("Error generating file '%s': %s", $attrfile, $err);
     }
     
     return $dfile;

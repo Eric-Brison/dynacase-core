@@ -285,9 +285,7 @@ class CheckWorkflow
     {
         // Sort out the formatting of the filename
         $fileName = realpath($this->getWorkflowClassFile());
-        // Get the shell output from the syntax check command
-        exec(sprintf('php -n -l %s 2>&1', escapeshellarg($fileName)) , $output, $status);
-        if ($status != 0) {
+        if (CheckClass::phpLintFile($fileName, $output) === false) {
             $this->addCodeError('WFL0003', implode("\n", $output));
         } else {
             include_once ($this->getWorkflowClassFile());

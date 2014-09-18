@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+if [ -z "$wpub" ]; then
+    echo "Undefined or empty wpub environment variable!"
+    exit 1
+fi
+
+if [ -z "$pgservice_core" ]; then
+    echo "Undefined or empty pgservice_core!"
+    exit 1
+fi
+
+(
+	shopt -s nullglob
+	echo "Fixing rights on 'FDLGEN/*.php' files..."
+	for F in FDLGEN/*.php; do
+		chmod 0600 "$F"
+	done
+	echo "Done."
+)

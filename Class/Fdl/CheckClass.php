@@ -51,7 +51,7 @@ class CheckClass extends CheckData
         
         if ($classFile === null) {
             \Dcp\DirectoriesAutoloader::instance(null, null)->forceRegenerate($this->className);
-
+            
             $classFile = \Dcp\DirectoriesAutoloader::instance(null, null)->getClassFile($this->className);
         }
         
@@ -69,14 +69,25 @@ class CheckClass extends CheckData
             if ($classFile && $fileName) {
                 $this->fileName = $fileName;
                 // Get the shell output from the syntax check command
-                exec(sprintf('php -n -l %s 2>&1', escapeshellarg($fileName)) , $output, $status);
-                if ($status != 0) {
+                if (self::phpLintFile($fileName, $output) === false) {
                     $this->addError(ErrorCode::getError('CLASS0002', $classFile, $this->doc->name, implode("\n", $output)));
                 }
             } else {
                 $this->addError(ErrorCode::getError('CLASS0003', $this->className, $this->doc->name));
             }
         }
+    }
+    /**
+     * Check PHP syntax of file (lint)
+     *
+     * @param string $fileName
+     * @param string $output Error message
+     * @return bool bool(true) if correct or bool(false) if error
+     */
+    public static function phpLintFile($fileName, &$output)
+    {
+        exec(sprintf('php -n -l %s 2>&1', escapeshellarg($fileName)) , $output, $status);
+        return ($status === 0);
     }
     
     protected function checkInherit()
