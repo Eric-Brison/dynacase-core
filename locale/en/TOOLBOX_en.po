@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-20 16:23+0200\n"
+"POT-Creation-Date: 2014-09-18 15:20+0200\n"
 "PO-Revision-Date: 2014-08-20 16:23+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -864,10 +864,6 @@ msgstr ""
 msgid "Cannot write to log %s"
 msgstr ""
 
-#, php-format
-msgid "Caught Exception : %s\n"
-msgstr ""
-
 msgid "Certain attribute can be not use for import"
 msgstr ""
 
@@ -1335,6 +1331,10 @@ msgstr ""
 msgid "Desactivate acls"
 msgstr ""
 
+#, php-format
+msgid "Destroyed by action %s/%s from %s"
+msgstr ""
+
 msgid "Detail Permissions"
 msgstr ""
 
@@ -1430,6 +1430,9 @@ msgid "Document context menu"
 msgstr ""
 
 msgid "Document creation"
+msgstr ""
+
+msgid "Document destroyed"
 msgstr ""
 
 #, php-format
@@ -1714,10 +1717,6 @@ msgid "Error : %s"
 msgstr ""
 
 #, php-format
-msgid "Error : %s\n"
-msgstr ""
-
-#, php-format
 msgid "Error : Process %s [%d]: status %d"
 msgstr ""
 
@@ -1755,6 +1754,10 @@ msgid "Error creating temp file for sql log output."
 msgstr ""
 
 #, php-format
+msgid "Error creating temporary file in '%s'."
+msgstr ""
+
+#, php-format
 msgid "Error in portfolio : folder %s not exists"
 msgstr ""
 
@@ -1763,11 +1766,19 @@ msgid "Error opening %s file '%s'"
 msgstr ""
 
 #, php-format
+msgid "Error renaming '%s' to '%s'."
+msgstr ""
+
+#, php-format
 msgid "Error sending file"
 msgstr ""
 
 #, php-format
 msgid "Error writing content to '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error writing content to file '%s'."
 msgstr ""
 
 #, php-format
@@ -1947,8 +1958,8 @@ msgstr ""
 "        </ul>\n"
 "    </li>\n"
 "    <li>\n"
-"        <em class=\"help-operator\">(</em> and <em class=\"help-operator\">)"
-"</em><br/>\n"
+"        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
+"\">)</em><br/>\n"
 "        Parenthesis express priorities between operators.\n"
 "        <ul>\n"
 "            <li>\n"
@@ -3648,6 +3659,10 @@ msgid "Sure duplicate %s ?"
 msgstr ""
 
 msgid "Sure duplicate ?"
+msgstr ""
+
+#, php-format
+msgid "Syntax error in file '%s': %s"
 msgstr ""
 
 msgid "System document"
@@ -7787,8 +7802,8 @@ msgid "submitreqpasswd_form_send_error_unknown"
 msgstr ""
 "<p>The server accountered an error processing your request</p>\n"
 "<p>Retry your request, and if the problem persist, please contact <a href="
-"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request\">"
-"[ON_ERROR_CONTACT]</a></p>"
+"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request"
+"\">[ON_ERROR_CONTACT]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""

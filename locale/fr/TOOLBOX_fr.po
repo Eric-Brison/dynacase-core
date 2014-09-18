@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-20 16:23+0200\n"
-"PO-Revision-Date: 2014-08-20 16:25+0200\n"
+"POT-Creation-Date: 2014-09-18 15:20+0200\n"
+"PO-Revision-Date: 2014-09-18 15:26+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -885,10 +885,6 @@ msgstr ""
 msgid "Cannot write to log %s"
 msgstr "Ne peux pas écrire dans les logs %s"
 
-#, php-format
-msgid "Caught Exception : %s\n"
-msgstr "Attrape exception : %s\n"
-
 msgid "Certain attribute can be not use for import"
 msgstr "Certain attribut peuvent ne pas servir lors de l\\'import"
 
@@ -1365,6 +1361,10 @@ msgstr "Supprimer cette rubrique"
 msgid "Desactivate acls"
 msgstr "Désactiver les droits"
 
+#, php-format
+msgid "Destroyed by action %s/%s from %s"
+msgstr "Destruction définitive par l'action %s/%s depuis %s"
+
 msgid "Detail Permissions"
 msgstr "Détail des droits"
 
@@ -1463,6 +1463,9 @@ msgstr "Menu contextuel du document"
 
 msgid "Document creation"
 msgstr "Création de document"
+
+msgid "Document destroyed"
+msgstr "Document détruit définitivement"
 
 #, php-format
 msgid "Document inserted in %s folder"
@@ -1762,10 +1765,6 @@ msgid "Error : %s"
 msgstr "Erreur : %s"
 
 #, php-format
-msgid "Error : %s\n"
-msgstr "Erreur : %s\n"
-
-#, php-format
 msgid "Error : Process %s [%d]: status %d"
 msgstr "Erreur : Processus %s [%d]: statut %d"
 
@@ -1804,6 +1803,10 @@ msgid "Error creating temp file for sql log output."
 msgstr "Erreur pendant la création du fichier temporaire de log sql."
 
 #, php-format
+msgid "Error creating temporary file in '%s'."
+msgstr "Erreur lors de creation d'un fichier temporaire dans '%s'"
+
+#, php-format
 msgid "Error in portfolio : folder %s not exists"
 msgstr "Erreur dans la chemise : dossier %s n'existe pas"
 
@@ -1812,12 +1815,20 @@ msgid "Error opening %s file '%s'"
 msgstr "Erreur lors de l'ouverture %s du fichier %s"
 
 #, php-format
+msgid "Error renaming '%s' to '%s'."
+msgstr "Erreur de renommage '%s' vers '%s'"
+
+#, php-format
 msgid "Error sending file"
 msgstr "Erreur lors de l'envoi du fichier"
 
 #, php-format
 msgid "Error writing content to '%s'."
 msgstr "Erreur d'écriture du contenu dans '%s'."
+
+#, php-format
+msgid "Error writing content to file '%s'."
+msgstr "Erreur d'écriture du fichier '%s'."
 
 #, php-format
 msgid "Error writing to ouput file '%s'."
@@ -3792,6 +3803,10 @@ msgstr "Etes vous sur de vouloir dupliquer %s"
 msgid "Sure duplicate ?"
 msgstr "Etes vous sur de vouloir dupliquer"
 
+#, php-format
+msgid "Syntax error in file '%s': %s"
+msgstr "Erreur de syntace dans le fichier '%s' : %s"
+
 msgid "System document"
 msgstr "Documents système"
 
@@ -4790,8 +4805,8 @@ msgstr ""
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
-"[CORE_EXTERNURL]</a>"
+"<p>Vous pouvez vous connecter sur <a href="
+"\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a>"
 
 msgid "can't access file"
 msgstr "Accès au fichier impossible"
@@ -8903,6 +8918,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Cancel change"
 #~ msgstr "Annuler les modifications"
 
+#~ msgid "Caught Exception : %s\n"
+#~ msgstr "Attrape exception : %s\n"
+
 #~ msgid "Choose document before set options"
 #~ msgstr "Choisissez un document avant de choisir les options"
 
@@ -8930,6 +8948,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "L'élément ne peut pas être parfaitement analysé, des erreurs peuvent "
 #~ "apparaître lors de l'importation"
+
+#~ msgid "Error : %s\n"
+#~ msgstr "Erreur : %s\n"
 
 #~ msgid "Freedom imodification"
 #~ msgstr "Modification de documents virtuels"

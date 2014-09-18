@@ -1669,6 +1669,11 @@ create unique index i_docir on doc(initid, revision);";
         if ($really) {
             if ($this->id != "") {
                 // delete all revision also
+                global $action;
+                global $_SERVER;
+                $appli = $action->parent;
+                $this->addHistoryEntry(sprintf(_("Destroyed by action %s/%s from %s") , $appli->name, $action->name, isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode') , DocHisto::NOTICE);
+                $this->addHistoryEntry(_("Document destroyed") , DocHisto::MESSAGE, "DELETE");
                 $this->addLog('delete', array(
                     "really" => $really
                 ));
@@ -1700,7 +1705,7 @@ create unique index i_docir on doc(initid, revision);";
                 
                 $appli = $action->parent;
                 $this->addHistoryEntry(sprintf(_("delete by action %s/%s from %s") , $appli->name, $action->name, isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode') , DocHisto::NOTICE);
-                $this->addHistoryEntry(_("document deleted") , HISTO_MESSAGE, "DELETE");
+                $this->addHistoryEntry(_("document deleted") , DocHisto::MESSAGE, "DELETE");
                 $this->addLog('delete', array(
                     "really" => $really
                 ));

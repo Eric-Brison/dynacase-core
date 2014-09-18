@@ -55,7 +55,7 @@ function fdl_card(&$action)
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) {
         $err = simpleQuery($dbaccess, sprintf("select id from dochisto where id=%d limit 1", $docid) , $hashisto, true, true);
-        if ($hashisto) $action->exitError(sprintf(_("Document %s has been destroyed.") , $docid) . sprintf(" <a href='?app=FDL&action=VIEWDESTROYDOC&id=%s>%s</a>", $docid, _("See latest information about it.")));
+        if ($hashisto) $action->exitError(sprintf(_("Document %s has been destroyed.") , $docid) . sprintf(" <a href='?app=FDL&action=VIEWDESTROYDOC&id=%s'>%s</a>", $docid, _("See latest information about it.")));
         else $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     }
     
