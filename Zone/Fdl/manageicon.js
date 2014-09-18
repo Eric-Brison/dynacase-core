@@ -81,7 +81,6 @@ function ounselect() {
 }
 
 function viewabstract(event) {
-    
   
   diva = document.getElementById('a'+selid);
   if (!diva) return;
@@ -105,16 +104,18 @@ function viewabstract(event) {
        
 }
 
+
+
 function openMenuOrAbstract(event) {
-  if (window.event) {
-	shiftKey = window.event.shiftKey
-	button=window.event.button;
-	if (isSafari) button++;
-   } else  {
-	shiftKey = event.shiftKey
-	button= event.button +1;
-}
-  //window.status=shiftKey+"/"+button;
+    var button, shiftKey;
+
+    if (! event) event=window.event;
+    if (event.which) {
+        button=event.which;
+    } else {
+        button=(event.button & 1)?1:0;
+    }
+    shiftKey = event.shiftKey
 
   if (button == 1) {
     if (shiftKey ) {
@@ -129,14 +130,15 @@ function openMenuOrAbstract(event) {
 
 function openMenuOrProperties(event,menuid,itemid,wtarget) {
   var target;
-  if (window.event) {
-    shiftKey = window.event.shiftKey
-      button=window.event.button;
-    if (isSafari) button++;
-  } else  {
+    var button, shiftKey;
+
+    if (! event) event=window.event;
+    if (event.which) {
+        button=event.which;
+    } else {
+        button=(event.button & 1)?1:0;
+    }
     shiftKey = event.shiftKey
-      button= event.button +1;
-  }
 
   //window.status=shiftKey+"/"+button;
   if (button == 1) {
@@ -182,7 +184,7 @@ var drag=0;
 addEvent(document,"keypress",trackKey);
 
 function trackKey(event) {
-  var intKeyCode;
+  var intKeyCode,altKey,ctrlKey ;
 
   if (!event) event=window.event;
   if (isNetscape) {
