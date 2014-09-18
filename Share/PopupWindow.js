@@ -157,7 +157,7 @@ function PopupWindow_isClicked(e) {
 			}
 		else if (this.use_gebi) {
 		  if (!e) return false;
-			var t = e.originalTarget;
+			var t = e.originalTarget || e.target;
             try {
                 if (t) {
                     while (t && t.parentNode != null) {
