@@ -49,8 +49,8 @@ if (count($argv) == 1) {
 foreach ($argv as $k => $v) {
     
     if (preg_match("/--([^=]+)=(.*)/", $v, $reg)) {
-        if (substr($reg[1],-2)=="[]") {
-            $_GET[substr($reg[1],0,-2)][] = $reg[2];
+        if (substr($reg[1], -2) == "[]") {
+            $_GET[substr($reg[1], 0, -2) ][] = $reg[2];
         } else {
             $_GET[$reg[1]] = $reg[2];
         }
@@ -120,7 +120,7 @@ try {
     }
 }
 catch(Dcp\Exception $e) {
-    echo sprintf(_("Error : %s\n") , $e->getMessage());
+    errorLogException($e);
     exit(1);
 }
 // init for gettext
@@ -138,7 +138,7 @@ if (isset($_GET["api"])) {
         catch(Dcp\ApiUsage\Exception $e) {
             switch ($e->getDcpCode()) {
                 case "CORE0002":
-                    echo sprintf(_("Error : %s\n") , $e->getDcpMessage());
+                    errorLogException($e);
                     exit(1);
                     break;
 
@@ -148,17 +148,16 @@ if (isset($_GET["api"])) {
                     break;
 
                 default:
-                    echo sprintf(_("Caught Exception : %s\n") , $e->getMessage());
+                    errorLogException($e);
                     exit(1);
             }
         }
         catch(Dcp\Exception $e) {
-            echo sprintf(_("Error : %s\n") , $e->getMessage());
+            errorLogException($e);
             exit(1);
         }
         catch(Exception $e) {
-            
-            echo sprintf(_("Caught Exception : %s\n") , $e->getMessage());
+            errorLogException($e);
             exit(1);
         }
     }
@@ -168,12 +167,11 @@ if (isset($_GET["api"])) {
             echo ($action->execute());
         }
         catch(Dcp\Exception $e) {
-            echo sprintf(_("Error : %s\n") , $e->getMessage());
+            errorLogException($e);
             exit(1);
         }
         catch(Exception $e) {
-            
-            echo sprintf(_("Caught Exception : %s\n") , $e->getMessage());
+            errorLogException($e);
             exit(1);
         }
     } else {
@@ -199,11 +197,11 @@ if (isset($_GET["api"])) {
             catch(Exception $e) {
                 switch ($e->getCode()) {
                     case THROW_EXITERROR:
-                        echo sprintf(_("Error : %s\n") , $e->getMessage());
+                        errorLogException($e);
                         break;
 
                     default:
-                        echo sprintf(_("Caught Exception : %s\n") , $e->getMessage());
+                        errorLogException($e);
                 }
             }
             echo "<hr>";
@@ -214,4 +212,3 @@ if (isset($_GET["api"])) {
 wbar(-1, -1, "completed");
 
 return (0);
-?>
