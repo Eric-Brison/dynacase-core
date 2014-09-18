@@ -383,7 +383,9 @@ class Fdl_Collection extends Fdl_Document
                     $s->reset();
                     $out->totalCount = $s->onlyCount();
                     $info = $s->getSearchInfo();
-                    
+                    if (!isset($out->delay)) {
+                        $out->delay='';
+                    }
                     $out->delay.= ' count:' . $info["delay"];
                 }
                 $out->content = $content;
