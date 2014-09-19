@@ -359,7 +359,7 @@ namespace {
             if ($error != '') $error.= "\n";
             $usage = $this->getUsage();
             
-            if ((!$this->useException)) {
+            if (!$this->useException) {
                 if (!empty($_SERVER['HTTP_HOST'])) {
                     $usage = str_replace('--', '&', $usage);
                     $error.= '<pre>' . htmlspecialchars($usage) . '</pre>';
@@ -369,7 +369,12 @@ namespace {
                 if ($this->action->getArgument("help") == true) {
                     throw new \Dcp\ApiUsage\Exception("CORE0003", $error, $usage);
                 }
-                $this->action->exitError($error);
+                if (!empty($_SERVER['HTTP_HOST'])) {
+                    $this->action->exitError($error);
+                } else {
+                    
+                    throw new \Dcp\ApiUsage\Exception("CORE0002", $error, $usage);
+                }
             } else {
                 // no usage when use exception mode
                 throw new \Dcp\ApiUsage\Exception("CORE0002", $error, $usage);

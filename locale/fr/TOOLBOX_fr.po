@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-18 15:20+0200\n"
-"PO-Revision-Date: 2014-09-18 15:26+0200\n"
+"PO-Revision-Date: 2014-09-19 08:41+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -4325,7 +4325,7 @@ msgstr ""
 
 #, php-format
 msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
-msgstr "Vous devez utiliser seulement les caractères  a-z, 0-9, _ : \"%s\""
+msgstr "Vous devez utiliser seulement les caractères  a-z, 0-9, _ - \"%s\""
 
 msgid "You use an too old Internet explorer navigator"
 msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"

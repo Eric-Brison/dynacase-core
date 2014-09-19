@@ -138,7 +138,7 @@ if (isset($_GET["api"])) {
         catch(Dcp\ApiUsage\Exception $e) {
             switch ($e->getDcpCode()) {
                 case "CORE0002":
-                    errorLogException($e);
+                    echo sprintf(_("Error : %s\n") , $e->getDcpMessage());
                     exit(1);
                     break;
 
@@ -148,7 +148,7 @@ if (isset($_GET["api"])) {
                     break;
 
                 default:
-                    errorLogException($e);
+                    echo sprintf($e->getDcpMessage());
                     exit(1);
             }
         }
