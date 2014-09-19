@@ -161,19 +161,17 @@ class importDocumentDescription
                     throw new Dcp\Exception(sprintf("cannot find csv separator in %s file", $csvFileName));
                 }
             }
+            
             if ($enclosure == 'auto') {
-                preg_match_all(sprintf('/%s(["\'])([^"\']+)(["\'])%s/m', $separator, $separator) , $content, $regs);
-                $begEnclosure = $regs[1];
-                $endEnclosure = $regs[3];
+                preg_match_all(sprintf('/%s(?P<enclosure>["\']).+?\\1%s/m', $separator, $separator) , $content, $regs);
+                $detectEnclosures = $regs["enclosure"];
                 $doublequote = 0;
                 $singlequote = 0;
-                foreach ($begEnclosure as $k => $be) {
-                    if ($begEnclosure[$k] === $endEnclosure[$k]) {
-                        if ($be === '"') {
-                            $doublequote++;
-                        } elseif ($be === "'") {
-                            $singlequote++;
-                        }
+                foreach ($detectEnclosures as $be) {
+                    if ($be === '"') {
+                        $doublequote++;
+                    } elseif ($be === "'") {
+                        $singlequote++;
                     }
                 }
                 if (max($doublequote, $singlequote) > 0) {
