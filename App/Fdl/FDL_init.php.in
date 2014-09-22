@@ -243,6 +243,18 @@ $app_const = array(
         "val" => "{}",
         "descr" => N_("EDIT Zones for FOOTER") ,
         "global" => "Y"
-    )
+    ),
+      "EXPORT_CSVSEPARATOR" => array(
+			       "val"=>";",
+			       "descr"=> N_("user csv separator preferences when export documents"),
+			       "global"=>"Y",
+			       "user"=>"Y"
+			       ),
+      "EXPORT_CSVENCLOSURE" => array(
+			       "val"=>"",
+			       "descr"=> N_("user csv enclosure preferences when export documents"),
+			       "global"=>"Y",
+			       "user"=>"Y"
+			       ),
 );
 ?>

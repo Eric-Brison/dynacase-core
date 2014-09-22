@@ -42,6 +42,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         $testExtarctFolder = uniqid(getTmpDir() . "/testexportextractimage");
         SetHttpVar("wfile", "Y");
         SetHttpVar("eformat", "I");
+        SetHttpVar("app", "FDL");
         
         exportfld(self::getAction() , $folderId, $famid, $testFolder);
         
@@ -55,6 +56,118 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         }
         
         remove_dir($testFolder);
+    }
+    /**
+     * Test that exported documents have no param columns
+     * @param string|int $folderId
+     * @param array $expectDoc
+     * @param string $separator
+     * @param string $enclosure
+     * @param array $expectedProfil
+     * @dataProvider dataExportFolder
+     */
+    public function testExportFolder($folderId, array $expectDoc, $separator, $enclosure, array $expectedProfil)
+    {
+        include_once ('FDL/exportfld.php');
+        
+        SetHttpVar("wfile", "N");
+        SetHttpVar("wprof", ($expectedProfil ? "Y" : "N"));
+        SetHttpVar("eformat", "I");
+        SetHttpVar("app", "FDL");
+        SetHttpVar("csv-enclosure", $enclosure);
+        SetHttpVar("csv-separator", $separator);
+        
+        $exportOutput = uniqid(getTmpDir() . "/testExport") . ".csv";
+        
+        exportfld(self::getAction() , $folderId, 0, $exportOutput);
+        
+        $this->assertTrue(file_exists($exportOutput) , sprintf('Export File "%s" nor create', $exportOutput));
+        
+        $exportDocName = array();
+        $h = fopen($exportOutput, "r");
+        
+        while (($data = fgetcsv($h, 0, $separator, $enclosure)) !== FALSE) {
+            if (isset($data[0]) && $data[0] === "DOC") {
+                $docName = $data[2];
+                $exportDocName[] = $docName;
+                if (isset($expectDoc[$docName])) {
+                    $expecDoc = $expectDoc[$docName];
+                    foreach ($expecDoc as $k => $v) {
+                        $this->assertEquals($v, $data[$k], sprintf("Invalid value for %s column : [%s] : see %s", $k, implode("][", $data) , $exportOutput));
+                    }
+                }
+            }
+            if (isset($data[0]) && $data[0] === "PROFIL") {
+                
+                $docName = $data[1];
+                if (isset($expectedProfil[$docName])) {
+                    $prof = $expectedProfil[$docName];
+                    
+                    foreach ($prof as $k => $v) {
+                        $this->assertEquals($v, $data[$k], sprintf("Invalid profil value for %s column : [%s]: see %s", $k, implode("][", $data) , $exportOutput));
+                    }
+                }
+            }
+        }
+        fclose($h);
+        
+        $this->assertEquals(array_keys($expectDoc) , $exportDocName, "No same exported documents: See $exportOutput");
+        //unlink($exportOutput);
+        
+    }
+    /**
+     * Test that exported documents have no param columns
+     * @param string|int $familyId
+     * @param array $expectData
+     * @param string $separator
+     * @param string $enclosure
+     * @param array $expectedProfil
+     * @dataProvider dataExportFamily
+     */
+    public function testExportamily($familyId, array $expectData, $separator, $enclosure)
+    {
+        include_once ('FDL/exportfld.php');
+        
+        SetHttpVar("wfile", "N");
+        SetHttpVar("wprof", "Y");
+        SetHttpVar("eformat", "I");
+        SetHttpVar("app", "FDL");
+        SetHttpVar("csv-enclosure", $enclosure);
+        SetHttpVar("csv-separator", $separator);
+        /**
+         * @var \Dir $tmpFolder
+         */
+        $tmpFolder = createTmpDoc(self::$dbaccess, "DIR");
+        $err = $tmpFolder->add();
+        $err.= $tmpFolder->insertDocument($familyId);
+        
+        $this->assertEmpty($err, "Error when create family folder");
+        $exportOutput = uniqid(getTmpDir() . "/testExport") . ".csv";
+        
+        exportfld(self::getAction() , $tmpFolder->id, 0, $exportOutput);
+        
+        $this->assertTrue(file_exists($exportOutput) , sprintf('Export File "%s" nor create', $exportOutput));
+        
+        $exportDocName = array();
+        $h = fopen($exportOutput, "r");
+        
+        $keys = array();
+        while (($data = fgetcsv($h, 0, $separator, $enclosure)) !== FALSE) {
+            if (!empty($data[0])) {
+                $keys[] = $data[0];
+                if (isset($expectData[$data[0]])) {
+                    foreach ($expectData[$data[0]] as $k => $v) {
+                        $this->assertEquals($v, $data[$k], sprintf("Invalid value for %s column : [%s] : see %s", $k, implode("][", $data) , $exportOutput));
+                    }
+                }
+            }
+        }
+        fclose($h);
+        foreach ($expectData as $key => $v) {
+            $this->assertTrue(in_array($key, $keys) , "Missing key $key see $exportOutput");
+        }
+        //unlink($exportOutput);
+        
     }
     /**
      * Test that exported documents have no param columns
@@ -102,7 +215,8 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         /* eformat */
         $eformat = 'I';
         
-        exportonedoc($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
+        $ed = new \Dcp\ExportDocument();
+        $ed->cvsExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
         
         fclose($fout);
         
@@ -120,6 +234,121 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         unset($line);
         
         unlink($tmpfile);
+    }
+    
+    public function dataExportFamily()
+    {
+        return array(
+            array(
+                "family" => "TST_EXPORT_PARAM",
+                "expectedData" => array(
+                    "BEGIN" => array(
+                        1 => '',
+                        2 => '',
+                        3 => '',
+                        4 => '',
+                        5 => "TST_EXPORT_PARAM"
+                    ) ,
+                    "PROFID" => array(
+                        1 => "TST_PROFFAMEXPORT"
+                    ) ,
+                    "CPROFID" => array(
+                        1 => "TST_PROFEXPORT"
+                    ) ,
+                    "END" => array()
+                ) ,
+                "separator" => ";",
+                "enclosure" => '"'
+            ) ,
+            array(
+                "family" => "TST_EXPORT_PARAM",
+                "expectedData" => array(
+                    "BEGIN" => array(
+                        1 => '',
+                        2 => '',
+                        3 => '',
+                        4 => '',
+                        5 => "TST_EXPORT_PARAM"
+                    ) ,
+                    "PROFID" => array(
+                        1 => "TST_PROFFAMEXPORT"
+                    ) ,
+                    "CPROFID" => array(
+                        1 => "TST_PROFEXPORT"
+                    )
+                ) ,
+                "separator" => ",",
+                "enclosure" => "'"
+            )
+        );
+    }
+    
+    public function dataExportFolder()
+    {
+        return array(
+            array(
+                "folderId" => "TST_EXPORT_FOLDER",
+                "expectedDocument" => array(
+                    "TST_EXPORT_PARAM_01" => array(
+                        4 => "L'un et l'autre",
+                        5 => 1
+                    ) ,
+                    "TST_EXPORT_PARAM_02" => array(
+                        4 => "Déja vu\nUne impression",
+                        5 => 2
+                    ) ,
+                    "TST_EXPORT_PARAM_03" => array(
+                        4 => 'Dicton "Qui élargit son cœur, rétrécit sa bouche"',
+                        5 => 3
+                    )
+                ) ,
+                "separator" => ";",
+                "enclosure" => '"',
+                "profil" => array()
+            ) ,
+            array(
+                "folderId" => "TST_EXPORT_FOLDER",
+                "expectedDocument" => array(
+                    "TST_EXPORT_PARAM_01" => array(
+                        4 => "L'un et l'autre"
+                    ) ,
+                    "TST_EXPORT_PARAM_02" => array(
+                        4 => "Déja vu\nUne impression"
+                    ) ,
+                    "TST_EXPORT_PARAM_03" => array(
+                        4 => 'Dicton "Qui élargit son cœur, rétrécit sa bouche"'
+                    )
+                ) ,
+                "separator" => ",",
+                "enclosure" => "'",
+                "profil" => array()
+            ) ,
+            array(
+                "folderId" => "TST_EXPORT_FOLDER",
+                "expectedDocument" => array(
+                    "TST_EXPORT_PARAM_01" => array(
+                        4 => "L'un et l'autre"
+                    ) ,
+                    "TST_PROFEXPORT" => array(
+                        4 => "Profil de test, d'exportation"
+                    ) ,
+                    "TST_EXPORT_PARAM_02" => array(
+                        4 => "Déja vu\nUne impression"
+                    ) ,
+                    "TST_EXPORT_PARAM_03" => array(
+                        4 => 'Dicton "Qui élargit son cœur, rétrécit sa bouche"'
+                    )
+                ) ,
+                "separator" => ",",
+                "enclosure" => "'",
+                "profil" => array(
+                    "TST_PROFEXPORT" => array(
+                        4 => "view=GADMIN",
+                        5 => "view=GDEFAULT"
+                    )
+                )
+            )
+        );
     }
     
     public function dataExportImage()

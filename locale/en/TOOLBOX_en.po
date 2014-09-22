@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-18 15:20+0200\n"
+"POT-Creation-Date: 2014-09-22 16:10+0200\n"
 "PO-Revision-Date: 2014-08-20 16:23+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -1645,6 +1645,9 @@ msgstr ""
 msgid "Emptying temporary database '%s' ..."
 msgstr ""
 
+msgid "Enclosure character"
+msgstr ""
+
 msgid "Encoding"
 msgstr ""
 
@@ -1714,6 +1717,10 @@ msgstr ""
 
 #, php-format
 msgid "Error : %s"
+msgstr ""
+
+#, php-format
+msgid "Error : %s\n"
 msgstr ""
 
 #, php-format
@@ -3504,6 +3511,9 @@ msgstr ""
 msgid "Sending input on change?"
 msgstr ""
 
+msgid "Separator character"
+msgstr ""
+
 msgid "September"
 msgstr ""
 
@@ -5219,6 +5229,30 @@ msgid "csv file <%s> wroted"
 msgstr ""
 
 msgid "csv, ods, xml, zip (xml) supported import files"
+msgstr ""
+
+msgid "csv-comma"
+msgstr ""
+
+msgid "csv-custom : "
+msgstr ""
+
+msgid "csv-doublequote"
+msgstr ""
+
+msgid "csv-noenclosure"
+msgstr ""
+
+msgid "csv-other-enclosure"
+msgstr ""
+
+msgid "csv-other-separator"
+msgstr ""
+
+msgid "csv-semicolon"
+msgstr ""
+
+msgid "csv-simplequote"
 msgstr ""
 
 #, php-format
@@ -7871,9 +7905,6 @@ msgstr ""
 msgid "template file (layout [%s]) not found"
 msgstr ""
 
-msgid "terminal too small (must ne at least 80 columns by 24 lines)"
-msgstr ""
-
 msgid "text color"
 msgstr ""
 
@@ -8286,13 +8317,19 @@ msgstr ""
 msgid "user cannot be revived"
 msgstr ""
 
-msgid "user csv enclosure preferences when export document"
+msgid "user csv enclosure preferences when export documents"
 msgstr ""
 
-msgid "user csv line break preferences when export document"
+msgid "user csv enclosure preferences when import documents"
 msgstr ""
 
-msgid "user csv separator preferences when export document"
+msgid "user csv line break preferences when import documents"
+msgstr ""
+
+msgid "user csv separator preferences when export documents"
+msgstr ""
+
+msgid "user csv separator preferences when import documents"
 msgstr ""
 
 msgid "user has not identificator"

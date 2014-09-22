@@ -1,79 +1,22 @@
 [ZONE FDL:HTMLHEAD]
-<script>
-include_js('WHAT/Layout/subwindow.js')
-function testexport(s) {
-    var mode=s.options[s.selectedIndex].value;
-    var f=s.form;
-    if (mode == 'X' || mode == 'Y') {
-      f.action.value='EXPORTXMLFLD';
-      for (var i in f.code.options) {
-          if (f.code.options[i].value=='utf8') f.code.options[i].selected=true;
-          else  f.code.options[i].selected=false;
-      }
-      f.code.disabled=true;
-      f.wprof.disabled=true;
-      //f.wident.disabled=true;
-      f.wcolumn.disabled=true;
-      f.wprof.className='disable';
-      //f.wident.className='disable';
-      f.wcolumn.className='disable';
-    } else {
-      f.action.value='EXPORTFLD';
-      f.code.disabled=false;
-      f.wprof.disabled=false;
-      f.wident.disabled=false;
-      f.wcolumn.disabled=false;
-      f.wprof.className='';
-      f.wident.className='';
-      f.wcolumn.className='';
-    }
-}
-    function pollingExport(exportId) {
-        $.ajax({
-              url: '?',
-              dataType: 'json',
-              data: {exportId:exportId,statusOnly:1,app:'FDL',action:'EXPORTFLD'},
-              success: function(data) {
-                  var bExport=$('#bExport');
-                  bExport.val(data.status);
-                  if (stopExportPolling < 1) {
-                    if (! data.end) setTimeout(function () {pollingExport(exportId);},500);
-                    else {
-                    bExport.attr('disabled',false);
-                    bExport.val("[TEXT:Redo export]");
-                     }
-                  } else {
-                    //bExport.val("[TEXT:Export done]");
-                    bExport.val("[TEXT:Redo export]");
-                    bExport.attr('disabled',false);
 
-
-                 }
-              }});
-
-    }
-    stopExportPolling=0;
-    $(document).ready(function() {
-
-        $('#outputfile').load(function() {
-            stopExportPolling++;
-             $('#outputfile').css("height","100px")
-        });
-        $('#exportForm').submit(function() {
-            stopExportPolling=0;
-            setTimeout(function () {$('#bExport').attr('disabled',true);},20);
-            setTimeout(function () {pollingExport($('#iExportId').val());},200);
-
-        });
-    });
-</script>
 <style>
-option.pref { 
-              background-color:[COLOR_B3];
-              }
+option.pref {
+    background-color:[COLOR_B3];
+    }
 select.disable {
-   visibility:hidden;
-}
+    visibility:hidden;
+    }
+input[type=submit] {
+    padding:3px;
+    }
+.other {
+    visibility:hidden;
+    padding-left:6px;
+    padding-right:6px;
+    margin-left:3px;
+    width:1em;
+    }
 </style>
 <h2 style="text-align:center">[TEXT:Export Documents from] </h2>
 <h3 style="text-align:center">[title]</h3>
@@ -122,6 +65,27 @@ select.disable {
   <option value="X">[TEXT:XML data (Zip with one xml by document)]</option>
   <option value="Y" >[TEXT:XML data (only one xml file)]</option>
 </select></td></tr>
+
+<tr><td align="right" style="cursor:help" title="[TEXT:Enclosure character]">[TEXT:EXPORT_CSV Enclosure :]</td>
+  <td>
+  <select  class="csv--option" name="csv-enclosure">
+      <option value="">[TEXT:csv-noenclosure]</option>
+      <option [IF selectDoubleQuote]selected="selected" [ENDIF selectDoubleQuote]value='"'>[TEXT:csv-doublequote] "</option>
+      <option [IF selectSimpleQuote]selected="selected" [ENDIF selectSimpleQuote]value="'">[TEXT:csv-simplequote] '</option>
+      [IF customEnclosure]<option selected="selected" value="[customEnclosure]">[TEXT:csv-custom : ][customEnclosure]</option>[ENDIF customEnclosure]
+      <option value="other">[TEXT:csv-other-enclosure]</option>
+  </select><input type="text" maxlength="1" size="2" class="other other--enclosure csv--option"></input>
+  </td></tr>
+
+<tr><td align="right" style="cursor:help" title="[TEXT:Separator character]">[TEXT:EXPORT_CSV Delimiter :]</td>
+  <td><select class="csv--option" name="csv-separator" >
+      <option value=";">[TEXT:csv-semicolon] ;</option>
+      <option [IF selectComma]selected="selected" [ENDIF selectComma]value=",">[TEXT:csv-comma] ,</option>
+      [IF customSeparator]<option selected="selected" value="[customSeparator]">[TEXT:csv-custom : ][customSeparator]</option>[ENDIF customSeparator]
+      <option value="other">[TEXT:csv-other-separator]</option>
+  </select><input type="text" maxlength="1" size="2"  class="other other--separator csv--option"></input>
+
+  </td></tr>
 
 <tr><td colspan="3" align="right"><input id="bExport" type="submit" value="[TEXT:Export]"></td></tr>
 </table>

@@ -166,6 +166,23 @@ if (isset($_GET["api"])) {
         try {
             echo ($action->execute());
         }
+        catch(Dcp\ApiUsage\Exception $e) {
+            switch ($e->getDcpCode()) {
+                case "CORE0002":
+                    echo sprintf(_("Error : %s\n") , $e->getDcpMessage());
+                    exit(1);
+                    break;
+
+                case "CORE0003":
+                    echo sprintf($e->getDcpMessage());
+                    exit(0);
+                    break;
+
+                default:
+                    echo sprintf($e->getDcpMessage());
+                    exit(1);
+            }
+        }
         catch(Dcp\Exception $e) {
             errorLogException($e);
             exit(1);

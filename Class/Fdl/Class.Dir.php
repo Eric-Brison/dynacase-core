@@ -324,7 +324,7 @@ class Dir extends PDir
         switch ($mode) {
             case "static":
                 $qf->qtype = 'F'; // fixed document
-                $qf->childid = $docid; // initial doc
+                $qf->childid = $doc->id; // initial doc
                 break;
 
             case "latest":
@@ -340,7 +340,7 @@ class Dir extends PDir
         $qf->query = "";
         if (!$qf->Exists()) {
             // use pre virtual method
-            if (!$noprepost) $err = $this->preInsertDocument($docid);
+            if (!$noprepost) $err = $this->preInsertDocument($doc->id);
             if ($err != "") return $err;
             // verify if doc family is autorized
             if ((!$forcerestrict) && (!$this->isAuthorized($doc->fromid))) return sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document") , $doc->title, $this->title);
@@ -405,7 +405,7 @@ class Dir extends PDir
                 
                 $this->updateFldRelations();
                 // use post virtual method
-                if (!$noprepost) $err = $this->postInsertDocument($docid, false);
+                if (!$noprepost) $err = $this->postInsertDocument($doc->id, false);
             }
         }
         return $err;
