@@ -1,7 +1,7 @@
 
 /* fonts */
 
-body, .core, P, input, textarea {
+body, .core, P, input, textarea, select {
   font-size: [SIZE_MEDIUM];
   font-family : Helvetica, Arial, sans-serif;
 }
@@ -22,7 +22,7 @@ TD, TR, TH {
 
 
 
-.popup a.menuItem * ,.popup a.menuItem, .popup a.menuItem:link, .popup a.menuItem:visited ,.popup a.menuItemCtrl:link, .popup a.menuItemCtrl:visited , popup a.menuItemDisabled, popup a.menuItemDisabled:link,  .popup a.separator {
+.popup a.menuItem * ,.popup a.menuItem, .popup a.menuItem:link, .popup a.menuItem:visited ,.popup a.menuItemCtrl:link, .popup a.menuItemCtrl:visited , .popup a.menuItemDisabled, .popup a.menuItemDisabled:link,  .popup a.separator {
   
   font-size:[SIZE_SMALL];
   font-weight: normal;
