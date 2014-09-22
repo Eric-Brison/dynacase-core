@@ -25,6 +25,8 @@ function editexport(Action & $action)
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id", 0);
     $action->parent->addJsRef("lib/jquery/jquery.js");
+    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
+    $action->parent->AddJsRef("FDL:editexport.js", true);
     $doc = new_Doc($dbaccess, $docid);
     $exportId = uniqid("export");
     $action->lay->Set("dirid", $doc->id);
@@ -41,5 +43,28 @@ function editexport(Action & $action)
         $selectclass[$k]["pref"] = in_array($cdoc["id"], $tfam);
     }
     $action->lay->setBlockData("coptions", $selectclass);
+    
+    $csvSeparator = $action->getParam("EXPORT_CSVSEPARATOR");
+    $csvEnclosure = $action->getParam("EXPORT_CSVENCLOSURE");
+    
+    $action->lay->set("selectDoubleQuote", false);
+    $action->lay->set("selectSimpleQuote", false);
+    $action->lay->set("customEnclosure", false);
+    $action->lay->set("customSeparator", false);
+    $action->lay->set("selectComma", false);
+    
+    if ($csvSeparator === ",") {
+        $action->lay->set("selectComma", true);
+    } elseif ($csvSeparator !== ";") {
+        $action->lay->set("customSeparator", $csvSeparator);
+    }
+    
+    if ($csvEnclosure === '"') {
+        $action->lay->set("selectDoubleQuote", true);
+    } elseif ($csvEnclosure === "'") {
+        $action->lay->set("selectSimpleQuote", true);
+    } elseif ($csvEnclosure !== "") {
+        $action->lay->set("customEnclosure", $csvEnclosure);
+    }
 }
 ?>

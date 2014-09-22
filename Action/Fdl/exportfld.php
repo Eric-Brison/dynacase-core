@@ -24,6 +24,9 @@ include_once ("FDL/import_file.php");
 /**
  * Exportation of documents from folder or searches
  * @param Action &$action current action
+ * @param string $aflid Folder identifier to use if no "id" http vars
+ * @param string $famid Family restriction to filter folder content
+ * @param string $outputPath where put export, if wfile outputPath is a directory
  * @global string $fldid Http var : folder identifier to export
  * @global string $wprof Http var : (Y|N) if Y export associated profil also
  * @global string $wfile Http var : (Y|N) if Y export attached file export format will be tgz
@@ -34,19 +37,86 @@ include_once ("FDL/import_file.php");
  * @global string $selection Http var :  JSON document selection object
  * @return void
  */
-function exportfld(Action & $action, $aflid = "0", $famid = "", $outputfolder = "")
+function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = "")
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    $fldid = GetHttpVars("id", $aflid);
-    $wprof = (GetHttpVars("wprof", "N") == "Y"); // with profil
-    $wfile = (GetHttpVars("wfile", "N") == "Y"); // with files
-    $wident = (GetHttpVars("wident", "Y") == "Y"); // with numeric identifier
-    $wutf8 = (GetHttpVars("code", "utf8") == "utf8"); // with numeric identifier
-    $nopref = (GetHttpVars("wcolumn") == "-"); // no preference read
-    $eformat = GetHttpVars("eformat", "I"); // export format
-    $selection = GetHttpVars("selection"); // export selection  object (JSON)
-    $statusOnly = (GetHttpVars("statusOnly") != ""); // export selection  object (JSON)
-    $exportId = GetHttpVars("exportId"); // export status id
+    
+    $usage = new ActionUsage($action);
+    
+    $wprof = ($usage->addOptionalParameter("wprof", "With profil", array(
+        "Y",
+        "N"
+    ) , "N") == "Y");
+    $wfile = ($usage->addOptionalParameter("wfile", "With files", array(
+        "Y",
+        "N"
+    ) , "N") == "Y");
+    $wident = ($usage->addOptionalParameter("wident", "With document numerix identifiers", array(
+        "Y",
+        "N"
+    ) , "Y") == "Y");
+    
+    $fileEncoding = $usage->addOptionalParameter("code", "File encoding", array(
+        "utf8",
+        "iso8859-15"
+    ) , "utf8");
+    $wutf8 = ($fileEncoding !== "iso8859-15");
+    
+    $nopref = ($usage->addOptionalParameter("wcolumn", "if - export preferences are ignored") == "-"); // no preference read
+    $eformat = $usage->addOptionalParameter("eformat", "Export format", array(
+        "I",
+        "R",
+        "F",
+        "X",
+        "Y"
+    ) , "I");
+    $selection = $usage->addOptionalParameter("selection", "export selection  object (JSON)");
+    $statusOnly = ($usage->addHiddenParameter("statusOnly", "Export progress status") != ""); // export selection  object (JSON)
+    $exportId = $usage->addHiddenParameter("exportId", "Export status id"); // export status id
+    if (!$aflid && !$selection && !$statusOnly) {
+        $fldid = $usage->addRequiredParameter("id", "Folder identifier");
+    } else {
+        $fldid = $usage->addOptionalParameter("id", "Folder identifier", array() , $aflid);
+    }
+    
+    $csvSeparator = $usage->addOptionalParameter("csv-separator", "character to delimiter fields - generaly a comma", function ($values, $argName, ApiUsage $apiusage)
+    {
+        if ($values === ApiUsage::GET_USAGE) {
+            return sprintf(' use single character or "auto"');
+        }
+        if (!is_string($values)) {
+            return sprintf("must be a character [%s] ", print_r($values, true));
+        }
+        if ($values != "auto") {
+            if (mb_strlen($values) > 1) {
+                return sprintf("must be a only one character [%s] ", $values);
+            }
+            if (mb_strlen($values) === 0) {
+                return sprintf("empty separator is not allowed [%s] ", $values);
+            }
+        }
+        return '';
+    }
+    , ";");
+    
+    $csvEnclosure = $usage->addOptionalParameter("csv-enclosure", "character to enclose fields - generaly double-quote", function ($values, $argName, ApiUsage $apiusage)
+    {
+        if ($values === ApiUsage::GET_USAGE) {
+            return sprintf(' use single character or "auto"');
+        }
+        if (!is_string($values)) {
+            return sprintf("must be a character [%s] ", print_r($values, true));
+        }
+        if ($values != "auto") {
+            if (mb_strlen($values) > 1) {
+                return sprintf("must be a only one character [%s] ", $values);
+            }
+        }
+        return '';
+    }
+    , "");
+    $usage->verify();
+    
     if ($statusOnly) {
         
         header('Content-Type: application/json');
@@ -96,29 +166,46 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputfolder = 
     //usort($tdoc, "orderbyfromid");
     $foutdir = '';
     if ($wfile) {
-        if ($outputfolder) $foutdir = $outputfolder;
+        if ($outputPath) $foutdir = $outputPath;
         else $foutdir = uniqid(getTmpDir() . "/exportfld");
         if (!mkdir($foutdir)) exit();
         
         $foutname = $foutdir . "/fdl.csv";
     } else {
-        $foutname = uniqid(getTmpDir() . "/exportfld") . ".csv";
+        if (!$outputPath) {
+            $foutname = uniqid(getTmpDir() . "/exportfld") . ".csv";
+        } else {
+            if (file_exists($outputPath)) {
+                $action->exitError(sprintf("export is not allowed to override existing file %s") , $outputPath);
+            }
+            $foutname = $outputPath;
+        }
     }
     
     $fout = fopen($foutname, "w");
-    // set encoding
-    if (!$wutf8) fputs_utf8($fout, "", true);
+    if (!$fout) {
+        $action->exitError(sprintf("Cannot create output file '%s' for export") , $foutname);
+    }
     
+    $action->setParamU("EXPORT_CSVSEPARATOR", $csvSeparator);
+    $action->setParamU("EXPORT_CSVENCLOSURE", $csvEnclosure);
+    // set encoding
+    \Dcp\WriteCsv::$enclosure = $csvEnclosure;
+    \Dcp\WriteCsv::$separator = $csvSeparator;
+    \Dcp\WriteCsv::$encoding = $fileEncoding;
+    
+    $exportDoc = new \Dcp\ExportDocument();
+    $exportDoc->setCsvEnclosure($csvEnclosure);
+    $exportDoc->setCsvSeparator($csvSeparator);
     $ef = array(); //   files to export
     if ($s->count() > 0) {
         
-        $send = "\n"; // string to be writed in last
         $doc = createDoc($dbaccess, 0);
         // compose the csv file
         $tmoredoc = array();
         
         recordStatus($action, $exportId, _("Record system families"));
-        
+        $famData = array();
         while ($doc = $s->getNextDoc()) {
             
             if ($doc->doctype == "C") {
@@ -200,12 +287,42 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputfolder = 
                         $tmoredoc[$doc->wid] = getTDoc($dbaccess, $doc->wid);
                     }
                     if ($cvname || $wname || $cpname || $fpname) {
-                        $send.= "BEGIN;;;;;" . $doc->name . "\n";
-                        if ($fpname) $send.= "PROFID;" . $fpname . "\n";
-                        if ($cvname) $send.= "CVID;" . $cvname . "\n";
-                        if ($wname) $send.= "WID;" . $wname . "\n";
-                        if ($doc->cprofid) $send.= "CPROFID;" . $cpname . "\n";
-                        $send.= "END;\n";
+                        $famData[] = array(
+                            "BEGIN",
+                            "",
+                            "",
+                            "",
+                            "",
+                            $doc->name
+                        );
+                        
+                        if ($fpname) {
+                            $famData[] = array(
+                                "PROFID",
+                                $fpname
+                            );
+                        }
+                        if ($cvname) {
+                            $famData[] = array(
+                                "CVID",
+                                $cvname
+                            );
+                        }
+                        if ($wname) {
+                            $famData[] = array(
+                                "WID",
+                                $wname
+                            );
+                        }
+                        if ($doc->cprofid) {
+                            $famData[] = array(
+                                "CPROFID",
+                                $cpname
+                            );
+                        }
+                        $famData[] = array(
+                            "END"
+                        );
                     }
                 }
             }
@@ -220,29 +337,17 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputfolder = 
                 recordStatus($action, $exportId, sprintf(_("Record documents %d/%d") , $c, $rc));
             }
             if ($doc->doctype != "C") {
-                exportonedoc($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
+                $exportDoc->cvsExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
             }
         }
         $more = new DocumentList();
         $more->addDocumentIdentifiers(array_keys($tmoredoc));
         foreach ($more as $doc) {
-            exportonedoc($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
+            $exportDoc->cvsExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
         }
-        /*foreach ($tdoc as $k => $zdoc) {
-            if (!empty($cachedoc[$zdoc["fromid"]])) $doc = $cachedoc[$zdoc["fromid"]];
-            else {
-                $cachedoc[$zdoc["fromid"]] = createDoc($dbaccess, $zdoc["fromid"], false);
-                $doc = $cachedoc[$zdoc["fromid"]];
-            }
-            
-            $doc->Affect($zdoc, true);
-            
-            if ($doc->doctype != "C") {
-                exportonedoc($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
-            }
-        }*/
-        
-        fputs_utf8($fout, $send);
+        foreach ($famData as $aRow) {
+            \Dcp\WriteCsv::fput($fout, $aRow);
+        }
     }
     fclose($fout);
     if ($wfile) {
@@ -257,7 +362,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputfolder = 
         if ($err) $action->addWarningMsg($err);
         system(sprintf("cd %s && zip -r fdl * > /dev/null", escapeshellarg($foutdir)) , $ret);
         if (is_file("$foutdir/fdl.zip")) {
-            if (!$outputfolder) {
+            if (!$outputPath) {
                 $foutname = $foutdir . "/fdl.zip";
                 recordStatus($action, $exportId, _("Export done") , true);
                 
@@ -274,13 +379,16 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputfolder = 
     } else {
         
         recordStatus($action, $exportId, _("Export done") , true);
-        
-        Http_DownloadFile($foutname, "$fname.csv", "text/csv", false, false);
-        unlink($foutname);
+        if (!$outputPath) {
+            Http_DownloadFile($foutname, "$fname.csv", "text/csv", false, false);
+            unlink($foutname);
+        }
     }
     
     recordStatus($action, $exportId, _("Export done") , true);
-    exit;
+    if (!$outputPath) {
+        exit;
+    }
 }
 
 function recordStatus(Action & $action, $exportId, $msg, $endStatus = false)
@@ -290,16 +398,7 @@ function recordStatus(Action & $action, $exportId, $msg, $endStatus = false)
         "end" => $endStatus
     ));
 }
-function fputs_utf8($r, $s, $iso = false)
-{
-    static $utf8 = true;
-    if ($iso === true) $utf8 = false;
-    
-    if ($s) {
-        if (!$utf8) fputs($r, utf8_decode($s));
-        else fputs($r, $s);
-    }
-}
+
 function orderbyfromid($a, $b)
 {
     
@@ -394,13 +493,21 @@ function exportProfil($fout, $dbaccess, $docid)
     }
     
     if (count($tpu) > 0) {
-        fputs_utf8($fout, "PROFIL;" . $name . ";;");
-        
+        $data = array(
+            "PROFIL",
+            $name,
+            "",
+            ""
+        );
+        //fputs_utf8($fout, "PROFIL;" . $name . ";;");
         foreach ($tpu as $ku => $uid) {
             if ($uid > 0) $uid = getUserLogicName($dbaccess, $uid);
-            fputs_utf8($fout, ";" . $tpa[$ku] . "=" . $uid);
+            //fputs_utf8($fout, ";" . $tpa[$ku] . "=" . $uid);
+            $data[] = sprintf("%s=%s", $tpa[$ku], $uid);
         }
-        fputs_utf8($fout, "\n");
+        \Dcp\WriteCsv::fput($fout, $data);
+        // fputs_utf8($fout, "\n");
+        
     }
 }
 
@@ -413,169 +520,3 @@ function getUserLogicName($dbaccess, $uid)
     }
     return $uid;
 }
-function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
-{
-    static $prevfromid = - 1;
-    static $lattr;
-    static $trans = false;
-    static $fromname;
-    static $alreadyExported = array();
-    
-    if (!$doc->isAffected()) return;
-    if (in_array($doc->id, $alreadyExported)) return;
-    $alreadyExported[] = $doc->id;
-    
-    if (!$trans) {
-        // to invert HTML entities
-        $trans = get_html_translation_table(HTML_ENTITIES);
-        $trans = array_flip($trans);
-        $trans = array_map("utf8_encode", $trans);
-    }
-    $efldid = '';
-    $dbaccess = $doc->dbaccess;
-    if ($prevfromid != $doc->fromid) {
-        if (($eformat != "I") && ($prevfromid > 0)) fputs_utf8($fout, "\n");
-        $adoc = $doc->getFamilyDocument();
-        if ($adoc->name != "") $fromname = $adoc->name;
-        else $fromname = $adoc->id;
-        if (!$fromname) return;
-        $lattr = $adoc->GetExportAttributes($wfile, $nopref);
-        if ($eformat == "I") fputs_utf8($fout, "//FAM;" . $adoc->title . "(" . $fromname . ");<specid>;<fldid>;");
-        foreach ($lattr as $ka => $attr) {
-            fputs_utf8($fout, str_replace(SEPCHAR, ALTSEPCHAR, $attr->getLabel()) . SEPCHAR);
-        }
-        fputs_utf8($fout, "\n");
-        if ($eformat == "I") {
-            fputs_utf8($fout, "ORDER;" . $fromname . ";;;");
-            foreach ($lattr as $ka => $attr) {
-                fputs_utf8($fout, $attr->id . ";");
-            }
-            fputs_utf8($fout, "\n");
-        }
-        $prevfromid = $doc->fromid;
-    }
-    reset($lattr);
-    if ($doc->name != "") $name = $doc->name;
-    else if ($wprof) {
-        $err = $doc->setNameAuto(true);
-        $name = $doc->name;
-    } else if ($wident) $name = $doc->id;
-    else $name = '';
-    if ($eformat == "I") fputs_utf8($fout, "DOC;" . $fromname . ";" . $name . ";" . $efldid . ";");
-    // write values
-    foreach ($lattr as $ka => $attr) {
-        if ($eformat == 'F') $value = str_replace(array(
-            '<BR>',
-            '<br/>'
-        ) , '\\n', $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
-        else $value = $doc->getRawValue($attr->id);
-        // invert HTML entities
-        if (($attr->type == "image") || ($attr->type == "file")) {
-            $tfiles = $doc->vault_properties($attr);
-            $tf = array();
-            foreach ($tfiles as $f) {
-                $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', unaccent($doc->title)) . "_D";
-                $fname = $ldir . '/' . unaccent($f["name"]);
-                $tf[] = $fname;
-                $ef[$fname] = array(
-                    "path" => $f["path"],
-                    "ldir" => $ldir,
-                    "fname" => unaccent($f["name"])
-                );
-            }
-            $value = implode("\n", $tf);
-        } else if ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
-            if ($value != "") {
-                if (strstr($value, "\n") || ($attr->getOption("multiple") == "yes")) {
-                    $tid = $doc->rawValueToArray($value);
-                    $tn = array();
-                    foreach ($tid as $did) {
-                        $brtid = explode("<BR>", $did);
-                        $tnbr = array();
-                        foreach ($brtid as $brid) {
-                            $n = getNameFromId($dbaccess, $brid);
-                            if ($n) $tnbr[] = $n;
-                            else $tnbr[] = $brid;
-                        }
-                        $tn[] = implode('<BR>', $tnbr);
-                    }
-                    $value = implode("\n", $tn);
-                } else {
-                    $n = getNameFromId($dbaccess, $value);
-                    if ($n) $value = $n;
-                }
-            }
-        } else if ($attr->type == "htmltext") {
-            $value = $attr->prepareHtmltextForExport($value);
-            if ($wfile) {
-                $value = preg_replace_callback('/(<img.*?src=")(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) use (&$ef)
-                {
-                    if (isset($matches[7])) {
-                        $docid = $matches[8];
-                        $attrid = $matches[9];
-                        $index = $matches[10] == "-1" ? 0 : $matches[10];
-                    } else {
-                        $docid = $matches[4];
-                        $index = $matches[6] == "-1" ? 0 : $matches[6];
-                        $attrid = $matches[5];
-                    }
-                    $doc = new_Doc(getDbAccess() , $docid);
-                    $attr = $doc->getAttribute($attrid);
-                    $tfiles = $doc->vault_properties($attr);
-                    $f = $tfiles[$index];
-                    
-                    $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', unaccent($doc->title)) . "_D";
-                    $fname = $ldir . '/' . unaccent($f["name"]);
-                    $ef[$fname] = array(
-                        "path" => $f["path"],
-                        "ldir" => $ldir,
-                        "fname" => unaccent($f["name"])
-                    );
-                    return $matches[1] . "file://" . $fname . '"';
-                }
-                , $value);
-            }
-        } else {
-            $value = preg_replace_callback('/(\&[a-zA-Z0-9\#]+;)/s', function ($matches) use ($trans)
-            {
-                return strtr($matches[1], $trans);
-            }
-            , $value);
-            // invert HTML entities which ascii code like &#232;
-            $value = preg_replace_callback('/\&#([0-9]+);/s', function ($matches)
-            {
-                return chr($matches[1]);
-            }
-            , $value);
-        }
-        fputs_utf8($fout, str_replace(array(
-            "\n",
-            ";",
-            "\r"
-        ) , array(
-            "\\n",
-            ALTSEPCHAR,
-            ""
-        ) , $value) . ";");
-    }
-    fputs_utf8($fout, "\n");
-    
-    if ($wprof) {
-        if ($doc->profid == $doc->id) exportProfil($fout, $dbaccess, $doc->id);
-        else if ($doc->profid > 0) {
-            $name = getNameFromId($dbaccess, $doc->profid);
-            $dname = $doc->name;
-            if (!$dname) $dname = $doc->id;
-            if (!$name) $name = $doc->profid;
-            if (!isset($tdoc[$doc->profid])) {
-                $tdoc[$doc->profid] = true;
-                $pdoc = new_doc($dbaccess, $doc->profid);
-                exportonedoc($pdoc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
-                //	  exportProfil($fout,$dbaccess,$doc->profid);
-                
-            }
-            fputs_utf8($fout, "PROFIL;$dname;$name;;\n");
-        }
-    }
-}
-?>

@@ -65,19 +65,19 @@ array(
 
       "FREEDOM_CSVSEPARATOR" => array(
 			       "val"=>";",
-			       "descr"=> N_("user csv separator preferences when export document"),
+			       "descr"=> N_("user csv separator preferences when import documents"),
 			       "global"=>"Y",
 			       "user"=>"Y"
 			       ),
       "FREEDOM_CSVENCLOSURE" => array(
 			       "val"=>"",
-			       "descr"=> N_("user csv enclosure preferences when export document"),
+			       "descr"=> N_("user csv enclosure preferences when import documents"),
 			       "global"=>"Y",
 			       "user"=>"Y"
 			       ),
       "FREEDOM_CSVLINEBREAK" => array(
 			       "val"=>'\n',
-			       "descr"=> N_("user csv line break preferences when export document"),
+			       "descr"=> N_("user csv line break preferences when import documents"),
 			       "global"=>"Y",
 			       "user"=>"Y"
 			       )

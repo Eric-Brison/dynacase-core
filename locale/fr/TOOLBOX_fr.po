@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-18 15:20+0200\n"
-"PO-Revision-Date: 2014-09-19 08:41+0200\n"
+"POT-Creation-Date: 2014-09-22 16:10+0200\n"
+"PO-Revision-Date: 2014-09-22 17:32+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1693,6 +1693,9 @@ msgstr "Post-It vide"
 msgid "Emptying temporary database '%s' ..."
 msgstr "Vidage de la base temporaire '%s'"
 
+msgid "Enclosure character"
+msgstr "caractère délimiteur de texte"
+
 msgid "Encoding"
 msgstr "Encodage"
 
@@ -1763,6 +1766,10 @@ msgstr "Erreur"
 #, php-format
 msgid "Error : %s"
 msgstr "Erreur : %s"
+
+#, php-format
+msgid "Error : %s\n"
+msgstr "Erreur : %s\n"
 
 #, php-format
 msgid "Error : Process %s [%d]: status %d"
@@ -3635,6 +3642,9 @@ msgstr "Envoi du email et changement d'état vers"
 msgid "Sending input on change?"
 msgstr "Envoi du formulaire pendant l'activation de l'événement onchange"
 
+msgid "Separator character"
+msgstr "Caractère de séparation de cellule"
+
 msgid "September"
 msgstr "Septembre"
 
@@ -5410,6 +5420,30 @@ msgstr "fichier csv <%s> écrit"
 
 msgid "csv, ods, xml, zip (xml) supported import files"
 msgstr "type de fichiers supportés : csv, ods, xml, zip (xml) "
+
+msgid "csv-comma"
+msgstr "Virgule"
+
+msgid "csv-custom : "
+msgstr "Personnalisé : "
+
+msgid "csv-doublequote"
+msgstr "Guillemets"
+
+msgid "csv-noenclosure"
+msgstr "Aucun délimiteur"
+
+msgid "csv-other-enclosure"
+msgstr "Autre délimiteur"
+
+msgid "csv-other-separator"
+msgstr "Autre séparateur"
+
+msgid "csv-semicolon"
+msgstr "Point-virgule"
+
+msgid "csv-simplequote"
+msgstr "Simple quote"
 
 #, php-format
 msgid "current (<em>%s</em>)"
@@ -8090,10 +8124,6 @@ msgstr "modèle %s pas de document trouvé"
 msgid "template file (layout [%s]) not found"
 msgstr "Fichier modèle (zone [%s]) non trouvé"
 
-msgid "terminal too small (must ne at least 80 columns by 24 lines)"
-msgstr ""
-"terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
-
 msgid "text color"
 msgstr "couleur du texte"
 
@@ -8517,15 +8547,20 @@ msgstr "l'utilisateur n°%d n'existe pas"
 msgid "user cannot be revived"
 msgstr "L'utilisateur ne peut pas être ressuscité"
 
-msgid "user csv enclosure preferences when export document"
-msgstr "Préférence pour les délimiteurs CSV lors de l'exportation de document"
+msgid "user csv enclosure preferences when export documents"
+msgstr "Exportation CSV : Délimiteur de texte"
 
-msgid "user csv line break preferences when export document"
-msgstr ""
-"Préférence pour le retour-chariot CSV lors de l'exportation de document"
+msgid "user csv enclosure preferences when import documents"
+msgstr "Importation CSV : Délimiteur de texte"
 
-msgid "user csv separator preferences when export document"
-msgstr "Préférence pour le sépareteur CSV lors de l'exportation de document"
+msgid "user csv line break preferences when import documents"
+msgstr "Importation CSV : Séquence de retour à la ligne "
+
+msgid "user csv separator preferences when export documents"
+msgstr "Exportation CSV : Séparateur de cellule"
+
+msgid "user csv separator preferences when import documents"
+msgstr "Importation CSV : Séparateur de cellule"
 
 msgid "user has not identificator"
 msgstr "L'utilisateur n'a pas d'identificateur"
@@ -8956,9 +8991,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ "L'élément ne peut pas être parfaitement analysé, des erreurs peuvent "
 #~ "apparaître lors de l'importation"
 
-#~ msgid "Error : %s\n"
-#~ msgstr "Erreur : %s\n"
-
 #~ msgid "Freedom imodification"
 #~ msgstr "Modification de documents virtuels"
 
@@ -9355,11 +9387,26 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "t"
 #~ msgstr "t"
 
+#~ msgid "terminal too small (must ne at least 80 columns by 24 lines)"
+#~ msgstr ""
+#~ "terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
+
 #~ msgid "transfered"
 #~ msgstr "transféré"
 
 #~ msgid "unknown login : passwd unchanged"
 #~ msgstr "login incoonu : mot de passe inchangé"
+
+#~ msgid "user csv enclosure preferences when export document"
+#~ msgstr ""
+#~ "Préférence pour les délimiteurs CSV lors de l'exportation de document"
+
+#~ msgid "user csv line break preferences when export document"
+#~ msgstr ""
+#~ "Préférence pour le retour-chariot CSV lors de l'exportation de document"
+
+#~ msgid "user csv separator preferences when export document"
+#~ msgstr "Préférence pour le sépareteur CSV lors de l'exportation de document"
 
 #~ msgid "view document option"
 #~ msgstr "voir les options d'un document"
