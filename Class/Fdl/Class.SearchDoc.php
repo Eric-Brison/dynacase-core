@@ -173,6 +173,50 @@ class SearchDoc
         $this->userid = getUserId();
     }
     /**
+     * Normalize supported forms of fromid
+     *
+     * @param int|string $id the fromid to normalize
+     * @return bool|int normalized integer or bool(false) on normalization failure
+     */
+    private function normalizeFromId($id)
+    {
+        $id = trim($id);
+        // "0" or "" (empty srting) = search on all documents (cross-family)
+        if ($id === "0" || $id === "") {
+            return 0;
+        }
+        // "-1" = search on docfam
+        if ($id === "-1") {
+            return -1;
+        }
+        if (is_numeric($id)) {
+            // 123 or -123 = search on family with id 123
+            $sign = 1;
+            if ($id < 0) {
+                // -123 = search on family with id 123 without sub-families
+                $sign = - 1;
+                $id = abs($id);
+            }
+            $fam = new_Doc($this->dbaccess, $id);
+            if ($fam->isAlive() && $fam->defDoctype === 'C') {
+                return $sign * (int)$fam->id;
+            }
+        } else {
+            // "ABC" or "-ABC" = search on family with name ABC
+            $sign = 1;
+            if (substr($id, 0, 1) == '-') {
+                // "-ABC" = search on family with name 123 without sub-families
+                $sign = - 1;
+                $id = substr($id, 1);
+            }
+            $fam = new_Doc($this->dbaccess, $id);
+            if ($fam->isAlive() || $fam->defDoctype === 'C') {
+                return $sign * (int)$fam->id;
+            }
+        }
+        return false;
+    }
+    /**
      * count results without return data
      * @api send query search and only count results
      *
@@ -194,8 +238,10 @@ class SearchDoc
             $this->debuginfo["query"] = $tqsql[0];
             $count = 0;
             if (!is_array($tqsql)) {
-                $this->debuginfo["err"] = _("cannot produce sql request");
-                return 0;
+                if (!isset($this->debuginfo["error"]) || $this->debuginfo["error"] == "") {
+                    $this->debuginfo["error"] = _("cannot produce sql request");
+                }
+                return -1;
             }
             foreach ($tqsql as $sql) {
                 if ($sql) {
@@ -1160,6 +1206,12 @@ class SearchDoc
         $folderRecursiveLevel = $this->folderRecursiveLevel;
         $join = $this->join;
         
+        $normFromId = $this->normalizeFromId($fromid);
+        if ($normFromId === false) {
+            $this->debuginfo["error"] = sprintf(_("%s is not a family") , $fromid);
+            return false;
+        }
+        $fromid = $normFromId;
         if (($fromid != "") && (!is_numeric($fromid))) {
             preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid) , $m);
             $fromid = $m['sign'] . getFamIdFromName($dbaccess, $m['fromid']);
