@@ -15,7 +15,7 @@ function displayWindow(height, width, ref, title, x, y, id, backgroundcolor) {
     var dialogFrame = $("#"+id+"_s");
     var oldFrame = $("#oldFrame_"+id);
     if (dialogFrame.length <= 0) {
-        dialogFrame = $('<iframe id="'+id+'_s" style="padding: 0;" frameborder="0"  allowtransparency="yes"></iframe>').appendTo('body');
+        dialogFrame = $('<iframe id="'+id+'_s" style="padding: 0" frameborder="0"  allowtransparency="yes"></iframe>').appendTo('body');
     } else {
          if (dialogFrame.dialog("isOpen") == true) {
              var position = dialogFrame.dialog("option", "position");
@@ -61,7 +61,8 @@ function displayWindow(height, width, ref, title, x, y, id, backgroundcolor) {
                 var newParam =parseInt(ui.position.left)+"+"+parseInt(ui.position.top)+"+"+parseInt(ui.size.width)+"x"+parseInt(ui.size.height);
                 setparamu("FDL", "MVIEW_GEO", newParam);
             }
-            dialogFrame.width(ui.size.width).height(ui.size.height);
+
+
         }
     }).bind('dialogdragstart dialogresizestart', function(event, ui) {
 
@@ -101,6 +102,10 @@ function displayWindow(height, width, ref, title, x, y, id, backgroundcolor) {
                 }
                 if (backgroundcolor &&  doc.getElementById("documentBody")) {
                     doc.getElementById("documentBody").style.backgroundColor =  backgroundcolor;
+                }
+                if (isIE6) {
+                    $(doc).find('body').css("margin-right","30px");
+                    $(doc).find('html').css("overflow-x", "hidden");
                 }
             }
             if (doc && doc.location && doc.location.href &&
