@@ -75,6 +75,7 @@ function editchangestate(Action & $action)
                             $tinputs[] = array(
                                 "alabel" => $oa->getLabel() ,
                                 "labelclass" => ($oa->needed) ? "FREEDOMLabelNeeded" : "FREEDOMLabel",
+                                "atype"=>$oa->type,
                                 "avalue" => $input,
                                 "aid" => $oa->id,
                                 "idisplay" => ($oa->visibility == "H") ? "none" : ""

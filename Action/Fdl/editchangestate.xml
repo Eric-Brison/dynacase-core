@@ -6,17 +6,20 @@ addEvent(window,'load',disableReadAttribute);
 addEvent(window,'load',resizePopDoc);
 addEvent(window,'unload',function () {autoUnlock('[docid]');});
 
-//setTimeout(resizePopDoc, 2000);
 function resizePopDoc() {
     var p=window.parent, width;
 
     if (!p) {
         return;
     }
+
+
     var dpop= p.$('#POPDOC_s');
     if (! dpop) {
         return;
     }
+    adjustDateHeight();
+
     var ih=0;
     var sh=0;
     ih=document.body.clientHeight;
@@ -38,8 +41,25 @@ function resizePopDoc() {
     dpop.width(width);
 
 }
+
+    function adjustDateHeight () {
+        var $dates=$('.attr--date, .attr-timestamp');
+        var lastDate=null,dh=0,itop=0 ;
+        if ($dates.length > 0) {
+             dh=document.body.clientHeight;
+             lastDate=$($dates[$dates.length-1]);
+            itop=lastDate.offset().top;
+             if (((dh - itop) < 190) && (itop < 210)) {
+                // need more height to display popup calendar
+                $('.askValueTable td').last().css('height',(187 - (dh - itop))+'px').css('vertical-align','top');
+             }
+        }
+    }
 </script>
 <style>
+
+
+
 .state:hover {
     background-color:[wcolor];
 }
@@ -64,6 +84,8 @@ function resizePopDoc() {
 .askButton {
   text-align:right
 }
+
+
 </style>
 
 <p class="askExplanation">[Explanations]</p>
@@ -81,13 +103,13 @@ function resizePopDoc() {
 [BLOCK FINPUTS]
 <div style="display:[idisplay];"  id="TWF[aid]" class="FREEDOMBack1 askInput">
   <span  valign="top" class="[labelclass] askLabel">[alabel]&nbsp;:&nbsp;</span><br/>
-  <table class="askValueTable"><tr><td class="askValue">[avalue]</td></tr></table>
+  <table class="askValueTable"><tr><td class="askValue attr--[atype]">[avalue]</td></tr></table>
 </div>
 [ENDBLOCK FINPUTS]
 
 
 [IFNOT noreason]
-[TEXT:Comment] : <br/><textarea class="askComment" name="comment" title="[TEXT:Comment for change state]"></textarea>
+<div>[TEXT:Comment] : </div><br/><textarea class="askComment" name="comment" title="[TEXT:Comment for change state]"></textarea>
 [ENDIF noreason]
 [IFNOT realtransition]<div class="Error"><p>[TEXT:Be carreful, this transition is not defined in workflow]</p>
 <p>[TEXT:The document can become inconsistent and can not be used properly]</p></div>[ENDIF realtransition]
