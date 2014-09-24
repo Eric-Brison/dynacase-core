@@ -88,7 +88,7 @@ addEvent(window,"load",resetbodyopacity);
 
 [ENDIF NOFORM]
 [IF HEAD]
-<table id="fixtablehead" class="[IFNOT ISIE]tablehead [ENDIF ISIE]documentHead"   cellspacing="0" width="100%">
+<table id="fixtablehead" class="[IFNOT ISIE7][IFNOT ISIE6]tablehead [ENDIF ISIE6][ENDIF ISIE7]documentHead"   cellspacing="0" width="100%">
 <thead>
 <tr class="FREEDOMBack1">
  <td width="60%">
@@ -107,7 +107,6 @@ addEvent(window,"load",resetbodyopacity);
 </thead>
 
 </table>
-[IFNOT ISIE]<div id="fixspanhead" style="visibility:visible;padding:0px;margin:0px;height:0px"></div>[ENDIF ISIE]
 [ENDIF HEAD]
 [IFNOT HEAD][IF FOOT][ZONE FDL:EDITBARMENU][ENDIF FOOT]
 [ENDIF HEAD]

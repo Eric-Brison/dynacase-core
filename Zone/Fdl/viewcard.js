@@ -4,40 +4,19 @@
  */
 
 // to adjust height of body in edit card in fixed positionning
-function fixedPosition() {
-    var fspan = document.getElementById('fixspanhead');
-    var ftable = document.getElementById('fixtablehead');
-    var xy;
-    var h;
 
-    if (isIE && ((document.body.scrollHeight) <= document.body.clientHeight)) {
-        if (fspan && ftable) {
-            ftable.style.position = 'static';
-            fspan.style.display = 'none';
+$( document ).ready(function() {
+    function fixHeader() {
+        var $header=$("#fixtablehead");
+        var height=$header.height();
+        if (height > 0 && $header.css("position")==="fixed") {
+            $('body').css("margin-top", height+"px");
         }
-        fspan = document.getElementById('fixspanfoot');
-        ftable = document.getElementById('fixtablefoot');
-        if (fspan && ftable) {
-            ftable.style.position = 'static';
-            fspan.style.display = 'none';
-        }
-    } else {
-        if (fspan && ftable) {
-            xy = getAnchorPosition(ftable.id);
-            h = parseInt(getObjectHeight(ftable)) - xy.y;
-            if (h > 0) {
-                fspan.style.height = parseInt(getObjectHeight(ftable)) + 'px';
-                fspan.style.top = xy.y + 'px';
-            }
-        }
-        fspan = document.getElementById('fixspanfoot');
-        ftable = document.getElementById('fixtablefoot');
+    };
 
-        if (fspan && ftable) {
-            fspan.style.height = parseInt(getObjectHeight(ftable)) + 'px';
-        }
-    }
+    fixHeader();
 
-}
-
-if (isNetscape) addEvent(window, "load", fixedPosition);
+    $(window).on("resize", function () {
+        fixHeader();
+    })
+});
