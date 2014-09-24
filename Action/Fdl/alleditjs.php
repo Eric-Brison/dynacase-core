@@ -25,10 +25,12 @@ function alleditjs(Action & $action)
         
         $ckeditorPath = "lib/ckeditor/3";
     }
-    
-    $extraCode = sprintf("CKEDITOR_BASEPATH = '%s/';", $ckeditorPath);
+
+    $action->parent->addJsRef("$ckeditorPath/ckeditor.js");
+
+    $extraCode = "";//sprintf("CKEDITOR_BASEPATH = '%s/';", $ckeditorPath);
     $statics = array(
-        "$ckeditorPath/ckeditor.js",
+       // "$ckeditorPath/ckeditor.js",
         "$jurl/subwindow.js",
         "$jurl/geometry.js",
         "$jurl/AnchorPosition.js",

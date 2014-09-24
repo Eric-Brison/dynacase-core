@@ -24,7 +24,7 @@ if (parseInt('[latestwaskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FD
 </script>
         <div class="header">
 [IF HEAD]
-<table id="fixtablehead" class="[IFNOT ISIE]tablehead [ENDIF ISIE]noprint documentHead"   cellspacing="0" width="100%">
+<table id="fixtablehead" class="[IFNOT ISIE7][IFNOT ISIE6]tablehead [ENDIF ISIE6][ENDIF ISIE7]noprint documentHead"   cellspacing="0" width="100%">
 <thead>
 <tr class="FREEDOMBack1">
  <td > <img class="click"  style="margin-left:2px" align="right" needresize="1" height="22px" onclick="self.print()"  alt="[TEXT:Print]" title="[TEXT:Print]"  src="[IMG:print.png]">
@@ -60,7 +60,6 @@ if (parseInt('[latestwaskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FD
 [ZONE FDL:VIEWBARMENU]
 [ENDIF ACTIONS][ENDIF viewbarmenu]
 [ENDIF HEAD]
-[IFNOT ISIE]<div id="fixspanhead" style="visibility:visible;padding:0px;margin:0px;height:0px"></div>[ENDIF ISIE]
 [ENDIF MAILVIEW]
 [IF MAILVIEW][IF HEAD]
 <table><tr><td>
