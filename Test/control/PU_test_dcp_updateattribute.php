@@ -101,6 +101,9 @@ class TestUpdateAttribute extends TestCaseDcpCommonFamily
         $s->setOrder('initid');
         $s->setSlice(20);
         //        $dl = $s->search();
+        $u = getCurrentUser();
+        $u->lastname = "o'Connor";
+        
         $dl = new \DocumentList($s);
         
         $ua = new \UpdateAttribute();

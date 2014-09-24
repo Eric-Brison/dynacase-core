@@ -204,7 +204,7 @@ class UpdateAttribute
         $level = HISTO_MESSAGE;
         $code = "UPDATE";
         foreach ($ids as $id => $initid) {
-            $vs[] = sprintf("(%d,%d,%d,'%s','%s',%d,'%s','%s')", $id, $initid, $uid, $uname, $date, $level, $code, pg_escape_string($this->historyComment));
+            $vs[] = sprintf("(%d,%d,%d,'%s','%s',%d,'%s','%s')", $id, $initid, $uid, pg_escape_string($uname) , pg_escape_string($date) , $level, pg_escape_string($code) , pg_escape_string($this->historyComment));
         }
         $sql.= implode(',', $vs);
         simpleQuery($this->dbaccess, $sql);
