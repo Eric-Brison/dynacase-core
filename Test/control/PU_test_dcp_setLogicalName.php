@@ -52,13 +52,103 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         $this->assertTrue($new_doc->isAlive() , sprintf("document %s not alive", $newname));
         $this->assertEquals($doc->id, $new_doc->id, sprintf("New logical name is not set to document"));
     }
+    /**
+     * @dataProvider dataBeforeAddSetLogicalName
+     * @param string $logicalName
+     */
+    public function testBeforeAddSetLogicalName($logicalName)
+    {
+        $doc = createDoc(self::$dbaccess, "BASE");
+        $err = $doc->setLogicalName($logicalName);
+        $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $logicalName, $doc->id, $err));
+        $err = $doc->Add();
+        $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
+        $this->assertTrue($doc->isAlive() , sprintf("document %s not alive", $doc->id));
+        
+        $this->assertEquals($logicalName, $doc->name, sprintf("New logical name is not set to document"));
+        
+        clearCacheDoc();
+        
+        $new_doc = new_Doc(self::$dbaccess, $logicalName);
+        $this->assertTrue($new_doc->isAlive() , sprintf("document %s not alive", $logicalName));
+    }
+    /**
+     * @dataProvider dataBeforeAddSetLogicalName
+     * @param string $oldname
+     */
+    public function testErrorBeforeAddSetLogicalName($oldname)
+    {
+        $doc1 = createDoc(self::$dbaccess, "BASE");
+        $err = $doc1->setLogicalName($oldname);
+        $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $oldname, $doc1->id, $err));
+        $err = $doc1->Add();
+        $this->assertEquals($oldname, $doc1->name, sprintf("New logical name is not set to document"));
+        $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
+        $this->assertTrue($doc1->isAlive() , sprintf("document %s not alive", $doc1->id));
+        
+        $doc2 = createDoc(self::$dbaccess, "BASE");
+        $err = $doc2->setLogicalName($oldname);
+        $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $oldname, $doc2->id, $err));
+        $err = $doc2->Add();
+        $this->assertNotEmpty($err, sprintf("Need error because duplicate name", $oldname, $doc2->id, $err));
+    }
+    /**
+     * @dataProvider dataErrorSyntaxSetLogicalName
+     * @param string $oldname
+     */
+    public function testErrorSyntaxSetLogicalName($oldname)
+    {
+        $doc1 = createDoc(self::$dbaccess, "BASE");
+        $err = $doc1->setLogicalName($oldname);
+        
+        $this->assertNotEmpty($err, sprintf("setLogicalName: Need error invalid name", $oldname, $doc1->id, $err));
+        
+        $err = $doc1->Add();
+        $this->assertNotEmpty($err, sprintf("Add: Need error invalid name", $oldname, $doc1->id, $err));
+    }
     
+    public function dataErrorSyntaxSetLogicalName()
+    {
+        return array(
+            array(
+                'TST_TEST 2'
+            ) ,
+            array(
+                'TST:TEST'
+            ) ,
+            array(
+                'élève'
+            ) ,
+            array(
+                '123'
+            ) ,
+            array(
+                '1a'
+            )
+        );
+    }
+    
+    public function dataBeforeAddSetLogicalName()
+    {
+        return array(
+            array(
+                'TST_TEST-2'
+            ) ,
+            array(
+                'T3'
+            )
+        );
+    }
     public function dataSetLogicalName()
     {
         return array(
             array(
                 'TST_TEST_ONE',
-                'TST_NEW_TEST_ONE'
+                'TST_NEW_TESTs_ONE'
+            ) ,
+            array(
+                'tst_test-one',
+                'tst_new-test-one'
             )
         );
     }
