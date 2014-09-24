@@ -43,9 +43,19 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
 function editmode(Action & $action)
 {
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
+
+    $ckeditorPath = "lib/ckeditor/4";
+    if ($action->getParam("ISIE6") || $action->getParam("ISIE7")) {
+        $ckeditorPath = "lib/ckeditor/3";
+    }
+    $action->parent->addJsRef("$ckeditorPath/ckeditor.js");
     $action->parent->AddJsRef(sprintf("%sapp=FDL&action=ALLEDITJS&wv=%s", $action->GetParam("CORE_SSTANDURL") , $action->GetParam("WVERSION")));
 
     $action->parent->addJsRef("lib/tipsy/src/javascripts/jquery.tipsy.js");
+
+
+    $action->parent->addJsCode( sprintf("CKEDITOR_BASEPATH = '%s/';", $ckeditorPath));
+
     $action->parent->addCssRef("lib/tipsy/src/stylesheets/tipsy.css");
     $action->parent->addCssRef("css/dcp/main.css");
     $action->parent->addCssRef("css/dcp/document-edit.css");
