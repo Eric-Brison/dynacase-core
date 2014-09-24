@@ -892,6 +892,12 @@ create unique index i_docir on doc(initid, revision);";
         //      if ($this->state == "") $this->state=$this->firstState;
         $this->version = $this->getVersion();
         
+        if ($this->name) {
+            $err = $this->setLogicalName($this->name, false, true);
+            if ($err) {
+                return $err;
+            }
+        }
         if ($this->wid > 0) {
             /**
              * @var WDoc $wdoc
@@ -7488,23 +7494,29 @@ create unique index i_docir on doc(initid, revision);";
      * affect a logical name that can be use as unique reference of a document independant of database
      * @param string $name new logical name
      * @param bool $reset set to true to accept change
+     * @param bool $verifyOnly if true only verify syntax and unicity
      * @return string error message if cannot be
      */
-    function setLogicalName($name, $reset = false)
+    function setLogicalName($name, $reset = false, $verifyOnly = false)
     {
         if ($name) {
             if (!CheckDoc::isWellformedLogicalName($name)) {
+                if (!$this->isAffected()) {
+                    $this->name = $name; // affect to be controlled in add and return error also
+                    
+                }
                 return (sprintf(_("name must begin with a letter and the containt only alphanumeric characters or - and _: invalid  [%s]") , $name));
-            } elseif (!$this->isAffected()) {
-                return (sprintf(_("Cannot set logical name %s because object is not affected") , $name));
-            } elseif ($this->isAffected() && ($this->name != "") && ($this->doctype != 'Z') && !$reset) {
-                return (sprintf(_("Logical name %s already set for %s") , $name, $this->title));
+            } elseif (!$verifyOnly && !$this->isAffected()) {
+                $this->name = $name;
+                return "";
+            } elseif (!$verifyOnly && $this->isAffected() && ($this->name != "") && ($this->doctype != 'Z') && !$reset) {
+                return (sprintf(_("Logical name %s already set for %s. Use reset parameter to overhide it") , $name, $this->title));
             } else {
                 // verify not use yet
                 $d = getTDoc($this->dbaccess, $name);
                 if ($d && $d["doctype"] != 'Z') {
                     return sprintf(_("Logical name %s already use in document %s") , $name, $d["title"]);
-                } else {
+                } elseif (!$verifyOnly) {
                     if ($this->name) {
                         simpleQuery($this->dbaccess, sprintf("UPDATE docname SET name = '%s' WHERE name = '%s'", pg_escape_string($name) , pg_escape_string($this->name)));
                     }
