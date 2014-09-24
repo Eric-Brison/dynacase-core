@@ -13,6 +13,7 @@ $lang["en_US"] = array(
     "label" => "English",
     "localeLabel" => _("English") ,
     "locale" => "en",
+    "culture" => "en-US",
     "dateFormat" => "%m/%d/%Y",
     "dateTimeFormat" => "%m/%d/%Y %H:%M",
     "timeFormat" => "%H:%M:%S",
