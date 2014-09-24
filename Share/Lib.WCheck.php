@@ -170,6 +170,9 @@ function getCheckApp($pubdir, &$tapp, $usePreviousVersion = false)
             if (!isset($tvfile[$v])) {
                 $tvfile[$v] = '';
             }
+            if (!isset($tvdb[$v])) {
+                $tvdb[$v] = '';
+            }
             if (($tmachine[$v] != "") && (gethostbyname($tmachine[$v]) != gethostbyname($_SERVER["HOSTNAME"]))) $chk[$v] = "?";
             else if ($tvdb[$v] == $tvfile[$v]) {
                 $chk[$v] = "";
