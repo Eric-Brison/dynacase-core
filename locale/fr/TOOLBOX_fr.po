@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-22 16:10+0200\n"
-"PO-Revision-Date: 2014-09-22 17:32+0200\n"
+"POT-Creation-Date: 2014-09-24 14:51+0200\n"
+"PO-Revision-Date: 2014-09-24 14:51+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -2757,8 +2757,8 @@ msgid "Log:User"
 msgstr "Utilisateur"
 
 #, php-format
-msgid "Logical name %s already set for %s"
-msgstr "Nom logique %s déjà utilisé pour %s"
+msgid "Logical name %s already set for %s. Use reset parameter to overhide it"
+msgstr "Nom logique déjà indiqué pour %s. Utiliser le paramètre reset pour le changer."
 
 #, php-format
 msgid "Logical name %s already use in document %s"
@@ -9002,6 +9002,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Import format"
 #~ msgstr "Format d'importation"
+
+#~ msgid "Logical name %s already set for %s"
+#~ msgstr "Nom logique %s déjà indiqué pour %s."
 
 #~ msgid "Maximum 20 views by control"
 #~ msgstr "Maximum 20 vues par contrôle"
