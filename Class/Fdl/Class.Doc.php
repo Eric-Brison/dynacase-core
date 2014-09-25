@@ -892,7 +892,7 @@ create unique index i_docir on doc(initid, revision);";
         //      if ($this->state == "") $this->state=$this->firstState;
         $this->version = $this->getVersion();
         
-        if ($this->name) {
+        if ($this->name && $this->revision == 0) {
             $err = $this->setLogicalName($this->name, false, true);
             if ($err) {
                 return $err;
