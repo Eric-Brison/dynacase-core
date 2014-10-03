@@ -1,7 +1,7 @@
 
 /* fonts */
 
-body, .core, P, input, textarea, select {
+body, .core, P, input, textarea, select, button {
   font-size: [SIZE_MEDIUM];
   font-family : Helvetica, Arial, sans-serif;
 }
