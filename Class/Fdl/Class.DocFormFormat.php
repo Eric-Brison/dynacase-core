@@ -146,7 +146,7 @@ class DocFormFormat
             return $input;
         }
         
-        $this->onChange = $this->jsEvents . " onchange=\"document.isChanged=true\" "; // use in "pleaseSave" js function
+        $this->onChange = $this->jsEvents;
         if ($docid == 0) {
             // case of specific interface
             if ($this->oattr->phpfile != '' && $this->oattr->phpfunc != '') {

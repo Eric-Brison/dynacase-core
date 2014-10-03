@@ -1213,6 +1213,7 @@ function deleteInputValue(id){
                 clearDocIdInputs(id, 'mdocid_isel_'+id, document.getElementById("ix_"+id), true);
             }
 
+            var oldValue=el.value;
 			el.value = ' ';
 
 			if ((el.tagName.toLowerCase()=='textarea') && (el.getAttribute('type')=='htmltext')) {
@@ -1224,7 +1225,9 @@ function deleteInputValue(id){
 			if( el.className.match(/^color\b/) ) {
 				el.style.backgroundColor = '';
 			}
-			if (el.onchange) el.onchange.apply(el,[]);
+            if (oldValue && oldValue !== ' ') {
+                $(el).trigger("change");
+            }
 
 			//	document.getElementById(iinput).style.backgroundColor='[CORE_BGCOLORHIGH]';
 		} else {
@@ -3153,5 +3156,12 @@ $( document ).ready(function() {
 
     $(window).on("resize", function () {
         fixHeader();
-    })
+    });
+
+    $('input, select, textarea').on("change", function () {
+       document.isChanged=true;
+    });
+    $('input,textarea').on("input", function () {
+       document.isChanged=true;
+    });
 });
