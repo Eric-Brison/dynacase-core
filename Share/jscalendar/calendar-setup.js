@@ -114,6 +114,7 @@ Calendar.setup = function (params) {
 			p.inputField.value = cal.date.print(p.ifFormat);
 			if (typeof p.inputField.onchange == "function")
 				p.inputField.onchange();
+            $(p.inputField).trigger("change");
 		}
 		if (update && p.displayArea)
 			p.displayArea.innerHTML = cal.date.print(p.daFormat);

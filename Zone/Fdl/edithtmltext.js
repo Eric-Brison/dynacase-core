@@ -123,6 +123,11 @@ window.htmlText.defaultOption.prototype = {
 window.htmlText.initEditor = function initEditor(htmlId, config) {
     config = config || {};
     CKEDITOR.replace(htmlId, new window.htmlText.defaultOption(config));
+
+    CKEDITOR.instances[htmlId].on("change", function () {
+        // trigger input because it's really like an input event and second because change cannot be use cause infinite loop
+        $(this.element.$).trigger("input");
+    });
 };
 
 window.htmlText.deleteContent = function deleteContent(htmlTextId) {
