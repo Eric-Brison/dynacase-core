@@ -25,6 +25,8 @@ include_once ('WHAT/Lib.Main.php');
 include_once ('WHAT/Class.AuthenticatorManager.php');
 include_once ('WHAT/wdebug.php');
 
+register_shutdown_function('handleFatalShutdown');
+
 global $SQLDELAY, $SQLDEBUG;
 global $TSQLDELAY;
 

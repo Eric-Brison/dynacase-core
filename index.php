@@ -22,6 +22,8 @@ include_once ('WHAT/Lib.Main.php');
 include_once ('WHAT/Class.AuthenticatorManager.php');
 include_once ('WHAT/Class.ActionRouter.php');
 
+register_shutdown_function('handleFatalShutdown');
+
 $guestMode = getDbAccessValue("useIndexAsGuest");
 
 $needToBeGuest = false;
