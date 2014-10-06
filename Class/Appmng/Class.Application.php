@@ -245,7 +245,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->InitStyle();
         }
         if ($this->session) {
-            $pStyle=$this->getParam("STYLE");
+            $pStyle = $this->getParam("STYLE");
             if ($pStyle) {
                 $this->session->register("userCoreStyle", $pStyle);
             }
@@ -745,7 +745,10 @@ create sequence SEQ_ID_APPLICATION start 10;
             } else error_log("dcp warning: $code");
         }
     }
-    
+    /**
+     * Get log text messages
+     * @return array
+     */
     public function getLogMsg()
     {
         return ($this->session->read("logmsg", array()));
@@ -755,6 +758,10 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         $this->session->unregister("logmsg");
     }
+    /**
+     * Get warning texts
+     * @return array
+     */
     public function getWarningMsg()
     {
         return ($this->session->read("warningmsg", array()));

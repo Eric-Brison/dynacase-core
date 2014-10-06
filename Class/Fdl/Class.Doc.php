@@ -3446,7 +3446,14 @@ create unique index i_docir on doc(initid, revision);";
         }
         if (($value !== "") && ($value !== null)) {
             // change only if different
-            if ($oattr === false) return sprintf(_("attribute %s unknow in family %s [%d]") , $attrid, $this->title, $this->id);
+            if ($oattr === false) {
+                if ($this->id > 0) {
+                    return sprintf(_("attribute %s unknow in document \"%s\" [%s]") , $attrid, $this->getTitle() , $this->fromname);
+                } else {
+                    
+                    return sprintf(_("attribute %s unknow in family \#%s\"") , $attrid, $this->fromname);
+                }
+            }
             if ($oattr->mvisibility == "I") return sprintf(_("no permission to modify this attribute %s") , $attrid);
             if ($value === DELVALUE) {
                 if ($oattr->type != "password") $value = " ";
