@@ -41,6 +41,8 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      */
     protected static $include_path = null;
     
+    protected static $testDirectory = "DCPTEST";
+    
     protected function setUp()
     {
         $this->log(sprintf("========== %s ========", $this->getName()));
@@ -212,15 +214,16 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         if (!file_exists($realfile)) {
             $ext = substr($file, strrpos($file, '.') + 1);
             if ($ext == "ods" || $ext == "csv") {
-                $realfile = "DCPTEST/" . $file;
+                $realfile = static::$testDirectory . "/" . $file;
             } else {
-                $realfile = "DCPTEST/Layout/" . $file;
+                $realfile = static::$testDirectory . "/Layout/" . $file;
             }
         }
         if (!file_exists($realfile)) {
             throw new \Dcp\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
         }
         $oImport = new \ImportDocument();
+        $oImport->setCsvOptions("auto", "auto");
         //error_log(__METHOD__."import $realfile");
         $oImport->importDocuments(self::getAction() , $realfile);
         $err = $oImport->getErrorMessage();
