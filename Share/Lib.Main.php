@@ -423,7 +423,7 @@ function handleFatalShutdown()
             if (!headers_sent()) {
                 header("HTTP/1.1 500 Dynacase Fatal Error");
             }
-            $action->exitError($error["message"]);
+            $action->exitError($error["message"], false);
             // Fatal error are already logged by PHP
             
         }
@@ -432,4 +432,3 @@ function handleFatalShutdown()
 
 set_exception_handler('handleActionException');
 
-register_shutdown_function('handleFatalShutdown');

@@ -623,11 +623,12 @@ create sequence SEQ_ID_ACTION;
     /**
      * display error to user and stop execution
      * @param string $texterr the error message
-     * @api abort action execution
+     * @param bool $exit if false , no exit are pêrformed
      * @throws Dcp\Core\Exception
+     * @api abort action execution
      * @return void
      */
-    public function exitError($texterr)
+    public function exitError($texterr, $exit = true)
     {
         if (!empty($_SERVER['HTTP_HOST'])) {
             //      redirect($this,"CORE&sole=Y","ERROR");
@@ -643,7 +644,9 @@ create sequence SEQ_ID_ACTION;
             }
             header('Warning: ' . strtok($texterr, "\n"));
             print $this->lay->gen();
-            exit;
+            if ($exit) {
+                exit;
+            }
         } else {
             throw new Dcp\Core\Exception("CORE0001", $texterr);
         }

@@ -33,6 +33,8 @@ if (ActionRouter::inMaintenance()) {
 include_once ('WHAT/Lib.Main.php');
 include_once ('WHAT/Class.ActionRouter.php');
 
+register_shutdown_function('handleFatalShutdown');
+
 $account = new Account();
 if ($account->setLoginName("anonymous") === false) {
     throw new \Dcp\Exception(sprintf("anonymous account not found."));
