@@ -1671,7 +1671,7 @@ class EnumAttributeTools
             } else {
                 $key = str_replace('.', '\\.', $key);
             }
-            $tItems[] = sprintf("%s|%s", $key, str_replace(',', '\\,', $label));
+            $tItems[] = sprintf("%s|%s", str_replace(',', '\\,', $key) , str_replace(',', '\\,', $label));
         }
         return implode(",", $tItems);
     }
