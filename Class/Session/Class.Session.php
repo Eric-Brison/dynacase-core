@@ -139,10 +139,19 @@ class Session extends DbObj
     {
         $turl = @parse_url($_SERVER["REQUEST_URI"]);
         if ($turl['path']) {
-            if (substr($turl['path'], -1) != '/') {
-                $path = dirname($turl['path']) . '/';
+            $scriptfile = $_SERVER["SCRIPT_FILENAME"];
+            $pos = strpos($scriptfile, DEFAULT_PUBDIR);
+            if ($pos === 0) {
+                $baseFilePath = substr($scriptfile, strlen(DEFAULT_PUBDIR) + 1);
+                $script = $_SERVER["SCRIPT_NAME"];
+                $pos = strpos($script, $baseFilePath);
+                $path = substr($script, 0, $pos);
             } else {
-                $path = $turl['path'];
+                if (substr($turl['path'], -1) != '/') {
+                    $path = dirname($turl['path']) . '/';
+                } else {
+                    $path = $turl['path'];
+                }
             }
             $path = preg_replace(':/+:', '/', $path);
             setcookie($this->name, $id, $ttl, $path, null, null, true);
@@ -268,7 +277,7 @@ class Session extends DbObj
     function Unregister($k = "")
     {
         global $_SERVER; // use only cache with HTTP
-        if (!empty($_SERVER['HTTP_HOST'])) {
+        if ($this->name && !empty($_SERVER['HTTP_HOST'])) {
             session_name($this->name);
             session_id($this->id);
             @session_start();
