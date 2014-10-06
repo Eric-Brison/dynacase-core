@@ -48,8 +48,7 @@ class DocTitle
                 return $relCache["title"];
             }
         }
-        
-        return null;
+        return self::getTitle($docid, $latest);
     }
     /**
      * get all title and access of document's relations
@@ -136,6 +135,39 @@ class DocTitle
         }
         if (!empty(self::$relationCache[$uid])) self::$relationCache[$uid] = array_merge($relationIds, self::$relationCache[$uid]);
         else self::$relationCache[$uid] = $relationIds;
+    }
+    /**
+     * Get title from database if not found in cache
+     * @param int $docid Document identifier
+     */
+    public static function getTitle($docid, $latest = true)
+    {
+        
+        if ($latest) {
+            $sql = sprintf("select id,initid,title,name,doctype,views && '%s' as canaccess from docread where initid = %d and locked != -1", self::getUserVector() , $docid);
+        } else {
+            $sql = sprintf("select id,initid,title,name,doctype,views && '%s' as canaccess from docread where id = %d", self::getUserVector() , $docid);
+        }
+        simpleQuery('', $sql, $result, false, true);
+        if ($result) {
+            $uid = getCurrentUser()->id;
+            $keyCache = $result["id"] . '-' . intval($latest);
+            self::$relationCache[$uid][$keyCache] = array(
+                "docid" => $result["id"],
+                "rid" => $result["id"],
+                "latest" => $latest,
+                "title" => $result["title"],
+                "canaccess" => $result["canaccess"]
+            );
+            
+            if ($result["canaccess"] === 't') {
+                return $result["title"];
+            } else {
+                return false; //_("information access deny");
+                
+            }
+        }
+        return null;
     }
     /**
      * get user vector of current user
