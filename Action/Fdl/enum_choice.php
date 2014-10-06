@@ -243,7 +243,8 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         } else {
             // can be values or family parameter
             $a = $doc->GetAttribute($v);
-            if ($index === "") {
+            
+            if ($index === "" || $index === null) {
                 $ta = getFuncVar($v, $v, $whttpvars, $doc, $a);
                 if ($ta === false) {
                     return false;
