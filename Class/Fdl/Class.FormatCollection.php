@@ -61,6 +61,10 @@ class FormatCollection
      * @var string text in case of no access in relation target
      */
     public $relationNoAccessText = "";
+    /**
+     * @var bool if true set showempty option in displayValue when value is empty
+     */
+    public $useShowEmptyOption = true;
     
     private $decimalSeparator = ',';
     
@@ -245,17 +249,18 @@ class FormatCollection
                 $oa = $doc->getAttribute($attrid);
                 if ($oa) {
                     if (($oa->type == "array") || ($oa->type == "tab") || ($oa->type == "frame")) throw new \Dcp\Fmtc\Exception("FMTC0002", $attrid);
-                    $mb0 = microtime(true);
+                    
                     $value = $doc->getRawValue($oa->id);
                     if ($value === '') {
-                        if ($empty = $oa->getOption("showempty")) $r[$kdoc]["attributes"][$oa->id] = $empty;
-                        else $r[$kdoc]["attributes"][$oa->id] = null;
-                        
-                        $this->debug["empty"][] = microtime(true) - $mb0;
+                        if ($this->useShowEmptyOption && $empty = $oa->getOption("showempty")) {
+                            $emptyAttr = new StandardAttributeValue($oa, null);
+                            $emptyAttr->displayValue = $empty;
+                            $r[$kdoc]["attributes"][$oa->id] = $emptyAttr;
+                        } else {
+                            $r[$kdoc]["attributes"][$oa->id] = null;
+                        }
                     } else {
                         $r[$kdoc]["attributes"][$oa->id] = $this->getInfo($oa, $value, $doc);
-                        
-                        $this->debug[$oa->type][] = microtime(true) - $mb0;
                     }
                 } else {
                     $r[$kdoc]["attributes"][$attrid] = new UnknowAttributeValue($this->ncAttribute);
@@ -296,11 +301,10 @@ class FormatCollection
         else if ($this->dateStyle === DateAttributeValue::isoStyle) return stringDateToIso($v, false, true);
         else if ($this->dateStyle === DateAttributeValue::isoWTStyle) return stringDateToIso($v, false, false);
         else if ($this->dateStyle === DateAttributeValue::frenchStyle) {
-            if (getLcdate() == "iso") { // FR
-                $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
-                if (strlen($v) < 11) return substr($ldate, 0, strlen($v));
-                else return $ldate;
-            }
+            
+            $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
+            if (strlen($v) < 11) return substr($ldate, 0, strlen($v));
+            else return $ldate;
         }
         return stringDateToLocaleDate($v);
     }
@@ -323,11 +327,25 @@ class FormatCollection
         }
         return $s;
     }
+    /**
+     * delete last null values
+     * @param array $t
+     * @return array
+     */
+    private static function rtrimNull(array $t)
+    {
+        $i = count($t) - 1;
+        for ($k = $i; $k >= 0; $k--) {
+            if ($t[$k] === null) unset($t[$k]);
+            else break;
+        }
+        return $t;
+    }
     public function getInfo(NormalAttribute $oa, $value, $doc = null)
     {
         $info = null;
         if ($oa->isMultiple()) {
-            if ($oa->inArray() && $oa->getOption("multiple") == "yes") {
+            if ($oa->isMultipleInArray()) {
                 // double level multiple
                 $tv = Doc::rawValueToArray($value);
                 if (count($tv) == 1 && $tv[0] == "\t") {
@@ -335,9 +353,18 @@ class FormatCollection
                 }
                 foreach ($tv as $k => $av) {
                     if ($av) {
-                        $tvv = explode('<BR>', $av); // second level multiple
-                        foreach ($tvv as $avv) {
-                            $info[$k][] = $this->getSingleInfo($oa, $avv, $doc);
+                        if (is_array($av)) {
+                            $tvv = $this->rtrimNull($av);
+                        } else {
+                            $tvv = explode('<BR>', $av); // second level multiple
+                            
+                        }
+                        if (count($tvv) == 0) {
+                            $info[$k] = array();
+                        } else {
+                            foreach ($tvv as $avv) {
+                                $info[$k][] = $this->getSingleInfo($oa, $avv, $doc);
+                            }
                         }
                     } else {
                         $info[$k] = array();
@@ -433,13 +460,20 @@ class FormatCollection
             "count" => $sum
         );
     }
+    /**
+     * @param array|stdClass $info
+     * @param NormalAttribute $oAttr
+     * @param int $index
+     * @param array $configuration
+     * @return string
+     */
     public static function getDisplayValue($info, $oAttr, $index = - 1, $configuration = array())
     {
         $attrInArray = ($oAttr->inArray());
         $attrIsMultiple = ($oAttr->getOption('multiple') == 'yes');
         $sepRow = isset($configuration['multipleSeparator'][0]) ? $configuration['multipleSeparator'][0] : "\n";
         $sepMulti = isset($configuration['multipleSeparator'][1]) ? $configuration['multipleSeparator'][1] : ", ";
-        $displayDocId = ($configuration['displayDocId'] === true);
+        $displayDocId = (isset($configuration['displayDocId']) && $configuration['displayDocId'] === true);
         
         if (is_array($info) && $index >= 0) {
             $info = array(
@@ -563,11 +597,10 @@ class DateAttributeValue extends StandardAttributeValue
             else if ($dateStyle === self::isoStyle) $this->displayValue = stringDateToIso($v, false, true);
             else if ($dateStyle === self::isoWTStyle) $this->displayValue = stringDateToIso($v, false, false);
             else if ($dateStyle === self::frenchStyle) {
-                if (getLcdate() == "iso") { // FR
-                    $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
-                    if (strlen($v) < 11) $this->displayValue = substr($ldate, 0, strlen($v));
-                    else $this->displayValue = $ldate;
-                }
+                
+                $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
+                if (strlen($v) < 11) $this->displayValue = substr($ldate, 0, strlen($v));
+                else $this->displayValue = $ldate;
             } else $this->displayValue = stringDateToLocaleDate($v);
         }
     }
@@ -619,7 +652,9 @@ class EnumAttributeValue extends StandardAttributeValue
     public function __construct(NormalAttribute $oa, $v)
     {
         $this->value = $v;
-        $this->displayValue = $oa->getEnumLabel($v);
+        if ($v !== null && $v !== '') {
+            $this->displayValue = $oa->getEnumLabel($v);
+        }
     }
 }
 
@@ -637,15 +672,17 @@ class FileAttributeValue extends StandardAttributeValue
         $this->value = $v;
         if ($v) {
             $finfo = $doc->getFileInfo($v);
-            $this->size = $finfo["size"];
-            $this->creationDate = $finfo["cdate"];
-            $this->fileName = $finfo["name"];
-            $this->mime = $finfo["mime_s"];
-            $this->displayValue = $this->fileName;
-            
-            $iconFile = getIconMimeFile($this->mime);
-            if ($iconFile) $this->icon = $doc->getIcon($iconFile, $iconMimeSize);
-            $this->url = $doc->getFileLink($oa->id, $index);
+            if ($finfo) {
+                $this->size = $finfo["size"];
+                $this->creationDate = $finfo["cdate"];
+                $this->fileName = $finfo["name"];
+                $this->mime = $finfo["mime_s"];
+                $this->displayValue = $this->fileName;
+                
+                $iconFile = getIconMimeFile($this->mime);
+                if ($iconFile) $this->icon = $doc->getIcon($iconFile, $iconMimeSize);
+                $this->url = $doc->getFileLink($oa->id, $index);
+            }
         }
     }
 }
@@ -655,7 +692,26 @@ class ImageAttributeValue extends FileAttributeValue
     public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $thumbnailSize = 48)
     {
         parent::__construct($oa, $v, $doc, $index);
-        $this->thumbnail = $doc->getFileLink($oa->id, $index, false, true) . sprintf('&width=%d', $thumbnailSize);
+        $fileLink = $doc->getFileLink($oa->id, $index, false, true);
+        if ($fileLink) {
+            if ($thumbnailSize > 0) {
+                $this->thumbnail = sprintf('%s&width=%d', $fileLink, $thumbnailSize);
+            } else {
+                $this->thumbnail = $fileLink;
+            }
+        } elseif ($v) {
+            global $action;
+            $localImage = $action->parent->getImageLink($v);
+            if ($localImage) {
+                $this->displayValue = basename($v);
+                $this->url = $localImage;
+                if ($thumbnailSize > 0) {
+                    $this->thumbnail = $action->parent->getImageLink($v, null, $thumbnailSize);
+                } else {
+                    $this->thumbnail = $localImage;
+                }
+            }
+        }
     }
 }
 class DocidAttributeValue extends StandardAttributeValue
@@ -672,7 +728,7 @@ class DocidAttributeValue extends StandardAttributeValue
         $this->value = $v;
         $this->displayValue = DocTitle::getRelationTitle($v, $oa->getOption("docrev", "latest") == "latest", $doc);
         if ($this->displayValue !== false) {
-            if ($v !== '') {
+            if ($v !== '' && $v !== null) {
                 if ($iconsize > 0) {
                     $prop = getDocProperties($v, $oa->getOption("docrev", "latest") == "latest", array(
                         
@@ -720,7 +776,7 @@ class ThesaurusAttributeValue extends DocidAttributeValue
                 if (self::$thcDoc === null) {
                     self::$thcDoc = createTmpDoc("", "THCONCEPT");
                 }
-                $rawValue = getTDoc('', $this->value);
+                $rawValue = getTDoc("", $this->value);
                 self::$thcDoc->affect($rawValue);
                 $this->displayValue = self::$thcDoc->getTitle();
                 // set local cache
