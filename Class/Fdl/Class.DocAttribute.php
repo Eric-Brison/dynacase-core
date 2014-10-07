@@ -1042,7 +1042,7 @@ class NormalAttribute extends BasicAttribute
                 }
                 return $tv;
             } else {
-                return (isset($cached[$enumid])) ? $cached[$enumid] : $enumid;
+                return (array_key_exists($enumid,$cached)) ? $cached[$enumid] : $enumid;
             }
         }
         

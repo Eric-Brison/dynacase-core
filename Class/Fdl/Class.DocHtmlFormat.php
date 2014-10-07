@@ -608,7 +608,7 @@ class DocHtmlFormat
                 }
             } else $htmlval = $avalue;
         } else {
-            if (isset($enumlabel[$avalue])) $htmlval = $enumlabel[$avalue];
+            if (array_key_exists($avalue,$enumlabel)) $htmlval = $enumlabel[$avalue];
             else $htmlval = $avalue;
         }
         return $htmlval;
