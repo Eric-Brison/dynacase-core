@@ -1836,7 +1836,6 @@ create unique index i_docir on doc(initid, revision);";
             $this->_maskApplied = false;
             $this->_oldvalue = array();
             $this->_paramValue = array();
-            $this->_setValueCompleteArrayRow = true;
             $this->_setValueDetectChange = true;
             $this->childs = null;
             $this->constraintbroken = false;
