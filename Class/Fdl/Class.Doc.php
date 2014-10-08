@@ -8788,6 +8788,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * update internal vault index relation table
+     * Delete temporary file property
      */
     public function updateVaultIndex()
     {
@@ -8814,12 +8815,17 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         
+        $vids = array();
         foreach ($tvid as $vid) {
             if ($vid > 0) {
                 $dvi->docid = $this->id;
                 $dvi->vaultid = $vid;
                 $dvi->Add();
+                $vids[] = intval($vid);
             }
+        }
+        if (count($vids) > 0) {
+            \Dcp\VaultManager::setFilesPersitent($vids);
         }
     }
     // ===================

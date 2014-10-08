@@ -54,6 +54,7 @@ $sessionUtils = new SessionUtils($core_db);
 $sessionUtils->deleteExpiredSessionFiles();
 
 cleanTmpFiles();
+\Dcp\VaultManager::destroyTmpFiles($action->GetParam('CORE_TMPDIR_MAXAGE', '2'));
 
 function mkTmpScript($script, $prefix)
 {

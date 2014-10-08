@@ -95,7 +95,7 @@ function retrieve($id_file, &$infos)
     return ($msg);
 }
 // ---------------------------------------------------------
-function store($infile, $public_access, &$id, $fsname = "", $te_name = "", $te_id_file = 0)
+function store($infile, $public_access, &$id, $fsname = "", $te_name = "", $te_id_file = 0, $tmp = null)
 {
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Store");
@@ -108,6 +108,7 @@ function store($infile, $public_access, &$id, $fsname = "", $te_name = "", $te_i
             $public_access = FALSE;
             $this->logger->warning("Access mode forced to RESTRICTED for " . $infile . "].");
         }
+        $this->storage->id_tmp = $tmp;
         $msg = $this->storage->Store($infile, $public_access, $id, $fsname, $te_name, $te_id_file);
         if ($msg) $this->logger->error($msg);
     }
