@@ -3,43 +3,11 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
+ *  * Syntaxe :
+ *  ---------
+ *     $session = new Session();
 */
-/**
- * Generated Header (not documented yet)
- *
- * @author Anakeen
- * @version $Id: Class.Session.php,v 1.38 2009/01/12 15:15:31 jerome Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage CORE
- */
-/**
- */
-// ---------------------------------------------------------------------------
-// Marc Claverie (marc.claverie@anakeen.com)- anakeen 2000
-// ---------------------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.38 2009/01/12 15:15:31 jerome Exp $
-//
-// ---------------------------------------------------------------------------
-// Syntaxe :
-// ---------
-//     $session = new Session();
-//
-// ---------------------------------------------------------------------------
+
 $CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.38 2009/01/12 15:15:31 jerome Exp $';
 include_once ('Class.QueryDb.php');
 include_once ('Class.DbObj.php');
@@ -139,25 +107,24 @@ class Session extends DbObj
     {
         $turl = @parse_url($_SERVER["REQUEST_URI"]);
         if ($turl['path']) {
-            $scriptfile = $_SERVER["SCRIPT_FILENAME"];
-            $pos = strpos($scriptfile, DEFAULT_PUBDIR);
-            if ($pos === 0) {
-                $baseFilePath = substr($scriptfile, strlen(DEFAULT_PUBDIR) + 1);
-                $script = $_SERVER["SCRIPT_NAME"];
-                $pos = strpos($script, $baseFilePath);
-                $path = substr($script, 0, $pos);
+            $scriptDirName = pathinfo($_SERVER["SCRIPT_FILENAME"], PATHINFO_DIRNAME);
+            if (strpos($scriptDirName, DEFAULT_PUBDIR) === 0) {
+                $relativeBaseFilePath = substr($scriptDirName, strlen(DEFAULT_PUBDIR));
+                $pos = strpos($scriptDirName, $relativeBaseFilePath);
+                $cookiePath = substr($scriptDirName, 0, $pos);
             } else {
                 if (substr($turl['path'], -1) != '/') {
-                    $path = dirname($turl['path']) . '/';
+                    $cookiePath = dirname($turl['path']) . '/';
                 } else {
-                    $path = $turl['path'];
+                    $cookiePath = $turl['path'];
                 }
             }
-            $path = preg_replace(':/+:', '/', $path);
-            setcookie($this->name, $id, $ttl, $path, null, null, true);
+            $cookiePath = preg_replace(':/+:', '/', $cookiePath);
+            setcookie($this->name, $id, $ttl, $cookiePath, null, null, true);
         } else {
             setcookie($this->name, $id, $ttl, null, null, null, true);
         }
+
     }
     /**
      * Closes session and removes all datas
