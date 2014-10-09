@@ -23,8 +23,6 @@ include_once ('Class.Application.php');
 include_once ('Class.Group.php');
 include_once ('WHAT/Lib.Common.php');
 
-require_once 'PEAR.php';
-
 define("GALL_ID", 2);
 define("ANONYMOUS_ID", 3);
 define("GADMIN_ID", 4);

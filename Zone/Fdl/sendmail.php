@@ -15,8 +15,6 @@
  */
 /**
  */
-include ('Mail/mime.php');
-include ('Net/SMTP.php');
 /**
  * Send mail via smtp server
  * @param string $to mail addresses (, separate)
@@ -33,6 +31,10 @@ function sendmail($to, $from, $cc, $bcc, $subject, &$mimemail, $multipart = null
         return __sendmail_Dcp_Mail_Message($to, $from, $cc, $bcc, $subject, $mimemail);
     }
     
+    require_once 'PEAR.php';
+    
+    include_once ('Mail/mime.php');
+    include_once ('Net/SMTP.php');
     $rcpt = array_merge(explode(',', $to) , explode(',', $cc) , explode(',', $bcc));
     
     $host = getParam('SMTP_HOST', 'localhost');
