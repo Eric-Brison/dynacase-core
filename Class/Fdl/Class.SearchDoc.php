@@ -1431,7 +1431,7 @@ class SearchDoc
             return $sqlM;
         }
         $attr = $this->_getAttributeFromColumn($fromid, $column);
-        if ($attr === false) {
+        if ($attr === false || $attr->isMultiple()) {
             return $sqlM;
         }
         switch ($attr->type) {
