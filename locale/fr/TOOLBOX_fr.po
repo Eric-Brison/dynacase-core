@@ -1478,6 +1478,10 @@ msgstr "Relations du document"
 msgid "Document unlinked of %s folder"
 msgstr "Document enlevé du dossier %s"
 
+#, php-format
+msgid "Document with id '%s' not found."
+msgstr "Document avec identifiant '%s' non trouvé."
+
 msgid "Documents administration"
 msgstr "Administration des documents"
 
@@ -8171,11 +8175,6 @@ msgstr "l'id du  document [%s] pour cet attribut n'est pas valide"
 
 msgid "the document id is empty"
 msgstr "l'id de document est vide"
-
-msgid "the document is not referenced: cannot apply defaut folder"
-msgstr ""
-"le document n'est pas référencé : la modification dossier par défaut "
-"abandonné"
 
 msgid ""
 "the document is not referenced: cannot apply profile access modification"

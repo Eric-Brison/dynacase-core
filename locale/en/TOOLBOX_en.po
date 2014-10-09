@@ -1446,6 +1446,10 @@ msgstr ""
 msgid "Document unlinked of %s folder"
 msgstr ""
 
+#, php-format
+msgid "Document with id '%s' not found."
+msgstr ""
+
 msgid "Documents administration"
 msgstr ""
 
@@ -7949,9 +7953,6 @@ msgid "the document id [%s] for this attribute is not valid"
 msgstr ""
 
 msgid "the document id is empty"
-msgstr ""
-
-msgid "the document is not referenced: cannot apply defaut folder"
 msgstr ""
 
 msgid ""
