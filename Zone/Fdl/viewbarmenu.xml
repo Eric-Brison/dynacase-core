@@ -3,7 +3,7 @@
 <script>
 // <![CDATA[
 function menuOpen(event, elmt) {
-    var confirm = ($(elmt).data('confirm') == 'true');
+    var useconfirm = ($(elmt).data('confirm') === true);
     var tconfirm = $(elmt).data('tconfirm');
     var m = $(elmt).data('m');
     var mheight = $(elmt).data('mheight');
@@ -13,8 +13,8 @@ function menuOpen(event, elmt) {
     var isjs = ($(elmt).data('isjs') === true);
     var jsfunction = $(elmt).data('jsfunction');
     var self = ($(elmt).data('self') === true);
-    if (confirm) {
-        if (!confirm(tconfirm)) {
+    if (useconfirm) {
+        if (!window.confirm(tconfirm)) {
             return;
         }
     }

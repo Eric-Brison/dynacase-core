@@ -451,6 +451,9 @@ class FormatCollection
         if (!$attrInArray) {
             if ($attrIsMultiple) {
                 $multiList = array();
+                if (empty($info)) {
+                    $info=array();
+                }
                 foreach ($info as $data) {
                     $multiList[] = $displayDocId ? $data->value : $data->displayValue;
                 }
@@ -461,6 +464,9 @@ class FormatCollection
         } else {
             $rowList = array();
             if ($attrIsMultiple) {
+                if (empty($info)) {
+                    $info=array();
+                }
                 foreach ($info as $multiData) {
                     $multiList = array();
                     foreach ($multiData as $data) {
