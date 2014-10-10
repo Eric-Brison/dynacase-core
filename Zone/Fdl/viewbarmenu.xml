@@ -12,7 +12,7 @@ function menuOpen(event, elmt) {
     var url = $(elmt).data('url');
     var isjs = ($(elmt).data('isjs') === true);
     var jsfunction = $(elmt).data('jsfunction');
-    var self = ($(elmt).data('self') === true);
+    var self = ($(elmt).data('self') === true) || (target === '_self');
     if (useconfirm) {
         if (!window.confirm(tconfirm)) {
             return;
