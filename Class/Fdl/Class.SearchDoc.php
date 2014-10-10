@@ -1431,18 +1431,18 @@ class SearchDoc
             return $sqlM;
         }
         $attr = $this->_getAttributeFromColumn($fromid, $column);
-        if ($attr === false) {
+        if ($attr === false || $attr->isMultiple()) {
             return $sqlM;
         }
         switch ($attr->type) {
             case 'enum':
                 $enumKeyLabelList = $attr->getEnum();
-                $mapValues = array();
+                $mapValues = array("('', NULL)");
                 foreach ($enumKeyLabelList as $key => $label) {
                     $mapValues[] = sprintf("('%s', '%s')", pg_escape_string($key) , pg_escape_string($label));
                 }
                 $map = sprintf('(VALUES %s) AS map_%s(key, label)', join(', ', $mapValues) , $attr->id);
-                $where = sprintf('map_%s.key = doc%s.%s', $attr->id, $fromid, $attr->id);
+                $where = sprintf("map_%s.key = coalesce(doc%s.%s, '')", $attr->id, $fromid, $attr->id);
                 
                 $sqlM = preg_replace('/ where /i', ", $map where ($where) and ", $sqlM);
                 $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column, "/")) , sprintf("map_%s.label", $attr->id) , $this->orderby);
