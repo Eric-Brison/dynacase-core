@@ -1,5 +1,5 @@
-html { background-color:[COLOR_A0]; padding:0; margin:0px; }
-body { font-family:Ubuntu, Trebuchet MS, Helvetica, sans-serif; background-color:[COLOR_A0]; padding:0px; margin:0px; color:[COLOR_A4]; }
+html { background-color:[COLOR_A9]; padding:0; margin:0px; }
+body { font-family:Ubuntu, Trebuchet MS, Helvetica, sans-serif; background-color:[COLOR_A9]; padding:0px; margin:0px; color:[COLOR_A4]; }
 
 img { border:0; }
 a, a:link, a:visited { }
@@ -12,36 +12,37 @@ p { margin:0; padding:0 }
  * left block
  */
 .left-block {
-   background-color:[COLOR_A0]; 
+   background-color:[COLOR_A9]; 
+   color:[COLOR_A1]; 
    position: relative;
    width:20%;
    top:20px;
    left:0;
    float:left;
+    font-size: 10pt;
 }
 /* 
  * right block
 */
 .right-block { 
-   margin-top:20px;
    float:left;
    display:table-cell;
    padding:10px; 
    width:75%;
    background-color:[COLOR_C9]; 
 }
-#apropos { padding:10px; color:[COLOR_C7]; }
+#apropos { padding:10px; }
 #apropos em { font-style:normal; font-weight: bold; }
 #apropos ul { margin-left:0; padding-left: 20px; }
 #apropos li { }
 #apropos div.fr, #apropos div.en { padding:20px 15px 0 15px; }
-#apropos a, #apropos a:link, #apropos a:visited   { color:[COLOR_C3]; text-decoration:underline; }
+#apropos a, #apropos a:link, #apropos a:visited   { color:#06F; text-decoration:underline ; }
 #apropos a:hover { text-decoration:none; background-color:[COLOR_A6]; }
 #apropos p { margin-bottom:10px; }
 #apropos a.anakeen, #apropos a.anakeen:visited, #apropos a.anakeen:hover { font-weight:bold; text-decoration:none; }
 
 .right-block .intro { display:block; text-align:right; font-size:80%; font-weight:bold; }
-#hello {  padding: 60px 40px; }
+#hello {  padding: 60px 20%; }
 
 #header { text-align:center;}
 #header .title { font-weight:bold; font-size:400%; }
@@ -70,10 +71,7 @@ a.manual {
 #footer { 
     padding-top:10px;
     text-align:center;
-    background-color:[COLOR_A0];
-    color:[COLOR_A9];
 }
-#footer a { color:[COLOR_A9]; }
 
 
 .clear { clear:both; }
@@ -81,7 +79,6 @@ a.manual {
 .documentation {
     text-align: center;
     font-size: 200%;
-    font-weight: bold;
 }
 
 .admin-link {
@@ -96,11 +93,16 @@ a.manual {
     padding: 0.5em 1em;
     color: #fff;
     background-color: #3E8FA8;
-    box-shadow: inset 1px 1px 4px rgba(0,0,0,0.2),inset 3px 3px 8px rgba(0,0,0,0.1), inset -1px -1px 4px rgba(0,0,0,0.2), inset -3px -3px 8px rgba(0,0,0,0.1)  ;
 }
 .admin-link a:hover{
     background-color: #FF620A;
     text-decoration: none;
     border-color: 1px solid #777;
-    box-shadow: inset 1px 1px 4px rgba(0,0,0,0.2),inset 3px 3px 8px rgba(0,0,0,0.1), inset -1px -1px 4px rgba(0,0,0,0.2), inset -3px -3px 8px rgba(0,0,0,0.1)  ;
+}
+
+.para {
+    margin-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
 }
