@@ -532,7 +532,7 @@ class StandardAttributeValue
     
     public function __construct(NormalAttribute $oa, $v)
     {
-        $this->value = $v;
+        $this->value = ($v==='')?null:$v;
         $this->displayValue = $v;
     }
 }
@@ -543,7 +543,7 @@ class UnknowAttributeValue
     
     public function __construct($v)
     {
-        $this->value = $v;
+        $this->value = ($v==='')?null:$v;
         $this->displayValue = $v;
     }
 }
@@ -562,7 +562,7 @@ class FormatAttributeValue extends StandardAttributeValue
     public function __construct(NormalAttribute $oa, $v)
     {
         
-        $this->value = $v;
+        $this->value = ($v==='')?null:$v;
         if ($oa->format) $this->displayValue = sprintf($oa->format, $v);
         else $this->displayValue = $v;
     }
@@ -651,7 +651,7 @@ class EnumAttributeValue extends StandardAttributeValue
 {
     public function __construct(NormalAttribute $oa, $v)
     {
-        $this->value = $v;
+        $this->value = ($v==='')?null:$v;
         if ($v !== null && $v !== '') {
             $this->displayValue = $oa->getEnumLabel($v);
         }
@@ -668,8 +668,8 @@ class FileAttributeValue extends StandardAttributeValue
     public $icon = '';
     public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $iconMimeSize = 24)
     {
-        
-        $this->value = $v;
+
+        $this->value = ($v==='')?null:$v;
         if ($v) {
             $finfo = $doc->getFileInfo($v);
             if ($finfo) {
@@ -725,7 +725,7 @@ class DocidAttributeValue extends StandardAttributeValue
     public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
         $this->familyRelation = $oa->format;
-        $this->value = $v;
+        $this->value = ($v==='')?null:$v;
         $this->displayValue = DocTitle::getRelationTitle($v, $oa->getOption("docrev", "latest") == "latest", $doc);
         if ($this->displayValue !== false) {
             if ($v !== '' && $v !== null) {
