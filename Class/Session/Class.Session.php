@@ -110,8 +110,9 @@ class Session extends DbObj
             $scriptDirName = pathinfo($_SERVER["SCRIPT_FILENAME"], PATHINFO_DIRNAME);
             if (strpos($scriptDirName, DEFAULT_PUBDIR) === 0) {
                 $relativeBaseFilePath = substr($scriptDirName, strlen(DEFAULT_PUBDIR));
-                $pos = strpos($scriptDirName, $relativeBaseFilePath);
-                $cookiePath = substr($scriptDirName, 0, $pos);
+                $script = $_SERVER["SCRIPT_NAME"];
+                $pos = strpos($script, $relativeBaseFilePath);
+                $cookiePath = substr($script, 0, $pos).'/';
             } else {
                 if (substr($turl['path'], -1) != '/') {
                     $cookiePath = dirname($turl['path']) . '/';
