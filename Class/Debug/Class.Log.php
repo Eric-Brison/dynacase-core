@@ -31,6 +31,10 @@ class Log
     private $tic;
     private $ptext;
     /**
+     * @var string Level to log
+     */
+    protected $logLevel = null;
+    /**
      * Constant to set log to debug level
      * Debug level is used by Core.
      * It's used to assert taht Core works properly
@@ -165,6 +169,23 @@ class Log
         $this->wlog(Log::DEPRECATED, $string);
     }
     /**
+     * @param string $logLevel
+     */
+    public function setLogLevel($logLevel)
+    {
+        $this->logLevel = $logLevel;
+    }
+    /**
+     * @return string
+     */
+    public function getLogLevel()
+    {
+        if ($this->logLevel === null) {
+            $this->logLevel = getParam("CORE_LOGLEVEL", "IWEF");
+        }
+        return $this->logLevel;
+    }
+    /**
      * to set start time
      * @param string $text prefix text to set for next tic/end
      */
@@ -203,8 +224,7 @@ class Log
     
     public function push($string)
     {
-        global $CORE_LOGLEVEL;
-        if (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, "C"))) {
+        if (is_int(strpos($this->getLogLevel() , "C"))) {
             global $call_ind, $call_stack, $call_pre, $call_reqid;
             if (!isset($call_ind)) $call_ind = 0;
             if (!isset($call_pre)) $call_pre = "-";
@@ -218,8 +238,7 @@ class Log
     
     public function pop()
     {
-        global $CORE_LOGLEVEL;
-        if (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, "C"))) {
+        if (is_int(strpos($this->getLogLevel() , "C"))) {
             global $call_ind, $call_stack, $call_pre, $call_reqid;
             $call_pre = substr($call_pre, 0, strlen($call_pre) - 1);
             $call_ind-= 1;
@@ -235,13 +254,11 @@ class Log
      */
     public function wlog($sta, $str, $args = NULL, $facility = LOG_LOCAL6)
     {
-        
         global $_SERVER;
-        global $CORE_LOGLEVEL;
         
         if (!$str) return;
         if (is_array($str)) $str = implode(", ", $str);
-        if ($sta == "S" || (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta)))) {
+        if ($sta == "S" || (is_int(strpos($this->getLogLevel() , $sta)))) {
             $addr = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '';
             $appf = "[{$sta}] Dynacase";
             $appf.= ($this->application != "" ? ":" . $this->application : "");
@@ -265,7 +282,7 @@ class Log
                         if ($str) {
                             $str.= ' ';
                         }
-                        $str.= sprintf("%s called in %s%s%s(), file %s:%s", isset($td[3]["function"])?$td[3]["function"]:'', $class, $class ? '::' : '', isset($td[4]["function"])?$td[4]["function"]:'', isset($td[4]["file"]) ? $td[4]["file"] : '', isset($td[4]["line"]) ? $td[4]["line"] : '');
+                        $str.= sprintf("%s called in %s%s%s(), file %s:%s", isset($td[3]["function"]) ? $td[3]["function"] : '', $class, $class ? '::' : '', isset($td[4]["function"]) ? $td[4]["function"] : '', isset($td[4]["file"]) ? $td[4]["file"] : '', isset($td[4]["line"]) ? $td[4]["line"] : '');
                         $pri = LOG_INFO;
                         break;
 
@@ -298,6 +315,7 @@ class Log
                 openlog("{$appf}", 0, $facility);
                 syslog($pri, "[{$addr}] " . $str);
                 closelog();
+                
                 if ($sta == "E") {
                     error_log($str); // use apache syslog also
                     

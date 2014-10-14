@@ -31,7 +31,6 @@ wbar(1, -1, "initialisation");
 $log = new Log("", "index.php");
 
 $CoreNull = "";
-global $CORE_LOGLEVEL;
 // get param
 global $_GET;
 global $_SERVER;
@@ -88,8 +87,6 @@ if (isset($_GET["userid"])) { //special user
 $core->Set("CORE", $CoreNull);
 $core->session = new Session();
 if (!isset($_GET["userid"])) $core->user = new Account("", 1); //admin
-$CORE_LOGLEVEL = $core->GetParam("CORE_LOGLEVEL", "IWEF");
-
 ini_set("memory_limit", -1);
 
 initMainVolatileParam($core);
