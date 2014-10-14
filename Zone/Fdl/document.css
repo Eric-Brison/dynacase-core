@@ -41,3 +41,10 @@
     opacity:0.3;
     filter: alpha(opacity = 30);
 }
+
+.documentView a img.mime {
+    vertical-align: middle;
+}
+.documentView tr[type=file] .FREEDOMText {
+    padding-top:0;
+}
