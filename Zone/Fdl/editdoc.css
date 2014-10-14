@@ -16,7 +16,7 @@ img.edit-image {
 div.edit-image {
     display:inline-block;
     [IF ISIE6]display:inline;[ENDIF ISIE6]
-    vertical-align: bottom;
+    vertical-align: middle;
     width:2em;
     height: 1.6em;
     position:relative;
