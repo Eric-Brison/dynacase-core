@@ -264,6 +264,8 @@ class SearchDoc
                     if (!$q) {
                         $this->debuginfo["query"] = $sql;
                         $this->debuginfo["error"] = pg_last_error($dbid);
+                        $count = - 1;
+                        break;
                     } else {
                         $result = pg_fetch_array($q, 0, PGSQL_ASSOC);
                         $count+= $result["count"];
@@ -1437,7 +1439,9 @@ class SearchDoc
         switch ($attr->type) {
             case 'enum':
                 $enumKeyLabelList = $attr->getEnum();
-                $mapValues = array("('', NULL)");
+                $mapValues = array(
+                    "('', NULL)"
+                );
                 foreach ($enumKeyLabelList as $key => $label) {
                     $mapValues[] = sprintf("('%s', '%s')", pg_escape_string($key) , pg_escape_string($label));
                 }
