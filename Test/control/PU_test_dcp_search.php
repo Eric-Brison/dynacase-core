@@ -129,6 +129,31 @@ class TestSearch extends TestCaseDcpCommonFamily
         $this->assertEquals($count, $c, sprintf("Return count must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
     }
     /**
+     * test basic search criteria
+     * @param string $criteria filter
+     * @param string $arg filter argument
+     * @param string $family family name or id
+     * @param integer $count expected results count
+     * @return void
+     * @dataProvider countErrorCriteria
+     * @depends testCountSearch
+     */
+    public function testOnlyCountErrorSearch($criteria, $arg, $family, $error)
+    {
+        require_once "FDL/Class.SearchDoc.php";
+        $this->createDataSearch();
+        $s = new \SearchDoc(self::$dbaccess, $family);
+        if ($criteria) $s->addFilter($criteria, $arg);
+        $s->setObjectReturn(true);
+        $c = $s->onlyCount();
+        
+        $err = $s->getError();
+        $this->assertContains($error, $err, sprintf("No good error %s", print_r($s->getSearchInfo() , true)));
+        $count = - 1;
+        $this->assertEquals($count, $s->count() , sprintf("Count must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
+        $this->assertEquals($count, $c, sprintf("Return count must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
+    }
+    /**
      * test only count user search
      * @param array $data test specification
      * @return void
@@ -344,7 +369,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         
         $sql = $s->getOriginalQuery();
         $this->assertNotEmpty($sql, sprintf("Unexpected empty original query!"));
-
+        
         $s->search();
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Unexpected SearchDoc error [%s]: %s", $sql, $err));
@@ -430,6 +455,29 @@ class TestSearch extends TestCaseDcpCommonFamily
                 "Pomme",
                 "BASE",
                 1
+            )
+        );
+    }
+    public function countErrorCriteria()
+    {
+        return array(
+            array(
+                "title_unknow ~* '%s'",
+                "Pomme",
+                "BASE",
+                "title_unknow"
+            ) ,
+            array(
+                "title ~ '%s'",
+                "Poire|Pomme|Cerise|Banane",
+                "BASE_UNKNOW",
+                "BASE_UNKNOW"
+            ) ,
+            array(
+                "title @? '%s'",
+                "Pomme",
+                "BASE",
+                "@?"
             )
         );
     }
