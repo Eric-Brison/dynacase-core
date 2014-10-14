@@ -809,6 +809,8 @@ class DocHtmlFormat
                         }
                         $tivalue[] = array(
                             "evalue" => $hval,
+                            "attrid"=>$va->id,
+                            "atype"=>$va->type,
                             "tdstyle" => $va->getOption("cellbodystyle") ,
                             "color" => $va->getOption("color", "inherit") ,
                             "bgcolor" => $va->getOption("bgcolor", "inherit") ,
