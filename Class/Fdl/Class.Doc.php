@@ -7058,7 +7058,9 @@ create unique index i_docir on doc(initid, revision);";
                             }
                         }
                     }
-                    
+
+                    $tableframe[$v]["attrid"] = $attr->id;
+                    $tableframe[$v]["atype"] = $attr->type;
                     $tableframe[$v]["classback"] = ($attr->usefor == "O") ? "FREEDOMOpt" : "FREEDOMBack1";
                     $v++;
                 } else {
