@@ -8825,9 +8825,10 @@ create unique index i_docir on doc(initid, revision);";
      * @param \Dcp\Family\TIMER &$timer the timer document
      * @param Doc &$origin the document which comes from the attachement
      * @param string $execdate date to execute first action YYYY-MM-DD HH:MM:SS
+     * @api Attach timer to a document
      * @return string error - empty if no error -
      */
-    final public function attachTimer(&$timer, &$origin = null, $execdate = null)
+    final public function attachTimer(&$timer, $origin = null, $execdate = null)
     {
         $dyn = false;
         if ($execdate == null) {
@@ -8849,8 +8850,9 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
     /**
-     * unattach timer to a document
+     * unattach timer of a document
      * @param \Dcp\Family\TIMER &$timer the timer document
+     * @api Unattach timer of a document
      * @return string error - empty if no error -
      */
     final public function unattachTimer(&$timer)
@@ -8866,7 +8868,10 @@ create unique index i_docir on doc(initid, revision);";
         } else $err = sprintf(_("unattachTimer : the timer parameter is not a document of TIMER family"));
         return $err;
     }
-    
+
+    /**
+     * Recompute timer's delay for all attached dynamic timers
+     */
     final public function resetDynamicTimers()
     {
         $tms = $this->getAttachedTimers();
@@ -8897,9 +8902,10 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * unattach several timers to a document
      * @param Doc &$origin if set unattach all timer which comes from this origin
+     * @api Unattach all times of the document
      * @return string error - empty if no error -
      */
-    final public function unattachAllTimers(&$origin = null)
+    final public function unattachAllTimers($origin = null)
     {
         /**
          * @var \Dcp\Family\TIMER $timer
@@ -8919,6 +8925,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * return all activated document timer
+     * @api Get all timer attached to the document
      * @return array of doctimer values
      */
     final public function getAttachedTimers()
