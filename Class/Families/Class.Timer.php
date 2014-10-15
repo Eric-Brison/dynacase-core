@@ -19,7 +19,7 @@ class Timer extends \Dcp\Family\Document
      * @param string $referenceDate reference date to trigger the actions
      * @return string error - empty if no error -
      */
-    function attachDocument(&$doc, &$origin, $referenceDate = null)
+    function attachDocument(&$doc, $origin, $referenceDate = null)
     {
         include_once ("FDL/Class.DocTimer.php");
         
