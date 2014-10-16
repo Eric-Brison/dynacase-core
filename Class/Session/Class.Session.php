@@ -111,8 +111,12 @@ class Session extends DbObj
             if (strpos($scriptDirName, DEFAULT_PUBDIR) === 0) {
                 $relativeBaseFilePath = substr($scriptDirName, strlen(DEFAULT_PUBDIR));
                 $script = $_SERVER["SCRIPT_NAME"];
-                $pos = strpos($script, $relativeBaseFilePath);
-                $cookiePath = substr($script, 0, $pos).'/';
+                if ($relativeBaseFilePath) {
+                    $pos = strpos($script, $relativeBaseFilePath);
+                    $cookiePath = substr($script, 0, $pos) . '/';
+                } else {
+                    $cookiePath = dirname($script) . '/';
+                }
             } else {
                 if (substr($turl['path'], -1) != '/') {
                     $cookiePath = dirname($turl['path']) . '/';
@@ -125,7 +129,6 @@ class Session extends DbObj
         } else {
             setcookie($this->name, $id, $ttl, null, null, null, true);
         }
-
     }
     /**
      * Closes session and removes all datas
