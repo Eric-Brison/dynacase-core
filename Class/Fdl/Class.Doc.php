@@ -8714,8 +8714,10 @@ create unique index i_docir on doc(initid, revision);";
     public static function userDocId()
     {
         global $action;
-        
-        return $action->user->fid;
+        if ($action) {
+            return $action->user->fid;
+        }
+        return 0;
     }
     /**
      * alias for Doc::userDocId
