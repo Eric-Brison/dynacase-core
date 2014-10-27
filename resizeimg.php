@@ -46,42 +46,56 @@ function getVaultPauth($vid)
     $dbaccess = getDbAccess();
     $rcore = pg_connect($dbaccess);
     if ($rcore) {
-        $result = pg_query($rcore, "SELECT val from paramv where name='FREEDOM_DB' and type='G'");
+        $result = pg_query(sprintf("select id_dir,name from vaultdiskstorage where id_file=%d", $vid));
         if ($result) {
-            $row = pg_fetch_row($result);
-            $dbfree = current($row);
-            
-            if ($dbfree) {
-                $rfree = pg_connect($dbfree);
-                if ($rfree) {
-                    $result = pg_query("select id_dir,name,public_access from vaultdiskstorage where id_file=$vid");
-                    if ($result) {
-                        $row = pg_fetch_row($result);
-                        if ($row) {
-                            $iddir = $row[0];
-                            $name = $row[1];
-                            $free = $row[2];
-                            
-                            if (!$free) {
-                                return false;
-                            }
-                            $ext = '';
-                            if (preg_match('/\.([^\.]*)$/', $name, $reg)) {
-                                $ext = $reg[1];
-                            }
-                            
-                            $result = pg_query("SELECT l_path,id_fs from vaultdiskdirstorage where id_dir = $iddir");
-                            $row = pg_fetch_row($result);
-                            $lpath = $row[0];
-                            $idfs = $row[1];
-                            $result = pg_query("SELECT r_path from vaultdiskfsstorage where id_fs = $idfs");
-                            $row = pg_fetch_row($result);
-                            $rpath = $row[0];
-                            
-                            $localimg = "$rpath/$lpath/$vid.$ext";
-                            if (file_exists($localimg)) return $localimg;
-                        }
-                    }
+            $row = pg_fetch_assoc($result);
+            if ($row) {
+                $iddir = $row["id_dir"];
+                $name = $row["name"];
+                
+                $ext = '';
+                if (preg_match('/\.([^\.]*)$/', $name, $reg)) {
+                    $ext = $reg[1];
+                }
+                
+                $result = pg_query(sprintf("SELECT l_path,id_fs from vaultdiskdirstorage where id_dir = %d", $iddir));
+                $row = pg_fetch_assoc($result);
+                $lpath = $row["l_path"];
+                $idfs = $row["id_fs"];
+                $result = pg_query(sprintf("SELECT r_path from vaultdiskfsstorage where id_fs = %d", $idfs));
+                $row = pg_fetch_assoc($result);
+                $rpath = $row["r_path"];
+                
+                $localimg = "$rpath/$lpath/$vid.$ext";
+                if (file_exists($localimg)) return $localimg;
+            }
+        }
+    }
+    return false;
+}
+/**
+ * Return true if access granted
+ * @param int $vid vault identifier
+ * @return bool
+ */
+function verifyAccessByVaultId($vid)
+{
+    $dbaccess = getDbAccess();
+    $rcore = pg_connect($dbaccess);
+    if ($rcore) {
+        $result = pg_query(sprintf("select id_dir,name,public_access, id_tmp from vaultdiskstorage where id_file=%d", $vid));
+        if ($result) {
+            $row = pg_fetch_assoc($result);
+            if ($row) {
+                $free = $row["public_access"];
+                $tmpSessId = $row["id_tmp"];
+                
+                if ($free) {
+                    return true;
+                } elseif ($tmpSessId) {
+                    // Verify if tmp file is produced by current user session
+                    include_once ("WHAT/Class.Session.php");
+                    if (isset($_COOKIE[Session::PARAMNAME]) && $tmpSessId === $_COOKIE[Session::PARAMNAME]) return true;
                 }
             }
         }
@@ -134,6 +148,12 @@ $ldir = DEFAULT_PUBDIR;
 if (preg_match("/vaultid=([0-9]+)/", $img, $vids)) {
     // vault file
     $vid = $vids[1];
+    
+    if (!verifyAccessByVaultId($vid)) {
+        header('HTTP/1.0 404 Not found');
+        exit;
+    }
+    
     $basedest = getVaultCacheImage($vid, $size);
     $dest = DEFAULT_PUBDIR . $basedest;
     if (file_exists($dest)) {

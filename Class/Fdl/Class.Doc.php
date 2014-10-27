@@ -3445,7 +3445,14 @@ create unique index i_docir on doc(initid, revision);";
         }
         if (($value !== "") && ($value !== null)) {
             // change only if different
-            if ($oattr === false) return sprintf(_("attribute %s unknow in family %s [%d]") , $attrid, $this->title, $this->id);
+            if ($oattr === false) {
+                if ($this->id > 0) {
+                    return sprintf(_("attribute %s unknow in document \"%s\" [%s]") , $attrid, $this->getTitle() , $this->fromname);
+                } else {
+                    
+                    return sprintf(_("attribute %s unknow in family \#%s\"") , $attrid, $this->fromname);
+                }
+            }
             if ($oattr->mvisibility == "I") return sprintf(_("no permission to modify this attribute %s") , $attrid);
             if ($value === DELVALUE) {
                 if ($oattr->type != "password") $value = " ";
@@ -8709,8 +8716,10 @@ create unique index i_docir on doc(initid, revision);";
     public static function userDocId()
     {
         global $action;
-        
-        return $action->user->fid;
+        if ($action) {
+            return $action->user->fid;
+        }
+        return 0;
     }
     /**
      * alias for Doc::userDocId
@@ -8783,6 +8792,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * update internal vault index relation table
+     * Delete temporary file property
      */
     public function updateVaultIndex()
     {
@@ -8809,12 +8819,17 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         
+        $vids = array();
         foreach ($tvid as $vid) {
             if ($vid > 0) {
                 $dvi->docid = $this->id;
                 $dvi->vaultid = $vid;
                 $dvi->Add();
+                $vids[] = intval($vid);
             }
+        }
+        if (count($vids) > 0) {
+            \Dcp\VaultManager::setFilesPersitent($vids);
         }
     }
     // ===================

@@ -33,10 +33,14 @@ function exportfile(Action & $action)
         $docid = $usage->addHiddenParameter("id", "document identifier");
     }
     
-    $usage->addHiddenParameter("vid", "vault file identifier - not used"); // only for construct url
+    $vid = $usage->addHiddenParameter("vid", "vault file identifier - used for tmp file"); // only for construct url
     $usage->addHiddenParameter("filename", "vault file name - not used"); // only for construct url
     $attrid = $usage->addOptionalParameter("attrid", "attribute identifier");
     $vaultid = $usage->addOptionalParameter("vaultid", "public file identifier");
+    
+    if (!$docid && $attrid === "-" && $vid > 0) {
+        $vaultid = $vid;
+    }
     $index = $usage->addOptionalParameter("index", "attribute index identifier");
     $imgwidth = $usage->addOptionalParameter("width", "image width use only when file is image");
     $inline = ($usage->addOptionalParameter("inline", "inline download", array(
@@ -102,7 +106,7 @@ function exportfile(Action & $action)
         } else $ovalue = $doc->getRawValue($attrid);
         if (ctype_digit((string)$index) && ((int)$index >= 0)) {
             $index = (int)$index;
-            $tvalue = explode("\n", $ovalue);
+            $tvalue = Doc::rawValueToArray($ovalue);
             if (!isset($tvalue[$index])) {
                 header('HTTP/1.0 404 File Not Found');
                 $action->exitError(sprintf(_("File not found at index '%s'") , $index));
@@ -173,9 +177,12 @@ function exportfirstfile(Action & $action)
 {
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    $docid = GetHttpVars("docid", GetHttpVars("id", 0));
+    $docid = $action->getArgument("docid", $action->getArgument("id", 0));
     
     $doc = new_Doc($dbaccess, $docid);
+    if (!$doc->isAffected()) {
+        $action->exitError(sprintf(_("unknow document reference '%s'") , $docid));
+    }
     $attr = $doc->GetFirstFileAttributes();
     if (!$attr) $action->exiterror(_("no attribute file found"));
     
@@ -318,7 +325,7 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
     } else {
         if ($info->mime_s) $mimetype = $info->mime_s;
         //Header("Location: $url");
-        if ($isControled || ($info->public_access)) {
+        if ($isControled || ($info->public_access) || ($info->id_tmp)) {
             if (($mimetype != "image/jpeg") || ($width == 0)) {
                 if ($othername) $info->name = $othername;
                 Http_DownloadFile($info->path, $info->name, $mimetype, $inline, $cache);

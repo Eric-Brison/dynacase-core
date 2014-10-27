@@ -20,7 +20,7 @@ class TestSuiteDcp
 {
     const logFile = "/var/tmp/pudcp.log";
     const msgFile = "/var/tmp/pudcp.msg";
-    private static $allInProgress = false;
+    public static $allInProgress = false;
     public static function suite()
     {
         self::configure();
@@ -36,7 +36,7 @@ class TestSuiteDcp
         return $suite;
     }
     
-    private static function configure()
+    public static function configure()
     {
         @unlink(self::logFile);
         ini_set("error_log", self::logFile);

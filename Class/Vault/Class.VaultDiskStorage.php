@@ -29,6 +29,7 @@ class VaultDiskStorage extends DbObj
         "public_access",
         "size",
         "name",
+        "id_tmp",
         
         "mime_t", // file mime type text
         "mime_s", // file mime type system
@@ -52,8 +53,8 @@ class VaultDiskStorage extends DbObj
                                      id_dir        int,
                                      public_access bool,
                                      size int,
-                                     name varchar(2048),
-
+                                     name text,
+                                     id_tmp text,
                                      mime_t           text DEFAULT '',
                                      mime_s           text DEFAULT '',
 
@@ -73,6 +74,11 @@ class VaultDiskStorage extends DbObj
     public $id_fs;
     public $id_dir;
     public $name;
+    /**
+     * Indicate if file is a temporary file : set to session user id
+     * @var string
+     */
+    public $id_tmp;
     public $size;
     public $public_access;
     public $mime_t;
@@ -279,6 +285,7 @@ class VaultDiskStorage extends DbObj
             $f_infos->cdate = $this->cdate;
             $f_infos->mdate = $this->mdate;
             $f_infos->adate = $this->adate;
+            $f_infos->id_tmp = $this->id_tmp;
             $f_infos->teng_state = $this->teng_state;
             $f_infos->teng_lname = $this->teng_lname;
             $f_infos->teng_vid = $this->teng_id_file;
@@ -378,5 +385,6 @@ class VaultFileInfo
     public $teng_vid;
     public $teng_comment;
     public $path;
+    public $id_tmp;
 }
 ?>

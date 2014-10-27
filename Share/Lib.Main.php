@@ -33,7 +33,6 @@ function getMainAction($auth, &$action)
     $log = new Log("", $indexphp);
     
     $CoreNull = "";
-    global $CORE_LOGLEVEL;
     
     global $_GET;
     $defaultapp = false;
@@ -82,7 +81,6 @@ function getMainAction($auth, &$action)
             ini_set("memory_limit", $core->GetParam("MEMORY_LIMIT", "64") . "M");
         }
     } //$core->SetSession($session);
-    $CORE_LOGLEVEL = $core->GetParam("CORE_LOGLEVEL", "IWEF");
     // ----------------------------------------
     // Init PUBLISH URL from script name
     initMainVolatileParam($core, $session);
@@ -423,7 +421,7 @@ function handleFatalShutdown()
             if (!headers_sent()) {
                 header("HTTP/1.1 500 Dynacase Fatal Error");
             }
-            $action->exitError($error["message"]);
+            $action->exitError($error["message"], false);
             // Fatal error are already logged by PHP
             
         }
@@ -432,4 +430,3 @@ function handleFatalShutdown()
 
 set_exception_handler('handleActionException');
 
-register_shutdown_function('handleFatalShutdown');

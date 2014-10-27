@@ -29,9 +29,6 @@ class VaultDiskFs extends DbObj
         "fsname",
         "max_size",
         "free_size",
-        "subdir_cnt_bydir",
-        "subdir_deep",
-        "max_entries_by_dir",
         "r_path"
     );
     var $id_fields = array(
@@ -41,16 +38,14 @@ class VaultDiskFs extends DbObj
     var $order_by = "";
     var $seq_tmpl = "seq_id_vaultdiskfs%s";
     var $sqlcreate_tmpl = <<<EOF
-           create table vaultdiskfs%s  ( id_fs     int not null,
-                                 fsname text,
-                                 primary key (id_fs),
-                                 max_size   int8,
-                                 free_size   int8,
-                                 subdir_cnt_bydir   int,
-                                 subdir_deep   int,
-                                 max_entries_by_dir   int,
-                                 r_path varchar(2048)
-                               );
+           create table vaultdiskfs%s  (
+                                id_fs int not null,
+                                fsname text,
+                                primary key (id_fs),
+                                max_size int8,
+                                free_size int8,
+                                r_path text
+                                );
            create sequence seq_id_vaultdiskfs%s start 10;
 
 EOF;
@@ -63,13 +58,11 @@ EOF;
     public $fsname;
     public $max_size;
     public $free_size;
-    public $subdir_cnt_bydir;
-    public $subdir_deep;
-    public $max_entries_by_dir;
     /**
      * @var string path to vault root
      */
     public $r_path;
+    public $specific;
     private $htaccess = <<<EOF
 Order Allow,Deny
 Deny from all
@@ -99,9 +92,6 @@ EOF;
         $this->fsname = $fsname;
         $this->max_size = $maxsize;
         $this->free_size = $maxsize;
-        $this->subdir_cnt_bydir = VAULT_MAXDIRBYDIR;
-        $this->subdir_deep = 1;
-        $this->max_entries_by_dir = VAULT_MAXENTRIESBYDIR;
         $this->r_path = $path;
         return $this->Add();
     }
@@ -153,7 +143,6 @@ EOF;
         }
         $query->basic_elem->sup_where = $qs;
         $t = $query->Query(0, 1, "TABLE");
-        
         if ($query->nb > 0) {
             $ifs = 0;
             $dirfound = FALSE;

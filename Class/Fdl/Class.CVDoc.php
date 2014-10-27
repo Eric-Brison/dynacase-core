@@ -91,7 +91,7 @@ class CVDoc extends Doc
         $originals = $dc->dacls;
         
         if (!preg_match('!^[0-9a-z_-]+$!i', $value)) {
-            $err = sprintf(_("You must use only a-z, 0-9, _, - characters : \"%s\""), $value);
+            $err = sprintf(_("You must use only a-z, 0-9, _, - characters : \"%s\"") , $value);
         } elseif (array_key_exists($value, $originals)) {
             $err = _("Impossible to name a view like a control acl");
         } else {
@@ -124,27 +124,21 @@ class CVDoc extends Doc
             'sug' => $sug
         );
     }
-    
+    /**
+     * Return view properties
+     * @param $vid
+     * @return array|false false if vid not found
+     */
     function getView($vid)
     {
-        $ti = $this->getMultipleRawValues("CV_IDVIEW");
-        foreach ($ti as $k => $v) {
-            if ($v === $vid) {
+        $tv = $this->getArrayRawValues("cv_t_views");
+        foreach ($tv as $v) {
+            if ($v["cv_idview"] === $vid) {
                 // found it
-                $tl = $this->getMultipleRawValues(MyAttributes::cv_lview);
-                $tz = $this->getMultipleRawValues(MyAttributes::cv_zview);
-                $tk = $this->getMultipleRawValues(MyAttributes::cv_kview);
-                $tm = $this->getMultipleRawValues(MyAttributes::cv_mskid);
-                $tmenu = $this->getMultipleRawValues(MyAttributes::cv_menu);
-                
-                return array(
-                    "CV_IDVIEW" => $v,
-                    "CV_LVIEW" => $tl[$k],
-                    "CV_ZVIEW" => $tz[$k],
-                    "CV_KVIEW" => $tk[$k],
-                    "CV_MSKID" => $tm[$k],
-                    "CV_MENU" => $tmenu[$k]
-                );
+                foreach ($v as $k => $av) {
+                    $v[strtoupper($k) ] = $av;
+                }
+                return $v;
             }
         }
         return false;
@@ -187,6 +181,33 @@ class CVDoc extends Doc
             $tv[$v] = $this->getView($v);
         }
         return $tv;
+    }
+    /**
+     * get Views that can be displayed in a menu by example
+     */
+    public function getDisplayableViews()
+    {
+        $tv = $this->getArrayRawValues("cv_t_views");
+        $cud = ($this->doc->CanEdit() == "");
+        $displayableViews = array();
+        foreach ($tv as $v) {
+            $vid = $v[MyAttributes::cv_idview];
+            $mode = $v[MyAttributes::cv_kview];
+            switch ($mode) {
+                case "VCONS":
+                    if ($this->control($vid) == "") {
+                        $displayableViews[] = $v;
+                    }
+                    break;
+
+                case "VEDIT":
+                    if ($cud && $this->control($vid) == "") {
+                        $displayableViews[] = $v;
+                    }
+                    break;
+            }
+        }
+        return $displayableViews;
     }
     
     function preImport(array $extra = array())
@@ -285,4 +306,3 @@ class CVDoc extends Doc
         return $view;
     }
 }
-?>

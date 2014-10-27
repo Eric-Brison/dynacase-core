@@ -435,9 +435,8 @@ class DirectoriesAutoloader
         }
         if ($err) {
             require_once "WHAT/Class.Log.php";
-            global $CORE_LOGLEVEL;
-            $CORE_LOGLEVEL = "WEI";
             $log = new \Log();
+            $log->setLogLevel("WEI");
             $log->error($err);
             throw new DirectoriesAutoloaderException($err);
         }

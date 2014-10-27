@@ -767,7 +767,7 @@ function seems_utf8($Str)
  * Initialise WHAT : set global $action whithout an authorized user
  *
  */
-function WhatInitialisation()
+function WhatInitialisation($session = null)
 {
     global $action;
     include_once ('Class.User.php');
@@ -775,8 +775,10 @@ function WhatInitialisation()
     
     $CoreNull = "";
     $core = new Application();
-    $core->Set("CORE", $CoreNull);
-    $core->session = new Session();
+    $core->Set("CORE", $CoreNull, $session);
+    if (!$session) {
+        $core->session = new Session();
+    }
     $action = new Action();
     $action->Set("", $core);
     // i18n
