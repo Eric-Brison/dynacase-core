@@ -47,9 +47,9 @@ class TestImportCVDOC extends TestCaseDcpCommonFamily
                 "file" => "PU_data_dcp_importcvdocbad1.ods",
                 "errors" => array(
                     "DOC0111",
-                    "[id vues]",
+                    "[Identifiant de la vue]",
                     "DOC0111",
-                    "[label]"
+                    "[Label]"
                 ) ,
             )
         );
