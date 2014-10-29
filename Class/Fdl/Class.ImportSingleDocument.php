@@ -27,6 +27,10 @@ class importSingleDocument
     protected $orders = array();
     protected $preValues = array();
     /**
+     * @var bool verify attribute access (visibility "I")
+     */
+    protected $verifyAttributeAccess = true;
+    /**
      * @var array folder id where insert the new document
      */
     protected $folderIds = array();
@@ -74,7 +78,13 @@ class importSingleDocument
     {
         $this->preValues = $preValues;
     }
-    
+    /**
+     * @param boolean $verifyAttributeAccess
+     */
+    public function setVerifyAttributeAccess($verifyAttributeAccess)
+    {
+        $this->verifyAttributeAccess = $verifyAttributeAccess;
+    }
     public function setTargetDirectory($dirid)
     {
         if ($dirid == '-') $dirid = 0;
@@ -242,7 +252,9 @@ class importSingleDocument
             
             return $this;
         }
-        
+        if (!$this->verifyAttributeAccess) {
+            $this->inhibitInvisibleAttributes($this->doc);
+        }
         if (count($this->orders) == 0) {
             $lattr = $this->doc->GetImportAttributes();
             $this->orders = array_keys($lattr);
@@ -365,12 +377,16 @@ class importSingleDocument
                             }
                             $err = $this->doc->preImport($extra);
                             if ($err != "") {
-                                if ($err) $this->setError("DOC0105", $this->doc->name, $err);
+                                if ($err) {
+                                    $this->setError("DOC0105", $this->doc->name, $err);
+                                }
                                 return $this;
                             }
                             $err = $this->doc->Add();
                             
-                            if ($err) $this->setError("DOC0107", $this->doc->name, $err);
+                            if ($err) {
+                                $this->setError("DOC0107", $this->doc->name, $err);
+                            }
                         }
                         if ($err == "") {
                             $this->tcr["id"] = $this->doc->id;
@@ -395,18 +411,24 @@ class importSingleDocument
                             if ($this->doc->id == "") {
                                 // insert default values
                                 foreach ($this->preValues as $k => $v) {
-                                    if ($this->doc->getRawValue($k) == "") $this->doc->setValue($k, $v);
+                                    if ($this->doc->getRawValue($k) == "") {
+                                        $this->doc->setValue($k, $v);
+                                    }
                                 }
                                 $err = $this->doc->preImport($extra);
                                 if ($err != "") {
                                     
-                                    if ($err) $this->setError("DOC0106", $this->doc->name, $err);
+                                    if ($err) {
+                                        $this->setError("DOC0106", $this->doc->name, $err);
+                                    }
                                     
                                     return $this;
                                 }
                                 $err = $this->doc->Add();
                                 
-                                if ($err) $this->setError("DOC0108", $this->doc->name, $err);
+                                if ($err) {
+                                    $this->setError("DOC0108", $this->doc->name, $err);
+                                }
                             }
                             if ($err == "") {
                                 $this->tcr["id"] = $this->doc->id;
@@ -429,7 +451,9 @@ class importSingleDocument
                         if (!$this->analyze) {
                             $err = $doc->preImport($extra);
                             if ($err != "") {
-                                if ($err) $this->setError("DOC0109", $this->doc->name, $err);
+                                if ($err) {
+                                    $this->setError("DOC0109", $this->doc->name, $err);
+                                }
                                 
                                 return $this;
                             }
@@ -469,7 +493,9 @@ class importSingleDocument
                             if ($this->doc->id == "") {
                                 // insert default values
                                 foreach ($this->preValues as $k => $v) {
-                                    if ($this->doc->getRawValue($k) == "") $this->doc->setValue($k, $v);
+                                    if ($this->doc->getRawValue($k) == "") {
+                                        $this->doc->setValue($k, $v);
+                                    }
                                 }
                                 $err = $this->doc->Add();
                             }
@@ -487,122 +513,141 @@ class importSingleDocument
                     }
                     
                     break;
-                }
-            } else {
-                // add special id
-                if (!$this->doc->isAffected()) {
-                    $this->tcr["action"] = "added";
-                    if (!$this->analyze) {
-                        // insert default values
-                        foreach ($this->preValues as $k => $v) {
-                            if ($this->doc->getRawValue($k) == "") $this->doc->setValue($k, $v);
+            }
+        } else {
+            // add special id
+            if (!$this->doc->isAffected()) {
+                $this->tcr["action"] = "added";
+                if (!$this->analyze) {
+                    // insert default values
+                    foreach ($this->preValues as $k => $v) {
+                        if ($this->doc->getRawValue($k) == "") {
+                            $this->doc->setValue($k, $v);
                         }
-                        $err = $this->doc->preImport($extra);
-                        if ($err != "") {
-                            $this->setError("DOC0111", $this->doc->name, $err);
-                            return $this;
-                        }
-                        $err = $this->doc->Add();
-                        if ($err != "") {
-                            $this->setError("DOC0111", $this->doc->name, $err);
-                            return $this;
-                        }
-                        $this->tcr["id"] = $this->doc->id;
-                        $msg.= $err . sprintf(_("add %s id [%d]  ") , $this->doc->title, $this->doc->id);
-                        $this->tcr["msg"] = sprintf(_("add %s id [%d]  ") , $this->doc->title, $this->doc->id);
-                    } else {
-                        $this->doc->RefreshTitle();
-                        $this->tcr["id"] = $this->doc->id;
-                        $this->tcr["msg"] = sprintf(_("%s to be add") , $this->doc->title);
                     }
-                }
-            }
-            $this->tcr["title"] = $this->doc->title;
-            if ($this->hasError()) return $this;
-            if (!$this->analyze) {
-                if ($this->doc->isAffected()) {
-                    $this->tcr["specmsg"] = $this->doc->Refresh(); // compute read attribute
-                    $msg.= $this->doc->postStore(); // compute read attribute
-                    $err = $this->doc->modify();
-                    if ($err == "-") $err = ""; // not really an error add addfile must be tested after
-                    if ($err == "") {
-                        $this->doc->addHistoryEntry(sprintf(_("updated by import")));
-                        $msg.= $this->doc->postImport($extra);
-                    } else {
-                        $this->setError("DOC0112", $this->doc->name, $err);
+                    $err = $this->doc->preImport($extra);
+                    if ($err != "") {
+                        $this->setError("DOC0111", $this->doc->name, $err);
+                        return $this;
                     }
-                    
-                    $this->tcr["msg"].= $msg;
+                    $err = $this->doc->Add();
+                    if ($err != "") {
+                        $this->setError("DOC0111", $this->doc->name, $err);
+                        return $this;
+                    }
+                    $this->tcr["id"] = $this->doc->id;
+                    $msg.= $err . sprintf(_("add %s id [%d]  ") , $this->doc->title, $this->doc->id);
+                    $this->tcr["msg"] = sprintf(_("add %s id [%d]  ") , $this->doc->title, $this->doc->id);
+                } else {
+                    $this->doc->RefreshTitle();
+                    $this->tcr["id"] = $this->doc->id;
+                    $this->tcr["msg"] = sprintf(_("%s to be add") , $this->doc->title);
                 }
             }
-            if ($this->hasError()) return $this;
-            //------------------
-            // add in folder
-            if ($this->folderId != "-") {
-                if ($this->folderId) {
-                    $this->addIntoFolder($this->folderId);
-                } elseif ($this->dirid) {
-                    $this->addIntoFolder($this->dirid);
-                }
-            }
-            if ($this->folderIds) {
-                foreach ($this->folderIds as $fid) {
-                    if ($fid) $this->addIntoFolder($fid);
-                }
-            }
-            if ($this->doc->id) clearCacheDoc($this->doc->id); // clear cache to clean unused
+        }
+        $this->tcr["title"] = $this->doc->title;
+        if ($this->hasError()) {
             return $this;
         }
-        public function importHtmltextFiles($matches)
-        {
-            $dvCahnged = $matches[0];
-            $absfile = "$this->importFilePath/$matches[2]";
-            $err = AddVaultFile(getDbAccess() , $absfile, $this->analyze, $vfid);
-            if ($err != "" || $this->analyze) {
-                $this->setError("DOC0102", $err, $matches[2], $this->currentAttrid, $this->doc->name);
-            } else {
-                $fileImgAttrid = "img_file";
-                /**
-                 * @var Doc $imgDoc
-                 */
-                $imgDoc = createDoc(getDbAccess() , "IMAGE");
-                
-                if (is_object($imgDoc)) {
-                    $imgDoc->setAttributeValue($fileImgAttrid, $vfid);
-                    $err = $imgDoc->store();
-                    if ($err) $this->setError("DOC0100", $this->currentAttrid, $err);
-                    else $dvCahnged = $matches[1] . htmlspecialchars($imgDoc->getFileLink($fileImgAttrid)) . $matches[3];
-                }
-            }
-            return $dvCahnged;
-        }
-        /**
-         * insert imported document into a folder
-         * @param string $folderId
-         */
-        protected function addIntoFolder($folderId)
-        {
-            if ($folderId) {
-                /**
-                 * @var $dir Dir
-                 */
-                $dir = new_Doc($this->dbaccess, $folderId);
-                if ($dir->isAlive()) {
-                    $this->tcr["folderid"] = $dir->id;
-                    $this->tcr["foldername"] = dirname($this->importFilePath) . "/" . $dir->title;
-                    if (!$this->analyze) {
-                        if (method_exists($dir, "insertDocument")) {
-                            $err = $dir->insertDocument($this->doc->id);
-                            if (-$err) $this->setError("DOC0200", $this->doc->name, $dir->getTitle() , $err);
-                        } else {
-                            $this->setError("DOC0202", $dir->getTitle() , $dir->fromname, $this->doc->name);
-                        }
-                    }
-                    $this->tcr["msg"].= " " . sprintf(_("and add in %s folder ") , $dir->title);
+        if (!$this->analyze) {
+            if ($this->doc->isAffected()) {
+                $this->tcr["specmsg"] = $this->doc->Refresh(); // compute read attribute
+                $msg.= $this->doc->postStore(); // compute read attribute
+                $err = $this->doc->modify();
+                if ($err == "-") $err = ""; // not really an error add addfile must be tested after
+                if ($err == "") {
+                    $this->doc->addHistoryEntry(sprintf(_("updated by import")));
+                    $msg.= $this->doc->postImport($extra);
                 } else {
-                    $this->setError("DOC0201", $folderId, ($this->doc->name) ? $this->doc->name : $this->doc->getTitle());
+                    $this->setError("DOC0112", $this->doc->name, $err);
                 }
+                
+                $this->tcr["msg"].= $msg;
+            }
+        }
+        if ($this->hasError()) {
+            return $this;
+        }
+        //------------------
+        // add in folder
+        if ($this->folderId != "-") {
+            if ($this->folderId) {
+                $this->addIntoFolder($this->folderId);
+            } elseif ($this->dirid) {
+                $this->addIntoFolder($this->dirid);
+            }
+        }
+        if ($this->folderIds) {
+            foreach ($this->folderIds as $fid) {
+                if ($fid) $this->addIntoFolder($fid);
+            }
+        }
+        if ($this->doc->id) {
+            clearCacheDoc($this->doc->id);
+        } // clear cache to clean unused
+        return $this;
+    }
+    
+    protected function inhibitInvisibleAttributes(Doc $doc)
+    {
+        $oas = $doc->getNormalAttributes();
+        foreach ($oas as $oa) {
+            if ($oa->mvisibility === "I") {
+                $oa->setVisibility("H");
             }
         }
     }
+    
+    public function importHtmltextFiles($matches)
+    {
+        $dvCahnged = $matches[0];
+        $absfile = "$this->importFilePath/$matches[2]";
+        $err = AddVaultFile(getDbAccess() , $absfile, $this->analyze, $vfid);
+        if ($err != "" || $this->analyze) {
+            $this->setError("DOC0102", $err, $matches[2], $this->currentAttrid, $this->doc->name);
+        } else {
+            $fileImgAttrid = "img_file";
+            /**
+             * @var Doc $imgDoc
+             */
+            $imgDoc = createDoc(getDbAccess() , "IMAGE");
+            
+            if (is_object($imgDoc)) {
+                $imgDoc->setAttributeValue($fileImgAttrid, $vfid);
+                $err = $imgDoc->store();
+                if ($err) $this->setError("DOC0100", $this->currentAttrid, $err);
+                else $dvCahnged = $matches[1] . htmlspecialchars($imgDoc->getFileLink($fileImgAttrid)) . $matches[3];
+            }
+        }
+        return $dvCahnged;
+    }
+    /**
+     * insert imported document into a folder
+     * @param string $folderId
+     */
+    protected function addIntoFolder($folderId)
+    {
+        if ($folderId) {
+            /**
+             * @var $dir Dir
+             */
+            $dir = new_Doc($this->dbaccess, $folderId);
+            if ($dir->isAlive()) {
+                $this->tcr["folderid"] = $dir->id;
+                $this->tcr["foldername"] = dirname($this->importFilePath) . "/" . $dir->title;
+                if (!$this->analyze) {
+                    if (method_exists($dir, "insertDocument")) {
+                        $err = $dir->insertDocument($this->doc->id);
+                        if (-$err) $this->setError("DOC0200", $this->doc->name, $dir->getTitle() , $err);
+                    } else {
+                        $this->setError("DOC0202", $dir->getTitle() , $dir->fromname, $this->doc->name);
+                    }
+                }
+                $this->tcr["msg"].= " " . sprintf(_("and add in %s folder ") , $dir->title);
+            } else {
+                $this->setError("DOC0201", $folderId, ($this->doc->name) ? $this->doc->name : $this->doc->getTitle());
+            }
+        }
+    }
+}
 ?>
