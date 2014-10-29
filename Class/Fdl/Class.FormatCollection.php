@@ -29,6 +29,7 @@
  */
 class FormatCollection
 {
+    const noAccessText = "N.C.";
     /**
      * @var DocumentList $dl
      */
@@ -41,6 +42,8 @@ class FormatCollection
     );
     private $fmtAttrs = array();
     private $ncAttribute = '';
+    
+    protected $noAccessText = self::noAccessText;
     /**
      * @var int family icon size in pixel
      */
@@ -65,6 +68,8 @@ class FormatCollection
      * @var bool if true set showempty option in displayValue when value is empty
      */
     public $useShowEmptyOption = true;
+    
+    protected $attributeGrants = array();
     
     private $decimalSeparator = ',';
     
@@ -120,6 +125,15 @@ class FormatCollection
                 $doc
             );
         }
+    }
+    /**
+     * Use when cannot access attribut value
+     * Due to visibility "I"
+     * @param string $noAccessText
+     */
+    public function setNoAccessText($noAccessText)
+    {
+        $this->noAccessText = $noAccessText;
     }
     /**
      * default value returned when attribute not found in document
@@ -387,57 +401,85 @@ class FormatCollection
             return $this->getSingleInfo($oa, $value, $doc);
         }
     }
+    /**
+     * Verify is attribute has visible access
+     * @param \Doc $doc the document to see
+     * @param \BasicAttribute $attribute the attribut to see
+     * @return bool return true if can be viewed
+     */
+    protected function isAttributeAccessGranted(\Doc $doc, \BasicAttribute $attribute)
+    {
+        $key = sprintf("%0d-%0d-%0d-%s", $doc->fromid, $doc->cvid, $doc->wid, $doc->state);
+        
+        if (!isset($this->attributeGrants[$key])) {
+            $doc->setMask(\Doc::USEMASKCVVIEW);
+            $this->attributeGrants[$key] = array();
+            $oas = $doc->getNormalAttributes();
+            foreach ($oas as $oa) {
+                if ($oa->mvisibility === "I") {
+                    $this->attributeGrants[$key][$oa->id] = false;
+                }
+            }
+        }
+        return (!isset($this->attributeGrants[$key][$attribute->id]));
+    }
     
     private function getSingleInfo(NormalAttribute $oa, $value, $doc = null, $index = - 1)
     {
         $info = null;
-        switch ($oa->type) {
-            case 'text':
-                $info = new TextAttributeValue($oa, $value);
-                break;
+        
+        if (!$this->isAttributeAccessGranted($doc, $oa)) {
+            $info = new noAccessAttributeValue($this->noAccessText);
+        } else {
+            
+            switch ($oa->type) {
+                case 'text':
+                    $info = new TextAttributeValue($oa, $value);
+                    break;
 
-            case 'int':
-                $info = new IntAttributeValue($oa, $value);
-                break;
+                case 'int':
+                    $info = new IntAttributeValue($oa, $value);
+                    break;
 
-            case 'money':
-            case 'double':
-                $info = new DoubleAttributeValue($oa, $value, $this->decimalSeparator);
-                break;
+                case 'money':
+                case 'double':
+                    $info = new DoubleAttributeValue($oa, $value, $this->decimalSeparator);
+                    break;
 
-            case 'enum':
-                $info = new EnumAttributeValue($oa, $value);
-                break;
+                case 'enum':
+                    $info = new EnumAttributeValue($oa, $value);
+                    break;
 
-            case 'thesaurus':
-                $info = new ThesaurusAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
-                break;
+                case 'thesaurus':
+                    $info = new ThesaurusAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
+                    break;
 
-            case 'docid':
-            case 'account':
-                $info = new DocidAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
-                break;
+                case 'docid':
+                case 'account':
+                    $info = new DocidAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
+                    break;
 
-            case 'file':
-                $info = new FileAttributeValue($oa, $value, $doc, $index, $this->mimeTypeIconSize);
-                break;
+                case 'file':
+                    $info = new FileAttributeValue($oa, $value, $doc, $index, $this->mimeTypeIconSize);
+                    break;
 
-            case 'image':
-                $info = new ImageAttributeValue($oa, $value, $doc, $index, $this->imageThumbnailSize);
-                break;
+                case 'image':
+                    $info = new ImageAttributeValue($oa, $value, $doc, $index, $this->imageThumbnailSize);
+                    break;
 
-            case 'timestamp':
-            case 'date':
-                $info = new DateAttributeValue($oa, $value, $this->dateStyle);
-                break;
+                case 'timestamp':
+                case 'date':
+                    $info = new DateAttributeValue($oa, $value, $this->dateStyle);
+                    break;
 
-            case 'htmltext':
-                $info = new HtmltextAttributeValue($oa, $value, $this->stripHtmlTag);
-                break;
+                case 'htmltext':
+                    $info = new HtmltextAttributeValue($oa, $value, $this->stripHtmlTag);
+                    break;
 
-            default:
-                $info = new StandardAttributeValue($oa, $value);
-                break;
+                default:
+                    $info = new StandardAttributeValue($oa, $value);
+                    break;
+            }
         }
         return $info;
     }
@@ -486,7 +528,7 @@ class FormatCollection
             if ($attrIsMultiple) {
                 $multiList = array();
                 if (empty($info)) {
-                    $info=array();
+                    $info = array();
                 }
                 foreach ($info as $data) {
                     $multiList[] = $displayDocId ? $data->value : $data->displayValue;
@@ -499,7 +541,7 @@ class FormatCollection
             $rowList = array();
             if ($attrIsMultiple) {
                 if (empty($info)) {
-                    $info=array();
+                    $info = array();
                 }
                 foreach ($info as $multiData) {
                     $multiList = array();
@@ -532,7 +574,7 @@ class StandardAttributeValue
     
     public function __construct(NormalAttribute $oa, $v)
     {
-        $this->value = ($v==='')?null:$v;
+        $this->value = ($v === '') ? null : $v;
         $this->displayValue = $v;
     }
 }
@@ -543,8 +585,19 @@ class UnknowAttributeValue
     
     public function __construct($v)
     {
-        $this->value = ($v==='')?null:$v;
+        $this->value = ($v === '') ? null : $v;
         $this->displayValue = $v;
+    }
+}
+class noAccessAttributeValue
+{
+    public $value;
+    public $displayValue;
+    
+    public function __construct($v)
+    {
+        $this->value = '';
+        $this->displayValue = ($v === '') ? FormatCollection::noAccessText : $v;
     }
 }
 
@@ -562,7 +615,7 @@ class FormatAttributeValue extends StandardAttributeValue
     public function __construct(NormalAttribute $oa, $v)
     {
         
-        $this->value = ($v==='')?null:$v;
+        $this->value = ($v === '') ? null : $v;
         if ($oa->format) $this->displayValue = sprintf($oa->format, $v);
         else $this->displayValue = $v;
     }
@@ -651,7 +704,7 @@ class EnumAttributeValue extends StandardAttributeValue
 {
     public function __construct(NormalAttribute $oa, $v)
     {
-        $this->value = ($v==='')?null:$v;
+        $this->value = ($v === '') ? null : $v;
         if ($v !== null && $v !== '') {
             $this->displayValue = $oa->getEnumLabel($v);
         }
@@ -668,8 +721,8 @@ class FileAttributeValue extends StandardAttributeValue
     public $icon = '';
     public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $iconMimeSize = 24)
     {
-
-        $this->value = ($v==='')?null:$v;
+        
+        $this->value = ($v === '') ? null : $v;
         if ($v) {
             $finfo = $doc->getFileInfo($v);
             if ($finfo) {
@@ -725,7 +778,7 @@ class DocidAttributeValue extends StandardAttributeValue
     public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
         $this->familyRelation = $oa->format;
-        $this->value = ($v==='')?null:$v;
+        $this->value = ($v === '') ? null : $v;
         $this->displayValue = DocTitle::getRelationTitle($v, $oa->getOption("docrev", "latest") == "latest", $doc);
         if ($this->displayValue !== false) {
             if ($v !== '' && $v !== null) {
