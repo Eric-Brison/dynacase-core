@@ -12,19 +12,19 @@ namespace Dcp\Core;
 use \Dcp\AttributeIdentifiers\Report as MyAttributes;
 class Report extends \Dcp\Family\Dsearch
 {
-    /*
-     * @end-method-ignore
-    */
-    var $defaultedit = "FREEDOM:EDITREPORT";
-    var $defaultview = "FREEDOM:VIEWREPORT";
     
-    var $cviews = array(
+    public $defaultedit = "FREEDOM:EDITREPORT";
+    public $defaultview = "FREEDOM:VIEWREPORT";
+    
+    public $cviews = array(
         "FREEDOM:VIEWREPORT",
         "FREEDOM:VIEWMINIREPORT:T"
     );
-    var $eviews = array(
+    public $eviews = array(
         "FREEDOM:EDITREPORT"
     );
+    
+    protected $attributeGrants = array();
     /**
      * public because use in RSS
      *
@@ -279,7 +279,7 @@ class Report extends \Dcp\Family\Dsearch
             "endframe" => (!$isNew) && $soa->type == "frame",
             "endtab" => (!$isNew) && $soa->type == "tab",
             "endarray" => (!$isNew) && $soa->type == "array",
-            "need" => $soa->needed,
+            "need" => isset($soa->needed) && $soa->needed,
             "hidden" => $soa->visibility == 'H',
             "selected" => false,
             "attrname" => $soa->getLabel()
@@ -335,6 +335,10 @@ class Report extends \Dcp\Family\Dsearch
                 }
             }
         }
+        
+        $tcols[] = "cvid";
+        $tcols[] = "wid";
+        $tcols[] = "state";
         $this->lay->setBlockData("COLS", $tcolumn2);
         $this->lay->set("HASCOLS", count($tcolumn2) > 0);
         include_once ("FDL/Lib.Dir.php");
@@ -412,6 +416,7 @@ class Report extends \Dcp\Family\Dsearch
                     "cellval" => ""
                 );
                 else {
+                    $visible = true;
                     switch ($kc) {
                         case "revdate":
                             // $cval= (date("Y-m-d H:i:s", $rdoc->getRawValue($kc)));
@@ -438,15 +443,25 @@ class Report extends \Dcp\Family\Dsearch
                             } else {
                                 $cval = $rdoc->getPropertyValue($kc);
                                 if ($cval === false) {
+                                    $visible = $this->isAttributeAccessGranted($rdoc, $lattr[$kc]);
                                     $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getRawValue($kc) , $target, $ulink);
                                 }
                             }
-                            if (isset($lattr[$kc]) && $lattr[$kc]->type == "image") $cval = "<img width=\"40px\" src=\"$cval\">";
-                        }
+                            if (isset($lattr[$kc]) && $lattr[$kc]->type == "image") {
+                                $cval = "<img width=\"40px\" src=\"$cval\">";
+                            }
+                    }
+                    if ($visible) {
                         $tcell[$ki] = array(
                             "cellval" => $cval,
                             "rawval" => $rdoc->getRawValue($kc)
                         );
+                    } else {
+                        $tcell[$ki] = array(
+                            "cellval" => \FormatCollection::noAccessText,
+                            "rawval" => ""
+                        );
+                    }
                 }
                 $tcell[$ki]["bgcell"] = current($tcolor);
                 next($tcolor);
@@ -503,6 +518,29 @@ class Report extends \Dcp\Family\Dsearch
             return $err;
     }
     /**
+     * Verify is attribute has visible access
+     * @param \Doc $doc the document to see
+     * @param \BasicAttribute $attribute the attribut to see
+     * @return bool return true if can be viewed
+     */
+    protected function isAttributeAccessGranted(\Doc $doc, \BasicAttribute $attribute)
+    {
+        
+        $key = sprintf("%0d-%0d-%0d-%s", $doc->fromid, $doc->cvid, $doc->wid, $doc->state);
+        
+        if (!isset($this->attributeGrants[$key])) {
+            $doc->setMask(\Doc::USEMASKCVVIEW);
+            $this->attributeGrants[$key] = array();
+            $oas = $doc->getNormalAttributes();
+            foreach ($oas as $oa) {
+                if ($oa->mvisibility === "I") {
+                    $this->attributeGrants[$key][$oa->id] = false;
+                }
+            }
+        }
+        return (!isset($this->attributeGrants[$key][$attribute->id]));
+    }
+    /**
      * Generate data struct to csv export of a report
      *
      * @param boolean $refresh true to refresh the doc before export
@@ -531,8 +569,10 @@ class Report extends \Dcp\Family\Dsearch
         $famDoc = createDoc($this->dbaccess, $famId, false);
         $tcols = $this->getMultipleRawValues("rep_idcols");
         $tcolsOption = $this->getMultipleRawValues("rep_displayoption");
-        
-        $search->returnsOnly($tcols);
+        $searchCols = $tcols;
+        $searchCols[] = "cvid";
+        $searchCols[] = "wid";
+        $search->returnsOnly($searchCols);
         
         if ($isPivotExport) {
             $search->search();
@@ -728,7 +768,6 @@ class Report extends \Dcp\Family\Dsearch
             $line = array();
             foreach ($columns as $kc => $col) {
                 $cellValue = '';
-                $dDocid = ($displayOptions[$kc] == "docid");
                 if (isset($render["attributes"][$col])) {
                     $cellValue = \FormatCollection::getDisplayValue($render["attributes"][$col], $famDoc->getAttribute($col) , -1, array(
                         'displayDocId' => ($displayOptions[$kc] == "docid") ,
