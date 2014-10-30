@@ -439,6 +439,7 @@ class Report extends \Dcp\Family\Dsearch
 
                         default:
                             if ($tDisplayOption[$ki] == "docid") {
+                                $visible = $this->isAttributeAccessGranted($rdoc, $lattr[$kc]);
                                 $cval = $rdoc->getRawValue($kc);
                             } else {
                                 $cval = $rdoc->getPropertyValue($kc);
@@ -458,7 +459,7 @@ class Report extends \Dcp\Family\Dsearch
                         );
                     } else {
                         $tcell[$ki] = array(
-                            "cellval" => \FormatCollection::noAccessText,
+                            "cellval" => $this->getFamilyParameterValue(MyAttributes::rep_noaccesstext) ,
                             "rawval" => ""
                         );
                     }
@@ -717,6 +718,11 @@ class Report extends \Dcp\Family\Dsearch
         $fc = new \FormatCollection();
         $dl = $search->getDocumentList();
         $fc->useCollection($dl);
+        
+        $htmlNoAccess = new \DOMDocument();
+        $htmlNoAccess->loadHTML($this->getFamilyParameterValue(MyAttributes::rep_noaccesstext));
+        
+        $fc->setNoAccessText(trim($htmlNoAccess->textContent));
         if ($separator) $fc->setDecimalSeparator($separator);
         $fc->relationIconSize = 0;
         $fc->stripHtmlTags($stripHtmlFormat);
