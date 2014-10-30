@@ -117,6 +117,8 @@ class FormatCollection
      * creation date
      */
     const cdate = "cdate";
+    
+    private $singleDocument = false;
     public function __construct($doc = null)
     {
         $this->propsKeys = array_keys(Doc::$infofields);
@@ -124,6 +126,7 @@ class FormatCollection
             $this->dl = array(
                 $doc
             );
+            $this->singleDocument = true;
         }
     }
     /**
@@ -411,7 +414,7 @@ class FormatCollection
     {
         $key = sprintf("%0d-%0d-%0d-%s", $doc->fromid, $doc->cvid, $doc->wid, $doc->state);
         
-        if (!isset($this->attributeGrants[$key])) {
+        if (!$this->singleDocument && !isset($this->attributeGrants[$key])) {
             $doc->setMask(\Doc::USEMASKCVVIEW);
             $this->attributeGrants[$key] = array();
             $oas = $doc->getNormalAttributes();
@@ -515,12 +518,15 @@ class FormatCollection
         $attrIsMultiple = ($oAttr->getOption('multiple') == 'yes');
         $sepRow = isset($configuration['multipleSeparator'][0]) ? $configuration['multipleSeparator'][0] : "\n";
         $sepMulti = isset($configuration['multipleSeparator'][1]) ? $configuration['multipleSeparator'][1] : ", ";
-        $displayDocId = (isset($configuration['displayDocId']) && $configuration['displayDocId'] === true);
+        $displayDocId = (isset($configuration['displayDocId']) && $configuration['displayDocId'] === true) && (!isset($info->visible));
         
         if (is_array($info) && $index >= 0) {
             $info = array(
                 $info[$index]
             );
+        }
+        if ($displayDocId && is_array($info) && count($info) > 0) {
+            $displayDocId = (!isset($info[0]->visible));
         }
         
         $result = '';
@@ -589,15 +595,13 @@ class UnknowAttributeValue
         $this->displayValue = $v;
     }
 }
-class noAccessAttributeValue
+class noAccessAttributeValue extends StandardAttributeValue
 {
-    public $value;
-    public $displayValue;
-    
+    public $visible = true;
     public function __construct($v)
     {
         $this->value = '';
-        $this->displayValue = ($v === '') ? FormatCollection::noAccessText : $v;
+        $this->displayValue = $v;
     }
 }
 
