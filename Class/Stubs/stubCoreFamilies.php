@@ -48,7 +48,7 @@ namespace Dcp\Family {
 	class Wdoc extends \WDoc { const familyName="WDOC";}
 	/** masque de saisie  */
 	class Mask extends \Dcp\Core\Mask { const familyName="MASK";}
-	/** contrôle de vues  */
+	/** Contrôle de vues  */
 	class Cvdoc extends \CVDoc { const familyName="CVDOC";}
 	/** état libre  */
 	class Freestate extends Document { const familyName="FREESTATE";}
@@ -657,6 +657,8 @@ namespace Dcp\AttributeIdentifiers {
 		const rep_imp='rep_imp';
 		/** [frame] Paramètres */
 		const rep_fr_param='rep_fr_param';
+		/** [text] Texte à afficher pour les valeurs protégées */
+		const rep_noaccesstext='rep_noaccesstext';
 		/** [int] Limite d'affichage pour le nombre de rangées */
 		const rep_maxdisplaylimit='rep_maxdisplaylimit';
 	}
@@ -702,7 +704,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [text] obligatoire */
 		const msk_needeeds='msk_needeeds';
 	}
-	/** contrôle de vues  */
+	/** Contrôle de vues  */
 	class Cvdoc extends Base {
 		/** [longtext] description */
 		const cv_desc='cv_desc';
@@ -712,23 +714,23 @@ namespace Dcp\AttributeIdentifiers {
 		const cv_fam='cv_fam';
 		/** [array] vues */
 		const cv_t_views='cv_t_views';
-		/** [text] id vues */
+		/** [text] Identifiant de la vue */
 		const cv_idview='cv_idview';
-		/** [text] label */
+		/** [text] Label */
 		const cv_lview='cv_lview';
-		/** [enum] type */
+		/** [enum] Type */
 		const cv_kview='cv_kview';
-		/** [text] zone */
+		/** [text] Zone (Layout) */
 		const cv_zview='cv_zview';
-		/** [docid] id masque */
+		/** [docid("MASK")] Masque */
 		const cv_mskid='cv_mskid';
-		/** [text] masque */
+		/** [text] Masque(titre) */
 		const cv_msk='cv_msk';
-		/** [int] ordre */
+		/** [int] Ordre de sélection */
 		const cv_order='cv_order';
-		/** [enum] affichable */
+		/** [enum] Affichable */
 		const cv_displayed='cv_displayed';
-		/** [text] menu */
+		/** [text] Menu */
 		const cv_menu='cv_menu';
 		/** [frame] vues par défauts */
 		const cv_fr_default='cv_fr_default';
@@ -738,9 +740,9 @@ namespace Dcp\AttributeIdentifiers {
 		const cv_lcview='cv_lcview';
 		/** [frame] profil dynamique */
 		const dpdoc_fr_dyn='dpdoc_fr_dyn';
-		/** [docid] family id */
+		/** [docid("-1")] Famille pour le profil */
 		const dpdoc_famid='dpdoc_famid';
-		/** [text] famille */
+		/** [text] Famille pour le profil (titre) */
 		const dpdoc_fam='dpdoc_fam';
 	}
 	/** état libre  */
@@ -885,13 +887,13 @@ namespace Dcp\AttributeIdentifiers {
 		const pfl_savedispo='pfl_savedispo';
 		/** [array] Onglets à lier (dynamique) */
 		const pfl_t_linktab='pfl_t_linktab';
-		/** [docid] id onglet à lier */
+		/** [docid("DIR")] id onglet à lier */
 		const pfl_idlinktab='pfl_idlinktab';
 		/** [text] onglet à lier */
 		const pfl_linktab='pfl_linktab';
 		/** [array] Onglets à copier pour les nouveaux documents */
 		const pfl_t_copytab='pfl_t_copytab';
-		/** [docid] id onglet à copier */
+		/** [docid("DIR")] id onglet à copier */
 		const pfl_idcopytab='pfl_idcopytab';
 		/** [text] onglet à copier */
 		const pfl_copytab='pfl_copytab';
@@ -912,7 +914,7 @@ namespace Dcp\AttributeIdentifiers {
 		const batch_title='batch_title';
 		/** [longtext] description */
 		const batch_desc='batch_desc';
-		/** [docid] id famille */
+		/** [docid("FAMILY")] id famille */
 		const batch_idfam='batch_idfam';
 		/** [text] famille */
 		const batch_fam='batch_fam';
