@@ -393,6 +393,7 @@ class FormatCollection
                 if ($oa->inArray() && count($tv) == 1 && $tv[0] == "\t") {
                     $tv[0] = '';
                 }
+                
                 foreach ($tv as $k => $av) {
                     $info[] = $this->getSingleInfo($oa, $av, $doc, $k);
                 }
@@ -412,6 +413,7 @@ class FormatCollection
      */
     protected function isAttributeAccessGranted(\Doc $doc, \BasicAttribute $attribute)
     {
+        //$mb0=microtime(true);
         $key = sprintf("%0d-%0d-%0d-%s", $doc->fromid, $doc->cvid, $doc->wid, $doc->state);
         
         if (!$this->singleDocument && !isset($this->attributeGrants[$key])) {
@@ -423,7 +425,10 @@ class FormatCollection
                     $this->attributeGrants[$key][$oa->id] = false;
                 }
             }
+            //$this->debug["mask"][]=microtime(true)-$mb0;
+            
         }
+        //$this->debug["grant"][]=microtime(true)-$mb0;
         return (!isset($this->attributeGrants[$key][$attribute->id]));
     }
     
@@ -438,6 +443,10 @@ class FormatCollection
             switch ($oa->type) {
                 case 'text':
                     $info = new TextAttributeValue($oa, $value);
+                    break;
+
+                case 'longtext':
+                    $info = new LongtextAttributeValue($oa, $value);
                     break;
 
                 case 'int':
@@ -627,6 +636,17 @@ class FormatAttributeValue extends StandardAttributeValue
 
 class TextAttributeValue extends FormatAttributeValue
 {
+}
+
+class LongtextAttributeValue extends FormatAttributeValue
+{
+    public function __construct(NormalAttribute $oa, $v)
+    {
+        if ($oa->inArray()) {
+            $v = str_replace("<BR>", "\n", $v);
+        }
+        parent::__construct($oa, $v);
+    }
 }
 
 class IntAttributeValue extends FormatAttributeValue

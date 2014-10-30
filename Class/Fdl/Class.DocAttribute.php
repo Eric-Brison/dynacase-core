@@ -180,9 +180,6 @@ class BasicAttribute
      */
     function inArray()
     {
-        if (get_class($this) == "NormalAttribute") {
-            if ($this->fieldSet && $this->fieldSet->type == "array") return true;
-        }
         return false;
     }
     /**
@@ -845,6 +842,15 @@ class NormalAttribute extends BasicAttribute
         return \FormatCollection::getDisplayValue($info, $this, $index, $configuration);
     }
     /**
+     * to see if an attribute is n item of an array
+     *
+     * @return boolean
+     */
+    function inArray()
+    {
+        return ($this->fieldSet && $this->fieldSet->type === "array");
+    }
+    /**
      * Return array of enumeration definition
      * the array's keys are the enum key and the values are the labels
      *
@@ -1042,7 +1048,7 @@ class NormalAttribute extends BasicAttribute
                 }
                 return $tv;
             } else {
-                return (array_key_exists($enumid,$cached)) ? $cached[$enumid] : $enumid;
+                return (array_key_exists($enumid, $cached)) ? $cached[$enumid] : $enumid;
             }
         }
         
