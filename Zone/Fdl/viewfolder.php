@@ -332,6 +332,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
             //                 COLUMN MODE
             // ----------------------------------------------------------
             if ($column) {
+                $doc->setMask(Doc::USEMASKCVVIEW);
                 $adoc = $doc->getFamilyDocument();
                 /* Check if the family header has already been generated */
                 $famdocAlreadyExists = false;
@@ -377,7 +378,10 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
                 } else {
                     foreach ($lattr[$doc->fromid] as $ka => $attr) {
                         //$tvalues[]=$doc->getRawValue($attr->id,"-");
-                        if ($attr->type == "image") $tvalues[] = '<img src="' . $doc->getHtmlValue($attr, $doc->getRawValue($attr->id, "-") , $target) . '&height=30"  height="30">';
+                        $dAttr = $doc->getAttribute($attr->id);
+                        if ($dAttr->mvisibility === "I") {
+                            $tvalues[] = FormatCollection::noAccessText;
+                        } elseif ($attr->type == "image") $tvalues[] = '<img src="' . $doc->getHtmlValue($attr, $doc->getRawValue($attr->id, "-") , $target) . '&height=30"  height="30">';
                         else $tvalues[] = ($doc->getRawValue($attr->id) ? $doc->getHtmlValue($attr, $doc->getRawValue($attr->id) , $target) : '-');
                     }
                 }
@@ -386,7 +390,6 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
             
             $k++;
         }
-        
         if ($hasNext) {
             //"delete last"
             array_pop($tdoc);
