@@ -39,7 +39,6 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         
-        $mb = microtime(true);
         $fc = new \FormatCollection();
         $fc->useCollection($dl);
         $fc->relationNoAccessText = 'no grant';

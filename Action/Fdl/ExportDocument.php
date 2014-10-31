@@ -135,11 +135,24 @@ class ExportDocument
         }
         // write values
         foreach ($this->lattr as $ka => $attr) {
-            if ($eformat == 'F') $value = str_replace(array(
-                '<BR>',
-                '<br/>'
-            ) , '\\n', $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
-            else $value = $doc->getRawValue($attr->id);
+            if ($eformat == 'F') {
+                if ($this->csvEnclosure) {
+                    $value = str_replace(array(
+                        '<BR>',
+                        '<br/>'
+                    ) , array(
+                        "\n",
+                        "\\n"
+                    ) , $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
+                } else {
+                    $value = str_replace(array(
+                        '<BR>',
+                        '<br/>'
+                    ) , '\\n', $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
+                }
+            } else {
+                $value = $doc->getRawValue($attr->id);
+            }
             // invert HTML entities
             if (($attr->type == "image") || ($attr->type == "file")) {
                 $tfiles = $doc->vault_properties($attr);

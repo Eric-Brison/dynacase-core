@@ -839,6 +839,9 @@ class NormalAttribute extends BasicAttribute
             $fc->setDateStyle(\DateAttributeValue::defaultStyle);
         }
         $info = $fc->getInfo($this, $value, $doc);
+        if (empty($info)) {
+            return '';
+        }
         return \FormatCollection::getDisplayValue($info, $this, $index, $configuration);
     }
     /**
