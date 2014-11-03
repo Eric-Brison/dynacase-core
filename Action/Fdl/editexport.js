@@ -120,7 +120,9 @@ $(document).ready(function () {
             $('.csv--option').attr("disabled","disabled");
         } else {
             $('.csv--option').removeAttr("disabled");
-
+            $("select[name=csv-enclosure]").trigger("change");
         }
     });
+
+    $("select[name=csv-enclosure]").trigger("change");
 });
