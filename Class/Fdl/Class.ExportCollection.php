@@ -18,8 +18,8 @@ class ExportCollection
     protected $exportDocumentNumericIdentiers = false;
     
     const utf8Encoding = "utf-8";
-    const latinEncding = "iso8859-15";
-    protected $outputFileEncding = self::utf8Encoding;
+    const latinEncoding = "iso8859-15";
+    protected $outputFileEncoding = self::utf8Encoding;
     
     protected $useUserColumnParameter = false;
     
@@ -35,6 +35,10 @@ class ExportCollection
     protected $cvsEnclosure = "";
     
     protected $outputFilePath = '';
+    /**
+     * @var string status use to show progress
+     */
+    protected $exportStatusId = '';
     /**
      * @var \DocCollection $collectionDocument
      */
@@ -65,6 +69,13 @@ class ExportCollection
     public function setOutputFilePath($outputFilePath)
     {
         $this->outputFilePath = $outputFilePath;
+    }
+    /**
+     * @param string $exportStatusId
+     */
+    public function setExportStatusId($exportStatusId)
+    {
+        $this->exportStatusId = $exportStatusId;
     }
     /**
      * @return string
@@ -105,9 +116,9 @@ class ExportCollection
     /**
      * @param string $outputFileEncding
      */
-    public function setOutputFileEncding($outputFileEncding)
+    public function setOutputFileEncoding($outputFileEncding)
     {
-        $this->outputFileEncding = $outputFileEncding;
+        $this->outputFileEncoding = $outputFileEncding;
     }
     /**
      * Indicate file output format :
@@ -140,7 +151,7 @@ class ExportCollection
         if (empty($this->outputFilePath)) {
             throw new Exception("EXPC0002");
         }
-        if (!is_writable($this->outputFilePath)) {
+        if (file_exists($this->outputFilePath) && !is_writable($this->outputFilePath)) {
             throw new Exception("EXPC0003", $this->outputFilePath);
         }
         if ($this->documentList === null) {
@@ -172,14 +183,211 @@ class ExportCollection
         $exportDoc = new \Dcp\ExportDocument();
         $exportDoc->setCsvEnclosure($this->cvsEnclosure);
         $exportDoc->setCsvSeparator($this->cvsSeparator);
-        $fout = fopen($this->outputFilePath, "w");
-        if (!$fout) {
-            throw new Exception("EXPC0005", $this->outputFilePath);
+        $outDir = '';
+        if ($this->exportFiles) {
+            $outDir = tempnam(getTmpDir() , 'exportFolder');
+            if (is_file($outDir)) {
+                unlink($outDir);
+            }
+            mkdir($outDir);
+            $fdlcsv = $outDir . "/fdl.csv";
+            $outHandler = fopen($fdlcsv, "w");
+            if (!$outHandler) {
+                throw new Exception("EXPC0012", $fdlcsv);
+            }
+        } else {
+            $outHandler = fopen($this->outputFilePath, "w");
+            if (!$outHandler) {
+                throw new Exception("EXPC0005", $this->outputFilePath);
+            }
         }
+        
+        $c = 0;
+        $rc = count($dl);
+        if ($this->exportProfil) {
+            foreach ($dl as $doc) {
+                $this->recordStatus(sprintf(_("Record documents %d/%d") , $c, $rc));
+                if ($doc->doctype === "C") {
+                    $c++;
+                    if ($c % 20 == 0) {
+                        $this->csvFamilyExport($doc);
+                    }
+                }
+            }
+        }
+        $fileInfos = array();
         foreach ($dl as $doc) {
-            $exportDoc->cvsExport($doc, $ef, $fout, $this->exportProfil, $this->exportFiles, $this->exportDocumentNumericIdentiers, ($this->outputFileEncding === self::utf8Encoding) , $this->useUserColumnParameter, $this->outputFormat);
+            
+            if ($doc->doctype !== "C") {
+                $c++;
+                if ($c % 20 == 0) {
+                    
+                    $this->recordStatus(sprintf(_("Record documents %d/%d") , $c, $rc));
+                }
+                $exportDoc->csvExport($doc, $fileInfos, $outHandler, $this->exportProfil, $this->exportFiles, $this->exportDocumentNumericIdentiers, ($this->outputFileEncoding === self::utf8Encoding) , $this->useUserColumnParameter, $this->outputFormat);
+            }
         }
-        fclose($fout);
+        fclose($outHandler);
+        
+        if ($this->exportFiles) {
+            $this->zipFiles($outDir, $fileInfos);
+        }
+    }
+    
+    public function recordStatus($msg, $endStatus = false)
+    {
+        if ($this->exportStatusId) {
+            global $action;
+            $action->register($this->exportStatusId, array(
+                "status" => $msg,
+                "end" => $endStatus
+            ));
+        }
+    }
+    /**
+     * @param \DocFam $doc
+     * @TODO
+     */
+    protected function csvFamilyExport(\DocFam $doc)
+    {
+        
+        $wname = "";
+        $cvname = "";
+        $cpname = "";
+        $fpname = "";
+        
+        if ($wprof) {
+            if ($doc->profid != $doc->id) {
+                $fp = getTDoc($dbaccess, $doc->profid);
+                $tmoredoc[$fp["id"]] = $fp;
+                if ($fp["name"] != "") $fpname = $fp["name"];
+                else $fpname = $fp["id"];
+            } else {
+                exportProfil($fout, $dbaccess, $doc->profid);
+            }
+            if ($doc->cprofid) {
+                $cp = getTDoc($dbaccess, $doc->cprofid);
+                if ($cp["name"] != "") $cpname = $cp["name"];
+                else $cpname = $cp["id"];
+                $tmoredoc[$cp["id"]] = $cp;
+            }
+            if ($doc->ccvid > 0) {
+                $cv = getTDoc($dbaccess, $doc->ccvid);
+                if ($cv["name"] != "") $cvname = $cv["name"];
+                else $cvname = $cv["id"];
+                $tmskid = $doc->rawValueToArray($cv["cv_mskid"]);
+                
+                foreach ($tmskid as $kmsk => $imsk) {
+                    if ($imsk != "") {
+                        $msk = getTDoc($dbaccess, $imsk);
+                        if ($msk) $tmoredoc[$msk["id"]] = $msk;
+                    }
+                }
+                
+                $tmoredoc[$cv["id"]] = $cv;
+            }
+            
+            if ($doc->wid > 0) {
+                $wdoc = new_doc($dbaccess, $doc->wid);
+                if ($wdoc->name != "") $wname = $wdoc->name;
+                else $wname = $wdoc->id;
+                $tattr = $wdoc->getAttributes();
+                foreach ($tattr as $ka => $oa) {
+                    if ($oa->type == "docid") {
+                        $tdid = $wdoc->getMultipleRawValues($ka);
+                        foreach ($tdid as $did) {
+                            if ($did != "") {
+                                $m = getTDoc($dbaccess, $did);
+                                if ($m) {
+                                    $tmoredoc[$m["id"]] = $m;
+                                    if (!empty($m["cv_mskid"])) {
+                                        $tmskid = $doc->rawValueToArray($m["cv_mskid"]);
+                                        foreach ($tmskid as $kmsk => $imsk) {
+                                            if ($imsk != "") {
+                                                $msk = getTDoc($dbaccess, $imsk);
+                                                if ($msk) $tmoredoc[$msk["id"]] = $msk;
+                                            }
+                                        }
+                                    }
+                                    if (!empty($m["tm_tmail"])) {
+                                        $tmskid = $doc->rawValueToArray(str_replace('<BR>', "\n", $m["tm_tmail"]));
+                                        foreach ($tmskid as $kmsk => $imsk) {
+                                            if ($imsk != "") {
+                                                $msk = getTDoc($dbaccess, $imsk);
+                                                if ($msk) $tmoredoc[$msk["id"]] = $msk;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                $tmoredoc[$doc->wid] = getTDoc($dbaccess, $doc->wid);
+            }
+            if ($cvname || $wname || $cpname || $fpname) {
+                $famData[] = array(
+                    "BEGIN",
+                    "",
+                    "",
+                    "",
+                    "",
+                    $doc->name
+                );
+                
+                if ($fpname) {
+                    $famData[] = array(
+                        "PROFID",
+                        $fpname
+                    );
+                }
+                if ($cvname) {
+                    $famData[] = array(
+                        "CVID",
+                        $cvname
+                    );
+                }
+                if ($wname) {
+                    $famData[] = array(
+                        "WID",
+                        $wname
+                    );
+                }
+                if ($doc->cprofid) {
+                    $famData[] = array(
+                        "CPROFID",
+                        $cpname
+                    );
+                }
+                $famData[] = array(
+                    "END"
+                );
+            }
+        }
+    }
+    protected function zipFiles($directory, array $infos)
+    {
+        // Copy file from vault
+        foreach ($infos as $info) {
+            $source = $info["path"];
+            $ddir = $directory . '/' . $info["ldir"];
+            if (!is_dir($ddir)) mkdir($ddir);
+            $dest = $ddir . '/' . $info["fname"];
+            if (!copy($source, $dest)) {
+                throw new Exception("EXPC0014", $source, $dest);
+            }
+        }
+        
+        $zipfile = $this->outputFilePath . ".zip";
+        $cmd = sprintf("cd %s && zip -r %s -- * > /dev/null && mv %s %s", escapeshellarg($directory) , escapeshellarg($zipfile) , escapeshellarg($zipfile) , escapeshellarg($this->outputFilePath));
+        system($cmd, $ret);
+        if (is_file($this->outputFilePath)) {
+            // @TODO
+            //recordStatus($action, $exportId, _("Export done") , true);
+            
+        } else {
+            throw new Exception("EXPC0012", $this->outputFilePath);
+        }
     }
     protected function exportCollectionXml()
     {

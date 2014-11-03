@@ -125,17 +125,18 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
         return;
     }
     setMaxExecutionTimeTo(3600);
-    if ($eformat == "X") {
-        // XML redirect
-        include_once ("FDL/exportxmlfld.php");
-        exportxmlfld($action, $aflid, $famid);
-    }
+    $exportCollection = new Dcp\ExportCollection();
+    $exportCollection->setExportStatusId($exportId);
+    $exportCollection->setOutputFormat($eformat);
+    $exportCollection->setOutputFileEncoding($wutf8 ? Dcp\ExportCollection::utf8Encoding : Dcp\ExportCollection::latinEncoding);
+    
     if ((!$fldid) && $selection) {
         $selection = json_decode($selection);
         include_once ("DATA/Class.DocumentSelection.php");
         include_once ("FDL/Class.SearchDoc.php");
         $os = new Fdl_DocumentSelection($selection);
         $ids = $os->getIdentificators();
+        $exportCollection->recordStatus(_("Retrieve documents from database"));
         $s = new SearchDoc($dbaccess);
         $s->setObjectReturn(true);
         $s->addFilter(getSqlCond($ids, "id", true));
@@ -153,9 +154,9 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
         ) , array(
             "_",
             ""
-        ) , $fld->title);
+        ) , $fld->getTitle());
         
-        recordStatus($action, $exportId, _("Retrieve documents from database"));
+        $exportCollection->recordStatus(_("Retrieve documents from database"));
         
         $s = new SearchDoc($dbaccess, $famid);
         $s->setObjectReturn(true);
@@ -163,32 +164,63 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
         $s->useCollection($fld->initid);
         $s->search();
     }
+    
+    $exportCollection->setDocumentlist($s->getDocumentList());
+    $exportCollection->setExportFiles($wfile);
     //usort($tdoc, "orderbyfromid");
     $foutdir = '';
-    if ($wfile) {
-        if ($outputPath) $foutdir = $outputPath;
-        else $foutdir = uniqid(getTmpDir() . "/exportfld");
-        if (!mkdir($foutdir)) exit();
-        
-        $foutname = $foutdir . "/fdl.csv";
+    if ($outputPath) {
+        $foutname = $outputPath;
     } else {
-        if (!$outputPath) {
-            $foutname = uniqid(getTmpDir() . "/exportfld") . ".csv";
+        if ($wfile) {
+            $foutname = uniqid(getTmpDir() . "/exportfld") . ".zip";
         } else {
-            if (file_exists($outputPath)) {
-                $action->exitError(sprintf("export is not allowed to override existing file %s") , $outputPath);
+            if ($eformat == Dcp\ExportCollection::xmlFileOutputFormat) {
+                $foutname = uniqid(getTmpDir() . "/exportfld") . ".xml";
+            } else {
+                $foutname = uniqid(getTmpDir() . "/exportfld") . ".csv";
             }
-            $foutname = $outputPath;
         }
     }
     
-    $fout = fopen($foutname, "w");
-    if (!$fout) {
-        $action->exitError(sprintf("Cannot create output file '%s' for export") , $foutname);
+    if (file_exists($foutname)) {
+        $action->exitError(sprintf("export is not allowed to override existing file %s") , $outputPath);
     }
     
+    $exportCollection->setOutputFilePath($foutname);
+    $exportCollection->setCvsSeparator($csvSeparator);
+    $exportCollection->setCvsEnclosure($csvEnclosure);
     $action->setParamU("EXPORT_CSVSEPARATOR", $csvSeparator);
     $action->setParamU("EXPORT_CSVENCLOSURE", $csvEnclosure);
+    
+    try {
+        $exportCollection->export();
+        if (is_file($foutname)) {
+            switch ($eformat) {
+                case Dcp\ExportCollection::xmlFileOutputFormat:
+                    $fname.= ".xml";
+                    $fileMime = "text/xml";
+                    break;
+
+                default:
+                    if ($wfile) {
+                        
+                        $fname.= ".zip";
+                        $fileMime = "application/x-zip";
+                    } else {
+                        $fname.= ".csv";
+                        $fileMime = "text/csv";
+                    }
+            }
+            $exportCollection->recordStatus(_("Export done") , true);
+            Http_DownloadFile($foutname, $fname, $fileMime, false, false);
+        }
+    }
+    catch(Dcp\Exception $e) {
+        throw $e;
+    }
+    
+    return;
     // set encoding
     \Dcp\WriteCsv::$enclosure = $csvEnclosure;
     \Dcp\WriteCsv::$separator = $csvSeparator;
@@ -337,13 +369,13 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
                 recordStatus($action, $exportId, sprintf(_("Record documents %d/%d") , $c, $rc));
             }
             if ($doc->doctype != "C") {
-                $exportDoc->cvsExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
+                $exportDoc->csvExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
             }
         }
         $more = new DocumentList();
         $more->addDocumentIdentifiers(array_keys($tmoredoc));
         foreach ($more as $doc) {
-            $exportDoc->cvsExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
+            $exportDoc->csvExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
         }
         foreach ($famData as $aRow) {
             \Dcp\WriteCsv::fput($fout, $aRow);
@@ -390,7 +422,14 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
         exit;
     }
 }
-
+/**
+ * @param Action $action
+ * @param $exportId
+ * @param $msg
+ * @param bool $endStatus
+ * @see Dcp\ExportCollection::recordStatus()
+ * @deprecated use Dcp\ExportCollection::recordStatus() instead
+ */
 function recordStatus(Action & $action, $exportId, $msg, $endStatus = false)
 {
     $action->register($exportId, array(
@@ -412,6 +451,7 @@ function orderbyfromid($a, $b)
  *
  * @param string $dirname the directory name to remove
  * @return boolean True/False whether the directory was deleted.
+ * @deprecated To delete (not used)
  */
 function deleteContentDirectory($dirname)
 {
@@ -433,6 +473,12 @@ function deleteContentDirectory($dirname)
     
     return true;
 }
+/**
+ * @param $fout
+ * @param $dbaccess
+ * @param $docid
+ * @deprecated To delete
+ */
 function exportProfil($fout, $dbaccess, $docid)
 {
     if (!$docid) return;
@@ -510,7 +556,12 @@ function exportProfil($fout, $dbaccess, $docid)
         
     }
 }
-
+/**
+ * @param $dbaccess
+ * @param $uid
+ * @return mixed
+ * @deprecated To delete
+ */
 function getUserLogicName($dbaccess, $uid)
 {
     $u = new Account("", $uid);

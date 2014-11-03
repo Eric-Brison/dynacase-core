@@ -72,4 +72,14 @@ class ErrorCodeEXPC
      * @see Dcp\ExportCollection::export
      */
     const EXPC0012 = 'EXPORT : Xml archive "%s" cannot be created';
+    /**
+     * @errorCode When use csv with file option
+     * @see Dcp\ExportCollection::setOutputFilePath
+     */
+    const EXPC0013 = 'EXPORT : Work output file "%s" cannot be opened in write mode';
+    /**
+     * @errorCode When use csv with file option
+     * @see Dcp\ExportCollection::setOutputFilePath
+     */
+    const EXPC0014 = 'EXPORT : Extract vault file : Caonot copy "%s" to "%s"';
 }
