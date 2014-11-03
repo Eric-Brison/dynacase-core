@@ -17,7 +17,7 @@ class ExportCollection extends TestCaseDcpCommonFamily
         );
     }
     
-    protected $famName = "TST_EXPCOLL1";
+    protected $famName = "tst_expcoll1";
     /**
      * @param $separator
      * @param $enclosure
@@ -56,7 +56,9 @@ class ExportCollection extends TestCaseDcpCommonFamily
             }
         }
     }
+
     /**
+     * @param $format
      * @param $separator
      * @param $enclosure
      * @param array $expectedData
@@ -116,13 +118,63 @@ class ExportCollection extends TestCaseDcpCommonFamily
         
         $this->assertTrue(filesize($outFile) > 0, sprintf("\"%s\" file not produced", $outFile));
         
-        print_r($outFile);
-        
         $dom = new \DOMDocument();
         $dom->load($outFile);
         
         $this->XPathTesting($dom, $expectedData);
     }
+    /**
+     * @dataProvider dataExportXmlArchive
+     */
+    public function testExportXmlArchive($file, array $xmlPathes)
+    {
+        $outFile = tempnam(getTmpDir() , 'tstexport');
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s->setObjectReturn();
+        $s->search();
+        
+        $this->assertEmpty($s->searchError() , sprintf("Error in search %s", print_r($s->getSearchInfo() , true)));
+        
+        $ec = new \Dcp\ExportCollection();
+        
+        $ec->setOutputFilePath($outFile);
+        $ec->setOutputFormat(\Dcp\ExportCollection::xmlArchiveOutputFormat);
+        $ec->setDocumentlist($s->getDocumentList());
+        $ec->export();
+        
+        $this->assertTrue(filesize($outFile) > 0, sprintf("\"%s\" file not produced", $outFile));
+        
+        $outDir = tempnam(getTmpDir() , 'tstextract');
+        if (is_file($outDir)) {
+            unlink($outDir);
+        }
+        mkdir($outDir);
+        $zip = new \ZipArchive;
+        $res = $zip->open($outFile);
+        
+        $this->assertTrue($res, sprintf("\"%s\" cannot unarchive", $outFile));
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $stat = $zip->statIndex($i);
+            if (preg_match("/" . $file . "/", basename($stat['name']))) {
+                $file = $stat['name'];
+                break;
+            }
+        }
+        
+        $zip->extractTo($outDir, array(
+            $file
+        ));
+        $zip->close();
+        
+        $xmlFile = sprintf("%s/%s", $outDir, $file);
+        $this->assertTrue(is_file($xmlFile) , sprintf("\"%s\" zip content not found", $xmlFile));
+        
+        $dom = new \DOMDocument();
+        $dom->load($xmlFile);
+        
+        $this->XPathTesting($dom, $xmlPathes);
+    }
+    
     protected function XPathTesting(\DOMDocument $dom, array $expectedValues)
     {
         
@@ -131,10 +183,7 @@ class ExportCollection extends TestCaseDcpCommonFamily
             $entries = $xp->query($path);
             $found = 0;
             $foundValues = array();
-            print_r2(array(
-                $path,
-                $entries
-            ));
+            
             foreach ($entries as $entry) {
                 if ($entry->nodeValue == $value) $found++;
                 $foundValues[] = $entry->nodeValue;
@@ -142,12 +191,43 @@ class ExportCollection extends TestCaseDcpCommonFamily
             $this->assertGreaterThan(0, $found, sprintf("Item \"%s\" not found in %s path, found \n\t%s\n", $value, $path, implode("\n\t", $foundValues)));
         }
     }
+    public function dataExportXmlArchive()
+    {
+        return array(
+            array(
+                "Titre1.*.xml",
+                array(
+                    "tst_frame1/tst_title" => "Titre 1",
+                    "tst_frame1/tst_number" => "1",
+                    "tst_frame1/tst_date" => "2014-02-23"
+                )
+            ) ,
+            array(
+                "Titre2.*.xml",
+                array(
+                    "tst_frame1/tst_number" => "2",
+                    "tst_frame1/tst_date" => "2014-12-24"
+                )
+            ) ,
+            array(
+                "Titre3.*.xml",
+                array(
+                    "tst_frame1/tst_number" => "3",
+                    "tst_tab_i/tst_frame2/tst_longtext" => "Trois long",
+                    // "tst_tab_i/tst_frame2/tst_array/tst_othertexts" => "Une deuxième",
+                    "tst_tab_i/tst_frame2/tst_array/tst_othertexts" => "Une ligne<BR>avec retour"
+                )
+            )
+        );
+    }
     public function dataExportXmlSingle()
     {
         return array(
             array(
                 array(
-                    "tst_expcoll1[@name = \"TST_EXPCOLL_DOC1\"]/tst_frame1/tst_number" => "1"
+                    $this->famName . "[@name = \"TST_EXPCOLL_DOC1\"]/tst_frame1/tst_number" => "1",
+                    $this->famName . "[@name = \"TST_EXPCOLL_DOC1\"]/tst_frame1/tst_date" => "2014-02-23",
+                    $this->famName . "[@name = \"TST_EXPCOLL_DOC2\"]/tst_frame1/tst_number" => "2"
                 )
             )
         );

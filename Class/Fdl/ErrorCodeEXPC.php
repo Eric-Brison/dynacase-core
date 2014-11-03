@@ -67,4 +67,9 @@ class ErrorCodeEXPC
      * @see Dcp\ExportCollection::export
      */
     const EXPC0011 = 'EXPORT : Ouput file  "%s" cannot be finished';
+    /**
+     * @errorCode XML archive format : output file cannot be produced
+     * @see Dcp\ExportCollection::export
+     */
+    const EXPC0012 = 'EXPORT : Xml archive "%s" cannot be created';
 }

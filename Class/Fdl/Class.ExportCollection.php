@@ -154,8 +154,9 @@ class ExportCollection
                 $this->exportCsv();
                 break;
 
+            case self::xmlArchiveOutputFormat:
             case self::xmlFileOutputFormat:
-                $this->exportSingleXml();
+                $this->exportCollectionXml();
                 break;
         }
     }
@@ -180,7 +181,7 @@ class ExportCollection
         }
         fclose($fout);
     }
-    protected function exportSingleXml()
+    protected function exportCollectionXml()
     {
         $dl = $this->documentList;
         $exportDoc = new \Dcp\ExportDocument();
@@ -191,10 +192,18 @@ class ExportCollection
         if (!mkdir($foutdir)) {
             throw new Exception("EXPC0006", $foutdir);
         }
+        $c = 0;
         /**
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
+            $c++;
+            if ($c % 20 == 0) {
+                // @TODO
+                //recordStatus($action, $exportId, sprintf(_("Record documents %d/%d") , $c, $rc));
+                
+            }
+            
             $ftitle = $this->cleanFileName($doc->getTitle());
             $suffix = sprintf("{%d}.xml", $doc->id);
             $maxBytesLen = MAX_FILENAME_LEN - strlen($suffix);
@@ -205,7 +214,10 @@ class ExportCollection
         
         if ($this->outputFormat === self::xmlFileOutputFormat) {
             $this->catXml($foutdir);
+        } elseif ($this->outputFormat === self::xmlArchiveOutputFormat) {
+            $this->zipXml($foutdir);
         }
+        system(sprintf("rm -fr %s", escapeshellarg($foutdir)));
     }
     protected static function cleanFileName($fileName)
     {
@@ -225,6 +237,22 @@ class ExportCollection
             '-',
             '_'
         ) , $fileName);
+    }
+    
+    protected function zipXml($directory)
+    {
+        
+        $zipfile = $this->outputFilePath . ".zip";
+        $cmd = sprintf("cd %s && zip -r %s -- * > /dev/null && mv %s %s", escapeshellarg($directory) , escapeshellarg($zipfile) , escapeshellarg($zipfile) , escapeshellarg($this->outputFilePath));
+        
+        system($cmd, $ret);
+        if (is_file($this->outputFilePath)) {
+            // @TODO
+            //recordStatus($action, $exportId, _("Export done") , true);
+            
+        } else {
+            throw new Exception("EXPC0012", $this->outputFilePath);
+        }
     }
     
     protected function catXml($directory)
