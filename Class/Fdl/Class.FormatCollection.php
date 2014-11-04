@@ -76,6 +76,8 @@ class FormatCollection
     private $dateStyle = DateAttributeValue::defaultStyle;
     
     private $stripHtmlTag = false;
+    
+    protected $longtextMultipleBrToCr = "\n";
     /**
      * @var closure
      */
@@ -446,7 +448,7 @@ class FormatCollection
                     break;
 
                 case 'longtext':
-                    $info = new LongtextAttributeValue($oa, $value);
+                    $info = new LongtextAttributeValue($oa, $value, $this->longtextMultipleBrToCr);
                     break;
 
                 case 'int':
@@ -494,6 +496,13 @@ class FormatCollection
             }
         }
         return $info;
+    }
+    /**
+     * @param string $longtextMultipleBrToCr
+     */
+    public function setLongtextMultipleBrToCr($longtextMultipleBrToCr)
+    {
+        $this->longtextMultipleBrToCr = $longtextMultipleBrToCr;
     }
     /**
      * get some stat to estimate time cost
@@ -640,10 +649,10 @@ class TextAttributeValue extends FormatAttributeValue
 
 class LongtextAttributeValue extends FormatAttributeValue
 {
-    public function __construct(NormalAttribute $oa, $v)
+    public function __construct(NormalAttribute $oa, $v, $multipleLongtextCr = "\n")
     {
         if ($oa->inArray()) {
-            $v = str_replace("<BR>", "\n", $v);
+            $v = str_replace("<BR>", $multipleLongtextCr, $v);
         }
         parent::__construct($oa, $v);
     }

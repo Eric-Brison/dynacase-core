@@ -82,4 +82,14 @@ class ErrorCodeEXPC
      * @see Dcp\ExportCollection::setOutputFilePath
      */
     const EXPC0014 = 'EXPORT : Extract vault file : Caonot copy "%s" to "%s"';
+    /**
+     * @errorCode Only valid encoding can be used to parameter export
+     * @see Dcp\ExportCollection::setOutputFileEncoding
+     */
+    const EXPC0015 = 'EXPORT : invalid encoding format "%s", valid are %s.';
+    /**
+     * @errorCode Only one character for CSV separator : generally comma
+     * @see Dcp\ExportCollection::setCvsSeparator
+     */
+    const EXPC0016 = 'EXPORT : Only one character for CSV separator : found "%s".';
 }

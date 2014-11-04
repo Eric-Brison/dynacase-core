@@ -8,7 +8,7 @@
 namespace Dcp\Pu;
 
 require_once 'PU_testcase_dcp_commonfamily.php';
-class ExportCollection extends TestCaseDcpCommonFamily
+class TestExportCollection extends TestCaseDcpCommonFamily
 {
     static function getCommonImportFile()
     {
@@ -280,6 +280,69 @@ class ExportCollection extends TestCaseDcpCommonFamily
         $this->assertTrue(is_file($contentFile) , sprintf("\"%s\" zip content not found", $contentFile));
         
         $this->verifyCsvContains($contentFile, $separator, $enclosure, $expectedData, 2);
+    }
+    /**
+     * @param $separator
+     * @param $enclosure
+     * @param array $expectedData
+     * @dataProvider dataExportFamilyCsv
+     */
+    public function testExportFamilyCsv($separator, $enclosure, array $expectedData)
+    {
+        $outFile = tempnam(getTmpDir() , 'tstexport');
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s->setObjectReturn();
+        $s->search();
+        
+        $this->assertEmpty($s->searchError() , sprintf("Error in search %s", print_r($s->getSearchInfo() , true)));
+        
+        $ec = new \Dcp\ExportCollection();
+        
+        $ec->setCvsEnclosure($enclosure);
+        $ec->setCvsSeparator($separator);
+        $ec->setOutputFilePath($outFile);
+        $ec->setDocumentlist($s->getDocumentList());
+        $ec->export();
+        
+        $this->assertTrue(filesize($outFile) > 0, sprintf("\"%s\" file not produced", $outFile));
+        
+        $this->verifyCsvContains($outFile, $separator, $enclosure, $expectedData, 2);
+    }
+    
+    public function dataExportFamilyCsv()
+    {
+        return array(
+            array(
+                ";",
+                '"',
+                array(
+                    "TST_EXPCOLL_DOC1" => array(
+                        4 => "Titre 1",
+                        5 => "1",
+                        6 => "2014-02-23",
+                        7 => "A",
+                        
+                        8 => "Un",
+                        9 => "1.1",
+                        10 => "Un long"
+                    ) ,
+                    "TST_EXPCOLL_DOC2" => array(
+                        4 => "Titre 2",
+                        5 => "2",
+                        6 => "2014-12-24",
+                        7 => "B",
+                        8 => "Deux",
+                        9 => "2.2",
+                        10 => "Deux long",
+                        11 => "TST_EXPCOLL_DOC1"
+                    ) ,
+                    "TST_EXPCOLL_DOC3" => array(
+                        4 => "Titre 3",
+                        11 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2"
+                    )
+                )
+            )
+        );
     }
     public function dataExportFileCsv()
     {

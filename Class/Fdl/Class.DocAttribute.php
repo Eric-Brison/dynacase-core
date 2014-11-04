@@ -814,8 +814,13 @@ class NormalAttribute extends BasicAttribute
      *
      * @param Doc $doc current Doc
      * @param int $index index if multiple
-     * @param array $configuration value config array : dateFormat => 'US' 'ISO', decimalSeparator => '.',
-     * multipleSeparator => array(0 => 'arrayLine', 1 => 'multiple') (defaultValue : dateFormat : 'US', decimalSeparator : '.', multiple => array(0 => "\n", 1 => ", "))
+     * @param array $configuration value config array :
+     * dateFormat => 'US' 'ISO',
+     * decimalSeparator => '.',
+     * longtextMultipleBrToCr => ' '
+     * multipleSeparator => array(0 => 'arrayLine', 1 => 'multiple')
+     *
+     * (defaultValue : dateFormat : 'US', decimalSeparator : '.', multiple => array(0 => "\n", 1 => ", "))
      *
      * @return string
      */
@@ -837,6 +842,12 @@ class NormalAttribute extends BasicAttribute
             $fc->setDateStyle(\DateAttributeValue::frenchStyle);
         } else {
             $fc->setDateStyle(\DateAttributeValue::defaultStyle);
+        }
+        if (isset($configuration['longtextMultipleBrToCr'])) {
+            $fc->setLongtextMultipleBrToCr($configuration['longtextMultipleBrToCr']);
+        } else {
+            $fc->setLongtextMultipleBrToCr(" "); // long text are in a single line
+            
         }
         $info = $fc->getInfo($this, $value, $doc);
         if (empty($info)) {

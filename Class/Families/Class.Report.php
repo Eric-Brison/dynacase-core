@@ -752,6 +752,8 @@ class Report extends \Dcp\Family\Dsearch
                 }
             }
         }
+        
+        $fc->setLongtextMultipleBrToCr(" "); // longtext are in a single line if multiple
         $fc->setNc('-');
         $fc->setHookAdvancedStatus(function ($s)
         {

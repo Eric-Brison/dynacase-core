@@ -48,6 +48,12 @@ class ExportCollection
      */
     protected $documentList = null;
     /**
+     * @var resource output file handler
+     */
+    protected $outHandler = null;
+    protected $moreDocuments = array();
+    protected $familyData = array();
+    /**
      * @param string $cvsEnclosure
      */
     public function setCvsEnclosure($cvsEnclosure)
@@ -55,15 +61,18 @@ class ExportCollection
         $this->cvsEnclosure = $cvsEnclosure;
     }
     /**
+     * Use document collection (folder or searcch) to export documents
+     * @see ExportCollection::setDocumentlist
      * @param \DocCollection $collectionDocument
      */
-    public function setCollectionDocument($collectionDocument)
+    public function setCollectionDocument(\DocCollection $collectionDocument)
     {
         $this->collectionDocument = $collectionDocument;
         $this->documentList = $this->collectionDocument->getDocumentList();
     }
     /**
      * File to record result of export (must be writable)
+     * The file will be overwrite if exists
      * @param string $outputFilePath
      */
     public function setOutputFilePath($outputFilePath)
@@ -71,6 +80,8 @@ class ExportCollection
         $this->outputFilePath = $outputFilePath;
     }
     /**
+     * Set identifier key to write status
+     * @see ExportCollection::setStatus
      * @param string $exportStatusId
      */
     public function setExportStatusId($exportStatusId)
@@ -78,6 +89,8 @@ class ExportCollection
         $this->exportStatusId = $exportStatusId;
     }
     /**
+     * Get output file name
+     * @see ExportCollection::setOutputFilePath
      * @return string
      */
     public function getOutputFilePath()
@@ -85,13 +98,20 @@ class ExportCollection
         return $this->outputFilePath;
     }
     /**
+     * Set CSV separator character
      * @param string $cvsSeparator
+     * @throws Exception
      */
     public function setCvsSeparator($cvsSeparator)
     {
+        if (strlen($cvsSeparator) !== 1) {
+            throw new Exception("EXPC0016", $cvsSeparator);
+        }
         $this->cvsSeparator = $cvsSeparator;
     }
     /**
+     * Only in csv, and no profil, export  numeric identifier if no logical name
+     * Else  identifier is not exported
      * @param boolean $exportDocumentNumericIdentiers
      */
     public function setExportDocumentNumericIdentiers($exportDocumentNumericIdentiers)
@@ -99,6 +119,7 @@ class ExportCollection
         $this->exportDocumentNumericIdentiers = $exportDocumentNumericIdentiers;
     }
     /**
+     * Indicate if export also attached files
      * @param boolean $exportFiles
      */
     public function setExportFiles($exportFiles)
@@ -114,15 +135,25 @@ class ExportCollection
         $this->exportProfil = $exportProfil;
     }
     /**
+     * Set encoding format default is UTF-8
      * @param string $outputFileEncding
+     * @throws Exception
      */
     public function setOutputFileEncoding($outputFileEncding)
     {
+        $allowedFormat = array(
+            self::utf8Encoding,
+            self::latinEncoding
+        );
+        if (!in_array($outputFileEncding, $allowedFormat)) {
+            throw new Exception("EXPC0015", $outputFileEncding, implode(",", $allowedFormat));
+        }
         $this->outputFileEncoding = $outputFileEncding;
     }
     /**
-     * Indicate file output format :
+     * Indicate file output format
      * @param string $outputFormat
+     * @throws Exception
      */
     public function setOutputFormat($outputFormat)
     {
@@ -139,13 +170,18 @@ class ExportCollection
         $this->outputFormat = $outputFormat;
     }
     /**
+     * Only for csv mode. Set true if need to export only column set by applicative parameter "FREEDOM_EXPORTCOLS"
      * @param boolean $useUserColumnParameter
      */
     public function setUseUserColumnParameter($useUserColumnParameter)
     {
         $this->useUserColumnParameter = $useUserColumnParameter;
     }
-    
+    /**
+     * Export Document LIst
+     * @see ExportCollection::setDocumentlist
+     * @throws Exception
+     */
     public function export()
     {
         if (empty($this->outputFilePath)) {
@@ -171,12 +207,18 @@ class ExportCollection
                 break;
         }
     }
-    
+    /**
+     * Set documentList to export
+     * @param \DocumentList $documentList
+     */
     public function setDocumentlist(\DocumentList $documentList)
     {
         $this->documentList = $documentList;
     }
-    
+    /**
+     * Export to csv file
+     * @throws Exception
+     */
     protected function exportCsv()
     {
         $dl = $this->documentList;
@@ -191,13 +233,13 @@ class ExportCollection
             }
             mkdir($outDir);
             $fdlcsv = $outDir . "/fdl.csv";
-            $outHandler = fopen($fdlcsv, "w");
-            if (!$outHandler) {
+            $this->outHandler = fopen($fdlcsv, "w");
+            if (!$this->outHandler) {
                 throw new Exception("EXPC0012", $fdlcsv);
             }
         } else {
-            $outHandler = fopen($this->outputFilePath, "w");
-            if (!$outHandler) {
+            $this->outHandler = fopen($this->outputFilePath, "w");
+            if (!$this->outHandler) {
                 throw new Exception("EXPC0005", $this->outputFilePath);
             }
         }
@@ -210,10 +252,12 @@ class ExportCollection
                 if ($doc->doctype === "C") {
                     $c++;
                     if ($c % 20 == 0) {
-                        $this->csvFamilyExport($doc);
+                        $this->recordStatus(sprintf(_("Record documents %d/%d") , $c, $rc));
                     }
+                    $this->csvFamilyExport($doc);
                 }
             }
+            $this->writeFamilies();
         }
         $fileInfos = array();
         foreach ($dl as $doc) {
@@ -224,16 +268,20 @@ class ExportCollection
                     
                     $this->recordStatus(sprintf(_("Record documents %d/%d") , $c, $rc));
                 }
-                $exportDoc->csvExport($doc, $fileInfos, $outHandler, $this->exportProfil, $this->exportFiles, $this->exportDocumentNumericIdentiers, ($this->outputFileEncoding === self::utf8Encoding) , $this->useUserColumnParameter, $this->outputFormat);
+                $exportDoc->csvExport($doc, $fileInfos, $this->outHandler, $this->exportProfil, $this->exportFiles, $this->exportDocumentNumericIdentiers, ($this->outputFileEncoding === self::utf8Encoding) , !$this->useUserColumnParameter, $this->outputFormat);
             }
         }
-        fclose($outHandler);
+        fclose($this->outHandler);
         
         if ($this->exportFiles) {
             $this->zipFiles($outDir, $fileInfos);
         }
     }
-    
+    /**
+     * Write message to session var. Used by interfaces to see progress
+     * @param string $msg
+     * @param bool $endStatus
+     */
     public function recordStatus($msg, $endStatus = false)
     {
         if ($this->exportStatusId) {
@@ -245,10 +293,19 @@ class ExportCollection
         }
     }
     /**
-     * @param \DocFam $doc
-     * @TODO
+     * Record document relative to family
+     * @param string $documentId
      */
-    protected function csvFamilyExport(\DocFam $doc)
+    protected function addDocumentToExport($documentId)
+    {
+        $this->moreDocuments[$documentId] = true;
+    }
+    /**
+     * Record family data which are write by writeFamilies
+     * @see ExportCollection::writeFamilies
+     * @param \DocFam $family
+     */
+    protected function csvFamilyExport(\DocFam $family)
     {
         
         $wname = "";
@@ -256,65 +313,80 @@ class ExportCollection
         $cpname = "";
         $fpname = "";
         
-        if ($wprof) {
-            if ($doc->profid != $doc->id) {
-                $fp = getTDoc($dbaccess, $doc->profid);
-                $tmoredoc[$fp["id"]] = $fp;
-                if ($fp["name"] != "") $fpname = $fp["name"];
-                else $fpname = $fp["id"];
-            } else {
-                exportProfil($fout, $dbaccess, $doc->profid);
-            }
-            if ($doc->cprofid) {
-                $cp = getTDoc($dbaccess, $doc->cprofid);
-                if ($cp["name"] != "") $cpname = $cp["name"];
-                else $cpname = $cp["id"];
-                $tmoredoc[$cp["id"]] = $cp;
-            }
-            if ($doc->ccvid > 0) {
-                $cv = getTDoc($dbaccess, $doc->ccvid);
-                if ($cv["name"] != "") $cvname = $cv["name"];
-                else $cvname = $cv["id"];
-                $tmskid = $doc->rawValueToArray($cv["cv_mskid"]);
-                
-                foreach ($tmskid as $kmsk => $imsk) {
-                    if ($imsk != "") {
-                        $msk = getTDoc($dbaccess, $imsk);
-                        if ($msk) $tmoredoc[$msk["id"]] = $msk;
+        $tmoredoc = array();
+        $dbaccess = getDbAccess();
+        if ($family->profid != $family->id) {
+            $fp = getTDoc($dbaccess, $family->profid);
+            $tmoredoc[$fp["id"]] = "famprof";
+            $this->addDocumentToExport($fp["id"]);
+            if ($fp["name"] != "") $fpname = $fp["name"];
+            else $fpname = $fp["id"];
+        } else {
+        }
+        if ($family->cprofid) {
+            $cp = getTDoc($dbaccess, $family->cprofid);
+            if ($cp["name"] != "") $cpname = $cp["name"];
+            else $cpname = $cp["id"];
+            $tmoredoc[$cp["id"]] = "cprofid";
+            $this->addDocumentToExport($cp["id"]);
+        }
+        if ($family->ccvid > 0) {
+            $cv = getTDoc($dbaccess, $family->ccvid);
+            if ($cv["name"] != "") $cvname = $cv["name"];
+            else $cvname = $cv["id"];
+            $tmskid = $family->rawValueToArray($cv["cv_mskid"]);
+            
+            foreach ($tmskid as $kmsk => $imsk) {
+                if ($imsk != "") {
+                    $msk = getTDoc($dbaccess, $imsk);
+                    if ($msk) {
+                        $tmoredoc[$msk["id"]] = "mask";
+                        $this->addDocumentToExport($msk["id"]);
                     }
                 }
-                
-                $tmoredoc[$cv["id"]] = $cv;
             }
             
-            if ($doc->wid > 0) {
-                $wdoc = new_doc($dbaccess, $doc->wid);
-                if ($wdoc->name != "") $wname = $wdoc->name;
-                else $wname = $wdoc->id;
-                $tattr = $wdoc->getAttributes();
-                foreach ($tattr as $ka => $oa) {
-                    if ($oa->type == "docid") {
-                        $tdid = $wdoc->getMultipleRawValues($ka);
-                        foreach ($tdid as $did) {
-                            if ($did != "") {
-                                $m = getTDoc($dbaccess, $did);
-                                if ($m) {
-                                    $tmoredoc[$m["id"]] = $m;
+            $tmoredoc[$cv["id"]] = "cv";
+            $this->addDocumentToExport($cv["id"]);
+        }
+        
+        if ($family->wid > 0) {
+            $wdoc = new_doc($dbaccess, $family->wid);
+            if ($wdoc->name != "") $wname = $wdoc->name;
+            else $wname = $wdoc->id;
+            $tattr = $wdoc->getAttributes();
+            foreach ($tattr as $ka => $oa) {
+                if ($oa->type == "docid") {
+                    $tdid = $wdoc->getMultipleRawValues($ka);
+                    foreach ($tdid as $did) {
+                        if ($did != "") {
+                            $m = getTDoc($dbaccess, $did);
+                            if ($m) {
+                                if ($m["doctype"] !== "C") {
+                                    $tmoredoc[$m["initid"]] = "wrel";
+                                    $this->addDocumentToExport($m["initid"]);
+                                    
                                     if (!empty($m["cv_mskid"])) {
-                                        $tmskid = $doc->rawValueToArray($m["cv_mskid"]);
+                                        $tmskid = $family->rawValueToArray($m["cv_mskid"]);
                                         foreach ($tmskid as $kmsk => $imsk) {
                                             if ($imsk != "") {
                                                 $msk = getTDoc($dbaccess, $imsk);
-                                                if ($msk) $tmoredoc[$msk["id"]] = $msk;
+                                                if ($msk) {
+                                                    $tmoredoc[$msk["id"]] = "wmask";
+                                                    $this->addDocumentToExport($msk["initid"]);
+                                                }
                                             }
                                         }
                                     }
                                     if (!empty($m["tm_tmail"])) {
-                                        $tmskid = $doc->rawValueToArray(str_replace('<BR>', "\n", $m["tm_tmail"]));
+                                        $tmskid = $family->rawValueToArray(str_replace('<BR>', "\n", $m["tm_tmail"]));
                                         foreach ($tmskid as $kmsk => $imsk) {
                                             if ($imsk != "") {
                                                 $msk = getTDoc($dbaccess, $imsk);
-                                                if ($msk) $tmoredoc[$msk["id"]] = $msk;
+                                                if ($msk) {
+                                                    $tmoredoc[$msk["id"]] = "tmask";
+                                                    $this->addDocumentToExport($msk["initid"]);
+                                                }
                                             }
                                         }
                                     }
@@ -323,46 +395,83 @@ class ExportCollection
                         }
                     }
                 }
-                $tmoredoc[$doc->wid] = getTDoc($dbaccess, $doc->wid);
             }
-            if ($cvname || $wname || $cpname || $fpname) {
-                $famData[] = array(
-                    "BEGIN",
-                    "",
-                    "",
-                    "",
-                    "",
-                    $doc->name
-                );
-                
-                if ($fpname) {
-                    $famData[] = array(
-                        "PROFID",
-                        $fpname
-                    );
-                }
-                if ($cvname) {
-                    $famData[] = array(
-                        "CVID",
-                        $cvname
-                    );
-                }
-                if ($wname) {
-                    $famData[] = array(
-                        "WID",
-                        $wname
-                    );
-                }
-                if ($doc->cprofid) {
-                    $famData[] = array(
-                        "CPROFID",
-                        $cpname
-                    );
-                }
-                $famData[] = array(
-                    "END"
+            $tmoredoc[$family->wid] = "wid";
+            $this->addDocumentToExport($family->wid);
+        }
+        
+        if ($cvname || $wname || $cpname || $fpname) {
+            $this->familyData[$family->id][] = array(
+                "BEGIN",
+                "",
+                "",
+                "",
+                "",
+                $family->name
+            );
+            
+            if ($fpname) {
+                $this->familyData[$family->id][] = array(
+                    "PROFID",
+                    $fpname
                 );
             }
+            if ($cvname) {
+                $this->familyData[$family->id][] = array(
+                    "CVID",
+                    $cvname
+                );
+            }
+            if ($wname) {
+                $this->familyData[$family->id][] = array(
+                    "WID",
+                    $wname
+                );
+            }
+            if ($family->cprofid) {
+                $this->familyData[$family->id][] = array(
+                    "CPROFID",
+                    $cpname
+                );
+            }
+            $this->familyData[$family->id][] = array(
+                "END"
+            );
+        }
+    }
+    /**
+     * write family data
+     */
+    protected function writeFamilies()
+    {
+        
+        $exportDoc = new \Dcp\ExportDocument();
+        $exportDoc->setCsvEnclosure($this->cvsEnclosure);
+        $exportDoc->setCsvSeparator($this->cvsSeparator);
+        
+        $more = new \DocumentList();
+        $more->addDocumentIdentifiers(array_keys($this->moreDocuments));
+        $searchDl = $more->getSearchDocument();
+        $searchDl->setOrder("fromid, name, id");
+        foreach ($more as $adoc) {
+            
+            $exportDoc->csvExport($adoc, $fileInfos, $this->outHandler, false, $this->exportFiles, $this->exportDocumentNumericIdentiers, ($this->outputFileEncoding === self::utf8Encoding) , !$this->useUserColumnParameter, $this->outputFormat);
+        }
+        foreach ($more as $adoc) {
+            
+            $exportDoc->exportProfil($this->outHandler, $adoc->id);
+        }
+        
+        foreach ($this->familyData as $famid => $aRow) {
+            $family = new_doc("", $famid);
+            if ($family->profid == $family->id) {
+                $exportDoc->exportProfil($this->outHandler, $family->id);
+            }
+        }
+        
+        foreach ($this->familyData as $famid => $aRow) {
+            
+            foreach ($aRow as $data) \Dcp\WriteCsv::fput($this->outHandler, $data);
         }
     }
     protected function zipFiles($directory, array $infos)
@@ -381,11 +490,8 @@ class ExportCollection
         $zipfile = $this->outputFilePath . ".zip";
         $cmd = sprintf("cd %s && zip -r %s -- * > /dev/null && mv %s %s", escapeshellarg($directory) , escapeshellarg($zipfile) , escapeshellarg($zipfile) , escapeshellarg($this->outputFilePath));
         system($cmd, $ret);
-        if (is_file($this->outputFilePath)) {
-            // @TODO
-            //recordStatus($action, $exportId, _("Export done") , true);
+        if (!is_file($this->outputFilePath)) {
             
-        } else {
             throw new Exception("EXPC0012", $this->outputFilePath);
         }
     }
@@ -401,15 +507,14 @@ class ExportCollection
             throw new Exception("EXPC0006", $foutdir);
         }
         $c = 0;
+        $rc = count($dl);
         /**
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
             $c++;
             if ($c % 20 == 0) {
-                // @TODO
-                //recordStatus($action, $exportId, sprintf(_("Record documents %d/%d") , $c, $rc));
-                
+                $this->recordStatus(sprintf(_("Record documents %d/%d") , $c, $rc));
             }
             
             $ftitle = $this->cleanFileName($doc->getTitle());
@@ -427,6 +532,11 @@ class ExportCollection
         }
         system(sprintf("rm -fr %s", escapeshellarg($foutdir)));
     }
+    /**
+     * Replace special character for a file name
+     * @param string $fileName
+     * @return string
+     */
     protected static function cleanFileName($fileName)
     {
         return str_replace(array(
@@ -446,7 +556,11 @@ class ExportCollection
             '_'
         ) , $fileName);
     }
-    
+    /**
+     * zip Xml files included in directory
+     * @param string $directory
+     * @throws Exception
+     */
     protected function zipXml($directory)
     {
         
@@ -454,15 +568,16 @@ class ExportCollection
         $cmd = sprintf("cd %s && zip -r %s -- * > /dev/null && mv %s %s", escapeshellarg($directory) , escapeshellarg($zipfile) , escapeshellarg($zipfile) , escapeshellarg($this->outputFilePath));
         
         system($cmd, $ret);
-        if (is_file($this->outputFilePath)) {
-            // @TODO
-            //recordStatus($action, $exportId, _("Export done") , true);
+        if (!is_file($this->outputFilePath)) {
             
-        } else {
             throw new Exception("EXPC0012", $this->outputFilePath);
         }
     }
-    
+    /**
+     * concatenate Xml files included in directory into single XML file
+     * @param string $directory
+     * @throws Exception
+     */
     protected function catXml($directory)
     {
         
