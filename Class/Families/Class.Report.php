@@ -397,6 +397,7 @@ class Report extends \Dcp\Family\Dsearch
         $tcolor = $this->getMultipleRawValues("REP_COLORS");
         $trow = array();
         $k = 0;
+        \Dcp\VerifyAttributeAccess::clearCache();
         while ($rdoc = $s->getNextDoc()) {
             $k++;
             $trow[$k] = array(
@@ -439,12 +440,12 @@ class Report extends \Dcp\Family\Dsearch
 
                         default:
                             if ($tDisplayOption[$ki] == "docid") {
-                                $visible = $this->isAttributeAccessGranted($rdoc, $lattr[$kc]);
+                                $visible = \Dcp\VerifyAttributeAccess::isAttributeAccessGranted($rdoc, $lattr[$kc]);
                                 $cval = $rdoc->getRawValue($kc);
                             } else {
                                 $cval = $rdoc->getPropertyValue($kc);
                                 if ($cval === false) {
-                                    $visible = $this->isAttributeAccessGranted($rdoc, $lattr[$kc]);
+                                    $visible = \Dcp\VerifyAttributeAccess::isAttributeAccessGranted($rdoc, $lattr[$kc]);
                                     $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getRawValue($kc) , $target, $ulink);
                                 }
                             }
@@ -518,29 +519,7 @@ class Report extends \Dcp\Family\Dsearch
             $this->lay->set("TITLE", $this->getHTMLTitle());
             return $err;
     }
-    /**
-     * Verify is attribute has visible access
-     * @param \Doc $doc the document to see
-     * @param \BasicAttribute $attribute the attribut to see
-     * @return bool return true if can be viewed
-     */
-    protected function isAttributeAccessGranted(\Doc $doc, \BasicAttribute $attribute)
-    {
-        
-        $key = sprintf("%0d-%0d-%0d-%s", $doc->fromid, $doc->cvid, $doc->wid, $doc->state);
-        
-        if (!isset($this->attributeGrants[$key])) {
-            $doc->setMask(\Doc::USEMASKCVVIEW);
-            $this->attributeGrants[$key] = array();
-            $oas = $doc->getNormalAttributes();
-            foreach ($oas as $oa) {
-                if ($oa->mvisibility === "I") {
-                    $this->attributeGrants[$key][$oa->id] = false;
-                }
-            }
-        }
-        return (!isset($this->attributeGrants[$key][$attribute->id]));
-    }
+
     /**
      * Generate data struct to csv export of a report
      *

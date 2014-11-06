@@ -248,7 +248,7 @@ class ExportDocument
         }
         // write values
         foreach ($this->lattr as $attr) {
-            if ($this->verifyAttributeAccess && !$this->isAttributeAccessGranted($doc, $attr)) {
+            if ($this->verifyAttributeAccess && !\Dcp\VerifyAttributeAccess::isAttributeAccessGranted($doc, $attr)) {
                 $data[] = $this->noAccessText;
                 continue;
             }
@@ -378,27 +378,5 @@ class ExportDocument
             }
         }
     }
-    /**
-     * Verify is attribute has visible access
-     * @param \Doc $doc the document to see
-     * @param \BasicAttribute $attribute the attribut to see
-     * @return bool return true if can be viewed
-     */
-    protected function isAttributeAccessGranted(\Doc $doc, \BasicAttribute $attribute)
-    {
-        
-        $key = sprintf("%0d-%0d-%0d-%s", $doc->fromid, $doc->cvid, $doc->wid, $doc->state);
-        
-        if (!isset($this->attributeGrants[$key])) {
-            $doc->setMask(\Doc::USEMASKCVVIEW);
-            $this->attributeGrants[$key] = array();
-            $oas = $doc->getNormalAttributes();
-            foreach ($oas as $oa) {
-                if ($oa->mvisibility === "I") {
-                    $this->attributeGrants[$key][$oa->id] = false;
-                }
-            }
-        }
-        return (!isset($this->attributeGrants[$key][$attribute->id]));
-    }
+
 }

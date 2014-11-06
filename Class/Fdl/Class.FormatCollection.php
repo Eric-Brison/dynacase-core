@@ -271,6 +271,7 @@ class FormatCollection
         $r = array();
         $kdoc = 0;
         $countDoc = count($this->dl);
+        \Dcp\VerifyAttributeAccess::clearCache();
         foreach ($this->dl as $docid => $doc) {
             if ($kdoc % 10 == 0) $this->callHookStatus(sprintf(_("Doc Render %d/%d") , $kdoc, $countDoc));
             foreach ($this->fmtProps as $propName) {
@@ -420,38 +421,13 @@ class FormatCollection
             return $this->getSingleInfo($oa, $value, $doc);
         }
     }
-    /**
-     * Verify is attribute has visible access
-     * @param \Doc $doc the document to see
-     * @param \BasicAttribute $attribute the attribut to see
-     * @return bool return true if can be viewed
-     */
-    protected function isAttributeAccessGranted(\Doc $doc, \BasicAttribute $attribute)
-    {
-        //$mb0=microtime(true);
-        $key = sprintf("%0d-%0d-%0d-%s", $doc->fromid, $doc->cvid, $doc->wid, $doc->state);
-        
-        if (!$this->singleDocument && !isset($this->attributeGrants[$key])) {
-            $doc->setMask(\Doc::USEMASKCVVIEW);
-            $this->attributeGrants[$key] = array();
-            $oas = $doc->getNormalAttributes();
-            foreach ($oas as $oa) {
-                if ($oa->mvisibility === "I") {
-                    $this->attributeGrants[$key][$oa->id] = false;
-                }
-            }
-            //$this->debug["mask"][]=microtime(true)-$mb0;
-            
-        }
-        //$this->debug["grant"][]=microtime(true)-$mb0;
-        return (!isset($this->attributeGrants[$key][$attribute->id]));
-    }
+
     
     protected function getSingleInfo(NormalAttribute $oa, $value, $doc = null, $index = - 1)
     {
         $info = null;
         
-        if ($this->verifyAttributeAccess === true && !$this->isAttributeAccessGranted($doc, $oa)) {
+        if ($this->verifyAttributeAccess === true && !\Dcp\VerifyAttributeAccess::isAttributeAccessGranted($doc, $oa)) {
             $info = new noAccessAttributeValue($this->noAccessText);
         } else {
             
