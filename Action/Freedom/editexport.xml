@@ -4,8 +4,8 @@
 option.pref {
     background-color:[COLOR_B3];
     }
-select.disable {
-    visibility:hidden;
+input.disable, select.disable {
+    visibility:hidden!important;
     }
 input[type=submit] {
     padding:3px;
@@ -68,7 +68,7 @@ input[type=submit] {
 
 </select></td></tr>
 <tr><td align="right" style="cursor:help" title="[TEXT:Raw data set database value. Formated data : data are exported like can see it in navigator.]">[TEXT:Format export] :</td>
-  <td><select name="eformat" onchange="testexport(this)">
+  <td><select class="import-format" name="eformat" >
   <option value="I">[TEXT:Importation data]</option>
   <option value="R">[TEXT:Raw data only]</option>
   <option value="F">[TEXT:Formated data]</option>

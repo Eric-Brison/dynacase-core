@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-24 14:51+0200\n"
-"PO-Revision-Date: 2014-09-24 14:51+0200\n"
+"POT-Creation-Date: 2014-11-06 14:06+0100\n"
+"PO-Revision-Date: 2014-11-06 15:30+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -872,10 +872,6 @@ msgid "Cannot see attribute %s"
 msgstr "Ne peut voir l'attribut %s"
 
 #, php-format
-msgid "Cannot set logical name %s because object is not affected"
-msgstr "Le nom logique %s ne peut être affecté qu'après création du document"
-
-#, php-format
 msgid "Cannot update enum. Attribute '%s'[family %s] not found"
 msgstr ""
 "Ne peut pas mettre à jour l'énuméré. L'attribut '%s' [famille %s] est "
@@ -1698,7 +1694,7 @@ msgid "Emptying temporary database '%s' ..."
 msgstr "Vidage de la base temporaire '%s'"
 
 msgid "Enclosure character"
-msgstr "caractère délimiteur de texte"
+msgstr "caractère délimiteur de texte (CSV)"
 
 msgid "Encoding"
 msgstr "Encodage"
@@ -1900,6 +1896,10 @@ msgid "Export archive file with data file - fdl.csv- and attached files"
 msgstr ""
 "Export d'une archive avec le fichier de description -fdl.csv- et les "
 "fichiers attachés"
+
+msgid ""
+"Export as administrator. Attributes with invisibility access are exported."
+msgstr "Exportation en tant qu'administrateur. Les attributs avec un accès invisible sont exportés."
 
 msgid "Export done"
 msgstr "Fin de l'exportation"
@@ -2303,7 +2303,7 @@ msgid "Format export"
 msgstr "Format"
 
 msgid "Formated data"
-msgstr "Données formatées"
+msgstr "Données formatées (CSV)"
 
 #, php-format
 msgid "Found <strong>%d</strong>  Result for <strong>%s</strong>%s"
@@ -2504,7 +2504,7 @@ msgid "Import file (CSV, ODS, XML, ZIP, TGZ)"
 msgstr "Fichier d'importation (CSV, ODS, XML, ZIP, TGZ)"
 
 msgid "Importation data"
-msgstr "Données réimportables"
+msgstr "Données réimportables (CSV)"
 
 msgid "Impossible to have several identical names"
 msgstr "Impossible d'avoir plusieurs vues avec le même nom"
@@ -2762,7 +2762,7 @@ msgstr "Utilisateur"
 
 #, php-format
 msgid "Logical name %s already set for %s. Use reset parameter to overhide it"
-msgstr "Nom logique déjà indiqué pour %s. Utiliser le paramètre reset pour le changer."
+msgstr "Nom logique %s déjà indiqué pour %s. Utiliser le paramètre reset pour le changer."
 
 #, php-format
 msgid "Logical name %s already use in document %s"
@@ -3318,7 +3318,7 @@ msgid "Raw archive"
 msgstr "Archive brute"
 
 msgid "Raw data only"
-msgstr "Données brutes seulement"
+msgstr "Données brutes seulement (CSV)"
 
 msgid ""
 "Raw data set database value. Formated data : data are exported like can see "
@@ -3342,9 +3342,6 @@ msgstr "Recalcul des documents profilés"
 #, php-format
 msgid "Record documents %d/%d"
 msgstr "Enregistrement des documents %d/%d"
-
-msgid "Record system families"
-msgstr "Enregistrement des familles systèmes"
 
 msgid "Redo export"
 msgstr "Relancer l'exportation"
@@ -3647,7 +3644,7 @@ msgid "Sending input on change?"
 msgstr "Envoi du formulaire pendant l'activation de l'événement onchange"
 
 msgid "Separator character"
-msgstr "Caractère de séparation de cellule"
+msgstr "Caractère de séparation de cellule (CSV)"
 
 msgid "September"
 msgstr "Septembre"
@@ -4721,8 +4718,12 @@ msgid "attribute %s not found [%s]"
 msgstr "l'attribut %s n'a pas été trouvé [%s]"
 
 #, php-format
-msgid "attribute %s unknow in family %s [%d]"
-msgstr "attribut %s inconnu pour la famille %s [%d]"
+msgid "attribute %s unknow in document \"%s\" [%s]"
+msgstr "attribut %s inconnu dans le document \"%s\" [%s]"
+
+#, php-format
+msgid "attribute %s unknow in family \\#%s\""
+msgstr "attribut %s inconnu dans la famille \"%s\" "
 
 msgid "attribute id"
 msgstr "Identifiant de l'attribut"
@@ -4850,10 +4851,6 @@ msgstr ""
 
 msgid "cannot contact server"
 msgstr "ne peut contacter le serveur"
-
-#, php-format
-msgid "cannot copy %s"
-msgstr "écriture impossible : %s"
 
 #, php-format
 msgid "cannot create %s: %s\n"
@@ -6022,10 +6019,6 @@ msgstr "les préférences d'exportation ont été sauvegardées"
 
 msgid "export preferences has been cleared"
 msgstr "Les préférences d'exportation ont été effacées"
-
-#, php-format
-msgid "exportXml : cannot write file %s"
-msgstr "exportXml : ne peut écrire le fichier %s"
 
 msgid "familly"
 msgstr "famille"
@@ -8959,6 +8952,10 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Cancel change"
 #~ msgstr "Annuler les modifications"
 
+#~ msgid "Cannot set logical name %s because object is not affected"
+#~ msgstr ""
+#~ "Le nom logique %s ne peut être affecté qu'après création du document"
+
 #~ msgid "Caught Exception : %s\n"
 #~ msgstr "Attrape exception : %s\n"
 
@@ -9043,6 +9040,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Quick Save"
 #~ msgstr "Sauver vite"
+
+#~ msgid "Record system families"
+#~ msgstr "Enregistrement des familles systèmes"
 
 #~ msgid "Reference Manuel"
 #~ msgstr "Manuel de référence"
@@ -9150,6 +9150,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "any"
 #~ msgstr "un des mots"
 
+#~ msgid "attribute %s unknow in family %s [%d]"
+#~ msgstr "attribut %s inconnu pour la famille %s [%d]"
+
 #~ msgid "boolean"
 #~ msgstr "booléen"
 
@@ -9163,6 +9166,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "accès impossible à la base de données par défaut "
 #~ "[service='$pgservice_core']"
+
+#~ msgid "cannot copy %s"
+#~ msgstr "écriture impossible : %s"
 
 #~ msgid "cannot modify forum %s"
 #~ msgstr "modification du forum impossible : %s"
@@ -9250,6 +9256,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "error ::moveDocument %s %s"
 #~ msgstr "erreur ::moveDocument %s %s"
+
+#~ msgid "exportXml : cannot write file %s"
+#~ msgstr "exportXml : ne peut écrire le fichier %s"
 
 #~ msgid "forum"
 #~ msgstr "forum"
