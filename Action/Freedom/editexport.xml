@@ -24,8 +24,7 @@ input[type=submit] {
 <form target="outputfile" id="exportForm"
       name="dexport" style="display:inline"
       method="POST" ENCTYPE="multipart/form-data"
-      action="[CORE_STANDURL]&app=FDL&id=[dirid]"       >
-<input type="hidden" name="action" value="EXPORTFLD"></input>
+      action="?app=[exportapp]&amp;action=[exportaction]&amp;id=[dirid]"       >
 <input type="hidden" id="iExportId" name="exportId" value="[exportid]"></input>
 <table align="center">
 <tr><td></td><td></td><td rowspan="7"><img align="left" src="[IMG:ardown.png]"></td></tr>

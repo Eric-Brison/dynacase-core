@@ -7,7 +7,7 @@
 
 include_once ("FDL/Class.WDoc.php");
 
-Class WTestInvisible extends WDoc
+Class WTestFourStates extends WDoc
 {
     var $attrPrefix = "WINV";
     

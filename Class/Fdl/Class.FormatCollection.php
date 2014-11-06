@@ -33,15 +33,15 @@ class FormatCollection
     /**
      * @var DocumentList $dl
      */
-    private $dl = null;
+    protected $dl = null;
     public $debug = array();
-    private $propsKeys = array();
-    private $fmtProps = array(
+    protected $propsKeys = array();
+    protected $fmtProps = array(
         self::propId,
         self::title
     );
-    private $fmtAttrs = array();
-    private $ncAttribute = '';
+    protected $fmtAttrs = array();
+    protected $ncAttribute = '';
     
     protected $noAccessText = self::noAccessText;
     /**
@@ -71,17 +71,22 @@ class FormatCollection
     
     protected $attributeGrants = array();
     
-    private $decimalSeparator = ',';
+    protected $decimalSeparator = ',';
     
-    private $dateStyle = DateAttributeValue::defaultStyle;
+    protected $dateStyle = DateAttributeValue::defaultStyle;
     
-    private $stripHtmlTag = false;
+    protected $stripHtmlTag = false;
     
     protected $longtextMultipleBrToCr = "\n";
     /**
+     * Verify attribute visibility "I"
+     * @var bool
+     */
+    protected $verifyAttributeAccess = true;
+    /**
      * @var closure
      */
-    private $hookStatus = null;
+    protected $hookStatus = null;
     const title = "title";
     /**
      * name property
@@ -120,7 +125,7 @@ class FormatCollection
      */
     const cdate = "cdate";
     
-    private $singleDocument = false;
+    protected $singleDocument = false;
     public function __construct($doc = null)
     {
         $this->propsKeys = array_keys(Doc::$infofields);
@@ -130,6 +135,14 @@ class FormatCollection
             );
             $this->singleDocument = true;
         }
+    }
+    /**
+     * If false, attribute with "I" visibility are  returned
+     * @param boolean $verifyAttributeAccess
+     */
+    public function setVerifyAttributeAccess($verifyAttributeAccess)
+    {
+        $this->verifyAttributeAccess = $verifyAttributeAccess;
     }
     /**
      * Use when cannot access attribut value
@@ -290,7 +303,7 @@ class FormatCollection
         }
         return $r;
     }
-    private function getPropInfo($propName, Doc $doc)
+    protected function getPropInfo($propName, Doc $doc)
     {
         switch ($propName) {
             case self::title:
@@ -314,7 +327,7 @@ class FormatCollection
                 return $doc->$propName;
         }
     }
-    private function getFormatDate($v)
+    protected function getFormatDate($v)
     {
         if ($this->dateStyle === DateAttributeValue::defaultStyle) return stringDateToLocaleDate($v);
         else if ($this->dateStyle === DateAttributeValue::isoStyle) return stringDateToIso($v, false, true);
@@ -327,7 +340,7 @@ class FormatCollection
         }
         return stringDateToLocaleDate($v);
     }
-    private function getState(Doc $doc)
+    protected function getState(Doc $doc)
     {
         $s = new StatePropertyValue();
         if ($doc->state) {
@@ -351,7 +364,7 @@ class FormatCollection
      * @param array $t
      * @return array
      */
-    private static function rtrimNull(array $t)
+    protected static function rtrimNull(array $t)
     {
         $i = count($t) - 1;
         for ($k = $i; $k >= 0; $k--) {
@@ -434,11 +447,11 @@ class FormatCollection
         return (!isset($this->attributeGrants[$key][$attribute->id]));
     }
     
-    private function getSingleInfo(NormalAttribute $oa, $value, $doc = null, $index = - 1)
+    protected function getSingleInfo(NormalAttribute $oa, $value, $doc = null, $index = - 1)
     {
         $info = null;
         
-        if (!$this->isAttributeAccessGranted($doc, $oa)) {
+        if ($this->verifyAttributeAccess === true && !$this->isAttributeAccessGranted($doc, $oa)) {
             $info = new noAccessAttributeValue($this->noAccessText);
         } else {
             
@@ -832,7 +845,7 @@ class DocidAttributeValue extends StandardAttributeValue
         }
     }
     
-    private function getDocUrl($v, $docrev)
+    protected function getDocUrl($v, $docrev)
     {
         if (!$v) return '';
         $ul = "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=" . $v;

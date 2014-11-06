@@ -30,6 +30,7 @@ class ExportCollection
     const xmlFileOutputFormat = "Y";
     
     protected $outputFormat = self::csvRawOutputFormat;
+    protected $verifyAttributeAccess = false;
     
     protected $cvsSeparator = ";";
     protected $cvsEnclosure = "";
@@ -53,6 +54,14 @@ class ExportCollection
     protected $outHandler = null;
     protected $moreDocuments = array();
     protected $familyData = array();
+    /**
+     * If true, attribute with "I" visibility are not returned
+     * @param boolean $verifyAttributeAccess
+     */
+    public function setVerifyAttributeAccess($verifyAttributeAccess)
+    {
+        $this->verifyAttributeAccess = $verifyAttributeAccess;
+    }
     /**
      * @param string $cvsEnclosure
      */
@@ -225,6 +234,7 @@ class ExportCollection
         $exportDoc = new \Dcp\ExportDocument();
         $exportDoc->setCsvEnclosure($this->cvsEnclosure);
         $exportDoc->setCsvSeparator($this->cvsSeparator);
+        $exportDoc->setVerifyAttributeAccess($this->verifyAttributeAccess);
         $outDir = '';
         if ($this->exportFiles) {
             $outDir = tempnam(getTmpDir() , 'exportFolder');
@@ -498,14 +508,20 @@ class ExportCollection
     protected function exportCollectionXml()
     {
         $dl = $this->documentList;
-        $exportDoc = new \Dcp\ExportDocument();
-        $exportDoc->setCsvEnclosure($this->cvsEnclosure);
-        $exportDoc->setCsvSeparator($this->cvsSeparator);
         
         $foutdir = uniqid(getTmpDir() . "/exportxml");
         if (!mkdir($foutdir)) {
             throw new Exception("EXPC0006", $foutdir);
         }
+        
+        $exd = new \Dcp\ExportXmlDocument();
+        $exd->setDocument($this);
+        $exd->setExportFiles($this->exportFiles);
+        $exd->setExportDocumentNumericIdentiers($this->exportDocumentNumericIdentiers);
+        $exd->setStructureAttributes(true);
+        $exd->setIncludeSchemaReference(true);
+        $exd->setVerifyAttributeAccess($this->verifyAttributeAccess);
+        
         $c = 0;
         $rc = count($dl);
         /**
@@ -522,7 +538,8 @@ class ExportCollection
             $maxBytesLen = MAX_FILENAME_LEN - strlen($suffix);
             $fname = sprintf("%s/%s%s", $foutdir, mb_strcut($ftitle, 0, $maxBytesLen, 'UTF-8') , $suffix);
             
-            $doc->exportXml($xml, $this->exportFiles, $fname, $this->exportDocumentNumericIdentiers, $notUseNsdeclaration = false, $exportAttribute = array());
+            $exd->setDocument($doc);
+            $exd->writeTo($fname);
         }
         
         if ($this->outputFormat === self::xmlFileOutputFormat) {

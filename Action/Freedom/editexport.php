@@ -66,5 +66,13 @@ function editexport(Action & $action)
     } elseif ($csvEnclosure !== "") {
         $action->lay->set("customEnclosure", $csvEnclosure);
     }
+    
+    if ($action->canExecute("EXPORTFOLDER", "DOCADMIN") == "") {
+        $action->lay->set("exportaction", "EXPORTFOLDER");
+        $action->lay->set("exportapp", "DOCADMIN");
+    } else {
+        $action->lay->set("exportaction", "EXPORTFLD");
+        $action->lay->set("exportapp", "FDL");
+    }
 }
 ?>

@@ -33,8 +33,8 @@ class BasicAttribute
     public $type; // text, longtext, date, file, ...
     public $usefor; // = Q if parameters.
     public $ordered; // order to place attributes
-    public $format; // subtype
-    
+    public $format; // subtypepublic
+    public $isNormal = null;
     /**
      * @var FieldSetAttribute field set object
      */
@@ -227,6 +227,7 @@ class BasicAttribute
      *
      * @param Doc $doc working doc
      * @param bool|\exportOptionAttribute $opt
+     * @deprecated use \Dcp\ExportXmlDocument class instead
      *
      * @return string
      */
@@ -512,6 +513,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @param Doc $doc working doc
      * @param bool|\exportOptionAttribute $opt
+     * @deprecated use \Dcp\ExportXmlDocument class intead
      *
      * @return string
      */
@@ -1391,6 +1393,7 @@ class FieldSetAttribute extends BasicAttribute
      *
      * @param Doc $doc working doc
      * @param exportOptionAttribute $opt
+     * @deprecated use \Dcp\ExportXmlDocument class instead
      *
      * @return string
      */

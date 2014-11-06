@@ -2,7 +2,7 @@ function testexport(s) {
     var mode = s.options[s.selectedIndex].value;
     var f = s.form;
     if (mode == 'X' || mode == 'Y') {
-        f.action.value = 'EXPORTXMLFLD';
+        //f.action.value = 'EXPORTXMLFLD';
         for (var i in f.code.options) {
             if (f.code.options[i].value == 'utf8') f.code.options[i].selected = true;
             else  f.code.options[i].selected = false;
@@ -15,7 +15,7 @@ function testexport(s) {
         //f.wident.className='disable';
         f.wcolumn.className = 'disable';
     } else {
-        f.action.value = 'EXPORTFLD';
+      //  f.action.value = 'EXPORTFLD';
         f.code.disabled = false;
         f.wprof.disabled = false;
         f.wident.disabled = false;

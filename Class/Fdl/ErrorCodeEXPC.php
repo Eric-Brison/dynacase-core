@@ -92,4 +92,25 @@ class ErrorCodeEXPC
      * @see Dcp\ExportCollection::setCvsSeparator
      */
     const EXPC0016 = 'EXPORT : Only one character for CSV separator : found "%s".';
+    /**
+     * @errorCode The output file cannot be written
+     * @see Dcp\ExportXmlDocument::writeTo
+     */
+    const EXPC0100 = 'EXPORT Xml : Cannot write output to file "%s".';
+    /**
+     * @errorCode The output file cannot be written
+     * @see Dcp\ExportXmlDocument::writeTo
+     */
+    const EXPC0101 = 'EXPORT Xml : Cannot apen output in write mode "%s".';
+    /**
+     * @errorCode The output file cannot be written
+     * @see Dcp\ExportXmlDocument::writeTo
+     */
+    const EXPC0102 = 'EXPORT Xml : Cannot insert attached files to output  file "%s".';
+    /**
+     * @errorCode The output file cannot be written
+     * @see Dcp\ExportXmlDocument::getXml
+     * @see Dcp\ExportXmlDocument::setExportFiles
+     */
+    const EXPC0103 = 'EXPORT Xml : Cannot export file using "ExportXmlDocument::getXml"';
 }

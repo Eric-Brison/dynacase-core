@@ -181,12 +181,21 @@ class TestExportCollection extends TestCaseDcpCommonFamily
             $entries = $xp->query($path);
             $found = 0;
             $foundValues = array();
-            
-            foreach ($entries as $entry) {
-                if ($entry->nodeValue == $value) $found++;
-                $foundValues[] = $entry->nodeValue;
+            if (is_array($value)) {
+                foreach ($entries as $entry) {
+                    if ($entry->nodeValue == $value) {
+                        $found++;
+                    }
+                    $foundValues[] = $entry->nodeValue;
+                }
+                $this->assertEquals($value, $foundValues, sprintf("Item \"%s\" not found in %s path, found \n\t%s\n", print_r($value, true) , $path, implode("\n\t", $foundValues)));
+            } else {
+                foreach ($entries as $entry) {
+                    if ($entry->nodeValue == $value) $found++;
+                    $foundValues[] = $entry->nodeValue;
+                }
+                $this->assertGreaterThan(0, $found, sprintf("Item \"%s\" not found in %s path, found \n\t%s\n", $value, $path, implode("\n\t", $foundValues)));
             }
-            $this->assertGreaterThan(0, $found, sprintf("Item \"%s\" not found in %s path, found \n\t%s\n", $value, $path, implode("\n\t", $foundValues)));
         }
     }
     /**
@@ -442,7 +451,10 @@ class TestExportCollection extends TestCaseDcpCommonFamily
                     "tst_frame1/tst_number" => "3",
                     "tst_tab_i/tst_frame2/tst_longtext" => "Trois long",
                     // "tst_tab_i/tst_frame2/tst_array/tst_othertexts" => "Une deuxième",
-                    "tst_tab_i/tst_frame2/tst_array/tst_othertexts" => "Une ligne<BR>avec retour"
+                    "tst_tab_i/tst_frame2/tst_array/tst_othertexts" => array(
+                        "Une ligne<BR>avec retour",
+                        "Une deuxième"
+                    )
                 )
             )
         );

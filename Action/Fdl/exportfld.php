@@ -27,6 +27,7 @@ include_once ("FDL/import_file.php");
  * @param string $aflid Folder identifier to use if no "id" http vars
  * @param string $famid Family restriction to filter folder content
  * @param string $outputPath where put export, if wfile outputPath is a directory
+ * @param bool $exportInvisibleVisibilities set to true to export invisible attribute also
  * @throws Dcp\Exception
  * @throws Exception
  * @global string $fldid Http var : folder identifier to export
@@ -39,7 +40,7 @@ include_once ("FDL/import_file.php");
  * @global string $selection Http var :  JSON document selection object
  * @return void
  */
-function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = "")
+function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = "", $exportInvisibleVisibilities = false)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
@@ -193,6 +194,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
                 $foutname = uniqid(getTmpDir() . "/exportfld") . ".csv";
             }
         }
+        $foutname = uniqid(getTmpDir() . "/exportfld");
     }
     
     if (file_exists($foutname)) {
@@ -214,6 +216,11 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
                     $fileMime = "text/xml";
                     break;
 
+                case Dcp\ExportCollection::xmlArchiveOutputFormat:
+                    $fname.= ".zip";
+                    $fileMime = "application/x-zip";
+                    break;
+
                 default:
                     if ($wfile) {
                         
@@ -233,7 +240,6 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
     catch(Dcp\Exception $e) {
         throw $e;
     }
-
 }
 /**
  * @param Action $action
@@ -250,8 +256,6 @@ function recordStatus(Action & $action, $exportId, $msg, $endStatus = false)
         "end" => $endStatus
     ));
 }
-
-
 /**
  * Removes content of the directory (not sub directory)
  *

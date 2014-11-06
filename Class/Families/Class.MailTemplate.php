@@ -277,7 +277,7 @@ class MailTemplate extends \Dcp\Family\Document
             $from = getParam('SMTP_FROM');
         }
         if ($from == "") {
-            $from = $action->user->login . '@' . $_SERVER["HTTP_HOST"];
+            $from = $action->user->login . '@' . (isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "");
         }
         
         if (trim($to . $cc . $bcc) == "") {
