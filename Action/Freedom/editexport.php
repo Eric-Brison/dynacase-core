@@ -70,9 +70,11 @@ function editexport(Action & $action)
     if ($action->canExecute("EXPORTFOLDER", "DOCADMIN") == "") {
         $action->lay->set("exportaction", "EXPORTFOLDER");
         $action->lay->set("exportapp", "DOCADMIN");
+        $action->lay->set("viewinfo", true);
     } else {
         $action->lay->set("exportaction", "EXPORTFLD");
         $action->lay->set("exportapp", "FDL");
+        $action->lay->set("viewinfo", false);
     }
 }
 ?>

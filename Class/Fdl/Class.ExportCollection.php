@@ -514,6 +514,8 @@ class ExportCollection
             throw new Exception("EXPC0006", $foutdir);
         }
         
+        VerifyAttributeAccess::clearCache();
+        
         $exd = new \Dcp\ExportXmlDocument();
         $exd->setDocument($this);
         $exd->setExportFiles($this->exportFiles);

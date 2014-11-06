@@ -135,6 +135,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
     $exportCollection->setExportDocumentNumericIdentiers($wident);
     $exportCollection->setUseUserColumnParameter(!$nopref);
     $exportCollection->setOutputFileEncoding($wutf8 ? Dcp\ExportCollection::utf8Encoding : Dcp\ExportCollection::latinEncoding);
+    $exportCollection->setVerifyAttributeAccess(!$exportInvisibleVisibilities);
     
     if ((!$fldid) && $selection) {
         $selection = json_decode($selection);

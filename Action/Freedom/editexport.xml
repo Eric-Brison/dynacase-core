@@ -17,6 +17,17 @@ input[type=submit] {
     margin-left:3px;
     width:1em;
     }
+
+    .caution {
+    text-align:right;
+    }
+.caution span {
+    margin-right:10px;
+    font-style: italic;
+}
+    .submit {
+        width : 5em;
+    }
 </style>
 <h2 style="text-align:center">[TEXT:Export Documents from] </h2>
 <h3 style="text-align:center">[title]</h3>
@@ -86,7 +97,8 @@ input[type=submit] {
 
   </td></tr>
 
-<tr><td colspan="3" align="right"><input id="bExport" type="submit" value="[TEXT:Export]"></td></tr>
+<tr><td colspan="2" class="caution">[IF viewinfo]<span>[TEXT:Export as administrator. Attributes with invisibility access are exported.]</span>[ENDIF viewinfo]
+    </td><td class="submit"><input id="bExport" type="submit" value="[TEXT:Export]"></td></tr>
 </table>
 
 </form>

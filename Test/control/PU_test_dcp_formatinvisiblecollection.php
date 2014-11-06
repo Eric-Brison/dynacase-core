@@ -175,7 +175,6 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
         
         $this->assertTrue(filesize($outFile) > 0, sprintf("\"%s\" file not produced", $outFile));
         
-        print_r2($outFile);
         $dom = new \DOMDocument();
         $dom->load($outFile);
         
@@ -239,7 +238,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                     
                     $this->famName . '[@name = "TST_INVISIBLE_DOC3"]/tst_frame1/tst_number[@granted = "false"]' => "",
                     $this->famName . '[@name = "TST_INVISIBLE_DOC3"]/tst_frame1/tst_text[@granted = "false"]' => "",
-                    $this->famName . '[@name = "TST_INVISIBLE_DOC3"]/tst_tab_i/tst_frame2/tst_decimal]' => "3.3",
+                    $this->famName . '[@name = "TST_INVISIBLE_DOC3"]/tst_tab_i/tst_frame2/tst_decimal' => "3.3",
                 )
             )
         );

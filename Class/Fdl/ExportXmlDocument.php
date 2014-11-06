@@ -118,20 +118,10 @@ class ExportXmlDocument
         
         foreach ($la as $k => & $v) {
             if (($v->id != "FIELD_HIDDENS") && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == "FIELD_HIDDENS")) {
-                // @TODO NOT HERE
-                if ($this->verifyAttributeAccess && !$this->isAttributeAccessGranted($this->document, $v)) {
-                    
-                    $level1[] = array(
-                        "level" => sprintf("<BOHH/>")
-                    );
-                } else {
-                    $level1[] = array(
-                        "level" => $this->getStructXmlValue($this->document, $v)
-                    );
-                }
-            } else {
-                // if ($v)  $tax[]=array("tax"=>$v->getXmlSchema());
                 
+                $level1[] = array(
+                    "level" => $this->getStructXmlValue($v)
+                );
             }
         }
         $lay->setBlockData("top", $level1);
@@ -182,38 +172,17 @@ class ExportXmlDocument
         return '';
     }
     /**
-     * Verify is attribute has visible access
-     * @param \Doc $doc the document to see
-     * @param \BasicAttribute $attribute the attribut to see
-     * @return bool return true if can be viewed
-     */
-    protected static function isAttributeAccessGranted(\Doc $doc, \BasicAttribute $attribute)
-    {
-        static $attributeGrants = array();
-        $key = sprintf("%0d-%0d-%0d-%s", $doc->fromid, $doc->cvid, $doc->wid, $doc->state);
-        
-        if (!isset($attributeGrants[$key])) {
-            $doc->setMask(\Doc::USEMASKCVVIEW);
-            $attributeGrants[$key] = array();
-            $oas = $doc->getNormalAttributes();
-            foreach ($oas as $oa) {
-                if ($oa->mvisibility === "I") {
-                    $attributeGrants[$key][$oa->id] = false;
-                }
-            }
-        }
-        return (!isset($attributeGrants[$key][$attribute->id]));
-    }
-    /**
      * export values as xml fragment
      *
-     * @param \Doc $doc working doc
+     * @param \NormalAttribute $attribute
+     * @param int $indexValue (in case of multiple value)
      *
      * @return string
      */
-    protected function getAttributeXmlValue(\Doc & $doc, \NormalAttribute $attribute, $indexValue)
+    protected function getAttributeXmlValue(\NormalAttribute $attribute, $indexValue)
     {
-        if ($this->verifyAttributeAccess && !$this->isAttributeAccessGranted($this->document, $attribute)) {
+        $doc = $this->document;
+        if ($this->verifyAttributeAccess && !VerifyAttributeAccess::isAttributeAccessGranted($this->document, $attribute)) {
             return sprintf("<%s granted=\"false\"/>", $attribute->id);
         }
         
@@ -243,7 +212,7 @@ class ExportXmlDocument
                         $oa = $doc->getAttribute($aid);
                         if (empty($this->attributeToExport[$doc->fromid]) || in_array($aid, $this->attributeToExport[$doc->fromid])) {
                             $indexValue = $k;
-                            $xmlvalues[] = $this->getAttributeXmlValue($doc, $oa, $indexValue);
+                            $xmlvalues[] = $this->getAttributeXmlValue($oa, $indexValue);
                         }
                     }
                     $axml[] = sprintf("<%s>%s</%s>", $attribute->id, implode("\n", $xmlvalues) , $attribute->id);
@@ -351,24 +320,25 @@ class ExportXmlDocument
             }
     }
     
-    protected function getXmlValue(\Doc & $doc, \BasicAttribute $attribute, $indexValue)
+    protected function getXmlValue(\BasicAttribute $attribute, $indexValue)
     {
         if ($attribute->isNormal === true) {
-            return $this->getAttributeXmlValue($doc, $attribute, $indexValue);
+            return $this->getAttributeXmlValue($attribute, $indexValue);
         } else {
-            return $this->getStructXmlValue($doc, $attribute, $indexValue);
+            return $this->getStructXmlValue($attribute, $indexValue);
         }
     }
     /**
      * export values as xml fragment
      *
-     * @param \Doc $doc working doc
-     * @param \exportOptionAttribute $opt
+     * @param \FieldSetAttribute $structAttribute
+     * @param int $indexValue
      *
      * @return string
      */
-    protected function getStructXmlValue(\Doc & $doc, \FieldSetAttribute $structAttribute, $indexValue = - 1)
+    protected function getStructXmlValue(\FieldSetAttribute $structAttribute, $indexValue = - 1)
     {
+        $doc = $this->document;
         $la = $doc->getAttributes();
         $xmlvalues = array();
         foreach ($la as $k => $v) {
@@ -376,7 +346,7 @@ class ExportXmlDocument
              * @var \NormalAttribute $v
              */
             if ($v->fieldSet && $v->fieldSet->id == $structAttribute->id && (empty($this->attributeToExport[$doc->fromid]) || in_array($v->id, $this->attributeToExport[$doc->fromid]))) {
-                $value = $this->getXmlValue($doc, $v, $indexValue);
+                $value = $this->getXmlValue($v, $indexValue);
                 if ($v->type == "htmltext" && $this->exportFiles) {
                     $value = $v->prepareHtmltextForExport($value);
                     if ($this->exportFiles) {
