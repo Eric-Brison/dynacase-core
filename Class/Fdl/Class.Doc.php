@@ -7065,7 +7065,7 @@ create unique index i_docir on doc(initid, revision);";
                             }
                         }
                     }
-
+                    
                     $tableframe[$v]["attrid"] = $attr->id;
                     $tableframe[$v]["atype"] = $attr->type;
                     $tableframe[$v]["classback"] = ($attr->usefor == "O") ? "FREEDOMOpt" : "FREEDOMBack1";
@@ -7947,93 +7947,30 @@ create unique index i_docir on doc(initid, revision);";
      * @param boolean $withfile include files in base64 encoded
      * @param string $outfile if not empty means content is put into this file
      * @param boolean $flat set to true if don't want structure
-     * @param array $exportAttribute to export only a part of attributes
+     * @param array $exportAttributes to export only a part of attributes
      * @return string error message (empty if no error)
      */
     public function exportXml(&$xml, $withfile = false, $outfile = "", $wident = true, $flat = false, $exportAttributes = array())
     {
-        $err = '';
-        $lay = new Layout(getLayoutFile("FDL", "exportxml.xml"));
-        //$lay=&$this->lay;
-        $lay->set("famname", strtolower($this->fromname));
-        $lay->set("id", ($wident ? $this->id : ''));
-        $lay->set("name", $this->name);
-        $lay->set("revision", $this->revision);
-        $lay->set("version", $this->getVersion());
-        $lay->set("state", $this->getState());
-        $lay->set("title", str_replace(array(
-            "&",
-            '<',
-            '>'
-        ) , array(
-            "&amp;",
-            '&lt;',
-            '&gt;'
-        ) , $this->getTitle()));
-        $lay->set("mdate", strftime("%FT%X", $this->revdate));
-        $lay->set("flat", $flat);
-        $la = $this->GetFieldAttributes();
-        $level1 = array();
-        
-        foreach ($la as $k => $v) {
-            if ((!$v) || ($v->getOption("autotitle") == "yes") || ($v->usefor == 'Q')) unset($la[$k]);
-        }
-        $option = new exportOptionAttribute();
-        $option->withFile = $withfile;
-        $option->outFile = $outfile;
-        $option->withIdentifier = $wident;
-        $option->flat = $flat;
-        $option->exportAttributes = $exportAttributes;
-        
-        foreach ($la as $k => & $v) {
-            if (($v->id != "FIELD_HIDDENS") && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == "FIELD_HIDDENS")) {
-                $level1[] = array(
-                    "level" => $v->getXmlValue($this, $option)
-                );
+        try {
+            $exd = new Dcp\ExportXmlDocument();
+            $exd->setDocument($this);
+            $exd->setExportFiles($withfile);
+            $exd->setExportDocumentNumericIdentiers($wident);
+            $exd->setStructureAttributes(!$flat);
+            $exd->setIncludeSchemaReference(!$flat);
+            $exd->setAttributeToExport($exportAttributes);
+            
+            if ($outfile) {
+                $exd->writeTo($outfile);
             } else {
-                // if ($v)  $tax[]=array("tax"=>$v->getXmlSchema());
-                
+                $xml = $exd->getXml();
             }
         }
-        $lay->setBlockData("top", $level1);
-        if ($outfile) {
-            if ($withfile) {
-                $xmlcontent = $lay->gen();
-                $fo = fopen($outfile, "w");
-                $pos = strpos($xmlcontent, "[FILE64");
-                $bpos = 0;
-                while ($pos !== false) {
-                    if (fwrite($fo, substr($xmlcontent, $bpos, $pos - $bpos))) {
-                        $bpos = strpos($xmlcontent, "]", $pos) + 1;
-                        
-                        $filepath = substr($xmlcontent, $pos + 8, ($bpos - $pos - 9));
-                        /* If you want to encode a large file, you should encode it in chunks that
-                                            are a multiple of 57 bytes.  This ensures that the base64 lines line up
-                                            and that you do not end up with padding in the middle. 57 bytes of data
-                                            fills one complete base64 line (76 == 57*4/3):*/
-                        $ff = fopen($filepath, "r");
-                        $size = 6 * 1024 * 57;
-                        while ($buf = fread($ff, $size)) {
-                            fwrite($fo, base64_encode($buf));
-                        }
-                        $pos = strpos($xmlcontent, "[FILE64", $bpos);
-                    } else {
-                        $err = sprintf(_("exportXml : cannot write file %s") , $outfile);
-                        $pos = false;
-                    }
-                }
-                if ($err == "") fwrite($fo, substr($xmlcontent, $bpos));
-                fclose($fo);
-            } else {
-                if (file_put_contents($outfile, $lay->gen()) === false) {
-                    $err = sprintf(_("exportXml : cannot write file %s") , $outfile);
-                }
-            }
-        } else {
-            $xml = $lay->gen();
-            return $err;
+        catch(Dcp\Exception $e) {
+            return $e->getMessage();
         }
-        return $err;
+        return '';
     }
     // =====================================================================================
     // ================= Methods use for XML ======================
@@ -8883,7 +8820,6 @@ create unique index i_docir on doc(initid, revision);";
         } else $err = sprintf(_("unattachTimer : the timer parameter is not a document of TIMER family"));
         return $err;
     }
-
     /**
      * Recompute timer's delay for all attached dynamic timers
      */

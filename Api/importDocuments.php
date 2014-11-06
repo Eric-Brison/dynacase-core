@@ -146,6 +146,7 @@ if ($strict == 'no') $oImport->setStrict(false);
 $oImport->setCsvOptions($csvSeparator, $csvEnclosure, $csvLinebreak);
 $oImport->setPolicy($policy);
 $oImport->setReset($reset);
+$oImport->setVerifyAttributeAccess(false);
 if ($dirid) $oImport->setTargetDirectory($dirid);
 $cr = $oImport->importDocuments($action, $filename, $analyze != "no", $archive == "yes");
 

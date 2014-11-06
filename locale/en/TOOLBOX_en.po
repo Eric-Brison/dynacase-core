@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-24 14:51+0200\n"
+"POT-Creation-Date: 2014-11-06 14:06+0100\n"
 "PO-Revision-Date: 2014-08-20 16:23+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -850,10 +850,6 @@ msgstr ""
 
 #, php-format
 msgid "Cannot see attribute %s"
-msgstr ""
-
-#, php-format
-msgid "Cannot set logical name %s because object is not affected"
 msgstr ""
 
 #, php-format
@@ -1844,6 +1840,10 @@ msgid "Export Folder"
 msgstr ""
 
 msgid "Export archive file with data file - fdl.csv- and attached files"
+msgstr ""
+
+msgid ""
+"Export as administrator. Attributes with invisibility access are exported."
 msgstr ""
 
 msgid "Export done"
@@ -3221,9 +3221,6 @@ msgstr ""
 msgid "Record documents %d/%d"
 msgstr ""
 
-msgid "Record system families"
-msgstr ""
-
 msgid "Redo export"
 msgstr ""
 
@@ -4553,7 +4550,11 @@ msgid "attribute %s not found [%s]"
 msgstr ""
 
 #, php-format
-msgid "attribute %s unknow in family %s [%d]"
+msgid "attribute %s unknow in document \"%s\" [%s]"
+msgstr ""
+
+#, php-format
+msgid "attribute %s unknow in family \\#%s\""
 msgstr ""
 
 msgid "attribute id"
@@ -4676,10 +4677,6 @@ msgid "cannot compare two document which comes from two different family"
 msgstr ""
 
 msgid "cannot contact server"
-msgstr ""
-
-#, php-format
-msgid "cannot copy %s"
 msgstr ""
 
 #, php-format
@@ -5825,10 +5822,6 @@ msgid "export preferences are saved"
 msgstr ""
 
 msgid "export preferences has been cleared"
-msgstr ""
-
-#, php-format
-msgid "exportXml : cannot write file %s"
 msgstr ""
 
 msgid "familly"

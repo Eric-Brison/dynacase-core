@@ -12,19 +12,19 @@ namespace Dcp\Core;
 use \Dcp\AttributeIdentifiers\Report as MyAttributes;
 class Report extends \Dcp\Family\Dsearch
 {
-    /*
-     * @end-method-ignore
-    */
-    var $defaultedit = "FREEDOM:EDITREPORT";
-    var $defaultview = "FREEDOM:VIEWREPORT";
     
-    var $cviews = array(
+    public $defaultedit = "FREEDOM:EDITREPORT";
+    public $defaultview = "FREEDOM:VIEWREPORT";
+    
+    public $cviews = array(
         "FREEDOM:VIEWREPORT",
         "FREEDOM:VIEWMINIREPORT:T"
     );
-    var $eviews = array(
+    public $eviews = array(
         "FREEDOM:EDITREPORT"
     );
+    
+    protected $attributeGrants = array();
     /**
      * public because use in RSS
      *
@@ -279,7 +279,7 @@ class Report extends \Dcp\Family\Dsearch
             "endframe" => (!$isNew) && $soa->type == "frame",
             "endtab" => (!$isNew) && $soa->type == "tab",
             "endarray" => (!$isNew) && $soa->type == "array",
-            "need" => $soa->needed,
+            "need" => isset($soa->needed) && $soa->needed,
             "hidden" => $soa->visibility == 'H',
             "selected" => false,
             "attrname" => $soa->getLabel()
@@ -335,6 +335,10 @@ class Report extends \Dcp\Family\Dsearch
                 }
             }
         }
+        
+        $tcols[] = "cvid";
+        $tcols[] = "wid";
+        $tcols[] = "state";
         $this->lay->setBlockData("COLS", $tcolumn2);
         $this->lay->set("HASCOLS", count($tcolumn2) > 0);
         include_once ("FDL/Lib.Dir.php");
@@ -393,6 +397,7 @@ class Report extends \Dcp\Family\Dsearch
         $tcolor = $this->getMultipleRawValues("REP_COLORS");
         $trow = array();
         $k = 0;
+        \Dcp\VerifyAttributeAccess::clearCache();
         while ($rdoc = $s->getNextDoc()) {
             $k++;
             $trow[$k] = array(
@@ -412,6 +417,7 @@ class Report extends \Dcp\Family\Dsearch
                     "cellval" => ""
                 );
                 else {
+                    $visible = true;
                     switch ($kc) {
                         case "revdate":
                             // $cval= (date("Y-m-d H:i:s", $rdoc->getRawValue($kc)));
@@ -434,19 +440,30 @@ class Report extends \Dcp\Family\Dsearch
 
                         default:
                             if ($tDisplayOption[$ki] == "docid") {
+                                $visible = \Dcp\VerifyAttributeAccess::isAttributeAccessGranted($rdoc, $lattr[$kc]);
                                 $cval = $rdoc->getRawValue($kc);
                             } else {
                                 $cval = $rdoc->getPropertyValue($kc);
                                 if ($cval === false) {
+                                    $visible = \Dcp\VerifyAttributeAccess::isAttributeAccessGranted($rdoc, $lattr[$kc]);
                                     $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getRawValue($kc) , $target, $ulink);
                                 }
                             }
-                            if (isset($lattr[$kc]) && $lattr[$kc]->type == "image") $cval = "<img width=\"40px\" src=\"$cval\">";
-                        }
+                            if (isset($lattr[$kc]) && $lattr[$kc]->type == "image") {
+                                $cval = "<img width=\"40px\" src=\"$cval\">";
+                            }
+                    }
+                    if ($visible) {
                         $tcell[$ki] = array(
                             "cellval" => $cval,
                             "rawval" => $rdoc->getRawValue($kc)
                         );
+                    } else {
+                        $tcell[$ki] = array(
+                            "cellval" => $this->getFamilyParameterValue(MyAttributes::rep_noaccesstext) ,
+                            "rawval" => ""
+                        );
+                    }
                 }
                 $tcell[$ki]["bgcell"] = current($tcolor);
                 next($tcolor);
@@ -502,6 +519,7 @@ class Report extends \Dcp\Family\Dsearch
             $this->lay->set("TITLE", $this->getHTMLTitle());
             return $err;
     }
+
     /**
      * Generate data struct to csv export of a report
      *
@@ -531,8 +549,10 @@ class Report extends \Dcp\Family\Dsearch
         $famDoc = createDoc($this->dbaccess, $famId, false);
         $tcols = $this->getMultipleRawValues("rep_idcols");
         $tcolsOption = $this->getMultipleRawValues("rep_displayoption");
-        
-        $search->returnsOnly($tcols);
+        $searchCols = $tcols;
+        $searchCols[] = "cvid";
+        $searchCols[] = "wid";
+        $search->returnsOnly($searchCols);
         
         if ($isPivotExport) {
             $search->search();
@@ -677,6 +697,11 @@ class Report extends \Dcp\Family\Dsearch
         $fc = new \FormatCollection();
         $dl = $search->getDocumentList();
         $fc->useCollection($dl);
+        
+        $htmlNoAccess = new \DOMDocument();
+        $htmlNoAccess->loadHTML($this->getFamilyParameterValue(MyAttributes::rep_noaccesstext));
+        
+        $fc->setNoAccessText(trim($htmlNoAccess->textContent));
         if ($separator) $fc->setDecimalSeparator($separator);
         $fc->relationIconSize = 0;
         $fc->stripHtmlTags($stripHtmlFormat);
@@ -706,6 +731,8 @@ class Report extends \Dcp\Family\Dsearch
                 }
             }
         }
+        
+        $fc->setLongtextMultipleBrToCr(" "); // longtext are in a single line if multiple
         $fc->setNc('-');
         $fc->setHookAdvancedStatus(function ($s)
         {
@@ -728,7 +755,6 @@ class Report extends \Dcp\Family\Dsearch
             $line = array();
             foreach ($columns as $kc => $col) {
                 $cellValue = '';
-                $dDocid = ($displayOptions[$kc] == "docid");
                 if (isset($render["attributes"][$col])) {
                     $cellValue = \FormatCollection::getDisplayValue($render["attributes"][$col], $famDoc->getAttribute($col) , -1, array(
                         'displayDocId' => ($displayOptions[$kc] == "docid") ,

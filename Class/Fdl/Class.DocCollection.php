@@ -547,6 +547,7 @@ class DocCollection extends Doc
         $s->useCollection($this->initid);
         $s->setObjectReturn();
         $s->excludeConfidential();
+        $s->setOrder("fromid, title, id desc");
         return $s->search()->getDocumentList();
     }
 }

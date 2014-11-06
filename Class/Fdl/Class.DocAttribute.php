@@ -33,8 +33,8 @@ class BasicAttribute
     public $type; // text, longtext, date, file, ...
     public $usefor; // = Q if parameters.
     public $ordered; // order to place attributes
-    public $format; // subtype
-    
+    public $format; // subtypepublic
+    public $isNormal = null;
     /**
      * @var FieldSetAttribute field set object
      */
@@ -180,9 +180,6 @@ class BasicAttribute
      */
     function inArray()
     {
-        if (get_class($this) == "NormalAttribute") {
-            if ($this->fieldSet && $this->fieldSet->type == "array") return true;
-        }
         return false;
     }
     /**
@@ -230,6 +227,7 @@ class BasicAttribute
      *
      * @param Doc $doc working doc
      * @param bool|\exportOptionAttribute $opt
+     * @deprecated use \Dcp\ExportXmlDocument class instead
      *
      * @return string
      */
@@ -515,6 +513,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @param Doc $doc working doc
      * @param bool|\exportOptionAttribute $opt
+     * @deprecated use \Dcp\ExportXmlDocument class intead
      *
      * @return string
      */
@@ -817,8 +816,13 @@ class NormalAttribute extends BasicAttribute
      *
      * @param Doc $doc current Doc
      * @param int $index index if multiple
-     * @param array $configuration value config array : dateFormat => 'US' 'ISO', decimalSeparator => '.',
-     * multipleSeparator => array(0 => 'arrayLine', 1 => 'multiple') (defaultValue : dateFormat : 'US', decimalSeparator : '.', multiple => array(0 => "\n", 1 => ", "))
+     * @param array $configuration value config array :
+     * dateFormat => 'US' 'ISO',
+     * decimalSeparator => '.',
+     * longtextMultipleBrToCr => ' '
+     * multipleSeparator => array(0 => 'arrayLine', 1 => 'multiple')
+     *
+     * (defaultValue : dateFormat : 'US', decimalSeparator : '.', multiple => array(0 => "\n", 1 => ", "))
      *
      * @return string
      */
@@ -841,8 +845,26 @@ class NormalAttribute extends BasicAttribute
         } else {
             $fc->setDateStyle(\DateAttributeValue::defaultStyle);
         }
+        if (isset($configuration['longtextMultipleBrToCr'])) {
+            $fc->setLongtextMultipleBrToCr($configuration['longtextMultipleBrToCr']);
+        } else {
+            $fc->setLongtextMultipleBrToCr(" "); // long text are in a single line
+            
+        }
         $info = $fc->getInfo($this, $value, $doc);
+        if (empty($info)) {
+            return '';
+        }
         return \FormatCollection::getDisplayValue($info, $this, $index, $configuration);
+    }
+    /**
+     * to see if an attribute is n item of an array
+     *
+     * @return boolean
+     */
+    function inArray()
+    {
+        return ($this->fieldSet && $this->fieldSet->type === "array");
     }
     /**
      * Return array of enumeration definition
@@ -1042,7 +1064,7 @@ class NormalAttribute extends BasicAttribute
                 }
                 return $tv;
             } else {
-                return (array_key_exists($enumid,$cached)) ? $cached[$enumid] : $enumid;
+                return (array_key_exists($enumid, $cached)) ? $cached[$enumid] : $enumid;
             }
         }
         
@@ -1371,6 +1393,7 @@ class FieldSetAttribute extends BasicAttribute
      *
      * @param Doc $doc working doc
      * @param exportOptionAttribute $opt
+     * @deprecated use \Dcp\ExportXmlDocument class instead
      *
      * @return string
      */

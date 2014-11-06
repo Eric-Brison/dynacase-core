@@ -29,18 +29,21 @@
  */
 class FormatCollection
 {
+    const noAccessText = "N.C.";
     /**
      * @var DocumentList $dl
      */
-    private $dl = null;
+    protected $dl = null;
     public $debug = array();
-    private $propsKeys = array();
-    private $fmtProps = array(
+    protected $propsKeys = array();
+    protected $fmtProps = array(
         self::propId,
         self::title
     );
-    private $fmtAttrs = array();
-    private $ncAttribute = '';
+    protected $fmtAttrs = array();
+    protected $ncAttribute = '';
+    
+    protected $noAccessText = self::noAccessText;
     /**
      * @var int family icon size in pixel
      */
@@ -66,15 +69,24 @@ class FormatCollection
      */
     public $useShowEmptyOption = true;
     
-    private $decimalSeparator = ',';
+    protected $attributeGrants = array();
     
-    private $dateStyle = DateAttributeValue::defaultStyle;
+    protected $decimalSeparator = ',';
     
-    private $stripHtmlTag = false;
+    protected $dateStyle = DateAttributeValue::defaultStyle;
+    
+    protected $stripHtmlTag = false;
+    
+    protected $longtextMultipleBrToCr = "\n";
+    /**
+     * Verify attribute visibility "I"
+     * @var bool
+     */
+    protected $verifyAttributeAccess = true;
     /**
      * @var closure
      */
-    private $hookStatus = null;
+    protected $hookStatus = null;
     const title = "title";
     /**
      * name property
@@ -112,6 +124,8 @@ class FormatCollection
      * creation date
      */
     const cdate = "cdate";
+    
+    protected $singleDocument = false;
     public function __construct($doc = null)
     {
         $this->propsKeys = array_keys(Doc::$infofields);
@@ -119,7 +133,25 @@ class FormatCollection
             $this->dl = array(
                 $doc
             );
+            $this->singleDocument = true;
         }
+    }
+    /**
+     * If false, attribute with "I" visibility are  returned
+     * @param boolean $verifyAttributeAccess
+     */
+    public function setVerifyAttributeAccess($verifyAttributeAccess)
+    {
+        $this->verifyAttributeAccess = $verifyAttributeAccess;
+    }
+    /**
+     * Use when cannot access attribut value
+     * Due to visibility "I"
+     * @param string $noAccessText
+     */
+    public function setNoAccessText($noAccessText)
+    {
+        $this->noAccessText = $noAccessText;
     }
     /**
      * default value returned when attribute not found in document
@@ -239,6 +271,7 @@ class FormatCollection
         $r = array();
         $kdoc = 0;
         $countDoc = count($this->dl);
+        \Dcp\VerifyAttributeAccess::clearCache();
         foreach ($this->dl as $docid => $doc) {
             if ($kdoc % 10 == 0) $this->callHookStatus(sprintf(_("Doc Render %d/%d") , $kdoc, $countDoc));
             foreach ($this->fmtProps as $propName) {
@@ -271,7 +304,7 @@ class FormatCollection
         }
         return $r;
     }
-    private function getPropInfo($propName, Doc $doc)
+    protected function getPropInfo($propName, Doc $doc)
     {
         switch ($propName) {
             case self::title:
@@ -295,7 +328,7 @@ class FormatCollection
                 return $doc->$propName;
         }
     }
-    private function getFormatDate($v)
+    protected function getFormatDate($v)
     {
         if ($this->dateStyle === DateAttributeValue::defaultStyle) return stringDateToLocaleDate($v);
         else if ($this->dateStyle === DateAttributeValue::isoStyle) return stringDateToIso($v, false, true);
@@ -308,7 +341,7 @@ class FormatCollection
         }
         return stringDateToLocaleDate($v);
     }
-    private function getState(Doc $doc)
+    protected function getState(Doc $doc)
     {
         $s = new StatePropertyValue();
         if ($doc->state) {
@@ -332,7 +365,7 @@ class FormatCollection
      * @param array $t
      * @return array
      */
-    private static function rtrimNull(array $t)
+    protected static function rtrimNull(array $t)
     {
         $i = count($t) - 1;
         for ($k = $i; $k >= 0; $k--) {
@@ -376,6 +409,7 @@ class FormatCollection
                 if ($oa->inArray() && count($tv) == 1 && $tv[0] == "\t") {
                     $tv[0] = '';
                 }
+                
                 foreach ($tv as $k => $av) {
                     $info[] = $this->getSingleInfo($oa, $av, $doc, $k);
                 }
@@ -387,59 +421,77 @@ class FormatCollection
             return $this->getSingleInfo($oa, $value, $doc);
         }
     }
+
     
-    private function getSingleInfo(NormalAttribute $oa, $value, $doc = null, $index = - 1)
+    protected function getSingleInfo(NormalAttribute $oa, $value, $doc = null, $index = - 1)
     {
         $info = null;
-        switch ($oa->type) {
-            case 'text':
-                $info = new TextAttributeValue($oa, $value);
-                break;
+        
+        if ($this->verifyAttributeAccess === true && !\Dcp\VerifyAttributeAccess::isAttributeAccessGranted($doc, $oa)) {
+            $info = new noAccessAttributeValue($this->noAccessText);
+        } else {
+            
+            switch ($oa->type) {
+                case 'text':
+                    $info = new TextAttributeValue($oa, $value);
+                    break;
 
-            case 'int':
-                $info = new IntAttributeValue($oa, $value);
-                break;
+                case 'longtext':
+                    $info = new LongtextAttributeValue($oa, $value, $this->longtextMultipleBrToCr);
+                    break;
 
-            case 'money':
-            case 'double':
-                $info = new DoubleAttributeValue($oa, $value, $this->decimalSeparator);
-                break;
+                case 'int':
+                    $info = new IntAttributeValue($oa, $value);
+                    break;
 
-            case 'enum':
-                $info = new EnumAttributeValue($oa, $value);
-                break;
+                case 'money':
+                case 'double':
+                    $info = new DoubleAttributeValue($oa, $value, $this->decimalSeparator);
+                    break;
 
-            case 'thesaurus':
-                $info = new ThesaurusAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
-                break;
+                case 'enum':
+                    $info = new EnumAttributeValue($oa, $value);
+                    break;
 
-            case 'docid':
-            case 'account':
-                $info = new DocidAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
-                break;
+                case 'thesaurus':
+                    $info = new ThesaurusAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
+                    break;
 
-            case 'file':
-                $info = new FileAttributeValue($oa, $value, $doc, $index, $this->mimeTypeIconSize);
-                break;
+                case 'docid':
+                case 'account':
+                    $info = new DocidAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
+                    break;
 
-            case 'image':
-                $info = new ImageAttributeValue($oa, $value, $doc, $index, $this->imageThumbnailSize);
-                break;
+                case 'file':
+                    $info = new FileAttributeValue($oa, $value, $doc, $index, $this->mimeTypeIconSize);
+                    break;
 
-            case 'timestamp':
-            case 'date':
-                $info = new DateAttributeValue($oa, $value, $this->dateStyle);
-                break;
+                case 'image':
+                    $info = new ImageAttributeValue($oa, $value, $doc, $index, $this->imageThumbnailSize);
+                    break;
 
-            case 'htmltext':
-                $info = new HtmltextAttributeValue($oa, $value, $this->stripHtmlTag);
-                break;
+                case 'timestamp':
+                case 'date':
+                    $info = new DateAttributeValue($oa, $value, $this->dateStyle);
+                    break;
 
-            default:
-                $info = new StandardAttributeValue($oa, $value);
-                break;
+                case 'htmltext':
+                    $info = new HtmltextAttributeValue($oa, $value, $this->stripHtmlTag);
+                    break;
+
+                default:
+                    $info = new StandardAttributeValue($oa, $value);
+                    break;
+            }
         }
         return $info;
+    }
+    /**
+     * @param string $longtextMultipleBrToCr
+     */
+    public function setLongtextMultipleBrToCr($longtextMultipleBrToCr)
+    {
+        $this->longtextMultipleBrToCr = $longtextMultipleBrToCr;
     }
     /**
      * get some stat to estimate time cost
@@ -473,12 +525,15 @@ class FormatCollection
         $attrIsMultiple = ($oAttr->getOption('multiple') == 'yes');
         $sepRow = isset($configuration['multipleSeparator'][0]) ? $configuration['multipleSeparator'][0] : "\n";
         $sepMulti = isset($configuration['multipleSeparator'][1]) ? $configuration['multipleSeparator'][1] : ", ";
-        $displayDocId = (isset($configuration['displayDocId']) && $configuration['displayDocId'] === true);
+        $displayDocId = (isset($configuration['displayDocId']) && $configuration['displayDocId'] === true) && (!isset($info->visible));
         
         if (is_array($info) && $index >= 0) {
             $info = array(
                 $info[$index]
             );
+        }
+        if ($displayDocId && is_array($info) && count($info) > 0) {
+            $displayDocId = (!isset($info[0]->visible));
         }
         
         $result = '';
@@ -486,7 +541,7 @@ class FormatCollection
             if ($attrIsMultiple) {
                 $multiList = array();
                 if (empty($info)) {
-                    $info=array();
+                    $info = array();
                 }
                 foreach ($info as $data) {
                     $multiList[] = $displayDocId ? $data->value : $data->displayValue;
@@ -499,7 +554,7 @@ class FormatCollection
             $rowList = array();
             if ($attrIsMultiple) {
                 if (empty($info)) {
-                    $info=array();
+                    $info = array();
                 }
                 foreach ($info as $multiData) {
                     $multiList = array();
@@ -532,7 +587,7 @@ class StandardAttributeValue
     
     public function __construct(NormalAttribute $oa, $v)
     {
-        $this->value = ($v==='')?null:$v;
+        $this->value = ($v === '') ? null : $v;
         $this->displayValue = $v;
     }
 }
@@ -543,7 +598,16 @@ class UnknowAttributeValue
     
     public function __construct($v)
     {
-        $this->value = ($v==='')?null:$v;
+        $this->value = ($v === '') ? null : $v;
+        $this->displayValue = $v;
+    }
+}
+class noAccessAttributeValue extends StandardAttributeValue
+{
+    public $visible = true;
+    public function __construct($v)
+    {
+        $this->value = '';
         $this->displayValue = $v;
     }
 }
@@ -562,7 +626,7 @@ class FormatAttributeValue extends StandardAttributeValue
     public function __construct(NormalAttribute $oa, $v)
     {
         
-        $this->value = ($v==='')?null:$v;
+        $this->value = ($v === '') ? null : $v;
         if ($oa->format) $this->displayValue = sprintf($oa->format, $v);
         else $this->displayValue = $v;
     }
@@ -570,6 +634,17 @@ class FormatAttributeValue extends StandardAttributeValue
 
 class TextAttributeValue extends FormatAttributeValue
 {
+}
+
+class LongtextAttributeValue extends FormatAttributeValue
+{
+    public function __construct(NormalAttribute $oa, $v, $multipleLongtextCr = "\n")
+    {
+        if ($oa->inArray()) {
+            $v = str_replace("<BR>", $multipleLongtextCr, $v);
+        }
+        parent::__construct($oa, $v);
+    }
 }
 
 class IntAttributeValue extends FormatAttributeValue
@@ -651,7 +726,7 @@ class EnumAttributeValue extends StandardAttributeValue
 {
     public function __construct(NormalAttribute $oa, $v)
     {
-        $this->value = ($v==='')?null:$v;
+        $this->value = ($v === '') ? null : $v;
         if ($v !== null && $v !== '') {
             $this->displayValue = $oa->getEnumLabel($v);
         }
@@ -668,8 +743,8 @@ class FileAttributeValue extends StandardAttributeValue
     public $icon = '';
     public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $iconMimeSize = 24)
     {
-
-        $this->value = ($v==='')?null:$v;
+        
+        $this->value = ($v === '') ? null : $v;
         if ($v) {
             $finfo = $doc->getFileInfo($v);
             if ($finfo) {
@@ -725,7 +800,7 @@ class DocidAttributeValue extends StandardAttributeValue
     public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
         $this->familyRelation = $oa->format;
-        $this->value = ($v==='')?null:$v;
+        $this->value = ($v === '') ? null : $v;
         $this->displayValue = DocTitle::getRelationTitle($v, $oa->getOption("docrev", "latest") == "latest", $doc);
         if ($this->displayValue !== false) {
             if ($v !== '' && $v !== null) {
@@ -746,7 +821,7 @@ class DocidAttributeValue extends StandardAttributeValue
         }
     }
     
-    private function getDocUrl($v, $docrev)
+    protected function getDocUrl($v, $docrev)
     {
         if (!$v) return '';
         $ul = "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=" . $v;

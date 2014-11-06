@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2014-11-03T11:56:37" author="O'reilly Master" name="recherche_Test_Famille_EXPCOLL">
+<tst_expcoll1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_expcoll1.xsd" name="TST_EXPCOLL_DOC6" title="Titre 1" revision="0" modification-date="2014-11-03T11:55:37" version="" state="">
+<tst_frame1><tst_title>Titre 6</tst_title>
+<tst_number>1</tst_number>
+<tst_date>2014-02-23</tst_date>
+<tst_enum>A</tst_enum>
+<tst_text>Six</tst_text>
+<tst_file vid="0" mime="text/plain" title="Hello.txt">SGVsbG8gd29ybGQK</tst_file>
+<tst_img vid="0" mime="image/png" title="red.png">iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gsDCjcO+61B5QAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAWSURBVAjXY3zCzMzAwMDEwMDAwMAAAAwDAO4ZzUxxAAAAAElFTkSuQmCC</tst_img></tst_frame1>
+<tst_tab_i><tst_frame2><tst_decimal>1.1</tst_decimal>
+<tst_longtext>Six long</tst_longtext>
+</tst_frame2></tst_tab_i>
+
+</tst_expcoll1>
+</documents>

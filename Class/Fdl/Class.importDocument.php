@@ -39,6 +39,11 @@ class ImportDocument
      * @var string update|add|keep
      */
     protected $policy = "update";
+    /**
+     * To verify visibility "I" of atttribute
+     * @var bool
+     */
+    protected $verifyAttributeAccess = true;
     
     protected $reset = array();
     /**
@@ -141,13 +146,20 @@ class ImportDocument
         }
         return $this->cr;
     }
-    
+    /**
+     * @param boolean $verifyAttributeAccess
+     */
+    public function setVerifyAttributeAccess($verifyAttributeAccess)
+    {
+        $this->verifyAttributeAccess = $verifyAttributeAccess;
+    }
     public function importSingleFile($file)
     {
         $if = new importDocumentDescription($file);
         $if->setImportDirectory($this->dirid);
         $if->analyzeOnly($this->onlyAnalyze);
         $if->setPolicy($this->policy);
+        $if->setVerifyAttributeAccess($this->verifyAttributeAccess);
         $if->reset($this->reset);
         $if->setCsvOptions($this->csvSeparator, $this->csvEnclosure, $this->csvLinebreak);
         return $if->import();

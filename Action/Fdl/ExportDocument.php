@@ -17,6 +17,26 @@ class ExportDocument
     protected $csvEnclosure = '"';
     protected $csvSeparator = ',';
     protected $encoding = 'utf-8';
+    protected $verifyAttributeAccess = false;
+    protected $attributeGrants = array();
+    protected $noAccessText = \FormatCollection::noAccessText;
+    /**
+     * Use when cannot access attribut value
+     * Due to visibility "I"
+     * @param string $noAccessText
+     */
+    public function setNoAccessText($noAccessText)
+    {
+        $this->noAccessText = $noAccessText;
+    }
+    /**
+     * If true, attribute with "I" visibility are not returned
+     * @param boolean $verifyAttributeAccess
+     */
+    public function setVerifyAttributeAccess($verifyAttributeAccess)
+    {
+        $this->verifyAttributeAccess = $verifyAttributeAccess;
+    }
     /**
      * @param string $encoding
      */
@@ -56,7 +76,100 @@ class ExportDocument
         return $htmlTransMapping;
     }
     
+    protected function getUserLogicName($uid)
+    {
+        $u = new \Account("", $uid);
+        if ($u->isAffected()) {
+            $du = getTDoc($u->dbaccess, $u->fid);
+            if (($du["name"] != "") && ($du["us_whatid"] == $uid)) return $du["name"];
+        }
+        return $uid;
+    }
+    /**
+     * @param resource $fout
+     * @param string|int $docid
+     */
+    public function exportProfil($fout, $docid)
+    {
+        if (!$docid) return;
+        // import its profile
+        $doc = new_Doc("", $docid); // needed to have special acls
+        $doc->acls[] = "viewacl";
+        $doc->acls[] = "modifyacl";
+        if ($doc->name != "") $name = $doc->name;
+        else $name = $doc->id;
+        
+        $dbaccess = getDbAccess();
+        $q = new \QueryDb($dbaccess, "DocPerm");
+        $q->AddQuery(sprintf("docid=%d", $doc->profid));
+        $acls = $q->Query(0, 0, "TABLE");
+        
+        $tpu = array();
+        $tpa = array();
+        if ($acls) {
+            foreach ($acls as $va) {
+                $up = $va["upacl"];
+                $uid = $va["userid"];
+                
+                foreach ($doc->acls as $acl) {
+                    $bup = ($doc->ControlUp($up, $acl) == "");
+                    if ($bup) {
+                        if ($uid >= STARTIDVGROUP) {
+                            $qvg = new \QueryDb($dbaccess, "VGroup");
+                            $qvg->AddQuery(sprintf("num=%d", $uid));
+                            $tvu = $qvg->Query(0, 1, "TABLE");
+                            $uid = $tvu[0]["id"];
+                        }
+                        
+                        $tpu[] = $uid;
+                        if ($bup) $tpa[] = $acl;
+                        else $tpa[] = "-" . $acl;
+                    }
+                }
+            }
+        }
+        // add extended Acls
+        if ($doc->extendedAcls) {
+            $extAcls = array_keys($doc->extendedAcls);
+            $aclCond = GetSqlCond($extAcls, "acl");
+            simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s", $doc->profid, $aclCond) , $eAcls);
+            
+            foreach ($eAcls as $aAcl) {
+                $uid = $aAcl["userid"];
+                if ($uid >= STARTIDVGROUP) {
+                    $qvg = new \QueryDb($dbaccess, "VGroup");
+                    $qvg->AddQuery(sprintf("num=%d", $uid));
+                    $tvu = $qvg->Query(0, 1, "TABLE");
+                    $uid = $tvu[0]["id"];
+                }
+                $tpa[] = $aAcl["acl"];
+                $tpu[] = $uid;
+            }
+        }
+        
+        if (count($tpu) > 0) {
+            $data = array(
+                "PROFIL",
+                $name,
+                "",
+                ""
+            );
+            foreach ($tpu as $ku => $uid) {
+                if ($uid > 0) $uid = $this->getUserLogicName($uid);
+                //fputs_utf8($fout, ";" . $tpa[$ku] . "=" . $uid);
+                $data[] = sprintf("%s=%s", $tpa[$ku], $uid);
+            }
+            \Dcp\WriteCsv::fput($fout, $data);
+        }
+    }
+    /**
+     * @deprecated rename to  csvExport
+     */
     public function cvsExport(\Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
+    {
+        $this->csvExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
+    }
+    public function csvExport(\Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
     {
         
         if (!$doc->isAffected()) return;
@@ -90,7 +203,7 @@ class ExportDocument
                 //fputs_utf8($fout, "//FAM;" . $adoc->title . "(" . $this->familyName . ");<specid>;<fldid>;");
                 
             }
-            foreach ($this->lattr as $ka => $attr) {
+            foreach ($this->lattr as $attr) {
                 $data[] = $attr->getLabel();
                 //fputs_utf8($fout, str_replace(SEPCHAR, ALTSEPCHAR, $attr->getLabel()) . SEPCHAR);
                 
@@ -105,7 +218,7 @@ class ExportDocument
                     ""
                 );
                 //fputs_utf8($fout, "ORDER;" . $this->familyName . ";;;");
-                foreach ($this->lattr as $ka => $attr) {
+                foreach ($this->lattr as $attr) {
                     $data[] = $attr->id;
                     //fputs_utf8($fout, $attr->id . ";");
                     
@@ -134,12 +247,31 @@ class ExportDocument
             
         }
         // write values
-        foreach ($this->lattr as $ka => $attr) {
-            if ($eformat == 'F') $value = str_replace(array(
-                '<BR>',
-                '<br/>'
-            ) , '\\n', $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
-            else $value = $doc->getRawValue($attr->id);
+        foreach ($this->lattr as $attr) {
+            if ($this->verifyAttributeAccess && !\Dcp\VerifyAttributeAccess::isAttributeAccessGranted($doc, $attr)) {
+                $data[] = $this->noAccessText;
+                continue;
+            }
+            
+            if ($eformat == 'F') {
+                if ($this->csvEnclosure) {
+                    $value = str_replace(array(
+                        '<BR>',
+                        '<br/>'
+                    ) , array(
+                        "\n",
+                        "\\n"
+                    ) , $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
+                } else {
+                    $value = str_replace(array(
+                        '<BR>',
+                        '<br/>'
+                    ) , '\\n', $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
+                }
+            } else {
+                
+                $value = $doc->getRawValue($attr->id);
+            }
             // invert HTML entities
             if (($attr->type == "image") || ($attr->type == "file")) {
                 $tfiles = $doc->vault_properties($attr);
@@ -221,21 +353,12 @@ class ExportDocument
                 , $value);
             }
             $data[] = $value;
-            /*fputs_utf8($fout, str_replace(array(
-                "\n",
-                ";",
-                "\r"
-            ) , array(
-                "\\n",
-                ALTSEPCHAR,
-                ""
-            ) , $value) . ";");*/
         }
         \Dcp\WriteCsv::fput($fout, $data);
-        //fputs_utf8($fout, "\n");
         if ($wprof) {
-            if ($doc->profid == $doc->id) exportProfil($fout, $dbaccess, $doc->id);
-            else if ($doc->profid > 0) {
+            if ($doc->profid == $doc->id) {
+                $this->exportProfil($fout, $doc->id);
+            } else if ($doc->profid > 0) {
                 $name = getNameFromId($dbaccess, $doc->profid);
                 $dname = $doc->name;
                 if (!$dname) $dname = $doc->id;
@@ -243,9 +366,7 @@ class ExportDocument
                 if (!isset($tdoc[$doc->profid])) {
                     $tdoc[$doc->profid] = true;
                     $pdoc = new_doc($dbaccess, $doc->profid);
-                    $this->cvsExport($pdoc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
-                    //	  exportProfil($fout,$dbaccess,$doc->profid);
-                    
+                    $this->csvExport($pdoc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
                 }
                 $data = array(
                     "PROFIL",
@@ -254,9 +375,8 @@ class ExportDocument
                     ""
                 );
                 \Dcp\WriteCsv::fput($fout, $data);
-                // fputs_utf8($fout, "PROFIL;$dname;$name;;\n");
-                
             }
         }
     }
+
 }

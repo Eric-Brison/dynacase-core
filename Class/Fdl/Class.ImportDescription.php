@@ -34,6 +34,10 @@ class importDocumentDescription
     private $ods2CsvFile = '';
     private $reset = array();
     /**
+     * @var bool verify attribute access (visibility "I")
+     */
+    private $verifyAttributeAccess = true;
+    /**
      * @var StructAttribute
      */
     private $structAttr = null;
@@ -59,7 +63,7 @@ class importDocumentDescription
     private $doc;
     /**
      * @param string $importFile
-     * @throw Dcp\Exception
+     * @throws Dcp\Exception
      */
     public function __construct($importFile)
     {
@@ -74,6 +78,13 @@ class importDocumentDescription
         }
         $this->importFileName = $importFile;
         $this->dbaccess = getParam("FREEDOM_DB");;
+    }
+    /**
+     * @param boolean $verifyAttributeAccess
+     */
+    public function setVerifyAttributeAccess($verifyAttributeAccess)
+    {
+        $this->verifyAttributeAccess = $verifyAttributeAccess;
     }
     
     public function analyzeOnly($analyze)
@@ -814,10 +825,24 @@ class importDocumentDescription
         if (isset($this->colOrders[$fromid])) {
             $torder = $this->colOrders[$fromid];
         }
-        $this->tcr[$this->nLine] = csvAddDoc($this->dbaccess, $data, $this->dirid, $this->analyze, '', $this->policy, $tk, array() , $torder);
+        // $this->tcr[$this->nLine] = csvAddDoc($this->dbaccess, $data, $this->dirid, $this->analyze, '', $this->policy, $tk, array() , $torder);
+        $oImportDocument = new importSingleDocument();
+        if ($tk) {
+            $oImportDocument->setKey($tk);
+        }
+        if ($torder) {
+            $oImportDocument->setOrder($torder);
+        }
+        $oImportDocument->analyzeOnly($this->analyze);
+        $oImportDocument->setPolicy($this->policy);
+        $oImportDocument->setTargetDirectory($this->dirid);
+        $oImportDocument->setVerifyAttributeAccess($this->verifyAttributeAccess);
         
-        if ($this->tcr[$this->nLine]["err"] == "") $this->nbDoc++;
-        else {
+        $this->tcr[$this->nLine] = $oImportDocument->import($data)->getImportResult();
+        
+        if ($this->tcr[$this->nLine]["err"] == "") {
+            $this->nbDoc++;
+        } else {
             $check->addError($this->tcr[$this->nLine]["err"]);
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
             $this->tcr[$this->nLine]["action"] = "warning";

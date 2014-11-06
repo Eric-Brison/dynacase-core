@@ -4,8 +4,8 @@
 option.pref {
     background-color:[COLOR_B3];
     }
-select.disable {
-    visibility:hidden;
+input.disable, select.disable {
+    visibility:hidden!important;
     }
 input[type=submit] {
     padding:3px;
@@ -17,6 +17,17 @@ input[type=submit] {
     margin-left:3px;
     width:1em;
     }
+
+    .caution {
+    text-align:right;
+    }
+.caution span {
+    margin-right:10px;
+    font-style: italic;
+}
+    .submit {
+        width : 5em;
+    }
 </style>
 <h2 style="text-align:center">[TEXT:Export Documents from] </h2>
 <h3 style="text-align:center">[title]</h3>
@@ -24,8 +35,7 @@ input[type=submit] {
 <form target="outputfile" id="exportForm"
       name="dexport" style="display:inline"
       method="POST" ENCTYPE="multipart/form-data"
-      action="[CORE_STANDURL]&app=FDL&id=[dirid]"       >
-<input type="hidden" name="action" value="EXPORTFLD"></input>
+      action="?app=[exportapp]&amp;action=[exportaction]&amp;id=[dirid]"       >
 <input type="hidden" id="iExportId" name="exportId" value="[exportid]"></input>
 <table align="center">
 <tr><td></td><td></td><td rowspan="7"><img align="left" src="[IMG:ardown.png]"></td></tr>
@@ -58,7 +68,7 @@ input[type=submit] {
 
 </select></td></tr>
 <tr><td align="right" style="cursor:help" title="[TEXT:Raw data set database value. Formated data : data are exported like can see it in navigator.]">[TEXT:Format export] :</td>
-  <td><select name="eformat" onchange="testexport(this)">
+  <td><select class="import-format" name="eformat" >
   <option value="I">[TEXT:Importation data]</option>
   <option value="R">[TEXT:Raw data only]</option>
   <option value="F">[TEXT:Formated data]</option>
@@ -87,7 +97,8 @@ input[type=submit] {
 
   </td></tr>
 
-<tr><td colspan="3" align="right"><input id="bExport" type="submit" value="[TEXT:Export]"></td></tr>
+<tr><td colspan="2" class="caution">[IF viewinfo]<span>[TEXT:Export as administrator. Attributes with invisibility access are exported.]</span>[ENDIF viewinfo]
+    </td><td class="submit"><input id="bExport" type="submit" value="[TEXT:Export]"></td></tr>
 </table>
 
 </form>

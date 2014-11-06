@@ -27,6 +27,9 @@ include_once ("FDL/import_file.php");
  * @param string $aflid Folder identifier to use if no "id" http vars
  * @param string $famid Family restriction to filter folder content
  * @param string $outputPath where put export, if wfile outputPath is a directory
+ * @param bool $exportInvisibleVisibilities set to true to export invisible attribute also
+ * @throws Dcp\Exception
+ * @throws Exception
  * @global string $fldid Http var : folder identifier to export
  * @global string $wprof Http var : (Y|N) if Y export associated profil also
  * @global string $wfile Http var : (Y|N) if Y export attached file export format will be tgz
@@ -37,7 +40,7 @@ include_once ("FDL/import_file.php");
  * @global string $selection Http var :  JSON document selection object
  * @return void
  */
-function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = "")
+function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = "", $exportInvisibleVisibilities = false)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
@@ -51,7 +54,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
         "Y",
         "N"
     ) , "N") == "Y");
-    $wident = ($usage->addOptionalParameter("wident", "With document numerix identifiers", array(
+    $wident = ($usage->addOptionalParameter("wident", "With document numeric identifiers", array(
         "Y",
         "N"
     ) , "Y") == "Y");
@@ -125,17 +128,22 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
         return;
     }
     setMaxExecutionTimeTo(3600);
-    if ($eformat == "X") {
-        // XML redirect
-        include_once ("FDL/exportxmlfld.php");
-        exportxmlfld($action, $aflid, $famid);
-    }
+    $exportCollection = new Dcp\ExportCollection();
+    $exportCollection->setExportStatusId($exportId);
+    $exportCollection->setOutputFormat($eformat);
+    $exportCollection->setExportProfil($wprof);
+    $exportCollection->setExportDocumentNumericIdentiers($wident);
+    $exportCollection->setUseUserColumnParameter(!$nopref);
+    $exportCollection->setOutputFileEncoding($wutf8 ? Dcp\ExportCollection::utf8Encoding : Dcp\ExportCollection::latinEncoding);
+    $exportCollection->setVerifyAttributeAccess(!$exportInvisibleVisibilities);
+    
     if ((!$fldid) && $selection) {
         $selection = json_decode($selection);
         include_once ("DATA/Class.DocumentSelection.php");
         include_once ("FDL/Class.SearchDoc.php");
         $os = new Fdl_DocumentSelection($selection);
         $ids = $os->getIdentificators();
+        $exportCollection->recordStatus(_("Retrieve documents from database"));
         $s = new SearchDoc($dbaccess);
         $s->setObjectReturn(true);
         $s->addFilter(getSqlCond($ids, "id", true));
@@ -153,9 +161,9 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
         ) , array(
             "_",
             ""
-        ) , $fld->title);
+        ) , $fld->getTitle());
         
-        recordStatus($action, $exportId, _("Retrieve documents from database"));
+        $exportCollection->recordStatus(_("Retrieve documents from database"));
         
         $s = new SearchDoc($dbaccess, $famid);
         $s->setObjectReturn(true);
@@ -163,234 +171,85 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
         $s->useCollection($fld->initid);
         $s->search();
     }
+    
+    $exportCollection->setDocumentlist($s->getDocumentList());
+    $exportCollection->setExportFiles($wfile);
     //usort($tdoc, "orderbyfromid");
     $foutdir = '';
-    if ($wfile) {
-        if ($outputPath) $foutdir = $outputPath;
-        else $foutdir = uniqid(getTmpDir() . "/exportfld");
-        if (!mkdir($foutdir)) exit();
-        
-        $foutname = $foutdir . "/fdl.csv";
-    } else {
-        if (!$outputPath) {
-            $foutname = uniqid(getTmpDir() . "/exportfld") . ".csv";
-        } else {
-            if (file_exists($outputPath)) {
-                $action->exitError(sprintf("export is not allowed to override existing file %s") , $outputPath);
+    if ($outputPath) {
+        if ($wfile) {
+            if (!is_dir($outputPath)) {
+                mkdir($outputPath);
             }
+            $foutname = $outputPath . "/fdl.zip";
+        } else {
             $foutname = $outputPath;
         }
+    } else {
+        if ($wfile) {
+            $foutname = uniqid(getTmpDir() . "/exportfld") . ".zip";
+        } else {
+            if ($eformat == Dcp\ExportCollection::xmlFileOutputFormat) {
+                $foutname = uniqid(getTmpDir() . "/exportfld") . ".xml";
+            } else {
+                $foutname = uniqid(getTmpDir() . "/exportfld") . ".csv";
+            }
+        }
+        $foutname = uniqid(getTmpDir() . "/exportfld");
     }
     
-    $fout = fopen($foutname, "w");
-    if (!$fout) {
-        $action->exitError(sprintf("Cannot create output file '%s' for export") , $foutname);
+    if (file_exists($foutname)) {
+        $action->exitError(sprintf("export is not allowed to override existing file %s") , $outputPath);
     }
     
+    $exportCollection->setOutputFilePath($foutname);
+    $exportCollection->setCvsSeparator($csvSeparator);
+    $exportCollection->setCvsEnclosure($csvEnclosure);
     $action->setParamU("EXPORT_CSVSEPARATOR", $csvSeparator);
     $action->setParamU("EXPORT_CSVENCLOSURE", $csvEnclosure);
-    // set encoding
-    \Dcp\WriteCsv::$enclosure = $csvEnclosure;
-    \Dcp\WriteCsv::$separator = $csvSeparator;
-    \Dcp\WriteCsv::$encoding = $fileEncoding;
     
-    $exportDoc = new \Dcp\ExportDocument();
-    $exportDoc->setCsvEnclosure($csvEnclosure);
-    $exportDoc->setCsvSeparator($csvSeparator);
-    $ef = array(); //   files to export
-    if ($s->count() > 0) {
-        
-        $doc = createDoc($dbaccess, 0);
-        // compose the csv file
-        $tmoredoc = array();
-        
-        recordStatus($action, $exportId, _("Record system families"));
-        $famData = array();
-        while ($doc = $s->getNextDoc()) {
-            
-            if ($doc->doctype == "C") {
-                $wname = "";
-                $cvname = "";
-                $cpname = "";
-                $fpname = "";
-                /**
-                 * @var Docfam $doc
-                 */
-                // it is a family
-                if ($wprof) {
-                    if ($doc->profid != $doc->id) {
-                        $fp = getTDoc($dbaccess, $doc->profid);
-                        $tmoredoc[$fp["id"]] = $fp;
-                        if ($fp["name"] != "") $fpname = $fp["name"];
-                        else $fpname = $fp["id"];
+    try {
+        $exportCollection->export();
+        if (is_file($foutname)) {
+            switch ($eformat) {
+                case Dcp\ExportCollection::xmlFileOutputFormat:
+                    $fname.= ".xml";
+                    $fileMime = "text/xml";
+                    break;
+
+                case Dcp\ExportCollection::xmlArchiveOutputFormat:
+                    $fname.= ".zip";
+                    $fileMime = "application/x-zip";
+                    break;
+
+                default:
+                    if ($wfile) {
+                        
+                        $fname.= ".zip";
+                        $fileMime = "application/x-zip";
                     } else {
-                        exportProfil($fout, $dbaccess, $doc->profid);
+                        $fname.= ".csv";
+                        $fileMime = "text/csv";
                     }
-                    if ($doc->cprofid) {
-                        $cp = getTDoc($dbaccess, $doc->cprofid);
-                        if ($cp["name"] != "") $cpname = $cp["name"];
-                        else $cpname = $cp["id"];
-                        $tmoredoc[$cp["id"]] = $cp;
-                    }
-                    if ($doc->ccvid > 0) {
-                        $cv = getTDoc($dbaccess, $doc->ccvid);
-                        if ($cv["name"] != "") $cvname = $cv["name"];
-                        else $cvname = $cv["id"];
-                        $tmskid = $doc->rawValueToArray($cv["cv_mskid"]);
-                        
-                        foreach ($tmskid as $kmsk => $imsk) {
-                            if ($imsk != "") {
-                                $msk = getTDoc($dbaccess, $imsk);
-                                if ($msk) $tmoredoc[$msk["id"]] = $msk;
-                            }
-                        }
-                        
-                        $tmoredoc[$cv["id"]] = $cv;
-                    }
-                    
-                    if ($doc->wid > 0) {
-                        $wdoc = new_doc($dbaccess, $doc->wid);
-                        if ($wdoc->name != "") $wname = $wdoc->name;
-                        else $wname = $wdoc->id;
-                        $tattr = $wdoc->getAttributes();
-                        foreach ($tattr as $ka => $oa) {
-                            if ($oa->type == "docid") {
-                                $tdid = $wdoc->getMultipleRawValues($ka);
-                                foreach ($tdid as $did) {
-                                    if ($did != "") {
-                                        $m = getTDoc($dbaccess, $did);
-                                        if ($m) {
-                                            $tmoredoc[$m["id"]] = $m;
-                                            if (!empty($m["cv_mskid"])) {
-                                                $tmskid = $doc->rawValueToArray($m["cv_mskid"]);
-                                                foreach ($tmskid as $kmsk => $imsk) {
-                                                    if ($imsk != "") {
-                                                        $msk = getTDoc($dbaccess, $imsk);
-                                                        if ($msk) $tmoredoc[$msk["id"]] = $msk;
-                                                    }
-                                                }
-                                            }
-                                            if (!empty($m["tm_tmail"])) {
-                                                $tmskid = $doc->rawValueToArray(str_replace('<BR>', "\n", $m["tm_tmail"]));
-                                                foreach ($tmskid as $kmsk => $imsk) {
-                                                    if ($imsk != "") {
-                                                        $msk = getTDoc($dbaccess, $imsk);
-                                                        if ($msk) $tmoredoc[$msk["id"]] = $msk;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        $tmoredoc[$doc->wid] = getTDoc($dbaccess, $doc->wid);
-                    }
-                    if ($cvname || $wname || $cpname || $fpname) {
-                        $famData[] = array(
-                            "BEGIN",
-                            "",
-                            "",
-                            "",
-                            "",
-                            $doc->name
-                        );
-                        
-                        if ($fpname) {
-                            $famData[] = array(
-                                "PROFID",
-                                $fpname
-                            );
-                        }
-                        if ($cvname) {
-                            $famData[] = array(
-                                "CVID",
-                                $cvname
-                            );
-                        }
-                        if ($wname) {
-                            $famData[] = array(
-                                "WID",
-                                $wname
-                            );
-                        }
-                        if ($doc->cprofid) {
-                            $famData[] = array(
-                                "CPROFID",
-                                $cpname
-                            );
-                        }
-                        $famData[] = array(
-                            "END"
-                        );
-                    }
-                }
             }
-        }
-        
-        $s->rewind();
-        $rc = $s->count();
-        $c = 0;
-        while ($doc = $s->getNextDoc()) {
-            $c++;
-            if ($c % 20 == 0) {
-                recordStatus($action, $exportId, sprintf(_("Record documents %d/%d") , $c, $rc));
-            }
-            if ($doc->doctype != "C") {
-                $exportDoc->cvsExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
-            }
-        }
-        $more = new DocumentList();
-        $more->addDocumentIdentifiers(array_keys($tmoredoc));
-        foreach ($more as $doc) {
-            $exportDoc->cvsExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
-        }
-        foreach ($famData as $aRow) {
-            \Dcp\WriteCsv::fput($fout, $aRow);
-        }
-    }
-    fclose($fout);
-    if ($wfile) {
-        $err = '';
-        foreach ($ef as $info) {
-            $source = $info["path"];
-            $ddir = $foutdir . '/' . $info["ldir"];
-            if (!is_dir($ddir)) mkdir($ddir);
-            $dest = $ddir . '/' . $info["fname"];
-            if (!@copy($source, $dest)) $err.= sprintf(_("cannot copy %s") , $dest);
-        }
-        if ($err) $action->addWarningMsg($err);
-        system(sprintf("cd %s && zip -r fdl * > /dev/null", escapeshellarg($foutdir)) , $ret);
-        if (is_file("$foutdir/fdl.zip")) {
+            $exportCollection->recordStatus(_("Export done") , true);
             if (!$outputPath) {
-                $foutname = $foutdir . "/fdl.zip";
-                recordStatus($action, $exportId, _("Export done") , true);
-                
-                Http_DownloadFile($foutname, "$fname.zip", "application/x-zip", false, false);
-                //if (deleteContentDirectory($foutdir)) rmdir($foutdir);
-                
-            } else {
-                recordStatus($action, $exportId, _("Export done") , true);
-                return;
+                Http_DownloadFile($foutname, $fname, $fileMime, false, false, true);
             }
-        } else {
-            $action->exitError(_("Zip Archive cannot be created"));
-        }
-    } else {
-        
-        recordStatus($action, $exportId, _("Export done") , true);
-        if (!$outputPath) {
-            Http_DownloadFile($foutname, "$fname.csv", "text/csv", false, false);
-            unlink($foutname);
         }
     }
-    
-    recordStatus($action, $exportId, _("Export done") , true);
-    if (!$outputPath) {
-        exit;
+    catch(Dcp\Exception $e) {
+        throw $e;
     }
 }
-
+/**
+ * @param Action $action
+ * @param $exportId
+ * @param $msg
+ * @param bool $endStatus
+ * @see Dcp\ExportCollection::recordStatus()
+ * @deprecated use Dcp\ExportCollection::recordStatus() instead
+ */
 function recordStatus(Action & $action, $exportId, $msg, $endStatus = false)
 {
     $action->register($exportId, array(
@@ -398,20 +257,12 @@ function recordStatus(Action & $action, $exportId, $msg, $endStatus = false)
         "end" => $endStatus
     ));
 }
-
-function orderbyfromid($a, $b)
-{
-    
-    if ($a["fromid"] == $b["fromid"]) return 0;
-    if ($a["fromid"] > $b["fromid"]) return 1;
-    
-    return -1;
-}
 /**
  * Removes content of the directory (not sub directory)
  *
  * @param string $dirname the directory name to remove
  * @return boolean True/False whether the directory was deleted.
+ * @deprecated To delete (not used)
  */
 function deleteContentDirectory($dirname)
 {
@@ -433,6 +284,12 @@ function deleteContentDirectory($dirname)
     
     return true;
 }
+/**
+ * @param $fout
+ * @param $dbaccess
+ * @param $docid
+ * @deprecated To delete
+ */
 function exportProfil($fout, $dbaccess, $docid)
 {
     if (!$docid) return;
@@ -510,7 +367,12 @@ function exportProfil($fout, $dbaccess, $docid)
         
     }
 }
-
+/**
+ * @param $dbaccess
+ * @param $uid
+ * @return mixed
+ * @deprecated To delete
+ */
 function getUserLogicName($dbaccess, $uid)
 {
     $u = new Account("", $uid);
