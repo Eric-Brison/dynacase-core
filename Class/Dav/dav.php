@@ -12,6 +12,7 @@
 
 $d1 = microtime();
 include_once ("../WHAT/Lib.Common.php");
+chdir(DEFAULT_PUBDIR);
 include_once ("DAV/Class.FdlDav.php");
 //error_log("dav:   path_info=(".$_SERVER["PATH_INFO"].")");
 $_SERVER['PATH_INFO'] = "/" . $_GET['filename'];
