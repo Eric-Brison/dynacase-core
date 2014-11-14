@@ -87,6 +87,23 @@ class FormatCollection
      * @var closure
      */
     protected $hookStatus = null;
+    /**
+     * @var bool
+     */
+    protected $singleDocument = false;
+    /**
+     * @var closure
+     */
+    protected $renderAttributeHook = null;
+    /**
+     * @var closure
+     */
+    protected $renderDocumentHook = null;
+    /**
+     * @var closure
+     */
+    protected $renderPropertyHook = null;
+    
     const title = "title";
     /**
      * name property
@@ -125,7 +142,6 @@ class FormatCollection
      */
     const cdate = "cdate";
     
-    protected $singleDocument = false;
     public function __construct($doc = null)
     {
         $this->propsKeys = array_keys(Doc::$infofields);
@@ -197,6 +213,7 @@ class FormatCollection
      * set date style
      * possible values are :DateAttributeValue::defaultStyle,DateAttributeValue::frenchStyle,DateAttributeValue::isoWTStyle,DateAttributeValue::isoStyle
      * @param string $style
+     * @return $this
      * @throws Dcp\Fmtc\Exception
      */
     public function setDateStyle($style)
@@ -210,6 +227,7 @@ class FormatCollection
             throw new \Dcp\Fmtc\Exception("FMTC0003", $style);
         }
         $this->dateStyle = $style;
+        return $this;
     }
     /**
      * add a property to render
@@ -242,13 +260,46 @@ class FormatCollection
      * apply a callback on each document
      * if callback return false, the document is skipped from list
      * @param Closure $hookfunction
-     * @return void
+     * @return $this
      */
     public function setHookAdvancedStatus($hookFunction)
     {
         $this->hookStatus = $hookFunction;
+        return $this;
     }
-    
+    /**
+     * apply a callback on each returned value
+     * to modify render
+     * @param Closure $hookFunction
+     * @return $this
+     */
+    public function setAttributeRenderHook($hookFunction)
+    {
+        $this->renderAttributeHook = $hookFunction;
+        return $this;
+    }
+    /**
+     * apply a callback on each document returned
+     * to modify render
+     * @param Closure $hookFunction
+     * @return $this
+     */
+    public function setDocumentRenderHook($hookFunction)
+    {
+        $this->renderDocumentHook = $hookFunction;
+        return $this;
+    }
+    /**
+     * apply a callback on each returned property
+     * to modify render value
+     * @param Closure $hookFunction
+     * @return $this
+     */
+    public function setPropertyRenderHook($hookFunction)
+    {
+        $this->renderPropertyHook = $hookFunction;
+        return $this;
+    }
     protected function callHookStatus($s)
     {
         if ($this->hookStatus) {
@@ -257,6 +308,47 @@ class FormatCollection
             return $h($s);
         }
         return true;
+    }
+    /**
+     * @param StandardAttributeValue|null $info
+     * @param BasicAttribute|null $oa
+     * @param Doc $doc
+     * @return StandardAttributeValue
+     */
+    protected function callAttributeRenderHook($info, $oa, \Doc $doc)
+    {
+        if ($this->renderAttributeHook) {
+            $h = $this->renderAttributeHook;
+            return $h($info, $oa, $doc);
+        }
+        return $info;
+    }
+    /**
+     * @param array $info
+     * @param BasicAttribute|null $oa
+     * @param Doc $doc
+     * @return StandardAttributeValue
+     */
+    protected function callDocumentRenderHook(array $info, \Doc $doc)
+    {
+        if ($this->renderDocumentHook) {
+            $h = $this->renderDocumentHook;
+            return $h($info, $doc);
+        }
+        return $info;
+    }
+    /**
+     * @param StandardAttributeValue|null $info
+     * @param string $propId
+     * @return StandardAttributeValue
+     */
+    protected function callPropertyRenderHook($info, $propId, \Doc $doc)
+    {
+        if ($this->renderPropertyHook) {
+            $h = $this->renderPropertyHook;
+            return $h($info, $propId, $doc);
+        }
+        return $info;
     }
     /**
      * return formatted document list to be easily exported in other format
@@ -274,8 +366,9 @@ class FormatCollection
         \Dcp\VerifyAttributeAccess::clearCache();
         foreach ($this->dl as $docid => $doc) {
             if ($kdoc % 10 == 0) $this->callHookStatus(sprintf(_("Doc Render %d/%d") , $kdoc, $countDoc));
+            $renderDoc = array();
             foreach ($this->fmtProps as $propName) {
-                $r[$kdoc]["properties"][$propName] = $this->getPropInfo($propName, $doc);
+                $renderDoc["properties"][$propName] = $this->callPropertyRenderHook($this->getPropInfo($propName, $doc) , $propName, $doc);
             }
             
             foreach ($this->fmtAttrs as $attrid) {
@@ -288,17 +381,20 @@ class FormatCollection
                         if ($this->useShowEmptyOption && $empty = $oa->getOption("showempty")) {
                             $emptyAttr = new StandardAttributeValue($oa, null);
                             $emptyAttr->displayValue = $empty;
-                            $r[$kdoc]["attributes"][$oa->id] = $emptyAttr;
+                            $attributeInfo = $emptyAttr;
                         } else {
-                            $r[$kdoc]["attributes"][$oa->id] = null;
+                            $attributeInfo = null;
                         }
                     } else {
-                        $r[$kdoc]["attributes"][$oa->id] = $this->getInfo($oa, $value, $doc);
+                        $attributeInfo = $this->getInfo($oa, $value, $doc);
                     }
+                    $renderDoc["attributes"][$oa->id] = $this->callAttributeRenderHook($attributeInfo, $oa, $doc);
                 } else {
-                    $r[$kdoc]["attributes"][$attrid] = new UnknowAttributeValue($this->ncAttribute);
+                    $renderDoc["attributes"][$attrid] = $this->callAttributeRenderHook(new UnknowAttributeValue($this->ncAttribute) , null, $doc);
                 }
             }
+            
+            $r[$kdoc] = $this->callDocumentRenderHook($renderDoc, $doc);
             
             $kdoc++;
         }
@@ -421,7 +517,6 @@ class FormatCollection
             return $this->getSingleInfo($oa, $value, $doc);
         }
     }
-
     
     protected function getSingleInfo(NormalAttribute $oa, $value, $doc = null, $index = - 1)
     {
@@ -581,21 +676,20 @@ class FormatCollection
 
 class StandardAttributeValue
 {
-    
     public $value;
     public $displayValue;
-    
-    public function __construct(NormalAttribute $oa, $v)
+    /**
+     * @param NormalAttribute $oa
+     * @param $v
+     */
+    public function __construct($oa, $v)
     {
         $this->value = ($v === '') ? null : $v;
         $this->displayValue = $v;
     }
 }
-class UnknowAttributeValue
+class UnknowAttributeValue extends StandardAttributeValue
 {
-    public $value;
-    public $displayValue;
-    
     public function __construct($v)
     {
         $this->value = ($v === '') ? null : $v;
@@ -625,7 +719,6 @@ class FormatAttributeValue extends StandardAttributeValue
 {
     public function __construct(NormalAttribute $oa, $v)
     {
-        
         $this->value = ($v === '') ? null : $v;
         if ($oa->format) $this->displayValue = sprintf($oa->format, $v);
         else $this->displayValue = $v;
