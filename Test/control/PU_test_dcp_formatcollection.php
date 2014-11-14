@@ -158,9 +158,9 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $this->assertEquals($expectDisplayValue, $fstate->displayValue, sprintf("incorrect state display value : %s", print_r($fstate, true)));
     }
     /**
-     * @dataProvider dataPropertyRenderFormatCollection
+     * @dataProvider dataDatePropertyRenderFormatCollection
      */
-    public function testPropertyRenderFormatCollection($docName, $propertyName, $format, $expectedFormat)
+    public function testDatePropertyRenderFormatCollection($docName, $propertyName, $format, $expectedFormat)
     {
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
@@ -175,6 +175,38 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         
         $propertyValue = $this->getRenderProp($r, $docName, $propertyName);
         $this->assertRegExp($expectedFormat, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+    }
+    /**
+     * @dataProvider dataPropertyRenderFormatCollection
+     */
+    public function testPropertyRenderFormatCollection($docName, $propertyName, $expectedValue)
+    {
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s->setObjectReturn();
+        $dl = $s->search()->getDocumentList();
+        $fc = new \FormatCollection();
+        $fc->setPropDateStyle(\DateAttributeValue::isoWTStyle);
+        $fc->useCollection($dl);
+        $fc->addProperty($fc::propName)->addProperty($propertyName);
+        
+        $r = $fc->render();
+        $this->assertEquals($s->count() , count($r) , "render must have same entry count has collection");
+        
+        $propertyValue = $this->getRenderProp($r, $docName, $propertyName);
+        if (is_array($expectedValue)) {
+            foreach ($expectedValue as $infoKey => $expectInfo) {
+                
+                if ($expectInfo[0] === "/") {
+                    $this->assertRegExp($expectInfo, (string)$propertyValue[$infoKey], sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+                } else {
+                    $this->assertEquals($expectInfo, $propertyValue[$infoKey], sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+                }
+            }
+        } elseif ($expectedValue[0] === "/") {
+            $this->assertRegExp($expectedValue, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+        } else {
+            $this->assertEquals($expectedValue, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+        }
     }
     /**
      * @dataProvider dataRenderAttributeHookFormatCollection
@@ -288,7 +320,41 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         }
         return null;
     }
-    
+    public function dataPropertyRenderFormatCollection()
+    {
+        return array(
+            array(
+                "TST_FMTCOL1",
+                "revision",
+                0
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                "name",
+                "TST_FMTCOL1"
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                "revdate",
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                "cdate",
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                "family",
+                array(
+                    "name" => $this->famName,
+                    "title" => "Test Format",
+                    "id" => '/^[0-9]+$/',
+                    "icon" => "/resizeimg.php/"
+                )
+            )
+        );
+    }
     public function dataDocumentHookRenderFormatCollection()
     {
         return array(
@@ -415,7 +481,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             )
         );
     }
-    public function dataPropertyRenderFormatCollection()
+    public function dataDatePropertyRenderFormatCollection()
     {
         return array(
             array(

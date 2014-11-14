@@ -75,6 +75,8 @@ class FormatCollection
     
     protected $dateStyle = DateAttributeValue::defaultStyle;
     
+    protected $propDateStyle = null;
+    
     protected $stripHtmlTag = false;
     
     protected $longtextMultipleBrToCr = "\n";
@@ -126,6 +128,10 @@ class FormatCollection
      */
     const propUrl = "url";
     /**
+     * family information
+     */
+    const propFamily = "family";
+    /**
      * state property
      */
     const propState = "state";
@@ -145,12 +151,29 @@ class FormatCollection
     public function __construct($doc = null)
     {
         $this->propsKeys = array_keys(Doc::$infofields);
+        $this->propsKeys[] = self::propFamily;
         if ($doc !== null) {
             $this->dl = array(
                 $doc
             );
             $this->singleDocument = true;
         }
+    }
+    /**
+     * @param null $propDateStyle
+     */
+    public function setPropDateStyle($propDateStyle)
+    {
+        if (!in_array($propDateStyle, array(
+            DateAttributeValue::defaultStyle,
+            DateAttributeValue::frenchStyle,
+            DateAttributeValue::isoWTStyle,
+            DateAttributeValue::isoStyle
+        ))) {
+            throw new \Dcp\Fmtc\Exception("FMTC0003", $propDateStyle);
+        }
+        $this->propDateStyle = $propDateStyle;
+        return $this;
     }
     /**
      * If false, attribute with "I" visibility are  returned
@@ -416,20 +439,37 @@ class FormatCollection
             case self::propUrl:
                 return sprintf("?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=%d", $doc->id);
             case self::revdate:
-                return $this->getFormatDate(date("c", $doc->$propName));
+                return $this->getFormatDate(date("Y-m-d H:i:s", $doc->$propName) , $this->propDateStyle);
             case self::cdate:
             case self::adate:
-                return $this->getFormatDate($doc->$propName);
+                return $this->getFormatDate($doc->$propName, $this->propDateStyle);
+            case self::propFamily:
+                return $this->getFamilyInfo($doc);
             default:
                 return $doc->$propName;
         }
     }
-    protected function getFormatDate($v)
+    protected function getFamilyInfo(\Doc $doc)
     {
-        if ($this->dateStyle === DateAttributeValue::defaultStyle) return stringDateToLocaleDate($v);
-        else if ($this->dateStyle === DateAttributeValue::isoStyle) return stringDateToIso($v, false, true);
-        else if ($this->dateStyle === DateAttributeValue::isoWTStyle) return stringDateToIso($v, false, false);
-        else if ($this->dateStyle === DateAttributeValue::frenchStyle) {
+        $family = $doc->getFamilyDocument();
+        return array(
+            "title" => $family->getTitle() ,
+            "name" => $family->name,
+            "id" => intval($family->id) ,
+            "icon" => $family->getIcon("",$this->familyIconSize),
+            "icon2" => $family->icon
+        );
+    }
+    
+    protected function getFormatDate($v, $dateStyle = '')
+    {
+        if (!$dateStyle) {
+            $dateStyle = $this->dateStyle;
+        }
+        if ($dateStyle === DateAttributeValue::defaultStyle) return stringDateToLocaleDate($v);
+        else if ($dateStyle === DateAttributeValue::isoStyle) return stringDateToIso($v, false, true);
+        else if ($dateStyle === DateAttributeValue::isoWTStyle) return stringDateToIso($v, false, false);
+        else if ($dateStyle === DateAttributeValue::frenchStyle) {
             
             $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
             if (strlen($v) < 11) return substr($ldate, 0, strlen($v));
@@ -752,7 +792,13 @@ class IntAttributeValue extends FormatAttributeValue
 class DateAttributeValue extends StandardAttributeValue
 {
     const defaultStyle = 'D';
+    /**
+     * ISO with T : YYYY-MM-DDTHH:MM:SS
+     */
     const isoStyle = 'I';
+    /**
+     * ISO without T : YYYY-MM-DD HH:MM:SS
+     */
     const isoWTStyle = 'U';
     const frenchStyle = 'F';
     public function __construct(NormalAttribute $oa, $v, $dateStyle = self::defaultStyle)
