@@ -345,13 +345,83 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             ) ,
             array(
                 "TST_FMTCOL1",
-                "family",
+                \formatCollection::propFamily,
                 array(
                     "name" => $this->famName,
                     "title" => "Test Format",
                     "id" => '/^[0-9]+$/',
                     "icon" => "/resizeimg.php/"
                 )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propRevisionData,
+                array(
+                    "id" => '/^[0-9]+$/',
+                    "number" => 0
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propSecurity,
+                array(
+                    "readOnly" => false
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propType,
+                "document"
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propUsage,
+                "normal"
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propNote,
+                array(
+                    "id" => 0
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propViewController,
+                array(
+                    "id" => 0
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propAffected,
+                array(
+                    "id" => 0
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propWorkflow,
+                array(
+                    "title" => "Cycle format",
+                    "id" => '/^[0-9]+$/',
+                    "icon" => "/resizeimg.php/"
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propCreationDate,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propLastModificationDate,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propLastAccessDate,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
             )
         );
     }

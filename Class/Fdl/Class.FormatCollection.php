@@ -120,9 +120,17 @@ class FormatCollection
      */
     const propIcon = "icon";
     /**
+     * locked property
+     */
+    const propLocked = "locked";
+    /**
      * initid property
      */
     const propInitid = "initid";
+    /**
+     * revision property
+     */
+    const propRevision = "revision";
     /**
      * url access to document
      */
@@ -131,6 +139,59 @@ class FormatCollection
      * family information
      */
     const propFamily = "family";
+    /**
+     * Last access date
+     */
+    const propLastAccessDate = "lastAccessDate";
+    /**
+     * Last modification date
+     */
+    const propLastModificationDate = "lastModificationDate";
+    /**
+     * Some informations about revision
+     */
+    const propRevisionData = "revisionData";
+    /**
+     * View Controller information
+     */
+    const propViewController = "viewController";
+    /**
+     * Workflow information
+     */
+    const propWorkflow = "workflow";
+    /**
+     * allocated information
+     */
+    const propAffected = "affected";
+    /**
+     * note information
+     */
+    const propNote = "note";
+    /**
+     * usefor information
+     */
+    const propUsage = "usage";
+    /**
+     * doctype information
+     */
+    const propType = "type";
+    /**
+     * Applictaion Tags list
+     * @see \Doc::addAtag()
+     */
+    const propTags = "tags";
+    /**
+     * Security information (lock, profil)
+     */
+    const propSecurity = "security";
+    /**
+     * Creation date (of revision 0)
+     */
+    const propCreationDate = "creationDate";
+    /**
+     * Creation user (of revision 0)
+     */
+    const propCreatedBy = "createdBy";
     /**
      * state property
      */
@@ -150,14 +211,33 @@ class FormatCollection
     
     public function __construct($doc = null)
     {
-        $this->propsKeys = array_keys(Doc::$infofields);
-        $this->propsKeys[] = self::propFamily;
+        $this->propsKeys = self::getAvailableProperties();
         if ($doc !== null) {
             $this->dl = array(
                 $doc
             );
             $this->singleDocument = true;
         }
+    }
+    
+    public static function getAvailableProperties()
+    {
+        $keys = array_keys(Doc::$infofields);
+        $keys[] = self::propFamily;
+        $keys[] = self::propLastAccessDate;
+        $keys[] = self::propLastModificationDate;
+        $keys[] = self::propCreationDate;
+        $keys[] = self::propCreatedBy;
+        $keys[] = self::propRevisionData;
+        $keys[] = self::propViewController;
+        $keys[] = self::propWorkflow;
+        $keys[] = self::propTags;
+        $keys[] = self::propSecurity;
+        $keys[] = self::propAffected;
+        $keys[] = self::propNote;
+        $keys[] = self::propUsage;
+        $keys[] = self::propType;
+        return $keys;
     }
     /**
      * @param null $propDateStyle
@@ -434,6 +514,10 @@ class FormatCollection
                 return intval($doc->id);
             case self::propInitid:
                 return intval($doc->initid);
+            case self::propRevision:
+                return intval($doc->revision);
+            case self::propLocked:
+                return intval($doc->locked);
             case self::propState:
                 return $this->getState($doc);
             case self::propUrl:
@@ -445,10 +529,236 @@ class FormatCollection
                 return $this->getFormatDate($doc->$propName, $this->propDateStyle);
             case self::propFamily:
                 return $this->getFamilyInfo($doc);
+            case self::propLastAccessDate:
+                return $this->getFormatDate($doc->adate, $this->propDateStyle);
+            case self::propLastModificationDate:
+                return $this->getFormatDate(date("Y-m-d H:i:s", $doc->revdate) , $this->propDateStyle);
+            case self::propCreationDate:
+                if ($doc->revision == 0) {
+                    return $this->getFormatDate($doc->cdate, $this->propDateStyle);
+                } else {
+                    $sql = sprintf("select cdate from docread where initid=%d and revision = 0", $doc->initid);
+                    simpleQuery($doc->dbaccess, $sql, $cdate, true, true);
+                    return $this->getFormatDate($cdate, $this->propDateStyle);
+                }
+            case self::propCreatedBy:
+                return $this->getCreatedByData($doc);
+            case self::propRevisionData:
+                return $this->getRevisionData($doc);
+            case self::propViewController:
+                return $this->getViewControllerData($doc);
+            case self::propWorkflow:
+                return $this->getWorkflowData($doc);
+            case self::propTags:
+                return $this->getApplicationTagsData($doc);
+            case self::propSecurity:
+                return $this->getSecurityData($doc);
+            case self::propAffected:
+                return $this->getAllocatedData($doc);
+            case self::propNote:
+                return $this->getNoteData($doc);
+            case self::propUsage:
+                return $this->getUsageData($doc);
+            case self::propType:
+                return $this->getTypeData($doc);
             default:
                 return $doc->$propName;
         }
     }
+    
+    protected function getCreatedByData(\Doc $doc)
+    {
+        if ($doc->revision == 0) {
+            $ownerId = $doc->owner;
+        } else {
+            $sql = sprintf("select owner from docread where initid=%d and revision = 0", $doc->initid);
+            simpleQuery($doc->dbaccess, $sql, $ownerId, true, true);
+        }
+        return $this->getAccountData($ownerId, $doc);
+    }
+    
+    protected function getUsageData(\Doc $doc)
+    {
+        if (strstr($doc->usefor, "S")) {
+            return "system";
+        } else {
+            return "normal";
+        }
+    }
+    protected function getTypeData(\Doc $doc)
+    {
+        switch ($doc->defDoctype) {
+            case 'F':
+                return "document";
+            case 'D':
+                return "folder";
+            case "S":
+                return "search";
+            case "C":
+                return "family";
+            case "P":
+                return "profil";
+            case "W":
+                return "workflow";
+            default:
+                return $doc->defDoctype;
+        }
+    }
+    
+    protected function getNoteData(\Doc $doc)
+    {
+        if ($doc->postitid > 0) {
+            $note = new_doc($doc->dbaccess, $doc->postitid);
+            return array(
+                "id" => intval($note->initid) ,
+                "title" => $note->getTitle() ,
+                "icon" => $note->getIcon("", $this->familyIconSize)
+            );
+        } else {
+            return array(
+                "id" => 0,
+                "title" => ""
+            );
+        }
+    }
+    protected function getWorkflowData(\Doc $doc)
+    {
+        if ($doc->wid > 0) {
+            $workflow = new_doc($doc->dbaccess, $doc->wid);
+            return array(
+                "id" => intval($workflow->initid) ,
+                "title" => $workflow->getTitle() ,
+                "icon" => $workflow->getIcon("", $this->familyIconSize)
+            );
+        } else {
+            return array(
+                "id" => 0,
+                "title" => ""
+            );
+        }
+    }
+    protected function getApplicationTagsData(\Doc $doc)
+    {
+        if ($doc->atags) {
+            return explode("\n", $doc->atags);
+        } else {
+            return array();
+        }
+    }
+    
+    protected function getAllocatedData(\Doc $doc)
+    {
+        if ($doc->allocated > 0) {
+            return $this->getAccountData($doc->allocated, $doc);
+        } else {
+            return array(
+                "id" => 0,
+                "title" => ""
+            );
+        }
+    }
+    
+    protected function getAccountData($accountId, \Doc $doc)
+    {
+        $sql = sprintf("select initid, icon, title from doc128 where us_whatid='%d' and locked != -1", $accountId);
+        simpleQuery("", $sql, $result, false, true);
+        return array(
+            "id" => $result["initid"],
+            "title" => $result["title"],
+            "icon" => $doc->getIcon($result["icon"], $this->familyIconSize)
+        );
+    }
+    protected function getSecurityData(\Doc $doc)
+    {
+        $info = array();
+        if ($doc->locked) {
+            if ($doc->locked == - 1) {
+                $info["lock"] = array(
+                    "id" => - 1,
+                    "temporary" => false
+                );
+            } else {
+                $info["lock"] = array(
+                    "lockedBy" => $this->getAccountData(abs($doc->locked) , $doc) ,
+                    "temporary" => ($doc->locked < - 1)
+                );
+            }
+        } else {
+            $info["lock"] = array(
+                "id" => 0
+            );
+        }
+        $info["readOnly"] = ($doc->canEdit() != "");
+        $info["fixed"] = ($doc->locked == - 1);
+        if ($doc->profid != 0) {
+            
+            if ($doc->profid == $doc->id) {
+                $info["profil"] = array(
+                    "id" => intval($doc->initid) ,
+                    "icon" => $doc->getIcon("", $this->familyIconSize) ,
+                    "private" => true,
+                    "activated" => true,
+                    "type" => "private",
+                    "title" => $doc->getTitle()
+                );
+                if ($doc->dprofid > 0) {
+                    $profil = new_doc($doc->dbaccess, $doc->dprofid);
+                    $info["profil"]["reference"] = array(
+                        "id" => intval($profil->initid) ,
+                        "icon" => $profil->getIcon("", $this->familyIconSize) ,
+                        "activated" => ($profil->id == $profil->profid) ,
+                        "title" => $profil->getTitle()
+                    );
+                    $info["profil"]["type"] = "dynamic";
+                }
+            } else {
+                $profil = new_doc($doc->dbaccess, abs($doc->profid));
+                $info["profil"] = array(
+                    "id" => intval($profil->initid) ,
+                    "icon" => $profil->getIcon("", $this->familyIconSize) ,
+                    "type" => "linked",
+                    "activated" => ($profil->id == $profil->profid) ,
+                    "title" => $profil->getTitle()
+                );
+            }
+        } else {
+            $info["profil"] = array(
+                "id" => 0,
+                "title" => ""
+            );
+        }
+        
+        $info["confidentiality"] = ($doc->confidential > 0) ? "private" : "public";
+        return $info;
+    }
+    
+    protected function getViewControllerData(\Doc $doc)
+    {
+        if ($doc->cvid > 0) {
+            $cv = new_doc($doc->dbaccess, $doc->cvid);
+            return array(
+                "id" => intval($cv->initid) ,
+                
+                "title" => $cv->getTitle() ,
+                "icon" => $cv->getIcon("", $this->familyIconSize)
+            );
+        } else {
+            return array(
+                "id" => 0,
+                "title" => ""
+            );
+        }
+    }
+    protected function getRevisionData(\Doc $doc)
+    {
+        return array(
+            "isModified" => ($doc->lmodify == "Y") ,
+            "id" => intval($doc->id) ,
+            "number" => intval($doc->revision) ,
+            "createdBy" => $this->getAccountData($doc->owner, $doc)
+        );
+    }
+    
     protected function getFamilyInfo(\Doc $doc)
     {
         $family = $doc->getFamilyDocument();
@@ -456,11 +766,9 @@ class FormatCollection
             "title" => $family->getTitle() ,
             "name" => $family->name,
             "id" => intval($family->id) ,
-            "icon" => $family->getIcon("",$this->familyIconSize),
-            "icon2" => $family->icon
+            "icon" => $family->getIcon("", $this->familyIconSize)
         );
     }
-    
     protected function getFormatDate($v, $dateStyle = '')
     {
         if (!$dateStyle) {
