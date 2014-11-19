@@ -8735,6 +8735,11 @@ create unique index i_docir on doc(initid, revision);";
     {
         if (empty($this->id)) return;
         $dvi = new DocVaultIndex($this->dbaccess);
+        
+        $point = uniqid("updateVaultIndex");
+        $this->savePoint($point);
+        // Need to lock to avoid constraint errors when concurrent docvaultindex update
+        simpleQuery($this->dbaccess, "lock table docvaultindex in exclusive mode");
         $err = $dvi->DeleteDoc($this->id);
         $fa = $this->GetFileAttributes();
         
@@ -8765,6 +8770,7 @@ create unique index i_docir on doc(initid, revision);";
                 $vids[] = intval($vid);
             }
         }
+        $this->commitPoint($point);
         if (count($vids) > 0) {
             \Dcp\VaultManager::setFilesPersitent($vids);
         }

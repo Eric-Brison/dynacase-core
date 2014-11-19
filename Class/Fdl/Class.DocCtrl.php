@@ -425,6 +425,10 @@ class DocCtrl extends DocLDAP
                     }
                 }
             }
+            $point = uniqid("docperm");
+            $this->savePoint($point);
+            // Need to lock to avoid constraint errors when concurrent docperm update
+            simpleQuery($this->dbaccess, "lock table docperm in exclusive mode");
             $this->exec_query(sprintf("delete from docperm where docid=%d", $this->id));
             if ($fromdocidvalues == null) $fromdocidvalues = & $this;
             $greenUid = array();
@@ -477,6 +481,8 @@ class DocCtrl extends DocLDAP
                     }
                 }
             }
+            
+            $this->commitPoint($point);
             $this->views = '{' . implode(',', $greenUid) . '}';
             $this->Modify(true, array(
                 'views'
