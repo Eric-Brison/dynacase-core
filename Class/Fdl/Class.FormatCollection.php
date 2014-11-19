@@ -164,6 +164,10 @@ class FormatCollection
      */
     const propAffected = "affected";
     /**
+     * status information : alive, deleted, fixed
+     */
+    const propStatus = "status";
+    /**
      * note information
      */
     const propNote = "note";
@@ -234,6 +238,7 @@ class FormatCollection
         $keys[] = self::propTags;
         $keys[] = self::propSecurity;
         $keys[] = self::propAffected;
+        $keys[] = self::propStatus;
         $keys[] = self::propNote;
         $keys[] = self::propUsage;
         $keys[] = self::propType;
@@ -555,6 +560,8 @@ class FormatCollection
                 return $this->getSecurityData($doc);
             case self::propAffected:
                 return $this->getAllocatedData($doc);
+            case self::propStatus:
+                return $this->getStatusData($doc);
             case self::propNote:
                 return $this->getNoteData($doc);
             case self::propUsage:
@@ -575,6 +582,17 @@ class FormatCollection
             simpleQuery($doc->dbaccess, $sql, $ownerId, true, true);
         }
         return $this->getAccountData($ownerId, $doc);
+    }
+    
+    protected function getStatusData(\Doc $doc)
+    {
+        if ($doc->doctype == "Z") {
+            return "deleted";
+        } elseif ($doc->locked == - 1) {
+            return "fixed";
+        } else {
+            return "alive";
+        }
     }
     
     protected function getUsageData(\Doc $doc)
@@ -663,7 +681,7 @@ class FormatCollection
         $sql = sprintf("select initid, icon, title from doc128 where us_whatid='%d' and locked != -1", $accountId);
         simpleQuery("", $sql, $result, false, true);
         return array(
-            "id" => $result["initid"],
+            "id" => intval($result["initid"]) ,
             "title" => $result["title"],
             "icon" => $doc->getIcon($result["icon"], $this->familyIconSize)
         );
