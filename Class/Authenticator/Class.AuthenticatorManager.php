@@ -53,12 +53,14 @@ class AuthenticatorManager
         self::$provider_errno = 0;
         if ($authtype == null) $authtype = getAuthType();
         if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype)) {
+            header('HTTP/1.0 500 Invalid authtype');
             print sprintf("Invalid authtype '%s'", $authtype);
             exit;
         }
         $authClass = strtolower($authtype) . "Authenticator";
         $authFile = 'WHAT/Class.' . $authClass . '.php';
         if (!file_exists($authFile)) {
+            header('HTTP/1.0 500 Unknown authtype');
             print "Unknown authtype " . $authtype;
             exit;
         }
@@ -154,6 +156,7 @@ class AuthenticatorManager
         $authClass = strtolower($authtype) . "Authenticator";
         $authFile = 'WHAT/Class.' . $authClass . '.php';
         if (!file_exists($authFile)) {
+            header('HTTP/1.0 500 Unknown authtype');
             print "Unknown authtype " . $_GET['authtype'];
             exit;
         }
