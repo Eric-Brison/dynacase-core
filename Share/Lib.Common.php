@@ -875,7 +875,9 @@ function setLanguage($lang)
     global $pubdir;
     //  print "<h1>setLanguage:$lang</H1>";
     $lang.= ".UTF-8";
-    setlocale(LC_MESSAGES, $lang);
+    if (setlocale(LC_MESSAGES, $lang) === false) {
+        throw new Dcp\Core\Exception(sprintf(ErrorCodeCORE::CORE0011, $lang));
+    }
     setlocale(LC_CTYPE, $lang);
     setlocale(LC_MONETARY, $lang);
     setlocale(LC_TIME, $lang);
@@ -898,4 +900,3 @@ function setLanguage($lang)
 }
 // use UTF-8 by default
 mb_internal_encoding('UTF-8');
-?>

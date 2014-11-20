@@ -65,6 +65,11 @@ namespace {
         const CORE0010 = 'Guest access not allowed';
         /**
          * @errorCode
+         * The locale is not supported by the operating system
+         */
+        const CORE0011 = "Locale '%s' is not supported by the operating system";
+        /**
+         * @errorCode
          * for beautifier
          */
         private function _bo()
