@@ -82,7 +82,8 @@ if [ "$1" = "I" ] ; then
 	PGDATESTYLE='SQL, DMY'
     fi
     DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
-    PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE\" SET DateStyle='$PGDATESTYLE';" #2> /dev/null
+    DATABASE_QUOTED=$(echo "$DATABASE" | sed -e 's/"/""/g')
+    PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE_QUOTED\" SET DateStyle='$PGDATESTYLE';" #2> /dev/null
     RET=$?
     if [ $RET -ne 0 ]; then
 	echo "An error occured while setting DateStyle to '$PGDATESTYLE'"
@@ -124,7 +125,8 @@ if [ "$1" = "U" ] ; then
 
 
     DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
-    PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE\" SET  standard_conforming_strings ='off';"
+    DATABASE_QUOTED=$(echo "$DATABASE" | sed -e 's/"/""/g')
+    PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE_QUOTED\" SET  standard_conforming_strings ='off';"
     RET=$?
     if [ $RET -ne 0 ]; then
 	echo "An error occured while setting standard_conforming_strings to 'off'"

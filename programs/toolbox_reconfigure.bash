@@ -100,6 +100,7 @@ fi
 
 log "Setting DateStyle to match CORE_LCDATE..."
 CURRENT_DATABASE=`PGSERVICE="$core_db" psql -tA -c "SELECT current_database()"`
+CURRENT_DATABASE_QUOTED=$(echo "$DATABASE" | sed -e 's/"/""/g')
 CORE_LCDATE=`"$WIFF_CONTEXT_ROOT/wsh.php" --api=getApplicationParameter --param=CORE_LCDATE| cut -f1 -d" "`
 if [ -z "$CURRENT_DATABASE" ]; then
     echo "Could not get current_database from PGSERVICE=$core_db"
@@ -111,7 +112,7 @@ if [ -n "$CORE_LCDATE" ]; then
     else
         PG_DATESTYLE="SQL, DMY"
     fi
-    PGSERVICE="$core_db" psql -c "ALTER DATABASE \"$CURRENT_DATABASE\" SET DateStyle = '$PG_DATESTYLE'"
+    PGSERVICE="$core_db" psql -c "ALTER DATABASE \"$CURRENT_DATABASE_QUOTED\" SET DateStyle = '$PG_DATESTYLE'"
     RET=$?
     if [ $RET -ne 0 ]; then
         echo "Error setting DateStyle to '$PG_DATESTYLE' on current database \"$CURRENT_DATABASE\""
@@ -120,7 +121,7 @@ if [ -n "$CORE_LCDATE" ]; then
 fi
 
 log "Setting standard_conforming_strings to 'off'..."
-PGSERVICE="$core_db" psql -c "ALTER DATABASE \"$CURRENT_DATABASE\" SET standard_conforming_strings = 'off'"
+PGSERVICE="$core_db" psql -c "ALTER DATABASE \"$CURRENT_DATABASE_QUOTED\" SET standard_conforming_strings = 'off'"
 RET=$?
 if [ $RET -ne 0 ]; then
     echo "Error setting standard_conforming_strings to 'off' on current database \"$CURRENT_DATABASE\""

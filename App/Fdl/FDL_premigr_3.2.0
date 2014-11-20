@@ -95,11 +95,12 @@ UPDATE docfam SET defval = replace(defval, '[us_privcard|W]', '') WHERE id < 100
 EOF
 
 CURRENT_DATABASE=`PGSERVICE="$pgservice_core" psql -tA -c "SELECT current_database()"`
+CURRENT_DATABASE_QUOTED=$(echo "$DATABASE" | sed -e 's/"/""/g')
 if [ -z "$CURRENT_DATABASE" ]; then
     echo "Could not get current_database from PGSERVICE=$pgservice_core"
     exit 1
 fi
-PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$CURRENT_DATABASE\" SET standard_conforming_strings = 'off'"
+PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$CURRENT_DATABASE_QUOTED\" SET standard_conforming_strings = 'off'"
 RET=$?
 if [ $RET -ne 0 ]; then
     echo "Error setting standard_conforming_strings to 'off' on current database \"$CURRENT_DATABASE\""
