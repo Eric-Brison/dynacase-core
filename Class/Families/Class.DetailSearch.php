@@ -313,6 +313,21 @@ class DetailSearch extends \Dcp\Family\Search
      */
     public function isValidCondition($attr, $op, $value)
     {
+        /* Accept method name */
+        if ($value !== '' && $this->getMethodName($value) !== '') {
+            return array(
+                'err' => '',
+                'sug' => ''
+            );
+        }
+        /* Accept parameter */
+        if (substr($value, 0, 1) == '?') {
+            return array(
+                'err' => '',
+                'sug' => ''
+            );
+        }
+        /* Call getSqlCond() in validation mode (validateCond = true) */
         $err = '';
         $this->getSqlCond($attr, $op, $value, '', $err, true);
         if ($err != '') {
