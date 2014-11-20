@@ -193,18 +193,20 @@ class CVDoc extends Doc
         foreach ($tv as $v) {
             $vid = $v[MyAttributes::cv_idview];
             $mode = $v[MyAttributes::cv_kview];
-            switch ($mode) {
-                case "VCONS":
-                    if ($this->control($vid) == "") {
-                        $displayableViews[] = $v;
-                    }
-                    break;
+            if ($v[MyAttributes::cv_displayed] !== "no") {
+                switch ($mode) {
+                    case "VCONS":
+                        if ($this->control($vid) == "") {
+                            $displayableViews[] = $v;
+                        }
+                        break;
 
-                case "VEDIT":
-                    if ($cud && $this->control($vid) == "") {
-                        $displayableViews[] = $v;
-                    }
-                    break;
+                    case "VEDIT":
+                        if ($cud && $this->control($vid) == "") {
+                            $displayableViews[] = $v;
+                        }
+                        break;
+                }
             }
         }
         return $displayableViews;

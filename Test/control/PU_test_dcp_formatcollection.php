@@ -158,9 +158,9 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $this->assertEquals($expectDisplayValue, $fstate->displayValue, sprintf("incorrect state display value : %s", print_r($fstate, true)));
     }
     /**
-     * @dataProvider dataPropertyRenderFormatCollection
+     * @dataProvider dataDatePropertyRenderFormatCollection
      */
-    public function testPropertyRenderFormatCollection($docName, $propertyName, $format, $expectedFormat)
+    public function testDatePropertyRenderFormatCollection($docName, $propertyName, $format, $expectedFormat)
     {
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
@@ -176,7 +176,131 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $propertyValue = $this->getRenderProp($r, $docName, $propertyName);
         $this->assertRegExp($expectedFormat, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
     }
-    
+    /**
+     * @dataProvider dataPropertyRenderFormatCollection
+     */
+    public function testPropertyRenderFormatCollection($docName, $propertyName, $expectedValue)
+    {
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s->setObjectReturn();
+        $dl = $s->search()->getDocumentList();
+        $fc = new \FormatCollection();
+        $fc->setPropDateStyle(\DateAttributeValue::isoWTStyle);
+        $fc->useCollection($dl);
+        $fc->addProperty($fc::propName)->addProperty($propertyName);
+        
+        $r = $fc->render();
+        $this->assertEquals($s->count() , count($r) , "render must have same entry count has collection");
+        
+        $propertyValue = $this->getRenderProp($r, $docName, $propertyName);
+        if (is_array($expectedValue)) {
+            foreach ($expectedValue as $infoKey => $expectInfo) {
+                
+                if ($expectInfo[0] === "/") {
+                    $this->assertRegExp($expectInfo, (string)$propertyValue[$infoKey], sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+                } else {
+                    $this->assertEquals($expectInfo, $propertyValue[$infoKey], sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+                }
+            }
+        } elseif ($expectedValue[0] === "/") {
+            $this->assertRegExp($expectedValue, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+        } else {
+            $this->assertEquals($expectedValue, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+        }
+    }
+    /**
+     * @dataProvider dataRenderAttributeHookFormatCollection
+     */
+    public function testRenderAttributeHookFormatCollection($docName, $attrName, $hook, $expectRender)
+    {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s->setObjectReturn();
+        $dl = $s->search()->getDocumentList();
+        $fc = new \FormatCollection();
+        $fc->useCollection($dl);
+        $fc->setAttributeRenderHook($hook);
+        $fc->relationNoAccessText = 'no grant';
+        $fc->addProperty($fc::propName)->addProperty($fc::propUrl);
+        
+        $f = new_doc(self::$dbaccess, $this->famName);
+        $la = $f->getNormalAttributes();
+        foreach ($la as $aid => $oa) {
+            if ($oa->type != "array") $fc->addAttribute($aid);
+        }
+        
+        $r = $fc->render();
+        //print_r2($fc->getDebug());
+        $this->assertEquals($s->count() , count($r) , "render must have same entry count has collection");
+        //print_r(($r));
+        //print_r2(json_encode($r));
+        $fValue = $this->getRenderValue($r, $docName, $attrName);
+        if (is_array($expectRender)) {
+            foreach ($expectRender as $expAttr => $expVal) {
+                if (is_array($expVal)) {
+                    $testValue = array();
+                    $this->assertTrue(is_array($fValue) , sprintf("result %s not an array for %s", print_r($fValue, true) , $expAttr));
+                    foreach ($fValue as $k => $v) {
+                        if (is_array($v)) {
+                            $testValue[$k] = array();
+                            foreach ($v as $vv) {
+                                $testValue[$k][] = $vv->$expAttr;
+                            }
+                        } else {
+                            $testValue[$k] = $v->$expAttr;
+                        }
+                    }
+                } else {
+                    $testValue = ($fValue === null) ? null : $fValue->$expAttr;
+                }
+                $this->assertEquals($expVal, $testValue, sprintf("values is : %s %s ", print_r($testValue, true) , json_encode($fValue)));
+            }
+        } else {
+            $this->assertEquals($expectRender, $fValue, sprintf("values is : %s", sprintf(json_encode($fValue))));
+        }
+    }
+    /**
+     * @dataProvider dataPropertyHookRenderFormatCollection
+     */
+    public function testPropertyHookRenderFormatCollection($docName, $propertyName, $hook, $expectedValue)
+    {
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s->setObjectReturn();
+        $dl = $s->search()->getDocumentList();
+        
+        $fc = new \FormatCollection();
+        $fc->useCollection($dl);
+        $fc->setPropertyRenderHook($hook);
+        $fc->addProperty($fc::propName)->addProperty($propertyName);
+        
+        $r = $fc->render();
+        $this->assertEquals($s->count() , count($r) , "render must have same entry count has collection");
+        
+        $propertyValue = $this->getRenderProp($r, $docName, $propertyName);
+        $this->assertEquals($expectedValue, $propertyValue, sprintf("incorrect property (%s)  value : %s", $propertyName, print_r($propertyValue, true)));
+    }
+    /**
+     * @dataProvider dataDocumentHookRenderFormatCollection
+     */
+    public function testDocumentHookRenderFormatCollection($docName, $hook, array $expectedProps)
+    {
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s->setObjectReturn();
+        $dl = $s->search()->getDocumentList();
+        
+        $fc = new \FormatCollection();
+        $fc->useCollection($dl);
+        $fc->setDocumentRenderHook($hook);
+        $fc->addProperty($fc::propName)->addProperty("revision");
+        
+        $r = $fc->render();
+        $this->assertEquals($s->count() , count($r) , "render must have same entry count has collection");
+        
+        foreach ($expectedProps as $propKey => $propValue) {
+            $propertyValue = $this->getRenderProp($r, $docName, $propKey);
+            $this->assertEquals($propValue, $propertyValue, sprintf("incorrect property (%s)  value : %s", $propKey, print_r($propertyValue, true)));
+        }
+    }
     private function getRenderValue(array $r, $docName, $attrName)
     {
         foreach ($r as $format) {
@@ -196,7 +320,166 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         }
         return null;
     }
-    
+    public function dataPropertyRenderFormatCollection()
+    {
+        return array(
+            array(
+                "TST_FMTCOL1",
+                "revision",
+                0
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                "name",
+                "TST_FMTCOL1"
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                "revdate",
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                "cdate",
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propFamily,
+                array(
+                    "name" => $this->famName,
+                    "title" => "Test Format",
+                    "id" => '/^[0-9]+$/',
+                    "icon" => "/resizeimg.php/"
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propRevisionData,
+                array(
+                    "id" => '/^[0-9]+$/',
+                    "number" => 0
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propSecurity,
+                array(
+                    "readOnly" => false
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propType,
+                "document"
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propUsage,
+                "normal"
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propNote,
+                array(
+                    "id" => 0
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propViewController,
+                array(
+                    "id" => 0
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propAffected,
+                array(
+                    "id" => 0
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propWorkflow,
+                array(
+                    "title" => "Cycle format",
+                    "id" => '/^[0-9]+$/',
+                    "icon" => "/resizeimg.php/"
+                )
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propCreationDate,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propLastModificationDate,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                \formatCollection::propLastAccessDate,
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+            )
+        );
+    }
+    public function dataDocumentHookRenderFormatCollection()
+    {
+        return array(
+            array(
+                "TST_FMTCOL1",
+                function ($info, $doc)
+                {
+                    /**
+                     * @var \Doc $doc
+                     */
+                    $info["properties"]["revision"].= ' (bis)';
+                    $info["properties"]["hello"] = 'world - ' . $doc->name;
+                    return $info;
+                }
+                ,
+                array(
+                    "revision" => '0 (bis)',
+                    "hello" => "world - TST_FMTCOL1"
+                )
+            )
+        );
+    }
+    public function dataPropertyHookRenderFormatCollection()
+    {
+        return array(
+            array(
+                "TST_FMTCOL1",
+                "revision",
+                function ($info, $propId)
+                {
+                    if ($propId === "revision") {
+                        $info.= " (bis)";
+                    }
+                    return $info;
+                }
+                ,
+                '0 (bis)'
+            ) ,
+            array(
+                "TST_FMTCOL1",
+                "doctype",
+                function ($info, $propId)
+                {
+                    if ($propId === "doctype") {
+                        if ($info === "F") {
+                            $info = "document";
+                        }
+                    }
+                    return $info;
+                }
+                ,
+                "document"
+            ) ,
+        );
+    }
     public function dataUnknowRenderFormatCollection()
     {
         
@@ -214,7 +497,61 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         );
     }
     
-    public function dataPropertyRenderFormatCollection()
+    public function dataRenderAttributeHookFormatCollection()
+    {
+        
+        return array(
+            array(
+                "TST_FMTCOL1",
+                "tst_title",
+                function ($info)
+                {
+                    if ($info) {
+                        if (!is_array($info)) {
+                            $info->value.= " (bis)";
+                            $info->displayValue.= " (ter)";
+                        }
+                    }
+                    return $info;
+                }
+                ,
+                array(
+                    "value" => "Test 1 (bis)",
+                    "displayValue" => "Test 1 (ter)"
+                )
+            ) ,
+            array(
+                "TST_FMTCOL2",
+                "tst_doubles",
+                function ($info, $oa)
+                {
+                    if ($info) {
+                        
+                        if ($oa->id === "tst_doubles") {
+                            foreach ($info as & $oneInfo) {
+                                $oneInfo->value+= 10;
+                            }
+                        }
+                    }
+                    return $info;
+                }
+                ,
+                array(
+                    "value" => array(
+                        56.67 + 10,
+                        88.0 + 10,
+                        3.1415926535 + 10
+                    ) ,
+                    "displayValue" => array(
+                        "56,67",
+                        "88",
+                        "3,1415926535"
+                    )
+                )
+            )
+        );
+    }
+    public function dataDatePropertyRenderFormatCollection()
     {
         return array(
             array(
