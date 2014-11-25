@@ -194,12 +194,6 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         return sprintf(_("function '%s' declared in %s is not found") , $callfunc, $oattr->id);
     }
     $rargids = $oParse->outputs; // return args
-    // change parameters family
-    $iarg = preg_replace_callback('/\{([^\}]+)\}/', function ($matches)
-    {
-        return getAttr($matches[1]);
-    }
-    , $reg[2]);
     $arg = array();
     foreach ($strucFunc->inputs as $k => $inpArg) {
         $v = str_replace(array(
@@ -216,6 +210,9 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         $unser = @unserialize($v); // try unserial to see if it is object
         if ($unser != "") {
             $arg[$k] = $unser;
+        } elseif (substr($v, 0, 1) == '{' && substr($v, -1, 1) == '}') {
+            /* Evaluate '{FAM_NAME}' or '{APP_PARAM_NAME}' notation */
+            $arg[$k] = getAttr(substr($v, 1, -1));
         } elseif ($inpArg->type == "string") {
             $arg[$k] = $v;
         } elseif ($v == "A") {
@@ -361,4 +358,3 @@ function getAttr($aid)
     
     return $r;
 }
-?>
