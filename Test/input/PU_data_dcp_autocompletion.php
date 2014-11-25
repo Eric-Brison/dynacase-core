@@ -31,7 +31,11 @@ function PU_data_dcp_autocompletion_getTitle_title($dbaccess, $title)
 function PU_data_dcp_autocompletion_getTitle_fam_title($dbaccess, $famId, $title)
 {
     if (!is_numeric($famId)) {
+        $famName = $famId;
         $famId = getIdFromName($dbaccess, $famId);
+        if ($famId <= 0) {
+            throw new Exception(sprintf("Family %s not found", $famName));
+        }
     }
     $s = new SearchDoc($dbaccess, $famId);
     $s->setObjectReturn();
@@ -93,4 +97,13 @@ function PU_data_dcp_autocompletion_relation_3($s_text, $ct, $ct_r1)
         )
     );
 }
-?>
+
+function PU_data_dcp_autocompletion_global_param($paramName, $paramValue)
+{
+    $expectedValue = getParam($paramName);
+    return array(
+        array(
+            ($paramValue == $expectedValue) ? 'OK' : sprintf("Got '%s' instead of '%s' for notation '{%s}'.", $paramValue, $expectedValue, $paramName)
+        )
+    );
+}
