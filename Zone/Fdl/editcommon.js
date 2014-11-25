@@ -1994,8 +1994,10 @@ function selectinlist(inpsel,key,unselect) {
   }
 }
 
-function  nodereplacestr(n,s1,s2) {
-
+function  nodereplacestr(n,s1,s2,replaceData) {
+  if (typeof replaceData != "boolean") {
+      replaceData = true;
+  }
   var kids=n.childNodes;
   var ka;
   var avalue;
@@ -2009,7 +2011,7 @@ function  nodereplacestr(n,s1,s2) {
   regs1 = new RegExp(rs1,'g');
 
   for (var i=0; i< kids.length; i++) {
-    if (kids[i].nodeType==3) {
+    if (kids[i].nodeType==3 && replaceData) {
       // Node.TEXT_NODE
 
 	if (kids[i].data.search(rs1) != -1) {
@@ -2037,7 +2039,7 @@ function  nodereplacestr(n,s1,s2) {
 	      }
 	    }
 	  }
-      nodereplacestr(kids[i],s1,s2);
+      nodereplacestr(kids[i],s1,s2,replaceData);
     }
   }
 }
@@ -2082,9 +2084,9 @@ function addtr(trid, tbodyid) {
 
     if (indextr==-1) indextr=ntable.childNodes.length;
     else indextr++;
-  nodereplacestr(ntr,'-1]',']'); // replace name [-1] by []
-  nodereplacestr(ntr,'-1',indextr);
-  nodereplacestr(ntr,'_1x_',indextr);
+  nodereplacestr(ntr,'-1]',']',false); // replace name [-1] by []
+  nodereplacestr(ntr,'-1',indextr,false);
+  nodereplacestr(ntr,'_1x_',indextr,false);
   resizeInputFields(); // need to revaluate input width
 
   if (seltr && (seltr.parentNode == ntr.parentNode))  {
