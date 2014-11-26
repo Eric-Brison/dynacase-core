@@ -94,7 +94,7 @@ function convertDateToIso(Action $action, $onlyAnalyze = false)
     
     if (!$onlyAnalyze) {
         simpleQuery($action->dbaccess, "SELECT current_database();", $databaseName, true, true);
-        $sql = sprintf("ALTER DATABASE %s set datestyle = 'ISO, DMY'", $databaseName);
+        $sql = sprintf("ALTER DATABASE %s set datestyle = 'ISO, DMY'", pg_escape_identifier($databaseName));
         simpleQuery($action->dbaccess, $sql);
         print "Change database datestyle to 'ISO, DMY'\n";
         $sql = "update paramv set val='iso' where name = 'CORE_LCDATE'";

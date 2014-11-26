@@ -51,7 +51,8 @@ if [ "$1" = "I" ] ; then
     done
 
     DATABASE=`PGSERVICE="$pgservice_freedom" psql -At -c "SELECT current_database();" 2> /dev/null`
-    PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE\" SET standard_conforming_strings = 'off';"
+    DATABASE_QUOTED=$(echo "$DATABASE" | sed -e 's/"/""/g')
+    PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE_QUOTED\" SET standard_conforming_strings = 'off';"
     RET=$?
     if [ $RET -ne 0 ]; then
         echo "An error occured while setting standard_conforming_strings to 'off'"
