@@ -549,8 +549,12 @@ class DirectoriesAutoloader
      */
     public function addDirectory($pDirectory, $pRecursive = true)
     {
-        if (!is_readable($pDirectory)) {
-            throw new DirectoriesAutoloaderException('Cannot read from [' . $pDirectory . ']');
+        $absoluteDirectory = $pDirectory;
+        if (strpos($pDirectory, '/') !== 0) {
+            $absoluteDirectory = $this->_cachePath . DIRECTORY_SEPARATOR . $pDirectory;
+        }
+        if (!is_readable($absoluteDirectory)) {
+            throw new DirectoriesAutoloaderException('Cannot read from [' . $absoluteDirectory . ']');
         }
         $this->_directories[$pDirectory] = $pRecursive ? true : false;
         return self::$_instance;
