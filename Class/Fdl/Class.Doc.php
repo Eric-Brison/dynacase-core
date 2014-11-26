@@ -1820,7 +1820,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $more add values from values attributes needed only if cast document
      * @return void
      */
-    final public function affect($array, $more = false)
+    final public function affect($array, $more = false, $reset=true)
     {
         if (is_array($array)) {
             if ($more) $this->ResetMoreValues();
@@ -1832,21 +1832,22 @@ create unique index i_docir on doc(initid, revision);";
             }
             $this->Complete();
             if ($more) $this->GetMoreValues();
-            
-            $this->_maskApplied = false;
-            $this->_oldvalue = array();
-            $this->_paramValue = array();
-            $this->_setValueDetectChange = true;
-            $this->childs = null;
-            $this->constraintbroken = false;
-            $this->fathers = null;
-            $this->hasChanged = false;
-            $this->htmlFormater = null;
-            $this->lastRefreshError = '';
-            $this->mvalues = array();
-            $this->oooFormater = null;
-            $this->textsend = array();
-            
+
+            if ($reset) {
+                $this->_maskApplied = false;
+                $this->_oldvalue = array();
+                $this->_paramValue = array();
+                $this->_setValueDetectChange = true;
+                $this->childs = null;
+                $this->constraintbroken = false;
+                $this->fathers = null;
+                $this->hasChanged = false;
+                $this->htmlFormater = null;
+                $this->lastRefreshError = '';
+                $this->mvalues = array();
+                $this->oooFormater = null;
+                $this->textsend = array();
+            }
             $this->isset = true;
         }
     }
@@ -3737,9 +3738,9 @@ create unique index i_docir on doc(initid, revision);";
                 if ($index == - 1) {
                     $this->$ak = '';
                 } else {
-                    if ($this->AffectColumn(array(
+                    if ($this->affectColumn(array(
                         $ak
-                    ))) {
+                    ), false)) {
                         $this->$ak = sep_replace($this->$ak, $index);
                     }
                 }
@@ -5051,7 +5052,7 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($fa as $k => $v) {
             $ca[] = $v->id . "_txt";
         }
-        $this->AffectColumn($ca);
+        $this->affectColumn($ca,false);
         foreach ($ca as $a) {
             if ($this->$a != "") $this->fields[$a] = $a;
         }

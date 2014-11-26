@@ -241,6 +241,76 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                     "tst_colint" => "1\n2",
                     "tst_coldate" => "2014-05-07\n2014-05-08",
                 )
+            ),
+            array(
+                "before" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 31,
+                    "tst_file" => "text/css|123|toto.css"
+
+                ) ,
+                "after" => array(
+                    "tst_title" => "T2",
+                    "tst_int" => 32,
+                    "tst_file" => "text/css|234|titi.css"
+                ) ,
+                "cnanged" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 31,
+                    "tst_file" => "text/css|123|toto.css"
+                )
+            ),
+            array(
+                "before" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 31,
+                    "tst_array" => array(
+                        array(
+                            "tst_coltext" => "Un",
+                            "tst_colint" => 1,
+                            "tst_coldate" => "2014-05-07",
+                            "tst_files" => "text/css|123|un.css"
+                        ) ,
+                        array(
+                            "tst_coltext" => "Deux",
+                            "tst_colint" => 2,
+                            "tst_coldate" => "2014-05-08",
+                            "tst_files" => "text/css|234|deux.css"
+                        )
+                    ) ,
+                ) ,
+                "after" => array(
+                    "tst_title" => "T2",
+                    "tst_int" => 3,
+                    "tst_array" => array(
+                        array(
+                            "tst_coltext" => "Un",
+                            "tst_colint" => 1,
+                            "tst_coldate" => "2014-05-07",
+                            "tst_files" => "text/css|123|un.css"
+                        ) ,
+                        array(
+                            "tst_coltext" => "Deux",
+                            "tst_colint" => 2,
+                            "tst_coldate" => "2014-05-08",
+                            "tst_files" => "text/css|234|deux.css"
+                        ),
+                        array(
+                            "tst_coltext" => "Trois",
+                            "tst_colint" => 3,
+                            "tst_coldate" => "2014-05-08",
+                            "tst_files" => "text/css|345|trois.css"
+                        ),
+                    ) ,
+                ) ,
+                "cnanged" => array(
+                    "tst_title" => "T1",
+                    "tst_int" => 31,
+                    "tst_coltext" => "Un\nDeux",
+                    "tst_colint" => "1\n2",
+                    "tst_coldate" => "2014-05-07\n2014-05-08",
+                    "tst_files" => "text/css|123|un.css\ntext/css|234|deux.css"
+                )
             )
         ));
     }

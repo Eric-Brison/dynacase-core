@@ -242,7 +242,7 @@ class DbObj
      * @param array $fields sql field to affect
      * @return bool true if OK false else
      */
-    function AffectColumn($fields)
+    function affectColumn($fields, $reset=true)
     {
         if ($this->dbid == - 1) return FALSE;
         
@@ -265,7 +265,7 @@ class DbObj
         
         if ($this->numrows() > 0) {
             $res = $this->fetch_array(0);
-            $this->Affect($res);
+            $this->affect($res, false, $reset);
         } else {
             return FALSE;
         }
@@ -275,9 +275,8 @@ class DbObj
      * affect object with a set of values
      * @param array $array indexed array of values , index if the column attribute
      */
-    function Affect($array)
+    function affect($array, $more = false, $reset=true)
     {
-        reset($array);
         foreach ($array as $k => $v) {
             if (!is_integer($k)) {
                 $this->$k = $v;
