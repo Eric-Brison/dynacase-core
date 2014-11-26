@@ -1820,7 +1820,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $more add values from values attributes needed only if cast document
      * @return void
      */
-    final public function affect($array, $more = false, $reset=true)
+    final public function affect($array, $more = false, $reset = true)
     {
         if (is_array($array)) {
             if ($more) $this->ResetMoreValues();
@@ -1832,7 +1832,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             $this->Complete();
             if ($more) $this->GetMoreValues();
-
+            
             if ($reset) {
                 $this->_maskApplied = false;
                 $this->_oldvalue = array();
@@ -3740,7 +3740,7 @@ create unique index i_docir on doc(initid, revision);";
                 } else {
                     if ($this->affectColumn(array(
                         $ak
-                    ), false)) {
+                    ) , false)) {
                         $this->$ak = sep_replace($this->$ak, $index);
                     }
                 }
@@ -4116,6 +4116,7 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         catch(\Exception $e) {
+            errorLogException($e);
             $err = $e->getMessage();
         }
         return $err;
@@ -4627,7 +4628,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function addComment($comment = '', $level = DocHisto::INFO, $code = '', $uid = '')
     {
         deprecatedFunction();
-        return $this->addHistoryEntry($comment = '', $level, $code, $uid);
+        return $this->addHistoryEntry($comment, $level, $code, $uid);
     }
     /**
      * Add a log entry line in log document
@@ -5052,7 +5053,7 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($fa as $k => $v) {
             $ca[] = $v->id . "_txt";
         }
-        $this->affectColumn($ca,false);
+        $this->affectColumn($ca, false);
         foreach ($ca as $a) {
             if ($this->$a != "") $this->fields[$a] = $a;
         }
@@ -5200,7 +5201,8 @@ create unique index i_docir on doc(initid, revision);";
             $err = $wdoc->ChangeState($newstate, $comment, $force, $withcontrol, $wm1, $wm2, $wneed, $wm0, $wm3, $msg);
         }
         catch(Exception $e) {
-            $err = sprintf(_("workflow associated %s [%d] is corrupted") , $wdoc->title, $wdoc->id);
+            $err = sprintf(_("Unexpected transition error on workflow %s [%d] : %s") , $wdoc->title, $wdoc->id, $e->getMessage());
+            errorLogException($e);
         }
         return $err;
     }
@@ -6772,8 +6774,10 @@ create unique index i_docir on doc(initid, revision);";
             }
             catch(Exception $e) {
                 if ((!file_exists($this->lay->file) && (!$this->lay->template))) {
-                    return sprintf(_("template file (layout [%s]) not found") , $layout);
-                } else throw $e;
+                    return sprintf(_("template file (layout [%s]) not found") . ": %s", $layout, $e->getMessage());
+                } else {
+                    throw $e;
+                }
             }
         } else {
             $this->viewdefaultcard($target, $ulink, $abstract);
@@ -7969,6 +7973,7 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         catch(Dcp\Exception $e) {
+            errorLogException($e);
             return $e->getMessage();
         }
         return '';

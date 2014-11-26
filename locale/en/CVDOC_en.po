@@ -101,6 +101,10 @@ msgstr "family"
 msgid "CVDOC#dpdoc_famid"
 msgstr "family id"
 
+#, fuzzy
+msgid "CVDOC#dpdoc_famid#elabel"
+msgstr "famille utilisée pour les profils dynamiques"
+
 #: App/Fdl/workflows.ods.csv
 msgid "CVDOC#dpdoc_fr_dyn"
 msgstr "dynamic profile"
