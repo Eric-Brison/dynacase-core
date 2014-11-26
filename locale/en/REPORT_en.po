@@ -100,6 +100,15 @@ msgid "REPORT#rep_maxdisplaylimit"
 msgstr "Maximum number of displayed rows"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "REPORT#rep_noaccesstext"
+msgstr "Texte à afficher pour les valeurs protégées"
+
+#, fuzzy
+msgid "REPORT#rep_noaccesstext#elabel"
+msgstr "Dans la cas où un attribut est protégé (visibilité I)"
+
+#: App/Fdl/searches.ods.csv
 msgid "REPORT#rep_ordersort"
 msgstr "Order"
 

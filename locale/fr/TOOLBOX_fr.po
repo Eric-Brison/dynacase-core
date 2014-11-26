@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-06 14:06+0100\n"
-"PO-Revision-Date: 2014-11-06 15:30+0100\n"
+"POT-Creation-Date: 2014-11-26 11:59+0100\n"
+"PO-Revision-Date: 2014-11-26 11:59+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1899,7 +1899,9 @@ msgstr ""
 
 msgid ""
 "Export as administrator. Attributes with invisibility access are exported."
-msgstr "Exportation en tant qu'administrateur. Les attributs avec un accès invisible sont exportés."
+msgstr ""
+"Exportation en tant qu'administrateur. Les attributs avec un accès invisible "
+"sont exportés."
 
 msgid "Export done"
 msgstr "Fin de l'exportation"
@@ -2762,7 +2764,9 @@ msgstr "Utilisateur"
 
 #, php-format
 msgid "Logical name %s already set for %s. Use reset parameter to overhide it"
-msgstr "Nom logique %s déjà indiqué pour %s. Utiliser le paramètre reset pour le changer."
+msgstr ""
+"Nom logique %s déjà indiqué pour %s. Utiliser le paramètre reset pour le "
+"changer."
 
 #, php-format
 msgid "Logical name %s already use in document %s"
@@ -4006,6 +4010,10 @@ msgstr "Désarchivé depuis %s"
 
 msgid "Undirected graphs"
 msgstr "Graphe non-directionnel"
+
+#, php-format
+msgid "Unexpected transition error on workflow %s [%d] : %s"
+msgstr "Erreur de transition sur le cycle %s [%d] : %s"
 
 #, php-format
 msgid "Unlabeled menu (%s)"
@@ -8786,10 +8794,6 @@ msgstr "édition par traitement de texte"
 msgid "workflow"
 msgstr "cycle de vie"
 
-#, php-format
-msgid "workflow associated %s [%d] is corrupted"
-msgstr "Le cycle de vie associé %s [%d] est corrompu"
-
 msgid "workflow has been recomposed"
 msgstr "le cycle de vie a été regénéré"
 
@@ -9427,6 +9431,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "word"
 #~ msgstr "entiers"
+
+#~ msgid "workflow associated %s [%d] is corrupted"
+#~ msgstr "Le cycle de vie associé %s [%d] est corrompu"
 
 #~ msgid "you don't have privilege to edit forum for document %s"
 #~ msgstr "vous n'avez pas les droits pour modifier le forum du document %s"
