@@ -23,6 +23,7 @@ UPDATE doc set id=511,initid=511 where name='PRF_FAMILY_DEFAULT';
 UPDATE doc set id=512,initid=512 where name='PRF_ADMIN_SEARCH';
 UPDATE doc set id=513,initid=513 where name='MSK_IGROUP_RESTRICTION';
 EOF
+RET=$?
 
 if [ $RET -ne 0 ]; then
     echo "Error setting logical name for account families."
