@@ -447,8 +447,47 @@ class TestAutocompletion extends TestCaseDcpAction
                         'ilink_relation_1'
                     )
                 )
+            ) ,
+            // Bug 5151
+            array(
+                array(
+                    'fam' => 'TST_AUTOCOMPLETION',
+                    'attr' => 'BUG_5151_FAM',
+                    'http:vars' => array(
+                        '_bug_5151_fam' => 'Relation'
+                    ) ,
+                    'expected:warning' => '',
+                    'expected:results' => array(
+                        array(
+                            'Test Relation 2',
+                            'Test Relation 2'
+                        ) ,
+                        array(
+                            'Test Relation 3',
+                            'Test Relation 3'
+                        )
+                    ) ,
+                    'expected:cibles' => array(
+                        'bug_5151_fam'
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    'fam' => 'TST_AUTOCOMPLETION',
+                    'attr' => 'BUG_5151_PARAM',
+                    'http:vars' => array() ,
+                    'expected:warning' => '',
+                    'expected:results' => array(
+                        array(
+                            'OK'
+                        )
+                    ) ,
+                    'expected:cibles' => array(
+                        'bug_5151_param'
+                    )
+                )
             )
         );
     }
 }
-?>
