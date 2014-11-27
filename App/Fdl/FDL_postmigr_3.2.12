@@ -37,12 +37,8 @@ PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - << 'SQL'
     $$;
 
     SELECT pg_temp.deleteAllViews('family');
-    ALTER TABLE doc ALTER COLUMN classname type text;
-    ALTER TABLE doc ALTER COLUMN state type text;
-    ALTER TABLE doc ALTER COLUMN icon type text;
-    ALTER TABLE docread ALTER COLUMN classname type text;
-    ALTER TABLE docread ALTER COLUMN state type text;
-    ALTER TABLE docread ALTER COLUMN icon type text;
+    ALTER TABLE doc     ALTER COLUMN classname TYPE text, ALTER COLUMN state TYPE text, ALTER COLUMN icon TYPE text;
+    ALTER TABLE docread ALTER COLUMN classname TYPE text, ALTER COLUMN state TYPE text, ALTER COLUMN icon TYPE text;
 SQL
 
 RET=$?
