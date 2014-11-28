@@ -564,7 +564,11 @@ class DocHtmlFormat
         if ($this->useEntities) $bvalue = nl2br(htmlentities((str_replace("<BR>", "\n", $avalue)) , ENT_COMPAT, "UTF-8"));
         else $bvalue = (str_replace("<BR>", "\n", $avalue));
         $shtmllink = $this->htmlLink ? "true" : "false";
-        $bvalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->doc->getDocAnchor('\\2',\"$this->target\",$shtmllink)", $bvalue);
+        $bvalue = preg_replace_callback('/(\[|&#x5B;)ADOC ([^\]]*)\]/', function ($matches) use ($shtmllink)
+        {
+            return $this->doc->getDocAnchor($matches[2], $this->target, $shtmllink);
+        }
+        , $bvalue);
         $htmlval = str_replace(array(
             "[",
             "$"
@@ -608,7 +612,7 @@ class DocHtmlFormat
                 }
             } else $htmlval = $avalue;
         } else {
-            if (array_key_exists($avalue,$enumlabel)) $htmlval = $enumlabel[$avalue];
+            if (array_key_exists($avalue, $enumlabel)) $htmlval = $enumlabel[$avalue];
             else $htmlval = $avalue;
         }
         return $htmlval;
@@ -727,7 +731,11 @@ class DocHtmlFormat
                 
                 foreach ($tr as $kd => $vd) {
                     
-                    $hval = preg_replace('/\[([^\]]*)\]/e', "\$this->rowattrReplace('\\1',$k)", $vd);
+                    $hval = preg_replace_callback('/\[([^\]]*)\]/', function ($matches) use ($k)
+                    {
+                        return $this->rowattrReplace($matches[1], $k);
+                    }
+                    , $vd);
                     $tivalue[] = array(
                         "evalue" => $hval,
                         "color" => "inherit",
@@ -809,8 +817,8 @@ class DocHtmlFormat
                         }
                         $tivalue[] = array(
                             "evalue" => $hval,
-                            "attrid"=>$va->id,
-                            "atype"=>$va->type,
+                            "attrid" => $va->id,
+                            "atype" => $va->type,
                             "tdstyle" => $va->getOption("cellbodystyle") ,
                             "color" => $va->getOption("color", "inherit") ,
                             "bgcolor" => $va->getOption("bgcolor", "inherit") ,
@@ -1015,7 +1023,11 @@ class DocHtmlFormat
             $this->cancelFormat = true;
         }
         $shtmllink = $this->htmlLink ? "true" : "false";
-        $avalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->doc->getDocAnchor('\\2',\"$this->target\",$shtmllink)", $avalue);
+        $avalue = preg_replace_callback('/(\[|&#x5B;)ADOC ([^\]]*)\]/', function ($matches) use ($shtmllink)
+        {
+            return $this->doc->getDocAnchor($matches[2], $this->target, $shtmllink);
+        }
+        , $avalue);
         if (stripos($avalue, "data-initid") !== false) {
             try {
                 $domDoc = new DOMDocument();

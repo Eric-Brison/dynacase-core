@@ -162,28 +162,25 @@ class Layout
     {
         $this->corresp["$p_nom_block"]["[$p_nom_modele]"] = ($p_nom == NULL ? $p_nom_modele : "$p_nom");
     }
-
-
-
     /**
      * set encoded data to fill a block
      * @api set data to fill a block
      * @param string $p_nom_block block name
      * @param array $data data to fill the block
      */
-    public function eSetBlockData($p_nom_block,  $data = NULL) {
+    public function eSetBlockData($p_nom_block, $data = NULL)
+    {
         if (is_array($data)) {
-            foreach ($data as &$aRow) {
+            foreach ($data as & $aRow) {
                 if (is_array($aRow)) {
-            foreach ($aRow as &$aData) {
-                    $aData=htmlspecialchars($aData, ENT_QUOTES);
-            }
+                    foreach ($aRow as & $aData) {
+                        $aData = htmlspecialchars($aData, ENT_QUOTES);
+                    }
                 }
             }
         }
         $this->setBlockData($p_nom_block, $data);
     }
-
     /**
      * set data to fill a block
      * @api set data to fill a block
@@ -243,21 +240,14 @@ class Layout
         $this->ParseBlock($out);
         return ($out);
     }
-    /**
-     * need for php5.3 - not accept anonymous method which use this
-     * @param array $matches
-     * @return string
-     */
-    private function pregSetBlock($matches)
-    {
-        return $this->SetBlock($matches[1], $matches[2]);
-    }
+    
     protected function ParseBlock(&$out)
     {
-        $out = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', array(
-            $this,
-            "pregSetBlock"
-        ) , $out);
+        $out = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', function ($matches)
+        {
+            return $this->SetBlock($matches[1], $matches[2]);
+        }
+        , $out);
     }
     
     protected function TestIf($name, $block, $not = false)
@@ -281,39 +271,23 @@ class Layout
         }
         return ($out);
     }
-    /**
-     * need for php5.3 - not accept anonymous method which use this
-     * @param array $matches
-     * @return string
-     */
-    private function pregTestIf($matches)
-    {
-        return $this->TestIf($matches[2], $matches[3], $matches[1]);
-    }
     
     protected function ParseIf(&$out)
     {
-        $out = preg_replace_callback('/(?m)\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', array(
-            $this,
-            "pregTestIf"
-        ) , $out);
-    }
-    /**
-     * need for php5.3 - not accept anonymous method which use this
-     * @param array $matches
-     * @return string
-     */
-    private function pregExecute($matches)
-    {
-        return $this->execute($matches[1], $matches[2]);
+        $out = preg_replace_callback('/(?m)\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', function ($matches)
+        {
+            return $this->TestIf($matches[2], $matches[3], $matches[1]);
+        }
+        , $out);
     }
     
     protected function ParseZone(&$out)
     {
-        $out = preg_replace_callback('/\[ZONE\s+([^:]*):([^\]]*)\]/', array(
-            $this,
-            "pregExecute"
-        ) , $out);
+        $out = preg_replace_callback('/\[ZONE\s+([^:]*):([^\]]*)\]/', function ($matches)
+        {
+            return $this->execute($matches[1], $matches[2]);
+        }
+        , $out);
     }
     
     protected function ParseKey(&$out)
@@ -424,7 +398,7 @@ class Layout
      */
     public function eSet($tag, $val)
     {
-        $this->set($tag, htmlspecialchars($val,ENT_QUOTES));
+        $this->set($tag, htmlspecialchars($val, ENT_QUOTES));
     }
     /**
      * return the value set for a key
@@ -551,30 +525,26 @@ class Layout
         }
         return ($out);
     }
-    private function pregGenJsCodeTrue($matches)
-    {
-        return $this->GenJsCode(true);
-    }
-    private function pregGenJsCodeFalse($matches)
-    {
-        return $this->GenJsCode(false);
-    }
+    
     protected function ParseJs(&$out)
     {
-        $out = preg_replace_callback('/\[JS:REF\]/', array(
-            $this,
-            "GenJsRef"
-        ) , $out);
+        $out = preg_replace_callback('/\[JS:REF\]/', function ()
+        {
+            return $this->GenJsRef();
+        }
+        , $out);
         
-        $out = preg_replace_callback('/\[JS:CODE\]/', array(
-            $this,
-            "pregGenJsCodeTrue"
-        ) , $out);
+        $out = preg_replace_callback('/\[JS:CODE\]/', function ()
+        {
+            return $this->GenJsCode(true);
+        }
+        , $out);
         
-        $out = preg_replace_callback('/\[JS:CODENLOG\]/', array(
-            $this,
-            "pregGenJsCodeFalse"
-        ) , $out);
+        $out = preg_replace_callback('/\[JS:CODENLOG\]/', function ()
+        {
+            return $this->GenJsCode(false);
+        }
+        , $out);
     }
     
     protected function GenCssRef($oldCompatibility = true)
@@ -603,25 +573,24 @@ class Layout
         }
         return ($out);
     }
-    private function pregGenCssRefFalse($matches)
-    {
-        return $this->GenCssRef(false);
-    }
     protected function ParseCss(&$out)
     {
-        $out = preg_replace_callback('/\[CSS:REF\]/', array(
-            $this,
-            "GenCssRef"
-        ) , $out);
-        $out = preg_replace_callback('/\[CSS:CUSTOMREF\]/', array(
-            $this,
-            "pregGenCssRefFalse"
-        ) , $out);
+        $out = preg_replace_callback('/\[CSS:REF\]/', function ()
+        {
+            return $this->GenCssRef();
+        }
+        , $out);
+        $out = preg_replace_callback('/\[CSS:CUSTOMREF\]/', function ()
+        {
+            return $this->GenCssRef(false);
+        }
+        , $out);
         
-        $out = preg_replace_callback('/\[CSS:CODE\]/', array(
-            $this,
-            "GenCssCode"
-        ) , $out);
+        $out = preg_replace_callback('/\[CSS:CODE\]/', function ()
+        {
+            return $this->GenCssCode();
+        }
+        , $out);
     }
     /**
      * Generate text from template with data included
