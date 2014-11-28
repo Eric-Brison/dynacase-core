@@ -100,7 +100,7 @@ fi
 
 log "Setting DateStyle to match CORE_LCDATE..."
 CURRENT_DATABASE=`PGSERVICE="$core_db" psql -tA -c "SELECT current_database()"`
-CURRENT_DATABASE_QUOTED=$(echo "$DATABASE" | sed -e 's/"/""/g')
+CURRENT_DATABASE_QUOTED=$(echo "$CURRENT_DATABASE" | sed -e 's/"/""/g')
 CORE_LCDATE=`"$WIFF_CONTEXT_ROOT/wsh.php" --api=getApplicationParameter --param=CORE_LCDATE| cut -f1 -d" "`
 if [ -z "$CURRENT_DATABASE" ]; then
     echo "Could not get current_database from PGSERVICE=$core_db"
