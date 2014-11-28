@@ -120,7 +120,11 @@ class TestSearch extends TestCaseDcpCommonFamily
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
         $s->setObjectReturn(true);
-        $c = $s->onlyCount();
+        try {
+            $c = $s->onlyCount();
+        }
+        catch(\Dcp\Db\Exception $e) {
+        }
         
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
@@ -145,13 +149,47 @@ class TestSearch extends TestCaseDcpCommonFamily
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
         $s->setObjectReturn(true);
-        $c = $s->onlyCount();
-        
+        $c = null;
+        try {
+            $c = $s->onlyCount();
+        }
+        catch(\Dcp\Db\Exception $e) {
+        }
         $err = $s->getError();
         $this->assertContains($error, $err, sprintf("No good error %s", print_r($s->getSearchInfo() , true)));
         $count = - 1;
         $this->assertEquals($count, $s->count() , sprintf("Count must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
         $this->assertEquals($count, $c, sprintf("Return count must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
+    }
+    /**
+     * test basic search criteria
+     * @param string $criteria filter
+     * @param string $arg filter argument
+     * @param string $family family name or id
+     * @param integer $count expected results count
+     * @return void
+     * @dataProvider countErrorCriteriaException
+     * @depends testCountSearch
+     */
+    public function testOnlyCountErrorSearchException($criteria, $arg, $family, $error)
+    {
+        require_once "FDL/Class.SearchDoc.php";
+        $this->createDataSearch();
+        $s = new \SearchDoc(self::$dbaccess, $family);
+        if ($criteria) $s->addFilter($criteria, $arg);
+        $s->setObjectReturn(true);
+        $exceptionError = '';
+        try {
+            $s->onlyCount();
+        }
+        catch(\Dcp\Db\Exception $e) {
+            $exceptionError = $e->getMessage();
+        }
+        $getError = $s->getError();
+        $this->assertContains($error, $exceptionError, sprintf("Exception error '%s' does not contains '%s' (%s)", $exceptionError, $getError, print_r($s->getSearchInfo() , true)));
+        $this->assertContains($error, $getError, sprintf("getError() '%s' does not contains '%s' (%s)", $getError, $getError, print_r($s->getSearchInfo() , true)));
+        $count = - 1;
+        $this->assertEquals($count, $s->count() , sprintf("count() must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
     }
     /**
      * test only count user search
@@ -182,7 +220,11 @@ class TestSearch extends TestCaseDcpCommonFamily
             if (isset($test['search:noviewcontrol']) && $test['search:noviewcontrol']) {
                 $s->overrideViewControl();
             }
-            $count = $s->onlyCount();
+            try {
+                $count = $s->onlyCount();
+            }
+            catch(\Dcp\Db\Exception $e) {
+            }
             $this->assertEquals($count, $test['expect:count'], sprintf("test#%s> Result size is %s while expecting %s. [%s]", $i, $count, $test['expect:count'], print_r($s->getSearchInfo() , true)));
             
             if (isset($test['sudo'])) {
@@ -462,16 +504,21 @@ class TestSearch extends TestCaseDcpCommonFamily
     {
         return array(
             array(
-                "title_unknow ~* '%s'",
-                "Pomme",
-                "BASE",
-                "title_unknow"
-            ) ,
-            array(
                 "title ~ '%s'",
                 "Poire|Pomme|Cerise|Banane",
                 "BASE_UNKNOW",
                 "BASE_UNKNOW"
+            )
+        );
+    }
+    public function countErrorCriteriaException()
+    {
+        return array(
+            array(
+                "title_unknow ~* '%s'",
+                "Pomme",
+                "BASE",
+                "title_unknow"
             ) ,
             array(
                 "title @? '%s'",
