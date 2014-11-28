@@ -64,7 +64,7 @@ if (($force) || ($dbDate == "SQL, DMY" && $locale == "dmy")) {
  */
 function convertDateToIso(Action $action, $onlyAnalyze = false)
 {
-    $sql = "SELECT a1.id, a1.docid, a1.type from docattr a1, docattr a2 where a1.usefor != 'Q' and (a1.type ~ 'date' or a1.type ~ 'timestamp') and a1.frameid=a2.id and a2.type ~ 'array';";
+    $sql = "SELECT a1.id, a1.docid, a1.type from docattr a1, docattr a2 where a1.usefor != 'Q' and (a1.type ~ 'date' or a1.type ~ 'timestamp') and a1.frameid=a2.id and a2.type ~ 'array' and a1.id !~ ':';";
     
     simpleQuery($action->dbaccess, $sql, $res);
     
