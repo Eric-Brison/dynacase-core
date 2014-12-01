@@ -194,16 +194,13 @@ class OOoLayout extends Layout
         return $depth;
     }
     
-    private function pregSetBlock($matches)
-    {
-        return $this->SetBlock($matches[1], $matches[2]);
-    }
     protected function ParseBlock(&$out = null)
     {
-        $this->template = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', array(
-            $this,
-            "pregSetBlock"
-        ) , $this->template);
+        $this->template = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', function ($matches)
+        {
+            return $this->SetBlock($matches[1], $matches[2]);
+        }
+        , $this->template);
     }
     /**
      *
@@ -238,15 +235,6 @@ class OOoLayout extends Layout
         return ($out);
     }
     /**
-     * need for php5.3 - not accept anonymous method which use this
-     * @param array $matches
-     * @return string
-     */
-    private function pregTestIf($matches)
-    {
-        return $this->TestIf($matches[2], $matches[3], $matches[1]);
-    }
-    /**
      * Top level parse condition
      */
     protected function ParseIf(&$out = null)
@@ -256,10 +244,11 @@ class OOoLayout extends Layout
         //header('Content-type: text/xml; charset=utf-8');print $this->template;exit;
         while ($templateori != $this->template && ($level < 10)) {
             $templateori = $this->template;
-            $this->template = preg_replace_callback('/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', array(
-                $this,
-                "pregTestIf"
-            ) , $this->template);
+            $this->template = preg_replace_callback('/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', function ($matches)
+            {
+                return $this->TestIf($matches[2], $matches[3], $matches[1]);
+            }
+            , $this->template);
             $level++; // to prevent infinite loop
             
         }
@@ -446,15 +435,6 @@ class OOoLayout extends Layout
         return ($out);
     }
     /**
-     * need for php5.3 - not accept anonymous method which use this
-     * @param array $matches
-     * @return string
-     */
-    private function pregExecute($matches)
-    {
-        return $this->execute($matches[1], $matches[2]);
-    }
-    /**
      * not use for the moment
      * @deprecated ZONE are not supported
      * @param $out
@@ -463,10 +443,11 @@ class OOoLayout extends Layout
     {
         deprecatedFunction();
         
-        $out = preg_replace('/\[ZONE\s*([^:]*):([^\]]*)\]/e', array(
-            $this,
-            "pregExecute"
-        ) , $out);
+        $out = preg_replace_callback('/\[ZONE\s*([^:]*):([^\]]*)\]/', function ($matches)
+        {
+            return $this->execute($matches[1], $matches[2]);
+        }
+        , $out);
     }
     /**
      * replace simple key in xml string
@@ -1172,7 +1153,11 @@ class OOoLayout extends Layout
         
         $level = 0;
         while ($level < 10) {
-            $replacement = preg_replace('/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se', "\$this->TestIf('\\2','\\3','\\1',\$levelPath)", $inner);
+            $replacement = preg_replace_callback('/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', function ($matches) use ($levelPath)
+            {
+                return $this->TestIf($matches[2], $matches[3], $matches[1], $levelPath);
+            }
+            , $inner);
             if ($inner == $replacement) break;
             else $inner = $replacement;
             $level++;

@@ -323,10 +323,11 @@ class importSingleDocument
                     } else {
                         if ($attr->type == "htmltext" && !$this->analyze) {
                             $this->currentAttrid = $attrid;
-                            $dv = preg_replace_callback('/(<img.*?src=")file:\/\/(.*?)(".*?\/>)/', array(
-                                $this,
-                                "importHtmltextFiles"
-                            ) , $dv);
+                            $dv = preg_replace_callback('/(<img.*?src=")file:\/\/(.*?)(".*?\/>)/', function ($matches)
+                            {
+                                return $this->importHtmltextFiles($matches);
+                            }
+                            , $dv);
                         }
                         $errv = $this->doc->setValue($attr->id, $dv);
                         if ($errv) {

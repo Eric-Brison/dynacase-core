@@ -808,7 +808,11 @@ function mkpasswd($length = 8, $charspace = "")
         $charspace = "[:alnum:]";
     }
     // Repeat a pattern e.g. [:a:3] -> [:a:][:a:][:a:]
-    $charspace = preg_replace("/(\[:[a-z]+:)(\d+)(\])/e", "str_repeat('\\1\\3',\\2)", $charspace);
+    $charspace = preg_replace_callback('/(\[:[a-z]+:)(\d+)(\])/', function ($matches)
+    {
+        return str_repeat($matches[1] . $matches[3], $matches[2]);
+    }
+    , $charspace);
     // Expand [:patterns:]
     $charspace = preg_replace(array(
         "/\[:alnum:\]/",
