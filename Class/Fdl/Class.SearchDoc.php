@@ -260,18 +260,18 @@ class SearchDoc
                     }
                     $dbid = getDbid($this->dbaccess);
                     $mb = microtime(true);
-                    $q = @pg_query($dbid, $sql);
-                    if (!$q) {
+                    try {
+                        simpleQuery($this->dbaccess, $sql, $result, false, true, true);
+                    }
+                    catch(\Dcp\Db\Exception $e) {
                         $this->debuginfo["query"] = $sql;
                         $this->debuginfo["error"] = pg_last_error($dbid);
-                        $count = - 1;
-                        break;
-                    } else {
-                        $result = pg_fetch_array($q, 0, PGSQL_ASSOC);
-                        $count+= $result["count"];
-                        $this->debuginfo["query"] = $sql;
-                        $this->debuginfo["delay"] = sprintf("%.03fs", microtime(true) - $mb);
+                        $this->count = - 1;
+                        throw $e;
                     }
+                    $count+= $result["count"];
+                    $this->debuginfo["query"] = $sql;
+                    $this->debuginfo["delay"] = sprintf("%.03fs", microtime(true) - $mb);
                 }
             }
             $this->count = $count;
