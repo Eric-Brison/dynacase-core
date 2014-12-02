@@ -135,7 +135,7 @@ class AuthenticatorManager
         /*
          * All authenticators are not necessarily based on sessions (i.e. 'basic')
         */
-        if (method_exists(self::$auth, 'getAuthSession')) {
+        if (self::hasAuthSession()) {
             self::$session = self::$auth->getAuthSession();
             /**
              * @var self::$session Session
@@ -335,5 +335,9 @@ class AuthenticatorManager
         }
         
         return AuthenticatorManager::AccessOk;
+    }
+    public static function hasAuthSession()
+    {
+        return isset(AuthenticatorManager::$auth) && method_exists(AuthenticatorManager::$auth, 'getAuthSession');
     }
 }
