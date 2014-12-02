@@ -1577,14 +1577,14 @@ function clearFile(o,nid) {
     var $t=$('#'+nid);
     $t.val(' ');
 
-    $t.closest('td').find(".newFileName").css('display','none');
-    $t.closest('td').find(".fileName").css('display','');
+    $t.closest('.fileInput').find(".newFileName").css('display','none');
+    $t.closest('.fileInput').find(".fileName").css('display','');
     $('#IF_'+nid).val('').css("display","");
     if ($('#INIV'+nid).val() != "") {
         $('#iu_'+nid).removeAttr("disabled");
-        $t.closest('td').find(".fileName").css("text-decoration","line-through");
-        //$t.closest('td').find(".fileName img").attr("src","Images/noimage.png");
-        $t.closest('td').find(".fileName img").css("visibility","hidden");
+        $t.closest('.fileInput').find(".fileName").css("text-decoration","line-through");
+        //$t.closest('.fileInput').find(".fileName img").attr("src","Images/noimage.png");
+        $t.closest('.fileInput').find(".fileName img").css("visibility","hidden");
     }
     $('#ix_'+nid).attr("disabled","disabled");
     $('#IFERR'+nid).text('');
@@ -1608,9 +1608,9 @@ function restoreFile(o,nid) {
     $t.val($('#INIV'+nid).val());
 
     resetFile(nid);
-      $t.closest('td').find(".fileName").css('display','').css("text-decoration","");
-      $t.closest('td').find(".fileName img").css("visibility","");
-      $t.closest('td').find(".newFileName").css('display','none');
+      $t.closest('.fileInput').find(".fileName").css('display','').css("text-decoration","");
+      $t.closest('.fileInput').find(".fileName img").css("visibility","");
+      $t.closest('.fileInput').find(".newFileName").css('display','none');
     $('#IF_'+nid).css("display","");
     $('#iu_'+nid).attr("disabled","disabled");
     if ($('#INIV'+nid).val() != "") {
@@ -1781,8 +1781,8 @@ function changeFile(o,nid,check) {
      // updatefilebutton(tix,nid);
 
       var $t=$('#'+nid);
-      $t.closest('td').find(".newFileName").text(o.value.replace(/^.*\\/, "")).css('display','');
-      $t.closest('td').find(".fileName").css('display','none');
+      $t.closest('.fileInput').find(".newFileName").text(o.value.replace(/^.*\\/, "")).css('display','');
+      $t.closest('.fileInput').find(".fileName").css('display','none');
       if ($('#INIV'+nid).val() != "") {
         $('#iu_'+nid).removeAttr("disabled");
       }
