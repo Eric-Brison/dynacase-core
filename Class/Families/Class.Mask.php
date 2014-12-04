@@ -86,7 +86,7 @@ class Mask extends \Dcp\Family\Base
         foreach ($tattrid as $k => $v) {
             $attr = $doc->getAttribute($v);
             if ($attr) {
-                $fvisid = $attr->fieldSet->id;
+                $fvisid = (isset($attr->fieldSet->id) ? $attr->fieldSet->id : null);
                 if ($tvisid[$k] == "-") $vis = $attr->visibility;
                 else $vis = $tvisid[$k];
                 
