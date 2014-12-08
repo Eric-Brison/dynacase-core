@@ -44,7 +44,7 @@ function __phpLintWriteFile($fileName, $content)
     }
     if (CheckClass::phpLintFile($temp, $output) === false) {
         // Leave temp file for syntax error analysis
-        return sprintf(_("Syntax error in file '%s': %s") , $temp, $output);
+        return sprintf(_("Syntax error in file '%s': %s") , $temp, join("\n", $output));
     }
     if (rename($temp, $fileName) === false) {
         unlink($temp);
@@ -689,7 +689,7 @@ function createDocFile($dbaccess, $tdoc)
     
     $err = __phpLintWriteFile($attrfile, AttrIdtoPhp($dbaccess, $tdoc));
     if ($err != '') {
-        throw new \Dcp\Exception("Error generating file '%s': %s", $attrfile, $err);
+        throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $attrfile, $err));
     }
     
     return $dfile;
