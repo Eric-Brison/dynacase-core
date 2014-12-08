@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-26 11:59+0100\n"
+"POT-Creation-Date: 2014-12-09 11:46+0100\n"
 "PO-Revision-Date: 2014-08-20 16:23+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -2665,6 +2665,9 @@ msgstr ""
 
 #, php-format
 msgid "Logical name %s already use in document %s"
+msgstr ""
+
+msgid "Logical name must not be empty."
 msgstr ""
 
 msgid "Login"
@@ -5854,6 +5857,9 @@ msgid "family %s not found"
 msgstr ""
 
 msgid "family id"
+msgstr ""
+
+msgid "family logical name"
 msgstr ""
 
 msgid "family manual"

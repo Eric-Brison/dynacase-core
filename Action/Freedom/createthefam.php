@@ -22,33 +22,40 @@ include_once ("FDL/Lib.Attr.php");
 include_once ("FDL/Class.DocFam.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function createthefam(&$action)
+function createthefam(Action & $action)
 {
     // Get all the params
     $ftitle = GetHttpVars("ftitle", _("new familly document"));
+    $fname = getHttpVars("fname", "");
+    if (!$fname) {
+        $action->exitError(_("Logical name must not be empty."));
+    }
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
-    $bdfreedomattr = new DocAttr($dbaccess);
-    if ($docid == 0) {
-        $doc = new DocFam($dbaccess);
-        //---------------------------
-        // add new freedom familly
-        //---------------------------
-        $doc->title = $ftitle;
-        $doc->owner = $action->user->id;
-        $doc->locked = $action->user->id; // lock for next modification
-        $doc->doctype = 'C'; // it is a new class document
-        $doc->fromid = GetHttpVars("classid"); // inherit from
-        $doc->profid = "0"; // NO PROFILE ACCESS
-        if (GetHttpVars("classid") > 0) {
-            $cdoc = new_Doc($dbaccess, GetHttpVars("classid"));
-            $doc->classname = "";
-            $doc->profid = $cdoc->cprofid; // inherit father profile
-            
-        }
-        $err = $doc->Add();
-        if ($err != "") $action->exitError($err);
+    $doc = new DocFam($dbaccess);
+    //---------------------------
+    // add new freedom familly
+    //---------------------------
+    $doc->title = $ftitle;
+    $doc->owner = $action->user->id;
+    $doc->locked = $action->user->id; // lock for next modification
+    $doc->doctype = 'C'; // it is a new class document
+    $doc->fromid = GetHttpVars("classid"); // inherit from
+    $doc->profid = "0"; // NO PROFILE ACCESS
+    if (GetHttpVars("classid") > 0) {
+        $cdoc = new_Doc($dbaccess, GetHttpVars("classid"));
+        $doc->classname = "";
+        $doc->profid = $cdoc->cprofid; // inherit father profile
+        
+    }
+    $err = $doc->setLogicalName($fname);
+    if ($err != "") {
+        $action->exitError($err);
+    }
+    $err = $doc->Add();
+    if ($err != "") {
+        $action->exitError($err);
     }
     
     $wsh = getWshCmd();
