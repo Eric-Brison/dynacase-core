@@ -16,6 +16,14 @@ class CheckEnd extends CheckData
      */
     protected $doc;
     /**
+     * @var importDocumentDescription
+     */
+    protected $importer = null;
+    public function __construct(importDocumentDescription & $importer = null)
+    {
+        $this->importer = $importer;
+    }
+    /**
      * @param array $data
      * @param Doc $doc
      * @return CheckEnd
@@ -218,7 +226,20 @@ class CheckEnd extends CheckData
             /**
              * @var $oa NormalAttribute
              */
-            $oa = $this->doc->getAttribute($attrid);
+            $oa = false;
+            /*
+             * Try to get the up-to-date attribute from the current importer if
+             * it has been defined or updated in the current import session.
+            */
+            if (is_object($this->importer)) {
+                $oa = $this->importer->getImportedAttribute($this->doc->id, $attrid);
+            }
+            /*
+             * Otherwise, try to get the attribute from the family's class
+            */
+            if (!$oa) {
+                $oa = $this->doc->getAttribute($attrid);
+            }
             if (!$oa) {
                 $this->addError(ErrorCode::getError('INIT0005', $attrid, $this->doc->name));
             } else {

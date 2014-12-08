@@ -62,6 +62,12 @@ class importDocumentDescription
      */
     private $doc;
     /**
+     * Store attributes defined/updated by the current import session.
+     *
+     * @var array
+     */
+    private $importedAttribute = array();
+    /**
      * @param string $importFile
      * @throws Dcp\Exception
      */
@@ -612,8 +618,10 @@ class importDocumentDescription
         }
         if ((count($data) > 3) && ($data[3] != "")) $this->doc->doctype = "S";
         if ($ferr == "") {
+            $now = gettimeofday();
+            $this->doc->revdate = $now['sec'];
             $this->doc->modify();
-            $check = new CheckEnd();
+            $check = new CheckEnd($this);
             if ($this->doc->doctype == "C") {
                 global $tFamIdName;
                 $check->checkMaxAttributes($this->doc);
@@ -1716,6 +1724,7 @@ class importDocumentDescription
                 }
                 if ($oattr->isAffected()) $err = $oattr->Modify();
                 else $err = $oattr->Add();
+                $this->addImportedAttribute($this->doc->id, $oattr);
                 
                 $this->tcr[$this->nLine]["err"].= $err;
             }
@@ -1874,6 +1883,20 @@ class importDocumentDescription
             }
         }
         if ($this->tcr[$this->nLine]["err"]) $this->tcr[$this->nLine]["action"] = "ignored";
+    }
+    protected function addImportedAttribute($famId, DocAttr & $oa)
+    {
+        if (!isset($this->importedAttribute[$famId])) {
+            $this->importedAttribute[$famId] = array();
+        }
+        $this->importedAttribute[$famId][$oa->id] = $oa;
+    }
+    public function getImportedAttribute($famId, $attrId)
+    {
+        if (isset($this->importedAttribute[$famId][$attrId])) {
+            return $this->importedAttribute[$famId][$attrId];
+        }
+        return false;
     }
 }
 

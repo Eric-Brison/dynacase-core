@@ -369,8 +369,13 @@ class TestImportFamily extends TestCaseDcpDocument
                 "PU_data_dcp_goodfamily4.ods",
                 "TST_GOODFAMIMP4",
                 false
+            ) ,
+            // Family update with PARAM + INITIAL value
+            array(
+                "PU_data_dcp_goodfamily5.ods",
+                "TST_GOODFAMIMP5",
+                false
             )
         );
     }
 }
-?>
