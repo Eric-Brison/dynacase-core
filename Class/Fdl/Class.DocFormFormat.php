@@ -630,11 +630,13 @@ class DocFormFormat
                 $lay->set("need", $this->oattr->needed);
                 $jsonconf = $this->oattr->getOption("jsonconf");
                 if (!$jsonconf) {
+                    $imageFamily = new_Doc("", "IMAGE");
                     $conf = array(
                         "height" => $this->oattr->getOption("editheight", "150px") ,
                         "toolbar" => $this->oattr->getOption("toolbar", "Simple") ,
                         "toolbarCanCollapse" => true,
                         "toolbarStartupExpanded" => (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? false : true,
+                        "filebrowserImageUploadUrl" => $imageFamily->hasPermission("create") ? '?sole=Y&app=FDL&action=CKUPLOAD' : null
                     );
                     
                     $jsonconf = json_encode($conf);

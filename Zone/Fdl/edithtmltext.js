@@ -102,7 +102,7 @@ window.htmlText.defaultOption.prototype = {
     removePlugins:'elementspath',
     extraPlugins:'quicksave',
     filebrowserImageBrowseUrl:'?sole=Y&app=FDL&action=CKIMAGE',
-    filebrowserImageUploadUrl:'?sole=Y&app=FDL&action=CKUPLOAD',
+    filebrowserImageUploadUrl: undefined,
     blockedKeystrokes:[
         CKEDITOR.CTRL + 66 /*B*/,
         CKEDITOR.CTRL + 73 /*I*/,
