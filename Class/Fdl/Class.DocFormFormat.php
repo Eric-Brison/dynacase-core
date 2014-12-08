@@ -633,7 +633,8 @@ class DocFormFormat
                     $conf = array(
                         "height" => $this->oattr->getOption("editheight", "150px") ,
                         "toolbar" => $this->oattr->getOption("toolbar", "Simple") ,
-                        "toolbarStartupExpanded" => (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? false : true
+                        "toolbarCanCollapse" => true,
+                        "toolbarStartupExpanded" => (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? false : true,
                     );
                     
                     $jsonconf = json_encode($conf);
