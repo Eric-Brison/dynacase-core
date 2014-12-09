@@ -4395,6 +4395,10 @@ msgid "[%s] must be a number"
 msgstr "[%s] doit être un nombre"
 
 #, php-format
+msgid "[%s] must be between %s and %s"
+msgstr "[%s] doit être compris entre %s et %s"
+
+#, php-format
 msgid "[%s] must be greater than %s"
 msgstr "[%s] doit être supérieur à %s"
 
