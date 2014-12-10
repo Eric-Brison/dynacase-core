@@ -7506,7 +7506,11 @@ create unique index i_docir on doc(initid, revision);";
         return $this->setLogicalName($name, $reset);
     }
     /**
-     * affect a logical name that can be use as unique reference of a document independant of database
+     * Affect a logical name that can be use as unique reference of a document independant of database.
+     *
+     * The logical name is affected only if it's not an empty string:
+     * if empty, then the affectation is silently bypassed.
+     *
      * @param string $name new logical name
      * @param bool $reset set to true to accept change
      * @param bool $verifyOnly if true only verify syntax and unicity
@@ -7514,7 +7518,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     function setLogicalName($name, $reset = false, $verifyOnly = false)
     {
-        if ($name) {
+        if (is_string($name) && strlen($name) > 0) {
             if (!CheckDoc::isWellformedLogicalName($name)) {
                 if (!$this->isAffected()) {
                     $this->name = $name; // affect to be controlled in add and return error also
