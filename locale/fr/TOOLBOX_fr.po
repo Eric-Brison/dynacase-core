@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-09 11:46+0100\n"
-"PO-Revision-Date: 2014-12-08 16:45+0100\n"
+"POT-Creation-Date: 2014-12-10 16:35+0100\n"
+"PO-Revision-Date: 2014-12-10 16:37+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -115,10 +115,6 @@ msgstr "%d jour"
 #, php-format
 msgid "%d days"
 msgstr "%d jours"
-
-#, php-format
-msgid "%d document"
-msgstr "%d document"
 
 #, php-format
 msgid "%d documents"
@@ -3709,6 +3705,18 @@ msgstr "SetBlock : erreur [%s]"
 
 msgid "Showing %br to %er of %nd documents%t%t%p%n"
 msgstr "Affiche les documents %br à %er sur %nd au total%t%t%p%n"
+
+#, php-format
+msgid "Showing %d document"
+msgstr "Affichage de %d document"
+
+#, php-format
+msgid "Showing %d documents"
+msgstr "Affichage de %d documents"
+
+#, php-format
+msgid "Showing %d of %d documents"
+msgstr "Affichage de %d sur %d documents"
 
 #, php-format
 msgid "Skip already added property '%s' in family '%s'"

@@ -5,8 +5,8 @@
   <head>
 
    <title>[foldername] [TEXT: folder containt]</title>
-<link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&amp;action=ALLVIEWCSS&amp;wv=[WVERSION]" />
 [IF RSS]<link rel="alternate" type="application/rss+xml" title="[foldername]" href="[rsslink]"/>[ENDIF RSS]
 
 [CSS:REF]
@@ -45,16 +45,16 @@ opalterrow('tbody'+id);
  </head>
 
 
-<body class="freedom" topmargin=1 leftmargin=1
+<body class="freedom" topmargin="1" leftmargin="1"
       onLoad="initmicon();" 
       onClick="closeMenu('popuplist');" >
 
 
 
-<img id="micon"  width="[SIZE_IMG-X-SMALL]" height="[SIZE_IMG-X-SMALL]"   style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif">
+<img id="micon"  width="[SIZE_IMG-X-SMALL]" height="[SIZE_IMG-X-SMALL]"   style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif" />
 
 
-[ZONE FREEDOM:FOLDER_BARMENU?nbdoc=[nbdoc]&dirid=[dirid]]
+[ZONE FREEDOM:FOLDER_BARMENU?nbdoc=[nbdoc]&dirid=[dirid]&count=[count]]
 [ZONE FREEDOM:POPUP]
 
 
@@ -62,7 +62,7 @@ opalterrow('tbody'+id);
                     [BLOCK TABLEBODY]
 <table class="tableborder" cellspacing="0" style="margin-top:5pt" width="100%" >
 <thead>
-<tr><th><IMG class="iconimg20"   align="absmiddle" needresize="1" src="[iconfamsrc]"><B>[ftitle]</B></th>
+<tr><th><IMG class="iconimg20"   align="absmiddle" needresize="1" src="[iconfamsrc]"/><B>[ftitle]</B></th>
 [BLOCK [blockattr]]
 <th>[aname]</th>
 [ENDBLOCK [blockattr]]</tr></thead>
@@ -76,7 +76,7 @@ opalterrow('tbody'+id);
      onmouseover="oselect([id])"  onmouseout="ounselect()"
      title="[highlight]">   
  <td class="tlist">
-<IMG style="display:none" id="i[divid]"  src="[iconsrc]">[title] <i>[state]</i></td>       
+<IMG style="display:none" id="i[divid]"  src="[iconsrc]"/>[title] <i>[state]</i></td>
 <td class="tlist">[values]</td>        
 </tr>
 [ENDBLOCK [blockvalue]]

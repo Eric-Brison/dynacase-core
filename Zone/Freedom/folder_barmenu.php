@@ -27,6 +27,7 @@ function folder_barmenu(Action & $action)
     // -----------------------------------
     // Get all the params
     $nbdoc = GetHttpVars("nbdoc");
+    $count = getHttpVars("count", "");
     $dirid = GetHttpVars("dirid");
     $target = GetHttpVars("target"); // target for hyperlinks
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -36,8 +37,16 @@ function folder_barmenu(Action & $action)
     $action->lay->set("wtarget", urlencode($target));
     $action->lay->set("title", $dir->getHTMLTitle());
     $action->lay->set("pds", $dir->urlWhatEncodeSpec("")); // parameters for searches
-    if ($nbdoc > 1) $action->lay->set("nbdoc", sprintf(_("%d documents") , $nbdoc));
-    else $action->lay->set("nbdoc", sprintf(_("%d document") , $nbdoc));
+    if ($nbdoc > 1) {
+        if (is_numeric($count) && $count > $nbdoc) {
+            $nbdocMsg = sprintf(_("Showing %d of %d documents") , $nbdoc, $count);
+        } else {
+            $nbdocMsg = sprintf(_("Showing %d documents") , $nbdoc);
+        }
+        $action->lay->set("nbdoc", $nbdocMsg);
+    } else {
+        $action->lay->set("nbdoc", sprintf(_("Showing %d document") , $nbdoc));
+    }
     
     $action->lay->set("dirid", urlencode($dirid));
     $tarch = array();
@@ -114,4 +123,3 @@ function folder_barmenu(Action & $action)
     
     popupGen(1);
 }
-?>

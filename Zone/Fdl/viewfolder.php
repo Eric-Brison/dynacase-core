@@ -468,6 +468,15 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
     $action->lay->Set("next", $startpage + 1);
     $action->lay->Set("prev", $startpage - 1);
     
+    $count = $nbdoc;
+    if ($paginationType === 'none' && ($start != 0 || ($start == 0 && $hasNext))) {
+        $sd->reset();
+        $sd->setSlice('ALL');
+        $sd->setStart(0);
+        $count = $sd->onlyCount();
+    }
+    
+    $action->lay->set("count", $count);
     $action->lay->Set("nbdoc", $nbdoc);
     $action->lay->Set("hasNext", $hasNext);
     $action->lay->eSet("wtarget", $target);
@@ -523,4 +532,3 @@ function getAbstractDetail(Doc & $doc, $target)
     }
     return implode(" - ", $tout);
 }
-?>

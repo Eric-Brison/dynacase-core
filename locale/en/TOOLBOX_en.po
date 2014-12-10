@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-09 11:46+0100\n"
-"PO-Revision-Date: 2014-08-20 16:23+0200\n"
+"POT-Creation-Date: 2014-12-10 16:35+0100\n"
+"PO-Revision-Date: 2014-12-10 16:35+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: \n"
@@ -111,10 +111,6 @@ msgstr ""
 
 #, php-format
 msgid "%d days"
-msgstr ""
-
-#, php-format
-msgid "%d document"
 msgstr ""
 
 #, php-format
@@ -3572,6 +3568,18 @@ msgid "SetBlock:error [%s]"
 msgstr ""
 
 msgid "Showing %br to %er of %nd documents%t%t%p%n"
+msgstr ""
+
+#, php-format
+msgid "Showing %d document"
+msgstr ""
+
+#, php-format
+msgid "Showing %d documents"
+msgstr ""
+
+#, php-format
+msgid "Showing %d of %d documents"
 msgstr ""
 
 #, php-format
