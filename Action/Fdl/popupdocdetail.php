@@ -421,31 +421,29 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
         if (count($tk) > 0) {
             foreach ($tk as $k => $v) {
                 if ($td[$k] != "no") {
-                    if ($tz[$k] != "") {
-                        if ($ti[$k] == "") $cvk = "CV$k";
-                        else $cvk = $ti[$k];
-                        if ($v == "VEDIT") {
-                            if ($cud) {
-                                if ($cvdoc->control($cvk) == "") {
-                                    $tv[$cvk] = array(
-                                        "typeview" => N_("specialedit") , # N_("specialedit %s")
-                                        "idview" => $cvk,
-                                        "menu" => $cvdoc->getLocaleViewMenu($cvk) ,
-                                        "zoneview" => $tz[$k],
-                                        "txtview" => $cvdoc->getLocaleViewLabel($cvk)
-                                    );
-                                }
-                            }
-                        } else {
+                    if ($ti[$k] == "") $cvk = "CV$k";
+                    else $cvk = $ti[$k];
+                    if ($v == "VEDIT") {
+                        if ($cud) {
                             if ($cvdoc->control($cvk) == "") {
                                 $tv[$cvk] = array(
-                                    "typeview" => N_("specialview") , # N_("specialview %s")
+                                    "typeview" => N_("specialedit") , # N_("specialedit %s")
                                     "idview" => $cvk,
                                     "menu" => $cvdoc->getLocaleViewMenu($cvk) ,
                                     "zoneview" => $tz[$k],
                                     "txtview" => $cvdoc->getLocaleViewLabel($cvk)
                                 );
                             }
+                        }
+                    } else {
+                        if ($cvdoc->control($cvk) == "") {
+                            $tv[$cvk] = array(
+                                "typeview" => N_("specialview") , # N_("specialview %s")
+                                "idview" => $cvk,
+                                "menu" => $cvdoc->getLocaleViewMenu($cvk) ,
+                                "zoneview" => $tz[$k],
+                                "txtview" => $cvdoc->getLocaleViewLabel($cvk)
+                            );
                         }
                     }
                 }
