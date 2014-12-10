@@ -81,7 +81,7 @@ class CheckClass extends CheckData
      * Check PHP syntax of file (lint)
      *
      * @param string $fileName
-     * @param string $output Error message
+     * @param array $output Error message
      * @return bool bool(true) if correct or bool(false) if error
      */
     public static function phpLintFile($fileName, &$output)

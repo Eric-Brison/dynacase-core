@@ -62,16 +62,17 @@
 <table  class="tablesimple" width="100%"  cellspacing="0" cellpadding="0" >
 
 <tbody>
-<tr><td colspan="2">&nbsp;<br></td></tr>
+<tr><td colspan="2">&nbsp;<br/></td></tr>
 
 <tr>
   <td  >
  <b>[TEXT:family title]</b> : <input type="text" value="[ftitle]"
-       name="ftitle"> 
+       name="ftitle" />
   </td>
+    <td><b>[TEXT:family logical name]</b> : <input type="text" value="" name="fname" /></td>
   <td  >
  <input type="submit" value="[TEXT:Create new family]"
-        onclick="setTimeout('self.close()',2000)"> 
+        onclick="setTimeout('self.close()',2000)" />
   </td>
 </tr>
 

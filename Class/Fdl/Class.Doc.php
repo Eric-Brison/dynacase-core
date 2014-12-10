@@ -2323,9 +2323,11 @@ create unique index i_docir on doc(initid, revision);";
     {
         if (!$this->_maskApplied) $this->ApplyMask();
         $tsa = array();
-        $at = $this->attributes->GetActionAttributes();
-        foreach ($at as $k => $v) {
-            if ($v->mvisibility != 'H') $tsa[$v->id] = $v;
+        if (isset($this->attributes)) {
+            $at = $this->attributes->GetActionAttributes();
+            foreach ($at as $k => $v) {
+                if ($v->mvisibility != 'H') $tsa[$v->id] = $v;
+            }
         }
         return $tsa;
     }
@@ -7750,36 +7752,38 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         // Out
-        $oaf = $this->getAttribute($currentFrameId);
-        if ($oaf->mvisibility == 'R' || $oaf->mvisibility == 'H' || $oaf->mvisibility == 'I') {
-            $frametpl = '';
-        } else {
-            $frametpl = $oaf->getOption("edittemplate");
-        }
-        if ($v > 0 || $frametpl) { // latest fieldset
-            if ($oaf->getOption("vlabel") == "none") $currentFrameText = '';
-            else $currentFrameText = mb_ucfirst($oaf->GetLabel());
-            $frames[$k]["frametext"] = $currentFrameText;
-            $frames[$k]["frameid"] = $oaf->id;
-            $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
-            $frames[$k]["tag"] = "";
-            $frames[$k]["TAB"] = false;
-            $frames[$k]["edittpl"] = ($frametpl != "");
-            $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]", $this->id, $this->fromid, $frametpl) : '';
-            $frames[$k]["ehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($oaf->id) : false;
-            $frames[$k]["ehelpid"] = ($help->isAlive()) ? $help->id : false;
-            
-            $oaf = $this->getAttribute($oaf->id);
-            $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
-            if (($currentFrame->fieldSet->id != "") && ($currentFrame->fieldSet->id != "FIELD_HIDDENS")) {
-                $frames[$k]["tag"] = "TAG" . $currentFrame->fieldSet->id;
-                $frames[$k]["TAB"] = true;
-                $ttabs[$currentFrame->fieldSet->id] = array(
-                    "tabid" => $currentFrame->fieldSet->id,
-                    "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel") == "none") ? '&nbsp;' : mb_ucfirst($currentFrame->fieldSet->getLabel())
-                );
+        if ($currentFrameId != '') {
+            $oaf = $this->getAttribute($currentFrameId);
+            if ($oaf->mvisibility == 'R' || $oaf->mvisibility == 'H' || $oaf->mvisibility == 'I') {
+                $frametpl = '';
+            } else {
+                $frametpl = $oaf->getOption("edittemplate");
             }
-            $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
+            if ($v > 0 || $frametpl) { // latest fieldset
+                if ($oaf->getOption("vlabel") == "none") $currentFrameText = '';
+                else $currentFrameText = mb_ucfirst($oaf->GetLabel());
+                $frames[$k]["frametext"] = $currentFrameText;
+                $frames[$k]["frameid"] = $oaf->id;
+                $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
+                $frames[$k]["tag"] = "";
+                $frames[$k]["TAB"] = false;
+                $frames[$k]["edittpl"] = ($frametpl != "");
+                $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]", $this->id, $this->fromid, $frametpl) : '';
+                $frames[$k]["ehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($oaf->id) : false;
+                $frames[$k]["ehelpid"] = ($help->isAlive()) ? $help->id : false;
+                
+                $oaf = $this->getAttribute($oaf->id);
+                $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
+                if (($currentFrame->fieldSet->id != "") && ($currentFrame->fieldSet->id != "FIELD_HIDDENS")) {
+                    $frames[$k]["tag"] = "TAG" . $currentFrame->fieldSet->id;
+                    $frames[$k]["TAB"] = true;
+                    $ttabs[$currentFrame->fieldSet->id] = array(
+                        "tabid" => $currentFrame->fieldSet->id,
+                        "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel") == "none") ? '&nbsp;' : mb_ucfirst($currentFrame->fieldSet->getLabel())
+                    );
+                }
+                $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
+            }
         }
         $this->lay->SetBlockData("HIDDENS", $thidden);
         $this->lay->SetBlockData("TABLEBODY", $frames);
