@@ -5200,7 +5200,7 @@ create unique index i_docir on doc(initid, revision);";
             $wdoc->Set($this);
             $err = $wdoc->ChangeState($newstate, $comment, $force, $withcontrol, $wm1, $wm2, $wneed, $wm0, $wm3, $msg);
         }
-        catch(Exception $e) {
+        catch(Dcp\Exception $e) {
             $err = sprintf(_("Unexpected transition error on workflow %s [%d] : %s") , $wdoc->title, $wdoc->id, $e->getMessage());
             errorLogException($e);
         }
