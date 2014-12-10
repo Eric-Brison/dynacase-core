@@ -93,7 +93,7 @@ $app_const = array(
     "CORE_TMPDIR" => "./var/tmp",
     "CORE_TMPDIR_MAXAGE" => array(
         "val" => "2",
-        "desc" => N_("core_tmpdir_maxage") ,
+        "descr" => N_("core_tmpdir_maxage") ,
         "user" => "N",
         "global" => "Y"
     ) ,
