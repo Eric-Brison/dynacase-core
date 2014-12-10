@@ -675,7 +675,14 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
     $cud = ($doc->CanEdit() == "");
     $tlink["toxml"]["visibility"] = POPUP_INVISIBLE;
     //  $tlink["reference"]["visibility"]=POPUP_CTRLACTIVE;
-    if (getParam("FREEDOM_IDBASKET") == 0) $tlink["tobasket"]["visibility"] = POPUP_INVISIBLE;
+    if (getParam("FREEDOM_IDBASKET") == 0 && $action->user->id == 1) {
+        /* Dynamically create basket for admin if it does not exists yet */
+        $homefld = new Dir($action->dbaccess);
+        $homefld->GetHome();
+    }
+    if (getParam("FREEDOM_IDBASKET") == 0) {
+        $tlink["tobasket"]["visibility"] = POPUP_INVISIBLE;
+    }
     
     if ($doc->locked == $doc->userid) $tlink["lockdoc"]["visibility"] = POPUP_INVISIBLE;
     else if (($doc->locked != $doc->userid) && $cud) $tlink["lockdoc"]["visibility"] = POPUP_CTRLACTIVE;
