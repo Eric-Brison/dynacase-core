@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-10 16:35+0100\n"
+"POT-Creation-Date: 2014-12-11 13:39+0100\n"
 "PO-Revision-Date: 2014-12-10 16:35+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -3790,6 +3790,9 @@ msgid "This search cannot be executed"
 msgstr ""
 
 msgid "Thursday"
+msgstr ""
+
+msgid "Timer infinity date"
 msgstr ""
 
 msgid "Timers prevision"

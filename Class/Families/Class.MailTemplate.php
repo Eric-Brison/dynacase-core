@@ -374,10 +374,14 @@ class MailTemplate extends \Dcp\Family\Document
         $doc->viewdefaultcard("mail", $ulink, false, true);
         foreach ($this->keys as $k => $v) $doc->lay->set($k, $v);
         $body = $doc->lay->gen();
-        $body = preg_replace(array(
-            "/SRC=\"([^\"]+)\"/e",
-            "/src=\"([^\"]+)\"/e"
-        ) , "\$this->srcfile('\\1')", $body);
+        $body = preg_replace_callback(array(
+            "/SRC=\"([^\"]+)\"/",
+            "/src=\"([^\"]+)\"/"
+        ) , function ($matches)
+        {
+            return $this->srcfile($matches[1]);
+        }
+        , $body);
         /* Expand remaining HTML constructions */
         if ($oattr !== false && $oattr->type == 'htmltext') {
             $body = $doc->getHtmlValue($oattr, $body, "mail", $ulink);
