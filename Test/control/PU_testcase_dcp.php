@@ -42,6 +42,9 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     protected static $include_path = null;
     
     protected static $testDirectory = "DCPTEST";
+
+    protected static $importCsvEnclosure="auto";
+    protected static $importCsvSeparator="auto";
     
     protected function setUp()
     {
@@ -223,7 +226,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
             throw new \Dcp\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
         }
         $oImport = new \ImportDocument();
-        $oImport->setCsvOptions("auto", "auto");
+        $oImport->setCsvOptions(static::$importCsvSeparator, static::$importCsvEnclosure);
         //error_log(__METHOD__."import $realfile");
         $oImport->setVerifyAttributeAccess(false);
         $oImport->importDocuments(self::getAction() , $realfile);
