@@ -996,14 +996,19 @@ class DocCtrl extends DocLDAP
      */
     static public function isInteger($x, $min = null, $max = null)
     {
-        $err = "";
         if ($x === "") return "";
-        $err = DocCtrl::isFloat($x, $min, $max);
-        if ($err == "") {
-            if (intval($x) != floatval($x)) $err = sprintf(_("[%s] must be a integer") , $x);
+        if (($err = DocCtrl::isFloat($x, $min, $max)) != "") {
+            return $err;
+        }
+        if (floatval($x) < - floatval(pow(2, 31)) || floatval($x) > floatval(pow(2, 31) - 1)) {
+            // signed int32 overflow
+            return sprintf(_("[%s] must be between %s and %s") , $x, -floatval(pow(2, 31)) , floatval(pow(2, 31) - 1));
+        }
+        if (intval($x) != floatval($x)) {
+            return sprintf(_("[%s] must be a integer") , $x);
         }
         
-        return $err;
+        return '';
     }
     /** 
      * return true if string match regexp

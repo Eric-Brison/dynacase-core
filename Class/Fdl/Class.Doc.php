@@ -3577,6 +3577,10 @@ create unique index i_docir on doc(initid, revision);";
                                         if (($avalue != "\t") && (!is_numeric($avalue))) {
                                             return sprintf(_("value [%s] is not a number") , $avalue);
                                         }
+                                        if (floatval($avalue) < - floatval(pow(2, 31)) || floatval($avalue) > floatval(pow(2, 31) - 1)) {
+                                            // signed int32 overflow
+                                            return sprintf(_("[%s] must be between %s and %s") , $avalue, -floatval(pow(2, 31)) , floatval(pow(2, 31) - 1));
+                                        }
                                         if (intval($avalue) != floatval($avalue)) {
                                             return sprintf(_("[%s] must be a integer") , $avalue);
                                         }
