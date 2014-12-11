@@ -8810,7 +8810,12 @@ create unique index i_docir on doc(initid, revision);";
         $dyn = false;
         if ($execdate == null) {
             $dyn = trim(strtok($timer->getRawValue("tm_dyndate") , " "));
-            if ($dyn) $execdate = $this->getRawValue($dyn);
+            if ($dyn) {
+                $execdate = $this->getRawValue($dyn);
+                if (empty($execdate)) {
+                    $execdate = '';
+                }
+            }
         }
         if (method_exists($timer, 'attachDocument')) {
             $err = $timer->attachDocument($this, $origin, $execdate);
@@ -8862,7 +8867,7 @@ create unique index i_docir on doc(initid, revision);";
                         $execdate = $this->getRawValue($dynDateAttr);
                         $previousExecdate = $this->getOldRawValue($dynDateAttr);
                         // detect if need reset timer : when date has changed
-                        if ($previousExecdate && ($execdate != $previousExecdate)) {
+                        if ($previousExecdate !== false && ($execdate != $previousExecdate)) {
                             if ($v["originid"]) $ori = new_doc($this->dbaccess, $v["originid"]);
                             else $ori = null;
                             $this->unattachTimer($t);
