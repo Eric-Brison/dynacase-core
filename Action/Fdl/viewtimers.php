@@ -22,7 +22,7 @@ include_once ("FDL/Class.Doc.php");
  * @param Action &$action current action
  * @global id Http var : document identifier to see
  */
-function viewtimers(&$action)
+function viewtimers(Action & $action)
 {
     $docid = getHttpVars("id");
     $szone = (getHttpVars("szone") == "Y");
@@ -37,6 +37,9 @@ function viewtimers(&$action)
     $prev = array();
     $timers = $doc->getAttachedTimers();
     foreach ($timers as $k => $v) {
+        /**
+         * @var \Dcp\Core\Timer $timer
+         */
         $timer = new_doc($dbaccess, $v["timerid"]);
         if ($timer->isAlive()) {
             $iprev = $timer->getPrevisions($v["attachdate"], $v["tododate"], $v["level"]);

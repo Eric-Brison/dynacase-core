@@ -10,7 +10,7 @@
 namespace Dcp\Core;
 class Timer extends \Dcp\Family\Document
 {
-
+    
     private $lineActions;
     /**
      * attach timer to a document
@@ -28,7 +28,7 @@ class Timer extends \Dcp\Family\Document
         $dt->docid = $doc->initid;
         $dt->title = $doc->title;
         $dt->attachdate = $doc->getTimeDate(); // now
-        if ($referenceDate == null) $referenceDate = $dt->attachdate;
+        if ($referenceDate === null) $referenceDate = $dt->attachdate;
         $dt->level = 0;
         if ($origin) $dt->originid = $origin->id;
         $dt->fromid = $doc->fromid;
@@ -45,17 +45,22 @@ class Timer extends \Dcp\Family\Document
                 $act = current($acts);
                 $dt->actions = serialize($act["actions"]);
                 
-                $jdRef = StringDateToJD($referenceDate);
-                $jdRef+= doubleval($this->getRawValue("tm_refdaydelta"));
-                $jdRef+= doubleval($this->getRawValue("tm_refhourdelta")) / 24;
-                $deltaReferenceDate = jd2cal($jdRef);
-                $dt->referencedate = $deltaReferenceDate;
-
-                $day = doubleval($dates[0]);
-                $hour = doubleval($hours[0]);
-                $jdTodo = $jdRef;
-                $jdTodo+= $day + ($hour / 24);
-                $dt->tododate = jd2cal($jdTodo);
+                if ($referenceDate === '') {
+                    $dt->tododate = 'infinity';
+                } else {
+                    
+                    $jdRef = StringDateToJD($referenceDate);
+                    $jdRef+= doubleval($this->getRawValue("tm_refdaydelta"));
+                    $jdRef+= doubleval($this->getRawValue("tm_refhourdelta")) / 24;
+                    $deltaReferenceDate = jd2cal($jdRef);
+                    $dt->referencedate = $deltaReferenceDate;
+                    
+                    $day = doubleval($dates[0]);
+                    $hour = doubleval($hours[0]);
+                    $jdTodo = $jdRef;
+                    $jdTodo+= $day + ($hour / 24);
+                    $dt->tododate = jd2cal($jdTodo);
+                }
                 $err = $dt->Add();
             } else $err = sprintf(_("no level 0 specified in timer %s [%d]") , $this->title, $this->id);
         }
@@ -127,18 +132,23 @@ class Timer extends \Dcp\Family\Document
         }
         for ($clevel = $level; $clevel < $max; $clevel++) {
             $tprev[$clevel] = $this->lineActions[$clevel];
-            if ($first && $tododate) { // add delta when timer is modify after attachement
-                $jdtodo = StringDateToJD($tododate);
-                $execdate = $jdstart + $tprev[$clevel]["delay"];
-                $delta = $jdtodo - $execdate;
-                $first = false;
-                $jdstart+= $delta;
+            if ($tododate === "infinity") {
+                $tprev[$clevel]["execdate"] = _("Timer infinity date");
+                $tprev[$clevel]["execdelay"] = "";
+            } else {
+                if ($first && $tododate) { // add delta when timer is modify after attachement
+                    $jdtodo = StringDateToJD($tododate);
+                    $execdate = $jdstart + $tprev[$clevel]["delay"];
+                    $delta = $jdtodo - $execdate;
+                    $first = false;
+                    $jdstart+= $delta;
+                }
+                $ldelay = $tprev[$clevel]["delay"];
+                //  print "$clevel)jdstart:$jdstart".jd2cal($jdstart)."[$ldelay] --".jd2cal($jdstart+$ldelay)."--\n";
+                $tprev[$clevel]["execdate"] = jd2cal($jdstart + $ldelay);
+                $tprev[$clevel]["execdelay"] = ($jdstart + $ldelay) - $jdnow;
+                $jdstart+= $ldelay;
             }
-            $ldelay = $tprev[$clevel]["delay"];
-            //  print "$clevel)jdstart:$jdstart".jd2cal($jdstart)."[$ldelay] --".jd2cal($jdstart+$ldelay)."--\n";
-            $tprev[$clevel]["execdate"] = jd2cal($jdstart + $ldelay);
-            $tprev[$clevel]["execdelay"] = ($jdstart + $ldelay) - $jdnow;
-            $jdstart+= $ldelay;
         }
         return ($tprev);
     }
