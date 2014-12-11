@@ -6,6 +6,7 @@
     <link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
     <title>[CORE_CLIENT]</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     [CSS:REF]
     <style type="text/css">
         [CSS:CODE]
