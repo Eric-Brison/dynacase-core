@@ -6,7 +6,7 @@
 
    <title>[foldername] [TEXT: folder containt]</title>
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&amp;action=ALLVIEWCSS&amp;wv=[WVERSION]" />
 [IF RSS]<link rel="alternate" type="application/rss+xml" title="[foldername]" href="[rsslink]"/>[ENDIF RSS]
 
 [CSS:REF]
@@ -37,7 +37,7 @@ addEvent(window,"load",function al1() {opalterrow('terrible');});
  </head>
 
 <body 
-      onLoad="initmicon();" topmargin=1 leftmargin=1
+      onLoad="initmicon();" topmargin="1" leftmargin="1"
       onClick="closeMenu('popuplist');" 
       onResize="">
 
@@ -48,9 +48,9 @@ addEvent(window,"load",function al1() {opalterrow('terrible');});
 <img id="micon" width="[SIZE_IMG-X-SMALL]" height="[SIZE_IMG-X-SMALL]"   style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif">
 
 
-[ZONE FREEDOM:FOLDER_BARMENU?nbdoc=[nbdoc]&dirid=[dirid]]
+[ZONE FREEDOM:FOLDER_BARMENU?nbdoc=[nbdoc]&dirid=[dirid]&count=[count]]
 [ZONE FREEDOM:POPUP]
-<br>
+<br/>
 <table class="tablesimple" id="terrible" cellspacing="0" width="100%" >
 <!-- TABLEBODY -->
                     [BLOCK TABLEBODY]
@@ -63,7 +63,7 @@ addEvent(window,"load",function al1() {opalterrow('terrible');});
      title="[highlight]">
 <td class="tlist" width="30" >
 <IMG class="iconimg20" id="i[divid]" needresize="1"
-     align="absmiddle"  src="[iconsrc]">
+     align="absmiddle"  src="[iconsrc]"/>
 </td>
 <td class="tlist" >[title] <i>[state]</i></td>
 <td class="tlist" width="40"><I style="font-size:80%">[revdate]</I></td>
