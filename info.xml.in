@@ -39,7 +39,10 @@
             <label lang="en">Check PHP version &gt;= 5.4.4</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.1.0">
-            <label lang="en">Check database access</label>
+            <label lang="en">Minimum database version is 9.1s</label>
+        </check>
+        <check type="pgversion" service="@core_db" predicate="le" version="9.4.0">
+            <label lang="en">Maximimum database version is 9.3</label>
         </check>
 
         <check type="pgempty" service="@core_db" optional="yes">
@@ -325,7 +328,11 @@ This can be solved by:<br/>
             <label lang="en">Check PHP version &gt;= 5.4.4</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.1.0">
-            <label lang="en">Check database access</label>
+            <label lang="en">Minimum database version is 9.1</label>
+        </check>
+
+        <check type="pgversion" service="@core_db" predicate="le" version="9.4.0">
+            <label lang="en">Maximimum database version is 9.3</label>
         </check>
 
         <check type="syscommand" command="rm">

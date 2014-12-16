@@ -91,6 +91,7 @@ $(document).ready(function () {
         }
         if (enclosureVal == "") {
             $("select[name=csv-separator]").val(';').attr("disabled", "disabled");
+            $(".other--separator").css("visibility", "");
         } else {
             $("select[name=csv-separator]").removeAttr("disabled");
         }
@@ -120,6 +121,8 @@ $(document).ready(function () {
         var otherVal = $(this).val().substr(0, 1);
         $('#bExport').removeAttr("disabled");
         $("select[name=csv-separator]").append(new Option('[TEXT:csv-custom : ]' + otherVal, otherVal, true, true));
+        $(this).css("visibility", "");
+        $(this).val('');
     });
 
 
