@@ -61,15 +61,15 @@ class VaultAnalyzerCLI
         printf("\n");
         printf("All:\n");
         printf("\tcount = %d\n", $report['all']['count']);
-        printf("\tsize  = %d (%s)\n", $report['all']['size'], $report['all']['size_pretty']);
+        printf("\tsize  = %d%s\n", $report['all']['size'], (empty($report['all']['size_pretty']) ? '' : ' (' . $report['all']['size_pretty'] . ')'));
         printf("\n");
         printf("Used:\n");
         printf("\tcount = %d\n", $report['used']['count']);
-        printf("\tsize  = %d (%s) (%3.02f%%)\n", $report['used']['size'], $report['used']['size_pretty'], (100 * $report['used']['size']) / $report['all']['size']);
+        printf("\tsize  = %d%s (%3.02f%%)\n", $report['used']['size'], ((empty($report['used']['size_pretty'])) ? '' : ' (' . $report['used']['size_pretty'] . ')') , (($report['all']['size'] != 0) ? ((100 * $report['used']['size']) / $report['all']['size']) : '0'));
         printf("\n");
         printf("Orphan:\n");
         printf("\tcount = %d\n", $report['orphan']['count']);
-        printf("\tsize  = %d (%s) (%3.02f%%)\n", $report['orphan']['size'], $report['orphan']['size_pretty'], (100 * $report['orphan']['size']) / $report['all']['size']);
+        printf("\tsize  = %d%s (%3.02f%%)\n", $report['orphan']['size'], ((empty($report['orphan']['size_pretty'])) ? '' : ' (' . $report['orphan']['size_pretty'] . ')') , (($report['all']['size'] != 0) ? ((100 * $report['orphan']['size']) / $report['all']['size']) : '0'));
         printf("\n");
         
         return;
