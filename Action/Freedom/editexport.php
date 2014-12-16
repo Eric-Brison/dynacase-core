@@ -67,7 +67,7 @@ function editexport(Action & $action)
         $action->lay->set("customEnclosure", $csvEnclosure);
     }
     
-    if ($action->canExecute("EXPORTFOLDER", "DOCADMIN") == "") {
+    if ($action->canExecute("EXPORTFOLDER", "DOCADMIN") == "" && preg_match('/\\/admin.php$/',$_SERVER["SCRIPT_NAME"])) {
         $action->lay->set("exportaction", "EXPORTFOLDER");
         $action->lay->set("exportapp", "DOCADMIN");
         $action->lay->set("viewinfo", true);
