@@ -147,6 +147,10 @@ class DocCtrl extends DocLDAP
      */
     public $id;
     /**
+     * @var int document initial identifier
+     */
+    public $initid;
+    /**
      * @var int user permission mask
      */
     public $uperm;
@@ -426,9 +430,8 @@ class DocCtrl extends DocLDAP
                 }
             }
             $point = uniqid("docperm");
-            $this->savePoint($point);
+            $this->savePoint($point, $this->initid, "PERM");
             // Need to lock to avoid constraint errors when concurrent docperm update
-            simpleQuery($this->dbaccess, "lock table docperm in exclusive mode");
             $this->exec_query(sprintf("delete from docperm where docid=%d", $this->id));
             if ($fromdocidvalues == null) $fromdocidvalues = & $this;
             $greenUid = array();

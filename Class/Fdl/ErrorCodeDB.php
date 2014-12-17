@@ -57,10 +57,15 @@ namespace {
          */
         const DB0008 = 'sending query : %s';
         /**
-         * @errorCode
-         * missing column on table
+         * @errorCode missing column on table
          */
         const DB0009 = 'no auto update for "%s" table';
+        /**
+         * @errorCode The lock prefix is converted to a 4 bytes numbre and it is limited to 4 characters
+         * @see DbObj::savePoint()
+         *
+         */
+        const DB0010 = 'The prefix lock "%s" must not exceed 4 characters';
         /**
          * @errorCode
          * simple query error
