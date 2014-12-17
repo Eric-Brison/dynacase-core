@@ -124,8 +124,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
         $nattr = $doc->GetNormalAttributes();
         
         $savePoint = uniqid("initrelation");
-        $this->savePoint($savePoint);
-        pg_query($this->dbid, "lock table docrel in exclusive mode"); // need to avoid conflict in docrel index
+        $this->savePoint($savePoint, $doc->initid, "IREL"); // need to avoid conflict in docrel index
         foreach ($nattr as $k => $v) {
             if (isset($doc->$k) && ($v->type == "docid" || $v->type == "account")) {
                 
@@ -181,7 +180,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                     $tin[] = sprintf("%d\t%d\t%s\t%s\t%s\t%s\t%s\t%s", $doc->initid, $row["initid"], str_replace("\t", " ", $doc->title) , str_replace("\t", " ", $row["title"]) , $doc->icon, $row["icon"], $reltype, $doc->doctype);
                     $c++;
                 }
-
+                
                 pg_copy_from($this->dbid, "docrel", $tin);
             }
         }
