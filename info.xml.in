@@ -34,9 +34,11 @@
     </parameters>
 
     <pre-install>
-
         <check type="phpversion" predicate="ge" version="5.4.4">
-            <label lang="en">Check PHP version &gt;= 5.4.4</label>
+            <label lang="en">Minimum PHP version version is 5.4.4</label>
+        </check>
+        <check type="phpversion" predicate="le" version="5.6.0">
+            <label lang="en">Maximimum PHP version version is 5.5</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.1.0">
             <label lang="en">Minimum database version is 9.1s</label>
@@ -325,7 +327,10 @@ This can be solved by:<br/>
     <pre-upgrade>
 
         <check type="phpversion" predicate="ge" version="5.4.4">
-            <label lang="en">Check PHP version &gt;= 5.4.4</label>
+            <label lang="en">Minimum PHP version version is 5.4.4</label>
+        </check>
+        <check type="phpversion" predicate="le" version="5.6.0">
+            <label lang="en">Maximimum PHP version version is 5.5</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.1.0">
             <label lang="en">Minimum database version is 9.1</label>
