@@ -486,12 +486,15 @@ class FormatCollection
                     
                     $value = $doc->getRawValue($oa->id);
                     if ($value === '') {
-                        if ($this->useShowEmptyOption && $empty = $oa->getOption("showempty")) {
-                            $emptyAttr = new StandardAttributeValue($oa, null);
-                            $emptyAttr->displayValue = $empty;
-                            $attributeInfo = $emptyAttr;
+                        if ($this->verifyAttributeAccess === true && !\Dcp\VerifyAttributeAccess::isAttributeAccessGranted($doc, $oa)) {
+                            $attributeInfo = new noAccessAttributeValue($this->noAccessText);
                         } else {
-                            $attributeInfo = null;
+                            if ($this->useShowEmptyOption && $empty = $oa->getOption("showempty")) {
+                                $attributeInfo = new StandardAttributeValue($oa, null);
+                                $attributeInfo->displayValue = $empty;
+                            } else {
+                                $attributeInfo = null;
+                            }
                         }
                     } else {
                         $attributeInfo = $this->getInfo($oa, $value, $doc);

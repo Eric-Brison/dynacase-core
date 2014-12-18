@@ -13,7 +13,6 @@ namespace Dcp\Pu;
  */
 
 require_once 'PU_testcase_dcp_commonfamily.php';
-
 class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
 {
     /**
@@ -49,6 +48,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
         
         $r = $fc->render();
         foreach ($expectedValues as $aid => $value) {
+            $this->assertTrue($this->getRenderValue($r, $docName, $aid) !== null, "$aid not found");
             $this->assertEquals($value, $this->getRenderValue($r, $docName, $aid)->displayValue, sprintf("%s [%s]<>\n%s", $aid, $value, print_r($this->getRenderValue($r, $docName, $aid) , true)));
         }
         $this->exitSudo();
@@ -74,6 +74,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
         
         $r = $fc->render();
         foreach ($expectedValues as $aid => $value) {
+            $this->assertTrue($this->getRenderValue($r, $docName, $aid) !== null, "$aid not found");
             $this->assertEquals($value, $this->getRenderValue($r, $docName, $aid)->displayValue, sprintf("%s [%s]<>\n%s", $aid, $value, print_r($this->getRenderValue($r, $docName, $aid) , true)));
         }
         $this->exitSudo();
@@ -207,7 +208,11 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     {
         foreach ($r as $format) {
             if ($format["properties"]["name"] == $docName) {
-                return $format["attributes"][$attrName];
+                if ($format["attributes"][$attrName] === null) {
+                    return new \StandardAttributeValue("", null);
+                } else {
+                    return $format["attributes"][$attrName];
+                }
             }
         }
         return null;
@@ -255,8 +260,9 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                         5 => "1", // number
                         6 => \FormatCollection::noAccessText, // text
                         7 => \FormatCollection::noAccessText, // decimal
-                        8 => \FormatCollection::noAccessText
-                        // longtext
+                        8 => \FormatCollection::noAccessText, // longtext
+                        9 => \FormatCollection::noAccessText
+                        // docid
                         
                     ) ,
                     "TST_INVISIBLE_DOC2" => array(
@@ -321,7 +327,8 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                     "tst_text" => \FormatCollection::noAccessText,
                     "tst_number" => "1",
                     "tst_longtext" => \FormatCollection::noAccessText,
-                    "tst_decimal" => \FormatCollection::noAccessText
+                    "tst_decimal" => \FormatCollection::noAccessText,
+                    "tst_docid" => \FormatCollection::noAccessText
                 )
             ) ,
             array( // MASK TST_INVMASK_E2
