@@ -906,9 +906,8 @@ class DbObj
     /**
      * set a database transaction save point
      * @param string $point point identifier
-     * @param int $exclusiveLock Numeric
-     * identifier (int32) of lock exclusive lock - no lock if 0
-     * @param string $exclusiveLockPrefix Second identifier key - this key is converted to hash with crc32 algorithm
+     * @param int $exclusiveLock Numeric identifier (int32) of lock exclusive lock - no lock if 0
+     * @param string $exclusiveLockPrefix Second : limited up to 4 characters
      * @throws \Dcp\Exception
      * @return string error message
      */
@@ -921,25 +920,9 @@ class DbObj
         }
         if ($this->debug) error_log('[DBG]' . 'BEFORE' . __METHOD__ . $this->dbid);
         $err = '';
-        
-        if ($exclusiveLock) {
-            if (empty(self::$lockpoint[$point])) {
-                if ($exclusiveLockPrefix) {
-                    if (strlen($exclusiveLockPrefix) > 4) {
-                        throw new \Dcp\Db\Exception("DB0010", $exclusiveLockPrefix);
-                    }
-                    $prefixLockId = unpack("i", $exclusiveLockPrefix) [1];
-                } else {
-                    $prefixLockId = 0;
-                }
-                $this->exec_query(sprintf('select pg_advisory_lock(%d,%d)', $exclusiveLock, $prefixLockId));
-                self::$lockpoint[$point] = array(
-                    $exclusiveLock,
-                    $prefixLockId
-                );
-            }
-        }
+
         $idbid = intval($this->dbid);
+
         if (empty(self::$savepoint[$idbid])) {
             self::$savepoint[$idbid] = array(
                 $point
@@ -950,9 +933,32 @@ class DbObj
             self::$savepoint[$idbid][] = $point;
             if ($this->debug) error_log('[DBG]' . __METHOD__ . "add(2) $point");
         }
+
+        if ($exclusiveLock) {
+            if (empty(self::$lockpoint[$idbid][$point])) {
+                if ($exclusiveLockPrefix) {
+                    if (strlen($exclusiveLockPrefix) > 4) {
+                        throw new \Dcp\Db\Exception("DB0010", $exclusiveLockPrefix);
+                    }
+                    $prefixLockId = unpack("i", $exclusiveLockPrefix) [1];
+                } else {
+                    $prefixLockId = 0;
+                }
+                $err=$this->exec_query(sprintf('select pg_advisory_xact_lock(%d,%d)', $exclusiveLock, $prefixLockId));
+                if ($err) {
+                    return $err;
+                }
+                self::$lockpoint[$idbid][$point] = array(
+                    $exclusiveLock,
+                    $prefixLockId
+                );
+            }
+        }
+
         if (!$err) {
             $err = $this->exec_query(sprintf('savepoint "%s"', pg_escape_string($point)));
         }
+
         if ($this->debug) error_log('[DBG]' . 'AFTER' . __METHOD__ . $idbid . ":$point:" . implode(',', self::$savepoint[$idbid]));
         if ($err) error_log(__METHOD__ . ":$err");
         return $err;
@@ -973,15 +979,11 @@ class DbObj
         if (isset(self::$savepoint[$idbid])) $lastPoint = array_search($point, self::$savepoint[$idbid]);
         else $lastPoint = false;
         if ($lastPoint !== false) {
+
             self::$savepoint[$idbid] = array_slice(self::$savepoint[$idbid], 0, $lastPoint);
             $err = $this->exec_query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));
-            
             if ((!$err) && (count(self::$savepoint[$idbid]) == 0)) {
                 $err = $this->exec_query("commit");
-                if (!empty(self::$lockpoint[$point])) {
-                    $this->exec_query(sprintf('select pg_advisory_unlock(%d,%d)', self::$lockpoint[$point][0], self::$lockpoint[$point][1]));
-                    self::$lockpoint[$point] = null;
-                }
             }
         } else {
             
@@ -1014,10 +1016,6 @@ class DbObj
             $err = $this->exec_query(sprintf('release savepoint "%s"', pg_escape_string($point)));
             if ((!$err) && (count(self::$savepoint[$idbid]) == 0)) {
                 $err = $this->exec_query("commit");
-                if (!empty(self::$lockpoint[$point])) {
-                    $this->exec_query(sprintf('select pg_advisory_unlock(%d,%d)', self::$lockpoint[$point][0], self::$lockpoint[$point][1]));
-                    self::$lockpoint[$point] = null;
-                }
             }
         } else {
             $err = sprintf("cannot commit unsaved point : %s", $point);
@@ -1025,6 +1023,7 @@ class DbObj
         if ($err) error_log(__METHOD__ . ":$err");
         return $err;
     }
+
+
     // FIN DE CLASSE
-    
 }
