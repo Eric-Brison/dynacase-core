@@ -35,16 +35,16 @@
 
     <pre-install>
         <check type="phpversion" predicate="ge" version="5.4.4">
-            <label lang="en">Minimum PHP version version is 5.4.4</label>
+            <label lang="en">Minimum PHP version is 5.4.4</label>
         </check>
-        <check type="phpversion" predicate="lt" version="5.6">
-            <label lang="en">Maximimum PHP version version is 5.5</label>
+        <check type="phpversion" predicate="lt" version="5.6.0">
+            <label lang="en">Maximum PHP version is 5.5</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.1">
             <label lang="en">Minimum database version is 9.1</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="lt" version="9.4">
-            <label lang="en">Maximimum database version is 9.3</label>
+        <check type="pgversion" service="@core_db" predicate="lt" version="9.4.0">
+            <label lang="en">Maximum database version is 9.3</label>
         </check>
 
         <check type="pgempty" service="@core_db" optional="yes">
@@ -327,17 +327,17 @@ This can be solved by:<br/>
     <pre-upgrade>
 
         <check type="phpversion" predicate="ge" version="5.4.4">
-            <label lang="en">Minimum PHP version version is 5.4.4</label>
+            <label lang="en">Minimum PHP version is 5.4.4</label>
         </check>
-        <check type="phpversion" predicate="le" version="5.6.0">
-            <label lang="en">Maximimum PHP version version is 5.5</label>
+        <check type="phpversion" predicate="lt" version="5.6.0">
+            <label lang="en">Maximum PHP version is 5.5</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.1.0">
             <label lang="en">Minimum database version is 9.1</label>
         </check>
 
-        <check type="pgversion" service="@core_db" predicate="le" version="9.4.0">
-            <label lang="en">Maximimum database version is 9.3</label>
+        <check type="pgversion" service="@core_db" predicate="lt" version="9.4.0">
+            <label lang="en">Maximum database version is 9.3</label>
         </check>
 
         <check type="syscommand" command="rm">
