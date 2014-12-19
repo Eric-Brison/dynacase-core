@@ -37,13 +37,13 @@
         <check type="phpversion" predicate="ge" version="5.4.4">
             <label lang="en">Minimum PHP version version is 5.4.4</label>
         </check>
-        <check type="phpversion" predicate="le" version="5.6.0">
+        <check type="phpversion" predicate="lt" version="5.6">
             <label lang="en">Maximimum PHP version version is 5.5</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="ge" version="9.1.0">
-            <label lang="en">Minimum database version is 9.1s</label>
+        <check type="pgversion" service="@core_db" predicate="ge" version="9.1">
+            <label lang="en">Minimum database version is 9.1</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="le" version="9.4.0">
+        <check type="pgversion" service="@core_db" predicate="lt" version="9.4">
             <label lang="en">Maximimum database version is 9.3</label>
         </check>
 
