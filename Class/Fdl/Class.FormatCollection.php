@@ -850,7 +850,7 @@ class FormatCollection
                     $tv[0] = '';
                 }
                 foreach ($tv as $k => $av) {
-                    if ($av) {
+                    if ($av !== '') {
                         if (is_array($av)) {
                             $tvv = $this->rtrimNull($av);
                         } else {
