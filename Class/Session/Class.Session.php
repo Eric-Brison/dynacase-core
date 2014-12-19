@@ -105,28 +105,66 @@ class Session extends DbObj
         return true;
     }
     
+    private static function getWebRootPath()
+    {
+        if (!isset($_SERVER['SCRIPT_FILENAME'])) {
+            return false;
+        }
+        if (!isset($_SERVER['SCRIPT_NAME'])) {
+            return false;
+        }
+        /*
+         * Get absolute context's pathname (with trailing '/'):
+         *
+         *     "/var/www/foo/"
+         *
+        */
+        $contextRoot = realpath(DEFAULT_PUBDIR);
+        if ($contextRoot === false) {
+            return false;
+        }
+        $contextRoot.= '/';
+        /*
+         *  Get absolute script's filename:
+         *
+         *     "/var/www/foo/bar/baz.php"
+         *s
+        */
+        $scriptFilename = $_SERVER['SCRIPT_FILENAME'];
+        /*
+         * Remove leading context's pathname from script's filename:
+         *
+         *     "/var/www/foo/bar/baz.php" - "^/var/www/foo/" => "bar/baz.php"
+         *
+         * This gives us the script's filename relative to the context's root.
+        */
+        $pos = strpos($scriptFilename, $contextRoot);
+        if ($pos !== 0) {
+            return false;
+        }
+        $relativeScriptFilename = substr($scriptFilename, strlen($contextRoot));
+        /*
+         * Remove trailing relative script's filename from script's name by finding the
+         * relative script's filename by the right :
+         *
+         *     "/x/y/z/bar/baz.php" - "bar/baz.php$" => "/x/y/z/"
+         *
+         * This gives us the Web root directory.
+        */
+        $scriptName = $_SERVER['SCRIPT_NAME'];
+        $pos = strrpos($scriptName, $relativeScriptFilename);
+        $webRootLen = (strlen($scriptName) - strlen($relativeScriptFilename));
+        if ($pos !== $webRootLen) {
+            return false;
+        }
+        $webRoot = substr($scriptName, 0, $webRootLen);
+        return $webRoot;
+    }
     function setCookieSession($id, $ttl = 0)
     {
-        $turl = @parse_url($_SERVER["REQUEST_URI"]);
-        if ($turl['path']) {
-            $scriptDirName = pathinfo($_SERVER["SCRIPT_FILENAME"], PATHINFO_DIRNAME);
-            if (strpos($scriptDirName, DEFAULT_PUBDIR) === 0) {
-                $relativeBaseFilePath = substr($scriptDirName, strlen(DEFAULT_PUBDIR));
-                $script = $_SERVER["SCRIPT_NAME"];
-                if ($relativeBaseFilePath) {
-                    $pos = strpos($script, $relativeBaseFilePath);
-                    $cookiePath = substr($script, 0, $pos) . '/';
-                } else {
-                    $cookiePath = dirname($script) . '/';
-                }
-            } else {
-                if (substr($turl['path'], -1) != '/') {
-                    $cookiePath = dirname($turl['path']) . '/';
-                } else {
-                    $cookiePath = $turl['path'];
-                }
-            }
-            $cookiePath = preg_replace(':/+:', '/', $cookiePath);
+        $webRootPath = self::getWebRootPath();
+        if ($webRootPath !== false) {
+            $cookiePath = preg_replace(':/+:', '/', $webRootPath);
             $this->setcookie($this->name, $id, $ttl, $cookiePath, null, null, true);
         } else {
             $this->setcookie($this->name, $id, $ttl, null, null, null, true);
