@@ -137,6 +137,9 @@ function freedom_import(Action & $action)
     if ($separator) {
         $oImport->setCsvOptions($separator, $enclosure, $linebreak);
     }
+    if (preg_match("/admin\\.php$/", $_SERVER["SCRIPT_NAME"])) {
+        $oImport->setVerifyAttributeAccess(false);
+    }
     $oImport->importDocuments($action, $csvfile, $analyze, $archive);
     $oImport->writeHtmlCr($action->lay);
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
