@@ -50,7 +50,7 @@ class Session extends DbObj
     var $session_name = self::PARAMNAME;
     function __construct($session_name = self::PARAMNAME)
     {
-        if ($this->authUsesSessions()) {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             include_once ("config/sessionHandler.php");
         }
         parent::__construct();
@@ -77,13 +77,11 @@ class Session extends DbObj
             if (!$this->hasExpired()) {
                 $createNewSession = false;
                 $this->touch();
-                if ($this->authUsesSessions()) {
-                    session_name($this->session_name);
-                    session_id($id);
-                    @session_start();
-                    @session_write_close(); // avoid block
-                    
-                }
+                session_name($this->session_name);
+                session_id($id);
+                @session_start();
+                @session_write_close(); // avoid block
+                
             }
         }
         
@@ -97,7 +95,7 @@ class Session extends DbObj
             }
         }
         // set cookie session
-        if ($this->authUsesSessions()) {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             if (empty($_SERVER["REDIRECT_URL"])) {
                 $this->setCookieSession($this->id, $this->SetTTL());
             }
@@ -127,9 +125,9 @@ class Session extends DbObj
                 }
             }
             $cookiePath = preg_replace(':/+:', '/', $cookiePath);
-            $this->setcookie($this->name, $id, $ttl, $cookiePath, null, null, true);
+            setcookie($this->name, $id, $ttl, $cookiePath, null, null, true);
         } else {
-            $this->setcookie($this->name, $id, $ttl, null, null, null, true);
+            setcookie($this->name, $id, $ttl, null, null, null, true);
         }
     }
     /**
@@ -138,14 +136,14 @@ class Session extends DbObj
     function Close()
     {
         global $_SERVER; // use only cache with HTTP
-        if ($this->authUsesSessions()) {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             session_name($this->name);
             session_id($this->id);
             @session_unset();
             @session_destroy();
             @session_write_close();
             // delete session cookie
-            $this->setcookie($this->name, false, time() - 3600, null, null, null, true);
+            setcookie($this->name, false, time() - 3600, null, null, null, true);
             $this->Delete();
         }
         $this->status = self::SESSION_CT_CLOSE;
@@ -179,7 +177,7 @@ class Session extends DbObj
     {
         $idsess = $this->newId();
         global $_SERVER; // use only cache with HTTP
-        if ($this->authUsesSessions()) {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             session_name($this->session_name);
             session_id($idsess);
             @session_start();
@@ -191,9 +189,7 @@ class Session extends DbObj
         $this->id = $idsess;
         $this->userid = $uid;
         $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
-        if ($this->authUsesSessions()) {
-            $this->Add();
-        }
+        $this->Add();
         $this->log->debug("Nouvelle Session : {$this->id}");
     }
     // --------------------------------
@@ -207,7 +203,7 @@ class Session extends DbObj
             return $this->status;
         }
         global $_SERVER; // use only cache with HTTP
-        if ($this->authUsesSessions()) {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             session_name($this->name);
             session_id($this->id);
             @session_start();
@@ -224,12 +220,12 @@ class Session extends DbObj
     // --------------------------------
     function Read($k = "", $d = "")
     {
-        if (!$this->authUsesSessions()) {
+        if (empty($_SERVER['HTTP_HOST'])) {
             return ($d);
         }
         /* Load session's data only once as requested by #4825 */
         $sessionOpened = false;
-        if (!isset($_SESSION) && $this->authUsesSessions()) {
+        if (!isset($_SESSION)) {
             session_name($this->name);
             session_id($this->id);
             @session_start();
@@ -252,7 +248,7 @@ class Session extends DbObj
     function Unregister($k = "")
     {
         global $_SERVER; // use only cache with HTTP
-        if ($this->name && $this->authUsesSessions()) {
+        if ($this->name && !empty($_SERVER['HTTP_HOST'])) {
             session_name($this->name);
             session_id($this->id);
             @session_start();
@@ -282,7 +278,7 @@ class Session extends DbObj
     function replaceGlobalParam($paramName, $paramValue)
     {
         global $_SERVER; // use only cache with HTTP
-        if ($this->authUsesSessions()) {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             session_name($this->name);
             session_id($this->id);
             @session_start();
@@ -461,21 +457,5 @@ class Session extends DbObj
             $exceptSessionId = $this->id;
         }
         return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid = %d AND id != '%s'", $userId, pg_escape_string($exceptSessionId)));
-    }
-    
-    private function authUsesSessions()
-    {
-        /*
-         * Use sessions if in Web mode AND frontend authenticator support sessions
-        */
-        return !empty($_SERVER['HTTP_HOST']) && AuthenticatorManager::hasAuthSession();
-    }
-    
-    private function setcookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = null, $httponly = null)
-    {
-        if ($this->authUsesSessions()) {
-            return setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
-        }
-        return false;
     }
 } // Class Session

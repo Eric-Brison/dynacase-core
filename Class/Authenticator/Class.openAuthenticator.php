@@ -155,3 +155,4 @@ class openAuthenticator extends Authenticator
         return $session_auth->read($name);
     }
 }
+?>
