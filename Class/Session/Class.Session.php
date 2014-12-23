@@ -35,6 +35,7 @@ class Session extends DbObj
     public $name;
     public $last_seen;
     public $status;
+    private $sendCookie = true;
     var $dbtable = "sessions";
     
     var $sqlcreate = "create table sessions ( id         varchar(100),
@@ -48,7 +49,7 @@ class Session extends DbObj
     
     const PARAMNAME = 'dcpsession';
     var $session_name = self::PARAMNAME;
-    function __construct($session_name = self::PARAMNAME)
+    function __construct($session_name = self::PARAMNAME, $sendCookie = true)
     {
         if (!empty($_SERVER['HTTP_HOST'])) {
             include_once ("config/sessionHandler.php");
@@ -56,6 +57,7 @@ class Session extends DbObj
         parent::__construct();
         if ($session_name != '') $this->session_name = $session_name;
         $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
+        $this->sendCookie = ($sendCookie === true);
     }
     
     function Set($id = "")
@@ -125,9 +127,9 @@ class Session extends DbObj
                 }
             }
             $cookiePath = preg_replace(':/+:', '/', $cookiePath);
-            setcookie($this->name, $id, $ttl, $cookiePath, null, null, true);
+            $this->setcookie($this->name, $id, $ttl, $cookiePath, null, null, true);
         } else {
-            setcookie($this->name, $id, $ttl, null, null, null, true);
+            $this->setcookie($this->name, $id, $ttl, null, null, null, true);
         }
     }
     /**
@@ -143,7 +145,7 @@ class Session extends DbObj
             @session_destroy();
             @session_write_close();
             // delete session cookie
-            setcookie($this->name, false, time() - 3600, null, null, null, true);
+            $this->setcookie($this->name, false, time() - 3600, null, null, null, true);
             $this->Delete();
         }
         $this->status = self::SESSION_CT_CLOSE;
@@ -457,5 +459,12 @@ class Session extends DbObj
             $exceptSessionId = $this->id;
         }
         return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid = %d AND id != '%s'", $userId, pg_escape_string($exceptSessionId)));
+    }
+    private function setcookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = null, $httponly = null)
+    {
+        if ($this->sendCookie) {
+            return setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
+        }
+        return false;
     }
 } // Class Session
