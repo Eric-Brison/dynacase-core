@@ -24,6 +24,7 @@ class openAuthenticator extends Authenticator
     
     private $privatelogin = false;
     public $token;
+    public $auth_session = null;
     /**
      * no need to ask authentication
      */
@@ -44,6 +45,9 @@ class openAuthenticator extends Authenticator
             return Authenticator::AUTH_NOK;
         }
         
+        $session = $this->getAuthSession();
+        $session->register('username', $this->getAuthUser());
+        $session->setuid($this->getAuthUser());
         return Authenticator::AUTH_OK;
     }
     
@@ -125,17 +129,9 @@ class openAuthenticator extends Authenticator
      */
     public function setSessionVar($name, $value)
     {
-        include_once ('WHAT/Class.Session.php');
-        $session_auth = new Session(Session::PARAMNAME);
-        if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
-            $session_auth->Set($_COOKIE[Session::PARAMNAME]);
-        } else {
-            $session_auth->Set();
-        }
-        
-        $session_auth->register($name, $value);
-        
-        return $session_auth->read($name);
+        $session = $this->getAuthSession();
+        $session->register($name, $value);
+        return $session->read($name);
     }
     /**
      **
@@ -144,15 +140,23 @@ class openAuthenticator extends Authenticator
      */
     public function getSessionVar($name)
     {
-        include_once ('WHAT/Class.Session.php');
-        $session_auth = new Session(Session::PARAMNAME);
-        if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
-            $session_auth->Set($_COOKIE[Session::PARAMNAME]);
-        } else {
-            $session_auth->Set();
+        $session = $this->getAuthSession();
+        return $session->read($name);
+    }
+    /**
+     *
+     */
+    public function getAuthSession()
+    {
+        if (!$this->auth_session) {
+            include_once ('WHAT/Class.Session.php');
+            $this->auth_session = new Session(Session::PARAMNAME, false);
+            if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
+                $this->auth_session->Set($_COOKIE[Session::PARAMNAME]);
+            } else {
+                $this->auth_session->Set();
+            }
         }
-        
-        return $session_auth->read($name);
+        return $this->auth_session;
     }
 }
-?>
