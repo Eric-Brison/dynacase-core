@@ -430,7 +430,8 @@ class DocCtrl extends DocLDAP
                 }
             }
             $point = uniqid("docperm");
-            $this->savePoint($point, $this->initid, "PERM");
+            $this->savePoint($point);
+            $this->lockPoint($this->initid, "PERM");
             // Need to lock to avoid constraint errors when concurrent docperm update
             $this->exec_query(sprintf("delete from docperm where docid=%d", $this->id));
             if ($fromdocidvalues == null) $fromdocidvalues = & $this;
