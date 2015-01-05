@@ -906,12 +906,10 @@ class DbObj
     /**
      * set a database transaction save point
      * @param string $point point identifier
-     * @param int $exclusiveLock Numeric identifier (int32) of lock exclusive lock - no lock if 0
-     * @param string $exclusiveLockPrefix Second : limited up to 4 characters
      * @throws \Dcp\Exception
      * @return string error message
      */
-    public function savePoint($point, $exclusiveLock = 0, $exclusiveLockPrefix = '')
+    public function savePoint($point)
     {
         if (!$this->dbid) {
             $err = sprintf("dbid is null cannot save point %s", $point);
@@ -920,9 +918,9 @@ class DbObj
         }
         if ($this->debug) error_log('[DBG]' . 'BEFORE' . __METHOD__ . $this->dbid);
         $err = '';
-
+        
         $idbid = intval($this->dbid);
-
+        
         if (empty(self::$savepoint[$idbid])) {
             self::$savepoint[$idbid] = array(
                 $point
@@ -933,34 +931,57 @@ class DbObj
             self::$savepoint[$idbid][] = $point;
             if ($this->debug) error_log('[DBG]' . __METHOD__ . "add(2) $point");
         }
-
-        if ($exclusiveLock) {
-            if (empty(self::$lockpoint[$idbid][$point])) {
-                if ($exclusiveLockPrefix) {
-                    if (strlen($exclusiveLockPrefix) > 4) {
-                        throw new \Dcp\Db\Exception("DB0010", $exclusiveLockPrefix);
-                    }
-                    $prefixLockId = unpack("i", $exclusiveLockPrefix) [1];
-                } else {
-                    $prefixLockId = 0;
-                }
-                $err=$this->exec_query(sprintf('select pg_advisory_xact_lock(%d,%d)', $exclusiveLock, $prefixLockId));
-                if ($err) {
-                    return $err;
-                }
-                self::$lockpoint[$idbid][$point] = array(
-                    $exclusiveLock,
-                    $prefixLockId
-                );
-            }
-        }
-
+        
         if (!$err) {
             $err = $this->exec_query(sprintf('savepoint "%s"', pg_escape_string($point)));
         }
-
+        
         if ($this->debug) error_log('[DBG]' . 'AFTER' . __METHOD__ . $idbid . ":$point:" . implode(',', self::$savepoint[$idbid]));
         if ($err) error_log(__METHOD__ . ":$err");
+        return $err;
+    }
+    /**
+     * set a database transaction advisory lock
+     * the lock is free when transaction is done.
+     * A transaction must be initiate before call it a call to DbObj::savePoint() is mandatory
+     * @param int $exclusiveLock Numeric identifier (int32) of lock exclusive lock
+     * @param string $exclusiveLockPrefix Second : limited up to 4 characters
+     * @see Dbobj::savePoint()
+     * @throws \Dcp\Exception DB0011 and DB0010
+     * @return string error message
+     */
+    public function lockPoint($exclusiveLock, $exclusiveLockPrefix = '')
+    {
+        if (!$this->dbid) {
+            $err = sprintf("dbid is null cannot add lock %s-%s", $exclusiveLock, $exclusiveLockPrefix);
+            error_log(__METHOD__ . ":$err");
+            return $err;
+        }
+        $err = '';
+        
+        $idbid = intval($this->dbid);
+        if (empty(self::$savepoint[$idbid])) {
+            throw new \Dcp\Db\Exception("DB0011", $exclusiveLock, $exclusiveLockPrefix);
+        }
+        
+        if ($exclusiveLockPrefix) {
+            if (strlen($exclusiveLockPrefix) > 4) {
+                throw new \Dcp\Db\Exception("DB0010", $exclusiveLockPrefix);
+            }
+            $prefixLockId = unpack("i", str_pad($exclusiveLockPrefix, 4)) [1];
+        } else {
+            $prefixLockId = 0;
+        }
+        $err = $this->exec_query(sprintf('select pg_advisory_xact_lock(%d,%d)', $exclusiveLock, $prefixLockId));
+        
+        if ($err) {
+            return $err;
+        }
+        self::$lockpoint[$idbid][sprintf("%d-%s", $exclusiveLock, $exclusiveLockPrefix) ] = array(
+            $exclusiveLock,
+            $prefixLockId
+        );
+        
         return $err;
     }
     /**
@@ -979,7 +1000,7 @@ class DbObj
         if (isset(self::$savepoint[$idbid])) $lastPoint = array_search($point, self::$savepoint[$idbid]);
         else $lastPoint = false;
         if ($lastPoint !== false) {
-
+            
             self::$savepoint[$idbid] = array_slice(self::$savepoint[$idbid], 0, $lastPoint);
             $err = $this->exec_query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));
             if ((!$err) && (count(self::$savepoint[$idbid]) == 0)) {
@@ -1023,7 +1044,6 @@ class DbObj
         if ($err) error_log(__METHOD__ . ":$err");
         return $err;
     }
-
-
     // FIN DE CLASSE
+    
 }

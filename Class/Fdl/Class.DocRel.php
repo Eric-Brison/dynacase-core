@@ -124,7 +124,8 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
         $nattr = $doc->GetNormalAttributes();
         
         $savePoint = uniqid("initrelation");
-        $this->savePoint($savePoint, $doc->initid, "IREL"); // need to avoid conflict in docrel index
+        $this->savePoint($savePoint);
+        $this->lockPoint($doc->initid, "IREL"); // need to avoid conflict in docrel index
         foreach ($nattr as $k => $v) {
             if (isset($doc->$k) && ($v->type == "docid" || $v->type == "account")) {
                 

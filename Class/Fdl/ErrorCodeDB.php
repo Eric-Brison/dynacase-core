@@ -62,10 +62,14 @@ namespace {
         const DB0009 = 'no auto update for "%s" table';
         /**
          * @errorCode The lock prefix is converted to a 4 bytes numbre and it is limited to 4 characters
-         * @see DbObj::savePoint()
-         *
+         * @see DbObj::lockPoint()
          */
         const DB0010 = 'The prefix lock "%s" must not exceed 4 characters';
+        /**
+         * @errorCode Lock is efficient only into a transaction
+         * @see DbObj::lockPoint()
+         */
+        const DB0011 = 'The lock "%d-%s" must be set inside a savePoint transaction';
         /**
          * @errorCode
          * simple query error

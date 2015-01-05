@@ -8756,7 +8756,8 @@ create unique index i_docir on doc(initid, revision);";
         $dvi = new DocVaultIndex($this->dbaccess);
         
         $point = uniqid("updateVaultIndex");
-        $this->savePoint($point, $this->initid, "UPVI");
+        $this->savePoint($point);
+        $this->lockPoint($this->initid, "UPVI");
         // Need to lock to avoid constraint errors when concurrent docvaultindex update
         $err = $dvi->DeleteDoc($this->id);
         $fa = $this->GetFileAttributes();
