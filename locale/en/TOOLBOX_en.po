@@ -2111,13 +2111,37 @@ msgid "File:: failed"
 msgstr ""
 
 #, php-format
+msgid "Filename '%s' cannot be transmitted (%d)."
+msgstr ""
+
+#, php-format
 msgid ""
 "Filename '%s' cannot be transmitted completly.\n"
 "May be saturation of server disk."
 msgstr ""
 
 #, php-format
-msgid "Filename '%s' cannot be transmitted."
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"A PHP extension stopped the file upload."
+msgstr ""
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"Failed to write file to disk."
+msgstr ""
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"Missing a temporary folder."
+msgstr ""
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"No file was uploaded."
 msgstr ""
 
 #, php-format

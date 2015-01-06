@@ -417,20 +417,36 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
             // if no file specified, keep current file
             if ($userfile['name'] != "") {
                 switch ($userfile['error']) {
-                    case UPLOAD_ERR_INI_SIZE:
+                    case UPLOAD_ERR_INI_SIZE: // 1
                         $err = sprintf(_("Filename '%s' cannot be transmitted.\nThe Size Limit is %s bytes.") , $userfile['name'], ini_get('upload_max_filesize'));
                         break;
 
-                    case UPLOAD_ERR_FORM_SIZE:
+                    case UPLOAD_ERR_FORM_SIZE: // 2
                         $err = sprintf(_("Filename '%s' cannot be transmitted.\nThe Size Limit was specified in the HTML form.") , $userfile['name']);
                         break;
 
-                    case UPLOAD_ERR_PARTIAL:
+                    case UPLOAD_ERR_PARTIAL: // 3
                         $err = sprintf(_("Filename '%s' cannot be transmitted completly.\nMay be saturation of server disk.") , $userfile['name']);
                         break;
 
+                    case UPLOAD_ERR_NO_FILE: // 4
+                        $err = sprintf(_("Filename '%s' cannot be transmitted.\nNo file was uploaded.") , $userfile['name']);
+                        break;
+
+                    case UPLOAD_ERR_NO_TMP_DIR: // 6
+                        $err = sprintf(_("Filename '%s' cannot be transmitted.\nMissing a temporary folder.") , $userfile['name']);
+                        break;
+
+                    case UPLOAD_ERR_CANT_WRITE: // 7
+                        $err = sprintf(_("Filename '%s' cannot be transmitted.\nFailed to write file to disk.") , $userfile['name']);
+                        break;
+
+                    case UPLOAD_ERR_EXTENSION: // 8
+                        $err = sprintf(_("Filename '%s' cannot be transmitted.\nA PHP extension stopped the file upload.") , $userfile['name']);
+                        break;
+
                     default:
-                        $err = sprintf(_("Filename '%s' cannot be transmitted.") , $userfile['name']);
+                        $err = sprintf(_("Filename '%s' cannot be transmitted (%d).") , $userfile['name'], $userfile['error']);
                 }
                 $action->ExitError($err);
             }
@@ -612,7 +628,6 @@ function specialmodcard(Action & $action, $usefor)
     }
     return $err;
 }
-
 /**
  * Check for PHP's max_input_vars corruption.
  *
@@ -622,7 +637,8 @@ function specialmodcard(Action & $action, $usefor)
  * @param string $inputNameValue Name and value of last input to detect corruption (default is '__detect_max_input_vars__')
  * @return bool
  */
-function check_max_input_vars(Action & $action, $inputNameValue = '__check_max_input_vars__') {
+function check_max_input_vars(Action & $action, $inputNameValue = '__check_max_input_vars__')
+{
     if ($action->getArgument('checkMaxInputVars') == 'yes' && $action->getArgument($inputNameValue) != $inputNameValue) {
         return false;
     }

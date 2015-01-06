@@ -2196,6 +2196,10 @@ msgid "File:: failed"
 msgstr "Échec de la conversion"
 
 #, php-format
+msgid "Filename '%s' cannot be transmitted (%d)."
+msgstr "Le fichier '%s' n'a pu être transmis (%d)."
+
+#, php-format
 msgid ""
 "Filename '%s' cannot be transmitted completly.\n"
 "May be saturation of server disk."
@@ -2204,8 +2208,36 @@ msgstr ""
 "Le disque du serveur est peut être saturé"
 
 #, php-format
-msgid "Filename '%s' cannot be transmitted."
-msgstr "Le fichier '%s' n'a pu être transmis."
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"A PHP extension stopped the file upload."
+msgstr ""
+"Le fichier '%s' n'a pu être transmis.\n"
+"Une extension PHP a arrêté l'envoi de fichier."
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"Failed to write file to disk."
+msgstr ""
+"Le fichier '%s' n'a pu être transmis.\n"
+"Échec de l'écriture du fichier sur le disque."
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"Missing a temporary folder."
+msgstr ""
+"Le fichier '%s' n'a pu être transmis.\n"
+"Un dossier temporaire est manquant."
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"No file was uploaded."
+msgstr ""
+"Le fichier '%s' n'a pu être transmis.\n"
+"Aucun fichier n'a été téléchargé."
 
 #, php-format
 msgid ""
