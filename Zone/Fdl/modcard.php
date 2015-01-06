@@ -367,18 +367,49 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
     global $action;
     global $_FILES;
     
-    global $upload_max_filesize;
-    
     if ($strict) $postfiles = $_FILES[$attrid];
     else $postfiles = $_FILES["_" . $attrid];
     $oa = $doc->getAttribute(substr($attrid, 4));
-    $toldfile = array();
     $oriid = "IFORI_" . substr($attrid, 4);
     $orinames = getHttpVars($oriid); // when use preventfilechange option
     if (is_array($postfiles['tmp_name'])) { // array of file
+        /*
+         * Transpose:
+         *
+         * $postfiles = array(
+         *     'tmp_name' => array(
+         *         0 => '/tmp/aaa',
+         *         [...],
+         *         N => '/tmp/nnn'
+         *      ),
+         *      [...],
+         *     'error' => array(
+         *         0 => 0,
+         *         [...],
+         *         N => 0
+         *      )
+         * );
+         *
+         * into:
+         *
+         * $tuserfiles = array(
+         *     0 => array(
+         *         'tmp_name' => '/tmp/aaa',
+         *         [...],
+         *         'error' => 0
+         *     ),
+         *     [...],
+         *     N => array(
+         *         'tmp_name' => '/tmp/nnn',
+         *         [...],
+         *         'error' => 0
+         *     )
+         * );
+         *
+        */
         $tuserfiles = array();
-        while (list($kp, $v) = each($postfiles)) {
-            while (list($k, $ufv) = each($v)) {
+        foreach ($postfiles as $kp => $v) {
+            foreach ($v as $k => $ufv) {
                 if ($k >= 0) {
                     $tuserfiles[$k][$kp] = $ufv;
                     if (!empty($orinames[$k])) {
@@ -400,7 +431,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
         $tuserfiles[] = $postfiles;
     }
     
-    $rt = $rtold = array(); // array of file to be returned
+    $rtold = array(); // array of file to be returned
     if ($doc) $rtold = $doc->rawValueToArray($doc->getOldRawValue(substr($attrid, 4))); // special in case of file modification by DAV in revised document
     $oa = $doc->getAttribute(substr($attrid, 4));
     $rt = $doc->getMultipleRawValues($attrid); // in case of modified only a part of array files
@@ -412,10 +443,49 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
             $rt[$k] = " "; // delete reference file
             continue;
         }
-        $userfile['name'] = ($userfile['name']); // cause gpc_magicquote
-        if (($userfile['tmp_name'] == "none") || ($userfile['tmp_name'] == "") || ($userfile['size'] == 0)) {
-            // if no file specified, keep current file
-            if ($userfile['name'] != "") {
+        
+        if ($userfile['error'] != UPLOAD_ERR_OK) {
+            if ($userfile['error'] == UPLOAD_ERR_NO_FILE) {
+                /**
+                 * In our case, an empty input field is not an error but it
+                 * means that the input field value has not been changed.
+                 *
+                 * So, UPLOAD_ERR_NO_FILE is not a real error, but a special
+                 * case in our handling of uploaded files.
+                 */
+                // if no file specified, keep current file
+                // reuse old value
+                if (substr($attrid, 0, 3) == "UPL") {
+                    $oldfile = getHttpVars(substr($attrid, 3));
+                    if (!is_array($oldfile)) {
+                        $vid1 = 0;
+                        $vid2 = 0;
+                        if (isset($rtold[0]) && preg_match(PREGEXPFILE, $rtold[0], $reg)) {
+                            $vid1 = $reg[2];
+                        }
+                        if (preg_match(PREGEXPFILE, $oldfile, $reg)) {
+                            $vid2 = $reg[2];
+                        }
+                        
+                        if (($vid1 > 0) && ($vid2 > 0) && ($vid1 > $vid2)) {
+                            $rt[$k] = $rtold[0];
+                        } // in case of DAV auto clone when revised doc
+                        else {
+                            $rt[$k] = $oldfile;
+                        }
+                    } else {
+                        if (isset($oldfile[$k])) {
+                            //	      print "RECENT $oldfile[$k] :<b>".searchmorerecent($rtold,$oldfile[$k])."</b><br>";
+                            $recent = searchmorerecent($rtold, $oldfile[$k]);
+                            if ($recent) $rt[$k] = $recent;
+                            else $rt[$k] = $oldfile[$k];
+                        }
+                    }
+                }
+            } else {
+                /**
+                 * Other codes are "real" errors and must be reported.
+                 */
                 switch ($userfile['error']) {
                     case UPLOAD_ERR_INI_SIZE: // 1
                         $err = sprintf(_("Filename '%s' cannot be transmitted.\nThe Size Limit is %s bytes.") , $userfile['name'], ini_get('upload_max_filesize'));
@@ -427,10 +497,6 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
 
                     case UPLOAD_ERR_PARTIAL: // 3
                         $err = sprintf(_("Filename '%s' cannot be transmitted completly.\nMay be saturation of server disk.") , $userfile['name']);
-                        break;
-
-                    case UPLOAD_ERR_NO_FILE: // 4
-                        $err = sprintf(_("Filename '%s' cannot be transmitted.\nNo file was uploaded.") , $userfile['name']);
                         break;
 
                     case UPLOAD_ERR_NO_TMP_DIR: // 6
@@ -450,82 +516,49 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
                 }
                 $action->ExitError($err);
             }
-            // reuse old value
-            if (substr($attrid, 0, 3) == "UPL") {
-                $oldfile = getHttpVars(substr($attrid, 3));
-                if (!is_array($oldfile)) {
-                    $vid1 = 0;
-                    $vid2 = 0;
-                    if (isset($rtold[0]) && preg_match(PREGEXPFILE, $rtold[0], $reg)) {
-                        $vid1 = $reg[2];
-                    }
-                    if (preg_match(PREGEXPFILE, $oldfile, $reg)) {
-                        $vid2 = $reg[2];
-                    }
+        } else {
+            /**
+             * Handle successful non-empty input field uploads
+             */
+            if (file_exists($userfile['tmp_name'])) {
+                if (is_uploaded_file($userfile['tmp_name'])) {
+                    // move to add extension
+                    $fname = $userfile['name'];
                     
-                    if (($vid1 > 0) && ($vid2 > 0) && ($vid1 > $vid2)) {
-                        $rt[$k] = $rtold[0];
-                    } // in case of DAV auto clone when revised doc
-                    else {
-                        $rt[$k] = $oldfile;
-                    }
-                } else {
+                    $err = vault_store($userfile['tmp_name'], $vid, $fname);
+                    // read system mime
+                    $userfile['type'] = getSysMimeFile($userfile['tmp_name'], $userfile['name']);
                     
-                    if (isset($oldfile[$k])) {
-                        $vid1 = 0;
-                        $vid2 = 0;
-                        if (preg_match(PREGEXPFILE, $rtold[$k], $reg)) $vid1 = $reg[2];
-                        if (preg_match(PREGEXPFILE, $oldfile[$k], $reg)) $vid2 = $reg[2];
-                        //	      print "RECENT $oldfile[$k] :<b>".searchmorerecent($rtold,$oldfile[$k])."</b><br>";
-                        $recent = searchmorerecent($rtold, $oldfile[$k]);
-                        if ($recent) $rt[$k] = $recent;
-                        else $rt[$k] = $oldfile[$k];
-                    }
-                }
-            }
-            
-            continue;
-        }
-        
-        preg_match("/(.*)\.(.*)$/", $userfile['name'], $reg);
-        // print_r($userfile);
-        $ext = $reg[2];
-        
-        if (file_exists($userfile['tmp_name'])) {
-            if (is_uploaded_file($userfile['tmp_name'])) {
-                // move to add extension
-                $fname = $userfile['name'];
-                
-                $err = vault_store($userfile['tmp_name'], $vid, $fname);
-                // read system mime
-                $userfile['type'] = getSysMimeFile($userfile['tmp_name'], $userfile['name']);
-                
-                if ($err != "") {
-                    AddWarningMsg($err);
-                    $doc->addHistoryEntry(sprintf(_("file %s : %s") , $userfile['name'], $err) , HISTO_WARNING);
-                } else {
-                    if ($oa && $oa->getOption('preventfilechange') == "yes") {
-                        if (preg_match(PREGEXPFILE, $userfile["oldvalue"], $reg)) {
-                            $expectname = vault_uniqname($reg[2]);
-                            if ($expectname && ($expectname != $userfile["realname"])) {
-                                $ext = substr($expectname, strrpos($expectname, '.'));
-                                $prefix = substr($expectname, 0, strrpos($expectname, '}') + 1);
-                                
-                                $realext = substr($userfile["realname"], strrpos($userfile["realname"], '.'));
-                                $realprefix = substr($userfile["realname"], 0, strrpos($userfile["realname"], '}', strrpos($expectname, '.') - 2) + 1);
-                                
-                                if (($ext != $realext) || ($prefix != $realprefix)) {
-                                    $doc->addHistoryEntry(sprintf(_("%s : file %s has been replaced by new file %s") , $oa->getLabel() , $reg[3], $userfile["name"]) , HISTO_WARNING);
+                    if ($err != "") {
+                        AddWarningMsg($err);
+                        $doc->addHistoryEntry(sprintf(_("file %s : %s") , $userfile['name'], $err) , HISTO_WARNING);
+                    } else {
+                        if ($oa && $oa->getOption('preventfilechange') == "yes") {
+                            if (preg_match(PREGEXPFILE, $userfile["oldvalue"], $reg)) {
+                                $expectname = vault_uniqname($reg[2]);
+                                if ($expectname && ($expectname != $userfile["realname"])) {
+                                    $ext = substr($expectname, strrpos($expectname, '.'));
+                                    $prefix = substr($expectname, 0, strrpos($expectname, '}') + 1);
+                                    
+                                    $realext = substr($userfile["realname"], strrpos($userfile["realname"], '.'));
+                                    $realprefix = substr($userfile["realname"], 0, strrpos($userfile["realname"], '}', strrpos($expectname, '.') - 2) + 1);
+                                    
+                                    if (($ext != $realext) || ($prefix != $realprefix)) {
+                                        $doc->addHistoryEntry(sprintf(_("%s : file %s has been replaced by new file %s") , $oa->getLabel() , $reg[3], $userfile["name"]) , HISTO_WARNING);
+                                    }
                                 }
                             }
                         }
+                        $rt[$k] = $userfile['type'] . "|" . $vid . '|' . $userfile['name']; // return file type and upload file name
+                        
                     }
-                    $rt[$k] = $userfile['type'] . "|" . $vid . '|' . $userfile['name']; // return file type and upload file name
-                    
+                } else {
+                    $err = sprintf(_("Possible file upload attack: filename '%s'.") , $userfile['name']);
+                    $action->ExitError($err);
                 }
             } else {
-                $err = sprintf(_("Possible file upload attack: filename '%s'.") , $userfile['name']);
-                $action->ExitError($err);
+                $err = sprintf(_("Filename '%s' cannot be transmitted.\nNo file was uploaded.") , $userfile['name']);
+                $action->exitError($err);
             }
         }
     }
