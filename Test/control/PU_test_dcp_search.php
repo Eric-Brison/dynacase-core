@@ -11,15 +11,15 @@ require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestSearch extends TestCaseDcpCommonFamily
 {
+    
     public static function getCommonImportFile()
     {
         return array(
             'PU_data_dcp_TestSearchGetOriginalQuery.ods'
         );
     }
-    /*protected function setUp()    {
-        parent::setUp();
-    }*/
+    
+    protected $famName = "TST_GETORIGINALQUERY1";
     /**
      * test basic search criteria
      * @param string $criteria filter
@@ -43,19 +43,68 @@ class TestSearch extends TestCaseDcpCommonFamily
     protected function createDataSearch()
     {
         
-        $societies = array(
-            "Poire",
-            "Pomme",
-            "Cerise",
-            "Pomme-Banane",
-            "Banane"
+        $fruits = array(
+            array(
+                "Pruneaux",
+                "Poire"
+            ) ,
+            array(
+                "Poire",
+                "Pomme"
+            ) ,
+            array(
+                "Mures",
+                "Cerise"
+            ) ,
+            array(
+                "Nèfle",
+                "Kiwi",
+                "Coing",
+                "Pomme-Banane"
+            ) ,
+            array(
+                "Banane"
+            ) ,
+            array(
+                "Melon",
+                "Raisin"
+            ) ,
+            array(
+                "Corme",
+                "__delete__"
+            ) ,
+            array(
+                "Corme",
+                "Orange",
+                "Prune",
+                "__delete__"
+            ) ,
         );
-        foreach ($societies as $socTitle) {
-            $d1 = createDoc(self::$dbaccess, "BASE", false);
-            $d1->setTitle($socTitle);
-            $err = $d1->add();
-            if ($err != "") return false;
+        $d1 = null;
+        foreach ($fruits as $socTitle) {
+            foreach ($socTitle as $k => $title) {
+                
+                if ($k === 0) {
+                    $d1 = createDoc(self::$dbaccess, $this->famName, false);
+                    $d1->setTitle($title);
+                    $err = $d1->add();
+                    $this->assertEmpty($err, "Cannot create data");
+                } else {
+                    
+                    if ($title === "__delete__") {
+                        
+                        $err = $d1->delete();
+                        $this->assertEmpty($err, "Cannot delete data");
+                    } else {
+                        $d1->revise("Yo");
+                        $d1->setTitle($title);
+                        $err = $d1->modify();
+                        $this->assertEmpty($err, "Cannot update data");
+                    }
+                }
+            }
         }
+        
         return true;
     }
     /**
@@ -79,6 +128,46 @@ class TestSearch extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
         
         $this->assertEquals($count, $s->count() , sprintf("Count must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
+    }
+    /**
+     * test basic search criteria
+     * @param string $criteria filter
+     * @param string $arg filter argument
+     * @param string $family family name or id
+     * @param integer $count expected results count
+     * @return void
+     * @dataProvider countAllRevisionCriteria
+     */
+    public function testCountRevisionSearch($latest, $distinct, $trash, $criteria, $arg, $family, array $expectTitles)
+    {
+        $this->createDataSearch();
+        $s = new \SearchDoc(self::$dbaccess, $family);
+        if ($criteria) $s->addFilter($criteria, $arg);
+        $s->setObjectReturn(true);
+        $s->latest = $latest;
+        $s->distinct = $distinct;
+        $s->trash = $trash;
+        $s->search();
+        $err = $s->getError();
+        $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
+        
+        $returnTitles = $this->getReturnTitles($s);
+        sort($returnTitles);
+        sort($expectTitles);
+        $this->assertEquals(count($expectTitles) , $s->count() , sprintf("Count error %s %s \nFound: %s %s", $criteria, $arg, implode(",", $returnTitles) , print_r($s->getSearchInfo() , true)));
+        $this->assertEquals($expectTitles, $returnTitles, sprintf("Not expected result %s %s \nFound : %s", $criteria, $arg, implode(", ", $returnTitles)));
+    }
+    
+    private function getReturnTitles(\SearchDoc $s)
+    {
+        $dl = $s->getDocumentList();
+        $titles = array();
+        foreach ($dl as $doc) {
+            
+            $titles[] = $doc->getTitle();
+        }
+        
+        return $titles;
     }
     /**
      * test basic search criteria in array mode
@@ -120,6 +209,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
         $s->setObjectReturn(true);
+        $c = - 2;
         try {
             $c = $s->onlyCount();
         }
@@ -173,7 +263,6 @@ class TestSearch extends TestCaseDcpCommonFamily
      */
     public function testOnlyCountErrorSearchException($criteria, $arg, $family, $error)
     {
-        require_once "FDL/Class.SearchDoc.php";
         $this->createDataSearch();
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
@@ -217,6 +306,7 @@ class TestSearch extends TestCaseDcpCommonFamily
             
             $s = new \SearchDoc(self::$dbaccess, $test['search:family']);
             $s->setObjectReturn();
+            $count = - 2;
             if (isset($test['search:noviewcontrol']) && $test['search:noviewcontrol']) {
                 $s->overrideViewControl();
             }
@@ -483,23 +573,197 @@ class TestSearch extends TestCaseDcpCommonFamily
             array(
                 "title ~* '%s'",
                 "Pomme",
-                "BASE",
+                $this->famName,
                 2
+            ) ,
+            array(
+                "title is not null",
+                "",
+                $this->famName,
+                6 + 3 // 3 from ods file
+                
             ) ,
             array(
                 "title ~ '%s'",
                 "Poire|Pomme|Cerise|Banane",
-                "BASE",
+                $this->famName,
                 5
             ) ,
             array(
                 "title = '%s'",
                 "Pomme",
-                "BASE",
+                $this->famName,
                 1
             )
         );
     }
+    
+    public function countAllRevisionCriteria()
+    {
+        return array(
+            array(
+                "latest" => false,
+                "distinct" => false,
+                "trash" => "no",
+                "title ~* '%s'",
+                "Pomme",
+                $this->famName,
+                array(
+                    "Pomme",
+                    "Pomme-Banane"
+                )
+            ) ,
+            array(
+                "latest" => false,
+                "distinct" => false,
+                "trash" => "no",
+                "title is not null",
+                "",
+                $this->famName,
+                array(
+                    "Pruneaux",
+                    "Poire",
+                    "Poire",
+                    "Pomme",
+                    "Mures",
+                    "Cerise",
+                    "Nèfle",
+                    "Kiwi",
+                    "Coing",
+                    "Pomme-Banane",
+                    "Banane",
+                    "Melon",
+                    "Raisin",
+                    "Un",
+                    "Deux",
+                    "Trois"
+                )
+            ) ,
+            array(
+                "latest" => false,
+                "distinct" => false,
+                "trash" => "no",
+                "title ~ '%s'",
+                "Poire|Pomme|Cerise|Banane|Prune|Corme",
+                $this->famName,
+                array(
+                    "Pruneaux",
+                    "Poire",
+                    "Poire",
+                    "Pomme",
+                    "Cerise",
+                    "Pomme-Banane",
+                    "Banane"
+                )
+            ) ,
+            array(
+                "latest" => false,
+                "distinct" => false,
+                "trash" => "no",
+                "title = '%s'",
+                "Poire",
+                $this->famName,
+                array(
+                    "Poire",
+                    "Poire"
+                )
+            ) ,
+            array(
+                "latest" => false,
+                "distinct" => true,
+                "trash" => "no",
+                "title ~ '%s'",
+                "Poire|Pomme|Cerise|Banane|Prune|Corme",
+                $this->famName,
+                array(
+                    "Poire",
+                    "Pomme",
+                    "Cerise",
+                    "Pomme-Banane",
+                    "Banane"
+                )
+            ) ,
+            array(
+                "latest" => true,
+                "distinct" => true,
+                "trash" => "only",
+                "title ~ '%s'",
+                "Poire|Pomme|Cerise|Banane|Prune|Corme",
+                $this->famName,
+                array(
+                    "Corme",
+                    "Prune"
+                )
+            ) ,
+            array(
+                "latest" => false,
+                "distinct" => false,
+                "trash" => "only",
+                "title ~ '%s'",
+                "Poire|Pomme|Cerise|Orange|Prune|Corme",
+                $this->famName,
+                array(
+                    "Corme",
+                    "Corme",
+                    "Prune",
+                    "Orange"
+                )
+            ) ,
+            array(
+                "latest" => false,
+                "distinct" => false,
+                "trash" => "also",
+                "title ~ '%s'",
+                "Poire|Pomme|Cerise|Orange|Prune|Corme",
+                $this->famName,
+                array(
+                    "Pruneaux",
+                    "Poire",
+                    "Poire",
+                    "Pomme",
+                    "Cerise",
+                    "Pomme-Banane",
+                    "Corme",
+                    "Corme",
+                    "Prune",
+                    "Orange"
+                )
+            ) ,
+            array(
+                "latest" => false,
+                "distinct" => true,
+                "trash" => "also",
+                "title ~ '%s'",
+                "Pomme|Cerise|Orange|Prune|Corme|Kiwi",
+                $this->famName,
+                array(
+                    "Pruneaux",
+                    "Pomme",
+                    "Cerise",
+                    "Pomme-Banane",
+                    "Corme",
+                    "Prune"
+                )
+            ) ,
+            array(
+                "latest" => true,
+                "distinct" => true,
+                "trash" => "also",
+                "title ~ '%s'",
+                "Pomme|Cerise|Orange|Prune|Corme|Kiwi",
+                $this->famName,
+                array(
+                    "Poire",
+                    "Pomme",
+                    "Cerise",
+                    "Pomme-Banane",
+                    "Corme",
+                    "Prune"
+                )
+            )
+        );
+    }
+    
     public function countErrorCriteria()
     {
         return array(
@@ -517,13 +781,13 @@ class TestSearch extends TestCaseDcpCommonFamily
             array(
                 "title_unknow ~* '%s'",
                 "Pomme",
-                "BASE",
+                $this->famName,
                 "title_unknow"
             ) ,
             array(
                 "title @? '%s'",
                 "Pomme",
-                "BASE",
+                $this->famName,
                 "@?"
             )
         );

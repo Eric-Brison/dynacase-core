@@ -1223,9 +1223,10 @@ class SearchDoc
         }
         $table = "doc";
         $only = "";
-        if ($trash == "only") $distinct = true;
-        if ($fromid == - 1) $table = "docfam";
-        elseif ($fromid < 0) {
+
+        if ($fromid == - 1) {
+            $table = "docfam";
+        } elseif ($fromid < 0) {
             $only = "only";
             $fromid = - $fromid;
             $table = "doc$fromid";
@@ -1278,14 +1279,19 @@ class SearchDoc
             //-------------------------------------------
             if (strpos(implode(",", $sqlfilters) , "archiveid") === false) $sqlfilters[-4] = $maintabledot . "archiveid is null";
             
-            if ($trash == "only") {
+            if ($trash === "only") {
                 $sqlfilters[-3] = $maintabledot . "doctype = 'Z'";
-            } elseif ($trash == "also");
-            else if (!$fromid) $sqlfilters[-3] = $maintabledot . "doctype != 'Z'";
+            } elseif ($trash !== "also") {
+                $sqlfilters[-3] = $maintabledot . "doctype != 'Z'";
+            }
             
-            if (($latest) && (($trash == "no") || (!$trash))) $sqlfilters[-1] = $maintabledot . "locked != -1";
+            if (($latest) && (($trash == "no") || (!$trash))) {
+                $sqlfilters[-1] = $maintabledot . "locked != -1";
+            }
             ksort($sqlfilters);
-            if (count($sqlfilters) > 0) $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+            if (count($sqlfilters) > 0) {
+                $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+            }
             $qsql = "select $selectfields " . "from $only $table  " . "where  " . $sqlcond;
             $qsql = $this->injectFromClauseForOrderByLabel($fromid, $this->orderbyLabel, $qsql);
         } else {
