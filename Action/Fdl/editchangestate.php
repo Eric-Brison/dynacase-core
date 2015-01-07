@@ -70,12 +70,12 @@ function editchangestate(Action & $action)
                             if ($edittpl = $oa->getOption("edittemplate")) {
                                 $input = sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&wiid=%d&zone=%s]", $wdoc->id, $wdoc->fromid, $doc->id, $edittpl);
                             } else {
-                                $input = getHtmlInput($wdoc, $oa, $wval, "", "", true);
+                                $input = getHtmlInput($wdoc, $oa, $wval, "", "", false);
                             }
                             $tinputs[] = array(
                                 "alabel" => $oa->getLabel() ,
                                 "labelclass" => ($oa->needed) ? "FREEDOMLabelNeeded" : "FREEDOMLabel",
-                                "atype"=>$oa->type,
+                                "atype" => $oa->type,
                                 "avalue" => $input,
                                 "aid" => $oa->id,
                                 "idisplay" => ($oa->visibility == "H") ? "none" : ""
