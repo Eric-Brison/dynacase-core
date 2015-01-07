@@ -71,6 +71,11 @@ function resizePopDoc() {
 .askComment {
   margin-left:20px;
   width:90%;
+  resize : vertical;
+}
+
+textarea {
+  resize : vertical;
 }
 .askLabel {
   vertical-align: top;
@@ -80,10 +85,28 @@ function resizePopDoc() {
 }
 .askValue {
   padding-left:20px;
+  width:100%;
 }
 .askButton {
   text-align:right
 }
+
+.inlineButton, .add-doc {
+  width: 20px;
+  height : 20px;
+}
+
+input {
+  height : 16px;
+}
+
+.askForm td.nowrap {
+   padding-right:0px;
+}
+.askForm td.editbutton {
+   padding-right:2px;
+}
+
 
 
 </style>
