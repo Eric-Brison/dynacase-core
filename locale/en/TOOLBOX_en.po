@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-11 13:39+0100\n"
-"PO-Revision-Date: 2014-12-10 16:35+0100\n"
+"POT-Creation-Date: 2015-01-07 16:01+0100\n"
+"PO-Revision-Date: 2015-01-07 16:51+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: \n"
@@ -392,9 +392,6 @@ msgid "A_Copy"
 msgstr ""
 
 msgid "A_Link"
-msgstr ""
-
-msgid "AbbrKbyte"
 msgstr ""
 
 msgid "Abstract card"
@@ -8138,6 +8135,23 @@ msgstr ""
 
 msgid "uncomplete request"
 msgstr ""
+
+msgid "unit:GB"
+msgstr "GB"
+
+msgid "unit:MB"
+msgstr "MB"
+
+msgid "unit:TB"
+msgstr "TB"
+
+msgid "unit:byte"
+msgid_plural "unit:bytes"
+msgstr[0] "byte"
+msgstr[1] "bytes"
+
+msgid "unit:kB"
+msgstr "kB"
 
 #, php-format
 msgid "unknow %s file property"
