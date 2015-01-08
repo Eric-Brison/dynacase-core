@@ -60,14 +60,16 @@ class TransformationEngine
      */
     function sendTransformation($te_name, $fkey, $filename, $callback, &$info)
     {
+        global $action;
         $err = "";
         
         clearstatcache(); // to reset filesize
-        if (! file_exists($filename)) {
-            $err = sprintf("file %s not found",$filename );
+        if (!file_exists($filename)) {
+            $err = sprintf("file %s not found", $filename);
             $info = array(
                 "status" => self::error_emptyfile
             );
+            $action->log->error($err);
             return $err;
         }
         $size = filesize($filename);
@@ -76,6 +78,7 @@ class TransformationEngine
             $info = array(
                 "status" => self::error_emptyfile
             );
+            $action->log->error($err);
             return $err;
         }
         /* Lit l'adresse IP du serveur de destination */
@@ -92,6 +95,7 @@ class TransformationEngine
             $info = array(
                 "status" => self::error_connect
             );
+            $action->log->error($err);
             return $err;
         }
         /*
@@ -103,6 +107,7 @@ class TransformationEngine
             $info = array(
                 "status" => self::error_sendfile
             );
+            $action->log->error($err);
             return $err;
         }
         if (trim($out) != 'Continue') {
@@ -110,6 +115,7 @@ class TransformationEngine
             $info = array(
                 "status" => self::error_sendfile
             );
+            $action->log->error($err);
             return $err;
         }
         /*
@@ -150,7 +156,7 @@ class TransformationEngine
                     $status = $match[1];
                 }
                 $outmsg = '';
-                if (preg_match("/<response[^>]*>(.*)<\/response>/i", $out, $match)) {
+                if (preg_match('/<response[^>]*>(.*)<\/response>/i', $out, $match)) {
                     $outmsg = $match[1];
                 }
                 //echo "Response [$status]\n";
@@ -164,8 +170,12 @@ class TransformationEngine
                         $status = $match[1];
                     }
                     $comment = '';
-                    if (preg_match("/<comment>(.*)<\/comment>/i", $outmsg, $match)) {
+                    if (preg_match('/<comment>(.*)<\/comment>/i', $outmsg, $match)) {
                         $comment = $match[1];
+                    }
+                    if (trim($tid) == '') {
+                        $err = _("Transformation server did not returned a valid task id");
+                        $status = self::error_convert;
                     }
                     $info = array(
                         "tid" => $tid,
@@ -177,12 +187,14 @@ class TransformationEngine
                 }
             }
         } else {
-            $taskerr = '-';
-            if (preg_match("/<comment>(.*)<\/comment>/i", $out, $match)) {
+            if (preg_match('/<comment>(.*)<\/comment>/i', $out, $match)) {
                 $info = array(
                     "status" => self::error_noengine
                 );
                 $err = $match[1];
+                if ($err == '') {
+                    $err = _("Transformation server did not returned a valid error comment");
+                }
             } else {
                 $err = _("Error sending file");
                 $info = array(
@@ -193,6 +205,9 @@ class TransformationEngine
         //echo "Fermeture de la socket...";
         fclose($fp);
         
+        if ($err != '') {
+            $action->log->error($err);
+        }
         return $err;
     }
     /**
@@ -204,6 +219,7 @@ class TransformationEngine
      */
     function getInfo($tid, &$info)
     {
+        global $action;
         $err = "";
         /* Lit l'adresse IP du serveur de destination */
         $address = gethostbyname($this->host);
@@ -261,6 +277,9 @@ class TransformationEngine
             fclose($fp);
         }
         
+        if ($err != '') {
+            $action->log->error($err);
+        }
         return $err;
     }
     /**
@@ -287,12 +306,13 @@ class TransformationEngine
      */
     function getAndLeaveTransformation($tid, $filename)
     {
-        
+        global $action;
         $err = "";
         
         $handle = @fopen($filename, "w");
         if (!$handle) {
             $err = sprintf("cannot open file <%s> in write mode", $filename);
+            $action->log->error($err);
             return $err;
         }
         /* Lit l'adresse IP du serveur de destination */
@@ -384,6 +404,9 @@ class TransformationEngine
         }
         //echo "Fermeture de la socket...";
         fclose($fp);
+        if ($err != '') {
+            $action->log->error($err);
+        }
         return $err;
     }
     /**
@@ -397,6 +420,8 @@ class TransformationEngine
      */
     function eraseTransformation($tid)
     {
+        global $action;
+        
         $err = "";
         /* Lit l'adresse IP du serveur de destination */
         $address = gethostbyname($this->host);
@@ -453,7 +478,9 @@ class TransformationEngine
             fclose($fp);
         }
         
+        if ($err != '') {
+            $action->log->error($err);
+        }
         return $err;
     }
 }
-?>

@@ -4019,6 +4019,12 @@ msgid "Transformation Engine timeout connection (in seconds)"
 msgstr ""
 "Temps d'attente de connexion pour le moteur de transformation (en secondes)"
 
+msgid "Transformation server did not returned a valid error comment"
+msgstr "Le serveur de transformation n'a pas retourné un message d'erreur valide"
+
+msgid "Transformation server did not returned a valid task id"
+msgstr "Le serveur de transformation n'a pas retourné un identifiant de tâche valide"
+
 msgid "Transitions"
 msgstr "Transitions"
 
