@@ -159,6 +159,14 @@ This can be solved by:<br/>
             <label lang="en">Check french spelling dictionary</label>
             <help>French spelling dictionary not found: you might need to install a aspell-fr package from your distribution in order to have french spelling support.</help>
         </check>
+        <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;en_US.UTF-8&quot;)!==false?0:1);'">
+            <label lang="en">Check required "en_US.UTF-8" locale</label>
+            <help>The required "en_US.UTF-8" locale is missing. You must install or generate (using locale-gen) the required "en_US.UTF-8" locale on your operating system.</help>
+        </check>
+        <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;fr_FR.UTF-8&quot;)!==false?0:1);'">
+            <label lang="en">Check required "fr_FR.UTF-8" locale</label>
+            <help>The required "fr_FR.UTF-8" locale is missing. You must install or generate (using locale-gen) the required "fr_FR.UTF-8" locale on your operating system.</help>
+        </check>
         <check type="phpfunction" function="iconv">
             <help>You might need to install a php-iconv package from your distribution in order to have iconv support in
                 PHP.
@@ -449,6 +457,14 @@ This can be solved by:<br/>
         <check type="exec" cmd="php -r 'exit(pspell_new(&quot;fr&quot;)!==false?0:1);'">
             <label lang="en">Check french spelling dictionary</label>
             <help>French spelling dictionary not found: you might need to install a aspell-fr package from your distribution in order to have french spelling support.</help>
+        </check>
+        <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;en_US.UTF-8&quot;)!==false?0:1);'">
+            <label lang="en">Check required "en_US.UTF-8" locale</label>
+            <help>The required "en_US.UTF-8" locale is missing. You must install or generate (using locale-gen) the required "en_US.UTF-8" locale on your operating system.</help>
+        </check>
+        <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;fr_FR.UTF-8&quot;)!==false?0:1);'">
+            <label lang="en">Check required "fr_FR.UTF-8" locale</label>
+            <help>The required "fr_FR.UTF-8" locale is missing. You must install or generate (using locale-gen) the required "fr_FR.UTF-8" locale on your operating system.</help>
         </check>
         <check type="phpfunction" function="iconv">
             <help>You might need to install a php-iconv package from your distribution in order to have iconv support in
