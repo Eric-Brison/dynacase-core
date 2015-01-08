@@ -155,7 +155,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         sort($returnTitles);
         sort($expectTitles);
         $this->assertEquals(count($expectTitles) , $s->count() , sprintf("Count error %s %s \nFound: %s %s", $criteria, $arg, implode(",", $returnTitles) , print_r($s->getSearchInfo() , true)));
-        $this->assertEquals($expectTitles, $returnTitles, sprintf("Not expected result %s %s \nFound : %s", $criteria, $arg, implode(", ", $returnTitles)));
+        $this->assertEquals($expectTitles, $returnTitles, sprintf("Not expected result %s %s \nFound : %s %s", $criteria, $arg, implode(", ", $returnTitles) , print_r($s->getSearchInfo() , true)));
     }
     
     private function getReturnTitles(\SearchDoc $s)
@@ -753,7 +753,7 @@ class TestSearch extends TestCaseDcpCommonFamily
                 "Pomme|Cerise|Orange|Prune|Corme|Kiwi",
                 $this->famName,
                 array(
-                    "Poire",
+                    "Pruneaux",
                     "Pomme",
                     "Cerise",
                     "Pomme-Banane",
