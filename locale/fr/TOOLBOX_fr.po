@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-11 13:39+0100\n"
-"PO-Revision-Date: 2014-12-11 13:42+0100\n"
+"POT-Creation-Date: 2015-01-07 16:01+0100\n"
+"PO-Revision-Date: 2015-01-07 16:39+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -398,9 +398,6 @@ msgstr "Copier"
 
 msgid "A_Link"
 msgstr "Lier"
-
-msgid "AbbrKbyte"
-msgstr "Ko"
 
 msgid "Abstract card"
 msgstr "Carte résumé"
@@ -8370,6 +8367,23 @@ msgstr "Pas de changement d'état"
 
 msgid "uncomplete request"
 msgstr "requête incomplète"
+
+msgid "unit:GB"
+msgstr "Go"
+
+msgid "unit:MB"
+msgstr "Mo"
+
+msgid "unit:TB"
+msgstr "To"
+
+msgid "unit:byte"
+msgid_plural "unit:bytes"
+msgstr[0] "octet"
+msgstr[1] "octets"
+
+msgid "unit:kB"
+msgstr "ko"
 
 #, php-format
 msgid "unknow %s file property"

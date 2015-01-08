@@ -537,11 +537,9 @@ class DocHtmlFormat
                     }
                     if ($standardview) {
                         global $action;
-                        $size = round($fileInfo->size / 1024) . _("AbbrKbyte");
+                        $size = self::human_size($fileInfo->size);
                         $utarget = ($action->Read("navigator", "") == "NETSCAPE") ? "_self" : "_blank";
-                        $opt = "";
                         $inline = $this->oattr->getOption("inline");
-                        if ($inline == "yes") $opt = "&inline=yes";
                         $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"" . $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes") , $avalue) . "\">";
                         if ($mimeicon) $htmlval.= "<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
                         $htmlval.= $fname . "</a>";
@@ -1172,5 +1170,29 @@ class DocHtmlFormat
             $v = $this->doc->getMultipleRawValues($sl, "", $index);
         }
         return $v;
+    }
+    /**
+     * Format the given size in human readable SI format (up to terabytes).
+     *
+     * @param int $size
+     * @return string
+     */
+    private static function human_size($size)
+    {
+        if (abs($size) < 1000) {
+            return sprintf("%d %s", $size, n___("unit:byte", "unit:bytes", abs($size)));
+        }
+        $size = $size / 1000;
+        foreach (array(
+            _("unit:kB") ,
+            _("unit:MB") ,
+            _("unit:GB")
+        ) as $unit) {
+            if (abs($size) < 1000) {
+                return sprintf("%3.2f %s", $size, $unit);
+            }
+            $size = $size / 1000;
+        }
+        return sprintf("%.2f %s", $size, _("unit:TB"));
     }
 }
