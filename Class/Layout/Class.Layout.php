@@ -504,7 +504,7 @@ class Layout
             // Add warning messages
             $list = $this->action->parent->GetWarningMsg();
             if (count($list) > 0) {
-                $out.= "displayWarningMsg(" . json_encode(implode("\\n---------\\n", array_unique($list)) , JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP) . ");\n";
+                $out.= "displayWarningMsg(" . json_encode(implode("\n---------\n", array_unique($list)) , JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP) . ");\n";
             }
             $this->action->parent->ClearWarningMsg();
         }
