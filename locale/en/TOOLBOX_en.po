@@ -3851,6 +3851,12 @@ msgstr ""
 msgid "Transformation Engine timeout connection (in seconds)"
 msgstr ""
 
+msgid "Transformation server did not returned a valid error comment"
+msgstr ""
+
+msgid "Transformation server did not returned a valid task id"
+msgstr ""
+
 msgid "Transitions"
 msgstr ""
 
