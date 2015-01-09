@@ -76,6 +76,7 @@ class DbObj
     var $isset = false; // indicate if fields has been affected (call affect methods)
     static $savepoint = array();
     static $lockpoint = array();
+    static private $masterLock = false;
     static $sqlStrict = null;
     /**
      * @var string error message
@@ -972,8 +973,9 @@ class DbObj
         } else {
             $prefixLockId = 0;
         }
-        $err = $this->exec_query(sprintf('select pg_advisory_xact_lock(%d,%d)', $exclusiveLock, $prefixLockId));
-        
+        if (self::$masterLock === false) {
+            $err = $this->exec_query(sprintf('select pg_advisory_lock(0), pg_advisory_unlock(0), pg_advisory_xact_lock(%d,%d);', $exclusiveLock, $prefixLockId));
+        }
         if ($err) {
             return $err;
         }
@@ -983,6 +985,33 @@ class DbObj
         );
         
         return $err;
+    }
+    /**
+     * set a database  master lock
+     * the lock is free when explicit call with false parameter.
+     * When a master lock is set,
+     * @param bool $useLock set lock (true) or unlock (false)
+     * @see Dbobj::lockPoint()
+     * @return string error message
+     */
+    public function setMasterLock($useLock)
+    {
+        if (!$this->dbid) {
+            $err = sprintf("dbid is null cannot add master lock ");
+            error_log(__METHOD__ . ":$err");
+            return $err;
+        }
+        
+        if ($useLock) {
+            $err = $this->exec_query('select pg_advisory_lock(0)');
+        } else {
+            $err = $this->exec_query('select pg_advisory_unlock(0)');
+        }
+        if ($err) {
+            return $err;
+        }
+        self::$masterLock = (bool)$useLock;
+        return '';
     }
     /**
      * revert to transaction save point
@@ -1007,7 +1036,6 @@ class DbObj
                 $err = $this->exec_query("commit");
             }
         } else {
-            
             $err = sprintf("cannot rollback unsaved point : %s", $point);
         }
         
