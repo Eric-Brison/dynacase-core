@@ -580,7 +580,7 @@ class UpdateAttribute
             if (!$this->transactionObject) {
                 $this->transactionObject = new DbObj($this->dbaccess);
             }
-            $this->transactionObject->savePoint("UPDATEATTR");
+            $this->transactionObject->savePoint("dcp:updateattr");
         }
     }
     
@@ -588,9 +588,9 @@ class UpdateAttribute
     {
         if ($this->transaction) {
             if ($this->error) {
-                $this->transactionObject->rollbackPoint("UPDATEATTR");
+                $this->transactionObject->rollbackPoint("dcp:updateattr");
             } else {
-                $this->transactionObject->commitPoint("UPDATEATTR");
+                $this->transactionObject->commitPoint("dcp:updateattr");
             }
         }
     }

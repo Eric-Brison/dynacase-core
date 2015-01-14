@@ -1205,7 +1205,7 @@ create unique index i_docir on doc(initid, revision);";
         $cdoc->prelid = $this->prelid;
         
         $values = $this->getValues();
-        $point = "convert" . $this->id;
+        $point = "dcp:convert" . $this->id;
         $this->savePoint($point); // begin transaction in case of fail add
         $err = $this->delete(true, false, true); // delete before add to avoid double id (it is not authorized)
         if ($err != "") return $err;
@@ -5036,7 +5036,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->postitid = 0;
         $date = gettimeofday();
         $this->revdate = $date['sec']; // change rev date
-        $point = "revision" . $this->id;
+        $point = "dcp:revision" . $this->id;
         $this->savePoint($point);
         if ($comment != '') $this->addHistoryEntry($comment, DocHisto::MESSAGE, "REVISION");
         $err = $this->modify();
@@ -8755,7 +8755,7 @@ create unique index i_docir on doc(initid, revision);";
         if (empty($this->id)) return;
         $dvi = new DocVaultIndex($this->dbaccess);
         
-        $point = uniqid("updateVaultIndex");
+        $point = uniqid("dcp:updateVaultIndex");
         $this->savePoint($point);
         $this->lockPoint($this->initid, "UPVI");
         // Need to lock to avoid constraint errors when concurrent docvaultindex update

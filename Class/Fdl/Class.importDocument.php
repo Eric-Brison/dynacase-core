@@ -90,7 +90,7 @@ class ImportDocument
     {
         $point = '';
         if ($this->strict) {
-            $point = 'importDocument';
+            $point = 'dcp:importDocument';
             //$action->debug=true;
             $action->savePoint($point);
         }

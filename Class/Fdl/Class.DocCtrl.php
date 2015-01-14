@@ -166,6 +166,11 @@ class DocCtrl extends DocLDAP
      * @var int  current user id
      */
     public $userid;
+    /**
+     * To prevent to lock to many objects
+     * @var bool
+     */
+    static private $globalDocPermLock = false;
     // --------------------------------------------------------------------
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
@@ -429,9 +434,11 @@ class DocCtrl extends DocLDAP
                     }
                 }
             }
-            $point = uniqid("docperm");
+            $point = uniqid("dcp:docperm");
             $this->savePoint($point);
-            $this->lockPoint($this->initid, "PERM");
+            if (!self::$globalDocPermLock) {
+                $this->lockPoint($this->initid, "PERM");
+            }
             // Need to lock to avoid constraint errors when concurrent docperm update
             $this->exec_query(sprintf("delete from docperm where docid=%d", $this->id));
             if ($fromdocidvalues == null) $fromdocidvalues = & $this;
@@ -822,6 +829,12 @@ class DocCtrl extends DocLDAP
                 // dynamic profil
                 // recompute associated documents
                 setMaxExecutionTimeTo(0);
+                
+                if (self::$savepoint) {
+                    // when are in transaction must lock complete table to avoid too many locks on each rows
+                    simpleQuery($this->dbaccess, "lock table docperm in exclusive mode");
+                    self::$globalDocPermLock = true;
+                }
                 $s = new SearchDoc($this->dbaccess);
                 $s->addFilter("dprofid = %d", $this->id);
                 $s->setObjectReturn();

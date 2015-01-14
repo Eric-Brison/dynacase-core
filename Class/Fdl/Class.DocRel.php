@@ -123,7 +123,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
     {
         $nattr = $doc->GetNormalAttributes();
         
-        $savePoint = uniqid("initrelation");
+        $savePoint = uniqid("dcp:initrelation");
         $this->savePoint($savePoint);
         $this->lockPoint($doc->initid, "IREL"); // need to avoid conflict in docrel index
         foreach ($nattr as $k => $v) {

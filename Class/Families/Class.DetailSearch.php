@@ -288,7 +288,8 @@ class DetailSearch extends \Dcp\Family\Search
     {
         $err = '';
         $this->last_sug = '';
-        $this->savePoint(__FUNCTION__);
+        $point="dcp:isValidPgRegex";
+        $this->savePoint($point);
         $q = sprintf("SELECT regexp_matches('', E'%s')", pg_escape_string($str));
         try {
             simpleQuery($this->dbaccess, $q, $res);
@@ -296,7 +297,7 @@ class DetailSearch extends \Dcp\Family\Search
         catch(\Exception $e) {
             $err = $e->getMessage();
         }
-        $this->rollbackPoint(__FUNCTION__);
+        $this->rollbackPoint($point);
         if ($err != '') {
             $err = _("invalid regular expression");
             $this->last_sug = preg_quote($str, '');
