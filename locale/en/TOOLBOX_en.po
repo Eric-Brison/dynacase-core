@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-07 16:01+0100\n"
+"POT-Creation-Date: 2015-01-19 10:37+0100\n"
 "PO-Revision-Date: 2015-01-07 16:51+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -701,6 +701,12 @@ msgstr ""
 msgid "Attribute format should not be empty on attribute '%s' in family '%s'."
 msgstr ""
 
+msgid "Attribute identifier"
+msgstr ""
+
+msgid "Attribute label"
+msgstr ""
+
 msgid "Attribute not found"
 msgstr ""
 
@@ -899,6 +905,12 @@ msgstr ""
 msgid "Change default search"
 msgstr ""
 
+msgid "Change default value"
+msgstr ""
+
+msgid "Change default value for family"
+msgstr ""
+
 msgid "Change enum"
 msgstr ""
 
@@ -1064,6 +1076,9 @@ msgid "Clear this translation"
 msgstr ""
 
 msgid "Click here to logout"
+msgstr ""
+
+msgid "Click on attribute to modify <b>{{aid}}</b> default value"
 msgstr ""
 
 msgid "Click to access to the document"
@@ -1291,6 +1306,9 @@ msgstr ""
 msgid "December"
 msgstr ""
 
+msgid "Default Raw value"
+msgstr ""
+
 msgid "Default Values and Parameters"
 msgstr ""
 
@@ -1298,6 +1316,14 @@ msgid "Default delay for account expiration (days)"
 msgstr "Default delay for account expiration (days)"
 
 msgid "Default search"
+msgstr ""
+
+#, php-format
+msgid "Default value erased"
+msgstr ""
+
+#, php-format
+msgid "Default value recorded"
 msgstr ""
 
 msgid "Delete"
@@ -1624,6 +1650,9 @@ msgstr ""
 "<p>\n"
 "Changes remain local. Record on the server and use by applications is "
 "effective only upon record via the [Save] button. </p>"
+
+msgid "Editor value"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -2229,6 +2258,9 @@ msgstr ""
 msgid "Formated data"
 msgstr ""
 
+msgid "Formated value"
+msgstr ""
+
 #, php-format
 msgid "Found <strong>%d</strong>  Result for <strong>%s</strong>%s"
 msgstr ""
@@ -2803,7 +2835,16 @@ msgstr ""
 msgid "Modify default Values"
 msgstr ""
 
+msgid "Modify default value"
+msgstr ""
+
+msgid "Modify default values"
+msgstr ""
+
 msgid "Modify enum items"
+msgstr ""
+
+msgid "Modify one default value"
 msgstr ""
 
 msgid "Modify parameters Values"
@@ -2860,6 +2901,9 @@ msgstr ""
 msgid "New state"
 msgstr ""
 
+msgid "New value which be set to server"
+msgstr ""
+
 msgid "Next"
 msgstr ""
 
@@ -2877,6 +2921,9 @@ msgid "No acl for new documents of this family"
 msgstr ""
 
 msgid "No columns has been defined"
+msgstr ""
+
+msgid "No default value"
 msgstr ""
 
 msgid "No description import file"
@@ -3225,6 +3272,9 @@ msgid ""
 "it in navigator."
 msgstr ""
 
+msgid "Raw value"
+msgstr ""
+
 msgid "Re-export report"
 msgstr ""
 
@@ -3239,6 +3289,9 @@ msgstr ""
 
 #, php-format
 msgid "Record documents %d/%d"
+msgstr ""
+
+msgid "Record new value to server"
 msgstr ""
 
 msgid "Redo export"
@@ -3946,6 +3999,9 @@ msgstr ""
 msgid "Use old file inputs compatibity form"
 msgstr ""
 
+msgid "Use this input to set special value like method description"
+msgstr ""
+
 #, php-format
 msgid "Use your home folder instead <%s>"
 msgstr ""
@@ -3963,6 +4019,9 @@ msgid "Utilisateur fixe"
 msgstr ""
 
 msgid "Validate"
+msgstr ""
+
+msgid "Value actualy recorded in server"
 msgstr ""
 
 msgid "Version"
@@ -5387,6 +5446,12 @@ msgstr ""
 msgid "definition of enumerate attribute %s of %s family"
 msgstr ""
 
+msgid "defval New value"
+msgstr ""
+
+msgid "defval Server value"
+msgstr ""
+
 msgid "delconfirm"
 msgstr ""
 
@@ -5989,6 +6054,9 @@ msgstr ""
 msgid "filename or type not include"
 msgstr ""
 
+msgid "filter attributes"
+msgstr ""
+
 #, php-format
 msgid "find %s more than one, created aborded\n"
 msgstr ""
@@ -6370,6 +6438,12 @@ msgid "interface to edit enum attribute"
 msgstr ""
 
 msgid "interface to export documents"
+msgstr ""
+
+msgid "interface to modify default values documents"
+msgstr ""
+
+msgid "interface to modify one default"
 msgstr ""
 
 msgid "interface to save choice of column export documents"

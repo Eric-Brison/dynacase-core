@@ -1,0 +1,160 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Modify default value]]
+
+
+<style>
+    body {
+      box-sizing:border-box;
+    }
+    .defval-section {
+        box-sizing:border-box;
+        width:calc(100% - 4px);
+
+
+    }
+    .defval-main {
+        border : solid 1px [COLOR_A7];
+        padding:4px;
+    }
+
+    .defval-foot {
+        width:100%%;
+    }
+    .value-raw {
+        box-sizing:border-box;
+        width:100%;
+        min-height:1em;
+        padding : 4px;
+        height:100%;
+    }
+
+
+    .raw-attribute {
+        vertical-align:top;
+        box-sizing:border-box;
+        display:inline-block;
+        width:100%;
+        height : 100%;
+
+
+    }
+    .format-attribute {
+        box-sizing:border-box;
+    vertical-align:top;
+    display:inline-block;
+
+        width:100%;
+    }
+    .value-raw textarea {
+        height : 100%;
+    }
+    .defval-section td {
+        vertical-align:top;
+    }
+    .defval-raw-cell {
+        width: 40%;
+    }
+    .defval-initial-value .defval-value, .defval-new-value .defval-value {
+        display:inline-block;
+    }
+    .defval--view-value {
+      width:100%;
+        border-top : solid 1px [COLOR_A7];
+       margin-top:10px;
+    }
+    .defval--view-value .defval-label {
+        text-align:right;
+        width:30%;
+    }
+    .defval--view-value .defval-value {
+
+    }
+    .format-attribute input[type=text] {
+     min-width:200px;
+    }
+    .format-attribute input {
+     height : 2em;
+    }
+    .format-attribute input.inlineButton {
+
+     height : 2.2em;
+     width:2em;
+    }
+    .defval-section th {
+      text-align:left;
+    }
+    .defval-new-value .defval-value {
+      font-weight : bold;
+    }
+    .defval-button {
+        padding:4px;
+    }
+    .defval-foot {
+
+        box-sizing:border-box;
+    }
+    .defval-message {
+        font-style: italic;
+        color:#2788CD;
+    }
+    .defval-message.ko {
+        color:red;
+    }
+    .no-message {
+        color:[COLOR_A3];
+    }
+    .icon {
+    vertical-align:bottom;
+    }
+    select.multidoc {
+       border :solid 1px grey;
+    }
+    .defval-value {
+        white-space: pre-wrap;
+        overflow: auto;
+        max-height: 100px;
+    }
+</style>
+
+<section class="defval-main">
+<table class="defval-section" data-famid="[famid]">
+<thead>
+    <tr><th>[TEXT:Raw value]</th><th>[TEXT:Editor value]</th></tr>
+</thead>
+<tbody>
+<tr>
+    <td class="defval-raw-cell">
+        <div class="raw-attribute" data-attrid="[aid]" title="[TEXT:Use this input to set special value like method description]">
+        [IF multiline]<textarea class="value-raw" name="defval">[value]</textarea>[ENDIF multiline]
+        [IFNOT multiline]<input class="value-raw" name="defval" value="[value]"/>[ENDIF multiline]
+        </div>
+    </td>
+    <td>
+        <div class="format-attribute" data-attrid="[aid]" data-inputname="[inputname]">
+            <form>
+        [formatInput]
+            </form>
+        </div>
+    </td>
+</tr>
+</tbody>
+</table>
+<table class="defval--view-value">
+<tr class="defval-initial-value" >
+    <td  class="defval-label"><label title="[TEXT:Value actualy recorded in server]">[TEXT:defval Server value]</label> :</td>
+    <td><pre class="defval-value">[value]&nbsp;</pre> <span [IF value]style="display:none" [ENDIF value]class="no-message">[TEXT:No default value]</span></td>
+</tr>
+<tr class="defval-new-value" >
+    <td  class="defval-label"><label title="[TEXT:New value which be set to server]">[TEXT:defval New value]</label> :</td>
+    <td><pre class="defval-value">[value]</pre></td>
+</tr>
+    <tr><td>&nbsp;</td><td><span class="defval-message"/></td></tr>
+<tr>
+    <td>&nbsp;</td>
+<td class="defval-foot">
+    <button title="[TEXT:Record new value to server]" class="defval-button defval-button-ok">[TEXT:Change default value]</button>
+    <button class="defval-button defval-button-close">[TEXT:Close]</button>
+</td>
+</tr>
+</table>
+</section>
+ [ZONE FDL:HTMLFOOT]

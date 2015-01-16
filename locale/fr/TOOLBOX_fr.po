@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-07 16:01+0100\n"
-"PO-Revision-Date: 2015-01-07 16:39+0100\n"
+"POT-Creation-Date: 2015-01-19 10:37+0100\n"
+"PO-Revision-Date: 2015-01-19 10:37+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -717,6 +717,12 @@ msgstr ""
 "La propriété format de l'attribut '%s' de la famille '%s' ne peut pas être "
 "vide."
 
+msgid "Attribute identifier"
+msgstr "Identifiant de l'attribut"
+
+msgid "Attribute label"
+msgstr "Libellé de l'attribut"
+
 msgid "Attribute not found"
 msgstr "Attribut non trouvé"
 
@@ -923,6 +929,12 @@ msgstr "Changer dossier par défaut"
 msgid "Change default search"
 msgstr "Changer la recherche par défaut"
 
+msgid "Change default value"
+msgstr "Changer la valeur par défaut"
+
+msgid "Change default value for family"
+msgstr "Changer les valeurs par défaut pour la famille"
+
 msgid "Change enum"
 msgstr "Changer d'énuméré"
 
@@ -1093,6 +1105,10 @@ msgstr "Effacer cette traduction"
 
 msgid "Click here to logout"
 msgstr "Cliquer ici pour se déconnecter"
+
+msgid "Click on attribute to modify <b>{{aid}}</b> default value"
+msgstr ""
+"Cliquer pour modifier la valeur par défaut de l'attribut <b>{{aid}}</b>"
 
 msgid "Click to access to the document"
 msgstr "Cliquer pour accéder au document"
@@ -1321,6 +1337,9 @@ msgstr "DbObj::Adds erreur dans insertion multiple"
 msgid "December"
 msgstr "Décembre"
 
+msgid "Default Raw value"
+msgstr "Valeur brute"
+
 msgid "Default Values and Parameters"
 msgstr "Valeurs par défaut et paramètres"
 
@@ -1329,6 +1348,14 @@ msgstr "Délai par défaut avant expiration du compte (jours)"
 
 msgid "Default search"
 msgstr "Recherche par défaut"
+
+#, php-format
+msgid "Default value erased"
+msgstr "La valeur par défaut a été effacée"
+
+#, php-format
+msgid "Default value recorded"
+msgstr "La valeur par défaut est enregistrée"
 
 msgid "Delete"
 msgstr "Supprimer"
@@ -1670,6 +1697,9 @@ msgstr ""
 "Les modifications restent locales. L'enregistrement sur le serveur et leur "
 "utilisation par les applications n'est effective que lors de leur "
 "enregistrement via le bouton Enregistrer].</p>"
+
+msgid "Editor value"
+msgstr "Édition de la valeur"
 
 #, php-format
 msgid ""
@@ -2332,6 +2362,9 @@ msgstr "Format"
 msgid "Formated data"
 msgstr "Données formatées (CSV)"
 
+msgid "Formated value"
+msgstr "Valeur formatée"
+
 #, php-format
 msgid "Found <strong>%d</strong>  Result for <strong>%s</strong>%s"
 msgstr "<strong>%d</strong> documents trouvés pour <strong>%s</strong>%s"
@@ -2927,8 +2960,17 @@ msgstr "Modifier les droits de la famille"
 msgid "Modify default Values"
 msgstr "Modifier les valeurs par défaut"
 
+msgid "Modify default value"
+msgstr "Modify une valeur par défaut"
+
+msgid "Modify default values"
+msgstr "Modifier les valeurs par défaut"
+
 msgid "Modify enum items"
 msgstr "Modification des éléments d'énumérés"
+
+msgid "Modify one default value"
+msgstr "Modifier une valeur par défaut"
 
 msgid "Modify parameters Values"
 msgstr "Modifier les paramètres"
@@ -2984,6 +3026,9 @@ msgstr "Nouvelle rubrique"
 msgid "New state"
 msgstr "Nouvel état"
 
+msgid "New value which be set to server"
+msgstr "Nouvelle valeur à enregistrer sur le serveur"
+
 msgid "Next"
 msgstr "Suivant"
 
@@ -3002,6 +3047,9 @@ msgstr "Pas de droits définis pour les nouveaux documents de cette famille"
 
 msgid "No columns has been defined"
 msgstr "Aucunes colonnes ont été définies"
+
+msgid "No default value"
+msgstr "Aucune valeur par défaut"
 
 msgid "No description import file"
 msgstr "Aucun fichier de description d'importation"
@@ -3359,6 +3407,9 @@ msgstr ""
 "Données brutes de la base de données. Données formatées : données telles que "
 "les voit l'utilisateur depuis son navigateur"
 
+msgid "Raw value"
+msgstr "Valeur brute"
+
 msgid "Re-export report"
 msgstr "Exporter de nouveau"
 
@@ -3374,6 +3425,9 @@ msgstr "Recalcul des documents profilés"
 #, php-format
 msgid "Record documents %d/%d"
 msgstr "Enregistrement des documents %d/%d"
+
+msgid "Record new value to server"
+msgstr "Enregistrer la nouvelle valeur sur le serveur"
 
 msgid "Redo export"
 msgstr "Relancer l'exportation"
@@ -4020,10 +4074,12 @@ msgstr ""
 "Temps d'attente de connexion pour le moteur de transformation (en secondes)"
 
 msgid "Transformation server did not returned a valid error comment"
-msgstr "Le serveur de transformation n'a pas retourné un message d'erreur valide"
+msgstr ""
+"Le serveur de transformation n'a pas retourné un message d'erreur valide"
 
 msgid "Transformation server did not returned a valid task id"
-msgstr "Le serveur de transformation n'a pas retourné un identifiant de tâche valide"
+msgstr ""
+"Le serveur de transformation n'a pas retourné un identifiant de tâche valide"
 
 msgid "Transitions"
 msgstr "Transitions"
@@ -4116,6 +4172,11 @@ msgstr "Utiliser une autre interface d'importation pour une famille précise"
 msgid "Use old file inputs compatibity form"
 msgstr "Utiliser le champ fichier original dans les formulaires"
 
+msgid "Use this input to set special value like method description"
+msgstr ""
+"Utiliser ce champ pour saisir des valeurs spécifiques comme les méthodes des "
+"attributs calculés"
+
 #, php-format
 msgid "Use your home folder instead <%s>"
 msgstr "Utilisation du dossier personnel <%s> à la place"
@@ -4134,6 +4195,9 @@ msgstr "Utilisateur fixe"
 
 msgid "Validate"
 msgstr "Valider"
+
+msgid "Value actualy recorded in server"
+msgstr "Valeur actuelle enregistrée sur le serveur"
 
 msgid "Version"
 msgstr "Version"
@@ -5589,6 +5653,12 @@ msgstr "Définir les attributs de tri"
 msgid "definition of enumerate attribute %s of %s family"
 msgstr "définition de l'attribut énuméré %s de la famille %s"
 
+msgid "defval New value"
+msgstr "Nouvelle valeur"
+
+msgid "defval Server value"
+msgstr "Valeur du serveur"
+
 msgid "delconfirm"
 msgstr "Voulez-vous supprimer"
 
@@ -6202,6 +6272,9 @@ msgstr "nom du fichier ou type du fichier contient"
 msgid "filename or type not include"
 msgstr "le nom du fichier ou son type ne contient pas"
 
+msgid "filter attributes"
+msgstr "Filtrer les attributs"
+
 #, php-format
 msgid "find %s more than one, created aborded\n"
 msgstr "%s trouvé plus d'une fois, création abandonnée\n"
@@ -6589,6 +6662,12 @@ msgstr "interface pour modifier les attributs énumérés"
 
 msgid "interface to export documents"
 msgstr "interface pour exporter des documents"
+
+msgid "interface to modify default values documents"
+msgstr "Interface pour modifier les valeurs par défaut"
+
+msgid "interface to modify one default"
+msgstr "Interface pour modifier une valeur par défaut"
 
 msgid "interface to save choice of column export documents"
 msgstr "Interface pour sauvgarder le choix des colonnes d'exportation"
@@ -9049,6 +9128,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Confirm unattach all activated timers"
 #~ msgstr "Confirmer l'annulation de tous les minuteurs actifs"
 
+#~ msgid "Default value"
+#~ msgstr "Valeur par défaut"
+
 #~ msgid "Description of the import format"
 #~ msgstr "Description du format d'import"
 
@@ -9087,9 +9169,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Name of the zoo"
 #~ msgstr "Nom du zoo"
-
-#~ msgid "No default value"
-#~ msgstr "Aucune valeurs par défaut"
 
 #~ msgid "No import : error detected"
 #~ msgstr "Pas d'importation: une erreur a été détectée"
