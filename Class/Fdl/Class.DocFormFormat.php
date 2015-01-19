@@ -461,6 +461,7 @@ class DocFormFormat
         {
             $lay = new Layout("FDL/Layout/editimage.xml");
             $lay->set("downloadUrl", "");
+            $lay->set("imageUrl", "");
             $lay->set("checkPfc", "");
             $lay->set("ISIE678", getParam("ISIE6") || getParam("ISIE7") || getParam("ISIE8"));
             $lay->set("hideInput", getParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
@@ -475,7 +476,7 @@ class DocFormFormat
                     $vid = $reg[2];
                     
                     global $action;
-                    $lay->set("downloadUrl", $this->doc->getFileLink($this->attrid, $this->index, false, false));
+                    $lay->set("downloadUrl", $this->doc->getFileLink($this->attrid, $this->index, false, false, $value));
                     
                     $fname = $info->name;
                     

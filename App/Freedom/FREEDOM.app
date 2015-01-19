@@ -168,6 +168,21 @@ $action_desc = array (
    "layout"		=>"freedom_list.xml",
    "acl"		=>"FREEDOM_READ"
   ) ,
+  array(
+   "name"		=>"EDITONEDEFAULTVALUE",
+   "short_name"		=>N_("interface to modify one default"),
+   "acl"		=>"FREEDOM_MASTER"
+  ) ,
+    array(
+        "name"		=>"MODONEDEFAULTVALUE",
+        "short_name"		=>N_("Modify one default value"),
+        "acl"		=>"FREEDOM_MASTER"
+    ) ,
+  array(
+   "name"		=>"EDITDEFAULTVALUES",
+   "short_name"		=>N_("interface to modify default values documents"),
+   "acl"		=>"FREEDOM_MASTER"
+  ) ,
   array( 
    "name"		=>"FREEDOM_PREVIEW",
    "short_name"		=>N_("Freedoms preview document"),

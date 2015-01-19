@@ -1,0 +1,81 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Modify default values]]
+
+
+<style>
+.defval {
+    cursor:pointer;
+}
+.defval:hover {
+    background-color:[COLOR_A7]!important;
+}
+iframe.default-frame {
+    padding: 0;
+    border : none;
+    width:100%;
+    height : 100%;
+}
+.default-values tr.selected {
+    background : yellow !important;
+}
+.default-values tr.selected td,  {
+    background : inherit !important;
+}
+
+table.dataTable tr.odd td.sorting_1, table.dataTable tr.even td.sorting_1 {
+background-color: inherit;
+}
+
+table.dataTable tr.odd {
+    background-color: [COLOR_A9];
+}
+.icon {
+    vertical-align:bottom;
+}
+.ui-dialog-title img {
+    vertical-align:middle;
+    height: 20px;
+}
+.ui-dialog-title .attribute-id {
+    padding-left:30px;
+    font-family:mono;
+}
+.format-value img.image {
+   height: 30px;
+}
+h1 {
+    font-weight: normal;
+    padding-right: 200px;
+}
+.dataTables_filter {
+    margin-top: -3em;
+}
+.dataTables_filter input {
+    padding:3px;
+}
+    .defval-head-attrid {
+        min-width : 7em;
+    }
+    .defval-head-label {
+        min-width : 12em;
+    }
+</style>
+<h1 data-title="[TEXT:Click on attribute to modify <b>{{aid}}</b> default value]"><img class="icon" src="[icon]"/>
+[TEXT:Change default value for family] : "[family]"</h1>
+
+<table cellspacing="0" class="default-values" data-famid="[famid]" data-filter="[TEXT:filter attributes]">
+<thead>
+    <th class="defval-head-attrid">[TEXT:Attribute identifier]</th>
+    <th class="defval-head-label">[TEXT:Attribute label]</th>
+    <th class="defval-head-raw">[TEXT:Default Raw value]</th>
+    <th class="defval-head-format">[TEXT:Formated value]</th>
+</thead>
+<tbody>
+    [BLOCK DEFAULTS]
+    <tr class="defval" data-multiline="[multiline]" data-attrid="[aid]"  id="[aid]">
+        <td class="attribute-id">[aid]</td><td class="attribute-label">[alabel]</td>
+        <td>[defval]</td><td class="format-value">[htmlval]</td></tr>
+    [ENDBLOCK DEFAULTS]
+
+</tbody>
+</table>
+ [ZONE FDL:HTMLFOOT]
