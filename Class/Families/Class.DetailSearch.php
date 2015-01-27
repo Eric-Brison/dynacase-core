@@ -288,7 +288,7 @@ class DetailSearch extends \Dcp\Family\Search
     {
         $err = '';
         $this->last_sug = '';
-        $point="dcp:isValidPgRegex";
+        $point = "dcp:isValidPgRegex";
         $this->savePoint($point);
         $q = sprintf("SELECT regexp_matches('', E'%s')", pg_escape_string($str));
         try {
@@ -454,7 +454,15 @@ class DetailSearch extends \Dcp\Family\Search
                     }
                 }
                 
-                if ($validateCond) {
+                if ($validateCond && in_array($op, array(
+                    "=",
+                    "!=",
+                    ">",
+                    "<",
+                    ">=",
+                    "<=",
+                    "~y"
+                ))) {
                     if (($err = $this->isValidTimestamp($val)) != '') {
                         return '';
                     }
