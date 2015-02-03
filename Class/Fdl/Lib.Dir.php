@@ -444,11 +444,25 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     if (is_array($td)) return $td;
                 }
             } else {
-                if ($fld->getRawValue("se_famid")) $fromid = $fld->getRawValue("se_famid");
+                if ($fld->getRawValue("se_famid")) {
+                    $fromid = $fld->getRawValue("se_famid");
+                    $fdoc = new_Doc($dbaccess, abs($fromid) , true);
+                    if (!is_object($fdoc) || !$fdoc->isAlive() || $fdoc->defDoctype != 'C') {
+                        throw new \Dcp\Exception(sprintf(_('Family [%s] not found') , abs($fromid)));
+                    }
+                    unset($fdoc);
+                }
             }
         } elseif ($dirid != 0) {
             $fld = new_Doc($dbaccess, $dirid);
-            if (($fld->defDoctype == 'S') && ($fld->getRawValue("se_famid"))) $fromid = $fld->getRawValue("se_famid");
+            if (($fld->defDoctype == 'S') && ($fld->getRawValue("se_famid"))) {
+                $fromid = $fld->getRawValue("se_famid");
+                $fdoc = new_Doc($dbaccess, abs($fromid) , true);
+                if (!is_object($fdoc) || !$fdoc->isAlive() || $fdoc->defDoctype != 'C') {
+                    throw new \Dcp\Exception(sprintf(_('Family [%s] not found') , abs($fromid)));
+                }
+                unset($fdoc);
+            }
         }
         if ($trash == "only") $distinct = true;
         //   xdebug_var_dump(xdebug_get_function_stack());
@@ -467,12 +481,30 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             foreach ($tqsql as & $qsql) {
                 if ($fromid != - 1) { // not families
                     if ($fromid != 0) {
-                        $fdoc = createDoc($dbaccess, abs($fromid) , false, false);
-                        if (preg_match('/from\s+docread/', $qsql) || $isgroup) $fdoc = new DocRead($dbaccess);
-                    } else $fdoc = new DocRead($dbaccess);
+                        if (preg_match('/from\s+docread/', $qsql) || $isgroup) {
+                            $fdoc = new DocRead($dbaccess);
+                        } else {
+                            $fdoc = createDoc($dbaccess, abs($fromid) , false, false);
+                            if ($fdoc === false) {
+                                throw new \Dcp\Exception(sprintf(_('Family [%s] not found') , abs($fromid)));
+                            }
+                        }
+                    } else {
+                        $fdoc = new DocRead($dbaccess);
+                    }
                     $tsqlfields = null;
-                    if ($searchDoc) $tsqlfields = $searchDoc->getReturnsFields();
-                    if ($tsqlfields == null) $tsqlfields = array_merge($fdoc->fields, $fdoc->sup_fields);
+                    if ($searchDoc) {
+                        $tsqlfields = $searchDoc->getReturnsFields();
+                    }
+                    if ($tsqlfields == null) {
+                        $tsqlfields = array();
+                        if (isset($fdoc->fields) && is_array($fdoc->fields)) {
+                            $tsqlfields = array_merge($tsqlfields, $fdoc->fields);
+                        }
+                        if (isset($fdoc->sup_fields) && is_array($fdoc->sup_fields)) {
+                            $tsqlfields = array_merge($tsqlfields, $fdoc->sup_fields);
+                        }
+                    }
                     $maintable = '';
                     if (!$join && preg_match('/from\s+([a-z0-9])*,/', $qsql)) {
                         $join = true;

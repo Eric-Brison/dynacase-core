@@ -209,6 +209,10 @@ class DetailSearch extends \Dcp\Family\Search
     
     function preConsultation()
     {
+        $err = parent::preConsultation();
+        if ($err !== '') {
+            return $err;
+        }
         if (count($this->getMultipleRawValues("se_filter")) > 0) {
             if ($this->defaultview == "FREEDOM:VIEWDSEARCH") {
                 $type = $this->getMultipleRawValues("se_typefilter");
@@ -217,6 +221,7 @@ class DetailSearch extends \Dcp\Family\Search
                 }
             }
         }
+        return '';
     }
     
     function preEdition()

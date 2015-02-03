@@ -53,6 +53,9 @@ class Report extends \Dcp\Family\Dsearch
         
         $rfamid = GetHttpVars("sfamid", $this->getRawValue("SE_FAMID", 1));
         $rdoc = createDoc($this->dbaccess, $rfamid, false);
+        if ($rdoc === false) {
+            $rdoc = new_Doc('');
+        }
         $lattr = $rdoc->GetNormalAttributes();
         $tcolumn1 = array();
         $tcolumn2 = array();
@@ -304,6 +307,11 @@ class Report extends \Dcp\Family\Dsearch
         // display headers column
         $rfamid = $this->getRawValue("SE_FAMID", 1);
         $rdoc = createDoc($this->dbaccess, $rfamid, false);
+        if ($rdoc === false) {
+            $err = sprintf(_('Family [%s] not found') , $rfamid);
+            $this->lay->template = htmlspecialchars($err, ENT_QUOTES);
+            return $err;
+        }
         $lattr = $rdoc->GetNormalAttributes();
         $tcolumn1 = array();
         $tcolumn2 = array();
@@ -519,7 +527,6 @@ class Report extends \Dcp\Family\Dsearch
             $this->lay->set("TITLE", $this->getHTMLTitle());
             return $err;
     }
-
     /**
      * Generate data struct to csv export of a report
      *

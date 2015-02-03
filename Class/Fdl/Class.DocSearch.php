@@ -43,6 +43,19 @@ class DocSearch extends PDocSearch
         if (((!isset($this->fromid))) || ($this->fromid == "")) $this->fromid = FAM_SEARCH;
     }
     
+    public function preConsultation()
+    {
+        $famId = $this->getRawValue(\Dcp\AttributeIdentifiers\Search::se_famid);
+        if ($famId) {
+            $doc = new_Doc($this->dbaccess, abs($famId) , true);
+            if (!is_object($doc) || !$doc->isAlive() || $doc->defDoctype != 'C') {
+                $err = sprintf(_('Family [%s] not found') , abs($famId));
+                return $err;
+            }
+        }
+        return '';
+    }
+    
     public function preCreated()
     {
         return $this->updateSearchAuthor();
@@ -327,10 +340,10 @@ class DocSearch extends PDocSearch
             $fullkeys = '(' . implode(")&(", $tsearchkeys) . ')';
             $fullkeys = unaccent($fullkeys);
             $fullkeys = pg_escape_string($fullkeys);
-            $sqlfilters[] = sprintf("fulltext @@ to_tsquery('french','%s') ",pg_escape_string($fullkeys));
+            $sqlfilters[] = sprintf("fulltext @@ to_tsquery('french','%s') ", pg_escape_string($fullkeys));
         }
         if (count($sqlfiltersbrut) > 0) $sqlfilters = array_merge($sqlfilters, $sqlfiltersbrut);
-        $sqlorder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc",pg_escape_string($fullkeys));
+        $sqlorder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string($fullkeys));
     }
     
     function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
