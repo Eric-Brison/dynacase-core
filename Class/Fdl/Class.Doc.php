@@ -7086,6 +7086,9 @@ create unique index i_docir on doc(initid, revision);";
                     $nbimg++;
                 }
             }
+            if ($currentFrameId == '' && isset($attr->fieldSet->id)) {
+                $currentFrameId = $attr->fieldSet->id;
+            }
         }
         $oaf = $this->getAttribute($currentFrameId);
         if ($oaf) {
