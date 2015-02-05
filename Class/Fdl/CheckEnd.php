@@ -336,7 +336,7 @@ class CheckEnd extends CheckData
                 $refMeth = new ReflectionMethod($phpClassName, $phpMethName);
                 $numArgs = $refMeth->getNumberOfRequiredParameters();
                 if ($numArgs > count($strucFunc->inputs)) {
-                    $this->addError(ErrorCode::getError('ATTR1401', $phpLongName, $numArgs, $oa->id));
+                    $this->addError(ErrorCode::getError('ATTR1401', $phpLongName, $numArgs, count($strucFunc->inputs) , $oa->id));
                 } else {
                     if ($strucFunc->className && (!$refMeth->isStatic())) {
                         $this->addError(ErrorCode::getError('ATTR1403', $phpLongName, $oa->id));
