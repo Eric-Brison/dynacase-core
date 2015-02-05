@@ -48,6 +48,7 @@ function edittpl(Action & $action)
         $doc = new_doc($dbaccess, $docid);
     } else {
         $doc = createDoc($dbaccess, $famid);
+        fdl_setHttpVars($doc);
     }
     if ($doc) {
         $zonefile = $doc->getZoneFile($zone);
@@ -67,4 +68,3 @@ function edittpl(Action & $action)
         }
     }
 }
-?>
