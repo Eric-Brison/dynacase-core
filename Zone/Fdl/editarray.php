@@ -51,9 +51,9 @@ function editarray(Action & $action)
     }
     
     $oattr = $doc->getAttribute($arrayid);
-    if (!$oattr) $action->lay->template = sprintf(_("attribute %s not found") , $arrayid);
+    if (!$oattr) $action->lay->template = htmlspecialchars(sprintf(_("attribute %s not found") , $arrayid));
     else {
-        if ($oattr->type != "array") $action->lay->template = sprintf(_("attribute %s not an array") , $arrayid);
+        if ($oattr->type != "array") $action->lay->template = htmlspecialchars(sprintf(_("attribute %s not an array") , $arrayid));
         else {
             $of = new DocFormFormat($doc);
             $of->getLayArray($action->lay, $doc, $oattr, $row);

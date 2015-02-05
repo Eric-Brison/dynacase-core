@@ -40,7 +40,7 @@ function editfamilyparameter(Action & $action)
         $attr = $doc->getAttribute($attrid);
         if (!$attr) {
             $action->AddWarningMsg(sprintf(_("Attribute [%s] is not found") , $attrid));
-            $action->lay->template = sprintf(_("Attribute [%s] is not found") , $attrid);
+            $action->lay->template = htmlspecialchars(sprintf(_("Attribute [%s] is not found") , $attrid) , ENT_QUOTES);
             return false;
         }
         $action->lay->eset("label", $attr->getLabel());
@@ -69,7 +69,7 @@ function editfamilyparameter(Action & $action)
         $action->lay->set("change", ($onChange != ""));
     } else {
         $action->AddWarningMsg(sprintf(_("Family [%s] not found") , $famid));
-        $action->lay->template = sprintf(_("Family [%s] not found") , $famid);
+        $action->lay->template = htmlspecialchars(sprintf(_("Family [%s] not found") , $famid) , ENT_QUOTES);
         return false;
     }
     

@@ -33,7 +33,7 @@ function editapplicationparameter(Action & $action)
     $err = simpleQuery($action->dbaccess, sprintf("SELECT * from paramdef where name='%s'", pg_escape_string($parameterid)) , $paramdef);
     if ($err) {
         $action->AddWarningMsg(sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err));
-        $action->lay->template = sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err);
+        $action->lay->template = htmlspecialchars(sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err) , ENT_QUOTES);
         return false;
     }
     $action->lay->set("type_text", ($paramdef[0]["kind"] == "text"));
@@ -46,7 +46,7 @@ function editapplicationparameter(Action & $action)
     if (!$appid) {
         if ($type !== PARAM_GLB) {
             $action->AddWarningMsg(sprintf(_("Parameter [%s] is not global, an apllication muste be given") , $parameterid));
-            $action->lay->template = sprintf(_("Parameter [%s] is not global, an apllication muste be given") , $parameterid);
+            $action->lay->template = htmlspecialchars(sprintf(_("Parameter [%s] is not global, an apllication muste be given") , $parameterid) , ENT_QUOTES);
             return false;
         }
         $appid = $paramdef[0]["appid"];
@@ -56,7 +56,7 @@ function editapplicationparameter(Action & $action)
         $err = $app->set($appid, $null);
         if ($err) {
             $action->AddWarningMsg(sprintf(_("Application [%s] not found. Error message: [%s]") , $appid, $err));
-            $action->lay->template = sprintf(_("Application [%s] not found. Error message: [%s]") , $appid, $err);
+            $action->lay->template = htmlspecialchars(sprintf(_("Application [%s] not found. Error message: [%s]") , $appid, $err) , ENT_QUOTES);
             return false;
         }
         $appid = $app->id;
@@ -68,7 +68,7 @@ function editapplicationparameter(Action & $action)
     $err = simpleQuery($action->dbaccess, $query, $val);
     if ($err) {
         $action->AddWarningMsg(sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err));
-        $action->lay->template = sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err);
+        $action->lay->template = htmlspecialchars(sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err));
         return false;
     }
     if (!$value) {

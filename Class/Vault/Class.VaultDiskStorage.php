@@ -259,8 +259,8 @@ class VaultDiskStorage extends DbObj
         $this->id_file = - 1;
         if ($teng_lname != "") {
             $query = new QueryDb($this->dbaccess, $this->dbtable);
-            $query->AddQuery("teng_id_file=" . $id_file);
-            $query->AddQuery("teng_lname='" . pg_escape_string($teng_lname) . "'");
+            $query->AddQuery(sprintf("teng_id_file = E'%s'::int", pg_escape_string($id_file)));
+            $query->AddQuery(sprintf("teng_lname = E'%s'", pg_escape_string($teng_lname)));
             
             $t = $query->Query(0, 0, "TABLE");
             

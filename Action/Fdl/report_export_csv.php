@@ -119,7 +119,7 @@ function report_export_csv(Action & $action)
             );
         }
     }
-
+    
     $action->lay->eSetBlockData("addedArguments", $addedArguments);
     
     if ($csvTmpFile) {
@@ -258,8 +258,11 @@ function report_export_csv(Action & $action)
                 default:
                     $csvStruct = $currentDoc->generateCSVReportStruct(false, "", $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh, $applyHtmlStrip);
             }
-            
-            $csvFile = tempnam(getTmpDir() , "csv$id") . ".csv";
+            $csvFile = tempnam(getTmpDir() , "csv");
+            if ($csvFile === false) {
+                $err = sprintf(_("Error creating temporary file in '%s'.", getTmpDir()));
+                $action->exitError($err);
+            }
             $fp = fopen($csvFile, 'w');
             
             foreach ($csvStruct as $currentLine) {
@@ -273,11 +276,10 @@ function report_export_csv(Action & $action)
             fclose($fp);
             
             if (empty($_SERVER['HTTP_HOST'])) {
-                $handle = fopen($csvFile, 'r');
-                $content = fread($handle, filesize($csvFile));
-                fclose($handle);
+                $content = file_get_contents($csvFile);
                 $action->lay->noparse = true;
                 $action->lay->template = $content;
+                unlink($csvFile);
             } else {
                 
                 $fileName = sprintf("%s_%s.%s", $currentDoc->getTitle() , date("Y_m_d-H_m_s") , "csv");
