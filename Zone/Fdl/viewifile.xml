@@ -1,4 +1,61 @@
 
-<input type="image" title="[TEXT:open in new window]" style="margin-bottom:-14px;margin-left:-10px;" src="[IMG:window_fullscreen.gif]" onclick="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'_blank','[CORE_STANDURL]app=FDL&action=FDL_GETVALUE&attrid=[aid]&latest=N&id=[id]')"></input>
-<iframe width="100%" style="height:[iheight];border:none;padding:0px" id="ifile[aid]" src="[CORE_STANDURL]app=FDL&action=FDL_GETVALUE&attrid=[aid]&latest=N&id=[id]"></iframe>
-
+<input type="image" title="[TEXT:open in new window]" style="margin-bottom:-14px;margin-left:-10px;" src="[IMG:window_fullscreen.gif]" onclick="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'_blank','[CORE_STANDURL]app=FDL&amp;action=FDL_GETVALUE&amp;attrid=[aid]&amp;latest=N&amp;id=[id]')"/>
+<div class="fdl_getvalue_view" data-src="[CORE_STANDURL]app=FDL&amp;action=FDL_GETVALUE&amp;attrid=[aid]&amp;latest=N&amp;id=[id]" width="100%" style="height:[iheight];border:none;padding:0px" id="ifile[aid]"/>
+<script>
+$(document).ready(function() {
+    function cleanhtmljs(html) {
+        var returnText = false;
+        if (!(html instanceof jQuery)) {
+            returnText = true;
+            html = $('<div>' + html + '</div>')
+        }
+        /* Remove tags */
+        var removeTagList = [
+            'script',
+            'iframe',
+            'frame',
+            'frameset',
+            'object',
+            'embed',
+            'applet'
+        ];
+        for (var i = 0; i < removeTagList.length; i++) {
+            html.find(removeTagList[i]).remove();
+        }
+        /* Remove on* attributes */
+        html.find('*').each(function (index, elmt) {
+            for (var i = 0; i < elmt.attributes.length; i++) {
+                var attr = elmt.attributes[i];
+                if (attr.name.match(/^on.*/i)) {
+                    elmt.removeAttribute(attr.name);
+                }
+            }
+        });
+        return (returnText==true?html.html():html);
+    }
+    function fdl_getvalue_view(elmt, force) {
+        if (typeof force != 'boolean') {
+            force = false;
+        }
+        if (elmt.done && !force) {
+            return;
+        }
+        var src = $(elmt).data('src');
+        if (typeof src == 'undefined' || src == '') {
+            return false;
+        }
+        $.ajax({
+            'type': 'GET',
+            'url': src,
+            'dataType': 'text',
+            'context': elmt
+        }).done(function (data, textStatus, jqXHR) {
+            $(this).html(cleanhtmljs(data));
+            $(this).done = true;
+        });
+    }
+    $('div.fdl_getvalue_view').each(function(index, elmt) {
+        fdl_getvalue_view(elmt);
+    });
+});
+</script>
