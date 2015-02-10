@@ -401,7 +401,7 @@ class ErrorCodeATTR
      * @errorCode
      * call method in constraint require more arguments
      */
-    const ATTR1401 = 'not enought argument call to use constraint "%s" (need %d arguments) for "%s" attribute';
+    const ATTR1401 = 'not enought argument call to use constraint "%s" (need %d arguments, given %d) for "%s" attribute';
     /**
      * @errorCode
      * call constraint method must be defined in file method or in another class if precised
