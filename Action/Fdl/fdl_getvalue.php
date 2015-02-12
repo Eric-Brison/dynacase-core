@@ -53,8 +53,7 @@ function fdl_getvalue(Action & $action)
     } else {
         $v = sprintf("unknown attribute [%s] for document %s |%d]", $attrid, $doc->title, $doc->id);
     }
-    
+    header('Content-Type: text/plain');
     $action->lay->template = $v;
     $action->lay->noparse = true;
 }
-?>

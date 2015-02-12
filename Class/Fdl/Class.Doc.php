@@ -6774,13 +6774,13 @@ create unique index i_docir on doc(initid, revision);";
                     global $action;
                     $syserr = ErrorCode::getError("DOC1101", $refMeth->getDeclaringClass()->getName() , $refMeth->getName() , $this);
                     $action->log->error($syserr);
-                    $err = sprintf(_("Layout \"%s\" : Controller not allowed") , $layout);
+                    $err = htmlspecialchars(sprintf(_("Layout \"%s\" : Controller not allowed") , $layout) , ENT_QUOTES);
                     return $err;
                 }
             }
             catch(Exception $e) {
                 if ((!file_exists($this->lay->file) && (!$this->lay->template))) {
-                    return sprintf(_("template file (layout [%s]) not found") . ": %s", $layout, $e->getMessage());
+                    return htmlspecialchars(sprintf(_("template file (layout [%s]) not found") . ": %s", $layout, $e->getMessage()) , ENT_QUOTES);
                 } else {
                     throw $e;
                 }
@@ -6790,7 +6790,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         
         if ((!file_exists($this->lay->file) && (!$this->lay->template))) {
-            return sprintf(_("template file (layout [%s]) not found") , $layout);
+            return htmlspecialchars(sprintf(_("template file (layout [%s]) not found") , $layout) , ENT_QUOTES);
         }
         
         $laygen = $this->lay->gen();

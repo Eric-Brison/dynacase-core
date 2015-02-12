@@ -10,7 +10,7 @@
 namespace Dcp\Core;
 class SentEmail extends \Dcp\Family\Document
 {
-
+    
     var $defaultview = "FDL:VIEWEMESSAGE";
     /**
      * @templateController
@@ -18,6 +18,7 @@ class SentEmail extends \Dcp\Family\Document
     function viewemessage($target = "_self", $ulink = true, $abstract = false)
     {
         include_once ("FDL/Lib.Dir.php");
+        
         $this->viewdefaultcard($target, $ulink, $abstract);
         
         $from = $this->getRawValue("emsg_from");
@@ -31,7 +32,7 @@ class SentEmail extends \Dcp\Family\Document
             /**
              * @var \Dcp\Family\Iuser $first
              */
-            $first=$tdir[0];
+            $first = $tdir[0];
             $vphoto = $first->getRawValue("us_photo");
             if ($vphoto) {
                 $photo = $first->GetHtmlAttrValue("us_photo");

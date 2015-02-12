@@ -23,10 +23,10 @@ include_once ("Lib.FileMime.php");
 /**
  * Modify the attrid_txt attribute
  * @param Action &$action current action
- * @global docid Http var : document identifier to modify
- * @global attrid Http var : the id of attribute to modify
- * @global index Http var : the range in case of array
- * @global tid Http var : task identifier
+ * @global docid string Http var : document identifier to modify
+ * @global attrid string Http var : the id of attribute to modify
+ * @global index int Http var : the range in case of array
+ * @global tid string Http var : task identifier
  *
  */
 function insertfile(&$action)
@@ -35,75 +35,86 @@ function insertfile(&$action)
     $vidout = GetHttpVars("vidout");
     $tid = GetHttpVars("tid");
     $name = GetHttpVars("name");
-    $engine = GetHttpVars("engine");
-    $isimage = (GetHttpVars("isimage") != "");
     $docid = GetHttpVars("docid");
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     if (!$tid) $err = _("no task identifier found");
     else {
-        $filename = uniqid(getTmpDir() . "/txt-" . $vidout . '-');
-        $err = getTEFile($tid, $filename, $info);
-        if ($err == "") {
-            
-            $outfile = $info["outfile"];
-            $status = $info["status"];
-            
-            if (($status == 'D') && ($outfile != '')) {
+        $filename = tempnam(getTmpDir() , 'txt-');
+        if ($filename === false) {
+            $err = sprintf(_("Error creating temporary file in '%s'.", getTmpDir()));
+        } else {
+            $err = getTEFile($tid, $filename, $info);
+            if ($err == "") {
                 
-                $vf = newFreeVaultFile($dbaccess);
-                $err = $vf->Retrieve($vidin, $infoin);
-                $err = $vf->Retrieve($vidout, $infoout);
-                $err = $vf->Save($filename, false, $vidout);
-                $err = $vf->Retrieve($vidout, $infoout); // relaod for mime
-                $ext = getExtension($infoout->mime_s);
-                if ($ext == "") $ext = $infoout->teng_lname;
-                //	  print_r($infoout);
-                // print_r($ext);
-                if ($name != "") {
-                    $newname = $name;
+                $outfile = $info["outfile"];
+                $status = $info["status"];
+                $infoin = new VaultFileInfo();
+                $infoout = new VaultFileInfo();
+                
+                if (($status == 'D') && ($outfile != '')) {
+                    
+                    $vf = newFreeVaultFile($dbaccess);
+                    $vf->Retrieve($vidin, $infoin);
+                    $vf->Retrieve($vidout, $infoout);
+                    $vf->Save($filename, false, $vidout);
+                    $err = $vf->Retrieve($vidout, $infoout); // relaod for mime
+                    $ext = getExtension($infoout->mime_s);
+                    if ($ext == "") $ext = $infoout->teng_lname;
+                    //	  print_r($infoout);
+                    // print_r($ext);
+                    if ($name != "") {
+                        $newname = $name;
+                    } else {
+                        $pp = strrpos($infoin->name, '.');
+                        $newname = substr($infoin->name, 0, $pp) . '.' . $ext;
+                    }
+                    
+                    $vf->Rename($vidout, $newname);
+                    $vf->storage->teng_state = 1;
+                    $vf->storage->modify();
                 } else {
-                    $pp = strrpos($infoin->name, '.');
-                    $newname = substr($infoin->name, 0, $pp) . '.' . $ext;
-                }
-                
-                $vf->Rename($vidout, $newname);
-                $vf->storage->teng_state = 1;
-                $vf->storage->modify();
-                
-                @unlink($filename);
-            } else {
-                $vf = newFreeVaultFile($dbaccess);
-                $err = $vf->Retrieve($vidin, $infoin);
-                $err = $vf->Retrieve($vidout, $infoout);
-                
-                $filename = uniqid(getTmpDir() . "/txt-" . $vidout . '-');
-                $error = sprintf(_("Conversion as %s has failed ") , $infoout->teng_lname);
-                $error.= "\n== " . _("See below information about conversion") . "==\n" . print_r($info, true);
-                file_put_contents($filename, $error);
-                //$vf->rename($vidout,"toto.txt");
-                $vf->Retrieve($vidout, $infoout);
-                $err = $vf->Save($filename, false, $vidout);
-                $basename = _("conversion error") . ".txt";
-                $vf->Rename($vidout, $basename);
-                $vf->storage->teng_state = TransformationEngine::error_convert;
-                $vf->storage->modify();
-                if ($docid) {
-                    $doc = new_doc($dbaccess, $docid);
-                    if ($doc->isAlive()) {
-                        $doc->addHistoryEntry(sprintf(_("convert file %s as %s failed") , $infoin->name, $infoout->teng_lname) , HISTO_ERROR);
+                    $vf = newFreeVaultFile($dbaccess);
+                    $vf->Retrieve($vidin, $infoin);
+                    $vf->Retrieve($vidout, $infoout);
+                    
+                    $filename2 = tempnam(getTmpDir() , 'txt-');
+                    if ($filename2 === false) {
+                        $err = sprintf(_("Error creating temporary file in '%s'.", getTmpDir()));
+                    } else {
+                        $error = sprintf(_("Conversion as %s has failed ") , $infoout->teng_lname);
+                        $error.= "\n== " . _("See below information about conversion") . "==\n" . print_r($info, true);
+                        file_put_contents($filename2, $error);
+                        //$vf->rename($vidout,"toto.txt");
+                        $vf->Retrieve($vidout, $infoout);
+                        $err = $vf->Save($filename2, false, $vidout);
+                        $basename = _("conversion error") . ".txt";
+                        $vf->Rename($vidout, $basename);
+                        $vf->storage->teng_state = TransformationEngine::error_convert;
+                        $vf->storage->modify();
+                        if ($docid) {
+                            $doc = new_doc($dbaccess, $docid);
+                            if ($doc->isAlive()) {
+                                $doc->addHistoryEntry(sprintf(_("convert file %s as %s failed") , $infoin->name, $infoout->teng_lname) , HISTO_ERROR);
+                            }
+                        }
+                        unlink($filename2);
                     }
                 }
             }
+            unlink($filename);
         }
     }
-    
-    if ($err != '') $action->lay->template = $err;
-    else $action->lay->template = "OK : " . sprintf(_("vid %d stored") , $vidout);
+    if ($err != '') $action->lay->template = htmlspecialchars($err, ENT_QUOTES);
+    else $action->lay->template = htmlspecialchars("OK : " . sprintf(_("vid %d stored") , $vidout) , ENT_QUOTES);
 }
 /**
  * return filename where is stored produced file
  * need to delete after use it
+ * @param $tid string
+ * @param $filename string
+ * @param $info array
+ * @return string
  */
 function getTEFile($tid, $filename, &$info)
 {
@@ -129,4 +140,3 @@ function getTEFile($tid, $filename, &$info)
     }
     return $err;
 }
-?>
