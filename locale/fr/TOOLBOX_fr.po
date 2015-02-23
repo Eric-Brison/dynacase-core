@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-19 10:37+0100\n"
-"PO-Revision-Date: 2015-02-23 10:52+0100\n"
+"POT-Creation-Date: 2015-02-23 16:52+0100\n"
+"PO-Revision-Date: 2015-02-23 16:55+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -858,6 +858,12 @@ msgstr "Fichier resource %s non trouvé"
 #, php-format
 msgid "Cannot find help function %s"
 msgstr "Fonction d'aide %s introuvable"
+
+#, php-format
+msgid ""
+"Cannot import document because the ORDER line for family '%s' is incorrect: "
+"%s"
+msgstr "Le document ne peut pas être importé car la ligne ORDER pour la famille '%s' est incorrecte: %s"
 
 #, php-format
 msgid "Cannot include '%s'"

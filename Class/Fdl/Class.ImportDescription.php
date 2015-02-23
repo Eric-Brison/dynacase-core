@@ -33,6 +33,8 @@ class importDocumentDescription
     private $nbDoc = 0;
     private $ods2CsvFile = '';
     private $reset = array();
+    /* Store erroneous family's ORDER line to prevent import of document from that family */
+    private $badOrderErrors = array();
     /**
      * @var bool verify attribute access (visibility "I")
      */
@@ -811,13 +813,25 @@ class importDocumentDescription
     {
         $check = new CheckDoc();
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
-        if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
-            $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
-            $this->tcr[$this->nLine]["action"] = "warning";
+        $famName = $check->getParsedFamName();
+        if ($this->tcr[$this->nLine]["err"]) {
+            if ($this->analyze) {
+                $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
+                $this->tcr[$this->nLine]["action"] = "warning";
+            } else {
+                $this->tcr[$this->nLine]["action"] = "ignored";
+            }
             return;
         }
-        if ($this->tcr[$this->nLine]["err"]) {
-            $this->tcr[$this->nLine]["action"] = "ignored";
+        if ($famName !== false && isset($this->badOrderErrors[$famName])) {
+            /* Do not import the document if the ORDER line of its family was erroneous */
+            if ($this->analyze) {
+                $this->tcr[$this->nLine]["msg"] = sprintf(_("Cannot import document because the ORDER line for family '%s' is incorrect: %s") , $famName, $this->badOrderErrors[$famName]);
+                $this->tcr[$this->nLine]["action"] = "warning";
+            } else {
+                $this->tcr[$this->nLine]["msg"] = sprintf(_("Cannot import document because the ORDER line for family '%s' is incorrect: %s") , $famName, $this->badOrderErrors[$famName]);
+                $this->tcr[$this->nLine]["action"] = "ignored";
+            }
             return;
         }
         // case of specific order
@@ -1548,14 +1562,21 @@ class importDocumentDescription
     {
         $check = new CheckOrder();
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
-        if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
-            $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
-            $this->tcr[$this->nLine]["action"] = "warning";
+        $famName = $check->getParsedFamName();
+        if ($this->tcr[$this->nLine]["err"]) {
+            if ($famName !== false) {
+                $this->badOrderErrors[$famName] = $this->tcr[$this->nLine]["err"];
+            }
+            if ($this->analyze) {
+                $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
+                $this->tcr[$this->nLine]["action"] = "warning";
+            } else {
+                $this->tcr[$this->nLine]["action"] = "ignored";
+            }
             return;
         }
-        if ($this->tcr[$this->nLine]["err"]) {
-            $this->tcr[$this->nLine]["action"] = "ignored";
-            return;
+        if ($famName !== false && isset($this->badOrderErrors[$famName])) {
+            unset($this->badOrderErrors[$famName]);
         }
         if (is_numeric($data[1])) $orfromid = $data[1];
         else $orfromid = getFamIdFromName($this->dbaccess, $data[1]);

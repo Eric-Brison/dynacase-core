@@ -36,6 +36,26 @@ class CheckOrder extends CheckData
         return $this;
     }
     /**
+     * Get the parsed family name or bool(false) if family name could
+     * not be parsed.
+     *
+     * @return bool|string
+     */
+    public function getParsedFamName()
+    {
+        return (isset($this->famName) ? $this->famName : false);
+    }
+    /**
+     * Get the parsed attributes ids or bool(false) if attributes ids
+     * could not be parsed.
+     *
+     * @return array|bool
+     */
+    public function getParsedAttrIds()
+    {
+        return (isset($this->attrIds) ? $this->attrIds : false);
+    }
+    /**
      * check
      * check
      * @return void

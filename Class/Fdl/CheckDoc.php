@@ -41,6 +41,16 @@ class CheckDoc extends CheckData
         return $this;
     }
     /**
+     * Get the parsed family name or bool(false) if family could not be
+     * parsed.
+     *
+     * @return bool|string
+     */
+    public function getParsedFamName()
+    {
+        return (isset($this->famName) ? $this->famName : false);
+    }
+    /**
      * check
      * check
      * @return void
@@ -62,6 +72,7 @@ class CheckDoc extends CheckData
                             $canCreateError = $f->control('create');
                             if ($canCreateError) $this->addError(ErrorCode::getError('DOC0007', $this->famName, $this->specName));
                         }
+                        $this->famName = $f->name;
                     }
                 }
                 catch(Exception $e) {
