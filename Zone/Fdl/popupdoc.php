@@ -67,7 +67,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
         if ($v["visibility"] == POPUP_INACTIVE) {
             if ($v["title"]) {
                 $v["url"] = '';
-                $v["jsfunction"] = htmlspecialchars(sprintf("alert(%s)", json_encode($v['title'])) , ENT_QUOTES);
+                $v["jsfunction"] = htmlspecialchars(sprintf("displayWarningMsg(%s)", json_encode($v['title'])) , ENT_QUOTES);
             } else {
                 $v["url"] = '#';
                 $v["jsfunction"] = '';
