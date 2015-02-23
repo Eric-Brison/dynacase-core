@@ -1522,7 +1522,7 @@ create unique index i_docir on doc(initid, revision);";
         /* @var NormalAttribute $paramAttr */
         $paramAttr = $this->getAttribute($idp);
         if (!$paramAttr) return $def;
-        if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "") {
+        if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "" && $paramAttr->type !== "enum") {
             $this->_paramValue[$idp] = $r;
             if ($paramAttr->inArray()) {
                 $attributes_array = $this->attributes->getArrayElements($paramAttr->fieldSet->id);
@@ -6107,11 +6107,18 @@ create unique index i_docir on doc(initid, revision);";
                 else $avalue = $otherValue;
             } else $avalue = $otherValue;
         }
+        $oa = $this->getAttribute($attrid);
+        if ($oa->usefor === "Q" && $this->doctype !== "C") {
+            $docid = $this->fromid;
+        } else {
+            $docid = $this->id;
+        }
+        
         if (preg_match(PREGEXPFILE, $avalue, $reg)) {
             $vid = $reg[2];
             // will be rewrited by apache rules
             //rewrite to  sprintf("%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d", "", $cache ? "yes" : "no", $inline ? "yes" : "no", $vid, $this->id, $attrid, $index);
-            $url = sprintf("file/%s/%d/%s/%s/%s?cache=%s&inline=%s", $this->id, $vid, $attrid, $index, rawurlencode($reg[3]) , $cache ? "yes" : "no", $inline ? "yes" : "no");
+            $url = sprintf("file/%s/%d/%s/%s/%s?cache=%s&inline=%s", $docid, $vid, $attrid, $index, rawurlencode($reg[3]) , $cache ? "yes" : "no", $inline ? "yes" : "no");
             if ($this->cvid > 0) {
                 $viewId = getHttpVars("vid");
                 if ($viewId) {

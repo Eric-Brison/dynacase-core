@@ -805,13 +805,30 @@ class WDoc extends Doc
         if ($addcomment != "") $this->doc->addHistoryEntry($addcomment);
         if (isset($tr["ask"])) {
             foreach ($tr["ask"] as $vpid) {
-                $pv = $this->getRawValue($vpid);
-                if ($pv != "") {
-                    $oa = $this->getAttribute($vpid);
-                    if ($oa->type == "password") {
-                        $pv = "*****";
+                $oa = $this->getAttribute($vpid);
+                if ($oa->type === "array") {
+                    $elem = $this->attributes->getArrayElements($oa->id);
+                    foreach ($elem as $aid => $arrayAttribute) {
+                        if ($oa->type == "password") {
+                            $displayValue = "*****";
+                        } else {
+                            $displayValue = str_replace("\n", ", ", $this->getRawValue($arrayAttribute->id));
+                        }
+                        $revcomment.= sprintf("\n-%s : %s", $arrayAttribute->getLabel() , $displayValue);
                     }
-                    $revcomment.= "\n-" . $oa->getLabel() . ":" . $pv;
+                } else {
+                    $pv = $this->getRawValue($vpid);
+                    if ($pv != "") {
+                        
+                        if ($oa->type == "password") {
+                            $pv = "*****";
+                        }
+                        
+                        if (is_array($pv)) {
+                            $pv = implode(", ", $pv);
+                        }
+                        $revcomment.= sprintf("\n-%s : %s", $oa->getLabel() , $pv);
+                    }
                 }
             }
         }

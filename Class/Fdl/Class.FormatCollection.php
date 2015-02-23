@@ -1224,7 +1224,7 @@ class FileAttributeValue extends StandardAttributeValue
                 
                 $iconFile = getIconMimeFile($this->mime);
                 if ($iconFile) $this->icon = $doc->getIcon($iconFile, $iconMimeSize);
-                $this->url = $doc->getFileLink($oa->id, $index);
+                $this->url = $doc->getFileLink($oa->id, $index, false, true, $v);
             }
         }
     }
@@ -1235,7 +1235,7 @@ class ImageAttributeValue extends FileAttributeValue
     public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $thumbnailSize = 48)
     {
         parent::__construct($oa, $v, $doc, $index);
-        $fileLink = $doc->getFileLink($oa->id, $index, false, true);
+        $fileLink = $doc->getFileLink($oa->id, $index, false, true, $v);
         if ($fileLink) {
             if ($thumbnailSize > 0) {
                 $this->thumbnail = sprintf('%s&width=%d', $fileLink, $thumbnailSize);
