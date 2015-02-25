@@ -830,7 +830,7 @@ class DocCtrl extends DocLDAP
                 // recompute associated documents
                 setMaxExecutionTimeTo(0);
                 
-                if (self::$savepoint) {
+                if (!empty(self::$savepoint[intval($this->dbid)])) {
                     // when are in transaction must lock complete table to avoid too many locks on each rows
                     simpleQuery($this->dbaccess, "lock table docperm in exclusive mode");
                     self::$globalDocPermLock = true;

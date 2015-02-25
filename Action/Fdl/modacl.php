@@ -28,7 +28,10 @@ function modacl(Action & $action)
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("modify document acl");
     $userid = $usage->addRequiredParameter("userid", "user identificator");
-    $aclp = $usage->addOptionalParameter("aclup", "acls to add");
+    $aclp = $usage->addOptionalParameter("aclup", "acls to add", function ($argVal, $argName, $apiUsage)
+    {
+        return ActionUsage::isArray($argVal, $argName, $apiUsage);
+    });
     $docid = $usage->addRequiredParameter("docid", "profil identificator");
     /**
      * @var array $aclp
@@ -65,4 +68,3 @@ function modacl(Action & $action)
     }
     redirect($action, "FREEDOM", sprintf("FREEDOM_ACCESS&userid=%d&id=%d", $userid, $docid));
 }
-?>
