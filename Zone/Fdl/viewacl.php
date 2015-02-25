@@ -27,7 +27,6 @@ function viewacl(Action & $action)
     // ------------------------
     $docid = intval($action->getArgument("docid"));
     $userid = intval($action->getArgument("userid"));
-
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
@@ -35,7 +34,6 @@ function viewacl(Action & $action)
     $err = $doc->control('viewacl');
     if ($err) $action->exitError($err);
     //-------------------
-
     $perm = new DocPerm($dbaccess, array(
         $doc->profid,
         $userid
@@ -47,14 +45,18 @@ function viewacl(Action & $action)
     $tableacl = array();
     
     $user = new Account($dbaccess, $userid);
-
+    
     $action->lay->Set("docid", $doc->id);
     $action->lay->Set("userid", $user->id);
     foreach ($acls as $k => $acl) {
         $tableacl[$k]["aclname"] = mb_ucfirst(_($acl));
-        $tableacl[$k]["acldesc"] = " (" . _($doc->dacls[$acl]["description"]) . ")";
         
-        $pos = $doc->dacls[$acl]["pos"];
+        if (!empty($doc->dacls[$acl]["description"])) {
+            
+            $tableacl[$k]["acldesc"] = _($doc->dacls[$acl]["description"]);
+        } else {
+            $tableacl[$k]["acldesc"] = "";
+        }
         
         $tableacl[$k]["aclid"] = $acl;
         $tableacl[$k]["iacl"] = $acl; // index for table in xml
@@ -72,30 +74,34 @@ function viewacl(Action & $action)
                     $tableacl[$k]["imgacl"] = "bred.png";
                 }
             }
-        } elseif ($perm->ControlUp($pos)) {
-            
-            $tableacl[$k]["selectedup"] = "checked";
-            $tableacl[$k]["imgacl"] = "bgreen.png";
         } else {
-            $tableacl[$k]["selectedup"] = "";
-            if ($perm->ControlU($pos)) {
-                $tableacl[$k]["imgacl"] = "bgrey.png";
+            
+            $pos = $doc->dacls[$acl]["pos"];
+            if ($perm->ControlUp($pos)) {
+                
+                $tableacl[$k]["selectedup"] = "checked";
+                $tableacl[$k]["imgacl"] = "bgreen.png";
             } else {
-                $tableacl[$k]["imgacl"] = "bred.png";
+                $tableacl[$k]["selectedup"] = "";
+                if ($perm->ControlU($pos)) {
+                    $tableacl[$k]["imgacl"] = "bgrey.png";
+                } else {
+                    $tableacl[$k]["imgacl"] = "bred.png";
+                }
             }
         }
         $tableacl[$k]["aclcause"] = getAclCause($acl, $doc, $perm, $user);
     }
     $action->lay->set("readonly", ($doc->control("modifyacl") != '' || $doc->dprofid || $doc->profid != $doc->id));
-    $action->lay->SetBlockData("SELECTACL", $tableacl);
+    $action->lay->eSetBlockData("SELECTACL", $tableacl);
     $action->lay->set("updateWaitText", sprintf(_("Update profiling is in progress.")));
 }
 
 function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
 {
-    $Aclpos = $doc->dacls[$acl]["pos"];
+    $Aclpos = isset($doc->dacls[$acl]["pos"]) ? $doc->dacls[$acl]["pos"] : -1;
     $msg = '?';
-    if ($perm->ControlUp($Aclpos) || DocPermExt::hasExtAclGrant($doc->id, $user->id, $acl) == 'green') {
+    if (($Aclpos !== - 1 && $perm->ControlUp($Aclpos)) || DocPermExt::hasExtAclGrant($doc->id, $user->id, $acl) == 'green') {
         if (!$doc->dprofid) {
             // direct green
             if ($doc->profid == $doc->id) {
