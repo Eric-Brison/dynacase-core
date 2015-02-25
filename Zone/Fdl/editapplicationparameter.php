@@ -7,7 +7,6 @@
 
 include_once ("FDL/Class.Dir.php");
 include_once ("FDL/editutil.php");
-include_once ("ACCESS/download.php");
 /**
  * Edit application parameters
  * @param Action $action
@@ -40,11 +39,11 @@ function editapplicationparameter(Action & $action)
     $enum = substr($paramdef[0]["kind"], 0, 4) == "enum";
     $action->lay->set("type_enum", $enum);
     
-    $type = ($paramdef[0]["isglob"] == "Y") ? PARAM_GLB : PARAM_APP;
+    $type = ($paramdef[0]["isglob"] == "Y") ? Param::PARAM_GLB : Param::PARAM_APP;
     $action->lay->set("type", $type);
     
     if (!$appid) {
-        if ($type !== PARAM_GLB) {
+        if ($type !== Param::PARAM_GLB) {
             $action->AddWarningMsg(sprintf(_("Parameter [%s] is not global, an apllication muste be given") , $parameterid));
             $action->lay->template = htmlspecialchars(sprintf(_("Parameter [%s] is not global, an apllication muste be given") , $parameterid) , ENT_QUOTES);
             return false;
@@ -117,4 +116,27 @@ function editapplicationparameter(Action & $action)
     $action->parent->addJsRef("lib/jquery/jquery.js");
     $action->parent->addJsRef("FDL/Layout/editparameter.js");
     return true;
+}
+
+function getApplicationNameFromId($dbaccess, $id, &$cache = null)
+{
+    if (is_array($cache) && array_key_exists('app', $cache)) {
+        if (array_key_exists($id, $cache['app'])) {
+            return $cache['app'][$id];
+        }
+    }
+    
+    $query = new QueryDb($dbaccess, "application");
+    $query->addQuery(sprintf("id = %s", pg_escape_string($id)));
+    $res = $query->query(0, 0, "TABLE");
+    if (!is_array($res)) {
+        return null;
+    }
+    
+    $name = $res[0]['name'];
+    if (is_array($cache) && array_key_exists('app', $cache)) {
+        $cache['app'][$id] = $name;
+    }
+    
+    return $name;
 }
