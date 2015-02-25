@@ -46,10 +46,10 @@ function moddfld(Action & $action)
         } else {
             $fld = new_Doc($dbaccess, $fldid);
             if ($fld === null || !$fld->isAlive()) {
-                $action->exitError(sprintf(_("Folder with id '%s' not found.") , $fldid));
+                $action->exitError(sprintf(_("Document with id '%s' not found.") , $fldid));
             }
-            if ($fld->defDoctype != 'D') {
-                $action->exitError(sprintf(_("Folder with id '%s' is not a folder.") , $fld->id));
+            if ($fld->defDoctype != 'D' && $fld->defDoctype != 'S') {
+                $action->exitError(sprintf(_("Document with id '%s' is not a folder or search.") , $fld->id));
             }
             $fldid = $fld->id;
         }

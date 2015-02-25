@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-19 10:37+0100\n"
-"PO-Revision-Date: 2015-01-19 10:37+0100\n"
+"PO-Revision-Date: 2015-02-23 10:52+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1495,6 +1495,10 @@ msgid "Document unlinked of %s folder"
 msgstr "Document enlevé du dossier %s"
 
 #, php-format
+msgid "Document with id '%s' is not a folder or search."
+msgstr "Le document d'identifiant '%s' n'est pas un dossier ou une recherche."
+
+#, php-format
 msgid "Document with id '%s' not found."
 msgstr "Document avec identifiant '%s' non trouvé."
 
@@ -2331,14 +2335,6 @@ msgstr "Dossier"
 
 msgid "Folder cleared"
 msgstr "Dossier vidé"
-
-#, php-format
-msgid "Folder with id '%s' is not a folder."
-msgstr "Le dossier d'identifiant '%s' n'est pas un dossier."
-
-#, php-format
-msgid "Folder with id '%s' not found."
-msgstr "Dossier avec identifiant '%s' non trouvé."
 
 #, php-format
 msgid "For %s of %s"

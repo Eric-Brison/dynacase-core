@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-19 10:37+0100\n"
-"PO-Revision-Date: 2015-01-07 16:51+0100\n"
+"PO-Revision-Date: 2015-02-23 10:52+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: \n"
@@ -1462,6 +1462,10 @@ msgid "Document unlinked of %s folder"
 msgstr ""
 
 #, php-format
+msgid "Document with id '%s' is not a folder or search."
+msgstr ""
+
+#, php-format
 msgid "Document with id '%s' not found."
 msgstr ""
 
@@ -2228,14 +2232,6 @@ msgid "Folder"
 msgstr ""
 
 msgid "Folder cleared"
-msgstr ""
-
-#, php-format
-msgid "Folder with id '%s' is not a folder."
-msgstr ""
-
-#, php-format
-msgid "Folder with id '%s' not found."
 msgstr ""
 
 #, php-format
