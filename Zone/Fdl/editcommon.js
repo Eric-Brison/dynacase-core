@@ -2970,6 +2970,7 @@ function documentsubmit(f) {
   }
   viewwait(true);
   setbodyopacity(0.5);
+  restoreall();
   return true
 }
 
