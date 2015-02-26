@@ -1276,6 +1276,7 @@ class DocFormFormat
                         "aid" => $v->id,
                         "alabel" => (!$visible) ? "" : $v->getLabel() ,
                         "elabel" => $v->getOption("elabel") ,
+                        "aneeded" => $v->needed,
                         "astyle" => $v->getOption("cellheadstyle") ,
                         "ahclass" => (!$visible) ? "hiddenAttribute" : "visibleAttribute",
                         "aehelp" => ($help->isAlive()) ? $help->getAttributeHelpUrl($v->id) : false,

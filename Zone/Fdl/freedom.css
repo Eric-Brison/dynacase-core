@@ -108,6 +108,14 @@ TR.FREEDOMOpt TD {
   text-align:right;
   font-weight: bold;
 }
+
+.error-needed {
+    outline: solid 1px [CORE_TEXTFGCOLOR];
+}
+
+TABLE.tarray TH.labelneeded {
+    font-weight: bold;
+}
 TD.uplabel span {
     text-decoration: underline;
 }

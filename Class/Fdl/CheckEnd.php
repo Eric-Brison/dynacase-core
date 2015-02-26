@@ -85,10 +85,6 @@ class CheckEnd extends CheckData
                 $ftype = $oa->fieldSet->type;
                 if (($ftype != 'frame') && ($ftype != 'array')) {
                     $this->addError(ErrorCode::getError('ATTR0205', $foa->id, $oa->id));
-                } elseif ($ftype == 'array') {
-                    if ($oa->needed) {
-                        $this->addError(ErrorCode::getError('ATTR0902', $oa->id));
-                    }
                 }
             }
         }

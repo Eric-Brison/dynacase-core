@@ -769,66 +769,98 @@ function closechoose() {
 
 function canmodify(withoutalert) {
     var err='';
-    var v;
-    for (var i=0; i< attrNid.length; i++) {
-      e=document.getElementById(attrNid[i]);
-      if (!e) e=document.getElementById('_'+attrNid[i]);
-	if (e) {
-	  v=getIValue(e);
-	  if (v === false) {
-	    ta = document.getElementsByName('_'+attrNid[i]+'[]');
-	    if (ta.length == 0)	{
-	    	err += ' - '+attrNtitle[i]+'\n';
-	    	focusNeeded(e);
-	    }
-	    for (var j=0; j< ta.length; j++) {
-	      v=getIValue(ta[j]);
-	      if ((v === '')||(v === ' ')) {
-	    	  err +=  ' - '+attrNtitle[i]+'/'+(j+1)+'\n';
-		      focusNeeded(ta[j]);
-	      }
-	    }
-	  } else {
-	    if ((v === '')||(v === ' ')) {
-	    	err +=  ' - '+attrNtitle[i]+'\n';
-	    	focusNeeded(e);
-	    }
-	  }
+    var v, e, i, j,ta,$firstTa,oneValueIsNotEmpty, aValue;
+    $('.error-needed').removeClass("error-needed");
+    for ( i=0; i< attrNid.length; i++) {
+        e=document.getElementById(attrNid[i]);
+        if (!e) e=document.getElementById('_'+attrNid[i]);
+        if (e) {
+            v=getIValue(e);
+            if (v === false) {
+                ta = document.getElementsByName('_'+attrNid[i]+'[]');
+                if (ta.length == 0)	{
+                    err += ' - '+attrNtitle[i]+'\n';
+                    focusNeeded(e);
+                }
+                for ( j=0; j< ta.length; j++) {
+                    v=getIValue(ta[j]);
+                    if ((v === '')||(v === ' ')) {
+                        err +=  ' - '+attrNtitle[i]+'/'+(j+1)+'\n';
+                        focusNeeded(ta[j]);
+                    }
+                }
+            } else {
+                if ((v === '')||(v === ' ')) {
+                    err +=  ' - '+attrNtitle[i]+'\n';
+                    focusNeeded(e);
+                }
+            }
         } else {
-	  // search in multiple values
-	  v=getInputValues(attrNid[i]);
-
-	  if ((v!==false) && ((v === '')||(v === ' '))) err +=  ' - '+attrNtitle[i]+'\n';
-	}
+            // search in multiple values
+            v=getInputValues(attrNid[i]);
+            if ((v!==false) && ((v === '')||(v === ' '))) {
+                // Verify in arrays
+                ta = getInputsByName('_'+attrNid[i]);
+                if (ta && ta.length > 0 ) {
+                    $firstTa=$(ta[0]);
+                    if ($firstTa.closest("table[type=array]").length > 0) {
+                        for ( j=0;j<ta.length;j++) {
+                            aValue=$(ta[j]).val()
+                            if (aValue === '' || aValue === ' ') {
+                                // Verify line
+                                oneValueIsNotEmpty=false;
+                                $(ta[j]).closest('tr').find("[name]").each(function (rowInput) {
+                                    if ($(this).attr("name").substr(0,1)==='_'&&  $(this).attr("name").substr(-1,1)===']') {
+                                        if ($(this).val() !== "" && $(this).val() !== " ") {
+                                            oneValueIsNotEmpty=true;
+                                        }
+                                    }
+                                });
+                                if (oneValueIsNotEmpty) {
+                                    focusNeeded(ta[j]);
+                                    err += ' - ' + attrNtitle[i] + '('+j+')\n';
+                                }
+                            }
+                        }
+                    } else {
+                        err += ' - ' + attrNtitle[i] + '\n';
+                    }
+                }
+            }
+        }
     }
     if (err != '') {
-      if (! withoutalert) displayWarningMsg('[TEXT:these needed attributes are empty]\n'+err);
-	    return false;
+        if (! withoutalert) displayWarningMsg('[TEXT:these needed attributes are empty]\n'+err);
+        return false;
     }
     return true;
 }
 function focusNeeded(inp) {
+    var inpId, name;
     if (inp) {
-	var p=inp.parentNode;
-	while (p && ((p.tagName != 'FIELDSET') || (! p.getAttribute('name'))) ) p=p.parentNode;
-	if (p) {
-	    var name=p.getAttribute('name');
-	    if (name) {
-		  var tab=window.document.getElementById('TAB'+name.substr(3));
-		  tab.onmousedown.apply(tab,[]);
-	    }
-	}
-	try {
-		if (! inp.disabled) {
-			if ((inp.type == 'hidden') && inp.id) {
-				inp=document.getElementById('IF_'+inp.id);
-				if (inp) inp.focus();
-			} else {
-			  inp.focus();
-			}
-		}
-	  } catch (exception) {
-         }
+        var p=inp.parentNode;
+        while (p && ((p.tagName != 'FIELDSET') || (! p.getAttribute('name'))) ) p=p.parentNode;
+        if (p) {
+            name=p.getAttribute('name');
+            if (name) {
+                var tab=window.document.getElementById('TAB'+name.substr(3));
+                tab.onmousedown.apply(tab,[]);
+            }
+        }
+        try {
+            if (! inp.disabled) {
+                if ((inp.type == 'hidden' || inp.style.display === "none") && inp.id) {
+                    inpId=inp.id;
+                    inp=document.getElementById('IF_'+inpId);
+                    if (!inp) inp=document.getElementById('ilink_'+inpId);
+                    if (inp) inp.focus();
+                } else {
+                    inp.focus();
+                }
+                $(inp).addClass("error-needed");
+            }
+        } catch (exception) {
+        }
     }
 }
 // to define which attributes must be disabled
