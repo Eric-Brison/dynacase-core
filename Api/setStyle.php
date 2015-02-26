@@ -27,6 +27,7 @@ class styleManager
     const CUSTOM_RULES_DIR_NAME = "rules.d";
     const DEFAULT_CSS_PARSER_DEPLOY_CLASS = '\Dcp\Style\dcpCssConcatParser';
     const DEFAULT_CSS_PARSER_RUNTIME_CLASS = null;
+    const GLOBAL_RULES_DIR_NAME = "global-rules.d";
     
     protected $verbose = false;
     protected $logIndent = 0;
@@ -99,6 +100,19 @@ class styleManager
                 }
             }
         }
+        //load global rules (rules.d)
+        $globalRulesDirPath = dirname(dirname($styFilePath)) . DIRECTORY_SEPARATOR . self::GLOBAL_RULES_DIR_NAME;
+        if (is_dir($globalRulesDirPath) && is_readable($globalRulesDirPath)) {
+            $globalRules = & $styleDefinition['sty_rules'];
+            $globalRulesFiles = scandir($globalRulesDirPath);
+            if (false !== $globalRulesFiles) {
+                foreach ($globalRulesFiles as $globalRulesFile) {
+                    if ($globalRulesFile == '.' || $globalRulesFile == '..') continue;
+                    $globalRules = array_replace_recursive($globalRules, $this->loadCustomRulesFromFile($globalRulesDirPath . DIRECTORY_SEPARATOR . $globalRulesFile));
+                }
+            }
+        }
+        
         return $styleDefinition;
     }
     
