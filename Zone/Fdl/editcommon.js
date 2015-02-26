@@ -1354,6 +1354,7 @@ function submitEdit(event,force) {
 				fedit.dispatchEvent(oEvent);
 			}
 			fedit.submit();
+            restoreall();
 		}
 	}
 	return r;
