@@ -2994,7 +2994,12 @@ function documentsubmit(f) {
   }
   viewwait(true);
   setbodyopacity(0.5);
-  restoreall();
+
+
+  setTimeout(function () {
+      //defer to be executed after submit
+    restoreall();
+  },100);
   return true
 }
 
