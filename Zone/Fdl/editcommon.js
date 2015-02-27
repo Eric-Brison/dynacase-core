@@ -808,18 +808,10 @@ function canmodify(withoutalert) {
                             aValue=$(ta[j]).val()
                             if (aValue === '' || aValue === ' ') {
                                 // Verify line
-                                oneValueIsNotEmpty=false;
-                                $(ta[j]).closest('tr').find("[name]").each(function (rowInput) {
-                                    if ($(this).attr("name").substr(0,1)==='_'&&  $(this).attr("name").substr(-1,1)===']') {
-                                        if ($(this).val() !== "" && $(this).val() !== " ") {
-                                            oneValueIsNotEmpty=true;
-                                        }
-                                    }
-                                });
-                                if (oneValueIsNotEmpty) {
-                                    focusNeeded(ta[j]);
-                                    err += ' - ' + attrNtitle[i] + '('+j+')\n';
-                                }
+
+                                focusNeeded(ta[j]);
+                                err += ' - ' + attrNtitle[i] + '('+j+')\n';
+
                             }
                         }
                     } else {

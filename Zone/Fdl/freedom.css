@@ -110,10 +110,10 @@ TR.FREEDOMOpt TD {
 }
 
 .error-needed {
-    outline: solid 1px [CORE_TEXTFGCOLOR];
+    outline: solid 1px [CORE_ERRORCOLOR];
 }
 
-TABLE.tarray TH.labelneeded {
+TABLE.tarray TH.labelNeeded {
     font-weight: bold;
 }
 TD.uplabel span {

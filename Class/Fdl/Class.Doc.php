@@ -7735,6 +7735,7 @@ create unique index i_docir on doc(initid, revision);";
                     
                     if ($listattr[$i]->needed) $tableframe[$v]["labelclass"] = "FREEDOMLabelNeeded";
                     else $tableframe[$v]["labelclass"] = "FREEDOMLabel";
+                    $tableframe[$v]["aneeded"] = $listattr[$i]->needed;
                     $elabel = $listattr[$i]->getoption("elabel");
                     $elabel = str_replace("'", "&rsquo;", $elabel);
                     $tableframe[$v]["elabel"] = mb_ucfirst(str_replace('"', "&rquot;", $elabel));
