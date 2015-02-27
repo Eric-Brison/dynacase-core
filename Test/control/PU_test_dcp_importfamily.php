@@ -290,9 +290,7 @@ class TestImportFamily extends TestCaseDcpDocument
                     "ATTR0205",
                     "tst_number4",
                     "ATTR0207",
-                    "tst_frame2",
-                    "ATTR0902",
-                    "tst_colneed"
+                    "tst_frame2"
                 )
             ) ,
             // static enum
