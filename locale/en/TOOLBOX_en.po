@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-19 10:37+0100\n"
+"POT-Creation-Date: 2015-02-23 16:52+0100\n"
 "PO-Revision-Date: 2015-02-23 10:52+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -838,6 +838,12 @@ msgstr ""
 
 #, php-format
 msgid "Cannot find help function %s"
+msgstr ""
+
+#, php-format
+msgid ""
+"Cannot import document because the ORDER line for family '%s' is incorrect: "
+"%s"
 msgstr ""
 
 #, php-format
