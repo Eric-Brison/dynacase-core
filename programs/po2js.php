@@ -1,5 +1,10 @@
 #!/usr/bin/env php
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * translate mo file to json
  * @author Anakeen
@@ -13,11 +18,10 @@ print $c->po2json();
  */
 Class Po2js
 {
-
+    
     protected $pofile = "";
     protected $entries = array();
     protected $encoding = 'utf-8';
-
     /**
      * Construct the object
      *
@@ -31,9 +35,7 @@ Class Po2js
         } else {
             throw new Exception("PO file ($pofile) doesn't exist.");
         }
-
     }
-
     /**
      * Convert the current PO file to a json string
      *
@@ -55,7 +57,6 @@ Class Po2js
             return "";
         }
     }
-
     /**
      * Extract PO entries an store them
      *
@@ -66,10 +67,11 @@ Class Po2js
         if (file_exists($this->pofile)) {
             $pocontent = file_get_contents($this->pofile);
             if ($pocontent !== false) {
-                $pocontent .= "\n\n";
-                preg_match_all('/^msgid (?P<msgid>".*?)msgstr (?P<msgstr>".*?")\n\n/ms', $pocontent, $matches, PREG_SET_ORDER);
+                $pocontent.= "\n\n";
+                preg_match_all('/^(msgctxt (?P<msgctxt>".*?))?msgid (?P<msgid>".*?)msgstr (?P<msgstr>".*?")\n\n/ms', $pocontent, $matches, PREG_SET_ORDER);
+                
                 foreach ($matches as $m) {
-                    $this->memoEntry($m['msgid'], $m['msgstr']);
+                    $this->memoEntry($m['msgid'], $m['msgstr'], $m['msgctxt']);
                 }
             } else {
                 throw new Exception("PO file ({$this->pofile}) is not readable.");
@@ -78,30 +80,34 @@ Class Po2js
             throw new Exception("PO file ({$this->pofile}) doesn't exist.");
         }
     }
-
     /**
      * Clean a key and a translation and add them to $this->entries
-     * @param $key
-     * @param $text
+     * @param string $key text to translate
+     * @param string $text translation
+     * @param string $ctxt context
      */
-    protected function memoEntry($key, $text)
+    protected function memoEntry($key, $text, $ctxt = '')
     {
         $tkey = explode("\n", $key);
-        $ttext = explode("\n", "$text");
+        $ttext = explode("\n", $text);
+        $tctxt = explode("\n", $ctxt);
         $key = trim(implode("\n", array_map('Po2js::trimquote', $tkey)));
         $text = trim(implode("\n", array_map('Po2js::trimquote', $ttext)));
+        $ctxt = trim(implode("\n", array_map('Po2js::trimquote', $tctxt)));
         if ($key && $text) {
-            $this->entries[$key] = $text;
+            if ($ctxt) {
+                $this->entries["_msgctxt_"][$ctxt][$key] = $text;
+            } else {
+                $this->entries[$key] = $text;
+            }
         } else if ($key == "") {
             if (stristr($text, "charset=ISO-8859") !== false) {
                 $this->encoding = 'iso';
             }
         }
     }
-
     protected static function trimquote($s)
     {
         return trim($s, '"');
     }
-
 }

@@ -67,9 +67,13 @@ function whattext ()
             if [ -d "./src" ]; then
                 for po in ./src/*.po ; do
                     msgfmt -c -o /dev/null $po
-                    php "$wpub/programs/po2js" $po > $po.mo.js 
+                    php "$wpub/programs/po2js" $po > $po.mo.js
+                    jsFile=`basename "$po" ".po"`".js"
+                    jsFile="catalog-"${jsFile#js_}
+                    cp "$po.mo.js" $jsFile
                 done
                 php "$wpub/programs/json_concat" *mo.js ./src/*mo.js > catalog.js
+                
                 \rm -f ./src/*mo.js
             else
                 php "$wpub/programs/json_concat" *mo.js  > catalog.js 
