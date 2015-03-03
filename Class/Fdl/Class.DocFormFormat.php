@@ -301,7 +301,6 @@ class DocFormFormat
                 }
                 break;
             }
-            
             if (($this->oattr->type != "array")) {
                 if ($this->visibility != "S") {
                     if ($usephpfunc && ($this->oattr->phpfunc != "") && ($this->oattr->phpfile != "") && ($this->oattr->type != "enum") && ($this->oattr->type != "enumlist")) {
@@ -1276,6 +1275,7 @@ class DocFormFormat
                         "aid" => $v->id,
                         "alabel" => (!$visible) ? "" : $v->getLabel() ,
                         "elabel" => $v->getOption("elabel") ,
+                        "aneeded" => $v->needed,
                         "astyle" => $v->getOption("cellheadstyle") ,
                         "ahclass" => (!$visible) ? "hiddenAttribute" : "visibleAttribute",
                         "aehelp" => ($help->isAlive()) ? $help->getAttributeHelpUrl($v->id) : false,
@@ -1385,6 +1385,7 @@ class DocFormFormat
                             "cellmultiple" => ($va->getOption("multiple") == "yes") ? "true" : "false",
                             "tdstyle" => $va->getOption("cellbodystyle") ,
                             "vhw" => (!$visible) ? "0px" : $va->getOption("cwidth", "auto") ,
+                            "aneeded" => $va->needed,
                             "eiclass" => (!$visible) ? "hiddenAttribute" : "visibleAttribute"
                         );
                         $ika++;
