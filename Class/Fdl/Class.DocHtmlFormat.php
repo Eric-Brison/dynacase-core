@@ -584,7 +584,11 @@ class DocHtmlFormat
      */
     public function formatPassword($kvalue, $avalue)
     {
-        $htmlval = preg_replace("/./", "*", htmlentities(($avalue) , ENT_COMPAT, "UTF-8"));
+        if (strlen($avalue) > 0) {
+            $htmlval = '*****';
+        } else {
+            $htmlval = '';
+        }
         return $htmlval;
     }
     /**
