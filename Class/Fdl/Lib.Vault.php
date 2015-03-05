@@ -19,7 +19,6 @@
 include_once ("VAULT/Class.VaultFile.php");
 include_once ("VAULT/Class.VaultEngine.php");
 include_once ("VAULT/Class.VaultDiskStorage.php");
-include_once ("WHAT/Class.TEClient.php");
 
 function initVaultAccess()
 {
@@ -68,19 +67,19 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
     $err = '';
     if (($vidin > 0) && ($vidout > 0)) {
         $tea = getParam("TE_ACTIVATE");
-        if ($tea != "yes") return '';
+        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) return '';
         global $action;
         include_once ("FDL/Class.TaskRequest.php");
         $of = new VaultDiskStorage($dbaccess, $vidin);
         $filename = $of->getPath();
         if (!$of->isAffected()) return "no file $vidin";
         $ofout = new VaultDiskStorage($dbaccess, $vidout);
-        $ofout->teng_state = TransformationEngine::status_waiting; // in progress
+        $ofout->teng_state = \Dcp\TransformationEngine\Client::status_waiting; // in progress
         $ofout->modify();
         
         $urlindex = getOpenTeUrl();
         $callback = $urlindex . "&sole=Y&app=FDL&action=INSERTFILE&engine=$engine&vidin=$vidin&vidout=$vidout&isimage=$isimage&docid=$docid";
-        $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(getParam("TE_HOST") , getParam("TE_PORT"));
         $err = $ot->sendTransformation($engine, $vidout, $filename, $callback, $info);
         if ($err == "") {
             $tr = new TaskRequest($dbaccess);
@@ -102,8 +101,8 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
             @unlink($filename);
             $vf->rename($vidout, _("impossible conversion") . ".txt");
             if ($info["status"]) $vf->storage->teng_state = $info["status"];
-            else $vf->storage->teng_state = TransformationEngine::status_inprogress;
-            $vf->storage->modify();;
+            else $vf->storage->teng_state = \Dcp\TransformationEngine\Client::status_inprogress;
+            $vf->storage->modify();
         }
     }
     return $err;
@@ -186,7 +185,7 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
     if (($docid > 0) && ($vid > 0)) {
         
         $tea = getParam("TE_ACTIVATE");
-        if ($tea != "yes") return '';
+        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) return '';
         $tea = getParam("TE_FULLTEXT");
         if ($tea != "yes") return '';
         
@@ -196,7 +195,7 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
         $filename = $of->getPath();
         $urlindex = getOpenTeUrl();
         $callback = $urlindex . "&sole=Y&app=FDL&action=SETTXTFILE&docid=$docid&attrid=" . $attrid . "&index=$index";
-        $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(getParam("TE_HOST") , getParam("TE_PORT"));
         $err = $ot->sendTransformation('utf8', $vid, $filename, $callback, $info);
         if ($err == "") {
             $tr = new TaskRequest($dbaccess);
@@ -225,9 +224,9 @@ function convertFile($infile, $engine, $outfile, &$info)
     $err = '';
     if (file_exists($infile) && ($engine != "")) {
         $tea = getParam("TE_ACTIVATE");
-        if ($tea != "yes") return _("TE not activated");
+        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) return _("TE not activated");
         $callback = "";
-        $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(getParam("TE_HOST") , getParam("TE_PORT"));
         $vid = '';
         $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
         if ($err == "") {

@@ -432,30 +432,33 @@ class DocHtmlFormat
             if ($fileInfo) {
                 if ($fileInfo->teng_state < 0 || $fileInfo->teng_state > 1) {
                     $htmlval = "";
-                    include_once ("WHAT/Class.TEClient.php");
-                    switch (intval($fileInfo->teng_state)) {
-                        case TransformationEngine::error_convert: // convert fail
-                            $textval = _("file conversion failed");
-                            break;
+                    if (\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+                        switch (intval($fileInfo->teng_state)) {
+                            case \Dcp\TransformationEngine\Client::error_convert: // convert fail
+                                $textval = _("file conversion failed");
+                                break;
 
-                        case TransformationEngine::error_noengine: // no compatible engine
-                            $textval = _("file conversion not supported");
-                            break;
+                            case \Dcp\TransformationEngine\Client::error_noengine: // no compatible engine
+                                $textval = _("file conversion not supported");
+                                break;
 
-                        case TransformationEngine::error_connect: // no compatible engine
-                            $textval = _("cannot contact server");
-                            break;
+                            case \Dcp\TransformationEngine\Client::error_connect: // no compatible engine
+                                $textval = _("cannot contact server");
+                                break;
 
-                        case TransformationEngine::status_waiting: // waiting
-                            $textval = _("waiting conversion file");
-                            break;
+                            case \Dcp\TransformationEngine\Client::status_waiting: // waiting
+                                $textval = _("waiting conversion file");
+                                break;
 
-                        case TransformationEngine::status_inprogress: // in progress
-                            $textval = _("generating file");
-                            break;
+                            case \Dcp\TransformationEngine\Client::status_inprogress: // in progress
+                                $textval = _("generating file");
+                                break;
 
-                        default:
-                            $textval = sprintf(_("unknown file state %s") , $fileInfo->teng_state);
+                            default:
+                                $textval = sprintf(_("unknown file state %s") , $fileInfo->teng_state);
+                        }
+                    } else {
+                        $textval = sprintf(_("unknown file state %s") , $fileInfo->teng_state);
                     }
                     if ($this->htmlLink) {
                         //$errconvert=trim(file_get_contents($info->path));
@@ -493,14 +496,14 @@ class DocHtmlFormat
                         } else {
                             $infopdf = new VaultFileInfo();
                             $err = $vf->Show($vid, $infopdf, 'pdf');
-                            if ($err == "") {
-                                if ($infopdf->teng_state == TransformationEngine::status_done || $infopdf->teng_state == TransformationEngine::status_waiting || $infopdf->teng_state == TransformationEngine::status_inprogress) {
+                            if ($err == "" && \Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+                                if ($infopdf->teng_state == \Dcp\TransformationEngine\Client::status_done || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_waiting || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_inprogress) {
                                     $imageview = true;
                                     if ($viewfiletype == 'image') $viewfiletype = 'png';
                                     else if ($viewfiletype == 'pdf') $viewfiletype = 'embed';
                                     
                                     $pages = getPdfNumberOfPages($infopdf->path);
-                                    if ($infopdf->teng_state == TransformationEngine::status_waiting || $infopdf->teng_state == TransformationEngine::status_inprogress) $waiting = true;
+                                    if ($infopdf->teng_state == \Dcp\TransformationEngine\Client::status_waiting || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_inprogress) $waiting = true;
                                 }
                             }
                         }

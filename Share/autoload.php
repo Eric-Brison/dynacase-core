@@ -5,8 +5,6 @@
  * @package FDL
 */
 
-require_once 'WHAT/classAutoloader.php';
-require_once 'WHAT/classAutoloaderIgnoreDotD.php';
-include_once 'WHAT/Lib.Prefix.php';
+require_once ('WHAT/classAutoloader.php');
 
-\Dcp\DirectoriesAutoloader::instance(DEFAULT_PUBDIR, '.autoloader.cache')->addDirectory('./')->addCustomFilter('\Dcp\autoloaderIgnoreDotD')->register();
+\Dcp\Autoloader::register();

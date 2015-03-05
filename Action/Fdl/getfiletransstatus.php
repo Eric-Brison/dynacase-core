@@ -6,20 +6,13 @@
 */
 /**
  * retrieve task status
- *
- * @author Anakeen
- * @version $Id: getfiletransstatus.php,v 1.1 2008/01/03 09:05:13 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
- */
-/**
  */
 
 include_once ("FDL/Class.Doc.php");
 /**
  * retrieve task status
  * @param Action &$action current action
+ * @throws Dcp\Db\Exception
  * @global string $tid Http var : task identifier
  */
 function getfiletransstatus(Action & $action)
@@ -35,7 +28,7 @@ function getfiletransstatus(Action & $action)
     global $action;
     include_once ("FDL/Class.TaskRequest.php");
     
-    $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
+    $ot = new \Dcp\TransformationEngine\Client(getParam("TE_HOST") , getParam("TE_PORT"));
     $err = $ot->getInfo($tid, $info);
     if ($err == "") {
         $action->lay->set("tid", $info["tid"]);
@@ -69,4 +62,3 @@ function getfiletransstatus(Action & $action)
     
     $action->lay->set("warning", $err);
 }
-?>

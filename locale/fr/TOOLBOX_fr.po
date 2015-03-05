@@ -472,14 +472,8 @@ msgstr "Action"
 msgid "Action to do"
 msgstr "Action à faire"
 
-msgid "Activate Transformation Engine"
-msgstr "Activation du serveur de transformation"
-
 msgid "Activate acls"
 msgstr "Activer les droits"
-
-msgid "Activate file indexing with TE"
-msgstr "Activation de l'indexation plein texte avec TE"
 
 msgid "Activity"
 msgstr "Activité"
@@ -1857,10 +1851,6 @@ msgstr "Erreur lors de l'ouverture %s du fichier %s"
 #, php-format
 msgid "Error renaming '%s' to '%s'."
 msgstr "Erreur de renommage '%s' vers '%s'"
-
-#, php-format
-msgid "Error sending file"
-msgstr "Erreur lors de l'envoi du fichier"
 
 #, php-format
 msgid "Error writing content to '%s'."
@@ -4062,27 +4052,6 @@ msgstr "Outils"
 msgid "Top Bottom"
 msgstr "Haut Bas"
 
-msgid "Transformation Engine callback url"
-msgstr "URL pour les callback du serveur de transformation"
-
-msgid "Transformation Engine server host name"
-msgstr "Adresse du serveur de transformation"
-
-msgid "Transformation Engine server port number"
-msgstr "Numéro de port du serveur de transformation"
-
-msgid "Transformation Engine timeout connection (in seconds)"
-msgstr ""
-"Temps d'attente de connexion pour le moteur de transformation (en secondes)"
-
-msgid "Transformation server did not returned a valid error comment"
-msgstr ""
-"Le serveur de transformation n'a pas retourné un message d'erreur valide"
-
-msgid "Transformation server did not returned a valid task id"
-msgstr ""
-"Le serveur de transformation n'a pas retourné un identifiant de tâche valide"
-
 msgid "Transitions"
 msgstr "Transitions"
 
@@ -6007,9 +5976,6 @@ msgstr "email envoyé"
 
 msgid "emailing"
 msgstr "publipostage"
-
-msgid "empty file"
-msgstr "fichier vide"
 
 msgid "enavpreview"
 msgstr "publi-pévisualisation"
@@ -8135,9 +8101,6 @@ msgstr "Simple"
 
 msgid "society style"
 msgstr "style société"
-
-msgid "socket creation error"
-msgstr "Erreur lors de la création d'une socket"
 
 msgid "specialedit"
 msgstr "Éditions spéciales"
