@@ -93,7 +93,7 @@ function viewacl(Action & $action)
         $tableacl[$k]["aclcause"] = getAclCause($acl, $doc, $perm, $user);
     }
     $action->lay->set("readonly", ($doc->control("modifyacl") != '' || $doc->dprofid || $doc->profid != $doc->id));
-    $action->lay->eSetBlockData("SELECTACL", $tableacl);
+    $action->lay->setBlockData("SELECTACL", $tableacl);
     $action->lay->set("updateWaitText", sprintf(_("Update profiling is in progress.")));
 }
 
@@ -137,7 +137,7 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
                         $oa = $doc->getAttribute($aid);
                         if ($oa) $alabel = $oa->getLabel();
                         else $alabel = $aid;
-                        $tAtt[] = sprintf(_("the attribute %s") , $alabel);
+                        $tAtt[] = sprintf(_("the attribute %s") , htmlspecialchars($alabel));
                     }
                 }
             }
@@ -168,9 +168,9 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
                 $tFrom = array();
                 foreach ($uas as $as) {
                     if ($as["accounttype"] == 'R') {
-                        $tFrom[] = sprintf(_("Role \"%s\"") , $as["lastname"]);
+                        $tFrom[] = sprintf(_("Role \"%s\"") , htmlspecialchars($as["lastname"]));
                     } else {
-                        $tFrom[] = sprintf(_("Group \"%s\"") , $as["lastname"]);
+                        $tFrom[] = sprintf(_("Group \"%s\"") , htmlspecialchars($as["lastname"]));
                     }
                 }
                 if (count($tFrom) > 0) {
@@ -200,9 +200,9 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
                 $tFrom = array();
                 foreach ($uas as $as) {
                     if ($as["accounttype"] == 'R') {
-                        $tFrom[] = sprintf(_("Role \"%s\"") , $as["lastname"]);
+                        $tFrom[] = sprintf(_("Role \"%s\"") , htmlspecialchars($as["lastname"]));
                     } else {
-                        $tFrom[] = sprintf(_("Group \"%s\"") , $as["lastname"]);
+                        $tFrom[] = sprintf(_("Group \"%s\"") , htmlspecialchars($as["lastname"]));
                     }
                 }
                 if (count($tFrom) > 0) {
@@ -231,7 +231,7 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
                                 $gv[] = $doc->getHtmlTitle($gid);
                             }
                             
-                            $msg = sprintf(_("Set by \"%s\" attribute (%s) from template profil \"%s\"") , $alabel, implode(', ', $gv) , $doc->getHtmlTitle($doc->dprofid));
+                            $msg = sprintf(_("Set by \"%s\" attribute (%s) from template profil \"%s\"") , htmlspecialchars($alabel), implode(', ', $gv) , $doc->getHtmlTitle($doc->dprofid));
                         }
                     }
                 }
