@@ -45,14 +45,35 @@ function resizePopDoc() {
     function adjustDateHeight () {
         var $dates=$('.attr--date, .attr-timestamp');
         var lastDate=null,dh=0,itop=0 ;
+        var datePickerHeight = 203;
         if ($dates.length > 0) {
-             dh=document.body.clientHeight;
-             lastDate=$($dates[$dates.length-1]);
+            dh=document.body.clientHeight;
+            lastDate=$($dates[$dates.length-1]);
+            /*
+
+                +----
+                |
+                |
+                |
+                |   +-- <- (itop)   ^
+                |   | input         | (iheight = 20)
+                |   +----           v                ^
+                |   | ...                            | (datePickerHeight = 203)
+                |   | date                           |
+                |   | picker                         |
+                |   | ...                            |
+                |   +--------                        v
+                |
+                |
+                +---------------- <- (dh)
+
+            */
             itop=lastDate.offset().top;
-             if (((dh - itop) < 190) && (itop < 210)) {
-                // need more height to display popup calendar
-                $('.askValueTable td').last().css('height',(187 - (dh - itop))+'px').css('vertical-align','top');
-             }
+            var iheight=lastDate.height();
+            if ((/* Not enough place below? */ (dh - itop) < (datePickerHeight + iheight)) && (/* Not enough place above? */ itop < datePickerHeight)) {
+                /* Add the required space below to display the datePicker */
+                $('.askValueTable tr').last().find('td').css('height',(datePickerHeight + iheight - (dh - itop))+'px').css('vertical-align','top');
+            }
         }
     }
 </script>
