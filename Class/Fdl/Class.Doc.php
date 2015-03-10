@@ -3425,28 +3425,32 @@ create unique index i_docir on doc(initid, revision);";
             $value = $tval;
         }
         if (is_array($value)) {
-            if ($oattr && $oattr->type == 'htmltext') {
-                $value = $this->arrayToRawValue($value, "\r");
-                if ($value === '') {
-                    $value = DELVALUE;
-                }
+            if (count($value) == 0) {
+                $value = DELVALUE;
+            } elseif ((count($value) == 1) && (first($value) === "" || first($value) === null) && (substr(key($value) , 0, 1) != "s")) {
+                // special tab for array of one empty cell
+                $value = "\t";
             } else {
-                if (count($value) == 0) $value = DELVALUE;
-                elseif ((count($value) == 1) && (first($value) === "" || first($value) === null) && (substr(key($value) , 0, 1) != "s")) $value = "\t"; // special tab for array of one empty cell
-                else {
-                    if ($oattr && $oattr->repeat && (count($value) == 1) && substr(key($value) , 0, 1) == "s") {
-                        $ov = $this->getMultipleRawValues($attrid);
-                        $rank = intval(substr(key($value) , 1));
-                        if (count($ov) < ($rank - 1)) { // fill array if not set
-                            $start = count($ov);
-                            for ($i = $start; $i < $rank; $i++) $ov[$i] = "";
+                if ($oattr && $oattr->repeat && (count($value) == 1) && substr(key($value) , 0, 1) == "s") {
+                    $ov = $this->getMultipleRawValues($attrid);
+                    $rank = intval(substr(key($value) , 1));
+                    if (count($ov) < ($rank - 1)) { // fill array if not set
+                        $start = count($ov);
+                        for ($i = $start; $i < $rank; $i++) {
+                            $ov[$i] = "";
                         }
-                        foreach ($value as $k => $v) $ov[substr($k, 1, 1) ] = $v;
-                        $value = $this->arrayToRawValue($ov);
-                    } else {
-                        $value = $this->arrayToRawValue($value);
                     }
+                    foreach ($value as $k => $v) {
+                        $ov[substr($k, 1, 1) ] = $v;
+                    }
+                    $value = $ov;
                 }
+                /*
+                 * Switch the $br separator from "<BR>" to "\r" for HTML text
+                 * attributes in order to not induce a conflict with legitimate
+                 * "<BR>" tags that might appear in the attribute's HTML content.
+                */
+                $value = $this->arrayToRawValue($value, (($oattr->type == 'htmltext') ? "\r" : "<BR>"));
             }
         }
         if (($value !== "") && ($value !== null)) {
