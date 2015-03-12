@@ -18,12 +18,12 @@ include_once "FDL/Class.Doc.php";
  * Verify if a file has been computed
  * @param Action &$action current action
  */
-function verifycomputedfiles(Action &$action)
+function verifycomputedfiles(Action & $action)
 {
     $usage = new ActionUsage($action);
-
-    $docid =  $usage->addRequiredParameter("id", "docid");
-
+    
+    $docid = $usage->addRequiredParameter("id", "docid");
+    
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     header('Content-type: text/xml; charset=utf-8');
@@ -52,7 +52,7 @@ function verifycomputedfiles(Action &$action)
     
     foreach ($files as $k => $v) {
         if (($v["teng_state"] == 1) || ($v["teng_state"] < 0)) {
-            $files[$k]["icon"] = "var/cache/image/20-" . getIconMimeFile($v["mime_s"]) . ".png";
+            $files[$k]["icon"] = sprintf("resizeimg.php?img=Images/%s&amp;size=20", htmlspecialchars(getIconMimeFile($v["mime_s"]) , ENT_QUOTES));
         } else {
             $files[$k]["icon"] = "";
         }
