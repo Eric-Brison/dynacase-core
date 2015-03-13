@@ -358,6 +358,9 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
     function WNGBDirRename($ldir)
     {
         $handle = opendir($ldir);
+        if ($handle === false) {
+            return;
+        }
         while (false !== ($file = readdir($handle))) {
             if ($file[0] != ".") {
                 $afile = "$ldir/$file";
