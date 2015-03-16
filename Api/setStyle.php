@@ -21,6 +21,8 @@ $verbose = ('yes' === $usage->addOptionalParameter('verbose', 'verbose', array(
 ) , 'no'));
 $usage->verify();
 
+chdir(DEFAULT_PUBDIR);
+
 class styleManager
 {
     
