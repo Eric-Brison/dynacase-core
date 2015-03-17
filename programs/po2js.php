@@ -4,7 +4,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 /**
  * translate mo file to json
  * @author Anakeen
@@ -88,12 +88,18 @@ Class Po2js
      */
     protected function memoEntry($key, $text, $ctxt = '')
     {
+        $encodeQuote="&--\v--;";
+
         $tkey = explode("\n", $key);
         $ttext = explode("\n", $text);
         $tctxt = explode("\n", $ctxt);
         $key = trim(implode("\n", array_map('Po2js::trimquote', $tkey)));
+        
+        $ttext = str_replace('\"', $encodeQuote, $ttext);
         $text = trim(implode("\n", array_map('Po2js::trimquote', $ttext)));
+        $text = str_replace($encodeQuote, '"', $text);
         $ctxt = trim(implode("\n", array_map('Po2js::trimquote', $tctxt)));
+        
         if ($key && $text) {
             if ($ctxt) {
                 $this->entries["_msgctxt_"][$ctxt][$key] = $text;
