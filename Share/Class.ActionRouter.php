@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 require_once ('WHAT/autoload.php');
 
@@ -18,8 +18,8 @@ class ActionRouter
         global $action;
         $this->action = null;
         $_SERVER['PHP_AUTH_USER'] = $account->login;
-        getMainAction($auth, $action);
-        $this->action = & $action;
+        getMainAction($auth, $this->action);
+        $action = $this->action;
     }
     
     public function getAction()
