@@ -164,6 +164,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                 }
                 
                 $rolesIds = $wuser->getRoles(false);
+                $this->clearArrayValues("us_t_roles");
                 $this->SetValue("us_roles", $rolesIds);
                 
                 $mail = $wuser->getMail();
