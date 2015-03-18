@@ -258,8 +258,40 @@ class TestAddArrayRow extends TestCaseDcpCommonFamily
                         )
                     )
                 )
+            ) ,
+            array(
+                array(
+                    'fam' => 'TST_ADDARRAYROW_DEV_5361',
+                    'name' => 'TST_ADDARRAYROW_DEV_5361_DOC_01',
+                    'array_attr_name' => 'ARR',
+                    'rows' => array(
+                        array(
+                            'index' => - 1,
+                            'data' => array(
+                                'col_1' => 'Line 1, Col 1',
+                                'col_2' => ''
+                            )
+                        ) ,
+                        array(
+                            'index' => - 1,
+                            'data' => array(
+                                'col_1' => '',
+                                'col_2' => 'Line 2, Col 2'
+                            )
+                        ) ,
+                    ) ,
+                    'expected_tvalues' => array(
+                        'col_1' => array(
+                            'Line 1, Col 1',
+                            ''
+                        ) ,
+                        'col_2' => array(
+                            '',
+                            'Line 2, Col 2'
+                        )
+                    )
+                )
             )
         );
     }
 }
-?>
