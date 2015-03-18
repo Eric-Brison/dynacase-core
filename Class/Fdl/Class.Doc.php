@@ -6919,7 +6919,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($attr->fieldSet && ($frametpl && $attr->fieldSet->type != "array")) {
                 $goodvalue = false;
                 if ($currentFrameId != $attr->fieldSet->id) {
-                    if (($attr->fieldSet->mvisibility != "H") && ($attr->fieldSet->mvisibility != "I")) {
+                    if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H") && ($attr->fieldSet->mvisibility != "I")) {
                         $changeframe = true;
                     }
                 }
@@ -7119,8 +7119,8 @@ create unique index i_docir on doc(initid, revision);";
             $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]", $this->id, $this->fromid, $target, $frametpl) : '';
             
             $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
-            $pSet = $currentFrame->fieldSet;
-            if (($pSet->id != "") && ($pSet->id != "FIELD_HIDDENS")) {
+            $pSet = (isset($currentFrame->fieldSet) ? $currentFrame->fieldSet : null);
+            if ($pSet !== null && ($pSet->id != "") && ($pSet->id != "FIELD_HIDDENS")) {
                 $frames[$k]["tag"] = "TAG" . $pSet->id;
                 $frames[$k]["TAB"] = true;
                 $ttabs[$pSet->id] = array(
