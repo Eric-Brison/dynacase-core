@@ -231,14 +231,14 @@ function AttrToPhp($dbaccess, $tdoc)
                     break;
 
                 default: // normal
-                    if (preg_match('/\[([a-z=0-9]+)\](.*)/', $v->phpfunc, $reg)) {
+                    if (preg_match('/^\[([a-z=0-9]+)\](.*)/', $v->phpfunc, $reg)) {
                         $v->phpfunc = $reg[2];
                         $funcformat = $reg[1];
                     } else {
                         $funcformat = "";
                     }
                     
-                    if (preg_match("/([a-z]+)\([\"'](.*)[\"']\)/i", $v->type, $reg)) {
+                    if (preg_match("/([a-z]+)\\([\"'](.*)[\"']\\)/i", $v->type, $reg)) {
                         $atype = $reg[1];
                         $aformat = $reg[2];
                         if ($atype == "idoc") {
