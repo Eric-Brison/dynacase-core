@@ -30,7 +30,7 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
     /**
      * @dataProvider dataComputedValues
      */
-    public function testComputedValue(array $inputs, array $expectedvalues)
+    public function testComputedValue(array $inputs, array $expectedvalues, array $logMatch)
     {
         static $d = null;
         if ($d === null) {
@@ -41,13 +41,25 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
         foreach ($inputs as $k => $v) {
             $d->setValue($k, $v);
         }
-        $err = $d->store();
+        
+        $tmpLogFile = tempnam(getTmpDir() , __FUNCTION__);
+        $d->log = new \Log($tmpLogFile, $d->log->application, $d->log->function);
+        
+        $info = new \storeInfo();
+        $err = $d->store($info);
+        
+        $log = file_get_contents($tmpLogFile);
+        unlink($tmpLogFile);
         
         $this->assertEmpty($err, sprintf("cannot modify %s document", $this->famName));
         foreach ($expectedvalues as $k => $v) {
             if (is_array($v)) $value = $d->getMultipleRawValues($k);
             else $value = $d->getRawValue($k);
             $this->assertEquals($v, $value, sprintf("error computed %s", $k));
+        }
+        $this->assertEmpty($info->refresh, sprintf("refresh returned with unexpected error: %s", $info->refresh));
+        foreach ($logMatch as $re) {
+            $this->assertTrue(preg_match($re, $log) == 1, sprintf("log did not contained expected message '%s'", $re));
         }
         
         return $d;
@@ -101,7 +113,14 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
                         $y1 + $y2,
                         $z1 + $z2
                     ) ,
-                    'tst_count' => 2
+                    'tst_count' => 2,
+                    'tst_vis_i_1' => '',
+                    'tst_vis_i_2' => '',
+                    'tst_vis_i_3' => ''
+                ) ,
+                'logMatch' => array(
+                    '/\[W\].*{ATTR1800} value of attribute "tst_vis_i_1"/',
+                    '/\[W\].*{ATTR1800} value of attribute "tst_vis_i_3"/'
                 )
             );
         }
