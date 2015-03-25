@@ -1,10 +1,15 @@
 //CKEDITOR_BASEPATH = 'lib/ckeditor4/ckeditor/';
 
 window.htmlText = {};
+if (parseInt(window.CKEDITOR.version) < 4) {
+    window.htmlText._buttonSource='Source';
+} else {
+    window.htmlText._buttonSource='Sourcedialog';
+}
 
 window.htmlText.toolbars = {
     toolbar_Full:[
-        { name:'document', items:[ 'Source', '-', 'quicksave', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates' ] },
+        { name:'document', items:[ window.htmlText._buttonSource, '-', 'quicksave', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates' ] },
         { name:'clipboard', items:[ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
         { name:'editing', items:[ 'Find', 'Replace', '-', 'SelectAll', '-' ] },
         { name:'forms', items:[ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
@@ -21,7 +26,7 @@ window.htmlText.toolbars = {
         { name:'tools', items:[ 'Maximize', 'ShowBlocks', '-', 'About' ] }
     ],
     toolbar_Default:[
-        { name:'document', items:[ 'quicksave', 'Source'] },
+        { name:'document', items:[ 'quicksave', window.htmlText._buttonSource] },
         { name:'clipboard', items:[ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
         { name:'editing', items:[ 'Find', 'Replace', '-', 'SelectAll' ] },
         { name:'basicstyles', items:[ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
@@ -42,7 +47,7 @@ window.htmlText.toolbars = {
         { name:'insert', items:[ 'Image', 'Table', 'SpecialChar' ] },
         { name:'styles', items:[ 'Format', 'FontSize' ] },
         { name:'colors', items:[ 'TextColor', 'BGColor' ] },
-        { name:'tools', items:[ 'Maximize', 'Source', '-', 'About' ] }
+        { name:'tools', items:[ 'Maximize', window.htmlText._buttonSource, '-', 'About' ] }
     ],
     toolbar_Basic:[
         { name:'links', items:['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'quicksave', 'About'] }
