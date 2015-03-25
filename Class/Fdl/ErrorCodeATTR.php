@@ -429,4 +429,8 @@ class ErrorCodeATTR
      * @note declaration for an attribute can create more than one sql column
      */
     const ATTR1701 = 'too many attributes : %d (maximum sql column is %d)';
+    /**
+     * @errorCode The value of the attribute will not be computed because the visibility is 'I'
+     */
+    const ATTR1800 = "value of attribute \"%s\" with phpfunc \"%s\" will not be computed because visibility is \"I\".";
 }
