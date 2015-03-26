@@ -5830,6 +5830,33 @@ create unique index i_docir on doc(initid, revision);";
         return '';
     }
     /**
+     * Special Refresh Generated for a single attribute
+     * @param string $attrId Attribute's name
+     * @param string $callMethod Method to apply
+     * @return string Error message or empty string on succcess
+     * @throws \Dcp\Exception
+     */
+    protected function specRefreshGenAttribute($attrId, $callMethod)
+    {
+        $err = '';
+        $oAttr = $this->getAttribute($attrId);
+        if (!$oAttr) throw new Dcp\Exception(ErrorCode::getError('ATTR1212', $callMethod, $this->fromname));
+        if ($oAttr->mvisibility == 'I') {
+            $this->log->warning(ErrorCode::getError('ATTR1800', $oAttr->id, $callMethod));
+        } else {
+            if ($oAttr->inArray()) {
+                $this->completeArrayRow($oAttr->fieldSet->id);
+                $t = $this->getMultipleRawValues($attrId);
+                foreach ($t as $k => $v) {
+                    $err.= $this->setValue($attrId, $this->applyMethod($callMethod, '', $k) , $k);
+                }
+            } else {
+                $err.= $this->setValue($attrId, $this->applyMethod($callMethod));
+            }
+        }
+        return $err;
+    }
+    /**
      * recompute all computed attribut
      * and save the document in database if changes occurred
      * @api refresh document by calling specRefresh and update computed attributes
