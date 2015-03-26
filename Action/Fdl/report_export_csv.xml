@@ -68,6 +68,18 @@
                     </tr>
                     <tr>
                         <td>
+                            [TEXT:EXPORT_CSV Numeric render :]
+                        </td>
+                        <td>
+                            <select name="numericRender">
+                                [BLOCK numericRender]
+                                <option value="[key]" [selected]>[label]</option>
+                               [ENDBLOCK numericRender]
+                        </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             [TEXT:EXPORT_CSV Encoding :]
                     </td>
                         <td>

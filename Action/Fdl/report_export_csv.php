@@ -77,10 +77,17 @@ function report_export_csv(Action & $action)
     $default = isset($defaultArgument["decimalSeparator"]) ? $defaultArgument["decimalSeparator"] : '.';
     $argumentsCSV["decimalSeparator"] = $usage->addOptionalParameter("decimalSeparator", "the decimalSeparator", array() , $default);
     $default = isset($defaultArgument["dateFormat"]) ? $defaultArgument["dateFormat"] : 'US';
+    
     $argumentsCSV["dateFormat"] = $usage->addOptionalParameter("dateFormat", "the dateFormat", array(
         'US',
         'FR',
         'ISO'
+    ) , $default);
+    
+    $default = isset($defaultArgument["numericRender"]) ? $defaultArgument["numericRender"] : 'format';
+    $argumentsCSV["numericRender"] = $usage->addOptionalParameter("numericRender", "the number render", array(
+        'format',
+        'raw'
     ) , $default);
     
     $displayForm = $usage->addHiddenParameter("displayForm", "");
@@ -237,6 +244,20 @@ function report_export_csv(Action & $action)
         );
         $action->lay->setBlockData("dateFormats", $dateFormats);
         
+        $numericRender = array(
+            array(
+                "key" => "format",
+                "selected" => $isSelected("format", $argumentsCSV["numericRender"]) ,
+                "label" => _("EXPORT_CSV formatted numbers ")
+            ) ,
+            array(
+                "key" => "raw",
+                "selected" => $isSelected("raw", $argumentsCSV["numericRender"]) ,
+                "label" => _("EXPORT_CSV raw numbers")
+            )
+        );
+        $action->lay->setBlockData("numericRender", $numericRender);
+        
         $action->lay->eset("delimiter", $argumentsCSV["delimiter"]);
         $action->lay->eset("enclosure", $argumentsCSV["enclosure"]);
         $action->lay->eset("decimalSeparator", $argumentsCSV["decimalSeparator"]);
@@ -252,11 +273,11 @@ function report_export_csv(Action & $action)
         if (in_array($reportFamId, $familyIdArray)) {
             switch ($kind) {
                 case "pivot":
-                    $csvStruct = $currentDoc->generateCSVReportStruct(true, $pivot, $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh, $applyHtmlStrip);
+                    $csvStruct = $currentDoc->generateCSVReportStruct(true, $pivot, $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh, $applyHtmlStrip, $argumentsCSV["numericRender"]);
                     break;
 
                 default:
-                    $csvStruct = $currentDoc->generateCSVReportStruct(false, "", $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh, $applyHtmlStrip);
+                    $csvStruct = $currentDoc->generateCSVReportStruct(false, "", $argumentsCSV["decimalSeparator"], $argumentsCSV["dateFormat"], $refresh, $applyHtmlStrip, $argumentsCSV["numericRender"]);
             }
             $csvFile = tempnam(getTmpDir() , "csv");
             if ($csvFile === false) {
