@@ -536,7 +536,7 @@ class Report extends \Dcp\Family\Dsearch
      *
      * @return array
      */
-    public function generateCSVReportStruct($isPivotExport = false, $pivotId = "id", $separator = ".", $dateFormat = "US", $refresh = true, $stripHtmlTags = false)
+    public function generateCSVReportStruct($isPivotExport = false, $pivotId = "id", $separator = ".", $dateFormat = "US", $refresh = true, $stripHtmlTags = false, $renderNumber = "format")
     {
         require_once 'WHAT/Class.twoDimensionalArray.php';
         require_once 'FDL/Class.SearchDoc.php';
@@ -564,10 +564,10 @@ class Report extends \Dcp\Family\Dsearch
         if ($isPivotExport) {
             $search->search();
             $this->setStatus(_("Doing render"));
-            return $this->generatePivotCSV($search, $tcols, $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags);
+            return $this->generatePivotCSV($search, $tcols, $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags, $renderNumber);
         } else {
             $this->setStatus(_("Doing render"));
-            return $this->generateBasicCSV($search, $tcols, $tcolsOption, $famDoc, $refresh, $separator, $dateFormat, $stripHtmlTags);
+            return $this->generateBasicCSV($search, $tcols, $tcolsOption, $famDoc, $refresh, $separator, $dateFormat, $stripHtmlTags, $renderNumber);
         }
     }
     
@@ -580,12 +580,13 @@ class Report extends \Dcp\Family\Dsearch
         ));
     }
     
-    protected function generatePivotCSV(\SearchDoc $search, Array $columns, \Doc $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags)
+    protected function generatePivotCSV(\SearchDoc $search, Array $columns, \Doc $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags, $renderNumber = "format")
     {
         $convertFormat = array(
             "dateFormat" => $dateFormat,
             'decimalSeparator' => $separator,
-            'stripHtmlTags' => $stripHtmlTags
+            'stripHtmlTags' => $stripHtmlTags,
+            'renderNumber' => $renderNumber
         );
         
         $pivotColumnName = uniqid();
@@ -636,11 +637,11 @@ class Report extends \Dcp\Family\Dsearch
                 $currentDoc->refresh();
             }
             $pivotAttribute = $famDoc->getAttribute($pivotId);
-            $pivotValue = $pivotAttribute ? $pivotAttribute->getTextualValue($currentDoc, -1, $convertFormat) : $this->convertInternalElement($pivotId, $currentDoc);
+            $pivotValue = $pivotAttribute ? $this->getCellValue($currentDoc, $pivotAttribute, $convertFormat) : $this->convertInternalElement($pivotId, $currentDoc);
             $resultSingleArray[$pivotColumnName][] = $pivotValue;
             foreach ($singleAttributes as $currentColumnID) {
                 $currentAttribute = $famDoc->getAttribute($currentColumnID);
-                $resultSingleArray[$currentColumnID][] = $currentAttribute ? $currentAttribute->getTextualValue($currentDoc, -1, $convertFormat) : $this->convertInternalElement($currentColumnID, $currentDoc);
+                $resultSingleArray[$currentColumnID][] = $currentAttribute ? $this->getCellValue($currentDoc, $currentAttribute, $convertFormat) : $this->convertInternalElement($currentColumnID, $currentDoc);
             }
             $nbElement = 0;
             foreach ($multipleAttributes as $currentKey => $currentArrayID) {
@@ -648,7 +649,7 @@ class Report extends \Dcp\Family\Dsearch
                     $currentAttribute = $famDoc->getAttribute($currentColumnID);
                     $nbElement = count($currentDoc->getMultipleRawValues($currentColumnID));
                     for ($i = 0; $i < $nbElement; $i++) {
-                        $resultMultipleArray[$currentKey][$currentColumnID][] = $currentAttribute->getTextualValue($currentDoc, $i, $convertFormat);
+                        $resultMultipleArray[$currentKey][$currentColumnID][] = $this->getCellValue($currentDoc, $currentAttribute, $convertFormat, $i);
                     }
                 }
                 for ($i = 0; $i < $nbElement; $i++) {
@@ -690,6 +691,23 @@ class Report extends \Dcp\Family\Dsearch
         
         return $twoDimStruct->getArray();
     }
+    
+    protected function getCellValue(\Doc $doc, \BasicAttribute $oa, $format, $index = - 1)
+    {
+        if ($format["renderNumber"] === "raw" && in_array($oa->type, array(
+            "int",
+            "double",
+            "money"
+        ))) {
+            $cellValue = $doc->getRawValue($oa->id);
+            if (!empty($format["decimalSeparator"])) {
+                $cellValue = str_replace(".", $format["decimalSeparator"], $cellValue);
+            }
+            return $cellValue;
+        } else {
+            return $oa->getTextualValue($doc, $index, $format);
+        }
+    }
     /**
      * Generate a basic CSV export
      *
@@ -699,7 +717,7 @@ class Report extends \Dcp\Family\Dsearch
      *
      * @return array
      */
-    protected function generateBasicCSV(\SearchDoc $search, Array $columns, Array $displayOptions, \Doc $famDoc, $refresh, $separator, $dateFormat, $stripHtmlFormat = true)
+    protected function generateBasicCSV(\SearchDoc $search, Array $columns, Array $displayOptions, \Doc $famDoc, $refresh, $separator, $dateFormat, $stripHtmlFormat = true, $renderNumber = "format")
     {
         $fc = new \FormatCollection();
         $dl = $search->getDocumentList();
@@ -763,10 +781,21 @@ class Report extends \Dcp\Family\Dsearch
             foreach ($columns as $kc => $col) {
                 $cellValue = '';
                 if (isset($render["attributes"][$col])) {
-                    $cellValue = \FormatCollection::getDisplayValue($render["attributes"][$col], $famDoc->getAttribute($col) , -1, array(
+                    $oa = $famDoc->getAttribute($col);
+                    $cellValue = \FormatCollection::getDisplayValue($render["attributes"][$col], $oa, -1, array(
                         'displayDocId' => ($displayOptions[$kc] == "docid") ,
                         'stripHtmlTags' => $stripHtmlFormat
                     ));
+                    if ($renderNumber === "raw" && in_array($oa->type, array(
+                        "int",
+                        "double",
+                        "money"
+                    ))) {
+                        $cellValue = $render["attributes"][$col]->value;
+                        if ($separator) {
+                            $cellValue = str_replace(".", $separator, $cellValue);
+                        }
+                    }
                 } else {
                     if (isset($render["properties"][$col])) {
                         $cellValue = $render["properties"][$col];

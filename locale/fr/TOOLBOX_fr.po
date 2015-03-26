@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-23 16:52+0100\n"
-"PO-Revision-Date: 2015-02-23 16:55+0100\n"
+"POT-Creation-Date: 2015-03-26 14:57+0100\n"
+"PO-Revision-Date: 2015-03-26 14:58+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -857,7 +857,9 @@ msgstr "Fonction d'aide %s introuvable"
 msgid ""
 "Cannot import document because the ORDER line for family '%s' is incorrect: "
 "%s"
-msgstr "Le document ne peut pas être importé car la ligne ORDER pour la famille '%s' est incorrecte: %s"
+msgstr ""
+"Le document ne peut pas être importé car la ligne ORDER pour la famille '%s' "
+"est incorrecte: %s"
 
 #, php-format
 msgid "Cannot include '%s'"
@@ -1619,6 +1621,9 @@ msgstr "Type d'export :"
 msgid "EXPORT_CSV Linebreak :"
 msgstr "Retour à la ligne :"
 
+msgid "EXPORT_CSV Numeric render :"
+msgstr "Format des nombres"
+
 msgid "EXPORT_CSV Select export kind :"
 msgstr "Sélectionner le type d'export : "
 
@@ -1628,11 +1633,17 @@ msgstr "Selectionner pivot : "
 msgid "EXPORT_CSV Simple"
 msgstr "Simple"
 
+msgid "EXPORT_CSV formatted numbers "
+msgstr "Nombre formaté"
+
 msgid "EXPORT_CSV help"
 msgstr "Aide"
 
 msgid "EXPORT_CSV pivot"
 msgstr "Pivot"
+
+msgid "EXPORT_CSV raw numbers"
+msgstr "Nombre brut"
 
 msgid "EXPORT_CSV utf8"
 msgstr "UTF-8"

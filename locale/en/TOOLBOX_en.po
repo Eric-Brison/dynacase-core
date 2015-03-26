@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-23 16:52+0100\n"
-"PO-Revision-Date: 2015-02-23 10:52+0100\n"
+"POT-Creation-Date: 2015-03-26 14:57+0100\n"
+"PO-Revision-Date: 2015-03-26 14:59+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: \n"
@@ -1586,6 +1586,9 @@ msgstr "Export type: "
 msgid "EXPORT_CSV Linebreak :"
 msgstr ""
 
+msgid "EXPORT_CSV Numeric render :"
+msgstr "Numeric Render"
+
 msgid "EXPORT_CSV Select export kind :"
 msgstr "Select export type"
 
@@ -1595,11 +1598,17 @@ msgstr "Select pivot: "
 msgid "EXPORT_CSV Simple"
 msgstr "Simple"
 
+msgid "EXPORT_CSV formatted numbers "
+msgstr "Formatted number"
+
 msgid "EXPORT_CSV help"
 msgstr "Help"
 
 msgid "EXPORT_CSV pivot"
 msgstr "Pivot"
+
+msgid "EXPORT_CSV raw numbers"
+msgstr "Raw number"
 
 msgid "EXPORT_CSV utf8"
 msgstr "UTF-8"
