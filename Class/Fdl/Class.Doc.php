@@ -3675,31 +3675,11 @@ create unique index i_docir on doc(initid, revision);";
                                         $tvalues[$kvalue] = str_replace('&#39;', "'", $tvalues[$kvalue]);
                                         
                                         $tvalues[$kvalue] = preg_replace("/<!--.*?-->/ms", "", $tvalues[$kvalue]); //delete comments
-                                        /* Double encode the entities we want to keep encoded as entities
-                                         * after the html_entity_decode() below.
-                                        */
-                                        $tvalues[$kvalue] = preg_replace('/&(gt|lt|amp|quot|apos);/', '&amp;\1;', $tvalues[$kvalue]);
+                                        $tvalues[$kvalue] = \Dcp\Utils\htmlclean::xssClean($tvalues[$kvalue]);
                                         
-                                        $tvalues[$kvalue] = str_replace(array(
-                                            '<noscript',
-                                            '</noscript>',
-                                            '<script',
-                                            '</script>'
-                                        ) , array(
-                                            '<pre',
-                                            '</pre>',
-                                            '<pre',
-                                            '</pre>'
-                                        ) , html_entity_decode($tvalues[$kvalue], ENT_NOQUOTES, 'UTF-8'));
                                         $tvalues[$kvalue] = str_replace("[", "&#x5B;", $tvalues[$kvalue]); // need to stop auto instance
-                                        $tvalues[$kvalue] = str_replace('--quoteric--', '&amp;quot;', $tvalues[$kvalue]); // reinject original quote entity
-                                        $tvalues[$kvalue] = preg_replace("/<\/?meta[^>]*>/s", "", $tvalues[$kvalue]);
                                         if ($oattr->getOption("htmlclean") == "yes") {
-                                            $tvalues[$kvalue] = preg_replace("/<\/?span[^>]*>/s", "", $tvalues[$kvalue]);
-                                            $tvalues[$kvalue] = preg_replace("/<\/?font[^>]*>/s", "", $tvalues[$kvalue]);
-                                            $tvalues[$kvalue] = preg_replace("/<style[^>]*>.*?<\/style>/s", "", $tvalues[$kvalue]);
-                                            $tvalues[$kvalue] = preg_replace("/<([^>]*) style=\"[^\"]*\"/s", "<\\1", $tvalues[$kvalue]);
-                                            $tvalues[$kvalue] = preg_replace("/<([^>]*) class=\"[^\"]*\"/s", "<\\1", $tvalues[$kvalue]);
+                                            $tvalues[$kvalue] = \Dcp\Utils\htmlclean::cleanStyle($tvalues[$kvalue]);
                                         }
                                         break;
 

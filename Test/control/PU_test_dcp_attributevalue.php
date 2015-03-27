@@ -241,13 +241,12 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                     "tst_colint" => "1\n2",
                     "tst_coldate" => "2014-05-07\n2014-05-08",
                 )
-            ),
+            ) ,
             array(
                 "before" => array(
                     "tst_title" => "T1",
                     "tst_int" => 31,
                     "tst_file" => "text/css|123|toto.css"
-
                 ) ,
                 "after" => array(
                     "tst_title" => "T2",
@@ -259,7 +258,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                     "tst_int" => 31,
                     "tst_file" => "text/css|123|toto.css"
                 )
-            ),
+            ) ,
             array(
                 "before" => array(
                     "tst_title" => "T1",
@@ -294,13 +293,13 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                             "tst_colint" => 2,
                             "tst_coldate" => "2014-05-08",
                             "tst_files" => "text/css|234|deux.css"
-                        ),
+                        ) ,
                         array(
                             "tst_coltext" => "Trois",
                             "tst_colint" => 3,
                             "tst_coldate" => "2014-05-08",
                             "tst_files" => "text/css|345|trois.css"
-                        ),
+                        ) ,
                     ) ,
                 ) ,
                 "cnanged" => array(
@@ -671,6 +670,63 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                 'TST_TIMESTAMP',
                 '2011-11-21T12:34',
                 $iso ? '2011-11-21T12:34' : '21/11/2011T12:34'
+            ) ,
+            array(
+                'TST_HTML',
+                '<p>Hello</p>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<p>&ecirc;tre &amp; Co <i>12 &euro;</i></p>',
+                '<p>être &amp; Co <i>12 €</i></p>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<p>L\'avenir est "ici"</p>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<p>L&apos;avenir est &quot;ici&quot;</p>',
+                '<p>L&apos;avenir est "ici"</p>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<p>L&#39;avenir est &quot;ici&quot;</p>',
+                '<p>L\'avenir est "ici"</p>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<p onload="alert(1)">Hou la là</p>',
+                '<p >Hou la là</p>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<p data-onload="alert(1)">&Ccedil;&agrave; et l&agrave;</p>',
+                '<p data-onload="alert(1)">Çà et là</p>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<div>A<iframe src="about:blank"/>Z</div>',
+                '<div>AZ</div>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<div>Z<embed data="about:blank"></embed>A<meta key="zou"/></div>',
+                '<div>ZA</div>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<div class="special"><span width="30px">Hello</span></div>'
+            ) ,
+            array(
+                'TST_HTMLCLEAN',
+                '<div class="special"><span width="30px">Hello</span></div>',
+                '<div>Hello</div>'
+            ) ,
+            array(
+                'TST_HTMLCLEAN',
+                '<div><font color="#007755">Hello</font></div>',
+                '<div>Hello</div>'
             )
         );
     }
