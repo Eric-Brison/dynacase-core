@@ -32,6 +32,7 @@ function autocompletion(Action & $action)
     $enum = GetHttpVars("enum"); // special case when it is an enum
     $skey = GetHttpVars("skey"); // use only when enum (filter key)
     $acId = GetHttpVars("acid", ""); // autocompletion Id
+    $defaultphpfunc = (getHttpVars("defaultphpfunc", "no") === "yes");
     if (!empty($_SERVER["HTTP_HOST"])) {
         header('Content-type: text/xml; charset=utf-8');
     }
@@ -46,6 +47,7 @@ function autocompletion(Action & $action)
     $doc = new_Doc($dbaccess, $docid);
     $docid = $doc->id;
     $action->lay->Set("count", 0);
+    $oattr = false;
     if ($docid == 0) {
         try {
             if ($acId == '') {
@@ -87,8 +89,12 @@ function autocompletion(Action & $action)
         }
     } else {
         $oattr = $doc->GetAttribute($attrid);
-        if (!$oattr) {
-            $err = sprintf(_("unknown attribute %s") , $attrid);
+    }
+    if (!$oattr) {
+        $err = sprintf(_("unknown attribute %s") , $attrid);
+    } else {
+        if ($defaultphpfunc) {
+            resetAttrDefaultPhpFunc($oattr);
         }
     }
     
@@ -317,5 +323,25 @@ function Utf8_decode_POST()
         } else {
             $ZONE_ARGS[$k] = utf8_decode($v);
         }
+    }
+}
+
+function resetAttrDefaultPhpFunc(NormalAttribute & $oattr)
+{
+    if ($oattr->type == 'account') {
+        /* Setup default fdlGetAccounts() call */
+        $oattr->phpfile = 'fdl.php';
+        $options = $oattr->options;
+        if ($oattr->format) {
+            if ($options) {
+                $options.= '|';
+            }
+            $options.= sprintf("family=%s", $oattr->format);
+        }
+        $oattr->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', str_replace('"', '\\"', $options) , $oattr->id);
+    } else if ($oattr->type == 'docid') {
+        /* Let autocompletion() setup a default lfamily() call */
+        $oattr->phpfile = '';
+        $oattr->phpfunc = '';
     }
 }
