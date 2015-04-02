@@ -107,3 +107,13 @@ function PU_data_dcp_autocompletion_global_param($paramName, $paramValue)
         )
     );
 }
+
+function PU_data_dcp_autocompletion_defaultphpfunc($dbaccess, $ct, $relation_1, $relation_2, $relation_3)
+{
+    return array(
+        array(
+            "defaultphpfunc",
+            "defaultphpfunc"
+        )
+    );
+}
