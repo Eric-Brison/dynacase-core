@@ -383,8 +383,8 @@ function filterfunc(th, onlyUpdate) {
 
                     var dIndex=aid+getNewDocIDIndex();
                     if (!document.getElementById(dIndex)) {
-                        html += '<input autocomplete="off" autoinput="1" onfocus="recycleDocId(\''+aid+'\',\''+dIndex+'\');activeAuto(event,' + famid + ',this,\'\',\'' + aid + '\',' + aIdindex + ')"   onchange="addmdocs(\'_' + aid + '\')" type="text" name="_ilink_' + aid + '"  id="ilink_' + aid + '" attrid="ilink_'+dIndex+'" value="">';
-                        html += '<input id="ic_'+dIndex +'" type="button" onclick="recycleDocId(\''+aid+'\',\''+dIndex+'\');sendAutoChoice(event,\'' + famid + '\',this,\'ilink_'+aid +'\',null,\''+aid +'\')"  value="&#133;">';
+                        html += '<input autocomplete="off" autoinput="1" onfocus="recycleDocId(\''+aid+'\',\''+dIndex+'\');activeAuto(event, ' + famid + ', this, \'&defaultphpfunc=yes\', \'' + aid + '\', ' + aIdindex + ')"   onchange="addmdocs(\'_' + aid + '\')" type="text" name="_ilink_' + aid + '"  id="ilink_' + aid + '" attrid="ilink_'+dIndex+'" value="">';
+                        html += '<input id="ic_'+dIndex +'" type="button" onclick="recycleDocId(\''+aid+'\',\''+dIndex+'\');sendAutoChoice(event, \'' + famid + '\', this, \'ilink_' + aid + '\', \'&defaultphpfunc=yes\', \'' + aid + '\')"  value="&#133;">';
                         html += '<input id="ix_'+dIndex+'" type="button" onclick="recycleDocId(\''+aid+'\',\''+dIndex+'\');clearInputs([\'ilink_'+aid +'\',\''+aid +'\'],null,\''+aid +'\' )" title="" value="&times;">';
                         if (ismultiple) {
                             if (! document.getElementById('mdocid_work' + aid )) {

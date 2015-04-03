@@ -234,8 +234,8 @@ tr.FREEDOMBack2 td.opt {
 	   <input type="text"  size="20" id="_se_keys[rowidx]" name="_se_keys[]" value="[key]">
 	  [ENDIF ISDOCID]
 	  [IF ISDOCID]
-		<input autocomplete="off" autoinput="1"  onfocus="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');activeAuto(event,[FAMID],this,'','[DOCID_AID]','')"   onchange="addmdocs('_[DOCID_AID]')" type="text" attrid="ilink_[DOCID_AIDINDEX]" value="[DOCID_TITLE]">
-                <input id="ic[DOCID_AIDINDEX]" type="button" onclick="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');sendAutoChoice(event,'[FAMID]',this,'ilink_[DOCID_AID]',null,'[DOCID_AID]')"  value="&#133;">
+		<input autocomplete="off" autoinput="1"  onfocus="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');activeAuto(event, [FAMID], this, '&amp;defaultphpfunc=yes', '[DOCID_AID]', '')"   onchange="addmdocs('_[DOCID_AID]')" type="text" attrid="ilink_[DOCID_AIDINDEX]" value="[DOCID_TITLE]">
+                <input id="ic[DOCID_AIDINDEX]" type="button" onclick="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');sendAutoChoice(event, '[FAMID]', this, 'ilink_[DOCID_AID]', '&amp;defaultphpfunc=yes', '[DOCID_AID]')"  value="&#133;">
            <input id="ix[DOCID_AIDINDEX]" type="button" onclick="recycleDocId('[DOCID_AID]','[DOCID_AIDINDEX]');clearInputs(['ilink_[DOCID_AID]','[DOCID_AID]'],null,'[DOCID_AID]' )" title="" value="&times;">
         <input [IFNOT key]type="hidden"[ENDIF key] id="_se_keys[rowidx]"  name="_se_keys[]"  attrid="[DOCID_AIDINDEX]" value="[key]">
         [IF ISDOCIDMULTIPLE]<input type="hidden"  id="mdocid_work[DOCID_AID]" value="" onchange="$('#[DOCID_AID]').val(this.value)">[ENDIF ISDOCIDMULTIPLE]

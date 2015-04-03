@@ -42,9 +42,9 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     protected static $include_path = null;
     
     protected static $testDirectory = "DCPTEST";
-
-    protected static $importCsvEnclosure="auto";
-    protected static $importCsvSeparator="auto";
+    
+    protected static $importCsvEnclosure = "auto";
+    protected static $importCsvSeparator = "auto";
     
     protected function setUp()
     {
@@ -314,4 +314,25 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         return false;
     }
 }
-?>
+
+class LateNameResolver
+{
+    private $value = null;
+    public function __construct($value)
+    {
+        $this->value = $value;
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->resolve($this->value);
+    }
+    private function resolve($value)
+    {
+        $id = getIdFromName('', $value);
+        if (is_numeric($id)) {
+            return (string)$id;
+        }
+        return (string)$value;
+    }
+}

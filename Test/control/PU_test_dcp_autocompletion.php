@@ -487,6 +487,56 @@ class TestAutocompletion extends TestCaseDcpAction
                         'bug_5151_param'
                     )
                 )
+            ) ,
+            // defaultphpfunc=yes
+            array(
+                array(
+                    'fam' => 'TST_AUTOCOMPLETION',
+                    'attr' => 'DEFAULTPHPFUNC_DOCID',
+                    'http:vars' => array(
+                        '_ilink_defaultphpfunc_docid' => 'Test Relation',
+                        'defaultphpfunc' => 'yes'
+                    ) ,
+                    'expected:warning' => '',
+                    'expected:results' => array(
+                        array(
+                            'Test Relation 2',
+                            new \Dcp\Pu\LateNameResolver("TST_AUTOCOMPLETION_2") ,
+                            'Test Relation 2'
+                        ) ,
+                        array(
+                            'Test Relation 3',
+                            new \Dcp\Pu\LateNameResolver("TST_AUTOCOMPLETION_3") ,
+                            'Test Relation 3'
+                        )
+                    ) ,
+                    'expected:cibles' => array(
+                        'defaultphpfunc_docid',
+                        'ilink_defaultphpfunc_docid'
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    'fam' => 'TST_AUTOCOMPLETION',
+                    'attr' => 'DEFAULTPHPFUNC_ACCOUNT',
+                    'http:vars' => array(
+                        '_ilink_defaultphpfunc_account' => 'bar',
+                        'defaultphpfunc' => 'yes'
+                    ) ,
+                    'expected:warning' => '',
+                    'expected:results' => array(
+                        array(
+                            'bar bar',
+                            new \Dcp\Pu\LateNameResolver('TST_AUTOCOMPLETION_U_BAR') ,
+                            'bar bar'
+                        )
+                    ) ,
+                    'expected:cibles' => array(
+                        'defaultphpfunc_account',
+                        'ilink_defaultphpfunc_account'
+                    )
+                )
             )
         );
     }
