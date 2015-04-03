@@ -238,6 +238,33 @@ class MailTemplate extends \Dcp\Family\Document
                     }
                     $mail = getParam($aid);
                     break;
+
+                case 'RD':
+                    $recipDocId = $v['tmail_recip'];
+                    if (preg_match('/^(?P<id>\d+)/', $v['tmail_recip'], $m)) {
+                        /**
+                         * Extract document's id from tmail_recip value
+                         */
+                        $recipDocId = $m['id'];
+                    }
+                    /**
+                     * @var \IMailRecipient|\Doc $recipientDoc
+                     */
+                    $recipientDoc = new_Doc($this->dbaccess, $recipDocId, true);
+                    if (!is_object($recipientDoc) || !$recipientDoc->isAlive()) {
+                        $err = sprintf(_("Send mail error: recipient document '%s' does not exists.") , $recipDocId);
+                        $action->log->error($err);
+                        $doc->addHistoryEntry($err);
+                        return $err;
+                    }
+                    if (!is_a($recipientDoc, 'IMailRecipient')) {
+                        $err = sprintf(_("Send mail error: recipient document '%s' does not implements IMailRecipient interface.") , $recipDocId);
+                        $action->log->error($err);
+                        $doc->addHistoryEntry($err);
+                        return $err;
+                    }
+                    $mail = $recipientDoc->getMail();
+                    break;
             }
             if ($mail) $dest[$toccbcc][] = str_replace(array(
                 "\n",

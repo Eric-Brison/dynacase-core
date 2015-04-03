@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MAILTEMPLATE \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-10 15:15+0200\n"
+"PO-Revision-Date: 2015-04-07 14:18+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: \n"
@@ -60,6 +60,9 @@ msgstr "Fixed adress"
 
 msgid "MAILTEMPLATE#tmail_desttype#P"
 msgstr "Global parameters"
+
+msgid "MAILTEMPLATE#tmail_desttype#RD"
+msgstr "Recipient document"
 
 msgid "MAILTEMPLATE#tmail_desttype#WA"
 msgstr "Cycle's attribute"

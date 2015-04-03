@@ -235,6 +235,10 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         case 'P':
             return getGlobalsParameters($name);
             break;
+
+        case 'RD':
+            return recipientDocument($dbaccess, $name);
+            break;
     }
     return "error tplmail($dbaccess,$type,$famid, $name)";
 }
@@ -1352,4 +1356,56 @@ function db_query($dbaccess, $table, $filter)
     }
     
     return $t;
+}
+
+function recipientDocument($dbaccess, $name)
+{
+    $tr = array();
+    $sf = new SearchDoc($dbaccess, -1);
+    $sf->setObjectReturn();
+    $sf->overrideViewControl();
+    $sf->addFilter("atags ~* E'\\\\yMAILRECIPIENT\\\\y'");
+    $dlf = $sf->search()->getDocumentList();
+    
+    if ($dlf->count() == 0) return sprintf(_("none families are described to be used as recipient"));
+    foreach ($dlf as $fam) {
+        $cfam = createTmpDoc($dbaccess, $fam->id);
+        /**
+         * @var IMailRecipient $cfam
+         */
+        if (!is_a($cfam, "IMailRecipient")) {
+            return sprintf(_("Family '%s' does not implements IMailRecipient interface.") , $fam->name);
+        }
+        
+        $mailAttr = $cfam->getMailAttribute();
+        $s = new SearchDoc($dbaccess, $fam->id);
+        $s->setObjectReturn();
+        $s->setSlice(100);
+        if ($mailAttr) $s->addFilter("%s is not null", $mailAttr);
+        if ($name != "") {
+            if ($mailAttr) $s->addFilter("(title ~* '%s') or (%s ~* '%s')", $name, $mailAttr, $name);
+            else $s->addFilter("(title ~* '%s')", $name, $name);
+        }
+        $dl = $s->search()->getDocumentList();
+        foreach ($dl as $dest) {
+            /**
+             * @var \Dcp\Family\IUSER $dest
+             */
+            $mailTitle = $dest->getMailTitle();
+            $mail = $dest->getMail();
+            if ($mailTitle == '') {
+                $mailTitle = $mail;
+            }
+            $tr[] = array(
+                xml_entity_encode($mailTitle) ,
+                xml_entity_encode(sprintf("%d (%s)", $dest->id, $dest->getTitle())) ,
+                xml_entity_encode($dest->getTitle())
+            );
+        }
+    }
+    usort($tr, function ($a, $b)
+    {
+        return strcasecmp($a[0], $b[0]);
+    });
+    return $tr;
 }
