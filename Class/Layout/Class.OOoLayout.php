@@ -738,6 +738,88 @@ class OOoLayout extends Layout
         return true;
     }
     /**
+     *  parse images
+     */
+    protected function parseHtmlDraw()
+    {
+        $draws = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0", "frame");
+        foreach ($draws as $draw) {
+            /**
+             * @var $draw DOMElement
+             */
+            $name = trim($draw->getAttribute('draw:name'));
+            if ($name === "htmlgraphic") {
+                $this->setHtmlDraw($draw);
+            }
+        }
+    }
+    /**
+     * set image from html fragment
+     * @param DOMElement $node
+     * @param string $name
+     * @param string $value
+     */
+    protected function setHtmlDraw(DOMElement & $draw)
+    {
+        
+        $imgs = $draw->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0", "image");
+        $err = "";
+        if ($imgs->length > 0) {
+            /**
+             * @var $img DOMElement
+             */
+            $img = $imgs->item(0);
+            
+            $href = $img->getAttribute('xlink:href');
+            $fileInfo = null;
+            if (preg_match('/^file\/([0-9]+)\/([0-9]+)/', $href, $reg)) {
+                $vid = $reg[2];
+                $docid = $reg[1];
+                $docimg = new_doc('', $docid, true);
+                if ($docimg->isAlive()) {
+                    $err = $docimg->control("view");
+                    if (!$err) {
+                        $fileInfo = \Dcp\VaultManager::getFileInfo($vid);
+                    }
+                }
+            } elseif (preg_match('/action=EXPORTFILE.*docid=([0-9]+).*attrid=([a-z0_9_-]+).*index=([0-9-]+)/i', $href, $reg)) {
+                
+                $docid = $reg[1];
+                $attrid = $reg[2];
+                $index = intval($reg[3]);
+                
+                $docimg = new_doc('', $docid, true);
+                if ($docimg->isAlive()) {
+                    $err = $docimg->control("view");
+                    if (!$err) {
+                        if ($index < 0) {
+                            $fileValue = $docimg->getRawValue($attrid);
+                        } else {
+                            $fileValue = $docimg->getMultipleRawValues($attrid, '', $index);
+                        }
+                        $fileInfo = (Object)$docimg->getFileInfo($fileValue);
+                    }
+                }
+            }
+            
+            if ($fileInfo) {
+                $href = sprintf('Pictures/dcp%s', basename($fileInfo->path));
+                $img->setAttribute('xlink:href', $href);
+                $this->added_images[] = $href;
+                if (!is_dir($this->cibledir . '/Pictures')) {
+                    mkdir($this->cibledir . '/Pictures');
+                }
+                
+                if (!copy($fileInfo->path, $this->cibledir . '/' . $href)) {
+                    $err = "setHtmlDraw::file copy fail";
+                }
+                //  print_r2($this->dom->saveXML());exit;
+                
+            }
+        }
+        return $err;
+    }
+    /**
      * set image
      * @param DOMElement $node
      * @param string $name
@@ -782,10 +864,12 @@ class OOoLayout extends Layout
     protected function parseDraw()
     {
         $draws = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0", "frame");
+        
         foreach ($draws as $draw) {
             /**
              * @var $draw DOMElement
              */
+            
             $name = trim($draw->getAttribute('draw:name'));
             if (preg_match('/\[(V_[A-Z0-9_-]+)\]/', $name, $reg)) {
                 $key = $reg[1];
@@ -1753,6 +1837,8 @@ class OOoLayout extends Layout
             $pp->nodeValue = "ERROR " . "[V_" . strtoupper($attrid) . "]";
             $htmlSection->parentNode->appendChild($pp);
         }
+        
+        $this->parseHtmlDraw();
         $this->template = $this->dom->saveXML();
     }
     /**
@@ -1870,6 +1956,7 @@ class OOoLayout extends Layout
             $this->restoreProtectedValues();
             
             $this->ParseHtmlText();
+            
             $this->dom = new DOMDocument();
             if ($this->dom->loadXML($this->template)) {
                 $this->restoreSection();

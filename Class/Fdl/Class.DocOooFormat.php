@@ -462,12 +462,13 @@ class DocOooFormat
             return DocOooFormat::getHtmlTdContent($matches[1], $matches[2]);
         }
         , $html_body); // accept only text in td tag
-        $html_body = cleanhtml($html_body);
         $html_body = preg_replace_callback('/(<\/?)([^\s>]+)([^>]*)(>)/', function ($matches)
         {
-            return toxhtmltag($matches[1], $matches[2], $matches[3], $matches[4]);
+            return $this->toxhtmltag($matches[1], $matches[2], $matches[3], $matches[4]);
         }
         , $html_body); // begin tag transform to pseudo xhtml
+        $html_body = $this->cleanhtml($html_body);
+        //print_r2($html_body);exit;
         $html_body = str_replace(array(
             '\"',
             '&quot;'
@@ -536,6 +537,79 @@ class DocOooFormat
         }
         //$oooval=preg_replace("/<\/?(\w+[^:]?|\w+\s.*?)>//g", "",$oooval  );
         return $oooval;
+    }
+    /**
+     * function use by Doc::getOOoValue()
+     * use to convert html to xhtml
+     * @param string $lt the < character
+     * @param string $tag the tag name
+     * @param string $attr all attributes of tag
+     * @param string $gt the > tag
+     * @return string the new tag
+     */
+    protected function toxhtmltag($lt, $tag, $attr, $gt)
+    {
+        if ($tag === "font") return '';
+        elseif (strpos($tag, ':') > 0) {
+            return ($lt . 'xhtml:span' . $gt);
+        } else {
+            $attr = str_replace(':=', '=', $attr);
+            if ($tag === "img") {
+                if (preg_match('/width:([0-9\.]+)([a-z]*)/', $attr, $reg)) {
+                    // width in mm :
+                    switch ($reg[2]) {
+                        case "px":
+                            $width = intval($reg[1]) * 3 / 17;
+                            break;
+
+                        case "cm":
+                            $width = floatval($reg[1]) * 10;
+                            break;
+
+                        case "mm":
+                            $width = intval($reg[1]);
+                            break;
+
+                        default:
+                            $width = intval($reg[1]);
+                    }
+                    $attr = sprintf(' width="%d" ', $width) . $attr;
+                }
+                if (preg_match('/height:([0-9\.]+)([a-z]*)/', $attr, $reg)) {
+                    // width in mm
+                    switch ($reg[2]) {
+                        case "px":
+                            $height = intval($reg[1]) * 3 / 17;
+                            break;
+
+                        case "cm":
+                            $height = floatval($reg[1]) * 10;
+                            break;
+
+                        case "mm":
+                            $height = intval($reg[1]);
+                            break;
+
+                        default:
+                            $height = intval($reg[1]);
+                    }
+                    
+                    $attr = sprintf(' height="%d" ', $height) . $attr;
+                }
+            }
+            return ($lt . "xhtml:" . $tag . $attr . $gt);
+        }
+    }
+    
+    protected function cleanhtml($html)
+    {
+        $html = preg_replace("/<\/?span[^>]*>/s", "", $html);
+        $html = preg_replace("/<\/?font[^>]*>/s", "", $html);
+        $html = preg_replace("/<\/?meta[^>]*>/s", "", $html);
+        $html = preg_replace("/<style[^>]*>.*?<\/style>/s", "", $html);
+        $html = preg_replace("/<([^>]*) style=\"[^\"]*\"/s", "<\\1", $html);
+        $html = preg_replace("/<([^>]*) class=\"[^\"]*\"/s", "<\\1", $html);
+        return $html;
     }
     /**
      * format Date attribute

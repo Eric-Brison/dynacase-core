@@ -75,26 +75,6 @@ function notEmpty($a)
 }
 /**
  * function use by Doc::getOOoValue()
- * use to convert html to xhtml
- * @param string $lt the < character
- * @param string $tag the tag name
- * @param string $attr all attributes of tag
- * @param string $gt the > tag
- * @return string the new tag
- */
-function toxhtmltag($lt, $tag, $attr, $gt)
-{
-    //  print "\ntoxhtmltag($tag,$attr)\n ";
-    if ($tag == "font") return '';
-    elseif (strpos($tag, ':') > 0) {
-        return strtolower($lt . 'xhtml:span' . $gt);
-    } else {
-        $attr = str_replace(':=', '=', $attr);
-        return strtolower($lt . "xhtml:" . $tag . $attr . $gt);
-    }
-}
-/**
- * function use by Doc::getOOoValue()
  * use to trap XML parsing error : raise exception
  * @param int $errno error number
  * @param string $errstr error message
@@ -1051,6 +1031,11 @@ function xt_innerXML(&$node)
     preg_match('!\<.*?\>(.*)\</.*?\>!s', $nodeAsString, $match);
     return $match[1];
 }
+/**
+ * @param $html
+ * @return mixed
+ * @deprecated
+ */
 function cleanhtml($html)
 {
     $html = preg_replace("/<\/?span[^>]*>/s", "", $html);

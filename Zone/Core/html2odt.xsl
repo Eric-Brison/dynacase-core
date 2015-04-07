@@ -291,7 +291,7 @@
         </xsl:template>
         
         <xsl:template match="xhtml:img">
-            <draw:frame draw:style-name="fr1" draw:name="graphics1" text:anchor-type="paragraph"  svg:width="{@width}px" svg:height="{@height}px" draw:z-index="0">
+            <draw:frame draw:style-name="fr1" draw:name="htmlgraphic" text:anchor-type="as-char"  svg:width="{@width}mm" svg:height="{@height}mm" draw:z-index="0">
             <draw:image xlink:href="{@src}" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad">
                 <xsl:apply-templates/>
             </draw:image>
