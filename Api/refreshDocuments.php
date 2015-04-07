@@ -42,7 +42,20 @@ function color_warning($msg)
 $usage = new ApiUsage();
 $usage->setDefinitionText("Refresh documents ");
 $famId = $usage->addRequiredParameter("famid", "the family identifier used to filter");
-$method = $usage->addOptionalParameter("method", "method to use)", array() , "refresh");
+$method = $usage->addOptionalParameter("method", "method to use", function ($value)
+{
+    if ($value === ApiUsage::GET_USAGE) {
+        return '';
+    }
+    if (!is_string($value)) {
+        return sprintf("Invalid %s value for option --method=<methodName>", gettype($value));
+    }
+    if (strlen($value) <= 0) {
+        return sprintf("Invalid empty value for option --method=<methodName>");
+    }
+    return '';
+}
+, "refresh");
 $arg = $usage->addOptionalParameter("arg", "optional method argument to set when calling method");
 $revision = $usage->addOptionalParameter("revision", "use all revision", array(
     "yes",
@@ -58,6 +71,20 @@ $save = $usage->addOptionalParameter("save", "store mode", array(
     "light",
     "none"
 ) , "light");
+$statusFile = $usage->addOptionalParameter("status-file", "refresh's status file or '-' for STDOUT", function ($value)
+{
+    if ($value === ApiUsage::GET_USAGE) {
+        return '';
+    }
+    if (!is_string($value)) {
+        return sprintf("Invalid %s value for option --status-file=<statusFile>|'-'", gettype($value));
+    }
+    if (strlen($value) <= 0) {
+        return sprintf("Invalid empty value for option --status-file=<statusFile>|'-'");
+    }
+    return '';
+});
+$stopOnError = ($usage->addEmptyParameter("stop-on-error", "Stop processing when a document returns an error or throws an exception") !== false);
 $usage->verify();
 
 $allrev = ($revision == "yes"); // method to use
@@ -65,6 +92,10 @@ $dbaccess = $action->getParam("FREEDOM_DB");
 if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
     exit();
+}
+
+if ($statusFile === '') {
+    $statusFile = null;
 }
 
 $famtitle = "";
@@ -118,16 +149,25 @@ $card = $s->count();
 printf("\n%d %s to update with %s\n", $card, $famtitle, $method);
 
 $ret = "";
+$countAll = $card;
+$countProcessed = 0;
+$countSuccess = 0;
+$countFailure = 0;
+$exitcode = 0;
 while ($doc = $s->getNextDoc()) {
-    $usemethod = ($method && (method_exists($doc, $method)));
-    if ($method && (!method_exists($doc, $method))) {
-        printf("\nmethod not exists %s \n", $method);
+    if (!method_exists($doc, $method)) {
+        printf("\nmethod not exists '%s' \n", $method);
+        $exitcode = 1;
         break;
     }
     
+    $countProcessed++;
+    
+    $ret = '';
+    $err = '';
     $modified = false;
     $smod = '';
-    if ($usemethod) {
+    try {
         $ret = call_user_func_array(array(
             $doc,
             $method
@@ -148,14 +188,62 @@ while ($doc = $s->getNextDoc()) {
                     $modified = true;
                     break;
             }
-            $ret.= $err;
         }
+    }
+    catch(\Exception $e) {
+        $err.= $e->getMessage();
     }
     $memory = '';
     //$memory= round(memory_get_usage() / 1024)."Ko";
-    printf("%s)%s[%d] %s %s %s\n", $card, $doc->title, $doc->id, ($modified) ? '-M-' : '', $memory, color_failure($ret));
+    if ($err != '') {
+        printf("%s)%s[%d] %s %s %s\n", $card, $doc->title, $doc->id, ($modified) ? '-M-' : '', $memory, color_failure($ret . $err));
+        $countFailure++;
+        $exitcode = 1;
+    } else {
+        printf("%s)%s[%d] %s %s %s\n", $card, $doc->title, $doc->id, ($modified) ? '-M-' : '', $memory, color_success($ret));
+        $countSuccess++;
+    }
     if ($smod) print $smod;
-    
+    if ($err != '' && $stopOnError) {
+        break;
+    }
     $card--;
 }
-?>
+
+$writeStatus = function ($statusFile, $status)
+{
+    $err = '';
+    $fh = STDOUT;
+    if ($statusFile !== '-') {
+        if (file_exists($statusFile)) {
+            unlink($statusFile);
+        }
+        if (($fh = fopen($statusFile, 'x')) === false) {
+            $err = sprintf("Error creating refresh's status file '%s'.", $statusFile);
+            return $err;
+        }
+    }
+    if (fwrite($fh, $status) === false) {
+        $err = sprintf("Error writing refresh's status to file '%s'.", $statusFile);
+        fclose($fh);
+        return $err;
+    }
+    if ($fh !== STDOUT) {
+        fclose($fh);
+    }
+    return $err;
+};
+
+if ($statusFile !== null) {
+    $status = '';
+    $status.= sprintf("ALL: %d\n", $countAll);
+    $status.= sprintf("PROCESSED: %d\n", $countProcessed);
+    $status.= sprintf("FAILURE: %d\n", $countFailure);
+    $status.= sprintf("SUCCESS: %d\n", $countSuccess);
+    $err = $writeStatus($statusFile, $status);
+    if ($err !== '') {
+        printf("%s\n", $err);
+    }
+}
+
+exit($exitcode);
