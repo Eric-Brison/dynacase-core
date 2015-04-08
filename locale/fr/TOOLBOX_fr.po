@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-26 14:57+0100\n"
-"PO-Revision-Date: 2015-03-26 14:58+0100\n"
+"POT-Creation-Date: 2015-04-07 17:52+0200\n"
+"PO-Revision-Date: 2015-04-07 17:53+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -2193,6 +2193,10 @@ msgid "Family %s not exist"
 msgstr "La famille (%s) n'existe pas"
 
 #, php-format
+msgid "Family '%s' does not implements IMailRecipient interface."
+msgstr "La famille '%s' n'implémente pas l'interface IMailRecipient."
+
+#, php-format
 msgid "Family '%s' is not valid or alive."
 msgstr "La famille '%s' n'est pas valide ou en vie."
 
@@ -3712,6 +3716,19 @@ msgid ""
 msgstr ""
 "Échec lors de l'envoi du mail:  La relation vers l'attribut %s est "
 "introuvable: La clé %s n'est pas liée à un document"
+
+#, php-format
+msgid "Send mail error: recipient document '%s' does not exists."
+msgstr ""
+"Échec lors de l'envoi du mail: le document destinataire '%s' n'existe pas."
+
+#, php-format
+msgid ""
+"Send mail error: recipient document '%s' does not implements IMailRecipient "
+"interface."
+msgstr ""
+"Échec lors de l'envoi du mail: le document destinataire '%s' n'implémente "
+"pas l'interface IMailRecipient."
 
 #, php-format
 msgid "Send mail info : can't send mail %s: no sendee found"

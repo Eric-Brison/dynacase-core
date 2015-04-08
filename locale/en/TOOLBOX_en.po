@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-26 14:57+0100\n"
+"POT-Creation-Date: 2015-04-07 17:52+0200\n"
 "PO-Revision-Date: 2015-03-26 14:59+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -2105,6 +2105,10 @@ msgid "Family %s not exist"
 msgstr ""
 
 #, php-format
+msgid "Family '%s' does not implements IMailRecipient interface."
+msgstr ""
+
+#, php-format
 msgid "Family '%s' is not valid or alive."
 msgstr ""
 
@@ -3565,6 +3569,16 @@ msgstr ""
 msgid ""
 "Send mail error : Relation to attribute %s not found. Relation key %s "
 "does'nt link to a document"
+msgstr ""
+
+#, php-format
+msgid "Send mail error: recipient document '%s' does not exists."
+msgstr ""
+
+#, php-format
+msgid ""
+"Send mail error: recipient document '%s' does not implements IMailRecipient "
+"interface."
 msgstr ""
 
 #, php-format
