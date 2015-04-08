@@ -224,6 +224,7 @@ class ImportDocument
             }
             if ($v["action"] == "ignored") $hasError = true;
             if ($v["action"] == "warning") $haswarning = true;
+            $this->cr[$k]["err"] = (($this->cr[$k]["err"] != '') ? "<ul><li>" . join("</li><li>", explode("\n", $this->cr[$k]["err"])) . "</li></ul>" : "");
         }
         $nbdoc = count(array_filter($this->cr, array(
             $this,
@@ -264,7 +265,7 @@ class ImportDocument
                             if ($va != "/no change/") $chg.= "{" . $ka . ":" . str_replace("\n", "-", $va) . '}';
                         }
                     }
-                    fputs($flog, sprintf("IMPORT DOC %s : [title:%s] [id:%d] [action:%s] [changes:%s] [message:%s] %s\n", $v["err"] ? "KO" : "OK", $v["title"], $v["id"], $v["action"], $chg, str_replace("\n", "-", $v["msg"]) , $v["err"] ? ('[error:' . str_replace("\n", "-", $v["err"]) . ']') : ""));
+                    fputs($flog, sprintf("IMPORT DOC %s : [title:%s] [id:%d] [action:%s] [changes:%s] [message:%s] [specmsg:%s] %s\n", $v["err"] ? "KO" : "OK", $v["title"], $v["id"], $v["action"], $chg, str_replace("\n", "-", $v["msg"]) , ($v["err"] ? ('[error:' . str_replace("\n", "-", $v["err"]) . ']') : "") , (isset($v['specmsg']) ? str_replace("\n", "-", $v['specmsg']) : '')));
                     if ($v["err"]) $counterr++;
                     else $countok++;
                 }

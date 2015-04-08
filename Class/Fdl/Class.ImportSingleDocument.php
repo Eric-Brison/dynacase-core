@@ -57,6 +57,10 @@ class importSingleDocument
      * @var DocFam
      */
     private $doc;
+    /**
+     * @var
+     */
+    private $knownLogicalNames = array();
     
     public function __construct()
     {
@@ -329,6 +333,19 @@ class importSingleDocument
                             }
                             , $dv);
                         }
+                        if ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
+                            /**
+                             * Check for unknown logical names in docid's raw value
+                             */
+                            $unknownLogicalNames = $this->getUnknownDocIdLogicalNames($this->doc, $attr, $dv);
+                            if (count($unknownLogicalNames) > 0) {
+                                foreach ($unknownLogicalNames as $logicalName) {
+                                    $warnMsg = sprintf(_("Unknown logical name '%s' in attribute '%s'.") , $logicalName, $attr->id);
+                                    $this->doc->log->warning($warnMsg);
+                                    $this->tcr['specmsg'].= (($this->tcr['specmsg'] != '') ? "\n" . $warnMsg : $warnMsg);
+                                }
+                            }
+                        }
                         $errv = $this->doc->setValue($attr->id, $dv);
                         if ($errv) {
                             $this->setError("DOC0100", $attr->id, $errv);
@@ -552,7 +569,8 @@ class importSingleDocument
         }
         if (!$this->analyze) {
             if ($this->doc->isAffected()) {
-                $this->tcr["specmsg"] = $this->doc->Refresh(); // compute read attribute
+                $warnMsg = $this->doc->Refresh();
+                $this->tcr["specmsg"].= (($this->tcr["specmsg"] != '') ? "\n" . $warnMsg : $warnMsg); // compute read attribute
                 $msg.= $this->doc->postStore(); // compute read attribute
                 $err = $this->doc->modify();
                 if ($err == "-") $err = ""; // not really an error add addfile must be tested after
@@ -650,5 +668,49 @@ class importSingleDocument
             }
         }
     }
+    /**
+     * Parse a docid's raw value (single or multiple) for unknown logical names
+     *
+     * @param Doc $doc
+     * @param NormalAttribute $oattr
+     * @param string $value docid's raw value
+     * @return array List of unknown logical names referenced by the value
+     */
+    protected function getUnknownDocIdLogicalNames(Doc & $doc, NormalAttribute & $oattr, $value)
+    {
+        $res = array();
+        if ($value === ' ') {
+            return $res;
+        }
+        $value = trim($value, " \x0B\r"); // suppress white spaces end & begin
+        if ($oattr->repeat) {
+            $tvalues = $doc->rawValueToArray($value);
+        } else {
+            $tvalues[] = $value;
+        }
+        foreach ($tvalues as $kvalue => $avalue) {
+            if (($avalue != "") && ($avalue != "\t")) {
+                $unresolvedLogicalNames = array();
+                $tvalues[$kvalue] = $doc->resolveDocIdLogicalNames($oattr, $avalue, $unresolvedLogicalNames, $this->knownLogicalNames);
+                if (count($unresolvedLogicalNames) > 0) {
+                    $res = array_merge($res, $unresolvedLogicalNames);
+                }
+            }
+        }
+        return $res;
+    }
+    /**
+     * Set the list of known logical names to check for unknown logical names
+     * @param array $knownLogicalNames List of known logical names
+     * @return array|bool Return the previous list of known logical names or bool(false) if the given list is not an array
+     */
+    public function setKnownLogicalNames($knownLogicalNames = array())
+    {
+        if (!is_array($knownLogicalNames)) {
+            return false;
+        }
+        $old = $this->knownLogicalNames;
+        $this->knownLogicalNames = $knownLogicalNames;
+        return $old;
+    }
 }
-?>

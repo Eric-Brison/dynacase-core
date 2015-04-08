@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-07 17:52+0200\n"
+"POT-Creation-Date: 2015-04-09 14:23+0200\n"
 "PO-Revision-Date: 2015-03-26 14:59+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -3944,6 +3944,10 @@ msgstr ""
 
 #, php-format
 msgid "Unexpected transition error on workflow %s [%d] : %s"
+msgstr ""
+
+#, php-format
+msgid "Unknown logical name '%s' in attribute '%s'."
 msgstr ""
 
 #, php-format
