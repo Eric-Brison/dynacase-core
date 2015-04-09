@@ -201,16 +201,14 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      *
      * @param string $file file path
      *
-     * @return void
+     * @return array
      */
     protected static function importDocument($file)
     {
         if (is_array($file)) {
-            self::importDocuments($file);
-            return;
+            return self::importDocuments($file);
         }
         
-        $cr = array();
         global $action;
         
         $realfile = $file;
@@ -229,26 +227,28 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         $oImport->setCsvOptions(static::$importCsvSeparator, static::$importCsvEnclosure);
         //error_log(__METHOD__."import $realfile");
         $oImport->setVerifyAttributeAccess(false);
-        $oImport->importDocuments(self::getAction() , $realfile);
+        $cr = $oImport->importDocuments(self::getAction() , $realfile);
         $err = $oImport->getErrorMessage();
         if ($err) throw new \Dcp\Exception($err);
-        return;
+        return $cr;
     }
     /**
      * Import multiple files specified as a array list
      * @param array $fileList list of files to import
-     * @return void
+     * @return array
      */
     protected static function importDocuments($fileList)
     {
+        $cr = array();
         if (!is_array($fileList)) {
-            self::importDocument($fileList);
-            return;
+            $cr[] = self::importDocument($fileList);
+            return $cr;
         }
         
         foreach ($fileList as $file) {
-            self::importDocument($file);
+            $cr[] = self::importDocument($file);
         }
+        return $cr;
     }
     /**
      * Import CSV data
