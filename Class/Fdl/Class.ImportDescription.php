@@ -70,6 +70,12 @@ class importDocumentDescription
      */
     private $importedAttribute = array();
     /**
+     * Store known logical names
+     *
+     * @var array
+     */
+    private $knownLogicalNames = array();
+    /**
      * @param string $importFile
      * @throws Dcp\Exception
      */
@@ -859,6 +865,15 @@ class importDocumentDescription
         $oImportDocument->setPolicy($this->policy);
         $oImportDocument->setTargetDirectory($this->dirid);
         $oImportDocument->setVerifyAttributeAccess($this->verifyAttributeAccess);
+        /**
+         * Append current document's logical name to list of known logical names
+         * and configure the importer to use this list to check for unknown
+         * logical names
+         */
+        if ($data[2] != '' && !in_array($data[2], $this->knownLogicalNames)) {
+            $this->knownLogicalNames[] = $data[2];
+        }
+        $oImportDocument->setKnownLogicalNames($this->knownLogicalNames);
         
         $this->tcr[$this->nLine] = $oImportDocument->import($data)->getImportResult();
         

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-07 17:52+0200\n"
-"PO-Revision-Date: 2015-04-07 17:53+0200\n"
+"POT-Creation-Date: 2015-04-09 14:23+0200\n"
+"PO-Revision-Date: 2015-04-09 14:24+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -4118,6 +4118,10 @@ msgstr "Graphe non-directionnel"
 #, php-format
 msgid "Unexpected transition error on workflow %s [%d] : %s"
 msgstr "Erreur de transition sur le cycle %s [%d] : %s"
+
+#, php-format
+msgid "Unknown logical name '%s' in attribute '%s'."
+msgstr "Nom logique '%s' inconnu dans l'attribut '%s'."
 
 #, php-format
 msgid "Unlabeled menu (%s)"

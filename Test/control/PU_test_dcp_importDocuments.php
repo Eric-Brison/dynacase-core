@@ -72,7 +72,54 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
             $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
         }
     }
-    
+    /**
+     * @dataProvider dataReturnOfImportDocument
+     */
+    public function testReturnOfImportDocument($data)
+    {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
+        
+        $err = '';
+        $cr = array();
+        try {
+            $cr = $this->importDocument($data['file']);
+        }
+        catch(\Exception $e) {
+            $err = $e->getMessage();
+        }
+        $this->assertEmpty($err, sprintf("Import of '%s' returned with unexpected errors: %s", $data['file'], $err));
+        
+        foreach (array(
+            'specmsg'
+        ) as $prop) {
+            if (isset($data[$prop])) {
+                if (isset($data[$prop]['contains'])) {
+                    foreach ($data[$prop]['contains'] as $string) {
+                        $found = false;
+                        foreach ($cr as $line) {
+                            $msg = (isset($line[$prop]) ? $line[$prop] : '');
+                            if (strpos($msg, $string) !== false) {
+                                $found = true;
+                            }
+                        }
+                        $this->assertTrue($found, sprintf("Expected string '%s' not found in '%s': %s", $string, $prop, var_export($cr, true)));
+                    }
+                }
+                if (isset($data[$prop]['not:contains'])) {
+                    foreach ($data[$prop]['not:contains'] as $string) {
+                        $found = false;
+                        foreach ($cr as $line) {
+                            $msg = (isset($line[$prop]) ? $line[$prop] : '');
+                            if (strpos($msg, $string) !== false) {
+                                $found = true;
+                            }
+                        }
+                        $this->assertFalse($found, sprintf("Non-expected string '%s' found in '%s': %s", $string, $prop, var_export($cr, true)));
+                    }
+                }
+            }
+        }
+    }
     public function dataGoodDocFiles()
     {
         return array(
@@ -146,5 +193,25 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
             )
         );
     }
+    public function dataReturnOfImportDocument()
+    {
+        return array(
+            array(
+                array(
+                    "file" => "PU_data_dcp_importdocbad4.ods",
+                    "specmsg" => array(
+                        "contains" => array(
+                            "Nom logique 'TST_GOODFAMIMPDOC_4' inconnu dans l'attribut 'tst_docid_1'",
+                            "Nom logique 'TST_GOODFAMIMPDOC_4' inconnu dans l'attribut 'tst_docid_m'",
+                            "Nom logique 'TST_GOODFAMIMPDOC_4' inconnu dans l'attribut 'tst_docid_x'"
+                        ) ,
+                        "not:contains" => array(
+                            "Nom logique 'TST_GOODFAMIMPDOC_1' inconnu dans l'attribut 'tst_docid_",
+                            "Nom logique 'TST_GOODFAMIMPDOC_3' inconnu dans l'attribut 'tst_docid_"
+                        )
+                    )
+                )
+            )
+        );
+    }
 }
-?>

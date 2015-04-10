@@ -3502,38 +3502,7 @@ create unique index i_docir on doc(initid, revision);";
                                 switch ($oattr->type) {
                                     case 'account':
                                     case 'docid':
-                                        if (!is_numeric($avalue)) {
-                                            if ((!strstr($avalue, "<BR>")) && (!strstr($avalue, "\n"))) {
-                                                if ($oattr->getOption("docrev", "latest") == "latest") {
-                                                    $tvalues[$kvalue] = getInitidFromName($avalue);
-                                                } else {
-                                                    $tvalues[$kvalue] = getIdFromName($this->dbaccess, $avalue);
-                                                }
-                                            } else {
-                                                $tnames = explode("\n", $avalue);
-                                                
-                                                $tids = array();
-                                                foreach ($tnames as $lname) {
-                                                    $mids = explode("<BR>", $lname);
-                                                    $tlids = array();
-                                                    foreach ($mids as $llname) {
-                                                        if (!is_numeric($llname)) {
-                                                            if ($oattr->getOption("docrev", "latest") == "latest") {
-                                                                $llid = getInitidFromName($llname);
-                                                            } else {
-                                                                $llid = getIdFromName($this->dbaccess, $llname);
-                                                            }
-                                                            $tlids[] = $llid ? $llid : $llname;
-                                                        } else {
-                                                            $tlids[] = $llname;
-                                                        }
-                                                    }
-                                                    $tids[] = implode('<BR>', $tlids);
-                                                }
-                                                
-                                                $tvalues[$kvalue] = implode("\n", $tids);
-                                            }
-                                        }
+                                        $tvalues[$kvalue] = $this->resolveDocIdLogicalNames($oattr, $avalue);
                                         break;
 
                                     case 'enum':
@@ -9311,5 +9280,58 @@ create unique index i_docir on doc(initid, revision);";
         , $tags);
         return $tags;
     }
+    /**
+     * Parse a docid's single or multiple value and resolve logical name references
+     *
+     * The function can report unknown logical names and can take an additional list of
+     * known logical names to not report
+     * @param NormalAttribute $oattr
+     * @param string $avalue docid's raw value
+     * @param array $unknownLogicalNames Return list of unknown logical names
+     * @param array $knownLogicalNames List of known logical names that should not be reported as unknown in $unknownLogicalNames
+     * @return int|string The value with logical names replaced by their id
+     */
+    public function resolveDocIdLogicalNames(NormalAttribute & $oattr, $avalue, &$unknownLogicalNames = array() , &$knownLogicalNames = array())
+    {
+        $res = $avalue;
+        if (!is_numeric($avalue)) {
+            if ((!strstr($avalue, "<BR>")) && (!strstr($avalue, "\n"))) {
+                if ($oattr->getOption("docrev", "latest") == "latest") {
+                    $res = getInitidFromName($avalue);
+                } else {
+                    $res = getIdFromName($this->dbaccess, $avalue);
+                }
+                if ($res == '' && !in_array($avalue, $knownLogicalNames)) {
+                    $unknownLogicalNames[] = $avalue;
+                }
+            } else {
+                $tnames = explode("\n", $avalue);
+                
+                $tids = array();
+                foreach ($tnames as $lname) {
+                    $mids = explode("<BR>", $lname);
+                    $tlids = array();
+                    foreach ($mids as $llname) {
+                        if (!is_numeric($llname)) {
+                            if ($oattr->getOption("docrev", "latest") == "latest") {
+                                $llid = getInitidFromName($llname);
+                            } else {
+                                $llid = getIdFromName($this->dbaccess, $llname);
+                            }
+                            if ($llid == '' && !in_array($llname, $knownLogicalNames)) {
+                                $unknownLogicalNames[] = $llname;
+                            }
+                            $tlids[] = $llid ? $llid : $llname;
+                        } else {
+                            $tlids[] = $llname;
+                        }
+                    }
+                    $tids[] = implode('<BR>', $tlids);
+                }
+                
+                $res = implode("\n", $tids);
+            }
+        }
+        return $res;
+    }
 }
-
