@@ -584,7 +584,7 @@ class FormatCollection
             $sql = sprintf("select owner from docread where initid=%d and revision = 0", $doc->initid);
             simpleQuery($doc->dbaccess, $sql, $ownerId, true, true);
         }
-        return $this->getAccountData($ownerId, $doc);
+        return $this->getAccountData(abs($ownerId) , $doc);
     }
     
     protected function getStatusData(\Doc $doc)
@@ -683,11 +683,19 @@ class FormatCollection
     {
         $sql = sprintf("select initid, icon, title from doc128 where us_whatid='%d' and locked != -1", $accountId);
         simpleQuery("", $sql, $result, false, true);
-        return array(
-            "id" => intval($result["initid"]) ,
-            "title" => $result["title"],
-            "icon" => $doc->getIcon($result["icon"], $this->familyIconSize)
-        );
+        if ($result) {
+            return array(
+                "id" => intval($result["initid"]) ,
+                "title" => $result["title"],
+                "icon" => $doc->getIcon($result["icon"], $this->familyIconSize)
+            );
+        } else {
+            return array(
+                "id" => 0,
+                "title" => "",
+                "icon" => ""
+            );
+        }
     }
     protected function getSecurityData(\Doc $doc)
     {
@@ -776,7 +784,7 @@ class FormatCollection
             "isModified" => ($doc->lmodify == "Y") ,
             "id" => intval($doc->id) ,
             "number" => intval($doc->revision) ,
-            "createdBy" => $this->getAccountData($doc->owner, $doc)
+            "createdBy" => $this->getAccountData(abs($doc->owner) , $doc)
         );
     }
     
