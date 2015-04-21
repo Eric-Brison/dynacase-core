@@ -771,8 +771,9 @@ class OOoLayout extends Layout
             $img = $imgs->item(0);
             
             $href = $img->getAttribute('xlink:href');
-            $fileInfo = null;
-            if (preg_match('/^file\/([0-9]+)\/([0-9]+)/', $href, $reg)) {
+            $fileInfo = new VaultFileInfo();
+            
+            if (preg_match('/^file\/([^\/]+)\/([0-9]+)/', $href, $reg)) {
                 $vid = $reg[2];
                 $docid = $reg[1];
                 $docimg = new_doc('', $docid, true);
@@ -780,9 +781,13 @@ class OOoLayout extends Layout
                     $err = $docimg->control("view");
                     if (!$err) {
                         $fileInfo = \Dcp\VaultManager::getFileInfo($vid);
+                    } else {
+                        $fileInfo->path = "Images/erreur.png";
                     }
+                } else {
+                    $fileInfo->path = "Images/noimage.png";
                 }
-            } elseif (preg_match('/action=EXPORTFILE.*docid=([0-9]+).*attrid=([a-z0_9_-]+).*index=([0-9-]+)/i', $href, $reg)) {
+            } elseif (preg_match('/action=EXPORTFILE.*&docid=([^&]+).*&attrid=([a-z0_9_-]+).*index=([0-9-]+)/i', $href, $reg)) {
                 
                 $docid = $reg[1];
                 $attrid = $reg[2];
@@ -798,11 +803,14 @@ class OOoLayout extends Layout
                             $fileValue = $docimg->getMultipleRawValues($attrid, '', $index);
                         }
                         $fileInfo = (Object)$docimg->getFileInfo($fileValue);
+                    } else {
+                        $fileInfo->path = "Images/erreur.png";
                     }
+                } else {
+                    $fileInfo->path = "Images/noimage.png";
                 }
             }
-            
-            if ($fileInfo) {
+            if ($fileInfo->path) {
                 $href = sprintf('Pictures/dcp%s', basename($fileInfo->path));
                 $img->setAttribute('xlink:href', $href);
                 $this->added_images[] = $href;

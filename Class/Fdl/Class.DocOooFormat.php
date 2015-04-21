@@ -549,17 +549,18 @@ class DocOooFormat
      */
     protected function toxhtmltag($lt, $tag, $attr, $gt)
     {
+        $px2mm = 3 / 16;
         if ($tag === "font") return '';
         elseif (strpos($tag, ':') > 0) {
             return ($lt . 'xhtml:span' . $gt);
         } else {
             $attr = str_replace(':=', '=', $attr);
             if ($tag === "img") {
-                if (preg_match('/width:([0-9\.]+)([a-z]*)/', $attr, $reg)) {
+                if (preg_match('/width\s*:\s*([0-9\.]+)([a-z]*)/', $attr, $reg)) {
                     // width in mm :
                     switch ($reg[2]) {
                         case "px":
-                            $width = intval($reg[1]) * 3 / 17;
+                            $width = intval($reg[1]) * $px2mm;
                             break;
 
                         case "cm":
@@ -575,11 +576,11 @@ class DocOooFormat
                     }
                     $attr = sprintf(' width="%d" ', $width) . $attr;
                 }
-                if (preg_match('/height:([0-9\.]+)([a-z]*)/', $attr, $reg)) {
+                if (preg_match('/height\s*:\s*([0-9\.]+)([a-z]*)/', $attr, $reg)) {
                     // width in mm
                     switch ($reg[2]) {
                         case "px":
-                            $height = intval($reg[1]) * 3 / 17;
+                            $height = intval($reg[1]) * $px2mm;
                             break;
 
                         case "cm":
