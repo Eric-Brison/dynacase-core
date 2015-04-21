@@ -36,6 +36,16 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
         self::beginTransaction();
         
         self::importDocument("PU_data_dcp_oooSimpleLayout.ods");
+        self::importDocument("PU_data_dcp_oooSimpleLayout.xml");
+        // replace real img reference into document testing
+        $img = new_doc(self::$dbaccess, "TST_HTMLIMAGE");
+        self::assertTrue($img->isAlive() , "no found reference image");
+        
+        $htmlImage = new_doc(self::$dbaccess, "TST_OOOS5");
+        self::assertTrue($htmlImage->isAlive() , "no found reference html");
+        $imgInfo = $img->getFileInfo($img->getRawValue("img_file"));
+        $htmlImage->setValue("tst_html", str_replace("1234567", $imgInfo["id_file"], $htmlImage->getRawValue("tst_html")));
+        $htmlImage->modify();
     }
     
     public static function tearDownAfterClass()
@@ -81,7 +91,8 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
                 if ($entry->nodeValue == $value) $found++;
                 $foundValues[] = $entry->nodeValue;
             }
-            $this->assertGreaterThan(0, $found, sprintf("Item \"%s\" not found in %s path, found \n\t%s\n", $value, $path, implode("\n\t", $foundValues)));
+            
+            $this->assertGreaterThan(0, $found, sprintf("Item \"%s\" not found in %s path, found \n\t%s\n", print_r($value, true) , $path, implode("\n\t", $foundValues)));
         }
     }
     /**
@@ -287,6 +298,58 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
                     array(
                         "office:body//table:table/table:table-row[2]/table:table-cell[1]//text:section/text:p",
                         "C'est un test <<\"hivers\" & \"été\">>"
+                    )
+                )
+            ) ,
+            array(
+                "TST_OOOS5",
+                "PU_dcp_data_simple1.odt",
+                array(
+                    array(
+                        "office:body/office:text/text:section/text:p",
+                        "Texte"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@draw:name='htmlgraphic']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@svg:width='20mm']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@svg:height='30mm']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@draw:name='htmlgraphic']/draw:image[contains(@xlink:href,'Pictures/dcp')]",
+                        ""
+                    )
+                )
+            ) ,
+            array(
+                "TST_OOOS6",
+                "PU_dcp_data_simple1.odt",
+                array(
+                    array(
+                        "office:body/office:text/text:section/text:p",
+                        "Débutet fin."
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@draw:name='htmlgraphic']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@svg:width='48mm']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@svg:height='35mm']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@draw:name='htmlgraphic']/draw:image[contains(@xlink:href,'Pictures/dcp')]",
+                        ""
                     )
                 )
             )
