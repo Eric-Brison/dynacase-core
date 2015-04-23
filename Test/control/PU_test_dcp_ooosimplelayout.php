@@ -359,11 +359,15 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
                 array(
                     
                     array(
-                        "office:body/office:text/text:section//table:table-cell/text:p/draw:frame[@draw:name='htmlgraphic']",
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[1]//table:table-cell/text:p/draw:frame[@draw:name='htmlgraphic']",
                         ""
                     ) ,
                     array(
-                        "office:body/office:text/text:section//table:table-cell/text:p/text:span[@text:style-name='Tbold']",
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[2]//table:table-cell/text:p/draw:frame[@draw:name='htmlgraphic']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/table:table[1]/table:table-row[1]//table:table-cell/text:p/text:span[@text:style-name='Tbold']",
                         "Gras"
                     )
                 )

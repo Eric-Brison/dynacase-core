@@ -1,4 +1,4 @@
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xhtml="http://www.w3.org/1999/xhtml"
                 xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
@@ -7,7 +7,7 @@
                 xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
                 xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
                 xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:svg="http://www.w3.org/2000/svg" >
+                xmlns:svg="http://www.w3.org/2000/svg">
     <xsl:output method="xml"/>
 
 
@@ -306,7 +306,6 @@
     </xsl:template>
 
 
-
     <xsl:template match="xhtml:td|xhtml:th">
         <table:table-cell table:style-name="Table1.A1">
             <xsl:apply-templates/>
@@ -329,9 +328,10 @@
         </text:p>
     </xsl:template>
 
-    <xsl:template match="xhtml:td[text()]/xhtml:strong|xhtml:td[text()]/xhtml:b|xhtml:th[text()]/xhtml:strong|xhtml:th[text()]/xhtml:b">
+    <xsl:template
+            match="xhtml:td[text()]/xhtml:strong|xhtml:td[text()]/xhtml:b|xhtml:th[text()]/xhtml:strong|xhtml:th[text()]/xhtml:b">
 
-            <xsl:call-template name="htmlstrong"/>
+        <xsl:call-template name="htmlstrong"/>
     </xsl:template>
 
 
@@ -340,8 +340,9 @@
             <xsl:call-template name="htmlem"/>
         </text:p>
     </xsl:template>
-    <xsl:template match="xhtml:td[text()]/xhtml:em|xhtml:td[text()]/xhtml:i|xhtml:th[text()]/xhtml:em|xhtml:th[text()]/xhtml:i">
-            <xsl:call-template name="htmlem"/>
+    <xsl:template
+            match="xhtml:td[text()]/xhtml:em|xhtml:td[text()]/xhtml:i|xhtml:th[text()]/xhtml:em|xhtml:th[text()]/xhtml:i">
+        <xsl:call-template name="htmlem"/>
     </xsl:template>
 
 
@@ -352,10 +353,8 @@
     </xsl:template>
 
     <xsl:template match="xhtml:td[text()]/xhtml:u|xhtml:th[text()]/xhtml:u">
-            <xsl:call-template name="htmlu"/>
+        <xsl:call-template name="htmlu"/>
     </xsl:template>
-
-
 
 
     <xsl:template match="xhtml:td/xhtml:sup|xhtml:th/xhtml:sup">
@@ -382,9 +381,10 @@
             <xsl:apply-templates/>
         </text:p>
     </xsl:template>
-    <xsl:template match="xhtml:td[text()]/xhtml:span|xhtml:td[text()]/xhtml:div|xhtml:th[text()]/xhtml:span|xhtml:th[text()]/xhtml:div">
+    <xsl:template
+            match="xhtml:td[text()]/xhtml:span|xhtml:td[text()]/xhtml:div|xhtml:th[text()]/xhtml:span|xhtml:th[text()]/xhtml:div">
 
-            <xsl:apply-templates/>
+        <xsl:apply-templates/>
 
     </xsl:template>
 
@@ -394,12 +394,25 @@
             <xsl:call-template name="htmlimg"/>
         </text:p>
     </xsl:template>
+    <xsl:template match="xhtml:td[text()]/xhtml:img|xhtml:th[text()]/xhtml:img">
+            <xsl:call-template name="htmlimg"/>
+    </xsl:template>
+
+
+    <xsl:template name="htmla" match="xhtml:a">
+        <text:a xlink:href="{@href}">
+            <xsl:apply-templates/>
+        </text:a>
+    </xsl:template>
+
     <xsl:template match="xhtml:td/xhtml:a|xhtml:th/xhtml:a">
         <text:p>
             <xsl:call-template name="htmla"/>
         </text:p>
     </xsl:template>
-
+    <xsl:template match="xhtml:td[text()]/xhtml:a|xhtml:th[text()]/xhtml:a">
+        <xsl:call-template name="htmla"/>
+    </xsl:template>
 
 
     <!-- match all ignored tag in cell -->
@@ -410,17 +423,9 @@
     </xsl:template>
 
     <xsl:template match="xhtml:td[text()]/xhtml:*|xhtml:th[text()]/xhtml:*">
-            <xsl:apply-templates/>
+        <xsl:apply-templates/>
     </xsl:template>
 
-
-
-
-    <xsl:template name="htmla" match="xhtml:a">
-        <text:a xlink:href="{@href}">
-            <xsl:apply-templates/>
-        </text:a>
-    </xsl:template>
 
     <xsl:template name="htmlimg" match="xhtml:img">
         <draw:frame draw:style-name="fr1" draw:name="htmlgraphic" text:anchor-type="as-char" svg:width="{@width}mm"
