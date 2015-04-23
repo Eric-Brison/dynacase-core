@@ -457,18 +457,13 @@ class DocOooFormat
         $html_body = str_replace("\r", "", $html_body);
         
         $html_body = preg_replace("/<!--.*?-->/ms", "", $html_body); //delete comments
-        $html_body = preg_replace_callback('/<td(\s[^>]*?)?>(.*?)<\/td>/ms', function ($matches)
-        {
-            return DocOooFormat::getHtmlTdContent($matches[1], $matches[2]);
-        }
-        , $html_body); // accept only text in td tag
+        
         $html_body = preg_replace_callback('/(<\/?)([^\s>]+)([^>]*)(>)/', function ($matches)
         {
             return $this->toxhtmltag($matches[1], $matches[2], $matches[3], $matches[4]);
         }
         , $html_body); // begin tag transform to pseudo xhtml
         $html_body = $this->cleanhtml($html_body);
-        //print_r2($html_body);exit;
         $html_body = str_replace(array(
             '\"',
             '&quot;'
@@ -484,7 +479,8 @@ class DocOooFormat
             '&lt;',
             '&gt;'
         ) , $html_body); // prevent pb for quot in quot
-        $xmldata = '<xhtml:body xmlns:xhtml="http://www.w3.org/1999/xhtml">' . $html_body . "</xhtml:body>";
+        $xmldata = '<xhtml:body xmlns:xhtml="http://www.w3.org/1999/xhtml">' . "\n" . $html_body . "</xhtml:body>";
+        
         $domHtml = new DOMDocument();
         $domHtml->load(DEFAULT_PUBDIR . "/CORE/Layout/html2odt.xsl");
         $xslt = new xsltProcessor;
@@ -513,9 +509,10 @@ class DocOooFormat
         //restore_error_handler();
         if ($dom) {
             $xmlout = $xslt->transformToXML($dom);
+            
             $dxml = new DomDocument();
             $dxml->loadXML($xmlout);
-            //office:text
+            
             $ot = $dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0", "text");
             $ot1 = $ot->item(0);
             $officetext = $ot1->ownerDocument->saveXML($ot1);
@@ -698,17 +695,6 @@ class DocOooFormat
         
         $oooval = sprintf("<span style=\"background-color:%s\">%s</span>", $avalue, $avalue);
         return $oooval;
-    }
-    /**
-     * return raw content
-     * @param string $attr html tag attributes
-     * @param string $data html content (innerHTML)
-     * @return string raw content
-     */
-    public static function getHtmlTdContent($attr, $data)
-    {
-        $data = preg_replace('|<(/?[^> ]+)(\s[^>]*?)?>|ms', '', $data); // delete all tags
-        return '<td>' . $data . '</td>';
     }
 }
 ?>
