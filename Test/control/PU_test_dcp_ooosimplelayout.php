@@ -36,6 +36,16 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
         self::beginTransaction();
         
         self::importDocument("PU_data_dcp_oooSimpleLayout.ods");
+        self::importDocument("PU_data_dcp_oooSimpleLayout.xml");
+        // replace real img reference into document testing
+        $img = new_doc(self::$dbaccess, "TST_HTMLIMAGE");
+        self::assertTrue($img->isAlive() , "no found reference image");
+        
+        $htmlImage = new_doc(self::$dbaccess, "TST_OOOS5");
+        self::assertTrue($htmlImage->isAlive() , "no found reference html");
+        $imgInfo = $img->getFileInfo($img->getRawValue("img_file"));
+        $htmlImage->setValue("tst_html", str_replace("1234567", $imgInfo["id_file"], $htmlImage->getRawValue("tst_html")));
+        $htmlImage->modify();
     }
     
     public static function tearDownAfterClass()
@@ -81,7 +91,8 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
                 if ($entry->nodeValue == $value) $found++;
                 $foundValues[] = $entry->nodeValue;
             }
-            $this->assertGreaterThan(0, $found, sprintf("Item \"%s\" not found in %s path, found \n\t%s\n", $value, $path, implode("\n\t", $foundValues)));
+            
+            $this->assertGreaterThan(0, $found, sprintf("Item \"%s\" not found in %s path, found \n\t%s\n", print_r($value, true) , $path, implode("\n\t", $foundValues)));
         }
     }
     /**
@@ -288,6 +299,196 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
                         "office:body//table:table/table:table-row[2]/table:table-cell[1]//text:section/text:p",
                         "C'est un test <<\"hivers\" & \"été\">>"
                     )
+                )
+            ) ,
+            array(
+                "TST_OOOS5",
+                "PU_dcp_data_simple1.odt",
+                array(
+                    array(
+                        "office:body/office:text/text:section/text:p",
+                        "Texte"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@draw:name='htmlgraphic']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@svg:width='20mm']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@svg:height='30mm']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@draw:name='htmlgraphic']/draw:image[contains(@xlink:href,'Pictures/dcp')]",
+                        ""
+                    )
+                )
+            ) ,
+            array(
+                "TST_OOOS6",
+                "PU_dcp_data_simple1.odt",
+                array(
+                    array(
+                        "office:body/office:text/text:section/text:p",
+                        "Débutet fin."
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@draw:name='htmlgraphic']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@svg:width='48mm']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@svg:height='35mm']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/text:p/draw:frame[@draw:name='htmlgraphic']/draw:image[contains(@xlink:href,'Pictures/dcp')]",
+                        ""
+                    )
+                )
+            ) ,
+            array(
+                "TST_OOOS7",
+                "PU_dcp_data_simple1.odt",
+                array(
+                    
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[1]//table:table-cell/text:p/draw:frame[@draw:name='htmlgraphic']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[2]//table:table-cell/text:p/draw:frame[@draw:name='htmlgraphic']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section/table:table[1]/table:table-row[1]//table:table-cell/text:p/text:span[@text:style-name='Tbold']",
+                        "Gras"
+                    )
+                )
+            ) ,
+            array(
+                "TST_OOOS8",
+                "PU_dcp_data_simple1.odt",
+                array(
+                    
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[1]//table:table-cell[1]/text:p/text:span[@text:style-name='Tbold']",
+                        "GrasP"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[1]//table:table-cell[2]/text:p/text:span[@text:style-name='Tbold']",
+                        "GrasO"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[1]//table:table-cell[1]/text:p/text:span[@text:style-name='Titalics']",
+                        "ItaliqueP"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[1]//table:table-cell[2]/text:p/text:span[@text:style-name='Titalics']",
+                        "ItaliqueO"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[1]//table:table-cell[3]/text:p",
+                        "Single text 'voilà'"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[2]//table:table-cell[1]/text:p",
+                        "Balise ignorée"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[2]//table:table-cell[2]/text:p/text:span[@text:style-name='Punderline']",
+                        "Souligné"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[2]//table:table-cell[3]/text:p",
+                        "Paragraphe normal."
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[2]//table:table-cell[4]/text:p",
+                        "Là"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[3]//table:table-cell[1]/text:p/text:span[@text:style-name='Tsub']",
+                        "Delta"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[3]//table:table-cell[1]/text:p/text:span[@text:style-name='Tbold']",
+                        "Gros"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[3]//table:table-cell[1]/text:p/text:span[@text:style-name='Titalics']",
+                        "mince"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[3]//table:table-cell[2]/text:p/text:span[@text:style-name='Tsuper']",
+                        "2"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[3]//table:table-cell[3]/text:p/text:span[@text:style-name='Tsub']",
+                        "d"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[3]//table:table-cell[4]/text:p/text:span[@text:style-name='Tsub']",
+                        "g"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[3]//table:table-cell[4]/text:p/text:span[@text:style-name='Tsuper']",
+                        "f"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[3]//table:table-cell[2]/text:p",
+                        "Y2S"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[3]//table:table-cell[3]/text:p",
+                        "Wd"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[3]//table:table-cell[4]/text:p",
+                        "Gg, Ff"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[3]//table:table-cell[1]/text:p",
+                        "XDelta Très Gros et mince"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-row[1]//table:table-cell[4]/text:p/text:a",
+                        "Goto"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]//table:table-column[@table:number-columns-repeated='4']",
+                        ""
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-header-rows//table:table-cell[1]/text:p/text:span[@text:style-name='Tbold']",
+                        "HGrasP"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-header-rows//table:table-cell[2]/text:p/text:span[@text:style-name='Tbold']",
+                        "HGrasO"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-header-rows//table:table-cell[1]/text:p/text:span[@text:style-name='Titalics']",
+                        "HItaliqueP"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-header-rows//table:table-cell[2]/text:p/text:span[@text:style-name='Titalics']",
+                        "HItaliqueO"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-header-rows//table:table-cell[3]/text:p",
+                        "Hingle text 'voilà'"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//table:table[1]/table:table-header-rows//table:table-cell[4]/text:p/text:a",
+                        "Hoto"
+                    ) ,
                 )
             )
         );

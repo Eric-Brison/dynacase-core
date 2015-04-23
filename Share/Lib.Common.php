@@ -158,8 +158,13 @@ function getTmpDir($def = '/tmp')
     if (empty($tmp)) {
         return $def;
     }
+    
     if (substr($tmp, 0, 1) != '/') {
-        $tmp = $pubdir . '/' . $tmp;
+        if ($pubdir !== ".") {
+            $tmp = $pubdir . '/' . $tmp;
+        } else {
+            $tmp = DEFAULT_PUBDIR . '/' . $tmp;
+        }
     }
     /* Try to create the directory if it does not exists */
     if (!is_dir($tmp)) {
