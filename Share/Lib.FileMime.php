@@ -217,15 +217,16 @@ function getTextMimeFile($f, $fn = '')
 }
 /**
  * get current extension from system mime
+ * @return string (empty string if no extension found)
  */
 function getExtension($smime)
 {
     include_once ("MimeExtension.php");
     $exts = getExtensions();
-    $ext = $exts[$smime];
-    if ($ext) {
-        return strtok($ext, " \n\t");
+    if (!empty($exts[$smime])) {
+        return strtok($exts[$smime], " \n\t");
     }
+    return "";
 }
 /**
  * get extension from file name
