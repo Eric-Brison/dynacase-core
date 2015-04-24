@@ -41,7 +41,7 @@ function insertfile(&$action)
     else {
         $filename = tempnam(getTmpDir() , 'txt-');
         if ($filename === false) {
-            $err = sprintf(_("Error creating temporary file in '%s'.", getTmpDir()));
+            $err = sprintf(_("Error creating temporary file in '%s'.") , getTmpDir());
         } else {
             $err = getTEFile($tid, $filename, $info);
             if ($err == "") {
@@ -79,7 +79,7 @@ function insertfile(&$action)
                     
                     $filename2 = tempnam(getTmpDir() , 'txt-');
                     if ($filename2 === false) {
-                        $err = sprintf(_("Error creating temporary file in '%s'.", getTmpDir()));
+                        $err = sprintf(_("Error creating temporary file in '%s'.") , getTmpDir());
                     } else {
                         $error = sprintf(_("Conversion as %s has failed ") , $infoout->teng_lname);
                         $error.= "\n== " . _("See below information about conversion") . "==\n" . print_r($info, true);
@@ -89,7 +89,7 @@ function insertfile(&$action)
                         $err = $vf->Save($filename2, false, $vidout);
                         $basename = _("conversion error") . ".txt";
                         $vf->Rename($vidout, $basename);
-                        $vf->storage->teng_state = TransformationEngine::error_convert;
+                        $vf->storage->teng_state = \Dcp\TransformationEngine\Client::error_convert;
                         $vf->storage->modify();
                         if ($docid) {
                             $doc = new_doc($dbaccess, $docid);
