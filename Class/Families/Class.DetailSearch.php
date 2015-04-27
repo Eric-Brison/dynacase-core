@@ -411,7 +411,7 @@ class DetailSearch extends \Dcp\Family\Search
          */
         if ($oa) {
             $atype = $oa->type;
-        } elseif (\Doc::$infofields[$col]) {
+        } elseif (!empty(\Doc::$infofields[$col])) {
             $atype = \Doc::$infofields[$col]["type"];
         }
         if (($atype == "date" || $atype == "timestamp")) {
