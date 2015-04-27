@@ -337,7 +337,7 @@ class Report extends \Dcp\Family\Dsearch
         $tDisplayOption = $this->getMultipleRawValues("REP_DISPLAYOPTION");
         foreach ($tcols as $k => & $vcol) {
             if ($vcol) {
-                $tcolumn2[$k] = $tcolumn1[$vcol];
+                $tcolumn2[$k] = isset($tcolumn1[$vcol])?$tcolumn1[$vcol]:null;
                 if ($tDisplayOption[$k] == "docid") {
                     $tcolumn2[$k]["collabel"].= ' (' . _("report:docid") . ')';
                 }
