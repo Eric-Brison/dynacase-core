@@ -696,23 +696,61 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             ) ,
             array(
                 'TST_HTML',
+                '<style>p.zou:{color:red;}</style><p class=zou">C\'est rouge</p>'
+            ) ,
+            array(
+                'TST_HTML',
                 '<p onload="alert(1)">Hou la là</p>',
                 '<p >Hou la là</p>'
             ) ,
             array(
                 'TST_HTML',
+                '<p onload=\'alert(1)\'>Hou la là quote</p>',
+                '<p >Hou la là quote</p>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<p onload = "alert(1)">Hou la là espaces</p>',
+                '<p >Hou la là espaces</p>'
+            ) ,
+            array(
+                'TST_HTML',
+                "<p onload\n=\n\t 'alert(1)' style='color:blue'>Hou la là espaces compliqués</p>",
+                "<p  style='color:blue'>Hou la là espaces compliqués</p>"
+            ) ,
+            array(
+                'TST_HTML',
+                '<p onload=\'alert(1)\'>Hou la là</p>',
+                '<p >Hou la là</p>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<script>alert("oh");</script><p data-oh="2" onclick="alert(1)" data-yo="1">Hou la là</p>',
+                'alert("oh");<p data-oh="2"  data-yo="1">Hou la là</p>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<a href="javascript:alert(1)">Hou la là</a>',
+                '<a href="nojavascript...alert(1)">Hou la là</a>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<a href="vbscript:alert(1)">Hou la là</a>',
+                '<a href="novbscript...alert(1)">Hou la là</a>'
+            ) ,
+            array(
+                'TST_HTML',
+                '<xml:a href="#Yo">Pas de domaine</xml:a>',
+                'Pas de domaine'
+            ) ,
+            array(
+                'TST_HTML',
+                '<a href="#Yo">Yo</a>'
+            ) ,
+            array(
+                'TST_HTML',
                 '<p data-onload="alert(1)">&Ccedil;&agrave; et l&agrave;</p>',
                 '<p data-onload="alert(1)">Çà et là</p>'
-            ) ,
-            array(
-                'TST_HTML',
-                '<div>A<iframe src="about:blank"/>Z</div>',
-                '<div>AZ</div>'
-            ) ,
-            array(
-                'TST_HTML',
-                '<div>Z<embed data="about:blank"></embed>A<meta key="zou"/></div>',
-                '<div>ZA</div>'
             ) ,
             array(
                 'TST_HTML',
@@ -727,7 +765,27 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                 'TST_HTMLCLEAN',
                 '<div><font color="#007755">Hello</font></div>',
                 '<div>Hello</div>'
-            )
+            ) ,
+            array(
+                'TST_HTML',
+                '<div>A<iframe style="color:red" onload="alert(1)" src="about:blank"/>Z</div>',
+                '<div>A<iframe style="color:red"  src="about:blank"/>Z</div>'
+            ) ,
+            array(
+                'TST_HTMLCLEAN',
+                '<div>A<iframe style="color:red" onload="alert(1)" src="about:blank"/>Z</div>',
+                '<div>A<iframe  src="about:blank"/>Z</div>'
+            ) ,
+            array(
+                'TST_HTMLCLEAN',
+                '<style>p.zou:{color:red;}</style><p class="zou">C\'est rouge</p>',
+                '<p>C\'est rouge</p>'
+            ) ,
+            array(
+                'TST_HTMLCLEAN',
+                '<style>p.zou:{color:red;}</style><p class=\'zou\'>C\'est rouge</p>',
+                '<p>C\'est rouge</p>'
+            ) ,
         );
     }
     

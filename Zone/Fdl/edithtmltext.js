@@ -94,6 +94,19 @@ window.htmlText.defaultOption = function (config) {
             this[property] = config[property];
         }
     }
+
+  /* Allow all tags
+    this.allowedContent = {
+        $1: {
+            // Use the ability to specify elements as an object.
+            elements: CKEDITOR.dtd,
+            attributes: true,
+            styles: true,
+            classes: true
+        }
+    };
+    this.disallowedContent = 'script; *[on*]';
+   */
 };
 
 window.htmlText.defaultOption.prototype = {
@@ -127,6 +140,7 @@ window.htmlText.defaultOption.prototype = {
 
 window.htmlText.initEditor = function initEditor(htmlId, config) {
     config = config || {};
+
     CKEDITOR.replace(htmlId, new window.htmlText.defaultOption(config));
 
     CKEDITOR.instances[htmlId].on("change", function () {
