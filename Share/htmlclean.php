@@ -36,7 +36,8 @@ class htmlclean
         $data = preg_replace('/(&#x*[0-9A-F]+);*/iu', '$1;', $data);
         $data = html_entity_decode($data, ENT_COMPAT, 'UTF-8');
         // Remove any attribute starting with "on" or xmlns
-        $data = preg_replace('#(<[^>]+?[\x00-\x20"\'])(?:on|xmlns)[^>]*+>#iu', '$1>', $data);
+        $data = preg_replace('#(<[^>]+?[\x00-\x20"\'])(?:on|xmlns)[a-z]*\s*=\s*["][^"]*["]+#iu', '$1', $data);
+        $data = preg_replace('#(<[^>]+?[\x00-\x20"\'])(?:on|xmlns)[a-z]*\s*=\s*[\'][^\']*[\']+#iu', '$1', $data);
         // Remove javascript: and vbscript: protocols
         $data = preg_replace('#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([`\'"]*)[\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu', '$1=$2nojavascript...', $data);
         $data = preg_replace('#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu', '$1=$2novbscript...', $data);
@@ -51,7 +52,7 @@ class htmlclean
         do {
             // Remove really unwanted tags
             $old_data = $data;
-            $data = preg_replace('#</*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|i(?:frame|layer)|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|title|xml)[^>]*+>#i', '', $data);
+            $data = preg_replace('#</*(?:applet|script)[^>]*+>#i', '', $data);
         } while ($old_data !== $data);
         // we are done...
         return $data;
@@ -60,13 +61,24 @@ class htmlclean
     public static function cleanStyle($data)
     {
         // Remove span tags and keep content
-        $data = preg_replace('/<\/?span[^>]*>/s', "", $data);
+        $data = preg_replace('/<\/?span[^>]*>/is', "", $data);
         // Remove font tags and keep content
-        $data = preg_replace('/<\/?font[^>]*>/s', "", $data);
+        $data = preg_replace('/<\/?font[^>]*>/is', "", $data);
         // Remove style attributes
-        $data = preg_replace('/<([^>]*) style=\"[^\"]*\"/s', "<\\1", $data);
+        $data = preg_replace('/<([^>]*) style\s*=\s*"[^"]*"/is', "<\\1", $data);
+        $data = preg_replace('/<([^>]*) style\s*=\s*\'[^\']*\'/is', "<\\1", $data);
         // Delete class attributes
-        $data = preg_replace('/<([^>]*) class=\"[^\"]*\"/s', "<\\1", $data);
+        $data = preg_replace('/<([^>]*) class\s*=\s*"[^"]*"/is', "<\\1", $data);
+        $data = preg_replace('/<([^>]*) class\s*=\s*\'[^\']*\'/is', "<\\1", $data);
+        // Delete style tags
+        $data = preg_replace('/<\s*style[^>]*>[^<]*<\/style>/iu', "", $data);
+        /*
+        do {
+            // Remove really unwanted tags
+            $old_data = $data;
+           // $data = preg_replace('#</*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|i(?:frame|layer)|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|title|xml)[^>]*+>#i', '', $data);
+        } while ($old_data !== $data);
+        */
         return $data;
     }
 }
