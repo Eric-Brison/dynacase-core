@@ -457,7 +457,6 @@ class DocOooFormat
         $html_body = str_replace("\r", "", $html_body);
         
         $html_body = preg_replace("/<!--.*?-->/ms", "", $html_body); //delete comments
-        
         $html_body = preg_replace_callback('/(<\/?)([^\s>]+)([^>]*)(>)/', function ($matches)
         {
             return $this->toxhtmltag($matches[1], $matches[2], $matches[3], $matches[4]);
@@ -552,46 +551,49 @@ class DocOooFormat
             return ($lt . 'xhtml:span' . $gt);
         } else {
             $attr = str_replace(':=', '=', $attr);
+            $inlineStyle = array();
+            if (preg_match('/\s+style\s*=\s*"(?P<style>[^"]*)"/', $attr, $m)) {
+                $inlineStyle = $this->parseInlineStyle($m['style']);
+            };
             if ($tag === "img") {
-                if (preg_match('/width\s*:\s*([0-9\.]+)([a-z]*)/', $attr, $reg)) {
+                if (isset($inlineStyle['width']) && preg_match('/^(?P<width>[0-9\.]+)(?P<unit>[a-z]*)$/', $inlineStyle['width'], $m)) {
                     // width in mm :
-                    switch ($reg[2]) {
+                    switch ($m['unit']) {
                         case "px":
-                            $width = intval($reg[1]) * $px2mm;
+                            $width = intval($m['width']) * $px2mm;
                             break;
 
                         case "cm":
-                            $width = floatval($reg[1]) * 10;
+                            $width = floatval($m['width']) * 10;
                             break;
 
                         case "mm":
-                            $width = intval($reg[1]);
+                            $width = intval($m['width']);
                             break;
 
                         default:
-                            $width = intval($reg[1]);
+                            $width = intval($m['width']);
                     }
                     $attr = sprintf(' width="%d" ', $width) . $attr;
                 }
-                if (preg_match('/height\s*:\s*([0-9\.]+)([a-z]*)/', $attr, $reg)) {
-                    // width in mm
-                    switch ($reg[2]) {
+                if (isset($inlineStyle['height']) && preg_match('/^(?P<height>[0-9\.]+)(?P<unit>[a-z]*)$/', $inlineStyle['height'], $m)) {
+                    // height in mm
+                    switch ($m['unit']) {
                         case "px":
-                            $height = intval($reg[1]) * $px2mm;
+                            $height = intval($m['height']) * $px2mm;
                             break;
 
                         case "cm":
-                            $height = floatval($reg[1]) * 10;
+                            $height = floatval($m['height']) * 10;
                             break;
 
                         case "mm":
-                            $height = intval($reg[1]);
+                            $height = intval($m['height']);
                             break;
 
                         default:
-                            $height = intval($reg[1]);
+                            $height = intval($m['height']);
                     }
-                    
                     $attr = sprintf(' height="%d" ', $height) . $attr;
                 }
             }
@@ -696,5 +698,22 @@ class DocOooFormat
         $oooval = sprintf("<span style=\"background-color:%s\">%s</span>", $avalue, $avalue);
         return $oooval;
     }
+    /**
+     * Basic inline style CSS parser
+     *
+     * Parse the value of a style="..." attribute and return a hash containing
+     * the property-names => property-values.
+     *
+     * @param $str
+     * @return array hash of property-name => property-value
+     */
+    protected function parseInlineStyle($str)
+    {
+        $rules = array();
+        preg_match_all('/(?P<propName>[\w-]+)\s*:\s*(?P<propValue>[^;]*)(;|$)/', $str, $matches, PREG_SET_ORDER);
+        foreach ($matches as $m) {
+            $rules[strtolower($m['propName']) ] = $m['propValue'];
+        }
+        return $rules;
+    }
 }
-?>
