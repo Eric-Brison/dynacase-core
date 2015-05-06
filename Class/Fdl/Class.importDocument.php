@@ -100,9 +100,9 @@ class ImportDocument
             $untardir = getTarExtractDir($action, basename($file));
             $mime = getSysMimeFile($file, basename($file));
             //print_r(array($untardir, $file, $mime));
-            $status = extractTar($file, $untardir, $mime);
-            if ($status != 0) {
-                $err = sprintf(_("cannot extract archive %s: status : %s") , $file, $status);
+            $err = extractTar($file, $untardir, $mime);
+            if ($err !== '') {
+                $err = sprintf(_("cannot extract archive %s: status : %s") , $file, $err);
                 $this->cr[] = array(
                     "err" => $err,
                     "msg" => "",

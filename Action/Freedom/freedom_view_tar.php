@@ -18,7 +18,7 @@
 
 include_once ("FREEDOM/freedom_import_tar.php");
 
-function freedom_view_tar(Action &$action)
+function freedom_view_tar(Action & $action)
 {
     
     global $_FILES;
@@ -27,9 +27,9 @@ function freedom_view_tar(Action &$action)
     $filename = GetHttpVars("filename"); // the select filename
     $dirid = GetHttpVars("dirid"); // directory to place imported doc
     $ldir = getTarUploadDir($action);
-    $selfile='';
-    $ttar=array();
-    $nbdoc=0;
+    $selfile = '';
+    $ttar = array();
+    $nbdoc = 0;
     if ($handle = opendir($ldir)) {
         while (false !== ($file = readdir($handle))) {
             if ($file[0] != ".") {
@@ -61,9 +61,10 @@ function freedom_view_tar(Action &$action)
             // need extract first
             $uploaddir = getTarUploadDir($action);
             $tar = $uploaddir . $selfile;
-            $status = extractTar($tar, $untardir);
-            if ($status == - 2) $action->AddWarningMsg(sprintf(_("cannot extract archive file %s.\nType %s not recognized as archive file") , $selfile, trim(shell_exec(sprintf("file -b %s", escapeshellarg($tar))))));
-            else if ($status != 0) $action->AddWarningMsg(sprintf(_("cannot extract archive file %s") , $selfile));
+            $err = extractTar($tar, $untardir);
+            if ($err !== '') {
+                $action->AddWarningMsg(sprintf(_("cannot extract archive file %s: %s") , $selfile, $err));
+            }
         }
         
         $nbdoc = see_directory($action, $untardir, $tfile);
