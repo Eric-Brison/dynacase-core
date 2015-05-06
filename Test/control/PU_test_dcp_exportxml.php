@@ -200,7 +200,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
         $folderId = "TEXT_FOLDER_EXPORT_IMAGE_XML";
         $famid = "TST_EXPORT_IMAGE_XML";
         $testFolder = uniqid(getTmpDir() . "/testexportimage");
-        $testExtarctFolder = uniqid(getTmpDir() . "/testexportextractimage");
+        $testExtractFolder = uniqid(getTmpDir() . "/testexportextractimage");
         mkdir($testFolder);
         $testarchivefile = $testFolder . "/xml";
         if ($type == "X") $testarchivefile.= ".zip";
@@ -209,11 +209,13 @@ class TestExportXml extends TestCaseDcpCommonFamily
         
         exportxmlfld(self::getAction() , $folderId, $famid, null, $testarchivefile, $type, "Y", null, false);
         
-        if ($type == "X") extractTar($testarchivefile, $testExtarctFolder);
-        else $testExtarctFolder = $testFolder;
+        if ($type == "X") {
+            $err = extractTar($testarchivefile, $testExtractFolder);
+            $this->assertEmpty($err, sprintf("Unexpected error while extracting archive '%s': %s", $testarchivefile, $err));
+        } else $testExtractFolder = $testFolder;
         
         $output = array();
-        exec(sprintf("cat %s/*.xml", escapeshellarg($testExtarctFolder)) , $output);
+        exec(sprintf("cat %s/*.xml", escapeshellarg($testExtractFolder)) , $output);
         foreach ($needles as $needle) {
             $found = false;
             foreach ($output as $line) {

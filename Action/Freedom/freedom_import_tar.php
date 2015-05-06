@@ -18,7 +18,7 @@
 
 include_once ("FDL/import_tar.php");
 
-function freedom_import_tar(Action &$action)
+function freedom_import_tar(Action & $action)
 {
     
     global $_FILES;
@@ -28,11 +28,11 @@ function freedom_import_tar(Action &$action)
     $onlycsv = (GetHttpVars("onlycsv") != ""); // only files described in fdl.csv files
     $analyze = (GetHttpVars("analyze", "N") == "Y"); // just analyze
     $uploaddir = getTarUploadDir($action);
-
-    $err='';
-    $fname='';
-    $report='';
-    $extract='';
+    
+    $err = '';
+    $fname = '';
+    $report = '';
+    $extract = '';
     if ($_FILES['tar']['error'] != UPLOAD_ERR_OK) {
         switch ($_FILES['tar']['error']) {
             case UPLOAD_ERR_INI_SIZE:
@@ -63,8 +63,11 @@ function freedom_import_tar(Action &$action)
             $untardir = getTarExtractDir($action, $fname);
             
             $status = extractTar($uploadfile, $untardir, $_FILES['tar']['type']);
-            if ($status == 0) $extract = sprintf(_("The file %s has been correctly extracted") , $fname);
-            else $extract = sprintf(_("The file %s cannot be extracted") , $fname);
+            if ($status === '') {
+                $extract = sprintf(_("The file %s has been correctly extracted") , $fname);
+            } else {
+                $extract = sprintf(_("The file %s cannot be extracted: %s") , $fname, $status);
+            }
         } else {
             $report = _("Possible file upload attack!  Here's some debugging info:\n");
             print_r2($_FILES);
@@ -80,38 +83,67 @@ function freedom_import_tar(Action &$action)
 function extractTar($tar, $untardir, $mime = "")
 {
     $tar = realpath($tar);
-    $mime = trim(shell_exec(sprintf("file -ib %s", escapeshellarg($tar))));
     $mime = trim(shell_exec(sprintf("file -b %s", escapeshellarg($tar))));
     $mime = substr($mime, 0, strpos($mime, " "));
     
-    $status = 0;
-    switch ($mime) {
-        case "gzip":
-        case "application/x-compressed-tar":
-        case "application/x-gzip":
-            system("/bin/rm -fr " . escapeshellarg($untardir) . "; mkdir -p " . escapeshellarg($untardir) , $status);
-            system("cd " . escapeshellarg($untardir) . " && tar xfz " . escapeshellarg($tar) . " >/dev/null", $status);
-            
-            break;
+    $err = '';
+    try {
+        switch ($mime) {
+            case "gzip":
+            case "application/x-compressed-tar":
+            case "application/x-gzip":
+                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error deleting directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error creating directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("tar -C %s -zxf %s 2>&1", escapeshellarg($untardir) , escapeshellarg($tar)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s") , $tar, $untardir, join("\n", $output)));
+                }
+                break;
 
-        case "bzip2":
-            system("/bin/rm -fr " . escapeshellarg($untardir) . "; mkdir -p " . escapeshellarg($untardir) , $status);
-            system("cd " . escapeshellarg($untardir) . " &&  tar xf " . escapeshellarg($tar) . " --use-compress-program bzip2 >/dev/null", $status);
-            
-            break;
+            case "bzip2":
+                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error deleting directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error creating directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("tar -C %s -jxf %s 2>&1", escapeshellarg($untardir) , escapeshellarg($tar)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s") , $tar, $untardir, join("\n", $output)));
+                }
+                break;
 
-        case "Zip":
-        case "application/x-zip-compressed":
-        case "application/x-zip":
-            system("/bin/rm -fr " . escapeshellarg($untardir) . "; mkdir -p " . escapeshellarg($untardir) , $status);
-            system("cd " . escapeshellarg($untardir) . " && unzip " . escapeshellarg($tar) . " >/dev/null", $status);
-            
-            WNGBDirRename($untardir);
-            break;
+            case "Zip":
+            case "application/x-zip-compressed":
+            case "application/x-zip":
+                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error deleting directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error creating directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("unzip -d %s %s 2>&1", escapeshellarg($untardir) , escapeshellarg($tar)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s") , $tar, $untardir, join("\n", $output)));
+                }
+                break;
 
-        default:
-            $status = - 2;
+            default:
+                throw new Exception(sprintf(_("Unsupported archive format '%s' for archive '%s'.") , $mime, $tar));
+        }
     }
-    return $status;
+    catch(Exception $e) {
+        $err = $e->getMessage();
+    }
+    return $err;
 }
-?>

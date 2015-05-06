@@ -39,7 +39,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         $folderId = "TEXT_FOLDER_EXPORT_IMAGE";
         $famid = "TST_EXPORT_IMAGE";
         $testFolder = uniqid(getTmpDir() . "/testexportimage");
-        $testExtarctFolder = uniqid(getTmpDir() . "/testexportextractimage");
+        $testExtractFolder = uniqid(getTmpDir() . "/testexportextractimage");
         SetHttpVar("wfile", "Y");
         SetHttpVar("eformat", "I");
         SetHttpVar("app", "FDL");
@@ -47,10 +47,11 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         exportfld(self::getAction() , $folderId, $famid, $testFolder);
         
         $testarchivefile = $testFolder . "/fdl.zip";
-        extractTar($testarchivefile, $testExtarctFolder);
+        $err = extractTar($testarchivefile, $testExtractFolder);
+        $this->assertEmpty($err, sprintf("Unexpected error while extracting archive '%s': %s", $testarchivefile, $err));
         
         $output = array();
-        exec(sprintf("ls -R %s", escapeshellarg($testExtarctFolder)) , $output);
+        exec(sprintf("ls -R %s", escapeshellarg($testExtractFolder)) , $output);
         foreach ($needles as $needle) {
             $this->assertContains($needle, $output, sprintf("file %s not found in export archive", $needle));
         }

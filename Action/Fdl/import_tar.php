@@ -352,28 +352,35 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
     }
     /**
      * rename file name which comes from windows zip
-     * @param $ldir directory to decode
-     * @return void
+     * @param string $ldir directory to decode
+     * @return string empty string on success, non-empty string with error message on failure
      */
     function WNGBDirRename($ldir)
     {
         $handle = opendir($ldir);
         if ($handle === false) {
-            return;
+            return sprintf(_("Error opening directory '%s'.") , $ldir);
         }
         while (false !== ($file = readdir($handle))) {
             if ($file[0] != ".") {
                 $afile = "$ldir/$file";
                 
                 if (is_file($afile)) {
-                    rename($afile, "$ldir/" . WNGBdecode($file));
+                    if (rename($afile, "$ldir/" . WNGBdecode($file)) === false) {
+                        return sprintf(_("Error renaming '%s' to '%s'.") , $afile, WNGBdecode($file));
+                    };
                 } else if (is_dir($afile)) {
-                    WNGBDirRename($afile);
+                    if (($err = WNGBDirRename($afile)) != '') {
+                        return $err;
+                    }
                 }
             }
         }
         
         closedir($handle);
-        rename($ldir, WNGBdecode($ldir));
+        if (rename($ldir, WNGBdecode($ldir)) === false) {
+            return sprintf(_("Error renaming '%s' to '%s'.") , $ldir, WNGBdecode($ldir));
+        }
+        return '';
     }
-?>
+    
