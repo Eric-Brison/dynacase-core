@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-09 14:23+0200\n"
-"PO-Revision-Date: 2015-03-26 14:59+0100\n"
+"POT-Creation-Date: 2015-05-06 14:57+0200\n"
+"PO-Revision-Date: 2015-05-06 15:14+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: \n"
@@ -1786,6 +1786,10 @@ msgstr ""
 msgid "Error could not open sql log file '%s' for writing."
 msgstr ""
 
+#, php-format
+msgid "Error creating directory '%s': %s"
+msgstr ""
+
 msgid "Error creating new default folder."
 msgstr ""
 
@@ -1800,6 +1804,10 @@ msgid "Error creating temporary file in '%s'."
 msgstr ""
 
 #, php-format
+msgid "Error deleting directory '%s': %s"
+msgstr ""
+
+#, php-format
 msgid "Error in portfolio : folder %s not exists"
 msgstr ""
 
@@ -1808,7 +1816,15 @@ msgid "Error opening %s file '%s'"
 msgstr ""
 
 #, php-format
+msgid "Error opening directory '%s'."
+msgstr ""
+
+#, php-format
 msgid "Error renaming '%s' to '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error extracting archive '%s' in '%s': %s"
 msgstr ""
 
 #, php-format
@@ -3827,7 +3843,7 @@ msgid "The document will be stored with \"%s\" state."
 msgstr ""
 
 #, php-format
-msgid "The file %s cannot be extracted"
+msgid "The file %s cannot be extracted: %s"
 msgstr ""
 
 #, php-format
@@ -3959,6 +3975,10 @@ msgid "Unlabeled view (%s)"
 msgstr ""
 
 msgid "Unlock"
+msgstr ""
+
+#, php-format
+msgid "Unsupported archive format '%s' for archive '%s'."
 msgstr ""
 
 msgid "Up"
@@ -4849,13 +4869,7 @@ msgid "cannot extract archive %s: status : %s"
 msgstr ""
 
 #, php-format
-msgid "cannot extract archive file %s"
-msgstr ""
-
-#, php-format
-msgid ""
-"cannot extract archive file %s.\n"
-"Type %s not recognized as archive file"
+msgid "cannot extract archive file %s: %s"
 msgstr ""
 
 #, php-format

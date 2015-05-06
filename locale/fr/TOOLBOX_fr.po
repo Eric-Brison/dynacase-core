@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-09 14:23+0200\n"
-"PO-Revision-Date: 2015-04-09 14:24+0200\n"
+"POT-Creation-Date: 2015-05-06 14:57+0200\n"
+"PO-Revision-Date: 2015-05-06 15:14+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1838,6 +1838,10 @@ msgstr ""
 msgid "Error could not open sql log file '%s' for writing."
 msgstr "Erreur: impossible d'ouvrir le fichier de log sql '%s' en écriture."
 
+#, php-format
+msgid "Error creating directory '%s': %s"
+msgstr "Erreur lors de la création du répertoire '%s': %s"
+
 msgid "Error creating new default folder."
 msgstr "Erreur de création du nouveau répertoire par défaut."
 
@@ -1852,6 +1856,10 @@ msgid "Error creating temporary file in '%s'."
 msgstr "Erreur lors de creation d'un fichier temporaire dans '%s'"
 
 #, php-format
+msgid "Error deleting directory '%s': %s"
+msgstr "Erreur lors de la suppression du répertoire '%s': %s"
+
+#, php-format
 msgid "Error in portfolio : folder %s not exists"
 msgstr "Erreur dans la chemise : dossier %s n'existe pas"
 
@@ -1860,8 +1868,16 @@ msgid "Error opening %s file '%s'"
 msgstr "Erreur lors de l'ouverture %s du fichier %s"
 
 #, php-format
+msgid "Error opening directory '%s'."
+msgstr "Erreur lors de l'ouverture du répertoire '%s'."
+
+#, php-format
 msgid "Error renaming '%s' to '%s'."
 msgstr "Erreur de renommage '%s' vers '%s'"
+
+#, php-format
+msgid "Error extracting archive '%s' in '%s': %s"
+msgstr "Erreur lors de l'extraction de l'archive '%s' dans '%s': %s"
 
 #, php-format
 msgid "Error writing content to '%s'."
@@ -3992,8 +4008,8 @@ msgid "The document will be stored with \"%s\" state."
 msgstr "Le document sera enregistré avec l'état \"%s\"."
 
 #, php-format
-msgid "The file %s cannot be extracted"
-msgstr "L'archive %s n'a pas pue être extraite"
+msgid "The file %s cannot be extracted: %s"
+msgstr "L'archive '%s' n'a pas pue être extraite: %s"
 
 #, php-format
 msgid "The file %s has been correctly extracted"
@@ -4133,6 +4149,10 @@ msgstr "Vue sans label (%s)"
 
 msgid "Unlock"
 msgstr "Déverrouiller"
+
+#, php-format
+msgid "Unsupported archive format '%s' for archive '%s'."
+msgstr "Format d'archive '%s' non-supporté pour l'archive '%s'."
 
 msgid "Up"
 msgstr "Monter"
@@ -5048,16 +5068,8 @@ msgid "cannot extract archive %s: status : %s"
 msgstr "L'archive %s n'a pas pu être extraite: statut : %s"
 
 #, php-format
-msgid "cannot extract archive file %s"
-msgstr "L'archive %s n'a pas pu être extraite"
-
-#, php-format
-msgid ""
-"cannot extract archive file %s.\n"
-"Type %s not recognized as archive file"
-msgstr ""
-"L'archive %s n'a pue être extraite\n"
-"Son type %s n'est pas reconnu en tant que fichier d'archive"
+msgid "cannot extract archive file %s: %s"
+msgstr "L'archive '%s' n'a pas pu être extraite: %s"
 
 #, php-format
 msgid "cannot get image transformation for %s"
@@ -9252,6 +9264,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "The \"Foo\" string"
 #~ msgstr "La chaîne de caractère \"Foo\""
 
+#~ msgid "The file %s cannot be extracted"
+#~ msgstr "L'archive %s n'a pas pue être extraite"
+
 #~ msgid "Timer result"
 #~ msgstr "Résultat"
 
@@ -9322,6 +9337,16 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "cannot copy %s"
 #~ msgstr "écriture impossible : %s"
+
+#~ msgid "cannot extract archive file %s"
+#~ msgstr "L'archive %s n'a pas pu être extraite"
+
+#~ msgid ""
+#~ "cannot extract archive file %s.\n"
+#~ "Type %s not recognized as archive file"
+#~ msgstr ""
+#~ "L'archive %s n'a pue être extraite\n"
+#~ "Son type %s n'est pas reconnu en tant que fichier d'archive"
 
 #~ msgid "cannot modify forum %s"
 #~ msgstr "modification du forum impossible : %s"
