@@ -266,8 +266,13 @@ class ImportDocument
                         }
                     }
                     fputs($flog, sprintf("IMPORT DOC %s : [title:%s] [id:%d] [action:%s] [changes:%s] [message:%s] [specmsg:%s] %s\n", $v["err"] ? "KO" : "OK", $v["title"], $v["id"], $v["action"], $chg, str_replace("\n", "-", $v["msg"]) , ($v["err"] ? ('[error:' . str_replace("\n", "-", $v["err"]) . ']') : "") , (isset($v['specmsg']) ? str_replace("\n", "-", $v['specmsg']) : '')));
-                    if ($v["err"]) $counterr++;
-                    else $countok++;
+                    if ($v['action'] !== 'ignored') {
+                        if ($v["err"]) {
+                            $counterr++;
+                        } else {
+                            $countok++;
+                        }
+                    }
                 }
                 fputs($flog, sprintf("IMPORT COUNT OK : %d\n", $countok));
                 fputs($flog, sprintf("IMPORT COUNT KO : %d\n", $counterr));
