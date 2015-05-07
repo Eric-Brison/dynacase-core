@@ -1532,6 +1532,9 @@ class DetailSearch extends \Dcp\Family\Search
                 $tenum = $v->getEnum();
                 $te = array();
                 foreach ($tenum as $ke => $ve) {
+                    if ($ke === ' ' || $ke === '') {
+                        continue;
+                    }
                     $te[] = array(
                         "enumkey" => $ke,
                         "enumlabel" => $ve
