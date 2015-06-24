@@ -24,15 +24,15 @@ foreach ($argv as $js_file) {
     if (empty($js)) {
         continue;
     }
-    $js_dec = json_decode($js);
+    $js_dec = json_decode($js, true);
     if ($js_dec === null) {
         error_log(sprintf("Error decoding json from '%s': %s.", $js_file, json_last_errmsg()));
         exit(2);
     }
-    foreach ($js_dec as $k => $v) {
-        $js_out[$k] = $v;
-    }
+
+    $js_out=array_merge_recursive($js_out,$js_dec);
 }
+
 
 if (count($js_out) <= 0) {
     exit(0);
