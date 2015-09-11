@@ -40,14 +40,14 @@ class cleanFamily
     {
         if (!$this->doc) return;
         
-        $orpheanAttributes = CheckDb::getOrpheanAttributes($this->doc->id);
-        if ($orpheanAttributes) {
+        $orphanAttributes = CheckDb::getOrphanAttributes($this->doc->id);
+        if ($orphanAttributes) {
             
             $sql = array();
-            foreach ($orpheanAttributes as $orpheanAttrId) {
-                $sql[] = sprintf("alter table doc%d drop column %s cascade; ", $this->doc->id, $orpheanAttrId);
+            foreach ($orphanAttributes as $orphanAttrId) {
+                $sql[] = sprintf("alter table doc%d drop column %s cascade; ", $this->doc->id, $orphanAttrId);
                 
-                $this->messages[].= "Destroy values for \"$orpheanAttrId\".";
+                $this->messages[].= "Destroy values for \"$orphanAttrId\".";
             }
             $sql[] = sprintf("create view family.\"%s\" as select * from doc%d", strtolower($this->doc->name) , $this->doc->id);
             if (!$this->dryrun) {

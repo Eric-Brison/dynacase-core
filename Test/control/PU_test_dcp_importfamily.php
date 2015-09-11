@@ -136,7 +136,7 @@ class TestImportFamily extends TestCaseDcpDocument
                     "ATTR0103",
                     "title",
                     "ATTR0200",
-                    "tst_orphean",
+                    "tst_orphan",
                     "ATTR0201",
                     "tst_invstruct",
                     "not defined",

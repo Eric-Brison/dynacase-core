@@ -700,14 +700,14 @@ class importDocumentDescription
     {
         if (!$this->doc) return;
         
-        $orpheanAttributes = CheckDb::getOrpheanAttributes($this->doc->id);
-        if ($orpheanAttributes) {
+        $orphanAttributes = CheckDb::getOrphanAttributes($this->doc->id);
+        if ($orphanAttributes) {
             
             $sql = array();
-            foreach ($orpheanAttributes as $orpheanAttrId) {
-                $sql[] = sprintf("alter table doc%d drop column %s cascade; ", $this->doc->id, $orpheanAttrId);
+            foreach ($orphanAttributes as $orphanAttrId) {
+                $sql[] = sprintf("alter table doc%d drop column %s cascade; ", $this->doc->id, $orphanAttrId);
                 
-                $this->tcr[$this->nLine]["msg"].= "\nDestroy values for \"$orpheanAttrId\".";
+                $this->tcr[$this->nLine]["msg"].= "\nDestroy values for \"$orphanAttrId\".";
             }
             $sql[] = sprintf("create view family.\"%s\" as select * from doc%d", strtolower($this->doc->name) , $this->doc->id);
             

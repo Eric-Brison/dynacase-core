@@ -437,7 +437,7 @@ class checkDb
         return $cr;
     }
     
-    public static function getOrpheanAttributes($famid)
+    public static function getOrphanAttributes($famid)
     {
         
         $d = new Doc();
@@ -459,44 +459,15 @@ class checkDb
             }
         }
         
-        $orphean = array();
+        $orphan = array();
         foreach ($res as $dbAttr) {
             if (!in_array($dbAttr, $oasIds)) {
                 if ($dbAttr != "forumid") {
-                    $orphean[] = $dbAttr;
+                    $orphan[] = $dbAttr;
                 }
             }
         }
-        return $orphean;
-    }
-    /**
-     * detected sql type inconsistence with declaration
-     * @param int $famid
-     * @throws Dcp\Exception
-     * @internal param \NormalAttribute $aoa if wan't test only one attribute
-     * @return array empty array if no error, else an item string by error detected
-     */
-    public static function verifyDbAttrOrphean($famid)
-    {
-        $cr = array();
-        /**
-         * @var DocFam $fam
-         */
-        $fam = new_doc('', $famid);
-        if ($fam->isAlive()) {
-            $orphean = self::getOrpheanAttributes($famid);
-            if ($orphean) {
-                $cr[] = sprintf("\nfamily \"%s\", column '%s' - not part of family", $fam->getTitle() , implode(",", $orphean));
-                $cr[] = sprintf("\ttry : drop view family.%s; ", strtolower($fam->name));
-                foreach ($orphean as $orpAttr) {
-                    $cr[] = sprintf("\tand : alter table doc%d drop column %s; ", $fam->id, $orpAttr);
-                }
-                $cr[] = "\n";
-            }
-        } else {
-            throw new Dcp\Exception("no family $famid");
-        }
-        return $cr;
+        return $orphan;
     }
     /**
      * verify attribute sql type
@@ -522,21 +493,165 @@ class checkDb
      * verify attribute sql type
      * @return void
      */
-    public function checkAttributeOrphean()
+    public function checkAttributeOrphan()
     {
-        $testName = 'attribute orphean';
+        $testName = 'attribute orphan';
         include_once ("../../../FDL/Class.Doc.php");
-        $err = simpleQuery('', "select id from docfam", $families, true);
-        
-        foreach ($families as $famid) {
-            $cr = $this->verifyDbAttrOrphean($famid);
-            if (count($cr) > 0) {
-                $err.= implode("<br/>", $cr);
-            }
+        if (($err = $this->computeDropColumns($treeNode)) != '') {
+            $this->tout[$testName]['status'] = self::BOF;
+            $this->tout[$testName]['msg'] = sprintf("<pre>%s</pre>", htmlspecialchars($err, ENT_QUOTES));
         }
         
-        $this->tout[$testName]['status'] = ($err) ? self::BOF : self::OK;
-        $this->tout[$testName]['msg'] = '<pre>' . $err . '</pre>';
+        $this->getSQLDropColumns($treeNode, $cmds);
+        
+        $html = '';
+        if (count($cmds) > 0) {
+            $html.= implode("<br/>", array_map(function ($v)
+            {
+                return htmlspecialchars($v, ENT_QUOTES);
+            }
+            , $cmds));
+        }
+        
+        $this->tout[$testName]['status'] = ($html) ? self::BOF : self::OK;
+        $this->tout[$testName]['msg'] = '<pre>' . $html . '</pre>';
+        
+        return;
+    }
+    /**
+     * Recursively walk up the tree node to find if a specific column has
+     * already been marked for deletion in a parent family.
+     *
+     * @param array $node The tree node starting point
+     * @param string $column The column's name to lookup for
+     * @return bool bool(true) if the column is already marked for deletion
+     *               in a parent family or bool(false) if not
+     */
+    static function isDroppedInNode(&$node, $column)
+    {
+        if (isset($node['drop'][$column])) {
+            return true;
+        }
+        if (isset($node['parent'])) {
+            return self::isDroppedInNode($node['parent'], $column);
+        }
+        return false;
+    }
+    /**
+     * Compute the required SQL commands to drop the columns marked for
+     * deletion in the given family tree.
+     *
+     * @param array $node The family tree obtained with ::computeDropColumns()
+     * @param array $cmds Resulting SQL commands
+     * @param bool $combined bool(true) to combine multiple DROP instructions
+     *                        into a single ALTER TABLE instruction,
+     *                        bool(false) to generate multiple ALTER TABLE
+     *                        instructions containing each a single DROP
+     *                        instruction.
+     */
+    public function getSQLDropColumns(&$node, &$cmds = array() , $combined = true)
+    {
+        $openTx = false;
+        if (count($cmds) <= 0) {
+            $openTx = true;
+            $cmds = array(
+                "BEGIN;",
+                ""
+            );
+        }
+        if (isset($node['drop']) && is_array($node['drop'])) {
+            if (count($node['drop']) > 0) {
+                $cmds[] = sprintf("-- Family '%s', table doc%d", $node['name'], $node['id']);
+                $alter = sprintf("ALTER TABLE doc%d", $node['id']);
+                $drops = array();
+                foreach ($node['drop'] as $column) {
+                    $drops[] = sprintf("DROP COLUMN IF EXISTS %s CASCADE", pg_escape_identifier($column));
+                }
+                if ($combined) {
+                    $alter.= "\n\t" . join(",\n\t", $drops) . ";";
+                    $cmds[] = $alter;
+                } else {
+                    foreach ($drops as $drop) {
+                        $cmds[] = $alter . " " . $drop . ";";
+                    }
+                }
+                $cmds[] = 'SELECT refreshFamilySchemaViews();';
+                $cmds[] = "";
+            }
+        }
+        if (isset($node['childs'])) {
+            foreach ($node['childs'] as & $child) {
+                $this->getSQLDropColumns($child, $cmds, $combined);
+            }
+        }
+        if ($openTx) {
+            $cmds[] = "COMMIT;";
+        }
+    }
+    /**
+     * Compute a tree of families with columns to drop
+     *
+     * @param array $node The families tree returned with columns to drop
+     * @param int $fromId Family id to start from (default is 0)
+     * @return string empty string on success, non-empty string containing the error message on failure
+     * @throws \Dcp\Db\Exception
+     */
+    public function computeDropColumns(&$node = null, $fromId = 0)
+    {
+        /*
+         * List of families ordered by parenthood:
+         * parents on top, childs at bottom
+        */
+        $sql = <<<'EOF'
+WITH RECURSIVE topfam(id, fromid) AS (
+    SELECT id, fromid FROM docfam WHERE fromid = %d
+    UNION
+    SELECT docfam.id, docfam.fromid FROM topfam, docfam WHERE docfam.fromid = topfam.id
+)
+SELECT * FROM topfam;
+EOF;
+        $sql = sprintf($sql, $fromId);
+        if (($err = simpleQuery('', $sql, $families, false, false, null)) != '') {
+            return $err;
+        }
+        
+        if ($node === null) {
+            $node = array(
+                'name' => '',
+                'id' => $fromId,
+                'childs' => array()
+            );
+        }
+        foreach ($families as $fam) {
+            $doc = new_Doc('', $fam['id']);
+            if (!is_object($doc) || !$doc->isAlive()) {
+                continue;
+            }
+            if ($fam['fromid'] != $fromId) {
+                continue;
+            }
+            $drop = array();
+            $orphans = self::getOrphanAttributes($fam['id']);
+            foreach ($orphans as $column) {
+                if (!self::isDroppedInNode($node, $column)) {
+                    $drop[$column] = $column;
+                }
+            }
+            $node['childs'][$fam['id']] = array(
+                'name' => $doc->name,
+                'id' => $fam['id'],
+                'fromid' => $fam['fromid'],
+                'drop' => $drop,
+                'parent' => & $node,
+                'childs' => array()
+            );
+        }
+        foreach ($node['childs'] as & $child) {
+            if (($err = $this->computeDropColumns($child, $child['id'])) != '') {
+                return $err;
+            }
+        }
+        return '';
     }
     /**
      * Do all analyses
@@ -559,7 +674,7 @@ class checkDb
             $this->checkMultipleAlive();
             $this->checkNetworkUser();
             $this->checkAttributeType();
-            $this->checkAttributeOrphean();
+            $this->checkAttributeOrphan();
             $this->checkcleanContext();
             $this->checkMissingDocumentsInDocread();
             $this->checkSpuriousDocumentsInDocread();
