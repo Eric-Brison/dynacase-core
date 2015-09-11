@@ -58,22 +58,26 @@ function destroyFamily($dbaccess, $idfam, $force = false)
         print "Destroying [" . $tdoc["title"] . "(" . $tdoc["name"] . ")]\n";
         $dbid = getDbId($dbaccess);
         $tsql = array();
-        if (!$force) $tsql[] = "begin;";
+        if (!$force) $tsql[] = "BEGIN;";
         $tsql+= array(
-            "delete from fld where childid in (select id from doc$resid);",
-            "delete from doc$resid;",
-            "drop view family.\"" . strtolower($resname) . "\";",
-            "delete from docname where name='$resname'",
-            "delete from docfrom where fromid=$resid",
-            "drop table doc$resid;",
-            "delete from docattr where docid=$resid;",
-            "delete from docfam where id=$resid;"
+            sprintf("DELETE FROM fld WHERE childid IN (SELECT id FROM doc%d);", $resid) ,
+            sprintf("DELETE FROM doc%d;", $resid) ,
+            sprintf("DELETE FROM docname WHERE name = %s;", pg_escape_literal($resname)) ,
+            sprintf("DELETE FROM docfrom WHERE fromid = %d;", $resid) ,
+            sprintf("DELETE FROM docattr WHERE docid = %d;", $resid) ,
+            sprintf("DELETE FROM docfam WHERE id = %d;", $resid) ,
+            sprintf("DROP VIEW IF EXISTS family.%s;", pg_escape_identifier(strtolower($resname))) ,
+            sprintf("DROP TABLE IF EXISTS doc%d;", $resid) ,
+            sprintf("DROP SEQUENCE IF EXISTS seq_doc%d;", $resid)
         );
-        if (!$force) $tsql[] = "commit;";
-        if (!unlink("FDLGEN/Class.Doc" . $tdoc["id"] . ".php")) {
-            $action->exitError("cannot destroy $idfam file");
-        } else {
-            print "delete FDLGEN file Class.Doc" . $tdoc["id"] . ".php\n";
+        if (!$force) $tsql[] = "COMMIT;";
+        $fdlgen = sprintf("FDLGEN/Class.Doc%d.php", $tdoc["id"]);
+        if (file_exists($fdlgen) && is_file($fdlgen)) {
+            if (!unlink($fdlgen)) {
+                $action->exitError("Could not delete file '%s'.", $fdlgen);
+            } else {
+                printf("Deleted file '%s'.\n", $fdlgen);
+            }
         }
         $res = "";
         foreach ($tsql as $sql) {
@@ -89,4 +93,3 @@ function destroyFamily($dbaccess, $idfam, $force = false)
         $action->exitError("cannot destroy $idfam\n");
     }
 }
-?>
