@@ -65,7 +65,20 @@ function centerZone() {
     aumilieu('main');
     aumilieu('zonehelp');
 }
+
+function appendRedirectHashFragment() {
+    if (window.location.hash == '') {
+        return;
+    }
+    var elmts = document.getElementsByName('redirect_uri');
+    for (var i = 0; i < elmts.length; i++) {
+        elmts[i].value = elmts[i].value + window.location.hash;
+    }
+}
+
 function initZone() {
+    appendRedirectHashFragment();
+
     centerZone();
     
     if (document.getElementById('zonehelp')) document.getElementById('zonehelp').style.visibility = 'hidden';
