@@ -117,6 +117,9 @@ if ($reinit == "yes") {
 if (!file_exists($filename)) {
     $action->ExitError(sprintf(_("import file %s not found") , $filename));
 }
+if (!is_file($filename)) {
+    $action->exitError(sprintf(_("import file '%s' is not a valid file") , $filename));
+}
 if ($logfile) {
     if (file_exists($logfile) && (!is_writable($logfile))) {
         $action->ExitError(sprintf(_("log file %s not writable") , $logfile));
