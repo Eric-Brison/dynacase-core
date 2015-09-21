@@ -1851,7 +1851,6 @@ create unique index i_docir on doc(initid, revision);";
                 $this->lastRefreshError = '';
                 $this->mvalues = array();
                 $this->oooFormater = null;
-                $this->textsend = array();
             }
             $this->isset = true;
         }
