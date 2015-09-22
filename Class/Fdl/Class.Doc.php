@@ -1824,6 +1824,11 @@ create unique index i_docir on doc(initid, revision);";
     {
         if (is_array($array)) {
             if ($more) $this->ResetMoreValues();
+            if ($reset) {
+                foreach ($this->fields as $key) {
+                    $this->$key = null;
+                }
+            }
             unset($this->uperm); // force recompute privileges
             foreach ($array as $k => $v) {
                 if (!is_integer($k)) {
@@ -4311,13 +4316,28 @@ create unique index i_docir on doc(initid, revision);";
         if (isset($this->values)) {
             $tvalues = explode("£", $this->values);
             $tattrids = explode("£", $this->attrids);
-            
-            foreach ($tvalues as $k => $v) {
-                $attrid = $tattrids[$k];
-                if (($attrid != "") && empty($this->$attrid)) {
-                    $this->$attrid = $v;
-                    $this->mvalues[$attrid] = $v; // to be use in getValues()
-                    
+            if (count($tvalues) === count($tattrids)) {
+                foreach ($tvalues as $k => $v) {
+                    $attrid = $tattrids[$k];
+                    if (($attrid != "") && empty($this->$attrid)) {
+                        $this->$attrid = $v;
+                        $this->mvalues[$attrid] = $v; // to be use in getValues()
+                        
+                    }
+                }
+            } else {
+                // Special case when £ characters is used in value
+                $missingAttrIds = array();
+                foreach ($tattrids as $k => $attrid) {
+                    if ($attrid && $this->$attrid === null) {
+                        $missingAttrIds[] = $attrid;
+                    }
+                }
+                if ($missingAttrIds) {
+                    $missingValues = getTDoc($this->dbaccess, $this->id, array() , $missingAttrIds);
+                    foreach ($missingValues as $attrid => $value) {
+                        $this->$attrid = $value;
+                    }
                 }
             }
         }
@@ -4329,10 +4349,10 @@ create unique index i_docir on doc(initid, revision);";
     {
         if (isset($this->values) && $this->id) {
             $tattrids = explode("£", $this->attrids);
-            
             foreach ($tattrids as $k => $v) {
-                $attrid = $tattrids[$k];
-                if ($attrid) $this->$attrid = "";
+                if ($v) {
+                    $this->$v = null;
+                }
             }
         }
         $this->mvalues = array();
@@ -9159,8 +9179,9 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $attrType empty string to returns all methods or attribute type (e.g. 'date', 'docid', 'docid("IUSER")', etc.) to restrict search to methods supporting this type
      * @return array list of array('method' => '::foo()', 'label' => 'Foo Bar Baz')
      */
-    public function getSearchMethods(/** @noinspection PhpUnusedParameterInspection */
-        $attrId, $attrType = '')
+    public function getSearchMethods(
+    /** @noinspection PhpUnusedParameterInspection */
+    $attrId, $attrType = '')
     {
         include_once ('FDL/Lib.Attr.php');
         /**
