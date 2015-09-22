@@ -70,7 +70,7 @@ function insertfile(&$action)
                     }
                     
                     $vf->Rename($vidout, $newname);
-                    $vf->storage->teng_state = 1;
+                    $vf->storage->teng_state = \Dcp\TransformationEngine\Client::status_done;
                     $vf->storage->modify();
                 } else {
                     $vf = newFreeVaultFile($dbaccess);

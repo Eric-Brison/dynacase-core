@@ -2590,10 +2590,10 @@ create unique index i_docir on doc(initid, revision);";
                 } else {
                     if ($isimage) {
                         if ($info->teng_state < 0) {
-                            if ($info->teng_state == - 1) $value = "convertfail.png";
+                            if ($info->teng_state == \Dcp\TransformationEngine\Client::error_convert) $value = "convertfail.png";
                             else $value = "convertimpossible.png";
                         } else {
-                            if ($info->teng_state == 1) $value = $info->mime_s . '|' . $info->id_file . '|' . $info->name;
+                            if ($info->teng_state == \Dcp\TransformationEngine\Client::status_done) $value = $info->mime_s . '|' . $info->id_file . '|' . $info->name;
                         }
                     } else {
                         $value = $info->mime_s . '|' . $info->id_file . '|' . $info->name;

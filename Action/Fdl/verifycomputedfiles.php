@@ -51,7 +51,7 @@ function verifycomputedfiles(Action & $action)
     $action->lay->set("delay", microtime_diff(microtime() , $mb));
     
     foreach ($files as $k => $v) {
-        if (($v["teng_state"] == 1) || ($v["teng_state"] < 0)) {
+        if (($v["teng_state"] == \Dcp\TransformationEngine\Client::status_done) || ($v["teng_state"] < 0)) {
             $files[$k]["icon"] = sprintf("resizeimg.php?img=Images/%s&amp;size=20", htmlspecialchars(getIconMimeFile($v["mime_s"]) , ENT_QUOTES));
         } else {
             $files[$k]["icon"] = "";
