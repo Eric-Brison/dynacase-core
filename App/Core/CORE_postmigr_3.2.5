@@ -25,6 +25,9 @@ if [ -d "$wpub/admin" ]; then
     (
         shopt -s nullglob dotglob
         for file in "$wpub"/admin/*; do
+            if [ "$(basename "$file")" = "index.html" ]; then
+                continue
+            fi
             mv "$file" "$wpub/supervisor/"
         done
     )
