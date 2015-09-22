@@ -30,7 +30,6 @@ class TestSearch extends TestCaseDcpCommonFamily
      */
     public function testBasicSearch($criteria, $arg, $family)
     {
-        require_once "FDL/Class.SearchDoc.php";
         $s = new \SearchDoc(self::$dbaccess, $family);
         $s->addFilter($criteria, $arg);
         $s->setObjectReturn(true);
@@ -118,7 +117,6 @@ class TestSearch extends TestCaseDcpCommonFamily
      */
     public function testCountSearch($criteria, $arg, $family, $count)
     {
-        require_once "FDL/Class.SearchDoc.php";
         $this->createDataSearch();
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
@@ -131,11 +129,13 @@ class TestSearch extends TestCaseDcpCommonFamily
     }
     /**
      * test basic search criteria
+     * @param bool $latest
+     * @param bool $distinct
+     * @param string $trash
      * @param string $criteria filter
      * @param string $arg filter argument
      * @param string $family family name or id
-     * @param integer $count expected results count
-     * @return void
+     * @param array $expectTitles
      * @dataProvider countAllRevisionCriteria
      */
     public function testCountRevisionSearch($latest, $distinct, $trash, $criteria, $arg, $family, array $expectTitles)
@@ -180,7 +180,6 @@ class TestSearch extends TestCaseDcpCommonFamily
      */
     public function testArrayCountSearch($criteria, $arg, $family, $count)
     {
-        require_once "FDL/Class.SearchDoc.php";
         $this->createDataSearch();
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
@@ -204,7 +203,6 @@ class TestSearch extends TestCaseDcpCommonFamily
      */
     public function testOnlyCountSearch($criteria, $arg, $family, $count)
     {
-        require_once "FDL/Class.SearchDoc.php";
         $this->createDataSearch();
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
@@ -227,14 +225,13 @@ class TestSearch extends TestCaseDcpCommonFamily
      * @param string $criteria filter
      * @param string $arg filter argument
      * @param string $family family name or id
-     * @param integer $count expected results count
+     * @param string $error expected error
      * @return void
      * @dataProvider countErrorCriteria
      * @depends testCountSearch
      */
     public function testOnlyCountErrorSearch($criteria, $arg, $family, $error)
     {
-        require_once "FDL/Class.SearchDoc.php";
         $this->createDataSearch();
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
@@ -256,7 +253,7 @@ class TestSearch extends TestCaseDcpCommonFamily
      * @param string $criteria filter
      * @param string $arg filter argument
      * @param string $family family name or id
-     * @param integer $count expected results count
+     * @param string $error expected error
      * @return void
      * @dataProvider countErrorCriteriaException
      * @depends testCountSearch
@@ -372,14 +369,11 @@ class TestSearch extends TestCaseDcpCommonFamily
      * @param string $criteria filter
      * @param string $arg filter argument
      * @param string $family family name or id
-     * @param integer $count expected results count
-     * @return void
      * @dataProvider countCriteria
      * @---depends testCountSearch
      */
-    public function testSliceSearch($criteria, $arg, $family, $count)
+    public function testSliceSearch($criteria, $arg, $family)
     {
-        require_once "FDL/Class.SearchDoc.php";
         $this->createDataSearch();
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
@@ -403,7 +397,6 @@ class TestSearch extends TestCaseDcpCommonFamily
      */
     public function testStartSearch($criteria, $arg, $family, $count)
     {
-        require_once "FDL/Class.SearchDoc.php";
         $this->createDataSearch();
         
         $s = new \SearchDoc(self::$dbaccess, $family);
@@ -459,7 +452,6 @@ class TestSearch extends TestCaseDcpCommonFamily
      */
     public function testCountAndResetSearch($criteria, $arg, $family, $count)
     {
-        require_once "FDL/Class.SearchDoc.php";
         $this->createDataSearch();
         $s = new \SearchDoc(self::$dbaccess, $family);
         $s->onlyCount();
@@ -481,7 +473,6 @@ class TestSearch extends TestCaseDcpCommonFamily
      */
     public function testGetOriginalQuery($test)
     {
-        require_once 'FDL/Class.SearchDoc.php';
         $fam = empty($test['search:family']) ? '' : $test['search:family'];
         $s = new \SearchDoc(self::$dbaccess, $fam);
         if (isset($test['search:filter'])) {
@@ -521,6 +512,70 @@ class TestSearch extends TestCaseDcpCommonFamily
         $spurious = array_diff($res, $expected);
         $this->assertEmpty($missing, sprintf("Unexpected missing elements [%s]: {%s}", $sql, join(', ', $missing)));
         $this->assertEmpty($spurious, sprintf("Unexpected spurious elements [%s]: {%s}", $sql, join(', ', $spurious)));
+    }
+    /**
+     * @param $famName
+     * @dataProvider dataSearchGetValue
+     */
+    public function testSearchGetValue($famName, $docName, $expectedAttr)
+    {
+        $s = new \SearchDoc("", $famName);
+        $s->setObjectReturn(true);
+        $dl = $s->search()->getDocumentList();
+        
+        foreach ($dl as $doc) {
+            if ($doc->name === $docName) {
+                foreach ($expectedAttr as $attrid => $value) {
+                    $this->assertEquals($value, $doc->getRawValue($attrid) , sprintf("attribute \"%s\"", $attrid));
+                }
+            }
+        }
+    }
+    
+    public function dataSearchGetValue()
+    {
+        return array(
+            array(
+                $this->famName,
+                "TST_GETORIGINALQUERY2_3",
+                array(
+                    "s_title" => "0",
+                    "s_text" => ""
+                )
+            ) ,
+            array(
+                $this->famName,
+                "TST_GETORIGINALQUERY2_2",
+                array(
+                    "s_title" => "1£1",
+                    "s_text" => "0"
+                )
+            ) ,
+            array(
+                "TST_GETORIGINALQUERY2",
+                "TST_GETORIGINALQUERY2_2",
+                array(
+                    "s_title" => "1£1",
+                    "s_text" => "0"
+                )
+            ) ,
+            array(
+                "",
+                "TST_GETORIGINALQUERY2_2",
+                array(
+                    "s_title" => "1£1",
+                    "s_text" => "0"
+                )
+            ) ,
+            array(
+                "",
+                "TST_GETORIGINALQUERY2_1",
+                array(
+                    "s_title" => "2",
+                    "s_text" => "Two£Four"
+                )
+            )
+        );
     }
     
     public function loginCriteria()
@@ -580,7 +635,7 @@ class TestSearch extends TestCaseDcpCommonFamily
                 "title is not null",
                 "",
                 $this->famName,
-                6 + 3 // 3 from ods file
+                6 + 3 + 3 // 3 from ods file
                 
             ) ,
             array(
@@ -636,7 +691,10 @@ class TestSearch extends TestCaseDcpCommonFamily
                     "Raisin",
                     "Un",
                     "Deux",
-                    "Trois"
+                    "Trois",
+                    "0",
+                    "1£1",
+                    "2"
                 )
             ) ,
             array(

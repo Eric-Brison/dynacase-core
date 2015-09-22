@@ -286,7 +286,7 @@ create sequence SEQ_ID_ACTION;
     public function PreInsert()
     {
         if ($this->Exists($this->name, $this->id_application)) return "Action {$this->name} already exists...";
-        $msg_res = $this->exec_query("select nextval ('seq_id_action')");
+        $this->exec_query("select nextval ('seq_id_action')");
         $arr = $this->fetch_array(0);
         $this->id = $arr["nextval"];
         return '';
@@ -302,9 +302,7 @@ create sequence SEQ_ID_ACTION;
      * shorcut to Application::getParam
      *
      * @param string $name
-     * @param string $def
-     * @internal param string $key
-     * @internal param string $default value if not set
+     * @param string $def default value if not set
      * @return string
      */
     public function getParam($name, $def = "")
@@ -393,8 +391,8 @@ create sequence SEQ_ID_ACTION;
             $sarg = $this->session->read("actdone_arg", array());
             $sact[] = $actdone;
             $sarg[] = $arg;
-            $sact = $this->session->register("actdone_name", $sact);
-            $sarg = $this->session->register("actdone_arg", $sarg);
+            $this->session->register("actdone_name", $sact);
+            $this->session->register("actdone_arg", $sarg);
         }
     }
     /**
@@ -584,7 +582,6 @@ create sequence SEQ_ID_ACTION;
         
         $this->log->push("{$this->parent->name}:{$this->name}");
         $pubdir = $this->parent->GetParam("CORE_PUBDIR");
-        $nav = $this->Read("navigator");
         if ($this->layout != "") {
             $layout = $this->GetLayoutFile($this->layout);
         } else {
@@ -741,6 +738,7 @@ create sequence SEQ_ID_ACTION;
                  */
                 $find = false;
                 reset($action_desc);
+                /** @noinspection PhpUnusedLocalVariableInspection */
                 while ((list($k2, $v2) = each($action_desc)) && (!$find)) {
                     $find = ($v2["name"] == $act->name);
                 }

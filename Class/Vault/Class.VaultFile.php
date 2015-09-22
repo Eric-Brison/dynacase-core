@@ -87,7 +87,6 @@ function retrieve($id_file, &$infos)
     if ($this->chrono) $this->logger->start("Retrieve");
     if (isset($info)) unset($infos);
     
-    $infos = new stdClass();
     $msg = $this->storage->Show($id_file, $infos);
     
     if ($msg != '') $this->logger->error($msg);
@@ -137,6 +136,9 @@ function save($infile, $public_access, $id)
 }
 /**
  * Modification of properties if file
+ * @param int $id_file vault id
+ * @param string $newname new file name
+ * @return string error message (empty if no error)
  */
 function rename($id_file, $newname)
 {
@@ -159,7 +161,7 @@ function rename($id_file, $newname)
         include_once ("WHAT/Lib.FileMime.php");
         $infile = $this->storage->getPath();
         $oldname = $this->storage->name;
-        $msg = $this->storage->Show($id_file, $infos);
+        $this->storage->Show($id_file, $infos);
         $this->storage->name = $newname;
         $this->storage->mime_t = getTextMimeFile($infile, $this->storage->name);
         $this->storage->mime_s = getSysMimeFile($infile, $this->storage->name);
@@ -173,8 +175,7 @@ function rename($id_file, $newname)
             if ($epin == "") $epin = "nop";
             if ($epio != $epin) {
                 // need rename physically file
-                $path = pathinfo($infos->path);
-                if (preg_match("|(.*)/([0-9]+)\.[^\.]*|", $infos->path, $reg)) {
+                if (preg_match("|(.*)/([0-9]+)\\.[^\\.]*|", $infos->path, $reg)) {
                     $newpath = $reg[1] . "/" . $reg[2] . "." . $epin;
                     rename($infos->path, $newpath);
                 }
@@ -216,4 +217,3 @@ function destroy($id)
     return $msg;
 }
 }
-?>

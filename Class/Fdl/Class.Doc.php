@@ -1031,7 +1031,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $fh = fopen($outfile, 'rb');
         if ($fh === false) {
-            $err = sprintf(_("Error opening %s file '%s'", 'outfile', $outfile));
+            $err = sprintf(_("Error opening %s file '%s'") , 'outfile', $outfile);
             addWarningMsg($err);
             return $err;
         }
@@ -1824,6 +1824,11 @@ create unique index i_docir on doc(initid, revision);";
     {
         if (is_array($array)) {
             if ($more) $this->ResetMoreValues();
+            if ($reset) {
+                foreach ($this->fields as $key) {
+                    $this->$key = null;
+                }
+            }
             unset($this->uperm); // force recompute privileges
             foreach ($array as $k => $v) {
                 if (!is_integer($k)) {
@@ -2067,7 +2072,7 @@ create unique index i_docir on doc(initid, revision);";
      * @api get attribute object
      * @param string $idAttr attribute identifier
      * @param BasicAttribute &$oa object reference use this if want to modify attribute
-     * @return BasicAttribute|bool
+     * @return BasicAttribute|NormalAttribute|bool
      */
     final public function &getAttribute($idAttr, &$oa = null)
     {
@@ -2549,7 +2554,7 @@ create unique index i_docir on doc(initid, revision);";
                         if ($isimage) {
                             $filename = getParam("CORE_PUBDIR") . "/Images/workinprogress.png";
                         } else $filename = uniqid(getTmpDir() . "/conv") . ".txt";
-                        $nc = file_put_contents($filename, $value);
+                        file_put_contents($filename, $value);
                         $vidout = 0;
                         $err = $vf->Store($filename, false, $vidout, "", $engine, $vidin);
                         if ($err) {
@@ -3049,6 +3054,9 @@ create unique index i_docir on doc(initid, revision);";
         if (empty($oa->isNormal)) {
             throw new Dcp\Exception('DOC0117', $idAttr, $this->title, $this->fromname);
         }
+        /**
+         * @var NormalAttribute $oa
+         */
         if ($oa->type === "array") {
             // record current array values
             $ta = $this->attributes->getArrayElements($oa->id);
@@ -3796,7 +3804,7 @@ create unique index i_docir on doc(initid, revision);";
             if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                 $vaultid = $reg[2];
                 $mimetype = $reg[1];
-                $info = new stdClass();
+                $info = new vaultFileInfo();
                 $err = $vf->Retrieve($vaultid, $info);
                 
                 if ($err == "") {
@@ -3891,7 +3899,7 @@ create unique index i_docir on doc(initid, revision);";
                     $vaultid = $reg[2];
                     $mimetype = $reg[1];
                     $oftitle = $reg[3];
-                    $info = new stdClass();
+                    $info = new VaultFileInfo();
                     $err = $vf->Retrieve($vaultid, $info);
                     
                     if ($err == "") {
@@ -3917,6 +3925,9 @@ create unique index i_docir on doc(initid, revision);";
                 
                 if ($this->revision > 0) {
                     $trev = $this->GetRevisions("TABLE", 2);
+                    /**
+                     * @var $revdoc array
+                     */
                     $revdoc = $trev[1];
                     $prevfile = getv($revdoc, strtolower($attrid));
                     if ($prevfile == $fvalue) $newfile = true;
@@ -4305,13 +4316,28 @@ create unique index i_docir on doc(initid, revision);";
         if (isset($this->values)) {
             $tvalues = explode("£", $this->values);
             $tattrids = explode("£", $this->attrids);
-            
-            foreach ($tvalues as $k => $v) {
-                $attrid = $tattrids[$k];
-                if (($attrid != "") && empty($this->$attrid)) {
-                    $this->$attrid = $v;
-                    $this->mvalues[$attrid] = $v; // to be use in getValues()
-                    
+            if (count($tvalues) === count($tattrids)) {
+                foreach ($tvalues as $k => $v) {
+                    $attrid = $tattrids[$k];
+                    if (($attrid != "") && empty($this->$attrid)) {
+                        $this->$attrid = $v;
+                        $this->mvalues[$attrid] = $v; // to be use in getValues()
+                        
+                    }
+                }
+            } else {
+                // Special case when £ characters is used in value
+                $missingAttrIds = array();
+                foreach ($tattrids as $k => $attrid) {
+                    if ($attrid && $this->$attrid === null) {
+                        $missingAttrIds[] = $attrid;
+                    }
+                }
+                if ($missingAttrIds) {
+                    $missingValues = getTDoc($this->dbaccess, $this->id, array() , $missingAttrIds);
+                    foreach ($missingValues as $attrid => $value) {
+                        $this->$attrid = $value;
+                    }
                 }
             }
         }
@@ -4323,10 +4349,10 @@ create unique index i_docir on doc(initid, revision);";
     {
         if (isset($this->values) && $this->id) {
             $tattrids = explode("£", $this->attrids);
-            
             foreach ($tattrids as $k => $v) {
-                $attrid = $tattrids[$k];
-                if ($attrid) $this->$attrid = "";
+                if ($v) {
+                    $this->$v = null;
+                }
             }
         }
         $this->mvalues = array();
@@ -5062,6 +5088,10 @@ create unique index i_docir on doc(initid, revision);";
             if ($maxrev > 0) {
                 if ($this->revision > $maxrev) {
                     // need delete first revision
+                    
+                    /**
+                     * @var $revs array
+                     */
                     $revs = $this->getRevisions("TABLE", "ALL");
                     for ($i = $maxrev; $i < count($revs); $i++) {
                         $d = getDocObject($this->dbaccess, $revs[$i]);
@@ -5146,7 +5176,6 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $wm0 set to false if you want to not apply m0 methods
      * @param bool $wm3 set to false if you want to not apply m3 methods
      * @param string $msg return message from m2 or m3
-     * @internal param bool $need set to false if you want to not verify needed attribute are set
      * @return string error message empty if no error
      */
     final public function setState($newstate, $comment = '', $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true, $wm0 = true, $wm3 = true, &$msg = '')
@@ -7415,6 +7444,9 @@ create unique index i_docir on doc(initid, revision);";
                         $tmkeys = array();
                         foreach ($tva as $kindex => $kvalues) {
                             foreach ($kvalues as $kaid => $va) {
+                                /**
+                                 * @var NormalAttribute $oa
+                                 */
                                 $oa = $this->getAttribute($kaid);
                                 if ($oa->getOption("multiple") == "yes") {
                                     // second level
@@ -8721,7 +8753,6 @@ create unique index i_docir on doc(initid, revision);";
      * concatenate and format string
      * to be use in computed attribute
      * @param string $fmt like sprintf format
-     * @internal param string $extra parameters of string composition
      * @return string the composed string
      */
     function formatString($fmt)
@@ -8753,7 +8784,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->savePoint($point);
         $this->lockPoint($this->initid, "UPVI");
         // Need to lock to avoid constraint errors when concurrent docvaultindex update
-        $err = $dvi->DeleteDoc($this->id);
+        $dvi->DeleteDoc($this->id);
         $fa = $this->GetFileAttributes();
         
         $tvid = array();
@@ -8766,7 +8797,6 @@ create unique index i_docir on doc(initid, revision);";
                 );
             }
             foreach ($ta as $k => $v) {
-                $vid = "";
                 if (preg_match(PREGEXPFILE, $v, $reg)) {
                     $vid = $reg[2];
                     $tvid[$vid] = $vid;
@@ -8854,6 +8884,9 @@ create unique index i_docir on doc(initid, revision);";
             $this->delATag("DYNTIMER");
         } else {
             foreach ($tms as $k => $v) {
+                /**
+                 * @var Dcp\Family\Timer $t
+                 */
                 $t = new_doc($this->dbaccess, $v["timerid"]);
                 if ($t->isAlive()) {
                     $dynDateAttr = trim(strtok($t->getRawValue("tm_dyndate") , " "));
@@ -8951,7 +8984,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function lockToDomain($domainId, $userid = 0)
     {
-        $err = '';
         if (!$userid) $userid = $this->userid;
         
         if ($domainId != '') {
@@ -9000,7 +9032,7 @@ create unique index i_docir on doc(initid, revision);";
     public function getParentFolderIds()
     {
         $fldids = array();
-        $err = simpleQuery($this->dbaccess, sprintf("select dirid from fld where qtype='S' and childid=%d", $this->initid) , $fldids, true, false);
+        simpleQuery($this->dbaccess, sprintf("select dirid from fld where qtype='S' and childid=%d", $this->initid) , $fldids, true, false);
         return $fldids;
     }
     /**
@@ -9015,7 +9047,7 @@ create unique index i_docir on doc(initid, revision);";
             if (!in_array($this->lockdomainid, $domains)) $this->lockdomainid = '';
             else {
                 if ($this->locked > 0) {
-                    $err = simpleQuery($this->dbaccess, sprintf("select id from users where id=%d", $this->locked) , $lockUserId, true, true);
+                    simpleQuery($this->dbaccess, sprintf("select id from users where id=%d", $this->locked) , $lockUserId, true, true);
                     
                     if ($lockUserId && (!$this->isInDomain(true, $lockUserId))) {
                         $this->lockdomainid = '';
@@ -9147,7 +9179,9 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $attrType empty string to returns all methods or attribute type (e.g. 'date', 'docid', 'docid("IUSER")', etc.) to restrict search to methods supporting this type
      * @return array list of array('method' => '::foo()', 'label' => 'Foo Bar Baz')
      */
-    public function getSearchMethods($attrId, $attrType = '')
+    public function getSearchMethods(
+    /** @noinspection PhpUnusedParameterInspection */
+    $attrId, $attrType = '')
     {
         include_once ('FDL/Lib.Attr.php');
         /**

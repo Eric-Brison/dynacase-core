@@ -895,7 +895,7 @@ function getLatestDocIds($dbaccess, $ids)
  *
  * @param string $dbaccess database specification
  * @param int $initid  document identificator
- * @return array identifier relative to latest revision. if one or several documents document not exists the identifier not appear in result so the array count of result can be lesser than parameter
+ * @return int identifier relative to latest revision. if one or several documents document not exists the identifier not appear in result so the array count of result can be lesser than parameter
  */
 function getLatestDocId($dbaccess, $initid)
 {
