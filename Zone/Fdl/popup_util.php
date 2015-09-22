@@ -43,7 +43,7 @@ function popupInit($name, $items)
             $tsubmenu[$name]['v' . $ki] = "";
         }
         // replace last comma by ']'
-        $jsarray[strlen($jsarray) - 1] = "]";
+        $jsarray[mb_strlen($jsarray) - 1] = "]";
     }
     $tmenus[$name]["menuitems"] = $jsarray;
     $tmenus[$name]["name"] = $name;
@@ -260,7 +260,7 @@ function popupGen($kdiv = "nothing")
                     $tma[$kv]["vmenuitems"].= "" . $vi . ",";
                 }
                 // replace last comma by ']'
-                $tma[$kv]["vmenuitems"][strlen($tma[$kv]["vmenuitems"]) - 1] = "]";
+                $tma[$kv]["vmenuitems"][mb_strlen($tma[$kv]["vmenuitems"]) - 1] = "]";
                 
                 $tma[$kv]["name"] = $name;
                 $tma[$kv]["divid"] = $v["divid"];
@@ -318,7 +318,7 @@ function popupAddGen($kdiv = "nothing")
                     $tma[$kv]["vmenuitems"].= "" . $vi . ",";
                 }
                 // replace last comma by ']'
-                $tma[$kv]["vmenuitems"][strlen($tma[$kv]["vmenuitems"]) - 1] = "]";
+                $tma[$kv]["vmenuitems"][mb_strlen($tma[$kv]["vmenuitems"]) - 1] = "]";
                 
                 $tma[$kv]["name"] = $name;
                 $tma[$kv]["divid"] = $v["divid"];
