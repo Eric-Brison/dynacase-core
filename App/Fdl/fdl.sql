@@ -596,3 +596,21 @@ begin
 return allfld;
 end;
 $$ language 'plpgsql';
+
+CREATE OR REPLACE FUNCTION refreshFamilySchemaViews()
+RETURNS BOOLEAN AS $$
+DECLARE
+  r RECORD;
+BEGIN
+-- Create family schema if not exists
+SELECT * INTO r FROM information_schema.schemata WHERE schema_name = 'family';
+IF NOT FOUND THEN
+  EXECUTE 'CREATE SCHEMA family';
+END IF;
+-- Refresh views
+FOR r IN SELECT 'CREATE OR REPLACE VIEW family.' || quote_ident(lower(name)) || ' AS SELECT * FROM ' || quote_ident('doc' || id) AS query FROM docfam ORDER BY id LOOP
+  EXECUTE r.query;
+END LOOP;
+RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
