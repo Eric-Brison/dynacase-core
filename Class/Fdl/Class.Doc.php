@@ -2067,7 +2067,7 @@ create unique index i_docir on doc(initid, revision);";
      * @api get attribute object
      * @param string $idAttr attribute identifier
      * @param BasicAttribute &$oa object reference use this if want to modify attribute
-     * @return BasicAttribute|bool
+     * @return BasicAttribute|NormalAttribute|bool
      */
     final public function &getAttribute($idAttr, &$oa = null)
     {
@@ -2549,7 +2549,7 @@ create unique index i_docir on doc(initid, revision);";
                         if ($isimage) {
                             $filename = getParam("CORE_PUBDIR") . "/Images/workinprogress.png";
                         } else $filename = uniqid(getTmpDir() . "/conv") . ".txt";
-                        $nc = file_put_contents($filename, $value);
+                        file_put_contents($filename, $value);
                         $vidout = 0;
                         $err = $vf->Store($filename, false, $vidout, "", $engine, $vidin);
                         if ($err) {
@@ -7424,6 +7424,9 @@ create unique index i_docir on doc(initid, revision);";
                         $tmkeys = array();
                         foreach ($tva as $kindex => $kvalues) {
                             foreach ($kvalues as $kaid => $va) {
+                                /**
+                                 * @var NormalAttribute $oa
+                                 */
                                 $oa = $this->getAttribute($kaid);
                                 if ($oa->getOption("multiple") == "yes") {
                                     // second level
@@ -8730,7 +8733,6 @@ create unique index i_docir on doc(initid, revision);";
      * concatenate and format string
      * to be use in computed attribute
      * @param string $fmt like sprintf format
-     * @internal param string $extra parameters of string composition
      * @return string the composed string
      */
     function formatString($fmt)
@@ -8762,7 +8764,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->savePoint($point);
         $this->lockPoint($this->initid, "UPVI");
         // Need to lock to avoid constraint errors when concurrent docvaultindex update
-        $err = $dvi->DeleteDoc($this->id);
+        $dvi->DeleteDoc($this->id);
         $fa = $this->GetFileAttributes();
         
         $tvid = array();
@@ -8775,7 +8777,6 @@ create unique index i_docir on doc(initid, revision);";
                 );
             }
             foreach ($ta as $k => $v) {
-                $vid = "";
                 if (preg_match(PREGEXPFILE, $v, $reg)) {
                     $vid = $reg[2];
                     $tvid[$vid] = $vid;
@@ -8963,7 +8964,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function lockToDomain($domainId, $userid = 0)
     {
-        $err = '';
         if (!$userid) $userid = $this->userid;
         
         if ($domainId != '') {
@@ -9012,7 +9012,7 @@ create unique index i_docir on doc(initid, revision);";
     public function getParentFolderIds()
     {
         $fldids = array();
-        $err = simpleQuery($this->dbaccess, sprintf("select dirid from fld where qtype='S' and childid=%d", $this->initid) , $fldids, true, false);
+        simpleQuery($this->dbaccess, sprintf("select dirid from fld where qtype='S' and childid=%d", $this->initid) , $fldids, true, false);
         return $fldids;
     }
     /**
@@ -9027,7 +9027,7 @@ create unique index i_docir on doc(initid, revision);";
             if (!in_array($this->lockdomainid, $domains)) $this->lockdomainid = '';
             else {
                 if ($this->locked > 0) {
-                    $err = simpleQuery($this->dbaccess, sprintf("select id from users where id=%d", $this->locked) , $lockUserId, true, true);
+                    simpleQuery($this->dbaccess, sprintf("select id from users where id=%d", $this->locked) , $lockUserId, true, true);
                     
                     if ($lockUserId && (!$this->isInDomain(true, $lockUserId))) {
                         $this->lockdomainid = '';
@@ -9159,7 +9159,8 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $attrType empty string to returns all methods or attribute type (e.g. 'date', 'docid', 'docid("IUSER")', etc.) to restrict search to methods supporting this type
      * @return array list of array('method' => '::foo()', 'label' => 'Foo Bar Baz')
      */
-    public function getSearchMethods($attrId, $attrType = '')
+    public function getSearchMethods(/** @noinspection PhpUnusedParameterInspection */
+        $attrId, $attrType = '')
     {
         include_once ('FDL/Lib.Attr.php');
         /**
