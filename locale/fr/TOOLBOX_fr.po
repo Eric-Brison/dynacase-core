@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-06 14:57+0200\n"
-"PO-Revision-Date: 2015-05-06 15:14+0200\n"
+"POT-Creation-Date: 2015-09-16 09:29+0200\n"
+"PO-Revision-Date: 2015-09-16 09:30+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -6601,6 +6601,10 @@ msgstr "modification de l'importation"
 #, php-format
 msgid "import file %s not found"
 msgstr "fichier d'importation %s non trouvé"
+
+#, php-format
+msgid "import file '%s' is not a valid file"
+msgstr "le fichier d'importation '%s' n'est pas un fichier valide"
 
 msgid "import file:"
 msgstr "Fichier à importer :"
