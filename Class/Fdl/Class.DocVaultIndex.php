@@ -44,7 +44,7 @@ create table docvaultindex ( docid  int not null,
 create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
     /**
      * return doc ids from a vault file
-     * @param id $vid vault id
+     * @param int $vid vault id
      * @return array object
      */
     function getDocIds($vid)
@@ -60,12 +60,11 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
     }
     /**
      * return first doc id from a vault file
-     * @param id $vid vault id
+     * @param int $vid vault id
      * @return int id of document
      */
     function getDocId($vid)
     {
-        $t = array();
         $query = new QueryDb($this->dbaccess, "DocVaultIndex");
         $query->AddQuery("vaultid = $vid");
         $t = $query->Query(0, 1, "TABLE");
@@ -74,12 +73,11 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
     }
     /**
      * return vault ids for a document
-     * @param id $docid document id
+     * @param int $docid document id
      * @return array
      */
     function getVaultIds($docid)
     {
-        $t = array();
         if (!$docid) return array();
         $query = new QueryDb($this->dbaccess, "DocVaultIndex");
         $query->AddQuery("docid = $docid");
@@ -105,4 +103,3 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
         return $err;
     }
 }
-?>

@@ -1031,7 +1031,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $fh = fopen($outfile, 'rb');
         if ($fh === false) {
-            $err = sprintf(_("Error opening %s file '%s'", 'outfile', $outfile));
+            $err = sprintf(_("Error opening %s file '%s'") , 'outfile', $outfile);
             addWarningMsg($err);
             return $err;
         }
@@ -3049,6 +3049,9 @@ create unique index i_docir on doc(initid, revision);";
         if (empty($oa->isNormal)) {
             throw new Dcp\Exception('DOC0117', $idAttr, $this->title, $this->fromname);
         }
+        /**
+         * @var NormalAttribute $oa
+         */
         if ($oa->type === "array") {
             // record current array values
             $ta = $this->attributes->getArrayElements($oa->id);
@@ -3796,7 +3799,7 @@ create unique index i_docir on doc(initid, revision);";
             if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                 $vaultid = $reg[2];
                 $mimetype = $reg[1];
-                $info = new stdClass();
+                $info = new vaultFileInfo();
                 $err = $vf->Retrieve($vaultid, $info);
                 
                 if ($err == "") {
@@ -3891,7 +3894,7 @@ create unique index i_docir on doc(initid, revision);";
                     $vaultid = $reg[2];
                     $mimetype = $reg[1];
                     $oftitle = $reg[3];
-                    $info = new stdClass();
+                    $info = new VaultFileInfo();
                     $err = $vf->Retrieve($vaultid, $info);
                     
                     if ($err == "") {
@@ -3917,6 +3920,9 @@ create unique index i_docir on doc(initid, revision);";
                 
                 if ($this->revision > 0) {
                     $trev = $this->GetRevisions("TABLE", 2);
+                    /**
+                     * @var $revdoc array
+                     */
                     $revdoc = $trev[1];
                     $prevfile = getv($revdoc, strtolower($attrid));
                     if ($prevfile == $fvalue) $newfile = true;
@@ -5062,6 +5068,10 @@ create unique index i_docir on doc(initid, revision);";
             if ($maxrev > 0) {
                 if ($this->revision > $maxrev) {
                     // need delete first revision
+                    
+                    /**
+                     * @var $revs array
+                     */
                     $revs = $this->getRevisions("TABLE", "ALL");
                     for ($i = $maxrev; $i < count($revs); $i++) {
                         $d = getDocObject($this->dbaccess, $revs[$i]);
@@ -5146,7 +5156,6 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $wm0 set to false if you want to not apply m0 methods
      * @param bool $wm3 set to false if you want to not apply m3 methods
      * @param string $msg return message from m2 or m3
-     * @internal param bool $need set to false if you want to not verify needed attribute are set
      * @return string error message empty if no error
      */
     final public function setState($newstate, $comment = '', $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true, $wm0 = true, $wm3 = true, &$msg = '')
@@ -8854,6 +8863,9 @@ create unique index i_docir on doc(initid, revision);";
             $this->delATag("DYNTIMER");
         } else {
             foreach ($tms as $k => $v) {
+                /**
+                 * @var Dcp\Family\Timer $t
+                 */
                 $t = new_doc($this->dbaccess, $v["timerid"]);
                 if ($t->isAlive()) {
                     $dynDateAttr = trim(strtok($t->getRawValue("tm_dyndate") , " "));
