@@ -31,6 +31,8 @@ function helppage_editsection(Action & $action, $dbaccess, $docid)
     
     include_once ('FDL/editutil.php');
     editmode($action);
+    
+    $imageFamily = new_Doc("", "IMAGE");
     /**
      * @var \Dcp\Family\HELPPAGE $doc
      */
@@ -58,6 +60,8 @@ function helppage_editsection(Action & $action, $dbaccess, $docid)
     $action->lay->SetBlockData('LEGENDCSSLANGS', $langitems);
     $action->lay->SetBlockData('LEGENDLANGS', $langitems);
     $action->lay->SetBlockData('MENULANGS', $langitems);
+    
+    $action->lay->set("CanUploadImage", $imageFamily->hasPermission("create"));
 }
 
 function helppage_edithelp(Action & $action, $dbaccess, $docid)
@@ -76,7 +80,6 @@ function helppage_edithelp(Action & $action, $dbaccess, $docid)
     $langs = $doc->getFamilyLangs();
     
     $action->lay->eset('JSONLANGS', json_encode($langs));
-    
     $helplangs = array();
     $index = 0;
     $displayed = false;
