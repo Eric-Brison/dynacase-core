@@ -636,6 +636,7 @@ class Doc extends DocCtrl
      * @var array
      */
     private $textsend = array();
+    private $vidNoSendTextToEngine = array();
     /**
      * to not detect changed when it is automatic setValue
      * @var bool
@@ -1851,7 +1852,6 @@ create unique index i_docir on doc(initid, revision);";
                 $this->lastRefreshError = '';
                 $this->mvalues = array();
                 $this->oooFormater = null;
-                $this->textsend = array();
             }
             $this->isset = true;
         }
@@ -2574,6 +2574,8 @@ create unique index i_docir on doc(initid, revision);";
                         if ($err == "") $vf->rename($vidout, sprintf(_("conversion of %s in progress") . ".%s", $info->name, $engine));
                         
                         $this->addHistoryEntry("value $engine : $value");
+                        /* Do not index temporary vid "vidout" while waiting for transformation result */
+                        $this->vidNoSendTextToEngine[$vidout] = true;
                     } else {
                         if ($err == "") {
                             $info1 = vault_properties($vidin);
@@ -2590,13 +2592,17 @@ create unique index i_docir on doc(initid, revision);";
                 } else {
                     if ($isimage) {
                         if ($info->teng_state < 0) {
-                            if ($info->teng_state == - 1) $value = "convertfail.png";
+                            if ($info->teng_state == \Dcp\TransformationEngine\Client::error_convert) $value = "convertfail.png";
                             else $value = "convertimpossible.png";
                         } else {
-                            if ($info->teng_state == 1) $value = $info->mime_s . '|' . $info->id_file . '|' . $info->name;
+                            if ($info->teng_state == \Dcp\TransformationEngine\Client::status_done) $value = $info->mime_s . '|' . $info->id_file . '|' . $info->name;
                         }
                     } else {
                         $value = $info->mime_s . '|' . $info->id_file . '|' . $info->name;
+                    }
+                    /* Do not index vid with failed or pending transformations */
+                    if ($info->teng_state != \Dcp\TransformationEngine\Client::status_done) {
+                        $this->vidNoSendTextToEngine[$info->id_file] = true;
                     }
                 }
             }
@@ -3743,6 +3749,9 @@ create unique index i_docir on doc(initid, revision);";
                 else $fval = strtok($this->getRawValue($v["attrid"]) , "\n");
                 if (preg_match(PREGEXPFILE, $fval, $reg)) {
                     $vid = $reg[2];
+                    if (isset($this->vidNoSendTextToEngine[$vid])) {
+                        return '';
+                    }
                     $err = sendTextTransformation($this->dbaccess, $this->id, $v["attrid"], $index, $vid);
                     if ($err != "") $this->addHistoryEntry(_("error sending text conversion") . ": $err", DocHisto::NOTICE);
                 }

@@ -56,7 +56,7 @@ function settxtfile(Action & $action)
                         if (($status == 'D') && ($outfile != '')) {
                             $filename = tempnam(getTmpDir() , 'txt-');
                             if ($filename === false) {
-                                $err = sprintf(_("Error creating temporary file in '%s'.", getTmpDir()));
+                                $err = sprintf(_("Error creating temporary file in '%s'.") , getTmpDir());
                             } else {
                                 $err = $ot->getTransformation($tid, $filename);
                                 //$err=$ot->getAndLeaveTransformation($tid,$filename);

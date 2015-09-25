@@ -365,7 +365,7 @@ class VaultDiskStorage extends DbObj
      */
     function resetTEFiles()
     {
-        $up = "update " . $this->dbtable . " set teng_state=2 where teng_id_file=" . $this->id_file . ";";
+        $up = sprintf("UPDATE %s SET teng_state = %d WHERE teng_id_file = %d", pg_escape_identifier($this->dbtable) , \Dcp\TransformationEngine\Client::status_inprogress, $this->id_file);
         $this->exec_query($up);
     }
 } // End Class.VaultFileDisk.php
@@ -387,4 +387,3 @@ class VaultFileInfo
     public $path;
     public $id_tmp;
 }
-?>
