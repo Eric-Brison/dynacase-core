@@ -20,8 +20,8 @@ include_once ("FDL/Class.Dir.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global docid Http var : document identifier to see
- * @global attrid Http var :  the attribute comes from search
+ * @global string $docid Http var : document identifier to see
+ * @global string $attrid Http var :  the attribute comes from search
  */
 function specialhelp(Action & $action)
 {
@@ -43,10 +43,8 @@ function specialhelp(Action & $action)
     if (preg_match('/([^:]+):([^(]+)\(([^)]*)\):(.*)/i', $phpfunc, $reg)) {
         $appname = $reg[1];
         $zone = $reg[2];
-        $funarg = explode(",", $reg[3]);
         if ($reg[4]) $funres = explode(",", $reg[4]);
         else $funres = array();
-        
         $action->lay = new Layout(getLayoutFile($appname, $zone . ".xml") , $action);
         
         $incfile = sprintf("EXTERNALS/%s", $oa->phpfile);
@@ -56,12 +54,12 @@ function specialhelp(Action & $action)
                 if (function_exists(strtolower($zone))) {
                     include_once ("FDL/enum_choice.php");
                     $oa->phpfunc = substr($phpfunc, strpos($phpfunc, ':') + 1);
-                    $res = getResPhpFunc($doc, $oa, $rargids, $tselect, $tval, true, $index = "", $zone);
+                    getResPhpFunc($doc, $oa, $rargids, $tselect, $tval, true, $index = "");
                     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
                     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/autoclose.js");
                     $action->parent->AddJsRef("FDL:specialhelp.js", true);
                     
-                    $action->parent->AddJsCode("Ih.resultArguments=" . json_encode($funres)) . ";";
+                    $action->parent->AddJsCode("Ih.resultArguments=" . json_encode($funres) . ";");
                 } else {
                     $action->exitError(sprintf(_("Cannot find help function %s") , strtolower($zone)));
                 }
@@ -84,4 +82,4 @@ function specialhelp(Action & $action)
         }
     }
 }
-?>
+

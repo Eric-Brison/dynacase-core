@@ -96,7 +96,7 @@ function helpEditsectionLoad() {
 	helppage.editsection.init();
 
 	try {
-		window.htmlText.initEditor( 'sec-text' );
+		window.htmlText.initEditor( 'sec-text' [IF CanUploadImage], {filebrowserImageUploadUrl:"?sole=Y&app=FDL&action=CKUPLOAD"}[ENDIF CanUploadImage] );
 		self.setTimeout( helpEditsectionLoaded, 500 );
 	}
 	catch(e) { }
