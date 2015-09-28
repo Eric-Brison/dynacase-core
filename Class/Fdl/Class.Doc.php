@@ -56,7 +56,6 @@ define("REGEXPFILE", "([^\|]*)\|([0-9]*)\|?(.*)?");
 define("PREGEXPFILE", "/([^\|]*)\|([0-9]*)\|?(.*)?/");
 /**
  * Document Class
- *
  */
 class Doc extends DocCtrl
 {
@@ -1818,12 +1817,14 @@ create unique index i_docir on doc(initid, revision);";
      * this function is call from QueryDb and all fields can not be instanciate
      * @param array $array the data array
      * @param bool $more add values from values attributes needed only if cast document
+     * @param bool $reset reset all values before set and clean private variables
      * @return void
      */
     final public function affect($array, $more = false, $reset = true)
     {
         if (is_array($array)) {
-            if ($more) $this->ResetMoreValues();
+            $this->preAffect($array, $more, $reset);
+            if ($more) $this->resetMoreValues();
             if ($reset) {
                 foreach ($this->fields as $key) {
                     $this->$key = null;
@@ -1835,8 +1836,8 @@ create unique index i_docir on doc(initid, revision);";
                     $this->$k = $v;
                 }
             }
-            $this->Complete();
-            if ($more) $this->GetMoreValues();
+            $this->complete();
+            if ($more) $this->getMoreValues();
             
             if ($reset) {
                 $this->_maskApplied = false;
@@ -1854,7 +1855,39 @@ create unique index i_docir on doc(initid, revision);";
                 $this->textsend = array();
             }
             $this->isset = true;
+            $this->postAffect($array, $more, $reset);
         }
+    }
+    /**
+     * @see Doc::affect()
+     * @final Doc::complete()
+     * @access private
+     * @internal use Doc::postAffect() instead
+     */
+    public function complete()
+    {
+    }
+    /**
+     * @see Doc::affect()
+     * @param array $data data use to affect document values
+     * @param bool $more use "values" attribute in case of incomplete data
+     * @param bool $reset reset all values before set and clean private variables
+     * @since 3.2.20
+     * @return void
+     */
+    protected function preAffect(array & $data, &$more, &$reset)
+    {
+    }
+    /**
+     * @see Doc::affect()
+     * @param array $data data use to affect document values
+     * @param bool $more use "values" attribute in case of incomplete data
+     * @param bool $reset reset all values before set and clean private variables
+     * @since 3.2.20
+     * @return void
+     */
+    protected function postAffect(array $data, $more, $reset)
+    {
     }
     /**
      * Set to default values before add new doc

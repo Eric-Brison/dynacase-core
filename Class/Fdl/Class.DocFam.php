@@ -121,11 +121,12 @@ create unique index idx_idfam on docfam(id);";
         }
     }
     
-    function complete()
+    protected function postAffect(array $data, $more, $reset)
     {
         $this->_xtdefval = null;
         $this->_xtparam = null;
     }
+    
     function preDocDelete()
     {
         return _("cannot delete family");

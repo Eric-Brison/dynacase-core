@@ -948,7 +948,8 @@ class Dir extends PDir
         $filter[] = "prelid=" . $this->initid;
         return $this->getContent(true, $filter);
     }
-    function Complete()
+    
+    protected function postAffect(array $data, $more, $reset)
     {
         $this->authfam = false;
         $this->norestrict = false;
