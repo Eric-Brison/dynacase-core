@@ -75,4 +75,90 @@ class htmlclean
         */
         return $data;
     }
+    /**
+     * Normalize/correct an HTML fragment by loading and serializing it back through libxml
+     *
+     * @param string $html The HTML fragment to cleanup/correct (HTML must be encoded in UTF-8)
+     * @param string $error Empty string if no error or non-empty string containing the error message
+     * @return bool(false)|string The resulting HTML on success or bool(false) on failure (the error message is returned in the $error argument)
+     */
+    public static function normalizeHTMLFragment($html, &$error = '')
+    {
+        $dom = new XDOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = false;
+        /*
+         * Add a HTML meta header to setup DOMDocument to UTF-8 encoding and no trailing </body></html>
+         * to not interfere with the given $html fragment.
+        */
+        $html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body>' . $html;
+        try {
+            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $error);
+        }
+        catch(XDOMDocumentException $e) {
+            $error = $e->getMessage();
+            return false;
+        }
+        $dom->normalizeDocument();
+        /* Get back the top <body> wrapper node added by loadHTML() */
+        $wrapper = $dom->documentElement->getElementsByTagName('body')->item(0);
+        if ($wrapper === null || $wrapper === false) {
+            $error = "body wrapper not found";
+            return false;
+        }
+        /* Extract and serialize back all the childs to HTML */
+        $html = '';
+        for ($i = 0; $i < $wrapper->childNodes->length; $i++) {
+            $html.= $dom->saveHTML($wrapper->childNodes->item($i));
+        }
+        /* Remove carriage-returns inserted by libxml's HTML serialization */
+        $html = str_replace(array(
+            "\n<",
+            ">\n"
+        ) , array(
+            "<",
+            ">"
+        ) , $html);
+        return $html;
+    }
+    /**
+     * Convert an HTML fragment to a XHTML document
+     *
+     * @param string $html The HTML fragment to cleanup/correct (HTML must be encoded in UTF-8)
+     * @param string $error Empty string if no error or non-empty string containing the error message
+     * @return bool(false)|string The resulting XHTML on success or bool(false) on failure (the error message is returned in the $error argument)
+     */
+    public static function convertHTMLFragmentToXHTMLDocument($html, &$error = '')
+    {
+        $dom = new XDOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = false;
+        /*
+         * Add a HTML meta header to setup DOMDocument to UTF-8 encoding and no trailing </body></html>
+         * to not interfere with the given $html fragment.
+        */
+        $html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body>' . $html;
+        try {
+            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $error);
+        }
+        catch(XDOMDocumentException $e) {
+            $error = $e->getMessage();
+            return false;
+        }
+        $dom->normalizeDocument();
+        /* Get back the top <body> wrapper node */
+        $wrapper = $dom->documentElement->getElementsByTagName('body')->item(0);
+        if ($wrapper === null || $wrapper === false) {
+            $error = 'body top node not found';
+            return false;
+        }
+        /* Extract and serialize back to XML all the childs */
+        $xhtml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        $xhtml.= '<html xmlns="http://www.w3.org/1999/xhtml"><body>';
+        for ($i = 0; $i < $wrapper->childNodes->length; $i++) {
+            $xhtml.= $dom->saveXML($wrapper->childNodes->item($i));
+        }
+        $xhtml.= '</body></html>';
+        return $xhtml;
+    }
 }

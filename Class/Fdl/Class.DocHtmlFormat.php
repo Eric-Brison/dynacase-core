@@ -1058,6 +1058,14 @@ class DocHtmlFormat
             catch(Exception $e) {
                 error_log(sprintf("%s unable to parse/create html width docLink elements(document :%s, error %)s", __METHOD__, $this->doc->id, $e->getMessage()));
             }
+        } else {
+            $avalue = \Dcp\Utils\htmlclean::normalizeHTMLFragment(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8') , $error);
+            if ($error != '') {
+                addWarningMsg(_("Malformed HTML:") . "\n" . $error);
+            }
+            if ($avalue === false) {
+                $avalue = '';
+            }
         }
         $htmlval = '<div class="htmltext">' . $avalue . '</div>';
         return $htmlval;

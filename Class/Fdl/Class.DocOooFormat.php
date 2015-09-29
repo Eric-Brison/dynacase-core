@@ -195,7 +195,10 @@ class DocOooFormat
      * @param string $avalue raw value of attribute
      * @return string openText value
      */
-    public function formatIDoc($avalue)
+    public function formatIDoc(
+    /** @noinspection PhpUnusedParameterInspection */
+    
+    $avalue)
     {
         
         $oooval = "";
@@ -253,8 +256,11 @@ class DocOooFormat
      * format Image attribute
      *
      * @param string $avalue raw value of attribute
+     * @return string
      */
-    public function formatPassword($avalue)
+    public function formatPassword(
+    /** @noinspection PhpUnusedParameterInspection */
+    $avalue)
     {
         
         $oooval = "*****";
@@ -295,7 +301,9 @@ class DocOooFormat
      * @param string $avalue raw value of attribute
      * @return string openText value
      */
-    public function formatArray($avalue)
+    public function formatArray(
+    /** @noinspection PhpUnusedParameterInspection */
+    $avalue)
     {
         
         $oooval = "";
@@ -307,7 +315,9 @@ class DocOooFormat
      * @param string $avalue raw value of attribute
      * @return string openText value
      */
-    public function formatDoc($avalue)
+    public function formatDoc(
+    /** @noinspection PhpUnusedParameterInspection */
+    $avalue)
     {
         $oooval = "";
         
@@ -399,7 +409,9 @@ class DocOooFormat
      * @param string $avalue raw value of attribute
      * @return string openText value
      */
-    public function formatOption($avalue)
+    public function formatOption(
+    /** @noinspection PhpUnusedParameterInspection */
+    $avalue)
     {
         
         $oooval = "";
@@ -429,69 +441,41 @@ class DocOooFormat
         $attrid = $this->oattr->id;
         $html_body = trim($avalue);
         if (!$html_body) return '';
-        $html_body = str_replace(array(
-            '&quot;',
-            '&lt;',
-            '&gt;'
-        ) , array(
-            '--quoteric--',
-            '--lteric--',
-            '--gteric--'
-        ) , $html_body); // prevent pb for quot in quot
-        if ($html_body && $html_body[0] != '<') {
-            // think it is raw text
-            $html_body = str_replace("\n<br/>", "\n", $html_body);
-            $html_body = str_replace('<br/>', "\n", $html_body);
-            if (!strpos($html_body, '<br')) $html_body = str_replace(array(
-                "<",
-                ">",
-                '&'
-            ) , array(
-                "&lt;",
-                "&gt;",
-                "&amp;"
-            ) , $html_body);
-            $html_body = '<p>' . nl2br($html_body) . '</p>';
+        $html_body = \Dcp\Utils\htmlclean::normalizeHTMLFragment($html_body, $error);
+        if ($error != '') {
+            addWarningMsg(sprintf(_("Malformed HTML in attribute '%s' from document '%s': %s") , $this->oattr->id, $this->doc->title, $error));
         }
-        $html_body = str_replace(">\r\n", ">", $html_body);
-        $html_body = str_replace("\r", "", $html_body);
+        if ($html_body === false) {
+            return '';
+        }
+        $xhtml_body = \Dcp\Utils\htmlclean::convertHTMLFragmentToXHTMLDocument($html_body, $error);
+        if ($error != '') {
+            addWarningMsg(sprintf(_("Error converting HTML from attribute '%s' from document '%s': %s") , $this->oattr->id, $this->doc->title, $error));
+        }
+        if ($xhtml_body === false) {
+            return '';
+        }
         
-        $html_body = preg_replace("/<!--.*?-->/ms", "", $html_body); //delete comments
-        $html_body = preg_replace_callback('/(<\/?)([^\s>]+)([^>]*)(>)/', function ($matches)
+        $xhtml_body = preg_replace("/<!--.*?-->/ums", "", $xhtml_body); //delete comments
+        $xhtml_body = preg_replace_callback('/(<\/?)([^\s>]+)([^>]*)(>)/u', function ($matches)
         {
-            return $this->toxhtmltag($matches[1], $matches[2], $matches[3], $matches[4]);
+            return $this->_fixupStyle($matches[1], $matches[2], $matches[3], $matches[4]);
         }
-        , $html_body); // begin tag transform to pseudo xhtml
-        $html_body = $this->cleanhtml($html_body);
-        $html_body = str_replace(array(
-            '\"',
-            '&quot;'
-        ) , '"', $html_body);
-        $html_body = str_replace('&', '&amp;', html_entity_decode($html_body, ENT_NOQUOTES, 'UTF-8'));
+        , $xhtml_body);
+        $xhtml_body = $this->cleanhtml($xhtml_body);
         
-        $html_body = str_replace(array(
-            '--quoteric--',
-            '--lteric--',
-            '--gteric--'
-        ) , array(
-            '&quot;',
-            '&lt;',
-            '&gt;'
-        ) , $html_body); // prevent pb for quot in quot
-        $xmldata = '<xhtml:body xmlns:xhtml="http://www.w3.org/1999/xhtml">' . "\n" . $html_body . "</xhtml:body>";
-        
-        $domHtml = new DOMDocument();
+        $domHtml = new \Dcp\Utils\XDOMDocument();
         $domHtml->load(DEFAULT_PUBDIR . "/CORE/Layout/html2odt.xsl");
         $xslt = new xsltProcessor;
         $xslt->importStyleSheet($domHtml);
         $dom = null;
         //	set_error_handler('HandleXmlError');
         try {
-            $dom = new DOMDocument();
-            @$dom->loadXML($xmldata);
+            $dom = new \Dcp\Utils\XDOMDocument();
+            $dom->loadXML($xhtml_body);
         }
         catch(Exception $e) {
-            addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s") , $this->doc->title));
+            addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s: %s") , $this->doc->title, $e->getMessage()));
             /*
             print "Exception catched:\n";
             print "Code: ".$e->getCode()."\n";
@@ -504,12 +488,14 @@ class DocOooFormat
             print "\n=========XMLDATA=================\n";
             print_r2($xmldata);
             exit;*/
+            
+            $dom = null;
         }
         //restore_error_handler();
         if ($dom) {
             $xmlout = $xslt->transformToXML($dom);
             
-            $dxml = new DomDocument();
+            $dxml = new \Dcp\Utils\XDOMDocument();
             $dxml->loadXML($xmlout);
             
             $ot = $dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0", "text");
@@ -521,17 +507,13 @@ class DocOooFormat
                 '<office:text/>'
             ) , "", $officetext);
             // work around : tables are not in paragraph
-            $oooval = preg_replace("/(<text:p>[\s]*<table:table )/ ", "<table:table ", $oooval);
-            $oooval = preg_replace("/(<\/table:table>[\s]*<\/text:p>)/ ", "</table:table> ", $oooval);
-            
-            $pppos = mb_strrpos($oooval, '</text:p>');
+            $oooval = preg_replace('!(<text:p>\s*<table:table )!u', "<table:table ", $oooval);
+            $oooval = preg_replace('!(</table:table>\s*</text:p>)!u', "</table:table> ", $oooval);
             
             $oooval = sprintf('<text:section text:style-name="Sect%s" text:name="Section%s" aid="%s">%s</text:section>', $attrid, $attrid, $attrid, $oooval);
         } else {
-            
             addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s") , $this->doc->title));
         }
-        //$oooval=preg_replace("/<\/?(\w+[^:]?|\w+\s.*?)>//g", "",$oooval  );
         return $oooval;
     }
     /**
@@ -543,72 +525,67 @@ class DocOooFormat
      * @param string $gt the > tag
      * @return string the new tag
      */
-    protected function toxhtmltag($lt, $tag, $attr, $gt)
+    protected function _fixupStyle($lt, $tag, $attr, $gt)
     {
         $px2mm = 3 / 16;
-        if ($tag === "font") return '';
-        elseif (strpos($tag, ':') > 0) {
-            return ($lt . 'xhtml:span' . $gt);
-        } else {
-            $attr = str_replace(':=', '=', $attr);
-            $inlineStyle = array();
-            if (preg_match('/\s+style\s*=\s*"(?P<style>[^"]*)"/', $attr, $m)) {
-                $inlineStyle = $this->parseInlineStyle($m['style']);
-            };
-            if ($tag === "img") {
-                if (isset($inlineStyle['width']) && preg_match('/^(?P<width>[0-9\.]+)(?P<unit>[a-z]*)$/', $inlineStyle['width'], $m)) {
-                    // width in mm :
-                    switch ($m['unit']) {
-                        case "px":
-                            $width = intval($m['width']) * $px2mm;
-                            break;
+        $attr = str_replace(':=', '=', $attr);
+        $inlineStyle = array();
+        if (preg_match('/\s+style\s*=\s*"(?P<style>[^"]*)"/u', $attr, $m)) {
+            $inlineStyle = $this->parseInlineStyle($m['style']);
+        };
+        if ($tag === "img") {
+            if (isset($inlineStyle['width']) && preg_match('/^(?P<width>[0-9\.]+)(?P<unit>[a-z]*)$/u', $inlineStyle['width'], $m)) {
+                // width in mm :
+                switch ($m['unit']) {
+                    case "px":
+                        $width = intval($m['width']) * $px2mm;
+                        break;
 
-                        case "cm":
-                            $width = floatval($m['width']) * 10;
-                            break;
+                    case "cm":
+                        $width = floatval($m['width']) * 10;
+                        break;
 
-                        case "mm":
-                            $width = intval($m['width']);
-                            break;
+                    case "mm":
+                        $width = intval($m['width']);
+                        break;
 
-                        default:
-                            $width = intval($m['width']);
-                    }
-                    $attr = sprintf(' width="%d" ', $width) . $attr;
+                    default:
+                        $width = intval($m['width']);
                 }
-                if (isset($inlineStyle['height']) && preg_match('/^(?P<height>[0-9\.]+)(?P<unit>[a-z]*)$/', $inlineStyle['height'], $m)) {
-                    // height in mm
-                    switch ($m['unit']) {
-                        case "px":
-                            $height = intval($m['height']) * $px2mm;
-                            break;
-
-                        case "cm":
-                            $height = floatval($m['height']) * 10;
-                            break;
-
-                        case "mm":
-                            $height = intval($m['height']);
-                            break;
-
-                        default:
-                            $height = intval($m['height']);
-                    }
-                    $attr = sprintf(' height="%d" ', $height) . $attr;
-                }
+                $attr = sprintf(' width="%d" ', $width) . $attr;
             }
-            return ($lt . "xhtml:" . $tag . $attr . $gt);
+            if (isset($inlineStyle['height']) && preg_match('/^(?P<height>[0-9\.]+)(?P<unit>[a-z]*)$/u', $inlineStyle['height'], $m)) {
+                // height in mm
+                switch ($m['unit']) {
+                    case "px":
+                        $height = intval($m['height']) * $px2mm;
+                        break;
+
+                    case "cm":
+                        $height = floatval($m['height']) * 10;
+                        break;
+
+                    case "mm":
+                        $height = intval($m['height']);
+                        break;
+
+                    default:
+                        $height = intval($m['height']);
+                }
+                $attr = sprintf(' height="%d" ', $height) . $attr;
+            }
         }
+        return ($lt . $tag . $attr . $gt);
     }
     
     protected function cleanhtml($html)
     {
-        $html = preg_replace("/<\/?span[^>]*>/s", "", $html);
-        $html = preg_replace("/<\/?font[^>]*>/s", "", $html);
-        $html = preg_replace("/<\/?meta[^>]*>/s", "", $html);
-        $html = preg_replace("/<style[^>]*>.*?<\/style>/s", "", $html);
-        $html = preg_replace("/<([^>]*) style=\"[^\"]*\"/s", "<\\1", $html);
-        $html = preg_replace("/<([^>]*) class=\"[^\"]*\"/s", "<\\1", $html);
+        $html = preg_replace(':</?span[^>]*>:us', "", $html);
+        $html = preg_replace(':</?font[^>]*>:us', "", $html);
+        $html = preg_replace(':</?meta[^>]*>:us', "", $html);
+        $html = preg_replace(':<style[^>]*>.*?</style>:us', "", $html);
+        $html = preg_replace(':<([^>]*) style=\"[^\"]*\":us', "<\\1", $html);
+        $html = preg_replace(':<([^>]*) class=\"[^\"]*\":us', "<\\1", $html);
         return $html;
     }
     /**
@@ -676,7 +653,9 @@ class DocOooFormat
      * @param string $avalue raw value of attribute
      * @return string openText value
      */
-    public function formatIfile($avalue)
+    public function formatIfile(
+    /** @noinspection PhpUnusedParameterInspection */
+    $avalue)
     {
         global $action;
         $lay = new Layout("FDL/Layout/viewifile.xml", $action);
@@ -710,7 +689,7 @@ class DocOooFormat
     protected function parseInlineStyle($str)
     {
         $rules = array();
-        preg_match_all('/(?P<propName>[\w-]+)\s*:\s*(?P<propValue>[^;]*)(;|$)/', $str, $matches, PREG_SET_ORDER);
+        preg_match_all('/(?P<propName>[\w-]+)\s*:\s*(?P<propValue>[^;]*)(;|$)/u', $str, $matches, PREG_SET_ORDER);
         foreach ($matches as $m) {
             $rules[strtolower($m['propName']) ] = $m['propValue'];
         }

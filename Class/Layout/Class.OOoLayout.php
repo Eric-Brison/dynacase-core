@@ -335,34 +335,15 @@ class OOoLayout extends Layout
         $this->template = $this->dom->saveXML();
     }
     /**
-     * function use by Doc::getOOoValue()
-     * use to trap XML parsing error : raise exception
-     * @param int $errno error number
-     * @param string $errstr error message
-     * @param string $errfile
-     * @param string $errline error line
-     * @throws DOMException
-     * @return bool
-     */
-    public static function HandleXmlError($errno, $errstr, $errfile, $errline)
-    {
-        if ($errno == E_WARNING && (substr_count($errstr, "DOMDocument::loadXML()") > 0)) {
-            throw new DOMException($errstr);
-        } else return false;
-    }
-    /**
      * to get xml warning as Exception
      * @param string $strXml
-     * @return DOMDocument
+     * @return \Dcp\Utils\XDOMDocument
+     * @throws \Dcp\Utils\XDOMDocumentException
      */
     protected function XmlLoader($strXml)
     {
-        set_error_handler(array(
-            __CLASS__,
-            "HandleXmlError"
-        ));
-        $this->dom->loadXml($strXml);
-        restore_error_handler();
+        $this->dom = new \Dcp\Utils\XDOMDocument();
+        $this->dom->loadXML($strXml);
         return $this->dom;
     }
     /**
@@ -373,7 +354,7 @@ class OOoLayout extends Layout
         try {
             $this->XmlLoader($this->template);
         }
-        catch(Exception $e) {
+        catch(\Dcp\Utils\XDOMDocumentException $e) {
             $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
             $this->addError("LAY0004", $outfile);
             file_put_contents($outfile, $this->template);
