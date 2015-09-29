@@ -44,10 +44,10 @@ define("POS_WF", 12); // begin of workflow privilege definition
  * Control Access Document Class
  * @package FDL
  * @class DocCtrl
- * @method getRawValue
- * @method getAttribute
+ * @method getRawValue($id)
+ * @method getAttribute($a)
  * @method canEdit
- * @method control
+ * @method control($acl)
  * @property int $fromid
  * @property Doc $doc
  *
@@ -200,7 +200,7 @@ class DocCtrl extends DocLDAP
             if ($this->doctype == 'P') $this->exec_query("update doc set profid=-profid where profid=" . $this->id . " and locked != -1;");
         }
         $this->profid = "0";
-        $err = $this->modify(true, array(
+        $this->modify(true, array(
             "profid"
         ));
     }
@@ -259,6 +259,7 @@ class DocCtrl extends DocLDAP
      *
      * @param int $profid identifier for profil document
      * @param Doc $fromdocidvalues
+     * @return string
      */
     function setProfil($profid, $fromdocidvalues = null)
     {
@@ -341,14 +342,7 @@ class DocCtrl extends DocLDAP
         foreach ($tacl as $v) {
             
             if ($v["userid"] < STARTIDVGROUP) {
-                $tuid = array(
-                    $greenUid[$v["userid"] . $v["acl"]] = array(
-                        "uid" => $v["userid"],
-                        "acl" => $v["acl"]
-                    )
-                );
             } else {
-                $tuid = array();
                 $aid = $tVgroup2attrid[$v["userid"]];
                 /**
                  * @var Doc $fromdocidvalues
@@ -512,26 +506,28 @@ class DocCtrl extends DocLDAP
             $this->computeDProfil();
         } else {
             if ($this->profid == $this->id) {
-                $err = simpleQuery($this->dbaccess, sprintf("select userid from docperm where docid=%d and upacl & 2 != 0", $this->id) , $uids, true, false);
+                simpleQuery($this->dbaccess, sprintf("select userid from docperm where docid=%d and upacl & 2 != 0", $this->id) , $uids, true, false);
                 $this->views = '{' . implode(',', $uids) . '}';
-                $err = $this->modify(true, array(
+                $this->modify(true, array(
                     'views'
                 ) , true);
                 if ($this->isRealProfile()) {
                     //propagate static profil views on linked documents
-                    $err = simpleQuery($this->dbaccess, sprintf("update doc set views='%s' where profid=%d and (dprofid is null or dprofid = 0)", $this->views, $this->id));
+                    simpleQuery($this->dbaccess, sprintf("update doc set views='%s' where profid=%d and (dprofid is null or dprofid = 0)", $this->views, $this->id));
                 }
             } else {
                 // static profil
                 if ($this->profid > 0) {
-                    $err = simpleQuery($this->dbaccess, sprintf("select views from docread where id=%d", $this->profid) , $view, true, true);
+                    simpleQuery($this->dbaccess, sprintf("select views from docread where id=%d", $this->profid) , $view, true, true);
                 } else {
                     $view = '{0}';
                 }
                 $this->views = $view;
-                if ($this->id) $err = $this->modify(true, array(
-                    'views'
-                ) , true);
+                if ($this->id) {
+                    $this->modify(true, array(
+                        'views'
+                    ) , true);
+                }
             }
         }
     }
@@ -595,7 +591,10 @@ class DocCtrl extends DocLDAP
                     $vg->id = $oa->id;
                     $vg->Add();
                     $uid = $vg->num;
-                } else $err = sprintf(_("unknow virtual user identificateur %s") , $uid);
+                } else {
+                    //$err = sprintf(_("unknow virtual user identificateur %s") , $uid);
+                    
+                }
             } else {
                 $uid = $vg->num;
             }
@@ -830,7 +829,7 @@ class DocCtrl extends DocLDAP
                 // recompute associated documents
                 setMaxExecutionTimeTo(0);
                 
-                if (!empty(self::$savepoint[intval($this->dbid)])) {
+                if (!empty(self::$savepoint[intval($this->dbid) ])) {
                     // when are in transaction must lock complete table to avoid too many locks on each rows
                     simpleQuery($this->dbaccess, "lock table docperm in exclusive mode");
                     self::$globalDocPermLock = true;
@@ -933,10 +932,11 @@ class DocCtrl extends DocLDAP
             "sug" => $sug
         );
     }
-    /** 
+    /**
      * verify if a document title and its link are for the same document
      * @param string $title document title use for verification
      * @param string $docid document identifier use for verification
+     * @return array constraint response
      */
     public function isDocLinked($title, $docid)
     {
@@ -959,10 +959,11 @@ class DocCtrl extends DocLDAP
             "sug" => $sug
         );
     }
-    /** 
+    /**
      * verify if a link of document is alive
      * @param string $title document title use for verification
      * @param string $docid document identifier use for verification
+     * @return array constraint response
      */
     public function isValidLink($title, $docid)
     {
@@ -1027,10 +1028,11 @@ class DocCtrl extends DocLDAP
         
         return '';
     }
-    /** 
+    /**
      * return true if string match regexp
      * @param string $x
      * @param string $p regexp pattern
+     * @return array|string constraint response
      */
     static public function isString($x, $p)
     {
@@ -1061,8 +1063,6 @@ class DocCtrl extends DocLDAP
     }
     /** 
      * return MENU_ACTIVE if user can edit document
-     * @param string $appname application name
-     * @param string $actname action name
      * @return int
      */
     public function canEditMenu()
@@ -1098,7 +1098,7 @@ class DocCtrl extends DocLDAP
     }
     /**
      * return MENU_ACTIVE if user can view or modify access in a profil document
-     * @param string $acl acl name
+     * @param string|bool $yes if "false" invert return
      * @return int
      */
     public function profilIsActivate($yes = true)
@@ -1115,4 +1115,3 @@ class DocCtrl extends DocLDAP
         return MENU_INVISIBLE;
     }
 }
-?>

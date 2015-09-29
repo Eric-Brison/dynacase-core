@@ -123,6 +123,7 @@ class WDoc extends Doc
     /**
      * change allocate user according to state
      * @param string $newstate new state of document
+     * @return string
      */
     function changeAllocateUser($newstate)
     {
@@ -289,9 +290,10 @@ class WDoc extends Doc
     }
     /**
      * create of parameters attributes of workflow
+     * @param int $cid
      * @return string error message
      */
-    function createProfileAttribute($cid = 0)
+    public function createProfileAttribute($cid = 0)
     {
         if (!$cid) {
             if ($this->doctype == 'C') $cid = $this->id;
@@ -323,7 +325,6 @@ class WDoc extends Doc
             else $oattr->Add();
             // --------------------------
             // profil id
-            $aid = $this->_Aid("_", $state);
             $aidprofilid = $this->_Aid("_ID", $state); //strtolower($this->attrPrefix."_ID".strtoupper($state));
             $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
@@ -703,7 +704,7 @@ class WDoc extends Doc
      * change state of a document
      * the method {@link set()} must be call before
      * @param string $newstate the next state
-     * @param string $addcomment
+     * @param string $addcomment comment to be set in history (describe why change state)
      * @param bool $force is true when it is the second passage (without interactivity)
      * @param bool $withcontrol set to false if you want to not verify control permission ot transition
      * @param bool $wm1 set to false if you want to not apply m1 methods
@@ -712,8 +713,6 @@ class WDoc extends Doc
      * @param bool $wm0 set to false if you want to not apply m0 methods
      * @param bool $wm3 set to false if you want to not apply m3 methods
      * @param string $msg return message from m2 or m3 methods
-     * @internal param string $comment comment to be set in history (describe why change state)
-     * @internal param bool $need set to false if you want to not verify needed attribute are set
      * @return string error message, if no error empty string
      */
     function changeState($newstate, $addcomment = "", $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true, $wm0 = true, $wm3 = true, &$msg = '')
@@ -725,8 +724,7 @@ class WDoc extends Doc
         $foundTo = false;
         $tname = '';
         $tr = array();
-        reset($this->cycle);
-        while (list($k, $trans) = each($this->cycle)) {
+        foreach ($this->cycle as $trans) {
             if (($this->doc->state == $trans["e1"])) {
                 // from state OK
                 $foundFrom = true;
@@ -905,11 +903,14 @@ class WDoc extends Doc
         if (($this->doc->locked > 0) && ($this->doc->locked != $this->doc->userid)) return array(); // no next state if locked by another person
         if ((!$noVerifyDomain) && ($this->doc->lockdomainid > 0)) return array(); // no next state if locked in a domain
         $fstate = array();
-        if ($this->doc->state == "") $this->doc->state = $this->getFirstState();
+        if ($this->doc->state == "") {
+            $this->doc->state = $this->getFirstState();
+        }
         
-        if ($this->userid == 1) return $this->getStates(); // only admin can go to any states from anystates
-        reset($this->cycle);
-        while (list($k, $tr) = each($this->cycle)) {
+        if ($this->userid == 1) {
+            return $this->getStates();
+        } // only admin can go to any states from anystates
+        foreach ($this->cycle as $tr) {
             if ($this->doc->state == $tr["e1"]) {
                 // from state OK
                 if ($this->control($tr["t"]) == "") $fstate[] = $tr["e2"];
@@ -935,6 +936,7 @@ class WDoc extends Doc
     /**
      * get associated color of a state
      * @param string $state the state
+     * @param string $def default value if not set
      * @return string the color (#RGB)
      */
     function getColor($state, $def = "")
@@ -946,6 +948,7 @@ class WDoc extends Doc
     /**
      * get activity (localized language)
      * @param string $state the state
+     * @param string $def default value if not set
      * @return string the text of action
      */
     function getActivity($state, $def = "")
@@ -960,6 +963,7 @@ class WDoc extends Doc
      * get action (localized language)
      * @deprecated use getActivity instead
      * @param string $state the state
+     * @param string $def default value if not set
      * @return string the text of action
      */
     function getAction($state, $def = "")
