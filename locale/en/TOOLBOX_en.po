@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-16 09:29+0200\n"
+"POT-Creation-Date: 2015-09-29 16:45+0200\n"
 "PO-Revision-Date: 2015-05-06 15:14+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -1779,6 +1779,10 @@ msgid "Error : need edit privilege to execute"
 msgstr ""
 
 #, php-format
+msgid "Error converting HTML from attribute '%s' from document '%s': %s"
+msgstr ""
+
+#, php-format
 msgid "Error could not open output log file '%s' for writing."
 msgstr ""
 
@@ -1808,6 +1812,10 @@ msgid "Error deleting directory '%s': %s"
 msgstr ""
 
 #, php-format
+msgid "Error extracting archive '%s' in '%s': %s"
+msgstr ""
+
+#, php-format
 msgid "Error in portfolio : folder %s not exists"
 msgstr ""
 
@@ -1821,10 +1829,6 @@ msgstr ""
 
 #, php-format
 msgid "Error renaming '%s' to '%s'."
-msgstr ""
-
-#, php-format
-msgid "Error extracting archive '%s' in '%s': %s"
 msgstr ""
 
 #, php-format
@@ -2016,8 +2020,8 @@ msgstr ""
 "        </ul>\n"
 "    </li>\n"
 "    <li>\n"
-"        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
-"\">)</em><br/>\n"
+"        <em class=\"help-operator\">(</em> and <em class=\"help-operator\">)"
+"</em><br/>\n"
 "        Parenthesis express priorities between operators.\n"
 "        <ul>\n"
 "            <li>\n"
@@ -2763,6 +2767,13 @@ msgid "Mail template document reference to ask new password"
 msgstr ""
 
 msgid "Make references ..."
+msgstr ""
+
+#, php-format
+msgid "Malformed HTML in attribute '%s' from document '%s': %s"
+msgstr ""
+
+msgid "Malformed HTML:"
 msgstr ""
 
 msgid "Manage families"
@@ -7294,7 +7305,7 @@ msgid "portfolio tab"
 msgstr ""
 
 #, php-format
-msgid "possible incorrect conversion HTML to ODT %s"
+msgid "possible incorrect conversion HTML to ODT %s: %s"
 msgstr ""
 
 #, php-format
@@ -7979,8 +7990,8 @@ msgid "submitreqpasswd_form_send_error_unknown"
 msgstr ""
 "<p>The server accountered an error processing your request</p>\n"
 "<p>Retry your request, and if the problem persist, please contact <a href="
-"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request"
-"\">[ON_ERROR_CONTACT]</a></p>"
+"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request\">"
+"[ON_ERROR_CONTACT]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""
