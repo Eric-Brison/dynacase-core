@@ -347,12 +347,12 @@ class ErrorCodeATTR
      * @errorCode
      * call method in phpfunc property must be defined in file method or in another class if precised
      */
-    const ATTR1260 = 'method  "%s" is not found for "%s" attribute';
+    const ATTR1260 = 'method  "%s" (context : "%s") is not found for "%s" attribute';
     /**
      * @errorCode
      * call method require more arguments
      */
-    const ATTR1261 = 'not enought argument call to use method "%s" (need %d arguments) for "%s" attribute';
+    const ATTR1261 = 'not enought argument call to use method "%s" (context "%s", need %d arguments) for "%s" attribute';
     /**
      * @errorCode
      * the phpfunc is not correct generally detected on inherited attributes
@@ -363,7 +363,7 @@ class ErrorCodeATTR
      * the phpfunc method must be static if a classname is set
      * @note example : myClass::myStaticMethod()
      */
-    const ATTR1263 = 'method "%s" is not static phpfunc for "%s" attribute';
+    const ATTR1263 = 'method "%s" (context : "%s") is not static phpfunc for "%s" attribute';
     /**
      * @errorCode
      * call method in phpfunc property must be defined in file method or in another class if precised
@@ -373,6 +373,11 @@ class ErrorCodeATTR
      * @see ATTR1263
      */
     const ATTR1265 = 'phpfunc method error in "%s" family : %s';
+    /**
+     * @errorCode
+     * call method in phpfunc property must be defined in file method or in another class if precised
+     */
+    const ATTR1266 = 'method  "%s" (context "%s" defined in parent family "%s") is not found for "%s" attribute';
     /**
      * @errorCode
      * enum declaration must be a set of key value
