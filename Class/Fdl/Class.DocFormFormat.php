@@ -640,7 +640,8 @@ class DocFormFormat
                 }
                 
                 $lay->set("jsonconf", $jsonconf);
-                
+
+                $lay->set("allowedContent", ($this->oattr->getOption("allowedcontent")==="all"));
                 $lay->set("height", $this->oattr->getOption("editheight", "150px"));
                 $lay->set("toolbar", $this->oattr->getOption("toolbar", "Simple"));
                 $lay->set("toolbarexpand", (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? "false" : "true");
