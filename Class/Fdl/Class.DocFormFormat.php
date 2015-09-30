@@ -194,7 +194,7 @@ class DocFormFormat
                 break;
 
             case "array":
-                $input = $this->formatArray($value);
+                $input = $this->formatArray();
                 break;
 
             case "thesaurus":
@@ -323,14 +323,7 @@ class DocFormFormat
                             }
                         }
                         if (!$this->notd) $input.= "</td><td class=\"editbutton\">";
-                        if (preg_match("/list/", $attrtype, $reg)) $ctype = "multiple";
-                        else $ctype = "single";
                         
-                        if ($alone) $ctype.= "-alone";
-                        /*$input.="<input id=\"ic2_$attridk\" type=\"button\" value=\"&#133;\"".
-                        " title=\"".$ititle."\"".
-                        " onclick=\"sendEnumChoice(event,".$docid.
-                        ",this,'$attridk','$ctype','$this->iOptions')\">";*/
                         if (preg_match('/[A-Z_\-0-9]+:[A-Z_\-0-9]+\(/i', $phpfunc)) {
                             $mheight = $this->oattr->getOption('mheight', 30);
                             $mwidth = $this->oattr->getOption('mwidth', 290);
@@ -415,7 +408,7 @@ class DocFormFormat
                     if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
                 }
                 
-                $input.= $this->addDocidCreate($this->oattr, $this->doc, $attridk, $value, $this->index);
+                $input.= $this->addDocidCreate($this->oattr, $this->doc, $attridk, $this->index);
                 if ($this->oattr->elink != "" && (!$alone)) {
                     
                     $isymbol = $ititle = '';
@@ -474,7 +467,6 @@ class DocFormFormat
                 if ($vf->Show($reg[2], $info) == "") {
                     $vid = $reg[2];
                     
-                    global $action;
                     $lay->set("downloadUrl", $this->doc->getFileLink($this->attrid, $this->index, false, false, $value));
                     
                     $fname = $info->name;
@@ -662,10 +654,9 @@ class DocFormFormat
         }
         /**
          * HTML input for array attribute
-         * @param string $value the row value of input
          * @return string HTML input fragment
          */
-        private function formatArray($value)
+        private function formatArray()
         {
             global $action;
             $lay = new Layout("FDL/Layout/editarray.xml", $action);
@@ -736,7 +727,7 @@ class DocFormFormat
         {
             global $action;
             $lay = new Layout("FDL/Layout/editadoc.xml", $action);
-            $this->getLayAdoc($lay, $this->doc, $this->oattr, $value, $this->attrin, $this->index);
+            $this->getLayAdoc($lay, $this->oattr, $value, $this->attrin, $this->index);
             
             if (($this->visibility == "R") || ($this->visibility == "S")) $lay->set("disabled", $this->idisabled);
             else $lay->set("disabled", "");
@@ -840,7 +831,6 @@ class DocFormFormat
                 $autocomplete = " autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event," . $this->docid . ",this,'{$this->iOptions}','{$this->attrid}','{$this->index}')\" ";
                 $this->onChange.= $autocomplete;
                 
-                $famid = $this->oattr->format;
                 $input.= "<input {$this->classname} $autocomplete {$this->jsEvents} onchange=\"addmdocs('{$this->attrin}');document.isChanged=true\" type=\"text\" name=\"_{$this->linkPrefix}" . substr($this->attrin, 1) . "\"";
                 if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
                 $input.= " id=\"{$this->linkPrefix}" . $this->attridk . "\" value=\"" . str_replace('"', '&quot;', $textvalue) . "\">";
@@ -967,7 +957,7 @@ class DocFormFormat
             {
                 global $action;
                 $lay = new Layout("FDL/Layout/editdate.xml", $action);
-                $this->getLayDate($lay, $this->doc, $this->oattr, $value, $this->attrin, $this->index);
+                $this->getLayDate($lay, $this->oattr, $value, $this->attrin, $this->index);
                 
                 $lay->set("disabled", "");
                 if (($this->visibility == "R") || ($this->visibility == "S")) {
@@ -988,7 +978,7 @@ class DocFormFormat
             {
                 global $action;
                 $lay = new Layout("FDL/Layout/edittimestamp.xml", $action);
-                $this->getLayDate($lay, $this->doc, $this->oattr, $value, $this->attrin, $this->index);
+                $this->getLayDate($lay, $this->oattr, $value, $this->attrin, $this->index);
                 
                 $lay->set("readonly", false);
                 $lay->set("disabled", "");
@@ -1026,7 +1016,9 @@ class DocFormFormat
              * @param string $value the row value of input
              * @return string HTML input fragment
              */
-            private function formatPassword($value)
+            private function formatPassword(
+            /** @noinspection PhpUnusedParameterInspection */
+            $value)
             {
                 // don't see the value
                 $eopt = $this->classname . ' ';
@@ -1181,7 +1173,6 @@ class DocFormFormat
                 
                 $talabel = array();
                 $tilabel = array();
-                $tvattr = array();
                 
                 $max = - 1;
                 $max0 = - 1;
@@ -1308,36 +1299,10 @@ class DocFormFormat
                             $tval[$k] = array(
                                 0 => ""
                             );
-                            $nbitem = 1;
                         }
                     }
-                    //Dead code?
-                    //("bvalue_" or "ivalue" could not be found in editarray.xml neither in this function.
-                    // and $tivalue is redefined as empty array in code below.
-                    /*
-                    $tivalue=array();
-                    for ($i=0;$i<$nbitem;$i++) {
-                    $tivalue[]=array("ivalue"=>$tval[$k][$i]);
-                    }
-                    $lay->setBlockData("bvalue_$k",$tivalue);
-                    */
                 }
-                //No more required (works even in IE6 which is no more supported)
-                /*
-                if ($action->read("navigator") == "EXPLORER") {
-                // compute col width explicitly
-                if ($nbcolattr> 0) {
-                $aw=sprintf("%d%%",100/$nbcolattr);
                 
-                foreach ($talabel as $ka => $va) {
-                if ($va["ahw"]=="auto") {
-                $talabel[$ka]["ahw"]=$aw;
-                $tilabel[$ka]["ihw"]=$aw;
-                }
-                }
-                }
-                }
-                */
                 $pindex = '';
                 if (($row >= 0) && ($oattr->mvisibility == "W" || $oattr->mvisibility == "O" || $oattr->mvisibility == "U")) {
                     $oattr->mvisibility = "U";
@@ -1416,8 +1381,6 @@ class DocFormFormat
              */
             private function getZoneLayArray(&$lay, &$doc, &$oattr, $zone)
             {
-                global $action;
-                
                 $height = $oattr->getOption("height", false);
                 $help = $doc->getHelpPage();
                 
@@ -1613,13 +1576,12 @@ class DocFormFormat
              * generate HTML for inline document (not virtual)
              *
              * @param Layout $lay template of html input
-             * @param Doc $doc current document in edition
              * @param NormalAttribute $oattr current attribute for input
              * @param string $value value of the attribute to display (generaly the value comes from current document)
              * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
              * @param int $index current row number if it is in array ("" if it is not in array)
              */
-            private function getLayAdoc(&$lay, &$doc, &$oattr, $value, $aname, $index)
+            private function getLayAdoc(&$lay, &$oattr, $value, $aname, $index)
             {
                 $idocid = $oattr->format . $index;
                 $lay->set("name", $aname);
@@ -1666,13 +1628,12 @@ class DocFormFormat
              * generate HTML for date attribute
              *
              * @param Layout $lay template of html input
-             * @param Doc $doc current document in edition
              * @param NormalAttribute $oattr current attribute for input
              * @param string $value value of the attribute to display (generaly the value comes from current document)
              * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
              * @param int $index current row number if it is in array ("" if it is not in array)
              */
-            private function getLayDate(&$lay, &$doc, &$oattr, $value, $aname, $index)
+            private function getLayDate(&$lay, &$oattr, $value, $aname, $index)
             {
                 if ($index !== "") $idocid = $oattr->format . '_' . $index;
                 else $idocid = $oattr->format;
@@ -1705,8 +1666,6 @@ class DocFormFormat
              */
             private function getLayOptions(&$lay, &$doc, &$oattr, $value, $aname, $index)
             {
-                if ($index !== "") $idocid = $oattr->format . '_' . $index;
-                else $idocid = $oattr->format;
                 $lay->set("name", $aname);
                 if ($index !== "") $idx = $oattr->id . '_' . $index;
                 else $idx = $oattr->id;
@@ -1836,8 +1795,6 @@ class DocFormFormat
              */
             private function getLayDocOption(&$lay, &$doc, &$oattr, $value, $aname, $index)
             {
-                if ($index !== "") $idocid = $oattr->format . '_' . $index;
-                else $idocid = $oattr->format;
                 $lay->set("name", $aname);
                 $idx = $oattr->id . $index;
                 $lay->set("id", $idx);
@@ -1863,8 +1820,7 @@ class DocFormFormat
             private function getLayTextOptions(&$lay, &$doc, &$oattr, $value, $aname, $index)
             {
                 include_once ("FDL/enum_choice.php");
-                if ($index !== "") $idocid = $oattr->format . '_' . $index;
-                else $idocid = $oattr->format;
+                
                 $lay->set("name", $aname);
                 $idx = $oattr->id . $index;
                 $lay->set("id", $idx);
@@ -1924,11 +1880,10 @@ class DocFormFormat
              * @param \BasicAttribute|\NormalAttribute $oattr
              * @param \Doc $doc
              * @param string $attridk id suffix of the <input/> tag
-             * @param string $value
              * @param integer $index
              * @return string
              */
-            private function addDocIdCreate(BasicAttribute & $oattr, Doc & $doc, $attridk, $value, $index)
+            private function addDocIdCreate(BasicAttribute & $oattr, Doc & $doc, $attridk, $index)
             {
                 
                 if ($oattr->type == "docid" || $oattr->type == "account") {
