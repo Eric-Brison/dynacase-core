@@ -307,7 +307,9 @@ class TestImportFamily extends TestCaseDcpDocument
                     "DFLT0001",
                     "tst syntax",
                     "DFLT0002",
-                    "DFLT0003"
+                    "DFLT0003",
+                    "ATTR1272",
+                    "tst_bad_enum_empty_key"
                 )
             ) ,
             // format string
