@@ -639,7 +639,7 @@ class Doc extends DocCtrl
      * to not detect changed when it is automatic setValue
      * @var bool
      */
-    private $_setValueDetectChange = true;
+    private $_setValueCompleteArray = false;
     /**
      * list of availaible control
      * @var array
@@ -764,7 +764,7 @@ create unique index i_docir on doc(initid, revision);";
      * @var bool
      * @access private
      */
-    private $_setValueCompleteArrayRow = true;
+    private $_setValueNeedCompleteArray = true;
     /**
      * display document main properties as string
      * @return string
@@ -1857,7 +1857,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->_maskApplied = false;
                 $this->_oldvalue = array();
                 $this->_paramValue = array();
-                $this->_setValueDetectChange = true;
+                $this->_setValueCompleteArray = false;
                 $this->childs = null;
                 $this->constraintbroken = false;
                 $this->fathers = null;
@@ -3320,8 +3320,8 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
             if ($needRepad) {
-                $oldComplete = $this->_setValueDetectChange;
-                $this->_setValueDetectChange = false;
+                $oldComplete = $this->_setValueCompleteArray;
+                $this->_setValueCompleteArray = true;
                 foreach ($ta as $k => $v) { // fill uncompleted rows
                     $c = count($tValues[$k]);
                     if ($c < $max) {
@@ -3331,7 +3331,7 @@ create unique index i_docir on doc(initid, revision);";
                         $err.= $this->setValue($k, $tValues[$k]);
                     }
                 }
-                $this->_setValueDetectChange = $oldComplete;
+                $this->_setValueCompleteArray = $oldComplete;
             }
             
             unset($calls[strtolower($idAttr) ]);
@@ -3354,8 +3354,8 @@ create unique index i_docir on doc(initid, revision);";
     final public function addArrayRow($idAttr, $tv, $index = - 1)
     {
         if (!is_array($tv)) return sprintf('values "%s" must be an array', $tv);
-        $old_setValueCompleteArrayRow = $this->_setValueCompleteArrayRow;
-        $this->_setValueCompleteArrayRow = false;
+        $old_setValueCompleteArrayRow = $this->_setValueNeedCompleteArray;
+        $this->_setValueNeedCompleteArray = false;
         
         $tv = array_change_key_case($tv, CASE_LOWER);
         $a = $this->getAttribute($idAttr);
@@ -3365,7 +3365,7 @@ create unique index i_docir on doc(initid, revision);";
                 $ta = $this->attributes->getArrayElements($a->id);
                 $attrOut = array_diff(array_keys($tv) , array_keys($ta));
                 if ($attrOut) {
-                    $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
+                    $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
                     return sprintf(_('attribute "%s" is not a part of array "%s"') , implode(', ', $attrOut) , $idAttr);
                 }
                 
@@ -3392,10 +3392,10 @@ create unique index i_docir on doc(initid, revision);";
                     $err = $this->completeArrayRow($idAttr, false);
                 }
             }
-            $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
+            $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
             return $err;
         }
-        $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
+        $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
         return sprintf(_("%s is not an array attribute") , $idAttr);
     }
     /**
@@ -3408,8 +3408,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function clearArrayValues($idAttr)
     {
-        $old_setValueCompleteArrayRow = $this->_setValueCompleteArrayRow;
-        $this->_setValueCompleteArrayRow = false;
+        $old_setValueCompleteArrayRow = $this->_setValueNeedCompleteArray;
+        $this->_setValueNeedCompleteArray = false;
         
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
@@ -3419,10 +3419,10 @@ create unique index i_docir on doc(initid, revision);";
             foreach ($ta as $k => $v) {
                 $err.= $this->clearValue($k);
             }
-            $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
+            $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
             return $err;
         }
-        $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
+        $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
         return sprintf(_("%s is not an array attribute") , $idAttr);
     }
     /**
@@ -3514,7 +3514,11 @@ create unique index i_docir on doc(initid, revision);";
                     return sprintf(_("attribute %s unknow in family \"%s\"") , $attrid, $this->fromname);
                 }
             }
-            if ($oattr->mvisibility == "I") return sprintf(_("no permission to modify this attribute %s") , $attrid);
+            if ($oattr->mvisibility == "I") {
+                if ($this->_setValueCompleteArray === false) {
+                    return sprintf(_("no permission to modify this attribute %s") , $attrid);
+                }
+            }
             if ($value === DELVALUE) {
                 if ($oattr->type != "password") $value = " ";
                 else return '';
@@ -3523,7 +3527,7 @@ create unique index i_docir on doc(initid, revision);";
                 $value = ""; // erase value
                 if ((!empty($this->$attrid)) || (isset($this->$attrid) && $this->$attrid === "0")) {
                     //print "change by delete $attrid  <BR>\n";
-                    if ($this->_setValueDetectChange) {
+                    if ($this->_setValueCompleteArray === false) {
                         $this->hasChanged = true;
                         $this->_oldvalue[$attrid] = $this->$attrid;
                     }
@@ -3721,7 +3725,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     //print "<br/>change $attrid to :".$this->$attrid."->".implode("\n",$tvalues);
                     $rawValue = implode("\n", $tvalues);
-                    if ($this->_setValueDetectChange && $this->$attrid != $rawValue) {
+                    if (!$this->_setValueCompleteArray && $this->$attrid != $rawValue) {
                         $this->_oldvalue[$attrid] = $this->$attrid;
                         $this->hasChanged = true;
                     }
@@ -3729,7 +3733,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         }
-        if ($this->_setValueCompleteArrayRow && $oattr && $oattr->inArray()) {
+        if ($this->_setValueNeedCompleteArray && $oattr && $oattr->inArray()) {
             return $this->completeArrayRow($oattr->fieldSet->id);
         }
         return '';

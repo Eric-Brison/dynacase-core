@@ -619,6 +619,32 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                     "tst_coldate" => array()
                 ) ,
                 0
+            ) ,
+            array(
+                array(
+                    "tst_col1" => array(
+                        "Un",
+                        "Deux",
+                        "Trois"
+                    ) ,
+                    "tst_col2" => "",
+                    "tst_col3" => array(
+                        "2012-06-20",
+                        "2012-06-21",
+                        "2012-06-22"
+                    )
+                ) ,
+                3,
+                array(
+                    "tst_col1" => array(
+                        "Un",
+                        "Deux"
+                    ) ,
+                    "tst_col3" => array(
+                        "2012-06-20"
+                    )
+                ) ,
+                2
             )
         );
     }
@@ -814,6 +840,10 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             ) ,
             array(
                 'TST_TIMESTAMP',
+                'a'
+            ) ,
+            array(
+                'TST_COL2',
                 'a'
             )
         );
