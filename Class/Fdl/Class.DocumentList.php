@@ -101,7 +101,7 @@ class DocumentList implements Iterator, Countable
     }
     public function key()
     {
-        return is_array($this->currentDoc)?$this->currentDoc["id"]:$this->currentDoc->id;
+        return is_array($this->currentDoc) ? $this->currentDoc["id"] : $this->currentDoc->id;
     }
     /**
      * @return Doc
@@ -160,7 +160,7 @@ class DocumentList implements Iterator, Countable
     /**
      * apply a callback on each document
      * if callback return false, the document is skipped from list
-     * @param Closure $hookfunction
+     * @param Closure $hookFunction
      * @return void
      */
     public function listMap($hookFunction)
@@ -168,4 +168,3 @@ class DocumentList implements Iterator, Countable
         $this->hookFunction = $hookFunction;
     }
 }
-?>

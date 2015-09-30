@@ -226,10 +226,14 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
     if (!empty($_SERVER["HTTP_HOST"])) {
         //  $name=urlencode($name);
         //  $name=htmlentities( $name , ENT_QUOTES , "UTF-8" );
-        if (seems_utf8($name)) $name = utf8_decode($name);
         $name = str_replace('"', '\\"', $name);
-        if (!$inline) header("Content-Disposition: attachment;filename=\"$name\"");
-        else header("Content-Disposition: inline;filename=\"$name\"");
+        $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
+        if (!$inline) {
+            // No need filename if chrome only use filename*
+            header("Content-Disposition: attachment;filename=\"$uName\";filename*=\"UTF-8''$name\"");
+        } else {
+            header("Content-Disposition: inline;filename=\"$uName\"");
+        }
         
         if ($cache) {
             $duration = 24 * 3600;

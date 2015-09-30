@@ -355,7 +355,7 @@ class _IGROUPUSER extends Doc
     /**
      * reset wuser
      */
-    function Complete()
+    protected function postAffect(array $data, $more, $reset)
     {
         if (isset($this->wuser)) unset($this->wuser);
     }

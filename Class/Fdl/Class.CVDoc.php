@@ -58,7 +58,7 @@ class CVDoc extends Doc
         $this->setAcls();
     }
     
-    function Complete()
+    protected function postAffect(array $data, $more, $reset)
     {
         $this->setAcls();
     }

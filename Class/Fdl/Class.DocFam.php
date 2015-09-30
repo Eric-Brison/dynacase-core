@@ -121,11 +121,12 @@ create unique index idx_idfam on docfam(id);";
         }
     }
     
-    function complete()
+    protected function postAffect(array $data, $more, $reset)
     {
         $this->_xtdefval = null;
         $this->_xtparam = null;
     }
+    
     function preDocDelete()
     {
         return _("cannot delete family");
@@ -171,6 +172,8 @@ create unique index idx_idfam on docfam(id);";
     }
     /**
      * update attributes of workflow if needed
+     * @param array $extra
+     * @return string
      */
     function postImport(array $extra = array())
     {
@@ -199,7 +202,9 @@ create unique index idx_idfam on docfam(id);";
      * @param bool $ulink
      * @param bool $abstract
      */
-    function viewDefaultValues($target = "_self", $ulink = true, $abstract = false)
+    function viewDefaultValues(
+    /** @noinspection PhpUnusedParameterInspection */
+    $target = "_self", $ulink = true, $abstract = false)
     {
         $d = createDoc($this->dbaccess, $this->id, false, true, false);
         $defValues = $this->getDefValues();
@@ -279,7 +284,9 @@ create unique index idx_idfam on docfam(id);";
      * @param bool $ulink
      * @param bool $abstract
      */
-    function viewfamcard($target = "_self", $ulink = true, $abstract = false)
+    function viewfamcard(
+    /** @noinspection PhpUnusedParameterInspection */
+    $target = "_self", $ulink = true, $abstract = false)
     {
         // -----------------------------------
         
@@ -635,6 +642,7 @@ create unique index idx_idfam on docfam(id);";
      *
      * @param string $idp parameter identifier
      * @param string $val value of the default
+     * @param bool $check
      * @return string error message
      */
     function setDefValue($idp, $val, $check = true)
@@ -659,6 +667,7 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return family default value
      *
+     * @param string $X column name
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      * @return string default value
@@ -676,7 +685,7 @@ create unique index idx_idfam on docfam(id);";
     }
     /**
      * explode param or defval string
-     * @param $sx
+     * @param string $sx
      * @return array
      */
     private function explodeX($sx)
@@ -694,6 +703,7 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return all family default values
      *
+     * @param string $X column name
      * @return array string default value
      */
     function getXValues($X)
@@ -774,7 +784,7 @@ create unique index idx_idfam on docfam(id);";
     final public function UpdateVaultIndex()
     {
         $dvi = new DocVaultIndex($this->dbaccess);
-        $err = $dvi->DeleteDoc($this->id);
+        $dvi->DeleteDoc($this->id);
         
         $fa = $this->getParamAttributes();
         
@@ -789,7 +799,6 @@ create unique index idx_idfam on docfam(id);";
                 );
             }
             foreach ($ta as $k => $v) {
-                $vid = "";
                 if (preg_match(PREGEXPFILE, $v, $reg)) {
                     $vid = $reg[2];
                     $tvid[$vid] = $vid;
@@ -806,6 +815,7 @@ create unique index idx_idfam on docfam(id);";
     
     function saveVaultFile($vid, $stream)
     {
+        $err = '';
         if (is_resource($stream) && get_resource_type($stream) == "stream") {
             $ext = "nop";
             $filename = uniqid(getTmpDir() . "/_fdl") . ".$ext";
@@ -817,11 +827,13 @@ create unique index idx_idfam on docfam(id);";
                 }
             }
             fclose($tmpstream);
-            $vf = newFreeVaultFile($this->dbaccess);
-            $info = null;
-            $err = $vf->Retrieve($vid, $info);
-            if ($err == "") $err = $vf->Save($filename, false, $vid);
-            unlink($filename);
+            if (!$err) {
+                $vf = newFreeVaultFile($this->dbaccess);
+                $info = null;
+                $err = $vf->Retrieve($vid, $info);
+                if ($err == "") $err = $vf->Save($filename, false, $vid);
+                unlink($filename);
+            }
             return $err;
         }
         return '';
