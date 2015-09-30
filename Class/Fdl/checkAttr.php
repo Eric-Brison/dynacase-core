@@ -492,7 +492,7 @@ SQL;
                     $enumLabel = null;
                 } else list($enumKey, $enumLabel) = explode("|", $opt, 2);
                 if ($enumKey === '') {
-                    $this->addError(ErrorCode::getError('ATTR1271', $opt, $this->attrid));
+                    $this->addError(ErrorCode::getError('ATTR1272', $opt, $this->attrid));
                 } elseif (!preg_match('/^[\x20-\x7E]+$/', $enumKey)) {
                     $this->addError(ErrorCode::getError('ATTR1271', $opt, $this->attrid));
                 } else if ($enumLabel === null) {
@@ -550,7 +550,6 @@ SQL;
     private function checkPhpMethod()
     {
         $phpFunc = trim($this->structAttr->phpfunc);
-        $phpFile = trim($this->structAttr->phpfile);
         $type = $this->getType();
         
         if ($this->isModAttr && (!$type)) return; // cannot really test if has not type
