@@ -258,6 +258,7 @@ class TestImportFamily extends TestCaseDcpDocument
                 array(
                     "ATTR1260",
                     "badCompute1",
+                    "context : \"phpFunc\"",
                     "tst_number1",
                     "ATTR1261",
                     "tst_number2",
@@ -267,6 +268,7 @@ class TestImportFamily extends TestCaseDcpDocument
                     "tst_number4",
                     "ATTR1402",
                     "DFLT0004",
+                    "context : \"Default value\"",
                     "DFLT0005",
                     "tst_notfound",
                     "badCall",

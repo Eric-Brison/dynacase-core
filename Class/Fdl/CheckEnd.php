@@ -128,7 +128,7 @@ class CheckEnd extends CheckData
             $this->addError(ErrorCode::getError('ATTR1262', $oa->phpfunc, $oa->id, $error));
         } else {
             
-            $err = $this->verifyMethod($strucFunc, $oa);
+            $err = $this->verifyMethod($strucFunc, $oa, "phpFunc");
             if ($err) {
                 $this->addError($err);
                 $this->addError(ErrorCode::getError('ATTR1265', $this->doc->name, $err));
@@ -170,7 +170,7 @@ class CheckEnd extends CheckData
             /**
              * @var ReflectionMethod $refMeth
              */
-            $err = $this->verifyMethod($strucLink, $oa, $refMeth);
+            $err = $this->verifyMethod($strucLink, $oa, "Link", $refMeth);
             if ($err) {
                 $this->addError($err);
                 $this->addError(ErrorCode::getError('ATTR1001', $this->doc->name, $err));
@@ -199,7 +199,7 @@ class CheckEnd extends CheckData
                 $error = $oParse->getError();
                 if (!$error) {
                     
-                    $err = $this->verifyMethod($strucFunc, $oa);
+                    $err = $this->verifyMethod($strucFunc, $oa, "Default value");
                     if ($err) {
                         $this->addError(ErrorCode::getError('DFLT0004', $attrid, $this->doc->name, $err));
                     }
@@ -249,7 +249,7 @@ class CheckEnd extends CheckData
                     $error = $oParse->getError();
                     if (!$error) {
                         
-                        $err = $this->verifyMethod($strucFunc, $oa);
+                        $err = $this->verifyMethod($strucFunc, $oa, "Parameters");
                         if ($err) {
                             $this->addError(ErrorCode::getError('INIT0004', $attrid, $this->doc->name, $err));
                         }
@@ -282,7 +282,7 @@ class CheckEnd extends CheckData
             }
         }
     }
-    private function verifyMethod($strucFunc, $oa, &$refMeth = null)
+    private function verifyMethod($strucFunc, $oa, $ctx, &$refMeth = null)
     {
         $err = '';
         $phpMethName = $strucFunc->methodName;
@@ -296,15 +296,19 @@ class CheckEnd extends CheckData
             $refMeth = new ReflectionMethod($phpClassName, $phpMethName);
             $numArgs = $refMeth->getNumberOfRequiredParameters();
             if ($numArgs > count($strucFunc->inputs)) {
-                $err = (ErrorCode::getError('ATTR1261', $phpLongName, $numArgs, $oa->id));
+                $err = (ErrorCode::getError('ATTR1261', $phpLongName, $ctx, $numArgs, $oa->id));
             } else {
                 if ($strucFunc->className && (!$refMeth->isStatic())) {
-                    $err = (ErrorCode::getError('ATTR1263', $phpLongName, $oa->id));
+                    $err = (ErrorCode::getError('ATTR1263', $phpLongName, $ctx, $oa->id));
                 }
             }
         }
         catch(Exception $e) {
-            $err = (ErrorCode::getError('ATTR1260', $phpLongName, $oa->id));
+            if ($oa->docid == $this->doc->id) {
+                $err = (ErrorCode::getError('ATTR1260', $phpLongName, $ctx, $oa->id));
+            } else {
+                $err = (ErrorCode::getError('ATTR1266', $phpLongName, $ctx, getNameFromId($this->doc->dbaccess, $oa->docid) , $oa->id));
+            }
         }
         return $err;
     }
