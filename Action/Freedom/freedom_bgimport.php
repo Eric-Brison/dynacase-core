@@ -19,7 +19,7 @@
 include_once ("FDL/Class.Dir.php");
 include_once ("FDL/sendmail.php");
 // -----------------------------------
-function freedom_bgimport(&$action)
+function freedom_bgimport(Action & $action)
 {
     // -----------------------------------
     global $_FILES;
@@ -35,6 +35,9 @@ function freedom_bgimport(&$action)
         // importation
         $file = $_FILES["file"]["tmp_name"];
         $filename = $_FILES["file"]["name"];
+    } else {
+        error_log(sprintf("No file has been uploaded!"));
+        return;
     }
     
     $wsh = getWshCmd(true);
@@ -45,13 +48,11 @@ function freedom_bgimport(&$action)
         return;
     }
     
-    $cmd[] = "$wsh --userid={$action->user->id} --api=freedom_import --htmlmode=Y --dirid=$dirid --double=$double --policy=$policy --to=$to --file=$destfile";
-    $cmd[] = "/bin/rm $destfile ";
+    $cmd[] = sprintf("%s --userid=%s --api=freedom_import --htmlmode=Y --dirid=%s --double=%s --policy=%s --to=%s --file=%s", $wsh, escapeshellarg($action->user->id) , escapeshellarg($dirid) , escapeshellarg($double) , escapeshellarg($policy) , escapeshellarg($to) , escapeshellarg($destfile));
+    $cmd[] = sprintf("rm -- %s", escapeshellarg($destfile));
     // $cmd[]="/bin/rm -f $file.?";
-    
     bgexec($cmd, $result, $err);
     
     if ($err == 0) $action->lay->set("text", sprintf(_("Import %s is in progress. When update will be finished an email to &lt;%s&gt; will be sended with result rapport") , $filename, $to));
     else $action->lay->set("text", sprintf(_("update of %s catalogue has failed,") , $filename));
 }
-?>

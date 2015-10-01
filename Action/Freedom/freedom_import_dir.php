@@ -18,7 +18,7 @@
 
 include_once ("FDL/import_tar.php");
 
-function freedom_import_dir(&$action)
+function freedom_import_dir(Action & $action)
 {
     
     $to = GetHttpVars("to");
@@ -30,16 +30,18 @@ function freedom_import_dir(&$action)
     $targs = array_merge($_GET, $_POST);
     $args = "";
     foreach ($targs as $k => $v) {
-        if (($k != "action") && ($k != "app")) $args.= " --$k=\"$v\"";
+        if ($k == "action" || $k == "app") {
+            continue;
+        }
+        $args.= " " . escapeshellarg("--$k=$v");
     }
     
     $subject = sprintf(_("result of archive import  %s") , $filename);
     
-    $cmd[] = "$wsh --userid={$action->user->id} --app=FREEDOM --action=FREEDOM_ANA_TAR --htmlmode=Y $args | ( $wsh --userid={$action->user->id} --api=fdl_sendmail --subject=\"$subject\" --htmlmode=Y --file=stdin --to=\"$to\" )";
+    $cmd[] = sprintf("%s --userid=%s --app=FREEDOM --action=FREEDOM_ANA_TAR --htmlmode=Y %s | ( %s --userid=%s --api=fdl_sendmail --subject=%s --htmlmode=Y --file=stdin --to=%s )", $wsh, escapeshellarg($action->user->id) , $args, $wsh, escapeshellarg($action->user->id) , escapeshellarg($subject) , escapeshellarg($to));
     
     bgexec($cmd, $result, $err);
     
     if ($err == 0) $action->lay->set("text", sprintf(_("Import %s is in progress. When update will be finished an email to &lt;%s&gt; will be sended with result rapport") , $filename, $to));
     else $action->lay->set("text", sprintf(_("update of %s catalogue has failed,") , $filename));
 }
-?>

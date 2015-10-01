@@ -258,7 +258,7 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                 // option 1
                 //$cmd=sprintf("gs -q -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=- -dFirstPage=%d -dLastPage=%d %s | convert -  -thumbnail %s %s",   min(intval($width/8.06),$quality),$pngpage+1,$pngpage+1,$info->path,$width,$cible);
                 // option 2
-                $cmd = sprintf("convert -thumbnail %s -auto-orient -density %d %s[%d] %s 2>&1", $width, $quality, $info->path, $pngpage, $cible);
+                $cmd = sprintf("convert -thumbnail %s -auto-orient -density %d %s[%d] %s 2>&1", escapeshellarg($width) , $quality, escapeshellarg($info->path) , $pngpage, escapeshellarg($cible));
                 // option 3
                 //$cmd=sprintf("gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=%s -dFirstPage=%d -dLastPage=%d %s",		   min(intval($width/8.06),$quality),$cible,$pngpage+1,$pngpage+1,$info->path);
                 // option 4
@@ -434,8 +434,6 @@ function rezizelocalimage($img, $size, $basedest)
     }
     if (!file_exists($dest)) {
         $cmd = sprintf("convert  -auto-orient -thumbnail %d %s %s", $size, escapeshellarg($source) , escapeshellarg($dest));
-        //print_r2($cmd);
-        //$cmd=sprintf("convert  -scale %dx%d $source $dest",$size,$size);
         system($cmd);
         if (file_exists($dest)) return $dest;
     } else {
@@ -450,11 +448,23 @@ function createPdf2Png($file, $vid)
         $density = 200;
         $width = 1200;
         $nbpages = trim(shell_exec(sprintf('grep -c "/Type[[:space:]]*/Page\>" %s', escapeshellarg($file))));
-        $cmd[] = sprintf("/bin/rm -f %s/vid-%d*.png;", DEFAULT_PUBDIR . "/var/cache/file", $vid);
-        
+        /* Remove existing cached files for the given $vid */
+        $dh = opendir(sprintf("%s/var/cache/file", DEFAULT_PUBDIR));
+        if ($dh !== false) {
+            while (($f = readdir($dh)) !== false) {
+                if ($f == '.' || $f == '..') {
+                    continue;
+                }
+                if (preg_match(sprintf('/^vid-%s-/', preg_quote($vid, '/')) , $f)) {
+                    unlink(sprintf("%s/var/cache/file/%s", DEFAULT_PUBDIR, $f));
+                }
+            }
+        }
+        /* Generate pages in background */
+        $cmd = array();
         for ($i = 0; $i < $nbpages; $i++) {
             $cible = DEFAULT_PUBDIR . "/var/cache/file/vid-${vid}-${i}.png";
-            $cmd[] = sprintf("nice convert -interlace plane -thumbnail %d  -density %d %s[%d] %s", $width, $density, $file, $i, $cible);
+            $cmd[] = sprintf("nice convert -interlace plane -thumbnail %d  -density %d %s[%d] %s", $width, $density, escapeshellarg($file) , $i, escapeshellarg($cible));
         }
         bgexec($cmd, $result, $err);
     }
