@@ -523,15 +523,14 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
             if (file_exists($userfile['tmp_name'])) {
                 if (is_uploaded_file($userfile['tmp_name'])) {
                     // move to add extension
-                    $fname = $userfile['name'];
-                    
+                    $fname = rawurldecode($userfile['name']);
                     $err = vault_store($userfile['tmp_name'], $vid, $fname);
                     // read system mime
                     $userfile['type'] = getSysMimeFile($userfile['tmp_name'], $userfile['name']);
                     
                     if ($err != "") {
                         AddWarningMsg($err);
-                        $doc->addHistoryEntry(sprintf(_("file %s : %s") , $userfile['name'], $err) , HISTO_WARNING);
+                        $doc->addHistoryEntry(sprintf(_("file %s : %s") , $fname, $err) , HISTO_WARNING);
                     } else {
                         if ($oa && $oa->getOption('preventfilechange') == "yes") {
                             if (preg_match(PREGEXPFILE, $userfile["oldvalue"], $reg)) {
@@ -549,7 +548,7 @@ function insert_file(Doc & $doc, $attrid, $strict = false)
                                 }
                             }
                         }
-                        $rt[$k] = $userfile['type'] . "|" . $vid . '|' . $userfile['name']; // return file type and upload file name
+                        $rt[$k] = $userfile['type'] . "|" . $vid . '|' . $fname; // return file type and upload file name
                         
                     }
                 } else {

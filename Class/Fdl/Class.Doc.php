@@ -6185,8 +6185,10 @@ create unique index i_docir on doc(initid, revision);";
         if (preg_match(PREGEXPFILE, $avalue, $reg)) {
             $vid = $reg[2];
             // will be rewrited by apache rules
-            //rewrite to  sprintf("%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d", "", $cache ? "yes" : "no", $inline ? "yes" : "no", $vid, $this->id, $attrid, $index);
-            $url = sprintf("file/%s/%d/%s/%s/%s?cache=%s&inline=%s", $docid, $vid, $attrid, $index, rawurlencode($reg[3]) , $cache ? "yes" : "no", $inline ? "yes" : "no");
+            //rewrite to  "%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d", "", $cache ? "yes" : "no", $inline ? "yes" : "no", $vid, $this->id, $attrid, $index);
+            // Double quote not supported by all browsers - replace by minus
+            $fname = str_replace('"', '-', $reg[3]);
+            $url = sprintf("file/%s/%d/%s/%s/%s?cache=%s&inline=%s", $docid, $vid, $attrid, $index, rawurlencode($fname) , $cache ? "yes" : "no", $inline ? "yes" : "no");
             if ($this->cvid > 0) {
                 $viewId = getHttpVars("vid");
                 if ($viewId) {
