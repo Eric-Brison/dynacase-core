@@ -4,6 +4,8 @@
   Allow from All
 </FilesMatch>
 
+RewriteEngine On
+
 RewriteCond %{REQUEST_URI} !/guest\.php$
 RewriteCond %{REQUEST_URI} !/authent\.php$
 RewriteCond %{REQUEST_URI} ^(.*)/file/[^/]*/[0-9]*/

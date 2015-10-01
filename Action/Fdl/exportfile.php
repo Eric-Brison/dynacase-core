@@ -172,6 +172,8 @@ function exportfile(Action & $action)
 }
 /**
  * Idem like exportfile instead that download first file attribute found
+ * @param Action $action
+ * @throws \Dcp\Core\Exception
  */
 function exportfirstfile(Action & $action)
 {
@@ -256,7 +258,7 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                 // option 1
                 //$cmd=sprintf("gs -q -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=- -dFirstPage=%d -dLastPage=%d %s | convert -  -thumbnail %s %s",   min(intval($width/8.06),$quality),$pngpage+1,$pngpage+1,$info->path,$width,$cible);
                 // option 2
-                $cmd = sprintf("convert -thumbnail %s  -density %d %s[%d] %s 2>&1", $width, $quality, $info->path, $pngpage, $cible);
+                $cmd = sprintf("convert -thumbnail %s -auto-orient -density %d %s[%d] %s 2>&1", $width, $quality, $info->path, $pngpage, $cible);
                 // option 3
                 //$cmd=sprintf("gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=%s -dFirstPage=%d -dLastPage=%d %s",		   min(intval($width/8.06),$quality),$cible,$pngpage+1,$pngpage+1,$info->path);
                 // option 4
@@ -331,16 +333,18 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                 Http_DownloadFile($info->path, $info->name, $mimetype, $inline, $cache);
             } else {
                 $filename = $info->path;
-                $name = $info->name;
-                if (!$inline) header("Content-Disposition: form-data;filename=$name");
+                $name = rawurlencode(str_replace('"', '-', $info->name));
+                
                 if ($inline) {
                     global $_SERVER;
                     $nav = $_SERVER['HTTP_USER_AGENT'];
                     $pos = strpos($nav, "MSIE");
                     if ($pos) {
                         // add special header for extension
-                        header("Content-Disposition: form-data;filename=\"$name\"");
+                        header("Content-Disposition: inline;filename*=\"UTF-8''$name\"");
                     }
+                } else {
+                    header("Content-Disposition: attachment;filename*=\"UTF-8''$name\"");
                 }
                 //	  header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
                 // header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
@@ -429,7 +433,7 @@ function rezizelocalimage($img, $size, $basedest)
         mkdir(RESIZEDIR);
     }
     if (!file_exists($dest)) {
-        $cmd = sprintf("convert  -thumbnail %d %s %s", $size, escapeshellarg($source) , escapeshellarg($dest));
+        $cmd = sprintf("convert  -auto-orient -thumbnail %d %s %s", $size, escapeshellarg($source) , escapeshellarg($dest));
         //print_r2($cmd);
         //$cmd=sprintf("convert  -scale %dx%d $source $dest",$size,$size);
         system($cmd);

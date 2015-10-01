@@ -14,8 +14,12 @@
  * @subpackage CORE
  */
 /**
+ * @param Action $action
+ * @param string $appname
+ * @param string $actionname
+ * @param string $otherurl
+ * @param bool $httpparamredirect
  */
-
 function Redirect(Action & $action, $appname, $actionname, $otherurl = "", $httpparamredirect = false)
 {
     global $_SERVER, $_GET; // use only  with HTTP
@@ -156,9 +160,9 @@ function SetHttpVar($name, $def)
 function GetMimeType($ext)
 {
     $mimes = file("/etc/mime.types");
-    while (list($k, $v) = each($mimes)) {
+    foreach ($mimes as $v) {
         if (substr($v, 0, 1) == "#") continue;
-        $tab = preg_split("/\s+/", $v);
+        $tab = preg_split('/\s+/', $v);
         if ((isset($tab[1])) && ($tab[1] == $ext)) return ($tab[0]);
     }
     return ("text/any");
@@ -167,9 +171,9 @@ function GetMimeType($ext)
 function GetExt($mime_type)
 {
     $mimes = file("/etc/mime.types");
-    while (list($k, $v) = each($mimes)) {
+    foreach ($mimes as $v) {
         if (substr($v, 0, 1) == "#") continue;
-        $tab = preg_split("/\s+/", $v);
+        $tab = preg_split('\s+/', $v);
         if ((isset($tab[0])) && ($tab[0] == $mime_type)) {
             if (isset($tab[1])) {
                 return ($tab[1]);
@@ -196,10 +200,11 @@ function Http_Download($src, $ext, $name, $add_ext = TRUE, $mime_type = "")
 {
     if ($mime_type == '') $mime_type = GetMimeType($ext);
     if ($add_ext) $name = $name . "." . $ext;
+    $name = str_replace('"', '\\"', $name);
     header("Cache-control: private"); // for IE : don't know why !!
     header('Content-Length: ' . strlen($src));
     header("Pragma: "); // HTTP 1.0
-    header("Content-Disposition: form-data;filename=\"$name\"");
+    header("Content-Disposition: form-data;filename*=\"UTF-8''$name\";");
     header("Content-type: " . $mime_type);
     echo $src;
 }
@@ -224,15 +229,14 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
     }
     
     if (!empty($_SERVER["HTTP_HOST"])) {
-        //  $name=urlencode($name);
-        //  $name=htmlentities( $name , ENT_QUOTES , "UTF-8" );
-        $name = str_replace('"', '\\"', $name);
-        $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
+        // Double quote not supported by all browsers - replace by minus
+        $name = rawurlencode(str_replace('"', '-', $name));
+        //$uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
         if (!$inline) {
-            // No need filename if chrome only use filename*
-            header("Content-Disposition: attachment;filename=\"$uName\";filename*=\"UTF-8''$name\"");
+            // No need filename because chrome browser no use filename* if filename set
+            header("Content-Disposition: attachment;filename*=\"UTF-8''$name\";");
         } else {
-            header("Content-Disposition: inline;filename=\"$uName\"");
+            header("Content-Disposition: inline;filename*=UTF-8''$name;");
         }
         
         if ($cache) {
@@ -285,6 +289,7 @@ function glue_url($parsed)
 }
 /**
  * set in cache one hour
+ * @param string $mime
  */
 function setHeaderCache($mime = "text/css")
 {
@@ -295,4 +300,3 @@ function setHeaderCache($mime = "text/css")
     header("Pragma: none"); // HTTP 1.0
     header("Content-type: $mime");
 }
-?>

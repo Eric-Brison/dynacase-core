@@ -811,7 +811,7 @@ class DocHtmlFormat
                         else $hval = '';
                         if ($va->type == "image") {
                             $iwidth = $va->getOption("iwidth", "80px");
-                            if ($tval[$ka][$k] == "") $hval = "";
+                            if (empty($tval[$ka][$k])) $hval = "";
                             else if ($va->link == "") {
                                 if (strstr($hval, '?')) $optwidth = "&width=" . intval($iwidth);
                                 else $optwidth = '';
