@@ -196,7 +196,7 @@ if (preg_match("/vaultid=([0-9]+)/", $img, $vids)) {
         }
     }
     $itselfName = $_SERVER["SCRIPT_FILENAME"];
-    $itselfdir = dirname($itselfName);
+    $itselfdir = realpath(dirname($itselfName));
     //printf("\n[%s] [%s]\n", $itselfdir, substr(dirname($realfile), 0,strlen($itselfdir)));
     if (substr(dirname($realfile) , 0, strlen($itselfdir)) != $itselfdir) {
         if (!is_link($path)) {
