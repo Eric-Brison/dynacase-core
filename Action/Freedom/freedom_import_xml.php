@@ -291,21 +291,14 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
         "title"
     );
     $prevalues = array();
-    $dom = new DOMDocument();
+    $dom = new \Dcp\Utils\XDOMDocument();
     try {
-        $ok = @$dom->load($xmlfile);
-        
-        if (!$ok) {
-            throw new XMLParseErrorException($xmlfile);
-        }
+        $dom->load($xmlfile, 0, $error);
     }
-    catch(Exception $e) {
+    catch(\Dcp\Utils\XDOMDocumentException $e) {
         $log["action"] = 'ignored';
-        /**
-         * @var XMLParseErrorException $e
-         */
-        $log["err"] = $e->userInfo;
-        return $e->userInfo;
+        $log["err"] = $e->getMessage();;
+        return $e->getMessage();
     }
     // print $doc->saveXML();
     $root = $dom->documentElement;
@@ -496,30 +489,3 @@ function base64_decodefile($filename)
     fclose($src);
     rename($tmpdest, $filename);
 }
-
-class XMLParseErrorException extends Exception
-{
-    public $userInfo = '';
-    public function __construct($filename)
-    {
-        set_error_handler(array(
-            $this,
-            "errorHandler"
-        ));
-        $dom = new DomDocument();
-        $dom->load($filename);
-        restore_error_handler();
-        $this->message = "XML Parse Error in $filename";
-        parent::__construct();
-    }
-    
-    public function errorHandler($errno, $errstr, $errfile, $errline)
-    {
-        $pos = strpos($errstr, "]:");
-        if ($pos) {
-            $errstr = substr($errstr, $pos + 2);
-        }
-        $this->userInfo.= "$errstr";
-    }
-}
-?>

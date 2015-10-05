@@ -445,7 +445,7 @@ class TestHtmlValue extends TestCaseDcpCommonFamily
                 ) ,
                 "get" => array(
                     "tst_text" => "'&quot;a|&agrave;|&aacute;|&acirc;|&atilde;|&auml;|&aring;|o|&ograve;|&oacute;|&ocirc;|&otilde;|&ouml;|&oslash;|e|&egrave;|&eacute;|&ecirc;|&euml;|c|&ccedil;|i|&igrave;|&iacute;|&icirc;|&iuml;|u|&ugrave;|&uacute;|&ucirc;|&uuml;|y|&yuml;|n|&ntilde;|&lt;|&gt;|&amp;",
-                    "tst_htmltext" => '<div class="htmltext"><p>été comme hivers</p><br/><p>2&gt;1</p></div>',
+                    "tst_htmltext" => '<div class="htmltext"><p>été comme hivers</p><br><p>2&gt;1</p></div>',
                 )
             )
         );

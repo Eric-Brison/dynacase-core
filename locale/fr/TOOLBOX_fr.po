@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-16 09:29+0200\n"
-"PO-Revision-Date: 2015-09-16 09:30+0200\n"
+"POT-Creation-Date: 2015-09-29 16:45+0200\n"
+"PO-Revision-Date: 2015-09-29 16:46+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1830,6 +1830,10 @@ msgid "Error : need edit privilege to execute"
 msgstr "Erreur ; privilege edit requis pour l'exécution"
 
 #, php-format
+msgid "Error converting HTML from attribute '%s' from document '%s': %s"
+msgstr "Erreur de conversion HTML de l'attribut '%s' du document '%s': %s"
+
+#, php-format
 msgid "Error could not open output log file '%s' for writing."
 msgstr ""
 "Erreur: impossible d'ouvrir le fichier de log sql de sortie '%s' en écriture."
@@ -1860,6 +1864,10 @@ msgid "Error deleting directory '%s': %s"
 msgstr "Erreur lors de la suppression du répertoire '%s': %s"
 
 #, php-format
+msgid "Error extracting archive '%s' in '%s': %s"
+msgstr "Erreur lors de l'extraction de l'archive '%s' dans '%s': %s"
+
+#, php-format
 msgid "Error in portfolio : folder %s not exists"
 msgstr "Erreur dans la chemise : dossier %s n'existe pas"
 
@@ -1874,10 +1882,6 @@ msgstr "Erreur lors de l'ouverture du répertoire '%s'."
 #, php-format
 msgid "Error renaming '%s' to '%s'."
 msgstr "Erreur de renommage '%s' vers '%s'"
-
-#, php-format
-msgid "Error extracting archive '%s' in '%s': %s"
-msgstr "Erreur lors de l'extraction de l'archive '%s' dans '%s': %s"
 
 #, php-format
 msgid "Error writing content to '%s'."
@@ -2882,6 +2886,13 @@ msgstr ""
 
 msgid "Make references ..."
 msgstr "Fabrication des références ..."
+
+#, php-format
+msgid "Malformed HTML in attribute '%s' from document '%s': %s"
+msgstr "HTML malformé dans l'attribut '%s' du document '%s': %s"
+
+msgid "Malformed HTML:"
+msgstr "HTML malformé:"
 
 msgid "Manage families"
 msgstr "gestion des familles"
@@ -4971,8 +4982,8 @@ msgstr ""
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href="
-"\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a>"
+"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
+"[CORE_EXTERNURL]</a>"
 
 msgid "can't access file"
 msgstr "Accès au fichier impossible"
@@ -7524,8 +7535,8 @@ msgid "portfolio tab"
 msgstr "onglets chemise"
 
 #, php-format
-msgid "possible incorrect conversion HTML to ODT %s"
-msgstr "possible erreur de conversion HTML vers ODT %s"
+msgid "possible incorrect conversion HTML to ODT %s: %s"
+msgstr "Possible erreur de conversion HTML vers ODT %s: %s"
 
 #, php-format
 msgid "postit of %s"
@@ -9159,6 +9170,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ "L'élément ne peut pas être parfaitement analysé, des erreurs peuvent "
 #~ "apparaître lors de l'importation"
 
+#~ msgid "Error converting HTML from attribute '%s' from document '%s'"
+#~ msgstr "Erreur de conversion du HTML de l'attribut '%s' du document '%s'"
+
 #~ msgid "Freedom imodification"
 #~ msgstr "Modification de documents virtuels"
 
@@ -9173,6 +9187,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Logical name %s already set for %s"
 #~ msgstr "Nom logique %s déjà indiqué pour %s."
+
+#~ msgid "Malformed HTML in attribute '%s' from document '%s'"
+#~ msgstr "HTML malformé dans l'attribut '%s' du document '%s'"
 
 #~ msgid "Maximum 20 views by control"
 #~ msgstr "Maximum 20 vues par contrôle"
@@ -9531,6 +9548,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "policy if same title"
 #~ msgstr "politique si même titre"
+
+#~ msgid "possible incorrect conversion HTML to ODT %s"
+#~ msgstr "possible erreur de conversion HTML vers ODT %s"
 
 #~ msgid "post it"
 #~ msgstr "post-it"

@@ -3703,14 +3703,26 @@ create unique index i_docir on doc(initid, revision);";
 
                                     case 'htmltext':
                                         $tvalues[$kvalue] = str_replace('&#39;', "'", $tvalues[$kvalue]);
-                                        
                                         $tvalues[$kvalue] = preg_replace("/<!--.*?-->/ms", "", $tvalues[$kvalue]); //delete comments
                                         $tvalues[$kvalue] = \Dcp\Utils\htmlclean::xssClean($tvalues[$kvalue]);
-                                        
-                                        $tvalues[$kvalue] = str_replace("[", "&#x5B;", $tvalues[$kvalue]); // need to stop auto instance
                                         if ($oattr->getOption("htmlclean") == "yes") {
                                             $tvalues[$kvalue] = \Dcp\Utils\htmlclean::cleanStyle($tvalues[$kvalue]);
                                         }
+                                        /* Check for malformed HTML */
+                                        $html = \Dcp\Utils\htmlclean::normalizeHTMLFragment($tvalues[$kvalue], $error);
+                                        if ($html === false) {
+                                            $html = '';
+                                        }
+                                        /* Return error on malformed HTML */
+                                        if ($error != '') {
+                                            return _("Malformed HTML:") . "\n" . $error;
+                                        }
+                                        /* If htmlclean is set, then use the normalized HTML fragment instead */
+                                        if ($oattr->getOption("htmlclean") == "yes") {
+                                            $tvalues[$kvalue] = $html;
+                                        }
+                                        /* Encode '[' to prevent further layout interpretation/evaluation */
+                                        $tvalues[$kvalue] = str_replace("[", "&#x5B;", $tvalues[$kvalue]); // need to stop auto instance
                                         break;
 
                                     case 'thesaurus':

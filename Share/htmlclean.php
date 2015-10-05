@@ -4,12 +4,6 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-/**
- * Created by PhpStorm.
- * User: eric
- * Date: 26/03/15
- * Time: 16:22
- */
 
 namespace Dcp\Utils;
 
@@ -43,9 +37,9 @@ class htmlclean
         $data = preg_replace('#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu', '$1=$2novbscript...', $data);
         $data = preg_replace('#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*-moz-binding[\x00-\x20]*:#u', '$1=$2nomozbinding...', $data);
         // Only works in IE: <span style="width: expression(alert('Ping!'));"></span>
-        $data = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?expression[\x00-\x20]*\([^>]*+>#i', '$1>', $data);
-        $data = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?behaviour[\x00-\x20]*\([^>]*+>#i', '$1>', $data);
-        $data = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*+>#iu', '$1>', $data);
+        $data = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*([`\'"])(?:.(?!\2))*?expression[\x00-\x20]*\((?:.(?!\2))*[^>]*+>#i', '$1>', $data);
+        $data = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*([`\'"])(?:.(?!\2))*?behaviour[\x00-\x20]*\((?:.(?!\2))*[^>]*+>#i', '$1>', $data);
+        $data = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*([`\'"])(?:.(?!\2))*?s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*(?:.(?!\2))*[^>]*>#iu', '$1>', $data);
         // Remove namespaced elements (we do not need them)
         $data = preg_replace('#</*\w+:\w[^>]*+>#i', '', $data);
         
@@ -80,5 +74,91 @@ class htmlclean
         } while ($old_data !== $data);
         */
         return $data;
+    }
+    /**
+     * Normalize/correct an HTML fragment by loading and serializing it back through libxml
+     *
+     * @param string $html The HTML fragment to cleanup/correct (HTML must be encoded in UTF-8)
+     * @param string $error Empty string if no error or non-empty string containing the error message
+     * @return bool(false)|string The resulting HTML on success or bool(false) on failure (the error message is returned in the $error argument)
+     */
+    public static function normalizeHTMLFragment($html, &$error = '')
+    {
+        $dom = new XDOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = false;
+        /*
+         * Add a HTML meta header to setup DOMDocument to UTF-8 encoding and no trailing </body></html>
+         * to not interfere with the given $html fragment.
+        */
+        $html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body>' . $html;
+        try {
+            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $error);
+        }
+        catch(XDOMDocumentException $e) {
+            $error = $e->getMessage();
+            return false;
+        }
+        $dom->normalizeDocument();
+        /* Get back the top <body> wrapper node added by loadHTML() */
+        $wrapper = $dom->documentElement->getElementsByTagName('body')->item(0);
+        if ($wrapper === null || $wrapper === false) {
+            $error = "body wrapper not found";
+            return false;
+        }
+        /* Extract and serialize back all the childs to HTML */
+        $html = '';
+        for ($i = 0; $i < $wrapper->childNodes->length; $i++) {
+            $html.= $dom->saveHTML($wrapper->childNodes->item($i));
+        }
+        /* Remove carriage-returns inserted by libxml's HTML serialization */
+        $html = str_replace(array(
+            "\n<",
+            ">\n"
+        ) , array(
+            "<",
+            ">"
+        ) , $html);
+        return $html;
+    }
+    /**
+     * Convert an HTML fragment to a XHTML document
+     *
+     * @param string $html The HTML fragment to cleanup/correct (HTML must be encoded in UTF-8)
+     * @param string $error Empty string if no error or non-empty string containing the error message
+     * @return bool(false)|string The resulting XHTML on success or bool(false) on failure (the error message is returned in the $error argument)
+     */
+    public static function convertHTMLFragmentToXHTMLDocument($html, &$error = '')
+    {
+        $dom = new XDOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = false;
+        /*
+         * Add a HTML meta header to setup DOMDocument to UTF-8 encoding and no trailing </body></html>
+         * to not interfere with the given $html fragment.
+        */
+        $html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body>' . $html;
+        try {
+            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $error);
+        }
+        catch(XDOMDocumentException $e) {
+            $error = $e->getMessage();
+            return false;
+        }
+        $dom->normalizeDocument();
+        /* Get back the top <body> wrapper node */
+        $wrapper = $dom->documentElement->getElementsByTagName('body')->item(0);
+        if ($wrapper === null || $wrapper === false) {
+            $error = 'body top node not found';
+            return false;
+        }
+        /* Extract and serialize back to XML all the childs */
+        $xhtml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        $xhtml.= '<html xmlns="http://www.w3.org/1999/xhtml"><body>';
+        for ($i = 0; $i < $wrapper->childNodes->length; $i++) {
+            $xhtml.= $dom->saveXML($wrapper->childNodes->item($i));
+        }
+        $xhtml.= '</body></html>';
+        return $xhtml;
     }
 }
