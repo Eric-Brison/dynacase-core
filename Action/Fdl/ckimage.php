@@ -51,9 +51,8 @@ function ckimage(Action & $action)
         $wimg->id = $img["id"];
         $limg[$k]["imgsrc"] = $wimg->GetHtmlValue($oaimg, $img["img_file"]);
         $limg[$k]["imgcachesrc"] = str_replace("cache=no", "", $limg[$k]["imgsrc"]);
-        if (preg_match("/vid=([0-9]+)/", $limg[$k]["imgsrc"], $vids)) {
-            $vid = $vids[1];
-            if ($vid > 0) $limg[$k]["imgcachesrc"] = $limg[$k]["imgsrc"] . "&width=100";
+        if (preg_match("/^file/", $limg[$k]["imgsrc"], $vids)) {
+            $limg[$k]["imgcachesrc"] = $limg[$k]["imgsrc"] . "&width=100";
         }
     }
     
