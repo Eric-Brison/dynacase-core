@@ -314,7 +314,7 @@ This can be solved by:<br/>
             <label>Authent mail template</label>
         </process>
 
-        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv  --csv-separator=';' --csv-enclosure=auto" >
+        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv  --csv-separator=';' --csv-enclosure='&quot;'" >
             <label>Help Documents</label>
         </process>
 
@@ -575,7 +575,7 @@ This can be solved by:<br/>
         <process command="./wsh.php --api=importDocuments --file=./AUTHENT/authent.ods">
             <label>Authent mail template</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv  --csv-separator=';' --csv-enclosure=auto"/>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv  --csv-separator=';' --csv-enclosure='&quot;'"/>
 
         <process command="./wsh.php --api=importDocuments --file=./FUSERS/account.ods">
             <label>Update Account families</label>
