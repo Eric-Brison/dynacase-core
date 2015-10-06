@@ -601,7 +601,7 @@ function getAuthParam($freedomctx = "", $provider = "")
 function getWshCmd($nice = false, $userid = 0, $sudo = false)
 {
     $freedomctx = getFreedomContext(); // choose when several databases
-    $wsh = "export freedom_context=\"$freedomctx\";";
+    $wsh = sprintf("export freedom_context=%s;", escapeshellarg($freedomctx));
     if ($nice) $wsh.= "nice -n +10 ";
     if ($sudo) $wsh.= "sudo ";
     $wsh.= escapeshellarg(GetParam("CORE_PUBDIR")) . "/wsh.php  ";
