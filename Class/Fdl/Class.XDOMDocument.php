@@ -9,6 +9,16 @@ namespace Dcp\Utils;
 
 class XDOMDocumentException extends \Exception
 {
+    public $libXMLError = null;
+    
+    public function __construct($message, \libXMLError & $libXMLError = null)
+    {
+        $this->message = $message;
+        if ($libXMLError === null) {
+            $libXMLError = new \libXMLError();
+        }
+        $this->libXMLError = $libXMLError;
+    }
 }
 
 class XDOMDocument extends \DOMDocument
@@ -28,89 +38,132 @@ class XDOMDocument extends \DOMDocument
         libxml_use_internal_errors(self::$libXmlIntErr);
         $libXmlIntErr = null;
     }
-    protected static function getLibXMLLastErrorMessage()
+    /**
+     * @return \LibXMLError|null
+     */
+    protected static function getLibXMLLastError()
     {
-        $error = libxml_get_last_error();
-        return ($error === false) ? '' : trim($error->message);
+        $libxmlError = libxml_get_last_error();
+        if ($libxmlError === false) {
+            return null;
+        }
+        return $libxmlError;
     }
-    public function load($filename, $options = 0, &$error = '')
+    public function load($filename, $options = 0, \libXMLError & $error = null)
     {
         self::enableLibXMLErrors();
         /*
          * Explicitly mask errors so PHPUnit work properly
         */
         $ret = @parent::load($filename, $options = 0);
-        $error = self::getLibXMLLastErrorMessage();
+        $error = self::getLibXMLLastError();
         self::restoreLibXMLErrors();
         if ($ret === false) {
-            if ($error == '') {
-                $error = 'general parsing error';
+            if ($error === null) {
+                $error = new \libXMLError();
+                $error->message = 'general parsing error';
+                $error->level = LIBXML_ERR_FATAL;
+                $error->code = 0;
+                $error->line = 0;
+                $error->column = 0;
+                $error->file = $filename;
             }
-            throw new XDOMDocumentException(sprintf("Error loading XML file '%s': %s", $filename, $error));
+            throw new XDOMDocumentException(sprintf("Error loading XML file '%s': %s", $filename, $error->message) , $error);
         }
         return true;
     }
-    public function loadXML($source, $options = 0, &$error = '')
+    public function loadXML($source, $options = 0, \libXMLError & $error = null)
     {
         self::enableLibXMLErrors();
         /*
          * Explicitly mask errors so PHPUnit work properly
         */
         $ret = @parent::loadXML($source, $options);
-        $error = self::getLibXMLLastErrorMessage();
+        $error = self::getLibXMLLastError();
         self::restoreLibXMLErrors();
         if ($ret === false) {
             /*
              * If source is empty, libxml_get_last_error report no errors at all
              * so we mimic the expected error message.
             */
-            if ($source == '') {
-                $error = 'Empty string supplied as input';
-            } else {
-                $error = 'general parsing error';
+            if ($error === null) {
+                $error = new \libXMLError();
+                $error->message = 'general parsing error';
+                $error->level = LIBXML_ERR_FATAL;
+                $error->code = 0;
+                $error->line = 0;
+                $error->column = 0;
+                $error->file = '';
             }
-            throw new XDOMDocumentException(sprintf("Error loading XML data: %s", $error));
+            if ($source == '') {
+                $error = new \libXMLError();
+                $error->message = 'Empty string supplied as input';
+                $error->level = LIBXML_ERR_ERROR;
+                $error->code = 0;
+                $error->line = 0;
+                $error->column = 0;
+                $error->file = '';
+            }
+            throw new XDOMDocumentException(sprintf("Error loading XML data: %s", $error->message) , $error);
         }
         return true;
     }
-    public function loadHTMLFile($filename, $options = 0, &$error = '')
+    public function loadHTMLFile($filename, $options = 0, \libXMLError & $error = null)
     {
         self::enableLibXMLErrors();
         /*
          * Explicitly mask errors so PHPUnit work properly
         */
         $ret = @parent::loadHTMLFile($filename, $options);
-        $error = self::getLibXMLLastErrorMessage();
+        $error = self::getLibXMLLastError();
         self::restoreLibXMLErrors();
         if ($ret === false) {
-            if ($error == '') {
-                $error = 'general parsing error';
+            if ($error === null) {
+                $error = new \libXMLError();
+                $error->message = 'general parsing error';
+                $error->level = LIBXML_ERR_FATAL;
+                $error->code = 0;
+                $error->line = 0;
+                $error->column = 0;
+                $error->file = $filename;
             }
-            throw new XDOMDocumentException(sprintf("Error loading HTML file '%s': %s", $filename, $error));
+            throw new XDOMDocumentException(sprintf("Error loading HTML file '%s': %s", $filename, $error->message) , $error);
         }
         return true;
     }
-    public function loadHTML($source, $options = 0, &$error = '')
+    public function loadHTML($source, $options = 0, \libXMLError & $error = null)
     {
         self::enableLibXMLErrors();
         /*
          * Explicitly mask errors so PHPUnit work properly
         */
         $ret = @parent::loadHTML($source, $options);
-        $error = self::getLibXMLLastErrorMessage();
+        $error = self::getLibXMLLastError();
         self::restoreLibXMLErrors();
         if ($ret === false) {
             /*
              * If source is empty, libxml_get_last_error report no errors at all
              * so we mimic the expected error message.
             */
-            if ($error == '') {
-                $error = 'general parsing error';
+            if ($error === null) {
+                $error = new \libXMLError();
+                $error->message = 'general parsing error';
+                $error->level = LIBXML_ERR_FATAL;
+                $error->code = 0;
+                $error->line = 0;
+                $error->column = 0;
+                $error->file = '';
             }
             if ($source == '') {
-                $error = 'Empty string supplied as input';
+                $error = new \libXMLError();
+                $error->message = 'Empty string supplied as input';
+                $error->level = LIBXML_ERR_NONE;
+                $error->code = 0;
+                $error->line = 0;
+                $error->column = 0;
+                $error->file = '';
             }
-            throw new XDOMDocumentException(sprintf("Error loading HTML data: %s", $error));
+            throw new XDOMDocumentException(sprintf("Error loading HTML data: %s", $error->message) , $error);
         }
         return true;
     }
