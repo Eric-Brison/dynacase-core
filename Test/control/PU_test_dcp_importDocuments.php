@@ -195,7 +195,8 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
                 "PU_data_dcp_importdocbad5.ods",
                 array(
                     "Couldn't find end of Start Tag p",
-                    "error parsing attribute name"
+                    "error parsing attribute name",
+                    "Unexpected end tag : em"
                 )
             )
         );

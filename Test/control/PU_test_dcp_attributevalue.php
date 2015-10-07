@@ -863,6 +863,16 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                 '<style>p.zou:{color:red;}</style><p class=\'zou\'>C\'est rouge</p>',
                 '<p>C\'est rouge</p>'
             ) ,
+            array(
+                'TST_HTML',
+                '<p>Hello <em>world',
+                '<p>Hello <em>world'
+            ) ,
+            array(
+                'TST_HTMLCLEAN',
+                '<p>Hello <em>world',
+                '<p>Hello <em>world</em></p>'
+            )
         );
     }
     

@@ -590,6 +590,13 @@ class DocFormFormat
          */
         private function formatHtmlText($value)
         {
+            $value = \Dcp\Utils\htmlclean::normalizeHTMLFragment(mb_convert_encoding($value, 'HTML-ENTITIES', 'UTF-8') , $error);
+            if ($error != '') {
+                addWarningMsg(_("Malformed HTML:") . "\n" . $error);
+            }
+            if ($value === false) {
+                $value = '';
+            }
             if (($this->visibility == "H") || ($this->visibility == "R")) {
                 $input = sprintf('<textarea style="display:none" name="%s" id="%s">%s</textarea>', $this->attrin, $this->attridk, htmlspecialchars($value));
             } elseif ($this->visibility == "S") {
@@ -640,8 +647,8 @@ class DocFormFormat
                 }
                 
                 $lay->set("jsonconf", $jsonconf);
-
-                $lay->set("allowedContent", ($this->oattr->getOption("allowedcontent")==="all"));
+                
+                $lay->set("allowedContent", ($this->oattr->getOption("allowedcontent") === "all"));
                 $lay->set("height", $this->oattr->getOption("editheight", "150px"));
                 $lay->set("toolbar", $this->oattr->getOption("toolbar", "Simple"));
                 $lay->set("toolbarexpand", (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? "false" : "true");

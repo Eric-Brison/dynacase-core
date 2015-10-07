@@ -92,15 +92,35 @@ class htmlclean
          * to not interfere with the given $html fragment.
         */
         $html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body>' . $html;
+        /**
+         * @var \libXMLError $libXMLError
+         */
+        $libXMLError = null;
         try {
-            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $error);
+            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $libXMLError);
         }
         catch(XDOMDocumentException $e) {
             $error = $e->getMessage();
             return false;
         }
-        $dom->normalizeDocument();
+        /* Check for errors */
+        $error = '';
+        if ($libXMLError !== null) {
+            switch ($libXMLError->code) {
+                case 23:
+                    /*
+                     * Ignore "htmlParseEntityRef: expecting ';'" errors,
+                     * and continue execution.
+                    */
+                    break;
+
+                default:
+                    /* Return error */
+                    $error = trim($libXMLError->message);
+            }
+        }
         /* Get back the top <body> wrapper node added by loadHTML() */
+        $dom->normalizeDocument();
         $wrapper = $dom->documentElement->getElementsByTagName('body')->item(0);
         if ($wrapper === null || $wrapper === false) {
             $error = "body wrapper not found";
@@ -138,15 +158,35 @@ class htmlclean
          * to not interfere with the given $html fragment.
         */
         $html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body>' . $html;
+        /**
+         * @var \libXMLError $libXMLError
+         */
+        $libXMLError = null;
         try {
-            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $error);
+            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $libXMLError);
         }
         catch(XDOMDocumentException $e) {
             $error = $e->getMessage();
             return false;
         }
-        $dom->normalizeDocument();
+        /* Check for errors */
+        $error = '';
+        if ($libXMLError !== null) {
+            switch ($libXMLError->code) {
+                case 23:
+                    /*
+                     * Ignore "htmlParseEntityRef: expecting ';'" errors,
+                     * and continue execution.
+                    */
+                    break;
+
+                default:
+                    /* Return error */
+                    $error = trim($libXMLError->message);
+            }
+        }
         /* Get back the top <body> wrapper node */
+        $dom->normalizeDocument();
         $wrapper = $dom->documentElement->getElementsByTagName('body')->item(0);
         if ($wrapper === null || $wrapper === false) {
             $error = 'body top node not found';
