@@ -162,53 +162,25 @@ class importDocumentDescription
      */
     public static function detectAutoCsvOptions($csvFileName, &$separator = 'auto', &$enclosure = 'auto')
     {
-        {
-            $content = file_get_contents($csvFileName);
-            if ($separator == 'auto') {
-                preg_match_all('/^["\']?([A-Z]+)["\']?([;,])/m', $content, $regs);
-                $seps = $regs[2];
-                $semicolon = 0;
-                $comma = 0;
-                if (count($seps) > 0) {
-                    foreach ($seps as $sep) {
-                        if ($sep == ';') {
-                            $semicolon++;
-                        } elseif ($sep == ';') {
-                            $comma++;
-                        }
-                    }
-                    if ($semicolon > $comma) {
-                        $separator = ';';
-                    } else {
-                        $separator = ',';
-                    }
-                } else {
-                    throw new Dcp\Exception(sprintf("cannot find csv separator in %s file", $csvFileName));
-                }
+        $content = file_get_contents($csvFileName);
+        if ($separator == 'auto') {
+            $detector = new \Dcp\Utils\CSVFormatDetector\Detector();
+            $detected = $detector->detect($content);
+            if (!isset($detected['separator']['char']) || $detected['separator']['char'] === null) {
+                throw new Dcp\Exception(sprintf("cannot find csv separator in %s file", $csvFileName));
             }
-            
-            if ($enclosure == 'auto') {
-                preg_match_all(sprintf('/%s(?P<enclosure>["\']).+?\\1%s/m', $separator, $separator) , $content, $regs);
-                $detectEnclosures = $regs["enclosure"];
-                $doublequote = 0;
-                $singlequote = 0;
-                foreach ($detectEnclosures as $be) {
-                    if ($be === '"') {
-                        $doublequote++;
-                    } elseif ($be === "'") {
-                        $singlequote++;
-                    }
-                }
-                if (max($doublequote, $singlequote) > 0) {
-                    if ($doublequote > $singlequote) {
-                        $enclosure = '"';
-                    } else {
-                        $enclosure = "'";
-                    }
-                } else {
-                    $enclosure = ''; // no enclosure
-                    
-                }
+            $separator = $detected['separator']['char'];
+        }
+        if ($enclosure == 'auto') {
+            $detector = new \Dcp\Utils\CSVFormatDetector\Detector();
+            $detector->separators = array(
+                $separator
+            );
+            $detected = $detector->detect($content);
+            if (isset($detected['enclosure']['char']) && $detected['enclosure']['char'] !== null) {
+                $enclosure = $detected['enclosure']['char'];
+            } else {
+                $enclosure = '';
             }
         }
         return array(
