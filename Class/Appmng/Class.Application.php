@@ -455,7 +455,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 $packSession = array();
                 $firstPack[$packName] = true;
             } else {
-                $packSession = $this->session->Read("RSPACK_" . $packName);
+                $packSession = ($this->session ? $this->session->Read("RSPACK_" . $packName) : array());
                 if (!$packSession) {
                     $packSession = array();
                 }
@@ -464,7 +464,9 @@ create sequence SEQ_ID_APPLICATION start 10;
                 "ref" => $ref,
                 "needparse" => $needparse
             );
-            $this->session->Register("RSPACK_" . $packName, $packSession);
+            if ($this->session) {
+                $this->session->Register("RSPACK_" . $packName, $packSession);
+            }
             
             if ($needparse) {
                 if ($fromAdd) {
@@ -738,11 +740,13 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($this->hasParent()) {
             $this->parent->addWarningMsg($code);
         } else {
-            if (!empty($_SERVER['HTTP_HOST'])) {
+            if (!empty($_SERVER['HTTP_HOST']) && $this->session) {
                 $logmsg = $this->session->read("warningmsg", array());
                 $logmsg[] = $code;
                 $this->session->register("warningmsg", $logmsg);
-            } else error_log("dcp warning: $code");
+            } else {
+                error_log("dcp warning: $code");
+            }
         }
     }
     /**
@@ -751,12 +755,14 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function getLogMsg()
     {
-        return ($this->session->read("logmsg", array()));
+        return ($this->session ? ($this->session->read("logmsg", array())) : array());
     }
     
     public function clearLogMsg()
     {
-        $this->session->unregister("logmsg");
+        if ($this->session) {
+            $this->session->unregister("logmsg");
+        }
     }
     /**
      * Get warning texts
@@ -764,12 +770,14 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function getWarningMsg()
     {
-        return ($this->session->read("warningmsg", array()));
+        return ($this->session ? ($this->session->read("warningmsg", array())) : array());
     }
     
     public function clearWarningMsg()
     {
-        $this->session->unregister("warningmsg");
+        if ($this->session) {
+            $this->session->unregister("warningmsg");
+        }
     }
     /**
      * mark the application as launched from admin context
