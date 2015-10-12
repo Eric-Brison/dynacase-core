@@ -618,11 +618,10 @@ This can be solved by:<br/>
         <process command="programs/update_catalog"/>
     </post-upgrade>
 
-    <pre-remove></pre-remove>
-    <post-remove></post-remove>
-
     <post-restore>
         <process command="wsh.php --api=manageContextCrontab --cmd=register --file=FREEDOM/freedom.cron"/>
+        <process command="programs/reconfigure_core_tmpdir reconfigure CORE_TMPDIR"/>
+        <process command="programs/reconfigure_core_tmpdir reconfigure FREEDOM_UPLOADDIR"/>
     </post-restore>
 
     <reconfigure>
