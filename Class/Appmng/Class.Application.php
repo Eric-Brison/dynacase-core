@@ -700,12 +700,12 @@ create sequence SEQ_ID_APPLICATION start 10;
     }
     /**
      * Add message to log (syslog)
-     * The message is also display in console of web interfaces
+     * The message is also displayed in the console of the web interface
      *
      * @param string $code message to add to log
-     * @param int $cut
+     * @param int $cut truncate message longer than this length (set to <= 0 to not truncate the message)(default is 0).
      */
-    public function addLogMsg($code, $cut = 80)
+    public function addLogMsg($code, $cut = 0)
     {
         if ($code == "") return;
         // Js Code are stored in the top level application
@@ -717,7 +717,9 @@ create sequence SEQ_ID_APPLICATION start 10;
                 if (is_array($code)) {
                     $code["stack"] = getDebugStack(4);
                     $logmsg[] = json_encode($code);
-                } else $logmsg[] = strftime("%H:%M - ") . str_replace("\n", "\\n", addslashes(mb_substr($code, 0, $cut)));
+                } else {
+                    $logmsg[] = strftime("%H:%M - ") . str_replace("\n", "\\n", addslashes((($cut > 0) ? mb_substr($code, 0, $cut) : $code)));
+                }
                 $this->session->register("logmsg", $logmsg);
                 $suser = sprintf("%s %s [%d] - ", $this->user->firstname, $this->user->lastname, $this->user->id);
                 if (is_array($code)) $code = print_r($code, true);
