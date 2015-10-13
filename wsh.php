@@ -115,6 +115,11 @@ try {
     } else {
         $action->Set("", $appl);
     }
+
+    if ($action->canExecute("CORE_ADMIN_ROOT", "CORE_ADMIN") === '') {
+        // Authorize administrators to execute admin actions
+        $action->parent->setAdminMode();
+    }
 }
 catch(Dcp\Exception $e) {
     errorLogException($e);
