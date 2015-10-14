@@ -38,6 +38,21 @@ class Autoloader
     {
         return self::getAutoloader()->classExists($pClassName);
     }
+    /**
+     *
+     */
+    public static function forceRegenerate()
+    {
+        require_once 'WHAT/Lib.Prefix.php';
+        require_once 'WHAT/classAutoloaderIgnoreDotD.php';
+        
+        $autoloader = self::configure(self::getAutoloader());
+        $cacheFile = $autoloader->getCacheFilePath();
+        if (is_file($cacheFile)) {
+            unlink($cacheFile);
+        }
+        $autoloader->forceRegenerate('');
+    }
 }
 
 class ExtensionFilterIteratorDecorator extends \FilterIterator
