@@ -271,24 +271,28 @@ function reloadWindow(w) {
 
   
 }
-function refreshParentWindows(famid) {  
+function refreshParentWindows(famid) {
+    var pWindow=getParentWindow();
 
-  if (parent.flist) reloadWindow(parent.flist);
-  else if (parent.fvfolder) reloadWindow(parent.fvfolder);
-  else if (parent.ffoliolist) {
-    reloadWindow(parent.ffoliolist);
-    if (parent.ffoliotab) reloadWindow(parent.ffoliotab);
-  } else if (window.opener && window.opener.document.needreload) reloadWindow(window.opener);
-  
-  if (famid) {
-      if (parent['if_'+famid]) reloadWindow(parent['if_'+famid]);
-  }
+    if (pWindow) {
+        if (pWindow.flist) reloadWindow(pWindow.flist);
+        else if (pWindow.fvfolder) reloadWindow(pWindow.fvfolder);
+        else if (pWindow.ffoliolist) {
+            reloadWindow(pWindow.ffoliolist);
+            if (pWindow.ffoliotab) reloadWindow(pWindow.ffoliotab);
+        } else if (window.opener && window.opener.document.needreload) reloadWindow(window.opener);
+
+        if (famid) {
+            if (pWindow['if_' + famid]) reloadWindow(pWindow['if_' + famid]);
+        }
+    }
 }
 function updatePopDocTitle() {
-  if (window.parent && window.name) {
+    var pWindow=getParentWindow();
+  if (pWindow && window.name) {
        
       var l=window.name.substring(0,window.name.length - 5)+'_ti';      
-    var fpopdoc_t= window.parent.document.getElementById(l);
+    var fpopdoc_t= pWindow.document.getElementById(l);
     if (fpopdoc_t) {
       if (window.document && (window.document.title!="")) {
 	fpopdoc_t.innerHTML=htmlescape(window.document.title);

@@ -78,8 +78,26 @@ function getChildFrames(w) {
     return fnames;
 }
 
+function getParentWindow(w) {
+    var pWindow=null;
+    if (!w) {
+        w=window;
+    }
+
+    try {
+        if (w.parent.document.domain) {
+            pWindow = w.parent;
+        }
+    } catch (e) {
+        pWindow=null;
+    }
+    return pWindow;
+}
+
 function windowExist(Name, NoOpen) {
     var w;
+	var pWindow=getParentWindow();
+
     getChildFrames(window);
 
     if (windows[Name]) {
@@ -99,8 +117,8 @@ function windowExist(Name, NoOpen) {
         return  windows[Name];
     }
 
-    if (window.parent) {
-        getChildFrames(window.parent);
+    if (pWindow) {
+        getChildFrames(pWindow);
         if (windows[Name]) {
             return  windows[Name];
         }
@@ -138,20 +156,24 @@ var warnmsg = '';
  */
 function displayWarningMsg(logmsg) {
     var msg = logmsg, generateParentList, parentList = [], i, length, currentParent, isFunction;
+	var pWindow=getParentWindow();
+
     isFunction = function(obj) {
       return typeof obj === 'function';
     };
-    if (window.parent.Ext) {
+    if (pWindow && pWindow.Ext) {
         msg = msg.replace(new RegExp("\n", "ig"), '<br/>');
         msg = msg.replace(new RegExp("\n", "ig"), '<br/>');
-        window.parent.Ext.Msg.alert('Warning', msg);
+        pWindow.Ext.Msg.alert('Warning', msg);
         return '';
     } else {
         generateParentList = function generateParentList(parent) {
             parentList.unshift(parent);
-            if (parent !== parent.top && parent.parent) {
-                generateParentList(parent.parent);
-            }
+            try {
+                if (parent !== parent.top && parent.parent) {
+                    generateParentList(parent.parent);
+                }
+            } catch (e) {}
         }(window);
         for (i = 0, length = parentList.length; i < length; i += 1) {
             currentParent = parentList[i];
@@ -189,6 +211,7 @@ function displayWarningMsg(logmsg) {
 }
 function displayLogMsg(logmsg) {
     var i, logi;
+    var wTop;
     if (logmsg.length == 0) return;
 
     if ("console" in window) {
@@ -196,9 +219,17 @@ function displayLogMsg(logmsg) {
             console.log(logmsg[i]);
         }
     }
+    try {
+        if (window.top.document.domain) {
+            wTop = window.top;
+        }
+    } catch (e) {
+        wTop=null;
+    }
+
     var log = false;
-    if (top.foot) {
-        log = top.foot.document.getElementById('slog');
+    if (wTop && wTop.foot) {
+        log = wTop.foot.document.getElementById('slog');
     } else {
         // redirect to foot function
         if (window.name != "foot") {
@@ -227,7 +258,7 @@ function displayLogMsg(logmsg) {
         }
         log.selectedIndex = log.options.length - 1;
 
-        logi = top.foot.document.getElementById('ilog');
+        logi = wTop.foot.document.getElementById('ilog');
         if ((!log.options) || (log.options.length == 0)) {
             logi.style.display = 'none';
         } else {
@@ -289,7 +320,11 @@ function _correctOnePNG(img, iknowitisapng) {// correctly handle PNG transparenc
     }
 }
 function sendActionNotification(code, arg) {
+    var pWindow=getParentWindow(), ppWindow=null;
 
+    if (pWindow) {
+        ppWindow=getParentWindow(pWindow);
+    }
     if (window) {
         if (window.receiptActionNotification) {
             window.receiptActionNotification(code, arg);
@@ -303,14 +338,14 @@ function sendActionNotification(code, arg) {
             }
         } catch (e) {}
     }
-    if (window.parent && (window != window.parent)) {
-        if (window.parent.receiptActionNotification) {
-            window.parent.receiptActionNotification(code, arg);
+    if (pWindow && (window != pWindow)) {
+        if (pWindow.receiptActionNotification) {
+            pWindow.receiptActionNotification(code, arg);
         }
     }
-    if (window.parent.parent && (window != window.parent.parent)) {
-        if (window.parent.parent.receiptActionNotification) {
-            window.parent.parent.receiptActionNotification(code, arg);
+    if (ppWindow && (window != ppWindow)) {
+        if (ppWindow.receiptActionNotification) {
+            ppWindow.receiptActionNotification(code, arg);
         }
     }
 

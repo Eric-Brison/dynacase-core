@@ -20,9 +20,11 @@
 </fieldset>
 </form>
 <script>
-if (window.parent.fvfolder) {
-  if (!document.modifydoc.target) document.modifydoc.target='fvfolder';
- } 
+try {
+    if (window.parent.fvfolder) {
+      if (!document.modifydoc.target) document.modifydoc.target='fvfolder';
+     }
+} catch (e) {}
 if (!document.modifydoc.target) document.modifydoc.target='_self';
 notalone=false;
 </script>

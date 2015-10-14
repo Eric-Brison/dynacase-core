@@ -115,12 +115,13 @@ function reqNotifyEditAttr(xmlres) {
       var actions=xmlres.getElementsByTagName("action");	  
       var actcode=new Array();
       var actarg=new Array();
+      var pWindow=getParentWindow();
       for (var i=0;i<actions.length;i++) {
 	actcode[i]=actions[i].getAttribute("code");
 	actarg[i]=actions[i].getAttribute("arg");
       }
       if (window.receiptActionNotification) window.receiptActionNotification(actcode,actarg);
-      if (window.parent && window.parent.receiptActionNotification) window.parent.receiptActionNotification(actcode,actarg);
+      if (pWindow && pWindow.receiptActionNotification) pWindow.receiptActionNotification(actcode,actarg);
       if (window.opener && window.opener.receiptActionNotification) window.opener.receiptActionNotification(actcode,actarg);
       ATTRCIBLE=false;
       if (! INPUTINPROGRESS) ATTRREADCIBLE=false;
