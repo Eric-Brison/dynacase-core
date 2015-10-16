@@ -23,6 +23,7 @@ function deletenew() {
 
 function sendsearch(faction, artarget) {
     var fedit = document.fedit;
+      var pWindow=getParentWindow();
     resetInputs('newcond');
 
     with (document.modifydoc) {
@@ -37,8 +38,8 @@ function sendsearch(faction, artarget) {
             nt = document.getElementById('newstate');
             if (nt)   disabledInput(nt, true);
         }
-        if ((!artarget) && (window.parent.fvfolder)) artarget = 'fvfolder';
-        else if ((!artarget) && (window.parent.flist)) {
+        if ((!artarget) && (pWindow && pWindow.fvfolder)) artarget = 'fvfolder';
+        else if ((!artarget) && (pWindow && pWindow.flist)) {
             artarget = 'flist';
             faction = faction + '&ingeneric=yes';
         } else if (!artarget) artarget = '_blank';

@@ -8,12 +8,14 @@
 
 function subwindow(h, w, name, url) {
 	var me;
+	var pWindow=getParentWindow();
 	if (name=="_self") me=window;
 	else me = windowExist(name, true);
 
 	if (! me) {
-		if(window.parent.Ext){
-			window.parent.Ext.fdl.Interface.prototype.publish('openurl',url,name,{height: h, width: w, opener:window});			
+
+		if(pWindow && pWindow.Ext && pWindow.Ext.fdl && pWindow.Ext.fdl.Interface){
+			pWindow.Ext.fdl.Interface.prototype.publish('openurl',url,name,{height: h, width: w, opener:window});
 			//return me;
 		} else {
 
@@ -56,6 +58,7 @@ function subwindowm(h, w, name, url) {
 
     var screen_width, screen_height;
     var win_top, win_left;
+	var pWindow=getParentWindow();
     var HelpWin;
     screen_height        = 0;     screen_width      = 0;
     win_top              = 0;     win_left          = 0;
@@ -65,8 +68,8 @@ function subwindowm(h, w, name, url) {
     win_left = screen_width  - w  - 20;
     me = windowExist(name, true);
     if (! me) {
-        if(window.parent.Ext){
-            window.parent.Ext.fdl.Interface.prototype.publish('openurl',url,name,{height: h, width: w, opener:window});
+        if(pWindow && pWindow.Ext && pWindow.Ext.fdl && pWindow.Ext.fdl.Interface){
+			pWindow.Ext.fdl.Interface.prototype.publish('openurl',url,name,{height: h, width: w, opener:window});
             //return me;
         } else {
             me  = window.open(

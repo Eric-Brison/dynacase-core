@@ -303,6 +303,7 @@ function closeMenu(menuid) {
 }
 
 function activate(th, url, wname,bar,w,h) {
+      var pWindow=getParentWindow();
   if ((th.className == 'menuItem') || (th.className == 'menuItemCtrl')) {
     // add referer url for client doesn't not support it
     //  var urlref;
@@ -317,20 +318,22 @@ function activate(th, url, wname,bar,w,h) {
       if (!h) h=fdl_vd2size;
 
       if (wname == 'fdoc') {
-          if (window.parent == window) {
+          if (pWindow == window) {
               wname='_blank';
           } else {
-              var mif=window.parent.frames.length;
-              var foundFdoc=false;
-              for (var i=0;i<mif;i++) {
-                  if (window.parent.frames[i].name == wname) {
-                      foundFdoc=true;
-                      break;
-                  }
+            if (pWindow) {
+              var mif = pWindow.frames.length;
+              var foundFdoc = false;
+              for (var i = 0; i < mif; i++) {
+                if (pWindow.frames[i].name == wname) {
+                  foundFdoc = true;
+                  break;
+                }
               }
               if (!foundFdoc) {
-                  wname='_blank';
+                wname = '_blank';
               }
+            }
           }
       }
       if (bar) subwindowm(h,w,wname,url);

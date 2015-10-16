@@ -347,6 +347,7 @@ function sendEnumChoice(event,docid,  choiceButton ,attrid, sorm,options) {
   var inp  = choiceButton.previousSibling;
   var index='';
   var attrid;
+    var pWindow=getParentWindow();
 
   var domindex=''; // needed to set values in arrays
   // search the input button in previous element
@@ -387,7 +388,7 @@ function sendEnumChoice(event,docid,  choiceButton ,attrid, sorm,options) {
   if (isNaN(window.screenX)){
     xy.y+=15; // add supposed decoration height
     // add body left width for IE sometimes ...
-    if (parent.ffolder)  xy.x += parent.ffolder.document.body.clientWidth;
+    if (pWindow && pWindow.ffolder)  xy.x += pWindow.ffolder.document.body.clientWidth;
 
   }
 
@@ -413,6 +414,7 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
     h = (h) ? h : 30;
     w = (w) ? w : 290;
     var inp  = inp=document.getElementById(inpid);
+	var pWindow=getParentWindow();
 
 
     var domindex=''; // needed to set values in arrays
@@ -447,7 +449,7 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
     oldact = f.action;
     oldtar = f.target;
     f.action = '[CORE_STANDURL]&app=FDL&action=SPECIALHELP&docid='+docid+'&attrid='+attrid+'&index='+index+'&domindex='+domindex;
-	if(window.parent.Ext) {
+	if(pWindow && pWindow.Ext) {
 		f.action += '&extjs=yes';
 	}
 
@@ -2538,6 +2540,7 @@ function vconstraint(cButton,famid,attrid) {
 
   var inid;
   var wf;
+    var pWindow=getParentWindow();
 
 
   inid= cButton.id.substr(3);
@@ -2560,7 +2563,7 @@ function vconstraint(cButton,famid,attrid) {
 	  if (isNaN(window.screenX)){
 		  xy.y+=15; // add supposed decoration height
 		  // add body left width for IE sometimes ...
-		  if (parent.ffolder)  xy.x += parent.ffolder.document.body.clientWidth;
+		  if (pWindow && pWindow.ffolder)  xy.x += pWindow.ffolder.document.body.clientWidth;
 	  }
 	  wf.moveTo(xy.x, xy.y+10);
   }
@@ -2758,6 +2761,7 @@ function viewquick(event,view) {
 // quick save of fckeditors
 function trackKeysQuickSave(event) {
   var intKeyCode,ctrlKey;
+    var pWindow=getParentWindow();
 
   if (!event) event=window.event;
 
@@ -2768,11 +2772,11 @@ function trackKeysQuickSave(event) {
   if (((intKeyCode == 115)||(intKeyCode == 83)) && ( ctrlKey)) {
     // Ctrl-S
     if (quicksave) quicksave();
-    else if (window.parent.quicksave) window.parent.quicksave();
+    else if (pWindow && pWindow.quicksave) pWindow.quicksave();
 
     //  window.parent.quicksave();
     if (stopPropagation) stopPropagation(event);
-    else if (window.parent.stopPropagation) window.parent.stopPropagation(event);
+    else if (pWindow && pWindow.stopPropagation) pWindow.stopPropagation(event);
   } else {
     document.isChanged=true;
   }
@@ -2978,12 +2982,13 @@ function verifyMaxFileUpload(f) {
 }
 
 function documentsubmit(f) {
+    var pWindow=getParentWindow();
   if (document.isSubmitted) return false;
   if (!canmodify()) return false;
   if (!verifyMaxFileUpload(f)) return false;
   document.isSubmitted=true;
   enableall();
-  if (parent) if (parent.flist) f.catgid.value=parent.flist.catgid;
+  if (pWindow) if (pWindow.flist) f.catgid.value=pWindow.flist.catgid;
   if (f.iSubmit) f.iSubmit.disabled=true;
   var asub=document.getElementById('aSubmit');
   if (asub) {

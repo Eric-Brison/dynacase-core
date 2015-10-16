@@ -93,7 +93,11 @@ function getKeyPress(event)
 
 
 function autoVresize() {
-  if (window != top && !window.parent.Ext) return;
+    try {
+        if (window != top && !window.parent.Ext) return;
+    } catch (e) {
+        return;
+    }
 
   var dw=0;
   var dh=0;
@@ -129,7 +133,11 @@ function autoVresize() {
 }
 
 function autoHresize1() {
-  if (window != top && !window.parent.Ext) return;
+    try {
+        if (window != top && !window.parent.Ext) return;
+    } catch (e) {
+        return;
+    }
   var dw=0;
   var dh=0;
   var sw;
