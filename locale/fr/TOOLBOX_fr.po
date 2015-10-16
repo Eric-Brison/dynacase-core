@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-29 16:45+0200\n"
-"PO-Revision-Date: 2015-09-29 16:46+0200\n"
+"PO-Revision-Date: 2015-10-16 15:16+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -5199,7 +5199,7 @@ msgid "case sensitive"
 msgstr " tenir compte de la casse"
 
 msgid "cdate"
-msgstr "Date de création"
+msgstr "Date de création de la révision"
 
 msgid "change"
 msgstr "modification"
@@ -7644,7 +7644,7 @@ msgstr "tag applicatfs"
 
 #. _COMMENT Sharp Label
 msgid "prop_cdate"
-msgstr "date de création"
+msgstr "date de création de la révision"
 
 #. _COMMENT Sharp Label
 msgid "prop_classname"

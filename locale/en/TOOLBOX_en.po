@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-29 16:45+0200\n"
-"PO-Revision-Date: 2015-05-06 15:14+0200\n"
+"PO-Revision-Date: 2015-10-16 15:16+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: \n"
@@ -4994,7 +4994,7 @@ msgid "case sensitive"
 msgstr ""
 
 msgid "cdate"
-msgstr ""
+msgstr "Revision creation date"
 
 msgid "change"
 msgstr ""
@@ -7414,7 +7414,7 @@ msgstr "application tags"
 
 #. _COMMENT Sharp Label
 msgid "prop_cdate"
-msgstr "creation date"
+msgstr "revision creation date"
 
 #. _COMMENT Sharp Label
 msgid "prop_classname"
