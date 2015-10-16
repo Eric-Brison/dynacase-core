@@ -365,7 +365,7 @@ class WStart extends WStartInternals
     public function clearAutoloadCache()
     {
         $this->verbose(1, sprintf("[+] Re-generating class autoloader.\n"));
-        require_once ('WHAT/classAutoloader.php');
+        require_once sprintf('%s/WHAT/classAutoloader.php', $this->contextRoot);
         \Dcp\Autoloader::forceRegenerate();
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
@@ -432,7 +432,7 @@ class WStart extends WStartInternals
     public function configureDbConnect()
     {
         $this->verbose(1, sprintf("[+] Configuring CORE_DBCONNECT.\n"));
-        require_once 'WHAT/Lib.Common.php';
+        require_once sprintf('%s/WHAT/Lib.Common.php', $this->contextRoot);
         $CORE_DBCONNECT = getParam('CORE_DBCONNECT');
         if ($CORE_DBCONNECT == 'persistent') {
             $this->sedFile($this->absolutize('WHAT/Lib.Common.php') , function ($content)

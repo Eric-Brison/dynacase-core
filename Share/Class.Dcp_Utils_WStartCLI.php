@@ -7,7 +7,7 @@
 
 namespace Dcp\Utils;
 
-require_once ('Class.Dcp_Utils_WStart.php');
+require_once __DIR__ . '/Class.Dcp_Utils_WStart.php';
 
 class WStartCLIException extends \Exception
 {
@@ -51,10 +51,14 @@ EOF;
      */
     private static function bootstrap()
     {
-        $contextRoot = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
+        $contextRoot = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
         if ($contextRoot === false) {
-            throw new WStartCLIException(sprintf("Could not get context root directory from file '%s'!", __FILE__));
+            throw new WStartCLIException(sprintf("Could not get context root directory from directory '%s'!", __DIR__));
         }
+        if (chdir($contextRoot) === false) {
+            throw new WStartCLIException(sprintf("Could not change current working directory to '%s'!", $contextRoot));
+        }
+        set_include_path($contextRoot . PATH_SEPARATOR . sprintf('%s/WHAT', $contextRoot) . PATH_SEPARATOR . get_include_path());
         require_once sprintf('%s/WHAT/Lib.Prefix.php', $contextRoot);
         require_once sprintf('%s/WHAT/Class.Dcp_Utils_WStart.php', $contextRoot);
         return $contextRoot;
