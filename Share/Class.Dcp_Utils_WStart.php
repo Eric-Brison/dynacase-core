@@ -195,12 +195,12 @@ class WStartInternals
         closedir($dh);
     }
     /**
-     * Returns app's dirs containing a specific subdir
+     * Returns surdirs containing a specific subdir
      *
      * @param $subdir
-     * @return string[] list of app's dirs relative to contextRoot
+     * @return string[] list of dir/subdir relative to contextRoot
      */
-    public function getAppSubDirs($subdir)
+    public function getSubDirs($subdir)
     {
         $appImagesDirs = array();
         if (($dh = opendir($this->contextRoot)) === false) {
@@ -210,10 +210,10 @@ class WStartInternals
             if ($elmt == '.' || $elmt == '..') {
                 continue;
             }
-            if (!is_dir($this->absolutize($elmt))) {
+            if ($elmt === 'supervisor') {
                 continue;
             }
-            if (!is_file($this->absolutize($elmt . DIRECTORY_SEPARATOR . basename($elmt) . '.app'))) {
+            if (!is_dir($this->absolutize($elmt))) {
                 continue;
             }
             if (!is_dir($this->absolutize($elmt . DIRECTORY_SEPARATOR . $subdir))) {
@@ -224,13 +224,13 @@ class WStartInternals
         closedir($dh);
         return $appImagesDirs;
     }
-    public function getAppImagesDirs()
+    public function getImagesDirs()
     {
-        return $this->getAppSubDirs('Images');
+        return $this->getSubDirs('Images');
     }
-    public function getAppDocsDirs()
+    public function getDocsDirs()
     {
-        return $this->getAppSubDirs('Docs');
+        return $this->getSubDirs('Docs');
     }
     protected function debug($msg)
     {
@@ -379,7 +379,7 @@ class WStart extends WStartInternals
         /* Images */
         $imagesDir = $this->absolutize('Images');
         $this->mkdir($imagesDir);
-        $dirs = $this->getAppImagesDirs();
+        $dirs = $this->getImagesDirs();
         foreach ($dirs as $dir) {
             $this->linkFiles($dir, $imagesDir, $linked);
         }
@@ -387,7 +387,7 @@ class WStart extends WStartInternals
         /* Docs */
         $docsDir = $this->absolutize('Docs');
         $this->mkdir($docsDir);
-        $dirs = $this->getAppDocsDirs();
+        $dirs = $this->getDocsDirs();
         foreach ($dirs as $dir) {
             $this->linkFiles($dir, $this->contextRoot . DIRECTORY_SEPARATOR . 'Docs', $linked);
         }
