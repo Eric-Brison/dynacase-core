@@ -876,7 +876,7 @@ create sequence SEQ_ID_ACTION;
                 }
                 $appli["description"] = $this->text($appli["description"]); // translate
                 $appli["iconsrc"] = $this->parent->getImageLink($appli["icon"]);
-                if ($appli["iconsrc"] == "CORE/Images/noimage.png") $appli["iconsrc"] = $appli["name"] . "/Images/" . $appli["icon"];
+                if ($appli["iconsrc"] == "CORE/Images/core-noimage.png") $appli["iconsrc"] = $appli["name"] . "/Images/" . $appli["icon"];
                 
                 $tab[$i++] = $appli;
             }

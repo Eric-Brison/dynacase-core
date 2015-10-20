@@ -5,7 +5,7 @@
 appname=$(applib)
 
 include $(utildir)/PubRule
-DISTFILES += Makefile freedom.xml freedom-os.xml  freedom.src freedom.gif
+DISTFILES += Makefile freedom.xml freedom-os.xml  freedom.src dynacase-opensearch.gif
 
 plugin=$(pubdir)/moz-searchplugin
 
@@ -15,8 +15,8 @@ $(plugin):
 $(plugin)/freedom.src : $(plugin) freedom.src
 	cp freedom.src $(plugin)
 
-$(plugin)/freedom.gif :  $(plugin) freedom.gif
-	cp freedom.gif $(plugin)
+$(plugin)/dynacase-opensearch.gif :  $(plugin) dynacase-opensearch.gif
+	cp dynacase-opensearch.gif $(plugin)
 
 $(plugin)/freedom.xml : $(plugin) freedom.xml
 	cp freedom.xml $(plugin)
@@ -25,4 +25,4 @@ $(plugin)/freedom-os.xml : $(plugin) freedom-os.xml
 	cp freedom-os.xml $(plugin)
 
 
-publish: $(plugin) $(plugin)/freedom.src $(plugin)/freedom.gif $(plugin)/freedom.xml $(plugin)/freedom-os.xml  
+publish: $(plugin) $(plugin)/freedom.src $(plugin)/dynacase-opensearch.gif $(plugin)/freedom.xml $(plugin)/freedom-os.xml  

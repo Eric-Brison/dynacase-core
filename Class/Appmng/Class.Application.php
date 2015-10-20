@@ -927,7 +927,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         return $this->rootdir . "/" . $this->getImageLink($img);
     }
     
-    var $noimage = "CORE/Images/noimage.png";
+    var $noimage = "CORE/Images/core-noimage.png";
     /**
      * get image url of an application
      * can also get another image by search in Images general directory
