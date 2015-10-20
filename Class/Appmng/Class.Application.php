@@ -718,7 +718,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                     $code["stack"] = getDebugStack(4);
                     $logmsg[] = json_encode($code);
                 } else {
-                    $logmsg[] = strftime("%H:%M - ") . str_replace("\n", "\\n", addslashes((($cut > 0) ? mb_substr($code, 0, $cut) : $code)));
+                    $logmsg[] = strftime("%H:%M - ") . str_replace("\n", "\\n", (($cut > 0) ? mb_substr($code, 0, $cut) : $code));
                 }
                 $this->session->register("logmsg", $logmsg);
                 $suser = sprintf("%s %s [%d] - ", $this->user->firstname, $this->user->lastname, $this->user->id);

@@ -364,7 +364,7 @@ create sequence SEQ_ID_ACTION;
         return '';
     }
     
-    public function addLogMsg($msg, $cut = 80)
+    public function addLogMsg($msg, $cut = 0)
     {
         if (isset($this->parent)) {
             $this->parent->AddLogMsg($msg, $cut);
