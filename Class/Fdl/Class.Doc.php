@@ -3812,7 +3812,10 @@ create unique index i_docir on doc(initid, revision);";
                         return '';
                     }
                     $err = sendTextTransformation($this->dbaccess, $this->id, $v["attrid"], $index, $vid);
-                    if ($err != "") $this->addHistoryEntry(_("error sending text conversion") . ": $err", DocHisto::NOTICE);
+                    if ($err != "") {
+                        $this->addHistoryEntry(_("error sending text conversion") . ": $err", DocHisto::NOTICE);
+                    }
+                    $this->vidNoSendTextToEngine[$vid] = true;
                 }
             }
             $this->textsend = array(); //reinit
