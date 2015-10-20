@@ -506,14 +506,18 @@ class checkDb
         
         $html = '';
         if (count($cmds) > 0) {
+            $html.= "BEGIN;<br/>";
+            $html.= "<br/>";
             $html.= implode("<br/>", array_map(function ($v)
             {
                 return htmlspecialchars($v, ENT_QUOTES);
             }
-            , $cmds));
+            , $cmds)) . "<br/>";
+            $html.= "<br/>";
+            $html.= "COMMIT;";
         }
         
-        $this->tout[$testName]['status'] = ($html) ? self::BOF : self::OK;
+        $this->tout[$testName]['status'] = ($html !== '') ? self::BOF : self::OK;
         $this->tout[$testName]['msg'] = '<pre>' . $html . '</pre>';
         
         return;
@@ -551,14 +555,6 @@ class checkDb
      */
     public function getSQLDropColumns(&$node, &$cmds = array() , $combined = true)
     {
-        $openTx = false;
-        if (count($cmds) <= 0) {
-            $openTx = true;
-            $cmds = array(
-                "BEGIN;",
-                ""
-            );
-        }
         if (isset($node['drop']) && is_array($node['drop'])) {
             if (count($node['drop']) > 0) {
                 $cmds[] = sprintf("-- Family '%s', table doc%d", $node['name'], $node['id']);
@@ -583,9 +579,6 @@ class checkDb
             foreach ($node['childs'] as & $child) {
                 $this->getSQLDropColumns($child, $cmds, $combined);
             }
-        }
-        if ($openTx) {
-            $cmds[] = "COMMIT;";
         }
     }
     /**
@@ -743,7 +736,7 @@ EOSQL;
         }
         $this->tout["missing family name"] = array(
             "status" => (count($pout) <= 0) ? self::OK : self::BOF,
-            "msg" => '<ul><li>' . join('</li><li>', $pout) . '</li></ul>'
+            "msg" => (count($pout) <= 0) ? '' : '<ul><li>' . join('</li><li>', $pout) . '</li></ul>'
         );
     }
     public function checkMissingDocumentsInDocread()
