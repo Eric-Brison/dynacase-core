@@ -196,7 +196,7 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
                 array(
                     "Couldn't find end of Start Tag p",
                     "error parsing attribute name",
-                    "Unexpected end tag : em"
+                    "Opening and ending tag mismatch: p and em"
                 )
             )
         );

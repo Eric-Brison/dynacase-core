@@ -872,6 +872,11 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                 'TST_HTMLCLEAN',
                 '<p>Hello <em>world',
                 '<p>Hello <em>world</em></p>'
+            ) ,
+            array(
+                'TST_HTMLCLEAN',
+                '<video src="foo.ogg"><track kind="subtitles" src="foo.en.vtt" srclang="en" label="English"></track><track kind="subtitles" src="foo.sv.vtt" srclang="sv" label="Svenska"></track></video>',
+                '<video src="foo.ogg"><track kind="subtitles" src="foo.en.vtt" srclang="en" label="English"></track><track kind="subtitles" src="foo.sv.vtt" srclang="sv" label="Svenska"></track></video>'
             )
         );
     }

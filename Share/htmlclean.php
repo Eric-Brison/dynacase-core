@@ -9,6 +9,12 @@ namespace Dcp\Utils;
 
 class htmlclean
 {
+    static $libXMLErrorIgnoreCodes = array(
+        /* Ignore "htmlParseEntityRef: expecting ';'" (XML_ERR_ENTITYREF_SEMICOL_MISSING) errors */
+        23,
+        /* Ignore "Tag video invalid in Entity" (XML_HTML_UNKNOWN_TAG) errors */
+        801
+    );
     /**
      * Delete dangerous attributes and elements to prevent xss attacks
      * @param string $data html fragment
@@ -85,6 +91,7 @@ class htmlclean
     public static function normalizeHTMLFragment($html, &$error = '')
     {
         $dom = new XDOMDocument();
+        $dom->setLibXMLErrorIgnoreCodes(self::$libXMLErrorIgnoreCodes);
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = false;
         /*
@@ -93,32 +100,17 @@ class htmlclean
         */
         $html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body>' . $html;
         /**
-         * @var \libXMLError $libXMLError
+         * @var \libXMLError[] $libXMLErrors
          */
-        $libXMLError = null;
+        $libXMLErrors = array();
         try {
-            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $libXMLError);
+            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $libXMLErrors);
         }
         catch(XDOMDocumentException $e) {
             $error = $e->getMessage();
             return false;
         }
-        /* Check for errors */
-        $error = '';
-        if ($libXMLError !== null) {
-            switch ($libXMLError->code) {
-                case 23:
-                    /*
-                     * Ignore "htmlParseEntityRef: expecting ';'" errors,
-                     * and continue execution.
-                    */
-                    break;
-
-                default:
-                    /* Return error */
-                    $error = trim($libXMLError->message);
-            }
-        }
+        $error = self::getFirstErrorMessage($libXMLErrors);
         /* Get back the top <body> wrapper node added by loadHTML() */
         $dom->normalizeDocument();
         $wrapper = $dom->documentElement->getElementsByTagName('body')->item(0);
@@ -151,6 +143,7 @@ class htmlclean
     public static function convertHTMLFragmentToXHTMLDocument($html, &$error = '')
     {
         $dom = new XDOMDocument();
+        $dom->setLibXMLErrorIgnoreCodes(self::$libXMLErrorIgnoreCodes);
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = false;
         /*
@@ -159,32 +152,17 @@ class htmlclean
         */
         $html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body>' . $html;
         /**
-         * @var \libXMLError $libXMLError
+         * @var \libXMLError[] $libXMLErrors
          */
-        $libXMLError = null;
+        $libXMLErrors = array();
         try {
-            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $libXMLError);
+            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET, $libXMLErrors);
         }
         catch(XDOMDocumentException $e) {
             $error = $e->getMessage();
             return false;
         }
-        /* Check for errors */
-        $error = '';
-        if ($libXMLError !== null) {
-            switch ($libXMLError->code) {
-                case 23:
-                    /*
-                     * Ignore "htmlParseEntityRef: expecting ';'" errors,
-                     * and continue execution.
-                    */
-                    break;
-
-                default:
-                    /* Return error */
-                    $error = trim($libXMLError->message);
-            }
-        }
+        $error = self::getFirstErrorMessage($libXMLErrors);
         /* Get back the top <body> wrapper node */
         $dom->normalizeDocument();
         $wrapper = $dom->documentElement->getElementsByTagName('body')->item(0);
@@ -200,5 +178,16 @@ class htmlclean
         }
         $xhtml.= '</body></html>';
         return $xhtml;
+    }
+    /**
+     * @param \libXMLError[] List of libXMLError objects
+     * @return string
+     */
+    public static function getFirstErrorMessage(&$libXMLErrors = array())
+    {
+        if (count($libXMLErrors) > 0) {
+            return $libXMLErrors[0]->message;
+        }
+        return '';
     }
 }
