@@ -9,7 +9,7 @@ CKEDITOR.plugins.add('quicksave', {
             });
         editor.ui.addButton('quicksave',
             {
-                label:editor.lang.quicksave.toolbar,
+                label:editor.lang.quicksave.toolbar || editor.lang.quicksave.quicksave.toolbar,
                 command:'quicksave',
                 icon:this.path + 'Images/floppy.png'
             });
