@@ -21,15 +21,14 @@ include_once ('FREEDOM/Lib.portfolio.php');
 /**
  * View a containt of portfolio separator
  * @param Action &$action current action
- * @global dirid Http var : separator identifier to see
- * @global folioid Http var : portfolio of separator
+ * @global string $dirid Http var : separator identifier to see
+ * @global string $folioid Http var : portfolio of separator
  */
-function foliolist(&$action)
+function foliolist(Action & $action)
 {
     // Get all the params
     $dirid = GetHttpVars("dirid"); // directory to see
     $folioid = GetHttpVars("folioid"); // portfolio id
-    $dbaccess = $action->GetParam("FREEDOM_DB");
     $refreshtab = (GetHttpVars("refreshtab", "N") == "Y"); // need refresh tabs
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     
@@ -38,7 +37,7 @@ function foliolist(&$action)
         $filter[] = "doctype != 'S'";
         $filter[] = "doctype != 'D'";
     }
-    $dir = new_Doc($dbaccess, $dirid);
+    $dir = new_Doc($action->dbaccess, $dirid);
     if (($dir->doctype == 'S')) {
         if ($dir->usefor == 'G') {
             // recompute search to restriction to local folder
@@ -76,7 +75,7 @@ function foliolist(&$action)
     $action->lay->set("LISTICON", $pfctx['listtype'] == 'icon');
     
     if ($folioid) {
-        $dir = new_Doc($dbaccess, $folioid);
+        $dir = new_Doc($action->dbaccess, $folioid);
     }
     
     $action->lay->set("docid", $dir->initid);
@@ -94,4 +93,3 @@ function foliolist(&$action)
     
     $action->lay->set("refreshtab", $refreshtab);
 }
-?>
