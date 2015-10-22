@@ -23,20 +23,19 @@ include_once ("FDL/Class.Dir.php");
  * @global string $id Http var : folder document identifier to see
  * @global string $famid Http var : family to use for search
  */
-function editinsertdocument(&$action)
+function editinsertdocument(Action & $action)
 {
     
     $docid = GetHttpVars("id");
     $famid = GetHttpVars("famid");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
     
     if ($docid == "") $action->exitError(_("no document reference"));
-    if (!is_numeric($docid)) $docid = getIdFromName($dbaccess, $docid);
+    if (!is_numeric($docid)) $docid = getIdFromName($action->dbaccess, $docid);
     if (intval($docid) == 0) $action->exitError(sprintf(_("unknow logical reference '%s'") , GetHttpVars("id")));
     /**
      * @var Dir $doc
      */
-    $doc = new_Doc($dbaccess, $docid);
+    $doc = new_Doc($action->dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     if ($doc->defDoctype != 'D') $action->exitError(sprintf(_("not a static folder %s") , $doc->title));
     $err = $doc->canModify();
@@ -55,11 +54,11 @@ function editinsertdocument(&$action)
     $action->lay->set("restrict", false);
     
     if (!$famid) {
-        $classid=0;
+        $classid = 0;
         if (method_exists($doc, "isAuthorized")) {
             if ($doc->isAuthorized($classid)) {
                 // verify if classid is possible
-                if ($doc->hasNoRestriction()) $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, $classid, "TABLE");
+                if ($doc->hasNoRestriction()) $tclassdoc = GetClassesDoc($action->dbaccess, $action->user->id, $classid, "TABLE");
                 else {
                     $tclassdoc = $doc->getAuthorizedFamilies();
                     $action->lay->set("restrict", true);
@@ -71,14 +70,14 @@ function editinsertdocument(&$action)
                 $action->lay->set("restrict", true);
             }
         } else {
-            $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, $classid, "TABLE");
+            $tclassdoc = GetClassesDoc($action->dbaccess, $action->user->id, $classid, "TABLE");
         }
         $action->lay->SetBlockData("SELECTCLASS", $tclassdoc);
         
         $action->lay->SetBlockData("SELECTCLASS", $tclassdoc);
         $action->lay->set("famid", false);
     } else {
-        $fdoc = new_Doc($dbaccess, $famid);
+        $fdoc = new_Doc($action->dbaccess, $famid);
         $action->lay->set("famid", $fdoc->id);
         $action->lay->set("famicon", $fdoc->getIcon());
         $action->lay->set("famtitle", sprintf(_("Search %s") , $fdoc->title));
@@ -94,7 +93,6 @@ function editinsertdocument(&$action)
     $action->lay->set("statecolor", $doc->getStateColor());
     $action->lay->set("count", count($l));
     
-    $action->lay->setBlockData("CONTENT", $l);
+    $action->lay->eSetBlockData("CONTENT", $l);
     $action->lay->set("nmembers", sprintf(_("%d documents") , count($l)));
 }
-?>

@@ -43,14 +43,14 @@ TR.modified {
 </table>
 <div   class="barmenu">
 <a href="#" onclick="document.fidoc.submit()">[TEXT:Change content]</a>
-<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[docid]">[TEXT:Cancel]</a>
+<a href="[CORE_STANDURL]&amp;app=FDL&amp;action=FDL_CARD&amp;id=[docid]">[TEXT:Cancel]</a>
 </div>
 <center>
 <table style="display:none"><tr><td>[V_WSP_IDADMIN]</td></tr></table>
 <form id="fidoc"
       name="fidoc" style="display:inline"
       method="POST" ENCTYPE="multipart/form-data"
-      action="[CORE_STANDURL]&app=FDL&action=INSERTDOCUMENT"
+      action="[CORE_STANDURL]&amp;app=FDL&amp;action=INSERTDOCUMENT"
       >
 <input type="hidden" value="[docid]" name="id">
 <table class="tsearch">
