@@ -20,19 +20,17 @@ include_once ("FDL/Lib.Dir.php");
 /**
  * View list of documents from one folder
  * @param Action &$action current action
- * @global famid Http var : family id where search document
- * @global key Http var : filter key on the title
+ * @internal string $famid Http var : family id where search document
+ * @global string $key Http var : filter key on the title
  */
-function searchdocument(&$action)
+function searchdocument(Action & $action)
 {
     header('Content-type: text/xml; charset=utf-8');
-    $action->lay->setEncoding("utf-8");
     
     $mb = microtime();
     $famid = GetHttpVars("famid");
     $key = GetHttpVars("key");
     $noids = explode('|', GetHttpVars("noids"));
-    $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $action->lay->set("warning", "");
     $action->lay->set("CODE", "OK");
@@ -40,12 +38,12 @@ function searchdocument(&$action)
     if ($key != "") $filter[] = "title ~* '" . pg_escape_string($key) . "'";
     $filter[] = "doctype!='T'";
     
-    $lq = internalGetDocCollection($dbaccess, 0, 0, $limit, $filter, $action->user->id, "TABLE", $famid);
-    $doc = new_doc($dbaccess);
+    $lq = internalGetDocCollection($action->dbaccess, 0, 0, $limit, $filter, $action->user->id, "TABLE", $famid);
+    $doc = new_doc($action->dbaccess);
     
     foreach ($lq as $k => $v) {
         if (!in_array($v["initid"], $noids)) {
-            $lq[$k]["title"] = ($v["title"]);
+            $lq[$k]["title"] = $v["title"];
             $lq[$k]["stitle"] = str_replace("'", "\\'", ($v["title"]));
             $lq[$k]["icon"] = $doc->getIcon($v["icon"]);
         } else {
@@ -53,7 +51,7 @@ function searchdocument(&$action)
         }
     }
     
-    $action->lay->setBlockData("DOCS", $lq);
+    $action->lay->eSetBlockData("DOCS", $lq);
     
     $action->lay->set("onecount", false);
     if (count($lq) == 1) {
@@ -65,4 +63,3 @@ function searchdocument(&$action)
     $action->lay->set("count", count($lq));
     $action->lay->set("delay", microtime_diff(microtime() , $mb));
 }
-?>
