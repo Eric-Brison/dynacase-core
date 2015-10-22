@@ -3,7 +3,7 @@
 
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
 <title>[TEXT:PortFolio] [title]</title>
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&amp;action=ALLVIEWCSS&amp;wv=[WVERSION]" >
 
     [JS:REF]
 <script language="JavaScript">
@@ -434,11 +434,11 @@ button span {
 
   <div id="tab-[docid]" class="[tabonglets]" title="[TEXT:View folder content]"
        onmousedown="if (!shiftKeyPushed(event)) if (drag == 1) {copyOrMove([dirid]);} else { change_foliolist('[dirid]','[dirid]');endDrag();} return false"
-	   onclick="if (shiftKeyPushed(event)) viewguide('[docid]'); else selecttab(this,'[docid]');"><img needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[docid]');if (drag != 1) stopPropagation(event)"  height="20px" src="[icon]">[title]</div>
+	   onclick="if (shiftKeyPushed(event)) viewguide('[docid]'); else selecttab(this,'[docid]');"><img needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[docid]');if (drag != 1) stopPropagation(event)"  height="20px" src="[icon]" />[title]</div>
 [BLOCK TAG]
   <div id="tab-[tabid]" class="[tag_cellbgclass]" style="background-color:[icolor]"
-     onmousedown="if (!shiftKeyPushed(event)) if (('[doctype]'=='D') && (drag == 1)) {copyOrMove([tabid]);} else { change_foliolist('[tabid]','[dirid]');endDrag();} return false"
-     onclick="if (shiftKeyPushed(event)) viewguide('[tabid]'); else selecttab(this,'[tabid]');"><img needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[tabid]');if (drag != 1) stopPropagation(event)" height="20px" src="[icontab]"><span class="[TAG_LABELCLASS]">[tabtitle]</span></div>
+     onmousedown="if (!shiftKeyPushed(event)) if (('[doctype]'=='D') &amp;&amp; (drag == 1)) {copyOrMove([tabid]);} else { change_foliolist('[tabid]','[dirid]');endDrag();} return false"
+     onclick="if (shiftKeyPushed(event)) viewguide('[tabid]'); else selecttab(this,'[tabid]');"><img needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[tabid]');if (drag != 1) stopPropagation(event)" height="20px" src="[icontab]" /><span class="[TAG_LABELCLASS]">[tabtitle]</span></div>
 [ENDBLOCK TAG]
 
 <button onclick="changemode(1)" id="btnmode1"><span id="spanmode1" class="tabmode10"></span></button>
