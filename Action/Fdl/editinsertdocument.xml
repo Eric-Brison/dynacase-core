@@ -73,7 +73,7 @@ TR.modified {
               
               <input type="image" align="absbottom" src="[IMG:b_ministop.png]" title="[TEXT:suppress document]" onclick="fld_deleteDoc(this,'[initid]');return false"></td></tr>
 [ENDBLOCK CONTENT]
-<tr id="trtemplate" class="modified" style="display:none;"><td><img src="jsicon"> jsuname</td><td><input type="hidden" name="uchange[jsuid]" value="new">
+<tr id="trtemplate" class="modified" style="display:none;"><td><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"> jsuname</td><td><input type="hidden" name="uchange[jsuid]" value="new">
               
               <img align="absbottom" style="cursor:pointer" src="[IMG:b_ministop.png]" title="[TEXT:suppress document]" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);fld_countDoc()" ></td></tr>
 

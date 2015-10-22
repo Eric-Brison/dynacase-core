@@ -33,7 +33,7 @@ function fdl_addDoc(event,o,uid,uname,icon) {
     ntr.style.display='';
     nodereplacestr(ntr,'jsuname',uname);
     nodereplacestr(ntr,'jsuid',uid);
-    nodereplacestr(ntr,'jsicon',icon);
+    nodereplacestr(ntr,'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',icon);
     ntable.appendChild(ntr);
     if (o) o.style.display='none';
     //    alert(ntr.innerHTML);
