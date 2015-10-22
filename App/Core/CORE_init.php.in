@@ -102,7 +102,7 @@ $app_const = array(
         "descr" => N_("connection type") ,
         "user" => "N",
         "style" => "N",
-        "kind" => "enum(unpersistent|persistent)",
+        "kind" => "readonly",
         "global" => "Y"
     ) ,
     "CORE_LCDATE" => array(
