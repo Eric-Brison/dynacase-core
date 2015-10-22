@@ -43,14 +43,14 @@ TR.modified {
 </table>
 <div   class="barmenu">
 <a href="#" onclick="document.fidoc.submit()">[TEXT:Change content]</a>
-<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[docid]">[TEXT:Cancel]</a>
+<a href="[CORE_STANDURL]&amp;app=FDL&amp;action=FDL_CARD&amp;id=[docid]">[TEXT:Cancel]</a>
 </div>
 <center>
 <table style="display:none"><tr><td>[V_WSP_IDADMIN]</td></tr></table>
 <form id="fidoc"
       name="fidoc" style="display:inline"
       method="POST" ENCTYPE="multipart/form-data"
-      action="[CORE_STANDURL]&app=FDL&action=INSERTDOCUMENT"
+      action="[CORE_STANDURL]&amp;app=FDL&amp;action=INSERTDOCUMENT"
       >
 <input type="hidden" value="[docid]" name="id">
 <table class="tsearch">
@@ -73,7 +73,7 @@ TR.modified {
               
               <input type="image" align="absbottom" src="[IMG:b_ministop.png]" title="[TEXT:suppress document]" onclick="fld_deleteDoc(this,'[initid]');return false"></td></tr>
 [ENDBLOCK CONTENT]
-<tr id="trtemplate" class="modified" style="display:none;"><td><img src="jsicon"> jsuname</td><td><input type="hidden" name="uchange[jsuid]" value="new">
+<tr id="trtemplate" class="modified" style="display:none;"><td><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"> jsuname</td><td><input type="hidden" name="uchange[jsuid]" value="new">
               
               <img align="absbottom" style="cursor:pointer" src="[IMG:b_ministop.png]" title="[TEXT:suppress document]" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);fld_countDoc()" ></td></tr>
 

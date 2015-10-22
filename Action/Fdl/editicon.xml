@@ -7,7 +7,7 @@
    <title>[APP_TITLE]</title>
 
 
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&amp;action=ALLVIEWCSS&amp;wv=[WVERSION]" >
 
 [CSS:REF]
 
@@ -60,7 +60,7 @@ img.chiconsel,img.chicon {
 
 <hr>
 
-<form  name="edit" method="POST" ENCTYPE="multipart/form-data" action="[CORE_STANDURL]app=FREEDOM&action=CHANGEICON&id=[docid]">
+<form  name="edit" method="POST" ENCTYPE="multipart/form-data" action="[CORE_STANDURL]app=FREEDOM&amp;action=CHANGEICON&amp;id=[docid]">
   <p>[TEXT:Or upload a new icon]:<input type="file" name="ifile" value="[ifilevalue]"></p>
   <input type="hidden" name="vid" value=""><br>
   <input type="submit" value="[TEXT:Change icon]" >

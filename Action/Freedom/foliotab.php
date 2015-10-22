@@ -20,27 +20,24 @@ include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/freedom_util.php");
 include_once ('FREEDOM/Lib.portfolio.php');
 // -----------------------------------
-function foliotab(Action &$action)
+function foliotab(Action & $action)
 {
     // -----------------------------------
     // Get all the params
     $docid = GetHttpVars("id", 0); // portfolio id
-    $dbaccess = $action->GetParam("FREEDOM_DB");
-    
     include_once ("FDL/popup_util.php");
-    $nbfolders = 1;
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/common.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/AnchorPosition.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     
-    $doc = new_Doc($dbaccess, $docid);
+    $doc = new_Doc($action->dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("document %s not exists") , $docid));
     $action->lay->set("docid", $doc->id);
     $action->lay->set("dirid", $doc->initid);
-    $action->lay->set("title", $doc->title);
+    $action->lay->eSet("title", $doc->title);
     
-    $child = getChildDir($dbaccess, $action->user->id, $doc->initid, false, "TABLE");
+    $child = getChildDir($action->dbaccess, $action->user->id, $doc->initid, false, "TABLE");
     
     if ($action->Read("navigator") == "EXPLORER") { // different tab class for PNG transparency
         $tabonglet = "ongletvgie";
@@ -54,7 +51,7 @@ function foliotab(Action &$action)
     if ($linktab) {
         $linktab = $doc->rawValueToArray($linktab);
         foreach ($linktab as $k => $id) {
-            $tdoc = getTDoc($dbaccess, $id);
+            $tdoc = getTDoc($action->dbaccess, $id);
             if (controlTdoc($tdoc, "view")) $child[] = $tdoc;
         }
     }
@@ -62,7 +59,7 @@ function foliotab(Action &$action)
     $action->lay->set("tabonglets", $tabongletsel);
     $action->lay->set("icon", $doc->getIcon());
     $ttag = array();
-    while (list($k, $v) = each($child)) {
+    foreach ($child as $v) {
         $icolor = getv($v, "gui_color");
         if ($v["initid"] != $doc->initid) {
             $ttag[$v["initid"]] = array(
@@ -72,7 +69,8 @@ function foliotab(Action &$action)
                 "tag_cellbgclass" => ($v["id"] == $docid) ? $tabongletsel : $tabonglet,
                 "icolor" => $icolor,
                 "icontab" => $doc->getIcon($v["icon"]) ,
-                "tabtitle" => str_replace(" ", "&nbsp;", $v["title"])
+                "tabtitle" => htmlspecialchars(str_replace(" ", "\xC2\xA0" /* UTF-8 for NO-BREAK SPACE */
+                , $v["title"]) , ENT_QUOTES)
             );
         }
     }
@@ -80,4 +78,3 @@ function foliotab(Action &$action)
     $action->lay->setBlockData("TAG", $ttag);
     $action->lay->setBlockData("nbcol", count($ttag) + 1);
 }
-?>

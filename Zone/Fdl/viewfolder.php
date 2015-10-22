@@ -193,8 +193,11 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
             
             if ($doc->doctype == "C") $tdoc[$k]["title"] = "<B>" . $title . "</B>";
             
-            if (strlen($title) > 20) $tdoc[$k]["abrvtitle"] = mb_substr($title, 0, 12) . " ... " . mb_substr($title, -5);
-            else $tdoc[$k]["abrvtitle"] = $title;
+            if (strlen($doc->getTitle()) > 20) {
+                $tdoc[$k]["abrvtitle"] = htmlspecialchars(mb_substr($doc->getTitle() , 0, 12) . " ... " . mb_substr($doc->getTitle() , -5) , ENT_QUOTES);
+            } else {
+                $tdoc[$k]["abrvtitle"] = $title;
+            }
             /** @noinspection PhpUndefinedFieldInspection */
             if (isset($doc->_highlight) && $doc->_highlight != "") {
                 /** @noinspection PhpUndefinedFieldInspection */
