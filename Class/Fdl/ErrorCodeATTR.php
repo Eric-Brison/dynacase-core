@@ -303,7 +303,7 @@ class ErrorCodeATTR
      * @errorCode
      * the called function need more arguments
      */
-    const ATTR1211 = 'not enought argument call to use function "%s" (need %d arguments)';
+    const ATTR1211 = 'not enough argument call to use function "%s" (need %d arguments)';
     /**
      * @errorCode
      * the method use for computed must declarer an existed attribute
@@ -352,7 +352,7 @@ class ErrorCodeATTR
      * @errorCode
      * call method require more arguments
      */
-    const ATTR1261 = 'not enought argument call to use method "%s" (context "%s", need %d arguments) for "%s" attribute';
+    const ATTR1261 = 'not enough argument call to use method "%s" (context "%s", need %d arguments) for "%s" attribute';
     /**
      * @errorCode
      * the phpfunc is not correct generally detected on inherited attributes
@@ -406,7 +406,7 @@ class ErrorCodeATTR
      * @errorCode
      * call method in constraint require more arguments
      */
-    const ATTR1401 = 'not enought argument call to use constraint "%s" (need %d arguments, given %d) for "%s" attribute';
+    const ATTR1401 = 'not enough argument call to use constraint "%s" (need %d arguments, given %d) for "%s" attribute';
     /**
      * @errorCode
      * call constraint method must be defined in file method or in another class if precised
