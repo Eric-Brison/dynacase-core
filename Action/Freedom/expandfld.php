@@ -21,7 +21,7 @@
 // ---------------------------------------------------------------
 include_once ("FREEDOM/folders.php");
 // -----------------------------------
-function expandfld(Action &$action)
+function expandfld(Action & $action)
 {
     // -----------------------------------
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -29,7 +29,6 @@ function expandfld(Action &$action)
     $inavmode = GetHttpVars("inavmode"); // root directory
     $dir = new_Doc($dbaccess, $dirid);
     $navigate = $action->getParam('FREEDOM_VIEWFRAME'); // standard navigation
-    
     $action->lay->eSet("navmode", $navigate);
     if ($inavmode == 'inverse') {
         if ($navigate == 'navigator') $action->lay->Set("navmode", "folder");
@@ -58,10 +57,10 @@ function expandfld(Action &$action)
     ));
     $ldir = getChildDir($dbaccess, $action->user->id, $dir->id, false, "TABLE");
     $stree = "";
-    $nbfolders=0;
+    $nbfolders = 0;
     if (count($ldir) > 0) {
         $nbfolders = 1;
-        while (list($k, $doc) = each($ldir)) {
+        foreach ($ldir as $doc) {
             
             popupActive("popfld", $nbfolders, 'cancel');
             popupActive("popfld", $nbfolders, 'vprop');
@@ -81,16 +80,17 @@ function expandfld(Action &$action)
             popupActive("poppaste", $nbfolders, 'cancel2');
             $nbfolders++;
             
-            if ($doc["owner"] < 0) $ftype = 3;
-            else if ($doc["doctype"] == 'D') $ftype = 1;
-            else if ($doc["doctype"] == 'S') $ftype = 2;
-            else continue; // it 'is not a folder
+            if (($doc["owner"] >= 0) && ($doc["doctype"] != 'D') && ($doc["doctype"] != 'S')) {
+                // it 'is not a folder
+                continue;
+            }
             $hasChild = 'false';
             // no child for a search
-            if (hasChildFld($dbaccess, $doc["initid"], ($doc["doctype"] == 'S'))) $hasChild = 'true';
+            if (hasChildFld($action->dbaccess, $doc["initid"], ($doc["doctype"] == 'S'))) $hasChild = 'true';
             
             $ftype = $dir->getIcon($doc["icon"]);
-            $stree.= "ffolder.insFld(fldtop, ffolder.gFld(" . json_encode(str_replace("\n", " ", $doc["title"])) . ", \"#\"," . $doc["initid"] . ",\"$ftype\",$hasChild))\n";
+            $title = htmlspecialchars($doc["title"], ENT_QUOTES);
+            $stree.= "ffolder.insFld(fldtop, ffolder.gFld(" . json_encode(str_replace("\n", " ", $title)) . ", \"#\"," . $doc["initid"] . ",\"$ftype\",$hasChild))\n";
         }
     }
     // define icon from style
