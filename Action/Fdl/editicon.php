@@ -20,22 +20,20 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
 include_once ("VAULT/Class.VaultDiskStorage.php");
 
-function editicon(Action &$action)
+function editicon(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id", 0);
     
-    $doc = new_Doc($dbaccess, $docid);
-    $action->lay->Set("APP_TITLE", _($action->parent->description));
+    $doc = new_Doc($action->dbaccess, $docid);
+    $action->lay->eSet("APP_TITLE", _($action->parent->description));
     $action->lay->Set("docid", urlencode($docid));
-    $action->lay->Set("title", $doc->title);
+    $action->lay->eSet("title", $doc->title);
     $action->lay->Set("iconsrc", $doc->geticon());
     
-    $q = new QueryDb($dbaccess, "VaultDiskStorage");
-    $q->dbaccess = $dbaccess;
-    $q->basic_elem->dbaccess = $dbaccess; // correct for special constructor
+    $q = new QueryDb($action->dbaccess, "VaultDiskStorage");
+    $q->dbaccess = $action->dbaccess;
+    $q->basic_elem->dbaccess = $action->dbaccess; // correct for special constructor
     $q->AddQuery("public_access");
     $l = $q->Query(0, 0, "TABLE");
     $action->lay->setBlockData("ICONLIST", $l);
 }
-?>
