@@ -41,6 +41,7 @@ function editinsertdocument(&$action)
     if ($doc->defDoctype != 'D') $action->exitError(sprintf(_("not a static folder %s") , $doc->title));
     $err = $doc->canModify();
     if ($err != "") $action->exitError($err);
+    $action->parent->addJsRef('lib/jquery/jquery.js');
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDC/Layout/inserthtml.js");
     $action->parent->AddJsRef($action->GetParam("CORE_STANDURL") . "app=FDL&action=EDITJS");
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/editinsertdocument.js");
