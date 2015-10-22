@@ -333,18 +333,20 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                 Http_DownloadFile($info->path, $info->name, $mimetype, $inline, $cache);
             } else {
                 $filename = $info->path;
-                $name = rawurlencode(str_replace('"', '-', $info->name));
-                
+
+                $name=str_replace('"', '-', $info->name);
+                $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
+                $name = rawurlencode($name);
                 if ($inline) {
                     global $_SERVER;
                     $nav = $_SERVER['HTTP_USER_AGENT'];
                     $pos = strpos($nav, "MSIE");
                     if ($pos) {
                         // add special header for extension
-                        header("Content-Disposition: inline;filename*=\"UTF-8''$name\"");
+                    header("Content-Disposition: inline;filename=\"$uName\";filename*=UTF-8''$name;");
                     }
                 } else {
-                    header("Content-Disposition: attachment;filename*=\"UTF-8''$name\"");
+                    header("Content-Disposition: attachment;filename=\"$uName\";filename*=UTF-8''$name;");
                 }
                 //	  header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
                 // header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla

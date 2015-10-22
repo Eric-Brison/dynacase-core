@@ -201,10 +201,12 @@ function Http_Download($src, $ext, $name, $add_ext = TRUE, $mime_type = "")
     if ($mime_type == '') $mime_type = GetMimeType($ext);
     if ($add_ext) $name = $name . "." . $ext;
     $name = str_replace('"', '\\"', $name);
+    $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
+    $name = rawurlencode($name);
     header("Cache-control: private"); // for IE : don't know why !!
     header('Content-Length: ' . strlen($src));
     header("Pragma: "); // HTTP 1.0
-    header("Content-Disposition: form-data;filename*=\"UTF-8''$name\";");
+    header("Content-Disposition: form-data;filename=\"$uName\";filename*=UTF-8''$name;");
     header("Content-type: " . $mime_type);
     echo $src;
 }
@@ -230,13 +232,13 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
     
     if (!empty($_SERVER["HTTP_HOST"])) {
         // Double quote not supported by all browsers - replace by minus
-        $name = rawurlencode(str_replace('"', '-', $name));
-        //$uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
+        $name=str_replace('"', '-', $name);
+        $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
+        $name = rawurlencode($name);
         if (!$inline) {
-            // No need filename because chrome browser no use filename* if filename set
-            header("Content-Disposition: attachment;filename*=\"UTF-8''$name\";");
+            header("Content-Disposition: attachment;filename=\"$uName\";filename*=UTF-8''$name;");
         } else {
-            header("Content-Disposition: inline;filename*=UTF-8''$name;");
+            header("Content-Disposition: inline;filename=\"$uName\";filename*=UTF-8''$name;");
         }
         
         if ($cache) {
