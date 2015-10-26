@@ -70,10 +70,8 @@ function Redirect(Action & $action, $appname, $actionname, $otherurl = "", $http
     }
     $viewext = isset($_GET["viewext"]) ? $_GET["viewext"] : (isset($_POST["viewext"]) ? $_POST["viewext"] : "");
     if ($viewext === "yes") {
-        $location = str_replace("FDL_CARD", "VIEWEXTDOC", $location);
-        if (preg_match("/action=GENERIC_EDIT/", $location)) {
-            $location = str_replace("GENERIC_EDIT", "EDITEXTDOC", $location);
-            $location = str_replace("app=GENERIC", "app=FDL", $location);
+        if (class_exists("\\Dcp\\ExtUi\\defaultMenu", false)) {
+            $location = \Dcp\ExtUi\defaultMenu::convertToExtUrl($location);
         }
     }
     header("Location: $location");
@@ -232,7 +230,7 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
     
     if (!empty($_SERVER["HTTP_HOST"])) {
         // Double quote not supported by all browsers - replace by minus
-        $name=str_replace('"', '-', $name);
+        $name = str_replace('"', '-', $name);
         $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
         $name = rawurlencode($name);
         if (!$inline) {

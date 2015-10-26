@@ -3508,7 +3508,7 @@ create unique index i_docir on doc(initid, revision);";
                  * attributes in order to not induce a conflict with legitimate
                  * "<BR>" tags that might appear in the attribute's HTML content.
                 */
-                $value = $this->arrayToRawValue($value, (($oattr->type == 'htmltext') ? "\r" : "<BR>"));
+                $value = $this->arrayToRawValue($value, (($oattr && $oattr->type === 'htmltext') ? "\r" : "<BR>"));
             }
         }
         if (($value !== "") && ($value !== null)) {
