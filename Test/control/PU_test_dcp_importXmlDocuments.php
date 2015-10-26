@@ -54,6 +54,21 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         $this->assertEquals(0, $s->onlyCount() , "document is created and must be not");
     }
     /**
+     * @dataProvider dataIuserFiles
+     */
+    public function testErrorImportIuser($documentFile)
+    {
+        $err = '';
+        try {
+            $this->importDocument($documentFile);
+        }
+        catch(\Dcp\Exception $e) {
+            $err = $e->getMessage();
+        }
+        $this->assertNotEmpty($err);
+    }
+
+    /**
      * @dataProvider dataFolderImportDocument
      */
     public function testFolderImportDocument($documentFile, $docName, array $folderNames)
@@ -67,7 +82,7 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         }
         $this->assertEmpty($err, sprintf("Error : $err"));
         $doc = new_doc("", $docName);
-        $this->assertTrue($doc->isAlive() , sprintf("cannot umport %s document", $docName));
+        $this->assertTrue($doc->isAlive() , sprintf("cannot import %s document", $docName));
         $folders = $doc->getParentFolderIds();
         foreach ($folderNames as $folder) {
             $fid = getIdFromName(self::$dbaccess, $folder);
@@ -88,7 +103,7 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         }
         $this->assertEmpty($err, sprintf("Error : $err"));
         $doc = new_doc("", $docName);
-        $this->assertTrue($doc->isAlive() , sprintf("cannot umport %s document", $docName));
+        $this->assertTrue($doc->isAlive() , sprintf("cannot import %s document", $docName));
         $tColK = $doc->getMultipleRawValues("tst_extrakey");
         $tColv = $doc->getMultipleRawValues("tst_extraval");
         $tExtra = array();
@@ -122,6 +137,15 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
             )
         );
     }
+    public function dataIuserFiles()
+    {
+        return array(
+            array(
+                "PU_dcp_data_iuser.xml"
+            )
+        );
+    }
+
     public function dataExtraImportDocument()
     {
         return array(

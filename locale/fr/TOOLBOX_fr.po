@@ -590,7 +590,7 @@ msgstr "Autoriser l'accès invité"
 
 msgid "An error occured, check the details for more information"
 msgstr ""
-"Une erreur a été détectée, consultez le compte-rendu ci-dessous pour plus "
+"Le processus d'importation n'a pas pu être effectué. Une erreur a été détectée, consultez le compte-rendu ci-dessous pour plus  "
 "d'information"
 
 msgid "Analyse fdl.csv"

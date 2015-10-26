@@ -95,50 +95,68 @@ class ImportDocument
             $action->savePoint($point);
         }
         $this->onlyAnalyze = $onlyAnalyze;
-        if ($archive) {
-            include_once ("FREEDOM/freedom_ana_tar.php");
-            $untardir = getTarExtractDir($action, basename($file));
-            $mime = getSysMimeFile($file, basename($file));
-            //print_r(array($untardir, $file, $mime));
-            $err = extractTar($file, $untardir, $mime);
-            if ($err !== '') {
-                $err = sprintf(_("cannot extract archive %s: status : %s") , $file, $err);
-                $this->cr[] = array(
-                    "err" => $err,
-                    "msg" => "",
-                    "specmsg" => "",
-                    "folderid" => 0,
-                    "foldername" => "",
-                    "filename" => "",
-                    "title" => "",
-                    "id" => "",
-                    "values" => array() ,
-                    "familyid" => 0,
-                    "familyname" => "",
-                    "action" => " "
-                );
+        try {
+            if ($archive) {
+                include_once ("FREEDOM/freedom_ana_tar.php");
+                $untardir = getTarExtractDir($action, basename($file));
+                $mime = getSysMimeFile($file, basename($file));
+                //print_r(array($untardir, $file, $mime));
+                $err = extractTar($file, $untardir, $mime);
+                if ($err !== '') {
+                    $err = sprintf(_("cannot extract archive %s: status : %s") , $file, $err);
+                    $this->cr[] = array(
+                        "err" => $err,
+                        "msg" => "",
+                        "specmsg" => "",
+                        "folderid" => 0,
+                        "foldername" => "",
+                        "filename" => "",
+                        "title" => "",
+                        "id" => "",
+                        "values" => array() ,
+                        "familyid" => 0,
+                        "familyname" => "",
+                        "action" => " "
+                    );
+                } else {
+                    $onlycsv = hasfdlpointcsv($untardir);
+                    $simpleFamilyFile = 7; // file
+                    $simpleFamilyFolder = 2; // folder
+                    $dirid = $this->dirid; // directory to insert imported doc
+                    $this->cr = import_directory($action, $untardir, $dirid, $simpleFamilyFile, $simpleFamilyFolder, $onlycsv, $onlyAnalyze, $this->csvLinebreak);
+                }
             } else {
-                $onlycsv = hasfdlpointcsv($untardir);
-                $simpleFamilyFile = 7; // file
-                $simpleFamilyFolder = 2; // folder
-                $dirid = $this->dirid; // directory to insert imported doc
-                $this->cr = import_directory($action, $untardir, $dirid, $simpleFamilyFile, $simpleFamilyFolder, $onlycsv, $onlyAnalyze, $this->csvLinebreak);
-            }
-        } else {
-            $ext = substr($file, strrpos($file, '.') + 1);
-            $this->begtime = Doc::getTimeDate(0, true);
-            if ($ext == "xml") {
-                include_once ("FREEDOM/freedom_import_xml.php");
-                $this->cr = freedom_import_xml($action, $file);
-            } else if ($ext == "zip") {
-                include_once ("FREEDOM/freedom_import_xml.php");
-                $this->cr = freedom_import_xmlzip($action, $file);
-            } else {
-                $this->cr = $this->importSingleFile($file);
+                $ext = substr($file, strrpos($file, '.') + 1);
+                $this->begtime = Doc::getTimeDate(0, true);
+                if ($ext == "xml") {
+                    include_once ("FREEDOM/freedom_import_xml.php");
+                    $this->cr = freedom_import_xml($action, $file);
+                } else if ($ext == "zip") {
+                    include_once ("FREEDOM/freedom_import_xml.php");
+                    $this->cr = freedom_import_xmlzip($action, $file);
+                } else {
+                    $this->cr = $this->importSingleFile($file);
+                }
             }
         }
+        catch(Exception $e) {
+            $this->cr = array(
+                array(
+                    "title" => "unable to import",
+                    "foldername" => "unable to import",
+                    "filename" => "unable to import",
+                    "familyname" => "unable to import",
+                    "action" => "ignored",
+                    "id" => "unable to import",
+                    "specmsg" => "unable to import",
+                    "err" => $e->getMessage()
+                )
+            );
+        }
+        
         if ($this->strict) {
             if ($this->getErrorMessage()) {
+                error_log("Unable to import rollback the import " . $this->getErrorMessage());
                 $action->rollbackPoint($point);
             } else {
                 $action->commitPoint($point);
