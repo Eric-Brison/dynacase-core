@@ -19,7 +19,8 @@ $usage->setDefinitionText("API script to manipulate user crontab");
 $cmd = $usage->addRequiredParameter("cmd", "command to execute", array(
     "list",
     "register",
-    "unregister"
+    "unregister",
+    "unregister-all"
 ));
 $file = $usage->addOptionalParameter("file", "path to cronfile (needed for cmd=register|unregister)", null, NULL);
 $user = $usage->addOptionalParameter("user", "id of user", null, NULL);
@@ -64,9 +65,13 @@ switch ($cmd) {
             exit(1);
         }
         break;
-        /* default:
-         usage();*/
+
+    case 'unregister-all':
+        $crontab = new Crontab($user);
+        if ($crontab->unregisterAll() === false) {
+            exit(1);
+        }
+        break;
 }
 
 exit(0);
-?>

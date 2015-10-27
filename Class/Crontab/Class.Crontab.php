@@ -71,7 +71,7 @@ class Crontab
     {
         include_once ('WHAT/Lib.System.php');
         
-        $tmp = tempnam(getTmpDir(), 'crontab');
+        $tmp = tempnam(getTmpDir() , 'crontab');
         if ($tmp === FALSE) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error creating temporary file");
             return FALSE;
@@ -212,5 +212,31 @@ class Crontab
         
         return $crontabs;
     }
+    
+    public function unregisterAll()
+    {
+        include_once ('WHAT/Lib.Prefix.php');
+        
+        $activeCrontab = $this->load();
+        if ($activeCrontab === FALSE) {
+            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error reading active crontab");
+            return FALSE;
+        }
+        
+        $tmpCrontab = preg_replace('/^#\s+BEGIN:FREEDOM_CRONTAB:' . preg_quote(DEFAULT_PUBDIR, '/') . ':.*?^#\s+END:FREEDOM_CRONTAB:' . preg_quote(DEFAULT_PUBDIR, '/') . ':.*?$/ms', '', $activeCrontab);
+        if ($tmpCrontab === NULL) {
+            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error unregistering all crontab for context '" . DEFAULT_PUBDIR . "'");
+            return FALSE;
+        }
+        
+        $this->crontab = $tmpCrontab;
+        
+        $ret = $this->save();
+        if ($ret === FALSE) {
+            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error saving crontab");
+            return FALSE;
+        }
+        
+        return $this->crontab;
+    }
 }
-?>
