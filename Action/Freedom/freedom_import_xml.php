@@ -358,8 +358,10 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
                     break;
 
                 case 'docid':
+                case 'account':
                     $id = $item->getAttribute("id");
                     if (!$id) {
+                        $logicalName = $item->getAttribute("name");
                         $name = $item->getAttribute("name");
                         if ($name) {
                             if (strpos($name, ',') !== false) {
@@ -378,7 +380,9 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
                             if ($item->nodeValue) {
                                 $afamid = $v->format;
                                 $id = getIdFromTitle($dbaccess, $item->nodeValue, $afamid);
-                                if (!$id) $msg.= sprintf(_("No identifier found for relation '%s' %s in %s file") . "\n", $item->nodeValue, $v->id, $xmlfile);
+                                if (!$id) {
+                                    $msg.= sprintf(_("No identifier found for relation '%s' %s in %s file") . "\n", $logicalName ? $logicalName : $item->nodeValue, $v->id, $xmlfile);
+                                }
                             }
                         }
                     }
@@ -418,9 +422,9 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
                 }
                 //  print $v->id.":".$item->nodeValue."\n";
                 
-            }
-            $tord[] = $v->id;
-            $tdoc[] = implode("\n", $val);
+        }
+        $tord[] = $v->id;
+        $tdoc[] = implode("\n", $val);
     }
     //$log = csvAddDoc($dbaccess, $tdoc, $importdirid, $analyze, $splitdir, $policy, $tkey, $prevalues, $tord);
     $o = new importSingleDocument();
@@ -446,7 +450,10 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
     $o->import($tdoc);
     $log = $o->getImportResult();
     
-    if ($msg) $log["err"].= "\n" . $msg;
+    if ($msg) {
+        $log["err"].= "\n" . $msg;
+        $log["action"] = "ignored";
+    }
     return '';
 }
 

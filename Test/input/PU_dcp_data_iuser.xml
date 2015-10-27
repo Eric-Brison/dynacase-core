@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2015-10-21T12:26:02" author="Default Master" name="Custom &#039;&quot;export">
+<iuser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="iuser.xsd"   name="IUSER_TEST_1" title="utilisateur de test 1 utilisateur de test 1" revision="0" modification-date="2015-10-21T09:10:01" version="" state=""> 
+<us_fr_ident><us_lname>utilisateur de test 1</us_lname>
+<us_fname>utilisateur de test 1</us_fname>
+<us_mail xsi:nil="true"/>
+<us_extmail xsi:nil="true"/></us_fr_ident>
+<us_tab_system><us_fr_intranet><us_meid name="IUSER_TEST_1">utilisateur de test 1 utilisateur de test 1</us_meid>
+<us_login>user1</us_login>
+</us_fr_intranet>
+</us_tab_system>
+</iuser>
+
+</documents>
