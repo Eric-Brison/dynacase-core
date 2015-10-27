@@ -66,7 +66,6 @@ class HelpPage extends \Dcp\Family\Document
         }
         return $err;
     }
-
     /**
      * Check 'view' control acl against the help_family family profile
      * @param string $aclname
@@ -164,7 +163,7 @@ class HelpPage extends \Dcp\Family\Document
         $helpname = '';
         $helplangiso = '';
         $lang_key = '';
-        $helpdescription='';
+        $helpdescription = '';
         // search user lang
         foreach ($help_values as $lang => $help) {
             if ($lang == $user_lang) {
@@ -291,7 +290,7 @@ class HelpPage extends \Dcp\Family\Document
         if ($this->CanEdit() == '') {
             $this->lay->set('HELPEDITABLE', '1');
             if ($action->getArgument('target') == 'ext') {
-                $this->lay->set('HELPEDITURI', '?app=FDL&action=EDITEXTDOC&viewext=yes&id=' . $this->id);
+                $this->lay->set('HELPEDITURI', '?app=EXTUI&action=EUI_EDITDOC&id=' . $this->id);
             } else {
                 $this->lay->set('HELPEDITURI', '?app=GENERIC&action=GENERIC_EDIT&id=' . $this->id);
             }

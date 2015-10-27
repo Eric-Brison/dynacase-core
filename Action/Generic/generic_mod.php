@@ -132,16 +132,16 @@ function generic_mod(Action & $action)
             $url = sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "GENERIC")) , $ract) . $zone;
             $action->lay->set("url", json_encode($url));
         } else {
+            $ract = getHttpVars("redirect_act", '');
+            $ract = str_replace("%ID%", $ndocid, $ract);
             if ($viewext) {
-                $ract = getHttpVars("redirect_act", null);
-                if ($ract === null) {
-                    $ract = "VIEWEXTDOC$zone&refreshfld=Y&id=" . urlencode($ndocid);
+                if ($ract === '') {
+                    $ract = "EUI_VIEWDOC$zone&refreshfld=Y&id=" . urlencode($ndocid);
                 }
-                $url = sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "FDL")) , $ract) . $zone;
+                $url = sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "EXTUI")) , $ract) . $zone;
                 $action->lay->set("url", json_encode($url));
             } else {
-                $ract = getHttpVars("redirect_act", null);
-                if ($ract === null) {
+                if ($ract === '') {
                     $ract = "FDL_CARD$zone&refreshfld=Y&id=" . urlencode($ndocid);
                 }
                 $url = sprintf("?app=%s&action=%s", urlencode(getHttpVars("redirect_app", "FDL")) , $ract) . $zone;
