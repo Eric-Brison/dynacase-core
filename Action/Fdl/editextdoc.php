@@ -14,7 +14,8 @@ function editextdoc(Action & $action)
         $err = _("This action requires the installation of Dynacase Extui module");
         $action->ExitError($err);
     }
-    
+
+    $action->log->deprecated("Action FDL:EDITEXTDOC deprecated use EXTUI:EUI_EDITDOC instead");
     $action->parent->set("EXTUI", $action->parent->parent);
     $action->set("EUI_EDITDOC", $action->parent);
     $gen = $action->execute();
