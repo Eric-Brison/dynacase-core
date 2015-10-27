@@ -628,4 +628,8 @@ This can be solved by:<br/>
         <process command="programs/toolbox_reconfigure"/>
     </reconfigure>
 
+    <pre-delete>
+        <process command="wsh.php --api=manageContextCrontab --cmd=unregister-all" />
+    </pre-delete>
+
 </module>
