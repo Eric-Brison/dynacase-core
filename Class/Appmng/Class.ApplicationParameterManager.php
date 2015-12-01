@@ -236,6 +236,9 @@ class ApplicationParameterManager
      */
     public static function getParameterValue($application, $parameterName)
     {
+        if (($value = self::_catchDeprecatedGlobalParameter($parameterName)) !== null) {
+            return $value;
+        }
         try {
             $applicationId = self::getApplicationId($application, $parameterName);
             $type = self::getParameter($applicationId, $parameterName);
@@ -415,6 +418,9 @@ class ApplicationParameterManager
      */
     private static function getGlobalParameterApplicationName($parameterName)
     {
+        if (($value = self::_catchDeprecatedGlobalParameter($parameterName)) !== null) {
+            return $value;
+        }
         $sql = sprintf("select paramv.appid from paramv, application where paramv.type='G' and application.id=paramv.appid and paramv.name='%s';", pg_escape_string($parameterName));
         $result = null;
         simpleQuery("", $sql, $result, true, true, true);
@@ -443,5 +449,27 @@ class ApplicationParameterManager
     {
         global $action;
         return $action;
+    }
+    /**
+     * Internal function to catch requests for deprecated parameters
+     *
+     * @param $parameterName
+     * @return null|string return null value if the parameter is not deprecated and the caller should follow on
+     * querying the value on its own, or a non-null value containing the value the caller should use instead of
+     * querying the value on its own.
+     */
+    public static function _catchDeprecatedGlobalParameter($parameterName)
+    {
+        if ($parameterName == 'CORE_DB' || $parameterName == 'FREEDOM_DB' || $parameterName == 'WEBDAV_DB') {
+            $msg = sprintf("Application parameter '%s' is deprecated: use \"getDbAccess()\", \"\$action->dbaccess\", \"\$application->dbaccess\", or \"\$doc->dbaccess\" instead.", $parameterName);
+            $action = self::getAction();
+            if (isset($action->log)) {
+                $action->log->deprecated($msg);
+            } else {
+                error_log(__METHOD__ . " " . $msg);
+            }
+            return getDbAccess();
+        }
+        return null;
     }
 }

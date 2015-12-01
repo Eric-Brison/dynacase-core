@@ -17,12 +17,6 @@ global $app_const;
 $app_const = array(
     "INIT" => "yes",
     "VERSION" => "@VERSION@-@RELEASE@",
-    "FREEDOM_DB" => array(
-        "val" => "user=@DBUSER@ dbname=@DBNAME@",
-        "global" => "Y",
-        "kind" => "readonly",
-        "descr" => N_("freedom database")
-    ) ,
     "ENUM_TITLE_SIZE" => array(
         "val" => "40",
         "user" => "Y",
@@ -205,17 +199,17 @@ $app_const = array(
         "val" => "{}",
         "descr" => N_("EDIT Zones for FOOTER") ,
         "global" => "Y"
-    ),
-      "EXPORT_CSVSEPARATOR" => array(
-			       "val"=>";",
-			       "descr"=> N_("user csv separator preferences when export documents"),
-			       "global"=>"Y",
-			       "user"=>"Y"
-			       ),
-      "EXPORT_CSVENCLOSURE" => array(
-			       "val"=>"",
-			       "descr"=> N_("user csv enclosure preferences when export documents"),
-			       "global"=>"Y",
-			       "user"=>"Y"
-			       ),
+    ) ,
+    "EXPORT_CSVSEPARATOR" => array(
+        "val" => ";",
+        "descr" => N_("user csv separator preferences when export documents") ,
+        "global" => "Y",
+        "user" => "Y"
+    ) ,
+    "EXPORT_CSVENCLOSURE" => array(
+        "val" => "",
+        "descr" => N_("user csv enclosure preferences when export documents") ,
+        "global" => "Y",
+        "user" => "Y"
+    ) ,
 );

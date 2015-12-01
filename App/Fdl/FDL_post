@@ -1,18 +1,13 @@
 #!/bin/bash
-if [ "$freedom_context" == "" ]; then
-    #load environement variable for freedom
-  . /etc/freedom.conf
-   wchoose -b
-fi
-
-. "$wpub"/log.sh
-. "$wpub"/libutil.sh
 
 if [ -z "$pgservice_core" -o -z "$pgservice_freedom" ]; then
     echo "Env variables pgservice_core or pgservice_freedom is empty !"
     echo "Check your context for missing or misconfigured environment variables."
     exit 1
 fi
+
+. "$wpub"/log.sh
+. "$wpub"/libutil.sh
 
 #------------------------------
 #post installation
@@ -33,14 +28,6 @@ if [ "$1" = "I" ] ; then
     if [ $RET -ne 0 ]; then
 	echo "An error occured while creating schema family : $RET"
 	exit $RET
-    fi
-
-    log "Setting FREEDOM_DB in paramv..."
-    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val = 'service=''$pgservice_freedom''' WHERE name = 'FREEDOM_DB'"
-    RET=$?
-    if [ $RET -ne 0 ]; then
-        echo "Error setting FREEDOM_DB"
-        exit $RET
     fi
 
     for CLASS in \
@@ -119,14 +106,6 @@ fi
 #post update
 #------------------------------
 if [ "$1" = "U" ] ; then
-
-    log "Setting FREEDOM_DB in paramv..."
-    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val = 'service=''$pgservice_freedom''' WHERE name = 'FREEDOM_DB'"
-    RET=$?
-    if [ $RET -ne 0 ]; then
-	echo "Error setting FREEDOM_DB"
-        exit $RET
-    fi
 
     PGSERVICE="$pgservice_freedom" pgExecuteSqlFile "$wpub/WHAT/getprivilege.sql"
     RET=$?

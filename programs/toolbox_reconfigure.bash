@@ -57,15 +57,11 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
-log "Setting CORE_DB in paramv..."
-PGSERVICE="$core_db" psql -c "UPDATE paramv SET val = 'service=''$freedom_db''' WHERE name = 'FREEDOM_DB'"
-PGSERVICE="$core_db" psql -c "UPDATE paramv SET val = 'service=''$core_db''' WHERE name = 'CORE_DB'"
-
 V=$(installUtils pg_escape_string "$client_name")
 PGSERVICE="$core_db" psql -c "UPDATE paramv SET val = '$V' WHERE name = 'CORE_CLIENT'"
 RET=$?
 if [ $RET -ne 0 ]; then
-	echo "Error setting CORE_DB"
+	echo "Error setting CORE_CLIENT"
     exit $RET
 fi
 

@@ -1,18 +1,13 @@
 #!/bin/bash
 
-if [ "$freedom_context" == "" ]; then
-  . /etc/freedom.conf
-   wchoose -b
-fi
-
-. "$wpub"/log.sh
-. "$wpub"/libutil.sh
-
 if [ -z "$pgservice_core" ]; then
     echo "Env variable pgservice_core is empty !"
     echo "Check your context for missing or misconfigured environment variables."
     exit 1
 fi
+
+. "$wpub"/log.sh
+. "$wpub"/libutil.sh
 
 #------------------------------
 #post installation
@@ -97,14 +92,6 @@ fi
 #post update
 #------------------------------
 if [ "$1" = "U" ] ; then
-
-    log "Setting CORE_DB in paramv..."
-    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val = 'service=''$pgservice_core''' WHERE name = 'CORE_DB'"
-    RET=$?
-    if [ $RET -ne 0 ]; then
-	echo "Error setting CORE_DB"
-        exit $RET
-    fi
 
     log "Setting CORE_PUBDIR in paramv..."
     V=$(installUtils pg_escape_string "$wpub")
