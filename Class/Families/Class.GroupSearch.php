@@ -16,23 +16,22 @@ class GroupedSearch extends \Dcp\Family\Search
     function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
         $tidsearch = $this->getMultipleRawValues("SEG_IDCOND");
-        $wsql = array();
-        $query[] = "select * from doc1 limit 0;"; // null query
+        
+        $query = array();
         foreach ($tidsearch as $k => $v) {
             /**
              * @var \Dcp\Family\Search $doc
              */
             $doc = new_Doc($this->dbaccess, $v);
+            $err = $doc->control("execute");
             
-            if (method_exists($doc, "getQuery")) {
+            if ($err == "" && method_exists($doc, "getQuery")) {
+                
                 $doc->setValue("SE_IDCFLD", $this->getRawValue("SE_IDCFLD"));
                 $q = $doc->getQuery();
                 
-                $wsql[] = $q[0];
+                $query[] = $q[0];
             }
-        }
-        if (count($wsql) > 0) {
-            $query = $wsql;
         }
         
         return $query;
