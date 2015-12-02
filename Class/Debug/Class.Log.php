@@ -78,7 +78,7 @@ class Log
      * @param string $application
      * @param string $function
      */
-    public function Log($logfile = "", $application = "", $function = "")
+    public function __construct($logfile = "", $application = "", $function = "")
     {
         $this->usesyslog = 0;
         if ($logfile == "") {

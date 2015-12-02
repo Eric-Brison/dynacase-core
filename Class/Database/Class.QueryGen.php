@@ -71,7 +71,7 @@ class QueryGen
     var $up = "&nbsp;^";
     var $down = "&nbsp;v";
     
-    function QueryGen($dbaccess, $class, &$action)
+    function __construct($dbaccess, $class, &$action)
     {
         //
         $this->log = new Log("", "QueryGen", "$class");

@@ -32,7 +32,7 @@ class Dir extends PDir
         "FDL:EDITBODYCARD",
         "FDL:EDITRESTRICTION"
     );
-    function Dir($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         parent::__construct($dbaccess, $id, $res, $dbid);
         if ($this->fromid == "") $this->fromid = FAM_DIR;

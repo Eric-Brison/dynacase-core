@@ -203,7 +203,7 @@ create unique index idx_idfam on docfam(id);";
      * @param bool $abstract
      */
     function viewDefaultValues(
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $target = "_self", $ulink = true, $abstract = false)
     {
         $d = createDoc($this->dbaccess, $this->id, false, true, false);
@@ -285,7 +285,7 @@ create unique index idx_idfam on docfam(id);";
      * @param bool $abstract
      */
     function viewfamcard(
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $target = "_self", $ulink = true, $abstract = false)
     {
         // -----------------------------------

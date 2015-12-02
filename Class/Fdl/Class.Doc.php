@@ -1319,9 +1319,9 @@ create unique index i_docir on doc(initid, revision);";
                     $info->errorCode = storeInfo::UPDATE_ERROR;
                 } else {
                     $info->postStore = $this->postStore();
-                    /** @noinspection PhpDeprecationInspection
+                    /* @noinspection PhpDeprecationInspection
                      * compatibility until postModify exists
-                     */
+                    */
                     $info->postModify = $info->postStore;
                     if ($this->hasChanged) {
                         //in case of change in postStore
@@ -5434,7 +5434,7 @@ create unique index i_docir on doc(initid, revision);";
      * @return string
      */
     function preDuplicate(
-    /** @noinspection PhpUnusedParameterInspection */ & $copyfrom)
+    /* @noinspection PhpUnusedParameterInspection */ & $copyfrom)
     {
         // to be defined in child class
         return "";
@@ -5448,7 +5448,7 @@ create unique index i_docir on doc(initid, revision);";
      * @return string
      */
     function preCopy(
-    /** @noinspection PhpUnusedParameterInspection */ & $copyfrom)
+    /* @noinspection PhpUnusedParameterInspection */ & $copyfrom)
     {
         // to be defined in child class
         return "";
@@ -5461,7 +5461,7 @@ create unique index i_docir on doc(initid, revision);";
      * @return string
      */
     function postDuplicate(
-    /** @noinspection PhpUnusedParameterInspection */ & $copyfrom)
+    /* @noinspection PhpUnusedParameterInspection */ & $copyfrom)
     {
         // to be defined in child class
         return "";
@@ -5475,7 +5475,7 @@ create unique index i_docir on doc(initid, revision);";
      * @return string
      */
     function postCopy(
-    /** @noinspection PhpUnusedParameterInspection */ & $copyfrom)
+    /* @noinspection PhpUnusedParameterInspection */ & $copyfrom)
     {
         // to be defined in child class
         return "";
@@ -5880,7 +5880,7 @@ create unique index i_docir on doc(initid, revision);";
      * @return string
      */
     public function specRefreshGen(
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $onlyspec = false)
     {
         return '';
@@ -6398,9 +6398,9 @@ create unique index i_docir on doc(initid, revision);";
      * @return string XML fragment
      */
     final public function getOooAttrValue($attrid,
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $target = "_self",
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $htmllink = false, $index = - 1)
     {
         if ($index != - 1) $v = $this->getMultipleRawValues($attrid, "", $index);
@@ -6418,9 +6418,9 @@ create unique index i_docir on doc(initid, revision);";
      * @return string XML fragment
      */
     final public function getOooValue($oattr, $value,
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $target = "_self",
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $htmllink = false, $index = - 1)
     {
         
@@ -7477,7 +7477,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $abstract
      */
     function viewabstractcard($target = "finfo", $ulink = true,
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $abstract = false)
     {
         $listattr = $this->GetAbstractAttributes();
@@ -7610,7 +7610,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $abstract unused
      */
     final public function viewprop($target = "_self", $ulink = true,
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $abstract = false)
     {
         foreach ($this->fields as $k => $v) {
@@ -7725,7 +7725,7 @@ create unique index i_docir on doc(initid, revision);";
      * @throws \Dcp\Core\Exception
      */
     function editbodycard(
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
     {
         include_once ("FDL/editutil.php");
@@ -8155,7 +8155,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($withdtd == true) {
             $dtd = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
             $dtd.= "<!DOCTYPE $name [";
-            /** @noinspection PhpDeprecationInspection */
+            /* @noinspection PhpDeprecationInspection */
             $dtd.= $this->todtd();
             $dtd.= "]>";
         } else {
@@ -8513,7 +8513,7 @@ create unique index i_docir on doc(initid, revision);";
      * @return string
      */
     function nothing(
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $a = "", $b = "", $c = "")
     {
         return "";
@@ -9284,7 +9284,7 @@ create unique index i_docir on doc(initid, revision);";
      * @return array list of array('method' => '::foo()', 'label' => 'Foo Bar Baz')
      */
     public function getSearchMethods(
-    /** @noinspection PhpUnusedParameterInspection */
+    /* @noinspection PhpUnusedParameterInspection */
     $attrId, $attrType = '')
     {
         include_once ('FDL/Lib.Attr.php');

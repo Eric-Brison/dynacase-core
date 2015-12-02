@@ -95,7 +95,7 @@ class QueryDb
      */
     public $basic_elem;
     
-    function QueryDb($dbaccess, $class)
+    function __construct($dbaccess, $class)
     {
         //
         $this->log = new Log("", "Query", "$class");

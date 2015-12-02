@@ -48,7 +48,7 @@ class CVDoc extends Doc
      */
     private $pdoc = null;
     // --------------------------------------------------------------------
-    function CVDoc($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // first construct acl array
         if (isset($this->fromid)) $this->defProfFamId = $this->fromid; // it's a profil itself

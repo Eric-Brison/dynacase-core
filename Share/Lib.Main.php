@@ -121,7 +121,7 @@ function getMainAction($auth, &$action)
     // -----------------------------------------------
     // now we are in correct protocol (http or https)
     $action = new Action();
-    $action->Set(getHttpVars("action") , $appl, $session);
+    $action->Set(getHttpVars("action") , $appl);
     
     if ($auth) {
         $core_lang = $auth->getSessionVar('CORE_LANG');
@@ -369,8 +369,11 @@ function executeAction(&$action, &$out = null)
         }
     }
 }
-
-function handleActionException(Exception $e)
+/**
+ * @param Exception|Error $e
+ * @throws \Dcp\Core\Exception
+ */
+function handleActionException($e)
 {
     global $action;
     
@@ -400,8 +403,10 @@ function handleActionException(Exception $e)
         }
     }
 }
-
-function errorLogException(Exception $e)
+/**
+ * @param Exception|Error  $e
+ */
+function errorLogException($e)
 {
     $pid = getmypid();
     error_log(sprintf("%s> Dynacase got an uncaught exception '%s' with message '%s' in file %s at line %s:", $pid, get_class($e) , $e->getMessage() , $e->getFile() , $e->getLine()));
