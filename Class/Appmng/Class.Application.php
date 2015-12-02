@@ -346,7 +346,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param string $ref the JS/CSS reference
      * @return string the resolved location of the reference or an empty string on failure
      */
-    private function resolveRessourceLocation($ref)
+    private function resolveResourceLocation($ref)
     {
         if ($this->rootdir == '') {
             $this->rootdir = $this->GetParam("CORE_PUBDIR");
@@ -389,18 +389,18 @@ create sequence SEQ_ID_APPLICATION start 10;
         return '';
     }
     /**
-     * Add a ressource (JS/CSS) to the page
+     * Add a resource (JS/CSS) to the page
      *
      * @param string $type 'js' or 'css'
-     * @param string $ref the ressource reference
-     * @param boolean $needparse should the ressource be parsed (default false)
+     * @param string $ref the resource reference
+     * @param boolean $needparse should the resource be parsed (default false)
      * @param string $packName
      *
-     * @return string ressource location
+     * @return string resource location
      */
     public function addRessourceRef($type, $ref, $needparse, $packName)
     {
-        /* Try to attach the ressource to the parent app */
+        /* Try to attach the resource to the parent app */
         if ($this->hasParent()) {
             $ret = $this->parent->AddRessourceRef($type, $ref, $needparse, $packName);
             if ($ret !== '') {
@@ -408,37 +408,37 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
         
-        $ressourceLocation = $this->getRessourceLocation($type, $ref, $needparse, $packName, true);
-        if (!$ressourceLocation) {
-            $wng = sprintf(_("Cannot find %s ressource file") , $ref);
+        $resourceLocation = $this->getResourceLocation($type, $ref, $needparse, $packName, true);
+        if (!$resourceLocation) {
+            $wng = sprintf(_("Cannot find %s resource file") , $ref);
             $this->addLogMsg($wng);
             $this->log->warning($wng);
         }
         if ($type == 'js') {
-            $this->jsref[$ressourceLocation] = $ressourceLocation;
+            $this->jsref[$resourceLocation] = $resourceLocation;
         } elseif ($type == 'css') {
-            $this->cssref[$ressourceLocation] = $ressourceLocation;
+            $this->cssref[$resourceLocation] = $resourceLocation;
         } else {
             return '';
         }
         
-        return $ressourceLocation;
+        return $resourceLocation;
     }
     /**
-     * Get ressourceLocation with cache handling
+     * Get resourceLocation with cache handling
      *
      * @param string $type (js|css)
-     * @param string $ref path or URI of the ressource
+     * @param string $ref path or URI of the resource
      * @param bool $needparse need to parse
      * @param string $packName use it to pack all the ref with the same packName into a single file
      * @param bool $fromAdd (do not use this param) true only if you call it from addRessourceRef function
      *
      * @return string new location
      */
-    private function getRessourceLocation($type, $ref, $needparse, $packName, $fromAdd = false)
+    private function getResourceLocation($type, $ref, $needparse, $packName, $fromAdd = false)
     {
         static $firstPack = array();
-        $ressourceLocation = '';
+        $resourceLocation = '';
         
         if (!isset($this->session)) {
             $sessid = 0;
@@ -448,8 +448,8 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($packName) {
             
             $key = md5($sessid . getParam("WVERSION"));
-            $ressourcePackParseLocation = sprintf("?app=CORE&amp;action=CORE_CSS&amp;type=%s&amp;ukey=%s&amp;pack=%s", $type, $key, $packName);
-            $ressourcePackNoParseLocation = sprintf("pack.php?type=%s&amp;pack=%s&amp;wv=%s", $type, $packName, getParam("WVERSION"));
+            $resourcePackParseLocation = sprintf("?app=CORE&amp;action=CORE_CSS&amp;type=%s&amp;ukey=%s&amp;pack=%s", $type, $key, $packName);
+            $resourcePackNoParseLocation = sprintf("pack.php?type=%s&amp;pack=%s&amp;wv=%s", $type, $packName, getParam("WVERSION"));
             
             if (!isset($firstPack[$packName])) {
                 $packSession = array();
@@ -471,32 +471,32 @@ create sequence SEQ_ID_APPLICATION start 10;
             if ($needparse) {
                 if ($fromAdd) {
                     if ($type == "js") {
-                        unset($this->jsref[$ressourcePackNoParseLocation]);
+                        unset($this->jsref[$resourcePackNoParseLocation]);
                     } elseif ($type == "css") {
-                        unset($this->cssref[$ressourcePackNoParseLocation]);
+                        unset($this->cssref[$resourcePackNoParseLocation]);
                     }
                 }
-                $ressourceLocation = $ressourcePackParseLocation;
+                $resourceLocation = $resourcePackParseLocation;
             } else {
-                $hasParseBefore = (($type === "js") && isset($this->jsref[$ressourcePackParseLocation]));
+                $hasParseBefore = (($type === "js") && isset($this->jsref[$resourcePackParseLocation]));
                 if (!$hasParseBefore) {
-                    $hasParseBefore = (($type === "css") && isset($this->cssref[$ressourcePackParseLocation]));
+                    $hasParseBefore = (($type === "css") && isset($this->cssref[$resourcePackParseLocation]));
                 }
                 if (!$hasParseBefore) {
-                    $ressourceLocation = $ressourcePackNoParseLocation;
+                    $resourceLocation = $resourcePackNoParseLocation;
                 }
             }
         } elseif ($needparse) {
             $key = md5($sessid . getParam("WVERSION"));
-            $ressourceLocation = "?app=CORE&amp;action=CORE_CSS&amp;ukey=" . $key . "&amp;layout=" . $ref . "&amp;type=" . $type;
+            $resourceLocation = "?app=CORE&amp;action=CORE_CSS&amp;ukey=" . $key . "&amp;layout=" . $ref . "&amp;type=" . $type;
         } else {
-            $location = $this->resolveRessourceLocation($ref);
+            $location = $this->resolveResourceLocation($ref);
             if ($location != '') {
-                $ressourceLocation = (strpos($location, '?') !== false) ? $location : $location . '?wv=' . getParam("WVERSION");
+                $resourceLocation = (strpos($location, '?') !== false) ? $location : $location . '?wv=' . getParam("WVERSION");
             }
         }
         
-        return $ressourceLocation;
+        return $resourceLocation;
     }
     /**
      * Get dynacase CSS link
@@ -515,9 +515,9 @@ create sequence SEQ_ID_APPLICATION start 10;
             $ref = substr($ref, 2);
         }
         $styleParseRule = $this->detectCssParse($ref, $needparse);
-        $rl = $this->getRessourceLocation('css', $ref, $styleParseRule, $packName);
+        $rl = $this->getResourceLocation('css', $ref, $styleParseRule, $packName);
         if (!$rl) {
-            $msg = sprintf(_("Cannot find %s ressource file") , $ref);
+            $msg = sprintf(_("Cannot find %s resource file") , $ref);
             $this->addLogMsg($msg);
             $this->log->warning($msg);
         }
@@ -539,9 +539,9 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (substr($ref, 0, 2) == './') {
             $ref = substr($ref, 2);
         }
-        $rl = $this->getRessourceLocation('js', $ref, $needparse, $packName);
+        $rl = $this->getResourceLocation('js', $ref, $needparse, $packName);
         if (!$rl) {
-            $msg = sprintf(_("Cannot find %s ressource file") , $ref);
+            $msg = sprintf(_("Cannot find %s resource file") , $ref);
             $this->addLogMsg($msg);
             $this->log->warning($msg);
         }
