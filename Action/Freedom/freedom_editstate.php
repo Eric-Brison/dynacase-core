@@ -18,9 +18,9 @@
 
 include_once ("FDL/Class.Doc.php");
 
-function freedom_editstate(&$action)
+function freedom_editstate(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     
     $doc = new_Doc($dbaccess, $docid);
@@ -37,4 +37,3 @@ function freedom_editstate(&$action)
         }
     }
 }
-?>

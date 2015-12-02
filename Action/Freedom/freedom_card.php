@@ -22,12 +22,12 @@
 include_once ("FDL/Class.Dir.php");
 // -----------------------------------
 // -----------------------------------
-function freedom_card(&$action)
+function freedom_card(Action & $action)
 {
     // -----------------------------------
     $docid = GetHttpVars("id");
     $latest = GetHttpVars("latest");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     
@@ -38,4 +38,3 @@ function freedom_card(&$action)
     
     $action->lay->Set("TITLE", $doc->title);
 }
-?>

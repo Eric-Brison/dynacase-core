@@ -174,9 +174,9 @@ class Form1NF
             }
         }
         
-        $this->freedom_dbaccess = $action->getParam('FREEDOM_DB');
+        $this->freedom_dbaccess = $action->dbaccess;
         if ($this->freedom_dbaccess == "") {
-            $action->error(_("Error: empty FREEDOM_DB"));
+            $action->error(_("Error: empty action->dbaccess"));
         }
         $this->freedom_pgservice = getServiceFreedom();
         
@@ -2027,4 +2027,3 @@ class Form1NF_Column
         return $type;
     }
 }
-?>

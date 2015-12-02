@@ -20,7 +20,7 @@ include_once ("FDL/Class.Doc.php");
 
 function setlogicalname(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id");
     $name = GetHttpVars("name");
     if ($docid) {

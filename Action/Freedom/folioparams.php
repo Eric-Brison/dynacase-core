@@ -20,14 +20,14 @@ include_once ('FREEDOM/Lib.portfolio.php');
 /**
  *
  * @param Action &$action current action
- * @global dirid Http var : separator identifier to see
- * @global folioid Http var : portfolio of separator
+ * @global dirid int Http var : separator identifier to see
+ * @global folioid int Http var : portfolio of separator
  */
-function folioparams(&$action)
+function folioparams(Action & $action)
 {
     
     $docid = GetHttpVars("id", 0); // document to edit
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $folio = new_Doc($dbaccess, $docid);
     
@@ -75,4 +75,3 @@ function folioparams(&$action)
         portfolio_set_context($dir, $pfctx);
     }
 }
-?>

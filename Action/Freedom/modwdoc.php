@@ -21,7 +21,7 @@ include_once ("FDL/Class.Dir.php");
 include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function modwdoc(&$action)
+function modwdoc(Action & $action)
 {
     // -----------------------------------
     
@@ -32,7 +32,7 @@ function modwdoc(&$action)
     
     if ($docid == 0) $action->exitError(_("the document is not referenced: cannot apply profile access modification"));
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     // initialise object
     $doc = new_Doc($dbaccess, $docid);
     $doc->wid = $wid; // new default workflow
@@ -46,11 +46,13 @@ function modwdoc(&$action)
     $doc->unlock(true); // disabled autolock
     // update document already created to be conform to new workflow
     $doc->exec_query("update doc" . $doc->id . " set wid=$wid where usefor !~ 'W'");
-    
+
+    /**
+     * @var WDoc $wdoc
+     */
     $wdoc = new_Doc($dbaccess, $wid);
     $firststate = $wdoc->firstState;
     $doc->exec_query("update doc" . $doc->id . " set state='$firststate' where  usefor !~ 'W' and (state is null or state='')");
     
     redirect($action, "FDL", "FDL_CARD&id=$docid", $action->GetParam("CORE_STANDURL"));
 }
-?>

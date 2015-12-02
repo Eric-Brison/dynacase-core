@@ -41,7 +41,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
     $noredirect = (GetHttpVars("noredirect")); // true  if return need edition
     $quicksave = (GetHttpVars("quicksave") == "1"); // true  if return need edition
     $force = (GetHttpVars("fstate", "no") == "yes"); // force change
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $ndocid = $docid;
     
     global $_POST;
@@ -599,7 +599,7 @@ function specialmodcard(Action & $action, $usefor)
     global $_POST;
     global $_FILES;
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $classid = GetHttpVars("classid", 0);
     /**
      * @var DocFam $cdoc

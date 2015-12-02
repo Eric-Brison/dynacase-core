@@ -15,9 +15,9 @@ include_once ('VAULT/Class.VaultFile.php');
 
 $appl = new Application();
 $appl->Set("FDL", $core);
-$dbaccess = $appl->GetParam("FREEDOM_DB");
+$dbaccess = $appl->dbaccess;
 if ($dbaccess == "") {
-    print "Database not found : param FREEDOM_DB";
+    print "Database not found : appl->dbaccess";
     exit;
 }
 /**
@@ -177,4 +177,3 @@ function cleanVault($dbaccess, $vaultname, $vt, $test)
         } else loclog(" *** ERROR *** $vid used (referenced in doc(s))");
     }
 }
-?>

@@ -24,7 +24,7 @@ function verifycomputedfiles(Action & $action)
     
     $docid = $usage->addRequiredParameter("id", "docid");
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     header('Content-type: text/xml; charset=utf-8');
     

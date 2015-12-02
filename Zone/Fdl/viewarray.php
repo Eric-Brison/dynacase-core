@@ -23,7 +23,7 @@ include_once ("FDL/freedom_util.php");
 include_once ("FDL/editutil.php");
 // Compute value to be inserted in a specific layout
 // -----------------------------------
-function viewarray(&$action)
+function viewarray(Action &$action)
 {
     // -----------------------------------
     // GetAllParameters
@@ -35,13 +35,16 @@ function viewarray(&$action)
     $target = GetHttpVars("target"); // may be mail
     // $width=GetHttpVars("width","100%"); // table width
     // Set the globals elements
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid == 0) $doc = createDoc($dbaccess, $classid);
     else $doc = new_Doc($dbaccess, $docid);
     
     if (($vid != "") && ($doc->cvid > 0)) {
         // special controlled view
+        /**
+         * @var CVDoc $cvdoc
+         */
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
         $tview = $cvdoc->getView($vid);
         if ($tview) $doc->setMask($tview["CV_MSKID"]);
@@ -52,4 +55,3 @@ function viewarray(&$action)
     
     $action->lay->set("array", $xmlarray);
 }
-?>

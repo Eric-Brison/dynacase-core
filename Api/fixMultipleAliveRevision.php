@@ -11,9 +11,10 @@ $usage = new ApiUsage();
 $usage->setDefinitionText("Fixed multiple alive revision problem");
 $usage->verify();
 
-$dbaccess = GetParam("FREEDOM_DB");
+global $action;
+$dbaccess = $action->dbaccess;
 if ($dbaccess == "") {
-    error_log("Freedom Database not found : param FREEDOM_DB");
+    error_log("Freedom Database not found : action->dbaccess");
     exit(1);
 }
 
@@ -37,4 +38,3 @@ foreach ($multipleList as $el) {
 }
 
 exit(0);
-?>

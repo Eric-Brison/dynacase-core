@@ -36,7 +36,7 @@ if ($admin_passwd == '') {
     exit(1);
 }
 
-$dbaccess = getParam('CORE_DB');
+$dbaccess = getDbAccess();
 
 $user = new Account($dbaccess, 1);
 if (!is_object($user) || !$user->isAffected()) {
@@ -58,4 +58,3 @@ if( $err != '' ) {
 }
 
 exit(0);
-?>

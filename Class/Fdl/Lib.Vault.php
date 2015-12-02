@@ -25,7 +25,7 @@ function initVaultAccess()
     static $FREEDOM_VAULT = false;;
     if (!$FREEDOM_VAULT) {
         include_once ("VAULT/Class.VaultFile.php");
-        $dbaccess = getParam("FREEDOM_DB");
+        $dbaccess = getDbAccess();
         $FREEDOM_VAULT = new VaultFile($dbaccess, "FREEDOM");
     }
     return $FREEDOM_VAULT;
@@ -231,7 +231,7 @@ function convertFile($infile, $engine, $outfile, &$info)
         $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
         if ($err == "") {
             include_once ("FDL/Class.TaskRequest.php");
-            $dbaccess = GetParam("FREEDOM_DB");
+            $dbaccess = getDbAccess();
             $tr = new TaskRequest($dbaccess);
             $tr->tid = $info["tid"];
             $tr->fkey = $vid;
@@ -288,4 +288,3 @@ function convertFile($infile, $engine, $outfile, &$info)
     }
     return $err;
 }
-?>

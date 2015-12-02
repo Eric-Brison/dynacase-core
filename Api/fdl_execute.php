@@ -25,9 +25,9 @@ global $action;
 $appl = new Application();
 $appl->Set("FDL", $core);
 
-$dbaccess = $appl->GetParam("FREEDOM_DB");
+$dbaccess = $appl->dbaccess;
 if ($dbaccess == "") {
-    print "Database not found : param FREEDOM_DB";
+    print "Database not found : appl->dbaccess";
     exit;
 }
 
@@ -102,4 +102,3 @@ if ($docid > 0) {
     
     if ($err != "") exit(1);
 }
-?>

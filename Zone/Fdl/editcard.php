@@ -29,7 +29,7 @@ function editcard(Action & $action)
     $usefor = GetHttpVars("usefor"); // default values for a document
     $vid = GetHttpVars("vid"); // special controlled view
     $mskid = GetHttpVars("mskid"); // special mask
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $temporaryMode = $action->getParam("overrideICreate") == "true";
     editmode($action);

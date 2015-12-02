@@ -21,14 +21,14 @@ include_once ("FDL/mailcard.php");
 /**
  * Edition to un-saffect document
  * @param Action &$action current action
- * @global id Http var : document id to affect
- * @global _id_affectuser Http var : user identifier to affect
- * @global _actioncomment Http var : description of the action
+ * @global id int Http var : document id to affect
+ * @global _id_affectuser int Http var : user identifier to affect
+ * @global _actioncomment string Http var : description of the action
  */
 function desaffect(&$action)
 {
     $docid = GetHttpVars("id");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_doc($dbaccess, $docid);
     if (!$doc->isAlive()) $action->exitError(sprintf(_("document #%s not found. Unaffectation aborded") , $docid));
@@ -39,9 +39,8 @@ function desaffect(&$action)
     if ($err == "") {
         $action->AddActionDone("UNLOCKDOC", $doc->id);
         
-        $action->addWarningMsg(sprintf(_("document %s has been unaffected") , $doc->title, $docu->title));
+        $action->addWarningMsg(sprintf(_("document %s has been unaffected") , $doc->title));
     }
     
     redirect($action, GetHttpVars("redirect_app", "FDL") , GetHttpVars("redirect_act", "FDL_CARD&latest=Y&refreshfld=Y&id=" . $doc->id) , $action->GetParam("CORE_STANDURL"));
 }
-?>

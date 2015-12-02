@@ -20,16 +20,17 @@ include_once ("FDL/Class.Doc.php");
 /**
  * Get  doc attributes values
  * @param Action &$action current action
- * @global id Http var : document id to view
+ * @global id int Http var : document id to view
  */
 function getdocvalues(&$action)
 {
     header('Content-type: text/xml; charset=utf-8');
-    
+
+    $err = '';
     $mb = microtime();
     $docid = GetHttpVars("id");
     $attrid = strtolower(GetHttpVars("attrid"));
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $action->lay->set("warning", "");
     
@@ -60,4 +61,3 @@ function getdocvalues(&$action)
     $action->lay->set("count", 1);
     $action->lay->set("delay", microtime_diff(microtime() , $mb));
 }
-?>

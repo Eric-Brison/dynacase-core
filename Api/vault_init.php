@@ -29,7 +29,7 @@ $fsname = $usage->addOptionalParameter("name", "Fs name", null, "FREEDOM");
 $size_in_bytes = $usage->addOptionalParameter("size", "Vault size", null, 500 * 1024 * 1024); // 500Mb
 $usage->verify();
 
-$dbaccess = $appl->GetParam("FREEDOM_DB");
+$dbaccess = $appl->dbaccess;
 $err = "";
 if (!is_dir($dirname)) {
     if (is_dir(dirname($dirname))) {
@@ -56,4 +56,3 @@ if ($err == "") {
     }
 }
 if ($err) print sprintf(_("ERROR %s\n") , $err);
-?>

@@ -17,10 +17,10 @@
  */
 include_once ("FDL/Class.Doc.php");
 
-function setsysrss(&$action)
+function setsysrss(Action &$action)
 {
     // Set the globals elements
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0); // document to edit
     $rss = new_Doc($dbaccess, $docid);
     if (is_object($rss) && $rss->isAffected()) {
@@ -40,4 +40,3 @@ function setsysrss(&$action)
     }
     redirect($action, "FDL", "FDL_CARD&id=$docid", $action->GetParam("CORE_STANDURL"));
 }
-?>

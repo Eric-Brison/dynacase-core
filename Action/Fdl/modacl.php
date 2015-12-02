@@ -37,7 +37,7 @@ function modacl(Action & $action)
      * @var array $aclp
      */
     $usage->verify();
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
     // test if current user can modify ACL

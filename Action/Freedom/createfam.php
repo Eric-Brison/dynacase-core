@@ -22,7 +22,7 @@ include_once ("FDL/Class.DocAttr.php");
 
 function createfam(Action &$action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     $classid = GetHttpVars("classid", 0); // use when new doc or change class
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
@@ -68,4 +68,3 @@ function createfam(Action &$action)
         $action->lay->SetBlockData("SELECTCLASS", $selectclass);
     }
 }
-?>

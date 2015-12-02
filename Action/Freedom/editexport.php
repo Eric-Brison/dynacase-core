@@ -22,7 +22,7 @@ include_once ("GENERIC/generic_util.php");
 
 function editexport(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     $action->parent->addJsRef("lib/jquery/jquery.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
@@ -77,4 +77,3 @@ function editexport(Action & $action)
         $action->lay->set("viewinfo", false);
     }
 }
-?>

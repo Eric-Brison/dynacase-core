@@ -23,13 +23,13 @@ include_once ("FDL/Class.Doc.php");
 /**
  * View a document without standard header and footer. It is display in raw format
  * @param Action &$action current action
- * @global id Http var : document identifier to see
- * @global latest Http var : (Y|N) if Y force view latest revision
- * @global abstract Http var : (Y|N) if Y view only abstract attribute
- * @global zonebodycard Http var : if set, view other specific representation
- * @global vid Http var : if set, view represention describe in view control (can be use only if doc has controlled view)
- * @global ulink Http var : (Y|N)if N hyperlink are disabled
- * @global target Http var : is set target of hyperlink can change (default _self)
+ * @global id int Http var : document identifier to see
+ * @global latest string Http var : (Y|N) if Y force view latest revision
+ * @global abstract string Http var : (Y|N) if Y view only abstract attribute
+ * @global zonebodycard string Http var : if set, view other specific representation
+ * @global vid int Http var : if set, view represention describe in view control (can be use only if doc has controlled view)
+ * @global ulink string Http var : (Y|N)if N hyperlink are disabled
+ * @global target string Http var : is set target of hyperlink can change (default _self)
  */
 function viewscard(&$action)
 {
@@ -60,7 +60,7 @@ function viewscard(&$action)
     $charset = $usage->addOptionalParameter("chset", "charset", null, "UTF-8");
     $usage->verify();
     // Set the globals elements
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
     if (($latest == "Y") && ($doc->locked == - 1)) {
@@ -107,4 +107,3 @@ function viewscard(&$action)
         exit;
     }
 }
-?>

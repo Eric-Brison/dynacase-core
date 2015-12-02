@@ -35,7 +35,7 @@ function insertfile(&$action)
     $tid = GetHttpVars("tid");
     $name = GetHttpVars("name");
     $docid = GetHttpVars("docid");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if (!$tid) $err = _("no task identifier found");
     else {
@@ -118,7 +118,7 @@ function insertfile(&$action)
 function getTEFile($tid, $filename, &$info)
 {
     global $action;
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $ot = new \Dcp\TransformationEngine\Client($action->getParam("TE_HOST") , $action->getParam("TE_PORT"));
     
     $err = $ot->getInfo($tid, $info);

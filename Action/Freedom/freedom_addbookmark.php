@@ -19,13 +19,13 @@ include_once ("FDL/Class.Doc.php");
 /**
  * Add folder bookmark
  * @param Action &$action current action
- * @global dirid Http var : folder identifier to add
+ * @global dirid int Http var : folder identifier to add
  */
-function freedom_addbookmark(&$action)
+function freedom_addbookmark(Action & $action)
 {
     $dirid = GetHttpVars("dirid");
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $attrid = "FREEDOM_UBOOK";
     
     $ubook = $action->GetParam($attrid);
@@ -54,7 +54,6 @@ function freedom_addbookmark(&$action)
         AddWarningMsg($err);
     } else {
         AddWarningMsg(sprintf(_("folder %s as been added in your bookmark") , $doc->title));
-        $action->parent->param->Set($attrid, $newbook, PARAM_USER . $action->user->id, $action->parent->id);
+        $action->parent->param->Set($attrid, $newbook, Param::PARAM_USER . $action->user->id, $action->parent->id);
     }
 }
-?>

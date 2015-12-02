@@ -21,12 +21,12 @@ include_once ("FDL/Class.DocLog.php");
 /**
  * View last history items of destroyed documents
  * @param Action &$action current action
- * @global id Http var : document to see
+ * @global id int Http var : document to see
  */
 function viewdestroydoc(Action & $action)
 {
     $docid = $action->getArgument("id");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $d = new_doc($dbaccess, $docid);
     if ($d->isAffected()) {
         $action->exitError(sprintf(_("document %s [%d] is not destroyed") , $d->getTitle() , $d->id));
@@ -35,6 +35,7 @@ function viewdestroydoc(Action & $action)
     $q = new QueryDb($dbaccess, "dochisto");
     $q->AddQuery("id=" . $docid);
     $l = $q->Query(0, 1, "TABLE");
+    $title = '';
     if (is_array($l)) {
         
         $initid = $l[0]["initid"];
@@ -60,4 +61,3 @@ function viewdestroydoc(Action & $action)
     $action->lay->set("title", $title);
     $action->lay->set("trace", sprintf(_("Last traces of %s document : %s") , $docid, $title));
 }
-?>

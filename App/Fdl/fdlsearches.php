@@ -19,7 +19,7 @@ function mytagdoc_($start, $slice, $tag, $userid = 0)
 {
     include_once ("FDL/Class.DocUTag.php");
     include_once ("FDL/Lib.Dir.php");
-    $dbaccess = getParam("FREEDOM_DB");
+    $dbaccess = getDbAccess();
     if ($userid == 0) $uid = getUserId();
     else $uid = $userid;
     $q = new QueryDb($dbaccess, "DocUTag");
@@ -46,7 +46,7 @@ function mytagdoc_($start, $slice, $tag, $userid = 0)
 function mytagdoc($start = "0", $slice = "ALL", $tag, $userid = 0)
 {
     include_once ("FDL/Class.SearchDoc.php");
-    $dbaccess = getParam("FREEDOM_DB");
+    $dbaccess = getDbAccess();
     $s = new searchDoc($dbaccess);
     $s->join("id = docutag(id)");
     $s->slice = $slice;
@@ -106,7 +106,7 @@ function myaffecteddoc($start = "0", $slice = "ALL", $userid = 0)
 function relateddoc($start = "0", $slice = "ALL", $userid = 0, $docid = 0, $famid = 0)
 {
     
-    $dbaccess = getParam("FREEDOM_DB");
+    $dbaccess = getDbAccess();
     if ($docid > 0) {
         include_once ("FDL/Class.DocRel.php");
         $lid = array();
@@ -149,7 +149,7 @@ function relateddoc($start = "0", $slice = "ALL", $userid = 0, $docid = 0, $fami
 function mydeleteddoc($start = "0", $slice = "ALL", $userid = 0)
 {
     include_once ("FDL/Class.SearchDoc.php");
-    $dbaccess = getParam("FREEDOM_DB");
+    $dbaccess = getDbAccess();
     $s = new searchDoc($dbaccess);
     $s->trash = 'only';
     $s->join("id = dochisto(id)");
@@ -159,4 +159,3 @@ function mydeleteddoc($start = "0", $slice = "ALL", $userid = 0)
     
     return $s->search();
 }
-?>

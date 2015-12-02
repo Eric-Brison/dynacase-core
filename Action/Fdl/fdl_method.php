@@ -19,7 +19,7 @@
 include_once ("FDL/Class.Doc.php");
 function fdl_method(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = $action->getArgument("id", 0);
     $method = $action->getArgument("method");
     $zone = $action->getArgument("zone");
@@ -95,4 +95,3 @@ function commentMethodMatch(&$object, $method, $comment)
     }
     return true;
 }
-?>

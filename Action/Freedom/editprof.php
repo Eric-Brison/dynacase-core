@@ -22,7 +22,7 @@ include_once ("FDL/Lib.Dir.php");
 
 function editprof(Action &$action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     $createp = GetHttpVars("create", 0); // 1 if use for create profile (only for familly)
 
@@ -132,4 +132,3 @@ function setControlView(&$action, &$doc, $createp = false)
     }
     $action->lay->SetBlockData("SELECTCV", $tcv);
 }
-?>

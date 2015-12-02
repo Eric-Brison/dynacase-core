@@ -39,7 +39,7 @@ function freedom_edit(Action &$action)
     $alsosub = (GetHttpVars("alsosubfam", "N") == "Y");
     $type = GetHttpVars("type", "");
     // Set the globals elements
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     if (!is_numeric($classid)) $classid = getFamIdFromName($dbaccess, $classid);
     else $classid = abs($classid);
     setHttpVar("classid", $classid);
@@ -211,4 +211,3 @@ function getFamiliesWithTypeOrClassId($dbaccess, $userid, $type, $classid, $qtyp
     }
     return GetClassesDoc($dbaccess, $userid, $classid, $qtype);
 }
-?>

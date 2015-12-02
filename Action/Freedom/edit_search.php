@@ -25,7 +25,7 @@ include_once ("FDL/Lib.Dir.php");
 function edit_search(Action &$action)
 {
     // -----------------------------------
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     // Get all the params
     $dir = GetHttpVars("dirid"); // insert search in this folder
     $action->lay->eSet("dirid", $dir);
@@ -39,4 +39,3 @@ function edit_search(Action &$action)
     
     $action->lay->SetBlockData("SELECTCLASS", $selectclass);
 }
-?>

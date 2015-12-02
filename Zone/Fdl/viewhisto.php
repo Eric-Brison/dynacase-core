@@ -19,7 +19,7 @@
 include_once ("FDL/Class.Doc.php");
 function viewhisto(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     $viewapp = GetHttpVars("viewapp", "FDL");
     $viewact = GetHttpVars("viewact", "FDL_CARD");
@@ -166,4 +166,3 @@ function viewhisto(Action & $action)
     $action->lay->eSet("latestVersion", $doc->version);
     $action->lay->SetBlockData("TABLEBODY", $trdoc);
 }
-?>

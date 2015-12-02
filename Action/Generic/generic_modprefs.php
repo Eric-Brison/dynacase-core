@@ -25,7 +25,7 @@ function generic_modprefs(Action & $action)
     $dispo = GetHttpVars("dispo"); // last searched
     $letters = GetHttpVars("letters"); // want tab letters
     $inherit = GetHttpVars("inherit"); // search in inherit
-    $dbaccess = $action->getParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $fdoc = new_doc($dbaccess, $famid);
     if (!$fdoc->isAlive()) {
         $action->exitError(sprintf(_("Family (#%s) not exists") , $famid));
@@ -64,4 +64,3 @@ function generic_modprefs(Action & $action)
 
     $action->lay->eset("famname", $fdoc->getPropertyValue("name"));
 }
-?>

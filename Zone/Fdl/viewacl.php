@@ -28,7 +28,7 @@ function viewacl(Action & $action)
     $docid = intval($action->getArgument("docid"));
     $userid = intval($action->getArgument("userid"));
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
     $err = $doc->control('viewacl');
@@ -242,4 +242,3 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
     }
     return $msg;
 }
-?>

@@ -22,19 +22,21 @@ include_once ("FDL/freedom_util.php");
 /**
  * Put a doc in trash
  * @param Action &$action current action
- * @global id Http var : document id to trash
- * @global recursive Http var : if yes and it is a folder like family try to delete containt (primary relation) also
+ * @global id int Http var : document id to trash
+ * @global recursive string Http var : if yes and it is a folder like family try to delete containt (primary relation) also
  */
-function generic_del(&$action)
+function generic_del(Action &$action)
 {
     // -----------------------------------
     // Get all the params
     $docid = GetHttpVars("id");
     $recursive = (GetHttpVars("recursive") == "yes");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid > 0) {
-        
+        /**
+         * @var Dir $doc
+         */
         $doc = new_Doc($dbaccess, $docid);
         
         $err = $doc->PreDocDelete();
@@ -56,4 +58,3 @@ function generic_del(&$action)
     
     redirect($action, GetHttpVars("app") , "GENERIC_LOGO");
 }
-?>

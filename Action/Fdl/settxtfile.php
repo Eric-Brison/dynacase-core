@@ -33,7 +33,7 @@ function settxtfile(Action & $action)
     $attrid = $action->getArgument("attrid");
     $index = $action->getArgument("index", -1);
     $tid = $action->getArgument("tid");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     if (!$tid) $err = _("no task identifier found");
     else {
         $ot = new \Dcp\TransformationEngine\Client($action->getParam("TE_HOST") , $action->getParam("TE_PORT"));

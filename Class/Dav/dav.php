@@ -35,7 +35,7 @@ if ($type == 'webdav') {
 
 error_log("   [ " . $_SERVER['REQUEST_METHOD'] . " ]=[ " . $_SERVER['PATH_INFO'] . " ]=======");
 whatInit();
-$s = new HTTP_WebDAV_Server_Freedom($action->getParam("WEBDAV_DB"));
+$s = new HTTP_WebDAV_Server_Freedom($action->dbaccess);
 $s->setFolderMaxItem($action->getParam('WEBDAV_FOLDERMAXITEM'));
 $path = $_SERVER['PATH_INFO'];
 if ($type == "freedav") {
@@ -69,7 +69,7 @@ $d2 = microtime();
 $dt = sprintf("%.02f", microtime_diff($d1, $d2));
 
 $s->http_auth_realm = "Dynacase Platform connection";
-$s->db_freedom = $action->getParam("FREEDOM_DB");
+$s->db_freedom = $action->dbaccess;
 $s->type = $type;
 $s->racine = $action->getParam("WEBDAV_ROOTID", 9);
 $s->ServeRequest();

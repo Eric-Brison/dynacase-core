@@ -26,7 +26,7 @@ function fdl_familyschema(Action & $action)
 {
     // -----------------------------------
     $docid = getHttpVars("id");
-    $dbaccess = $action->getParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     /**
      * @var DocFam $doc
      */
@@ -38,4 +38,3 @@ function fdl_familyschema(Action & $action)
     $action->lay->noparse = true;
     $action->lay->template = $doc->getXmlSchema();
 }
-?>

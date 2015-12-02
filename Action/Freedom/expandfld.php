@@ -24,7 +24,7 @@ include_once ("FREEDOM/folders.php");
 function expandfld(Action & $action)
 {
     // -----------------------------------
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $dirid = GetHttpVars("dirid", 9); // root directory
     $inavmode = GetHttpVars("inavmode"); // root directory
     $dir = new_Doc($dbaccess, $dirid);

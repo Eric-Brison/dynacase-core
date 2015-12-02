@@ -30,7 +30,7 @@ function popupfamdetail(Action & $action)
 function getpopupfamdetail(Action & $action, $docid)
 {
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     
     if ($doc->isAffected()) $docid = $doc->id;

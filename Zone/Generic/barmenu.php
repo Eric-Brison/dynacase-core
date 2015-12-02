@@ -33,7 +33,7 @@ function barmenu(Action & $action)
         $action->lay->set("fhelp", "fhidden");
     }
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $famid = getDefFam($action);
     

@@ -21,7 +21,7 @@ include_once ("FDL/Lib.Dir.php");
 function speedsearch(Action &$action)
 {
     // -----------------------------------
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $idsfam = $action->GetParam("FREEDOM_PREFFAMIDS");
     
@@ -50,4 +50,3 @@ function speedsearch(Action &$action)
     
     $action->lay->SetBlockData("SELECTCLASS", $selectclass);
 }
-?>

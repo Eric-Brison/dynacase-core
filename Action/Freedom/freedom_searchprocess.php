@@ -22,24 +22,24 @@ include_once ("GENERIC/generic_util.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global id Http var : document identifier for process document
- * @global target Http var : window name when click on document
+ * @global id int Http var : document identifier for process document
+ * @global target string Http var : window name when click on document
  */
-function freedom_searchprocess(&$action)
+function freedom_searchprocess(Action & $action)
 {
     // -----------------------------------
     // Get all the params
     $docid = GetHttpVars("id"); // id doc to search
     $target = GetHttpVars("target"); //
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
-    if (($famid !== 0) && (!is_numeric($famid))) {
-        $famid = getFamIdFromName($dbaccess, $famid);
-    }
     if ($docid == "") $action->exitError(_("related search aborted : no parameter found"));
     
     $doc = new_Doc($dbaccess, $docid);
-    
+
+    /**
+     * @var DocSearch $sdoc
+     */
     $sdoc = createDoc($dbaccess, 5); //new DocSearch($dbaccess);
     $sdoc->doctype = 'T'; // it is a temporary document (will be delete after)
     $sdoc->title = sprintf(_("process search comes from %s") , $doc->title);
@@ -63,4 +63,3 @@ function freedom_searchprocess(&$action)
     
     
 }
-?>

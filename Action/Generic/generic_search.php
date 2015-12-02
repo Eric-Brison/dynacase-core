@@ -37,7 +37,7 @@ function generic_search(Action & $action)
     $mysearches = ($action->getArgument("mysearches") == "yes");
     
     $onefamOrigin = $action->getArgument("onefam"); // onefam origin
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $famid = getDefFam($action);
     //change famid if it is a simplesearch

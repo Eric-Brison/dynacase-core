@@ -20,18 +20,19 @@ include_once ("FDL/Lib.Dir.php");
 /**
  * Get a doc from the trash
  * @param Action &$action current action
- * @global id Http var : document id to restore
- * @global reload Http var : [Y|N] if Y not xml but redirect to fdl_card
- * @global containt Http var : if 'yes' restore also folder items
+ * @global id int Http var : document id to restore
+ * @global reload string Http var : [Y|N] if Y not xml but redirect to fdl_card
+ * @global containt string Http var : if 'yes' restore also folder items
  */
 function restoredoc(Action & $action)
 {
     
     $docid = GetHttpVars("id");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_doc($dbaccess, $docid);
-    
+
+    $err = '';
     if ($doc->isAffected()) {
         if (!$doc->isAlive()) {
             $err = $doc->undelete();
@@ -42,4 +43,3 @@ function restoredoc(Action & $action)
     
     redirect($action, "FDL", "FDL_CARD&sole=Y&refreshfld=Y&latest=Y&id=$docid");
 }
-?>

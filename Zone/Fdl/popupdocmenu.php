@@ -26,7 +26,7 @@ function popupdocmenu(Action &$action)
     $js = ($action->getArgument("js", "true") == "true") ? true : false;
     $css = ($action->getArgument("css", "true") == "true") ? true : false;
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid); # _("States")
     if ($zone == "") $specmenu = $doc->specialmenu;
     else $specmenu = $zone;
@@ -49,4 +49,3 @@ function popupdocmenu(Action &$action)
         $action->parent->AddCssRef("FDL:POPUP.CSS", true);
     }
 }
-?>

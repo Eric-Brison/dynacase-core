@@ -24,7 +24,7 @@ function generic_root(Action & $action)
     $usage->setStrictMode(false);
     $usage->verify(true);
 
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     if ($famid && (!is_numeric($famid))) {
         $famid = getFamIdFromName($dbaccess, $famid);
     }

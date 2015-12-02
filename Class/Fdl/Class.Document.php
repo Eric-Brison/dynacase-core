@@ -36,7 +36,7 @@ class Fdl_Document
      */
     function __construct($id = 0, $config = null, Doc & $doc = null)
     {
-        $this->dbaccess = getParam("FREEDOM_DB");
+        $this->dbaccess = $doc->dbaccess;
         if (isset($config->latest)) $latest = $config->latest;
         else $latest = true;
         
@@ -982,4 +982,3 @@ class Fdl_Document
         return $s;
     }
 }
-?>

@@ -31,7 +31,7 @@ function folders(Action &$action)
     $nbfolders = 0;
     // Get all the params
     $dirid = GetHttpVars("dirid", 0); // root directory
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     include_once ("FDL/popup_util.php");
     //barmenu($action); // describe bar menu
@@ -158,4 +158,3 @@ function addfolder(Doc $doc, $level, $treename, $thisfld = true)
     }
     return $ltree;
 }
-?>

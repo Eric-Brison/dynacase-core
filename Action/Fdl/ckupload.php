@@ -34,7 +34,7 @@ function ckupload(Action & $action)
     
     $usage->verify();
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     global $_FILES;
     
     $doc = createDoc($dbaccess, "IMAGE");
@@ -54,4 +54,3 @@ function ckupload(Action & $action)
     $action->lay->set("FUNCNUM", intval($funcNum));
     $action->lay->set("err", $err);
 }
-?>

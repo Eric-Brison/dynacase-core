@@ -24,12 +24,12 @@ include_once ("FDL/modcard.php");
 /**
  * Search document
  * @param Action &$action current action
- * @global keyword Http var : word to search in any values
- * @global famid Http var : restrict to this family identioficator
- * @global viewone Http var : (Y|N) if Y direct view document detail if only one returned
- * @global view Http var : display mode : icon|column|list
+ * @global keyword string Http var : word to search in any values
+ * @global famid int Http var : restrict to this family identioficator
+ * @global viewone string Http var : (Y|N) if Y direct view document detail if only one returned
+ * @global view string Http var : display mode : icon|column|list
  */
-function search(&$action)
+function search(Action &$action)
 {
     // -----------------------------------
     $docid = GetHttpVars("id", 0);
@@ -40,7 +40,7 @@ function search(&$action)
     $view = GetHttpVars("view"); // display mode : icon|column|list
     $famid = GetHttpVars("famid");
     $generic = (GetHttpVars("ingeneric") == "yes");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($classid == 0) {
         if ($docid > 0) {
@@ -84,4 +84,3 @@ function search(&$action)
         redirect($action, GetHttpVars("app") , "FREEDOM_VIEW&view=$view&target=$target&viewone=$viewone&dirid=" . $ndoc->id . "&sqlorder=$orderby", $action->GetParam("CORE_STANDURL"));
     }
 }
-?>

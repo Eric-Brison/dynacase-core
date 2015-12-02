@@ -24,7 +24,7 @@ include_once ("GENERIC/generic_util.php");
 function generic_modkind(Action & $action)
 {
     // -----------------------------------
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $aid = GetHttpVars("aid"); // attribute id
     $famid = GetHttpVars("fid"); // family id
@@ -108,4 +108,3 @@ function generic_modkind(Action & $action)
     
     $action->lay->Set("desc", sprintf(_("Modification for attribute %s for family %s") , $a->getLabel() , $fdoc->title));
 }
-?>

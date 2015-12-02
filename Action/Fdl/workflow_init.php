@@ -21,7 +21,7 @@ include_once ("FDL/Class.SearchDoc.php");
 include_once ("FDL/Lib.Attr.php");
 include_once ("FDL/Class.DocFam.php");
 // -----------------------------------
-function workflow_init(&$action)
+function workflow_init(Action &$action)
 {
     
     $docid = GetHttpVars("id"); // view doc abstract attributes
@@ -29,8 +29,11 @@ function workflow_init(&$action)
         $action->exitError(_("workflow_init :: id is empty"));
     }
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
-    
+    $dbaccess = $action->dbaccess;
+
+    /**
+     * @var WDoc $wdoc
+     */
     $wdoc = new_Doc($dbaccess, $docid);
     $wdoc->CreateProfileAttribute();
     if ($wdoc->doctype == 'C') $cid = $wdoc->id;
@@ -63,4 +66,3 @@ function workflow_init(&$action)
     $action->addWarningMsg(_("workflow has been recomposed"));
     redirect($action, "FDL", "FDL_CARD&id=$docid");
 }
-?>

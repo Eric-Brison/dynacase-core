@@ -22,7 +22,7 @@
 include_once ("FDL/freedom_util.php");
 include_once ("FDL/Lib.Dir.php");
 // -----------------------------------
-function freedom_dedit(&$action)
+function freedom_dedit(Action & $action)
 {
     // -----------------------------------
     // Get All Parameters
@@ -30,7 +30,7 @@ function freedom_dedit(&$action)
     $classid = GetHttpVars("classid", 0); // use when new doc or change class
     
     // Set the globals elements
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     if ($docid > 0) {
         
         $doc = new_Doc($dbaccess, $docid);
@@ -64,4 +64,3 @@ function freedom_dedit(&$action)
     
     redirect($action, GetHttpVars("app") , "FREEDOM_EDIT&id=$docid");
 }
-?>

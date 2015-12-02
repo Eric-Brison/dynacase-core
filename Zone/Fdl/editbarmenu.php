@@ -29,7 +29,7 @@ function editbarmenu(Action & $action)
     $rtarget = GetHttpVars("rtarget", "_self"); // special zone when finish edition return target
     $classid = GetHttpVars("classid", getDefFam($action)); // use when new doc or change class
     $action->lay->Set("SELFTARGET", ($rtarget == "_self"));
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $action->lay->eSet("id", $docid);
     if (($docid === 0) || ($docid === "") || ($docid === "0")) {

@@ -70,7 +70,7 @@ function analyze_tar(Action &$action, $selfile)
     $topfld = (GetHttpVars("topfld") != ""); // add a root folder
     $analyze = (GetHttpVars("analyze", "Y") == "Y"); // just analyze
     $filename = GetHttpVars("filename"); // the select filename
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $selectclass = array();
     
 
@@ -186,4 +186,3 @@ function hasfdlpointcsv($dir)
     }
     return $found;
 }
-?>

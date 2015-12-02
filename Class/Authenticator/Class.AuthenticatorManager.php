@@ -110,7 +110,7 @@ class AuthenticatorManager
                         /**
                          * @var \Dcp\Family\IUSER $du
                          */
-                        $du = new_Doc(getParam("FREEDOM_DB") , $wu->fid);
+                        $du = new_Doc(getDbAccess() , $wu->fid);
                         if ($du->isAlive()) {
                             $du->disableEditControl();
                             $du->increaseLoginFailure();
@@ -308,7 +308,7 @@ class AuthenticatorManager
             /**
              * @var \Dcp\Family\IUSER $du
              */
-            $du = new_Doc(getParam("FREEDOM_DB") , $wu->fid);
+            $du = new_Doc(getDbAccess() , $wu->fid);
             // First check if account is active
             if (!$du->isAccountActive()) {
                 AuthenticatorManager::secureLog("failure", "inactive account", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);

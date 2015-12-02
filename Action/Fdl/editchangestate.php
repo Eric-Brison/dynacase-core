@@ -31,7 +31,7 @@ function editchangestate(Action & $action)
     $nextstate = GetHttpVars("nstate");
     $viewext = GetHttpVars("viewext");
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     editmode($action);
     $doc = new_doc($dbaccess, $docid, true);
@@ -150,4 +150,3 @@ function editchangestate(Action & $action)
         }
     }
 }
-?>

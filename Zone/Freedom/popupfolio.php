@@ -25,7 +25,7 @@ function popupfolio(Action &$action)
     $dirid = GetHttpVars("dirid"); //
     $folioid = GetHttpVars("folioid"); // portfolio id
     $kdiv = 1; // only one division
-    $dbaccess = $action->getParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $dir = new_Doc($dbaccess, $dirid);
     if ($dir->locked == - 1) { // it is revised document
@@ -83,4 +83,3 @@ function popupfolio(Action &$action)
     
     setFamidInLayout($action);
 }
-?>

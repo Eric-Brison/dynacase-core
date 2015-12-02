@@ -764,9 +764,9 @@ class DotWorkflow
 /**
  * @var Application $appl
  */
-$dbaccess = $appl->GetParam("FREEDOM_DB");
+$dbaccess = $appl->dbaccess;
 if ($dbaccess == "") {
-    print "Database not found : param FREEDOM_DB";
+    print "Database not found : appl->dbaccess";
     exit;
 }
 
@@ -808,4 +808,3 @@ $dw->setSize($isize);
 $dw->setType($type);
 $dw->setWorkflow($doc);
 print $dw->generate();
-?>

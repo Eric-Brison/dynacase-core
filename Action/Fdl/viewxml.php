@@ -22,13 +22,13 @@
 
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
-function viewxml(&$action)
+function viewxml(Action &$action)
 {
     // -----------------------------------
     
     // Get all the params
     $docid = GetHttpVars("id"); // dccument to export
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
     $xml = $doc->toxml(true, $docid);
@@ -47,4 +47,3 @@ function viewxml(&$action)
     unlink($export_file);
     exit;
 }
-?>

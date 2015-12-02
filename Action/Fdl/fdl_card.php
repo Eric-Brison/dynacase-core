@@ -47,7 +47,7 @@ function fdl_card(&$action)
     $inline = (getHttpVars("inline") == "Y"); // view file inline
     $unlock = (getHttpVars("unlock", "N") == "Y");
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid == "") $action->exitError(_("no document reference"));
     if (!is_numeric($docid)) $docid = getIdFromName($dbaccess, $docid);
@@ -203,4 +203,3 @@ function fdl_getGetVars()
     
     return $s;
 }
-?>

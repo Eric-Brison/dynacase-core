@@ -13,24 +13,26 @@ require_once 'EXTERNALS/fdl.php';
  *
  * @note
  * @verbatim
- Usage :
- --app=FDL : <application name>
- --action=REPORT_EXPORT_CSV : <action name>
- --id=<the id of the report>
- Options:
- --refresh=<would you refresh doc before build report> [TRUE|FALSE], default is 'FALSE'
- --kind=<the kind of report> [simple|pivot], default is 'simple'
- --pivot=<the pivot attr>, default is 'id'
- --delimiter=<the CSV delimiter>, default is ';'
- --enclosure=<the CSV enclosure>, default is '"'
- --encoding=<the CSV encoding>, default is 'ISO-8859-15//TRANSLIT'
- --decimalSeparator=<the decimalSeparator>, default is '.'
- --dateFormat=<the dateFormat> [US|FR|ISO], default is 'US
- @endverbatim
+Usage :
+ * --app=FDL : <application name>
+ * --action=REPORT_EXPORT_CSV : <action name>
+ * --id=<the id of the report>
+ * Options:
+ * --refresh=<would you refresh doc before build report> [TRUE|FALSE], default is 'FALSE'
+ * --kind=<the kind of report> [simple|pivot], default is 'simple'
+ * --pivot=<the pivot attr>, default is 'id'
+ * --delimiter=<the CSV delimiter>, default is ';'
+ * --enclosure=<the CSV enclosure>, default is '"'
+ * --encoding=<the CSV encoding>, default is 'ISO-8859-15//TRANSLIT'
+ * --decimalSeparator=<the decimalSeparator>, default is '.'
+ * --dateFormat=<the dateFormat> [US|FR|ISO], default is 'US
+ * @endverbatim
+ * @param Action $action
+ * @throws \Dcp\Core\Exception
  */
 function report_export_csv(Action & $action)
 {
-    $dbaccess = getParam('FREEDOM_DB');
+    $dbaccess = $action->dbaccess;
     setMaxExecutionTimeTo(1000);
     $argumentsCSV = array();
     $defaultArgument = json_decode(getParam("REPORT_DEFAULT_CSV", "[]") , true);
@@ -281,7 +283,7 @@ function report_export_csv(Action & $action)
             }
             $csvFile = tempnam(getTmpDir() , "csv");
             if ($csvFile === false) {
-                $err = sprintf(_("Error creating temporary file in '%s'.", getTmpDir()));
+                $err = sprintf(_("Error creating temporary file in '%s'."), getTmpDir());
                 $action->exitError($err);
             }
             $fp = fopen($csvFile, 'w');

@@ -77,7 +77,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
             $err = $this->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
             $err = $this->exec_query("delete from sessions where userid=$uid");
             
-            $dbf = getParam("FREEDOM_DB");
+            $dbf = $this->dbaccess;
             $g = new Group($dbf);
             $err = $g->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
             
@@ -113,7 +113,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
             // recompute all doc profil
             $this->resetAccountMemberOf();
         } else {
-            $dbf = getParam("FREEDOM_DB");
+            $dbf = $this->dbaccess;
             $g = new Group($dbf);
             $g->iduser = $this->iduser;
             $g->idgroup = $this->idgroup;
@@ -140,7 +140,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
             // recompute all doc profil
             $this->resetAccountMemberOf();
         } else {
-            $dbf = getParam("FREEDOM_DB");
+            $dbf = $this->dbaccess;
             $g = new Group($dbf);
             $g->iduser = $this->iduser;
             $g->idgroup = $this->idgroup;

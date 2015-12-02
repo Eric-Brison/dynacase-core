@@ -27,10 +27,9 @@ function generic_logo(Action & $action)
     $action->lay->Set("apptitle", "");
     $famid = getDefFam($action);
     if ($famid > 0) {
-        $dbaccess = $action->GetParam("FREEDOM_DB");
+        $dbaccess = $action->dbaccess;
         $doc = new_Doc($dbaccess, $famid);
         $action->lay->Set("appicon", $doc->getIcon());
         $action->lay->Set("apptitle", $doc->title);
     }
 }
-?>

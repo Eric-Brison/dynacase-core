@@ -20,8 +20,8 @@ include_once ("FDL/editutil.php");
 /**
  * Display editor to fix a document version
  * @param Action &$action current action
- * @global docid Http var : document id
- * @global aid Http var : attribute id
+ * @global docid int Http var : document id
+ * @global aid int Http var : attribute id
  */
 function addenumitem(Action & $action)
 {
@@ -31,7 +31,7 @@ function addenumitem(Action & $action)
     $index = $action->getArgument("index");
     
     $key = trim(str_replace('"', '', $key));
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $action->lay->template = htmlspecialchars("addenumitem '$docid' '$attrid' '$key'", ENT_QUOTES);
     $doc = new_doc($dbaccess, $docid);

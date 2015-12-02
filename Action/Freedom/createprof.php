@@ -21,7 +21,7 @@ include_once ("FDL/Class.Dir.php");
 include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/freedom_util.php");
 
-function createprof(&$action)
+function createprof(Action &$action)
 {
     // Get all the params
     $docid = GetHttpVars("targetid");
@@ -31,7 +31,7 @@ function createprof(&$action)
     
     if ($docid == 0) $action->exitError(_("the document is not referenced: cannot apply profile access modification"));
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     // initialise object
     $doc = new_Doc($dbaccess, $docid);
     if ($attrid != "cprofid") {
@@ -43,7 +43,7 @@ function createprof(&$action)
     if ($err != "") $action->ExitError($err);
     
     $tmpdoc = createTmpDoc($dbaccess, $famid);
-    
+
     switch ($tmpdoc->defDoctype) {
         case 'D':
             $pdoc = createDoc($dbaccess, "PDIR");
@@ -59,7 +59,7 @@ function createprof(&$action)
 
         default:
             $action->exitError(_("Automatic profil creation not possible for this kind of family"));
-            break;;
+            break;
     }
     
     if (!$pdoc) $action->exitError("not allowed to create profil");
@@ -84,4 +84,3 @@ function createprof(&$action)
     if (!$redirid) $redirid = $docid;
     redirect($action, "FDL", "FDL_CARD&props=Y&id=$redirid", $action->GetParam("CORE_STANDURL"));
 }
-?>

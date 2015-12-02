@@ -24,7 +24,7 @@ include_once ("FDL/modcard.php");
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_addcatg(&$action)
+function generic_addcatg(Action &$action)
 {
     // -----------------------------------
     // Get all the params
@@ -32,12 +32,15 @@ function generic_addcatg(&$action)
     //   $newcatg=GetHttpVars("newcatg");
     //   if ($newcatg == "") $action->exitError(_("the title of the new category cannot be empty"));
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $err = modcard($action, $ndocid); // ndocid change if new doc
     if ($err != "") $action->ExitError($err);
     
     if ($dirid > 0) {
+        /**
+         * @var Dir $fld
+         */
         $fld = new_Doc($dbaccess, $dirid);
         
         $doc = new_Doc($dbaccess, $ndocid);
@@ -46,4 +49,3 @@ function generic_addcatg(&$action)
     }
     redirect($action, "FDL", "FDL_CARD&id=$ndocid");
 }
-?>

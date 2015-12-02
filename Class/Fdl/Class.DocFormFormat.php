@@ -1148,7 +1148,7 @@ class DocFormFormat
                                     $i++;
                                 }
                                 //	  print "attr=$sattrid";
-                                $ovalue = GetParam($sattrid, getFamIdFromName(GetParam("FREEDOM_DB") , $sattrid));
+                                $ovalue = GetParam($sattrid, getFamIdFromName($doc->dbaccess , $sattrid));
                                 
                                 $urllink.= $ovalue;
                                 

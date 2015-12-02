@@ -28,7 +28,7 @@ function freedom_mod(Action & $action)
     $dirid = GetHttpVars("dirid", 0);
     $docid = GetHttpVars("id", 0);
     $retedit = GetHttpVars("retedit", "N") == "Y"; // true  if return need edition
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $err = modcard($action, $ndocid); // ndocid change if new doc
     if ($err != "") $action->AddWarningMsg($err);
@@ -89,4 +89,3 @@ function freedom_mod(Action & $action)
         redirect($action, GetHttpVars("redirect_app", "FDL") , GetHttpVars("redirect_act", "FDL_CARD&refreshfld=Y&id=$ndocid") , $action->GetParam("CORE_STANDURL"));
     }
 }
-?>

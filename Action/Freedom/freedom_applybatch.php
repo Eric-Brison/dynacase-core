@@ -21,13 +21,13 @@ include_once ("FDL/Lib.Dir.php");
 /**
  * Choose a batch document
  * @param Action &$action current action
- * @global id Http var : folder identifier to use to construct batch
+ * @global id int Http var : folder identifier to use to construct batch
  */
-function freedom_applybatch(&$action)
+function freedom_applybatch(Action & $action)
 {
     
     $dirid = GetHttpVars("id");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $bdoc = new_Doc($dbaccess, "BATCH");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     
@@ -49,4 +49,3 @@ function freedom_applybatch(&$action)
     $action->lay->setBlockData("BATCHFAMS", $tb);
     $action->lay->set("dirid", urlencode($dirid));
 }
-?>

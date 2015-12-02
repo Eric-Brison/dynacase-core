@@ -31,7 +31,8 @@ if (seemsODS($fimport)) {
 }
 if (!$fdoc) exit(1);
 
-$dbaccess = getParam('FREEDOM_DB');
+global $action;
+$dbaccess = $action->dbaccess;
 $idoc = new doc($dbaccess);
 while (!feof($fdoc)) {
     
@@ -89,4 +90,3 @@ foreach ($titles as $fromid => $v) {
     $sql = sprintf("select setval ('seq_doc%d',(select max(id) from doc%d));\n", $fromid, $fromid);
     print $sql;
 }
-?>

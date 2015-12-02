@@ -22,7 +22,7 @@ include_once ("FDL/Class.DocAttr.php");
 
 function defattr(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     $classid = GetHttpVars("classid", 0); // use when new doc or change class
     $dirid = GetHttpVars("dirid", 0); // directory to place doc if new doc

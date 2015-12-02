@@ -45,7 +45,7 @@ function fullsearchresult(Action & $action)
     $initpage = false;
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     $orderby = "title";
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     if (!is_numeric($famid)) $famid = getFamIdFromName($dbaccess, $famid);
     $famtitle = "";
     $globalCount = 0;
@@ -260,4 +260,3 @@ function strtr8($s, $c1, $c2)
     $s9 = strtr($s9, utf8_decode($c1) , utf8_decode($c2));
     return utf8_encode($s9);
 }
-?>

@@ -18,7 +18,7 @@
 include_once ("Lib.Http.php");
 include_once ("FDL/Class.Doc.php");
 
-function family_help(&$action)
+function family_help(Action & $action)
 {
     
     $docid = GetHttpVars("id");
@@ -28,14 +28,14 @@ function family_help(&$action)
         $name = basename($pdffile);
         Http_DownloadFile($pdffile, "$name", "application/pdf");
     } else {
-        $errtext = sprintf(_("file for %s not found.") , $name);
+        $errtext = sprintf(_("file for %s not found.") , $docid);
         $action->ExitError($errtext);
     }
 }
 
-function getFamilyHelpFile(&$action, $docid)
+function getFamilyHelpFile(Action &$action, $docid)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     if (!is_numeric($docid)) $docid = getFamIdFromName($dbaccess, $docid);
     
     $doc = new_Doc($dbaccess, $docid);
@@ -50,4 +50,3 @@ function getFamilyHelpFile(&$action, $docid)
     }
     return false;
 }
-?>

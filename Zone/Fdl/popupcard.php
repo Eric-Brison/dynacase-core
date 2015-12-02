@@ -29,7 +29,10 @@ function popupcard(Action &$action)
     $headers = (GetHttpVars("props", 'N') == "Y"); // view doc properties
     $specialmenu = GetHttpVars("specialmenu"); // view doc properties
     $zone = GetHttpVars("zone"); // special zone
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
+    /**
+     * @var DocFam $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     $kdiv = 1; // only one division
     $fdoc = getTDoc($dbaccess, $doc->fromid);
@@ -179,6 +182,9 @@ function popupcard(Action &$action)
     
     if ($doc->locked != - 1) {
         if ($doc->wid > 0) {
+            /**
+             * @var WDoc $wdoc
+             */
             $wdoc = new_Doc($doc->dbaccess, $doc->wid);
             if ($wdoc->isAlive()) {
                 $wdoc->Set($doc);
@@ -241,7 +247,9 @@ function popupcard(Action &$action)
     popupInvisible('popupcard', $kdiv, 'sedit');
     
     if ($doc->cvid > 0) {
-        
+        /**
+         * @var CVDoc $cvdoc
+         */
         $cvdoc = new_Doc($doc->dbaccess, $doc->cvid);
         $cvdoc->set($doc);
         $ti = $cvdoc->getMultipleRawValues("CV_IDVIEW");
@@ -360,4 +368,3 @@ function popupcard(Action &$action)
     */
     popupGen();
 }
-?>

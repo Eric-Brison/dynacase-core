@@ -80,7 +80,7 @@ abstract class Authenticator
         
         $u = new Account();
         if ($u->SetLoginName($username)) {
-            $dbaccess = GetParam("FREEDOM_DB");
+            $dbaccess = getDbAccess();
             $du = new_Doc($dbaccess, $u->fid);
             if ($du->isAlive()) {
                 return TRUE;
@@ -129,4 +129,3 @@ abstract class Authenticator
     abstract function setSessionVar($name, $value);
     abstract function getSessionVar($name);
 }
-?>

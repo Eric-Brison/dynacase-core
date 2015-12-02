@@ -24,7 +24,7 @@ function generic_editcatg(Action &$action)
     // -----------------------------------
     global $dbaccess;
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $aid = GetHttpVars("aid"); // attribute id
     $famid = GetHttpVars("fid"); // family id
@@ -72,4 +72,3 @@ function generic_editcatg(Action &$action)
     $action->lay->setBlockData("ALABEL", $tlabel);
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/GENERIC/Layout/generic_editcatg.js");
 }
-?>

@@ -21,14 +21,13 @@ include_once ("GENERIC/generic_util.php");
 /**
  * View interface to modify enumerate attributes
  * @param Action &$action current action
- * @global famid Http var : family document identifier where find enum attributes
+ * @global famid int Http var : family document identifier where find enum attributes
  */
 function generic_editfamcatg(&$action)
 {
     $famid = GetHttpVars("famid", getDefFam($action));
-    $dbaccess = $action->getParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $fam = new_doc($dbaccess, $famid);
     $action->lay->set("famid", $fam->id);
     $action->lay->set("GTITLE", $fam->getHtmlTitle());
 }
-?>

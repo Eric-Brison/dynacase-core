@@ -19,7 +19,7 @@
 include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function freedom_insertfld(&$action)
+function freedom_insertfld(Action & $action)
 {
     // -----------------------------------
     // insert the documents of $dirid in folder $id
@@ -30,8 +30,11 @@ function freedom_insertfld(&$action)
     $mode = GetHttpVars("mode", "latest");
     $clean = GetHttpVars("clean", "N") == "Y"; // if want to clean source folder
     $folio = GetHttpVars("folio", "N") == "Y"; // return in folio
-    $dbaccess = $action->GetParam("FREEDOM_DB");
-    
+    $dbaccess = $action->dbaccess;
+
+    /**
+     * @var Dir $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     
     $err = "";
@@ -44,6 +47,9 @@ function freedom_insertfld(&$action)
     if ($err != "") $action->addWarningMsg($err);
     
     if ($clean) {
+        /**
+         * @var Dir $sfld
+         */
         $sfld = new_Doc($dbaccess, $dirid);
         $sfld->Clear();
     }
@@ -51,4 +57,3 @@ function freedom_insertfld(&$action)
     if ($folio) redirect($action, "FREEDOM", "FOLIOLIST&dirid=" . $doc->initid);
     else redirect($action, "FREEDOM", "FREEDOM_VIEW&dirid=" . $doc->initid);
 }
-?>

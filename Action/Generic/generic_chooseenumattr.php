@@ -23,10 +23,10 @@ include_once ("GENERIC/generic_util.php");
  * @param Action &$action current action
  * @global string $famid Http var : family document identifier where find enum attributes
  */
-function generic_chooseenumattr(&$action)
+function generic_chooseenumattr(Action &$action)
 {
     $famid = GetHttpVars("famid", getDefFam($action));
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     
     $tcf = array();
@@ -53,4 +53,3 @@ function generic_chooseenumattr(&$action)
     $action->lay->set("title", sprintf(_("modify enumerate attributes for family : %s") , $fdoc->title));
     $action->lay->set("icon", $fdoc->getIcon());
 }
-?>

@@ -20,8 +20,8 @@ include_once ("FDL/Class.Dir.php");
 /**
  * Compare 2 documents
  * @param Action &$action current action
- * @global id1 Http var : first document identifier to compare
- * @global id2 Http var : second document identifier to compare
+ * @global id1 int Http var : first document identifier to compare
+ * @global id2 int Http var : second document identifier to compare
  */
 function diffdoc(&$action)
 {
@@ -31,7 +31,7 @@ function diffdoc(&$action)
         $docid2 = GetHttpVars("id1");
         $docid1 = GetHttpVars("id2");
     }
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $d1 = new_doc($dbaccess, $docid1);
     $err = $d1->control("view");
     if ($err != "") $action->exitError($err);
@@ -42,7 +42,8 @@ function diffdoc(&$action)
     if ($d1->fromid != $d2->fromid) $action->exitError(sprintf(_("cannot compare two document which comes from two different family")));
     
     $la = $d1->GetNormalAttributes();
-    
+
+    $tattr = array();
     foreach ($la as $k => $a) {
         
         if ($a->type == "array") {
@@ -105,4 +106,3 @@ function diffdoc(&$action)
     
     $action->lay->setBlockData("ATTRS", $tattr);
 }
-?>

@@ -23,7 +23,7 @@ include_once ("FDL/Lib.Dir.php");
 
 function editwdoc(Action &$action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
 
     
@@ -52,4 +52,3 @@ function editwdoc(Action &$action)
     
     $action->lay->SetBlockData("SELECTFLD", $selectclass);
 }
-?>

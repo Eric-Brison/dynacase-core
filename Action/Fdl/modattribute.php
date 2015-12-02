@@ -20,10 +20,10 @@ include_once ("FDL/Class.Doc.php");
 /**
  * Modify an attribute inline
  * @param Action &$action current action
- * @global docid Http var : document identifier to modify
- * @global attrid Http var : the id of attribute to modify
- * @global value Http var : the new  value for attribute
- * @global stayedit Http var : stay in edition
+ * @global docid int Http var : document identifier to modify
+ * @global attrid string Http var : the id of attribute to modify
+ * @global value string Http var : the new  value for attribute
+ * @global stayedit string Http var : stay in edition
  */
 function modattribute(&$action)
 {
@@ -31,7 +31,7 @@ function modattribute(&$action)
     $attrid = GetHttpVars("attrid");
     $value = GetHttpVars("value");
     $stayedit = (GetHttpVars("stayedit") == "yes");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     header('Content-type: text/xml; charset=utf-8');
     
@@ -39,7 +39,8 @@ function modattribute(&$action)
     
     $action->lay->set("CODE", "OK");
     $action->lay->set("warning", "");
-    
+
+    $err = '';
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $err = sprintf(_("cannot see unknow reference %s") , $docid);
     
@@ -49,7 +50,7 @@ function modattribute(&$action)
     }
     $a = $doc->getAttribute($attrid);
     if (($value === "") && ($a->type != "file") && ($a->type != "image") && ($a->type != "password")) $value = DELVALUE;
-    
+
     if ($value != ".") {
         
         if ($err != "") {
@@ -63,7 +64,6 @@ function modattribute(&$action)
                 $vis = $a->mvisibility;
                 if (strstr("WO", $vis) === false) $err = sprintf(_("visibility %s does not allow modify attribute %s for document %s") , $vis, $a->getLabel() , $doc->title);
                 if ($err == "") {
-                    $value = $value;
                     if ($a->type == "file") {
                         $err = $doc->SetTextValueInFile($attrid, $value);
                     } else {
@@ -98,4 +98,3 @@ function modattribute(&$action)
     $action->lay->setBlockData("ACTIONS", $tact);
     $action->clearActionDone();
 }
-?>

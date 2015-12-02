@@ -32,9 +32,9 @@ $usage->verify();
 $appl = new Application();
 $appl->Set("FDL", $core);
 
-$dbaccess = $appl->GetParam("FREEDOM_DB");
+$dbaccess = $appl->dbaccess;
 if ($dbaccess == "") {
-    $action->exitError("Database not found : param FREEDOM_DB");
+    $action->exitError("Database not found : appl->dbaccess");
 }
 
 if (($docid !== 0) && (!is_numeric($docid))) {

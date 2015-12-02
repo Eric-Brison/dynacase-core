@@ -41,19 +41,18 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.QueryDir.php");
 // -----------------------------------
 // -----------------------------------
-function refreshdir(&$action)
+function refreshdir(Action & $action)
 {
     // -----------------------------------
     $action->log->start();
     // Set the globals elements
     $baseurl = $action->GetParam("CORE_BASEURL");
     $standurl = $action->GetParam("CORE_STANDURL");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     // Get all the params
     $dirid = GetHttpVars("dirid"); // directory to refresh
-    
+
     $oqd = new QueryDir($dbaccess);
     $oqd->RefreshDir($dirid);
     redirect($action, GetHttpVars("app") , "FREEDOM_VIEW&dirid=$dirid");
 }
-?>

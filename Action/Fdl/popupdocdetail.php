@@ -30,7 +30,7 @@ function getpopupdocdetail(Action & $action, $docid)
 {
     // define accessibility
     $zone = GetHttpVars("zone"); // special zone
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     if ($doc->isAffected()) $docid = $doc->id;
     //  if ($doc->doctype=="C") return; // not for familly

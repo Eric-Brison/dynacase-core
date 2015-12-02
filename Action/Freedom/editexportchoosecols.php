@@ -22,7 +22,7 @@ include_once ("GENERIC/generic_util.php");
 
 function editexportchoosecols(Action &$action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id");
     
     $doc = new_doc($dbaccess, $docid);
@@ -69,4 +69,3 @@ function editexportchoosecols(Action &$action)
     $action->lay->set("famtitle", $doc->getTitle());
     $action->lay->set("famicon", $doc->getIcon());
 }
-?>

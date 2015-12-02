@@ -25,9 +25,7 @@ function changeicon(Action &$action)
 {
     global $_FILES;
     
-    $destdir = "./" . GetHttpVars("app") . "/Upload/";
-    
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
 
     
@@ -69,4 +67,3 @@ function changeicon(Action &$action)
     
     redirect($action, "FDL", "FDL_CARD&sole=Y&id=" . $doc->id);
 }
-?>

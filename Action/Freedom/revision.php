@@ -21,9 +21,9 @@
 // ---------------------------------------------------------------
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
-function revision(&$action)
+function revision(Action &$action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     $comment = GetHttpVars("comment", _("no comment"));
     
@@ -39,4 +39,3 @@ function revision(&$action)
     
     redirect($action, "FDL", "FDL_CARD&refreshfld=Y&id=" . $doc->id, $action->GetParam("CORE_STANDURL"));
 }
-?>

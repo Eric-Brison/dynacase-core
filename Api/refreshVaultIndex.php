@@ -16,9 +16,9 @@ include_once ('VAULT/Class.VaultFile.php');
 /**
  * Setup main db connection
  */
-$dbaccess = GetParam("FREEDOM_DB");
+$dbaccess = $action->dbaccess;
 if ($dbaccess == "") {
-    $action->exitError("Database not found : param FREEDOM_DB");
+    $action->exitError("Database not found : action->dbaccess");
 }
 $o = new DbObj($dbaccess);
 if (!is_object($o)) {
@@ -206,4 +206,3 @@ function sqlexec(&$dbobj, &$parms, $sql)
     }
     return $err;
 }
-?>

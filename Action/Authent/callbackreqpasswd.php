@@ -25,7 +25,7 @@ function callbackreqpasswd(Action & $action)
     $au->verify();
     // Retrieve token from database
     $utok = new UserToken($action->dbaccess, $token);
-
+    
     if (!$utok->isAffected()) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "no element found for token " . $token);
         $action->exitError(_("Cannot access interface to change password"));
@@ -41,7 +41,7 @@ function callbackreqpasswd(Action & $action)
         return "";
     }
     
-    $freedomdb = $action->getParam('FREEDOM_DB');
+    $freedomdb = $action->dbaccess;
     if ($freedomdb == "") {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "FREEDOM_DB is empty");
         $action->exitError(_("Cannot access interface to change password"));
@@ -116,4 +116,3 @@ function authLog($txt)
     $facility = constant(getParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
     $log->wlog("S", $txt, NULL, $facility);
 }
-?>

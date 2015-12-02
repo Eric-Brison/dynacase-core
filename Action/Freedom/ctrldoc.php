@@ -28,13 +28,13 @@ include_once ("Class.QueryGen.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
 // -----------------------------------
-function ctrldoc(&$action)
+function ctrldoc(Action &$action)
 {
     // -----------------------------------
     // Set the globals elements
     $baseurl = $action->GetParam("CORE_BASEURL");
     $standurl = $action->GetParam("CORE_STANDURL");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $docid = GetHttpVars("id");
     
@@ -44,4 +44,3 @@ function ctrldoc(&$action)
     
     redirect($action, "FDL", "FDL_CARD&id=$docid");
 }
-?>

@@ -8,9 +8,9 @@ global $action;
 $parent = null;
 
 
-$dbaccess = $action->GetParam("FREEDOM_DB");
+$dbaccess = $action->dbaccess;
 if ($dbaccess == "") {
-    $action->exitError("Empty parameter 'FREEDOM_DB'.");
+    $action->exitError("Empty dbaccess: action->dbaccess.");
 }
 
 $usage = new ApiUsage();

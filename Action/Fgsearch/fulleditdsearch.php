@@ -22,24 +22,25 @@ include_once ("FDL/freedom_util.php");
 /**
  * Interface Fulltext Detailled  Search document
  * @param Action &$action current action
- * @global keyword Http var : word to search in any values
- * @global famid Http var : restrict to this family identioficator
- * @global start Http var : page number
- * @global dirid Http var : search identifier
+ * @global keyword string Http var : word to search in any values
+ * @global famid int Http var : restrict to this family identioficator
+ * @global start int Http var : page number
+ * @global dirid int Http var : search identifier
  */
-function fulleditdsearch(&$action)
+function fulleditdsearch(Action &$action)
 {
     
     $famid = $action->getArgument("famid", 0);
     $substitute = ($action->getArgument("substitute") == "yes");
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     if (!is_numeric($famid)) $famid = getFamIdFromName($dbaccess, $famid);
     if ($famid == 0) $famid = 7; // FILE family
     $action->lay->set("searchtitle", _("detailled search"));
     $action->lay->set("substitute", (bool)$substitute);
     
     $tclassdoc = getNonSystemFamilies($dbaccess, $action->user->id, "TABLE");
+    $selectclass = array();
     foreach ($tclassdoc as $k => $cdoc) {
         $selectclass[$k]["idcdoc"] = $cdoc["initid"];
         $selectclass[$k]["classname"] = $cdoc["title"];
@@ -63,4 +64,3 @@ function fulleditdsearch(&$action)
         $action->lay->set("famid", $fdoc->id);
     }
 }
-?>

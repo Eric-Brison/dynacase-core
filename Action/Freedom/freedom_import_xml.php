@@ -31,7 +31,7 @@ function freedom_import_xml(Action & $action, $filename = "")
     $opt["policy"] = getHttpVars("policy", "update");
     $opt["dirid"] = getHttpVars("dirid", getHttpVars("dir", 0));
     
-    $dbaccess = $action->getParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     global $_FILES;
     
     setMaxExecutionTimeTo(300);
@@ -74,7 +74,7 @@ function freedom_import_xmlzip(Action & $action, $filename = "")
     $opt["analyze"] = (substr(strtolower(getHttpVars("analyze", "Y")) , 0, 1) == "y");
     $opt["policy"] = getHttpVars("policy", "update");
     $opt["dirid"] = getHttpVars("dirid", getHttpVars("dir", 0));
-    $dbaccess = $action->getParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     global $_FILES;
     setMaxExecutionTimeTo(300);
     if ($filename == "") {

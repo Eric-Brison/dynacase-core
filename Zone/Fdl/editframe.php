@@ -32,7 +32,7 @@ function editframe(Action & $action)
     $frameid = strtolower($action->getArgument("frameid"));
     $vid = $action->getArgument("vid"); // special controlled view
     // Set the globals elements
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid == 0) {
         $doc = createDoc($dbaccess, $classid);
@@ -114,4 +114,3 @@ function editframe(Action & $action)
         ));
     }
 }
-?>

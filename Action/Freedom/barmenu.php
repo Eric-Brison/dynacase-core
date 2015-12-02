@@ -25,7 +25,7 @@ include_once ("FDL/popup_util.php");
 function barmenu(Action &$action)
 {
     // -----------------------------------
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     popupInit("newmenu", array(
         'newdoc',
         'newsystem',
@@ -119,4 +119,3 @@ function barmenu(Action &$action)
     $action->lay->setBlockData("MARKS", $tmark);
     popupGen(1);
 }
-?>

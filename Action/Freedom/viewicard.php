@@ -19,13 +19,13 @@
 include_once ("FDL/freedom_util.php");
 include_once ("FDL/fdl_xml.php");
 // -----------------------------------
-function viewicard(&$action)
+function viewicard(Action &$action)
 {
     global $action;
     // Get All Parameters
     $xml = GetHttpVars("xml");
     $famid = GetHttpVars("famid");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $action->lay->Set("TITLE", $idoc->title);
     //  print(base64_decode(trim($xml)));
@@ -34,4 +34,3 @@ function viewicard(&$action)
     
     redirect($action, GetHttpVars("redirect_app", "FDL") , GetHttpVars("redirect_act", "IMPCARD&dochead=no&id=" . $idoc->id) , $action->GetParam("CORE_STANDURL"));
 }
-?>

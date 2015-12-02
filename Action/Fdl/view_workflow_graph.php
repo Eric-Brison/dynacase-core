@@ -67,7 +67,7 @@ function view_workflow_graph(Action & $action)
     ) , "dot");
     $usage->verify();
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($tool == "sfdp") {
         $tool.= "  -Goverlap=prism";

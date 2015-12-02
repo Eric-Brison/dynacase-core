@@ -61,7 +61,7 @@ function gettitle($dbaccess, $docid)
 function linkenum($famid, $attrid)
 {
     
-    $dbaccess = getParam("FREEDOM_DB");
+    $dbaccess = getDbAccess();
     if (!is_numeric($famid)) $famid = getFamIdFromName($dbaccess, $famid);
     $soc = new_Doc($dbaccess, $famid);
     if ($soc->isAffected()) {

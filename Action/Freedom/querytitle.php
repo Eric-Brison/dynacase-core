@@ -24,7 +24,7 @@ include_once ("FDL/Class.DocAttr.php");
 
 function querytitle(Action &$action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     
     $doc = new_Doc($dbaccess, $docid);
@@ -33,4 +33,3 @@ function querytitle(Action &$action)
     $action->lay->eSet("title", $doc->title);
     $action->lay->Set("iconsrc", $doc->geticon());
 }
-?>

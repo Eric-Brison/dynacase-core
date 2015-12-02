@@ -22,7 +22,7 @@
 include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function adddirfile(&$action)
+function adddirfile(Action &$action)
 {
     // -----------------------------------
     //    PrintAllHttpVars();
@@ -34,9 +34,12 @@ function adddirfile(&$action)
     $folio = (GetHttpVars("folio", "N") == "Y"); // return in folio
     $folio = ($folio | $return);
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
+    /**
+     * @var Dir $dir
+     */
     $dir = new_Doc($dbaccess, $dirid);
     
     $err = $dir->AddFile($doc->initid, $mode);
@@ -48,4 +51,3 @@ function adddirfile(&$action)
         redirect($action, GetHttpVars("app") , "FOLIOLIST&refreshtab=$refreshtab&dirid=$dirid");
     } else redirect($action, GetHttpVars("app") , "FREEDOM_VIEW&dirid=$dirid");
 }
-?>

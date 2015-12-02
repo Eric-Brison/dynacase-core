@@ -24,14 +24,17 @@ include_once ("FDL/duplicate.php");
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_duplicate(&$action)
+function generic_duplicate(Action &$action)
 {
     // -----------------------------------
     // Get all the params
     $dirid = GetHttpVars("dirid"); // where to duplicate
     $docid = GetHttpVars("id", 0); // doc to duplicate
     if ($dirid == "") {
-        $dbaccess = $action->GetParam("FREEDOM_DB");
+        $dbaccess = $action->dbaccess;
+        /**
+         * @var DocFam $fdoc
+         */
         $fdoc = new_Doc($dbaccess, $docid);
         
         $dirid = $fdoc->dfldid;
@@ -40,4 +43,3 @@ function generic_duplicate(&$action)
     
     redirect($action, "FDL", "FDL_CARD&refreshfld=Y&id=" . $copy->id, $action->GetParam("CORE_STANDURL"));
 }
-?>

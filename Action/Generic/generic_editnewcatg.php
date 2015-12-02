@@ -22,12 +22,12 @@
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_editnewcatg(&$action)
+function generic_editnewcatg(Action &$action)
 {
     // -----------------------------------
     global $dbaccess;
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $homefld = new_Doc($dbaccess, getDefFld($action));
     
     $stree = getChildCatg($homefld->id, 1);
@@ -37,4 +37,3 @@ function generic_editnewcatg(&$action)
     $action->lay->SetBlockData("CATG", $stree);
     $action->lay->Set("topdir", getDefFld($action));
 }
-?>

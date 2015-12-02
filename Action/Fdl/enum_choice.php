@@ -30,7 +30,7 @@ function enum_choice(Action & $action)
     $domindex = GetHttpVars("domindex", ""); // index in dom of the attributes for arrays
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
     $action->parent->AddJsRef("FDL/Layout/common.js");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
     
@@ -212,7 +212,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
             $arg[$k] = $unser;
         } elseif (substr($v, 0, 1) == '{' && substr($v, -1, 1) == '}') {
             /* Evaluate '{FAM_NAME}' or '{APP_PARAM_NAME}' notation */
-            $arg[$k] = getAttr(substr($v, 1, -1));
+            $arg[$k] = getAttr($doc->dbaccess, substr($v, 1, -1));
         } elseif ($inpArg->type == "string") {
             $arg[$k] = $v;
         } elseif ($v == "A") {
@@ -351,10 +351,10 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
     return $res;
 }
 
-function getAttr($aid)
+function getAttr($dbaccess, $aid)
 {
     $r = GetParam($aid);
-    if ($r == "") $r = getFamIdFromName(GetParam("FREEDOM_DB") , $aid);
+    if ($r == "") $r = getFamIdFromName($dbaccess , $aid);
     
     return $r;
 }

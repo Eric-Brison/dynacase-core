@@ -20,7 +20,7 @@ include_once ("FDL/Class.Doc.php");
 function lockfile(Action &$action)
 {
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
 
     
@@ -39,4 +39,3 @@ function lockfile(Action &$action)
     
     redirect($action, "FDL", "FDL_CARD&id=" . $doc->id, $action->GetParam("CORE_STANDURL"));
 }
-?>

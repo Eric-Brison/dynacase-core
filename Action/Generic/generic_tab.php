@@ -27,7 +27,7 @@ function generic_tab(Action & $action)
     // Get all the params
     $dirid = GetHttpVars("catg", -1); // folder where search
     $tab = GetHttpVars("tab", 1); // tab index
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $famid = getDefFam($action);
     $emptyfld = false;
@@ -44,7 +44,7 @@ function generic_tab(Action & $action)
     if ($dirid == 0) {
         $dirid = getDefU($action, "GENE_PREFSEARCH");
         if (!is_numeric($dirid)) {
-            $dirid = getIdFromName($action->getParam('FREEDOM_DB') , $dirid);
+            $dirid = getIdFromName($action->dbaccess , $dirid);
         }
         if ($dirid > 0) {
             $dir = new_Doc($dbaccess, $dirid);

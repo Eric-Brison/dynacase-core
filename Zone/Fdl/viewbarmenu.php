@@ -22,7 +22,7 @@ include_once ("FDL/popupfamdetail.php");
 function viewbarmenu(Action & $action)
 {
     $docid = GetHttpVars("id");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     if ($docid == "") $action->exitError(_("No identificator"));
     $popup = '';

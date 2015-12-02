@@ -29,7 +29,7 @@ function generic_editchangecatg(Action &$action)
     global $dbaccess;
     
     $docid = GetHttpVars("id"); // the user to change catg
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $homefld = new_Doc($dbaccess, getDefFld($action));
     
     $doc = new_Doc($dbaccess, $docid);
@@ -49,4 +49,3 @@ function generic_editchangecatg(Action &$action)
     $action->lay->Set("topdir", getDefFld($action));
     $action->lay->Set("docid", $doc->id);
 }
-?>

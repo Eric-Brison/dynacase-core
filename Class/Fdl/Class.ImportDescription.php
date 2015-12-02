@@ -91,7 +91,7 @@ class importDocumentDescription
             throw new Dcp\Exception(sprintf("no import file found : %s", $importFile));
         }
         $this->importFileName = $importFile;
-        $this->dbaccess = getParam("FREEDOM_DB");;
+        $this->dbaccess = getDbAccess();
     }
     /**
      * @param boolean $verifyAttributeAccess
@@ -208,7 +208,7 @@ class importDocumentDescription
         setMaxExecutionTimeTo(300);
         
         $this->nbDoc = 0; // number of imported document
-        $this->dbaccess = GetParam("FREEDOM_DB");
+        $this->dbaccess = getDbAccess();
         $this->structAttr = null;
         $this->colOrders = array();
         $this->ods2CsvFile = "";

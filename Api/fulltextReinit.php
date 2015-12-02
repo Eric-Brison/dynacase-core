@@ -27,9 +27,10 @@ $usage->setDefinitionText("Reinit vault files");
 
 $usage->verify();
 
-$dbaccess = GetParam("FREEDOM_DB");
+global $action;
+$dbaccess = $action->dbaccess;
 if ($dbaccess == "") {
-    print "Database not found : param FREEDOM_DB";
+    print "Database not found : action->dbaccess";
     exit;
 }
 $o = new DbObj($dbaccess);
@@ -52,4 +53,3 @@ foreach ($la as $k => $v) {
 $sql = "update doc set fulltext=null;";
 print "$sql\n";
 $o->exec_query($sql);
-?>

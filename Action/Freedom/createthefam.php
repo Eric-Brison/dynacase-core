@@ -31,7 +31,7 @@ function createthefam(Action & $action)
         $action->exitError(_("Logical name must not be empty."));
     }
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new DocFam($dbaccess);
     //---------------------------
@@ -44,6 +44,9 @@ function createthefam(Action & $action)
     $doc->fromid = GetHttpVars("classid"); // inherit from
     $doc->profid = "0"; // NO PROFILE ACCESS
     if (GetHttpVars("classid") > 0) {
+        /**
+         * @var DocFam $cdoc
+         */
         $cdoc = new_Doc($dbaccess, GetHttpVars("classid"));
         $doc->classname = "";
         $doc->profid = $cdoc->cprofid; // inherit father profile
@@ -68,4 +71,3 @@ function createthefam(Action & $action)
     
     redirect($action, "FDL", "FDL_CARD&id=" . $doc->id, $action->GetParam("CORE_STANDURL"));
 }
-?>

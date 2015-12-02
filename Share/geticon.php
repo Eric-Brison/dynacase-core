@@ -25,11 +25,11 @@ include_once ("FDL/exportfile.php");
 $vaultid = GetHttpVars("vaultid", 0);
 $mimetype = GetHttpVars("mimetype", "image");
 
-$wdbaccess = getDbAccess();
-$dbaccess = getParam("FREEDOM_DB");
+$dbaccess = getDbAccess();
 
 $vf = newFreeVaultFile($dbaccess);
 
+$info = new VaultFileInfo();
 if ($vf->Retrieve($vaultid, $info) != "") {
 } else {
     //Header("Location: $url");
@@ -39,4 +39,3 @@ if ($vf->Retrieve($vaultid, $info) != "") {
         Http_DownloadFile("Images/doc.png", "unknow", "image/png", true);
     }
 }
-?>

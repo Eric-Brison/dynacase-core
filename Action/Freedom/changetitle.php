@@ -27,7 +27,7 @@ include_once ("VAULT/Class.VaultFile.php");
 function changetitle(Action &$action)
 {
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     $ntitle = GetHttpVars("ititle", "");
 
@@ -44,4 +44,3 @@ function changetitle(Action &$action)
     
     redirect($action, "FDL", "FDL_CARD&id=" . $doc->id);
 }
-?>

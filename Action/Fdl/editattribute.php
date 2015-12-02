@@ -28,7 +28,7 @@ function editattribute(Action & $action)
     $docid = $action->getArgument("docid");
     $attrid = $action->getArgument("attrid");
     $modjsft = $action->getArgument("modjsft", "modattr");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     header('Content-type: text/xml; charset=utf-8');
     

@@ -22,12 +22,12 @@
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
 // -----------------------------------
-function generic_card(&$action)
+function generic_card(Action &$action)
 {
     // -----------------------------------
     // set title
     $docid = GetHttpVars("id");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     
@@ -37,4 +37,3 @@ function generic_card(&$action)
     if ($head == "yes") $action->lay->Set("PROPS", "Y");
     else $action->lay->Set("PROPS", "N");
 }
-?>

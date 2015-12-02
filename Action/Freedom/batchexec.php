@@ -20,19 +20,22 @@ include_once ("FDL/Class.Dir.php");
 /**
  * Batch execute
  * @param Action &$action current action
- * @global id Http var : document identifier folder
- * @global saction Http var : action name to execute
- * @global sapp Http var : app name to execute
+ * @global id int Http var : document identifier folder
+ * @global saction string Http var : action name to execute
+ * @global sapp string Http var : app name to execute
  */
-function batchexec(&$action)
+function batchexec(Action &$action)
 {
     // -----------------------------------
     $docid = GetHttpVars("id");
     $latest = GetHttpVars("latest");
     $saction = GetHttpVars("saction");
     $sapp = GetHttpVars("sapp");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
-    
+    $dbaccess = $action->dbaccess;
+
+    /**
+     * @var Dir $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAlive()) $action->exitError(sprintf(_("batcexec aborted\ndocument [%s] not found") , $docid));
     
@@ -57,4 +60,3 @@ function batchexec(&$action)
     
     redirect($action, "FDL", "FDL_METHOD&method=bgExecute&id=" . $de->id, $action->GetParam("CORE_STANDURL"));
 }
-?>

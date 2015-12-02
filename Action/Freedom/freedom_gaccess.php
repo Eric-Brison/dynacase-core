@@ -26,7 +26,7 @@ function freedom_gaccess(Action & $action)
     // edition of group accessibilities
     // ---------------------
     // Get all the params
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $usage = new ActionUsage($action);
     $usage->setStrictMode(false);
     $usage->setDefinitionText("view or modify document accessibilities");
@@ -369,4 +369,3 @@ function getTacl($dbaccess, $dacls, $acls, $docid, $gid, $extAcl = '')
     //print_r2($tableacl);
     return $tableacl;
 }
-?>

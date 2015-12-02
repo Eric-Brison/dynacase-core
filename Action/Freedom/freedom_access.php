@@ -29,7 +29,7 @@ function freedom_access(Action & $action)
     // this file is sent by dowload
     // -----------------------------------
     // Get all the params
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = $action->getArgument("id");
     $userId = $action->getArgument("userid");
     if (!$userId) {
@@ -82,4 +82,3 @@ function freedom_access(Action & $action)
     $action->lay->Set("userid", ($userId == 1) ? $tiduser[0]->id : $userId);
     $action->lay->Set("username", User::getDisplayName($userId));
 }
-?>

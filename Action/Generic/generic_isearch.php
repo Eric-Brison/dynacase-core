@@ -30,7 +30,7 @@ function generic_isearch(Action & $action)
     $famid = GetHttpVars("famid", 0); // restriction of search
     $viewone = GetHttpVars("viewone"); //
     $generic = (GetHttpVars("generic") == "Y"); //
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if (($famid !== 0) && (!is_numeric($famid))) {
         $nfamid = getFamIdFromName($dbaccess, $famid);
@@ -72,4 +72,3 @@ function generic_isearch(Action & $action)
     
     
 }
-?>

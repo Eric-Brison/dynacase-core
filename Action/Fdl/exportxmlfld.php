@@ -36,9 +36,8 @@ include_once ("FDL/exportfld.php");
 function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', Fdl_DocumentSelection $aSelection = null, $toDownload = true)
 {
     setMaxExecutionTimeTo(3600); // 60 minutes
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $fldid = $action->getArgument("id", $aflid);
-    $wprof = false; // no profil
     $wfile = (substr(strtolower($action->getArgument("wfile", "N")) , 0, 1) == "y"); // with files
     $wident = (substr(strtolower($action->getArgument("wident", $wident)) , 0, 1) == "y"); // with numeric identifier
     $flat = (substr(strtolower($action->getArgument("flat")) , 0, 1) == "y"); // flat xml
@@ -219,7 +218,7 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
 <documents date="%s" author="%s" name="%s">
 
 EOF;
-        $xml_head = sprintf($xml_head, htmlspecialchars(strftime("%FT%T")) , htmlspecialchars(User::getDisplayName($action->user->id)) , htmlspecialchars($exportname));
+        $xml_head = sprintf($xml_head, htmlspecialchars(strftime("%FT%T")) , htmlspecialchars(Account::getDisplayName($action->user->id)) , htmlspecialchars($exportname));
         $xml_footer = "</documents>";
         
         $ret = fwrite($fh, $xml_head);
@@ -282,4 +281,3 @@ function exportExit(Action & $action, $err)
     }
     $action->exitError($err);
 }
-?>

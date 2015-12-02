@@ -25,7 +25,7 @@
 include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function freedom_clearfld(&$action)
+function freedom_clearfld(Action & $action)
 {
     // -----------------------------------
     // insert the documents of $dirid in folder $id
@@ -34,8 +34,11 @@ function freedom_clearfld(&$action)
     $docid = GetHttpVars("id");
     $mode = GetHttpVars("mode", "latest");
     $return = GetHttpVars("return"); // return action may be folio
-    $dbaccess = $action->GetParam("FREEDOM_DB");
-    
+    $dbaccess = $action->dbaccess;
+
+    /**
+     * @var Dir $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     $err = $doc->Clear();
     
@@ -43,4 +46,3 @@ function freedom_clearfld(&$action)
     
     redirect($action, "FREEDOM", "FREEDOM_VIEW&dirid=$docid");
 }
-?>

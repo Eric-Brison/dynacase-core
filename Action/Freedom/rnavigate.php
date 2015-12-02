@@ -20,7 +20,7 @@ include_once ("FDL/Lib.Dir.php");
 
 function rnavigate(Action & $action, $onlyGetResult = false)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
 
     $usage = new ActionUsage($action);
     $docid = $usage->addRequiredParameter("id", "id of the current document");

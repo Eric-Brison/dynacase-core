@@ -28,7 +28,7 @@ include_once ("FDL/editutil.php");
  * @global string $value Http var : predefined value
  * @global string $esize Http var : number of character visible (for text input)
  */
-function inputattribute(&$action)
+function inputattribute(Action &$action)
 {
     
     $attrid = strtolower(GetHttpVars("id"));
@@ -41,7 +41,7 @@ function inputattribute(&$action)
     $phpfile = GetHttpVars("phpfile", "", "zone");
     $eformat = GetHttpVars("eformat");
     $options = GetHttpVars("options");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new doc($dbaccess);
     $htmlinput = "";
     
@@ -127,4 +127,3 @@ function inputattribute(&$action)
     
     $action->lay->template = $htmlinput;
 }
-?>

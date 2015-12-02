@@ -30,13 +30,13 @@ function freedom_processtoexec(Action &$action)
     // Get all the params
     $docid = GetHttpVars("id"); // id doc to search
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
     $action->lay->set("docid", $doc->id);
     if ($doc->isAlive()) {
         $la = $doc->GetActionAttributes();
-        if (count($la) == 0) $action - exitError(_("no action found for %s document") , $doc->title);
+        if (count($la) == 0) $action->exitError(sprintf(_("no action found for %s document") , $doc->title));
         if (count($la) == 1) {
             $oa = current($la);
             $ta["exec_application"] = $oa->wapplication;
@@ -69,4 +69,3 @@ function freedom_processtoexec(Action &$action)
         }
     }
 }
-?>
