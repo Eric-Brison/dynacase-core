@@ -14,13 +14,13 @@
  * @subpackage CORE
  */
 /**
- * @param Action $action
+ * @param Action|Application $action
  * @param string $appname
  * @param string $actionname
  * @param string $otherurl
  * @param bool $httpparamredirect
  */
-function Redirect(Action & $action, $appname, $actionname, $otherurl = "", $httpparamredirect = false)
+function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredirect = false)
 {
     global $_SERVER, $_GET; // use only  with HTTP
     if (empty($_SERVER['HTTP_HOST'])) {
@@ -70,7 +70,9 @@ function Redirect(Action & $action, $appname, $actionname, $otherurl = "", $http
     }
     $viewext = isset($_GET["viewext"]) ? $_GET["viewext"] : (isset($_POST["viewext"]) ? $_POST["viewext"] : "");
     if ($viewext === "yes") {
-        if (class_exists("\\Dcp\\ExtUi\\defaultMenu", false)) {
+        if (\Dcp\Autoloader::classExists("\\Dcp\\ExtUi\\defaultMenu")) {
+            /** @noinspection PhpUndefinedNamespaceInspection */
+            /** @noinspection PhpUndefinedClassInspection */
             $location = \Dcp\ExtUi\defaultMenu::convertToExtUrl($location);
         }
     }
