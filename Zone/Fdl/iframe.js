@@ -134,7 +134,7 @@ ns6bugfix();
 
 function ns6bugfix(){
   return;
-  if(ns6)setTimeout('self.resizeBy(0,1); self.resizeBy(0,-1);', 100);
+  //if(ns6)setTimeout('self.resizeBy(0,1); self.resizeBy(0,-1);', 100);
 }
 
 function trackmouse(evt){

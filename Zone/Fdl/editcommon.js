@@ -2681,7 +2681,6 @@ function preview(faction,ntarget) {
     target=ntarget;
     action=faction;
 
-    submittextarea();
     submit();
     target=editTarget;
     action=editAction;
@@ -2712,9 +2711,6 @@ function quicksave() {
 	var oldredirect=document.modifydoc.noredirect.value;
 	document.modifydoc.noredirect.value=1;
 	document.modifydoc.quicksave.value=1;
-	// for htmlarea
-	submittextarea();
-
 
 	submit();
 	document.modifydoc.noredirect.value=oldredirect;
@@ -2737,10 +2733,6 @@ function quicksave() {
 
 function submittextarea() {
   // for htmlarea
-  return;
-  for (var i=0;i< editors.length; i++) {
-    editors[i]._formSubmit();
-  }
 }
 function viewquick(event,view) {
   if (! event) event=window.event;
