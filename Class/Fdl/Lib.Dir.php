@@ -303,7 +303,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     /**
      * get possibles errors before request of getChildDoc
      * @param string $dbaccess database specification
-     * @param array  $dirid the array of id or single id of folder where search document
+     * @param array|int  $dirid the array of id or single id of folder where search document
      * @return array error codes
      */
     function getChildDocError($dbaccess, $dirid)
@@ -778,10 +778,12 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         }
         return $rt;
     }
+
     /**
      * query to find child directories (no recursive - only in the specified folder)
      * @param string $dbaccess database specification
-     * @param int  $dirid the id of folder where search subfolders
+     * @param int $dirid the id of folder where search subfolders
+     * @return array
      */
     function getChildDirId($dbaccess, $dirid)
     {
@@ -819,7 +821,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         
         $rchilds[] = $dirid;
         
-        $childs = getChildDirId($dbaccess, $dirid, true);
+        $childs = getChildDirId($dbaccess, $dirid);
         
         if (count($childs) > 0) {
             foreach ($childs as $k => $v) {
