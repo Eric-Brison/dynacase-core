@@ -485,9 +485,8 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
     $action->lay->eSet("wtarget", $target);
     
     $last = $startpage;
-    $rangeTo = $start + $count - 1;
-    
-    if (!$hasNext) $rangeTo++;
+    $rangeTo = $start + $count;
+
     if ($paginationType != "" && preg_match("/(^pageNumber$|^documentNumber$|%f|%l|%er|%np|%nd)/", $paginationType) && ($start != 0 || ($start == 0 && $hasNext))) {
         $sd->reset();
         $sd->setSlice('ALL');
@@ -508,7 +507,6 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
         "rangeto" => $rangeTo,
         "hasnext" => $hasNext
     );
-    
     $action->parent->setVolatileParam("searchConfig", $searchConfig);
     return $nbdoc;
 }
