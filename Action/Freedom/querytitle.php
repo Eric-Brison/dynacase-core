@@ -22,7 +22,7 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
 
-function querytitle(Action &$action)
+function querytitle(Action & $action)
 {
     $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);

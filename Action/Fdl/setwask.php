@@ -24,7 +24,7 @@ include_once ("FDL/Class.Dir.php");
  * @global waskid int Http var : document identifier of the ask
  * @global answer string Http var : the answer for the question
  */
-function setwask(Action &$action)
+function setwask(Action & $action)
 {
     $docid = GetHttpVars("docid");
     $answers = GetHttpVars("answer");

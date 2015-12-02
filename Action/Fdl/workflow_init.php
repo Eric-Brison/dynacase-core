@@ -21,7 +21,7 @@ include_once ("FDL/Class.SearchDoc.php");
 include_once ("FDL/Lib.Attr.php");
 include_once ("FDL/Class.DocFam.php");
 // -----------------------------------
-function workflow_init(Action &$action)
+function workflow_init(Action & $action)
 {
     
     $docid = GetHttpVars("id"); // view doc abstract attributes
@@ -30,7 +30,6 @@ function workflow_init(Action &$action)
     }
     
     $dbaccess = $action->dbaccess;
-
     /**
      * @var WDoc $wdoc
      */

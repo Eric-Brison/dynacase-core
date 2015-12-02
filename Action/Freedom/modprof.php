@@ -38,6 +38,7 @@ function modprof(Action & $action)
     
     $dbaccess = $action->dbaccess;
     // initialise object
+    
     /**
      * @var DocFam $doc
      */

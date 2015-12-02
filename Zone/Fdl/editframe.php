@@ -63,7 +63,7 @@ function editframe(Action & $action)
     $tval = array();
     
     $foa = $doc->getAttribute($frameid);
-    if (!$foa) $action->exitError(sprintf("attribute %s not found" , $frameid));
+    if (!$foa) $action->exitError(sprintf("attribute %s not found", $frameid));
     if ($foa->getOption("vlabel") == "none") $action->lay->set("flabel", '');
     else $action->lay->set("flabel", mb_ucfirst($foa->getLabel()));
     $action->lay->set("frameid", $foa->id);

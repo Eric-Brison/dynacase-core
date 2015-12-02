@@ -23,7 +23,6 @@ include_once ("FDL/Class.Doc.php");
 function freedom_modpreffam(Action & $action)
 {
     $tidsfam = GetHttpVars("idsfam"); // preferenced families
-
     $idsfam = "";
     if (is_array($tidsfam)) $idsfam = implode(",", $tidsfam);
     

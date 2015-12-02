@@ -31,7 +31,7 @@ function restoredoc(Action & $action)
     $dbaccess = $action->dbaccess;
     
     $doc = new_doc($dbaccess, $docid);
-
+    
     $err = '';
     if ($doc->isAffected()) {
         if (!$doc->isAlive()) {

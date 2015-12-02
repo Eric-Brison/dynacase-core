@@ -42,7 +42,7 @@ function diffdoc(&$action)
     if ($d1->fromid != $d2->fromid) $action->exitError(sprintf(_("cannot compare two document which comes from two different family")));
     
     $la = $d1->GetNormalAttributes();
-
+    
     $tattr = array();
     foreach ($la as $k => $a) {
         

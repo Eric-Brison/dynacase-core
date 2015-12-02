@@ -36,7 +36,6 @@ function freedom_searchprocess(Action & $action)
     if ($docid == "") $action->exitError(_("related search aborted : no parameter found"));
     
     $doc = new_Doc($dbaccess, $docid);
-
     /**
      * @var DocSearch $sdoc
      */

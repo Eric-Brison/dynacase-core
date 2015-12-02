@@ -24,7 +24,7 @@ include_once ("FDL/modcard.php");
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_changecatg(Action &$action)
+function generic_changecatg(Action & $action)
 {
     // -----------------------------------
     // special for onefam application
@@ -32,9 +32,7 @@ function generic_changecatg(Action &$action)
     $dirids = GetHttpVars("dirid", getDefFld($action));
     $ndirids = GetHttpVars("ndirid"); // catg to deleted
     $docid = GetHttpVars("docid"); // the user to change catg
-    
     $dbaccess = $action->dbaccess;
-
     /**
      * @var Dir $fld
      */

@@ -26,7 +26,7 @@ include_once ("FDL/Lib.Dir.php");
 function getdocsvalue(&$action)
 {
     header('Content-type: text/xml; charset=utf-8');
-
+    
     $err = '';
     $mb = microtime();
     $docids = GetHttpVars("ids");

@@ -17,7 +17,7 @@
  */
 include_once ("FDL/Class.Doc.php");
 
-function setsysrss(Action &$action)
+function setsysrss(Action & $action)
 {
     // Set the globals elements
     $dbaccess = $action->dbaccess;

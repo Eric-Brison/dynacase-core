@@ -201,7 +201,6 @@ function family_defaultmenu(Action & $action)
             }
         }
     }
-
     //----------------------------
     // sort menu
     $tsort = array();
@@ -298,7 +297,6 @@ function family_defaultmenu(Action & $action)
         );
         $tmsort[$a->id] = "sortdoc" . $a->id;
     }
-
     // select the current sort
     $csort = $action->getArgument("sqlorder");
     if ($csort == "") $csort = getDefUSort($action, "--");

@@ -120,12 +120,12 @@ function generic_search(Action & $action)
                 case "SD0007":
                     $err = sprintf(_("incorrect global filter %s") , $keyword);
                     addWarningMsg($err);
-
+                    
                     break;
 
                 default:
                     $err = $e->getMessage();
-            addWarningMsg($err);
+                    addWarningMsg($err);
             }
             $sqlfilter = array(
                 'false'

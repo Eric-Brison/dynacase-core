@@ -31,7 +31,6 @@ function freedom_insertfld(Action & $action)
     $clean = GetHttpVars("clean", "N") == "Y"; // if want to clean source folder
     $folio = GetHttpVars("folio", "N") == "Y"; // return in folio
     $dbaccess = $action->dbaccess;
-
     /**
      * @var Dir $doc
      */

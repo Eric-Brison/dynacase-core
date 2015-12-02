@@ -22,7 +22,7 @@
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_editnewcatg(Action &$action)
+function generic_editnewcatg(Action & $action)
 {
     // -----------------------------------
     global $dbaccess;

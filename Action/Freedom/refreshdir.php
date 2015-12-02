@@ -51,7 +51,6 @@ function refreshdir(Action & $action)
     $dbaccess = $action->dbaccess;
     // Get all the params
     $dirid = GetHttpVars("dirid"); // directory to refresh
-
     $oqd = new QueryDir($dbaccess);
     $oqd->RefreshDir($dirid);
     redirect($action, GetHttpVars("app") , "FREEDOM_VIEW&dirid=$dirid");

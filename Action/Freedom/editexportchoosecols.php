@@ -20,7 +20,7 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Lib.Dir.php");
 include_once ("GENERIC/generic_util.php");
 
-function editexportchoosecols(Action &$action)
+function editexportchoosecols(Action & $action)
 {
     $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id");
@@ -39,7 +39,7 @@ function editexportchoosecols(Action &$action)
         if ($oa->type == "array") continue;
         $newframe = false;
         $newtab = false;
-        $tabname= $framename=false;
+        $tabname = $framename = false;
         if (($before != $oa->fieldSet->id) && ($before != $oa->fieldSet->type = 'frame')) {
             $newframe = ($before != $oa->fieldSet->id);
             $framename = $oa->fieldSet->getLabel();

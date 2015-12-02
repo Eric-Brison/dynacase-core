@@ -231,7 +231,7 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
                                 $gv[] = $doc->getHtmlTitle($gid);
                             }
                             
-                            $msg = sprintf(_("Set by \"%s\" attribute (%s) from template profil \"%s\"") , htmlspecialchars($alabel), implode(', ', $gv) , $doc->getHtmlTitle($doc->dprofid));
+                            $msg = sprintf(_("Set by \"%s\" attribute (%s) from template profil \"%s\"") , htmlspecialchars($alabel) , implode(', ', $gv) , $doc->getHtmlTitle($doc->dprofid));
                         }
                     }
                 }

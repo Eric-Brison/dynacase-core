@@ -20,7 +20,7 @@
 // $Source: /home/cvsroot/anakeen/freedom/freedom/Action/Fdl/unlockfile.php,v $
 // ---------------------------------------------------------------
 include_once ("FDL/Class.Doc.php");
-function unlockfile(Action &$action)
+function unlockfile(Action & $action)
 {
     
     $dbaccess = $action->dbaccess;

@@ -28,7 +28,7 @@ include_once ("Class.QueryGen.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
 // -----------------------------------
-function ctrldoc(Action &$action)
+function ctrldoc(Action & $action)
 {
     // -----------------------------------
     // Set the globals elements

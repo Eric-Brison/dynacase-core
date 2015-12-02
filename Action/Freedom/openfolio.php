@@ -11,7 +11,7 @@ include_once ("FDL/Class.Doc.php");
 include_once ('FREEDOM/Lib.portfolio.php');
 // -----------------------------------
 // -----------------------------------
-function openfolio(Action &$action)
+function openfolio(Action & $action)
 {
     // -----------------------------------
     // Set the globals elements

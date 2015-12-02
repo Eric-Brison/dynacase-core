@@ -25,7 +25,7 @@ include_once ("FDL/Class.Doc.php");
 function getdocvalues(&$action)
 {
     header('Content-type: text/xml; charset=utf-8');
-
+    
     $err = '';
     $mb = microtime();
     $docid = GetHttpVars("id");

@@ -39,7 +39,7 @@ function modattribute(&$action)
     
     $action->lay->set("CODE", "OK");
     $action->lay->set("warning", "");
-
+    
     $err = '';
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $err = sprintf(_("cannot see unknow reference %s") , $docid);
@@ -50,7 +50,7 @@ function modattribute(&$action)
     }
     $a = $doc->getAttribute($attrid);
     if (($value === "") && ($a->type != "file") && ($a->type != "image") && ($a->type != "password")) $value = DELVALUE;
-
+    
     if ($value != ".") {
         
         if ($err != "") {

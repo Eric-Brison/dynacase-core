@@ -28,7 +28,7 @@ include_once ("FDL/freedom_util.php");
  * @global start int Http var : page number
  * @global dirid int Http var : search identifier
  */
-function fullsearch(Action &$action)
+function fullsearch(Action & $action)
 {
     
     $dbaccess = $action->dbaccess;
@@ -68,7 +68,7 @@ function fullsearch(Action &$action)
     $action->lay->set("initKeyword", ($keyword == "" ? true : false));
 }
 
-function createSearchEngine(Action &$action)
+function createSearchEngine(Action & $action)
 {
     global $_SERVER;
     $tfiles = array(

@@ -32,7 +32,7 @@ include_once ("GENERIC/generic_util.php");
  * @global colorder string Http var : array to describe CSV column attributes
  * @global file string Http var : path to import file (only with wsh)
  */
-function generic_importcsv(Action &$action)
+function generic_importcsv(Action & $action)
 {
     // -----------------------------------
     global $_FILES;
@@ -180,3 +180,4 @@ function generic_importcsv(Action &$action)
     {
         return (($var["action"] == "added") || ($var["action"] == "updated"));
     }
+    

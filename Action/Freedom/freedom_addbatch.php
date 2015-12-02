@@ -35,13 +35,11 @@ function freedom_addbatch(Action & $action)
     
     $bdoc = new_Doc($dbaccess, $bid);
     if (!$bdoc->isAlive()) $action->exitError(sprintf(_("unknown batch document %s") , $bid));
-
     /**
      * @var Dir $fld
      */
     $fld = new_Doc($dbaccess, $dirid);
     if (!$fld->isAlive()) $action->exitError(sprintf(_("unknown folder document %s") , $fld));
-
     /**
      * @var Dir $doc
      */

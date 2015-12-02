@@ -32,6 +32,7 @@ function moddfld(Action & $action)
     
     $dbaccess = $action->dbaccess;
     // initialise object
+    
     /**
      * @var DocFam $doc
      */

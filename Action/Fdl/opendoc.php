@@ -69,3 +69,4 @@ function opendoc(Action & $action)
         }
         if ($err) $action->exitError($err);
     }
+    

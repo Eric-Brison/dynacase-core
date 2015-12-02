@@ -25,7 +25,7 @@ include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/freedom_util.php");
 // Compute value to be inserted in a specific layout
 // -----------------------------------
-function viewattr(Action &$action, $htmlval = true, $htmllink = true)
+function viewattr(Action & $action, $htmlval = true, $htmllink = true)
 {
     // -----------------------------------
     // GetAllParameters

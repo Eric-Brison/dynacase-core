@@ -33,7 +33,7 @@ function setparamu(Action & $action)
     $parname = GetHttpVars("parname");
     
     $parval = GetHttpVars("parval");
-
+    
     $action->lay->set("warning", "");
     
     $appid = $action->parent->GetIdFromName($appname);

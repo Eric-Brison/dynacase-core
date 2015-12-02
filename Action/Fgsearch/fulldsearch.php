@@ -26,7 +26,7 @@ include_once ("FDL/modcard.php");
  * @global start int Http var : page number
  * @global dirid int Http var : search identifier
  */
-function fulldsearch(Action &$action)
+function fulldsearch(Action & $action)
 {
     
     $famid = GetHttpVars("famid", 0);

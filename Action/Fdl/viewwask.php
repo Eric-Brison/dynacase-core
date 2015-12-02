@@ -23,7 +23,7 @@ include_once ("FDL/Class.Dir.php");
  * @global docid int Http var : document identifier where use the ask
  * @global waskid int Http var : document identifier of the ask
  */
-function viewwask(Action &$action)
+function viewwask(Action & $action)
 {
     $docid = GetHttpVars("docid");
     $answers = GetHttpVars("answer");

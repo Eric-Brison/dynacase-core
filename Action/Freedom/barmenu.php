@@ -22,7 +22,7 @@ include_once ("FDL/freedom_util.php");
 
 include_once ("FDL/popup_util.php");
 // -----------------------------------
-function barmenu(Action &$action)
+function barmenu(Action & $action)
 {
     // -----------------------------------
     $dbaccess = $action->dbaccess;

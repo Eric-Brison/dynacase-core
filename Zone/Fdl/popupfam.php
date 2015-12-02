@@ -18,7 +18,7 @@
 
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
-function popupfam(Action &$action, &$tsubmenu)
+function popupfam(Action & $action, &$tsubmenu)
 {
     // -----------------------------------
     // ------------------------------
@@ -38,7 +38,7 @@ function popupfam(Action &$action, &$tsubmenu)
     $lmenu = $doc->GetMenuAttributes();
     $tmenu = array();
     $km = 0;
-
+    
     $tlink = array();
     foreach ($lmenu as $k => $v) {
         

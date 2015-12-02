@@ -24,7 +24,7 @@ include_once ("FDL/Class.Dir.php");
  * @global saction string Http var : action name to execute
  * @global sapp string Http var : app name to execute
  */
-function batchexec(Action &$action)
+function batchexec(Action & $action)
 {
     // -----------------------------------
     $docid = GetHttpVars("id");
@@ -32,7 +32,6 @@ function batchexec(Action &$action)
     $saction = GetHttpVars("saction");
     $sapp = GetHttpVars("sapp");
     $dbaccess = $action->dbaccess;
-
     /**
      * @var Dir $doc
      */

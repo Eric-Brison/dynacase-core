@@ -27,7 +27,7 @@ include_once ("GENERIC/generic_edit.php");
  * @global string $onlysubfam Http var : to show in family list only sub family of classid
  * @global string $alsosubfam Http var : N default (Y|N) in case of only sub fam view also the mother family
  */
-function freedom_edit(Action &$action)
+function freedom_edit(Action & $action)
 {
     // -----------------------------------
     // Get All Parameters
@@ -47,7 +47,7 @@ function freedom_edit(Action &$action)
     $tmpDoc = createDoc($action->dbaccess, $classid);
     $isSystemDoc = (is_object($tmpDoc) && substr($tmpDoc->usefor, 0, 1) == 'S');
     unset($tmpDoc);
-    $doc=null;
+    $doc = null;
     if ($docid > 0) {
         $doc = new_Doc($dbaccess, $docid);
         if (!$doc->isAlive()) $action->exitError(sprintf(_("document id %d not found") , $docid));
@@ -115,7 +115,7 @@ function freedom_edit(Action &$action)
     generic_edit($action);
     // build list of class document
     $selectclass = array();
-    $k=0;
+    $k = 0;
     if ($tclassdoc) {
         $first = false;
         foreach ($tclassdoc as $k => $cdoc) {
@@ -158,7 +158,7 @@ function freedom_edit(Action &$action)
             $doc = createDoc($dbaccess, $classid); // the doc inherit from chosen class
             if ($doc === false) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , $classid));
             // restrict to possible family creation permission
-            $tfid=array();
+            $tfid = array();
             foreach ($selectclass as $k => $cdoc) {
                 $tfid[] = abs($cdoc["idcdoc"]);
             }

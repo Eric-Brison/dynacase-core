@@ -21,11 +21,10 @@
 // ---------------------------------------------------------------
 include_once ("FDL/Lib.Dir.php");
 
-function editwdoc(Action &$action)
+function editwdoc(Action & $action)
 {
     $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
-
     
     $doc = new_Doc($dbaccess, $docid);
     $action->lay->Set("docid", $doc->id);

@@ -23,7 +23,7 @@ include_once ("FDL/Class.DocFam.php");
  * @param Action &$action current action
  * @global id int Http var : folder document identifier to see
  */
-function insertdocument(Action &$action)
+function insertdocument(Action & $action)
 {
     
     $docid = GetHttpVars("id");

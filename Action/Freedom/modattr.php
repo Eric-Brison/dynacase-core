@@ -27,6 +27,7 @@ function modattr(Action & $action)
     // Get all the params
     $docid = GetHttpVars("docid");
     $dirid = GetHttpVars("dirid", 0); // directory to place doc if new doc
+    
     /**
      * @var array $orders
      */

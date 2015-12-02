@@ -333,8 +333,8 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                 Http_DownloadFile($info->path, $info->name, $mimetype, $inline, $cache);
             } else {
                 $filename = $info->path;
-
-                $name=str_replace('"', '-', $info->name);
+                
+                $name = str_replace('"', '-', $info->name);
                 $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
                 $name = rawurlencode($name);
                 if ($inline) {
@@ -343,7 +343,7 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                     $pos = strpos($nav, "MSIE");
                     if ($pos) {
                         // add special header for extension
-                    header("Content-Disposition: inline;filename=\"$uName\";filename*=UTF-8''$name;");
+                        header("Content-Disposition: inline;filename=\"$uName\";filename*=UTF-8''$name;");
                     }
                 } else {
                     header("Content-Disposition: attachment;filename=\"$uName\";filename*=UTF-8''$name;");

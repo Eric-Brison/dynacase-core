@@ -116,7 +116,7 @@ function viewbarmenu(Action & $action)
         }
     }
     foreach ($popup as & $elmt) {
-        foreach ($elmt as $k=>& $value) {
+        foreach ($elmt as $k => & $value) {
             if (is_string($value) && $k !== "descr") {
                 $value = htmlspecialchars($value, ENT_QUOTES);
             }

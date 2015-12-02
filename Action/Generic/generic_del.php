@@ -25,7 +25,7 @@ include_once ("FDL/freedom_util.php");
  * @global id int Http var : document id to trash
  * @global recursive string Http var : if yes and it is a folder like family try to delete containt (primary relation) also
  */
-function generic_del(Action &$action)
+function generic_del(Action & $action)
 {
     // -----------------------------------
     // Get all the params

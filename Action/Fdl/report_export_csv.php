@@ -13,7 +13,7 @@ require_once 'EXTERNALS/fdl.php';
  *
  * @note
  * @verbatim
-Usage :
+ Usage :
  * --app=FDL : <application name>
  * --action=REPORT_EXPORT_CSV : <action name>
  * --id=<the id of the report>
@@ -283,7 +283,7 @@ function report_export_csv(Action & $action)
             }
             $csvFile = tempnam(getTmpDir() , "csv");
             if ($csvFile === false) {
-                $err = sprintf(_("Error creating temporary file in '%s'."), getTmpDir());
+                $err = sprintf(_("Error creating temporary file in '%s'.") , getTmpDir());
                 $action->exitError($err);
             }
             $fp = fopen($csvFile, 'w');

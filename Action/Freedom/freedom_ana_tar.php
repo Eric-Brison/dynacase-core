@@ -18,7 +18,7 @@
 
 include_once ("FREEDOM/freedom_import_tar.php");
 
-function freedom_ana_tar(Action &$action)
+function freedom_ana_tar(Action & $action)
 {
     
     global $_FILES;
@@ -27,7 +27,7 @@ function freedom_ana_tar(Action &$action)
     $analyze = GetHttpVars("analyze", "Y"); // just analyze
     $filename = GetHttpVars("filename"); // the select filename
     $ldir = getTarUploadDir($action);
-    $selfile='';
+    $selfile = '';
     if ($handle = opendir($ldir)) {
         while (false !== ($file = readdir($handle))) {
             if ($file[0] != ".") {
@@ -61,7 +61,7 @@ function freedom_ana_tar(Action &$action)
     $action->lay->Set("importtext", sprintf(_("proceed background import of %d documents") , $nbdoc));
 }
 
-function analyze_tar(Action &$action, $selfile)
+function analyze_tar(Action & $action, $selfile)
 {
     $dirid = GetHttpVars("dirid"); // directory to place imported doc
     $famid = GetHttpVars("famid", 7); // default import family
@@ -73,7 +73,6 @@ function analyze_tar(Action &$action, $selfile)
     $dbaccess = $action->dbaccess;
     $selectclass = array();
     
-
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
     
     foreach ($tclassdoc as $k => $cdoc) {
@@ -85,7 +84,7 @@ function analyze_tar(Action &$action, $selfile)
     $action->lay->SetBlockData("SELECTCLASS", $selectclass);
     
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, 2, "TABLE");
-    $selectfld=array();
+    $selectfld = array();
     foreach ($tclassdoc as $k => $cdoc) {
         $selectfld[$k]["idcdoc"] = $cdoc["initid"];
         $selectfld[$k]["classname"] = $cdoc["title"];

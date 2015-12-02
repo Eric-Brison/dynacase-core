@@ -22,7 +22,7 @@ function getDefFam(Action & $action)
 {
     // special for onefam application
     $famid = GetHttpVars("famid");
-    if (!is_numeric($famid)) $famid = getIdFromName($action->dbaccess , $famid);
+    if (!is_numeric($famid)) $famid = getIdFromName($action->dbaccess, $famid);
     if ($famid != "") return $famid;
     
     $famid = $action->GetParam("DEFAULT_FAMILY", 1);
@@ -57,7 +57,7 @@ function getDefUSort(Action & $action, $def = "-revdate", $famid = "")
         while (list($k, $v) = each($tu)) {
             list($afamid, $aorder, $sqlorder) = explode(":", $v);
             if (!is_numeric($afamid)) {
-                $afamid = getFamIdFromName($action->dbaccess , $afamid);
+                $afamid = getFamIdFromName($action->dbaccess, $afamid);
             }
             if ($afamid == $famid) {
                 return $aorder;
@@ -246,7 +246,7 @@ function getFamilyParameter(&$action, $famid, $key, $def = "")
             if (strpos($v, '|') !== false) {
                 list($afamid, $aorder) = explode("|", $v);
                 if (!is_numeric($afamid)) {
-                    $afamid = getFamIdFromName($action->dbaccess , $afamid);
+                    $afamid = getFamIdFromName($action->dbaccess, $afamid);
                 }
                 if ($afamid == $famid) {
                     return $aorder;
@@ -283,7 +283,7 @@ function setFamilyParameter(Action & $action, $famid, $attrid, $value)
 /**
  * delete family attribute for generic application
  */
-function deleteFamilyParameter(Action &$action, $famid, $attrid)
+function deleteFamilyParameter(Action & $action, $famid, $attrid)
 {
     $tmode = explode(",", $action->getParam($attrid));
     // explode parameters

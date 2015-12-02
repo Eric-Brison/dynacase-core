@@ -17,7 +17,7 @@
  */
 
 include_once ("FDL/popupdocdetail.php");
-function popupeditstate(Action &$action)
+function popupeditstate(Action & $action)
 {
     $docid = GetHttpVars("id");
     if ($docid == "") $action->exitError(_("No identificator"));

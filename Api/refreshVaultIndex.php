@@ -83,10 +83,9 @@ if (is_numeric($parms['famid'])) {
     $q->AddQuery(sprintf("id = %s", pg_escape_string($parms['famid'])));
 }
 $famIconList = $q->Query(0, 0, "TABLE");
-if (! $famIconList) {
-    $famIconList=array();
+if (!$famIconList) {
+    $famIconList = array();
 }
-
 /**
  * Load all file attributes
  */

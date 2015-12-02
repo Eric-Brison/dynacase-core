@@ -17,7 +17,7 @@
  */
 //
 include_once ("FDL/Class.Doc.php");
-function popupfolio(Action &$action)
+function popupfolio(Action & $action)
 {
     // -----------------------------------
     // ------------------------------

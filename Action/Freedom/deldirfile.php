@@ -19,17 +19,15 @@
 include_once ("FDL/Class.Dir.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function deldirfile(Action &$action)
+function deldirfile(Action & $action)
 {
     // -----------------------------------
-    
     // Get all the params
     $dirid = GetHttpVars("dirid");
     $docid = GetHttpVars("docid");
     $folio = GetHttpVars("folio", "N") == "Y"; // return in folio
     //  print "deldirfile :: dirid:$dirid , docid:$docid";
     $dbaccess = $action->dbaccess;
-
     /**
      * @var Dir $dir
      */

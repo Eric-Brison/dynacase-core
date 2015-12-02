@@ -34,7 +34,6 @@ function fdl_process(&$action)
     $method = "::fdl_pubprint(pubm_title,pubm_body)";
     
     $dbaccess = $action->dbaccess;
-
     /**
      * @var Dir $doc
      */

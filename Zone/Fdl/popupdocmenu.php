@@ -8,15 +8,14 @@
  * Specific menu for family
  */
 require_once "FDL/popupdoc.php";
-
 /**
  * define popupmenu for a document
- * 
+ *
  * @param Action &$action current action
- * 
+ *
  * @return void
  */
-function popupdocmenu(Action &$action)
+function popupdocmenu(Action & $action)
 {
     // -----------------------------------
     // define accessibility
@@ -37,7 +36,7 @@ function popupdocmenu(Action &$action)
         $menuapp = "FDL";
         $menuaction = "POPUPDOCDETAIL";
     }
-
+    
     $action->lay->set("id", $doc->id);
     $action->lay->set("menuapp", $menuapp);
     $action->lay->set("menuaction", $menuaction);

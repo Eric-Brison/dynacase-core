@@ -27,7 +27,7 @@ include_once ("FDL/freedom_util.php");
  * @global start int Http var : page number
  * @global dirid int Http var : search identifier
  */
-function fulleditdsearch(Action &$action)
+function fulleditdsearch(Action & $action)
 {
     
     $famid = $action->getArgument("famid", 0);

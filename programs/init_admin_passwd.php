@@ -52,9 +52,9 @@ if ($err != '') {
 }
 
 $err = $user->setAdminHtpasswd($admin_passwd);
-if( $err != '' ) {
-	print sprintf("Error setting password in 'admin/.htpasswd': %s", $err);
-	exit(1);
+if ($err != '') {
+    print sprintf("Error setting password in 'admin/.htpasswd': %s", $err);
+    exit(1);
 }
 
 exit(0);

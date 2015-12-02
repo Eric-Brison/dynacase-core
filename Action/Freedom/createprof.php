@@ -21,7 +21,7 @@ include_once ("FDL/Class.Dir.php");
 include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/freedom_util.php");
 
-function createprof(Action &$action)
+function createprof(Action & $action)
 {
     // Get all the params
     $docid = GetHttpVars("targetid");
@@ -43,7 +43,7 @@ function createprof(Action &$action)
     if ($err != "") $action->ExitError($err);
     
     $tmpdoc = createTmpDoc($dbaccess, $famid);
-
+    
     switch ($tmpdoc->defDoctype) {
         case 'D':
             $pdoc = createDoc($dbaccess, "PDIR");

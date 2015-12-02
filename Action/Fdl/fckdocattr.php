@@ -18,7 +18,7 @@
 
 include_once ("FDL/Class.DocFam.php");
 
-function fckdocattr(Action &$action)
+function fckdocattr(Action & $action)
 {
     
     $docid = GetHttpVars("famid");

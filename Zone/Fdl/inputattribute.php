@@ -28,7 +28,7 @@ include_once ("FDL/editutil.php");
  * @global string $value Http var : predefined value
  * @global string $esize Http var : number of character visible (for text input)
  */
-function inputattribute(Action &$action)
+function inputattribute(Action & $action)
 {
     
     $attrid = strtolower(GetHttpVars("id"));

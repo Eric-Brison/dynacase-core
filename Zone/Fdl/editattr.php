@@ -26,7 +26,7 @@ include_once ("FDL/freedom_util.php");
 include_once ("FDL/editutil.php");
 // Compute value to be inserted in a specific layout
 // -----------------------------------
-function editattr(Action &$action)
+function editattr(Action & $action)
 {
     // -----------------------------------
     // GetAllParameters

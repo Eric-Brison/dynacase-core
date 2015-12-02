@@ -24,14 +24,13 @@ include_once ("FDL/modcard.php");
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_addcatg(Action &$action)
+function generic_addcatg(Action & $action)
 {
     // -----------------------------------
     // Get all the params
     $dirid = GetHttpVars("dirid", getDefFld($action));
     //   $newcatg=GetHttpVars("newcatg");
     //   if ($newcatg == "") $action->exitError(_("the title of the new category cannot be empty"));
-    
     $dbaccess = $action->dbaccess;
     
     $err = modcard($action, $ndocid); // ndocid change if new doc

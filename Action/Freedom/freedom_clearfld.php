@@ -35,7 +35,6 @@ function freedom_clearfld(Action & $action)
     $mode = GetHttpVars("mode", "latest");
     $return = GetHttpVars("return"); // return action may be folio
     $dbaccess = $action->dbaccess;
-
     /**
      * @var Dir $doc
      */

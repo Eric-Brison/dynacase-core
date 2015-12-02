@@ -17,12 +17,11 @@
  */
 
 include_once ("FDL/Class.Doc.php");
-function lockfile(Action &$action)
+function lockfile(Action & $action)
 {
     
     $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
-
     
     $doc = new_Doc($dbaccess, $docid);
     

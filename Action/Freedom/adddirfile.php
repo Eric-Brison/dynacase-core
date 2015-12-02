@@ -22,7 +22,7 @@
 include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function adddirfile(Action &$action)
+function adddirfile(Action & $action)
 {
     // -----------------------------------
     //    PrintAllHttpVars();

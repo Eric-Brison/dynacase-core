@@ -719,7 +719,7 @@ function setFamidInLayout(Action & $action)
     
     global $tFamIdName;
     
-    if (!isset($tFamIdName)) getFamIdFromName($action->dbaccess , "-");
+    if (!isset($tFamIdName)) getFamIdFromName($action->dbaccess, "-");
     
     reset($tFamIdName);
     while (list($k, $v) = each($tFamIdName)) {

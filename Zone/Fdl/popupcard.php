@@ -19,7 +19,7 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/popupfam.php");
 // -----------------------------------
-function popupcard(Action &$action)
+function popupcard(Action & $action)
 {
     // -----------------------------------
     // ------------------------------

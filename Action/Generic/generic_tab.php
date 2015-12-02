@@ -44,7 +44,7 @@ function generic_tab(Action & $action)
     if ($dirid == 0) {
         $dirid = getDefU($action, "GENE_PREFSEARCH");
         if (!is_numeric($dirid)) {
-            $dirid = getIdFromName($action->dbaccess , $dirid);
+            $dirid = getIdFromName($action->dbaccess, $dirid);
         }
         if ($dirid > 0) {
             $dir = new_Doc($dbaccess, $dirid);

@@ -19,7 +19,7 @@
 include_once ("FDL/Class.DocFam.php");
 include_once ("FDL/modcard.php");
 
-function vconstraint(Action &$action)
+function vconstraint(Action & $action)
 {
     
     $docid = GetHttpVars("id", 0);

@@ -23,7 +23,7 @@ include_once ("FDL/Class.Dir.php");
  * @global id int Http var : document identifier where use the ask
  * @global waskid int Http var : document identifier of the ask
  */
-function gotowask(Action &$action)
+function gotowask(Action & $action)
 {
     $docid = GetHttpVars("id");
     $dbaccess = $action->dbaccess;

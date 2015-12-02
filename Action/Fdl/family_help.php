@@ -33,7 +33,7 @@ function family_help(Action & $action)
     }
 }
 
-function getFamilyHelpFile(Action &$action, $docid)
+function getFamilyHelpFile(Action & $action, $docid)
 {
     $dbaccess = $action->dbaccess;
     if (!is_numeric($docid)) $docid = getFamIdFromName($dbaccess, $docid);

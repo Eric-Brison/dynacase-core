@@ -24,12 +24,11 @@ include_once ("GENERIC/generic_util.php");
  * @param Action &$action current action
  * @global string $id Http var : document identifier for process document
  */
-function freedom_processtoexec(Action &$action)
+function freedom_processtoexec(Action & $action)
 {
     // -----------------------------------
     // Get all the params
     $docid = GetHttpVars("id"); // id doc to search
-    
     $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);

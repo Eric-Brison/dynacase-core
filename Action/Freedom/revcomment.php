@@ -21,7 +21,7 @@
 // ---------------------------------------------------------------
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
-function revcomment(Action &$action)
+function revcomment(Action & $action)
 {
     $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);

@@ -28,7 +28,6 @@ function freedom_dedit(Action & $action)
     // Get All Parameters
     $docid = 0; //GetHttpVars("id",0);        // document to edit
     $classid = GetHttpVars("classid", 0); // use when new doc or change class
-    
     // Set the globals elements
     $dbaccess = $action->dbaccess;
     if ($docid > 0) {

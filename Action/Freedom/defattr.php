@@ -167,8 +167,8 @@ function defattr(Action & $action)
                     $oDocAttr->visibility = $oa->visibility;
                     $oDocAttr->labeltext = $oa->labelText;
                     $oDocAttr->frameid = (isset($oa->fieldSet) && $oa->fieldSet->id != "FIELD_HIDDENS") ? $oa->fieldSet->id : '';
-
-                    $oDocAttr->phpconstraint = isset($oa->phpconstraint)?$oa->phpconstraint:'';
+                    
+                    $oDocAttr->phpconstraint = isset($oa->phpconstraint) ? $oa->phpconstraint : '';
                     $oDocAttr->options = $oa->options;
                     if (is_a($oa, "NormalAttribute")) {
                         $oDocAttr->abstract = ($oa->isInAbstract) ? "Y" : "N";
@@ -182,7 +182,7 @@ function defattr(Action & $action)
                 }
             }
             
-            $newelem[$k]["attrname"] =  htmlspecialchars($oDocAttr->labeltext,ENT_QUOTES);
+            $newelem[$k]["attrname"] = htmlspecialchars($oDocAttr->labeltext, ENT_QUOTES);
             $newelem[$k]["order"] = $oDocAttr->ordered;
             if ($oDocAttr->isStructure()) $newelem[$k]["displayorder"] = - 2;
             else {
@@ -196,12 +196,12 @@ function defattr(Action & $action)
             $newelem[$k]["profond"] = getAttributeProfunder($k, $attrs) * 10;
             $newelem[$k]["profundator"] = getPuceAttributeProfunder($oDocAttr, $attrs);
             $newelem[$k]["visibility"] = $oDocAttr->visibility;
-            $newelem[$k]["link"] = htmlspecialchars($oDocAttr->link,ENT_QUOTES);
-            $newelem[$k]["phpfile"] = htmlspecialchars($oDocAttr->phpfile,ENT_QUOTES);
-            $newelem[$k]["phpfunc"] = htmlspecialchars($oDocAttr->phpfunc,ENT_QUOTES);
-            $newelem[$k]["options"] = htmlspecialchars($oDocAttr->options,ENT_QUOTES);
-            $newelem[$k]["phpconstraint"] = htmlspecialchars($oDocAttr->phpconstraint,ENT_QUOTES);
-            $newelem[$k]["elink"] = htmlspecialchars($oDocAttr->elink,ENT_QUOTES);
+            $newelem[$k]["link"] = htmlspecialchars($oDocAttr->link, ENT_QUOTES);
+            $newelem[$k]["phpfile"] = htmlspecialchars($oDocAttr->phpfile, ENT_QUOTES);
+            $newelem[$k]["phpfunc"] = htmlspecialchars($oDocAttr->phpfunc, ENT_QUOTES);
+            $newelem[$k]["options"] = htmlspecialchars($oDocAttr->options, ENT_QUOTES);
+            $newelem[$k]["phpconstraint"] = htmlspecialchars($oDocAttr->phpconstraint, ENT_QUOTES);
+            $newelem[$k]["elink"] = htmlspecialchars($oDocAttr->elink, ENT_QUOTES);
             $newelem[$k]["disabledid"] = "disabled";
             $newelem[$k]["neweltid"] = $k;
             if ($oDocAttr->isAbstract()) {
@@ -217,7 +217,7 @@ function defattr(Action & $action)
             
             $newelem[$k]["neededcheck"] = ($oDocAttr->isNeeded()) ? "checked" : "";
             
-            $newelem[$k]["typevalue"] = htmlspecialchars($oDocAttr->type,ENT_QUOTES);
+            $newelem[$k]["typevalue"] = htmlspecialchars($oDocAttr->type, ENT_QUOTES);
             $newelem[$k]["classvalue"] = $oDocAttr->getRawType();
             if (isset($attrs[$oDocAttr->frameid]["type"])) $newelem[$k]["classvalue"].= ' F' . $oDocAttr->getRawType($attrs[$oDocAttr->frameid]["type"]);
             

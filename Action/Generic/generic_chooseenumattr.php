@@ -23,7 +23,7 @@ include_once ("GENERIC/generic_util.php");
  * @param Action &$action current action
  * @global string $famid Http var : family document identifier where find enum attributes
  */
-function generic_chooseenumattr(Action &$action)
+function generic_chooseenumattr(Action & $action)
 {
     $famid = GetHttpVars("famid", getDefFam($action));
     $dbaccess = $action->dbaccess;

@@ -23,7 +23,7 @@ include_once ("FDL/freedom_util.php");
 include_once ("FDL/editutil.php");
 // Compute value to be inserted in a specific layout
 // -----------------------------------
-function viewarray(Action &$action)
+function viewarray(Action & $action)
 {
     // -----------------------------------
     // GetAllParameters
@@ -42,6 +42,7 @@ function viewarray(Action &$action)
     
     if (($vid != "") && ($doc->cvid > 0)) {
         // special controlled view
+        
         /**
          * @var CVDoc $cvdoc
          */

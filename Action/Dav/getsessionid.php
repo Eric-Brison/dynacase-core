@@ -29,7 +29,7 @@ function getsessionid(Action & $action)
     $mb = microtime();
     $vid = GetHttpVars("vid");
     $docid = GetHttpVars("docid");
-
+    
     $action->lay->set("warning", "");
     $action->lay->set("CODE", "OK");
     $sessid = dav_sessionid($docid, $vid);

@@ -274,7 +274,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (is_object($this->session)) {
             if ($this->session->userid != 0) {
                 $this->log->debug("Get user on " . $this->dbaccess);
-                $this->user = new Account($this->dbaccess , $this->session->userid);
+                $this->user = new Account($this->dbaccess, $this->session->userid);
             } else {
                 $this->log->debug("User not set ");
             }

@@ -29,7 +29,7 @@ include_once ("FDL/modcard.php");
  * @global viewone string Http var : (Y|N) if Y direct view document detail if only one returned
  * @global view string Http var : display mode : icon|column|list
  */
-function search(Action &$action)
+function search(Action & $action)
 {
     // -----------------------------------
     $docid = GetHttpVars("id", 0);

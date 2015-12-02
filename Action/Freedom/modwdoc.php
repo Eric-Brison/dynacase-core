@@ -24,7 +24,6 @@ include_once ("FDL/freedom_util.php");
 function modwdoc(Action & $action)
 {
     // -----------------------------------
-    
     // Get all the params
     $docid = GetHttpVars("docid");
     $current = (GetHttpVars("current", "N") == "Y");
@@ -46,7 +45,6 @@ function modwdoc(Action & $action)
     $doc->unlock(true); // disabled autolock
     // update document already created to be conform to new workflow
     $doc->exec_query("update doc" . $doc->id . " set wid=$wid where usefor !~ 'W'");
-
     /**
      * @var WDoc $wdoc
      */

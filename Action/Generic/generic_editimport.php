@@ -19,7 +19,7 @@
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_editimport(Action &$action)
+function generic_editimport(Action & $action)
 {
     // -----------------------------------
     global $dbaccess;
@@ -39,6 +39,7 @@ function generic_editimport(Action &$action)
     
     $famid = getDefFam($action);
     // spec for csv file
+    
     /**
      * @var DocFam $doc
      */
@@ -48,6 +49,7 @@ function generic_editimport(Action &$action)
     else $famname = $doc->id;
     if ($doc->ccvid > 0) {
         // special controlled view
+        
         /**
          * @var CVDoc $cvdoc
          */

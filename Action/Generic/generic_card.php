@@ -22,7 +22,7 @@
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
 // -----------------------------------
-function generic_card(Action &$action)
+function generic_card(Action & $action)
 {
     // -----------------------------------
     // set title

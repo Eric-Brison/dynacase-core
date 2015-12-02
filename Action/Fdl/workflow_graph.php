@@ -25,7 +25,7 @@ include_once ("FDL/Class.WDoc.php");
  * @global id int Http var : document id to affect
  * @global viewdoc string Http var : with preview of affect document [Y|N]
  */
-function workflow_graph(Action &$action)
+function workflow_graph(Action & $action)
 {
     $docid = GetHttpVars("id");
     $viewdoc = (GetHttpVars("viewdoc", "N") == "Y");

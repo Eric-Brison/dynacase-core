@@ -149,7 +149,7 @@ function barmenu(Action & $action)
     ));
     
     $lmenu = $fdoc->GetMenuAttributes();
-    $tmenu=array();
+    $tmenu = array();
     foreach ($lmenu as $k => $v) {
         if ($v->getOption("global") == "yes") {
             $confirm = ($v->getOption("lconfirm") == "yes");
@@ -271,7 +271,7 @@ function barmenu(Action & $action)
                 );
         }
     }
-    $tmsort=array();
+    $tmsort = array();
     while (list($k, $v) = each($tsort)) {
         $tmsort[$v["said"]] = "sortdoc" . $v["said"];
     }
