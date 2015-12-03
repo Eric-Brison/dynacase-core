@@ -29,6 +29,11 @@ class ErrorCodeWFL
     const WFL0202 = 'workflow transition #%d property \'t\' is mandatory in class %s';
     /**
      * @errorCode
+     * The element of the $cycle must be an array()
+     */
+    const WFL0203 = "workflow transition element at index %d must be an array in class %s (found %s instead)";
+    /**
+     * @errorCode
      * transition are declared in a an array
      * @code
      * public $transitions = array(
@@ -100,6 +105,11 @@ class ErrorCodeWFL
      * m3 property must be a worflow method
      */
     const WFL0109 = 'workflow unknow m3 method %s for transition model %s in class %s';
+    /**
+     * @errorCode
+     * The transition element must have a key and an array() value
+     */
+    const WFL0110 = "transition element with key '%s' (index %d) must be an array in class %s (found %s instead)";
     /**
      * @errorCode
      *
