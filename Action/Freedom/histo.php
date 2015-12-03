@@ -17,12 +17,11 @@
  */
 
 include_once ("FDL/Class.Doc.php");
-function histo(&$action)
+function histo(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     
     $doc = new_Doc($dbaccess, $docid);
     $action->lay->Set("title", $doc->title);
 }
-?>

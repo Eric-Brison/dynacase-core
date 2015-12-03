@@ -68,7 +68,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
     // first see if fdl.csv file
     global $importedFiles;
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $tr = array();
     if (is_dir($ldir)) {
         if ($handle = opendir($ldir)) {

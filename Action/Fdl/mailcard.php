@@ -24,7 +24,7 @@ function mailcard(Action & $action)
     
     $docid = GetHttpVars("id");
     $cr = GetHttpVars("cr"); // want a status
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     // control sending
     $err = $doc->control('send');
@@ -137,7 +137,7 @@ function sendmailcard(Action & $action)
         
         $docid = GetHttpVars("id");
         
-        $dbaccess = $action->GetParam("FREEDOM_DB");
+        $dbaccess = $action->dbaccess;
         $doc = new_Doc($dbaccess, $docid);
         if ($doc->wid > 0) {
             if ($state != "-") {
@@ -184,7 +184,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
     setHttpVar("id", $docid); // for view zone
     if (GetHttpVars("_mail_format") == "") setHttpVar("_mail_format", $format);
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     
     $ftitle = str_replace(array(

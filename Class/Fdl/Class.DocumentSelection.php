@@ -26,7 +26,7 @@ class Fdl_DocumentSelection
     function __construct($config)
     {
         foreach ($config as $k => $v) $this->$k = $v;
-        $this->dbaccess = getParam("FREEDOM_DB");
+        $this->dbaccess = getDbAccess();
     }
     /**
      * return document identificators from selection
@@ -89,4 +89,3 @@ class Fdl_DocumentSelection
         return array();
     }
 }
-?>

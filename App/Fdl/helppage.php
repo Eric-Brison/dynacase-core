@@ -11,7 +11,7 @@
 function helppageenumlang()
 {
     
-    $dbaccess = getParam("FREEDOM_DB");
+    $dbaccess = getDbAccess();
     
     $doc = new_Doc($dbaccess, 'HELPPAGE');
     if ($doc->isAlive()) {
@@ -111,4 +111,3 @@ function helppage_edithelp(Action & $action, $dbaccess, $docid)
     $action->lay->SetBlockData('HELPLANGS1', $helplangs);
     $action->lay->SetBlockData('HELPLANGS2', $helplangs);
 }
-?>

@@ -23,17 +23,16 @@ include_once ("GENERIC/generic_util.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global policy Http var : add|update|keep police case of similar document
- * @global category Http var :
- * @global analyze Http var : "Y" if just analyze
- * @global key1 Http var : primary key for double
- * @global key2 Http var : secondary key for double
- * @global classid Http var : document family to import
- * @global colorder Http var : array to describe CSV column attributes
- * @global file Http var : path to import file (only with wsh)
- * @global  Http var :
+ * @global policy string Http var : add|update|keep police case of similar document
+ * @global category string Http var :
+ * @global analyze string Http var : "Y" if just analyze
+ * @global key1 string Http var : primary key for double
+ * @global key2 string Http var : secondary key for double
+ * @global classid int Http var : document family to import
+ * @global colorder string Http var : array to describe CSV column attributes
+ * @global file string Http var : path to import file (only with wsh)
  */
-function generic_importcsv(&$action)
+function generic_importcsv(Action & $action)
 {
     // -----------------------------------
     global $_FILES;
@@ -47,7 +46,7 @@ function generic_importcsv(&$action)
     $classid = GetHttpVars("classid", getDefFam($action)); // document family to import
     $comma = GetHttpVars("comma", ";"); // Column separator -default is comma-
     $tcolorder[$classid] = GetHttpVars("colorder"); // column order
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     setMaxExecutionTimeTo(180);
     $ddoc = createDoc($dbaccess, $classid);
@@ -75,6 +74,7 @@ function generic_importcsv(&$action)
     $tvalue = array();
     
     $line = 0;
+    $cr = array();
     while (!feof($fdoc)) {
         $buffer = rtrim(fgets($fdoc, 4096));
         $data = explode($comma, $buffer);
@@ -100,7 +100,9 @@ function generic_importcsv(&$action)
                         if (is_array($category)) {
                             
                             foreach ($category as $k => $v) {
-                                
+                                /**
+                                 * @var Dir $catg
+                                 */
                                 $catg = new_Doc($dbaccess, $v);
                                 $err = $catg->AddFile($cr[$line]["id"]);
                                 $cr[$line]["err"].= $err;
@@ -178,4 +180,4 @@ function generic_importcsv(&$action)
     {
         return (($var["action"] == "added") || ($var["action"] == "updated"));
     }
-?>
+    

@@ -49,7 +49,7 @@ function generic_usort(Action & $action)
 function setUsort(Action & $action, $aorder, $famid = "")
 {
     if (!$famid) $famid = getDefFam($action);
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $fdoc = new_Doc($dbaccess, $famid);
     

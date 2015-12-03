@@ -142,6 +142,11 @@ class Param extends DbObj
     
     function Get($name, $def = "")
     {
+        require_once ('WHAT/Class.ApplicationParameterManager.php');
+        
+        if (($value = ApplicationParameterManager::_catchDeprecatedGlobalParameter($name)) !== null) {
+            return $value;
+        }
         if (isset($this->buffer[$name])) {
             return ($this->buffer[$name]);
         } else {

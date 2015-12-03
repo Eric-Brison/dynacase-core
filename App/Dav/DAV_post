@@ -1,8 +1,9 @@
 #!/bin/bash
-if [ "$freedom_context" == "" ]; then
-    #load environement variable for freedom
-    . /etc/freedom.conf
-    wchoose -b
+
+if [ -z "$pgservice_core" ]; then
+    echo "Env variable pgservice_core is empty !"
+    echo "Check your context for missing or misconfigured environment variables."
+    exit 1
 fi
 
 . "$wpub/log.sh"
@@ -13,8 +14,6 @@ fi
 #------------------------------
 if [ "$1" = "I" ] ; then
     PGSERVICE="$pgservice_core" psql -f "$wpub/DAV/dav-pg.sql"
-    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val='service=''$pgservice_core''' WHERE name='WEBDAV_DB'"
-          
 fi
 
 #------------------------------
@@ -27,15 +26,8 @@ if [ "$1" = "U" ] ; then
         RET=$?
         if [ $RET -ne 0 ]; then
             PGSERVICE="$pgservice_core" psql -f "$wpub/DAV/dav-pg.sql"
-            
         fi
-	PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val='service=''$pgservice_core''' WHERE name='WEBDAV_DB'"
-	RET=$?
-	if [ $RET -ne 0 ]; then
-	    echo "Error setting WEBDAV_DB"
-	    exit $RET
-	fi
-    
+
 fi
 
 #------------------------------

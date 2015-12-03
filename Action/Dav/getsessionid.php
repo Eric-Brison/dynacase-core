@@ -21,17 +21,14 @@ include_once ("DAV/Class.FdlDav.php");
 /**
  * Get DAV session id for current user
  * @param Action &$action current action
- * @param string $vid identifier for file <vaultid>-<docid>
  */
-function getsessionid(&$action)
+function getsessionid(Action & $action)
 {
     header('Content-type: text/xml; charset=utf-8');
     
     $mb = microtime();
     $vid = GetHttpVars("vid");
     $docid = GetHttpVars("docid");
-    
-    $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $action->lay->set("warning", "");
     $action->lay->set("CODE", "OK");
@@ -44,7 +41,7 @@ function getsessionid(&$action)
 function dav_sessionid($docid, $vid)
 {
     global $action;
-    $s = new HTTP_WebDAV_Server_Freedom(getParam("WEBDAV_DB"));
+    $s = new HTTP_WebDAV_Server_Freedom($action->dbaccess);
     $s->setFolderMaxItem(getParam('WEBDAV_FOLDERMAXITEM'));
     $sid = $s->getSession($docid, $vid, $action->user->login);
     if (!$sid) {
@@ -56,10 +53,12 @@ function dav_sessionid($docid, $vid)
 }
 function dav_getdavurl($docid, $vid)
 {
-    $dbaccess = getParam("FREEDOM_DB");
+    global $action;
+    $dbaccess = $action->dbaccess;
     $vf = newFreeVaultFile($dbaccess);
     $sdav = getParam("FREEDAV_SERVEUR", false);
     if ($sdav && $vf->Show($vid, $info) == "") {
         return sprintf("asdav://%s/freedav/vid-%s/%s", $sdav, dav_sessionid($docid, $vid) , $info->name);
     }
+    return false;
 }

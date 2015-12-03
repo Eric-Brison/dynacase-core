@@ -41,7 +41,7 @@ function generic_mod(Action & $action)
     $recallhelper = $action->getArgument("recallhelper") == "yes"; // special zone when finish edition
     $updateAttrid = $action->getArgument("updateAttrid");
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $action->parent->addJsRef("GENERIC:generic_mod.js", true);
     $err = modcard($action, $ndocid, $info); // ndocid change if new doc
     if (!$noredirect) $action->AddWarningMsg($err);

@@ -32,7 +32,7 @@ function editframe(Action & $action)
     $frameid = strtolower($action->getArgument("frameid"));
     $vid = $action->getArgument("vid"); // special controlled view
     // Set the globals elements
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid == 0) {
         $doc = createDoc($dbaccess, $classid);
@@ -63,7 +63,7 @@ function editframe(Action & $action)
     $tval = array();
     
     $foa = $doc->getAttribute($frameid);
-    if (!$foa) $action->exitError(sprintf("attribute %s not found" , $frameid));
+    if (!$foa) $action->exitError(sprintf("attribute %s not found", $frameid));
     if ($foa->getOption("vlabel") == "none") $action->lay->set("flabel", '');
     else $action->lay->set("flabel", mb_ucfirst($foa->getLabel()));
     $action->lay->set("frameid", $foa->id);
@@ -114,4 +114,3 @@ function editframe(Action & $action)
         ));
     }
 }
-?>

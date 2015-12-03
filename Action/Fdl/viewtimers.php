@@ -20,13 +20,13 @@ include_once ("FDL/Class.Doc.php");
 /**
  * View timers attached to a document
  * @param Action &$action current action
- * @global id Http var : document identifier to see
+ * @global id int Http var : document identifier to see
  */
 function viewtimers(Action & $action)
 {
     $docid = getHttpVars("id");
     $szone = (getHttpVars("szone") == "Y");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     $doc = new_Doc($dbaccess, $docid, true);
     if (!$doc->isAlive()) {
@@ -111,4 +111,3 @@ function humandelay($dd)
     }
     return $s;
 }
-?>

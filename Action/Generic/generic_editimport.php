@@ -19,14 +19,14 @@
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_editimport(&$action)
+function generic_editimport(Action & $action)
 {
     // -----------------------------------
     global $dbaccess;
     $allcol = (GetHttpVars("allcol", "N") == "Y"); // special controlled view
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/selectbox.js");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $homefld = new_Doc($dbaccess, getDefFld($action));
     
     $stree = array();
@@ -39,12 +39,20 @@ function generic_editimport(&$action)
     
     $famid = getDefFam($action);
     // spec for csv file
+    
+    /**
+     * @var DocFam $doc
+     */
     $doc = new_Doc($dbaccess, $famid);
     $famid = $doc->id;
     if ($doc->name != "") $famname = $doc->name;
     else $famname = $doc->id;
     if ($doc->ccvid > 0) {
         // special controlled view
+        
+        /**
+         * @var CVDoc $cvdoc
+         */
         $cvdoc = new_Doc($dbaccess, $doc->ccvid);
         $cvid = $cvdoc->getRawValue("CV_IDCVIEW");
         if ($cvid) {
@@ -73,6 +81,7 @@ function generic_editimport(&$action)
         $format.= $attr->getLabel() . " ;";
     }
     $lattr = $doc->GetNormalAttributes();
+    $tkey = array();
     foreach ($lattr as $k => $attr) {
         if ($attr->visibility == "O") continue; // only valuated attribut
         $tkey[] = array(
@@ -82,6 +91,7 @@ function generic_editimport(&$action)
     }
     if ($allcol) $lattr = $doc->GetNormalAttributes();
     else $lattr = $doc->GetImportAttributes();
+    $tcol = array();
     foreach ($lattr as $k => $attr) {
         $tcol[] = array(
             "idattr" => $attr->id,
@@ -96,4 +106,3 @@ function generic_editimport(&$action)
     $action->lay->Set("classid", $famid);
     $action->lay->Set("classname", $famname);
 }
-?>

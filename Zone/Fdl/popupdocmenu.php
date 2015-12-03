@@ -8,15 +8,14 @@
  * Specific menu for family
  */
 require_once "FDL/popupdoc.php";
-
 /**
  * define popupmenu for a document
- * 
+ *
  * @param Action &$action current action
- * 
+ *
  * @return void
  */
-function popupdocmenu(Action &$action)
+function popupdocmenu(Action & $action)
 {
     // -----------------------------------
     // define accessibility
@@ -26,7 +25,7 @@ function popupdocmenu(Action &$action)
     $js = ($action->getArgument("js", "true") == "true") ? true : false;
     $css = ($action->getArgument("css", "true") == "true") ? true : false;
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid); # _("States")
     if ($zone == "") $specmenu = $doc->specialmenu;
     else $specmenu = $zone;
@@ -37,7 +36,7 @@ function popupdocmenu(Action &$action)
         $menuapp = "FDL";
         $menuaction = "POPUPDOCDETAIL";
     }
-
+    
     $action->lay->set("id", $doc->id);
     $action->lay->set("menuapp", $menuapp);
     $action->lay->set("menuaction", $menuaction);
@@ -49,4 +48,3 @@ function popupdocmenu(Action &$action)
         $action->parent->AddCssRef("FDL:POPUP.CSS", true);
     }
 }
-?>

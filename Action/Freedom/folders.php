@@ -19,19 +19,18 @@
 // $Id: folders.php,v 1.18 2005/06/28 08:37:46 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/freedom/Action/Freedom/folders.php,v $
 // ---------------------------------------------------------------
-
 include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/Class.QueryDir.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function folders(Action &$action)
+function folders(Action & $action)
 {
     // -----------------------------------
     global $nbfolders, $dbaccess, $pexport;
     $nbfolders = 0;
     // Get all the params
     $dirid = GetHttpVars("dirid", 0); // root directory
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     include_once ("FDL/popup_util.php");
     //barmenu($action); // describe bar menu
@@ -42,7 +41,6 @@ function folders(Action &$action)
     $action->lay->Set("homeid", $homefld->id);
     
     $tmenuaccess = array(); // to define action an each icon
-    
     if ($dirid == 0) $dirid = $action->getParam("ROOTFLD", getFirstDir($dbaccess));
     
     $doc = new_Doc($dbaccess, $dirid);
@@ -97,7 +95,6 @@ function folders(Action &$action)
     //-------------- pop-up menu ----------------
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     // display popup js
-    
     // display popup js
     popupGen($nbfolders);
 }
@@ -158,4 +155,3 @@ function addfolder(Doc $doc, $level, $treename, $thisfld = true)
     }
     return $ltree;
 }
-?>

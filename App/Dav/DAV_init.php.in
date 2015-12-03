@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 /**
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
@@ -27,12 +27,6 @@ $app_const = array(
         "descr" => N_("address of the webdav server for authenticate server") ,
         "global" => "Y"
     ) ,
-    "WEBDAV_DB" => array(
-        "val" => "dbname=webdav user=anakeen",
-        "descr" => N_("database access for webdav") ,
-        "kind" => "readonly",
-        "global" => "Y"
-    ) ,
     "WEBDAV_ROOTID" => array(
         "val" => "9",
         "descr" => N_("folder identifier for root") ,
@@ -44,4 +38,3 @@ $app_const = array(
         "global" => "Y"
     )
 );
-?>

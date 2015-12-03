@@ -25,7 +25,6 @@ function freedom_bgimport(Action & $action)
     global $_FILES;
     // Get all the params
     $dirid = GetHttpVars("dirid");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
     $policy = GetHttpVars("policy", "keep");
     $analyze = (GetHttpVars("analyze", "N") == "Y");
     $double = GetHttpVars("double"); // with double title document

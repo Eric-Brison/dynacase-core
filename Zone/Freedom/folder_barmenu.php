@@ -30,7 +30,7 @@ function folder_barmenu(Action & $action)
     $count = getHttpVars("count", "");
     $dirid = GetHttpVars("dirid");
     $target = GetHttpVars("target"); // target for hyperlinks
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $dir = new_Doc($dbaccess, $dirid);
     

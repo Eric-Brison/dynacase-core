@@ -22,14 +22,14 @@
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_editchangecatg(Action &$action)
+function generic_editchangecatg(Action & $action)
 {
     // -----------------------------------
     global $docid;
     global $dbaccess;
     
     $docid = GetHttpVars("id"); // the user to change catg
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $homefld = new_Doc($dbaccess, getDefFld($action));
     
     $doc = new_Doc($dbaccess, $docid);
@@ -49,4 +49,3 @@ function generic_editchangecatg(Action &$action)
     $action->lay->Set("topdir", getDefFld($action));
     $action->lay->Set("docid", $doc->id);
 }
-?>

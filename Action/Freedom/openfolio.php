@@ -11,12 +11,12 @@ include_once ("FDL/Class.Doc.php");
 include_once ('FREEDOM/Lib.portfolio.php');
 // -----------------------------------
 // -----------------------------------
-function openfolio(Action &$action)
+function openfolio(Action & $action)
 {
     // -----------------------------------
     // Set the globals elements
     $docid = GetHttpVars("id", 0); // document to edit
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $folio = new_Doc($dbaccess, $docid);
     
@@ -70,4 +70,3 @@ function openfolio(Action &$action)
         }
     }
 }
-?>

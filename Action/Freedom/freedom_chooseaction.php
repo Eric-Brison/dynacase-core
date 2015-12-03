@@ -20,21 +20,22 @@ include_once ("FDL/Class.Dir.php");
 /**
  * To choose action before create en exec document
  * @param Action &$action current action
- * @global id Http var : document identifier folder
- * @global saction Http var : action name to execute
- * @global sapp Http var : app name to execute
+ * @global id int Http var : document identifier folder
+ * @global saction string Http var : action name to execute
+ * @global sapp string Http var : app name to execute
  */
-function freedom_chooseaction(&$action)
+function freedom_chooseaction(Action & $action)
 {
     
     $docid = GetHttpVars("id");
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     if ($doc->isAlive()) {
         $la = $doc->GetActionAttributes();
-        if (count($la) == 0) $action - exitError(_("no action found for %s document") , $doc->title);
+        if (count($la) == 0) $action->exitError(sprintf(_("no action found for %s document") , $doc->title));
         $oa = current($la);
+        $taction = array();
         foreach ($la as $ka => $oa) {
             $taction[$ka]["label"] = $oa->getLabel();
             

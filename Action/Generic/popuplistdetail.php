@@ -19,14 +19,14 @@
 include_once ("FDL/popupdoc.php");
 include_once ("FDL/popupdocdetail.php");
 
-function popuplistdetail(&$action)
+function popuplistdetail(Action & $action)
 {
     $docid = GetHttpVars("id");
     if ($docid == "") $action->exitError(_("No identificator"));
     
     $zone = GetHttpVars("zone"); // special zone
     $famid = GetHttpVars("famid"); // special zone
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     if ($doc->isAffected()) $docid = $doc->id;
     //  if ($doc->doctype=="C") return; // not for familly

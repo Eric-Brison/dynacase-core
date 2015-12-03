@@ -19,7 +19,7 @@
 include_once ("FDL/Class.DocFam.php");
 include_once ("FDL/modcard.php");
 
-function vconstraint(&$action)
+function vconstraint(Action & $action)
 {
     
     $docid = GetHttpVars("id", 0);
@@ -30,7 +30,7 @@ function vconstraint(&$action)
     if ($index === "") $index = - 1;
     
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid > 0) {
         $doc = new_Doc($dbaccess, $docid);
@@ -68,6 +68,8 @@ function vconstraint(&$action)
         
         $action->lay->set("suggest", (count($tres) > 0));
         // view possible correction
+        $tselect = array();
+        $tval = array();
         while (list($k, $v) = each($tres)) {
             $tselect[$k]["choice"] = htmlentities($v[0]);
             $tselect[$k]["cindex"] = $k;

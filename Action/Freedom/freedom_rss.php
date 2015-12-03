@@ -28,7 +28,7 @@ function freedom_rss(Action & $action)
     $lim = GetHttpVars("lim", 100);
     $order = GetHttpVars("order");
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     header('Content-type: text/xml; charset=utf-8');
     $action->lay->setEncoding("utf-8");
@@ -203,4 +203,3 @@ function __xmlentities($string)
         '&apos;'
     ) , $string);
 }
-?>

@@ -82,7 +82,7 @@ class ldapProvider extends Provider
         }
         
         include_once ("FDL/Class.DocFam.php");
-        $dbaccess = getParam("FREEDOM_DB");
+        $dbaccess = getDbAccess();
         $du = new_doc($dbaccess, $whatuser->fid);
         if ($du->isAlive()) {
             $du->setValue("us_whatid", $whatuser->id);
@@ -90,6 +90,9 @@ class ldapProvider extends Provider
             if ($err == "") {
                 error_log("User $username added (id=" . $du->id . ")");
                 if ($this->parms{'dGroup'} != '') {
+                    /**
+                     * @var Dir $gu
+                     */
                     $gu = new_Doc($dbaccess, $this->parms{'dGroup'});
                     if ($gu->isAlive()) {
                         $errg = $gu->addFile($du->id);

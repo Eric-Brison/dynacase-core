@@ -25,7 +25,7 @@ function generic_prefs(Action & $action)
     $onefamOrigin = $action->getArgument("onefam");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     
-    $dbaccess = $action->getParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $fdoc = new_doc($dbaccess, $famid);
     if (!$fdoc->isAlive()) {
         $action->addWarningMsg(sprintf(_("Family (#%s) not exists") , $famid));
@@ -67,4 +67,3 @@ function generic_prefs(Action & $action)
     if (($viewmode == 'column') && ($splitmode == 'V')) $action->lay->set("dispocheck3", "checked");
     if (($viewmode == 'abstract') && ($splitmode == 'H')) $action->lay->set("dispocheck4", "checked");
 }
-?>

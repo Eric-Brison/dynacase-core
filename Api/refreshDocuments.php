@@ -88,9 +88,9 @@ $stopOnError = ($usage->addEmptyParameter("stop-on-error", "Stop processing when
 $usage->verify();
 
 $allrev = ($revision == "yes"); // method to use
-$dbaccess = $action->getParam("FREEDOM_DB");
+$dbaccess = $action->dbaccess;
 if ($dbaccess == "") {
-    print "Database not found : param FREEDOM_DB";
+    print "Database not found : action->dbaccess";
     exit();
 }
 

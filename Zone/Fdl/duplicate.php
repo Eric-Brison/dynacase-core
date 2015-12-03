@@ -20,7 +20,7 @@ include_once ("FDL/Class.Dir.php");
 // -----------------------------------
 function duplicate(Action & $action, $dirid, $docid, $temporary = false)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     // test if doc with values
     $doc = new_Doc($dbaccess, $docid);
     
@@ -73,4 +73,3 @@ function duplicate(Action & $action, $dirid, $docid, $temporary = false)
     
     return $copy;
 }
-?>

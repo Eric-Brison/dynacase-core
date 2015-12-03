@@ -23,13 +23,13 @@ include_once ("FDL/duplicate.php");
 include_once ("FDL/modcard.php");
 // -----------------------------------
 // -----------------------------------
-function freedom_preview(&$action)
+function freedom_preview(Action & $action)
 {
     // -----------------------------------
     $docid = GetHttpVars("id", 0);
     $classid = GetHttpVars("classid", 0);
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid > 0) {
         $doc = new_Doc($dbaccess, $docid);
@@ -53,4 +53,3 @@ function freedom_preview(&$action)
     //if ($err != "")  $action-> ExitError($err);
     
 }
-?>

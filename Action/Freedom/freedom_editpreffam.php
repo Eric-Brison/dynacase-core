@@ -22,9 +22,9 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Lib.Dir.php");
 
-function freedom_editpreffam(&$action)
+function freedom_editpreffam(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
     $tcdoc = GetClassesDoc($dbaccess, $action->user->id, array(
@@ -52,4 +52,3 @@ function cmpselect($a, $b)
 {
     return strcasecmp($a["ctitle"], $b["ctitle"]);
 }
-?>

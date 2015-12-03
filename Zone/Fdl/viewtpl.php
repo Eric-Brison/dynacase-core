@@ -20,9 +20,9 @@ include_once ("FDL/Class.Dir.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global id Http var : document identifier to see
- * @global famid Http var :
- * @global zone Http var : zone
+ * @global id int Http var : document identifier to see
+ * @global famid int Http var :
+ * @global zone string Http var : zone
  */
 function viewtpl(Action & $action)
 {
@@ -34,7 +34,7 @@ function viewtpl(Action & $action)
     if (!$docid) $docid = $action->getArgument("famid");
     if (!$zone) $action->addWarningMsg(_("no template defined"));
     if (!$docid) $action->addWarningMsg(sprintf(_("template %s no document found") , $zone));
-    $dbaccess = $action->getParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $reg = Doc::parseZone($zone);
     if ($reg === false) {
@@ -61,4 +61,3 @@ function viewtpl(Action & $action)
         }
     }
 }
-?>

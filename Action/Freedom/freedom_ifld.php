@@ -28,7 +28,7 @@ function freedom_ifld(Action & $action)
 {
     // -----------------------------------
     $docid = GetHttpVars("id");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     
     $lfather = array_reverse(fatherFld($dbaccess, $doc->initid));
@@ -80,4 +80,3 @@ function fatherFld($dbaccess, $docid, $level = 0, $lfldid = array() , $lcdoc = a
     } else return $lcdoc;
     return $ldoc2;
 }
-?>

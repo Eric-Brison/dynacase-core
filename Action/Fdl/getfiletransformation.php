@@ -33,7 +33,7 @@ function getfiletransformation(Action & $action)
     $zone = $action->getArgument("zone");
     $vid = $action->getArgument("vid");
     $idv = $action->getArgument("idv");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid == "") $action->exitError(_("no document reference"));
     if (!is_numeric($docid)) $docid = getIdFromName($dbaccess, $docid);
@@ -154,7 +154,7 @@ function sendRequestForFileTransformation($filename, $engine, &$info)
             $ot = new \Dcp\TransformationEngine\Client(getParam("TE_HOST") , getParam("TE_PORT"));
             $err = $ot->sendTransformation($engine, $vid = 0, $filename, $callback, $info);
             if ($err == "") {
-                $dbaccess = GetParam("FREEDOM_DB");
+                $dbaccess = $action->dbaccess;
                 $tr = new TaskRequest($dbaccess);
                 $tr->tid = $info["tid"];
                 $tr->fkey = $vid;

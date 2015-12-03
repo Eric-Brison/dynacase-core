@@ -22,7 +22,7 @@ include_once ("FDL/popupfamdetail.php");
 function viewbarmenu(Action & $action)
 {
     $docid = GetHttpVars("id");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     if ($docid == "") $action->exitError(_("No identificator"));
     $popup = '';
@@ -116,7 +116,7 @@ function viewbarmenu(Action & $action)
         }
     }
     foreach ($popup as & $elmt) {
-        foreach ($elmt as $k=>& $value) {
+        foreach ($elmt as $k => & $value) {
             if (is_string($value) && $k !== "descr") {
                 $value = htmlspecialchars($value, ENT_QUOTES);
             }

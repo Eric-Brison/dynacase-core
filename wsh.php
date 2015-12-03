@@ -115,7 +115,7 @@ try {
     } else {
         $action->Set("", $appl);
     }
-
+    
     if ($action->canExecute("CORE_ADMIN_ROOT", "CORE_ADMIN") === '') {
         // Authorize administrators to execute admin actions
         $action->parent->setAdminMode();
@@ -195,9 +195,9 @@ if (isset($_GET["api"])) {
         }
     } else {
         // REPEAT EXECUTION FOR FREEDOM FOLDERS
-        $dbaccess = $appl->GetParam("FREEDOM_DB");
+        $dbaccess = $appl->dbaccess;
         if ($dbaccess == "") {
-            print "Database not found : param FREEDOM_DB";
+            print "Database not found : appl->dbaccess";
             exit;
         }
         include_once ("FDL/Class.Doc.php");

@@ -21,9 +21,9 @@ include_once ("FDL/modcard.php");
 /**
  * Fusion all document to be printed
  * @param Action &$action current action
- * @global docid Http var : folder id (generaly an action)
- * @global fromedit Http var : (Y|N) if Y action comes from edition else from viewing
- * @global zonebodycard Http var : definition of the zone used for print
+ * @global docid int Http var : folder id (generaly an action)
+ * @global fromedit string Http var : (Y|N) if Y action comes from edition else from viewing
+ * @global zonebodycard string Http var : definition of the zone used for print
  */
 function fdl_process(&$action)
 {
@@ -33,8 +33,10 @@ function fdl_process(&$action)
     $fromedit = (GetHttpVars("fromedit", "Y") == "Y"); // need to compose temporary doc
     $method = "::fdl_pubprint(pubm_title,pubm_body)";
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
-    
+    $dbaccess = $action->dbaccess;
+    /**
+     * @var Dir $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     if ($udocid > 0) {
         $t[] = getTDoc($dbaccess, $udocid);
@@ -78,4 +80,3 @@ function fdl_process(&$action)
     $action->lay->setBlockData("DOCS", $tlay);
     $action->lay->set("BGIMG", $doc->getHtmlAttrValue("pubm_bgimg"));
 }
-?>

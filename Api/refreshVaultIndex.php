@@ -16,9 +16,9 @@ include_once ('VAULT/Class.VaultFile.php');
 /**
  * Setup main db connection
  */
-$dbaccess = GetParam("FREEDOM_DB");
+$dbaccess = $action->dbaccess;
 if ($dbaccess == "") {
-    $action->exitError("Database not found : param FREEDOM_DB");
+    $action->exitError("Database not found : action->dbaccess");
 }
 $o = new DbObj($dbaccess);
 if (!is_object($o)) {
@@ -83,10 +83,9 @@ if (is_numeric($parms['famid'])) {
     $q->AddQuery(sprintf("id = %s", pg_escape_string($parms['famid'])));
 }
 $famIconList = $q->Query(0, 0, "TABLE");
-if (! $famIconList) {
-    $famIconList=array();
+if (!$famIconList) {
+    $famIconList = array();
 }
-
 /**
  * Load all file attributes
  */
@@ -206,4 +205,3 @@ function sqlexec(&$dbobj, &$parms, $sql)
     }
     return $err;
 }
-?>

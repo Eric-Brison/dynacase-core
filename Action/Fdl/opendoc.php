@@ -22,8 +22,8 @@ include_once ("FDL/Class.Doc.php");
  * all parameters use in GENERIC_GENERIC_EDIT can be use in edit mode
  * all parameters use in FDL:FDL_CARD can be use in view mode
  * @param Action &$action current action
- * @global id Http var : document identifier to see
- * @global mode Http var : edit or view mode
+ * @global id int Http var : document identifier to see
+ * @global mode string Http var : edit or view mode
  *
  */
 function opendoc(Action & $action)
@@ -38,7 +38,7 @@ function opendoc(Action & $action)
                 $mode = "new";
             }
         } else {
-            $dbaccess = $action->GetParam("FREEDOM_DB");
+            $dbaccess = $action->dbaccess;
             $doc = new_doc($dbaccess, $docid, true);
             if (($err = $doc->control('edit')) == "") {
                 $mode = 'edit';
@@ -69,4 +69,4 @@ function opendoc(Action & $action)
         }
         if ($err) $action->exitError($err);
     }
-?>
+    

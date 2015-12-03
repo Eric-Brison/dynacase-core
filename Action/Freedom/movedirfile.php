@@ -19,7 +19,7 @@
 include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function movedirfile(&$action)
+function movedirfile(Action & $action)
 {
     // -----------------------------------
     // Get all the params
@@ -27,10 +27,14 @@ function movedirfile(&$action)
     $fromdirid = GetHttpVars("fromdirid");
     $docid = GetHttpVars("docid");
     $return = GetHttpVars("return"); // return action may be folio
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
     // add before suppress
+    
+    /**
+     * @var Dir $dir
+     */
     $dir = new_Doc($dbaccess, $todirid);
     if ($dir->locked == - 1) { // it is revised document
         $ldocid = $dir->getLatestId();
@@ -63,4 +67,3 @@ function movedirfile(&$action)
     if ($return == "folio") redirect($action, GetHttpVars("app") , "FOLIOLIST&dirid=$todirid");
     else redirect($action, GetHttpVars("app") , "FREEDOM_VIEW&dirid=$todirid");
 }
-?>

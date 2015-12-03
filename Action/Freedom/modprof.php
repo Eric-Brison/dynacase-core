@@ -36,8 +36,12 @@ function modprof(Action & $action)
     
     if ($docid == 0) $action->exitError(_("the document is not referenced: cannot apply profile access modification"));
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     // initialise object
+    
+    /**
+     * @var DocFam $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     // control modify acl
     $err = $doc->Control("modifyacl");
@@ -97,4 +101,3 @@ function modprof(Action & $action)
     if ($redirid) $docid = $redirid;
     redirect($action, "FDL", "FDL_CARD&props=Y&id=$docid", $action->GetParam("CORE_STANDURL"));
 }
-?>

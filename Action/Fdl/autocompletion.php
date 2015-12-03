@@ -42,7 +42,7 @@ function autocompletion(Action & $action)
     }
     $err = '';
     $canitem = false;
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
     $docid = $doc->id;

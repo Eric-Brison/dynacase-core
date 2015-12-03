@@ -20,10 +20,10 @@
 // $Source: /home/cvsroot/anakeen/freedom/freedom/Action/Fdl/unlockfile.php,v $
 // ---------------------------------------------------------------
 include_once ("FDL/Class.Doc.php");
-function unlockfile(&$action)
+function unlockfile(Action & $action)
 {
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     $rzone = GetHttpVars("rzone"); // special zone when finish edition
     $rvid = GetHttpVars("rvid"); // special zone when finish edition
@@ -51,4 +51,3 @@ function unlockfile(&$action)
         redirect($action, "FDL", "FDL_CARD$opt&id=" . $doc->id, $action->GetParam("CORE_STANDURL"));
     }
 }
-?>

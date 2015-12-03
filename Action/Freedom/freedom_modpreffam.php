@@ -20,11 +20,9 @@
 // $Source: /home/cvsroot/anakeen/freedom/freedom/Action/Freedom/freedom_modpreffam.php,v $
 include_once ("FDL/Class.Doc.php");
 
-function freedom_modpreffam(&$action)
+function freedom_modpreffam(Action & $action)
 {
     $tidsfam = GetHttpVars("idsfam"); // preferenced families
-    $dbaccess = $action->GetParam("FREEDOM_DB");
-    
     $idsfam = "";
     if (is_array($tidsfam)) $idsfam = implode(",", $tidsfam);
     
@@ -32,4 +30,3 @@ function freedom_modpreffam(&$action)
     
     redirect($action, "CORE", "FOOTER");
 }
-?>

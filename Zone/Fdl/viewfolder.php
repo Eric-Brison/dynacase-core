@@ -56,7 +56,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
     // Set the globals elements
     $baseurl = $action->GetParam("CORE_BASEURL");
     $standurl = $action->GetParam("CORE_STANDURL");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $dir = new_Doc($dbaccess, $dirid);
     

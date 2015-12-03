@@ -37,7 +37,7 @@ function viewframe(Action & $action)
     $vid = GetHttpVars("vid"); // special controlled view
     if ($ulink == "N") $ulink = false;
     // Set the globals elements
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $action->lay->Set("cursor", $ulink ? "crosshair" : "inherit");
     
@@ -109,4 +109,3 @@ function viewframe(Action & $action)
         $action->lay->setBlockData("FVALUES", $tval);
     }
 }
-?>

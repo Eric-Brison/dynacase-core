@@ -29,9 +29,9 @@ $usage->verify();
 $appl = new Application();
 $appl->Set("FDL", $core);
 
-$dbaccess = $appl->GetParam("FREEDOM_DB");
+$dbaccess = $appl->dbaccess;
 if ($dbaccess == "") {
-    print "Database not found : param FREEDOM_DB";
+    print "Database not found : appl->dbaccess";
     return;
 }
 $filter = array();
@@ -54,4 +54,3 @@ if ($nd > 0) {
     print _("done\n");
 }
 wbar(0, $nd, "done");
-?>

@@ -60,7 +60,7 @@ function generic_edit(Action & $action)
     $action->lay->eSet("updateAttrid", $updateAttrid);
     $action->lay->Set("SELFTARGET", ($rtarget == "_self"));
     // Set the globals elements
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if (($docid === 0) || ($docid === "") || ($docid === "0")) {
         if ($classid == "") $action->exitError(sprintf(_("Creation aborded : no family specified")));
@@ -215,4 +215,3 @@ function cmp_cvorder($a, $b)
     }
     return ($a["cv_order"] < $b["cv_order"]) ? -1 : 1;
 }
-?>

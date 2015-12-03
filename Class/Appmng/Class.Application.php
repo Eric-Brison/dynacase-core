@@ -273,8 +273,8 @@ create sequence SEQ_ID_APPLICATION start 10;
         // Set the user if possible
         if (is_object($this->session)) {
             if ($this->session->userid != 0) {
-                $this->log->debug("Get user on " . $this->GetParam("CORE_DB"));
-                $this->user = new Account($this->GetParam("CORE_DB") , $this->session->userid);
+                $this->log->debug("Get user on " . $this->dbaccess);
+                $this->user = new Account($this->dbaccess, $this->session->userid);
             } else {
                 $this->log->debug("User not set ");
             }

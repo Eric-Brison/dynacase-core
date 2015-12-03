@@ -63,7 +63,7 @@ function editmail(Action & $action)
         $from = getMailAddr($action->user->id, false);
     }
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     // control sending
     $err = $doc->control('send');
@@ -88,4 +88,3 @@ function editmail(Action & $action)
     $action->lay->Set("title", $doc->getHTMLTitle());
     $action->lay->set("VIEWDOC", $viewdoc);
 }
-?>

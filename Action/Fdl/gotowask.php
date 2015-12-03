@@ -20,13 +20,13 @@ include_once ("FDL/Class.Dir.php");
 /**
  * View a document
  * @param Action &$action current action
- * @global id Http var : document identifier where use the ask
- * @global waskid Http var : document identifier of the ask
+ * @global id int Http var : document identifier where use the ask
+ * @global waskid int Http var : document identifier of the ask
  */
-function gotowask(&$action)
+function gotowask(Action & $action)
 {
     $docid = GetHttpVars("id");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     if ($docid == "") $action->exitError(_("no document reference"));
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAlive()) $action->exitError(sprintf(_("unknow document reference '%s'") , GetHttpVars("docid")));
@@ -42,4 +42,3 @@ function gotowask(&$action)
     $action->lay->set("doctitle", sprintf(_("goto latest %s") , _($doc->state)));
     $action->lay->set("id", $doc->id);
 }
-?>

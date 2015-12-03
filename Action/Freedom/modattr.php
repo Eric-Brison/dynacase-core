@@ -27,6 +27,10 @@ function modattr(Action & $action)
     // Get all the params
     $docid = GetHttpVars("docid");
     $dirid = GetHttpVars("dirid", 0); // directory to place doc if new doc
+    
+    /**
+     * @var array $orders
+     */
     $orders = GetHttpVars("order");
     $names = GetHttpVars("name");
     $types = GetHttpVars("type");
@@ -43,7 +47,7 @@ function modattr(Action & $action)
     $phpconstraint = GetHttpVars("phpconstraint");
     $options = GetHttpVars("options");
     $nattrids = GetHttpVars("nattrid"); // for new attributes
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $bdfreedomattr = new DocAttr($dbaccess);
     if ($docid == 0) {
@@ -144,4 +148,3 @@ function modattr(Action & $action)
     $action->AddWarningMsg(sprintf(_("\"%s\" family structure has been updated") , $doc->getTitle()));
     redirect($action, "FREEDOM", "DEFATTR&id=" . $doc->id, $action->GetParam("CORE_STANDURL"));
 }
-?>

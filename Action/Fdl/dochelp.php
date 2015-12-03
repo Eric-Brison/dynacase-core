@@ -23,11 +23,10 @@ function dochelp(Action & $action)
     
     $docid = $action->getArgument("id");
     $anchor = $action->getArgument("anchor");
-    $dbaccess = $action->getParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_doc($dbaccess, $docid);
     if (!$doc->isAlive()) {
     }
     
     redirect($action, "FDL", "IMPCARD&id=$docid#$anchor");
 }
-?>

@@ -85,11 +85,6 @@ $app_const = array(
         "descr" => N_("Publication directory") ,
         "kind" => "readonly"
     ) ,
-    "CORE_DB" => array(
-        "val" => "",
-        "kind" => "readonly",
-        "descr" => N_("Database information")
-    ) ,
     "CORE_TMPDIR" => "./var/tmp",
     "CORE_TMPDIR_MAXAGE" => array(
         "val" => "2",

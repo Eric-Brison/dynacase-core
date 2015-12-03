@@ -43,7 +43,7 @@ function freedom_editimport(Action & $action)
     $action->parent->addCssRef("css/dcp/jquery-ui.css");
     $action->parent->addCssRef("FREEDOM:freedom_editimport.css");
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     // build list of class document
     $query = new QueryDb($dbaccess, "Doc");
     $query->AddQuery("doctype='C'");
@@ -71,4 +71,3 @@ function freedom_editimport(Action & $action)
     
     $action->lay->eSet("dirid", $dirid);
 }
-?>

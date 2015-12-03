@@ -25,14 +25,14 @@ include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/freedom_util.php");
 // Compute value to be inserted in a specific layout
 // -----------------------------------
-function viewattr(&$action, $htmlval = true, $htmllink = true)
+function viewattr(Action & $action, $htmlval = true, $htmllink = true)
 {
     // -----------------------------------
     // GetAllParameters
     $docid = GetHttpVars("id");
     $abstract = (GetHttpVars("abstract", 'N') == "Y"); // view doc abstract attributes
     // Set the globals elements
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
     
@@ -62,4 +62,3 @@ function viewattr(&$action, $htmlval = true, $htmllink = true)
         $action->lay->Set("L_" . strtoupper($v->id) , $v->getLabel());
     }
 }
-?>

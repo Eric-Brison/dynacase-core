@@ -24,7 +24,7 @@ include_once ("FDL/modcard.php");
 include_once ("FDL/Class.Dir.php");
 include_once ("GENERIC/generic_util.php");
 // -----------------------------------
-function generic_changecatg(&$action)
+function generic_changecatg(Action & $action)
 {
     // -----------------------------------
     // special for onefam application
@@ -32,9 +32,10 @@ function generic_changecatg(&$action)
     $dirids = GetHttpVars("dirid", getDefFld($action));
     $ndirids = GetHttpVars("ndirid"); // catg to deleted
     $docid = GetHttpVars("docid"); // the user to change catg
-    
-    $dbaccess = $action->GetParam("FREEDOM_DB");
-    
+    $dbaccess = $action->dbaccess;
+    /**
+     * @var Dir $fld
+     */
     if (is_array($dirids)) {
         while (list($k, $dirid) = each($dirids)) {
             $fld = new_Doc($dbaccess, $dirid);
@@ -50,4 +51,3 @@ function generic_changecatg(&$action)
     
     redirect($action, "FDL", "FDL_CARD&id=$docid");
 }
-?>

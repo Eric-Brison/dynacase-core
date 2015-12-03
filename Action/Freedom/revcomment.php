@@ -21,9 +21,9 @@
 // ---------------------------------------------------------------
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
-function revcomment(&$action)
+function revcomment(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     
     $doc = new_Doc($dbaccess, $docid);
@@ -38,4 +38,3 @@ function revcomment(&$action)
     $action->lay->Set("title", $doc->title);
     $action->lay->Set("docid", $doc->id);
 }
-?>

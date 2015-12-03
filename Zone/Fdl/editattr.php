@@ -26,14 +26,14 @@ include_once ("FDL/freedom_util.php");
 include_once ("FDL/editutil.php");
 // Compute value to be inserted in a specific layout
 // -----------------------------------
-function editattr(&$action)
+function editattr(Action & $action)
 {
     // -----------------------------------
     // GetAllParameters
     $docid = GetHttpVars("id", 0);
     $classid = GetHttpVars("classid");
     // Set the globals elements
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid == 0) $doc = new_Doc($dbaccess, $classid);
     else $doc = new_Doc($dbaccess, $docid);
@@ -45,4 +45,3 @@ function editattr(&$action)
     
     return;
 }
-?>

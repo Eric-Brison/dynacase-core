@@ -25,7 +25,7 @@ define("RESIZEDIR", DEFAULT_PUBDIR . "/var/cache/file/");
 // --------------------------------------------------------------------
 function exportfile(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $usage = new ActionUsage($action);
     $usage->setText("Download document attached file");
     $docid = $usage->addOptionalParameter("docid", "document identifier", null, 0);
@@ -178,7 +178,7 @@ function exportfile(Action & $action)
 function exportfirstfile(Action & $action)
 {
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = $action->getArgument("docid", $action->getArgument("id", 0));
     
     $doc = new_Doc($dbaccess, $docid);
@@ -195,7 +195,7 @@ function exportfirstfile(Action & $action)
 // --------------------------------------------------------------------
 function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "", $width = "", $inline = false, $cache = true, $type = "", $pngpage = 0, $othername = '')
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $vf = newFreeVaultFile($dbaccess);
     /**
      * @var vaultFileInfo $info
@@ -333,8 +333,8 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                 Http_DownloadFile($info->path, $info->name, $mimetype, $inline, $cache);
             } else {
                 $filename = $info->path;
-
-                $name=str_replace('"', '-', $info->name);
+                
+                $name = str_replace('"', '-', $info->name);
                 $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
                 $name = rawurlencode($name);
                 if ($inline) {
@@ -343,7 +343,7 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                     $pos = strpos($nav, "MSIE");
                     if ($pos) {
                         // add special header for extension
-                    header("Content-Disposition: inline;filename=\"$uName\";filename*=UTF-8''$name;");
+                        header("Content-Disposition: inline;filename=\"$uName\";filename*=UTF-8''$name;");
                     }
                 } else {
                     header("Content-Disposition: attachment;filename=\"$uName\";filename*=UTF-8''$name;");

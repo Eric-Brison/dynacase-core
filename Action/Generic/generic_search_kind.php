@@ -31,7 +31,7 @@ function generic_search_kind(Action & $action)
     $aid = $action->getArgument("aid"); // attribute to search
     $dirid = $action->getArgument("catg"); // folder or research to search
     $onefamOrigin = $action->getArgument("onefam"); // onefam origin
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $famid = getDefFam($action);
     $fdoc = new_Doc($dbaccess, $famid);
@@ -67,7 +67,7 @@ function generic_search_kind(Action & $action)
     $kid = str_replace('\.', '-dot-', $kid);
     if (strrpos($kid, '.') !== false) $kid = substr($kid, strrpos($kid, '.') + 1); // last reference
     // clear key
-    $action->parent->param->Set("GENE_LATESTTXTSEARCH", setUkey($action, $famid, '') , PARAM_USER . $action->user->id, $action->parent->id);
+    $action->parent->param->Set("GENE_LATESTTXTSEARCH", setUkey($action, $famid, '') , Param::PARAM_USER . $action->user->id, $action->parent->id);
     
     $sqlfilter[] = "locked != -1";
     //  $sqlfilter[]= "doctype='F'";
@@ -99,4 +99,3 @@ function generic_search_kind(Action & $action)
     
     redirect($action, $action->getArgument("app") , "GENERIC_LIST&onefam=$onefamOrigin&famid=$famid&dirid=" . $sdoc->id . "&catg=" . $dirid);
 }
-?>

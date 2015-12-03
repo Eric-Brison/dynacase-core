@@ -30,7 +30,7 @@ function fdl_getvalue(Action & $action)
     $docid = $action->getArgument("id");
     $latest = $action->getArgument("latest", "Y");
     $attrid = $action->getArgument("attrid");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid == "") $action->exitError(_("no document reference"));
     if (!is_numeric($docid)) $docid = getIdFromName($dbaccess, $docid);

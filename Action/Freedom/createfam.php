@@ -20,13 +20,12 @@ include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
 
-function createfam(Action &$action)
+function createfam(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     $classid = GetHttpVars("classid", 0); // use when new doc or change class
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
-
     
     $doc = new_Doc($dbaccess, $docid);
     $action->lay->Set("docid", $doc->id);
@@ -68,4 +67,3 @@ function createfam(Action &$action)
         $action->lay->SetBlockData("SELECTCLASS", $selectclass);
     }
 }
-?>

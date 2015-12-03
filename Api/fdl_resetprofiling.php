@@ -14,8 +14,8 @@
  * @package FDL
  *
  *
- * @global login Http var : login
- * @global password Http var : password
+ * @global login string Http var : login
+ * @global password string Http var : password
  /**
  */
 
@@ -31,11 +31,12 @@ $usage->verify();
 /**
  * @var Action $action
  */
-$dbaccess = $action->GetParam("FREEDOM_DB");
-$coreaccess = $action->GetParam("CORE_DB");
+global $action;
+$dbaccess = $action->dbaccess;
+$coreaccess = $action->dbaccess;
 
 if ($dbaccess == "") {
-    print "Database not found : param FREEDOM_DB";
+    print "Database not found : action->dbaccess";
     exit;
 }
 
@@ -105,4 +106,3 @@ if ($uid > 0) {
         if ($err) print "\nerreur:$err\n";
     }
 }
-?>

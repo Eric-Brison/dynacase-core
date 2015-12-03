@@ -30,8 +30,12 @@ function moddfld(Action & $action)
     $newfolder = (GetHttpVars("autofolder", "N") == "Y");
     $fldid = GetHttpVars("dfldid");
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     // initialise object
+    
+    /**
+     * @var DocFam $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     if ($doc === null || !$doc->isAlive()) $action->exitError(sprintf(_("Document with id '%s' not found.") , $docid));
     // create folder if auto

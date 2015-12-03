@@ -20,12 +20,11 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/Lib.Dir.php");
 
-function editprof(Action &$action)
+function editprof(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     $createp = GetHttpVars("create", 0); // 1 if use for create profile (only for familly)
-
     $action->lay->Set("create", intval($createp));
     
     if ($createp) $action->lay->Set("TITLE", _("change creation profile"));
@@ -71,8 +70,7 @@ function editprof(Action &$action)
              * @var DocFam $doc
              */
             $sprofid = abs($doc->cprofid);
-        }
-        else {
+        } else {
             $sprofid = abs($doc->profid);
             // select dynamic profil if set
             if ($doc->dprofid != 0) $sprofid = abs($doc->dprofid);
@@ -100,7 +98,6 @@ function editprof(Action &$action)
         $action->lay->set("CV", false);
     }
 }
-
 /**
  * @param Action $action
  * @param Doc $doc
@@ -132,4 +129,3 @@ function setControlView(&$action, &$doc, $createp = false)
     }
     $action->lay->SetBlockData("SELECTCV", $tcv);
 }
-?>

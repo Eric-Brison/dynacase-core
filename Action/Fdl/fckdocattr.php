@@ -18,13 +18,14 @@
 
 include_once ("FDL/Class.DocFam.php");
 
-function fckdocattr(Action &$action)
+function fckdocattr(Action & $action)
 {
     
     $docid = GetHttpVars("famid");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     if ($doc->isAlive()) {
+        $tatt = array();
         $listattr = $doc->GetNormalAttributes();
         foreach ($listattr as $k => $v) {
             $tatt[$k] = array(
@@ -50,4 +51,3 @@ function fckdocattr(Action &$action)
         $action->lay->set("DOCATTR", json_encode($tatt));
     }
 }
-?>

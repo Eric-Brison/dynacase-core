@@ -19,22 +19,19 @@
 // $Id: viewxml.php,v 1.4 2005/06/28 08:37:46 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/freedom/Action/Fdl/viewxml.php,v $
 // ---------------------------------------------------------------
-
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
-function viewxml(&$action)
+function viewxml(Action & $action)
 {
     // -----------------------------------
-    
     // Get all the params
     $docid = GetHttpVars("id"); // dccument to export
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
     $xml = $doc->toxml(true, $docid);
     //$doc->fromxml($xml);
     //$xml=$doc->viewdtd();
-    
     $export_file = uniqid(getTmpDir() . "/xml");
     $export_file.= ".xml";
     $fp = fopen($export_file, "w");
@@ -47,4 +44,3 @@ function viewxml(&$action)
     unlink($export_file);
     exit;
 }
-?>

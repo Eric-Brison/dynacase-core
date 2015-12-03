@@ -19,17 +19,18 @@
 include_once ("FDL/Class.Dir.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------
-function deldirfile(&$action)
+function deldirfile(Action & $action)
 {
     // -----------------------------------
-    
     // Get all the params
     $dirid = GetHttpVars("dirid");
     $docid = GetHttpVars("docid");
     $folio = GetHttpVars("folio", "N") == "Y"; // return in folio
     //  print "deldirfile :: dirid:$dirid , docid:$docid";
-    $dbaccess = $action->GetParam("FREEDOM_DB");
-    
+    $dbaccess = $action->dbaccess;
+    /**
+     * @var Dir $dir
+     */
     $dir = new_Doc($dbaccess, $dirid); // use initial id for directories
     $err = $dir->DelFile($docid);
     if ($err != "") $action->exitError($err);
@@ -40,4 +41,3 @@ function deldirfile(&$action)
         redirect($action, "FREEDOM", "FOLIOLIST&refreshtab=$refreshtab&dirid=" . $dir->initid);
     } else redirect($action, "FREEDOM", "FREEDOM_VIEW&dirid=" . $dir->initid);
 }
-?>

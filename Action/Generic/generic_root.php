@@ -18,18 +18,19 @@
 include_once ("GENERIC/generic_util.php");
 function generic_root(Action & $action)
 {
-
+    
     $usage = new ActionUsage($action);
     $famid = $usage->addRequiredParameter("famid", "id or logical name of the family"); // family restriction
     $usage->setStrictMode(false);
     $usage->verify(true);
-
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    
+    $dbaccess = $action->dbaccess;
     if ($famid && (!is_numeric($famid))) {
         $famid = getFamIdFromName($dbaccess, $famid);
     }
     if ($famid != "") {
         $action->register("DEFAULT_FAMILY", $famid); // for old compatibility
+        
     }
     $smode = getSplitMode($action);
     

@@ -18,10 +18,10 @@
 
 include_once ("FDL/Lib.Dir.php");
 // -----------------------------------
-function speedsearch(Action &$action)
+function speedsearch(Action & $action)
 {
     // -----------------------------------
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $idsfam = $action->GetParam("FREEDOM_PREFFAMIDS");
     
@@ -42,7 +42,7 @@ function speedsearch(Action &$action)
         1,
         2
     ) , "TABLE");
-    $selectclass=array();
+    $selectclass = array();
     while (list($k, $cdoc) = each($tclassdoc)) {
         $selectclass[$k]["idcdoc"] = $cdoc["initid"];
         $selectclass[$k]["classname"] = $cdoc["title"];
@@ -50,4 +50,3 @@ function speedsearch(Action &$action)
     
     $action->lay->SetBlockData("SELECTCLASS", $selectclass);
 }
-?>

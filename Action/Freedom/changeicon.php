@@ -21,15 +21,12 @@ include_once ("FDL/Class.DocAttr.php");
 include_once ("FREEDOM/freedom_mod.php");
 include_once ("VAULT/Class.VaultFile.php");
 
-function changeicon(Action &$action)
+function changeicon(Action & $action)
 {
     global $_FILES;
     
-    $destdir = "./" . GetHttpVars("app") . "/Upload/";
-    
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
-
     
     $doc = new_Doc($dbaccess, $docid);
     $err = $doc->canEdit();
@@ -69,4 +66,3 @@ function changeicon(Action &$action)
     
     redirect($action, "FDL", "FDL_CARD&sole=Y&id=" . $doc->id);
 }
-?>

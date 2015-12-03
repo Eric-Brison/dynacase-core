@@ -31,9 +31,9 @@ $force = ($usage->addOptionalParameter("force", "force (yes or no)") == "yes");
 
 $usage->verify();
 
-$dbaccess = GetParam("FREEDOM_DB");
+$dbaccess = $action->dbaccess;
 if ($dbaccess == "") {
-    print "Database not found : param FREEDOM_DB";
+    print "Database not found : action->dbaccess";
     exit;
 }
 $o = new DbObj($dbaccess);
@@ -62,5 +62,3 @@ foreach ($la as $k => $v) {
     }
 }
 //print "$sqlicon\n";
-
-?>

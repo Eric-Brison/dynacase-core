@@ -28,7 +28,7 @@ function specialhelp(Action & $action)
     // -----------------------------------
     $docid = $action->getArgument("docid");
     $attrid = $action->getArgument("attrid");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid == "") $action->exitError(_("no document reference"));
     if (!is_numeric($docid)) $docid = getIdFromName($dbaccess, $docid);

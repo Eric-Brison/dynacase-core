@@ -23,15 +23,15 @@ include_once ("FDL/freedom_util.php");
 /**
  * Fulltext Search document
  * @param Action &$action current action
- * @global keyword Http var : word to search in any values
- * @global famid Http var : restrict to this family identioficator
- * @global start Http var : page number
- * @global dirid Http var : search identifier
+ * @global keyword string Http var : word to search in any values
+ * @global famid int Http var : restrict to this family identioficator
+ * @global start int Http var : page number
+ * @global dirid int Http var : search identifier
  */
-function fullsearch(&$action)
+function fullsearch(Action & $action)
 {
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $famid = GetHttpVars("famid", 0);
     $keyword = GetHttpVars("_se_key", GetHttpVars("keyword")); // keyword to search
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/DHTMLapi.js");
@@ -56,7 +56,7 @@ function fullsearch(&$action)
     createSearchEngine($action);
     /* $bfam = array(); */
     $tclassdoc = getNonSystemFamilies($dbaccess, $action->user->id, "TABLE");
-    
+    $selectclass = array();
     foreach ($tclassdoc as $k => $cdoc) {
         $selectclass[$k]["idcdoc"] = $cdoc["initid"];
         $selectclass[$k]["classname"] = $cdoc["title"];
@@ -68,7 +68,7 @@ function fullsearch(&$action)
     $action->lay->set("initKeyword", ($keyword == "" ? true : false));
 }
 
-function createSearchEngine(&$action)
+function createSearchEngine(Action & $action)
 {
     global $_SERVER;
     $tfiles = array(
@@ -103,4 +103,3 @@ function createSearchEngine(&$action)
         }
     }
 }
-?>

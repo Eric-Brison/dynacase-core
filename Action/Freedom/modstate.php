@@ -36,7 +36,7 @@ function modstate(Action & $action)
     $force = ($action->getArgument("fstate", "no") == "yes"); // force change
     if ($docid == 0) $action->exitError(_("the document is not referenced: cannot apply state modification"));
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     // initialise object
     $doc = new_Doc($dbaccess, $docid);
     
@@ -67,4 +67,3 @@ function modstate(Action & $action)
     
     redirect($action, $action->getArgument("redirect_app", "FDL") , $action->getArgument("redirect_act", "FDL_CARD&refreshfld=Y&id=" . $doc->id) , $action->GetParam("CORE_STANDURL"));
 }
-?>

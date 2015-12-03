@@ -21,17 +21,17 @@ include_once ("FDL/modcard.php");
 /**
  * Fulltext Search document
  * @param Action &$action current action
- * @global keyword Http var : word to search in any values
- * @global famid Http var : restrict to this family identioficator
- * @global start Http var : page number
- * @global dirid Http var : search identifier
+ * @global keyword string Http var : word to search in any values
+ * @global famid int Http var : restrict to this family identioficator
+ * @global start int Http var : page number
+ * @global dirid int Http var : search identifier
  */
-function fulldsearch(&$action)
+function fulldsearch(Action & $action)
 {
     
     $famid = GetHttpVars("famid", 0);
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($famid > 0) {
         $fdoc = new_doc($dbaccess, $famid);
@@ -51,4 +51,3 @@ function fulldsearch(&$action)
         fullsearchresult($action);
     }
 }
-?>

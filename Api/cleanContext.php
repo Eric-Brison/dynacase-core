@@ -28,9 +28,9 @@ if ($full !== true) {
 
 $usage->verify();
 
-$dbaccess = $action->GetParam("FREEDOM_DB");
+$dbaccess = $action->dbaccess;
 if ($dbaccess == "") {
-    print "Database not found : param FREEDOM_DB";
+    print "Database not found : action->dbaccess";
     exit;
 }
 
@@ -49,7 +49,7 @@ if ($real || $full) {
     basicDbClean($action, $dbaccess);
 }
 // Cleanup session files
-$core_db = $action->GetParam('CORE_DB');
+$core_db = $action->dbaccess;
 $sessionUtils = new SessionUtils($core_db);
 $sessionUtils->deleteExpiredSessionFiles();
 
@@ -158,4 +158,3 @@ function cleanTmpFiles()
     
     return;
 }
-?>

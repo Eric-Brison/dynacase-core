@@ -42,7 +42,7 @@ include_once ("FDL/import_file.php");
  */
 function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = "", $exportInvisibleVisibilities = false)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $usage = new ActionUsage($action);
     
@@ -175,7 +175,6 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
     $exportCollection->setDocumentlist($s->getDocumentList());
     $exportCollection->setExportFiles($wfile);
     //usort($tdoc, "orderbyfromid");
-    $foutdir = '';
     if ($outputPath) {
         if ($wfile) {
             if (!is_dir($outputPath)) {
@@ -186,15 +185,6 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
             $foutname = $outputPath;
         }
     } else {
-        if ($wfile) {
-            $foutname = uniqid(getTmpDir() . "/exportfld") . ".zip";
-        } else {
-            if ($eformat == Dcp\ExportCollection::xmlFileOutputFormat) {
-                $foutname = uniqid(getTmpDir() . "/exportfld") . ".xml";
-            } else {
-                $foutname = uniqid(getTmpDir() . "/exportfld") . ".csv";
-            }
-        }
         $foutname = uniqid(getTmpDir() . "/exportfld");
     }
     

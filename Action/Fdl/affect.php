@@ -21,9 +21,9 @@ include_once ("FDL/mailcard.php");
 /**
  * Edition to allocate document
  * @param Action &$action current action
- * @global id Http var : document id to affect
- * @global _id_affectuser Http var : user identifier to affect
- * @global _actioncomment Http var : description of the action
+ * @global id int Http var : document id to affect
+ * @global _id_affectuser int Http var : user identifier to affect
+ * @global _actioncomment string Http var : description of the action
  */
 function affect(&$action)
 {
@@ -32,7 +32,7 @@ function affect(&$action)
     $newstate = GetHttpVars("newstate", -1);
     $commentstate = GetHttpVars("_statecomment");
     $commentaction = GetHttpVars("_actioncomment");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $revstate = true;
     
     $doc = new_doc($dbaccess, $docid);
@@ -71,4 +71,3 @@ function affect(&$action)
     
     redirect($action, GetHttpVars("redirect_app", "FDL") , GetHttpVars("redirect_act", "FDL_CARD&latest=Y&refreshfld=Y&id=" . $doc->id) , $action->GetParam("CORE_STANDURL"));
 }
-?>

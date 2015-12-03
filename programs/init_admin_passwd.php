@@ -36,7 +36,7 @@ if ($admin_passwd == '') {
     exit(1);
 }
 
-$dbaccess = getParam('CORE_DB');
+$dbaccess = getDbAccess();
 
 $user = new Account($dbaccess, 1);
 if (!is_object($user) || !$user->isAffected()) {
@@ -52,10 +52,9 @@ if ($err != '') {
 }
 
 $err = $user->setAdminHtpasswd($admin_passwd);
-if( $err != '' ) {
-	print sprintf("Error setting password in 'admin/.htpasswd': %s", $err);
-	exit(1);
+if ($err != '') {
+    print sprintf("Error setting password in 'admin/.htpasswd': %s", $err);
+    exit(1);
 }
 
 exit(0);
-?>

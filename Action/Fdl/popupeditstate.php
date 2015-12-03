@@ -17,13 +17,13 @@
  */
 
 include_once ("FDL/popupdocdetail.php");
-function popupeditstate(&$action)
+function popupeditstate(Action & $action)
 {
     $docid = GetHttpVars("id");
     if ($docid == "") $action->exitError(_("No identificator"));
     $popup = array();
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     
     addStatesPopup($popup, $doc);

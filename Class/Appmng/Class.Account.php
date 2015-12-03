@@ -531,7 +531,7 @@ create sequence seq_id_users start 10;";
     function synchroAccountDocument()
     {
         $err = '';
-        $dbaccess = GetParam("FREEDOM_DB");
+        $dbaccess = $this->dbaccess;
         if ($dbaccess == "") return _("no freedom DB access");
         if ($this->fid <> "") {
             /**

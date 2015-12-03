@@ -26,7 +26,7 @@ function family_defaultmenu(Action & $action)
     $dirid = $action->getArgument("dirid", getDefFld($action)); // folder where search
     $catg = $action->getArgument("catg", 1); // catg where search
     $pds = $action->getArgument("pds"); // special extra parameters used by parametrable searches
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $onefamOrigin = $action->getArgument("onefam"); // onefam origin
     $famid = getDefFam($action);
@@ -201,7 +201,6 @@ function family_defaultmenu(Action & $action)
             }
         }
     }
-
     //----------------------------
     // sort menu
     $tsort = array();
@@ -298,7 +297,6 @@ function family_defaultmenu(Action & $action)
         );
         $tmsort[$a->id] = "sortdoc" . $a->id;
     }
-
     // select the current sort
     $csort = $action->getArgument("sqlorder");
     if ($csort == "") $csort = getDefUSort($action, "--");

@@ -25,14 +25,14 @@ include_once ("FDL/editutil.php");
 /**
  * Edition to affect document
  * @param Action &$action current action
- * @global id Http var : document id to affect
- * @global viewdoc Http var : with preview of affect document [Y|N]
+ * @global id int Http var : document id to affect
+ * @global viewdoc string Http var : with preview of affect document [Y|N]
  */
 function editaffect(&$action)
 {
     $docid = GetHttpVars("id");
     $viewdoc = (GetHttpVars("viewdoc", "N") == "Y");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $doc = new_doc($dbaccess, $docid);
     editmode($action);
@@ -69,4 +69,3 @@ function editaffect(&$action)
     
     $action->lay->eSetBlockData("freestate", $tstate);
 }
-?>

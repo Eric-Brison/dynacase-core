@@ -38,7 +38,7 @@ function ckimage(Action & $action)
     $usage->verify();
     
     $slice = 28;
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($startpage == 0) $start = 0;
     else $start = ($startpage * $slice + 1);
@@ -74,4 +74,3 @@ function ckimage(Action & $action)
     $action->lay->set("NOIMAGES", (count($limg) == 0));
     $action->lay->set("FUNCNUM", urlencode($numFunc));
 }
-?>

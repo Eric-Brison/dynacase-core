@@ -21,7 +21,7 @@
 // ---------------------------------------------------------------
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
-function popupcard(&$action)
+function popupcard(Action & $action)
 {
     // -----------------------------------
     // ------------------------------
@@ -30,7 +30,7 @@ function popupcard(&$action)
     $abstract = (GetHttpVars("abstract", 'N') == "Y");
     $headers = (GetHttpVars("head", 'no') == "yes");
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     $kdiv = 1; // only one division
     $action->lay->Set("id", $doc->id);
@@ -82,6 +82,9 @@ function popupcard(&$action)
             popupInactive('popupcard', $kdiv, 'chgcatg');
         }
         if ($doc->wid > 0) {
+            /**
+             * @var WDoc $wdoc
+             */
             $wdoc = new_Doc($doc->dbaccess, $doc->wid);
             $wdoc->Set($doc);
             if (count($wdoc->GetFollowingStates()) > 0) popupActive('popupcard', $kdiv, 'editstate');

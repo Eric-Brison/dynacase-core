@@ -21,15 +21,13 @@
 // ---------------------------------------------------------------
 include_once ("FDL/Lib.Dir.php");
 
-function editdfld(Action &$action)
+function editdfld(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id", 0);
     $firstfld = (GetHttpVars("current", "N") == "Y");
-
     
     $action->lay->Set("TITLE", _("change root folder"));
-
     /**
      * @var DocFam $doc
      */
@@ -70,4 +68,3 @@ function editdfld(Action &$action)
     
     $action->lay->SetBlockData("SELECTFLD", $selectclass);
 }
-?>

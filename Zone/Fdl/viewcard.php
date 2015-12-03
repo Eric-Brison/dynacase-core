@@ -59,7 +59,7 @@ function viewcard(Action & $action)
     
     $baseurl = $action->GetParam("CORE_BASEURL");
     $standurl = $action->GetParam("CORE_STANDURL");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     /*
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/DHTMLapi.js");
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/iframe.js");
@@ -289,4 +289,3 @@ function viewcard(Action & $action)
     $action->lay->Set("helpurl", ($help->isAlive()) ? $help->getAttributeHelpUrl() : false);
     $action->lay->Set("helpid", ($help->isAlive()) ? $help->id : false);
 }
-?>

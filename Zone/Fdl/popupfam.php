@@ -18,7 +18,7 @@
 
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
-function popupfam(Action &$action, &$tsubmenu)
+function popupfam(Action & $action, &$tsubmenu)
 {
     // -----------------------------------
     // ------------------------------
@@ -27,7 +27,7 @@ function popupfam(Action &$action, &$tsubmenu)
     $abstract = (GetHttpVars("abstract", 'N') == "Y");
     
     $action->lay->Set("SEP", false);
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $doc = new_Doc($dbaccess, $docid);
     //  if ($doc->doctype=="C") return; // not for familly
     $kdiv = 1; // only one division
@@ -39,6 +39,7 @@ function popupfam(Action &$action, &$tsubmenu)
     $tmenu = array();
     $km = 0;
     
+    $tlink = array();
     foreach ($lmenu as $k => $v) {
         
         $confirm = false;
@@ -148,4 +149,3 @@ function popupfam(Action &$action, &$tsubmenu)
     $action->lay->Set("SEP", true); // to see separator
     
 }
-?>

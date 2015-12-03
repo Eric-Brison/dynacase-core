@@ -33,7 +33,6 @@ function setparamu(Action & $action)
     $parname = GetHttpVars("parname");
     
     $parval = GetHttpVars("parval");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $action->lay->set("warning", "");
     
@@ -52,13 +51,13 @@ function setparamu(Action & $action)
         
         $param = new QueryDb("", "Param");
         $param->AddQuery("name='" . pg_escape_string($parname) . "'");
-        $param->AddQuery("type='" . PARAM_USER . $action->user->id . "'");
+        $param->AddQuery("type='" . Param::PARAM_USER . $action->user->id . "'");
         $param->AddQuery("appid=$appid");
         $list = $param->Query(0, 1);
         if ($param->nb == 0) {
             $p = new Param("");
             $p->name = $parname;
-            $p->type = PARAM_USER . $action->user->id;
+            $p->type = Param::PARAM_USER . $action->user->id;
             $p->appid = $appid;
         } else {
             $p = $list[0];

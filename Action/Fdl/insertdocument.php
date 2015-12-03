@@ -21,18 +21,21 @@ include_once ("FDL/Class.DocFam.php");
 /**
  * Insert documents in  folder
  * @param Action &$action current action
- * @global id Http var : folder document identifier to see
+ * @global id int Http var : folder document identifier to see
  */
-function insertdocument(&$action)
+function insertdocument(Action & $action)
 {
     
     $docid = GetHttpVars("id");
     $uchange = GetHttpVars("uchange");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if ($docid == "") $action->exitError(_("no document reference"));
     if (!is_numeric($docid)) $docid = getIdFromName($dbaccess, $docid);
     if (intval($docid) == 0) $action->exitError(sprintf(_("unknow logical reference '%s'") , GetHttpVars("id")));
+    /**
+     * @var Dir $doc
+     */
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     if ($doc->defDoctype != 'D') $action->exitError(sprintf(_("not a static folder %s") , $doc->title));
@@ -74,4 +77,3 @@ function insertdocument(&$action)
     
     redirect($action, GetHttpVars("redirect_app", "FDL") , GetHttpVars("redirect_act", "FDL_CARD&refreshfld=Y&id=$docid") , $action->GetParam("CORE_STANDURL"));
 }
-?>

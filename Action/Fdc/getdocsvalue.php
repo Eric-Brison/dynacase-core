@@ -21,16 +21,17 @@ include_once ("FDL/Lib.Dir.php");
 /**
  * Return a single same value from a set of doc
  * @param Action &$action current action
- * @global ids Http var : set of document id ( | separated)
+ * @global ids string Http var : set of document id ( | separated)
  */
 function getdocsvalue(&$action)
 {
     header('Content-type: text/xml; charset=utf-8');
     
+    $err = '';
     $mb = microtime();
     $docids = GetHttpVars("ids");
     $attrid = trim(strtolower(GetHttpVars("attrid")));
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $action->lay->set("warning", "");
     
@@ -44,7 +45,7 @@ function getdocsvalue(&$action)
         $tvalues[$v] = array(
             "attrid" => $attrid,
             "docid" => $v["id"],
-            "value" => xml_entity_encode($value)
+            "value" => ''
         );
     }
     
@@ -66,4 +67,3 @@ function getdocsvalue(&$action)
     $action->lay->set("count", count($tvalues));
     $action->lay->set("delay", microtime_diff(microtime() , $mb));
 }
-?>

@@ -19,9 +19,9 @@ include_once ("FDL/Lib.Dir.php");
 $appl = new Application();
 $appl->Set("FDL", $core);
 
-$dbaccess = $appl->GetParam("FREEDOM_DB");
+$dbaccess = $appl->dbaccess;
 if ($dbaccess == "") {
-    print "Database not found : param FREEDOM_DB";
+    print "Database not found : appl->dbaccess";
     return;
 }
 
@@ -90,7 +90,7 @@ if ($query->nb > 0) {
         }
         if ($foundoc) {
             /**
-             * @var \Dcp\Family\IUSER|_IGROUP $udoc
+             * @var \Dcp\Family\IUSER|\Dcp\Family\IGROUP $udoc
              */
             if (method_exists($udoc, "RefreshGroup")) $udoc->RefreshGroup();
             else if (method_exists($udoc, "RefreshDocUser")) $udoc->RefreshDocUser();

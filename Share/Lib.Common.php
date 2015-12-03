@@ -209,8 +209,13 @@ function getParam($name, $def = "")
  */
 function getCoreParam($name, $def = "")
 {
+    require_once ('WHAT/Class.ApplicationParameterManager.php');
+    
     static $params = null;
     
+    if (($value = ApplicationParameterManager::_catchDeprecatedGlobalParameter($name)) !== null) {
+        return $value;
+    }
     if (empty($params)) {
         $params = array();
         $tparams = array();

@@ -20,9 +20,9 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Lib.Dir.php");
 include_once ("GENERIC/generic_util.php");
 
-function modexportchoosecols(&$action)
+function modexportchoosecols(Action & $action)
 {
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $docid = GetHttpVars("id");
     $cols = GetHttpVars("ch");
     $clear = (GetHttpVars("clear") == "yes");

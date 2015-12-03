@@ -45,7 +45,7 @@ function impcard(Action & $action)
     $usage->verify();
     $szone = false;
     
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     $action->lay->set("viewprint", ($view == "print"));
     
     $doc = new_Doc($dbaccess, $docid);
@@ -117,4 +117,3 @@ function impcard(Action & $action)
         exit;
     }
 }
-?>

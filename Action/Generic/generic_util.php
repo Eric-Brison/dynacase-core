@@ -22,7 +22,7 @@ function getDefFam(Action & $action)
 {
     // special for onefam application
     $famid = GetHttpVars("famid");
-    if (!is_numeric($famid)) $famid = getIdFromName($action->GetParam("FREEDOM_DB") , $famid);
+    if (!is_numeric($famid)) $famid = getIdFromName($action->dbaccess, $famid);
     if ($famid != "") return $famid;
     
     $famid = $action->GetParam("DEFAULT_FAMILY", 1);
@@ -37,7 +37,10 @@ function getDefFam(Action & $action)
 function getDefFld(Action & $action)
 {
     $famid = getDefFam($action);
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
+    /**
+     * @var DocFam $fdoc
+     */
     $fdoc = new_Doc($dbaccess, $famid);
     if ($fdoc->dfldid > 0) return $fdoc->dfldid;
     
@@ -54,7 +57,7 @@ function getDefUSort(Action & $action, $def = "-revdate", $famid = "")
         while (list($k, $v) = each($tu)) {
             list($afamid, $aorder, $sqlorder) = explode(":", $v);
             if (!is_numeric($afamid)) {
-                $afamid = getFamIdFromName($action->getParam('FREEDOM_DB') , $afamid);
+                $afamid = getFamIdFromName($action->dbaccess, $afamid);
             }
             if ($afamid == $famid) {
                 return $aorder;
@@ -80,14 +83,14 @@ function getDefUKey(Action & $action)
 /**
  * memorize search key for generic applications
  * @param Action $action current action
- * @param int fmily identifier
+ * @param int $famid family identifier
  * @param string $key key to memorize
  */
 function setUkey(Action & $action, $famid, $key)
 {
     
     $famid = getDefFam($action);
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     $fdoc = new_Doc($dbaccess, $famid);
     
@@ -243,7 +246,7 @@ function getFamilyParameter(&$action, $famid, $key, $def = "")
             if (strpos($v, '|') !== false) {
                 list($afamid, $aorder) = explode("|", $v);
                 if (!is_numeric($afamid)) {
-                    $afamid = getFamIdFromName($action->getParam('FREEDOM_DB') , $afamid);
+                    $afamid = getFamIdFromName($action->dbaccess, $afamid);
                 }
                 if ($afamid == $famid) {
                     return $aorder;
@@ -280,15 +283,16 @@ function setFamilyParameter(Action & $action, $famid, $attrid, $value)
 /**
  * delete family attribute for generic application
  */
-function deleteFamilyParameter(&$action, $famid, $attrid)
+function deleteFamilyParameter(Action & $action, $famid, $attrid)
 {
     $tmode = explode(",", $action->getParam($attrid));
     // explode parameters
+    $tview = array();
     foreach ($tmode as $k => $v) {
         list($fid, $val) = explode("|", $v);
         $tview[$fid] = $val;
     }
-    if ($tview[$famid]) {
+    if (isset($tview[$famid]) && $tview[$famid]) {
         unset($tview[$famid]);
         // implode parameters to change user preferences
         $tmode = array();
@@ -338,4 +342,3 @@ function getSqlFrom($dbaccess, $docid)
         $docid
     ) , array_keys($fdoc->GetChildFam())) , "fromid");
 }
-?>

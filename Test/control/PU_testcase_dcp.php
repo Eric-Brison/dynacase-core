@@ -73,7 +73,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      */
     protected static function beginTransaction()
     {
-        self::$dbaccess = getParam("FREEDOM_DB");
+        self::$dbaccess = getDbAccess();
         if (!self::$odb) {
             self::$odb = new \DbObj(self::$dbaccess);
         }
