@@ -22,6 +22,8 @@ require_once 'Class.Session.php';
 require_once 'Class.Log.php';
 require_once 'Lib.Main.php';
 
+checkWshExecUid(__FILE__);
+
 function print_usage()
 {
     print "Usage\twsh.php --app=APPLICATION --action=ACTION [--ARG=VAL] ...:  execute an action\n" . "\twsh.php --api=API [--ARG=VAL] ....   :  execute an api function\n" . "\twsh.php --listapi                     : view api list\n";

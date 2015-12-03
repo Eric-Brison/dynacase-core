@@ -206,6 +206,10 @@ This can be solved by:<br/>
                 unconfigured suhosin can cause silent corruption of form data).
             </help>
         </check>
+        <check type="exec" cmd="php -r 'exit(function_exists(&quot;posix_getuid&quot;)?0:1);'">
+            <label lang="en">Check POSIX extension is available in PHP CLI</label>
+            <help>You might need to install a php-posix package in order to have POSIX support in PHP CLI.</help>
+        </check>
 
         <check type="phpclass" class="XSLTProcessor">
             <help>You might need to install a php-xsl package from your distribution in order to have XSLT support in
@@ -499,6 +503,10 @@ This can be solved by:<br/>
             <help>The PHP suhosin extension MUST NOT be active! Please deactivate the PHP suhosin extension (as
                 unconfigured suhosin can cause silent corruption of form data).
             </help>
+        </check>
+        <check type="exec" cmd="php -r 'exit(function_exists(&quot;posix_getuid&quot;)?0:1);'">
+            <label lang="en">Check POSIX extension is available in PHP CLI</label>
+            <help>You might need to install a php-posix package in order to have POSIX support in PHP CLI.</help>
         </check>
 
         <check type="phpclass" class="XSLTProcessor">

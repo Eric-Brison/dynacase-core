@@ -369,6 +369,29 @@ function executeAction(&$action, &$out = null)
         }
     }
 }
+
+function checkWshExecUid($file)
+{
+    $uid = posix_getuid();
+    if ($uid === 0) {
+        throw new Dcp\Exception(sprintf("Error: this script must NOT be run as root (uid 0).\n"));
+    }
+    if (($owner = fileowner($file)) === false) {
+        throw new Dcp\Exception(sprintf("Error: could not get owner of file '%s'.\n", $file));
+    }
+    if ($owner !== $uid) {
+        $msg = <<<'EOF'
+Error: current uid %d does not match owner %d of file '%s'.
+
+You might need to either:
+- run the script under the webserver's user;
+- or set proper ownership of context's files to that of the webserver's user.
+
+EOF;
+        throw new Dcp\Exception(sprintf($msg, $uid, $owner, $file));
+    }
+}
+
 /**
  * @param Exception|Error $e
  * @throws \Dcp\Core\Exception
