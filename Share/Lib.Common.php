@@ -887,7 +887,10 @@ function getLocaleConfig($core_lang = '')
 function setLanguage($lang)
 {
     global $pubdir;
-    //  print "<h1>setLanguage:$lang</H1>";
+
+    if (!$lang) {
+        return;
+    }
     $lang.= ".UTF-8";
     if (setlocale(LC_MESSAGES, $lang) === false) {
         throw new Dcp\Core\Exception(sprintf(ErrorCodeCORE::CORE0011, $lang));
@@ -907,6 +910,7 @@ function setLanguage($lang)
     $td = "main-catalog$number";
     
     putenv("LANG=" . $lang); // needed for old Linux kernel < 2.4
+    putenv("LANGUAGE="); // no use LANGUAGE variable
     bindtextdomain($td, "$pubdir/locale");
     bind_textdomain_codeset($td, 'utf-8');
     textdomain($td);

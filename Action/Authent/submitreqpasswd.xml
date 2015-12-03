@@ -34,7 +34,7 @@
             </div>
             [ENDIF FORM_SEND_ERROR_UNKNOWN]
             <div class="action">
-                <a href="[CORE_BASEURL]app=AUTHENT&action=REQPASSWD">Retour</a>
+                <a href="[CORE_BASEURL]app=AUTHENT&action=REQPASSWD&lang=[lang]">Retour</a>
                 <div style="clear:both"></div>
             </div>
         </div>

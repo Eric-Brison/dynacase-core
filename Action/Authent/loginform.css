@@ -40,11 +40,11 @@ html, body {
     margin: 0 auto 0 auto;
 }
 
-.authmain a {
+.authmain a, .authmain input.submit {
     color: #08C;
 }
 
-.authmain a:hover {
+.authmain a:hover, .authmain input.submit:hover {
     color: #029;
     background-color: inherit;
 }
@@ -123,24 +123,30 @@ html, body {
 }
 
 select.lang,
-.authmain .zoneinput .action a {
+.authmain .zoneinput .action a, .authmain input.submit {
     border-radius: 3px;
     border: 1px solid #aaa;
     cursor: pointer;
 }
+
+ .authmain input.submit {
+     background-image: none;
+     font-size: 11pt;
+ }
+
 
 select.lang {
     color: #888;
     padding: 3px 10px;
 }
 
-.authmain .zoneinput .action a {
+.authmain .zoneinput .action a,.authmain input.submit {
     float: right;
     background-color: #E4E4E4;
     padding: 5px 10px;
 }
 
-.authmain .zoneinput .action a:hover {
+.authmain .zoneinput .action a:hover, .authmain input.submit:hover {
     background-color: #08C;
     color: #fff;
     text-decoration: none;
