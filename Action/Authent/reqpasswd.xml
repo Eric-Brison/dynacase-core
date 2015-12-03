@@ -3,6 +3,7 @@
 </div>
 <form action="[CORE_BASEURL]app=AUTHENT&amp;action=SUBMITREQPASSWD"
       method="post" id="reqform" name="reqform">
+    <input type="hidden" name="lang" value="[lang]"/>
     <div id="authform" class="authmain" style="visibility:hidden">
 
 
@@ -27,14 +28,12 @@
                     <label for="form_email" class="label">[TEXT:reqpasswd_email]
                     </label>
                     <div class="input">
-                        <input type="text" name="form_email" id="form_email"
+                        <input type="email" name="form_email" id="form_email"
                                autocapitalize="off" autocorrect="off"
                                placeholder="[TEXT:Enter your email]"/>
                     </div>
                     <div class="action">
-
-                        <a id="submit" onclick="document.getElementById('reqform').submit();">
-                            [TEXT:reqpasswd_submit]</a>
+                        <input class="submit" type="submit" value="[TEXT:reqpasswd_submit]"/>
                         <div style="clear:both"></div>
                     </div>
                 </div>

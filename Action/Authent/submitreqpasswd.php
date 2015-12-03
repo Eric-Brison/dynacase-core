@@ -23,9 +23,14 @@ function submitreqpasswd(Action & $action)
     include_once ('FDL/Lib.Dir.php');
     include_once ('FDL/freedom_util.php');
     
-    $submitted_login = GetHttpVars('form_login');
-    $submitted_email = GetHttpVars('form_email');
-    
+    $submitted_login = $action->getArgument('form_login');
+    $submitted_email = $action->getArgument('form_email');
+
+
+    $lang = $action->getArgument("lang");
+
+    setLanguage($lang);
+
     $action->parent->AddCssRef('AUTHENT:loginform.css', true);
     $action->parent->AddCssRef('AUTHENT:submitreqpasswd.css');
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
@@ -37,6 +42,7 @@ function submitreqpasswd(Action & $action)
     $action->lay->set('FORM_SEND_ERROR_UNKNOWN', False);
     $action->lay->set('FORM_SEND_ERROR_EXTERNAL_AUTH', False);
     $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
+    $action->lay->eSet("lang", $lang);
     
     $userdoc = retrieveUserDoc($action, $submitted_login, $submitted_email);
     
