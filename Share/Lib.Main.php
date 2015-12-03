@@ -419,11 +419,12 @@ function handleActionException($e)
             $action->exitError($e->getMessage());
         }
     } else {
-        if (!empty($_SERVER['HTTP_HOST'])) {
-            print htmlspecialchars($e->getMessage());
+        if (php_sapi_name() == 'cli') {
+            fwrite(STDERR, $e->getMessage());
         } else {
-            print $e->getMessage();
+            print htmlspecialchars($e->getMessage());
         }
+        exit(1);
     }
 }
 /**
