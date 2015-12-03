@@ -20,51 +20,6 @@
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Layout/Class.TableLayout.php,v $
 // ---------------------------------------------------------------
 // $Log: Class.TableLayout.php,v $
-// Revision 1.2  2003/08/18 15:46:42  eric
-// phpdoc
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.13  2001/02/26 15:10:32  yannick
-// Optimization
-//
-// Revision 1.12  2001/02/09 13:53:26  yannick
-// Release 0.3.0
-//
-// Revision 1.11  2001/02/07 16:41:22  yannick
-// Gestion des header et tris
-//
-// Revision 1.10  2001/02/07 13:16:17  yannick
-// Retour à la page 0 sur tri
-//
-// Revision 1.9  2001/02/07 11:30:44  yannick
-// Traitement résultat vide, 1 seule page
-//
-// Revision 1.8  2001/02/07 09:22:17  yannick
-// Nombre de pages arrondi
-//
-// Revision 1.7  2001/02/06 16:23:28  yannick
-// QueryGen : first release
-//
-// Revision 1.6  2001/01/15 11:29:25  marianne
-// Parametrage du nom de la table
-//
-// Revision 1.5  2000/10/26 08:10:50  yannick
-// Nettoyage
-//
-// Revision 1.4  2000/10/24 17:44:55  yannick
-// Ajout du download
-//
-// Revision 1.3  2000/10/19 16:49:20  marc
-// TableLayout utilise un lay fournit
-//
-// Revision 1.2  2000/10/19 10:58:54  yannick
-// Gestion des utilisateurs
-//
-// Revision 1.1  2000/10/13 14:21:41  yannick
-// Création
-//
 //
 //
 // ---------------------------------------------------------------------------
@@ -129,7 +84,7 @@ class TableLayout
     // Public methods
     // ---------------------------------------------------------------------------
     //
-    function TableLayout(&$lay, $table_name = 'TABLE')
+    function __construct(&$lay, $table_name = 'TABLE')
     {
         $this->table_name = $table_name;
         $this->log = new Log("", "TableLayout", "");

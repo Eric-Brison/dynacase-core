@@ -20,26 +20,8 @@
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Form/Class.SubForm.php,v $
 // ---------------------------------------------------------------
 // $Log: Class.SubForm.php,v $
-// Revision 1.3  2006/06/20 16:18:07  eric
-// new font size theme
-//
-// Revision 1.2  2003/08/18 15:46:42  eric
-// phpdoc
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.3  2000/10/26 12:52:13  yannick
-// Bug : perte du mot de passe
-//
-// Revision 1.2  2000/10/23 14:21:27  marc
-// Use of select in forms
-//
-// Revision 1.1  2000/10/19 16:34:45  yannick
-// Pour Marc
 //
 //
-$CLASS_SUBFORM_PHP = '$Id: Class.SubForm.php,v 1.3 2006/06/20 16:18:07 eric Exp $';
 
 class SubForm
 {
@@ -76,7 +58,7 @@ function sendform() {
     var $param = array(); // contains all exchanged vars in the form
     // "key" => "val" , val is the initial value
     // of the key.
-    function SubForm($name, $width = 100, $height = 100, $mainurl = "", $suburl = "")
+    function __construct($name, $width = 100, $height = 100, $mainurl = "", $suburl = "")
     {
         $this->name = $name;
         $this->width = $width;

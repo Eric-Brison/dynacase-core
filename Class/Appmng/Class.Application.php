@@ -169,7 +169,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * initialize  Application object
      * @param string $name application name to set
-     * @param Application $parent the parent (generally CORE app)
+     * @param Application|string $parent the parent object (generally CORE app) : empty string if no parent
      * @param string $session parent session
      * @param bool $autoinit set to true to auto create app if not exists yet
      *
@@ -287,7 +287,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($this->name == "CORE") {
             $this->id = 1;
         } else {
-            $res = $this->exec_query("select nextval ('seq_id_application')");
+            $this->exec_query("select nextval ('seq_id_application')");
             $arr = $this->fetch_array(0);
             $this->id = $arr["nextval"];
         }
@@ -868,6 +868,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * create style parameters
      * @param bool $init
+     * @param string $useStyle
      */
     public function initStyle($init = true, $useStyle = '')
     {
@@ -1409,7 +1410,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $query->AddQuery("available = 'Y'");
         $allapp = $query->Query();
         
-        while (list($k, $app) = each($allapp)) {
+        foreach ($allapp as $app) {
             $application = new Application($this->dbaccess, $app->id);
             
             $application->Set($app->name, $this->parent);
@@ -1435,11 +1436,10 @@ create sequence SEQ_ID_APPLICATION start 10;
         $list = $query->Query();
         
         if ($query->nb > 0) {
-            reset($list);
             /**
              * @var Action $v
              */
-            while (list($k, $v) = each($list)) {
+            foreach ($list as $v) {
                 $this->log->debug(" Delete action {$v->name} ");
                 $err = $v->Delete();
                 if ($err != '') {
@@ -1472,6 +1472,8 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * Write default ACL when new user is created
      * @TODO not used - to remove
+     * @param int $iduser
+     * @throws \Dcp\Db\Exception
      */
     public function updateUserAcl($iduser)
     {
@@ -1481,14 +1483,14 @@ create sequence SEQ_ID_APPLICATION start 10;
         $allapp = $query->Query();
         $acl = new Acl($this->dbaccess);
         
-        while (list($k, $v) = each($allapp)) {
+        foreach ($allapp as $v) {
             $permission = new Permission($this->dbaccess);
             $permission->id_user = $iduser;
             $permission->id_application = $v->id;
             
             $privileges = $acl->getDefaultAcls($v->id);
             
-            while (list($k2, $aclid) = each($privileges)) {
+            foreach ($privileges as $aclid) {
                 $permission->id_acl = $aclid;
                 if (($permission->id_acl > 0) && (!$permission->Exists($permission->id_user, $v->id))) {
                     $permission->Add();
