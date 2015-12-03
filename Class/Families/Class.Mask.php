@@ -46,7 +46,6 @@ class Mask extends \Dcp\Family\Base
         $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
         $tvis = $this->getMultipleRawValues("MSK_VISIBILITIES");
         
-        $tvisibilities = array();
         foreach ($tattrid as $k => $v) {
             if (($tneed[$k] == '-') && ($tvis[$k] == '-')) {
                 unset($tneed[$k]);
@@ -80,7 +79,7 @@ class Mask extends \Dcp\Family\Base
         $docid = $this->getRawValue("MSK_FAMID", 1);
         $doc = new_Doc($this->dbaccess, $docid);
         
-        $tsvis = $this->getVisibilities();
+        $this->getVisibilities();
         $tvisibilities = array();
         
         foreach ($tattrid as $k => $v) {
@@ -128,6 +127,10 @@ class Mask extends \Dcp\Family\Base
         $this->lay->Set("docid", $docid);
         
         $doc = new_Doc($this->dbaccess, $docid);
+        if (!$doc->isAlive()) {
+            addWarningMsg(sprintf("Family %s not found", $docid));
+            return;
+        }
         $doc->applyMask();
         $origattr = $doc->attributes->attr;
         
@@ -201,7 +204,6 @@ class Mask extends \Dcp\Family\Base
      */
     function editmask()
     {
-        global $action;
         
         $docid = $this->getRawValue("MSK_FAMID");
         
