@@ -183,6 +183,14 @@ class TestImportWorkflow extends TestCaseDcpDocument
                 array(
                     "WFL0104"
                 )
+            ) ,
+            // test malformed $transitions or $cycle structure
+            array(
+                "PU_data_dcp_badfamily18.ods",
+                array(
+                    "WFL0110",
+                    "WFL0203"
+                )
             )
         );
     }
