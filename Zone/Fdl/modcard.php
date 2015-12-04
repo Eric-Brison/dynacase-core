@@ -27,6 +27,7 @@ include_once ("Lib.FileMime.php");
  * @param Action $action
  * @param int $ndocid
  * @param array $info
+ * @return string
  */
 function modcard(Action & $action, &$ndocid, &$info = array())
 {
@@ -34,7 +35,6 @@ function modcard(Action & $action, &$ndocid, &$info = array())
     // -----------------------------------
     // Get all the params
     $docid = GetHttpVars("id", 0);
-    $dirid = GetHttpVars("dirid", 10);
     $classid = GetHttpVars("classid", 0);
     $usefor = GetHttpVars("usefor"); // use for default values for a document
     $vid = GetHttpVars("vid"); // special controlled view
@@ -358,6 +358,11 @@ function setPostVars(Doc & $doc, &$info = array())
 }
 /**
  * insert file in VAULT from HTTP upload
+ * @param Doc $doc
+ * @param $attrid
+ * @param bool $strict
+ * @return array|string
+ * @throws \Dcp\Core\Exception
  */
 function insert_file(Doc & $doc, $attrid, $strict = false)
 {
@@ -638,7 +643,7 @@ function specialmodcard(Action & $action, $usefor)
             if ($filename != "") {
                 if (substr($k, 0, 4) == "UPL_") $k = substr($k, 4);
                 if ($usefor == "D") $cdoc->setDefValue($k, $filename);
-                else if ($usefor == "Q") $err . $cdoc->setParam($k, $filename);
+                else if ($usefor == "Q") $err.= $cdoc->setParam($k, $filename);
                 
                 $tmod[$k] = $filename;
             }
