@@ -32,7 +32,7 @@ $usage->verify();
 
 $param = new Param();
 
-if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/WHAT/size.php")) {
+if (file_exists(DEFAULT_PUBDIR . "/WHAT/size.php")) {
     global $size;
     include ("WHAT/size.php");
     /*
@@ -58,8 +58,8 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/WHAT/size.p
             
             foreach ($v as $kf => $vf) {
                 $kn = "SIZE_" . strtoupper($kf);
-                if ($k == "normal") $param->Set($kn, $vf, PARAM_GLB, 1); // put in default
-                $param->Set($kn, $vf, PARAM_STYLE . $stylename, 1);
+                if ($k == "normal") $param->Set($kn, $vf, Param::PARAM_GLB, 1); // put in default
+                $param->Set($kn, $vf, Param::PARAM_STYLE . $stylename, 1);
                 $action->parent->SetVolatileParam($kn, $vf); // to compose css with new paramters
                 
             }
@@ -71,8 +71,7 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/WHAT/size.p
             
             $inputlay = new Layout("WHAT/Layout/size.css", $action);
             $out = $inputlay->gen();
-            file_put_contents($action->GetParam("CORE_PUBDIR") . "/WHAT/Layout/size-$k.css", $out);
+            file_put_contents(DEFAULT_PUBDIR . "/WHAT/Layout/size-$k.css", $out);
         }
     }
 }
-?>

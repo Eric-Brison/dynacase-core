@@ -418,7 +418,7 @@ function AttrToPhp($dbaccess, $tdoc)
         foreach ($tfmethods as $fmethods) {
             if ($fmethods[0] == "*") {
                 $cmethod = substr($fmethods, 1);
-                $filename = GetParam("CORE_PUBDIR") . "/FDL/" . $cmethod;
+                $filename = DEFAULT_PUBDIR . "/FDL/" . $cmethod;
                 $contents2 = getMethodFileInnerContents($filename);
                 /* Skip empty method file */
                 if (strlen(trim($contents2)) <= 0) {
@@ -426,7 +426,7 @@ function AttrToPhp($dbaccess, $tdoc)
                     $contents2 = '';
                 }
             } else {
-                $filename = GetParam("CORE_PUBDIR") . "/FDL/" . $fmethods;
+                $filename = DEFAULT_PUBDIR . "/FDL/" . $fmethods;
                 $innerContents = getMethodFileInnerContents($filename);
                 /* Concatenate non-empty method file */
                 if (strlen(trim($innerContents)) > 0) {
@@ -677,7 +677,7 @@ function PgUpdateFamilly($dbaccess, $docid, $docname = "")
 function createDocFile($dbaccess, $tdoc)
 {
     $GEN = getGen($dbaccess);
-    $pubdir = GetParam("CORE_PUBDIR");
+    $pubdir = DEFAULT_PUBDIR;
     $dfile = "$pubdir/FDL$GEN/Class.Doc" . $tdoc["id"] . ".php";
     
     $err = __phpLintWriteFile($dfile, AttrtoPhp($dbaccess, $tdoc));

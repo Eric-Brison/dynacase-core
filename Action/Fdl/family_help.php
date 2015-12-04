@@ -42,7 +42,7 @@ function getFamilyHelpFile(Action & $action, $docid)
     if ($doc->isAlive()) {
         $name = $doc->name;
         if ($name != "") {
-            $pdffile = $action->GetParam("CORE_PUBDIR") . "/Docs/$name.pdf";
+            $pdffile = DEFAULT_PUBDIR . "/Docs/$name.pdf";
             if (file_exists($pdffile)) {
                 return $pdffile;
             }

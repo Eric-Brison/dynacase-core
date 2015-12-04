@@ -120,7 +120,7 @@ class Layout
         $this->file = "";
         if ($caneva != "") {
             if ((!file_exists($file)) && ($file[0] != '/')) {
-                $file = GetParam("CORE_PUBDIR") . "/$file"; // try absolute
+                $file = DEFAULT_PUBDIR . "/$file"; // try absolute
                 
             }
             if (file_exists($file)) {

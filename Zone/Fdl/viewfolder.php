@@ -461,7 +461,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
     
     if ($with_popup || $column) {
         // js : manage icons
-        $licon = new Layout($action->Getparam("CORE_PUBDIR") . "/FDL/Layout/manageicon.js", $action);
+        $licon = new Layout(DEFAULT_PUBDIR . "/FDL/Layout/manageicon.js", $action);
         $licon->Set("nbdiv", $kdiv - 1);
         $action->parent->AddJsCode($licon->gen());
     }
@@ -486,7 +486,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
     
     $last = $startpage;
     $rangeTo = $start + $count;
-
+    
     if ($paginationType != "" && preg_match("/(^pageNumber$|^documentNumber$|%f|%l|%er|%np|%nd)/", $paginationType) && ($start != 0 || ($start == 0 && $hasNext))) {
         $sd->reset();
         $sd->setSlice('ALL');

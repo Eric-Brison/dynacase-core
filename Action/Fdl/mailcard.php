@@ -203,7 +203,7 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
     $bcc = str_replace("\"", "'", $bcc);
     
     $vf = newFreeVaultFile($dbaccess);
-    $pubdir = $action->getParam("CORE_PUBDIR");
+    $pubdir = DEFAULT_PUBDIR;
     $szone = false;
     $sgen = $sgen1 = '';
     

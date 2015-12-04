@@ -48,7 +48,7 @@ if ($docid != - 1) {
     
     if ($query->nb > 0) {
         
-        $pubdir = $appl->GetParam("CORE_PUBDIR");
+        $pubdir = DEFAULT_PUBDIR;
         
         while (list($k, $v) = each($table1)) {
             $doc = createDoc($dbaccess, $v["id"]);

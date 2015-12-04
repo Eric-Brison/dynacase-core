@@ -238,13 +238,13 @@ function popupGen($kdiv = "nothing")
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/common.js");
         $action->parent->AddJsRef($action->Getparam("CORE_PUBURL") . "/FDL/Layout/popupfunc.js");
         // css pour popup
-        //    $cssfile=$action->Getparam("CORE_PUBDIR")."/FDL/Layout/popup.css";
+        //    $cssfile=DEFAULT_PUBDIR ."/FDL/Layout/popup.css";
         //     $csslay = new Layout($cssfile,$action);
         //     $action->parent->AddCssCode($csslay->gen());
         $action->parent->AddCssRef("FDL:POPUP.CSS", true);
         $first = 0;
     }
-    $lpopup = new Layout($action->Getparam("CORE_PUBDIR") . "/FDL/Layout/popup.js", $action);
+    $lpopup = new Layout(DEFAULT_PUBDIR . "/FDL/Layout/popup.js", $action);
     if (isset($tmenuaccess)) {
         $kv = 0; // index for item
         $tma = array();
@@ -302,7 +302,7 @@ function popupAddGen($kdiv = "nothing")
     global $action;
     global $tsubmenu;
     
-    $lpopup = new Layout($action->Getparam("CORE_PUBDIR") . "/FDL/Layout/popupadd.js");
+    $lpopup = new Layout(DEFAULT_PUBDIR . "/FDL/Layout/popupadd.js");
     if (isset($tmenuaccess)) {
         reset($tmenuaccess);
         $kv = 0; // index for item
@@ -342,4 +342,3 @@ function popupAddGen($kdiv = "nothing")
     unset($tsubmenu);
     unset($tmenuitems);
 }
-?>

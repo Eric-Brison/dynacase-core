@@ -83,7 +83,7 @@ namespace {
         
         function getImageUrl($img, $default)
         {
-            $root = $this->parent->Getparam("CORE_PUBDIR");
+            $root = DEFAULT_PUBDIR;
             
             $socStyle = $this->parent->Getparam("CORE_SOCSTYLE");
             // first see if i have an society style
@@ -100,7 +100,7 @@ namespace {
         
         function getLayoutFile($layname, $default = "")
         {
-            $root = $this->parent->Getparam("CORE_PUBDIR");
+            $root = DEFAULT_PUBDIR;
             
             $socStyle = $this->parent->Getparam("CORE_SOCSTYLE");
             // first see if i have an society style
@@ -251,7 +251,7 @@ namespace Dcp\Style
          */
         public function gen($destFile = null)
         {
-            $pubDir = \ApplicationParameterManager::getScopedParameterValue("CORE_PUBDIR", DEFAULT_PUBDIR);
+            $pubDir = DEFAULT_PUBDIR;
             // prepare target dir
             $fullTargetPath = $pubDir . DIRECTORY_SEPARATOR . $destFile;
             $fullTargetDirname = dirname($fullTargetPath);
@@ -313,7 +313,7 @@ namespace Dcp\Style
         public function gen($destFile = null)
         {
             $template = '';
-            $pubDir = \ApplicationParameterManager::getScopedParameterValue("CORE_PUBDIR", DEFAULT_PUBDIR);
+            $pubDir = DEFAULT_PUBDIR;
             global $action;
             foreach ($this->_srcFiles as $srcPath) {
                 $srcFullPath = $pubDir . DIRECTORY_SEPARATOR . $srcPath;
@@ -381,7 +381,7 @@ namespace Dcp\Style
         public function gen($destFile = null)
         {
             $template = '';
-            $pubDir = \ApplicationParameterManager::getScopedParameterValue("CORE_PUBDIR", DEFAULT_PUBDIR);
+            $pubDir = DEFAULT_PUBDIR;
             global $action;
             foreach ($this->_srcFiles as $srcPath) {
                 $srcFullPath = $pubDir . DIRECTORY_SEPARATOR . $srcPath;

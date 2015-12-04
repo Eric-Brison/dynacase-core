@@ -18,9 +18,8 @@
 
 include_once ("FDL/import_file.php");
 // -----------------------------------
-function freedom_init(&$action)
+function freedom_init(Action & $action)
 {
     // -----------------------------------
-    add_import_file($action, $action->GetParam("CORE_PUBDIR") . "/FDL/init.freedom");
+    add_import_file($action, DEFAULT_PUBDIR . "/FDL/init.freedom");
 }
-?>

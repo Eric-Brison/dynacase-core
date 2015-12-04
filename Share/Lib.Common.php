@@ -261,7 +261,7 @@ function getLayoutFile($app, $layfile)
     if (!strstr($layfile, '.')) $layfile.= ".xml";
     $socStyle = Getparam("CORE_SOCSTYLE");
     $style = Getparam("STYLE");
-    $root = Getparam("CORE_PUBDIR");
+    $root = DEFAULT_PUBDIR;
     if ($socStyle != "") {
         $file = $root . "/STYLE/$socStyle/Layout/$layfile";
         if (file_exists($file)) {
@@ -609,7 +609,7 @@ function getWshCmd($nice = false, $userid = 0, $sudo = false)
     $wsh = sprintf("export freedom_context=%s;", escapeshellarg($freedomctx));
     if ($nice) $wsh.= "nice -n +10 ";
     if ($sudo) $wsh.= "sudo ";
-    $wsh.= escapeshellarg(GetParam("CORE_PUBDIR")) . "/wsh.php  ";
+    $wsh.= escapeshellarg(DEFAULT_PUBDIR) . "/wsh.php  ";
     $userid = intval($userid);
     if ($userid > 0) $wsh.= "--userid=$userid ";
     return $wsh;
@@ -887,7 +887,7 @@ function getLocaleConfig($core_lang = '')
 function setLanguage($lang)
 {
     global $pubdir;
-
+    
     if (!$lang) {
         return;
     }

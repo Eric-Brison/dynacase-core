@@ -54,7 +54,7 @@ if ($docid > 0) {
     pushfam(0, $tid, $table1);
 }
 if ($query->nb > 0) {
-    $pubdir = $appl->GetParam("CORE_PUBDIR");
+    $pubdir = DEFAULT_PUBDIR;
     if ($query->nb > 1) {
         $tii = array(
             1,

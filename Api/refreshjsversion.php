@@ -23,16 +23,16 @@ $usage->verify();
 
 $nv = getJsVersion();
 
-$fjs = getParam("CORE_PUBDIR") . "/CORE/wversion.js.in";
+$fjs = DEFAULT_PUBDIR . "/CORE/wversion.js.in";
 
 $fc = file_get_contents($fjs);
 $fc = str_replace("%VERSION%", $nv, $fc);
 
-$cible = getParam("CORE_PUBDIR") . "/CORE/wversion.js";
+$cible = DEFAULT_PUBDIR . "/CORE/wversion.js";
 $fj = fopen($cible, "w");
 fputs($fj, $fc);
 fclose($fj);
 
+global $action;
 $action->parent->param->Set("WVERSION", $nv + 1);
 print "$cible [$nv]\n";
-?>

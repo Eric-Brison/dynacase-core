@@ -581,7 +581,7 @@ create sequence SEQ_ID_ACTION;
         }
         
         $this->log->push("{$this->parent->name}:{$this->name}");
-        $pubdir = $this->parent->GetParam("CORE_PUBDIR");
+        $pubdir = DEFAULT_PUBDIR;
         if ($this->layout != "") {
             $layout = $this->GetLayoutFile($this->layout);
         } else {
@@ -835,7 +835,7 @@ create sequence SEQ_ID_ACTION;
     public function appInstalled($appname)
     {
         
-        $pubdir = $this->parent->GetParam("CORE_PUBDIR");
+        $pubdir = DEFAULT_PUBDIR;
         
         return (@is_dir($pubdir . "/" . $appname));
     }
