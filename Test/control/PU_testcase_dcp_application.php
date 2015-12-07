@@ -100,9 +100,9 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
         }
         
         $myAction = self::getAction();
-        $myAction->parent->setVolatileParam('CORE_PUBDIR', $appRoot);
         
         self::$app = new \Application();
+        self::$app->rootdir = $appRoot;
         self::$app->param = new \Param(self::$dbaccess);
         self::$app->parent = $myAction->parent;
         self::$app->set($appName, $myAction->parent, $myAction->parent->session, true);
@@ -110,8 +110,6 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
         if (self::$app->id <= 0) {
             throw new \Exception(sprintf("Error initializing application from '%s'.", $fileDotApp));
         }
-        
-        $myAction->parent->setVolatileParam('CORE_PUBDIR', DEFAULT_PUBDIR);
     }
     /**
      * Config of the application
@@ -125,4 +123,3 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
         return array();
     }
 }
-?>
