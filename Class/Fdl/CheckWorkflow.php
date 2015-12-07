@@ -171,6 +171,10 @@ class CheckWorkflow
             $this->addCodeError('WFL0200', $this->className);
         } else {
             foreach ($cycle as $k => $state) {
+                if (!is_array($state)) {
+                    $this->addCodeError('WFL0203', $k, $this->className, gettype($state));
+                    continue;
+                }
                 $props = array_keys($state);
                 $diff = array_diff($props, $this->transitionProperties);
                 if (count($diff) > 0) {
@@ -199,7 +203,12 @@ class CheckWorkflow
             if ($columnNumber > self::maxSqlColumn) {
                 $this->addCodeError('WFL0102', $this->className, $columnNumber, self::maxSqlColumn);
             }
+            $index = 0;
             foreach ($transitions as $tkey => $transition) {
+                if (!is_array($transition)) {
+                    $this->addCodeError('WFL0110', $tkey, $index, $this->className, gettype($transition));
+                    continue;
+                }
                 $this->checkTransitionStateKey($tkey);
                 
                 $props = array_keys($transition);
@@ -241,6 +250,7 @@ class CheckWorkflow
                         $this->addCodeError('WFL0107', $tkey, $this->className);
                     }
                 }
+                $index++;
             }
         }
     }
