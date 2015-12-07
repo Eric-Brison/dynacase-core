@@ -167,6 +167,18 @@ create sequence SEQ_ID_APPLICATION start 10;
     public $cssref = array();
     public $csscode = array();
     /**
+     * Application constructor.
+     * @param string $dbaccess
+     * @param string|string[] $id
+     * @param string|array $res
+     * @param int $dbid
+     */
+    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    {
+        parent::__construct($dbaccess, $id, $res, $dbid);
+        $this->rootdir = DEFAULT_PUBDIR;
+    }
+    /**
      * initialize  Application object
      * @param string $name application name to set
      * @param Application|string $parent the parent object (generally CORE app) : empty string if no parent
@@ -252,7 +264,6 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         
         $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : false, $this->style->name);
-        if (!$this->rootdir) $this->rootdir = $this->Getparam("CORE_PUBDIR");
         if ($this->available == "N") {
             // error
             $e = new Dcp\Core\Exception("CORE0007", $name);
@@ -348,10 +359,6 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     private function resolveResourceLocation($ref)
     {
-        if ($this->rootdir == '') {
-            $this->rootdir = $this->GetParam("CORE_PUBDIR");
-        }
-        
         if (strstr($ref, '../') !== false) {
             return '';
         }
@@ -1076,9 +1083,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     }
     public function OldGetLayoutFile($layname)
     {
-        
-        $root = $this->Getparam("CORE_PUBDIR");
-        $file = $root . "/" . $this->name . "/Layout/" . $layname;
+        $file = $this->rootdir . "/" . $this->name . "/Layout/" . $layname;
         if (file_exists($file)) {
             $file = $this->style->GetLayoutFile($layname, $file);
             return ($file);
@@ -1249,7 +1254,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         
         $this->log->info("Init : $name");
-        if (file_exists($this->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/{$name}/{$name}.app")) {
+        if (file_exists($this->rootdir . "/{$name}/{$name}.app")) {
             global $app_desc, $app_acl, $action_desc;
             // init global array
             $app_acl = array();
@@ -1313,7 +1318,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
             //----------------------------------
             // init application constant
-            if (file_exists(GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/{$name}/{$name}_init.php")) {
+            if (file_exists($this->rootdir . "/{$name}/{$name}_init.php")) {
                 include ("{$name}/{$name}_init.php");
                 if ($update) {
                     /* Store previous version for post migration scripts */
@@ -1338,7 +1343,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
             //----------------------------------
             // add init father application constant
-            if (file_exists(GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/{$this->childof}/{$this->childof}_init.php")) {
+            if (file_exists($this->rootdir . "/{$this->childof}/{$this->childof}_init.php")) {
                 include ("{$this->childof}/{$this->childof}_init.php");
                 global $app_const;
                 $this->InitAllParam(array_filter($app_const, "f_paramglog") , true);

@@ -91,7 +91,6 @@ AC_OUTPUT(
     App/Freedom/FREEDOM_init.php  \
     App/Generic/GENERIC_init.php \
     Api/updateclass.php \
-    Share/Lib.Prefix.php  \
     Supervisor/htaccess \
     htaccess \
     info.xml \

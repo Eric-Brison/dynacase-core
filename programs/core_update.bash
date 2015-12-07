@@ -12,18 +12,12 @@ fi
 dbaccesstpl="$WIFF_CONTEXT_ROOT"/config/dbaccess.php.in
 dbaccess="$WIFF_CONTEXT_ROOT"/config/dbaccess.php
 
-prefixtpl="$WIFF_CONTEXT_ROOT"/WHAT/Lib.Prefix.php.in
-prefix="$WIFF_CONTEXT_ROOT"/WHAT/Lib.Prefix.php
 htaccesstpl="$WIFF_CONTEXT_ROOT"/supervisor/.htaccess.in
 htaccess="$WIFF_CONTEXT_ROOT"/supervisor/.htaccess
 corepost="$WIFF_CONTEXT_ROOT"/CORE/CORE_post
 
 if [ ! -f "$dbaccesstpl" ]; then
     echo "file '$dbaccesstpl' not found" >&2
-    exit 1
-fi
-if [ ! -f "$prefixtpl" ]; then
-    echo "file '$prefixtpl' not found" >&2
     exit 1
 fi
 if [ ! -f "$htaccesstpl" ]; then
@@ -41,7 +35,6 @@ fi
 (
     set -e
     cp "$dbaccesstpl" "$dbaccess" && installUtils replace -f "$dbaccess" +s +e ".@AUTHTYPE@." "$authtype" ".@CORE_DB@." "$core_db" ".@FREEDOM_DB@." "$freedom_db" -q "@prefix@" "$WIFF_CONTEXT_ROOT"
-    cp "$prefixtpl" "$prefix" && installUtils replace -f "$prefix" +s +e ".@prefix@." "$WIFF_CONTEXT_ROOT"
     V=$(installUtils doublequote -q "$WIFF_CONTEXT_ROOT")
     cp "$htaccesstpl" "$htaccess" && installUtils replace -f "$htaccess" +em '@prefix@(.*)$' "\"$V\$1\""
     V=$(installUtils doublequote -q "$WIFF_CONTEXT_ROOT")

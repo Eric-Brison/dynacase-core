@@ -460,16 +460,29 @@ class ApplicationParameterManager
      */
     public static function _catchDeprecatedGlobalParameter($parameterName)
     {
-        if ($parameterName == 'CORE_DB' || $parameterName == 'FREEDOM_DB' || $parameterName == 'WEBDAV_DB') {
-            $msg = sprintf("Application parameter '%s' is deprecated: use \"getDbAccess()\", \"\$action->dbaccess\", \"\$application->dbaccess\", or \"\$doc->dbaccess\" instead.", $parameterName);
+        $retVal = null;
+        $msg = '';
+        switch ($parameterName) {
+            case 'CORE_DB':
+            case 'FREEDOM_DB':
+            case 'WEBDAV_DB':
+                $msg = sprintf("Application parameter '%s' is deprecated: use \"getDbAccess()\", \"\$action->dbaccess\", \"\$application->dbaccess\", or \"\$doc->dbaccess\" instead.", $parameterName);
+                $retVal = getDbAccess();
+                break;
+
+            case 'CORE_PUBDIR':
+                $msg = sprintf("Application parameter '%s' is deprecated: use DEFAULT_PUBDIR constant instead.", $parameterName);
+                $retVal = DEFAULT_PUBDIR;
+                break;
+        }
+        if ($msg !== '') {
             $action = self::getAction();
             if (isset($action->log)) {
                 $action->log->deprecated($msg);
             } else {
                 error_log(__METHOD__ . " " . $msg);
             }
-            return getDbAccess();
         }
-        return null;
+        return $retVal;
     }
 }

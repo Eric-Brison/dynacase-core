@@ -8,7 +8,7 @@
  * Default install directory
  *
  * @author Anakeen 2005
- * @version $Id: Lib.Prefix.php.in,v 1.9 2008/12/31 14:41:35 jerome Exp $
+ * @version $Id: Lib.Prefix.php,v 1.9 2008/12/31 14:41:35 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage CORE
@@ -16,7 +16,7 @@
 /**
  */
 global $pubdir;
-$pubdir = "@prefix@";
+$pubdir = dirname(__DIR__);
 
 set_include_path(get_include_path() . PATH_SEPARATOR . "$pubdir:$pubdir/WHAT");
 
@@ -33,4 +33,3 @@ ini_set("upload_max_filesize", "80M");
 define("DEFAULT_PUBDIR", $pubdir);
 // Maximum length of a filename (should match your system NAME_MAX constant)
 define("MAX_FILENAME_LEN", 255);
-?>

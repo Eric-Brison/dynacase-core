@@ -16,13 +16,12 @@
 /**
  */
 
-function systemcss(&$action)
+function systemcss(Action & $action)
 {
     
-    $file = GetParam("CORE_PUBDIR") . "/css/dcp/main.css";
+    $file = DEFAULT_PUBDIR . "/css/dcp/main.css";
     
     $tsize = file_get_contents($file);
     
     $action->lay->template = $tsize;
 }
-?>

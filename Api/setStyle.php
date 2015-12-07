@@ -308,7 +308,7 @@ class styleManager
         $this->log("deploy css files");
         $filesDefinition = array();
         
-        $pubDir = ApplicationParameterManager::getScopedParameterValue("CORE_PUBDIR", DEFAULT_PUBDIR);
+        $pubDir = DEFAULT_PUBDIR;
         $targetDir = $pubDir . DIRECTORY_SEPARATOR . $targetDirName;
         // clean previous files
         $this->deleteDirectory($targetDir);

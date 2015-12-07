@@ -18,7 +18,7 @@
 
 include_once ("Lib.Http.php");
 
-function helpview(&$action)
+function helpview(Action & $action)
 {
     
     $appname = (GetHttpVars("appname"));
@@ -26,7 +26,7 @@ function helpview(&$action)
     
     if ($filename == "") $filename = strtoupper($appname) . ".pdf";
     
-    $pdffile = $action->GetParam("CORE_PUBDIR") . "/Docs/$filename";
+    $pdffile = DEFAULT_PUBDIR . "/Docs/$filename";
     if (file_exists($pdffile)) {
         Http_DownloadFile($pdffile, "$filename", "application/pdf");
     } else {
@@ -34,4 +34,3 @@ function helpview(&$action)
         $action->ExitError($errtext);
     }
 }
-?>

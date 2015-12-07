@@ -2598,7 +2598,7 @@ create unique index i_docir on doc(initid, revision);";
                         // create temporary file
                         $value = sprintf(_("conversion %s in progress") , $engine);
                         if ($isimage) {
-                            $filename = getParam("CORE_PUBDIR") . "/Images/workinprogress.png";
+                            $filename = DEFAULT_PUBDIR . "/Images/workinprogress.png";
                         } else $filename = uniqid(getTmpDir() . "/conv") . ".txt";
                         file_put_contents($filename, $value);
                         $vidout = 0;

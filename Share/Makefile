@@ -11,12 +11,9 @@ include $(rootdir)/corePubRule.mk
 
 SUBDIR= ckeditor-quicksave ckeditor-docattr jscalendar jsXMLParser mozillaplugin jscolor PHPMailer Dcp
 
-publish: $(pubdir)/log.sh $(pubdir)/WHAT/Lib.Prefix.php.in $(pubdir)/jscalendar $(pubdir)/FDL/geticon.php
+publish: $(pubdir)/log.sh $(pubdir)/jscalendar $(pubdir)/FDL/geticon.php
 
 $(pubdir)/log.sh: log.sh
-	cp $< $@
-
-$(pubdir)/WHAT/Lib.Prefix.php.in: Lib.Prefix.php.in
 	cp $< $@
 
 $(pubdir)/FDL/geticon.php: geticon.php

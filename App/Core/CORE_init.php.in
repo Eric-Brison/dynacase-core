@@ -80,11 +80,6 @@ $app_const = array(
         "user" => "N",
         "kind" => "enum(small|normal|large|x-large)"
     ) ,
-    "CORE_PUBDIR" => array(
-        "val" => "@prefix@",
-        "descr" => N_("Publication directory") ,
-        "kind" => "readonly"
-    ) ,
     "CORE_TMPDIR" => "./var/tmp",
     "CORE_TMPDIR_MAXAGE" => array(
         "val" => "2",
