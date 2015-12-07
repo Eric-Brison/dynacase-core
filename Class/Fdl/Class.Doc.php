@@ -6037,9 +6037,12 @@ create unique index i_docir on doc(initid, revision);";
                                 $sattrid.= $link[$i];
                                 $i++;
                             }
-                            
-                            if (preg_match('/^[a-z0-9_]*::/i', $sattrid)) {
-                                $urllink.= $this->applyMethod($sattrid, $sattrid, $k);
+                            if (preg_match('/^[a-z0-9_\\\\]*::/i', $sattrid)) {
+                                $mapArgs = array();
+                                foreach (self::$infofields as $propId => $prop) {
+                                    $mapArgs[$propId] = $this->getPropertyValue($propId);
+                                }
+                                $urllink.= $this->applyMethod($sattrid, $sattrid, $k, array() , $mapArgs);
                             } else {
                                 
                                 if (!in_array(mb_strtolower($sattrid) , $this->fields)) {
@@ -6250,11 +6253,23 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 /* Setup base URL */
                 $ul = '?';
+                $specialUl = false;
                 switch ($target) {
                     case "mail":
                         $js = false;
-                        $ul = htmlspecialchars(GetParam("CORE_MAILACTIONURL"));
-                        $ul.= "&amp;id=$id";
+                        $mUrl = getParam("CORE_MAILACTIONURL");
+                        if (strstr($mUrl, '%')) {
+                            if ($this->id != $id) {
+                                $mDoc = new_doc($this->dbaccess, $id);
+                            } else {
+                                $mDoc = $this;
+                            }
+                            $ul = htmlspecialchars($mDoc->urlWhatEncode($mUrl));
+                            $specialUl = true;
+                        } else {
+                            $ul = htmlspecialchars(GetParam("CORE_MAILACTIONURL"));
+                            $ul.= "&amp;id=$id";
+                        }
                         break;
 
                     case "ext":
@@ -6287,18 +6302,21 @@ create unique index i_docir on doc(initid, revision);";
                         if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
                         elseif ($docrev != "fixed") {
                             // validate that docrev looks like state(xxx)
-                            if (preg_match("/^state\(([a-zA-Z0-9_:-]+)\)/", $docrev, $matches)) {
+                            if (preg_match("/^state\\(([a-zA-Z0-9_:-]+)\\)/", $docrev, $matches)) {
                                 $ul.= "&amp;state=" . $matches[1];
                             }
                         }
                         $a = "<a href=\"$ul\">$title</a>";
                     }
                 } else {
-                    if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
-                    elseif ($docrev != "fixed") {
-                        // validate that docrev looks like state(xxx)
-                        if (preg_match("/^state\(([a-zA-Z0-9_:-]+)\)/", $docrev, $matches)) {
-                            $ul.= "&amp;state=" . $matches[1];
+                    if (!$specialUl) {
+                        if ($docrev == "latest" || $docrev == "" || !$docrev) {
+                            $ul.= "&amp;latest=Y";
+                        } elseif ($docrev != "fixed") {
+                            // validate that docrev looks like state(xxx)
+                            if (preg_match("/^state\\(([a-zA-Z0-9_:-]+)\\)/", $docrev, $matches)) {
+                                $ul.= "&amp;state=" . $matches[1];
+                            }
                         }
                     }
                     if ($js) $ajs = "oncontextmenu=\"popdoc(event,'$ul');return false;\"";
