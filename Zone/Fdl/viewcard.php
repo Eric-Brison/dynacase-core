@@ -153,8 +153,12 @@ function viewcard(Action & $action)
         $action->lay->set("inDomain", true);
     }
     
-    if ($doc->doctype == 'Z') {
-        $err = _("This document has been deleted");
+    if ($doc->doctype === 'Z') {
+        if ($doc->lmodify === "D") {
+            $err = _("This document has been deleted");
+        } else {
+            $err = _("This revision has been deleted");
+        }
     } else {
         // disabled control just to refresh
         $doc->disableEditControl();

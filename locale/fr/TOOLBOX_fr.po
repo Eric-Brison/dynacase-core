@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-29 16:45+0200\n"
-"PO-Revision-Date: 2015-10-22 08:29+0200\n"
+"POT-Creation-Date: 2015-12-07 10:59+0100\n"
+"PO-Revision-Date: 2015-12-07 11:00+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -490,9 +490,6 @@ msgstr "Ajout %s dans dossier %s"
 msgid "Add Attributes : %s"
 msgstr "Ajout des attributs : %s"
 
-msgid "Add a note"
-msgstr "Ajouter une note"
-
 #, php-format
 msgid "Add acl %s for %s"
 msgstr "Ajout Acl %s pour %s"
@@ -590,8 +587,8 @@ msgstr "Autoriser l'accès invité"
 
 msgid "An error occured, check the details for more information"
 msgstr ""
-"Le processus d'importation n'a pas pu être effectué. Une erreur a été détectée, consultez le compte-rendu ci-dessous pour plus  "
-"d'information"
+"Le processus d'importation n'a pas pu être effectué. Une erreur a été "
+"détectée, consultez le compte-rendu ci-dessous pour plus  d'information"
 
 msgid "Analyse fdl.csv"
 msgstr "Analyse fdl.csv"
@@ -846,8 +843,8 @@ msgstr ""
 "Ne peut faire cette action. La fonction de la fenêtre parent est introuvable"
 
 #, php-format
-msgid "Cannot find %s ressource file"
-msgstr "Fichier resource %s non trouvé"
+msgid "Cannot find %s resource file"
+msgstr ""
 
 #, php-format
 msgid "Cannot find help function %s"
@@ -1269,9 +1266,6 @@ msgstr "Ne peut ouvrir '%s' pour lecture."
 msgid "Create"
 msgstr "Créer"
 
-msgid "Create !"
-msgstr "Créer !"
-
 #, php-format
 msgid "Create %s"
 msgstr "Créer %s"
@@ -1304,10 +1298,6 @@ msgstr "Créer un dossier"
 
 msgid "Creation"
 msgstr "Création"
-
-#, php-format
-msgid "Creation %s"
-msgstr "Création %s"
 
 #, php-format
 msgid "Creation aborded : no family specified"
@@ -1911,8 +1901,8 @@ msgstr ""
 msgid "Error: config file '%s' is not a file."
 msgstr "Erreur: le fichier de config '%s' n'est pas un fichier"
 
-msgid "Error: empty FREEDOM_DB"
-msgstr "Erreur: FREEDOM_DB vide"
+msgid "Error: empty action->dbaccess"
+msgstr ""
 
 #, php-format
 msgid "Error: missing or empty --tmppgservice"
@@ -2516,9 +2506,6 @@ msgstr "Date"
 
 msgid "Histo:User"
 msgstr "Utilisateur"
-
-msgid "Historic"
-msgstr "Historique"
 
 msgid "History"
 msgstr "Historique"
@@ -3487,9 +3474,6 @@ msgstr "Relations entre documents"
 msgid "Relation parametre"
 msgstr "Relation paramètre"
 
-msgid "Reload document"
-msgstr "Recharger le document"
-
 msgid "Reload page"
 msgstr "Recharger la page"
 
@@ -3592,9 +3576,6 @@ msgstr "Samedi"
 
 msgid "Save"
 msgstr "Sauver"
-
-msgid "Save !"
-msgstr "Sauver !"
 
 msgid "Save and quit edit mode"
 msgstr "Sauver et quitter le mode édition"
@@ -3706,9 +3687,6 @@ msgstr ""
 
 msgid "Send Analyze"
 msgstr "Lancer l'analyse"
-
-msgid "Send document"
-msgstr "Envoyer par courriel"
 
 msgid "Send document searches"
 msgstr "Envoi de la recherche de documents"
@@ -4074,6 +4052,9 @@ msgstr "Cette action nécessite l'installation du module Dynacase Extui"
 msgid "This document has been deleted"
 msgstr "Ce document a été supprimé"
 
+msgid "This revision has been deleted"
+msgstr "Cette révision a été supprimée"
+
 #, php-format
 msgid "This search cannot be executed"
 msgstr "Cette recherche ne peut pas être exécutée"
@@ -4319,9 +4300,6 @@ msgstr "Voir les droits posés. (puces vertes)"
 
 msgid "View postit"
 msgstr "Voir le post-it"
-
-msgid "View print version"
-msgstr "Version imprimable"
 
 msgid "View properties"
 msgstr "Voir les propriétés"
@@ -4881,8 +4859,8 @@ msgid "attribute %s unknow in document \"%s\" [%s]"
 msgstr "attribut %s inconnu dans le document \"%s\" [%s]"
 
 #, php-format
-msgid "attribute %s unknow in family \\#%s\""
-msgstr "attribut %s inconnu dans la famille \"%s\" "
+msgid "attribute %s unknow in family \"%s\""
+msgstr ""
 
 msgid "attribute id"
 msgstr "Identifiant de l'attribut"
@@ -4982,8 +4960,8 @@ msgstr ""
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
-"[CORE_EXTERNURL]</a>"
+"<p>Vous pouvez vous connecter sur <a href="
+"\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a>"
 
 msgid "can't access file"
 msgstr "Accès au fichier impossible"
@@ -7114,9 +7092,6 @@ msgstr "suivant"
 msgid "next level"
 msgstr "niveau supérieur"
 
-msgid "no"
-msgstr "non"
-
 msgid "no access control"
 msgstr "pas de contrôle d'accès"
 
@@ -8577,10 +8552,6 @@ msgid "unknow user #%s"
 msgstr "Utilisateur inconnu #%s"
 
 #, php-format
-msgid "unknow virtual user identificateur %s"
-msgstr "identificateur [%s] inconnu comme utilisateur virtuel"
-
-#, php-format
 msgid "unknown attribute %s"
 msgstr "attribut inconnu : %s"
 
@@ -8995,9 +8966,6 @@ msgstr "qualifié"
 msgid "write only"
 msgstr "écriture seule"
 
-msgid "yes"
-msgstr "oui"
-
 msgid "yesterday"
 msgstr "hier"
 
@@ -9120,6 +9088,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "%s style updated\n"
 #~ msgstr "%s style mis à jour\n"
 
+#~ msgid "Add a note"
+#~ msgstr "Ajouter une note"
+
 #~ msgid "Admin edit"
 #~ msgstr "Administrer"
 
@@ -9131,6 +9102,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Cancel change"
 #~ msgstr "Annuler les modifications"
+
+#~ msgid "Cannot find %s ressource file"
+#~ msgstr "Fichier resource %s non trouvé"
 
 #~ msgid "Cannot set logical name %s because object is not affected"
 #~ msgstr ""
@@ -9151,6 +9125,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Confirm unattach all activated timers"
 #~ msgstr "Confirmer l'annulation de tous les minuteurs actifs"
+
+#~ msgid "Create !"
+#~ msgstr "Créer !"
+
+#~ msgid "Creation %s"
+#~ msgstr "Création %s"
 
 #~ msgid "Default value"
 #~ msgstr "Valeur par défaut"
@@ -9173,11 +9153,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Error converting HTML from attribute '%s' from document '%s'"
 #~ msgstr "Erreur de conversion du HTML de l'attribut '%s' du document '%s'"
 
+#~ msgid "Error: empty FREEDOM_DB"
+#~ msgstr "Erreur: FREEDOM_DB vide"
+
 #~ msgid "Freedom imodification"
 #~ msgstr "Modification de documents virtuels"
 
 #~ msgid "Go"
 #~ msgstr "Go"
+
+#~ msgid "Historic"
+#~ msgstr "Historique"
 
 #~ msgid "Import file (CSV, ODS, XML)"
 #~ msgstr "Fichier d'importation (CSV, ODS, XML)"
@@ -9236,6 +9222,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Reimport report"
 #~ msgstr "Réimporter le rapport"
 
+#~ msgid "Reload document"
+#~ msgstr "Recharger le document"
+
 #~ msgid "Report to (mail address)"
 #~ msgstr "Rapport à (adresse de courriel)"
 
@@ -9248,6 +9237,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "SEARCH_DOC:Unknown operator %s"
 #~ msgstr "Recherche : problème d'opérateur \"%s\""
 
+#~ msgid "Save !"
+#~ msgstr "Sauver !"
+
 #~ msgid "Save change"
 #~ msgstr "Sauvegarder les changements"
 
@@ -9256,6 +9248,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Search containing characters"
 #~ msgstr "Recherche contenant les caractères"
+
+#~ msgid "Send document"
+#~ msgstr "Envoyer par courriel"
 
 #~ msgid ""
 #~ "Some element couldn't be fully analyze, you might have importation's "
@@ -9318,6 +9313,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Until done date"
 #~ msgstr "Historique des minuteurs vieux de plus de n jours"
 
+#~ msgid "View print version"
+#~ msgstr "Version imprimable"
+
 #~ msgid "You must use only a-z, 0-9, _, - caracters"
 #~ msgstr "Vous devez utiliser uniquement les caractères 0-9, a-z, _ et -"
 
@@ -9341,6 +9339,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "attribute %s unknow in family %s [%d]"
 #~ msgstr "attribut %s inconnu pour la famille %s [%d]"
+
+#~ msgid "attribute %s unknow in family \\#%s\""
+#~ msgstr "attribut %s inconnu dans la famille \"%s\" "
 
 #~ msgid "boolean"
 #~ msgstr "booléen"
@@ -9528,6 +9529,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "new forum answer"
 #~ msgstr "ajouter une entrée"
 
+#~ msgid "no"
+#~ msgstr "non"
+
 #~ msgid "no delay specified in timer %s [%d]"
 #~ msgstr "pas de durée spécifiée dans le minuteur %s [%d]"
 
@@ -9607,6 +9611,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "transfered"
 #~ msgstr "transféré"
 
+#~ msgid "unknow virtual user identificateur %s"
+#~ msgstr "identificateur [%s] inconnu comme utilisateur virtuel"
+
 #~ msgid "unknown login : passwd unchanged"
 #~ msgstr "login incoonu : mot de passe inchangé"
 
@@ -9632,6 +9639,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "workflow associated %s [%d] is corrupted"
 #~ msgstr "Le cycle de vie associé %s [%d] est corrompu"
+
+#~ msgid "yes"
+#~ msgstr "oui"
 
 #~ msgid "you don't have privilege to edit forum for document %s"
 #~ msgstr "vous n'avez pas les droits pour modifier le forum du document %s"
