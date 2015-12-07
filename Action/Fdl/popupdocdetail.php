@@ -718,12 +718,9 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
     
     $fdoc = $doc->getFamilyDocument();
     if ($fdoc->Control("icreate") != "") $tlink["duplicate"]["visibility"] = POPUP_INVISIBLE;
-    
-    if ($doc->PreDocDelete() == "") {
-        $tlink["delete"]["visibility"] = POPUP_ACTIVE;
-    } else {
-        $tlink["delete"]["visibility"] = POPUP_INACTIVE;
-    }
+
+    $canDelete=($doc->PreDocDelete() == "");
+    $tlink["delete"]["visibility"] = ($canDelete)?POPUP_ACTIVE:POPUP_INACTIVE;
     
     if ($cud) {
         $tlink["editdoc"]["visibility"] = POPUP_ACTIVE;
@@ -739,7 +736,13 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
             if ($tmpdoc->Control("view") == "") {
                 if (!$tmpdoc->preUndelete()) $tlink["latest"]["visibility"] = POPUP_ACTIVE;
             }
-        } elseif (!$doc->preUndelete()) $tlink["restore"]["visibility"] = POPUP_ACTIVE;
+        } elseif ($doc->lmodify === "D") {
+            if (!$doc->preUndelete()) {
+                $tlink["restore"]["visibility"] = (!$doc->control("delete"))?POPUP_ACTIVE:POPUP_INACTIVE;
+            }
+        } else {
+            $tlink["latest"]["visibility"] = POPUP_ACTIVE;
+        }
         $tlink["editdoc"]["visibility"] = POPUP_INVISIBLE;
         $tlink["delete"]["visibility"] = POPUP_INVISIBLE;
         $tlink["editprof"]["visibility"] = POPUP_INVISIBLE;

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-29 16:45+0200\n"
+"POT-Creation-Date: 2015-12-07 10:59+0100\n"
 "PO-Revision-Date: 2015-10-22 08:31+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -485,9 +485,6 @@ msgstr ""
 msgid "Add Attributes : %s"
 msgstr ""
 
-msgid "Add a note"
-msgstr ""
-
 #, php-format
 msgid "Add acl %s for %s"
 msgstr ""
@@ -827,7 +824,7 @@ msgid "Cannot do this action. The function of parent window is not found"
 msgstr ""
 
 #, php-format
-msgid "Cannot find %s ressource file"
+msgid "Cannot find %s resource file"
 msgstr ""
 
 #, php-format
@@ -1236,9 +1233,6 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-msgid "Create !"
-msgstr ""
-
 #, php-format
 msgid "Create %s"
 msgstr ""
@@ -1270,10 +1264,6 @@ msgid "Create subfolder"
 msgstr ""
 
 msgid "Creation"
-msgstr ""
-
-#, php-format
-msgid "Creation %s"
 msgstr ""
 
 #, php-format
@@ -1857,7 +1847,7 @@ msgstr ""
 msgid "Error: config file '%s' is not a file."
 msgstr ""
 
-msgid "Error: empty FREEDOM_DB"
+msgid "Error: empty action->dbaccess"
 msgstr ""
 
 #, php-format
@@ -2020,8 +2010,8 @@ msgstr ""
 "        </ul>\n"
 "    </li>\n"
 "    <li>\n"
-"        <em class=\"help-operator\">(</em> and <em class=\"help-operator\">)"
-"</em><br/>\n"
+"        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
+"\">)</em><br/>\n"
 "        Parenthesis express priorities between operators.\n"
 "        <ul>\n"
 "            <li>\n"
@@ -2408,9 +2398,6 @@ msgstr "Date"
 
 msgid "Histo:User"
 msgstr "User"
-
-msgid "Historic"
-msgstr ""
 
 msgid "History"
 msgstr ""
@@ -3350,9 +3337,6 @@ msgstr ""
 msgid "Relation parametre"
 msgstr ""
 
-msgid "Reload document"
-msgstr ""
-
 msgid "Reload page"
 msgstr ""
 
@@ -3454,9 +3438,6 @@ msgid "Saturday"
 msgstr ""
 
 msgid "Save"
-msgstr ""
-
-msgid "Save !"
 msgstr ""
 
 msgid "Save and quit edit mode"
@@ -3563,9 +3544,6 @@ msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
 msgstr ""
 
 msgid "Send Analyze"
-msgstr ""
-
-msgid "Send document"
 msgstr ""
 
 msgid "Send document searches"
@@ -3901,6 +3879,9 @@ msgstr ""
 msgid "This document has been deleted"
 msgstr ""
 
+msgid "This revision has been deleted"
+msgstr ""
+
 #, php-format
 msgid "This search cannot be executed"
 msgstr ""
@@ -4141,9 +4122,6 @@ msgid "View only access set. Green flag"
 msgstr ""
 
 msgid "View postit"
-msgstr ""
-
-msgid "View print version"
 msgstr ""
 
 msgid "View properties"
@@ -4694,7 +4672,7 @@ msgid "attribute %s unknow in document \"%s\" [%s]"
 msgstr ""
 
 #, php-format
-msgid "attribute %s unknow in family \\#%s\""
+msgid "attribute %s unknow in family \"%s\""
 msgstr ""
 
 msgid "attribute id"
@@ -6889,9 +6867,6 @@ msgstr ""
 msgid "next level"
 msgstr ""
 
-msgid "no"
-msgstr "No"
-
 msgid "no access control"
 msgstr ""
 
@@ -7990,8 +7965,8 @@ msgid "submitreqpasswd_form_send_error_unknown"
 msgstr ""
 "<p>The server accountered an error processing your request</p>\n"
 "<p>Retry your request, and if the problem persist, please contact <a href="
-"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request\">"
-"[ON_ERROR_CONTACT]</a></p>"
+"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request"
+"\">[ON_ERROR_CONTACT]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""
@@ -8329,10 +8304,6 @@ msgstr ""
 
 #, php-format
 msgid "unknow user #%s"
-msgstr ""
-
-#, php-format
-msgid "unknow virtual user identificateur %s"
 msgstr ""
 
 #, php-format
@@ -8746,9 +8717,6 @@ msgstr ""
 msgid "write only"
 msgstr ""
 
-msgid "yes"
-msgstr "Yes"
-
 msgid "yesterday"
 msgstr ""
 
@@ -8883,6 +8851,9 @@ msgstr ""
 #~ msgid "forum_id"
 #~ msgstr "forum"
 
+#~ msgid "no"
+#~ msgstr "No"
+
 #~ msgid "search online help"
 #~ msgstr "Start search"
 
@@ -8891,3 +8862,6 @@ msgstr ""
 
 #~ msgid "switch search mode (basic/advanced)"
 #~ msgstr "basic/advanced mode"
+
+#~ msgid "yes"
+#~ msgstr "Yes"

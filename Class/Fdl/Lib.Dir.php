@@ -175,10 +175,18 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         
         if ($trash == "only") {
             $sqlfilters[-3] = $maintabledot . "doctype = 'Z'";
-        } elseif ($trash == "also");
-        else if (!$fromid) $sqlfilters[-3] = $maintabledot . "doctype != 'Z'";
+            if ($latest) {
+                $sqlfilters[] = $maintabledot . "lmodify = 'D'";
+            }
+        } elseif ($trash == "also") {
+            $sqlfilters[-3] = sprintf("(%slocked != -1 or %slmodify='D')", $maintabledot, $maintabledot);
+        } else if (!$fromid) {
+            $sqlfilters[-3] = $maintabledot . "doctype != 'Z'";
+        }
         
-        if (($latest) && (($trash == "no") || (!$trash))) $sqlfilters[-1] = $maintabledot . "locked != -1";
+        if (($latest) && (($trash == "no") || (!$trash))) {
+            $sqlfilters[-1] = $maintabledot . "locked != -1";
+        }
         ksort($sqlfilters);
         if (count($sqlfilters) > 0) $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
         $qsql = "select $selectfields " . "from $only $table  " . "where  " . $sqlcond;
@@ -202,8 +210,12 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             }
             if (strpos(implode(",", $sqlfilters) , "archiveid") === false) $sqlfilters[-4] = $maintabledot . "archiveid is null";
             //if ($fld->getRawValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
-            if ($trash == "only") $sqlfilters[-1] = "locked = -1";
-            elseif ($latest) $sqlfilters[-1] = "locked != -1";
+            if ($trash == "only") {
+                $sqlfilters[-1] = "locked = -1";
+                if ($latest) {
+                    $sqlfilters[] = $maintabledot . "lmodify = 'D'";
+                }
+            } elseif ($latest) $sqlfilters[-1] = "locked != -1";
             ksort($sqlfilters);
             if (count($sqlfilters) > 0) $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
             
@@ -607,7 +619,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                         $tretdocs[] = $tableq;
                     } else $tretdocs = array_merge($tretdocs, $tableq);
                 }
-                //		 print "<HR><br><div style=\"border:red 1px inset;background-color:lightyellow;color:black\">".$query->LastQuery; print " - $qtype<B> [".$query->nb.']'.sprintf("%.03fs",microtime_diff(microtime(),$mb))."</B><b style='color:red'>".$query->basic_elem->msg_err."</b></div>";
+                // print "<HR><br><div style=\"border:red 1px inset;background-color:lightyellow;color:black\">".$query->LastQuery; print " - $qtype<B> [".$query->nb.']'.sprintf("%.03fs",microtime_diff(microtime(),$mb))."</B><b style='color:red'>".$query->basic_elem->msg_err."</b></div>";
                 if ($query->basic_elem->msg_err != "") {
                     addLogMsg($query->basic_elem->msg_err, 200);
                     addLogMsg(array(
@@ -778,7 +790,6 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         }
         return $rt;
     }
-
     /**
      * query to find child directories (no recursive - only in the specified folder)
      * @param string $dbaccess database specification
