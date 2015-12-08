@@ -1310,7 +1310,9 @@ class DocidAttributeValue extends StandardAttributeValue
                         "state" => $matches[1]
                     );
                 }
-                $this->initid = intval($info["initid"]);
+                if (isset($info["initid"])) {
+                    $this->initid = intval($info["initid"]);
+                }
             }
         } else {
             $this->visible = false;

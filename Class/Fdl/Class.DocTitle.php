@@ -176,7 +176,7 @@ class DocTitle
     {
         
         if ($latest || $docrevOption === "latest") {
-            $sql = sprintf("select id,initid,title,name,doctype,views && '%s' as canaccess from docread where initid = %d and locked != -1", self::getUserVector() , $docid);
+            $sql = sprintf("select id,initid,title,revision,name,doctype,views && '%s' as canaccess from docread where initid = %d and locked != -1", self::getUserVector() , $docid);
         } else {
             if (preg_match('/^state\(([^\)]+)\)/', $docrevOption, $matches)) {
                 $revState = $matches[1];
