@@ -245,7 +245,9 @@ class FormatCollection
         return $keys;
     }
     /**
-     * @param null $propDateStyle
+     * @param string $propDateStyle
+     * @return $this
+     * @throws \Dcp\Fmtc\Exception
      */
     public function setPropDateStyle($propDateStyle)
     {
@@ -367,7 +369,7 @@ class FormatCollection
     /**
      * apply a callback on each document
      * if callback return false, the document is skipped from list
-     * @param Closure $hookfunction
+     * @param Closure $hookFunction
      * @return $this
      */
     public function setHookAdvancedStatus($hookFunction)
@@ -433,7 +435,6 @@ class FormatCollection
     }
     /**
      * @param array $info
-     * @param BasicAttribute|null $oa
      * @param Doc $doc
      * @return StandardAttributeValue
      */
@@ -446,8 +447,9 @@ class FormatCollection
         return $info;
     }
     /**
-     * @param StandardAttributeValue|null $info
+     * @param StandardAttributeValue|string|null $info
      * @param string $propId
+     * @param Doc $doc
      * @return StandardAttributeValue
      */
     protected function callPropertyRenderHook($info, $propId, \Doc $doc)
@@ -1008,7 +1010,6 @@ class FormatCollection
             $displayDocId = (!isset($info[0]->visible));
         }
         
-        $result = '';
         if (!$attrInArray) {
             if ($attrIsMultiple) {
                 $multiList = array();
@@ -1067,6 +1068,10 @@ class StandardAttributeValue
 }
 class UnknowAttributeValue extends StandardAttributeValue
 {
+    /**
+     * noAccessAttributeValue constructor.
+     * @param string $v
+     */
     public function __construct($v)
     {
         $this->value = ($v === '') ? null : $v;
@@ -1076,6 +1081,10 @@ class UnknowAttributeValue extends StandardAttributeValue
 class noAccessAttributeValue extends StandardAttributeValue
 {
     public $visible = true;
+    /**
+     * noAccessAttributeValue constructor.
+     * @param string $v
+     */
     public function __construct($v)
     {
         $this->value = '';
@@ -1217,6 +1226,7 @@ class FileAttributeValue extends StandardAttributeValue
     public $url = '';
     public $mime = '';
     public $icon = '';
+    
     public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $iconMimeSize = 24)
     {
         
@@ -1271,13 +1281,17 @@ class DocidAttributeValue extends StandardAttributeValue
     
     public $url;
     public $icon = null;
+    public $revision = - 1;
+    public $initid;
     protected $visible = true;
     
     public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
         $this->familyRelation = $oa->format;
         $this->value = ($v === '') ? null : $v;
-        $this->displayValue = DocTitle::getRelationTitle($v, $oa->getOption("docrev", "latest") == "latest", $doc);
+        $info = array();
+        $docRevOption = $oa->getOption("docrev", "latest");
+        $this->displayValue = DocTitle::getRelationTitle($v, $docRevOption == "latest", $doc, $docRevOption, $info);
         if ($this->displayValue !== false) {
             if ($v !== '' && $v !== null) {
                 if ($iconsize > 0) {
@@ -1288,7 +1302,15 @@ class DocidAttributeValue extends StandardAttributeValue
                     if (!$prop["icon"]) $prop["icon"] = "doc.png";
                     $this->icon = $doc->getIcon($prop["icon"], $iconsize);
                 }
-                $this->url = $this->getDocUrl($v, $oa->getOption("docrev"));
+                $this->url = $this->getDocUrl($v, $docRevOption);
+                if ($docRevOption === "fixed") {
+                    $this->revision = intval($info["revision"]);
+                } else if (preg_match('/^state\(([^\)]+)\)/', $docRevOption, $matches)) {
+                    $this->revision = array(
+                        "state" => $matches[1]
+                    );
+                }
+                $this->initid = intval($info["initid"]);
             }
         } else {
             $this->visible = false;
