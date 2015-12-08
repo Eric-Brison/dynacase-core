@@ -20,15 +20,20 @@ class DocTitle
      * @param int $docid relation documentg id
      * @param bool $latest true if it is latest
      * @param Doc $doc document where comes from relation
-     * @return string|bool|null
+     * @param string $docrevOption docrev attribute option
+     * @param array $info more information about document target (revision, initid)
+     * @return bool|null|string
      */
-    public static function getRelationTitle($docid, $latest = true, Doc $doc)
+    public static function getRelationTitle($docid, $latest = true, Doc $doc, $docrevOption = "", array & $info = array())
     {
         $uid = getCurrentUser()->id; // index by uid in case of sudo
         $isAdmin = ($uid == 1);
         if (!is_numeric($docid)) $docid = getIdFromName(getDbAccess() , $docid);
         if (!$docid) return null;
-        $keyCache = intval($docid) . '-' . intval($latest);
+        if ($docrevOption === "") {
+            $docrevOption = $latest ? "latest" : "fixed";
+        }
+        $keyCache = intval($docid) . '-' . $docrevOption;
         
         if (!isset(self::$relationCache[$uid][$keyCache])) {
             self::setRelationCache($doc, $uid);
@@ -36,19 +41,23 @@ class DocTitle
         
         if (isset(self::$relationCache[$uid][$keyCache])) {
         } else {
-            $keyCache = intval($docid) . '-' . intval(!$latest);
+            $keyCache = intval($docid) . '-' . $docrevOption;
         }
         if (isset(self::$relationCache[$uid][$keyCache])) {
             $relCache = self::$relationCache[$uid][$keyCache];
-            if (!isset($relCache["rid"]) || !isset($relCache["title"])) return null; // unknow document
+            if (!isset($relCache["rid"]) || !isset($relCache["title"])) {
+                return null;
+            } // unknow document
             if ($relCache["canaccess"] === 'f' && (!$isAdmin)) {
                 return false; //_("information access deny");
                 
             } else {
+                $info = $relCache;
                 return $relCache["title"];
             }
         }
-        return self::getTitle($docid, $latest);
+        $title = self::getTitle($docid, $latest, $docrevOption, $info);
+        return $title;
     }
     /**
      * get all title and access of document's relations
@@ -63,7 +72,12 @@ class DocTitle
         $relationIds = array();
         foreach ($la as $oa) {
             $type = $oa->type;
-            $latest = $oa->getOption("docrev", "latest") == "latest";
+            $docRevOption = $oa->getOption("docrev", "latest");
+            $latest = $docRevOption === "latest";
+            $revState = "";
+            if (preg_match('/^state\(([^\)]+)\)/', $docRevOption, $matches)) {
+                $revState = $matches[1];
+            }
             if ($type == "docid" || $type == "account" || $type == "thesaurus") {
                 $ids = $doc->getMultipleRawValues($oa->id);
                 $realId = array();
@@ -77,17 +91,25 @@ class DocTitle
                     }
                 }
                 foreach ($realId as $did) {
-                    $relationIds[$did . '-' . intval($latest) ] = array(
+                    $relationIds[$did . '-' . $docRevOption] = array(
                         "docid" => $did,
                         "rid" => $did,
-                        "latest" => $latest
+                        "latest" => $latest,
+                        "state" => $revState
                     );
                 }
             }
         }
         $latestId = array();
-        foreach ($relationIds as $relid) {
+        foreach ($relationIds as $k => $relid) {
             if ($relid["latest"]) $latestId[] = $relid["docid"];
+            elseif ($relid["state"]) {
+                
+                simpleQuery($doc->dbaccess, sprintf("select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1", $relid["docid"], pg_escape_string($relid["state"])) , $stateId, true, true);
+                if ($stateId) {
+                    $relationIds[$k]["rid"] = $stateId;
+                }
+            }
         }
         if ($latestId) {
             $sql = sprintf("select id,initid from docread where initid in (%s) and locked != -1", implode(',', $latestId));
@@ -101,7 +123,9 @@ class DocTitle
                 if ($relid["latest"]) {
                     $relationIds[$k]["rid"] = empty($tInitid[$relid["docid"]]) ? $relid["docid"] : $tInitid[$relid["docid"]];
                 } else {
-                    $relationIds[$k]["rid"] = $relid["docid"];
+                    if (!$relid["state"]) {
+                        $relationIds[$k]["rid"] = $relid["docid"];
+                    }
                 }
             }
         }
@@ -111,7 +135,7 @@ class DocTitle
             if (!empty($relid["rid"])) $realIds[] = $relid["rid"];
         }
         if ($realIds) {
-            $sql = sprintf("select id,initid,title,name,doctype,views && '%s' as canaccess from docread where id in (%s)", self::getUserVector() , implode(',', $realIds));
+            $sql = sprintf("select id,initid,title,name,doctype,revision,views && '%s' as canaccess from docread where id in (%s)", self::getUserVector() , implode(',', $realIds));
             simpleQuery($doc->dbaccess, $sql, $result);
             $accesses = array();
             foreach ($result as $access) {
@@ -121,6 +145,7 @@ class DocTitle
             foreach ($relationIds as $k => $relid) {
                 $rid = $relid["rid"];
                 if ($rid && isset($accesses[$rid])) {
+                    
                     if ($accesses[$rid]["doctype"] === "C") {
                         $relationIds[$k]["title"] = DocFam::getLangTitle(array(
                             "name" => $accesses[$rid]["name"],
@@ -130,6 +155,8 @@ class DocTitle
                         $relationIds[$k]["title"] = $accesses[$rid]["title"];
                     }
                     $relationIds[$k]["canaccess"] = $accesses[$rid]["canaccess"];
+                    $relationIds[$k]["revision"] = $accesses[$rid]["revision"];
+                    $relationIds[$k]["initid"] = $accesses[$rid]["initid"];
                 }
             }
         }
@@ -139,14 +166,24 @@ class DocTitle
     /**
      * Get title from database if not found in cache
      * @param int $docid Document identifier
+     * @param bool $latest
+     * @param string $docrevOption
+     * @param array $info
+     * @return bool|null
+     * @throws \Dcp\Db\Exception
      */
-    public static function getTitle($docid, $latest = true)
+    public static function getTitle($docid, $latest = true, $docrevOption = "latest", array & $info = array())
     {
         
-        if ($latest) {
+        if ($latest || $docrevOption === "latest") {
             $sql = sprintf("select id,initid,title,name,doctype,views && '%s' as canaccess from docread where initid = %d and locked != -1", self::getUserVector() , $docid);
         } else {
-            $sql = sprintf("select id,initid,title,name,doctype,views && '%s' as canaccess from docread where id = %d", self::getUserVector() , $docid);
+            if (preg_match('/^state\(([^\)]+)\)/', $docrevOption, $matches)) {
+                $revState = $matches[1];
+                $sql = sprintf("select id,initid,revision,title,name,doctype,views && '%s' as canaccess from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1", self::getUserVector() , $docid, pg_escape_string($revState));
+            } else {
+                $sql = sprintf("select id,initid,revision,title,name,doctype,views && '%s' as canaccess from docread where id = %d", self::getUserVector() , $docid);
+            }
         }
         simpleQuery('', $sql, $result, false, true);
         if ($result) {
@@ -155,12 +192,15 @@ class DocTitle
             self::$relationCache[$uid][$keyCache] = array(
                 "docid" => $result["id"],
                 "rid" => $result["id"],
+                "initid" => $result["initid"],
                 "latest" => $latest,
+                "revision" => $result["revision"],
                 "title" => $result["title"],
                 "canaccess" => $result["canaccess"]
             );
             
             if ($result["canaccess"] === 't') {
+                $info = $result;
                 return $result["title"];
             } else {
                 return false; //_("information access deny");
