@@ -8920,24 +8920,8 @@ create unique index i_docir on doc(initid, revision);";
         $this->lockPoint($this->initid, "UPVI");
         // Need to lock to avoid constraint errors when concurrent docvaultindex update
         $dvi->DeleteDoc($this->id);
-        $fa = $this->GetFileAttributes();
         
-        $tvid = array();
-        foreach ($fa as $aid => $oattr) {
-            if ($oattr->inArray()) {
-                $ta = $this->getMultipleRawValues($aid);
-            } else {
-                $ta = array(
-                    $this->getRawValue($aid)
-                );
-            }
-            foreach ($ta as $k => $v) {
-                if (preg_match(PREGEXPFILE, $v, $reg)) {
-                    $vid = $reg[2];
-                    $tvid[$vid] = $vid;
-                }
-            }
-        }
+        $tvid = \Dcp\Core\vidExtractor\vidExtractor::getVidsFromDoc($this);
         
         $vids = array();
         foreach ($tvid as $vid) {
