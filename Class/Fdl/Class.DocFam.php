@@ -783,34 +783,33 @@ create unique index idx_idfam on docfam(id);";
     
     final public function UpdateVaultIndex()
     {
+        /*
+         * Skip processing if the family has no attributes.
+         * This typically happens when the family is created for the first time.
+        */
+        $attrList = $this->getAttributes();
+        if (count($attrList) <= 0) {
+            return '';
+        }
+        
+        $point = uniqid(__METHOD__);
+        if (($err = $this->savePoint($point)) !== '') {
+            return $err;
+        }
         $dvi = new DocVaultIndex($this->dbaccess);
         $dvi->DeleteDoc($this->id);
         
-        $fa = $this->getParamAttributes();
-        
-        $tvid = array();
-        
-        foreach ($fa as $aid => $oattr) {
-            if ($oattr->inArray()) {
-                $ta = $this->rawValueToArray($this->getParameterRawValue($aid));
-            } else {
-                $ta = array(
-                    $this->getParameterRawValue($aid)
-                );
-            }
-            foreach ($ta as $k => $v) {
-                if (preg_match(PREGEXPFILE, $v, $reg)) {
-                    $vid = $reg[2];
-                    $tvid[$vid] = $vid;
-                }
-            }
-        }
+        $tvid = \Dcp\Core\vidExtractor\vidExtractor::getVidsFromDocFam($this);
         
         foreach ($tvid as $k => $vid) {
             $dvi->docid = $this->id;
             $dvi->vaultid = $vid;
             $dvi->Add();
         }
+        if (($err = $this->commitPoint($point)) !== '') {
+            return $err;
+        }
+        return '';
     }
     
     function saveVaultFile($vid, $stream)
@@ -1022,5 +1021,13 @@ create unique index idx_idfam on docfam(id);";
         }
         
         return $res;
+    }
+    
+    public function PostUpdate()
+    {
+        if (($err = $this->updateVaultIndex()) !== '') {
+            return $err;
+        }
+        return parent::PostUpdate();
     }
 }
