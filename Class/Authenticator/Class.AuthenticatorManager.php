@@ -202,8 +202,7 @@ class AuthenticatorManager
     
     public static function clearGDocs()
     {
-        global $gdocs;
-        $gdocs = array();
+        \Dcp\Core\SharedDocuments::clear();
     }
     
     public static function getAccount()

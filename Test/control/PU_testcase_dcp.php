@@ -158,8 +158,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      */
     protected function resetDocumentCache()
     {
-        global $gdocs;
-        $gdocs = array();
+        \Dcp\Core\SharedDocuments::clear();
     }
     /**
      * use another user
