@@ -817,6 +817,11 @@ create unique index i_docir on doc(initid, revision);";
             "adate",
             "revdate"
         ) , true); // to force also execute sql trigger
+
+        if ($this->doctype != 'C') {
+            // set to shared : because comes from createDoc
+            \Dcp\Core\SharedDocuments::set($this->id, $this);
+        }
         if ($this->doctype != "T") {
             $err = $this->PostCreated();
             if ($err != "") AddWarningMsg($err);
@@ -831,11 +836,6 @@ create unique index i_docir on doc(initid, revision);";
             $this->updateRelations(true);
         }
         $this->hasChanged = false;
-        
-        global $gdocs; // set to cache
-        if (count($gdocs) < MAXGDOCS && ($this->doctype != 'C')) {
-            $gdocs[$this->id] = & $this;
-        }
     }
     
     function setChanged()
@@ -1235,9 +1235,8 @@ create unique index i_docir on doc(initid, revision);";
         $cdoc->addHistoryEntry(sprintf(_("convertion from %s to %s family") , $f1from, $f2from));
         
         $this->commitPoint($point);
-        global $gdocs; //reset cache if needed
-        if (isset($gdocs[$this->id])) {
-            $gdocs[$this->id] = & $cdoc;
+        if (\Dcp\Core\SharedDocuments::exists($this->id)) {
+            \Dcp\Core\SharedDocuments::set($this->id, $cdoc);
         }
         
         return $cdoc;

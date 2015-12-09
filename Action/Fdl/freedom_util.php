@@ -95,11 +95,10 @@ function HandleXmlError($errno, $errstr, $errfile, $errline)
  */
 function clearCacheDoc($id = 0)
 {
-    global $gdocs; // optimize for speed
     if ($id == 0) {
-        $gdocs = array();
+        \Dcp\Core\SharedDocuments::clear();
     } else {
-        $gdocs[$id] = null;
+        \Dcp\Core\SharedDocuments::remove($id);
     }
 }
 /**
@@ -107,7 +106,6 @@ function clearCacheDoc($id = 0)
  * @param string $dbaccess database specification
  * @param int|string $id identifier of the object
  * @param bool $latest if true set to latest revision of doc
- * @global array $gdocs optimize for speed
  *
  * @code
  * $myDoc=new_doc("", $myIdentifier);
@@ -122,7 +120,6 @@ function clearCacheDoc($id = 0)
  */
 function new_Doc($dbaccess, $id = '', $latest = false)
 {
-    global $gdocs; // optimize for speed
     if ($dbaccess == "") {
         // don't test if file exist or must be searched in include_path
         $dbaccess = getDbAccess();
@@ -146,15 +143,15 @@ function new_Doc($dbaccess, $id = '', $latest = false)
     }
     $id = intval($id);
     if ($id > 0) {
-        if (isset($gdocs[$id]) && ((!$latest) || ($gdocs[$id]->locked != - 1))) {
-            $doc = $gdocs[$id];
-            if (($doc->doctype != 'W') || (!isset($doc->doc))) {
-                $doc = $gdocs[$id]; // optimize for speed
-                //	if ($doc->id != $id) print_r2("<b>Error $id /".$doc->id."</b>");
-                if ($doc->id == $id) {
-                    $doc->cached = 1;
-                    return $doc;
-                } else unset($gdocs[$id]);
+        $sharedDoc=Dcp\Core\SharedDocuments::get($id);
+        if (isset($sharedDoc) && ((!$latest) || ($sharedDoc->locked != - 1))) {
+            if (($sharedDoc->doctype != 'W') || (!isset($sharedDoc->doc))) {
+                if ($sharedDoc->id == $id) {
+                    $sharedDoc->cached = 1;
+                    return $sharedDoc;
+                } else {
+                    Dcp\Core\SharedDocuments::remove($id);
+                }
             }
         }
         
@@ -179,10 +176,10 @@ function new_Doc($dbaccess, $id = '', $latest = false)
             $id = $doc->id;
         }
         
-        if (($id > 0) && (count($gdocs) < MAXGDOCS)) {
+        if ($id > 0) {
             if (($doc->doctype != 'C') || (count($doc->attributes->attr) > 0)) {
+                Dcp\Core\SharedDocuments::set($id,$doc);
                 $doc->iscached = 1;
-                $gdocs[$id] = & $doc;
             }
             //print_r2("<b>use cache $id /".$doc->id."</b>");
             
