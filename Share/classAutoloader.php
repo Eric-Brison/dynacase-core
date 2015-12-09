@@ -377,11 +377,16 @@ class DirectoriesAutoloader
          * Re-check the cache in case of a concurrent process
          * which might have already re-built the cache.
         */
-        $this->_classes = array();
+        $this->_classes = array(); // Empty the cache to force a re-validation from the cache file
         if ($this->_loadClass($pClassName)) {
             $this->_unlock();
             return true;
         }
+        /*
+         * If the re-validation failed, then the cache is now re-populated with the content of the cache file,
+         * so we re-empty it before regenerating the new content
+        */
+        $this->_classes = array();
         /*
          * Re-build the cache
         */
