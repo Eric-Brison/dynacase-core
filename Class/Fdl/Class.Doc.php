@@ -5772,28 +5772,48 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * change icon for a class or a simple doc
      * @param string $icon basename icon file
+     * @return string empty string on success, non-empty string on error
      */
     final public function changeIcon($icon)
     {
+        $point = "dcp:changeIcon";
+        if (($err = $this->savePoint($point)) != '') {
+            return $err;
+        }
         
         if ($this->doctype == "C") { //  a class
             $fromid = $this->initid;
+            $tableName = sprintf("doc%s", $fromid);
             if ($this->icon != "") {
                 // need disabled triggers to increase speed
-                $qt[] = "ALTER TABLE doc$fromid DISABLE TRIGGER ALL";
-                $qt[] = "update doc$fromid set icon='$icon' where (fromid=" . $fromid . ") AND (doctype != 'C') and ((icon='" . $this->icon . "') or (icon is null))";
-                $qt[] = "ALTER TABLE doc$fromid ENABLE TRIGGER ALL";
-                $qt[] = "update docread set icon='$icon' where (fromid=" . $fromid . ") AND (doctype != 'C') and ((icon='" . $this->icon . "') or (icon is null))";
-                
-                $this->exec_query(implode(";", $qt));
+                $qt = array();
+                $qt[] = sprintf("ALTER TABLE %s DISABLE TRIGGER ALL", pg_escape_identifier($tableName));
+                $qt[] = sprintf("UPDATE %s SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND ((icon = %s) OR (icon IS NULL))", pg_escape_identifier($tableName) , pg_escape_literal($icon) , pg_escape_literal($fromid) , pg_escape_literal($this->icon));
+                $qt[] = sprintf("ALTER TABLE %s ENABLE TRIGGER ALL", pg_escape_identifier($tableName));
+                $qt[] = sprintf("UPDATE DOCREAD SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND ((icon = %s) OR (icon IS NULL))", pg_escape_literal($icon) , pg_escape_literal($fromid) , pg_escape_literal($this->icon));
+                if (($err = simpleQuery($this->dbaccess, implode("; ", $qt) , $res, false, false, false)) != '') {
+                    $this->rollbackPoint($point);
+                    return $err;
+                }
             } else {
-                $q = "update doc$fromid set icon='$icon' where (fromid=" . $fromid . ") AND (doctype != 'C') and (icon is null)";
-                $this->exec_query($q);
+                $q = sprintf("UPDATE %s SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND (icon IS NULL)", pg_escape_identifier($tableName) , pg_escape_literal($icon) , pg_escape_literal($fromid));
+                if (($err = simpleQuery($this->dbaccess, $q, $res, false, false, false)) != '') {
+                    $this->rollbackPoint($point);
+                    return $err;
+                }
             }
         }
         //    $this->title = AddSlashes($this->title);
         $this->icon = $icon;
-        $this->Modify();
+        if (($err = $this->Modify()) != '') {
+            $this->rollbackPoint($point);
+            return $err;
+        }
+        if (($err = $this->commitPoint($point)) != '') {
+            $this->rollbackPoint($point);
+            return $err;
+        }
+        return '';
     }
     /**
      * declare a dependance between several attributes
