@@ -235,7 +235,7 @@ namespace Dcp\AttributeIdentifiers {
 		const tmail_family='tmail_family';
 		/** [docid("x")] Famille cycle */
 		const tmail_workflow='tmail_workflow';
-		/** [array] Emetteur */
+		/** [array] Émetteur */
 		const tmail_t_from='tmail_t_from';
 		/** [enum] type */
 		const tmail_fromtype='tmail_fromtype';
@@ -657,7 +657,7 @@ namespace Dcp\AttributeIdentifiers {
 		const rep_imp='rep_imp';
 		/** [frame] Paramètres */
 		const rep_fr_param='rep_fr_param';
-		/** [text] Texte à afficher pour les valeurs protégées */
+		/** [htmltext] Texte à afficher pour les valeurs protégées */
 		const rep_noaccesstext='rep_noaccesstext';
 		/** [int] Limite d'affichage pour le nombre de rangées */
 		const rep_maxdisplaylimit='rep_maxdisplaylimit';
