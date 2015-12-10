@@ -198,6 +198,7 @@ class OOoLayout extends Layout
     {
         $this->template = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', function ($matches)
         {
+            /** @noinspection PhpDeprecationInspection */
             return $this->SetBlock($matches[1], $matches[2]);
         }
         , $this->template);
@@ -236,6 +237,8 @@ class OOoLayout extends Layout
     }
     /**
      * Top level parse condition
+     * @param string|null $out
+     * @throws \Dcp\Exception
      */
     protected function ParseIf(&$out = null)
     {
@@ -388,6 +391,7 @@ class OOoLayout extends Layout
      * @deprecated BLOCK are not supported
      * @param $name
      * @param $block
+     * @return string
      */
     protected function SetBlock($name, $block)
     {
@@ -404,6 +408,7 @@ class OOoLayout extends Layout
                 foreach ($this->corresp["$name"] as $k2 => $v2) {
                     
                     if (strstr($v[$v2], '<text:tab/>')) {
+                        /** @noinspection PhpDeprecationInspection */
                         $loc = $this->parseListInBlock($loc, $k2, $v[$v2]);
                     } elseif ((!is_object($v[$v2])) && (!is_array($v[$v2]))) $loc = str_replace($k2, $v[$v2], $loc);
                 }
@@ -432,6 +437,7 @@ class OOoLayout extends Layout
     }
     /**
      * replace simple key in xml string
+     * @param string|null $out
      */
     protected function ParseKey(&$out = null)
     {
@@ -439,32 +445,11 @@ class OOoLayout extends Layout
             $this->template = str_replace($this->pkey, $this->rkey, $this->template);
         }
     }
-    
-    private function ParseKeyXML()
-    {
-        if (isset($this->rkeyxml)) {
-            
-            $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "p");
-            foreach ($this->rkeyxml as $k => $xmlkey) {
-                print "\n\nserach [$k]\n";
-                foreach ($lists as $list) {
-                    /**
-                     * @var $list DOMElement
-                     */
-                    $pstyle = $list->getAttribute("text:style-name");
-                    $content = $this->dom->saveXML($list);
-                    
-                    if (strstr($content, "[$k]")) {
-                        print "\n----------------\nfind C:$xmlkey $k:\n$content";
-                    }
-                }
-            }
-        }
-    }
     /**
      * read odt file and insert xmls in object
-     * @param string $odsfile path to the odt file
+     * @param string $odtfile path to the odt file
      * @return string
+     * @throws \Dcp\Layout\Exception
      */
     protected function odf2content($odtfile)
     {
@@ -620,6 +605,7 @@ class OOoLayout extends Layout
     /**
      * replace entities & < >
      * @param string $s text to encode
+     * @return string
      */
     static public function xmlEntities($s)
     {
@@ -636,6 +622,7 @@ class OOoLayout extends Layout
     /**
      *
      * @param string $val
+     * @return bool
      */
     protected function isXML($val)
     {
@@ -646,6 +633,7 @@ class OOoLayout extends Layout
     /**
      * get value of $tag key
      * @param string $tag
+     * @return string
      */
     public function get($tag)
     {
@@ -654,6 +642,7 @@ class OOoLayout extends Layout
     }
     /**
      * parse text
+     * @param string|null $out
      */
     protected function ParseText(&$out = null)
     {
@@ -737,8 +726,7 @@ class OOoLayout extends Layout
     /**
      * set image from html fragment
      * @param DOMElement $node
-     * @param string $name
-     * @param string $value
+     * @return string
      */
     protected function setHtmlDraw(DOMElement & $draw)
     {
@@ -810,9 +798,10 @@ class OOoLayout extends Layout
     }
     /**
      * set image
-     * @param DOMElement $node
+     * @param DOMElement $draw
      * @param string $name
-     * @param string $value
+     * @param string $file
+     * @return string
      */
     protected function setDraw(DOMElement & $draw, $name, $file)
     {
@@ -890,6 +879,7 @@ class OOoLayout extends Layout
      * @param DomNode $objNode
      * @param string $strOldContent
      * @param string $strNewContent
+     * @throws \Dcp\Exception
      */
     protected function replaceNodeText(DOMNode & $objNode, $strOldContent, $strNewContent)
     {
@@ -1019,6 +1009,9 @@ class OOoLayout extends Layout
                 }
                 if ($maxk > 0) {
                     for ($i = 0; $i < $maxk; $i++) {
+                        /**
+                         * @var DOMElement $clone
+                         */
                         $clone = $aSection->cloneNode(true);
                         $aSection->parentNode->insertBefore($clone, $aSection);
                         foreach ($tvkey as $kk => $key) {
@@ -1138,7 +1131,7 @@ class OOoLayout extends Layout
                 if ($maxk > 0) {
                     for ($i = 0; $i < $maxk; $i++) {
                         /**
-                         * @var DOMNode $clone
+                         * @var DOMElement $clone
                          */
                         $clone = $rowItem->cloneNode(true);
                         
@@ -1164,6 +1157,7 @@ class OOoLayout extends Layout
     /**
      * return the number of array in arrays
      * @param array $v
+     * @return int
      */
     private static function getArrayDepth($v)
     {
@@ -1179,6 +1173,7 @@ class OOoLayout extends Layout
      * Retrieve one of values for a multi value key
      * @param string $key the key name (multiple values)
      * @param array $levelPath path to access of a particular value
+     * @return string|null
      */
     protected function getArrayKeyValue($key, array $levelPath)
     {
@@ -1255,10 +1250,10 @@ class OOoLayout extends Layout
         }
     }
     /**
-     * @param DOMNode $row
+     * @param DOMElement $row
      * @param array $levelPath
      */
-    protected function replaceRowNode(DOMNode & $row, array $levelPath)
+    protected function replaceRowNode(DOMElement & $row, array $levelPath)
     {
         // Inspect sub tables, rows
         $this->replaceRowSomething($row, $levelPath, "table", "table-row", true);
@@ -1307,6 +1302,9 @@ class OOoLayout extends Layout
                     
                     if ($maxk > 0) {
                         for ($i = 0; $i < $maxk; $i++) {
+                            /**
+                             * @var DOMElement $clone
+                             */
                             $clone = $item->cloneNode(true);
                             $item->parentNode->insertBefore($clone, $item);
                             foreach ($tvkey as $kk => $key) {
@@ -1798,32 +1796,15 @@ class OOoLayout extends Layout
                 }
             }
         }
-        $nbp = 0;
         foreach ($htmlCleanSections as $htmlSection) {
             /**
              * @var $htmlSection DOMElement
              */
             
             $attrid = substr($htmlSection->getAttribute("text:name") , 7);
-            /*
-            if ($htmlSection->parentNode->nodeName == "text:p") {
-                $nbp = $htmlSection->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "p")->length;
-            }
-            while ($htmlSection->childNodes->length > 0) {
-                $newSpan = null;
-                if (($htmlSection->parentNode->nodeName == "text:p")) {
-                    if ($htmlSection->firstChild->nodeName == "text:p") {
-                        $htmlSection->firstChild->appendChild($this->dom->createElement("text:line-break"));
-                        $nbp--;
-                        $this->changeElementName($htmlSection->firstChild, 'text:span');
-                    }
-                }
-                $htmlSection->firstChild->nodeValue='ERROR';
-                $htmlSection->removeChild($htmlSection->firstChild);
-            }
-            */
+            
             $pp = $this->dom->createElement("text:span");
-            $pp->nodeValue = "ERROR " . "[V_" . strtoupper($attrid) . "]";
+            $pp->nodeValue = "HTML attribute misplaced  : " . "[V_" . strtoupper($attrid) . "]";
             $htmlSection->parentNode->appendChild($pp);
         }
         
@@ -1851,7 +1832,6 @@ class OOoLayout extends Layout
      */
     protected function exitError($outfile = '')
     {
-        $s = array();
         foreach ($this->errors as $err) {
             if ($err["code"]) {
                 $e = new Dcp\Layout\Exception($err["code"], $err["key"]);
