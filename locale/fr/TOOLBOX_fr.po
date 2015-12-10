@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-07 10:59+0100\n"
-"PO-Revision-Date: 2015-12-07 11:00+0100\n"
+"POT-Creation-Date: 2015-12-10 15:10+0100\n"
+"PO-Revision-Date: 2015-12-10 15:18+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1312,9 +1312,6 @@ msgstr "Courant"
 
 msgid "Data cannot be saved"
 msgstr "Les données ne peuvent être sauvées"
-
-msgid "Database information"
-msgstr "Information sur la base de donnée"
 
 msgid "Date"
 msgstr "Date"
@@ -3398,9 +3395,6 @@ msgstr "La propriété '%s' n'est pas valide (famille '%s')."
 
 msgid "PubliPreview"
 msgstr "prévisualisation"
-
-msgid "Publication directory"
-msgstr "Repertoire d'installation"
 
 #, php-format
 msgid "Purge archive"
@@ -5593,9 +5587,6 @@ msgstr "Le document %s n'est pas une famille"
 msgid "data:family %s not alive"
 msgstr "La famille %s n'est pas vivante"
 
-msgid "database access for webdav"
-msgstr "coordonnées d'accès à la base de données webdav"
-
 msgid "database record date style"
 msgstr "style de la date pour la base de donnée"
 
@@ -6347,9 +6338,6 @@ msgstr "taille de la fenêtre"
 #, php-format
 msgid "free item %s"
 msgstr "insérer [%s]"
-
-msgid "freedom database"
-msgstr "base de donnée dynacase"
 
 msgid "freedom global search"
 msgstr "Recherche générale dynacase"
@@ -8182,6 +8170,11 @@ msgstr "taille maximum de chaines de caractère pour les choix"
 msgid "style sheet"
 msgstr "feuille de style"
 
+msgid "submitreqpasswd_form_multiplemail"
+msgstr ""
+"<p>L'adresse indiquée correspond à plusieurs utilisateurs</p>\n"
+"<p>Il est nécessaire d'utiliser le nom de connexion (login) dans ce cas</p>"
+
 msgid "submitreqpasswd_form_send_error_external_auth"
 msgstr ""
 "<p>Votre compte utilise une authentification externe.</p>\n"
@@ -9132,6 +9125,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Creation %s"
 #~ msgstr "Création %s"
 
+#~ msgid "Database information"
+#~ msgstr "Information sur la base de donnée"
+
 #~ msgid "Default value"
 #~ msgstr "Valeur par défaut"
 
@@ -9206,6 +9202,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Progress bar"
 #~ msgstr "Barre de progression"
+
+#~ msgid "Publication directory"
+#~ msgstr "Repertoire d'installation"
 
 #~ msgid "Purge history"
 #~ msgstr "Nettoyage de l'historique"
@@ -9400,6 +9399,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "create forum"
 #~ msgstr "créer le forum"
 
+#~ msgid "database access for webdav"
+#~ msgstr "coordonnées d'accès à la base de données webdav"
+
 #~ msgid "days"
 #~ msgstr "jours"
 
@@ -9498,6 +9500,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "forum_id"
 #~ msgstr "identifiant du forum"
+
+#~ msgid "freedom database"
+#~ msgstr "base de donnée dynacase"
 
 #~ msgid "full phrase"
 #~ msgstr "la phrase entière"

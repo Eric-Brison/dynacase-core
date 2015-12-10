@@ -18,7 +18,8 @@
 
             [IF FORM_SEND_ERROR_INVALID_ARGS]
             <div id="form_send_error_invalid_args" class="text error-true">
-                [TEXT:submitreqpasswd_form_send_error_invalid_args]
+                [IF MAILMULTIPLE][TEXT:submitreqpasswd_form_multiplemail][ENDIF MAILMULTIPLE]
+                [IFNOT MAILMULTIPLE][TEXT:submitreqpasswd_form_send_error_invalid_args][ENDIF MAILMULTIPLE]
             </div>
             [ENDIF FORM_SEND_ERROR_INVALID_ARGS]
 
