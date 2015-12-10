@@ -59,7 +59,7 @@ class TestTag extends TestCaseDcpDocument
         $this->assertTrue($utag !== false, sprintf("utag %s not retrieved", $tag));
         $this->assertEquals($value, $utag->comment);
         
-        $this->exitSudo($login);
+        $this->exitSudo();
         // test it is only for login not aoth people
         $this->sudo($otherLogin);
         
@@ -70,7 +70,7 @@ class TestTag extends TestCaseDcpDocument
         
         $this->assertTrue($utag === false, sprintf("utag %s of other user is retrieved", $tag));
         
-        $this->exitSudo($otherLogin);
+        $this->exitSudo();
     }
     /**
      *
@@ -95,7 +95,7 @@ class TestTag extends TestCaseDcpDocument
         $this->assertTrue($utag !== false, sprintf("utag %s not retrieved", $tag));
         $this->assertEquals($value, $utag->comment);
         
-        $this->exitSudo($login);
+        $this->exitSudo();
     }
     /**
      *
@@ -123,7 +123,7 @@ class TestTag extends TestCaseDcpDocument
         
         $this->assertTrue($utag === false, sprintf("utag %s not deleted", $tag));
         
-        $this->exitSudo($login);
+        $this->exitSudo();
     }
     /**
      *
@@ -151,7 +151,7 @@ class TestTag extends TestCaseDcpDocument
         
         $this->assertTrue($utag === false, sprintf("utag %s not deleted", $tag));
         
-        $this->exitSudo($login);
+        $this->exitSudo();
     }
     /**
      * @dataProvider dataATags
