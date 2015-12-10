@@ -2,11 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-07 10:59+0100\n"
-"PO-Revision-Date: 2015-10-22 08:31+0200\n"
+"POT-Creation-Date: 2015-12-10 15:10+0100\n"
+"PO-Revision-Date: 2015-12-10 15:19+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
-"Language-Team: français <>\n"
-"Language: \n"
+"Language-Team: English team <>\n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1278,9 +1278,6 @@ msgid "Current_state"
 msgstr "Current step"
 
 msgid "Data cannot be saved"
-msgstr ""
-
-msgid "Database information"
 msgstr ""
 
 msgid "Date"
@@ -3262,9 +3259,6 @@ msgid "Property '%s' is not valid (family '%s')."
 msgstr ""
 
 msgid "PubliPreview"
-msgstr ""
-
-msgid "Publication directory"
 msgstr ""
 
 #, php-format
@@ -5386,9 +5380,6 @@ msgstr ""
 msgid "data:family %s not alive"
 msgstr ""
 
-msgid "database access for webdav"
-msgstr ""
-
 msgid "database record date style"
 msgstr ""
 
@@ -6129,9 +6120,6 @@ msgstr ""
 #, php-format
 msgid "free item %s"
 msgstr ""
-
-msgid "freedom database"
-msgstr "Dynacase database"
 
 msgid "freedom global search"
 msgstr "Global search"
@@ -7952,6 +7940,11 @@ msgstr ""
 msgid "style sheet"
 msgstr ""
 
+msgid "submitreqpasswd_form_multiplemail"
+msgstr ""
+"<p>The email address is used by several users.</p>\n"
+"<p>In this case, you need to use login identifier</p>"
+
 msgid "submitreqpasswd_form_send_error_external_auth"
 msgstr ""
 "<p>Your account uses an external authentication.</p>\n"
@@ -8850,6 +8843,9 @@ msgstr ""
 
 #~ msgid "forum_id"
 #~ msgstr "forum"
+
+#~ msgid "freedom database"
+#~ msgstr "Dynacase database"
 
 #~ msgid "no"
 #~ msgstr "No"

@@ -10,14 +10,15 @@
  * password
  *
  * @author Anakeen
- * @version $Id: submitreqpasswd.php,v 1.4 2009/01/16 13:33:00 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage
  */
-/**
- */
 
+/**
+ * @param Action $action
+ * @throws \Dcp\Core\Exception
+ */
 function submitreqpasswd(Action & $action)
 {
     include_once ('FDL/Lib.Dir.php');
@@ -58,7 +59,7 @@ function submitreqpasswd(Action & $action)
         return;
     }
     
-    $ret = sendCallback($action, $userdoc, 'AUTHENT/Layout/submitreqpasswd_mail.xml');
+    $ret = sendCallback($action, $userdoc);
     if ($ret != "") {
         error_log(__FUNCTION__ . " $ret");
         $action->lay->set('FORM_SEND_ERROR_UNKNOWN', True);
@@ -75,11 +76,12 @@ function submitreqpasswd(Action & $action)
  * @param Action $action
  * @param string $login
  * @param string $email
- * @return _IUSER|null
+ * @return \Dcp\Family\Iuser|null
  */
 function retrieveUserDoc(Action $action, $login = "", $email = "")
 {
-    
+
+    $action->lay->set('MAILMULTIPLE', false);
     if (!$login && !$email) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Undefined email and login args.");
         return NULL;
@@ -103,6 +105,8 @@ function retrieveUserDoc(Action $action, $login = "", $email = "")
     
     if ($s->count() > 1) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Result contains more than 1 element");
+
+        $action->lay->set('MAILMULTIPLE', true);
         return NULL;
     }
     /**
@@ -118,7 +122,7 @@ function retrieveUserDoc(Action $action, $login = "", $email = "")
     return $uDoc;
 }
 
-function sendCallback(Action $action, _IUSER $userdoc)
+function sendCallback(Action $action, \Dcp\family\IUser $userdoc)
 {
     include_once ('WHAT/Class.UserToken.php');
     include_once ("FDL/sendmail.php");
@@ -164,4 +168,3 @@ function sendCallback(Action $action, _IUSER $userdoc)
     
     return $err;
 }
-?>
