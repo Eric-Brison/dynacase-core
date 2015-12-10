@@ -59,7 +59,6 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     
     public static function setUpBeforeClass()
     {
-        global $action;
     }
     
     public static function log($text)
@@ -105,7 +104,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         global $action;
         if (!$action) {
             WhatInitialisation();
-            setSystemLogin("admin");
+            setSystemLogin($login);
         }
     }
     /**
@@ -130,7 +129,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      * Current application
      * @return \Application
      */
-    protected function getApplication()
+    protected static function getApplication()
     {
         global $action;
         if ($action) return $action->parent;
@@ -150,13 +149,11 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         return $sval;
     }
     /**
-     * use another user
-     *
-     * @param string $login
+     * reset shared documents
      *
      * @return void
      */
-    protected function resetDocumentCache()
+    protected static function resetDocumentCache()
     {
         \Dcp\Core\SharedDocuments::clear();
     }
@@ -164,10 +161,10 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      * use another user
      *
      * @param string $login
-     *
      * @return \Account
+     * @throws \Dcp\Exception
      */
-    protected function sudo($login)
+    protected static function sudo($login)
     {
         $u = new \Account(self::$dbaccess);
         if (!$u->setLoginName($login)) {
@@ -183,11 +180,9 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     /**
      * exit sudo
      *
-     * @param string $login
-     *
      * @return void
      */
-    protected function exitSudo($login = '')
+    protected static function exitSudo()
     {
         global $action;
         if (self::$user) {
@@ -199,16 +194,14 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      * Import a file document description
      *
      * @param string $file file path
-     *
      * @return array
+     * @throws \Dcp\Exception
      */
     protected static function importDocument($file)
     {
         if (is_array($file)) {
             return self::importDocuments($file);
         }
-        
-        global $action;
         
         $realfile = $file;
         if (!file_exists($realfile)) {
@@ -252,7 +245,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     /**
      * Import CSV data
      * @param string $data CSV data
-     * @return void
+     * @throws \Dcp\Exception
      */
     public function importCsvData($data)
     {

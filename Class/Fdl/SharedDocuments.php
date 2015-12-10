@@ -1,12 +1,17 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
+
 namespace Dcp\Core;
 /**
  * Manage Shared documents through the global array $gdocs
  */
 class SharedDocuments
 {
-    protected static $limit=MAXGDOCS;
-
+    protected static $limit = MAXGDOCS;
     /**
      * @return int
      */
@@ -14,18 +19,21 @@ class SharedDocuments
     {
         return self::$limit;
     }
-
     /**
      * @param int $limit
+     * @throws \Dcp\Exception
      */
     public static function setLimit($limit)
     {
+        if (!is_int($limit)) {
+            throw new \Dcp\Exception("SharedDocuments limit must be a integer");
+        }
         self::$limit = $limit;
     }
     /**
      * Retrieve object from key identifier
      * @param string $key document identifier
-     * @return object|null
+     * @return \Doc|null
      */
     public static function &get($key)
     {
@@ -42,7 +50,7 @@ class SharedDocuments
     /**
      * Add or update an object
      * @param string $key object identifier
-     * @param mixed $item object to add or update
+     * @param \Doc $item object to add or update
      * @return bool (true if it is set to shared object)
      */
     public static function set($key, &$item)
@@ -52,10 +60,10 @@ class SharedDocuments
             return false;
         }
         if (count($gdocs) < self::$limit) {
-            $gdocs[$key] = &$item;
+            $gdocs[$key] = & $item;
             return true;
         }
-
+        
         return false;
     }
     /**
@@ -100,5 +108,19 @@ class SharedDocuments
     {
         global $gdocs;
         return array_key_exists($key, $gdocs);
+    }
+    /**
+     * Verify if a key is referenced in cached and object is same as item object
+     * @param string $key object identifier
+     * @param \Doc $item object item
+     * @return bool true if $key and item match
+     */
+    public static function isShared($key, &$item)
+    {
+        global $gdocs;
+        if ($key === '' or $key === null or (!is_scalar($key))) {
+            return false;
+        }
+        return (isset($gdocs[$key]) && $gdocs[$key] === $item);
     }
 }
