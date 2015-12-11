@@ -152,7 +152,7 @@ function autocompletion(Action & $action)
             $cible = ($multi == "yes") ? "mdocid_work" : "";
             if (!$oattr->phpfile) {
                 $filter = array(); //no filter by default
-                $sfilter = '';
+                $sfilter = '""';
                 $idid = "initid"; //if there's no docrev option (or it's present but not fixed), use initid to have the latest.
                 $docrev = $oattr->getOption("docrev");
                 if ($docrev == "fixed") {

@@ -296,8 +296,18 @@ class ExportCollection
     {
         if ($this->exportStatusId) {
             global $action;
+            $warnings = array();
+            if ($endStatus) {
+                $warnings = $action->parent->getWarningMsg();
+                if (count($warnings) > 0) {
+                    array_unshift($warnings, _("Export:Warnings"));
+                }
+                
+                $action->parent->clearWarningMsg();
+            }
             $action->register($this->exportStatusId, array(
                 "status" => $msg,
+                "warnings" => $warnings,
                 "end" => $endStatus
             ));
         }
