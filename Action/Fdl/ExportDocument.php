@@ -356,16 +356,17 @@ class ExportDocument
         }
         \Dcp\WriteCsv::fput($fout, $data);
         if ($wprof) {
-            if ($doc->profid == $doc->id) {
+            $profid=($doc->dprofid)?$doc->dprofid:$doc->profid;
+            if ($profid == $doc->id) {
                 $this->exportProfil($fout, $doc->id);
-            } else if ($doc->profid > 0) {
-                $name = getNameFromId($dbaccess, $doc->profid);
+            } else if ($profid > 0) {
+                $name = getNameFromId($dbaccess, $profid);
                 $dname = $doc->name;
                 if (!$dname) $dname = $doc->id;
-                if (!$name) $name = $doc->profid;
-                if (!isset($tdoc[$doc->profid])) {
-                    $tdoc[$doc->profid] = true;
-                    $pdoc = new_doc($dbaccess, $doc->profid);
+                if (!$name) $name = $profid;
+                if (!isset($tdoc[$profid])) {
+                    $tdoc[$profid] = true;
+                    $pdoc = new_doc($dbaccess, $profid);
                     $this->csvExport($pdoc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
                 }
                 $data = array(
