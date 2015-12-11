@@ -817,7 +817,6 @@ create unique index i_docir on doc(initid, revision);";
             "adate",
             "revdate"
         ) , true); // to force also execute sql trigger
-
         if ($this->doctype != 'C') {
             // set to shared : because comes from createDoc
             \Dcp\Core\SharedDocuments::set($this->id, $this);
@@ -7694,12 +7693,7 @@ create unique index i_docir on doc(initid, revision);";
                     simpleQuery($this->dbaccess, sprintf("UPDATE docname SET name = '%s' WHERE name = '%s'", pg_escape_string($name) , pg_escape_string($this->name)));
                 }
                 $this->name = $name;
-                $err = $this->modify(true, array(
-                    "name"
-                ) , true);
-                if ($err != "") {
-                    return $err;
-                }
+                simpleQuery("", sprintf("update %s set name='%s' where initid=%d", pg_escape_string($this->dbtable) , pg_escape_string($name) , $this->initid));
             }
         }
         return "";
