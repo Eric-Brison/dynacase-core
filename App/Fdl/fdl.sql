@@ -135,23 +135,23 @@ NEW.values:='';
 NEW.svalues:='';
 NEW.attrids:='';
 
-if (NEW.doctype = 'Z') and (NEW.name is not null) then
-	delete from docname where name=NEW.name;
-end if;	
-if (NEW.name is not null and OLD.name is null) then
-  if (NEW.doctype = 'C') then 
-       cfromid=-1; -- for families
-     else
-       cfromid=NEW.fromid;
-     end if;
-     select into lname name from docname where name= NEW.name;
-     if (lname = NEW.name) then 
- 	 update docname set fromid=cfromid,id=NEW.id where name=NEW.name;	
-     else 
-	 insert into docname (id,fromid,name) values (NEW.id, cfromid, NEW.name);
-     end if;
+  if (NEW.doctype = 'Z') and (NEW.name is not null) then
+    delete from docname where name=NEW.name;
   end if;
-return NEW;
+  if (NEW.name is not null and OLD.name is null) then
+    if (NEW.doctype = 'C') then
+      cfromid=-1; -- for families
+    else
+      cfromid=NEW.fromid;
+    end if;
+    select into lname name from docname where name= NEW.name;
+    if (lname = NEW.name) then
+      update docname set fromid=cfromid,id=NEW.id where name=NEW.name;
+    else
+      insert into docname (id,fromid,name) values (NEW.id, cfromid, NEW.name);
+    end if;
+  end if;
+  return NEW;
 end;
 $$ language 'plpgsql';
 
@@ -230,43 +230,42 @@ END;
 $$ language 'plpgsql';
 
 create or replace function fixeddoc() 
-returns trigger as '
+returns trigger as $$
 declare 
    lid int;
    lname text;
    cfromid int;
 begin
 
-
-if (TG_OP = ''INSERT'') then
-     if (NEW.doctype = ''C'') then 
+if (TG_OP = 'INSERT') then
+     if (NEW.doctype = 'C') then
        cfromid=-1; -- for families
      else
        cfromid=NEW.fromid;
        if (NEW.revision > 0) then
-         EXECUTE ''update doc'' || cfromid || '' set lmodify=''''N'''' where initid= '' || NEW.initid || '' and lmodify != ''''N'''''';
-         EXECUTE ''update doc'' || cfromid || '' set lmodify=''''L'''' where  id=(select distinct on (initid) id from only doc'' || cfromid || '' where initid = '' || NEW.initid || '' and locked = -1 order by initid, revision desc)'';
+         EXECUTE 'update doc' || cfromid || ' set lmodify=''N'' where initid= ' || NEW.initid || ' and lmodify != ''N''';
+         EXECUTE 'update doc' || cfromid || ' set lmodify=''L'' where  id=(select distinct on (initid) id from only doc' || cfromid || ' where initid = ' || NEW.initid || ' and locked = -1 order by initid, revision desc)';
        end if;
      end if;
      select into lid id from docfrom where id= NEW.id;
      if (lid = NEW.id) then 
-	update docfrom set fromid=cfromid where id=NEW.id;
-     else 
-	insert into docfrom (id,fromid) values (NEW.id, cfromid);
+	     update docfrom set fromid=cfromid where id=NEW.id;
+     else
+	     insert into docfrom (id,fromid) values (NEW.id, cfromid);
      end if;
-     if (NEW.name is not null) then
+     if (NEW.name is not null and NEW.locked != -1) then
        select into lname name from docname where name= NEW.name;
        if (lname = NEW.name) then 
- 	 update docname set fromid=cfromid,id=NEW.id where name=NEW.name;	
-       else 
-	 insert into docname (id,fromid,name) values (NEW.id, cfromid, NEW.name);
+ 	        update docname set fromid=cfromid,id=NEW.id where name=NEW.name;
+       else
+	        insert into docname (id,fromid,name) values (NEW.id, cfromid, NEW.name);
        end if;
      end if;
 end if;
  
 return NEW;
 end;
-' language 'plpgsql';
+$$ language 'plpgsql';
 
 create or replace function setread() 
 returns trigger as '
