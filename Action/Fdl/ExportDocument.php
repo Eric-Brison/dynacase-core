@@ -292,7 +292,7 @@ class ExportDocument
                 $value = implode("\n", $tf);
             } else if ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
                 $docrevOption = $attr->getOption("docrev", "latest");
-                if ($value != "" && $docrevOption === "latest") {
+                if ($value != "") {
                     if (strstr($value, "\n") || ($attr->getOption("multiple") == "yes")) {
                         $tid = $doc->rawValueToArray($value);
                         $tn = array();
@@ -301,15 +301,29 @@ class ExportDocument
                             $tnbr = array();
                             foreach ($brtid as $brid) {
                                 $n = getNameFromId($dbaccess, $brid);
-                                if ($n) $tnbr[] = $n;
-                                else $tnbr[] = $brid;
+                                if ($n) {
+                                    if ($docrevOption === "latest") {
+                                        $tnbr[] = $n;
+                                    } else {
+                                        addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name") , $doc->getTitle() , $attr->getLabel()));
+                                        $tnbr[] = $brid;
+                                    }
+                                } else {
+                                    $tnbr[] = $brid;
+                                }
                             }
                             $tn[] = implode('<BR>', $tnbr);
                         }
                         $value = implode("\n", $tn);
                     } else {
                         $n = getNameFromId($dbaccess, $value);
-                        if ($n) $value = $n;
+                        if ($n) {
+                            if ($docrevOption === "latest") {
+                                $value = $n;
+                            } else {
+                                addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name") , $doc->getTitle() , $attr->getLabel()));
+                            }
+                        }
                     }
                 }
             } else if ($attr->type == "htmltext") {
