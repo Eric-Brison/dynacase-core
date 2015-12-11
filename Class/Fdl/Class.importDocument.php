@@ -228,21 +228,41 @@ class ImportDocument
         $hasError = false;
         $haswarning = false;
         foreach ($this->cr as $k => $v) {
+            /*
+             * [action]
+             * [order]
+             * [title]
+             * [foldername]
+             * [id]
+             * [familyid]
+             * [familyname]
+             * [taction]
+             * [msg]
+             * [specmsg]
+             * [svalues]
+             * [err]
+            */
             if (!isset($v["msg"])) $v["msg"] = '';
             if (!isset($v["values"])) $v["values"] = null;
-            $this->cr[$k]["taction"] = _($v["action"]); // translate action
-            $this->cr[$k]["order"] = $k; // translate action
-            $this->cr[$k]["svalues"] = "";
-            $this->cr[$k]["msg"] = nl2br($v["msg"]);
+            $this->cr[$k]["title"] = htmlspecialchars($v["title"], ENT_QUOTES);
+            $this->cr[$k]["foldername"] = htmlspecialchars($v["foldername"], ENT_QUOTES);
+            $this->cr[$k]["id"] = htmlspecialchars($v["id"], ENT_QUOTES);
+            $this->cr[$k]["familyid"] = htmlspecialchars($v["familyid"], ENT_QUOTES);
+            $this->cr[$k]["familyname"] = htmlspecialchars($v["familyname"], ENT_QUOTES);
+            $this->cr[$k]["taction"] = htmlspecialchars(_($v["action"]) , ENT_QUOTES); // translate action
+            $this->cr[$k]["order"] = htmlspecialchars($k, ENT_QUOTES); // translate action
+            $this->cr[$k]["svalues"] = htmlspecialchars("", ENT_QUOTES);
+            $this->cr[$k]["msg"] = nl2br(htmlspecialchars($v["msg"], ENT_QUOTES));
             if (is_array($v["values"])) {
                 foreach ($v["values"] as $ka => $va) {
-                    $this->cr[$k]["svalues"].= "<LI" . (($va == "/no change/") ? ' class="no"' : '') . ">[$ka:$va]</LI>"; //
-                    
+                    $this->cr[$k]["svalues"].= sprintf("<LI %s>[%s:%s]</LI>", (($va == "/no change/") ? ' class="no"' : '') , htmlspecialchars($ka, ENT_QUOTES) , htmlspecialchars($va, ENT_QUOTES));
                 }
             }
             if ($v["action"] == "ignored") $hasError = true;
             if ($v["action"] == "warning") $haswarning = true;
-            $this->cr[$k]["err"] = (($this->cr[$k]["err"] != '') ? "<ul><li>" . join("</li><li>", explode("\n", $this->cr[$k]["err"])) . "</li></ul>" : "");
+            $this->cr[$k]["err"] = (($this->cr[$k]["err"] != '') ? "<ul><li>" . join("</li><li>", explode("\n", htmlspecialchars($this->cr[$k]["err"], ENT_QUOTES))) . "</li></ul>" : "");
+            $this->cr[$k]["action"] = htmlspecialchars($v["action"], ENT_QUOTES);
+            $this->cr[$k]["specmsg"] = htmlspecialchars($v["specmsg"], ENT_QUOTES);
         }
         $nbdoc = count(array_filter($this->cr, array(
             $this,
