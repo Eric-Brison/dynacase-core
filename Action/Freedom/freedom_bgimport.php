@@ -47,7 +47,7 @@ function freedom_bgimport(Action & $action)
         return;
     }
     
-    $cmd[] = sprintf("%s --userid=%s --api=freedom_import --htmlmode=Y --dirid=%s --double=%s --policy=%s --to=%s --file=%s", $wsh, escapeshellarg($action->user->id) , escapeshellarg($dirid) , escapeshellarg($double) , escapeshellarg($policy) , escapeshellarg($to) , escapeshellarg($destfile));
+    $cmd[] = sprintf("%s --userid=%s --api=importDocuments --htmlmode=yes --dir=%s --policy=%s --to=%s --file=%s", $wsh, escapeshellarg($action->user->id) , escapeshellarg($dirid) , escapeshellarg($policy) , escapeshellarg($to) , escapeshellarg($destfile));
     $cmd[] = sprintf("rm -- %s", escapeshellarg($destfile));
     // $cmd[]="/bin/rm -f $file.?";
     bgexec($cmd, $result, $err);
