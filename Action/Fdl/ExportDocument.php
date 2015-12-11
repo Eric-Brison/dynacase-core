@@ -229,22 +229,25 @@ class ExportDocument
             }
             $this->prevfromid = $doc->fromid;
         }
-        if ($doc->name != "") $name = $doc->name;
-        else if ($wprof) {
-            $err = $doc->setNameAuto(true);
-            $name = $doc->name;
-        } else if ($wident) $name = $doc->id;
-        else $name = '';
+        $docName = '';
+        if ($doc->name != "" && $doc->locked != - 1) {
+            $docName = $doc->name;
+        } else if ($wprof) {
+            if ($doc->locked != - 1) {
+                $err = $doc->setNameAuto(true);
+                $docName = $doc->name;
+            }
+        } else if ($wident) {
+            $docName = $doc->id;
+        }
         $data = array();
         if ($eformat == "I") {
             $data = array(
                 "DOC",
                 $this->familyName,
-                $name,
+                $docName,
                 $efldid
             );
-            // fputs_utf8($fout, "DOC;" . $this->familyName . ";" . $name . ";" . $efldid . ";");
-            
         }
         // write values
         foreach ($this->lattr as $attr) {
@@ -288,7 +291,8 @@ class ExportDocument
                 }
                 $value = implode("\n", $tf);
             } else if ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
-                if ($value != "") {
+                $docrevOption = $attr->getOption("docrev", "latest");
+                if ($value != "" && $docrevOption === "latest") {
                     if (strstr($value, "\n") || ($attr->getOption("multiple") == "yes")) {
                         $tid = $doc->rawValueToArray($value);
                         $tn = array();
@@ -356,7 +360,7 @@ class ExportDocument
         }
         \Dcp\WriteCsv::fput($fout, $data);
         if ($wprof) {
-            $profid=($doc->dprofid)?$doc->dprofid:$doc->profid;
+            $profid = ($doc->dprofid) ? $doc->dprofid : $doc->profid;
             if ($profid == $doc->id) {
                 $this->exportProfil($fout, $doc->id);
             } else if ($profid > 0) {
@@ -379,5 +383,4 @@ class ExportDocument
             }
         }
     }
-
 }
