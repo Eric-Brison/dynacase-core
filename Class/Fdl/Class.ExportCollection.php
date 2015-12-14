@@ -260,6 +260,9 @@ class ExportCollection
             foreach ($dl as $doc) {
                 $this->recordStatus(sprintf(_("Record documents %d/%d") , $c, $rc));
                 if ($doc->doctype === "C") {
+                    /**
+                     * @var \DocFam $doc
+                     */
                     $c++;
                     if ($c % 20 == 0) {
                         $this->recordStatus(sprintf(_("Record documents %d/%d") , $c, $rc));
@@ -527,7 +530,7 @@ class ExportCollection
         VerifyAttributeAccess::clearCache();
         
         $exd = new \Dcp\ExportXmlDocument();
-        $exd->setDocument($this);
+        
         $exd->setExportFiles($this->exportFiles);
         $exd->setExportDocumentNumericIdentiers($this->exportDocumentNumericIdentiers);
         $exd->setStructureAttributes(true);

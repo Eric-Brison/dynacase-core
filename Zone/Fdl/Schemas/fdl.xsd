@@ -3,6 +3,7 @@
                 <xs:simpleContent>
                         <xs:extension base="xs:token">
                                 <xs:attribute name="id" type="xs:integer" />
+                                <xs:attribute name="revision" type="xs:string" />
                                 <xs:attribute name="name" type="xs:Name" />
                         </xs:extension>
                 </xs:simpleContent>              
@@ -25,7 +26,7 @@
                         </xs:extension>
                 </xs:simpleContent>
         </xs:complexType>
-	<xs:simpleType name="fdl-color">
+	 <xs:simpleType name="fdl-color">
 		<xs:restriction base="xs:token">
 			<xs:whiteSpace value="collapse"></xs:whiteSpace>
 			<xs:pattern value="#([0-9A-Fa-f]){6}"></xs:pattern>
