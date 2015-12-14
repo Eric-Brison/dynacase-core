@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-11 16:21+0100\n"
+"POT-Creation-Date: 2015-12-14 14:03+0100\n"
 "PO-Revision-Date: 2015-12-11 16:19+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -1376,6 +1376,12 @@ msgstr "Connect"
 msgid ""
 "Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical "
 "name"
+msgstr ""
+
+#, php-format
+msgid ""
+"Doc %s : Attribut \"%s\" reference revised identifier : importation not "
+"support revision links without identifiers"
 msgstr ""
 
 #, php-format
