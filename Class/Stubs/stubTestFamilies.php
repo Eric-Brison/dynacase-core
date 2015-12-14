@@ -186,6 +186,8 @@ namespace Dcp\Family {
 	class Tst_exportfam1 extends Document { const familyName="TST_EXPORTFAM1";}
 	/** Test Export Param  */
 	class Tst_export_param extends Document { const familyName="TST_EXPORT_PARAM";}
+	/** Test Export Param  */
+	class Tst_export_revision extends Document { const familyName="TST_EXPORT_REVISION";}
 	/** Test export title limits  */
 	class Tst_exporttitlelimits extends Document { const familyName="TST_EXPORTTITLELIMITS";}
 	/** Cycle test  */
@@ -4368,6 +4370,21 @@ namespace Dcp\AttributeIdentifiers {
 		const a_param_frame='a_param_frame';
 		/** [text] Text */
 		const a_param_text='a_param_text';
+	}
+	/** Test Export Param  */
+	class Tst_export_revision {
+		/** [frame] Frame */
+		const tst_frame='tst_frame';
+		/** [text] Text */
+		const tst_title='tst_title';
+		/** [int] Nombre */
+		const tst_int='tst_int';
+		/** [docid("TST_EXPORT_REVISION")] Relation courante */
+		const tst_doc_latest='tst_doc_latest';
+		/** [docid("TST_EXPORT_REVISION")] Relation fixe */
+		const tst_doc_fixed='tst_doc_fixed';
+		/** [docid("TST_EXPORT_REVISION")] Relation état */
+		const tst_doc_state='tst_doc_state';
 	}
 	/** Test export title limits  */
 	class Tst_exporttitlelimits {
