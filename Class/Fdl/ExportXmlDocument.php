@@ -92,7 +92,11 @@ class ExportXmlDocument
         //$lay=&$this->document->lay;
         $lay->set("famname", strtolower($this->document->fromname));
         $lay->set("id", ($this->exportDocumentNumericIdentiers ? $this->document->id : ''));
-        $lay->set("name", $this->document->name);
+        if ($this->document->locked != - 1) {
+            $lay->set("name", $this->document->name);
+        } else {
+            $lay->set("name", "");
+        }
         $lay->set("revision", $this->document->revision);
         $lay->set("version", $this->document->getVersion());
         $lay->set("state", $this->document->getState());
