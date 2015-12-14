@@ -1,0 +1,24 @@
+//;héritage;titre;id;class;name;;;;
+BEGIN;TST_DOCVAULTINDEX;Test DocVaultIndex Child#1;;;TST_DOCVAULTINDEX_CHILD_1;;;;
+//;;;;;;;;;
+DFLDID;auto;;;;;;;;
+RESET attributes;;;;;;;;;
+//;;;;;;;;;
+END;;;;;;;;;
+;;;;;;;;;
+BEGIN;TST_DOCVAULTINDEX_CHILD_1;Test DocVaultIndex Child#2;;;TST_DOCVAULTINDEX_CHILD_2;;;;
+//;;;;;;;;;
+DFLDID;auto;;;;;;;;
+RESET;attributes;;;;;;;;
+//;;;;;;;;;
+ATTR;FRAME_2;;Frame;N;N;frame;10;W;N
+ATTR;DEFAULT_FILE_2;FRAME_2;Default file 2;N;N;file;20;W;N
+ATTR;DEFAULT_IMAGE_2;FRAME_2;Default image 2;N;N;image;21;W;N
+ATTR;S_FILE_2;FRAME_2;Single file;N;N;file;30;W;N
+ATTR;S_IMAGE_2;FRAME_2;Single image;N;N;image;31;W;N
+//;;;;;;;;;
+PARAM;P_FRAME_2;;Frame;N;N;frame;10;W;N
+PARAM;P_S_FILE_2;P_FRAME_2;Single file 2;N;N;file;20;W;N
+PARAM;P_S_IMAGE_2;P_FRAME_2;Single image 2;N;N;image;21;W;N
+//;;;;;;;;;
+END;;;;;;;;;
