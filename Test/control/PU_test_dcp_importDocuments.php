@@ -29,7 +29,7 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
      * test import simple document
      * @dataProvider dataGoodDocFiles
      */
-    public function testGoodImportDocument($documentFile, array $docNames)
+    public function testGoodImportDocument($documentFile, array $expects)
     {
         $err = '';
         $d = createDoc(self::$dbaccess, "TST_GOODFAMIMPDOC");
@@ -41,11 +41,18 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, "import error detected $err");
-        $name = $docNames["famName"];
-        $t = getTDoc(self::$dbaccess, $name);
-        $this->assertArrayHasKey('id', $t, sprintf("cannot find %s document", $name));
-        foreach ($docNames["expectValue"] as $aid => $expVal) {
-            $this->assertEquals($expVal, $t[$aid]);
+        
+        foreach ($expects as $docNames) {
+            $name = $docNames["docName"];
+            $t = getTDoc(self::$dbaccess, $name);
+            $this->assertArrayHasKey('id', $t, sprintf("cannot find %s document", $name));
+            foreach ($docNames["expectValue"] as $aid => $expVal) {
+                if ($expVal[0] === "*") {
+                    $this->assertContains(substr($expVal, 1) , $t[$aid]);
+                } else {
+                    $this->assertEquals($expVal, $t[$aid]);
+                }
+            }
         }
     }
     /**
@@ -125,11 +132,42 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
         return array(
             array(
                 "file" => "PU_data_dcp_importdocgood1.ods",
-                "names" => array(
-                    "famName" => "TST_GOOD1",
-                    "expectValue" => array(
-                        "tst_title" => "Test1",
-                        "tst_number" => "20"
+                array(
+                    array(
+                        "docName" => "TST_GOOD1",
+                        "expectValue" => array(
+                            "tst_title" => "Test1",
+                            "tst_number" => "20"
+                        )
+                    ),
+                    array(
+                        "docName" => "TST_GOOD4",
+                        "expectValue" => array(
+                            "tst_title" => "Portez ce vieux whisky au juge blond qui fume sur son île intérieure, à côté de l'alcôve ovoïde, où les bûches se consument dans l'âtre, ce qui lui permet de penser à la cænogénèse de l'être dont il est question dans la cause ambiguë entendue à Moÿ, dans un capharnaüm qui, pense-t-il, diminue çà et là la qualité de son œuvre.",
+                            "tst_number" => "-4"
+                        )
+                    )
+                )
+            ) ,
+            array(
+                "file" => "../PU_data_dcp_importdocgood2.zip",
+                array(
+                    array(
+                        "docName" => "TST_GOOD2",
+                        "expectValue" => array(
+                            "tst_title" => "Dès Noël où un zéphyr haï me vêt de glaçons würmiens je dîne d’exquis rôtis de bœuf au kir à l’aÿ d’âge mûr & cætera",
+                            "tst_number" => "9878",
+                            "tst_date" => "1987-12-02"
+                        )
+                    ) ,
+                    array(
+                        "docName" => "TST_GOOD3",
+                        "expectValue" => array(
+                            "tst_title" => "Zéphir",
+                            "tst_number" => "987",
+                            "tst_date" => "2015-10-02",
+                            "tst_file" => "*Zéphir.txt"
+                        )
                     )
                 )
             )

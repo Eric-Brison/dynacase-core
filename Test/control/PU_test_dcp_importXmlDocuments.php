@@ -37,6 +37,9 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataDocumentFiles
+     * @param string $documentFile
+     * @param int $nbError
+     * @throws \Dcp\Db\Exception
      */
     public function testErrorImportDocument($documentFile, $nbError)
     {
@@ -55,6 +58,7 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataIuserFiles
+     * @param string $documentFile
      */
     public function testErrorImportIuser($documentFile)
     {
@@ -67,9 +71,11 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         }
         $this->assertNotEmpty($err);
     }
-
     /**
      * @dataProvider dataFolderImportDocument
+     * @param string $documentFile
+     * @param string $docName
+     * @param array $folderNames
      */
     public function testFolderImportDocument($documentFile, $docName, array $folderNames)
     {
@@ -91,6 +97,9 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataExtraImportDocument
+     * @param string $documentFile
+     * @param string $docName
+     * @param array $extraValues
      */
     public function testExtraImportDocument($documentFile, $docName, array $extraValues)
     {
@@ -145,7 +154,7 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
             )
         );
     }
-
+    
     public function dataExtraImportDocument()
     {
         return array(
