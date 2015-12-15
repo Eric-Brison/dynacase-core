@@ -129,11 +129,19 @@ class ImportDocument
                 $ext = substr($file, strrpos($file, '.') + 1);
                 $this->begtime = Doc::getTimeDate(0, true);
                 if ($ext == "xml") {
-                    include_once ("FREEDOM/freedom_import_xml.php");
-                    $this->cr = freedom_import_xml($action, $file);
+                    $iXml = new \Dcp\Core\importXml();
+                    $iXml->setPolicy($this->policy);
+                    $iXml->setImportDirectory($this->dirid);
+                    $iXml->setVerifyAttributeAccess($this->verifyAttributeAccess);
+                    $iXml->analyzeOnly($this->onlyAnalyze);
+                    $this->cr = $iXml->importSingleXmlFile($file);
                 } else if ($ext == "zip") {
-                    include_once ("FREEDOM/freedom_import_xml.php");
-                    $this->cr = freedom_import_xmlzip($action, $file);
+                    $iXml = new \Dcp\Core\importXml();
+                    $iXml->setPolicy($this->policy);
+                    $iXml->setImportDirectory($this->dirid);
+                    $iXml->setVerifyAttributeAccess($this->verifyAttributeAccess);
+                    $iXml->analyzeOnly($this->onlyAnalyze);
+                    $this->cr = $iXml->importZipFile($file);
                 } else {
                     $this->cr = $this->importSingleFile($file);
                 }
