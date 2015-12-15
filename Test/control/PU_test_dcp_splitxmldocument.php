@@ -69,12 +69,18 @@ class TestSplitXmlDocument extends TestCaseDcp
             }
         }
         /* check splitXmlDocument() */
-        $err = splitXmlDocument($workingXML, $testDir);
         if (isset($data['expect_error']) && $data['expect_error'] === true) {
-            $this->assertNotEmpty($err, sprintf("splitXmlDocument did not returned with an expected error"));
+            try {
+                \Dcp\Core\importXml::splitXmlDocument($workingXML, $testDir);
+                $this->assertTrue(false, "XML Error not detected");
+            }
+            catch(\Exception $e) {
+                $this->assertNotEmpty($e->getMessage() , sprintf("splitXmlDocument did not returned with an expected error"));
+            }
+            
             return;
         } else {
-            $this->assertEmpty($err, sprintf("splitXmlDocument returned with '%s'", $err));
+            \Dcp\Core\importXml::splitXmlDocument($workingXML, $testDir);
         }
         
         if (!isset($data['produces'])) {
@@ -124,7 +130,7 @@ class TestSplitXmlDocument extends TestCaseDcp
         /* grep found no "SAX.error" lines */
         return true;
     }
-    
+    /** @noinspection PhpUnusedPrivateMethodInspection */
     private function addBigNode($xml, $args = array())
     {
         $addNodeData = file_get_contents('DCPTEST' . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . 'PU_data_dcp_splitxmldocument_bignode_template.xml');

@@ -12,15 +12,39 @@ function pollingExport(exportId) {
                     pollingExport(exportId);
                 }, 500);
                 else {
-                    bExport.attr('disabled', false);
-                    bExport.val("[TEXT:Redo export]");
+                    window.setTimeout(function() {
+                        bExport.attr('disabled', false);
+                        bExport.val("[TEXT:Redo export]");
+                    }, 2000);
                 }
             } else {
-                //bExport.val("[TEXT:Export done]");
-                bExport.val("[TEXT:Redo export]");
-                bExport.attr('disabled', false);
+                window.setTimeout(function() {
+                    bExport.attr('disabled', false);
+                    bExport.val("[TEXT:Redo export]");
+                }, 2000);
+            }
+            if (data.warnings && data.warnings.length > 0) {
+                var $warning=$("<div/>").addClass("warning");
+                var $button=$("<button/>").addClass("close").html("&times;");
+                var $p;
+                $warning.append($button);
+                for (var i=0;i<data.warnings.length;i++) {
+                    if (i===0) {
+                        $p=$("<h3/>");
+                    } else {
+                        $p=$("<p/>");
+                    }
+                    $p.text(data.warnings[i]);
+                    $warning.append($p);
+                }
 
+                $("body").append($warning);
 
+                $button.on("click", function () {
+                    $(".warning").hide();
+                });
+            } else {
+                $(".warning").hide();
             }
         }
     });

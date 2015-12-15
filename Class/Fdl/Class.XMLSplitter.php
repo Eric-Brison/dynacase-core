@@ -217,11 +217,9 @@ class XMLSplitter
     {
         $attrList = array();
         foreach ($node['attrs'] as $name => $value) {
-            if ($this->compatibilityEscape) {
-                $value = $this::compatibilityEscapeEntities($value);
-            } else {
-                $value = $this::escapeEntities($value);
-            }
+            
+            $value = $this::escapeEntities($value);
+            
             $attrList[] = sprintf('%s="%s"', $name, $value);
         }
         $str = sprintf("<%s%s%s>", $node['name'], count($attrList) > 0 ? ' ' : '', join(" ", $attrList));
@@ -261,6 +259,7 @@ class XMLSplitter
      * @param string $data the data extracted by the parser
      * @return void
      */
+    /** @noinspection PhpUnusedPrivateMethodInspection */
     private function characterData(&$parser, $data)
     {
         if ($this->depth >= 1) {
@@ -276,6 +275,7 @@ class XMLSplitter
      * @throws Dcp\Exception
      * @return void
      */
+    /** @noinspection PhpUnusedPrivateMethodInspection */
     private function startElement(&$parser, $name, $attrs)
     {
         $node = array(
@@ -299,6 +299,7 @@ class XMLSplitter
      * @param string $name the current closing tag name
      * @return void
      */
+    /** @noinspection PhpUnusedPrivateMethodInspection */
     private function endElement(&$parser, $name)
     {
         $node = array(
@@ -323,7 +324,7 @@ class XMLSplitter
     private function openOutputFile(array $node)
     {
         if ($this->out_fh !== false) {
-            $this->errmsg = sprintf(_("Output file '%s' is already opened.", $this->out_file));
+            $this->errmsg = sprintf(_("Output file '%s' is already opened.") , $this->out_file);
             error_log($this->errmsg);
             throw new Dcp\Exception($this->errmsg);
         }

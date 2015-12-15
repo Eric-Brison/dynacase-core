@@ -229,22 +229,25 @@ class ExportDocument
             }
             $this->prevfromid = $doc->fromid;
         }
-        if ($doc->name != "") $name = $doc->name;
-        else if ($wprof) {
-            $err = $doc->setNameAuto(true);
-            $name = $doc->name;
-        } else if ($wident) $name = $doc->id;
-        else $name = '';
+        $docName = '';
+        if ($doc->name != "" && $doc->locked != - 1) {
+            $docName = $doc->name;
+        } else if ($wprof) {
+            if ($doc->locked != - 1) {
+                $err = $doc->setNameAuto(true);
+                $docName = $doc->name;
+            }
+        } else if ($wident) {
+            $docName = $doc->id;
+        }
         $data = array();
         if ($eformat == "I") {
             $data = array(
                 "DOC",
                 $this->familyName,
-                $name,
+                $docName,
                 $efldid
             );
-            // fputs_utf8($fout, "DOC;" . $this->familyName . ";" . $name . ";" . $efldid . ";");
-            
         }
         // write values
         foreach ($this->lattr as $attr) {
@@ -288,6 +291,7 @@ class ExportDocument
                 }
                 $value = implode("\n", $tf);
             } else if ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
+                $docrevOption = $attr->getOption("docrev", "latest");
                 if ($value != "") {
                     if (strstr($value, "\n") || ($attr->getOption("multiple") == "yes")) {
                         $tid = $doc->rawValueToArray($value);
@@ -297,15 +301,29 @@ class ExportDocument
                             $tnbr = array();
                             foreach ($brtid as $brid) {
                                 $n = getNameFromId($dbaccess, $brid);
-                                if ($n) $tnbr[] = $n;
-                                else $tnbr[] = $brid;
+                                if ($n) {
+                                    if ($docrevOption === "latest") {
+                                        $tnbr[] = $n;
+                                    } else {
+                                        addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name") , $doc->getTitle() , $attr->getLabel()));
+                                        $tnbr[] = $brid;
+                                    }
+                                } else {
+                                    $tnbr[] = $brid;
+                                }
                             }
                             $tn[] = implode('<BR>', $tnbr);
                         }
                         $value = implode("\n", $tn);
                     } else {
                         $n = getNameFromId($dbaccess, $value);
-                        if ($n) $value = $n;
+                        if ($n) {
+                            if ($docrevOption === "latest") {
+                                $value = $n;
+                            } else {
+                                addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name") , $doc->getTitle() , $attr->getLabel()));
+                            }
+                        }
                     }
                 }
             } else if ($attr->type == "htmltext") {
@@ -356,16 +374,17 @@ class ExportDocument
         }
         \Dcp\WriteCsv::fput($fout, $data);
         if ($wprof) {
-            if ($doc->profid == $doc->id) {
+            $profid = ($doc->dprofid) ? $doc->dprofid : $doc->profid;
+            if ($profid == $doc->id) {
                 $this->exportProfil($fout, $doc->id);
-            } else if ($doc->profid > 0) {
-                $name = getNameFromId($dbaccess, $doc->profid);
+            } else if ($profid > 0) {
+                $name = getNameFromId($dbaccess, $profid);
                 $dname = $doc->name;
                 if (!$dname) $dname = $doc->id;
-                if (!$name) $name = $doc->profid;
-                if (!isset($tdoc[$doc->profid])) {
-                    $tdoc[$doc->profid] = true;
-                    $pdoc = new_doc($dbaccess, $doc->profid);
+                if (!$name) $name = $profid;
+                if (!isset($tdoc[$profid])) {
+                    $tdoc[$profid] = true;
+                    $pdoc = new_doc($dbaccess, $profid);
                     $this->csvExport($pdoc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
                 }
                 $data = array(
@@ -378,5 +397,4 @@ class ExportDocument
             }
         }
     }
-
 }

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-10 15:10+0100\n"
-"PO-Revision-Date: 2015-12-10 15:18+0100\n"
+"POT-Creation-Date: 2015-12-14 14:03+0100\n"
+"PO-Revision-Date: 2015-12-14 14:04+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -844,7 +844,7 @@ msgstr ""
 
 #, php-format
 msgid "Cannot find %s resource file"
-msgstr ""
+msgstr "La ressource fichier %s est introuvable"
 
 #, php-format
 msgid "Cannot find help function %s"
@@ -1406,6 +1406,20 @@ msgid "Do connection"
 msgstr "Se connecter"
 
 #, php-format
+msgid ""
+"Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical "
+"name"
+msgstr ""
+"Document \"%s\" : L'attribut \"%s\" référence un identifiant de révision : "
+"le nom logique ne peut pas être utilisé"
+
+#, php-format
+msgid ""
+"Doc %s : Attribut \"%s\" reference revised identifier : importation not "
+"support revision links without identifiers"
+msgstr "Document \"%s\" : L'attribut \"%s\" référence un identifiant de révision : l'importation ne supporte pas les liens entre révisions sans l'identifiant numérique."
+
+#, php-format
 msgid "Doc Render %d/%d"
 msgstr "Composition %d/%d"
 
@@ -1899,7 +1913,7 @@ msgid "Error: config file '%s' is not a file."
 msgstr "Erreur: le fichier de config '%s' n'est pas un fichier"
 
 msgid "Error: empty action->dbaccess"
-msgstr ""
+msgstr "Erreur: action->dbaccess est vide"
 
 #, php-format
 msgid "Error: missing or empty --tmppgservice"
@@ -1946,6 +1960,9 @@ msgstr ""
 
 msgid "Export done"
 msgstr "Fin de l'exportation"
+
+msgid "Export:Warnings"
+msgstr "Avertissements de l'exportation :"
 
 msgid "FGSEARCH:Add search engine"
 msgstr "Ajouter le moteur de recherche"
@@ -4854,7 +4871,7 @@ msgstr "attribut %s inconnu dans le document \"%s\" [%s]"
 
 #, php-format
 msgid "attribute %s unknow in family \"%s\""
-msgstr ""
+msgstr "attribut %s inconnu dans la famille \"%s\""
 
 msgid "attribute id"
 msgstr "Identifiant de l'attribut"

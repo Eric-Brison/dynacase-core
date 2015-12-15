@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-10 15:10+0100\n"
-"PO-Revision-Date: 2015-12-10 15:19+0100\n"
+"POT-Creation-Date: 2015-12-14 14:03+0100\n"
+"PO-Revision-Date: 2015-12-11 16:19+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
 "Language: English\n"
@@ -1373,6 +1373,18 @@ msgid "Do connection"
 msgstr "Connect"
 
 #, php-format
+msgid ""
+"Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical "
+"name"
+msgstr ""
+
+#, php-format
+msgid ""
+"Doc %s : Attribut \"%s\" reference revised identifier : importation not "
+"support revision links without identifiers"
+msgstr ""
+
+#, php-format
 msgid "Doc Render %d/%d"
 msgstr ""
 
@@ -1886,6 +1898,9 @@ msgstr ""
 
 msgid "Export done"
 msgstr ""
+
+msgid "Export:Warnings"
+msgstr "Export warnings :"
 
 msgid "FGSEARCH:Add search engine"
 msgstr "Add search engine"

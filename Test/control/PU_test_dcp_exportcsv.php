@@ -122,7 +122,6 @@ class TestExportCsv extends TestCaseDcpCommonFamily
      * @param array $expectData
      * @param string $separator
      * @param string $enclosure
-     * @param array $expectedProfil
      * @dataProvider dataExportFamily
      */
     public function testExportamily($familyId, array $expectData, $separator, $enclosure)
@@ -148,8 +147,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         exportfld(self::getAction() , $tmpFolder->id, 0, $exportOutput);
         
         $this->assertTrue(file_exists($exportOutput) , sprintf('Export File "%s" nor create', $exportOutput));
-        
-        $exportDocName = array();
+
         $h = fopen($exportOutput, "r");
         
         $keys = array();
@@ -170,9 +168,11 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         //unlink($exportOutput);
         
     }
+
     /**
      * Test that exported documents have no param columns
      * @param array $data test specification
+     * @throws \Exception
      * @dataProvider dataExportNoParam
      */
     public function testExportNoParam($data)
@@ -217,7 +217,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         $eformat = 'I';
         
         $ed = new \Dcp\ExportDocument();
-        $ed->cvsExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
+        $ed->csvExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
         
         fclose($fout);
         

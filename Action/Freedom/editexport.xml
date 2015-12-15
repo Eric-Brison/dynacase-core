@@ -28,6 +28,30 @@ input[type=submit] {
     .submit {
         width : 5em;
     }
+.warning {
+    border: solid 2px orange;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    background: #FFD68A;
+    padding: 1em;
+    margin: 10px auto;
+    left: 0;
+    right: 0;
+    width:70%;
+    overflow: auto;
+    max-height: 80%;
+ }
+.warning p:first-child {
+    font-weight:bold;
+}
+button.close {
+    width: 2em;
+    padding: 0.25em;
+    text-align: center;
+    float: right;
+    font-size: 150%;
+    }
 </style>
 <h2 style="text-align:center">[TEXT:Export Documents from] </h2>
 <h3 style="text-align:center">[title]</h3>

@@ -49,24 +49,18 @@ function freedom_import_xml(Action & $action, $filename = "")
     } else {
         $xmlfiles = $filename;
     }
-    $splitdir = uniqid(getTmpDir() . "/xmlsplit");
-    @mkdir($splitdir);
-    if (!is_dir($splitdir)) $action->exitError(_("Cannot create directory %s for xml import") , $splitdir);
-    $err = splitXmlDocument($xmlfiles, $splitdir);
-    if ($err) $action->exiterror($err);
-    //print "Split OK in $splitdir";
-    $err = extractFilesFromXmlDirectory($splitdir);
-    if ($err) $action->exiterror($err);
     
-    $log = importXmlDirectory($dbaccess, $splitdir, $opt);
-    system(sprintf("/bin/rm -fr %s ", $splitdir));
-    // print "look : $splitdir\n";
-    return $log;
+    $iXml = new \Dcp\Core\importXml();
+    $iXml->setPolicy($opt["policy"]);
+    $iXml->setImportDirectory($opt["dirid"]);
+    $iXml->analyzeOnly($opt["analyze"]);
+    return $iXml->importSingleXmlFile($xmlfiles);
 }
 /**
  * export global xml file
  * @param Action $action main action
  * @param string $filename xml filename to import
+ * @return array
  */
 function freedom_import_xmlzip(Action & $action, $filename = "")
 {
@@ -74,7 +68,7 @@ function freedom_import_xmlzip(Action & $action, $filename = "")
     $opt["analyze"] = (substr(strtolower(getHttpVars("analyze", "Y")) , 0, 1) == "y");
     $opt["policy"] = getHttpVars("policy", "update");
     $opt["dirid"] = getHttpVars("dirid", getHttpVars("dir", 0));
-    $dbaccess = $action->dbaccess;
+    
     global $_FILES;
     setMaxExecutionTimeTo(300);
     if ($filename == "") {
@@ -91,372 +85,85 @@ function freedom_import_xmlzip(Action & $action, $filename = "")
     } else {
         $zipfiles = $filename;
     }
-    $splitdir = uniqid(getTmpDir() . "/xmlsplit");
-    @mkdir($splitdir);
-    if (!is_dir($splitdir)) $action->exitError(_("Cannot create directory %s for xml import") , $splitdir);
-    $err = splitZipXmlDocument($zipfiles, $splitdir);
-    if ($err) $action->exiterror($err);
-    //print "Split OK in $splitdir";
-    $err = extractFilesFromXmlDirectory($splitdir);
-    if ($err) $action->exiterror($err);
     
-    $log = importXmlDirectory($dbaccess, $splitdir, $opt);
-    system(sprintf("/bin/rm -fr %s ", $splitdir));
-    //print "look : $splitdir\n";
+    $iXml = new \Dcp\Core\importXml();
+    $iXml->setPolicy($opt["policy"]);
+    $iXml->setImportDirectory($opt["dirid"]);
+    $iXml->analyzeOnly($opt["analyze"]);
+    
+    $log = $iXml->importZipFile($zipfiles);
     return $log;
 }
 /**
  * read a directory to import all xml files
  * @param string $splitdir
  * @param array $opt options analyze (boolean) , policy (string)
+ * @deprecated use Dcp\Core\importXml::importXmlDirectory instead
+ * @return array
  */
 function importXmlDirectory($dbaccess, $splitdir, $opt)
 {
-    $tlog = array();
-    if ($handle = opendir($splitdir)) {
-        $files = array();
-        while (false !== ($file = readdir($handle))) {
-            if ($file[0] != "." && is_file("$splitdir/$file")) {
-                $ext = substr($file, strrpos($file, '.') + 1);
-                if ($ext == "xml") {
-                    $files[] = $file;
-                }
-            }
-        }
-        asort($files);
-        foreach ($files as $file) {
-            $err = importXmlDocument($dbaccess, "$splitdir/$file", $log, $opt);
-            $tlog[] = $log;
-        }
-        closedir($handle);
-    }
-    
-    return $tlog;
+    $iXml = new \Dcp\Core\importXml();
+    $iXml->setPolicy($opt["policy"]);
+    $iXml->setImportDirectory($opt["dirid"]);
+    $iXml->analyzeOnly($opt["analyze"]);
+    return $iXml->importXmlDirectory($splitdir);
 }
 /**
  * read a directory to extract all encoded files
  * @param $splitdir
+ * @deprecated Dcp\Core\importXml::extractFilesFromXmlDirectory
+ * @return string
  */
 function extractFilesFromXmlDirectory($splitdir)
 {
-    $err = '';
-    if ($handle = opendir($splitdir)) {
-        while (false !== ($file = readdir($handle))) {
-            if ($file[0] != ".") {
-                if (!is_dir("$splitdir/$file")) {
-                    $err.= extractFileFromXmlDocument("$splitdir/$file");
-                }
-            }
-        }
-        closedir($handle);
+    try {
+        \Dcp\Core\importXml::extractFilesFromXmlDirectory($splitdir);
     }
-    return $err;
+    catch(Exception $e) {
+        return $e->getMessage();
+    }
+    return "";
 }
 /**
  * extract encoded base 64 file from xml and put it in local media directory
  * the file is rewrite without encoded data and replace by href attribute
  * @param $file
  * @return string error message empty if no errors
+ * @deprecated use Dcp\Core\importXml::extractFileFromXmlDocument
  */
 function extractFileFromXmlDocument($file)
 {
-    static $mediaindex = 0;
-    $err = '';
-    $dir = dirname($file);
-    if (!file_exists($file)) return sprintf(_("import Xml extract : file %s not found") , $file);
-    $mediadir = "media";
-    if (!is_dir("$dir/$mediadir")) mkdir("$dir/$mediadir");
-    $f = fopen($file, "r");
-    $nf = fopen($file . ".new", "w");
-    while (!feof($f)) {
-        $buffer = fgets($f, 4096);
-        $mediaindex++;
-        if (preg_match("/<([a-z_0-9-]+)[^>]*mime=\"[^\"]+\"(.*)>(.*)/", $buffer, $reg)) {
-            if ((substr($reg[2], -1) != "/") && (substr($reg[2], -strlen($reg[1]) - 3) != '></' . $reg[1])) { // not empty tag
-                $tag = $reg[1];
-                if (preg_match("/<([a-z_0-9-]+)[^>]*title=\"([^\"]+)\"/", $buffer, $regtitle)) {
-                    $title = $regtitle[2];
-                } else if (preg_match("/<([a-z_0-9-]+)[^>]*title='([^']+)'/", $buffer, $regtitle)) {
-                    $title = $regtitle[2];
-                } else $title = "noname";
-                mkdir(sprintf("%s/%s/%d", $dir, $mediadir, $mediaindex));
-                $rfin = sprintf("%s/%d/%s", $mediadir, $mediaindex, $title);
-                $fin = sprintf("%s/%s", $dir, $rfin);
-                $fi = fopen($fin, "w");
-                
-                if (preg_match("/(.*)(<$tag [^>]*)>/", $buffer, $regend)) {
-                    fputs($nf, $regend[1] . $regend[2] . ' href="' . $rfin . '">');
-                }
-                if (preg_match("/>([^<]*)<\/$tag>(.*)/", $buffer, $regend)) {
-                    // end of file
-                    fputs($fi, $regend[1]);
-                    fputs($nf, "</$tag>");
-                    fputs($nf, $regend[2]);
-                } else {
-                    // find end of file
-                    fputs($fi, $reg[3]);
-                    $findtheend = false;
-                    while (!feof($f) && (!$findtheend)) {
-                        $buffer = fgets($f, 4096);
-                        if (preg_match("/(.*)<\/$tag>(.*)/", $buffer, $regend)) {
-                            fputs($fi, $regend[1]);
-                            fputs($nf, "</$tag>");
-                            fputs($nf, $regend[2]);
-                            $findtheend = true;
-                        } else {
-                            fputs($fi, $buffer);
-                        }
-                    }
-                }
-                fclose($fi);
-                base64_decodefile($fin);
-            } else {
-                fputs($nf, $buffer);
-            }
-        } else if (preg_match("/&lt;img.*?src=\"data:[^;]*;base64,(.*)/", $buffer, $reg)) {
-            if (preg_match("/&lt;img.*?title=\"([^\"]+)\"/", $buffer, $regtitle)) {
-                $title = $regtitle[1];
-            } else if (preg_match("/&lt;img.*?title='([^']+)'/", $buffer, $regtitle)) {
-                $title = $regtitle[1];
-            } else $title = "noname";
-            mkdir(sprintf("%s/%s/%d", $dir, $mediadir, $mediaindex));
-            $rfin = sprintf("%s/%d/%s", $mediadir, $mediaindex, $title);
-            $fin = sprintf("%s/%s", $dir, $rfin);
-            $fi = fopen($fin, "w");
-            if (preg_match("/(.*)(&lt;img.*?)src=\"data:[^;]*;base64,/", $buffer, $regend)) {
-                $chaintoput = $regend[1] . $regend[2] . ' src="file://' . $rfin . '"';
-                fputs($nf, $chaintoput);
-            }
-            if (preg_match("/&lt;img.*?src=\"data:[^;]*;base64,([^\"]*)\"(.*)/", $buffer, $regend)) {
-                // end of file
-                fputs($fi, $regend[1]);
-                fputs($nf, $regend[2]);
-            } else {
-                // find end of file
-                fputs($fi, $reg[1]);
-                $findtheend = false;
-                while (!feof($f) && (!$findtheend)) {
-                    $buffer = fgets($f, 4096);
-                    if (preg_match("/([^\"]*)\"(.*)/", $buffer, $regend)) {
-                        fputs($fi, $regend[1]);
-                        fputs($nf, $regend[2]);
-                        $findtheend = true;
-                    } else {
-                        fputs($fi, $buffer);
-                    }
-                }
-            }
-            fclose($fi);
-            base64_decodefile($fin);
-        } else {
-            fputs($nf, $buffer);
-        }
-    }
-    fclose($f);
-    fclose($nf);
-    rename($file . ".new", $file);
-    return $err;
-}
-
-function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
-{
-    static $families = array();
-    $log = array(
-        "err" => "",
-        "msg" => "",
-        "specmsg" => "",
-        "folderid" => 0,
-        "foldername" => "",
-        "filename" => "",
-        "title" => "",
-        "id" => "",
-        "values" => array() ,
-        "familyid" => 0,
-        "familyname" => "",
-        "action" => "-"
-    );
-    
-    if (!is_file($xmlfile)) {
-        $err = sprintf(_("Xml import file %s not found") , $xmlfile);
-        $log["err"] = $err;
-        return $err;
-    }
-    $importdirid = 0;
-    $analyze = true;
-    $policy = "update";
-    if ($opt["policy"]) $policy = $opt["policy"];
-    if ($opt["analyze"] !== null) $analyze = $opt["analyze"];
-    $splitdir = dirname($xmlfile);
-    $tkey = array(
-        "title"
-    );
-    $prevalues = array();
-    $dom = new \Dcp\Utils\XDOMDocument();
     try {
-        $dom->load($xmlfile, 0, $error);
+        \Dcp\Core\importXml::extractFileFromXmlDocument($file);
     }
-    catch(\Dcp\Utils\XDOMDocumentException $e) {
-        $log["action"] = 'ignored';
-        $log["err"] = $e->getMessage();;
+    catch(Exception $e) {
         return $e->getMessage();
     }
-    // print $doc->saveXML();
-    $root = $dom->documentElement;
-    $id = $root->getAttribute("id");
-    $name = $root->getAttribute("name");
-    $key = $root->getAttribute("key");
-    $folders = $root->getAttribute("folders");
-    if ($key) {
-        $tkey = explode(',', $key);
-        foreach ($tkey as & $v) {
-            $v = trim($v);
-        }
-    }
-    
-    $family = $root->tagName;
-    $famid = getFamIdFromName($dbaccess, $family);
-    if (!isset($families[$famid])) {
-        $families[$famid] = new_doc($dbaccess, $famid);
-    }
-    //print("family : $family $id $name $famid\n");
-    
-    /**
-     * @var DocFam[] $families
-     */
-    $la = $families[$famid]->getNormalAttributes();
-    $tord = array();
-    $tdoc = array(
-        "DOC",
-        $famid,
-        ($id) ? $id : $name,
-        ''
-    );
-    
-    $rootAttrs = $root->attributes;
-    
-    foreach ($rootAttrs as $rname => $ra) {
-        $v = $root->getAttribute($rname);
-        if ($v) {
-            $tord[] = "extra:$rname";
-            $tdoc[] = $v;
-        }
-    }
-    
-    $msg = '';
-    /**
-     * @var BasicAttribute $v
-     */
-    foreach ($la as $k => & $v) {
-        $n = $dom->getElementsByTagName($v->id);
-        $val = array();
-        /**
-         * @var DomElement $item
-         */
-        foreach ($n as $item) {
-            switch ($v->type) {
-                case 'array':
-                    break;
-
-                case 'docid':
-                case 'account':
-                    $id = $item->getAttribute("id");
-                    if (!$id) {
-                        $logicalName = $item->getAttribute("name");
-                        $name = $item->getAttribute("name");
-                        if ($name) {
-                            if (strpos($name, ',') !== false) {
-                                $names = explode(',', $name);
-                                $lids = array();
-                                foreach ($names as $lname) {
-                                    $lids[] = getIdFromName($dbaccess, $lname);
-                                }
-                                $id = implode(",", $lids);
-                            } else {
-                                $id = getIdFromName($dbaccess, $name);
-                            }
-                        }
-                        if (!$id) {
-                            // search from title
-                            if ($item->nodeValue) {
-                                $afamid = $v->format;
-                                $id = getIdFromTitle($dbaccess, $item->nodeValue, $afamid);
-                                if (!$id) {
-                                    $msg.= sprintf(_("No identifier found for relation '%s' %s in %s file") . "\n", $logicalName ? $logicalName : $item->nodeValue, $v->id, $xmlfile);
-                                }
-                            }
-                        }
-                    }
-                    if ($v->getOption("multiple") == "yes") {
-                        $id = str_replace(',', '\n', $id);
-                        if ($v->inArray()) $id = str_replace(array(
-                            '\\n',
-                            "\n",
-                        ) , "<BR>", $id);
-                    }
-                    $val[] = $id;
-                    break;
-
-                case 'image':
-                case 'file':
-                    $href = $item->getAttribute("href");
-                    if ($href) {
-                        $val[] = $href;
-                    } else {
-                        $vid = $item->getAttribute("vid");
-                        $mime = $item->getAttribute("mime");
-                        $title = $item->getAttribute("title");
-                        if ($vid) {
-                            $val[] = "$mime|$vid|$title";
-                        } else {
-                            $val[] = '';
-                        }
-                    }
-                    break;
-
-                case 'htmltext':
-                    $val[] = str_replace("\n", " ", str_replace(">\n", ">", $item->nodeValue));
-                    break;
-
-                default:
-                    $val[] = $item->nodeValue;
-                }
-                //  print $v->id.":".$item->nodeValue."\n";
-                
-        }
-        $tord[] = $v->id;
-        $tdoc[] = implode("\n", $val);
-    }
-    //$log = csvAddDoc($dbaccess, $tdoc, $importdirid, $analyze, $splitdir, $policy, $tkey, $prevalues, $tord);
-    $o = new importSingleDocument();
-    if ($tkey) $o->setKey($tkey);
-    if ($tord) $o->setOrder($tord);
-    $o->analyzeOnly($analyze);
-    $o->setPolicy($policy);
-    $o->setFilePath($splitdir);
-    if ($folders) {
-        $folders = str_replace(',', ' ', $folders);
-        $tfolders = explode(' ', $folders);
-        foreach ($tfolders as $k => $aFolder) {
-            if (!$aFolder) unset($tfolders[$k]);
-        }
-        
-        if ($tfolders) {
-            $o->setTargetDirectories($tfolders);
-        }
-    } elseif (!empty($opt["dirid"])) {
-        $o->setTargetDirectory($opt["dirid"]);
-    }
-    
-    $o->import($tdoc);
-    $log = $o->getImportResult();
-    
-    if ($msg) {
-        $log["err"].= "\n" . $msg;
-        $log["action"] = "ignored";
-    }
-    return '';
+    return "";
 }
-
+/**
+ * @param $dbaccess
+ * @param $xmlfile
+ * @param $log
+ * @param $opt
+ * @sdeprecated use Dcp\Core\importXml::importXmlFileDocument
+ * @return string
+ */
+function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
+{
+    $iXml = new \Dcp\Core\importXml();
+    $iXml->setPolicy($opt["policy"]);
+    $iXml->setImportDirectory($opt["dirid"]);
+    $iXml->analyzeOnly($opt["analyze"]);
+    return $iXml->importXmlFileDocument($xmlfile, $log);
+}
+/**
+ * @param $zipfiles
+ * @param $splitdir
+ * @return string
+ * @deprecated  use Dcp\Core\importXml::unZipXmlDocument
+ */
 function splitZipXmlDocument($zipfiles, $splitdir)
 {
     $err = "";
@@ -465,34 +172,26 @@ function splitZipXmlDocument($zipfiles, $splitdir)
     if ($retval != 0) $err = sprintf(_("export Xml : cannot unzip %s : %s") , $zipfiles, $ll);
     return $err;
 }
+/**
+ * @param $xmlfiles
+ * @param $splitdir
+ * @return string
+ * @deprecated use Dcp\Core\importXml::splitXmlDocument
+ */
 function splitXmlDocument($xmlfiles, $splitdir)
 {
-    $xs = null;
     try {
-        $xs = new XMLSplitter($splitdir);
-        $xs->split($xmlfiles);
-        $xs->close();
+        return Dcp\Core\importXml::splitXmlDocument($xmlfiles, $splitdir);
     }
-    catch(Exception $e) {
-        if ($xs) {
-            $xs->close();
-        }
+    catch(\Exception $e) {
         return $e->getMessage();
     }
-    return '';
 }
-
+/**
+ * @param $filename
+ * @deprecated use Dcp\Core\importXml::base64Decodefile instead
+ */
 function base64_decodefile($filename)
 {
-    $dir = dirname($filename);
-    $tmpdest = uniqid(getTmpDir() . "/fdlbin");
-    $chunkSize = 1024 * 30;
-    $src = fopen($filename, 'rb');
-    $dst = fopen($tmpdest, 'wb');
-    while (!feof($src)) {
-        fwrite($dst, base64_decode(fread($src, $chunkSize)));
-    }
-    fclose($dst);
-    fclose($src);
-    rename($tmpdest, $filename);
+    Dcp\Core\importXml::base64Decodefile($filename);
 }
