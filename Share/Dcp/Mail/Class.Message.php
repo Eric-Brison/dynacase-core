@@ -254,6 +254,24 @@ class Message
         include_once ("WHAT/Lib.Common.php");
         $lcConfig = getLocaleConfig();
         $mail = new \PHPMailer();
+        /*
+         * SMTPAutoTLS was introduced in v5.2.10 and is set to bool(true) by
+         * default.
+         *
+         * We set it back to bool(false) for compatibility and prevent errors
+         * with existing SMTP servers that could advertise TLS with non-valid
+         * certificates.
+         *
+         * If a client wants to use TLS, it can explicitly specify it with a
+         * "tls://<hostname>" URI in the SMTP_HOST parameter.
+        */
+        $mail->SMTPAutoTLS = false;
+        /*
+         * Timeout was changed in v5.2.10 to 300 seconds to conform with RFC2821.
+         *
+         * We set it back to 10 to keep previous behaviour.
+        */
+        $mail->Timeout = 10;
         $mail->setLanguage($lcConfig['locale']);
         $mail->isSMTP();
         $host = getParam('SMTP_HOST', 'localhost');
