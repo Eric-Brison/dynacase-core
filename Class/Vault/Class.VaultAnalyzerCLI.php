@@ -25,6 +25,7 @@ class VaultAnalyzerCLI
         $opts['analyze'] = ($usage->addEmptyParameter('analyze', 'Analyze orphan files (non-destructive)') !== false);
         $opts['clean'] = ($usage->addEmptyParameter('clean', 'Clean orphan files') !== false);
         $opts['missing-files'] = ($usage->addEmptyParameter('missing-files', "Use in conjunction with '--analyze' to analyze missing physical files instead of orphan files") !== false);
+        $opts['skip-trash'] = ($usage->addEmptyParameter('skip-trash', "Really delete file and do not move them under '<vault_root>/.trash/'  sub-directory") !== false);
         $usage->verify();
         if (!$opts['analyze'] && !$opts['clean']) {
             $usage->exitError("Use '--analyze' or '--clean'.");
@@ -35,14 +36,20 @@ class VaultAnalyzerCLI
             return;
         }
         
-        if ($opts['analyze']) {
-            if ($opts['missing-files']) {
-                self::main_analyze_missing_files();
-            } else {
-                self::main_analyze_orphans();
+        try {
+            if ($opts['analyze']) {
+                if ($opts['missing-files']) {
+                    self::main_analyze_missing_files();
+                } else {
+                    self::main_analyze_orphans();
+                }
+            } elseif ($opts['clean']) {
+                self::main_clean_orphans($opts['skip-trash']);
             }
-        } elseif ($opts['clean']) {
-            self::main_clean_orphans();
+        }
+        catch(VaultAnalyzerCLIException $e) {
+            printf("\nError: %s\n\n", $e->getMessage());
+            exit(1);
         }
         return;
     }
@@ -50,6 +57,7 @@ class VaultAnalyzerCLI
     public static function main_analyze_orphans()
     {
         $vaultAnalyzer = new VaultAnalyzer();
+        self::checkDocVaultIndex($vaultAnalyzer);
         
         printf("* Analyzing... ");
         $report = $vaultAnalyzer->summary();
@@ -75,9 +83,10 @@ class VaultAnalyzerCLI
         return;
     }
     
-    public static function main_clean_orphans()
+    public static function main_clean_orphans($skipTrash = false)
     {
         $vaultAnalyzer = new VaultAnalyzer();
+        self::checkDocVaultIndex($vaultAnalyzer);
         
         printf("* Cleanup docvaultindex: ");
         $report = $vaultAnalyzer->cleanDocVaultIndex();
@@ -99,21 +108,28 @@ class VaultAnalyzerCLI
              * Delete file
             */
             if (file_exists($vault_filename)) {
-                if (!is_dir($trash_root)) {
-                    if (mkdir($trash_root) === false) {
-                        throw new VaultAnalyzerCLIException("Could not create trash dir '%s'.", $trash_root);
-                    }
-                }
-                $dir = dirname($trash_filename);
-                if (!is_dir($dir)) {
-                    if (mkdir($dir, 0777, true) === false) {
-                        printf("Error: could not create trash subdir '%s'.\n", $dir);
+                if ($skipTrash === true) {
+                    if (unlink($vault_filename) === false) {
+                        printf("Error: could not delete '%s'.\n", $vault_filename);
                         continue;
                     }
-                }
-                if (rename($vault_filename, $trash_filename) === false) {
-                    printf("Error: could not move '%s' to '%s'.\n", $vault_filename, $trash_filename);
-                    continue;
+                } else {
+                    if (!is_dir($trash_root)) {
+                        if (mkdir($trash_root) === false) {
+                            throw new VaultAnalyzerCLIException("Could not create trash dir '%s'.", $trash_root);
+                        }
+                    }
+                    $dir = dirname($trash_filename);
+                    if (!is_dir($dir)) {
+                        if (mkdir($dir, 0777, true) === false) {
+                            printf("Error: could not create trash subdir '%s'.\n", $dir);
+                            continue;
+                        }
+                    }
+                    if (rename($vault_filename, $trash_filename) === false) {
+                        printf("Error: could not move '%s' to '%s'.\n", $vault_filename, $trash_filename);
+                        continue;
+                    }
                 }
             }
             /*
@@ -122,6 +138,7 @@ class VaultAnalyzerCLI
             $vaultAnalyzer->deleteIdFile($t['id_file']);
             $pom->progress($p);
         }
+        $pom->finish();
         printf("\nDone.\n");
         printf("\n");
         
@@ -131,6 +148,8 @@ class VaultAnalyzerCLI
     public static function main_analyze_missing_files()
     {
         $vaultAnalyzer = new vaultAnalyzer();
+        self::checkDocVaultIndex($vaultAnalyzer);
+        
         printf("* Counting entries: ");
         $report = $vaultAnalyzer->analyzePhysicalFiles();
         printf("found %d entries.\n", $report['count']);
@@ -180,5 +199,13 @@ class VaultAnalyzerCLI
         printf("\n");
         
         return;
+    }
+    
+    protected static function checkDocVaultIndex(VaultAnalyzer & $vaultAnalyzer)
+    {
+        $report = array();
+        if ($vaultAnalyzer->checkDocVaultIndex($report) === false) {
+            throw new VaultAnalyzerCLIException(sprintf("Found inconsistencies in 'docvaultindex': you might need to regenerate docvaultindex with \"./wsh.php --api=refreshVaultIndex\""));
+        }
     }
 }

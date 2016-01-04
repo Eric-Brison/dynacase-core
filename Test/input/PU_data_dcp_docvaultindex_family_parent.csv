@@ -1,0 +1,23 @@
+//;héritage;titre;id;class;name;;;;;;;;;;
+BEGIN;;Test DocVaultIndex;;;TST_DOCVAULTINDEX;;;;;;;;;;
+//;;;;;;;;;;;;;;;
+DFLDID;auto;;;;;;;;;;;;;;
+RESET;attributes;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+ATTR;FRAME_1;;Frame;N;N;frame;10;W;N;;;;;;
+ATTR;DEFAULT_FILE;FRAME_1;Default file;N;N;file;20;S;N;;;;;;
+ATTR;DEFAULT_IMAGE;FRAME_1;Default image;N;N;image;21;S;N;;;;;;
+ATTR;S_FILE;FRAME_1;Single file;N;N;file;30;W;N;;;;;;
+ATTR;S_IMAGE;FRAME_1;Single image;N;N;image;31;W;N;;;;;;
+ATTR;ARRAY_1;FRAME_1;Array;N;N;array;40;W;N;;;;;;
+ATTR;M_FILE;ARRAY_1;Multiple files;N;N;file;50;W;N;;;;;;
+ATTR;M_IMAGE;ARRAY_1;Multiple images;N;N;image;51;W;N;;;;;;
+//;;;;;;;;;;;;;;;
+PARAM;P_FRAME_1;;Frame;N;N;frame;10;W;N;;;;;;
+PARAM;P_S_FILE;P_FRAME_1;Single file;N;N;file;20;W;N;;;;;;
+PARAM;P_S_IMAGE;P_FRAME_1;Single image;N;N;image;21;W;N;;;;;;
+PARAM;P_ARRAY_1;P_FRAME_1;Array;N;N;array;30;W;N;;;;;;
+PARAM;P_M_FILE;P_ARRAY_1;Multiple files;N;N;file;40;W;N;;;;;;
+PARAM;P_M_IMAGE;P_ARRAY_1;Multiple images;N;N;image;41;W;N;;;;;;
+//;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;

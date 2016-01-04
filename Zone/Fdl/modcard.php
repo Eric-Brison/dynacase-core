@@ -658,6 +658,9 @@ function specialmodcard(Action & $action, $usefor)
             else if ($usefor == "Q") $s = _("modify parameters :");
             $s.= " ";
             foreach ($tmod as $k => $v) {
+                if (is_array($v)) {
+                    $v = '[' . join(', ', $v) . ']';
+                }
                 $s.= "$k:$v, ";
             }
             $cdoc->addHistoryEntry($s);
