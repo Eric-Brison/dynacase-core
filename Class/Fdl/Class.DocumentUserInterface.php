@@ -7,7 +7,14 @@
 
 class DocumentUserInterface
 {
-    
+    /**
+     * Add/replace a zone for document html footer
+     *
+     * @param string $index index of zone to add/replace
+     * @param string $zone [APP:ZONE] zone reference
+     * @param bool $edit set to true for form view, false for consultation
+     * @throws \Dcp\Db\Exception
+     */
     static public function addDocumentFooterZone($index, $zone, $edit)
     {
         $val = array();
