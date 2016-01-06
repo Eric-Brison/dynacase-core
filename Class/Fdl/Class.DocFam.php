@@ -100,6 +100,11 @@ create unique index idx_idfam on docfam(id);";
             'sort' => 'asc',
         )
     );
+    /**
+     * @var bool bool(true) if object is "fully" instantiated using FDLGEN or bool(false) if object is instantiated
+     * without FDLGEN (e.g. when the family is imported and the FDLGEN is not yet generated).
+     */
+    private $FDLGEN_HasBeenLoaded = false;
     
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $include = true)
     {
@@ -118,6 +123,7 @@ create unique index idx_idfam on docfam(id);";
             } else {
                 throw new Dcp\Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
             }
+            $this->FDLGEN_HasBeenLoaded = true;
         }
     }
     
@@ -784,11 +790,10 @@ create unique index idx_idfam on docfam(id);";
     final public function UpdateVaultIndex()
     {
         /*
-         * Skip processing if the family has no attributes.
-         * This typically happens when the family is created for the first time.
+         * Skip processing if the family has no attributes
+         * This typically happens when the family is created for the first time at import and FDLGEN is not yet generated
         */
-        $attrList = $this->getAttributes();
-        if (count($attrList) <= 0) {
+        if ((!$this->FDLGEN_HasBeenLoaded) || (!isset($this->attributes->attr))) {
             return '';
         }
         
