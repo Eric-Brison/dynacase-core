@@ -279,7 +279,7 @@ class styleManager
         }
         $this->logIndent-= 1;
         // apply sty_rules
-        $this->deployStyleFiles($styleConfig['sty_rules'], 'css');
+        $this->deployStyleFiles($styleConfig['sty_rules']);
         
         $style->setRules($styleConfig['sty_rules']);
         $err = $style->modify();
