@@ -251,7 +251,7 @@ function fullsearchresult(Action & $action)
     $action->lay->set("displayBottomBar", ($globalCount == 0 ? false : true));
     $action->lay->set("displayTopBar", ($page == 0));
     
-    $action->lay->set("searchdate", Doc::getDate(0, 0, 0, 0, true));
+    $action->lay->set("searchdate", Doc::getDate(0, 0, 0, true));
 }
 
 function strtr8($s, $c1, $c2)
