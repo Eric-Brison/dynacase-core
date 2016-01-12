@@ -34,7 +34,7 @@ function modexportchoosecols(Action & $action)
     else $scols = implode(';', $cols);
     
     if ($clear) {
-        deleteFamilyParameter($action, $doc->id, "FREEDOM_EXPORTCOLS", $scols);
+        deleteFamilyParameter($action, $doc->id, "FREEDOM_EXPORTCOLS");
         $action->addWarningMsg(_("export preferences has been cleared"));
     } else {
         setFamilyParameter($action, $doc->id, "FREEDOM_EXPORTCOLS", $scols);
