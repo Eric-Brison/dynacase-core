@@ -299,12 +299,7 @@ $action_desc = array (
    "short_name"		=>N_("create family"),
    "acl"		=>"FREEDOM_MASTER"
   ) ,
-  array( 
-   "name"		=>"REFRESHDIR",
-   "short_name"		=>N_("refresh directory"),
-   "acl"		=>"FREEDOM"
-  ) ,
-  array( 
+  array(
    "name"		=>"MODATTR",
    "short_name"		=>N_("attributes modification"),
    "acl"		=>"FREEDOM_MASTER"
