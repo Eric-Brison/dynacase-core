@@ -64,7 +64,7 @@ function generic_isearch(Action & $action)
         $viewMode = $freedomApp->getParam('FREEDOM_VIEW');
         setHttpVar("view", $viewMode);
         setHttpVar("target", "gisearch");
-        freedom_view($action, false);
+        freedom_view($action);
         //    redirect($action,"FREEDOM","FREEDOM_VIEW&viewone=$viewone&dirid=".$sdoc->id);
         
     }
