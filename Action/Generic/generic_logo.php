@@ -29,7 +29,7 @@ function generic_logo(Action & $action)
     if ($famid > 0) {
         $dbaccess = $action->dbaccess;
         $doc = new_Doc($dbaccess, $famid);
-        $action->lay->Set("appicon", $doc->getIcon());
-        $action->lay->Set("apptitle", $doc->title);
+        $action->lay->eSet("appicon", $doc->getIcon());
+        $action->lay->eSet("apptitle", $doc->title);
     }
 }
