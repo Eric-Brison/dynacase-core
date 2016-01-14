@@ -70,9 +70,6 @@ $action_desc = array(
         "name" => "ERROR",
     ),
     array(
-        "name" => "HELPVIEW",
-    ),
-    array(
         "name" => "CHANGE_USER_PASSWORD",
         "short_name" => N_("change user password"),
         "root" => "N"
