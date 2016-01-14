@@ -1216,15 +1216,17 @@ SQL;
      * Test if an enum key existe
      *
      * @param string $key enumKey
-     *
-     * @return boolean
+     * @param bool $completeKey if true test complete key with path else without path
+     * @return bool
      */
-    function existEnum($key)
+    function existEnum($key, $completeKey = true)
     {
-        if ($key == "") return false;
+        if ($key == "") {
+            return false;
+        }
         $this->getEnum();
-        if (isset($this->enum[$key])) return true;
-        return false;
+        
+        return (($completeKey && isset($this->enum[$key])) || (!$completeKey && isset($this->enumlabel[$key])));
     }
     /**
      * Construct a string key
