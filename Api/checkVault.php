@@ -37,7 +37,7 @@ $command = $usage->addRequiredParameter("cmd", "Examine command", array(
     "check-noref",
     "check-nofile",
     "clean-unref"
-) , null);
+));
 /* --csv */
 $csv = $usage->addEmptyParameter("csv", "Output in CSV format");
 $csv = ($csv === "1" || $csv === true || $csv == "yes") ? true : false;
