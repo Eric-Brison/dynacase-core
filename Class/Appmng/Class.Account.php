@@ -266,12 +266,18 @@ create sequence seq_id_users start 10;";
         
         if (($this->accounttype == self::GROUP_TYPE) || ($this->accounttype == self::ROLE_TYPE) || ($this->isgroup == "Y")) {
             if ((!$this->accounttype) && ($this->isgroup == "Y")) $this->accounttype = self::GROUP_TYPE;
-            $this->password_new = uniqid($this->accounttype); // no passwd for group,role
+            $this->password = '-'; // no passwd for group,role
             
         } else {
             $this->isgroup = "N";
         }
-        if (!$this->accounttype) $this->accounttype = 'U';
+        if (!$this->accounttype) {
+            $this->accounttype = self::USER_TYPE;
+        }
+        
+        if ($this->accounttype === self::USER_TYPE && !$this->status) {
+            $this->status = "A";
+        }
         $this->login = mb_strtolower($this->login);
         
         if (isset($this->password_new) && ($this->password_new != "")) {
@@ -381,6 +387,13 @@ create sequence seq_id_users start 10;";
             return null;
         }
         return null;
+    }
+    /**
+     * Same as ::getDisplayName but for current object
+     */
+    public function getAccountName()
+    {
+        return trim(sprintf("%s %s", $this->firstname, $this->lastname));
     }
     /**
      * return system user identifier from user document reference
@@ -538,6 +551,7 @@ create sequence seq_id_users start 10;";
         $dbaccess = $this->dbaccess;
         if ($dbaccess == "") return _("no freedom DB access");
         if ($this->fid <> "") {
+            include_once ("FDL/freedom_util.php");
             /**
              * @var \Dcp\Family\IUSER $iuser
              */

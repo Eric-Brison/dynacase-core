@@ -1,7 +1,7 @@
-<xs:element name="[aname]" [IF notop]minOccurs="0" maxOccurs="1"[ENDIF notop]>
-	<xs:annotation><xs:appinfo xmlns:fdl="http://www.dynacase.org/schema">
+<xs:element name="[aname]" minOccurs="0" maxOccurs="1">
+	<xs:annotation><xs:documentation >
                 [appinfos]
-        </xs:appinfo></xs:annotation>
+        </xs:documentation></xs:annotation>
                 <xs:complexType>
                         <xs:sequence>[BLOCK ATTR]
                         [axs]

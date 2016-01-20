@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-14 14:03+0100\n"
+"POT-Creation-Date: 2016-01-28 13:36+0100\n"
 "PO-Revision-Date: 2015-12-11 16:19+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -394,9 +394,6 @@ msgstr ""
 msgid "A_Link"
 msgstr ""
 
-msgid "Abstract card"
-msgstr ""
-
 msgid "Access Action Library"
 msgstr ""
 
@@ -492,6 +489,10 @@ msgstr ""
 msgid "Add filter"
 msgstr ""
 
+msgctxt "fusersimport"
+msgid "Add group reference"
+msgstr ""
+
 #, php-format
 msgid "Add it in %s folder"
 msgstr ""
@@ -509,6 +510,10 @@ msgid "Add or modify item's category"
 msgstr ""
 
 msgid "Add postit"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Add role reference"
 msgstr ""
 
 msgid "Add search engine"
@@ -813,10 +818,6 @@ msgstr ""
 msgid "Cannot copy file %s to %s"
 msgstr ""
 
-#, php-format
-msgid "Cannot create directory %s for xml import"
-msgstr ""
-
 msgid "Cannot do this action. Parent window is closed"
 msgstr ""
 
@@ -1011,9 +1012,6 @@ msgstr ""
 msgid "Choose a family to import only set of attributes"
 msgstr ""
 
-msgid "Choose a father category"
-msgstr ""
-
 msgid "Choose an attribute"
 msgstr ""
 
@@ -1104,9 +1102,6 @@ msgid "Close help"
 msgstr ""
 
 msgid "Close message"
-msgstr ""
-
-msgid "Column mode"
 msgstr ""
 
 #, php-format
@@ -1255,6 +1250,10 @@ msgid "Create a batch"
 msgstr ""
 
 msgid "Create a new  process document"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Create account"
 msgstr ""
 
 msgid "Create new family"
@@ -1446,6 +1445,10 @@ msgstr ""
 msgid "Document creation"
 msgstr ""
 
+msgctxt "fusersimport"
+msgid "Document creation"
+msgstr ""
+
 msgid "Document destroyed"
 msgstr ""
 
@@ -1458,6 +1461,10 @@ msgstr ""
 
 #, php-format
 msgid "Document unlinked of %s folder"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Document update"
 msgstr ""
 
 #, php-format
@@ -1880,6 +1887,10 @@ msgstr ""
 msgid "Export 1NF done"
 msgstr ""
 
+msgctxt "fuserexport"
+msgid "Export Aborted"
+msgstr ""
+
 msgid "Export Documents from"
 msgstr ""
 
@@ -1887,6 +1898,11 @@ msgid "Export Done"
 msgstr ""
 
 msgid "Export Folder"
+msgstr ""
+
+#, php-format
+msgctxt "fuserexport"
+msgid "Export accounts (%d/%d)"
 msgstr ""
 
 msgid "Export archive file with data file - fdl.csv- and attached files"
@@ -1897,6 +1913,11 @@ msgid ""
 msgstr ""
 
 msgid "Export done"
+msgstr ""
+
+#, php-format
+msgctxt "fuserexport"
+msgid "Export relative document (%d/%d)"
 msgstr ""
 
 msgid "Export:Warnings"
@@ -2123,6 +2144,11 @@ msgid "Family"
 msgstr ""
 
 #, php-format
+msgctxt "fusersimport"
+msgid "Family %s"
+msgstr ""
+
+#, php-format
 msgid "Family %s not exist"
 msgstr ""
 
@@ -2292,9 +2318,6 @@ msgstr ""
 msgid "Found <strong>%d</strong>  Result for <strong>%s</strong>%s"
 msgstr ""
 
-msgid "Freedom"
-msgstr "Dynacase"
-
 msgid "Freedom accessibilities"
 msgstr "Dynacase rights management"
 
@@ -2378,6 +2401,10 @@ msgstr ""
 msgid "Group \"%s\""
 msgstr ""
 
+msgctxt "fusersimport"
+msgid "Group reference already added"
+msgstr ""
+
 msgid "Handle my searches"
 msgstr ""
 
@@ -2440,6 +2467,10 @@ msgid ""
 "%s&gt; will be sended with result rapport"
 msgstr ""
 
+msgctxt "fuserimport"
+msgid "Import Aborted"
+msgstr ""
+
 msgid "Import Archive"
 msgstr ""
 
@@ -2470,10 +2501,26 @@ msgstr ""
 msgid "Import documents"
 msgstr ""
 
-msgid "Import file"
+msgctxt "fuserimport"
+msgid "Import end"
 msgstr ""
 
 msgid "Import file (CSV, ODS, XML, ZIP, TGZ)"
+msgstr ""
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import group (%d/%d)"
+msgstr ""
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import role (%d/%d)"
+msgstr ""
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import user (%d/%d)"
 msgstr ""
 
 msgid "Importation data"
@@ -2548,9 +2595,6 @@ msgid "Invalid directory '%s'."
 msgstr ""
 
 msgid "Invert all columns"
-msgstr ""
-
-msgid "Invert split"
 msgstr ""
 
 msgid "It cannot be empty"
@@ -2698,6 +2742,10 @@ msgid "Linked from profil"
 msgstr ""
 
 msgid "List view"
+msgstr ""
+
+msgctxt "fuserimport"
+msgid "Load XML file"
 msgstr ""
 
 #, php-format
@@ -2917,6 +2965,10 @@ msgstr ""
 msgid "Name of table cannot be empty"
 msgstr ""
 
+msgid "New password"
+msgstr ""
+
+msgctxt "fusersimport"
 msgid "New password"
 msgstr ""
 
@@ -3372,6 +3424,14 @@ msgstr ""
 msgid "Reopen archive"
 msgstr ""
 
+msgctxt "fusersimport"
+msgid "Reset all direct associated roles"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Reset all group attachment"
+msgstr ""
+
 #, php-format
 msgid "Reset attribute structure"
 msgstr ""
@@ -3406,6 +3466,10 @@ msgstr ""
 msgid "Result value"
 msgstr ""
 
+msgctxt "fuserexport"
+msgid "Retrieve Account data"
+msgstr ""
+
 msgid "Retrieve documents from database"
 msgstr ""
 
@@ -3420,6 +3484,10 @@ msgstr ""
 
 #, php-format
 msgid "Role \"%s\""
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Role reference already added"
 msgstr ""
 
 msgid "Root folder"
@@ -3991,6 +4059,10 @@ msgstr ""
 msgid "Update access"
 msgstr ""
 
+msgctxt "fusersimport"
+msgid "Update account"
+msgstr ""
+
 msgid "Update by importation"
 msgstr ""
 
@@ -4450,9 +4522,6 @@ msgstr ""
 
 #, php-format
 msgid "add negative acl %s"
-msgstr ""
-
-msgid "add new category"
 msgstr ""
 
 #, php-format
@@ -6351,10 +6420,6 @@ msgstr ""
 msgid "import <I>%s</I> documents from"
 msgstr ""
 
-#, php-format
-msgid "import Xml extract : file %s not found"
-msgstr ""
-
 msgid "import analysis result"
 msgstr ""
 
@@ -6806,9 +6871,6 @@ msgstr ""
 msgid "new card"
 msgstr ""
 
-msgid "new category"
-msgstr ""
-
 #, php-format
 msgid "new column order %s"
 msgstr ""
@@ -6942,9 +7004,6 @@ msgid "no family"
 msgstr ""
 
 msgid "no family identificator"
-msgstr ""
-
-msgid "no father category (its a top category)"
 msgstr ""
 
 msgid "no file"
@@ -7544,9 +7603,6 @@ msgid "reference"
 msgstr ""
 
 msgid "reference for this revision"
-msgstr ""
-
-msgid "refresh directory"
 msgstr ""
 
 #, php-format
@@ -8849,6 +8905,9 @@ msgstr ""
 
 #~ msgid "Basic search"
 #~ msgstr "basic search"
+
+#~ msgid "Freedom"
+#~ msgstr "Dynacase"
 
 #~ msgid "Freedom imodification"
 #~ msgstr "Modify virtual document"

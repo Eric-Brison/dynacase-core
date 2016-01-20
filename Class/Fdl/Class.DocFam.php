@@ -878,14 +878,33 @@ create unique index idx_idfam on docfam(id);";
         return $this->_configuration;
     }
     /**
+     * @param bool $linkInclude if false fdl.xsd is write inside else use an include directive
      * @return string
      */
-    function getXmlSchema()
+    function getXmlSchema($linkInclude = false)
     {
         $lay = new Layout(getLayoutFile("FDL", "family_schema.xml"));
         $lay->set("famname", strtolower($this->name));
         $lay->set("famtitle", strtolower($this->getTitle()));
-        $lay->set("includefdlxsd", file_get_contents(getLayoutFile("FDL", "fdl.xsd")));
+        $lay->set("include", $linkInclude);
+        if ($linkInclude) {
+            $lay->set("includefdlxsd", "");
+        } else {
+            $xsd = new DOMDocument();
+            $xsd->load(getLayoutFile("FDL", "fdl.xsd"));
+            $xsd->preserveWhiteSpace = false;
+            $xsd->formatOutput = true;
+            $innerXml = '';
+            $rootNode = $xsd->documentElement;
+            /**
+             * @var \DOMNode $node
+             */
+            foreach ($rootNode->childNodes as $subnode) {
+                $innerXml.= ($xsd->saveXML($subnode));
+            }
+            
+            $lay->set("includefdlxsd", $innerXml);
+        }
         
         $level1 = array();
         $la = $this->getAttributes();
@@ -910,7 +929,13 @@ create unique index idx_idfam on docfam(id);";
         
         $lay->setBlockData("ATTR", $tax);
         $lay->setBlockData("LEVEL1", $level1);
-        return ($lay->gen());
+        
+        $xsd = new DOMDocument();
+        $xsd->preserveWhiteSpace = false;
+        $xsd->formatOutput = true;
+        $xsd->loadXML($lay->gen());
+        
+        return ($xsd->saveXML());
     }
     /*
         private function loadDefaultSortProperties() {

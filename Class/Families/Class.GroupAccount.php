@@ -38,7 +38,7 @@ class GroupAccount extends \Dcp\Family\Group
         $err = "";
         $this->AddParamRefresh("US_WHATID", "GRP_MAIL,US_LOGIN");
         // refresh MEID itself
-        $this->SetValue("US_MEID", $this->id);
+        $this->setValue("US_MEID", $this->id);
         $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
@@ -409,12 +409,12 @@ class GroupAccount extends \Dcp\Family\Group
         if ($wid > 0) {
             $wuser = $this->getAccount(true);
             if ($wuser->isAffected()) {
-                $this->SetValue("US_WHATID", $wuser->id);
-                $this->SetValue("GRP_NAME", $wuser->lastname);
-                //   $this->SetValue("US_FNAME",$wuser->firstname);
-                $this->SetValue("US_LOGIN", $wuser->login);
+                $this->setValue("US_WHATID", $wuser->id);
+                $this->setValue("GRP_NAME", $wuser->lastname);
+                //   $this->setValue("US_FNAME",$wuser->firstname);
+                $this->setValue("US_LOGIN", $wuser->login);
                 
-                $this->SetValue("US_MEID", $this->id);
+                $this->setValue("US_MEID", $this->id);
                 // search group of the group
                 $g = new \Group("", $wid);
                 $tglogin = $tgid = array();
@@ -424,13 +424,15 @@ class GroupAccount extends \Dcp\Family\Group
                         $tgid[$gid] = $gt->fid;
                         $tglogin[$gid] = $this->getTitle($gt->fid);
                     }
-                    $this->SetValue("GRP_IDPGROUP", $tgid);
+                    $this->setValue("GRP_IDPGROUP", $tgid);
                 } else {
-                    $this->SetValue("GRP_IDPGROUP", " ");
+                    $this->setValue("GRP_IDPGROUP", " ");
                 }
+                $this->setValue("grp_roles", $wuser->getRoles(false));
                 $err = $this->modify(true, array(
                     "us_whatid",
                     "grp_name",
+                    "grp_roles",
                     "us_login",
                     "us_meid",
                     "grp_idgroup"
@@ -467,7 +469,7 @@ class GroupAccount extends \Dcp\Family\Group
             
             if (is_array($tglogin)) {
                 uasort($tglogin, "strcasecmp");
-                $this->SetValue("GRP_IDGROUP", array_keys($tglogin));
+                $this->setValue("GRP_IDGROUP", array_keys($tglogin));
             } else {
                 $this->clearValue("GRP_IDGROUP");
             }

@@ -618,8 +618,18 @@ function getFamIdFromName($dbaccess, $name)
             if ($v["name"] != "") $tFamIdName[$v["name"]] = $v["id"];
         }
     }
-    if (isset($tFamIdName[$name])) return $tFamIdName[$name];
-    if (isset($tFamIdName[strtoupper($name) ])) return $tFamIdName[strtoupper($name) ];
+    if (isset($tFamIdName[$name])) {
+        return $tFamIdName[$name];
+    }
+    if (isset($tFamIdName[strtoupper($name) ])) {
+        return $tFamIdName[strtoupper($name) ];
+    }
+    $name=strtolower($name);
+    foreach ($tFamIdName as $famName=>$famId) {
+        if (strtolower($famName) === $name ) {
+            return $famId;
+        }
+    }
     return 0;
 }
 /**

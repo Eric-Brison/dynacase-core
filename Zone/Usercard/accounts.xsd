@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="accounts" type="accountsType"/>
+    <xs:complexType name="substituteType">
+        <xs:annotation>
+            <xs:documentation>Reference a substitute</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="reference" use="required">
+                    <xs:annotation>
+                        <xs:documentation>User login identifier</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="groupRefType">
+        <xs:annotation>
+            <xs:documentation>
+                Reference to a parent group
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="referenceType" name="reference" use="required">
+                    <xs:annotation>
+                        <xs:documentation>Group reference identifier</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="groupsRefType">
+        <xs:annotation>
+            <xs:documentation>
+                Parent group list references
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element type="groupRefType" name="parentGroup" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:boolean" name="reset" default="false" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    If true, only referenced groups are parents of account, previously parents links are removed.
+                    If false, parent groups are added, currents group links are preserved.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="statusType">
+        <xs:annotation>
+            <xs:documentation>
+                If status is false, the user cannot be logged to system.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:boolean" name="activated" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="passwordType">
+        <xs:annotation>
+            <xs:documentation>Password for user account</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:boolean" name="crypted" use="required">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Set to false to record a new clear password. Only crypted password is recorded
+                            and can be exported
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="rolesRefType">
+        <xs:annotation>
+            <xs:documentation>Associated roles for an account</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element type="roleRefType" name="associatedRole" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:boolean" name="reset" default="false" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    If true, only listed roles are references, currents roles are removed.
+                    If false, roles are added, currents roles are not removed
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="documentType">
+        <xs:annotation>
+            <xs:documentation>Associated document of the account</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+        </xs:sequence>
+        <xs:attribute type="referenceType" name="family" use="optional">
+            <xs:annotation>
+                <xs:documentation>Associated document family</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="accountsType">
+        <xs:sequence>
+            <xs:element type="rolesType" name="roles" minOccurs="0"/>
+            <xs:element type="groupsType" name="groups" minOccurs="0"/>
+            <xs:element type="usersType" name="users" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="date" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="usersType">
+        <xs:sequence>
+            <xs:element type="userType" name="user" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="userType">
+        <xs:all>
+            <xs:element type="referenceType" name="login">
+                <xs:annotation>
+                    <xs:documentation>User connexion identifier</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:string" name="firstname" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>User first name</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:string" name="lastname">
+                <xs:annotation>
+                    <xs:documentation>User last name</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:string" name="mail" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>User mail address</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="statusType" name="status" minOccurs="0"/>
+            <xs:element type="substituteType" name="substitute" minOccurs="0"/>
+            <xs:element type="rolesRefType" name="associatedRoles" minOccurs="0"/>
+            <xs:element type="groupsRefType" name="parentGroups" minOccurs="0"/>
+            <xs:element type="passwordType" name="password" minOccurs="0"/>
+            <xs:element type="documentType" name="document" minOccurs="0"/>
+        </xs:all>
+        <xs:attribute type="idType" name="id" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="roleRefType">
+        <xs:annotation>
+            <xs:documentation>Reference to a role</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="referenceType" name="reference" use="required">
+                    <xs:annotation>
+                        <xs:documentation>Role reference identifier</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="groupType">
+        <xs:sequence>
+            <xs:element type="referenceType" name="reference"/>
+            <xs:element name="displayName" type="xs:string"/>
+            <xs:element type="rolesRefType" name="associatedRoles" minOccurs="0"/>
+            <xs:element type="groupsRefType" name="parentGroups" minOccurs="0"/>
+            <xs:element type="documentType" name="document" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="idType" name="id" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="groupsType">
+        <xs:sequence>
+            <xs:element type="groupType" name="group" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="rolesType">
+        <xs:annotation>
+            <xs:documentation>Role list</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element type="roleType" name="role" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+
+    </xs:complexType>
+
+    <xs:complexType name="roleType">
+        <xs:annotation>
+            <xs:documentation>Role definition to be referenced by group or user</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element type="referenceType" name="reference"/>
+            <xs:element type="xs:string" name="displayName"/>
+            <xs:element type="documentType" name="document" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="idType" name="id" use="optional"/>
+    </xs:complexType>
+
+    <xs:simpleType name="referenceType">
+        <xs:annotation>
+            <xs:documentation>Unique reference for an account</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:normalizedString">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="idType">
+        <xs:annotation>
+            <xs:documentation>System reference for an account - not used when import accounts</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:nonNegativeInteger"/>
+    </xs:simpleType>
+
+</xs:schema>

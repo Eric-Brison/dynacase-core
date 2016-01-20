@@ -169,8 +169,14 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                 $this->SetValue("us_roles", $rolesIds);
                 
                 $mail = $wuser->getMail();
-                if (!$mail) $this->clearValue(MyAttributes::us_mail);
-                else $this->SetValue(MyAttributes::us_mail, $mail);
+                if (!$mail) {
+                    $this->clearValue(MyAttributes::us_extmail);
+                    $this->clearValue(MyAttributes::us_mail);
+                } else {
+                    $this->SetValue(MyAttributes::us_mail, $mail);
+                    $this->SetValue(MyAttributes::us_extmail, $mail);
+                }
+                
                 if ($wuser->passdelay <> 0) {
                     $this->SetValue(MyAttributes::us_expiresd, strftime("%Y-%m-%d", $wuser->expires));
                     $this->SetValue(MyAttributes::us_expirest, strftime("%H:%M", $wuser->expires));

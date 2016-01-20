@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts date="2016-01-29T11:49:17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="xsd/accounts.xsd">
+    <roles>
+        <role>
+            <reference>Fat capacity</reference>
+            <displayName>Grosse capacité</displayName>
+            <document family="ROLE">
+                <role name="TST_CAPACITY1"/>
+            </document>
+        </role>
+        <role>
+            <reference>Big capacity</reference>
+            <displayName>Grande capacité</displayName>
+            <document family="TST_ROLECAPACITY">
+                <tst_rolecapacity name="TST_CAPACITY2">
+                    <tst_fr_capacity>
+                        <tst_addr>10 rue des agences</tst_addr>
+                    </tst_fr_capacity>
+                </tst_rolecapacity>
+            </document>
+        </role>
+        <role>
+            <reference>Supervisor</reference>
+            <displayName>Surveillance galactique</displayName>
+            <document family="ROLE">
+                <role name="TST_SUPERVISOR"/>
+            </document>
+        </role>
+    </roles>
+
+    <groups>
+        <group>
+            <reference>TopSupervisor</reference>
+            <displayName>Sécurité du toit</displayName>
+            <associatedRoles reset="false">
+                <associatedRole reference="Supervisor"/>
+            </associatedRoles>
+            <document family="IGROUP">
+                <igroup name="TST_GRP_ROOFSUPERVISOR"/>
+            </document>
+        </group>
+        <group>
+            <reference>LevelSupervisor</reference>
+            <displayName>Sécurité des niveaux</displayName>
+            <parentGroups>
+                <parentGroup reference="TopSupervisor"/>
+            </parentGroups>
+            <document family="IGROUP">
+                <igroup name="TST_GRP_LEVELSUPERVISOR"/>
+            </document>
+        </group>
+        <group>
+            <reference>UnderGroundSupervisor</reference>
+            <displayName>Sécurité du sous-sol</displayName>
+            <parentGroups>
+                <parentGroup reference="TopSupervisor"/>
+            </parentGroups>
+            <document family="IGROUP">
+                <igroup name="TST_GRP_UNDERGROUNDSUPERVISOR"/>
+            </document>
+        </group>
+    </groups>
+
+    <users>
+        <user>
+            <login>chewie</login>
+            <lastname>Chewbacca</lastname>
+            <mail>chewie@starwars.com</mail>
+        </user>
+        <user>
+            <login>luke</login>
+            <firstname>Luke</firstname>
+            <lastname>Skywalker</lastname>
+            <mail>luke@starwars.com</mail>
+            <password crypted="false">May the force be with you</password>
+            <status activated="true"/>
+            <associatedRoles reset="false">
+                <associatedRole reference="Big capacity"/>
+            </associatedRoles>
+            <parentGroups reset="false">
+                <parentGroup reference="LevelSupervisor"/>
+            </parentGroups>
+            <document family="TST_USERAGENT">
+                <tst_useragent name="TST_AGENT_L" >
+                    <tst_tab_agent>
+                        <tst_fr_agent>
+                            <tst_phone>63.76.89.33</tst_phone>
+                            <tst_mat>3323</tst_mat>
+                            <tst_contact_t>
+                                <tst_contactid/>
+                                <tst_contactaddr>10 rue des Néons</tst_contactaddr>
+                            </tst_contact_t>
+                        </tst_fr_agent>
+                    </tst_tab_agent>
+                </tst_useragent>
+            </document>
+        </user>
+        <user>
+            <login>leia</login>
+            <firstname>Leia</firstname>
+            <lastname>Skywalker</lastname>
+            <mail>leia@starwars.com</mail>
+            <password crypted="false">May the force be with you</password>
+            <status activated="true"/>
+            <associatedRoles reset="false">
+                <associatedRole reference="Big capacity"/>
+            </associatedRoles>
+            <parentGroups reset="false">
+                <parentGroup reference="LevelSupervisor"/>
+            </parentGroups>
+            <document family="TST_USERAGENT">
+                <tst_useragent name="TST_AGENT_P" >
+                    <tst_tab_agent>
+                        <tst_fr_agent>
+                            <tst_phone>63.76.89.34</tst_phone>
+                            <tst_mat>3324</tst_mat>
+                            <tst_contact_t>
+                                <tst_contactid/>
+                                <tst_contactaddr>10 rue des Néons</tst_contactaddr>
+                            </tst_contact_t>
+                        </tst_fr_agent>
+                    </tst_tab_agent>
+                </tst_useragent>
+            </document>
+        </user>
+        <user>
+            <login>solo</login>
+            <firstname>Han</firstname>
+            <lastname>Solo</lastname>
+            <mail>solo@starwars.com</mail>
+            <!-- Falcon Millenium : is the crypted password -->
+            <password crypted="true">$5$u9ap7nzr0tIClII4$EuUVVB0YOMFuWN1y2DH.Yc7flwgSCEVezzhGwgKUAW/</password>
+
+            <status activated="false"/>
+            <associatedRoles reset="false">
+                <associatedRole reference="Fat capacity"/>
+            </associatedRoles>
+            <parentGroups reset="false">
+                <parentGroup reference="LevelSupervisor"/>
+                <parentGroup reference="TopSupervisor"/>
+            </parentGroups>
+            <document family="TST_USERAGENT">
+                <tst_useragent name="TST_AGENT_H" >
+                    <tst_tab_agent>
+                        <tst_fr_agent>
+                            <tst_phone>83.26.89.43</tst_phone>
+                            <tst_mat>3524</tst_mat>
+                            <tst_contact_t>
+                                <tst_contactid name="TST_AGENT_L"/>
+                                <tst_contactaddr>12 rue des Néons</tst_contactaddr>
+                            </tst_contact_t>
+                        </tst_fr_agent>
+                    </tst_tab_agent>
+                </tst_useragent>
+            </document>
+        </user>
+    </users>
+</accounts>

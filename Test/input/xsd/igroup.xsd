@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fdl="fdloptions.xsd">
+  <xs:include schemaLocation="fdl.xsd"/>
+  <xs:complexType name="family-igroup-type">
+    <xs:all>
+      <xs:element name="grp_fr" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <fdl:label>Groupes</fdl:label>
+            <fdl:type>frame</fdl:type>
+            <fdl:visibility>W</fdl:visibility>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="grp_idgroup" minOccurs="0" maxOccurs="unbounded" type="fdl-relation" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>sous groupes</fdl:label>
+                  <fdl:type>account</fdl:type>
+                  <fdl:visibility>R</fdl:visibility>
+                  <fdl:inputsearch>
+                    <fdl:searchfile>fdl.php</fdl:searchfile>
+                    <fdl:searchfunction>fdlGetAccounts(CT,15,"multiple=yes|showempty=Aucun sous groupe"):grp_idgroup,CT</fdl:searchfunction>
+                  </fdl:inputsearch>
+                  <fdl:options key="multiple">yes</fdl:options>
+                  <fdl:options key="showempty">Aucun sous groupe</fdl:options>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="grp_idpgroup" minOccurs="0" maxOccurs="unbounded" type="fdl-relation" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>groupes parents</fdl:label>
+                  <fdl:type>account</fdl:type>
+                  <fdl:visibility>R</fdl:visibility>
+                  <fdl:inputsearch>
+                    <fdl:searchfile>fdl.php</fdl:searchfile>
+                    <fdl:searchfunction>fdlGetAccounts(CT,15,"multiple=yes|showempty=Aucun groupe parent"):grp_idpgroup,CT</fdl:searchfunction>
+                  </fdl:inputsearch>
+                  <fdl:options key="multiple">yes</fdl:options>
+                  <fdl:options key="showempty">Aucun groupe parent</fdl:options>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="grp_isrefreshed" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>est rafraîchi</fdl:label>
+                  <fdl:type>enum</fdl:type>
+                  <fdl:visibility>H</fdl:visibility>
+                  <fdl:options key="system">yes</fdl:options>
+                  <fdl:options key="bmenu">no</fdl:options>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="1">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:enumLabel>oui</fdl:enumLabel>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="0">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:enumLabel>non</fdl:enumLabel>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="grp_fr_ident" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <fdl:label>Identification</fdl:label>
+            <fdl:type>frame</fdl:type>
+            <fdl:visibility>W</fdl:visibility>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="grp_name" minOccurs="1" maxOccurs="1" nillable="false">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>nom</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:title>true</fdl:title>
+                  <fdl:options key="esize">30</fdl:options>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:minLength value="1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="grp_mail" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>mail</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>R</fdl:visibility>
+                  <fdl:link href="mailto:%GRP_MAIL%"/>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="grp_hasmail" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>sans adresse mail de groupe</fdl:label>
+                  <fdl:type>enum</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:options key="system">yes</fdl:options>
+                  <fdl:options key="bmenu">no</fdl:options>
+                  <fdl:options key="elabel">permet d'éviter le calcul du mail de groupe lorsque le groupe contient beaucoup de membres</fdl:options>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="yes">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:enumLabel>adresses regroupées</fdl:enumLabel>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="no">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:enumLabel>sans adresse mail</fdl:enumLabel>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fld_fr_rest" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <fdl:label>Restrictions</fdl:label>
+            <fdl:type>frame</fdl:type>
+            <fdl:visibility>H</fdl:visibility>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fld_allbut" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>tout ou rien</fdl:label>
+                  <fdl:type>enum</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:options key="system">yes</fdl:options>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="0">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:enumLabel>tout sauf</fdl:enumLabel>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="1">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:enumLabel>seulement</fdl:enumLabel>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="fld_tfam" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>familles filtrées</fdl:label>
+                  <fdl:type>array</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:options key="vlabel">none</fdl:options>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                  <xs:element name="fld_fam" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>familles (titre)</fdl:label>
+                        <fdl:type>text</fdl:type>
+                        <fdl:visibility>H</fdl:visibility>
+                        <fdl:compute>
+                          <fdl:method>::getTitle(FLD_FAMIDS)</fdl:method>
+                        </fdl:compute>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="fld_famids" minOccurs="0" maxOccurs="1" type="fdl-relation" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>familles</fdl:label>
+                        <fdl:type>docid</fdl:type>
+                        <fdl:visibility>W</fdl:visibility>
+                        <fdl:inputsearch>
+                          <fdl:searchfile>fdl.php</fdl:searchfile>
+                          <fdl:searchfunction>lfamilies(D,CT):FLD_FAMIDS,CT</fdl:searchfunction>
+                        </fdl:inputsearch>
+                        <fdl:familyRelation>-1</fdl:familyRelation>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="fld_subfam" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>restriction sous famille</fdl:label>
+                        <fdl:type>enum</fdl:type>
+                        <fdl:visibility>W</fdl:visibility>
+                        <fdl:options key="bmenu">no</fdl:options>
+                        <fdl:options key="system">yes</fdl:options>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:token">
+                        <xs:enumeration value="yes">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <fdl:enumLabel>inclure les sous familles</fdl:enumLabel>
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="no">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <fdl:enumLabel>ne pas inclure les sous familles</fdl:enumLabel>
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fld_fr_prof" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <fdl:label>Profils par défaut</fdl:label>
+            <fdl:type>frame</fdl:type>
+            <fdl:visibility>H</fdl:visibility>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fld_pdoc" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>profil par défaut de document (titre)</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>H</fdl:visibility>
+                  <fdl:compute>
+                    <fdl:method>::getTitle(FLD_PDOCID)</fdl:method>
+                  </fdl:compute>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="fld_pdocid" minOccurs="0" maxOccurs="1" type="fdl-relation" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>profil par défaut de document</fdl:label>
+                  <fdl:type>docid</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:inputsearch>
+                    <fdl:searchfile>fdl.php</fdl:searchfile>
+                    <fdl:searchfunction>lfamilly(D,PDOC,CT):FLD_PDOCID,CT</fdl:searchfunction>
+                  </fdl:inputsearch>
+                  <fdl:familyRelation>PDOC</fdl:familyRelation>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="fld_pdir" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>profil par défaut de dossier (titre)</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>H</fdl:visibility>
+                  <fdl:compute>
+                    <fdl:method>::getTitle(FLD_PDIRID):FLD_PDIR</fdl:method>
+                  </fdl:compute>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="fld_pdirid" minOccurs="0" maxOccurs="1" type="fdl-relation" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>profil par défaut de dossier</fdl:label>
+                  <fdl:type>docid</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:inputsearch>
+                    <fdl:searchfile>fdl.php</fdl:searchfile>
+                    <fdl:searchfunction>lfamilly(D,PDIR,CT):FLD_PDIRID,CT</fdl:searchfunction>
+                  </fdl:inputsearch>
+                  <fdl:familyRelation>PDIR</fdl:familyRelation>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="grp_fr_intranet" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <fdl:label>Système</fdl:label>
+            <fdl:type>frame</fdl:type>
+            <fdl:visibility>W</fdl:visibility>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="us_login" minOccurs="1" maxOccurs="1" nillable="false">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>identifiant</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:constraint>
+                    <fdl:method>::ConstraintLogin(US_LOGIN)</fdl:method>
+                  </fdl:constraint>
+                  <fdl:options key="esize">20</fdl:options>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:minLength value="1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="us_whatid" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>identifiant système</fdl:label>
+                  <fdl:type>int</fdl:type>
+                  <fdl:visibility>R</fdl:visibility>
+                  <fdl:constraint>
+                    <fdl:method>::isInteger(us_whatid)</fdl:method>
+                  </fdl:constraint>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">       
+                        </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="us_meid" minOccurs="0" maxOccurs="1" type="fdl-relation" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>groupe id</fdl:label>
+                  <fdl:type>account</fdl:type>
+                  <fdl:visibility>H</fdl:visibility>
+                  <fdl:inputsearch>
+                    <fdl:searchfile>fdl.php</fdl:searchfile>
+                    <fdl:searchfunction>fdlGetAccounts(CT,15,""):us_meid,CT</fdl:searchfunction>
+                  </fdl:inputsearch>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="grp_roles" minOccurs="0" maxOccurs="unbounded" type="fdl-relation" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Rôles associés</fdl:label>
+                  <fdl:type>docid</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:options key="creation">{autoclose:"yes"}</fdl:options>
+                  <fdl:options key="multiple">yes</fdl:options>
+                  <fdl:options key="showempty">Aucun rôle</fdl:options>
+                  <fdl:familyRelation>ROLE</fdl:familyRelation>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fr_basic" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <fdl:label>basique</fdl:label>
+            <fdl:type>frame</fdl:type>
+            <fdl:visibility>H</fdl:visibility>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ba_title" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>titre</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>H</fdl:visibility>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="ba_desc" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>description</fdl:label>
+                  <fdl:type>longtext</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">       
+                        </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="gui_color" minOccurs="0" maxOccurs="1" type="fdl-color" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>couleur intercalaire</fdl:label>
+                  <fdl:type>color</fdl:type>
+                  <fdl:visibility>O</fdl:visibility>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="gui_isrss" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Utilisable comme flux RSS</fdl:label>
+                  <fdl:type>enum</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:options key="bmenu">no</fdl:options>
+                  <fdl:options key="system">yes</fdl:options>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:enumeration value="no">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:enumLabel>non</fdl:enumLabel>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="yes">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:enumLabel>oui</fdl:enumLabel>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="gui_sysrss" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Flux RSS système</fdl:label>
+                  <fdl:type>enum</fdl:type>
+                  <fdl:visibility>R</fdl:visibility>
+                  <fdl:options key="bmenu">no</fdl:options>
+                  <fdl:options key="system">yes</fdl:options>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                       	
+                     
+           </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+    <xs:attribute name="id" type="xs:integer"/>
+    <xs:attribute name="name" type="xs:token"/>
+    <xs:attribute name="version" type="xs:token"/>
+    <xs:attribute name="key" type="xs:token"/>
+    <xs:attribute name="revision" type="xs:integer"/>
+    <xs:attribute name="state" type="xs:token"/>
+    <xs:attribute name="title" type="xs:token"/>
+    <xs:attribute name="folders" type="xs:token"/>
+    <xs:attribute name="modification-date" type="xs:dateTime"/>
+  </xs:complexType>
+  <xs:element name="igroup" type="family-igroup-type">
+    <xs:annotation>
+      <xs:documentation>
+        <fdl:label>groupe d'utilisateurs</fdl:label>
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

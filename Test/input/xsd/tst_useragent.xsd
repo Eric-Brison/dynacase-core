@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fdl="fdloptions.xsd">
+  <xs:include schemaLocation="fdl.xsd"/>
+  <xs:complexType name="family-tst_useragent-type">
+    <xs:all>
+      <xs:element name="tst_tab_agent" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <fdl:label>Gardien</fdl:label>
+            <fdl:type>tab</fdl:type>
+            <fdl:visibility>W</fdl:visibility>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="tst_fr_agent" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Agent</fdl:label>
+                  <fdl:type>frame</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="tst_phone" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>Téléphone</fdl:label>
+                        <fdl:type>text</fdl:type>
+                        <fdl:visibility>W</fdl:visibility>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="tst_mat" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>Matricule</fdl:label>
+                        <fdl:type>int</fdl:type>
+                        <fdl:visibility>W</fdl:visibility>
+                        <fdl:constraint>
+                          <fdl:method>::isInteger(tst_mat)</fdl:method>
+                        </fdl:constraint>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:integer">       
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="tst_contact_t" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>Contacts</fdl:label>
+                        <fdl:type>array</fdl:type>
+                        <fdl:visibility>W</fdl:visibility>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="tst_contactid" minOccurs="0" maxOccurs="1" type="fdl-relation" nillable="true">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <fdl:label>Contact</fdl:label>
+                              <fdl:type>docid</fdl:type>
+                              <fdl:visibility>W</fdl:visibility>
+                              <fdl:familyRelation>TST_USERAGENT</fdl:familyRelation>
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="tst_contactaddr" minOccurs="0" maxOccurs="1" nillable="true">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <fdl:label>Adresse</fdl:label>
+                              <fdl:type>longtext</fdl:type>
+                              <fdl:visibility>W</fdl:visibility>
+                            </xs:documentation>
+                          </xs:annotation>
+                          <xs:simpleType>
+                            <xs:restriction base="xs:string">       
+                        </xs:restriction>
+                          </xs:simpleType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="us_fr_ident" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <fdl:label>État civil</fdl:label>
+            <fdl:type>frame</fdl:type>
+            <fdl:visibility>W</fdl:visibility>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="us_lname" minOccurs="1" maxOccurs="1" nillable="false">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>nom</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:title>true</fdl:title>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:minLength value="1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="us_fname" minOccurs="1" maxOccurs="1" nillable="false">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>prénom</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:title>true</fdl:title>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:minLength value="1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="my_phone" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Téléphone</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="us_mail" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>mail</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>R</fdl:visibility>
+                  <fdl:link href="mailto:%US_MAIL%"/>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="us_extmail" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>mail principal</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>O</fdl:visibility>
+                  <fdl:constraint>
+                    <fdl:method>::parseMail(US_EXTMAIL)</fdl:method>
+                  </fdl:constraint>
+                  <fdl:options key="esize">30</fdl:options>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="us_tab_system" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <fdl:label>Système</fdl:label>
+            <fdl:type>tab</fdl:type>
+            <fdl:visibility>W</fdl:visibility>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="us_fr_substitute" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Suppléants</fdl:label>
+                  <fdl:type>frame</fdl:type>
+                  <fdl:visibility>R</fdl:visibility>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="us_substitute" minOccurs="0" maxOccurs="1" type="fdl-relation" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>Suppléant</fdl:label>
+                        <fdl:type>account</fdl:type>
+                        <fdl:visibility>W</fdl:visibility>
+                        <fdl:inputsearch>
+                          <fdl:searchfile>fdl.php</fdl:searchfile>
+                          <fdl:searchfunction>fdlGetAccounts(CT,15,""):us_substitute,CT</fdl:searchfunction>
+                        </fdl:inputsearch>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="us_incumbents" minOccurs="0" maxOccurs="unbounded" type="fdl-relation" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>Titulaires</fdl:label>
+                        <fdl:type>account</fdl:type>
+                        <fdl:visibility>R</fdl:visibility>
+                        <fdl:inputsearch>
+                          <fdl:searchfile>fdl.php</fdl:searchfile>
+                          <fdl:searchfunction>fdlGetAccounts(CT,15,"multiple=yes"):us_incumbents,CT</fdl:searchfunction>
+                        </fdl:inputsearch>
+                        <fdl:options key="multiple">yes</fdl:options>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="us_fr_intranet" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Identification intranet</fdl:label>
+                  <fdl:type>frame</fdl:type>
+                  <fdl:visibility>R</fdl:visibility>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="us_meid" minOccurs="0" maxOccurs="1" type="fdl-relation" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>utilisateur id</fdl:label>
+                        <fdl:type>account</fdl:type>
+                        <fdl:visibility>H</fdl:visibility>
+                        <fdl:inputsearch>
+                          <fdl:searchfile>fdl.php</fdl:searchfile>
+                          <fdl:searchfunction>fdlGetAccounts(CT,15,""):us_meid,CT</fdl:searchfunction>
+                        </fdl:inputsearch>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="us_login" minOccurs="1" maxOccurs="1" nillable="false">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>login</fdl:label>
+                        <fdl:type>text</fdl:type>
+                        <fdl:visibility>R</fdl:visibility>
+                        <fdl:constraint>
+                          <fdl:method>::ConstraintLogin(US_LOGIN)</fdl:method>
+                        </fdl:constraint>
+                        <fdl:options key="elabel">saisissez '-' pour indiquer qu'il n'y a pas de login</fdl:options>
+                        <fdl:options key="esize">20</fdl:options>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:token">
+                        <xs:minLength value="1"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="us_whatid" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>identifiant</fdl:label>
+                        <fdl:type>text</fdl:type>
+                        <fdl:visibility>R</fdl:visibility>
+                        <fdl:options key="esize">4</fdl:options>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="us_t_roles" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>Rôles</fdl:label>
+                        <fdl:type>array</fdl:type>
+                        <fdl:visibility>R</fdl:visibility>
+                        <fdl:options key="showempty">Aucun rôle</fdl:options>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="us_roles" minOccurs="0" maxOccurs="1" type="fdl-relation" nillable="true">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <fdl:label>Rôle</fdl:label>
+                              <fdl:type>account</fdl:type>
+                              <fdl:visibility>W</fdl:visibility>
+                              <fdl:inputsearch>
+                                <fdl:searchfile>fdl.php</fdl:searchfile>
+                                <fdl:searchfunction>fdlGetAccounts(CT,15,"creation={autoclose:\"yes\"}|match=role"):us_roles,CT</fdl:searchfunction>
+                              </fdl:inputsearch>
+                              <fdl:options key="creation">{autoclose:"yes"}</fdl:options>
+                              <fdl:options key="match">role</fdl:options>
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="us_rolesorigin" minOccurs="0" maxOccurs="1" nillable="true">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <fdl:label>Origine</fdl:label>
+                              <fdl:type>enum</fdl:type>
+                              <fdl:visibility>R</fdl:visibility>
+                              <fdl:options key="eformat">bool</fdl:options>
+                              <fdl:options key="system">yes</fdl:options>
+                              <fdl:options key="bmenu">no</fdl:options>
+                            </xs:documentation>
+                          </xs:annotation>
+                          <xs:simpleType>
+                            <xs:restriction base="xs:token">
+                              <xs:enumeration value="internal">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    <fdl:enumLabel>Affectation directe</fdl:enumLabel>
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:enumeration>
+                              <xs:enumeration value="group">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    <fdl:enumLabel>Obtenu par</fdl:enumLabel>
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:enumeration>
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="us_rolegorigin" minOccurs="0" maxOccurs="unbounded" type="fdl-relation" nillable="true">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <fdl:label>Groupe</fdl:label>
+                              <fdl:type>account</fdl:type>
+                              <fdl:visibility>R</fdl:visibility>
+                              <fdl:inputsearch>
+                                <fdl:searchfile>fdl.php</fdl:searchfile>
+                                <fdl:searchfunction>fdlGetAccounts(CT,15,"multiple=yes|match=group"):us_rolegorigin,CT</fdl:searchfunction>
+                              </fdl:inputsearch>
+                              <fdl:options key="multiple">yes</fdl:options>
+                              <fdl:options key="match">group</fdl:options>
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="us_groups" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>groupes d'appartenance</fdl:label>
+                        <fdl:type>array</fdl:type>
+                        <fdl:visibility>R</fdl:visibility>
+                        <fdl:options key="showempty">Aucun groupe</fdl:options>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="us_group" minOccurs="0" maxOccurs="1" nillable="true">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <fdl:label>groupe (titre)</fdl:label>
+                              <fdl:type>text</fdl:type>
+                              <fdl:visibility>H</fdl:visibility>
+                              <fdl:compute>
+                                <fdl:method>::getTitle(US_IDGROUP)</fdl:method>
+                              </fdl:compute>
+                            </xs:documentation>
+                          </xs:annotation>
+                          <xs:simpleType>
+                            <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+                          </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="us_idgroup" minOccurs="0" maxOccurs="1" type="fdl-relation" nillable="true">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <fdl:label>Groupe</fdl:label>
+                              <fdl:type>account</fdl:type>
+                              <fdl:visibility>W</fdl:visibility>
+                              <fdl:inputsearch>
+                                <fdl:searchfile>fdl.php</fdl:searchfile>
+                                <fdl:searchfunction>fdlGetAccounts(CT,15,"isuser=yes|doctitle=us_group|match=group"):us_idgroup,CT</fdl:searchfunction>
+                              </fdl:inputsearch>
+                              <fdl:options key="isuser">yes</fdl:options>
+                              <fdl:options key="doctitle">us_group</fdl:options>
+                              <fdl:options key="match">group</fdl:options>
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="us_expires" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>date d'expiration epoch</fdl:label>
+                        <fdl:type>int</fdl:type>
+                        <fdl:visibility>H</fdl:visibility>
+                        <fdl:constraint>
+                          <fdl:method>::isInteger(us_expires)</fdl:method>
+                        </fdl:constraint>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:integer">       
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="us_daydelay" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>délai d'expiration en jours</fdl:label>
+                        <fdl:type>int</fdl:type>
+                        <fdl:visibility>H</fdl:visibility>
+                        <fdl:constraint>
+                          <fdl:method>::isInteger(us_daydelay)</fdl:method>
+                        </fdl:constraint>
+                        <fdl:options key="elabel">mettre -1 pour annuler l'expiration</fdl:options>
+                        <fdl:options key="esize">3</fdl:options>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:integer">       
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="us_expiresd" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>date d'expiration</fdl:label>
+                        <fdl:type>date</fdl:type>
+                        <fdl:visibility>H</fdl:visibility>
+                        <fdl:constraint>
+                          <fdl:method>::ConstraintExpires(US_EXPIRESD,US_EXPIREST,US_DAYDELAY)</fdl:method>
+                        </fdl:constraint>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:date">       
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="us_expirest" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>heure d'expiration</fdl:label>
+                        <fdl:type>time</fdl:type>
+                        <fdl:visibility>H</fdl:visibility>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:time">       
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="us_passdelay" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>délai d'expiration epoch</fdl:label>
+                        <fdl:type>int</fdl:type>
+                        <fdl:visibility>H</fdl:visibility>
+                        <fdl:constraint>
+                          <fdl:method>::isInteger(us_passdelay)</fdl:method>
+                        </fdl:constraint>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:integer">       
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="us_ldapdn" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>login LDAP</fdl:label>
+                        <fdl:type>text</fdl:type>
+                        <fdl:visibility>R</fdl:visibility>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="us_fr_userchange" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Mot de passe</fdl:label>
+                  <fdl:type>frame</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <!-- no Schema us_passwd1 (type password)-->
+                  <!-- no Schema us_passwd2 (type password)-->
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="us_fr_security" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Sécurité</fdl:label>
+                  <fdl:type>frame</fdl:type>
+                  <fdl:visibility>R</fdl:visibility>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="us_status" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>état du compte</fdl:label>
+                        <fdl:type>enum</fdl:type>
+                        <fdl:visibility>R</fdl:visibility>
+                        <fdl:options key="system">yes</fdl:options>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:token">
+                        <xs:enumeration value="A">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <fdl:enumLabel>Activé</fdl:enumLabel>
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="D">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <fdl:enumLabel>Désactivé</fdl:enumLabel>
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="us_loginfailure" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>échecs de connexion</fdl:label>
+                        <fdl:type>int</fdl:type>
+                        <fdl:visibility>R</fdl:visibility>
+                        <fdl:constraint>
+                          <fdl:method>::isInteger(us_loginfailure)</fdl:method>
+                        </fdl:constraint>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:integer">       
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="us_accexpiredate" minOccurs="0" maxOccurs="1" nillable="true">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <fdl:label>Date d'expiration du compte</fdl:label>
+                        <fdl:type>date</fdl:type>
+                        <fdl:visibility>R</fdl:visibility>
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:date">       
+                        </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="us_fr_privacy" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <fdl:label>confidentialité</fdl:label>
+            <fdl:type>frame</fdl:type>
+            <fdl:visibility>H</fdl:visibility>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+                        </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+    <xs:attribute name="id" type="xs:integer"/>
+    <xs:attribute name="name" type="xs:token"/>
+    <xs:attribute name="version" type="xs:token"/>
+    <xs:attribute name="key" type="xs:token"/>
+    <xs:attribute name="revision" type="xs:integer"/>
+    <xs:attribute name="state" type="xs:token"/>
+    <xs:attribute name="title" type="xs:token"/>
+    <xs:attribute name="folders" type="xs:token"/>
+    <xs:attribute name="modification-date" type="xs:dateTime"/>
+  </xs:complexType>
+  <xs:element name="tst_useragent" type="family-tst_useragent-type">
+    <xs:annotation>
+      <xs:documentation>
+        <fdl:label>agents</fdl:label>
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

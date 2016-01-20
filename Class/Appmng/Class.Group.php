@@ -44,6 +44,9 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     var $groups = array(); // user groups
     public $iduser;
     public $idgroup;
+    
+    protected $syncAccount = true;
+    
     private $allgroups;
     private $levgid;
     /**
@@ -151,33 +154,43 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
                 
                 $p = new Permission($this->dbaccess);
                 $p->deletePermission($g->iduser, null, null, true);
+                $err = "";
             }
         }
         
         return $err;
     }
     /**
+     * @param boolean $syncAccount
+     */
+    public function setSyncAccount($syncAccount)
+    {
+        $this->syncAccount = $syncAccount;
+    }
+    /**
      * recompute all memberof properties of user accounts
      */
-    function resetAccountMemberOf($synchro = false)
+    public function resetAccountMemberOf($synchro = false)
     {
-        $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
-        $this->exec_query("delete from permission where computed");
-        
-        if ($synchro) {
-            simpleQuery($this->dbaccess, "select * from users order by id", $tusers);
-            $u = new Account($this->dbaccess);
-            foreach ($tusers as $tu) {
-                $u->affect($tu);
-                $u->updateMemberOf();
-            }
-        } else {
-            $wsh = getWshCmd();
-            $cmd = $wsh . " --api=initViewPrivileges --reset-account=yes";
+        if ($this->syncAccount) {
+            $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
+            $this->exec_query("delete from permission where computed");
             
-            bgexec(array(
-                $cmd
-            ) , $result, $err);
+            if ($synchro) {
+                simpleQuery($this->dbaccess, "select * from users order by id", $tusers);
+                $u = new Account($this->dbaccess);
+                foreach ($tusers as $tu) {
+                    $u->affect($tu);
+                    $u->updateMemberOf();
+                }
+            } else {
+                $wsh = getWshCmd();
+                $cmd = $wsh . " --api=initViewPrivileges --reset-account=yes";
+                
+                bgexec(array(
+                    $cmd
+                ) , $result, $err);
+            }
         }
     }
     /**

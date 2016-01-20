@@ -332,9 +332,15 @@ class _IGROUPUSER extends Doc
     function getAccount($nocache = false)
     {
         if ($nocache) {
-            unset($this->wuser); // needed for reaffect new values
+            $this->wuser=null; // needed for reaffect new values
             
+        } elseif ($this->wuser) {
+            if ($this->wuser->fid != $this->getRawValue("us_whatid")) {
+                $this->wuser=null; // clear cache when reaffect
+                
+            }
         }
+        
         if (!isset($this->wuser)) {
             $wid = $this->getRawValue("us_whatid");
             if ($wid > 0) {
