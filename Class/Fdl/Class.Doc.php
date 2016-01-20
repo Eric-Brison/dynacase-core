@@ -1464,6 +1464,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getFamilyDocument()
     {
+        /**
+         * @var DocFam $famdoc
+         */
         static $famdoc = null;
         if (($famdoc === null) || ($famdoc->id != $this->fromid)) $famdoc = new_Doc($this->dbaccess, $this->fromid);
         return $famdoc;
@@ -2100,6 +2103,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function &tag()
     {
+        /**
+         * @var TagManager $tag
+         */
         static $tag = null;
         
         if (empty($tag) || $tag->docid != $this->initid) {
