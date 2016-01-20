@@ -266,16 +266,16 @@ class _IGROUPUSER extends Doc
         $tgid = array(); // group ids will be modified
         if ($gidnew == "Y") {
             /**
-             * @var int $gid
+             * @var int[] $gids
              */
-            $gid = $_POST["gid"];
-            if ($gid == "") $gid = array();
+            $gids = $_POST["gid"];
+            if ($gids == "") $gids = array();
             
             $gAccount = $this->getAccount();
             $rgid = $gAccount->GetGroupsId();
-            if ((count($rgid) != count($gid)) || (count(array_diff($rgid, $gid)) != 0)) {
-                $gdel = array_diff($rgid, $gid);
-                $gadd = array_diff($gid, $rgid);
+            if ((count($rgid) != count($gids)) || (count(array_diff($rgid, $gids)) != 0)) {
+                $gdel = array_diff($rgid, $gids);
+                $gadd = array_diff($gids, $rgid);
                 // add group
                 $g = new Group("", $gAccount->id);
                 foreach ($gadd as $gid) {
@@ -326,6 +326,7 @@ class _IGROUPUSER extends Doc
     }
     /**
      * return system account object conform to whatid
+     * @param bool $nocache set to true if need to reload user object from database
      * @return Account return false if not found
      */
     function getAccount($nocache = false)

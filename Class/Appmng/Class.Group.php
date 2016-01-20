@@ -75,11 +75,11 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         
         if (($this->iduser > 0) && ($uid > 0)) {
             $err = $this->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
-            $err = $this->exec_query("delete from sessions where userid=$uid");
+            $err.= $this->exec_query("delete from sessions where userid=$uid");
             
             $dbf = $this->dbaccess;
             $g = new Group($dbf);
-            $err = $g->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
+            $err.= $g->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
             
             if (!$nopost) $this->PostDelete($uid);
         }
@@ -109,7 +109,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         if ($uid) $u = new Account("", $uid);
         else $u = new Account("", $this->iduser);
         $u->updateMemberOf();
-        if ($u->accounttype != "U") {
+        if ($u->accounttype != Account::USER_TYPE) {
             // recompute all doc profil
             $this->resetAccountMemberOf();
         } else {
@@ -136,7 +136,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         
         $u->updateMemberOf();
         
-        if ($u->accounttype != "U") {
+        if ($u->accounttype != Account::USER_TYPE) {
             // recompute all doc profil
             $this->resetAccountMemberOf();
         } else {
@@ -161,8 +161,8 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
      */
     function resetAccountMemberOf($synchro = false)
     {
-        $err = $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
-        $err = $this->exec_query("delete from permission where computed");
+        $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
+        $this->exec_query("delete from permission where computed");
         
         if ($synchro) {
             simpleQuery($this->dbaccess, "select * from users order by id", $tusers);

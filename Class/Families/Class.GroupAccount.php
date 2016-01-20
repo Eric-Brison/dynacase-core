@@ -11,8 +11,8 @@ namespace Dcp\Core;
 /**
  * Class GroupAccount
  *
- * @method \Account getAccount
- * @method array getSystemIds
+ * @method \Account getAccount($a=false)
+ * @method array getSystemIds($a)
  * @method string setGroups
  */
 class GroupAccount extends \Dcp\Family\Group
@@ -146,7 +146,6 @@ class GroupAccount extends \Dcp\Family\Group
     }
     public function synchronizeSystemGroup()
     {
-        $uid = $this->getRawValue("US_WHATID");
         $gname = $this->getRawValue("GRP_NAME");
         $login = $this->getRawValue("US_LOGIN");
         $roles = $this->getMultipleRawValues("grp_roles");
@@ -168,7 +167,9 @@ class GroupAccount extends \Dcp\Family\Group
             $this->modify(false, array(
                 "us_whatid"
             ));
-            if ($user) $err = $this->setGroups();
+            if ($user) {
+                $this->setGroups();
+            }
             // get members
             //$this->RefreshGroup(); // in postinsert
             //    $this->refreshParentGroup();
@@ -199,7 +200,7 @@ class GroupAccount extends \Dcp\Family\Group
      * compute the mail of the group
      * concatenation of each user mail and group member mail
      *
-     *
+     * @param bool $nomail if true no mail will be computed
      * @return string error message, if no error empty string
      */
     public function setGroupMail($nomail = false)
@@ -213,6 +214,7 @@ class GroupAccount extends \Dcp\Family\Group
     }
     /**
      * return concatenation of mail addresses
+     * @param bool $rawmail if true only raw address will be returned else complete address with firstname and lastname are returned
      * @return string
      */
     public function getMail($rawmail = false)
@@ -232,6 +234,8 @@ class GroupAccount extends \Dcp\Family\Group
     }
     /**
      * update groups table in USER database
+     * @param int $docid
+     * @param bool $multiple
      * @return string error message
      */
     function postInsertDocument($docid, $multiple = false)
@@ -264,6 +268,7 @@ class GroupAccount extends \Dcp\Family\Group
     }
     /**
      * update groups table in USER database
+     * @param array $tdocid
      * @return string error message
      */
     function postInsertMultipleDocuments($tdocid)
@@ -299,6 +304,8 @@ class GroupAccount extends \Dcp\Family\Group
     }
     /**
      * update groups table in USER database before suppress
+     * @param int $docid
+     * @param bool $multiple
      * @return string error message
      */
     function postRemoveDocument($docid, $multiple = false)
@@ -446,11 +453,11 @@ class GroupAccount extends \Dcp\Family\Group
             $u = $this->getAccount(true);
             
             $tu = $u->GetUsersGroupList($wid, true);
-            $tulogin = $tglogin = '';
+            $tglogin = '';
             if (count($tu) > 0) {
                 
                 foreach ($tu as $uid => $tvu) {
-                    if ($tvu["accounttype"] == "G") {
+                    if ($tvu["accounttype"] == \Account::GROUP_TYPE) {
                         $tgid[$uid] = $tvu["fid"];
                         //	  $tglogin[$uid]=$this->getTitle($tvu["fid"]);
                         $tglogin[$tvu["fid"]] = $tvu["lastname"];
@@ -472,7 +479,7 @@ class GroupAccount extends \Dcp\Family\Group
     /**
      * Flush/empty group's content
      */
-    function Clear()
+    function clear()
     {
         $err = '';
         $content = $this->getContent(false);

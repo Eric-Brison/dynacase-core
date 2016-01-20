@@ -143,7 +143,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
     }
     $id = intval($id);
     if ($id > 0) {
-        $sharedDoc=Dcp\Core\SharedDocuments::get($id);
+        $sharedDoc = Dcp\Core\SharedDocuments::get($id);
         if (isset($sharedDoc) && ((!$latest) || ($sharedDoc->locked != - 1))) {
             if (($sharedDoc->doctype != 'W') || (!isset($sharedDoc->doc))) {
                 if ($sharedDoc->id == $id) {
@@ -178,7 +178,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
         
         if ($id > 0) {
             if (($doc->doctype != 'C') || (count($doc->attributes->attr) > 0)) {
-                Dcp\Core\SharedDocuments::set($id,$doc);
+                Dcp\Core\SharedDocuments::set($id, $doc);
                 $doc->iscached = 1;
             }
             //print_r2("<b>use cache $id /".$doc->id."</b>");
@@ -736,7 +736,7 @@ function getDocFromUserId($dbaccess, $userid)
     $tdoc = array();
     $user = new Account("", $userid);
     if (!$user->isAffected()) return false;
-    if ($user->accounttype == "G") {
+    if ($user->accounttype == Account::GROUP_TYPE) {
         $filter = array(
             "us_whatid = '$userid'"
         );
