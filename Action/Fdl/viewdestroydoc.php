@@ -45,7 +45,7 @@ function viewdestroydoc(Action & $action)
             $q->order_by = 'date desc';
             $limit = 10;
             $l = $q->Query(0, $limit, "TABLE");
-            $action->lay->setBlockData("HISTO", $l);
+            $action->lay->eSetBlockData("HISTO", $l);
             $q = new QueryDb($dbaccess, "doclog");
             $q->AddQuery("initid=" . $initid);
             $limit = 0;
@@ -53,11 +53,11 @@ function viewdestroydoc(Action & $action)
             $l = $q->Query(0, $limit, "TABLE");
             if ($q->nb > 0) {
                 $title = $l[0]["title"];
-                $action->lay->setBlockData("LOG", $l);
+                $action->lay->eSetBlockData("LOG", $l);
             }
         }
     }
     
-    $action->lay->set("title", $title);
-    $action->lay->set("trace", sprintf(_("Last traces of %s document : %s") , $docid, $title));
+    $action->lay->eSet("title", $title);
+    $action->lay->eSet("trace", sprintf(_("Last traces of %s document : %s") , $docid, $title));
 }
