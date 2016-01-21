@@ -15,12 +15,12 @@ table.tableaction tbody tr.odd td {
                              }
 </style>
 [IFNOT szone]
-<h1><img width="[SIZE_IMG-MEDIUM]" needresize="1" src="[iconsrc]"><a  href="[CORE_STANDURL]app=FDL&action=FDL_CARD&latest=Y&id=[docid]">[doctitle]</a></h1>[ENDIF szone]
+<h1><img width="[SIZE_IMG-MEDIUM]" needresize="1" src="[iconsrc]"><a  href="[CORE_STANDURL]app=FDL&amp;action=FDL_CARD&amp;latest=Y&amp;id=[docid]">[doctitle]</a></h1>[ENDIF szone]
 
 <table class="tableaction">
 <thead><tr><th>[TEXT:level]</th><th>[TEXT:timer]</th><th>[TEXT:date]</th><th>[TEXT:rest delay]</th><th>[TEXT:timeraction]</th></tr></thead>
 <tbody>
-[BLOCK PREV]<tr class="[oddoreven]"><td>[level]</td><td><a target="timer[timerid]" href="[CORE_STANDURL]app=FDL&action=FDL_CARD&id=[timerid]">[timertitle]</a></td><td>[execdate]</td><td><b>[hdelay]</b></td><td><ul>
+[BLOCK PREV]<tr class="[oddoreven]"><td>[level]</td><td><a target="timer[timerid]" href="[CORE_STANDURL]app=FDL&amp;action=FDL_CARD&amp;id=[timerid]">[timertitle]</a></td><td>[execdate]</td><td><b>[hdelay]</b></td><td><ul>
 [IF state]<li>[TEXT:Change state to] : [state]</li>[ENDIF state]
 [IF tmail]<li>[TEXT:Send mail with template] : [tmaila]</li>[ENDIF tmail]
 [IF method]<li>[TEXT:Call method] : [method]</li>[ENDIF method]</ul>
