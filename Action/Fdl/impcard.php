@@ -46,7 +46,7 @@ function impcard(Action & $action)
     $szone = false;
     
     $dbaccess = $action->dbaccess;
-    $action->lay->set("viewprint", ($view == "print"));
+    $action->lay->rSet("viewprint", ($view == "print"));
     
     $doc = new_Doc($dbaccess, $docid);
     
@@ -73,7 +73,7 @@ function impcard(Action & $action)
             SetHttpVar("id", $docid);
         }
     }
-    $action->lay->set("TITLE", $doc->getTitle());
+    $action->lay->eset("TITLE", $doc->getTitle());
     if (($zonebodycard == "") && ($vid != "")) {
         /**
          * @var CVDOC $cvdoc
@@ -97,7 +97,7 @@ function impcard(Action & $action)
     }
     
     if ($zo == 'S') $szone = true; // the zonebodycard is a standalone zone ?
-    $action->lay->set("nocss", ($zo == "U"));
+    $action->lay->rSet("nocss", ($zo == "U"));
     if ($szone) {
         // change layout
         include_once ("FDL/viewscard.php");
