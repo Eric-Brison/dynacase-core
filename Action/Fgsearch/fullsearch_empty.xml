@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="icon" href="[DYNACASE_FAVICO]" >
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&amp;action=ALLVIEWCSS&amp;wv=[WVERSION]" >
 <link title="[CORE_CLIENT]" type="application/opensearchdescription+xml" rel="search" href="var/cache/image/[HOST]-freedom-os.xml">
 
 [CSS:REF]
@@ -12,7 +12,7 @@
 [ZONE FGSEARCH:FGSEARCH_ADDSEARCH]
 <body>
 
-<a style="position:absolute;right:3px;top:3px;"  onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a>
+<a style="position:absolute;right:3px;top:3px;"  onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&amp;app=FGSEARH&amp;action=FULLSEARCH&amp;keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a>
 <div style="text-align:center;vertical-align:middle">
 <img    src="[IMG:logodynacase.png]"><br><br>
 <form  id="fedit"  
@@ -20,7 +20,7 @@
        name="searchdoc"       
        target="_self"
        method="POST" ENCTYPE="multipart/form-data" 
-       action="[CORE_STANDURL]&app=FGSEARCH&action=FULLSEARCH" >
+       action="[CORE_STANDURL]&amp;app=FGSEARCH&amp;action=FULLSEARCH" >
 [CORE_CLIENT]<br>
 <input name="keyword" type="text" size="30" value=""><br/>
 <input type="submit" value="[TEXT:ToSearch]"></div>

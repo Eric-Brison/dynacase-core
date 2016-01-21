@@ -38,10 +38,10 @@ function fullsearchresult(Action & $action)
     $slice = 10;
     $start = $page * $slice;
     
-    $action->lay->set("isdetail", false);
-    $action->lay->set("page", $page + 1);
-    $action->lay->eset("dirid", $dirid);
-    $action->lay->set("SUBSEARCH", ($start > 0));
+    $action->lay->rSet("isdetail", false);
+    $action->lay->rSet("page", (int)($page + 1));
+    $action->lay->rSet("dirid", json_encode($dirid));
+    $action->lay->rSet("SUBSEARCH", ($start > 0));
     $initpage = false;
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     $orderby = "title";
@@ -57,7 +57,7 @@ function fullsearchresult(Action & $action)
         }
         $nosearch = true;
     }
-    $action->lay->set("INITSEARCH", $nosearch);
+    $action->lay->rSet("INITSEARCH", $nosearch);
     $kfams = array();
     $fkeyword = $keyword;
     if ($keyword != "") {
@@ -174,16 +174,16 @@ function fullsearchresult(Action & $action)
         
         $dbid = getDbid($dbaccess);
         if ($s->count() == ($slice + 1)) {
-            $action->lay->set("notthenend", true);
+            $action->lay->rSet("notthenend", true);
             
             $notTheEnd = true;
         } else {
-            $action->lay->set("notthenend", false);
+            $action->lay->rSet("notthenend", false);
             $notTheEnd = false;
         }
         
-        $action->lay->set("notfirst", ($start != 0));
-        $action->lay->set("theFollowingText", _("View next results"));
+        $action->lay->rSet("notfirst", ($start != 0));
+        $action->lay->eSet("theFollowingText", _("View next results"));
         $c = 0;
         
         $k = 0;
@@ -197,10 +197,10 @@ function fullsearchresult(Action & $action)
             }
             $displayedIds[] = $doc->initid;
             $c++;
-            $tdocs[$k]["number"] = $c + $start;
+            $tdocs[$k]["number"] = htmlspecialchars($c + $start, ENT_QUOTES);
             $tdocs[$k]["title"] = $doc->getHTMLTitle();
             $tdocs[$k]["id"] = $doc->id;
-            $tdocs[$k]["htext"] = str_replace('[', '&#1B;', nl2br($s->getHighLightText($doc, '<strong>', '</strong>', $action->GetParam("FULLTEXT_HIGHTLIGHTSIZE", 200))));
+            $tdocs[$k]["htext"] = htmlspecialchars(str_replace('[', '&#1B;', nl2br($s->getHighLightText($doc, '<strong>', '</strong>', $action->GetParam("FULLTEXT_HIGHTLIGHTSIZE", 200)))));
             $tdocs[$k]["iconsrc"] = $doc->getIcon('', 20);
             $tdocs[$k]["mdate"] = strftime("%a %d %b %Y", $doc->revdate);
             $k++;
@@ -220,7 +220,7 @@ function fullsearchresult(Action & $action)
                 );
             }
             
-            $action->lay->setBlockData("PAGES", $tpages);
+            $action->lay->eSetBlockData("PAGES", $tpages);
         }
         
         $action->lay->setBlockData("DOCS", $tdocs);
@@ -229,29 +229,29 @@ function fullsearchresult(Action & $action)
         if ($dirid != 0) {
             $sdoc = new_doc($dbaccess, $dirid);
             if ($sdoc->isAffected()) {
-                $action->lay->set("isdetail", false);
-                $action->lay->eset("searchtitle", $sdoc->title);
-                $action->lay->set("dirid", $sdoc->id);
+                $action->lay->rSet("isdetail", false);
+                $action->lay->eSet("searchtitle", $sdoc->title);
+                $action->lay->rSet("dirid", $sdoc->id);
             }
         }
     } else {
-        $action->lay->set("cpage", "0");
-        $action->lay->set("notfirst", false);
-        $action->lay->set("notthenend", false);
+        $action->lay->rSet("cpage", "0");
+        $action->lay->rSet("notfirst", false);
+        $action->lay->rSet("notthenend", false);
     }
     
     $famsuffix = ($famid == 0 ? "" : sprintf("<span class=\"families\">(%s %s)</span>", _("family search result") , $famtitle));
     if ($globalCount == 0) {
-        $action->lay->set("resulttext", sprintf(_("No document found for <strong>%s</strong>%s") , htmlspecialchars($keyword) , $famsuffix));
+        $action->lay->rSet("resulttext", sprintf(_("No document found for <strong>%s</strong>%s") , htmlspecialchars($keyword) , $famsuffix));
     } else if ($globalCount == 1) {
-        $action->lay->set("resulttext", sprintf(_("One document for <strong>%s</strong>%s") , htmlspecialchars($keyword) , $famsuffix));
+        $action->lay->rSet("resulttext", sprintf(_("One document for <strong>%s</strong>%s") , htmlspecialchars($keyword) , $famsuffix));
     } else {
-        $action->lay->set("resulttext", sprintf(_("Found <strong>%d</strong>  Result for <strong>%s</strong>%s") , $globalCount, htmlspecialchars($keyword) , $famsuffix));
+        $action->lay->rSet("resulttext", sprintf(_("Found <strong>%d</strong>  Result for <strong>%s</strong>%s") , $globalCount, htmlspecialchars($keyword) , $famsuffix));
     }
-    $action->lay->set("displayBottomBar", ($globalCount == 0 ? false : true));
-    $action->lay->set("displayTopBar", ($page == 0));
+    $action->lay->rSet("displayBottomBar", ($globalCount == 0 ? false : true));
+    $action->lay->rSet("displayTopBar", ($page == 0));
     
-    $action->lay->set("searchdate", Doc::getDate(0, 0, 0, true));
+    $action->lay->eSet("searchdate", Doc::getDate(0, 0, 0, true));
 }
 
 function strtr8($s, $c1, $c2)
