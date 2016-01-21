@@ -58,8 +58,8 @@ function displayhi(event,o) {
 <table width="100%">
 <thead>
 <tr><th><a title="[TEXT:view equality attributes]" onmousedown="displaytr(event);return false">[TEXT:attributes]</a><a title="[TEXT:view hidden attributes]"><img width="22px" align="absmiddle" src="[IMG:cible.gif]"  onmousedown="displayhi(event,this);return false"></img></a></th>
-<th><a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[target]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id1]')">[document1]</a> [version1]/[revision1] - [date1] </th>
-<th><a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[target]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id2]')">[document2]</a> [version2]/[revision2] - [date2]</th></tr>
+<th><a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'diffdoc_view','[CORE_STANDURL]&amp;app=FDL&amp;action=FDL_CARD&amp;id=[id1]')">[document1]</a> [version1]/[revision1] - [date1] </th>
+<th><a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'diffdoc_view','[CORE_STANDURL]&amp;app=FDL&amp;action=FDL_CARD&amp;id=[id2]')">[document2]</a> [version2]/[revision2] - [date2]</th></tr>
 </thead>
 <tbody>
 [BLOCK ATTRS]<tr name="[cdiff]" class="[vdiff]"><td >[attname]</td>
