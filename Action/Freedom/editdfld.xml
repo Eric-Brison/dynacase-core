@@ -7,7 +7,7 @@
    <title>[TITLE] [doctitle]</title>
 
 
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&amp;action=ALLVIEWCSS&amp;wv=[WVERSION]" >
 
 [CSS:REF]
 
@@ -32,7 +32,7 @@
 
                          
 <!-- Title Table -->
-<form  class="fborder" name="modifyfreedom" method="POST"  action="[CORE_STANDURL]&app=[APPNAME]&action=MODDFLD&current=[current]&docid=[docid]" >
+<form  class="fborder" name="modifyfreedom" method="POST"  action="[CORE_STANDURL]&amp;app=[APPNAME]&amp;action=MODDFLD&amp;current=[current]&amp;docid=[docid]" >
 
 
                          
@@ -63,7 +63,7 @@
  [IF ROOTFOLDER]<input type="submit" [autodisabled] onclick="document.getElementById('autofolder').value='Y'" 
         value="[TEXT:Create New]"> &nbsp;&nbsp;&nbsp;[ENDIF ROOTFOLDER]
  <input type="submit" value="[TEXT:Validate]"> 
- <input type="reset" value="[TEXT:Cancel]" onclick="document.location.href='[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[docid]'"> 
+ <input type="reset" value="[TEXT:Cancel]" onclick="document.location.href='[CORE_STANDURL]&amp;app=FDL&amp;action=FDL_CARD&amp;id=[docid]'">
   
   </td>
 </tr>
