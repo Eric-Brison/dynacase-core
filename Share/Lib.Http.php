@@ -206,7 +206,7 @@ function Http_Download($src, $ext, $name, $add_ext = TRUE, $mime_type = "")
     header("Cache-control: private"); // for IE : don't know why !!
     header('Content-Length: ' . strlen($src));
     header("Pragma: "); // HTTP 1.0
-    header("Content-Disposition: form-data;filename=\"$uName\";filename*=UTF-8''$name;");
+    header("Content-Disposition: attachment;filename=\"$uName\";filename*=UTF-8''$name;");
     header("Content-type: " . $mime_type);
     echo $src;
 }
