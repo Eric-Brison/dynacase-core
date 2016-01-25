@@ -89,7 +89,14 @@ namespace {
             $this->addOptionalParameter('userid', "user system id or login name to execute function - default is (admin)", null, 1);
             $this->addEmptyParameter('help', "Show usage");
         }
-        
+
+        /**
+         * Restriction callback to verify a scalar value
+         * @param string $argVal argument value
+         * @param string $argName argument name
+         * @param ApiUsage $apiUsage current apiUsage object
+         * @return string
+         */
         public static function isScalar($argVal, $argName, $apiUsage)
         {
             $err = "";
@@ -99,6 +106,13 @@ namespace {
             }
             return $err;
         }
+        /**
+         * Restriction callback to verify an array value
+         * @param string $argVal argument value
+         * @param string $argName argument name
+         * @param ApiUsage $apiUsage current apiUsage object
+         * @return string
+         */
         public static function isArray($argVal, $argName, $apiUsage)
         {
             $err = "";
@@ -164,7 +178,7 @@ namespace {
                 "name" => $argName,
                 "def" => $argDefinition
             );
-            return $this->action->getArgument($argName);
+            return $this->getArgumentValue($argName);
         }
         /**
          * add needed argument
@@ -203,7 +217,7 @@ namespace {
                 "default" => null,
                 "restriction" => $restriction
             );
-            return $this->action->getArgument($argName);
+            return $this->getArgumentValue($argName);
         }
         /**
          * add optional argument
@@ -243,7 +257,7 @@ namespace {
                 "default" => $default,
                 "restriction" => $restriction
             );
-            return $this->action->getArgument($argName, $default);
+            return $this->getArgumentValue($argName, $default);
         }
         /**
          * add empty argument (argument with boolean value)
@@ -280,7 +294,17 @@ namespace {
                 "default" => null,
                 "restriction" => null
             );
-            return $this->action->getArgument($argName, false);
+            return $this->getArgumentValue($argName, false);
+        }
+        /**
+         * Return value of argument key
+         * @param string $key the identifier
+         * @param string $defaultValue value to return if value is empty
+         * @return mixed|string
+         */
+        protected function getArgumentValue($key, $defaultValue = '')
+        {
+            return $this->action->getArgument($key, $defaultValue);
         }
         /**
          * get usage for a specific argument
@@ -366,7 +390,7 @@ namespace {
                 } else {
                     $error.= $usage;
                 }
-                if ($this->action->getArgument("help") == true) {
+                if ($this->getArgumentValue("help") == true) {
                     throw new \Dcp\ApiUsage\Exception("CORE0003", $error, $usage);
                 }
                 if (!empty($_SERVER['HTTP_HOST'])) {
@@ -435,11 +459,11 @@ namespace {
         public function verify($useException = false)
         {
             $this->useException = $useException;
-            if ($this->action->getArgument("help") == true) {
+            if ($this->getArgumentValue("help") == true) {
                 $this->exitError();
             }
             foreach ($this->needArgs as $arg) {
-                $value = $this->action->getArgument($arg["name"]);
+                $value = $this->getArgumentValue($arg["name"]);
                 if ($value === '' || is_bool($value)) {
                     $error = sprintf("argument '%s' expected\n", $arg["name"]);
                     
@@ -450,7 +474,7 @@ namespace {
             $argsKey = $this->getHiddenKeys();
             
             foreach ($allArgs as $arg) {
-                $value = $this->action->getArgument($arg["name"], null);
+                $value = $this->getArgumentValue($arg["name"], null);
                 if ($value !== null) {
                     if ($this->isCallable($arg["restriction"])) {
                         $error = call_user_func($arg["restriction"], $value, $arg["name"], $this);

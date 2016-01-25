@@ -51,5 +51,37 @@ class ActionUsage extends ApiUsage
         $usage = str_replace('--action=', '--action=' . $this->action->name . ' : ', $usage);
         return $usage;
     }
+    /**
+     * Return value of argument key
+     * @param string $key the identifier
+     * @param string $defaultValue value to return if value is empty
+     * @return mixed|string
+     */
+    protected function getArgumentValue($key, $defaultValue = '')
+    {
+        $value = parent::getArgumentValue($key, null);
+        if ($value === null) {
+            if (isset($_FILES[$key])) {
+                return $_FILES[$key];
+            }
+        }
+        return ($value === null) ? $defaultValue : $value;
+    }
+
+    /**
+     * Restriction callback to verify a file array value
+     * @param string $argVal argument value
+     * @param string $argName argument name
+     * @param ApiUsage $apiUsage current apiUsage object
+     * @return string
+     */
+    public static function isFile($argVal, $argName, $apiUsage)
+    {
+        $err = "";
+        if (!is_array($argVal) || !isset($argVal["name"]) || !isset($argVal["tmp_name"])) {
+            $err = sprintf("Value type isn't authorized for argument, must be a file description array");
+        }
+        return $err;
+    }
 }
 ?>
