@@ -36,5 +36,5 @@ function freedom_card(Action & $action)
         SetHttpVar("id", $doc->getLatestId());
     }
     
-    $action->lay->Set("TITLE", $doc->title);
+    $action->lay->eSet("TITLE", $doc->getTitle());
 }
