@@ -5,7 +5,7 @@
    <title>[TEXT: history] [title]</title>
 
 
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&amp;action=ALLVIEWCSS&amp;wv=[WVERSION]" >
 
 [CSS:REF]
 
