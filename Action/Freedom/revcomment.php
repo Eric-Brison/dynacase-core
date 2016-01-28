@@ -34,7 +34,7 @@ function revcomment(Action & $action)
     $err = $doc->canEdit();
     if ($err != "") $action->ExitError($err);
     
-    $action->lay->Set("APP_TITLE", _($action->parent->description));
-    $action->lay->Set("title", $doc->title);
-    $action->lay->Set("docid", $doc->id);
+    $action->lay->eSet("APP_TITLE", _($action->parent->description));
+    $action->lay->eSet("title", $doc->getTitle());
+    $action->lay->eSet("docid", (int)$doc->id);
 }

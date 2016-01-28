@@ -7,7 +7,7 @@
    <title>[APP_TITLE]</title>
 
 
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&amp;action=ALLVIEWCSS&amp;wv=[WVERSION]" >
 
 [CSS:REF]
 
@@ -37,7 +37,7 @@
 <p>[TEXT: comment for revision]</p>
 <form  name="edit" 
        method="POST"
-       action="[CORE_STANDURL]app=[APPNAME]&action=REVISION&id=[docid]">
+       action="[CORE_STANDURL]app=[APPNAME]&amp;action=REVISION&amp;id=[docid]">
   <textarea cols="40" rows="4" name="comment" ></textarea><br>
   <input type="submit" value="[TEXT: revise document]" ></input>
 </form>
