@@ -31,9 +31,9 @@ function generic_card(Action & $action)
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     
-    $action->lay->Set("TITLE", $doc->title);
+    $action->lay->eSet("TITLE", $doc->getTitle());
     
     $head = GetHttpVars("head", "no"); // directory to place doc if new doc
-    if ($head == "yes") $action->lay->Set("PROPS", "Y");
-    else $action->lay->Set("PROPS", "N");
+    if ($head == "yes") $action->lay->rSet("PROPS", urlencode("Y"));
+    else $action->lay->rSet("PROPS", urlencode("N"));
 }
