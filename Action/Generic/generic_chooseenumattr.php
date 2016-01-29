@@ -34,7 +34,7 @@ function generic_chooseenumattr(Action & $action)
      * @var DocFam $fdoc
      */
     $fdoc = new_doc($dbaccess, $famid);
-    $action->lay->set("famid", $fdoc->id);
+    $action->lay->eSet("famid", (int)$fdoc->id);
     
     $lattr = $fdoc->getNormalAttributes();
     foreach ($lattr as $k => $a) {
@@ -49,7 +49,7 @@ function generic_chooseenumattr(Action & $action)
         }
     }
     
-    $action->lay->setBlockData("CATG", $tcf);
-    $action->lay->set("title", sprintf(_("modify enumerate attributes for family : %s") , $fdoc->title));
-    $action->lay->set("icon", $fdoc->getIcon());
+    $action->lay->eSetBlockData("CATG", $tcf);
+    $action->lay->eSet("title", sprintf(_("modify enumerate attributes for family : %s") , $fdoc->getTitle()));
+    $action->lay->eSet("icon", $fdoc->getIcon());
 }
