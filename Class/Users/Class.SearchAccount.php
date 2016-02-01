@@ -328,7 +328,7 @@ class SearchAccount
      * get final query to search accounts
      * @return string
      */
-    private function getQuery()
+    public function getQuery()
     {
         
         $groupRoleFilter = $this->getgroupRoleFilter();

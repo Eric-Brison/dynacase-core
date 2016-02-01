@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="defaultMethod"  type="xs:string"/>				
+	<xs:element name="title" default="false" type="xs:boolean"/>				
+        <xs:element name="label"  type="xs:token"/>                                
+        <xs:element name="type"  type="xs:token"/>
+	<xs:element name="abstract" default="false" type="xs:boolean"/>
+        <xs:element name="visibility" default="W">
+           <xs:simpleType>
+           <xs:restriction base="xs:token">
+           <xs:enumeration value="H"/>
+           <xs:enumeration value="R"/>
+           <xs:enumeration value="W"/>
+           <xs:enumeration value="O"/>
+           <xs:enumeration value="I"/>
+           <xs:enumeration value="U"/>
+           <xs:enumeration value="S"/>
+           </xs:restriction>
+           </xs:simpleType>
+        </xs:element>
+				
+	
+	
+</xs:schema>

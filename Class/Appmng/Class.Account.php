@@ -36,6 +36,10 @@ class Account extends DbObj
     const GALL_ID = GALL_ID;
     const GADMIN_ID = GADMIN_ID;
     
+    const USER_TYPE = "U";
+    const GROUP_TYPE = "G";
+    const ROLE_TYPE = "R";
+    
     var $fields = array(
         "id",
         "lastname",
@@ -246,7 +250,7 @@ create sequence seq_id_users start 10;";
     function preInsert()
     {
         $err = '';
-        if ((!$this->login) && $this->accounttype == 'R') {
+        if ((!$this->login) && $this->accounttype == self::ROLE_TYPE) {
             // compute auto role reference
             $this->login = uniqid('role');
         }
@@ -260,14 +264,20 @@ create sequence seq_id_users start 10;";
             $this->id = $arr["nextval"];
         }
         
-        if (($this->accounttype == 'G') || ($this->accounttype == 'R') || ($this->isgroup == "Y")) {
-            if ((!$this->accounttype) && ($this->isgroup == "Y")) $this->accounttype = 'G';
-            $this->password_new = uniqid($this->accounttype); // no passwd for group,role
+        if (($this->accounttype == self::GROUP_TYPE) || ($this->accounttype == self::ROLE_TYPE) || ($this->isgroup == "Y")) {
+            if ((!$this->accounttype) && ($this->isgroup == "Y")) $this->accounttype = self::GROUP_TYPE;
+            $this->password = '-'; // no passwd for group,role
             
         } else {
             $this->isgroup = "N";
         }
-        if (!$this->accounttype) $this->accounttype = 'U';
+        if (!$this->accounttype) {
+            $this->accounttype = self::USER_TYPE;
+        }
+        
+        if ($this->accounttype === self::USER_TYPE && !$this->status) {
+            $this->status = "A";
+        }
         $this->login = mb_strtolower($this->login);
         
         if (isset($this->password_new) && ($this->password_new != "")) {
@@ -377,6 +387,13 @@ create sequence seq_id_users start 10;";
             return null;
         }
         return null;
+    }
+    /**
+     * Same as ::getDisplayName but for current object
+     */
+    public function getAccountName()
+    {
+        return trim(sprintf("%s %s", $this->firstname, $this->lastname));
     }
     /**
      * return system user identifier from user document reference
@@ -493,7 +510,7 @@ create sequence seq_id_users start 10;";
         $this->fid = $fid;
         if (!$this->isAffected()) {
             $this->isgroup = "Y";
-            $this->accounttype = 'G';
+            $this->accounttype = self::GROUP_TYPE;
             $err = $this->Add();
         } else {
             $err = $this->Modify();
@@ -534,6 +551,7 @@ create sequence seq_id_users start 10;";
         $dbaccess = $this->dbaccess;
         if ($dbaccess == "") return _("no freedom DB access");
         if ($this->fid <> "") {
+            include_once ("FDL/freedom_util.php");
             /**
              * @var \Dcp\Family\IUSER $iuser
              */
@@ -544,8 +562,8 @@ create sequence seq_id_users start 10;";
         else {
             include_once ("FDL/Lib.Dir.php");
             if ($this->famid != "") $fam = $this->famid;
-            elseif ($this->accounttype == "G") $fam = "IGROUP";
-            elseif ($this->accounttype == "R") $fam = "ROLE";
+            elseif ($this->accounttype == self::GROUP_TYPE) $fam = "IGROUP";
+            elseif ($this->accounttype == self::ROLE_TYPE) $fam = "ROLE";
             else $fam = "IUSER";;
             $filter = array(
                 "us_whatid = '" . $this->id . "'"
@@ -670,9 +688,8 @@ union
         // Create admin user
         $this->id = 1;
         $this->lastname = "Master";
-        $freedomctx = getFreedomContext();
-        if ($freedomctx == "") $this->firstname = "Dynacase Platform";
-        else $this->firstname = ucfirst("$freedomctx");
+        $this->firstname = "Dynacase Platform";
+        
         $this->password_new = "anakeen";
         $this->login = "admin";
         $this->Add(true);
@@ -683,7 +700,7 @@ union
         $this->firstname = "";
         $this->login = "all";
         $this->isgroup = "Y";
-        $this->accounttype = "G";
+        $this->accounttype = self::GROUP_TYPE;
         $this->Add(true);
         $group->idgroup = $this->id;
         $group->Add(true);
@@ -693,7 +710,7 @@ union
         $this->firstname = "guest";
         $this->login = "anonymous";
         $this->isgroup = "N";
-        $this->accounttype = "U";
+        $this->accounttype = self::USER_TYPE;
         $this->Add(true);
         // Create admin group
         $this->id = Account::GADMIN_ID;
@@ -701,7 +718,7 @@ union
         $this->firstname = "";
         $this->login = "gadmin";
         $this->isgroup = "Y";
-        $this->accounttype = "G";
+        $this->accounttype = self::GROUP_TYPE;
         $this->Add(true);
         $group->idgroup = Account::GALL_ID;
         $group->iduser = Account::GADMIN_ID;
@@ -1142,7 +1159,7 @@ union
     public function addRole($idRole)
     {
         if (!$this->isAffected()) return ErrorCode::getError("ACCT0002", $idRole);
-        if ($this->accounttype != 'U') return ErrorCode::getError("ACCT0003", $idRole, $this->login);
+        if ($this->accounttype != self::USER_TYPE) return ErrorCode::getError("ACCT0003", $idRole, $this->login);
         if (!is_numeric($idRole)) {
             simpleQuery($this->dbaccess, sprintf("select id from users where login = '%'", pg_escape_string($idRole)) , $idRoleW, true, true);
             if ($idRoleW) $idRole = $idRoleW;
@@ -1169,10 +1186,10 @@ union
     {
         if (!$this->isAffected()) return ErrorCode::getError("ACCT0006", implode(',', $roleIds));
         
-        if ($this->accounttype == 'R') return ErrorCode::getError("ACCT0007", implode(',', $roleIds) , $this->login);
+        if ($this->accounttype == self::ROLE_TYPE) return ErrorCode::getError("ACCT0007", implode(',', $roleIds) , $this->login);
         $this->deleteRoles();
         $err = '';
-        if ($this->accounttype == 'U' || $this->accounttype == 'G') {
+        if ($this->accounttype == self::USER_TYPE || $this->accounttype == self::GROUP_TYPE) {
             $g = new group($this->dbaccess);
             foreach ($roleIds as $rid) {
                 if (!is_numeric($rid)) {
@@ -1193,7 +1210,7 @@ union
             
             $this->updateMemberOf();
         }
-        if ($this->accounttype == 'G') {
+        if ($this->accounttype == self::GROUP_TYPE) {
             // must propagate to users
             $lu = $this->getUserMembers();
             $uw = new Account($this->dbaccess);
@@ -1236,7 +1253,7 @@ union
     public function deleteRoles()
     {
         if (!$this->isAffected()) return ErrorCode::getError("ACCT0004");
-        if ($this->accounttype == 'R') return ErrorCode::getError("ACCT0005", $this->login);
+        if ($this->accounttype == self::ROLE_TYPE) return ErrorCode::getError("ACCT0005", $this->login);
         $err = '';
         $sql = sprintf("DELETE FROM groups USING users where groups.iduser=%d and users.id=groups.idgroup and users.accounttype='R'", $this->id);
         $err = simpleQuery($this->dbaccess, $sql);

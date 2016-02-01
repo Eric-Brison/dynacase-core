@@ -102,6 +102,7 @@ class ExportDocument
         $dbaccess = getDbAccess();
         $q = new \QueryDb($dbaccess, "DocPerm");
         $q->AddQuery(sprintf("docid=%d", $doc->profid));
+        $q->order_by="userid";
         $acls = $q->Query(0, 0, "TABLE");
         
         $tpu = array();
@@ -132,7 +133,7 @@ class ExportDocument
         if ($doc->extendedAcls) {
             $extAcls = array_keys($doc->extendedAcls);
             $aclCond = GetSqlCond($extAcls, "acl");
-            simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s", $doc->profid, $aclCond) , $eAcls);
+            simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s order by userid", $doc->profid, $aclCond) , $eAcls);
             
             foreach ($eAcls as $aAcl) {
                 $uid = $aAcl["userid"];

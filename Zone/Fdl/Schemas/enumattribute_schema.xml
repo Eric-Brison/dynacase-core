@@ -1,13 +1,13 @@
 <xs:element name="[aname]" minOccurs="[minOccurs]" maxOccurs="[maxOccurs]" nillable="[isnillable]">
-    <xs:annotation><xs:appinfo xmlns:fdl="http://www.dynacase.org/schema">
+    <xs:annotation><xs:documentation >
                 [appinfos]
-     </xs:appinfo></xs:annotation>
+     </xs:documentation></xs:annotation>
      <xs:simpleType>         	
            <xs:restriction base="xs:token">
                        	
            [BLOCK enums]
-           <xs:enumeration value="[key]"><xs:annotation><xs:appinfo xmlns:fdl="http://www.dynacase.org/schema">             
-                <fdl:enumLabel>[val]</fdl:enumLabel></xs:appinfo> </xs:annotation></xs:enumeration>[ENDBLOCK enums]          
+           <xs:enumeration value="[key]"><xs:annotation><xs:documentation >             
+                <fdl:enumLabel>[val]</fdl:enumLabel></xs:documentation> </xs:annotation></xs:enumeration>[ENDBLOCK enums]          
            </xs:restriction>
      </xs:simpleType>
 </xs:element>

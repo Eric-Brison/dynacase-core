@@ -24,6 +24,7 @@ class SuiteDcpUser
         $suite->addTestSuite('Dcp\Pu\TestDocControlSubstitute');
         $suite->addTestSuite('Dcp\Pu\TestSearchAccount');
         $suite->addTestSuite('Dcp\Pu\TestGroupAccount');
+        $suite->addTestSuite('Dcp\Pu\TestImportAccounts');
         // ...
         return $suite;
     }

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-14 14:03+0100\n"
-"PO-Revision-Date: 2015-12-14 14:04+0100\n"
+"POT-Creation-Date: 2016-01-28 13:36+0100\n"
+"PO-Revision-Date: 2016-01-29 13:34+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -399,9 +399,6 @@ msgstr "Copier"
 msgid "A_Link"
 msgstr "Lier"
 
-msgid "Abstract card"
-msgstr "Carte résumé"
-
 msgid "Access Action Library"
 msgstr "Bibliothèque pour les droits"
 
@@ -497,6 +494,10 @@ msgstr "Ajout Acl %s pour %s"
 msgid "Add filter"
 msgstr "Ajouter une condition"
 
+msgctxt "fusersimport"
+msgid "Add group reference"
+msgstr "Affectation à un groupe"
+
 #, php-format
 msgid "Add it in %s folder"
 msgstr "Ajout dans dossier %s"
@@ -515,6 +516,10 @@ msgstr "Ajouter uo modifier des valeurs de catégorie"
 
 msgid "Add postit"
 msgstr "Ajouter un post-it"
+
+msgctxt "fusersimport"
+msgid "Add role reference"
+msgstr "Association d'un rôle"
 
 msgid "Add search engine"
 msgstr "Ajouter le moteur de recherche"
@@ -831,10 +836,6 @@ msgstr "Ne peut ajouter dans le dossier %s, identificateur %d inconnu"
 msgid "Cannot copy file %s to %s"
 msgstr "Ne peut copier le fichier %s vers %s"
 
-#, php-format
-msgid "Cannot create directory %s for xml import"
-msgstr "Ne peux créer le répertoire %s pour import xml"
-
 msgid "Cannot do this action. Parent window is closed"
 msgstr "Ne peut faire cette action. La fenêtre parent est fermée"
 
@@ -1041,9 +1042,6 @@ msgid "Choose a family to import only set of attributes"
 msgstr ""
 "Choisissez une famille pour importer un sous-ensemble d'attributs choisis"
 
-msgid "Choose a father category"
-msgstr "Choisissez une catégorie père"
-
 msgid "Choose an attribute"
 msgstr "Choisir un attribut"
 
@@ -1136,9 +1134,6 @@ msgstr "Fermer l'aide"
 
 msgid "Close message"
 msgstr "Cacher le message"
-
-msgid "Column mode"
-msgstr "Mode colonne"
 
 #, php-format
 msgid "Column type '%s' is not managed for export."
@@ -1290,6 +1285,10 @@ msgstr "Créer un traitement"
 msgid "Create a new  process document"
 msgstr "Créer un nouveau document processus"
 
+msgctxt "fusersimport"
+msgid "Create account"
+msgstr "Création d'un compte"
+
 msgid "Create new family"
 msgstr "Créer une nouvelle famille"
 
@@ -1417,7 +1416,10 @@ msgstr ""
 msgid ""
 "Doc %s : Attribut \"%s\" reference revised identifier : importation not "
 "support revision links without identifiers"
-msgstr "Document \"%s\" : L'attribut \"%s\" référence un identifiant de révision : l'importation ne supporte pas les liens entre révisions sans l'identifiant numérique."
+msgstr ""
+"Document \"%s\" : L'attribut \"%s\" référence un identifiant de révision : "
+"l'importation ne supporte pas les liens entre révisions sans l'identifiant "
+"numérique."
 
 #, php-format
 msgid "Doc Render %d/%d"
@@ -1483,6 +1485,10 @@ msgstr "Menu contextuel du document"
 msgid "Document creation"
 msgstr "Création de document"
 
+msgctxt "fusersimport"
+msgid "Document creation"
+msgstr "Création du document associé"
+
 msgid "Document destroyed"
 msgstr "Document détruit définitivement"
 
@@ -1496,6 +1502,10 @@ msgstr "Relations du document"
 #, php-format
 msgid "Document unlinked of %s folder"
 msgstr "Document enlevé du dossier %s"
+
+msgctxt "fusersimport"
+msgid "Document update"
+msgstr "Mise à jour du document associé"
 
 #, php-format
 msgid "Document with id '%s' is not a folder or search."
@@ -1938,6 +1948,10 @@ msgstr "Exporter"
 msgid "Export 1NF done"
 msgstr "Export 1NF fini"
 
+msgctxt "fuserexport"
+msgid "Export Aborted"
+msgstr "Abandon de l'exportation"
+
 msgid "Export Documents from"
 msgstr " Exporter les documents depuis"
 
@@ -1946,6 +1960,11 @@ msgstr "Exportation finie"
 
 msgid "Export Folder"
 msgstr "Exportation du dossier"
+
+#, php-format
+msgctxt "fuserexport"
+msgid "Export accounts (%d/%d)"
+msgstr "Exportation des comptes (%d/%d)"
 
 msgid "Export archive file with data file - fdl.csv- and attached files"
 msgstr ""
@@ -1960,6 +1979,11 @@ msgstr ""
 
 msgid "Export done"
 msgstr "Fin de l'exportation"
+
+#, php-format
+msgctxt "fuserexport"
+msgid "Export relative document (%d/%d)"
+msgstr "Exportation des documents relatifs (%d/%d)"
 
 msgid "Export:Warnings"
 msgstr "Avertissements de l'exportation :"
@@ -2213,6 +2237,11 @@ msgid "Family"
 msgstr "Famille"
 
 #, php-format
+msgctxt "fusersimport"
+msgid "Family %s"
+msgstr "Famille \"%s\""
+
+#, php-format
 msgid "Family %s not exist"
 msgstr "La famille (%s) n'existe pas"
 
@@ -2400,9 +2429,6 @@ msgstr "Valeur formatée"
 msgid "Found <strong>%d</strong>  Result for <strong>%s</strong>%s"
 msgstr "<strong>%d</strong> documents trouvés pour <strong>%s</strong>%s"
 
-msgid "Freedom"
-msgstr "Dynacase"
-
 msgid "Freedom accessibilities"
 msgstr "Droits Dynacase"
 
@@ -2488,6 +2514,10 @@ msgstr "Aller aux archives"
 msgid "Group \"%s\""
 msgstr "le groupe \"%s\""
 
+msgctxt "fusersimport"
+msgid "Group reference already added"
+msgstr "Groupe déjà affecté"
+
 msgid "Handle my searches"
 msgstr "Gérer mes recherches"
 
@@ -2555,6 +2585,10 @@ msgstr ""
 "envoyé à \n"
 "&lt;%s&gt; avec le rapport d'importation"
 
+msgctxt "fuserimport"
+msgid "Import Aborted"
+msgstr "Abandon de l'importation"
+
 msgid "Import Archive"
 msgstr "Importer une archive"
 
@@ -2585,11 +2619,27 @@ msgstr "Importer les documents maintenant"
 msgid "Import documents"
 msgstr "Importer des documents"
 
-msgid "Import file"
-msgstr "Fichier à importer"
+msgctxt "fuserimport"
+msgid "Import end"
+msgstr "Fin de l'importation"
 
 msgid "Import file (CSV, ODS, XML, ZIP, TGZ)"
 msgstr "Fichier d'importation (CSV, ODS, XML, ZIP, TGZ)"
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import group (%d/%d)"
+msgstr "Importation des groupes (%d/%d)"
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import role (%d/%d)"
+msgstr "Importation des rôles (%d/%d)"
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import user (%d/%d)"
+msgstr "Importation des utilisateurs (%d/%d)"
 
 msgid "Importation data"
 msgstr "Données réimportables (CSV)"
@@ -2664,9 +2714,6 @@ msgstr "Répertoire non valide '%s'."
 
 msgid "Invert all columns"
 msgstr "Inverser la sélection"
-
-msgid "Invert split"
-msgstr "Inverser le découpage"
 
 msgid "It cannot be empty"
 msgstr "Ce champ ne peut être vide"
@@ -2815,6 +2862,10 @@ msgstr "Lié par le profil"
 
 msgid "List view"
 msgstr "Vue en liste"
+
+msgctxt "fuserimport"
+msgid "Load XML file"
+msgstr "Chargement du fichier XML"
 
 #, php-format
 msgid "Load dump file into '%s' ..."
@@ -3046,6 +3097,10 @@ msgstr "Non effacé"
 msgid "Name of table cannot be empty"
 msgstr "Le nom de la table ne doit pas être vide"
 
+msgid "New password"
+msgstr "Nouveau mot de passe"
+
+msgctxt "fusersimport"
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
@@ -3511,6 +3566,14 @@ msgstr "Renommer le fichier en %s"
 msgid "Reopen archive"
 msgstr "Réouverture de l'archive"
 
+msgctxt "fusersimport"
+msgid "Reset all direct associated roles"
+msgstr "Suppression des rôles directs associés."
+
+msgctxt "fusersimport"
+msgid "Reset all group attachment"
+msgstr "Suppression des appartenences aux groupes"
+
 #, php-format
 msgid "Reset attribute structure"
 msgstr "Réinitialisation de la structure du document"
@@ -3545,6 +3608,10 @@ msgstr "Résultat de l'importation d'archives"
 msgid "Result value"
 msgstr "Valeur résultante"
 
+msgctxt "fuserexport"
+msgid "Retrieve Account data"
+msgstr "Récupération des données des comptes"
+
 msgid "Retrieve documents from database"
 msgstr "Récupération des documents"
 
@@ -3560,6 +3627,10 @@ msgstr "Réviser"
 #, php-format
 msgid "Role \"%s\""
 msgstr "le rôle \"%s\""
+
+msgctxt "fusersimport"
+msgid "Role reference already added"
+msgstr "Rôle déjà associé"
 
 msgid "Root folder"
 msgstr "Dossier racine"
@@ -4166,6 +4237,10 @@ msgstr "Mise à jour des droits en cours"
 msgid "Update access"
 msgstr "Modifier les privilèges"
 
+msgctxt "fusersimport"
+msgid "Update account"
+msgstr "Mise à jour du compte"
+
 msgid "Update by importation"
 msgstr "Mise à jour par importation"
 
@@ -4639,9 +4714,6 @@ msgstr "ajouter entrée"
 #, php-format
 msgid "add negative acl %s"
 msgstr "ajout droit négatif %s"
-
-msgid "add new category"
-msgstr "ajout nouvelle catégorie"
 
 #, php-format
 msgid "add new profil %s"
@@ -6575,11 +6647,6 @@ msgstr "ignoré"
 msgid "import <I>%s</I> documents from"
 msgstr " Importation de documents <I>%s</I> à partir de"
 
-#, php-format
-msgid "import Xml extract : file %s not found"
-msgstr ""
-"Erreur lors de l'extraction de l'importation XML: fichier %s introuvable"
-
 msgid "import analysis result"
 msgstr "Résultat de l'analyse de l'import"
 
@@ -7033,9 +7100,6 @@ msgstr "nouvelle %s"
 msgid "new card"
 msgstr "Nouvelle carte"
 
-msgid "new category"
-msgstr "Nouvelle catégorie"
-
 #, php-format
 msgid "new column order %s"
 msgstr "nouvel ordre des colonnes %s"
@@ -7170,9 +7234,6 @@ msgstr "pas de famille"
 
 msgid "no family identificator"
 msgstr "aucun identificateur de famille"
-
-msgid "no father category (its a top category)"
-msgstr "pas de catégorie père (catégorie primaire)"
 
 msgid "no file"
 msgstr "pas de fichier"
@@ -7777,9 +7838,6 @@ msgstr "référence"
 
 msgid "reference for this revision"
 msgstr "référence de la dernière révision"
-
-msgid "refresh directory"
-msgstr "rafraichir le dossier"
 
 #, php-format
 msgid "refreshing %s"
@@ -9098,6 +9156,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "%s style updated\n"
 #~ msgstr "%s style mis à jour\n"
 
+#~ msgid "Abstract card"
+#~ msgstr "Carte résumé"
+
 #~ msgid "Add a note"
 #~ msgstr "Ajouter une note"
 
@@ -9113,6 +9174,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Cancel change"
 #~ msgstr "Annuler les modifications"
 
+#~ msgid "Cannot create directory %s for xml import"
+#~ msgstr "Ne peux créer le répertoire %s pour import xml"
+
 #~ msgid "Cannot find %s ressource file"
 #~ msgstr "Fichier resource %s non trouvé"
 
@@ -9123,12 +9187,18 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Caught Exception : %s\n"
 #~ msgstr "Attrape exception : %s\n"
 
+#~ msgid "Choose a father category"
+#~ msgstr "Choisissez une catégorie père"
+
 #~ msgid "Choose document before set options"
 #~ msgstr "Choisissez un document avant de choisir les options"
 
 #, fuzzy
 #~ msgid "Choose report column"
 #~ msgstr "Choisir les colonnes du rapport"
+
+#~ msgid "Column mode"
+#~ msgstr "Mode colonne"
 
 #~ msgid "Confirm unattach activated timers matched "
 #~ msgstr "Confirmer l'annulation des minuteurs provenant des documents "
@@ -9169,6 +9239,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Error: empty FREEDOM_DB"
 #~ msgstr "Erreur: FREEDOM_DB vide"
 
+#~ msgid "Freedom"
+#~ msgstr "Dynacase"
+
 #~ msgid "Freedom imodification"
 #~ msgstr "Modification de documents virtuels"
 
@@ -9178,11 +9251,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Historic"
 #~ msgstr "Historique"
 
+#~ msgid "Import file"
+#~ msgstr "Fichier à importer"
+
 #~ msgid "Import file (CSV, ODS, XML)"
 #~ msgstr "Fichier d'importation (CSV, ODS, XML)"
 
 #~ msgid "Import format"
 #~ msgstr "Format d'importation"
+
+#~ msgid "Invert split"
+#~ msgstr "Inverser le découpage"
 
 #~ msgid "Logical name %s already set for %s"
 #~ msgstr "Nom logique %s déjà indiqué pour %s."
@@ -9343,6 +9422,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "add entry in a document forum"
 #~ msgstr "répondre"
+
+#~ msgid "add new category"
+#~ msgstr "ajout nouvelle catégorie"
 
 #~ msgid "alive"
 #~ msgstr "vivant"
@@ -9527,6 +9609,10 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "goto forum"
 #~ msgstr "aller au forum"
 
+#~ msgid "import Xml extract : file %s not found"
+#~ msgstr ""
+#~ "Erreur lors de l'extraction de l'importation XML: fichier %s introuvable"
+
 #~ msgid "interface to change document option"
 #~ msgstr "interface pour changer les options d'un document"
 
@@ -9548,6 +9634,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "modoption: document [%d] is not alive"
 #~ msgstr "modoption: document [%d] n'est pas en vie"
 
+#~ msgid "new category"
+#~ msgstr "Nouvelle catégorie"
+
 #~ msgid "new forum answer"
 #~ msgstr "ajouter une entrée"
 
@@ -9556,6 +9645,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "no delay specified in timer %s [%d]"
 #~ msgstr "pas de durée spécifiée dans le minuteur %s [%d]"
+
+#~ msgid "no father category (its a top category)"
+#~ msgstr "pas de catégorie père (catégorie primaire)"
 
 #~ msgid "no login : passwd unchanged"
 #~ msgstr "pas de login : mot de passe inchangé"
@@ -9583,6 +9675,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "query [%s] not valid for select document"
 #~ msgstr "la requête [%s] n'est pas valide pour une sélection de documents"
+
+#~ msgid "refresh directory"
+#~ msgstr "rafraichir le dossier"
 
 #~ msgid "response for this forum entry"
 #~ msgstr "réponse pour cette entrée"

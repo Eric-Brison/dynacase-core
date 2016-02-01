@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fdl="fdloptions.xsd">
+  <xs:include schemaLocation="fdl.xsd"/>
+  <xs:complexType name="family-role-type">
+    <xs:all>
+      <xs:element name="role_fr_ident" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <fdl:label>Identification</fdl:label>
+            <fdl:type>frame</fdl:type>
+            <fdl:visibility>W</fdl:visibility>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="role_login" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Référence</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>R</fdl:visibility>
+                  <fdl:constraint>
+                    <fdl:method>::isUniqueLogin(ROLE_LOGIN)</fdl:method>
+                  </fdl:constraint>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                        	
+                                
+                                
+                        </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="role_name" minOccurs="1" maxOccurs="1" nillable="false">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Libellé</fdl:label>
+                  <fdl:type>text</fdl:type>
+                  <fdl:visibility>W</fdl:visibility>
+                  <fdl:title>true</fdl:title>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:token">
+                  <xs:minLength value="1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="us_whatid" minOccurs="0" maxOccurs="1" nillable="true">
+              <xs:annotation>
+                <xs:documentation>
+                  <fdl:label>Identifiant système</fdl:label>
+                  <fdl:type>int</fdl:type>
+                  <fdl:visibility>R</fdl:visibility>
+                  <fdl:constraint>
+                    <fdl:method>::isInteger(us_whatid)</fdl:method>
+                  </fdl:constraint>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">       
+                        </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+    <xs:attribute name="id" type="xs:integer"/>
+    <xs:attribute name="name" type="xs:token"/>
+    <xs:attribute name="version" type="xs:token"/>
+    <xs:attribute name="key" type="xs:token"/>
+    <xs:attribute name="revision" type="xs:integer"/>
+    <xs:attribute name="state" type="xs:token"/>
+    <xs:attribute name="title" type="xs:token"/>
+    <xs:attribute name="folders" type="xs:token"/>
+    <xs:attribute name="modification-date" type="xs:dateTime"/>
+  </xs:complexType>
+  <xs:element name="role" type="family-role-type">
+    <xs:annotation>
+      <xs:documentation>
+        <fdl:label>rôle</fdl:label>
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

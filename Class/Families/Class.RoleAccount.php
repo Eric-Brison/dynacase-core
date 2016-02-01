@@ -87,7 +87,7 @@ class RoleAccount extends \Dcp\Family\Document
                 $sR->login = $this->getRawValue('role_login');
                 $sR->lastname = $this->getRawValue('role_name');
                 $sR->fid = $this->initid;
-                $sR->accounttype = 'R';
+                $sR->accounttype = \Account::ROLE_TYPE;
                 $sR->password_new = uniqid("role");
                 /** @noinspection PhpDeprecationInspection */
                 $sR->isgroup = 'N';

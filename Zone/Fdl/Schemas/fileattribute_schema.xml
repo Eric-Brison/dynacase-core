@@ -1,7 +1,7 @@
 <xs:element name="[aname]" minOccurs="[minOccurs]" maxOccurs="[maxOccurs]" type="fdl-file" nillable="[isnillable]">
-        <xs:annotation><xs:appinfo xmlns:fdl="http://www.dynacase.org/schema">
+        <xs:annotation><xs:documentation >
                 [appinfos]
                
-         </xs:appinfo> </xs:annotation>
+         </xs:documentation> </xs:annotation>
        
 </xs:element>

@@ -36,7 +36,7 @@ class DocSearch extends PDocSearch
      */
     public $folderRecursiveLevel = 2;
     
-    function DocSearch($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         
         PDocSearch::__construct($dbaccess, $id, $res, $dbid);

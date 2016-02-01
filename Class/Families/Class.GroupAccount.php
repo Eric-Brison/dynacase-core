@@ -11,8 +11,8 @@ namespace Dcp\Core;
 /**
  * Class GroupAccount
  *
- * @method \Account getAccount
- * @method array getSystemIds
+ * @method \Account getAccount($a=false)
+ * @method array getSystemIds($a)
  * @method string setGroups
  */
 class GroupAccount extends \Dcp\Family\Group
@@ -38,7 +38,7 @@ class GroupAccount extends \Dcp\Family\Group
         $err = "";
         $this->AddParamRefresh("US_WHATID", "GRP_MAIL,US_LOGIN");
         // refresh MEID itself
-        $this->SetValue("US_MEID", $this->id);
+        $this->setValue("US_MEID", $this->id);
         $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
@@ -146,7 +146,6 @@ class GroupAccount extends \Dcp\Family\Group
     }
     public function synchronizeSystemGroup()
     {
-        $uid = $this->getRawValue("US_WHATID");
         $gname = $this->getRawValue("GRP_NAME");
         $login = $this->getRawValue("US_LOGIN");
         $roles = $this->getMultipleRawValues("grp_roles");
@@ -168,7 +167,9 @@ class GroupAccount extends \Dcp\Family\Group
             $this->modify(false, array(
                 "us_whatid"
             ));
-            if ($user) $err = $this->setGroups();
+            if ($user) {
+                $this->setGroups();
+            }
             // get members
             //$this->RefreshGroup(); // in postinsert
             //    $this->refreshParentGroup();
@@ -199,7 +200,7 @@ class GroupAccount extends \Dcp\Family\Group
      * compute the mail of the group
      * concatenation of each user mail and group member mail
      *
-     *
+     * @param bool $nomail if true no mail will be computed
      * @return string error message, if no error empty string
      */
     public function setGroupMail($nomail = false)
@@ -213,6 +214,7 @@ class GroupAccount extends \Dcp\Family\Group
     }
     /**
      * return concatenation of mail addresses
+     * @param bool $rawmail if true only raw address will be returned else complete address with firstname and lastname are returned
      * @return string
      */
     public function getMail($rawmail = false)
@@ -232,6 +234,8 @@ class GroupAccount extends \Dcp\Family\Group
     }
     /**
      * update groups table in USER database
+     * @param int $docid
+     * @param bool $multiple
      * @return string error message
      */
     function postInsertDocument($docid, $multiple = false)
@@ -264,6 +268,7 @@ class GroupAccount extends \Dcp\Family\Group
     }
     /**
      * update groups table in USER database
+     * @param array $tdocid
      * @return string error message
      */
     function postInsertMultipleDocuments($tdocid)
@@ -299,6 +304,8 @@ class GroupAccount extends \Dcp\Family\Group
     }
     /**
      * update groups table in USER database before suppress
+     * @param int $docid
+     * @param bool $multiple
      * @return string error message
      */
     function postRemoveDocument($docid, $multiple = false)
@@ -402,12 +409,12 @@ class GroupAccount extends \Dcp\Family\Group
         if ($wid > 0) {
             $wuser = $this->getAccount(true);
             if ($wuser->isAffected()) {
-                $this->SetValue("US_WHATID", $wuser->id);
-                $this->SetValue("GRP_NAME", $wuser->lastname);
-                //   $this->SetValue("US_FNAME",$wuser->firstname);
-                $this->SetValue("US_LOGIN", $wuser->login);
+                $this->setValue("US_WHATID", $wuser->id);
+                $this->setValue("GRP_NAME", $wuser->lastname);
+                //   $this->setValue("US_FNAME",$wuser->firstname);
+                $this->setValue("US_LOGIN", $wuser->login);
                 
-                $this->SetValue("US_MEID", $this->id);
+                $this->setValue("US_MEID", $this->id);
                 // search group of the group
                 $g = new \Group("", $wid);
                 $tglogin = $tgid = array();
@@ -417,13 +424,15 @@ class GroupAccount extends \Dcp\Family\Group
                         $tgid[$gid] = $gt->fid;
                         $tglogin[$gid] = $this->getTitle($gt->fid);
                     }
-                    $this->SetValue("GRP_IDPGROUP", $tgid);
+                    $this->setValue("GRP_IDPGROUP", $tgid);
                 } else {
-                    $this->SetValue("GRP_IDPGROUP", " ");
+                    $this->setValue("GRP_IDPGROUP", " ");
                 }
+                $this->setValue("grp_roles", $wuser->getRoles(false));
                 $err = $this->modify(true, array(
                     "us_whatid",
                     "grp_name",
+                    "grp_roles",
                     "us_login",
                     "us_meid",
                     "grp_idgroup"
@@ -446,11 +455,11 @@ class GroupAccount extends \Dcp\Family\Group
             $u = $this->getAccount(true);
             
             $tu = $u->GetUsersGroupList($wid, true);
-            $tulogin = $tglogin = '';
+            $tglogin = '';
             if (count($tu) > 0) {
                 
                 foreach ($tu as $uid => $tvu) {
-                    if ($tvu["accounttype"] == "G") {
+                    if ($tvu["accounttype"] == \Account::GROUP_TYPE) {
                         $tgid[$uid] = $tvu["fid"];
                         //	  $tglogin[$uid]=$this->getTitle($tvu["fid"]);
                         $tglogin[$tvu["fid"]] = $tvu["lastname"];
@@ -460,7 +469,7 @@ class GroupAccount extends \Dcp\Family\Group
             
             if (is_array($tglogin)) {
                 uasort($tglogin, "strcasecmp");
-                $this->SetValue("GRP_IDGROUP", array_keys($tglogin));
+                $this->setValue("GRP_IDGROUP", array_keys($tglogin));
             } else {
                 $this->clearValue("GRP_IDGROUP");
             }
@@ -472,7 +481,7 @@ class GroupAccount extends \Dcp\Family\Group
     /**
      * Flush/empty group's content
      */
-    function Clear()
+    function clear()
     {
         $err = '';
         $content = $this->getContent(false);

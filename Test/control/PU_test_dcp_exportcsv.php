@@ -344,8 +344,8 @@ class TestExportCsv extends TestCaseDcpCommonFamily
                 "enclosure" => "'",
                 "profil" => array(
                     "TST_PROFEXPORT" => array(
-                        4 => "view=GADMIN",
-                        5 => "view=GDEFAULT"
+                        4 => "view=GDEFAULT",
+                        5 => "view=GADMIN"
                     )
                 )
             )

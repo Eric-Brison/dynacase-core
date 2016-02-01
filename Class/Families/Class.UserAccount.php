@@ -12,8 +12,8 @@ namespace Dcp\Core;
 use Dcp\AttributeIdentifiers\Iuser as MyAttributes;
 /**
  * Class UserAccount
- * @method \Account getAccount
- * @method array getSystemIds
+ * @method \Account getAccount($a=false)
+ * @method array getSystemIds($a)
  * @method string setGroups
  */
 class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
@@ -75,7 +75,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     }
     /**
      * get all direct group document identificators of the isuser
-     * @return @array of group document id, the index of array is the system identifier
+     * @return array of group document id, the index of array is the system identifier
      */
     public function getUserGroups()
     {
@@ -92,12 +92,13 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     /**
      * return all direct group and parent group document identificators of $gid
      * @param string $gid systeme identifier group or users
+     * @return array
      */
     protected function getAscendantGroup($gid)
     {
         $groupIds = array();
         if ($gid > 0) {
-            $err = simpleQuery($this->dbaccess, sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $gid) , $groupIds, false, false);
+            simpleQuery($this->dbaccess, sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $gid) , $groupIds, false, false);
             $gids = array(); // current level
             $pgids = array(); // fathers
             foreach ($groupIds as $gid) {
@@ -113,7 +114,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     }
     /**
      * get all direct group and parent group document identificators of the isuser
-     * @return @array of group document id the index of array is the system identifier
+     * @return int[] of group document id the index of array is the system identifier
      */
     public function getAllUserGroups()
     {
@@ -168,8 +169,14 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                 $this->SetValue("us_roles", $rolesIds);
                 
                 $mail = $wuser->getMail();
-                if (!$mail) $this->clearValue(MyAttributes::us_mail);
-                else $this->SetValue(MyAttributes::us_mail, $mail);
+                if (!$mail) {
+                    $this->clearValue(MyAttributes::us_extmail);
+                    $this->clearValue(MyAttributes::us_mail);
+                } else {
+                    $this->SetValue(MyAttributes::us_mail, $mail);
+                    $this->SetValue(MyAttributes::us_extmail, $mail);
+                }
+                
                 if ($wuser->passdelay <> 0) {
                     $this->SetValue(MyAttributes::us_expiresd, strftime("%Y-%m-%d", $wuser->expires));
                     $this->SetValue(MyAttributes::us_expirest, strftime("%H:%M", $wuser->expires));
@@ -264,12 +271,10 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     function synchronizeSystemUser()
     {
         $err = '';
-        $uid = $this->getRawValue("us_whatid");
         $lname = $this->getRawValue("us_lname");
         $fname = $this->getRawValue("us_fname");
         $pwd1 = $this->getRawValue("us_passwd1");
         $pwd2 = $this->getRawValue("us_passwd2");
-        $expires = $this->getRawValue("us_expires");
         $daydelay = $this->getRawValue("us_daydelay");
         if ($daydelay == - 1) $passdelay = $daydelay;
         else $passdelay = intval($daydelay) * 3600 * 24;
@@ -351,6 +356,8 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     /**
      * Do not call ::setGroup if its import
      * called only in initialisation
+     * @param array $extra
+     * @return string|void
      */
     function preImport(array $extra = array())
     {
@@ -386,7 +393,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         $allParents = $u->getUserParents();
         $allRoles = $allGroup = array();
         foreach ($allParents as $aParent) {
-            if ($aParent["accounttype"] == 'R') $allRoles[] = $aParent;
+            if ($aParent["accounttype"] == \Account::ROLE_TYPE) $allRoles[] = $aParent;
             else $allGroup[] = $aParent;
         }
         
@@ -401,7 +408,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                     "us_rolegorigin" => $group
                 ));
             }
-            $group = '';
+            
             $rid = $role["id"];
             $tgroup = array();
             foreach ($allGroup as $aGroup) {
@@ -543,6 +550,13 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         }
         return '';
     }
+    /**
+     * Constraint to verify expiration data
+     * @param $expiresd
+     * @param $expirest
+     * @param $daydelay
+     * @return array
+     */
     function constraintExpires($expiresd, $expirest, $daydelay)
     {
         $err = '';
@@ -590,6 +604,8 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     }
     /**
      * Set/change user password
+     * @param string $password password to crypt
+     * @return string
      */
     function setPassword($password)
     {
@@ -617,7 +633,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         $lf = intval($this->getRawValue("us_loginfailure", 0)) + 1;
         $err = $this->SetValue("us_loginfailure", $lf);
         if ($err == "") {
-            $err = $this->modify(false, array(
+            $this->modify(false, array(
                 "us_loginfailure"
             ) , false);
         }
