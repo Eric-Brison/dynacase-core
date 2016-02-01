@@ -521,15 +521,15 @@ class TestAutocompletion extends TestCaseDcpAction
                     'fam' => 'TST_AUTOCOMPLETION',
                     'attr' => 'DEFAULTPHPFUNC_ACCOUNT',
                     'http:vars' => array(
-                        '_ilink_defaultphpfunc_account' => 'bar',
+                        '_ilink_defaultphpfunc_account' => 'barfirst',
                         'defaultphpfunc' => 'yes'
                     ) ,
                     'expected:warning' => '',
                     'expected:results' => array(
                         array(
-                            'bar bar',
+                            'barlast barfirst',
                             new \Dcp\Pu\LateNameResolver('TST_AUTOCOMPLETION_U_BAR') ,
-                            'bar bar'
+                            'barlast barfirst'
                         )
                     ) ,
                     'expected:cibles' => array(
