@@ -589,7 +589,7 @@ class DirectoriesAutoloader
      */
     public function classExists($pClassName)
     {
-        $className = strtolower($pClassName);
+        $className = ltrim(strtolower($pClassName),"\\");
         if (count($this->_classes) === 0) {
             if (is_readable($this->getCacheFilePath())) {
                 $classes = array();
