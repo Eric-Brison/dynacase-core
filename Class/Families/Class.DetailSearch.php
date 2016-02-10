@@ -779,8 +779,10 @@ class DetailSearch extends \Dcp\Family\Search
                     else $tkey[$k] = $rv;
                 }
                 if ($taid[$k] == "revdate") {
-                    list($dd, $mm, $yyyy) = explode("/", $tkey[$k]);
-                    if ($yyyy > 0) $tkey[$k] = mktime(0, 0, 0, $mm, $dd, $yyyy);
+                    if (substr_count($tkey[$k],'/') === 2) {
+                        list($dd, $mm, $yyyy) = explode("/", $tkey[$k]);
+                        if ($yyyy > 0) $tkey[$k] = mktime(0, 0, 0, $mm, $dd, $yyyy);
+                    }
                 }
             }
             foreach ($taid as $k => $v) {
