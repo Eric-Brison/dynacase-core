@@ -18,7 +18,7 @@ function fdl_setusertag(Action & $action)
 {
     // -----------------------------------
     $usage = new ActionUsage($action);
-    $usage->setText("add user tag to a document");
+    $usage->setDefinitionText("add user tag to a document");
     $docid = $usage->addRequiredParameter("id", "document identifier");
     $tagName = $usage->addRequiredParameter("tag", "tag name");
     $tagValue = $usage->addOptionalParameter("value", "tag value");
@@ -40,4 +40,3 @@ function fdl_setusertag(Action & $action)
     $action->lay->template = json_encode($out);
     $action->lay->noparse = true;
 }
-?>

@@ -22,7 +22,7 @@ function impcard(Action & $action)
 {
     // GetAllParameters
     $usage = new ActionUsage($action);
-    $usage->setText("view document in HTML page");
+    $usage->setDefinitionText("view document in HTML page");
     $docid = $usage->addRequiredParameter("id", "document identifier");
     $mime = $usage->addOptionalParameter("mime", "other mime type header to send");
     $ext = $usage->addOptionalParameter("ext", "file extension if inline is no", null, "html");

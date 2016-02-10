@@ -29,7 +29,7 @@ function freedom_import(Action & $action)
     global $_FILES;
     
     $usage = new ActionUsage($action);
-    $usage->setText("Import documents");
+    $usage->setDefinitionText("Import documents");
     $separator = $usage->addOptionalParameter("separator", "character to delimiter fields - generaly a comma", function ($values, $argName, ApiUsage $apiusage)
     {
         if ($values === ApiUsage::GET_USAGE) {
@@ -147,4 +147,3 @@ function freedom_import(Action & $action)
     if (isset($_FILES["file"])) @unlink($csvfile); // tmp file
     
 }
-?>

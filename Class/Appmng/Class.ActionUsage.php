@@ -11,13 +11,13 @@
  * @class ActionUsage
  * @code
  $usage = new ActionUsage();
- $usage->setText("Refresh documents ");
- $usage->addNeeded("famid", "the family filter");
- $usage->addOption("revision", "use all revision - default is no", array(
+ $usage->setDescriptionText("Refresh documents ");
+ $usage->addRequiredParameter("famid", "the family filter");
+ $usage->addOptionalParameter("revision", "use all revision - default is no", array(
  "yes",
  "no"
  ));
- $usage->addOption("save", "use modify default is light", array(
+ $usage->addOptionalParameter("save", "use modify default is light", array(
  "complete",
  "light",
  "none"
