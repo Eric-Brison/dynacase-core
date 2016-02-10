@@ -70,7 +70,7 @@ function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredi
     }
     $viewext = isset($_GET["viewext"]) ? $_GET["viewext"] : (isset($_POST["viewext"]) ? $_POST["viewext"] : "");
     if ($viewext === "yes") {
-        if (\Dcp\Autoloader::classExists("\\Dcp\\ExtUi\\defaultMenu")) {
+        if (\Dcp\Autoloader::classExists("Dcp\\ExtUi\\defaultMenu")) {
             /** @noinspection PhpUndefinedNamespaceInspection */
             /** @noinspection PhpUndefinedClassInspection */
             $location = \Dcp\ExtUi\defaultMenu::convertToExtUrl($location);
