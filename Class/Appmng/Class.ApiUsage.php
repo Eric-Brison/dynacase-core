@@ -12,13 +12,13 @@ namespace {
      * @brief Verify arguments for wsh programs
      * @code
      $usage = new ApiUsage();
-     $usage->setText("Refresh documents ");
-     $usage->addNeeded("famid", "the family filter");
-     $usage->addOption("revision", "use all revision - default is no", array(
+     $usage->setDescriptionText("Refresh documents ");
+     $usage->addRequiredParameter("famid", "the family filter");
+     $usage->addOptionalParameter("revision", "use all revision - default is no", array(
      "yes",
      "no"
      ));
-     $usage->addOption("save", "use modify default is light", array(
+     $usage->addOptionalParameter("save", "use modify default is light", array(
      "complete",
      "light",
      "none"
@@ -124,8 +124,9 @@ namespace {
         /**
          * add textual definition of program
          *
+         * @see setDefinitionText
          * @param string $text usage text
-         *
+         * @deprecated use { @link ApiUsage::setDefinitionText } instead
          * @return void setText
          */
         public function setText($text)
@@ -150,7 +151,7 @@ namespace {
          *
          * @see ApiUsage::addHiddenParameter
          *
-         * @deprecated use { @link Application::addHiddenParameter } instead
+         * @deprecated use { @link ApiUsage::addHiddenParameter } instead
          *
          * @param string $argName argument name
          * @param string $argDefinition argument définition
@@ -185,7 +186,7 @@ namespace {
          *
          * @see ApiUsage::addRequiredParameter
          *
-         * @deprecated use { @link Application::addRequiredParameter } instead
+         * @deprecated use { @link ApiUsage::addRequiredParameter } instead
          *
          * @param string $argName argument name
          * @param string $argDefinition argument définition
@@ -222,9 +223,9 @@ namespace {
         /**
          * add optional argument
          *
-         * @see addOptionalParameter::addOptionParameter
+         * @see ApiUsage::addOptionParameter
          *
-         * @deprecated use { @link Application::addOptionParameter } instead
+         * @deprecated use { @link ApiUsage::addOptionParameter } instead
          * @param string $argName argument name
          * @param string $argDefinition argument définition
          * @param array $restriction optional enumeration for argument
@@ -264,7 +265,7 @@ namespace {
          *
          * @see ApiUsage::addEmptyParameter
          *
-         * @deprecated use { @link Application::addEmptyParameter } instead
+         * @deprecated use { @link ApiUsage::addEmptyParameter } instead
          *
          * @param string $argName argument name
          * @param string $argDefinition argument definition

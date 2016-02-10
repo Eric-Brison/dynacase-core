@@ -27,7 +27,7 @@ function exportfile(Action & $action)
 {
     $dbaccess = $action->dbaccess;
     $usage = new ActionUsage($action);
-    $usage->setText("Download document attached file");
+    $usage->setDefinitionText("Download document attached file");
     $docid = $usage->addOptionalParameter("docid", "document identifier", null, 0);
     if (!$docid) {
         $docid = $usage->addHiddenParameter("id", "document identifier");
