@@ -68,7 +68,7 @@ function settxtfile(Action & $action)
                                         } else {
                                             if ($doc->AffectColumn(array(
                                                 $at
-                                            ))) {
+                                            ), false)) {
                                                 $doc->$at = sep_replace($doc->$at, $index, str_replace("\n", " ", file_get_contents($filename)));
                                             }
                                         }
