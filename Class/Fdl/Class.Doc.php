@@ -557,6 +557,8 @@ class Doc extends DocCtrl
      * @var string last modify error when refresh
      */
     private $lastRefreshError = '';
+    private $formaterLevel = 0;
+    private $otherFormatter= array();
     /**
      * identification of special views
      *
@@ -1868,6 +1870,8 @@ create unique index i_docir on doc(initid, revision);";
                 $this->lastRefreshError = '';
                 $this->mvalues = array();
                 $this->oooFormater = null;
+                $this->formaterLevel=0;
+                $this->otherFormatter=array();
             }
             $this->isset = true;
             $this->postAffect($array, $more, $reset);
@@ -6373,25 +6377,23 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getHtmlValue($oattr, $value, $target = "_self", $htmllink = true, $index = - 1, $entities = true, $abstract = false)
     {
-        static $level = 0;
-        static $otherFormatter = array();;
         if (!$this->htmlFormater) {
             $this->htmlFormater = new DocHtmlFormat($this);
         }
-        if ($level == 0) {
+        if ($this->formaterLevel == 0) {
             $htmlFormater = & $this->htmlFormater;
         } else {
-            if (!isset($otherFormatter[$level])) {
-                $otherFormatter[$level] = new DocHtmlFormat($this);
+            if (!isset($this->otherFormatter[$this->formaterLevel])) {
+                $this->otherFormatter[$this->formaterLevel] = new DocHtmlFormat($this);
             }
-            $htmlFormater = $otherFormatter[$level];
+            $htmlFormater = $this->otherFormatter[$this->formaterLevel];
         }
         if ($htmlFormater->doc->id != $this->id) {
             $htmlFormater->setDoc($this);
         }
-        $level++;
+        $this->formaterLevel++;
         $r = $htmlFormater->getHtmlValue($oattr, $value, $target, $htmllink, $index, $entities, $abstract);
-        $level--;
+        $this->formaterLevel--;
         return $r;
     }
     /**
