@@ -6,7 +6,7 @@
    <title>[TEXT:Properties:] [TITLE]</title>
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
 
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&amp;action=ALLVIEWCSS&amp;wv=[WVERSION]" >
 
 
 [CSS:REF]
@@ -26,7 +26,7 @@
  </head>
 
 <body class="freedom" 
-      onload="autoVresize()";
+      onload="autoVresize();"
       onClick="closeMenu('popupcard');" >
 
 

@@ -86,11 +86,6 @@ $action_desc = array (
    "short_name"		=>N_("Freedoms list by column"),
    "acl"		=>"FREEDOM_READ"
   ) ,
-  array( 
-   "name"		=>"ENUM_CHOICE",
-   "short_name"		=>N_("to choose value from set"),
-   "acl"		=>"FREEDOM"
-  ) ,
   array(
    "name"		=>"FREEDOM_MAINIMPORT",
    "short_name"		=>N_("main interface document import"),

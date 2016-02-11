@@ -98,11 +98,6 @@ $action_desc = array(
         "acl" => "FAMILY"
     ),
     array(
-        "name" => "ENUM_CHOICE",
-        "short_name" => N_("to choose value from set"),
-        "acl" => "NORMAL",
-    ),
-    array(
         "name" => "SPECIALHELP",
         "short_name" => N_("to choose value from special interface"),
         "acl" => "NORMAL",

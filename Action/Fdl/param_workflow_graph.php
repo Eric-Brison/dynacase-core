@@ -28,12 +28,10 @@ include_once ("FDL/Class.WDoc.php");
 function param_workflow_graph(&$action)
 {
     $docid = GetHttpVars("id");
-    $viewdoc = (GetHttpVars("viewdoc", "N") == "Y");
-    $type = GetHttpVars("type", "simple"); // type of graph
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js");
     
     $dbaccess = $action->dbaccess;
     
     $doc = new_doc($dbaccess, $docid);
-    $action->lay->set("id", $doc->id);
+    $action->lay->rSet("id", $doc->id);
 }

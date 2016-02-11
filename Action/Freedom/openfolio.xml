@@ -13,15 +13,15 @@ function frameLoaded() {
 	if(nb_frames_loaded == 6) {
 		try {
 			var w = window.frames['ffoliotab'];
-			if('[VIEWSTATE]' == 0) {
+			if([VIEWSTATE] == 0) {
 				w.setone();
 			}
-			else if('[VIEWSTATE]' >= 3) {
+			else if([VIEWSTATE] >= 3) {
 				w.setthree();
 			}
 			w.setview([VIEWSTATE]);
-			if('[TABSELECTED]') {
-				w.selecttab(null,'[TABSELECTED]');
+			if([TABSELECTED]) {
+				w.selecttab(null, [TABSELECTED]);
 			}
 		}
 		catch(e) {
@@ -92,7 +92,7 @@ function xhr_send(datas) {
 
 <frameset name="ffolio" id="ffolio" border="0" rows="35px,*" >
 
-	<frame name="ffoliotab" id="ffoliotab" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOTAB&id=[docid]" scrolling="no" onload="frameLoaded()">
+	<frame name="ffoliotab" id="ffoliotab" src="[CORE_STANDURL]&amp;app=FREEDOM&amp;action=FOLIOTAB&amp;id=[docid]" scrolling="no" onload="frameLoaded()">
 
 	<frameset name="ffoliocontent" border="2" cols="[FRAMELISTWIDTH]px,*" scrolling="no">
 
@@ -101,12 +101,12 @@ function xhr_send(datas) {
 		<frameset id="ffolios" name="ffolios" cols="50%,*" border="2">
 
 			<frameset rows="0,*" border="0">
-				<frame name="fsel0" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOSEL&selid=0&selected=N" scrolling="no" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frameLoaded()">
+				<frame name="fsel0" src="[CORE_STANDURL]&amp;app=FREEDOM&amp;action=FOLIOSEL&amp;selid=0&amp;selected=N" scrolling="no" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frameLoaded()">
 				<frame name="folio0" src="[CORE_STANDURL][FRAME1]" scrolling="needed" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frame1Loaded()">
 			</frameset>
 
 			<frameset rows="0,*" border="0">
-				<frame name="fsel1" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOSEL&selid=1&selected=Y" scrolling="no" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frameLoaded()">
+				<frame name="fsel1" src="[CORE_STANDURL]&amp;app=FREEDOM&amp;action=FOLIOSEL&amp;selid=1&amp;selected=Y" scrolling="no" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frameLoaded()">
 				<frame name="folio1" src="[CORE_STANDURL][FRAME2]" scrolling="needed" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frame2Loaded()">
 			</frameset>
 

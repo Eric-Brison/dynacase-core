@@ -45,7 +45,7 @@ function viewtimers(Action & $action)
             $iprev = $timer->getPrevisions($v["attachdate"], $v["tododate"], $v["level"]);
             foreach ($iprev as $pk => $pv) {
                 $iprev[$pk]["timerid"] = $timer->id;
-                $iprev[$pk]["timertitle"] = $timer->getTitle();
+                $iprev[$pk]["timertitle"] = $timer->getHTMLTitle();
             }
             $prev = array_merge($prev, $iprev);
         }
@@ -55,24 +55,24 @@ function viewtimers(Action & $action)
         $prev[$k]["tmaila"] = "";
         $prev[$k]["state"] = "";
         $prev[$k]["method"] = "";
-        if ($v["actions"]["state"]) $prev[$k]["state"] = _($v["actions"]["state"]);
+        if ($v["actions"]["state"]) $prev[$k]["state"] = htmlspecialchars(_($v["actions"]["state"]) , ENT_QUOTES);
         else $prev[$k]["state"] = false;
         if ($v["actions"]["tmail"]) {
             $prev[$k]["tmail"] = true;
             $prev[$k]["tmaila"] = $timer->getHtmlValue($timer->getAttribute("tm_tmail") , $v["actions"]["tmail"]);
         } else $prev[$k]["tmail"] = false;
-        if ($v["actions"]["method"]) $prev[$k]["method"] = _($v["actions"]["method"]);
+        if ($v["actions"]["method"]) $prev[$k]["method"] = htmlspecialchars(($v["actions"]["method"]) , ENT_QUOTES);
         else $prev[$k]["method"] = false;
-        $prev[$k]["hdelay"] = humandelay($v["execdelay"]);
-        $prev[$k]["oddoreven"] = ($k % 2 == 0) ? "even" : "odd";
+        $prev[$k]["hdelay"] = htmlspecialchars(humandelay($v["execdelay"]) , ENT_QUOTES);
+        $prev[$k]["oddoreven"] = htmlspecialchars((($k % 2 == 0) ? "even" : "odd") , ENT_QUOTES);
     }
     
     usort($prev, "sortprevision");
     $action->lay->setBlockData("PREV", $prev);
-    $action->lay->set("docid", $doc->id);
-    $action->lay->set("iconsrc", $doc->getIcon());
-    $action->lay->set("doctitle", $doc->getTitle());
-    $action->lay->set("szone", $szone);
+    $action->lay->rSet("docid", $doc->id);
+    $action->lay->eSet("iconsrc", $doc->getIcon());
+    $action->lay->eSet("doctitle", $doc->getTitle());
+    $action->lay->rSet("szone", $szone);
 }
 
 function sortprevision($a, $b)

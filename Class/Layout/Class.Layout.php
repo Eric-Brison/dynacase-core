@@ -391,6 +391,14 @@ class Layout
         $this->pkey[$tag] = "[$tag]";
         $this->rkey[$tag] = $val;
     }
+    public function rSet($tag, $val)
+    {
+        $this->set($tag, $val);
+    }
+    public function xSet($tag, $val)
+    {
+        $this->rSet($tag, xml_entity_encode_all($val));
+    }
     /**
      * set key/value pair and XML entity encode
      * @param string $tag the key to replace

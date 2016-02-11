@@ -28,14 +28,9 @@ include_once ("FDL/Class.WDoc.php");
 function workflow_graph(Action & $action)
 {
     $docid = GetHttpVars("id");
-    $viewdoc = (GetHttpVars("viewdoc", "N") == "Y");
-    $type = GetHttpVars("type", "simple"); // type of graph
     $dbaccess = $action->dbaccess;
     
     $doc = new_doc($dbaccess, $docid);
-    $action->lay->set("id", $doc->id);
-    $action->lay->set("TITLE", $doc->title);
-    
-    $filetype = "svg";
-    if ($action->Read("navigator", "") == "EXPLORER") $filetype = "png";
+    $action->lay->rSet("id", $doc->id);
+    $action->lay->eSet("TITLE", $doc->getTitle());
 }

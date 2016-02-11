@@ -36,9 +36,8 @@ function gotowask(Action & $action)
     
     if (!$doc->state) $action->exitError(sprintf(_("document '%s' [revision %d] has no state") , $doc->getTitle() , $doc->revision));
     
-    $action->lay->set("comment", sprintf(_("The latest document %s waiting for a answer") , _($doc->state)));
-    $action->lay->set("lstate", _($doc->state));
-    $action->lay->set("title", $doc->getTitle());
-    $action->lay->set("doctitle", sprintf(_("goto latest %s") , _($doc->state)));
-    $action->lay->set("id", $doc->id);
+    $action->lay->eSet("comment", sprintf(_("The latest document %s waiting for a answer") , _($doc->state)));
+    $action->lay->rSet("title", urlencode($doc->getTitle()));
+    $action->lay->eSet("doctitle", sprintf(_("goto latest %s") , _($doc->state)));
+    $action->lay->rSet("id", $doc->id);
 }

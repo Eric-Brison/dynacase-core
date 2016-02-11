@@ -23,5 +23,5 @@ function histo(Action & $action)
     $docid = GetHttpVars("id", 0);
     
     $doc = new_Doc($dbaccess, $docid);
-    $action->lay->Set("title", $doc->title);
+    $action->lay->eSet("title", $doc->getTitle());
 }

@@ -607,6 +607,16 @@ function xml_entity_encode($s)
         "&gt;"
     ) , $s);
 }
+function xml_entity_encode_all($s)
+{
+    return str_replace(array(
+        '"',
+        "'"
+    ) , array(
+        "&quot;",
+        "&apos;"
+    ) , xml_entity_encode($s));
+}
 /**
  * Remove JS and other insecure elements from HTML.
  *
