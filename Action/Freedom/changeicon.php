@@ -38,28 +38,29 @@ function changeicon(Action & $action)
             // if no file specified, keep current file
             if (($fileinfo['tmp_name'] == "none") || ($fileinfo['tmp_name'] == "") || ($fileinfo['size'] == 0)) {
                 $vid = getHttpVars("vid");
-                if ($vid > 0) {
-                    $doc->ChangeIcon("image|" . $vid);
+                
+                $fileVaultInfo = \Dcp\VaultManager::getFileInfo($vid);
+                
+                if ($fileVaultInfo) {
+                    if ($fileVaultInfo->public_access !== "t") {
+                        $action->exitError("File cannot be used as icon");
+                    }
+                    $doc->changeIcon(sprintf("%s|%s|%s", $fileVaultInfo->mime_s, $fileVaultInfo->id_file, $fileVaultInfo->name));
                 } else {
                     $action->addWarningMsg(_("no file specified : change icon aborted"));
                 }
             } else {
                 if (!is_uploaded_file($fileinfo['tmp_name'])) $action->ExitError(_("file not expected : possible attack : update aborted"));
                 
-                preg_match("/(.*)\.(.*)$/", $fileinfo['name'], $reg);
-                $ext = $reg[2];
-                // move to add extension
-                $destfile = str_replace(" ", "_", getTmpDir() . "/" . $fileinfo['name']);
-                move_uploaded_file($fileinfo['tmp_name'], $destfile);
+                $imageSize = getimagesize($fileinfo['tmp_name']);
+                if (!$imageSize) {
+                    $action->exitError("File is not recognized like an image");
+                }
                 
-                $vf = newFreeVaultFile($dbaccess);
+                $vid = \Dcp\VaultManager::storeFile($fileinfo['tmp_name'], $fileinfo['name'], true);
+                $fileVaultInfo = \Dcp\VaultManager::getFileInfo($vid);
                 
-                $err = $vf->Store($destfile, true, $vid);
-                if ($err != "") $action->ExitError($err);
-                
-                $doc->ChangeIcon($fileinfo['type'] . "|" . $vid);
-                
-                unlink($destfile);
+                $doc->changeIcon(sprintf("%s|%s|%s", $fileVaultInfo->mime_s, $fileVaultInfo->id_file, $fileVaultInfo->name));
             }
         }
     }

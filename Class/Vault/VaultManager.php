@@ -40,13 +40,14 @@ class VaultManager
      * return various informations for a file stored in VAULT
      * @param string $filepath
      * @param string $ftitle
+     * @param bool $public_access set to true to store uncontrolled files like icons
+     * @return int
      * @throws Exception
-     * @return int return vault identifier
      */
-    public static function storeFile($filepath, $ftitle = "")
+    public static function storeFile($filepath, $ftitle = "", $public_access = false)
     {
         
-        $err = self::getVault()->store($filepath, false, $vid);
+        $err = self::getVault()->store($filepath, $public_access, $vid);
         if ($err) {
             throw new Exception("VAULT0001", $err);
         }
