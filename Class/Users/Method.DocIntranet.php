@@ -364,7 +364,9 @@ class _IGROUPUSER extends Doc
      */
     protected function postAffect(array $data, $more, $reset)
     {
-        if (isset($this->wuser)) unset($this->wuser);
+        if (isset($this->wuser)) {
+            $this->wuser=null;
+        }
     }
     /**
      * @begin-method-ignore
