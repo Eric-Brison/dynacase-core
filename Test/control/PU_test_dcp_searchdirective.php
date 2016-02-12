@@ -863,6 +863,12 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
+                "100",
+                array(
+                    "TST_FULL11"
+                )
+            ) ,
+            array(
                 "jean-marte",
                 array(
                     "TST_FULL11"
@@ -879,6 +885,18 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 array(
                     "TST_FULL10",
                     "TST_FULL11"
+                )
+            ) ,
+            array(
+                "sous-marin vert",
+                array(
+                    "TST_FULL9",
+                )
+            ) ,
+            array(
+                "sous vert",
+                array(
+                    "TST_FULL9",
                 )
             ) ,
             array(
@@ -1276,6 +1294,58 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL4",
                     "TST_FULL6",
                     "TST_FULL9"
+                )
+            ),
+            array(
+                '2012-01-15',
+                array(
+                    "TST_FULL4"
+                )
+            ),
+            array(
+                '2012-01',
+                array(
+                    "TST_FULL3",
+                    "TST_FULL4",
+                    "TST_FULL5",
+                    "TST_FULL6",
+                    "TST_FULL7",
+                    "TST_FULL2",
+                    "TST_FULL9",
+                    "TST_FULL1",
+                    "TST_FULL8",
+                    "TST_FULL10",
+                    "TST_FULL11"
+                )
+            ),
+            array(
+                '2012-01-15 chiens',
+                array(
+                    "TST_FULL4"
+                )
+            ),
+            array(
+                '2012 15 01 chiens',
+                array(
+                    "TST_FULL4"
+                )
+            ),
+            array(
+                '2012/03/05 john',
+                array(
+                    "TST_FULL10"
+                )
+            ),
+            array(
+                '06 04 2013 john doe',
+                array(
+                    "TST_FULL10"
+                )
+            ),
+            array(
+                '59 356 2012 01',
+                array(
+                    "TST_FULL11"
                 )
             )
         );

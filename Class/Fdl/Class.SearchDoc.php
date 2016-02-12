@@ -889,7 +889,7 @@ class SearchDoc
         };
         
         $filterElements = \Dcp\Lex\GeneralFilter::analyze($keywords);
-        
+
         $isOnlyWord = true;
         foreach ($filterElements as $currentFilter) {
             if (!in_array($currentFilter["mode"], array(
@@ -929,6 +929,10 @@ class SearchDoc
                         $filterElement = self::testSpell($currentElement["word"]);
                     }
                     $rankElement = unaccent($filterElement);
+                    if (is_numeric($filterElement)) {
+                        $filterElement=sprintf("(%s|-%s)",$filterElement, $filterElement);
+                    }
+
                     $words[] = $filterElement;
                     if ($isOnlyWord) {
                         $filterElement = pg_escape_string(unaccent($filterElement));
@@ -1025,7 +1029,7 @@ class SearchDoc
         $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string(preg_replace('/\s+/u', '&', $rank)));
         
         $highlightWords = implode("|", array_merge($words, $stringWords));
-        
+
         return $filter;
     }
     /**
