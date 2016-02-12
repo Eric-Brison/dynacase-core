@@ -67,7 +67,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
         if ($v["visibility"] == POPUP_INACTIVE) {
             if ($v["title"]) {
                 $v["url"] = '';
-                $v["jsfunction"] = htmlspecialchars(sprintf("displayWarningMsg(%s)", json_encode($v['title'])) , ENT_QUOTES);
+                $v["jsfunction"] = htmlLayoutEncode(sprintf("displayWarningMsg(%s)", json_encode($v['title'])) );
             } else {
                 $v["url"] = '#';
                 $v["jsfunction"] = '';
@@ -90,8 +90,9 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
             }
             
             $v["issubmenu"] = false;
-            $v["title"] = htmlspecialchars(mb_ucfirst($v["title"]) , ENT_QUOTES);
-            $v["tconfirm"] = htmlspecialchars(json_encode($v["tconfirm"]) , ENT_QUOTES);
+            $v["title"] = htmlLayoutEncode(mb_ucfirst($v["title"]) );
+            $v["tconfirm"] = htmlLayoutEncode(json_encode($v["tconfirm"]) );
+            $v["descr"] = htmlLayoutEncode($v["descr"] );
             if (!isset($v["visibility"])) $v["visibility"] = "";
             if (!isset($v["confirm"])) $v["confirm"] = "";
             if (!isset($v["color"])) $v["color"] = false;
@@ -131,7 +132,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
                     }
                     $tsubmenu[$smid] = array(
                         "idlink" => $smid,
-                        "descr" => htmlspecialchars(_($v['submenu']) , ENT_QUOTES) ,
+                        "descr" => htmlLayoutEncode(_($v['submenu'])) ,
                         "icon" => $v["icon"],
                         "visibility" => false,
                         "ICONS" => "mainicon",
@@ -172,7 +173,6 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
         // ctrlkey submenu at bottom
         $rlink = array_merge($rlink, $rlinkbottom);
     }
-    
     $action->lay->Set("mainicon", $useicon);
     $action->lay->SetBlockData("ADDLINK", $rlink);
     $action->lay->SetBlockData("SUBMENU", $tsubmenu);
@@ -180,4 +180,8 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
     $action->lay->Set("count", count($tlink));
     $action->lay->Set("SEP", (count($tsubmenu) > 0)); // to see separator
     $action->lay->set("delay", microtime_diff(microtime() , $mb));
+}
+
+function htmlLayoutEncode($v) {
+   return str_replace("[", "&#091;",htmlspecialchars($v , ENT_QUOTES));
 }

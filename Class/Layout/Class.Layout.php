@@ -91,6 +91,8 @@ class Layout
      * @var array
      */
     protected $pkey = array();
+
+    protected $zoneLevel=0;
     /**
      * @var Action
      */
@@ -323,6 +325,8 @@ class Layout
         }
         
         if ($this->action == "") return ("Layout not used in a core environment");
+
+        $this->zoneLevel++;
         // analyse action & its args
         $actionargn = str_replace(":", "--", $actionargn); //For buggy function parse_url in PHP 4.3.1
         $acturl = parse_url($actionargn);
@@ -333,7 +337,7 @@ class Layout
         if (isset($acturl["query"])) {
             $acturl["query"] = str_replace("--", ":", $acturl["query"]); //For buggy function parse_url in PHP 4.3.1
             $zargs = explode("&", $acturl["query"]);
-            while (list($k, $v) = each($zargs)) {
+            foreach ($zargs as $v) {
                 if (preg_match("/([^=]*)=(.*)/", $v, $regs)) {
                     // memo zone args for next action execute
                     $ZONE_ARGS[$regs[1]] = urldecode($regs[2]);
@@ -374,6 +378,8 @@ class Layout
             }
             
             $ZONE_ARGS = $OLD_ZONE_ARGS; // restore old zone args
+
+            $this->zoneLevel--;
             return ($res);
         } else {
             return ("Fatal loop : $actionname is called in $actionname");
@@ -406,7 +412,7 @@ class Layout
      */
     public function eSet($tag, $val)
     {
-        $this->set($tag, htmlspecialchars($val, ENT_QUOTES));
+        $this->set($tag, str_replace("[ZONE","&#091;ZONE",htmlspecialchars($val, ENT_QUOTES)));
     }
     /**
      * return the value set for a key
@@ -576,7 +582,7 @@ class Layout
         $list = $this->action->parent->GetCssCode();
         reset($list);
         $out = "";
-        while (list($k, $v) = each($list)) {
+        foreach ($list as $v) {
             $out.= $v . "\n";
         }
         return ($out);
@@ -609,17 +615,16 @@ class Layout
     {
         if ($this->noparse) return $this->template;
         // if used in an app , set the app params
-        if (is_object($this->action) && (!empty($this->action->parent))) {
-            $list = $this->action->parent->GetAllParam();
-            foreach ($list as $k => $v) {
-                if (!is_scalar($v)) $v = "notScalar";
-                $this->set($k, $v);
-            }
-        }
         $out = $this->template;
-        
-        $this->ParseBlock($out);
+
         $this->rif = & $this->rkey;
+        $this->parseApplicationParameters($out, false);
+
+        $this->ParseBlock($out);
+
+        $this->rif = & $this->rkey;
+        $this->parseApplicationParameters($out, true);
+
         $this->ParseIf($out);
         // Parse IMG: and LAY: tags
         $this->ParseText($out);
@@ -630,6 +635,34 @@ class Layout
         $this->ParseCss($out);
         
         return ($out);
+    }
+
+    /**
+     * Use application parameters like keys
+     * @param string $out current template
+     * @param bool $addIf if true replace key with application parameters else use conditions
+     */
+    protected function parseApplicationParameters(&$out, $addIf)
+    {
+        if ( is_object($this->action) && (!empty($this->action->parent))) {
+            $keys = $pval = array();
+            $list = $this->action->parent->GetAllParam();
+
+            if ($addIf) {
+                foreach ($list as $k => $v) {
+                    $this->rif[$k] = !empty($v);
+                }
+            } elseif ($this->zoneLevel === 0) {
+                foreach ($list as $k => $v) {
+                    if (!is_scalar($v)) $v = "notScalar";
+                    $keys[] = "[$k]";
+                    $pval[] = $v;
+                }
+            }
+
+
+            $out = str_replace($keys, $pval, $out);
+        }
     }
     /**
      * Count number of execute() calls on the stack to detect infinite recursive loops
