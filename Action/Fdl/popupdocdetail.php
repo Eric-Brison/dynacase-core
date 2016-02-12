@@ -82,7 +82,7 @@ function getpopupdocdetail(Action & $action, $docid)
             "url" => "$surl&app=GENERIC&action=GENERIC_DEL&id=$docid",
             "confirm" => "true",
             "control" => "false",
-            "tconfirm" => sprintf(_("Sure delete %s ?") , $doc->title) ,
+            "tconfirm" => sprintf(_("Sure delete %s ?") , $doc->getTitle()) ,
             "target" => "_self",
             "visibility" => POPUP_INACTIVE,
             "submenu" => "",
@@ -340,7 +340,7 @@ function getpopupdocdetail(Action & $action, $docid)
     addFamilyPopup($tlink, $doc);
     addArchivePopup($tlink, $doc);
     addDocOfflinePopup($tlink, $doc, "_self", _("Offline menu"));
-    
+
     return $tlink;
 }
 /**

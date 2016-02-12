@@ -8647,10 +8647,13 @@ create unique index i_docir on doc(initid, revision);";
     public static function htmlEncode($s)
     {
         $s = str_replace("&", "&amp;", $s);
+
         return str_replace(array(
+            "[",
             "<",
             ">"
         ) , array(
+            "&#091;",
             "&lt;",
             "&gt;"
         ) , $s);

@@ -117,8 +117,8 @@ function viewbarmenu(Action & $action)
     }
     foreach ($popup as & $elmt) {
         foreach ($elmt as $k => & $value) {
-            if (is_string($value) && $k !== "descr") {
-                $value = htmlspecialchars($value, ENT_QUOTES);
+            if (is_string($value)) {
+                $value = str_replace("[", "&#091;",htmlspecialchars($value, ENT_QUOTES));
             }
         }
         unset($value);
