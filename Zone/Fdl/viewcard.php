@@ -71,7 +71,7 @@ function viewcard(Action & $action)
     } else {
         $action->lay->eset("refreshfld", GetHttpVars("refreshfld"));
     }
-    $action->lay->eset("ITSELF", $_SERVER["REQUEST_URI"]);
+    $action->lay->eset("ITSELF", (isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : '#'));
     $doc = new_Doc($dbaccess, $docid);
     if (!$doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s") , $docid));
     
