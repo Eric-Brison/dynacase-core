@@ -202,11 +202,17 @@
         },
 
         _createSaveButton: function _createSaveButton() {
-            var buttonSave = $('<button class="saveButton" title="[TEXT:EnumWidget:Save change]">[TEXT:Save]</button>').on("click", $.proxy(this._modEnumItems, this)),
-                buttonReload = $('<button class="reloadButton" title="[TEXT:EnumWidget:Cancel change]">[TEXT:EnumWidget:Reload]</button>').on("click", $.proxy(this._beforeOnReload, this)),
-                buttonHelp = $('<button class="helpButton">[TEXT:Help]</button>').button().on("click", $.proxy(this._showHelp, this)),
-                buttonsDiv = $("<div></div>").append(buttonSave).append(buttonReload).addClass("headerButton"),
-                disabled = this._keyRowChangedLength() <= 0;
+            var self = this;
+            var buttonSave = $('<button class="saveButton" title="[TEXT:EnumWidget:Save change]">[TEXT:Save]</button>').on(
+                "click", function (event) {
+                    $(this).button({"disabled": true}); // Prevent multiple click/trigger
+                    self._modEnumItems();
+                }
+            );
+            var buttonReload = $('<button class="reloadButton" title="[TEXT:EnumWidget:Cancel change]">[TEXT:EnumWidget:Reload]</button>').on("click", $.proxy(this._beforeOnReload, this));
+            var buttonHelp = $('<button class="helpButton">[TEXT:Help]</button>').button().on("click", $.proxy(this._showHelp, this));
+            var buttonsDiv = $("<div></div>").append(buttonSave).append(buttonReload).addClass("headerButton");
+            var disabled = this._keyRowChangedLength() <= 0;
 
             if (this.options.saveOnBottom) {
                 $("#newLine").append(buttonsDiv.clone(true).css("text-align", "right"));
