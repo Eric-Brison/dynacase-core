@@ -210,7 +210,7 @@ class SearchDoc
                 $id = substr($id, 1);
             }
             $fam = new_Doc($this->dbaccess, $id);
-            if ($fam->isAlive() || $fam->defDoctype === 'C') {
+            if ($fam->isAlive() && $fam->defDoctype === 'C') {
                 return $sign * (int)$fam->id;
             }
         }
@@ -1223,7 +1223,7 @@ class SearchDoc
         }
         $table = "doc";
         $only = "";
-
+        
         if ($fromid == - 1) {
             $table = "docfam";
         } elseif ($fromid < 0) {
