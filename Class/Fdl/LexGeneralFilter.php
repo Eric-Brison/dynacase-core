@@ -115,6 +115,7 @@ class GeneralFilter
         $currentMode = false;
         
         $inEscape = false;
+        $inQuote=false;
         $currentWord = "";
         foreach ($tokens as $value) {
             if ($inEscape) {
@@ -133,6 +134,7 @@ class GeneralFilter
                 continue;
             }
             if ($value["token"] === self::T_QUOTE) {
+                $inQuote=!$inQuote;
                 if ($currentMode === false) {
                     $currentMode = self::MODE_STRING;
                     continue;
@@ -147,7 +149,8 @@ class GeneralFilter
                     $currentWord.= $value["match"];
                 }
             }
-            if ($currentMode === self::MODE_STRING) {
+
+            if ($currentMode === self::MODE_STRING && $inQuote) {
                 $currentWord.= $value["match"];
                 continue;
             }
