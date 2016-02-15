@@ -7,8 +7,7 @@
 /**
  * Default install directory
  *
- * @author Anakeen 2005
- * @version $Id: Lib.Prefix.php,v 1.9 2008/12/31 14:41:35 jerome Exp $
+ * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage CORE
@@ -18,7 +17,7 @@
 global $pubdir;
 $pubdir = dirname(__DIR__);
 
-set_include_path(get_include_path() . PATH_SEPARATOR . "$pubdir:$pubdir/WHAT");
+set_include_path($pubdir . PATH_SEPARATOR . "$pubdir/WHAT" . PATH_SEPARATOR . get_include_path());
 
 ini_set("session.use_cookies", "0");
 ini_set("session.name", "session");
