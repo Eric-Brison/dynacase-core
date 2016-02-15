@@ -38,7 +38,7 @@ class PostitView extends \Dcp\Family\Document
             $tlaycomment[] = array(
                 "comments" => $this->getHtmlValue($this->getAttribute('PIT_COM') , $v, '_blank') ,
                 "user" => $tuser[$k],
-                "date" => $tdate[$k],
+                "date" => stringDateToLocaleDate($tdate[$k]) ,
                 "color" => $tcolor[$k]
             );
         }
