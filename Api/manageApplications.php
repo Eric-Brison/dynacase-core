@@ -34,29 +34,38 @@ echo " $appname...$method\n";
 $app = new Application();
 
 $Null = "";
-if ($method != "delete") {
-    $app->Set($appname, $Null, null, true);
-    if ($method == "reinit") {
-        $ret = $app->InitApp($appname, false, null, true);
+
+switch ($method) {
+    case "init":
+        $app->set($appname, $Null, null, true);
+        break;
+
+    case "reinit":
+        $app->set($appname, $Null, null, false, false);
+        $ret = $app->InitApp($appname, false);
         if ($ret === false) {
             $action->exitError(sprintf("Error initializing application '%s'.", $appname));
         }
-    }
-    if ($method == "update") {
+        break;
+
+    case "update":
+        $app->set($appname, $Null, null, false, false);
         $ret = $app->InitApp($appname, true);
         if ($ret === false) {
             $action->exitError(sprintf("Error updating application '%s'.", $appname));
         }
-    }
-}
-if ($method == "delete") {
-    $app->Set($appname, $Null, null, false);
-    if ($app->isAffected()) {
-        $err = $app->DeleteApp();
-        if ($err != '') {
-            $action->exitError($err);
+        break;
+
+    case "delete":
+        $app->set($appname, $Null, null, false);
+        if ($app->isAffected()) {
+            $err = $app->DeleteApp();
+            if ($err != '') {
+                $action->exitError($err);
+            }
+        } else {
+            echo "already deleted";
         }
-    } else {
-        echo "already deleted";
-    }
+        break;
 }
+
