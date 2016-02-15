@@ -185,21 +185,23 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param string $session parent session
      * @param bool $autoinit set to true to auto create app if not exists yet
      *
+     * @param bool $verifyAvailable set to true to not exit when unavailable action
+     * @return string error message
+     * @throws \Dcp\Core\Exception if application not exists
+     * @throws \Dcp\Db\Exception
      * @code
      $CoreNull = "";
-     $core = new Application();
-     $core->Set("CORE", $CoreNull); // init core application from nothing
-     $core->session = new Session();
-     $core->session->set();
-     $one = new Application();
-     $one->set("ONEFAM", $core, $core->session);// init ONEFAM application from CORE
+     * $core = new Application();
+     * $core->Set("CORE", $CoreNull); // init core application from nothing
+     * $core->session = new Session();
+     * $core->session->set();
+     * $one = new Application();
+     * $one->set("ONEFAM", $core, $core->session);// init ONEFAM application from CORE
      *
      * @endcode
      *
-     * @return string error message
-     * @throws Dcp\Core\Exception if application not exists
      */
-    public function set($name, &$parent, $session = "", $autoinit = false)
+    public function set($name, &$parent, $session = "", $autoinit = false, $verifyAvailable = true)
     {
         $this->log->debug("Entering : Set application to $name");
         
@@ -264,10 +266,10 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         
         $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : false, $this->style->name);
-        if ($this->available == "N") {
+        if ($verifyAvailable && $this->available === "N") {
             // error
             $e = new Dcp\Core\Exception("CORE0007", $name);
-            $e->addHttpHeader('HTTP/1.0 503 Application unavalaible');
+            $e->addHttpHeader('HTTP/1.0 503 Application unavailable');
             throw $e;
         }
         $this->permission = null;
