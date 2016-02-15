@@ -44,8 +44,9 @@ function viewscard(&$action)
     $zonebodycard = $usage->addOptionalParameter("zone", "view with another specific representation", null, "");
     $ulink = ($usage->addOptionalParameter("ulink", "enable or disable hyperlink", array(
         "Y",
-        "N"
-    ) , "Y") == "Y");
+        "N",
+        ""
+    ) , "Y") !== "N");
     $target = $usage->addOptionalParameter("target", "target for hyperlinks ('mail', '_self', etc.)", null, "");
     $wedit = ($usage->addOptionalParameter("wedit", "view by word editor", array(
         "Y",
