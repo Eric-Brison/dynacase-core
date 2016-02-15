@@ -75,7 +75,7 @@ td {
 <script>if (window.opener) document.affect.target=window.opener.name; 
 </script>
 [IF VIEWDOC]
-<iframe style="height:100%"  width="100%" src="[CORE_STANDURL]&app=FDL&action=FDL_CARD&ulink=[ulink]&dochead=[dochead]&zone=[mzone]&id=[mid]"></iframe>
+<iframe style="height:100%"  width="100%" src="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]"></iframe>
 [ENDIF VIEWDOC]
 
 
