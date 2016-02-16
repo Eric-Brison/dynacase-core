@@ -10,6 +10,16 @@ export wpub=$REAL_DIRNAME
 
 shopt -s nullglob
 
+function main {
+    if [ "$WHATTEXT_GOT_LOCK" = "yes" ]; then
+	# The lock has been obtained, so keep on processing...
+	whattext
+    else
+	# Try to obtain the lock and re-execute myself
+	WHATTEXT_GOT_LOCK=yes "$wpub/programs/flock" "$0".lock "$0" "$@"
+    fi
+}
+
 function whattext ()
 {
     ntf="$wpub/locale/.gettextnumber"
@@ -83,6 +93,5 @@ function whattext ()
         fi
     done
 }
-whattext
 
-
+main "$@"
