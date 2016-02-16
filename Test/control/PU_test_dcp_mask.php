@@ -28,16 +28,19 @@ class TestMask extends TestCaseDcpCommonFamily
     /**
      * apply mask
      * @dataProvider dataGoodMask
+     * @param $docid
+     * @param $mid
      */
-    public function testsetMask($docid, $mid)
+    public function testsetMask($docid, $mid, array $expectedVisibilities)
     {
-        
         $doc = new_doc(self::$dbaccess, $docid, true);
         
         if ($doc->isAlive()) {
-            
-            $err = $doc->applyMask($mid);
+            $err = $doc->setMask($mid);
             $this->assertEmpty($err, sprintf("mask apply error %s", $err));
+            foreach ($expectedVisibilities as $attrid => $expectVis) {
+                $this->assertEquals($expectVis, $doc->getAttribute($attrid)->mvisibility, sprintf("Attribute $attrid"));
+            }
         } else {
             $this->markTestIncomplete(sprintf(_('Document %d not alive.') , $docid));
         }
@@ -45,6 +48,9 @@ class TestMask extends TestCaseDcpCommonFamily
     /**
      * apply mask (detect errors)
      * @dataProvider dataBadMask
+     * @param $docid
+     * @param $mid
+     * @param array $expectedErrors
      */
     public function testsetMaskError($docid, $mid, array $expectedErrors)
     {
@@ -68,7 +74,51 @@ class TestMask extends TestCaseDcpCommonFamily
         return array(
             array(
                 'TST_DOCBASE1',
-                'TST_MASK1'
+                'TST_GOODMASK1',
+                array(
+                    "tst_title" => "R",
+                    "tst_number" => "W",
+                    "tst_date" => "W",
+                    "tst_coltext" => "W",
+                    "tst_coldate" => "W",
+                    "tst_text" => "W"
+                )
+            ) ,
+            array(
+                'TST_DOCBASE1',
+                'TST_GOODMASK2',
+                array(
+                    "tst_title" => "H",
+                    "tst_number" => "H",
+                    "tst_date" => "H",
+                    "tst_coltext" => "H",
+                    "tst_coldate" => "H",
+                    "tst_text" => "W"
+                )
+            ) ,
+            array(
+                'TST_DOCBASE1',
+                'TST_GOODMASK3',
+                array(
+                    "tst_title" => "H",
+                    "tst_number" => "H",
+                    "tst_date" => "H",
+                    "tst_coltext" => "H",
+                    "tst_coldate" => "H",
+                    "tst_text" => "H"
+                )
+            ) ,
+            array(
+                'TST_DOCBASE1',
+                'TST_GOODMASK4',
+                array(
+                    "tst_title" => "R",
+                    "tst_number" => "R",
+                    "tst_date" => "R",
+                    "tst_coltext" => "W",
+                    "tst_coldate" => "W",
+                    "tst_text" => "H"
+                )
             )
         );
     }
