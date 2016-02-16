@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-28 13:36+0100\n"
-"PO-Revision-Date: 2016-01-29 13:34+0100\n"
+"POT-Creation-Date: 2016-02-16 16:24+0100\n"
+"PO-Revision-Date: 2016-02-16 16:27+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -47,9 +47,6 @@ msgstr " changer d'icone"
 
 msgid " change title"
 msgstr " Changer de titre"
-
-msgid " choose value"
-msgstr " choisir une valeur"
 
 msgid " comment for revision"
 msgstr " commentaire de révision"
@@ -452,6 +449,10 @@ msgstr "Accès aux documents système"
 
 msgid "Accord"
 msgstr "Accord"
+
+#, php-format
+msgid "Account Type \"%s\""
+msgstr "Type du compte \"%s\""
 
 #, php-format
 msgid "Acl [%s] not available for App %s"
@@ -3119,6 +3120,9 @@ msgstr "Nouvel état"
 msgid "New value which be set to server"
 msgstr "Nouvelle valeur à enregistrer sur le serveur"
 
+msgid "New visibility / mandatory"
+msgstr "Nouvelle visibilité / obligation"
+
 msgid "Next"
 msgstr "Suivant"
 
@@ -3275,6 +3279,9 @@ msgstr "Ou télécharger un nouvel icone"
 
 msgid "Order must be an odd number"
 msgstr "L'ordre de l'énuméré doit être un nombre impair"
+
+msgid "Original visibility / mandatory"
+msgstr "Originelle visibilité / obligation"
 
 msgid "Other Archive"
 msgstr "Autre archive"
@@ -3985,6 +3992,10 @@ msgstr "Compte-rendu du publipostage"
 msgid "Steps"
 msgstr "Étapes"
 
+msgctxt "fusersimport"
+msgid "Stopped on first error"
+msgstr "Arrêt à la première erreur"
+
 msgid "Strip HTML tags :"
 msgstr "Balises HTML :"
 
@@ -4260,6 +4271,10 @@ msgstr "Mise à jour des privilèges en cours"
 #, php-format
 msgid "Update profiling of %d documents is in progress."
 msgstr "Mise à jour des privilèges pour %d documents en cours."
+
+msgctxt "dcp:import"
+msgid "Updated values"
+msgstr "Valeurs mise à jour"
 
 msgid "Upload archive"
 msgstr "Télécharger l'archive"
@@ -6141,10 +6156,6 @@ msgid "error color"
 msgstr "couleur messages d'erreur"
 
 #, php-format
-msgid "error in calling function %s"
-msgstr "erreur dans l'appel de la fonction %s"
-
-#, php-format
 msgid ""
 "error in calling function %s\n"
 "%s"
@@ -6887,6 +6898,10 @@ msgstr "faire une nouvelle révision de document"
 msgid "manage bookmarks"
 msgstr "Gérer les signets"
 
+msgctxt "mask"
+msgid "mandatory"
+msgstr "Obligatoire"
+
 msgid "manual date"
 msgstr "Date manuelle"
 
@@ -7483,6 +7498,10 @@ msgstr "Ouvrir la chemise"
 #, php-format
 msgid "operator [%s] not allowed"
 msgstr "l'opérateur {%s] n'est pas autorisé"
+
+msgctxt "mask"
+msgid "optional"
+msgstr "Optionnel"
 
 msgid "options"
 msgstr "options"
@@ -8478,9 +8497,6 @@ msgstr "à mettre à jour %s [%d] "
 msgid "to choose value from input help"
 msgstr "pour choisir une valeur à partir de l'aide à la saisie"
 
-msgid "to choose value from set"
-msgstr "pour choisir une valeur à partir d'un ensemble"
-
 msgid "to choose value from special interface"
 msgstr "Pour choisir une valeur depuis une interface spécifique"
 
@@ -9147,6 +9163,9 @@ msgstr "l'identifiant système {left} est différent de {right}"
 msgid "{left} title include {right}"
 msgstr "le titre de {left} inclus {right}"
 
+#~ msgid " choose value"
+#~ msgstr " choisir une valeur"
+
 #~ msgid " from any folder"
 #~ msgstr "dans l'ensemble des dossiers"
 
@@ -9558,6 +9577,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "error ::moveDocument %s %s"
 #~ msgstr "erreur ::moveDocument %s %s"
 
+#~ msgid "error in calling function %s"
+#~ msgstr "erreur dans l'appel de la fonction %s"
+
 #~ msgid "exportXml : cannot write file %s"
 #~ msgstr "exportXml : ne peut écrire le fichier %s"
 
@@ -9724,6 +9746,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "terminal too small (must ne at least 80 columns by 24 lines)"
 #~ msgstr ""
 #~ "terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
+
+#~ msgid "to choose value from set"
+#~ msgstr "pour choisir une valeur à partir d'un ensemble"
 
 #~ msgid "transfered"
 #~ msgstr "transféré"

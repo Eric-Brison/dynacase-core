@@ -34,9 +34,53 @@
         table.tablemask tr.notmodified td {
             opacity:0.5;
         }
+        table.tablemask tr.needmodified td {
+            opacity:1;
+        }
         table.tablemask tr.inheritmodified td span,table.tablemask tr.directmodified td span  { 
            /*background-color: [COLOR_WHITE];*/
         }
+     table.tablemask i.attr {
+        float:right;
+        padding-right:1em;
+    }
+
+    table.tablemask tr.directmodified .mvisibility .vis::before,
+    table.tablemask tr.needmodified .mvisibility .need::before
+    {
+    font-family:monospace;
+       content: "* ";
+    }
+    table.tablemask tr.inheritmodified .mvisibility .vis::before {
+    font-family:monospace;
+    content: "> ";
+    }
+    table.tablemask .mvisibility .vis::before,
+    table.tablemask .mvisibility .need::before {
+       font-family:monospace;
+       content: "\00a0  ";
+    }
+
+    table.tablemask .mandatory {
+      font-weight: bold;
+    }
+    table.tablemask .mvisibility .vis,
+    table.tablemask .visibility .vis {
+       display:inline-block;
+        width:50%;
+    }
+
+    table.tablemask .newvis,
+    table.tablemask .orivis {
+      min-width:20em;
+    }
+    table.tablemask .mvisibility .need,
+    table.tablemask .visibility .need {
+    /*text-align:center;*/
+    }
+
+
+
         /*table.tablemask tr.tab, table.tablemask tr.frame, table.tablemask tr.array{ 
            background-image:url("Images/tabvig.png");
         }
@@ -54,16 +98,16 @@
   <th>[TEXT:atype]</th>  
   <th>[TEXT:fieldset]</th>     
    <th>[TEXT:attrname]</th>  
-   <th>[TEXT:new visibility]</th>
-   <th>[TEXT:default visibility]</th>
+   <th class="newvis">[TEXT:New visibility / mandatory]</th>
+   <th class="orivis">[TEXT:Original visibility / mandatory]</th>
 </tr>
 [BLOCK MASK]
 <tr  class="[classtype]" >  
   <td><span>[type]</span></td>     
   <td><span>[framelabel]</span></td>     
-   <td><span style="font-weight:[waneed]">[attrname]</span></td>
-   <td style="font-weight:[waneed]"><span>[mvisibility]</span></td>
-   <td style="font-weight:[wneed]"><span>[visibility]</span></td>
+   <td><span>[attrname] <i class="attr">([attrid])</i></span></td>
+   <td class="mvisibility"><span class="vis">[mvisibility]</span><i class="need [IF isAneed]mandatory[ENDIF isAneed]"> [waneed]</i></td>
+   <td class="visibility"><span class="vis">[visibility] </span><i class="need[IF isNeed] mandatory[ENDIF isNeed]"> [wneed]</i></td>
 </tr>
 [ENDBLOCK MASK]
 </table>
