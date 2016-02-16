@@ -66,36 +66,14 @@ class Mask extends \Dcp\Family\Base
         $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
         
         $tvisibilities = array();
-        while (list($k, $v) = each($tattrid)) {
-            $tvisibilities[$v] = $tvisid[$k];
-        }
-        return $tvisibilities;
-    }
-    
-    function getCVisibilities()
-    {
-        $tvisid = $this->getMultipleRawValues("MSK_VISIBILITIES");
-        $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
-        $docid = $this->getRawValue("MSK_FAMID", 1);
-        $doc = new_Doc($this->dbaccess, $docid);
-        
-        $this->getVisibilities();
-        $tvisibilities = array();
-        
         foreach ($tattrid as $k => $v) {
-            $attr = $doc->getAttribute($v);
-            if ($attr) {
-                $fvisid = (isset($attr->fieldSet->id) ? $attr->fieldSet->id : null);
-                if ($tvisid[$k] == "-") $vis = $attr->visibility;
-                else $vis = $tvisid[$k];
-                
-                $tvisibilities[$v] = ComputeVisibility($vis, isset($tvisibilities[$fvisid]) ? $tvisibilities[$fvisid] : '', isset($attr->fieldSet->fieldSet) ? $attr->fieldSet->fieldSet->mvisibility : '');
-            } else {
-                $tvisibilities[$v] = false;
+            if ($tvisid[$k] !== "-") {
+                $tvisibilities[$v] = $tvisid[$k];
             }
         }
         return $tvisibilities;
     }
+    
     function getNeedeeds()
     {
         $tvisid = $this->getMultipleRawValues("MSK_NEEDEEDS");
@@ -118,9 +96,8 @@ class Mask extends \Dcp\Family\Base
         
         $docid = $this->getRawValue("MSK_FAMID", 1);
         
-        $tvisibilities = $this->getCVisibilities();
+        $tvisibilities = $this->getVisibilities();
         $tkey_visibilities = array_keys($tvisibilities);
-        $tinitvisibilities = $tvisibilities;
         
         $tneedeeds = $this->getNeedeeds();
         
@@ -151,9 +128,11 @@ class Mask extends \Dcp\Family\Base
             if ($attr->usefor == 'Q') continue;
             $tmask[$k]["attrname"] = $attr->getLabel();
             $tmask[$k]["type"] = $attr->type;
+            $tmask[$k]["attrid"] = $attr->id;
             $tmask[$k]["visibility"] = $labelvis[$attr->visibility];
-            $tmask[$k]["wneed"] = (!empty($origattr[$k]->needed)) ? "bold" : "normal";
+            $tmask[$k]["wneed"] = (!empty($origattr[$k]->needed)) ? ___("mandatory", "mask") : ___("optional", "mask");
             $tmask[$k]["bgcolor"] = "inherits";
+            $tmask[$k]["isNeed"] = (!empty($origattr[$k]->needed));
             $tmask[$k]["mvisibility"] = $labelvis[$attr->mvisibility];
             $tmask[$k]["classtype"] = strtok($attr->type, '(');
             
@@ -164,15 +143,31 @@ class Mask extends \Dcp\Family\Base
             } else {
                 $tmask[$k]["classtype"].= " notmodified";
             }
-            
+            $tmask[$k]["isAneed"] = $tmask[$k]["isNeed"];
             if (isset($tneedeeds[$attr->id])) {
-                if (($tneedeeds[$attr->id] == "Y") || (($tneedeeds[$attr->id] == "-") && (!empty($attr->needed)))) $tmask[$k]["waneed"] = "bold";
-                else $tmask[$k]["waneed"] = "normal";
-                if ($tneedeeds[$attr->id] != "-") $tmask[$k]["bgcolor"] = getParam("CORE_BGCOLORALTERN");
-            } else $tmask[$k]["waneed"] = $tmask[$k]["wneed"];
+                if (($tneedeeds[$attr->id] == "Y") || (($tneedeeds[$attr->id] == "-") && (!empty($attr->needed)))) {
+                    $tmask[$k]["waneed"] = ___("mandatory", "mask");
+                    $tmask[$k]["isAneed"] = true;
+                } else {
+                    $tmask[$k]["waneed"] = ___("optional", "mask");
+                    $tmask[$k]["isAneed"] = false;
+                }
+            } else {
+                $tmask[$k]["waneed"] = $tmask[$k]["wneed"];
+            }
+            
+            if (in_array($attr->type, array(
+                "frame",
+                "tab",
+                "menu",
+                "action",
+                "array"
+            ))) {
+                $tmask[$k]["waneed"] = $tmask[$k]["wneed"] = '';
+            }
             
             if ($tmask[$k]["wneed"] != $tmask[$k]["waneed"]) {
-                $tmask[$k]["bgcolor"] = getParam("COLOR_B5");
+                $tmask[$k]["classtype"].= " needmodified";
             }
             
             if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id != "FIELD_HIDDENS") $tmask[$k]["framelabel"] = $attr->fieldSet->getLabel();
@@ -262,9 +257,18 @@ class Mask extends \Dcp\Family\Base
                 $newelem[$k]["type"] = strtok($attr->type, '(');
                 $newelem[$k]["visibility"] = $labelvis[$attr->visibility];
                 
-                $newelem[$k]["wneed"] = (!empty($attr->needed)) ? "bold" : "normal";
+                $newelem[$k]["wneed"] = (!empty($attr->needed)) ? ___("mandatory", "mask") : ___("optional", "mask");
+                $newelem[$k]["isNeed"] = (!empty($attr->needed));
                 $newelem[$k]["neweltid"] = $k;
                 $newelem[$k]["attrinfo"] = $attr->id;
+                $newelem[$k]["useNeed"] = (!in_array($attr->type, array(
+                    "frame",
+                    "tab",
+                    "menu",
+                    "action",
+                    "array"
+                )));
+                
                 if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id != 'FIELD_HIDDENS') {
                     $newelem[$k]["attrinfo"].= '/' . $attr->fieldSet->id;
                     if ($attr->fieldSet->fieldSet->id && $attr->fieldSet->fieldSet->id != 'FIELD_HIDDENS') $newelem[$k]["attrinfo"].= '/' . $attr->fieldSet->fieldSet->id;
@@ -328,10 +332,11 @@ class Mask extends \Dcp\Family\Base
         }
         $this->editattr(false);
     }
-    /** 
+    /**
      * use to usort attributes
      * @param \BasicAttribute $a
      * @param \BasicAttribute $b
+     * @return int
      */
     static function sortnewelem($a, $b)
     {

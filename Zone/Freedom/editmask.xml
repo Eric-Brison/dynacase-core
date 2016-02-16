@@ -11,6 +11,13 @@
            background-color:#6eb9d5; // sky blue
            background-image:url("Images/tabvig.png");
         }
+    table.tablemask  .vis {
+       display:inline-block;
+        width:50%;
+    }
+    table.tablemask  .need.mandatory {
+        font-weight: bold;
+    }
 	table.tablemask tr.array { 
            background-color:#f3cc81; // orange
            background-image:url("Images/tabvig.png");
@@ -72,7 +79,7 @@
    <td  >[framelabel]</td>
   
    
-   <td   style="font-weight:[wneed]">
+   <td>
    <input type="hidden" name="_MSK_ATTRIDS[[neweltid]]" value="[attrid]" >[attrname]</td>
   
    <td  >
@@ -83,12 +90,22 @@
     </select>
    </td>
    <td>
-      <select name="_MSK_NEEDEEDS[[neweltid]]"  >        
-         [BLOCK [SELECTNEED]]
+
+       [IF useNeed]
+       <select name="_MSK_NEEDEEDS[[neweltid]]"  >
+           [BLOCK [SELECTNEED]]
            <option VALUE="[needid]" [selectedneed]>[needlabel]</option>
-         [ENDBLOCK [SELECTNEED]]
-    </select></td>
-   <td style="font-weight:[wneed]">[visibility]</td>
+       [ENDBLOCK [SELECTNEED]]
+   </select>
+    [ENDIF useNeed]
+
+    [IFNOT useNeed]
+       <input type="hidden" name="_MSK_NEEDEEDS[[neweltid]]"/>
+    [ENDIF useNeed]
+
+
+   </td>
+   <td><span class="vis">[visibility]</span><span class="need[IF isNeed] mandatory[ENDIF isNeed]">[wneed]</span></td>
   
    
   

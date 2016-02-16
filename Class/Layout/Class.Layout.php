@@ -91,8 +91,8 @@ class Layout
      * @var array
      */
     protected $pkey = array();
-
-    protected $zoneLevel=0;
+    
+    protected $zoneLevel = 0;
     /**
      * @var Action
      */
@@ -225,6 +225,7 @@ class Layout
             $block = str_replace("\\\"", "\"", $block);
         }
         $out = "";
+        $oriRif = $this->rif;
         
         if (isset($this->data) && isset($this->data["$name"]) && is_array($this->data["$name"])) {
             foreach ($this->data["$name"] as $k => $v) {
@@ -238,6 +239,7 @@ class Layout
                 $this->ParseIf($loc);
                 $out.= $loc;
             }
+            $this->rif = $oriRif;
         }
         $this->ParseBlock($out);
         return ($out);
@@ -276,7 +278,7 @@ class Layout
     
     protected function ParseIf(&$out)
     {
-        $out = preg_replace_callback('/(?m)\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', function ($matches)
+        $out = preg_replace_callback('/\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s+\\2\]/smu', function ($matches)
         {
             return $this->TestIf($matches[2], $matches[3], $matches[1]);
         }
@@ -325,7 +327,7 @@ class Layout
         }
         
         if ($this->action == "") return ("Layout not used in a core environment");
-
+        
         $this->zoneLevel++;
         // analyse action & its args
         $actionargn = str_replace(":", "--", $actionargn); //For buggy function parse_url in PHP 4.3.1
@@ -378,7 +380,6 @@ class Layout
             }
             
             $ZONE_ARGS = $OLD_ZONE_ARGS; // restore old zone args
-
             $this->zoneLevel--;
             return ($res);
         } else {
@@ -412,7 +413,7 @@ class Layout
      */
     public function eSet($tag, $val)
     {
-        $this->set($tag, str_replace("[ZONE","&#091;ZONE",htmlspecialchars($val, ENT_QUOTES)));
+        $this->set($tag, str_replace("[ZONE", "&#091;ZONE", htmlspecialchars($val, ENT_QUOTES)));
     }
     /**
      * return the value set for a key
@@ -616,15 +617,15 @@ class Layout
         if ($this->noparse) return $this->template;
         // if used in an app , set the app params
         $out = $this->template;
-
+        
         $this->rif = & $this->rkey;
         $this->parseApplicationParameters($out, false);
-
+        
         $this->ParseBlock($out);
-
+        
         $this->rif = & $this->rkey;
         $this->parseApplicationParameters($out, true);
-
+        
         $this->ParseIf($out);
         // Parse IMG: and LAY: tags
         $this->ParseText($out);
@@ -636,7 +637,6 @@ class Layout
         
         return ($out);
     }
-
     /**
      * Use application parameters like keys
      * @param string $out current template
@@ -644,10 +644,10 @@ class Layout
      */
     protected function parseApplicationParameters(&$out, $addIf)
     {
-        if ( is_object($this->action) && (!empty($this->action->parent))) {
+        if (is_object($this->action) && (!empty($this->action->parent))) {
             $keys = $pval = array();
             $list = $this->action->parent->GetAllParam();
-
+            
             if ($addIf) {
                 foreach ($list as $k => $v) {
                     $this->rif[$k] = !empty($v);
@@ -659,8 +659,7 @@ class Layout
                     $pval[] = $v;
                 }
             }
-
-
+            
             $out = str_replace($keys, $pval, $out);
         }
     }

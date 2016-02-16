@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-28 13:36+0100\n"
+"POT-Creation-Date: 2016-02-16 16:24+0100\n"
 "PO-Revision-Date: 2015-12-11 16:19+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -43,9 +43,6 @@ msgid " change icon"
 msgstr ""
 
 msgid " change title"
-msgstr ""
-
-msgid " choose value"
 msgstr ""
 
 msgid " comment for revision"
@@ -446,6 +443,10 @@ msgid "Access to system documents"
 msgstr ""
 
 msgid "Accord"
+msgstr ""
+
+#, php-format
+msgid "Account Type \"%s\""
 msgstr ""
 
 #, php-format
@@ -2987,6 +2988,9 @@ msgstr ""
 msgid "New value which be set to server"
 msgstr ""
 
+msgid "New visibility / mandatory"
+msgstr ""
+
 msgid "Next"
 msgstr ""
 
@@ -3138,6 +3142,9 @@ msgid "Or upload a new icon"
 msgstr ""
 
 msgid "Order must be an odd number"
+msgstr ""
+
+msgid "Original visibility / mandatory"
 msgstr ""
 
 msgid "Other Archive"
@@ -3820,6 +3827,10 @@ msgstr ""
 msgid "Steps"
 msgstr ""
 
+msgctxt "fusersimport"
+msgid "Stopped on first error"
+msgstr ""
+
 msgid "Strip HTML tags :"
 msgstr ""
 
@@ -4079,6 +4090,10 @@ msgstr ""
 
 #, php-format
 msgid "Update profiling of %d documents is in progress."
+msgstr ""
+
+msgctxt "dcp:import"
+msgid "Updated values"
 msgstr ""
 
 msgid "Upload archive"
@@ -5926,10 +5941,6 @@ msgid "error color"
 msgstr ""
 
 #, php-format
-msgid "error in calling function %s"
-msgstr ""
-
-#, php-format
 msgid ""
 "error in calling function %s\n"
 "%s"
@@ -6660,6 +6671,10 @@ msgstr ""
 msgid "manage bookmarks"
 msgstr ""
 
+msgctxt "mask"
+msgid "mandatory"
+msgstr ""
+
 msgid "manual date"
 msgstr ""
 
@@ -7252,6 +7267,10 @@ msgstr ""
 
 #, php-format
 msgid "operator [%s] not allowed"
+msgstr ""
+
+msgctxt "mask"
+msgid "optional"
 msgstr ""
 
 msgid "options"
@@ -8229,9 +8248,6 @@ msgid "to be update %s [%d] "
 msgstr ""
 
 msgid "to choose value from input help"
-msgstr ""
-
-msgid "to choose value from set"
 msgstr ""
 
 msgid "to choose value from special interface"
