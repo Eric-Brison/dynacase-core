@@ -49,7 +49,8 @@ switch ($method) {
         break;
 
     case "update":
-        $app->set($appname, $Null, null, false, false);
+        // Init if application is not already installed
+        $app->set($appname, $Null, null, true, false);
         $ret = $app->InitApp($appname, true);
         if ($ret === false) {
             $action->exitError(sprintf("Error updating application '%s'.", $appname));
