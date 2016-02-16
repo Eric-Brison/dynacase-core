@@ -558,7 +558,7 @@ class Doc extends DocCtrl
      */
     private $lastRefreshError = '';
     private $formaterLevel = 0;
-    private $otherFormatter= array();
+    private $otherFormatter = array();
     /**
      * identification of special views
      *
@@ -1870,8 +1870,8 @@ create unique index i_docir on doc(initid, revision);";
                 $this->lastRefreshError = '';
                 $this->mvalues = array();
                 $this->oooFormater = null;
-                $this->formaterLevel=0;
-                $this->otherFormatter=array();
+                $this->formaterLevel = 0;
+                $this->otherFormatter = array();
             }
             $this->isset = true;
             $this->postAffect($array, $more, $reset);
@@ -2296,7 +2296,7 @@ create unique index i_docir on doc(initid, revision);";
                     if (!in_array($maskFam, $this->getFromDoc())) {
                         $err = ErrorCode::getError('DOC1002', $argMid, $this->getTitle() , getNameFromId($this->dbaccess, $maskFam));
                     } else {
-                        $tvis = $mdoc->getCVisibilities();
+                        $tvis = $mdoc->getVisibilities();
                         foreach ($tvis as $k => $v) {
                             if (isset($oas[$k])) {
                                 if ($v != "-") $oas[$k]->mvisibility = $v;
@@ -8647,7 +8647,7 @@ create unique index i_docir on doc(initid, revision);";
     public static function htmlEncode($s)
     {
         $s = str_replace("&", "&amp;", $s);
-
+        
         return str_replace(array(
             "[",
             "<",
