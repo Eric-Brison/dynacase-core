@@ -25,9 +25,36 @@ table.dataTable tr.odd td.sorting_1, table.dataTable tr.even td.sorting_1 {
 background-color: inherit;
 }
 
+    table.dataTable {
+     border-bottom: solid 1px [COLOR_BLACK];
+    }
+
 table.dataTable tr.odd {
     background-color: [COLOR_A9];
 }
+table.dataTable tr.head ,
+table.dataTable thead tr
+    {
+    background-color: [COLOR_B4];
+}
+table.dataTable tr.head th {
+    border-top:solid 1px [COLOR_BLACK];
+}
+table.dataTable thead th {
+    cursor:default;
+}
+
+
+    table.dataTable tr.caption
+    {
+    background-color: [COLOR_WHITE];
+    }
+    table.dataTable tr.caption th
+    {
+    border-top:solid 1px [COLOR_BLACK];
+    text-align:left;
+    padding-left:2em;
+    }
 .icon {
     vertical-align:bottom;
 }
@@ -47,16 +74,23 @@ h1 {
     padding-right: 200px;
 }
 .dataTables_filter {
-    margin-top: -3em;
+    position: absolute;
+    right: 10px;
+    top: 1em;
 }
 .dataTables_filter input {
     padding:3px;
 }
     .defval-head-attrid {
         min-width : 7em;
+        width:20%;
     }
     .defval-head-label {
         min-width : 12em;
+        width:30%;
+    }
+    .defval-head-raw {
+    width:20%;
     }
 </style>
 <h1 data-title="[TEXT:Click on attribute to modify <b>{{aid}}</b> default value]"><img class="icon" src="[icon]"/>
@@ -64,18 +98,41 @@ h1 {
 
 <table cellspacing="0" class="default-values" data-famid="[famid]" data-filter="[TEXT:filter attributes]">
 <thead>
-    <th class="defval-head-attrid">[TEXT:Attribute identifier]</th>
+    <tr class="caption"><th><p>[TEXT:Attributes]</p></th><th/><th/><th/></tr>
+    <tr><th class="defval-head-attrid">[TEXT:Attribute identifier]</th>
     <th class="defval-head-label">[TEXT:Attribute label]</th>
     <th class="defval-head-raw">[TEXT:Default Raw value]</th>
-    <th class="defval-head-format">[TEXT:Formated value]</th>
+    <th class="defval-head-format">[TEXT:Formated value]</th></tr>
 </thead>
 <tbody>
-    [BLOCK DEFAULTS]
+    [BLOCK ADEFAULTS]
     <tr class="defval" data-multiline="[multiline]" data-attrid="[aid]"  id="[aid]">
         <td class="attribute-id">[aid]</td><td class="attribute-label">[alabel]</td>
         <td>[defval]</td><td class="format-value">[htmlval]</td></tr>
-    [ENDBLOCK DEFAULTS]
+    [ENDBLOCK ADEFAULTS]
+
+
 
 </tbody>
 </table>
+[IF hasParam]
+<br/><br/><br/>
+
+<table cellspacing="0" class="default-values" data-famid="[famid]" data-filter="[TEXT:filter parameters]">
+<thead>
+    <tr class="caption"><th><p>[TEXT:Parameters]</p></th><th/><th/><th/></tr>
+    <tr><th class="defval-head-attrid">[TEXT:Parameter identifier]</th>
+        <th class="defval-head-label">[TEXT:Parameter label]</th>
+        <th class="defval-head-raw">[TEXT:Default Raw value]</th>
+        <th class="defval-head-format">[TEXT:Formated value]</th></tr>
+</thead>
+<tbody>
+    [BLOCK PDEFAULTS]
+    <tr class="defval" data-multiline="[multiline]" data-attrid="[aid]"  id="[aid]">
+        <td class="attribute-id">[aid]</td><td class="attribute-label">[alabel]</td>
+        <td>[defval]</td><td class="format-value">[htmlval]</td></tr>
+    [ENDBLOCK PDEFAULTS]
+</tbody>
+</table>
+        [ENDIF hasParam]
  [ZONE FDL:HTMLFOOT]
