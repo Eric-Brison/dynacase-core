@@ -200,7 +200,16 @@ function fullsearchresult(Action & $action)
             $tdocs[$k]["number"] = htmlspecialchars($c + $start, ENT_QUOTES);
             $tdocs[$k]["title"] = $doc->getHTMLTitle();
             $tdocs[$k]["id"] = $doc->id;
-            $tdocs[$k]["htext"] = htmlspecialchars(str_replace('[', '&#1B;', nl2br($s->getHighLightText($doc, '<strong>', '</strong>', $action->GetParam("FULLTEXT_HIGHTLIGHTSIZE", 200)))));
+            /* Escape elements of highlight string */
+            $highlight = $s->getHighLightText($doc, '<strong>', '</strong>', $action->GetParam("FULLTEXT_HIGHTLIGHTSIZE", 200));
+            $tokens = preg_split('!(</?strong>)!', $highlight, -1, PREG_SPLIT_DELIM_CAPTURE);
+            foreach ($tokens as & $token) {
+                if ($token == '<strong>' || $token == '</strong>') {
+                    continue;
+                }
+                $token = htmlspecialchars($token, ENT_QUOTES);
+            }
+            $tdocs[$k]["htext"] = str_replace('[', '&#1B;', nl2br(join('', $tokens)));
             $tdocs[$k]["iconsrc"] = $doc->getIcon('', 20);
             $tdocs[$k]["mdate"] = strftime("%a %d %b %Y", $doc->revdate);
             $k++;

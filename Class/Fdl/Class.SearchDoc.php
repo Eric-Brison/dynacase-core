@@ -847,7 +847,7 @@ class SearchDoc
             $rank = preg_replace('/\s+(OR)\s+/u', '|', $keyword);
             $rank = preg_replace('/\s+(AND)\s+/u', '&', $rank);
             $rank = preg_replace('/\s+/u', '&', $rank);
-            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string(unaccent($rank)));
+            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french', E'%s')) desc, id desc", pg_escape_string(unaccent($rank)));
         }
         if ($this->pertinenceOrder) $this->setOrder($this->pertinenceOrder);
     }
@@ -889,7 +889,6 @@ class SearchDoc
         };
         
         $filterElements = \Dcp\Lex\GeneralFilter::analyze($keywords);
-
         $isOnlyWord = true;
         foreach ($filterElements as $currentFilter) {
             if (!in_array($currentFilter["mode"], array(
@@ -930,22 +929,27 @@ class SearchDoc
                     }
                     $rankElement = unaccent($filterElement);
                     if (is_numeric($filterElement)) {
-                        $filterElement=sprintf("(%s|-%s)",$filterElement, $filterElement);
+                        $filterElement = sprintf("(%s|-%s)", $filterElement, $filterElement);
                     }
-
+                    
                     $words[] = $filterElement;
                     if ($isOnlyWord) {
                         $filterElement = pg_escape_string(unaccent($filterElement));
                     } else {
-                        $to_tsquery = sprintf("to_tsquery('french','%s')", pg_escape_string(unaccent($filterElement)));
+                        $to_tsquery = sprintf("to_tsquery('french', E'%s')", pg_escape_string(unaccent($filterElement)));
+                        $dbObj = new DbObj('');
+                        $point = sprintf('dcp:%s', uniqid(__METHOD__));
+                        $dbObj->savePoint($point);
                         try {
                             simpleQuery('', sprintf("select %s", $to_tsquery) , $indexedWord, true, true);
+                            $dbObj->rollbackPoint($point);
                         }
                         catch(Dcp\Db\Exception $e) {
+                            $dbObj->rollbackPoint($point);
                             throw new \Dcp\SearchDoc\Exception("SD0007", unaccent($filterElement));
                         }
                         if ($indexedWord) {
-                            $filterElement = sprintf("(fulltext @@ '%s')", pg_escape_string($indexedWord));
+                            $filterElement = sprintf("(fulltext @@ E'%s')", pg_escape_string($indexedWord));
                         } else {
                             //ignore stop words
                             $filterElement = "";
@@ -955,7 +959,6 @@ class SearchDoc
 
                 case \Dcp\Lex\GeneralFilter::MODE_STRING:
                     $rankElement = unaccent($currentElement["word"]);
-                    $stringWords[] = $rankElement;
                     if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, 0, 1))) {
                         $begin = '[£|\\\\s]';
                     } else {
@@ -966,6 +969,9 @@ class SearchDoc
                     } else {
                         $end = '\\\\y';
                     }
+                    /* Strip non-word chars to prevent errors with to_tsquery() */
+                    $rankElement = trim(preg_replace('/[^\w]+/', ' ', $rankElement));
+                    $stringWords[] = $rankElement;
                     
                     $filterElement = sprintf("svalues ~* E'%s%s%s'", $begin, pg_escape_string(preg_quote($currentElement["word"])) , $end);
                     break;
@@ -1023,13 +1029,13 @@ class SearchDoc
         }
         if ($isOnlyWord) {
             $filter = str_replace(')(', ')&(', $filter);
-            $filter = sprintf("fulltext @@ to_tsquery('french','%s')", pg_escape_string($filter));
+            $filter = sprintf("fulltext @@ to_tsquery('french', E'%s')", pg_escape_string($filter));
         }
         
-        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string(preg_replace('/\s+/u', '&', $rank)));
+        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french', E'%s')) desc, id desc", pg_escape_string(preg_replace('/\s+/u', '&', $rank)));
         
         $highlightWords = implode("|", array_merge($words, $stringWords));
-
+        
         return $filter;
     }
     /**
