@@ -859,10 +859,12 @@ class SearchDoc
      * @param bool $useSpell
      * @param string $pertinenceOrder return pertinence order
      * @param string $highlightWords return words to be use by SearchHighlight class
-     * @throws Dcp\SearchDoc\Exception
-     * @return string sql filter
+     * @param bool $usePartial if true each words are defined as partial characters
+     * @return string
+     * @throws \Dcp\Lex\LexException
+     * @throws \Dcp\SearchDoc\Exception
      */
-    public static function getGeneralFilter($keywords, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
+    public static function getGeneralFilter($keywords, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '', $usePartial = false)
     {
         $filter = "";
         $rank = "";
@@ -889,20 +891,31 @@ class SearchDoc
         };
         
         $filterElements = \Dcp\Lex\GeneralFilter::analyze($keywords);
-        $isOnlyWord = true;
-        foreach ($filterElements as $currentFilter) {
-            if (!in_array($currentFilter["mode"], array(
-                \Dcp\Lex\GeneralFilter::MODE_OR,
-                \Dcp\Lex\GeneralFilter::MODE_AND,
-                \Dcp\Lex\GeneralFilter::MODE_OPEN_PARENTHESIS,
-                \Dcp\Lex\GeneralFilter::MODE_CLOSE_PARENTHESIS,
-                \Dcp\Lex\GeneralFilter::MODE_WORD,
-            ))) {
-                $isOnlyWord = false;
-                break;
+        if ($usePartial) {
+            $isOnlyWord = false;
+        } else {
+            $isOnlyWord = true;
+            foreach ($filterElements as $currentFilter) {
+                if ($usePartial && $currentFilter["mode"] === \Dcp\Lex\GeneralFilter::MODE_WORD) {
+                    $isOnlyWord = false;
+                    $currentFilter["mode"] = \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BOTH;
+                }
+                if (!in_array($currentFilter["mode"], array(
+                    \Dcp\Lex\GeneralFilter::MODE_OR,
+                    \Dcp\Lex\GeneralFilter::MODE_AND,
+                    \Dcp\Lex\GeneralFilter::MODE_OPEN_PARENTHESIS,
+                    \Dcp\Lex\GeneralFilter::MODE_CLOSE_PARENTHESIS,
+                    \Dcp\Lex\GeneralFilter::MODE_WORD,
+                ))) {
+                    $isOnlyWord = false;
+                    break;
+                }
             }
         }
         foreach ($filterElements as $currentElement) {
+            if ($usePartial && $currentElement["mode"] === \Dcp\Lex\GeneralFilter::MODE_WORD) {
+                $currentElement["mode"] = \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BOTH;
+            }
             switch ($currentElement["mode"]) {
                 case \Dcp\Lex\GeneralFilter::MODE_OR:
                     $currentOperator = "or";

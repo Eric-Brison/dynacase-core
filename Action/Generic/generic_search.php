@@ -25,18 +25,23 @@ include_once ("GENERIC/generic_util.php");
  * @global string $keyword Http var : keyword to search
  * @global string $catg Http var : primary folder/search where search
  * @global string $dirid Http var : secondary search for sub searches
- * @global string $mode Http var : (REGEXP|FULL)  search mode regular expression or full text
  */
 function generic_search(Action & $action)
 {
     // Get all the params
     $keyword = $action->getArgument("keyword"); // keyword to search
     $catgid = $action->getArgument("catg", getDefFld($action)); // primary folder/search where search
-    $dirid = $action->getArgument("dirid", getDefFld($action)); // temporary subsearch
-    $mode = $action->getArgument("mode");
+    $searchMode = $action->getParam("GENE_SEARCHMODE", "words");
+    
     $mysearches = ($action->getArgument("mysearches") == "yes");
     
     $onefamOrigin = $action->getArgument("onefam"); // onefam origin
+    if ($onefamOrigin) {
+        $onefamSearchMode = ApplicationParameterManager::getParameterValue($onefamOrigin, "ONEFAM_SEARCHMODE");
+        if ($onefamSearchMode) {
+            $searchMode = $onefamSearchMode;
+        }
+    }
     $dbaccess = $action->dbaccess;
     
     $famid = getDefFam($action);
@@ -50,7 +55,6 @@ function generic_search(Action & $action)
     }
     $action->setParamU("GENE_LATESTTXTSEARCH", setUkey($action, $famid, $keyword));
     
-    setSearchMode($action, $famid, $mode);
     if ($mysearches) {
         /**
          * @var DocSearch $sdoc
@@ -63,7 +67,7 @@ function generic_search(Action & $action)
             $sdoc->title = sprintf(_("my searches about %s") , $fdoc->title);
         }
         $sdoc->Add();
-        $full = ($mode == "FULL");
+        $full = ($searchMode === "words");
         
         $sqlfilter = $sdoc->getSqlGeneralFilters($keyword, "yes", false, $full);
         $sqlorder = getDefUSort($action, "title");
@@ -77,7 +81,6 @@ function generic_search(Action & $action)
         $sdoc->AddQuery($query);
         executeGenericList($action, array(
             "onefam" => $onefamOrigin,
-            "mode" => $mode,
             "famid" => $famid,
             "dirid" => $sdoc->id,
             "catg" => $catgid
@@ -110,8 +113,9 @@ function generic_search(Action & $action)
             if (!SearchDoc::checkGeneralFilter($keyword)) {
                 throw new \Dcp\Exception(sprintf(_("incorrect global filter %s") , $keyword));
             } else {
+                $usePartial = ($searchMode === "characters");
                 $sqlfilter = array(
-                    SearchDoc::getGeneralFilter($keyword, $useSpell = true)
+                    SearchDoc::getGeneralFilter($keyword, $useSpell = true, $fullOrder, $highlight, $usePartial)
                 );
             }
         }
@@ -150,7 +154,6 @@ function generic_search(Action & $action)
         
         executeGenericList($action, array(
             "onefam" => $onefamOrigin,
-            "mode" => $mode,
             "famid" => $famid,
             "dirid" => $sdoc->id,
             "catg" => $catgid
@@ -158,7 +161,6 @@ function generic_search(Action & $action)
     } else {
         executeGenericList($action, array(
             "onefam" => $onefamOrigin,
-            "mode" => $mode,
             "famid" => $famid,
             "dirid" => $catgid,
             "catg" => $catgid

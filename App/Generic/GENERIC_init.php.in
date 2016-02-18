@@ -68,11 +68,11 @@ array("INIT" => "yes",
 				      "global"=>"Y",
 				      "kind"=>"static",
 				      "user"=>"Y"),
-      "GENE_MODESEARCH" => array("val"=>"",
+      "GENE_SEARCHMODE" => array("val"=>"words",
 				      "descr"=>N_("search mode"),
-				      "global"=>"Y",
-				      "kind"=>"static",
-				      "user"=>"Y")
+				      "global"=>"N",
+				      "kind"=>"enum(words|characters)",
+				      "user"=>"N")
       );
 
 ?>

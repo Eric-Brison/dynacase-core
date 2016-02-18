@@ -85,6 +85,7 @@ function getDefUKey(Action & $action)
  * @param Action $action current action
  * @param int $famid family identifier
  * @param string $key key to memorize
+ * @return string
  */
 function setUkey(Action & $action, $famid, $key)
 {
@@ -163,21 +164,12 @@ function getInherit(Action & $action, $famid = "")
     return getFamilyParameter($action, $famid, "GENE_INHERIT", "Y");
 }
 /**
- * return  if search is also in inherit famileis
- * @return string [Y|N] Yes/No  according to family
- */
-function getSearchMode(Action & $action, $famid = "")
-{
-    if ($famid == "") $famid = getDefFam($action);
-    return getFamilyParameter($action, $famid, "GENE_MODESEARCH", "REGEXP");
-}
-/**
  * set attribute split mode
  * @param string $split [V|H]
  */
 function setSplitMode(Action & $action, $famid, $split)
 {
-    return setFamilyParameter($action, $famid, 'GENE_SPLITMODE', $split);
+    setFamilyParameter($action, $famid, 'GENE_SPLITMODE', $split);
 }
 /**
  * set attribute view mode
@@ -185,7 +177,7 @@ function setSplitMode(Action & $action, $famid, $split)
  */
 function setViewMode(&$action, $famid, $view)
 {
-    return setFamilyParameter($action, $famid, 'GENE_VIEWMODE', $view);
+    setFamilyParameter($action, $famid, 'GENE_VIEWMODE', $view);
 }
 /**
  * set attribute view tab letters
@@ -193,7 +185,7 @@ function setViewMode(&$action, $famid, $view)
  */
 function setTabLetter(&$action, $famid, $letter)
 {
-    return setFamilyParameter($action, $famid, 'GENE_TABLETTER', $letter);
+    setFamilyParameter($action, $famid, 'GENE_TABLETTER', $letter);
 }
 /**
  * set attribute view tab letters
@@ -201,15 +193,7 @@ function setTabLetter(&$action, $famid, $letter)
  */
 function setInherit(&$action, $famid, $inherit)
 {
-    return setFamilyParameter($action, $famid, 'GENE_INHERIT', $inherit);
-}
-/**
- * set attribute search mode
- * @param string $split [REGEXP|FULL]
- */
-function setSearchMode(&$action, $famid, $mode)
-{
-    return setFamilyParameter($action, $famid, 'GENE_MODESEARCH', $mode);
+    setFamilyParameter($action, $famid, 'GENE_INHERIT', $inherit);
 }
 /**
  * return parameters key search for all familly

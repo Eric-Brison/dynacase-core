@@ -101,7 +101,8 @@
     </div>
     <div class="hblock">
         [TEXT:FGSEARCH:help (intro)]
-        [TEXT:FGSEARCH:help for input]
+        [TEXT:FGSEARCH:help words search]
+        [TEXT:FGSEARCH:help characters search]
         [TEXT:FGSEARCH:help for family selection]
         [TEXT:FGSEARCH:help for advanced search]
     </div>
