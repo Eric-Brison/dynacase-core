@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 13:43+0100\n"
-"PO-Revision-Date: 2016-02-17 13:44+0100\n"
+"POT-Creation-Date: 2016-02-18 09:40+0100\n"
+"PO-Revision-Date: 2016-02-18 09:41+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -4044,6 +4044,12 @@ msgstr "Etes vous sur de vouloir dupliquer %s"
 
 msgid "Sure duplicate ?"
 msgstr "Etes vous sur de vouloir dupliquer"
+
+msgid "Switch Expert Mode"
+msgstr "Basculer en mode expert"
+
+msgid "Switch Normal Mode"
+msgstr "Basculer en mode normal"
 
 #, php-format
 msgid "Syntax error in file '%s': %s"

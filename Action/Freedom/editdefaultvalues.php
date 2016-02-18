@@ -10,7 +10,6 @@ include_once ("FDL/editutil.php");
 function editdefaultvalues(Action $action)
 {
     $usage = new ActionUsage($action);
-    
     $famid = $usage->addRequiredParameter("famid", "Family identifier", function ($value)
     {
         $family = new_doc("", $value);

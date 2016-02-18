@@ -50,7 +50,6 @@ $(document).on("ready", function () {
         });
         dialogFrame.dialog("open");
 
-
     });
     $defVal.tipsy({
         html: true,

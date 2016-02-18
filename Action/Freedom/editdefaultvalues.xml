@@ -1,6 +1,5 @@
 [ZONE FDL:HTMLHEAD?title=[TEXT:Modify default values]]
 
-
 <style>
 .defval {
     cursor:pointer;

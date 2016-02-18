@@ -581,22 +581,27 @@ create unique index idx_idfam on docfam(id);";
         
         if (is_array($val)) $vals = $val;
         else $vals[] = $val;
-        //print_r2($val);
-        foreach ($vals as $ka => $av) {
-            switch ($type) {
-                case 'money':
-                case 'double':
-                    if (!empty($av) && (!is_numeric($av))) {
-                        $err = sprintf(_("value [%s] is not a number") , $av);
-                    }
-                    break;
 
-                case 'int':
-                    if (!empty($av)) {
-                        if ((!is_numeric($av))) $err = sprintf(_("value [%s] is not a number") , $av);
-                        if (!$err && (!ctype_digit($av))) $err = sprintf(_("value [%s] is not a integer") , $av);
-                    }
-                    break;
+        foreach ($vals as $ka => $av) {
+            if (!self::seemsMethod($av)) {
+                switch ($type) {
+                    case 'money':
+                    case 'double':
+                        if (!empty($av) && (!is_numeric($av))) {
+                            $err = sprintf(_("value [%s] is not a number") , $av);
+                        }
+                        break;
+
+                    case 'int':
+                        if (!empty($av)) {
+                            if ((!is_numeric($av))) {
+                                $err = sprintf(_("value [%s] is not a number") , $av);
+                            }
+                            if (!$err && (!ctype_digit($av))) {
+                                $err = sprintf(_("value [%s] is not a integer") , $av);
+                            }
+                        }
+                        break;
                 }
                 if (!$err) {
                     // verifiy constraint
@@ -607,7 +612,8 @@ create unique index idx_idfam on docfam(id);";
                     }
                 }
             }
-            return $err;
+        }
+        return $err;
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ DEFAULT VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
     

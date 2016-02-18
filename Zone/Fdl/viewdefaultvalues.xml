@@ -1,7 +1,7 @@
 <style>
     table.defaultValues {
       margin:10px;
-      width:100%;
+      width:calc(100% - 20px);
     }
     table.defaultValues tr td{
       border:solid 1px [COLOR_B0];
