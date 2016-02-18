@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-16 16:24+0100\n"
+"POT-Creation-Date: 2016-02-18 09:40+0100\n"
 "PO-Revision-Date: 2015-12-11 16:19+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -705,6 +705,9 @@ msgid "Attribute label"
 msgstr ""
 
 msgid "Attribute not found"
+msgstr ""
+
+msgid "Attributes"
 msgstr ""
 
 msgid "Attributes definition"
@@ -3226,10 +3229,19 @@ msgstr ""
 msgid "Parameter [%s] not found. Error message: [%s]"
 msgstr ""
 
+msgid "Parameter identifier"
+msgstr ""
+
+msgid "Parameter label"
+msgstr ""
+
 msgid "Parameter name does not include spaces"
 msgstr ""
 
 msgid "Parameter's id"
+msgstr ""
+
+msgid "Parameters"
 msgstr ""
 
 msgid "Parameters for"
@@ -3866,6 +3878,12 @@ msgid "Sure duplicate %s ?"
 msgstr ""
 
 msgid "Sure duplicate ?"
+msgstr ""
+
+msgid "Switch Expert Mode"
+msgstr ""
+
+msgid "Switch Normal Mode"
 msgstr ""
 
 #, php-format
@@ -6142,6 +6160,9 @@ msgid "filename or type not include"
 msgstr ""
 
 msgid "filter attributes"
+msgstr ""
+
+msgid "filter parameters"
 msgstr ""
 
 #, php-format

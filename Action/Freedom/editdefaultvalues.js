@@ -2,15 +2,22 @@ $(document).on("ready", function () {
 
     var hashAid = window.location.href.split('#')[1];
     var $defVal = $(".defval");
-    $(".default-values").dataTable({
+    var $defaultValues=$(".default-values");
+
+    $defaultValues.dataTable({
         bPaginate: false,
+        "aaSorting": [],
+        "bSort": false,
+        bAutoWidth:false,
         "sDom": '<"top"ft<"bottom"><"clear">',
         oLanguage: {
             "sSearch": ""
         }
     });
 
-    $(".dataTables_filter input").attr("placeholder",$(".default-values").data("filter") );
+    $(".dataTables_filter input").attr("placeholder", function () {
+        return $(this).closest(".top").find(".default-values").data("filter");
+    } );
 
     $defVal.on("click", "a", function (event) {
         event.stopPropagation();
@@ -42,7 +49,6 @@ $(document).on("ready", function () {
             '<span class="attribute-id">"' + $(this).find(".attribute-id").html() + '"</span>'
         });
         dialogFrame.dialog("open");
-
 
     });
     $defVal.tipsy({

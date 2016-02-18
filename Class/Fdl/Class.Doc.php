@@ -4440,6 +4440,11 @@ create unique index i_docir on doc(initid, revision);";
         $value = $this->ApplyMethod($value, $value);
         return $value;
     }
+    
+    public static function seemsMethod($method)
+    {
+        return is_string($method) && preg_match('/([^:]*)::([^\(]+)\(([^\)]*)\)/', $method);
+    }
     /**
      * apply a method to a doc
      * specified like ::getFoo(10)
@@ -4457,7 +4462,7 @@ create unique index i_docir on doc(initid, revision);";
         $value = $def;
         $err = '';
         
-        if (is_string($method) && preg_match('/([^:]*)::([^\(]+)\(([^\)]*)\)/', $method, $reg)) {
+        if (self::seemsMethod($method)) {
             
             $parseMethod = new parseFamilyMethod();
             $parseMethod->parse($method);

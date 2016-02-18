@@ -10,13 +10,13 @@ include_once ("FDL/editutil.php");
 function editdefaultvalues(Action $action)
 {
     $usage = new ActionUsage($action);
-    
     $famid = $usage->addRequiredParameter("famid", "Family identifier", function ($value)
     {
         $family = new_doc("", $value);
         if ($family->doctype !== "C") {
             return "Must be a family identifier";
         }
+        return "";
     });
     $family = new_doc("", $famid);
     
@@ -35,11 +35,14 @@ function editdefaultvalues(Action $action)
     /**
      * @var DocFam $family
      */
-    $oas = $family->getNormalAttributes();
+    $oas = $family->getAttributes();
     $d = createDoc($action->dbaccess, $family->id, false, true, false);
-    $tdefval = array();
+    $taDefval = $tpDefval = array();
     foreach ($oas as $oa) {
-        if ($oa->type !== "array") {
+        if ($oa->isNormal && $oa->type !== "array") {
+            /**
+             * @var NormalAttribute $oa
+             */
             $defval = $family->getDefValue($oa->id);
             if ($defval) {
                 if ($oa->type === "file" || $oa->type === "image") {
@@ -53,17 +56,25 @@ function editdefaultvalues(Action $action)
             } else {
                 $htmlvalue = '';
             }
-            $tdefval[] = array(
+            $row = array(
                 "aid" => $oa->id,
                 "alabel" => htmlspecialchars(sprintf("%s / %s", $oa->fieldSet->getLabel() , $oa->getLabel())) ,
                 "multiline" => ($oa->isMultiple() || $oa->type === "longtext" || $oa->type === "htmltext") ,
                 "defval" => htmlspecialchars($defval, ENT_QUOTES) ,
                 "htmlval" => $htmlvalue
             );
+            
+            if ($oa->usefor === "Q") {
+                $tpDefval[] = $row;
+            } else {
+                $taDefval[] = $row;
+            }
         }
     }
     
-    $action->lay->setBlockData("DEFAULTS", $tdefval);
+    $action->lay->setBlockData("ADEFAULTS", $taDefval);
+    $action->lay->setBlockData("PDEFAULTS", $tpDefval);
+    $action->lay->set("hasParam", count($tpDefval) > 0);
     
     $action->lay->set("famid", $family->id);
     $action->lay->set("family", $family->getHTMLTitle());

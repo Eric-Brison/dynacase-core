@@ -2582,9 +2582,7 @@ function canceloption(said) {
 }
 
 
-
 function focusFirst() {
-
   var fedit= document.getElementById('fedit');
   if (fedit) {
     for (var i=0;i<fedit.elements.length;i++) {
@@ -2595,7 +2593,8 @@ function focusFirst() {
       case 'select-multiple':
       case 'textarea':
       case 'FIELDSET':
-	if ((! fedit.elements[i].disabled)&&(fedit.elements[i].style.display != 'none')&&(fedit.elements[i].style.visibility != 'hidden')) {
+	if ((! fedit.elements[i].disabled)&&(fedit.elements[i].style.display != 'none')&&(fedit.elements[i].style.visibility != 'hidden')
+        && fedit.elements[i].getAttribute("readonly") != "readonly") {
 	  try {
 	    fedit.elements[i].focus();
 	    return;

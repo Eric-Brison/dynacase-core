@@ -1,28 +1,18 @@
 <?php
 /*
+ * generate form interface for document
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 /**
- * generate interface for the rdition of document
- *
- * @author Anakeen
- * @version $Id: editcard.php,v 1.76 2008/11/10 16:53:06 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
  */
-/**
- */
-
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/editutil.php");
 
 function editcard(Action & $action)
 {
-    
     $docid = GetHttpVars("id", 0); // document to edit
     $classid = GetHttpVars("classid", 0); // use when new doc or change class
     $zonebodycard = GetHttpVars("zone"); // define view action
@@ -71,6 +61,8 @@ function editcard(Action & $action)
                 $doc->usefor = 'Q';
                 $doc->setDefaultValues($fdoc->getParams() , false);
                 $doc->state = '';
+                
+                $action->parent->addJsRef("FDL:editfamilyparam.js", true);
                 break;
         }
     } else {
@@ -197,7 +189,7 @@ function editcard(Action & $action)
         if ($doc->id == 0) {
             if (fdl_setHttpVars($doc)) $doc->refresh();
         }
-        if ($usefor == "Q") {
+        if ($usefor === "Q") {
             useOwnParamters($doc);
         }
         setRefreshAttributes($action, $doc);
@@ -221,11 +213,23 @@ function useOwnParamters(Doc & $doc)
     } else {
         $fam = $doc->getFamilyDocument();
     }
+    
+    $expertMode = getHttpVars("mode") === "expert";
     foreach ($listattr as $aid => $attr) {
         /**
          * @var NormalAttribute $attr
          */
         $defParamValue = $fam->getDefValue($aid);
+        if ($attr->type !== "array" && $expertMode) {
+            if ($attr->type === "htmltext" || $attr->type === "longtext") {
+                $attr->type = "longtext";
+            } else {
+                $attr->type = "text";
+            }
+            $attr->format = "";
+            $attr->phpfile = '';
+            $attr->phpfunc = '';
+        }
         if ($defParamValue) {
             $attr->setOption("elabel", _("default value") . ": \n" . $defParamValue);
         }
@@ -236,13 +240,24 @@ function useOwnParamters(Doc & $doc)
     $defVal = $fam->getOwnParams();
     foreach ($defVal as $aid => $value) {
         $doc->$aid = $value; // use raw affect to see method declaration
-        
+        $oa = $doc->getAttribute($aid);
+        if (Doc::seemsMethod($value)) {
+            if ($oa->type === "htmltext" || $oa->type === "longtext") {
+                $oa->type = "longtext";
+            } else {
+                $oa->type = "text";
+            }
+            $oa->mvisibility = "W";
+            $oa->format = "";
+            $oa->phpfile = '';
+            $oa->phpfunc = '';
+        }
     }
 }
 /**
  * set all attribute in W visibility
  *
- *
+ * @param Doc $doc
  */
 function setDocDefaultValues(Doc & $doc)
 {
@@ -283,7 +298,11 @@ function setDocDefaultValues(Doc & $doc)
 
 function setNeededAttributes(Action & $action, Doc & $doc)
 {
-    $attrn = $doc->GetNeededAttributes($doc->usefor == 'Q');
+    if ($doc->usefor == 'Q') {
+        $attrn = array();
+    } else {
+        $attrn = $doc->GetNeededAttributes($doc->usefor == 'Q');
+    }
     
     if (count($attrn) == 0) {
         $sattrNid = "[]";

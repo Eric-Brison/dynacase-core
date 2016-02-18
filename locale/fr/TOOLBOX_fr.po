@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-16 16:24+0100\n"
-"PO-Revision-Date: 2016-02-16 16:27+0100\n"
+"POT-Creation-Date: 2016-02-18 09:40+0100\n"
+"PO-Revision-Date: 2016-02-18 09:41+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -722,6 +722,9 @@ msgstr "Libellé de l'attribut"
 
 msgid "Attribute not found"
 msgstr "Attribut non trouvé"
+
+msgid "Attributes"
+msgstr "Attributs"
 
 msgid "Attributes definition"
 msgstr "définition des attributs"
@@ -3364,11 +3367,20 @@ msgstr "Le paramétre [%s] de la famille [%s] n'a pas été trouvé"
 msgid "Parameter [%s] not found. Error message: [%s]"
 msgstr "Paramétre [%s] introuvable.Une erreur a été reçue: [%s]"
 
+msgid "Parameter identifier"
+msgstr "Identifiant du paramètre"
+
+msgid "Parameter label"
+msgstr "Libellé du paramètre"
+
 msgid "Parameter name does not include spaces"
 msgstr "Le nom de paramètre ne doit pas inclure d'espaces"
 
 msgid "Parameter's id"
 msgstr "Identifiant du paramètre"
+
+msgid "Parameters"
+msgstr "Paramètres"
 
 msgid "Parameters for"
 msgstr "Paramètres pour"
@@ -4032,6 +4044,12 @@ msgstr "Etes vous sur de vouloir dupliquer %s"
 
 msgid "Sure duplicate ?"
 msgstr "Etes vous sur de vouloir dupliquer"
+
+msgid "Switch Expert Mode"
+msgstr "Basculer en mode expert"
+
+msgid "Switch Normal Mode"
+msgstr "Basculer en mode normal"
 
 #, php-format
 msgid "Syntax error in file '%s': %s"
@@ -6366,6 +6384,9 @@ msgstr "le nom du fichier ou son type ne contient pas"
 
 msgid "filter attributes"
 msgstr "Filtrer les attributs"
+
+msgid "filter parameters"
+msgstr "Filter les paramètres"
 
 #, php-format
 msgid "find %s more than one, created aborded\n"
