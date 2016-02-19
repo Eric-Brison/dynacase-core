@@ -71,6 +71,8 @@ include_once ('Class.Application.php');
 class Layout
 {
     private $strip = 'N';
+    private $noGoZoneMapping = "___NO-GO-ZONE___";
+    private $goZoneMapping = "[ZONE ";
     public $encoding = "";
     /**
      * set to true to not parse template when it is generating
@@ -118,6 +120,7 @@ class Layout
         else $this->template = $template;
         if ($action) $this->action = & $action;
         $this->generation = "";
+        $this->noGoZoneMapping=uniqid($this->noGoZoneMapping);
         $file = $caneva;
         $this->file = "";
         if ($caneva != "") {
@@ -233,7 +236,9 @@ class Layout
                 if (!is_array($this->corresp["$name"])) return sprintf(_("SetBlock:error [%s]") , $name);
                 foreach ($this->corresp["$name"] as $k2 => $v2) {
                     $vv2 = (isset($v[$v2])) ? $v[$v2] : '';
-                    if ((!is_object($vv2)) && (!is_array($vv2))) $loc = str_replace($k2, $vv2, $loc);
+                    if ((!is_object($vv2)) && (!is_array($vv2))) {
+                        $loc = str_replace($k2, str_replace($this->goZoneMapping, $this->noGoZoneMapping, $vv2) , $loc);
+                    }
                 }
                 $this->rif = & $v;
                 $this->ParseIf($loc);
@@ -297,7 +302,6 @@ class Layout
     protected function ParseKey(&$out)
     {
         if (isset($this->rkey)) {
-            
             $out = str_replace($this->pkey, $this->rkey, $out);
         }
     }
@@ -413,7 +417,8 @@ class Layout
      */
     public function eSet($tag, $val)
     {
-        $this->set($tag, str_replace("[ZONE", "&#091;ZONE", htmlspecialchars($val, ENT_QUOTES)));
+        $val = str_replace($this->goZoneMapping, $this->noGoZoneMapping, $val);
+        $this->set($tag, htmlspecialchars($val, ENT_QUOTES));
     }
     /**
      * return the value set for a key
@@ -635,6 +640,7 @@ class Layout
         $this->ParseJs($out);
         $this->ParseCss($out);
         
+        $out = str_replace($this->noGoZoneMapping, $this->goZoneMapping, $out);
         return ($out);
     }
     /**

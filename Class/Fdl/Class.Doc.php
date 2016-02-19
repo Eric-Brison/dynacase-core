@@ -7319,6 +7319,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->viewabstractcard($target, $ulink, $abstract);
         $this->viewprop($target, $ulink, $abstract);
         $this->lay->set("iconsrc", $this->getIcon());
+        $this->lay->set("TITLE", $this->getHTMLTitle());
         $state = $this->getState();
         if ($state != "") $this->lay->set("state", _($state));
         else $this->lay->set("state", "");
@@ -8651,17 +8652,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     public static function htmlEncode($s)
     {
-        $s = str_replace("&", "&amp;", $s);
-        
-        return str_replace(array(
-            "[",
-            "<",
-            ">"
-        ) , array(
-            "&#091;",
-            "&lt;",
-            "&gt;"
-        ) , $s);
+        $s = htmlspecialchars($s, ENT_QUOTES);
+        return str_replace("[", "&#091;", $s);
     }
     /**
      * return the today date with european format DD/MM/YYYY
