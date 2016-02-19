@@ -16,7 +16,12 @@ global $app_const;
 $app_const= 
 array(
       "VERSION"	   =>"@VERSION@-@RELEASE@",
+      "FGSEARCH_SEARCHMODE" => array(
+          "val"=>"words",
+				      "descr"=>N_("search mode"),
+				      "global"=>"N",
+				      "kind"=>"enum(words|characters)",
+				      "user"=>"N")
       );
 
 
-?>

@@ -74,7 +74,7 @@
              [ENDIF ONESEARCH]
              <td class="search-input-key">
 	       <div class="css-search-zone">
-		 <input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[TEXT:generic#search]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/>
+		 <input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[SearchPlaceHolder]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/>
 	       </div>
              </td>
         <td>

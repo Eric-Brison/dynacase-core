@@ -47,6 +47,13 @@ function generic_list(&$action)
     setHttpVar("target", $target);
     if (!($famid > 0)) $famid = getDefFam($action);
     
+    $searchMode = $action->getParam("GENE_SEARCHMODE", "words");
+    if ($onefamOrigin) {
+        $onefamSearchMode = ApplicationParameterManager::getParameterValue($onefamOrigin, "ONEFAM_SEARCHMODE");
+        if ($onefamSearchMode) {
+            $searchMode = $onefamSearchMode;
+        }
+    }
     $paginationType = "basic";
     $column = generic_viewmode($action, $famid); // choose the good view mode
     $dbaccess = $action->dbaccess;
@@ -110,13 +117,16 @@ function generic_list(&$action)
     $action->lay->eSet("tab", $tab);
     $action->lay->eSet("catg", $catgid);
     $action->lay->eSet("famid", $famid);
-    $mode = getSearchMode($action, $famid);
-    $action->lay->Set("FULLMODE", ($mode == "FULL"));
     $slice = $action->GetParam("CARD_SLICE_LIST", 5);
     //  $action->lay->Set("next",$start+$slice);
     //$action->lay->Set("prev",$start-$slice);
     $action->lay->Set("nexticon", "");
     $action->lay->Set("previcon", "");
+    if ($searchMode === "words") {
+        $action->lay->set("SearchPlaceHolder", ___("Search words", "generic"));
+    } else {
+        $action->lay->set("SearchPlaceHolder", ___("Search characters", "generic"));
+    }
     
     if ($sqlorder == "") {
         /* This should be in sync with the default value $def from getDefUSort() */
@@ -279,7 +289,6 @@ function getFamilySearches(Action $action, $dbaccess, $famid, $only = false)
      * @var DocFam $fdoc
      */
     $fdoc = new_Doc($dbaccess, $famid);
-    $famid = $fdoc->id;
     $dirid = GetHttpVars("dirid"); // search
     $catgid = GetHttpVars("catg", $dirid); // primary directory
     if ($catgid == 0) $catgid = $dirid;

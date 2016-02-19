@@ -51,6 +51,7 @@ function fullsearch(Action & $action)
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     
     $action->lay->eset("key", $keyword);
+    $action->lay->set("searchWords", $action->getParam("FGSEARCH_SEARCHMODE", "words") === "words");
     if (!is_numeric($famid)) $famid = getFamIdFromName($dbaccess, $famid);
     
     createSearchEngine($action);

@@ -50,6 +50,45 @@ class SearchHighlight
     }
     /**
      * return part of text where are found keywords
+     * use simply regexp replace
+     * @param string $s original text
+     * @param string $k keywords
+     * @return string HTML text with <b> tags
+     */
+    public function rawHighLight($s, $k)
+    {
+        $offsetStart = 100; // number of characters displayed before and after first result
+        $replace = $this->beginTag . '$1' . $this->endTag;
+        
+        $out = preg_replace("/($k)/iu", $replace, str_replace(array(
+            '£',
+            $this->beginTag,
+            $this->endTag
+        ) , array(
+            ' - ',
+            " ",
+            ""
+        ) , ($s)));
+        $begin = strpos($out, $this->beginTag);
+        $end = strpos($out, $this->endTag);
+        if ($begin === false) {
+            $out = "-";
+        } else {
+            $begin = strpos($out, " ", max(0, $begin - $offsetStart));
+            if ($begin === false) {
+                $begin = 0;
+            }
+            $end = strpos($out, " ", $end + $offsetStart);
+            if ($end === false) {
+                $end = $begin + 100;
+            }
+            
+            $out = substr($out, $begin, $end - $begin);
+        }
+        return $out;
+    }
+    /**
+     * return part of text where are found keywords
      * Due to unaccent fulltext vectorisation need to transpose original text with highlight text done by headline tsearch2 sql function
      * @param string $s original text
      * @param string $k keywords
@@ -131,7 +170,6 @@ class SearchHighlight
                 $headline = $nh;
             }
         }
-        //  print_r("\n\tT=$headline");
         return $headline;
     }
 }

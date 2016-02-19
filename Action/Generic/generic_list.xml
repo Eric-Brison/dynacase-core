@@ -87,8 +87,6 @@
     [ZONE [APPNAME]:FAMILY_BARMENU?catg=[catg]&onefam=[ONEFAMORIGIN]&famid=[famid]&pds=[pds]]
     [ZONE FDL:POPUPDOCMENU?mzone=GENERIC:POPUPLISTDETAIL%26famid=[famid]]
     <div id="main">
-
-
         <table cellspacing="0" cellpadding="0" id="searchheader"><tr>
             [IF ONESEARCH]
             <td class="select-search-button">
@@ -99,14 +97,11 @@
                 <table cellspacing="0" cellpadding="0" ><tr><td><p class="selected-search-text" id="selected-search-text"></p></td>
                     <td><span id="close-select-search" title="[TEXT:Delete selected search]"  class="ui-icon ui-icon-close"></span></td></tr></table>
 
-
-
-
             </td>
             [ENDIF ONESEARCH]
             <td class="search-input-key">
                 <div class="css-search-zone">
-                    <input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[TEXT:generic:search placeholder]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/>
+                    <input onMouseUp="return true" title="[TEXT:Search document]" placeholder="[SearchPlaceHolder]" onKeyPress="KeySendSimpleSearch(event)" type="text" value="[tkey]"  id="searchkey"/>
                 </div>
             </td>
             <td>
@@ -119,11 +114,9 @@
             </td>
         </tr></table>
 
-
     <div class="searchHeader ui-widget-header" cellspacing="0" width="100%">
         <span class="searchTitle"> [fldtitle]</span>
     </div>
-
         <table class="transparent" width="100%" cellpadding="0px" cellspacing="0px">
             <tr>
                 [IF hasOnglet]
