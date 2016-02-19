@@ -188,7 +188,7 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
             $tdoc[$k]["id"] = $docid;
             $tdoc[$k]["fromid"] = $doc->fromid;
             // search title for freedom item
-            $title = htmlspecialchars($doc->getTitle() , ENT_QUOTES);
+            $title = $doc->getHtmlTitle();
             $tdoc[$k]["title"] = $title;
             
             if ($doc->doctype == "C") $tdoc[$k]["title"] = "<B>" . $title . "</B>";
@@ -449,9 +449,9 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
              */
             return $collator->compare($a['ftitle'], $b['ftitle']);
         });
-        $action->lay->SetBlockData("TABLEBODY", $tfamdoc);
+        $action->lay->setBlockData("TABLEBODY", $tfamdoc);
     } else {
-        $action->lay->SetBlockData("TABLEBODY", $tdoc);
+        $action->lay->setBlockData("TABLEBODY", $tdoc);
     }
     
     if ($with_popup) {
