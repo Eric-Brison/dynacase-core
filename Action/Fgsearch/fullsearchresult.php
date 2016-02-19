@@ -32,7 +32,6 @@ function fullsearchresult(Action & $action)
 {
     $famid = $action->getArgument("famid", 0);
     $keyword = $action->getArgument("_se_key", $action->getArgument("keyword")); // keyword to search
-    $target = $action->getArgument("target"); // target window when click on document
     $page = $action->getArgument("page", 0); // page number
     $dirid = $action->getArgument("dirid", 0); // special search
     $slice = 10;
@@ -44,7 +43,7 @@ function fullsearchresult(Action & $action)
     $action->lay->rSet("SUBSEARCH", ($start > 0));
     $initpage = false;
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
-    $orderby = "title";
+    
     $dbaccess = $action->dbaccess;
     if (!is_numeric($famid)) $famid = getFamIdFromName($dbaccess, $famid);
     $famtitle = "";
@@ -59,7 +58,7 @@ function fullsearchresult(Action & $action)
     }
     $action->lay->rSet("INITSEARCH", $nosearch);
     $kfams = array();
-    $fkeyword = $keyword;
+    
     if ($keyword != "") {
         // process family specification
         $kl = explode(":", $keyword);
@@ -84,6 +83,8 @@ function fullsearchresult(Action & $action)
             }
         }
     }
+    
+    $searchMode = $action->getParam("FGSEARCH_SEARCHMODE", "words");
     /* $bfam = array(); */
     $tclassdoc = getNonSystemFamilies($dbaccess, $action->user->id, "TABLE");
     if (!$nosearch) {
@@ -92,7 +93,7 @@ function fullsearchresult(Action & $action)
         $famfilter = $or = $and = "";
         if (count($kfams) > 0) {
             $famid = 0;
-            $tmpdoc = new Doc($dbaccess);
+            
             foreach ($kfams as $k => $v) {
                 foreach ($tclassdoc as $kdoc => $cdoc) {
                     if (strstr(strtolower($cdoc["title"]) , $v["kfam"]) != false) {
@@ -104,7 +105,7 @@ function fullsearchresult(Action & $action)
             if ($or != "") $famfilter = "($or)";
             if ($and != "") $famfilter.= ($famfilter != "" ? " AND " : "") . " ($and)";
         }
-        $keys = '';
+        $keys = $vardids = $displayedIds = '';
         
         $s = new SearchDoc($dbaccess, $famid);
         
@@ -112,7 +113,8 @@ function fullsearchresult(Action & $action)
             $s->addFilter("usefor !~ '^S'");
             $s->setObjectReturn();
             if ($keyword != "") {
-                $s->addGeneralFilter($keyword, true);
+                
+                $s->addGeneralFilter($keyword, true, $searchMode === "characters");
                 $s->setPertinenceOrder();
             } else {
                 $sdoc = new_doc($dbaccess, $dirid);
@@ -157,7 +159,7 @@ function fullsearchresult(Action & $action)
             if ($s->count() < ($slice + 1)) $globalCount = $s->count();
             else {
                 $sc = new SearchDoc($dbaccess, $famid);
-                if ($keyword) $sc->addGeneralFilter($keyword, true);
+                if ($keyword) $sc->addGeneralFilter($keyword, true, $searchMode === "characters");
                 if ($dirid) {
                     $sc->useCollection($dirid);
                 } else {
@@ -172,7 +174,6 @@ function fullsearchresult(Action & $action)
         $workdoc = new Doc($dbaccess);
         if ($famid) $famtitle = $workdoc->getTitle($famid);
         
-        $dbid = getDbid($dbaccess);
         if ($s->count() == ($slice + 1)) {
             $action->lay->rSet("notthenend", true);
             
@@ -201,7 +202,7 @@ function fullsearchresult(Action & $action)
             $tdocs[$k]["title"] = $doc->getHTMLTitle();
             $tdocs[$k]["id"] = $doc->id;
             /* Escape elements of highlight string */
-            $highlight = $s->getHighLightText($doc, '<strong>', '</strong>', $action->GetParam("FULLTEXT_HIGHTLIGHTSIZE", 200));
+            $highlight = $s->getHighLightText($doc, '<strong>', '</strong>', $action->GetParam("FULLTEXT_HIGHTLIGHTSIZE", 200) , $searchMode === "words");
             $tokens = preg_split('!(</?strong>)!', $highlight, -1, PREG_SPLIT_DELIM_CAPTURE);
             foreach ($tokens as & $token) {
                 if ($token == '<strong>' || $token == '</strong>') {

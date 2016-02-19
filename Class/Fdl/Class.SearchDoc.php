@@ -230,9 +230,6 @@ class SearchDoc
         $fld = new_Doc($this->dbaccess, $this->dirid);
         $userid = $this->userid;
         if ($fld->fromid != getFamIdFromName($this->dbaccess, "SSEARCH")) {
-            if ($this->debug) $debuginfo = array();
-            else $debuginfo = null;
-            
             $this->recursiveSearchInit();
             $tqsql = $this->getQueries();
             $this->debuginfo["query"] = $tqsql[0];
@@ -443,7 +440,7 @@ class SearchDoc
                     if ($this->fromid < - 1) {
                         $this->only = true;
                     }
-                    $err = simpleQuery($this->dbaccess, sprintf("select doctype from docfam where id=%d", abs($this->fromid)) , $doctype, true, true);
+                    simpleQuery($this->dbaccess, sprintf("select doctype from docfam where id=%d", abs($this->fromid)) , $doctype, true, true);
                     if ($doctype != 'C') $fromid = 0;
                     else $fromid = $this->fromid;
                 } else $fromid = $this->fromid;
@@ -507,7 +504,6 @@ class SearchDoc
      */
     public function returnsOnly(array $returns)
     {
-        $fields = array();
         if ($this->fromid) {
             $fdoc = createTmpDoc($this->dbaccess, $this->fromid, false);
             $fields = array_merge($fdoc->fields, $fdoc->sup_fields);
@@ -801,14 +797,15 @@ class SearchDoc
      * @api add global filter based on keyword
      * @param string $keywords
      * @param bool $useSpell use spell french checker
-     * @throws Dcp\SearchDoc\Exception SD0004 SD0003 SD0002
+     * @param bool $usePartial if true each words are defined as partial characters
+     * @throws \Dcp\SearchDoc\Exception SD0004 SD0003 SD0002
      */
-    public function addGeneralFilter($keywords, $useSpell = false)
+    public function addGeneralFilter($keywords, $useSpell = false, $usePartial = false)
     {
         if (!$this->checkGeneralFilter($keywords)) {
             throw new \Dcp\SearchDoc\Exception("SD0004", $keywords);
         } else {
-            $filter = $this->getGeneralFilter(trim($keywords) , $useSpell, $this->pertinenceOrder, $this->highlightWords);
+            $filter = $this->getGeneralFilter(trim($keywords) , $useSpell, $this->pertinenceOrder, $this->highlightWords, $usePartial);
             $this->addFilter($filter);
         }
     }
@@ -913,7 +910,7 @@ class SearchDoc
             }
         }
         foreach ($filterElements as $currentElement) {
-            if ($usePartial && $currentElement["mode"] === \Dcp\Lex\GeneralFilter::MODE_WORD) {
+            if ($usePartial && ($currentElement["mode"] === \Dcp\Lex\GeneralFilter::MODE_WORD || $currentElement["mode"] === \Dcp\Lex\GeneralFilter::MODE_STRING)) {
                 $currentElement["mode"] = \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BOTH;
             }
             switch ($currentElement["mode"]) {
@@ -1013,6 +1010,9 @@ class SearchDoc
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BOTH:
                     $rankElement = unaccent($currentElement["word"]);
+                    if ($usePartial) {
+                        $stringWords[] = $currentElement["word"];
+                    }
                     $filterElement = sprintf("svalues ~* E'%s'", pg_escape_string(preg_quote($currentElement["word"])));
                     break;
             }
@@ -1061,7 +1061,7 @@ class SearchDoc
      * @param int $limit file size limit to analyze
      * @return mixed
      */
-    public function getHighLightText(Doc & $doc, $beginTag = '<b>', $endTag = '</b>', $limit = 200)
+    public function getHighLightText(Doc & $doc, $beginTag = '<b>', $endTag = '</b>', $limit = 200, $wordMode = true)
     {
         static $oh = null;
         if (!$oh) {
@@ -1071,7 +1071,12 @@ class SearchDoc
         if ($endTag) $oh->endTag = $endTag;
         if ($limit > 0) $oh->setLimit($limit);
         simpleQuery($this->dbaccess, sprintf("select svalues from docread where id=%d", $doc->id) , $text, true, true);
-        $h = $oh->highlight($text, $this->highlightWords);
+        
+        if ($wordMode) {
+            $h = $oh->highlight($text, $this->highlightWords);
+        } else {
+            $h = $oh->rawHighlight($text, $this->highlightWords);
+        }
         
         return $h;
     }
