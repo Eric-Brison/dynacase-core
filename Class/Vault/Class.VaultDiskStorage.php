@@ -49,12 +49,12 @@ class VaultDiskStorage extends DbObj
     var $seq = "seq_id_vaultdiskstorage";
     var $sqlcreate = "create table vaultdiskstorage  ( 
                                      id_file       int not null, primary key (id_file),
-                                     id_fs         int,
-                                     id_dir        int,
-                                     public_access bool,
-                                     size int,
-                                     name text,
-                                     id_tmp text,
+                                     id_fs            int,
+                                     id_dir           int,
+                                     public_access    bool,
+                                     size             int,
+                                     name             text,
+                                     id_tmp           text,
                                      mime_t           text DEFAULT '',
                                      mime_s           text DEFAULT '',
 
@@ -64,8 +64,8 @@ class VaultDiskStorage extends DbObj
  
                                      teng_state       int DEFAULT 0,
                                      teng_lname       text DEFAULT '',
-                                     teng_id_file        int DEFAULT -1,
-                                     teng_comment        text DEFAULT ''
+                                     teng_id_file     int DEFAULT -1,
+                                     teng_comment     text DEFAULT ''
 
                                );
            create sequence seq_id_vaultdiskstorage start 10;
@@ -90,6 +90,10 @@ class VaultDiskStorage extends DbObj
     public $teng_lname;
     public $teng_id_file;
     public $teng_comment;
+    /**
+     * @var Log
+     */
+    protected $logger;
     var $storage = 1;
     /**
      * @var VaultDiskFsStorage
@@ -121,7 +125,7 @@ class VaultDiskStorage extends DbObj
     function PreInsert()
     {
         // --------------------------------------------------------------------
-        $res = $this->exec_query("select nextval ('" . $this->seq . "')");
+        $this->exec_query(sprintf("select nextval ('%s')", pg_escape_string($this->seq)));
         $arr = $this->fetch_array(0);
         $this->id_file = $arr["nextval"];
         return '';
@@ -133,7 +137,11 @@ class VaultDiskStorage extends DbObj
         $query = new QueryDb($this->dbaccess, $this->dbtable);
         $t = $query->Query(0, 0, "TABLE");
         $fc = $query->nb;
-        while ($fc > 0 && (list($k, $v) = each($t))) $fv+= $v["size"];
+        if ($fc > 0) {
+            foreach ($t as $v) {
+                $fv+= $v["size"];
+            }
+        }
         unset($t);
         return '';
     }
@@ -165,8 +173,10 @@ class VaultDiskStorage extends DbObj
      * Add new file in VAULT
      * @param string $infile complete server path of file to store
      * @param bool $public_access set true if can be access without any permission
-     * @param int &$id new file identifier
+     * @param int &$idf new file identifier
      * @param string $fsname name of the VAULT to store (can be empty=>store in one of available VAULT)
+     * @param string $te_lname transformation engine name
+     * @param int $te_id_file transformation engine file result identifier
      * @return string error message (empty if OK)
      */
     function Store($infile, $public_access, &$idf, $fsname = "", $te_lname = "", $te_id_file = 0)
@@ -218,8 +228,10 @@ class VaultDiskStorage extends DbObj
     }
     /**
      * Get the VaultDiskStorage transforming object corresponding to the current object
+     * @param string $te_name transformation engine name
      * @param  VaultDiskStorage &$ngf returned object
      * @return string error message (empty if OK)
+     * @throws \Dcp\Db\Exception
      */
     function GetEngineObject($te_name, &$ngf)
     {
@@ -265,12 +277,12 @@ class VaultDiskStorage extends DbObj
             $t = $query->Query(0, 0, "TABLE");
             
             if ($query->nb > 0) {
-                $msg = DbObj::Select($t[0]["id_file"]);
+                DbObj::Select($t[0]["id_file"]);
             }
         }
         
         if (($this->id_file == - 1) && ($teng_lname == "")) {
-            $msg = DbObj::Select($id_file);
+            DbObj::Select($id_file);
         }
         
         if ($this->id_file != - 1) {
@@ -325,11 +337,14 @@ class VaultDiskStorage extends DbObj
         return $msg;
     }
     // --------------------------------------------------------------------
-    function Save($infile, $public_access, $idf)
+    function save($infile, $public_access, $idf)
     {
         $err = '';
         $vf = new VaultFile($this->dbaccess);
         if ($vf->Show($idf, $info) == "") {
+            /**
+             * @var VaultFileInfo $info
+             */
             $path = str_replace("//", "/", $info->path);
             
             $size = $this->size;
@@ -337,10 +352,7 @@ class VaultDiskStorage extends DbObj
             $newsize = $this->size - $size;
             // Verifier s'il y a assez de places ???
             $this->public_access = $public_access;
-            //$this->name = my_basename($infile); // not rename
-            $fd = fopen($path, "w+");
-            //    if (!unlink($path))
-            //	return("NOT UNLINK $path\n");
+            
             $this->mdate = date("c", time());
             
             $msg = $this->modify();
@@ -371,19 +383,43 @@ class VaultDiskStorage extends DbObj
 } // End Class.VaultFileDisk.php
 class VaultFileInfo
 {
+    /**
+     * @var int vault identifier
+     */
     public $id_file;
+    /**
+     * @var string file basename
+     */
     public $name;
+    /**
+     * @var int file size in bytes
+     */
     public $size;
     public $public_access;
     public $mime_t;
+    /**
+     * @var string system mime file
+     */
     public $mime_s;
+    /**
+     * @var string creation date (YYYY-MM-DD HH:MM:SS)
+     */
     public $cdate;
+    /**
+     * @var string modification date (YYYY-MM-DD HH:MM:SS)
+     */
     public $mdate;
+    /**
+     * @var string last access date (YYYY-MM-DD HH:MM:SS)
+     */
     public $adate;
     public $teng_state;
     public $teng_lname;
     public $teng_vid;
     public $teng_comment;
+    /**
+     * @var string complete path to file
+     */
     public $path;
     public $id_tmp;
 }
