@@ -10,20 +10,12 @@
  * @package FDL
  */
 // ---------------------------------------------------------------
-// $Id: Class.VaultDiskFs.php,v 1.17 2008/11/21 09:57:23 jerome Exp $
-// $Source: /home/cvsroot/anakeen/freedom/vault/Class/Class.VaultDiskFs.php,v $
-// ---------------------------------------------------------------
-//
-//
-//
-// ---------------------------------------------------------------
 include_once ("Class.QueryDb.php");
 include_once ("Class.DbObj.php");
 include_once ("VAULT/Class.VaultDiskDir.php");
 
 class VaultDiskFs extends DbObj
 {
-    
     var $fields = array(
         "id_fs",
         "fsname",
@@ -63,6 +55,7 @@ EOF;
      */
     public $r_path;
     public $specific;
+    protected $seq;
     private $htaccess = <<<EOF
 Order Allow,Deny
 Deny from all
@@ -97,7 +90,7 @@ EOF;
     }
     /**
      * verify if fs is availlable (file system is mounted)
-     * @return book
+     * @return bool
      */
     function isAvailable()
     {
@@ -113,7 +106,7 @@ EOF;
     {
         // --------------------------------------------------------------------
         if ($this->Exists($this->r_path)) return (_("File System already exists"));
-        $res = $this->exec_query("select nextval ('" . $this->seq . "')");
+        $this->exec_query(sprintf("select nextval ('%s')", pg_escape_string($this->seq)));
         $arr = $this->fetch_array(0);
         $this->id_fs = $arr["nextval"];
         return '';
@@ -126,7 +119,7 @@ EOF;
         $query->basic_elem->sup_where = array(
             "r_path=E'" . pg_escape_string($path) . "'"
         );
-        $t = $query->Query(0, 0, "TABLE");
+        $query->Query(0, 0, "TABLE");
         return ($query->nb > 0);
     }
     // --------------------------------------------------------------------
@@ -145,6 +138,8 @@ EOF;
         $t = $query->Query(0, 1, "TABLE");
         if ($query->nb > 0) {
             $ifs = 0;
+            $msg = '';
+            $sd = null;
             $dirfound = FALSE;
             while (!$dirfound && ($ifs < $query->nb)) {
                 $sd = new VaultDiskDir($this->dbaccess, '', $this->specific);
@@ -157,6 +152,11 @@ EOF;
                 $id_fs = $this->id_fs;
                 $id_dir = $sd->id_dir;
                 $f_path = $this->r_path . "/" . $sd->l_path;
+                if (!is_dir($f_path)) {
+                    if (!mkdir($f_path, VAULT_DMODE, true)) {
+                        return (sprintf(_("Failed to create directory \"%s\" in vault") , $f_path));
+                    }
+                }
             } else {
                 return ($msg);
             }
@@ -192,7 +192,7 @@ EOF;
     {
         // --------------------------------------------------------------------
         $this->free_size = $this->free_size - $fs;
-        $err = $this->Modify();
+        $this->modify();
     }
     // --------------------------------------------------------------------
     function DelEntry($id_fs, $id_dir, $fs)
@@ -201,7 +201,7 @@ EOF;
         DbObj::Select($id_fs);
         if ($this->IsAffected()) {
             $this->free_size = $this->free_size + $fs;
-            $this->Modify();
+            $this->modify();
             $sd = new VaultDiskDir($this->dbaccess, $id_dir, $this->specific);
             if ($sd->IsAffected()) {
                 $sd->DelEntry();
@@ -223,7 +223,7 @@ EOF;
             $s["fs$k"]["root_dir"] = $v["r_path"];
             $s["fs$k"]["allowed_size"] = $v["max_size"];
             $s["fs$k"]["free_size"] = $v["free_size"];
-            $sd = new VaultDiskDir($this->dbacces, '', $this->specific);
+            $sd = new VaultDiskDir($this->dbaccess, '', $this->specific);
             $s["fs$k"]["free_entries"] = $sd->FreeEntries($v["id_fs"]);
             unset($sd);
         }
