@@ -48,10 +48,10 @@ function pagination(Action & $action)
         "%f" => $searchConfig["pagenumber"] != 1 ? getButtonLayout("firstpage", $paginationConfig, "0", _("First page")) : ""
         */
         
-        "%n" => getButtonLayout("nextpage", $paginationConfig, $searchConfig["next"], _("Next page") , $searchConfig["hasnext"]) ,
-        "%p" => getButtonLayout("prevpage", $paginationConfig, $searchConfig["prev"], _("Previous page") , $searchConfig["pagenumber"] != 1) ,
-        "%l" => getButtonLayout("lastpage", $paginationConfig, $searchConfig["last"], _("Last page") , $searchConfig["hasnext"]) ,
-        "%f" => getButtonLayout("firstpage", $paginationConfig, "0", _("First page") , $searchConfig["pagenumber"] != 1)
+        "%n" => getButtonLayout($action, "nextpage", $paginationConfig, $searchConfig["next"], _("Next page") , $searchConfig["hasnext"]) ,
+        "%p" => getButtonLayout($action, "prevpage", $paginationConfig, $searchConfig["prev"], _("Previous page") , $searchConfig["pagenumber"] != 1) ,
+        "%l" => getButtonLayout($action, "lastpage", $paginationConfig, $searchConfig["last"], _("Last page") , $searchConfig["hasnext"]) ,
+        "%f" => getButtonLayout($action, "firstpage", $paginationConfig, "0", _("First page") , $searchConfig["pagenumber"] != 1)
     );
     
     $paginationDefOther = array(
@@ -102,12 +102,13 @@ function pagination(Action & $action)
     }
 }
 
-function getButtonLayout($buttonName, $paginationConfig, $page, $buttonTitle, $visible = true)
+function getButtonLayout(Action & $action, $buttonName, $paginationConfig, $page, $buttonTitle, $visible = true)
 {
     $lay = new Layout("GENERIC/Layout/pagination_button.xml");
     foreach ($paginationConfig as $key => $value) {
         $lay->set($key, $value);
     }
+    $lay->set("APPNAME", isset($action->parent->name) ? $action->parent->name : '');
     $lay->set("page", $page);
     $lay->set("buttonclass", $buttonName);
     $lay->set("buttontitle", $buttonTitle);
