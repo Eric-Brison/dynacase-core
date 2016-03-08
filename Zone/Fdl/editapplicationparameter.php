@@ -33,6 +33,7 @@ function editapplicationparameter(Action & $action)
     if ($err) {
         $action->AddWarningMsg(sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err));
         $action->lay->template = htmlspecialchars(sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err) , ENT_QUOTES);
+        $action->lay->noparse = true;
         return false;
     }
     $action->lay->set("type_text", ($paramdef[0]["kind"] == "text"));
@@ -46,6 +47,7 @@ function editapplicationparameter(Action & $action)
         if ($type !== Param::PARAM_GLB) {
             $action->AddWarningMsg(sprintf(_("Parameter [%s] is not global, an apllication muste be given") , $parameterid));
             $action->lay->template = htmlspecialchars(sprintf(_("Parameter [%s] is not global, an apllication muste be given") , $parameterid) , ENT_QUOTES);
+            $action->lay->noparse = true;
             return false;
         }
         $appid = $paramdef[0]["appid"];
@@ -56,6 +58,7 @@ function editapplicationparameter(Action & $action)
         if ($err) {
             $action->AddWarningMsg(sprintf(_("Application [%s] not found. Error message: [%s]") , $appid, $err));
             $action->lay->template = htmlspecialchars(sprintf(_("Application [%s] not found. Error message: [%s]") , $appid, $err) , ENT_QUOTES);
+            $action->lay->noparse = true;
             return false;
         }
         $appid = $app->id;
@@ -68,6 +71,7 @@ function editapplicationparameter(Action & $action)
     if ($err) {
         $action->AddWarningMsg(sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err));
         $action->lay->template = htmlspecialchars(sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err));
+        $action->lay->noparse = true;
         return false;
     }
     if (!$value) {

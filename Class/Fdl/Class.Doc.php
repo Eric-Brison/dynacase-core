@@ -7335,6 +7335,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($err == "") $err = $this->control("wask");
         if ($err) {
             $this->lay->template = $err;
+            $this->lay->noparse = true;
             return;
         }
         

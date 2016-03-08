@@ -68,7 +68,7 @@ function settxtfile(Action & $action)
                                         } else {
                                             if ($doc->AffectColumn(array(
                                                 $at
-                                            ), false)) {
+                                            ) , false)) {
                                                 $doc->$at = sep_replace($doc->$at, $index, str_replace("\n", " ", file_get_contents($filename)));
                                             }
                                         }
@@ -129,4 +129,5 @@ function settxtfile(Action & $action)
     }
     if ($err != '') $action->lay->template = htmlspecialchars($err, ENT_QUOTES);
     else $action->lay->template = htmlspecialchars("OK : " . sprintf(_("doc %d indexed") , $docid) , ENT_QUOTES);
+    $action->lay->noparse = true;
 }
