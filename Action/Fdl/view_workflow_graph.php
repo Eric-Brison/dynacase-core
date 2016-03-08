@@ -86,15 +86,15 @@ function view_workflow_graph(Action & $action)
         $action->lay->template = _("no cycle defined");
     } else {
         
-        $cmd.= sprintf("--api=wdoc_graphviz --size=%s --ratio=%s --type=%s --orient=%s --docid=%d", $size, escapeshellarg($ratio) , escapeshellarg($type) , escapeshellarg($orient) , $doc->id);
+        $cmd.= sprintf("--api=wdoc_graphviz --size=%s --ratio=%s --type=%s --orient=%s --docid=%d", escapeshellarg($size) , escapeshellarg($ratio) , escapeshellarg($type) , escapeshellarg($orient) , $doc->id);
         $svgfile = "var/cache/image/w$type-" . $action->getParam("CORE_LANG") . "-" . $doc->id . ".$format";
         if ($format == "dot") $svgfile.= ".txt"; // conflict with document template
         $dest = DEFAULT_PUBDIR . "/$svgfile";
-        if ($format == "dot") $cmd.= sprintf("> %s", escapeshellarg($dest));
-        $sed = sprintf("s/%s/../", str_replace('/', '\/', DEFAULT_PUBDIR));
-        // if ($format == "svg") $cmd.= sprintf("| %s -T%s | sed -e %s > %s", $tool, escapeshellarg($format) , escapeshellarg($sed) , escapeshellarg($dest));
-        //else
-        $cmd.= sprintf("| %s -T%s 2>&1  > %s", $tool, escapeshellarg($format) , escapeshellarg($dest));
+        if ($format == "dot") {
+            $cmd.= sprintf(" > %s", escapeshellarg($dest));
+        } else {
+            $cmd.= sprintf(" | %s -T%s -o%s 2>&1", $tool, escapeshellarg($format) , escapeshellarg($dest));
+        }
         
         exec($cmd, $out, $ret);
         
