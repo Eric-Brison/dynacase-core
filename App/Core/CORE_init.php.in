@@ -367,6 +367,12 @@ $app_const = array(
         "user" => "N",
         "global" => "Y"
     ) ,
+    "CORE_SESSION_BYTE_LENGTH" => array(
+        "val" => "16",
+        "descr" => N_("core_session_byte_length") ,
+        "user" => "N",
+        "global" => "Y"
+    ) ,
     // Layout->execute recursion limit
     "CORE_LAYOUT_EXECUTE_RECURSION_LIMIT" => array(
         "val" => "30",

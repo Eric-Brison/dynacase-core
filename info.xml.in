@@ -120,6 +120,13 @@ This can be solved by:<br/>
 ]]></help>
         </check>
 
+        <check type="phpfunction" function="openssl_random_pseudo_bytes">
+            <help>You might need to install a php-openssl package from your distribution in order to have OpenSSL support in PHP.</help>
+        </check>
+        <check type="exec" cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
+            <label lang="en">Check for cryptographically strong random bytes from openssl</label>
+            <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old.</help>
+        </check>
         <check type="phpfunction" function="gettext">
             <help>You might need to install a php-gettext package from your distribution in order to have localization
                 support in PHP.
@@ -421,6 +428,13 @@ This can be solved by:<br/>
 ]]></help>
         </check>
 
+        <check type="phpfunction" function="openssl_random_pseudo_bytes">
+            <help>You might need to install a php-openssl package from your distribution in order to have OpenSSL support in PHP.</help>
+        </check>
+        <check type="exec" cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
+            <label lang="en">Check for cryptographically strong random bytes from openssl</label>
+            <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old.</help>
+        </check>
         <check type="phpfunction" function="gettext">
             <help>You might need to install a php-gettext package from your distribution in order to have localization
                 support in PHP.

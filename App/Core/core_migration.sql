@@ -76,6 +76,10 @@ SELECT pg_temp.addColumnIfNotExists('', 'users', 'accounttype', 'char');
 select pg_temp.addIndexIfNotExists('', 'users', 'users_login', true, '(login)');
 SELECT pg_temp.changeColumnType('', 'users', 'password', 'text', '');
 
+--
+-- Update `sessions' data types
+--
+SELECT pg_temp.changeColumnType('', 'sessions', 'id', 'text', '');
 
 SELECT pg_temp.dropColumnIfExists('', 'docperm', 'unacl');
 SELECT pg_temp.dropColumnIfExists('', 'docperm', 'cacl');
