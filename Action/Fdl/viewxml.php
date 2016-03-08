@@ -29,6 +29,12 @@ function viewxml(Action & $action)
     $dbaccess = $action->dbaccess;
     
     $doc = new_Doc($dbaccess, $docid);
+    if (!$doc->isAlive()) {
+        $action->exitError(sprintf(_("unknown document id %s") , $docid));
+    }
+    if (($err = $doc->control("view")) !== "") {
+        $action->exitError($err);
+    }
     $xml = $doc->toxml(true, $docid);
     //$doc->fromxml($xml);
     //$xml=$doc->viewdtd();
