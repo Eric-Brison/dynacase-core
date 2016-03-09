@@ -347,11 +347,6 @@ $action_desc = array (
    "acl"		=>"FREEDOM_MASTER"
   ) ,
   array( 
-   "name"		=>"CTRLDOC",
-   "short_name"		=>N_("set the document controlled"),
-   "acl"		=>"FREEDOM"
-  ) ,
-  array( 
    "name"		=>"CHANGEICON",
    "short_name"		=>N_("change icon document"),
    "acl"		=>"FREEDOM"
