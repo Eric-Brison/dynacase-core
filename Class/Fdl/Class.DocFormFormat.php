@@ -1406,12 +1406,14 @@ class DocFormFormat
                     $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
                     if (!file_exists($rowlayfile)) {
                         $lay->template = sprintf(_("cannot open %s layout file") , $rowlayfile);
+                        $lay->noparse = true;
                         AddwarningMsg(sprintf(_("cannot open %s layout file") , $rowlayfile));
                         return;
                     }
                     if (!@$dxml->load($rowlayfile)) {
                         AddwarningMsg(sprintf(_("cannot load xml template : %s") , print_r(libxml_get_last_error() , true)));
                         $lay->template = sprintf(_("cannot load xml %s layout file") , $rowlayfile);
+                        $lay->noparse = true;
                         return;
                     }
                     $theads = $dxml->getElementsByTagName('table-head');

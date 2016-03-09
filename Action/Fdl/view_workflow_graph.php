@@ -84,6 +84,7 @@ function view_workflow_graph(Action & $action)
     
     if (count($doc->cycle) == 0) {
         $action->lay->template = _("no cycle defined");
+        $action->lay->noparse = true;
     } else {
         
         $cmd.= sprintf("--api=wdoc_graphviz --size=%s --ratio=%s --type=%s --orient=%s --docid=%d", escapeshellarg($size) , escapeshellarg($ratio) , escapeshellarg($type) , escapeshellarg($orient) , $doc->id);

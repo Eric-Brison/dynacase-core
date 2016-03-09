@@ -60,6 +60,7 @@ function fdl_method(Action & $action)
     } else {
         if ($err) $action->lay->template = htmlspecialchars($err, ENT_QUOTES);
         else $action->lay->template = htmlspecialchars(sprintf(_("method %s applied to document %s #%d") , $method, $doc->title, $doc->id) , ENT_QUOTES);
+        $action->lay->noparse = true;
     }
 }
 /**

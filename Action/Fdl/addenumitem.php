@@ -33,9 +33,11 @@ function addenumitem(Action & $action)
     $key = trim(str_replace('"', '', $key));
     $dbaccess = $action->dbaccess;
     
+    $action->lay->noparse = true;
     $action->lay->template = htmlspecialchars("addenumitem '$docid' '$attrid' '$key'", ENT_QUOTES);
     $doc = new_doc($dbaccess, $docid);
     if ($doc->isAlive()) {
+        $action->lay->noparse = true;
         $action->lay->template = htmlspecialchars("addenumitem/2 '$docid' '$attrid' '$key'", ENT_QUOTES);
         /**
          * @var NormalAttribute $oa

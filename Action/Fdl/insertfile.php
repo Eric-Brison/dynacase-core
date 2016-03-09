@@ -106,6 +106,7 @@ function insertfile(&$action)
     }
     if ($err != '') $action->lay->template = htmlspecialchars($err, ENT_QUOTES);
     else $action->lay->template = htmlspecialchars("OK : " . sprintf(_("vid %d stored") , $vidout) , ENT_QUOTES);
+    $action->lay->noparse = true;
 }
 /**
  * return filename where is stored produced file

@@ -51,10 +51,14 @@ function editarray(Action & $action)
     }
     
     $oattr = $doc->getAttribute($arrayid);
-    if (!$oattr) $action->lay->template = htmlspecialchars(sprintf(_("attribute %s not found") , $arrayid));
-    else {
-        if ($oattr->type != "array") $action->lay->template = htmlspecialchars(sprintf(_("attribute %s not an array") , $arrayid));
-        else {
+    if (!$oattr) {
+        $action->lay->template = htmlspecialchars(sprintf(_("attribute %s not found") , $arrayid));
+        $action->lay->noparse = true;
+    } else {
+        if ($oattr->type != "array") {
+            $action->lay->template = htmlspecialchars(sprintf(_("attribute %s not an array") , $arrayid));
+            $action->lay->noparse = true;
+        } else {
             $of = new DocFormFormat($doc);
             $of->getLayArray($action->lay, $doc, $oattr, $row);
         }

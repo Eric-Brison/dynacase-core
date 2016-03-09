@@ -41,6 +41,7 @@ function editfamilyparameter(Action & $action)
         if (!$attr) {
             $action->AddWarningMsg(sprintf(_("Attribute [%s] is not found") , $attrid));
             $action->lay->template = htmlspecialchars(sprintf(_("Attribute [%s] is not found") , $attrid) , ENT_QUOTES);
+            $action->lay->noparse = true;
             return false;
         }
         $action->lay->eset("label", $attr->getLabel());
@@ -70,6 +71,7 @@ function editfamilyparameter(Action & $action)
     } else {
         $action->AddWarningMsg(sprintf(_("Family [%s] not found") , $famid));
         $action->lay->template = htmlspecialchars(sprintf(_("Family [%s] not found") , $famid) , ENT_QUOTES);
+        $action->lay->noparse = true;
         return false;
     }
     
