@@ -64,7 +64,6 @@ if [ "$1" = "I" ] ; then
     "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Permission
     "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Acl
     "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Session
-    "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=SessionConf
     "$wpub"/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=UserToken
 
     "$wpub"/wsh.php  --api=manageApplications --appname=CORE
