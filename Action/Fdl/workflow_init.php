@@ -48,12 +48,8 @@ function workflow_init(Action & $action)
     $query->AddQuery("id=$cid");
     $table1 = $query->Query(0, 0, "TABLE");
     if ($query->nb > 0) {
-        $tdoc = $table1[0];
-        
         if ($wdoc->isAffected() && strstr($wdoc->usefor, 'W')) {
-            
-            createDocFile($dbaccess, $tdoc);
-            PgUpdateFamilly($dbaccess, $cid);
+            refreshPhpPgDoc($dbaccess, $cid);
         } else {
             $action->exitError(sprintf(_("workflow_init :: id %s is not a workflow") , $docid));
         }

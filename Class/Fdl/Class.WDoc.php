@@ -300,6 +300,9 @@ class WDoc extends Doc
             else $cid = $this->fromid;
         }
         $ordered = 1000;
+        if (($err = $this->setMasterLock(true)) !== '') {
+            return $err;
+        }
         // delete old attributes before
         $this->exec_query(sprintf("delete from docattr where docid=%d  and options ~ 'autocreated=yes'", intval($cid)));
         $this->getStates();
@@ -697,6 +700,9 @@ class WDoc extends Doc
             $oattr->labeltext = sprintf(_("%s unattach timer") , _($k));
             if ($oattr->isAffected()) $oattr->Modify();
             else $oattr->Add();
+        }
+        if (($err = $this->setMasterLock(false)) !== '') {
+            return $err;
         }
         return refreshPhpPgDoc($this->dbaccess, $cid);
     }

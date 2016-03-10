@@ -91,13 +91,9 @@ if ($query->nb > 0) {
 }
 function updateDoc($dbaccess, $v)
 {
+    require_once 'FDL/Lib.Attr.php';
     try {
-        $phpfile = createDocFile($dbaccess, $v);
-        print "$phpfile [" . $v["title"] . "(" . $v["name"] . ")]\n";
-        $msg = PgUpdateFamilly($dbaccess, $v["id"], $v["name"]);
-        print $msg;
-        activateTrigger($dbaccess, $v["id"]);
-        resetSystemEnum($v["id"]);
+        _refreshPhpPgDoc($dbaccess, $v, true);
     }
     catch(\Dcp\Exception $e) {
         print $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";
