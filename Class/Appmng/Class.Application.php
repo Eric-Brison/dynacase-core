@@ -449,14 +449,9 @@ create sequence SEQ_ID_APPLICATION start 10;
         static $firstPack = array();
         $resourceLocation = '';
         
-        if (!isset($this->session)) {
-            $sessid = 0;
-        } else {
-            $sessid = $this->session->id;
-        }
+        $key = isset($this->session) ? $this->session->getUKey(getParam("WVERSION")) : uniqid(getParam("WVERSION"));
         if ($packName) {
             
-            $key = md5($sessid . getParam("WVERSION"));
             $resourcePackParseLocation = sprintf("?app=CORE&amp;action=CORE_CSS&amp;type=%s&amp;ukey=%s&amp;pack=%s", $type, $key, $packName);
             $resourcePackNoParseLocation = sprintf("pack.php?type=%s&amp;pack=%s&amp;wv=%s", $type, $packName, getParam("WVERSION"));
             
@@ -496,7 +491,6 @@ create sequence SEQ_ID_APPLICATION start 10;
                 }
             }
         } elseif ($needparse) {
-            $key = md5($sessid . getParam("WVERSION"));
             $resourceLocation = "?app=CORE&amp;action=CORE_CSS&amp;ukey=" . $key . "&amp;layout=" . $ref . "&amp;type=" . $type;
         } else {
             $location = $this->resolveResourceLocation($ref);

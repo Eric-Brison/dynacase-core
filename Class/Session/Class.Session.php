@@ -13,13 +13,13 @@ include_once ('Class.QueryDb.php');
 include_once ('Class.DbObj.php');
 include_once ('Class.Log.php');
 include_once ('Class.User.php');
-include_once ('Class.SessionConf.php');
 include_once ("Class.SessionCache.php");
 
 class Session extends DbObj
 {
     const SESSION_CT_CLOSE = 2;
     const SESSION_CT_ARGS = 3;
+    const SESSION_MIN_BYTE_LENGTH = 16; /* 16 bytes = 128 bits */
     var $fields = array(
         "id",
         "userid",
@@ -38,7 +38,7 @@ class Session extends DbObj
     private $sendCookie = true;
     var $dbtable = "sessions";
     
-    var $sqlcreate = "create table sessions ( id         varchar(100),
+    var $sqlcreate = "create table sessions ( id text,
                         userid   int,
                         name text not null,
                         last_seen timestamp not null DEFAULT now() );
@@ -60,7 +60,7 @@ class Session extends DbObj
         $this->sendCookie = ($sendCookie === true);
     }
     
-    function Set($id = "")
+    function set($id = "")
     {
         global $_SERVER;
         
@@ -173,7 +173,7 @@ class Session extends DbObj
     /**
      * Closes session and removes all datas
      */
-    function Close()
+    function close()
     {
         global $_SERVER; // use only cache with HTTP
         if (!empty($_SERVER['HTTP_HOST'])) {
@@ -192,7 +192,7 @@ class Session extends DbObj
     /**
      * Closes all session
      */
-    function CloseAll($uid = null)
+    function closeAll($uid = null)
     {
         if ($uid === null) {
             $this->exec_query(sprintf("delete from sessions where name = '%s';", pg_escape_string($this->session_name)));
@@ -205,7 +205,7 @@ class Session extends DbObj
     /**
      * Closes all user's sessions
      */
-    function CloseUsers($uid = - 1)
+    function closeUsers($uid = - 1)
     {
         if (!$uid > 0) return '';
         $this->exec_query("delete from sessions where userid= '" . pg_escape_string($uid) . "'");
@@ -213,7 +213,7 @@ class Session extends DbObj
         return $this->status;
     }
     
-    function Open($uid = Account::ANONYMOUS_ID)
+    function open($uid = Account::ANONYMOUS_ID)
     {
         $idsess = $this->newId();
         global $_SERVER; // use only cache with HTTP
@@ -236,7 +236,7 @@ class Session extends DbObj
     // Stocke une variable de session args
     // $v est une chaine !
     // --------------------------------
-    function Register($k = "", $v = "")
+    function register($k = "", $v = "")
     {
         if ($k == "") {
             $this->status = self::SESSION_CT_ARGS;
@@ -258,7 +258,7 @@ class Session extends DbObj
     // Récupère une variable de session
     // $v est une chaine !
     // --------------------------------
-    function Read($k = "", $d = "")
+    function read($k = "", $d = "")
     {
         if (empty($_SERVER['HTTP_HOST'])) {
             return ($d);
@@ -285,7 +285,7 @@ class Session extends DbObj
     // Détruit une variable de session
     // $v est une chaine !
     // --------------------------------
-    function Unregister($k = "")
+    function unregister($k = "")
     {
         global $_SERVER; // use only cache with HTTP
         if ($this->name && !empty($_SERVER['HTTP_HOST'])) {
@@ -298,16 +298,51 @@ class Session extends DbObj
         }
         return true;
     }
+    /**
+     * Get, or generate, a "cache busting" key
+     *
+     * @param string $prefix
+     * @return string
+     */
+    public function getUKey($prefix = '')
+    {
+        $uKey = $this->read('_uKey_', false);
+        if ($uKey === false) {
+            $uKey = uniqid($prefix);
+            $this->register('_uKey_', $uKey);
+        }
+        return $uKey;
+    }
     // ------------------------------------------------------------------------
     // utilities functions (private)
     // ------------------------------------------------------------------------
     function newId()
     {
         $this->log->debug("newId");
-        $magic = new SessionConf($this->dbaccess, "MAGIC");
-        $m = $magic->val;
-        unset($magic);
-        return md5(uniqid($m));
+        $byteLength = (int)getParam('CORE_SESSION_BYTE_LENGTH');
+        if ($byteLength < self::SESSION_MIN_BYTE_LENGTH) {
+            $byteLength = self::SESSION_MIN_BYTE_LENGTH;
+        }
+        return self::randomId($byteLength);
+    }
+    /**
+     * Get a new cryptographically strong random id
+     *
+     * Throws an exception if no cryptographically strong random bytes could be
+     * obtained from openssl: this might occurs on broken or old system.
+     *
+     * @param int $byteLength The number of bytes to get from the CSPRNG
+     * @return string The random bytes in hexadecimal representation (e.g. "a7d1f43b")
+     * @throws \Dcp\Exception
+     */
+    private static function randomId($byteLength)
+    {
+        $strong = false;
+        $bytes = openssl_random_pseudo_bytes($byteLength, $strong);
+        if ($bytes === false || $strong === false) {
+            throw new \Dcp\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
+        }
+        return bin2hex($bytes);
     }
     /**
      * replace value of global parameter in session cache
@@ -334,7 +369,7 @@ class Session extends DbObj
         }
         return true;
     }
-    function SetTTL()
+    function setTTL()
     {
         $ttliv = $this->getSessionTTL(0);
         if ($ttliv > 0) {

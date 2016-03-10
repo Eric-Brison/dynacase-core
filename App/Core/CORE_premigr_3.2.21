@@ -24,3 +24,12 @@ if [ $RET -ne 0 ]; then
     echo "Error removing CORE_PUBDIR parameter."
     exit $RET
 fi
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'EOF'
+DROP TABLE IF EXISTS session_conf;
+EOF
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error dropping table 'session_conf'."
+    exit $RET
+fi

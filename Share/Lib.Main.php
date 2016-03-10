@@ -312,7 +312,7 @@ function _initMainVolatileParamWeb(Application & $core, Session & $session = nul
     $core_mailaction = $core->getParam("CORE_MAILACTION");
     $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
     
-    $sessKey = isset($session->id) ? md5($session->id . getParam("WVERSION")) : md5(uniqid("", true));
+    $sessKey = isset($session->id) ? $session->getUKey(getParam("WVERSION")) : uniqid(getParam("WVERSION"));
     $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
     $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
     $core->SetVolatileParam("CORE_ABSURL", stripUrlSlahes($puburl . "/")); // absolute links
