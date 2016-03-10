@@ -34,6 +34,12 @@ function workflow_init(Action & $action)
      * @var WDoc $wdoc
      */
     $wdoc = new_Doc($dbaccess, $docid);
+    if (!$wdoc->isAlive()) {
+        $action->exitError(sprintf(_("unknown document id %s") , $docid));
+    }
+    if (($err = $wdoc->control("edit")) !== "") {
+        $action->exitError($err);
+    }
     $wdoc->CreateProfileAttribute();
     if ($wdoc->doctype == 'C') $cid = $wdoc->id;
     else $cid = $wdoc->fromid;

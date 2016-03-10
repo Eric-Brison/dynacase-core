@@ -345,7 +345,7 @@ $action_desc = array(
     array(
         "name" => "WORKFLOW_INIT",
         "short_name" => N_("init workflow profile attributes"),
-        "acl" => "NORMAL"
+        "acl" => "SYSTEM"
     ),
     array(
         "name" => "MVIEW_SAVEGEO",
