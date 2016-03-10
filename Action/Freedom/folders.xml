@@ -113,7 +113,7 @@ XXXX -->
 
 <!-- Code for browser detection -->
 <script src="FREEDOM/Layout/ua.js"></script>
-<script language="JavaScript">document.wstyle='[iconFolderPath]';</script>
+<script language="JavaScript">document.wstyle=[iconFolderPath];</script>
 <!-- Infrastructure code for the tree -->
 <script src="FREEDOM/Layout/ftiens4.js"></script>
 
@@ -137,7 +137,7 @@ var actionviewfile = "[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_VIEW";
 var actionexpfld = "[CORE_STANDURL]&app=[APPNAME]&action=EXPANDFLD&dirid=";
 var navmode='[FREEDOM_VIEWFRAME]';
 
-var fldtop = gFld("<i>[reptitle]</i>", "#",[dirid],"[icon]",true)
+var fldtop = gFld([reptitle], "#",[dirid],[icon],true)
 
 
 [subtree]

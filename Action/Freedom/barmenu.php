@@ -66,7 +66,7 @@ function barmenu(Action & $action)
             $tbook[] = "bookmark$id";
             $tmark[] = array(
                 "idmark" => "bookmark$id",
-                "markid" => $id,
+                "markid" => urlencode($id) ,
                 "labelmark" => $label
             );
         }
@@ -110,12 +110,12 @@ function barmenu(Action & $action)
     popupActive("bookmarks", 1, 'addtobook');
     $rootlabel = getTDoc($dbaccess, 9);
     if ($rootlabel) {
-        $action->lay->set("rootlabel", $rootlabel["title"]);
+        $action->lay->eSet("rootlabel", $rootlabel["title"]);
         popupActive("bookmarks", 1, 'broot');
     } else {
         popupInvisible("bookmarks", 1, 'broot');
     }
     
-    $action->lay->setBlockData("MARKS", $tmark);
+    $action->lay->eSetBlockData("MARKS", $tmark);
     popupGen(1);
 }
