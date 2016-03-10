@@ -37,16 +37,12 @@ function folders(Action & $action)
     $homefld = new Dir($dbaccess);
     $homefld = $homefld->GetHome();
     
-    $action->lay->Set("homename", $homefld->title);
-    $action->lay->Set("homeid", $homefld->id);
-    
-    $tmenuaccess = array(); // to define action an each icon
     if ($dirid == 0) $dirid = $action->getParam("ROOTFLD", getFirstDir($dbaccess));
     
     $doc = new_Doc($dbaccess, $dirid);
-    $action->lay->Set("dirid", urlencode($dirid));
-    $action->lay->eSet("reptitle", str_replace('"', '\"', $doc->title));
-    $action->lay->Set("icon", $doc->getIcon());
+    $action->lay->rSet("dirid", urlencode($doc->id));
+    $action->lay->rSet("reptitle", json_encode(sprintf("<i>%s</i>", $doc->getHTMLTitle())));
+    $action->lay->rSet("icon", json_encode($doc->getIcon()));
     // ------------------------------------------------------
     // definition of popup menu
     popupInit("popfld", array(
@@ -82,16 +78,16 @@ function folders(Action & $action)
     // define icon from style
     $iconfolder = $action->parent->getImageLink("ftv2folderopen1.gif");
     $pathicon = explode("/", $iconfolder);
-    if (count($pathicon) == 4) $action->lay->set("iconFolderPath", $pathicon[0] . "/" . $pathicon[1]);
-    else $action->lay->set("iconFolderPath", "FREEDOM");
+    if (count($pathicon) == 4) $action->lay->rSet("iconFolderPath", json_encode($pathicon[0] . "/" . $pathicon[1]));
+    else $action->lay->rSet("iconFolderPath", json_encode("FREEDOM"));
     // define sub trees
     $stree = addfolder($doc, -1, "fldtop", false);
-    $action->lay->Set("subtree", $stree);
+    $action->lay->rSet("subtree", $stree);
     
-    $action->lay->Set("idHomeFolder", $nbfolders);
+    $action->lay->rSet("idHomeFolder", (int)$nbfolders);
     
     $htree = addfolder($homefld, 0, "fldtop");
-    $action->lay->Set("hometree", $htree);
+    $action->lay->rSet("hometree", $htree);
     //-------------- pop-up menu ----------------
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     // display popup js
@@ -116,13 +112,13 @@ function addfolder(Doc $doc, $level, $treename, $thisfld = true)
         else if ($doc->doctype == 'D') $ftype = 1;
         else if ($doc->doctype == 'S') $ftype = 2;
         
-        $hasChild = 'false';
+        $hasChild = false;
         // if ($doc->doctype != 'S') {
         // no child for a search
-        if (hasChildFld($dbaccess, $doc->initid, ($doc->doctype == 'S'))) $hasChild = 'true';
+        if (hasChildFld($dbaccess, $doc->initid, ($doc->doctype == 'S'))) $hasChild = true;
         //}
         $ftype = $doc->getIcon();
-        $ltree = "$treename$level = insFld(" . $treename . $levelp . ", gFld(\"" . str_replace('"', '\"', $doc->title) . "\", \"#\"," . $doc->initid . ",\"$ftype\", $hasChild))\n";
+        $ltree = sprintf("%s%s = insFld(%s, gFld(%s, \"#\", %d, %s, %s))\n", $treename, $level, $treename . $levelp, json_encode($doc->getHTMLTitle()) , $doc->initid, json_encode($ftype) , ($hasChild ? 'true' : 'false'));
         
         popupActive("popfld", $nbfolders, 'cancel');
         popupActive("popfld", $nbfolders, 'vprop');
