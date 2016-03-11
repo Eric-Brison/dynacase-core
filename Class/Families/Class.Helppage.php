@@ -192,7 +192,7 @@ class HelpPage extends \Dcp\Family\Document
             $this->lay->set('HELPATTRIBUTESLIST', true);
             $docfam = createDoc($this->dbaccess, $famid, false);
             $docattributes = $docfam->GetNormalAttributes();
-            array_merge($docattributes, $docfam->getFieldAttributes());
+            $docattributes=array_merge($docattributes, $docfam->getFieldAttributes());
             $attributes = array();
             foreach ($docattributes as & $attribute) {
                 $attributes[] = array(
