@@ -33,8 +33,14 @@ function freedom_preview(Action & $action)
     
     if ($docid > 0) {
         $doc = new_Doc($dbaccess, $docid);
+        if (!$doc->isAlive()) {
+            $action->exitError(sprintf(_("unknown document id %s") , $docid));
+        }
+        if (($err = $doc->control("view")) !== "") {
+            $action->exitError($err);
+        }
         
-        $action->lay->Set("TITLE", $doc->title);
+        $action->lay->eSet("TITLE", $doc->getTitle());
         $ndoc = duplicate($action, 0, $docid, true); // temporary document
         $ndoc->modify();
     } else {
