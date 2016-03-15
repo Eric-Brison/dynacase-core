@@ -15,6 +15,9 @@
         <check type="syscommand" command="xmllint">
             <label lang="en">Check "xmllint". To check xml files</label>
         </check>
+        <check type="phpclass" class="ZipArchive">
+            <help>You might need to install a php-zip package from your distribution in order to have ZipArchive support in PHP.</help>
+        </check>
     </pre-install>
 
     <post-install>
@@ -24,6 +27,9 @@
     <pre-upgrade>
         <check type="syscommand" command="xmllint">
             <label lang="en">Check "xmllint". To check xml files</label>
+        </check>
+        <check type="phpclass" class="ZipArchive">
+            <help>You might need to install a php-zip package from your distribution in order to have ZipArchive support in PHP.</help>
         </check>
     </pre-upgrade>
 
