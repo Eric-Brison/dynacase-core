@@ -120,7 +120,7 @@ class Layout
         else $this->template = $template;
         if ($action) $this->action = & $action;
         $this->generation = "";
-        $this->noGoZoneMapping=uniqid($this->noGoZoneMapping);
+        $this->noGoZoneMapping = uniqid($this->noGoZoneMapping);
         $file = $caneva;
         $this->file = "";
         if ($caneva != "") {
@@ -653,14 +653,14 @@ class Layout
         if (is_object($this->action) && (!empty($this->action->parent))) {
             $keys = $pval = array();
             $list = $this->action->parent->GetAllParam();
-            
             if ($addIf) {
                 foreach ($list as $k => $v) {
                     $this->rif[$k] = !empty($v);
                 }
             } elseif ($this->zoneLevel === 0) {
                 foreach ($list as $k => $v) {
-                    if (!is_scalar($v)) $v = "notScalar";
+                    if ($v === null) $v = '';
+                    elseif (!is_scalar($v)) $v = "notScalar";
                     $keys[] = "[$k]";
                     $pval[] = $v;
                 }
