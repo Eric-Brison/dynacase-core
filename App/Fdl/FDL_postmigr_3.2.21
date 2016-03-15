@@ -1,0 +1,42 @@
+#!/bin/bash
+
+if [ -z "$pgservice_core" ]; then
+	echo "Undefined or empty pgservice_core!"
+	exit 1
+fi
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'EOF'
+update doc set name=docread.name
+from docread
+where
+docread.name is not null and
+doc.name is null and
+doc.initid = docread.initid and
+doc.doctype != 'Z' and
+docread.locked != -1
+and not exists (select initid from doc where doc.initid=docread.initid group by revision, initid having count(revision) > 1);
+EOF
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error reset revised logical name."
+    exit $RET
+fi
+
+#
+# Set default SSEARCH's profid to PRF_ADMIN_CREATION if the SSEARCH family is
+# still using the previous default PRF_SEARCHES
+#
+SSEARCH_PROFID=$(PGSERVICE=$pgservice_core psql -tA -c "SELECT docname.name FROM docfam, docname WHERE docfam.name = 'SSEARCH' AND docfam.profid = docname.id")
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Could not get profid for family 'SSEARCH'."
+    exit $RET
+fi
+if [ "${SSEARCH_PROFID}" = "PRF_SEARCHES" ]; then
+    ./wsh.php --api=importDocuments --file=FDL/FDL_postmigr_3.2.21_01.csv --csv-separator=';' --csv-enclosure='"'
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error setting SSEARCH's profid to 'PRF_ADMIN_CREATION'."
+	exit $RET
+    fi
+fi
