@@ -614,6 +614,10 @@ class importDocumentDescription
                 if ($err == '') {
                     if (strpos($this->doc->usefor, "W") !== false) $this->doc->postImport(); //special to add calculated attributes
                     $msg = refreshPhpPgDoc($this->dbaccess, $this->doc->id);
+                    if ($msg !== '') {
+                        $this->tcr[$this->nLine]["err"].= $msg;
+                        return;
+                    }
                     if (isset($tFamIdName)) $tFamIdName[$this->doc->name] = $this->doc->id; // refresh getFamIdFromName for multiple family import
                     $checkCr = checkDb::verifyDbFamily($this->doc->id);
                     if (count($checkCr) > 0) {

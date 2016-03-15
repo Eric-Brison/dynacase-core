@@ -670,7 +670,6 @@ function PgUpdateFamilly($dbaccess, $docid, $docname = "")
             }
         }
     }
-    
     return $msg;
 }
 
@@ -724,24 +723,63 @@ function setSqlIndex($dbaccess, $docid)
  */
 function refreshPhpPgDoc($dbaccess, $docid)
 {
+    $err = '';
     $query = new QueryDb($dbaccess, "DocFam");
     $query->AddQuery("doctype='C'");
     $query->AddQuery("id=$docid");
     $table1 = $query->Query(0, 0, "TABLE");
     if ($query->nb > 0) {
         $v = $table1[0];
-        $df = createDocFile($dbaccess, $v);
-        
-        $msg = PgUpdateFamilly($dbaccess, $v["id"], $v["name"]);
-        //------------------------------
-        // see if workflow
-        AddLogMsg($msg);
-        // -----------------------------
-        // activate trigger by trigger
-        activateTrigger($dbaccess, $docid);
-        resetSystemEnum($docid);
+        $err = _refreshPhpPgDoc($dbaccess, $v, false);
     }
     
+    return $err;
+}
+function _refreshPhpPgDoc($dbaccess, $tdoc, $interactive = false)
+{
+    $doc = new_Doc($dbaccess);
+    $locked = false;
+    $savepointed = false;
+    try {
+        if (($err = $doc->setMasterLock(true)) !== '') {
+            throw new \Dcp\Core\Exception($err);
+        }
+        $locked = true;
+        if (($err = $doc->savePoint(__METHOD__)) !== '') {
+            throw new \Dcp\Core\Exception($err);
+        }
+        $savepointed = true;
+        
+        $phpfile = createDocFile($dbaccess, $tdoc);
+        if ($interactive) {
+            print "$phpfile [" . $tdoc["title"] . "(" . $tdoc["name"] . ")]\n";
+        }
+        $msg = PgUpdateFamilly($dbaccess, $tdoc["id"], $tdoc["name"]);
+        if ($interactive) {
+            print $msg;
+        } else {
+            AddLogMsg($msg);
+        }
+        activateTrigger($dbaccess, $tdoc["id"]);
+        resetSystemEnum($tdoc["id"]);
+        
+        if (($err = $doc->commitPoint(__METHOD__)) !== '') {
+            throw new \Dcp\Core\Exception($err);
+        }
+        $savepointed = false;
+        if (($err = $doc->setMasterLock(false)) !== '') {
+            throw new \Dcp\Core\Exception($err);
+        }
+    }
+    catch(\Exception $e) {
+        if ($savepointed) {
+            $doc->rollbackPoint(__METHOD__);
+        }
+        if ($locked) {
+            $doc->setMasterLock(false);
+        }
+        return $e->getMessage();
+    }
     return '';
 }
 /**
