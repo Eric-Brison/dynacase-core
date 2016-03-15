@@ -22,6 +22,7 @@ class VaultAnalyzer
     const STMT_INSERT_TMP = 'insert_tmp';
     
     protected static $savePointSeq = 0;
+    protected $verbose = true;
     
     protected $_conn = null;
     
@@ -29,7 +30,13 @@ class VaultAnalyzer
     {
         $this->sqlConnect();
     }
-    
+    /**
+     * @param boolean $verbose
+     */
+    public function setVerbose($verbose)
+    {
+        $this->verbose = $verbose;
+    }
     public function summary()
     {
         $report = array();
@@ -149,32 +156,32 @@ EOF;
         $point = $this->newPoint();
         $this->sqlSavePoint($point);
         
-        printf("[+] Locking tables...\n");
+        $this->verbose("[+] Locking tables...\n");
         $this->sqlQuery("LOCK TABLE docvaultindex, doc * IN ACCESS EXCLUSIVE MODE");
         $this->sqlQuery("CREATE TEMPORARY TABLE tmp_docvaultindex (LIKE docvaultindex) ON COMMIT DROP");
         $this->sqlQuery("CREATE TEMPORARY TABLE tmp2_docvaultindex (LIKE docvaultindex) ON COMMIT DROP");
         $this->sqlPrepare(self::STMT_INSERT_TMP, "INSERT INTO tmp_docvaultindex(docid, vaultid) VALUES ($1, $2)");
-        printf("[+] Done.\n");
+        $this->verbose("[+] Done.\n");
         
-        printf("[+] Analyzing dead entries in docvaultindex...\n");
+        $this->verbose("[+] Analyzing dead entries in docvaultindex...\n");
         $this->sqlQuery("DELETE FROM docvaultindex WHERE NOT EXISTS (SELECT 1 FROM doc WHERE id = docid)");
-        printf("|+] Done.\n");
+        $this->verbose("|+] Done.\n");
         
-        printf("[+] Analyzing families...\n");
+        $this->verbose("[+] Analyzing families...\n");
         $families = $this->getFamilies();
-        printf("[+] Done.\n");
+        $this->verbose("[+] Done.\n");
         
         $famIndex = 0;
         foreach ($families as $famid => & $fam) {
             $famIndex++;
-            printf("[+] (%d/%d) %s family '%s'...\n", $famIndex, count($families) , $mode, $fam['name']);
+            $this->verbose("[+] (%d/%d) %s family '%s'...\n", $famIndex, count($families) , $mode, $fam['name']);
             foreach ($fam['vid'] as $vid) {
                 $this->sqlExec(self::STMT_INSERT_TMP, array(
                     $famid,
                     $vid
                 ));
             }
-            printf("[+] Done.\n");
+            $this->verbose("[+] Done.\n");
             
             $relname = sprintf("doc%d", $famid);
             $res = $this->sqlQuery(sprintf("SELECT count(id) FROM ONLY %s", pg_escape_identifier($relname)));
@@ -192,8 +199,11 @@ EOF;
             if ($count <= 0) {
                 continue;
             }
-            printf("[+] %s '%d' documents from family '%s'...\n", $mode, $count, $fam['name']);
-            $pom = (new ConsoleProgressOMeter())->setMax($count)->setInterval(1000)->start();
+            $this->verbose("[+] %s '%d' documents from family '%s'...\n", $mode, $count, $fam['name']);
+            $pom = null;
+            if ($this->verbose) {
+                $pom = (new ConsoleProgressOMeter())->setMax($count)->setInterval(1000)->start();
+            }
             $rows = new PgFetchArrayIterator($this->sqlQuery(sprintf("SELECT id, icon %s FROM ONLY %s", $addColumns, pg_escape_identifier($relname))));
             $rowIndex = 0;
             foreach ($rows as $row) {
@@ -205,14 +215,18 @@ EOF;
                         $vid
                     ));
                 }
-                $pom->progress($rowIndex);
+                if ($pom) {
+                    $pom->progress($rowIndex);
+                }
             }
-            $pom->finish();
-            printf("[+] Done.\n");
+            if ($pom) {
+                $pom->finish();
+            }
+            $this->verbose("[+] Done.\n");
         }
         unset($fam);
         
-        printf("\n");
+        $this->verbose("\n");
         /* De-duplicate entries */
         $this->sqlQuery("INSERT INTO tmp2_docvaultindex (docid, vaultid) SELECT DISTINCT ON (docid, vaultid) docid, vaultid FROM tmp_docvaultindex");
         /* Copy de-duplicated entries to tmp_docvaultindex */
@@ -241,14 +255,21 @@ EOF;
             return ($report['new']['count'] == 0 && $report['missing']['count'] == 0);
         } else {
             /* Reset content of docvaultindex with new content from tmp_docvaultindex */
-            printf("[+] Committing docvaultindex...\n");
+            $this->verbose("[+] Committing docvaultindex...\n");
             $this->sqlQuery("DELETE FROM docvaultindex");
             $this->sqlQuery("INSERT INTO docvaultindex (docid, vaultid) SELECT docid, vaultid FROM tmp_docvaultindex");
             $this->sqlQuery("DROP TABLE tmp_docvaultindex");
             $this->sqlCommitPoint($point);
-            printf("[+] Done.\n");
+            $this->verbose("[+] Done.\n");
         }
         return true;
+    }
+    
+    protected function verbose($format)
+    {
+        if ($this->verbose) {
+            call_user_func_array("printf", func_get_args());
+        }
     }
     
     public function cleanDocVaultIndex()

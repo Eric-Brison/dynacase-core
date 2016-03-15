@@ -6219,9 +6219,10 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $cache set to true if file may be persistent in client cache
      * @param bool $inline set to true if file must be displayed in web browser
      * @param string $otherValue use another file value instead of attribute value
+     * @param VaultFileInfo $info extra file info
      * @return string the url anchor
      */
-    public function getFileLink($attrid, $index = - 1, $cache = false, $inline = false, $otherValue = '')
+    public function getFileLink($attrid, $index = - 1, $cache = false, $inline = false, $otherValue = '', $info = null)
     {
         if ($index === '' || $index === null) {
             $index = - 1;
@@ -6243,12 +6244,17 @@ create unique index i_docir on doc(initid, revision);";
         }
         
         if (preg_match(PREGEXPFILE, $avalue, $reg)) {
-            $vid = $reg[2];
+            $fileKey = 0;
+            if ($info) {
+                $fileKey = strtotime($info->mdate);
+                // Double quote not supported by all browsers - replace by minus
+                $fname = str_replace('"', '-', $info->name);
+            } else {
+                $fname = str_replace('"', '-', $reg[3]);
+            }
             // will be rewrited by apache rules
             //rewrite to  "%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d", "", $cache ? "yes" : "no", $inline ? "yes" : "no", $vid, $this->id, $attrid, $index);
-            // Double quote not supported by all browsers - replace by minus
-            $fname = str_replace('"', '-', $reg[3]);
-            $url = sprintf("file/%s/%d/%s/%s/%s?cache=%s&inline=%s", $docid, $vid, $attrid, $index, rawurlencode($fname) , $cache ? "yes" : "no", $inline ? "yes" : "no");
+            $url = sprintf("file/%s/%d/%s/%s/%s?cache=%s&inline=%s", $docid, $fileKey, $attrid, $index, rawurlencode($fname) , $cache ? "yes" : "no", $inline ? "yes" : "no");
             if ($this->cvid > 0) {
                 $viewId = getHttpVars("vid");
                 if ($viewId) {
@@ -8120,9 +8126,10 @@ create unique index i_docir on doc(initid, revision);";
      * return a property of vault file value
      * @param string $filesvalue the file value : like application/pdf|12345
      * @param string $key one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, adate, teng_state, teng_lname, teng_vid, teng_comment, path
-     * @return string|array value of property or array of all properties if no key
+     * @param string $returnType if "array" return indexed array else return VaultFileInfo object
+     * @return array|string|VaultFileInfo value of property or array of all properties if no key
      */
-    final public function getFileInfo($filesvalue, $key = "")
+    final public function getFileInfo($filesvalue, $key = "", $returnType = "array")
     {
         if (!is_string($filesvalue)) return false;
         if (preg_match(PREGEXPFILE, $filesvalue, $reg)) {
@@ -8134,7 +8141,11 @@ create unique index i_docir on doc(initid, revision);";
                 if (isset($info->$key)) return $info->$key;
                 else return sprintf(_("unknow %s file property") , $key);
             } else {
-                return get_object_vars($info);
+                if ($returnType === "array") {
+                    return get_object_vars($info);
+                } else {
+                    return $info;
+                }
             }
         }
         return $key ? '' : array();

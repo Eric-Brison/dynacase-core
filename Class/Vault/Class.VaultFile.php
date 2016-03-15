@@ -71,7 +71,9 @@ function show($id_file, &$infos, $teng_lname = "")
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Show");
     $msg = $this->storage->Show($id_file, $infos, $teng_lname);
-    if ($msg != '') $this->logger->error($msg);
+    if ($msg != '') {
+        $this->logger->error(sprintf("File #%s : %s", $id_file, $msg));
+    }
     if ($this->chrono) $this->logger->end("Show");
     return ($msg);
 }

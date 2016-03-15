@@ -99,6 +99,10 @@ class VaultDiskStorage extends DbObj
      * @var VaultDiskFsStorage
      */
     public $fs;
+    /**
+     * max length to be compatible with bigint (int(8))
+     */
+    const VAULTIDLENGTH = 8;
     // --------------------------------------------------------------------
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
@@ -124,11 +128,34 @@ class VaultDiskStorage extends DbObj
     // --------------------------------------------------------------------
     function PreInsert()
     {
-        // --------------------------------------------------------------------
-        $this->exec_query(sprintf("select nextval ('%s')", pg_escape_string($this->seq)));
-        $arr = $this->fetch_array(0);
-        $this->id_file = $arr["nextval"];
+        $this->id_file = $this->getNewVaultId();
         return '';
+    }
+    /**
+     * Get a new cryptographically random id forvault identifier
+     *
+     * Throws an exception if no cryptographically random bytes could be
+     * obtained from openssl: this might occurs on broken or old system.
+     *
+     * @return int The new id (bigint)
+     * @throws \Dcp\Exception
+     */
+    public function getNewVaultId()
+    {
+        $bytes = openssl_random_pseudo_bytes(self::VAULTIDLENGTH);
+        if ($bytes === false) {
+            throw new \Dcp\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
+        }
+        $hex = bin2hex($bytes);
+        $newId = '';
+        while (empty($newId)) {
+            $this->exec_query(sprintf("select x'%s'::bigint as newid from %s where id_file != x'%s'::bigint", $hex, $this->dbtable, $hex));
+            
+            $arr = $this->fetch_array(0);
+            $newId = str_replace('-', '', ($arr["newid"])); // absolute value
+            
+        }
+        return $newId;
     }
     // --------------------------------------------------------------------
     function fStat(&$fc, &$fv)

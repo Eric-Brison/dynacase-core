@@ -22,6 +22,16 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'EOF'
+create index idx_docvid on docvaultindex(vaultid);
+EOF
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error add index on docvault."
+    exit $RET
+fi
+
 #
 # Set default SSEARCH's profid to PRF_ADMIN_CREATION if the SSEARCH family is
 # still using the previous default PRF_SEARCHES

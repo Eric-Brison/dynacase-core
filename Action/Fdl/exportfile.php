@@ -118,6 +118,11 @@ function exportfile(Action & $action)
             header('HTTP/1.0 404 Attribute Not Found');
             $action->exitError(sprintf(_("attribute %s not found") , $attrid));
         } else {
+            if ($oa->type !== "file" && $oa->type !== "image") {
+                header('HTTP/1.0 403 Incorrect Attribute');
+                $action->exitError(sprintf("Not file attribute : %s ", $attrid));
+            }
+            
             if ($cvViewId != "" && $doc->cvid > 0) {
                 /**
                  * @var $cvdoc CVDOC
@@ -163,6 +168,15 @@ function exportfile(Action & $action)
         preg_match(PREGEXPFILE, $ovalue, $reg);
         $vaultid = $reg[2];
         $mimetype = $reg[1];
+        $fileName = $reg[3];
+        
+        $fileInfo = \Dcp\VaultManager::getFileInfo($vaultid);
+        
+        if ($fileName !== $fileInfo->name) {
+            //  header('HTTP/1.0 403 Forbidden');
+            //  $action->exitError(sprintf("Incorrect file identifier"));
+            
+        }
     } else {
         $mimetype = "";
     }
