@@ -623,18 +623,20 @@ class Layout
         // if used in an app , set the app params
         $out = $this->template;
         
-        $this->rif = & $this->rkey;
-        $this->parseApplicationParameters($out, false);
-        
+        $this->rif =  $this->rkey;
         $this->ParseBlock($out);
-        
-        $this->rif = & $this->rkey;
+        // Restore rif because parseBlock can change it
+        $this->rif =  $this->rkey;
+        // Application parameters conditions
         $this->parseApplicationParameters($out, true);
         
         $this->ParseIf($out);
         // Parse IMG: and LAY: tags
         $this->ParseText($out);
         $this->ParseKey($out);
+
+        // Application parameters values
+        $this->parseApplicationParameters($out, false);
         $this->ParseRef($out);
         $this->ParseZone($out);
         $this->ParseJs($out);
