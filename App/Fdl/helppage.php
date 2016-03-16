@@ -63,6 +63,55 @@ function helppage_editsection(Action & $action, $dbaccess, $docid)
     
     $action->lay->set("CanUploadImage", $imageFamily->hasPermission("create"));
 }
+/**
+ * @param NormalAttribute|FieldsetAttribute $oa
+ * @return string
+ */
+function helppage_getParentLabel($oa)
+{
+    if ($oa && $oa->fieldSet && $oa->fieldSet->id != 'FIELD_HIDDENS') {
+        return helppage_getParentLabel($oa->fieldSet) . $oa->fieldSet->getLabel() . '/';
+    }
+    return '';
+}
+// liste des attributs triable d'une famille
+function helppage_getHelpAttr($famid, $name = "")
+{
+    $docfam = new DocFam("", $famid);
+    //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
+    $doc = createDoc("", $famid, false);
+    
+    $tr = array();
+    $pattern_name = preg_quote($name, "/");
+    
+    $tinter = array_merge($doc->getFieldAttributes() , $doc->GetNormalAttributes());
+    /**
+     * @var NormalAttribute $v
+     */
+    foreach ($tinter as $k => $v) {
+        if ($v->id === "FIELD_HIDDENS") {
+            continue;
+        }
+        if (($name == "") || (preg_match("/$pattern_name/i", $v->getLabel() , $reg))) {
+            
+            $parent = helppage_getParentLabel($v);
+            if ($parent) {
+                $dv = sprintf('<b><i>%s</i></b><br/><span>&nbsp;&nbsp;%s (%s)</span>', htmlspecialchars($parent) , htmlspecialchars($v->getLabel()) , htmlspecialchars($v->type));
+            } else {
+                $dv = sprintf('<b><i>%s</i></b> (%s)', htmlspecialchars($v->getLabel()) , htmlspecialchars($v->type));
+            }
+            
+            $tr[] = array(
+                $dv,
+                $v->id,
+                $v->getLabel() ,
+                $v->getOption('sortable')
+            );
+        }
+    }
+    
+    return $tr;
+}
 
 function helppage_edithelp(Action & $action, $dbaccess, $docid)
 {
