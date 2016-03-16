@@ -36,7 +36,7 @@ class Fdl_Document
      */
     function __construct($id = 0, $config = null, Doc & $doc = null)
     {
-        $this->dbaccess = $doc->dbaccess;
+        $this->dbaccess = isset($doc)?$doc->dbaccess:getDbAccess();
         if (isset($config->latest)) $latest = $config->latest;
         else $latest = true;
         
