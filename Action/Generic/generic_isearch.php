@@ -42,13 +42,31 @@ function generic_isearch(Action & $action)
     
     $doc = new_Doc($dbaccess, $docid);
     
-    $sdoc = createTmpDoc($dbaccess, 38); //new Special Seraches
+    $sdoc = createTmpDoc($dbaccess, 'SSEARCH'); //new Special Seraches
     $sdoc->setValue("ba_title", sprintf(_("related documents of %s") , $doc->title));
     $sdoc->setValue("se_phpfile", "fdlsearches.php");
     $sdoc->setValue("se_phpfunc", "relateddoc");
     $sdoc->setValue("se_phparg", "$docid,$famid");
     
-    $sdoc->Add();
+    try {
+        if (($err = $sdoc->Add()) != '') {
+            $action->exitError($err);
+        }
+        if (($err = $sdoc->setControl(false)) != '') {
+            $sdoc->delete(true);
+            $action->exitError($err);
+        }
+        if (($err = $sdoc->addControl($action->user->id, 'execute')) != '') {
+            $sdoc->delete(true);
+            $action->exitError($err);
+        }
+    }
+    catch(\Exception $e) {
+        if ($sdoc->isAffected()) {
+            $sdoc->delete(true);
+        }
+        $action->exitError($e->getMessage());
+    }
     
     setHttpVar("dirid", $sdoc->id);
     if ($generic) {
