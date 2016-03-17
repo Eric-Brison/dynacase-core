@@ -239,6 +239,9 @@ SQL;
     }
     protected function recover()
     {
+        if ($this->dryRun) {
+            return;
+        }
         if (is_file($this->logFile)) {
             if (($data = file($this->logFile)) === false) {
                 throw new \Dcp\Exception(sprintf("Error reading content from transaction's log file '%s'.", $this->logFile));
@@ -328,11 +331,9 @@ SQL;
             }
             
             if ($needModify) {
-                if (!$this->dryRun) {
-                    $err = $family->modify(false);
-                    if ($err) {
-                        throw new \Dcp\Exception(sprintf("Cannot update family (%s) : %s ", $family->name, $err));
-                    }
+                $err = $family->modify(false);
+                if ($err) {
+                    throw new \Dcp\Exception(sprintf("Cannot update family (%s) : %s ", $family->name, $err));
                 }
             }
         }
@@ -367,7 +368,7 @@ SQL;
             if (!$this->dryRun) {
                 simpleQuery("", $sql);
                 
-                $sql = sprintf("update docvaultindex set vaultid=%s where vaultid=%d", $newId, $vaultId);
+                $sql = sprintf("EXECUTE update_docvaultindex_vaultid(%s, %s)", pg_escape_literal($newId) , pg_escape_literal($vaultId));
                 simpleQuery("", $sql);
             }
         }

@@ -81,6 +81,7 @@ SELECT pg_temp.changeColumnType('', 'users', 'password', 'text', '');
 --
 SELECT pg_temp.changeColumnType('', 'sessions', 'id', 'text', '');
 SELECT pg_temp.changeColumnType('', 'vaultdiskstorage', 'id_file', 'bigint', '');
+SELECT pg_temp.changeColumnType('', 'vaultdiskstorage', 'teng_id_file', 'bigint', '');
 SELECT pg_temp.changeColumnType('', 'docvaultindex', 'vaultid', 'bigint', '');
 
 SELECT pg_temp.dropColumnIfExists('', 'docperm', 'unacl');
