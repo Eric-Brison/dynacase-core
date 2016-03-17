@@ -46,7 +46,6 @@ class VaultDiskStorage extends DbObj
         "id_file"
     );
     var $dbtable = "vaultdiskstorage";
-    var $seq = "seq_id_vaultdiskstorage";
     var $sqlcreate = "create table vaultdiskstorage  ( 
                                      id_file       int not null, primary key (id_file),
                                      id_fs            int,
@@ -68,8 +67,8 @@ class VaultDiskStorage extends DbObj
                                      teng_comment     text DEFAULT ''
 
                                );
-           create sequence seq_id_vaultdiskstorage start 10;
-           CREATE INDEX vault_teng on vaultdiskstorage (teng_state);";
+           CREATE INDEX vault_teng on vaultdiskstorage (teng_state);
+           CREATE INDEX vault_tengid on vaultdiskstorage (teng_id_file);";
     public $id_file;
     public $id_fs;
     public $id_dir;

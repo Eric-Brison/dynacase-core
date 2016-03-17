@@ -75,7 +75,13 @@ SQL;
 PREPARE update_vaultdiskstorage_id_file (bigint, bigint) AS UPDATE vaultdiskstorage SET id_file = $1 where id_file = $2;
 SQL;
         simpleQuery('', $sql, $res, false, false, true);
-        
+
+
+        $sql = <<<'SQL'
+PREPARE update_vaultdiskstorage_teng_id_file (bigint, bigint) AS UPDATE vaultdiskstorage SET teng_id_file = $1 where teng_id_file = $2;
+SQL;
+        simpleQuery('', $sql, $res, false, false, true);
+
         $sql = <<<'SQL'
 SELECT
   docvaultindex.vaultid,
@@ -216,6 +222,8 @@ SQL;
             $sql = sprintf("EXECUTE update_docvaultindex_vaultid(%s, %s)", pg_escape_literal($newId) , pg_escape_literal($vaultId));
             simpleQuery("", $sql, $res, false, false, true);
             $sql = sprintf("EXECUTE update_vaultdiskstorage_id_file(%s, %s)", pg_escape_literal($newId) , pg_escape_literal($vaultId));
+            simpleQuery("", $sql, $res, false, false, true);
+            $sql = sprintf("EXECUTE update_vaultdiskstorage_teng_id_file(%s, %s)", pg_escape_literal($newId) , pg_escape_literal($vaultId));
             simpleQuery("", $sql, $res, false, false, true);
             $this->logVault($currentFileName, $newFileName);
             if (!rename($currentFileName, $newFileName)) {
