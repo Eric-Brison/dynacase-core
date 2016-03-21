@@ -344,9 +344,7 @@ class DocHtmlFormat
         if ($this->target == "te") {
             $htmlval = "file://" . $this->doc->vault_filename($this->oattr->id, true, $kvalue);
         } else {
-            $vid = "";
             if (preg_match(PREGEXPFILE, $avalue, $reg)) {
-                $vid = $reg[2];
                 $fileInfo = new VaultFileInfo();
                 $vf = newFreeVaultFile($this->doc->dbaccess);
                 if ($vf->Show($reg[2], $fileInfo) == "") {
@@ -362,7 +360,7 @@ class DocHtmlFormat
                 if (($this->oattr->repeat) && ($this->index <= 0)) $idx = $kvalue;
                 else $idx = $this->index;
                 $inline = $this->oattr->getOption("inline");
-                $htmlval = $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes") , $avalue);
+                $htmlval = $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes") , $avalue, $fileInfo);
             } else {
                 if (empty($avalue)) {
                     $localImage = $this->oattr->getOption('showempty');
@@ -543,7 +541,7 @@ class DocHtmlFormat
                         $size = self::human_size($fileInfo->size);
                         $utarget = ($action->Read("navigator", "") == "NETSCAPE") ? "_self" : "_blank";
                         $inline = $this->oattr->getOption("inline");
-                        $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"" . $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes") , $avalue) . "\">";
+                        $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"" . $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes") , $avalue, $fileInfo) . "\">";
                         if ($mimeicon) $htmlval.= "<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
                         $htmlval.= $fname . "</a>";
                     }

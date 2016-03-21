@@ -80,6 +80,9 @@ SELECT pg_temp.changeColumnType('', 'users', 'password', 'text', '');
 -- Update `sessions' data types
 --
 SELECT pg_temp.changeColumnType('', 'sessions', 'id', 'text', '');
+SELECT pg_temp.changeColumnType('', 'vaultdiskstorage', 'id_file', 'bigint', '');
+SELECT pg_temp.changeColumnType('', 'vaultdiskstorage', 'teng_id_file', 'bigint', '');
+SELECT pg_temp.changeColumnType('', 'docvaultindex', 'vaultid', 'bigint', '');
 
 SELECT pg_temp.dropColumnIfExists('', 'docperm', 'unacl');
 SELECT pg_temp.dropColumnIfExists('', 'docperm', 'cacl');

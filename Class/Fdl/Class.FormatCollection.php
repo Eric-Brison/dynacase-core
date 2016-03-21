@@ -1234,17 +1234,17 @@ class FileAttributeValue extends StandardAttributeValue
         
         $this->value = ($v === '') ? null : $v;
         if ($v) {
-            $finfo = $doc->getFileInfo($v);
+            $finfo = $doc->getFileInfo($v, "", "object");
             if ($finfo) {
-                $this->size = $finfo["size"];
-                $this->creationDate = $finfo["cdate"];
-                $this->fileName = $finfo["name"];
-                $this->mime = $finfo["mime_s"];
+                $this->size = $finfo->size;
+                $this->creationDate = $finfo->cdate;
+                $this->fileName = $finfo->name;
+                $this->mime = $finfo->mime_s;
                 $this->displayValue = $this->fileName;
                 
                 $iconFile = getIconMimeFile($this->mime);
                 if ($iconFile) $this->icon = $doc->getIcon($iconFile, $iconMimeSize);
-                $this->url = $doc->getFileLink($oa->id, $index, false, true, $v);
+                $this->url = $doc->getFileLink($oa->id, $index, false, true, $v, $finfo);
             }
         }
     }

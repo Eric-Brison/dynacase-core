@@ -46,7 +46,6 @@ class VaultDiskStorage extends DbObj
         "id_file"
     );
     var $dbtable = "vaultdiskstorage";
-    var $seq = "seq_id_vaultdiskstorage";
     var $sqlcreate = "create table vaultdiskstorage  ( 
                                      id_file       int not null, primary key (id_file),
                                      id_fs            int,
@@ -64,12 +63,12 @@ class VaultDiskStorage extends DbObj
  
                                      teng_state       int DEFAULT 0,
                                      teng_lname       text DEFAULT '',
-                                     teng_id_file     int DEFAULT -1,
+                                     teng_id_file     bigint DEFAULT -1,
                                      teng_comment     text DEFAULT ''
 
                                );
-           create sequence seq_id_vaultdiskstorage start 10;
-           CREATE INDEX vault_teng on vaultdiskstorage (teng_state);";
+           CREATE INDEX vault_teng on vaultdiskstorage (teng_state);
+           CREATE INDEX vault_tengid on vaultdiskstorage (teng_id_file);";
     public $id_file;
     public $id_fs;
     public $id_dir;
@@ -99,6 +98,10 @@ class VaultDiskStorage extends DbObj
      * @var VaultDiskFsStorage
      */
     public $fs;
+    /**
+     * max length to be compatible with bigint (int(8))
+     */
+    const VAULTIDLENGTH = 8;
     // --------------------------------------------------------------------
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
@@ -124,11 +127,34 @@ class VaultDiskStorage extends DbObj
     // --------------------------------------------------------------------
     function PreInsert()
     {
-        // --------------------------------------------------------------------
-        $this->exec_query(sprintf("select nextval ('%s')", pg_escape_string($this->seq)));
-        $arr = $this->fetch_array(0);
-        $this->id_file = $arr["nextval"];
+        $this->id_file = $this->getNewVaultId();
         return '';
+    }
+    /**
+     * Get a new cryptographically random id forvault identifier
+     *
+     * Throws an exception if no cryptographically random bytes could be
+     * obtained from openssl: this might occurs on broken or old system.
+     *
+     * @return int The new id (bigint)
+     * @throws \Dcp\Exception
+     */
+    public function getNewVaultId()
+    {
+        $bytes = openssl_random_pseudo_bytes(self::VAULTIDLENGTH);
+        if ($bytes === false) {
+            throw new \Dcp\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
+        }
+        $hex = bin2hex($bytes);
+        $newId = '';
+        while (empty($newId)) {
+            $this->exec_query(sprintf("select x'%s'::bigint as newid from %s where id_file != x'%s'::bigint", $hex, $this->dbtable, $hex));
+            
+            $arr = $this->fetch_array(0);
+            $newId = str_replace('-', '', ($arr["newid"])); // absolute value
+            
+        }
+        return $newId;
     }
     // --------------------------------------------------------------------
     function fStat(&$fc, &$fv)
@@ -271,7 +297,7 @@ class VaultDiskStorage extends DbObj
         $this->id_file = - 1;
         if ($teng_lname != "") {
             $query = new QueryDb($this->dbaccess, $this->dbtable);
-            $query->AddQuery(sprintf("teng_id_file = E'%s'::int", pg_escape_string($id_file)));
+            $query->AddQuery(sprintf("teng_id_file = E'%s'::bigint", pg_escape_string($id_file)));
             $query->AddQuery(sprintf("teng_lname = E'%s'", pg_escape_string($teng_lname)));
             
             $t = $query->Query(0, 0, "TABLE");
@@ -377,7 +403,7 @@ class VaultDiskStorage extends DbObj
      */
     function resetTEFiles()
     {
-        $up = sprintf("UPDATE %s SET teng_state = %d WHERE teng_id_file = %d", pg_escape_identifier($this->dbtable) , \Dcp\TransformationEngine\Client::status_inprogress, $this->id_file);
+        $up = sprintf("UPDATE %s SET teng_state = %d WHERE teng_id_file = %s", pg_escape_identifier($this->dbtable) , pg_escape_literal(\Dcp\TransformationEngine\Client::status_inprogress) , pg_escape_literal($this->id_file));
         $this->exec_query($up);
     }
 } // End Class.VaultFileDisk.php
