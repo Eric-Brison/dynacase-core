@@ -34,15 +34,15 @@ function generic_list(&$action)
 {
     // Set the globals elements
     // Get all the params
-    $dirid = GetHttpVars("dirid"); // directory to see
-    $catgid = GetHttpVars("catg", $dirid); // category
-    $startpage = GetHttpVars("page", "0"); // page to see
-    $tab = GetHttpVars("tab", "0"); // tab to see 1 for ABC, 2 for DEF, ...
-    $onglet = GetHttpVars("onglet"); // if you want onglet
-    $famid = GetHttpVars("famid"); // family restriction
-    $clearkey = (GetHttpVars("clearkey", "N") == "Y"); // delete last user key search
-    $sqlorder = GetHttpVars("sqlorder"); // family restriction
-    $onefamOrigin = GetHttpVars("onefam"); // onefam orgigin
+    $dirid = getHttpVars("dirid"); // directory to see
+    $catgid = getHttpVars("catg", $dirid); // category
+    $startpage = getHttpVars("page", "0"); // page to see
+    $tab = getHttpVars("tab", "0"); // tab to see 1 for ABC, 2 for DEF, ...
+    $onglet = getHttpVars("onglet"); // if you want onglet
+    $famid = getHttpVars("famid"); // family restriction
+    $clearkey = (getHttpVars("clearkey", "N") == "Y"); // delete last user key search
+    $sqlorder = getHttpVars("sqlorder"); // family restriction
+    $onefamOrigin = getHttpVars("onefam"); // onefam orgigin
     $target = "finfo$famid";
     setHttpVar("target", $target);
     if (!($famid > 0)) $famid = getDefFam($action);
@@ -58,11 +58,11 @@ function generic_list(&$action)
     $column = generic_viewmode($action, $famid); // choose the good view mode
     $dbaccess = $action->dbaccess;
     $packGeneric = "";
-    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/DHTMLapi.js", false, $packGeneric);
-    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/geometry.js", false, $packGeneric);
-    $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/AnchorPosition.js", false, $packGeneric);
-    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/common.js", false, $packGeneric);
-    $action->parent->AddJsRef($action->Getparam("CORE_PUBURL") . "/FDL/Layout/popupfunc.js", false, $packGeneric);
+    $action->parent->addJsRef($action->getParam("CORE_JSURL") . "/DHTMLapi.js", false, $packGeneric);
+    $action->parent->addJsRef($action->getParam("CORE_JSURL") . "/geometry.js", false, $packGeneric);
+    $action->parent->addJsRef($action->getParam("CORE_JSURL") . "/AnchorPosition.js", false, $packGeneric);
+    $action->parent->addJsRef($action->getParam("CORE_PUBURL") . "/FDL/Layout/common.js", false, $packGeneric);
+    $action->parent->addJsRef($action->getParam("CORE_PUBURL") . "/FDL/Layout/popupfunc.js", false, $packGeneric);
     $action->parent->addCssRef("css/dcp/main.css");
     $action->parent->addCssRef("GENERIC:generic_list.css", true);
     
@@ -94,20 +94,20 @@ function generic_list(&$action)
     $action->lay->set("folderid", "0");
     $pds = "";
     if ($catg->doctype == 'D') $action->lay->set("folderid", $catg->id);
-    $action->lay->Set("pds", "");
+    $action->lay->set("pds", "");
     if ($catgid) {
         $catg = new_Doc($dbaccess, $catgid);
         $catgid = $catg->id;
         $pds = $catg->urlWhatEncodeSpec("");
-        $action->lay->Set("pds", $pds);
+        $action->lay->set("pds", $pds);
         
-        $action->lay->Set("fldtitle", $dir->getHTMLTitle());
+        $action->lay->set("fldtitle", $dir->getHTMLTitle());
     } else {
         if ($dirid == 0) {
-            $action->lay->Set("fldtitle", _("precise search"));
-            $action->lay->Set("pds", "");
+            $action->lay->set("fldtitle", _("precise search"));
+            $action->lay->set("pds", "");
         } else {
-            $action->lay->Set("fldtitle", $dir->getHTMLTitle());
+            $action->lay->set("fldtitle", $dir->getHTMLTitle());
         }
     }
     
@@ -117,11 +117,11 @@ function generic_list(&$action)
     $action->lay->eSet("tab", $tab);
     $action->lay->eSet("catg", $catgid);
     $action->lay->eSet("famid", $famid);
-    $slice = $action->GetParam("CARD_SLICE_LIST", 5);
-    //  $action->lay->Set("next",$start+$slice);
-    //$action->lay->Set("prev",$start-$slice);
-    $action->lay->Set("nexticon", "");
-    $action->lay->Set("previcon", "");
+    $slice = $action->getParam("CARD_SLICE_LIST", 5);
+    //  $action->lay->set("next",$start+$slice);
+    //$action->lay->set("prev",$start-$slice);
+    $action->lay->set("nexticon", "");
+    $action->lay->set("previcon", "");
     if ($searchMode === "words") {
         $action->lay->set("SearchPlaceHolder", ___("Search words", "generic"));
     } else {
@@ -158,12 +158,13 @@ function generic_list(&$action)
         $only = (getInherit($action, $famid) == "N");
         viewfolder($action, true, false, $column, $slice, array() , ($only) ? -(abs($famid)) : abs($famid) , $paginationType);
         // can see next
-        $action->lay->Set("nexticon", $action->GetIcon("next.png", N_("next") , 16));
+        $action->lay->set("nexticon", $action->getIcon("next.png", N_("next") , 16));
     }
     getFamilySearches($action, $dbaccess, $famid, $only);
+    
     if ($startpage > 0) {
         // can see prev
-        $action->lay->Set("previcon", $action->GetIcon("prev.png", N_("prev") , 16));
+        $action->lay->set("previcon", $action->getIcon("prev.png", N_("prev") , 16));
     }
     
     if ($dirid && $wonglet) {
@@ -213,7 +214,7 @@ function generic_list(&$action)
             $onglet[$k]["onglabel"] = str_replace(" ", "<BR>", $v["onglabel"]);
         }
         
-        $action->lay->SetBlockData("ONGLET", $onglet);
+        $action->lay->setBlockData("ONGLET", $onglet);
     }
     $paginationConfig = array(
         "type" => $paginationType,
@@ -226,10 +227,10 @@ function generic_list(&$action)
         "onglet" => $wonglet ? "Y" : "N"
     );
     $action->parent->setVolatileParam("paginationConfig", $paginationConfig);
-    $action->lay->Set("onglet", $wonglet ? "Y" : "N");
-    $action->lay->Set("hasOnglet", (!empty($wonglet)));
+    $action->lay->set("onglet", $wonglet ? "Y" : "N");
+    $action->lay->set("hasOnglet", (!empty($wonglet)));
     
-    $action->lay->eset("tkey", getDefUKey($action));
+    $action->lay->eSet("tkey", getDefUKey($action));
 }
 
 function generic_viewmode(Action & $action, $famid)
@@ -263,16 +264,16 @@ function generic_viewmode(Action & $action, $famid)
         
         switch ($tview[$famid]) {
             case "column":
-                $action->layout = $action->GetLayoutFile("generic_listv.xml");
+                $action->layout = $action->getLayoutFile("generic_listv.xml");
                 $action->lay = new Layout($action->layout, $action);
-                //    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FREEDOM/Layout/sorttable.js");
+                //    $action->parent->addJsRef($action->getParam("CORE_PUBURL")."/FREEDOM/Layout/sorttable.js");
                 //    $column=true;
                 $column = 2;
                 break;
 
             case "abstract":
             default:
-                $action->layout = $action->GetLayoutFile("generic_list.xml");
+                $action->layout = $action->getLayoutFile("generic_list.xml");
                 $action->lay = new Layout($action->layout, $action);
                 $column = false;
                 
@@ -289,95 +290,99 @@ function getFamilySearches(Action $action, $dbaccess, $famid, $only = false)
      * @var DocFam $fdoc
      */
     $fdoc = new_Doc($dbaccess, $famid);
-    $dirid = GetHttpVars("dirid"); // search
-    $catgid = GetHttpVars("catg", $dirid); // primary directory
+    $dirid = getHttpVars("dirid"); // search
+    $catgid = getHttpVars("catg", $dirid); // primary directory
     if ($catgid == 0) $catgid = $dirid;
     
+    $action->lay->set("ONESEARCH", false);
+    $utreeSearch = array();
     $streeSearch = array();
-    if ($fdoc->dfldid > 0) {
-        // shared searches
-        $s = new SearchDoc($action->dbaccess, 5);
-        $s->useCollection($fdoc->dfldid);
-        $s->setObjectReturn();
-        $s->search();
-        $dl = $s->getDocumentList();
-        /**
-         * @var Doc $search
-         */
-        foreach ($dl as $ids => $search) {
-            if (($search->doctype == "S") && ($search->fromid != $fdoc->id)) {
-                if ($search->control("execute") != '') {
-                    continue;
-                }
-                $stitle = $search->getHtmlTitle();
-                
-                $streeSearch[$ids]["id"] = $ids;
-                $streeSearch[$ids]["title"] = $stitle;
-                $streeSearch[$ids]["selected"] = ($ids == $catgid) ? "1" : "0";
-                $streeSearch[$ids]["isreport"] = "0";
-                $streeSearch[$ids]["gui_color"] = $search->getRawValue(\Dcp\AttributeIdentifiers\Search::gui_color);
-                $streeSearch[$ids]["isparam"] = "0";
-                $keys = $search->getRawValue("se_keys");
-                if (preg_match('/\?/', $keys)) {
-                    $streeSearch[$ids]["title"] = "(P)" . $stitle;
-                    $streeSearch[$ids]["isparam"] = "1";
-                }
-                if ($search->fromid == 25) {
-                    $streeSearch[$ids]["title"] = "(R)" . $stitle;
-                    $streeSearch[$ids]["isreport"] = "1";
+    $hasSysSearch = false;
+    if ($famid) {
+        if (isset($fdoc->dfldid) && $fdoc->dfldid > 0) {
+            // shared searches
+            $s = new SearchDoc($action->dbaccess, 5);
+            $s->useCollection($fdoc->dfldid);
+            $s->setObjectReturn();
+            $s->search();
+            $dl = $s->getDocumentList();
+            /**
+             * @var Doc $search
+             */
+            foreach ($dl as $ids => $search) {
+                if (($search->doctype == "S") && ($search->fromid != $fdoc->id)) {
+                    if ($search->control("execute") != '') {
+                        continue;
+                    }
+                    $stitle = $search->getHTMLTitle();
+                    
+                    $streeSearch[$ids]["id"] = $ids;
+                    $streeSearch[$ids]["title"] = $stitle;
+                    $streeSearch[$ids]["selected"] = ($ids == $catgid) ? "1" : "0";
+                    $streeSearch[$ids]["isreport"] = "0";
+                    $streeSearch[$ids]["gui_color"] = $search->getRawValue(\Dcp\AttributeIdentifiers\Search::gui_color);
+                    $streeSearch[$ids]["isparam"] = "0";
+                    $keys = $search->getRawValue("se_keys");
+                    if (preg_match('/\?/', $keys)) {
+                        $streeSearch[$ids]["title"] = "(P)" . $stitle;
+                        $streeSearch[$ids]["isparam"] = "1";
+                    }
+                    if ($search->fromid == 25) {
+                        $streeSearch[$ids]["title"] = "(R)" . $stitle;
+                        $streeSearch[$ids]["isreport"] = "1";
+                    }
                 }
             }
         }
-    }
-    $hasSysSearch = count($streeSearch) > 0;
-    $action->lay->set("ONESEARCH", ($hasSysSearch));
-    
-    $action->lay->SetBlockData("SYSSEARCH", $streeSearch);
-    // search user searches for family
-    $s = new SearchDoc($action->dbaccess, 5);
-    $s->addFilter("owner=%d", $action->user->id);
-    // Need take account of generic parameter GENE_INHERIT
-    $child = $fdoc->getChildFam();
-    if ($only || count($child) == 0) {
-        $s->addFilter("se_famid='%s'", $fdoc->id);
-    } else {
-        $childIds = array_keys($child);
-        $childIds[] = $fdoc->id;
-        $s->addFilter($s->sqlcond($childIds, "se_famid"));
-    }
-    
-    $s->addFilter("usefor!='G'");
-    $s->addFilter("doctype != 'T'");
-    $s->addFilter("se_memo='yes'");
-    $s->setObjectReturn(true);
-    $dl = $s->search()->getDocumentList();
-    $action->lay->set("MSEARCH", false);
-    $utreeSearch = array();
-    foreach ($dl as $ids => $search) {
-        if (!isset($streeSearch[$ids])) {
-            if ($search->control("execute") != '') {
-                continue;
-            }
-            $stitle = $search->getHtmlTitle();
-            $utreeSearch[$ids]["id"] = $ids;
-            $utreeSearch[$ids]["title"] = $stitle;
-            $utreeSearch[$ids]["selected"] = ($ids == $catgid) ? "1" : "0";
-            $utreeSearch[$ids]["isreport"] = "0";
-            $utreeSearch[$ids]["isparam"] = "0";
-            $utreeSearch[$ids]["gui_color"] = $search->getRawValue(\Dcp\AttributeIdentifiers\Search::gui_color);
-            $keys = $search->getRawValue("se_keys");
-            if (preg_match('/\?/', $keys)) {
-                $utreeSearch[$ids]["title"] = "(P)" . $stitle;
-                $utreeSearch[$ids]["isparam"] = "1";
-            }
-            if ($search->fromid == 25) {
-                $utreeSearch[$ids]["title"] = "(R)" . $stitle;
-                $utreeSearch[$ids]["isreport"] = "1";
+        $hasSysSearch = count($streeSearch) > 0;
+        $action->lay->set("ONESEARCH", ($hasSysSearch));
+        
+        $action->lay->setBlockData("SYSSEARCH", $streeSearch);
+        // search user searches for family
+        $s = new SearchDoc($action->dbaccess, 5);
+        $s->addFilter("owner=%d", $action->user->id);
+        // Need take account of generic parameter GENE_INHERIT
+        $child = $fdoc->getChildFam();
+        if ($only || count($child) == 0) {
+            $s->addFilter("se_famid='%s'", $fdoc->id);
+        } else {
+            $childIds = array_keys($child);
+            $childIds[] = $fdoc->id;
+            $s->addFilter($s->sqlcond($childIds, "se_famid"));
+        }
+        
+        $s->addFilter("usefor!='G'");
+        $s->addFilter("doctype != 'T'");
+        $s->addFilter("se_memo='yes'");
+        $s->setObjectReturn(true);
+        $dl = $s->search()->getDocumentList();
+        $action->lay->set("MSEARCH", false);
+        foreach ($dl as $ids => $search) {
+            if (!isset($streeSearch[$ids])) {
+                if ($search->control("execute") != '') {
+                    continue;
+                }
+                $stitle = $search->getHTMLTitle();
+                $utreeSearch[$ids]["id"] = $ids;
+                $utreeSearch[$ids]["title"] = $stitle;
+                $utreeSearch[$ids]["selected"] = ($ids == $catgid) ? "1" : "0";
+                $utreeSearch[$ids]["isreport"] = "0";
+                $utreeSearch[$ids]["isparam"] = "0";
+                $utreeSearch[$ids]["gui_color"] = $search->getRawValue(\Dcp\AttributeIdentifiers\Search::gui_color);
+                $keys = $search->getRawValue("se_keys");
+                if (preg_match('/\?/', $keys)) {
+                    $utreeSearch[$ids]["title"] = "(P)" . $stitle;
+                    $utreeSearch[$ids]["isparam"] = "1";
+                }
+                if ($search->fromid == 25) {
+                    $utreeSearch[$ids]["title"] = "(R)" . $stitle;
+                    $utreeSearch[$ids]["isreport"] = "1";
+                }
             }
         }
     }
     $action->lay->set("MSEARCH", (count($utreeSearch) > 0 && $hasSysSearch));
-    $action->lay->SetBlockData("USERSEARCH", $utreeSearch);
+    $action->lay->setBlockData("USERSEARCH", $utreeSearch);
     if (count($streeSearch) + count($utreeSearch) > 0) {
         $action->lay->set("ONESEARCH", true);
     }
