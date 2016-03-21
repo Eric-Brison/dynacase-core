@@ -56,9 +56,11 @@ function generic_isearch(Action & $action)
             $sdoc->delete(true);
             $action->exitError($err);
         }
-        if (($err = $sdoc->addControl($action->user->id, 'execute')) != '') {
-            $sdoc->delete(true);
-            $action->exitError($err);
+        if ($action->user->id != 1) {
+            if (($err = $sdoc->addControl($action->user->id, 'execute')) != '') {
+                $sdoc->delete(true);
+                $action->exitError($err);
+            }
         }
     }
     catch(\Exception $e) {
