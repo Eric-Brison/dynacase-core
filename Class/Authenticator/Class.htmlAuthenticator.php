@@ -111,6 +111,7 @@ class htmlAuthenticator extends Authenticator
         if (!isset($args['redirect_uri'])) {
             $args['redirect_uri'] = $_SERVER['REQUEST_URI'];
         }
+        
         header(sprintf('Location: %s', $this->getAuthUrl($args)));
         return TRUE;
     }
@@ -125,7 +126,8 @@ class htmlAuthenticator extends Authenticator
         if (empty($this->parms['auth']['app'])) {
             throw new \Dcp\Exception("Missing html/auth/app config.");
         }
-        $location = 'authent.php?app=' . $this->parms['auth']['app'];
+        $location = Session::getWebRootPath();
+        $location.= 'authent.php?app=' . $this->parms['auth']['app'];
         if (!empty($this->parms['auth']['action'])) {
             $location.= '&action=' . $this->parms['auth']['action'];
         }

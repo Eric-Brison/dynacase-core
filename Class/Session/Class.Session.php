@@ -105,7 +105,7 @@ class Session extends DbObj
         return true;
     }
     
-    private static function getWebRootPath()
+    public static function getWebRootPath()
     {
         if (!isset($_SERVER['SCRIPT_FILENAME'])) {
             return false;
