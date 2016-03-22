@@ -47,7 +47,7 @@ class VaultDiskStorage extends DbObj
     );
     var $dbtable = "vaultdiskstorage";
     var $sqlcreate = "create table vaultdiskstorage  ( 
-                                     id_file       int not null, primary key (id_file),
+                                     id_file          bigint not null, primary key (id_file),
                                      id_fs            int,
                                      id_dir           int,
                                      public_access    bool,
@@ -148,11 +148,18 @@ class VaultDiskStorage extends DbObj
         $hex = bin2hex($bytes);
         $newId = '';
         while (empty($newId)) {
-            $this->exec_query(sprintf("select x'%s'::bigint as newid from %s where id_file != x'%s'::bigint", $hex, $this->dbtable, $hex));
-            
-            $arr = $this->fetch_array(0);
-            $newId = str_replace('-', '', ($arr["newid"])); // absolute value
-            
+            $err = $this->exec_query(sprintf("select x'%s'::bigint as newid union select id_file as newid from %s where id_file = x'%s'::bigint", $hex, $this->dbtable, $hex));
+            if ($err) {
+                throw new \Dcp\Db\Exception("DB0104", $err);
+            }
+            if ($this->numrows() === 1) {
+                $arr = $this->fetch_array(0);
+                if (! isset($arr["newid"])) {
+                    throw new \Dcp\Db\Exception("DB0103");
+                }
+                $newId = str_replace('-', '', ($arr["newid"])); // absolute value
+                
+            }
         }
         return $newId;
     }
