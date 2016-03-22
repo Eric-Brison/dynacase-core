@@ -85,6 +85,17 @@ namespace {
          * simple query error connect
          */
         const DB0102 = 'cannot connect to "%s". Simple query error "%s" for query "%s"';
+
+        /**
+         * @errorCode  Vault identifier key cannot be generated
+         * @see VaultDiskStorage::getNewVaultId
+         */
+        const DB0103 = 'Cannot generate vault identifier';
+        /**
+         * @errorCode  Vault identifier key must be verify if not already in use
+         * @see VaultDiskStorage::getNewVaultId
+         */
+        const DB0104 = 'Cannot verify vault identifier : %s';
         /**
          * @errorCode
          * for beautifier
