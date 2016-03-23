@@ -39,7 +39,7 @@ class DocVaultIndex extends DbObj
     public $vaultid;
     var $sqlcreate = "
 create table docvaultindex ( docid  int not null,
-                             vaultid int not null
+                             vaultid bigint not null
                    );
 create index idx_docvid on docvaultindex(vaultid);
 create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
