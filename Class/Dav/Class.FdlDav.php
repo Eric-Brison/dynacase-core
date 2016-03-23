@@ -1274,9 +1274,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
     function addsession($sessid, $vid, $docid, $owner, $expire = 0)
     {
         
-        $query = "INSERT INTO dav.sessions (session,vid,fid,owner,expires) values (
-                         '$sessid'   , $vid  , $docid , '$owner'   , '$expire')";
-        $query = sprintf("INSERT INTO dav.sessions (session, vid, fid, owner, expires) values ('%s', %s, %s, '%s', %s)", pg_escape_string($sessid) , pg_escape_string($vid) , pg_escape_string($docid) , pg_escape_string($owner) , pg_escape_string($expire));
+        $query = sprintf("INSERT INTO dav.sessions (session, vid, fid, owner, expires) VALUES (%s, %s, %s, %s, %s)", pg_escape_literal($sessid) , pg_escape_literal($vid) , pg_escape_literal($docid) , pg_escape_literal($owner) , pg_escape_literal($expire));
         
         $res = pg_query($this->db_res, $query);
         
@@ -1296,12 +1294,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
      */
     function getLogin($docid, $vid, $sessid)
     {
-        
-        $query = "select owner from  dav.sessions where 
-                         session   = '$sessid' and
-                         vid = $vid and
-                         fid = $docid";
-        $query = sprintf("select owner from  dav.sessions where session   = '%s' and vid = %s and fid = %s", pg_escape_string($sessid) , pg_escape_string($vid) , pg_escape_string($docid));
+        $query = sprintf("SELECT owner FROM dav.sessions WHERE session = %s AND vid = %s AND fid = %s", pg_escape_literal($sessid) , pg_escape_literal($vid) , pg_escape_literal($docid));
         //error_log("getLogin $query");
         $res = pg_query($this->db_res, $query);
         $row = pg_fetch_assoc($res);
@@ -1310,8 +1303,6 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
         pg_free_result($res);
         
         return $owner;
-        
-        return false;
     }
     /**
      * get session from login
@@ -1323,12 +1314,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
      */
     function getSession($docid, $vid, $owner)
     {
-        
-        $query = "select session from  dav.sessions where 
-                         owner   = '$owner' and
-                         vid = $vid and
-                         fid = $docid";
-        $query = sprintf("select session from  dav.sessions where owner   = '%s' and vid = %s and fid = %s", pg_escape_string($owner) , pg_escape_string($vid) , pg_escape_string($docid));
+        $query = sprintf("SELECT session FROM dav.sessions WHERE owner = %s AND vid = %s AND fid = %s", pg_escape_literal($owner) , pg_escape_literal($vid) , pg_escape_literal($docid));
         //error_log("getSession $query");
         $res = pg_query($this->db_res, $query);
         $row = pg_fetch_assoc($res);
@@ -1381,4 +1367,3 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
         return $this->folder_max_item;
     }
 }
-?>
