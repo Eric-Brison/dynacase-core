@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-03-09 16:47+0100\n"
+"PO-Revision-Date: 2016-03-23 14:14+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
 "Language: English\n"
@@ -8769,7 +8769,7 @@ msgid "vertical size for secondary windows"
 msgstr ""
 
 #, php-format
-msgid "vid %d stored"
+msgid "vid %s stored"
 msgstr ""
 
 #. _COMMENT Sharp Label

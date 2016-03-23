@@ -46,7 +46,7 @@ function getVaultPauth($vid)
     $dbaccess = getDbAccess();
     $rcore = pg_connect($dbaccess);
     if ($rcore) {
-        $result = pg_query(sprintf("select id_dir,name from vaultdiskstorage where id_file=%d", $vid));
+        $result = pg_query(sprintf("select id_dir,name from vaultdiskstorage where id_file = %s", pg_escape_literal($vid)));
         if ($result) {
             $row = pg_fetch_assoc($result);
             if ($row) {
@@ -83,7 +83,7 @@ function verifyAccessByVaultId($vid)
     $dbaccess = getDbAccess();
     $rcore = pg_connect($dbaccess);
     if ($rcore) {
-        $result = pg_query(sprintf("select id_dir,name,public_access, id_tmp from vaultdiskstorage where id_file=%d", $vid));
+        $result = pg_query(sprintf("select id_dir,name,public_access, id_tmp from vaultdiskstorage where id_file = %s", pg_escape_literal($vid)));
         if ($result) {
             $row = pg_fetch_assoc($result);
             if ($row) {
@@ -105,7 +105,7 @@ function verifyAccessByVaultId($vid)
 
 function getVaultCacheImage($vid, $size)
 {
-    $basedest = sprintf("/var/cache/image/%s-vid%d.png", $size, $vid);
+    $basedest = sprintf("/var/cache/image/%s-vid%s.png", $size, $vid);
     return $basedest;
 }
 
@@ -140,7 +140,7 @@ if (!preg_match('/^H?[0-9]+(px)?$/', $size)) {
 $img = isset($_GET["img"]) ? $_GET["img"] : null;
 if (!$img) {
     $vid = isset($_GET["vid"]) ? $_GET["vid"] : null;
-    if ($vid > 0) $img = "vaultid=$vid";
+    if (ctype_digit($vid)) $img = "vaultid=$vid";
 }
 $location = '';
 $dir = dirname($_SERVER["SCRIPT_NAME"]);
@@ -159,7 +159,7 @@ if (preg_match("/vaultid=([0-9]+)/", $img, $vids)) {
     if (file_exists($dest)) {
         $location = $ldir . "/" . $basedest;
     } else {
-        $localimage = getVaultPauth(intval($vid));
+        $localimage = getVaultPauth($vid);
         if ($localimage) {
             $newimg = rezizelocalimage($localimage, $size, $basedest);
             if ($newimg) $location = "$ldir/$newimg";

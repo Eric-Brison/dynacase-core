@@ -233,15 +233,15 @@ class ExportXmlDocument
                         
                         if (is_file($path)) {
                             if ($this->writeToFile) {
-                                return sprintf('<%s vid="%d" mime="%s" title="%s">[FILE64:%s]</%s>', $attribute->id, $vid, $mime, $name, $path, $attribute->id);
+                                return sprintf('<%s vid="%s" mime="%s" title="%s">[FILE64:%s]</%s>', $attribute->id, $vid, $mime, $name, $path, $attribute->id);
                             } else {
-                                return sprintf('<%s vid="%d" mime="%s" title="%s">%s</%s>', $attribute->id, $vid, $mime, $name, base64_encode(file_get_contents($path)) , $attribute->id);
+                                return sprintf('<%s vid="%s" mime="%s" title="%s">%s</%s>', $attribute->id, $vid, $mime, $name, base64_encode(file_get_contents($path)) , $attribute->id);
                             }
                         } else {
-                            return sprintf('<!-- file not found --><%s vid="%d" mime="%s" title="%s"/>', $attribute->id, $vid, $mime, $name, $attribute->id);
+                            return sprintf('<!-- file not found --><%s vid="%s" mime="%s" title="%s"/>', $attribute->id, $vid, $mime, $name, $attribute->id);
                         }
                     } else {
-                        return sprintf('<%s vid="%d" mime="%s" href="%s" title="%s"/>', $attribute->id, $vid, $mime, $href, $name);
+                        return sprintf('<%s vid="%s" mime="%s" href="%s" title="%s"/>', $attribute->id, $vid, $mime, $href, $name);
                     }
                 } else {
                     return sprintf("<%s>%s</%s>", $attribute->id, $v, $attribute->id);

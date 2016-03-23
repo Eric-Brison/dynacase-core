@@ -46,7 +46,7 @@ create index properties_path on  dav.properties(path);
 CREATE TABLE dav.sessions (
   session varchar(200) NOT NULL ,
   owner varchar(200) NOT NULL ,
-  vid int NOT NULL ,
+  vid bigint NOT NULL ,
   fid int NOT NULL ,
   expires int NOT NULL default '0',
   PRIMARY KEY  (session)

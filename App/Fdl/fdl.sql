@@ -477,7 +477,7 @@ declare
   sfile alias for $2;
   rvalue bool;
   wt text;
-  wti int;
+  wti bigint;
   i int;
   elementsCount int;
   elements text[];
@@ -501,7 +501,7 @@ begin
       CONTINUE;
     END IF;
     wt := matches[1];
-    wti := wt::int;
+    wti := wt::bigint;
     -- RAISE NOTICE 'vaultreindex inserting (docid=%, vaultid=%)', a_docid, wti;
     BEGIN
       INSERT INTO docvaultindex(docid, vaultid) VALUES (a_docid, wti);

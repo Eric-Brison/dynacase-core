@@ -570,15 +570,15 @@ class NormalAttribute extends BasicAttribute
                         
                         if (is_file($path)) {
                             if ($opt->outFile) {
-                                return sprintf('<%s vid="%d" mime="%s" title="%s">[FILE64:%s]</%s>', $this->id, $vid, $mime, $name, $path, $this->id);
+                                return sprintf('<%s vid="%s" mime="%s" title="%s">[FILE64:%s]</%s>', $this->id, $vid, $mime, $name, $path, $this->id);
                             } else {
-                                return sprintf('<%s vid="%d" mime="%s" title="%s">%s</%s>', $this->id, $vid, $mime, $name, base64_encode(file_get_contents($path)) , $this->id);
+                                return sprintf('<%s vid="%s" mime="%s" title="%s">%s</%s>', $this->id, $vid, $mime, $name, base64_encode(file_get_contents($path)) , $this->id);
                             }
                         } else {
-                            return sprintf('<!-- file not found --><%s vid="%d" mime="%s" title="%s"/>', $this->id, $vid, $mime, $name, $this->id);
+                            return sprintf('<!-- file not found --><%s vid="%s" mime="%s" title="%s"/>', $this->id, $vid, $mime, $name, $this->id);
                         }
                     } else {
-                        return sprintf('<%s vid="%d" mime="%s" href="%s" title="%s"/>', $this->id, $vid, $mime, $href, $this->encodeXml($name));
+                        return sprintf('<%s vid="%s" mime="%s" href="%s" title="%s"/>', $this->id, $vid, $mime, $href, $this->encodeXml($name));
                     }
                 } else {
                     return sprintf("<%s>%s</%s>", $this->id, $v, $this->id);
