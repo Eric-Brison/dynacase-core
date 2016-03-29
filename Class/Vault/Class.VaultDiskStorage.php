@@ -98,10 +98,6 @@ class VaultDiskStorage extends DbObj
      * @var VaultDiskFsStorage
      */
     public $fs;
-    /**
-     * max length to be compatible with bigint (int(8))
-     */
-    const VAULTIDLENGTH = 8;
     // --------------------------------------------------------------------
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
@@ -125,40 +121,97 @@ class VaultDiskStorage extends DbObj
         }
     }
     // --------------------------------------------------------------------
+    function Add($nopost = false, $nopre = false)
+    {
+        /*
+         * Serialize execution of concurrent Add() to prevent potential
+         * insertions of two objects with a same id_file, which would result
+         * in one of the two returning an error due to unique constraint on
+         * id_file.
+        */
+        if (($err = $this->setMasterLock(true)) !== '') {
+            return $err;
+        }
+        try {
+            $err = parent::Add($nopost, $nopre);
+        }
+        catch(\Exception $e) {
+            $this->setMasterLock(false);
+            return $e->getMessage();
+        }
+        $this->setMasterLock(false);
+        return $err;
+    }
     function PreInsert()
     {
         $this->id_file = $this->getNewVaultId();
         return '';
     }
     /**
-     * Get a new cryptographically random id forvault identifier
+     * Get a new cryptographically random id for vault identifier
      *
-     * Throws an exception if no cryptographically random bytes could be
-     * obtained from openssl: this might occurs on broken or old system.
+     * Throws an exception:
+     * - if no cryptographically random bytes could be obtained from openssl:
+     *   this might occurs on broken or old system.
+     * - if architecture int size is not supported.
      *
      * @return int The new id (bigint)
      * @throws \Dcp\Exception
      */
     public function getNewVaultId()
     {
-        $bytes = openssl_random_pseudo_bytes(self::VAULTIDLENGTH);
-        if ($bytes === false) {
-            throw new \Dcp\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
-        }
-        $hex = bin2hex($bytes);
         $newId = '';
         while (empty($newId)) {
-            $err = $this->exec_query(sprintf("select x'%s'::bigint as newid union select id_file as newid from %s where id_file = x'%s'::bigint", $hex, $this->dbtable, $hex));
+            $bytes = openssl_random_pseudo_bytes(PHP_INT_SIZE);
+            if ($bytes === false) {
+                throw new \Dcp\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
+            }
+            /*
+             * We are going to perform a bitmask operation, so we should ensure
+             * that the correct number of requested bytes have been returned.
+            */
+            if (strlen($bytes) !== PHP_INT_SIZE) {
+                throw new \Dcp\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
+            }
+            /*
+             * Set leftmost bit to 0 to prevent having negative values
+            */
+            if (PHP_INT_SIZE == 4) {
+                $bytes = ($bytes & "\x7f\xff\xff\xff");
+                $int = unpack("Nint4", $bytes);
+                $int = $int['int4'];
+            } elseif (PHP_INT_SIZE == 8) {
+                $bytes = ($bytes & "\x7f\xff\xff\xff" . "\xff\xff\xff\xff");
+                /*
+                 * "J" format is only supported on PHP >= 5.6.2, so we need to
+                 * manually unpack 2 int4 (with format "N") and reconstruct the
+                 * final int8.
+                */
+                $upper_int = unpack("Nint4", substr($bytes, 0, 4));
+                $lower_int = unpack("Nint4", substr($bytes, 4, 4));
+                $int = ($upper_int['int4'] << 32) + $lower_int['int4'];
+            } else {
+                throw new \Dcp\Exception(sprintf("Unsupported PHP_INT_SIZE '%d'.", PHP_INT_SIZE));
+            }
+            /*
+             * If the integer is negative, then something is wrong
+             * with this code...
+            */
+            if ($int < 0) {
+                throw new \Dcp\Exception(sprintf("Unexpected negative integer value with PHP_INT_SIZE '%d' and binary data '0x%s'.", PHP_INT_SIZE, bin2hex($bytes)));
+            }
+            /*
+             * Check if this id is already in use
+            */
+            $err = $this->exec_query(sprintf("SELECT id_file FROM %s WHERE id_file = %d LIMIT 1", pg_escape_identifier($this->dbtable) , $int));
             if ($err) {
                 throw new \Dcp\Db\Exception("DB0104", $err);
             }
-            if ($this->numrows() === 1) {
-                $arr = $this->fetch_array(0);
-                if (! isset($arr["newid"])) {
-                    throw new \Dcp\Db\Exception("DB0103");
-                }
-                $newId = str_replace('-', '', ($arr["newid"])); // absolute value
-                
+            if ($this->numrows() === 0) {
+                /*
+                 * The id is not already in use, so we can use it
+                */
+                $newId = $int;
             }
         }
         return $newId;

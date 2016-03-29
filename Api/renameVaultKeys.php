@@ -37,6 +37,7 @@ class DcpApiVaultKeys
     protected $verbose = false;
     protected $stop = false;
     private $randKey = 0;
+    private $minIndex = 0;
     private $maxIndex = 0;
     const timeWindow = 10;
     const timeWindowFactor = 100;
@@ -58,9 +59,18 @@ class DcpApiVaultKeys
     {
         $this->vaultFile = new VaultDiskStorage();
         $this->logFile = sprintf("%s/.renameVaultKeys.log", DEFAULT_PUBDIR);
-        $this->maxIndex = 1 << 62;
+        if (PHP_INT_SIZE >= 8) {
+            $this->minIndex = 1 << 31;
+        } else {
+            $this->minIndex = $this->getSequenceNextVal('seq_id_vaultdiskstorage');
+        }
+        $this->maxIndex = PHP_INT_MAX;
     }
-    
+    public function getSequenceNextVal($seqName)
+    {
+        simpleQuery('', sprintf("SELECT nextval(%s)", pg_escape_literal($seqName)) , $res, true, true, true);
+        return $res;
+    }
     public function run($dryRun, $vaultid)
     {
         $this->dryRun = $dryRun;
@@ -75,13 +85,12 @@ SQL;
 PREPARE update_vaultdiskstorage_id_file (bigint, bigint) AS UPDATE vaultdiskstorage SET id_file = $1 where id_file = $2;
 SQL;
         simpleQuery('', $sql, $res, false, false, true);
-
-
+        
         $sql = <<<'SQL'
 PREPARE update_vaultdiskstorage_teng_id_file (bigint, bigint) AS UPDATE vaultdiskstorage SET teng_id_file = $1 where teng_id_file = $2;
 SQL;
         simpleQuery('', $sql, $res, false, false, true);
-
+        
         $sql = <<<'SQL'
 SELECT
   docvaultindex.vaultid,
@@ -93,12 +102,12 @@ FROM
   docfrom
 WHERE
   docfrom.id = docvaultindex.docid AND
-  docvaultindex.vaultid < 2147483647 %s
+  docvaultindex.vaultid < %s %s
 GROUP BY docvaultindex.vaultid
 ORDER BY docvaultindex.vaultid
 SQL;
         
-        $sql = sprintf($sql, empty($vaultid) ? "" : sprintf("and docvaultindex.vaultid=%d", $vaultid));
+        $sql = sprintf($sql, pg_escape_literal($this->minIndex) , empty($vaultid) ? "" : sprintf("and docvaultindex.vaultid = %s", pg_escape_literal($vaultid)));
         
         $this->verbose("Retrieve vault file to reindex...");
         simpleQuery("", $sql, $vaultIndexes);
@@ -368,7 +377,7 @@ SQL;
                 } else {
                     $sql.= ", ";
                 }
-                $sql.= sprintf(" %s=regexp_replace(%s, E'\\\\|%d($|\\n|[\\\\|.*])',E'|%s\\\\1','g')", pg_escape_string($attr) , pg_escape_string($attr) , $vaultId, $newId);
+                $sql.= sprintf(" %s=regexp_replace(%s, E'\\\\|%s($|\\n|[\\\\|.*])',E'|%s\\\\1','g')", pg_escape_string($attr) , pg_escape_string($attr) , $vaultId, $newId);
             }
             
             $sql.= sprintf(" where id in (%s)", implode(",", $docids));
@@ -408,11 +417,10 @@ SQL;
         $nogood = true;
         $newId = 0;
         while ($nogood) {
-            $newId = rand(1, $this->maxIndex) + 2147483647;
+            $newId = mt_rand($this->minIndex, $this->maxIndex);
             simpleQuery("", sprintf("select true from vaultdiskstorage where id_file = %s", $newId) , $nogood, true, true);
         }
         
         return $newId;
     }
 }
-
