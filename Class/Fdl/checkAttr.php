@@ -37,7 +37,6 @@ class CheckAttr extends CheckData
         "ifile",
         "xml",
         "thesaurus",
-        "idoc",
         "tab",
         "time",
         "timestamp",

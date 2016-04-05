@@ -39,7 +39,6 @@ function alleditjs(Action & $action)
         "jscalendar/Layout/calendar.js",
         "jscalendar/Layout/calendar-setup.js",
         "FDL/Layout/common.js",
-        "FDL/Layout/viewicard.js",
         "FDL/Layout/iframe.js",
         "FDL/Layout/autocompletion.js",
         "FDC/Layout/inserthtml.js",
@@ -63,7 +62,6 @@ function alleditjs(Action & $action)
     $dynamics = array(
         "FDL/Layout/editcommon.js",
         "FDL/Layout/editload.js",
-        "FDL/Layout/editidoc.js",
         "FDL/Layout/enum_choice.js",
         "FDL/Layout/viewdoc.js",
         "FDL/Layout/edithtmltext.js"

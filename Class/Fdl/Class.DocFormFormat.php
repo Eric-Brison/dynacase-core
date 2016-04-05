@@ -189,10 +189,6 @@ class DocFormFormat
                 $input = $this->formatHtmlText($value);
                 break;
 
-            case "idoc":
-                $input.= $this->getLayIdoc($this->doc, $this->oattr, $attridk, $attrin, $value);
-                break;
-
             case "array":
                 $input = $this->formatArray();
                 break;
@@ -1855,34 +1851,6 @@ class DocFormFormat
                 
                 $lay->set("value", $value);
                 return true;
-            }
-            /**
-             * generate HTML for idoc attribute
-             * @param Doc $doc
-             * @param NormalAttribute $oattr current attribute for input
-             * @param string $attridk id suffix of the generated HTML tag
-             * @param string $attrin name of the generated HTML tag
-             * @param string $value value of the attribute to display (generaly the value comes from current document)
-             * @param string $zone
-             * @return String the formated output
-             */
-            private function getLayIdoc(&$doc, &$oattr, $attridk, $attrin, $value, $zone = "")
-            {
-                
-                $idocfamid = $oattr->format;
-                if ($value != "") {
-                    $temp = base64_decode($value);
-                    $entete = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"yes\" ?>";
-                    $xml = $entete;
-                    $xml.= $temp;
-                    $title = recup_argument_from_xml($xml, "title"); //in freedom_util.php
-                    
-                } else {
-                    $famname = $doc->getTitle($idocfamid);
-                    $title = sprintf(_("create new %s") , $famname);
-                }
-                $input = "<INPUT id=\"_" . $attridk . "\" TYPE=\"hidden\"  name=$attrin value=\"" . $value . " \"><a id='iti_$attridk' " . " oncontextmenu=\"viewidoc_in_popdoc(event,'$attridk','_$attridk','$idocfamid')\"" . " onclick=\"editidoc('_$attridk','_$attridk','$idocfamid','$zone');\">$title</a> ";
-                return $input;
             }
             /**
              * add button to create/modify document relation

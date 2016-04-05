@@ -424,11 +424,6 @@ $action_desc = array (
    "short_name"		=>N_("Freedom modification"),
    "acl"		=>"FREEDOM"
   ),
- array(
-   "name"		=>"VIEWICARD",
-   "short_name"		=>N_("view idoc attribute card"),
-   "acl"		=>"FREEDOM"
-  ),
   array(
    "name"		=>"FREEDOM_DEL",
    "short_name"		=>N_("Freedom deletion"),

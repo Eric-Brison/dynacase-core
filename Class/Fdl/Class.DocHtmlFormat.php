@@ -85,10 +85,6 @@ class DocHtmlFormat
                 $thtmlval[$kvalue] = '';
             } else {
                 switch ($atype) {
-                    case "idoc":
-                        $htmlval = $this->formatIDoc($kvalue, $avalue);
-                        break;
-
                     case "image":
                         $htmlval = $this->formatImage($kvalue, $avalue);
                         break;
@@ -298,33 +294,6 @@ class DocHtmlFormat
             "&#091;",
             "&#036;"
         ) , $avalue);
-        return $htmlval;
-    }
-    /**
-     * format iDoc attribute
-     * @param $kvalue
-     * @param $avalue
-     * @return string HTML value
-     */
-    public function formatIDoc($kvalue, $avalue)
-    {
-        
-        $idocfamid = $this->oattr->format;
-        $value = $avalue;
-        if ($value != "") {
-            $temp = base64_decode($value);
-            $entete = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
-            $xml = $entete;
-            $xml.= $temp;
-            //$title = recup_argument_from_xml($xml, "title"); //in freedom_util.php
-            
-        }
-        $this->attrid = $this->attrid . $this->index;
-        $htmlval = "<form style=\"display:inline\"><INPUT id=\"_" . $this->attrid . "\" TYPE=\"hidden\"  name=\"_" . $this->attrid . "\" value=\"" . $value . " \">";
-        $htmlval.= "<a onclick=\"subwindow(400,400,'_$this->attrid','');viewidoc('_$this->attrid','$idocfamid')\" ";
-        $title = $this->doc->getHTMLTitle();
-        $htmlval.= "oncontextmenu=\"viewidoc_in_popdoc(event,'$this->attrid','_$this->attrid','$idocfamid');return false\">$title</a>";
-        $htmlval.= "</form>";
         return $htmlval;
     }
     /**

@@ -167,12 +167,6 @@ $action_desc = array(
         "layout" => "editcommon.js"
     ),
     array(
-        "name" => "EDITIJS",
-        "script" => "cacheone.php",
-        "function" => "cacheone",
-        "layout" => "editidoc.js"
-    ),
-    array(
         "name" => "ENUMCHOICEJS",
         "script" => "cacheone.php",
         "function" => "cacheone",
