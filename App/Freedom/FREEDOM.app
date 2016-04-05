@@ -179,11 +179,6 @@ $action_desc = array (
    "acl"		=>"FREEDOM_MASTER"
   ) ,
   array( 
-   "name"		=>"FREEDOM_PREVIEW",
-   "short_name"		=>N_("Freedoms preview document"),
-   "acl"		=>"FREEDOM"
-  ) ,
-  array( 
    "name"		=>"POPUP",
    "short_name"		=>N_("popup menu"),
    "acl"		=>"FREEDOM_READ",

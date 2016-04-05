@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-04-05 16:26+0200\n"
+"PO-Revision-Date: 2016-04-05 17:46+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
 "Language: English\n"
@@ -2481,9 +2481,6 @@ msgstr "List"
 
 msgid "Freedoms list by column"
 msgstr ""
-
-msgid "Freedoms preview document"
-msgstr "Document preview"
 
 msgid "Freedoms view folder"
 msgstr "View as folder"
