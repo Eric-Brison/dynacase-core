@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-04-05 14:25+0200\n"
+"PO-Revision-Date: 2016-04-05 16:22+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -2580,9 +2580,6 @@ msgstr "Modification de documents"
 
 msgid "Freedom modify accessibilities"
 msgstr "Modification des Droits"
-
-msgid "Freedom update title fields"
-msgstr "mise à jour des champs titre"
 
 msgid "Freedoms RSS syndication"
 msgstr "RSS Dynacase"

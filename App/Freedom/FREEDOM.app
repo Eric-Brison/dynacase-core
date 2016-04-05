@@ -430,15 +430,6 @@ $action_desc = array (
    "acl"		=>"FREEDOM"
   ),
   array(
-   "name"		=>"FREEDOM_UPDATETITLE",
-   "short_name"		=>N_("Freedom update title fields"),
-   "acl"		=>"FREEDOM_MASTER",
-   "function"           =>"freedom_updatetitle",
-   "layout"		=>"freedom_admin.xml",
-   "script"		=>"freedom_admin.php"
-	
-  ),
-  array(
    "name"		=>"FREEDOM_ACCESS",
    "short_name"		=>N_("Freedom accessibilities"),
    "acl"		=>"FREEDOM"	
