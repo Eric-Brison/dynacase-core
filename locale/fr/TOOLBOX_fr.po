@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-04-05 16:22+0200\n"
+"PO-Revision-Date: 2016-04-05 16:26+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -8181,9 +8181,6 @@ msgstr "recherche contenant %s dans %s"
 
 msgid "search document"
 msgstr "Recherche de documents"
-
-msgid "search document criteria"
-msgstr "critères de recherche de document"
 
 msgid "search document to insert in a folder"
 msgstr "recherche de document pour l'insertion dans un dossier"

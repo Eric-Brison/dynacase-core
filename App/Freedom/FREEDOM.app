@@ -367,11 +367,6 @@ $action_desc = array (
    "acl"		=>"FREEDOM_READ"
   ) ,
   array( 
-   "name"		=>"EDIT_SEARCH",
-   "short_name"		=>N_("search document criteria"),
-   "acl"		=>"FREEDOM_READ"
-  ) ,
-  array( 
    "name"		=>"QUERYFILE",
    "short_name"		=>N_("ask for a new file revision"),
    "acl"		=>"FREEDOM"
