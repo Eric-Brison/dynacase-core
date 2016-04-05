@@ -208,8 +208,12 @@ class BasicAttribute
      */
     function getTab()
     {
-        if ($this->type == 'tab') return $this;
-        if ($this->fieldSet && ($this->fieldSet->id != BasicAttribute::hiddenFieldId)) return $this->fieldSet->getTab();
+        if ($this->type == 'tab') {
+            return $this;
+        }
+        if (is_object($this->fieldSet) && method_exists($this->fieldSet, 'getTab') && ($this->fieldSet->id != BasicAttribute::hiddenFieldId)) {
+            return $this->fieldSet->getTab();
+        }
         return false;
     }
     /**

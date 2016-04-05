@@ -7123,8 +7123,13 @@ create unique index i_docir on doc(initid, revision);";
             //------------------------------
             // change frame if needed
             if ($changeframe) { // to generate  fieldset
+                if ($currentFrameId == '') {
+                    throw new Dcp\Exception('DOC0124', $attr->id);
+                }
                 $oaf = $this->getAttribute($currentFrameId);
-                
+                if (!is_object($oaf)) {
+                    throw new Dcp\Exception('DOC0125', $currentFrameId, $attr->id);
+                }
                 $frametpl = $oaf->getOption("viewtemplate");
                 $changeframe = false;
                 if ((($v + $nbimg) > 0) || $frametpl) { // one value detected

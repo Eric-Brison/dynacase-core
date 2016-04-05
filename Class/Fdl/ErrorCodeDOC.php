@@ -189,6 +189,16 @@ class ErrorCodeDOC
      */
     const DOC0123 = 'cannot set default value for "%s". It is not an attribute for "%s" ("%s") family';
     /**
+     * @errorCode problems with frame's structure
+     * @see Doc::viewbodycard
+     */
+    const DOC0124 = 'changeframe requested but current frame is empty (current attribute is "%s")';
+    /**
+     * @errorCode problems with frame's structure
+     * @see Doc::viewbodycard
+     */
+    const DOC0125 = 'changeframe requested but current frame "%s" does not exists (current attribute is "%s")';
+    /**
      * @errorCode
      * the document cannot be inserted in folder target
      * @note when DOC has defined a folder target
