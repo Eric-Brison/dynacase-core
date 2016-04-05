@@ -458,11 +458,6 @@ $action_desc = array (
    "short_name"		=>N_("Freedom modify accessibilities"),
    "acl"		=>"FREEDOM"	
   ),
-  array(
-   "name"		=>"FREEDOM_INIT",
-   "short_name"		=>N_("Freedom initialisation"),
-   "acl"		=>"FREEDOM"	
-  ),
   array( 
    "name"		=>"OPENFOLIO",
    "short_name"		=>N_("open portfolio"),

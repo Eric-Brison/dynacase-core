@@ -179,11 +179,6 @@ $action_desc = array(
         "layout" => "enum_choice.js"
     ),
     array(
-        "name" => "FREEDOM_INIT",
-        "short_name" => N_("Freedom initialisation"),
-        "acl" => "NORMAL"
-    ),
-    array(
         "name" => "POPUPDOCDETAIL",
         "short_name" => N_("Document context menu"),
         "acl" => "NORMAL"
