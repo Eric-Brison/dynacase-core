@@ -30,9 +30,6 @@ $action_desc = array(
         "name" => "LOGOUT"
     ) ,
     array(
-        "name" => "UNAUTHORIZED"
-    ) ,
-    array(
         "name" => "REQPASSWD"
     ) ,
     array(
