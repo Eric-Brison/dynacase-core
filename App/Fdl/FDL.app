@@ -342,11 +342,6 @@ $action_desc = array(
         "acl" => "NORMAL"
     ),
     array(
-        "name" => "VCONSTRAINT",
-        "short_name" => N_("verify constraint attribute"),
-        "acl" => "NORMAL"
-    ),
-    array(
         "name" => "EDITCHANGESTATE",
         "short_name" => N_("interface to change state"),
         "acl" => "NORMAL"

@@ -427,17 +427,6 @@ class DocFormFormat
                     
                     $input.= "\">";
                 }
-                if (GetHttpVars("viewconstraint") == "Y") { // set in modcard
-                    if (($this->oattr->phpconstraint != "") && ($this->index != "__1x_")) {
-                        $color = '';
-                        $res = $this->doc->verifyConstraint($this->oattr->id, ($this->index == "") ? -1 : $this->index);
-                        if (($res["err"] == "") && (count($res["sug"]) == 0)) $color = 'mediumaquamarine';
-                        if (($res["err"] == "") && (count($res["sug"]) > 0)) $color = 'orange';
-                        if (($res["err"] != "")) $color = 'tomato';
-                        
-                        $input.= "<input style=\"background-color:$color;\"type=\"button\" class=\"constraint inlineButton\" id=\"co_$attridk\" value=\"C\"" . " onclick=\"vconstraint(this," . $this->doc->fromid . ",'$attrid');\">";
-                    }
-                }
             } elseif ($this->oattr->type == "htmltext") {
                 if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
             }

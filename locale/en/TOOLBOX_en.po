@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-03-23 14:14+0100\n"
+"PO-Revision-Date: 2016-04-05 14:25+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
 "Language: English\n"
@@ -8754,9 +8754,6 @@ msgid "vault file is not initialized"
 msgstr ""
 
 msgid "vconstraint input not found id="
-msgstr ""
-
-msgid "verify constraint attribute"
 msgstr ""
 
 msgid "verify files status"
