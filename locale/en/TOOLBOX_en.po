@@ -568,9 +568,6 @@ msgstr ""
 msgid "All css in one for consultation"
 msgstr "Concatenate all CSS for consultation"
 
-msgid "All css in one for edition"
-msgstr "Concatenate all CSS for edition"
-
 msgid "All js in one for consultation"
 msgstr "Concatenate all JS scripts for consultation"
 

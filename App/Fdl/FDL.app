@@ -146,11 +146,6 @@ $action_desc = array(
         "acl" => "NORMAL"
     ),
     array(
-        "name" => "ALLEDITCSS",
-        "short_name" => N_("All css in one for edition"),
-        "acl" => "NORMAL"
-    ),
-    array(
         "name" => "ALLVIEWJS",
         "short_name" => N_("All js in one for consultation"),
         "acl" => "NORMAL"
@@ -491,4 +486,3 @@ $action_desc = array(
 
 );
 
-?>
