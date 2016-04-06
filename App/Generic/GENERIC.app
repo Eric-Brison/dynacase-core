@@ -148,11 +148,6 @@ $action_desc = array(
         "acl" => "GENERIC_READ"
     ),
     array(
-        "name" => "GENERIC_MEMOSPLIT",
-        "short_name" => N_("memorisation of split mode"),
-        "acl" => "GENERIC"
-    ),
-    array(
         "name" => "GENERIC_MEMOSEARCH",
         "short_name" => N_("memorisation of pref search"),
         "acl" => "GENERIC",

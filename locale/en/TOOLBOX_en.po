@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-04-06 12:05+0200\n"
+"PO-Revision-Date: 2016-04-06 13:48+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
 "Language: English\n"
@@ -6801,9 +6801,6 @@ msgid "mdoc: remove doc"
 msgstr ""
 
 msgid "memorisation of pref search"
-msgstr ""
-
-msgid "memorisation of split mode"
 msgstr ""
 
 msgid "memory max for PHP in Mo"
