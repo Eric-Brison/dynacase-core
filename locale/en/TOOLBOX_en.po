@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-04-06 11:00+0200\n"
+"PO-Revision-Date: 2016-04-06 11:16+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
 "Language: English\n"
@@ -8753,9 +8753,6 @@ msgstr ""
 
 #. _COMMENT Sharp Label
 msgid "view"
-msgstr ""
-
-msgid "view a generic"
 msgstr ""
 
 msgid "view a part of list"

@@ -151,11 +151,6 @@ $action_desc = array(
         "acl" => "GENERIC_READ"
     ),
     array(
-        "name" => "GENERIC_CARD",
-        "short_name" => N_("view a generic"),
-        "acl" => "GENERIC_READ"
-    ),
-    array(
         "name" => "GENERIC_EDITIMPORT",
         "short_name" => N_("edit import vcard"),
         "acl" => "GENERIC_MASTER"
