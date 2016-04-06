@@ -167,14 +167,6 @@ $action_desc = array(
         "layout" => "generic_list.xml"
     ),
     array(
-        "name" => "GENERIC_TABV",
-        "short_name" => N_("view a part of list"),
-        "acl" => "GENERIC_READ",
-        "script" => "generic_tab.php",
-        "function" => "generic_tabv",
-        "layout" => "generic_listv.xml"
-    ),
-    array(
         "name" => "GENERIC_IMPORTCSV",
         "short_name" => N_("import csv"),
         "layout" => "generic_import.xml",
