@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-04-06 10:43+0200\n"
+"PO-Revision-Date: 2016-04-06 10:55+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
 "Language: English\n"
@@ -8881,9 +8881,6 @@ msgstr ""
 
 msgid "welcome"
 msgstr "Welcome !"
-
-msgid "widget display popup for a description card"
-msgstr ""
 
 msgid "width of the abstract card"
 msgstr ""

@@ -392,11 +392,6 @@ $action_desc = array (
    "acl"		=>"FREEDOM_HISTO"
   ),
   array(
-   "name"		=>"POPUPCARD",
-   "short_name"		=>N_("widget display popup for a description card"),
-   "acl"		=>"FREEDOM_READ"
-  ),
-  array(
    "name"		=>"FREEDOM_LOGO",
    "acl"		=>"FREEDOM_READ"
   ),
@@ -495,5 +490,3 @@ $action_desc = array (
   ) ,
 
 );
-   
-?>

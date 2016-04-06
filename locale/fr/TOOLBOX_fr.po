@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-04-06 10:43+0200\n"
+"PO-Revision-Date: 2016-04-06 10:55+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -9144,9 +9144,6 @@ msgstr "Voir les réponses"
 
 msgid "welcome"
 msgstr "Bienvenue !"
-
-msgid "widget display popup for a description card"
-msgstr "widget popup pour affichage d'une carte"
 
 msgid "width of the abstract card"
 msgstr "largeur de la carte résumé (en px ou en %)"
