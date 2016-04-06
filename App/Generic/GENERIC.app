@@ -81,11 +81,6 @@ $action_desc = array(
         "acl" => "GENERIC"
     ),
     array(
-        "name" => "GENERIC_ADDCATG",
-        "short_name" => N_("add category"),
-        "acl" => "GENERIC"
-    ),
-    array(
         "name" => "GENERIC_PREFS",
         "short_name" => N_("edit family preference"),
         "acl" => "GENERIC_READ"
