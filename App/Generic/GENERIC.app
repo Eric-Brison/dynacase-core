@@ -96,11 +96,6 @@ $action_desc = array(
         "acl" => "GENERIC"
     ),
     array(
-        "name" => "GENERIC_VCARD",
-        "short_name" => N_("view as vcard"),
-        "acl" => "GENERIC_READ"
-    ),
-    array(
         "name" => "GENERIC_LOGO",
         "short_name" => N_("display logo"),
         "acl" => "GENERIC_READ"
@@ -156,4 +151,3 @@ $action_desc = array(
     )
 );
 
-?>
