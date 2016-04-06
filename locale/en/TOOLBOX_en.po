@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-04-06 11:16+0200\n"
+"PO-Revision-Date: 2016-04-06 12:04+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
 "Language: English\n"
@@ -505,9 +505,6 @@ msgid "Add new entry"
 msgstr ""
 
 msgid "Add new enum choice: "
-msgstr ""
-
-msgid "Add or modify item's category"
 msgstr ""
 
 msgid "Add postit"
@@ -3008,10 +3005,6 @@ msgstr ""
 msgid "Modification date"
 msgstr ""
 
-#, php-format
-msgid "Modification for attribute %s for family %s"
-msgstr ""
-
 msgid "Modify"
 msgstr ""
 
@@ -5213,9 +5206,6 @@ msgstr ""
 msgid "change application tag to '%s'"
 msgstr ""
 
-msgid "change category"
-msgstr ""
-
 msgid "change creation profile"
 msgstr ""
 
@@ -5230,9 +5220,6 @@ msgid "change icon document"
 msgstr ""
 
 msgid "change icon of document"
-msgstr ""
-
-msgid "change king in enum attribute"
 msgstr ""
 
 #, php-format
@@ -5300,9 +5287,6 @@ msgid "chgstates"
 msgstr "Steps"
 
 msgid "choose action from batch document"
-msgstr ""
-
-msgid "choose for edit enum attribute"
 msgstr ""
 
 #, php-format
@@ -5674,10 +5658,6 @@ msgstr ""
 msgid "define sort attribute"
 msgstr ""
 
-#, php-format
-msgid "definition of enumerate attribute %s of %s family"
-msgstr ""
-
 msgid "defval New value"
 msgstr ""
 
@@ -6000,12 +5980,6 @@ msgstr ""
 msgid "edit to add category"
 msgstr ""
 
-msgid "edit to add or modify category"
-msgstr ""
-
-msgid "edit to change category"
-msgstr ""
-
 msgid "edition"
 msgstr ""
 
@@ -6032,9 +6006,6 @@ msgid "emailing"
 msgstr ""
 
 msgid "enavpreview"
-msgstr ""
-
-msgid "enum attribute list"
 msgstr ""
 
 msgid "enumerate input not found"
@@ -6653,9 +6624,6 @@ msgstr ""
 msgid "interface to choose column export documents"
 msgstr ""
 
-msgid "interface to edit enum attribute"
-msgstr ""
-
 msgid "interface to export documents"
 msgstr ""
 
@@ -6916,10 +6884,6 @@ msgid "modify enum items"
 msgstr ""
 
 msgid "modify enum items definition"
-msgstr ""
-
-#, php-format
-msgid "modify enumerate attributes for family : %s"
 msgstr ""
 
 msgid "modify family help"

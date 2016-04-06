@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-04-06 11:16+0200\n"
+"PO-Revision-Date: 2016-04-06 12:04+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -511,9 +511,6 @@ msgstr "Ajouter la nouvelle entrée"
 
 msgid "Add new enum choice: "
 msgstr "Ajouter une nouvelle entrée: "
-
-msgid "Add or modify item's category"
-msgstr "Ajouter uo modifier des valeurs de catégorie"
 
 msgid "Add postit"
 msgstr "Ajouter un post-it"
@@ -3152,10 +3149,6 @@ msgstr "Valeur non-trouvée pour 'autocompletion.%s'."
 msgid "Modification date"
 msgstr "Date de dernière modification"
 
-#, php-format
-msgid "Modification for attribute %s for family %s"
-msgstr "Modification de l'attribut %s de la famille %s"
-
 msgid "Modify"
 msgstr "Modifier"
 
@@ -5435,9 +5428,6 @@ msgstr "modification %s"
 msgid "change application tag to '%s'"
 msgstr "change la balise applicative  à '%s'"
 
-msgid "change category"
-msgstr "changer de catégorie"
-
 msgid "change creation profile"
 msgstr "changer de profil par défaut"
 
@@ -5453,9 +5443,6 @@ msgstr "changer l'icone du document"
 
 msgid "change icon of document"
 msgstr "changer l'icone du document"
-
-msgid "change king in enum attribute"
-msgstr "changer la catégorie d'un attribut énuméré"
 
 #, php-format
 msgid "change methods to '%s'"
@@ -5523,9 +5510,6 @@ msgstr "Étapes"
 
 msgid "choose action from batch document"
 msgstr "choix d'une action à partir d'un traitement"
-
-msgid "choose for edit enum attribute"
-msgstr "choix pour editer les attributs énumérés"
 
 #, php-format
 msgid "choose inputs for %s"
@@ -5898,10 +5882,6 @@ msgstr "visibilité par défaut"
 msgid "define sort attribute"
 msgstr "Définir les attributs de tri"
 
-#, php-format
-msgid "definition of enumerate attribute %s of %s family"
-msgstr "définition de l'attribut énuméré %s de la famille %s"
-
 msgid "defval New value"
 msgstr "Nouvelle valeur"
 
@@ -6224,12 +6204,6 @@ msgstr "Édition état"
 msgid "edit to add category"
 msgstr "éditer pour l'ajout de catégorie"
 
-msgid "edit to add or modify category"
-msgstr "éditer pour l'ajout ou modification de catégorie"
-
-msgid "edit to change category"
-msgstr "édition pour changer de catégorie"
-
 msgid "edition"
 msgstr "édition"
 
@@ -6257,9 +6231,6 @@ msgstr "publipostage"
 
 msgid "enavpreview"
 msgstr "publi-pévisualisation"
-
-msgid "enum attribute list"
-msgstr "liste des attributs énumérés"
 
 msgid "enumerate input not found"
 msgstr "entrée énumérée non trouvé"
@@ -6892,9 +6863,6 @@ msgstr "Interface pour le changement d'état"
 msgid "interface to choose column export documents"
 msgstr "Interface pour choisir les colonnes d'exportation"
 
-msgid "interface to edit enum attribute"
-msgstr "interface pour modifier les attributs énumérés"
-
 msgid "interface to export documents"
 msgstr "interface pour exporter des documents"
 
@@ -7156,10 +7124,6 @@ msgstr "modifier les énumérés"
 
 msgid "modify enum items definition"
 msgstr "modification des énumérés"
-
-#, php-format
-msgid "modify enumerate attributes for family : %s"
-msgstr "Modification des attributs énumérés de la famille : %s"
 
 msgid "modify family help"
 msgstr "Modifier l'aide"

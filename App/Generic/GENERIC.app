@@ -91,38 +91,8 @@ $action_desc = array(
         "acl" => "GENERIC_READ"
     ),
     array(
-        "name" => "GENERIC_MODKIND",
-        "short_name" => N_("change king in enum attribute"),
-        "acl" => "GENERIC_MASTER"
-    ),
-    array(
-        "name" => "GENERIC_CHOOSEENUMATTR",
-        "short_name" => N_("choose for edit enum attribute"),
-        "acl" => "GENERIC_MASTER"
-    ),
-    array(
-        "name" => "GENERIC_EDITFAMCATG",
-        "short_name" => N_("interface to edit enum attribute"),
-        "acl" => "GENERIC_MASTER"
-    ),
-    array(
         "name" => "GENERIC_EDITNEWCATG",
         "short_name" => N_("edit to add category"),
-        "acl" => "GENERIC"
-    ),
-    array(
-        "name" => "GENERIC_EDITCATG",
-        "short_name" => N_("edit to add or modify category"),
-        "acl" => "GENERIC_MASTER"
-    ),
-    array(
-        "name" => "GENERIC_EDITCHANGECATG",
-        "short_name" => N_("edit to change category"),
-        "acl" => "GENERIC"
-    ),
-    array(
-        "name" => "GENERIC_CHANGECATG",
-        "short_name" => N_("change category"),
         "acl" => "GENERIC"
     ),
     array(
