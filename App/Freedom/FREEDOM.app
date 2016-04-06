@@ -367,10 +367,6 @@ $action_desc = array (
    "acl"		=>"FREEDOM"
   ) ,
   array(
-   "name"               =>"GENCSS",
-   "layout"		=>"freedom.css"
-  ),
-  array(
    "name"		=>"FREEDOM_EDIT",
    "short_name"		=>N_("edit document properties"),
    "acl"		=>"FREEDOM"
@@ -394,11 +390,6 @@ $action_desc = array (
    "name"		=>"HISTO",
    "short_name"		=>N_("view history revision"),
    "acl"		=>"FREEDOM_HISTO"
-  ),
-  array(
-   "name"		=>"GENCSS",
-   "short_name"		=>N_("style sheet"),
-   "acl"		=>"FREEDOM_READ"
   ),
   array(
    "name"		=>"POPUPCARD",
