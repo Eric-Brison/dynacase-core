@@ -56,11 +56,6 @@ $action_desc = array(
         "root" => "Y"
     ),
     array(
-        "name" => "GENERIC_ROOTV",
-        "short_name" => N_("generic vertical home page"),
-        "acl" => "GENERIC_READ"
-    ),
-    array(
         "name" => "GENERIC_EDIT",
         "short_name" => N_("edition"),
         "acl" => "GENERIC"
