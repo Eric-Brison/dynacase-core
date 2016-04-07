@@ -179,11 +179,6 @@ $action_desc = array (
    "acl"		=>"FREEDOM_MASTER"
   ) ,
   array( 
-   "name"		=>"FREEDOM_PREVIEW",
-   "short_name"		=>N_("Freedoms preview document"),
-   "acl"		=>"FREEDOM"
-  ) ,
-  array( 
    "name"		=>"POPUP",
    "short_name"		=>N_("popup menu"),
    "acl"		=>"FREEDOM_READ",
@@ -367,19 +362,10 @@ $action_desc = array (
    "acl"		=>"FREEDOM_READ"
   ) ,
   array( 
-   "name"		=>"EDIT_SEARCH",
-   "short_name"		=>N_("search document criteria"),
-   "acl"		=>"FREEDOM_READ"
-  ) ,
-  array( 
    "name"		=>"QUERYFILE",
    "short_name"		=>N_("ask for a new file revision"),
    "acl"		=>"FREEDOM"
   ) ,
-  array(
-   "name"               =>"GENCSS",
-   "layout"		=>"freedom.css"
-  ),
   array(
    "name"		=>"FREEDOM_EDIT",
    "short_name"		=>N_("edit document properties"),
@@ -406,16 +392,6 @@ $action_desc = array (
    "acl"		=>"FREEDOM_HISTO"
   ),
   array(
-   "name"		=>"GENCSS",
-   "short_name"		=>N_("style sheet"),
-   "acl"		=>"FREEDOM_READ"
-  ),
-  array(
-   "name"		=>"POPUPCARD",
-   "short_name"		=>N_("widget display popup for a description card"),
-   "acl"		=>"FREEDOM_READ"
-  ),
-  array(
    "name"		=>"FREEDOM_LOGO",
    "acl"		=>"FREEDOM_READ"
   ),
@@ -424,24 +400,10 @@ $action_desc = array (
    "short_name"		=>N_("Freedom modification"),
    "acl"		=>"FREEDOM"
   ),
- array(
-   "name"		=>"VIEWICARD",
-   "short_name"		=>N_("view idoc attribute card"),
-   "acl"		=>"FREEDOM"
-  ),
   array(
    "name"		=>"FREEDOM_DEL",
    "short_name"		=>N_("Freedom deletion"),
    "acl"		=>"FREEDOM"
-  ),
-  array(
-   "name"		=>"FREEDOM_UPDATETITLE",
-   "short_name"		=>N_("Freedom update title fields"),
-   "acl"		=>"FREEDOM_MASTER",
-   "function"           =>"freedom_updatetitle",
-   "layout"		=>"freedom_admin.xml",
-   "script"		=>"freedom_admin.php"
-	
   ),
   array(
    "name"		=>"FREEDOM_ACCESS",
@@ -456,11 +418,6 @@ $action_desc = array (
   array(
    "name"		=>"FREEDOM_MODACCESS",
    "short_name"		=>N_("Freedom modify accessibilities"),
-   "acl"		=>"FREEDOM"	
-  ),
-  array(
-   "name"		=>"FREEDOM_INIT",
-   "short_name"		=>N_("Freedom initialisation"),
    "acl"		=>"FREEDOM"	
   ),
   array( 
@@ -533,5 +490,3 @@ $action_desc = array (
   ) ,
 
 );
-   
-?>

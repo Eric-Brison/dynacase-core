@@ -146,11 +146,6 @@ $action_desc = array(
         "acl" => "NORMAL"
     ),
     array(
-        "name" => "ALLEDITCSS",
-        "short_name" => N_("All css in one for edition"),
-        "acl" => "NORMAL"
-    ),
-    array(
         "name" => "ALLVIEWJS",
         "short_name" => N_("All js in one for consultation"),
         "acl" => "NORMAL"
@@ -167,21 +162,10 @@ $action_desc = array(
         "layout" => "editcommon.js"
     ),
     array(
-        "name" => "EDITIJS",
-        "script" => "cacheone.php",
-        "function" => "cacheone",
-        "layout" => "editidoc.js"
-    ),
-    array(
         "name" => "ENUMCHOICEJS",
         "script" => "cacheone.php",
         "function" => "cacheone",
         "layout" => "enum_choice.js"
-    ),
-    array(
-        "name" => "FREEDOM_INIT",
-        "short_name" => N_("Freedom initialisation"),
-        "acl" => "NORMAL"
     ),
     array(
         "name" => "POPUPDOCDETAIL",
@@ -353,11 +337,6 @@ $action_desc = array(
         "acl" => "NORMAL"
     ),
     array(
-        "name" => "VCONSTRAINT",
-        "short_name" => N_("verify constraint attribute"),
-        "acl" => "NORMAL"
-    ),
-    array(
         "name" => "EDITCHANGESTATE",
         "short_name" => N_("interface to change state"),
         "acl" => "NORMAL"
@@ -507,4 +486,3 @@ $action_desc = array(
 
 );
 
-?>

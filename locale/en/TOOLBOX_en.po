@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-03-23 14:14+0100\n"
+"PO-Revision-Date: 2016-04-06 14:10+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
 "Language: English\n"
@@ -507,9 +507,6 @@ msgstr ""
 msgid "Add new enum choice: "
 msgstr ""
 
-msgid "Add or modify item's category"
-msgstr ""
-
 msgid "Add postit"
 msgstr ""
 
@@ -567,9 +564,6 @@ msgstr ""
 
 msgid "All css in one for consultation"
 msgstr "Concatenate all CSS for consultation"
-
-msgid "All css in one for edition"
-msgstr "Concatenate all CSS for edition"
 
 msgid "All js in one for consultation"
 msgstr "Concatenate all JS scripts for consultation"
@@ -2461,9 +2455,6 @@ msgstr "Modify document"
 msgid "Freedom modify accessibilities"
 msgstr "Modify rights"
 
-msgid "Freedom update title fields"
-msgstr "Update title field"
-
 msgid "Freedoms RSS syndication"
 msgstr "Dynacase RSS"
 
@@ -2487,9 +2478,6 @@ msgstr "List"
 
 msgid "Freedoms list by column"
 msgstr ""
-
-msgid "Freedoms preview document"
-msgstr "Document preview"
 
 msgid "Freedoms view folder"
 msgstr "View as folder"
@@ -3015,10 +3003,6 @@ msgid "Missing value for 'autocompletion.%s'."
 msgstr ""
 
 msgid "Modification date"
-msgstr ""
-
-#, php-format
-msgid "Modification for attribute %s for family %s"
 msgstr ""
 
 msgid "Modify"
@@ -4644,9 +4628,6 @@ msgstr ""
 msgid "add batch document"
 msgstr ""
 
-msgid "add category"
-msgstr ""
-
 msgid "add column"
 msgstr ""
 
@@ -5225,9 +5206,6 @@ msgstr ""
 msgid "change application tag to '%s'"
 msgstr ""
 
-msgid "change category"
-msgstr ""
-
 msgid "change creation profile"
 msgstr ""
 
@@ -5242,9 +5220,6 @@ msgid "change icon document"
 msgstr ""
 
 msgid "change icon of document"
-msgstr ""
-
-msgid "change king in enum attribute"
 msgstr ""
 
 #, php-format
@@ -5312,9 +5287,6 @@ msgid "chgstates"
 msgstr "Steps"
 
 msgid "choose action from batch document"
-msgstr ""
-
-msgid "choose for edit enum attribute"
 msgstr ""
 
 #, php-format
@@ -5686,10 +5658,6 @@ msgstr ""
 msgid "define sort attribute"
 msgstr ""
 
-#, php-format
-msgid "definition of enumerate attribute %s of %s family"
-msgstr ""
-
 msgid "defval New value"
 msgstr ""
 
@@ -6012,12 +5980,6 @@ msgstr ""
 msgid "edit to add category"
 msgstr ""
 
-msgid "edit to add or modify category"
-msgstr ""
-
-msgid "edit to change category"
-msgstr ""
-
 msgid "edition"
 msgstr ""
 
@@ -6044,9 +6006,6 @@ msgid "emailing"
 msgstr ""
 
 msgid "enavpreview"
-msgstr ""
-
-msgid "enum attribute list"
 msgstr ""
 
 msgid "enumerate input not found"
@@ -6411,9 +6370,6 @@ msgstr ""
 msgid "generic home page"
 msgstr ""
 
-msgid "generic vertical home page"
-msgstr ""
-
 msgid "geometry of mini view"
 msgstr ""
 
@@ -6641,9 +6597,6 @@ msgstr ""
 msgid "initial reference"
 msgstr ""
 
-msgid "initialisation"
-msgstr ""
-
 msgid "input color bg"
 msgstr ""
 
@@ -6663,9 +6616,6 @@ msgid "interface to change state"
 msgstr ""
 
 msgid "interface to choose column export documents"
-msgstr ""
-
-msgid "interface to edit enum attribute"
 msgstr ""
 
 msgid "interface to export documents"
@@ -6850,9 +6800,6 @@ msgstr ""
 msgid "memorisation of pref search"
 msgstr ""
 
-msgid "memorisation of split mode"
-msgstr ""
-
 msgid "memory max for PHP in Mo"
 msgstr ""
 
@@ -6928,10 +6875,6 @@ msgid "modify enum items"
 msgstr ""
 
 msgid "modify enum items definition"
-msgstr ""
-
-#, php-format
-msgid "modify enumerate attributes for family : %s"
 msgstr ""
 
 msgid "modify family help"
@@ -7942,9 +7885,6 @@ msgstr ""
 msgid "search document"
 msgstr ""
 
-msgid "search document criteria"
-msgstr ""
-
 msgid "search document to insert in a folder"
 msgstr ""
 
@@ -8172,9 +8112,6 @@ msgid "stop on sql error"
 msgstr ""
 
 msgid "string limit for popup enum"
-msgstr ""
-
-msgid "style sheet"
 msgstr ""
 
 msgid "submitreqpasswd_form_multiplemail"
@@ -8756,9 +8693,6 @@ msgstr ""
 msgid "vconstraint input not found id="
 msgstr ""
 
-msgid "verify constraint attribute"
-msgstr ""
-
 msgid "verify files status"
 msgstr ""
 
@@ -8776,9 +8710,6 @@ msgstr ""
 msgid "view"
 msgstr ""
 
-msgid "view a generic"
-msgstr ""
-
 msgid "view a part of list"
 msgstr ""
 
@@ -8794,9 +8725,6 @@ msgstr ""
 
 #. _COMMENT Sharp Label
 msgid "view answers"
-msgstr ""
-
-msgid "view as vcard"
 msgstr ""
 
 msgid "view card"
@@ -8899,9 +8827,6 @@ msgstr ""
 
 msgid "welcome"
 msgstr "Welcome !"
-
-msgid "widget display popup for a description card"
-msgstr ""
 
 msgid "width of the abstract card"
 msgstr ""

@@ -2531,45 +2531,6 @@ function submitinputs(faction, itarget) {
 }
 
 
-function vconstraint(cButton,famid,attrid) {
-  var inp  = cButton.previousSibling;
-  var index='';
-
-  var domindex=''; // needed to set values in arrays
-  // search the input button in previous element
-
-  var inid;
-  var wf;
-    var pWindow=getParentWindow();
-
-
-  inid= cButton.id.substr(3);
-  inp=document.getElementById(inid);
-
-  if ((! inp)||(inp==null)) {
-    alert('[TEXT:vconstraint input not found id=]'+inid);
-  }
-
-  if (inp.name.substr(inp.name.length-1,1) == ']') {
-    // it is an attribute in array
-      index=getRowNumber(cButton,'tarray');
-    domindex = inp.id.substring(attrid.length);
-  }
-
-
-  wf=submitinputs('[CORE_STANDURL]&app=FDL&action=VCONSTRAINT&famid='+famid+'&attrid='+attrid+'&index='+index+'&domindex='+domindex,'wchoose');
-  if (wf) {
-	  var xy= getAnchorWindowPosition(inp.id);
-	  if (isNaN(window.screenX)){
-		  xy.y+=15; // add supposed decoration height
-		  // add body left width for IE sometimes ...
-		  if (pWindow && pWindow.ffolder)  xy.x += pWindow.ffolder.document.body.clientWidth;
-	  }
-	  wf.moveTo(xy.x, xy.y+10);
-  }
-}
-
-
 function canceloption(said) {
   nfid=self.parent.document.getElementById('if_'+said);
   pdivopt=self.parent.document.getElementById('pdiv_'+said);

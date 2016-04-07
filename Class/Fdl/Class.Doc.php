@@ -6579,7 +6579,7 @@ create unique index i_docir on doc(initid, revision);";
             $fulltext_c = array();
             foreach ($na as $k => $v) {
                 $opt_searchcriteria = $v->getOption("searchcriteria", "");
-                if (($v->type != "array") && ($v->type != "frame") && ($v->type != "tab") && ($v->type != "idoc")) {
+                if (($v->type != "array") && ($v->type != "frame") && ($v->type != "tab")) {
                     // values += any attribute
                     if ($v->docid == $famId) {
                         $tvalues[] = array(
@@ -8281,18 +8281,10 @@ create unique index i_docir on doc(initid, revision);";
                 }
                 // Set the table value elements
                 if (($iattr <= $nattr) && ($this->getRawValue($i) != "")) {
-                    $attrtype_idoc = false;
                     $attrtype_list = false;
                     
                     if (strstr($listattr[$i]->type, "textlist") != false) {
                         $attrtype_list = true;
-                    }
-                    if ((strstr($listattr[$i]->type, "idoclist")) != false) {
-                        $attrtype_list = true;
-                        $attrtype_idoc = true;
-                    }
-                    if ((strstr($listattr[$i]->type, "idoc")) != false) {
-                        $attrtype_idoc = true;
                     }
                     if ($listattr[$i]->inArray()) {
                         $attrtype_list = true;
@@ -8306,13 +8298,8 @@ create unique index i_docir on doc(initid, revision);";
                         while ($text = each($textlist)) {
                             $currentFrameId = $listattr[$i]->fieldSet->id;
                             $tableframe[$v]["id"] = $listattr[$i]->id;
-                            if ($attrtype_idoc) {
-                                $tableframe[$v]["value"] = base64_decode($text[1]);
-                                $tableframe[$v]["type"] = "idoc";
-                            } else {
-                                $tableframe[$v]["value"] = $text[1];
-                                $tableframe[$v]["type"] = base64_encode($listattr[$i]->type);
-                            }
+                            $tableframe[$v]["value"] = $text[1];
+                            $tableframe[$v]["type"] = base64_encode($listattr[$i]->type);
                             $tableframe[$v]["labelText"] = (str_replace(array(
                                 "%",
                                 "\""
@@ -8326,17 +8313,9 @@ create unique index i_docir on doc(initid, revision);";
                             $v++;
                         }
                     } else {
-                        
-                        if ($attrtype_idoc) {
-                            $value = base64_decode($this->getRawValue($i));
-                            $tableframe[$v]["type"] = "idoc";
-                            //printf($value);
-                            
-                        } else {
-                            $value = htmlspecialchars($this->getRawValue($i));
-                            $tableframe[$v]["type"] = base64_encode($listattr[$i]->type);
-                        }
-                        
+                        $value = htmlspecialchars($this->getRawValue($i));
+                        $tableframe[$v]["type"] = base64_encode($listattr[$i]->type);
+
                         $currentFrameId = $listattr[$i]->fieldSet->id;
                         $tableframe[$v]["id"] = $listattr[$i]->id;
                         $tableframe[$v]["value"] = $value;

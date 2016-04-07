@@ -56,11 +56,6 @@ $action_desc = array(
         "root" => "Y"
     ),
     array(
-        "name" => "GENERIC_ROOTV",
-        "short_name" => N_("generic vertical home page"),
-        "acl" => "GENERIC_READ"
-    ),
-    array(
         "name" => "GENERIC_EDIT",
         "short_name" => N_("edition"),
         "acl" => "GENERIC"
@@ -81,11 +76,6 @@ $action_desc = array(
         "acl" => "GENERIC"
     ),
     array(
-        "name" => "GENERIC_ADDCATG",
-        "short_name" => N_("add category"),
-        "acl" => "GENERIC"
-    ),
-    array(
         "name" => "GENERIC_PREFS",
         "short_name" => N_("edit family preference"),
         "acl" => "GENERIC_READ"
@@ -96,49 +86,14 @@ $action_desc = array(
         "acl" => "GENERIC_READ"
     ),
     array(
-        "name" => "GENERIC_MODKIND",
-        "short_name" => N_("change king in enum attribute"),
-        "acl" => "GENERIC_MASTER"
-    ),
-    array(
-        "name" => "GENERIC_CHOOSEENUMATTR",
-        "short_name" => N_("choose for edit enum attribute"),
-        "acl" => "GENERIC_MASTER"
-    ),
-    array(
-        "name" => "GENERIC_EDITFAMCATG",
-        "short_name" => N_("interface to edit enum attribute"),
-        "acl" => "GENERIC_MASTER"
-    ),
-    array(
         "name" => "GENERIC_EDITNEWCATG",
         "short_name" => N_("edit to add category"),
-        "acl" => "GENERIC"
-    ),
-    array(
-        "name" => "GENERIC_EDITCATG",
-        "short_name" => N_("edit to add or modify category"),
-        "acl" => "GENERIC_MASTER"
-    ),
-    array(
-        "name" => "GENERIC_EDITCHANGECATG",
-        "short_name" => N_("edit to change category"),
-        "acl" => "GENERIC"
-    ),
-    array(
-        "name" => "GENERIC_CHANGECATG",
-        "short_name" => N_("change category"),
         "acl" => "GENERIC"
     ),
     array(
         "name" => "GENERIC_MOD",
         "short_name" => N_("modification or creation"),
         "acl" => "GENERIC"
-    ),
-    array(
-        "name" => "GENERIC_VCARD",
-        "short_name" => N_("view as vcard"),
-        "acl" => "GENERIC_READ"
     ),
     array(
         "name" => "GENERIC_LOGO",
@@ -156,11 +111,6 @@ $action_desc = array(
         "acl" => "GENERIC_READ"
     ),
     array(
-        "name" => "GENERIC_CARD",
-        "short_name" => N_("view a generic"),
-        "acl" => "GENERIC_READ"
-    ),
-    array(
         "name" => "GENERIC_EDITIMPORT",
         "short_name" => N_("edit import vcard"),
         "acl" => "GENERIC_MASTER"
@@ -170,14 +120,6 @@ $action_desc = array(
         "short_name" => N_("view a part of list"),
         "acl" => "GENERIC_READ",
         "layout" => "generic_list.xml"
-    ),
-    array(
-        "name" => "GENERIC_TABV",
-        "short_name" => N_("view a part of list"),
-        "acl" => "GENERIC_READ",
-        "script" => "generic_tab.php",
-        "function" => "generic_tabv",
-        "layout" => "generic_listv.xml"
     ),
     array(
         "name" => "GENERIC_IMPORTCSV",
@@ -196,16 +138,6 @@ $action_desc = array(
         "acl" => "GENERIC_READ"
     ),
     array(
-        "name" => "GENERIC_INIT",
-        "short_name" => N_("initialisation"),
-        "acl" => "GENERIC"
-    ),
-    array(
-        "name" => "GENERIC_MEMOSPLIT",
-        "short_name" => N_("memorisation of split mode"),
-        "acl" => "GENERIC"
-    ),
-    array(
         "name" => "GENERIC_MEMOSEARCH",
         "short_name" => N_("memorisation of pref search"),
         "acl" => "GENERIC",
@@ -219,4 +151,3 @@ $action_desc = array(
     )
 );
 
-?>

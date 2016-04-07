@@ -47,16 +47,10 @@ function viewcard(Action & $action)
     /*
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/WHAT/Layout/AnchorPosition.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
-    // $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/idoc.js");
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/common.js");
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDC/Layout/setparamu.js");
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDC/Layout/inserthtml.js");
     */
-    //pour les idocs
-    $jsfile = $action->GetLayoutFile("viewicard.js");
-    $jslay = new Layout($jsfile, $action);
-    $action->parent->AddJsCode($jslay->gen());
-    
     $baseurl = $action->GetParam("CORE_BASEURL");
     $standurl = $action->GetParam("CORE_STANDURL");
     $dbaccess = $action->dbaccess;

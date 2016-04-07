@@ -35,14 +35,6 @@
       onload="autoVresize();" >
 
 
-<form id="fviewidoc"
-      name="fviewidoc"
-      style="display:inline"
-      method="POST" ENCTYPE="multipart/form-data"
-      action="[CORE_STANDURL]&app=FREEDOM&action=VIEWICARD"      >
-<input type="hidden" name="xml">
-<input type="hidden" name="famid">
-</form>
 
 [ZONE FDL:POPUPDOCMENU?id=[id]]
 

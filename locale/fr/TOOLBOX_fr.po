@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-03-23 14:14+0100\n"
+"PO-Revision-Date: 2016-04-06 14:10+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -512,9 +512,6 @@ msgstr "Ajouter la nouvelle entrée"
 msgid "Add new enum choice: "
 msgstr "Ajouter une nouvelle entrée: "
 
-msgid "Add or modify item's category"
-msgstr "Ajouter uo modifier des valeurs de catégorie"
-
 msgid "Add postit"
 msgstr "Ajouter un post-it"
 
@@ -572,9 +569,6 @@ msgstr "Tout insérer dans le porte-documents"
 
 msgid "All css in one for consultation"
 msgstr "Concatène toutes les CSS pour la consultation"
-
-msgid "All css in one for edition"
-msgstr "Concatène toutes les CSS pour l'édition"
 
 msgid "All js in one for consultation"
 msgstr "Concatène tous les scripts JS pour la consultation"
@@ -2584,9 +2578,6 @@ msgstr "Modification de documents"
 msgid "Freedom modify accessibilities"
 msgstr "Modification des Droits"
 
-msgid "Freedom update title fields"
-msgstr "mise à jour des champs titre"
-
 msgid "Freedoms RSS syndication"
 msgstr "RSS Dynacase"
 
@@ -2610,9 +2601,6 @@ msgstr "liste dynacase"
 
 msgid "Freedoms list by column"
 msgstr "liste dynacase par colonne"
-
-msgid "Freedoms preview document"
-msgstr "prévisualisation de document"
 
 msgid "Freedoms view folder"
 msgstr "visualisation de contenu de dossier"
@@ -3160,10 +3148,6 @@ msgstr "Valeur non-trouvée pour 'autocompletion.%s'."
 
 msgid "Modification date"
 msgstr "Date de dernière modification"
-
-#, php-format
-msgid "Modification for attribute %s for family %s"
-msgstr "Modification de l'attribut %s de la famille %s"
 
 msgid "Modify"
 msgstr "Modifier"
@@ -4847,9 +4831,6 @@ msgstr "ajout droit %s "
 msgid "add batch document"
 msgstr "Ajout d'un document lot"
 
-msgid "add category"
-msgstr "ajout de catégorie"
-
 msgid "add column"
 msgstr "ajout de colonnes"
 
@@ -5447,9 +5428,6 @@ msgstr "modification %s"
 msgid "change application tag to '%s'"
 msgstr "change la balise applicative  à '%s'"
 
-msgid "change category"
-msgstr "changer de catégorie"
-
 msgid "change creation profile"
 msgstr "changer de profil par défaut"
 
@@ -5465,9 +5443,6 @@ msgstr "changer l'icone du document"
 
 msgid "change icon of document"
 msgstr "changer l'icone du document"
-
-msgid "change king in enum attribute"
-msgstr "changer la catégorie d'un attribut énuméré"
 
 #, php-format
 msgid "change methods to '%s'"
@@ -5535,9 +5510,6 @@ msgstr "Étapes"
 
 msgid "choose action from batch document"
 msgstr "choix d'une action à partir d'un traitement"
-
-msgid "choose for edit enum attribute"
-msgstr "choix pour editer les attributs énumérés"
 
 #, php-format
 msgid "choose inputs for %s"
@@ -5910,10 +5882,6 @@ msgstr "visibilité par défaut"
 msgid "define sort attribute"
 msgstr "Définir les attributs de tri"
 
-#, php-format
-msgid "definition of enumerate attribute %s of %s family"
-msgstr "définition de l'attribut énuméré %s de la famille %s"
-
 msgid "defval New value"
 msgstr "Nouvelle valeur"
 
@@ -6236,12 +6204,6 @@ msgstr "Édition état"
 msgid "edit to add category"
 msgstr "éditer pour l'ajout de catégorie"
 
-msgid "edit to add or modify category"
-msgstr "éditer pour l'ajout ou modification de catégorie"
-
-msgid "edit to change category"
-msgstr "édition pour changer de catégorie"
-
 msgid "edition"
 msgstr "édition"
 
@@ -6269,9 +6231,6 @@ msgstr "publipostage"
 
 msgid "enavpreview"
 msgstr "publi-pévisualisation"
-
-msgid "enum attribute list"
-msgstr "liste des attributs énumérés"
 
 msgid "enumerate input not found"
 msgstr "entrée énumérée non trouvé"
@@ -6646,9 +6605,6 @@ msgstr "Gestion générique"
 msgid "generic home page"
 msgstr "page d'accueil générique"
 
-msgid "generic vertical home page"
-msgstr "page d'accueil découpage vertical"
-
 msgid "geometry of mini view"
 msgstr "géométrie de la mini vue       "
 
@@ -6880,9 +6836,6 @@ msgstr "initialisation des attributs profil"
 msgid "initial reference"
 msgstr "référence initiale"
 
-msgid "initialisation"
-msgstr "initialisation"
-
 msgid "input color bg"
 msgstr "couleur des champs de saisie"
 
@@ -6903,9 +6856,6 @@ msgstr "Interface pour le changement d'état"
 
 msgid "interface to choose column export documents"
 msgstr "Interface pour choisir les colonnes d'exportation"
-
-msgid "interface to edit enum attribute"
-msgstr "interface pour modifier les attributs énumérés"
 
 msgid "interface to export documents"
 msgstr "interface pour exporter des documents"
@@ -7089,9 +7039,6 @@ msgstr "Enlever le document"
 msgid "memorisation of pref search"
 msgstr "mémorisation de la recherche"
 
-msgid "memorisation of split mode"
-msgstr "mémorisation du mode de découpage de la fenêtre"
-
 msgid "memory max for PHP in Mo"
 msgstr "mémoire maximum pour PHP en Mo"
 
@@ -7168,10 +7115,6 @@ msgstr "modifier les énumérés"
 
 msgid "modify enum items definition"
 msgstr "modification des énumérés"
-
-#, php-format
-msgid "modify enumerate attributes for family : %s"
-msgstr "Modification des attributs énumérés de la famille : %s"
 
 msgid "modify family help"
 msgstr "Modifier l'aide"
@@ -8188,9 +8131,6 @@ msgstr "recherche contenant %s dans %s"
 msgid "search document"
 msgstr "Recherche de documents"
 
-msgid "search document criteria"
-msgstr "critères de recherche de document"
-
 msgid "search document to insert in a folder"
 msgstr "recherche de document pour l'insertion dans un dossier"
 
@@ -8419,9 +8359,6 @@ msgstr "Arrêt lors d'une erreur sql"
 
 msgid "string limit for popup enum"
 msgstr "taille maximum de chaines de caractère pour les choix"
-
-msgid "style sheet"
-msgstr "feuille de style"
 
 msgid "submitreqpasswd_form_multiplemail"
 msgstr ""
@@ -9018,9 +8955,6 @@ msgstr "fichier du coffre non initialisé"
 msgid "vconstraint input not found id="
 msgstr "entrée vconstraint non trouvé id="
 
-msgid "verify constraint attribute"
-msgstr "vérifie les contraintes d'attributs"
-
 msgid "verify files status"
 msgstr "Vérification status des fichiers"
 
@@ -9038,9 +8972,6 @@ msgstr "vid %s enregistré"
 msgid "view"
 msgstr "voir"
 
-msgid "view a generic"
-msgstr "voir une carte"
-
 msgid "view a part of list"
 msgstr "voir une partie d'une liste"
 
@@ -9057,9 +8988,6 @@ msgstr "voir l'alternance des couleurs dans les documents"
 #. _COMMENT Sharp Label
 msgid "view answers"
 msgstr "Voir les réponses"
-
-msgid "view as vcard"
-msgstr "voir au format Vcard"
 
 msgid "view card"
 msgstr "voir une carte"
@@ -9162,9 +9090,6 @@ msgstr "Voir les réponses"
 
 msgid "welcome"
 msgstr "Bienvenue !"
-
-msgid "widget display popup for a description card"
-msgstr "widget popup pour affichage d'une carte"
 
 msgid "width of the abstract card"
 msgstr "largeur de la carte résumé (en px ou en %)"

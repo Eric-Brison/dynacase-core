@@ -40,11 +40,6 @@ $action_desc = array(
         "root" => "Y"
     ),
     array(
-        "name" => "LOGO",
-        "layout" => "logo.xml",
-        "root" => "N"
-    ),
-    array(
         "name" => "INVALID",
         "desc" => N_("Message to indicate invalid configuration")
     ),

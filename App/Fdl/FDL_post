@@ -98,8 +98,6 @@ if [ "$1" = "I" ] ; then
     #fi
     #$wpub/wsh.php --api=vault_init
     
-    # $wpub/wsh.php --app=FDL --action=FREEDOM_INIT  
-    # psql $dbfreename anakeen -f $wpub/API/cleanContext.sql
 fi
 
 #------------------------------
