@@ -1,7 +1,6 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 /**
@@ -9,7 +8,6 @@
  *
  * @author Anakeen
  * @version $Id: viewarray.php,v 1.4 2007/09/27 12:23:40 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage
  */

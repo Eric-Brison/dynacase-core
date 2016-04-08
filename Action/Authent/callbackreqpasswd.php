@@ -2,7 +2,6 @@
 /*
  * Callback page when requesting a password re-initialization
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 function callbackreqpasswd(Action & $action)

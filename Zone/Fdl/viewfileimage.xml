@@ -2,7 +2,6 @@
 <script>
 /**
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 addEvent(window,'load', function () {
 var wf=new widgetFile({documentId:[docid],attributeId:'[attrid]',index:[index],mimeIcon:'[mimeicon]',vid:[vid],

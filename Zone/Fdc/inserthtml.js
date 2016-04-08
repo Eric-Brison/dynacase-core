@@ -1,7 +1,6 @@
 
 /**
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
 // $Id: inserthtml.js,v 1.14 2008/09/01 17:28:40 marc Exp $

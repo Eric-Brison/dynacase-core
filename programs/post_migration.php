@@ -2,7 +2,6 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 /**
@@ -10,7 +9,6 @@
  *
  * @author Anakeen
  * @version $Id:  $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  */
 $WIFF_ROOT = getenv("WIFF_ROOT");

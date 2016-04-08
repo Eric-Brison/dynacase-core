@@ -1,7 +1,6 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.gnu.org/licenses/lgpl-3.0.html GNU Lesser General Public License
  * @package FDL
 */
 

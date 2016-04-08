@@ -1,14 +1,12 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 /**
  * PHP Authentification control
  *
  * @author Anakeen
- * @license http://www.gnu.org/licenses/lgpl-3.0.html GNU Lesser General Public License
  * @package FDL
  * @subpackage CORE
  * @deprecated since HTTP Authentification

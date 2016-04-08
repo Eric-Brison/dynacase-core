@@ -1,14 +1,12 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 /**
  * Layout Class
  * @author Anakeen
  * @version $Id: Class.Layout.php,v 1.49 2009/01/14 14:48:14 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage CORE
  */
