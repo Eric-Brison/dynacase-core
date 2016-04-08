@@ -1,7 +1,6 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 /**
@@ -10,7 +9,6 @@
  * @param string $filename the file which contain new login or ACLs
  * @author Anakeen
  * @version $Id: refreshjsversion.php,v 1.2 2005/06/10 13:05:18 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage WSH
  */

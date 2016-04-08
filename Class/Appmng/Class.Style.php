@@ -1,7 +1,6 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 namespace {
@@ -10,7 +9,6 @@ namespace {
      *
      * @author Anakeen
      * @version $Id: Class.Style.php,v 1.5 2003/08/18 15:46:42 eric Exp $
-     * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
      * @package FDL
      * @subpackage CORE
      */

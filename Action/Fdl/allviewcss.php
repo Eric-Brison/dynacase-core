@@ -1,14 +1,12 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 /**
  * Edition to affect document
  *
  * @author Anakeen 2011
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 /**
  * All view css stylesheets in one single stylesheets

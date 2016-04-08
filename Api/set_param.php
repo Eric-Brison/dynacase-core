@@ -1,7 +1,6 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 /**
@@ -10,7 +9,6 @@
  * analyze sub-directories presents in STYLE directory
  * @author Anakeen
  * @version $Id: set_param.php,v 1.3 2006/04/28 14:31:49 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage WSH
  */

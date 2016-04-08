@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<module name="@PACKAGE@" version="@VERSION@" release="@RELEASE@" license="@LICENSE@" basecomponent="yes">
+<module name="@PACKAGE@" version="@VERSION@" release="@RELEASE@" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0" basecomponent="yes">
 
     <description lang="en">Hosting Application Toolkit dynacase core</description>
     <description lang="fr">Serveur d'application dynacase core</description>
