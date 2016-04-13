@@ -105,7 +105,6 @@ tr.FREEDOMBack2 td.opt {
 </td>
 <td class="und" align="left">
 		 <select class="modeperso" name="tpl!_se_ols[]"   >
-  <option selected  value="">[TEXT:OP_GLOB]</option>
   <option value="and">[TEXT:OP_AND]</option>
   <option value="or">[TEXT:OP_OR]</option>
   </select>
@@ -206,7 +205,6 @@ tr.FREEDOMBack2 td.opt {
   <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="FREEDOM/Images/bin.png"></td>
 	<td class="und">
 		 <select class="modeperso" name="_se_ols[]"   >
-  <option selected  value="">[TEXT:OP_GLOB]</option>
   <option [ols_and_selected]  value="and">[TEXT:OP_AND]</option>
   <option [ols_or_selected]  value="or">[TEXT:OP_OR]</option>
   </select>
