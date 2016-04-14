@@ -391,7 +391,7 @@ class DetailSearch extends \Dcp\Family\Search
     {
         
         if ((!$this->searchfam) || ($this->searchfam->id != $this->getRawValue("se_famid"))) {
-            $this->searchfam = new_doc($this->dbaccess, $this->getRawValue("se_famid"));
+            $this->searchfam = \new_Doc($this->dbaccess, $this->getRawValue("se_famid"));
         }
         $col = trim(strtok($col, ' ')); // a col is one word only (prevent injection)
         // because for historic reason revdate is not a date type
@@ -751,7 +751,7 @@ class DetailSearch extends \Dcp\Family\Search
         if ($ol == "") $ol = "and";
         $cond = "";
         if (!$this->searchfam) {
-            $this->searchfam = new_doc($this->dbaccess, $this->getRawValue("se_famid"));
+            $this->searchfam = \new_Doc($this->dbaccess, $this->getRawValue("se_famid"));
         }
         if ((count($taid) > 1) || (count($taid) > 0 && $taid[0] != "")) {
             // special loop for revdate
@@ -778,7 +778,7 @@ class DetailSearch extends \Dcp\Family\Search
                     else $tkey[$k] = $rv;
                 }
                 if ($taid[$k] == "revdate") {
-                    if (substr_count($tkey[$k],'/') === 2) {
+                    if (substr_count($tkey[$k], '/') === 2) {
                         list($dd, $mm, $yyyy) = explode("/", $tkey[$k]);
                         if ($yyyy > 0) $tkey[$k] = mktime(0, 0, 0, $mm, $dd, $yyyy);
                     }
@@ -794,8 +794,13 @@ class DetailSearch extends \Dcp\Family\Search
                     else $cond = $cond1 . " ";
                     if (isset($tlr[$k]) && $tlr[$k] == "yes") $cond.= ')';
                 } elseif ($cond1 != "") {
-                    if (isset($tols[$k]) && $tols[$k] != "") $ol1 = $tols[$k];
+                    if (isset($tols[$k]) && $tols[$k] != "" && $ol === "perso") $ol1 = $tols[$k];
                     else $ol1 = $ol;
+                    
+                    if ($ol1 === "perso") {
+                        // workaround if user set global as condition
+                        $ol1 = "and";
+                    }
                     if (isset($tlp[$k]) && $tlp[$k] == "yes") $cond.= $ol1 . ' (' . $cond1 . " ";
                     else $cond.= $ol1 . " " . $cond1 . " ";
                     if (isset($tlr[$k]) && $tlr[$k] == "yes") $cond.= ') ';
@@ -914,7 +919,7 @@ class DetailSearch extends \Dcp\Family\Search
         $tf = $this->getMultipleRawValues("SE_FUNCS");
         if ((count($taid) > 1) || (!empty($taid[0]))) {
             
-            $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
+            $fdoc = \new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
             $zpi = $fdoc->GetNormalAttributes();
             $zpi["state"] = new \BasicAttribute("state", $this->fromid, _("step"));
             $zpi["fixstate"] = new \BasicAttribute("fixstate", $this->fromid, _("state"));
@@ -992,7 +997,7 @@ class DetailSearch extends \Dcp\Family\Search
         $zpi = $toperator = array();
         if ((count($taid) > 1) || ($taid[0] != "")) {
             
-            $fdoc = new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
+            $fdoc = \new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
             $zpi = $fdoc->GetNormalAttributes();
             $zpi["state"] = new \BasicAttribute("state", $this->fromid, _("step"));
             $zpi["fixstate"] = new \BasicAttribute("state", $this->fromid, _("fixstate"));
@@ -1058,6 +1063,7 @@ class DetailSearch extends \Dcp\Family\Search
                 } else {
                     $aotxt = new \BasicAttribute($v, $doc->id, "eou");
                     if ($v == "revdate") $aotxt->type = "date";
+                    /** @noinspection PhpParamsInspection */
                     $tinputs[$k]["inputs"] = getHtmlInput($doc, $aotxt, getHttpVars($k));
                 }
             }
@@ -1100,7 +1106,7 @@ class DetailSearch extends \Dcp\Family\Search
             /**
              * @var \Dir $dir
              */
-            $dir = new_Doc($this->dbaccess, $dirid);
+            $dir = \new_Doc($this->dbaccess, $dirid);
             if (method_exists($dir, "isAuthorized")) {
                 if ($dir->isAuthorized($classid)) {
                     // verify if classid is possible
@@ -1129,7 +1135,7 @@ class DetailSearch extends \Dcp\Family\Search
         } else {
             if ($onlysubfam) {
                 if (!is_numeric($onlysubfam)) $onlysubfam = getFamIdFromName($this->dbaccess, $onlysubfam);
-                $cdoc = new_Doc($this->dbaccess, $onlysubfam);
+                $cdoc = \new_Doc($this->dbaccess, $onlysubfam);
                 $tsub = $cdoc->GetChildFam($cdoc->id, false);
                 $tclassdoc[$classid] = array(
                     "id" => $cdoc->id,
@@ -1239,8 +1245,8 @@ class DetailSearch extends \Dcp\Family\Search
             );
         }
         
-        $fdoc = new_Doc($this->dbaccess, abs($famid));
-        $tmpDoc = createTmpDoc($this->dbaccess, abs($famid));
+        $fdoc = \new_Doc($this->dbaccess, abs($famid));
+        $tmpDoc = \createTmpDoc($this->dbaccess, abs($famid));
         $zpi = $fdoc->GetNormalAttributes();
         
         foreach ($zpi as $k => $v) {
@@ -1302,7 +1308,7 @@ class DetailSearch extends \Dcp\Family\Search
         // display state
         $wdoc = null;
         if ($fdoc->wid > 0) {
-            $wdoc = new_Doc($this->dbaccess, $fdoc->wid);
+            $wdoc = \new_Doc($this->dbaccess, $fdoc->wid);
             /**
              * @var \Wdoc $wdoc
              */

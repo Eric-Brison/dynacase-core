@@ -132,7 +132,11 @@ declare
 begin
 
 NEW.values:='';
-NEW.svalues:='';
+if not NEW.title isnull then
+  NEW.svalues:=NEW.title;
+else
+  NEW.svalues:= '';
+end if;
 NEW.attrids:='';
 
   if (NEW.doctype = 'Z') and (NEW.name is not null) then
