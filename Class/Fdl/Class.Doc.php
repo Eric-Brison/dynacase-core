@@ -6047,6 +6047,10 @@ create unique index i_docir on doc(initid, revision);";
                                     $urllink.= $action->GetParam("CORE_STANDURL");
                                     break;
 
+                                case "U": // extern url
+                                    $urllink.= $action->GetParam("CORE_EXTERNURL");
+                                    break;
+
                                 case "I": // id
                                     $urllink.= $this->id;
                                     break;
