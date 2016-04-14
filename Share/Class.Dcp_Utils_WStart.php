@@ -118,7 +118,7 @@ class WStartInternals
             }
             $relSourceFile = $this->relativize($sourceDir . DIRECTORY_SEPARATOR . $file);
             $absSourceFile = $this->absolutize($relSourceFile);
-            if (!is_file($absSourceFile)) {
+            if (!is_file($absSourceFile) && !is_dir($absSourceFile)) {
                 continue;
             }
             $relTarget = '..' . DIRECTORY_SEPARATOR . $relSourceFile;
