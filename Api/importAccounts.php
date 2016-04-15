@@ -36,24 +36,73 @@ $import->setFile($filename);
 $import->setAnalyzeOnly($dry);
 $import->import();
 
-$report = $import->getReport();
-$out = '';
-$format = "| %20s | %20s | %30s | %20s |\n";
-$out = sprintf($format, "login", "action", "error", "message");
-$out.= "---------------------------------------------------------------------------------------------------\n";
-foreach ($report as $row) {
-    if ($row["error"]) {
-        $out.= chr(0x1b) . "[1;31m";
-    }
-    
-    $out.= sprintf($format, $row["login"], $row["action"], $row["error"], $row["message"]);
-    if ($row["error"]) {
-        $out.= chr(0x1b) . "[0;39m";
+$ext = substr($outfile, strrpos($outfile, '.') + 1);
+if ($outfile) {
+    $report = $import->getReport();
+    switch ($ext) {
+        case "json":
+            if ($outfile === "-.json") {
+                $outfile = "php://stdout";
+            }
+            file_put_contents($outfile, json_encode($report, JSON_PRETTY_PRINT));
+            break;
+
+        case "csv":
+            printCsv($report, $outfile);
+            break;
+
+        default:
+            printText($report, $outfile);
+            break;
     }
 }
-if ($outfile) {
-    if ($outfile === "-") {
+
+function printCsv($report, $outfile)
+{
+    if ($outfile === "-.csv") {
         $outfile = "php://stdout";
-        file_put_contents($outfile, $out);
     }
+    $csvFile = fopen($outfile, "w+");
+    fputcsv($csvFile, array(
+        "login",
+        "action",
+        "error",
+        "message",
+        "node"
+    ));
+    foreach ($report as $row) {
+        fputcsv($csvFile, array(
+            $row["login"],
+            $row["action"],
+            $row["error"],
+            $row["message"],
+            $row["node"]
+        ));
+    }
+    fclose($csvFile);
+}
+
+function printText($report, $outfile)
+{
+    $out = '';
+    $format = "| %20s | %20s | %30s | %20s |\n";
+    $out = sprintf($format, "login", "action", "error", "message");
+    $spaces = sprintf("%80s", " ");
+    $out.= "---------------------------------------------------------------------------------------------------\n";
+    foreach ($report as $row) {
+        if ($row["error"]) {
+            $out.= chr(0x1b) . "[1;31m";
+        }
+        
+        $out.= sprintf($format, $row["login"], $row["action"], $row["error"], str_replace("\n", ", ", $row["message"]));
+        if ($row["error"]) {
+            $out.= chr(0x1b) . "[0;39m";
+        }
+    }
+    if ($outfile) {
+        if ($outfile === "-") {
+            $outfile = "php://stdout";
+        }
+    }
+    file_put_contents($outfile, $out);
 }

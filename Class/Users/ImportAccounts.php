@@ -337,11 +337,22 @@ class ImportAccounts
                     case "password":
                         $crypted = $nodeInfo->getAttribute("crypted") === "true";
                         if ($crypted) {
-                            $values["password"] = $nodeInfo->nodeValue;
+                            if (substr($nodeInfo->nodeValue, 0, 3) !== '$5$') {
+                                $this->addToReport($values["login"], "changePassword", "Not a SHA256 crypt", "", $nodeInfo);
+                            } else {
+                                $values["password"] = $nodeInfo->nodeValue;
+                            }
                         } else {
                             $values["password_new"] = $nodeInfo->nodeValue;
                             $this->addToReport($values["login"], "changePassword", "", "", $nodeInfo);
                         }
+                        break;
+
+                    case "login":
+                        if (mb_strtolower($nodeInfo->nodeValue) !== $nodeInfo->nodeValue) {
+                            $this->addToReport($nodeInfo->nodeValue, "users update", "Login must not contains uppercase characters", "", $nodeInfo);
+                        }
+                        $values[$varId] = $nodeInfo->nodeValue;
                         break;
 
                     default:
@@ -373,7 +384,11 @@ class ImportAccounts
              */
             $value = $this->xpath->query($xmlTag, $node);
             $values[$varId] = $value->item(0)->nodeValue;
+            if ($varId === "login" && mb_strtolower($values[$varId]) !== $values[$varId]) {
+                $this->addToReport($values[$varId], "group update", "Reference must not contains uppercase characters", "", $value->item(0));
+            }
         }
+        
         $account = $this->importAccount($node, "group", "IGROUP", $values);
         $this->importParent($node, "associatedRole", $account);
         $this->importParent($node, "parentGroup", $account);
@@ -471,6 +486,9 @@ class ImportAccounts
              */
             $value = $this->xpath->query($xmlTag, $node);
             $values[$varId] = $value->item(0)->nodeValue;
+            if ($varId === "login" && mb_strtolower($values[$varId]) !== $values[$varId]) {
+                $this->addToReport($values[$varId], "role update", "Reference must not contains uppercase characters", "", $value->item(0));
+            }
         }
         $this->importAccount($node, "role", "ROLE", $values);
     }
@@ -517,7 +535,7 @@ class ImportAccounts
                 $this->addToReport($values["login"], "documentCreation", $err, "", $documentNode);
                 $famId = $defaultFamily;
             }
-            $newDocAccount = createDoc("", $famId);
+            $newDocAccount = \createDoc("", $famId);
             if ($newDocAccount) {
                 $err = $newDocAccount->add();
                 if (!$err) {
@@ -558,7 +576,7 @@ class ImportAccounts
                 if ($roleDocumentNode) {
                     $docName = $roleDocumentNode->getAttribute("name");
                     if ($docName) {
-                        $docAccount = new_doc("", $account->fid);
+                        $docAccount = \new_doc("", $account->fid);
                         if (!$docAccount->name) {
                             $docAccount->setLogicalName($docName);
                         } else {
