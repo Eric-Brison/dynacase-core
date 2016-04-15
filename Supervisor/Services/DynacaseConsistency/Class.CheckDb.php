@@ -86,6 +86,22 @@ class checkDb
             "msg" => $msg
         );
     }
+    
+    public function checkStandardConformingStrings()
+    {
+        $res = array(
+            "status" => self::OK,
+            "msg" => ""
+        );
+        simpleQuery('', "SELECT current_database()", $dbname, true, true, true);
+        simpleQuery('', "SHOW standard_conforming_strings", $value, true, true, true);
+        if ($value !== 'off') {
+            $res['status'] = self::KO;
+            $res['msg'] = sprintf("Database's \"standard_conforming_strings\" should be set to 'off' (actual value is '%s')&nbsp;:<br/><pre>ALTER DATABASE %s SET standard_conforming_strings = off;</pre>", htmlspecialchars($value, ENT_QUOTES) , htmlspecialchars(pg_escape_identifier($dbname)));
+        }
+        $this->tout["standard_conforming_strings"] = $res;
+    }
+    
     public function checkUserAsGroup()
     {
         $result = pg_query($this->r, "SELECT distinct(idgroup) from groups where idgroup not in (select id from users where accounttype!='U');");
@@ -653,6 +669,7 @@ EOF;
     {
         if ($this->checkConnection()) {
             $this->checkDateStyle();
+            $this->checkStandardConformingStrings();
             $this->checkUnreferenceUsers();
             $this->checkUserAsGroup();
             $this->checkUnreferencedAction();
