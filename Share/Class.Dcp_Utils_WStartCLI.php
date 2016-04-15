@@ -155,6 +155,7 @@ EOF;
          * Set operations that need to be executed.
         */
         $operations = array(
+            'reapplyDatabaseParameters' => true, /* Always reapply database parameters before anything else */
             'clearAutoloadCache' => false,
             'imageAndDocsLinks' => false,
             'clearFileCache' => false,
