@@ -848,13 +848,13 @@ function mkpasswd($length = 8, $charspace = "")
     return $passwd;
 }
 /**
- + * return lcdate use in database : iso or dmy
- + * @return string
- +
+ * return lcdate use in database : 'iso'
+ * Note: old 'dmy' format is not used since 3.2.8
+ * @return string 'iso'
  */
 function getLcdate()
 {
-    return substr(getParam("CORE_LCDATE") , 0, 3);
+    return 'iso';
 }
 /**
  *

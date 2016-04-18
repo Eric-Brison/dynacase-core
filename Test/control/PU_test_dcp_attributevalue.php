@@ -649,7 +649,6 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
     
     public function goodValues()
     {
-        $iso = (getLcDate() == 'iso');
         return array(
             array(
                 'TST_INT',
@@ -665,12 +664,12 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_DATE',
                 '20/11/2011',
-                $iso ? '2011-11-20' : "20/11/2011"
+                '2011-11-20'
             ) ,
             array(
                 'TST_DATE',
                 '2011-11-21',
-                $iso ? '2011-11-21' : "21/11/2011"
+                '2011-11-21'
             ) ,
             array(
                 'TST_DOUBLE',
@@ -688,12 +687,12 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_TIMESTAMP',
                 '2011-11-21 12:34',
-                $iso ? '2011-11-21 12:34' : '21/11/2011 12:34'
+                '2011-11-21 12:34'
             ) ,
             array(
                 'TST_TIMESTAMP',
                 '2011-11-21T12:34',
-                $iso ? '2011-11-21T12:34' : '21/11/2011T12:34'
+                '2011-11-21T12:34'
             ) ,
             array(
                 'TST_HTML',

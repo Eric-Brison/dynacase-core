@@ -1,8 +1,12 @@
 #!/bin/bash
 
 if [ -z "$pgservice_core" ]; then
-	echo "Undefined or empty pgservice_core!"
-	exit 1
+    echo "Undefined or empty pgservice_core!"
+    exit 1
+fi
+if [ -z "$wpub" ]; then
+    echo "Undefined or empty wpub!"
+    exit 1
 fi
 
 PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'EOF'
@@ -44,10 +48,21 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 if [ "${SSEARCH_PROFID}" = "PRF_SEARCHES" ]; then
-    ./wsh.php --api=importDocuments --file=FDL/FDL_postmigr_3.2.21_01.csv --csv-separator=';' --csv-enclosure='"'
+    "$wpub/wsh.php" --api=importDocuments --file=FDL/FDL_postmigr_3.2.21_01.csv --csv-separator=';' --csv-enclosure='"'
     RET=$?
     if [ $RET -ne 0 ]; then
 	echo "Error setting SSEARCH's profid to 'PRF_ADMIN_CREATION'."
 	exit $RET
     fi
 fi
+
+PGSERVICE=$pgservice_core psql --set ON_ERROR_STOP=on -f - <<'EOF'
+DELETE FROM paramv USING application WHERE paramv.appid = application.id AND application.name = 'CORE' AND paramv.name = 'CORE_LCDATE';
+EOF
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error deleting CORE_LCDATE parameter."
+    exit $RET
+fi
+
+# vim: set tabstop=8 softtabstop=4 shiftwidth=4 noexpandtab:
