@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-09 16:41+0100\n"
-"PO-Revision-Date: 2016-04-06 14:10+0200\n"
+"POT-Creation-Date: 2016-04-20 09:49+0200\n"
+"PO-Revision-Date: 2016-04-20 09:50+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -92,10 +92,6 @@ msgstr "Lancer la recherche"
 
 msgid " view files"
 msgstr "afficher les fichiers attachés"
-
-#, php-format
-msgid "\"%s\" family structure has been updated"
-msgstr "La structure de la famille \"%s\" a été mise à jour"
 
 #, php-format
 msgid "%d answer"
@@ -379,9 +375,6 @@ msgstr "(titre)"
 msgid "<it's a message>"
 msgstr "<c'est un message>"
 
-msgid "A?"
-msgstr "R?"
-
 #, php-format
 msgid "API %s is deprecated. You should use %s instead."
 msgstr "L'API %s est depréciée. Veuillez utiliser %s à la place"
@@ -483,10 +476,6 @@ msgstr "Ajout de %d document(s)"
 #, php-format
 msgid "Add %s in %s folder"
 msgstr "Ajout %s dans dossier %s"
-
-#, php-format
-msgid "Add Attributes : %s"
-msgstr "Ajout des attributs : %s"
 
 #, php-format
 msgid "Add acl %s for %s"
@@ -720,9 +709,6 @@ msgstr "Attribut non trouvé"
 msgid "Attributes"
 msgstr "Attributs"
 
-msgid "Attributes definition"
-msgstr "définition des attributs"
-
 msgid "August"
 msgstr "Août"
 
@@ -869,12 +855,6 @@ msgid "Cannot see attribute %s"
 msgstr "Ne peut voir l'attribut %s"
 
 #, php-format
-msgid "Cannot update enum. Attribute '%s'[family %s] not found"
-msgstr ""
-"Ne peut pas mettre à jour l'énuméré. L'attribut '%s' [famille %s] est "
-"inconnu."
-
-#, php-format
 msgid "Cannot write to log %s"
 msgstr "Ne peux pas écrire dans les logs %s"
 
@@ -883,9 +863,6 @@ msgstr "Certain attribut peuvent ne pas servir lors de l\\'import"
 
 msgid "Change State"
 msgstr "Changer d'état"
-
-msgid "Change category"
-msgstr "Changer de catégorie"
 
 msgid "Change content"
 msgstr "Changer le contenu"
@@ -932,12 +909,6 @@ msgstr "Changer la valeur par défaut"
 
 msgid "Change default value for family"
 msgstr "Changer les valeurs par défaut pour la famille"
-
-msgid "Change enum"
-msgstr "Changer d'énuméré"
-
-msgid "Change family structure"
-msgstr "Modifier la structure de la famille"
 
 msgid "Change icon"
 msgstr "Changer d'icone"
@@ -1027,9 +998,6 @@ msgstr "Choisir l'archive"
 msgid "Choose Archive Type"
 msgstr "Choisir le type d'archive"
 
-msgid "Choose Gate Urls"
-msgstr "Choix des URLs"
-
 msgid "Choose User"
 msgstr "Choisissez un compte"
 
@@ -1070,9 +1038,6 @@ msgstr "Choisissez dans la liste d'icones"
 msgid "Choose mask family"
 msgstr "Choisissez la famille du masque"
 
-msgid "Choose new categories"
-msgstr "Choisissez de nouvelles catégories"
-
 msgid "Choose report columns"
 msgstr "Choisir les colonnes du rapport"
 
@@ -1097,9 +1062,6 @@ msgstr "Effacer mes préférences"
 
 msgid "Clear this translation"
 msgstr "Effacer cette traduction"
-
-msgid "Click here to logout"
-msgstr "Cliquer ici pour se déconnecter"
 
 msgid "Click on attribute to modify <b>{{aid}}</b> default value"
 msgstr ""
@@ -2569,9 +2531,6 @@ msgstr "Suppression de documents"
 msgid "Freedom group accessibilities"
 msgstr "Droits des groupes Dynacase"
 
-msgid "Freedom initialisation"
-msgstr "Initialisation dynacase"
-
 msgid "Freedom modification"
 msgstr "Modification de documents"
 
@@ -2682,9 +2641,6 @@ msgstr "Historique"
 msgid "History for"
 msgstr "Historique de"
 
-msgid "ID"
-msgstr "ID"
-
 msgid "Icons view"
 msgstr "Vue en icônes"
 
@@ -2787,10 +2743,6 @@ msgstr "Le filtre \"%s\" est incorrect"
 msgid "Incorrect specification of special menu : %s"
 msgstr "Spécification incorrecte du menu spécial %s"
 
-#, php-format
-msgid "Inherit from \"%s\""
-msgstr "Hérite de \"%s\""
-
 msgid "Inherit value"
 msgstr "Valeur des parents"
 
@@ -2823,12 +2775,6 @@ msgstr "Insérer le contenu dans %s"
 msgid "Inserted in a domain"
 msgstr "Inséré dans un domaine"
 
-msgid "Inspect another family"
-msgstr "Inspecter une autre famille"
-
-msgid "Internet explorer site"
-msgstr "Site de Microsoft"
-
 #, php-format
 msgid "Invalid condition for attribute '%s' with value '%s': %s"
 msgstr "Condition invalide pour l'attribut '%s' avec la valeur '%s': %s"
@@ -2855,9 +2801,6 @@ msgstr "L\\'entrée ne peut être vide"
 
 msgid "January"
 msgstr "Janvier"
-
-msgid "Javascript must be enabled in your navigator"
-msgstr "Javascript doit être activé dans votre navigateur"
 
 msgid "July"
 msgstr "Juillet"
@@ -2979,9 +2922,6 @@ msgid "Limit of text size (in Ko) for highlight text"
 msgstr ""
 "Limite de la taille du texte pour la mise en valeur des mot-clefs (en Ko)"
 
-msgid "Link"
-msgstr "Lien"
-
 msgid "Linked from profil"
 msgstr "Lié par le profil"
 
@@ -3080,13 +3020,6 @@ msgstr "Mars"
 msgid "Mask title"
 msgstr "Titre du masque"
 
-msgid ""
-"Master document has been closed.\n"
-"Close window ?"
-msgstr ""
-"Le document maître a été fermé.\n"
-"Voulez-vous fermer la fenêtre ?"
-
 #, php-format
 msgid "Max display limit %s reached. Use export to see all"
 msgstr ""
@@ -3152,9 +3085,6 @@ msgstr "Date de dernière modification"
 msgid "Modify"
 msgstr "Modifier"
 
-msgid "Modify Attributes"
-msgstr "Modification des attributs"
-
 msgid "Modify acls"
 msgstr "Modifier les droits"
 
@@ -3208,9 +3138,6 @@ msgstr "Identifiant de mon compte utilisateur"
 
 msgid "N"
 msgstr "N"
-
-msgid "N?"
-msgstr "O?"
 
 msgid "NOT Clear"
 msgstr "Non effacé"
@@ -4183,9 +4110,6 @@ msgstr "Erreur de syntaxe dans le fichier '%s' : %s"
 msgid "System document"
 msgstr "Documents système"
 
-msgid "T?"
-msgstr "T?"
-
 msgid "TE engine activate but TE-CLIENT not found"
 msgstr "Moteur TE activé mais TE-CLIENT non trouvé"
 
@@ -4461,9 +4385,6 @@ msgstr "Valeur actuelle enregistrée sur le serveur"
 msgid "Version"
 msgstr "Version"
 
-msgid "Vi"
-msgstr "Vi"
-
 msgid "View"
 msgstr "Affichage"
 
@@ -4494,6 +4415,9 @@ msgstr "Voir toutes les rangées"
 msgid "View answers"
 msgstr "Voir les réponses"
 
+msgid "View attributes"
+msgstr "Voir les attributs"
+
 msgid "View color legend"
 msgstr "Affiche la légende des couleurs"
 
@@ -4518,9 +4442,6 @@ msgstr "Voir les propriétés du dossier"
 msgid "View group access"
 msgstr "Voir les groupes"
 
-msgid "View headers"
-msgstr "Voir entête"
-
 msgid "View historique"
 msgstr "Voir l'historique"
 
@@ -4544,9 +4465,6 @@ msgstr "Voir les droits posés. (puces vertes)"
 
 msgid "View postit"
 msgstr "Voir le post-it"
-
-msgid "View properties"
-msgstr "Voir les propriétés"
 
 msgid "View revision"
 msgstr "Voir la révision"
@@ -4704,35 +4622,9 @@ msgid ""
 msgstr ""
 "Vous n'avez accès à aucun contenu. Veuillez contacter votre administrateur."
 
-msgid "You must upgrade to version 6 or more"
-msgstr "Vous devez mettre à jour avec la version 6 au minimum"
-
-msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
-msgstr ""
-"Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 (Firefox)"
-
 #, php-format
 msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
 msgstr "Vous devez utiliser seulement les caractères  a-z, 0-9, _ - \"%s\""
-
-msgid "You use an too old Internet explorer navigator"
-msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
-
-msgid "You use an too old Netscape navigator"
-msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
-
-msgid "You use version an to old version of Internet Explorer"
-msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
-
-msgid "You use version an to old version of Netscape (Mozilla)"
-msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
-
-msgid ""
-"Your navigator does not accept cookies.\n"
-"Cookies must be enabled to use correctly this application"
-msgstr ""
-"Votre navigateur n'accepte pas les cookies.\n"
-"Vous devez autoriser les cookies pour utiliser correctement l'application."
 
 #, php-format
 msgid "Your password is not secure."
@@ -5105,12 +4997,6 @@ msgstr "Identifiant de l'attribut"
 
 msgid "attributes"
 msgstr "attributs"
-
-msgid "attributes definitions"
-msgstr "définition des attributs"
-
-msgid "attributes modification"
-msgstr "Modification d'attributs"
 
 msgid "attrname"
 msgstr "Nom"
@@ -5606,9 +5492,6 @@ msgstr "type de connexion"
 msgid "connexion to %s has failed"
 msgstr "la connexion vers %s a échoué"
 
-msgid "constraint"
-msgstr "contrainte"
-
 #, php-format
 msgid "constraint broken %s"
 msgstr "contrainte non respectée %s"
@@ -5741,10 +5624,6 @@ msgstr "création de famille"
 
 msgid "create help"
 msgstr "Créer une aide"
-
-#, php-format
-msgid "create new %s"
-msgstr "créé par %s"
 
 msgid "create profile access"
 msgstr "création d'un profil"
@@ -6030,10 +5909,6 @@ msgid "document %s not exists"
 msgstr "Le document %s n'existe pas"
 
 #, php-format
-msgid "document %s not found"
-msgstr "Le document [%s] est introuvable"
-
-#, php-format
 msgid "document '%s' [revision %d] has no state"
 msgstr "Le document '%s' [révision %d] n'a pas d'état"
 
@@ -6126,9 +6001,6 @@ msgstr "Outil"
 msgid "dotType"
 msgstr "Type"
 
-msgid "downk"
-msgstr "descendre"
-
 msgid "drag to move"
 msgstr "glisser/déposer pour déplacer la rangée"
 
@@ -6215,9 +6087,6 @@ msgstr "modifier:"
 
 msgid "electronic messages cannot be modified"
 msgstr "les courriels ne peuvent être modifiés"
-
-msgid "elink"
-msgstr "extra Lien"
 
 #, php-format
 msgid "elinkEncode::attribute not found %s in %s : %s"
@@ -6425,9 +6294,6 @@ msgstr "Recherche générale"
 msgid "fieldset"
 msgstr "Cadre"
 
-msgid "file"
-msgstr "fichier"
-
 #, php-format
 msgid "file %d"
 msgstr "fichier %d"
@@ -6550,9 +6416,6 @@ msgstr "pour"
 msgid "founded"
 msgstr "nombre de document(s) trouvé(s)"
 
-msgid "frame"
-msgstr "fenêtre"
-
 msgid "frame border size"
 msgstr "taille de la bordure de la fenêtre"
 
@@ -6580,9 +6443,6 @@ msgstr "plein texte"
 
 msgid "fulltext index mode"
 msgstr "mode d'indexation fulltext"
-
-msgid "func"
-msgstr "ft"
 
 #, php-format
 msgid "function '%s' declared in %s is not found"
@@ -6915,9 +6775,6 @@ msgstr "mot-clef"
 msgid "keyword filter"
 msgstr "mot-clef"
 
-msgid "labeltext"
-msgstr "désignation"
-
 msgid "language"
 msgstr "langue"
 
@@ -7077,7 +6934,6 @@ msgstr "mode de navigation pour les dossiers"
 msgid "modification or creation"
 msgstr "modification ou création"
 
-#. #-#-#-#-#  TOOLBOX_app_.pot (PACKAGE VERSION)  #-#-#-#-#
 #. _COMMENT Sharp Label
 msgid "modify"
 msgstr "Contenu"
@@ -7143,17 +6999,11 @@ msgstr "modifier les familles préférées"
 msgid "modifyacl"
 msgstr "modifier les droits"
 
-msgid "more families"
-msgstr "toutes les familles"
-
 msgid "mot of the day"
 msgstr "Mot Of The Day"
 
 msgid "move file query into directory"
 msgstr "déplacement d'un document dans un dossier"
-
-msgid "mozilla site"
-msgstr "site de Mozilla"
 
 msgid "multiple document"
 msgstr "document multiple"
@@ -7165,9 +7015,6 @@ msgstr "mes recherches %s"
 #, php-format
 msgid "my searches about %s"
 msgstr "mes recherches concernant %s"
-
-msgid "name"
-msgstr "Nom"
 
 msgid "name and address of our society"
 msgstr "nom et adresse de votre société"
@@ -7207,9 +7054,6 @@ msgstr "Vous devez sélectionner le document dans la liste proposée"
 msgid "need to select workflow"
 msgstr "le cycle doit être sélectionné"
 
-msgid "nestcape site"
-msgstr "Site de Netscape"
-
 #, php-format
 msgid "new %s"
 msgstr "nouvelle %s"
@@ -7223,9 +7067,6 @@ msgstr "nouvel ordre des colonnes %s"
 
 msgid "new document"
 msgstr "Nouveau document"
-
-msgid "new document family"
-msgstr "nelle famille de document"
 
 #, php-format
 msgid "new duplicate document is named : %s"
@@ -7275,9 +7116,6 @@ msgstr "nouvelle visibilité"
 msgid "next"
 msgstr "suivant"
 
-msgid "next level"
-msgstr "niveau supérieur"
-
 msgid "no access control"
 msgstr "pas de contrôle d'accès"
 
@@ -7295,9 +7133,6 @@ msgid "no attribute file found"
 msgstr "Aucun attribut de type fichier trouvé"
 
 msgid "no available persons found"
-msgstr "pas de personnes valides trouvées"
-
-msgid "no avalaible persons found"
 msgstr "pas de personnes valides trouvées"
 
 #, php-format
@@ -7337,9 +7172,6 @@ msgstr "pas de référence au document"
 msgid "no document type"
 msgstr "pas de famille de document"
 
-msgid "no email address found"
-msgstr "absence d'adresse couriel"
-
 msgid "no empty vault file system found"
 msgstr "Tous les coffres de fichiers sont saturés"
 
@@ -7376,9 +7208,6 @@ msgstr "pas d'accès à la base de données DYNACASE"
 
 msgid "no image"
 msgstr "pas d'image"
-
-msgid "no inheritance"
-msgstr "Aucun héritage"
 
 msgid "no key2"
 msgstr "pas de clef"
@@ -7605,16 +7434,10 @@ msgctxt "mask"
 msgid "optional"
 msgstr "Optionnel"
 
-msgid "options"
-msgstr "options"
-
 #. #-#-#-#-#  TOOLBOX_app_.pot (PACKAGE VERSION)  #-#-#-#-#
 #. _COMMENT Sharp Label
 msgid "or"
 msgstr "ou"
-
-msgid "order"
-msgstr "ordre"
 
 msgid "other folders"
 msgstr "Autres dossiers"
@@ -7668,16 +7491,6 @@ msgstr "téléphone de votre société"
 msgid "php file %s needed for request not found"
 msgstr "le fichier PHP %s nécessaire à la requête n'a pas pu être trouvé"
 
-msgid "please upgrade to Internet explorer 6.0 or greater"
-msgstr ""
-"Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
-"supérieur) "
-
-msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
-msgstr ""
-"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) "
-"ou Mozilla 1.0.1 (ou supérieur)"
-
 msgid "plug inserted in footer"
 msgstr "reférence au plug du footer"
 
@@ -7712,9 +7525,6 @@ msgstr "Recherche préférée"
 
 msgid "prev"
 msgstr "précédent"
-
-msgid "previous level"
-msgstr "niveau inférieur"
 
 msgid "primary folder"
 msgstr "Dossier principal"
@@ -8031,9 +7841,6 @@ msgstr "restaurer le document"
 msgid "restore document from trash"
 msgstr "restaurer le document depuis la poubelle"
 
-msgid "restrict to preferred families"
-msgstr "restriction aux familles préférées"
-
 #, php-format
 msgid "result of archive import  %s"
 msgstr "Résultat de l'importation d'archive %s"
@@ -8288,9 +8095,6 @@ msgstr "affecte la caractéristique spéciale à '%s'"
 
 msgid "set specific ask"
 msgstr "mettre à jour une demande spécifique"
-
-msgid "set the document controlled"
-msgstr "Mettre le document sous contrôle"
 
 msgid "set user parameter"
 msgstr "affecte les paramètres utilisateur"
@@ -8631,9 +8435,6 @@ msgstr "ville de votre société"
 msgid "try add acl %s"
 msgstr "essai d'ajout de l'acl %s "
 
-msgid "type"
-msgstr "type"
-
 msgid "type characters to filter document on it's title"
 msgstr "saisissez des caractères pour filtrer les documents par leur titre"
 
@@ -8834,15 +8635,6 @@ msgstr "mis à jour"
 msgid "updated by import"
 msgstr "mise à jour par import"
 
-msgid "updateldap"
-msgstr "Mise à jour du serveur LDAP"
-
-msgid "updatetitle"
-msgstr "Mise à jour des titres"
-
-msgid "upk"
-msgstr "monter"
-
 msgid "url to reach http server index"
 msgstr "URL pour atteindre l'index du serveur web dynacase"
 
@@ -8952,9 +8744,6 @@ msgstr "erreur fichier Vault"
 msgid "vault file is not initialized"
 msgstr "fichier du coffre non initialisé"
 
-msgid "vconstraint input not found id="
-msgstr "entrée vconstraint non trouvé id="
-
 msgid "verify files status"
 msgstr "Vérification status des fichiers"
 
@@ -9023,9 +8812,6 @@ msgstr "Voir les attributs cachés"
 
 msgid "view history revision"
 msgstr "voir l'historique"
-
-msgid "view idoc attribute card"
-msgstr "Visualisation des attributs d'un document virtuel"
 
 msgid "view imported tar"
 msgstr "voir les archives importées"
@@ -9253,14 +9039,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid " from any folder"
 #~ msgstr "dans l'ensemble des dossiers"
 
+#~ msgid "\"%s\" family structure has been updated"
+#~ msgstr "La structure de la famille \"%s\" a été mise à jour"
+
 #~ msgid "%s all "
 #~ msgstr "%s tout"
 
 #~ msgid "%s style updated\n"
 #~ msgstr "%s style mis à jour\n"
 
+#~ msgid "A?"
+#~ msgstr "R?"
+
 #~ msgid "Abstract card"
 #~ msgstr "Carte résumé"
+
+#~ msgid "Add Attributes : %s"
+#~ msgstr "Ajout des attributs : %s"
 
 #~ msgid "Add a note"
 #~ msgstr "Ajouter une note"
@@ -9270,6 +9065,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Advanced search"
 #~ msgstr "Recherche avancée"
+
+#~ msgid "Attributes definition"
+#~ msgstr "définition des attributs"
 
 #~ msgid "Basic search"
 #~ msgstr "Recherche simple"
@@ -9287,8 +9085,25 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "Le nom logique %s ne peut être affecté qu'après création du document"
 
+#~ msgid "Cannot update enum. Attribute '%s'[family %s] not found"
+#~ msgstr ""
+#~ "Ne peut pas mettre à jour l'énuméré. L'attribut '%s' [famille %s] est "
+#~ "inconnu."
+
 #~ msgid "Caught Exception : %s\n"
 #~ msgstr "Attrape exception : %s\n"
+
+#~ msgid "Change category"
+#~ msgstr "Changer de catégorie"
+
+#~ msgid "Change enum"
+#~ msgstr "Changer d'énuméré"
+
+#~ msgid "Change family structure"
+#~ msgstr "Modifier la structure de la famille"
+
+#~ msgid "Choose Gate Urls"
+#~ msgstr "Choix des URLs"
 
 #~ msgid "Choose a father category"
 #~ msgstr "Choisissez une catégorie père"
@@ -9296,9 +9111,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Choose document before set options"
 #~ msgstr "Choisissez un document avant de choisir les options"
 
+#~ msgid "Choose new categories"
+#~ msgstr "Choisissez de nouvelles catégories"
+
 #, fuzzy
 #~ msgid "Choose report column"
 #~ msgstr "Choisir les colonnes du rapport"
+
+#~ msgid "Click here to logout"
+#~ msgstr "Cliquer ici pour se déconnecter"
 
 #~ msgid "Column mode"
 #~ msgstr "Mode colonne"
@@ -9348,11 +9169,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Freedom imodification"
 #~ msgstr "Modification de documents virtuels"
 
+#~ msgid "Freedom initialisation"
+#~ msgstr "Initialisation dynacase"
+
 #~ msgid "Go"
 #~ msgstr "Go"
 
 #~ msgid "Historic"
 #~ msgstr "Historique"
+
+#~ msgid "ID"
+#~ msgstr "ID"
 
 #~ msgid "Import file"
 #~ msgstr "Fichier à importer"
@@ -9363,8 +9190,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Import format"
 #~ msgstr "Format d'importation"
 
+#~ msgid "Inherit from \"%s\""
+#~ msgstr "Hérite de \"%s\""
+
+#~ msgid "Inspect another family"
+#~ msgstr "Inspecter une autre famille"
+
+#~ msgid "Internet explorer site"
+#~ msgstr "Site de Microsoft"
+
 #~ msgid "Invert split"
 #~ msgstr "Inverser le découpage"
+
+#~ msgid "Javascript must be enabled in your navigator"
+#~ msgstr "Javascript doit être activé dans votre navigateur"
+
+#~ msgid "Link"
+#~ msgstr "Lien"
 
 #~ msgid "Logical name %s already set for %s"
 #~ msgstr "Nom logique %s déjà indiqué pour %s."
@@ -9372,8 +9214,21 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Malformed HTML in attribute '%s' from document '%s'"
 #~ msgstr "HTML malformé dans l'attribut '%s' du document '%s'"
 
+#~ msgid ""
+#~ "Master document has been closed.\n"
+#~ "Close window ?"
+#~ msgstr ""
+#~ "Le document maître a été fermé.\n"
+#~ "Voulez-vous fermer la fenêtre ?"
+
 #~ msgid "Maximum 20 views by control"
 #~ msgstr "Maximum 20 vues par contrôle"
+
+#~ msgid "Modify Attributes"
+#~ msgstr "Modification des attributs"
+
+#~ msgid "N?"
+#~ msgstr "O?"
 
 #~ msgid "Name of the glob"
 #~ msgstr "Nom du glob"
@@ -9463,6 +9318,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "T3"
 #~ msgstr "T3"
 
+#~ msgid "T?"
+#~ msgstr "T?"
+
 #~ msgid "TEST_EXTRA:Extra state not found"
 #~ msgstr "État extra introuvable"
 
@@ -9511,11 +9369,47 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Until done date"
 #~ msgstr "Historique des minuteurs vieux de plus de n jours"
 
+#~ msgid "Vi"
+#~ msgstr "Vi"
+
+#~ msgid "View headers"
+#~ msgstr "Voir entête"
+
 #~ msgid "View print version"
 #~ msgstr "Version imprimable"
 
+#~ msgid "View properties"
+#~ msgstr "Voir les propriétés"
+
+#~ msgid "You must upgrade to version 6 or more"
+#~ msgstr "Vous devez mettre à jour avec la version 6 au minimum"
+
+#~ msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
+#~ msgstr ""
+#~ "Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 "
+#~ "(Firefox)"
+
 #~ msgid "You must use only a-z, 0-9, _, - caracters"
 #~ msgstr "Vous devez utiliser uniquement les caractères 0-9, a-z, _ et -"
+
+#~ msgid "You use an too old Internet explorer navigator"
+#~ msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+
+#~ msgid "You use an too old Netscape navigator"
+#~ msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+
+#~ msgid "You use version an to old version of Internet Explorer"
+#~ msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+
+#~ msgid "You use version an to old version of Netscape (Mozilla)"
+#~ msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+
+#~ msgid ""
+#~ "Your navigator does not accept cookies.\n"
+#~ "Cookies must be enabled to use correctly this application"
+#~ msgstr ""
+#~ "Votre navigateur n'accepte pas les cookies.\n"
+#~ "Vous devez autoriser les cookies pour utiliser correctement l'application."
 
 #~ msgid "access granted to  database $db\n"
 #~ msgstr "accès à la base de données $db autorisé\n"
@@ -9543,6 +9437,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "attribute %s unknow in family \\#%s\""
 #~ msgstr "attribut %s inconnu dans la famille \"%s\" "
+
+#~ msgid "attributes definitions"
+#~ msgstr "définition des attributs"
+
+#~ msgid "attributes modification"
+#~ msgstr "Modification d'attributs"
 
 #~ msgid "boolean"
 #~ msgstr "booléen"
@@ -9595,11 +9495,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "close search online help"
 #~ msgstr "Fermer l'aide à la recherche"
 
+#~ msgid "constraint"
+#~ msgstr "contrainte"
+
 #~ msgid "convalescent"
 #~ msgstr "convalescent"
 
 #~ msgid "create forum"
 #~ msgstr "créer le forum"
+
+#~ msgid "create new %s"
+#~ msgstr "créé par %s"
 
 #~ msgid "database access for webdav"
 #~ msgstr "coordonnées d'accès à la base de données webdav"
@@ -9628,6 +9534,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "disable/enable forum on documents"
 #~ msgstr "Autoriser/interdire les forums sur les documents"
 
+#~ msgid "document %s not found"
+#~ msgstr "Le document [%s] est introuvable"
+
+#~ msgid "downk"
+#~ msgstr "descendre"
+
 #~ msgid "download file"
 #~ msgstr "Télécharger le fichier"
 
@@ -9645,6 +9557,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "edit workflow transitions "
 #~ msgstr "édition des transitions des cycles"
+
+#~ msgid "elink"
+#~ msgstr "extra Lien"
 
 #~ msgid "empty password : not changed"
 #~ msgstr "mot de passe vide : non changé"
@@ -9666,6 +9581,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "exportXml : cannot write file %s"
 #~ msgstr "exportXml : ne peut écrire le fichier %s"
+
+#~ msgid "file"
+#~ msgstr "fichier"
 
 #~ msgid "forum"
 #~ msgstr "forum"
@@ -9706,11 +9624,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "forum_id"
 #~ msgstr "identifiant du forum"
 
+#~ msgid "frame"
+#~ msgstr "fenêtre"
+
 #~ msgid "freedom database"
 #~ msgstr "base de donnée dynacase"
 
 #~ msgid "full phrase"
 #~ msgstr "la phrase entière"
+
+#~ msgid "func"
+#~ msgstr "ft"
 
 #~ msgid "generic#search"
 #~ msgstr "Rechercher"
@@ -9731,6 +9655,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "label"
 #~ msgstr "désignation"
 
+#~ msgid "labeltext"
+#~ msgstr "désignation"
+
 #~ msgid "menu forum"
 #~ msgstr "menu forum"
 
@@ -9746,20 +9673,47 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "modoption: document [%d] is not alive"
 #~ msgstr "modoption: document [%d] n'est pas en vie"
 
+#~ msgid "more families"
+#~ msgstr "toutes les familles"
+
+#~ msgid "mozilla site"
+#~ msgstr "site de Mozilla"
+
+#~ msgid "name"
+#~ msgstr "Nom"
+
+#~ msgid "nestcape site"
+#~ msgstr "Site de Netscape"
+
 #~ msgid "new category"
 #~ msgstr "Nouvelle catégorie"
+
+#~ msgid "new document family"
+#~ msgstr "nelle famille de document"
 
 #~ msgid "new forum answer"
 #~ msgstr "ajouter une entrée"
 
+#~ msgid "next level"
+#~ msgstr "niveau supérieur"
+
 #~ msgid "no"
 #~ msgstr "non"
+
+#~ msgid "no avalaible persons found"
+#~ msgstr "pas de personnes valides trouvées"
 
 #~ msgid "no delay specified in timer %s [%d]"
 #~ msgstr "pas de durée spécifiée dans le minuteur %s [%d]"
 
+#~ msgid "no email address found"
+#~ msgstr "absence d'adresse couriel"
+
 #~ msgid "no father category (its a top category)"
 #~ msgstr "pas de catégorie père (catégorie primaire)"
+
+#~ msgid "no inheritance"
+#~ msgstr "Aucun héritage"
 
 #~ msgid "no login : passwd unchanged"
 #~ msgstr "pas de login : mot de passe inchangé"
@@ -9773,8 +9727,24 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "option: "
 #~ msgstr "option: "
 
+#~ msgid "options"
+#~ msgstr "options"
+
+#~ msgid "order"
+#~ msgstr "ordre"
+
 #~ msgid "password are not identicals : not changed"
 #~ msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
+
+#~ msgid "please upgrade to Internet explorer 6.0 or greater"
+#~ msgstr ""
+#~ "Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
+#~ "supérieur) "
+
+#~ msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
+#~ msgstr ""
+#~ "Mettez votre navigateur à jour avec une version Netscape 7.0 (ou "
+#~ "supérieur) ou Mozilla 1.0.1 (ou supérieur)"
 
 #~ msgid "policy if same title"
 #~ msgstr "politique si même titre"
@@ -9784,6 +9754,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "post it"
 #~ msgstr "post-it"
+
+#~ msgid "previous level"
+#~ msgstr "niveau inférieur"
 
 #~ msgid "query [%s] not valid for select document"
 #~ msgstr "la requête [%s] n'est pas valide pour une sélection de documents"
@@ -9797,6 +9770,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "restore original file"
 #~ msgstr "Annuler l'effacement du fichier"
 
+#~ msgid "restrict to preferred families"
+#~ msgstr "restriction aux familles préférées"
+
 #~ msgid "save"
 #~ msgstr "Sauver"
 
@@ -9808,6 +9784,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "search online help"
 #~ msgstr "Aide à la recherche"
+
+#~ msgid "set the document controlled"
+#~ msgstr "Mettre le document sous contrôle"
 
 #~ msgid "short_name"
 #~ msgstr "nom abrégé"
@@ -9843,11 +9822,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "transfered"
 #~ msgstr "transféré"
 
+#~ msgid "type"
+#~ msgstr "type"
+
 #~ msgid "unknow virtual user identificateur %s"
 #~ msgstr "identificateur [%s] inconnu comme utilisateur virtuel"
 
 #~ msgid "unknown login : passwd unchanged"
 #~ msgstr "login incoonu : mot de passe inchangé"
+
+#~ msgid "updateldap"
+#~ msgstr "Mise à jour du serveur LDAP"
+
+#~ msgid "updatetitle"
+#~ msgstr "Mise à jour des titres"
+
+#~ msgid "upk"
+#~ msgstr "monter"
 
 #~ msgid "user csv enclosure preferences when export document"
 #~ msgstr ""
@@ -9860,8 +9851,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "user csv separator preferences when export document"
 #~ msgstr "Préférence pour le sépareteur CSV lors de l'exportation de document"
 
+#~ msgid "vconstraint input not found id="
+#~ msgstr "entrée vconstraint non trouvé id="
+
 #~ msgid "view document option"
 #~ msgstr "voir les options d'un document"
+
+#~ msgid "view idoc attribute card"
+#~ msgstr "Visualisation des attributs d'un document virtuel"
 
 #~ msgid "view object acl"
 #~ msgstr "voir les droits"

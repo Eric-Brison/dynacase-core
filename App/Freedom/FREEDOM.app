@@ -275,11 +275,6 @@ $action_desc = array (
    "acl"		=>"FREEDOM"
   ) ,
   array( 
-   "name"		=>"DEFATTR",
-   "short_name"		=>N_("attributes definitions"),
-   "acl"		=>"FREEDOM_MASTER"
-  ) ,
-  array( 
    "name"		=>"CREATEFAM",
    "short_name"		=>N_("edit create family"),
    "acl"		=>"FREEDOM_MASTER"
@@ -287,11 +282,6 @@ $action_desc = array (
   array( 
    "name"		=>"CREATETHEFAM",
    "short_name"		=>N_("create family"),
-   "acl"		=>"FREEDOM_MASTER"
-  ) ,
-  array(
-   "name"		=>"MODATTR",
-   "short_name"		=>N_("attributes modification"),
    "acl"		=>"FREEDOM_MASTER"
   ) ,
   array( 
