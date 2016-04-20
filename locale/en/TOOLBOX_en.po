@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-09 16:41+0100\n"
+"POT-Creation-Date: 2016-04-20 09:49+0200\n"
 "PO-Revision-Date: 2016-04-06 14:10+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -88,10 +88,6 @@ msgid " send search"
 msgstr ""
 
 msgid " view files"
-msgstr ""
-
-#, php-format
-msgid "\"%s\" family structure has been updated"
 msgstr ""
 
 #, php-format
@@ -374,9 +370,6 @@ msgstr ""
 msgid "<it's a message>"
 msgstr ""
 
-msgid "A?"
-msgstr ""
-
 #, php-format
 msgid "API %s is deprecated. You should use %s instead."
 msgstr ""
@@ -477,10 +470,6 @@ msgstr ""
 
 #, php-format
 msgid "Add %s in %s folder"
-msgstr ""
-
-#, php-format
-msgid "Add Attributes : %s"
 msgstr ""
 
 #, php-format
@@ -704,9 +693,6 @@ msgstr ""
 msgid "Attributes"
 msgstr ""
 
-msgid "Attributes definition"
-msgstr ""
-
 msgid "August"
 msgstr ""
 
@@ -848,10 +834,6 @@ msgid "Cannot see attribute %s"
 msgstr ""
 
 #, php-format
-msgid "Cannot update enum. Attribute '%s'[family %s] not found"
-msgstr ""
-
-#, php-format
 msgid "Cannot write to log %s"
 msgstr ""
 
@@ -860,9 +842,6 @@ msgstr ""
 
 msgid "Change State"
 msgstr "Next step"
-
-msgid "Change category"
-msgstr ""
 
 msgid "Change content"
 msgstr ""
@@ -905,12 +884,6 @@ msgid "Change default value"
 msgstr ""
 
 msgid "Change default value for family"
-msgstr ""
-
-msgid "Change enum"
-msgstr ""
-
-msgid "Change family structure"
 msgstr ""
 
 msgid "Change icon"
@@ -998,9 +971,6 @@ msgstr ""
 msgid "Choose Archive Type"
 msgstr ""
 
-msgid "Choose Gate Urls"
-msgstr ""
-
 msgid "Choose User"
 msgstr ""
 
@@ -1040,9 +1010,6 @@ msgstr ""
 msgid "Choose mask family"
 msgstr ""
 
-msgid "Choose new categories"
-msgstr ""
-
 msgid "Choose report columns"
 msgstr ""
 
@@ -1066,9 +1033,6 @@ msgid "Clear preferences"
 msgstr ""
 
 msgid "Clear this translation"
-msgstr ""
-
-msgid "Click here to logout"
 msgstr ""
 
 msgid "Click on attribute to modify <b>{{aid}}</b> default value"
@@ -2446,9 +2410,6 @@ msgstr "Deletion of documents"
 msgid "Freedom group accessibilities"
 msgstr "Dynacase group rights"
 
-msgid "Freedom initialisation"
-msgstr "Dynacase initialization"
-
 msgid "Freedom modification"
 msgstr "Modify document"
 
@@ -2557,9 +2518,6 @@ msgstr ""
 msgid "History for"
 msgstr ""
 
-msgid "ID"
-msgstr ""
-
 msgid "Icons view"
 msgstr ""
 
@@ -2657,10 +2615,6 @@ msgstr ""
 msgid "Incorrect specification of special menu : %s"
 msgstr ""
 
-#, php-format
-msgid "Inherit from \"%s\""
-msgstr ""
-
 msgid "Inherit value"
 msgstr ""
 
@@ -2693,12 +2647,6 @@ msgstr ""
 msgid "Inserted in a domain"
 msgstr ""
 
-msgid "Inspect another family"
-msgstr ""
-
-msgid "Internet explorer site"
-msgstr ""
-
 #, php-format
 msgid "Invalid condition for attribute '%s' with value '%s': %s"
 msgstr ""
@@ -2724,9 +2672,6 @@ msgid "Item cannot be empty"
 msgstr ""
 
 msgid "January"
-msgstr ""
-
-msgid "Javascript must be enabled in your navigator"
 msgstr ""
 
 msgid "July"
@@ -2848,9 +2793,6 @@ msgstr "Users"
 msgid "Limit of text size (in Ko) for highlight text"
 msgstr ""
 
-msgid "Link"
-msgstr ""
-
 msgid "Linked from profil"
 msgstr ""
 
@@ -2945,11 +2887,6 @@ msgstr ""
 msgid "Mask title"
 msgstr ""
 
-msgid ""
-"Master document has been closed.\n"
-"Close window ?"
-msgstr ""
-
 #, php-format
 msgid "Max display limit %s reached. Use export to see all"
 msgstr ""
@@ -3008,9 +2945,6 @@ msgstr ""
 msgid "Modify"
 msgstr ""
 
-msgid "Modify Attributes"
-msgstr ""
-
 msgid "Modify acls"
 msgstr ""
 
@@ -3063,9 +2997,6 @@ msgid "My user account id"
 msgstr ""
 
 msgid "N"
-msgstr ""
-
-msgid "N?"
 msgstr ""
 
 msgid "NOT Clear"
@@ -4006,9 +3937,6 @@ msgstr ""
 msgid "System document"
 msgstr ""
 
-msgid "T?"
-msgstr ""
-
 msgid "TE engine activate but TE-CLIENT not found"
 msgstr ""
 
@@ -4267,9 +4195,6 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-msgid "Vi"
-msgstr ""
-
 msgid "View"
 msgstr ""
 
@@ -4300,6 +4225,9 @@ msgstr ""
 msgid "View answers"
 msgstr ""
 
+msgid "View attributes"
+msgstr ""
+
 msgid "View color legend"
 msgstr ""
 
@@ -4324,9 +4252,6 @@ msgstr ""
 msgid "View group access"
 msgstr ""
 
-msgid "View headers"
-msgstr ""
-
 msgid "View historique"
 msgstr ""
 
@@ -4349,9 +4274,6 @@ msgid "View only access set. Green flag"
 msgstr ""
 
 msgid "View postit"
-msgstr ""
-
-msgid "View properties"
 msgstr ""
 
 msgid "View revision"
@@ -4506,31 +4428,8 @@ msgid ""
 "You don't have access to any content. Please contact your administrator."
 msgstr ""
 
-msgid "You must upgrade to version 6 or more"
-msgstr ""
-
-msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
-msgstr ""
-
 #, php-format
 msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
-msgstr ""
-
-msgid "You use an too old Internet explorer navigator"
-msgstr ""
-
-msgid "You use an too old Netscape navigator"
-msgstr ""
-
-msgid "You use version an to old version of Internet Explorer"
-msgstr ""
-
-msgid "You use version an to old version of Netscape (Mozilla)"
-msgstr ""
-
-msgid ""
-"Your navigator does not accept cookies.\n"
-"Cookies must be enabled to use correctly this application"
 msgstr ""
 
 #, php-format
@@ -4900,12 +4799,6 @@ msgid "attribute id"
 msgstr ""
 
 msgid "attributes"
-msgstr ""
-
-msgid "attributes definitions"
-msgstr ""
-
-msgid "attributes modification"
 msgstr ""
 
 msgid "attrname"
@@ -5384,9 +5277,6 @@ msgstr ""
 msgid "connexion to %s has failed"
 msgstr ""
 
-msgid "constraint"
-msgstr ""
-
 #, php-format
 msgid "constraint broken %s"
 msgstr ""
@@ -5516,10 +5406,6 @@ msgid "create family"
 msgstr ""
 
 msgid "create help"
-msgstr ""
-
-#, php-format
-msgid "create new %s"
 msgstr ""
 
 msgid "create profile access"
@@ -5806,10 +5692,6 @@ msgid "document %s not exists"
 msgstr ""
 
 #, php-format
-msgid "document %s not found"
-msgstr ""
-
-#, php-format
 msgid "document '%s' [revision %d] has no state"
 msgstr ""
 
@@ -5902,9 +5784,6 @@ msgstr ""
 msgid "dotType"
 msgstr ""
 
-msgid "downk"
-msgstr ""
-
 msgid "drag to move"
 msgstr ""
 
@@ -5990,9 +5869,6 @@ msgid "edition: "
 msgstr ""
 
 msgid "electronic messages cannot be modified"
-msgstr ""
-
-msgid "elink"
 msgstr ""
 
 #, php-format
@@ -6190,9 +6066,6 @@ msgstr "Global search"
 msgid "fieldset"
 msgstr ""
 
-msgid "file"
-msgstr ""
-
 #, php-format
 msgid "file %d"
 msgstr ""
@@ -6315,9 +6188,6 @@ msgstr ""
 msgid "founded"
 msgstr ""
 
-msgid "frame"
-msgstr ""
-
 msgid "frame border size"
 msgstr ""
 
@@ -6344,9 +6214,6 @@ msgid "fulltext"
 msgstr ""
 
 msgid "fulltext index mode"
-msgstr ""
-
-msgid "func"
 msgstr ""
 
 #, php-format
@@ -6676,9 +6543,6 @@ msgstr ""
 msgid "keyword filter"
 msgstr ""
 
-msgid "labeltext"
-msgstr ""
-
 msgid "language"
 msgstr "lang"
 
@@ -6838,7 +6702,6 @@ msgstr ""
 msgid "modification or creation"
 msgstr ""
 
-#. #-#-#-#-#  TOOLBOX_app_.pot (PACKAGE VERSION)  #-#-#-#-#
 #. _COMMENT Sharp Label
 msgid "modify"
 msgstr "Content"
@@ -6904,16 +6767,10 @@ msgstr ""
 msgid "modifyacl"
 msgstr ""
 
-msgid "more families"
-msgstr ""
-
 msgid "mot of the day"
 msgstr ""
 
 msgid "move file query into directory"
-msgstr ""
-
-msgid "mozilla site"
 msgstr ""
 
 msgid "multiple document"
@@ -6926,9 +6783,6 @@ msgstr ""
 #, php-format
 msgid "my searches about %s"
 msgstr ""
-
-msgid "name"
-msgstr "Name"
 
 msgid "name and address of our society"
 msgstr ""
@@ -6966,9 +6820,6 @@ msgstr ""
 msgid "need to select workflow"
 msgstr ""
 
-msgid "nestcape site"
-msgstr ""
-
 #, php-format
 msgid "new %s"
 msgstr ""
@@ -6981,9 +6832,6 @@ msgid "new column order %s"
 msgstr ""
 
 msgid "new document"
-msgstr ""
-
-msgid "new document family"
 msgstr ""
 
 #, php-format
@@ -7034,9 +6882,6 @@ msgstr ""
 msgid "next"
 msgstr ""
 
-msgid "next level"
-msgstr ""
-
 msgid "no access control"
 msgstr ""
 
@@ -7054,9 +6899,6 @@ msgid "no attribute file found"
 msgstr ""
 
 msgid "no available persons found"
-msgstr ""
-
-msgid "no avalaible persons found"
 msgstr ""
 
 #, php-format
@@ -7096,9 +6938,6 @@ msgstr ""
 msgid "no document type"
 msgstr ""
 
-msgid "no email address found"
-msgstr ""
-
 msgid "no empty vault file system found"
 msgstr ""
 
@@ -7134,9 +6973,6 @@ msgid "no freedom DB access"
 msgstr "No access to Dynacase database"
 
 msgid "no image"
-msgstr ""
-
-msgid "no inheritance"
 msgstr ""
 
 msgid "no key2"
@@ -7363,15 +7199,9 @@ msgctxt "mask"
 msgid "optional"
 msgstr ""
 
-msgid "options"
-msgstr ""
-
 #. #-#-#-#-#  TOOLBOX_app_.pot (PACKAGE VERSION)  #-#-#-#-#
 #. _COMMENT Sharp Label
 msgid "or"
-msgstr ""
-
-msgid "order"
 msgstr ""
 
 msgid "other folders"
@@ -7426,12 +7256,6 @@ msgstr ""
 msgid "php file %s needed for request not found"
 msgstr ""
 
-msgid "please upgrade to Internet explorer 6.0 or greater"
-msgstr ""
-
-msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
-msgstr ""
-
 msgid "plug inserted in footer"
 msgstr ""
 
@@ -7465,9 +7289,6 @@ msgid "prefered search"
 msgstr ""
 
 msgid "prev"
-msgstr ""
-
-msgid "previous level"
 msgstr ""
 
 msgid "primary folder"
@@ -7785,9 +7606,6 @@ msgstr ""
 msgid "restore document from trash"
 msgstr ""
 
-msgid "restrict to preferred families"
-msgstr ""
-
 #, php-format
 msgid "result of archive import  %s"
 msgstr ""
@@ -8041,9 +7859,6 @@ msgid "set special characteristics to '%s'"
 msgstr ""
 
 msgid "set specific ask"
-msgstr ""
-
-msgid "set the document controlled"
 msgstr ""
 
 msgid "set user parameter"
@@ -8372,9 +8187,6 @@ msgstr ""
 msgid "try add acl %s"
 msgstr ""
 
-msgid "type"
-msgstr ""
-
 msgid "type characters to filter document on it's title"
 msgstr ""
 
@@ -8573,15 +8385,6 @@ msgstr ""
 msgid "updated by import"
 msgstr ""
 
-msgid "updateldap"
-msgstr "Update LDAP server"
-
-msgid "updatetitle"
-msgstr "Update Title Cards"
-
-msgid "upk"
-msgstr ""
-
 msgid "url to reach http server index"
 msgstr ""
 
@@ -8690,9 +8493,6 @@ msgstr ""
 msgid "vault file is not initialized"
 msgstr ""
 
-msgid "vconstraint input not found id="
-msgstr ""
-
 msgid "verify files status"
 msgstr ""
 
@@ -8760,9 +8560,6 @@ msgid "view hidden attributes"
 msgstr ""
 
 msgid "view history revision"
-msgstr ""
-
-msgid "view idoc attribute card"
 msgstr ""
 
 msgid "view imported tar"
@@ -9148,6 +8945,9 @@ msgstr ""
 #~ msgid "Freedom imodification"
 #~ msgstr "Modify virtual document"
 
+#~ msgid "Freedom initialisation"
+#~ msgstr "Dynacase initialization"
+
 #~ msgid "description"
 #~ msgstr "Description"
 
@@ -9163,6 +8963,9 @@ msgstr ""
 #~ msgid "generic:search placeholder"
 #~ msgstr "Search"
 
+#~ msgid "name"
+#~ msgstr "Name"
+
 #~ msgid "no"
 #~ msgstr "No"
 
@@ -9174,6 +8977,12 @@ msgstr ""
 
 #~ msgid "switch search mode (basic/advanced)"
 #~ msgstr "basic/advanced mode"
+
+#~ msgid "updateldap"
+#~ msgstr "Update LDAP server"
+
+#~ msgid "updatetitle"
+#~ msgstr "Update Title Cards"
 
 #~ msgid "yes"
 #~ msgstr "Yes"

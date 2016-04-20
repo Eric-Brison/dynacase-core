@@ -74,14 +74,14 @@ function getpopupfamdetail(Action & $action, $docid)
             "barmenu" => "false"
         ) ,
         
-        "editattr" => array(
-            "descr" => _("Edit attributes") ,
-            "url" => "$surl&app=FREEDOM&action=DEFATTR&id=$docid",
+        "viewattr" => array(
+            "descr" => _("View attributes") ,
+            "url" => "$surl&app=DOCADMIN&action=FAMILY_VIEWATTRIBUTES&id=$docid",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
             "target" => "",
-            "visibility" => POPUP_ACTIVE,
+            "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
         ) ,
@@ -306,7 +306,6 @@ function changeFamMenuVisibility(Action & $action, &$tlink, &$doc)
     if (!$clf) {
         // actions not available
         $tlink["defval"]["visibility"] = POPUP_INVISIBLE;
-        $tlink["editattr"]["visibility"] = POPUP_INVISIBLE;
         $tlink["editenum"]["visibility"] = POPUP_INVISIBLE;
         $tlink["chicon"]["visibility"] = POPUP_INVISIBLE;
         $tlink["param"]["visibility"] = POPUP_INVISIBLE;
@@ -322,6 +321,9 @@ function changeFamMenuVisibility(Action & $action, &$tlink, &$doc)
     }
     if (!$action->parent->Haspermission("FDL", "FAMILY")) {
         $tlink["histo"]["editenum"] = POPUP_INVISIBLE;
+    }
+    if ($action->parent->Haspermission("DOCADMIN", "DOCADMIN")) {
+        $tlink["viewattr"]["visibility"] = POPUP_ACTIVE;
     }
     
     include_once ("FDL/Class.SearchDoc.php");
