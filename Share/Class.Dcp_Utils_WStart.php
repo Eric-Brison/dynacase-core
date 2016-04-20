@@ -474,4 +474,28 @@ class WStart extends WStartInternals
         }
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
+    /**
+     * @throws WStartException
+     * @throws \Dcp\Db\Exception
+     */
+    public function reapplyDatabaseParameters()
+    {
+        require_once 'WHAT/Lib.Common.php';
+        
+        $this->verbose(1, sprintf("[+] Reapplying database parameters.\n"));
+        if (($err = simpleQuery('', 'SELECT current_database()', $dbName, true, true, false)) !== '') {
+            throw new WStartException(sprintf("Error getting current database name: %s", $err));
+        }
+        $paramList = array(
+            'DateStyle' => 'ISO, DMY',
+            'standard_conforming_strings' => 'off'
+        );
+        foreach ($paramList as $paramName => $paramValue) {
+            $sql = sprintf("ALTER DATABASE %s SET %s = %s", pg_escape_identifier($dbName) , pg_escape_identifier($paramName) , pg_escape_literal($paramValue));
+            if (($err = simpleQuery('', $sql, $res, true, true, false)) !== '') {
+                throw new WStartException(sprintf("Error setting '%s' = '%s' on database '%s': %s", $paramName, $paramValue, $dbName, $err));
+            }
+        }
+        $this->verbose(1, sprintf("[+] Done.\n"));
+    }
 }

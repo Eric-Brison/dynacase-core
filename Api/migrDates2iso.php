@@ -29,7 +29,7 @@ $onlyAnalyze = ($usage->addOptionalParameter("analyze", "only analyze ", array(
 
 $usage->verify();
 
-$locale = getLcdate();
+$locale = substr(getParam("CORE_LCDATE") , 0, 3);
 simpleQuery($action->dbaccess, "show datestyle", $dbDate, true, true);
 simpleQuery($action->dbaccess, "SELECT current_database();", $databaseName, true, true);
 

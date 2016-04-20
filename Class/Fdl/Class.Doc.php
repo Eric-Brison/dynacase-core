@@ -3663,9 +3663,6 @@ create unique index i_docir on doc(initid, revision);";
                                             $localeconfig = getLocaleConfig();
                                             if ($localeconfig !== false) {
                                                 $tvalues[$kvalue] = stringDateToIso($avalue, $localeconfig['dateFormat']);
-                                                if (getLcdate() != "iso") {
-                                                    $tvalues[$kvalue] = preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
-                                                }
                                             } else {
                                                 return sprintf(_("local config for date not found"));
                                             }
@@ -3685,9 +3682,6 @@ create unique index i_docir on doc(initid, revision);";
                                             $localeconfig = getLocaleConfig();
                                             if ($localeconfig !== false) {
                                                 $tvalues[$kvalue] = stringDateToIso($avalue, $localeconfig['dateTimeFormat']);
-                                                if (getLcdate() != "iso") {
-                                                    $tvalues[$kvalue] = preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
-                                                }
                                             } else {
                                                 return sprintf(_("local config for timestamp not found"));
                                             }
@@ -8317,7 +8311,7 @@ create unique index i_docir on doc(initid, revision);";
                     } else {
                         $value = htmlspecialchars($this->getRawValue($i));
                         $tableframe[$v]["type"] = base64_encode($listattr[$i]->type);
-
+                        
                         $currentFrameId = $listattr[$i]->fieldSet->id;
                         $tableframe[$v]["id"] = $listattr[$i]->id;
                         $tableframe[$v]["value"] = $value;
@@ -8676,7 +8670,6 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             $nd = time();
         }
-        $isIsoDate = (getLcdate() == "iso");
         if ($dayhour !== "" || $daymin !== "") {
             $delta = abs(intval($dayhour));
             if ($dayhour > 0) {
@@ -8694,15 +8687,13 @@ create unique index i_docir on doc(initid, revision);";
             if ($getlocale) {
                 return stringDateToLocaleDate(date("Y-m-d H:i", $nd));
             } else {
-                if ($isIsoDate) return date("Y-m-d H:i", $nd);
-                else return date("d/m/Y H:i", $nd);
+                return date("Y-m-d H:i", $nd);
             }
         } else {
             if ($getlocale) {
                 return stringDateToLocaleDate(date("Y-m-d", $nd));
             } else {
-                if ($isIsoDate) return date("Y-m-d", $nd);
-                else return date("d/m/Y", $nd);
+                return date("Y-m-d", $nd);
             }
         }
     }
@@ -8715,13 +8706,8 @@ create unique index i_docir on doc(initid, revision);";
     public static function getTimeDate($hourdelta = 0, $second = false)
     {
         $delta = abs(intval($hourdelta));
-        if ((getLcdate() == "iso")) {
-            if ($second) $format = "Y-m-d H:i:s";
-            else $format = "Y-m-d H:i";
-        } else {
-            if ($second) $format = "d/m/Y H:i:s";
-            else $format = "d/m/Y H:i";
-        }
+        if ($second) $format = "Y-m-d H:i:s";
+        else $format = "Y-m-d H:i";
         if ($hourdelta > 0) {
             if (is_float($hourdelta)) {
                 $dm = intval((abs($hourdelta) - $delta) * 60);

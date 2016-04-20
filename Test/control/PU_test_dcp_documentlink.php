@@ -138,7 +138,7 @@ class TestLink extends TestCaseDcpDocument
             array(
                 "linkTwo",
                 "http://test.com/?date=%tst_coldate%",
-                getLcDate() == 'iso' ? 'http://test.com/?date=2011-11-01%5Cn2011-11-02' : "http://test.com/?date=01%2F11%2F2011%5Cn02%2F11%2F2011"
+                'http://test.com/?date=2011-11-01%5Cn2011-11-02'
             ) ,
             array(
                 "linkTwo",

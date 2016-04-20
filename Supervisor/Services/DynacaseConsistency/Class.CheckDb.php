@@ -68,23 +68,17 @@ class checkDb
     
     public function checkDateStyle()
     {
-        $result = pg_query($this->r, "show DateStyle;");
-        $row = pg_fetch_array($result, NULL);
-        $msg = $dateStyle = $row[0];
-        $result = pg_query($this->r, "SELECT val from paramv where name = 'CORE_LCDATE'");
-        $row = pg_fetch_array($result, NULL);
-        $lcDate = substr($row[0], 0, 3);
-        if (($lcDate == 'iso') && ($dateStyle == "ISO, DMY")) $status = self::OK;
-        else if ($dateStyle == "SQL, DMY") $status = self::OK;
-        else {
-            $status = self::KO;
-            $msg = sprintf("Mismatch locale : database : %s, application : %s", $dateStyle, $lcDate);
-        }
-        
-        $this->tout["dateStyle"] = array(
-            "status" => $status,
-            "msg" => $msg
+        $ret = array(
+            'status' => self::OK,
+            'msg' => ''
         );
+        simpleQuery('', "SELECT current_database()", $dbname, true, true, true);
+        simpleQuery('', "SHOW DateStyle", $dateStyle, true, true, true);
+        if ($dateStyle !== 'ISO, DMY') {
+            $ret['status'] = self::KO;
+            $ret['msg'] = sprintf("Database's \"DateStyle\" should be set to 'ISO, DMY' (actual value is '%s')&nbsp;<br/><pre>ALTER DATABASE %s SET DateStyle = 'ISO, DMY';</pre>", htmlspecialchars($dateStyle, ENT_QUOTES) , htmlspecialchars(pg_escape_identifier($dbname)));
+        }
+        $this->tout["dateStyle"] = $ret;
     }
     
     public function checkStandardConformingStrings()
