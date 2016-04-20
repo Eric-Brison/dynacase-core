@@ -163,7 +163,7 @@ class ImportDocument
         
         if ($this->strict) {
             if ($this->getErrorMessage()) {
-                error_log("Unable to import rollback the import " . $this->getErrorMessage());
+                error_log("Import aborted :" . $this->getErrorMessage());
                 $action->rollbackPoint($point);
             } else {
                 $action->commitPoint($point);
