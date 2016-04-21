@@ -9568,8 +9568,21 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         }
-        //print_r2($moreSearchValues);
-        // @TODO MUltiple implode
+        $custom=$this->getCustomSearchValues();
+        if ($custom ) {
+            if (!is_array($custom)) {
+                throw new \Dcp\Exception("DOC0126",gettype($custom));
+            }
+            $moreSearchValues=array_merge($moreSearchValues,$custom) ;
+        }
         return implode("£", array_unique($moreSearchValues));
+    }
+
+    /**
+     * @api Hook to add values used in general searches
+     * @return string
+     */
+    protected function getCustomSearchValues() {
+        return [];
     }
 }

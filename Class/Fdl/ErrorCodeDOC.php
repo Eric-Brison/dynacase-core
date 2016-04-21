@@ -198,6 +198,11 @@ class ErrorCodeDOC
      */
     const DOC0125 = 'changeframe requested but current frame "%s" does not exists (current attribute is "%s")';
     /**
+     * @errorCode return of customSearchValues hook must be an array
+     * @see Doc::getCustomSearchValues
+     */
+    const DOC0126 = 'getCustomSearchValues must return an array of string (found "%s")';
+    /**
      * @errorCode
      * the document cannot be inserted in folder target
      * @note when DOC has defined a folder target
