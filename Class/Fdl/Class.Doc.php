@@ -94,7 +94,10 @@ class Doc extends DocCtrl
         "confidential",
         "ldapdn"
     );
-    
+    /**
+     * @var string searchable values
+     */
+    protected $svalues;
     public $sup_fields = array(
         "values",
         "attrids"
@@ -782,7 +785,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return void
      */
-    final public function PostInsert()
+    final public function postInsert()
     {
         // controlled will be set explicitly
         //$this->SetControl();
@@ -806,6 +809,7 @@ create unique index i_docir on doc(initid, revision);";
                 "fromname" => $this->fromname
             ));
         }
+        unset($this->fields["svalues"]);
         $this->Select($this->id);
         // set creation date
         $this->cdate = $this->getTimeDate(0, true);
@@ -897,6 +901,11 @@ create unique index i_docir on doc(initid, revision);";
                 return $err;
             }
         }
+        unset($this->fields["svalues"]);
+        if ($this->doctype !== "T") {
+            $this->svalues = $this->getExtraSearchableDisplayValues();
+            $this->fields["svalues"] = "svalues";
+        }
         if ($this->wid > 0) {
             /**
              * @var WDoc $wdoc
@@ -920,7 +929,7 @@ create unique index i_docir on doc(initid, revision);";
      * if attribute values are changed the modification date is updated
      * @return string error message, if no error empty string
      */
-    function PreUpdate()
+    function preUpdate()
     {
         if ($this->id == "") return _("cannot update no initialized document");
         if ($this->doctype == 'I') return _("cannot update inconsistent document"); // provides from waiting document or searchDOc with setReturns
@@ -932,15 +941,22 @@ create unique index i_docir on doc(initid, revision);";
         $err = $this->docIsCleanToModify();
         if ($err) return $err;
         if ($this->constraintbroken) return (sprintf(_("constraint broken %s") , $this->constraintbroken));
+        
+        unset($this->fields["svalues"]);
         $this->RefreshTitle();
         if ($this->hasChanged) {
             if (chop($this->title) == "") $this->title = _("untitle document");
             // set modification date
+            if ($this->doctype !== "T") {
+                $this->svalues = $this->getExtraSearchableDisplayValues();
+                $this->fields["svalues"] = "svalues";
+            }
             $date = gettimeofday();
             $this->revdate = $date['sec'];
             $this->version = $this->getVersion();
             $this->lmodify = 'Y';
         }
+        
         return '';
     }
     
@@ -976,9 +992,10 @@ create unique index i_docir on doc(initid, revision);";
      * optimize for speed : memorize object for future use
      * @return string
      */
-    function PostUpdate()
+    function postUpdate()
     {
         fixMultipleAliveDocument($this);
+        
         if ($this->hasChanged) {
             $this->computeDProfil();
             if ($this->doctype != 'C') {
@@ -6568,7 +6585,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($onlydrop) return $sql; // only drop
         if ($code) {
             $files = array();
-            $lay = new Layout("FDL/Layout/sqltrigger.xml");
+            $lay = new Layout("FDL/sqltrigger.sql");
             $na = $this->GetNormalAttributes();
             $tvalues = array();
             $tsearch = array();
@@ -6584,11 +6601,11 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     // svalues += attribute allowed to be indexed
                     if (($v->type != "file") && ($v->type != "image") && ($v->type != "password") && ($opt_searchcriteria != "hidden")) {
-                        if ($v->docid == $famId) {
-                            $tsearch[] = array(
-                                "attrid" => $k
-                            );
-                        }
+                        
+                        $tsearch[] = array(
+                            "attrid" => $k
+                        );
+                        
                         $fulltext_c[] = array(
                             "attrid" => $k
                         );
@@ -6601,11 +6618,9 @@ create unique index i_docir on doc(initid, revision);";
                         "vecid" => $k . "_vec"
                     );
                     // svalues += file attributes
-                    if ($v->docid == $famId) {
-                        $tsearch[] = array(
-                            "attrid" => $k . "_txt"
-                        );
-                    }
+                    $tsearch[] = array(
+                        "attrid" => $k . "_txt"
+                    );
                 }
             }
             // fulltext += abstract attributes
@@ -6645,7 +6660,7 @@ create unique index i_docir on doc(initid, revision);";
             // the reset trigger must begin with 'A' letter to be proceed first (pgsql 7.3.2)
             if ($cid != "fam") {
                 $sql.= "create trigger AUVR{$cid} BEFORE UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
-                $sql.= "create trigger VFULL{$cid} BEFORE INSERT OR UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE fullvectorize$cid();";
+                $sql.= "create trigger VSEARCH{$cid} BEFORE INSERT OR UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE searchvalues$cid();";
             } else {
                 $sql.= "create trigger UVdocfam before insert or update on docfam FOR EACH ROW EXECUTE PROCEDURE upvaldocfam();";
             }
@@ -9478,5 +9493,83 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         return $res;
+    }
+    /**
+     * set display values for general searches
+     *
+     * @param string $searchAttrId attribut where store extra search values
+     *
+     * @return string
+     */
+    protected function getExtraSearchableDisplayValues($withLocale = true)
+    {
+        
+        $moreSearchValues = [];
+        
+        $fmt = new \FormatCollection($this);
+        $attributes = $this->getNormalAttributes();
+        $datesValues = [];
+        $oneAttributeAtLeast = false;
+        foreach ($attributes as $attr) {
+            if ($attr->type !== "array" && $attr->getOption("searchcriteria") !== "hidden" && $this->getRawValue($attr->id)) {
+                $fmt->addAttribute($attr->id);
+                $oneAttributeAtLeast = true;
+                if ($attr->type === "date") {
+                    if ($attr->isMultiple()) {
+                        $datesValues = array_merge($datesValues, $this->getMultipleRawValues($attr->id));
+                    } else {
+                        $datesValues[] = $this->getRawValue($attr->id);
+                    }
+                }
+            }
+        }
+        
+        if ($oneAttributeAtLeast) {
+            $a = null;
+            $enumAttr = new \NormalAttribute("", "", "", "", "", "", "", "", "", "", "", "", $a, "", "", "");
+            $datesValues = array_unique($datesValues);
+            if ($withLocale) {
+                $lang = getLocales();
+            } else {
+                $lang = array(
+                    "current"
+                );
+            }
+            foreach ($lang as $klang => $currentLang) {
+                if ($withLocale) {
+                    setLanguage($klang);
+                    $enumAttr->resetEnum();
+                }
+                $moreSearchValues[] = $this->getTitle();
+                $r = $fmt->render();
+                
+                foreach ($datesValues as $date) {
+                    $moreSearchValues[] = strftime("%A %B %Y %m %d", strtotime($date));
+                }
+                /**
+                 * @var \StandardAttributeValue $renderInfo
+                 */
+                foreach ($r[0]["attributes"] as $renderInfo) {
+                    if (isset($renderInfo->value) && $renderInfo->displayValue !== $renderInfo->value) {
+                        $moreSearchValues[] = $renderInfo->displayValue;
+                    } elseif ($renderInfo && is_array($renderInfo)) {
+                        foreach ($renderInfo as $rowInfo) {
+                            if (isset($rowInfo->value) && $rowInfo->displayValue !== $rowInfo->value) {
+                                $moreSearchValues[] = $rowInfo->displayValue;
+                            } elseif ($rowInfo && is_array($rowInfo)) {
+                                foreach ($rowInfo as $subRowInfo) {
+                                    if (isset($subRowInfo->value) && $subRowInfo->displayValue !== $subRowInfo->value) {
+                                        $moreSearchValues[] = $subRowInfo->displayValue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //print_r2($moreSearchValues);
+        // @TODO MUltiple implode
+        return implode("£", array_unique($moreSearchValues));
     }
 }

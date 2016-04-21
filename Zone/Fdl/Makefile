@@ -8,3 +8,5 @@ appname = $(shell basename `pwd` | tr [a-z] [A-Z])
 export appname
 SUBDIR=Schemas
 include $(utildir)/PubRule
+
+include $(rootdir)/corePubRule.mk

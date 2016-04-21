@@ -131,12 +131,8 @@ declare
    cfromid int;
 begin
 
+
 NEW.values:='';
-if not NEW.title isnull then
-  NEW.svalues:=NEW.title;
-else
-  NEW.svalues:= '';
-end if;
 NEW.attrids:='';
 
   if (NEW.doctype = 'Z') and (NEW.name is not null) then
@@ -182,7 +178,7 @@ create or replace function to2_ascii(text)
 returns text as $$
 declare 
 begin
-   return translate(lower($1),'éèêëàâùüçôîïÉÈÊËÀÂÙÜÇÔÎÏ.','eeeeaauucoiieeeeaauucoii ');
+   return translate(lower($1),'éèêëàâùüûçôîïÉÈÊËÀÂÙÜÛÇÔÎÏ.','eeeeaauuucoiieeeeaauuucoii ');
 end;
 $$ language 'plpgsql' ;
 
@@ -208,30 +204,6 @@ begin
 end;
 $$ language 'plpgsql' ;
 
-create or replace function fulltext() 
-returns trigger as $$
-declare 
-  good bool;
-begin
-  good := true;
-  if (TG_OP = 'UPDATE') then 
-    if (NEW.fulltext is not null) then
-      good:=(NEW.values != OLD.values);
-    end if;
-  end if;
-
-  if (good) then
-  begin
-   NEW.fulltext := setweight(to_tsvector('french',to2_ascii(NEW.title)), 'A')|| to_tsvector('french',replace(to2_ascii(NEW.values),'£',' '));
-
-     EXCEPTION
-	 WHEN OTHERS THEN
-	    RAISE NOTICE 'Error fulltext %',NEW.id;
-   end;
-   end if;
-return NEW;
-END;
-$$ language 'plpgsql';
 
 create or replace function fixeddoc() 
 returns trigger as $$
