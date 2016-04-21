@@ -147,7 +147,6 @@ function getMailAddr($userid, $full = false)
 
 function getTmpDir($def = '/tmp')
 {
-    global $pubdir;
     static $tmp;
     if (isset($tmp) && !empty($tmp)) {
         return $tmp;
@@ -158,11 +157,7 @@ function getTmpDir($def = '/tmp')
     }
     
     if (substr($tmp, 0, 1) != '/') {
-        if ($pubdir !== ".") {
-            $tmp = $pubdir . '/' . $tmp;
-        } else {
-            $tmp = DEFAULT_PUBDIR . '/' . $tmp;
-        }
+        $tmp = DEFAULT_PUBDIR . '/' . $tmp;
     }
     /* Try to create the directory if it does not exists */
     if (!is_dir($tmp)) {
@@ -375,7 +370,8 @@ function getDbAccessFreedom()
  */
 function getDbEnv()
 {
-    error_log("Deprecated call to getDbEnv() : use getFreedomContext()");
+    error_log("Deprecated call to getDbEnv() : not necessary");
+    /** @noinspection PhpDeprecationInspection */
     return getFreedomContext();
 }
 /**
@@ -528,8 +524,6 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
 }
 function getAuthType($freedomctx = "")
 {
-    global $pubdir;
-    
     if (array_key_exists('authtype', $_GET)) {
         return $_GET['authtype'];
     }
@@ -544,7 +538,6 @@ function getAuthType($freedomctx = "")
 
 function getAuthProvider($freedomctx = "")
 {
-    global $pubdir;
     $freedom_authprovider = getDbAccessValue('freedom_authprovider');
     
     if ($freedom_authprovider == "") {
@@ -556,14 +549,11 @@ function getAuthProvider($freedomctx = "")
 
 function getAuthProviderList($freedomctx = "")
 {
-    global $pubdir;
-    
     return preg_split("/\s*,\s*/", getAuthProvider($freedomctx));
 }
 
 function getAuthTypeParams($freedomctx = "")
 {
-    global $pubdir;
     $freedom_authtypeparams = getDbAccessValue('freedom_authtypeparams');
     if (!is_array($freedom_authtypeparams)) {
         throw new Dcp\Exception('FILE0006');
@@ -578,8 +568,6 @@ function getAuthTypeParams($freedomctx = "")
 
 function getAuthParam($freedomctx = "", $provider = "")
 {
-    global $pubdir;
-    
     if ($provider == "") return array();
     $freedom_providers = getDbAccessValue('freedom_providers');
     if (!is_array($freedom_providers)) {
@@ -603,8 +591,7 @@ function getAuthParam($freedomctx = "", $provider = "")
  */
 function getWshCmd($nice = false, $userid = 0, $sudo = false)
 {
-    $freedomctx = getFreedomContext(); // choose when several databases
-    $wsh = sprintf("export freedom_context=%s;", escapeshellarg($freedomctx));
+    $wsh = '';
     if ($nice) $wsh.= "nice -n +10 ";
     if ($sudo) $wsh.= "sudo ";
     $wsh.= escapeshellarg(DEFAULT_PUBDIR) . "/wsh.php  ";
@@ -863,7 +850,6 @@ function getLcdate()
  */
 function getLocaleConfig($core_lang = '')
 {
-    
     if (empty($core_lang)) {
         $core_lang = getParam("CORE_LANG", "fr_FR");
     }
@@ -878,16 +864,33 @@ function getLocaleConfig($core_lang = '')
     }
     return $lang[$core_lang];
 }
+
+function getLocales()
+{
+    static $locales = null;
+    
+    if ($locales === null) {
+        $lang = array();
+        include ('CORE/lang.php');
+        $locales = $lang;
+    }
+    return $locales;
+}
 /**
- *
- * @param string $lang
+ * use new locale language
+ * @param string $lang like fr_FR, en_US
+ * @throws \Dcp\Core\Exception
  */
 function setLanguage($lang)
 {
-    global $pubdir;
+    global $action;
     
     if (!$lang) {
         return;
+    }
+    if ($action) {
+        $action->parent->param->SetVolatile("CORE_LANG", $lang);
+        $action->parent->setVolatileParam("CORE_LANG", $lang);
     }
     $lang.= ".UTF-8";
     if (setlocale(LC_MESSAGES, $lang) === false) {
@@ -898,8 +901,10 @@ function setLanguage($lang)
     setlocale(LC_TIME, $lang);
     //print $action->Getparam("CORE_LANG");
     $number = 0;
-    if (is_file("$pubdir/locale/.gettextnumber")) {
-        $number = trim(@file_get_contents("$pubdir/locale/.gettextnumber"));
+    $numberFile = sprintf("%s/locale/.gettextnumber", DEFAULT_PUBDIR);
+    
+    if (is_file($numberFile)) {
+        $number = trim(@file_get_contents($numberFile));
         if ($number == "") {
             $number = 0;
         }
@@ -909,7 +914,7 @@ function setLanguage($lang)
     
     putenv("LANG=" . $lang); // needed for old Linux kernel < 2.4
     putenv("LANGUAGE="); // no use LANGUAGE variable
-    bindtextdomain($td, "$pubdir/locale");
+    bindtextdomain($td, sprintf("%s/locale", DEFAULT_PUBDIR));
     bind_textdomain_codeset($td, 'utf-8');
     textdomain($td);
     mb_internal_encoding('UTF-8');

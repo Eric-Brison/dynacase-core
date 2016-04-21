@@ -63,8 +63,7 @@ function getenumitems(Action & $action)
         $oa = $fam->getAttribute($enumId);
         $enums = DocEnum::getFamilyEnums($fam->id, $oa->id);
         
-        $lang = array();
-        include_once ('CORE/lang.php');
+        $lang = getLocales();
         
         $items = array();
         
