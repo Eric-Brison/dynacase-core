@@ -76,7 +76,7 @@ function getpopupfamdetail(Action & $action, $docid)
         
         "viewattr" => array(
             "descr" => _("View attributes") ,
-            "url" => "$surl&app=DOCADMIN&action=FAMILY_VIEWATTRIBUTES&id=$docid",
+            "url" => "admin.php?app=DOCADMIN&action=FAMILY_VIEWATTRIBUTES&id=$docid",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
