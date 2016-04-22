@@ -146,7 +146,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         exportfld(self::getAction() , $tmpFolder->id, 0, $exportOutput);
         
         $this->assertTrue(file_exists($exportOutput) , sprintf('Export File "%s" nor create', $exportOutput));
-
+        
         $h = fopen($exportOutput, "r");
         
         $keys = array();
@@ -167,7 +167,6 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         //unlink($exportOutput);
         
     }
-
     /**
      * Test that exported documents have no param columns
      * @param array $data test specification
@@ -343,8 +342,9 @@ class TestExportCsv extends TestCaseDcpCommonFamily
                 "enclosure" => "'",
                 "profil" => array(
                     "TST_PROFEXPORT" => array(
-                        4 => "view=GDEFAULT",
-                        5 => "view=GADMIN"
+                        2 => ":useAccount",
+                        4 => "view=all",
+                        5 => "view=gadmin"
                     )
                 )
             )

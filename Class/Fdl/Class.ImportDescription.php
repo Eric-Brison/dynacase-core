@@ -17,7 +17,8 @@ include_once ("FDL/import_file.php");
 
 class importDocumentDescription
 {
-    
+    const attributePrefix = ":ATTR:";
+    const documentPrefix = ":DOC:";
     private $dirid = 0;
     private $analyze = false;
     private $policy = "update";
@@ -73,6 +74,7 @@ class importDocumentDescription
      * @var array
      */
     private $knownLogicalNames = array();
+    private $userIds = [];
     /**
      * @param string $importFile
      * @throws Dcp\Exception
@@ -1463,6 +1465,8 @@ class importDocumentDescription
                         $pdoc->disableEditControl(); // need because new profil is not enable yet
                         $this->tcr[$this->nLine]["err"] = $pdoc->modify();
                     }
+                    
+                    $defaultUseType = trim($data[2]);
                     $optprof = strtoupper(trim($data[3]));
                     $initialPerms = array();
                     $profilingHasChanged = false;
@@ -1479,19 +1483,16 @@ class importDocumentDescription
                         if (preg_match("/([^=]+)=(.*)/", $acl, $reg)) {
                             $tuid = explode(",", $reg[2]);
                             $aclname = trim($reg[1]);
-                            if (substr($aclname, 0, 1) == "-") {
-                                $negative = true;
-                                $aclname = substr($aclname, 1);
-                            } else $negative = false;
+                            
                             $perr = "";
                             if ($optprof == "DELETE") {
                                 foreach ($tuid as $uid) {
-                                    $perr.= $pdoc->delControl(trim($uid) , $aclname, $negative);
+                                    $perr.= $pdoc->delControl($this->getProfilUid($defaultUseType, $uid) , $aclname);
                                     $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("delete %s for %s") , $aclname, $uid);
                                 }
                             } else { // the "ADD" by default
                                 foreach ($tuid as $uid) {
-                                    $perr.= $pdoc->addControl(trim($uid) , $aclname, $negative);
+                                    $perr.= $pdoc->addControl($this->getProfilUid($defaultUseType, $uid) , $aclname);
                                     $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("add %s for %s") , $aclname, $uid);
                                 }
                             }
@@ -1513,6 +1514,59 @@ class importDocumentDescription
             }
         }
         if ($this->tcr[$this->nLine]["err"]) $this->tcr[$this->nLine]["action"] = "ignored";
+    }
+    
+    protected function getProfilUid($defaultReferenceType, $reference)
+    {
+        
+        $reference = trim($reference);
+        $this->extractAccount($defaultReferenceType, $reference, $type, $value);
+        switch ($type) {
+            case ':useAccount':
+                return $this->getUserId($value);
+                break;
+
+            case ':useAttribute':
+                return self::attributePrefix . $value;
+                break;
+
+            case ':useDocument':
+                return self::documentPrefix . $value;
+                break;
+
+            default:
+                return $value;
+        }
+    }
+    
+    private function extractAccount($defaultReferenceType, $reference, &$type, &$value)
+    {
+        if (preg_match('/^attribute\((.*)\)$/', $reference, $reg)) {
+            $type = ":useAttribute";
+            $value = trim($reg[1]);
+        } elseif (preg_match('/^account\((.*)\)$/', $reference, $reg)) {
+            $type = ":useAccount";
+            $value = trim($reg[1]);
+        } elseif (preg_match('/^document\((.*)\)$/', $reference, $reg)) {
+            $type = ":useDocument";
+            $value = trim($reg[1]);
+        } else {
+            $value = $reference;
+            $type = $defaultReferenceType;
+        }
+    }
+    
+    protected function getUserId($login)
+    {
+        $login = mb_strtolower($login);
+        if (!isset($this->userIds[$login])) {
+            simpleQuery("", sprintf("select id from users where login='%s'", pg_escape_string($login)) , $uid, true, true);
+            if (!$uid) {
+                throw new \Dcp\Exception("PRFL0204", $login);
+            }
+            $this->userIds[$login] = $uid;
+        }
+        return $this->userIds[$login];
     }
     /**
      * analyze KEYS

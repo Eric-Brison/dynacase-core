@@ -55,7 +55,12 @@ class ErrorCodePRFL
      * @errorCode
      * user must be exists for static profil
      */
-    const PRFL0103 = 'user "%s" not found in acl for "%s" static profil';
+    const PRFL0103 = 'account "%s" not found in acl for "%s" static profil';
+    /**
+     * @errorCode
+     * user must be exists for static profil
+     */
+    const PRFL0104 = 'user login "%s" not found in acl for "%s" static profil';
     /**
      * @errorCode
      * acl must reference an user or an attribute in dynamic profil
@@ -76,4 +81,8 @@ class ErrorCodePRFL
      *  dynamic profil must reference a valid family document
      */
     const PRFL0203 = 'unknow dynamic reference "%s" for "%s" dynamic profil';
+    /**
+     * @errorCode user must be exists for static profil
+     */
+    const PRFL0204 = 'user login "%s" not found in acl for  profil';
 }

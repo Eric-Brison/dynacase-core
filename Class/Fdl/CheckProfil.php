@@ -41,6 +41,8 @@ class CheckProfil extends CheckData
      * @var string
      */
     private $modifier = '';
+    
+    private $defaultAccountType = '';
     /**
      * @var array
      */
@@ -50,6 +52,13 @@ class CheckProfil extends CheckData
         'delete',
         'set'
     );
+    
+    private $availablesDefaultType = array(
+        ':useAccount',
+        ':useDocument',
+        ':useAttribute'
+    );
+    private $userIds = [];
     /**
      * @param array $data
      * @return CheckProfil
@@ -57,10 +66,11 @@ class CheckProfil extends CheckData
     function check(array $data, &$extra = null)
     {
         
-        if (!empty($data[2])) {
+        if (!empty($data[2]) && !in_array($data[2], $this->availablesDefaultType)) {
             $this->prfName = $data[2];
             $this->docName = $data[1];
         } else {
+            $this->defaultAccountType = isset($data[2]) ? trim($data[2]) : null;
             $this->prfName = isset($data[1]) ? $data[1] : null;
             for ($i = 4; $i < count($data); $i++) {
                 $this->acls[] = $data[$i];
@@ -143,11 +153,11 @@ class CheckProfil extends CheckData
             $uid = trim($uid);
             if ($uid) {
                 if ($this->profil->getRawValue("dpdoc_famid")) {
-                    if (!$this->checkUser($uid)) {
+                    if (!$this->checkAccount($uid)) {
                         $this->checkAttribute($uid);
                     }
                 } else {
-                    if (!$this->checkUser($uid)) {
+                    if (!$this->checkAccount($uid)) {
                         $this->addError(ErrorCode::getError('PRFL0103', $uid, $this->prfName));
                     }
                 }
@@ -157,22 +167,71 @@ class CheckProfil extends CheckData
         }
     }
     
-    private function checkUser($uid)
+    private function checkAccount($reference)
     {
-        
         $findUser = false;
-        if (ctype_digit($uid)) {
-            $findUser = User::getDisplayName($uid);
-        } else {
-            // search document
-            $tu = getTDoc(getDbAccess() , $uid);
-            if ($tu) {
-                $findUser = ($tu["us_whatid"] != '');
-            }
+        $this->extractAccount($reference, $type, $value);
+        switch ($type) {
+            case ':useAccount':
+                $findUser = $this->getUserIdFromLogin($value);
+                if (!$findUser) {
+                    $this->addError(ErrorCode::getError('PRFL0104', $value, $this->prfName));
+                }
+                break;
+
+            case ':useDocument':
+                $tu = getTDoc(getDbAccess() , $value);
+                if ($tu) {
+                    $findUser = ($tu["us_whatid"] != '');
+                }
+                break;
+
+            case ':useAttribute':
+                $this->checkAttribute($value);
+                $findUser = true;
+                break;
+
+            default:
+                if (ctype_digit($reference)) {
+                    $findUser = Account::getDisplayName($reference);
+                } else {
+                    // search document
+                    $tu = getTDoc(getDbAccess() , $reference);
+                    if ($tu) {
+                        $findUser = ($tu["us_whatid"] != '');
+                    }
+                }
         }
+        
         return $findUser;
     }
     
+    private function extractAccount($reference, &$type, &$value)
+    {
+        if (preg_match('/^attribute\((.*)\)$/', $reference, $reg)) {
+            $type = ":useAttribute";
+            $value = strtolower(trim($reg[1]));
+        } elseif (preg_match('/^account\((.*)\)$/', $reference, $reg)) {
+            $type = ":useAccount";
+            $value = mb_strtolower(trim($reg[1]));
+        } elseif (preg_match('/^document\((.*)\)$/', $reference, $reg)) {
+            $type = ":useDocument";
+            $value = trim($reg[1]);
+        } else {
+            $value = $reference;
+            $type = $this->defaultAccountType;
+        }
+    }
+    
+    private function getUserIdFromLogin($login)
+    {
+        $login = mb_strtolower($login);
+        if (!isset($this->userIds[$login])) {
+            simpleQuery("", sprintf("select login from users where login='%s'", pg_escape_string($login)) , $uid, true, true);
+            $this->userIds[$uid] = $uid;
+        }
+        return $this->userIds[$login];
+    }
     private function checkAttribute($aid)
     {
         $dynName = $this->profil->getRawValue("dpdoc_famid");

@@ -401,8 +401,9 @@ class TestExportCollection extends TestCaseDcpCommonFamily
                 '"',
                 array(
                     "TST_PRF_EXPCOLL" => array(
-                        4 => "view=UEXPCOLL1",
-                        5 => "edit=UEXPCOLL2"
+                        2 => ":useAccount",
+                        4 => "view=uexpcoll1",
+                        5 => "edit=uexpcoll2"
                     ) ,
                     "TST_EXPCOLL_DOC1" => array(
                         2 => "TST_PRF_EXPCOLL"
