@@ -9495,11 +9495,14 @@ create unique index i_docir on doc(initid, revision);";
         return $res;
     }
     /**
-     * set display values for general searches
+     * get display values for general searches
      *
-     * @param string $searchAttrId attribut where store extra search values
-     *
+     * @param bool $withLocale use all defined locale
      * @return string
+     * @throws \Dcp\Core\Exception
+     * @throws \Dcp\Exception
+     * @throws \Dcp\Fmtc\Exception
+     *
      */
     protected function getExtraSearchableDisplayValues($withLocale = true)
     {
@@ -9525,20 +9528,23 @@ create unique index i_docir on doc(initid, revision);";
         }
         
         if ($oneAttributeAtLeast) {
-            $a = null;
-            $enumAttr = new \NormalAttribute("", "", "", "", "", "", "", "", "", "", "", "", $a, "", "", "");
             $datesValues = array_unique($datesValues);
+            $currentLocale = "";
             if ($withLocale) {
+                $currentLocale = getParam("CORE_LANG", "fr_FR");
                 $lang = getLocales();
+                $locales = array_keys($lang);
+                // set current at then end to get same locale when function finished
+                unset($locales[$currentLocale]);
+                $locales[] = $currentLocale;
             } else {
-                $lang = array(
+                $locales = array(
                     "current"
                 );
             }
-            foreach ($lang as $klang => $currentLang) {
+            foreach ($locales as $klang) {
                 if ($withLocale) {
                     setLanguage($klang);
-                    $enumAttr->resetEnum();
                 }
                 $moreSearchValues[] = $this->getTitle();
                 $r = $fmt->render();
@@ -9568,21 +9574,22 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         }
-        $custom=$this->getCustomSearchValues();
-        if ($custom ) {
+        
+        $custom = $this->getCustomSearchValues();
+        if ($custom) {
             if (!is_array($custom)) {
-                throw new \Dcp\Exception("DOC0126",gettype($custom));
+                throw new \Dcp\Exception("DOC0126", gettype($custom));
             }
-            $moreSearchValues=array_merge($moreSearchValues,$custom) ;
+            $moreSearchValues = array_merge($moreSearchValues, $custom);
         }
         return implode("£", array_unique($moreSearchValues));
     }
-
     /**
      * @api Hook to add values used in general searches
      * @return string
      */
-    protected function getCustomSearchValues() {
+    protected function getCustomSearchValues()
+    {
         return [];
     }
 }

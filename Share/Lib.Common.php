@@ -909,6 +909,10 @@ function setLanguage($lang)
             $number = 0;
         }
     }
+    // Reset enum traduction cache
+    $a = null;
+    $enumAttr = new \NormalAttribute("", "", "", "", "", "", "", "", "", "", "", "", $a, "", "", "");
+    $enumAttr->resetEnum();
     
     $td = "main-catalog$number";
     
