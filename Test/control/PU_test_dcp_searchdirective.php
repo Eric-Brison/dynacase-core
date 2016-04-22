@@ -32,6 +32,11 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
      */
     public function testGeneralFilter($filter, array $expectedDocName)
     {
+        /*$sql = sprintf("select name, tst_rel1, svalues, fulltext from family.TST_FULLSEARCHFAM1");
+        simpleQuery("", $sql, $ret);
+        print_r2($sql);
+        print_r2($ret);
+        exit;*/
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         if ($filter) $s->addGeneralFilter($filter);
         $s->setObjectReturn(true);
@@ -48,7 +53,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         /**
          * @var \Doc $doc
          */
-        foreach ($dl as $docid=>$doc) {
+        foreach ($dl as $docid => $doc) {
             $this->assertEquals($expectedDocName[$index], $doc->name, print_r($s->getSearchInfo() , true));
             $this->assertEquals($doc->id, $docid, "document key is not correct");
             $index++;
@@ -76,7 +81,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         /**
          * @var \Doc $doc
          */
-        foreach ($dl as $docid=>$doc) {
+        foreach ($dl as $docid => $doc) {
             $this->assertEquals($expectedDocName[$index], $doc["name"]);
             $this->assertEquals($doc["id"], $docid, "document key is not correct");
             $index++;
@@ -1058,6 +1063,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL5",
                     "TST_FULL6",
                     "TST_FULL7",
+                    "TST_FULL1",
                     "TST_FULL8"
                 )
             ) ,
@@ -1195,6 +1201,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL5",
                     "TST_FULL6",
                     "TST_FULL7",
+                    "TST_FULL1",
                     "TST_FULL8"
                 )
             ) ,
@@ -1291,15 +1298,17 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL3",
                     "TST_FULL4",
                     "TST_FULL6",
-                    "TST_FULL9"
+                    "TST_FULL7",
+                    "TST_FULL9",
+                    "TST_FULL10"
                 )
-            ),
+            ) ,
             array(
                 '2012-01-15',
                 array(
                     "TST_FULL4"
                 )
-            ),
+            ) ,
             array(
                 '2012-01',
                 array(
@@ -1312,38 +1321,198 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL9",
                     "TST_FULL1",
                     "TST_FULL8",
-                    "TST_FULL10",
+                    "TST_FULL10"
+                )
+            ) ,
+            array(
+                'janvier',
+                array(
+                    "TST_FULL3",
+                    "TST_FULL4",
+                    "TST_FULL5",
+                    "TST_FULL6",
+                    "TST_FULL7",
+                    "TST_FULL2",
+                    "TST_FULL9",
+                    "TST_FULL1",
+                    "TST_FULL8",
+                    "TST_FULL10"
+                )
+            ) ,
+            array(
+                'février',
+                array(
                     "TST_FULL11"
                 )
-            ),
+            ) ,
+            array(
+                'february',
+                array(
+                    "TST_FULL11"
+                )
+            ) ,
+            array(
+                '22/02/2012',
+                array(
+                    "TST_FULL11"
+                )
+            ) ,
+            array(
+                '*22/2012*',
+                array(
+                    "TST_FULL11"
+                )
+            ) ,
+            array(
+                '*02/2012',
+                array(
+                    "TST_FULL11"
+                )
+            ) ,
+            array(
+                '02/22/2012',
+                array(
+                    "TST_FULL11"
+                )
+            ) ,
             array(
                 '2012-01-15 chiens',
                 array(
                     "TST_FULL4"
                 )
-            ),
+            ) ,
             array(
                 '2012 15 01 chiens',
                 array(
                     "TST_FULL4"
                 )
-            ),
+            ) ,
             array(
                 '2012/03/05 john',
                 array(
                     "TST_FULL10"
                 )
-            ),
+            ) ,
             array(
                 '06 04 2013 john doe',
                 array(
                     "TST_FULL10"
                 )
-            ),
+            ) ,
             array(
-                '59 356 2012 01',
+                '59 356 2012 02',
                 array(
                     "TST_FULL11"
+                )
+            ) ,
+            array(
+                'Vert',
+                array(
+                    "TST_FULL2",
+                    "TST_FULL9"
+                )
+            ) ,
+            array(
+                'Rouge',
+                array(
+                    "TST_FULL3",
+                    "TST_FULL4",
+                    "TST_FULL5",
+                    "TST_FULL6",
+                    "TST_FULL7",
+                    "TST_FULL1",
+                    "TST_FULL8"
+                )
+            ) ,
+            array(
+                'Bleu',
+                array(
+                    "TST_FULL3"
+                )
+            ) ,
+            array(
+                'march 2016',
+                array(
+                    "TST_FULL2",
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
+                'march july 2016 2017',
+                array(
+                    "TST_FULL2"
+                )
+            ) ,
+            array(
+                'mars juillet 2016 2017',
+                array(
+                    "TST_FULL2"
+                )
+            ) ,
+            array(
+                'printemps',
+                array(
+                    "TST_FULL3",
+                    "TST_FULL4"
+                )
+            ) ,
+            array(
+                'Chien rouge en été et printemps',
+                array(
+                    "TST_FULL4"
+                )
+            ) ,
+            array(
+                'D1 Premier',
+                array(
+                    "TST_FULL5",
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
+                'A2 canin',
+                array(
+                    "TST_FULL4",
+                    "TST_FULL7",
+                    "TST_FULL10"
+                )
+            ) ,
+            array(
+                'A2 canin C1 deuxième',
+                array(
+                    "TST_FULL4",
+                    "TST_FULL7",
+                    "TST_FULL10"
+                )
+            ) ,
+            array(
+                'A2 canin C1 deuxième A4 canasson',
+                array(
+                    "TST_FULL7",
+                    "TST_FULL10"
+                )
+            ) ,
+            array(
+                'C1 A2 A3 canin C1 deuxième A4 canasson',
+                array(
+                    "TST_FULL10"
+                )
+            ) ,
+            array(
+                '*Premier',
+                array(
+                    "TST_FULL5",
+                    "TST_FULL1"
+                )
+            ) ,
+            array(
+                'C1 Deuxième',
+                array(
+                    "TST_FULL4",
+                    "TST_FULL5",
+                    "TST_FULL7",
+                    "TST_FULL2",
+                    "TST_FULL10"
                 )
             )
         );
@@ -1386,6 +1555,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 array(
                     "TST_FULL4",
                     "TST_FULL3",
+                    "TST_FULL7",
                     "TST_FULL6"
                 )
             ) ,
