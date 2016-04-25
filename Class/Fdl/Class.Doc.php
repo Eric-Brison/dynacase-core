@@ -6998,7 +6998,6 @@ create unique index i_docir on doc(initid, revision);";
         
         return $laygen;
     }
-    // --------------------------------------------------------------------
     
     /**
      * default construct layout for view card containt
@@ -7014,8 +7013,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->viewattr($target, $ulink, $abstract, $viewhidden);
         $this->viewprop($target, $ulink, $abstract);
     }
-    // --------------------------------------------------------------------
-    
+
     /**
      * construct layout for view card containt
      *
@@ -7024,6 +7022,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $ulink if false hyperlink are not generated
      * @param bool $abstract if true only abstract attribute are generated
      * @param bool $onlyopt if true only optional attributes are displayed
+     * @throws \Dcp\Exception
      */
     function viewbodycard($target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
     {
@@ -9529,7 +9528,6 @@ create unique index i_docir on doc(initid, revision);";
         
         if ($oneAttributeAtLeast) {
             $datesValues = array_unique($datesValues);
-            $currentLocale = "";
             if ($withLocale) {
                 $currentLocale = getParam("CORE_LANG", "fr_FR");
                 $lang = getLocales();
