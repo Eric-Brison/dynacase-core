@@ -19,6 +19,8 @@ class ExportDocument
     protected $verifyAttributeAccess = false;
     protected $attributeGrants = array();
     protected $noAccessText = \FormatCollection::noAccessText;
+    
+    private $logins = [];
     /**
      * Use when cannot access attribut value
      * Due to visibility "I"
@@ -62,7 +64,9 @@ class ExportDocument
     {
         $this->alreadyExported = array();
     }
-    
+    /**
+     * @return array
+     */
     public function getTrans()
     {
         static $htmlTransMapping = false;
@@ -75,14 +79,13 @@ class ExportDocument
         return $htmlTransMapping;
     }
     
-    protected function getUserLogicName($uid)
+    protected function getUserLogin($uid)
     {
-        $u = new \Account("", $uid);
-        if ($u->isAffected()) {
-            $du = getTDoc($u->dbaccess, $u->fid);
-            if (($du["name"] != "") && ($du["us_whatid"] == $uid)) return $du["name"];
+        if (!isset($this->logins[$uid])) {
+            simpleQuery("", sprintf("select login from users where id=%d", $uid) , $login, true, true);
+            $this->logins[$uid] = $login ? $login : $uid;
         }
-        return $uid;
+        return $this->logins[$uid];
     }
     /**
      * @param resource $fout
@@ -92,7 +95,7 @@ class ExportDocument
     {
         if (!$docid) return;
         // import its profile
-        $doc = new_Doc("", $docid); // needed to have special acls
+        $doc = \new_Doc("", $docid); // needed to have special acls
         $doc->acls[] = "viewacl";
         $doc->acls[] = "modifyacl";
         if ($doc->name != "") $name = $doc->name;
@@ -101,7 +104,7 @@ class ExportDocument
         $dbaccess = getDbAccess();
         $q = new \QueryDb($dbaccess, "DocPerm");
         $q->AddQuery(sprintf("docid=%d", $doc->profid));
-        $q->order_by="userid";
+        $q->order_by = "userid";
         $acls = $q->Query(0, 0, "TABLE");
         
         $tpu = array();
@@ -111,15 +114,20 @@ class ExportDocument
                 $up = $va["upacl"];
                 $uid = $va["userid"];
                 
+                if ($uid >= STARTIDVGROUP) {
+                    $qvg = new \QueryDb($dbaccess, "VGroup");
+                    $qvg->AddQuery(sprintf("num=%d", $uid));
+                    $tvu = $qvg->Query(0, 1, "TABLE");
+                    $uid = sprintf("attribute(%s)", $tvu[0]["id"]);
+                } else {
+                    $uid = $this->getUserLogin($uid);
+                    if (preg_match('/^attribute\(.*\)$/', $uid)) {
+                        $uid = sprintf("account(%s)", $uid);
+                    }
+                }
                 foreach ($doc->acls as $acl) {
                     $bup = ($doc->ControlUp($up, $acl) == "");
                     if ($bup) {
-                        if ($uid >= STARTIDVGROUP) {
-                            $qvg = new \QueryDb($dbaccess, "VGroup");
-                            $qvg->AddQuery(sprintf("num=%d", $uid));
-                            $tvu = $qvg->Query(0, 1, "TABLE");
-                            $uid = $tvu[0]["id"];
-                        }
                         
                         $tpu[] = $uid;
                         if ($bup) $tpa[] = $acl;
@@ -140,7 +148,12 @@ class ExportDocument
                     $qvg = new \QueryDb($dbaccess, "VGroup");
                     $qvg->AddQuery(sprintf("num=%d", $uid));
                     $tvu = $qvg->Query(0, 1, "TABLE");
-                    $uid = $tvu[0]["id"];
+                    $uid = sprintf("attribute(%s)", $tvu[0]["id"]);
+                } else {
+                    $uid = $this->getUserLogin($uid);
+                    if (preg_match('/^attribute\(.*\)$/', $uid)) {
+                        $uid = sprintf("account(%s)", $uid);
+                    }
                 }
                 $tpa[] = $aAcl["acl"];
                 $tpu[] = $uid;
@@ -151,11 +164,10 @@ class ExportDocument
             $data = array(
                 "PROFIL",
                 $name,
-                "",
+                ":useAccount",
                 ""
             );
             foreach ($tpu as $ku => $uid) {
-                if ($uid > 0) $uid = $this->getUserLogicName($uid);
                 //fputs_utf8($fout, ";" . $tpa[$ku] . "=" . $uid);
                 $data[] = sprintf("%s=%s", $tpa[$ku], $uid);
             }
@@ -340,7 +352,7 @@ class ExportDocument
                             $index = $matches[6] == "-1" ? 0 : $matches[6];
                             $attrid = $matches[5];
                         }
-                        $doc = new_Doc(getDbAccess() , $docid);
+                        $doc = \new_Doc(getDbAccess() , $docid);
                         $attr = $doc->getAttribute($attrid);
                         $tfiles = $doc->vault_properties($attr);
                         $f = $tfiles[$index];
@@ -384,7 +396,7 @@ class ExportDocument
                 if (!$name) $name = $profid;
                 if (!isset($tdoc[$profid])) {
                     $tdoc[$profid] = true;
-                    $pdoc = new_doc($dbaccess, $profid);
+                    $pdoc = \new_Doc($dbaccess, $profid);
                     $this->csvExport($pdoc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
                 }
                 $data = array(

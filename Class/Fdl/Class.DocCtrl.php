@@ -567,37 +567,49 @@ class DocCtrl extends DocLDAP
         }
         return $err;
     }
-    
-    private function getUid($uid)
+    /**
+     * If reference is not a number => try to get user id from document logical name
+     * if not found try to get user id from attribute
+     * @param string $accountReference
+     * @return string
+     */
+    private function getUid($accountReference)
     {
-        if (!is_numeric($uid)) {
-            $uiid = getIdFromName($this->dbaccess, $uid);
+        // Test logical name
+        if (!is_numeric($accountReference) && strpos($accountReference, importDocumentDescription::attributePrefix) !== 0) {
+            if (strpos($accountReference, importDocumentDescription::documentPrefix) === 0) {
+                $accountReference = substr($accountReference, strlen(importDocumentDescription::documentPrefix));
+            }
+            $uiid = getIdFromName($this->dbaccess, $accountReference);
             if ($uiid) {
                 $udoc = new_Doc($this->dbaccess, $uiid);
-                if ($udoc->isAlive()) $uid = $udoc->getRawValue("us_whatid");
+                if ($udoc->isAlive()) $accountReference = $udoc->getRawValue("us_whatid");
             }
         }
-        
-        if (!is_numeric($uid)) {
+        // Test  account attribute reference
+        if (!is_numeric($accountReference) && strpos($accountReference, importDocumentDescription::documentPrefix) !== 0) {
+            if (strpos($accountReference, importDocumentDescription::attributePrefix) === 0) {
+                $accountReference = substr($accountReference, strlen(importDocumentDescription::attributePrefix));
+            }
             // logical name
-            $vg = new VGroup($this->dbaccess, strtolower($uid));
+            $vg = new VGroup($this->dbaccess, strtolower($accountReference));
             if (!$vg->isAffected()) {
                 // try to add
                 $ddoc = new_Doc($this->dbaccess, $this->getRawValue("dpdoc_famid"));
-                $oa = $ddoc->getAttribute($uid);
+                $oa = $ddoc->getAttribute($accountReference);
                 if (($oa->type == "docid") || ($oa->type == "account")) {
                     $vg->id = $oa->id;
                     $vg->Add();
-                    $uid = $vg->num;
+                    $accountReference = $vg->num;
                 } else {
                     //$err = sprintf(_("unknow virtual user identificateur %s") , $uid);
                     
                 }
             } else {
-                $uid = $vg->num;
+                $accountReference = $vg->num;
             }
         }
-        return $uid;
+        return $accountReference;
     }
     /**
      * modify control for a specific user

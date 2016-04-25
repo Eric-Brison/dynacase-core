@@ -35,7 +35,7 @@ class TestProfil extends TestCaseDcpCommonFamily
         
         $this->sudo($login);
         $this->resetDocumentCache();
-        $df = new_doc(self::$dbaccess, $docName);
+        $df = \new_Doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive() , "document $docName is not alive");
         $df->setProfil($prfName);
         foreach ($aclAttendees as $acl => $expect) {
@@ -54,7 +54,7 @@ class TestProfil extends TestCaseDcpCommonFamily
     public function testProfilDynamicChange($docName, $prfName, $login, $newPrfAcl, $aclAttendees)
     {
         
-        $df = new_doc(self::$dbaccess, $docName);
+        $df = \new_Doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive() , "document $docName is not alive");
         $df->setProfil($prfName);
         
@@ -62,7 +62,7 @@ class TestProfil extends TestCaseDcpCommonFamily
         $this->sudo($login);
         
         $this->resetDocumentCache();
-        $df = new_doc(self::$dbaccess, $docName);
+        $df = \new_Doc(self::$dbaccess, $docName);
         
         foreach ($aclAttendees as $acl => $expect) {
             $result = ($df->Control($acl) == "");
@@ -80,7 +80,7 @@ class TestProfil extends TestCaseDcpCommonFamily
     public function testSearchControlled($docName, $prfName, $login, $newPrfAcl, $aclAttendees)
     {
         
-        $df = new_doc(self::$dbaccess, $docName);
+        $df = \new_Doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive() , "document $docName is not alive");
         $df->setProfil($prfName);
         
@@ -88,7 +88,7 @@ class TestProfil extends TestCaseDcpCommonFamily
         $this->sudo($login);
         
         $this->resetDocumentCache();
-        $df = new_doc(self::$dbaccess, $docName);
+        $df = \new_Doc(self::$dbaccess, $docName);
         
         foreach ($aclAttendees as $acl => $expect) {
             $result = ($df->Control($acl) == "");
@@ -120,11 +120,11 @@ class TestProfil extends TestCaseDcpCommonFamily
      */
     public function testProfilRecomputeProfiledDocuments($data)
     {
-        $profile = new_Doc('', $data['profile']);
+        $profile = \new_Doc('', $data['profile']);
         simpleQuery('', sprintf('DELETE FROM dochisto WHERE id = %d', $profile->initid));
         $this->importCsvData($data['import']);
         $this->resetDocumentCache();
-        $profile = new_Doc('', $data['profile']);
+        $profile = \new_Doc('', $data['profile']);
         $histo = $profile->getHisto();
         $hasRecomputedProfileedDocuments = false;
         foreach ($histo as $entry) {
@@ -416,6 +416,48 @@ class TestProfil extends TestCaseDcpCommonFamily
             array(
                 
                 "TST_DOCPRFBASIC",
+                "TST_PRFJANE_ACCOUNT",
+                "john",
+                array(
+                    "view" => true,
+                    "edit" => false,
+                    "delete" => false
+                )
+            ) ,
+            array(
+                
+                "TST_DOCPRFBASIC",
+                "TST_PRFJANE_DOCUMENT",
+                "john",
+                array(
+                    "view" => true,
+                    "edit" => false,
+                    "delete" => false
+                )
+            ) ,
+            array(
+                "TST_DOCPRFBASIC",
+                "TST_PRFJANE_MIXED",
+                "john",
+                array(
+                    "view" => true,
+                    "edit" => false,
+                    "delete" => false
+                )
+            ) ,
+            array(
+                "TST_DOCPRFBASIC",
+                "TST_PRFJANE_MIXEDNOTHING",
+                "john",
+                array(
+                    "view" => true,
+                    "edit" => false,
+                    "delete" => false
+                )
+            ) ,
+            array(
+                
+                "TST_DOCPRFBASIC",
                 "TST_PRFJANE",
                 "jane",
                 array(
@@ -425,7 +467,6 @@ class TestProfil extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                
                 "TST_DOCPRFUSERJANE",
                 "TST_PRFDYNUSER",
                 "jane",
@@ -433,6 +474,41 @@ class TestProfil extends TestCaseDcpCommonFamily
                     "view" => true,
                     "edit" => true,
                     "delete" => false
+                )
+            ) ,
+            array(
+                "TST_DOCPRFUSERJANE",
+                "TST_PRFDYNUSER_ATTR",
+                "jane",
+                array(
+                    "view" => true,
+                    "edit" => true,
+                    "delete" => false,
+                    "send" => true
+                )
+            ) ,
+            array(
+                "TST_DOCPRFUSERJANE",
+                "TST_PRFDYNUSER_ACCOUNT",
+                "jane",
+                array(
+                    "view" => true,
+                    "edit" => true,
+                    "delete" => false,
+                    "send" => true,
+                    "unlock" => false
+                )
+            ) ,
+            array(
+                "TST_DOCPRFUSERJANE",
+                "TST_PRFDYNUSER_ACCOUNT",
+                "john",
+                array(
+                    "view" => false,
+                    "edit" => true,
+                    "delete" => false,
+                    "send" => true,
+                    "unlock" => true
                 )
             ) ,
             array(
