@@ -1887,6 +1887,10 @@ create unique index i_docir on doc(initid, revision);";
                 $this->oooFormater = null;
                 $this->formaterLevel = 0;
                 $this->otherFormatter = array();
+                $this->mid = 0;
+                $this->svalues = null;
+                $this->vidNoSendTextToEngine = array();
+                $this->textsend = array();
             }
             $this->isset = true;
             $this->postAffect($array, $more, $reset);
@@ -6998,7 +7002,6 @@ create unique index i_docir on doc(initid, revision);";
         
         return $laygen;
     }
-    
     /**
      * default construct layout for view card containt
      *
@@ -7013,7 +7016,6 @@ create unique index i_docir on doc(initid, revision);";
         $this->viewattr($target, $ulink, $abstract, $viewhidden);
         $this->viewprop($target, $ulink, $abstract);
     }
-
     /**
      * construct layout for view card containt
      *
