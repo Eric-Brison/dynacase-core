@@ -83,7 +83,7 @@ class ExportDocument
     {
         if (!isset($this->logins[$uid])) {
             simpleQuery("", sprintf("select login from users where id=%d", $uid) , $login, true, true);
-            $this->logins[$uid] = $login ? $login : $uid;
+            $this->logins[$uid] = $login ? $login : 0;
         }
         return $this->logins[$uid];
     }
@@ -127,11 +127,9 @@ class ExportDocument
                 }
                 foreach ($doc->acls as $acl) {
                     $bup = ($doc->ControlUp($up, $acl) == "");
-                    if ($bup) {
-                        
+                    if ($uid && $bup) {
                         $tpu[] = $uid;
-                        if ($bup) $tpa[] = $acl;
-                        else $tpa[] = "-" . $acl;
+                        $tpa[] = $acl;
                     }
                 }
             }
@@ -155,8 +153,10 @@ class ExportDocument
                         $uid = sprintf("account(%s)", $uid);
                     }
                 }
-                $tpa[] = $aAcl["acl"];
-                $tpu[] = $uid;
+                if ($uid) {
+                    $tpa[] = $aAcl["acl"];
+                    $tpu[] = $uid;
+                }
             }
         }
         
