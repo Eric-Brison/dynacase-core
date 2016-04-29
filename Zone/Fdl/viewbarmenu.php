@@ -50,6 +50,7 @@ function viewbarmenu(Action & $action)
     $menuIndex = array(
         "visibility",
         "jsfunction",
+        "isjs",
         "submenu",
         "mwidth",
         "mheight",
@@ -78,6 +79,7 @@ function viewbarmenu(Action & $action)
                         "visibility" => false,
                         "confirm" => "false",
                         "jsfunction" => "false",
+                        "isjs" => "false",
                         "title" => _("Click to view menu") ,
                         "barmenu" => false,
                         "m" => "",
@@ -116,7 +118,7 @@ function viewbarmenu(Action & $action)
     foreach ($popup as & $elmt) {
         foreach ($elmt as $k => & $value) {
             if (is_string($value)) {
-                $value = str_replace("[", "&#091;",htmlspecialchars($value, ENT_QUOTES));
+                $value = str_replace("[", "&#091;", htmlspecialchars($value, ENT_QUOTES));
             }
         }
         unset($value);

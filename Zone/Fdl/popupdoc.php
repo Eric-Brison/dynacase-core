@@ -49,6 +49,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
         "visibility",
         "url",
         "jsfunction",
+        "isjs",
         "icon"
     );
     foreach ($tlink as $k => $v) {
@@ -65,10 +66,12 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
         if ($v["visibility"] == POPUP_INACTIVE) {
             if ($v["title"]) {
                 $v["url"] = '';
-                $v["jsfunction"] = htmlLayoutEncode(sprintf("displayWarningMsg(%s)", json_encode($v['title'])) );
+                $v["jsfunction"] = htmlLayoutEncode(sprintf("displayWarningMsg(%s)", json_encode($v['title'])));
+                $v["isjs"] = true;
             } else {
                 $v["url"] = '#';
                 $v["jsfunction"] = '';
+                $v["isjs"] = false;
             }
             $v["confirm"] = 'false';
         }
@@ -88,15 +91,20 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
             }
             
             $v["issubmenu"] = false;
-            $v["title"] = htmlLayoutEncode(mb_ucfirst($v["title"]) );
-            $v["tconfirm"] = htmlLayoutEncode(json_encode($v["tconfirm"]) );
-            $v["descr"] = htmlLayoutEncode($v["descr"] );
+            $v["title"] = htmlLayoutEncode(mb_ucfirst($v["title"]));
+            $v["tconfirm"] = htmlLayoutEncode(json_encode($v["tconfirm"]));
+            $v["descr"] = htmlLayoutEncode($v["descr"]);
             if (!isset($v["visibility"])) $v["visibility"] = "";
             if (!isset($v["confirm"])) $v["confirm"] = "";
             if (!isset($v["color"])) $v["color"] = false;
             if (!isset($v["title"])) $v["title"] = false;
             
-            if (!isset($v["jsfunction"])) $v["jsfunction"] = "";
+            if (!isset($v["jsfunction"])) {
+                $v["jsfunction"] = "";
+                $v["isjs"] = false;
+            } else {
+                $v["isjs"] = true;
+            }
             if (!isset($v["barmenu"])) $v["barmenu"] = "";
             if (!isset($v["url"])) $v["url"] = "";
             else $v["url"] = ($v["url"]);
@@ -115,8 +123,13 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
                 }
             }
             
-            if ((isset($v["jsfunction"])) && ($v["jsfunction"] != "")) $v["JSFT"] = true;
-            else $v["JSFT"] = false;
+            if ((isset($v["jsfunction"])) && ($v["jsfunction"] != "")) {
+                $v["isjs"] = true;
+                $v["JSFT"] = true;
+            } else {
+                $v["isjs"] = false;
+                $v["JSFT"] = false;
+            }
             $v["smid"] = "";
             if ((isset($v["submenu"])) && ($v["submenu"] != "")) {
                 $smid = base64_encode($v["submenu"]);
@@ -138,6 +151,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
                         "color" => false,
                         "title" => false,
                         "jsfunction" => false,
+                        "isjs" => false,
                         "barmenu" => false,
                         "url" => false,
                         "target" => false,
@@ -180,6 +194,7 @@ function popupdoc(Action & $action, $tlink, $tsubmenu = array())
     $action->lay->set("delay", microtime_diff(microtime() , $mb));
 }
 
-function htmlLayoutEncode($v) {
-   return str_replace("[", "&#091;",htmlspecialchars($v , ENT_QUOTES));
+function htmlLayoutEncode($v)
+{
+    return str_replace("[", "&#091;", htmlspecialchars($v, ENT_QUOTES));
 }
