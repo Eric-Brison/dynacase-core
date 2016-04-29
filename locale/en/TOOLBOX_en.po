@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-20 09:49+0200\n"
+"POT-Creation-Date: 2016-04-29 17:43+0200\n"
 "PO-Revision-Date: 2016-04-06 14:10+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -4161,7 +4161,13 @@ msgstr ""
 msgid "Use Ctrl-S to save and stay in edit mode"
 msgstr ""
 
+msgid "Use account reference"
+msgstr ""
+
 msgid "Use another import interface for a specific family"
+msgstr ""
+
+msgid "Use document reference"
 msgstr ""
 
 msgid "Use old file inputs compatibity form"

@@ -33,6 +33,7 @@ class ExportCollection
     
     protected $cvsSeparator = ";";
     protected $cvsEnclosure = "";
+    protected $profileAccountType = ExportDocument::useAclAccountType;
     
     protected $outputFilePath = '';
     /**
@@ -95,6 +96,14 @@ class ExportCollection
     public function setExportStatusId($exportStatusId)
     {
         $this->exportStatusId = $exportStatusId;
+    }
+    /**
+     * Type of acl reference when export profile
+     * @param string $profileAccountType
+     */
+    public function setProfileAccountType($profileAccountType)
+    {
+        $this->profileAccountType = $profileAccountType;
     }
     /**
      * Get output file name
@@ -233,6 +242,7 @@ class ExportCollection
         $exportDoc = new \Dcp\ExportDocument();
         $exportDoc->setCsvEnclosure($this->cvsEnclosure);
         $exportDoc->setCsvSeparator($this->cvsSeparator);
+        $exportDoc->setExportAccountType($this->profileAccountType);
         $exportDoc->setVerifyAttributeAccess($this->verifyAttributeAccess);
         $outDir = '';
         if ($this->exportFiles) {
@@ -373,7 +383,7 @@ class ExportCollection
         }
         
         if ($family->wid > 0) {
-            $wdoc = new_doc($dbaccess, $family->wid);
+            $wdoc = \new_doc($dbaccess, $family->wid);
             if ($wdoc->name != "") $wname = $wdoc->name;
             else $wname = $wdoc->id;
             $tattr = $wdoc->getAttributes();
@@ -485,7 +495,7 @@ class ExportCollection
         }
         
         foreach ($this->familyData as $famid => $aRow) {
-            $family = new_doc("", $famid);
+            $family = \new_doc("", $famid);
             if ($family->profid == $family->id) {
                 $exportDoc->exportProfil($this->outHandler, $family->id);
             }

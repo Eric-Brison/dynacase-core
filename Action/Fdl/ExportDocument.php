@@ -8,6 +8,8 @@ namespace Dcp;
 
 class ExportDocument
 {
+    const useAclDocumentType = ":useDocument";
+    const useAclAccountType = ":useAccount";
     
     protected $alreadyExported = array();
     protected $lattr;
@@ -19,6 +21,9 @@ class ExportDocument
     protected $verifyAttributeAccess = false;
     protected $attributeGrants = array();
     protected $noAccessText = \FormatCollection::noAccessText;
+    protected $exportAccountType = self::useAclAccountType;
+    
+    private $logicalName = [];
     
     private $logins = [];
     /**
@@ -87,6 +92,14 @@ class ExportDocument
         }
         return $this->logins[$uid];
     }
+    protected function getUserLogicalName($uid)
+    {
+        if (!isset($this->logicalName[$uid])) {
+            simpleQuery("", sprintf("select name from docread where id=(select fid from users where id = %d)", $uid) , $logicalName, true, true);
+            $this->logicalName[$uid] = $logicalName ? $logicalName : 0;
+        }
+        return $this->logicalName[$uid];
+    }
     /**
      * @param resource $fout
      * @param string|int $docid
@@ -107,8 +120,7 @@ class ExportDocument
         $q->order_by = "userid";
         $acls = $q->Query(0, 0, "TABLE");
         
-        $tpu = array();
-        $tpa = array();
+        $tAcls = array();
         if ($acls) {
             foreach ($acls as $va) {
                 $up = $va["upacl"];
@@ -120,16 +132,31 @@ class ExportDocument
                     $tvu = $qvg->Query(0, 1, "TABLE");
                     $uid = sprintf("attribute(%s)", $tvu[0]["id"]);
                 } else {
-                    $uid = $this->getUserLogin($uid);
-                    if (preg_match('/^attribute\(.*\)$/', $uid)) {
-                        $uid = sprintf("account(%s)", $uid);
+                    if ($this->exportAccountType === self::useAclDocumentType) {
+                        $uln = $this->getUserLogicalName($uid);
+                        if ($uln) {
+                            if (preg_match('/^attribute\(.*\)$/', $uln)) {
+                                $uid = sprintf("document(%s)", $uln);
+                            } else {
+                                $uid = $uln;
+                            }
+                        } else {
+                            $uid = $this->getUserLogin($uid);
+                            if ($uid) {
+                                $uid = sprintf("account(%s)", $uid);
+                            }
+                        }
+                    } else {
+                        $uid = $this->getUserLogin($uid);
+                        if (preg_match('/^attribute\(.*\)$/', $uid)) {
+                            $uid = sprintf("account(%s)", $uid);
+                        }
                     }
                 }
-                foreach ($doc->acls as $acl) {
+                foreach ($doc->acls as $kAcl => $acl) {
                     $bup = ($doc->ControlUp($up, $acl) == "");
                     if ($uid && $bup) {
-                        $tpu[] = $uid;
-                        $tpa[] = $acl;
+                        $tAcls[$kAcl . "-" . $uid] = ["uid" => $uid, "acl" => $acl];
                     }
                 }
             }
@@ -140,7 +167,7 @@ class ExportDocument
             $aclCond = GetSqlCond($extAcls, "acl");
             simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s order by userid", $doc->profid, $aclCond) , $eAcls);
             
-            foreach ($eAcls as $aAcl) {
+            foreach ($eAcls as $kAcl => $aAcl) {
                 $uid = $aAcl["userid"];
                 if ($uid >= STARTIDVGROUP) {
                     $qvg = new \QueryDb($dbaccess, "VGroup");
@@ -154,22 +181,22 @@ class ExportDocument
                     }
                 }
                 if ($uid) {
-                    $tpa[] = $aAcl["acl"];
-                    $tpu[] = $uid;
+                    $tAcls[$kAcl["acl"] . "-" . $uid] = ["uid" => $uid, "acl" => $aAcl["acl"]];
                 }
             }
         }
         
-        if (count($tpu) > 0) {
+        if (count($tAcls) > 0) {
             $data = array(
                 "PROFIL",
                 $name,
-                ":useAccount",
+                $this->exportAccountType,
                 ""
             );
-            foreach ($tpu as $ku => $uid) {
+            ksort($tAcls);
+            foreach ($tAcls as $ku => $oneAcl) {
                 //fputs_utf8($fout, ";" . $tpa[$ku] . "=" . $uid);
-                $data[] = sprintf("%s=%s", $tpa[$ku], $uid);
+                $data[] = sprintf("%s=%s", $oneAcl["acl"], $oneAcl["uid"]);
             }
             \Dcp\WriteCsv::fput($fout, $data);
         }
@@ -408,5 +435,17 @@ class ExportDocument
                 \Dcp\WriteCsv::fput($fout, $data);
             }
         }
+    }
+    /**
+     * @param string $exportAccountType
+     * @throws Exception
+     */
+    public function setExportAccountType($exportAccountType)
+    {
+        $availables = [self::useAclAccountType, self::useAclDocumentType];
+        if (!in_array($exportAccountType, $availables)) {
+            throw new Exception("PRFL0300", $exportAccountType, implode(", ", $availables));
+        }
+        $this->exportAccountType = $exportAccountType;
     }
 }

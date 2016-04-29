@@ -72,7 +72,10 @@ button.close {
 <td><select name="wprof">
   <option value="N">[TEXT:Without profil]</option>
   <option value="Y">[TEXT:With profil]</option>
-</select></td></tr>
+</select>  <select name="wproftype">
+    <option value=":useAccount">[TEXT:Use account reference]</option>
+    <option value=":useDocument">[TEXT:Use document reference]</option>
+</select> </td></tr>
 <tr><td align="right" style="cursor:help" title="[TEXT:Export archive file with data file - fdl.csv- and attached files]">[TEXT:Files] :</td>
 <td><select name="wfile">
   <option value="N">[TEXT:Without files]</option>

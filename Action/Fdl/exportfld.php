@@ -61,6 +61,10 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
         "utf8",
         "iso8859-15"
     ) , "utf8");
+    $profilType = $usage->addOptionalParameter("wproftype", "Profil option type", array(
+        \Dcp\ExportDocument::useAclAccountType,
+        \Dcp\ExportDocument::useAclDocumentType
+    ) , \Dcp\ExportDocument::useAclAccountType);
     $wutf8 = ($fileEncoding !== "iso8859-15");
     
     $nopref = ($usage->addOptionalParameter("wcolumn", "if - export preferences are ignored") == "-"); // no preference read
@@ -134,6 +138,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
     $exportCollection->setUseUserColumnParameter(!$nopref);
     $exportCollection->setOutputFileEncoding($wutf8 ? Dcp\ExportCollection::utf8Encoding : Dcp\ExportCollection::latinEncoding);
     $exportCollection->setVerifyAttributeAccess(!$exportInvisibleVisibilities);
+    $exportCollection->setProfileAccountType($profilType);
     
     if ((!$fldid) && $selection) {
         $selection = json_decode($selection);
@@ -271,102 +276,4 @@ function deleteContentDirectory($dirname)
     }
     
     return true;
-}
-/**
- * @param $fout
- * @param $dbaccess
- * @param $docid
- * @deprecated To delete
- */
-function exportProfil($fout, $dbaccess, $docid)
-{
-    if (!$docid) return;
-    // import its profile
-    $doc = new_Doc($dbaccess, $docid); // needed to have special acls
-    $doc->acls[] = "viewacl";
-    $doc->acls[] = "modifyacl";
-    if ($doc->name != "") $name = $doc->name;
-    else $name = $doc->id;
-    
-    $q = new QueryDb($dbaccess, "DocPerm");
-    $q->AddQuery("docid=" . $doc->profid);
-    $acls = $q->Query(0, 0, "TABLE");
-    
-    $tpu = array();
-    $tpa = array();
-    if ($acls) {
-        foreach ($acls as $va) {
-            $up = $va["upacl"];
-            $uid = $va["userid"];
-            
-            foreach ($doc->acls as $acl) {
-                $bup = ($doc->ControlUp($up, $acl) == "");
-                if ($bup) {
-                    if ($uid >= STARTIDVGROUP) {
-                        $vg = new Vgroup($dbaccess, $uid);
-                        $qvg = new QueryDb($dbaccess, "VGroup");
-                        $qvg->AddQuery("num=$uid");
-                        $tvu = $qvg->Query(0, 1, "TABLE");
-                        $uid = $tvu[0]["id"];
-                    }
-                    
-                    $tpu[] = $uid;
-                    if ($bup) $tpa[] = $acl;
-                    else $tpa[] = "-" . $acl;
-                }
-            }
-        }
-    }
-    // add extended Acls
-    if ($doc->extendedAcls) {
-        $extAcls = array_keys($doc->extendedAcls);
-        $aclCond = GetSqlCond($extAcls, "acl");
-        simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s", $doc->profid, $aclCond) , $eAcls);
-        
-        foreach ($eAcls as $aAcl) {
-            $uid = $aAcl["userid"];
-            if ($uid >= STARTIDVGROUP) {
-                $vg = new Vgroup($dbaccess, $uid);
-                $qvg = new QueryDb($dbaccess, "VGroup");
-                $qvg->AddQuery("num=$uid");
-                $tvu = $qvg->Query(0, 1, "TABLE");
-                $uid = $tvu[0]["id"];
-            }
-            $tpa[] = $aAcl["acl"];
-            $tpu[] = $uid;
-        }
-    }
-    
-    if (count($tpu) > 0) {
-        $data = array(
-            "PROFIL",
-            $name,
-            "",
-            ""
-        );
-        //fputs_utf8($fout, "PROFIL;" . $name . ";;");
-        foreach ($tpu as $ku => $uid) {
-            if ($uid > 0) $uid = getUserLogicName($dbaccess, $uid);
-            //fputs_utf8($fout, ";" . $tpa[$ku] . "=" . $uid);
-            $data[] = sprintf("%s=%s", $tpa[$ku], $uid);
-        }
-        \Dcp\WriteCsv::fput($fout, $data);
-        // fputs_utf8($fout, "\n");
-        
-    }
-}
-/**
- * @param $dbaccess
- * @param $uid
- * @return mixed
- * @deprecated To delete
- */
-function getUserLogicName($dbaccess, $uid)
-{
-    $u = new Account("", $uid);
-    if ($u->isAffected()) {
-        $du = getTDoc($dbaccess, $u->fid);
-        if (($du["name"] != "") && ($du["us_whatid"] == $uid)) return $du["name"];
-    }
-    return $uid;
 }

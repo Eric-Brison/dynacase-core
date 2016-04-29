@@ -85,4 +85,9 @@ class ErrorCodePRFL
      * @errorCode user must be exists for static profil
      */
     const PRFL0204 = 'user login "%s" not found in acl for  profil';
+    /**
+     * @errorCode user must be exists for static profil
+     * @see \Dcp\ExportDocument::setExportAccountType
+     */
+    const PRFL0300 = 'Export option setExportAccountType "%s" not available. Availables are : %s';
 }
