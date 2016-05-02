@@ -77,18 +77,22 @@ $(document).ready(function () {
                 }
                 f.code.disabled = true;
                 f.wprof.disabled = true;
+                f.wproftype.disabled = true;
                 //f.wident.disabled=true;
                 f.wcolumn.disabled = true;
                 f.wprof.className = 'disable';
+                f.wproftype.className = 'disable';
                 //f.wident.className='disable';
                 f.wcolumn.className = 'disable';
             } else {
                 //  f.action.value = 'EXPORTFLD';
                 f.code.disabled = false;
                 f.wprof.disabled = false;
+                f.wproftype.disabled = false;
                 f.wident.disabled = false;
                 f.wcolumn.disabled = false;
                 f.wprof.className = '';
+                f.wproftype.className = '';
                 f.wident.className = '';
                 f.wcolumn.className = '';
             }
@@ -103,7 +107,15 @@ $(document).ready(function () {
         }
     );
 
-
+    $("select[name=wproftype]").css("visibility", "hidden");
+    $("select[name=wprof]").on("change", function () {
+        var wprof = $(this).val();
+        if (wprof === "Y") {
+            $("select[name=wproftype]").css("visibility", "");
+        } else {
+            $("select[name=wproftype]").css("visibility", "hidden");
+        }
+    });
     $("select[name=csv-enclosure]").on("change", function () {
         var enclosureVal = $(this).val();
         if (enclosureVal === "other") {
