@@ -29,8 +29,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         $err = parent::preRefresh();
         
         if ($this->getRawValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is deactivated");
-        // refresh MEID itself
-        $this->SetValue("US_MEID", $this->id);
+        
         $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
@@ -183,8 +182,6 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                     $this->SetValue(MyAttributes::us_expiresd, " ");
                     $this->SetValue(MyAttributes::us_expirest, " ");
                 }
-                
-                $this->SetValue(MyAttributes::us_meid, $this->id);
                 // search group of the user
                 $g = new \Group("", $wid);
                 $tgid = array();
@@ -244,6 +241,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                 "us_accexpiredate"
             ) , true);
         }
+        
         return $err;
     }
     /**
@@ -317,9 +315,12 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             $err.= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substitute);
             if ($err == "") {
                 if ($user) {
-                    $this->setValue("US_WHATID", $user->id);
+                    $this->setValue(MyAttributes::us_whatid, $user->id);
+                    $this->setValue(MyAttributes::us_meid, $this->id);
+                    
                     $this->modify(false, array(
-                        "us_whatid"
+                        MyAttributes::us_whatid,
+                        MyAttributes::us_meid
                     ));
                     $err = $this->setGroups(); // set groups (add and suppress) may be long
                     if ($newuser) $err.= $this->setToDefaultGroup();

@@ -46,6 +46,7 @@ define("POS_WF", 12); // begin of workflow privilege definition
  * @method getAttribute($a)
  * @method canEdit
  * @method control($acl)
+ * @method  addHistoryEntry($comment = '', $level = DocHisto::INFO)
  * @property int $fromid
  * @property Doc $doc
  *
@@ -454,10 +455,24 @@ class DocCtrl extends DocLDAP
                         $tduid = Doc::rawValueToArray($duid);
                         foreach ($tduid as $duid) {
                             if ($duid > 0) {
-                                $docu = getTDoc($fromdocidvalues->dbaccess, intval($duid)); // not for idoc list for the moment
-                                $tuid[] = $docu["us_whatid"];
-                                //print "<br>$aid:$duid:".$docu["us_whatid"];
-                                
+                                $docu = getTDoc($fromdocidvalues->dbaccess, intval($duid));
+                                if (!is_array($docu)) {
+                                    // No use exception because document may has been deleted
+                                    $errorMessage = ErrorCode::getError('DOC0127', var_export($duid, true) , var_export($aid, true));
+                                    $this->log->error($errorMessage);
+                                    $this->addHistoryEntry($errorMessage, \DocHisto::ERROR);
+                                } elseif (!array_key_exists('us_whatid', $docu)) {
+                                    $errorMessage = ErrorCode::getError('DOC0128', var_export($duid, true) , var_export($aid, true));
+                                    $this->log->error($errorMessage);
+                                    $this->addHistoryEntry($errorMessage, \DocHisto::ERROR);
+                                } elseif (empty($docu['us_whatid'])) {
+                                    // No use exception because account may has been deleted
+                                    $errorMessage = ErrorCode::getError('DOC0129', var_export($duid, true) , var_export($aid, true));
+                                    $this->log->error($errorMessage);
+                                    $this->addHistoryEntry($errorMessage, \DocHisto::ERROR);
+                                } else {
+                                    $tuid[] = $docu["us_whatid"];
+                                }
                             }
                         }
                     }

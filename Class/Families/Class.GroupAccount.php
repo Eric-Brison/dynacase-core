@@ -7,6 +7,8 @@
  * Group account
  */
 namespace Dcp\Core;
+
+use Dcp\AttributeIdentifiers\Igroup as MyAttributes;
 /**
  * Class GroupAccount
  *
@@ -37,7 +39,6 @@ class GroupAccount extends \Dcp\Family\Group
         $err = "";
         $this->AddParamRefresh("US_WHATID", "GRP_MAIL,US_LOGIN");
         // refresh MEID itself
-        $this->setValue("US_MEID", $this->id);
         $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
@@ -162,9 +163,11 @@ class GroupAccount extends \Dcp\Family\Group
         $roleIds = $this->getSystemIds($roles);
         $err = $user->SetGroups($fid, $gname, $login, $roleIds);
         if ($err == "") {
-            $this->setValue("US_WHATID", $user->id);
+            $this->setValue(MyAttributes::us_whatid, $user->id);
+            $this->setValue(MyAttributes::us_meid, $this->id);
             $this->modify(false, array(
-                "us_whatid"
+                MyAttributes::us_whatid,
+                MyAttributes::us_meid
             ));
             if ($user) {
                 $this->setGroups();
