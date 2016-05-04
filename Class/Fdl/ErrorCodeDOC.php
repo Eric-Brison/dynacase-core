@@ -203,6 +203,21 @@ class ErrorCodeDOC
      */
     const DOC0126 = 'getCustomSearchValues must return an array of string (found "%s")';
     /**
+     * @errorCode Dynamic profil reference an attribute which no refers to any document
+     * @see DocCtrl::computeDProfil
+     */
+    const DOC0127 = 'Document with identifier %s not found for attribute %s';
+    /**
+     * @errorCode Dynamic profil reference an attribute refers to a document. But this document is not an account
+     * @see DocCtrl::computeDProfil
+     */
+    const DOC0128 = 'Document with identifier "%s" from attribute "%s" has no property "us_whatid"';
+    /**
+     * @errorCode Dynamic profil reference an attribute which refers to an incomplete account
+     * @see DocCtrl::computeDProfil
+     */
+    const DOC0129 = 'Document with identifier "%s" from attribute "%s" has an empty property "us_whatid"';
+    /**
      * @errorCode
      * the document cannot be inserted in folder target
      * @note when DOC has defined a folder target
