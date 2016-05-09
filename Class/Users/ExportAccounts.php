@@ -200,7 +200,11 @@ class ExportAccounts
         }
         if (count($groupLogins) > 0) {
             // Get all members of every exported groups
-            $sql = sprintf("select memberof,id from users where login in ('%s')", implode($groupLogins, "','"));
+            $sql = sprintf("select memberof,id from users where login in (%s)", implode(array_map(function ($s)
+            {
+                return pg_escape_literal($s);
+            }
+            , $groupLogins) , ", "));
             simpleQuery("", $sql, $members);
             $searchGroups = array();
             foreach ($members as $parents) {
@@ -215,7 +219,11 @@ class ExportAccounts
             });
             if ($searchGroups) {
                 // Get tree group information
-                $sql = sprintf("select groups.iduser as groupid, groups.idgroup as parentid, users.login as grouplogin from groups, users where groups.iduser in (%s) and groups.iduser=users.id and users.accounttype='G'", implode($searchGroups, ","));
+                $sql = sprintf("select groups.iduser as groupid, groups.idgroup as parentid, users.login as grouplogin from groups, users where groups.iduser in (%s) and groups.iduser=users.id and users.accounttype='G'", implode(array_map(function ($s)
+                {
+                    return pg_escape_literal($s);
+                }
+                , $searchGroups) , ", "));
                 simpleQuery("", $sql, $groupTree);
                 
                 if ($groupTree) {
@@ -244,7 +252,7 @@ class ExportAccounts
                         /**
                          * @var \DOMElement $groups
                          */
-                        $groups = $xpath->query(sprintf('//accounts/groups/group/reference[text()="%s"]/..', $reference))->item(0);
+                        $groups = $xpath->query(sprintf('//accounts/groups/group/reference[text()=%s]/..', self::xpathLiteral($reference)))->item(0);
                         // $groups->setAttribute("level", $group["order"]);
                         $groups->parentNode->appendChild($groups);
                     }
@@ -619,7 +627,7 @@ class ExportAccounts
         $node->appendChild($nodeInfo);
         
         if ($user->substitute) {
-            simpleQuery("", sprintf("select login from users where id=%d", $user->substitute) , $substituteLogin, true, true);
+            simpleQuery("", sprintf("select login from users where id = %d", $user->substitute) , $substituteLogin, true, true);
             if ($substituteLogin) {
                 $nodeInfo = $this->xml->createElement("substitute");
                 $nodeInfo->setAttribute("reference", $substituteLogin);
@@ -647,9 +655,9 @@ class ExportAccounts
     {
         if (empty($this->addedIds[$group->id])) {
             $node = $this->xml->createElement("group");
-            $nodeInfo = $this->xml->createElement("reference", $group->login);
+            $nodeInfo = $this->xml->createElement("reference", htmlspecialchars($group->login));
             $node->appendChild($nodeInfo);
-            $nodeInfo = $this->xml->createElement("displayName", $group->getAccountName());
+            $nodeInfo = $this->xml->createElement("displayName", htmlspecialchars($group->getAccountName()));
             $node->appendChild($nodeInfo);
             
             $node->setAttribute("id", $group->id);
@@ -677,6 +685,28 @@ class ExportAccounts
             
             $this->roleRootNode->appendChild($node);
             $this->addedIds[$role->id] = true;
+        }
+    }
+    /**
+     * Convert a string to an XPath literal
+     *
+     * If the string contains an apostrophe, then a concat() is used
+     * to construct the string literal expression.
+     *
+     * If no apostrophe is found, then quote the string with apostrophes.
+     *
+     * @param $str
+     * @return string
+     */
+    protected static function xpathLiteral($str)
+    {
+        if (strpos($str, "'") === false) {
+            return "'" . $str . "'";
+        } else {
+            return "concat(" . str_replace(array(
+                "'',",
+                ",''"
+            ) , "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
         }
     }
 }

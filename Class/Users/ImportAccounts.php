@@ -416,7 +416,7 @@ class ImportAccounts
                 } elseif ($tagName === "associatedRole") {
                     $type = \Account::ROLE_TYPE;
                 }
-                $sql = sprintf("delete from groups using users where iduser=%d and users.id=groups.idgroup and users.accounttype= '%s';", $account->id, pg_escape_string($type));
+                $sql = sprintf("delete from groups using users where iduser=%d and users.id=groups.idgroup and users.accounttype= %s", $account->id, pg_escape_literal($type));
                 simpleQuery("", $sql);
                 $this->addToReport($account->login, "reset$tagName", "", "", $listNodeItem);
                 $this->needSyncAccounts = true;
