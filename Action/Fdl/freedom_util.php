@@ -622,9 +622,9 @@ function getFamIdFromName($dbaccess, $name)
     if (isset($tFamIdName[strtoupper($name) ])) {
         return $tFamIdName[strtoupper($name) ];
     }
-    $name=strtolower($name);
-    foreach ($tFamIdName as $famName=>$famId) {
-        if (strtolower($famName) === $name ) {
+    $name = strtolower($name);
+    foreach ($tFamIdName as $famName => $famId) {
+        if (strtolower($famName) === $name) {
             return $famId;
         }
     }
@@ -835,10 +835,10 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array() , $fromid = fal
     global $action;
     
     if (!($initid > 0)) return false;
-    $dbid = getDbid($dbaccess);
+    getDbid($dbaccess);
     $table = "doc";
     if (!$fromid) {
-        $err = simpleQuery($dbaccess, sprintf("select fromid from docread where initid=%d and locked != -1", $initid) , $tf, true);
+        simpleQuery($dbaccess, sprintf("select fromid from docread where initid=%d", $initid) , $tf, true);
         if (count($tf) > 0) {
             $fromid = $tf[0];
         }
@@ -853,11 +853,11 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array() , $fromid = fal
     if ($userid) {
         $userMember = DocPerm::getMemberOfVector();
         $sql = sprintf("select *,getaperm('%s',profid) as uperm  from only %s where initid=%d and doctype != 'T' and locked != -1 %s", $userMember, $table, $initid, $sqlcond);
-        $err = simpleQuery($dbaccess, $sql, $result);
+        simpleQuery($dbaccess, $sql, $result);
         if (!$result) {
             // zombie doc ?
             $sql = sprintf("select *,getaperm('%s',profid) as uperm  from only %s where initid=%d and doctype != 'T' %s order by id desc limit 1", $userMember, $table, $initid, $sqlcond);
-            $err = simpleQuery($dbaccess, $sql, $result);
+            simpleQuery($dbaccess, $sql, $result);
         }
         
         if ($result && (count($result) > 0)) {
