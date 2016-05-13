@@ -25,7 +25,7 @@ function editicon(Action & $action)
     $doc = new_Doc($action->dbaccess, $docid);
     $action->lay->eSet("APP_TITLE", _($action->parent->description));
     $action->lay->Set("docid", urlencode($docid));
-    $action->lay->eSet("title", $doc->title);
+    $action->lay->eset("title", $doc->title);
     $action->lay->Set("iconsrc", $doc->geticon());
     
     $q = new QueryDb($action->dbaccess, "VaultDiskStorage");
