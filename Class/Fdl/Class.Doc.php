@@ -5841,6 +5841,8 @@ create unique index i_docir on doc(initid, revision);";
             $this->rollbackPoint($point);
             return $err;
         }
+        
+        $this->UpdateVaultIndex();
         return '';
     }
     /**
