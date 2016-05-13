@@ -36,14 +36,20 @@ class PostitView extends \Dcp\Family\Document
         while (list($k, $v) = each($tcomment)) {
             $tlaycomment[] = array(
                 "comments" => $this->getHtmlValue($this->getAttribute('PIT_COM') , $v, '_blank') ,
-                "user" => $tuser[$k],
-                "date" => stringDateToLocaleDate($tdate[$k]) ,
-                "color" => $tcolor[$k]
+                "user" => str_replace(array(
+                    '[',
+                    ']'
+                ) , array(
+                    '&#91;',
+                    '&#93;'
+                ) , htmlspecialchars($tuser[$k], ENT_QUOTES)) ,
+                "date" => htmlspecialchars(stringDateToLocaleDate($tdate[$k]) , ENT_QUOTES) ,
+                "color" => htmlspecialchars($tcolor[$k], ENT_QUOTES)
             );
         }
         
-        $this->lay->set("EMPTY", count($tcomment) == 0);
-        $this->lay->set("fontsize", $fontsize);
+        $this->lay->rSet("EMPTY", (bool)(count($tcomment) == 0));
+        $this->lay->rSet("fontsize", (int)$fontsize);
         // Out
         $this->lay->SetBlockData("TEXT", $tlaycomment);
     }
