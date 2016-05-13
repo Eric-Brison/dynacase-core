@@ -46,7 +46,7 @@ class Mask extends \Dcp\Family\Base
         $tvis = $this->getMultipleRawValues("MSK_VISIBILITIES");
         
         foreach ($tattrid as $k => $v) {
-            if (($tneed[$k] == '-') && ($tvis[$k] == '-')) {
+            if (($tneed[$k] === '-') && ($tvis[$k] === '-') || ($tneed[$k] === '') && ($tvis[$k] === '-')) {
                 unset($tneed[$k]);
                 unset($tvis[$k]);
                 unset($tattrid[$k]);
