@@ -179,7 +179,7 @@ class Layout
             foreach ($data as & $aRow) {
                 if (is_array($aRow)) {
                     foreach ($aRow as & $aData) {
-                        $aData = htmlspecialchars($aData, ENT_QUOTES);
+                        $aData = str_replace("[", $this->escapeBracket, htmlspecialchars($aData, ENT_QUOTES));
                     }
                 }
             }
