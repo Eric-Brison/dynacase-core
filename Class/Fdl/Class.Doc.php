@@ -7453,74 +7453,80 @@ create unique index i_docir on doc(initid, revision);";
     {
         global $action;
         $this->viewprop($target, $ulink, $abstract);
-        $this->lay->set("iconsrc", $this->getIcon());
+        $this->lay->eSet("iconsrc", $this->getIcon());
         $fdoc = $this->getFamilyDocument();
-        $this->lay->Set("ficonsrc", $fdoc->getIcon());
+        $this->lay->eSet("ficonsrc", $fdoc->getIcon());
         $owner = new Account("", abs($this->owner));
-        $this->lay->Set("username", $owner->firstname . " " . $owner->lastname);
-        $this->lay->Set("userid", $owner->fid);
-        $this->lay->Set("lockedby", $this->lay->get("locked"));
+        $this->lay->rSet("username", str_replace(array(
+            '[',
+            ']'
+        ) , array(
+            '&#91;',
+            '&#93;'
+        ) , htmlspecialchars($owner->firstname . " " . $owner->lastname)));
+        $this->lay->rSet("userid", $owner->fid);
+        $this->lay->rSet("lockedby", $this->lay->get("locked"));
         
-        $this->lay->Set("lockdomain", '');
+        $this->lay->rSet("lockdomain", '');
         if ($this->locked == - 1) {
-            $this->lay->Set("lockedid", false);
+            $this->lay->rSet("lockedid", false);
         } else {
             $user = new Account("", abs($this->locked));
             // $this->lay->Set("locked", $user->firstname." ".$user->lastname);
             if ($this->lockdomainid) {
-                $this->lay->Set("lockdomain", sprintf(_("in domain %s") , $this->getDocAnchor($this->lockdomainid, '_blank', true, '', false, true, true)));
+                $this->lay->eSet("lockdomain", sprintf(_("in domain %s") , $this->getDocAnchor($this->lockdomainid, '_blank', true, '', false, true, true)));
             }
-            $this->lay->Set("lockedid", $user->fid);
+            $this->lay->rSet("lockedid", $user->fid);
         }
         $state = $this->getState();
         if ($state != "") {
-            if (($this->locked == - 1) || ($this->lmodify != 'Y')) $this->lay->Set("state", _($state));
-            else $this->lay->Set("state", sprintf(_("current (<em>%s</em>)") , _($state)));
-        } else $this->lay->set("state", _("no state"));
+            if (($this->locked == - 1) || ($this->lmodify != 'Y')) $this->lay->eSet("state", _($state));
+            else $this->lay->rSet("state", sprintf(_("current (<em>%s</em>)") , htmlspecialchars(_($state) , ENT_QUOTES)));
+        } else $this->lay->eset("state", _("no state"));
         if (is_numeric($this->state) && ($this->state > 0) && (!$this->wid)) {
-            $this->lay->set("freestate", $this->state);
-        } else $this->lay->set("freestate", false);
-        $this->lay->set("setname", $action->parent->Haspermission("FREEDOM_MASTER", "FREEDOM"));
-        $this->lay->set("lname", $this->name);
-        $this->lay->set("hasrevision", ($this->revision > 0));
-        $this->lay->Set("moddate", strftime("%Y-%m-%d %H:%M:%S", $this->revdate));
-        $this->lay->set("moddatelabel", _("last modification date"));
+            $this->lay->rSet("freestate", $this->state);
+        } else $this->lay->rSet("freestate", false);
+        $this->lay->rSet("setname", (bool)$action->parent->Haspermission("FREEDOM_MASTER", "FREEDOM"));
+        $this->lay->rSet("lname", $this->name);
+        $this->lay->rSet("hasrevision", ($this->revision > 0));
+        $this->lay->eSet("moddate", strftime("%Y-%m-%d %H:%M:%S", $this->revdate));
+        $this->lay->eSet("moddatelabel", _("last modification date"));
         if ($this->locked == - 1) {
-            if ($this->doctype == 'Z') $this->lay->set("moddatelabel", _("suppression date"));
-            else $this->lay->set("moddatelabel", _("revision date"));
+            if ($this->doctype == 'Z') $this->lay->eSet("moddatelabel", _("suppression date"));
+            else $this->lay->eSet("moddatelabel", _("revision date"));
         }
         if (GetParam("CORE_LANG") == "fr_FR") { // date format depend of locale
-            $this->lay->Set("revdate", strftime("%a %d %b %Y %H:%M", $this->revdate));
+            $this->lay->eSet("revdate", strftime("%a %d %b %Y %H:%M", $this->revdate));
         } else {
-            $this->lay->Set("revdate", strftime("%x %T", $this->revdate));
+            $this->lay->eSet("revdate", strftime("%x %T", $this->revdate));
         }
-        $this->lay->Set("version", $this->version);
+        $this->lay->eSet("version", $this->version);
         
         if ((abs($this->profid) > 0) && ($this->profid != $this->id)) {
             
-            $this->lay->Set("profile", $this->getDocAnchor(abs($this->profid) , '_blank', true, '', false, 'latest', true));
+            $this->lay->rSet("profile", $this->getDocAnchor(abs($this->profid) , '_blank', true, '', false, 'latest', true));
         } else {
             if ($this->profid == 0) {
-                $this->lay->Set("profile", _("no access control"));
+                $this->lay->eSet("profile", _("no access control"));
             } else {
                 if ($this->dprofid == 0) {
                     
-                    $this->lay->Set("profile", $this->getDocAnchor(abs($this->profid) , '_blank', true, _("specific control") , false, 'latest', true));
+                    $this->lay->rSet("profile", $this->getDocAnchor(abs($this->profid) , '_blank', true, _("specific control") , false, 'latest', true));
                 } else {
-                    $this->lay->Set("profile", $this->getDocAnchor(abs($this->dprofid) , '_blank', true, _("dynamic control") . " (" . $this->getHTMLTitle(abs($this->dprofid)) . ")", false, 'latest', true));
+                    $this->lay->rSet("profile", $this->getDocAnchor(abs($this->dprofid) , '_blank', true, _("dynamic control") . " (" . $this->getHTMLTitle(abs($this->dprofid)) . ")", false, 'latest', true));
                 }
             }
         }
         if ($this->cvid == 0) {
-            $this->lay->Set("cview", _("no view control"));
+            $this->lay->eSet("cview", _("no view control"));
         } else {
-            $this->lay->Set("cview", $this->getDocAnchor($this->cvid, '_blank', true, '', false, 'latest', true));
+            $this->lay->rSet("cview", $this->getDocAnchor($this->cvid, '_blank', true, '', false, 'latest', true));
         }
         if ($this->prelid == 0) {
-            $this->lay->Set("prel", _("no folder"));
+            $this->lay->eSet("prel", _("no folder"));
         } else {
             
-            $this->lay->Set("prel", $this->getDocAnchor($this->prelid, '_blank', true, '', false, 'latest', true));
+            $this->lay->rSet("prel", $this->getDocAnchor($this->prelid, '_blank', true, '', false, 'latest', true));
             $fldids = $this->getParentFolderIds();
             $tfld = array();
             foreach ($fldids as $fldid) {
@@ -7533,17 +7539,17 @@ create unique index i_docir on doc(initid, revision);";
             $this->lay->setBlockData("FOLDERS", $tfld);
         }
         if ($this->allocated == 0) {
-            $this->lay->Set("allocate", _("no allocate"));
-            $this->lay->Set("allocateid", false);
+            $this->lay->eSet("allocate", _("no allocate"));
+            $this->lay->rSet("allocateid", false);
         } else {
             $user = new Account("", ($this->allocated));
-            $this->lay->Set("allocate", $user->firstname . " " . $user->lastname);
-            $this->lay->Set("allocateid", $user->fid);
+            $this->lay->eSet("allocate", $user->firstname . " " . $user->lastname);
+            $this->lay->rSet("allocateid", $user->fid);
         }
         
         $tms = $this->getAttachedTimers();
         
-        $this->lay->Set("Timers", (count($tms) > 0));
+        $this->lay->rSet("Timers", (count($tms) > 0));
     }
     /**
      * @templateController controller for abstract view
