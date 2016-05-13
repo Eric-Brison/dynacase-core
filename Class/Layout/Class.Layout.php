@@ -69,7 +69,8 @@ include_once ('Class.Application.php');
 class Layout
 {
     private $strip = 'N';
-    private $noGoZoneMapping = "___NO-GO-ZONE___";
+    private $escapeBracket = "__BRACKET-OPEN__";
+    private $noGoZoneMapping = "__NO-GO-ZONE__";
     private $goZoneMapping = "[ZONE ";
     public $encoding = "";
     /**
@@ -119,6 +120,7 @@ class Layout
         if ($action) $this->action = & $action;
         $this->generation = "";
         $this->noGoZoneMapping = uniqid($this->noGoZoneMapping);
+        $this->escapeBracket = uniqid($this->escapeBracket);
         $file = $caneva;
         $this->file = "";
         if ($caneva != "") {
@@ -416,7 +418,7 @@ class Layout
     public function eSet($tag, $val)
     {
         $val = str_replace($this->goZoneMapping, $this->noGoZoneMapping, $val);
-        $this->set($tag, htmlspecialchars($val, ENT_QUOTES));
+        $this->set($tag, str_replace("[", $this->escapeBracket, htmlspecialchars($val, ENT_QUOTES)));
     }
     /**
      * return the value set for a key
@@ -621,10 +623,10 @@ class Layout
         // if used in an app , set the app params
         $out = $this->template;
         
-        $this->rif =  $this->rkey;
+        $this->rif = $this->rkey;
         $this->ParseBlock($out);
         // Restore rif because parseBlock can change it
-        $this->rif =  $this->rkey;
+        $this->rif = $this->rkey;
         // Application parameters conditions
         $this->parseApplicationParameters($out, true);
         
@@ -632,7 +634,6 @@ class Layout
         // Parse IMG: and LAY: tags
         $this->ParseText($out);
         $this->ParseKey($out);
-
         // Application parameters values
         $this->parseApplicationParameters($out, false);
         $this->ParseRef($out);
@@ -640,7 +641,13 @@ class Layout
         $this->ParseJs($out);
         $this->ParseCss($out);
         
-        $out = str_replace($this->noGoZoneMapping, $this->goZoneMapping, $out);
+        $out = str_replace(array(
+            $this->noGoZoneMapping,
+            $this->escapeBracket
+        ) , array(
+            $this->goZoneMapping,
+            "["
+        ) , $out);
         return ($out);
     }
     /**
