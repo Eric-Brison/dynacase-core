@@ -51,30 +51,6 @@ AC_ARG_WITH(log-level,
 
 
 
-
-
-
-
-dnl get php pear path
-AC_SUBST(PEAR)
-AC_ARG_WITH(pear, \
-  [  --with-pear=PHP PEAR path], \
-  PEAR="$withval",
-  PEAR="" \
-)
-if test "x$PEAR" = "x" ; then
-  AC_CHECK_PROG(PEARCMD, pear, pear)
-  if test "x$PEARCMD" = "x" ; then
-    AC_MSG_ERROR(Could not find the pear command... Specify the PHP Pear path with --with-pear)
-  fi
-  AC_MSG_CHECKING(for pear config-get php_dir)
-  PEAR=`"$PEARCMD" config-get php_dir`
-  if test "x$PEAR" = "x" ; then
-    AC_MSG_ERROR(Looks like the pear command is broken... Specify the PHP Pear path with --with-pear)
-  fi
-  AC_MSG_RESULT($PEAR)
-fi
-
 AC_OUTPUT(
     Makefile \
     App/Authent/AUTHENT_init.php \
