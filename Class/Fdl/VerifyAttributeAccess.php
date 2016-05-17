@@ -23,7 +23,9 @@ class VerifyAttributeAccess
         $key = sprintf("%0d-%0d-%0d-%s", $doc->fromid, $doc->cvid, $doc->wid, $doc->state);
         
         if (!isset(self::$attributeGrants[$key])) {
-            $doc->setMask(\Doc::USEMASKCVVIEW);
+            if (!$doc->mid) {
+                $doc->setMask(\Doc::USEMASKCVVIEW);
+            }
             self::$attributeGrants[$key] = array();
             $oas = $doc->getNormalAttributes();
             foreach ($oas as $oa) {
