@@ -64,10 +64,7 @@ switch ($command) {
         break;
 
     case "clean-unref":
-        $t = view($dbaccess, $vaultname, array(
-            "unref" => true
-        ));
-        cleanVault($dbaccess, $vaultname, $t, $test);
+        $action->exitError("Use \"cleanVaultOrphans\" wsh script to delete orphans files");
         break;
 
     default:
