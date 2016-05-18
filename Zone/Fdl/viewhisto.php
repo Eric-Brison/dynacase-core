@@ -144,7 +144,7 @@ function viewhisto(Action & $action)
             */
             $tlc[] = array(
                 "cdate" => stringDateToLocaleDate($stime, $formatDate) ,
-                "cauthor" => $vc["uname"],
+                "cauthor" => htmlspecialchars($vc["uname"]),
                 "clevel" => $vc["level"],
                 "ccomment" => nl2br(htmlentities($vc["comment"], ENT_COMPAT, "UTF-8"))
             );

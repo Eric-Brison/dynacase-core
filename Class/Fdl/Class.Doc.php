@@ -2228,7 +2228,9 @@ create unique index i_docir on doc(initid, revision);";
         if (isset($this->attributes->attr)) {
             // reinit mask before apply
             foreach ($this->attributes->attr as $k => $v) {
-                $this->attributes->attr[$k]->mvisibility = $v->visibility;
+                if ($this->attributes->attr[$k] !== null) {
+                    $this->attributes->attr[$k]->mvisibility = $v->visibility;
+                }
             }
         }
         return $this->ApplyMask($mid);
