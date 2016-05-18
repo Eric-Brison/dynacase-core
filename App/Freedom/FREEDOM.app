@@ -426,16 +426,6 @@ $action_desc = array (
    "acl"		=>"FREEDOM_READ"
   ) ,
   array( 
-   "name"		=>"FREEDOM_EDITPREFFAM",
-   "short_name"		=>N_("choose preferred families"),
-   "acl"		=>"FREEDOM"
-  )  ,
-  array( 
-   "name"		=>"FREEDOM_MODPREFFAM",
-   "short_name"		=>N_("modify preferred families"),
-   "acl"		=>"FREEDOM"
-  )  ,
-  array( 
    "name"		=>"FREEDOM_ADDBOOKMARK",
    "short_name"		=>N_("add folder in bookmark"),
    "acl"		=>"FREEDOM"

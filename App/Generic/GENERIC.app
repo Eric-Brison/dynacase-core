@@ -86,11 +86,6 @@ $action_desc = array(
         "acl" => "GENERIC_READ"
     ),
     array(
-        "name" => "GENERIC_EDITNEWCATG",
-        "short_name" => N_("edit to add category"),
-        "acl" => "GENERIC"
-    ),
-    array(
         "name" => "GENERIC_MOD",
         "short_name" => N_("modification or creation"),
         "acl" => "GENERIC"
