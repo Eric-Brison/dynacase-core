@@ -69,7 +69,7 @@ function viewhisto(Action & $action)
         */
         $tlc[] = array(
             "cdate" => stringDateToLocaleDate($stime, $formatDate) ,
-            "cauthor" => $vc["uname"],
+            "cauthor" => htmlspecialchars($vc["uname"]),
             "clevel" => $vc["level"],
             "ccomment" => nl2br(htmlentities($vc["comment"], ENT_COMPAT, "UTF-8"))
         );
@@ -102,11 +102,11 @@ function viewhisto(Action & $action)
     foreach ($dl as $k => $rdoc) {
         if ($rdoc->locked != - 1) continue;
         if ($rdoc->control('view')) continue;
-        $trdoc[$k]["owner"] = Account::getDisplayName($rdoc->owner);
+        $trdoc[$k]["owner"] = htmlspecialchars(Account::getDisplayName($rdoc->owner));
         if ($k == 0) $trdoc[$k]["owner"] = _("Modification date");
         
         $trdoc[$k]["revision"] = $rdoc->revision;
-        $trdoc[$k]["version"] = $rdoc->version;
+        $trdoc[$k]["version"] = htmlspecialchars($rdoc->version);
         $trdoc[$k]["target"] = ($target == "") ? "doc_" . $rdoc->id : $target;
         
         $state = $rdoc->getState();
