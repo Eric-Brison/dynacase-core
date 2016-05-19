@@ -905,6 +905,7 @@ class NormalAttribute extends BasicAttribute
                         $br = $dreg[1] . '#' . strtolower($dreg[2]) . '#';
                     }
                     if (function_exists($reg[1])) {
+                        $this->phpfile="";
                         $this->phpfunc = call_user_func_array($reg[1], $args);
                         
                         EnumAttributeTools::flatEnumNotationToEnumArray($this->phpfunc, $this->enum, $this->enumlabel, $br);
@@ -913,7 +914,7 @@ class NormalAttribute extends BasicAttribute
                         $this->phpfunc = "";
                     }
                 } else {
-                    AddWarningMsg(sprintf(_("invalid syntax for [%s] for enum attribute") , $this->phpfunc));
+                    AddWarningMsg(sprintf(_("invalid syntax for [%s] for enum attribute [%s]") , $this->phpfunc, $this->id));
                 }
                 self::_cacheStore(self::_cEnum, array(
                     $this->docid,

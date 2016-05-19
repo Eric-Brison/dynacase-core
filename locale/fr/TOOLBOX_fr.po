@@ -6743,8 +6743,8 @@ msgid "invalid regular expression"
 msgstr "expression rationnelle invalide"
 
 #, php-format
-msgid "invalid syntax for [%s] for enum attribute"
-msgstr "erreur de syntaxe pour l'attribut énuméré [%s]"
+msgid "invalid syntax for [%s] for enum attribute [%s]"
+msgstr "erreur de syntaxe pour l'attribut énuméré [%s] [%s]"
 
 msgid "inverse video background color"
 msgstr "couleur de fond en inverse vidéo"
