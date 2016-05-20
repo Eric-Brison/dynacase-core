@@ -111,7 +111,7 @@ EOF;
             /* Fetch file or image attributes */
             $attrList = array();
             foreach ($fam->getAttributes() as $attr) {
-                if ($attr->type != 'file' && $attr->type != 'image') {
+                if (!$attr || ($attr->type != 'file' && $attr->type != 'image')) {
                     continue;
                 }
                 if ($attr->usefor != 'Q') {
