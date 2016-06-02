@@ -20,9 +20,9 @@ function checkauth(Action & $action)
     include_once ('WHAT/Class.htmlAuthenticator.php');
     include_once ('WHAT/Class.User.php');
     include_once ('WHAT/Class.Log.php');
-
+    
     $redirect_uri = GetHttpVars('redirect_uri', '');
-
+    
     $status = AuthenticatorManager::checkAccess();
     //error_log("checkauth: AuthenticatorManager::checkAccess() = {$status}");
     switch ($status) {
@@ -46,11 +46,20 @@ function checkauth(Action & $action)
             ));
             exit(0);
     }
-
+    
     if (($redirect_uri == "") || (preg_match('/app=AUTHENT/', $redirect_uri))) {
         $redirect_uri = ".";
+    } else if ($redirect_uri[0] != '/') {
+        /*
+         * $redirect_uri is normally constructed from REQUEST_URI, so
+         * it should start with "/" and be a local absolute pathname.
+         *
+         * If it does not start with a "/", then it might indicate a
+         * malicious manipulation to perform a cross-site redirect.
+        */
+        $redirect_uri = ".";
     }
-    $lang = array();;
+    $lang = array();
     include_once ('CORE/lang.php');
     $core_lang = getHttpVars('CORE_LANG');
     if ($core_lang != "" && array_key_exists($core_lang, $lang)) {
@@ -63,4 +72,3 @@ function checkauth(Action & $action)
     header('Location: ' . $redirect_uri);
     exit(0);
 }
-?>
