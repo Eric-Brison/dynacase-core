@@ -33,29 +33,28 @@ class htmlAuthenticator extends Authenticator
     public function checkAuthentication()
     {
         $session = $this->getAuthSession();
-        
         $this->username = $session->read('username');
         if ($this->username != "") return Authenticator::AUTH_OK;
         
-        if (!array_key_exists($this->parms{'username'}, $_POST)) return Authenticator::AUTH_ASK;
-        if (!array_key_exists($this->parms{'password'}, $_POST)) return Authenticator::AUTH_ASK;
+        if (!array_key_exists($this->parms['username'], $_POST)) return Authenticator::AUTH_ASK;
+        if (!array_key_exists($this->parms['password'], $_POST)) return Authenticator::AUTH_ASK;
         
-        $this->username = getHttpVars($this->parms{'username'});
+        $this->username = getHttpVars($this->parms['username']);
         if (is_callable(array(
             $this->provider,
             'validateCredential'
         ))) {
-            if (!$this->provider->validateCredential(getHttpVars($this->parms{'username'}) , getHttpVars($this->parms{'password'}))) {
+            if (!$this->provider->validateCredential(getHttpVars($this->parms['username']) , getHttpVars($this->parms{'password'}))) {
                 return Authenticator::AUTH_NOK;
             }
             
-            if (!$this->freedomUserExists(getHttpVars($this->parms{'username'}))) {
-                if (!$this->tryInitializeUser(getHttpVars($this->parms{'username'}))) {
+            if (!$this->freedomUserExists(getHttpVars($this->parms['username']))) {
+                if (!$this->tryInitializeUser(getHttpVars($this->parms['username']))) {
                     return Authenticator::AUTH_NOK;
                 }
             }
-            $session->register('username', getHttpVars($this->parms{'username'}));
-            $session->setuid(getHttpVars($this->parms{'username'}));
+            $session->register('username', getHttpVars($this->parms['username']));
+            $session->setuid(getHttpVars($this->parms['username']));
             return Authenticator::AUTH_OK;
         }
         
@@ -69,7 +68,6 @@ class htmlAuthenticator extends Authenticator
     public function getAuthSession()
     {
         if (!$this->auth_session) {
-            include_once ('WHAT/Class.Session.php');
             $this->auth_session = new Session(Session::PARAMNAME);
             if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
                 $this->auth_session->Set($_COOKIE[Session::PARAMNAME]);
@@ -77,6 +75,7 @@ class htmlAuthenticator extends Authenticator
                 $this->auth_session->Set();
             }
         }
+        
         return $this->auth_session;
     }
     /**

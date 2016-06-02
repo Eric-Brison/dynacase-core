@@ -68,21 +68,23 @@ class Session extends DbObj
         }
         
         $this->gcSessions();
-        
-        $query = new QueryDb($this->dbaccess, "Session");
-        $query->addQuery("id = '" . pg_escape_string($id) . "'");
-        $list = $query->Query(0, 0, "TABLE");
         $createNewSession = true;
-        if ($query->nb != 0) {
-            $this->Affect($list[0]);
-            if (!$this->hasExpired()) {
-                $createNewSession = false;
-                $this->touch();
-                session_name($this->session_name);
-                session_id($id);
-                @session_start();
-                @session_write_close(); // avoid block
-                
+        
+        if ($id) {
+            $query = new QueryDb($this->dbaccess, "Session");
+            $query->addQuery("id = '" . pg_escape_string($id) . "'");
+            $list = $query->Query(0, 0, "TABLE");
+            if ($query->nb != 0) {
+                $this->Affect($list[0]);
+                if (!$this->hasExpired()) {
+                    $createNewSession = false;
+                    $this->touch();
+                    session_name($this->session_name);
+                    session_id($id);
+                    @session_start();
+                    @session_write_close(); // avoid block
+                    
+                }
             }
         }
         
@@ -178,9 +180,8 @@ class Session extends DbObj
         if (!empty($_SERVER['HTTP_HOST'])) {
             session_name($this->name);
             session_id($this->id);
-            @session_unset();
+            @session_start();
             @session_destroy();
-            @session_write_close();
             // delete session cookie
             $this->setcookie($this->name, false, time() - 3600, null, null, null, true);
             $this->Delete();
@@ -465,6 +466,23 @@ class Session extends DbObj
                 return $err;
             }
         }
+        if ($this->userid != $uid) {
+            if (isset($_SESSION)) {
+                $sessionCopy = $_SESSION;
+                // Reset session id when user id does not match regitered session user id
+                $this->close();
+                $this->set();
+                session_id($this->id);
+                session_start();
+                // Copy session values from old to new session
+                foreach ($sessionCopy as $k => $v) {
+                    $_SESSION[$k] = $v;
+                }
+                session_write_close(); // avoid block
+                
+            }
+        }
+        
         $this->userid = $uid;
         return $this->modify();
     }
