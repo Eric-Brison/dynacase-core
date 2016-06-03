@@ -1727,12 +1727,7 @@ class DocFormFormat
                 if (($eformat == "auto") && ($multiple == "yes")) $lay->set("isopen", false); // set by typing
                 if ($noselect && ($etype == "free")) {
                     if ((trim($value) != "") && ($value != "\t")) {
-                        if ($eformat != "auto") {
-                            $topt['...']["fvalue"] = "";
-                            $topt['...']["kvalue"] = "";
-                            $topt['...']["selected"] = "selected";
-                            $topt['...']["checked"] = "checked";
-                        }
+                        
                         $lay->set("isfreeselected", true);
                         $lay->set("lvalue", $lay->get("lvalue") . ' ' . _("(Other)"));
                         if (!$eformat) {
@@ -1740,6 +1735,8 @@ class DocFormFormat
                                 $topt['.sel.'] = $topt['...'];
                                 $topt['.sel.']["fvalue"] = $value . ' ' . _("(Other input)");
                                 $topt['.sel.']["kvalue"] = $value;
+                                $topt['.sel.']["selected"] = "selected";
+                                $topt['.sel.']["checked"] = "checked";
                             }
                             $topt['...']["selected"] = "";
                             $topt['...']["checked"] = "";
