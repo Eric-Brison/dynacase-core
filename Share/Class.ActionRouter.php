@@ -10,6 +10,9 @@ include_once ('WHAT/Lib.Main.php');
 
 class ActionRouter
 {
+    /**
+     * @var Action
+     */
     private $action = null;
     
     public function __construct(Account & $account, Authenticator & $auth = null)
