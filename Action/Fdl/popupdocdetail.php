@@ -338,7 +338,7 @@ function getpopupdocdetail(Action & $action, $docid)
     addFamilyPopup($tlink, $doc);
     addArchivePopup($tlink, $doc);
     addDocOfflinePopup($tlink, $doc, "_self", _("Offline menu"));
-
+    
     return $tlink;
 }
 /**
@@ -450,7 +450,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
         
         $defaultview = $doc->getDefaultView(true);
         if ($defaultview !== 0) {
-            $tlink["editdoc"]["descr"] = htmlspecialchars($cvdoc->getLocaleViewLabel($defaultview['cv_idview']) , ENT_QUOTES);
+            $tlink["editdoc"]["descr"] = $cvdoc->getLocaleViewLabel($defaultview['cv_idview']);
         }
         
         $count["specialedit"] = $count["specialview"] = 0;
@@ -479,7 +479,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
             $target = $cvdoc->getZoneOption($v["zoneview"]) === "B" ? "_download" : $target;
             if ((!$defaultview) || $defaultview["cv_idview"] !== $v["idview"]) {
                 $tlink[$v["idview"]] = array(
-                    "descr" => htmlspecialchars($mtitle, ENT_QUOTES) ,
+                    "descr" => $mtitle,
                     "url" => $url,
                     "jsfunction" => $js,
                     "confirm" => "false",
@@ -543,7 +543,7 @@ function addStatesPopup(&$tlink, Doc & $doc)
             }
             $tlink[$v] = array(
                 "title" => $tooltip,
-                "descr" => htmlspecialchars($tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, mb_ucfirst(_($v))) , ENT_QUOTES) ,
+                "descr" => $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, mb_ucfirst(_($v))) ,
                 "jsfunction" => $jsf,
                 "confirm" => "false",
                 "control" => "false",
@@ -591,7 +591,7 @@ function addFamilyPopup(&$tlink, Doc & $doc)
             $tlink[$k]["target"] = $v->getOption("ltarget");
         } else if ($v->getOption("mtarget") != "") $tlink[$k]["target"] = $v->getOption("mtarget");
         $tlink[$k]["idlink"] = $v->id;
-        $tlink[$k]["descr"] = htmlspecialchars($v->getLabel() , ENT_QUOTES);
+        $tlink[$k]["descr"] = $v->getLabel();
         $tlink[$k]["title"] = $v->getOption("ltitle");
         $tlink[$k]["url"] = addslashes($doc->urlWhatEncode($v->link));
         $tlink[$k]["confirm"] = $confirm ? "true" : "false";
@@ -631,7 +631,7 @@ function addFamilyPopup(&$tlink, Doc & $doc)
         } else if ($v->getOption("mtarget") != "") $tlink[$k]["target"] = $v->getOption("mtarget");
         $tlink[$k]["barmenu"] = ($v->getOption("barmenu") == "yes") ? "true" : "false";
         $tlink[$k]["idlink"] = $v->id;
-        $tlink[$k]["descr"] = htmlspecialchars($v->getLabel() , ENT_QUOTES);
+        $tlink[$k]["descr"] = $v->getLabel();
         $tlink[$k]["url"] = addslashes($doc->urlWhatEncode($alink));
         $tlink[$k]["confirm"] = $confirm ? "true" : "false";
         $tlink[$k]["control"] = $control;
@@ -716,9 +716,9 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
     
     $fdoc = $doc->getFamilyDocument();
     if ($fdoc->Control("icreate") != "") $tlink["duplicate"]["visibility"] = POPUP_INVISIBLE;
-
-    $canDelete=($doc->PreDocDelete() == "");
-    $tlink["delete"]["visibility"] = ($canDelete)?POPUP_ACTIVE:POPUP_INACTIVE;
+    
+    $canDelete = ($doc->PreDocDelete() == "");
+    $tlink["delete"]["visibility"] = ($canDelete) ? POPUP_ACTIVE : POPUP_INACTIVE;
     
     if ($cud) {
         $tlink["editdoc"]["visibility"] = POPUP_ACTIVE;
@@ -736,7 +736,7 @@ function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
             }
         } elseif ($doc->lmodify === "D") {
             if (!$doc->preUndelete()) {
-                $tlink["restore"]["visibility"] = (!$doc->control("delete"))?POPUP_ACTIVE:POPUP_INACTIVE;
+                $tlink["restore"]["visibility"] = (!$doc->control("delete")) ? POPUP_ACTIVE : POPUP_INACTIVE;
             }
         } else {
             $tlink["latest"]["visibility"] = POPUP_ACTIVE;
