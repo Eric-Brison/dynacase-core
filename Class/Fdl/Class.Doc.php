@@ -7515,7 +7515,7 @@ create unique index i_docir on doc(initid, revision);";
                     
                     $this->lay->rSet("profile", $this->getDocAnchor(abs($this->profid) , '_blank', true, _("specific control") , false, 'latest', true));
                 } else {
-                    $this->lay->rSet("profile", $this->getDocAnchor(abs($this->dprofid) , '_blank', true, _("dynamic control") . " (" . $this->getHTMLTitle(abs($this->dprofid)) . ")", false, 'latest', true));
+                    $this->lay->rSet("profile", $this->getDocAnchor(abs($this->dprofid) , '_blank', true, _("dynamic control") . " (" . $this->getTitle(abs($this->dprofid)) . ")", false, 'latest', true));
                 }
             }
         }
