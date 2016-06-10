@@ -185,6 +185,5 @@ function freedom_rss(Action & $action)
 
 function __xmlentities($string)
 {
-    $string = htmlspecialchars($string, ENT_QUOTES);
-    return str_replace('[ZONE', '&#091;ZONE', $string);
+    return Doc::htmlEncode($string);
 }
