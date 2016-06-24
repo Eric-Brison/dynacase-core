@@ -324,7 +324,7 @@
         },
 
         _convertStringWithInfo: function (str) {
-            return str.replace("%f", this.famTitle, "g").replace("%e", this.enumLabel, "g").replace("%s", this.enumParentLabel, "g");
+            return str.replace(/%f/g, this.famTitle).replace(/%e/g, this.enumLabel).replace(/%s/g, this.enumParentLabel);
         },
 
         _initWidgetHeader: function _initWidgetHeader() {
@@ -470,7 +470,7 @@
 
         _getActiveRadioButton: function (lineData) {
 
-            var key = lineData.key ? lineData.key.replace('"', "&quot;", "g").replace("'", "--", "g") : "";
+            var key = lineData.key ? lineData.key.replace(/"/g, "&quot;").replace(/'/g,'--'): "";
             return '<div class="activebuttonset" >' +
                 '<input type="radio" id="activebuttonset_' + key  + '_on" name="activebuttonset_' + key  + '" ' + (!lineData.disabled ? 'checked="checked"' : "") + '/><label class="enum-on" for="activebuttonset_' + key + '_on">' + this._activeButtonLabel.on + '</label>' +
                 '<input type="radio" id="activebuttonset_' + key  + '_off" name="activebuttonset_' + key + '"' + (lineData.disabled ? 'checked="checked"' : "") + '/><label class="enum-off" for="activebuttonset_' + key + '_off">' + this._activeButtonLabel.off + '</label>' +
