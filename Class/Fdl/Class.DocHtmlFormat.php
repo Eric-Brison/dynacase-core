@@ -887,7 +887,10 @@ class DocHtmlFormat
                 $htmlval = implode("<br/>", $thval);
             } else {
                 if ($avalue == "") $htmlval = $avalue;
-                elseif ($this->oattr->link != "") $htmlval = $this->doc->getHTMLTitle($avalue);
+                elseif ($this->oattr->link != "") {
+                    $title = DocTitle::getRelationTitle(trim($avalue) , $isLatest, $this->doc);
+                    $htmlval = $this->doc->htmlEncode($title);
+                }
                 else {
                     $title = DocTitle::getRelationTitle(trim($avalue) , $isLatest, $this->doc);
                     if ($title === false) $htmlval = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
