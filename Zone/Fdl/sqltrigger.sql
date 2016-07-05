@@ -30,8 +30,7 @@ CREATE OR REPLACE FUNCTION searchvalues[docid]() RETURNS trigger AS $$
 
 			if reallyUpdated then
 					-- Plain text Part
-				NEW.svalues:=COALESCE(NEW.svalues, '');
-				if (TG_OP = 'INSERT' OR (NEW.values != OLD.values) OR (NEW.svalues != COALESCE(OLD.svalues,''))) then
+				  NEW.svalues:=COALESCE(NEW.svalues, '');
 
           if (TG_OP = 'UPDATE' AND NEW.svalues = OLD.svalues) then
             -- reset to display value part
@@ -39,37 +38,36 @@ CREATE OR REPLACE FUNCTION searchvalues[docid]() RETURNS trigger AS $$
             NEW.svalues:=substring(OLD.svalues from 0 for pos);
             NEW.svalues:=COALESCE(NEW.svalues, '');
           end if;
-						-- Fulltext Part
+          -- Fulltext Part
 
-						begin
-								[BLOCK FILEATTR]
-								if NEW.[vecid] is null or (NEW.[vecid]='' and NEW.[attrid]!='') then
-									NEW.[vecid] := setweight2(NEW.[attrid]);
-								end if; [ENDBLOCK FILEATTR]
+          begin
+              [BLOCK FILEATTR]
+              if NEW.[vecid] is null or (NEW.[vecid]='' and NEW.[attrid]!='') then
+                NEW.[vecid] := setweight2(NEW.[attrid]);
+              end if; [ENDBLOCK FILEATTR]
 
-								NEW.fulltext:=setweight2(NEW.title, 'A') || setweight2(NEW.svalues, 'C') ||
+              NEW.fulltext:=setweight2(NEW.title, 'A') || setweight2(NEW.svalues, 'C') ||
 
-								[BLOCK ABSATTR]
-									setweight2(NEW.[attrid]::text, 'B') ||[ENDBLOCK ABSATTR]
-								[BLOCK FILEATTR2]
-									NEW.[vecid] ||[ENDBLOCK FILEATTR2]
-								[BLOCK FULLTEXT_C]
-									setweight2(NEW.[attrid]::text, 'C') ||[ENDBLOCK FULLTEXT_C]
-									setweight2('', 'C');
+              [BLOCK ABSATTR]
+                setweight2(NEW.[attrid]::text, 'B') ||[ENDBLOCK ABSATTR]
+              [BLOCK FILEATTR2]
+                NEW.[vecid] ||[ENDBLOCK FILEATTR2]
+              [BLOCK FULLTEXT_C]
+                setweight2(NEW.[attrid]::text, 'C') ||[ENDBLOCK FULLTEXT_C]
+                setweight2('', 'C');
 
-									EXCEPTION
-										WHEN OTHERS THEN
-										RAISE NOTICE 'fulltext not set %',NEW.id;
-						end;
+                EXCEPTION
+                  WHEN OTHERS THEN
+                  RAISE NOTICE 'fulltext not set %',NEW.id;
+          end;
 
-						-- Plain text Part
+          -- Plain text Part
 
-						NEW.svalues := NEW.svalues || ' ΞΞ ' ||
-						[BLOCK SEARCHFIELD] COALESCE(NEW.[attrid] || '£', '') ||
-						[ENDBLOCK SEARCHFIELD]
-						'£';
+          NEW.svalues := NEW.svalues || ' ΞΞ ' ||
+          [BLOCK SEARCHFIELD] COALESCE(NEW.[attrid] || '£', '') ||
+          [ENDBLOCK SEARCHFIELD]
+          '£';
 
-				end if;
 			end if;
 		end if;
 		return NEW;
