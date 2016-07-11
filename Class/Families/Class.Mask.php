@@ -116,8 +116,7 @@ class Mask extends \Dcp\Family\Base
         $tmask = array();
         
         $labelvis = $this->getLabelVis();
-        
-        uasort($tmpdoc->attributes->attr, "tordered");
+        $tmpdoc->attributes->orderAttributes();
         
         foreach ($tmpdoc->attributes->attr as $k => $attr) {
             /**
@@ -169,7 +168,7 @@ class Mask extends \Dcp\Family\Base
                 $tmask[$k]["classtype"].= " needmodified";
             }
             
-            if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id != "FIELD_HIDDENS") $tmask[$k]["framelabel"] = $attr->fieldSet->getLabel();
+            if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id != \Adoc::HIDDENFIELD) $tmask[$k]["framelabel"] = $attr->fieldSet->getLabel();
             else $tmask[$k]["framelabel"] = "";
             if (!empty($attr->waction)) $tmask[$k]["framelabel"] = _("Action");
             
@@ -186,7 +185,7 @@ class Mask extends \Dcp\Family\Base
                 }
             }
         }
-        unset($tmask["FIELD_HIDDENS"]);
+        unset($tmask[\Adoc::HIDDENFIELD]);
         uasort($tmask, array(
             get_class($this) ,
             'sortnewelem'
@@ -202,8 +201,10 @@ class Mask extends \Dcp\Family\Base
         $docid = $this->getRawValue("MSK_FAMID");
         
         $this->lay->Set("docid", $docid);
-        
-        $doc = new_Doc($this->dbaccess, $docid);
+        /**
+         * @var \DocFam $family
+         */
+        $family = new_Doc($this->dbaccess, $docid);
         
         $tvisibilities = $this->getVisibilities();
         $tneedeeds = $this->getNeedeeds();
@@ -223,7 +224,7 @@ class Mask extends \Dcp\Family\Base
         // display current values
         $newelem = array();
         $this->lay->set("creation", ($docid == 0));
-        $this->lay->set("family", $doc->getTitle());
+        $this->lay->set("family", $family->getTitle());
         
         if ($docid > 0) {
             $ka = 0; // index attribute
@@ -243,8 +244,8 @@ class Mask extends \Dcp\Family\Base
             }
             //    ------------------------------------------
             //  -------------------- NORMAL ----------------------
-            $tattr = $doc->getAttributes();
-            uasort($tattr, "tordered");
+            $tattr = $family->getAttributes();
+
             foreach ($tattr as $k => $attr) {
                 /**
                  * @var $attr \NormalAttribute|\FieldSetAttribute|\ActionAttribute
@@ -268,9 +269,9 @@ class Mask extends \Dcp\Family\Base
                     "array"
                 )));
                 
-                if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id != 'FIELD_HIDDENS') {
+                if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id != \Adoc::HIDDENFIELD) {
                     $newelem[$k]["attrinfo"].= '/' . $attr->fieldSet->id;
-                    if ($attr->fieldSet->fieldSet->id && $attr->fieldSet->fieldSet->id != 'FIELD_HIDDENS') $newelem[$k]["attrinfo"].= '/' . $attr->fieldSet->fieldSet->id;
+                    if ($attr->fieldSet->fieldSet->id && $attr->fieldSet->fieldSet->id != \Adoc::HIDDENFIELD) $newelem[$k]["attrinfo"].= '/' . $attr->fieldSet->fieldSet->id;
                 }
                 
                 if (($attr->type == "array") || (strtolower(get_class($attr)) == "fieldsetattribute")) $newelem[$k]["fieldweight"] = "bold";
@@ -322,7 +323,7 @@ class Mask extends \Dcp\Family\Base
                 
                 $ka++;
             }
-            unset($newelem["FIELD_HIDDENS"]);
+            unset($newelem[\Adoc::HIDDENFIELD]);
             uasort($newelem, array(
                 get_class($this) ,
                 'sortnewelem'

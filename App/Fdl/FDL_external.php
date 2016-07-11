@@ -1139,12 +1139,12 @@ function getSortProperties($dbaccess, $famid, $name = "")
     return $ret;
 }
 /**
- * @param NormalAttribute $oa
+ * @param NormalAttribute|FieldsetAttribute $oa
  * @return string
  */
 function _getParentLabel($oa)
 {
-    if ($oa && $oa->fieldSet && $oa->fieldSet->id != 'FIELD_HIDDENS') {
+    if ($oa && $oa->fieldSet && $oa->fieldSet->id != Adoc::HIDDENFIELD) {
         return _getParentLabel($oa->fieldSet) . $oa->fieldSet->getLabel() . '/';
     }
     return '';

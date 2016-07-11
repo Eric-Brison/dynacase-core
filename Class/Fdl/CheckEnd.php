@@ -94,7 +94,7 @@ class CheckEnd extends CheckData
             if ($foa) {
                 $type = $oa->type;
                 $ftype = $oa->fieldSet->type;
-                if (($type == 'frame') && ($ftype != 'tab') && ($oa->fieldSet->id != BasicAttribute::hiddenFieldId)) {
+                if (($type == 'frame') && ($ftype != 'tab') && ($oa->fieldSet->id != Adoc::HIDDENFIELD)) {
                     $this->addError(ErrorCode::getError('ATTR0207', $foa->id, $oa->id));
                 }
             }

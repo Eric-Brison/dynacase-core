@@ -1567,7 +1567,7 @@ class DetailSearch extends \Dcp\Family\Search
         $level = 0;
         $tset = array();
         if ($reset) $setAttribute = array();
-        while ($fs && $fs->id != 'FIELD_HIDDENS') {
+        while ($fs && $fs->id != \Adoc::HIDDENFIELD) {
             if (!in_array($fs->id, $setAttribute)) {
                 $tset[$fs->id] = array(
                     "attrid" => $fs->id,
