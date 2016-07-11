@@ -1786,6 +1786,11 @@ class importDocumentDescription
                         }
                     }
                 }
+                if ($oattr->ordered && !is_numeric($oattr->ordered)) {
+                    $oattr->options.= ($oattr->options) ? "|" : "";
+                    $oattr->options.= sprintf("relativeOrder=%s", $oattr->ordered);
+                    $oattr->ordered = $this->nLine;
+                }
                 if ($oattr->isAffected()) $err = $oattr->Modify();
                 else $err = $oattr->Add();
                 $this->addImportedAttribute($this->doc->id, $oattr);

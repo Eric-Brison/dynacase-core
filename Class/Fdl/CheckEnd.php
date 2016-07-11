@@ -39,6 +39,7 @@ class CheckEnd extends CheckData
         }
         
         $this->checkSetAttributes();
+        $this->checkOrderAttributes();
         $this->checkComputedConstraintAttributes();
         $this->checkDefault();
         $this->checkParameters();
@@ -101,6 +102,21 @@ class CheckEnd extends CheckData
         }
     }
     
+    protected function checkOrderAttributes()
+    {
+        $la = $this->doc->getAttributes(); // force reattach attributes
+        foreach ($la as & $oa) {
+            if ($oa) {
+                $relativeOrder = $oa->getOption("relativeOrder");
+                if ($relativeOrder && $relativeOrder !== \Dcp\FamilyAbsoluteOrder::firstOrder && $relativeOrder !== \Dcp\FamilyAbsoluteOrder::autoOrder) {
+                    if (!$this->doc->getAttribute($relativeOrder)) {
+                        $this->addError(ErrorCode::getError('ATTR0212', $oa->id, $relativeOrder));
+                    }
+                }
+            }
+        }
+    }
+    
     protected function checkComputedConstraintAttributes()
     {
         $this->doc->getAttributes(); // force reattach attributes
@@ -146,7 +162,8 @@ class CheckEnd extends CheckData
     }
     /**
      * check method validity for phpfunc property
-     * @param NormalAttribute|MenuAttribute $oa
+     *
+     * @param BasicAttribute|MenuAttribute|NormalAttribute $oa
      */
     private function checkLinkMethod(BasicAttribute & $oa)
     {

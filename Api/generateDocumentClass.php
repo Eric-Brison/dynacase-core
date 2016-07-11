@@ -79,7 +79,7 @@ if ($query->nb > 0) {
              */
             $wdoc = createDoc($dbaccess, $v["id"]);
             $wdoc->CreateProfileAttribute(); // add special attribute for workflow
-            activateTrigger($dbaccess, $v["id"]);
+            \Dcp\FamilyImport::activateTrigger($dbaccess, $v["id"]);
         }
     }
     foreach ($tid as $k => $v) {
@@ -92,7 +92,7 @@ function updateDoc($dbaccess, $v)
 {
     require_once 'FDL/Lib.Attr.php';
     try {
-        _refreshPhpPgDoc($dbaccess, $v, true);
+        \Dcp\FamilyImport::buildFamilyFilesAndTables($dbaccess, $v, true);
     }
     catch(\Dcp\Exception $e) {
         print $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";

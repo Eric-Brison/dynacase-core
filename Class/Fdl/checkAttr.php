@@ -360,15 +360,15 @@ SQL;
     private function checkOrder()
     {
         $order = $this->structAttr->order;
-        if ($this->isNodeNeedOrder()) {
-            if (empty($order)) {
-                $this->addError(ErrorCode::getError('ATTR0702', $this->attrid));
-            } elseif (!is_numeric($order)) {
-                $this->addError(ErrorCode::getError('ATTR0700', $order, $this->attrid));
-            }
-        } else {
-            if ($order) {
-                if (!is_numeric($order)) {
+        
+        if ($this->isNodeNeedOrder() && empty($order)) {
+            $this->addError(ErrorCode::getError('ATTR0702', $this->attrid));
+        } elseif ($order) {
+            if (!is_numeric($order)) {
+                if ($order === \dcp\FamilyAbsoluteOrder::firstOrder || $order === \dcp\FamilyAbsoluteOrder::autoOrder) {
+                    return;
+                }
+                if (!$this->checkAttrSyntax($order)) {
                     $this->addError(ErrorCode::getError('ATTR0700', $order, $this->attrid));
                 }
             }

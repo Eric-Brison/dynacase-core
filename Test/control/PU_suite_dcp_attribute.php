@@ -24,6 +24,7 @@ class SuiteDcpAttribute
         $suite->addTestSuite('Dcp\Pu\TestGetEnum');
         $suite->addTestSuite('Dcp\Pu\TestDocEnum');
         $suite->addTestSuite('Dcp\Pu\TestAttributeVisibility');
+        $suite->addTestSuite('Dcp\Pu\TestAttributeOrder');
         $suite->addTestSuite('Dcp\Pu\TestAttributeValue');
         $suite->addTestSuite('Dcp\Pu\TestAttributeDefault');
         $suite->addTestSuite('Dcp\Pu\TestAttributeCompute');

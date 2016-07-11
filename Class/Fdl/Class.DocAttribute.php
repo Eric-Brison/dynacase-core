@@ -20,7 +20,7 @@
  */
 class BasicAttribute
 {
-    const hiddenFieldId = "FIELD_HIDDENS";
+    const hiddenFieldId = Adoc::HIDDENFIELD;
     public $id;
     public $docid;
     public $labelText;
@@ -209,7 +209,7 @@ class BasicAttribute
         if ($this->type == 'tab') {
             return $this;
         }
-        if (is_object($this->fieldSet) && method_exists($this->fieldSet, 'getTab') && ($this->fieldSet->id != BasicAttribute::hiddenFieldId)) {
+        if (is_object($this->fieldSet) && method_exists($this->fieldSet, 'getTab') && ($this->fieldSet->id != Adoc::HIDDENFIELD)) {
             return $this->fieldSet->getTab();
         }
         return false;
@@ -905,7 +905,7 @@ class NormalAttribute extends BasicAttribute
                         $br = $dreg[1] . '#' . strtolower($dreg[2]) . '#';
                     }
                     if (function_exists($reg[1])) {
-                        $this->phpfile="";
+                        $this->phpfile = "";
                         $this->phpfunc = call_user_func_array($reg[1], $args);
                         
                         EnumAttributeTools::flatEnumNotationToEnumArray($this->phpfunc, $this->enum, $this->enumlabel, $br);
@@ -1380,7 +1380,7 @@ class FieldSetAttribute extends BasicAttribute
         
         $lay->set("minOccurs", "0");
         $lay->set("maxOccurs", "1");
-        $lay->set("notop", ($this->fieldSet->id != '' && $this->fieldSet->id != BasicAttribute::hiddenFieldId));
+        $lay->set("notop", ($this->fieldSet->id != '' && $this->fieldSet->id != Adoc::HIDDENFIELD));
         $tax = array();
         foreach ($la as $k => $v) {
             if ($v->fieldSet && $v->fieldSet->id == $this->id) {
