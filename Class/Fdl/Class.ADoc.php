@@ -26,8 +26,10 @@ class ADoc
     public $attr = array();
     public $fromname = '';
     public $isOrdered = false;
+    protected $absoluteOrders = [];
+    const HIDDENFIELD = "FIELD_HIDDENS";
     /**
-     * @var Array
+     * @var array
      */
     public $fields = array();
     /**
@@ -35,15 +37,15 @@ class ADoc
      */
     public $fromids = array();
     
-    function __construct()
+    public function __construct()
     {
-        $this->attr["FIELD_HIDDENS"] = new FieldSetAttribute("FIELD_HIDDENS", 0, "hiddens");
+        $this->attr[self::HIDDENFIELD] = new FieldSetAttribute(self::HIDDENFIELD, 0, "hiddens");
     }
     /**
      * @param string $id attribute identifier
      * @return BasicAttribute
      */
-    function getAttr($id)
+    public function getAttr($id)
     {
         if (isset($this->attr[$id])) return $this->attr[$id];
         if (isset($this->attr[strtolower($id) ])) return $this->attr[$id];
@@ -53,7 +55,7 @@ class ADoc
     /**
      * get attributes ids
      */
-    function getAttrIds($id)
+    public function getAttrIds()
     {
         return array_keys($this->attr);
     }
@@ -62,7 +64,7 @@ class ADoc
      * @param bool $onlyopt
      * @return NormalAttribute[]
      */
-    function GetNormalAttributes($onlyopt = false)
+    public function GetNormalAttributes($onlyopt = false)
     {
         $tsa = array();
         if (isset($this->attr)) {
@@ -90,7 +92,7 @@ class ADoc
      * return all the family parameters except frame & menu & action
      * @return NormalAttribute[]
      */
-    function getParamAttributes()
+    public function getParamAttributes()
     {
         $tsa = array();
         if (isset($this->attr)) {
@@ -105,7 +107,7 @@ class ADoc
      * get attributes included in an arrary
      * @return NormalAttribute[]
      */
-    function getArrayElements($id)
+    public function getArrayElements($id)
     {
         $a = $this->getAttr($id);
         
@@ -123,5 +125,24 @@ class ADoc
         }
         return false;
     }
+    
+    public function orderAttributes($force = true)
+    {
+        if (!$this->isOrdered || $force) {
+            $this->absoluteOrders[self::HIDDENFIELD] = 0;
+            uasort($this->attr, function ($a, $b)
+            {
+                if (!$a || !$b) {
+                    return 0;
+                } elseif ($this->absoluteOrders[$a->id] > $this->absoluteOrders[$b->id]) {
+                    return 1;
+                } elseif ($this->absoluteOrders[$a->id] < $this->absoluteOrders[$b->id]) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+            $this->isOrdered = true;
+        }
+    }
 }
-?>

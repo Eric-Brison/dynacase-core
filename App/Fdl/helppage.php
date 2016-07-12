@@ -68,7 +68,7 @@ function helppage_editsection(Action & $action, $dbaccess, $docid)
  */
 function helppage_getParentLabel($oa)
 {
-    if ($oa && $oa->fieldSet && $oa->fieldSet->id != 'FIELD_HIDDENS') {
+    if ($oa && $oa->fieldSet && $oa->fieldSet->id != \Adoc::HIDDENFIELD) {
         return helppage_getParentLabel($oa->fieldSet) . $oa->fieldSet->getLabel() . '/';
     }
     return '';
@@ -88,7 +88,7 @@ function helppage_getHelpAttr($famid, $name = "")
      * @var NormalAttribute $v
      */
     foreach ($tinter as $k => $v) {
-        if ($v->id === "FIELD_HIDDENS") {
+        if ($v->id === \Adoc::HIDDENFIELD) {
             continue;
         }
         if (($name == "") || (preg_match("/$pattern_name/i", $v->getLabel() , $reg))) {

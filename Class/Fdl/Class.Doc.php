@@ -2360,10 +2360,9 @@ create unique index i_docir on doc(initid, revision);";
                 $err = ErrorCode::getError('DOC1000', $argMid, $this->getTitle());
             }
         }
-        if (empty($this->attributes->isOrdered)) {
-            uasort($this->attributes->attr, "tordered");
-            $this->attributes->isOrdered = true;
-        }
+        
+        $this->attributes->orderAttributes();
+        
         if ($err) error_log($err);
         return $err;
     }
@@ -2799,6 +2798,7 @@ create unique index i_docir on doc(initid, revision);";
         
         if (!$this->_maskApplied) $this->ApplyMask();
         $tsa = array();
+        $this->attributes->orderAttributes();
         $tattr = $this->attributes->attr;
         foreach ($tattr as $k => $v) {
             /**
@@ -2819,7 +2819,6 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         
-        uasort($tsa, "tordered");
         return $tsa;
     }
     /**
@@ -7159,7 +7158,7 @@ create unique index i_docir on doc(initid, revision);";
                      * @var FieldSetAttribute $pSet
                      */
                     $pSet = $oaf->fieldSet;
-                    if ($pSet && ($pSet->id != "") && ($pSet->id != "FIELD_HIDDENS")) {
+                    if ($pSet && ($pSet->id != "") && ($pSet->id != Adoc::HIDDENFIELD)) {
                         $frames[$k]["tag"] = "TAG" . $pSet->id;
                         $frames[$k]["TAB"] = true;
                         $ttabs[$pSet->id] = array(
@@ -7291,7 +7290,7 @@ create unique index i_docir on doc(initid, revision);";
             
             $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
             $pSet = (isset($currentFrame->fieldSet) ? $currentFrame->fieldSet : null);
-            if ($pSet !== null && ($pSet->id != "") && ($pSet->id != "FIELD_HIDDENS")) {
+            if ($pSet !== null && ($pSet->id != "") && ($pSet->id != Adoc::HIDDENFIELD)) {
                 $frames[$k]["tag"] = "TAG" . $pSet->id;
                 $frames[$k]["TAB"] = true;
                 $ttabs[$pSet->id] = array(
@@ -7890,7 +7889,7 @@ create unique index i_docir on doc(initid, revision);";
                     $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
                     $frames[$k]["ehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($oaf->id) : false;
                     $frames[$k]["ehelpid"] = ($help->isAlive()) ? $help->id : false;
-                    if ($oaf && $oaf->fieldSet && ($oaf->fieldSet->id != "") && ($oaf->fieldSet->id != "FIELD_HIDDENS")) {
+                    if ($oaf && $oaf->fieldSet && ($oaf->fieldSet->id != "") && ($oaf->fieldSet->id != Adoc::HIDDENFIELD)) {
                         $frames[$k]["tag"] = "TAG" . $oaf->fieldSet->id;
                         $frames[$k]["TAB"] = true;
                         $ttabs[$oaf->fieldSet->id] = array(
@@ -7996,7 +7995,7 @@ create unique index i_docir on doc(initid, revision);";
                 
                 $oaf = $this->getAttribute($oaf->id);
                 $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
-                if (($currentFrame->fieldSet->id != "") && ($currentFrame->fieldSet->id != "FIELD_HIDDENS")) {
+                if (($currentFrame->fieldSet->id != "") && ($currentFrame->fieldSet->id != Adoc::HIDDENFIELD)) {
                     $frames[$k]["tag"] = "TAG" . $currentFrame->fieldSet->id;
                     $frames[$k]["TAB"] = true;
                     $ttabs[$currentFrame->fieldSet->id] = array(
@@ -8276,7 +8275,7 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($listattr as $i => $attr) {
             $iattr++;
             
-            if ((chop($listattr[$i]->id) != "") && ($listattr[$i]->id != "FIELD_HIDDENS")) {
+            if ((chop($listattr[$i]->id) != "") && ($listattr[$i]->id != Adoc::HIDDENFIELD)) {
                 //------------------------------
                 // Compute value elements
                 if ($currentFrameId != $listattr[$i]->fieldSet->id) {

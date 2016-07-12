@@ -117,7 +117,7 @@ create unique index idx_idfam on docfam(id);";
             if (include_once ("FDL$GEN/Class.$adoc.php")) {
                 $adoc = "ADoc" . $this->id;
                 $this->attributes = new $adoc();
-                uasort($this->attributes->attr, "tordered");
+                $this->attributes->orderAttributes();
             } else {
                 throw new Dcp\Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
             }
@@ -579,7 +579,7 @@ create unique index idx_idfam on docfam(id);";
         
         if (is_array($val)) $vals = $val;
         else $vals[] = $val;
-
+        
         foreach ($vals as $ka => $av) {
             if (!self::seemsMethod($av)) {
                 switch ($type) {
@@ -918,7 +918,7 @@ create unique index idx_idfam on docfam(id);";
             if ((!$v) || ($v->getOption("autotitle") == "yes") || ($v->usefor == 'Q')) unset($la[$k]);
         }
         foreach ($la as $k => $v) {
-            if (($v->id != "FIELD_HIDDENS") && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == "FIELD_HIDDENS")) {
+            if (($v->id != Adoc::HIDDENFIELD) && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == Adoc::HIDDENFIELD)) {
                 $level1[] = array(
                     "level1name" => $k
                 );
@@ -1064,13 +1064,13 @@ create unique index idx_idfam on docfam(id);";
         }
         return parent::PostUpdate();
     }
-
     /**
      * Inhibit search values : no need and must not be use when import family
      * @param bool $withLocale
      * @return string
      */
-    protected function getExtraSearchableDisplayValues($withLocale = true) {
+    protected function getExtraSearchableDisplayValues($withLocale = true)
+    {
         return "";
     }
 }

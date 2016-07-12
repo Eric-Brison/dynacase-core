@@ -112,7 +112,7 @@ class ExportXmlDocument
         $option->outFile = $outfile;
         
         foreach ($la as $k => & $v) {
-            if (($v->id != "FIELD_HIDDENS") && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == "FIELD_HIDDENS")) {
+            if (($v->id != \Adoc::HIDDENFIELD) && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == \Adoc::HIDDENFIELD)) {
                 
                 $level1[] = array(
                     "level" => $this->getStructXmlValue($v)

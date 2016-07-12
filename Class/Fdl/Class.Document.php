@@ -428,7 +428,7 @@ class Fdl_Document
             $listattr = $this->doc->getAttributes();
             
             foreach ($listattr as $k => $oa) {
-                if ($oa && ($oa->id != 'FIELD_HIDDENS') && ($oa->usefor != "Q")) {
+                if ($oa && ($oa->id != \Adoc::HIDDENFIELD) && ($oa->usefor != "Q")) {
                     foreach ($oa as $aid => $v) {
                         if ($aid == "options") {
                             $oa->getOption('');
@@ -439,7 +439,7 @@ class Fdl_Document
                             $attrs[$oa->id]["options"] = $topt;
                             unset($oa->_topt);
                         } elseif (!is_object($v)) $attrs[$oa->id][$aid] = $v;
-                        else if ($aid == "fieldSet") if ($v->id != 'FIELD_HIDDENS') $attrs[$oa->id]["parentId"] = $v->id;
+                        else if ($aid == "fieldSet") if ($v->id != \Adoc::HIDDENFIELD) $attrs[$oa->id]["parentId"] = $v->id;
                         else $attrs[$oa->id]["parentId"] = null;
                     }
                     $attrs[$oa->id]['labelText'] = $oa->getLabel();

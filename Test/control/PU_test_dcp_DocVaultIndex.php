@@ -34,7 +34,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
             $oImport = new \ImportDocument();
             $oImport->importDocuments($this->getAction() , $file, $onlyAnalyze = false, $archive = false);
             $err = $oImport->getErrorMessage();
-            $this->assertEmpty($err, sprintf("import error %s", $err));
+            $this->assertEmpty($err, sprintf("import error [%s] %s", $file, $err));
             /*
              * Run post-import callback
             */

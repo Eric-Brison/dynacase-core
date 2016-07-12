@@ -39,6 +39,7 @@ class CheckEnd extends CheckData
         }
         
         $this->checkSetAttributes();
+        $this->checkOrderAttributes();
         $this->checkComputedConstraintAttributes();
         $this->checkDefault();
         $this->checkParameters();
@@ -94,8 +95,23 @@ class CheckEnd extends CheckData
             if ($foa) {
                 $type = $oa->type;
                 $ftype = $oa->fieldSet->type;
-                if (($type == 'frame') && ($ftype != 'tab') && ($oa->fieldSet->id != BasicAttribute::hiddenFieldId)) {
+                if (($type == 'frame') && ($ftype != 'tab') && ($oa->fieldSet->id != Adoc::HIDDENFIELD)) {
                     $this->addError(ErrorCode::getError('ATTR0207', $foa->id, $oa->id));
+                }
+            }
+        }
+    }
+    
+    protected function checkOrderAttributes()
+    {
+        $la = $this->doc->getAttributes(); // force reattach attributes
+        foreach ($la as & $oa) {
+            if ($oa) {
+                $relativeOrder = $oa->getOption("relativeOrder");
+                if ($relativeOrder && $relativeOrder !== \Dcp\FamilyAbsoluteOrder::firstOrder && $relativeOrder !== \Dcp\FamilyAbsoluteOrder::autoOrder) {
+                    if (!$this->doc->getAttribute($relativeOrder)) {
+                        $this->addError(ErrorCode::getError('ATTR0212', $oa->id, $relativeOrder));
+                    }
                 }
             }
         }
@@ -146,7 +162,8 @@ class CheckEnd extends CheckData
     }
     /**
      * check method validity for phpfunc property
-     * @param NormalAttribute|MenuAttribute $oa
+     *
+     * @param BasicAttribute|MenuAttribute|NormalAttribute $oa
      */
     private function checkLinkMethod(BasicAttribute & $oa)
     {

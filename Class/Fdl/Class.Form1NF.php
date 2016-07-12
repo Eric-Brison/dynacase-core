@@ -1923,7 +1923,7 @@ class Form1NF_Column
     private function loadContainers($fieldset)
     {
         if (!is_object($fieldset)) return;
-        if ($fieldset->id == 'FIELD_HIDDENS') return;
+        if ($fieldset->id == \Adoc::HIDDENFIELD) return;
         if (empty($this->arrayName) && $fieldset->type == 'array') $this->arrayName = $fieldset->id;
         $this->containers[] = $fieldset->id;
         if (property_exists($fieldset, 'fieldSet')) {

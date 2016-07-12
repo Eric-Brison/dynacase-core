@@ -589,7 +589,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         $this->attributes->attr['us_extmail']->mvisibility = 'W';
         $this->attributes->attr['us_extmail']->fieldSet = $this->attributes->attr['us_fr_coord'];
         $this->attributes->attr['us_extmail']->ordered = $this->attributes->attr['us_pphone']->ordered - 1;
-        uasort($this->attributes->attr, "tordered");
+        $this->attributes->orderAttributes();
         
         $this->editbodycard($target, $ulink, $abstract);
     }

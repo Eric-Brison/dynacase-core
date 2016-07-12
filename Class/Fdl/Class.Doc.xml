@@ -26,6 +26,8 @@ class ADoc[docid] extends [AParent] {
 						$this->attr["[frame]"],"[phpfile]","[phpfunc]","[elink]","[phpconstraint]","[usefor]","[eformat]","[options]","[docName]");
 
      [ENDBLOCK NATTR]
+		[IF sAbsoluteOrders]
+	 $this->absoluteOrders=[[sAbsoluteOrders]];[ENDIF sAbsoluteOrders]
      $this->fromids[[docid]]=[docid];
      $this->fromname='[docName]';
 [BLOCK ATTRFIELD]
