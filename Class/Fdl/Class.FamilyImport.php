@@ -760,7 +760,7 @@ class FamilyImport
         }
     }
     
-    function setSqlIndex($dbaccess, $docid)
+    public static function setSqlIndex($dbaccess, $docid)
     {
         $cdoc = createTmpDoc($dbaccess, $docid, false);
         $indexes = $cdoc->GetSqlIndex();
