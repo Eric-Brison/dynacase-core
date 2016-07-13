@@ -896,10 +896,10 @@ class DocFormFormat
                         $lset = next($enuml);
                         $boolkeys = array_keys($enuml);
                         if ($value == key($enuml)) $lay->set("checkedyesno", "checked");
-                        else $lay->set("checkedyesno", "");
-                        $lay->set("tyesno", sprintf(_("set for %s, unset for %s") , $lset, $lunset));
-                        $lay->set("val1", $boolkeys[0]);
-                        $lay->set("val2", $boolkeys[1]);
+                        else $lay->rSet("checkedyesno", "");
+                        $lay->eSet("tyesno", sprintf(_("set for %s, unset for %s") , $lset, $lunset));
+                        $lay->eSet("val1", json_encode((string)$boolkeys[0]));
+                        $lay->eSet("val2", json_encode((string)$boolkeys[1]));
                         break;
 
                     default:
@@ -908,11 +908,11 @@ class DocFormFormat
                 }
                 
                 $this->getLayOptions($lay, $this->doc, $this->oattr, $value, $this->attrin, $this->index);
-                $lay->set("msize", $this->oattr->getOption("mselectsize", 3));
-                if (($this->visibility == "R") || ($this->visibility == "S")) $lay->set("disabled", $this->idisabled);
-                else $lay->set("disabled", "");
+                $lay->eSet("msize", $this->oattr->getOption("mselectsize", 3));
+                if (($this->visibility == "R") || ($this->visibility == "S")) $lay->rSet("disabled", $this->idisabled);
+                else $lay->rSet("disabled", "");
                 
-                $lay->set("NOTD", $trueNotd);
+                $lay->rSet("NOTD", ($trueNotd == true));
                 $input = $lay->gen();
                 return $input;
             }
@@ -1677,7 +1677,7 @@ class DocFormFormat
                 $lay->set("isfree", ($etype == "free"));
                 $tvalue = $doc->rawValueToArray($value);
                 
-                $lay->set("lvalue", $value);
+                $lay->eSet("lvalue", $value);
                 $enuml = $oattr->getenumlabel(null, false);
                 if ($esort == 'key' || $esort == 'label') {
                     $enuml = $this->sortEnumMap($enuml, $esort);
@@ -1706,7 +1706,7 @@ class DocFormFormat
                     if ($found) {
                         $topt[$k]["selected"] = "selected";
                         $topt[$k]["checked"] = "checked";
-                        $lay->set("lvalue", $v);
+                        $lay->eSet("lvalue", $v);
                         $noselect = false;
                     } else {
                         if ($eformat != "auto") {
@@ -1729,7 +1729,7 @@ class DocFormFormat
                     if ((trim($value) != "") && ($value != "\t")) {
                         
                         $lay->set("isfreeselected", true);
-                        $lay->set("lvalue", $lay->get("lvalue") . ' ' . _("(Other)"));
+                        $lay->rSet("lvalue", $lay->get("lvalue") . ' ' . _("(Other)"));
                         if (!$eformat) {
                             if ($multiple != "yes") {
                                 $topt['.sel.'] = $topt['...'];
@@ -1770,7 +1770,7 @@ class DocFormFormat
                 }
                 $lay->setBlockData("OPTIONS", $topt);
                 $lay->set("NBOPT", max(count($topt) , 1));
-                $lay->set("value", $value);
+                $lay->eSet("value", $value);
                 $lay->set("docid", ($doc->id == 0) ? $doc->fromid : $doc->id);
                 $lay->set("index", $index);
             }
@@ -1794,7 +1794,7 @@ class DocFormFormat
                 if ($index !== "") $lay->set("said", $doc->getMultipleRawValues($oattr->format, "", $index));
                 else $lay->set("said", $doc->getRawValue($oattr->format));
                 
-                $lay->set("value", $value);
+                $lay->eSet("value", $value);
                 $lay->set("uuvalue", urlencode($value));
             }
             /**
