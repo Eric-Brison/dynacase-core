@@ -927,7 +927,7 @@ class DocFormFormat
                 $eopt = '';
                 $elabel = $this->oattr->getOption("elabel");
                 if ($elabel != "") $eopt.= " title=\"$elabel\"";
-                $input = "<input size=7  $eopt style=\"background-color:$value\" type=\"text\" name=\"" . $this->attrin . "\" value=\"" . chop(htmlentities($value, ENT_COMPAT, "UTF-8")) . "\"";
+                $input = sprintf('<input size=7 %s style="background-color: %s" type="text" name="%s" value="%s"', $eopt, htmlspecialchars($value, ENT_QUOTES) , htmlspecialchars($this->attrin, ENT_QUOTES) , chop(htmlspecialchars($value, ENT_QUOTES)));
                 $input.= " id=\"" . $this->attridk . "\" ";
                 
                 if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
