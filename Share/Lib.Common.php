@@ -153,7 +153,11 @@ function getTmpDir($def = '/tmp')
     }
     $tmp = getParam('CORE_TMPDIR', $def);
     if (empty($tmp)) {
-        return $def;
+        if (empty($def)) {
+            $tmp = './var/tmp';
+        } else {
+            $tmp = $def;
+        }
     }
     
     if (substr($tmp, 0, 1) != '/') {
