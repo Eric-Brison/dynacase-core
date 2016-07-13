@@ -2360,8 +2360,9 @@ create unique index i_docir on doc(initid, revision);";
                 $err = ErrorCode::getError('DOC1000', $argMid, $this->getTitle());
             }
         }
-        
-        $this->attributes->orderAttributes();
+        if (!empty($this->attributes->attr)) {
+            $this->attributes->orderAttributes();
+        }
         
         if ($err) error_log($err);
         return $err;
@@ -2798,7 +2799,9 @@ create unique index i_docir on doc(initid, revision);";
         
         if (!$this->_maskApplied) $this->ApplyMask();
         $tsa = array();
-        $this->attributes->orderAttributes();
+        if (!empty($this->attributes->attr)) {
+            $this->attributes->orderAttributes();
+        }
         $tattr = $this->attributes->attr;
         foreach ($tattr as $k => $v) {
             /**
