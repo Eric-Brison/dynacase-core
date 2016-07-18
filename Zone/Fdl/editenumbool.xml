@@ -1,4 +1,4 @@
-<input id="[id]" onchange="updateBoolCheck(this,'[val1]','[val2]')" value="[value]" type="hidden"  name="[name]">
+<input id="[id]" onchange="updateBoolCheck(this,[val1],[val2])" value="[value]" type="hidden"  name="[name]">
 <input id="[id]_0" type="checkbox"   [disabled] 
-  onchange="updateBoolValue(this,'[id]','[val1]','[val2]')" 
+  onchange="updateBoolValue(this,'[id]',[val1],[val2])"
   [checkedyesno] title="[tyesno]"> 
