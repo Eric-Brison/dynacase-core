@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-04-29 17:43+0200\n"
-"PO-Revision-Date: 2016-04-06 14:10+0200\n"
+"PO-Revision-Date: 2016-07-18 16:13+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
 "Language: English\n"
@@ -7015,7 +7015,7 @@ msgid "no privilege %s for %s [%d]"
 msgstr ""
 
 #, php-format
-msgid "no privilege %s for %s |%d]"
+msgid "no privilege %s for document with id %d"
 msgstr ""
 
 #, php-format
