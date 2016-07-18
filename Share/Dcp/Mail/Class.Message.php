@@ -298,7 +298,7 @@ class Message
             $mail->addBCC($to->address, $to->name);
         }
         $mail->CharSet = "UTF-8";
-        $mail->XMailer = sprintf("Dynacase Platform %s", getParam('VERSION'));
+        $mail->XMailer = sprintf("Dynacase Platform %s", \ApplicationParameterManager::getParameterValue('CORE', 'VERSION'));
         $mail->MessageID = '<' . strftime("%Y%M%d%H%M%S-", time()) . rand(1, 65535) . "@%s>";
         $mail->MessageID = sprintf('<%s%s@%s>', strftime("%Y%M%d%H%M%S-", time()) , rand(1, 65535) , $host);
         $mail->Subject = $this->subject;
