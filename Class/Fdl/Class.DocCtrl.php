@@ -782,7 +782,7 @@ class DocCtrl extends DocLDAP
     function controlUp($uperm, $aclname)
     {
         if (isset($this->dacls[$aclname])) {
-            return (($uperm & (1 << ($this->dacls[$aclname]["pos"]))) != 0) ? "" : sprintf(_("no privilege %s for %s |%d]") , $aclname, $this->title, $this->id);
+            return (($uperm & (1 << ($this->dacls[$aclname]["pos"]))) != 0) ? "" : sprintf(_("no privilege %s for %s [%d]") , $aclname, $this->title, $this->id);
         } else {
             return sprintf(_("unknow privilege %s") , $aclname);
         }

@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-04-29 17:43+0200\n"
-"PO-Revision-Date: 2016-04-29 17:44+0200\n"
+"PO-Revision-Date: 2016-07-18 16:13+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -7249,8 +7249,8 @@ msgid "no privilege %s for %s [%d]"
 msgstr "pas de privilège %s pour le document %s [%d]"
 
 #, php-format
-msgid "no privilege %s for %s |%d]"
-msgstr "Pas de privilège %s pour le document %s [%d]"
+msgid "no privilege %s for document with id %d"
+msgstr "Pas de privilège %s pour le document %d"
 
 #, php-format
 msgid "no privilege to create interactivaly this kind (%s) of document"

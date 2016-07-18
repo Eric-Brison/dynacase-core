@@ -6511,6 +6511,29 @@ create unique index i_docir on doc(initid, revision);";
         return $this->oooFormater->getOooValue($oattr, $value, $index);
     }
     /**
+     * Prevent displaying the document's title in the error message
+     * if the user has no 'view' privilege
+     *
+     * @param Doc $doc
+     * @param $aclname
+     * @return string
+     */
+    protected function noPrivilegeMessage(Doc & $doc, $aclname)
+    {
+        /*
+         * If the error message concerns the 'view' privilege, or the document
+         * is confidential, or the user has no 'view' privilege on the
+         * document, then we should not display the document's title
+        */
+        if (($aclname == 'view') || ($doc->isConfidential()) || ($doc->control('view') !== '')) {
+            return sprintf(_("no privilege %s for document with id %d") , $aclname, $doc->id);
+        }
+        /*
+         * Otherwise, display the error message with the document's title
+        */
+        return sprintf(_("no privilege %s for %s [%d]") , $aclname, $doc->getTitle() , $doc->id);
+    }
+    /**
      * Control Access privilege for document for current user
      *
      * @param string $aclname identifier of the privilege to test
@@ -6519,17 +6542,23 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function control($aclname, $strict = false)
     {
-        $err = '';
-        if (($this->isAffected())) {
-            if (($this->profid <= 0) || ($this->userid == 1)) return ""; // no profil or admin
-            $err = $this->controlId($this->profid, $aclname, $strict);
-            if (($err != "") && ($this->isConfidential())) $err = sprintf(_("no privilege %s for %s") , $aclname, $this->getTitle());
+        if (!$this->isAffected()) {
+            return '';
+        }
+        if (($this->profid <= 0) || ($this->userid == 1)) {
+            return ""; // no profil or admin
+            
+        }
+        $err = $this->controlId($this->profid, $aclname, $strict);
+        if ($err != "") {
+            return $this->noPrivilegeMessage($this, $aclname);
+        } else {
             // Edit rights on profiles must also be controlled by the 'modifyacl' acl
-            if (($err == "") && ($aclname == 'edit' || $aclname == 'delete' || $aclname == 'unlock') && $this->isRealProfile()) {
-                $err = $this->controlId($this->profid, 'modifyacl', $strict);
+            if (($aclname == 'edit' || $aclname == 'delete' || $aclname == 'unlock') && $this->isRealProfile()) {
+                return $this->controlId($this->profid, 'modifyacl', $strict);
             }
         }
-        return $err;
+        return '';
     }
     /**
      * Control Access privilege for document for current user
