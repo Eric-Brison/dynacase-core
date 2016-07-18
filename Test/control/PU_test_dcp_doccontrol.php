@@ -75,7 +75,7 @@ class TestDocControl extends TestCaseDcpDocument
                             "user" => "TST_U_HOMER_SIMPSON",
                             "doc" => "TST_HELPPAGE_01",
                             "acl" => "view",
-                            "result" => false
+                            "result" => true
                         ) ,
                         array(
                             "user" => "TST_U_HOMER_SIMPSON",
