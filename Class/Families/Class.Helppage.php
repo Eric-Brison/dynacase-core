@@ -66,29 +66,6 @@ class HelpPage extends \Dcp\Family\Document
         return $err;
     }
     /**
-     * Check 'view' control acl against the help_family family profile
-     * @param string $aclname
-     * @param bool $strict
-     * @return string non-empty string with error message when forbidden or empty string if allowed
-     */
-    public function Control($aclname, $strict = false)
-    {
-        $control = parent::Control($aclname, $strict);
-        
-        if ($control != '') {
-            return $control;
-        }
-        
-        if ($aclname == 'view') {
-            $famId = $this->getRawValue('HELP_FAMILY');
-            $fam = new_Doc($this->dbaccess, $famId);
-            if ($fam->isAlive()) {
-                return $fam->Control('view');
-            }
-        }
-        return '';
-    }
-    /**
      *
      * @return array
      */
@@ -191,7 +168,7 @@ class HelpPage extends \Dcp\Family\Document
             $this->lay->set('HELPATTRIBUTESLIST', true);
             $docfam = createDoc($this->dbaccess, $famid, false);
             $docattributes = $docfam->GetNormalAttributes();
-            $docattributes=array_merge($docattributes, $docfam->getFieldAttributes());
+            $docattributes = array_merge($docattributes, $docfam->getFieldAttributes());
             $attributes = array();
             foreach ($docattributes as & $attribute) {
                 $attributes[] = array(
