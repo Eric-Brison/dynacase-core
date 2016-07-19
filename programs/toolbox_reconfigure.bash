@@ -1,9 +1,20 @@
 #!/bin/bash
 
 authtype=`"$WIFF_ROOT"/wiff --getValue=authtype`
+if [ -z "$authtype" ]; then
+    echo "Unexpected empty 'authtype' from wiff"
+    exit 1
+fi
 core_db=`"$WIFF_ROOT"/wiff --getValue=core_db`
-freedom_db=`"$WIFF_ROOT"/wiff --getValue=freedom_db`
+if [ -z "$core_db" ]; then
+    echo "Unexpected empty 'core_db' from wiff"
+    exit 1
+fi
 vault_root=`"$WIFF_ROOT"/wiff --getValue=vault_root`
+if [ -z "$vault_root" ]; then
+    echo "Unexpected empty 'vault_root' from wiff"
+    exit 1
+fi
 client_name=`"$WIFF_ROOT"/wiff --getValue=client_name`
 vault_save=`"$WIFF_ROOT"/wiff --getValue=vault_save`
  
@@ -58,7 +69,7 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
-log "Updating vault r_path..."
+echo "Updating vault free_entries..."
 if [ "$vault_save" == "no" ]; then
     PGSERVICE="$freedom_db" psql -c "UPDATE vaultdiskdirstorage set free_entries = 0 where free_entries > 0;"
     RET=$?
@@ -67,7 +78,7 @@ if [ "$vault_save" == "no" ]; then
 	exit $RET
     fi
 fi
-logger "update vault data"
+echo "Updating vault r_path..."
 V=$(installUtils pg_escape_string "$vault_root")
 PGSERVICE="$freedom_db" psql -c "UPDATE vaultdiskfsstorage SET r_path = '$V' || '/' || id_fs; "
 
@@ -78,7 +89,7 @@ echo "Error updating vault r_path"
 fi
 
 
-log "Setting DateStyle to match CORE_LCDATE..."
+echo "Setting DateStyle to match CORE_LCDATE..."
 CURRENT_DATABASE=`PGSERVICE="$core_db" psql -tA -c "SELECT current_database()"`
 CURRENT_DATABASE_QUOTED=$(echo "$CURRENT_DATABASE" | sed -e 's/"/""/g')
 CORE_LCDATE=`"$WIFF_CONTEXT_ROOT/wsh.php" --api=getApplicationParameter --param=CORE_LCDATE| cut -f1 -d" "`
@@ -93,7 +104,7 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
-log "Setting standard_conforming_strings to 'off'..."
+echo "Setting standard_conforming_strings to 'off'..."
 PGSERVICE="$core_db" psql -c "ALTER DATABASE \"$CURRENT_DATABASE_QUOTED\" SET standard_conforming_strings = 'off'"
 RET=$?
 if [ $RET -ne 0 ]; then
@@ -101,13 +112,13 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
-log "Setting session.save_path..."
+echo "Setting session.save_path..."
 if [ -f "${WIFF_CONTEXT_ROOT}/.htaccess" ]; then
     V=$(installUtils doublequote -q "$WIFF_CONTEXT_ROOT")
     installUtils replace -f .htaccess +em '^(\s*php_value\s+session\.save_path\s+).*$' "\$1\"$V/var/session\""
 fi
 
-log "Re-creating var subdirs..."
+echo "Re-creating var subdirs..."
 for SUBDIR in cache/file cache/image session tmp upload; do
     DIR="${WIFF_CONTEXT_ROOT}/var/${SUBDIR}"
     if [ ! -e "$DIR" ]; then
