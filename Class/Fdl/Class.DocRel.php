@@ -76,8 +76,11 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
     {
         global $action;
         include_once ("Class.QueryDb.php");
+        if (empty($this->sinitid)) {
+            return array();
+        }
         $q = new QueryDb($this->dbaccess, get_class($this));
-        $q->AddQuery("sinitid=" . $this->sinitid);
+        $q->AddQuery(sprintf("sinitid = %d", $this->sinitid));
         if ($reltype != "") $q->AddQuery("type='$reltype'");
         if ($doctype != "") $q->AddQuery("doctype='$doctype'");
         $userid = $action->user->id;
