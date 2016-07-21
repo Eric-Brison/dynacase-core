@@ -8905,10 +8905,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     public static function getWhatUserId()
     {
-        global $action;
         deprecatedFunction();
         
-        return $action->user->id;
+        return self::getSystemUserId();
     }
     /**
      * return system user id
@@ -8919,7 +8918,7 @@ create unique index i_docir on doc(initid, revision);";
     public static function getSystemUserId()
     {
         global $action;
-        return $action->user->id;
+        return (int)$action->user->id;
     }
     /**
      * return a specific attribute of the current user document
