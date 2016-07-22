@@ -2,107 +2,134 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ARCHIVING \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2016-07-26 09:45+0200\n"
+"PO-Revision-Date: 2016-07-22T16:31:37+02:00\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: English\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_clear"
-msgstr "Empty archive content"
+msgstr "Vider l'archive de son contenu"
 
+#, fuzzy
 msgid "ARCHIVING#arc_clear#submenu"
-msgstr "Archiving"
+msgstr "Archivage"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_close"
-msgstr "Archive documents"
+msgstr "Archiver les documents"
 
+#, fuzzy
 msgid "ARCHIVING#arc_close#ltitle"
-msgstr "Archive documents included in archive"
+msgstr "Réaliser l'archivage des documents inclus dans l'archive"
 
+#, fuzzy
 msgid "ARCHIVING#arc_close#submenu"
-msgstr "Archiving"
+msgstr "Archivage"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_clotdate"
-msgstr "Closing date"
+msgstr "Date de clôture"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_fr_purge"
 msgstr "Purge"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_list"
-msgstr "View documents"
+msgstr "Voir les documents"
 
+#, fuzzy
 msgid "ARCHIVING#arc_list#submenu"
-msgstr "Archiving"
+msgstr "Archivage"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_listc"
-msgstr "View archived documents"
+msgstr "Voir les documents archivés"
 
+#, fuzzy
 msgid "ARCHIVING#arc_listc#submenu"
-msgstr "Archiving"
+msgstr "Archivage"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_modprof"
-msgstr "Manage archived documents rights"
+msgstr "Gérer les droits des documents archivés"
 
+#, fuzzy
 msgid "ARCHIVING#arc_modprof#submenu"
-msgstr "Archiving"
+msgstr "Archivage"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_profil"
-msgstr "Relevant profile"
+msgstr "Profil applicable"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_purge"
-msgstr "Destroy archived documents"
+msgstr "Détruire les documents archivé"
 
+#, fuzzy
 msgid "ARCHIVING#arc_purge#ltitle"
-msgstr "Permanently delete archived documents"
+msgstr "Supprimer définitivement les documents archivés"
 
+#, fuzzy
 msgid "ARCHIVING#arc_purge#submenu"
-msgstr "Archiving"
+msgstr "Archivage"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_purgedate"
-msgstr "Destruction date"
+msgstr "Date de destruction"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_purgemanif"
-msgstr "Destroyed documents"
+msgstr "Documents détruits"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_reopen"
-msgstr "Retrieve archived documents"
+msgstr "Désarchiver les documents archivés"
 
+#, fuzzy
 msgid "ARCHIVING#arc_reopen#ltitle"
-msgstr "Retrieve archived documents"
+msgstr "Désarchiver les documents archivés"
 
+#, fuzzy
 msgid "ARCHIVING#arc_reopen#submenu"
-msgstr "Archiving"
+msgstr "Archivage"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_status"
-msgstr "Status"
+msgstr "Statut"
 
+#, fuzzy
 msgid "ARCHIVING#arc_status#C"
-msgstr "Closed"
+msgstr "Clôturé"
 
+#, fuzzy
 msgid "ARCHIVING#arc_status#O"
-msgstr "Opened"
+msgstr "Ouvert"
 
+#, fuzzy
 msgid "ARCHIVING#arc_status#P"
-msgstr "Purged"
+msgstr "Purgé"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "ARCHIVING#arc_tab_purge"
 msgstr "Purge"
 
@@ -114,5 +141,6 @@ msgstr ""
 msgid "ARCHIVING#gui_isrss"
 msgstr ""
 
+#, fuzzy
 msgid "ARCHIVING#title"
 msgstr "Archive"
