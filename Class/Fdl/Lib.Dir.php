@@ -413,7 +413,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      * @param int $userid the current user id
      * @param string $qtype LIST|TABLE the kind of return : list of object or list or values array
      * @param int|string $fromid identifier of family document
-     * @param bool $distinct if true all revision of the document are returned else only latest
+     * @param bool $distinct if false all revision of the document are returned else only latest
      * @param string $orderby field order
      * @param bool $latest if true only latest else all revision
      * @param string $trash (no|only|also) search in trash or not
