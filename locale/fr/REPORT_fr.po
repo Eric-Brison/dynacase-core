@@ -2,165 +2,209 @@ msgid ""
 msgstr ""
 "Project-Id-Version: REPORT \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2016-07-26 09:46+0200\n"
+"PO-Revision-Date: 2016-07-25 11:22+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: English\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_caption"
 msgstr "Description"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_coloreven"
-msgstr "Even color"
+msgstr "Couleur paire"
 
+#, fuzzy
 msgid "REPORT#rep_coloreven#elabel"
-msgstr "background color for even rows"
+msgstr "couleur du fond pour les rangées paires"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_colorhf"
-msgstr "Header color"
+msgstr "Couleur entête"
 
+#, fuzzy
 msgid "REPORT#rep_colorhf#elabel"
-msgstr "background color for header and footer"
+msgstr "couleur du fond pour l'entête et le pied de tableau"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_colorodd"
-msgstr "Odd color"
+msgstr "Couleur impaire"
 
+#, fuzzy
 msgid "REPORT#rep_colorodd#elabel"
-msgstr "background color for odd rows"
+msgstr "couleur du fond pour les rangées impaires"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_colors"
-msgstr "Color"
+msgstr "Couleur"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_csv"
 msgstr "Export CSV"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_displayoption"
-msgstr "Presentation option"
+msgstr "Option de présentation"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_foots"
-msgstr "Footer"
+msgstr "Pied de tableau"
 
+#, fuzzy
 msgid "REPORT#rep_foots#CARD"
-msgstr "Cardinality"
+msgstr "Cardinal"
 
+#, fuzzy
 msgid "REPORT#rep_foots#MOY"
-msgstr "Mean"
+msgstr "Moyenne"
 
+#, fuzzy
 msgid "REPORT#rep_foots#NONE"
 msgstr " "
 
+#, fuzzy
 msgid "REPORT#rep_foots#SUM"
-msgstr "Sum"
+msgstr "Somme"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_fr_param"
-msgstr "Parameters"
+msgstr "Paramètres"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_fr_presentation"
-msgstr "Presentation"
+msgstr "Présentation"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_idcols"
-msgstr "Column id"
+msgstr "Id colonnes"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_idsort"
-msgstr "Sort id"
+msgstr "Id tri"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_imp"
-msgstr "Printable version"
+msgstr "Version imprimable"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_lcols"
 msgstr "Label"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_limit"
-msgstr "Limit"
+msgstr "Limite"
 
+#, fuzzy
 msgid "REPORT#rep_limit#elabel"
-msgstr "Maximum number of displayed documents"
+msgstr "nombre maximum de documents retournés"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_maxdisplaylimit"
-msgstr "Maximum number of displayed rows"
+msgstr "Limite d'affichage pour le nombre de rangées"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_noaccesstext"
-msgstr "Text displayed when the value is protected"
+msgstr "Texte à afficher pour les valeurs protégées"
 
+#, fuzzy
 msgid "REPORT#rep_noaccesstext#elabel"
-msgstr "I.e. when an attribute visibility is I"
+msgstr "Dans la cas où un attribut est protégé (visibilité I)"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_ordersort"
-msgstr "Order"
+msgstr "Ordre"
 
+#, fuzzy
 msgid "REPORT#rep_ordersort#asc"
-msgstr "ascending"
+msgstr "ascendant"
 
+#, fuzzy
 msgid "REPORT#rep_ordersort#desc"
-msgstr "descending"
+msgstr "descendant"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_sort"
-msgstr "Sort"
+msgstr "Tri"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_style"
 msgstr "Style"
 
+#, fuzzy
 msgid "REPORT#rep_style# "
-msgstr "Customized..."
+msgstr "Personnalisé..."
 
+#, fuzzy
 msgid "REPORT#rep_style#reportHBlue"
-msgstr "Horizontal blue"
+msgstr "Bleu horizontal"
 
+#, fuzzy
 msgid "REPORT#rep_style#reportHInverse"
-msgstr "Horizontal reverse video"
+msgstr "Inverse vidéo"
 
+#, fuzzy
 msgid "REPORT#rep_style#reportHYellow"
-msgstr "Horizontal yellow"
+msgstr "Jaune horizontal"
 
+#, fuzzy
 msgid "REPORT#rep_style#reportVGreen"
-msgstr "Vertical green"
+msgstr "Vert vertical"
 
+#, fuzzy
 msgid "REPORT#rep_style#standard1"
-msgstr "Standard (Theme 1)"
+msgstr "Standard (Thème 1)"
 
+#, fuzzy
 msgid "REPORT#rep_style#standard2"
-msgstr "Standard (Theme 2)"
+msgstr "Standard (Thème 2)"
 
+#, fuzzy
 msgid "REPORT#rep_style#standard3"
-msgstr "Standard (Theme 3)"
+msgstr "Standard (Thème 3)"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_tab_presentation"
-msgstr "Presentation"
+msgstr "Présentation"
 
 #: App/Fdl/searches.ods.csv
+#, fuzzy
 msgid "REPORT#rep_tcols"
-msgstr "Columns"
+msgstr "Colonnes"
 
+#, fuzzy
 msgid "REPORT#rep_tcols#lsymbol"
-msgstr "Choose columns"
+msgstr "Choisir les colonnes"
 
+#, fuzzy
 msgid "REPORT#rep_tcols#ltitle"
-msgstr "Choose report displayed columns"
+msgstr "Choisir les colonnes du rapport"
 
+#, fuzzy
 msgid "REPORT#title"
-msgstr "Report"
+msgstr "Rapport"
