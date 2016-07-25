@@ -2,38 +2,45 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BATCH \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2016-07-26 09:50+0200\n"
+"PO-Revision-Date: 2016-07-25T09:24:33+02:00\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: English\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: App/Fdl/freeaction.ods.csv
+#, fuzzy
 msgid "BATCH#batch_desc"
-msgstr "description"
+msgstr "Description"
 
 #: App/Fdl/freeaction.ods.csv
+#, fuzzy
 msgid "BATCH#batch_fam"
-msgstr "family"
+msgstr "Famille"
 
 #: App/Fdl/freeaction.ods.csv
+#, fuzzy
 msgid "BATCH#batch_fr_ident"
-msgstr "identification"
+msgstr "Identification"
 
 #: App/Fdl/freeaction.ods.csv
+#, fuzzy
 msgid "BATCH#batch_idfam"
-msgstr "id family"
+msgstr "Id famille"
 
 #: App/Fdl/freeaction.ods.csv
+#, fuzzy
 msgid "BATCH#batch_plan"
-msgstr "planification"
+msgstr "Planification"
 
 #: App/Fdl/freeaction.ods.csv
+#, fuzzy
 msgid "BATCH#batch_title"
-msgstr "title"
+msgstr "Titre"
 
+#, fuzzy
 msgid "BATCH#title"
-msgstr "processing"
+msgstr "Traitement"
