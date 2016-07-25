@@ -3,10 +3,10 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-20T11:54:53+01:00\n"
-"PO-Revision-Date: 2013-03-13 10:13+0100\n"
+"PO-Revision-Date: 2016-07-26 09:48+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
-"Language: \n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
@@ -38,7 +38,7 @@ msgstr "Default group"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_desactivateaccount"
-msgstr "Desactivate account"
+msgstr "Deactivate account"
 
 msgid "IUSER#us_desactivateaccount#submenu"
 msgstr "Account"
@@ -97,7 +97,7 @@ msgstr "Group (title)"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_groups"
-msgstr "User's groups"
+msgstr "User groups"
 
 msgid "IUSER#us_groups#showempty"
 msgstr "No group"
@@ -131,7 +131,7 @@ msgstr "Enter '-' if you don't want a login"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_loginfailure"
-msgstr "Login failure"
+msgstr "Login failures"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_mail"
@@ -143,7 +143,7 @@ msgstr "User id"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_menuresetlogfails"
-msgstr "Reset log fails"
+msgstr "Reset login failures"
 
 msgid "IUSER#us_menuresetlogfails#submenu"
 msgstr "Account"
