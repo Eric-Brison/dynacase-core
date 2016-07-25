@@ -2,183 +2,235 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MAILTEMPLATE \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2016-07-26 09:48+0200\n"
+"PO-Revision-Date: 2016-07-25 11:03+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: English\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#, fuzzy
 msgid "MAILTEMPLATE#title"
-msgstr "Mail template"
+msgstr "Modèle de mail"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_attach"
-msgstr "Attachment"
+msgstr "Attachement"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_body"
-msgstr "Body"
+msgstr "Corps"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_copymode"
 msgstr "-"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_copymode#bcc"
 msgstr "Bcc"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_copymode#cc"
 msgstr "Cc"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_copymode#to"
-msgstr "To"
+msgstr "À"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_dest"
-msgstr "Recipient"
+msgstr "Destinataires"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_desttype"
 msgstr "Type"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_desttype#A"
-msgstr "Text attribute"
+msgstr "Attribut texte"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_desttype#D"
-msgstr "Relation attribute"
+msgstr "Attribut relation"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_desttype#DE"
-msgstr "Family relation parameter"
+msgstr "Paramètre de famille relation"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_desttype#E"
-msgstr "Family text parameter"
+msgstr "Paramètre de famille texte"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_desttype#F"
-msgstr "Fixed address"
+msgstr "Adresse fixe"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_desttype#P"
-msgstr "Global parameters"
+msgstr "Paramètres globaux"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_desttype#RD"
-msgstr "Recipient document"
+msgstr "Document destinataire"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_desttype#WA"
-msgstr "Workflow attribute"
+msgstr "Attribut cycle"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_desttype#WD"
-msgstr "Workflow relation"
+msgstr "Relation cycle"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_desttype#WE"
-msgstr "Workflow parameter"
+msgstr "Paramètre cycle"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_family"
-msgstr "Family"
+msgstr "Famille"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_format"
 msgstr "Format"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_format#html"
 msgstr "HTML"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_format#htmlpdf"
 msgstr "HTML & PDF"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_format#pdf"
 msgstr "PDF"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fr"
-msgstr "Header"
+msgstr "Entête"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fr_content"
-msgstr "Content"
+msgstr "Contenu"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_from"
-msgstr "From"
+msgstr "De"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fromtype"
 msgstr "type"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fromtype#A"
-msgstr "Text attribute"
+msgstr "Attribut texte"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fromtype#D"
-msgstr "Relation attribute"
+msgstr "Attribut relation"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fromtype#DE"
-msgstr "Family relation parameter"
+msgstr "Paramètre de famille relation"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fromtype#E"
-msgstr "Family text parameter"
+msgstr "Paramètre de famille texte"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fromtype#F"
-msgstr "Fixed address"
+msgstr "Adresse fixe"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fromtype#P"
-msgstr "Global parameters"
+msgstr "Paramètres globaux"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fromtype#WA"
-msgstr "Workflow attribute"
+msgstr "Attribut cycle"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fromtype#WD"
-msgstr "Workflow relation"
+msgstr "Relation cycle"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_fromtype#WE"
-msgstr "Workflow parameter"
+msgstr "Paramètre cycle"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_recip"
-msgstr "Recipient"
+msgstr "Destinataire"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_savecopy"
-msgstr "Save a copy"
+msgstr "Enregistrer une copie"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_savecopy#elabel"
-msgstr "save a message copy on server when sending"
+msgstr "enregistrer une copie du message sur le serveur lors de l'envoi"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_savecopy#no"
-msgstr "No copy"
+msgstr "Pas de copie"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_savecopy#yes"
-msgstr "Copy on server"
+msgstr "Copie sur le serveur"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_subject"
-msgstr "Subject"
+msgstr "Sujet"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_t_attach"
-msgstr "Attachments"
+msgstr "Attachements"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_t_from"
-msgstr "Sender"
+msgstr "Émetteur"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_title"
-msgstr "Title"
+msgstr "Titre"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_ulink"
-msgstr "With links"
+msgstr "Avec liens"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_ulink#no"
-msgstr "Without link"
+msgstr "Sans lien"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_ulink#yes"
-msgstr "With links"
+msgstr "Avec liens"
 
 #: App/Fdl/fdl.ods.csv
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_workflow"
-msgstr "Workflow family"
+msgstr "Famille cycle"
 
+#, fuzzy
 msgid "MAILTEMPLATE#tmail_workflow#elabel"
-msgstr "workflow family to recover comment or transition settings"
+msgstr ""
+"famille cycle pour récupérer le commentaire ou les paramètres de transition"
