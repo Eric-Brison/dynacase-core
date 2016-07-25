@@ -31,11 +31,11 @@ function generic_duplicate(Action & $action)
     if ($dirid == "") {
         $dbaccess = $action->dbaccess;
         /**
-         * @var DocFam $fdoc
+         * @var Doc $fdoc
          */
         $fdoc = new_Doc($dbaccess, $docid);
         
-        $dirid = $fdoc->dfldid;
+        $dirid = $fdoc->prelid;
     }
     $copy = duplicate($action, $dirid, $docid);
     
