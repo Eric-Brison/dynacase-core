@@ -1,0 +1,43 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MASK \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-26 11:07+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/workflows.ods.csv
+msgid "MASK#msk_attrids"
+msgstr "Attrid"
+
+#: App/Fdl/workflows.ods.csv
+msgid "MASK#msk_fam"
+msgstr "Family (title)"
+
+#: App/Fdl/workflows.ods.csv
+msgid "MASK#msk_famid"
+msgstr "Family"
+
+#: App/Fdl/workflows.ods.csv
+msgid "MASK#msk_fr_rest"
+msgstr "Family"
+
+#: App/Fdl/workflows.ods.csv
+msgid "MASK#msk_needeeds"
+msgstr "Needed"
+
+#: App/Fdl/workflows.ods.csv
+msgid "MASK#msk_t_contain"
+msgstr "Content"
+
+#: App/Fdl/workflows.ods.csv
+msgid "MASK#msk_visibilities"
+msgstr "Visibility"
+
+msgid "MASK#title"
+msgstr "Mask"
