@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-07-26 10:38+0200\n"
-"PO-Revision-Date: 2016-07-18 16:13+0200\n"
+"PO-Revision-Date: 2016-07-26 10:39+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -43,7 +43,7 @@ msgid " cancel"
 msgstr " annuler"
 
 msgid " change icon"
-msgstr " changer d'icone"
+msgstr " changer d'icône"
 
 msgid " change title"
 msgstr " Changer de titre"
@@ -911,7 +911,7 @@ msgid "Change default value for family"
 msgstr "Changer les valeurs par défaut pour la famille"
 
 msgid "Change icon"
-msgstr "Changer d'icone"
+msgstr "Changer d'icône"
 
 msgid "Change logical name"
 msgstr "Modifier le nom logique"
@@ -1033,7 +1033,7 @@ msgid "Choose image"
 msgstr "Choisissez une image"
 
 msgid "Choose in icon list"
-msgstr "Choisissez dans la liste d'icones"
+msgstr "Choisissez dans la liste d'icônes"
 
 msgid "Choose mask family"
 msgstr "Choisissez la famille du masque"
@@ -2544,7 +2544,7 @@ msgid "Freedoms detail list"
 msgstr "liste détaillé"
 
 msgid "Freedoms icon list"
-msgstr "liste sous forme d'icones"
+msgstr "liste sous forme d'icônes"
 
 msgid "Freedoms lib"
 msgstr "bibliothèque dynacase"
@@ -3175,7 +3175,7 @@ msgstr "Page suivante"
 
 #, php-format
 msgid "No Icon specified"
-msgstr "Pas d'icone définie"
+msgstr "Pas d'icône définie"
 
 msgid "No acl for family"
 msgstr "Pas de droits définis pour la famille"
@@ -3319,7 +3319,7 @@ msgid "Options import"
 msgstr "Options d'importation"
 
 msgid "Or upload a new icon"
-msgstr "Ou télécharger un nouvel icone"
+msgstr "Ou télécharger un nouvel icône"
 
 msgid "Order must be an odd number"
 msgstr "L'ordre de l'énuméré doit être un nombre impair"
@@ -5323,10 +5323,10 @@ msgid "change default folder"
 msgstr "changer le dossier par défaut"
 
 msgid "change icon document"
-msgstr "changer l'icone du document"
+msgstr "changer l'icône du document"
 
 msgid "change icon of document"
-msgstr "changer l'icone du document"
+msgstr "changer l'icône du document"
 
 #, php-format
 msgid "change methods to '%s'"
@@ -5858,7 +5858,7 @@ msgstr "Le document %d est enlevé"
 
 #, php-format
 msgid "document %s : set icon to '%s'"
-msgstr "document %s : affecte l'icone à '%s'"
+msgstr "document %s : affecte l'icône à '%s'"
 
 #, php-format
 msgid "document %s [%d] is not destroyed"
@@ -6388,7 +6388,7 @@ msgid "folders"
 msgstr "dossiers"
 
 msgid "folio icon list"
-msgstr "liste icones pour chemise"
+msgstr "liste icônes pour chemise"
 
 msgid "folio params ajax request"
 msgstr "Paramètres de requête ajax pour chemise"
@@ -6575,14 +6575,14 @@ msgstr ""
 "son heure à sonné"
 
 msgid "icon"
-msgstr "Icone"
+msgstr "Icône"
 
 #, php-format
 msgid "icon already set. No update allowed"
-msgstr "icone déjà affectée. Pas de mise à jour possible."
+msgstr "icône déjà affectée. Pas de mise à jour possible."
 
 msgid "icon size"
-msgstr "taille des icones"
+msgstr "taille des icônes"
 
 #. _COMMENT Sharp Label
 msgid "icreate"
@@ -7123,7 +7123,7 @@ msgstr "pas de personnes valides trouvées"
 
 #, php-format
 msgid "no change icon : document %s not found"
-msgstr "pas de changement d'icone : document %s pas trouvé"
+msgstr "pas de changement d'icône : document %s pas trouvé"
 
 #, php-format
 msgid "no columns specified"
@@ -7178,7 +7178,7 @@ msgid "no file referenced for %s document"
 msgstr "pas de fichier trouvé pour le document %s"
 
 msgid "no file specified : change icon aborted"
-msgstr "pas de fichier fournit, changement d'icone abandonnée"
+msgstr "pas de fichier fournit, changement d'icône abandonnée"
 
 msgid "no filename"
 msgstr "pas de fichier"
@@ -7634,7 +7634,7 @@ msgstr "famille"
 
 #. _COMMENT Sharp Label
 msgid "prop_icon"
-msgstr "icone"
+msgstr "icône"
 
 #. _COMMENT Sharp Label
 msgid "prop_id"
@@ -7720,7 +7720,7 @@ msgid "query document import"
 msgstr "demande d'importation de document"
 
 msgid "query icon"
-msgstr "requête icone"
+msgstr "requête icône"
 
 msgid "query tar document import"
 msgstr "demande d'importation d'archive"
@@ -8051,7 +8051,7 @@ msgstr "cocher pour %s, décocher pour %s"
 
 #, php-format
 msgid "set icon to '%s'"
-msgstr "affecte l'icone à '%s'"
+msgstr "affecte l'icône à '%s'"
 
 msgid "set logical name"
 msgstr "affecter un nom logique"
