@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-29 17:43+0200\n"
+"POT-Creation-Date: 2016-07-26 10:38+0200\n"
 "PO-Revision-Date: 2016-07-18 16:13+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -1040,9 +1040,6 @@ msgstr "Choisissez la famille du masque"
 
 msgid "Choose report columns"
 msgstr "Choisir les colonnes du rapport"
-
-msgid "Choose visibles families"
-msgstr "Choix des familles visibles"
 
 msgid "Choose workflow"
 msgstr "Choisir un cycle"
@@ -4623,11 +4620,6 @@ msgid "You can close window now or waiting the end of processing"
 msgstr ""
 "Vous pouvez fermer la fenêtre maintenant ou attendre la fin du traitement"
 
-msgid ""
-"You don't have access to any content. Please contact your administrator."
-msgstr ""
-"Vous n'avez accès à aucun contenu. Veuillez contacter votre administrateur."
-
 #, php-format
 msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
 msgstr "Vous devez utiliser seulement les caractères  a-z, 0-9, _ - \"%s\""
@@ -5407,9 +5399,6 @@ msgstr "choix d'une action à partir d'un traitement"
 msgid "choose inputs for %s"
 msgstr "choisir une valeur pour %s"
 
-msgid "choose preferred families"
-msgstr "Choix des familles préférées"
-
 msgid "choose workflow"
 msgstr "choisir un cycle"
 
@@ -5709,9 +5698,6 @@ msgstr "Le document %s n'est pas une famille"
 #, php-format
 msgid "data:family %s not alive"
 msgstr "La famille %s n'est pas vivante"
-
-msgid "database record date style"
-msgstr "style de la date pour la base de donnée"
 
 msgid "date"
 msgstr "date"
@@ -6078,9 +6064,6 @@ msgstr "éditer une demande spécifique"
 
 msgid "edit state "
 msgstr "Édition état"
-
-msgid "edit to add category"
-msgstr "éditer pour l'ajout de catégorie"
 
 msgid "edition"
 msgstr "édition"
@@ -6998,9 +6981,6 @@ msgstr "modifier le contenu du dossier"
 msgid "modify parameters :"
 msgstr "modifier les paramètres"
 
-msgid "modify preferred families"
-msgstr "modifier les familles préférées"
-
 #. _COMMENT Sharp Label
 msgid "modifyacl"
 msgstr "modifier les droits"
@@ -7239,10 +7219,6 @@ msgstr "pas d'opérateur détecté"
 #, php-format
 msgid "no permission to modify this attribute %s"
 msgstr "vous n'avez pas la permission de modifier cet attribut : %s"
-
-#, php-format
-msgid "no privilege %s for %s"
-msgstr "Pas de privilège %s pour le document %s"
 
 #, php-format
 msgid "no privilege %s for %s [%d]"
@@ -9124,6 +9100,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Choose report column"
 #~ msgstr "Choisir les colonnes du rapport"
 
+#~ msgid "Choose visibles families"
+#~ msgstr "Choix des familles visibles"
+
 #~ msgid "Click here to logout"
 #~ msgstr "Cliquer ici pour se déconnecter"
 
@@ -9387,6 +9366,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "View properties"
 #~ msgstr "Voir les propriétés"
 
+#~ msgid ""
+#~ "You don't have access to any content. Please contact your administrator."
+#~ msgstr ""
+#~ "Vous n'avez accès à aucun contenu. Veuillez contacter votre "
+#~ "administrateur."
+
 #~ msgid "You must upgrade to version 6 or more"
 #~ msgstr "Vous devez mettre à jour avec la version 6 au minimum"
 
@@ -9492,6 +9477,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "changed"
 #~ msgstr "modifié"
 
+#~ msgid "choose preferred families"
+#~ msgstr "Choix des familles préférées"
+
 #~ msgid "click to change option"
 #~ msgstr "Cliquez pour changer les options"
 
@@ -9515,6 +9503,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "database access for webdav"
 #~ msgstr "coordonnées d'accès à la base de données webdav"
+
+#~ msgid "database record date style"
+#~ msgstr "style de la date pour la base de donnée"
 
 #~ msgid "days"
 #~ msgstr "jours"
@@ -9560,6 +9551,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "edit icard 2 "
 #~ msgstr "éditer une carte virtuelle 2"
+
+#~ msgid "edit to add category"
+#~ msgstr "éditer pour l'ajout de catégorie"
 
 #~ msgid "edit workflow transitions "
 #~ msgstr "édition des transitions des cycles"
@@ -9676,6 +9670,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "modify document option"
 #~ msgstr "modifier les options d'un document"
 
+#~ msgid "modify preferred families"
+#~ msgstr "modifier les familles préférées"
+
 #~ msgid "modoption: document [%d] is not alive"
 #~ msgstr "modoption: document [%d] n'est pas en vie"
 
@@ -9723,6 +9720,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "no login : passwd unchanged"
 #~ msgstr "pas de login : mot de passe inchangé"
+
+#~ msgid "no privilege %s for %s"
+#~ msgstr "Pas de privilège %s pour le document %s"
 
 #~ msgid "not present %s in %s"
 #~ msgstr "%s non présent dans %s"
