@@ -40,6 +40,8 @@ simpleQuery($dbaccess, $logdelete);
 
 global $_SERVER;
 
+cleanTmpDoc();
+
 if ($real || $full) {
     print "Full clean.\n";
     fullDbClean($action, $dbaccess);
@@ -156,4 +158,36 @@ function cleanTmpFiles()
     }
     
     return;
+}
+/**
+ * Delete temporary documents that have reached their end-of-life (CORE_TMPDOC_MAXAGE).
+ */
+function cleanTmpDoc()
+{
+    $days = \ApplicationParameterManager::getParameterValue('CORE', 'CORE_TMPDOC_MAXAGE');
+    if (!is_int($days) && !ctype_digit($days)) {
+        $days = 1;
+    }
+    
+    $sql = <<<'EOF'
+BEGIN;
+
+-- Delete expired temporary documents
+DELETE FROM doc WHERE doctype = 'T' AND cdate < (now() - INTERVAL '%d day');
+
+-- Delete lingering dochisto entries of temporary documents
+DELETE FROM dochisto WHERE id >= 1000000000 AND NOT EXISTS (SELECT 1 FROM doc WHERE doc.id = dochisto.id);
+
+-- Reset temporary id sequence to MAX(id) of temporary documents
+SELECT SETVAL('seq_id_tdoc', (SELECT COALESCE(MAX(id), 1000000000) FROM doc WHERE doctype = 'T'));
+
+COMMIT;
+EOF;
+    try {
+        $sql = sprintf($sql, $days);
+        simpleQuery('', $sql, $res, true, true, true);
+    }
+    catch(\Exception $e) {
+        printf("Error: removal of expired temporary documents returned with error: %s\n", $e->getMessage());
+    }
 }

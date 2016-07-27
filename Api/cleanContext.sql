@@ -1,6 +1,5 @@
 \timing
 delete from only doc;
-delete from doc where doctype='T';
 begin;
 delete from docfrom;
 insert INTO docfrom (id, fromid) select id, fromid from doc;
