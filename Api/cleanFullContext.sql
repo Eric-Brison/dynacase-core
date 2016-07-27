@@ -1,8 +1,5 @@
 --vacuum full;
 delete from groups where iduser = idgroup;
-delete from doc where doctype='T';
-select setval('seq_id_tdoc', 1000000000);
-delete from dochisto where id>1000000000;
 delete from docattr where docid not in (select id from doc);
 
 delete from docperm where not exists (select 1 from docread where docid=id );

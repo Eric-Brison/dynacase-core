@@ -85,6 +85,12 @@ $app_const = array(
         "user" => "N",
         "global" => "Y"
     ) ,
+    "CORE_TMPDOC_MAXAGE" => array(
+        "val" => "1",
+        "descr" => N_("core_tmpdoc_maxage") ,
+        "user" => "N",
+        "global" => "Y"
+    ) ,
     "CORE_DBCONNECT" => array(
         "val" => "unpersistent",
         "descr" => N_("connection type") ,
