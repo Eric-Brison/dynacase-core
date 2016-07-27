@@ -1,0 +1,127 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PUBLIMAIL \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25T09:24:33+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#ba_title"
+msgstr "Titre"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#fr_basic"
+msgstr "Basique"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_adesc"
+msgstr "Description"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_bgimg"
+msgstr "Image de fond"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_body"
+msgstr "Corps du message"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_display"
+msgstr "Afficher"
+
+#, fuzzy
+msgid "PUBLIMAIL#pubm_display#submenu"
+msgstr "actions"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_fam"
+msgstr "Famille du lot"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_fdesc"
+msgstr "Fichier"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_fr_att"
+msgstr "Attachements"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_fr_body"
+msgstr "Corps"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_fr_config"
+msgstr "Configuration"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_fr_ident"
+msgstr "Identification"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_idfam"
+msgstr "Id famille"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_mailatt"
+msgstr "Attribut mail"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_preview"
+msgstr "Prévisualisation"
+
+#, fuzzy
+msgid "PUBLIMAIL#pubm_preview#submenu"
+msgstr "actions"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_print"
+msgstr "Imprimer"
+
+#, fuzzy
+msgid "PUBLIMAIL#pubm_print#submenu"
+msgstr "actions"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_send"
+msgstr "Envoyer"
+
+#, fuzzy
+msgid "PUBLIMAIL#pubm_send#submenu"
+msgstr "actions"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_t_att"
+msgstr "Attachements"
+
+#: App/Fdl/freeaction.ods.csv
+#, fuzzy
+msgid "PUBLIMAIL#pubm_title"
+msgstr "Sujet"
+
+#, fuzzy
+msgid "PUBLIMAIL#title"
+msgstr "Publipostage"

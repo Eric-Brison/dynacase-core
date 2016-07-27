@@ -1,0 +1,102 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: HELPPAGE \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-22T16:02:07+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_description"
+msgstr "Description"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_family"
+msgstr "Famille"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_fr_family"
+msgstr "Paramètres de famille"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_fr_identification"
+msgstr "Aide"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_lang"
+msgstr "Langue du libellé"
+
+msgid "HELPPAGE#help_lang#helppageenumlang()"
+msgstr ""
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_name"
+msgstr "Libellé"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_p_lang_key"
+msgstr "Langue"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_p_lang_name"
+msgstr "Libellé de la langue"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_sec_key"
+msgstr "Clé de la rubrique"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_sec_lang"
+msgstr "Langue"
+
+msgid "HELPPAGE#help_sec_lang#helppageenumlang()"
+msgstr ""
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_sec_name"
+msgstr "Nom de la rubrique"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_sec_order"
+msgstr "Ordre de la rubrique"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_sec_text"
+msgstr "Texte"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_t_family"
+msgstr "Langues"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_t_help"
+msgstr "Description"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "HELPPAGE#help_t_sections"
+msgstr "Rubriques"
+
+#, fuzzy
+msgid "HELPPAGE#title"
+msgstr "Aide en ligne"

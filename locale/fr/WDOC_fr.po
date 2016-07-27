@@ -1,0 +1,79 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WDOC \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25T09:24:33+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "WDOC#dpdoc_fam"
+msgstr "Famille (titre)"
+
+#, fuzzy
+msgid "WDOC#dpdoc_fam#elabel"
+msgstr "famille utilisée pour le profil dynamique"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "WDOC#dpdoc_famid"
+msgstr "Famille"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "WDOC#dpdoc_fr_dyn"
+msgstr "Profil dynamique"
+
+#, fuzzy
+msgid "WDOC#title"
+msgstr "Cycle de vie"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "WDOC#wf_desc"
+msgstr "description"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "WDOC#wf_fam"
+msgstr "Famille (titre)"
+
+#, fuzzy
+msgid "WDOC#wf_fam#elabel"
+msgstr "famille compatible avec ce cycle"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "WDOC#wf_famid"
+msgstr "Famille"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "WDOC#wf_graph"
+msgstr "Voir le graphe"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "WDOC#wf_graphc"
+msgstr "Voir le graphe complet"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "WDOC#wf_init"
+msgstr "Initialisation"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "WDOC#wf_tab_states"
+msgstr "Étapes"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "WDOC#wf_tab_transitions"
+msgstr "Transitions"

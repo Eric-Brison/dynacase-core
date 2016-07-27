@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: POSTIT \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-08T14:34:11+02:00\n"
+"PO-Revision-Date: 2016-07-25 11:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -14,22 +14,22 @@ msgstr ""
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
 msgid "POSTIT#pit_adoc"
-msgstr "doc attaché"
+msgstr "Doc attaché"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
 msgid "POSTIT#pit_color"
-msgstr "couleur"
+msgstr "Couleur"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
 msgid "POSTIT#pit_com"
-msgstr "commentaire"
+msgstr "Commentaire"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
 msgid "POSTIT#pit_date"
-msgstr "date"
+msgstr "Date"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
@@ -39,7 +39,7 @@ msgstr "Attachement"
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
 msgid "POSTIT#pit_fr_edit"
-msgstr "édition"
+msgstr "Édition"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
@@ -49,12 +49,12 @@ msgstr "Texte"
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
 msgid "POSTIT#pit_idadoc"
-msgstr "id doc attaché"
+msgstr "Id doc attaché"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
 msgid "POSTIT#pit_iduser"
-msgstr "id utilisateur"
+msgstr "Id utilisateur"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
@@ -84,13 +84,13 @@ msgstr "Titre"
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
 msgid "POSTIT#pit_user"
-msgstr "utilisateur"
+msgstr "Utilisateur"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
 msgid "POSTIT#pit_viewdoc"
-msgstr "voir le document associé"
+msgstr "Voir le document associé"
 
 #, fuzzy
 msgid "POSTIT#title"
-msgstr "post it"
+msgstr "Post-it"

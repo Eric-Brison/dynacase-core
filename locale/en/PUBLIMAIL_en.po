@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PUBLIMAIL \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-10 17:20+0200\n"
+"PO-Revision-Date: 2016-07-26 09:46+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: \n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,11 +13,11 @@ msgstr ""
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#ba_title"
-msgstr "title"
+msgstr "Title"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#fr_basic"
-msgstr "basic"
+msgstr "Basic"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_adesc"
@@ -25,22 +25,22 @@ msgstr "Description"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_bgimg"
-msgstr "background image"
+msgstr "Background image"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_body"
-msgstr "message body"
+msgstr "Message body"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_display"
-msgstr "display"
+msgstr "Display"
 
 msgid "PUBLIMAIL#pubm_display#submenu"
 msgstr "actions"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_fam"
-msgstr "batch's family"
+msgstr "Batch family"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_fdesc"
@@ -60,33 +60,33 @@ msgstr "Configuration"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_fr_ident"
-msgstr "identification"
+msgstr "Identification"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_idfam"
-msgstr "id family"
+msgstr "Id family"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_mailatt"
-msgstr "attribut mail"
+msgstr "Mail attribute"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_preview"
-msgstr "preview"
+msgstr "Preview"
 
 msgid "PUBLIMAIL#pubm_preview#submenu"
 msgstr "actions"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_print"
-msgstr "print"
+msgstr "Print"
 
 msgid "PUBLIMAIL#pubm_print#submenu"
 msgstr "actions"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_send"
-msgstr "send"
+msgstr "Send"
 
 msgid "PUBLIMAIL#pubm_send#submenu"
 msgstr "actions"
@@ -97,7 +97,7 @@ msgstr "Attachments"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "PUBLIMAIL#pubm_title"
-msgstr "subject"
+msgstr "Subject"
 
 msgid "PUBLIMAIL#title"
-msgstr "publimail"
+msgstr "Mailings"

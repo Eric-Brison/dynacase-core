@@ -1,0 +1,85 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: HELPPAGE \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-26 09:49+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_description"
+msgstr "Description"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_family"
+msgstr "Family"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_fr_family"
+msgstr "Family parameters"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_fr_identification"
+msgstr "Help"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_lang"
+msgstr "Label language"
+
+msgid "HELPPAGE#help_lang#helppageenumlang()"
+msgstr ""
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_name"
+msgstr "Label"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_p_lang_key"
+msgstr "Language"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_p_lang_name"
+msgstr "Language label"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_sec_key"
+msgstr "Section key"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_sec_lang"
+msgstr "Language"
+
+msgid "HELPPAGE#help_sec_lang#helppageenumlang()"
+msgstr ""
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_sec_name"
+msgstr "Section name"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_sec_order"
+msgstr "Section order"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_sec_text"
+msgstr "Text"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_t_family"
+msgstr "Languages"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_t_help"
+msgstr "Description"
+
+#: App/Fdl/fdl.ods.csv
+msgid "HELPPAGE#help_t_sections"
+msgstr "Sections"
+
+msgid "HELPPAGE#title"
+msgstr "Online help"

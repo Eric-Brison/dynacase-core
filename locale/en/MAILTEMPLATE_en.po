@@ -2,17 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MAILTEMPLATE \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2015-04-07 14:18+0200\n"
+"PO-Revision-Date: 2016-07-26 09:48+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: \n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "MAILTEMPLATE#title"
-msgstr "mail template"
+msgstr "Mail template"
 
 #: App/Fdl/fdl.ods.csv
 msgid "MAILTEMPLATE#tmail_attach"
@@ -37,26 +37,26 @@ msgstr "To"
 
 #: App/Fdl/fdl.ods.csv
 msgid "MAILTEMPLATE#tmail_dest"
-msgstr "Reciever"
+msgstr "Recipient"
 
 #: App/Fdl/fdl.ods.csv
 msgid "MAILTEMPLATE#tmail_desttype"
-msgstr "type"
+msgstr "Type"
 
 msgid "MAILTEMPLATE#tmail_desttype#A"
-msgstr "Text's attribute"
+msgstr "Text attribute"
 
 msgid "MAILTEMPLATE#tmail_desttype#D"
-msgstr "Relation's attribute"
+msgstr "Relation attribute"
 
 msgid "MAILTEMPLATE#tmail_desttype#DE"
-msgstr "Family relation's parameter"
+msgstr "Family relation parameter"
 
 msgid "MAILTEMPLATE#tmail_desttype#E"
-msgstr "Family text's parameter"
+msgstr "Family text parameter"
 
 msgid "MAILTEMPLATE#tmail_desttype#F"
-msgstr "Fixed adress"
+msgstr "Fixed address"
 
 msgid "MAILTEMPLATE#tmail_desttype#P"
 msgstr "Global parameters"
@@ -65,13 +65,13 @@ msgid "MAILTEMPLATE#tmail_desttype#RD"
 msgstr "Recipient document"
 
 msgid "MAILTEMPLATE#tmail_desttype#WA"
-msgstr "Cycle's attribute"
+msgstr "Workflow attribute"
 
 msgid "MAILTEMPLATE#tmail_desttype#WD"
-msgstr "Cycle's relation"
+msgstr "Workflow relation"
 
 msgid "MAILTEMPLATE#tmail_desttype#WE"
-msgstr "Cycle's parameter"
+msgstr "Workflow parameter"
 
 #: App/Fdl/fdl.ods.csv
 msgid "MAILTEMPLATE#tmail_family"
@@ -107,35 +107,35 @@ msgid "MAILTEMPLATE#tmail_fromtype"
 msgstr "type"
 
 msgid "MAILTEMPLATE#tmail_fromtype#A"
-msgstr "Text's attribute"
+msgstr "Text attribute"
 
 msgid "MAILTEMPLATE#tmail_fromtype#D"
-msgstr "Relation's attribute"
+msgstr "Relation attribute"
 
 msgid "MAILTEMPLATE#tmail_fromtype#DE"
-msgstr "Family relation's parameter"
+msgstr "Family relation parameter"
 
 msgid "MAILTEMPLATE#tmail_fromtype#E"
-msgstr "Family text's parameter"
+msgstr "Family text parameter"
 
 msgid "MAILTEMPLATE#tmail_fromtype#F"
-msgstr "Fixed adress"
+msgstr "Fixed address"
 
 msgid "MAILTEMPLATE#tmail_fromtype#P"
 msgstr "Global parameters"
 
 msgid "MAILTEMPLATE#tmail_fromtype#WA"
-msgstr "Cycle's attribute"
+msgstr "Workflow attribute"
 
 msgid "MAILTEMPLATE#tmail_fromtype#WD"
-msgstr "Cycle's relation"
+msgstr "Workflow relation"
 
 msgid "MAILTEMPLATE#tmail_fromtype#WE"
-msgstr "Cycle's parameter"
+msgstr "Workflow parameter"
 
 #: App/Fdl/fdl.ods.csv
 msgid "MAILTEMPLATE#tmail_recip"
-msgstr "reciever"
+msgstr "Recipient"
 
 #: App/Fdl/fdl.ods.csv
 msgid "MAILTEMPLATE#tmail_savecopy"
@@ -152,7 +152,7 @@ msgstr "Copy on server"
 
 #: App/Fdl/fdl.ods.csv
 msgid "MAILTEMPLATE#tmail_subject"
-msgstr "subject"
+msgstr "Subject"
 
 #: App/Fdl/fdl.ods.csv
 msgid "MAILTEMPLATE#tmail_t_attach"
@@ -178,7 +178,7 @@ msgstr "With links"
 
 #: App/Fdl/fdl.ods.csv
 msgid "MAILTEMPLATE#tmail_workflow"
-msgstr "Cycle's family"
+msgstr "Workflow family"
 
 msgid "MAILTEMPLATE#tmail_workflow#elabel"
-msgstr "family to recover comment or transition settings"
+msgstr "workflow family to recover comment or transition settings"

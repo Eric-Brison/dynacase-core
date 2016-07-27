@@ -2,17 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TIMER \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-10 16:29+0200\n"
+"PO-Revision-Date: 2016-07-26 09:45+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: \n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "TIMER#title"
-msgstr "timer"
+msgstr "Timer"
 
 #: App/Fdl/workflows.ods.csv
 msgid "TIMER#tm_delay"
@@ -23,10 +23,10 @@ msgid "TIMER#tm_dyndate"
 msgstr "Reference date"
 
 msgid "TIMER#tm_dyndate#elabel"
-msgstr "First action's execution's date"
+msgstr "First action execution date"
 
 msgid "TIMER#tm_dyndate#showempty"
-msgstr "Timer's attachment date"
+msgstr "Timer attachment date"
 
 #: App/Fdl/workflows.ods.csv
 msgid "TIMER#tm_family"
@@ -77,7 +77,7 @@ msgstr "Mail template"
 
 #: App/Fdl/workflows.ods.csv
 msgid "TIMER#tm_workflow"
-msgstr "Cyce family"
+msgstr "Cycle family"
 
 msgid "TIMER#tm_workflow#elabel"
 msgstr "Cycle family for state choice"

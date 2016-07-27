@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EXEC \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-10 13:44+0200\n"
+"PO-Revision-Date: 2016-07-26 09:50+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: \n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,19 +13,19 @@ msgstr ""
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_action"
-msgstr "action"
+msgstr "Action"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_api"
-msgstr "api"
+msgstr "Api"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_application"
-msgstr "application"
+msgstr "Application"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_bgexec"
-msgstr "execute now"
+msgstr "Execute now"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_date"
@@ -33,69 +33,69 @@ msgstr "Execution date"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_detail"
-msgstr "detail"
+msgstr "Detail"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_detaillog"
-msgstr "log"
+msgstr "Log"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_elapsed"
-msgstr "execution duration"
+msgstr "Execution duration"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_fr_batch"
-msgstr "treatment"
+msgstr "Treatment"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_fr_cr"
-msgstr "report"
+msgstr "Report"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_fr_date"
-msgstr "dates"
+msgstr "Dates"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_fr_ident"
-msgstr "identification"
+msgstr "Identification"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_fr_param"
-msgstr "parameter"
+msgstr "Parameter"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_handnextdate"
-msgstr "to execute the"
+msgstr "Execute on"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_idadmin"
-msgstr "administrator"
+msgstr "Administrator"
 
 msgid "EXEC#exec_idadmin#elabel"
-msgstr "will recieve execution report copy in mail"
+msgstr "Will receive execution report copy in mail"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_idref"
-msgstr "following"
+msgstr "From"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_iduser"
-msgstr "performer"
+msgstr "Performer"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_idvar"
-msgstr "variable"
+msgstr "Variable"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_nextdate"
-msgstr "next execution date"
+msgstr "Next execution date"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_periodday"
-msgstr "period in day"
+msgstr "Period in day"
 
 msgid "EXEC#exec_periodday#elabel"
-msgstr "to do every n day"
+msgstr "Perform every n day"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_perioddaynumber"
@@ -128,44 +128,44 @@ msgstr "Sunday"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_periodenddate"
-msgstr "to"
+msgstr "Until"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_periodhour"
-msgstr "period in hours"
+msgstr "Period in hours"
 
 msgid "EXEC#exec_periodhour#elabel"
-msgstr "to do every n hours"
+msgstr "perform every n hours"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_periodmin"
-msgstr "period in minutes"
+msgstr "Period in minutes"
 
 msgid "EXEC#exec_periodmin#elabel"
-msgstr "to do every n minutes"
+msgstr "perform every n minutes"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_prevdate"
-msgstr "previous execution date"
+msgstr "Previous execution date"
 
 msgid "EXEC#exec_prevdate#ltitle"
 msgstr "See previous execution"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_ref"
-msgstr "referer (title)"
+msgstr "Referrer (title)"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_reset"
-msgstr "abandon the current execution"
+msgstr "Abandon current execution"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_state"
-msgstr "status"
+msgstr "Status"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_status"
-msgstr "execution"
+msgstr "Execution"
 
 msgid "EXEC#exec_status#none"
 msgstr "No"
@@ -174,30 +174,27 @@ msgid "EXEC#exec_status#progressing"
 msgstr "Ongoing"
 
 msgid "EXEC#exec_status#waiting"
-msgstr "waiting"
+msgstr "Waiting"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_statusdate"
-msgstr "execution since"
+msgstr "Execution since"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_t_parameters"
-msgstr "parameters"
+msgstr "Parameters"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_title"
-msgstr "title"
+msgstr "Title"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_user"
-msgstr "performer (title)"
+msgstr "Performer (title)"
 
 #: App/Fdl/freeaction.ods.csv
 msgid "EXEC#exec_valuevar"
-msgstr "value"
+msgstr "Value"
 
 msgid "EXEC#title"
-msgstr "process"
-
-#~ msgid "EXEC#exec_perioddaynumber#"
-#~ msgstr "---"
+msgstr "Process"

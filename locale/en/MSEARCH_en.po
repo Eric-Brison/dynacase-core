@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MSEARCH \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-10 14:02+0200\n"
+"PO-Revision-Date: 2016-07-26 09:48+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: \n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,11 +13,11 @@ msgstr ""
 
 #: App/Fdl/searches.ods.csv
 msgid "MSEARCH#se_crit"
-msgstr "criteria"
+msgstr "Criteria"
 
 #: App/Fdl/searches.ods.csv
 msgid "MSEARCH#se_fr_searches"
-msgstr "searches"
+msgstr "Searches"
 
 #: App/Fdl/searches.ods.csv
 msgid "MSEARCH#seg_cond"
@@ -29,7 +29,7 @@ msgstr "Search"
 
 #: App/Fdl/searches.ods.csv
 msgid "MSEARCH#seg_t_cond"
-msgstr "Search's ensemble"
+msgstr "Search ensemble"
 
 msgid "MSEARCH#title"
-msgstr "grouped search"
+msgstr "Grouped search"

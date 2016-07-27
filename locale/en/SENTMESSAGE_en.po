@@ -2,115 +2,93 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SENTMESSAGE \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-10T18:15:34+02:00\n"
+"PO-Revision-Date: 2016-07-26 09:46+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: \n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_attach"
-msgstr "Fichier"
+msgstr "File"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_date"
 msgstr "Date"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_editcontrol"
-msgstr "Force la lecture seule"
+msgstr "Force read-only"
 
-#, fuzzy
 msgid "SENTMESSAGE#emsg_editcontrol#freeedit"
-msgstr "Droit édit libre"
+msgstr "Free edit right"
 
-#, fuzzy
 msgid "SENTMESSAGE#emsg_editcontrol#lockedit"
-msgstr "Droit édit verrouillé"
+msgstr "Locked edit right"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_fr_bodies"
-msgstr "Corps de messages"
+msgstr "Message body"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_fr_ident"
 msgstr "Identification"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_fr_parameters"
-msgstr "Paramètres"
+msgstr "Parameters"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_from"
-msgstr "De"
+msgstr "From"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_htmlbody"
-msgstr "Texte formaté"
+msgstr "Formatted text"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_recipient"
-msgstr "Destinataire"
+msgstr "Recipient"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_refid"
-msgstr "Document référence"
+msgstr "Referent document"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_sendtype"
 msgstr "Type"
 
-#, fuzzy
 msgid "SENTMESSAGE#emsg_sendtype#bcc"
-msgstr "Copie cachée"
+msgstr "Blind carbon copy"
 
-#, fuzzy
 msgid "SENTMESSAGE#emsg_sendtype#cc"
-msgstr "Copie"
+msgstr "Copy"
 
-#, fuzzy
 msgid "SENTMESSAGE#emsg_sendtype#to"
-msgstr "Pour"
+msgstr "To"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_size"
-msgstr "Taille"
+msgstr "Size"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_subject"
-msgstr "Sujet"
+msgstr "Subject"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_t_attach"
-msgstr "Attachements"
+msgstr "Attachments"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_t_recipient"
-msgstr "Destinataires"
+msgstr "Recipients"
 
 #: App/Fdl/fdl.ods.csv
-#, fuzzy
 msgid "SENTMESSAGE#emsg_textbody"
-msgstr "Texte"
+msgstr "Text"
 
-#, fuzzy
 msgid "SENTMESSAGE#title"
-msgstr "message envoyé"
+msgstr "Sent message"

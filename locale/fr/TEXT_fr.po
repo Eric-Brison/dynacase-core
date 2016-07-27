@@ -1,0 +1,46 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TEXT \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25 10:45+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/misc.ods.csv
+#, fuzzy
+msgid "TEXT#ba_title"
+msgstr "Titre"
+
+#, fuzzy
+msgid "TEXT#title"
+msgstr "Texte"
+
+#: App/Fdl/misc.ods.csv
+#, fuzzy
+msgid "TEXT#txt_fr_anx"
+msgstr "Annexes"
+
+#: App/Fdl/misc.ods.csv
+#, fuzzy
+msgid "TEXT#txt_img"
+msgstr "Images"
+
+#: App/Fdl/misc.ods.csv
+#, fuzzy
+msgid "TEXT#txt_img_ori"
+msgstr "Source"
+
+#: App/Fdl/misc.ods.csv
+#, fuzzy
+msgid "TEXT#txt_t_img"
+msgstr "Images"
+
+#: App/Fdl/misc.ods.csv
+#, fuzzy
+msgid "TEXT#txt_text"
+msgstr "Texte"

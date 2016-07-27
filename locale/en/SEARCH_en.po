@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SEARCH \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-09 16:43+0200\n"
+"PO-Revision-Date: 2016-07-26 09:46+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: fr\n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,7 +13,7 @@ msgstr ""
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#gui_color"
-msgstr "guide color"
+msgstr "Guide color"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#gui_isrss"
@@ -47,16 +47,15 @@ msgstr "Alterable"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_archive"
-msgstr "in archive"
+msgstr "In archive"
 
 #: App/Fdl/searches.ods.csv
-#, fuzzy
 msgid "SEARCH#se_author"
-msgstr "Auteur"
+msgstr "Author"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_case"
-msgstr "mode "
+msgstr "Mode "
 
 msgid "SEARCH#se_case#full"
 msgstr "full word"
@@ -69,23 +68,23 @@ msgstr "case sensitive"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_ccfld"
-msgstr "current father's folder"
+msgstr "Current father folder"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_cfld"
-msgstr "from folder"
+msgstr "From folder"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_crit"
-msgstr "criteria"
+msgstr "Criteria"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_fam"
-msgstr "family"
+msgstr "Family"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_famid"
-msgstr "family (id)"
+msgstr "Family (id)"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_famonly"
@@ -99,19 +98,19 @@ msgstr "Without inherited families"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_idcfld"
-msgstr "id of current father's folder"
+msgstr "Id of current father folder"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_idfld"
-msgstr "root folder"
+msgstr "Root folder"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_key"
-msgstr "keyword"
+msgstr "Keyword"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_latest"
-msgstr "revision"
+msgstr "Revision"
 
 msgid "SEARCH#se_latest#allfixed"
 msgstr "without current revision"
@@ -140,11 +139,11 @@ msgstr "yes"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_open"
-msgstr "open"
+msgstr "Open"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_openfolio"
-msgstr "open as portfolio"
+msgstr "Open as portfolio"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_orderby"
@@ -156,7 +155,7 @@ msgstr "RSS visible/hidden to users"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_sqlselect"
-msgstr "sql request"
+msgstr "SQL request"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_static"
@@ -164,11 +163,11 @@ msgstr "Static request"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_sublevel"
-msgstr "search depth"
+msgstr "Search depth"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_sysfam"
-msgstr "include system documents"
+msgstr "Include system documents"
 
 msgid "SEARCH#se_sysfam#[bool]no"
 msgstr "no"
@@ -178,7 +177,7 @@ msgstr "yes"
 
 #: App/Fdl/searches.ods.csv
 msgid "SEARCH#se_trash"
-msgstr "in trash"
+msgstr "In trash"
 
 msgid "SEARCH#se_trash#also"
 msgstr "also"
@@ -190,4 +189,4 @@ msgid "SEARCH#se_trash#only"
 msgstr "only"
 
 msgid "SEARCH#title"
-msgstr "search"
+msgstr "Search"

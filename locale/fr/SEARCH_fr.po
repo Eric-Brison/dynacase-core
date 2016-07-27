@@ -1,0 +1,243 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SEARCH \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25T09:24:34+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#gui_color"
+msgstr "Couleur intercalaire"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#gui_isrss"
+msgstr "Utilisable comme flux RSS"
+
+#, fuzzy
+msgid "SEARCH#gui_isrss#[bool]no"
+msgstr "non"
+
+#, fuzzy
+msgid "SEARCH#gui_isrss#yes"
+msgstr "oui"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#gui_sysrss"
+msgstr "Flux RSS système"
+
+#, fuzzy
+msgid "SEARCH#gui_sysrss#[bool]no"
+msgstr "non"
+
+#, fuzzy
+msgid "SEARCH#gui_sysrss#yes"
+msgstr "oui"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_acl"
+msgstr "Document"
+
+#, fuzzy
+msgid "SEARCH#se_acl#delete"
+msgstr "Supprimable"
+
+#, fuzzy
+msgid "SEARCH#se_acl#edit"
+msgstr "Modifiable"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_archive"
+msgstr "Dans l'archive"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_author"
+msgstr "Auteur"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_case"
+msgstr "Mode "
+
+#, fuzzy
+msgid "SEARCH#se_case#full"
+msgstr "mot complet"
+
+#, fuzzy
+msgid "SEARCH#se_case#no"
+msgstr "expression sans casse"
+
+#, fuzzy
+msgid "SEARCH#se_case#yes"
+msgstr "expression avec casse"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_ccfld"
+msgstr "Dossier père courant"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_cfld"
+msgstr "À partir du dossier"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_crit"
+msgstr "Critère"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_fam"
+msgstr "Famille"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_famid"
+msgstr "Famille (id)"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_famonly"
+msgstr "Sans sous famille"
+
+#, fuzzy
+msgid "SEARCH#se_famonly#no"
+msgstr "Avec les sous familles"
+
+#, fuzzy
+msgid "SEARCH#se_famonly#yes"
+msgstr "Sans les sous familles"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_idcfld"
+msgstr "Id dossier père courant"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_idfld"
+msgstr "Dossier racine"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_key"
+msgstr "Mot-clef"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_latest"
+msgstr "Révision"
+
+#, fuzzy
+msgid "SEARCH#se_latest#allfixed"
+msgstr "sans la courante"
+
+#, fuzzy
+msgid "SEARCH#se_latest#fixed"
+msgstr "dernière révision"
+
+#, fuzzy
+msgid "SEARCH#se_latest#lastfixed"
+msgstr "dernière parmi les révisions effectuées"
+
+#, fuzzy
+msgid "SEARCH#se_latest#no"
+msgstr "toutes les révisions"
+
+#, fuzzy
+msgid "SEARCH#se_latest#yes"
+msgstr "courante"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_memo"
+msgstr "À utiliser dans les menus"
+
+#, fuzzy
+msgid "SEARCH#se_memo#[bool]no"
+msgstr "non"
+
+#, fuzzy
+msgid "SEARCH#se_memo#yes"
+msgstr "oui"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_open"
+msgstr "Ouvrir"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_openfolio"
+msgstr "Ouvrir comme une chemise"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_orderby"
+msgstr "Trié par"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_setsysrss"
+msgstr "RSS visible/masquée aux utilisateurs"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_sqlselect"
+msgstr "Requête sql"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_static"
+msgstr "Requête statique"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_sublevel"
+msgstr "Profondeur de recherche"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_sysfam"
+msgstr "Inclure les documents système"
+
+#, fuzzy
+msgid "SEARCH#se_sysfam#[bool]no"
+msgstr "non"
+
+#, fuzzy
+msgid "SEARCH#se_sysfam#yes"
+msgstr "oui"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "SEARCH#se_trash"
+msgstr "Dans la poubelle"
+
+#, fuzzy
+msgid "SEARCH#se_trash#also"
+msgstr "aussi"
+
+#, fuzzy
+msgid "SEARCH#se_trash#no"
+msgstr "non"
+
+#, fuzzy
+msgid "SEARCH#se_trash#only"
+msgstr "seulement"
+
+#, fuzzy
+msgid "SEARCH#title"
+msgstr "Recherche"

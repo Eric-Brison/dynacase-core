@@ -1,0 +1,26 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BASKET \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25T09:24:33+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "BASKET#fld_clear"
+msgstr "Vider"
+
+#: App/Fdl/fdl.ods.csv
+#, fuzzy
+msgid "BASKET#fld_copybasket"
+msgstr "Insérer le porte-document"
+
+#, fuzzy
+msgid "BASKET#title"
+msgstr "Porte-documents"

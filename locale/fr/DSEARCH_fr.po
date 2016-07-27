@@ -1,0 +1,120 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: DSEARCH \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25T09:24:34+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_attrids"
+msgstr "Attributs"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_filter"
+msgstr "Filtre"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_fr_detail"
+msgstr "Conditions"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_funcs"
+msgstr "Fonctions"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_keys"
+msgstr "Mot-clefs"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_leftp"
+msgstr "Parenthèse gauche"
+
+#, fuzzy
+msgid "DSEARCH#se_leftp#no"
+msgstr " "
+
+#, fuzzy
+msgid "DSEARCH#se_leftp#yes"
+msgstr "("
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_ol"
+msgstr "Condition"
+
+#, fuzzy
+msgid "DSEARCH#se_ol#and"
+msgstr "satisfait toutes les conditions"
+
+#, fuzzy
+msgid "DSEARCH#se_ol#or"
+msgstr "satisfait au moins une condition"
+
+#, fuzzy
+msgid "DSEARCH#se_ol#perso"
+msgstr "personnalisée"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_ols"
+msgstr "Opérateur"
+
+#, fuzzy
+msgid "DSEARCH#se_ols#and"
+msgstr "et"
+
+#, fuzzy
+msgid "DSEARCH#se_ols#or"
+msgstr "ou"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_rightp"
+msgstr "Parenthèse droite"
+
+#, fuzzy
+msgid "DSEARCH#se_rightp#no"
+msgstr " "
+
+#, fuzzy
+msgid "DSEARCH#se_rightp#yes"
+msgstr ")"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_t_detail"
+msgstr "Conditions"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_t_filters"
+msgstr "Filtres"
+
+#: App/Fdl/searches.ods.csv
+#, fuzzy
+msgid "DSEARCH#se_typefilter"
+msgstr "Type"
+
+#, fuzzy
+msgid "DSEARCH#se_typefilter#generated"
+msgstr "Généré"
+
+#, fuzzy
+msgid "DSEARCH#se_typefilter#specified"
+msgstr "Spécifié"
+
+#, fuzzy
+msgid "DSEARCH#title"
+msgstr "Recherche détaillée"

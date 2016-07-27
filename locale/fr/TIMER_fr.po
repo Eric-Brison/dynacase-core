@@ -1,0 +1,102 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TIMER \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25T09:24:33+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#, fuzzy
+msgid "TIMER#title"
+msgstr "Minuteur"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_delay"
+msgstr "Délai (en jours)"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_dyndate"
+msgstr "Date de référence"
+
+#, fuzzy
+msgid "TIMER#tm_dyndate#elabel"
+msgstr "date d'exécution de la première action"
+
+#, fuzzy
+msgid "TIMER#tm_dyndate#showempty"
+msgstr "Date d'attachement du minuteur"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_family"
+msgstr "Famille"
+
+#, fuzzy
+msgid "TIMER#tm_family#elabel"
+msgstr "famille compatible avec ce timer"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_fr_ident"
+msgstr "Identification"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_hdelay"
+msgstr "Délai (en heures)"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_iteration"
+msgstr "Nombre d'itérations"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_method"
+msgstr "Méthode"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_refdaydelta"
+msgstr "Décalage (en jours)"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_refhourdelta"
+msgstr "Décalage (en heures)"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_state"
+msgstr "Nouvel état"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_t_config"
+msgstr "Configuration"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_title"
+msgstr "Titre"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_tmail"
+msgstr "Modèle de mail"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "TIMER#tm_workflow"
+msgstr "Famille cycle"
+
+#, fuzzy
+msgid "TIMER#tm_workflow#elabel"
+msgstr "famille cycle pour le choix des états"

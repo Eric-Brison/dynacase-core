@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PDOC \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-10 15:43+0200\n"
+"PO-Revision-Date: 2016-07-26 09:47+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: \n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,18 +13,18 @@ msgstr ""
 
 #: App/Fdl/fdl.ods.csv
 msgid "PDOC#dpdoc_fam"
-msgstr "family"
+msgstr "Family"
 
 msgid "PDOC#dpdoc_fam#elabel"
-msgstr "family used for dynamaics profiles"
+msgstr "Family used for dynamic profiles"
 
 #: App/Fdl/fdl.ods.csv
 msgid "PDOC#dpdoc_famid"
-msgstr "family id"
+msgstr "Family id"
 
 #: App/Fdl/fdl.ods.csv
 msgid "PDOC#dpdoc_fr_dyn"
-msgstr "dynamic"
+msgstr "Dynamic"
 
 #: App/Fdl/fdl.ods.csv
 msgid "PDOC#prf_access"
@@ -36,11 +36,11 @@ msgstr "Activate"
 
 #: App/Fdl/fdl.ods.csv
 msgid "PDOC#prf_desactivate"
-msgstr "Desactivate"
+msgstr "Deactivate"
 
 #: App/Fdl/fdl.ods.csv
 msgid "PDOC#prf_desc"
-msgstr "description"
+msgstr "Description"
 
 #: App/Fdl/fdl.ods.csv
 msgid "PDOC#prf_forcecomputing"
@@ -50,4 +50,4 @@ msgid "PDOC#prf_forcecomputing#ltitle"
 msgstr "Force associated documents profiles recalculation"
 
 msgid "PDOC#title"
-msgstr "document's profile"
+msgstr "Document profile"

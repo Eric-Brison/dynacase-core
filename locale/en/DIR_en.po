@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DIR \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2013-04-10 17:07+0200\n"
+"PO-Revision-Date: 2016-07-26 09:50+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: fr\n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -39,7 +39,7 @@ msgstr "Families"
 
 #: App/Fdl/fdl.ods.csv
 msgid "DIR#fld_fr_prof"
-msgstr "Profils by default"
+msgstr "Profiles by default"
 
 #: App/Fdl/fdl.ods.csv
 msgid "DIR#fld_fr_rest"
@@ -59,19 +59,19 @@ msgstr "Open as a portfolio"
 
 #: App/Fdl/fdl.ods.csv
 msgid "DIR#fld_pdir"
-msgstr "Profil by default for the folder (title)"
+msgstr "Default directory profile (title)"
 
 #: App/Fdl/fdl.ods.csv
 msgid "DIR#fld_pdirid"
-msgstr "Profil by default for the folder"
+msgstr "Default directory profile"
 
 #: App/Fdl/fdl.ods.csv
 msgid "DIR#fld_pdoc"
-msgstr "Profil by default for the document (title)"
+msgstr "Default document profile (title)"
 
 #: App/Fdl/fdl.ods.csv
 msgid "DIR#fld_pdocid"
-msgstr "Profil by default for the document"
+msgstr "Default document profile"
 
 #: App/Fdl/fdl.ods.csv
 msgid "DIR#fld_setsysrss"

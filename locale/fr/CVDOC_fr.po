@@ -1,0 +1,139 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CVDOC \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25T09:24:33+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_desc"
+msgstr "Description"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_displayed"
+msgstr "Affichable"
+
+#, fuzzy
+msgid "CVDOC#cv_displayed#[bool]no"
+msgstr "non"
+
+#, fuzzy
+msgid "CVDOC#cv_displayed#yes"
+msgstr "oui"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_fam"
+msgstr "Famille"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_famid"
+msgstr "Famille (id)"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_fr_default"
+msgstr "Vues par défauts"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_idcview"
+msgstr "Id création vues par défaut"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_idview"
+msgstr "Identifiant de la vue"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_kview"
+msgstr "Type"
+
+#, fuzzy
+msgid "CVDOC#cv_kview#VCONS"
+msgstr "Consultation"
+
+#, fuzzy
+msgid "CVDOC#cv_kview#VEDIT"
+msgstr "Edition"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_lcview"
+msgstr "Création vue"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_lview"
+msgstr "Label"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_menu"
+msgstr "Menu"
+
+#, fuzzy
+msgid "CVDOC#cv_menu#elabel"
+msgstr "nom du sous menu"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_msk"
+msgstr "Masque(titre)"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_mskid"
+msgstr "Masque"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_order"
+msgstr "Ordre de sélection"
+
+#, fuzzy
+msgid "CVDOC#cv_order#elabel"
+msgstr "ordre d'accès pour le profilage"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_t_views"
+msgstr "Vues"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#cv_zview"
+msgstr "Zone (Layout)"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#dpdoc_fam"
+msgstr "Famille pour le profil (titre)"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#dpdoc_famid"
+msgstr "Famille pour le profil"
+
+#, fuzzy
+msgid "CVDOC#dpdoc_famid#elabel"
+msgstr "famille utilisée pour les profils dynamiques"
+
+#: App/Fdl/workflows.ods.csv
+#, fuzzy
+msgid "CVDOC#dpdoc_fr_dyn"
+msgstr "Profil dynamique"
+
+#, fuzzy
+msgid "CVDOC#title"
+msgstr "Contrôle de vues"

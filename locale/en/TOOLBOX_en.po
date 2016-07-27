@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-29 17:43+0200\n"
+"POT-Creation-Date: 2016-07-26 10:38+0200\n"
 "PO-Revision-Date: 2016-07-18 16:13+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -1011,9 +1011,6 @@ msgid "Choose mask family"
 msgstr ""
 
 msgid "Choose report columns"
-msgstr ""
-
-msgid "Choose visibles families"
 msgstr ""
 
 msgid "Choose workflow"
@@ -4430,10 +4427,6 @@ msgstr ""
 msgid "You can close window now or waiting the end of processing"
 msgstr ""
 
-msgid ""
-"You don't have access to any content. Please contact your administrator."
-msgstr ""
-
 #, php-format
 msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
 msgstr ""
@@ -5192,9 +5185,6 @@ msgstr ""
 msgid "choose inputs for %s"
 msgstr ""
 
-msgid "choose preferred families"
-msgstr ""
-
 msgid "choose workflow"
 msgstr ""
 
@@ -5491,9 +5481,6 @@ msgstr ""
 
 #, php-format
 msgid "data:family %s not alive"
-msgstr ""
-
-msgid "database record date style"
 msgstr ""
 
 msgid "date"
@@ -5860,9 +5847,6 @@ msgid "edit specific ask"
 msgstr ""
 
 msgid "edit state "
-msgstr ""
-
-msgid "edit to add category"
 msgstr ""
 
 msgid "edition"
@@ -6511,7 +6495,7 @@ msgid "invalid regular expression"
 msgstr ""
 
 #, php-format
-msgid "invalid syntax for [%s] for enum attribute"
+msgid "invalid syntax for [%s] for enum attribute [%s]"
 msgstr ""
 
 msgid "inverse video background color"
@@ -6766,9 +6750,6 @@ msgstr ""
 msgid "modify parameters :"
 msgstr ""
 
-msgid "modify preferred families"
-msgstr ""
-
 #. _COMMENT Sharp Label
 msgid "modifyacl"
 msgstr ""
@@ -7004,10 +6985,6 @@ msgstr ""
 
 #, php-format
 msgid "no permission to modify this attribute %s"
-msgstr ""
-
-#, php-format
-msgid "no privilege %s for %s"
 msgstr ""
 
 #, php-format
