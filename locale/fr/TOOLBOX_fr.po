@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-27 14:34+0200\n"
-"PO-Revision-Date: 2016-07-27 14:36+0200\n"
+"POT-Creation-Date: 2016-07-28 15:39+0200\n"
+"PO-Revision-Date: 2016-07-28 15:40+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -108,6 +108,18 @@ msgstr "%d jour"
 #, php-format
 msgid "%d days"
 msgstr "%d jours"
+
+#, php-format
+msgid "%d document detected"
+msgid_plural "%d documents detected"
+msgstr[0] "%d document détecté"
+msgstr[1] "%d documents détectés"
+
+#, php-format
+msgid "%d document processed"
+msgid_plural "%d documents processed"
+msgstr[0] "%d document traité"
+msgstr[1] "%d documents traités"
 
 #, php-format
 msgid "%d documents"
@@ -574,11 +586,6 @@ msgstr "Affecter"
 msgid "Allow guest access"
 msgstr "Autoriser l'accès invité"
 
-msgid "An error occured, check the details for more information"
-msgstr ""
-"Le processus d'importation n'a pas pu être effectué. Une erreur a été "
-"détectée, consultez le compte-rendu ci-dessous pour plus  d'information"
-
 msgid "Analyse fdl.csv"
 msgstr "Analyse fdl.csv"
 
@@ -590,6 +597,12 @@ msgstr "Analyse"
 
 msgid "Analyze Archive"
 msgstr "Analyse de l'archive"
+
+msgid "Analyze error occured, check the details for more information"
+msgstr "L'analyse révèle des erreurs. Voir les détails ci-dessous."
+
+msgid "Analyze in progress"
+msgstr "Analyse en cours"
 
 msgid "Analyze only"
 msgstr "Analyse seulement"
@@ -2457,6 +2470,9 @@ msgstr "Remplissage de la table enumérée '%s'"
 msgid "Filling family table '%s' and relatives"
 msgstr "Remplissage de la table famille '%s' et afférentes"
 
+msgid "Filter import message"
+msgstr "Filtrer parmi les messages"
+
 #, php-format
 msgid "Filter on %s"
 msgstr "Filtre sur %s"
@@ -2685,6 +2701,9 @@ msgstr "Résultat de l'importation"
 msgid "Import Tar"
 msgstr "Importation Archive"
 
+msgid "Import Warning are occured"
+msgstr "Des avertissements ont été détectés"
+
 msgid "Import after analyze done"
 msgstr "Importer après l'analyse"
 
@@ -2701,6 +2720,11 @@ msgctxt "fuserimport"
 msgid "Import end"
 msgstr "Fin de l'importation"
 
+msgid "Import error occured, check the details for more information"
+msgstr ""
+"L'importation a échouée et aucune opération n'a été effectuée. Les messages "
+"sont affichés ci-dessous."
+
 msgid "Import file (CSV, ODS, XML, ZIP, TGZ)"
 msgstr "Fichier d'importation (CSV, ODS, XML, ZIP, TGZ)"
 
@@ -2708,6 +2732,9 @@ msgstr "Fichier d'importation (CSV, ODS, XML, ZIP, TGZ)"
 msgctxt "fuserimport"
 msgid "Import group (%d/%d)"
 msgstr "Importation des groupes (%d/%d)"
+
+msgid "Import in progress"
+msgstr "Importation en cours"
 
 #, php-format
 msgctxt "fuserimport"
@@ -4620,6 +4647,11 @@ msgid "You can close window now or waiting the end of processing"
 msgstr ""
 "Vous pouvez fermer la fenêtre maintenant ou attendre la fin du traitement"
 
+msgid ""
+"You don't have access to any content. Please contact your administrator."
+msgstr ""
+"Vous n'avez accès à aucun contenu. Veuillez contacter votre administrateur."
+
 #, php-format
 msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
 msgstr "Vous devez utiliser seulement les caractères  a-z, 0-9, _ - \"%s\""
@@ -5586,11 +5618,6 @@ msgid "core_tmpdir_maxage"
 msgstr ""
 "Temps maximal (en jours) au bout duquel les fichiers et répertoires "
 "temporaires sont supprimés"
-
-msgid "core_tmpdoc_maxage"
-msgstr ""
-"Temps maximal (en jours) au bout duquel les documents temporaires sont "
-"supprimés"
 
 #, php-format
 msgid "create %s family %s"
@@ -9053,6 +9080,11 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Advanced search"
 #~ msgstr "Recherche avancée"
 
+#~ msgid "An error occured, check the details for more information"
+#~ msgstr ""
+#~ "Le processus d'importation n'a pas pu être effectué. Une erreur a été "
+#~ "détectée, consultez le compte-rendu ci-dessous pour plus  d'information"
+
 #~ msgid "Attributes definition"
 #~ msgstr "définition des attributs"
 
@@ -9371,12 +9403,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "View properties"
 #~ msgstr "Voir les propriétés"
 
-#~ msgid ""
-#~ "You don't have access to any content. Please contact your administrator."
-#~ msgstr ""
-#~ "Vous n'avez accès à aucun contenu. Veuillez contacter votre "
-#~ "administrateur."
-
 #~ msgid "You must upgrade to version 6 or more"
 #~ msgstr "Vous devez mettre à jour avec la version 6 au minimum"
 
@@ -9500,6 +9526,11 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "convalescent"
 #~ msgstr "convalescent"
 
+#~ msgid "core_tmpdoc_maxage"
+#~ msgstr ""
+#~ "Temps maximal (en jours) au bout duquel les documents temporaires sont "
+#~ "supprimés"
+
 #~ msgid "create forum"
 #~ msgstr "créer le forum"
 
@@ -9538,6 +9569,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "document %s not found"
 #~ msgstr "Le document [%s] est introuvable"
+
+#~ msgid "documents detected"
+#~ msgstr "doc"
 
 #~ msgid "downk"
 #~ msgstr "descendre"

@@ -601,11 +601,13 @@ class importDocumentDescription
             $now = gettimeofday();
             $this->doc->revdate = $now['sec'];
             $this->doc->modify();
+
             $check = new CheckEnd($this);
             if ($this->doc->doctype == "C") {
                 global $tFamIdName;
                 $check->checkMaxAttributes($this->doc);
                 $err = $check->getErrors();
+
                 if ($err && $this->analyze) {
                     $this->tcr[$this->nLine]["msg"].= sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
                     $this->tcr[$this->nLine]["action"] = "warning";
@@ -616,6 +618,8 @@ class importDocumentDescription
                     $msg = refreshPhpPgDoc($this->dbaccess, $this->doc->id);
                     if ($msg !== '') {
                         $this->tcr[$this->nLine]["err"].= $msg;
+                        $this->tcr[$this->nLine]["action"] = "ignored";
+                        $this->tcr[$this->beginLine]["action"] = "ignored";
                         return;
                     }
                     if (isset($tFamIdName)) $tFamIdName[$this->doc->name] = $this->doc->id; // refresh getFamIdFromName for multiple family import
@@ -627,6 +631,7 @@ class importDocumentDescription
                     $this->tcr[$this->nLine]["err"].= $err;
                 }
             }
+
             if ($this->needCleanParamsAndDefaults) {
                 $this->needCleanParamsAndDefaults = false;
                 $this->cleanDefaultAndParametersValues();
@@ -638,6 +643,7 @@ class importDocumentDescription
                 $this->tcr[$this->nLine]["action"] = "warning";
                 return;
             }
+
             if ((!$this->analyze) && ($this->familyIcon != "")) $this->doc->changeIcon($this->familyIcon);
             $this->tcr[$this->nLine]["msg"].= $this->doc->postImport();
             if (!$this->tcr[$this->nLine]["err"]) {
@@ -661,6 +667,7 @@ class importDocumentDescription
             }
         } else {
             $this->tcr[$this->beginLine]["action"] = "ignored";
+                $this->tcr[$this->nLine]["action"] = "ignored";
         }
         if ($this->needCleanStructure) {
             $this->needCleanStructure = false;

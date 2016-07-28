@@ -64,6 +64,7 @@ function freedom_import(Action & $action)
         "yes",
         "no"
     ) , 'no') == "yes");
+
     $linebreak = $usage->addOptionalParameter("linebreak", "csv linebreak", array() , '\n');
     
     $analyze = ($usage->addOptionalParameter("analyze", "analyze", array(
@@ -82,6 +83,7 @@ function freedom_import(Action & $action)
     setMaxExecutionTimeTo(3600); // 60 minutes
     $csvfile = '';
     $ext = '';
+    $filename='';
     if (isset($_FILES["file"])) {
         if ($_FILES["file"]["error"]) {
             $action->exitError(_("No description import file"));
@@ -116,7 +118,7 @@ function freedom_import(Action & $action)
     $pseparator = $action->getParam("FREEDOM_CSVSEPARATOR");
     $penclosure = $action->getParam("FREEDOM_CSVENCLOSURE");
     $plinebreak = $action->getParam("FREEDOM_CSVLINEBREAK");
-    
+
     if (!$analyze) {
         if ($separator) {
             if ($plinebreak != $linebreak) {
@@ -140,6 +142,7 @@ function freedom_import(Action & $action)
     }
     $oImport->importDocuments($action, $csvfile, $analyze, $archive);
     $oImport->writeHtmlCr($action->lay);
+    $action->lay->eset("basename", $filename);
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     
     if (isset($_FILES["file"])) @unlink($csvfile); // tmp file

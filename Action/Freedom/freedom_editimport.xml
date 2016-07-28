@@ -20,14 +20,13 @@
             <input type="hidden" id="analyze" name="analyze" value="N"/>
             <input type="hidden" id="action" name="action" value="FREEDOM_IMPORT"/>
 
+
             <fieldset class="frame">
                 <legend>[TEXT:Import file (CSV, ODS, XML, ZIP, TGZ)] :</legend>
 
                 <input type="file" name="file" id="ifile" class="file"
                    accept="text/csv,application/xml,application/vnd.oasis.opendocument.spreadsheet"
-                   title="[TEXT:csv, ods, xml, zip (xml) supported import files]"
-                   onchange="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;"
-                   onblur="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;">
+                   title="[TEXT:csv, ods, xml, zip (xml) supported import files]" />
                 <br/>
                 <fieldset id="archiveOption" class="archive frame">
                     <legend class="legend">[TEXT:Choose Archive Type]</legend>
@@ -135,6 +134,16 @@
             "limitReached" : "[TEXT:No direct import : limit is reached]",
             "importDocument" : "[TEXT:Import document description now]"
         };
+    </script>
+    <script id="waitAnalyze" type="text/template">
+        <div style="text-align:center;margin-top:4em"><img src="Images/loading.gif"/><br/>
+            <h2>[TEXT:Analyze in progress]</h2>
+        </div>
+    </script>
+    <script id="waitImport" type="text/template">
+        <div style="text-align:center;margin-top:4em"><img src="Images/loading.gif"/><br/>
+            <h2>[TEXT:Import in progress]</h2>
+        </div>
     </script>
     [JS:REF]
 </body>

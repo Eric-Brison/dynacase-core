@@ -17,9 +17,7 @@ TR.added TD{
 TR.warning TD{
    background-color:#FBC95E;
 }
-LI {
-  white-space:nowrap;
-  }
+
 LI.no {
         color:#333
         }
@@ -31,9 +29,27 @@ TD, TH {
        }
 #importresults_filter {
   position: absolute;
-  top: -2.8em;
-  right: 0;
+  top: -2.5em;
+       right: 0em;
+       margin-right: 2px;
 }
+
+#importresults_filter input {
+       padding:0.3em;
+       border: 1px solid grey;
+       width: 13em;
+       }
+ h4.warning  {
+       padding:0.5em;
+       margin:0.5em;
+       }
+h4.error  {
+       padding:0.5em;
+       margin:0.5em;
+       margin-right:15em;
+}
+
+
    </style>
 
 [JS:REF]
@@ -42,7 +58,7 @@ TD, TH {
 
     [JS:CODE]
 
-       $(document).ready(function () {
+    $(document).ready(function () {
        var editw=window.opener;
           if (! editw) {
               if (window.parent) {
@@ -62,17 +78,22 @@ TD, TH {
         }
        var ybody=$(window).height() - $('#importresults tbody').offset().top - 20;
 
-           $('#importresults').dataTable({
-               "sDom":'f<"top"t<"bottom"><"clear">',
-               bJQueryUI:true,
-               bSort:false,
-               sScrollY:ybody+'px',
-               iDisplayLength:5000,
-               "oLanguage": {
-                  "sSearch": ""
-                }
-           });
+       $('#importresults').dataTable({
+           "sDom":'f<"top"t<"bottom"><"clear">',
+           bJQueryUI:true,
+           bSort:false,
+           bAutoWidth:false,
+           iDisplayLength:5000,
+           "oLanguage": {
+              "sSearch": ""
+            }
        });
+
+       window.setTimeout(function() {
+                $("#importresults_filter input").attr("placeholder","[TEXT:Filter import message]");
+        },500);
+
+     });
    </script>
 
 
@@ -80,16 +101,32 @@ TD, TH {
  </head>
 
 <body >
+[IF analyze]
+    <h1>[TEXT:Result Analyze Documents] "[basename]"</h1>
+    [IFNOT haserror]<H3>[processMessage].</H3>[ENDIF haserror]
 
-
-   <H1>[IF analyze][TEXT:Result Analyze Documents][ENDIF analyze][IFNOT analyze][TEXT:Result Import Documents][ENDIF analyze]</H1>
-[IFNOT haswarning]<H3>[nbdoc] [TEXT:documents to examine].</H3>[ENDIF haswarning]
-[IF haserror]
-    <h4 style="background-color: [CORE_ERRORCOLOR]">[TEXT:An error occured, check the details for more information]</h4>
-    [ENDIF haserror]
     [IF haswarning]
-    <h4 style="background-color: #FBC95E">[TEXT:Some element couldn't be fully analyze, warnings can become errors or be corrected when importing]</h4>
+    <h4 class="warning" style="background-color: #FBC95E">[TEXT:Some element couldn't be fully analyze, warnings can become errors or be corrected when importing]</h4>
     [ENDIF haswarning]
+    [IF haserror]
+    <h4 class="error"  style="background-color: [CORE_ERRORCOLOR]">[TEXT:Analyze error occured, check the details for more information]</h4>
+    [ENDIF haserror]
+[ENDIF analyze]
+
+[IFNOT analyze]
+    <h1>[TEXT:Result Import Documents] "[basename]"</h1>
+    [IFNOT haserror]<H3>[processMessage].</H3>[ENDIF haserror]
+
+    [IF haswarning]
+    <h4 class="warning" style="background-color: #FBC95E">[TEXT:Import Warning are occured]</h4>
+    [ENDIF haswarning]
+    [IF haserror]
+    <h4 class="error" style="background-color: [CORE_ERRORCOLOR]">[TEXT:Import error occured, check the details for more information]</h4>
+    [ENDIF haserror]
+[ENDIF analyze]
+
+
+
 <table id="importresults" width="100%" >
 
 <thead><tr><th>[TEXT:line]</th>
