@@ -49,34 +49,48 @@
         $('#ifile').on("change", function() {
             var fileExtension=$(this).val().split('.').pop().toLowerCase();
             if (fileExtension != "csv") {
-                $("#csvOption input").attr("disabled", "disabled");
+                $("#csvOption input").prop("disabled", true);
             } else {
-                $("#csvOption input").removeAttr("disabled");
+                $("#csvOption input").prop("disabled", false);
             }
             if (fileExtension == "zip") {
                  $("#archiveOption").show();
             } else {
                 $("#archiveOption").hide();
             }
-            $('#banalyze').button("enable");
+            $('#banalyze').prop("disabled", false).button("enable");
+            $('#bgimport').prop("disabled", true).button("disable");
+            $('#fgimport').prop("disabled", true).button("disable");
         });
         $("#archiveOption").hide();
         $('#classid').on("change", function() {
             if ($(this).val() != "0") {
                 $(this).parent().find('input').button("enable");
+                $(this).parent().find('input').prop("disabled",false);
             } else {
                 $(this).parent().find('input').button("disable");
+                $(this).parent().find('input').prop("disabled",true);
             }
         });
         $("#banalyze").on("click", function() {
+
+            window.parent.document.getElementById("resultw").contentDocument.body.innerHTML=$("#waitAnalyze").html();
+
             $('#action').val('FREEDOM_IMPORT');
             $('#analyze').val('Y');
-            $('#mainform').submit();
+
+            window.setTimeout(function () {
+                $('#mainform').submit();
+            }, 1);
         });
         $("#fgimport").on("click", function() {
+            window.parent.document.getElementById("resultw").contentDocument.body.innerHTML=$("#waitImport").html();
             $('#action').val('FREEDOM_IMPORT');
             $('#analyze').val('N');
-            $('#mainform').submit();
+
+            window.setTimeout(function () {
+                $('#mainform').submit();
+            }, 1);
         });
     });
 })(window, document, jQuery);

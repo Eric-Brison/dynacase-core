@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-27 14:34+0200\n"
+"POT-Creation-Date: 2016-07-28 15:39+0200\n"
 "PO-Revision-Date: 2016-07-27 14:35+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -105,6 +105,18 @@ msgstr ""
 #, php-format
 msgid "%d days"
 msgstr ""
+
+#, php-format
+msgid "%d document detected"
+msgid_plural "%d documents detected"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%d document processed"
+msgid_plural "%d documents processed"
+msgstr[0] ""
+msgstr[1] ""
 
 #, php-format
 msgid "%d documents"
@@ -569,9 +581,6 @@ msgstr ""
 msgid "Allow guest access"
 msgstr ""
 
-msgid "An error occured, check the details for more information"
-msgstr ""
-
 msgid "Analyse fdl.csv"
 msgstr ""
 
@@ -582,6 +591,12 @@ msgid "Analyze"
 msgstr ""
 
 msgid "Analyze Archive"
+msgstr ""
+
+msgid "Analyze error occured, check the details for more information"
+msgstr ""
+
+msgid "Analyze in progress"
 msgstr ""
 
 msgid "Analyze only"
@@ -2340,6 +2355,9 @@ msgstr ""
 msgid "Filling family table '%s' and relatives"
 msgstr ""
 
+msgid "Filter import message"
+msgstr ""
+
 #, php-format
 msgid "Filter on %s"
 msgstr ""
@@ -2557,6 +2575,9 @@ msgstr ""
 msgid "Import Tar"
 msgstr ""
 
+msgid "Import Warning are occured"
+msgstr ""
+
 msgid "Import after analyze done"
 msgstr ""
 
@@ -2573,12 +2594,18 @@ msgctxt "fuserimport"
 msgid "Import end"
 msgstr ""
 
+msgid "Import error occured, check the details for more information"
+msgstr ""
+
 msgid "Import file (CSV, ODS, XML, ZIP, TGZ)"
 msgstr ""
 
 #, php-format
 msgctxt "fuserimport"
 msgid "Import group (%d/%d)"
+msgstr ""
+
+msgid "Import in progress"
 msgstr ""
 
 #, php-format
@@ -4427,6 +4454,10 @@ msgstr ""
 msgid "You can close window now or waiting the end of processing"
 msgstr ""
 
+msgid ""
+"You don't have access to any content. Please contact your administrator."
+msgstr ""
+
 #, php-format
 msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
 msgstr ""
@@ -5370,9 +5401,6 @@ msgid "core_tmpdir_maxage"
 msgstr ""
 "Maximum time (in days) after which the temporary files and directories are "
 "deleted"
-
-msgid "core_tmpdoc_maxage"
-msgstr "Maximum time (in days) after which the temporary documents are deleted"
 
 #, php-format
 msgid "create %s family %s"
@@ -8933,6 +8961,10 @@ msgstr ""
 
 #~ msgid "Freedom initialisation"
 #~ msgstr "Dynacase initialization"
+
+#~ msgid "core_tmpdoc_maxage"
+#~ msgstr ""
+#~ "Maximum time (in days) after which the temporary documents are deleted"
 
 #~ msgid "description"
 #~ msgstr "Description"

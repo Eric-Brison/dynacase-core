@@ -51,7 +51,7 @@ function getpopupfamdetail(Action & $action, $docid)
         ) ,
         
         "create" => array(
-            "descr" => sprintf(_("Create %s") , $doc->getHTMLTitle()) ,
+            "descr" => sprintf(_("Create %s") , $doc->getTitle()) ,
             "url" => "$surl&app=GENERIC&action=GENERIC_EDIT&classid=$docid",
             "confirm" => "false",
             "control" => "false",
