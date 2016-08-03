@@ -18,7 +18,7 @@ class ImportDocument
     private $strict = true;
     
     private $onlyAnalyze = false;
-    protected $fileName='';
+    protected $fileName = '';
     /**
      * @var int folder to insert documents
      */
@@ -95,7 +95,7 @@ class ImportDocument
             $action->savePoint($point);
         }
         $this->onlyAnalyze = $onlyAnalyze;
-        $this->fileName=$file;
+        $this->fileName = $file;
         try {
             if ($archive) {
                 include_once ("FREEDOM/freedom_ana_tar.php");
@@ -284,11 +284,11 @@ class ImportDocument
         $lay->Set("nbdoc", $nbdoc);
         $lay->set("analyze", ($this->onlyAnalyze));
         if ($this->onlyAnalyze) {
-            $lay->set("processMessage", sprintf(n___("%d document detected", "%d documents detected", $nbdoc), $nbdoc));
+            $lay->set("processMessage", sprintf(n___("%d document detected", "%d documents detected", $nbdoc) , $nbdoc));
         } else {
-            $lay->set("processMessage", sprintf(n___("%d document processed", "%d documents processed", $nbdoc), $nbdoc));
+            $lay->set("processMessage", sprintf(n___("%d document processed", "%d documents processed", $nbdoc) , $nbdoc));
         }
-
+        
         $lay->Set("nbprof", count(array_filter($this->cr, array(
             $this,
             "isprof"
