@@ -278,7 +278,8 @@ class ImportDocument
             "isdoc"
         )));
         $lay->SetBlockData("ADDEDDOC", $this->cr);
-        $lay->set("haserror", !empty($this->getErrorMessage()));
+        $errmsg = $this->getErrorMessage();
+        $lay->set("haserror", $hasError || !empty($errmsg));
         $lay->set("basename", $this->fileName);
         $lay->set("haswarning", $haswarning);
         $lay->Set("nbdoc", $nbdoc);
