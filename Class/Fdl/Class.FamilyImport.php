@@ -562,64 +562,22 @@ class FamilyImport
     
     protected static function pgUpdateFamily($dbaccess, $docid, $docname = "")
     {
+        $docname = strtolower($docname);
         $msg = '';
-        if ($msg) {
-            return $msg;
-        }
-        $doc = new_Doc($dbaccess);
-        $doc->exec_query("SELECT oid FROM pg_class where relname='doc" . $docid . "';");
-        if ($doc->numrows() == 0) {
-            $msg.= "Create table doc" . $docid . "\n";
-            // create postgres table if new \familly
-            $cdoc = createTmpDoc($dbaccess, $docid, false);
-            $triggers = $cdoc->sqltrigger(false, true);
-            $cdoc->exec_query($triggers, 1);
-            // step by step
-            $cdoc->Create();
-            self::setSqlIndex($dbaccess, $docid);
+        /* Create family's table if not exists */
+        if (!self::tableExists($dbaccess, "public", "doc$docid")) {
+            $msg.= sprintf("Create table 'doc%d'\n", $docid);
+            self::createFamilyTable($dbaccess, $docid);
             
-            $err = $doc->exec_query("SELECT oid FROM pg_class where relname='doc" . $docid . "';");
-            if ($doc->numrows() == 0) {
-                $msg.= "Cannot create Table : $err\n";
-            }
-        }
-        $row = $doc->fetch_array(0, PGSQL_ASSOC);
-        $relid = $row["oid"]; // pg id of the table
-        // create view
-        if ($docname != "") {
-            $docname = strtolower($docname);
-            $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
-            $updateview = false;
-            if ($doc->numrows() == 1) {
-                // update view
-                $sql = sprintf("drop view family.\"%s\"", $docname);
-                $doc->exec_query($sql, 1);
-                $updateview = true;
-            }
-            $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
-            if ($doc->numrows() == 0) {
-                if (!$updateview) {
-                    $msg.= "Create view family." . $docname . "\n";
-                }
-                // create postgres table if new \familly
-                $sql = sprintf("create view family.\"%s\" as select * from doc%d", ($docname) , $docid);
-                $doc->exec_query($sql, 1);
-                
-                $err = $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
-                if ($doc->numrows() == 0) {
-                    $msg.= "Cannot create view : $err\n";
-                }
+            if (self::tableExists($dbaccess, "public", "doc$docid")) {
+                /* Re-create family's view */
+                self::recreateFamilyView($dbaccess, $docname, $docid);
+            } else {
+                $msg.= sprintf("Could not create table 'doc%d'.\n", $docid);
             }
         }
         
-        $sqlquery = "select attname FROM pg_attribute where attrelid=$relid;";
-        $doc->exec_query($sqlquery, 1); // search existed attribute of the table
-        $nbidx = $doc->numrows();
-        $pgatt = array();
-        for ($c = 0; $c < $nbidx; $c++) {
-            $row = $doc->fetch_array($c, PGSQL_ASSOC);
-            $pgatt[$row["attname"]] = $row["attname"];
-        }
+        $pgatt = self::getTableColumns($dbaccess, "public", "doc$docid");
         // -----------------------------
         // add column attribute
         $qattr = new \QueryDb($dbaccess, "DocAttr");
@@ -665,6 +623,7 @@ class FamilyImport
                 }
             }
             
+            $updateView = false;
             foreach ($tattr as $ka => $attr) {
                 $attr->id = chop($attr->id);
                 if (substr($attr->type, 0, 5) == "array") {
@@ -715,14 +674,56 @@ class FamilyImport
                                     $sqltype = " text";
                             }
                         }
-                        $sqlquery = "ALTER TABLE doc" . $docid . " ADD COLUMN $ka $sqltype;";
-                        $doc->exec_query($sqlquery, 1); // add new \field
-                        
+                        self::alterTableAddColumn($dbaccess, "public", "doc$docid", $ka, $sqltype);
+                        $updateView = true;
                     }
                 }
             }
+            /* Update family's view if table structure has changed */
+            if ($updateView) {
+                self::recreateFamilyView($dbaccess, $docname, $docid);
+            }
         }
         return $msg;
+    }
+    
+    protected static function tableExists($dbaccess, $schemaName, $tableName)
+    {
+        simpleQuery($dbaccess, sprintf("SELECT 'true' FROM information_schema.tables WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName) , pg_escape_literal($tableName)) , $res, true, true, true);
+        return ($res == 'true');
+    }
+    
+    protected static function viewExists($dbaccess, $schemaName, $viewName)
+    {
+        simpleQuery($dbaccess, sprintf("SELECT 'true' FROM information_schema.views WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName) , pg_escape_literal($viewName)) , $res, true, true, true);
+        return ($res == 'true');
+    }
+    
+    protected static function createFamilyTable($dbaccess, $docid)
+    {
+        // create postgres table if new \familly
+        $cdoc = createTmpDoc($dbaccess, $docid, false);
+        $triggers = $cdoc->sqltrigger(false, true);
+        $cdoc->exec_query($triggers, 1);
+        // step by step
+        $cdoc->Create();
+        self::setSqlIndex($dbaccess, $docid);
+    }
+    
+    protected static function recreateFamilyView($dbaccess, $docname, $docid)
+    {
+        simpleQuery($dbaccess, sprintf("CREATE OR REPLACE VIEW family.%s AS SELECT * FROM %s", pg_escape_identifier($docname) , pg_escape_identifier(sprintf("doc%s", $docid))) , $res, true, true, true);
+    }
+    
+    protected static function getTableColumns($dbaccess, $schemaName, $tableName)
+    {
+        simpleQuery($dbaccess, sprintf("SELECT column_name FROM information_schema.columns WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName) , pg_escape_literal($tableName)) , $res, true, false, true);
+        return $res;
+    }
+    
+    protected static function alterTableAddColumn($dbaccess, $schemaName, $tableName, $columnName, $columnType)
+    {
+        simpleQuery($dbaccess, sprintf("ALTER TABLE %s.%s ADD COLUMN %s %s", pg_escape_identifier($schemaName) , pg_escape_identifier($tableName) , pg_escape_identifier($columnName) , $columnType) , $res, true, true, true);
     }
     
     public static function createDocFile($dbaccess, $tdoc)
