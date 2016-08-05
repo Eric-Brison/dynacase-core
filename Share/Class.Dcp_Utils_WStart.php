@@ -481,6 +481,7 @@ class WStart extends WStartInternals
     public function reapplyDatabaseParameters()
     {
         require_once 'WHAT/Lib.Common.php';
+        require_once 'WHAT/autoload.php';
         
         $this->verbose(1, sprintf("[+] Reapplying database parameters.\n"));
         if (($err = simpleQuery('', 'SELECT current_database()', $dbName, true, true, false)) !== '') {
