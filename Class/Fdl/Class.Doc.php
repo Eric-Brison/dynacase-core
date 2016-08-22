@@ -5405,7 +5405,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function duplicate($temporary = false, $control = true, $linkfld = false, $copyfile = false)
     {
-        
+        if ($this->fromid == '') {
+            throw new Dcp\Exception(ErrorCode::getError('DOC0203'));
+        }
         $copy = createDoc($this->dbaccess, $this->fromid, $control);
         if (!is_object($copy)) return false;
         /**

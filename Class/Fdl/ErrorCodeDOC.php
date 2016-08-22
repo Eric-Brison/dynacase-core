@@ -236,6 +236,11 @@ class ErrorCodeDOC
      */
     const DOC0202 = '"%s" folder is not a folder (is is a "%s"). Cannot insert "%s" document';
     /**
+     * @errorCode The document one is trying to duplicate is invalid.
+     * @note An invalid document can be a non-existing document (e.g. obtained with `new_Doc("", "NON_EXISTING")`).
+     */
+    const DOC0203 = "Cannot duplicate an invalid document";
+    /**
      * @errorCode
      * the mask cannot be applied
      */
