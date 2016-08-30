@@ -917,6 +917,10 @@ class DetailSearch extends \Dcp\Family\Search
         $tkey = $this->getMultipleRawValues("SE_KEYS");
         $taid = $this->getMultipleRawValues("SE_ATTRIDS");
         $tf = $this->getMultipleRawValues("SE_FUNCS");
+        $se_ol = $this->getRawValue(\Dcp\AttributeIdentifiers\Dsearch::se_ol);
+        $se_ols = $this->getMultipleRawValues(\Dcp\AttributeIdentifiers\Dsearch::se_ols);
+        $se_leftp = $this->getMultipleRawValues(\Dcp\AttributeIdentifiers\Dsearch::se_leftp);
+        $se_rightp = $this->getMultipleRawValues(\Dcp\AttributeIdentifiers\Dsearch::se_rightp);
         if ((count($taid) > 1) || (!empty($taid[0]))) {
             
             $fdoc = \new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
@@ -948,7 +952,29 @@ class DetailSearch extends \Dcp\Family\Search
                         if ($type === "docid") $type = "docid[]";
                         else if ($type === "account") $type = "account[]";
                     }
-                    $tcond[]["condition"] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $type) , $displayValue);
+                    $elmts = array();
+                    if ($se_ol == 'perso') {
+                        if (count($tcond) > 0) {
+                            /* Do not display operator on first line */
+                            if (isset($se_ols[$k]) && $se_ols[$k] != '') {
+                                $elmts[] = _($se_ols[$k]);
+                            }
+                        }
+                        if (isset($se_leftp[$k]) && $se_leftp[$k] == 'yes') {
+                            $elmts[] = '(';
+                        }
+                        $elmts[] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $type) , $displayValue);
+                        if (isset($se_rightp[$k]) && $se_rightp[$k] == 'yes') {
+                            $elmts[] = ')';
+                        }
+                    } else {
+                        if (count($tcond) > 0) {
+                            /* Do not display operator on first line */
+                            $elmts[] = _($se_ol);
+                        }
+                        $elmts[] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $type) , $displayValue);
+                    }
+                    $tcond[]["condition"] = join(' ', $elmts);
                     if (isset($tkey[$k][0]) && $tkey[$k][0] == '?') {
                         $tparm[substr($tkey[$k], 1) ] = $taid[$k];
                     }
