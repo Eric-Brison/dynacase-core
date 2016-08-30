@@ -111,50 +111,60 @@ function exportfile(Action & $action)
             }
             $ovalue = $tvalue[$index];
         }
-        $oa = $doc->getAttribute($attrid);
-        if (!$oa) {
-            header('HTTP/1.0 404 Attribute Not Found');
-            $action->exitError(sprintf(_("attribute %s not found") , $attrid));
-        } else {
-            if ($oa->type !== "file" && $oa->type !== "image") {
-                header('HTTP/1.0 403 Incorrect Attribute');
-                $action->exitError(sprintf("Not file attribute : %s ", $attrid));
-            }
-            
-            if ($cvViewId != "" && $doc->cvid > 0) {
-                /**
-                 * @var $cvdoc CVDOC
-                 */
-                $cvdoc = new_Doc($dbaccess, $doc->cvid);
-                $cvdoc->set($doc);
-                /*
-                 * Apply mask from requested view
-                */
-                $err = $cvdoc->control($cvViewId); // control special view
-                if ($err != "") {
-                    header('HTTP/1.0 403 Forbidden');
-                    $action->exitError($err);
-                }
-                $tview = $cvdoc->getView($cvViewId);
-                if ($tview) {
-                    $mask = $tview["CV_MSKID"];
-                    if ($mask) {
-                        $doc->applyMask($mask);
-                    }
-                }
+        if ($attrid !== "icon") {
+            $oa = $doc->getAttribute($attrid);
+            if (!$oa) {
+                header('HTTP/1.0 404 Attribute Not Found');
+                $action->exitError(
+                    sprintf(_("attribute %s not found"), $attrid)
+                );
             } else {
-                $doc->applyMask(Doc::USEMASKCVVIEW);
+                if ($oa->type !== "file" && $oa->type !== "image") {
+                    header('HTTP/1.0 403 Incorrect Attribute');
+                    $action->exitError(
+                        sprintf("Not file attribute : %s ", $attrid)
+                    );
+                }
+
+                if ($cvViewId != "" && $doc->cvid > 0) {
+                    /**
+                     * @var $cvdoc CVDOC
+                     */
+                    $cvdoc = new_Doc($dbaccess, $doc->cvid);
+                    $cvdoc->set($doc);
+                    /*
+                     * Apply mask from requested view
+                    */
+                    $err = $cvdoc->control($cvViewId); // control special view
+                    if ($err != "") {
+                        header('HTTP/1.0 403 Forbidden');
+                        $action->exitError($err);
+                    }
+                    $tview = $cvdoc->getView($cvViewId);
+                    if ($tview) {
+                        $mask = $tview["CV_MSKID"];
+                        if ($mask) {
+                            $doc->applyMask($mask);
+                        }
+                    }
+                } else {
+                    $doc->applyMask(Doc::USEMASKCVVIEW);
+                }
+                if ($oa->mvisibility == "I") {
+                    header('HTTP/1.0 403 Forbidden');
+                    $action->exitError(
+                        sprintf(_("Cannot see attribute %s"), $attrid)
+                    );
+                }
             }
-            if ($oa->mvisibility == "I") {
-                header('HTTP/1.0 403 Forbidden');
-                $action->exitError(sprintf(_("Cannot see attribute %s") , $attrid));
+            if ($oa->getOption("preventfilechange") == "yes") {
+                if (preg_match(PREGEXPFILE, $ovalue, $reg)) {
+                    $vaultid = $reg[2];
+                    $othername = vault_uniqname($vaultid);
+                }
             }
-        }
-        if ($oa->getOption("preventfilechange") == "yes") {
-            if (preg_match(PREGEXPFILE, $ovalue, $reg)) {
-                $vaultid = $reg[2];
-                $othername = vault_uniqname($vaultid);
-            }
+        } else {
+            $ovalue=$doc->icon;
         }
         
         if ($ovalue == "") {
@@ -164,9 +174,9 @@ function exportfile(Action & $action)
         }
         if ($ovalue == "") $action->exiterror(sprintf(_("no file referenced for %s document") , $doc->title));
         preg_match(PREGEXPFILE, $ovalue, $reg);
-        $vaultid = $reg[2];
-        $mimetype = $reg[1];
-        $fileName = $reg[3];
+        $vaultid = $reg["vid"];
+        $mimetype = $reg["mime"];
+        $fileName = $reg["name"];
         
         $fileInfo = \Dcp\VaultManager::getFileInfo($vaultid);
         

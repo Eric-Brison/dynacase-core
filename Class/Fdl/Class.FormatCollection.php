@@ -1283,6 +1283,7 @@ class DocidAttributeValue extends StandardAttributeValue
     public $icon = null;
     public $revision = - 1;
     public $initid;
+    public $fromid;
     protected $visible = true;
     
     public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
@@ -1295,12 +1296,11 @@ class DocidAttributeValue extends StandardAttributeValue
         if ($this->displayValue !== false) {
             if ($v !== '' && $v !== null) {
                 if ($iconsize > 0) {
-                    $prop = getDocProperties($v, $oa->getOption("docrev", "latest") == "latest", array(
-                        
-                        "icon"
-                    ));
-                    if (!$prop["icon"]) $prop["icon"] = "doc.png";
-                    $this->icon = $doc->getIcon($prop["icon"], $iconsize);
+                    if (!empty($info["icon"])) {
+                        $this->icon = $doc->getIcon($info["icon"], $iconsize,$info["initid"]);
+                    } else {
+                        $this->icon = $doc->getIcon("doc.png", $iconsize);
+                    }
                 }
                 $this->url = $this->getDocUrl($v, $docRevOption);
                 if ($docRevOption === "fixed") {
@@ -1312,6 +1312,9 @@ class DocidAttributeValue extends StandardAttributeValue
                 }
                 if (isset($info["initid"])) {
                     $this->initid = intval($info["initid"]);
+                }
+                if (isset($info["fromid"])) {
+                    $this->fromid=intval($info["fromid"]);
                 }
             }
         } else {

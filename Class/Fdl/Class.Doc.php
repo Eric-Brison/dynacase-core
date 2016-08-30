@@ -51,7 +51,7 @@ define("DELVALUE", 'DEL??');
 define("MAXGDOCS", 20);
 
 define("REGEXPFILE", "([^\|]*)\|([0-9]*)\|?(.*)?");
-define("PREGEXPFILE", "/([^\|]*)\|([0-9]*)\|?(.*)?/");
+define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
 /**
  * Document Class
  */
@@ -5778,7 +5778,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param int $size width size
      * @return string icon url
      */
-    final public function getIcon($idicon = "", $size = null)
+    final public function getIcon($idicon = "", $size = null, $otherId=null)
     {
         /**
          * @var Action $action
@@ -5788,10 +5788,12 @@ create unique index i_docir on doc(initid, revision);";
         if ($idicon != "") {
             
             if (preg_match(PREGEXPFILE, $idicon, $reg)) {
-                if ($size) {
-                    $efile = "resizeimg.php?vid=" . $reg[2] . "&size=" . $size;
+                if ($idicon[0] === "!") {
+                    $efile =  sprintf("file/%s/0/icon/-1/%s?inline=yes&width=%s", ($otherId==null)?$this->id:$otherId,  rawurlencode($reg["name"]), $size);
+                } elseif  ($size) {
+                    $efile = "resizeimg.php?vid=" . $reg["vid"] . "&size=" . $size;
                 } else {
-                    $efile = "FDL/geticon.php?vaultid=" . $reg[2] . "&mimetype=" . $reg[1];
+                    $efile = "FDL/geticon.php?vaultid=" . $reg["vid"] . "&mimetype=" . $reg["mime"];
                 }
             } else {
                 $efile = $action->parent->getImageLink($idicon, true, $size);
@@ -5812,7 +5814,14 @@ create unique index i_docir on doc(initid, revision);";
         if (($err = $this->savePoint($point)) != '') {
             return $err;
         }
-        
+
+        if (preg_match(PREGEXPFILE, $icon, $reg)) {
+            $fileData=\Dcp\VaultManager::getFileInfo($reg["vid"]);
+            if (!$fileData->public_access) {
+                $icon="!".$icon;
+            }
+        }
+
         if ($this->doctype == "C") { //  a class
             $fromid = $this->initid;
             $tableName = sprintf("doc%s", $fromid);
