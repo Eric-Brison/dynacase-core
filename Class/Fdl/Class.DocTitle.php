@@ -134,7 +134,7 @@ class DocTitle
             if (!empty($relid["rid"])) $realIds[] = $relid["rid"];
         }
         if ($realIds) {
-            $sql = sprintf("select id,initid,title,name,doctype,revision,views && '%s' as canaccess from docread where id in (%s)", self::getUserVector() , implode(',', $realIds));
+            $sql = sprintf("select id,initid,title,name,doctype,revision,icon,fromid,views && '%s' as canaccess from docread where id in (%s)", self::getUserVector() , implode(',', $realIds));
             simpleQuery($doc->dbaccess, $sql, $result);
             $accesses = array();
             foreach ($result as $access) {
@@ -156,6 +156,8 @@ class DocTitle
                     $relationIds[$k]["canaccess"] = $accesses[$rid]["canaccess"];
                     $relationIds[$k]["revision"] = $accesses[$rid]["revision"];
                     $relationIds[$k]["initid"] = $accesses[$rid]["initid"];
+                    $relationIds[$k]["fromid"] = $accesses[$rid]["fromid"];
+                    $relationIds[$k]["icon"] = $accesses[$rid]["icon"];
                 }
             }
         }
@@ -175,13 +177,13 @@ class DocTitle
     {
         
         if ($latest || $docrevOption === "latest") {
-            $sql = sprintf("select id,initid,title,revision,name,doctype,views && '%s' as canaccess from docread where initid = %d and locked != -1", self::getUserVector() , $docid);
+            $sql = sprintf("select id,initid,title,revision,name,doctype,fromid,icon,views && '%s' as canaccess from docread where initid = %d and locked != -1", self::getUserVector() , $docid);
         } else {
             if (preg_match('/^state\(([^\)]+)\)/', $docrevOption, $matches)) {
                 $revState = $matches[1];
-                $sql = sprintf("select id,initid,revision,title,name,doctype,views && '%s' as canaccess from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1", self::getUserVector() , $docid, pg_escape_string($revState));
+                $sql = sprintf("select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1", self::getUserVector() , $docid, pg_escape_string($revState));
             } else {
-                $sql = sprintf("select id,initid,revision,title,name,doctype,views && '%s' as canaccess from docread where id = %d", self::getUserVector() , $docid);
+                $sql = sprintf("select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess from docread where id = %d", self::getUserVector() , $docid);
             }
         }
         simpleQuery('', $sql, $result, false, true);
@@ -195,6 +197,8 @@ class DocTitle
                 "latest" => $latest,
                 "revision" => $result["revision"],
                 "title" => $result["title"],
+                "fromid" => $result["fromid"],
+                "icon" => $result["icon"],
                 "canaccess" => $result["canaccess"]
             );
             
