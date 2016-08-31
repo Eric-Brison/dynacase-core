@@ -27,25 +27,7 @@ class ExecProcessus extends \Dcp\Family\Document
         if (!$this->canExecuteAction()) {
             AddWarningMsg(sprintf(_("Error : need edit privilege to execute")));
         } else {
-            setMaxExecutionTimeTo(3600);
-            $cmd = getWshCmd(true);
-            $cmd.= " --api=fdl_execute";
-            $cmd.= " --docid=" . $this->id;
-            
-            $cmd.= " --userid=" . $this->userid;
-            if ($comment != "") $cmd.= " --comment=" . base64_encode($comment); // prevent hack
-            $time_start = microtime(true);
-            system($cmd, $status);
-            $time_end = microtime(true);
-            $time = $time_end - $time_start;
-            if ($status == 0) {
-                AddWarningMsg(sprintf(_("Process %s [%d] executed") , $this->title, $this->id));
-                $action->log->info(sprintf(_("Process %s [%d] executed in %.03f seconds") , $this->title, $this->id, $time));
-            } else {
-                AddWarningMsg(sprintf(_("Error : Process %s [%d]: status %d") , $this->title, $this->id, $status));
-                $action->log->error(sprintf(_("Error : Process %s [%d]: status %d in %.03f seconds") , $this->title, $this->id, $status, $time));
-            }
-            return $status;
+            return $this->_execute($action, $comment);
         }
         return -2;
     }
@@ -157,5 +139,118 @@ class ExecProcessus extends \Dcp\Family\Document
     {
         $err = $this->control('edit');
         return ($err == "");
+    }
+    
+    public function executeNow()
+    {
+        /**
+         * Logging in bgexecute
+         */
+        $status = $this->bgExecute(_("dynacase cron try execute"));
+        $del = new_Doc($this->dbaccess, $this->getLatestId(false, true));
+        /**
+         * @var \Dcp\Family\EXEC $del
+         */
+        $del->clearValue("exec_status");
+        $del->clearValue("exec_handnextdate");
+        $err = $del->store();
+        
+        if ($status == 0) {
+            print sprintf("Execute %s [%d] (%s) : %s\n", $del->title, $del->id, $del->getRawValue("exec_handnextdate") , $err);
+        } else {
+            print sprintf("Error executing %s [%d] (%s) : %s (%s)\n", $del->title, $del->id, $del->getRawValue("exec_handnextdate") , $err, $status);
+        }
+    }
+    
+    public function _execute(\Action & $action, $comment = '')
+    {
+        setMaxExecutionTimeTo(3600);
+        /*
+        $cmd = getWshCmd(true);
+        $cmd.= " --api=fdl_execute";
+        $cmd.= " --docid=" . $this->id;
+        
+        $cmd.= " --userid=" . $this->userid;
+        if ($comment != "") $cmd.= " --comment=" . base64_encode($comment); // prevent hack
+        */
+        $time_start = microtime(true);
+        // system($cmd, $status);
+        $status = $this->__execute($action, $this->id, $comment);
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        if ($status == 0) {
+            AddWarningMsg(sprintf(_("Process %s [%d] executed") , $this->title, $this->id));
+            $action->log->info(sprintf(_("Process %s [%d] executed in %.03f seconds") , $this->title, $this->id, $time));
+        } else {
+            AddWarningMsg(sprintf(_("Error : Process %s [%d]: status %d") , $this->title, $this->id, $status));
+            $action->log->error(sprintf(_("Error : Process %s [%d]: status %d in %.03f seconds") , $this->title, $this->id, $status, $time));
+        }
+        return $status;
+    }
+    
+    public function __execute(\Action & $action, $docid, $comment = '')
+    {
+        $doc = new_Doc($action->dbaccess, $docid);
+        /**
+         * @var \Dcp\Family\EXEC $doc
+         */
+        if ($doc->locked == - 1) { // it is revised document
+            $doc = new_Doc($action->dbaccess, $doc->getLatestId());
+        }
+        
+        $doc->setValue("exec_status", "progressing");
+        $doc->setValue("exec_statusdate", $doc->getTimeDate());
+        $doc->modify(true, array(
+            "exec_status",
+            "exec_statusdate"
+        ) , true);
+        $cmd = $doc->bgCommand($action->user->id == 1);
+        $f = uniqid(getTmpDir() . "/fexe");
+        $fout = "$f.out";
+        $ferr = "$f.err";
+        $cmd.= ">$fout 2>$ferr";
+        $m1 = microtime();
+        system($cmd, $statut);
+        $m2 = microtime_diff(microtime() , $m1);
+        $ms = gmstrftime("%H:%M:%S", $m2);
+        
+        if (file_exists($fout)) {
+            $doc->setValue("exec_detail", file_get_contents($fout));
+            unlink($fout);
+        }
+        if (file_exists($ferr)) {
+            $doc->setValue("exec_detaillog", file_get_contents($ferr));
+            unlink($ferr);
+        }
+        
+        $doc->clearValue("exec_nextdate");
+        $doc->setValue("exec_elapsed", $ms);
+        $doc->setValue("exec_date", date("d/m/Y H:i "));
+        $doc->clearValue("exec_status");
+        $doc->clearValue("exec_statusdate");
+        $doc->setValue("exec_state", (($statut == 0) ? "OK" : $statut));
+        $puserid = $doc->getRawValue("exec_iduser"); // default exec user
+        $doc->setValue("exec_iduser", $doc->getExecUserID());
+        $doc->refresh();
+        $err = $doc->modify();
+        if ($err == "") {
+            if ($comment != "") $doc->addHistoryEntry($comment);
+            $err = $doc->revise(sprintf(_("execution by %s done %s") , $doc->getTitle($doc->getExecUserID()) , $statut));
+            if ($err == "") {
+                $doc->clearValue("exec_elapsed");
+                $doc->clearValue("exec_detail");
+                $doc->clearValue("exec_detaillog");
+                $doc->clearValue("exec_date");
+                $doc->clearValue("exec_state");
+                $doc->setValue("exec_iduser", $puserid);
+                $doc->refresh();
+                $err = $doc->modify();
+            }
+        } else {
+            $doc->addHistoryEntry($err, HISTO_ERROR);
+        }
+        
+        if ($err != "") return 1;
+        return 0;
     }
 }

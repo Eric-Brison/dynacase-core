@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-28 15:39+0200\n"
-"PO-Revision-Date: 2016-07-28 15:40+0200\n"
+"POT-Creation-Date: 2016-08-31 13:23+0200\n"
+"PO-Revision-Date: 2016-08-31 13:27+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -4553,6 +4553,12 @@ msgstr "Vous devez fournir le mot de passe actuel"
 
 msgid "WIDGET_CHANGE_PASSWORD:You need to provide twice the new password"
 msgstr "Vous devez fournir la vérification"
+
+msgid "WSH error mail recipients (comma-separated list of mail addresses)"
+msgstr "Destinataires des messages d'erreurs de WSH (liste d'adresses de courriel séparés par des virgules)"
+
+msgid "WSH error mail subject"
+msgstr "Sujet des messages d'erreurs de WSH"
 
 #, php-format
 msgid "Warning : %s"

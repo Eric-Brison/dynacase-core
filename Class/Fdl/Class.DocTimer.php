@@ -198,7 +198,10 @@ create table doctimer ( id serial,
         $q->addQuery("tododate is not null");
         $q->addQuery("tododate < now()");
         $timerhourlimit = getParam("FDL_TIMERHOURLIMIT", 2);
-        $q->addQuery("tododate > now() - interval '$timerhourlimit hour'");
+        if ((int)$timerhourlimit <= 0) {
+            $timerhourlimit = 2;
+        }
+        $q->addQuery(sprintf("tododate > now() - interval '%d hour'", $timerhourlimit));
         $l = $q->Query(0, 0, "TABLE");
         if ($q->nb > 0) return $l;
         return array();
