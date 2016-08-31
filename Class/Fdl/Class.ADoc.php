@@ -43,7 +43,7 @@ class ADoc
     }
     /**
      * @param string $id attribute identifier
-     * @return BasicAttribute
+     * @return BasicAttribute|false
      */
     public function getAttr($id)
     {
@@ -105,7 +105,7 @@ class ADoc
     }
     /**
      * get attributes included in an arrary
-     * @return NormalAttribute[]
+     * @return NormalAttribute[]|false
      */
     public function getArrayElements($id)
     {
@@ -143,6 +143,20 @@ class ADoc
                 }
             });
             $this->isOrdered = true;
+        }
+    }
+    /**
+     * Add volatile attribute to document structure
+     *
+     * @param BasicAttribute $attr
+     */
+    public function addAttribute(\BasicAttribute $attr)
+    {
+        $this->attr[$attr->id] = $attr;
+        if (is_numeric($attr->ordered)) {
+            $this->absoluteOrders[$attr->id] = $attr->ordered;
+        } else {
+            $this->absoluteOrders[$attr->id] = (count($this->absoluteOrders) + 1) * 10;
         }
     }
 }
