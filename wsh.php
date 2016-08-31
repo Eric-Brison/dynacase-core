@@ -20,6 +20,8 @@ require_once 'Class.Session.php';
 require_once 'Class.Log.php';
 require_once 'Lib.Main.php';
 
+enable_wsh_safetybelts();
+
 checkWshExecUid(__FILE__);
 
 function print_usage()
@@ -122,8 +124,7 @@ try {
     }
 }
 catch(Dcp\Exception $e) {
-    errorLogException($e);
-    exit(1);
+    _wsh_exception_handler($e);
 }
 // init for gettext
 setLanguage($action->Getparam("CORE_LANG"));
@@ -155,12 +156,10 @@ if (isset($_GET["api"])) {
             }
         }
         catch(Dcp\Exception $e) {
-            errorLogException($e);
-            exit(1);
+            _wsh_exception_handler($e);
         }
         catch(Exception $e) {
-            errorLogException($e);
-            exit(1);
+            _wsh_exception_handler($e);
         }
     }
 } else {
@@ -186,12 +185,10 @@ if (isset($_GET["api"])) {
             }
         }
         catch(Dcp\Exception $e) {
-            errorLogException($e);
-            exit(1);
+            _wsh_exception_handler($e);
         }
         catch(Exception $e) {
-            errorLogException($e);
-            exit(1);
+            _wsh_exception_handler($e);
         }
     } else {
         // REPEAT EXECUTION FOR FREEDOM FOLDERS

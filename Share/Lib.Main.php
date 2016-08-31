@@ -424,17 +424,137 @@ function handleActionException($e)
         exit(1);
     }
 }
+
+function isInteractiveCLI()
+{
+    if (php_sapi_name() !== 'cli') {
+        return false;
+    }
+    if (function_exists('posix_isatty')) {
+        return (posix_isatty(STDIN) || posix_isatty(STDOUT) || posix_isatty(STDERR));
+    }
+    return true;
+}
+
+function _wsh_send_error($errMsg, $expand = array())
+{
+    global $action;
+    $wshError = new Dcp\WSHMailError($action, $errMsg);
+    $wshError->prefix = sprintf('%s %s ', date('c') , php_uname('n'));
+    $wshError->addExpand($expand);
+    $wshError->autosend();
+}
+/**
+ * @param Throwable $e
+ */
+function _wsh_exception_handler($e)
+{
+    $errMsg = formatErrorLogException($e);
+    
+    error_log($errMsg);
+    if (!isInteractiveCLI()) {
+        $expand = array(
+            'm' => preg_replace('/^([^\n]*).*/s', '\1', $e->getMessage())
+        );
+        _wsh_send_error($errMsg, $expand);
+    }
+    
+    exit(255);
+}
+
+function _wsh_shutdown_handler()
+{
+    global $argv;
+    
+    $error = error_get_last();
+    if ($error === null) {
+        /* No error */
+        return;
+    }
+    /* Process error */
+    switch ($error["type"]) {
+        case E_ERROR:
+            $title = "Runtime Error";
+            break;
+
+        case E_CORE_ERROR:
+            $title = "Startup Error";
+            break;
+
+        case E_PARSE:
+            $title = "Parse Error";
+            break;
+
+        case E_COMPILE_ERROR:
+            $title = "Compile Error";
+            break;
+
+        case E_RECOVERABLE_ERROR:
+            $title = "Recoverable Error";
+            break;
+
+        default:
+            return;
+    }
+    
+    $pid = getmypid();
+    $errMsg = <<<EOF
+$pid> Dynacase $title
+EOF;
+    
+    if (php_sapi_name() == 'cli' && is_array($argv)) {
+        $errMsg.= sprintf("\n%s> Command line arguments: %s", $pid, join(' ', array_map("escapeshellarg", $argv)));
+        $errMsg.= sprintf("\n%s> error_log: %s", $pid, ini_get('error_log'));
+        $errMsg.= "\n";
+    }
+    
+    $errMsg.= <<<EOF
+$pid> Type:    ${error['type']}
+$pid> Message: ${error['message']}
+$pid> File:    ${error['file']}
+$pid> Line:    ${error['line']}
+EOF;
+    
+    error_log($errMsg);
+    if (!isInteractiveCLI()) {
+        $expand = array(
+            'm' => preg_replace('/^([^\n]*).*/s', '\1', $error['message'])
+        );
+        _wsh_send_error($errMsg, $expand);
+    }
+}
+
+function enable_wsh_safetybelts()
+{
+    set_exception_handler("_wsh_exception_handler");
+    register_shutdown_function("_wsh_shutdown_handler");
+}
+/**
+ * @param Throwable $e
+ * @return string
+ */
+function formatErrorLogException($e)
+{
+    global $argv;
+    
+    $pid = getmypid();
+    $err = sprintf("%s> Dynacase got an uncaught exception '%s' with message '%s' in file %s at line %s:", $pid, get_class($e) , $e->getMessage() , $e->getFile() , $e->getLine());
+    if (php_sapi_name() == 'cli' && is_array($argv)) {
+        $err.= sprintf("\n%s> Command line arguments: %s", $pid, join(' ', array_map("escapeshellarg", $argv)));
+        $err.= sprintf("\n%s> error_log: %s", $pid, ini_get('error_log'));
+    }
+    foreach (preg_split('/\n/', $e->getTraceAsString()) as $line) {
+        $err.= sprintf("\n%s> %s", $pid, $line);
+    }
+    $err.= sprintf("\n%s> End Of Exception.", $pid);
+    return $err;
+}
 /**
  * @param Exception|Error  $e
  */
 function errorLogException($e)
 {
-    $pid = getmypid();
-    error_log(sprintf("%s> Dynacase got an uncaught exception '%s' with message '%s' in file %s at line %s:", $pid, get_class($e) , $e->getMessage() , $e->getFile() , $e->getLine()));
-    foreach (preg_split('/\n/', $e->getTraceAsString()) as $line) {
-        error_log(sprintf("%s> %s", $pid, $line));
-    }
-    error_log(sprintf("%s> End Of Exception.", $pid));
+    error_log(formatErrorLogException($e));
 }
 
 function handleFatalShutdown()

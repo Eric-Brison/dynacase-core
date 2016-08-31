@@ -388,6 +388,19 @@ $app_const = array(
         "descr" => N_("Mail action URL") ,
         "user" => "N",
         "global" => "Y"
+    ) ,
+    // WSH error mail
+    "CORE_WSH_MAILTO" => array(
+        "val" => "",
+        "descr" => N_("WSH error mail recipients (comma-separated list of mail addresses)") ,
+        "user" => "N",
+        "global" => "Y"
+    ) ,
+    "CORE_WSH_MAILSUBJECT" => array(
+        "val" => "[%h](%c) Script error: %m",
+        "descr" => N_("WSH error mail subject") ,
+        "user" => "N",
+        "global" => "Y"
     )
 );
 

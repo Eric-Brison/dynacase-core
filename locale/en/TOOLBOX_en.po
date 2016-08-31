@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-28 15:39+0200\n"
+"POT-Creation-Date: 2016-08-31 13:23+0200\n"
 "PO-Revision-Date: 2016-07-27 14:35+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -4361,6 +4361,12 @@ msgstr "You need to provide the old password"
 
 msgid "WIDGET_CHANGE_PASSWORD:You need to provide twice the new password"
 msgstr "You need to provide twice the new password"
+
+msgid "WSH error mail recipients (comma-separated list of mail addresses)"
+msgstr ""
+
+msgid "WSH error mail subject"
+msgstr ""
 
 #, php-format
 msgid "Warning : %s"
