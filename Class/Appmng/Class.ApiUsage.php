@@ -88,7 +88,6 @@ namespace {
             $this->addOptionalParameter('userid', "user system id or login name to execute function - default is (admin)", null, 1);
             $this->addEmptyParameter('help', "Show usage");
         }
-
         /**
          * Restriction callback to verify a scalar value
          * @param string $argVal argument value
@@ -100,8 +99,11 @@ namespace {
         {
             $err = "";
             if (!is_scalar($argVal)) {
-                if (is_array($argVal)) $err = sprintf("Argument doesn't support multiple value (values got are [%s])", implode(",", $argVal));
-                else $err = sprintf("Value type %s isn't authorized for argument, must be a scalar", gettype($argVal));
+                if (is_array($argVal)) {
+                    if (!isset($_FILES[$argName])) {
+                        $err = sprintf("Argument doesn't support multiple value (values got are [%s])", implode(",", $argVal));
+                    }
+                } else $err = sprintf("Value type %s isn't authorized for argument, must be a scalar", gettype($argVal));
             }
             return $err;
         }
