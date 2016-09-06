@@ -89,7 +89,7 @@ class FamilyAbsoluteOrder
             }
             self::completeForNumericOrderByFamilyLevel($famAttribute);
             foreach ($famAttribute as $oneAttribute) {
-                $key = $oneAttribute["id"] . "-" . $oneAttribute["family"];
+                $key = $oneAttribute["id"] . "/" . $oneAttribute["family"];
                 $attributes[$key] = $oneAttribute;
             }
         }

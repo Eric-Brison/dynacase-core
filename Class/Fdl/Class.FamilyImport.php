@@ -192,13 +192,31 @@ class FamilyImport
                     $previousOrder = strtolower($reg[1]);
                 }
                 if ($parentAttr["id"][0] !== ":") {
-                    $allAttributes[$parentAttr["id"] . "-" . $parentAttr["docid"]] = ["id" => $parentAttr["id"], "parent" => $parentAttr["frameid"], "family" => $parentAttr["docid"], "prev" => $previousOrder, "numOrder" => intval($parentAttr["ordered"]) ];
+                    $allAttributes[$parentAttr["id"] . "/" . $parentAttr["docid"]] = ["id" => $parentAttr["id"], "parent" => $parentAttr["frameid"], "family" => $parentAttr["docid"], "prev" => $previousOrder, "numOrder" => intval($parentAttr["ordered"]) ];
+                } else {
+                    if (is_numeric($parentAttr["ordered"])) {
+                        $pattern = sprintf("/%s\\/([0-9]+)/", substr($parentAttr["id"], 1));
+                        
+                        foreach ($allAttributes as $ka => $attrData) {
+                            if (preg_match($pattern, $ka, $reg)) {
+                                $allAttributes[$ka]["numOrder"] = $parentAttr["ordered"];
+                            }
+                        }
+                    }
                 }
             }
             
             foreach ($table1 as $k => $v) {
                 if ($v->id[0] == ':') {
                     $v = self::completeAttribute($dbaccess, $v);
+                    if (is_numeric($v->ordered)) {
+                        $pattern = sprintf("/%s\\/([0-9]+)/", $v->id);
+                        foreach ($allAttributes as $ka => $attrData) {
+                            if (preg_match($pattern, $ka, $reg)) {
+                                $allAttributes[$ka]["numOrder"] = $v->ordered;
+                            }
+                        }
+                    }
                 }
                 
                 $previous = ""; //FamilyAbsoluteOrder::autoOrder;
@@ -206,7 +224,7 @@ class FamilyImport
                     $previous = strtolower($reg[1]);
                 }
                 
-                $allAttributes[$v->id . "-" . $v->docid] = ["id" => $v->id, "parent" => $v->frameid, "family" => $v->docid, "prev" => $previous, "numOrder" => intval($v->ordered) ];
+                $allAttributes[$v->id . "/" . $v->docid] = ["id" => $v->id, "parent" => $v->frameid, "family" => $v->docid, "prev" => $previous, "numOrder" => intval($v->ordered) ];
                 if ($v->visibility == "F") {
                     $v->type = "frame";
                 } // old notation compliant
@@ -409,7 +427,6 @@ class FamilyImport
                         }
                 }
             }
-            
             FamilyAbsoluteOrder::completeForNumericOrder($allAttributes, $tdoc["id"]);
             $absoluteOrders = FamilyAbsoluteOrder::getAbsoluteOrders($allAttributes, $tdoc["id"]);
             $tAbsOrders = [];
@@ -924,7 +941,7 @@ class FamilyImport
             
             $nextfromid = getFamFromId($dbaccess, $fromid);
             if ($nextfromid > 0) {
-                $pa = array_merge($pa, self::getParentAttributes($dbaccess, $nextfromid));
+                $pa = array_merge(self::getParentAttributes($dbaccess, $nextfromid) , $pa);
             }
             $paf = array();
             foreach ($pa as $v) {
