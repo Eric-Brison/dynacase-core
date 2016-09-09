@@ -447,7 +447,7 @@ class OOoLayout extends Layout
      * read odt file and insert xmls in object
      * @param string $odtfile path to the odt file
      * @return string
-     * @throws \Dcp\Layout\Exception
+     * @throws \Dcp\Layout\Exception|\Dcp\Core\Exception
      */
     protected function odf2content($odtfile)
     {
@@ -457,8 +457,20 @@ class OOoLayout extends Layout
         }
         $this->cibledir = uniqid(getTmpDir() . "/odf");
         
-        $cmd = sprintf("unzip  %s  -d %s >/dev/null", escapeshellarg($odtfile) , escapeshellarg($this->cibledir));
-        system($cmd);
+        $cmd = sprintf("unzip %s -d %s 2>&1", escapeshellarg($odtfile) , escapeshellarg($this->cibledir));
+        if (exec($cmd, $out, $ret) === false) {
+            $err = error_get_last();
+            if (isset($err['message'])) {
+                $err = $err['message'];
+            } else {
+                $err = 'unknown PHP error...';
+            }
+            throw new Dcp\Core\Exception("LAY0006", $err);
+        }
+        if ($ret !== 0) {
+            $err = join("\n", $out);
+            throw new Dcp\Core\Exception("LAY0007", $odtfile, $err);
+        }
         
         $contentxml = $this->cibledir . "/content.xml";
         if (file_exists($contentxml)) {
