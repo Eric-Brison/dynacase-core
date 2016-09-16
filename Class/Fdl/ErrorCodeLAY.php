@@ -46,6 +46,16 @@ namespace {
          */
         const LAY0005 = 'HTML attribute %s misplaced';
         /**
+         * The PHP exec() call failed
+         * @errorCode The PHP exec() call failed (internal PHP dysfunction, kernel resource exhaustion, etc.)
+         */
+        const LAY0006 = "Error in exec() call: %s";
+        /**
+         * The decompression of the template failed
+         * @errorCode The decompression of the template failed (missing 'unzip' command, invalid Zip file format, insufficient disk space, etc.)
+         */
+        const LAY0007 = "Decompression of '%s' failed with error: %s";
+        /**
          * for beautifier
          */
         private function _bo()
