@@ -6,6 +6,9 @@
 
 namespace Dcp;
 
+if (! defined("ALTSEPCHAR")) {
+    define("ALTSEPCHAR", ' --- ');
+}
 class WriteCsv
 {
     
