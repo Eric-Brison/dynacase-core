@@ -43,6 +43,7 @@ function inputattribute(Action & $action)
     $doc = new doc($dbaccess);
     $htmlinput = "";
     
+    $doc->attributes = new Adoc();
     $value = str_replace('\\n', "\n", $value);
     if ($type == "doclink") {
         $famid = GetHttpVars("famid");
@@ -89,10 +90,10 @@ function inputattribute(Action & $action)
         $options = "elabel=" . ($label);
         if ($esize) $options.= "|esize=$esize";
         $oattr = new NormalAttribute($attrid, $doc->id, $label, "text", $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, $fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint, $usefor, $eformat, $options);
-        
-        $doc->attributes->attr[$oattr1->id] = $oattr1;
+        $doc->attributes->addAttribute($oattr1);
         $htmlinput = getHtmlInput($doc, $oattr1, $value, $index, $jsevent, true);
-        $doc->attributes->attr[$oattr->id] = $oattr;
+        
+        $doc->attributes->addAttribute($oattr);
     } else {
         
         $format = "";
@@ -118,7 +119,7 @@ function inputattribute(Action & $action)
         if (!$options) $options = "elabel=" . ($label);
         if ($esize) $options.= "|esize=$esize";
         $oattr = new NormalAttribute($attrid, $doc->id, $label, $type, $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, $fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint, $usefor, $eformat, $options);
-        $doc->attributes->attr[$attrid] = $oattr;
+        $doc->attributes->addAttribute($oattr);
     }
     
     $htmlinput.= getHtmlInput($doc, $oattr, $value, $index, $jsevent, true);
