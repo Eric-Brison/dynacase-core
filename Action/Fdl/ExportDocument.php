@@ -181,11 +181,10 @@ class ExportDocument
                     }
                 }
                 if ($uid) {
-                    $tAcls[$kAcl["acl"] . "-" . $uid] = ["uid" => $uid, "acl" => $aAcl["acl"]];
+                    $tAcls["e".$kAcl . "-" . $uid] = ["uid" => $uid, "acl" => $aAcl["acl"]];
                 }
             }
         }
-        
         if (count($tAcls) > 0) {
             $data = array(
                 "PROFIL",
