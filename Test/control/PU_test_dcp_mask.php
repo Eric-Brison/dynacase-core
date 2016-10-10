@@ -10,6 +10,8 @@
 
 namespace Dcp\Pu;
 
+use Dcp\ApiUsage\Exception;
+
 require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestMask extends TestCaseDcpCommonFamily
@@ -66,7 +68,38 @@ class TestMask extends TestCaseDcpCommonFamily
             $this->markTestIncomplete(sprintf(_('Document %d not alive.') , $docid));
         }
     }
+    /**
+     * @param       $file
+     * @param array $expectedErrors
+     * @dataProvider dataBadImportMask
+     */
+    public function testBadImportMask($file, array $expectedErrors)
+    {
+        try {
+            self::importDocument($file);
+            $this->assertTrue(false, "Mask import errors must not be empty");
+        }
+        catch(\Dcp\Exception $e) {
+            foreach ($expectedErrors as $error) {
+                $this->assertContains($error, $e->getMessage() , sprintf("mask apply not correct error %s", $e->getMessage()));
+            }
+        }
+    }
     
+    public function dataBadImportMask()
+    {
+        return array(
+            ["PU_data_dcp_badMask.ods",
+            ["MSK0001",
+            "TST_BADMASK1",
+            "MSK0002",
+            "TST_BADMASK2",
+            "MSK0003",
+            "tst_titlex",
+            "tst_numberx",
+            "tst_p2"]]
+        );
+    }
     public function dataGoodMask()
     {
         return array(

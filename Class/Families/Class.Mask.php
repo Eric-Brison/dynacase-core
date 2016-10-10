@@ -8,6 +8,7 @@
  *
  */
 namespace Dcp\Core;
+use \Dcp\AttributeIdentifiers\Mask as myAttr;
 class Mask extends \Dcp\Family\Base
 {
     
@@ -57,6 +58,45 @@ class Mask extends \Dcp\Family\Base
         $this->setValue("MSK_VISIBILITIES", $tvis);
         
         return '';
+    }
+    
+    public function preImport(array $extra = array())
+    {
+        return $this->verifyIntegraty();
+    }
+    public function preRefresh()
+    {
+        return $this->verifyIntegraty();
+    }
+    /**
+     * Verify if family and attributes are coherents
+     * @return string error message
+     */
+    protected function verifyIntegraty()
+    {
+        $mskAttrids = $this->getMultipleRawValues(myAttr::msk_attrids);
+        $famid = $this->getRawValue(myAttr::msk_famid);
+        if (!$famid) {
+            return \ErrorCode::getError("MSK0001", $this->name);
+        }
+        $fam = new_doc($this->dbaccess, $famid);
+        if ($fam->doctype !== "C") {
+            return \ErrorCode::getError("MSK0002", $famid, $this->name);
+        }
+        $attributes = $fam->getAttributes();
+        $attrids = [];
+        foreach ($attributes as $attribute) {
+            if ($attribute->usefor !== "Q") {
+                $attrids[] = $attribute->id;
+            }
+        }
+        foreach ($mskAttrids as $mAttrid) {
+            if ($mAttrid && !in_array($mAttrid, $attrids)) {
+                
+                return \ErrorCode::getError("MSK0003", $mAttrid, $fam->name, $this->name);
+            }
+        }
+        return "";
     }
     
     function getVisibilities()
@@ -245,7 +285,7 @@ class Mask extends \Dcp\Family\Base
             //    ------------------------------------------
             //  -------------------- NORMAL ----------------------
             $tattr = $family->getAttributes();
-
+            
             foreach ($tattr as $k => $attr) {
                 /**
                  * @var $attr \NormalAttribute|\FieldSetAttribute|\ActionAttribute
