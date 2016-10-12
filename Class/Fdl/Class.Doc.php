@@ -2151,7 +2151,9 @@ create unique index i_docir on doc(initid, revision);";
     final public function &getAttribute($idAttr, &$oa = null)
     {
         if (!$this->_maskApplied) $this->ApplyMask();
-        $idAttr = strtolower($idAttr);
+        if ($idAttr !== Adoc::HIDDENFIELD) {
+            $idAttr = strtolower($idAttr);
+        }
         $oas = $this->getAttributes();
         
         if (isset($this->attributes->attr[$idAttr])) $oa = $oas[$idAttr];
@@ -5780,7 +5782,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param int $size width size
      * @return string icon url
      */
-    final public function getIcon($idicon = "", $size = null, $otherId=null)
+    final public function getIcon($idicon = "", $size = null, $otherId = null)
     {
         /**
          * @var Action $action
@@ -5791,8 +5793,8 @@ create unique index i_docir on doc(initid, revision);";
             
             if (preg_match(PREGEXPFILE, $idicon, $reg)) {
                 if ($idicon[0] === "!") {
-                    $efile =  sprintf("file/%s/0/icon/-1/%s?inline=yes&width=%s", ($otherId==null)?$this->id:$otherId,  rawurlencode($reg["name"]), $size);
-                } elseif  ($size) {
+                    $efile = sprintf("file/%s/0/icon/-1/%s?inline=yes&width=%s", ($otherId == null) ? $this->id : $otherId, rawurlencode($reg["name"]) , $size);
+                } elseif ($size) {
                     $efile = "resizeimg.php?vid=" . $reg["vid"] . "&size=" . $size;
                 } else {
                     $efile = "FDL/geticon.php?vaultid=" . $reg["vid"] . "&mimetype=" . $reg["mime"];
@@ -5816,14 +5818,14 @@ create unique index i_docir on doc(initid, revision);";
         if (($err = $this->savePoint($point)) != '') {
             return $err;
         }
-
+        
         if (preg_match(PREGEXPFILE, $icon, $reg)) {
-            $fileData=\Dcp\VaultManager::getFileInfo($reg["vid"]);
+            $fileData = \Dcp\VaultManager::getFileInfo($reg["vid"]);
             if (!$fileData->public_access) {
-                $icon="!".$icon;
+                $icon = "!" . $icon;
             }
         }
-
+        
         if ($this->doctype == "C") { //  a class
             $fromid = $this->initid;
             $tableName = sprintf("doc%s", $fromid);
