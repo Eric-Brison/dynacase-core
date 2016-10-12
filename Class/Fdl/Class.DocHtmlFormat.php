@@ -890,8 +890,7 @@ class DocHtmlFormat
                 elseif ($this->oattr->link != "") {
                     $title = DocTitle::getRelationTitle(trim($avalue) , $isLatest, $this->doc);
                     $htmlval = $this->doc->htmlEncode($title);
-                }
-                else {
+                } else {
                     $title = DocTitle::getRelationTitle(trim($avalue) , $isLatest, $this->doc);
                     if ($title === false) $htmlval = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
                     else $htmlval = $this->doc->getDocAnchor(trim($avalue) , $dtarget, $this->htmlLink, $title, true, $this->oattr->getOption("docrev") , true);
@@ -1028,7 +1027,24 @@ class DocHtmlFormat
                 error_log(sprintf("%s unable to parse/create html width docLink elements(document :%s, error %)s", __METHOD__, $this->doc->id, $e->getMessage()));
             }
         } else {
+            $prefix = uniqid("");
+            $avalue = str_replace(array(
+                "[",
+                "&#x5B;",
+                "]"
+            ) , array(
+                "B$prefix",
+                "B$prefix",
+                "D$prefix"
+            ) , $avalue);
             $avalue = \Dcp\Utils\htmlclean::normalizeHTMLFragment(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8') , $error);
+            $avalue = str_replace(array(
+                "B$prefix",
+                "D$prefix"
+            ) , array(
+                "[",
+                "]"
+            ) , $avalue);
             if ($error != '') {
                 addWarningMsg(_("Malformed HTML:") . "\n" . $error);
             }
@@ -1036,7 +1052,7 @@ class DocHtmlFormat
                 $avalue = '';
             }
         }
-        $htmlval = '<div class="htmltext">' . $avalue . '</div>';
+        $htmlval = '<div class="htmltext">' . str_replace("[", "&#x5B;", $avalue) . '</div>';
         return $htmlval;
     }
     /**

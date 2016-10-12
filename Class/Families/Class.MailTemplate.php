@@ -316,7 +316,8 @@ class MailTemplate extends \Dcp\Family\Document
             if ($umail != "") $bcc.= (trim($bcc) == "" ? "" : ",") . $umail;
         }
         
-        $message->setBody(new \Dcp\Mail\Body($pfout, 'text/html'));
+        $body = new \Dcp\Mail\Body($pfout, 'text/html');
+        $message->setBody($body);
         // ---------------------------
         // add inserted image
         foreach ($this->ifiles as $k => $v) {
