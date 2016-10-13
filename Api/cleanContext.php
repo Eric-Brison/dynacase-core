@@ -53,6 +53,8 @@ if ($real || $full) {
 $core_db = $action->dbaccess;
 $sessionUtils = new SessionUtils($core_db);
 $sessionUtils->deleteExpiredSessionFiles();
+// Clean token open access
+UserToken::deleteExpired();
 
 cleanTmpFiles();
 \Dcp\VaultManager::destroyTmpFiles($action->GetParam('CORE_TMPDIR_MAXAGE', '2'));

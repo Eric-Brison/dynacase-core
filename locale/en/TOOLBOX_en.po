@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-26 15:53+0200\n"
+"POT-Creation-Date: 2016-11-07 14:22+0100\n"
 "PO-Revision-Date: 2016-07-27 14:35+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -715,6 +715,10 @@ msgid "Authentication failures before account deactivation"
 msgstr ""
 
 msgid "Author"
+msgstr ""
+
+msgctxt "authentOpen"
+msgid "Authorization Required"
 msgstr ""
 
 msgid "Automatic profil creation not possible for this kind of family"
@@ -2407,6 +2411,10 @@ msgstr ""
 msgid "For export functions"
 msgstr ""
 
+msgctxt "authent"
+msgid "Forget password"
+msgstr ""
+
 msgid "Format export"
 msgstr ""
 
@@ -3366,6 +3374,10 @@ msgid "Previous page"
 msgstr ""
 
 msgid "Print"
+msgstr ""
+
+msgctxt "authentOpen"
+msgid "Private key identifier is not valid"
 msgstr ""
 
 msgid "Privilege input"

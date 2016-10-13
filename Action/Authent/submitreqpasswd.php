@@ -12,7 +12,6 @@
  * @package FDL
  * @subpackage
  */
-
 /**
  * @param Action $action
  * @throws \Dcp\Core\Exception
@@ -24,12 +23,11 @@ function submitreqpasswd(Action & $action)
     
     $submitted_login = $action->getArgument('form_login');
     $submitted_email = $action->getArgument('form_email');
-
-
+    
     $lang = $action->getArgument("lang");
-
+    
     setLanguage($lang);
-
+    
     $action->parent->AddCssRef('AUTHENT:loginform.css', true);
     $action->parent->AddCssRef('AUTHENT:submitreqpasswd.css');
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
@@ -78,7 +76,7 @@ function submitreqpasswd(Action & $action)
  */
 function retrieveUserDoc(Action $action, $login = "", $email = "")
 {
-
+    
     $action->lay->set('MAILMULTIPLE', false);
     if (!$login && !$email) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Undefined email and login args.");
@@ -103,7 +101,7 @@ function retrieveUserDoc(Action $action, $login = "", $email = "")
     
     if ($s->count() > 1) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Result contains more than 1 element");
-
+        
         $action->lay->set('MAILMULTIPLE', true);
         return NULL;
     }
@@ -137,6 +135,11 @@ function sendCallback(Action $action, \Dcp\family\IUser $userdoc)
     $token->token = $token->genToken();
     $token->setExpiration();
     $token->expendable = 1;
+    $token->context = serialize(array(
+        "app" => "AUTHENT",
+        "action" => "CALLBACKREQPASSWD"
+    ));
+    $token->description=___("Forget password", "authent");
     $err = $token->add();
     if ($err != "") {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error token->add() : " . $err);

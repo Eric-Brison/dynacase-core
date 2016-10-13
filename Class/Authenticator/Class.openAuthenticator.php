@@ -49,7 +49,7 @@ class openAuthenticator extends Authenticator
         return Authenticator::AUTH_OK;
     }
     
-    public function getLoginFromPrivateKey($privatekey)
+    public static function getLoginFromPrivateKey($privatekey)
     {
         include_once ('WHAT/Class.UserToken.php');
         include_once ('WHAT/Class.User.php');
@@ -67,7 +67,51 @@ class openAuthenticator extends Authenticator
             return false;
         }
         
+        if (!self::verifyOpenAccess($token->context)) {
+            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Access deny for user '%s' with token '%s' : context not match.", $user->login, $privatekey));
+            
+            return false;
+        }
+        
+        if (!self::verifyOpenExpire($token->expire)) {
+            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Access deny for user '%s' with token '%s' : token has expired.", $user->login, $privatekey));
+            
+            return false;
+        }
+        
         return $user->login;
+    }
+    
+    public static function verifyOpenExpire($expiredate)
+    {
+        if ($expiredate === "infinity") {
+            return true;
+        }
+        $date = new \DateTime($expiredate);
+        $now = new \DateTime();
+        
+        return $now <= $date;
+    }
+    public static function verifyOpenAccess($rawContext)
+    {
+        $allow = false;
+        if ($rawContext === null) {
+            return true;
+        }
+        
+        if ($rawContext) {
+            $context = unserialize($rawContext);
+            if (is_array($context)) {
+                $allow = true;
+                foreach ($context as $k => $v) {
+                    if (getHttpVars($k) !== (string)$v) {
+                        $allow = false;
+                    }
+                }
+            }
+        }
+        
+        return $allow;
     }
     
     public function consumeToken($privatekey)
@@ -97,7 +141,10 @@ class openAuthenticator extends Authenticator
      */
     public function askAuthentication($args)
     {
-        return TRUE;
+        header("HTTP/1.0 403 Forbidden", true);
+        print ___("Private key identifier is not valid", "authentOpen");
+        
+        return true;
     }
     
     public function getAuthUser()
@@ -116,8 +163,8 @@ class openAuthenticator extends Authenticator
      */
     public function logout($redir_uri = '')
     {
-        header("HTTP/1.0 401 Authorization Required ");
-        print _("private key is not valid");
+        header("HTTP/1.0 401 Authorization Required");
+        print ___("Authorization Required", "authentOpen");
         return true;
     }
     /**

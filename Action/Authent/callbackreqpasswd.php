@@ -31,20 +31,21 @@ function callbackreqpasswd(Action & $action)
         return "";
     }
     // If this token has expired, remove all expired tokens
-    $now = time();
-    $expire = stringDateToUnixTs($utok->expire);
-    if ($now > $expire) {
+    if (!openAuthenticator::verifyOpenExpire($utok)) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Token " . $utok->token . " has expired (expire = " . $utok->expire . ")");
-        $utok->deleteExpired();
         $action->exitError(_("Cannot access interface to change password"));
         return "";
     }
     
-    $freedomdb = $action->dbaccess;
-    if ($freedomdb == "") {
-        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "FREEDOM_DB is empty");
+    if (!$utok->context || !openAuthenticator::verifyOpenAccess($utok)) {
+        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "context not valid");
         $action->exitError(_("Cannot access interface to change password"));
         return "";
+    }
+    $context = unserialize($utok->context);
+    if (empty($context["app"]) || empty($context["action"])) {
+        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "context not valid");
+        $action->exitError(_("Cannot access interface to change password"));
     }
     // Retrieve the IUSER document associated with the token
     $u = new Account('', $utok->userid);

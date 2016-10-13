@@ -329,7 +329,7 @@ namespace {
                 }
                 $default = "";
                 if ($arg["default"] !== null) {
-                    $default = sprintf(", default is '%s'", $arg["default"]);
+                    $default = sprintf(", default is '%s'", print_r($arg["default"], true));
                 }
                 $string = "\t--" . $arg["name"] . ($empty ? " (%s) " : "=<%s>");
                 

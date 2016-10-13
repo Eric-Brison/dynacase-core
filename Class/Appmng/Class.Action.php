@@ -533,22 +533,9 @@ create sequence SEQ_ID_ACTION;
         // If no parent set , it's a misconfiguration
         if (!isset($this->parent)) return '';
         
-        if ($this->auth && $this->auth->parms["type"] == "open") {
-            if ($this->openaccess != 'Y') {
-                $allow = false;
-                if ($this->auth->token && $this->auth->token["context"]) {
-                    $context = unserialize($this->auth->token["context"]);
-                    if (is_array($context) && (count($context) > 0)) {
-                        $allow = true;
-                        foreach ($context as $k => $v) {
-                            if (getHttpVars($k) != $v) {
-                                $allow = false;
-                            }
-                        }
-                        if (!$allow) $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode and token context not match") , $this->name));
-                    }
-                }
-                if (!$allow) $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode") , $this->name));
+        if ($this->auth && $this->auth->parms["type"] === "open") {
+            if ($this->openaccess !== 'Y') {
+                $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode") , $this->name));
             }
         }
         

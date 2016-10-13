@@ -37,7 +37,7 @@ class AuthenticatorManager
     const AccessNotAuthorized = 5;
     const NeedAsk = 6;
     /**
-     * @var Authenticator|htmlAuthenticator
+     * @var Authenticator|htmlAuthenticator|openAuthenticator
      */
     public static $auth = null;
     public static $provider_errno = 0;
