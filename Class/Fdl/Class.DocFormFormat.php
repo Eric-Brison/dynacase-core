@@ -574,13 +574,32 @@ class DocFormFormat
          */
         private function formatHtmlText($value)
         {
+            $prefix = uniqid("");
+            $value = str_replace(array(
+                "[",
+                "&#x5B;",
+                "]"
+            ) , array(
+                "B$prefix",
+                "B$prefix",
+                "D$prefix"
+            ) , $value);
             $value = \Dcp\Utils\htmlclean::normalizeHTMLFragment(mb_convert_encoding($value, 'HTML-ENTITIES', 'UTF-8') , $error);
+            $value = str_replace(array(
+                "B$prefix",
+                "D$prefix"
+            ) , array(
+                "[",
+                "]"
+            ) , $value);
+            
             if ($error != '') {
                 addWarningMsg(_("Malformed HTML:") . "\n" . $error);
             }
             if ($value === false) {
                 $value = '';
             }
+            $value = str_replace("[", "&#x5B;", $value);
             if (($this->visibility == "H") || ($this->visibility == "R")) {
                 $input = sprintf('<textarea style="display:none" name="%s" id="%s">%s</textarea>', $this->attrin, $this->attridk, htmlspecialchars($value));
             } elseif ($this->visibility == "S") {
