@@ -42,7 +42,7 @@ Options -Indexes
         Header set X-UA-Compatible "IE=Edge"
 </FilesMatch>
 
-<FilesMatch "\.(gif|jpe?g|png|xpm|ico|js|html|css|svg|pdf)$">
+<FilesMatch "\.(gif|jpe?g|png|xpm|ico|js|html|css|svg|pdf|map)$">
         Order Deny,Allow
         Allow from All
 </FilesMatch>
