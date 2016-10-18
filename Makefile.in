@@ -67,6 +67,11 @@ $(pubdir)/var/session: $(pubdir)/var
 $(pubdir)/var/session/.htaccess: htaccess.denyall $(pubdir)/var/session
 	cp $< $@
 
+$(pubdir)/STYLE:
+	mkdir -p $@
+$(pubdir)/STYLE/.htaccess: htaccess-asset $(pubdir)/STYLE/
+	cp $< $@
+
 $(pubdir)/var/cache/file: $(pubdir)/var/cache
 	mkdir -p $@
 $(pubdir)/var/cache/file/.htaccess: htaccess.denyall $(pubdir)/var/cache/file
@@ -113,8 +118,7 @@ $(pubdir)/FREEDOM:
 $(pubdir)/FREEDOM/freedom.cron: freedom.cron $(pubdir)/FREEDOM
 	cp $< $@
 
-publish: $(pubdir)/var/session/.htaccess $(pubdir)/var/cache/image/.htaccess $(pubdir)/var/cache/file/.htaccess $(pubdir)/var/tmp/.htaccess $(pubdir)/var/upload/.htaccess $(pubdir)/$(applib) $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron $(pubdir)/.autoloader-ignore.d/@PACKAGE@
-
+publish: $(pubdir)/var/session/.htaccess $(pubdir)/var/cache/image/.htaccess $(pubdir)/var/cache/file/.htaccess $(pubdir)/var/tmp/.htaccess $(pubdir)/var/upload/.htaccess $(pubdir)/$(applib) $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron $(pubdir)/.autoloader-ignore.d/@PACKAGE@ $(pubdir)/STYLE/.htaccess
 
 webinst-test:
 	make -C Test webinst RELEASE=$(RELEASE) PACKAGE=$(PACKAGE)-test VERSION=$(VERSION) appname=DCPTEST
