@@ -526,64 +526,51 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
     
     return $err;
 }
+/**
+ * @param string $freedomctx
+ * @deprecated
+ * @return string
+ */
 function getAuthType($freedomctx = "")
 {
-    if (array_key_exists('authtype', $_GET)) {
-        return $_GET['authtype'];
-    }
-    $freedom_authtype = getDbAccessValue('freedom_authtype');
-    
-    if ($freedom_authtype == "") {
-        $freedom_authtype = "apache";
-    }
-    
-    return trim($freedom_authtype);
+    return AuthenticatorManager::getAuthType();
 }
-
+/**
+ * @param string $freedomctx
+ *
+ * @deprecated
+ * @return string
+ */
 function getAuthProvider($freedomctx = "")
 {
-    $freedom_authprovider = getDbAccessValue('freedom_authprovider');
-    
-    if ($freedom_authprovider == "") {
-        $freedom_authprovider = "apache";
-    }
-    
-    return trim($freedom_authprovider);
+    return AuthenticatorManager::getAuthProvider();
 }
-
+/**
+ * @param string $freedomctx
+ * @deprecated
+ * @return array
+ */
 function getAuthProviderList($freedomctx = "")
 {
-    return preg_split("/\s*,\s*/", getAuthProvider($freedomctx));
+    return AuthenticatorManager::getAuthProviderList();
 }
-
+/**
+ * @deprecated
+ * @param string $freedomctx
+ *
+ * @return array|mixed
+ * @throws \Dcp\Exception
+ */
 function getAuthTypeParams($freedomctx = "")
 {
-    $freedom_authtypeparams = getDbAccessValue('freedom_authtypeparams');
-    if (!is_array($freedom_authtypeparams)) {
-        throw new Dcp\Exception('FILE0006');
-    }
-    
-    if (!array_key_exists(getAuthType() , $freedom_authtypeparams)) {
-        return array();
-    }
-    
-    return $freedom_authtypeparams[getAuthType() ];
+    return Authenticator::getAuthTypeParams();
 }
-
+/**
+ * @deprecated
+ */
 function getAuthParam($freedomctx = "", $provider = "")
 {
-    if ($provider == "") return array();
-    $freedom_providers = getDbAccessValue('freedom_providers');
-    if (!is_array($freedom_providers)) {
-        return array();
-    }
-    
-    if (!array_key_exists($provider, $freedom_providers)) {
-        error_log(__FUNCTION__ . ":" . __LINE__ . "provider " . $provider . " does not exists in freedom_providers");
-        return array();
-    }
-    
-    return $freedom_providers[$provider];
+    return Authenticator::getAuthParam($provider);
 }
 /**
  * return shell commande for wsh

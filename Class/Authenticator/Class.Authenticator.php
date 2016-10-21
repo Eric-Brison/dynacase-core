@@ -24,6 +24,8 @@ abstract class Authenticator
     const AUTH_NOK = 1;
     /* Authentication status cannot be determined, and credentials should be asked */
     const AUTH_ASK = 2;
+    
+    const nullProvider = "__for_logout__";
     /**
      * @var Provider
      */
@@ -41,9 +43,9 @@ abstract class Authenticator
             'type' => $authtype,
             'provider' => $authprovider
         );
-        $ta = getAuthTypeParams();
-        if ($authprovider != "__for_logout__") {
-            $tp = getAuthParam("", $authprovider);
+        $ta = self::getAuthTypeParams();
+        if ($authprovider != self::nullProvider) {
+            $tp = self::getAuthParam($authprovider);
             $this->parms = array_merge($tx, $ta, $tp);
             
             if (!array_key_exists('provider', $this->parms)) {
@@ -60,7 +62,6 @@ abstract class Authenticator
             if (!class_exists($providerClass)) {
                 throw new Dcp\Exception(__METHOD__ . " " . "Error: " . $providerClass . " class not found");
             }
-            global $action;
             //     error_log("Using authentication provider [".$providerClass."]");
             $this->provider = new $providerClass($authprovider, $this->parms);
             if (!is_a($this->provider, 'Provider')) {
@@ -70,8 +71,37 @@ abstract class Authenticator
             $this->parms = array_merge($tx, $ta);
         }
     }
+    public static function getAuthParam($provider = "")
+    {
+        if ($provider == "") return array();
+        $freedom_providers = getDbAccessValue('freedom_providers');
+        if (!is_array($freedom_providers)) {
+            return array();
+        }
+        
+        if (!array_key_exists($provider, $freedom_providers)) {
+            error_log(__FUNCTION__ . ":" . __LINE__ . "provider " . $provider . " does not exists in freedom_providers");
+            return array();
+        }
+        
+        return $freedom_providers[$provider];
+    }
     
-    public function freedomUserExists($username)
+    public static function getAuthTypeParams()
+    {
+        $freedom_authtypeparams = getDbAccessValue('freedom_authtypeparams');
+        if (!is_array($freedom_authtypeparams)) {
+            throw new Dcp\Exception('FILE0006');
+        }
+        
+        if (!array_key_exists(AuthenticatorManager::getAuthType() , $freedom_authtypeparams)) {
+            return array();
+        }
+        
+        return $freedom_authtypeparams[AuthenticatorManager::getAuthType() ];
+    }
+    
+    public static function freedomUserExists($username)
     {
         include_once ('FDL/Class.Doc.php');
         include_once ('WHAT/Class.User.php');

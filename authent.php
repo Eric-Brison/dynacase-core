@@ -2,7 +2,7 @@
 /*
  * @author Anakeen
  * @package FDL
- */
+*/
 
 include_once ('WHAT/autoload.php');
 include_once ('WHAT/Class.ActionRouter.php');
@@ -37,7 +37,7 @@ if (isset($_REQUEST['logout'])) {
 function getAuthenticator($authtype = '')
 {
     if ($authtype == '') {
-        $authtype = getAuthType();
+        $authtype = \AuthenticatorManager::getAuthType();
     }
     if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype)) {
         return false;
@@ -48,5 +48,5 @@ function getAuthenticator($authtype = '')
         return false;
     }
     include_once ($authFile);
-    return new $authClass($authtype, "__for_logout__");
+    return new $authClass($authtype, Authenticator::nullProvider);
 }

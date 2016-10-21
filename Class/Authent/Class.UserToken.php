@@ -25,17 +25,25 @@ class UserToken extends DbObj
     
     var $fields = array(
         'token',
+        'type',
+        'cdate',
+        'authorid',
         'userid',
         'expire',
         'expendable',
+        'description',
         'context'
     );
     
     public $token;
     public $userid;
+    public $authorid;
     public $expire;
     public $expendable;
     public $context;
+    public $cdate;
+    public $description;
+    public $type = "CORE";
     
     var $id_fields = array(
         'token'
@@ -46,9 +54,13 @@ class UserToken extends DbObj
     var $sqlcreate = "
     CREATE TABLE usertoken (
       token text NOT NULL PRIMARY KEY,
+      type text,
+      cdate timestamp without time zone,
+      authorid int,
       userid INT NOT NULL,
       expire TIMESTAMP NOT NULL,
       expendable BOOLEAN DEFAULT FALSE,
+      description text,
       context text
     );
     CREATE INDEX usertoken_idx ON usertoken(token);
@@ -64,6 +76,8 @@ class UserToken extends DbObj
         if (is_array($this->context)) {
             $this->context = serialize($this->context);
         }
+        $this->cdate = date("Y-m-d H:i:s");
+        $this->authorid = getCurrentUser()->id;
     }
     
     public function setHAlg($hAlg)

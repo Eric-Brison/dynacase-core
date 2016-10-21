@@ -14,3 +14,17 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+cd $wpub;
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'EOF'
+\i CORE/core_database_utils.sql
+SELECT pg_temp.addColumnIfNotExists('', 'usertoken', 'cdate', 'timestamp without time zone');
+SELECT pg_temp.addColumnIfNotExists('', 'usertoken', 'description', 'text');
+SELECT pg_temp.addColumnIfNotExists('', 'usertoken', 'authorid', 'int');
+SELECT pg_temp.addColumnIfNotExists('', 'usertoken', 'type', 'text');
+EOF
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Add new columns to usertoken table."
+    exit $RET
+fi

@@ -1052,7 +1052,7 @@ union
     /**
      * Get user token for open access
      *
-     * @param bool|int $expireDelay set expiration delay in seconds (false if nether expire)
+     * @param bool|int $expireDelay set expiration delay in seconds (-1 if nether expire)
      * @param bool     $oneshot     set to true to use one token is consumed/deleted when used
      *
      * @param array    $context     get http var restriction
@@ -1060,9 +1060,9 @@ union
      * @return string
      * @throws \Dcp\Exception
      */
-    function getUserToken($expireDelay = false, $oneshot = false, $context = array())
+    function getUserToken($expireDelay = - 1, $oneshot = false, $context = array())
     {
-        if ($expireDelay === false) {
+        if ($expireDelay === - 1 || $expireDelay === false) {
             $expireDelay = UserToken::INFINITY;
         }
         if ($context && (count($context) > 0)) {
@@ -1093,6 +1093,7 @@ union
             $uk = new UserToken("");
             $uk->userid = $this->id;
             $uk->token = $uk->genToken();
+            $uk->type = "CORE";
             $uk->expire = $uk->setExpiration($expireDelay);
             if ($uk->expire === false) {
                 throw new Dcp\Exception(sprintf("User token : Invalid date. Expire must be a delay in seconds"));

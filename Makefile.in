@@ -69,7 +69,7 @@ $(pubdir)/var/session/.htaccess: htaccess.denyall $(pubdir)/var/session
 
 $(pubdir)/STYLE:
 	mkdir -p $@
-$(pubdir)/STYLE/.htaccess: htaccess-asset $(pubdir)/STYLE/
+$(pubdir)/STYLE/.htaccess: htaccess-asset $(pubdir)/STYLE
 	cp $< $@
 
 $(pubdir)/var/cache/file: $(pubdir)/var/cache

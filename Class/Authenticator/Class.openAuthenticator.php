@@ -30,9 +30,8 @@ class openAuthenticator extends Authenticator
     {
         include_once ('WHAT/Lib.Http.php');
         
-        $privatekey = getHttpVars("privateid");
+        $privatekey = static::getTokenId();
         if (!$privatekey) return Authenticator::AUTH_NOK;
-        
         $this->privatelogin = $this->getLoginFromPrivateKey($privatekey);
         if ($this->privatelogin === false) {
             return Authenticator::AUTH_NOK;
@@ -49,13 +48,18 @@ class openAuthenticator extends Authenticator
         return Authenticator::AUTH_OK;
     }
     
+    public static function getTokenId()
+    {
+        return getHttpVars("privateid");
+    }
+    
     public static function getLoginFromPrivateKey($privatekey)
     {
         include_once ('WHAT/Class.UserToken.php');
         include_once ('WHAT/Class.User.php');
         
-        $token = new UserToken('', $privatekey);
-        if (!is_object($token) || !$token->isAffected()) {
+        $token = static::getUserToken($privatekey);
+        if ($token === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Token '%s' not found.", $privatekey));
             return false;
         }
@@ -67,13 +71,13 @@ class openAuthenticator extends Authenticator
             return false;
         }
         
-        if (!self::verifyOpenAccess($token->context)) {
+        if (!static::verifyOpenAccess($token)) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Access deny for user '%s' with token '%s' : context not match.", $user->login, $privatekey));
             
             return false;
         }
         
-        if (!self::verifyOpenExpire($token->expire)) {
+        if (!static::verifyOpenExpire($token)) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Access deny for user '%s' with token '%s' : token has expired.", $user->login, $privatekey));
             
             return false;
@@ -81,9 +85,21 @@ class openAuthenticator extends Authenticator
         
         return $user->login;
     }
-    
-    public static function verifyOpenExpire($expiredate)
+    public static function getUserToken($tokenId)
     {
+        
+        $token = new UserToken('', $tokenId);
+        if (!is_object($token) || !$token->isAffected()) {
+            
+            return false;
+        }
+        
+        return $token;
+    }
+    
+    public static function verifyOpenExpire(\UserToken $token)
+    {
+        $expiredate = $token->expire;
         if ($expiredate === "infinity") {
             return true;
         }
@@ -92,9 +108,16 @@ class openAuthenticator extends Authenticator
         
         return $now <= $date;
     }
-    public static function verifyOpenAccess($rawContext)
+    public static function verifyOpenAccess(\UserToken $token)
     {
+        $rawContext = $token->context;
+        
         $allow = false;
+        
+        if ($token->type && $token->type !== "CORE") {
+            return false;
+        }
+        
         if ($rawContext === null) {
             return true;
         }
