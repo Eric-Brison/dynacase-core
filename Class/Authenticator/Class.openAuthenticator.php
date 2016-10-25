@@ -20,6 +20,8 @@ include_once ('WHAT/Class.Authenticator.php');
 class openAuthenticator extends Authenticator
 {
     
+    const openAuthorizationScheme = "DcpOpen";
+    const openGetId = "dcpopen-authorization";
     private $privatelogin = false;
     public $token;
     public $auth_session = null;
@@ -50,7 +52,17 @@ class openAuthenticator extends Authenticator
     
     public static function getTokenId()
     {
-        return getHttpVars("privateid");
+        $tokenId = getHttpVars(self::openGetId, getHttpVars("privateid"));
+        if (!$tokenId) {
+            $headers = apache_request_headers();
+            if (!empty($headers["Authorization"])) {
+                
+                if (preg_match(sprintf("/%s\\s+(.*)$/", self::openAuthorizationScheme) , $headers["Authorization"], $reg)) {
+                    $tokenId = trim($reg[1]);
+                }
+            }
+        }
+        return $tokenId;
     }
     
     public static function getLoginFromPrivateKey($privatekey)
@@ -217,13 +229,9 @@ class openAuthenticator extends Authenticator
     public function getAuthSession()
     {
         if (!$this->auth_session) {
-            include_once ('WHAT/Class.Session.php');
             $this->auth_session = new Session(Session::PARAMNAME, false);
-            if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
-                $this->auth_session->Set($_COOKIE[Session::PARAMNAME]);
-            } else {
-                $this->auth_session->Set();
-            }
+            
+            $this->auth_session->Set();
         }
         return $this->auth_session;
     }

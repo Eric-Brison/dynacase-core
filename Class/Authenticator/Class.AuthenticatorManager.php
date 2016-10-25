@@ -47,9 +47,7 @@ class AuthenticatorManager
         /*
          * Part 1: check authentication
         */
-        
         $status = self::checkAuthentication($authtype, $noask);
-        
         if ($status === Authenticator::AUTH_NOK) {
             $error = 1;
             $providerErrno = self::$auth->getProviderErrno();
@@ -120,7 +118,6 @@ class AuthenticatorManager
         self::$provider_errno = 0;
         
         self::$auth = static::getAuthenticatorClass();
-        
         $authProviderList = static::getAuthProviderList();
         $status = false;
         foreach ($authProviderList as $authProvider) {
@@ -183,6 +180,22 @@ class AuthenticatorManager
         if (array_key_exists('authtype', $_GET)) {
             return $_GET['authtype'];
         }
+        if (!empty($_GET[OpenAuthenticator::openGetId])) {
+            return "open";
+        }
+        
+        $scheme = self::getAuthorizationScheme();
+        if ($scheme) {
+            switch ($scheme) {
+                case OpenAuthenticator::openAuthorizationScheme:
+                    return "open";
+                case \basicAuthenticator::basicAuthorizationScheme:
+                    return "basic";
+                default:
+                    throw new Exception(sprintf("Invalid authorization method \"%s\"", $scheme));
+            }
+        }
+        
         $freedom_authtype = getDbAccessValue('freedom_authtype');
         
         if ($freedom_authtype == "") {
@@ -190,6 +203,17 @@ class AuthenticatorManager
         }
         
         return trim($freedom_authtype);
+    }
+    
+    protected static function getAuthorizationScheme()
+    {
+        $headers = apache_request_headers();
+        if (!empty($headers["Authorization"])) {
+            if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $headers["Authorization"], $reg)) {
+                return trim($reg[1]);
+            }
+        }
+        return "";
     }
     
     public static function closeAccess()
@@ -207,7 +231,7 @@ class AuthenticatorManager
         }
         
         header('HTTP/1.0 500 Internal Error');
-        print sprintf("logout method not supported by authtype '%s'", $authtype);
+        print sprintf("logout method not supported by authtype '%s'", static::getAuthType());
         exit(0);
     }
     /**
