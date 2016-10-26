@@ -10,10 +10,29 @@
 namespace Dcp\Core;
 class MailTemplate extends \Dcp\Family\Document
 {
+    /**
+     * always show a user notification
+     */
+    const NOTIFY_SENDMAIL_ALWAYS = 'always';
+    /**
+     * only show a notification if an error occured
+     */
+    const NOTIFY_SENDMAIL_ERRORS_ONLY = 'errors only';
+    /**
+     * never show a notification
+     */
+    const NOTIFY_SENDMAIL_NEVER = 'never';
+    /**
+     * show notification according to CORE_NOTIFY_SENDMAIL parameter
+     */
+    const NOTIFY_SENDMAIL_AUTO = 'auto';
+
     public $ifiles = array();
     public $sendercopy = true;
     public $keys = array();
-    
+
+    protected $notifySendMail = self::NOTIFY_SENDMAIL_AUTO;
+
     function preEdition()
     {
         global $action;
@@ -371,17 +390,54 @@ class MailTemplate extends \Dcp\Family\Document
         if ($bcc) {
             $recip.= ' ' . sprintf(_("sendmailbcc %s") , $bcc);
         }
+
+        if (self::NOTIFY_SENDMAIL_AUTO === $this->notifySendMail) {
+            $notifySendMail = \ApplicationParameterManager::getParameterValue('CORE', 'CORE_NOTIFY_SENDMAIL');
+            if (is_null($notifySendMail)) {
+                $notifySendMail = self::NOTIFY_SENDMAIL_ALWAYS;
+            }
+        } else {
+            $notifySendMail = $this->notifySendMail;
+        }
         
         if ($err == "") {
             $doc->addHistoryEntry(sprintf(_("send mail %s with template %s") , $recip, $this->title) , HISTO_INFO, "SENDMAIL");
             $action->log->info(sprintf(_("Mail %s sent to %s") , $subject, $recip));
-            addWarningMsg(sprintf(_("send mail %s") , $recip));
+            if (self::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail) {
+                addWarningMsg(sprintf(_("send mail %s"), $recip));
+            }
         } else {
             $doc->addHistoryEntry(sprintf(_("cannot send mail %s with template %s : %s") , $recip, $this->title, $err) , HISTO_ERROR);
             $action->log->error(sprintf(_("cannot send mail %s to %s : %s") , $subject, $recip, $err));
-            addWarningMsg(sprintf(_("cannot send mail %s") , $err));
+            if (self::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail ||
+                self::NOTIFY_SENDMAIL_ERRORS_ONLY === $notifySendMail) {
+                addWarningMsg(sprintf(_("cannot send mail %s"), $err));
+            }
         }
         return $err;
+    }
+
+    /**
+     * determine if a notification should be displayed to the user
+     *
+     * @param string $notifySendMail one of the NOTIFY_SENDMAIL_* const
+     * @return string error if the value is invalid, empty string in case of success
+     */
+    public function setNotification($notifySendMail)
+    {
+        $allowedValues = [
+            self::NOTIFY_SENDMAIL_ALWAYS,
+            self::NOTIFY_SENDMAIL_ERRORS_ONLY,
+            self::NOTIFY_SENDMAIL_NEVER,
+            self::NOTIFY_SENDMAIL_AUTO
+        ];
+
+        if (! in_array($notifySendMail, $allowedValues)) {
+            throw new Exception("MAIL0001", $notifySendMail, implode("' , '", $allowedValues));
+        } else {
+            $this->notifySendMail = $notifySendMail;
+        }
+        return '';
     }
     /**
      * update template with document values

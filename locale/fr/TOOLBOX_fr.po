@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-31 13:23+0200\n"
+"POT-Creation-Date: 2016-10-26 15:53+0200\n"
 "PO-Revision-Date: 2016-08-31 13:27+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -3988,6 +3988,9 @@ msgstr "Obtenu depuis le profil lié \"%s\""
 msgid "SetBlock:error [%s]"
 msgstr "SetBlock : erreur [%s]"
 
+msgid "Show a notification when a mail is sent"
+msgstr "Afficher une notification à l'utilisateur lorsqu'un mail est envoyé"
+
 msgid "Showing %br to %er of %nd documents%t%t%p%n"
 msgstr "Affiche les documents %br à %er sur %nd au total%t%t%p%n"
 
@@ -4555,7 +4558,9 @@ msgid "WIDGET_CHANGE_PASSWORD:You need to provide twice the new password"
 msgstr "Vous devez fournir la vérification"
 
 msgid "WSH error mail recipients (comma-separated list of mail addresses)"
-msgstr "Destinataires des messages d'erreurs de WSH (liste d'adresses de courriel séparés par des virgules)"
+msgstr ""
+"Destinataires des messages d'erreurs de WSH (liste d'adresses de courriel "
+"séparés par des virgules)"
 
 msgid "WSH error mail subject"
 msgstr "Sujet des messages d'erreurs de WSH"
@@ -5624,6 +5629,11 @@ msgid "core_tmpdir_maxage"
 msgstr ""
 "Temps maximal (en jours) au bout duquel les fichiers et répertoires "
 "temporaires sont supprimés"
+
+msgid "core_tmpdoc_maxage"
+msgstr ""
+"Temps maximal (en jours) au bout duquel les documents temporaires sont "
+"supprimés"
 
 #, php-format
 msgid "create %s family %s"
@@ -9531,11 +9541,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "convalescent"
 #~ msgstr "convalescent"
-
-#~ msgid "core_tmpdoc_maxage"
-#~ msgstr ""
-#~ "Temps maximal (en jours) au bout duquel les documents temporaires sont "
-#~ "supprimés"
 
 #~ msgid "create forum"
 #~ msgstr "créer le forum"

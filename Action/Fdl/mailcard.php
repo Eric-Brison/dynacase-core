@@ -19,7 +19,6 @@ include_once ("FDL/sendmail.php");
 // -----------------------------------
 function mailcard(Action & $action)
 {
-    
     $docid = GetHttpVars("id");
     $cr = GetHttpVars("cr"); // want a status
     $dbaccess = $action->dbaccess;
@@ -124,7 +123,7 @@ function sendmailcard(Action & $action)
     
     $sendcopy = true;
     $addfiles = array();
-    $userinfo = true;
+    $userinfo = null;
     $err = sendCard($action, GetHttpVars("id") , GetHttpVars("_mail_to", '') , GetHttpVars("_mail_cc", "") , GetHttpVars("_mail_subject") , GetHttpVars("zone") , GetHttpVars("ulink", "N") == "Y", GetHttpVars("_mail_cm", "") , GetHttpVars("_mail_from", "") , GetHttpVars("_mail_bcc", "") , GetHttpVars("_mail_format", "html") , $sendcopy, $addfiles, $userinfo, GetHttpVars("_mail_savecopy", "no") == "yes");
     
     if ($err != "") return $err;
@@ -158,8 +157,14 @@ function sendCard(&$action, $docid, $to, $cc, $subject, $zonebodycard = "", // d
 $ulink = false, // don't see hyperlink
 $comment = "", $from = "", $bcc = "", $format = "html", // define view action
 $sendercopy = true, // true : a copy is send to the sender according to the Freedom user parameter
-$addfiles = array() , $userinfo = true, $savecopy = false)
+$addfiles = array() , $userinfo = null, $savecopy = false)
 {
+    if (is_null($userinfo)) {
+        $notifySendMail = \ApplicationParameterManager::getParameterValue('CORE', 'CORE_NOTIFY_SENDMAIL');
+    } else {
+        $notifySendMail = $userinfo ? \Dcp\Family\Mailtemplate::NOTIFY_SENDMAIL_ALWAYS : \Dcp\Family\Mailtemplate::NOTIFY_SENDMAIL_NEVER;
+    }
+
     // -----------------------------------
     $viewonly = (GetHttpVars("viewonly", "N") == "Y");
     if ((!$viewonly) && ($to == "") && ($cc == "") && ($bcc == "")) return _("mail dest is empty");
@@ -547,12 +552,17 @@ $addfiles = array() , $userinfo = true, $savecopy = false)
             else $lsend = $to;
             $doc->addHistoryEntry(sprintf(_("sended to %s") , $lsend));
             $action->addlogmsg(sprintf(_("sending %s to %s") , $doc->title, $lsend));
-            if ($userinfo) $action->addwarningmsg(sprintf(_("sending %s to %s") , $doc->title, $lsend));
+            if (\Dcp\Family\Mailtemplate::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail) {
+                $action->addWarningMsg(sprintf(_("sending %s to %s") , $doc->title, $lsend));
+            }
         } else {
             $action->log->warning($err);
             $action->addlogmsg(sprintf(_("%s cannot be sent") , $doc->title));
-            if ($userinfo) $action->addwarningmsg(sprintf(_("%s cannot be sent") , $doc->title));
-            if ($userinfo) $action->addwarningmsg($err);
+            if (\Dcp\Family\Mailtemplate::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail ||
+                \Dcp\Family\Mailtemplate::NOTIFY_SENDMAIL_ERRORS_ONLY === $notifySendMail ) {
+                $action->addWarningMsg(sprintf(_("%s cannot be sent"), $doc->title));
+                $action->addWarningMsg($err);
+            }
         }
         // suppress temporaries files
         if (isset($ftxt) && is_file($ftxt)) unlink($ftxt);

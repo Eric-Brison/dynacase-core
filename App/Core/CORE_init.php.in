@@ -389,6 +389,13 @@ $app_const = array(
         "user" => "N",
         "global" => "Y"
     ) ,
+    "CORE_NOTIFY_SENDMAIL" => array(
+        "val" => "always",
+        "descr" => N_("Show a notification when a mail is sent") ,
+        "kind" => "enum(always|errors only|never)",
+        "user" => "N",
+        "global" => "Y"
+    ) ,
     // WSH error mail
     "CORE_WSH_MAILTO" => array(
         "val" => "",
