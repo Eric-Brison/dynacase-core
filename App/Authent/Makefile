@@ -10,8 +10,8 @@ export appname
 
 include $(utildir)/PubRule
 
-$(pubdir)/$(appname)/%.ods : %.ods 
+$(pubdir)/$(appname)/%.csv : %.csv
 	cp  $< $@
 
-DISTFILES = Makefile  $(appname).app $(appname)_init.php.in authent.ods
+DISTFILES = Makefile  $(appname).app $(appname)_init.php.in authent.csv
 
