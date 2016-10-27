@@ -38,6 +38,10 @@ class ActionUsage extends ApiUsage
         $this->addRequiredParameter('app', "application name");
         $this->addOptionalParameter('action', "action name");
         $this->addHiddenParameter('sole', "display mode (deprecated)");
+        $authType = $this->addHiddenParameter('authtype', "authentication type");
+        if("open" === $authType) {
+            $this->addHiddenParameter("privateid", "token");
+        }
     }
     /**
      * @api Get usage for action funtion
