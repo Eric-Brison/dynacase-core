@@ -6456,10 +6456,15 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getHtmlAttrValue($attrid, $target = "_self", $htmllink = 2, $index = - 1, $entities = true, $abstract = false)
     {
+        $oattr = $this->getAttribute($attrid);
+        if (!$oattr) {
+            throw new Dcp\Exception('DOC0130', $attrid, $this->id, $this->fromid);
+        }
+        
         if ($index != - 1) $v = $this->getMultipleRawValues($attrid, "", $index);
         else $v = $this->getRawValue($attrid);
         
-        return $this->GetHtmlValue($this->getAttribute($attrid) , $v, $target, $htmllink, $index, $entities, $abstract);
+        return $this->GetHtmlValue($oattr, $v, $target, $htmllink, $index, $entities, $abstract);
     }
     /**
      * Get a textual representation of the content of an attribute
