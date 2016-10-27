@@ -45,6 +45,30 @@ class TestHtmlValue extends TestCaseDcpCommonFamily
         }
     }
     /**
+     * @dataProvider dataGetHtmlValuesException
+     */
+    public function testGetHtmlValuesException($data)
+    {
+        $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
+        $d = new_doc(self::$dbaccess, $data['docName']);
+        $this->assertTrue($d->isAlive() , sprintf("cannot access %s document", $data['docName']));
+        foreach ($data['setValues'] as $attrid => $newValue) {
+            $d->setAttributeValue($attrid, $newValue);
+        }
+        $d->store(); // verify database record
+        foreach ($data['expectedExceptionsMatch'] as $attrid => $expectedExceptionMatchRE) {
+            $exceptionMessage = '';
+            try {
+                $value = $d->getHtmlAttrValue($attrid);
+            }
+            catch(\Exception $e) {
+                $exceptionMessage = $e->getMessage();
+            }
+            
+            $this->assertTrue((preg_match($expectedExceptionMatchRE, $exceptionMessage) === 1) , sprintf("Exception '%s' does not match expected exception message '%s'.", $exceptionMessage, $expectedExceptionMatchRE));
+        }
+    }
+    /**
      * @dataProvider dataHtmlFormat
      */
     public function testHtmlFormat($docName, array $setValues, array $expectedValues, $target = "_self", $htmllink = true, $index = - 1, $useEntitities = true, $abstractMode = false)
@@ -448,5 +472,21 @@ class TestHtmlValue extends TestCaseDcpCommonFamily
             )
         );
     }
+    public function dataGetHtmlValuesException()
+    {
+        return array(
+            array(
+                array(
+                    'docName' => 'TST_DOCHTML0',
+                    'setValues' => array(
+                        'tst_text' => 'foo'
+                    ) ,
+                    'expectedExceptionsMatch' => array(
+                        'tst_text' => '/^$/',
+                        'tst_non_existing_attribute' => '/{DOC0130}/'
+                    )
+                )
+            )
+        );
+    }
 }
-?>
