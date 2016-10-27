@@ -3162,13 +3162,13 @@ msgid "November"
 msgstr ""
 
 msgid "OP_AND"
-msgstr ""
+msgstr "and"
 
 msgid "OP_GLOB"
-msgstr ""
+msgstr "global"
 
 msgid "OP_OR"
-msgstr ""
+msgstr "or"
 
 msgid "October"
 msgstr ""
@@ -5486,31 +5486,31 @@ msgid "csv file <%s> wroted"
 msgstr ""
 
 msgid "csv, ods, xml, zip (xml) supported import files"
-msgstr ""
+msgstr "supported file types: csv, ods, xml, zip (xml)"
 
 msgid "csv-comma"
-msgstr ""
+msgstr "Comma"
 
 msgid "csv-custom : "
-msgstr ""
+msgstr "Custom"
 
 msgid "csv-doublequote"
-msgstr ""
+msgstr "Quotation mark"
 
 msgid "csv-noenclosure"
-msgstr ""
+msgstr "No enclosures"
 
 msgid "csv-other-enclosure"
-msgstr ""
+msgstr "Other enclosure"
 
 msgid "csv-other-separator"
-msgstr ""
+msgstr "Other separator"
 
 msgid "csv-semicolon"
-msgstr ""
+msgstr "Semicolon"
 
 msgid "csv-simplequote"
-msgstr ""
+msgstr "Quote"
 
 #, php-format
 msgid "current (<em>%s</em>)"
