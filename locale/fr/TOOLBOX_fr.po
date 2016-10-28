@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-26 15:53+0200\n"
-"PO-Revision-Date: 2016-08-31 13:27+0200\n"
+"POT-Creation-Date: 2016-10-28 08:47+0200\n"
+"PO-Revision-Date: 2016-10-28 09:16+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -1859,6 +1859,10 @@ msgstr "Erreur lors de l'ouverture %s du fichier %s"
 #, php-format
 msgid "Error opening directory '%s'."
 msgstr "Erreur lors de l'ouverture du répertoire '%s'."
+
+#, php-format
+msgid "Error reading from file '%s'"
+msgstr "Erreur de lecture du fichier '%s'"
 
 #, php-format
 msgid "Error renaming '%s' to '%s'."
