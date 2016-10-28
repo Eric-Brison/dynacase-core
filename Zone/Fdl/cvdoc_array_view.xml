@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE table [
+        <!ELEMENT table (table-head*,table-body*)>
+
+        <!ELEMENT table-head (cell)*>
+        <!ELEMENT table-body (cell)*>
+
+        <!ELEMENT cell ANY>
+        <!ATTLIST cell
+                class CDATA #IMPLIED
+                style CDATA #IMPLIED>
+
+        <!ENTITY nbsp "&#160;">
+        ]>
+<table>
+    <table-head>
+        <cell class="cvdoc_array_view__cell cvdoc_array_view__cell--head cvdoc_array_view__cell--idview">
+            [TEXT:CVDOC_ARRAY_VIEW:idview]
+        </cell>
+        <cell class="cvdoc_array_view__cell cvdoc_array_view__cell--head cvdoc_array_view__cell--type">
+            [TEXT:CVDOC_ARRAY_VIEW:type]
+        </cell>
+        <cell class="cvdoc_array_view__cell cvdoc_array_view__cell--head cvdoc_array_view__cell--view">
+            [TEXT:CVDOC_ARRAY_VIEW:view]
+        </cell>
+        <cell class="cvdoc_array_view__cell cvdoc_array_view__cell--head cvdoc_array_view__cell--display">
+            [TEXT:CVDOC_ARRAY_VIEW:display]
+        </cell>
+    </table-head>
+    <table-body>
+        <cell>
+            <div class="cvdoc_array_view__cell cvdoc_array_view__cell--body cvdoc_array_view__cell--idview">
+                <div class="cvdoc_array_view__label cvdoc_array_view__label--int">
+                    [L_CV_ORDER]&nbsp;:
+                </div>
+                <div class="cvdoc_array_view__value cvdoc_array_view__value--int">
+                    [V_CV_ORDER]
+                </div>
+                <div class="cvdoc_array_view__label cvdoc_array_view__label--text">
+                    [L_CV_IDVIEW]&nbsp;:
+                </div>
+                <div class="cvdoc_array_view__value cvdoc_array_view__value--text">
+                    [V_CV_IDVIEW]
+                </div>
+                <div class="cvdoc_array_view__label cvdoc_array_view__label--text">
+                    [L_CV_LVIEW]&nbsp;:
+                </div>
+                <div class="cvdoc_array_view__value cvdoc_array_view__value--text">
+                    [V_CV_LVIEW]
+                </div>
+            </div>
+        </cell>
+        <cell>
+            <div class="cvdoc_array_view__cell cvdoc_array_view__cell--body cvdoc_array_view__cell--type">
+                <div class="cvdoc_array_view__label cvdoc_array_view__label--enum">
+                    [L_CV_KVIEW]&nbsp;:
+                </div>
+                <div class="cvdoc_array_view__value cvdoc_array_view__value--enum">
+                    [V_CV_KVIEW]
+                </div>
+            </div>
+        </cell>
+        <cell>
+            <div class="cvdoc_array_view__cell cvdoc_array_view__cell--body cvdoc_array_view__cell--view">
+                <div class="cvdoc_array_view__label cvdoc_array_view__label--docid">
+                    [L_CV_ZVIEW]&nbsp;:
+                </div>
+                <div class="cvdoc_array_view__value  cvdoc_array_view__value--docid">
+                    [V_CV_ZVIEW]
+                </div>
+                <div class="cvdoc_array_view__label cvdoc_array_view__label--docid">
+                    [L_CV_MSKID]&nbsp;:
+                </div>
+                <div class="cvdoc_array_view__value cvdoc_array_view__value--docid">
+                    [V_CV_MSKID]
+                </div>
+                <div class="cvdoc_array_view__value">
+                    [V_CV_MSK]
+                </div>
+            </div>
+        </cell>
+        <cell>
+            <div class="cvdoc_array_view__cell cvdoc_array_view__cell--body cvdoc_array_view__cell--display">
+                <div class="cvdoc_array_view__label cvdoc_array_view__label--bool">
+                    [L_CV_DISPLAYED]&nbsp;:
+                </div>
+                <div class="cvdoc_array_view__value cvdoc_array_view__value--bool">
+                    [V_CV_DISPLAYED]
+                </div>
+                <div class="cvdoc_array_view__label cvdoc_array_view__label--text">
+                    [L_CV_MENU]&nbsp;:
+                </div>
+                <div class="cvdoc_array_view__value cvdoc_array_view__value--text">
+                    [V_CV_MENU]
+                </div>
+            </div>
+        </cell>
+    </table-body>
+</table>

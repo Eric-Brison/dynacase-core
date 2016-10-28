@@ -1,0 +1,50 @@
+.cvdoc_array_view__cell {
+    padding: 0 10px 5px;
+    box-sizing: border-box;
+}
+
+.cvdoc_array_view__cell--head {
+    padding: 5px;
+}
+
+.cvdoc_array_view__cell--idview {
+    width: 20em;
+}
+
+.cvdoc_array_view__cell--type {
+    width: 12em;
+}
+
+.cvdoc_array_view__cell--view {
+    /*min-width: 20em;*/
+}
+
+.cvdoc_array_view__cell--display {
+    width: 11em;
+}
+
+.cvdoc_array_view__value--text input{
+    width: 100%;
+}
+
+.cvdoc_array_view__value--docid input[type=text] {
+    width: calc(100% - 4em);
+    min-width: 20em;
+}
+
+.cvdoc_array_view__label {
+    margin-top: 5px;
+    font-style: italic;
+    color: #6F6F6F;
+}
+
+.cvdoc_array_view__label--int,
+.cvdoc_array_view__label--bool {
+    display: inline-block;
+}
+
+.cvdoc_array_view__label + .cvdoc_array_view__value--int,
+.cvdoc_array_view__label + .cvdoc_array_view__value--bool {
+    display: inline-block;
+    margin-left: 10px
+}

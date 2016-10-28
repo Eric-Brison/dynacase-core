@@ -911,14 +911,28 @@ function lzone($dbaccess, $tview, $famid = "")
 
 function lview($tidview, $tlview)
 {
-    
     $tr = array();
-    foreach ($tidview as $k => $v) {
-        $tr[] = array(
-            $tlview[$k],
-            trim($v) ,
-            $tlview[$k]
-        );
+
+    if (is_array($tidview)) {
+        foreach ($tidview as $k => $v) {
+            $currentViewId = trim($v);
+            if ('' !== $currentViewId) {
+                $currentViewlabel = $tlview[$k];
+                $tr[] = array(
+                    htmlspecialchars(
+                        sprintf("%s (%s)",
+                            $currentViewlabel,
+                            $currentViewId
+                        )
+                    ),
+                    $currentViewId,
+                    sprintf("%s (%s)",
+                        $currentViewlabel,
+                        $currentViewId
+                    )
+                );
+            }
+        }
     }
     
     return $tr;

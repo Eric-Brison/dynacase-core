@@ -55,6 +55,26 @@ class CVDoc extends Doc
         
         $this->setAcls();
     }
+
+    public function preConsultation()
+    {
+        $err = parent::preConsultation();
+        $this->injectCss();
+        return $err;
+    }
+
+    public function preEdition()
+    {
+        $err = parent::preEdition();
+        $this->injectCss();
+        return $err;
+    }
+
+    protected function injectCss()
+    {
+        global $action;
+        $action->parent->addCssRef("FDL:cvdoc_array_view.css");
+    }
     
     protected function postAffect(array $data, $more, $reset)
     {
@@ -76,6 +96,25 @@ class CVDoc extends Doc
             );
             
             $this->acls[$cvk] = $cvk;
+        }
+    }
+
+    function computeCreationViewLabel($idCreationView)
+    {
+        if ('' !== $idCreationView) {
+            $viewIds = $this->getAttributeValue(MyAttributes::cv_idview);
+            $viewLabels = $this->getAttributeValue(MyAttributes::cv_lview);
+            $viewIndex = array_search($idCreationView, $viewIds);
+            if (false !== $viewIndex) {
+                return sprintf("%s (%s)",
+                    $viewLabels[$viewIndex],
+                    $idCreationView
+                );
+            } else {
+                return ' ';
+            }
+        } else {
+            return ' ';
         }
     }
     
@@ -122,6 +161,20 @@ class CVDoc extends Doc
             'sug' => $sug
         );
     }
+
+    function isCreationViewValid($idCreationView, $labelCreationView, $idViews)
+    {
+        $err = '';
+        if ('' !== $idCreationView) {
+            if (!is_array($idViews) ||
+                !in_array($idCreationView, $idViews)
+            ) {
+                $err = sprintf(___("creation view '%s' does not exists", "CVDOC"), $labelCreationView);
+            }
+        }
+        return $err;
+    }
+
     /**
      * Return view properties
      * @param $vid

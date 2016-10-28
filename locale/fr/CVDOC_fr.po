@@ -86,6 +86,10 @@ msgstr "Menu"
 msgid "CVDOC#cv_menu#elabel"
 msgstr "nom du sous menu"
 
+#, fuzzy
+msgid "CVDOC#cv_menu#showempty"
+msgstr "&lt;aucun>"
+
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
 msgid "CVDOC#cv_msk"
@@ -96,6 +100,10 @@ msgstr "Masque(titre)"
 msgid "CVDOC#cv_mskid"
 msgstr "Masque"
 
+#, fuzzy
+msgid "CVDOC#cv_mskid#showempty"
+msgstr "&lt;aucun>"
+
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
 msgid "CVDOC#cv_order"
@@ -104,6 +112,10 @@ msgstr "Ordre de sélection"
 #, fuzzy
 msgid "CVDOC#cv_order#elabel"
 msgstr "ordre d'accès pour le profilage"
+
+#, fuzzy
+msgid "CVDOC#cv_order#showempty"
+msgstr "&lt;aucun>"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
@@ -114,6 +126,10 @@ msgstr "Vues"
 #, fuzzy
 msgid "CVDOC#cv_zview"
 msgstr "Zone (Layout)"
+
+#, fuzzy
+msgid "CVDOC#cv_zview#showempty"
+msgstr "&lt;aucun>"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
