@@ -325,18 +325,8 @@ class importXml
     }
     public static function splitXmlDocument($xmlfiles, $splitdir)
     {
-        $xs = null;
-        try {
-            $xs = new \XMLSplitter($splitdir);
-            $xs->split($xmlfiles);
-            $xs->close();
-        }
-        catch(Exception $e) {
-            if ($xs) {
-                $xs->close();
-            }
-            throw $e;
-        }
+        $xs = new \XMLSplitter($splitdir);
+        $xs->split($xmlfiles);
         return '';
     }
     public static function extractFilesFromXmlDirectory($splitdir)
@@ -472,4 +462,3 @@ class importXml
         rename($tmpdest, $filename);
     }
 }
-

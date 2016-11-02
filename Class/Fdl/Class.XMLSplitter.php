@@ -78,18 +78,29 @@ class XMLSplitter
      * Parse the given XML input file and produce the XML output files.
      *
      * @param string $file the XML input file
-     * @throws Dcp\Exception
-     * @return void
+     * @throws Exception
      */
     public function split($file)
     {
         $this->open($file);
         
-        while ($data = fread($this->in_fh, 4096)) {
-            if (!xml_parse($this->xml_parser, $data, feof($this->in_fh))) {
-                $this->errmsg = sprintf(_("XML error %s at line %d") , xml_error_string(xml_get_error_code($this->xml_parser)) , xml_get_current_line_number($this->xml_parser));
-                throw new Dcp\Exception($this->errmsg);
+        try {
+            $eof = false;
+            while (!$eof) {
+                if (($data = fread($this->in_fh, 8192)) === false) {
+                    $this->errmsg = sprintf(_("Error reading from file '%s'") , $this->in_file);
+                    throw new Dcp\Exception($this->errmsg);
+                }
+                $eof = feof($this->in_fh);
+                if (!xml_parse($this->xml_parser, $data, $eof)) {
+                    $this->errmsg = sprintf(_("XML error %s at line %d") , xml_error_string(xml_get_error_code($this->xml_parser)) , xml_get_current_line_number($this->xml_parser));
+                    throw new Dcp\Exception($this->errmsg);
+                }
             }
+        }
+        catch(Exception $e) {
+            $this->close();
+            throw $e;
         }
         $this->close();
     }
@@ -380,4 +391,3 @@ class XMLSplitter
         $this->out_file = false;
     }
 }
-?>
