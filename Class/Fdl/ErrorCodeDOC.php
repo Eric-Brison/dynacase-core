@@ -218,6 +218,11 @@ class ErrorCodeDOC
      */
     const DOC0129 = 'Document with identifier "%s" from attribute "%s" has an empty property "us_whatid"';
     /**
+     * @errorCode The requested attribute was not found in Doc::getHtmlAttrValue()
+     * @see Doc::getHtmlAttrValue
+     */
+    const DOC0130 = 'Attribute "%s" not found on document "%s" from family "%s"';
+    /**
      * @errorCode
      * the document cannot be inserted in folder target
      * @note when DOC has defined a folder target
