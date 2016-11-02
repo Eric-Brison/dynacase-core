@@ -321,11 +321,11 @@ This can be solved by:<br/>
             <label>Profiling system families</label>
         </process>
 
-        <process command="./wsh.php --api=importDocuments --file=./AUTHENT/authent.ods">
+        <process command="./wsh.php --api=importDocuments --file=./AUTHENT/authent.csv --csv-separator=';' --csv-enclosure='&quot;'">
             <label>Authent mail template</label>
         </process>
 
-        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv  --csv-separator=';' --csv-enclosure='&quot;'" >
+        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv --csv-separator=';' --csv-enclosure='&quot;'" >
             <label>Help Documents</label>
         </process>
 
@@ -594,10 +594,13 @@ This can be solved by:<br/>
         <process command="./wsh.php --api=importDocuments --file=./FDL/freeaction.ods">
             <label>Update process system families</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./AUTHENT/authent.ods">
+        <process command="./wsh.php --api=importDocuments --file=./AUTHENT/authent.csv --csv-separator=';' --csv-enclosure='&quot;'">
             <label>Authent mail template</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv  --csv-separator=';' --csv-enclosure='&quot;'"/>
+
+        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv --csv-separator=';' --csv-enclosure='&quot;'" >
+            <label>Help Documents</label>
+        </process>
 
         <process command="./wsh.php --api=importDocuments --file=./FUSERS/account.ods">
             <label>Update Account families</label>

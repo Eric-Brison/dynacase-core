@@ -1,0 +1,29 @@
+//FAM;"Modèle de mail(MAILTEMPLATE)";<specid>;<fldid>;Titre;Famille;"Famille cycle";type;De;-;Type;Destinataire;Sujet;"Enregistrer une copie";"Avec liens";Corps;Attachement;Format
+ORDER;MAILTEMPLATE;;;tmail_title;tmail_family;tmail_workflow;tmail_fromtype;tmail_from;tmail_copymode;tmail_desttype;tmail_recip;tmail_subject;tmail_savecopy;tmail_ulink;tmail_body;tmail_attach;tmail_format
+DOC;MAILTEMPLATE;AUTH_TPLMAILASKPWD;;"Demande de changement de mot de passe";IUSER;;P;"SMTP_FROM (SMTP default from if not)";to;D;"us_meid (utilisateur id)";"Réinitialisation de mot de passe | Password reinitialisation";no;yes;"<p>English version below</p>
+
+<hr />
+<p>Bonjour &#x5B;V_US_FNAME] &#x5B;V_US_LNAME],</p>
+
+<p>Vous avez demandé la réinitialisation de votre mot de passe. Si ce n'est pas le cas, veuillez détruire ce message.</p>
+
+<p>Pour poursuivre la réinitialisation de votre mot de passe, veuillez suivre <a href=""&#x5B;LINK_CHANGE_PASSWORD]"">ce lien</a>.</p>
+
+<p>Veuillez noter que ce expirera dans 24h.</p>
+
+<p>Vous pouvez également copier l'adresse suivante dans votre navigateur :</p>
+
+<p>&#x5B;LINK_CHANGE_PASSWORD]</p>
+
+<hr />
+<p>Hello &#x5B;V_US_FNAME] &#x5B;V_US_LNAME],</p>
+
+<p>You asked a password reinitialisation. If you did not ask this, destroy this message.</p>
+
+<p>To reinitialise your pasword, use <a href=""&#x5B;LINK_CHANGE_PASSWORD]"">this link</a>.</p>
+
+<p>Please note that this link will expire in 24h.</p>
+
+<p>You can also paste the following string in your browser:</p>
+
+<p>&#x5B;LINK_CHANGE_PASSWORD]</p>";;
