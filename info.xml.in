@@ -34,8 +34,8 @@
     </parameters>
 
     <pre-install>
-        <check type="phpversion" predicate="ge" version="5.4.4">
-            <label lang="en">Minimum PHP version is 5.4.4</label>
+        <check type="phpversion" predicate="ge" version="5.6.0">
+            <label lang="en">Minimum PHP version is 5.6.0</label>
         </check>
         <check type="phpversion" predicate="lt" version="7.1.0">
             <label lang="en">Maximum PHP version is 7.0</label>
