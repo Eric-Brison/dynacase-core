@@ -56,6 +56,14 @@ namespace {
          */
         const LAY0007 = "Decompression of '%s' failed with error: %s";
         /**
+         * The <automatic-styles> tag was not found in the XSLT output
+         */
+        const LAY0008 = "Missing automatic-styles tag in '%s'";
+        /**
+         * The <automatic-styles> tag was not found in the ODT template
+         */
+        const LAY0009 = "Missing automatic-styles tag in ODT template '%s'";
+        /**
          * for beautifier
          */
         private function _bo()
