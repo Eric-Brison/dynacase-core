@@ -169,6 +169,11 @@ class TestOooLayout extends TestCaseDcpDocument
                     "Z" => "One"
                 ) ,
                 "LAY0004"
+            ) ,
+            array(
+                "PU_dcp_data_customOooLayout_no_automatic-styles.odt",
+                array() ,
+                "LAY0009"
             )
         );
     }
