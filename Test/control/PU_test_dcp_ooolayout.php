@@ -139,6 +139,27 @@ class TestOooLayout extends TestCaseDcpDocument
         $f = $l->gen();
         $this->assertNotEmpty($f, "file is not produced");
     }
+    /**
+     * @dataProvider dataInvalidXMLChars
+     */
+    public function testInvalidXMLChars($data)
+    {
+        $err = '';
+        $doc = createTmpDoc(self::$dbaccess, $data['family']);
+        foreach ($data['setValue'] as $k => $v) {
+            $err.= $doc->setValue($k, $v);
+        }
+        $out = '';
+        $exceptionMessage = '';
+        try {
+            $out = $doc->viewDoc("DCPTEST:" . $data['template'] . ":B");
+        }
+        catch(\Exception $e) {
+            $exceptionMessage = $e->getMessage();
+        }
+        $this->assertTrue(is_file($out) , sprintf("Unexpected error from viewDoc(): %s", $out));
+        $this->assertEmpty($exceptionMessage, sprintf("Unexpected exception from viewDoc(): %s", $exceptionMessage));
+    }
     
     public function dataErrorXML()
     {
@@ -268,5 +289,47 @@ class TestOooLayout extends TestCaseDcpDocument
             )
         );
     }
+    public function dataInvalidXMLChars()
+    {
+        return array(
+            /* PCDATA invalid Char value 1 in Entity */
+            array(
+                array(
+                    "family" => "TST_OOOLAYOUT",
+                    "setValue" => array(
+                        "TST_TITLE" => "(SOH: \x01)"
+                    ) ,
+                    "template" => "PU_dcp_data_simple1.odt"
+                )
+            ) ,
+            array(
+                array(
+                    "family" => "TST_OOOLAYOUT",
+                    "setValue" => array(
+                        "HTML_MULTI" => "(SOH: \x01)"
+                    ) ,
+                    "template" => "PU_dcp_data_simple1.odt"
+                )
+            ) ,
+            /* Char 0xFFFE out of allowed range in Entity + PCDATA invalid Char value 65534 in Entity */
+            array(
+                array(
+                    "family" => "TST_OOOLAYOUT",
+                    "setValue" => array(
+                        "TST_TITLE" => "(\xef\xbf\xbe)"
+                    ) ,
+                    "template" => "PU_dcp_data_simple1.odt"
+                )
+            ) ,
+            array(
+                array(
+                    "family" => "TST_OOOLAYOUT",
+                    "setValue" => array(
+                        "HTML_MULTI" => "(\xef\xbf\xbe)"
+                    ) ,
+                    "template" => "PU_dcp_data_simple1.odt"
+                )
+            )
+        );
+    }
 }
-?>
