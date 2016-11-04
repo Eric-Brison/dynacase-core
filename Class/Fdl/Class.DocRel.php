@@ -179,7 +179,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                 $c = 0;
                 $tin = array();
                 while ($row = @pg_fetch_array($this->res, $c, PGSQL_ASSOC)) {
-                    $tin[] = sprintf("%d\t%d\t%s\t%s\t%s\t%s\t%s\t%s", $doc->initid, $row["initid"], str_replace("\t", " ", $doc->title) , str_replace("\t", " ", $row["title"]) , $doc->icon, $row["icon"], $reltype, $doc->doctype);
+                    $tin[] = sprintf("%d\t%d\t%s\t%s\t%s\t%s\t%s\t%s", $doc->initid, $row["initid"], $this->escapePgCopyChars($doc->title) , $this->escapePgCopyChars($row["title"]) , $doc->icon, $row["icon"], $reltype, $doc->doctype);
                     $c++;
                 }
                 
@@ -187,5 +187,15 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
             }
         }
     }
+    
+    protected function escapePgCopyChars($str)
+    {
+        /* Escape literal backslash chars */
+        $str = str_replace("\\", "\\\\", $str);
+        /* These characters should also be escaped, but for compatibility reasons we will simply replace them with a space char */
+        $str = str_replace("\r", " ", $str);
+        $str = str_replace("\n", " ", $str);
+        $str = str_replace("\t", " ", $str);
+        return $str;
+    }
 }
-?>
