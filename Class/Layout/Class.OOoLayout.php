@@ -353,7 +353,7 @@ class OOoLayout extends Layout
     protected function restoreUserFieldSet()
     {
         try {
-            $this->XmlLoader($this->template);
+            $this->XmlLoader(\Dcp\Utils\htmlclean::cleanXMLUTF8($this->template));
         }
         catch(\Dcp\Utils\XDOMDocumentException $e) {
             $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
@@ -1945,6 +1945,7 @@ class OOoLayout extends Layout
             
             $this->ParseHtmlText();
             
+            $this->template = \Dcp\Utils\htmlclean::cleanXMLUTF8($this->template);
             $this->dom = new DOMDocument();
             if ($this->dom->loadXML($this->template)) {
                 $this->restoreSection();
