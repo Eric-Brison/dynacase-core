@@ -1049,6 +1049,7 @@ union
         simpleQuery($this->dbaccess, $sql, $users);
         return $users;
     }
+
     /**
      * Get user token for open access
      *
@@ -1057,10 +1058,12 @@ union
      *
      * @param array    $context     get http var restriction
      *
+     * @param string   $description text description information
+     *
      * @return string
      * @throws \Dcp\Exception
      */
-    function getUserToken($expireDelay = - 1, $oneshot = false, $context = array())
+    function getUserToken($expireDelay = - 1, $oneshot = false, $context = array(), $description="")
     {
         if ($expireDelay === - 1 || $expireDelay === false) {
             $expireDelay = UserToken::INFINITY;
@@ -1092,6 +1095,7 @@ union
             // create one
             $uk = new UserToken("");
             $uk->userid = $this->id;
+            $uk->description=$description;
             $uk->token = $uk->genToken();
             $uk->type = "CORE";
             $uk->expire = $uk->setExpiration($expireDelay);
@@ -1101,6 +1105,9 @@ union
             $uk->expendable = $oneshot;
             $uk->context = $scontext;
             $err = $uk->add();
+            if ($err) {
+                 throw new Dcp\Exception($err);
+            }
             $token = $uk->token;
         } else {
             $token = $tu[0]["token"];
