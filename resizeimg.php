@@ -32,7 +32,7 @@ function rezizelocalimage($img, $size, $basedest)
     
     $size = min(MAX_RESIZE_IMG_SIZE, $size);
     
-    $cmd = sprintf("convert  -thumbnail $h%d %s %s", $size, escapeshellarg($source) , escapeshellarg($dest));
+    $cmd = sprintf("convert -strip -thumbnail $h%d %s %s", $size, escapeshellarg($source) , escapeshellarg($dest));
     system($cmd);
     if (file_exists($dest)) return $basedest;
     return false;
