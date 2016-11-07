@@ -115,17 +115,13 @@ function exportfile(Action & $action)
             $oa = $doc->getAttribute($attrid);
             if (!$oa) {
                 header('HTTP/1.0 404 Attribute Not Found');
-                $action->exitError(
-                    sprintf(_("attribute %s not found"), $attrid)
-                );
+                $action->exitError(sprintf(_("attribute %s not found") , $attrid));
             } else {
                 if ($oa->type !== "file" && $oa->type !== "image") {
                     header('HTTP/1.0 403 Incorrect Attribute');
-                    $action->exitError(
-                        sprintf("Not file attribute : %s ", $attrid)
-                    );
+                    $action->exitError(sprintf("Not file attribute : %s ", $attrid));
                 }
-
+                
                 if ($cvViewId != "" && $doc->cvid > 0) {
                     /**
                      * @var $cvdoc CVDOC
@@ -152,9 +148,7 @@ function exportfile(Action & $action)
                 }
                 if ($oa->mvisibility == "I") {
                     header('HTTP/1.0 403 Forbidden');
-                    $action->exitError(
-                        sprintf(_("Cannot see attribute %s"), $attrid)
-                    );
+                    $action->exitError(sprintf(_("Cannot see attribute %s") , $attrid));
                 }
             }
             if ($oa->getOption("preventfilechange") == "yes") {
@@ -164,7 +158,7 @@ function exportfile(Action & $action)
                 }
             }
         } else {
-            $ovalue=$doc->icon;
+            $ovalue = $doc->icon;
         }
         
         if ($ovalue == "") {
