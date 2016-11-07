@@ -2861,8 +2861,9 @@ create unique index i_docir on doc(initid, revision);";
                 } else $title1.= $this->getRawValue($v->id) . " ";
             }
         }
-        if (mb_trim($title1) != "") $this->title = mb_substr(mb_trim(str_replace("\n", " ", $title1)) , 0, 255); // restric to 256 char
-        $this->title = mb_substr(mb_trim(str_replace("\n", " ", $this->getCustomTitle())) , 0, 255);
+        /* Replace control chars with spaces, and limit title to 256 chars */
+        if (mb_trim($title1) != "") $this->title = mb_substr(mb_trim(preg_replace('/\p{Cc}/u', ' ', $title1)) , 0, 255);
+        $this->title = mb_substr(mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())) , 0, 255);
     }
     /**
      * call after construct

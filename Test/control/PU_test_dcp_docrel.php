@@ -48,6 +48,31 @@ class TestDocRel extends TestCaseDcpCommonFamily
                 if ($i < 2) $d->revise();
             }
         }
+        
+        $d = createDoc("", "TST_DOCREL");
+        $d->setLogicalName("TST_DOCREL_TITLE_CR");
+        $d->setTitle("xxx\rxxx");
+        $d->store();
+        
+        $d = createDoc("", "TST_DOCREL");
+        $d->setLogicalName("TST_DOCREL_TITLE_LF");
+        $d->setTitle("xxx\nxxx");
+        $d->store();
+        
+        $d = createDoc("", "TST_DOCREL");
+        $d->setLogicalName("TST_DOCREL_TITLE_TAB");
+        $d->setTitle("xxx\txxx");
+        $d->store();
+        
+        $d = createDoc("", "TST_DOCREL");
+        $d->setLogicalName("TST_DOCREL_TITLE_BACKSLASH");
+        $d->setTitle("nnn\\nnn");
+        $d->store();
+        
+        $d = createDoc("", "TST_DOCREL");
+        $d->setLogicalName("TST_DOCREL_TITLE_BACKSLASH_N");
+        $d->setTitle("\\N");
+        $d->store();
     }
     /**
      * to search real ids
@@ -62,13 +87,23 @@ class TestDocRel extends TestCaseDcpCommonFamily
                 $tbs = explode("<BR>", $aVal);
                 $tids = array();
                 foreach ($tbs as $single) {
-                    $tids[] = $this->base[$single];
+                    if (isset($this->base[$single])) {
+                        $tids[] = $this->base[$single];
+                    } else {
+                        $tids[] = getIdFromName(self::$dbaccess, $single);
+                    }
                 }
                 
                 $tb[] = implode('<BR>', $tids);
             }
             return $tb;
-        } else return $this->base[$val];
+        } else {
+            if (isset($this->base[$val])) {
+                return $this->base[$val];
+            } else {
+                return getIdFromName(self::$dbaccess, $val);
+            }
+        }
     }
     /**
      * @dataProvider dataDocRelUpdate
@@ -97,7 +132,7 @@ class TestDocRel extends TestCaseDcpCommonFamily
         foreach ($expectValues as $expectProps) {
             $aid = $expectProps["aid"];
             $this->assertEquals($expectProps["title"], $this->getRelTitle($rels, $aid, $expectProps["title"]) , sprintf("not correct title $aid expect %s : %s", $expectProps["title"], print_r($rels, true)));
-            $this->assertEquals($this->base[$expectProps["id"]], $this->getRelId($rels, $aid, $this->base[$expectProps["id"]]) , "not correct id $aid");
+            $this->assertEquals($this->translateName($expectProps["id"]) , $this->getRelId($rels, $aid, $this->translateName($expectProps["id"])) , "not correct id $aid");
         }
     }
     
@@ -257,6 +292,76 @@ class TestDocRel extends TestCaseDcpCommonFamily
                         "aid" => "tst_rels2",
                         "id" => "B0",
                         "title" => "B2"
+                    )
+                )
+            ) ,
+            
+            array(
+                "init" => array(
+                    "tst_rel1" => "TST_DOCREL_TITLE_CR"
+                ) ,
+                "update" => array() ,
+                "expect" => array(
+                    array(
+                        "aid" => "tst_rel1",
+                        "id" => "TST_DOCREL_TITLE_CR",
+                        "title" => "xxx xxx"
+                    )
+                )
+            ) ,
+            
+            array(
+                "init" => array(
+                    "tst_rel1" => "TST_DOCREL_TITLE_LF"
+                ) ,
+                "update" => array() ,
+                "expect" => array(
+                    array(
+                        "aid" => "tst_rel1",
+                        "id" => "TST_DOCREL_TITLE_LF",
+                        "title" => "xxx xxx"
+                    )
+                )
+            ) ,
+            
+            array(
+                "init" => array(
+                    "tst_rel1" => "TST_DOCREL_TITLE_TAB"
+                ) ,
+                "update" => array() ,
+                "expect" => array(
+                    array(
+                        "aid" => "tst_rel1",
+                        "id" => "TST_DOCREL_TITLE_TAB",
+                        "title" => "xxx xxx"
+                    )
+                )
+            ) ,
+            
+            array(
+                "init" => array(
+                    "tst_rel1" => "TST_DOCREL_TITLE_BACKSLASH"
+                ) ,
+                "update" => array() ,
+                "expect" => array(
+                    array(
+                        "aid" => "tst_rel1",
+                        "id" => "TST_DOCREL_TITLE_BACKSLASH",
+                        "title" => "nnn\\nnn"
+                    )
+                )
+            ) ,
+            
+            array(
+                "init" => array(
+                    "tst_rel1" => "TST_DOCREL_TITLE_BACKSLASH_N"
+                ) ,
+                "update" => array() ,
+                "expect" => array(
+                    array(
+                        "aid" => "tst_rel1",
+                        "id" => "TST_DOCREL_TITLE_BACKSLASH_N",
+                        "title" => "\\N"
                     )
                 )
             )
