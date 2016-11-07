@@ -24,6 +24,7 @@ function getMainAction($auth, &$action)
     include_once ('Class.Application.php');
     include_once ('Class.Session.php');
     include_once ('Lib.Http.php');
+    include_once ('Lib.Phpini.php');
     include_once ('Class.Log.php');
     include_once ('Class.DbObj.php');
     $indexphp = basename($_SERVER["SCRIPT_NAME"]);
@@ -68,17 +69,11 @@ function getMainAction($auth, &$action)
     if ($defaultapp && $core->GetParam("CORE_START_APP")) {
         $_GET["app"] = $core->GetParam("CORE_START_APP");
     }
-    $limit = ini_get("memory_limit");
-    if (is_string($limit)) {
-        $limitNum = intval(substr($limit, 0, -1));
-        $multipli = 1;
-        if (substr($limit, -1) == "G") {
-            $multipli = 1024;
-        }
-        if ($limitNum >= 0 && ($limitNum * $multipli) < intval($core->GetParam("MEMORY_LIMIT", "64"))) {
-            ini_set("memory_limit", $core->GetParam("MEMORY_LIMIT", "64") . "M");
-        }
-    } //$core->SetSession($session);
+
+    \Dcp\Core\LibPhpini::setCoreApplication($core);
+    \Dcp\Core\LibPhpini::applyLimits();
+
+    //$core->SetSession($session);
     // ----------------------------------------
     // Init PUBLISH URL from script name
     initMainVolatileParam($core, $session);

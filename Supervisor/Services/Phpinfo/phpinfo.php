@@ -15,6 +15,9 @@
  */
 
 include_once ('../../../WHAT/Lib.Prefix.php');
+include_once ('../../../WHAT/Lib.Phpini.php');
+
+\Dcp\Core\LibPhpini::applyLimits();
 
 phpinfo();
 ?>
