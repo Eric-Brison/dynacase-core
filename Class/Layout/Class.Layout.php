@@ -488,7 +488,7 @@ class Layout
         reset($list);
         
         foreach ($list as $k => $v) {
-            $js.= "\n" . sprintf('<script type="text/javascript" language="JavaScript" src="%s"></script>', $v);
+            $js.= "\n" . sprintf('<script type="text/javascript" language="JavaScript" src="%s"></script>', htmlspecialchars($v, ENT_QUOTES));
         }
         return $js;
     }
@@ -572,11 +572,12 @@ class Layout
         $css = "";
         if (empty($this->action->parent)) return "";
         if ($oldCompatibility) {
-            $cssLink = $this->action->parent->getCssLink("css/dcp/system.css", true);
+            $cssLink = htmlspecialchars($this->action->parent->getCssLink("css/dcp/system.css", true), ENT_QUOTES);
             $css.= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$cssLink\">\n";
         }
         $list = $this->action->parent->GetCssRef();
         foreach ($list as $k => $v) {
+            $v = htmlspecialchars($v, ENT_QUOTES);
             $css.= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$v\">\n";
         }
         return $css;
