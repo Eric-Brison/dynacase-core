@@ -114,9 +114,20 @@ function cleanTmpFiles()
 {
     global $action;
     global $pubdir;
-    
+
     if ($pubdir == '') {
         echo sprintf("Error: Yikes! we got an empty pubdir?");
+        return;
+    }
+
+    $maxAge = $action->GetParam('CORE_TMPDIR_MAXAGE', '');
+    if ($maxAge == '') {
+        echo sprintf("Error: empty CORE_TMPDIR_MAXAGE parameter.");
+        return;
+    }
+
+    if (!is_numeric($maxAge)) {
+        echo sprintf("Error: found non-numeric value '%s' for CORE_TMPDIR_MAXAGE.", $maxAge);
         return;
     }
     
@@ -125,41 +136,50 @@ function cleanTmpFiles()
         echo sprintf("Error: empty directory returned by getTmpDir().");
         return;
     }
-    if (!is_dir($tmpDir)) {
-        echo sprintf("Error: temporary directory '%s' does not exists.", $tmpDir);
-        return;
+
+    //clean tmp files
+    $r = cleanOldFiles($tmpDir, $maxAge);
+    if($r) {
+        echo $r;
     }
-    
-    $maxAge = $action->GetParam('CORE_TMPDIR_MAXAGE', '');
-    if ($maxAge == '') {
-        echo sprintf("Error: empty CORE_TMPDIR_MAXAGE parameter.");
-        return;
-    }
-    if (!is_numeric($maxAge)) {
-        echo sprintf("Error: found non-numeric value '%s' for CORE_TMPDIR_MAXAGE.", $maxAge);
-        return;
-    }
-    /* Values < 0 disable tmp file cleaning */
-    if ($maxAge < 0) {
-        return;
-    }
-    /* We use find & xargs shell commands to do the cleaning. */
-    /* First pass: remove expired files */
-    $cmd = sprintf('find %s -type f -mtime +%s -print0 | xargs -0 --no-run-if-empty rm', escapeshellarg($tmpDir) , $maxAge);
-    exec($cmd, $output, $ret);
-    if ($ret != 0) {
-        echo sprintf("Error: removal of temporary files from '%s' returned with error: %s", $tmpDir, join("\n", $output));
-        return;
-    }
-    /* Second pass: remove expired empty directories */
-    $cmd = sprintf('find %s -type d -empty -mtime +%s -print0 | xargs -0 --no-run-if-empty rmdir', escapeshellarg($tmpDir) , $maxAge);
-    exec($cmd, $output, $ret);
-    if ($ret != 0) {
-        echo sprintf("Error: removal of empty temporary directories from '%s' returned with error: %s", $tmpDir, join("\n", $output));
-        return;
+
+    //clean mustache cache files
+    $r = cleanOldFiles( $pubdir . '/var/cache/mustache', $maxAge);
+    if($r) {
+        echo $r;
     }
     
     return;
+}
+/*
+ * Delete files oldre than N days in given directory
+ */
+function cleanOldFiles($dir, $maxAge)
+{
+    if (!is_dir($dir)) {
+        return "";
+    }
+
+    /* Values < 0 disable tmp file cleaning */
+    if ($maxAge < 0) {
+        return "";
+    }
+
+    /* We use find & xargs shell commands to do the cleaning. */
+    /* First pass: remove expired files */
+    $cmd = sprintf('find %s -type f -mtime +%s -print0 | xargs -0 --no-run-if-empty rm', escapeshellarg($dir) , $maxAge);
+    exec($cmd, $output, $ret);
+    if ($ret != 0) {
+        return sprintf("Error: removal of old files from '%s' returned with error: %s", $dir, join("\n", $output));
+    }
+    /* Second pass: remove expired empty directories */
+    $cmd = sprintf('find %s -type d -empty -mtime +%s -print0 | xargs -0 --no-run-if-empty rmdir', escapeshellarg($dir) , $maxAge);
+    exec($cmd, $output, $ret);
+    if ($ret != 0) {
+        return sprintf("Error: removal of empty temporary directories from '%s' returned with error: %s", $dir, join("\n", $output));
+    }
+
+    return "";
 }
 /**
  * Delete temporary documents that have reached their end-of-life (CORE_TMPDOC_MAXAGE).
