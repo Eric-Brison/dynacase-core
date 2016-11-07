@@ -353,7 +353,7 @@ class OOoLayout extends Layout
     protected function restoreUserFieldSet()
     {
         try {
-            $this->XmlLoader($this->template);
+            $this->XmlLoader(\Dcp\Utils\htmlclean::cleanXMLUTF8($this->template));
         }
         catch(\Dcp\Utils\XDOMDocumentException $e) {
             $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
@@ -1613,9 +1613,18 @@ class OOoLayout extends Layout
         $dxml = new DomDocument();
         $dxml->loadXML($xmlout);
         $ot = $dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0", "automatic-styles");
+        if ($ot->length <= 0) {
+            $this->addError("LAY0008", DEFAULT_PUBDIR . "/CORE/Layout/html2odt.xsl");
+            $this->exitError();
+        }
         $ot1 = $ot->item(0);
         $ass = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0", "automatic-styles");
-        
+        if ($ass->length <= 0) {
+            $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
+            file_put_contents($outfile, $this->template);
+            $this->addError("LAY0009", $this->file);
+            $this->exitError($outfile);
+        }
         $ass0 = $ass->item(0);
         foreach ($ot1->childNodes as $ots) {
             $c = $this->dom->importNode($ots, true);
@@ -1936,6 +1945,7 @@ class OOoLayout extends Layout
             
             $this->ParseHtmlText();
             
+            $this->template = \Dcp\Utils\htmlclean::cleanXMLUTF8($this->template);
             $this->dom = new DOMDocument();
             if ($this->dom->loadXML($this->template)) {
                 $this->restoreSection();
