@@ -228,7 +228,7 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
         return;
     }
     
-    if (!empty($_SERVER["HTTP_HOST"])) {
+    if (php_sapi_name() !== 'cli') {
         // Double quote not supported by all browsers - replace by minus
         $name = str_replace('"', '-', $name);
         $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
@@ -253,16 +253,15 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
         header("Content-type: " . $mime_type);
         header("Content-Transfer-Encoding: binary");
         header("Content-Length: " . filesize($filename));
-        ob_clean();
+        $buflen = ob_get_length();
+        if ($buflen !== false && $buflen > 0) {
+            ob_clean();
+        }
         flush();
     }
-    if (file_exists($filename)) {
-        readfile($filename);
-        if ($deleteafter) unlink($filename);
-        exit;
-    } else {
-        printf(_("file not found : %s") , $filename);
-    }
+    readfile($filename);
+    if ($deleteafter) unlink($filename);
+    exit;
 }
 
 function PrintAllHttpVars()
