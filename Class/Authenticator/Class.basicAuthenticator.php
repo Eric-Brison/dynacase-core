@@ -20,9 +20,10 @@ include_once ('WHAT/Class.Authenticator.php');
 class basicAuthenticator extends Authenticator
 {
     
+    const basicAuthorizationScheme = "Basic";
+    protected $auth_session = null;
     public function checkAuthentication()
     {
-        
         if (array_key_exists('logout', $_COOKIE) && $_COOKIE['logout'] == "true") {
             setcookie('logout', '', time() - 3600, null, null, null, true);
             return Authenticator::AUTH_ASK;
@@ -56,29 +57,19 @@ class basicAuthenticator extends Authenticator
             }
         }
         
+        $session = $this->getAuthSession();
+        $session->register('username', $this->getAuthUser());
+        $session->setuid($this->getAuthUser());
         return Authenticator::AUTH_OK;
     }
     
     public function checkAuthorization($opt)
     {
-        if (is_callable(array(
-            $this->provider,
-            'checkAuthorization'
-        ))) {
-            return $this->provider->checkAuthorization($opt);
-        }
-        
         return TRUE;
     }
     
     public function askAuthentication($args)
     {
-        if (is_callable(array(
-            $this->provider,
-            'askAuthentication'
-        ))) {
-            return $this->provider->askAuthentication(array());
-        }
         header('HTTP/1.1 401 Authentication Required');
         header('WWW-Authenticate: Basic realm="' . $this->parms{'realm'} . '"');
         header('Connection: close');
@@ -87,32 +78,18 @@ class basicAuthenticator extends Authenticator
     
     public function getAuthUser()
     {
-        if (is_callable(array(
-            $this->provider,
-            'getAuthUser'
-        ))) {
-            return $this->provider->getAuthUser();
-        }
-        
-        return $_SERVER['PHP_AUTH_USER'];
+        return isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null;
     }
     
     public function getAuthPw()
     {
-        if (is_callable(array(
-            $this->provider,
-            'getAuthPw'
-        ))) {
-            return $this->provider->getAuthPw();
-        }
-        
-        return $_SERVER['PHP_AUTH_PW'];
+        return isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : null;
     }
     
     public function logout($redir_uri = '')
     {
         setcookie('logout', 'true', 0, null, null, null, true);
-
+        
         if ($redir_uri == '') {
             $pUri = parse_url($_SERVER['REQUEST_URI']);
             if (preg_match(':(?P<path>.*/)[^/]*$:', $pUri['path'], $m)) {
@@ -125,11 +102,25 @@ class basicAuthenticator extends Authenticator
     
     public function setSessionVar($name, $value)
     {
-        return TRUE;
+        $session = $this->getAuthSession();
+        $session->register($name, $value);
+        return $session->read($name);
     }
-    
     public function getSessionVar($name)
     {
-        return '';
+        $session = $this->getAuthSession();
+        return $session->read($name);
+    }
+    /**
+     *
+     */
+    public function getAuthSession()
+    {
+        if (!$this->auth_session) {
+            $this->auth_session = new Session(Session::PARAMNAME, false);
+            
+            $this->auth_session->Set();
+        }
+        return $this->auth_session;
     }
 }

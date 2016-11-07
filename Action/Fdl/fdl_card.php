@@ -96,8 +96,10 @@ function fdl_card(&$action)
     $mgeo = $action->getParam("MVIEW_GEO");
     $action->lay->set("mviewgeo", $mgeo);
     
-    $action->lay->set("RSS", ($doc->getRawValue("gui_isrss")));
-    $action->lay->set("rsslink", $doc->getRssLink());
+    $action->lay->set("RSS", ($doc->getRawValue("gui_isrss") === "yes"));
+    if ($action->lay->get("RSS")) {
+        $action->lay->set("rsslink", $doc->getRssLink());
+    }
     $action->lay->Set("TITLE", $doc->getHtmlTitle());
     $action->lay->Set("id", $doc->id);
     $action->lay->Set("initid", $doc->initid);

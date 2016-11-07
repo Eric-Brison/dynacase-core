@@ -20,6 +20,8 @@ include_once ('WHAT/Class.Authenticator.php');
 class openAuthenticator extends Authenticator
 {
     
+    const openAuthorizationScheme = "DcpOpen";
+    const openGetId = "dcpopen-authorization";
     private $privatelogin = false;
     public $token;
     public $auth_session = null;
@@ -30,9 +32,8 @@ class openAuthenticator extends Authenticator
     {
         include_once ('WHAT/Lib.Http.php');
         
-        $privatekey = getHttpVars("privateid");
+        $privatekey = static::getTokenId();
         if (!$privatekey) return Authenticator::AUTH_NOK;
-        
         $this->privatelogin = $this->getLoginFromPrivateKey($privatekey);
         if ($this->privatelogin === false) {
             return Authenticator::AUTH_NOK;
@@ -49,13 +50,28 @@ class openAuthenticator extends Authenticator
         return Authenticator::AUTH_OK;
     }
     
-    public function getLoginFromPrivateKey($privatekey)
+    public static function getTokenId()
+    {
+        $tokenId = getHttpVars(self::openGetId, getHttpVars("privateid"));
+        if (!$tokenId) {
+            $headers = apache_request_headers();
+            if (!empty($headers["Authorization"])) {
+                
+                if (preg_match(sprintf("/%s\\s+(.*)$/", self::openAuthorizationScheme) , $headers["Authorization"], $reg)) {
+                    $tokenId = trim($reg[1]);
+                }
+            }
+        }
+        return $tokenId;
+    }
+    
+    public static function getLoginFromPrivateKey($privatekey)
     {
         include_once ('WHAT/Class.UserToken.php');
         include_once ('WHAT/Class.User.php');
         
-        $token = new UserToken('', $privatekey);
-        if (!is_object($token) || !$token->isAffected()) {
+        $token = static::getUserToken($privatekey);
+        if ($token === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Token '%s' not found.", $privatekey));
             return false;
         }
@@ -67,7 +83,70 @@ class openAuthenticator extends Authenticator
             return false;
         }
         
+        if (!static::verifyOpenAccess($token)) {
+            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Access deny for user '%s' with token '%s' : context not match.", $user->login, $privatekey));
+            
+            return false;
+        }
+        
+        if (!static::verifyOpenExpire($token)) {
+            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Access deny for user '%s' with token '%s' : token has expired.", $user->login, $privatekey));
+            
+            return false;
+        }
+        
         return $user->login;
+    }
+    public static function getUserToken($tokenId)
+    {
+        
+        $token = new UserToken('', $tokenId);
+        if (!is_object($token) || !$token->isAffected()) {
+            
+            return false;
+        }
+        
+        return $token;
+    }
+    
+    public static function verifyOpenExpire(\UserToken $token)
+    {
+        $expiredate = $token->expire;
+        if ($expiredate === "infinity") {
+            return true;
+        }
+        $date = new \DateTime($expiredate);
+        $now = new \DateTime();
+        
+        return $now <= $date;
+    }
+    public static function verifyOpenAccess(\UserToken $token)
+    {
+        $rawContext = $token->context;
+        
+        $allow = false;
+        
+        if ($token->type && $token->type !== "CORE") {
+            return false;
+        }
+        
+        if ($rawContext === null) {
+            return true;
+        }
+        
+        if ($rawContext) {
+            $context = unserialize($rawContext);
+            if (is_array($context)) {
+                $allow = true;
+                foreach ($context as $k => $v) {
+                    if (getHttpVars($k) !== (string)$v) {
+                        $allow = false;
+                    }
+                }
+            }
+        }
+        
+        return $allow;
     }
     
     public function consumeToken($privatekey)
@@ -97,7 +176,10 @@ class openAuthenticator extends Authenticator
      */
     public function askAuthentication($args)
     {
-        return TRUE;
+        header("HTTP/1.0 403 Forbidden", true);
+        print ___("Private key identifier is not valid", "authentOpen");
+        
+        return true;
     }
     
     public function getAuthUser()
@@ -116,8 +198,8 @@ class openAuthenticator extends Authenticator
      */
     public function logout($redir_uri = '')
     {
-        header("HTTP/1.0 401 Authorization Required ");
-        print _("private key is not valid");
+        header("HTTP/1.0 401 Authorization Required");
+        print ___("Authorization Required", "authentOpen");
         return true;
     }
     /**
@@ -147,13 +229,9 @@ class openAuthenticator extends Authenticator
     public function getAuthSession()
     {
         if (!$this->auth_session) {
-            include_once ('WHAT/Class.Session.php');
             $this->auth_session = new Session(Session::PARAMNAME, false);
-            if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
-                $this->auth_session->Set($_COOKIE[Session::PARAMNAME]);
-            } else {
-                $this->auth_session->Set();
-            }
+            
+            $this->auth_session->Set();
         }
         return $this->auth_session;
     }

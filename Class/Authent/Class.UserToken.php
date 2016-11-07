@@ -25,17 +25,25 @@ class UserToken extends DbObj
     
     var $fields = array(
         'token',
+        'type',
+        'cdate',
+        'authorid',
         'userid',
         'expire',
         'expendable',
+        'description',
         'context'
     );
     
     public $token;
     public $userid;
+    public $authorid;
     public $expire;
     public $expendable;
     public $context;
+    public $cdate;
+    public $description;
+    public $type = "CORE";
     
     var $id_fields = array(
         'token'
@@ -45,10 +53,14 @@ class UserToken extends DbObj
     
     var $sqlcreate = "
     CREATE TABLE usertoken (
-      token VARCHAR(256) NOT NULL PRIMARY KEY,
+      token text NOT NULL PRIMARY KEY,
+      type text,
+      cdate timestamp without time zone,
+      authorid int,
       userid INT NOT NULL,
       expire TIMESTAMP NOT NULL,
       expendable BOOLEAN DEFAULT FALSE,
+      description text,
       context text
     );
     CREATE INDEX usertoken_idx ON usertoken(token);
@@ -59,42 +71,54 @@ class UserToken extends DbObj
     var $expiration = 86400; // 24 hours
     const INFINITY = "infinity";
     
-    function setHAlg($hAlg)
+    public function preInsert()
+    {
+        if (is_array($this->context)) {
+            $this->context = serialize($this->context);
+        }
+        $this->cdate = date("Y-m-d H:i:s");
+        $this->authorid = getCurrentUser()->id;
+    }
+    
+    public function setHAlg($hAlg)
     {
         $this->hAlg = $hAlg;
         return $this->hAlg;
     }
     
-    function setRndSize($rndSize)
+    public function setRndSize($rndSize)
     {
         $this->rndSize = $rndSize;
         return $this->rndSize;
     }
     
-    function setExpiration($expiration = "")
+    public function setExpiration($expiration = "")
     {
         if ($expiration == "") {
             $expiration = $this->expiration;
         }
-        
-        if (preg_match('/^-?infinity$/', $expiration)) {
-            $this->expire = $expiration;
-        } else {
-            if (!is_numeric($expiration)) {
-                return false;
-            }
-            
-            $this->expire = strftime("%Y-%m-%d %H:%M:%S", time() + $expiration);
-        }
+        $this->expire = self::getExpirationDate($expiration);
         
         return $this->expire;
     }
-    
-    function genToken()
+    public static function getExpirationDate($delayInSeconds)
+    {
+        if (preg_match('/^-?infinity$/', $delayInSeconds)) {
+            $expireDate = $delayInSeconds;
+        } else {
+            if (!is_numeric($delayInSeconds)) {
+                return false;
+            }
+            $expireDate = strftime("%Y-%m-%d %H:%M:%S", time() + $delayInSeconds);
+        }
+        
+        return $expireDate;
+    }
+    public function genToken()
     {
         $rnd = rand();
         for ($i = 0; $i < $this->rndSize; $i++) {
-            $rnd.= rand();
+            $rnd.= mt_rand();
         }
         
         switch (strtolower($this->hAlg)) {
@@ -115,7 +139,7 @@ class UserToken extends DbObj
         return $rnd;
     }
     
-    function getToken()
+    public function getToken()
     {
         if ($this->token == "") {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "token is not defined.");
@@ -123,13 +147,13 @@ class UserToken extends DbObj
         return $this->token;
     }
     
-    function deleteExpired()
+    public static function deleteExpired()
     {
-        $err = $this->exec_query("DELETE FROM " . pg_escape_string($this->dbtable) . " WHERE expire < now()");
-        return $err;
+        $sql = sprintf("DELETE FROM usertoken WHERE expire < now()");
+        simpleQuery('', $sql);
     }
     
-    function preUpdate()
+    public function preUpdate()
     {
         if ($this->token == "") {
             return "Error: token not set";

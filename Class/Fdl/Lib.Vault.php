@@ -161,7 +161,7 @@ function vault_store($filename, &$vid, $ftitle = "")
 /**
  * return context of a file
  * @param int $idfile vault file identifier
- * @return array
+ * @return array|false
  */
 function vault_get_content($idfile)
 {

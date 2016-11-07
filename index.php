@@ -48,8 +48,7 @@ switch ($status) {
         sleep(1); // for robots
         // Redirect to authentication
         AuthenticatorManager::$auth->askAuthentication(array());
-        // AuthenticatorManager::$auth->askAuthentication(array("error" => $status));
-        // Redirect($action, 'AUTHENT', 'LOGINFORM&error='.$status.'&auth_user='.urlencode($_POST['auth_user']));
+        
         exit(0);
 }
 

@@ -1049,28 +1049,41 @@ union
         simpleQuery($this->dbaccess, $sql, $users);
         return $users;
     }
+
     /**
      * Get user token for open access
-     * @param int $expire set expiration delay in seconds (false if nether expire)
-     * @param bool $oneshot set to true to use one token is consumed/deleted when used
+     *
+     * @param bool|int $expireDelay set expiration delay in seconds (-1 if nether expire)
+     * @param bool     $oneshot     set to true to use one token is consumed/deleted when used
+     *
+     * @param array    $context     get http var restriction
+     *
+     * @param string   $description text description information
+     *
+     * @return string
+     * @throws \Dcp\Exception
      */
-    function getUserToken($expire = false, $oneshot = false, $context = array())
+    function getUserToken($expireDelay = - 1, $oneshot = false, $context = array(), $description="")
     {
-        if ($expire === false) {
-            $expire = UserToken::INFINITY;
+        if ($expireDelay === - 1 || $expireDelay === false) {
+            $expireDelay = UserToken::INFINITY;
         }
         if ($context && (count($context) > 0)) {
             $scontext = serialize($context);
         } else $scontext = '';
         
-        if (!$this->isAffected()) return false;
+        if (!$this->isAffected()) {
+            throw new Dcp\Exception(sprintf("User token : account must be affected"));
+        }
         include_once ('WHAT/Class.UserToken.php');
         include_once ('WHAT/Class.QueryDb.php');
         $create = false;
+        $expireDate = UserToken::getExpirationDate($expireDelay);
         $tu = array();
         if (!$oneshot) {
             $q = new QueryDb($this->dbaccess, "UserToken");
-            $q->addQuery("userid=" . $this->id);
+            $q->addQuery(sprintf("userid=%d", $this->id));
+            $q->addQuery(sprintf("expire='%s'", $expireDate));
             if ($scontext) $q->addQuery("context='" . pg_escape_string($scontext) . "'");
             $tu = $q->Query(0, 0, "TABLE");
             $create = ($q->nb == 0);
@@ -1081,13 +1094,20 @@ union
         if ($create) {
             // create one
             $uk = new UserToken("");
-            $uk->deleteExpired();
             $uk->userid = $this->id;
+            $uk->description=$description;
             $uk->token = $uk->genToken();
-            $uk->expire = $uk->setExpiration($expire);
+            $uk->type = "CORE";
+            $uk->expire = $uk->setExpiration($expireDelay);
+            if ($uk->expire === false) {
+                throw new Dcp\Exception(sprintf("User token : Invalid date. Expire must be a delay in seconds"));
+            }
             $uk->expendable = $oneshot;
             $uk->context = $scontext;
             $err = $uk->add();
+            if ($err) {
+                 throw new Dcp\Exception($err);
+            }
             $token = $uk->token;
         } else {
             $token = $tu[0]["token"];

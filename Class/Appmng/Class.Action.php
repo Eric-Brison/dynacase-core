@@ -533,22 +533,9 @@ create sequence SEQ_ID_ACTION;
         // If no parent set , it's a misconfiguration
         if (!isset($this->parent)) return '';
         
-        if ($this->auth && $this->auth->parms["type"] == "open") {
-            if ($this->openaccess != 'Y') {
-                $allow = false;
-                if ($this->auth->token && $this->auth->token["context"]) {
-                    $context = unserialize($this->auth->token["context"]);
-                    if (is_array($context) && (count($context) > 0)) {
-                        $allow = true;
-                        foreach ($context as $k => $v) {
-                            if (getHttpVars($k) != $v) {
-                                $allow = false;
-                            }
-                        }
-                        if (!$allow) $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode and token context not match") , $this->name));
-                    }
-                }
-                if (!$allow) $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode") , $this->name));
+        if ($this->auth && $this->auth->parms["type"] === "open") {
+            if ($this->openaccess !== 'Y') {
+                $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode") , $this->name));
             }
         }
         
@@ -649,9 +636,14 @@ create sequence SEQ_ID_ACTION;
     
     public function exitForbidden($texterr)
     {
-        header("HTTP/1.0 403 Forbidden");
-        print $texterr;
-        exit;
+        if (php_sapi_name() !== 'cli') {
+            header("HTTP/1.0 403 Forbidden");
+            print ErrorCode::getError("CORE0012", $texterr);
+            exit;
+        } else {
+            error_log(sprintf("Forbidden: %s\n", $texterr));
+            throw new Dcp\Core\Exception("CORE0012", $texterr);
+        }
     }
     /**
      * unregister FT error

@@ -13,6 +13,7 @@ class SuiteDcpSecurity
         $suite = new FrameworkDcp('Package');
         
         $suite->addTestSuite('Dcp\Pu\TestAccess');
+        $suite->addTestSuite('Dcp\Pu\TestOpenAccess');
         $suite->addTestSuite('Dcp\Pu\TestDocControl');
         $suite->addTestSuite('Dcp\Pu\TestRole');
         $suite->addTestSuite('Dcp\Pu\TestRoleMove');

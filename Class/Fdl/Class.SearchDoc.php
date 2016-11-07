@@ -751,8 +751,12 @@ class SearchDoc
         } else {
             if (!isset($this->cacheDocuments[$fromid])) {
                 $this->cacheDocuments[$fromid] = createDoc($this->dbaccess, $fromid, false, false);
+                if (empty($this->cacheDocuments[$fromid])) {
+                    throw new Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
+                }
             }
         }
+        
         $this->cacheDocuments[$fromid]->Affect($v, true);
         $this->cacheDocuments[$fromid]->nocache = true;
         if ((!empty($this->returnsFields))) $this->cacheDocuments[$fromid]->doctype = "I"; // incomplete document

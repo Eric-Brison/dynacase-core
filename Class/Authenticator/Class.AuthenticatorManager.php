@@ -37,7 +37,7 @@ class AuthenticatorManager
     const AccessNotAuthorized = 5;
     const NeedAsk = 6;
     /**
-     * @var Authenticator|htmlAuthenticator
+     * @var Authenticator|htmlAuthenticator|openAuthenticator
      */
     public static $auth = null;
     public static $provider_errno = 0;
@@ -47,42 +47,7 @@ class AuthenticatorManager
         /*
          * Part 1: check authentication
         */
-        $error = self::AccessOk;
-        self::$provider_errno = 0;
-        if ($authtype == null) $authtype = getAuthType();
-        if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype)) {
-            header('HTTP/1.0 500 Invalid authtype');
-            print sprintf("Invalid authtype '%s'", $authtype);
-            exit;
-        }
-        $authClass = strtolower($authtype) . "Authenticator";
-        $authFile = 'WHAT/Class.' . $authClass . '.php';
-        if (!file_exists($authFile)) {
-            header('HTTP/1.0 500 Unknown authtype');
-            print "Unknown authtype " . $authtype;
-            exit;
-        }
-        include_once ($authFile);
-        self::$auth = new $authClass($authtype, "__for_logout__");
-        
-        $authProviderList = getAuthProviderList();
-        $status = false;
-        foreach ($authProviderList as $authProvider) {
-            self::$auth = new $authClass($authtype, $authProvider);
-            $status = self::$auth->checkAuthentication();
-            if ($status === Authenticator::AUTH_ASK) {
-                if ($noask) {
-                    return self::NeedAsk;
-                } else {
-                    self::$auth->askAuthentication(array());
-                    exit(0);
-                }
-            }
-            if ($status === Authenticator::AUTH_OK) {
-                break;
-            }
-        }
-        
+        $status = self::checkAuthentication($authtype, $noask);
         if ($status === Authenticator::AUTH_NOK) {
             $error = 1;
             $providerErrno = self::$auth->getProviderErrno();
@@ -148,18 +113,114 @@ class AuthenticatorManager
         return self::AccessOk;
     }
     
+    protected static function checkAuthentication($authtype = null, $noask = false)
+    {
+        self::$provider_errno = 0;
+        
+        self::$auth = static::getAuthenticatorClass();
+        $authProviderList = static::getAuthProviderList();
+        $status = false;
+        foreach ($authProviderList as $authProvider) {
+            self::$auth = static::getAuthenticatorClass($authtype, $authProvider);
+            $status = self::$auth->checkAuthentication();
+            if ($status === Authenticator::AUTH_ASK) {
+                if ($noask) {
+                    return self::NeedAsk;
+                } else {
+                    self::$auth->askAuthentication(array());
+                    exit(0);
+                }
+            }
+            if ($status === Authenticator::AUTH_OK) {
+                break;
+            }
+        }
+        return $status;
+    }
+    
+    protected static function getAuthenticatorClass($authtype = null, $provider = Authenticator::nullProvider)
+    {
+        
+        if (!$authtype) {
+            $authtype = static::getAuthType();
+        }
+        if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype)) {
+            throw new \Dcp\Exception(sprintf("Invalid authtype '%s'", $authtype));
+        }
+        
+        $authClass = strtolower($authtype) . "Authenticator";
+        if (!\Dcp\Autoloader::classExists($authClass)) {
+            throw new \Dcp\Exception(sprintf("Cannot find authenticator '%s'", $authtype));
+        }
+        return new $authClass($authtype, $provider);
+    }
+    /**
+     * @return string
+     */
+    public static function getAuthProvider()
+    {
+        $freedom_authprovider = getDbAccessValue('freedom_authprovider');
+        
+        if ($freedom_authprovider == "") {
+            $freedom_authprovider = "apache";
+        }
+        
+        return trim($freedom_authprovider);
+    }
+    /**
+     * @return array
+     */
+    public static function getAuthProviderList()
+    {
+        return preg_split("/\\s*,\\s*/", static::getAuthProvider());
+    }
+    
+    public static function getAuthType()
+    {
+        if (array_key_exists('authtype', $_GET)) {
+            return $_GET['authtype'];
+        }
+        if (!empty($_GET[OpenAuthenticator::openGetId])) {
+            return "open";
+        }
+        
+        $scheme = self::getAuthorizationScheme();
+        if ($scheme) {
+            switch ($scheme) {
+                case OpenAuthenticator::openAuthorizationScheme:
+                    return "open";
+                case \basicAuthenticator::basicAuthorizationScheme:
+                    return "basic";
+                default:
+                    throw new Exception(sprintf("Invalid authorization method \"%s\"", $scheme));
+            }
+        }
+        
+        $freedom_authtype = getDbAccessValue('freedom_authtype');
+        
+        if ($freedom_authtype == "") {
+            $freedom_authtype = "apache";
+        }
+        
+        return trim($freedom_authtype);
+    }
+    
+    protected static function getAuthorizationScheme()
+    {
+        if (php_sapi_name() !== 'cli') {
+            $headers = apache_request_headers();
+            if (!empty($headers["Authorization"])) {
+                if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $headers["Authorization"], $reg)) {
+                    return trim($reg[1]);
+                }
+            }
+        }
+        return "";
+    }
+    
     public static function closeAccess()
     {
-        $authtype = getAuthType();
-        $authClass = strtolower($authtype) . "Authenticator";
-        $authFile = 'WHAT/Class.' . $authClass . '.php';
-        if (!file_exists($authFile)) {
-            header('HTTP/1.0 500 Unknown authtype');
-            print "Unknown authtype " . $_GET['authtype'];
-            exit;
-        }
-        include_once ($authFile);
-        self::$auth = new $authClass($authtype, "__for_logout__");
+        self::$auth = static::getAuthenticatorClass();
         
         if (method_exists(self::$auth, 'logout')) {
             if (is_object(self::$auth->provider)) {
@@ -172,7 +233,7 @@ class AuthenticatorManager
         }
         
         header('HTTP/1.0 500 Internal Error');
-        print sprintf("logout method not supported by authtype '%s'", $authtype);
+        print sprintf("logout method not supported by authtype '%s'", static::getAuthType());
         exit(0);
     }
     /**
@@ -231,7 +292,7 @@ class AuthenticatorManager
      * @return int
      * @throws \Dcp\Exception
      */
-    private static function checkAuthorization()
+    protected static function checkAuthorization()
     {
         $login = AuthenticatorManager::$auth->getAuthUser();
         $wu = new Account();
