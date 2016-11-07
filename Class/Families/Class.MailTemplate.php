@@ -38,7 +38,7 @@ class MailTemplate extends \Dcp\Family\Document
         global $action;
         
         if ($mailfamily = $this->getRawValue("tmail_family", getHttpVars("TMAIL_FAMILY"))) {
-            $action->parent->AddJsRef(htmlspecialchars("?app=FDL&action=FCKDOCATTR&famid=" . urlencode($mailfamily)) , ENT_QUOTES);
+            $action->parent->AddJsRef(htmlspecialchars("?app=FDL&action=FCKDOCATTR&famid=" . urlencode($mailfamily) , ENT_QUOTES));
         }
     }
     /**
