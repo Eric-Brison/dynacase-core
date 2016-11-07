@@ -636,9 +636,14 @@ create sequence SEQ_ID_ACTION;
     
     public function exitForbidden($texterr)
     {
-        header("HTTP/1.0 403 Forbidden");
-        print $texterr;
-        exit;
+        if (php_sapi_name() !== 'cli') {
+            header("HTTP/1.0 403 Forbidden");
+            print ErrorCode::getError("CORE0012", $texterr);
+            exit;
+        } else {
+            error_log(sprintf("Forbidden: %s\n", $texterr));
+            throw new Dcp\Core\Exception("CORE0012", $texterr);
+        }
     }
     /**
      * unregister FT error

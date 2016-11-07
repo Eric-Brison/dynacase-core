@@ -207,10 +207,12 @@ class AuthenticatorManager
     
     protected static function getAuthorizationScheme()
     {
-        $headers = apache_request_headers();
-        if (!empty($headers["Authorization"])) {
-            if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $headers["Authorization"], $reg)) {
-                return trim($reg[1]);
+        if (php_sapi_name() !== 'cli') {
+            $headers = apache_request_headers();
+            if (!empty($headers["Authorization"])) {
+                if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $headers["Authorization"], $reg)) {
+                    return trim($reg[1]);
+                }
             }
         }
         return "";

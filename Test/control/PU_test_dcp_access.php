@@ -57,28 +57,26 @@ class TestAccess extends TestCaseDcpApplication
             foreach ($test['has:permission'] as $checkIdx => $check) {
                 $user = new_doc(self::$dbaccess, $check['user']);
                 $this->assertTrue($user->isAlive() , sprintf("test#%s/check#%s> Could not get user with id '%s'.", $testIdx, $checkIdx, $check['user']));
-                $wuser = new \User(self::$dbaccess, $user->getRawValue('us_whatid'));
+                $wuser = new \Account(self::$dbaccess, $user->getRawValue('us_whatid'));
                 $this->assertTrue(is_numeric($wuser->id) , sprintf("test#%s/check#%s> Invalid user what id '%s' for user '%s'.", $testIdx, $checkIdx, $wuser->id, $check['user']));
                 
                 $this->sudo($wuser->login);
-
                 // check Action::hasPermission
                 $perm = $myAction->hasPermission($check['acl'], $check['app']);
                 $err = sprintf("test#%s/check#%s> Unexpected permission %s (should be %s) for user %s on acl %s from app %s", $testIdx, $checkIdx, $perm ? 'true' : 'false', $check['permission'] ? 'true' : 'false', $check['user'], $check['acl'], $check['app']);
                 if ($perm != $check['permission']) {
                     // these requests can be really slow, only execute them if needed
-                    $err .= "\n\t" . $this->prettySqlRelation(sprintf("Groups test#%s/check#%s", $testIdx, $checkIdx), "SELECT l.login AS user, r.login AS group FROM users AS l, groups AS g, users AS r WHERE g.iduser = l.id AND g.idgroup = r.id");
-                    $err .= "\n\t" . $this->prettySqlRelation(sprintf("Permission test#%s/check#%s", $testIdx, $checkIdx), "SELECT u.login AS user, a.name AS app, c.name AS acl, p.id_acl AS permission, p.computed AS computed FROM users AS u, permission AS p, application AS a, acl AS c WHERE u.id = p.id_user AND p.id_application = a.id AND abs(p.id_acl) = c.id AND a.name = 'TST_ACCESS'");
+                    $err.= "\n\t" . $this->prettySqlRelation(sprintf("Groups test#%s/check#%s", $testIdx, $checkIdx) , "SELECT l.login AS user, r.login AS group FROM users AS l, groups AS g, users AS r WHERE g.iduser = l.id AND g.idgroup = r.id");
+                    $err.= "\n\t" . $this->prettySqlRelation(sprintf("Permission test#%s/check#%s", $testIdx, $checkIdx) , "SELECT u.login AS user, a.name AS app, c.name AS acl, p.id_acl AS permission, p.computed AS computed FROM users AS u, permission AS p, application AS a, acl AS c WHERE u.id = p.id_user AND p.id_application = a.id AND abs(p.id_acl) = c.id AND a.name = 'TST_ACCESS'");
                 }
                 $this->assertTrue($perm == $check['permission'], $err);
-
                 // check Action::canExecute
                 $perm = $myAction->canExecute($check['action'], $check['app']);
-                if($check['permission']){
-                    $this->assertTrue('' === $perm, sprintf("test#%s/check#%s> Unexpected canExecute %s (should be '') for user %s on action %s from app %s", $testIdx, $checkIdx, var_export($perm, true), $check['user'], $check['action'], $check['app']));
+                if ($check['permission']) {
+                    $this->assertTrue('' === $perm, sprintf("test#%s/check#%s> Unexpected canExecute %s (should be '') for user %s on action %s from app %s", $testIdx, $checkIdx, var_export($perm, true) , $check['user'], $check['action'], $check['app']));
                 } else {
                     $regexp = sprintf('/no privilege (.+) for (\d+) %s/', $check['action']);
-                    $this->assertRegExp($regexp, $perm, sprintf("test#%s/check#%s> Unexpected canExecute %s (should match %s) for user %s on action %s from app %s", $testIdx, $checkIdx, var_export($perm, true), $regexp, $check['user'], $check['action'], $check['app']));
+                    $this->assertRegExp($regexp, $perm, sprintf("test#%s/check#%s> Unexpected canExecute %s (should match %s) for user %s on action %s from app %s", $testIdx, $checkIdx, var_export($perm, true) , $regexp, $check['user'], $check['action'], $check['app']));
                 }
                 
                 $this->exitSudo();
@@ -157,21 +155,21 @@ class TestAccess extends TestCaseDcpApplication
                                     "acl" => "TST_ACCESS_ACL_1",
                                     "action" => "TST_ACCESS_ACTION_1",
                                     "permission" => true
-                                ),
+                                ) ,
                                 array(
                                     "user" => "TST_U_HOMER_SIMPSON",
                                     "app" => "TST_ACCESS",
                                     "acl" => "TST_ACCESS_ACL_2",
                                     "action" => "TST_ACCESS_ACTION_2",
                                     "permission" => false
-                                ),
+                                ) ,
                                 array(
                                     "user" => "TST_U_HOMER_SIMPSON",
                                     "app" => "TST_ACCESS",
                                     "acl" => \Action::ACCESS_FREE,
                                     "action" => "TST_ACCESS_ACTION_FREE",
                                     "permission" => true
-                                ),
+                                ) ,
                                 // Marge
                                 array(
                                     "user" => "TST_U_MARGE_SIMPSON",
@@ -179,21 +177,21 @@ class TestAccess extends TestCaseDcpApplication
                                     "acl" => "TST_ACCESS_ACL_1",
                                     "action" => "TST_ACCESS_ACTION_1",
                                     "permission" => true
-                                ),
+                                ) ,
                                 array(
                                     "user" => "TST_U_MARGE_SIMPSON",
                                     "app" => "TST_ACCESS",
                                     "acl" => "TST_ACCESS_ACL_2",
                                     "action" => "TST_ACCESS_ACTION_2",
                                     "permission" => true
-                                ),
+                                ) ,
                                 array(
                                     "user" => "TST_U_MARGE_SIMPSON",
                                     "app" => "TST_ACCESS",
                                     "acl" => \Action::ACCESS_FREE,
                                     "action" => "TST_ACCESS_ACTION_FREE",
                                     "permission" => true
-                                ),
+                                ) ,
                                 // Bart
                                 array(
                                     "user" => "TST_U_BART_SIMPSON",
@@ -201,21 +199,21 @@ class TestAccess extends TestCaseDcpApplication
                                     "acl" => "TST_ACCESS_ACL_1",
                                     "action" => "TST_ACCESS_ACTION_1",
                                     "permission" => false
-                                ),
+                                ) ,
                                 array(
                                     "user" => "TST_U_BART_SIMPSON",
                                     "app" => "TST_ACCESS",
                                     "acl" => "TST_ACCESS_ACL_2",
                                     "action" => "TST_ACCESS_ACTION_2",
                                     "permission" => false
-                                ),
+                                ) ,
                                 array(
                                     "user" => "TST_U_BART_SIMPSON",
                                     "app" => "TST_ACCESS",
                                     "acl" => \Action::ACCESS_FREE,
                                     "action" => "TST_ACCESS_ACTION_FREE",
                                     "permission" => true
-                                ),
+                                ) ,
                                 // Lisa
                                 array(
                                     "user" => "TST_U_LISA_SIMPSON",
@@ -223,21 +221,21 @@ class TestAccess extends TestCaseDcpApplication
                                     "acl" => "TST_ACCESS_ACL_1",
                                     "action" => "TST_ACCESS_ACTION_1",
                                     "permission" => false
-                                ),
+                                ) ,
                                 array(
                                     "user" => "TST_U_LISA_SIMPSON",
                                     "app" => "TST_ACCESS",
                                     "acl" => "TST_ACCESS_ACL_2",
                                     "action" => "TST_ACCESS_ACTION_2",
                                     "permission" => true
-                                ),
+                                ) ,
                                 array(
                                     "user" => "TST_U_LISA_SIMPSON",
                                     "app" => "TST_ACCESS",
                                     "acl" => \Action::ACCESS_FREE,
                                     "action" => "TST_ACCESS_ACTION_FREE",
                                     "permission" => true
-                                ),
+                                ) ,
                                 // Maggie
                                 array(
                                     "user" => "TST_U_MAGGIE_SIMPSON",
@@ -245,14 +243,14 @@ class TestAccess extends TestCaseDcpApplication
                                     "acl" => "TST_ACCESS_ACL_1",
                                     "action" => "TST_ACCESS_ACTION_1",
                                     "permission" => false
-                                ),
+                                ) ,
                                 array(
                                     "user" => "TST_U_MAGGIE_SIMPSON",
                                     "app" => "TST_ACCESS",
                                     "acl" => "TST_ACCESS_ACL_2",
                                     "action" => "TST_ACCESS_ACTION_2",
                                     "permission" => true
-                                ),
+                                ) ,
                                 array(
                                     "user" => "TST_U_MAGGIE_SIMPSON",
                                     "app" => "TST_ACCESS",

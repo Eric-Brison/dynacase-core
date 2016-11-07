@@ -392,26 +392,35 @@ function handleActionException($e)
 {
     global $action;
     
-    if (method_exists($e, "addHttpHeader")) {
-        /**
-         * @var \Dcp\Exception $e
-         */
-        if ($e->getHttpHeader()) header($e->getHttpHeader());
-        else header("HTTP/1.1 500 Dynacase Uncaugth Exception");
-    } else {
-        header("HTTP/1.1 500 Dynacase Uncaugth Exception");
+    if (php_sapi_name() !== "cli") {
+        if (method_exists($e, "addHttpHeader")) {
+            /**
+             * @var \Dcp\Exception $e
+             */
+            if ($e->getHttpHeader()) {
+                header($e->getHttpHeader());
+            } else {
+                header("HTTP/1.1 500 Dynacase Uncaugth Exception");
+            }
+        } else {
+            header("HTTP/1.1 500 Dynacase Uncaugth Exception");
+        }
     }
-    
     errorLogException($e);
     if (isset($action) && is_a($action, 'Action') && isset($action->parent)) {
+        
         if ($action->parent->name === ApplicationParameterManager::getParameterValue("CORE", "CORE_START_APP")) {
             $action->parent->session->Close();
             $action->exitError(_("You don't have access to any content. Please contact your administrator."));
         } else {
-            $action->exitError($e->getMessage());
+            if (php_sapi_name() === 'cli') {
+                fwrite(STDERR, $e->getMessage() . "\n");
+            } else {
+                $action->exitError($e->getMessage());
+            }
         }
     } else {
-        if (php_sapi_name() == 'cli') {
+        if (php_sapi_name() === 'cli') {
             fwrite(STDERR, $e->getMessage());
         } else {
             print htmlspecialchars($e->getMessage());
