@@ -274,7 +274,7 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
                 // option 1
                 //$cmd=sprintf("gs -q -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=- -dFirstPage=%d -dLastPage=%d %s | convert -  -thumbnail %s %s",   min(intval($width/8.06),$quality),$pngpage+1,$pngpage+1,$info->path,$width,$cible);
                 // option 2
-                $cmd = sprintf("convert -thumbnail %s -auto-orient -density %d %s[%d] %s 2>&1", escapeshellarg($width) , $quality, escapeshellarg($info->path) , $pngpage, escapeshellarg($cible));
+                $cmd = sprintf("convert -strip -thumbnail %s -auto-orient -density %d %s[%d] %s 2>&1", escapeshellarg($width) , $quality, escapeshellarg($info->path) , $pngpage, escapeshellarg($cible));
                 // option 3
                 //$cmd=sprintf("gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=%s -dFirstPage=%d -dLastPage=%d %s",		   min(intval($width/8.06),$quality),$cible,$pngpage+1,$pngpage+1,$info->path);
                 // option 4
@@ -451,7 +451,7 @@ function rezizelocalimage($img, $size, $basedest)
         mkdir(RESIZEDIR);
     }
     if (!file_exists($dest)) {
-        $cmd = sprintf("convert  -auto-orient -thumbnail %d %s %s", $size, escapeshellarg($source) , escapeshellarg($dest));
+        $cmd = sprintf("convert -strip -auto-orient -thumbnail %d %s %s", $size, escapeshellarg($source) , escapeshellarg($dest));
         system($cmd);
         if (file_exists($dest)) return $dest;
     } else {
@@ -482,7 +482,7 @@ function createPdf2Png($file, $vid)
         $cmd = array();
         for ($i = 0; $i < $nbpages; $i++) {
             $cible = DEFAULT_PUBDIR . "/var/cache/file/vid-${vid}-${i}.png";
-            $cmd[] = sprintf("nice convert -interlace plane -thumbnail %d  -density %d %s[%d] %s", $width, $density, escapeshellarg($file) , $i, escapeshellarg($cible));
+            $cmd[] = sprintf("nice convert -strip -interlace plane -thumbnail %d  -density %d %s[%d] %s", $width, $density, escapeshellarg($file) , $i, escapeshellarg($cible));
         }
         bgexec($cmd, $result, $err);
     }
