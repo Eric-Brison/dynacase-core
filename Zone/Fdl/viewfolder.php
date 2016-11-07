@@ -62,7 +62,9 @@ function viewfolder(Action & $action, $with_abstract = false, $with_popup = true
     $distinct = false;
     
     $action->lay->set("RSS", ($dir->getRawValue("gui_isrss") == "yes" ? true : false));
-    $action->lay->set("rsslink", $dir->getRssLink());
+    if ($action->lay->get("RSS")) {
+        $action->lay->set("rsslink", $dir->getRssLink());
+    }
     $action->lay->set("foldername", $dir->getHtmlTitle());
     // control open
     if ($dir->defDoctype == 'S') {
