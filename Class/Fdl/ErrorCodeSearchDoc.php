@@ -49,12 +49,30 @@ namespace {
          *
          */
         const SD0007 = 'general filter: words not supported : "%s"';
-
+        /**
+         * Searching on a "Specialized search" and specifying additional filters is not supported
+         * @errorCode When setting a "Specialized search" collection with useCollection() and adding filters with addFilter()
+         */
+        const SD0008 = 'Searching on a "Specialized search" collection and specifying additional filters is not supported';
+        /**
+         * for beautifier
+         */
+        private function _bo()
+        {
+            if (true) return;
+        }
     }
 }
 
 namespace Dcp\SearchDoc {
     class Exception extends \Dcp\Exception
     {
+        /**
+         * for beautifier
+         */
+        private function _bo()
+        {
+            if (true) return;
+        }
     }
 }
