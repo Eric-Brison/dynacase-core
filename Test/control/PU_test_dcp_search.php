@@ -416,17 +416,17 @@ class TestSearch extends TestCaseDcpCommonFamily
     }
     /**
      * test basic search criteria
-     * @param string $criteria filter
-     * @param string $arg filter argument
-     * @param string $family family name or id
-     * @return void
+     * @param $data
      * @dataProvider errorCriteria
      */
-    public function testErrorSearch($criteria, $arg, $family, $expectErrors = array())
+    public function testErrorSearch($data)
     {
         try {
-            $s = new \SearchDoc(self::$dbaccess, $family);
-            $s->addFilter($criteria, $arg);
+            $s = new \SearchDoc(self::$dbaccess, $data['family']);
+            $s->addFilter($data['criteria'], $data['arg']);
+            if (isset($data['collection'])) {
+                $s->useCollection($data['collection']);
+            }
             $s->setObjectReturn(true);
             $s->search();
             
@@ -435,8 +435,8 @@ class TestSearch extends TestCaseDcpCommonFamily
         catch(\Exception $e) {
             $err = $e->getMessage();
         }
-        $this->assertFalse($err == "", sprintf("Need detect Search error %s %s", $criteria, $arg));
-        foreach ($expectErrors as $error) {
+        $this->assertFalse($err == "", sprintf("Need detect Search error %s %s", $data['criteria'], $data['arg']));
+        foreach ($data['expectErrors'] as $error) {
             $this->assertContains($error, $err, sprintf("no good error code"));
         }
     }
@@ -597,27 +597,46 @@ class TestSearch extends TestCaseDcpCommonFamily
         return array(
             // family error
             array(
-                "us_login ~* '%s'",
-                "Garfield",
-                "IUSER2",
                 array(
-                    'IUSER2'
+                    'criteria' => "us_login ~* '%s'",
+                    'arg' => "Garfield",
+                    'family' => "IUSER2",
+                    'expectErrors' => array(
+                        'IUSER2'
+                    )
                 )
             ) ,
             // syntax error
             array(
-                "us_mail y '%s'",
-                "Léopol",
-                "IUSER",
                 array(
-                    'DB0005'
+                    'criteria' => "us_mail y '%s'",
+                    'arg' => "Léopol",
+                    'family' => "IUSER",
+                    'expectErrors' => array(
+                        'DB0005'
+                    )
                 )
             ) ,
             // injection error
             array(
-                "us_mail ~ '%s');update users set id=0 where id = -6;--",
-                "Léopol",
-                "IUSER"
+                array(
+                    'criteria' => "us_mail ~ '%s');update users set id=0 where id = -6;--",
+                    'arg' => "Léopol",
+                    'family' => "IUSER",
+                    'expectErrors' => array()
+                )
+            ) ,
+            // useCollection() and addFilter() conflict
+            array(
+                array(
+                    'criteria' => "us_login ~* '%s'",
+                    'arg' => 'Garfield',
+                    'family' => 'IUSER',
+                    'collection' => 'TST_GETORIGINALQUERY_SEARCH_SSEARCH_1',
+                    'expectErrors' => array(
+                        'SD0008'
+                    )
+                )
             )
         );
     }

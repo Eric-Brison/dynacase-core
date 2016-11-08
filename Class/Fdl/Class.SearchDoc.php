@@ -422,6 +422,13 @@ class SearchDoc
      */
     public function search()
     {
+        if (count($this->filters) > 0 && $this->dirid > 0) {
+            $dir = new_Doc($this->dbaccess, $this->dirid);
+            if (is_object($dir) && $dir->isAlive() && is_a($dir, '\Dcp\Family\Ssearch')) {
+                // Searching on a "Specialized search" collection and specifying additional filters is not supported
+                throw new \Dcp\SearchDoc\Exception("SD0008");
+            }
+        }
         if ($this->getError()) {
             if ($this->mode == "ITEM") {
                 return null;
