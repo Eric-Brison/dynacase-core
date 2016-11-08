@@ -28,27 +28,28 @@ $db = $usage->addOptionalParameter('dbcoord', "Database name", null, getDbAccess
 
 $usage->verify();
 
-include_once ("$pubdir/$appclass/Class.$class.php");
+$phpClass=sprintf("%s/%s/Class.%s.php",DEFAULT_PUBDIR,$appclass,$class);
 
+include_once ($phpClass);
+
+/**
+ * @var DbObj $o
+ */
 $o = new $class($db);
 
 $dbid = pg_connect($db);
 if (!$dbid) {
     print _("cannot access to  database $db\n");
     exit(1);
-} else print _("access granted to  database $db\n");
+} else {
+    print _("access granted to  database $db\n");
+}
 
 $sql = array();
 $rq = @pg_query($dbid, "select * from " . $o->dbtable . " LIMIT 1;");
 if (!$rq) {
     // table not exist : just create
     $o->Create();
-    // $sqlcmds = explode(";",$o->sqlcreate);
-    //   while (list($k,$sqlquery)=each($sqlcmds)) {
-    //     if (chop($sqlquery) != "")
-    //       $sql[]=$sqlquery;
-    // }
-    
 } else {
     $row = 0;
     
@@ -68,7 +69,7 @@ if (!$rq) {
     }
     
     if ($row) {
-        $sql[] = "INSERT INTO " . $o->dbtable . " (" . implode(",", $fieds) . ") SELECT " . implode(",", $fieds) . " FROM " . $o->dbtable . "_old";
+        $sql[] = "INSERT INTO " . $o->dbtable . " (" . implode(",", $o->fields) . ") SELECT " . implode(",", $o->fields) . " FROM " . $o->dbtable . "_old";
         
         $sql[] = "DROP TABLE " . $o->dbtable . "_old;";
     }
@@ -90,4 +91,3 @@ while (list($k, $v) = each($sql)) {
 }
 
 pg_close($dbid);
-?>
