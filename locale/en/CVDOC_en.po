@@ -70,6 +70,9 @@ msgstr "Menu"
 msgid "CVDOC#cv_menu#elabel"
 msgstr "submenu name"
 
+msgid "CVDOC#cv_menu#showempty"
+msgstr "&lt;empty>"
+
 #: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_msk"
 msgstr "Mask (title)"
@@ -78,12 +81,18 @@ msgstr "Mask (title)"
 msgid "CVDOC#cv_mskid"
 msgstr "Mask id"
 
+msgid "CVDOC#cv_mskid#showempty"
+msgstr "&lt;empty>"
+
 #: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_order"
 msgstr "Order"
 
 msgid "CVDOC#cv_order#elabel"
 msgstr "Profiling access order"
+
+msgid "CVDOC#cv_order#showempty"
+msgstr "&lt;empty>"
 
 #: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_t_views"
@@ -92,6 +101,9 @@ msgstr "Views"
 #: App/Fdl/workflows.ods.csv
 msgid "CVDOC#cv_zview"
 msgstr "Zone"
+
+msgid "CVDOC#cv_zview#showempty"
+msgstr "&lt;empty>"
 
 #: App/Fdl/workflows.ods.csv
 msgid "CVDOC#dpdoc_fam"

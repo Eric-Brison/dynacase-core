@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-07 14:22+0100\n"
+"POT-Creation-Date: 2016-10-26 15:53+0200\n"
 "PO-Revision-Date: 2016-07-27 14:35+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -770,6 +770,18 @@ msgstr ""
 
 msgid "CSV specification file"
 msgstr ""
+
+msgid "CVDOC_ARRAY_VIEW:display"
+msgstr "display"
+
+msgid "CVDOC_ARRAY_VIEW:idview"
+msgstr "identification"
+
+msgid "CVDOC_ARRAY_VIEW:type"
+msgstr "type"
+
+msgid "CVDOC_ARRAY_VIEW:view"
+msgstr "view"
 
 #, php-format
 msgid "CVID : %s"
@@ -5491,6 +5503,11 @@ msgid "creation of document family"
 msgstr ""
 
 msgid "creation processes"
+msgstr ""
+
+#, php-format
+msgctxt "CVDOC"
+msgid "creation view '%s' does not exists"
 msgstr ""
 
 #, php-format
