@@ -62,7 +62,6 @@ AC_OUTPUT(
     App/Fgsearch/FGSEARCH_init.php \
     App/Freedom/FREEDOM_init.php  \
     App/Generic/GENERIC_init.php \
-    Api/updateclass.php \
     Supervisor/htaccess \
     htaccess \
     info.xml \
