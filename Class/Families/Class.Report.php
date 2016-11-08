@@ -179,7 +179,7 @@ class Report extends \Dcp\Family\Dsearch
                 } else if ($soa->type == "frame") {
                     $currentFrame = $soa->id;
                 }
-                if (isset($soa->fieldSet) && $soa->fieldSet->id != Adoc::HIDDENFIELD) {
+                if (isset($soa->fieldSet) && $soa->fieldSet->id != \Adoc::HIDDENFIELD) {
                     if ($soa->fieldSet->type == "tab") {
                         $currentTab = $soa->fieldSet->id;
                     }
