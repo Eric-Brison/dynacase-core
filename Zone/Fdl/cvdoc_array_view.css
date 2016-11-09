@@ -34,8 +34,11 @@
 
 .cvdoc_array_view__label {
     margin-top: 5px;
-    font-style: italic;
+}
+
+.documentView .cvdoc_array_view__label {
     color: #6F6F6F;
+    font-style: italic;
 }
 
 .cvdoc_array_view__label--int,

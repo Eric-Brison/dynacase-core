@@ -8,10 +8,18 @@ namespace Dcp\Family {
 	class Tst_getoriginalquery1 extends Document { const familyName="TST_GETORIGINALQUERY1";}
 	/** Test getOriginalQuery 2  */
 	class Tst_getoriginalquery2 extends Tst_getoriginalquery1 { const familyName="TST_GETORIGINALQUERY2";}
+	/** Agents  */
+	class Tst_useragent extends Iuser { const familyName="TST_USERAGENT";}
+	/** Agency  */
+	class Tst_groupagency extends Igroup { const familyName="TST_GROUPAGENCY";}
+	/** Capacité  */
+	class Tst_rolecapacity extends Role { const familyName="TST_ROLECAPACITY";}
 	/** Test Famille default 1  */
 	class Tst_slashfamily1 extends Document { const familyName="TST_SLASHFAMILY1";}
 	/** Test autocompletion  */
 	class Tst_autocompletion extends Document { const familyName="TST_AUTOCOMPLETION";}
+	/** Test Famille 1  */
+	class Tst_badfammask extends Document { const familyName="TST_BADFAMMASK";}
 	/** Test Famille 1  */
 	class Tst_badfamimp1 extends Document { const familyName="TST_BADFAMIMP1";}
 	/** Test Attr 10  */
@@ -28,6 +36,10 @@ namespace Dcp\Family {
 	class Tst_badattr15 extends Document { const familyName="TST_BADATTR15";}
 	/** Test Attr 16  */
 	class Tst_badattr16 extends Document { const familyName="TST_BADATTR16";}
+	/** Test Famille 1  */
+	class Tst_badfamimp17 extends Document { const familyName="TST_BADFAMIMP17";}
+	/** Bad Famille 18  */
+	class Tst_badfamimp18 extends Document { const familyName="TST_BADFAMIMP18";}
 	/** Test Famille 1  */
 	class Tst_badfamimp2 extends Document { const familyName="TST_BADFAMIMP2";}
 	/** Test Attr 4  */
@@ -74,8 +86,6 @@ namespace Dcp\Family {
 	class Wtst_wffamimp8 extends \WTestSyntaxErrorImp8 { const familyName="WTST_WFFAMIMP8";}
 	/** Cycle test  */
 	class Wtst_wffamimp9 extends \WTestBadImp9 { const familyName="WTST_WFFAMIMP9";}
-	/** Test 1  */
-	class  extends Document { const familyName="";}
 	/** Test 2  */
 	class Tst_bad fam1 extends Document { const familyName="TST_BAD FAM1";}
 	/** Test 3  */
@@ -322,6 +332,36 @@ namespace Dcp\Family {
 	class Tst_ooolayout extends Document { const familyName="TST_OOOLAYOUT";}
 	/** Test Ooo Layout  */
 	class Tst_ooosimplelayout extends Document { const familyName="TST_OOOSIMPLELAYOUT";}
+	/** test Ordre Auto Famille A  */
+	class Tst_orderautoa extends Document { const familyName="TST_ORDERAUTOA";}
+	/** test Ordre Auto Famille B  */
+	class Tst_orderautob extends Tst_orderautoa { const familyName="TST_ORDERAUTOB";}
+	/** test Ordre Auto Famille C  */
+	class Tst_orderautoc extends Tst_orderautob { const familyName="TST_ORDERAUTOC";}
+	/** test Ordre Auto Famille D  */
+	class Tst_orderautod extends Tst_orderautob { const familyName="TST_ORDERAUTOD";}
+	/** test Ordre Auto Famille E  */
+	class Tst_orderautoe extends Tst_orderautoc { const familyName="TST_ORDERAUTOE";}
+	/** Test Ordre Relatif Famille A  */
+	class Tst_orderrela extends Document { const familyName="TST_ORDERRELA";}
+	/** Test Ordre Relatif Famille B  */
+	class Tst_orderrelb extends Tst_orderrela { const familyName="TST_ORDERRELB";}
+	/** Test Ordre Relatif Famille C  */
+	class Tst_orderrelc extends Tst_orderrelb { const familyName="TST_ORDERRELC";}
+	/** Test Ordre Relatif Famille D  */
+	class Tst_orderreld extends Tst_orderrelb { const familyName="TST_ORDERRELD";}
+	/** Test Ordre Relatif Famille E  */
+	class Tst_orderrele extends Tst_orderrelc { const familyName="TST_ORDERRELE";}
+	/** test Ordre Numérique Famille A  */
+	class Tst_ordernuma extends Document { const familyName="TST_ORDERNUMA";}
+	/** test Ordre Numérique Famille B  */
+	class Tst_ordernumb extends Tst_ordernuma { const familyName="TST_ORDERNUMB";}
+	/** test Ordre Numérique Famille C  */
+	class Tst_ordernumc extends Tst_ordernumb { const familyName="TST_ORDERNUMC";}
+	/** test Ordre Numérique Famille D  */
+	class Tst_ordernumd extends Tst_ordernumb { const familyName="TST_ORDERNUMD";}
+	/** test Ordre Numérique Famille E  */
+	class Tst_ordernume extends Tst_ordernumc { const familyName="TST_ORDERNUME";}
 	/** Test Profil  */
 	class Tst_profil extends Document { const familyName="TST_PROFIL";}
 	/** Test Profil  */
@@ -379,6 +419,41 @@ namespace Dcp\AttributeIdentifiers {
 		const frame='frame';
 		/** [text] Texte */
 		const s_text='s_text';
+	}
+	/** Agents  */
+	class Tst_useragent extends Iuser {
+		/** [tab] Gardien */
+		const tst_tab_agent='tst_tab_agent';
+		/** [frame] Agent */
+		const tst_fr_agent='tst_fr_agent';
+		/** [text] Téléphone */
+		const tst_phone='tst_phone';
+		/** [int] Matricule */
+		const tst_mat='tst_mat';
+		/** [array] Contacts */
+		const tst_contact_t='tst_contact_t';
+		/** [docid("TST_USERAGENT")] Contact */
+		const tst_contactid='tst_contactid';
+		/** [longtext] Adresse */
+		const tst_contactaddr='tst_contactaddr';
+	}
+	/** Agency  */
+	class Tst_groupagency extends Igroup {
+		/** [frame] Agence */
+		const tst_fr_agency='tst_fr_agency';
+		/** [longtext] Adresse */
+		const tst_addr='tst_addr';
+		/** [docid("TST_USERAGENT")] Directeur */
+		const tst_resp='tst_resp';
+	}
+	/** Capacité  */
+	class Tst_rolecapacity extends Role {
+		/** [frame] Capacité */
+		const tst_fr_capacity='tst_fr_capacity';
+		/** [longtext] Résumé */
+		const tst_addr='tst_addr';
+		/** [docid("TST_USERAGENT")] Entraineur */
+		const tst_resp='tst_resp';
 	}
 	/** Test Famille default 1  */
 	class Tst_slashfamily1 {
@@ -449,6 +524,33 @@ namespace Dcp\AttributeIdentifiers {
 		const defaultphpfunc_docid='defaultphpfunc_docid';
 		/** [account] defafultphpfunc */
 		const defaultphpfunc_account='defaultphpfunc_account';
+	}
+	/** Test Famille 1  */
+	class Tst_badfammask {
+		/** [tab] Onglet */
+		const tst_tab='tst_tab';
+		/** [frame] Cadre Un */
+		const tst_frame='tst_frame';
+		/** [text] Titre */
+		const tst_title='tst_title';
+		/** [int] Nombre */
+		const tst_number='tst_number';
+		/** [date] Date */
+		const tst_date='tst_date';
+		/** [array] Tableau simple */
+		const tst_array='tst_array';
+		/** [text] Texte colonne */
+		const tst_coltext='tst_coltext';
+		/** [date] Date colonne */
+		const tst_coldate='tst_coldate';
+		/** [frame] Cadre Deux */
+		const tst_frame2='tst_frame2';
+		/** [text] Texte colonne */
+		const tst_text='tst_text';
+		/** [frame] TP1 */
+		const tst_p1='tst_p1';
+		/** [text] TP2 */
+		const tst_p2='tst_p2';
 	}
 	/** Test Famille 1  */
 	class Tst_badfamimp1 {
@@ -3783,14 +3885,14 @@ namespace Dcp\AttributeIdentifiers {
 		const tst_docid_title='tst_docid_title';
 	}
 	/** Test Famille 1  */
-	class Tst_badfamimp2 {
+	class Tst_badfamimp17 {
 		/** [frame] Cadre Un */
 		const tst_frame='tst_frame';
 		/** [text] Titre */
 		const tst_title='tst_title';
 		/** [text] No order */
 		const tst_noorder='tst_noorder';
-		/** [text] No type */
+		/** [text] Ncheckend */
 		const tst_errorder='tst_errorder';
 		/** [array] Tableau simple */
 		const tst_array='tst_array';
@@ -3798,6 +3900,50 @@ namespace Dcp\AttributeIdentifiers {
 		const tst_coltext='tst_coltext';
 		/** [date] Date colonne */
 		const tst_coldate='tst_coldate';
+	}
+	/** Bad Famille 18  */
+	class Tst_badfamimp18 {
+		/** [frame] Cadre Un */
+		const tst_frame1='tst_frame1';
+		/** [text] Titre */
+		const tst_title='tst_title';
+		/** [text] Texte 1 */
+		const tst_t1='tst_t1';
+		/** [text] Texte 2 */
+		const tst_t2='tst_t2';
+		/** [frame] Cadre Deux */
+		const tst_frame2='tst_frame2';
+		/** [text] Texte 3 */
+		const tst_t3='tst_t3';
+		/** [text] Texte 4 */
+		const tst_t4='tst_t4';
+		/** [array] Tableau simple */
+		const tst_array='tst_array';
+		/** [text] Texte colonne */
+		const tst_coltext='tst_coltext';
+		/** [date] Date colonne */
+		const tst_coldate='tst_coldate';
+	}
+	/** Test Famille 1  */
+	class Tst_badfamimp2 {
+		/** [frame] Cadre Un */
+		const tst_frame='tst_frame';
+		/** [text] Titre */
+		const tst_title='tst_title';
+		/** [int] Nombre */
+		const tst_number='tst_number';
+		/** [date] Date */
+		const tst_date='tst_date';
+		/** [array] Tableau simple */
+		const tst_array='tst_array';
+		/** [text] Texte colonne */
+		const tst_coltext='tst_coltext';
+		/** [date] Date colonne */
+		const tst_coldate='tst_coldate';
+		/** [text] No order */
+		const tst_noorder='tst_noorder';
+		/** [text] Ncheckend */
+		const tst_errorder='tst_errorder';
 	}
 	/** Test Attr 4  */
 	class Tst_badattr4 {
@@ -3950,9 +4096,6 @@ namespace Dcp\AttributeIdentifiers {
 	}
 	/** Cycle test  */
 	class Wtst_wffamimp9 extends Wdoc {
-	}
-	/** Test 1  */
-	class  {
 		/** [frame] Cadre Un */
 		const tst_frame='tst_frame';
 		/** [text] Titre */
@@ -4308,6 +4451,36 @@ namespace Dcp\AttributeIdentifiers {
 	}
 	/** Test Famille EXPCOLL  */
 	class Tst_expcoll1 {
+		/** [frame] Cadre Un */
+		const tst_frame1='tst_frame1';
+		/** [text] Titre */
+		const tst_title='tst_title';
+		/** [int] Nombre */
+		const tst_number='tst_number';
+		/** [date] Date */
+		const tst_date='tst_date';
+		/** [enum] Enum */
+		const tst_enum='tst_enum';
+		/** [text] Texte */
+		const tst_text='tst_text';
+		/** [file] Fichier */
+		const tst_file='tst_file';
+		/** [image] Image */
+		const tst_img='tst_img';
+		/** [tab] Onglet */
+		const tst_tab_i='tst_tab_i';
+		/** [frame] Cadre Deux */
+		const tst_frame2='tst_frame2';
+		/** [double] Double */
+		const tst_decimal='tst_decimal';
+		/** [longtext] Texte long */
+		const tst_longtext='tst_longtext';
+		/** [array] Tableau */
+		const tst_array='tst_array';
+		/** [docid("TST_EXPCOLLFAMILY1")] Doc */
+		const tst_docid='tst_docid';
+		/** [longtext] Autre texte */
+		const tst_othertexts='tst_othertexts';
 	}
 	/** Test Export Image  */
 	class Tst_export_image {
@@ -4755,14 +4928,24 @@ namespace Dcp\AttributeIdentifiers {
 		const tst_text1='tst_text1';
 		/** [text] Texte */
 		const tst_text2='tst_text2';
+		/** [enum] RGB */
+		const tst_enum='tst_enum';
+		/** [docid] Relation */
+		const tst_rel='tst_rel';
 		/** [date] Date */
 		const tst_date='tst_date';
 		/** [array("empty")] Tableau simple */
 		const tst_array='tst_array';
 		/** [text] Texte colonne */
 		const tst_coltext='tst_coltext';
+		/** [date] Dates */
+		const tst_dates='tst_dates';
+		/** [docid] Relation */
+		const tst_rel1='tst_rel1';
+		/** [docid] Relation */
+		const tst_rel2='tst_rel2';
 		/** [enum] Enum */
-		const tst_enum='tst_enum';
+		const tst_enums='tst_enums';
 	}
 	/** Test usefor S  */
 	class Tst_usefor_s {
@@ -5337,6 +5520,10 @@ namespace Dcp\AttributeIdentifiers {
 	/** Test Famille 5  */
 	class Tst_goodfamimp5 {
 		/** [frame] Frame */
+		const frame='frame';
+		/** [text] Text */
+		const text='text';
+		/** [frame] Frame */
 		const param_frame='param_frame';
 		/** [int] Int */
 		const param_int='param_int';
@@ -5370,6 +5557,8 @@ namespace Dcp\AttributeIdentifiers {
 		const tst_docid_1='tst_docid_1';
 		/** [docid("TST_GOODFAMIMPDOC")] Docid multiple */
 		const tst_docid_m='tst_docid_m';
+		/** [file] Fichier */
+		const tst_file='tst_file';
 		/** [htmltext] Htmltext */
 		const tst_htmltext='tst_htmltext';
 		/** [array] Tableau docid */
@@ -5552,6 +5741,28 @@ namespace Dcp\AttributeIdentifiers {
 	}
 	/** Cycle test invisible  */
 	class Tst_invisiblefamily1 {
+		/** [frame] Cadre Un */
+		const tst_frame1='tst_frame1';
+		/** [text] Titre */
+		const tst_title='tst_title';
+		/** [int] Nombre */
+		const tst_number='tst_number';
+		/** [text] Texte */
+		const tst_text='tst_text';
+		/** [tab] Onglet */
+		const tst_tab_i='tst_tab_i';
+		/** [frame] Cadre Deux */
+		const tst_frame2='tst_frame2';
+		/** [double] Double */
+		const tst_decimal='tst_decimal';
+		/** [longtext] Texte long */
+		const tst_longtext='tst_longtext';
+		/** [array] Tableau */
+		const tst_array='tst_array';
+		/** [docid("TST_INVISIBLEFAMILY1")] Doc */
+		const tst_docid='tst_docid';
+		/** [longtext] Autre texte */
+		const tst_othertexts='tst_othertexts';
 	}
 	/** Cycle test invisible  */
 	class Wtst_winvisible extends Wdoc {
@@ -5567,6 +5778,8 @@ namespace Dcp\AttributeIdentifiers {
 	}
 	/** Test Famille 1  */
 	class Tst_fammask {
+		/** [tab] Onglet */
+		const tst_tab='tst_tab';
 		/** [frame] Cadre Un */
 		const tst_frame='tst_frame';
 		/** [text] Titre */
@@ -5581,6 +5794,10 @@ namespace Dcp\AttributeIdentifiers {
 		const tst_coltext='tst_coltext';
 		/** [date] Date colonne */
 		const tst_coldate='tst_coldate';
+		/** [frame] Cadre Deux */
+		const tst_frame2='tst_frame2';
+		/** [text] Texte colonne */
+		const tst_text='tst_text';
 	}
 	/** Test Famille 1  */
 	class Tst_nd {
@@ -5650,6 +5867,291 @@ namespace Dcp\AttributeIdentifiers {
 		const tst_folder='tst_folder';
 		/** [docid("DIR")] Dossiers niveau 2 */
 		const tst_mdirs='tst_mdirs';
+	}
+	/** test Ordre Auto Famille A  */
+	class Tst_orderautoa {
+		/** [frame] a1000 */
+		const tst_af1000='tst_af1000';
+		/** [text] a2000 */
+		const tst_a2000='tst_a2000';
+		/** [text] a3000 */
+		const tst_a3000='tst_a3000';
+		/** [text] a4000 */
+		const tst_a4000='tst_a4000';
+		/** [array] a5000 */
+		const tst_aa5000='tst_aa5000';
+		/** [text] a6000 */
+		const tst_a6000='tst_a6000';
+		/** [text] a7000 */
+		const tst_a7000='tst_a7000';
+		/** [tab] a8000 */
+		const tst_at8000='tst_at8000';
+		/** [frame] a9000 */
+		const tst_af9000='tst_af9000';
+		/** [text] a10000 */
+		const tst_a10000='tst_a10000';
+		/** [text] a11000 */
+		const tst_a11000='tst_a11000';
+		/** [text] a12000 */
+		const tst_a12000='tst_a12000';
+		/** [frame] a13000 */
+		const tst_af13000='tst_af13000';
+		/** [text] a14000 */
+		const tst_a14000='tst_a14000';
+		/** [text] a15000 */
+		const tst_a15000='tst_a15000';
+		/** [array] a16000 */
+		const tst_aa16000='tst_aa16000';
+		/** [text] a17000 */
+		const tst_a17000='tst_a17000';
+		/** [text] a18000 */
+		const tst_a18000='tst_a18000';
+		/** [text] a19000 */
+		const tst_a19000='tst_a19000';
+	}
+	/** test Ordre Auto Famille B  */
+	class Tst_orderautob extends Tst_orderautoa {
+		/** [frame] b500 */
+		const tst_bc500='tst_bc500';
+		/** [text] b550 */
+		const tst_b550='tst_b550';
+		/** [text] b600 */
+		const tst_b600='tst_b600';
+		/** [text] b2500 */
+		const tst_b2500='tst_b2500';
+		/** [text] b7200 */
+		const tst_b7200='tst_b7200';
+		/** [text] b7100 */
+		const tst_b7100='tst_b7100';
+		/** [tab] b20000 */
+		const tst_bt20000='tst_bt20000';
+		/** [frame] b21000 */
+		const tst_bf21000='tst_bf21000';
+		/** [text] b22000 */
+		const tst_b22000='tst_b22000';
+		/** [text] b23000 */
+		const tst_b23000='tst_b23000';
+		/** [tab] b7300 */
+		const tst_bt7300='tst_bt7300';
+		/** [frame] b7400 */
+		const tst_bf7400='tst_bf7400';
+		/** [text] b7500 */
+		const tst_b7500='tst_b7500';
+		/** [text] b7600 */
+		const tst_b7600='tst_b7600';
+	}
+	/** test Ordre Auto Famille C  */
+	class Tst_orderautoc extends Tst_orderautob {
+		/** [tab] c19500 */
+		const tst_ct19500='tst_ct19500';
+		/** [frame] c19600 */
+		const tst_cf19600='tst_cf19600';
+		/** [text] c19700 */
+		const tst_c19700='tst_c19700';
+		/** [text] c19800 */
+		const tst_c19800='tst_c19800';
+	}
+	/** test Ordre Auto Famille D  */
+	class Tst_orderautod extends Tst_orderautob {
+	}
+	/** test Ordre Auto Famille E  */
+	class Tst_orderautoe extends Tst_orderautoc {
+		/** [tab] c25000 */
+		const tst_et25000='tst_et25000';
+		/** [frame] c25100 */
+		const tst_ef25100='tst_ef25100';
+		/** [text] c25200 */
+		const tst_e25200='tst_e25200';
+	}
+	/** Test Ordre Relatif Famille A  */
+	class Tst_orderrela {
+		/** [frame] a1000 */
+		const tst_af1000='tst_af1000';
+		/** [text] a2000 */
+		const tst_a2000='tst_a2000';
+		/** [text] a1000 */
+		const tst_a4000='tst_a4000';
+		/** [text] a3000 */
+		const tst_a3000='tst_a3000';
+		/** [array] a5000 */
+		const tst_aa5000='tst_aa5000';
+		/** [text] a6000 */
+		const tst_a6000='tst_a6000';
+		/** [text] a7000 */
+		const tst_a7000='tst_a7000';
+		/** [tab] a8000 */
+		const tst_at8000='tst_at8000';
+		/** [frame] a9000 */
+		const tst_af9000='tst_af9000';
+		/** [text] a10000 */
+		const tst_a10000='tst_a10000';
+		/** [text] a11000 */
+		const tst_a11000='tst_a11000';
+		/** [text] a12000 */
+		const tst_a12000='tst_a12000';
+		/** [frame] a13000 */
+		const tst_af13000='tst_af13000';
+		/** [text] a14000 */
+		const tst_a14000='tst_a14000';
+		/** [text] a15000 */
+		const tst_a15000='tst_a15000';
+		/** [array] a16000 */
+		const tst_aa16000='tst_aa16000';
+		/** [text] a17000 */
+		const tst_a17000='tst_a17000';
+		/** [text] a18000 */
+		const tst_a18000='tst_a18000';
+		/** [text] a19000 */
+		const tst_a19000='tst_a19000';
+	}
+	/** Test Ordre Relatif Famille B  */
+	class Tst_orderrelb extends Tst_orderrela {
+		/** [frame] b500 */
+		const tst_bc500='tst_bc500';
+		/** [text] b550 */
+		const tst_b550='tst_b550';
+		/** [text] b600 */
+		const tst_b600='tst_b600';
+		/** [text] b2500 */
+		const tst_b2500='tst_b2500';
+		/** [text] b7200 */
+		const tst_b7200='tst_b7200';
+		/** [text] b7100 */
+		const tst_b7100='tst_b7100';
+		/** [tab] b20000 */
+		const tst_bt20000='tst_bt20000';
+		/** [frame] b21000 */
+		const tst_bf21000='tst_bf21000';
+		/** [text] b22000 */
+		const tst_b22000='tst_b22000';
+		/** [text] b23000 */
+		const tst_b23000='tst_b23000';
+		/** [tab] b7300 */
+		const tst_bt7300='tst_bt7300';
+		/** [frame] b7400 */
+		const tst_bf7400='tst_bf7400';
+		/** [text] b7500 */
+		const tst_b7500='tst_b7500';
+		/** [text] b7600 */
+		const tst_b7600='tst_b7600';
+	}
+	/** Test Ordre Relatif Famille C  */
+	class Tst_orderrelc extends Tst_orderrelb {
+		/** [tab] c19500 */
+		const tst_ct19500='tst_ct19500';
+		/** [frame] c19600 */
+		const tst_cf19600='tst_cf19600';
+		/** [text] c19700 */
+		const tst_c19700='tst_c19700';
+		/** [text] c19800 */
+		const tst_c19800='tst_c19800';
+	}
+	/** Test Ordre Relatif Famille D  */
+	class Tst_orderreld extends Tst_orderrelb {
+	}
+	/** Test Ordre Relatif Famille E  */
+	class Tst_orderrele extends Tst_orderrelc {
+		/** [tab] c25000 */
+		const tst_et25000='tst_et25000';
+		/** [frame] c25100 */
+		const tst_ef25100='tst_ef25100';
+		/** [text] c25200 */
+		const tst_e25200='tst_e25200';
+	}
+	/** test Ordre Numérique Famille A  */
+	class Tst_ordernuma {
+		/** [frame] a1000 */
+		const tst_af1000='tst_af1000';
+		/** [text] a2000 */
+		const tst_a2000='tst_a2000';
+		/** [text] a3000 */
+		const tst_a3000='tst_a3000';
+		/** [text] a4000 */
+		const tst_a4000='tst_a4000';
+		/** [array] a5000 */
+		const tst_aa5000='tst_aa5000';
+		/** [text] a6000 */
+		const tst_a6000='tst_a6000';
+		/** [text] a7000 */
+		const tst_a7000='tst_a7000';
+		/** [tab] a8000 */
+		const tst_at8000='tst_at8000';
+		/** [frame] a9000 */
+		const tst_af9000='tst_af9000';
+		/** [text] a10000 */
+		const tst_a10000='tst_a10000';
+		/** [text] a11000 */
+		const tst_a11000='tst_a11000';
+		/** [text] a12000 */
+		const tst_a12000='tst_a12000';
+		/** [frame] a13000 */
+		const tst_af13000='tst_af13000';
+		/** [text] a14000 */
+		const tst_a14000='tst_a14000';
+		/** [text] a15000 */
+		const tst_a15000='tst_a15000';
+		/** [array] a16000 */
+		const tst_aa16000='tst_aa16000';
+		/** [text] a17000 */
+		const tst_a17000='tst_a17000';
+		/** [text] a18000 */
+		const tst_a18000='tst_a18000';
+		/** [text] a19000 */
+		const tst_a19000='tst_a19000';
+	}
+	/** test Ordre Numérique Famille B  */
+	class Tst_ordernumb extends Tst_ordernuma {
+		/** [frame] b500 */
+		const tst_bc500='tst_bc500';
+		/** [text] b550 */
+		const tst_b550='tst_b550';
+		/** [text] b600 */
+		const tst_b600='tst_b600';
+		/** [text] b2500 */
+		const tst_b2500='tst_b2500';
+		/** [text] b7200 */
+		const tst_b7200='tst_b7200';
+		/** [text] b7100 */
+		const tst_b7100='tst_b7100';
+		/** [tab] b20000 */
+		const tst_bt20000='tst_bt20000';
+		/** [frame] b21000 */
+		const tst_bf21000='tst_bf21000';
+		/** [text] b22000 */
+		const tst_b22000='tst_b22000';
+		/** [text] b23000 */
+		const tst_b23000='tst_b23000';
+		/** [tab] b7300 */
+		const tst_bt7300='tst_bt7300';
+		/** [frame] b7400 */
+		const tst_bf7400='tst_bf7400';
+		/** [text] b7500 */
+		const tst_b7500='tst_b7500';
+		/** [text] b7600 */
+		const tst_b7600='tst_b7600';
+	}
+	/** test Ordre Numérique Famille C  */
+	class Tst_ordernumc extends Tst_ordernumb {
+		/** [tab] c19500 */
+		const tst_ct19500='tst_ct19500';
+		/** [frame] c19600 */
+		const tst_cf19600='tst_cf19600';
+		/** [text] c19700 */
+		const tst_c19700='tst_c19700';
+		/** [text] c19800 */
+		const tst_c19800='tst_c19800';
+	}
+	/** test Ordre Numérique Famille D  */
+	class Tst_ordernumd extends Tst_ordernumb {
+	}
+	/** test Ordre Numérique Famille E  */
+	class Tst_ordernume extends Tst_ordernumc {
+		/** [tab] c25000 */
+		const tst_et25000='tst_et25000';
+		/** [frame] c25100 */
+		const tst_ef25100='tst_ef25100';
+		/** [text] c25200 */
+		const tst_e25200='tst_e25200';
 	}
 	/** Test Profil  */
 	class Tst_profil {
@@ -5825,6 +6327,38 @@ namespace Dcp\AttributeIdentifiers {
 	}
 	/** Test Update  */
 	class Tst_updtattr {
+		/** [frame] Cadre Un */
+		const tst_frame='tst_frame';
+		/** [text] Titre */
+		const tst_title='tst_title';
+		/** [docid("TST_UPDTATTR")] docid latest */
+		const tst_rellatest='tst_rellatest';
+		/** [docid("TST_UPDTATTR")] docid mul */
+		const tst_relmul='tst_relmul';
+		/** [enum] enum */
+		const tst_enum='tst_enum';
+		/** [enum] enums */
+		const tst_enums='tst_enums';
+		/** [account] rédacteur */
+		const tst_redactor='tst_redactor';
+		/** [array] Atomics */
+		const tst_t_array='tst_t_array';
+		/** [double] double */
+		const tst_doubles='tst_doubles';
+		/** [int] int */
+		const tst_ints='tst_ints';
+		/** [text] text */
+		const tst_texts='tst_texts';
+		/** [array] Relations */
+		const tst_t_array3='tst_t_array3';
+		/** [docid("TST_UPDTATTR")] docid latest */
+		const tst_rellatests='tst_rellatests';
+		/** [docid("TST_UPDTATTR")] docid fix */
+		const tst_relfixs='tst_relfixs';
+		/** [docid("TST_UPDTATTR")] docid mul */
+		const tst_relmuls='tst_relmuls';
+		/** [enum] enum */
+		const tst_enums2='tst_enums2';
 	}
 	/** Test visibility  */
 	class Tst_famvisibility {

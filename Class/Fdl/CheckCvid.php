@@ -36,7 +36,7 @@ class CheckCvid extends CheckData
             $d = new_doc('', $this->folderName);
             if (!$d->isAlive()) {
                 $this->addError(ErrorCode::getError('CVID0001', $this->folderName, $this->doc->name));
-            } elseif (!is_a($d, "CVDoc")) {
+            } elseif (!is_a($d, "\\Dcp\\Family\\CVDoc")) {
                 $this->addError(ErrorCode::getError('CVID0002', $this->folderName, $this->doc->name));
             }
         }

@@ -74,7 +74,7 @@ function impcard(Action & $action)
     $action->lay->eset("TITLE", $doc->getTitle());
     if (($zonebodycard == "") && ($vid != "")) {
         /**
-         * @var CVDOC $cvdoc
+         * @var \Dcp\Family\CVDOC $cvdoc
          */
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
         $tview = $cvdoc->getView($vid);

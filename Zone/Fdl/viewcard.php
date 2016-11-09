@@ -105,7 +105,7 @@ function viewcard(Action & $action)
         // special controlled view
         
         /**
-         * @var $cvdoc CVDOC
+         * @var $cvdoc \Dcp\Family\CVDOC
          */
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
         $cvdoc->set($doc);

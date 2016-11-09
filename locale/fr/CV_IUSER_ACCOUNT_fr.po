@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-20T11:54:53+01:00\n"
-"PO-Revision-Date: 2013-10-10 15:50+0200\n"
+"PO-Revision-Date: 2016-11-09 11:35+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -21,7 +21,7 @@ msgstr "Modifier le suppléant"
 
 #: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#label#EUSER"
-msgstr "Admininistrer"
+msgstr "Administrer"
 
 #: App/Fusers/accountprofil.ods.csv
 msgid "CV_IUSER_ACCOUNT#menu#EGROUP"

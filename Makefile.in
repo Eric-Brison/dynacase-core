@@ -130,7 +130,7 @@ publish-test:
 webinst-all: webinst webinst-test
 
 stub:
-	php  $(utildir)/genStubFamilyClass.php App/Fdl/fdl.ods App/Fusers/account.ods App/Fdl/searches.ods App/Fdl/workflows.ods App/Fdl/misc.ods App/Fdl/freeaction.ods > Class/Stubs/stubCoreFamilies.php
+	php  $(utildir)/genStubFamilyClass.php App/Fdl/fdl.ods App/Fusers/account.ods App/Fdl/searches.ods App/Fdl/workflows.ods App/Fdl/misc.ods App/Fdl/freeaction.ods App/Fdl/cv_init.csv > Class/Stubs/stubCoreFamilies.php
 	php  $(utildir)/genStubFamilyClass.php Test/input/family/PU*ods > Class/Stubs/stubTestFamilies.php
 
 clean:

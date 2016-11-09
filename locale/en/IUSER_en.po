@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-20T11:54:53+01:00\n"
-"PO-Revision-Date: 2016-07-26 09:48+0200\n"
+"PO-Revision-Date: 2016-11-09 11:02+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
 "Language: English\n"
@@ -23,7 +23,7 @@ msgid "IUSER#us_activateaccount"
 msgstr "Activate account"
 
 msgid "IUSER#us_activateaccount#submenu"
-msgstr "Account"
+msgstr "Manage account"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_daydelay"
@@ -41,7 +41,7 @@ msgid "IUSER#us_desactivateaccount"
 msgstr "Deactivate account"
 
 msgid "IUSER#us_desactivateaccount#submenu"
-msgstr "Account"
+msgstr "Manage account"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_expires"
@@ -146,7 +146,7 @@ msgid "IUSER#us_menuresetlogfails"
 msgstr "Reset login failures"
 
 msgid "IUSER#us_menuresetlogfails#submenu"
-msgstr "Account"
+msgstr "Manage account"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_passdelay"
