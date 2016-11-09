@@ -11,13 +11,12 @@
  */
 /**
  */
-
-include_once ('FDL/Class.Doc.php');
+namespace Dcp\Core;
 /**
  * Control view Class
  */
 use \Dcp\AttributeIdentifiers\Cvdoc as MyAttributes;
-class CVDoc extends Doc
+class CVDoc extends \Dcp\Family\Base
 {
     /**
      * CVDoc has its own special access depend on special views
@@ -38,7 +37,7 @@ class CVDoc extends Doc
     var $attrPrefix = "CVI"; // prefix attribute
     
     /**
-     * @var Doc instance document
+     * @var \Doc instance document
      */
     public $doc = null;
     /**
@@ -51,29 +50,48 @@ class CVDoc extends Doc
         // first construct acl array
         if (isset($this->fromid)) $this->defProfFamId = $this->fromid; // it's a profil itself
         // don't use Doc constructor because it could call this constructor => infinitive loop
-        DocCtrl::__construct($dbaccess, $id, $res, $dbid);
+        \DocCtrl::__construct($dbaccess, $id, $res, $dbid);
         
         $this->setAcls();
     }
-
+    
     public function preConsultation()
     {
         $err = parent::preConsultation();
         $this->injectCss();
+        
+        $ids = $this->getMultipleRawValues(MyAttributes::cv_idview);
+        $menus = $this->getMultipleRawValues(MyAttributes::cv_menu);
+        $vLabel = $this->getMultipleRawValues(MyAttributes::cv_lview);
+        foreach ($menus as $k => $menuId) {
+            
+            if ($menuId) {
+                $menuLabel = $this->getLocaleViewMenu($ids[$k]);
+                
+                if ($menuLabel && $menuLabel !== $menuId) {
+                    $this->setValue(MyAttributes::cv_menu, sprintf("%s (%s)", $menuId, $menuLabel) , $k);
+                }
+            }
+            $label = $this->getLocaleViewLabel($ids[$k]);
+            if ($vLabel[$k] && $vLabel[$k] !== $label) {
+                $this->setValue(MyAttributes::cv_lview, sprintf("%s (%s)", $vLabel[$k], $label) , $k);
+            }
+        }
+        
         return $err;
     }
-
+    
     public function preEdition()
     {
         $err = parent::preEdition();
         $this->injectCss();
         return $err;
     }
-
+    
     protected function injectCss()
     {
         global $action;
-        $action->parent->addCssRef("FDL:cvdoc_array_view.css");
+        $action->parent->addCssRef("FDL/Layout/cvdoc_array_view.css");
     }
     
     protected function postAffect(array $data, $more, $reset)
@@ -98,7 +116,7 @@ class CVDoc extends Doc
             $this->acls[$cvk] = $cvk;
         }
     }
-
+    
     function computeCreationViewLabel($idCreationView)
     {
         if ('' !== $idCreationView) {
@@ -106,10 +124,7 @@ class CVDoc extends Doc
             $viewLabels = $this->getAttributeValue(MyAttributes::cv_lview);
             $viewIndex = array_search($idCreationView, $viewIds);
             if (false !== $viewIndex) {
-                return sprintf("%s (%s)",
-                    $viewLabels[$viewIndex],
-                    $idCreationView
-                );
+                return sprintf("%s (%s)", $viewLabels[$viewIndex], $idCreationView);
             } else {
                 return ' ';
             }
@@ -124,7 +139,7 @@ class CVDoc extends Doc
         $sug = array();
         $this->nbId++;
         
-        $dc = new DocCtrl($this->dbaccess);
+        $dc = new \DocCtrl($this->dbaccess);
         $originals = $dc->dacls;
         
         if (!preg_match('!^[0-9a-z_-]+$!i', $value)) {
@@ -161,20 +176,17 @@ class CVDoc extends Doc
             'sug' => $sug
         );
     }
-
+    
     function isCreationViewValid($idCreationView, $labelCreationView, $idViews)
     {
         $err = '';
         if ('' !== $idCreationView) {
-            if (!is_array($idViews) ||
-                !in_array($idCreationView, $idViews)
-            ) {
-                $err = sprintf(___("creation view '%s' does not exists", "CVDOC"), $labelCreationView);
+            if (!is_array($idViews) || !in_array($idCreationView, $idViews)) {
+                $err = sprintf(___("creation view '%s' does not exists", "CVDOC") , $labelCreationView);
             }
         }
         return $err;
     }
-
     /**
      * Return view properties
      * @param $vid
@@ -280,10 +292,15 @@ class CVDoc extends Doc
     
     function docControl($aclname, $strict = false)
     {
-        return Doc::control($aclname, $strict);
+        return \Doc::control($aclname, $strict);
     }
     /**
      * Special control in case of dynamic controlled profil
+     *
+     * @param string $aclname
+     * @param bool   $strict
+     *
+     * @return string
      */
     function control($aclname, $strict = false)
     {

@@ -2,29 +2,29 @@
 namespace Dcp\Family {
 	/** de base  */
 	class Base extends Document { const familyName="BASE";}
-	/** dossier  */
+	/** Dossier  */
 	class Dir extends \Dir { const familyName="DIR";}
-	/** profil de document  */
+	/** Profil de document  */
 	class Pdoc extends \PDoc { const familyName="PDOC";}
-	/** profil de dossier  */
+	/** Profil de dossier  */
 	class Pdir extends \PDir { const familyName="PDIR";}
-	/** profil de recherche  */
+	/** Profil de recherche  */
 	class Psearch extends \PDocSearch { const familyName="PSEARCH";}
-	/** profil de famille  */
+	/** Profil de famille  */
 	class Pfam extends \PFam { const familyName="PFAM";}
-	/** porte-documents  */
+	/** Porte-documents  */
 	class Basket extends Dir { const familyName="BASKET";}
 	/** Aide en ligne  */
 	class Helppage extends \Dcp\Core\HelpPage { const familyName="HELPPAGE";}
-	/** mail  */
+	/** Mail  */
 	class Mail extends \Dcp\Core\MailEdit { const familyName="MAIL";}
-	/** modèle de mail  */
+	/** Modèle de mail  */
 	class Mailtemplate extends \Dcp\Core\MailTemplate { const familyName="MAILTEMPLATE";}
-	/** message envoyé  */
+	/** Message envoyé  */
 	class Sentmessage extends \Dcp\Core\SentEmail { const familyName="SENTMESSAGE";}
 	/** Archive  */
 	class Archiving extends \Dcp\Core\Archiving { const familyName="ARCHIVING";}
-	/** post it  */
+	/** Post-it  */
 	class Postit extends \Dcp\Core\PostitView { const familyName="POSTIT";}
 	/** Groupe de personnes  */
 	class Group extends \Dcp\Core\AccountCollection { const familyName="GROUP";}
@@ -34,7 +34,7 @@ namespace Dcp\Family {
 	class Igroup extends \Dcp\Core\GroupAccount { const familyName="IGROUP";}
 	/** utilisateur  */
 	class Iuser extends \Dcp\Core\UserAccount { const familyName="IUSER";}
-	/** recherche  */
+	/** Recherche  */
 	class Search extends \DocSearch { const familyName="SEARCH";}
 	/** Recherche groupée  */
 	class Msearch extends \Dcp\Core\GroupedSearch { const familyName="MSEARCH";}
@@ -44,17 +44,17 @@ namespace Dcp\Family {
 	class Ssearch extends \Dcp\Core\SpecialSearch { const familyName="SSEARCH";}
 	/** Rapport  */
 	class Report extends \Dcp\Core\Report { const familyName="REPORT";}
-	/** cycle de vie  */
+	/** Cycle de vie  */
 	class Wdoc extends \WDoc { const familyName="WDOC";}
-	/** masque de saisie  */
+	/** Masque de saisie  */
 	class Mask extends \Dcp\Core\Mask { const familyName="MASK";}
-	/** Contrôle de vues  */
-	class Cvdoc extends \CVDoc { const familyName="CVDOC";}
-	/** état libre  */
+	/**   */
+	class Cvdoc extends \Dcp\Core\Cvdoc { const familyName="CVDOC";}
+	/** État libre  */
 	class Freestate extends Document { const familyName="FREESTATE";}
-	/** accord  */
+	/** Accord  */
 	class Wask extends \Dcp\Core\Wask { const familyName="WASK";}
-	/** minuteur  */
+	/** Minuteur  */
 	class Timer extends \Dcp\Core\Timer { const familyName="TIMER";}
 	/** fichiers  */
 	class File extends \Dcp\Core\File { const familyName="FILE";}
@@ -68,28 +68,28 @@ namespace Dcp\Family {
 	class Guidecard extends Dir { const familyName="GUIDECARD";}
 	/** intercalaire dynamique  */
 	class Sguidecard extends Dsearch { const familyName="SGUIDECARD";}
-	/** traitement  */
+	/** Traitement  */
 	class Batch extends \Dcp\Core\BatchDocument { const familyName="BATCH";}
-	/** processus  */
+	/** Processus  */
 	class Exec extends \Dcp\Core\ExecProcessus { const familyName="EXEC";}
-	/** publipostage  */
+	/** Publipostage  */
 	class Publimail extends \Dcp\Core\Emailing { const familyName="PUBLIMAIL";}
-	/** action basique  */
+	/** Action basique  */
 	class Basicbatch extends Batch { const familyName="BASICBATCH";}
 }
 namespace Dcp\AttributeIdentifiers {
 	/** de base  */
 	class Base {
-		/** [frame] basique */
+		/** [frame] Basique */
 		const fr_basic='fr_basic';
-		/** [text] titre */
+		/** [text] Titre */
 		const ba_title='ba_title';
 	}
-	/** dossier  */
+	/** Dossier  */
 	class Dir extends Base {
-		/** [longtext] description */
+		/** [longtext] Description */
 		const ba_desc='ba_desc';
-		/** [color] couleur intercalaire */
+		/** [color] Couleur intercalaire */
 		const gui_color='gui_color';
 		/** [enum] Utilisable comme flux RSS */
 		const gui_isrss='gui_isrss';
@@ -97,46 +97,46 @@ namespace Dcp\AttributeIdentifiers {
 		const gui_sysrss='gui_sysrss';
 		/** [frame] Restrictions */
 		const fld_fr_rest='fld_fr_rest';
-		/** [enum] tout ou rien */
+		/** [enum] Tout ou rien */
 		const fld_allbut='fld_allbut';
-		/** [array] familles filtrées */
+		/** [array] Familles filtrées */
 		const fld_tfam='fld_tfam';
-		/** [text] familles (titre) */
+		/** [text] Familles (titre) */
 		const fld_fam='fld_fam';
-		/** [docid('-1')] familles */
+		/** [docid('-1')] Familles */
 		const fld_famids='fld_famids';
-		/** [enum] restriction sous famille */
+		/** [enum] Restriction sous famille */
 		const fld_subfam='fld_subfam';
 		/** [frame] Profils par défaut */
 		const fld_fr_prof='fld_fr_prof';
-		/** [text] profil par défaut de document (titre) */
+		/** [text] Profil par défaut de document (titre) */
 		const fld_pdoc='fld_pdoc';
-		/** [docid('PDOC')] profil par défaut de document */
+		/** [docid('PDOC')] Profil par défaut de document */
 		const fld_pdocid='fld_pdocid';
-		/** [text] profil par défaut de dossier (titre) */
+		/** [text] Profil par défaut de dossier (titre) */
 		const fld_pdir='fld_pdir';
-		/** [docid('PDIR')] profil par défaut de dossier */
+		/** [docid('PDIR')] Profil par défaut de dossier */
 		const fld_pdirid='fld_pdirid';
-		/** [menu] ouvrir */
+		/** [menu] Ouvrir */
 		const fld_open='fld_open';
-		/** [menu] insérer le porte-document */
+		/** [menu] Insérer le porte-document */
 		const fld_copybasket='fld_copybasket';
-		/** [menu] ouvrir comme une chemise */
+		/** [menu] Ouvrir comme une chemise */
 		const fld_openfolio='fld_openfolio';
-		/** [menu] insérer des documents */
+		/** [menu] Insérer des documents */
 		const fld_insertdoc='fld_insertdoc';
 		/** [menu] RSS visible/masquée aux utilisateurs */
 		const fld_setsysrss='fld_setsysrss';
 	}
-	/** profil de document  */
+	/** Profil de document  */
 	class Pdoc extends Base {
-		/** [longtext] description */
+		/** [longtext] Description */
 		const prf_desc='prf_desc';
-		/** [frame] dynamique */
+		/** [frame] Dynamique */
 		const dpdoc_fr_dyn='dpdoc_fr_dyn';
-		/** [docid] family id */
+		/** [docid] Famille (id) */
 		const dpdoc_famid='dpdoc_famid';
-		/** [text] famille */
+		/** [text] Famille */
 		const dpdoc_fam='dpdoc_fam';
 		/** [action] Accessibilités */
 		const prf_access='prf_access';
@@ -147,20 +147,20 @@ namespace Dcp\AttributeIdentifiers {
 		/** [menu] Forcer la propagation du profil */
 		const prf_forcecomputing='prf_forcecomputing';
 	}
-	/** profil de dossier  */
+	/** Profil de dossier  */
 	class Pdir extends Pdoc {
 	}
-	/** profil de recherche  */
+	/** Profil de recherche  */
 	class Psearch extends Pdoc {
 	}
-	/** profil de famille  */
+	/** Profil de famille  */
 	class Pfam extends Pdoc {
 	}
-	/** porte-documents  */
+	/** Porte-documents  */
 	class Basket extends Dir {
-		/** [menu] insérer le porte-document */
+		/** [menu] Insérer le porte-document */
 		const fld_copybasket='fld_copybasket';
-		/** [menu] vider */
+		/** [menu] Vider */
 		const fld_clear='fld_clear';
 	}
 	/** Aide en ligne  */
@@ -198,7 +198,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [text] Langue */
 		const help_p_lang_key='help_p_lang_key';
 	}
-	/** mail  */
+	/** Mail  */
 	class Mail {
 		/** [frame] Adresses */
 		const mail_fr='mail_fr';
@@ -208,13 +208,13 @@ namespace Dcp\AttributeIdentifiers {
 		const mail_dest='mail_dest';
 		/** [enum]  */
 		const mail_copymode='mail_copymode';
-		/** [docid] id destinataire */
+		/** [docid] Id destinataire */
 		const mail_recipid='mail_recipid';
-		/** [text] destinataire */
+		/** [text] Destinataire */
 		const mail_recip='mail_recip';
 		/** [enum] Notif. */
 		const mail_sendformat='mail_sendformat';
-		/** [text] sujet */
+		/** [text] Sujet */
 		const mail_subject='mail_subject';
 		/** [enum] Enregistrer une copie */
 		const mail_savecopy='mail_savecopy';
@@ -225,7 +225,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [enum] Format */
 		const mail_format='mail_format';
 	}
-	/** modèle de mail  */
+	/** Modèle de mail  */
 	class Mailtemplate {
 		/** [frame] Entête */
 		const tmail_fr='tmail_fr';
@@ -245,11 +245,11 @@ namespace Dcp\AttributeIdentifiers {
 		const tmail_dest='tmail_dest';
 		/** [enum] - */
 		const tmail_copymode='tmail_copymode';
-		/** [enum] type */
+		/** [enum] Type */
 		const tmail_desttype='tmail_desttype';
-		/** [text] destinataire */
+		/** [text] Destinataire */
 		const tmail_recip='tmail_recip';
-		/** [text] sujet */
+		/** [text] Sujet */
 		const tmail_subject='tmail_subject';
 		/** [frame] Contenu */
 		const tmail_fr_content='tmail_fr_content';
@@ -266,7 +266,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [enum] Format */
 		const tmail_format='tmail_format';
 	}
-	/** message envoyé  */
+	/** Message envoyé  */
 	class Sentmessage {
 		/** [frame] Identification */
 		const emsg_fr_ident='emsg_fr_ident';
@@ -332,7 +332,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [menu] Vider l'archive de son contenu */
 		const arc_clear='arc_clear';
 	}
-	/** post it  */
+	/** Post-it  */
 	class Postit {
 		/** [frame] Texte */
 		const pit_fr_text='pit_fr_text';
@@ -340,25 +340,25 @@ namespace Dcp\AttributeIdentifiers {
 		const pit_title='pit_title';
 		/** [array] Commentaires */
 		const pit_tcom='pit_tcom';
-		/** [longtext] commentaire */
+		/** [longtext] Commentaire */
 		const pit_com='pit_com';
-		/** [date] date */
+		/** [date] Date */
 		const pit_date='pit_date';
-		/** [docid] id utilisateur */
+		/** [docid] Id utilisateur */
 		const pit_iduser='pit_iduser';
-		/** [text] utilisateur */
+		/** [text] Utilisateur */
 		const pit_user='pit_user';
-		/** [color] couleur */
+		/** [color] Couleur */
 		const pit_color='pit_color';
 		/** [frame] Attachement */
 		const pit_fr_doc='pit_fr_doc';
-		/** [docid] id doc attaché */
+		/** [docid] Id doc attaché */
 		const pit_idadoc='pit_idadoc';
-		/** [text] doc attaché */
+		/** [text] Doc attaché */
 		const pit_adoc='pit_adoc';
-		/** [menu] voir le document associé */
+		/** [menu] Voir le document associé */
 		const pit_viewdoc='pit_viewdoc';
-		/** [frame] édition */
+		/** [frame] Édition */
 		const pit_fr_edit='pit_fr_edit';
 		/** [longtext] Nouveau commentaire */
 		const pit_ncom='pit_ncom';
@@ -507,47 +507,47 @@ namespace Dcp\AttributeIdentifiers {
 		/** [menu] Actualiser les utilisateurs */
 		const us_inituser='us_inituser';
 	}
-	/** recherche  */
+	/** Recherche  */
 	class Search extends Base {
 		/** [account] Auteur */
 		const se_author='se_author';
-		/** [color] couleur intercalaire */
+		/** [color] Couleur intercalaire */
 		const gui_color='gui_color';
 		/** [enum] Utilisable comme flux RSS */
 		const gui_isrss='gui_isrss';
 		/** [enum] Flux RSS système */
 		const gui_sysrss='gui_sysrss';
-		/** [enum] à utiliser dans les menus */
+		/** [enum] À utiliser dans les menus */
 		const se_memo='se_memo';
-		/** [frame] critère */
+		/** [frame] Critère */
 		const se_crit='se_crit';
-		/** [text] mot-clef */
+		/** [text] Mot-clef */
 		const se_key='se_key';
-		/** [enum] révision */
+		/** [enum] Révision */
 		const se_latest='se_latest';
-		/** [enum] mode  */
+		/** [enum] Mode  */
 		const se_case='se_case';
-		/** [text] famille */
+		/** [text] Famille */
 		const se_fam='se_fam';
-		/** [docid] famille (id) */
+		/** [docid] Famille (id) */
 		const se_famid='se_famid';
-		/** [enum] inclure les documents système */
+		/** [enum] Inclure les documents système */
 		const se_sysfam='se_sysfam';
-		/** [docid] dossier racine */
+		/** [docid] Dossier racine */
 		const se_idfld='se_idfld';
-		/** [text] à partir du dossier */
+		/** [text] À partir du dossier */
 		const se_cfld='se_cfld';
-		/** [enum] dans la poubelle */
+		/** [enum] Dans la poubelle */
 		const se_trash='se_trash';
-		/** [docid("ARCHIVING")] dans l'archive */
+		/** [docid("ARCHIVING")] Dans l'archive */
 		const se_archive='se_archive';
-		/** [int] profondeur de recherche */
+		/** [int] Profondeur de recherche */
 		const se_sublevel='se_sublevel';
-		/** [text] requête sql */
+		/** [text] Requête sql */
 		const se_sqlselect='se_sqlselect';
-		/** [docid] id dossier père courant */
+		/** [docid] Id dossier père courant */
 		const se_idcfld='se_idcfld';
-		/** [text] dossier père courant */
+		/** [text] Dossier père courant */
 		const se_ccfld='se_ccfld';
 		/** [text] Trié par */
 		const se_orderby='se_orderby';
@@ -557,20 +557,20 @@ namespace Dcp\AttributeIdentifiers {
 		const se_acl='se_acl';
 		/** [text] Requête statique */
 		const se_static='se_static';
-		/** [menu] ouvrir */
+		/** [menu] Ouvrir */
 		const se_open='se_open';
-		/** [menu] ouvrir comme une chemise */
+		/** [menu] Ouvrir comme une chemise */
 		const se_openfolio='se_openfolio';
 		/** [menu] RSS visible/masquée aux utilisateurs */
 		const se_setsysrss='se_setsysrss';
 	}
 	/** Recherche groupée  */
 	class Msearch extends Search {
-		/** [frame] critère */
+		/** [frame] Critère */
 		const se_crit='se_crit';
-		/** [frame] les recherches */
+		/** [frame] Les recherches */
 		const se_fr_searches='se_fr_searches';
-		/** [array] ensemble de recherche */
+		/** [array] Ensemble de recherche */
 		const seg_t_cond='seg_t_cond';
 		/** [docid("SEG_IDCOND")] Recherche */
 		const seg_idcond='seg_idcond';
@@ -589,11 +589,11 @@ namespace Dcp\AttributeIdentifiers {
 		const se_ols='se_ols';
 		/** [enum] Parenthèse gauche */
 		const se_leftp='se_leftp';
-		/** [text] attributs */
+		/** [text] Attributs */
 		const se_attrids='se_attrids';
-		/** [text] fonctions */
+		/** [text] Fonctions */
 		const se_funcs='se_funcs';
-		/** [text] mot-clefs */
+		/** [text] Mot-clefs */
 		const se_keys='se_keys';
 		/** [enum] Parenthèse droite */
 		const se_rightp='se_rightp';
@@ -608,11 +608,11 @@ namespace Dcp\AttributeIdentifiers {
 	class Ssearch extends Search {
 		/** [frame] Fonction */
 		const se_fr_function='se_fr_function';
-		/** [text] fichier PHP */
+		/** [text] Fichier PHP */
 		const se_phpfile='se_phpfile';
-		/** [text] fonction PHP */
+		/** [text] Fonction PHP */
 		const se_phpfunc='se_phpfunc';
-		/** [text] argument PHP */
+		/** [text] Argument PHP */
 		const se_phparg='se_phparg';
 	}
 	/** Rapport  */
@@ -621,39 +621,39 @@ namespace Dcp\AttributeIdentifiers {
 		const rep_tab_presentation='rep_tab_presentation';
 		/** [frame] Présentation */
 		const rep_fr_presentation='rep_fr_presentation';
-		/** [longtext] description */
+		/** [longtext] Description */
 		const rep_caption='rep_caption';
-		/** [text] tri */
+		/** [text] Tri */
 		const rep_sort='rep_sort';
-		/** [text] id tri */
+		/** [text] Id tri */
 		const rep_idsort='rep_idsort';
-		/** [enum] ordre */
+		/** [enum] Ordre */
 		const rep_ordersort='rep_ordersort';
-		/** [int] limite */
+		/** [int] Limite */
 		const rep_limit='rep_limit';
 		/** [array] Colonnes */
 		const rep_tcols='rep_tcols';
-		/** [text] label */
+		/** [text] Label */
 		const rep_lcols='rep_lcols';
-		/** [text] id colonnes */
+		/** [text] Id colonnes */
 		const rep_idcols='rep_idcols';
 		/** [text] Option de présentation */
 		const rep_displayoption='rep_displayoption';
-		/** [color] couleur */
+		/** [color] Couleur */
 		const rep_colors='rep_colors';
-		/** [enum] pied de tableau */
+		/** [enum] Pied de tableau */
 		const rep_foots='rep_foots';
-		/** [enum] style */
+		/** [enum] Style */
 		const rep_style='rep_style';
-		/** [color] couleur entête */
+		/** [color] Couleur entête */
 		const rep_colorhf='rep_colorhf';
-		/** [color] couleur impaire */
+		/** [color] Couleur impaire */
 		const rep_colorodd='rep_colorodd';
-		/** [color] couleur paire */
+		/** [color] Couleur paire */
 		const rep_coloreven='rep_coloreven';
 		/** [menu] Export CSV */
 		const rep_csv='rep_csv';
-		/** [menu] version imprimable */
+		/** [menu] Version imprimable */
 		const rep_imp='rep_imp';
 		/** [frame] Paramètres */
 		const rep_fr_param='rep_fr_param';
@@ -662,21 +662,21 @@ namespace Dcp\AttributeIdentifiers {
 		/** [int] Limite d'affichage pour le nombre de rangées */
 		const rep_maxdisplaylimit='rep_maxdisplaylimit';
 	}
-	/** cycle de vie  */
+	/** Cycle de vie  */
 	class Wdoc extends Base {
 		/** [longtext] description */
 		const wf_desc='wf_desc';
-		/** [menu] initialisation */
+		/** [menu] Initialisation */
 		const wf_init='wf_init';
-		/** [docid("-1")] famille */
+		/** [docid("-1")] Famille */
 		const wf_famid='wf_famid';
-		/** [text] famille (titre) */
+		/** [text] Famille (titre) */
 		const wf_fam='wf_fam';
-		/** [frame] profil dynamique */
+		/** [frame] Profil dynamique */
 		const dpdoc_fr_dyn='dpdoc_fr_dyn';
-		/** [docid("-1")] famille */
+		/** [docid("-1")] Famille */
 		const dpdoc_famid='dpdoc_famid';
-		/** [text] famille (titre) */
+		/** [text] Famille (titre) */
 		const dpdoc_fam='dpdoc_fam';
 		/** [action] Voir le graphe */
 		const wf_graph='wf_graph';
@@ -687,7 +687,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [action] Voir le graphe complet */
 		const wf_graphc='wf_graphc';
 	}
-	/** masque de saisie  */
+	/** Masque de saisie  */
 	class Mask extends Base {
 		/** [frame] Famille */
 		const msk_fr_rest='msk_fr_rest';
@@ -697,22 +697,22 @@ namespace Dcp\AttributeIdentifiers {
 		const msk_fam='msk_fam';
 		/** [array] Contenu */
 		const msk_t_contain='msk_t_contain';
-		/** [text] attrid */
+		/** [text] Attrid */
 		const msk_attrids='msk_attrids';
-		/** [text] visibilité */
+		/** [text] Visibilité */
 		const msk_visibilities='msk_visibilities';
-		/** [text] obligatoire */
+		/** [text] Obligatoire */
 		const msk_needeeds='msk_needeeds';
 	}
-	/** Contrôle de vues  */
+	/**   */
 	class Cvdoc extends Base {
-		/** [longtext] description */
+		/** [longtext] Description */
 		const cv_desc='cv_desc';
-		/** [docid] family id */
+		/** [docid] Famille (id) */
 		const cv_famid='cv_famid';
-		/** [text] famille */
+		/** [text] Famille */
 		const cv_fam='cv_fam';
-		/** [array] vues */
+		/** [array] Vues */
 		const cv_t_views='cv_t_views';
 		/** [text] Identifiant de la vue */
 		const cv_idview='cv_idview';
@@ -732,35 +732,35 @@ namespace Dcp\AttributeIdentifiers {
 		const cv_displayed='cv_displayed';
 		/** [text] Menu */
 		const cv_menu='cv_menu';
-		/** [frame] vues par défauts */
+		/** [frame] Vues par défauts */
 		const cv_fr_default='cv_fr_default';
-		/** [text] id création vues par défaut */
+		/** [text] Id création vues par défaut */
 		const cv_idcview='cv_idcview';
-		/** [text] création vue */
+		/** [text] Création vue */
 		const cv_lcview='cv_lcview';
-		/** [frame] profil dynamique */
+		/** [frame] Profil dynamique */
 		const dpdoc_fr_dyn='dpdoc_fr_dyn';
 		/** [docid("-1")] Famille pour le profil */
 		const dpdoc_famid='dpdoc_famid';
 		/** [text] Famille pour le profil (titre) */
 		const dpdoc_fam='dpdoc_fam';
 	}
-	/** état libre  */
+	/** État libre  */
 	class Freestate {
 		/** [frame] Identification */
 		const frst_fr_ident='frst_fr_ident';
-		/** [text] nom */
+		/** [text] Nom */
 		const frst_name='frst_name';
-		/** [longtext] description */
+		/** [longtext] Description */
 		const frst_desc='frst_desc';
-		/** [docid] family id */
+		/** [docid] Famille (id) */
 		const frst_famid='frst_famid';
-		/** [text] famille */
+		/** [text] Famille */
 		const frst_fam='frst_fam';
-		/** [color] couleur */
+		/** [color] Couleur */
 		const frst_color='frst_color';
 	}
-	/** accord  */
+	/** Accord  */
 	class Wask {
 		/** [frame] Identification */
 		const was_fr_ident='was_fr_ident';
@@ -774,14 +774,14 @@ namespace Dcp\AttributeIdentifiers {
 		const was_keys='was_keys';
 		/** [text] Libellé */
 		const was_labels='was_labels';
-		/** [frame] profil dynamique */
+		/** [frame] Profil dynamique */
 		const dpdoc_fr_dyn='dpdoc_fr_dyn';
-		/** [docid] family id */
+		/** [docid] Famille (id) */
 		const dpdoc_famid='dpdoc_famid';
-		/** [text] famille */
+		/** [text] Famille */
 		const dpdoc_fam='dpdoc_fam';
 	}
-	/** minuteur  */
+	/** Minuteur  */
 	class Timer {
 		/** [frame] Identification */
 		const tm_fr_ident='tm_fr_ident';
@@ -904,107 +904,107 @@ namespace Dcp\AttributeIdentifiers {
 	/** intercalaire dynamique  */
 	class Sguidecard extends Dsearch {
 	}
-	/** traitement  */
+	/** Traitement  */
 	class Batch extends Portfolio {
-		/** [menu] planification */
+		/** [menu] Planification */
 		const batch_plan='batch_plan';
-		/** [frame] identification */
+		/** [frame] Identification */
 		const batch_fr_ident='batch_fr_ident';
-		/** [text] titre */
+		/** [text] Titre */
 		const batch_title='batch_title';
-		/** [longtext] description */
+		/** [longtext] Description */
 		const batch_desc='batch_desc';
-		/** [docid("FAMILY")] id famille */
+		/** [docid("FAMILY")] Id famille */
 		const batch_idfam='batch_idfam';
-		/** [text] famille */
+		/** [text] Famille */
 		const batch_fam='batch_fam';
 	}
-	/** processus  */
+	/** Processus  */
 	class Exec {
-		/** [frame] identification */
+		/** [frame] Identification */
 		const exec_fr_ident='exec_fr_ident';
-		/** [docid("IUSER")] exécutant */
+		/** [docid("IUSER")] Exécutant */
 		const exec_iduser='exec_iduser';
-		/** [text] exécutant (titre) */
+		/** [text] Exécutant (titre) */
 		const exec_user='exec_user';
-		/** [docid("BATCH")] issue de */
+		/** [docid("BATCH")] Issue de */
 		const exec_idref='exec_idref';
-		/** [text] référent (titre) */
+		/** [text] Référent (titre) */
 		const exec_ref='exec_ref';
-		/** [text] titre */
+		/** [text] Titre */
 		const exec_title='exec_title';
-		/** [enum] exécution */
+		/** [enum] Exécution */
 		const exec_status='exec_status';
-		/** [timestamp] exécution depuis */
+		/** [timestamp] Exécution depuis */
 		const exec_statusdate='exec_statusdate';
-		/** [frame] traitement */
+		/** [frame] Traitement */
 		const exec_fr_batch='exec_fr_batch';
-		/** [text] application */
+		/** [text] Application */
 		const exec_application='exec_application';
-		/** [text] action */
+		/** [text] Action */
 		const exec_action='exec_action';
-		/** [text] api */
+		/** [text] Api */
 		const exec_api='exec_api';
-		/** [array] paramètres */
+		/** [array] Paramètres */
 		const exec_t_parameters='exec_t_parameters';
-		/** [text] variable */
+		/** [text] Variable */
 		const exec_idvar='exec_idvar';
-		/** [text] valeur */
+		/** [text] Valeur */
 		const exec_valuevar='exec_valuevar';
-		/** [frame] dates */
+		/** [frame] Dates */
 		const exec_fr_date='exec_fr_date';
-		/** [timestamp] précédente date d'exécution */
+		/** [timestamp] Précédente date d'exécution */
 		const exec_prevdate='exec_prevdate';
-		/** [timestamp] prochaine date d'exécution */
+		/** [timestamp] Prochaine date d'exécution */
 		const exec_nextdate='exec_nextdate';
-		/** [timestamp] à exécuter le */
+		/** [timestamp] À exécuter le */
 		const exec_handnextdate='exec_handnextdate';
-		/** [int] période en jours */
+		/** [int] Période en jours */
 		const exec_periodday='exec_periodday';
-		/** [int] période en heures */
+		/** [int] Période en heures */
 		const exec_periodhour='exec_periodhour';
-		/** [int] période en minutes */
+		/** [int] Période en minutes */
 		const exec_periodmin='exec_periodmin';
-		/** [timestamp] jusqu'au */
+		/** [timestamp] Jusqu'au */
 		const exec_periodenddate='exec_periodenddate';
-		/** [enum] jour de la semaine */
+		/** [enum] Jour de la semaine */
 		const exec_perioddaynumber='exec_perioddaynumber';
-		/** [frame] compte-rendu */
+		/** [frame] Compte-rendu */
 		const exec_fr_cr='exec_fr_cr';
-		/** [timestamp("%A %d %B %Y %X")] date d'exécution */
+		/** [timestamp("%A %d %B %Y %X")] Date d'exécution */
 		const exec_date='exec_date';
-		/** [time("%H:%M:%S")] durée d'exécution */
+		/** [time("%H:%M:%S")] Durée d'exécution */
 		const exec_elapsed='exec_elapsed';
-		/** [text] status */
+		/** [text] Statut */
 		const exec_state='exec_state';
-		/** [ifile] détail */
+		/** [ifile] Détail */
 		const exec_detail='exec_detail';
-		/** [longtext] log */
+		/** [longtext] Log */
 		const exec_detaillog='exec_detaillog';
-		/** [menu] exécuter maintenant */
+		/** [menu] Exécuter maintenant */
 		const exec_bgexec='exec_bgexec';
-		/** [menu] abandonner l'exécution en cours */
+		/** [menu] Abandonner l'exécution en cours */
 		const exec_reset='exec_reset';
-		/** [frame] paramètre */
+		/** [frame] Paramètre */
 		const exec_fr_param='exec_fr_param';
-		/** [docid("IUSER")] administrateur */
+		/** [docid("IUSER")] Administrateur */
 		const exec_idadmin='exec_idadmin';
 	}
-	/** publipostage  */
+	/** Publipostage  */
 	class Publimail extends Batch {
-		/** [frame] basique */
+		/** [frame] Basique */
 		const fr_basic='fr_basic';
-		/** [text] titre */
+		/** [text] Titre */
 		const ba_title='ba_title';
-		/** [frame] identification */
+		/** [frame] Identification */
 		const pubm_fr_ident='pubm_fr_ident';
-		/** [text] sujet */
+		/** [text] Sujet */
 		const pubm_title='pubm_title';
 		/** [frame] Corps */
 		const pubm_fr_body='pubm_fr_body';
-		/** [htmltext] corps du message */
+		/** [htmltext] Corps du message */
 		const pubm_body='pubm_body';
-		/** [image] image de fond */
+		/** [image] Image de fond */
 		const pubm_bgimg='pubm_bgimg';
 		/** [frame] Attachements */
 		const pubm_fr_att='pubm_fr_att';
@@ -1014,32 +1014,32 @@ namespace Dcp\AttributeIdentifiers {
 		const pubm_adesc='pubm_adesc';
 		/** [file] Fichier */
 		const pubm_fdesc='pubm_fdesc';
-		/** [action] envoyer */
+		/** [action] Envoyer */
 		const pubm_send='pubm_send';
-		/** [action] prévisualisation */
+		/** [action] Prévisualisation */
 		const pubm_preview='pubm_preview';
-		/** [action] afficher */
+		/** [action] Afficher */
 		const pubm_display='pubm_display';
-		/** [action] imprimer */
+		/** [action] Imprimer */
 		const pubm_print='pubm_print';
 		/** [frame] Configuration */
 		const pubm_fr_config='pubm_fr_config';
-		/** [docid] id famille */
+		/** [docid] Id famille */
 		const pubm_idfam='pubm_idfam';
-		/** [text] famille du lot */
+		/** [text] Famille du lot */
 		const pubm_fam='pubm_fam';
-		/** [text] attribut mail */
+		/** [text] Attribut mail */
 		const pubm_mailatt='pubm_mailatt';
 	}
-	/** action basique  */
+	/** Action basique  */
 	class Basicbatch extends Batch {
-		/** [action] verrouiller */
+		/** [action] Verrouiller */
 		const bbatch_lock='bbatch_lock';
-		/** [action] déverrouiller */
+		/** [action] Déverrouiller */
 		const bbatch_unlock='bbatch_unlock';
-		/** [action] supprimer */
+		/** [action] Supprimer */
 		const bbatch_delete='bbatch_delete';
-		/** [action] dupliquer */
+		/** [action] Dupliquer */
 		const bbatch_copy='bbatch_copy';
 	}
 }

@@ -124,7 +124,7 @@ function exportfile(Action & $action)
                 
                 if ($cvViewId != "" && $doc->cvid > 0) {
                     /**
-                     * @var $cvdoc CVDOC
+                     * @var \Dcp\Family\Cvdoc $cvdoc
                      */
                     $cvdoc = new_Doc($dbaccess, $doc->cvid);
                     $cvdoc->set($doc);

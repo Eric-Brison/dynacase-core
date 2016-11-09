@@ -25,6 +25,6 @@ SELECT pg_temp.addColumnIfNotExists('', 'usertoken', 'type', 'text');
 EOF
 RET=$?
 if [ $RET -ne 0 ]; then
-    echo "Add new columns to usertoken table."
+    echo "Fail to add new columns to usertoken table."
     exit $RET
 fi

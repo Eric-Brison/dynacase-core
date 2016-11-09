@@ -401,26 +401,21 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
         $cud = ($doc->CanEdit() == "");
         $docid = $doc->id;
         /**
-         * @var CVDoc $cvdoc
+         * @var \Dcp\Family\CVDoc $cvdoc
          */
         $cvdoc = new_Doc($doc->dbaccess, $doc->cvid);
         $cvdoc->set($doc);
-        $ti = $cvdoc->getMultipleRawValues("CV_IDVIEW");
-        $tl = $cvdoc->getMultipleRawValues("CV_LVIEW");
-        $tz = $cvdoc->getMultipleRawValues("CV_ZVIEW");
-        $tk = $cvdoc->getMultipleRawValues("CV_KVIEW");
-        $tm = $cvdoc->getMultipleRawValues("CV_MSKID");
-        $td = $cvdoc->getMultipleRawValues("CV_DISPLAYED");
-        $tmenu = $cvdoc->getMultipleRawValues("CV_MENU");
         
         $tv = array(); // consult array views
-        $te = array(); // edit array views
         $count = array();
-        if (count($tk) > 0) {
-            foreach ($tk as $k => $v) {
-                if ($td[$k] != "no") {
-                    if ($ti[$k] == "") $cvk = "CV$k";
-                    else $cvk = $ti[$k];
+        
+        $views = $cvdoc->getDisplayableViews();
+        if (count($views) > 0) {
+            foreach ($views as $k => $viewInfo) {
+                $v = $viewInfo["cv_kview"];
+                if ($viewInfo["cv_displayed"] != "no") {
+                    if ($viewInfo["cv_idview"] == "") $cvk = "CV$k";
+                    else $cvk = $viewInfo["cv_idview"];
                     if ($v == "VEDIT") {
                         if ($cud) {
                             if ($cvdoc->control($cvk) == "") {
@@ -428,7 +423,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
                                     "typeview" => N_("specialedit") , # N_("specialedit %s")
                                     "idview" => $cvk,
                                     "menu" => $cvdoc->getLocaleViewMenu($cvk) ,
-                                    "zoneview" => $tz[$k],
+                                    "zoneview" => $viewInfo["cv_zview"],
                                     "txtview" => $cvdoc->getLocaleViewLabel($cvk)
                                 );
                             }
@@ -439,7 +434,7 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
                                 "typeview" => N_("specialview") , # N_("specialview %s")
                                 "idview" => $cvk,
                                 "menu" => $cvdoc->getLocaleViewMenu($cvk) ,
-                                "zoneview" => $tz[$k],
+                                "zoneview" => $viewInfo["cv_zview"],
                                 "txtview" => $cvdoc->getLocaleViewLabel($cvk)
                             );
                         }
@@ -447,7 +442,6 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
                 }
             }
         }
-        
         $defaultview = $doc->getDefaultView(true);
         if ($defaultview !== 0) {
             $tlink["editdoc"]["descr"] = $cvdoc->getLocaleViewLabel($defaultview['cv_idview']);
