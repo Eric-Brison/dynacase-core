@@ -25,7 +25,7 @@
                 <legend>[TEXT:Import file (CSV, ODS, XML, ZIP, TGZ)] :</legend>
 
                 <input type="file" name="file" id="ifile" class="file"
-                   accept="text/csv,application/xml,application/vnd.oasis.opendocument.spreadsheet"
+                   accept="text/csv,.csv,application/xml,.xml,application/vnd.oasis.opendocument.spreadsheet,.ods,application/zip,.zip"
                    title="[TEXT:csv, ods, xml, zip (xml) supported import files]" />
                 <br/>
                 <fieldset id="archiveOption" class="archive frame">
