@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-20T11:54:53+01:00\n"
-"PO-Revision-Date: 2013-03-12 18:06+0100\n"
+"PO-Revision-Date: 2016-11-09 11:01+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -23,7 +23,7 @@ msgid "IUSER#us_activateaccount"
 msgstr "Activer le compte"
 
 msgid "IUSER#us_activateaccount#submenu"
-msgstr "Compte"
+msgstr "Gestion du compte"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_daydelay"
@@ -41,7 +41,7 @@ msgid "IUSER#us_desactivateaccount"
 msgstr "Désactiver le compte"
 
 msgid "IUSER#us_desactivateaccount#submenu"
-msgstr "Compte"
+msgstr "Gestion du compte"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_expires"
@@ -146,7 +146,7 @@ msgid "IUSER#us_menuresetlogfails"
 msgstr "Réinitialiser échecs de connexion"
 
 msgid "IUSER#us_menuresetlogfails#submenu"
-msgstr "Compte"
+msgstr "Gestion du compte"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_passdelay"
