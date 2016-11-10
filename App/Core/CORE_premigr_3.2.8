@@ -33,6 +33,4 @@ fi
 
 PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where (id = 'us_iddomain' or id= 'us_domain') and docid < 200;"
 
-# Delete parasite parameters
-"$wpub/wsh.php" --api=cleanFamilyParameter
 exit 0

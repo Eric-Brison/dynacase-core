@@ -92,7 +92,10 @@ function updateDoc($dbaccess, $v)
 {
     require_once 'FDL/Lib.Attr.php';
     try {
-        \Dcp\FamilyImport::buildFamilyFilesAndTables($dbaccess, $v, true);
+        $err = \Dcp\FamilyImport::buildFamilyFilesAndTables($dbaccess, $v, true);
+        if ($err) {
+            error_log($err);
+        }
     }
     catch(\Dcp\Exception $e) {
         print $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";

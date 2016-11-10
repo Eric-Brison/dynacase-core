@@ -57,13 +57,6 @@ PGSERVICE="$pgservice_core" psql -t -c "update docfam set fromid=0 where id=128;
 PGSERVICE="$pgservice_core" psql -t -c "drop TRIGGER tinitacl on docperm;"
 PGSERVICE="$pgservice_core" psql -f "$wpub/FDL/fdl.sql"
 
-# Delete parasite parameters
-"$wpub/wsh.php" --api=cleanFamilyParameter
-RET=$?
-if [ $RET -ne 0 ]; then
-    echo "Error executing cleanFamilyParameter."
-    exit $RET
-fi
 
 #
 # Delete deprecated default values
