@@ -30,4 +30,22 @@ if [ $RET -ne 0 ]; then
 fi
 
 
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'EOF'
+update docattr set phpfunc = null where docid=20 and id='wf_fam';
+EOF
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error removing 3.1 error."
+    exit $RET
+fi
+
+"$wpub/wsh.php" --api=generateDocumentClass --docid=1
 "$wpub"/wsh.php --api=importDocuments --file="$wpub/FDL/cv_init.csv" --csv-separator=';' --csv-enclosure='"'
+
+# Delete parasite parameters
+"$wpub/wsh.php" --api=cleanFamilyParameter
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error executing cleanFamilyParameter."
+    exit $RET
+fi

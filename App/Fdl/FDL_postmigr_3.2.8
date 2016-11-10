@@ -21,4 +21,13 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+
+
+# Delete parasite parameters
+"$wpub/wsh.php" --api=cleanFamilyParameter
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error executing cleanFamilyParameter."
+    exit $RET
+fi
 exit 0
