@@ -282,11 +282,12 @@ This can be solved by:<br/>
         <process command="./wsh.php --api=importDocuments --file=./FDL/fdl.ods">
             <label>Import basic system families</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./FDL/workflows.ods">
-            <label>Import workflow system families</label>
-        </process>
+
         <process command="./wsh.php --api=importDocuments --file=./FDL/cv_init.csv --csv-separator=';' --csv-enclosure='&quot;'">
             <label>Add config in view control families</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/workflows.ods">
+            <label>Import workflow system families</label>
         </process>
         <process command="./wsh.php --api=importDocuments --file=./FDL/searches.ods">
             <label>Import searches families</label>
