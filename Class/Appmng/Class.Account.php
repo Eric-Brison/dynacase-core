@@ -1049,7 +1049,6 @@ union
         simpleQuery($this->dbaccess, $sql, $users);
         return $users;
     }
-
     /**
      * Get user token for open access
      *
@@ -1057,13 +1056,13 @@ union
      * @param bool     $oneshot     set to true to use one token is consumed/deleted when used
      *
      * @param array    $context     get http var restriction
-     *
      * @param string   $description text description information
+     * @param bool     $forceCreate set to true to always return a new token
      *
      * @return string
      * @throws \Dcp\Exception
      */
-    function getUserToken($expireDelay = - 1, $oneshot = false, $context = array(), $description="")
+    function getUserToken($expireDelay = - 1, $oneshot = false, $context = array() , $description = "", $forceCreate = false)
     {
         if ($expireDelay === - 1 || $expireDelay === false) {
             $expireDelay = UserToken::INFINITY;
@@ -1077,10 +1076,10 @@ union
         }
         include_once ('WHAT/Class.UserToken.php');
         include_once ('WHAT/Class.QueryDb.php');
-        $create = false;
+        
         $expireDate = UserToken::getExpirationDate($expireDelay);
         $tu = array();
-        if (!$oneshot) {
+        if (!$oneshot && !$forceCreate) {
             $q = new QueryDb($this->dbaccess, "UserToken");
             $q->addQuery(sprintf("userid=%d", $this->id));
             $q->addQuery(sprintf("expire='%s'", $expireDate));
@@ -1095,7 +1094,7 @@ union
             // create one
             $uk = new UserToken("");
             $uk->userid = $this->id;
-            $uk->description=$description;
+            $uk->description = $description;
             $uk->token = $uk->genToken();
             $uk->type = "CORE";
             $uk->expire = $uk->setExpiration($expireDelay);
@@ -1106,7 +1105,7 @@ union
             $uk->context = $scontext;
             $err = $uk->add();
             if ($err) {
-                 throw new Dcp\Exception($err);
+                throw new Dcp\Exception($err);
             }
             $token = $uk->token;
         } else {
