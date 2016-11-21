@@ -6247,7 +6247,7 @@ create unique index i_docir on doc(initid, revision);";
          * @var Action $action
          */
         global $action;
-        return sprintf("%s?app=FREEDOM&action=FREEDOM_RSS&authtype=open&privateid=%s&id=%s", $action->getParam("CORE_OPENURL", $action->getParam("CORE_EXTERNURL")) , $action->user->getUserToken(false, false, ["action" => "FREEDOM_RSS", "app" => "FREEDOM"]) , $this->id);
+        return sprintf("%s?app=FREEDOM&action=FREEDOM_RSS&dcpopen-authorization=%s&id=%s", $action->getParam("CORE_OPENURL", $action->getParam("CORE_EXTERNURL")) , $action->user->getUserToken(false, false, ["action" => "FREEDOM_RSS", "app" => "FREEDOM"]) , $this->id);
     }
     /**
      * return an url to download for file attribute
