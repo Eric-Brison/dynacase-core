@@ -152,8 +152,8 @@ function sendmailcard(Action & $action)
     }
     return '';
 }
-// -----------------------------------
-function sendCard(&$action, $docid, $to, $cc, $subject, $zonebodycard = "", // define mail layout
+
+function sendCard(Action & $action, $docid, $to, $cc, $subject, $zonebodycard = "", // define mail layout
 $ulink = false, // don't see hyperlink
 $comment = "", $from = "", $bcc = "", $format = "html", // define view action
 $sendercopy = true, // true : a copy is send to the sender according to the Freedom user parameter
@@ -164,7 +164,6 @@ $addfiles = array() , $userinfo = null, $savecopy = false)
     } else {
         $notifySendMail = $userinfo ? \Dcp\Family\Mailtemplate::NOTIFY_SENDMAIL_ALWAYS : \Dcp\Family\Mailtemplate::NOTIFY_SENDMAIL_NEVER;
     }
-
     // -----------------------------------
     $viewonly = (GetHttpVars("viewonly", "N") == "Y");
     if ((!$viewonly) && ($to == "") && ($cc == "") && ($bcc == "")) return _("mail dest is empty");
@@ -376,12 +375,13 @@ $addfiles = array() , $userinfo = null, $savecopy = false)
         }
         // ---------------------------
         // construct message's body
-        $htmlPart = null;
         if (preg_match("/html/", $format, $reg)) {
             $body = file_get_contents($pfout);
-            $message->setBody(new \Dcp\Mail\Body($body, 'text/html'));
+            $mailBody = new \Dcp\Mail\Body($body, 'text/html');
+            $message->setBody($mailBody);
         } else if ($format == "pdf") {
-            $message->setBody(new \Dcp\Mail\Body($comment, 'text/plain'));
+            $mailBody = new \Dcp\Mail\Body($comment, 'text/plain');
+            $message->setBody($mailBody);
         }
         
         if ($format != "pdf") {
@@ -426,14 +426,6 @@ $addfiles = array() , $userinfo = null, $savecopy = false)
                     }
                 }
             }
-            // Remove <a href="cid:xxx"> links in HTML source, and regenerate attached file
-            if ($htmlPart !== null && $sgen1 != '' && $pfout != '') {
-                $htmlBody = preg_replace('|<a\s+(?:\w+="[^"]+")*\s*href="cid:[^"]+"[^>]*>([^<]*)</a>|si', '\1', $sgen1);
-                $fout = fopen($pfout, "w");
-                fwrite($fout, $htmlBody);
-                fclose($fout);
-                $htmlPart->setBodyFile($pfout);
-            }
             // ---------------------------
             // add icon image
             if (preg_match("/html/", $format, $reg)) {
@@ -449,12 +441,14 @@ $addfiles = array() , $userinfo = null, $savecopy = false)
                              * @var VaultFileInfo $info
                              */
                             if ($vf->Retrieve($vid, $info) == "") {
-                                $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment($info->path, $info->name, ($info->mime_s ? $info->mime_s : $mime) , 'icon'));
+                                $mailAttach = new \Dcp\Mail\RelatedAttachment($info->path, $info->name, ($info->mime_s ? $info->mime_s : $mime) , 'icon');
+                                $message->addBodyRelatedAttachment($mailAttach);
                             }
                         } else {
                             $icon = $doc->getIcon();
                             if (file_exists($pubdir . "/$icon")) {
-                                $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment(sprintf("%s/%s", $pubdir, $icon) , 'icon', sprintf("image/%s", fileextension($icon)) , 'icon'));
+                                $mailAttach = new \Dcp\Mail\RelatedAttachment(sprintf("%s/%s", $pubdir, $icon) , 'icon', sprintf("image/%s", fileextension($icon)) , 'icon');
+                                $message->addBodyRelatedAttachment($mailAttach);
                             }
                         }
                     }
@@ -464,13 +458,15 @@ $addfiles = array() , $userinfo = null, $savecopy = false)
             // add inserted image
             foreach ($ifiles as $v) {
                 if (file_exists($pubdir . "/$v")) {
-                    $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment(sprintf("%s/%s", $pubdir, $v) , basename($v) , sprintf("image/%s", fileextension($v)) , $v));
+                    $mailAttach = new \Dcp\Mail\RelatedAttachment(sprintf("%s/%s", $pubdir, $v) , basename($v) , sprintf("image/%s", fileextension($v)) , $v);
+                    $message->addBodyRelatedAttachment($mailAttach);
                 }
             }
             
             foreach ($tfiles as $k => $v) {
                 if (file_exists($v)) {
-                    $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment($v, $k, trim(shell_exec(sprintf("file --mime -b %s", escapeshellarg($v)))) , $k));
+                    $mailAttach = new \Dcp\Mail\RelatedAttachment($v, $k, trim(shell_exec(sprintf("file --mime -b %s", escapeshellarg($v)))) , $k);
+                    $message->addBodyRelatedAttachment($mailAttach);
                 }
             }
             // Other files,
@@ -558,9 +554,8 @@ $addfiles = array() , $userinfo = null, $savecopy = false)
         } else {
             $action->log->warning($err);
             $action->addlogmsg(sprintf(_("%s cannot be sent") , $doc->title));
-            if (\Dcp\Family\Mailtemplate::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail ||
-                \Dcp\Family\Mailtemplate::NOTIFY_SENDMAIL_ERRORS_ONLY === $notifySendMail ) {
-                $action->addWarningMsg(sprintf(_("%s cannot be sent"), $doc->title));
+            if (\Dcp\Family\Mailtemplate::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail || \Dcp\Family\Mailtemplate::NOTIFY_SENDMAIL_ERRORS_ONLY === $notifySendMail) {
+                $action->addWarningMsg(sprintf(_("%s cannot be sent") , $doc->title));
                 $action->addWarningMsg($err);
             }
         }
@@ -639,28 +634,21 @@ function imgvaultfile($src)
 }
 function copyvault($src)
 {
-    global $action;
+    include_once ('FDL/exportfile.php');
     
-    include_once ('FDL/Lib.Vault.php');
-    
-    if (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)docid=([^&]*)&/", $src, $reg)) {
-        $url = $action->getParam("CORE_OPENURL", $action->getParam("CORE_EXTERNURL"));
-        if (strstr($url, '?')) $url.= '&';
-        else $url.= '?';
-        $token = $action->user->getUserToken(3600, true, array(
-            "app" => "FDL",
-            "action" => "EXPORTFILE",
-            "docid" => $reg[3]
-        ));
-        $url.= "authtype=open&privateid=$token&";
-        $url.= $src;
-        $newfile = uniqid(getTmpDir() . "/img");
-        if (!copy($url, $newfile)) {
-            return "";
+    if (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)docid=([^&]*).*&attrid=([^&]*).*&index=([^&]*)/", $src, $reg)) {
+        $fileDoc = new_doc("", $reg[3]);
+        $filePath = getExportFileDocumentPath($fileDoc, $reg[4], $reg[5]);
+        
+        if ($filePath) {
+            $newfile = uniqid(getTmpDir() . "/img");
+            if (!copy($filePath, $newfile)) {
+                return "";
+            }
+            return $newfile;
         }
-        return $newfile;
     }
-    if (preg_match("|^FDL/geticon\.php\?vaultid=(?P<vid>\d+)|", $src, $reg)) {
+    if (preg_match("|^FDL/geticon\\.php\\?vaultid=(?P<vid>\\d+)|", $src, $reg)) {
         $info = vault_properties($reg['vid']);
         $newfile = uniqid(getTmpDir() . "/img");
         if (!copy($info->path, $newfile)) {
@@ -669,12 +657,17 @@ function copyvault($src)
         return $newfile;
     }
     if (preg_match('!^file/(?P<docid>\d+)/(?P<vid>\d+)/(?P<attrid>[^/]+)/(?P<index>[^/]+)/(?P<fname>[^?]+)!', $src, $reg)) {
-        $info = vault_properties($reg['vid']);
-        $newfile = uniqid(getTmpDir() . "/img");
-        if (!copy($info->path, $newfile)) {
-            return "";
+        
+        $fileDoc = new_doc("", $reg['docid']);
+        $filePath = getExportFileDocumentPath($fileDoc, $reg['attrid'], $reg['index']);
+        
+        if ($filePath) {
+            $newfile = uniqid(getTmpDir() . "/img");
+            if (!copy($filePath, $newfile)) {
+                return "";
+            }
+            return $newfile;
         }
-        return $newfile;
     }
     
     return "";
