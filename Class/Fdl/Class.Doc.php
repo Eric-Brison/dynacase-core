@@ -7795,7 +7795,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->name = $name; // affect to be controlled in add and return error also
                 
             }
-            return (sprintf(_("name must begin with a letter and the containt only alphanumeric characters or - and _: invalid  [%s]") , $name));
+            return (sprintf(_("name must begin with a letter and contain only alphanumeric characters or - and _: invalid  [%s]") , $name));
         } elseif (!$verifyOnly && !$this->isAffected()) {
             $this->name = $name;
             return "";
