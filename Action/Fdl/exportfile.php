@@ -95,22 +95,8 @@ function exportfile(Action & $action)
             $action->exiterror($err);
         }
         $isControled = true;
-        if ($doc->doctype == "C") {
-            /**
-             * @var DocFam $doc
-             */
-            $ovalue = $doc->getParameterRawValue($attrid);
-            if (!$ovalue) $ovalue = $doc->getDefValue($attrid);
-        } else $ovalue = $doc->getRawValue($attrid);
-        if (ctype_digit((string)$index) && ((int)$index >= 0)) {
-            $index = (int)$index;
-            $tvalue = Doc::rawValueToArray($ovalue);
-            if (!isset($tvalue[$index])) {
-                header('HTTP/1.0 404 File Not Found');
-                $action->exitError(sprintf(_("File not found at index '%s'") , $index));
-            }
-            $ovalue = $tvalue[$index];
-        }
+        $oa = null;
+        
         if ($attrid !== "icon") {
             $oa = $doc->getAttribute($attrid);
             if (!$oa) {
@@ -151,22 +137,23 @@ function exportfile(Action & $action)
                     $action->exitError(sprintf(_("Cannot see attribute %s") , $attrid));
                 }
             }
-            if ($oa->getOption("preventfilechange") == "yes") {
-                if (preg_match(PREGEXPFILE, $ovalue, $reg)) {
-                    $vaultid = $reg[2];
-                    $othername = vault_uniqname($vaultid);
-                }
-            }
-        } else {
-            $ovalue = $doc->icon;
         }
+        
+        $ovalue = getExportFileDocumentValue($doc, $attrid, $index);
         
         if ($ovalue == "") {
             header('HTTP/1.0 404 File Not Found');
             print (sprintf(_("no file referenced for %s document") , $doc->title));
             exit;
         }
-        if ($ovalue == "") $action->exiterror(sprintf(_("no file referenced for %s document") , $doc->title));
+        
+        if ($oa && $oa->getOption("preventfilechange") == "yes") {
+            if (preg_match(PREGEXPFILE, $ovalue, $reg)) {
+                $vaultid = $reg[2];
+                $othername = vault_uniqname($vaultid);
+            }
+        }
+        
         preg_match(PREGEXPFILE, $ovalue, $reg);
         $vaultid = $reg["vid"];
         $mimetype = $reg["mime"];
@@ -185,6 +172,68 @@ function exportfile(Action & $action)
     
     DownloadVault($action, $vaultid, $isControled, $mimetype, $imgwidth, $inline, $cache, $type, $pngpage, $othername);
     exit;
+}
+
+function getExportFileDocumentValue(\Doc $doc, $attrid, $index = - 1)
+{
+    
+    if ($doc->control("view")) {
+        return "";
+    }
+    
+    if ($doc->doctype == "C") {
+        /**
+         * @var DocFam $doc
+         */
+        $ovalue = $doc->getParameterRawValue($attrid);
+        if (!$ovalue) $ovalue = $doc->getDefValue($attrid);
+    } else $ovalue = $doc->getRawValue($attrid);
+    
+    if (ctype_digit((string)$index) && ((int)$index >= 0)) {
+        $index = (int)$index;
+        $tvalue = Doc::rawValueToArray($ovalue);
+        if (!isset($tvalue[$index])) {
+            header('HTTP/1.0 404 File Not Found');
+            throw new Exception(sprintf(_("File not found at index '%s'") , $index));
+        }
+        $ovalue = $tvalue[$index];
+    }
+    
+    if ($attrid !== "icon") {
+        $oa = $doc->getAttribute($attrid);
+        if (!$oa) {
+            header('HTTP/1.0 404 Attribute Not Found');
+            throw new Exception(sprintf(_("attribute %s not found") , $attrid));
+        } else {
+            if ($oa->type !== "file" && $oa->type !== "image") {
+                header('HTTP/1.0 403 Incorrect Attribute');
+                throw new Exception(sprintf("Not file attribute : %s ", $attrid));
+            }
+            $doc->applyMask(Doc::USEMASKCVVIEW);
+            if ($oa->mvisibility == "I") {
+                header('HTTP/1.0 403 Forbidden');
+                throw new Exception(sprintf(_("Cannot see attribute %s") , $attrid));
+            }
+        }
+    } else {
+        $ovalue = $doc->icon;
+    }
+    
+    return $ovalue;
+}
+
+function getExportFileDocumentPath(\Doc $doc, $attrid, $index = - 1)
+{
+    $filePath = "";
+    
+    $fileValue = getExportFileDocumentValue($doc, $attrid, $index);
+    
+    if ($fileValue && preg_match(PREGEXPFILE, $fileValue, $reg)) {
+        $vaultid = $reg["vid"];
+        $fileInfo = \Dcp\VaultManager::getFileInfo($vaultid);
+        $filePath = $fileInfo->path;
+    }
+    return $filePath;
 }
 /**
  * Idem like exportfile instead that download first file attribute found
