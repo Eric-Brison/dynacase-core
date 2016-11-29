@@ -27,6 +27,8 @@ class VaultFile
     public $f_mode = 0600;
     public $d_mode = 0700;
     public $type = "fs";
+    
+    const VAULT_DMODE = VAULT_DMODE;
     /**
      * @var VaultDiskStorage
      */
@@ -186,15 +188,6 @@ function rename($id_file, $newname)
     
     if ($this->chrono) $this->logger->end("Rename");
     return ($msg);
-}
-// ---------------------------------------------------------
-function stats(&$s)
-{
-    // ---------------------------------------------------------
-    if ($this->chrono) $this->logger->start("Stats");
-    $this->storage->Stats($s);
-    if ($this->chrono) $this->logger->end("Stats");
-    return '';
 }
 // ---------------------------------------------------------
 function listFiles(&$s)

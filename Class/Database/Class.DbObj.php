@@ -315,7 +315,7 @@ class DbObj
     public function preInsert()
     {
         // This function should be replaced by the Child Class
-        
+        return '';
     }
     /** 
      * Method use after Add method
@@ -328,7 +328,7 @@ class DbObj
     public function postInsert()
     {
         // This function should be replaced by the Child Class
-        
+        return '';
     }
     /** 
      * Method use before Modify method
@@ -341,7 +341,7 @@ class DbObj
     public function preUpdate()
     {
         // This function should be replaced by the Child Class
-        
+        return '';
     }
     /** 
      * Method use after Modify method
@@ -704,8 +704,7 @@ class DbObj
         if ($SQLDEBUG) $sqlt1 = microtime(); // to test delay of request
         $this->init_dbid();
         $this->log->debug("exec_query : $sql");
-        $this->msg_err = '';
-        
+        $this->msg_err = $this->err_code = '';
         if ($prepare) {
             if (pg_send_prepare($this->dbid, '', $sql) === false) {
                 $this->msg_err = ErrorCode::getError('DB0006', pg_last_error($this->dbid));
@@ -744,8 +743,10 @@ class DbObj
             $this->res = pg_get_result($this->dbid);
             while (pg_get_result($this->dbid)); // purge following queries
             $err = pg_result_error($this->res);
-            if ($err) $this->msg_err = ErrorCode::getError('DB0001', $err);
-            $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
+            if ($err) {
+                $this->msg_err = ErrorCode::getError('DB0001', $err);
+                $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
+            }
         }
         
         if ($this->msg_err && ($lvl == 0)) {
@@ -893,7 +894,8 @@ class DbObj
             $values = substr($values, 0, strlen($values) - 1); // remove last comma
             $values.= ")";
             // copy compatible values
-            $err = $objupdate->exec_query("INSERT INTO " . $this->dbtable . " " . $fields . " VALUES " . $values, 1);
+            $sqlInsert = sprintf("INSERT INTO %s %s VALUES ", $this->dbtable, $fields, $values);
+            $err = $objupdate->exec_query($sqlInsert, 1);
             if ($err != "") return ($err);
         }
         // ---------------------------------------------------

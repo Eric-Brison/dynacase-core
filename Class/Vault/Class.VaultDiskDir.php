@@ -24,7 +24,8 @@ class VaultDiskDir extends DbObj
     public $fields = array(
         "id_dir",
         "id_fs",
-        "free_entries",
+        "isfull",
+        "size",
         "l_path"
     );
     public $id_fields = array(
@@ -32,27 +33,36 @@ class VaultDiskDir extends DbObj
     );
     public $id_dir;
     public $id_fs;
-    public $free_entries;
     public $l_path;
     
     public $dbtable_tmpl = "vaultdiskdir%s";
     public $order_by = "";
     public $seq_tmpl = "seq_id_vaultdiskdir%s";
-    public $sqlcreate_tmpl = "
-           create table vaultdiskdir%s  ( id_dir     int not null,
+    public $sqlcreate_tmpl = <<<'SQL'
+
+           create table vaultdiskdir:specific:  ( id_dir     int not null,
                                  primary key (id_dir),
-				 id_fs          int,
-				 free_entries   int,
+				 id_fs    int,
+				 isfull   bool,
+				 size   bigint,
                                  l_path varchar(2048)
                                );
-           create sequence seq_id_vaultdiskdir%s start 10;";
+           create sequence seq_id_vaultdiskdir:specific: start 10;
+           CREATE INDEX vault_isfull:specific: on vaultdiskdir:specific: (isfull);
+SQL;
+    
+    public $specific;
+    public $seq;
+    public $isfull;
+    public $size;
+    protected $dirToClose;
     // --------------------------------------------------------------------
     function __construct($dbaccess, $id_dir = '', $def = '')
     {
         // --------------------------------------------------------------------
         $this->specific = $def;
         $this->dbtable = sprintf($this->dbtable_tmpl, $this->specific);
-        $this->sqlcreate = sprintf($this->sqlcreate_tmpl, $this->specific, $this->specific);
+        $this->sqlcreate = str_replace(":specific:", $this->specific, $this->sqlcreate_tmpl);
         $this->seq = sprintf($this->seq_tmpl, $this->specific);
         
         parent::__construct($dbaccess, $id_dir);
@@ -89,6 +99,11 @@ class VaultDiskDir extends DbObj
         }
         return implode('/', $td);
     }
+    
+    public function complete()
+    {
+        $this->isfull = ($this->isfull === 't');
+    }
     // --------------------------------------------------------------------
     function SetFreeDir($fs)
     {
@@ -97,37 +112,95 @@ class VaultDiskDir extends DbObj
         $id_fs = $fs["id_fs"];
         $query->basic_elem->sup_where = array(
             "id_fs=" . $id_fs,
-            "free_entries>0"
+            "not isfull"
         );
-        $t = $query->Query(0, 0, "TABLE");
+        $query->order_by = "id_dir";
+        // Lock directory : force each process to use its proper dir
+        $sql = sprintf("select * from %s where id_fs=%d and not isfull and pg_try_advisory_xact_lock(id_dir, %d) order by id_fs limit 1 for update;", pg_escape_identifier($this->dbtable) , $id_fs, unpack("i", "VLCK") [1]);
+        
+        $err = "";
+        $dirs = $query->Query(0, 0, "TABLE", $sql);
+        
+        $this->dirToClose = 0;
         if ($query->nb > 0) {
-            $this->Select($t[0]["id_dir"]);
-            unset($t);
-            $this->free_entries--;
-            $this->Modify();
-        } else {
-            $t = $query->Query(0, 0, "TABLE", "SELECT * from vaultdiskdirstorage where id_fs=" . intval($id_fs) . " order by id_dir desc limit 1");
-            $lpath = $t[0]["l_path"];
-            $npath = $this->nextdir($lpath);
-            $rpath = $fs["r_path"];
-            
-            $this->id_dir = "";
-            $this->id_fs = $id_fs;
-            $this->l_path = $npath;
-            $this->free_entries = VAULT_MAXENTRIESBYDIR;
-            $this->free_entries--;
-            $err = $this->Add();
-            if ($err == "") {
-                $dirpath = $rpath . "/" . $npath;
-                if (!is_dir($dirpath)) {
-                    mkdir($dirpath, VAULT_DMODE, true);
+            $needNewOneDir = true;
+            foreach ($dirs as $dir) {
+                $this->Select($dir["id_dir"]);
+                
+                $sql = sprintf("SELECT count(*) FROM vaultdiskstorage WHERE id_dir=%d", $this->id_dir);
+                $t = $query->Query(0, 0, "TABLE", $sql);
+                
+                $count = intval($t[0]["count"]);
+                if ($count >= (VAULT_MAXENTRIESBYDIR - 1)) {
+                    $this->dirToClose = $this->id_dir;
+                    if ($count < VAULT_MAXENTRIESBYDIR) {
+                        $needNewOneDir = false;
+                        break;
+                    }
+                } else {
+                    $needNewOneDir = false;
+                    break;
                 }
-            } else {
-                error_log("Vault dirs full");
-                return sprintf(_("cannot extend vault: %s") , $err);
+            }
+            if ($needNewOneDir) {
+                $err = $this->createDirectory($fs);
+            }
+        } else {
+            $err = $this->createDirectory($fs);
+        }
+        return $err;
+    }
+    
+    public function closeDir()
+    {
+        $err = '';
+        if ($this->dirToClose) {
+            $query = new QueryDb($this->dbaccess, $this->dbtable);
+            $sql = sprintf("SELECT sum(size) FROM vaultdiskstorage WHERE id_dir=%d", $this->dirToClose);
+            $t = $query->Query(0, 0, "TABLE", $sql);
+            if ($query->nb > 0) {
+                $this->select($this->dirToClose);
+                $this->isfull = 't';
+                $this->size = $t[0]["sum"];
+                $err = $this->modify();
+                $this->dirToClose = 0;
             }
         }
-        return "";
+        return $err;
+    }
+    
+    protected function createDirectory($fs)
+    {
+        $id_fs = $fs["id_fs"];
+        $query = new QueryDb($this->dbaccess, $this->dbtable);
+        $t = $query->Query(0, 0, "TABLE", "SELECT * from vaultdiskdirstorage where id_fs=" . intval($id_fs) . " order by id_dir desc limit 1");
+        $lpath = $t[0]["l_path"];
+        $npath = $this->nextdir($lpath);
+        $rpath = $fs["r_path"];
+        
+        $absDir = sprintf("%s/%s", $rpath, $npath);
+        
+        while (is_dir($absDir)) {
+            $npath = $this->nextdir($npath);
+            $absDir = sprintf("%s/%s", $rpath, $npath);
+        }
+        
+        $this->id_dir = "";
+        $this->id_fs = $id_fs;
+        $this->l_path = $npath;
+        $this->isfull = 'f';
+        $this->size = null;
+        $err = $this->Add();
+        if ($err == "") {
+            $dirpath = $rpath . "/" . $npath;
+            if (!is_dir($dirpath)) {
+                mkdir($dirpath, VaultFile::VAULT_DMODE, true);
+            }
+        } else {
+            error_log("Vault dirs full");
+            return sprintf(_("cannot extend vault: %s") , $err);
+        }
+        return $err;
     }
     // --------------------------------------------------------------------
     function PreInsert()
@@ -154,24 +227,9 @@ class VaultDiskDir extends DbObj
     // --------------------------------------------------------------------
     function DelEntry()
     {
-        // --------------------------------------------------------------------
-        $this->free_entries+= 1;
-        $this->Modify();
-    }
-    // --------------------------------------------------------------------
-    function FreeEntries($id_fs)
-    {
-        // --------------------------------------------------------------------
-        $free_entries = 0;
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
-        $query->basic_elem->sup_where = array(
-            "free_entries>0",
-            "id_fs=" . $id_fs
-        );
-        $t = $query->Query(0, 0, "TABLE");
-        while ($query->nb > 0 && (list($k, $v) = each($t))) $free_entries+= $v["free_entries"];
-        unset($t);
-        return ($free_entries);
+        if ($this->isfull) {
+            $this->isfull = false;
+            $this->Modify();
+        }
     }
 }
-?>

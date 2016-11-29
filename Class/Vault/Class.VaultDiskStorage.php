@@ -65,6 +65,7 @@ class VaultDiskStorage extends DbObj
                                      teng_comment     text DEFAULT ''
 
                                );
+           CREATE INDEX vault_iddir on vaultdiskstorage (id_dir);
            CREATE INDEX vault_teng on vaultdiskstorage (teng_state);
            CREATE INDEX vault_tengid on vaultdiskstorage (teng_id_file);";
     public $id_file;
@@ -118,28 +119,7 @@ class VaultDiskStorage extends DbObj
             $this->fs = new VaultDiskFsCache($this->dbaccess, $this->id_fs);
         }
     }
-    // --------------------------------------------------------------------
-    function Add($nopost = false, $nopre = false)
-    {
-        /*
-         * Serialize execution of concurrent Add() to prevent potential
-         * insertions of two objects with a same id_file, which would result
-         * in one of the two returning an error due to unique constraint on
-         * id_file.
-        */
-        if (($err = $this->setMasterLock(true)) !== '') {
-            return $err;
-        }
-        try {
-            $err = parent::Add($nopost, $nopre);
-        }
-        catch(\Exception $e) {
-            $this->setMasterLock(false);
-            return $e->getMessage();
-        }
-        $this->setMasterLock(false);
-        return $err;
-    }
+    
     function PreInsert()
     {
         $this->id_file = $this->getNewVaultId();
@@ -201,7 +181,11 @@ class VaultDiskStorage extends DbObj
             /*
              * Check if this id is already in use
             */
-            $err = $this->exec_query(sprintf("SELECT id_file FROM %s WHERE id_file = %d LIMIT 1", pg_escape_identifier($this->dbtable) , $int));
+            $sql = <<<'SQL'
+SELECT id_file FROM %s WHERE id_file = %d LIMIT 1
+SQL;
+            
+            $err = $this->exec_query(sprintf($sql, pg_escape_identifier($this->dbtable) , $int));
             if ($err) {
                 throw new \Dcp\Db\Exception("DB0104", $err);
             }
@@ -215,21 +199,6 @@ class VaultDiskStorage extends DbObj
         return $newId;
     }
     // --------------------------------------------------------------------
-    function fStat(&$fc, &$fv)
-    {
-        // --------------------------------------------------------------------
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
-        $t = $query->Query(0, 0, "TABLE");
-        $fc = $query->nb;
-        if ($fc > 0) {
-            foreach ($t as $v) {
-                $fv+= $v["size"];
-            }
-        }
-        unset($t);
-        return '';
-    }
-    // --------------------------------------------------------------------
     function ListFiles(&$list)
     {
         // --------------------------------------------------------------------
@@ -237,16 +206,6 @@ class VaultDiskStorage extends DbObj
         $list = $query->Query(0, 0, "TABLE");
         $fc = $query->nb;
         return $fc;
-    }
-    // --------------------------------------------------------------------
-    function Stats(&$s)
-    {
-        // --------------------------------------------------------------------
-        $this->fs->Stats($s);
-        $this->fStat($file_count, $vol);
-        $s["general"]["file_count"] = $file_count;
-        $s["general"]["file_size"] = $vol;
-        return '';
     }
     
     function seems_utf8($Str)
@@ -282,6 +241,7 @@ class VaultDiskStorage extends DbObj
         }
         $this->id_fs = $id_fs;
         $this->id_dir = $id_dir;
+        // printf("\nDIR:%s\n", $id_dir);
         $this->public_access = $public_access;
         $this->name = my_basename($infile);
         if (!$this->seems_utf8($this->name)) $this->name = utf8_encode($this->name);
@@ -297,6 +257,7 @@ class VaultDiskStorage extends DbObj
         $msg = $this->Add();
         if ($msg != '') return ($msg);
         
+        $this->fs->closeCurrentDir();
         $idf = $this->id_file;
         
         $f = vaultfilename($f_path, $infile, $this->id_file);
@@ -306,7 +267,6 @@ class VaultDiskStorage extends DbObj
             return (sprintf(_("Failed to copy %s to vault") , $infile));
         }
         
-        $this->fs->AddEntry($this->size);
         $this->logger->debug("File $infile stored in $f");
         return "";
     }
@@ -315,6 +275,8 @@ class VaultDiskStorage extends DbObj
      * @param string $te_name transformation engine name
      * @param  VaultDiskStorage &$ngf returned object
      * @return string error message (empty if OK)
+     *
+     * @deprecated no usage
      * @throws \Dcp\Db\Exception
      */
     function GetEngineObject($te_name, &$ngf)
@@ -446,7 +408,6 @@ class VaultDiskStorage extends DbObj
                 $err = sprintf(_("Cannot copy file %s to %s") , $infile, $path);
             } else {
                 $this->fs->select($this->id_fs);
-                $this->fs->AddEntry($newsize - $size);
                 $this->logger->debug("File $infile saved in $path");
                 
                 $this->resetTEFiles();
@@ -461,7 +422,11 @@ class VaultDiskStorage extends DbObj
      */
     function resetTEFiles()
     {
-        $up = sprintf("UPDATE %s SET teng_state = %d WHERE teng_id_file = %s", pg_escape_identifier($this->dbtable) , pg_escape_literal(\Dcp\TransformationEngine\Client::status_inprogress) , pg_escape_literal($this->id_file));
+        $sql = <<<SQL
+UPDATE %s SET teng_state = %d WHERE teng_id_file = %s
+SQL;
+        
+        $up = sprintf($sql, pg_escape_identifier($this->dbtable) , pg_escape_literal(\Dcp\TransformationEngine\Client::status_inprogress) , pg_escape_literal($this->id_file));
         $this->exec_query($up);
     }
 } // End Class.VaultFileDisk.php
