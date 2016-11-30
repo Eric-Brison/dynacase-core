@@ -350,15 +350,25 @@ SQL;
             $f_infos->teng_comment = $this->teng_comment;
             $f_infos->path = vaultfilename($f_path, $this->name, $this->id_file);
             
-            $this->adate = date("c", time());
-            $this->modify(true, array(
-                "adate"
-            ) , true);
-            
             return '';
         } else {
             return (_("file does not exist in vault"));
         }
+    }
+    
+    function updateAccessDate($id_file)
+    {
+        $err = '';
+        if ($this->id_file != $id_file) {
+            DbObj::Select($id_file);
+        }
+        if ($this->isAffected()) {
+            $this->adate = date("c", time());
+            $err = $this->modify(true, array(
+                "adate"
+            ) , true);
+        }
+        return $err;
     }
     /**
      * return the complete path in file system

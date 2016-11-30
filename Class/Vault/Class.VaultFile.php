@@ -78,6 +78,15 @@ function show($id_file, &$infos, $teng_lname = "")
     return ($msg);
 }
 /**
+ * Set access date to now
+ * @param int $id_file vault file identifier
+ * @return void
+ */
+function updateAccessDate($id_file)
+{
+    $this->storage->updateAccessDate($id_file);
+}
+/**
  * retrieve information from vault id
  * @param int $id_file
  * @param VaultFileInfo $infos

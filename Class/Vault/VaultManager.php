@@ -116,4 +116,12 @@ class VaultManager
             self::destroyFile($vid);
         }
     }
+    /**
+     * Set access date to now
+     * @param  int $idfile vault file identifier
+     */
+    public static function updateAccessDate($idfile)
+    {
+        self::getVault()->updateAccessDate($idfile);
+    }
 }
