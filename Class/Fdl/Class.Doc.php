@@ -1195,7 +1195,7 @@ create unique index i_docir on doc(initid, revision);";
      * loose all revisions
      * @param int $fromid family identifier where the document will be converted
      * @param array $prevalues values which will be added before conversion
-     * @return doc the document converted (don't reuse $this) if error return string message
+     * @return doc|false|string the document converted (don't reuse $this) if error return string message
      */
     final public function convert($fromid, $prevalues = array())
     {
@@ -1801,14 +1801,17 @@ create unique index i_docir on doc(initid, revision);";
                 if ($err == "") {
                     if (!$latestId) $err = sprintf(_("document %s [%d] is strange") , $this->title, $this->id);
                     else {
+                        $previousName = $this->name;
                         $this->doctype = $this->defDoctype;
                         $this->locked = 0;
                         $this->id = $latestId;
+                        $this->name = '';
                         $this->lmodify = 'Y'; // indicate last restoration
                         $this->modify(true, array(
                             "doctype",
                             "locked",
-                            "lmodify"
+                            "lmodify",
+                            "name"
                         ) , true);
                         $this->addHistoryEntry(_("revival document") , HISTO_MESSAGE, "REVIVE");
                         $msg = $this->postUndelete();
@@ -1821,19 +1824,16 @@ create unique index i_docir on doc(initid, revision);";
                         foreach ($rev as $k => $v) {
                             if ($v->doctype == 'Z') {
                                 $v->doctype = $v->defDoctype;
+                                $v->name = '';
                                 $err.= $v->modify(true, array(
-                                    "doctype"
+                                    "doctype",
+                                    "name"
                                 ) , true);
                             }
                         }
-                        if ($this->name) {
-                            // force reset logival name if not set
-                            $name = $this->name;
-                            $this->name = '';
-                            $this->modify(true, array(
-                                "name"
-                            ) , true);
-                            $this->setLogicalName($name);
+                        if ($previousName) {
+                            // Reaffect logical name if can be
+                            $this->setLogicalName($previousName);
                         }
                     }
                 }
@@ -2190,7 +2190,7 @@ create unique index i_docir on doc(initid, revision);";
      * retrieve first compatible view from default view control
      * @param bool $edition if true edition view else consultation view
      * @param string $extract [id|mask|all]
-     * @return array view definition "cv_idview", "cv_mskid"
+     * @return array|int view definition "cv_idview", "cv_mskid"
      */
     final public function getDefaultView($edition = false, $extract = "all")
     {
@@ -2198,7 +2198,7 @@ create unique index i_docir on doc(initid, revision);";
             // special controlled view
             
             /**
-             * @var CVDoc $cvdoc
+             * @var \Dcp\Family\CVDoc $cvdoc
              */
             $cvdoc = new_Doc($this->dbaccess, $this->cvid);
             $cvdoc->set($this);
@@ -2952,6 +2952,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     function preImport(array $extra = array())
     {
+        return "";
     }
     /**
      * call when doc is imported after databases modification
@@ -2962,6 +2963,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     function postImport(array $extra = array())
     {
+        return "";
     }
     /**
      * call when doc is being revised before new document is created
@@ -2972,6 +2974,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     function preRevise()
     {
+        return "";
     }
     /**
      * call when doc is revised after new document is created
@@ -2982,6 +2985,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     function postRevise()
     {
+        return "";
     }
     /**
      * call when doc is being undelete
@@ -2992,6 +2996,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     function preUndelete()
     {
+        return "";
     }
     /**
      * call when doc is revived after resurrection in database
@@ -3001,6 +3006,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     function postUndelete()
     {
+        return "";
     }
     /**
      * call when doc is being undelete
@@ -3011,6 +3017,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     function preRevive()
     {
+        return "";
     }
     /**
      * call when doc is revived after resurrection in database
@@ -3021,6 +3028,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     function postRevive()
     {
+        return "";
     }
     /**
      * set attribute title value
@@ -3256,7 +3264,7 @@ create unique index i_docir on doc(initid, revision);";
      * @api get all values for an array attribute
      * @param string $idAttr identifier of array attribute
      * @param int $index the values for $index row (default value -1 means all values)
-     * @return array all values of array order by rows (return false if not an array attribute)
+     * @return array|false all values of array order by rows (return false if not an array attribute)
      */
     final public function getArrayRawValues($idAttr, $index = - 1)
     {
@@ -3789,7 +3797,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string $attrid identifier of file attribute
      * @param int $index in case of multiple values
-     * @return string error message, if no error empty string
+     * @return void
      */
     final private function clearFullAttr($attrid, $index = - 1)
     {
@@ -7798,6 +7806,7 @@ create unique index i_docir on doc(initid, revision);";
             return (sprintf(_("name must begin with a letter and contain only alphanumeric characters or - and _: invalid  [%s]") , $name));
         } elseif (!$verifyOnly && !$this->isAffected()) {
             $this->name = $name;
+            
             return "";
         } elseif (!$verifyOnly && $this->isAffected() && ($this->name != "") && ($this->doctype != 'Z') && !$reset) {
             return (sprintf(_("Logical name %s already set for %s. Use reset parameter to overhide it") , $name, $this->title));
@@ -7807,11 +7816,16 @@ create unique index i_docir on doc(initid, revision);";
             if ($d && $d["doctype"] != 'Z') {
                 return sprintf(_("Logical name %s already use in document %s") , $name, $d["title"]);
             } elseif (!$verifyOnly) {
+                
                 if ($this->name) {
                     simpleQuery($this->dbaccess, sprintf("UPDATE docname SET name = '%s' WHERE name = '%s'", pg_escape_string($name) , pg_escape_string($this->name)));
                 }
                 $this->name = $name;
                 simpleQuery("", sprintf("update %s set name='%s' where initid=%d", pg_escape_string($this->dbtable) , pg_escape_string($name) , $this->initid));
+                simpleQuery("", sprintf("select name from docname where id=%d", $this->id) , $dbdocname, true, true);
+                if (!$dbdocname) {
+                    simpleQuery("", sprintf("insert into docname (id,fromid,name) values (%d, %d, '%s')", $this->id, $this->fromid, pg_escape_string($this->name)));
+                }
             }
         }
         return "";
@@ -9357,6 +9371,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($s->count() > 0) {
             $helpId = $help[0]["id"];
         }
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return new_Doc($this->dbaccess, $helpId);
     }
     /**
