@@ -138,6 +138,11 @@ class VaultAnalyzerCLI
             $pom->progress($p);
         }
         $pom->finish();
+
+        printf("* Reset sizes...\n");
+        $fs=new \VaultDiskFsStorage(getDbAccess());
+        $fs->recomputeDirectorySize();
+
         printf("\nDone.\n");
         printf("\n");
         

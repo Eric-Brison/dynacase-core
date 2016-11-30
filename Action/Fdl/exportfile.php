@@ -66,7 +66,6 @@ function exportfile(Action & $action)
     $usage->verify();
     $isControled = false;
     $othername = '';
-    
     if ($vaultid == 0) {
         
         $doc = new_Doc($dbaccess, $docid);
@@ -393,6 +392,8 @@ function DownloadVault(Action & $action, $vaultid, $isControled, $mimetype = "",
         if ($info->mime_s) $mimetype = $info->mime_s;
         //Header("Location: $url");
         if ($isControled || ($info->public_access) || ($info->id_tmp)) {
+            $vf->storage->updateAccessDate($info->id_file);
+            
             if (($mimetype != "image/jpeg") || ($width == 0)) {
                 if ($othername) $info->name = $othername;
                 Http_DownloadFile($info->path, $info->name, $mimetype, $inline, $cache);

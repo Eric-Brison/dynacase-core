@@ -31,6 +31,30 @@ fi
 
 
 PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'EOF'
+\i CORE/core_database_utils.sql
+SELECT pg_temp.addColumnIfNotExists('', 'vaultdiskdirstorage', 'isfull', 'bool');
+SELECT pg_temp.addColumnIfNotExists('', 'vaultdiskdirstorage', 'size', 'bigint');
+
+update vaultdiskdirstorage set isfull=(free_entries = 0);
+update vaultdiskdirstorage set size=(select sum(size) from vaultdiskstorage where id_dir=vaultdiskdirstorage.id_dir) where isfull;
+
+SELECT pg_temp.addIndexIfNotExists('', 'vaultdiskstorage', 'vault_iddir', false, '(id_dir)');
+SELECT pg_temp.addIndexIfNotExists('', 'vaultdiskdirstorage', 'vault_isfullstorage', false, '(isfull)');
+
+SELECT pg_temp.dropColumnIfExists('', 'vaultdiskfsstorage', 'subdir_cnt_bydir', '');
+SELECT pg_temp.dropColumnIfExists('', 'vaultdiskfsstorage', 'subdir_deep', '');
+SELECT pg_temp.dropColumnIfExists('', 'vaultdiskfsstorage', 'max_entries_by_dir', '');
+SELECT pg_temp.dropColumnIfExists('', 'vaultdiskfsstorage', 'free_size', '');
+SELECT pg_temp.dropColumnIfExists('', 'vaultdiskdirstorage', 'free_entries', '');
+EOF
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Fail to add new columns to usertoken table."
+    exit $RET
+fi
+
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'EOF'
 update docattr set phpfunc = null where docid=20 and id='wf_fam';
 EOF
 RET=$?

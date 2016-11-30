@@ -71,7 +71,7 @@ fi
 
 echo "Updating vault free_entries..."
 if [ "$vault_save" == "no" ]; then
-    PGSERVICE="$freedom_db" psql -c "UPDATE vaultdiskdirstorage set free_entries = 0 where free_entries > 0;"
+    PGSERVICE="$freedom_db" psql -c "UPDATE vaultdiskdirstorage set isfull = 't';"
     RET=$?
     if [ $RET -ne 0 ]; then
 	echo "Error reinitializing vault table"

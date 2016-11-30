@@ -18,7 +18,6 @@ class VaultDiskFs extends DbObj
         "id_fs",
         "fsname",
         "max_size",
-        "free_size",
         "r_path"
     );
     var $id_fields = array(
@@ -33,7 +32,6 @@ class VaultDiskFs extends DbObj
                                 fsname text,
                                 primary key (id_fs),
                                 max_size int8,
-                                free_size int8,
                                 r_path text
                                 );
            create sequence seq_id_vaultdiskfs%s start 10;
@@ -47,13 +45,16 @@ EOF;
     public $id_fs;
     public $fsname;
     public $max_size;
-    public $free_size;
     /**
      * @var string path to vault root
      */
     public $r_path;
     public $specific;
     protected $seq;
+    /**
+     * @var VaultDiskDirStorage
+     */
+    protected $sd;
     private $htaccess = <<<EOF
 Order Allow,Deny
 Deny from all
@@ -82,7 +83,6 @@ EOF;
         }
         $this->fsname = $fsname;
         $this->max_size = $maxsize;
-        $this->free_size = $maxsize;
         $this->r_path = $path;
         return $this->Add();
     }
@@ -126,43 +126,131 @@ EOF;
         // --------------------------------------------------------------------
         $id_fs = $id_dir = - 1;
         $f_path = "";
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
-        $qs = array();
-        $qs[0] = "free_size>" . $f_size;
-        if ($fsname != "") {
-            $qs[1] = "fsname='" . pg_escape_string($fsname) . "'";
-        }
-        $query->basic_elem->sup_where = $qs;
-        $t = $query->Query(0, 1, "TABLE");
-        if ($query->nb > 0) {
-            $ifs = 0;
-            $msg = '';
-            $sd = null;
-            $dirfound = FALSE;
-            while (!$dirfound && ($ifs < $query->nb)) {
-                $sd = new VaultDiskDir($this->dbaccess, '', $this->specific);
-                $msg = $sd->SetFreeDir($t[$ifs]);
-                if ($msg == '') $dirfound = TRUE;
-                else $ifs++;
-            }
-            if ($dirfound) {
-                $this->Select($t[0]["id_fs"]);
+        
+        $freeFs = $this->findFreeFS($f_size, $fsname);
+        if ($freeFs) {
+            $ifs = $this->getValues();
+            
+            $this->sd = new VaultDiskDir($this->dbaccess, '', $this->specific);
+            $err = $this->sd->SetFreeDir($ifs);
+            
+            if (!$err) {
                 $id_fs = $this->id_fs;
-                $id_dir = $sd->id_dir;
-                $f_path = $this->r_path . "/" . $sd->l_path;
+                $id_dir = $this->sd->id_dir;
+                $f_path = $this->r_path . "/" . $this->sd->l_path;
                 if (!is_dir($f_path)) {
-                    if (!mkdir($f_path, VAULT_DMODE, true)) {
+                    if (!mkdir($f_path, VaultFile::VAULT_DMODE, true)) {
                         return (sprintf(_("Failed to create directory \"%s\" in vault") , $f_path));
                     }
                 }
             } else {
-                return ($msg);
+                return ($err);
             }
             unset($t);
         } else {
             return (_("no empty vault file system found"));
         }
         return "";
+    }
+    
+    public function closeCurrentDir()
+    {
+        return $this->sd->closeDir();
+    }
+    
+    public function findFreeFS($size, $specificFs = "")
+    {
+        $sql = <<<SQL
+
+select vaultdiskfsstorage.*, y.size 
+from vaultdiskfsstorage, ( 
+    select sum(c) as size, id_fs from (
+                (select sum(vaultdiskstorage.size) as c, vaultdiskdirstorage.id_fs 
+                from vaultdiskstorage, vaultdiskdirstorage 
+                where vaultdiskdirstorage.id_dir = vaultdiskstorage.id_dir and not isfull 
+                group by vaultdiskdirstorage.id_fs )
+            union
+                (select sum(size) as c, vaultdiskdirstorage.id_fs 
+                from vaultdiskdirstorage 
+                where isfull 
+                group by vaultdiskdirstorage.id_fs)) as z group by id_fs) as y 
+ where y.id_fs =vaultdiskfsstorage.id_fs :SQLFSNAME:
+ and vaultdiskfsstorage.max_size > (y.size + %d)
+ order by vaultdiskfsstorage.id_fs
+ ;
+SQL;
+        
+        if ($specificFs) {
+            $sqlName = sprintf("and vaultdiskfsstorage.fsname='%s'", pg_escape_string($specificFs));
+        } else {
+            $sqlName = '';
+        }
+        
+        $sql = sprintf(str_replace(":SQLFSNAME:", $sqlName, $sql) , $size);
+        $this->exec_query($sql);
+        if ($this->numrows() > 0) {
+            $result = $this->fetch_array(0);
+            if ($result) {
+                $this->affect($result);
+                
+                return $result["id_fs"];
+            }
+        } else {
+            // May be a new vault
+            $sql = "select * from vaultdiskfsstorage where id_fs not in (select id_fs from vaultdiskdirstorage ) order by id_fs;";
+            $this->exec_query($sql);
+            if ($this->numrows() > 0) {
+                $result = $this->fetch_array(0);
+                if ($result) {
+                    $this->affect($result);
+                    
+                    return $result["id_fs"];
+                }
+            }
+        }
+        return false;
+    }
+    
+    public function getSize()
+    {
+        $sql = <<<SQL
+
+select vaultdiskfsstorage.*, y.size 
+from vaultdiskfsstorage, ( 
+    select sum(c) as size, id_fs from (
+                (select sum(vaultdiskstorage.size) as c, vaultdiskdirstorage.id_fs 
+                from vaultdiskstorage, vaultdiskdirstorage 
+                where vaultdiskdirstorage.id_dir = vaultdiskstorage.id_dir and not isfull 
+                group by vaultdiskdirstorage.id_fs )
+            union
+                (select sum(size) as c, vaultdiskdirstorage.id_fs 
+                from vaultdiskdirstorage 
+                where isfull 
+                group by vaultdiskdirstorage.id_fs)) as z group by id_fs) as y 
+ where y.id_fs =vaultdiskfsstorage.id_fs 
+ and vaultdiskfsstorage.id_fs = %d
+ ;
+SQL;
+        
+        $sql = sprintf($sql, $this->id_fs);
+        $this->exec_query($sql);
+        if ($this->numrows() > 0) {
+            $result = $this->fetch_array(0);
+            if ($result) {
+                $this->affect($result);
+                
+                return intval($result["size"]);
+            }
+        }
+        return -1;
+    }
+    
+    public function recomputeDirectorySize()
+    {
+        $sql = "update vaultdiskdirstorage set size=(select sum(size) from vaultdiskstorage where id_dir=vaultdiskdirstorage.id_dir) where isfull;";
+        $this->exec_query($sql);
+        $sql = "update vaultdiskdirstorage set size=0 where isfull and size is null;";
+        $this->exec_query($sql);
     }
     // --------------------------------------------------------------------
     function Show($id_fs, $id_dir, &$f_path)
@@ -186,20 +274,11 @@ EOF;
         return '';
     }
     // --------------------------------------------------------------------
-    function AddEntry($fs)
-    {
-        // --------------------------------------------------------------------
-        $this->free_size = $this->free_size - $fs;
-        $this->modify();
-    }
-    // --------------------------------------------------------------------
     function DelEntry($id_fs, $id_dir, $fs)
     {
         // --------------------------------------------------------------------
         DbObj::Select($id_fs);
         if ($this->IsAffected()) {
-            $this->free_size = $this->free_size + $fs;
-            $this->modify();
             $sd = new VaultDiskDir($this->dbaccess, $id_dir, $this->specific);
             if ($sd->IsAffected()) {
                 $sd->DelEntry();
@@ -208,22 +287,6 @@ EOF;
             }
         } else {
             return (_("no vault file system found"));
-        }
-        return '';
-    }
-    // --------------------------------------------------------------------
-    function Stats(&$s)
-    {
-        // --------------------------------------------------------------------
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
-        $t = $query->Query(0, 0, "TABLE");
-        while ($query->nb > 0 && (list($k, $v) = each($t))) {
-            $s["fs$k"]["root_dir"] = $v["r_path"];
-            $s["fs$k"]["allowed_size"] = $v["max_size"];
-            $s["fs$k"]["free_size"] = $v["free_size"];
-            $sd = new VaultDiskDir($this->dbaccess, '', $this->specific);
-            $s["fs$k"]["free_entries"] = $sd->FreeEntries($v["id_fs"]);
-            unset($sd);
         }
         return '';
     }

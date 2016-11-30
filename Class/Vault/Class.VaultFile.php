@@ -27,6 +27,8 @@ class VaultFile
     public $f_mode = 0600;
     public $d_mode = 0700;
     public $type = "fs";
+    
+    const VAULT_DMODE = VAULT_DMODE;
     /**
      * @var VaultDiskStorage
      */
@@ -74,6 +76,15 @@ function show($id_file, &$infos, $teng_lname = "")
     }
     if ($this->chrono) $this->logger->end("Show");
     return ($msg);
+}
+/**
+ * Set access date to now
+ * @param int $id_file vault file identifier
+ * @return void
+ */
+function updateAccessDate($id_file)
+{
+    $this->storage->updateAccessDate($id_file);
 }
 /**
  * retrieve information from vault id
@@ -186,15 +197,6 @@ function rename($id_file, $newname)
     
     if ($this->chrono) $this->logger->end("Rename");
     return ($msg);
-}
-// ---------------------------------------------------------
-function stats(&$s)
-{
-    // ---------------------------------------------------------
-    if ($this->chrono) $this->logger->start("Stats");
-    $this->storage->Stats($s);
-    if ($this->chrono) $this->logger->end("Stats");
-    return '';
 }
 // ---------------------------------------------------------
 function listFiles(&$s)
