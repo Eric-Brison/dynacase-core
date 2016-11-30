@@ -134,7 +134,9 @@ class TestDocument extends TestCaseDcpCommonFamily
             }
         }
         $nd = createDoc(self::$dbaccess, $familyName, false);
-        if (!$nd) $this->assertFalse($nd, sprintf("cannot create document BASE"));
+        if (!$nd) {
+            $this->assertFalse($nd, sprintf("cannot create document BASE"));
+        }
         $err = $nd->add();
         $this->assertEmpty($err, sprintf("error when create document BASE : %s", $err));
         $this->assertTrue(($nd->id > 0) , sprintf("no id when create document BASE"));
@@ -155,6 +157,24 @@ class TestDocument extends TestCaseDcpCommonFamily
         $this->assertGreaterThan(-1, $slock, sprintf("document %s locked fix", $name));
         $sdoctype = $this->_DBGetValue(sprintf("select doctype from docread where id=%d", $nd->id));
         $this->assertNotEquals('Z', $sdoctype, sprintf("document %s not revived fix", $name));
+        $sname = $this->_DBGetValue(sprintf("select name from docread where id=%d", $nd->id));
+        $this->assertEquals($name, $sname, sprintf("document %s not restore its name fix", $name));
+        // Redelete
+        if ($name) {
+            $err = $nd->delete();
+            $this->assertEmpty($err, sprintf("error when delete document BASE(1) : %s", $err));
+            
+            $nd2 = createDoc(self::$dbaccess, $familyName, false);
+            
+            $err = $nd2->add();
+            $this->assertEmpty($err, sprintf("error when create document BASE(2) : %s", $err));
+            $err = $nd2->setLogicalName($name);
+            $this->assertEmpty($err, sprintf("cannot set name %s : %s", $name, $err));
+            $err = $nd->undelete();
+            $this->assertEmpty($err, sprintf("error when undelete document BASE(1) : %s", $err));
+            $sname = $this->_DBGetValue(sprintf("select name from docread where id=%d", $nd->id));
+            $this->assertEmpty($sname, sprintf("document %s name must be empty", $name));
+        }
     }
     /**
      * @dataProvider dataDelete
