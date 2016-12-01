@@ -7821,10 +7821,13 @@ create unique index i_docir on doc(initid, revision);";
                     simpleQuery($this->dbaccess, sprintf("UPDATE docname SET name = '%s' WHERE name = '%s'", pg_escape_string($name) , pg_escape_string($this->name)));
                 }
                 $this->name = $name;
+                
                 simpleQuery("", sprintf("update %s set name='%s' where initid=%d", pg_escape_string($this->dbtable) , pg_escape_string($name) , $this->initid));
                 simpleQuery("", sprintf("select name from docname where id=%d", $this->id) , $dbdocname, true, true);
+                
                 if (!$dbdocname) {
-                    simpleQuery("", sprintf("insert into docname (id,fromid,name) values (%d, %d, '%s')", $this->id, $this->fromid, pg_escape_string($this->name)));
+                    $sql = sprintf("delete from docname where name='%s';insert into docname (id,fromid,name) select id, fromid, name from docread where name='%s' and locked != -1", pg_escape_string($name) , pg_escape_string($name));
+                    simpleQuery("", $sql);
                 }
             }
         }
