@@ -332,33 +332,31 @@ class importDocumentDescription
                 case "ICON": // for family
                     $this->doIcon($data);
                     break;
-                    // -----------------------------------
-                    
+
                 case "DOCICON":
                     $this->doDocIcon($data);
                     break;
-                    // -----------------------------------
-                    
+
+                case "DOCATAG":
+                    $this->doDocAtag($data);
+                    break;
+
                 case "DFLDID":
                     $this->doDfldid($data);
                     break;
-                    // -----------------------------------
-                    
+
                 case "CFLDID":
                     $this->doCfldid($data);
                     break;
-                    // -----------------------------------
-                    
+
                 case "WID":
                     $this->doWid($data);
                     break;
-                    // -----------------------------------
-                    
+
                 case "CVID":
                     $this->doCvid($data);
                     break;
-                    // -----------------------------------
-                    
+
                 case "SCHAR":
                     if (!$this->doc) {
                         break;
@@ -372,13 +370,11 @@ class importDocumentDescription
                 case "CLASS":
                     $this->doClass($data);
                     break;
-                    // -----------------------------------
-                    
+
                 case "METHOD":
                     $this->doMethod($data);
                     break;
-                    // -----------------------------------
-                    
+
                 case "USEFORPROF":
                     if (!$this->doc) {
                         break;
@@ -387,8 +383,7 @@ class importDocumentDescription
                     $this->doc->usefor = "P";
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("change special use to '%s'") , $this->doc->usefor);
                     break;
-                    // -----------------------------------
-                    
+
                 case "USEFOR":
                     if (!$this->doc) {
                         break;
@@ -397,18 +392,15 @@ class importDocumentDescription
                     $this->doc->usefor = $data[1];
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("change special use to '%s'") , $this->doc->usefor);
                     break;
-                    // -----------------------------------
-                    
+
                 case "TAG":
                     $this->doATag($data);
                     break;
-                    // -----------------------------------
-                    
+
                 case "CPROFID":
                     $this->doCprofid($data);
                     break;
-                    // -----------------------------------
-                    
+
                 case "PROFID":
                     $this->doProfid($data);
                     break;
@@ -424,8 +416,7 @@ class importDocumentDescription
                 case "IATTR":
                     $this->doIattr($data);
                     break;
-                    // -----------------------------------
-                    
+
                 case "PARAM":
                 case "OPTION":
                 case "ATTR":
@@ -447,7 +438,6 @@ class importDocumentDescription
 
                 case "PROFIL":
                     $this->doProfil($data);
-                    
                     break;
 
                 case "ACCESS":
@@ -951,6 +941,69 @@ class importDocumentDescription
         }
     }
     /**
+     * analyze DOCATAG
+     * @param array $data line of description file
+     */
+    protected function doDocAtag(array $data)
+    {
+        $check = new CheckDocATag();
+        $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
+        if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
+            $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
+            $this->tcr[$this->nLine]["action"] = "warning";
+            return;
+        }
+        if ($this->tcr[$this->nLine]["err"]) {
+            $this->tcr[$this->nLine]["action"] = "ignored";
+            return;
+        }
+        $idoc = new_doc($this->dbaccess, $data[1]);
+        
+        $i = 4;
+        $tags = [];
+        while (!empty($data[$i])) {
+            $tags[] = $data[$i];
+            $i++;
+        }
+        
+        $tagAction = $data[3];
+        if (!$tagAction) {
+            $tagAction = "ADD";
+        }
+        
+        if (!$this->analyze) {
+            if ($tagAction === "SET") {
+                $idoc->atags = '';
+                if (!$tags) {
+                    $idoc->addATag('');
+                }
+            }
+            foreach ($tags as $tag) {
+                if ($tagAction === "DELETE") {
+                    $err = $idoc->delATag($tag);
+                } else {
+                    $err = $idoc->addATag($tag);
+                }
+                if ($err) {
+                    $this->tcr[$this->nLine]["err"] = $err;
+                }
+            }
+        }
+        switch ($tagAction) {
+            case "ADD":
+                $this->tcr[$this->nLine]["msg"] = sprintf(_("Add atags \"%s\"") , implode("\", \"", $tags));
+                break;
+
+            case "DELETE":
+                $this->tcr[$this->nLine]["msg"] = sprintf(_("Del atags \"%s\"") , implode("\", \"", $tags));
+                break;
+
+            case "SET":
+                $this->tcr[$this->nLine]["msg"] = sprintf(_("Set atags \"%s\"") , implode("\", \"", $tags));
+                break;
+        }
+    }
+    /**
      * analyze ICON
      * @param array $data line of description file
      */
@@ -1099,7 +1152,7 @@ class importDocumentDescription
                 if (!$cvdoc->isAlive()) {
                     $this->tcr[$this->nLine]["err"] = sprintf(_("CVID : view control '%s' not found") , $data[1]);
                 } else {
-                        $this->doc->ccvid = $cvdoc->id;
+                    $this->doc->ccvid = $cvdoc->id;
                 }
                 $this->tcr[$this->nLine]["msg"] = sprintf(_("set default view control to '%s'") , $data[1]);
             }

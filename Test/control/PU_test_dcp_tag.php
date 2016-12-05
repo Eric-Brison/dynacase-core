@@ -228,6 +228,47 @@ class TestTag extends TestCaseDcpDocument
         $err = $df->addATag($tag);
         $this->assertContains($error, $err, sprintf("atag error"));
     }
+    /**
+     * @dataProvider dataImportATag
+     */
+    public function testImportATag($docName, array $expectedTags)
+    {
+        $df = new_doc(self::$dbaccess, $docName);
+        $this->assertTrue($df->isAlive() , "document $docName is not alive");
+        
+        foreach ($expectedTags as $tag) {
+            $atag = $df->getATag($tag);
+            $this->assertTrue($atag, sprintf("atag %s not retrieved : \n found [%s]", $tag, $df->atags));
+        }
+        $tags = [];
+        if ($df->atags) {
+            $tags = explode("\n", $df->atags);
+        }
+        $this->assertEquals(count($tags) , count($expectedTags) , sprintf("wrong count for [%s]", $df->atags));
+    }
+    
+    public function dataImportATag()
+    {
+        return array(
+            array(
+                "TST_BASETAG1",
+                ["Red",
+                "Blue"]
+            ) ,
+            array(
+                "TST_BASETAG2",
+                ["Yellow"]
+            ) ,
+            array(
+                "TST_BASETAG3",
+                ["Green"]
+            ) ,
+            array(
+                "TST_BASETAG4",
+                []
+            )
+        );
+    }
     
     public function dataAddAErrorTag()
     {
