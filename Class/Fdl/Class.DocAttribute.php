@@ -348,6 +348,9 @@ class NormalAttribute extends BasicAttribute
      * @var array
      */
     private static $_cache = array();
+    protected $originalPhpfile;
+    protected $originalPhpfunc;
+
     /**
      * Normal Attribute constructor : non structural attribute
      *
@@ -890,6 +893,10 @@ class NormalAttribute extends BasicAttribute
             $this->enum = array();
             $this->enumlabel = array();
             $br = $this->docname . '#' . $this->id . '#'; // id i18n prefix
+            if ($this->originalPhpfile && $this->originalPhpfunc) {
+                $this->phpfile=$this->originalPhpfile;
+                $this->phpfunc=$this->originalPhpfunc;
+            }
             if (($this->phpfile != "") && ($this->phpfile != "-")) {
                 // for dynamic  specification of kind attributes
                 if (!include_once ("EXTERNALS/$this->phpfile")) {
@@ -905,6 +912,8 @@ class NormalAttribute extends BasicAttribute
                         $br = $dreg[1] . '#' . strtolower($dreg[2]) . '#';
                     }
                     if (function_exists($reg[1])) {
+                        $this->originalPhpfile=$this->phpfile;
+                        $this->originalPhpfunc=$this->phpfunc;
                         $this->phpfile = "";
                         $this->phpfunc = call_user_func_array($reg[1], $args);
                         
@@ -1017,7 +1026,7 @@ class NormalAttribute extends BasicAttribute
     /**
      * reset Enum cache
      */
-    function resetEnum()
+    public static function resetEnum()
     {
         self::_cacheFlush(self::_cEnum);
         self::_cacheFlush(self::_cEnumLabel);
