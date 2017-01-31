@@ -136,7 +136,7 @@ NEW.values:='';
 NEW.attrids:='';
 
   if (NEW.doctype = 'Z') and (NEW.name is not null) then
-    delete from docname where name=NEW.name;
+    delete from docname where id=NEW.id;
   end if;
   if (NEW.name is not null and OLD.name is null) then
     if (NEW.doctype = 'C') then
