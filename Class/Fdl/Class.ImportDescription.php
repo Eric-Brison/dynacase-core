@@ -975,7 +975,10 @@ class importDocumentDescription
             if ($tagAction === "SET") {
                 $idoc->atags = '';
                 if (!$tags) {
-                    $idoc->addATag('');
+                    $err = $idoc->modify(true, array("atags"), true);
+                    if ($err) {
+                        $this->tcr[$this->nLine]["err"] = $err;
+                    }
                 }
             }
             foreach ($tags as $tag) {
