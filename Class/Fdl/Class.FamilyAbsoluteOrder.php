@@ -15,8 +15,6 @@
 
 namespace Dcp;
 
-use Dcp\Core\Exception;
-
 class FamilyAbsoluteOrder
 {
     const firstOrder = "::first";
@@ -217,7 +215,7 @@ class FamilyAbsoluteOrder
      * @param array  $attributes
      *
      * @return int
-     * @throws Exception
+     * @throws \Dcp\Core\Exception
      */
     protected static function getStructLevel($attrid, array $attributes)
     {
@@ -226,7 +224,7 @@ class FamilyAbsoluteOrder
             $attrid = $attributes[$attrid]["parent"];
             $level++;
             if ($level > 5) {
-                throw new Exception("ATTR0214", $attrid);
+                throw new \Dcp\Core\Exception("ATTR0214", $attrid);
             }
         }
         return $level;
