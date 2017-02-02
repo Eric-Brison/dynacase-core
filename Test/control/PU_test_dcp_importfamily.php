@@ -365,6 +365,13 @@ class TestImportFamily extends TestCaseDcpDocument
                     "tst_frame1",
                     "tst_frame2"
                 )
+            ),
+            array(
+                "PU_data_dcp_badattr19.ods",
+                array(
+                    "ATTR0214",
+                    "loop_a5"
+                )
             )
         );
     }

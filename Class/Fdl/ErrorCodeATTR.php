@@ -90,6 +90,11 @@ class ErrorCodeATTR
      * @errorCode  Attribute order reference is not in the current frame
      */
     const ATTR0213 = 'the attribute "%s" has incorrect order  : parent is "%s" must be "%s": out of field';
+
+    /**
+     * @errorCode A parent id reference a child id
+     */
+    const ATTR0214 = 'the attribute "%s" has a loop reference for parent ';
     /**
      * @errorCode  Attribute isTitle is Y or N
      */
