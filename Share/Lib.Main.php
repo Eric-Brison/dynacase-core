@@ -448,14 +448,24 @@ function _wsh_send_error($errMsg, $expand = array())
     $wshError->addExpand($expand);
     $wshError->autosend();
 }
+
 /**
+ * Handle exceptions by logging errors or by sending mails
+ * depending if the program is used in a CLI or not.
+ *
  * @param Throwable $e
+ * @param bool $callStack If set to false: the error message is minimal.
+ * Otherwise the error message is the call stack.
  */
-function _wsh_exception_handler($e)
+function _wsh_exception_handler($e, $callStack = true)
 {
-    $errMsg = formatErrorLogException($e);
-    
-    error_log($errMsg);
+    if ($callStack === true) {
+        $errMsg = formatErrorLogException($e);
+        error_log($errMsg);
+    } else {
+        $errMsg = $e->getMessage();
+    }
+
     if (!isInteractiveCLI()) {
         $expand = array(
             'm' => preg_replace('/^([^\n]*).*/s', '\1', $e->getMessage())

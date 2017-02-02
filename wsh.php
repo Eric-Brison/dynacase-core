@@ -93,16 +93,9 @@ ini_set("memory_limit", -1);
 
 initMainVolatileParam($core);
 initExplorerParam($core);
-
-if (!$core->user->isAffected()) {
-    echo sprintf(_("Error : User [%s] doesn't exists\n") , $_GET["userid"]);
-    exit(2);
-}
-
-if ($core->user->status == "D") {
-    echo sprintf(_("Error : User account [%s] is desactivated\n") , $_GET["userid"]);
-    exit(2);
-}
+/**
+ * @var Action $action
+ */
 try {
     if (isset($_GET["app"])) {
         $appl = new Application();
@@ -110,14 +103,22 @@ try {
     } else {
         $appl = $core;
     }
-    
+
     $action = new Action();
     if (isset($_GET["action"])) {
         $action->Set($_GET["action"], $appl);
     } else {
         $action->Set("", $appl);
     }
-    
+
+    if (!$core->user->isAffected()) {
+        throw new Dcp\Core\Exception("CORE0013", $_GET["userid"]);
+    }
+
+    if ($core->user->status === "D") {
+        throw new Dcp\Core\Exception("CORE0014", $_GET["userid"]);
+    }
+
     if ($action->canExecute("CORE_ADMIN_ROOT", "CORE_ADMIN") === '') {
         // Authorize administrators to execute admin actions
         $action->parent->setAdminMode();
@@ -142,6 +143,7 @@ if (isset($_GET["api"])) {
             switch ($e->getDcpCode()) {
                 case "CORE0002":
                     echo sprintf(_("Error : %s\n") , $e->getDcpMessage());
+                    _wsh_exception_handler($e, false);
                     exit(1);
                     break;
 
@@ -152,6 +154,7 @@ if (isset($_GET["api"])) {
 
                 default:
                     echo sprintf($e->getDcpMessage());
+                    _wsh_exception_handler($e, false);
                     exit(1);
             }
         }
