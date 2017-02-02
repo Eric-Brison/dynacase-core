@@ -61,6 +61,14 @@ namespace {
          */
         const CORE0012 = "Access deny : %s";
         /**
+         * @errorCode Trying to access a non-existing user account
+         */
+        const CORE0013 = "Error : User [%s] doesn't exists";
+        /**
+         * @errorCode Trying to access a desactivated user account
+         */
+        const CORE0014 = "Error : User account [%s] is desactivated";
+        /**
          * @errorCode
          * for beautifier
          */
