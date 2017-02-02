@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-26 15:53+0200\n"
+"POT-Creation-Date: 2017-02-02 09:00+0100\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -488,6 +488,10 @@ msgstr ""
 msgid "Add acl %s for %s"
 msgstr ""
 
+#, php-format
+msgid "Add atags \"%s\""
+msgstr ""
+
 msgid "Add filter"
 msgstr ""
 
@@ -537,6 +541,10 @@ msgid "Adding button to submit"
 msgstr ""
 
 msgid "Additionnals informations about import document"
+msgstr ""
+
+msgctxt "authent"
+msgid "Address not configured"
 msgstr ""
 
 msgid "Affectation"
@@ -785,10 +793,6 @@ msgstr "view"
 
 #, php-format
 msgid "CVID : %s"
-msgstr ""
-
-#, php-format
-msgid "CVID : view control '%s' is not a view control"
 msgstr ""
 
 #, php-format
@@ -1300,6 +1304,10 @@ msgstr ""
 
 #, php-format
 msgid "Default value recorded"
+msgstr ""
+
+#, php-format
+msgid "Del atags \"%s\""
 msgstr ""
 
 msgid "Delete"
@@ -3615,6 +3623,10 @@ msgstr ""
 msgid "SMTP port"
 msgstr ""
 
+msgctxt "authent"
+msgid "SMTP server not configured"
+msgstr ""
+
 msgid "SVG"
 msgstr ""
 
@@ -3805,6 +3817,10 @@ msgstr ""
 
 msgid "Session authentication log facility"
 msgstr "Session authentication log facility"
+
+#, php-format
+msgid "Set atags \"%s\""
+msgstr ""
 
 msgid "Set autonome profil"
 msgstr ""
@@ -4557,12 +4573,6 @@ msgstr ""
 
 #, php-format
 msgid "action %s is not declared to be access in open mode"
-msgstr ""
-
-#, php-format
-msgid ""
-"action %s is not declared to be access in open mode and token context not "
-"match"
 msgstr ""
 
 msgid "activity"
@@ -7354,9 +7364,6 @@ msgid "primary folder"
 msgstr ""
 
 msgid "printed view card"
-msgstr ""
-
-msgid "private key is not valid"
 msgstr ""
 
 msgid "proceed background import"
