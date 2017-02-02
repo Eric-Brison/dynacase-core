@@ -38,7 +38,7 @@ function submitreqpasswd(Action & $action)
     $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', False);
     $action->lay->set('FORM_SEND_ERROR_UNKNOWN', False);
     $action->lay->set('FORM_SEND_ERROR_EXTERNAL_AUTH', False);
-    $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
+    $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM', ___("Address not configured","authent")));
     $action->lay->eSet("lang", $lang);
     
     $userdoc = retrieveUserDoc($action, $submitted_login, $submitted_email);

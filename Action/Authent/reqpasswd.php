@@ -23,6 +23,13 @@ function reqpasswd(Action & $action)
     $action->parent->addJsRef("AUTHENT:loginform.js", true);
     $lang = $action->getArgument("lang");
 
+    $smtpfrom=$action->getParam("SMTP_FROM");
+    $smtpport=$action->getParam("SMTP_PORT");
+    $smtphost=$action->getParam("SMTP_HOST");
+    if (!$smtpfrom || !$smtpport || !$smtphost) {
+        $action->exitError(___("SMTP server not configured","authent"));
+    }
+
     $action->lay->eSet("lang", $lang);
     setLanguage($lang);
     return "";

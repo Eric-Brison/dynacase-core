@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-26 15:53+0200\n"
-"PO-Revision-Date: 2016-11-18 15:26+0100\n"
+"POT-Creation-Date: 2017-02-02 09:00+0100\n"
+"PO-Revision-Date: 2017-02-02 09:03+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -493,6 +493,10 @@ msgstr "Ajout %s dans dossier %s"
 msgid "Add acl %s for %s"
 msgstr "Ajout Acl %s pour %s"
 
+#, php-format
+msgid "Add atags \"%s\""
+msgstr "Ajout atags \"%s\""
+
 msgid "Add filter"
 msgstr "Ajouter une condition"
 
@@ -543,6 +547,10 @@ msgstr "Ajout un bouton pour l'envoi du formulaire"
 
 msgid "Additionnals informations about import document"
 msgstr "Informations sur les formats d'importation"
+
+msgctxt "authent"
+msgid "Address not configured"
+msgstr "Adresse non configurée"
 
 msgid "Affectation"
 msgstr "Affectation"
@@ -800,10 +808,6 @@ msgstr "Vue"
 #, php-format
 msgid "CVID : %s"
 msgstr "CVID : %s"
-
-#, php-format
-msgid "CVID : view control '%s' is not a view control"
-msgstr "Le contrôle de vue '%s' n'est pas un contrôle de vue"
 
 #, php-format
 msgid "CVID : view control '%s' not found"
@@ -1330,6 +1334,10 @@ msgstr "La valeur par défaut a été effacée"
 #, php-format
 msgid "Default value recorded"
 msgstr "La valeur par défaut est enregistrée"
+
+#, php-format
+msgid "Del atags \"%s\""
+msgstr "Suppression atags \"%s\""
 
 msgid "Delete"
 msgstr "Supprimer"
@@ -3765,6 +3773,10 @@ msgstr "Mot de passe pour la connexion SMTP"
 msgid "SMTP port"
 msgstr "Numéro de port de la connexion SMTP"
 
+msgctxt "authent"
+msgid "SMTP server not configured"
+msgstr "Serveur SMTP non configuré"
+
 msgid "SVG"
 msgstr "vectoriel (SVG)"
 
@@ -3967,6 +3979,10 @@ msgstr "Septembre"
 
 msgid "Session authentication log facility"
 msgstr "facility (syslog) de journalisation des authentifications"
+
+#, php-format
+msgid "Set atags \"%s\""
+msgstr "Affectation atags \"%s\""
 
 msgid "Set autonome profil"
 msgstr "Profil dédié"
@@ -4754,14 +4770,6 @@ msgstr "action"
 #, php-format
 msgid "action %s is not declared to be access in open mode"
 msgstr "L'action %s n'est pas déclarée comme étant accessible en mode ouvert"
-
-#, php-format
-msgid ""
-"action %s is not declared to be access in open mode and token context not "
-"match"
-msgstr ""
-"L'action %s n'est pas déclaré pour être accessible en mode ouvert. La clef "
-"de contexte ne correspond pas."
 
 msgid "activity"
 msgstr "activité"
@@ -6206,7 +6214,8 @@ msgstr "Le server LDAP n'a pas pu être contacté"
 msgid "errno_bug_639_message"
 msgstr ""
 "<p>Vous devez réinitialiser votre mot de passe.</p>\n"
-"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Réinitialiser mon mot de passe</a></p>"
+"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Réinitialiser mon "
+"mot de passe</a></p>"
 
 msgid "error"
 msgstr "erreur"
@@ -7594,9 +7603,6 @@ msgstr "Dossier principal"
 msgid "printed view card"
 msgstr "voir une carte imprimable"
 
-msgid "private key is not valid"
-msgstr "La clef privé n'est pas valide"
-
 msgid "proceed background import"
 msgstr "Effectuer l'importation en tâche de fond"
 
@@ -8254,7 +8260,8 @@ msgstr ""
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""
 "<p>Votre demande a bien été prise en compte.</p>\n"
-"<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour finaliser la réinitialisation de votre mot de passe.</p>"
+"<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour "
+"finaliser la réinitialisation de votre mot de passe.</p>"
 
 msgid "suggestions"
 msgstr "suggestions"
@@ -9138,6 +9145,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Basic search"
 #~ msgstr "Recherche simple"
 
+#~ msgid "CVID : view control '%s' is not a view control"
+#~ msgstr "Le contrôle de vue '%s' n'est pas un contrôle de vue"
+
 #~ msgid "Cancel change"
 #~ msgstr "Annuler les modifications"
 
@@ -9482,6 +9492,13 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "access granted to  database $db\n"
 #~ msgstr "accès à la base de données $db autorisé\n"
+
+#~ msgid ""
+#~ "action %s is not declared to be access in open mode and token context not "
+#~ "match"
+#~ msgstr ""
+#~ "L'action %s n'est pas déclaré pour être accessible en mode ouvert. La "
+#~ "clef de contexte ne correspond pas."
 
 #~ msgid "actions"
 #~ msgstr "les actions"
@@ -9844,6 +9861,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "previous level"
 #~ msgstr "niveau inférieur"
+
+#~ msgid "private key is not valid"
+#~ msgstr "La clef privé n'est pas valide"
 
 #~ msgid "query [%s] not valid for select document"
 #~ msgstr "la requête [%s] n'est pas valide pour une sélection de documents"
