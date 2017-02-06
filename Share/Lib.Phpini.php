@@ -90,6 +90,7 @@ class LibPhpini
     {
         $val = trim($val);
         $last = strtolower(substr($val, -1));
+        $val=intval($val);
         switch($last) {
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'g':

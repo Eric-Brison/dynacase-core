@@ -128,6 +128,7 @@ class Dir extends PDir
      */
     function preInsertDocument($docid, $multiple = false)
     {
+        return "";
     }
     /**
      * virtual method use before insert document in folder
@@ -152,6 +153,7 @@ class Dir extends PDir
      */
     function postInsertDocument($docid, $multiple = false)
     {
+        return "";
     }
     /**
      * virtual method use after insert document in folder
@@ -234,6 +236,7 @@ class Dir extends PDir
      */
     function postRemoveDocument($docid, $multiple = false)
     {
+        return "";
     }
     /**
      * hook method use after unlink document in folder
@@ -1061,4 +1064,3 @@ class Dir extends PDir
         return $terr;
     }
 }
-?>

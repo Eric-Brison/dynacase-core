@@ -30,7 +30,7 @@ class _TST_FAMILYCOMPUTED extends Doc
     
     public function oneMore($x)
     {
-        return $x + 1;
+        return intval($x) + 1;
     }
     
     public function itself($x)

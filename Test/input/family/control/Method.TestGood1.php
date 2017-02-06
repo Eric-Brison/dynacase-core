@@ -29,7 +29,7 @@ class _TST_GOODFAMIMP21 extends Doc
     }
     public function goodCompute2($a)
     {
-        return $a + 1;
+        return intval($a) + 1;
     }
     public function goodConstraint2($a)
     {
