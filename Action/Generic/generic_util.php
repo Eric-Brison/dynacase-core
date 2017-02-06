@@ -52,7 +52,7 @@ function getDefUSort(Action & $action, $def = "-revdate", $famid = "")
     if ($pu) {
         $tu = explode("|", $pu);
         
-        while (list($k, $v) = each($tu)) {
+        foreach ($tu as $k => $v) {
             list($afamid, $aorder, $sqlorder) = explode(":", $v);
             if (!is_numeric($afamid)) {
                 $afamid = getFamIdFromName($action->dbaccess, $afamid);
@@ -71,7 +71,7 @@ function getDefUKey(Action & $action)
     $pu = $action->GetParam("GENE_LATESTTXTSEARCH");
     if ($pu) {
         $tu = explode("|", $pu);
-        while (list($k, $v) = each($tu)) {
+        foreach ($tu as $k => $v) {
             list($afamid, $aorder) = explode(":", $v);
             if ($afamid == $famid) return $aorder;
         }
@@ -99,7 +99,7 @@ function setUkey(Action & $action, $famid, $key)
         // disambled parameter
         $tu = explode("|", $pu);
         
-        while (list($k, $v) = each($tu)) {
+        foreach ($tu as $k => $v) {
             list($afamid, $uk) = explode(":", $v);
             $tr[$afamid] = $uk;
         }
@@ -205,7 +205,7 @@ function getFamilyParameters(&$action, $key)
     $t = array();
     if ($pu) {
         $tu = explode(",", $pu);
-        while (list($k, $v) = each($tu)) {
+        foreach ($tu as $k => $v) {
             list($afamid, $aorder) = explode("|", $v);
             $t[$afamid] = $aorder;
         }
@@ -299,7 +299,7 @@ function getChildCatg($docid, $level, $notfldsearch = false, $maxlevel = 2)
         
         if (count($ldir) > 0) {
             
-            while (list($k, $v) = each($ldir)) {
+            foreach ($ldir as $k => $v) {
                 $ltree[$v["id"]] = array(
                     "level" => $level * 20,
                     "id" => $v["id"],

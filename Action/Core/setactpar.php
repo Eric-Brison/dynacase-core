@@ -64,8 +64,7 @@ function setactpar(&$action)
             $act->ActRegister($key, $val);
         } else {
             global $_POST;
-            reset($_POST);
-            while (list($k, $v) = each($_POST)) {
+            foreach ($_POST as $k => $v) {
                 if (($k != "key") && ($k != "sapp") && ($k != "sact")) {
                     $act->ActRegister($k, $v);
                 }
@@ -75,4 +74,3 @@ function setactpar(&$action)
     
     redirect($action, $sapp, $sact);
 }
-?>

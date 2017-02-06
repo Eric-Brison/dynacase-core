@@ -612,7 +612,7 @@ function getFamIdFromName($dbaccess, $name)
         $tFamIdName = array();
         $q = new QueryDb($dbaccess, "DocFam");
         $ql = $q->Query(0, 0, "TABLE");
-        while (list($k, $v) = each($ql)) {
+        foreach ($ql as $k => $v) {
             if ($v["name"] != "") $tFamIdName[$v["name"]] = $v["id"];
         }
     }
@@ -727,7 +727,7 @@ function setFamidInLayout(Action & $action)
     if (!isset($tFamIdName)) getFamIdFromName($action->dbaccess, "-");
     
     reset($tFamIdName);
-    while (list($k, $v) = each($tFamIdName)) {
+    foreach ($tFamIdName as $k => $v) {
         $action->lay->set("IDFAM_$k", $v);
     }
 }

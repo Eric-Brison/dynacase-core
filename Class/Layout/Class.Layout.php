@@ -514,7 +514,7 @@ class Layout
             $list = $this->action->parent->GetLogMsg();
             reset($list);
             $out.= "var logmsg=new Array();\n";
-            while (list($k, $v) = each($list)) {
+            foreach ($list as $k => $v) {
                 if (($v[0] == '{')) $out.= "logmsg[$k]=$v;\n";
                 else $out.= "logmsg[$k]=" . json_encode($v) . ";\n";
             }

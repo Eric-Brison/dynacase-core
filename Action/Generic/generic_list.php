@@ -206,7 +206,7 @@ function generic_list(&$action)
             )
         );
         
-        while (list($k, $v) = each($onglet)) {
+        foreach ($onglet as $k => $v) {
             if ($v["ongdir"] == $tab) $onglet[$k]["ongclass"] = "onglets";
             else $onglet[$k]["ongclass"] = "onglet";
             $onglet[$k]["onglabel"] = str_replace(" ", "<BR>", $v["onglabel"]);
@@ -251,7 +251,7 @@ function generic_viewmode(Action & $action, $famid)
             $tview[$famid] = $prefview;
             // implode parameters to change user preferences
             $tmode = array();
-            while (list($k, $v) = each($tview)) {
+            foreach ($tview as $k => $v) {
                 if ($k > 0) $tmode[] = "$k|$v";
             }
             $pmode = implode(",", $tmode);

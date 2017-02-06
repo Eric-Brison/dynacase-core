@@ -89,7 +89,7 @@ function setUsort(Action & $action, $aorder, $famid = "")
     // rebuild parameter
     $tu = array();
     reset($tr);
-    while (list($k, $v) = each($tr)) {
+    foreach ($tr as $k => $v) {
         $tu[] = "$k:$v";
     }
     return implode("|", $tu);

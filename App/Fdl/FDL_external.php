@@ -527,7 +527,7 @@ function lkfamily($dbaccess, $famname, $aid, $kid, $name, $filter = array())
     
     $tr = array();
     
-    while (list($k, $v) = each($tinter)) {
+    foreach ($tinter as $k => $v) {
         
         $tr[] = array(
             $v["title"],
@@ -683,7 +683,7 @@ function lenum($val, $enum)
     $tr = array();
     // HERE HERE HERE
     $pattern_val = preg_quote($val, "/");
-    while (list($k, $v) = each($tenum)) {
+    foreach ($tenum as $k => $v) {
         
         if (($val == "") || (preg_match("/$pattern_val/i", $v, $reg))) $tr[] = array(
             $v,
@@ -912,24 +912,16 @@ function lzone($dbaccess, $tview, $famid = "")
 function lview($tidview, $tlview)
 {
     $tr = array();
-
+    
     if (is_array($tidview)) {
         foreach ($tidview as $k => $v) {
             $currentViewId = trim($v);
             if ('' !== $currentViewId) {
                 $currentViewlabel = $tlview[$k];
                 $tr[] = array(
-                    htmlspecialchars(
-                        sprintf("%s (%s)",
-                            $currentViewlabel,
-                            $currentViewId
-                        )
-                    ),
+                    htmlspecialchars(sprintf("%s (%s)", $currentViewlabel, $currentViewId)) ,
                     $currentViewId,
-                    sprintf("%s (%s)",
-                        $currentViewlabel,
-                        $currentViewId
-                    )
+                    sprintf("%s (%s)", $currentViewlabel, $currentViewId)
                 );
             }
         }

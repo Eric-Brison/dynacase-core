@@ -147,7 +147,7 @@ class QueryDb
                 $i = 0;
                 $query = $query . ' where ';
                 reset($where);
-                while (list($k, $v) = each($where)) {
+                foreach ($where as $k => $v) {
                     if ($v != "") {
                         if ($i == 0) {
                             $query = $query . $v;
@@ -234,7 +234,7 @@ class QueryDb
                 if (($res_type == "LIST") || ($res_type == "LISTC")) {
                     $this->list[$c] = new $this->class($this->dbaccess, "", $result, $this->basic_elem->dbid);
                 } else {
-                    while (list($k, $v) = each($result)) {
+                    foreach ($result as $k => $v) {
                         $this->list[$c][$k] = $v;
                     }
                 }
@@ -302,7 +302,7 @@ class QueryDb
         if (sizeof($this->basic_elem->sup_where) > 0) {
             reset($this->basic_elem->sup_where);
             $count = 0;
-            while (list($k, $v) = each($this->basic_elem->sup_where)) {
+            foreach ($this->basic_elem->sup_where as $k => $v) {
                 if ($count > 0) {
                     $out = $out . " AND (" . $v . ")";
                 } else {

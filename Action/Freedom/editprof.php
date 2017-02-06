@@ -45,7 +45,7 @@ function editprof(Action & $action)
             $tclassdoc = GetProfileDoc($dbaccess, $doc->id, $tdoc->defProfFamId);
         } else $tclassdoc = GetProfileDoc($dbaccess, $doc->id);
         if (is_array($tclassdoc)) {
-            while (list($k, $pdoc) = each($tclassdoc)) {
+            foreach ($tclassdoc as $k => $pdoc) {
                 if ($pdoc["id"] != $doc->id) {
                     $selectclass[$k]["idpdoc"] = $pdoc["id"];
                     $selectclass[$k]["profname"] = $pdoc["title"];
@@ -78,7 +78,7 @@ function editprof(Action & $action)
         else {
             $action->lay->Set("selected_spec", "");
             // selected the current class document
-            while (list($k, $pdoc) = each($selectclass)) {
+            foreach ($selectclass as $k => $pdoc) {
                 //      print $doc->doctype." == ".$selectclass[$k]["idcdoc"]."<BR>";
                 if ($sprofid == $selectclass[$k]["idpdoc"]) {
                     $selectclass[$k]["selected"] = "selected";

@@ -124,7 +124,7 @@ function popupfam(Action & $action, &$tsubmenu)
         }
     }
     
-    while (list($k, $v) = each($tmenu)) {
+    foreach ($tmenu as $k => $v) {
         if ($tlink[$v]["visibility"] == MENU_INVISIBLE) {
             Popupinvisible('popupcard', $kdiv, $v);
         } else {

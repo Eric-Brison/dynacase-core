@@ -33,7 +33,7 @@ function freedom_ifld(Action & $action)
     
     $lmax = 0;
     $lprev = 0;
-    while (list($k, $v) = each($lfather)) {
+    foreach ($lfather as $k => $v) {
         // recompute level for indentation
         if ($lprev == 0) $lmax = $lfather[$k]["level"];
         $lfather[$k]["level"] = - ($v["level"] - $lmax) * 15; // by 15px

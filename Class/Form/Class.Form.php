@@ -264,7 +264,7 @@ class Form
             }
         }
         if (sizeof($liste) > 0) {
-            while (list($k, $v) = each($liste)) {
+            foreach ($liste as $k => $v) {
                 if ((isset($entite->$name)) && ($entite->$name == $v->$name_id)) {
                     $src.= "<OPTION SELECTED VALUE=\"" . $v->$name_id . "\">" . $v->$name_lib . "\n";
                 } else {
@@ -291,7 +291,7 @@ class Form
             $src.= "<OPTION SELECTED VALUE=\"\">-- vide --\n";
         }
         if (sizeof($liste) > 0) {
-            while (list($k, $v) = each($liste)) {
+            foreach ($liste as $k => $v) {
                 if ((isset($entite->$name)) && ($entite->$name == $v->$name_id)) {
                     $src.= "<OPTION SELECTED VALUE=\"" . $v->$name_id . "\">" . $v->$name_lib1 . " " . $v->$name_lib2 . "\n";
                 } else {
@@ -323,7 +323,7 @@ class Form
             }
         }
         if (sizeof($liste) > 0) {
-            while (list($k, $v) = each($liste)) {
+            foreach ($liste as $k => $v) {
                 if ((isset($entite->$name)) && ($entite->$name == $v)) {
                     $src.= "<OPTION SELECTED VALUE='$v'>$v\n";
                 } else {

@@ -756,7 +756,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         if ($a) {
             $tkids = array();;
             $enum = $a->getEnum();
-            while (list($k, $v) = each($enum)) {
+            foreach ($enum as $k => $v) {
                 if (in_array($kid, explode(".", $k))) {
                     $tkids[] = substr($k, strrpos("." . $k, '.'));
                 }
@@ -781,7 +781,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         $rt = array();
         if ($sqlvalue != "") {
             $vals = explode("][", substr($sqlvalue, 1, -1));
-            while (list($k1, $v1) = each($vals)) {
+            foreach ($vals as $k1 => $v1) {
                 list($aname, $aval) = explode(";;", $v1);
                 $rt[$aname] = $aval;
             }

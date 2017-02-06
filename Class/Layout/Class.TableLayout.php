@@ -68,7 +68,6 @@ class TableLayout
     // index of the page start, the second gives the
     // page size (number of elements in the page
     var $nb_tot = 0; // Total number of elements
-    
     // ---------------------------------------------------------------------------
     // Private var
     var $row = 0; // index of the current displayed row
@@ -114,7 +113,7 @@ class TableLayout
         
         if (!isset($this->headcontent)) return;
         reset($this->headcontent);
-        while (list($k, $v) = each($this->headcontent)) {
+        foreach ($this->headcontent as $k => $v) {
             /* link ? */
             if (isset($this->headsortfields[$k])) {
                 $value[0] = $this->headsortfields[$k];
@@ -137,14 +136,14 @@ class TableLayout
         $ind = 0;
         reset($this->array);
         $tmparray = "";
-        while (list($key, $val) = each($this->array)) {
+        foreach ($this->array as $key => $val) {
             if ($ind > $this->slice) break;
 
             
             if ((!is_array($val)) && (!is_object($val))) continue;
             
             reset($this->fields);
-            while (list($k, $v) = each($this->fields)) {
+            foreach ($this->fields as $k => $v) {
                 if (is_object($val)) {
                     $curval = $val->$v;
                 } else {
@@ -158,7 +157,7 @@ class TableLayout
                     $tmparray[$ind][$v] = $curval;
                 } else {
                     reset($this->links[$v][1]);
-                    while (list($kk, $var) = each($this->links[$v][1])) {
+                    foreach ($this->links[$v][1] as $kk => $var) {
                         if (is_object($val)) {
                             $value[$kk] = $val->$var;
                         } else {
@@ -176,7 +175,7 @@ class TableLayout
             $ind++;
         }
         reset($this->fields);
-        while (list($k, $v) = each($this->fields)) {
+        foreach ($this->fields as $k => $v) {
             $this->lay->SetBlockCorresp($this->table_name . "BODY", $v, $v);
         }
         
@@ -186,7 +185,7 @@ class TableLayout
     function GenFooter()
     {
         reset($this->fields);
-        while (list($k, $v) = each($this->fields)) {
+        foreach ($this->fields as $k => $v) {
             if (isset($this->footcontent)) {
                 if (isset($this->footcontent[$v])) {
                     $val = $this->footcontent[$v];
@@ -250,7 +249,7 @@ class TableLayout
         list($key, $val) = each($this->array);
         if (is_object($val)) $val = get_object_vars($val);
         reset($val);
-        while (list($k, $v) = each($val)) {
+        foreach ($val as $k => $v) {
             $this->fields[] = $k;
         }
     }

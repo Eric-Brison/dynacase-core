@@ -634,7 +634,7 @@ class Dir extends PDir
         $tableq = $query->Query();
         
         if ($query->nb > 0) {
-            while (list($k, $v) = each($tableq)) {
+            foreach ($tableq as $k => $v) {
                 $tableid[$k] = $v->id;
             }
             unset($tableq);
@@ -839,7 +839,7 @@ class Dir extends PDir
                 }
                 // suppress undesirable families
                 reset($tfamid);
-                while (list($k, $famid) = each($tfamid)) {
+                foreach ($tfamid as $k => $famid) {
                     
                     unset($tclassdoc[intval($famid) ]);
                     if ($tsubfam[$k] != "yes") {

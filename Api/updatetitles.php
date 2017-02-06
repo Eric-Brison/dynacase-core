@@ -42,7 +42,7 @@ if ($famId > 0) $query->AddQuery("fromid = $famId");
 $table1 = $query->Query();
 
 if ($query->nb > 0) {
-    while (list($k, $v) = each($table1)) {
+    foreach ($table1 as $k => $v) {
         /**
          * @var Doc $v
          */

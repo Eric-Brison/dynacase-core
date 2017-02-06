@@ -50,7 +50,7 @@ function freedom_chooseaction(Action & $action)
             else $tp = array(
                 "id" => $doc->id
             );
-            while (list($k, $v) = each($p)) {
+            foreach ($p as $k => $v) {
                 list($var, $value) = explode("=", $v);
                 $tp[$var] = $value;
             }

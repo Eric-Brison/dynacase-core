@@ -119,7 +119,7 @@ class Mask extends \Dcp\Family\Base
         $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
         
         $tvisibilities = array();
-        while (list($k, $v) = each($tattrid)) {
+        foreach ($tattrid as $k => $v) {
             $tvisibilities[$v] = $tvisid[$k];
         }
         return $tvisibilities;
@@ -269,14 +269,14 @@ class Mask extends \Dcp\Family\Base
         if ($docid > 0) {
             $ka = 0; // index attribute
             $labelvis = $this->getLabelVis();
-            while (list($k, $v) = each($labelvis)) {
+            foreach ($labelvis as $k => $v) {
                 $selectvis[] = array(
                     "visid" => $k,
                     "vislabel" => $v
                 );
             }
             $labelneed = $this->getLabelNeed();
-            while (list($k, $v) = each($labelneed)) {
+            foreach ($labelneed as $k => $v) {
                 $selectneed[] = array(
                     "needid" => $k,
                     "needlabel" => $v
@@ -328,7 +328,7 @@ class Mask extends \Dcp\Family\Base
                 if (!empty($attr->waction)) $newelem[$k]["framelabel"] = _("Action");
                 
                 reset($selectvis);
-                while (list($kopt, $opt) = each($selectvis)) {
+                foreach ($selectvis as $kopt => $opt) {
                     if (isset($tvisibilities[$attr->id]) && $opt["visid"] == $tvisibilities[$attr->id]) {
                         $selectvis[$kopt]["selected"] = "selected";
                     } else {
@@ -337,7 +337,7 @@ class Mask extends \Dcp\Family\Base
                 }
                 // idem for needed
                 reset($selectneed);
-                while (list($kopt, $opt) = each($selectneed)) {
+                foreach ($selectneed as $kopt => $opt) {
                     if (isset($tneedeeds[$attr->id]) && $opt["needid"] == $tneedeeds[$attr->id]) {
                         $selectneed[$kopt]["selectedneed"] = "selected";
                     } else {

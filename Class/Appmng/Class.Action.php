@@ -678,7 +678,7 @@ create sequence SEQ_ID_ACTION;
             // If the action already exists ,set it
             if ($action->Exists($node["name"], $app->id)) {
                 $action->Set($node["name"], $app);
-                while (list($k, $v) = each($node)) {
+                foreach ($node as $k => $v) {
                     if ($k == 'available' && $update) {
                         continue;
                     }
@@ -686,7 +686,7 @@ create sequence SEQ_ID_ACTION;
                 }
                 reset($node);
             } else {
-                while (list($k, $v) = each($node)) {
+                foreach ($node as $k => $v) {
                     $action->$k = $v;
                 }
                 reset($node);

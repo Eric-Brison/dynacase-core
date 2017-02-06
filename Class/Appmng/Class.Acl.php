@@ -134,7 +134,7 @@ create sequence SEQ_ID_ACL;
         $default_user_acl = array(); // default acl ids
         $default_acl = false; // to update default acl id
         $smalestgrant = null;
-        while (list($k, $tab) = each($app_acl)) {
+        foreach ($app_acl as $k => $tab) {
             $acl = new Acl($this->dbaccess);
             if ($acl->Exists($tab["name"], $app->id)) {
                 $acl->Set($tab["name"], $app->id);
@@ -210,7 +210,7 @@ create sequence SEQ_ID_ACL;
                 $query->AddQuery("id_application = " . $app->id);
                 $query->AddQuery("grant_level < $default_grant_level");
                 if ($qacl = $query->Query()) {
-                    while (list($k2, $acl) = each($qacl)) {
+                    foreach ($qacl as $k2 => $acl) {
                         if (!in_array($acl->id, $default_user_acl)) {
                             $default_user_acl[] = $acl->id;
                         }
@@ -220,7 +220,7 @@ create sequence SEQ_ID_ACL;
         }
         // create default permission
         reset($default_user_acl);
-        while (list($ka, $aclid) = each($default_user_acl)) {
+        foreach ($default_user_acl as $ka => $aclid) {
             // set the default user access
             $defaultacl = new Acl($this->dbaccess, $aclid);
             $defaultacl->group_default = "Y";
@@ -278,7 +278,7 @@ create sequence SEQ_ID_ACL;
         $query->AddQuery("id_application = $idapp");
         $query->AddQuery("group_default = 'Y'");
         if ($qacl = $query->Query()) {
-            while (list($k2, $acl) = each($qacl)) {
+            foreach ($qacl as $k2 => $acl) {
                 $aclids[] = $acl->id;
             }
         }
