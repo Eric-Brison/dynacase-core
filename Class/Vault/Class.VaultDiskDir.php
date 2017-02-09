@@ -55,7 +55,7 @@ SQL;
     public $seq;
     public $isfull;
     public $size;
-    protected $dirToClose;
+    protected $dirsToClose = [];
     // --------------------------------------------------------------------
     function __construct($dbaccess, $id_dir = '', $def = '')
     {
@@ -72,6 +72,11 @@ SQL;
      * 1/1 => 1/2
      * 1/10 => 2/1
      * 1/2  = 1/3
+     *
+     * @param string   $d path  to file
+     * @param int      $max
+     *
+     * @return string
      */
     function nextdir($d, $max = VAULT_MAXDIRBYDIR)
     {
@@ -121,7 +126,7 @@ SQL;
         $err = "";
         $dirs = $query->Query(0, 0, "TABLE", $sql);
         
-        $this->dirToClose = 0;
+        $this->dirsToClose = [];
         if ($query->nb > 0) {
             $needNewOneDir = true;
             foreach ($dirs as $dir) {
@@ -132,7 +137,7 @@ SQL;
                 
                 $count = intval($t[0]["count"]);
                 if ($count >= (VAULT_MAXENTRIESBYDIR - 1)) {
-                    $this->dirToClose = $this->id_dir;
+                    $this->dirsToClose[] = $this->id_dir;
                     if ($count < VAULT_MAXENTRIESBYDIR) {
                         $needNewOneDir = false;
                         break;
@@ -154,18 +159,20 @@ SQL;
     public function closeDir()
     {
         $err = '';
-        if ($this->dirToClose) {
-            $query = new QueryDb($this->dbaccess, $this->dbtable);
-            $sql = sprintf("SELECT sum(size) FROM vaultdiskstorage WHERE id_dir=%d", $this->dirToClose);
-            $t = $query->Query(0, 0, "TABLE", $sql);
-            if ($query->nb > 0) {
-                $this->select($this->dirToClose);
-                $this->isfull = 't';
-                $this->size = $t[0]["sum"];
-                $err = $this->modify();
-                $this->dirToClose = 0;
+        foreach ($this->dirsToClose as $dirid) {
+            if ($dirid) {
+                $query = new QueryDb($this->dbaccess, $this->dbtable);
+                $sql = sprintf("SELECT sum(size) FROM vaultdiskstorage WHERE id_dir=%d", $dirid);
+                $t = $query->Query(0, 0, "TABLE", $sql);
+                if ($query->nb > 0) {
+                    $this->select($dirid);
+                    $this->isfull = 't';
+                    $this->size = $t[0]["sum"];
+                    $err.= $this->modify();
+                }
             }
         }
+        $this->dirsToClose = [];
         return $err;
     }
     
@@ -207,7 +214,7 @@ SQL;
     {
         // --------------------------------------------------------------------
         if ($this->Exists($this->l_path, $this->id_fs)) return (_("Directory already exists"));
-        $res = $this->exec_query("select nextval ('" . $this->seq . "')");
+        $this->exec_query("select nextval ('" . $this->seq . "')");
         $arr = $this->fetch_array(0);
         $this->id_dir = $arr["nextval"];
         return '';
@@ -221,7 +228,7 @@ SQL;
             "l_path='" . $path . "'",
             "id_fs=" . $id_fs
         );
-        $t = $query->Query(0, 0, "TABLE");
+        $query->Query(0, 0, "TABLE");
         return ($query->nb > 0);
     }
     // --------------------------------------------------------------------
