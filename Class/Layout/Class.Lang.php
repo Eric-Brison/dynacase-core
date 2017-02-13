@@ -116,7 +116,7 @@ create index lang_idx1 on lang(idapp, lang, code);
         $listb = $query->Query();
         $list = array_merge($lista, $listb);
         reset($list);
-        while (list($k, $v) = each($list)) {
+        foreach ($list as $k => $v) {
             $this->buffer[$v->code] = $v->fmt;
         }
     }
@@ -182,7 +182,7 @@ create index lang_idx1 on lang(idapp, lang, code);
         );
         $list = $query->Query();
         if ($query->nb > 0) {
-            while (list($k, $v) = each($list)) $v->delete();
+            foreach ($list as $k => $v) $v->delete();
         }
     }
 } // End Class

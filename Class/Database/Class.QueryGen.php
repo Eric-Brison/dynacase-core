@@ -181,7 +181,7 @@ class QueryGen
         // color row table
         $this->table->fields[] = "CLASS";
         reset($this->table->array);
-        while (list($k, $v) = each($this->table->array)) {
+        foreach ($this->table->array as $k => $v) {
             $this->table->array[$k]["CLASS"] = ($k % 2) ? "TABOdd" : "";
         }
         
@@ -190,7 +190,7 @@ class QueryGen
             $desc = $this->desc;
             if (is_array($this->table->headsortfields)) {
                 reset($this->table->headsortfields);
-                while (list($k, $v) = each($this->table->headsortfields)) {
+                foreach ($this->table->headsortfields as $k => $v) {
                     if ($this->order_by == $v) {
                         $this->table->headcontent[$k].= $this->$desc;
                     }
@@ -204,7 +204,7 @@ class QueryGen
         if (($this->fulltext != "") && (sizeof($this->fulltextfields) > 0)) {
             reset($this->fulltextfields);
             $sql = "(";
-            while (list($k, $v) = each($this->fulltextfields)) {
+            foreach ($this->fulltextfields as $k => $v) {
                 $sql.= " upper($v) like '%" . strtoupper($this->fulltext) . "%' OR";
             }
             $sql = substr($sql, 0, -2) . ")";

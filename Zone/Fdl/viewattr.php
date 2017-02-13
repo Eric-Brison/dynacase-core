@@ -36,14 +36,14 @@ function viewattr(Action & $action, $htmlval = true, $htmllink = true)
     
     $listattr = $doc->GetNormalAttributes();
     // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-    while (list($k, $v) = each($listattr)) {
+    foreach ($listattr as $k => $v) {
         
         $value = chop($doc->getRawValue($v->id));
         //------------------------------
         // Set the table value elements
         if ($v->mvisibility != "H") {
             // don't see  non abstract if not
-            if (($abstract) && ($v->abstract != "Y")) {
+            if ($abstract && !$v->isInAbstract) {
                 $action->lay->Set("V_" . $v->id, "");
                 $action->lay->Set("L_" . $v->id, "");
             } else {
@@ -55,7 +55,7 @@ function viewattr(Action & $action, $htmlval = true, $htmllink = true)
     
     $listattr = $doc->GetFieldAttributes();
     // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-    while (list($k, $v) = each($listattr)) {
+    foreach ($listattr as $k => $v) {
         
         $action->lay->Set("L_" . strtoupper($v->id) , $v->getLabel());
     }

@@ -82,8 +82,8 @@ function popupInitItem($name, $k)
     
     if (!isset($tmenuaccess[$name][$k]["divid"])) {
         $tmenuaccess[$name][$k]["divid"] = $k;
-        reset($menuitems[$name]);
-        while (list($ki, $v) = each($menuitems[$name])) {
+        
+        foreach ($menuitems[$name] as $ki => $v) {
             $tmenuaccess[$name][$k]['v' . $ki] = 2; // invisible
             
         }
@@ -248,8 +248,7 @@ function popupGen($kdiv = "nothing")
         $tma = array();
         foreach ($tmenuaccess as $name => $v2) {
             $nbdiv = 0;
-            while (list($k, $v) = each($v2)) {
-                
+            foreach ($v2 as $k => $v) {
                 uksort($v, 'vcompare');
                 
                 $tma[$kv]["vmenuitems"] = "[";
@@ -305,13 +304,13 @@ function popupAddGen($kdiv = "nothing")
         reset($tmenuaccess);
         $kv = 0; // index for item
         $tma = array();
-        while (list($name, $v2) = each($tmenuaccess)) {
+        foreach ($tmenuaccess as $name => $v2) {
             $nbdiv = 0;
-            while (list($k, $v) = each($v2)) {
+            foreach ($v2 as $k => $v) {
                 uksort($v, 'vcompare');
                 
                 $tma[$kv]["vmenuitems"] = "[";
-                while (list($ki, $vi) = each($v)) {
+                foreach ($v as $ki => $vi) {
                     if ($ki[0] == 'v') // its a value
                     $tma[$kv]["vmenuitems"].= "" . $vi . ",";
                 }

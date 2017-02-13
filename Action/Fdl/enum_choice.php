@@ -234,7 +234,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         $tval = array();
         reset($res);
         $ki = 0;
-        while (list($k, $v) = each($res)) {
+        foreach ($res as $k => $v) {
             $tselect[$k]["choice"] = $v[0];
             $tselect[$k]["cindex"] = $ki; // numeric index needed
             $tval[$k]["index"] = $ki;

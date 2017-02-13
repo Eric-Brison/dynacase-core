@@ -48,7 +48,7 @@ if ($docid != - 1) {
         
         $pubdir = DEFAULT_PUBDIR;
         
-        while (list($k, $v) = each($table1)) {
+        foreach ($table1 as $k => $v) {
             $doc = createDoc($dbaccess, $v["id"]);
             
             if ($trig) print $doc->sqltrigger($drop) . "\n";

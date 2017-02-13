@@ -30,7 +30,7 @@ function adddirfile(Action & $action)
     $mode = GetHttpVars("mode");
     $return = GetHttpVars("return"); // return action may be folio
     $folio = (GetHttpVars("folio", "N") == "Y"); // return in folio
-    $folio = ($folio | $return);
+    $folio = ($folio || $return);
     
     $dbaccess = $action->dbaccess;
     

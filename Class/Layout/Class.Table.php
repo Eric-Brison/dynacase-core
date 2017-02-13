@@ -13,7 +13,6 @@
  */
 /**
  */
-
 //
 include_once ('Class.Log.php');
 
@@ -152,7 +151,7 @@ class Table
         $ind = 0;
         $lettre = array();
         reset($this->array);
-        while (list($k, $v) = each($this->array)) {
+        foreach ($this->array as $k => $v) {
             if ($this->arrayobj == "TRUE") {
                 $initiale = substr($v->$this->ordered_by, 0, 1);
             } else {
@@ -230,7 +229,7 @@ class Table
         $this->table_index_row_open();
         $idx = "[";
         $prev = 0;
-        while (list($k, $car) = each($alpha_list)) {
+        foreach ($alpha_list as $k => $car) {
             if ($prev) $idx = $idx . "|";
             if (!isset($lettre[$car])) {
                 $idx = $idx . "&nbsp;$car&nbsp;";
@@ -262,7 +261,7 @@ class Table
         $this->table_heading_row_open();
         
         reset($this->fields);
-        while (list($k, $v) = each($this->fields)) {
+        foreach ($this->fields as $k => $v) {
             if (isset($this->headcontent)) {
                 if (isset($this->headcontent[$v])) {
                     $val = $this->headcontent[$v];
@@ -287,7 +286,7 @@ class Table
     {
         $ind = 0;
         reset($this->array);
-        while (list($key, $val) = each($this->array)) {
+        foreach ($this->array as $key => $val) {
             if ($ind++ < $this->start) continue;
             if (($this->slice > 0) && ($ind > ($this->start + $this->slice))) break;
 
@@ -297,7 +296,7 @@ class Table
             $this->table_row_open();
             
             reset($this->fields);
-            while (list($k, $v) = each($this->fields)) {
+            foreach ($this->fields as $k => $v) {
                 if ($this->arrayobj == "TRUE") {
                     $curval = $val->$v;
                     ######## BUG ########### echo $val->Parents->nomp;
@@ -313,7 +312,7 @@ class Table
                     $this->table_cell($curval, 1, isset($this->fieldsattr[$v]["align"]) ? $this->fieldsattr[$v]["align"] : '', isset($this->fieldsattr[$v]["wrap"]) ? $this->fieldsattr[$v]["wrap"] : '', isset($this->fieldsattr[$v]["class"]) ? $this->fieldsattr[$v]["class"] : '', isset($this->fieldsattr[$v]["width"]) ? $this->fieldsattr[$v]["width"] : '');
                 } else {
                     reset($this->links[$v][1]);
-                    while (list($kk, $var) = each($this->links[$v][1])) {
+                    foreach ($this->links[$v][1] as $kk => $var) {
                         if ($this->arrayobj == "TRUE") {
                             $value[$kk] = $val->$var;
                         } else {
@@ -337,7 +336,7 @@ class Table
         if ($this->footing) {
             $this->table_row_open("", $this->footcolor);
             reset($this->fields);
-            while (list($k, $v) = each($this->fields)) {
+            foreach ($this->fields as $k => $v) {
                 if (isset($this->footcontent)) {
                     if (isset($this->footcontent[$v])) {
                         $val = $this->footcontent[$v];
@@ -406,7 +405,7 @@ class Table
         reset($this->array);
         list($key, $val) = each($this->array);
         reset($val);
-        while (list($k, $v) = each($val)) {
+        foreach ($val as $k => $v) {
             if (preg_match($this->filter, $k)) $this->fields[] = $k;
         }
     }
@@ -479,7 +478,7 @@ class Table
     {
         $link = "\$link = sprintf (\"\n<a href=\\\"" . $template . "\\\">\"";
         reset($values);
-        while (list($key, $val) = each($values)) {
+        foreach ($values as $key => $val) {
             $link = $link . ",\"" . $val . "\"";
         }
         $link = $link . ");";

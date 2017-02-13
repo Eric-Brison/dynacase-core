@@ -106,7 +106,7 @@ class DHTML_Calendar
     {
         $jstr = '';
         reset($array);
-        while (list($key, $val) = each($array)) {
+        foreach ($array as $key => $val) {
             if (is_bool($val)) $val = $val ? 'true' : 'false';
             else if (!is_numeric($val)) $val = '"' . $val . '"';
             if ($jstr) $jstr.= ',';
@@ -119,7 +119,7 @@ class DHTML_Calendar
     {
         $attrstr = '';
         reset($array);
-        while (list($key, $val) = each($array)) {
+        foreach ($array as $key => $val) {
             $attrstr.= $key . '="' . $val . '" ';
         }
         return $attrstr;

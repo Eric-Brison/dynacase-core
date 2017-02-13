@@ -255,7 +255,7 @@ function family_defaultmenu(Action & $action)
         }
     }
     
-    while (list($k, $v) = each($tsort)) {
+    foreach ($tsort as $k => $v) {
         $tmsort[$v["said"]] = "sortdoc" . $v["said"];
     }
     $lattr = $sfdoc->GetSortAttributes();

@@ -225,7 +225,7 @@ class QueryObj extends QueryDb
         $ind = 0;
         // table of types
         reset($this->basic_elem->criterias);
-        while (list($k, $v) = each($this->basic_elem->criterias)) {
+        foreach ($this->basic_elem->criterias as $k => $v) {
             $o->cat("tab_types[{$ind}]=\"" . $v["type"] . "\";");
             $ind++;
         }
@@ -330,7 +330,7 @@ class QueryObj extends QueryDb
             if ($this->display_alpha == "TRUE") {
                 $o->cat('<td><small><select name="p_alpha_criteria">\n');
                 reset($this->basic_elem->criterias);
-                while (list($k, $v) = each($this->basic_elem->criterias)) {
+                foreach ($this->basic_elem->criterias as $k => $v) {
                     if ($v["type"] == "TXT") {
                         if ($this->alpha_criteria == $k) {
                             $o->cat("<OPTION SELECTED VALUE=\"{$k}\">" . $v["libelle"] . "\n");
@@ -377,7 +377,7 @@ class QueryObj extends QueryDb
         <TD><SMALL><SELECT NAME=\"p_criteria\"
                            onChange=\"selFiltre(document.QueryObj,this);\">\n");
             reset($this->basic_elem->criterias);
-            while (list($k, $v) = each($this->basic_elem->criterias)) {
+            foreach ($this->basic_elem->criterias as $k => $v) {
                 if ($this->criteria == $k) {
                     $o->cat("<OPTION SELECTED VALUE=\"{$k}\">" . $v["libelle"] . "\n");
                 } else {
@@ -389,7 +389,7 @@ class QueryObj extends QueryDb
             $o->cat("
         <TD><SMALL><SELECT NAME=\"p_operator\"
                            onChange=\"selFiltre(document.QueryObj,this);\">\n");
-            while (list($k, $v) = each($this->operators)) {
+            foreach ($this->operators as $k => $v) {
                 if ($this->operator == $k) {
                     $o->cat("<OPTION SELECTED VALUE=\"{$k}\">" . $v["lib"] . "\n");
                 } else {

@@ -20,7 +20,6 @@
 // $Log: Class.SubForm.php,v $
 //
 //
-
 class SubForm
 {
     // This class is used to produce HTML/JS code when you want to
@@ -87,7 +86,7 @@ function sendform() {
         $tab = array();
         reset($this->param);
         $c = - 1;
-        while (list($k, $v) = each($this->param)) {
+        foreach ($this->param as $k => $v) {
             $tab[$c]["name"] = $k;
             $tab[$c]["val"] = $v["val"];
             $c++;
@@ -112,7 +111,7 @@ function sendform() {
         $tab = array();
         reset($this->param);
         $isel = $c = - 1;
-        while (list($k, $v) = each($this->param)) {
+        foreach ($this->param as $k => $v) {
             if ($v["typ"] == "sel") {
                 $isel++;
                 $tabsel[$isel]["name"] = $k;

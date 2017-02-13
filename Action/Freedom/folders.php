@@ -141,7 +141,7 @@ function addfolder(Doc $doc, $level, $treename, $thisfld = true)
             
             if (count($ldir) > 0) {
                 
-                while (list($k, $v) = each($ldir)) {
+                foreach ($ldir as $k => $v) {
                     $ltree.= addfolder($v, $level + 1, $treename);
                 }
             }

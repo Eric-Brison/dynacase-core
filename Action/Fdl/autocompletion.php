@@ -247,7 +247,7 @@ function autocompletion(Action & $action)
             if ($err == "") {
                 $xmlCibles = $xmlDocument->createElement("cibles");
                 // add  index for return args only if the element is not in a array
-                while (list($k,) = each($rargids)) {
+                foreach ($rargids as $k => $noUsed) {
                     $linkprefix = "ilink_";
                     $isILink = false;
                     $attrId = $rargids[$k];

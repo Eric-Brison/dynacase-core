@@ -40,7 +40,7 @@ if ($app->id > 0) {
     $action->Set($actionname, $app);
     if ($action->id > 0) {
         reset($action->fields);
-        while (list($k, $v) = each($action->fields)) {
+        foreach ($action->fields as $k => $v) {
             if ($v == $attribute) {
                 $action->$attribute = $value;
                 $action->Modify();

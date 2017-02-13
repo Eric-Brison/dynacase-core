@@ -13,7 +13,7 @@ class FamImp4 extends Famimp4Plus
     }
     public function goodCompute2($a)
     {
-        return $a + 1;
+        return intval($a) + 1;
     }
     public function goodConstraint2($a)
     {

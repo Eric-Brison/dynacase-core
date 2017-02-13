@@ -1209,7 +1209,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         if (is_array($tparam)) {
             reset($tparam);
-            while (list($k, $v) = each($tparam)) {
+            foreach ($tparam as $k => $v) {
                 $this->SetParamDef($k, $v); // update definition
                 if ($update) {
                     // don't modify old parameters

@@ -170,7 +170,7 @@ create unique index idx_perm on docperm(docid, userid);";
      */
     function SetControlP($pos)
     {
-        $this->upacl = $this->upacl | (1 << $pos);
+        $this->upacl = intval($this->upacl) | (1 << $pos);
     }
     /**
      * unset positive ACL in specified position

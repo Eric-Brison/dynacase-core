@@ -61,7 +61,7 @@ class Report extends \Dcp\Family\Dsearch
         /**
          * @var \NormalAttribute $v
          */
-        while (list($k, $v) = each($lattr)) {
+        foreach ($lattr as $k => $v) {
             //    if ($v->visibility=="H") continue;
             $tcolumn1[$v->id] = array(
                 "aid" => $v->id,
@@ -71,7 +71,7 @@ class Report extends \Dcp\Family\Dsearch
         $tinternals = $this->_getInternals();
         // reconstruct internals for layout
         reset($tinternals);
-        while (list($k, $v) = each($tinternals)) {
+        foreach ($tinternals as $k => $v) {
             $tinternals[$k] = array(
                 "aid" => $k,
                 "alabel" => $v

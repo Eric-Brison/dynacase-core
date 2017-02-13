@@ -33,7 +33,7 @@ class PostitView extends \Dcp\Family\Document
         elseif ($nbcar < 200) $fontsize = 100;
         else $fontsize = 80;
         $tlaycomment = array();
-        while (list($k, $v) = each($tcomment)) {
+        foreach ($tcomment as $k => $v) {
             $tlaycomment[] = array(
                 "comments" => $this->getHtmlValue($this->getAttribute('PIT_COM') , $v, '_blank') ,
                 "user" => str_replace(array(

@@ -108,7 +108,7 @@ class SearchDoc
      * @public bool
      */
     private $debug = false;
-    private $debuginfo = "";
+    private $debuginfo = [];
     private $join = "";
     /**
      * sql filter not return confidential document if current user cannot see it
@@ -374,7 +374,7 @@ class SearchDoc
         $this->result = false;
         $this->resultPos = 0;
         $this->resultQPos = 0;
-        $this->debuginfo = "";
+        $this->debuginfo = [];
         $this->count = - 1;
     }
     /**
@@ -1412,6 +1412,7 @@ class SearchDoc
                             }
                             $fld->folderRecursiveLevel = $folderRecursiveLevel;
                             $tsqlM = $fld->getQuery();
+                            $qsql=[];
                             foreach ($tsqlM as $sqlM) {
                                 if ($sqlM != false) {
                                     if (!preg_match("/doctype[ ]*=[ ]*'Z'/", $sqlM, $reg)) {

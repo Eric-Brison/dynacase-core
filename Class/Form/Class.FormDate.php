@@ -121,7 +121,7 @@ class FormDate
         $tab=array();
         reset($this->param);
         $isel = $c = -1;
-        while (list($k,$v) = each($this->param)) {
+        foreach($this->param as  $k => $v) {
         if ($v["typ"] == "sel" ) {
         $isel++;
         $tabsel[$isel]["name"] = $k;

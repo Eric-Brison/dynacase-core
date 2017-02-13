@@ -28,10 +28,9 @@ $db = $usage->addOptionalParameter('dbcoord', "Database name", null, getDbAccess
 
 $usage->verify();
 
-$phpClass=sprintf("%s/%s/Class.%s.php",DEFAULT_PUBDIR,$appclass,$class);
+$phpClass = sprintf("%s/%s/Class.%s.php", DEFAULT_PUBDIR, $appclass, $class);
 
 include_once ($phpClass);
-
 /**
  * @var DbObj $o
  */
@@ -64,7 +63,7 @@ if (!$rq) {
         $sql[] = "DROP TABLE " . $o->dbtable . ";";
     }
     $sqlcmds = explode(";", $o->sqlcreate);
-    while (list($k, $sqlquery) = each($sqlcmds)) {
+    foreach ($sqlcmds as $k => $sqlquery) {
         if (chop($sqlquery) != "") $sql[] = $sqlquery;
     }
     
@@ -74,7 +73,7 @@ if (!$rq) {
         $sql[] = "DROP TABLE " . $o->dbtable . "_old;";
     }
 }
-while (list($k, $v) = each($sql)) {
+foreach ($sql as $k => $v) {
     print "Sql:$v\n";
     $rq = @pg_exec($dbid, $v);
     if (!$rq) {

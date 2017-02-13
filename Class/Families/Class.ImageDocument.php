@@ -34,7 +34,7 @@ class Image extends \Dcp\Family\Document
         $tableimage = array();
         $vf = newFreeVaultFile($this->dbaccess);
         // view all (and only) images
-        while (list($i, $attr) = each($listattr)) {
+        foreach ($listattr as $i => $attr) {
             
             $value = chop($this->getRawValue($i));
             //------------------------------

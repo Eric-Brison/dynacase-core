@@ -50,7 +50,7 @@ function freedom_editimport(Action & $action)
     
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
     
-    while (list($k, $cdoc) = each($tclassdoc)) {
+    foreach ($tclassdoc as $k => $cdoc) {
         $selectclass[$k]["idcdoc"] = $cdoc["initid"];
         $selectclass[$k]["classname"] = $cdoc["title"];
         if ($cdoc["initid"] == $classid) $selectclass[$k]["selected"] = "selected";

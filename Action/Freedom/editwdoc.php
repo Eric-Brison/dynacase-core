@@ -38,7 +38,7 @@ function editwdoc(Action & $action)
     
     $selectclass = array();
     if (is_array($tclassdoc)) {
-        while (list($k, $pdoc) = each($tclassdoc)) {
+        foreach ($tclassdoc as $k => $pdoc) {
             
             $selectclass[$k]["idpdoc"] = $pdoc["id"];
             $selectclass[$k]["profname"] = $pdoc["title"];

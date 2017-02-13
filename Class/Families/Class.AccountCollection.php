@@ -145,7 +145,7 @@ class AccountCollection extends \Dcp\Family\Dir
         /**
          * @var \Dcp\Family\Group $v
          */
-        while (list($k, $v) = each($tgroup)) {
+        foreach ($tgroup as $k => $v) {
             $v->RefreshGroup();
             $tpgroup[] = $v->title;
             $tidpgroup[] = $v->id;

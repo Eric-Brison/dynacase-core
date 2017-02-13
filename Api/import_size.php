@@ -39,7 +39,7 @@ if (file_exists(DEFAULT_PUBDIR . "/WHAT/size.php")) {
      $query->AddQuery("type='".PARAM_STYLE.$name."'");
      $list=$query->Query();
      if ($query->nb> 0) {       
-       while(list($k,$v)=each($list)) {
+       foreach($list as  $k => $v) {
     $v->delete();
        }
      }

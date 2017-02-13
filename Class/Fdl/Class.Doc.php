@@ -1307,7 +1307,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function store(&$info = null, $skipConstraint = false)
     {
-        $constraint = '';
+        $constraint = [];
         $info = new storeInfo();
         
         $err = $this->preStore();
@@ -6880,7 +6880,7 @@ create unique index i_docir on doc(initid, revision);";
                             if (!is_array($values)) {
                                 throw new Dcp\Exception("DFLT0008", $aid, $dval, $values, $this->fromname);
                             }
-                            $terr = '';
+                            $terr = [];
                             foreach ($values as $row) {
                                 $err = $this->addArrayRow($aid, $row);
                                 if ($err) $terr[] = $err;

@@ -37,7 +37,7 @@ function createfam(Action & $action)
     if (($docid == 0) && ($classid > 0)) $doc = new_Doc($dbaccess, $classid); // the doc inherit from chosen class
     $selectclass = array();
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, $classid, "TABLE");
-    while (list($k, $cdoc) = each($tclassdoc)) {
+    foreach ($tclassdoc as $k => $cdoc) {
         $selectclass[$k]["idcdoc"] = $cdoc["id"];
         $selectclass[$k]["classname"] = $cdoc["title"];
         $selectclass[$k]["selected"] = "";
@@ -54,7 +54,7 @@ function createfam(Action & $action)
     }
     if (($classid > 0) || ($doc->doctype = 'C')) {
         // selected the current class document
-        while (list($k, $cdoc) = each($selectclass)) {
+        foreach ($selectclass as $k => $cdoc) {
             
             if ($classid == $selectclass[$k]["idcdoc"]) {
                 

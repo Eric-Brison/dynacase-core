@@ -35,7 +35,7 @@ class _TST_FAMILYDEFAULT extends Doc
     
     public function oneMore($x)
     {
-        return $x + 1;
+        return intval($x) + 1;
     }
     
     public function itself($x)

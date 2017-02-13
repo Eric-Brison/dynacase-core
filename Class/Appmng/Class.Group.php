@@ -197,7 +197,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     function GetAllGroups()
     {
         $allg = $this->groups;
-        while (list($k, $gid) = each($this->groups)) {
+        foreach ($this->groups as $k => $gid) {
             $og = new Group($this->dbaccess, $gid);
             $allg = array_merge($allg, $og->GetAllGroups());
         }

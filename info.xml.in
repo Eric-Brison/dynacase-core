@@ -43,8 +43,8 @@
         <check type="pgversion" service="@core_db" predicate="ge" version="9.1.0">
             <label lang="en">Minimum database version is 9.1</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="lt" version="9.6.0">
-            <label lang="en">Maximum database version is 9.5</label>
+        <check type="pgversion" service="@core_db" predicate="lt" version="9.7.0">
+            <label lang="en">Maximum database version is 9.6</label>
         </check>
 
         <check type="pgempty" service="@core_db" optional="yes">
@@ -359,8 +359,8 @@ This can be solved by:<br/>
             <label lang="en">Minimum database version is 9.1</label>
         </check>
 
-        <check type="pgversion" service="@core_db" predicate="lt" version="9.6.0">
-            <label lang="en">Maximum database version is 9.5</label>
+        <check type="pgversion" service="@core_db" predicate="lt" version="9.7.0">
+            <label lang="en">Maximum database version is 9.6</label>
         </check>
 
         <check type="syscommand" command="rm">

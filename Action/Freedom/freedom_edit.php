@@ -174,7 +174,7 @@ function freedom_edit(Action & $action)
     } else {
         if (!$doc->isAlive()) $action->ExitError(_("document not referenced"));
         // selected the current class document
-        while (list($k, $cdoc) = each($selectclass)) {
+        foreach ($selectclass as $k => $cdoc) {
             if ($doc->fromid == abs($selectclass[$k]["idcdoc"])) {
                 $selectclass[$k]["selected"] = "selected";
             }
