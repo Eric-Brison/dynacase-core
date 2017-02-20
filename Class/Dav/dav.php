@@ -13,7 +13,8 @@ include_once ("../WHAT/Lib.Common.php");
 chdir(DEFAULT_PUBDIR);
 include_once ("DAV/Class.FdlDav.php");
 //error_log("dav:   path_info=(".$_SERVER["PATH_INFO"].")");
-$_SERVER['PATH_INFO'] = "/" . $_GET['filename'];
+
+$_SERVER['PATH_INFO'] = "/" . (empty($_GET['filename']) ? "" : $_GET['filename']);
 $type = isset($_GET['type']) ? $_GET['type'] : 'freedav';
 
 if ($type != 'webdav' && $type != 'freedav') {
@@ -36,6 +37,7 @@ whatInit();
 $s = new HTTP_WebDAV_Server_Freedom($action->dbaccess);
 $s->setFolderMaxItem($action->getParam('WEBDAV_FOLDERMAXITEM'));
 $path = $_SERVER['PATH_INFO'];
+$login = "";
 if ($type == "freedav") {
     if (preg_match("|/vid-([0-9]+)-([0-9]+)-([^/]+)|", $path, $reg)) {
         $docid = $reg[1];
@@ -102,6 +104,7 @@ function whatLogin($login)
     if ($login != "") {
         $action->user = new Account(); //create user
         $action->user->setLoginName($login);
+        $action->parent->user = $action->user;
     }
 }
 

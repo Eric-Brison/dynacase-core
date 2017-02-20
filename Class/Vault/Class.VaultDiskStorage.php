@@ -432,12 +432,14 @@ SQL;
      */
     function resetTEFiles()
     {
-        $sql = <<<SQL
+        if (\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+            $sql = <<<SQL
 UPDATE %s SET teng_state = %d WHERE teng_id_file = %s
 SQL;
-        
-        $up = sprintf($sql, pg_escape_identifier($this->dbtable) , pg_escape_literal(\Dcp\TransformationEngine\Client::status_inprogress) , pg_escape_literal($this->id_file));
-        $this->exec_query($up);
+            
+            $up = sprintf($sql, pg_escape_identifier($this->dbtable) , pg_escape_literal(\Dcp\TransformationEngine\Client::status_inprogress) , pg_escape_literal($this->id_file));
+            $this->exec_query($up);
+        }
     }
 } // End Class.VaultFileDisk.php
 class VaultFileInfo

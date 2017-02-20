@@ -14,7 +14,6 @@
  */
 
 require_once "DAV/Class.ServerDav.php";
-require_once "System.php";
 /**
  * Filesystem access using WebDAV
  *
@@ -32,7 +31,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
      */
     var $base = "";
     
-    public $db_freedom = "user=anakeen dbname=freedom";
+    public $db_freedom = "";
     /**
      * Type : 'webdav' or 'freedav'
      *
@@ -241,7 +240,11 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
         //    error_log("FSPATH :".$fspath. "=>".$fid);
         return $fid;
     }
-    
+    /**
+     * @param Doc $doc
+     *
+     * @return array
+     */
     function getFilesProperties(&$doc)
     {
         $fileAttributes = $doc->GetFileAttributes();
@@ -304,7 +307,8 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                 $query = sprintf("delete from dav.properties where path=  '%s' and name= 'fid'", pg_escape_string($this->_unslashify($info["path"])));
                 
                 pg_query($this->db_res, $query);
-                $query = sprintf("INSERT INTO dav.properties (path, name, ns, value) values ('%s', 'fid',  '%s', '%s')", pg_escape_string($this->_unslashify($info["path"])) , pg_escape_string($prop['ns']) , pg_escape_string($doc->initid));
+                $ns = ''; // @TODO verify $prop['ns']
+                $query = sprintf("INSERT INTO dav.properties (path, name, ns, value) values ('%s', 'fid',  '%s', '%s')", pg_escape_string($this->_unslashify($info["path"])) , pg_escape_string($ns) , pg_escape_string($doc->initid));
                 
                 pg_query($this->db_res, $query);
             }
@@ -346,7 +350,8 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                         //$query = "REPLACE INTO properties SET path = '".pg_escape_string($this->_unslashify($info["path"]))."', name = 'fid', ns= '$prop[ns]', value = '".$doc->id."'";
                         $query = sprintf("delete from dav.properties where path=  '%s' and name= 'fid'", pg_escape_string($this->_unslashify($info["path"])));
                         pg_query($this->db_res, $query);
-                        $query = sprintf("INSERT INTO dav.properties (path, name, ns, value) values ('%s', 'fid', '%s', '%s')", pg_escape_string($this->_unslashify($info["path"])) , pg_escape_string($prop['ns']) , pg_escape_string($doc->initid));
+                        $ns = ''; // @TODO verify ns
+                        $query = sprintf("INSERT INTO dav.properties (path, name, ns, value) values ('%s', 'fid', '%s', '%s')", pg_escape_string($this->_unslashify($info["path"])) , pg_escape_string($ns) , pg_escape_string($doc->initid));
                         pg_query($this->db_res, $query);
                         //  error_log($query);
                         //error_log("FILE:".$afile["name"]."-".$afile["size"]."-".$path);
@@ -388,8 +393,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
             $info["props"][] = $this->mkprop("displayname", $path);
             //      $info["props"][] = $this->mkprop("urn:schemas-microsoft-com:", "Win32FileAttributes", "00000001");
             $path = $this->_slashify($path);
-            if ($firstlevel) $info["path"] = $path;
-            else $info["path"] = $path;
+            $info["path"] = $path;
             //$info["path"]  = $path;
             $info["props"][] = $this->mkprop("creationdate", time());
             $info["props"][] = $this->mkprop("getlastmodified", time());
@@ -416,8 +420,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                     $info["props"][] = $this->mkprop("resourcetype", "");
                     
                     $info["props"][] = $this->mkprop("displayname", $aname);
-                    if ($firstlevel) $info["path"] = $dpath . $aname;
-                    else $info["path"] = $path . $aname;
+                    $info["path"] = $path . $aname;
                     $filename = $afile["path"];
                     $info["props"][] = $this->mkprop("creationdate", filectime($filename));
                     $info["props"][] = $this->mkprop("getlastmodified", filemtime($filename));
@@ -679,11 +682,9 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
                         foreach ($fnames as $k => $fname) {
                             //	  error_log("PUT SEARCH:.$bpath $fname");
                             if ($fname == $bpath) {
-                                error_log("PUT FOUND:" . $path . '-' . $fname);
                                 
-                                $bpath = $bpath;
                                 $doc->saveFile($afile->id, $options["stream"], $bpath, $k);
-                                $err = $doc->postStore();
+                                $doc->postStore();
                                 $err = $doc->Modify();
                                 
                                 break;
@@ -1232,7 +1233,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
         if (!$result) {
             
             include_once ("FDL/Class.Doc.php");
-            $fldid = $this->path2id($options["path"], $vid);
+            $fldid = $this->path2id($path, $vid);
             $doc = new_doc($this->db_freedom, $fldid);
             
             if ($doc->isAffected()) {

@@ -111,7 +111,7 @@ class HTTP_WebDAV_Server
      *
      * @param void
      */
-    function HTTP_WebDAV_Server()
+    function __construct()
     {
         // PHP messages destroy XML output -> switch them off
         ini_set("display_errors", 0);
@@ -139,7 +139,7 @@ class HTTP_WebDAV_Server
         }
         // default uri is the complete request uri
         $uri = (@$this->_SERVER["HTTPS"] === "on" ? "https:" : "http:");
-        $uri.= "//$this->_SERVER[HTTP_HOST]$this->_SERVER[SCRIPT_NAME]";
+        $uri.= sprintf("//%s%s", $this->_SERVER["HTTP_HOST"], $this->_SERVER["SCRIPT_NAME"]);
         
         $path_info = empty($this->_SERVER["PATH_INFO"]) ? "/" : $this->_SERVER["PATH_INFO"];
         
@@ -227,224 +227,6 @@ class HTTP_WebDAV_Server
             }
         }
     }
-    // }}}
-    // {{{ abstract WebDAV methods
-    // {{{ GET()
-    
-    /**
-     * GET implementation
-     *
-     * overload this method to retrieve resources from your server
-     * <br>
-     *
-     *
-     * @abstract
-     * @param array &$params Array of input and output parameters
-     * <br><b>input</b><ul>
-     * <li> path -
-     * </ul>
-     * <br><b>output</b><ul>
-     * <li> size -
-     * </ul>
-     * @returns int HTTP-Statuscode
-     */
-    /* abstract
-     function GET(&$params) 
-     {
-     // dummy entry for PHPDoc
-     } 
-    */
-    // }}}
-    // {{{ PUT()
-    
-    /**
-     * PUT implementation
-     *
-     * PUT implementation
-     *
-     * @abstract
-     * @param array &$params
-     * @returns int HTTP-Statuscode
-     */
-    /* abstract
-     function PUT() 
-     {
-     // dummy entry for PHPDoc
-     } 
-    */
-    // }}}
-    // {{{ COPY()
-    
-    /**
-     * COPY implementation
-     *
-     * COPY implementation
-     *
-     * @abstract
-     * @param array &$params
-     * @returns int HTTP-Statuscode
-     */
-    /* abstract
-     function COPY() 
-     {
-     // dummy entry for PHPDoc
-     } 
-    */
-    // }}}
-    // {{{ MOVE()
-    
-    /**
-     * MOVE implementation
-     *
-     * MOVE implementation
-     *
-     * @abstract
-     * @param array &$params
-     * @returns int HTTP-Statuscode
-     */
-    /* abstract
-     function MOVE() 
-     {
-     // dummy entry for PHPDoc
-     } 
-    */
-    // }}}
-    // {{{ DELETE()
-    
-    /**
-     * DELETE implementation
-     *
-     * DELETE implementation
-     *
-     * @abstract
-     * @param array &$params
-     * @returns int HTTP-Statuscode
-     */
-    /* abstract
-     function DELETE() 
-     {
-     // dummy entry for PHPDoc
-     } 
-    */
-    // }}}
-    // {{{ PROPFIND()
-    
-    /**
-     * PROPFIND implementation
-     *
-     * PROPFIND implementation
-     *
-     * @abstract
-     * @param array &$params
-     * @returns int HTTP-Statuscode
-     */
-    /* abstract
-     function PROPFIND() 
-     {
-     // dummy entry for PHPDoc
-     } 
-    */
-    // }}}
-    // {{{ PROPPATCH()
-    
-    /**
-     * PROPPATCH implementation
-     *
-     * PROPPATCH implementation
-     *
-     * @abstract
-     * @param array &$params
-     * @returns int HTTP-Statuscode
-     */
-    /* abstract
-     function PROPPATCH() 
-     {
-     // dummy entry for PHPDoc
-     } 
-    */
-    // }}}
-    // {{{ LOCK()
-    
-    /**
-     * LOCK implementation
-     *
-     * LOCK implementation
-     *
-     * @abstract
-     * @param array &$params
-     * @returns int HTTP-Statuscode
-     */
-    /* abstract
-     function LOCK() 
-     {
-     // dummy entry for PHPDoc
-     } 
-    */
-    // }}}
-    // {{{ UNLOCK()
-    
-    /**
-     * UNLOCK implementation
-     *
-     * UNLOCK implementation
-     *
-     * @abstract
-     * @param array &$params
-     * @returns int HTTP-Statuscode
-     */
-    /* abstract
-     function UNLOCK() 
-     {
-     // dummy entry for PHPDoc
-     } 
-    */
-    // }}}
-    // }}}
-    // {{{ other abstract methods
-    // {{{ check_auth()
-    
-    /**
-     * check authentication
-     *
-     * overload this method to retrieve and confirm authentication information
-     *
-     * @abstract
-     * @param string type Authentication type, e.g. "basic" or "digest"
-     * @param string username Transmitted username
-     * @param string passwort Transmitted password
-     * @returns bool Authentication status
-     */
-    /* abstract
-     function checkAuth($type, $username, $password) 
-     {
-     // dummy entry for PHPDoc
-     } 
-    */
-    // }}}
-    // {{{ checklock()
-    
-    /**
-     * check lock status for a resource
-     *
-     * overload this method to return shared and exclusive locks
-     * active for this resource
-     *
-     * @abstract
-     * @param string resource Resource path to check
-     * @returns array An array of lock entries each consisting
-     *                of 'type' ('shared'/'exclusive'), 'token' and 'timeout'
-     */
-    /* abstract
-     function checklock($resource) 
-     {
-     // dummy entry for PHPDoc
-     } 
-    */
-    // }}}
-    // }}}
-    // {{{ WebDAV HTTP method wrappers
-    // {{{ http_OPTIONS()
-    
     /**
      * OPTIONS method handler
      *
@@ -1356,10 +1138,10 @@ class HTTP_WebDAV_Server
             $options["depth"] = "infinity";
         }
         
-        extract(parse_url($this->_SERVER["HTTP_DESTINATION"]));
-        $path = str_replace("%25", "%", $path);
+        $urlInfo = parse_url($this->_SERVER["HTTP_DESTINATION"]);
+        $path = str_replace("%25", "%", $urlInfo["path"]);
         $path = urldecode($path);
-        $http_host = $host;
+        $http_host = $urlInfo["host"];
         if (isset($port) && $port != 80) $http_host.= ":$port";
         
         $http_header_host = preg_replace("/:80$/", "", $this->_SERVER["HTTP_HOST"]);
@@ -1516,9 +1298,9 @@ class HTTP_WebDAV_Server
     /**
      *
      *
-     * @param  string  header string to parse
-     * @param  int     current parsing position
-     * @return array   next token (type and value)
+     * @param  string  $string header string to parse
+     * @param  int     $pos current parsing position
+     * @return array|false   next token (type and value)
      */
     function _if_header_lexer($string, &$pos)
     {
@@ -1577,7 +1359,7 @@ class HTTP_WebDAV_Server
      * parse If: header
      *
      * @param  string  header string
-     * @return array   URIs and their conditions
+     * @return array|bool   URIs and their conditions
      */
     function _if_header_parser($str)
     {
@@ -1660,7 +1442,7 @@ class HTTP_WebDAV_Server
      * defined in RFC 2518 section 9.4
      *
      * @param  void
-     * @return void
+     * @return string
      */
     function _check_if_header_conditions()
     {
@@ -1877,8 +1659,8 @@ class HTTP_WebDAV_Server
     /**
      * Merge two pathes, make sure there is exactly one slash between them
      *
-     * @param  string  parent path
-     * @param  string  child path
+     * @param  string  $parent parent path
+     * @param  string  $child child path
      * @return string  merged path
      */
     function _mergePathes($parent, $child)
@@ -1890,10 +1672,3 @@ class HTTP_WebDAV_Server
         }
     }
 }
-/*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * End:
-*/
-?>
