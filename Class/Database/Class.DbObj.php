@@ -942,17 +942,27 @@ class DbObj
         return $err;
     }
     /**
-     * set a database transaction advisory lock
-     * the lock is free when transaction is done.
-     * A transaction must be initiate before call it a call to DbObj::savePoint() is mandatory
-     * @param int $exclusiveLock Numeric identifier (int32) of lock exclusive lock
-     * @param string $exclusiveLockPrefix Second : limited up to 4 characters
+     * Set a database transaction advisory lock
+     *
+     * - A transaction advisory lock can only be used within an existing
+     *   transaction.  So, a transaction must have been explicitly opened
+     *   by a call to DbObj::savePoint() before using DbObj::lockPoint().
+     * - The lock is automatically released when the transaction is
+     *   commited or rolled back.
+     *
+     * @param int $exclusiveLock Lock's identifier as a signed integer in the int32 range
+     *                           (i.e. in the range [-2147483648, 2147483647]).
+     * @param string $exclusiveLockPrefix Lock's prefix string limited up to 4 bytes.
      * @see Dbobj::savePoint()
-     * @throws \Dcp\Exception DB0011 and DB0010
+     * @throws \Dcp\Exception DB0010, DB0011, and DB0012
      * @return string error message
      */
     public function lockPoint($exclusiveLock, $exclusiveLockPrefix = '')
     {
+        if (($exclusiveLock_int32 = \Dcp\Utils\Types::to_int32($exclusiveLock)) === false) {
+            throw new \Dcp\Db\Exception("DB0012", var_export($exclusiveLock, true));
+        }
+        $exclusiveLock = $exclusiveLock_int32;
         if (!$this->dbid) {
             $err = sprintf("dbid is null cannot add lock %s-%s", $exclusiveLock, $exclusiveLockPrefix);
             error_log(__METHOD__ . ":$err");
