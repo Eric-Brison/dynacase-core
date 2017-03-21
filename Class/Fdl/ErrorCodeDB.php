@@ -70,6 +70,11 @@ namespace {
          */
         const DB0011 = 'The lock "%d-%s" must be set inside a savePoint transaction';
         /**
+         * @errorCode Lock identifier is not a valid int32
+         * @see DbObj::lockPoint()
+         */
+        const DB0012 = 'Lock identifier (%s) is not a valid int32';
+        /**
          * @errorCode
          * simple query error
          */
@@ -84,7 +89,6 @@ namespace {
          * simple query error connect
          */
         const DB0102 = 'cannot connect to "%s". Simple query error "%s" for query "%s"';
-
         /**
          * @errorCode  Vault identifier key cannot be generated
          * @see VaultDiskStorage::getNewVaultId
