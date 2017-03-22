@@ -917,6 +917,9 @@ class FormatCollection
                     break;
 
                 case 'money':
+                    $info = new MoneyAttributeValue($oa, $value);
+                    break;
+
                 case 'double':
                     $info = new DoubleAttributeValue($oa, $value, $this->decimalSeparator);
                     break;
@@ -1205,6 +1208,40 @@ class DoubleAttributeValue extends FormatAttributeValue
     }
 }
 
+class MoneyAttributeValue extends FormatAttributeValue
+{
+    
+    public function __construct(NormalAttribute $oa, $v)
+    {
+        parent::__construct($oa, $v);
+        
+        $lang = getParam("CORE_LANG");
+        if ($lang == "fr_FR") {
+        }
+        if (is_array($this->displayValue)) {
+            foreach ($this->displayValue as $k => $dv) {
+                $this->displayValue[$k] = money_format('%!.2n', doubleval($dv));
+                if ($oa->format) {
+                    $this->displayValue[$k] = sprintf($oa->format, $this->displayValue[$k]);
+                }
+            }
+        } else {
+            $this->displayValue = money_format('%!.2n', doubleval($v));
+            if ($oa->format) {
+                $this->displayValue = sprintf($oa->format, $this->displayValue);
+            }
+        }
+        
+        if (is_array($this->value)) {
+            /** @noinspection PhpWrongForeachArgumentTypeInspection */
+            foreach ($this->value as $k => $v) {
+                $this->value[$k] = doubleval($v);
+            }
+        } else {
+            $this->value = doubleval($this->value);
+        }
+    }
+}
 class EnumAttributeValue extends StandardAttributeValue
 {
     public $exists = true;
@@ -1297,7 +1334,7 @@ class DocidAttributeValue extends StandardAttributeValue
             if ($v !== '' && $v !== null) {
                 if ($iconsize > 0) {
                     if (!empty($info["icon"])) {
-                        $this->icon = $doc->getIcon($info["icon"], $iconsize,$info["initid"]);
+                        $this->icon = $doc->getIcon($info["icon"], $iconsize, $info["initid"]);
                     } else {
                         $this->icon = $doc->getIcon("doc.png", $iconsize);
                     }
@@ -1314,7 +1351,7 @@ class DocidAttributeValue extends StandardAttributeValue
                     $this->initid = intval($info["initid"]);
                 }
                 if (isset($info["fromid"])) {
-                    $this->fromid=intval($info["fromid"]);
+                    $this->fromid = intval($info["fromid"]);
                 }
             }
         } else {

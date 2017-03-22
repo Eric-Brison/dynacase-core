@@ -85,10 +85,10 @@ function report_export_csv(Action & $action)
         'ISO'
     ) , $default);
     
-    $default = isset($defaultArgument["numericRender"]) ? $defaultArgument["numericRender"] : 'format';
+    $default = isset($defaultArgument["numericRender"]) ? $defaultArgument["numericRender"] : 'raw';
     $argumentsCSV["numericRender"] = $usage->addOptionalParameter("numericRender", "the number render", array(
-        'format',
-        'raw'
+        'raw',
+        'format'
     ) , $default);
     
     $displayForm = $usage->addHiddenParameter("displayForm", "");
@@ -96,7 +96,6 @@ function report_export_csv(Action & $action)
     
     $usage->setStrictMode(false);
     $usage->verify();
-    
     $usageArguments = array(
         "sole",
         "app",
@@ -247,14 +246,14 @@ function report_export_csv(Action & $action)
         
         $numericRender = array(
             array(
-                "key" => "format",
-                "selected" => $isSelected("format", $argumentsCSV["numericRender"]) ,
-                "label" => _("EXPORT_CSV formatted numbers ")
-            ) ,
-            array(
                 "key" => "raw",
                 "selected" => $isSelected("raw", $argumentsCSV["numericRender"]) ,
                 "label" => _("EXPORT_CSV raw numbers")
+            ) ,
+            array(
+                "key" => "format",
+                "selected" => $isSelected("format", $argumentsCSV["numericRender"]) ,
+                "label" => _("EXPORT_CSV formatted numbers ")
             )
         );
         $action->lay->setBlockData("numericRender", $numericRender);

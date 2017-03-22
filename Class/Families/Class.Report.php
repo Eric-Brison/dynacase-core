@@ -694,19 +694,7 @@ class Report extends \Dcp\Family\Dsearch
     
     protected function getCellValue(\Doc $doc, \BasicAttribute $oa, $format, $index = - 1)
     {
-        if ($format["renderNumber"] === "raw" && in_array($oa->type, array(
-            "int",
-            "double",
-            "money"
-        ))) {
-            $cellValue = $doc->getRawValue($oa->id);
-            if (!empty($format["decimalSeparator"])) {
-                $cellValue = str_replace(".", $format["decimalSeparator"], $cellValue);
-            }
-            return $cellValue;
-        } else {
-            return $oa->getTextualValue($doc, $index, $format);
-        }
+        return $oa->getTextualValue($doc, $index, $format);
     }
     /**
      * Generate a basic CSV export
@@ -791,9 +779,21 @@ class Report extends \Dcp\Family\Dsearch
                         "double",
                         "money"
                     ))) {
-                        $cellValue = $render["attributes"][$col]->value;
-                        if ($separator) {
-                            $cellValue = str_replace(".", $separator, $cellValue);
+                        if (is_array($render["attributes"][$col])) {
+                            $numValues = [];
+                            foreach ($render["attributes"][$col] as $arender) {
+                                $oneValue = $arender->value;
+                                if ($separator) {
+                                    $oneValue = str_replace(".", $separator, $oneValue);
+                                }
+                                $numValues[] = $oneValue;
+                            }
+                            $cellValue = implode("\n", $numValues);
+                        } else {
+                            $cellValue = $render["attributes"][$col]->value;
+                            if ($separator) {
+                                $cellValue = str_replace(".", $separator, $cellValue);
+                            }
                         }
                     }
                 } else {
