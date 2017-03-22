@@ -350,7 +350,6 @@ class NormalAttribute extends BasicAttribute
     private static $_cache = array();
     protected $originalPhpfile;
     protected $originalPhpfunc;
-
     /**
      * Normal Attribute constructor : non structural attribute
      *
@@ -833,14 +832,24 @@ class NormalAttribute extends BasicAttribute
      */
     public function getTextualValue(Doc $doc, $index = - 1, Array $configuration = array())
     {
+        $decimalSeparator = isset($configuration['decimalSeparator']) ? $configuration['decimalSeparator'] : '.';
+        
+        if (in_array($this->type, array(
+            "int",
+            "double",
+            "money"
+        ))) {
+            return $this->getNumberValue($doc, $index, $decimalSeparator);
+        }
         $value = $doc->getRawValue($this->id);
         $fc = new \FormatCollection();
         $stripHtmlTags = isset($configuration['stripHtmlTags']) ? $configuration['stripHtmlTags'] : false;
         $fc->stripHtmlTags($stripHtmlTags);
-        $decimalSeparator = isset($configuration['decimalSeparator']) ? $configuration['decimalSeparator'] : '.';
+        
         $fc->setDecimalSeparator($decimalSeparator);
         $fc->setDateStyle(\DateAttributeValue::defaultStyle);
         $dateFormat = isset($configuration['dateFormat']) ? $configuration['dateFormat'] : 'US';
+        
         if ($dateFormat == 'US') {
             $fc->setDateStyle(\DateAttributeValue::isoWTStyle);
         } elseif ($dateFormat == "ISO") {
@@ -861,6 +870,33 @@ class NormalAttribute extends BasicAttribute
             return '';
         }
         return \FormatCollection::getDisplayValue($info, $this, $index, $configuration);
+    }
+    
+    public function getNumberValue(Doc $doc, $index = - 1, $decimalSeparator = ".")
+    {
+        
+        if ($index >= 0) {
+            $numberValue = $doc->getMultipleRawValues($this->id, "", $index);
+            if ($this->format) {
+                $numberValue = sprintf($this->format, $numberValue);
+            }
+        } elseif ($this->isMultiple() && $this->format) {
+            $cellValues = $doc->getMultipleRawValues($this->id);
+            foreach ($cellValues as & $cell) {
+                $cell = sprintf($this->format, $cell);
+            }
+            $numberValue = implode("\n", $cellValues);
+        } else {
+            $numberValue = $doc->getRawValue($this->id);
+            if ($this->format) {
+                $numberValue = sprintf($this->format, $numberValue);
+            }
+        }
+        
+        if (!empty($decimalSeparator)) {
+            $numberValue = str_replace(".", $decimalSeparator, $numberValue);
+        }
+        return $numberValue;
     }
     /**
      * to see if an attribute is n item of an array
@@ -894,8 +930,8 @@ class NormalAttribute extends BasicAttribute
             $this->enumlabel = array();
             $br = $this->docname . '#' . $this->id . '#'; // id i18n prefix
             if ($this->originalPhpfile && $this->originalPhpfunc) {
-                $this->phpfile=$this->originalPhpfile;
-                $this->phpfunc=$this->originalPhpfunc;
+                $this->phpfile = $this->originalPhpfile;
+                $this->phpfunc = $this->originalPhpfunc;
             }
             if (($this->phpfile != "") && ($this->phpfile != "-")) {
                 // for dynamic  specification of kind attributes
@@ -912,8 +948,8 @@ class NormalAttribute extends BasicAttribute
                         $br = $dreg[1] . '#' . strtolower($dreg[2]) . '#';
                     }
                     if (function_exists($reg[1])) {
-                        $this->originalPhpfile=$this->phpfile;
-                        $this->originalPhpfunc=$this->phpfunc;
+                        $this->originalPhpfile = $this->phpfile;
+                        $this->originalPhpfunc = $this->phpfunc;
                         $this->phpfile = "";
                         $this->phpfunc = call_user_func_array($reg[1], $args);
                         

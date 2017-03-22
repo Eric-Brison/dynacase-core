@@ -52,6 +52,8 @@ class TestReport extends TestCaseDcpAction
     {
         $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $this->setCurrentParameters('id', 'RAPPORT_4e6e2c77b36ed');
+        $this->setCurrentParameters('numericRender', 'raw');
+        
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__, $csvContent);
         $this->assertEquals($this->readExampleFile("default_report.csv") , $csvContent);
@@ -65,6 +67,7 @@ class TestReport extends TestCaseDcpAction
         $this->setCurrentParameters('id', 'RAPPORT_4e6e2c77b36ed');
         $this->setCurrentParameters('kind', 'pivot');
         $this->setCurrentParameters('pivot', 'all_element_text');
+        $this->setCurrentParameters('numericRender', 'raw');
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__, $csvContent);
         $this->assertEquals($this->readExampleFile("pivot_allelement_report.csv") , $csvContent);
@@ -79,6 +82,7 @@ class TestReport extends TestCaseDcpAction
         $this->setCurrentParameters('delimiter', '"');
         $this->setCurrentParameters('enclosure', ',');
         $this->setCurrentParameters('encoding', 'UTF-8');
+        $this->setCurrentParameters('numericRender', 'raw');
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__, $csvContent);
         $this->assertEquals($this->readExampleFile("customCSV_report.csv") , $csvContent);
@@ -91,6 +95,7 @@ class TestReport extends TestCaseDcpAction
         $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $this->setCurrentParameters('id', 'RAPPORT_4e6e2c77b36ed');
         $this->setCurrentParameters('dateFormat', 'ISO');
+        $this->setCurrentParameters('numericRender', 'raw');
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__ . "_ISO", $csvContent);
         $this->assertEquals($this->readExampleFile("dateISO_report.csv") , $csvContent, "ISO DATE");
@@ -107,6 +112,7 @@ class TestReport extends TestCaseDcpAction
         $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $this->setCurrentParameters('id', 'RAPPORT_4e6e2c77b36ed');
         $this->setCurrentParameters('decimalSeparator', '%');
+        $this->setCurrentParameters('numericRender', 'raw');
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__, $csvContent);
         $this->assertEquals($this->readExampleFile("decimalSeparator_report.csv") , $csvContent);
