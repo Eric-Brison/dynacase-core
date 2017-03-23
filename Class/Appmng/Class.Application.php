@@ -346,7 +346,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     private function stripRootDir($pathname)
     {
-        if (substr($pathname, 0, strlen($this->rootdir) - 1) == $this->rootdir) {
+        if (substr($pathname, 0, strlen($this->rootdir)) === $this->rootdir) {
             $pathname = substr($pathname, strlen($this->rootdir) + 1);
         }
         
