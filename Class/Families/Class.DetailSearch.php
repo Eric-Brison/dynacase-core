@@ -276,11 +276,11 @@ class DetailSearch extends \Dcp\Family\Search
             return '';
         }
         /* Check ISO format */
-        if (preg_match('|^\d\d\d\d-\d\d-\d\d(\s+\d\d:\d\d(:\d\d)?)?$|', $str)) {
+        if (preg_match('@^\d\d\d\d-\d\d-\d\d([\s+|T]\d\d:\d\d(:\d\d)?)?$@', $str)) {
             return '';
         }
         $this->last_sug = $this->getDate(0, '', '', true);
-        return _("DetailSearch:malformed timestamp");
+        return _("DetailSearch:malformed timestamp").": $str";
     }
     /**
      * Check the given string is a valid Postgresql's RE
