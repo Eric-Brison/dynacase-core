@@ -8949,12 +8949,12 @@ create unique index i_docir on doc(initid, revision);";
      * return system user id
      * @searchLabel My system user id
      * @searchType uid
-     * @return int
+     * @return string the numeric system identifier of user
      */
     public static function getSystemUserId()
     {
         global $action;
-        return (int)$action->user->id;
+        return $action->user->id;
     }
     /**
      * return a specific attribute of the current user document
