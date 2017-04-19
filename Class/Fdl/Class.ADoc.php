@@ -130,18 +130,12 @@ class ADoc
     {
         if (!$this->isOrdered || $force) {
             $this->absoluteOrders[self::HIDDENFIELD] = 0;
-            uasort($this->attr, function ($a, $b)
-            {
-                if (!$a || !$b) {
-                    return 0;
-                } elseif ($this->absoluteOrders[$a->id] > $this->absoluteOrders[$b->id]) {
-                    return 1;
-                } elseif ($this->absoluteOrders[$a->id] < $this->absoluteOrders[$b->id]) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            });
+            $tmpSort = $this->attr;
+            $this->attr = [];
+            asort($this->absoluteOrders);
+            foreach ($this->absoluteOrders as $aid => $absorder) {
+                $this->attr[$aid] = & $tmpSort[$aid];
+            }
             $this->isOrdered = true;
         }
     }

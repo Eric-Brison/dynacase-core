@@ -187,7 +187,7 @@ class BasicAttribute
      */
     function isMultiple()
     {
-        return ($this->inArray() || ($this->getOption('multiple') == 'yes'));
+        return ($this->inArray() || ($this->getOption('multiple') === 'yes'));
     }
     /**
      * verify if attribute is multiple value and if is also in array multiple^2
@@ -196,7 +196,7 @@ class BasicAttribute
      */
     function isMultipleInArray()
     {
-        return ($this->inArray() && ($this->getOption('multiple') == 'yes'));
+        return ($this->inArray() && ($this->getOption('multiple') === 'yes'));
     }
     /**
      * Get tab ancestor
