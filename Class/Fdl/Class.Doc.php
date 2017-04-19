@@ -2146,27 +2146,32 @@ create unique index i_docir on doc(initid, revision);";
      * @api get attribute object
      * @param string $idAttr attribute identifier
      * @param BasicAttribute &$oa object reference use this if want to modify attribute
-     * @return BasicAttribute|NormalAttribute|bool
+     * @param bool $useMask set to false to not apply mask if needed (quick access mode)
+     * @return BasicAttribute|bool|NormalAttribute
      */
-    final public function &getAttribute($idAttr, &$oa = null)
+    final public function &getAttribute($idAttr, &$oa = null, $useMask = true)
     {
-        if (!$this->_maskApplied) $this->ApplyMask();
         if ($idAttr !== Adoc::HIDDENFIELD) {
             $idAttr = strtolower($idAttr);
         }
-        $oas = $this->getAttributes();
-        
-        if (isset($this->attributes->attr[$idAttr])) $oa = $oas[$idAttr];
-        else $oa = false;
+        if ($useMask) {
+            $this->getAttributes($useMask);
+        }
+        if (isset($this->attributes->attr[$idAttr])) {
+            $oa = $this->attributes->attr[$idAttr];
+        } else {
+            $oa = false;
+        }
         
         return $oa;
     }
     /**
      * return all the attributes object
      * the attribute can be defined in fathers
+     * @param bool $useMask set to false to not apply mask if needed (quick access mode)
      * @return BasicAttribute[]
      */
-    final public function &getAttributes()
+    final public function &getAttributes($useMask = true)
     {
         $fromname = ($this->doctype == 'C') ? $this->name : $this->fromname;
         $aFromName = isset($this->attributes->fromname) ? $this->attributes->fromname : '';
@@ -2182,8 +2187,10 @@ create unique index i_docir on doc(initid, revision);";
                 $this->attributes = new $adocClassName();
             }
         }
-        if (!$this->_maskApplied) $this->ApplyMask();
-        reset($this->attributes->attr);
+        if ($useMask && !$this->_maskApplied) {
+            $this->ApplyMask();
+            reset($this->attributes->attr);
+        }
         return $this->attributes->attr;
     }
     /**
@@ -3116,7 +3123,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \NormalAttribute $oa
          */
-        $oa = $this->getAttribute($idAttr);
+        $oa = $this->getAttribute($idAttr, $nothing, false);
         if (!$oa) {
             throw new Dcp\Exception('DOC0114', $idAttr, $this->title, $this->fromname);
         }
@@ -3212,7 +3219,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $idAttr identifier of list attribute
      * @param string $def default value returned if attribute not found or if is empty
      * @param int $index the values for $index row (default value -1 means all values)
-     * @return array the list of attribute values
+     * @return array|string the list of attribute values
      */
     final public function getMultipleRawValues($idAttr, $def = "", $index = - 1)
     {
@@ -3228,7 +3235,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $t = $this->rawValueToArray($v);
         if ($index == - 1) {
-            $oa = $this->getAttribute($idAttr);
+            $oa = $this->getAttribute($idAttr, $nothing, false);
             if ($oa && $oa->type == "xml") {
                 foreach ($t as $k => $v) {
                     $t[$k] = str_replace('<BR>', "\n", $v);
@@ -3237,7 +3244,7 @@ create unique index i_docir on doc(initid, revision);";
             return $t;
         }
         if (isset($t[$index])) {
-            $oa = $this->getAttribute($idAttr);
+            $oa = $this->getAttribute($idAttr, $nothing, false);
             if ($oa && $oa->type == "xml") $t[$index] = str_replace('<BR>', "\n", $t[$index]);
             return $t[$index];
         } else return $def;
@@ -7700,16 +7707,16 @@ create unique index i_docir on doc(initid, revision);";
                                     $values = explode("<BR>", $va);
                                     $ovalues = array();
                                     foreach ($values as $ka => $vaa) {
-                                        $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa), ENT_QUOTES);
+                                        $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa) , ENT_QUOTES);
                                     }
                                     //print_r(array($oa->id=>$ovalues));
                                     $tmkeys[$kindex]["V_" . strtoupper($kaid) ] = $ovalues;
                                     $oa->setOption("multiple", "yes"); //  needto have values like first level
                                     
                                 } else {
-                                    $oooValue=$this->GetOOoValue($oa, $va);
+                                    $oooValue = $this->GetOOoValue($oa, $va);
                                     if ($oa->type !== "htmltext") {
-                                        $oooValue=htmlspecialchars_decode($oooValue, ENT_QUOTES);
+                                        $oooValue = htmlspecialchars_decode($oooValue, ENT_QUOTES);
                                     }
                                     $tmkeys[$kindex]["V_" . strtoupper($kaid) ] = $oooValue;
                                 }
@@ -7727,7 +7734,7 @@ create unique index i_docir on doc(initid, revision);";
                             $ovalues = array();
                             $v->setOption("multiple", "no");
                             foreach ($values as $ka => $va) {
-                                $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($v, $va), ENT_QUOTES);
+                                $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($v, $va) , ENT_QUOTES);
                             }
                             $v->setOption("multiple", "yes");
                             //print_r(array("V_".strtoupper($v->id)=>$ovalues,"raw"=>$values));
