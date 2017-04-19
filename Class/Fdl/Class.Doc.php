@@ -7700,14 +7700,18 @@ create unique index i_docir on doc(initid, revision);";
                                     $values = explode("<BR>", $va);
                                     $ovalues = array();
                                     foreach ($values as $ka => $vaa) {
-                                        $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa));
+                                        $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa), ENT_QUOTES);
                                     }
                                     //print_r(array($oa->id=>$ovalues));
                                     $tmkeys[$kindex]["V_" . strtoupper($kaid) ] = $ovalues;
                                     $oa->setOption("multiple", "yes"); //  needto have values like first level
                                     
                                 } else {
-                                    $tmkeys[$kindex]["V_" . strtoupper($kaid) ] = $this->GetOOoValue($oa, $va);
+                                    $oooValue=$this->GetOOoValue($oa, $va);
+                                    if ($oa->type !== "htmltext") {
+                                        $oooValue=htmlspecialchars_decode($oooValue, ENT_QUOTES);
+                                    }
+                                    $tmkeys[$kindex]["V_" . strtoupper($kaid) ] = $oooValue;
                                 }
                             }
                         }
@@ -7723,7 +7727,7 @@ create unique index i_docir on doc(initid, revision);";
                             $ovalues = array();
                             $v->setOption("multiple", "no");
                             foreach ($values as $ka => $va) {
-                                $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($v, $va));
+                                $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($v, $va), ENT_QUOTES);
                             }
                             $v->setOption("multiple", "yes");
                             //print_r(array("V_".strtoupper($v->id)=>$ovalues,"raw"=>$values));

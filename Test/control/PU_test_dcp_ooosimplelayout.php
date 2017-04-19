@@ -251,11 +251,11 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
                     ) ,
                     array(
                         "office:body//table:table/table:table-row[4]/table:table-cell[2]//text:p/text:span",
-                        "Column three"
+                        "Column 'three"
                     ) ,
                     array(
                         "office:body//table:table/table:table-row[5]/table:table-cell[2]//text:p/text:span",
-                        "Column four"
+                        "Column <four>"
                     )
                 )
             ) ,
