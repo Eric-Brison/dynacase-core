@@ -76,6 +76,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestDcpMailMessage');
         $suite->addTestSuite('Dcp\Pu\TestAffect');
         $suite->addTestSuite('Dcp\Pu\TestDocVaultIndex');
+        $suite->addTestSuite('Dcp\Pu\TestHtmlclean');
         // ...
         return $suite;
     }
