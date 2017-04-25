@@ -8,11 +8,17 @@ namespace Dcp\Utils;
 
 class htmlclean
 {
+    /*
+     * Libxml's errors to ignore.
+     * Error codes are taken from `include/libxml/xmlerror.h` from libxml's source code.
+    */
     static $libXMLErrorIgnoreCodes = array(
         /* Ignore "htmlParseEntityRef: expecting ';'" (XML_ERR_ENTITYREF_SEMICOL_MISSING) errors */
         23,
         /* Ignore "Tag video invalid in Entity" (XML_HTML_UNKNOWN_TAG) errors */
-        801
+        801,
+        /* Ignore "ID %s already defined" (XML_DTD_ID_REDEFINED) errors */
+        513
     );
     /**
      * Delete dangerous attributes and elements to prevent xss attacks
