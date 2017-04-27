@@ -1,0 +1,1 @@
+delete from fld where dirid not in (select initid from doc2 where locked != -1) and qtype='S';
