@@ -148,13 +148,13 @@ class FamilyImport
              */
             foreach ($table1 as $k => $v) {
                 $type = trim(strtok($v->type, "("));
-                if ($type == "docid") {
+                if ($type === "docid" || $type == "account" || $type == "thesaurus") {
                     $parentDoctitle = "";
                     if (isset($pa[substr($v->id, 1) ]) && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $pa[substr($v->id, 1) ]["options"], $reg)) {
                         $parentDoctitle = $reg[1];
                     }
                     // add title auto
-                    if (preg_match("/doctitle=([A-Za-z0-9_-]+)/", $v->options, $reg)) {
+                    if ($v->usefor !== 'Q' && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $v->options, $reg)) {
                         $doctitle = $reg[1];
                         if ($doctitle === $parentDoctitle) {
                             continue;
@@ -625,8 +625,9 @@ class FamilyImport
                     $tattr[strtolower($attr->id) . '_vec'] = clone ($attr);
                     $tattr[strtolower($attr->id) . '_vec']->type = 'tsvector';
                 } else {
-                    if (substr($attr->type, 0, 5) == "docid") {
-                        if (preg_match("/doctitle=([A-Za-z0-9_-]+)/", $attr->options, $reg)) {
+                    $type = trim(strtok($attr->type, "("));
+                    if ($type === "docid" || $type === "account" || $type === "thesaurus") {
+                        if ($attr->usefor !== "Q" && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $attr->options, $reg)) {
                             $doctitle = $reg[1];
                             if ($doctitle == "auto") {
                                 $doctitle = $attr->id . "_title";
