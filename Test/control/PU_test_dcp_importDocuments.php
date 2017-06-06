@@ -137,7 +137,7 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
                             "tst_title" => "Test1",
                             "tst_number" => "20"
                         )
-                    ),
+                    ) ,
                     array(
                         "docName" => "TST_GOOD4",
                         "expectValue" => array(
@@ -165,6 +165,15 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
                             "tst_number" => "987",
                             "tst_date" => "2015-10-02",
                             "tst_file" => "*Zéphir.txt"
+                        )
+                    ) ,
+                    array(
+                        "docName" => "TST_GOOD4",
+                        "expectValue" => array(
+                            "tst_title" => "<Foo'Bar\"Baz&Buz>",
+                            "tst_number" => "987",
+                            "tst_date" => "2015-10-02",
+                            "tst_file" => "*|<Foo'Bar\"Baz&Buz>.txt"
                         )
                     )
                 )
