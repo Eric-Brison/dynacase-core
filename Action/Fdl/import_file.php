@@ -20,6 +20,7 @@ include_once ("FDL/Class.Dir.php");
 include_once ("FDL/Class.QueryDir.php");
 include_once ("FDL/Lib.Attr.php");
 include_once ("FDL/Class.DocAttrLDAP.php");
+require_once ("WHAT/Lib.FileMime.php");
 
 define("ALTSEPCHAR", ' --- ');
 define("SEPCHAR", ';');
@@ -103,16 +104,14 @@ function AddVaultFile($dbaccess, $path, $analyze, &$vid)
     global $importedFiles;
     
     $err = '';
-    $path = str_replace("//", "/", $path);
+    $path = preg_replace(':/+:', '/', $path);
     // return same if already imported (case of multi links)
     if (isset($importedFiles[$path])) {
         $vid = $importedFiles[$path];
         return "";
     }
-    
-    $absfile2 = str_replace('"', '\\"', $path);
     // $mime=mime_content_type($absfile);
-    $mime = trim(shell_exec(sprintf("file -ib %s", escapeshellarg($absfile2))));
+    $mime = getSysMimeFile($path);
     if (!$analyze) {
         $vf = newFreeVaultFile($dbaccess);
         $err = $vf->Store($path, false, $vid);

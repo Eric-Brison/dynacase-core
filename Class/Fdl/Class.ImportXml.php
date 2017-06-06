@@ -342,6 +342,17 @@ class importXml
             closedir($handle);
         }
     }
+    protected static function fputsError($fd, $str)
+    {
+        $len = fputs($fd, $str);
+        if ($len === false || $len != strlen($str)) {
+            $metadata = stream_get_meta_data($fd);
+            $filename = ((is_array($metadata) && isset($metadata['uri'])) ? $metadata['uri'] : '*unknown*file*');
+            fclose($fd);
+            throw new \Dcp\Exception("IMPC0012", $filename);
+        }
+        return $len;
+    }
     /**
      * extract encoded base 64 file from xml and put it in local media directory
      * the file is rewrite without encoded data and replace by href attribute
@@ -358,94 +369,136 @@ class importXml
         $mediadir = "media";
         if (!is_dir("$dir/$mediadir")) mkdir("$dir/$mediadir");
         $f = fopen($file, "r");
+        if ($f === false) {
+            throw new \Dcp\Exception("IMPC0009", $file);
+        }
         $nf = fopen($file . ".new", "w");
-        while (!feof($f)) {
-            $buffer = fgets($f, 4096);
-            $mediaindex++;
-            if (preg_match("/<([a-z_0-9-]+)[^>]*mime=\"[^\"]+\"(.*)>(.*)/", $buffer, $reg)) {
-                if ((substr($reg[2], -1) != "/") && (substr($reg[2], -strlen($reg[1]) - 3) != '></' . $reg[1])) { // not empty tag
-                    $tag = $reg[1];
-                    if (preg_match("/<([a-z_0-9-]+)[^>]*title=\"([^\"]+)\"/", $buffer, $regtitle)) {
-                        $title = $regtitle[2];
-                    } else if (preg_match("/<([a-z_0-9-]+)[^>]*title='([^']+)'/", $buffer, $regtitle)) {
-                        $title = $regtitle[2];
+        if ($nf === false) {
+            throw new \Dcp\Exception("IMPC0010", $file . ".new");
+        }
+        try {
+            while (!feof($f)) {
+                $buffer = fgets($f, 4096);
+                $mediaindex++;
+                if (preg_match("/<([a-z_0-9-]+)[^>]*mime=\"[^\"]+\"(.*)>(.*)/", $buffer, $reg)) {
+                    if ((substr($reg[2], -1) != "/") && (substr($reg[2], -strlen($reg[1]) - 3) != '></' . $reg[1])) { // not empty tag
+                        $tag = $reg[1];
+                        if (preg_match("/<([a-z_0-9-]+)[^>]*title=\"([^\"]+)\"/", $buffer, $regtitle)) {
+                            $title = \XMLSplitter::unescapeEntities($regtitle[2]);
+                        } else if (preg_match("/<([a-z_0-9-]+)[^>]*title='([^']+)'/", $buffer, $regtitle)) {
+                            $title = \XMLSplitter::unescapeEntities($regtitle[2]);
+                        } else $title = "noname";
+                        if (strpos($title, DIRECTORY_SEPARATOR) !== false) {
+                            throw new \Dcp\Exception("IMPC0005", DIRECTORY_SEPARATOR, $title);
+                        }
+                        $mediaIndexDir = sprintf("%s/%s/%d", $dir, $mediadir, $mediaindex);
+                        if (!file_exists($mediaIndexDir)) {
+                            if (mkdir($mediaIndexDir) === false) {
+                                throw new \Dcp\Exception("IMPC0006", $mediaIndexDir);
+                            }
+                        }
+                        if (!is_dir($mediaIndexDir)) {
+                            throw new \Dcp\Exception("IMPC0007", $mediaIndexDir);
+                        }
+                        $rfin = sprintf("%s/%d/%s", $mediadir, $mediaindex, $title);
+                        $fin = sprintf("%s/%s", $dir, $rfin);
+                        $fi = fopen($fin, "w");
+                        if ($fi === false) {
+                            throw new \Dcp\Exception("IMPC0008", $fi);
+                        }
+                        if (preg_match("/(.*)(<$tag [^>]*)>/", $buffer, $regend)) {
+                            self::fputsError($nf, $regend[1] . $regend[2] . ' href="' . \XMLSplitter::escapeEntities($rfin) . '">');
+                        }
+                        if (preg_match("/>([^<]*)<\/$tag>(.*)/", $buffer, $regend)) {
+                            // end of file
+                            self::fputsError($fi, $regend[1]);
+                            self::fputsError($nf, "</$tag>");
+                            self::fputsError($nf, $regend[2]);
+                        } else {
+                            // find end of file
+                            self::fputsError($fi, $reg[3]);
+                            $findtheend = false;
+                            while (!feof($f) && (!$findtheend)) {
+                                $buffer = fgets($f, 4096);
+                                if (preg_match("/(.*)<\/$tag>(.*)/", $buffer, $regend)) {
+                                    self::fputsError($fi, $regend[1]);
+                                    self::fputsError($nf, "</$tag>");
+                                    self::fputsError($nf, $regend[2]);
+                                    $findtheend = true;
+                                } else {
+                                    self::fputsError($fi, $buffer);
+                                }
+                            }
+                        }
+                        fclose($fi);
+                        self::base64Decodefile($fin);
+                    } else {
+                        self::fputsError($nf, $buffer);
+                    }
+                } else if (preg_match("/&lt;img.*?src=\"data:[^;]*;base64,(.*)/", $buffer, $reg)) {
+                    if (preg_match("/&lt;img.*?title=\"([^\"]+)\"/", $buffer, $regtitle)) {
+                        $title = $regtitle[1];
+                    } else if (preg_match("/&lt;img.*?title='([^']+)'/", $buffer, $regtitle)) {
+                        $title = $regtitle[1];
                     } else $title = "noname";
-                    mkdir(sprintf("%s/%s/%d", $dir, $mediadir, $mediaindex));
+                    if (strpos($title, DIRECTORY_SEPARATOR) !== false) {
+                        throw new \Dcp\Exception("IMPC0005", DIRECTORY_SEPARATOR, $title);
+                    }
+                    $mediaIndexDir = sprintf("%s/%s/%d", $dir, $mediadir, $mediaindex);
+                    if (!file_exists($mediaIndexDir)) {
+                        if (mkdir($mediaIndexDir) === false) {
+                            throw new \Dcp\Exception("IMPC0006", $mediaIndexDir);
+                        }
+                    }
+                    if (!is_dir($mediaIndexDir)) {
+                        throw new \Dcp\Exception("IMPC0007", $mediaIndexDir);
+                    }
                     $rfin = sprintf("%s/%d/%s", $mediadir, $mediaindex, $title);
                     $fin = sprintf("%s/%s", $dir, $rfin);
                     $fi = fopen($fin, "w");
-                    
-                    if (preg_match("/(.*)(<$tag [^>]*)>/", $buffer, $regend)) {
-                        fputs($nf, $regend[1] . $regend[2] . ' href="' . $rfin . '">');
+                    if ($fi === false) {
+                        throw new \Dcp\Exception("IMPC0008", $fi);
                     }
-                    if (preg_match("/>([^<]*)<\/$tag>(.*)/", $buffer, $regend)) {
+                    if (preg_match("/(.*)(&lt;img.*?)src=\"data:[^;]*;base64,/", $buffer, $regend)) {
+                        $chaintoput = $regend[1] . $regend[2] . ' src="file://' . $rfin . '"';
+                        self::fputsError($nf, $chaintoput);
+                    }
+                    if (preg_match("/&lt;img.*?src=\"data:[^;]*;base64,([^\"]*)\"(.*)/", $buffer, $regend)) {
                         // end of file
-                        fputs($fi, $regend[1]);
-                        fputs($nf, "</$tag>");
-                        fputs($nf, $regend[2]);
+                        self::fputsError($fi, $regend[1]);
+                        self::fputsError($nf, $regend[2]);
                     } else {
                         // find end of file
-                        fputs($fi, $reg[3]);
+                        self::fputsError($fi, $reg[1]);
                         $findtheend = false;
                         while (!feof($f) && (!$findtheend)) {
                             $buffer = fgets($f, 4096);
-                            if (preg_match("/(.*)<\/$tag>(.*)/", $buffer, $regend)) {
-                                fputs($fi, $regend[1]);
-                                fputs($nf, "</$tag>");
-                                fputs($nf, $regend[2]);
+                            if (preg_match("/([^\"]*)\"(.*)/", $buffer, $regend)) {
+                                self::fputsError($fi, $regend[1]);
+                                self::fputsError($nf, $regend[2]);
                                 $findtheend = true;
                             } else {
-                                fputs($fi, $buffer);
+                                self::fputsError($fi, $buffer);
                             }
                         }
                     }
                     fclose($fi);
                     self::base64Decodefile($fin);
                 } else {
-                    fputs($nf, $buffer);
+                    self::fputsError($nf, $buffer);
                 }
-            } else if (preg_match("/&lt;img.*?src=\"data:[^;]*;base64,(.*)/", $buffer, $reg)) {
-                if (preg_match("/&lt;img.*?title=\"([^\"]+)\"/", $buffer, $regtitle)) {
-                    $title = $regtitle[1];
-                } else if (preg_match("/&lt;img.*?title='([^']+)'/", $buffer, $regtitle)) {
-                    $title = $regtitle[1];
-                } else $title = "noname";
-                mkdir(sprintf("%s/%s/%d", $dir, $mediadir, $mediaindex));
-                $rfin = sprintf("%s/%d/%s", $mediadir, $mediaindex, $title);
-                $fin = sprintf("%s/%s", $dir, $rfin);
-                $fi = fopen($fin, "w");
-                if (preg_match("/(.*)(&lt;img.*?)src=\"data:[^;]*;base64,/", $buffer, $regend)) {
-                    $chaintoput = $regend[1] . $regend[2] . ' src="file://' . $rfin . '"';
-                    fputs($nf, $chaintoput);
-                }
-                if (preg_match("/&lt;img.*?src=\"data:[^;]*;base64,([^\"]*)\"(.*)/", $buffer, $regend)) {
-                    // end of file
-                    fputs($fi, $regend[1]);
-                    fputs($nf, $regend[2]);
-                } else {
-                    // find end of file
-                    fputs($fi, $reg[1]);
-                    $findtheend = false;
-                    while (!feof($f) && (!$findtheend)) {
-                        $buffer = fgets($f, 4096);
-                        if (preg_match("/([^\"]*)\"(.*)/", $buffer, $regend)) {
-                            fputs($fi, $regend[1]);
-                            fputs($nf, $regend[2]);
-                            $findtheend = true;
-                        } else {
-                            fputs($fi, $buffer);
-                        }
-                    }
-                }
-                fclose($fi);
-                self::base64Decodefile($fin);
-            } else {
-                fputs($nf, $buffer);
             }
+        }
+        catch(\Exception $e) {
+            fclose($f);
+            fclose($nf);
+            throw $e;
         }
         fclose($f);
         fclose($nf);
-        rename($file . ".new", $file);
+        if (rename($file . ".new", $file) === false) {
+            throw new \Dcp\Exception("IMPC0011", $file . ".new", $file);
+        }
     }
     
     public static function base64Decodefile($filename)
