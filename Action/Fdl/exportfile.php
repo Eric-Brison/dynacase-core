@@ -112,7 +112,8 @@ function exportfile(Action & $action)
                      * @var \Dcp\Family\Cvdoc $cvdoc
                      */
                     $cvdoc = new_Doc($dbaccess, $doc->cvid);
-                    $cvdoc->set($doc);
+                    $cvdoc = clone $cvdoc;
+                    $cvdoc->Set($doc);
                     /*
                      * Apply mask from requested view
                     */

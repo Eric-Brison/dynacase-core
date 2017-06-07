@@ -108,7 +108,8 @@ function viewcard(Action & $action)
          * @var $cvdoc \Dcp\Family\CVDOC
          */
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
-        $cvdoc->set($doc);
+        $cvdoc = clone $cvdoc;
+        $cvdoc->Set($doc);
         if ($vid != "") {
             /*
              * Apply mask from requested view

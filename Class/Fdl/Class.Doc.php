@@ -2208,7 +2208,8 @@ create unique index i_docir on doc(initid, revision);";
              * @var \Dcp\Family\CVDoc $cvdoc
              */
             $cvdoc = new_Doc($this->dbaccess, $this->cvid);
-            $cvdoc->set($this);
+            $cvdoc = clone $cvdoc;
+            $cvdoc->Set($this);
             
             $view = $cvdoc->getPrimaryView($edition);
             
@@ -2283,7 +2284,8 @@ create unique index i_docir on doc(initid, revision);";
                  */
                 $cvdoc = new_Doc($this->dbaccess, $this->cvid);
                 if ($cvdoc->isAlive()) {
-                    $cvdoc->set($this);
+                    $cvdoc = clone $cvdoc;
+                    $cvdoc->Set($this);
                     $vid = $this->getDefaultView(($mid == Doc::USEMASKCVEDIT) , "id");
                     if ($vid != '') {
                         $tview = $cvdoc->getView($vid);

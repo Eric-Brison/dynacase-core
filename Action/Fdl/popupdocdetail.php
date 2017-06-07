@@ -404,7 +404,8 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
          * @var \Dcp\Family\CVDoc $cvdoc
          */
         $cvdoc = new_Doc($doc->dbaccess, $doc->cvid);
-        $cvdoc->set($doc);
+        $cvdoc = clone $cvdoc;
+        $cvdoc->Set($doc);
         
         $tv = array(); // consult array views
         $count = array();
