@@ -1,0 +1,1 @@
+delete from docattr where docid not in (select id from doc);

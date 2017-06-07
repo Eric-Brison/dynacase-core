@@ -1,0 +1,1 @@
+update doc set locked=0 where locked < -1;
