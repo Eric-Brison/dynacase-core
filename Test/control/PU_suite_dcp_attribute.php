@@ -38,6 +38,7 @@ class SuiteDcpAttribute
         $suite->addTestSuite('DCP\PU\TestGetDocAnchor');
         $suite->addTestSuite('Dcp\Pu\TestAutocompletion'); // This test requires a bootstrap.php with ob_start()
         $suite->addTestSuite('Dcp\Pu\TestGetTextualValue');
+        $suite->addTestSuite('DCP\PU\TestAttributeDoctitle');
         // ...
         return $suite;
     }
