@@ -209,7 +209,7 @@ class FamilyImport
             foreach ($table1 as $k => $v) {
                 $validOrder = true;
                 if ($v->id[0] === ':') {
-                    if (!$v->ordered) {
+                    if (!$v->ordered && !$v->frameid) {
                         $validOrder = false;
                     }
                     $v = self::completeAttribute($dbaccess, $v);
