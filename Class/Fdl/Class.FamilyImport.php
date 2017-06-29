@@ -207,7 +207,11 @@ class FamilyImport
             }
             
             foreach ($table1 as $k => $v) {
-                if ($v->id[0] == ':') {
+                $validOrder = true;
+                if ($v->id[0] === ':') {
+                    if (!$v->ordered) {
+                        $validOrder = false;
+                    }
                     $v = self::completeAttribute($dbaccess, $v);
                     if (is_numeric($v->ordered)) {
                         $pattern = sprintf("/%s\\/([0-9]+)/", $v->id);
@@ -223,8 +227,9 @@ class FamilyImport
                 if (preg_match("/relativeOrder=([A-Za-z0-9_:-]+)/", $v->options, $reg)) {
                     $previous = strtolower($reg[1]);
                 }
-                
-                $allAttributes[$v->id . "/" . $v->docid] = ["id" => $v->id, "parent" => $v->frameid, "family" => $v->docid, "prev" => $previous, "numOrder" => intval($v->ordered) ];
+                if ($validOrder) {
+                    $allAttributes[$v->id . "/" . $v->docid] = ["id" => $v->id, "parent" => $v->frameid, "family" => $v->docid, "prev" => $previous, "numOrder" => intval($v->ordered) ];
+                }
                 if ($v->visibility == "F") {
                     $v->type = "frame";
                 } // old notation compliant
