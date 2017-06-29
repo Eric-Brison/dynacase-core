@@ -1261,7 +1261,7 @@ SQL;
         return $a;
     }
     /**
-     * Test if an enum key existe
+     * Test if an enum key exists
      *
      * @param string $key enumKey
      * @param bool $completeKey if true test complete key with path else without path
@@ -1272,9 +1272,13 @@ SQL;
         if ($key == "") {
             return false;
         }
-        $this->getEnum();
         
-        return (($completeKey && isset($this->enum[$key])) || (!$completeKey && isset($this->enumlabel[$key])));
+        if ($completeKey) {
+            $enumKeys = $this->getEnum();
+        } else {
+            $enumKeys = $this->getEnumLabel();
+        }
+        return isset($enumKeys[$key]);
     }
     /**
      * Construct a string key
