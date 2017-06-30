@@ -656,12 +656,15 @@ function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
  *
  * @param string $dbaccess database specification
  * @param string $name logical name
- * @param string $famid must be set to increase speed search
- * @return int 0 if not found, return negative first id found if multiple (name must be unique)
+ * @return int|false return numeric id, false if not found, if revision (name must be unique) return the latest id
  */
-function getIdFromName($dbaccess, $name, $famid = "")
+function getIdFromName($dbaccess, $name)
 {
     static $first = true;
+    
+    if (!$name || $name === "\t" || strpos($name, "\n") !== false) {
+        return false;
+    }
     $dbid = getDbid($dbaccess);
     $id = false;
     

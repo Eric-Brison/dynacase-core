@@ -27,7 +27,10 @@ class DocTitle
     {
         $uid = getCurrentUser()->id; // index by uid in case of sudo
         $isAdmin = ($uid == 1);
-        if (!is_numeric($docid)) $docid = getIdFromName(getDbAccess() , $docid);
+        
+        if ($docid && !is_numeric($docid)) {
+            $docid = getIdFromName(getDbAccess() , $docid);
+        }
         if (!$docid) return null;
         if ($docrevOption === "") {
             $docrevOption = $latest ? "latest" : "fixed";
