@@ -46,19 +46,21 @@ class SharedDocuments
         }
         return $null;
     }
+
     /**
      * Add or update an object
      * @param string $key object identifier
      * @param \Doc $item object to add or update
-     * @return bool (true if it is set to shared object)
+     * @param bool $force set to true to add without limits
+     * @return bool
      */
-    public static function set($key, &$item)
+    public static function set($key, &$item, $force = false)
     {
         global $gdocs;
         if ($key === '' or $key === null or (!is_scalar($key))) {
             return false;
         }
-        if (count($gdocs) < self::$limit) {
+        if (count($gdocs) < self::$limit || $force === true) {
             $gdocs[$key] = & $item;
             return true;
         }
