@@ -662,7 +662,8 @@ function getIdFromName($dbaccess, $name)
 {
     static $first = true;
     
-    if (!$name || $name === "\t" || strpos($name, "\n") !== false) {
+    $name = trim($name);
+    if (!$name || strpos($name, "\n") !== false) {
         return false;
     }
     $dbid = getDbid($dbaccess);
@@ -674,7 +675,7 @@ function getIdFromName($dbaccess, $name)
     }
     //  $result = pg_query($dbid,"select id from docname where name='$name';");
     $result = pg_execute($dbid, "getidfromname", array(
-        trim($name)
+        $name
     ));
     $n = pg_num_rows($result);
     if ($n > 0) {
