@@ -173,6 +173,11 @@ function viewcard(Action & $action)
     if ($zonebodycard == "") {
         $zonebodycard = "FDL:VIEWBODYCARD";
     }
+
+    if ($action->getParam("ISIE", null) === null) {
+        initExplorerParam($action->parent, false);
+    }
+
     // with doc head ?
     $zo = $doc->getZoneOption($zonebodycard);
     if (GetHttpVars("dochead") == "") $dochead = (!preg_match("/[T|U|V]/", $zo, $reg));
@@ -192,6 +197,7 @@ function viewcard(Action & $action)
     $action->lay->Set("reference", $doc->initid . (($doc->name == "") ? "" : " ({$doc->name})"));
     
     $action->lay->Set("revision", $doc->revision);
+    $action->lay->Set("V_TITLE", $doc->getDocAnchor($doc->id, $target));
     
     $action->lay->Set("lockedid", 0);
     $action->lay->Set("comment", '');

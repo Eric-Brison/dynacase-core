@@ -4,23 +4,41 @@
   <head>
 
    <title>[TEXT:Properties:] [TITLE]</title>
-<BASE HREF="[baseurl]">
-
-
-
 
    <style type="text/css">
-[ZONE CORE:SYSTEMCSS]
-[CSS:CODE]
+       .frame {
+          border:[COLOR_A3] solid 1px;
+          margin: 5px;
+          padding: 5px;
+       }
+
+       .frame .legend {
+          background-color: [COLOR_B8];
+          border-bottom:[COLOR_A3] solid 1px;
+          font-weight:bold;
+       }
+
+       body, td, th, tr {
+         font-size: 12px;
+       }
+
+       a {
+         text-decoration:none;
+       }
+       table.border, table.border td {
+          border:[COLOR_A7] solid 1px;
+          border-collapse: collapse;
+       }
+
    </style>
 
  </head>
 
-<body class="freedom"   >
+<body>
 
 [BLOCK COMMENT]
-<P>[comment]</P>
-<HR>
+<p>[comment]</p>
+<hr/>
 [ENDBLOCK COMMENT]
 <div width="100%" class="tablesimple">
 [ZONE FDL:VIEWCARD?target=mail&zone=[zone]]

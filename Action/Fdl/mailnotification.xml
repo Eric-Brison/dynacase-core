@@ -4,25 +4,13 @@
   <head>
 
    <title>[TEXT:Properties:] [TITLE]</title>
-<BASE HREF="[baseurl]">
 
    <style type="text/css">
-[ZONE CORE:SYSTEMCSS]
-[CSS:CODE]
-div.border {
-  border-color:[CORE_BLACK];
-  border-style:groove;
-  border-width:2px;
-  -moz-border-radius:5px;
-  cursor:pointer
-}
-div.border:hover {  
-  background-color:[COLOR_C5];
-}
-A.nounder:hover, A.nounder:link,A.nounder:visited, A.nounder {
-  text-decoration:none;
-  color:[COLOR_BLACK];
-}
+
+       a {
+       text-decoration:none;
+       }
+
    </style>
 
  </head>
@@ -30,12 +18,14 @@ A.nounder:hover, A.nounder:link,A.nounder:visited, A.nounder {
 <body class="freedom"   >
 
 [BLOCK COMMENT]
-<P>[comment]</P>
-<HR>
+<p>[comment]</p>
+<hr/>
 [ENDBLOCK COMMENT]
-<a class="nounder" title="[TEXT:Click to access to the document]" href="[CORE_MAILACTIONURL]&id=[ID]">
-<div class="border" style="width:300px">
+
+    <h3> [V_TITLE] </h3>
+
+    <div class="border" >
 [ZONE FDL:VIEWCARD?target=mail&zone=FDL:VIEWTHUMBCARD:T]
-</div></a>
+</div>
 </body>
 </html>
